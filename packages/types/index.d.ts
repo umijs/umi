@@ -299,7 +299,7 @@ export interface IConfig extends IConfigCore {
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
-  title?: string;
+  title?: string | false;
   [key: string]: any;
 }
 
