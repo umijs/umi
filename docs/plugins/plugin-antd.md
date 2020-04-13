@@ -44,12 +44,13 @@ translateHelp: true
 export default {
   antd: {
     dark: true,
+    // or
     compact: true,
   },
 }
 ```
 
-启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
+启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。暗色主题和紧凑主题无法同时开启。
 
 ## FAQ
 
