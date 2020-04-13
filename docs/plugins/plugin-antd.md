@@ -44,7 +44,7 @@ translateHelp: true
 export default {
   antd: {
     dark: true,
-    or
+    // or
     compact: true,
   },
 }
