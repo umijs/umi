@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "2.13.12",
+  "version": "2.13.13",
   "description": "Pluggable enterprise-level react application framework.",
   "dependencies": {
     "@babel/core": "7.4.5",
@@ -18,7 +18,7 @@
     "signale": "1.4.0",
     "umi-build-dev": "1.18.5",
     "umi-core": "1.9.9",
-    "umi-ui": "1.5.5",
+    "umi-ui": "1.5.6",
     "umi-utils": "1.7.2",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"
