@@ -53,7 +53,6 @@
     "portfinder": "^1.0.24",
     "prettier": "^1.19.1",
     "puppeteer": "1.11.0",
-    "react": "^16.8.6",
     "react-router-dom": "5.1.2",
     "react-test-renderer": "16.6.3",
     "rimraf": "^3.0.0",
