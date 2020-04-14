@@ -14,7 +14,7 @@
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "publish": "lerna-changelog && ./scripts/publish.js",
+    "publish": "lerna-changelog && ./scripts/publish.js --npm-tag=latest-2",
     "test": "node scripts/test.js",
     "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
     "ui:build": "node ./scripts/ui.js"
