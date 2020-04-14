@@ -9,6 +9,10 @@ export function isReactComponent(code: string) {
       hasJSXElement = true;
       path.stop();
     },
+    JSXFragment(path) {
+      hasJSXElement = true;
+      path.stop();
+    }
   });
   return hasJSXElement;
 }
