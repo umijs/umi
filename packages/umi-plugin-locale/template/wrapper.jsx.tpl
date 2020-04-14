@@ -39,7 +39,7 @@ import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
 {{/defaultMomentLocale}}
-let defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
+let defaultAntd = require('antd/{{requireModule}}/locale-provider/{{defaultAntdLocale}}');
 defaultAntd = defaultAntd.default || defaultAntd;
 {{/antd}}
 
@@ -50,7 +50,7 @@ const localeInfo = {
       {{#paths}}...((locale) => locale.__esModule ? locale.default : locale)(require('{{{.}}}')),{{/paths}}
     },
     locale: '{{name}}',
-    {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
+    {{#antd}}antd: require('antd/{{requireModule}}/locale-provider/{{lang}}_{{country}}'),{{/antd}}
     data: require('react-intl/locale-data/{{lang}}'),
     momentLocale: '{{momentLocale}}',
   },
@@ -143,7 +143,7 @@ class LocaleWrapper extends React.Component{
      const isConfigProvider = Number(major) > 3 || (Number(major) >= 3 && Number(minor) >= 21);
      if (isConfigProvider) {
        try {
-         AntdProvider = require('antd/lib/config-provider').default;
+         AntdProvider = require('antd/{{requireModule}}/config-provider').default;
        } catch (e) {}
      }
 
