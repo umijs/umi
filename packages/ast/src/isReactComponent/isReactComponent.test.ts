@@ -6,4 +6,8 @@ test('jsx', () => {
 
 test('no jsx', () => {
   expect(isReactComponent(`export default () => <p />`)).toEqual(true);
-});
+})
+
+test('no React Fragment', () => {
+  expect(isReactComponent(`export default () => <>hello</>`)).toEqual(true);
+})
