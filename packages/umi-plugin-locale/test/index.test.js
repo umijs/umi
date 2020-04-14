@@ -47,7 +47,7 @@ describe('test plugin', () => {
     expect(ret).toEqual(expect.stringContaining('<AntdProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-    expect(ret).toEqual(expect.stringContaining('antd/lib/locale-provider/en_US'));
+    expect(ret).toEqual(expect.stringContaining('antd/es/locale-provider/en_US'))
     expect(ret).toEqual(expect.stringContaining('moment/locale/zh-cn'));
     unlinkSync(wrapperFile);
   });
@@ -64,7 +64,7 @@ test('antd is false', () => {
 
   expect(ret).not.toEqual(expect.stringContaining('<AntdProvider'));
   expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-  expect(ret).not.toEqual(expect.stringContaining('antd/lib/locale-provider/zh_CN'));
+  expect(ret).not.toEqual(expect.stringContaining('antd/es/locale-provider/zh_CN'));
   expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
   unlinkSync(wrapperFile);
 });

@@ -96,7 +96,7 @@ export function isNeedPolyfill(targets = {}) {
 
 export default function(api, options = {}) {
   const { config, paths } = api;
-  const { targets } = config;
+  const { targets, ssr } = config;
 
   if (isNeedPolyfill(targets)) {
     api.addEntryPolyfillImports({
@@ -133,6 +133,7 @@ export default function(api, options = {}) {
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,
       defaultMomentLocale: getMomentLocale(lang, country),
+      requireModule: ssr ? 'lib' : 'es',
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');
     writeFileSync(wrapperPath, wrapperContent, 'utf-8');
