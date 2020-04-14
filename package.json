@@ -32,7 +32,6 @@
     "babel-eslint": "10.0.1",
     "chokidar": "3.0.1",
     "cross-spawn": "^6.0.5",
-    "dva": "2.4.1",
     "eslint": "5.10.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "^4.2.0",
