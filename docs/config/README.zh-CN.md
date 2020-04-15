@@ -160,6 +160,26 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+若希望将 ClassName 类名变成驼峰命名形式，可配置：
+
+```js
+{
+  cssLoader: {
+    localsConvention: 'camelCase'
+  }
+}
+```
+
+则以下写法将自动转成驼峰命名：
+
+```tsx
+import React from 'react';
+
+import styles from './index.less'; // .bar-foo { font-size: 16px; }
+
+export default () => <div className={styles.barFoo}>Hello</div>;
+// => <div class="bar-foo___{hash}">Hello</div>
+```
 
 ## cssModulesTypescriptLoader <Badge>3.1+</Badge>
 
