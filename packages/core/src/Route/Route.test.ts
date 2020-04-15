@@ -222,6 +222,36 @@ test('conventional route 404', async () => {
   ]);
 });
 
+test('conventional 404/404', async () => {
+  const route = new Route();
+  expect(
+    await route.getRoutes({
+      config: {},
+      root: join(fixtures, 'conventional-404-404/pages'),
+    }),
+  ).toEqual([
+    {
+      path: '/',
+      exact: true,
+      component: '@/pages/index.tsx',
+    },
+    {
+      path: '/user/404',
+      exact: true,
+      component: '@/pages/user/404.tsx',
+    },
+    {
+      path: '/user',
+      exact: true,
+      component: '@/pages/user/index.tsx',
+    },
+    {
+      exact: true,
+      component: '@/pages/404.tsx',
+    },
+  ]);
+});
+
 test('conventional sort routes func', async () => {
   expect(
     [
