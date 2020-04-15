@@ -1,5 +1,5 @@
 import { join } from 'path';
-import Route from './Route';
+import Route, { routesSortFn } from './Route';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -211,9 +211,87 @@ test('conventional route 404', async () => {
     }),
   ).toEqual([
     {
-      path: '/404',
+      path: '/',
+      exact: true,
+      component: '@/pages/index.tsx',
+    },
+    {
       exact: true,
       component: '@/pages/404.tsx',
+    },
+  ]);
+});
+
+test('conventional sort routes func', async () => {
+  expect(
+    [
+      { path: '/', exact: true, component: '@/pages/index.tsx' },
+      { exact: true, component: '@/pages/404.tsx' },
+      {
+        path: '/foo',
+        exact: true,
+        component: '@/pages/foo.tsx',
+      },
+    ].sort(routesSortFn),
+  ).toEqual([
+    {
+      path: '/',
+      exact: true,
+      component: '@/pages/index.tsx',
+    },
+    {
+      path: '/foo',
+      exact: true,
+      component: '@/pages/foo.tsx',
+    },
+    {
+      exact: true,
+      component: '@/pages/404.tsx',
+    },
+  ]);
+
+  expect(
+    [
+      { path: '/', exact: true, component: '@/pages/index.tsx' },
+      {
+        path: '/foo',
+        exact: true,
+        component: '@/pages/foo.tsx',
+      },
+      { exact: true, component: '@/pages/404.tsx' },
+    ].sort(routesSortFn),
+  ).toEqual([
+    {
+      path: '/',
+      exact: true,
+      component: '@/pages/index.tsx',
+    },
+    {
+      path: '/foo',
+      exact: true,
+      component: '@/pages/foo.tsx',
+    },
+    {
+      exact: true,
+      component: '@/pages/404.tsx',
+    },
+  ]);
+
+  expect(
+    [
+      { exact: true, component: '@/pages/404.tsx' },
+      {
+        path: '/foo',
+        exact: true,
+        component: '@/pages/foo.tsx',
+      },
+      { path: '/', exact: true, component: '@/pages/index.tsx' },
+    ].sort(routesSortFn),
+  ).toEqual([
+    {
+      path: '/foo',
+      exact: true,
+      component: '@/pages/foo.tsx',
     },
     {
       path: '/',
@@ -221,6 +299,7 @@ test('conventional route 404', async () => {
       component: '@/pages/index.tsx',
     },
     {
+      exact: true,
       component: '@/pages/404.tsx',
     },
   ]);
