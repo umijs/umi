@@ -111,7 +111,7 @@ export default {
           routes: [
             {
               path: '/app1/user',
-	          	component: './app1/user/index.js',
+              component: './app1/user/index.js',
             },
           ],
         },
