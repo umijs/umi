@@ -6,6 +6,17 @@ import assert from 'assert';
 import { IRoute } from './types';
 import { IConfig } from '..';
 
+// 将 */404 置后，其余位置不变
+export function routesSortFn<T extends IRoute>(aRoute: T, bRoute: T) {
+  if (aRoute.path && !bRoute.path) {
+    return -1;
+  }
+  if (!aRoute.path && bRoute.path) {
+    return 1;
+  }
+  return 0;
+}
+
 interface IOpts {
   root: string;
   relDir?: string;
@@ -178,17 +189,16 @@ function normalizeRoutes(routes: IRoute[]): IRoute[] {
     `We should not have multiple dynamic routes under a directory.`,
   );
 
-  return [...exactRoutes, ...layoutRoutes, ...paramsRoutes].reduce(
-    (memo, route) => {
+  return [...exactRoutes, ...layoutRoutes, ...paramsRoutes]
+    .reduce((memo, route) => {
       if (route.__toMerge && route.routes) {
         memo = memo.concat(route.routes);
       } else {
         memo.push(route);
       }
       return memo;
-    },
-    [] as IRoute[],
-  );
+    }, [] as IRoute[])
+    .sort(routesSortFn);
 }
 
 export default function getRoutes(opts: IOpts) {

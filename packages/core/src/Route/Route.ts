@@ -5,17 +5,6 @@ import assert from 'assert';
 import getConventionalRoutes from './getConventionalRoutes';
 import routesToJSON from './routesToJSON';
 
-// 将 path 不存在的 route 置后，其余位置不变
-export function routesSortFn<T extends IRoute>(aRoute: T, bRoute: T) {
-  if (aRoute.path && !bRoute.path) {
-    return -1;
-  }
-  if (!aRoute.path && bRoute.path) {
-    return 1;
-  }
-  return 0;
-}
-
 interface IOpts {
   onPatchRoutesBefore?: Function;
   onPatchRoutes?: Function;
@@ -67,10 +56,6 @@ class Route {
         routes,
         parentRoute: opts.parentRoute,
       });
-    }
-    // 约定式路由，将 */404 置后
-    if (opts.isConventional) {
-      routes.sort(routesSortFn);
     }
     for (const route of routes) {
       await this.patchRoute(route, opts);

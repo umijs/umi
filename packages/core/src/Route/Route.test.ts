@@ -1,5 +1,6 @@
 import { join } from 'path';
-import Route, { routesSortFn } from './Route';
+import Route from './Route';
+import { routesSortFn } from './getConventionalRoutes';
 
 const fixtures = join(__dirname, 'fixtures');
 
