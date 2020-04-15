@@ -77,9 +77,16 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
     };
     memo.push(normalizeRoute(route, opts));
   } else {
-    const bName = basename(file, extname(file));
     // 404 路由处理，支持 404 子路由 #4469
-    if (bName === '404') {
+    // 子路由存在 _layout 情况下对 404 处理
+    const hasLayoutFile = !!getFile({
+      base: join(root, relDir),
+      fileNameWithoutExt: '_layout',
+      type: 'javascript',
+    });
+    const bName = basename(file, extname(file));
+    const routePath = normalizePath(join(relDir, bName), opts);
+    if (routePath === '/404' || (bName === '404' && hasLayoutFile)) {
       memo.push(
         normalizeRoute(
           {
@@ -94,7 +101,7 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
       memo.push(
         normalizeRoute(
           {
-            path: normalizePath(join(relDir, bName), opts),
+            path: routePath,
             exact: true,
             component: absFile,
             __isDynamic,
