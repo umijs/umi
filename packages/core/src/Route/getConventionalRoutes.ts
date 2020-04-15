@@ -78,17 +78,31 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
     memo.push(normalizeRoute(route, opts));
   } else {
     const bName = basename(file, extname(file));
-    memo.push(
-      normalizeRoute(
-        {
-          path: normalizePath(join(relDir, bName), opts),
-          exact: true,
-          component: absFile,
-          __isDynamic,
-        },
-        opts,
-      ),
-    );
+    // 404 路由处理，支持 404 子路由 #4469
+    if (bName === '404') {
+      memo.push(
+        normalizeRoute(
+          {
+            exact: true,
+            component: absFile,
+            __isDynamic,
+          },
+          opts,
+        ),
+      );
+    } else {
+      memo.push(
+        normalizeRoute(
+          {
+            path: normalizePath(join(relDir, bName), opts),
+            exact: true,
+            component: absFile,
+            __isDynamic,
+          },
+          opts,
+        ),
+      );
+    }
   }
   return memo;
 }

@@ -5,6 +5,16 @@ import assert from 'assert';
 import getConventionalRoutes from './getConventionalRoutes';
 import routesToJSON from './routesToJSON';
 
+export function routesSortFn<T extends IRoute>(aRoute: T, bRoute: T) {
+  if (aRoute.path && !bRoute.path) {
+    return -1;
+  }
+  if (!aRoute.path && bRoute.path) {
+    return 1;
+  }
+  return 0;
+}
+
 interface IOpts {
   onPatchRoutesBefore?: Function;
   onPatchRoutes?: Function;
@@ -57,15 +67,12 @@ class Route {
         parentRoute: opts.parentRoute,
       });
     }
-    let routeNotFound;
+    // 约定式路由，将 */404 置于底部
+    if (opts.isConventional) {
+      routes.sort(routesSortFn);
+    }
     for (const route of routes) {
       await this.patchRoute(route, opts);
-      if (route.path && route.path === '/404') {
-        routeNotFound = route;
-      }
-    }
-    if (opts.isConventional && routeNotFound) {
-      routes.push({ component: routeNotFound.component });
     }
     if (this.opts.onPatchRoutes) {
       await this.opts.onPatchRoutes({
@@ -103,7 +110,7 @@ class Route {
         parentRoute: route,
       });
     } else {
-      if (!('exact' in route)) {
+      if (!lodash.has(route, 'exact')) {
         // exact by default
         route.exact = true;
       }
