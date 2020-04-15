@@ -202,6 +202,30 @@ test('conventional index/index', async () => {
   ]);
 });
 
+test('conventional route 404', async () => {
+  const route = new Route();
+  expect(
+    await route.getRoutes({
+      config: {},
+      root: join(fixtures, 'conventional-404/pages'),
+    }),
+  ).toEqual([
+    {
+      path: '/404',
+      exact: true,
+      component: '@/pages/404.tsx',
+    },
+    {
+      path: '/',
+      exact: true,
+      component: '@/pages/index.tsx',
+    },
+    {
+      component: '@/pages/404.tsx',
+    },
+  ]);
+});
+
 test('conventional opts.componentPrefix', async () => {
   const route = new Route();
   expect(
