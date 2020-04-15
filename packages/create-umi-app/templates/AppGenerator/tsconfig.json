@@ -15,7 +15,10 @@
     },
     "allowSyntheticDefaultImports": true
   },
-  "files": [
+  "include": [
+    "mock/**/*",
+    "src/**/*",
+    "config/**/*",
     ".umirc.ts"
   ]
 }
