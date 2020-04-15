@@ -57,8 +57,15 @@ class Route {
         parentRoute: opts.parentRoute,
       });
     }
+    let route404;
     for (const route of routes) {
       await this.patchRoute(route, opts);
+      if (route.path && route.path === '/404') {
+        route404 = route;
+      }
+    }
+    if (opts.isConventional && route404) {
+      routes.push({ component: route404.component });
     }
     if (this.opts.onPatchRoutes) {
       await this.opts.onPatchRoutes({
