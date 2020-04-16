@@ -162,7 +162,7 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 通过 `api.registerMethod()` 扩展的方法。
 
-### addBeforeMiddewares
+### addBeforeMiddlewares
 
 添加在 webpack compiler 中间件之前的中间件，返回值格式为 express 中间件。
 
@@ -214,7 +214,7 @@ api.addHTMLScript(() => {
 
 在 HTML 头部添加脚本。
 
-### addMiddewares
+### addMiddlewares
 
 添加在 webpack compiler 中间件之后的中间件，返回值格式为 express 中间件。
 

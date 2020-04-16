@@ -208,8 +208,8 @@ export interface IApi extends PluginAPI {
   addEntryCode: IAdd<null, string>;
   addEntryCodeAhead: IAdd<null, string>;
   addTmpGenerateWatcherPaths: IAdd<null, string>;
-  addBeforeMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
-  addMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  addBeforeMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  addMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
 }
 
 export { IRoute };

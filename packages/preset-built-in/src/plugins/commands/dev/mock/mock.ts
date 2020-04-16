@@ -48,7 +48,7 @@ export default function (api: IApi) {
     ...(userConfig?.mock?.exclude || []),
   ];
 
-  api.addBeforeMiddewares(() => {
+  api.addBeforeMiddlewares(() => {
     const mockResult = getMockData({
       cwd,
       ignore,
