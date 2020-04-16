@@ -103,7 +103,7 @@ export default async function getConfig(
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(config.publicPath!)
+    .publicPath((config.publicPath! as unknown) as string)
     // remove this after webpack@5
     // free memory of assets after emitting
     .futureEmitAssets(true)

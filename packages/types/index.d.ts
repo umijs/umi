@@ -220,7 +220,7 @@ interface IManifest {
   basePath: string;
 }
 
-export interface IConfig extends IConfigCore {
+interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };
@@ -299,9 +299,15 @@ export interface IConfig extends IConfigCore {
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
-  title?: string;
+  title?: string | false;
   [key: string]: any;
 }
+
+type WithFalse<T> = {
+  [P in keyof T]?: T[P] | false;
+};
+
+export type IConfig = WithFalse<BaseIConfig>;
 
 export { webpack };
 export { Html, IScriptConfig, IStyleConfig };
