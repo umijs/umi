@@ -99,7 +99,7 @@ export default async function getConfig(
   const useHash = config.hash && isProd;
   const absOutputPath = join(cwd, config.outputPath || 'dist');
 
-  const outputConfig = webpackConfig.output
+  webpackConfig.output
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
