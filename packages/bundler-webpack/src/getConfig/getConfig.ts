@@ -99,15 +99,18 @@ export default async function getConfig(
   const useHash = config.hash && isProd;
   const absOutputPath = join(cwd, config.outputPath || 'dist');
 
-  webpackConfig.output
+  const outputConfig = webpackConfig.output
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(config.publicPath!)
     // remove this after webpack@5
     // free memory of assets after emitting
     .futureEmitAssets(true)
     .pathinfo(isDev || disableCompress);
+
+  if (config.publicPath) {
+    outputConfig.publicPath(config.publicPath);
+  }
 
   // resolve
   // prettier-ignore
