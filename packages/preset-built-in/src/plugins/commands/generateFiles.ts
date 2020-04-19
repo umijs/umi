@@ -23,7 +23,7 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
       type: api.ApplyPluginsType.add,
       initialValue: [
         paths.absPagesPath!,
-        join(paths.absSrcPath!, 'layouts'),
+        join(paths.absSrcPath!, api.config?.singular ? 'layout' : 'layouts'),
         join(paths.absSrcPath!, 'app.tsx'),
         join(paths.absSrcPath!, 'app.ts'),
         join(paths.absSrcPath!, 'app.jsx'),
