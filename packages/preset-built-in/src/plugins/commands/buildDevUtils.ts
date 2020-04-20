@@ -101,7 +101,6 @@ export async function getBundleAndConfigs({
     key: 'modifyBundleConfigs',
     initialValue: [
       await getConfig({ type: ConfigType.csr }),
-      api.config!.ssr && (await getConfig({ type: ConfigType.ssr })),
     ].filter(Boolean),
     args: {
       ...bundlerArgs,

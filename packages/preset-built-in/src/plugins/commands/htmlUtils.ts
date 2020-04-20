@@ -69,7 +69,7 @@ export function chunksToFiles(opts: {
   };
 }
 
-export function getHtmlGenerator({ api }: { api: IApi }): any {
+export function getHtmlGenerator({ api, type }: { api: IApi, type: string }): any {
   function getDocumentTplPath() {
     const docPath = join(api.paths.absPagesPath!, 'document.ejs');
     return existsSync(docPath) ? docPath : '';
@@ -119,6 +119,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         type: api.ApplyPluginsType.modify,
         initialValue: api.config.chunks || ['umi'],
         args: {
+          type,
           route: args.route,
         },
       });

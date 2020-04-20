@@ -27,8 +27,12 @@ export default (api: IApi) => {
   }
 
   const sharedMap = new Map();
-  api.onDevCompileDone(({ stats }) => {
-    // store chunks
+  api.onDevCompileDone(({ stats, type }) => {
+    // don't need ssr bundler chunks
+    if (type === 'ssr') {
+      return;
+    }
+    // store client build chunks
     sharedMap.set('chunks', stats.compilation.chunks);
   });
 
@@ -148,18 +152,18 @@ export default (api: IApi) => {
         bundleImplementor,
       });
 
-      const beforeMiddlewares = await api.applyPlugins({
+      const beforeMiddlewares = (await api.applyPlugins({
         key: 'addBeforeMiddewares',
         type: api.ApplyPluginsType.add,
         initialValue: [],
         args: {},
-      });
-      const middlewares = await api.applyPlugins({
+      })).filter(Boolean);
+      const middlewares = (await api.applyPlugins({
         key: 'addMiddewares',
         type: api.ApplyPluginsType.add,
         initialValue: [],
         args: {},
-      });
+      })).filter(Boolean);
 
       const server = new Server({
         ...opts,

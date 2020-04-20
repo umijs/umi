@@ -123,7 +123,7 @@ export interface IApi extends PluginAPI {
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onPatchRoutesBefore: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;
-  onDevCompileDone: IEvent<{ isFirstCompile: boolean; stats: webpack.Stats }>;
+  onDevCompileDone: IEvent<{ isFirstCompile: boolean; stats: webpack.Stats, type: string }>;
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
@@ -171,11 +171,11 @@ export interface IApi extends PluginAPI {
   modifyRoutes: IModify<IRoute[], {}>;
   modifyHTMLChunks: IModify<
     (string | { name: string; headScript?: boolean })[],
-    { route: IRoute }
+    { route: IRoute, type?: string }
   >;
   chainWebpack: IModify<
     WebpackChain,
-    { webpack: typeof webpack; createCSSRule: ICreateCSSRule }
+    { webpack: typeof webpack; createCSSRule: ICreateCSSRule, type: string; }
   >;
 
   // ApplyPluginType.add
@@ -218,6 +218,10 @@ interface IManifest {
   fileName: string;
   publicPath: string;
   basePath: string;
+}
+
+interface ISSR {
+  devServer?: boolean;
 }
 
 interface BaseIConfig extends IConfigCore {
@@ -293,7 +297,7 @@ interface BaseIConfig extends IConfigCore {
   runtimePublicPath?: boolean;
   scripts?: IScriptConfig;
   singular?: boolean;
-  ssr?: object;
+  ssr?: ISSR;
   styleLoader?: object;
   styles?: IStyleConfig;
   targets?: ITargets;

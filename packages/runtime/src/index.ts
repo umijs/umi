@@ -5,6 +5,7 @@ export {
   Redirect,
   Route,
   Router,
+  StaticRouter,
   MemoryRouter,
   Switch,
   matchPath,

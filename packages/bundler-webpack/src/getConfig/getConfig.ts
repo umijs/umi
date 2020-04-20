@@ -445,6 +445,7 @@ export default async function getConfig(
 
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
+      type,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
     });

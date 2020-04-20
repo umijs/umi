@@ -81,7 +81,7 @@ export default function renderClient(opts: IOpts) {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
-    ReactDOM[!!opts.ssrProps ? 'hydrate' : 'render'](
+    ReactDOM[!!window.g_useSSR ? 'hydrate' : 'render'](
       rootContainer,
       rootElement,
     );

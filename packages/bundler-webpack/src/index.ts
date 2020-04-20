@@ -45,7 +45,8 @@ class Bundler {
           try {
             console.log(stats.toString('errors-only'));
           } catch (e) {}
-          return reject(new Error('build failed'));
+          // throw error info
+          return reject(err);
         }
         resolve({ stats });
       });
@@ -60,10 +61,12 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
+    const { devServer } = this.config;
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       publicPath: '/',
       logLevel: 'silent',
+      writeToDisk: devServer && devServer.writeToDisk,
       watchOptions: {
         ignored:
           process.env.WATCH_IGNORED === 'none'

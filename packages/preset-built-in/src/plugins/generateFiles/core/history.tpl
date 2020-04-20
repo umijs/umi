@@ -5,11 +5,12 @@ if ((<any>window).routerBase) {
   options.basename = (<any>window).routerBase;
 }
 
-let history = {{{ creator }}}(options);
+// remove initial history because of ssr
+let history: any = !process.env.__IS_BROWSER ? null : {{{ creator }}}(options);
 export const createHistory = (hotReload = false) => {
   if (!hotReload) {
     history = {{{ creator }}}(options);
-  }
+}
 
   return history;
 };

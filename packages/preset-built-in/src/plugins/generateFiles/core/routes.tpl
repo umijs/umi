@@ -1,5 +1,5 @@
 import { ApplyPluginsType{{ #config.dynamicImport }}, dynamic{{ /config.dynamicImport }} } from '{{{ runtimePath }}}';
-import { plugin } from './plugin';
+import { plugin } from '@@/core/plugin';
 
 const routes = {{{ routes }}};
 

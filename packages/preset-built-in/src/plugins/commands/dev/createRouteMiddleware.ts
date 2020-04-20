@@ -24,10 +24,34 @@ export default ({
           route = matchedRoutes[matchedRoutes.length - 1].route;
         }
       }
-      const content = await html.getContent({
+      let content = await html.getContent({
         route,
         chunks: sharedMap.get('chunks'),
       });
+      if (api.config.ssr && api.config.ssr.devServer !== false) {
+        // umi dev to enable server side render by default
+        const { absOutputPath } = api.paths;
+        const serverPath = join(absOutputPath || '', 'umi.server.js');
+        // if dev clear cache
+        if (api.env === 'development') {
+          delete require.cache[serverPath];
+        }
+
+        console.time(`[SSR] render ${req.path} start`);
+
+        const { render } = require(serverPath);
+        const { html, error } = await render({
+          pathname: req.path,
+          htmlTemplate: content,
+          mountElementId: api.config?.mountElementId || 'root',
+        });
+
+        console.timeEnd(`[SSR] render ${req.path} start`);
+
+        if (!error)  {
+          content = html;
+        }
+      }
       res.setHeader('Content-Type', 'text/html');
       res.send(content);
     }

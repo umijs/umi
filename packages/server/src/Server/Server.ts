@@ -64,6 +64,7 @@ export interface IServerOpts {
   };
   onConnection?: (param: { connection: Connection; server: Server }) => void;
   onConnectionClose?: (param: { connection: Connection }) => void;
+  writeToDisk?: boolean;
 }
 
 const defaultOpts: Required<PartialProps<IServerOpts>> = {
@@ -81,6 +82,7 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   // not use
   host: 'localhost',
   port: 8000,
+  writeToDisk: false,
 };
 
 class Server {

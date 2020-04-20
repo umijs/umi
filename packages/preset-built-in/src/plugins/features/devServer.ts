@@ -12,6 +12,7 @@ export default (api: IApi) => {
             https: joi.alternatives(joi.object(), joi.boolean()),
             http2: joi.boolean(),
             headers: joi.object(),
+            writeToDisk: joi.boolean(),
           })
           .description('devServer configs')
           .unknown(true);
