@@ -12,7 +12,7 @@ export function isReactComponent(code: string) {
     JSXFragment(path) {
       hasJSXElement = true;
       path.stop();
-    }
+    },
   });
   return hasJSXElement;
 }
