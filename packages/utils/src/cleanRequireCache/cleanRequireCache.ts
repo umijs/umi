@@ -7,7 +7,7 @@ export default function (cacheKey: string): void {
   // windows 下 require.cache 中路径 key 为类似 ‘c:\demo\.umirc.ts’
   const cachePath = isWindows ? cacheKey.replace(/\//g, '\\') : cacheKey;
   if (require.cache[cachePath]) {
-    const cacheParent = require.cache[cachePath].parent;
+    const cacheParent = require.cache[cachePath]?.parent;
     let i = cacheParent?.children.length || 0;
     // 清理 require cache 中 parents 的引用
     while (i--) {
