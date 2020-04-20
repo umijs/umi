@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@types/react-router": "5.1.5",
-    "@types/react-router-dom": "5.1.3",
+    "@types/react-router-dom": "5.1.4",
     "history-with-query": "4.10.3",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
