@@ -36,10 +36,6 @@ title = "gitleaks config"
 	regex = '''[0-9a-zA-Z]{35,40}'''
 	tags = ["key", "Github Token"]
 [[rules]]
-	description = "ACCESS_TOKEN"
-	regex = '''(ACCESS_TOKEN|access_token)'''
-	tags = ["key", "ACCESS_TOKEN"]
-[[rules]]
 	description = "Alibaba"
 	regex = '''(alibaba|antfin)-inc'''
 	tags = ["key", "Alibaba"]
