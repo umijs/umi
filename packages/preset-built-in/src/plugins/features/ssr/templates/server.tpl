@@ -1,6 +1,6 @@
 // umi.server.js
 import { renderServer, createServerElement } from '{{{ Renderer }}}';
-import { findRoute, serialize, cheerio } from '{{{ Utils }}}'
+import { findRoute, serialize } from '{{{ Utils }}}'
 import { routes } from '@@/core/routes'
 
 export interface IParams {
@@ -8,7 +8,7 @@ export interface IParams {
   initialData?: object;
   htmlTemplate?: string;
   mountElementId?: string;
-  context?: object;
+  context?: object
 }
 
 export interface IRenderResult<T> {
@@ -66,30 +66,32 @@ export const render: IRender = async (params) => {
     path,
   });
 
-  const $ = cheerio.load(htmlTemplate);
+  let html = htmlTemplate;
   let rootContainer = '';
   try {
     const opts = {
       path,
       initialData,
+      pageInitialProps,
       context,
       routes,
     }
     // renderServer get rootContainer
     rootContainer = await renderServer(opts);
     // use ssr
-    $('head').append(`<script>
-    window.g_useSSR = true;
-    ${pageInitialProps ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
-    </script>`);
+    html = html.replace('</head>', `
+    <script>
+      window.g_useSSR = true;
+      ${pageInitialProps && !{{{ ForceInitialProps }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
+    </script>
+    </head>`)
   } catch (e) {
     // downgrade into csr
     error = e;
     console.error('[SSR ERROR]', e);
   }
-  $(`#${mountElementId}`).append(rootContainer);
 
-  const html = $.html();
+  html = html.replace(`<div id="${mountElementId}"></div>`, `<div id="${mountElementId}">${rootContainer}</div>`);
 
   return {
     rootContainer,

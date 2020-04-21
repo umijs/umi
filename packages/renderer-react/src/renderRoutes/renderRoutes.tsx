@@ -8,6 +8,7 @@ interface IOpts {
   routes: IRoute[];
   plugin: Plugin;
   extraProps?: object;
+  pageInitialProps?: object;
 }
 
 interface IGetRouteElementOpts {
@@ -16,31 +17,27 @@ interface IGetRouteElementOpts {
   opts: IOpts;
 }
 
-/**
- * A flag indicating the route changed or not
- */
-let routeChanged = false;
-
 function wrapInitialPropsFetch(Component: any) {
   function ComponentWithInitialPropsFetch(props: object) {
-    const [initialProps, setInitialProps] = useState(() => window.g_initialProps);
+    const [initialProps, setInitialProps] = useState(() => (window as any).g_initialProps);
 
     useEffect(() => {
-      (async () => {
-        const initialProps = await Component!.getInitialProps!({
-          isServer: false,
-          match: props?.match,
-        });
-        setInitialProps(initialProps);
-      })();
-      return () => {
-        routeChanged = true;
+      // first time using window.g_initialProps
+      // switch route fetching data
+      if ((window as any).g_initialProps) {
+        (window as any).g_initialProps = null;
+      } else {
+        (async () => {
+          const initialProps = await Component!.getInitialProps!({
+            isServer: false,
+            match: props?.match,
+          });
+          setInitialProps(initialProps);
+        })();
       }
     }, []);
-    return <Component {...props} {...initialProps} />;
+    return <Component {...Object.assign({}, props, initialProps)} />;
   };
-  // A const static value marking itself as wrapped
-  ComponentWithInitialPropsFetch.wrappedWithInitialProps = true;
   return ComponentWithInitialPropsFetch;
 }
 
@@ -63,14 +60,14 @@ function render({
   let { component: Component, wrappers } = route;
   if (Component) {
     // @ts-ignore
-    if (process.env.__IS_BROWSER && Component.getInitialProps && !Component?.wrappedWithInitialProps) {
+    if (process.env.__IS_BROWSER  && Component.getInitialProps) {
       Component = wrapInitialPropsFetch(Component);
-      route.component = Component;
     }
 
     const newProps = {
       ...props,
       ...opts.extraProps,
+      ...opts.pageInitialProps,
       route,
     };
     // @ts-ignore

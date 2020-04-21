@@ -23,4 +23,4 @@ export function findRoute(routes: any[], path: string): any {
 }
 
 export { serialize };
-export { cheerio } from '@umijs/utils';
+

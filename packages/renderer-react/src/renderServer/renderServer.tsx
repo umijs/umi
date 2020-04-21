@@ -8,6 +8,7 @@ interface IOpts {
   path: string;
   extraProps: object;
   routes: IRoute[];
+  pageInitialProps: object;
   initialData: any;
   context: object;
   /** unused */
