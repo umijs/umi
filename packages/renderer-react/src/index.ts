@@ -18,12 +18,15 @@ export interface IRoute {
   wrappers?: any[];
 }
 
-export interface IRouteComponentProps {
+export interface IRouteComponentProps<
+  Params extends { [K in keyof Params]?: string } = {},
+  Query extends { [K in keyof Query]?: string } = {}
+> {
   children: JSX.Element;
-  location: Location;
+  location: Location & { query: Query };
   route: IRoute;
   history: History;
-  match: match;
+  match: match<Params>;
 }
 
 export { default as renderClient } from './renderClient/renderClient';
