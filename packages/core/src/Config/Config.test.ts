@@ -18,6 +18,22 @@ test('umirc', async () => {
   expect(service.userConfig).toEqual({ foo: 'bar' });
 });
 
+test('is-javascript', async () => {
+  const cwd = join(fixtures, 'umirc');
+  const service = new Service({
+    cwd,
+  });
+  expect(service.isTypeScript).toEqual(false);
+});
+
+test('is-tavascript', async () => {
+  const cwd = join(fixtures, 'umirc-typescript');
+  const service = new Service({
+    cwd,
+  });
+  expect(service.isTypeScript).toEqual(true);
+});
+
 test('umirc-typescript', async () => {
   const cwd = join(fixtures, 'umirc-typescript');
   const service = new Service({
