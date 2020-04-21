@@ -59,7 +59,7 @@ export const getPageInitialProps = async (params) => {
  */
 export const render: IRender = async (params) => {
   let error;
-  const { path, initialData, htmlTemplate, mountElementId = 'root', context = {} } = params;
+  const { path, initialData, htmlTemplate = '', mountElementId = 'root', context = {} } = params;
 
   // pages getInitialProps
   const pageInitialProps = await getPageInitialProps({
