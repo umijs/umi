@@ -35,7 +35,6 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
-        CheerioModule: require.resolve('@umijs/utils/lib/cheerio'),
         Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
         Utils: winPath(require.resolve('./utils')),
       })

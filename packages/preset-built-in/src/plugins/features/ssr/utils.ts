@@ -1,19 +1,26 @@
-import { matchPath } from 'react-router-dom';
+import { matchPath } from '@umijs/runtime';
+import { parse } from 'url';
+// @ts-ignore
+import serialize from 'serialize-javascript';
 
-export function findRoute(routes: any[], pathname: string): any {
+export function findRoute(routes: any[], path: string): any {
+  const { pathname } = parse(path);
   for (const route of routes) {
     if (route.routes) {
-      const routesMatch = findRoute(route.routes, pathname);
+      const routesMatch = findRoute(route.routes, path);
       if (routesMatch) {
         return routesMatch;
       }
-    } else if (matchPath(pathname, route)) {
+    } else if (matchPath(pathname || '', route)) {
       // for get params (/news/1 => { params: { id： 1 } })
-      const { params } = matchPath(pathname, route) as any;
+      const match = matchPath(pathname || '', route) as any;
       return {
         ...route,
-        params,
+        match,
       };
     }
   }
 }
+
+export { serialize };
+export { cheerio } from '@umijs/utils';

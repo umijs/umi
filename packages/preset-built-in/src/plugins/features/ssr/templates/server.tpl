@@ -1,7 +1,6 @@
 // umi.server.js
-import { cheerio } from '{{{ CheerioModule }}}';
 import { renderServer, createServerElement } from '{{{ Renderer }}}';
-
+import { findRoute, serialize, cheerio } from '{{{ Utils }}}'
 import { routes } from '@@/core/routes'
 
 export interface IParams {
@@ -22,25 +21,67 @@ export interface IRender<T = string> {
   (params: IParams): Promise<IRenderResult<T>>;
 }
 
-// export default libraryExport: 'default'
+export interface IGetInitialProps {
+
+}
+
+export interface IGetInitialPropsServer extends IGetInitialProps {
+  isServer: Boolean;
+  match: object;
+}
+
+/**
+ * get current page component getPageInitialProps data
+ * @param params
+ */
+export const getPageInitialProps = async (params) => {
+  const { path } = params;
+  // pages getInitialProps
+  let { component, ...restRouteParams } = findRoute(routes, path) || {};
+  let pageInitialProps = {};
+  // handle preload dynamic import
+  if (component?.preload) {
+    component = await component.preload();
+  }
+  pageInitialProps =
+  component?.getInitialProps
+      ? await component.getInitialProps({
+          isServer: true,
+          ...restRouteParams,
+        })
+      : null;
+  return pageInitialProps;
+}
+
+/**
+ * server render function
+ * @param params
+ */
 export const render: IRender = async (params) => {
   let error;
   const { path, initialData, htmlTemplate, mountElementId = 'root', context = {} } = params;
 
-  const opts = {
+  // pages getInitialProps
+  const pageInitialProps = await getPageInitialProps({
     path,
-    initialData,
-    context,
-    routes,
-  }
+  });
 
   const $ = cheerio.load(htmlTemplate);
   let rootContainer = '';
   try {
-    // renderServer get { rootContainer, App }
-    rootContainer = await renderServer(opts)
+    const opts = {
+      path,
+      initialData,
+      context,
+      routes,
+    }
+    // renderServer get rootContainer
+    rootContainer = await renderServer(opts);
     // use ssr
-    $('head').append(`<script>window.g_useSSR = true;</script>`)
+    $('head').append(`<script>
+    window.g_useSSR = true;
+    ${pageInitialProps ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
+    </script>`);
   } catch (e) {
     // downgrade into csr
     error = e;

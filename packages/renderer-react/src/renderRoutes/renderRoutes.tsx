@@ -16,17 +16,32 @@ interface IGetRouteElementOpts {
   opts: IOpts;
 }
 
+/**
+ * A flag indicating the route changed or not
+ */
+let routeChanged = false;
+
 function wrapInitialPropsFetch(Component: any) {
-  return function ComponentWithInitialPropsFetch(props: object) {
-    const [initialProps, setInitialProps] = useState();
+  function ComponentWithInitialPropsFetch(props: object) {
+    const [initialProps, setInitialProps] = useState(() => window.g_initialProps);
+
     useEffect(() => {
       (async () => {
-        const initialProps = await Component!.getInitialProps!();
+        const initialProps = await Component!.getInitialProps!({
+          isServer: false,
+          match: props?.match,
+        });
         setInitialProps(initialProps);
       })();
+      return () => {
+        routeChanged = true;
+      }
     }, []);
     return <Component {...props} {...initialProps} />;
   };
+  // A const static value marking itself as wrapped
+  ComponentWithInitialPropsFetch.wrappedWithInitialProps = true;
+  return ComponentWithInitialPropsFetch;
 }
 
 // TODO: custom Switch
@@ -47,8 +62,10 @@ function render({
 
   let { component: Component, wrappers } = route;
   if (Component) {
-    if (Component.getInitialProps) {
+    // @ts-ignore
+    if (process.env.__IS_BROWSER && Component.getInitialProps && !Component?.wrappedWithInitialProps) {
       Component = wrapInitialPropsFetch(Component);
+      route.component = Component;
     }
 
     const newProps = {
