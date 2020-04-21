@@ -50,6 +50,7 @@ export default class Config {
   config?: object;
   localConfig?: boolean;
   configFile?: string | null;
+  isTypeScript?: boolean;
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd || process.cwd();
@@ -140,6 +141,7 @@ export default class Config {
   getUserConfig() {
     const configFile = this.getConfigFile();
     this.configFile = configFile;
+    this.isTypeScript = extname(configFile || '').indexOf('ts') !== -1;
     // 潜在问题：
     // .local 和 .env 的配置必须有 configFile 才有效
     if (configFile) {
