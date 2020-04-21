@@ -1,6 +1,6 @@
 import { join } from 'path';
-import Route from './Route';
 import { routesSortFn } from './getConventionalRoutes';
+import Route from './Route';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -203,7 +203,7 @@ test('conventional index/index', async () => {
   ]);
 });
 
-test('conventional route 404', async () => {
+test('conventional 404', async () => {
   const route = new Route();
   expect(
     await route.getRoutes({
@@ -245,6 +245,21 @@ test('conventional 404/404', async () => {
       path: '/user',
       exact: true,
       component: '@/pages/user/index.tsx',
+    },
+    {
+      path: '/post',
+      routes: [
+        {
+          path: '/post',
+          exact: true,
+          component: '@/pages/post/index.tsx',
+        },
+        {
+          exact: true,
+          component: '@/pages/post/404.tsx',
+        },
+      ],
+      component: '@/pages/post/_layout.tsx',
     },
     {
       exact: true,
