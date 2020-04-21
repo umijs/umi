@@ -1,12 +1,12 @@
 import ReactDOMServer from 'react-dom/server';
-import React, { useEffect } from 'react';
-import { ApplyPluginsType, Plugin, StaticRouter } from '@umijs/runtime';
-import { matchRoutes } from 'react-router-config';
+import React from 'react';
+import { Plugin, StaticRouter } from '@umijs/runtime';
+import { createLocation } from 'history-with-query';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
 interface IOpts {
-  pathname: string;
+  path: string;
   extraProps: object;
   routes: IRoute[];
   initialData: any;
@@ -20,8 +20,10 @@ interface IOpts {
  * @param opts
  */
 export const createServerElement = (opts: IOpts): React.ReactElement => {
-  const { pathname, context, ...renderRoutesProps } = opts;
-  return <StaticRouter location={pathname} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>;
+  const { path, context, ...renderRoutesProps } = opts;
+  // same as client render
+  const location = createLocation(path);
+  return <StaticRouter location={location} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>;
 }
 
 export default async function renderServer(opts: IOpts) {

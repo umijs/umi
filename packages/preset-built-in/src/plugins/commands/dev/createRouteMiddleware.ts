@@ -41,7 +41,8 @@ export default ({
 
         const { render } = require(serverPath);
         const { html, error } = await render({
-          pathname: req.path,
+          // with query
+          path: req.url,
           htmlTemplate: content,
           mountElementId: api.config?.mountElementId || 'root',
         });

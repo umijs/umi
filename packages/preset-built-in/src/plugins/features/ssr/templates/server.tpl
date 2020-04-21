@@ -5,7 +5,7 @@ import { renderServer, createServerElement } from '{{{ Renderer }}}';
 import { routes } from '@@/core/routes'
 
 export interface IParams {
-  pathname: string;
+  path: string;
   initialData?: object;
   htmlTemplate?: string;
   mountElementId?: string;
@@ -25,10 +25,10 @@ export interface IRender<T = string> {
 // export default libraryExport: 'default'
 export const render: IRender = async (params) => {
   let error;
-  const { pathname, initialData, htmlTemplate, mountElementId = 'root', context = {} } = params;
+  const { path, initialData, htmlTemplate, mountElementId = 'root', context = {} } = params;
 
   const opts = {
-    pathname,
+    path,
     initialData,
     context,
     routes,
