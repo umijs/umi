@@ -1,7 +1,6 @@
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
-import { Plugin, StaticRouter } from '@umijs/runtime';
-import { createLocation } from 'history-with-query';
+import { Plugin, StaticRouter, createLocation } from '@umijs/runtime';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
