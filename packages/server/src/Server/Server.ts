@@ -37,9 +37,9 @@ type IServerProxyConfig =
 export interface IHttps extends ServerOptions {}
 
 export interface IServerOpts {
-  afterMiddlewares?: RequestHandler<any>[];
-  beforeMiddlewares?: RequestHandler<any>[];
-  compilerMiddleware?: RequestHandler<any> | null;
+  afterMiddlewares?: (string | RegExp)[][];
+  beforeMiddlewares?: (string | RegExp)[][];
+  compilerMiddleware?: any;
   https?: IHttps | boolean;
   http2?: boolean;
   headers?: {
