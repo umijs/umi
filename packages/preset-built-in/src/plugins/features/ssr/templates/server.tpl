@@ -1,7 +1,9 @@
 // umi.server.js
 import { renderServer, createServerElement } from '{{{ Renderer }}}';
-import { findRoute, serialize } from '{{{ Utils }}}'
-import { routes } from '@@/core/routes'
+import { findRoute, serialize } from '{{{ Utils }}}';
+import { ApplyPluginsType } from '@umijs/runtime';
+import { plugin } from '@@/core/plugin';
+import { routes } from '@@/core/routes';
 
 export interface IParams {
   path: string;
@@ -34,7 +36,7 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
  * get current page component getPageInitialProps data
  * @param params
  */
-export const getPageInitialProps = async (params) => {
+export const getInitial = async (params) => {
   const { path } = params;
   // pages getInitialProps
   let { component, ...restRouteParams } = findRoute(routes, path) || {};
@@ -43,27 +45,42 @@ export const getPageInitialProps = async (params) => {
   if (component?.preload) {
     component = await component.preload();
   }
-  pageInitialProps =
-  component?.getInitialProps
-      ? await component.getInitialProps({
-          isServer: true,
-          ...restRouteParams,
-        })
-      : null;
-  return pageInitialProps;
+  pageInitialProps = component?.getInitialProps
+    ? await component.getInitialProps({
+        isServer: true,
+        ...restRouteParams,
+      })
+    : null;
+  const runtimeConfig = plugin.applyPlugins({
+    key: 'ssr',
+    type: ApplyPluginsType.modify,
+    initialValue: {},
+  });
+  let appInitialData = {};
+  if (typeof runtimeConfig?.getInitialData === 'function') {
+    appInitialData = await runtimeConfig.getInitialData({
+      isServer: true,
+      ...restRouteParams,
+    });
+  }
+  return {
+    pageInitialProps,
+    appInitialData,
+  };
 }
 
 /**
  * handle html with rootContainer(rendered)
  * @param param0
  */
-export const handleHtml = ({ html, pageInitialProps, rootContainer, mountElementId = 'root' }) => {
+export const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = 'root' }) => {
   return html
     .replace(
       '</head>',
       `<script>
         window.g_useSSR = true;
-        ${pageInitialProps && !{{{ ForceInitialProps }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
+        ${appInitialData && !{{{ ForceInitial }}} ? `window.g_initialData = ${serialize(appInitialData)};` : ''}
+        ${pageInitialProps && !{{{ ForceInitial }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
       </script>
       </head>`
     )
@@ -73,6 +90,8 @@ export const handleHtml = ({ html, pageInitialProps, rootContainer, mountElement
     )
 }
 
+export const getServerElement = (params) => createServerElement({ ...params, plugin });
+
 /**
  * server render function
  * @param params
@@ -81,8 +100,8 @@ export const render: IRender = async (params) => {
   let error;
   const { path, initialData, htmlTemplate = '', mountElementId = 'root', context = {} } = params;
 
-  // pages getInitialProps
-  const pageInitialProps = await getPageInitialProps({
+  // getInitial
+  const { pageInitialProps, appInitialData } = await getInitial({
     path,
   });
 
@@ -93,13 +112,17 @@ export const render: IRender = async (params) => {
       path,
       initialData,
       pageInitialProps,
+      appInitialData,
       context,
       routes,
     }
     // renderServer get rootContainer
-    rootContainer = await renderServer(opts);
+    rootContainer = await renderServer({
+      ...opts,
+      plugin,
+    });
     if (html) {
-      html = handleHtml({ html, rootContainer, pageInitialProps, mountElementId });
+      html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId });
     }
   } catch (e) {
     // downgrade into csr
@@ -114,4 +137,3 @@ export const render: IRender = async (params) => {
   }
 }
 
-export { createServerElement }

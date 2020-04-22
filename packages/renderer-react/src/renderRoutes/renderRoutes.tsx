@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plugin, Redirect } from '@umijs/runtime';
+import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
 import Route from './Route';
@@ -9,6 +9,7 @@ interface IOpts {
   plugin: Plugin;
   extraProps?: object;
   pageInitialProps?: object;
+  appInitialData?: object;
 }
 
 interface IGetRouteElementOpts {
@@ -17,7 +18,7 @@ interface IGetRouteElementOpts {
   opts: IOpts;
 }
 
-function wrapInitialPropsFetch(Component: any): IComponent {
+function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
   return function ComponentWithInitialPropsFetch(props: any) {
     const [initialProps, setInitialProps] = useState(() => (window as any).g_initialProps);
 
@@ -58,10 +59,14 @@ function render({
 
   let { component: Component, wrappers } = route;
   if (Component) {
+    const defaultPageInitialProps = process.env.__IS_BROWSER ? (window as any).g_initialProps : {};
+    const defaultAppInitialData = process.env.__IS_BROWSER ? (window as any).g_initialData : {};
     const newProps = {
       ...props,
       ...opts.extraProps,
-      ...opts.pageInitialProps,
+      ...(opts.pageInitialProps || defaultPageInitialProps),
+      // TODO: refresh appInitialData when not exist window.g_initialData
+      ...(opts.appInitialData || defaultAppInitialData),
       route,
     };
     // @ts-ignore
@@ -95,7 +100,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (process.env.__IS_BROWSER  && route.component?.getInitialProps) {
-      route.component = wrapInitialPropsFetch(route.component);
+      route.component = wrapInitialPropsFetch(route.component, opts);
     }
     return (
       <Route

@@ -61,7 +61,8 @@ export function renderClient(opts: IOpts): any {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
-    ReactDOM.render(rootContainer, rootElement);
+    // @ts-ignore
+    ReactDOM[!!window.g_useSSR ? 'hydrate' : 'render'](rootContainer, rootElement);
   } else {
     return rootContainer;
   }

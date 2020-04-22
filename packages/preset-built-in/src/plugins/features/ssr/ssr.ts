@@ -7,6 +7,7 @@ const { winPath, Mustache } = utils;
 const BUNDLE_CONFIG_TYPE = 'ssr';
 const CHUNK_NAME = 'server';
 const OUTPUT_SERVER_FILENAME = 'umi.server.js';
+const TMP_PLUGIN_DIR = 'plugin-ssr';
 const CLIENT_EXPORTS = 'clientExports';
 
 export default (api: IApi) => {
@@ -15,7 +16,7 @@ export default (api: IApi) => {
     config: {
       schema: (joi) => {
         return joi.object({
-          forceInitialProps: joi.boolean().description('remove window.g_initialProps in html, to force execing Page getInitialProps function')
+          forceInitial: joi.boolean().description('remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions')
         });
       },
     },
@@ -41,15 +42,15 @@ export default (api: IApi) => {
         Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
         Utils: winPath(require.resolve('./utils')),
         // @ts-ignore
-        ForceInitialProps: !!api.config.ssr?.forceInitialProps,
+        ForceInitial: !!api.config.ssr?.forceInitial,
       })
     });
 
     const clientExportsContent = fs.readFileSync(path.join(winPath(__dirname), `templates/${CLIENT_EXPORTS}.tpl`), 'utf-8');
     api.writeTmpFile({
-      path: `plugin-ssr/${CLIENT_EXPORTS}.ts`,
+      path: `${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}.ts`,
       content: clientExportsContent,
-    })
+    });
   })
 
   api.addPolyfillImports(() => [{ source: './core/server.ts' }]);
@@ -131,10 +132,13 @@ export default (api: IApi) => {
     return config;
   });
 
+  // runtime ssr plugin
+  api.addRuntimePluginKey(() => 'ssr');
+
   api.addUmiExports(() => [
     {
       exportAll: true,
-      source: `../plugin-ssr/${CLIENT_EXPORTS}`
+      source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`
     }
-  ])
+  ]);
 };
