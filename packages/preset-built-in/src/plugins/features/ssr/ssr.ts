@@ -65,6 +65,7 @@ export default (api: IApi) => {
     if (!config.devServer) {
       config.devServer = {};
     }
+    // DISCUSS: 是否需要强行改项目配置的方式，来开启 dev 下写 umi.server.js
     // force enable writeToDisk
     config.devServer.writeToDisk = (filePath: string) => /(umi\.server\.js|index\.html)$/.test(filePath);
     return config;
