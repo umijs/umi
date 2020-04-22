@@ -7,6 +7,7 @@ const { winPath, Mustache } = utils;
 const BUNDLE_CONFIG_TYPE = 'ssr';
 const CHUNK_NAME = 'server';
 const OUTPUT_SERVER_FILENAME = 'umi.server.js';
+const CLIENT_EXPORTS = 'clientExports';
 
 export default (api: IApi) => {
   api.describe({
@@ -43,6 +44,12 @@ export default (api: IApi) => {
         ForceInitialProps: !!api.config.ssr?.forceInitialProps,
       })
     });
+
+    const clientExportsContent = fs.readFileSync(path.join(winPath(__dirname), `templates/${CLIENT_EXPORTS}.tpl`), 'utf-8');
+    api.writeTmpFile({
+      path: `plugin-ssr/${CLIENT_EXPORTS}.ts`,
+      content: clientExportsContent,
+    })
   })
 
   api.addPolyfillImports(() => [{ source: './core/server.ts' }]);
@@ -121,5 +128,12 @@ export default (api: IApi) => {
       }
     }
     return config;
-  })
+  });
+
+  api.addUmiExports(() => [
+    {
+      exportAll: true,
+      source: `../plugin-ssr/${CLIENT_EXPORTS}`
+    }
+  ])
 };
