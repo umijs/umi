@@ -6,18 +6,26 @@ export default (api: IApi) => {
     key: 'forkTSCheker',
     config: {
       schema(joi) {
-        return joi.object({
-          tsconfig: joi.string().description('Path to tsconfig.json file'),
-          compilerOptions: joi.object().description('Allows overriding TypeScript options. Should be specified in the same format as you would do for the compilerOptions property in tsconfig.json.'),
-          eslint: joi.boolean(),
-          eslintOptions: joi.object(),
-          async: joi.boolean(),
-          ignoreDiagnostics: joi.array().items(joi.number()),
-          formatter: joi.valid('default', 'codeframe'),
-          formatterOptions: joi.object(),
-          silent: joi.boolean(),
-          checkSyntacticErrors: joi.boolean(),
-        }).description('More options see https://www.npmjs.com/package/fork-ts-checker-webpack-plugin#options');
+        return joi
+          .object({
+            tsconfig: joi.string().description('Path to tsconfig.json file'),
+            compilerOptions: joi
+              .object()
+              .description(
+                'Allows overriding TypeScript options. Should be specified in the same format as you would do for the compilerOptions property in tsconfig.json.',
+              ),
+            eslint: joi.boolean(),
+            eslintOptions: joi.object(),
+            async: joi.boolean(),
+            ignoreDiagnostics: joi.array().items(joi.number()),
+            formatter: joi.valid('default', 'codeframe'),
+            formatterOptions: joi.object(),
+            silent: joi.boolean(),
+            checkSyntacticErrors: joi.boolean(),
+          })
+          .description(
+            'More options see https://www.npmjs.com/package/fork-ts-checker-webpack-plugin#options',
+          );
       },
     },
     enableBy: () =>
@@ -28,12 +36,15 @@ export default (api: IApi) => {
     webpackConfig
       .plugin('fork-ts-checker')
       .use(require('fork-ts-checker-webpack-plugin'), [
-        deepmerge({
-          formatter: 'codeframe',
-          // parallel
-          async: false,
-          checkSyntacticErrors: true,
-        }, api.config?.forkTSCheker || {}),
+        deepmerge(
+          {
+            formatter: 'codeframe',
+            // parallel
+            async: false,
+            checkSyntacticErrors: true,
+          },
+          api.config?.forkTSCheker || {},
+        ),
       ]);
     return webpackConfig;
   });

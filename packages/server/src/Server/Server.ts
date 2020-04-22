@@ -154,6 +154,7 @@ class Server {
       },
       beforeMiddlewares: () => {
         this.opts.beforeMiddlewares.forEach((middleware) => {
+          // @ts-ignore
           this.app.use(middleware);
         });
       },
@@ -164,11 +165,13 @@ class Server {
       },
       compilerMiddleware: () => {
         if (this.opts.compilerMiddleware) {
+          // @ts-ignore
           this.app.use(this.opts.compilerMiddleware);
         }
       },
       afterMiddlewares: () => {
         this.opts.afterMiddlewares.forEach((middleware) => {
+          // @ts-ignore
           this.app.use(middleware);
         });
       },

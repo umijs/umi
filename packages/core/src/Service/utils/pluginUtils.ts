@@ -1,6 +1,5 @@
 import { basename, dirname, extname, join, relative } from 'path';
 import { existsSync } from 'fs';
-import camelcase from 'camelcase';
 import assert from 'assert';
 import {
   compatESModuleRequire,
@@ -8,6 +7,7 @@ import {
   resolve,
   winPath,
   pkgUp,
+  lodash,
 } from '@umijs/utils';
 import { PluginType } from '../enums';
 import { IPackage, IPlugin } from '../types';
@@ -74,7 +74,7 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
 function nameToKey(name: string) {
   return name
     .split('.')
-    .map((part) => camelcase(part))
+    .map((part) => lodash.camelCase(part))
     .join('.');
 }
 
