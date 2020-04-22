@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { History, Location } from 'history-with-query';
 import { match } from 'react-router-dom';
 
-interface IComponent extends FunctionComponent {
+export interface IComponent extends FunctionComponent {
   getInitialProps?: Function;
 }
 
