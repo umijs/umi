@@ -54,6 +54,26 @@ export const getPageInitialProps = async (params) => {
 }
 
 /**
+ * handle html with rootContainer(rendered)
+ * @param param0
+ */
+export const handleHtml = ({ html, pageInitialProps, rootContainer, mountElementId = 'root' }) => {
+  return html
+    .replace(
+      '</head>',
+      `<script>
+        window.g_useSSR = true;
+        ${pageInitialProps && !{{{ ForceInitialProps }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
+      </script>
+      </head>`
+    )
+    .replace(
+      `<div id="${mountElementId}"></div>`,
+      `<div id="${mountElementId}">${rootContainer}</div>`
+    )
+}
+
+/**
  * server render function
  * @param params
  */
@@ -78,20 +98,14 @@ export const render: IRender = async (params) => {
     }
     // renderServer get rootContainer
     rootContainer = await renderServer(opts);
-    // use ssr
-    html = html.replace('</head>', `
-    <script>
-      window.g_useSSR = true;
-      ${pageInitialProps && !{{{ ForceInitialProps }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
-    </script>
-    </head>`)
+    if (html) {
+      html = handleHtml({ html, rootContainer, pageInitialProps, mountElementId });
+    }
   } catch (e) {
     // downgrade into csr
     error = e;
     console.error('[SSR ERROR]', e);
   }
-
-  html = html.replace(`<div id="${mountElementId}"></div>`, `<div id="${mountElementId}">${rootContainer}</div>`);
 
   return {
     rootContainer,

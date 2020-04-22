@@ -36,7 +36,9 @@ export default function (api: IApi) {
     if (
       env === 'production' &&
       id === 'webpack' &&
-      process.env.HTML !== 'none'
+      process.env.HTML !== 'none' &&
+      // avoid ssr bundler build override index.html
+      type === 'csr'
     ) {
       bundleConfig.plugins?.unshift(new HtmlWebpackPlugin({ type }));
     }
