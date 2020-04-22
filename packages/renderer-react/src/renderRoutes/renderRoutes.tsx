@@ -18,7 +18,7 @@ interface IGetRouteElementOpts {
 }
 
 function wrapInitialPropsFetch(Component: any): IComponent {
-  function ComponentWithInitialPropsFetch(props: any) {
+  return function ComponentWithInitialPropsFetch(props: any) {
     const [initialProps, setInitialProps] = useState(() => (window as any).g_initialProps);
 
     useEffect(() => {
@@ -32,13 +32,13 @@ function wrapInitialPropsFetch(Component: any): IComponent {
             isServer: false,
             match: props?.match,
           });
+          console.log('initialProps', initialProps);
           setInitialProps(initialProps);
         })();
       }
-    }, []);
-    return <Component {...Object.assign({}, props, initialProps)} />;
+    }, [`${window.location.pathname}${window.location.search}`]);
+    return <Component {...props} {...initialProps} />;
   };
-  return ComponentWithInitialPropsFetch;
 }
 
 // TODO: custom Switch
@@ -91,13 +91,14 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     sensitive: route.sensitive,
     path: route.path,
   };
-  // avoid mount and unmount with url hash change
-  if (process.env.__IS_BROWSER  && route.component?.getInitialProps) {
-    route.component = wrapInitialPropsFetch(route.component);
-  }
   if (route.redirect) {
     return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
   } else {
+    // avoid mount and unmount with url hash change
+    if (process.env.__IS_BROWSER  && route.component?.getInitialProps) {
+      console.log('route.component?.getInitialProps', route.component?.getInitialProps);
+      route.component = wrapInitialPropsFetch(route.component);
+    }
     return (
       <Route
         {...routeProps}
