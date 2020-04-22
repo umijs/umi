@@ -20,13 +20,11 @@ export default class PluginAPI {
   Html: typeof Html;
   utils: typeof utils;
   logger: Logger;
-  isTypeScript?: boolean;
 
   constructor(opts: IOpts) {
     this.id = opts.id;
     this.key = opts.key;
     this.service = opts.service;
-    this.isTypeScript = opts.service.isTypeScript;
     this.utils = utils;
     this.Html = Html;
     this.logger = new Logger(`umi:plugin:${this.id || this.key}`);

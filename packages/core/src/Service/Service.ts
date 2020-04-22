@@ -90,7 +90,6 @@ export default class Service extends EventEmitter {
   ConfigChangeType = ConfigChangeType;
   ServiceStage = ServiceStage;
   args: any;
-  isTypeScript?: boolean;
 
   constructor(opts: IServiceOpts) {
     super();
@@ -119,7 +118,6 @@ export default class Service extends EventEmitter {
       localConfig: this.env === 'development',
     });
     this.userConfig = this.configInstance.getUserConfig();
-    this.isTypeScript = this.configInstance.isTypeScript;
     logger.debug('userConfig:');
     logger.debug(this.userConfig);
 

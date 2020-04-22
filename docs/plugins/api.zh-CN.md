@@ -533,10 +533,6 @@ export default api => {
 
 Service 实例。通常不需要用到，除非你知道为啥要用。
 
-### isTypeScript
-
-判断当前项目是否是 TypeScript 项目。
-
 ### stage
 
 Service 运行阶段。
