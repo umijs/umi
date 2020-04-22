@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plugin, Redirect } from '@umijs/runtime';
-import { IRoute } from '..';
+import { IRoute, IRouteComponentProps } from '..';
 import Switch from './Switch';
 import Route from './Route';
 
@@ -18,7 +18,7 @@ interface IGetRouteElementOpts {
 }
 
 function wrapInitialPropsFetch(Component: any) {
-  function ComponentWithInitialPropsFetch(props: object) {
+  function ComponentWithInitialPropsFetch(props: IRouteComponentProps) {
     const [initialProps, setInitialProps] = useState(() => (window as any).g_initialProps);
 
     useEffect(() => {
