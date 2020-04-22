@@ -32,7 +32,6 @@ function wrapInitialPropsFetch(Component: any): IComponent {
             isServer: false,
             match: props?.match,
           });
-          console.log('initialProps', initialProps);
           setInitialProps(initialProps);
         })();
       }
@@ -96,7 +95,6 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (process.env.__IS_BROWSER  && route.component?.getInitialProps) {
-      console.log('route.component?.getInitialProps', route.component?.getInitialProps);
       route.component = wrapInitialPropsFetch(route.component);
     }
     return (
