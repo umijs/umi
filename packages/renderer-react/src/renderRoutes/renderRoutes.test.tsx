@@ -8,6 +8,10 @@ function TestInitialProps({ foo }: { foo: string }) {
   return <h1 data-testid="test">{foo}</h1>;
 }
 
+beforeEach(() => {
+  delete process.env.__IS_BROWSER;
+})
+
 TestInitialProps.getInitialProps = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -221,6 +225,7 @@ test('/pass-props', async () => {
 });
 
 test('/get-initial-props', async () => {
+  process.env.__IS_BROWSER = 'true';
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props']}>
       {routes}
@@ -231,6 +236,7 @@ test('/get-initial-props', async () => {
 });
 
 test('/get-initial-props-embed', async () => {
+  process.env.__IS_BROWSER = 'true';
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props-embed']}>
       {routes}
