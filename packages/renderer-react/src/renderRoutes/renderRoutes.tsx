@@ -59,11 +59,6 @@ function render({
 
   let { component: Component, wrappers } = route;
   if (Component) {
-    // @ts-ignore
-    if (process.env.__IS_BROWSER  && Component.getInitialProps) {
-      Component = wrapInitialPropsFetch(Component);
-    }
-
     const newProps = {
       ...props,
       ...opts.extraProps,
@@ -96,6 +91,10 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     sensitive: route.sensitive,
     path: route.path,
   };
+  // avoid mount and unmount with url hash change
+  if (process.env.__IS_BROWSER  && route.component?.getInitialProps) {
+    route.component = wrapInitialPropsFetch(route.component);
+  }
   if (route.redirect) {
     return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
   } else {
