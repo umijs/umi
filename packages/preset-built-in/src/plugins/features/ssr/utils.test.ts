@@ -203,3 +203,32 @@ test('nested routes', () => {
     }
   });
 });
+
+test('normal with basename', () => {
+  expect(
+    findRoute(
+      [
+        {
+          path: '/',
+          component: 'layout',
+          routes: [
+            { path: '/', exact: true, component: 'Home' },
+            { path: '/users', exact: true, component: 'Users' },
+          ],
+        },
+      ],
+      '/ssr/users',
+      '/ssr'
+    ),
+  ).toEqual({
+    path: '/users',
+    exact: true,
+    component: 'Users',
+    match: {
+      isExact: true,
+      params: {},
+      path: '/users',
+      url: '/users',
+    }
+  });
+});

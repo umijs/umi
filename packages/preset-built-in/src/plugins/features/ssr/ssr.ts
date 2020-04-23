@@ -47,6 +47,7 @@ export default (api: IApi) => {
         Stream: !!api.config.ssr?.stream,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        Basename: api.config.base || '/',
         DEFAULT_HTML_PLACEHOLDER,
       })
     });

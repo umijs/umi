@@ -7,6 +7,7 @@ import renderRoutes from '../renderRoutes/renderRoutes';
 interface IOpts {
   path: string;
   extraProps: object;
+  basename: string;
   routes: IRoute[];
   pageInitialProps: object;
   appInitialData: object;
@@ -21,12 +22,12 @@ interface IOpts {
  * @param opts
  */
 export function createServerElement(opts: IOpts): React.ReactElement {
-  const { path, context, ...renderRoutesProps } = opts;
+  const { path, context, basename = '/', ...renderRoutesProps } = opts;
   return renderRoutesProps.plugin.applyPlugins({
     type: ApplyPluginsType.modify,
     key: 'rootContainer',
     initialValue: (
-      <StaticRouter location={path} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>
+      <StaticRouter basename={basename} location={path} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>
     ),
     args: {
       // special rootContainer

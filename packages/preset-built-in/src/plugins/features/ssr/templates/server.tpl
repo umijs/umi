@@ -36,10 +36,10 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
  * get current page component getPageInitialProps data
  * @param params
  */
-export const getInitial = async (params) => {
+const getInitial = async (params) => {
   const { path } = params;
   // pages getInitialProps
-  let { component, ...restRouteParams } = findRoute(routes, path) || {};
+  let { component, ...restRouteParams } = findRoute(routes, path, '{{{Basename}}}') || {};
   let pageInitialProps = {};
   // handle preload dynamic import
   if (component?.preload) {
@@ -73,7 +73,7 @@ export const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-export const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = 'root' }) => {
+const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = 'root' }) => {
   return html
     .replace(
       '</head>',
@@ -103,7 +103,7 @@ const render: IRender = async (params) => {
     path,
   });
 
-  let html = htmlTemplate || `{{ DEFAULT_HTML_PLACEHOLDER }}`;
+  let html = htmlTemplate || `{{{ DEFAULT_HTML_PLACEHOLDER }}}`;
   let rootContainer = '';
   try {
     const opts = {
@@ -117,6 +117,7 @@ const render: IRender = async (params) => {
     // renderServer get rootContainer
     rootContainer = await renderServer({
       ...opts,
+      basename: '{{{ Basename }}}',
       plugin,
     });
     if (html) {
