@@ -1,11 +1,12 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import assert from 'assert';
 
 import { IApi, utils } from 'umi';
 
 import { fixHtmlSuffix, getDistContent, getStaticRoutePaths, isDynamicRoute, routeToFile } from './utils';
 
-const { createDebug, signale, mkdirp } = utils;
+const { createDebug, signale, mkdirp, rimraf } = utils;
 
 const debug = createDebug('umi:preset-built-in:prerender');
 
@@ -21,7 +22,9 @@ export default (api: IApi) => {
     },
     // 配置开启
     enableBy: api.EnableBy.config,
-  })
+  });
+
+  assert(api.userConfig?.ssr && !api.userConfig?.ssr?.stream, 'Prerender need enable `ssr: {}` and disable ssr.stream');
 
   api.onPatchRoute(({ route }) => {
     route.path = fixHtmlSuffix(route);
@@ -69,6 +72,9 @@ export default (api: IApi) => {
         }
       }
       signale.success('Umi prerender success!');
+      // delete umi.server.js
+      rimraf.sync(serverFilePath);
+      signale.info('Umi prerender remove umi.server.js sccuess!');
     }
   })
 };
