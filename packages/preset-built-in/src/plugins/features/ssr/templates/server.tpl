@@ -103,7 +103,7 @@ const render: IRender = async (params) => {
     path,
   });
 
-  let html = htmlTemplate;
+  let html = htmlTemplate || `{{ DEFAULT_HTML_PLACEHOLDER }}`;
   let rootContainer = '';
   try {
     const opts = {

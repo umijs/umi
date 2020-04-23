@@ -9,6 +9,7 @@ const CHUNK_NAME = 'server';
 const OUTPUT_SERVER_FILENAME = 'umi.server.js';
 const TMP_PLUGIN_DIR = 'plugin-ssr';
 const CLIENT_EXPORTS = 'clientExports';
+const DEFAULT_HTML_PLACEHOLDER = '__UMI_DEFAULT_HTML_TEMPLATE__';
 
 export default (api: IApi) => {
   api.describe({
@@ -46,6 +47,7 @@ export default (api: IApi) => {
         Stream: !!api.config.ssr?.stream,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        DEFAULT_HTML_PLACEHOLDER,
       })
     });
 
@@ -145,4 +147,25 @@ export default (api: IApi) => {
       source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`
     }
   ]);
+
+  /**
+   * replace default html string when build success
+   * [WARN] must exec before prerender plugin
+   */
+  api.onBuildComplete(({ err }) => {
+    const { absOutputPath } = api.paths;
+    const serverFilePath = path.join(absOutputPath || '', OUTPUT_SERVER_FILENAME);
+    const defaultHtmlTemplatePath = path.join(absOutputPath || '', 'index.html');
+
+    if (!err) {
+      const serverFile = fs.readFileSync(serverFilePath, 'utf-8');
+      const defaultHtmlTemplate = fs.readFileSync(defaultHtmlTemplatePath, 'utf-8');
+
+      if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER)) {
+        // has placeholder
+        const newServerFile = serverFile.replace(DEFAULT_HTML_PLACEHOLDER, defaultHtmlTemplate);
+        fs.writeFileSync(serverFilePath, newServerFile);
+      }
+    }
+  })
 };
