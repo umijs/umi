@@ -224,6 +224,7 @@ interface ISSR {
   forceInitial?: boolean;
   devServerRender?: boolean;
   stream?: boolean;
+  staticMarkup?: boolean;
 }
 
 interface BaseIConfig extends IConfigCore {

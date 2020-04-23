@@ -108,7 +108,15 @@ const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mou
  */
 const render: IRender = async (params) => {
   let error;
-  const { path, initialData, htmlTemplate = '', mountElementId = 'root', context = {}, stream = {{{Stream}}} } = params;
+  const {
+    path,
+    initialData,
+    htmlTemplate = '',
+    mountElementId = 'root',
+    context = {},
+    stream = {{{Stream}}},
+    staticMarkup = {{{StaticMarkup}}},
+  } = params;
 
   // getInitial
   const { pageInitialProps, appInitialData } = await getInitial({
@@ -125,6 +133,7 @@ const render: IRender = async (params) => {
       appInitialData,
       context,
       stream,
+      staticMarkup,
       routes,
     }
     // renderServer get rootContainer

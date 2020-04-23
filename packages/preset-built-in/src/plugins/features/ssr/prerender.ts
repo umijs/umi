@@ -26,6 +26,14 @@ export default (api: IApi) => {
 
   assert(api.userConfig?.ssr && !api.userConfig?.ssr?.stream, 'Prerender need enable `ssr: {}` and disable ssr.stream');
 
+  api.modifyDefaultConfig((config) => {
+    config.ssr = {
+      ...config.ssr,
+      staticMarkup: true,
+    };
+    return config;
+  })
+
   api.onPatchRoute(({ route }) => {
     route.path = fixHtmlSuffix(route);
   });
@@ -71,10 +79,10 @@ export default (api: IApi) => {
           throw e;
         }
       }
-      signale.success('Umi prerender success!');
       // delete umi.server.js
       rimraf.sync(serverFilePath);
-      signale.info('Umi prerender remove umi.server.js sccuess!');
+      signale.info('Remove umi.server.js sccuess!');
+      signale.success('Umi prerender success!');
     }
   })
 };

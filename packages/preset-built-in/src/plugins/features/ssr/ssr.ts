@@ -17,6 +17,7 @@ export default (api: IApi) => {
           forceInitial: joi.boolean().description('remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions'),
           devServerRender: joi.boolean().description('disable serve-side render in umi dev mode.'),
           stream: joi.boolean().description('stream render, conflict with prerender'),
+          staticMarkup: joi.boolean().description('static markup in static site'),
         });
       },
     },
@@ -42,6 +43,7 @@ export default (api: IApi) => {
         Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
         Utils: winPath(require.resolve('./templates/utils')),
         Stream: !!api.config.ssr?.stream,
+        StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
         Basename: api.config.base || '/',

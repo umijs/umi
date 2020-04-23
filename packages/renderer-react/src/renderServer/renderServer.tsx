@@ -14,6 +14,7 @@ interface IOpts {
   initialData: any;
   context: object;
   stream?: boolean;
+  staticMarkup?: boolean;
   /** unused */
   plugin: Plugin;
 }
@@ -44,10 +45,11 @@ export function createServerElement(opts: IOpts): React.ReactElement {
 
 export default async function renderServer(opts: IOpts) {
   const element = createServerElement(opts);
+  console.log('opts.staticMarkup', opts.staticMarkup);
   if (opts.stream) {
-    return ReactDOMServer.renderToNodeStream(element);
+    return ReactDOMServer[opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'](element);
   }
   // by default
-  const html = ReactDOMServer.renderToString(element);
+  const html = ReactDOMServer[opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'](element);
   return html;
 }
