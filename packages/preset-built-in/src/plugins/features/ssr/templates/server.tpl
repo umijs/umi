@@ -1,5 +1,5 @@
 // umi.server.js
-import { renderServer, createServerElement } from '{{{ Renderer }}}';
+import { renderServer } from '{{{ Renderer }}}';
 import { findRoute, serialize } from '{{{ Utils }}}';
 import { ApplyPluginsType } from '@umijs/runtime';
 import { plugin } from '@@/core/plugin';
@@ -90,13 +90,11 @@ export const handleHtml = ({ html, pageInitialProps, appInitialData, rootContain
     )
 }
 
-export const getServerElement = (params) => createServerElement({ ...params, plugin });
-
 /**
  * server render function
  * @param params
  */
-export const render: IRender = async (params) => {
+const render: IRender = async (params) => {
   let error;
   const { path, initialData, htmlTemplate = '', mountElementId = 'root', context = {} } = params;
 
@@ -137,3 +135,4 @@ export const render: IRender = async (params) => {
   }
 }
 
+export default render;

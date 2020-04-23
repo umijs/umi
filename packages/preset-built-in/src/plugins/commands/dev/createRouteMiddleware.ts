@@ -39,7 +39,7 @@ export default ({
 
         console.time(`[SSR] render ${req.path} start`);
 
-        const { render } = require(serverPath);
+        const render = require(serverPath);
         const { html, error } = await render({
           // with query
           path: req.url,

@@ -16,7 +16,9 @@ export default (api: IApi) => {
     config: {
       schema: (joi) => {
         return joi.object({
-          forceInitial: joi.boolean().description('remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions')
+          forceInitial: joi.boolean().description('remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions'),
+          devServerRender: joi.boolean().description('disable serve-side render in umi dev mode.'),
+          stream: joi.boolean().description('stream render, conflict with prerender'),
         });
       },
     },
@@ -41,6 +43,7 @@ export default (api: IApi) => {
       content: Mustache.render(serverContent, {
         Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
         Utils: winPath(require.resolve('./utils')),
+        Stream: !!api.config.ssr?.stream,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
       })
@@ -85,6 +88,7 @@ export default (api: IApi) => {
 
       config.output
         .filename(OUTPUT_SERVER_FILENAME)
+        .libraryExport('default')
         .chunkFilename('[name].server.js')
         .publicPath(api.config.publicPath || '/')
         .pathinfo(false)

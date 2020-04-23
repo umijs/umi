@@ -221,7 +221,9 @@ interface IManifest {
 }
 
 interface ISSR {
-  devServer?: boolean;
+  forceInitial?: boolean;
+  devServerRender?: boolean;
+  stream?: boolean;
 }
 
 interface BaseIConfig extends IConfigCore {
