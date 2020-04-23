@@ -27,7 +27,8 @@ export function createServerElement(opts: IOpts): React.ReactElement {
     type: ApplyPluginsType.modify,
     key: 'rootContainer',
     initialValue: (
-      <StaticRouter basename={basename} location={path} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>
+      // basename maybe react-router bug, will lead to double slash
+      <StaticRouter basename={basename === '/' ? '' : basename} location={path} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>
     ),
     args: {
       // special rootContainer
