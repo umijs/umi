@@ -89,9 +89,6 @@ const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mou
     const containerString = `<div id="${mountElementId}">`;
     const [beforeRootContainer, afterRootContainer] = htmlWithInitialData.split(containerString);
 
-    console.log('beforeRootContainer', beforeRootContainer);
-    console.log('containerString', containerString);
-    console.log('afterRootContainer', afterRootContainer);
     const beforeRootContainerStream = new ReadableString(beforeRootContainer);
     const containerStream = new ReadableString(containerString);
     const afterRootContainerStream = new ReadableString(afterRootContainer);
