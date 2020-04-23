@@ -1,69 +1,71 @@
-import { matchPath } from '@umijs/runtime';
-import { Readable } from 'stream';
-import { parse, UrlWithStringQuery } from 'url';
-// @ts-ignore
-import mergeStream from 'merge-stream';
-// @ts-ignore
-import serialize from 'serialize-javascript';
+import * as fs from 'fs';
+import * as path from 'path';
+import { IRoute, utils } from 'umi';
 
+import { OUTPUT_SERVER_FILENAME } from './constants';
 
-function addLeadingSlash(path: string): string {
-  return path.charAt(0) === "/" ? path : "/" + path;
-}
+const { lodash } = utils;
 
-// from react-router
-function stripBasename(basename: string, location: UrlWithStringQuery): UrlWithStringQuery {
-  if (!basename) return location;
+export const fixHtmlSuffix = (route: IRoute) => {
+  const isHtmlPath = (path: string): boolean => /\.(html|htm)/g.test(path);
+  if (route.path && route.path !== '/' && !isHtmlPath(route.path) && !route.redirect) {
+    return `${route.path}(.html)?`;
+  }
+  return route.path;
+};
 
-  const base = addLeadingSlash(basename);
+export const getDistContent = (absOutputPath: string): { serverFile: string, htmlFile: string, htmlPath: string, serverFilePath: string } => {
+  const serverFilePath = path.join(absOutputPath || '', OUTPUT_SERVER_FILENAME);
+  const htmlPath = path.join(absOutputPath || '', 'index.html');
 
-  if (location?.pathname?.indexOf(base) !== 0) return location;
-
+  const serverFile = fs.readFileSync(serverFilePath, 'utf-8');
+  const htmlFile = fs.readFileSync(htmlPath, 'utf-8');
   return {
-    ...location,
-    pathname: addLeadingSlash(location.pathname.substr(base.length))
-  };
+    serverFilePath,
+    serverFile,
+    htmlPath,
+    htmlFile,
+  }
 }
 
-export function findRoute(routes: any[], path: string, basename: string = '/'): any {
-  const { pathname } = stripBasename(basename, parse(path));
-  for (const route of routes) {
-    if (route.routes) {
-      const routesMatch = findRoute(route.routes, path, basename);
-      if (routesMatch) {
-        return routesMatch;
+export const isDynamicRoute = (path: string): boolean =>
+  !!path?.split('/')?.some?.(snippet => snippet.startsWith('['));
+
+const removeSuffixHtml = (path: string): string =>
+  path
+    .replace('?', '')
+    .replace('(', '')
+    .replace(')', '')
+    .replace(/\.(html|htm)/g, '');
+
+export const getStaticRoutePaths = (routes: IRoute[]) =>
+  lodash.uniq(
+    routes.reduce((memo: string[], route: IRoute) => {
+      if (route.path && !route.redirect) {
+        memo.push(removeSuffixHtml(route.path));
+        if (route.routes) {
+          memo = memo.concat(getStaticRoutePaths(route.routes));
+        }
       }
-    } else if (matchPath(pathname || '', route)) {
-      // for get params (/news/1 => { params: { id： 1 } })
-      const match = matchPath(pathname || '', route) as any;
-      return {
-        ...route,
-        match,
-      };
-    }
-  }
-}
+      return memo;
+    }, []),
+  );
 
-export class ReadableString extends Readable {
-  str: string
-  sent: boolean
-
-  constructor (str: string) {
-    super()
-    this.str = str
-    this.sent = false
-  }
-
-  _read () {
-    if (!this.sent) {
-      this.push(Buffer.from(this.str))
-      this.sent = true
-    } else {
-      this.push(null)
-    }
-  }
-}
-
-
-export { serialize, mergeStream };
-
+/**
+ * convert route path into file path
+ * / => index.html
+ * /a/b => a/b.html
+ * /a/:id => a/[id].html
+ * /a/b/:id/:id => a/b/[id]/[id].html
+ *
+ * @param path
+ */
+export const routeToFile = (path: string): string => {
+  const pathArr = path?.split('/')?.map?.(p => {
+    const normalPath = removeSuffixHtml(p);
+    return isDynamicRoute(normalPath) ? `[${normalPath.replace(/:/g, '')}]` : normalPath;
+  });
+  // for basement render, join ${host}/${renderRoutes}
+  const pathname = path.startsWith('/') ? pathArr.slice(1).join('/') : pathArr.join('/');
+  return pathname ? `${pathname}.html` : 'index.html';
+};

@@ -3,13 +3,10 @@ import * as path from 'path';
 
 import { IApi, utils } from 'umi';
 
+import { BUNDLE_CONFIG_TYPE, CHUNK_NAME, OUTPUT_SERVER_FILENAME, TMP_PLUGIN_DIR, CLIENT_EXPORTS, DEFAULT_HTML_PLACEHOLDER } from './constants';
+import { getDistContent } from './utils';
+
 const { winPath, Mustache } = utils;
-const BUNDLE_CONFIG_TYPE = 'ssr';
-const CHUNK_NAME = 'server';
-const OUTPUT_SERVER_FILENAME = 'umi.server.js';
-const TMP_PLUGIN_DIR = 'plugin-ssr';
-const CLIENT_EXPORTS = 'clientExports';
-const DEFAULT_HTML_PLACEHOLDER = '__UMI_DEFAULT_HTML_TEMPLATE__';
 
 export default (api: IApi) => {
   api.describe({
@@ -43,7 +40,7 @@ export default (api: IApi) => {
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
         Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
-        Utils: winPath(require.resolve('./utils')),
+        Utils: winPath(require.resolve('./templates/utils')),
         Stream: !!api.config.ssr?.stream,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
@@ -153,19 +150,17 @@ export default (api: IApi) => {
    * replace default html string when build success
    * [WARN] must exec before prerender plugin
    */
-  api.onBuildComplete(({ err }) => {
+  api.onBuildComplete( ({ err }) => {
     const { absOutputPath } = api.paths;
-    const serverFilePath = path.join(absOutputPath || '', OUTPUT_SERVER_FILENAME);
-    const defaultHtmlTemplatePath = path.join(absOutputPath || '', 'index.html');
 
     if (!err) {
-      const serverFile = fs.readFileSync(serverFilePath, 'utf-8');
-      const defaultHtmlTemplate = fs.readFileSync(defaultHtmlTemplatePath, 'utf-8');
+      const { serverFile, htmlFile, serverFilePath } = getDistContent(absOutputPath || '');
 
-      if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER)) {
+      if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
+        const html = htmlFile.replace(/(\r\n|\n|\r)/gm, '');
         // has placeholder
-        const newServerFile = serverFile.replace(DEFAULT_HTML_PLACEHOLDER, defaultHtmlTemplate);
-        fs.writeFileSync(serverFilePath, newServerFile);
+        const newServerFile = serverFile.replace(new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'), html);
+        fs.writeFileSync(serverFilePath, newServerFile, 'utf-8');
       }
     }
   })
