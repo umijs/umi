@@ -1,5 +1,8 @@
 import { matchPath } from '@umijs/runtime';
+import { Readable } from 'stream';
 import { parse, UrlWithStringQuery } from 'url';
+// @ts-ignore
+import mergeStream from 'merge-stream';
 // @ts-ignore
 import serialize from 'serialize-javascript';
 
@@ -41,5 +44,26 @@ export function findRoute(routes: any[], path: string, basename: string = '/'): 
   }
 }
 
-export { serialize };
+export class ReadableString extends Readable {
+  str: string
+  sent: boolean
+
+  constructor (str: string) {
+    super()
+    this.str = str
+    this.sent = false
+  }
+
+  _read () {
+    if (!this.sent) {
+      this.push(Buffer.from(this.str))
+      this.sent = true
+    } else {
+      this.push(null)
+    }
+  }
+}
+
+
+export { serialize, mergeStream };
 

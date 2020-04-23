@@ -13,6 +13,7 @@ interface IOpts {
   appInitialData: object;
   initialData: any;
   context: object;
+  stream?: boolean;
   /** unused */
   plugin: Plugin;
 }
@@ -43,6 +44,10 @@ export function createServerElement(opts: IOpts): React.ReactElement {
 
 export default async function renderServer(opts: IOpts) {
   const element = createServerElement(opts);
+  if (opts.stream) {
+    return ReactDOMServer.renderToNodeStream(element);
+  }
+  // by default
   const html = ReactDOMServer.renderToString(element);
   return html;
 }

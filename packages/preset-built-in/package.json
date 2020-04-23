@@ -49,6 +49,7 @@
     "react-router-dom": "5.1.2",
     "regenerator-runtime": "0.13.5",
     "serialize-javascript": "3.0.0",
+    "merge-stream": "2.0.0",
     "umi-webpack-bundle-analyzer": "3.5.0",
     "zlib": "1.0.5"
   }

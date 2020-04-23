@@ -1,6 +1,7 @@
 // umi.server.js
 import { renderServer } from '{{{ Renderer }}}';
-import { findRoute, serialize } from '{{{ Utils }}}';
+import { findRoute, serialize, mergeStream, ReadableString } from '{{{ Utils }}}';
+
 import { ApplyPluginsType } from '@umijs/runtime';
 import { plugin } from '@@/core/plugin';
 import { routes } from '@@/core/routes';
@@ -73,17 +74,31 @@ const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = 'root' }) => {
-  return html
-    .replace(
-      '</head>',
-      `<script>
-        window.g_useSSR = true;
-        ${appInitialData && !{{{ ForceInitial }}} ? `window.g_initialData = ${serialize(appInitialData)};` : ''}
-        ${pageInitialProps && !{{{ ForceInitial }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
-      </script>
-      </head>`
-    )
+const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = 'root', stream = false }) => {
+  const htmlWithInitialData = html.replace(
+    '</head>',
+    `<script>
+      window.g_useSSR = true;
+      ${appInitialData && !{{{ ForceInitial }}} ? `window.g_initialData = ${serialize(appInitialData)};` : ''}
+      ${pageInitialProps && !{{{ ForceInitial }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
+    </script>
+    </head>`
+  )
+
+  if (stream) {
+    const containerString = `<div id="${mountElementId}">`;
+    const [beforeRootContainer, afterRootContainer] = htmlWithInitialData.split(containerString);
+
+    console.log('beforeRootContainer', beforeRootContainer);
+    console.log('containerString', containerString);
+    console.log('afterRootContainer', afterRootContainer);
+    const beforeRootContainerStream = new ReadableString(beforeRootContainer);
+    const containerStream = new ReadableString(containerString);
+    const afterRootContainerStream = new ReadableString(afterRootContainer);
+    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainer, afterRootContainerStream);
+    return htmlStream;
+  }
+  return htmlWithInitialData
     .replace(
       `<div id="${mountElementId}"></div>`,
       `<div id="${mountElementId}">${rootContainer}</div>`
@@ -96,7 +111,7 @@ const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mou
  */
 const render: IRender = async (params) => {
   let error;
-  const { path, initialData, htmlTemplate = '', mountElementId = 'root', context = {} } = params;
+  const { path, initialData, htmlTemplate = '', mountElementId = 'root', context = {}, stream = {{{Stream}}} } = params;
 
   // getInitial
   const { pageInitialProps, appInitialData } = await getInitial({
@@ -112,6 +127,7 @@ const render: IRender = async (params) => {
       pageInitialProps,
       appInitialData,
       context,
+      stream,
       routes,
     }
     // renderServer get rootContainer
@@ -121,7 +137,7 @@ const render: IRender = async (params) => {
       plugin,
     });
     if (html) {
-      html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId });
+      html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, stream });
     }
   } catch (e) {
     // downgrade into csr

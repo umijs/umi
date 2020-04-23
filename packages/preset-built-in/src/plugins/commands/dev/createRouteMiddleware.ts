@@ -28,7 +28,7 @@ export default ({
         route,
         chunks: sharedMap.get('chunks'),
       });
-      if (api.config.ssr && api.config.ssr.devServer !== false) {
+      if (api.config.ssr && api.config.ssr?.devServerRender !== false) {
         // umi dev to enable server side render by default
         const { absOutputPath } = api.paths;
         const serverPath = join(absOutputPath || '', 'umi.server.js');
@@ -54,7 +54,15 @@ export default ({
         }
       }
       res.setHeader('Content-Type', 'text/html');
-      res.send(content);
+
+      if (api.config.ssr && api.config.ssr?.stream) {
+        content.pipe(res);
+        content.on('end', function() {
+          res.end();
+        });
+      } else {
+        res.send(content);
+      }
     }
 
     if (req.path === '/favicon.ico') {
