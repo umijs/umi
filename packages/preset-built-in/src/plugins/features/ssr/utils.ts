@@ -29,7 +29,7 @@ export const getDistContent = (absOutputPath: string): { serverFile: string, htm
 }
 
 export const isDynamicRoute = (path: string): boolean =>
-  !!path?.split('/')?.some?.(snippet => snippet.startsWith('['));
+  !!path?.split('/')?.some?.(snippet => snippet.startsWith(':'));
 
 const removeSuffixHtml = (path: string): string =>
   path
