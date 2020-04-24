@@ -43,6 +43,7 @@ export default (api: IApi) => {
         Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
         Utils: winPath(require.resolve('./templates/utils')),
         Stream: !!api.config.ssr?.stream,
+        MountElementId: api.config.mountElementId,
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,

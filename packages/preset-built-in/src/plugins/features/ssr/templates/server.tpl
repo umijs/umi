@@ -70,7 +70,7 @@ const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = 'root', stream = false }) => {
+const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', stream = {{{Stream}}} }) => {
   const htmlWithInitialData = html.replace(
     '</head>',
     `<script>
@@ -108,7 +108,7 @@ const render: IRender = async (params) => {
     path,
     initialData,
     htmlTemplate = '',
-    mountElementId = 'root',
+    mountElementId = '{{{MountElementId}}}',
     context = {},
     stream = {{{Stream}}},
     staticMarkup = {{{StaticMarkup}}},
