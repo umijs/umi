@@ -115,7 +115,7 @@ const render: IRender = async (params) => {
   } = params;
 
 
-  let html = htmlTemplate || `{{{ DEFAULT_HTML_PLACEHOLDER }}}`;
+  let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
   let rootContainer = '';
   try {
     // getInitial

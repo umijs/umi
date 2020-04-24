@@ -74,7 +74,9 @@ export default (api: IApi) => {
           // write html file
           const outputRoutePath = path.join(absOutputPath || '', filename);
           const dir = path.join(absOutputPath || '', filename.substring(0, filename.lastIndexOf('/')));
-          mkdirp.sync(dir);
+          if (!fs.existsSync(dir)) {
+            mkdirp.sync(dir);
+          }
           fs.writeFileSync(outputRoutePath, ssrHtml);
           signale.complete(filename);
         } catch (e) {
@@ -83,8 +85,10 @@ export default (api: IApi) => {
         }
       }
       // delete umi.server.js
-      rimraf.sync(serverFilePath);
-      signale.info('Remove umi.server.js sccuess!');
+      if (process.env.RM_SERVER_FILE !== 'none') {
+        rimraf.sync(serverFilePath);
+        signale.info('Remove umi.server.js sccuess!');
+      }
       signale.success('Umi prerender success!');
     }
   })

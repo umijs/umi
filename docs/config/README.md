@@ -996,7 +996,9 @@ __webpack_public_path__ = window.publicPath;
     - [id].html
 ```
 
-考虑到 prerender 后，大部分不会再用到 `umi.server.js` 服务端文件，所以在预渲染完成后会删掉 `umi.server.js` 文件。
+考虑到 prerender 后，大部分不会再用到 `umi.server.js` 服务端文件。
+
+所以在预渲染完成后会删掉 `umi.server.js` 文件如果有调试、不删除 server 文件需求，可通过环境变量 `RM_SERVER_FILE=none` 来保留。
 
 ## styleLoader
 
