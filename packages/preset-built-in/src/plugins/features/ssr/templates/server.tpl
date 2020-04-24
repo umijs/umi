@@ -42,10 +42,6 @@ const getInitial = async (params) => {
   // pages getInitialProps
   let { component, ...restRouteParams } = findRoute(routes, path, '{{{Basename}}}') || {};
   let pageInitialProps = {};
-  // handle preload dynamic import
-  if (component?.preload) {
-    component = await component.preload();
-  }
   pageInitialProps = component?.getInitialProps
     ? await component.getInitialProps({
         isServer: true,
