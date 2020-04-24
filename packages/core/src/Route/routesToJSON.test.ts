@@ -32,11 +32,11 @@ test('normal with dynamicImport', () => {
 [
   {
     "path": "/",
-    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')})
+    "component": process.env.__IS_BROWSER ? dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')}) : require('@/pages/index.ts').default
   },
   {
     "path": "/users/:id",
-    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__users__id' */'@/pages/users/[id].ts')})
+    "component": process.env.__IS_BROWSER ? dynamic({ loader: () => import(/* webpackChunkName: 'p__users__id' */'@/pages/users/[id].ts')}) : require('@/pages/users/[id].ts').default
   }
 ]
   `.trim(),
