@@ -98,7 +98,7 @@ export default function renderClient(opts: IOpts) {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
-    if (window.g_useSSR) {
+    if (rootElement?.hasChildNodes()) {
       preloadComponent(opts.routes).then(function () {
         ReactDOM.hydrate(
           rootContainer,
