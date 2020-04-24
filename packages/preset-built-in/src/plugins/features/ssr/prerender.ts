@@ -24,7 +24,9 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  assert(api.userConfig?.ssr && !api.userConfig?.ssr?.stream, 'Prerender need enable `ssr: {}` and disable ssr.stream');
+  if (api.userConfig.prerender) {
+    assert(api.userConfig?.ssr && !api.userConfig?.ssr?.stream, 'Prerender need enable `ssr: {}` and disable ssr.stream');
+  }
 
   api.modifyDefaultConfig((config) => {
     config.ssr = {
