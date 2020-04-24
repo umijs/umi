@@ -41,6 +41,7 @@ export default function (api: IApi) {
     'modifyBabelPresetOpts',
     'modifyBundleImplementor',
     'modifyHTMLChunks',
+    'modifyDevServerContent',
     'modifyPublicPathStr',
     'modifyRendererPath',
     'modifyRoutes',

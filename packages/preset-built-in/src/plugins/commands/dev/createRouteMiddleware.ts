@@ -1,4 +1,5 @@
 import { IApi, NextFunction, Request, Response } from '@umijs/types';
+import { Stream } from 'stream';
 import { extname, join } from 'path';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { getHtmlGenerator } from '../htmlUtils';
@@ -24,38 +25,22 @@ export default ({
           route = matchedRoutes[matchedRoutes.length - 1].route;
         }
       }
-      let content = await html.getContent({
+      const defaultContent = await html.getContent({
         route,
         chunks: sharedMap.get('chunks'),
+      })
+      const content = await api.applyPlugins({
+        key: 'modifyDevServerContent',
+        type: api.ApplyPluginsType.modify,
+        initialValue: defaultContent,
+        args: {
+          req,
+        }
       });
-      if (api.config.ssr && api.config.ssr?.devServerRender !== false) {
-        // umi dev to enable server side render by default
-        const { absOutputPath } = api.paths;
-        const serverPath = join(absOutputPath || '', 'umi.server.js');
-        // if dev clear cache
-        if (api.env === 'development') {
-          delete require.cache[serverPath];
-        }
-
-        console.time(`[SSR] render ${req.path} start`);
-
-        const render = require(serverPath);
-        const { html, error } = await render({
-          // with query
-          path: req.url,
-          htmlTemplate: content,
-          mountElementId: api.config?.mountElementId || 'root',
-        });
-
-        console.timeEnd(`[SSR] render ${req.path} start`);
-
-        if (!error)  {
-          content = html;
-        }
-      }
       res.setHeader('Content-Type', 'text/html');
 
-      if (api.config.ssr && api.config.ssr?.stream) {
+      // support stream content
+      if (content instanceof Stream) {
         content.pipe(res);
         content.on('end', function() {
           res.end();

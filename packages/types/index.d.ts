@@ -8,6 +8,7 @@ import {
   IHTMLTag,
   Service,
 } from '@umijs/core';
+import { Stream } from 'stream';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
@@ -172,6 +173,10 @@ export interface IApi extends PluginAPI {
   modifyHTMLChunks: IModify<
     (string | { name: string; headScript?: boolean })[],
     { route: IRoute, type?: string, chunks: webpack.compilation.Chunk[] }
+  >;
+  modifyDevServerContent: IModify<
+    (string | Stream),
+    { req: Request }
   >;
   chainWebpack: IModify<
     WebpackChain,

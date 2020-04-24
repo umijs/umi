@@ -77,6 +77,35 @@ export default (api: IApi) => {
     // force enable writeToDisk
     config.devServer.writeToDisk = (filePath: string) => /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
     return config;
+  });
+
+  // modify devServer content
+  api.modifyDevServerContent(async (defaultHtml, { req }) => {
+    // umi dev to enable server side render by default
+    const { absOutputPath } = api.paths;
+    const { stream } = api.config?.ssr || {};
+    const serverPath = path.join(absOutputPath || '', 'umi.server.js');
+    // if dev clear cache
+    if (api.env === 'development') {
+      delete require.cache[serverPath];
+    }
+
+    console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.path} start`);
+
+    const render = require(serverPath);
+    const { html, error } = await render({
+      // with query
+      path: req.url,
+      htmlTemplate: defaultHtml,
+      mountElementId: api.config?.mountElementId || 'root',
+    });
+
+    console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.path} start`);
+
+    if (!error)  {
+      return html
+    }
+    return defaultHtml;
   })
 
   // 修改
