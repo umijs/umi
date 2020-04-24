@@ -192,10 +192,13 @@ function createLoadableComponent(loadFn, options) {
     }
   };
 
-  LoadableComponent.preload = () => init();
-  LoadableComponent.displayName = 'LoadableComponent';
+  const LoadableComponentWithRef = React.forwardRef(LoadableComponent);
+  // add static method in React.forwardRef
+  // https://github.com/facebook/react/issues/17830
+  LoadableComponentWithRef.preload = () => init();
+  LoadableComponentWithRef.displayName = 'LoadableComponent';
 
-  return React.forwardRef(LoadableComponent);
+  return LoadableComponentWithRef;
 }
 
 class LoadableSubscription {
@@ -300,6 +303,23 @@ function LoadableMap(opts) {
 }
 
 Loadable.Map = LoadableMap;
+
+const Capture = (props) => {
+  const { report, children } = props;
+  return (
+    <LoadableContext.Provider
+      value={{
+        loadable: {
+          report,
+        }
+      }}
+    >
+      {React.Children.only(children)}
+    </LoadableContext.Provider>
+  );
+}
+
+Loadable.Capture = Capture;
 
 function flushInitializers(initializers, ids) {
   let promises = [];

@@ -1,6 +1,6 @@
 import * as ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
-import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
+import { ApplyPluginsType, Plugin, Router, matchPath } from '@umijs/runtime';
 import { matchRoutes } from 'react-router-config';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
@@ -56,6 +56,23 @@ function RouterComponent(props: IRouterComponentProps) {
   return <Router history={history}>{renderRoutes(renderRoutesProps)}</Router>;
 }
 
+/**
+ * preload for SSR in dynamicImport
+ * exec preload Promise function before ReactDOM.hydrate
+ * @param Routes
+ */
+async function preloadComponent(readyRoutes: IRoute[]): Promise<IRoute[]> {
+  for (const route of readyRoutes) {
+    if (matchPath(location.pathname, route) && route.component?.preload) {
+      route.component = (await route.component.preload()).default;
+    }
+    if (route.routes) {
+      route.routes = await preloadComponent(route.routes);
+    }
+  }
+  return readyRoutes;
+}
+
 export default function renderClient(opts: IOpts) {
   const rootContainer = opts.plugin.applyPlugins({
     type: ApplyPluginsType.modify,
@@ -81,10 +98,19 @@ export default function renderClient(opts: IOpts) {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
-    ReactDOM[!!window.g_useSSR ? 'hydrate' : 'render'](
-      rootContainer,
-      rootElement,
-    );
+    if (window.g_useSSR) {
+      preloadComponent(opts.routes).then(function () {
+        ReactDOM.hydrate(
+          rootContainer,
+          rootElement,
+        );
+      });
+    } else {
+      ReactDOM.render(
+        rootContainer,
+        rootElement,
+      );
+    }
   } else {
     return rootContainer;
   }

@@ -118,14 +118,14 @@ const render: IRender = async (params) => {
     staticMarkup = {{{StaticMarkup}}},
   } = params;
 
-  // getInitial
-  const { pageInitialProps, appInitialData } = await getInitial({
-    path,
-  });
 
   let html = htmlTemplate || `{{{ DEFAULT_HTML_PLACEHOLDER }}}`;
   let rootContainer = '';
   try {
+    // getInitial
+    const { pageInitialProps, appInitialData } = await getInitial({
+      path,
+    });
     const opts = {
       path,
       initialData,
@@ -137,11 +137,12 @@ const render: IRender = async (params) => {
       routes,
     }
     // renderServer get rootContainer
-    rootContainer = await renderServer({
+    const serverResult = await renderServer({
       ...opts,
       basename: '{{{ Basename }}}',
       plugin,
     });
+    rootContainer = serverResult.html;
     if (html) {
       html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, stream });
     }

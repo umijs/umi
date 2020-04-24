@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
+import { Plugin, Redirect } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
 import Route from './Route';
@@ -29,11 +29,13 @@ function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
         (window as any).g_initialProps = null;
       } else {
         (async () => {
-          const initialProps = await Component!.getInitialProps!({
-            isServer: false,
-            match: props?.match,
-          });
-          setInitialProps(initialProps);
+          if (Component.getInitialProps) {
+            const initialProps = await Component!.getInitialProps!({
+              isServer: false,
+              match: props?.match,
+            });
+            setInitialProps(initialProps);
+          }
         })();
       }
     }, [`${window.location.pathname}${window.location.search}`]);
@@ -99,7 +101,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
   } else {
     // avoid mount and unmount with url hash change
-    if (process.env.__IS_BROWSER  && route.component?.getInitialProps) {
+    if (process.env.__IS_BROWSER && route.component?.getInitialProps) {
       route.component = wrapInitialPropsFetch(route.component, opts);
     }
     return (

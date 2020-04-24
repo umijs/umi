@@ -35,7 +35,9 @@ export default (api: IApi) => {
   })
 
   api.onPatchRoute(({ route }) => {
-    route.path = fixHtmlSuffix(route);
+    if (api.env === 'production') {
+      route.path = fixHtmlSuffix(route);
+    }
   });
 
   api.onBuildComplete(async ({ err }) => {
@@ -61,7 +63,6 @@ export default (api: IApi) => {
         if (!isDynamicRoute(url)) {
           const { html } = await render({
             path: url,
-            htmlTemplate: htmlFile,
           });
           ssrHtml = html;
         }

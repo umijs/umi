@@ -121,6 +121,7 @@ export function getHtmlGenerator({ api, type }: { api: IApi, type: string }): an
         args: {
           type,
           route: args.route,
+          chunks: args.chunks,
         },
       });
       const { cssFiles, jsFiles, headJSFiles } = chunksToFiles({

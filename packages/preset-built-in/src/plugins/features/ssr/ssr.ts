@@ -6,7 +6,7 @@ import { IApi, utils } from 'umi';
 import { BUNDLE_CONFIG_TYPE, CHUNK_NAME, OUTPUT_SERVER_FILENAME, TMP_PLUGIN_DIR, CLIENT_EXPORTS, DEFAULT_HTML_PLACEHOLDER } from './constants';
 import { getDistContent } from './utils';
 
-const { winPath, Mustache } = utils;
+const { winPath, Mustache, lodash } = utils;
 
 export default (api: IApi) => {
   api.describe({
@@ -64,7 +64,8 @@ export default (api: IApi) => {
     if (opts.type === BUNDLE_CONFIG_TYPE) {
       return [CHUNK_NAME];
     }
-    return memo;
+    const chunks = opts.chunks.map(chunk => chunk.name)
+    return lodash.uniq([...memo, ...chunks]);
   })
 
   api.modifyConfig(config => {
@@ -73,7 +74,7 @@ export default (api: IApi) => {
     }
     // DISCUSS: 是否需要强行改项目配置的方式，来开启 dev 下写 umi.server.js
     // force enable writeToDisk
-    config.devServer.writeToDisk = (filePath: string) => /(umi\.server\.js|index\.html)$/.test(filePath);
+    config.devServer.writeToDisk = (filePath: string) => /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
     return config;
   })
 
@@ -159,9 +160,8 @@ export default (api: IApi) => {
       const { serverFile, htmlFile, serverFilePath } = getDistContent(absOutputPath || '');
 
       if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
-        const html = htmlFile.replace(/(\r\n|\n|\r)/gm, '');
         // has placeholder
-        const newServerFile = serverFile.replace(new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'), html);
+        const newServerFile = serverFile.replace(new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'), JSON.stringify(htmlFile));
         fs.writeFileSync(serverFilePath, newServerFile, 'utf-8');
       }
     }

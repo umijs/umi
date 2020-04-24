@@ -171,7 +171,7 @@ export interface IApi extends PluginAPI {
   modifyRoutes: IModify<IRoute[], {}>;
   modifyHTMLChunks: IModify<
     (string | { name: string; headScript?: boolean })[],
-    { route: IRoute, type?: string }
+    { route: IRoute, type?: string, chunks: webpack.compilation.Chunk[] }
   >;
   chainWebpack: IModify<
     WebpackChain,
