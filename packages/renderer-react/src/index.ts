@@ -4,6 +4,7 @@ import { match } from 'react-router-dom';
 
 export interface IComponent extends FunctionComponent {
   getInitialProps?: Function;
+  preload?: Promise<any>;
 }
 
 export interface IRoute {
