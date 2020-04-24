@@ -900,9 +900,101 @@ __webpack_public_path__ = window.publicPath;
 
 比如 `src/pages` 的约定在开启后为 `src/page` 目录，[@umijs/plugins](https://github.com/umijs/plugins) 里的插件也遵照此配置的约定。
 
-## ssr
+## ssr <Badge>3.2+</Badge>
 
-暂未在 umi@3 中实现。
+* Type: `object`
+* Default: `false`
+
+配置是否开启服务端渲染，配置如下：
+
+```js
+{
+  // 一键开启
+  // ssr: {}
+
+  // 更多配置
+  ssr: {
+    forceInitial: false,
+    devServerRender: true,
+    stream: false,
+    staticMarkup: false,
+  }
+}
+```
+
+配置说明：
+
+* `forceInitial`：客户端渲染时强制执行 `getInitialProps` 和 `getInitialData` 方法，常见的场景：静态站点希望每次访问时保持数据最新，以客户端渲染为主。
+* `devServerRender`：在 `umi dev` 开发模式下，执行渲染，用于 umi SSR 项目的快速开发、调试，服务端渲染效果所见即所得，同时我们考虑到可能会与服务端框架（如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)）结合做本地开发、调试，关闭后，在 `umi dev` 下不执行服务端渲染，但会生成 `umi.server.js`（Umi SSR 服务端渲染入口文件），渲染开发流程交由开发者处理。
+* `stream`：Umi SSR 支持一键开启流式渲染，减少 TTFB（浏览器开始收到服务器响应数据的时间） 时长。
+* `staticMarkup`：html 上的渲染属性（例如 React 渲染的 `data-reactroot`），常用于静态站点生成的场景上。
+
+注意：
+
+* 开启后，执行 `umi dev` 时，访问 http://localhost:8000，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
+* 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
+* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以使用 [prerender](#prerender) 配置。
+
+了解更多，可点击 [服务端渲染指南](#ssr)
+
+## prerender <Badge>3.2+</Badge>
+
+* Type: `object`
+* Default: `false`
+
+开启预渲染配置，与配置 [ssr](#ssr) 一同使用，常用来解决没有服务端情况下，页面的 SEO 和首屏渲染提速，配置如下：
+
+```jsx
+{
+  ssr: {},
+  // 一键开启
+  // prerender: {}
+
+  // 更多配置
+  prerender: {
+    extraRoutes: ['/news/1', '/news/2']
+  }
+}
+```
+
+配置说明：
+
+* `extraRoutes`：额外路由列表，预渲染默认情况下，不会渲染动态路由（例如这种形式的路由 `/news/[id]`），为了满足预渲染时将某些动态路由也渲染成 html，增加此配置。
+
+预渲染配置开启后，在 `umi build` 后，会路由（除静态路由外）渲染成静态 html 页面，例如如下路由配置：
+
+```jsx
+// .umirc.ts | config/config.ts
+{
+  routes: [
+    {u
+      path: '/',
+      component: '@/layouts/Layout',
+      routes: [
+        { path: '/', component: '@/pages/Index' },
+        { path: '/bar', component: '@/pages/Bar' },
+        { path: '/news', component: '@/pages/News' },
+        { path: '/news/:id', component: '@/pages/NewsDetail' },
+      ]
+    },
+  ]
+}
+```
+
+会在编译后，生成如下产物：
+
+```bash
+- dist
+  - umi.js
+  - umi.css
+  - index.html
+  - bar.html
+  - news.html
+  - news
+    - [id].html
+```
+
+考虑到 prerender 后，大部分不会再用到 `umi.server.js` 服务端文件，所以在预渲染完成后会删掉 `umi.server.js` 文件。
 
 ## styleLoader
 
