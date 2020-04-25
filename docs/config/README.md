@@ -402,12 +402,15 @@ export default () => {
 
 配置 html 的输出形式，默认只输出 `index.html`。
 
+如果需要预渲染，请开启 [ssr](#ssr) 配置，常用来解决没有服务端情况下，页面的 SEO 和首屏渲染提速。
+
 如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
 
-包含两个子属性，
+包含以下几个属性，
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
+* extraRoutes，额外路由列表，预渲染默认情况下，不会渲染动态路由（例如这种形式的路由 `/news/[id]`），为了满足预渲染时将某些动态路由也渲染成 html，增加此配置。
 
 比如以下路由，
 
@@ -438,6 +441,44 @@ export default () => {
 - users.html
 - list.html
 ```
+
+设置 `{ ssr: {}, exportStatic: { extraRoutes: ['/news/1', '/news/2'] } }` 后，输出，
+
+预渲染配置开启后，在 `umi build` 后，会路由（除静态路由外）渲染成静态 html 页面，例如如下路由配置：
+
+```jsx
+// .umirc.ts | config/config.ts
+{
+  routes: [
+    {
+      path: '/',
+      component: '@/layouts/Layout',
+      routes: [
+        { path: '/', component: '@/pages/Index' },
+        { path: '/bar', component: '@/pages/Bar' },
+        { path: '/news', component: '@/pages/News' },
+        { path: '/news/:id', component: '@/pages/NewsDetail' },
+      ]
+    },
+  ]
+}
+```
+
+会在编译后，生成如下产物：
+
+```bash
+- dist
+  - umi.js
+  - umi.css
+  - index.html
+  - bar
+    - index.html
+  - news
+    - index.html
+    - [id].html
+```
+
+考虑到预渲染后，大部分不会再用到 `umi.server.js` 服务端文件，构建完成后会删掉 `umi.server.js` 文件如果有调试、不删除 server 文件需求，可通过环境变量 `RM_SERVER_FILE=none` 来保留。
 
 ## externals
 
@@ -935,7 +976,7 @@ __webpack_public_path__ = window.publicPath;
 
 * 开启后，执行 `umi dev` 时，访问 http://localhost:8000，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
 * 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
-* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以使用 [prerender](#prerender) 配置。
+* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以使用 [exportStatic](#exportStatic) 配置，在构建时进行预渲染。
 
 了解更多，可点击 [服务端渲染指南](#ssr)
 
@@ -969,7 +1010,7 @@ __webpack_public_path__ = window.publicPath;
 // .umirc.ts | config/config.ts
 {
   routes: [
-    {u
+    {
       path: '/',
       component: '@/layouts/Layout',
       routes: [
