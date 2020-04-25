@@ -38,7 +38,7 @@ footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [du
 $ mkdir myapp && cd myapp
 
 # 安装依赖
-$ yarn add umi@next
+$ yarn add umi
 
 # 创建页面
 $ npx umi g page index --typescript --less

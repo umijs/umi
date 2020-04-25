@@ -28,7 +28,7 @@ Manually,
 $ mkdir myapp && cd myapp
 
 # Install dependency
-$ yarn add umi@next
+$ yarn add umi
 
 # Create page
 $ npx umi g page index --typescript --less
