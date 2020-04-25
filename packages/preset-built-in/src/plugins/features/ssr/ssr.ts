@@ -1,8 +1,9 @@
 import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
+import { matchPath } from '@umijs/runtime';
 
-import { IApi, utils } from 'umi';
+import { IApi, utils, IRoute } from 'umi';
 
 import { BUNDLE_CONFIG_TYPE, CHUNK_NAME, OUTPUT_SERVER_FILENAME, TMP_PLUGIN_DIR, CLIENT_EXPORTS, DEFAULT_HTML_PLACEHOLDER } from './constants';
 import { getDistContent } from './utils';
@@ -67,11 +68,19 @@ export default (api: IApi) => {
   api.addPolyfillImports(() => [{ source: './core/server.ts' }]);
 
   api.modifyHTMLChunks(async (memo, opts) => {
+    // remove server bundle entry in html
     if (opts.type === BUNDLE_CONFIG_TYPE) {
-      return [CHUNK_NAME];
+      return [];
     }
-    const chunks = opts.chunks.map(chunk => chunk.name)
-    return lodash.uniq([...memo, ...chunks]);
+    // for dynamicImport
+    if (api.config.dynamicImport) {
+      // TODO: page bind opposite chunks, now will bind all chunks
+      const chunks = opts.chunks.map(chunk => {
+        return chunk.name;
+      })
+      return lodash.uniq([...memo, ...chunks]);
+    }
+    return memo;
   })
 
   api.modifyConfig(config => {
