@@ -107,7 +107,6 @@ const isDev = process.env.NODE_ENV === 'development';
 
 export default defineConfig({
   ssr: {},
-  prerender: {},
   favicon: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   mode: 'site',
   title: 'UmiJS',
@@ -136,6 +135,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  exportStatic: {},
   analytics: isDev
     ? false
     : {

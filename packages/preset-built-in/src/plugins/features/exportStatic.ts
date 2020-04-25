@@ -1,4 +1,12 @@
-import { IApi } from '@umijs/types';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { IApi, utils } from 'umi';
+import { matchPath } from '@umijs/runtime';
+
+const { signale } = utils;
+
+const isDynamicRoute = (path: string): boolean =>
+  !!path?.split('/')?.some?.(snippet => snippet.startsWith(':'));
 
 export default (api: IApi) => {
   api.describe({
@@ -8,6 +16,8 @@ export default (api: IApi) => {
         return joi.object({
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
+          // TODO
+          extraRoutes: joi.array().items(joi.string()).description('extra Routes for dynamic routes'),
         });
       },
     },
@@ -29,7 +39,6 @@ export default (api: IApi) => {
 
   api.onPatchRoutes(({ routes }) => {
     if (!api.config.exportStatic) return;
-
     // copy / to /index.html
     let rootIndex = null;
     routes.forEach((route, index) => {
@@ -43,6 +52,37 @@ export default (api: IApi) => {
         path: '/index.html',
       });
     }
+  });
+
+  // modify export html using routes
+  api.modifyRouteMap(async (memo, { html }) => {
+    if (api.config.exportStatic) {
+      const routeMap = await html.getRouteMap();
+      return routeMap;
+    }
+    return memo;
+  });
+
+  api.modifyBuildContent(async (memo, { route }) => {
+    const { absOutputPath } = api.paths;
+    const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+    const { ssr } = api.config;
+    if (ssr && existsSync(serverFilePath) && !isDynamicRoute(route.path || '')) {
+      try {
+        // do server-side render
+        const render = require(serverFilePath);
+        const { html }  = await render({
+          path: route.path,
+          htmlTemplate: memo,
+        });
+        signale.success(`${route.path} render success`);
+        return html;
+      } catch (e) {
+        signale.fatal(`${route.path} render failed`, e);
+        throw e;
+      }
+    }
+    return memo;
   });
 
   function addHtmlSuffix(path: string, hasRoutes: boolean) {

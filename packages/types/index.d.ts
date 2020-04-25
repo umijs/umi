@@ -178,6 +178,14 @@ export interface IApi extends PluginAPI {
     (string | Stream),
     { req: Request }
   >;
+  modifyBuildContent: IModify<
+    (string),
+    { route: IRoute, file: string }
+  >;
+  modifyRouteMap: IModify<
+    ({ route: Pick<IRoute, 'path'>, file: string }[]),
+    { html: InstanceType<Html> }
+  >;
   chainWebpack: IModify<
     WebpackChain,
     { webpack: typeof webpack; createCSSRule: ICreateCSSRule, type: string; }
@@ -265,6 +273,7 @@ interface BaseIConfig extends IConfigCore {
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
+    extraRoutes?: string[];
   };
   externals?: any;
   extraBabelPlugins?: IBabelPresetOrPlugin[];

@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import assert from 'assert';
 import * as path from 'path';
 
 import { IApi, utils } from 'umi';
@@ -23,7 +24,11 @@ export default (api: IApi) => {
     },
     // 配置开启
     enableBy: api.EnableBy.config,
-  })
+  });
+
+  if (api.userConfig.ssr) {
+    assert(api.userConfig.history?.type !== 'hash', 'the `type` of `history` must be `browser` when using SSR');
+  }
 
   // 再加一个 webpack instance
   api.modifyBundleConfigs(async (memo, { getConfig }) => {
@@ -81,6 +86,10 @@ export default (api: IApi) => {
 
   // modify devServer content
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
+    // skip hot update requests
+    if (req.url.includes('hot-update.json')) {
+      return defaultHtml;
+    }
     // umi dev to enable server side render by default
     const { absOutputPath } = api.paths;
     const { stream } = api.config?.ssr || {};
@@ -90,7 +99,7 @@ export default (api: IApi) => {
       delete require.cache[serverPath];
     }
 
-    console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.path} start`);
+    console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
 
     const render = require(serverPath);
     const { html, error } = await render({
@@ -100,7 +109,7 @@ export default (api: IApi) => {
       mountElementId: api.config?.mountElementId || 'root',
     });
 
-    console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.path} start`);
+    console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
 
     if (!error)  {
       return html

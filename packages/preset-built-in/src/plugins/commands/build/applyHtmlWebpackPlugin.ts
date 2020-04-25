@@ -12,15 +12,28 @@ export default function (api: IApi) {
         'UmiHtmlGeneration',
         async (compilation: any) => {
           const html = getHtmlGenerator({ api, type: this.type });
-
-          const routeMap = api.config.exportStatic
-            ? await html.getRouteMap()
-            : [{ route: { path: '/' }, file: 'index.html' }];
+          const routeMap = await api.applyPlugins({
+            key: 'modifyRouteMap',
+            type: api.ApplyPluginsType.modify,
+            initialValue: [{ route: { path: '/' }, file: 'index.html' }],
+            args: {
+              html,
+            },
+          });
           for (const { route, file } of routeMap) {
-            const content = await html.getContent({
+            const defaultContent = await html.getContent({
               route,
               chunks: compilation.chunks,
             });
+            const content = await api.applyPlugins({
+              key: 'modifyBuildContent',
+              type: api.ApplyPluginsType.modify,
+              initialValue: defaultContent,
+              args: {
+                route,
+                file,
+              }
+            })
             compilation.assets[file] = {
               source: () => content,
               size: () => content.length,
