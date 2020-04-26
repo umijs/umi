@@ -251,6 +251,9 @@ class Server {
                 : proxyConfig.target;
             const realUrl = new URL(req.url || '', target)?.href || '';
             proxyRes.headers['x-real-url'] = realUrl;
+
+            typeof proxyConfig.onProxyRes === 'function' &&
+              proxyConfig.onProxyRes(proxyRes, req, res);
           },
         });
       }
