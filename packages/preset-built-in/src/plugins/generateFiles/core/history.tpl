@@ -10,7 +10,7 @@ let history: any = !process.env.__IS_BROWSER ? null : {{{ creator }}}(options);
 export const createHistory = (hotReload = false) => {
   if (!hotReload) {
     history = {{{ creator }}}(options);
-}
+  }
 
   return history;
 };
