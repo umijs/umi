@@ -304,23 +304,6 @@ function LoadableMap(opts) {
 
 Loadable.Map = LoadableMap;
 
-const Capture = (props) => {
-  const { report, children } = props;
-  return (
-    <LoadableContext.Provider
-      value={{
-        loadable: {
-          report,
-        }
-      }}
-    >
-      {React.Children.only(children)}
-    </LoadableContext.Provider>
-  );
-}
-
-Loadable.Capture = Capture;
-
 function flushInitializers(initializers, ids) {
   let promises = [];
 
