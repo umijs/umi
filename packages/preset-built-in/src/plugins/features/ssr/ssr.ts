@@ -161,7 +161,7 @@ export default (api: IApi) => {
         .filename(OUTPUT_SERVER_FILENAME)
         .libraryExport('default')
         .chunkFilename('[name].server.js')
-        .publicPath(api.config.publicPath || '/')
+        .publicPath(api.config!.publicPath)
         .pathinfo(false)
         .libraryTarget('commonjs2');
 
