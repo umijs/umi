@@ -2,6 +2,7 @@ import { IApi } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
 import { delay } from '@umijs/utils';
 import assert from 'assert';
+import { ConfigType } from '@umijs/bundler-webpack';
 import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
@@ -29,7 +30,7 @@ export default (api: IApi) => {
   const sharedMap = new Map();
   api.onDevCompileDone(({ stats, type }) => {
     // don't need ssr bundler chunks
-    if (type === 'ssr') {
+    if (type === ConfigType.ssr) {
       return;
     }
     // store client build chunks
@@ -152,18 +153,22 @@ export default (api: IApi) => {
         bundleImplementor,
       });
 
-      const beforeMiddlewares = (await api.applyPlugins({
-        key: 'addBeforeMiddewares',
-        type: api.ApplyPluginsType.add,
-        initialValue: [],
-        args: {},
-      })).filter(Boolean);
-      const middlewares = (await api.applyPlugins({
-        key: 'addMiddewares',
-        type: api.ApplyPluginsType.add,
-        initialValue: [],
-        args: {},
-      })).filter(Boolean);
+      const beforeMiddlewares = (
+        await api.applyPlugins({
+          key: 'addBeforeMiddewares',
+          type: api.ApplyPluginsType.add,
+          initialValue: [],
+          args: {},
+        })
+      ).filter(Boolean);
+      const middlewares = (
+        await api.applyPlugins({
+          key: 'addMiddewares',
+          type: api.ApplyPluginsType.add,
+          initialValue: [],
+          args: {},
+        })
+      ).filter(Boolean);
 
       const server = new Server({
         ...opts,
