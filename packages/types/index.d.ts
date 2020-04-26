@@ -27,9 +27,11 @@ import {
   RequestHandler,
 } from 'express';
 import { History, Location } from 'history-with-query';
-import { BundlerConfigType } from './';
 
-export { BundlerConfigType };
+export enum BundlerConfigType {
+  csr = 'csr',
+  ssr = 'ssr',
+}
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
