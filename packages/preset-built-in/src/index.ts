@@ -62,7 +62,6 @@ export default function () {
       require.resolve('./plugins/features/umiInfo'),
       require.resolve('./plugins/features/forkTSChecker'),
       require.resolve('./plugins/features/ssr/ssr'),
-      require.resolve('./plugins/features/ssr/prerender'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
