@@ -41,12 +41,12 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  if (api.userConfig.ssr) {
+  api.onStart(() => {
     assert(
-      api.userConfig.history?.type !== 'hash',
+      api.config.history?.type !== 'hash',
       'the `type` of `history` must be `browser` when using SSR',
     );
-  }
+  });
 
   // 再加一个 webpack instance
   api.modifyBundleConfigs(async (memo, { getConfig }) => {
