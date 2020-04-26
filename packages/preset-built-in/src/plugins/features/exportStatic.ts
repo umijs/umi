@@ -13,11 +13,6 @@ export default (api: IApi) => {
         return joi.object({
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
-          // TODO
-          extraRoutes: joi
-            .array()
-            .items(joi.string())
-            .description('extra Routes for dynamic routes'),
         });
       },
     },

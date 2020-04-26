@@ -408,7 +408,6 @@ export default () => {
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
-* extraRoutes，额外路由列表，预渲染默认情况下，不会渲染动态路由（例如这种形式的路由 `/news/[id]`），为了满足预渲染时将某些动态路由也渲染成 html，增加此配置。
 
 比如以下路由，
 
@@ -440,7 +439,7 @@ export default () => {
 - list.html
 ```
 
-设置 `{ ssr: {}, exportStatic: { extraRoutes: ['/news/1', '/news/2'] } }` 后，输出，
+设置 `{ ssr: {}, exportStatic: { }` 后，输出，
 
 预渲染配置开启后，在 `umi build` 后，会路由（除静态路由外）渲染成静态 html 页面，例如如下路由配置：
 
@@ -974,7 +973,7 @@ __webpack_public_path__ = window.publicPath;
 
 * 开启后，执行 `umi dev` 时，访问 http://localhost:8000，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
 * 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
-* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以使用 [exportStatic](#exportStatic) 配置，在构建时进行预渲染。
+* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以使用 [exportStatic](#exportStatic) 配置，在构建时进行**预渲染**。
 
 了解更多，可点击 [服务端渲染指南](#ssr)
 

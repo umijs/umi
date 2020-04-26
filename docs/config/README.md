@@ -410,7 +410,6 @@ export default () => {
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
-* extraRoutes，额外路由列表，预渲染默认情况下，不会渲染动态路由（例如这种形式的路由 `/news/[id]`），为了满足预渲染时将某些动态路由也渲染成 html，增加此配置。
 
 比如以下路由，
 
@@ -442,7 +441,7 @@ export default () => {
 - list.html
 ```
 
-设置 `{ ssr: {}, exportStatic: { extraRoutes: ['/news/1', '/news/2'] } }` 后，输出，
+设置 `{ ssr: {}, exportStatic: { } }` 后，输出，
 
 预渲染配置开启后，在 `umi build` 后，会路由（除静态路由外）渲染成静态 html 页面，例如如下路由配置：
 
@@ -979,67 +978,6 @@ __webpack_public_path__ = window.publicPath;
 * 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以使用 [exportStatic](#exportStatic) 配置，在构建时进行预渲染。
 
 了解更多，可点击 [服务端渲染指南](#ssr)
-
-## prerender <Badge>3.2+</Badge>
-
-* Type: `object`
-* Default: `false`
-
-开启预渲染配置，与配置 [ssr](#ssr) 一同使用，常用来解决没有服务端情况下，页面的 SEO 和首屏渲染提速，配置如下：
-
-```jsx
-{
-  ssr: {},
-  // 一键开启
-  // prerender: {}
-
-  // 更多配置
-  prerender: {
-    extraRoutes: ['/news/1', '/news/2']
-  }
-}
-```
-
-配置说明：
-
-* `extraRoutes`：额外路由列表，预渲染默认情况下，不会渲染动态路由（例如这种形式的路由 `/news/[id]`），为了满足预渲染时将某些动态路由也渲染成 html，增加此配置。
-
-预渲染配置开启后，在 `umi build` 后，会路由（除静态路由外）渲染成静态 html 页面，例如如下路由配置：
-
-```jsx
-// .umirc.ts | config/config.ts
-{
-  routes: [
-    {
-      path: '/',
-      component: '@/layouts/Layout',
-      routes: [
-        { path: '/', component: '@/pages/Index' },
-        { path: '/bar', component: '@/pages/Bar' },
-        { path: '/news', component: '@/pages/News' },
-        { path: '/news/:id', component: '@/pages/NewsDetail' },
-      ]
-    },
-  ]
-}
-```
-
-会在编译后，生成如下产物：
-
-```bash
-- dist
-  - umi.js
-  - umi.css
-  - index.html
-  - bar.html
-  - news.html
-  - news
-    - [id].html
-```
-
-考虑到 prerender 后，大部分不会再用到 `umi.server.js` 服务端文件。
-
-所以在预渲染完成后会删掉 `umi.server.js` 文件如果有调试、不删除 server 文件需求，可通过环境变量 `RM_SERVER_FILE=none` 来保留。
 
 ## styleLoader
 
