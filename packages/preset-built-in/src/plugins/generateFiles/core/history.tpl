@@ -6,7 +6,7 @@ if ((<any>window).routerBase) {
 }
 
 // remove initial history because of ssr
-let history: any = !process.env.__IS_BROWSER ? null : {{{ creator }}}(options);
+let history: any = process.env.__IS_SERVER ? null : {{{ creator }}}(options);
 export const createHistory = (hotReload = false) => {
   if (!hotReload) {
     history = {{{ creator }}}(options);

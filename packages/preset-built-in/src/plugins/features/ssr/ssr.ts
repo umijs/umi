@@ -169,7 +169,7 @@ export default (api: IApi) => {
         {
           ...args,
           'window.routerBase': JSON.stringify(api.config.base),
-          'process.env.__IS_BROWSER': false,
+          'process.env.__IS_SERVER': true,
         },
       ]);
 

@@ -42,23 +42,27 @@ const getInitial = async (params) => {
   // pages getInitialProps
   let { component, ...restRouteParams } = findRoute(routes, path, '{{{Basename}}}') || {};
   let pageInitialProps = {};
-  pageInitialProps = component?.getInitialProps
-    ? await component.getInitialProps({
-        isServer: true,
-        ...restRouteParams,
-      })
-    : null;
-  const runtimeConfig = plugin.applyPlugins({
+  const { getInitialData, modifyInitialProps } = plugin.applyPlugins({
     key: 'ssr',
     type: ApplyPluginsType.modify,
     initialValue: {},
   });
+  const defaultInitialProps = {
+    isServer: true,
+    ...restRouteParams,
+  };
+  // extend the `params` of getInitialProps(params) function
+  const initialProps = modifyInitialProps ? await modifyInitialProps(defaultInitialProps) : defaultInitialProps;
+  pageInitialProps = component?.getInitialProps
+    ? await component.getInitialProps(initialProps)
+    : null;
   let appInitialData = {};
-  if (typeof runtimeConfig?.getInitialData === 'function') {
-    appInitialData = await runtimeConfig.getInitialData({
+  if (typeof getInitialData === 'function') {
+    const defaultInitialData = {
       isServer: true,
       ...restRouteParams,
-    });
+    };
+    appInitialData = await getInitialData(defaultInitialData);
   }
   return {
     pageInitialProps,

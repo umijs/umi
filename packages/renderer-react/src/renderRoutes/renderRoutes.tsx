@@ -20,7 +20,9 @@ interface IGetRouteElementOpts {
 
 function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
   return function ComponentWithInitialPropsFetch(props: any) {
-    const [initialProps, setInitialProps] = useState(() => (window as any).g_initialProps);
+    const [initialProps, setInitialProps] = useState(
+      () => (window as any).g_initialProps,
+    );
 
     useEffect(() => {
       // first time using window.g_initialProps
@@ -61,8 +63,12 @@ function render({
 
   let { component: Component, wrappers } = route;
   if (Component) {
-    const defaultPageInitialProps = process.env.__IS_BROWSER ? (window as any).g_initialProps : {};
-    const defaultAppInitialData = process.env.__IS_BROWSER ? (window as any).g_initialData : {};
+    const defaultPageInitialProps = process.env.__IS_SERVER
+      ? {}
+      : (window as any).g_initialProps;
+    const defaultAppInitialData = process.env.__IS_SERVER
+      ? {}
+      : (window as any).g_initialData;
     const newProps = {
       ...props,
       ...opts.extraProps,
@@ -101,7 +107,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
   } else {
     // avoid mount and unmount with url hash change
-    if (process.env.__IS_BROWSER && route.component?.getInitialProps) {
+    if (!process.env.__IS_SERVER && route.component?.getInitialProps) {
       route.component = wrapInitialPropsFetch(route.component, opts);
     }
     return (

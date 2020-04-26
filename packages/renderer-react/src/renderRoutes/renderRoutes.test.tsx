@@ -1,6 +1,12 @@
 import React from 'react';
 import { MemoryRouter, Plugin, Link } from '@umijs/runtime';
-import { getByText, render, screen, wait, waitFor } from '@testing-library/react';
+import {
+  getByText,
+  render,
+  screen,
+  wait,
+  waitFor,
+} from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '..';
 
@@ -13,7 +19,7 @@ function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
   React.useEffect(() => {
     return () => {
       mountCount++;
-    }
+    };
   }, []);
   return (
     <div>
@@ -25,12 +31,7 @@ function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
   );
 }
 
-
-beforeEach(() => {
-  delete process.env.__IS_BROWSER;
-})
-
-const getInitialProps =  async () => {
+const getInitialProps = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -115,7 +116,10 @@ const routerConfig = {
     { path: '/redirect', redirect: '/d' },
     { path: '/d', component: () => <h1 data-testid="test">Redirect</h1> },
     { path: '/get-initial-props', component: TestInitialProps as any },
-    { path: '/get-initial-props-without-unmount', component: TestInitialPropsWithoutUnmount as any },
+    {
+      path: '/get-initial-props-without-unmount',
+      component: TestInitialPropsWithoutUnmount as any,
+    },
     {
       path: '/get-initial-props-embed',
       component: TestInitialPropsParent as any,
@@ -247,7 +251,6 @@ test('/pass-props', async () => {
 });
 
 test('/get-initial-props', async () => {
-  process.env.__IS_BROWSER = 'true';
   const newRoutes = renderRoutes(routerConfig);
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props']}>
@@ -259,7 +262,6 @@ test('/get-initial-props', async () => {
 });
 
 test('/get-initial-props-without-unmount', async () => {
-  process.env.__IS_BROWSER = 'true';
   const newRoutes = renderRoutes(routerConfig);
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props-without-unmount']}>
@@ -281,7 +283,6 @@ test('/get-initial-props-without-unmount', async () => {
 });
 
 test('/get-initial-props-embed', async () => {
-  process.env.__IS_BROWSER = 'true';
   const newRoutes = renderRoutes(routerConfig);
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props-embed']}>
