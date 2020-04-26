@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plugin, Redirect } from '@umijs/runtime';
+import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
 import Route from './Route';
@@ -31,11 +31,22 @@ function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
         (window as any).g_initialProps = null;
       } else {
         (async () => {
+          const { modifyGetInitialPropsParams } = opts.plugin.applyPlugins({
+            key: 'ssr',
+            type: ApplyPluginsType.modify,
+            initialValue: {},
+          });
+          const defaultGetInitialPropsParams = {
+            isServer: false,
+            match: props?.match,
+          };
+          const initialPropsParams = modifyGetInitialPropsParams
+            ? await modifyGetInitialPropsParams(defaultGetInitialPropsParams)
+            : defaultGetInitialPropsParams;
           if (Component.getInitialProps) {
-            const initialProps = await Component!.getInitialProps!({
-              isServer: false,
-              match: props?.match,
-            });
+            const initialProps = await Component!.getInitialProps!(
+              initialPropsParams,
+            );
             setInitialProps(initialProps);
           }
         })();
@@ -108,6 +119,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (!process.env.__IS_SERVER && route.component?.getInitialProps) {
+      // client Render for enable ssr, but not sure SSR success
       route.component = wrapInitialPropsFetch(route.component, opts);
     }
     return (
