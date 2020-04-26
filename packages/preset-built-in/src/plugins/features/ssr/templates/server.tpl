@@ -4,8 +4,8 @@ import { renderServer } from '{{{ Renderer }}}';
 import { findRoute, serialize, mergeStream, ReadableString } from '{{{ Utils }}}';
 
 import { ApplyPluginsType } from '@umijs/runtime';
-import { plugin } from '@@/core/plugin';
-import { routes } from '@@/core/routes';
+import { plugin } from './plugin';
+import { routes } from './routes';
 
 export interface IParams {
   path: string;

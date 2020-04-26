@@ -1,9 +1,10 @@
 import { Service } from '@umijs/core';
+import { Stream } from 'stream';
 import { join } from 'path';
 import cheerio from 'cheerio';
 import { render, cleanup } from '@testing-library/react';
 import { rimraf } from '@umijs/utils';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -90,4 +91,89 @@ test('html', async () => {
   expect($('body script[crossorigin="true"]').attr('src')).toEqual(
     '/custom.js',
   );
+});
+
+const htmlTemplate = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="/umi.css" />
+    <script>
+      window.routerBase = "/";
+    </script>
+    <script>
+      //! umi version: undefined
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="/umi.js"></script>
+  </body>
+</html>`;
+
+test('ssr', async () => {
+  const cwd = join(fixtures, 'ssr');
+  const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
+
+  delete require.cache[tmpServerFile];
+  rimraf.sync(join(cwd, '.umi-test'));
+
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+  });
+  await service.run({
+    name: 'g',
+    args: {
+      _: ['g', 'tmp'],
+    },
+  });
+  expect(existsSync(tmpServerFile)).toBeTruthy();
+
+  const render = require(tmpServerFile).default;
+  const { rootContainer, html } = await render({
+    path: '/',
+    htmlTemplate,
+    mountElementId: 'root',
+  });
+  const expectRootContainer =
+    '<div><ul><li>hello</li><li>world</li></ul></div>';
+  expect(rootContainer).toEqual(expectRootContainer);
+  const $ = cheerio.load(html);
+  expect($('#root').html()).toEqual(expectRootContainer);
+});
+
+test('ssr using stream', async () => {
+  const cwd = join(fixtures, 'ssr-stream');
+  const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
+
+  delete require.cache[tmpServerFile];
+  rimraf.sync(join(cwd, '.umi-test'));
+
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+  });
+  await service.run({
+    name: 'g',
+    args: {
+      _: ['g', 'tmp'],
+    },
+  });
+  expect(existsSync(tmpServerFile)).toBeTruthy();
+
+  const render = require(tmpServerFile).default;
+  const { rootContainer, html } = await render({
+    path: '/',
+    htmlTemplate,
+    stream: true,
+    mountElementId: 'root',
+  });
+  expect(rootContainer instanceof Stream).toBeTruthy();
+  expect(html instanceof Stream).toBeTruthy();
 });
