@@ -63,6 +63,7 @@ export default (api: IApi) => {
         Renderer: winPath(
           path.dirname(require.resolve('@umijs/renderer-react/package')),
         ),
+        RuntimePolyfill: require.resolve('regenerator-runtime/runtime'),
         Utils: winPath(require.resolve('./templates/utils')),
         Stream: !!api.config.ssr?.stream,
         MountElementId: api.config.mountElementId,

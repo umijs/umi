@@ -1,4 +1,5 @@
 // umi.server.js
+import '{{{ RuntimePolyfill }}}';
 import { renderServer } from '{{{ Renderer }}}';
 import { findRoute, serialize, mergeStream, ReadableString } from '{{{ Utils }}}';
 

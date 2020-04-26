@@ -3,6 +3,8 @@ module.exports = {
   moduleNameMapper: {},
   collectCoverageFrom(memo) {
     return memo.concat([
+      // benchmarks
+      '!benchmarks/**/*',
       '!packages/bundler-webpack/src/getConfig/setPublicPath.ts',
       '!packages/bundler-webpack/src/getConfig/runtimePublicPathEntry.ts',
       '!packages/bundler-webpack/src/webpackHotDevClient/*',
