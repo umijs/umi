@@ -393,7 +393,7 @@ TODO
 
 修改路由数组。
 
-### onBuildCompelete({ err?, stats? })
+### onBuildComplete({ err?, stats? })
 
 构建完成时可以做的事。
 
