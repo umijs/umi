@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587896986172,
+  "lastUpdate": 1587897132034,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -266,6 +266,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.47%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "b47fa0b77923e76e198671467a0c9837623a1a12",
+          "message": "fix: windows runtime polyfill",
+          "timestamp": "2020-04-26T18:28:55+08:00",
+          "tree_id": "f3c1d87a1477a9ab446fe4946e46abbb93fd22df",
+          "url": "https://github.com/umijs/umi/commit/b47fa0b77923e76e198671467a0c9837623a1a12"
+        },
+        "date": 1587897128507,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1237,
+            "range": "±3.14%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2172,
+            "range": "±5.47%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
