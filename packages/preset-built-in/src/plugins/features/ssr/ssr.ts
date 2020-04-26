@@ -115,7 +115,7 @@ export default (api: IApi) => {
       // with query
       path: req.url,
       htmlTemplate: defaultHtml,
-      mountElementId: api.config?.mountElementId || 'root',
+      mountElementId: api.config?.mountElementId,
     });
 
     console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
