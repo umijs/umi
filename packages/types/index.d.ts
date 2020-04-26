@@ -27,6 +27,9 @@ import {
   RequestHandler,
 } from 'express';
 import { History, Location } from 'history-with-query';
+import { BundlerConfigType } from './';
+
+export { BundlerConfigType };
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -84,10 +87,6 @@ type IPresetOrPlugin = string | [string, any];
 type IBabelPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
 
-export enum BundlerConfigType {
-  csr = 'csr',
-  ssr = 'ssr',
-}
 export type IBundlerConfigType = keyof typeof BundlerConfigType;
 
 export interface IApi extends PluginAPI {
