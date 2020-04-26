@@ -64,7 +64,7 @@ export interface IServerOpts {
   };
   onConnection?: (param: { connection: Connection; server: Server }) => void;
   onConnectionClose?: (param: { connection: Connection }) => void;
-  writeToDisk?: boolean;
+  writeToDisk?: boolean | ((filePath: string) => boolean);
 }
 
 const defaultOpts: Required<PartialProps<IServerOpts>> = {
