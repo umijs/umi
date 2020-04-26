@@ -1,11 +1,17 @@
 import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
-import { matchPath } from '@umijs/runtime';
 
-import { IApi, utils, IRoute } from 'umi';
+import { IApi, utils } from 'umi';
 
-import { BUNDLE_CONFIG_TYPE, CHUNK_NAME, OUTPUT_SERVER_FILENAME, TMP_PLUGIN_DIR, CLIENT_EXPORTS, DEFAULT_HTML_PLACEHOLDER } from './constants';
+import {
+  BUNDLE_CONFIG_TYPE,
+  CHUNK_NAME,
+  OUTPUT_SERVER_FILENAME,
+  TMP_PLUGIN_DIR,
+  CLIENT_EXPORTS,
+  DEFAULT_HTML_PLACEHOLDER,
+} from './constants';
 import { getDistContent } from './utils';
 
 const { winPath, Mustache, lodash } = utils;
@@ -16,10 +22,20 @@ export default (api: IApi) => {
     config: {
       schema: (joi) => {
         return joi.object({
-          forceInitial: joi.boolean().description('remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions'),
-          devServerRender: joi.boolean().description('disable serve-side render in umi dev mode.'),
-          stream: joi.boolean().description('stream render, conflict with prerender'),
-          staticMarkup: joi.boolean().description('static markup in static site'),
+          forceInitial: joi
+            .boolean()
+            .description(
+              'remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions',
+            ),
+          devServerRender: joi
+            .boolean()
+            .description('disable serve-side render in umi dev mode.'),
+          stream: joi
+            .boolean()
+            .description('stream render, conflict with prerender'),
+          staticMarkup: joi
+            .boolean()
+            .description('static markup in static site'),
         });
       },
     },
@@ -28,15 +44,15 @@ export default (api: IApi) => {
   });
 
   if (api.userConfig.ssr) {
-    assert(api.userConfig.history?.type !== 'hash', 'the `type` of `history` must be `browser` when using SSR');
+    assert(
+      api.userConfig.history?.type !== 'hash',
+      'the `type` of `history` must be `browser` when using SSR',
+    );
   }
 
   // 再加一个 webpack instance
   api.modifyBundleConfigs(async (memo, { getConfig }) => {
-    return [
-      ...memo,
-      await getConfig({ type: BUNDLE_CONFIG_TYPE }),
-    ]
+    return [...memo, await getConfig({ type: BUNDLE_CONFIG_TYPE })];
   });
 
   api.onGenerateFiles(async () => {
@@ -46,7 +62,9 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
-        Renderer: winPath(path.dirname(require.resolve('@umijs/renderer-react/package'))),
+        Renderer: winPath(
+          path.dirname(require.resolve('@umijs/renderer-react/package')),
+        ),
         Utils: winPath(require.resolve('./templates/utils')),
         Stream: !!api.config.ssr?.stream,
         MountElementId: api.config.mountElementId,
@@ -55,15 +73,18 @@ export default (api: IApi) => {
         ForceInitial: !!api.config.ssr?.forceInitial,
         Basename: api.config.base || '/',
         DEFAULT_HTML_PLACEHOLDER,
-      })
+      }),
     });
 
-    const clientExportsContent = fs.readFileSync(path.join(winPath(__dirname), `templates/${CLIENT_EXPORTS}.tpl`), 'utf-8');
+    const clientExportsContent = fs.readFileSync(
+      path.join(winPath(__dirname), `templates/${CLIENT_EXPORTS}.tpl`),
+      'utf-8',
+    );
     api.writeTmpFile({
       path: `${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}.ts`,
       content: clientExportsContent,
     });
-  })
+  });
 
   api.modifyHTMLChunks(async (memo, opts) => {
     // remove server bundle entry in html
@@ -73,21 +94,22 @@ export default (api: IApi) => {
     // for dynamicImport
     if (api.config.dynamicImport) {
       // TODO: page bind opposite chunks, now will bind all chunks
-      const chunks = opts.chunks.map(chunk => {
+      const chunks = opts.chunks.map((chunk) => {
         return chunk.name;
-      })
+      });
       return lodash.uniq([...memo, ...chunks]);
     }
     return memo;
-  })
+  });
 
-  api.modifyConfig(config => {
+  api.modifyConfig((config) => {
     if (!config.devServer) {
       config.devServer = {};
     }
     // DISCUSS: 是否需要强行改项目配置的方式，来开启 dev 下写 umi.server.js
     // force enable writeToDisk
-    config.devServer.writeToDisk = (filePath: string) => /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
+    config.devServer.writeToDisk = (filePath: string) =>
+      /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
     return config;
   });
 
@@ -118,11 +140,11 @@ export default (api: IApi) => {
 
     console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
 
-    if (!error)  {
-      return html
+    if (!error) {
+      return html;
     }
     return defaultHtml;
-  })
+  });
 
   // 修改
   api.chainWebpack(async (config, opts) => {
@@ -143,28 +165,33 @@ export default (api: IApi) => {
         .pathinfo(false)
         .libraryTarget('commonjs2');
 
-      config.plugin('define').tap(([args]) => [{ ...args,
-        'window.routerBase': JSON.stringify(api.config.base),
-        'process.env.__IS_BROWSER': false,
-      }]);
-
+      config.plugin('define').tap(([args]) => [
+        {
+          ...args,
+          'window.routerBase': JSON.stringify(api.config.base),
+          'process.env.__IS_BROWSER': false,
+        },
+      ]);
 
       if (config.plugins.has('extract-css')) {
-        config.plugins.delete('extract-css')
+        config.plugins.delete('extract-css');
       }
-      [ 'css', 'less' ].forEach((lang) => {
+      ['css', 'less'].forEach((lang) => {
         const langRule = config.module.rule(lang);
-        [langRule.oneOf('css-modules').resourceQuery(/modules/), langRule.oneOf('css')].forEach(rule => {
+        [
+          langRule.oneOf('css-modules').resourceQuery(/modules/),
+          langRule.oneOf('css'),
+        ].forEach((rule) => {
           if (rule.uses.has('extract-css-loader')) {
             rule.uses.delete('extract-css-loader');
             rule.use('css-loader').tap((options) => ({
               ...options,
               // https://webpack.js.org/loaders/css-loader/#onlylocals
-              onlyLocals: true
+              onlyLocals: true,
             }));
           }
-        })
-      })
+        });
+      });
 
       config.externals([]);
 
@@ -191,25 +218,30 @@ export default (api: IApi) => {
   api.addUmiExports(() => [
     {
       exportAll: true,
-      source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`
-    }
+      source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`,
+    },
   ]);
 
   /**
    * replace default html string when build success
    * [WARN] must exec before prerender plugin
    */
-  api.onBuildComplete( ({ err }) => {
+  api.onBuildComplete(({ err }) => {
     const { absOutputPath } = api.paths;
 
     if (!err) {
-      const { serverFile, htmlFile, serverFilePath } = getDistContent(absOutputPath || '');
+      const { serverFile, htmlFile, serverFilePath } = getDistContent(
+        absOutputPath || '',
+      );
 
       if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
         // has placeholder
-        const newServerFile = serverFile.replace(new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'), JSON.stringify(htmlFile));
+        const newServerFile = serverFile.replace(
+          new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
+          JSON.stringify(htmlFile),
+        );
         fs.writeFileSync(serverFilePath, newServerFile, 'utf-8');
       }
     }
-  })
+  });
 };
