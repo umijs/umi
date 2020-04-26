@@ -26,7 +26,7 @@ export default {
 
 执行 `umi dev` 或 `umi build` 时，增加环境变量 `ANALYZE=1` 可查看产物的依赖占比。
 
-<img src="https://cdn.nlark.com/yuque/0/2020/png/86025/1587883983223-7f794469-ab70-4e27-a060-3ed27062d03b.png" width=600 />
+<img src="https://cdn.nlark.com/yuque/0/2020/png/86025/1587883983223-7f794469-ab70-4e27-a060-3ed27062d03b.png" width="600" />
 
 注意：
 
