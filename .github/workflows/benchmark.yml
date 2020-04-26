@@ -1,6 +1,9 @@
 name: Umi Benchmark
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   benchmark:
@@ -18,7 +21,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn build
         env:
           CI: true
