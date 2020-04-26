@@ -65,8 +65,6 @@ export default (api: IApi) => {
     });
   })
 
-  api.addPolyfillImports(() => [{ source: './core/server.ts' }]);
-
   api.modifyHTMLChunks(async (memo, opts) => {
     // remove server bundle entry in html
     if (opts.type === BUNDLE_CONFIG_TYPE) {
