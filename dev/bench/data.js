@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587897132034,
+  "lastUpdate": 1587900837366,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -304,6 +304,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.47%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "4dc7c68deb2b9215b175d674c69db782811cbcab",
+          "message": "fix: remove exportStatic extraRoutes",
+          "timestamp": "2020-04-26T19:30:57+08:00",
+          "tree_id": "038642cfc7e0fa6d6e6ec43140c61c937c151720",
+          "url": "https://github.com/umijs/umi/commit/4dc7c68deb2b9215b175d674c69db782811cbcab"
+        },
+        "date": 1587900834012,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1400,
+            "range": "±2.16%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2427,
+            "range": "±3.09%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
