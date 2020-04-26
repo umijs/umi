@@ -245,7 +245,12 @@ class Server {
         return createProxyMiddleware(context!, {
           ...proxyConfig,
           onProxyRes(proxyRes: any, req, res) {
-            proxyConfig.onProxyRes.call(this);
+            if (
+              proxyConfig.onProxyRes &&
+              typeof proxyConfig.onProxyRes === 'function'
+            ) {
+              proxyConfig.onProxyRes.call(this, proxyRes, req, res);
+            }
             const target =
               typeof proxyConfig.target === 'object'
                 ? url.format(proxyConfig.target)
