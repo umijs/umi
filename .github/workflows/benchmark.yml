@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: [10.x, 12.x]
+        node_version: [10.x]
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
@@ -27,7 +27,8 @@ jobs:
           NODE_ENV: test
           NODE_OPTIONS: --max_old_space_size=4096
       - name: Run benchmark
-        run: yarn benchmark | tee output.txt
+      - run: yarn benchmark | tee output.txt
+      - run: ls
         env:
           GITHUB_ACTION: true
       - name: Store benchmark result

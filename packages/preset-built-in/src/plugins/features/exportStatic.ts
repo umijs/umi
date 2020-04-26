@@ -21,6 +21,7 @@ export default (api: IApi) => {
         });
       },
     },
+    enableBy: api.EnableBy.config,
   });
 
   api.modifyConfig((memo) => {

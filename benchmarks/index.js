@@ -2,7 +2,6 @@ const path = require('path');
 const { fork } = require('child_process');
 
 const Benchmark = require('benchmark');
-const beautifyBenchmark = require('beautify-benchmark');
 const { glob } = require('@umijs/utils');
 
 const UMI_SCRIPT = path.join(__dirname, '../packages/umi/bin/umi.js');
@@ -16,7 +15,7 @@ function build({ cwd }) {
         COMPRESS: 'none',
       },
       cwd,
-      stdio: 'inherit',
+      stdio: 'ignore',
     });
     child.on('exit', (code) => {
       if (code === 0) {
@@ -58,11 +57,9 @@ const bootstrap = async () => {
 
   suite
     .on('cycle', function (event) {
-      beautifyBenchmark.add(event.target);
+      console.log(String(event.target));
     })
-    .on('complete', function () {
-      beautifyBenchmark.log();
-    })
+    .on('complete', function () {})
     // run async
     .run({ async: true });
 };
