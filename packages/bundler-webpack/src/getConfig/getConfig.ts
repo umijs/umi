@@ -1,11 +1,10 @@
-import { IConfig } from '@umijs/types';
+import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
-  ConfigType,
   getBabelDepsOpts,
   getBabelOpts,
   getBabelPresetOpts,
@@ -25,7 +24,7 @@ import {
 export interface IOpts {
   cwd: string;
   config: IConfig;
-  type: ConfigType;
+  type: IBundlerConfigType;
   env: 'development' | 'production';
   entry?: {
     [key: string]: string;
@@ -461,7 +460,7 @@ export default async function getConfig(
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
   // speed-measure-webpack-plugin
-  if (process.env.SPEED_MEASURE && type === ConfigType.csr) {
+  if (process.env.SPEED_MEASURE && type === BundlerConfigType.csr) {
     const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
     const smpOption =
       process.env.SPEED_MEASURE === 'CONSOLE'

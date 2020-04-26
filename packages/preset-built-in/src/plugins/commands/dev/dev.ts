@@ -1,8 +1,7 @@
-import { IApi } from '@umijs/types';
+import { IApi, BundlerConfigType } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
 import { delay } from '@umijs/utils';
 import assert from 'assert';
-import { ConfigType } from '@umijs/bundler-webpack';
 import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
@@ -30,7 +29,7 @@ export default (api: IApi) => {
   const sharedMap = new Map();
   api.onDevCompileDone(({ stats, type }) => {
     // don't need ssr bundler chunks
-    if (type === ConfigType.ssr) {
+    if (type === BundlerConfigType.ssr) {
       return;
     }
     // store client build chunks

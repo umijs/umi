@@ -2,7 +2,8 @@ import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
 
-import { IApi, utils } from 'umi';
+import { IApi, BundlerConfigType } from '@umijs/types';
+import { winPath, Mustache, lodash } from '@umijs/utils';
 
 import {
   CHUNK_NAME,
@@ -11,10 +12,7 @@ import {
   CLIENT_EXPORTS,
   DEFAULT_HTML_PLACEHOLDER,
 } from './constants';
-import { ConfigType } from '@umijs/bundler-webpack';
 import { getDistContent } from './utils';
-
-const { winPath, Mustache, lodash } = utils;
 
 export default (api: IApi) => {
   api.describe({
@@ -52,7 +50,7 @@ export default (api: IApi) => {
 
   // 再加一个 webpack instance
   api.modifyBundleConfigs(async (memo, { getConfig }) => {
-    return [...memo, await getConfig({ type: ConfigType.ssr })];
+    return [...memo, await getConfig({ type: BundlerConfigType.ssr })];
   });
 
   api.onGenerateFiles(async () => {
@@ -88,7 +86,7 @@ export default (api: IApi) => {
 
   api.modifyHTMLChunks(async (memo, opts) => {
     // remove server bundle entry in html
-    if (opts.type === ConfigType.ssr) {
+    if (opts.type === BundlerConfigType.ssr) {
       return [];
     }
     // for dynamicImport
@@ -151,7 +149,7 @@ export default (api: IApi) => {
     const { paths } = api;
     const { type } = opts;
     const serverEntryPath = path.join(paths.absTmpPath || '', 'core/server.ts');
-    if (type === ConfigType.ssr) {
+    if (type === BundlerConfigType.ssr) {
       config.entryPoints.clear();
       config.entry(CHUNK_NAME).add(serverEntryPath);
       config.target('node');

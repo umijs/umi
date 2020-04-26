@@ -1,8 +1,7 @@
-import { IConfig } from '@umijs/types';
+import { IConfig, BundlerConfigType } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
-import { ConfigType } from '@umijs/bundler-utils';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 
 interface IOpts {
@@ -147,4 +146,4 @@ class Bundler {
   }
 }
 
-export { Bundler, ConfigType, defaultWebpack as webpack };
+export { Bundler, BundlerConfigType as ConfigType, defaultWebpack as webpack };

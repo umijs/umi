@@ -1,10 +1,15 @@
-import { IApi, webpack } from '@umijs/types';
+import {
+  IApi,
+  webpack,
+  IBundlerConfigType,
+  BundlerConfigType,
+} from '@umijs/types';
 import { getHtmlGenerator } from '../htmlUtils';
 
 export default function (api: IApi) {
   class HtmlWebpackPlugin {
-    private type: string;
-    constructor({ type }: { type: string }) {
+    private type: IBundlerConfigType;
+    constructor({ type }: { type: IBundlerConfigType }) {
       this.type = type;
     }
     apply(compiler: webpack.Compiler) {
@@ -32,8 +37,8 @@ export default function (api: IApi) {
               args: {
                 route,
                 file,
-              }
-            })
+              },
+            });
             compilation.assets[file] = {
               source: () => content,
               size: () => content.length,
@@ -51,7 +56,7 @@ export default function (api: IApi) {
       id === 'webpack' &&
       process.env.HTML !== 'none' &&
       // avoid ssr bundler build override index.html
-      type === 'csr'
+      type === BundlerConfigType.csr
     ) {
       bundleConfig.plugins?.unshift(new HtmlWebpackPlugin({ type }));
     }

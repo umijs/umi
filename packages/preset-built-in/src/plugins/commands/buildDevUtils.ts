@@ -1,9 +1,5 @@
-import { IApi } from '@umijs/types';
-import {
-  Bundler as DefaultBundler,
-  ConfigType,
-  webpack,
-} from '@umijs/bundler-webpack';
+import { IApi, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
+import { Bundler as DefaultBundler, webpack } from '@umijs/bundler-webpack';
 import { join, resolve } from 'path';
 import { existsSync, readdirSync, readFileSync } from 'fs';
 import { rimraf, chalk } from '@umijs/utils';
@@ -32,7 +28,7 @@ export async function getBundleAndConfigs({
   });
 
   // get config
-  async function getConfig({ type }: { type: ConfigType }) {
+  async function getConfig({ type }: { type: IBundlerConfigType }) {
     const env: Env = api.env === 'production' ? 'production' : 'development';
     const getConfigOpts = await api.applyPlugins({
       type: api.ApplyPluginsType.modify,
@@ -41,7 +37,7 @@ export async function getBundleAndConfigs({
         env,
         type,
         port,
-        hot: type === ConfigType.csr && process.env.HMR !== 'none',
+        hot: type === BundlerConfigType.csr && process.env.HMR !== 'none',
         entry: {
           umi: join(api.paths.absTmpPath!, 'umi.ts'),
         },
@@ -99,9 +95,9 @@ export async function getBundleAndConfigs({
   const bundleConfigs = await api.applyPlugins({
     type: api.ApplyPluginsType.modify,
     key: 'modifyBundleConfigs',
-    initialValue: [
-      await getConfig({ type: ConfigType.csr }),
-    ].filter(Boolean),
+    initialValue: [await getConfig({ type: BundlerConfigType.csr })].filter(
+      Boolean,
+    ),
     args: {
       ...bundlerArgs,
       getConfig,

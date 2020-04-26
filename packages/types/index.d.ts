@@ -84,6 +84,12 @@ type IPresetOrPlugin = string | [string, any];
 type IBabelPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
 
+export enum BundlerConfigType {
+  csr = 'csr',
+  ssr = 'ssr',
+}
+export type IBundlerConfigType = keyof typeof BundlerConfigType;
+
 export interface IApi extends PluginAPI {
   // properties
   paths: typeof Service.prototype.paths;
@@ -124,7 +130,11 @@ export interface IApi extends PluginAPI {
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onPatchRoutesBefore: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;
-  onDevCompileDone: IEvent<{ isFirstCompile: boolean; stats: webpack.Stats, type: string }>;
+  onDevCompileDone: IEvent<{
+    isFirstCompile: boolean;
+    stats: webpack.Stats;
+    type: IBundlerConfigType;
+  }>;
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
@@ -133,18 +143,26 @@ export interface IApi extends PluginAPI {
   modifyBundler: IModify<any, null>;
   modifyBundleConfigOpts: IModify<
     any,
-    { env: env; type: string; bundler: { id: string; version: number } }
+    {
+      env: env;
+      type: IBundlerConfigType;
+      bundler: { id: string; version: number };
+    }
   >;
   modifyBundleConfig: IModify<
     webpack.Configuration,
-    { env: env; type: string; bundler: { id: string; version: number } }
+    {
+      env: env;
+      type: IBundlerConfigType;
+      bundler: { id: string; version: number };
+    }
   >;
   modifyBundleConfigs: IModify<
     any[],
     {
       env: env;
       bundler: { id: string };
-      getConfig: ({ type }: { type: string }) => object;
+      getConfig: ({ type }: { type: IBundlerConfigType }) => object;
     }
   >;
   modifyBabelOpts: IModify<
@@ -172,23 +190,25 @@ export interface IApi extends PluginAPI {
   modifyRoutes: IModify<IRoute[], {}>;
   modifyHTMLChunks: IModify<
     (string | { name: string; headScript?: boolean })[],
-    { route: IRoute, type?: string, chunks: webpack.compilation.Chunk[] }
+    {
+      route: IRoute;
+      type?: IBundlerConfigType;
+      chunks: webpack.compilation.Chunk[];
+    }
   >;
-  modifyDevServerContent: IModify<
-    (string | Stream),
-    { req: Request }
-  >;
-  modifyBuildContent: IModify<
-    (string),
-    { route: IRoute, file: string }
-  >;
+  modifyDevServerContent: IModify<string | Stream, { req: Request }>;
+  modifyBuildContent: IModify<string, { route: IRoute; file: string }>;
   modifyRouteMap: IModify<
-    ({ route: Pick<IRoute, 'path'>, file: string }[]),
+    { route: Pick<IRoute, 'path'>; file: string }[],
     { html: InstanceType<Html> }
   >;
   chainWebpack: IModify<
     WebpackChain,
-    { webpack: typeof webpack; createCSSRule: ICreateCSSRule, type: string; }
+    {
+      webpack: typeof webpack;
+      createCSSRule: ICreateCSSRule;
+      type: IBundlerConfigType;
+    }
   >;
 
   // ApplyPluginType.add
