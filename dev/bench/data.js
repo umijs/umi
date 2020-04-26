@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587895141896,
+  "lastUpdate": 1587896777162,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -190,6 +190,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.68%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "ba66261621fdb255fae1b0c2b62a643e22ad5454",
+          "message": "fix: remove unnecessary ssr webpack config",
+          "timestamp": "2020-04-26T18:23:39+08:00",
+          "tree_id": "ced44aa946675f4d660c9290883d6a33f1d3c36f",
+          "url": "https://github.com/umijs/umi/commit/ba66261621fdb255fae1b0c2b62a643e22ad5454"
+        },
+        "date": 1587896774423,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1934,
+            "range": "±3.39%",
+            "unit": "ops/sec",
+            "extra": "70 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 3070,
+            "range": "±3.80%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
