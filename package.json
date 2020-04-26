@@ -48,7 +48,6 @@
     "@umijs/utils": "3.2.0-beta.1",
     "escape-goat": "^3.0.0",
     "father-build": "^1.17.2",
-    "husky": "^4.2.5",
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.6",
     "new-github-release-url": "^1.0.0",
