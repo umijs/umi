@@ -39,7 +39,6 @@ export default (api: IApi) => {
   });
 
   api.onPatchRoutes(({ routes }) => {
-    if (!api.config.exportStatic) return;
     // copy / to /index.html
     let rootIndex = null;
     routes.forEach((route, index) => {
@@ -57,11 +56,8 @@ export default (api: IApi) => {
 
   // modify export html using routes
   api.modifyRouteMap(async (memo, { html }) => {
-    if (api.config.exportStatic) {
-      const routeMap = await html.getRouteMap();
-      return routeMap;
-    }
-    return memo;
+    const routeMap = await html.getRouteMap();
+    return routeMap;
   });
 
   api.modifyBuildContent(async (memo, { route }) => {
