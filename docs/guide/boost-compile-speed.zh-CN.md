@@ -86,7 +86,37 @@ ios: false
 
 ## 调整 splitChunks 策略，减少整体尺寸
 
-TODO，HELP\_WANTED。
+如果开了 dynamicImport，然后产物特别大，每个出口文件都包含了相同的依赖，比如 antd，可尝试通过 splitChunks 配置调整公共依赖的提取策略。
+
+比如：
+
+```js
+export default {
+  chunks: ['vendors', 'umi'],
+  chainWebpack: function (config, { webpack }) {
+    config.merge({
+      optimization: {
+        minimize: true,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 30000,
+          minChunks: 3,
+          automaticNameDelimiter: '.',
+          cacheGroups: {
+            vendor: {
+              name: 'vendors',
+              test({ resource }) {
+                return /[\\/]node_modules[\\/]/.test(resource);
+              },
+              priority: 10,
+            },
+          },
+        },
+      }
+    });
+  },
+}
+```
 
 ## 通过 NODE\_OPTIONS 设置内存上限
 
