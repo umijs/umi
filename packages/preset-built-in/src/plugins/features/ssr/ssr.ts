@@ -69,7 +69,7 @@ export default (api: IApi) => {
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
-        Basename: api.config.base || '/',
+        Basename: api.config.base,
         DEFAULT_HTML_PLACEHOLDER,
       }),
     });
@@ -118,9 +118,11 @@ export default (api: IApi) => {
       return defaultHtml;
     }
     // umi dev to enable server side render by default
-    const { absOutputPath } = api.paths;
     const { stream } = api.config?.ssr || {};
-    const serverPath = path.join(absOutputPath || '', 'umi.server.js');
+    const serverPath = path.join(
+      api.paths!.absOutputPath,
+      OUTPUT_SERVER_FILENAME,
+    );
     // if dev clear cache
     if (api.env === 'development') {
       delete require.cache[serverPath];
@@ -148,7 +150,7 @@ export default (api: IApi) => {
   api.chainWebpack(async (config, opts) => {
     const { paths } = api;
     const { type } = opts;
-    const serverEntryPath = path.join(paths.absTmpPath || '', 'core/server.ts');
+    const serverEntryPath = path.join(paths!.absTmpPath, 'core/server.ts');
     if (type === BundlerConfigType.ssr) {
       config.entryPoints.clear();
       config.entry(CHUNK_NAME).add(serverEntryPath);
@@ -225,11 +227,9 @@ export default (api: IApi) => {
    * [WARN] must exec before prerender plugin
    */
   api.onBuildComplete(({ err }) => {
-    const { absOutputPath } = api.paths;
-
     if (!err) {
       const { serverFile, htmlFile, serverFilePath } = getDistContent(
-        absOutputPath || '',
+        api.paths!.absOutputPath,
       );
 
       if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
