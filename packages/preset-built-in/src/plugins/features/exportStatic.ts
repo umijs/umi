@@ -1,12 +1,9 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, utils } from 'umi';
-import { matchPath } from '@umijs/runtime';
-
-const { signale } = utils;
 
 const isDynamicRoute = (path: string): boolean =>
-  !!path?.split('/')?.some?.(snippet => snippet.startsWith(':'));
+  !!path?.split('/')?.some?.((snippet) => snippet.startsWith(':'));
 
 export default (api: IApi) => {
   api.describe({
@@ -17,7 +14,10 @@ export default (api: IApi) => {
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
           // TODO
-          extraRoutes: joi.array().items(joi.string()).description('extra Routes for dynamic routes'),
+          extraRoutes: joi
+            .array()
+            .items(joi.string())
+            .description('extra Routes for dynamic routes'),
         });
       },
     },
@@ -67,18 +67,22 @@ export default (api: IApi) => {
     const { absOutputPath } = api.paths;
     const serverFilePath = join(absOutputPath || '', 'umi.server.js');
     const { ssr } = api.config;
-    if (ssr && existsSync(serverFilePath) && !isDynamicRoute(route.path || '')) {
+    if (
+      ssr &&
+      existsSync(serverFilePath) &&
+      !isDynamicRoute(route.path || '')
+    ) {
       try {
         // do server-side render
         const render = require(serverFilePath);
-        const { html }  = await render({
+        const { html } = await render({
           path: route.path,
           htmlTemplate: memo,
         });
-        signale.success(`${route.path} render success`);
+        api.logger.info(`${route.path} render success`);
         return html;
       } catch (e) {
-        signale.fatal(`${route.path} render failed`, e);
+        api.logger.error(`${route.path} render failed`, e);
         throw e;
       }
     }

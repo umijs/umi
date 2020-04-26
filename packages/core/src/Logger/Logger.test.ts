@@ -1,3 +1,5 @@
+import { chalk } from '@umijs/utils';
+
 import Logger from './Logger';
 import UmiError from './UmiError';
 
@@ -24,10 +26,10 @@ describe('Logger', () => {
     const logger = new Logger('log');
     logger.log('hello');
     expect(logMockFn).toBeCalled();
-    expect(logMockFn).toBeCalledWith('hello');
+    expect(logMockFn).toBeCalledWith(logger.LOG, 'hello');
 
     logger.log('hello', { hello: 'world' });
-    expect(logMockFn).toBeCalledWith('hello', { hello: 'world' });
+    expect(logMockFn).toBeCalledWith(logger.LOG, 'hello', { hello: 'world' });
     spy.mockRestore();
   });
 
@@ -39,10 +41,10 @@ describe('Logger', () => {
     const logger = new Logger('warn');
     logger.warn('hello');
     expect(warnMockFn).toBeCalled();
-    expect(warnMockFn).toBeCalledWith('hello');
+    expect(warnMockFn).toBeCalledWith(logger.WARN, 'hello');
 
     logger.warn('hello', { hello: 'world' });
-    expect(warnMockFn).toBeCalledWith('hello', { hello: 'world' });
+    expect(warnMockFn).toBeCalledWith(logger.WARN, 'hello', { hello: 'world' });
     spy.mockRestore();
   });
 
@@ -68,7 +70,7 @@ describe('Logger', () => {
       const normalError = new Error('normal error');
       logger.error(normalError);
       expect(errorMockFn).toBeCalled();
-      expect(errorMockFn).toBeCalledWith(normalError);
+      expect(errorMockFn).toBeCalledWith(logger.ERROR, normalError);
       spy.mockRestore();
     });
 
