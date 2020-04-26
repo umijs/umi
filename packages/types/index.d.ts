@@ -19,13 +19,8 @@ import {
 } from '@umijs/renderer-react';
 import webpack from 'webpack';
 import WebpackChain from 'webpack-chain';
-import {
-  Express,
-  NextFunction,
-  Request,
-  Response,
-  RequestHandler,
-} from 'express';
+import { Express, NextFunction, RequestHandler } from 'express';
+import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
 
 export enum BundlerConfigType {
