@@ -162,8 +162,6 @@ export default (api: IApi) => {
         .filename(OUTPUT_SERVER_FILENAME)
         .libraryExport('default')
         .chunkFilename('[name].server.js')
-        .publicPath(api.config!.publicPath)
-        .pathinfo(false)
         .libraryTarget('commonjs2');
 
       config.plugin('define').tap(([args]) => [
@@ -174,41 +172,7 @@ export default (api: IApi) => {
         },
       ]);
 
-      if (config.plugins.has('extract-css')) {
-        config.plugins.delete('extract-css');
-      }
-      ['css', 'less'].forEach((lang) => {
-        const langRule = config.module.rule(lang);
-        [
-          langRule.oneOf('css-modules').resourceQuery(/modules/),
-          langRule.oneOf('css'),
-        ].forEach((rule) => {
-          if (rule.uses.has('extract-css-loader')) {
-            rule.uses.delete('extract-css-loader');
-            rule.use('css-loader').tap((options) => ({
-              ...options,
-              // https://webpack.js.org/loaders/css-loader/#onlylocals
-              onlyLocals: true,
-            }));
-          }
-        });
-      });
-
       config.externals([]);
-
-      // avoid client and server analyze conflicts
-      if (process.env.ANALYZE) {
-        if (config.plugins.has('bundle-analyzer')) {
-          config.plugins.delete('bundle-analyzer');
-        }
-      }
-      return config;
-    }
-    // avoid client and server analyze conflicts
-    if (process.env.ANALYZE_SSR) {
-      if (config.plugins.has('bundle-analyzer')) {
-        config.plugins.delete('bundle-analyzer');
-      }
     }
     return config;
   });

@@ -71,9 +71,12 @@ export interface ITargets {
   [key: string]: number | boolean;
 }
 
+export type IBundlerConfigType = keyof typeof BundlerConfigType;
+
 interface ICreateCSSRule {
   (opts: {
     lang: string;
+    type: IBundlerConfigType;
     test: RegExp;
     loader?: string;
     options?: object;
@@ -83,8 +86,6 @@ interface ICreateCSSRule {
 type IPresetOrPlugin = string | [string, any];
 type IBabelPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
-
-export type IBundlerConfigType = keyof typeof BundlerConfigType;
 
 export interface IApi extends PluginAPI {
   // properties

@@ -284,6 +284,7 @@ export default async function getConfig(
 
   // css
   css({
+    type,
     config,
     webpackConfig,
     isDev,
@@ -436,6 +437,7 @@ export default async function getConfig(
       webpackConfig,
       config,
       isDev,
+      type,
       browserslist,
       miniCSSExtractPluginLoaderPath,
       ...opts,
