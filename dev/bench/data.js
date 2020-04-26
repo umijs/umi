@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587896777162,
+  "lastUpdate": 1587896986172,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -226,6 +226,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 3070,
             "range": "±3.80%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "b4aa645aa0c224a308283299540537b72f0b033c",
+          "message": "feat: add writeToDisk opts for devServer",
+          "timestamp": "2020-04-26T18:27:10+08:00",
+          "tree_id": "b458eb4ceef306ca552b56076770bee9bbc2ada8",
+          "url": "https://github.com/umijs/umi/commit/b4aa645aa0c224a308283299540537b72f0b033c"
+        },
+        "date": 1587896982968,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1665,
+            "range": "±2.40%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2781,
+            "range": "±3.47%",
             "unit": "ops/sec",
             "extra": "45 samples"
           }
