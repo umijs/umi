@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587894852455,
+  "lastUpdate": 1587895141896,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -152,6 +152,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.11%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "a173a695c05fc5e037c76e7a702eb2fab6b39b98",
+          "message": "fix: remove ssr.test.ts",
+          "timestamp": "2020-04-26T17:56:21+08:00",
+          "tree_id": "31a74d7f181522be9d1f8bc6d7ba5e7709642229",
+          "url": "https://github.com/umijs/umi/commit/a173a695c05fc5e037c76e7a702eb2fab6b39b98"
+        },
+        "date": 1587895138922,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1777,
+            "range": "±2.69%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 3028,
+            "range": "±2.68%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
