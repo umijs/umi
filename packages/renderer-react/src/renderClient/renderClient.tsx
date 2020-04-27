@@ -62,13 +62,17 @@ function RouterComponent(props: IRouterComponentProps) {
  * exec preload Promise function before ReactDOM.hydrate
  * @param Routes
  */
-async function preloadComponent(readyRoutes: IRoute[]): Promise<IRoute[]> {
+export async function preloadComponent(
+  readyRoutes: IRoute[],
+  pathname = window.location.pathname,
+): Promise<IRoute[]> {
   for (const route of readyRoutes) {
-    if (matchPath(location.pathname, route) && route.component?.preload) {
-      route.component = (await route.component.preload()).default;
+    if (matchPath(pathname, route) && route.component?.preload) {
+      const preloadComponent = await route.component.preload();
+      route.component = preloadComponent.default || preloadComponent;
     }
     if (route.routes) {
-      route.routes = await preloadComponent(route.routes);
+      route.routes = await preloadComponent(route.routes, pathname);
     }
   }
   return readyRoutes;
