@@ -4,7 +4,7 @@
 
 > 首先我们先了解下，以及是否符合我们的业务场景，再决定是否需要使用。
 
-服务端渲染（Server-Side Render），是指将单页应用（SPA）在**服务器端渲染**为 HTML 片段，发送到浏览器，然后为其绑定状态与事件，成为完全可交互页面的过程。
+服务端渲染（Server-Side Render），是指将组件或页面的渲染逻辑在**服务器端**执行后生成 HTML 片段，发送到浏览器，然后为其绑定状态与事件，成为完全可交互页面的过程。
 
 这么讲可能比较学术，那通过两张图来更容易地说清楚。
 
@@ -13,7 +13,7 @@
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png" width="600" />
 
 
-第二张，**白屏时间**上 SSR 较少，因为当 html 文档返回时，已经有对应的内容。（见 Network）
+第二张，**白屏时间**上 SSR 较少，因为当 HTML 文档返回时，已经有对应的内容。（见 Network）
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80308316-e74a3880-8800-11ea-9a20-2d9d153fe9d1.png" />
 
@@ -30,7 +30,7 @@
 
 预渲染与服务端渲染唯一的不同点在于**渲染时机**，服务端渲染的时机是在用户访问时执行渲染（即**实时渲染**，数据一般是最新的），预渲染的时机是在项目构建时，当用户访问时，数据不是一定是最新的（如果数据没有实时性，则可以直接考虑预渲染）。
 
-预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 html 文件。无需使用 web 服务器实时动态编译 HTML，适用于**静态站点生成**。
+预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 HTML 文件。无需使用 web 服务器实时动态编译 HTML，适用于**静态站点生成**。
 
 ## Umi 服务端渲染特性
 
@@ -40,9 +40,8 @@ Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的
 
 - **开箱即用**：内置 SSR，一键开启，`umi dev` 即 SSR 预览，开发调试方便。
 - **服务端框架无关**：Umi 不耦合服务端框架（例如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)），无论是哪种框架或者 Serverless 模式，都可以非常简单进行集成。
-- **前端框架无关**：不局限于 React 应用下的 SSR，Umi 3 中的 SSR 与渲染框架解耦，如果有可能，可以扩展也 Vue SSR 等。
 - **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps）的同时，增加了应用级数据获取（getInitialData），来解决之前全局数据的获取问题。
-- **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 html。
+- **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 HTML。
 - **支持渲染降级**：优先使用 SSR，如果服务端渲染失败，自动降级为客户端渲染（CSR），不影响正常业务流程。
 - **支持流式渲染**：`ssr: { stream: true }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
 - **兼容客户端动态加载**：在 Umi 2 中同时使用 SSR 和 dynamicImport（动态加载）会有一些问题，在 Umi 3 中可同时开启使用。
@@ -270,9 +269,61 @@ export default {
 }
 ```
 
+## 使用预渲染
+
+### 开启预渲染
+
+通过 `exportStatic` 结合 `ssr` 开启预渲染
+
+```js
+export default {
+  ssr: {},
+  exportStatic: {},
+}
+```
+
+### 预渲染动态路由
+
+预渲染默认情况下不会渲染动态路由里的所有页面，如果需要渲染动态路由中的页面，通过配置 `extraPaths`，例如：
+
+```diff
+export default {
+  ssr: {},
+  exportStatic: {
++   extraPaths: ['/news/1', '/news/2']
+  },
+  routes: [
+    {
+      path: '/',
+      component: '@/layout',
+      routes: [
+        { path: '/', component: '@/pages/index' },
+        { path: '/news', component: '@/pages/news' },
+        { path: '/news/:id', component: '@/pages/news/detail' }
+      ]
+    }
+  ]
+}
+```
+
+则会生成以下产物：
+
+```diff
+ - dist
+   - umi.js
+   - umi.css
+   - index.html
+   - news
+    - :id
+      - index.html
++   - 1
++     - index.html
+    - index.html
+```
+
 ## 在 dumi 中使用
 
-Umi 官网文档即使用的预渲染，可使用源代码查看，开启方法：
+[dumi](https://d.umijs.org/)：基于 Umi、为组件开发场景而生的文档工具，Umi 官网文档即使用 dumi 编写并结合预渲染，让文档内容具备 SEO，可使用源代码查看，开启方法：
 
 ```jsx
 export default {

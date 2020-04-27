@@ -290,6 +290,7 @@ interface BaseIConfig extends IConfigCore {
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
+    extraPaths?: string[];
   };
   externals?: any;
   extraBabelPlugins?: IBabelPresetOrPlugin[];

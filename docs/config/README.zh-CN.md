@@ -443,6 +443,7 @@ export default () => {
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
+* extraPaths，生成额外的路径页面，用法和场景见 [预渲染动态路由](/zh-CN/docs/ssr#预渲染动态路由)
 
 比如以下路由，
 

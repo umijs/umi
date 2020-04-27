@@ -1,6 +1,8 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
-import { IApi, utils } from 'umi';
+import { IApi, IRoute } from '@umijs/types';
+import { deepmerge } from '@umijs/utils';
+import pathToRegexp from 'path-to-regexp';
 
 const isDynamicRoute = (path: string): boolean =>
   !!path?.split('/')?.some?.((snippet) => snippet.startsWith(':'));
@@ -13,6 +15,11 @@ export default (api: IApi) => {
         return joi.object({
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
+          // 不能通过直接 patch 路由的方式，拿不到 match.[id]，是一个 render paths 的概念
+          extraPaths: joi
+            .array()
+            .items(joi.string())
+            .description('extra render paths only enable in ssr'),
         });
       },
     },
@@ -52,6 +59,25 @@ export default (api: IApi) => {
   // modify export html using routes
   api.modifyRouteMap(async (memo, { html }) => {
     const routeMap = await html.getRouteMap();
+    const { extraPaths } = api.config.exportStatic || {};
+    // for dynamic routes
+    // TODO: test case
+    if (extraPaths?.length > 0) {
+      extraPaths?.forEach((path) => {
+        const match = routeMap.find(({ route }: { route: IRoute }) => {
+          return route.path && pathToRegexp(route.path).exec(path);
+        });
+        if (match) {
+          const newPath = deepmerge(match, {
+            route: {
+              path,
+            },
+            file: html.getHtmlPath(path),
+          });
+          routeMap.push(newPath);
+        }
+      });
+    }
     return routeMap;
   });
 
@@ -59,11 +85,7 @@ export default (api: IApi) => {
     const { absOutputPath } = api.paths;
     const serverFilePath = join(absOutputPath || '', 'umi.server.js');
     const { ssr } = api.config;
-    if (
-      ssr &&
-      existsSync(serverFilePath) &&
-      !isDynamicRoute(route.path || '')
-    ) {
+    if (ssr && existsSync(serverFilePath) && !isDynamicRoute(route!.path)) {
       try {
         // do server-side render
         const render = require(serverFilePath);
