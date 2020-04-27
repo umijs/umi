@@ -34,6 +34,12 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
   match: object;
 }
 
+const { getInitialData, modifyGetInitialPropsParams, modifyHTML } = plugin.applyPlugins({
+  key: 'ssr',
+  type: ApplyPluginsType.modify,
+  initialValue: {},
+});
+
 /**
  * get current page component getPageInitialProps data
  * @param params
@@ -43,11 +49,6 @@ const getInitial = async (params) => {
   // pages getInitialProps
   let { component, ...restRouteParams } = findRoute(routes, path, '{{{Basename}}}') || {};
   let pageInitialProps = {};
-  const { getInitialData, modifyGetInitialPropsParams } = plugin.applyPlugins({
-    key: 'ssr',
-    type: ApplyPluginsType.modify,
-    initialValue: {},
-  });
   const defaultInitialProps = {
     isServer: true,
     ...restRouteParams,
@@ -144,7 +145,10 @@ const render: IRender = async (params) => {
     });
     rootContainer = serverResult.html;
     if (html) {
-      html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
+      const processedHTML = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
+      html = modifyHTML
+        ? modifyHTML(processedHTML, { context })
+        : processedHTML;
     }
   } catch (e) {
     // downgrade into csr
