@@ -122,6 +122,22 @@ export default {
 
 如果出现 OOM，也可以通过增加内存上限尝试解决。比如 `NODE_OPTIONS=--max_old_space_size=4096` 设置为 4G。
 
+## 调整 SourceMap 生成方式
+
+如果 dev 时慢或者修改代码后增量编译慢，可尝试禁用 SourceMap 生成或者调整为更低成本的生成方式，
+
+```js
+// 禁用 sourcemap
+export default {
+  devtool: false,
+};
+
+// 使用最低成本的 sourcemap 生成方式，默认是 cheap-module-source-map
+export default {
+  devtool: 'eval',
+};
+```
+
 ## 不压缩
 
 > 不推荐，紧急情况下使用。
