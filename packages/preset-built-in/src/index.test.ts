@@ -148,7 +148,7 @@ test('ssr', async () => {
   expect($('#root').html()).toEqual(expectRootContainer);
 });
 
-test('ssr using stream', async () => {
+test('ssr using stream', (done) => {
   const cwd = join(fixtures, 'ssr-stream');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
@@ -159,21 +159,35 @@ test('ssr using stream', async () => {
     cwd,
     presets: [require.resolve('./index.ts')],
   });
-  await service.run({
-    name: 'g',
-    args: {
-      _: ['g', 'tmp'],
-    },
-  });
-  expect(existsSync(tmpServerFile)).toBeTruthy();
-
-  const render = require(tmpServerFile).default;
-  const { rootContainer, html } = await render({
-    path: '/',
-    htmlTemplate,
-    stream: true,
-    mountElementId: 'root',
-  });
-  expect(rootContainer instanceof Stream).toBeTruthy();
-  expect(html instanceof Stream).toBeTruthy();
+  service
+    .run({
+      name: 'g',
+      args: {
+        _: ['g', 'tmp'],
+      },
+    })
+    .then(() => {
+      expect(existsSync(tmpServerFile)).toBeTruthy();
+      const render = require(tmpServerFile).default;
+      render({
+        path: '/',
+        htmlTemplate,
+        stream: true,
+        mountElementId: 'root',
+      }).then(({ html, rootContainer }) => {
+        expect(rootContainer instanceof Stream).toBeTruthy();
+        expect(html instanceof Stream).toBeTruthy();
+        const expectBytes = new Buffer(
+          '<div><ul><li>hello</li><li>world</li></ul></div>',
+        );
+        let bytes = new Buffer('');
+        rootContainer.on('data', (chunk) => {
+          bytes = Buffer.concat([bytes, chunk]);
+        });
+        rootContainer.on('end', () => {
+          expect(bytes).toEqual(expectBytes);
+          done();
+        });
+      });
+    });
 });

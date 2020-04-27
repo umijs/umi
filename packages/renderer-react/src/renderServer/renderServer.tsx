@@ -1,18 +1,19 @@
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
+import { Stream } from 'stream';
 import { Plugin, StaticRouter, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
 interface IOpts {
   path: string;
-  extraProps: object;
-  basename: string;
+  extraProps?: object;
+  basename?: string;
   routes: IRoute[];
-  pageInitialProps: object;
-  appInitialData: object;
-  initialData: any;
-  context: object;
+  pageInitialProps?: object;
+  appInitialData?: object;
+  initialData?: any;
+  context?: object;
   stream?: boolean;
   staticMarkup?: boolean;
   /** unused */
@@ -30,7 +31,13 @@ export function createServerElement(opts: IOpts): React.ReactElement {
     key: 'rootContainer',
     initialValue: (
       // basename maybe react-router bug, will lead to double slash
-      <StaticRouter basename={basename === '/' ? '' : basename} location={path} context={context}>{renderRoutes(renderRoutesProps)}</StaticRouter>
+      <StaticRouter
+        basename={basename === '/' ? '' : basename}
+        location={path}
+        context={context}
+      >
+        {renderRoutes(renderRoutesProps)}
+      </StaticRouter>
     ),
     args: {
       // special rootContainer
@@ -43,15 +50,21 @@ export function createServerElement(opts: IOpts): React.ReactElement {
   });
 }
 
-export default async function renderServer(opts: IOpts) {
+export default async function renderServer(
+  opts: IOpts,
+): Promise<{ html: string | Stream }> {
   const element = createServerElement(opts);
   if (opts.stream) {
     return {
-      html: ReactDOMServer[opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'](element)
+      html: ReactDOMServer[
+        opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'
+      ](element),
     };
   }
   // by default
   return {
-    html: ReactDOMServer[opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'](element),
+    html: ReactDOMServer[
+      opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'
+    ](element),
   };
 }
