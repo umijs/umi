@@ -57,7 +57,10 @@ const bootstrap = async () => {
 
   suite
     .on('cycle', function (event) {
-      console.log(String(event.target));
+      console.log(
+        String(event.target),
+        `${Math.round(event.target.stats.mean * 1000 * 1000)} ms`,
+      );
     })
     .on('complete', function () {})
     // run async
