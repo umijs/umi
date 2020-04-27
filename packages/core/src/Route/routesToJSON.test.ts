@@ -32,6 +32,33 @@ test('normal with dynamicImport', () => {
 [
   {
     "path": "/",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')})
+  },
+  {
+    "path": "/users/:id",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__users__id' */'@/pages/users/[id].ts')})
+  }
+]
+  `.trim(),
+  );
+});
+
+test('ssr', () => {
+  const ret = routesToJSON({
+    routes: [
+      { path: '/', component: '@/pages/index.ts' },
+      { path: '/users/:id', component: '@/pages/users/[id].ts' },
+    ],
+    config: {
+      dynamicImport: true,
+      ssr: {},
+    },
+  });
+  expect(ret).toEqual(
+    `
+[
+  {
+    "path": "/",
     "component": !process.env.__IS_SERVER ? dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')}) : require('@/pages/index.ts').default
   },
   {
