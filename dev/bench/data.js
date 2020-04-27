@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587957595074,
+  "lastUpdate": 1587962984907,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -570,6 +570,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.41%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "b413766e45b85dc46d01c2c9279ce0dd7604a313",
+          "message": "fix: webpack throw error",
+          "timestamp": "2020-04-27T12:46:41+08:00",
+          "tree_id": "e24128eb80ba902790220167191d3d75fafe651a",
+          "url": "https://github.com/umijs/umi/commit/b413766e45b85dc46d01c2c9279ce0dd7604a313"
+        },
+        "date": 1587962981718,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1575,
+            "range": "±3.26%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2418,
+            "range": "±3.37%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
