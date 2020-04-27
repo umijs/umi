@@ -7,7 +7,7 @@ const { glob } = require('@umijs/utils');
 const UMI_SCRIPT = path.join(__dirname, '../packages/umi/bin/umi.js');
 
 function build({ cwd }) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const child = fork(UMI_SCRIPT, ['build'], {
       env: {
         ...process.env,
@@ -17,7 +17,7 @@ function build({ cwd }) {
       cwd,
       stdio: 'ignore',
     });
-    child.on('exit', (code) => {
+    child.on('exit', code => {
       if (code === 0) {
         resolve();
         return;
@@ -36,7 +36,7 @@ const buildProjects = async () => {
     absolute: true,
     cwd: __dirname,
   });
-  await Promise.all(projects.map((project) => build({ cwd: project })));
+  await Promise.all(projects.map(project => build({ cwd: project })));
 };
 
 // benchmarks entry
@@ -50,19 +50,26 @@ const bootstrap = async () => {
     ignore: ['index.js', '**/*/fixtures/**/*'],
     cwd: __dirname,
   });
-  benchmarks.forEach((benchmark) => {
+  benchmarks.forEach(benchmark => {
     const benchmarkFunc = require(benchmark);
     benchmarkFunc(suite);
   });
 
   suite
-    .on('cycle', function (event) {
-      console.log(
-        String(event.target),
-        `${Math.round(event.target.stats.mean * 1000 * 1000)} ms`,
-      );
+    .on('cycle', function(event) {
+      console.log(String(event.target));
     })
-    .on('complete', function () {})
+    .on('complete', function() {
+      console.log('');
+      for (let index = 0; index < this.length; index++) {
+        const benchmark = this[index];
+        console.log(benchmark.name);
+        console.log(
+          `Mean:    ${Math.round(benchmark.stats.mean * 1000 * 1000)} ms`,
+        );
+        console.log('');
+      }
+    })
     // run async
     .run({ async: true });
 };
