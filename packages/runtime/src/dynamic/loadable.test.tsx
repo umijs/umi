@@ -34,40 +34,6 @@ afterEach(async () => {
   } catch (err) {}
 });
 
-test('delay and timeout', async () => {
-  let LoadableMyComponent = Loadable({
-    loader: createLoader(300, () => MyComponent),
-    loading: MyLoadingComponent,
-    delay: 100,
-    timeout: 200,
-  });
-
-  let { container } = render(<LoadableMyComponent prop="foo" />);
-
-  expect(container.innerHTML).toMatchSnapshot(); // initial
-  await waitFor(100);
-  expect(container.innerHTML).toMatchSnapshot(); // loading
-  await waitFor(100);
-  expect(container.innerHTML).toMatchSnapshot(); // timed out
-  await waitFor(100);
-  expect(container.innerHTML).toMatchSnapshot(); // loaded
-});
-
-test('loading error', async () => {
-  let LoadableMyComponent = Loadable({
-    loader: createLoader(400, null, new Error('test error')),
-    loading: MyLoadingComponent,
-  });
-
-  let component = render(<LoadableMyComponent prop="baz" />);
-
-  expect(component.container.innerHTML).toMatchSnapshot(); // initial
-  await waitFor(200);
-  expect(component.container.innerHTML).toMatchSnapshot(); // loading
-  await waitFor(200);
-  expect(component.container.innerHTML).toMatchSnapshot(); // errored
-});
-
 test('server side rendering', async () => {
   let LoadableMyComponent = Loadable({
     loader: createLoader(400, () => require('../__fixtures__/component')),
