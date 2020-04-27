@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587955945074,
+  "lastUpdate": 1587956135217,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -418,6 +418,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.82%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "d3913d1d7ae6459eecdddd0c9fe4b058b0e08b23",
+          "message": "fix: bundler error",
+          "timestamp": "2020-04-27T10:52:29+08:00",
+          "tree_id": "bbfac4957dc076d90ef73a5b2064d81077a854c4",
+          "url": "https://github.com/umijs/umi/commit/d3913d1d7ae6459eecdddd0c9fe4b058b0e08b23"
+        },
+        "date": 1587956132273,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1823,
+            "range": "±3.49%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2738,
+            "range": "±2.89%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
