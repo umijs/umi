@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587956135217,
+  "lastUpdate": 1587956465718,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -456,6 +456,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.89%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "aa2755b384a3c515f97b2c1ea2b92d9a177a66fc",
+          "message": "fix: routesToJSON using condition output",
+          "timestamp": "2020-04-27T10:58:28+08:00",
+          "tree_id": "2f9e7bb60106b8c80fe105e3688f10b12ca6dd8c",
+          "url": "https://github.com/umijs/umi/commit/aa2755b384a3c515f97b2c1ea2b92d9a177a66fc"
+        },
+        "date": 1587956462663,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1922,
+            "range": "±2.36%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 3184,
+            "range": "±3.66%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
