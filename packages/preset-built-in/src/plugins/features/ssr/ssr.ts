@@ -116,10 +116,6 @@ export default (api: IApi) => {
 
   // modify devServer content
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
-    // skip hot update requests
-    if (req.url.includes('hot-update.json')) {
-      return defaultHtml;
-    }
     // umi dev to enable server side render by default
     const { stream } = api.config?.ssr || {};
     const serverPath = path.join(
