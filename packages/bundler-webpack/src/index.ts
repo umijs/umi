@@ -41,9 +41,7 @@ class Bundler {
       const compiler = bundleImplementor(bundleConfigs);
       compiler.run((err, stats) => {
         if (err || stats.hasErrors()) {
-          try {
-            console.log(stats.toString('errors-only'));
-          } catch (e) {}
+          console.log(stats.toString('errors-only'));
           // throw error info
           return reject(err);
         }
