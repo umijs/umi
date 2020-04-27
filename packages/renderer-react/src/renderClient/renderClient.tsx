@@ -11,6 +11,7 @@ interface IRouterComponentProps {
   history: any;
   ssrProps?: object;
   defaultTitle?: string;
+  dynamicImport?: boolean;
 }
 
 interface IOpts extends IRouterComponentProps {
@@ -99,17 +100,16 @@ export default function renderClient(opts: IOpts) {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     if (rootElement?.hasChildNodes()) {
-      preloadComponent(opts.routes).then(function () {
-        ReactDOM.hydrate(
-          rootContainer,
-          rootElement,
-        );
-      });
+      if (opts.dynamicImport) {
+        // dynamicImport should preload current route component
+        preloadComponent(opts.routes).then(function() {
+          ReactDOM.hydrate(rootContainer, rootElement);
+        });
+      } else {
+        ReactDOM.hydrate(rootContainer, rootElement);
+      }
     } else {
-      ReactDOM.render(
-        rootContainer,
-        rootElement,
-      );
+      ReactDOM.render(rootContainer, rootElement);
     }
   } else {
     return rootContainer;
