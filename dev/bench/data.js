@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587977962052,
+  "lastUpdate": 1587980029699,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -836,6 +836,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.24%",
             "unit": "ops/sec",
             "extra": "47 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "4771ee24696bd001fb57524090a081350dff9eb4",
+          "message": "chore: preloadComponent test case",
+          "timestamp": "2020-04-27T17:31:00+08:00",
+          "tree_id": "4989313eb517e3b309b227ac95a51beb7ea80cfb",
+          "url": "https://github.com/umijs/umi/commit/4771ee24696bd001fb57524090a081350dff9eb4"
+        },
+        "date": 1587980026465,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1553,
+            "range": "±1.59%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2607,
+            "range": "±2.66%",
+            "unit": "ops/sec",
+            "extra": "49 samples"
           }
         ]
       }
