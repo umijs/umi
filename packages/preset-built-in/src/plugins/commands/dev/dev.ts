@@ -152,22 +152,18 @@ export default (api: IApi) => {
         bundleImplementor,
       });
 
-      const beforeMiddlewares = (
-        await api.applyPlugins({
-          key: 'addBeforeMiddewares',
-          type: api.ApplyPluginsType.add,
-          initialValue: [],
-          args: {},
-        })
-      ).filter(Boolean);
-      const middlewares = (
-        await api.applyPlugins({
-          key: 'addMiddewares',
-          type: api.ApplyPluginsType.add,
-          initialValue: [],
-          args: {},
-        })
-      ).filter(Boolean);
+      const beforeMiddlewares = await api.applyPlugins({
+        key: 'addBeforeMiddewares',
+        type: api.ApplyPluginsType.add,
+        initialValue: [],
+        args: {},
+      });
+      const middlewares = await api.applyPlugins({
+        key: 'addMiddewares',
+        type: api.ApplyPluginsType.add,
+        initialValue: [],
+        args: {},
+      });
 
       const server = new Server({
         ...opts,
