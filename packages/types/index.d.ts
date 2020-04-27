@@ -311,11 +311,7 @@ interface BaseIConfig extends IConfigCore {
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
   mpa?: object;
-  mock?:
-    | {
-        exclude?: string[];
-      }
-    | false;
+  mock?: { exclude?: string[]; };
   mountElementId?: string;
   nodeModulesTransform?: {
     type: 'all' | 'none';
@@ -337,7 +333,7 @@ interface BaseIConfig extends IConfigCore {
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
-  title?: string | false;
+  title?: string;
   [key: string]: any;
 }
 
