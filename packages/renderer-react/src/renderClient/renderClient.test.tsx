@@ -1,8 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
 import { delay } from '@umijs/utils';
 import renderClient, { preloadComponent } from './renderClient';
+
+afterEach(cleanup);
 
 test('normal', async () => {
   const history = createMemoryHistory({
