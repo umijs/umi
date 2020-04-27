@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587912051687,
+  "lastUpdate": 1587955945074,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -380,6 +380,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.58%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "db2cabbbb8cb54c65b5043cd54585d51359d1889",
+          "message": "feat: dynamic routes prerender",
+          "timestamp": "2020-04-27T10:49:24+08:00",
+          "tree_id": "a0a6ca7cae75ad4a14d30fe51f70b62fc54b0cb4",
+          "url": "https://github.com/umijs/umi/commit/db2cabbbb8cb54c65b5043cd54585d51359d1889"
+        },
+        "date": 1587955941948,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1530,
+            "range": "±1.73%",
+            "unit": "ops/sec",
+            "extra": "80 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2538,
+            "range": "±2.82%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
