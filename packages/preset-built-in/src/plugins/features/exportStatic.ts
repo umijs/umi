@@ -4,8 +4,7 @@ import { IApi, IRoute } from '@umijs/types';
 import { deepmerge } from '@umijs/utils';
 import pathToRegexp from 'path-to-regexp';
 
-const isDynamicRoute = (path: string): boolean =>
-  !!path?.split('/')?.some?.((snippet) => snippet.startsWith(':'));
+import { isDynamicRoute } from '../utils';
 
 export default (api: IApi) => {
   api.describe({
