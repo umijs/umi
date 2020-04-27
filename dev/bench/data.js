@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1587962984907,
+  "lastUpdate": 1587963271305,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -608,6 +608,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.37%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "29c2d6ad3b4413c7c891bfbe70a2f5648fe6f01c",
+          "message": "fix: isDynamicRoute use utils",
+          "timestamp": "2020-04-27T12:51:39+08:00",
+          "tree_id": "c2177cec86edc2184dcec9a325e8c1513573b9bf",
+          "url": "https://github.com/umijs/umi/commit/29c2d6ad3b4413c7c891bfbe70a2f5648fe6f01c"
+        },
+        "date": 1587963268314,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1524,
+            "range": "±1.60%",
+            "unit": "ops/sec",
+            "extra": "81 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2476,
+            "range": "±3.17%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
