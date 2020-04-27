@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import Loadable from './loadable';
 
 function waitFor(delay) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(resolve, delay);
   });
 }
@@ -32,24 +32,6 @@ afterEach(async () => {
   try {
     await Loadable.preloadAll();
   } catch (err) {}
-});
-
-test('loading success', async () => {
-  let LoadableMyComponent = Loadable({
-    loader: createLoader(400, () => MyComponent),
-    loading: MyLoadingComponent,
-  });
-
-  let { container } = render(<LoadableMyComponent prop="foo" />);
-
-  await waitFor(200);
-  expect(container.innerHTML).toMatchSnapshot(); // loading
-  await waitFor(200);
-  expect(container.innerHTML).toMatchSnapshot(); // loaded
-
-  let component2 = render(<LoadableMyComponent prop="bar" />);
-
-  expect(component2.container.innerHTML).toMatchSnapshot(); // reload
 });
 
 test('delay and timeout', async () => {

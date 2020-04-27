@@ -4,7 +4,7 @@ exports[`delay and timeout 1`] = `"<div>MyLoadingComponent {\\"isLoading\\":true
 
 exports[`delay and timeout 2`] = `"<div>MyLoadingComponent {\\"isLoading\\":true,\\"pastDelay\\":true,\\"timedOut\\":false,\\"error\\":null}</div>"`;
 
-exports[`delay and timeout 3`] = `"<div>MyLoadingComponent {\\"isLoading\\":true,\\"pastDelay\\":true,\\"timedOut\\":true,\\"error\\":null}</div>"`;
+exports[`delay and timeout 3`] = `"<div>MyComponent {\\"prop\\":\\"foo\\"}</div>"`;
 
 exports[`delay and timeout 4`] = `"<div>MyComponent {\\"prop\\":\\"foo\\"}</div>"`;
 
@@ -25,12 +25,6 @@ exports[`loading error 1`] = `"<div>MyLoadingComponent {\\"isLoading\\":true,\\"
 exports[`loading error 2`] = `"<div>MyLoadingComponent {\\"isLoading\\":true,\\"pastDelay\\":true,\\"timedOut\\":false,\\"error\\":null}</div>"`;
 
 exports[`loading error 3`] = `"<div>MyLoadingComponent {\\"isLoading\\":false,\\"pastDelay\\":true,\\"timedOut\\":false,\\"error\\":{}}</div>"`;
-
-exports[`loading success 1`] = `"<div>MyLoadingComponent {\\"isLoading\\":true,\\"pastDelay\\":true,\\"timedOut\\":false,\\"error\\":null}</div>"`;
-
-exports[`loading success 2`] = `"<div>MyComponent {\\"prop\\":\\"foo\\"}</div>"`;
-
-exports[`loading success 3`] = `"<div>MyComponent {\\"prop\\":\\"bar\\"}</div>"`;
 
 exports[`preload 1`] = `"<div>MyLoadingComponent {\\"isLoading\\":true,\\"pastDelay\\":true,\\"timedOut\\":false,\\"error\\":null}</div>"`;
 
