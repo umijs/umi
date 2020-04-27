@@ -324,6 +324,38 @@ export default {
     - index.html
 ```
 
+## 页面标题渲染
+
+为了更灵活地对页面标题展示，可以使用官方的 [@umijs/plugin-helmet](@umijs/plugin-helmet) 插件，该插件同时也支持服务端渲染标题，使用方式：
+
+安装：
+
+```bash
+$ yarn add @umijs/plugin-helmet
+```
+
+在页面中，即直接可以渲染标题：
+
+```jsx
+// pages/bar.tsx
+import React from 'react';
+import { Helmet } from 'umi';
+
+export default props => {
+  return (
+    <div>
+      {/* 可自定义需不需要编码 */}
+      <Helmet encodeSpecialCharacters={false}>
+        <html lang="en" data-direction="666" />
+        <title>Hello Umi Bar Title</title>
+      </Helmet>
+    </div>
+  );
+};
+```
+
+![image](https://user-images.githubusercontent.com/13595509/80379292-770ae800-88d0-11ea-8f6e-4585cc1970ac.png)
+
 ## 在 dumi 中使用
 
 [dumi](https://d.umijs.org/)：基于 Umi、为组件开发场景而生的文档工具，Umi 官网文档即使用 dumi 编写并结合预渲染，让文档内容具备 SEO，可使用源代码查看，开启方法：
