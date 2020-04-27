@@ -84,7 +84,7 @@ test('ssr staticMarkup', async () => {
   expect(serverResultBar.html).toEqual('<div><h1>bar</h1></div>');
 });
 
-test('ssr stream', (done) => {
+test('ssr stream', done => {
   const routeChanges: string[] = [];
   const plugin = new Plugin({
     validKeys: ['onRouteChange', 'rootContainer'],
@@ -104,7 +104,7 @@ test('ssr stream', (done) => {
   renderServer({
     path: '/foo',
     plugin,
-    stream: true,
+    mode: 'stream',
     routes: [
       { path: '/foo', component: () => <h1>foo</h1> },
       { path: '/bar', component: () => <h1>bar</h1> },
@@ -113,7 +113,7 @@ test('ssr stream', (done) => {
     const expectBytes = new Buffer('<div data-reactroot=""><h1>foo</h1></div>');
     let bytes = new Buffer('');
     expect(html instanceof Stream).toBeTruthy();
-    html.on('data', (chunk) => {
+    html.on('data', chunk => {
       bytes = Buffer.concat([bytes, chunk]);
     });
     html.on('end', () => {

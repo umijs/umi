@@ -75,7 +75,7 @@ const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', stream = {{{Stream}}} }) => {
+const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = {{{Mode}}} }) => {
   const htmlWithInitialData = html.replace(
     '</head>',
     `<script>
@@ -86,7 +86,7 @@ const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mou
     </head>`
   )
 
-  if (stream) {
+  if (mode === 'stream') {
     const containerString = `<div id="${mountElementId}">`;
     const [beforeRootContainer, afterRootContainer] = htmlWithInitialData.split(containerString);
 
@@ -115,7 +115,7 @@ const render: IRender = async (params) => {
     htmlTemplate = '',
     mountElementId = '{{{MountElementId}}}',
     context = {},
-    stream = {{{Stream}}},
+    mode = '{{{Mode}}}',
     staticMarkup = {{{StaticMarkup}}},
   } = params;
 
@@ -132,7 +132,7 @@ const render: IRender = async (params) => {
       pageInitialProps,
       appInitialData,
       context,
-      stream,
+      mode,
       staticMarkup,
       routes,
     }
@@ -144,7 +144,7 @@ const render: IRender = async (params) => {
     });
     rootContainer = serverResult.html;
     if (html) {
-      html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, stream });
+      html = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
     }
   } catch (e) {
     // downgrade into csr

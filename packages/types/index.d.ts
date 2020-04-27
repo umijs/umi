@@ -253,7 +253,7 @@ interface IManifest {
 interface ISSR {
   forceInitial?: boolean;
   devServerRender?: boolean;
-  stream?: boolean;
+  mode?: 'string' | 'stream';
   staticMarkup?: boolean;
 }
 

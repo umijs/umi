@@ -43,7 +43,7 @@ Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的
 - **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps）的同时，增加了应用级数据获取（getInitialData），来解决之前全局数据的获取问题。
 - **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 HTML。
 - **支持渲染降级**：优先使用 SSR，如果服务端渲染失败，自动降级为客户端渲染（CSR），不影响正常业务流程。
-- **支持流式渲染**：`ssr: { stream: true }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
+- **支持流式渲染**：`ssr: { mode: 'stream' }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
 - **兼容客户端动态加载**：在 Umi 2 中同时使用 SSR 和 dynamicImport（动态加载）会有一些问题，在 Umi 3 中可同时开启使用。
 - **SSR 功能插件化**：Umi 3 内置的 SSR 功能基本够用，若不满足需求或者想自定义渲染方法，可通过提供的 API 来自定义。
 
@@ -210,7 +210,7 @@ app.use(async (req, res) => {
     // htmlTemplate: defaultHtml,
 
     // 启用流式渲染
-    // stream: false,
+    // mode: 'stream',
   });
 
   // support stream content
@@ -264,7 +264,7 @@ app.use(async (req, res) => {
 ```js
 export default {
   ssr: {
-    stream: true,
+    mode: 'stream',
   },
 }
 ```

@@ -14,7 +14,7 @@ interface IOpts {
   appInitialData?: object;
   initialData?: any;
   context?: object;
-  stream?: boolean;
+  mode?: 'stream' | 'string';
   staticMarkup?: boolean;
   /** unused */
   plugin: Plugin;
@@ -54,7 +54,7 @@ export default async function renderServer(
   opts: IOpts,
 ): Promise<{ html: string | Stream }> {
   const element = createServerElement(opts);
-  if (opts.stream) {
+  if (opts.mode === 'stream') {
     return {
       html: ReactDOMServer[
         opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'

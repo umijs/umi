@@ -1,16 +1,16 @@
 const { Stream } = require('stream');
 
-module.exports = (suite) => {
+module.exports = suite => {
   const render = require('./fixtures/normal/dist/umi.server');
 
   // add tests
   suite
     .add('ssr#normal /', {
       defer: true,
-      fn: (deferred) => {
+      fn: deferred => {
         render({
           path: '/',
-        }).then((res) => {
+        }).then(res => {
           if (res.html) {
             deferred.resolve();
           } else {
@@ -21,11 +21,11 @@ module.exports = (suite) => {
     })
     .add('ssr#normal#stream /', {
       defer: true,
-      fn: (deferred) => {
+      fn: deferred => {
         render({
           path: '/',
-          stream: true,
-        }).then((res) => {
+          mode: 'stream',
+        }).then(res => {
           if (res.html instanceof Stream) {
             deferred.resolve();
           } else {

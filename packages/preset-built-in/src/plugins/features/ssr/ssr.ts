@@ -18,7 +18,7 @@ export default (api: IApi) => {
   api.describe({
     key: 'ssr',
     config: {
-      schema: (joi) => {
+      schema: joi => {
         return joi.object({
           forceInitial: joi
             .boolean()
@@ -28,9 +28,7 @@ export default (api: IApi) => {
           devServerRender: joi
             .boolean()
             .description('disable serve-side render in umi dev mode.'),
-          stream: joi
-            .boolean()
-            .description('stream render, conflict with prerender'),
+          mode: joi.string().valid('stream', 'string'),
           staticMarkup: joi
             .boolean()
             .description('static markup in static site'),
@@ -67,7 +65,7 @@ export default (api: IApi) => {
           require.resolve('regenerator-runtime/runtime'),
         ),
         Utils: winPath(require.resolve('./templates/utils')),
-        Stream: !!api.config.ssr?.stream,
+        Mode: !!api.config.ssr?.mode || 'string',
         MountElementId: api.config.mountElementId,
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
@@ -95,7 +93,7 @@ export default (api: IApi) => {
     // for dynamicImport
     if (api.config.dynamicImport) {
       // TODO: page bind opposite chunks, now will bind all chunks
-      const chunks = opts.chunks.map((chunk) => {
+      const chunks = opts.chunks.map(chunk => {
         return chunk.name;
       });
       return lodash.uniq([...memo, ...chunks]);
@@ -103,7 +101,7 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.modifyConfig((config) => {
+  api.modifyConfig(config => {
     if (!config.devServer) {
       config.devServer = {};
     }
