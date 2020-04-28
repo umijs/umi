@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588066433999,
+  "lastUpdate": 1588074483881,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1406,6 +1406,42 @@ window.BENCHMARK_DATA = {
             "range": "±3.34%",
             "unit": "ops/sec",
             "extra": "49 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pr",
+            "name": "pr"
+          },
+          "committer": {
+            "email": "pr",
+            "name": "pr"
+          },
+          "distinct": true,
+          "id": "7046464ae45999ba2893affe82a83917a5c77521",
+          "message": "fix: tpl",
+          "timestamp": "2020-04-28T19:45:19+08:00",
+          "tree_id": "b0c2c4cc50986acbb289ce9ca0ec724fa23d2060",
+          "url": "https://github.com/umijs/umi/commit/7046464ae45999ba2893affe82a83917a5c77521"
+        },
+        "date": 1588074480675,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1779,
+            "range": "±3.39%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2639,
+            "range": "±3.93%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
