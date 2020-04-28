@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, IRoute } from '@umijs/types';
-import { deepmerge } from '@umijs/utils';
+import { deepmerge, lodash } from '@umijs/utils';
 import pathToRegexp from 'path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
@@ -16,8 +16,7 @@ export default (api: IApi) => {
           dynamicRoot: joi.boolean(),
           // 不能通过直接 patch 路由的方式，拿不到 match.[id]，是一个 render paths 的概念
           extraPaths: joi
-            .array()
-            .items(joi.string())
+            .alternatives(joi.function(), joi.array().items(joi.string()))
             .description('extra render paths only enable in ssr'),
         });
       },
@@ -25,7 +24,7 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyConfig((memo) => {
+  api.modifyConfig(memo => {
     if (memo.exportStatic?.dynamicRoot) {
       memo.runtimePublicPath = true;
     }
@@ -58,11 +57,14 @@ export default (api: IApi) => {
   // modify export html using routes
   api.modifyRouteMap(async (memo, { html }) => {
     const routeMap = await html.getRouteMap();
-    const { extraPaths } = api.config.exportStatic || {};
+    const { exportStatic } = api.config;
     // for dynamic routes
     // TODO: test case
-    if (extraPaths?.length > 0) {
-      extraPaths?.forEach((path) => {
+    if (exportStatic?.extraPaths) {
+      const extraPaths = lodash.isFunction(exportStatic.extraPaths)
+        ? await exportStatic.extraPaths()
+        : exportStatic.extraPaths;
+      extraPaths?.forEach(path => {
         const match = routeMap.find(({ route }: { route: IRoute }) => {
           return route.path && pathToRegexp(route.path).exec(path);
         });

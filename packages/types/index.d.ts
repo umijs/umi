@@ -290,7 +290,7 @@ interface BaseIConfig extends IConfigCore {
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
-    extraPaths?: string[];
+    extraPaths?: string[] | (() => Promise<string[]>);
   };
   externals?: any;
   extraBabelPlugins?: IBabelPresetOrPlugin[];
@@ -311,7 +311,7 @@ interface BaseIConfig extends IConfigCore {
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
   mpa?: object;
-  mock?: { exclude?: string[]; };
+  mock?: { exclude?: string[] };
   mountElementId?: string;
   nodeModulesTransform?: {
     type: 'all' | 'none';

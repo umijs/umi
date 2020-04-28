@@ -293,6 +293,7 @@ export default {
 export default {
   ssr: {},
   exportStatic: {
+    // 或者 extraPaths: async () => ['/news/1', '/news/2']
 +   extraPaths: ['/news/1', '/news/2']
   },
   routes: [
