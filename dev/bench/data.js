@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588042121542,
+  "lastUpdate": 1588046426844,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1216,6 +1216,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.10%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "b30a2bc49c0671fcb478aa8a2ab86a440b371afd",
+          "message": "docs: async extraPaths fetch",
+          "timestamp": "2020-04-28T11:57:13+08:00",
+          "tree_id": "f6027a87802b1ff66953777eea0c8ea85b4c37ed",
+          "url": "https://github.com/umijs/umi/commit/b30a2bc49c0671fcb478aa8a2ab86a440b371afd"
+        },
+        "date": 1588046423149,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1415,
+            "range": "±2.04%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2355,
+            "range": "±4.08%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
