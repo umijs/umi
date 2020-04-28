@@ -76,7 +76,7 @@ const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = {{{Mode}}} }) => {
+const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{Mode}}} })' => {
   const htmlWithInitialData = html.replace(
     '</head>',
     `<script>
