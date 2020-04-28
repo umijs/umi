@@ -392,9 +392,24 @@ export default {
 
 <img src="https://user-images.githubusercontent.com/13595509/80310631-52e6d280-880e-11ea-9a9a-0942c0e24658.png" width="600" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" />
 
-## 与 dva 结合使用
+## 数据流结合
+
+### 与 dva 结合使用
 
 TODO
+
+## 包大小分析
+
+Umi 同时支持对服务端和客户端包大小的分析
+
+```bash
+# 服务端包大小分析
+$ ANALYZE_SSR=1 umi build
+# 客户端包大小分析
+$ ANALYZE=1 umi build
+```
+
+<img width="600" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80446129-8b8ac700-8948-11ea-82a8-54d94501a672.png" />
 
 ## Q & A
 
