@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588046957736,
+  "lastUpdate": 1588064230321,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1292,6 +1292,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.15%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "138d3e4f3d09b72db5ff3a71e492484a2d6f25f3",
+          "message": "Merge origin/master into feat-ssr-umi3",
+          "timestamp": "2020-04-28T16:54:25+08:00",
+          "tree_id": "9323c45f772363d4be6e3ca0cb6bbc4dc13ef482",
+          "url": "https://github.com/umijs/umi/commit/138d3e4f3d09b72db5ff3a71e492484a2d6f25f3"
+        },
+        "date": 1588064227231,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1793,
+            "range": "±1.77%",
+            "unit": "ops/sec",
+            "extra": "79 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2932,
+            "range": "±3.00%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
