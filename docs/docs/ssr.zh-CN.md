@@ -340,13 +340,13 @@ import { Helmet } from 'umi';
 
 export default props => {
   return (
-    <div>
+    <>
       {/* 可自定义需不需要编码 */}
       <Helmet encodeSpecialCharacters={false}>
         <html lang="en" data-direction="666" />
         <title>Hello Umi Bar Title</title>
       </Helmet>
-    </div>
+    </>
   );
 };
 ```
