@@ -282,6 +282,10 @@ export default {
 }
 ```
 
+执行 `umi build`，会将输出渲染后的 HTML
+
+<img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80445233-53828480-8946-11ea-8884-016b88c14220.png" />
+
 ### 预渲染动态路由
 
 预渲染默认情况下不会渲染动态路由里的所有页面，如果需要渲染动态路由中的页面，通过配置 `extraPaths`，例如：
@@ -290,7 +294,6 @@ export default {
 export default {
   ssr: {},
   exportStatic: {
-    // 或者 extraPaths: async () => ['/news/1', '/news/2']
 +   extraPaths: ['/news/1', '/news/2']
   },
   routes: [
@@ -307,6 +310,23 @@ export default {
 }
 ```
 
+同时，为了解决动态路由列表，`extraPaths` 参数也支持异步函数
+
+```js
+import request from 'your-request-lib';
+
+export default {
+  ssr: {},
+  exportStatic: {
+    extraPaths: async () => {
+      // [{ id: 1 }, { id: 2 }]
+      const result = await request('https://your-api/news/list');
+      return result.map(item => `/news/${item.id}`);
+    }
+  }
+}
+```
+
 则会生成以下产物：
 
 ```diff
@@ -318,6 +338,8 @@ export default {
     - :id
       - index.html
 +   - 1
++     - index.html
++   - 2
 +     - index.html
     - index.html
 ```
