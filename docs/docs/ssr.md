@@ -297,7 +297,10 @@ export default {
 export default {
   ssr: {},
   exportStatic: {
-+   extraPaths: ['/news/1', '/news/2']
++   extraPaths: async () => {
++     // const result = await request('https://your-api/news/list');
++     return Promise.resolve(['/news/1', 'news/2']);
++   }
   },
   routes: [
     {
@@ -310,23 +313,6 @@ export default {
       ]
     }
   ]
-}
-```
-
-同时，为了解决动态路由列表，`extraPaths` 参数也支持异步函数
-
-```js
-import request from 'your-request-lib';
-
-export default {
-  ssr: {},
-  exportStatic: {
-    extraPaths: async () => {
-      // [{ id: 1 }, { id: 2 }]
-      const result = await request('https://your-api/news/list');
-      return result.map(item => `/news/${item.id}`);
-    }
-  }
 }
 ```
 

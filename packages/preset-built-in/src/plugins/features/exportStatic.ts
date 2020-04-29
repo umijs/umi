@@ -16,7 +16,7 @@ export default (api: IApi) => {
           dynamicRoot: joi.boolean(),
           // 不能通过直接 patch 路由的方式，拿不到 match.[id]，是一个 render paths 的概念
           extraPaths: joi
-            .alternatives(joi.function(), joi.array().items(joi.string()))
+            .function()
             .description('extra render paths only enable in ssr'),
         });
       },
@@ -24,7 +24,7 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyConfig(memo => {
+  api.modifyConfig((memo) => {
     if (memo.exportStatic?.dynamicRoot) {
       memo.runtimePublicPath = true;
     }
@@ -60,11 +60,9 @@ export default (api: IApi) => {
     const { exportStatic } = api.config;
     // for dynamic routes
     // TODO: test case
-    if (exportStatic?.extraPaths) {
-      const extraPaths = lodash.isFunction(exportStatic.extraPaths)
-        ? await exportStatic.extraPaths()
-        : exportStatic.extraPaths;
-      extraPaths?.forEach(path => {
+    if (lodash.isFinite(exportStatic?.extraPaths)) {
+      const extraPaths = await exportStatic?.extraPaths();
+      extraPaths?.forEach((path) => {
         const match = routeMap.find(({ route }: { route: IRoute }) => {
           return route.path && pathToRegexp(route.path).exec(path);
         });
