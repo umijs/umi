@@ -58,8 +58,6 @@ export default {
           entry: '//localhost:7002', // html entry
         },
       ],
-      jsSandbox: true, // 是否启用 js 沙箱，默认为 true
-      prefetch: true, // 是否启用 prefetch 特性，默认为 true
     },
   },
 };
@@ -72,10 +70,8 @@ export default {
 export const qiankun = fetch('/config').then(({ apps }}) => ({
   // 注册子应用信息
   apps,
-  jsSandbox: true, // 是否启用 js 沙箱，默认为 true
-  prefetch: true, // 是否启用 prefetch 特性，默认为 true
+  // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
   lifeCycles: {
-    // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
     afterMount: props => {
       console.log(props);
     },
@@ -274,8 +270,8 @@ PORT=8081
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
 | apps | 子应用配置 | App[] | 是 |  |
-| jsSandbox | 是否启用 js 沙箱 | boolean | 否 | false |
-| prefetch | 是否启用 prefetch 特性 | boolean | 否 | true |
+| sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | false |
+| prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| string | 否 | true |
 
 #### App
 
@@ -289,17 +285,17 @@ PORT=8081
 
 ### 与 @umijs/plugin-qiankun 1.x 的变化
 
-* 用户注册子应用时不再需要手动配置 base 以及 mountElementId。
+* 主应用注册子应用时不再需要手动配置 base 和 mountElementId。
 
-这类方式会导致很多关联问题，最典型的是如果我们需要将子应用挂载到某一个具体的子路由下时，常出现由于挂载点还未初始化或已被销毁导致的问题。
+  这类方式会导致很多关联问题，最典型的是如果我们需要将子应用挂载到某一个具体的子路由下时，常出现由于挂载点还未初始化或已被销毁导致的问题。
 
-现在只需要在注册完子应用后，在期望的路由下指定需要挂载的子应用的 name 即可。
+  现在只需要在注册完子应用后，在期望的路由下指定需要挂载的子应用的 name 即可。
 
 * 可以直接通过 `<MicroApp />` 组件的方式在任意位置挂载自己的子应用。详见 [API 说明](#MicroApp)
-
 * 不再支持主应用是 browser 路由模式，子应用是 hash 路由的混合模式。如果有场景需要可以通过自己使用 `<MicroApp />`组件加载子应用。
-
-* 完全兼容 1.x 插件。
+* 移除了 base、mountElementId、defer 等配置，现在有更好的方式来解决这类问题，参见第一条。
+* rename `jsSandbox` -> `sandbox`，来自 qiankun2.0 的升级。
+* **完全兼容 1.x 插件。**
 
 ## 相关
 
