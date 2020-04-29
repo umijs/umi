@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588143617292,
+  "lastUpdate": 1588148755805,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1478,6 +1478,42 @@ window.BENCHMARK_DATA = {
             "range": "±4.88%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pr",
+            "name": "pr"
+          },
+          "committer": {
+            "email": "pr",
+            "name": "pr"
+          },
+          "distinct": true,
+          "id": "ee7e951e3b8d35616b4deb16afefc33f09e75986",
+          "message": "feat: extraPaths use function",
+          "timestamp": "2020-04-29T16:23:04+08:00",
+          "tree_id": "b32a1e072dee7a96da64f86b1cb39789e302dbaf",
+          "url": "https://github.com/umijs/umi/commit/ee7e951e3b8d35616b4deb16afefc33f09e75986"
+        },
+        "date": 1588148752676,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1717,
+            "range": "±3.36%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2626,
+            "range": "±2.70%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
