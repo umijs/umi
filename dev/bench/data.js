@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588148755805,
+  "lastUpdate": 1588225530175,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1514,6 +1514,42 @@ window.BENCHMARK_DATA = {
             "range": "±2.70%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pr",
+            "name": "pr"
+          },
+          "committer": {
+            "email": "pr",
+            "name": "pr"
+          },
+          "distinct": true,
+          "id": "d6b40bbca69926a497dbaa77c25b9ebbb6e55423",
+          "message": "Merge origin/master into feat-ssr-umi3",
+          "timestamp": "2020-04-30T13:42:19+08:00",
+          "tree_id": "5047d2a63a3580d14a8c5bc802727d65f93e8ca9",
+          "url": "https://github.com/umijs/umi/commit/d6b40bbca69926a497dbaa77c25b9ebbb6e55423"
+        },
+        "date": 1588225526876,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1335,
+            "range": "±2.07%",
+            "unit": "ops/sec",
+            "extra": "79 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2205,
+            "range": "±4.12%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
