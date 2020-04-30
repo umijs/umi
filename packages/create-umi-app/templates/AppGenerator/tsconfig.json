@@ -19,6 +19,7 @@
     "mock/**/*",
     "src/**/*",
     "config/**/*",
-    ".umirc.ts"
+    ".umirc.ts",
+    "typings.d.ts"
   ]
 }
