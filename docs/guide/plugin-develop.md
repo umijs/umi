@@ -7,14 +7,14 @@ translateHelp: true
 在 Umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：
 
 ```js
-export default (api, opts) => {
+export default (api) => {
   // your plugin code here
 };
 ```
 
 需要注意的是，如果你的插件需要发布为 npm 包，那么你需要发布之前做编译，确保发布的代码里面是 ES5 的代码。
 
-该初始化方法会收到 `api` 参数，umi 提供给插件的接口都是通过它暴露出来的。。
+该初始化方法会收到 `api` 参数，Umi 提供给插件的接口都是通过它暴露出来的。
 
 ## 插件示例
 
@@ -68,7 +68,7 @@ yarn create umi --plugin
 $ yarn
 ```
 
-> 你也可以使用npm install，因为有编写测试，所以安装了 puppetee，如果你安装失败，可能需要科学上网，或者使用淘宝源。
+> 你也可以使用 npm install ，因为有编写测试，所以安装了 puppetee，如果你安装失败，可能需要科学上网，或者使用淘宝源。
 
 ### Umi@3 插件命名特性
 
@@ -82,11 +82,11 @@ export default defineConfig({
 });
 ```
 
-> 此次示例中我们的插件名是 umi-plugin-main-path
+> 此次示例中我们的插件名是 umi-plugin-main-path 。
 
 ### 实战演练
 
-首先我们先看一下，初始化脚手架中的代码，如果使用这个插件，那么就会打印日志 `use plugin`，然后使用 `modifyHTML` api 在 `body` 上添加了 `h1` 的内容。更多插件api，请查阅[Plugins Api](/plugins/api)。
+首先我们先看一下，初始化脚手架中的代码，如果使用这个插件，那么就会打印日志 `use plugin`，然后使用 `modifyHTML` api 在 `body` 上添加了 `h1` 的内容。更多插件 api ，请查阅[Plugins Api](/plugins/api)。
 
 ```ts
 export default function (api: IApi) {
@@ -123,9 +123,10 @@ export default function (api: IApi) {
   }
 ```
 
-> 这里需要注意的是，我们在判断是取的是 api.userConfig，而在api的回调中使用的是 api.config，你可以理解为 api.userConfig 是配置中的值， api.config 是插件修改后的值，这里可以是任意插件修改。
+> 这里需要注意的是，我们在判断是取的是 api.userConfig，而在 api 的回调中使用的是 api.config，你可以理解为 api.userConfig 是配置中的值， api.config 是插件修改后的值，这里可以是任意插件修改。
 
-在演示中使用我们的插件
+在演示中使用我们的插件：
+
 在 `example/.umirc.ts` 中增加配置
 
 ```ts
@@ -152,7 +153,7 @@ export default () => (
 
 查看效果
 
-```
+```shell
 yarn start
 Starting the development server...
 
@@ -164,11 +165,11 @@ Starting the development server...
   - Network: http://192.168.50.236:8000
 ```
 
-浏览器访问 `http://localhost:8000` 就可以访问到 `home` ，要访问之前的 `index` 页面，要通过 `http://localhost:8000/index`
+浏览器访问 `http://localhost:8000` 就可以访问到 `home` ，要访问之前的 `index` 页面，要通过 `http://localhost:8000/index`。
 
 ### 为插件编写测试
 
-一般 Umi 插件的测试，我们都是采用结果测试的方案，只看最终运行效果。这里我们使用的是 [`test-umi-plugin`](https://github.com/umijs/test-umi-plugin)，它也有一定的约定，指定 之后，他会自动执行文件夹下的 test 文件。
+一般 Umi 插件的测试，我们都是采用结果测试的方案，只看最终运行效果。这里我们使用的是 [`test-umi-plugin`](https://github.com/umijs/test-umi-plugin)，它也有一定的约定，指定 `fixtures` 之后，他会自动执行文件夹下的 test 文件。
 
 在 `test/fixtures/normal/.umirc.ts` 中增加配置
 
@@ -225,4 +226,4 @@ Ran all test suites.
 ✨  Done in 14.01s.
 ```
 
-本次示例的完整代码在 [umi-plugin-main-path](https://github.com/alitajs/umi-plugin-main-path)
+本次示例的完整代码在 [umi-plugin-main-path](https://github.com/alitajs/umi-plugin-main-path)。
