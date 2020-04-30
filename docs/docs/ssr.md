@@ -120,7 +120,9 @@ export default (props) => {
 
 每个页面可能有单独的数据预获取逻辑，这里我们会获取页面组件上的 `getInitialProps` 静态方法，执行后将结果注入到该页面组件的 `props` 中，例如：
 
-```jsx
+```tsx
+// pages/index.tsx
+import { IGetInitialProps } from 'umi;
 import React from 'react';
 
 const Home = (props) => {
@@ -131,13 +133,13 @@ const Home = (props) => {
   )
 }
 
-Home.getInitialProps = async (params) => {
+Home.getInitialProps = (async (params) => {
   return Promise.resolve({
     data: {
       title: 'Hello World',
     }
   })
-}
+}) as IGetInitialProps;
 
 export default Home;
 ```
