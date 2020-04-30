@@ -435,6 +435,14 @@ export default () => {
 }
 ```
 
+### 为什么不能 external 服务端中的一些模块
+
+1. 因为 umi 内部模块大量使用了 `alias`，如果做 external 会做大量模块的路径映射，真正在服务端使用时，会出现某些包路径不对，加载不了的报错
+1. 有些模块需要依赖模块实例才会做服务端渲染（例如 [react-helmet](https://github.com/nfl/react-helmet)）为了保持同一实例，不会使用 external
+1. 经过测试，服务端包 external 后与不 external，在 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数）没有明显区别
+
+综合考虑，Umi 3 SSR 不会对服务端文件（`umi.server.js`）做 external。
+
 ### `Prop `dangerouslySetInnerHTML` did not match.` 报错
 
 只有 `div` 标签 `dangerouslySetInnerHTML` 属性才能被 SSR 渲染，正常的写法应该是：
