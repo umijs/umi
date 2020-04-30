@@ -1,7 +1,6 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
-import { renderServer } from '{{{ Renderer }}}';
-import { matchRoutes } from 'react-router-config';
+import { renderServer, matchRoutes } from '{{{ Renderer }}}';
 import { findRoute, serialize, mergeStream, ReadableString } from '{{{ Utils }}}';
 
 import { ApplyPluginsType } from '@umijs/runtime';
