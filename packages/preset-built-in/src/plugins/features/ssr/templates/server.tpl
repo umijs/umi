@@ -1,6 +1,7 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
 import { renderServer } from '{{{ Renderer }}}';
+import { matchRoutes } from 'react-router-config';
 import { findRoute, serialize, mergeStream, ReadableString } from '{{{ Utils }}}';
 
 import { ApplyPluginsType } from '@umijs/runtime';
@@ -46,23 +47,28 @@ const { getInitialData, modifyGetInitialPropsParams, modifyHTML } = plugin.apply
  */
 const getInitial = async (params) => {
   const { path } = params;
-  // pages getInitialProps
-  let { component, ...restRouteParams } = findRoute(routes, path, '{{{Basename}}}') || {};
-  let pageInitialProps = {};
-  const defaultInitialProps = {
-    isServer: true,
-    ...restRouteParams,
-  };
-  // extend the `params` of getInitialProps(params) function
-  const initialPropsParams = modifyGetInitialPropsParams ? await modifyGetInitialPropsParams(defaultInitialProps) : defaultInitialProps;
-  pageInitialProps = component?.getInitialProps
-    ? await component.getInitialProps(initialPropsParams)
-    : null;
+  const matched = matchRoutes(routes, path).map(async ({ route, match }) => {
+    // @ts-ignore
+    const { component, ...restRouteParams } = route;
+    if (component && component?.getInitialProps) {
+      const defaultInitialProps = {
+        isServer: true,
+        match,
+        ...restRouteParams,
+      };
+      // extend the `params` of getInitialProps(params) function
+      const initialPropsParams = modifyGetInitialPropsParams ? await modifyGetInitialPropsParams(defaultInitialProps) : defaultInitialProps;
+      return component.getInitialProps
+        ? await component.getInitialProps(initialPropsParams)
+        : null;
+    }
+  }).filter(Boolean);
+  const pageInitialProps = (await Promise.all(matched)).reduce((acc, curr) => Object.assign({}, acc, curr), {});
+
   let appInitialData = {};
   if (typeof getInitialData === 'function') {
     const defaultInitialData = {
       isServer: true,
-      ...restRouteParams,
     };
     appInitialData = await getInitialData(defaultInitialData);
   }
