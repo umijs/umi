@@ -81,6 +81,8 @@ export const layout = {
 
 用于运行时配置默认 Layout 的 UI 中，点击退出登录的处理逻辑，默认不做处理。
 
+> 注：默认在顶部右侧并不会显示退出按钮，需要在运行配置中配合`@umijs/plugin-intial-state`的`getInitialState`返回一个对象，才可以显示
+
 #### rightRender
 
 * Type: `(initialState) => React.ReactNode`
@@ -105,15 +107,15 @@ export const layout = {
 
 Layout 插件会基于 umi 的路由，封装了更多的配置项，支持更多配置式的能力。新增：
 
-• 侧边栏菜单配置。
-• 布局路由级别展示/隐藏相关配置。
-• 与权限插件结合，配置式实现权限路由的功能。
+- 侧边栏菜单配置。
+- 布局路由级别展示/隐藏相关配置。
+- 与权限插件结合，配置式实现权限路由的功能。
 
 新增如下配置项：
 
-• menu
-• layout
-• access
+- menu
+- layout
+- access
 
 示例如下：
 
