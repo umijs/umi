@@ -1,22 +1,13 @@
-import {
-  IApi,
-  webpack,
-  IBundlerConfigType,
-  BundlerConfigType,
-} from '@umijs/types';
+import { IApi, webpack, BundlerConfigType } from '@umijs/types';
 import { getHtmlGenerator } from '../htmlUtils';
 
 export default function (api: IApi) {
   class HtmlWebpackPlugin {
-    private type: IBundlerConfigType;
-    constructor({ type }: { type: IBundlerConfigType }) {
-      this.type = type;
-    }
     apply(compiler: webpack.Compiler) {
       compiler.hooks.emit.tapPromise(
         'UmiHtmlGeneration',
         async (compilation: any) => {
-          const html = getHtmlGenerator({ api, type: this.type });
+          const html = getHtmlGenerator({ api });
           const routeMap = await api.applyPlugins({
             key: 'modifyRouteMap',
             type: api.ApplyPluginsType.modify,
@@ -58,7 +49,7 @@ export default function (api: IApi) {
       // avoid ssr bundler build override index.html
       type === BundlerConfigType.csr
     ) {
-      bundleConfig.plugins?.unshift(new HtmlWebpackPlugin({ type }));
+      bundleConfig.plugins?.unshift(new HtmlWebpackPlugin());
     }
     return bundleConfig;
   });

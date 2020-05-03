@@ -18,7 +18,7 @@ export default (api: IApi) => {
   api.describe({
     key: 'ssr',
     config: {
-      schema: joi => {
+      schema: (joi) => {
         return joi.object({
           forceInitial: joi
             .boolean()
@@ -87,13 +87,10 @@ export default (api: IApi) => {
 
   api.modifyHTMLChunks(async (memo, opts) => {
     // remove server bundle entry in html
-    if (opts.type === BundlerConfigType.ssr) {
-      return [];
-    }
     // for dynamicImport
     if (api.config.dynamicImport) {
       // TODO: page bind opposite chunks, now will bind all chunks
-      const chunks = opts.chunks.map(chunk => {
+      const chunks = opts.chunks.map((chunk) => {
         return chunk.name;
       });
       return lodash.uniq([...memo, ...chunks]);
@@ -101,7 +98,7 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.modifyConfig(config => {
+  api.modifyConfig((config) => {
     if (!config.devServer) {
       config.devServer = {};
     }

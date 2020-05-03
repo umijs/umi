@@ -1,4 +1,4 @@
-import { IApi, IRoute, webpack } from '@umijs/types';
+import { IApi, IRoute, webpack, IBundlerConfigType } from '@umijs/types';
 import { extname, join } from 'path';
 import { existsSync } from 'fs';
 import { lodash } from '@umijs/utils';
@@ -69,7 +69,7 @@ export function chunksToFiles(opts: {
   };
 }
 
-export function getHtmlGenerator({ api, type }: { api: IApi, type: string }): any {
+export function getHtmlGenerator({ api }: { api: IApi }): any {
   function getDocumentTplPath() {
     const docPath = join(api.paths.absPagesPath!, 'document.ejs');
     return existsSync(docPath) ? docPath : '';
@@ -119,7 +119,6 @@ export function getHtmlGenerator({ api, type }: { api: IApi, type: string }): an
         type: api.ApplyPluginsType.modify,
         initialValue: api.config.chunks || ['umi'],
         args: {
-          type,
           route: args.route,
           chunks: args.chunks,
         },
