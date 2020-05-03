@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588493557757,
+  "lastUpdate": 1588497328444,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1808,6 +1808,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.86%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "65aa57ef0468e869ad9604e917c75cc2339c5214",
+          "message": "fix: ssr dynamicImport bug",
+          "timestamp": "2020-05-03T17:12:23+08:00",
+          "tree_id": "b3208ae044d9606971289dae60acf5bb83851384",
+          "url": "https://github.com/umijs/umi/commit/65aa57ef0468e869ad9604e917c75cc2339c5214"
+        },
+        "date": 1588497325377,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1542,
+            "range": "±2.30%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2640,
+            "range": "±4.01%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
