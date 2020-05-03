@@ -47,7 +47,7 @@ function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
           }
         })();
       }
-    }, [`${window.location.pathname}${window.location.search}`]);
+    }, [window.location.pathname, window.location.search]);
     return <Component {...props} {...initialProps} />;
   };
 }
