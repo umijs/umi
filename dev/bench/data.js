@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588492003270,
+  "lastUpdate": 1588493557757,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1770,6 +1770,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.04%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "083b338d23471c856ab0e357381d2c2cf9f1c03c",
+          "message": "fix: layout getInitialProps reset",
+          "timestamp": "2020-05-03T16:10:04+08:00",
+          "tree_id": "8488e53f4e772f2b997f4ab935388abe91587b9a",
+          "url": "https://github.com/umijs/umi/commit/083b338d23471c856ab0e357381d2c2cf9f1c03c"
+        },
+        "date": 1588493554506,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1845,
+            "range": "±3.17%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2847,
+            "range": "±2.86%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
