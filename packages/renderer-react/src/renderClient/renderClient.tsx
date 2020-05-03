@@ -22,6 +22,11 @@ function RouterComponent(props: IRouterComponentProps) {
   const { history, ...renderRoutesProps } = props;
 
   useEffect(() => {
+    // first time using window.g_initialProps
+    // switch route fetching data, if exact route reset window.getInitialProps
+    if ((window as any).g_initialProps) {
+      (window as any).g_initialProps = null;
+    }
     function routeChangeHandler(location: any, action?: string) {
       const matchedRoutes = matchRoutes(props.routes, location.pathname);
 
@@ -106,7 +111,7 @@ export default function renderClient(opts: IOpts) {
     if (rootElement?.hasChildNodes()) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
-        preloadComponent(opts.routes).then(function() {
+        preloadComponent(opts.routes).then(function () {
           ReactDOM.hydrate(rootContainer, rootElement);
         });
       } else {

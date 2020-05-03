@@ -25,11 +25,7 @@ function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
     );
 
     useEffect(() => {
-      // first time using window.g_initialProps
-      // switch route fetching data
-      if ((window as any).g_initialProps) {
-        (window as any).g_initialProps = null;
-      } else {
+      if (!(window as any).g_initialProps) {
         (async () => {
           const { modifyGetInitialPropsParams } = opts.plugin.applyPlugins({
             key: 'ssr',
