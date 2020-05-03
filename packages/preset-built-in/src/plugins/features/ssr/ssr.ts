@@ -166,6 +166,14 @@ export default (api: IApi) => {
       ]);
 
       config.externals([]);
+    } else {
+      // define client bundler config
+      config.plugin('define').tap(([args]) => [
+        {
+          ...args,
+          'process.env.__IS_SERVER': false,
+        },
+      ]);
     }
     return config;
   });
