@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588421366821,
+  "lastUpdate": 1588492003270,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -1732,6 +1732,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.55%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "e35215951e90e37e21ed0cba20fcec8b6f8803ee",
+          "message": "fix: remove unused bundler type",
+          "timestamp": "2020-05-03T15:43:37+08:00",
+          "tree_id": "cc11443b814ac11204ac27fb67820ed238dba22d",
+          "url": "https://github.com/umijs/umi/commit/e35215951e90e37e21ed0cba20fcec8b6f8803ee"
+        },
+        "date": 1588492000352,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1768,
+            "range": "±3.23%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2723,
+            "range": "±3.04%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
