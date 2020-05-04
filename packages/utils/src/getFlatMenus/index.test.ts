@@ -1,4 +1,4 @@
-import getSelectedMenu from './index';
+import getFlatMenus from './index';
 import transformationRoute from '../transformationRoute';
 
 const routes = [
@@ -46,15 +46,8 @@ const { menuData } = transformationRoute(routes, false, ({ id }) => {
 });
 
 test('normal', () => {
-  const openMenuItems = getSelectedMenu('/admin/sub-page', menuData);
-  expect(openMenuItems.length).toEqual(2);
+  const flatMenus = getFlatMenus(menuData);
+  expect(Object.keys(flatMenus).length).toEqual(5);
 
-  expect(openMenuItems[0].name).toEqual('管理页');
-  expect(openMenuItems[1].name).toEqual('二级管理页');
-});
-
-test('var path', () => {
-  const openMenuItems = getSelectedMenu('/list/1234', menuData);
-  expect(openMenuItems.length).toEqual(1);
-  expect(openMenuItems[0].name).toEqual('数据详情');
+  expect(flatMenus['/list'].name).toEqual('查询表格');
 });
