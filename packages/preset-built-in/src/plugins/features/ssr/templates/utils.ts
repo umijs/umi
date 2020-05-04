@@ -11,7 +11,8 @@ function addLeadingSlash(path: string): string {
 }
 
 // from react-router
-function stripBasename(basename: string, location: UrlWithStringQuery): UrlWithStringQuery {
+export function stripBasename(basename: string, path: string): UrlWithStringQuery {
+  const location = parse(path);
   if (!basename) return location;
 
   const base = addLeadingSlash(basename);
@@ -25,7 +26,7 @@ function stripBasename(basename: string, location: UrlWithStringQuery): UrlWithS
 }
 
 export function findRoute(routes: any[], path: string, basename: string = '/'): any {
-  const { pathname } = stripBasename(basename, parse(path));
+  const { pathname } = stripBasename(basename, path);
   for (const route of routes) {
     if (route.routes) {
       const routesMatch = findRoute(route.routes, path, basename);

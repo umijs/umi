@@ -1,7 +1,7 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
 import { renderServer, matchRoutes } from '{{{ Renderer }}}';
-import { findRoute, serialize, mergeStream, ReadableString } from '{{{ Utils }}}';
+import { stripBasename, serialize, mergeStream, ReadableString, } from '{{{ Utils }}}';
 
 import { ApplyPluginsType } from '@umijs/runtime';
 import { plugin } from './plugin';
@@ -45,8 +45,10 @@ const { getInitialData, modifyGetInitialPropsParams, modifyHTML } = plugin.apply
  * @param params
  */
 const getInitial = async (params) => {
-  const { path } = params;
-  const matched = matchRoutes(routes, path).map(async ({ route, match }) => {
+  const { path, basename = '{{{ Basename }}}' } = params;
+  // handle basename
+  const { pathname } = stripBasename(basename, path);
+  const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
     // @ts-ignore
     const { component, ...restRouteParams } = route;
     if (component && component?.getInitialProps) {
