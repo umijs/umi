@@ -1,5 +1,5 @@
 import getSelectedMenu from './index';
-import transformationRoute from '../transformationRoute';
+import transformRoute from '../transformRoute';
 
 const routes = [
   {
@@ -36,7 +36,7 @@ const routes = [
   { path: '/', redirect: '/welcome', exact: true, unaccessible: false },
 ];
 
-const { menuData } = transformationRoute(routes, false, ({ id }) => {
+const { menuData } = transformRoute(routes, false, ({ id }) => {
   if (id === 'menu.list.table-list') return '查询表格';
   if (id === 'menu.list.table.result') return '数据详情';
   if (id === 'menu.admin') return '管理页';

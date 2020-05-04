@@ -1,4 +1,4 @@
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 import memoizeOne from 'memoize-one';
 import hash from 'hash.js';
 import { MenuDataItem, Route, MessageDescriptor } from '../types';
@@ -216,7 +216,7 @@ const memoizeOneGetBreadcrumbNameMap = memoizeOne(
  * @param formatMessage 国际化的程序
  * @returns { breadcrumb, menuData}
  */
-const transformationRoute = (
+const transformRoute = (
   routes: Route[],
   locale: false,
   formatMessage?: (message: MessageDescriptor) => string,
@@ -236,4 +236,4 @@ const transformationRoute = (
   return { breadcrumb, menuData };
 };
 
-export default transformationRoute;
+export default transformRoute;

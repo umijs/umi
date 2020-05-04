@@ -1,4 +1,4 @@
-import transformationRoute from './index';
+import transformRoute from './index';
 
 const routes = [
   {
@@ -31,17 +31,13 @@ const routes = [
   { path: '/', redirect: '/welcome', exact: true, unaccessible: false },
 ];
 
-const { menuData, breadcrumb } = transformationRoute(
-  routes,
-  false,
-  ({ id }) => {
-    if (id === 'menu.list.table-list') return '查询表格';
-    if (id === 'menu.admin') return '管理页';
-    if (id === 'menu.admin.sub-page') return '二级管理页';
-    if (id === 'menu.welcome') return '欢迎';
-    return id;
-  },
-);
+const { menuData, breadcrumb } = transformRoute(routes, false, ({ id }) => {
+  if (id === 'menu.list.table-list') return '查询表格';
+  if (id === 'menu.admin') return '管理页';
+  if (id === 'menu.admin.sub-page') return '二级管理页';
+  if (id === 'menu.welcome') return '欢迎';
+  return id;
+});
 
 test('normal', () => {
   expect(menuData[0].name).toEqual('欢迎');
