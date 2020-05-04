@@ -121,7 +121,6 @@ test('ssr', async () => {
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
   delete require.cache[tmpServerFile];
-  rimraf.sync(join(cwd, '.umi-test'));
 
   const service = new Service({
     cwd,
@@ -146,14 +145,14 @@ test('ssr', async () => {
   expect(rootContainer).toEqual(expectRootContainer);
   const $ = cheerio.load(html);
   expect($('#root').html()).toEqual(expectRootContainer);
+  rimraf.sync(join(cwd, '.umi-test'));
 });
 
 test('ssr getInitialPropsParams', async () => {
-  const cwd = join(fixtures, 'ssr');
+  const cwd = join(fixtures, 'ssr-getInitialPropsParams');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
   delete require.cache[tmpServerFile];
-  rimraf.sync(join(cwd, '.umi-test'));
 
   const service = new Service({
     cwd,
@@ -169,7 +168,7 @@ test('ssr getInitialPropsParams', async () => {
 
   const render = require(tmpServerFile).default;
   const { rootContainer, html } = await render({
-    path: '/getInitialPropsParams',
+    path: '/',
     htmlTemplate,
     mountElementId: 'root',
     getInitialPropsParams: {
@@ -180,6 +179,7 @@ test('ssr getInitialPropsParams', async () => {
   expect(rootContainer).toEqual(expectRootContainer);
   const $ = cheerio.load(html);
   expect($('#root').html()).toEqual(expectRootContainer);
+  rimraf.sync(join(cwd, '.umi-test'));
 });
 
 test('ssr using stream', (done) => {
