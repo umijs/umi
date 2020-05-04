@@ -9,7 +9,6 @@ import { routes } from './routes';
 
 export interface IParams {
   path: string;
-  initialData?: object;
   htmlTemplate?: string;
   mountElementId?: string;
   context?: object
@@ -55,6 +54,7 @@ const getInitial = async (params) => {
       const defaultInitialProps = {
         isServer: true,
         match,
+        ...(params.getInitialPropsParams || {}),
         ...restRouteParams,
       };
       // extend the `params` of getInitialProps(params) function
@@ -83,7 +83,7 @@ const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-const handleHtml = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{ Mode }}}' }) => {
+const handleHTML = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{ Mode }}}' }) => {
   const htmlWithInitialData = html.replace(
     '</head>',
     `<script>
@@ -119,12 +119,13 @@ const render: IRender = async (params) => {
   let error;
   const {
     path,
-    initialData,
     htmlTemplate = '',
     mountElementId = '{{{MountElementId}}}',
     context = {},
     mode = '{{{ Mode }}}',
+    basename = '{{{ Basename }}}',
     staticMarkup = {{{StaticMarkup}}},
+    getInitialPropsParams,
   } = params;
 
   let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
@@ -133,10 +134,12 @@ const render: IRender = async (params) => {
     // getInitial
     const { pageInitialProps, appInitialData } = await getInitial({
       path,
+      basename,
+      getInitialPropsParams,
     });
     const opts = {
       path,
-      initialData,
+      getInitialPropsParams,
       pageInitialProps,
       appInitialData,
       context,
@@ -147,15 +150,14 @@ const render: IRender = async (params) => {
     // renderServer get rootContainer
     const serverResult = await renderServer({
       ...opts,
-      basename: '{{{ Basename }}}',
+      basename,
       plugin,
     });
     rootContainer = serverResult.html;
     if (html) {
-      const processedHTML = handleHtml({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
-      html = modifyHTML
-        ? modifyHTML(processedHTML, { context })
-        : processedHTML;
+      // plugin for modify html template
+      html = typeof modifyHTML === 'function' ? await modifyHTML(html, { context }) : html;
+      html = handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
     }
   } catch (e) {
     // downgrade into csr

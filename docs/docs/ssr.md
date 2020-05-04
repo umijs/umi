@@ -234,6 +234,12 @@ app.use(async (req, res) => {
 
     // 启用流式渲染
     // mode: 'stream',
+
+    // html 片段静态标记（适用于静态站点生成）
+    // staticMarkup: false,
+
+    // 扩展 getInitialProps 在服务端渲染中的参数
+    // getInitialPropsParams: {},
   });
 
   // support stream content

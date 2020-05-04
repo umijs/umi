@@ -9,6 +9,7 @@ interface IOpts {
   plugin: Plugin;
   extraProps?: object;
   pageInitialProps?: object;
+  getInitialPropsParams?: object;
   appInitialData?: object;
 }
 
@@ -18,7 +19,8 @@ interface IGetRouteElementOpts {
   opts: IOpts;
 }
 
-function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
+function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
+  const { component: Component, ...restRouteParams } = route;
   return function ComponentWithInitialPropsFetch(props: any) {
     const [initialProps, setInitialProps] = useState(
       () => (window as any).g_initialProps,
@@ -35,6 +37,8 @@ function wrapInitialPropsFetch(Component: any, opts: IOpts): IComponent {
           const defaultGetInitialPropsParams = {
             isServer: false,
             match: props?.match,
+            ...(opts.getInitialPropsParams || {}),
+            ...restRouteParams,
           };
           const initialPropsParams = modifyGetInitialPropsParams
             ? await modifyGetInitialPropsParams(defaultGetInitialPropsParams)
@@ -116,7 +120,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     // avoid mount and unmount with url hash change
     if (!process.env.__IS_SERVER && route.component?.getInitialProps) {
       // client Render for enable ssr, but not sure SSR success
-      route.component = wrapInitialPropsFetch(route.component, opts);
+      route.component = wrapInitialPropsFetch(route, opts);
     }
     return (
       <Route

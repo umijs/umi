@@ -5,6 +5,7 @@ export default {
   history: { type: 'memory' },
   routes: [
     { path: '/', component: 'index' },
+    { path: '/getInitialPropsParams', component: 'getInitialPropsParams' },
   ],
   mountElementId: '',
 } as IConfig;
