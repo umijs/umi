@@ -4,6 +4,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'devServer',
     config: {
+      default: {
+        lazy: !!process.env.LAZY,
+      },
       schema(joi) {
         return joi
           .object({
@@ -11,6 +14,11 @@ export default (api: IApi) => {
             host: joi.string(),
             https: joi.alternatives(joi.object(), joi.boolean()),
             http2: joi.boolean(),
+            lazy: joi
+              .boolean()
+              .description(
+                "it it won't recompile when files change, but rather on each request.",
+              ),
             headers: joi.object(),
           })
           .description('devServer configs')

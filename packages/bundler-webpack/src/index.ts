@@ -59,10 +59,12 @@ class Bundler {
     bundleConfigs: defaultWebpack.Configuration[];
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
+    const { publicPath, devServer } = this.config;
     const compiler = bundleImplementor(bundleConfigs);
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
-      publicPath: '/',
+      publicPath: publicPath || '/',
+      lazy: devServer && devServer.lazy,
       logLevel: 'silent',
       watchOptions: {
         ignored:

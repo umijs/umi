@@ -41,6 +41,7 @@ export interface IServerOpts {
   beforeMiddlewares?: RequestHandler<any>[];
   compilerMiddleware?: RequestHandler<any> | null;
   https?: IHttps | boolean;
+  lazy?: boolean;
   http2?: boolean;
   headers?: {
     [key: string]: string;
@@ -70,6 +71,7 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   afterMiddlewares: [],
   beforeMiddlewares: [],
   compilerMiddleware: null,
+  lazy: false,
   compress: true,
   https: !!process.env.HTTPS,
   http2: false,

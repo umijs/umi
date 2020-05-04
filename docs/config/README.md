@@ -320,6 +320,7 @@ if (false) {
 * host，默认 `0.0.0.0`
 * https，是否启用 https server
 * http2，是否启用 http2
+* lazy，惰性模式，只有在请求时才编译包（bundle），同时也可以通过 `LAZY=1 umi dev` 开启
 
 启用 port 和 host 也可以通过环境变量 PORT 和 HOST 临时指定。
 
