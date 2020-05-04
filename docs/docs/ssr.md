@@ -141,6 +141,24 @@ Home.getInitialProps = (async (params) => {
   })
 }) as IGetInitialProps;
 
+/** 同时也可以使用 class 组件
+class Home extends React.Component {
+  static getInitialProps = (async (params) => {
+    return Promise.resolve({
+      data: {
+        title: 'Hello World',
+      }
+    })
+  }) as IGetInitialProps
+  render() {
+    const { data } = props;
+    return (
+      <div>{data.title}</div>
+    )
+  }
+}
+*/
+
 export default Home;
 ```
 
