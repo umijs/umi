@@ -20,7 +20,8 @@ interface IGetRouteElementOpts {
 }
 
 function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
-  const { component: Component, ...restRouteParams } = route;
+  const { component, ...restRouteParams } = route;
+  const Component: any = route!.component;
   return function ComponentWithInitialPropsFetch(props: any) {
     const [initialProps, setInitialProps] = useState(
       () => (window as any).g_initialProps,
@@ -43,7 +44,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
           const initialPropsParams = modifyGetInitialPropsParams
             ? await modifyGetInitialPropsParams(defaultGetInitialPropsParams)
             : defaultGetInitialPropsParams;
-          if (Component.getInitialProps) {
+          if (Component!.getInitialProps) {
             const initialProps = await Component!.getInitialProps!(
               initialPropsParams,
             );
