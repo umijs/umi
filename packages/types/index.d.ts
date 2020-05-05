@@ -259,7 +259,7 @@ interface BaseIConfig extends IConfigCore {
   extraBabelPresets?: IBabelPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
   favicon?: string;
-  forkTSCheker?: object;
+  forkTSChecker?: object;
   hash?: boolean;
   headScripts?: IScriptConfig;
   history?: {
