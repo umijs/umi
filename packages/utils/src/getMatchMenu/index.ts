@@ -29,7 +29,7 @@ export const getMenuMatches = (
   path: string,
 ): string | undefined =>
   flatMenuKeys
-    .filter(item => {
+    .filter((item) => {
       if (item === '/' && path === '/') {
         return true;
       }
@@ -63,7 +63,7 @@ export const getMenuMatches = (
  * @param menuData
  * @returns MenuDataItem[]
  */
-export const getSelectedMenu = (
+export const getMatchMenu = (
   pathname: string,
   menuData: MenuDataItem[],
 ): MenuDataItem[] => {
@@ -76,8 +76,8 @@ export const getSelectedMenu = (
   const menuItem = flatMenus[menuPathKey] || { parentKeys: '', key: '' };
 
   const parentItems = (menuItem.parentKeys || [])
-    .map(key => flatMenus[key])
-    .filter(item => item);
+    .map((key) => flatMenus[key])
+    .filter((item) => item);
 
   if (menuItem.key) {
     parentItems.push(menuItem);
@@ -85,4 +85,4 @@ export const getSelectedMenu = (
   return parentItems;
 };
 
-export default getSelectedMenu;
+export default getMatchMenu;

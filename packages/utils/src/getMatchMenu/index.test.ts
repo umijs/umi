@@ -1,4 +1,4 @@
-import getSelectedMenu from './index';
+import getMatchMenu from './index';
 import transformRoute from '../transformRoute';
 
 const routes = [
@@ -46,7 +46,7 @@ const { menuData } = transformRoute(routes, false, ({ id }) => {
 });
 
 test('normal', () => {
-  const openMenuItems = getSelectedMenu('/admin/sub-page', menuData);
+  const openMenuItems = getMatchMenu('/admin/sub-page', menuData);
   expect(openMenuItems.length).toEqual(2);
 
   expect(openMenuItems[0].name).toEqual('管理页');
@@ -54,7 +54,7 @@ test('normal', () => {
 });
 
 test('var path', () => {
-  const openMenuItems = getSelectedMenu('/list/1234', menuData);
+  const openMenuItems = getMatchMenu('/list/1234', menuData);
   expect(openMenuItems.length).toEqual(1);
   expect(openMenuItems[0].name).toEqual('数据详情');
 });
