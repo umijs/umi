@@ -23,8 +23,7 @@ test('env variables', () => {
   ).toEqual({
     'process.env': {
       NODE_ENV: '"test"',
-      UMI_APP_FOO:
-        '"BARdynamic-import-disabledynamic-import-disabledynamic-import-disable"',
+      UMI_APP_FOO: '"BAR"',
     },
   });
 });
