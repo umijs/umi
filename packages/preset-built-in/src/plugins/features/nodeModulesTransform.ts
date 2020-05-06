@@ -11,7 +11,7 @@ export default (api: IApi) => {
       schema(joi) {
         return joi.object({
           type: joi.string().valid('all', 'none'),
-          exclude: joi.array().items(joi.string),
+          exclude: joi.array().items(joi.string()),
         });
       },
     },
