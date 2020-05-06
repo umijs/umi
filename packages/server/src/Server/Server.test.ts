@@ -329,61 +329,6 @@ describe('proxy', () => {
     server.listeningApp?.close();
   });
 
-  it('proxy config refresh', async () => {
-    const server = new Server({
-      beforeMiddlewares: [],
-      afterMiddlewares: [],
-      compilerMiddleware: (req, res, next) => {
-        if (req.path === '/compiler') {
-          res.end('compiler');
-        } else {
-          next();
-        }
-      },
-      proxy: {
-        '/api': {
-          target: `http://${host}:${proxyServer1Port}`,
-          changeOrigin: true,
-        },
-      },
-    });
-    const { port, hostname } = await server.listen({
-      port: 3000,
-      hostname: host,
-    });
-    const { body: compilerBody } = await got(
-      `http://${hostname}:${port}/compiler`,
-    );
-    expect(compilerBody).toEqual('compiler');
-
-    const { body: proxyBody } = await got(`http://${hostname}:${port}/api`);
-    expect(proxyBody).toEqual(
-      JSON.stringify({
-        hello: 'umi proxy',
-      }),
-    );
-
-    // change proxy config
-    const newProxy = {
-      // @ts-ignore
-      '/api2': {
-        target: `http://${host}:${proxyServer2Port}`,
-        changeOrigin: true,
-      },
-    };
-    server.setupProxy(newProxy, true);
-
-    const { body: proxyChangeBody } = await got(
-      `http://${hostname}:${port}/api2`,
-    );
-    expect(proxyChangeBody).toEqual(
-      JSON.stringify({
-        hello: 'umi proxy2',
-      }),
-    );
-    server.listeningApp?.close();
-  });
-
   it('proxy multiple targets', async () => {
     const server = new Server({
       beforeMiddlewares: [],
