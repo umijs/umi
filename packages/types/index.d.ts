@@ -273,7 +273,7 @@ interface BaseIConfig extends IConfigCore {
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
   mpa?: object;
-  mock?: { exclude?: string[]; };
+  mock?: { exclude?: string[] };
   mountElementId?: string;
   nodeModulesTransform?: {
     type: 'all' | 'none';
