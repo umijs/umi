@@ -16,7 +16,7 @@ export default (api: IApi) => {
 
   api.addBeforeMiddewares(() => {
     return (req, res, next) => {
-      if (req.path === '/@@/devScripts.js') {
+      if (req.path === `${api.config.publicPath}@@/devScripts.js`) {
         api
           .applyPlugins({
             key: 'addDevScripts',
@@ -44,7 +44,7 @@ export default (api: IApi) => {
 
   api.addHTMLHeadScripts(() => [
     {
-      src: '/@@/devScripts.js',
+      src: `${api.config.publicPath}@@/devScripts.js`,
     },
   ]);
 
