@@ -17,7 +17,7 @@ test('webpack', async () => {
     },
   });
   // @ts-ignore
-  expect(config.mode).toEqual('development');
+  expect(config.mode).toEqual('test');
 });
 
 test('webpack with plugins', async () => {
