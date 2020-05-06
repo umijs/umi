@@ -1,6 +1,6 @@
 import pathToRegexp from 'path-to-regexp';
 import { MenuDataItem } from '../types';
-import getFlatMenu from '../getFlatMenus';
+import getFlatMenu from '../getFlatMenus/getFlatMenus';
 
 /**
  * a-b-c

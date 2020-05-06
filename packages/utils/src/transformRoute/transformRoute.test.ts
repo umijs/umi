@@ -1,5 +1,4 @@
-import getMatchMenu from './index';
-import transformRoute from '../transformRoute';
+import transformRoute from './transformRoute';
 
 const routes = [
   {
@@ -20,11 +19,7 @@ const routes = [
         unaccessible: false,
       },
     ],
-  },
-  {
-    name: 'list.table.result',
-    path: '/list/:id',
-    exact: true,
+
     unaccessible: false,
   },
   {
@@ -36,9 +31,8 @@ const routes = [
   { path: '/', redirect: '/welcome', exact: true, unaccessible: false },
 ];
 
-const { menuData } = transformRoute(routes, false, ({ id }) => {
+const { menuData, breadcrumb } = transformRoute(routes, false, ({ id }) => {
   if (id === 'menu.list.table-list') return '查询表格';
-  if (id === 'menu.list.table.result') return '数据详情';
   if (id === 'menu.admin') return '管理页';
   if (id === 'menu.admin.sub-page') return '二级管理页';
   if (id === 'menu.welcome') return '欢迎';
@@ -46,15 +40,12 @@ const { menuData } = transformRoute(routes, false, ({ id }) => {
 });
 
 test('normal', () => {
-  const openMenuItems = getMatchMenu('/admin/sub-page', menuData);
-  expect(openMenuItems.length).toEqual(2);
+  expect(menuData[0].name).toEqual('欢迎');
+  expect(menuData[1].name).toEqual('管理页');
+  // @ts-ignore
+  expect(menuData[1].children[0].name).toEqual('二级管理页');
 
-  expect(openMenuItems[0].name).toEqual('管理页');
-  expect(openMenuItems[1].name).toEqual('二级管理页');
-});
-
-test('var path', () => {
-  const openMenuItems = getMatchMenu('/list/1234', menuData);
-  expect(openMenuItems.length).toEqual(1);
-  expect(openMenuItems[0].name).toEqual('数据详情');
+  expect(breadcrumb.get('/admin')?.name).toEqual('管理页');
+  expect(breadcrumb.get('/welcome')?.name).toEqual('欢迎');
+  expect(breadcrumb.get('/admin/sub-page')?.name).toEqual('二级管理页');
 });

@@ -62,4 +62,9 @@ export { default as Generator } from './Generator/Generator';
 export { default as randomColor } from './randomColor/randomColor';
 export { default as delay } from './delay/delay';
 export { default as cleanRequireCache } from './cleanRequireCache/cleanRequireCache';
+
+export { default as transformRoute } from './transformRoute/transformRoute';
+export { default as getFlatMenus } from './getFlatMenus/getFlatMenus';
+export { default as getMatchMenu } from './getMatchMenu/getMatchMenu';
+
 export * from './types';

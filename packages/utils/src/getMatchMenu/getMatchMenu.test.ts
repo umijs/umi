@@ -1,5 +1,5 @@
-import getFlatMenus from './index';
-import transformRoute from '../transformRoute';
+import getMatchMenu from './getMatchMenu';
+import transformRoute from '../transformRoute/transformRoute';
 
 const routes = [
   {
@@ -46,8 +46,15 @@ const { menuData } = transformRoute(routes, false, ({ id }) => {
 });
 
 test('normal', () => {
-  const flatMenus = getFlatMenus(menuData);
-  expect(Object.keys(flatMenus).length).toEqual(5);
+  const openMenuItems = getMatchMenu('/admin/sub-page', menuData);
+  expect(openMenuItems.length).toEqual(2);
 
-  expect(flatMenus['/list'].name).toEqual('查询表格');
+  expect(openMenuItems[0].name).toEqual('管理页');
+  expect(openMenuItems[1].name).toEqual('二级管理页');
+});
+
+test('var path', () => {
+  const openMenuItems = getMatchMenu('/list/1234', menuData);
+  expect(openMenuItems.length).toEqual(1);
+  expect(openMenuItems[0].name).toEqual('数据详情');
 });
