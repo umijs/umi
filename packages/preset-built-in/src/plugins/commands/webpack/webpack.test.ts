@@ -17,7 +17,7 @@ test('webpack', async () => {
     },
   });
   // @ts-ignore
-  expect(config.mode).toEqual('test');
+  expect(config.mode).toEqual('development');
 });
 
 test('webpack with plugins', async () => {
@@ -50,7 +50,7 @@ test('webpack with plugin', async () => {
     },
   });
   // @ts-ignore
-  expect(config.definitions['process.env'].NODE_ENV).toContain('development');
+  expect(config.definitions['process.env'].NODE_ENV).toContain('test');
 });
 
 test('webpack with rules', async () => {
