@@ -186,7 +186,7 @@ export const ssr = {
 ```js
 // app.(ts|js)
 export const ssr = {
-  modifyGetInitialPropsParams: async (params) {
+  modifyGetInitialPropsParams: async (params) => {
     return {
       ...params,
       title: 'params'

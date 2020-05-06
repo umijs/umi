@@ -130,9 +130,6 @@ export default (api: IApi) => {
       path: req.url,
       htmlTemplate: defaultHtml,
       mountElementId: api.config?.mountElementId,
-      getInitialPropsParams: {
-        req,
-      },
     });
 
     console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
