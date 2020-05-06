@@ -3372,81 +3372,6 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@umijs/ast@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/ast/-/ast-3.1.2.tgz#76681d26d5f033594a5105f6e65ea1524100ed31"
-  integrity sha512-Mp6a9sY2A+8VORfZ4/BJl4x0I8QnCwwcpudsUNmxK8JS5uMH4MIpAnRdYYOBwb9h7wfwp5ACAyhakyymdERlQw==
-  dependencies:
-    "@umijs/utils" "3.1.2"
-
-"@umijs/babel-plugin-auto-css-modules@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/babel-plugin-auto-css-modules/-/babel-plugin-auto-css-modules-3.1.2.tgz#80ee76e73e9862304c1190cc5b65f8f281e4abfe"
-  integrity sha512-u24J6lEkmWZYxKCJy25LSuVJgjAPNJEPaXeR4Np19N3XyXFOgZgc9hVP6Baq8wUqQeW2kMy8Dw3oubDG1aTFzw==
-  dependencies:
-    "@umijs/utils" "3.1.2"
-
-"@umijs/babel-plugin-lock-core-js-3@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/babel-plugin-lock-core-js-3/-/babel-plugin-lock-core-js-3-3.1.2.tgz#cf946f17697d8254759d8dd197bf9199d534ae43"
-  integrity sha512-HSZHyDX7g8T87BVJpVrmlhQPuMAOErPz12ybm3kFY5+dooaCbTeg5iNPfKkNTZVdHC+oCifSp61Qe7ZNeBPMsQ==
-  dependencies:
-    "@umijs/utils" "3.1.2"
-    core-js "3.6.5"
-
-"@umijs/babel-preset-umi@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/babel-preset-umi/-/babel-preset-umi-3.1.2.tgz#1d4888bc45b36b7d5432d91f591869af93f0e03a"
-  integrity sha512-CTGxD+OkQBuVRJnKnve6nTyGrmOiztIYlqRdqBC0pCPnaWmHWK3Ga1z1GPfa12hjfLixglM1NlsA3UYhFOVIUg==
-  dependencies:
-    "@babel/plugin-proposal-class-properties" "7.8.3"
-    "@babel/plugin-proposal-decorators" "7.8.3"
-    "@babel/plugin-proposal-do-expressions" "7.8.3"
-    "@babel/plugin-proposal-export-default-from" "7.8.3"
-    "@babel/plugin-proposal-function-bind" "7.8.3"
-    "@babel/plugin-proposal-pipeline-operator" "7.8.3"
-    "@babel/plugin-transform-destructuring" "7.9.5"
-    "@babel/plugin-transform-runtime" "7.9.0"
-    "@babel/preset-env" "7.9.5"
-    "@babel/preset-react" "7.9.4"
-    "@babel/preset-typescript" "7.9.0"
-    "@babel/runtime" "7.9.2"
-    "@svgr/webpack" "4.3.3"
-    "@umijs/babel-plugin-auto-css-modules" "3.1.2"
-    "@umijs/babel-plugin-lock-core-js-3" "3.1.2"
-    babel-plugin-dynamic-import-node "2.3.0"
-    babel-plugin-import "^1.13.0"
-    babel-plugin-named-asset-import "0.3.6"
-    babel-plugin-react-require "3.1.3"
-    babel-plugin-transform-react-remove-prop-types "0.4.24"
-
-"@umijs/core@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/core/-/core-3.1.2.tgz#c8f89c38bdf14344876aa97b5f947900720501de"
-  integrity sha512-kGRo4DmwfluRwT1x+qclIp954zd7HsarNNiq0P8Ye0X+QqnF2zZ/RDm9ICej+kW3+0b/DxBSjQF9KGKhltdTMQ==
-  dependencies:
-    "@babel/core" "7.9.0"
-    "@babel/register" "7.9.0"
-    "@hapi/joi" "16.1.8"
-    "@types/ejs" "3.0.2"
-    "@types/hapi__joi" "16.0.12"
-    "@types/marked" "^0.7.4"
-    "@types/marked-terminal" "^3.1.1"
-    "@types/prettier" "2.0.0"
-    "@types/tapable" "1.0.5"
-    "@umijs/ast" "3.1.2"
-    "@umijs/babel-preset-umi" "3.1.2"
-    "@umijs/error-code-map" "^1.0.1"
-    "@umijs/utils" "3.1.2"
-    dotenv "8.2.0"
-    ejs "3.0.2"
-    marked "0.8.2"
-    marked-terminal "4.0.0"
-    os-locale "5.0.0"
-    prettier "2.0.4"
-    set-value "3.0.2"
-    tapable "1.1.3"
-
 "@umijs/error-code-map@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@umijs/error-code-map/-/error-code-map-1.0.1.tgz#2a2dd7b4bcd11869e968264ff3dabacfabe8b874"
@@ -3532,89 +3457,6 @@
     unified "^8.4.1"
     unist-util-visit "^2.0.1"
     unist-util-visit-parents "^3.0.1"
-
-"@umijs/server@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/server/-/server-3.1.2.tgz#5f5aaa9d35405495b2b886b2095bad99e0c17cd0"
-  integrity sha512-zzVdvYnOfCJmDfP1+fpPZj/krX5yfcGUBVukvTXbjyTjXWEe+I6hJW2KpVUZmDnGyy76v84jYr/LIO09IbcrYQ==
-  dependencies:
-    "@types/compression" "1.7.0"
-    "@types/express" "4.17.6"
-    "@types/node" "13.13.0"
-    "@types/sockjs" "0.3.31"
-    "@types/spdy" "3.4.4"
-    "@umijs/utils" "3.1.2"
-    compression "1.7.4"
-    express "4.17.1"
-    http-proxy-middleware "1.0.3"
-    immer "6.0.3"
-    portfinder "1.0.25"
-    sockjs "0.3.20"
-    spdy "4.0.2"
-
-"@umijs/types@^3.0.0-beta.22":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/types/-/types-3.1.2.tgz#af5839b02edb58dbfa1b4048f2fbffa12605257c"
-  integrity sha512-ouKxPYqePXEY8Oz8zBDZjUXv6e6GaWXNgTQ/ZvVZGjeohtc0koGzveo1a8SYDm5MlDRoHbryFG7MXz1iE2mkMw==
-  dependencies:
-    "@types/cheerio" "0.22.17"
-    "@types/express" "4.17.6"
-    "@types/webpack" "4.41.12"
-    "@types/webpack-bundle-analyzer" "2.13.3"
-    "@umijs/babel-preset-umi" "3.1.2"
-    "@umijs/core" "3.1.2"
-    "@umijs/server" "3.1.2"
-    "@umijs/utils" "3.1.2"
-    webpack-chain "6.4.0"
-
-"@umijs/utils@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@umijs/utils/-/utils-3.1.2.tgz#9c1ca74b3666b69c3107159b13dfcec1ae90f1d3"
-  integrity sha512-mM0TBt1onTJvoUpP61dYTVdGgtXvttZKEYdsOagVJHIm8lFCsgMomowQY1XMpg7AboTRAJm0ZD4EBxRE4+m/DA==
-  dependencies:
-    "@babel/parser" "7.9.4"
-    "@babel/register" "7.9.0"
-    "@babel/traverse" "7.9.5"
-    "@babel/types" "7.9.5"
-    "@types/cheerio" "0.22.17"
-    "@types/color" "3.0.1"
-    "@types/cross-spawn" "6.0.1"
-    "@types/debug" "4.1.5"
-    "@types/glob" "7.1.1"
-    "@types/got" "9.6.10"
-    "@types/lodash" "4.14.150"
-    "@types/mkdirp" "1.0.0"
-    "@types/mustache" "4.0.1"
-    "@types/resolve" "1.14.0"
-    "@types/rimraf" "3.0.0"
-    "@types/semver" "7.1.0"
-    "@types/signale" "1.4.1"
-    "@types/yargs" "15.0.4"
-    "@types/yargs-parser" "15.0.0"
-    address "1.1.2"
-    chalk "4.0.0"
-    cheerio "1.0.0-rc.3"
-    chokidar "3.3.1"
-    clipboardy "2.3.0"
-    color "3.1.2"
-    crequire "1.8.1"
-    cross-spawn "7.0.2"
-    debug "4.1.1"
-    deepmerge "4.2.2"
-    execa "4.0.0"
-    glob "7.1.6"
-    got "9.6.0"
-    lodash "4.17.15"
-    mkdirp "1.0.4"
-    mustache "4.0.1"
-    pkg-up "3.1.0"
-    portfinder "1.0.25"
-    resolve "1.16.1"
-    rimraf "3.0.2"
-    semver "7.3.2"
-    signale "1.4.0"
-    yargs "15.3.1"
-    yargs-parser "18.1.3"
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -4491,14 +4333,6 @@ before-after-hook@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-2.1.0.tgz#b6c03487f44e24200dd30ca5e6a1979c5d2fb635"
   integrity sha512-IWIbu7pMqyw3EAJHzzHbWa85b6oud/yfKYg5rqB5hNE8CeMi3nX+2C2sj0HswfblST86hpVEOAb9x34NZd6P7A==
-
-benchmark@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/benchmark/-/benchmark-2.1.4.tgz#09f3de31c916425d498cc2ee565a0ebf3c2a5629"
-  integrity sha1-CfPeMckWQl1JjMLuVloOvzwqVik=
-  dependencies:
-    lodash "^4.17.4"
-    platform "^1.3.3"
 
 better-path-resolve@^1.0.0:
   version "1.0.0"
@@ -12258,11 +12092,6 @@ pkg-up@^2.0.0:
   integrity sha1-yBmscoBZpGHKscOImivjxJoATX8=
   dependencies:
     find-up "^2.1.0"
-
-platform@^1.3.3:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/platform/-/platform-1.3.5.tgz#fb6958c696e07e2918d2eeda0f0bc9448d733444"
-  integrity sha512-TuvHS8AOIZNAlE77WUDiR4rySV/VMptyMfcfeoMgs4P8apaZM3JrnbzBiixKUv+XR6i+BXrQh8WAnjaSPFO65Q==
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"

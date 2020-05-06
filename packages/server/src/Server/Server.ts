@@ -8,7 +8,7 @@ import {
   RequestHandler as ProxyRequestHandler,
   Filter as ProxyFilter,
 } from 'http-proxy-middleware';
-import http, { ServerResponse } from 'http';
+import * as http from 'http';
 import { ServerOptions } from 'spdy';
 import * as url from 'url';
 import https from 'https';
@@ -248,7 +248,7 @@ class Server {
       if (proxyConfig.target) {
         return createProxyMiddleware(context!, {
           ...proxyConfig,
-          onProxyRes(proxyRes: any, req: Request, res) {
+          onProxyRes(proxyRes, req: any, res) {
             const target =
               typeof proxyConfig.target === 'object'
                 ? url.format(proxyConfig.target)
