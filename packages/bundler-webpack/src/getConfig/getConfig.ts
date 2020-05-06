@@ -14,13 +14,13 @@ import {
 import { lodash } from '@umijs/utils';
 import css, { createCSSRule } from './css';
 import terserOptions from './terserOptions';
-import { objToStringified } from './utils';
 import {
   TYPE_ALL_EXCLUDE,
   isMatch,
   excludeToPkgs,
   es5ImcompatibleVersionsToPkg,
 } from './nodeModulesTransform';
+import resolveDefine from './resolveDefine';
 
 export interface IOpts {
   cwd: string;
@@ -327,13 +327,9 @@ export default async function getConfig(
 
   // define
   webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
-    {
-      'process.env': objToStringified({
-        ...process.env,
-        NODE_ENV: env,
-      }),
-      ...objToStringified(config.define || {}),
-    },
+    resolveDefine({
+      define: config.define || {},
+    }),
   ] as any);
 
   // progress
