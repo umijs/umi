@@ -92,6 +92,7 @@ export interface IApi extends PluginAPI {
   pkg: typeof Service.prototype.pkg;
   env: typeof Service.prototype.env;
   args: typeof Service.prototype.args;
+  service: Service;
 
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
@@ -273,7 +274,7 @@ interface BaseIConfig extends IConfigCore {
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
   mpa?: object;
-  mock?: { exclude?: string[]; };
+  mock?: { exclude?: string[] };
   mountElementId?: string;
   nodeModulesTransform?: {
     type: 'all' | 'none';
