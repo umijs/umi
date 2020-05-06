@@ -53,6 +53,7 @@ export { signale };
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';
+export { default as isTypeScriptProject } from './isTypeScriptProject/isTypeScriptProject';
 export { default as getFile } from './getFile/getFile';
 export { default as winPath } from './winPath/winPath';
 export { default as winEOL, isWindows } from './winEOL/winEOL';
