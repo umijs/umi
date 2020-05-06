@@ -590,7 +590,7 @@ HTML 中会生成，
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
 ```
 
-## forkTSCheker
+## forkTSChecker
 
 * Type: `object`
 
