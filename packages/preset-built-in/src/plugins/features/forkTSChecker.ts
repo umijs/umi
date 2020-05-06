@@ -3,7 +3,7 @@ import { IApi, utils } from 'umi';
 export default (api: IApi) => {
   const { deepmerge } = utils;
   api.describe({
-    key: 'forkTSCheker',
+    key: 'forkTSChecker',
     config: {
       schema(joi) {
         return joi
@@ -29,7 +29,7 @@ export default (api: IApi) => {
       },
     },
     enableBy: () =>
-      (process.env.FORK_TS_CHECKER || !!api.config?.forkTSCheker) as boolean,
+      (process.env.FORK_TS_CHECKER || !!api.config?.forkTSChecker) as boolean,
   });
 
   api.chainWebpack((webpackConfig) => {
@@ -43,7 +43,7 @@ export default (api: IApi) => {
             async: false,
             checkSyntacticErrors: true,
           },
-          api.config?.forkTSCheker || {},
+          api.config?.forkTSChecker || {},
         ),
       ]);
     return webpackConfig;
