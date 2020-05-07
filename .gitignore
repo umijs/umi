@@ -16,3 +16,5 @@
 **/*.css.d.ts
 report.*.json
 output.txt
+/examples/*/dist
+/examples/*/node_modules
