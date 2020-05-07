@@ -69,6 +69,10 @@ $ ANALYZE=1 umi dev
 $ ANALYZE=1 umi build
 ```
 
+### BABEL_CACHE
+
+默认开启 Babel 编译缓存，值为 none 时禁用缓存。
+
 ### BABEL\_POLYFILL
 
 默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
@@ -124,6 +128,10 @@ $ PROGRESS=none umi dev
 ```bash
 $ SOCKET_SERVER=https://localhost:7001/ umi dev
 ```
+
+### TERSER_CACHE
+
+默认开启 Terser 压缩缓存，值为 none 时禁用缓存。
 
 ### UMI_ENV
 

@@ -419,7 +419,7 @@ export default async function getConfig(
                 config.terserOptions || {},
               ),
               sourceMap: config.devtool !== false,
-              cache: true,
+              cache: process.env.TERSER_CACHE !== 'none',
               parallel: true,
               extractComments: false,
             },
