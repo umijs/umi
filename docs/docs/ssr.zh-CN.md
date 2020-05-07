@@ -175,13 +175,6 @@ export const ssr = {
       store: getApp()._store,
     }
   },
-  // 修改 ssr 后的 html 初始化数据变量，window.g_dva_store = {};
-  modifyWindowInitialVars: async (memo, { forceInitial, serialize }) => {
-    return {
-      ...memo,
-      ...(forceInitial ? { 'window.g_dva_store': serialize(getApp()._store) } : {}),
-    }
-  },
 }
 ```
 

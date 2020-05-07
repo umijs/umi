@@ -94,11 +94,10 @@ const getInitial = async (params) => {
  */
 const handleHTML = async ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{ Mode }}}' }) => {
   const forceInitial = {{{ ForceInitial }}};
-  const defaultWindowInitialVars = {
+  const windowInitialVars = {
     ...(appInitialData && !forceInitial ? { 'window.g_initialData': serialize(appInitialData) } : {}),
     ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
   }
-  const windowInitialVars = typeof modifyWindowInitialVars === 'function' ? await modifyWindowInitialVars(defaultWindowInitialVars, { forceInitial, serialize }) : defaultWindowInitialVars;
   const htmlWithInitialData = html.replace(
     '</head>',
     `<script>
