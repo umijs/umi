@@ -43,7 +43,7 @@ export default function (api: IApi) {
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
     if (
-      env === 'production' &&
+      (env === 'production' || (env === 'development' && !!api.config?.ssr)) &&
       id === 'webpack' &&
       process.env.HTML !== 'none' &&
       // avoid ssr bundler build override index.html

@@ -18,6 +18,12 @@ export default (api: IApi) => {
   api.describe({
     key: 'ssr',
     config: {
+      default: {
+        forceInitial: false,
+        devServerRender: true,
+        mode: 'string',
+        staticMarkup: false,
+      },
       schema: (joi) => {
         return joi.object({
           forceInitial: joi
@@ -105,15 +111,16 @@ export default (api: IApi) => {
     }
     // DISCUSS: 是否需要强行改项目配置的方式，来开启 dev 下写 umi.server.js
     // force enable writeToDisk
-    config.devServer.writeToDisk = (filePath: string) =>
-      /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
+    config.devServer.writeToDisk = (filePath: string) => {
+      return /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
+    };
     return config;
   });
 
   // modify devServer content
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
-    const { stream } = api.config?.ssr || {};
+    const { stream, devServerRender } = api.config?.ssr || {};
     const serverPath = path.join(
       api.paths!.absOutputPath,
       OUTPUT_SERVER_FILENAME,
@@ -121,6 +128,10 @@ export default (api: IApi) => {
     // if dev clear cache
     if (api.env === 'development') {
       delete require.cache[serverPath];
+    }
+
+    if (!devServerRender) {
+      return defaultHtml;
     }
 
     console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
@@ -190,23 +201,40 @@ export default (api: IApi) => {
   ]);
 
   /**
+   * replace umi.server.js DEFAULT_HTML_PLACEHOLDER
+   */
+  const replaceHTMLPlaceholder = () => {
+    const { serverFile, htmlFile, serverFilePath } = getDistContent(
+      api.paths!.absOutputPath,
+    );
+
+    if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
+      // has placeholder
+      const newServerFile = serverFile.replace(
+        new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
+        JSON.stringify(htmlFile),
+      );
+      fs.writeFileSync(serverFilePath, newServerFile, 'utf-8');
+    }
+  };
+
+  /**
+   * with server in ssr.devServerRender: false
+   */
+  api.onDevCompileDone(({ isFirstCompile }) => {
+    const { devServerRender } = api.config?.ssr || {};
+    if (isFirstCompile && !devServerRender) {
+      replaceHTMLPlaceholder();
+    }
+  });
+
+  /**
    * replace default html string when build success
    * [WARN] must exec before prerender plugin
    */
   api.onBuildComplete(({ err }) => {
     if (!err) {
-      const { serverFile, htmlFile, serverFilePath } = getDistContent(
-        api.paths!.absOutputPath,
-      );
-
-      if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
-        // has placeholder
-        const newServerFile = serverFile.replace(
-          new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
-          JSON.stringify(htmlFile),
-        );
-        fs.writeFileSync(serverFilePath, newServerFile, 'utf-8');
-      }
+      replaceHTMLPlaceholder();
     }
   });
 };

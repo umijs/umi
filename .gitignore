@@ -19,3 +19,6 @@ output.txt
 /examples/*/dist
 /examples/*/node_modules
 /examples/*/yarn.lock
+/examples/*/app/public
+/examples/*/logs
+/examples/*/run
