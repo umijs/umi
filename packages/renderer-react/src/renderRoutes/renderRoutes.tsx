@@ -9,7 +9,7 @@ interface IOpts {
   plugin: Plugin;
   extraProps?: object;
   pageInitialProps?: object;
-  getInitialPropsParams?: object;
+  getInitialPropsCtx?: object;
   appInitialData?: object;
 }
 
@@ -38,7 +38,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
           const defaultCtx = {
             isServer: false,
             match: props?.match,
-            ...(opts.getInitialPropsParams || {}),
+            ...(opts.getInitialPropsCtx || {}),
             ...restRouteParams,
           };
           const ctx = modifyGetInitialPropsCtx

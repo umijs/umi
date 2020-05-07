@@ -148,8 +148,8 @@ test('ssr', async () => {
   rimraf.sync(join(cwd, '.umi-test'));
 });
 
-test('ssr getInitialPropsParams', async () => {
-  const cwd = join(fixtures, 'ssr-getInitialPropsParams');
+test('ssr getInitialPropsCtx', async () => {
+  const cwd = join(fixtures, 'ssr-getInitialPropsCtx');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
   delete require.cache[tmpServerFile];
@@ -171,7 +171,7 @@ test('ssr getInitialPropsParams', async () => {
     path: '/',
     htmlTemplate,
     mountElementId: 'root',
-    getInitialPropsParams: {
+    getInitialPropsCtx: {
       fromServerTitle: 'Server Title',
     },
   });

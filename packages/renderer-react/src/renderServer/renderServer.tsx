@@ -8,7 +8,7 @@ import renderRoutes from '../renderRoutes/renderRoutes';
 interface IOpts {
   path: string;
   extraProps?: object;
-  getInitialPropsParams?: object;
+  getInitialPropsCtx?: object;
   basename?: string;
   routes: IRoute[];
   pageInitialProps?: object;
