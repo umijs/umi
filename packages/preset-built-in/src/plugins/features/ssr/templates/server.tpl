@@ -33,7 +33,7 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
   match: object;
 }
 
-const { getInitialData, modifyGetInitialPropsCtx, modifyHTML } = plugin.applyPlugins({
+const { getInitialData, modifyGetInitialPropsCtx, modifyHTML, modifyWindowInitialVars } = plugin.applyPlugins({
   key: 'ssr',
   type: ApplyPluginsType.modify,
   initialValue: {},
@@ -47,7 +47,6 @@ const getInitial = async (params) => {
   const { path, basename = '{{{ Basename }}}' } = params;
   // handle basename
   const { pathname } = stripBasename(basename, path);
-  console.log('qwefqwef', matchRoutes(routes, pathname));
   const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
     // @ts-ignore
     const { component, ...restRouteParams } = route;
@@ -66,7 +65,6 @@ const getInitial = async (params) => {
         ...(params.getInitialPropsCtx || {}),
         ...restRouteParams,
       };
-      console.log('componentName', componentName, component.getInitialProps);
       // extend the `params` of getInitialProps(params) function
       const ctx = modifyGetInitialPropsCtx ? await modifyGetInitialPropsCtx(defaultCtx) : defaultCtx;
       const initialProps = component.getInitialProps
@@ -94,13 +92,18 @@ const getInitial = async (params) => {
  * handle html with rootContainer(rendered)
  * @param param0
  */
-const handleHTML = ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{ Mode }}}' }) => {
+const handleHTML = async ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{ Mode }}}' }) => {
+  const forceInitial = {{{ ForceInitial }}};
+  const defaultWindowInitialVars = {
+    ...(appInitialData && !forceInitial ? { 'window.g_initialData': serialize(appInitialData) } : {}),
+    ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
+  }
+  const windowInitialVars = typeof modifyWindowInitialVars === 'function' ? await modifyWindowInitialVars(defaultWindowInitialVars, { forceInitial, serialize }) : defaultWindowInitialVars;
   const htmlWithInitialData = html.replace(
     '</head>',
     `<script>
       window.g_useSSR = true;
-      ${appInitialData && !{{{ ForceInitial }}} ? `window.g_initialData = ${serialize(appInitialData)};` : ''}
-      ${pageInitialProps && !{{{ ForceInitial }}} ? `window.g_initialProps = ${serialize(pageInitialProps)};` : ''}
+      ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).concat('').join(';\n')}
     </script>
     </head>`
   )
@@ -168,7 +171,7 @@ const render: IRender = async (params) => {
     if (html) {
       // plugin for modify html template
       html = typeof modifyHTML === 'function' ? await modifyHTML(html, { context }) : html;
-      html = handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
+      html = await handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
     }
   } catch (e) {
     // downgrade into csr
