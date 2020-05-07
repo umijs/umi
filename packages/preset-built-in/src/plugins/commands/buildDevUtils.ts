@@ -143,7 +143,7 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
   const filesize = (bytes: number) => {
     bytes = Math.abs(bytes);
     const radix = 1024;
-    const unit = ['b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb', 'Eb', 'Zb', 'Yb'];
+    const unit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     let loop = 0;
 
     // calculate
