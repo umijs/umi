@@ -77,6 +77,9 @@ async function release() {
     if (!args.skipBuild) {
       logStep('build');
       await exec('npm', ['run', 'build']);
+
+      // 为 defineConfig.d.ts 添加 ts-ignore
+      require('./tsIngoreDefineConfig');
     } else {
       logStep('build is skipped, since args.skipBuild is supplied');
     }
