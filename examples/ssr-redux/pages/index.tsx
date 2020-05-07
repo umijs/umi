@@ -1,5 +1,6 @@
 // from next.js ssr-redux-examples
 import React from 'react';
+import { isBrowser } from 'umi';
 import { useDispatch } from 'react-redux';
 import { withRedux } from '../lib/redux';
 import useInterval from '../lib/useInterval';
@@ -30,7 +31,7 @@ IndexPage.getInitialProps = ({ reduxStore }) => {
   const { dispatch } = reduxStore;
   dispatch({
     type: 'TICK',
-    light: typeof window === 'object',
+    light: isBrowser(),
     lastUpdate: Date.now(),
   });
 
