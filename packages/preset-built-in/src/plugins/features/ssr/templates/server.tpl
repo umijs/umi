@@ -1,7 +1,7 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
 import { renderServer, matchRoutes } from '{{{ Renderer }}}';
-import { stripBasename, serialize, mergeStream, ReadableString, getComponentDisplayName } from '{{{ Utils }}}';
+import { stripBasename, serialize, mergeStream, ReadableString, getComponentDisplayName, cheerio } from '{{{ Utils }}}';
 
 import { ApplyPluginsType } from '@umijs/runtime';
 import { plugin } from './plugin';
@@ -33,7 +33,7 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
   match: object;
 }
 
-const { getInitialData, modifyGetInitialPropsCtx, modifyHTML, modifyWindowInitialVars } = plugin.applyPlugins({
+const { getInitialData, modifyGetInitialPropsCtx, modifyServerHTML } = plugin.applyPlugins({
   key: 'ssr',
   type: ApplyPluginsType.modify,
   initialValue: {},
@@ -169,7 +169,7 @@ const render: IRender = async (params) => {
     rootContainer = serverResult.html;
     if (html) {
       // plugin for modify html template
-      html = typeof modifyHTML === 'function' ? await modifyHTML(html, { context }) : html;
+      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio }) : html;
       html = await handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
     }
   } catch (e) {

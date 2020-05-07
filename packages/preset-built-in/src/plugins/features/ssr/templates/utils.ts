@@ -68,3 +68,4 @@ export class ReadableString extends Readable {
 export const getComponentDisplayName = (Component: any, defaultName = 'Unknown') => typeof Component === 'string' ? Component : (Component.displayName || Component.name || defaultName)
 
 export { serialize, mergeStream };
+export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio'
