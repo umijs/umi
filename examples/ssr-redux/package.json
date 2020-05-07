@@ -1,0 +1,18 @@
+{
+  "name": "ssr-redux",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build"
+  },
+  "private": true,
+  "peerDependencies": {
+    "umi": "latest"
+  },
+  "dependencies": {
+    "react-redux": "^7.1.0",
+    "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.2"
+  },
+  "license": "ISC"
+}

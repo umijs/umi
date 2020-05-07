@@ -18,3 +18,4 @@ report.*.json
 output.txt
 /examples/*/dist
 /examples/*/node_modules
+/examples/*/yarn.lock
