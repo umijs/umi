@@ -21,7 +21,7 @@ const Clock = () => {
   return (
     <div className={light ? 'light' : ''}>
       {formatTime(lastUpdate)}
-      <style jsx>{`
+      <style jsx="true">{`
         div {
           padding: 15px;
           display: inline-block;
