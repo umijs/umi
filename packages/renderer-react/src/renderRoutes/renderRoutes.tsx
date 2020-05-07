@@ -30,24 +30,22 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
     useEffect(() => {
       if (!(window as any).g_initialProps) {
         (async () => {
-          const { modifyGetInitialPropsParams } = opts.plugin.applyPlugins({
+          const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
             key: 'ssr',
             type: ApplyPluginsType.modify,
             initialValue: {},
           });
-          const defaultGetInitialPropsParams = {
+          const defaultCtx = {
             isServer: false,
             match: props?.match,
             ...(opts.getInitialPropsParams || {}),
             ...restRouteParams,
           };
-          const initialPropsParams = modifyGetInitialPropsParams
-            ? await modifyGetInitialPropsParams(defaultGetInitialPropsParams)
-            : defaultGetInitialPropsParams;
+          const ctx = modifyGetInitialPropsCtx
+            ? await modifyGetInitialPropsCtx(defaultCtx)
+            : defaultCtx;
           if (Component!.getInitialProps) {
-            const initialProps = await Component!.getInitialProps!(
-              initialPropsParams,
-            );
+            const initialProps = await Component!.getInitialProps!(ctx);
             setInitialProps(initialProps);
           }
         })();

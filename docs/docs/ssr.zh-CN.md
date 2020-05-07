@@ -164,12 +164,12 @@ export default Home;
 - `match`： 与客户端页面 props 中的 `match` 保持一致，有当前路由的相关数据。
 - `isServer`：是否为服务端在执行该方法。
 
-同时为了结合数据流框架，我们提供了 `modifyGetInitialPropsParams` 方法，由插件或应用来扩展参数，例如 `dva`：
+同时为了结合数据流框架，我们提供了 `modifyGetInitialPropsCtx` 方法，由插件或应用来扩展参数，例如 `dva`：
 
 ```jsx
 // plugin-dva/runtime.ts
 export const ssr = {
-  modifyGetInitialPropsParams: async (params) => {
+  modifyGetInitialPropsCtx: async (params) => {
     return {
       ...params,
       store: getApp()._store,
@@ -183,7 +183,7 @@ export const ssr = {
 ```js
 // app.(ts|js)
 export const ssr = {
-  modifyGetInitialPropsParams: async (params) => {
+  modifyGetInitialPropsCtx: async (params) => {
     return {
       ...params,
       title: 'params'

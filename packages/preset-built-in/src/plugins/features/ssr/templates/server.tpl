@@ -1,7 +1,7 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
 import { renderServer, matchRoutes } from '{{{ Renderer }}}';
-import { stripBasename, serialize, mergeStream, ReadableString, } from '{{{ Utils }}}';
+import { stripBasename, serialize, mergeStream, ReadableString, getComponentDisplayName } from '{{{ Utils }}}';
 
 import { ApplyPluginsType } from '@umijs/runtime';
 import { plugin } from './plugin';
@@ -33,7 +33,7 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
   match: object;
 }
 
-const { getInitialData, modifyGetInitialPropsParams, modifyHTML } = plugin.applyPlugins({
+const { getInitialData, modifyGetInitialPropsCtx, modifyHTML } = plugin.applyPlugins({
   key: 'ssr',
   type: ApplyPluginsType.modify,
   initialValue: {},
@@ -47,21 +47,32 @@ const getInitial = async (params) => {
   const { path, basename = '{{{ Basename }}}' } = params;
   // handle basename
   const { pathname } = stripBasename(basename, path);
+  console.log('qwefqwef', matchRoutes(routes, pathname));
   const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
     // @ts-ignore
     const { component, ...restRouteParams } = route;
+    const componentName = getComponentDisplayName(component);
+    // throw error when not use static function
+    if ('{{{ Env }}}' !== 'production') {
+      if (component.prototype?.getInitialProps) {
+        throw new Error(`${componentName}.getInitialProps()" is defined as an instance method, please use static getInitialProps or ${componentName}.getInitialProps`);
+      }
+    }
+
     if (component && component?.getInitialProps) {
-      const defaultInitialProps = {
+      const defaultCtx = {
         isServer: true,
         match,
-        ...(params.getInitialPropsParams || {}),
+        ...(params.getInitialPropsCtx || {}),
         ...restRouteParams,
       };
+      console.log('componentName', componentName, component.getInitialProps);
       // extend the `params` of getInitialProps(params) function
-      const initialPropsParams = modifyGetInitialPropsParams ? await modifyGetInitialPropsParams(defaultInitialProps) : defaultInitialProps;
-      return component.getInitialProps
-        ? await component.getInitialProps(initialPropsParams)
+      const ctx = modifyGetInitialPropsCtx ? await modifyGetInitialPropsCtx(defaultCtx) : defaultCtx;
+      const initialProps = component.getInitialProps
+        ? await component.getInitialProps(ctx)
         : null;
+      return initialProps;
     }
   }).filter(Boolean);
   const pageInitialProps = (await Promise.all(matched)).reduce((acc, curr) => Object.assign({}, acc, curr), {});
@@ -125,7 +136,7 @@ const render: IRender = async (params) => {
     mode = '{{{ Mode }}}',
     basename = '{{{ Basename }}}',
     staticMarkup = {{{StaticMarkup}}},
-    getInitialPropsParams,
+    getInitialPropsCtx,
   } = params;
 
   let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
@@ -135,11 +146,11 @@ const render: IRender = async (params) => {
     const { pageInitialProps, appInitialData } = await getInitial({
       path,
       basename,
-      getInitialPropsParams,
+      getInitialPropsCtx,
     });
     const opts = {
       path,
-      getInitialPropsParams,
+      getInitialPropsCtx,
       pageInitialProps,
       appInitialData,
       context,

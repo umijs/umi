@@ -64,5 +64,7 @@ export class ReadableString extends Readable {
   }
 }
 
+// get displayName from Component
+export const getComponentDisplayName = (Component: any, defaultName = 'Unknown') => typeof Component === 'string' ? Component : (Component.displayName || Component.name || defaultName)
 
 export { serialize, mergeStream };

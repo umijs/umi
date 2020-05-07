@@ -58,6 +58,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
+        Env: api.env,
         Renderer: winPath(
           path.dirname(require.resolve('@umijs/renderer-react/package')),
         ),
