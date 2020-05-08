@@ -151,6 +151,28 @@ export default {
 };
 ```
 
+## 用 esbuild 作为压缩器
+
+> 试验性功能，可能有坑，但效果拔群。
+
+以依赖了全量 antd 和 bizcharts 的项目为例，在禁用 Babel 缓存和 Terser 缓存的基础上进行了测试，效果如图：
+
+<img src="https://cdn.nlark.com/yuque/0/2020/png/86025/1588847300475-07a8dcaa-c712-4e5b-b244-367b3e0d61ca.png" width=400 />
+
+先安装依赖，
+
+```bash
+$ yarn add @umijs/plugin-esbuild
+```
+
+然后在配置里开启，
+
+```js
+export default {
+  esbuild: {},
+}
+```
+
 ## 不压缩
 
 > 不推荐，紧急情况下使用。
