@@ -221,9 +221,9 @@ export default (api: IApi) => {
   /**
    * with server in ssr.devServerRender: false
    */
-  api.onDevCompileDone(({ isFirstCompile }) => {
+  api.onDevCompileDone(() => {
     const { devServerRender } = api.config?.ssr || {};
-    if (isFirstCompile && !devServerRender) {
+    if (!devServerRender) {
       replaceHTMLPlaceholder();
     }
   });
