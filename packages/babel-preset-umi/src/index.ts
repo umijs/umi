@@ -85,6 +85,7 @@ export default (context: any, opts: IOpts = {}) => {
       ],
       require('@babel/plugin-proposal-do-expressions').default,
       require('@babel/plugin-proposal-function-bind').default,
+      require('@babel/plugin-proposal-logical-assignment-operators').default,
       opts.transformRuntime && [
         require('@babel/plugin-transform-runtime').default,
         {
