@@ -241,3 +241,12 @@ test('svgr', () => {
   );
   expect(winPath(code!)).toContain(`index.js?-svgo,+titleProp,+ref!./a.svg");`);
 });
+
+test('logical assignment operators', () => {
+  const code = transformWithPreset(`a ||= b;`, {
+    env: {
+      targets: { ie: 10 },
+    },
+  });
+  expect(winPath(code!)).toContain(`a || (a = b);`);
+});
