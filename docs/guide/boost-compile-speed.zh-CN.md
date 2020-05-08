@@ -146,7 +146,7 @@ export default {
 };
 ```
 
-## 用 esbuild 作为压缩器
+## 替换压缩器为 esbuild
 
 > 试验性功能，可能有坑，但效果拔群。
 
