@@ -359,6 +359,8 @@ export default {
     - index.html
 ```
 
+> 默认情况下，预渲染后会删除 `umi.server.js` 服务端入口文件，如果需要保留，可使用变量 `RM_SERVER_FILE=none` 来保留 `umi.server.js`。
+
 ## 页面标题渲染
 
 为了更灵活地对页面标题展示，可以使用官方的 [@umijs/plugin-helmet](@umijs/plugin-helmet) 插件，该插件同时也支持服务端渲染标题，使用方式：

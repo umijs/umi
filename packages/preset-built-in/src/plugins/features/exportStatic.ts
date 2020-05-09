@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, IRoute } from '@umijs/types';
-import { deepmerge, lodash } from '@umijs/utils';
+import { deepmerge, lodash, rimraf } from '@umijs/utils';
 import pathToRegexp from 'path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
@@ -100,6 +100,17 @@ export default (api: IApi) => {
       }
     }
     return memo;
+  });
+
+  api.onBuildComplete(({ err }) => {
+    if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
+      // remove umi.server.js
+      const { absOutputPath } = api.paths;
+      const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+      if (existsSync(serverFilePath)) {
+        rimraf.sync(serverFilePath);
+      }
+    }
   });
 
   function addHtmlSuffix(path: string, hasRoutes: boolean) {
