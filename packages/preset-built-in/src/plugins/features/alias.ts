@@ -4,17 +4,6 @@ import { winPath, resolve } from '@umijs/utils';
 
 export default (api: IApi) => {
   const { paths, pkg, cwd } = api;
-  const pathsAliasMapping = {
-    '@': 'absSrcPath',
-    '@@': 'absTmpPath',
-  };
-  // 基于 alias 和 paths 的映射关系生成默认的 alias
-  const pathsRelatedAlias = Object.entries(pathsAliasMapping).reduce(
-    (result, [name, key]) => ({
-      ...result,
-      [name]: paths[key],
-    }),
-  );
 
   api.describe({
     key: 'alias',
@@ -30,8 +19,6 @@ export default (api: IApi) => {
         // 替换成带 query 的 history
         // 由于用了 query-string，会额外引入 7.6K（压缩后，gzip 前），考虑换轻量的实现
         history: dirname(require.resolve('history-with-query/package.json')),
-        // 将于 paths 对象的字段关联的 alias 展开
-        ...pathsRelatedAlias,
       },
     },
   });
@@ -58,7 +45,7 @@ export default (api: IApi) => {
 
   // 另一种实现方式:
   // 提供 projectFirstLibraries 的配置方式，但是不通用，先放插件层实现
-  api.chainWebpack(async memo => {
+  api.chainWebpack(async (memo) => {
     const libraries: {
       name: string;
       path: string;
@@ -76,21 +63,20 @@ export default (api: IApi) => {
         },
       ],
     });
-    libraries.forEach(library => {
+    libraries.forEach((library) => {
       memo.resolve.alias.set(
         library.name,
         getUserLibDir({ library: library.name }) || library.path,
       );
     });
 
-    // 遍历与 paths 对象相关的 alias 映射，用于在使用 modifyPaths API 修改 paths 后更新 alias
-    Object.entries(pathsAliasMapping).forEach(([name, key]) => {
-      if (
-        // 如果最新的 paths 对象中的值不等于初始化时的 alias 值（即 alias 过期了）
-        pathsRelatedAlias[name] !== paths[key] &&
-        // 并且当前 alias 配置项中的值仍然等于初始化时的 alias 值（即用户没有修改过）则对 alias 进行更新
-        memo.resolve.alias.get(name) === pathsRelatedAlias[name]
-      ) {
+    // 如果用户没有配置过 @ 和 @@，则配置为 Umi 的默认约定
+    // 选择在 chainWebpack 中进行以上 alias 的初始化，是为了支持用户使用 modifyPaths API 对 paths 进行改写
+    [
+      ['@', 'absSrcPath'],
+      ['@@', 'absTmpPath'],
+    ].forEach(([name, key]) => {
+      if (!memo.resolve.alias.get(name)) {
         memo.resolve.alias.set(name, paths[key]);
       }
     });
