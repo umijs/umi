@@ -21,9 +21,9 @@ export default () => <img src={require('./foo.png')} />
 export default () => <img src={require('@/foo.png')} />
 ```
 
-## use .svg in jsx, tsx
+## JS 里使用svg
 
-**import as component**
+**组件式引入**
 
 ```js
 import { ReactComponent as Logo } from './logo.svg'
@@ -33,7 +33,7 @@ function Analysis() {
 }
 ```
 
-**import as url**
+**url式引入**
 
 ```js
 import logoSrc from './logo.svg'
@@ -42,6 +42,7 @@ function Analysis() {
   return <img src={logoSrc} alt="logo" />
 }
 ```
+
 
 ## CSS 里使用图片
 

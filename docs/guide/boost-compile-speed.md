@@ -5,7 +5,7 @@ translateHelp: true
 # 如何做编译提速
 
 
-如果遇到编译慢，内存爆掉，OOM 等问题，可尝试以下方法。
+如果遇到编译慢，增量编译慢，内存爆掉，OOM 等问题，可尝试以下方法。
 
 ## 配置 `nodeModulesTransform` 为  `{ type: 'none' }`
 
@@ -77,12 +77,16 @@ ios: 10,
 
 选择合适的浏览器版本，可减少不少尺寸，比如配成以下这样，预计可减少 90K （压缩后未 gzip）的尺寸。
 
-```
-chrome: 79,
-firefox: false,
-safari: false,
-edge: false,
-ios: false
+```js
+export default {
+  targets: {
+    chrome: 79,
+    firefox: false,
+    safari: false,
+    edge: false,
+    ios: false,
+  },
+}
 ```
 
 注意：
@@ -136,11 +140,37 @@ export default {
 export default {
   devtool: false,
 };
+```
 
+或者，
+
+```js
 // 使用最低成本的 sourcemap 生成方式，默认是 cheap-module-source-map
 export default {
   devtool: 'eval',
 };
+```
+
+## 替换压缩器为 esbuild
+
+> 试验性功能，可能有坑，但效果拔群。
+
+以依赖了全量 antd 和 bizcharts 的项目为例，在禁用 Babel 缓存和 Terser 缓存的基础上进行了测试，效果如图：
+
+![](https://cdn.nlark.com/yuque/0/2020/png/86025/1588847300475-07a8dcaa-c712-4e5b-b244-367b3e0d61ca.png)
+
+先安装依赖，
+
+```bash
+$ yarn add @umijs/plugin-esbuild
+```
+
+然后在配置里开启，
+
+```js
+export default {
+  esbuild: {},
+}
 ```
 
 ## 不压缩

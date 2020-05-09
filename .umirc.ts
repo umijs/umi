@@ -16,6 +16,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/plugins/plugin-antd',
           '/plugins/plugin-crossorigin',
           '/plugins/plugin-dva',
+          '/plugins/plugin-esbuild',
           '/plugins/plugin-initial-state',
           '/plugins/plugin-layout',
           '/plugins/plugin-locale',
