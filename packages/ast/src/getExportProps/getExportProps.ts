@@ -32,6 +32,15 @@ export function getExportProps(code: string) {
           );
           if (resolver) {
             props = resolver.get(defaultExport as any);
+            if ('id' in defaultExport && t.isIdentifier(defaultExport.id)) {
+              props = {
+                ...(props as object),
+                ...findAssignmentExpressionProps({
+                  programNode: node,
+                  name: defaultExport.id.name,
+                }),
+              };
+            }
           }
         }
       },

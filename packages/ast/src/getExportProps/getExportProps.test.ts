@@ -105,6 +105,15 @@ test('export literal value', () => {
   expect(getExportProps('export default null;')).toEqual(null);
 });
 
+test('assign after exported function', () => {
+  const props = getExportProps(`
+    export default function foo() {};
+    foo.a = 1;
+    foo.b = [0, '1', () => {}];
+  `);
+  expect(props).toEqual({ a: 1, b: [0, '1', expect.any(Function)] });
+});
+
 test('no default export', () => {
   const props = getExportProps(
     `

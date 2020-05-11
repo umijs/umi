@@ -88,7 +88,7 @@ const ArrayResolver: IResolver<t.ArrayExpression> = {
 
 const FunctionResolver: IResolver<t.FunctionExpression> = {
   is(src) {
-    return t.isFunctionExpression(src);
+    return t.isFunctionExpression(src) || t.isFunctionDeclaration(src);
   },
   get(src) {
     return function () {};
