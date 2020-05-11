@@ -4,6 +4,7 @@ import {
   NODE_RESOLVERS,
   findArrayElements,
   findObjectMembers,
+  findClassStaticProperty,
 } from './propertyResolver';
 
 export function getExportProps(code: string) {
