@@ -20,7 +20,7 @@ No black magic, hooks model file is just normal custom hooks module. See below e
 **src/models/useAuthModel.js**
 
 ```js
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 export default function useAuthModel() {
   const [user, setUser] = useState(null)
