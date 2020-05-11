@@ -152,7 +152,7 @@ export default {
 
 以依赖了全量 antd 和 bizcharts 的项目为例，在禁用 Babel 缓存和 Terser 缓存的基础上进行了测试，效果如图：
 
-![](https://cdn.nlark.com/yuque/0/2020/png/86025/1588847300475-07a8dcaa-c712-4e5b-b244-367b3e0d61ca.png)
+![](https://gw.alipayobjects.com/zos/antfincdn/NRwBU0Kgui/7f24657c-ec26-420b-b956-14ae4e3de0a3.png)
 
 先安装依赖，
 
