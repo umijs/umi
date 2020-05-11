@@ -70,7 +70,9 @@ const getInitial = async (params) => {
       const defaultInitialProps = component.getInitialProps
         ? await component.getInitialProps(ctx)
         : null;
-      const initialProps = modifyInitialProps ? await modifyInitialProps(defaultInitialProps) : defaultInitialProps;
+      const initialProps = modifyInitialProps
+        ? await modifyInitialProps(defaultInitialProps)
+        : defaultInitialProps;
       return initialProps;
     }
   }).filter(Boolean);
