@@ -50,7 +50,7 @@ export default {
 
 ## 配置 Mock
 
-详见[配置#mock](TODO)。
+详见[配置#mock](/config#mock)。
 
 ## 如何关闭 Mock？
 
