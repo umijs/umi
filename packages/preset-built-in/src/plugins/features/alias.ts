@@ -70,16 +70,9 @@ export default (api: IApi) => {
       );
     });
 
-    // 如果用户没有配置过 @ 和 @@，则配置为 Umi 的默认约定
     // 选择在 chainWebpack 中进行以上 alias 的初始化，是为了支持用户使用 modifyPaths API 对 paths 进行改写
-    [
-      ['@', 'absSrcPath'],
-      ['@@', 'absTmpPath'],
-    ].forEach(([name, key]) => {
-      if (!memo.resolve.alias.get(name)) {
-        memo.resolve.alias.set(name, paths[key]);
-      }
-    });
+    memo.resolve.alias.set('@', paths.absSrcPath as string);
+    memo.resolve.alias.set('@@', paths.absSrcPath as string);
 
     return memo;
   });
