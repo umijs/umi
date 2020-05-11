@@ -65,6 +65,9 @@ export default (api: IApi) => {
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
         Env: api.env,
+        RuntimePath: winPath(
+          path.dirname(require.resolve('@umijs/runtime/package.json')),
+        ),
         Renderer: winPath(
           path.dirname(require.resolve('@umijs/renderer-react/package')),
         ),
@@ -134,20 +137,24 @@ export default (api: IApi) => {
       return defaultHtml;
     }
 
-    console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
-
-    const render = require(serverPath);
-    const { html, error } = await render({
-      // with query
-      path: req.url,
-      htmlTemplate: defaultHtml,
-      mountElementId: api.config?.mountElementId,
-    });
-
-    console.timeEnd(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
-
-    if (!error) {
+    try {
+      console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
+      const render = require(serverPath);
+      const { html, error } = await render({
+        // with query
+        path: req.url,
+        htmlTemplate: defaultHtml,
+        mountElementId: api.config?.mountElementId,
+      });
+      console.timeEnd(
+        `[SSR] ${stream ? 'stream' : ''} render ${req.url} start`,
+      );
+      if (error) {
+        throw error;
+      }
       return html;
+    } catch (e) {
+      api.logger.error('[SSR]', e);
     }
     return defaultHtml;
   });
@@ -162,6 +169,7 @@ export default (api: IApi) => {
       config.entry(CHUNK_NAME).add(serverEntryPath);
       config.target('node');
       config.name(CHUNK_NAME);
+      config.devtool(false);
 
       config.output
         .filename(OUTPUT_SERVER_FILENAME)

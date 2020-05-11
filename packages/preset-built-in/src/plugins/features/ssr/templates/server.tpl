@@ -3,7 +3,7 @@ import '{{{ RuntimePolyfill }}}';
 import { renderServer, matchRoutes } from '{{{ Renderer }}}';
 import { stripBasename, serialize, mergeStream, ReadableString, getComponentDisplayName, cheerio } from '{{{ Utils }}}';
 
-import { ApplyPluginsType } from '@umijs/runtime';
+import { ApplyPluginsType, createMemoryHistory } from '{{{ RuntimePath }}}';
 import { plugin } from './plugin';
 import { routes } from './routes';
 
@@ -33,7 +33,7 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
   match: object;
 }
 
-const { getInitialData, modifyGetInitialPropsCtx, modifyServerHTML } = plugin.applyPlugins({
+const { getInitialData, modifyGetInitialPropsCtx, modifyInitialProps, modifyServerHTML } = plugin.applyPlugins({
   key: 'ssr',
   type: ApplyPluginsType.modify,
   initialValue: {},
@@ -45,31 +45,32 @@ const { getInitialData, modifyGetInitialPropsCtx, modifyServerHTML } = plugin.ap
  */
 const getInitial = async (params) => {
   const { path, basename = '{{{ Basename }}}' } = params;
+  // server history
+  const history = createMemoryHistory({
+    initialEntries: [path],
+  });
   // handle basename
   const { pathname } = stripBasename(basename, path);
   const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
     // @ts-ignore
     const { component, ...restRouteParams } = route;
     const componentName = getComponentDisplayName(component);
-    // throw error when not use static function
-    if ('{{{ Env }}}' !== 'production') {
-      if (component.prototype?.getInitialProps) {
-        throw new Error(`${componentName}.getInitialProps()" is defined as an instance method, please use static getInitialProps or ${componentName}.getInitialProps`);
-      }
-    }
 
     if (component && component?.getInitialProps) {
       const defaultCtx = {
         isServer: true,
         match,
+        // server only
+        history,
         ...(params.getInitialPropsCtx || {}),
         ...restRouteParams,
       };
       // extend the `params` of getInitialProps(params) function
       const ctx = modifyGetInitialPropsCtx ? await modifyGetInitialPropsCtx(defaultCtx) : defaultCtx;
-      const initialProps = component.getInitialProps
+      const defaultInitialProps = component.getInitialProps
         ? await component.getInitialProps(ctx)
         : null;
+      const initialProps = modifyInitialProps ? await modifyInitialProps(defaultInitialProps) : defaultInitialProps;
       return initialProps;
     }
   }).filter(Boolean);
@@ -160,6 +161,7 @@ const render: IRender = async (params) => {
       staticMarkup,
       routes,
     }
+
     // renderServer get rootContainer
     const serverResult = await renderServer({
       ...opts,
@@ -175,9 +177,7 @@ const render: IRender = async (params) => {
   } catch (e) {
     // downgrade into csr
     error = e;
-    console.error('[SSR ERROR]', e);
   }
-
   return {
     rootContainer,
     error,

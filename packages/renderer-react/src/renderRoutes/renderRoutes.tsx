@@ -30,7 +30,10 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
     useEffect(() => {
       if (!(window as any).g_initialProps) {
         (async () => {
-          const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
+          const {
+            modifyGetInitialPropsCtx,
+            modifyInitialProps,
+          } = opts.plugin.applyPlugins({
             key: 'ssr',
             type: ApplyPluginsType.modify,
             initialValue: {},
@@ -45,7 +48,10 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
             ? await modifyGetInitialPropsCtx(defaultCtx)
             : defaultCtx;
           if (Component!.getInitialProps) {
-            const initialProps = await Component!.getInitialProps!(ctx);
+            const defaultInitialProps = await Component!.getInitialProps!(ctx);
+            const initialProps = modifyInitialProps
+              ? await modifyInitialProps(defaultInitialProps)
+              : defaultInitialProps;
             setInitialProps(initialProps);
           }
         })();

@@ -64,7 +64,7 @@ class Bundler {
     const { devServer } = this.config;
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
-      publicPath: '/',
+      publicPath: this.config.publicPath,
       logLevel: 'silent',
       writeToDisk: devServer && devServer.writeToDisk,
       watchOptions: {
