@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, IRoute } from '@umijs/types';
-import { deepmerge, lodash, rimraf } from '@umijs/utils';
+import { deepmerge, rimraf } from '@umijs/utils';
 import pathToRegexp from 'path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
@@ -61,7 +61,7 @@ export default (api: IApi) => {
       const { exportStatic } = api.config;
       // for dynamic routes
       // TODO: test case
-      if (lodash.isFinite(exportStatic?.extraPaths)) {
+      if (typeof exportStatic?.extraPaths === 'function') {
         const extraPaths = await exportStatic?.extraPaths();
         extraPaths?.forEach((path) => {
           const match = routeMap.find(({ route }: { route: IRoute }) => {

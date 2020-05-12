@@ -227,7 +227,10 @@ export default (api: IApi) => {
    * with server in ssr.devServerRender: false
    */
   api.onDevCompileDone(() => {
-    replaceHTMLPlaceholder();
+    const { devServerRender = true } = api.config?.ssr || {};
+    if (!devServerRender) {
+      replaceHTMLPlaceholder();
+    }
   });
 
   /**

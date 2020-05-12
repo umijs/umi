@@ -14,8 +14,12 @@ export const getDistContent = (
   const serverFilePath = path.join(absOutputPath, OUTPUT_SERVER_FILENAME);
   const htmlPath = path.join(absOutputPath, 'index.html');
 
-  const serverFile = fs.readFileSync(serverFilePath, 'utf-8');
-  const htmlFile = fs.readFileSync(htmlPath, 'utf-8');
+  const serverFile = fs.existsSync(serverFilePath)
+    ? fs.readFileSync(serverFilePath, 'utf-8')
+    : '';
+  const htmlFile = fs.existsSync(htmlPath)
+    ? fs.readFileSync(htmlPath, 'utf-8')
+    : '';
   return {
     serverFilePath,
     serverFile,

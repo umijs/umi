@@ -61,10 +61,10 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
-    const { devServer } = this.config;
+    const { devServer, publicPath } = this.config;
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
-      publicPath: this.config.publicPath,
+      publicPath,
       logLevel: 'silent',
       writeToDisk: devServer && devServer.writeToDisk,
       watchOptions: {
