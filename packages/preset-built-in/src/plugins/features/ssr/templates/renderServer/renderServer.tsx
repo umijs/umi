@@ -29,7 +29,6 @@ export interface IOpts {
 
 export interface ILoadGetInitialPropsValue {
   pageInitialProps: any;
-  appInitialProps?: any;
 }
 
 interface ILoadGetInitialPropsOpts extends IOpts {
@@ -54,7 +53,7 @@ interface IContext {
  */
 export const loadPageGetInitialProps = async ({ ctx,
   opts, }: { ctx: IContext, opts: ILoadGetInitialPropsOpts }): Promise<ILoadGetInitialPropsValue> => {
-  const { routes, pathname } = opts;
+  const { routes, pathname = opts.path } = opts;
   // via {routes} to find `getInitialProps`
   const promises = matchRoutes(routes, pathname || '/')
     .map(async ({ route, match }) => {
