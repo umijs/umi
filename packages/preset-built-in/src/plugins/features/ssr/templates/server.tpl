@@ -45,12 +45,13 @@ const { getInitialData, modifyGetInitialPropsCtx, modifyInitialProps, modifyServ
  */
 const getInitial = async (params) => {
   const { path, basename = '{{{ Basename }}}' } = params;
-  // server history
-  const history = createMemoryHistory({
-    initialEntries: [path],
-  });
   // handle basename
-  const { pathname } = stripBasename(basename, path);
+  const location = stripBasename(basename, path);
+  const { pathname } = location;
+    // server history
+    const history = createMemoryHistory({
+      initialEntries: [location],
+    });
   const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
     // @ts-ignore
     const { component, ...restRouteParams } = route;
