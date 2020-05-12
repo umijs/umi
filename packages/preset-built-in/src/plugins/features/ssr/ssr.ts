@@ -12,7 +12,6 @@ import {
   CLIENT_EXPORTS,
   DEFAULT_HTML_PLACEHOLDER,
 } from './constants';
-import { getDistContent } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -114,6 +113,23 @@ export default (api: IApi) => {
     return config;
   });
 
+  /**
+   * replace umi.server.js DEFAULT_HTML_PLACEHOLDER
+   */
+  const replaceHTMLPlaceholder = ({ serverPath, htmlFile }: any) => {
+    const serverFile = fs.existsSync(serverPath)
+      ? fs.readFileSync(serverPath, 'utf-8')
+      : '';
+    if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
+      // has placeholder
+      const newServerFile = serverFile.replace(
+        new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
+        JSON.stringify(htmlFile),
+      );
+      fs.writeFileSync(serverPath, newServerFile, 'utf-8');
+    }
+  };
+
   // modify devServer content
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
@@ -124,8 +140,15 @@ export default (api: IApi) => {
       OUTPUT_SERVER_FILENAME,
     );
     // if dev clear cache
-    if (api.env === 'development' && require.cache[serverPath]) {
-      delete require.cache[serverPath];
+    if (api.env === 'development') {
+      replaceHTMLPlaceholder({
+        serverPath,
+        htmlFile: defaultHtml,
+      });
+      if (require.cache[serverPath]) {
+        // replace default html
+        delete require.cache[serverPath];
+      }
     }
 
     if (!devServerRender) {
@@ -204,42 +227,4 @@ export default (api: IApi) => {
       source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`,
     },
   ]);
-
-  /**
-   * replace umi.server.js DEFAULT_HTML_PLACEHOLDER
-   */
-  const replaceHTMLPlaceholder = () => {
-    const { serverFile, htmlFile, serverFilePath } = getDistContent(
-      api.paths!.absOutputPath,
-    );
-
-    if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
-      // has placeholder
-      const newServerFile = serverFile.replace(
-        new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
-        JSON.stringify(htmlFile),
-      );
-      fs.writeFileSync(serverFilePath, newServerFile, 'utf-8');
-    }
-  };
-
-  /**
-   * with server in ssr.devServerRender: false
-   */
-  api.onDevCompileDone(() => {
-    const { devServerRender = true } = api.config?.ssr || {};
-    if (!devServerRender) {
-      replaceHTMLPlaceholder();
-    }
-  });
-
-  /**
-   * replace default html string when build success
-   * [WARN] must exec before prerender plugin
-   */
-  api.onBuildComplete(({ err }) => {
-    if (!err) {
-      replaceHTMLPlaceholder();
-    }
-  });
 };

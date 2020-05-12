@@ -66,7 +66,9 @@ class Bundler {
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       publicPath,
       logLevel: 'silent',
-      writeToDisk: devServer && devServer.writeToDisk,
+      ...(devServer && devServer.writeToDisk
+        ? { writeToDisk: devServer.writeToDisk }
+        : {}),
       watchOptions: {
         ignored:
           process.env.WATCH_IGNORED === 'none'

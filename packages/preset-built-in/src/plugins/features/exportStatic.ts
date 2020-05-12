@@ -56,52 +56,48 @@ export default (api: IApi) => {
 
   // modify export html using routes
   api.modifyRouteMap(async (memo, { html }) => {
-    if (api.env === 'production') {
-      const routeMap = await html.getRouteMap();
-      const { exportStatic } = api.config;
-      // for dynamic routes
-      // TODO: test case
-      if (typeof exportStatic?.extraPaths === 'function') {
-        const extraPaths = await exportStatic?.extraPaths();
-        extraPaths?.forEach((path) => {
-          const match = routeMap.find(({ route }: { route: IRoute }) => {
-            return route.path && pathToRegexp(route.path).exec(path);
-          });
-          if (match) {
-            const newPath = deepmerge(match, {
-              route: {
-                path,
-              },
-              file: html.getHtmlPath(path),
-            });
-            routeMap.push(newPath);
-          }
+    const routeMap = await html.getRouteMap();
+    const { exportStatic } = api.config;
+    // for dynamic routes
+    // TODO: test case
+    if (typeof exportStatic?.extraPaths === 'function') {
+      const extraPaths = await exportStatic?.extraPaths();
+      extraPaths?.forEach((path) => {
+        const match = routeMap.find(({ route }: { route: IRoute }) => {
+          return route.path && pathToRegexp(route.path).exec(path);
         });
-      }
-      return routeMap;
+        if (match) {
+          const newPath = deepmerge(match, {
+            route: {
+              path,
+            },
+            file: html.getHtmlPath(path),
+          });
+          routeMap.push(newPath);
+        }
+      });
     }
+    return routeMap;
     return memo;
   });
 
   api.modifyBuildContent(async (memo, { route }) => {
-    if (api.env === 'production') {
-      const { absOutputPath } = api.paths;
-      const serverFilePath = join(absOutputPath || '', 'umi.server.js');
-      const { ssr } = api.config;
-      if (ssr && existsSync(serverFilePath) && !isDynamicRoute(route!.path)) {
-        try {
-          // do server-side render
-          const render = require(serverFilePath);
-          const { html } = await render({
-            path: route.path,
-            htmlTemplate: memo,
-          });
-          api.logger.info(`${route.path} render success`);
-          return html;
-        } catch (e) {
-          api.logger.error(`${route.path} render failed`, e);
-          throw e;
-        }
+    const { absOutputPath } = api.paths;
+    const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+    const { ssr } = api.config;
+    if (ssr && existsSync(serverFilePath) && !isDynamicRoute(route!.path)) {
+      try {
+        // do server-side render
+        const render = require(serverFilePath);
+        const { html } = await render({
+          path: route.path,
+          htmlTemplate: memo,
+        });
+        api.logger.info(`${route.path} render success`);
+        return html;
+      } catch (e) {
+        api.logger.error(`${route.path} render failed`, e);
+        throw e;
       }
     }
     return memo;
