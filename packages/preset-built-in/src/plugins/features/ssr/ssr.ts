@@ -118,6 +118,7 @@ export default (api: IApi) => {
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
     const { stream, devServerRender = true } = api.config?.ssr || {};
+    console.log('devServerRender', devServerRender);
     const serverPath = path.join(
       api.paths!.absOutputPath,
       OUTPUT_SERVER_FILENAME,
@@ -134,9 +135,11 @@ export default (api: IApi) => {
     try {
       console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
       const render = require(serverPath);
+      const context = {};
       const { html, error } = await render({
         // with query
         path: req.url,
+        context,
         htmlTemplate: defaultHtml,
         mountElementId: api.config?.mountElementId,
       });

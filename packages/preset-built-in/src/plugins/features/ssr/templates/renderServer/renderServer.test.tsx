@@ -326,3 +326,42 @@ test('renderServer stream', (done) => {
     });
   });
 });
+
+test('renderServer plugin modifyGetInitialPropsCtx', async () => {
+  const routeChanges: string[] = [];
+  const plugin = new Plugin({
+    validKeys: ['onRouteChange', 'rootContainer', 'ssr'],
+  });
+  plugin.register({
+    apply: {
+      onRouteChange({ location, action }: any) {
+        routeChanges.push(`${action} ${location.pathname}`);
+      },
+      rootContainer(container: any) {
+        return <div>{container}</div>;
+      },
+      ssr: {
+        modifyGetInitialPropsCtx: async (ctx) => {
+          ctx.title = 'Hello SSR';
+        }
+      },
+    },
+    path: '/foo',
+  });
+  const Foo = (props) => <h1>{props.title}</h1>;
+  Foo.getInitialProps = async (ctx) => {
+    return {
+      title: ctx.title,
+    }
+  }
+  const serverResult = await renderServer({
+    path: '/foo',
+    plugin,
+    routes: [
+      { path: '/foo', component: Foo },
+    ],
+  });
+  expect(serverResult.pageHTML).toEqual(
+    '<div data-reactroot=""><h1>Hello SSR</h1></div>',
+  );
+});
