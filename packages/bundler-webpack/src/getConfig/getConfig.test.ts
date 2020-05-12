@@ -287,5 +287,5 @@ test('rule exclude + opts.chainWebpack', async () => {
   const rules = config.module?.rules;
   expect(rules).not.toBeUndefined();
   const last = (rules || []).pop();
-  expect(Array(last?.exclude).pop()).toEqual(/\.pdf$/);
+  expect((last?.exclude as Array<any>).pop()).toEqual(/\.pdf$/);
 });
