@@ -1,6 +1,7 @@
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import { Stream } from 'stream';
+import { matchRoutes } from 'react-router-config';
 import {
   Plugin,
   StaticRouter,
@@ -9,7 +10,6 @@ import {
 } from '@umijs/runtime';
 import { IRoute } from '@umijs/types';
 import { renderRoutes } from '@umijs/renderer-react';
-import { loadGetInitialProps, ILoadGetInitialPropsValue } from './utils';
 
 export interface IOpts {
   path: string;
@@ -27,6 +27,67 @@ export interface IOpts {
   [key: string]: any;
 }
 
+export interface ILoadGetInitialPropsValue {
+  pageInitialProps: any;
+  appInitialProps?: any;
+}
+
+interface ILoadGetInitialPropsOpts extends IOpts {
+  App?: React.ReactElement;
+}
+
+interface IPatchRoute extends IRoute {
+  component: any;
+}
+
+// getInitialProps(ctx)
+interface IContext {
+  isServer: boolean;
+  history: MemoryHistory;
+  match?: any;
+  [key: string]: any;
+}
+
+/**
+ * get current page component getPageInitialProps data
+ * @param params
+ */
+export const loadPageGetInitialProps = async ({ ctx,
+  opts, }: { ctx: IContext, opts: ILoadGetInitialPropsOpts }): Promise<ILoadGetInitialPropsValue> => {
+  const { routes, pathname } = opts;
+  // via {routes} to find `getInitialProps`
+  const promises = matchRoutes(routes, pathname || '/')
+    .map(async ({ route, match }) => {
+      // @ts-ignore
+      const { component, ...restRouteParams } = route as IPatchRoute;
+
+      if (component && (component as any)?.getInitialProps) {
+
+        // handle ctx
+        ctx.match = match;
+        Object.keys(restRouteParams || {}).forEach(restRouteKey => {
+          if (restRouteParams[restRouteKey]) {
+            ctx[restRouteKey] = restRouteParams[restRouteKey];
+          }
+        });
+
+        const initialProps = component.getInitialProps
+          ? await component.getInitialProps(ctx)
+          : null;
+        return initialProps;
+      }
+    })
+    .filter(Boolean);
+  const pageInitialProps = (await Promise.all(promises)).reduce(
+    (acc, curr) => Object.assign({}, acc, curr),
+    {},
+  );
+
+  return {
+    pageInitialProps,
+  };
+};
+
 /**
  * 处理 getInitialProps、路由 StaticRouter、数据预获取
  * @param opts
@@ -39,7 +100,6 @@ function getRootContainer(
     type: ApplyPluginsType.modify,
     key: 'rootContainer',
     initialValue: (
-      // basename maybe react-router bug, will lead to double slash
       <StaticRouter
         basename={basename === '/' ? '' : basename}
         location={path}
@@ -63,6 +123,16 @@ interface IRenderServer extends ILoadGetInitialPropsValue {
   pageHTML: string | Stream;
 }
 
+/**
+ * 服务端渲染处理
+ *
+ * 1、获取各个插件 `rootContainer` wrappers (ctx)
+ * 2、walkTree wrappers 来处理 应用级 数据预获取 (ctx，共享，透传)
+ * 3、通过 `routes` 来做 页面级 数据预获取
+ * 4、执行渲染
+ *
+ * @param opts
+ */
 export default async function renderServer(
   opts: IOpts,
 ): Promise<IRenderServer> {
@@ -79,11 +149,23 @@ export default async function renderServer(
       plugin: opts.plugin,
     },
   });
+  const ctx: IContext = {
+    isServer: true,
+    // server only
+    history: opts.history,
+    ...(opts.getInitialPropsCtx || {}),
+  };
+  // await App.props.children.props.children.props.children.type.getInitialProps(ctx);
   // get pageInitialProps
-  const { pageInitialProps } = await loadGetInitialProps(opts);
+  const { pageInitialProps } = await loadPageGetInitialProps({
+    ctx,
+    opts
+  });
   const rootContainer = getRootContainer({
     ...opts,
     pageInitialProps,
+    // TODO
+    appInitialProps: {},
   });
   if (opts.mode === 'stream') {
     return {

@@ -68,7 +68,9 @@ export default (api: IApi) => {
         RuntimePath: winPath(
           path.dirname(require.resolve('@umijs/runtime/package.json')),
         ),
-        Renderer: winPath(require.resolve('./renderServer/renderServer')),
+        Renderer: winPath(
+          require.resolve('./templates/renderServer/renderServer'),
+        ),
         RuntimePolyfill: winPath(
           require.resolve('regenerator-runtime/runtime'),
         ),
