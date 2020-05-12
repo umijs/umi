@@ -64,6 +64,7 @@ test('renderServer layout', async () => {
   class Layout extends React.Component {
     static async getInitialProps(ctx) {
       execFlag = true;
+      ctx.layout = 'layoutCtx';
       return {
         title: 'layout',
         titleLayout: 'titleLayout',
@@ -84,12 +85,16 @@ test('renderServer layout', async () => {
   class Foo extends React.Component {
     static async getInitialProps(ctx) {
       return {
+        layout: ctx.layout,
         title: 'foo'
       }
     }
     render() {
       return (
-        <h4>{this.props.title}</h4>
+        <>
+          <h4>{this.props.title}</h4>
+          <h5>{this.props.layout}</h5>
+        </>
       )
     }
   }
@@ -108,7 +113,7 @@ test('renderServer layout', async () => {
     ],
   });
   expect(serverResult.pageHTML).toEqual(
-    '<div><h1>true</h1><h2>titleLayout</h2><h3>foo</h3><h4>foo</h4></div>',
+    '<div><h1>true</h1><h2>titleLayout</h2><h3>foo</h3><h4>foo</h4><h5>layoutCtx</h5></div>',
   );
 });
 
