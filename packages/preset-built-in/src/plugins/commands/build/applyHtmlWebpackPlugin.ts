@@ -42,6 +42,7 @@ export default function (api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
+    // ssr dev 下需要生成 html，避免 umi.server.js 引用报错
     if (
       (env === 'production' || (env === 'development' && !!api.config?.ssr)) &&
       id === 'webpack' &&

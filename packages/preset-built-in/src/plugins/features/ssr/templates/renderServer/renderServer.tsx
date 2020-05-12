@@ -115,12 +115,7 @@ interface IRenderServer extends ILoadGetInitialPropsValue {
 }
 
 /**
- * 服务端渲染处理
- *
- * 1、获取各个插件 `rootContainer` wrappers (ctx)
- * 2、walkTree wrappers 来处理 应用级 数据预获取 (ctx，共享，透传)
- * 3、通过 `routes` 来做 页面级 数据预获取
- * 4、执行渲染
+ * 服务端渲染处理，通过 `routes` 来做 页面级 数据预获取
  *
  * @param opts
  */
