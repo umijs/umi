@@ -1,7 +1,7 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
 import { format } from 'url';
-import { renderServer } from '{{{ Renderer }}}';
+import renderServer from '{{{ Renderer }}}';
 import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
 
 import { ApplyPluginsType, createMemoryHistory } from '{{{ RuntimePath }}}';

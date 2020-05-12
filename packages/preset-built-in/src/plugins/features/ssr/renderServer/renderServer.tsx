@@ -7,9 +7,9 @@ import {
   ApplyPluginsType,
   MemoryHistory,
 } from '@umijs/runtime';
-import { IRoute } from '..';
+import { IRoute } from '@umijs/types';
+import { renderRoutes } from '@umijs/renderer-react';
 import { loadGetInitialProps, ILoadGetInitialPropsValue } from './utils';
-import renderRoutes from '../renderRoutes/renderRoutes';
 
 export interface IOpts {
   path: string;
