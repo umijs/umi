@@ -33,7 +33,7 @@ export interface IGetInitialPropsServer extends IGetInitialProps {
   match: object;
 }
 
-const { getInitialData, modifyGetInitialPropsCtx, modifyInitialProps, modifyServerHTML } = plugin.applyPlugins({
+const { getInitialData, modifyServerHTML } = plugin.applyPlugins({
   key: 'ssr',
   type: ApplyPluginsType.modify,
   initialValue: {},
@@ -48,17 +48,17 @@ const getInitial = async (params) => {
   // handle basename
   const location = stripBasename(basename, path);
   const { pathname } = location;
-    // server history
-    const history = createMemoryHistory({
-      initialEntries: [location],
-    });
+  // server history
+  const history = createMemoryHistory({
+    initialEntries: [location],
+  });
+  // via {routes} to find `getInitialProps`
   const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
     // @ts-ignore
     const { component, ...restRouteParams } = route;
-    const componentName = getComponentDisplayName(component);
 
     if (component && component?.getInitialProps) {
-      const defaultCtx = {
+      const ctx = {
         isServer: true,
         match,
         // server only
@@ -66,14 +66,9 @@ const getInitial = async (params) => {
         ...(params.getInitialPropsCtx || {}),
         ...restRouteParams,
       };
-      // extend the `params` of getInitialProps(params) function
-      const ctx = modifyGetInitialPropsCtx ? await modifyGetInitialPropsCtx(defaultCtx) : defaultCtx;
-      const defaultInitialProps = component.getInitialProps
+      const initialProps = component.getInitialProps
         ? await component.getInitialProps(ctx)
         : null;
-      const initialProps = modifyInitialProps
-        ? await modifyInitialProps(defaultInitialProps)
-        : defaultInitialProps;
       return initialProps;
     }
   }).filter(Boolean);
