@@ -264,3 +264,28 @@ test('env COMPRESS = none + production', async () => {
   expect(config.optimization?.minimize).toEqual(false);
   delete process.env.COMPRESS;
 });
+
+test('rule exclude + opts.chainWebpack', async () => {
+  const config = await getConfig({
+    cwd: '/foo',
+    config: {},
+    env: 'development',
+    type: ConfigType.csr,
+    chainWebpack(memo) {
+      memo.module
+        .rule('pdf')
+        .test(/\.pdf$/)
+        .use('file-loader')
+        .loader(require.resolve('file-loader'))
+        .options({
+          name: 'static/[name].[hash:8].[ext]',
+          esModule: false,
+        });
+      return memo;
+    },
+  });
+  const rules = config.module?.rules;
+  expect(rules).not.toBeUndefined();
+  const last = (rules || []).pop();
+  expect(Array(last?.exclude).pop()).toEqual(/\.pdf$/);
+});
