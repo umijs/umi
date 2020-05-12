@@ -665,7 +665,7 @@ export default {
 
 包含以下子属性，
 
-* exclude，格式为 `Array(string)`，用于忽略不需要走 mock 的文件
+* exclude，格式为 `Array(string)`，用于忽略不需要走 mock 的文件，支持 `glob` 语法，如 `['mock/**/get*.js']` 会忽略目录下所有 get 开头的 mock 文件，`['mock/**/[^get]*.js']` 则会忽略除了 get 开头以外的所有文件
 
 ## mountElementId
 
