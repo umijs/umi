@@ -186,7 +186,6 @@ export default (api: IApi) => {
    * with server in ssr.devServerRender: false
    */
   api.onDevCompileDone(async ({ stats }) => {
-    console.log('onDevCompileDone');
     const { devServerRender = true } = api.config?.ssr || {};
     if (!devServerRender) {
       const serverPath = path.join(
@@ -211,7 +210,6 @@ export default (api: IApi) => {
    * [WARN] must exec before prerender plugin
    */
   api.onBuildComplete(({ err }) => {
-    console.log('onBuildComplete');
     const serverPath = path.join(
       api.paths!.absOutputPath,
       OUTPUT_SERVER_FILENAME,
