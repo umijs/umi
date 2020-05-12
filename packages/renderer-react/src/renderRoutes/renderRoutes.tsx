@@ -35,7 +35,17 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
             ...(opts.getInitialPropsCtx || {}),
             ...restRouteParams,
           };
+
           if (Component!.getInitialProps) {
+            const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
+              key: 'ssr',
+              type: ApplyPluginsType.modify,
+              initialValue: {},
+            });
+            if (typeof modifyGetInitialPropsCtx === 'function') {
+              modifyGetInitialPropsCtx(ctx);
+            }
+
             const initialProps = await Component!.getInitialProps!(ctx);
             setInitialProps(initialProps);
           }

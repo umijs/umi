@@ -54,6 +54,8 @@ interface IContext {
 export const loadPageGetInitialProps = async ({ ctx,
   opts, }: { ctx: IContext, opts: ILoadGetInitialPropsOpts }): Promise<ILoadGetInitialPropsValue> => {
   const { routes, pathname = opts.path } = opts;
+
+  console.log('pathnamepathname', pathname);
   // via {routes} to find `getInitialProps`
   const promises = matchRoutes(routes, pathname || '/')
     .map(async ({ route, match }) => {
@@ -63,17 +65,11 @@ export const loadPageGetInitialProps = async ({ ctx,
       if (component && (component as any)?.getInitialProps) {
 
         // handle ctx
-        ctx.match = match;
-        Object.keys(restRouteParams || {}).forEach(restRouteKey => {
-          if (restRouteParams[restRouteKey]) {
-            ctx[restRouteKey] = restRouteParams[restRouteKey];
-          }
-        });
+        ctx = Object.assign(ctx, { match, ...restRouteParams });
 
-        const initialProps = component.getInitialProps
+        return component.getInitialProps
           ? await component.getInitialProps(ctx)
-          : null;
-        return initialProps;
+          : {};
       }
     })
     .filter(Boolean);
@@ -139,6 +135,16 @@ export default async function renderServer(
     history: opts.history,
     ...(opts.getInitialPropsCtx || {}),
   };
+  // modify ctx
+  const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
+    key: 'ssr',
+    type: ApplyPluginsType.modify,
+    initialValue: {},
+  });
+  // modify ctx
+  if (typeof modifyGetInitialPropsCtx === 'function') {
+    await modifyGetInitialPropsCtx(ctx);
+  }
   // await App.props.children.props.children.props.children.type.getInitialProps(ctx);
   // get pageInitialProps
   const { pageInitialProps } = await loadPageGetInitialProps({
@@ -148,21 +154,22 @@ export default async function renderServer(
   const rootContainer = getRootContainer({
     ...opts,
     pageInitialProps,
-    appInitialProps: {},
   });
   if (opts.mode === 'stream') {
+    const pageHTML = ReactDOMServer[
+      opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'
+    ](rootContainer);
     return {
-      pageHTML: ReactDOMServer[
-        opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'
-      ](rootContainer),
+      pageHTML,
       pageInitialProps,
     };
   }
+  const pageHTML = ReactDOMServer[
+    opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'
+  ](rootContainer);
   // by default
   return {
-    pageHTML: ReactDOMServer[
-      opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'
-    ](rootContainer),
+    pageHTML,
     pageInitialProps,
   };
 }

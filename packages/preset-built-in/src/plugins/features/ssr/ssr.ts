@@ -117,13 +117,13 @@ export default (api: IApi) => {
   // modify devServer content
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
-    const { stream, devServerRender } = api.config?.ssr || {};
+    const { stream, devServerRender = true } = api.config?.ssr || {};
     const serverPath = path.join(
       api.paths!.absOutputPath,
       OUTPUT_SERVER_FILENAME,
     );
     // if dev clear cache
-    if (api.env === 'development') {
+    if (api.env === 'development' && require.cache[serverPath]) {
       delete require.cache[serverPath];
     }
 
@@ -224,10 +224,7 @@ export default (api: IApi) => {
    * with server in ssr.devServerRender: false
    */
   api.onDevCompileDone(() => {
-    const { devServerRender } = api.config?.ssr || {};
-    if (!devServerRender) {
-      replaceHTMLPlaceholder();
-    }
+    replaceHTMLPlaceholder();
   });
 
   /**

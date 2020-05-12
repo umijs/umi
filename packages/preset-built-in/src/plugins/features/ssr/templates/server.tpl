@@ -74,12 +74,12 @@ const render: IRender = async (params) => {
     }
 
     // renderServer get rootContainer
-    const { pageHTML, appInitialData, pageInitialProps } = await renderServer(opts);
+    const { pageHTML, pageInitialProps } = await renderServer(opts);
     rootContainer = pageHTML;
     if (html) {
       // plugin for modify html template
       html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio }) : html;
-      html = await handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode, forceInitial });
+      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial });
     }
   } catch (e) {
     // downgrade into csr
