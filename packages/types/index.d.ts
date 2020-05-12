@@ -134,7 +134,7 @@ export interface IApi extends PluginAPI {
   }>;
 
   // ApplyPluginType.modify
-  modifyPaths: IModify<string[], null>;
+  modifyPaths: IModify<typeof Service.prototype.paths, null>;
   modifyRendererPath: IModify<string, null>;
   modifyPublicPathStr: IModify<string, { route: IRoute }>;
   modifyBundler: IModify<any, null>;
