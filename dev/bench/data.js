@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589246321474,
+  "lastUpdate": 1589252143014,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -2188,6 +2188,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.62%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "99fc89ab0980792260b7236b118dedb629a40e8f",
+          "message": "fix: remove modifyGetInitialPropsCtx and modifyInitialProps",
+          "timestamp": "2020-05-12T10:52:13+08:00",
+          "tree_id": "f01fb9bc1969b56a452149978dc9e48ee3c0079e",
+          "url": "https://github.com/umijs/umi/commit/99fc89ab0980792260b7236b118dedb629a40e8f"
+        },
+        "date": 1589252139815,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1501,
+            "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2393,
+            "range": "±3.79%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
