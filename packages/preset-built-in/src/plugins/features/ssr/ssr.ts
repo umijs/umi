@@ -134,7 +134,6 @@ export default (api: IApi) => {
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
     const { stream, devServerRender = true } = api.config?.ssr || {};
-    console.log('devServerRender', devServerRender);
     const serverPath = path.join(
       api.paths!.absOutputPath,
       OUTPUT_SERVER_FILENAME,
