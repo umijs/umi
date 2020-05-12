@@ -5,6 +5,8 @@ import * as path from 'path';
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash } from '@umijs/utils';
 
+import { getHtmlGenerator } from '../../commands/htmlUtils';
+
 import {
   CHUNK_NAME,
   OUTPUT_SERVER_FILENAME,
@@ -113,23 +115,6 @@ export default (api: IApi) => {
     return config;
   });
 
-  /**
-   * replace umi.server.js DEFAULT_HTML_PLACEHOLDER
-   */
-  const replaceHTMLPlaceholder = ({ serverPath, htmlFile }: any) => {
-    const serverFile = fs.existsSync(serverPath)
-      ? fs.readFileSync(serverPath, 'utf-8')
-      : '';
-    if (serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
-      // has placeholder
-      const newServerFile = serverFile.replace(
-        new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
-        JSON.stringify(htmlFile),
-      );
-      fs.writeFileSync(serverPath, newServerFile, 'utf-8');
-    }
-  };
-
   // modify devServer content
   api.modifyDevServerContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
@@ -139,15 +124,9 @@ export default (api: IApi) => {
       OUTPUT_SERVER_FILENAME,
     );
     // if dev clear cache
-    if (api.env === 'development') {
-      replaceHTMLPlaceholder({
-        serverPath,
-        htmlFile: defaultHtml,
-      });
-      if (require.cache[serverPath]) {
-        // replace default html
-        delete require.cache[serverPath];
-      }
+    if (require.cache[serverPath]) {
+      // replace default html
+      delete require.cache[serverPath];
     }
 
     if (!devServerRender) {
@@ -176,6 +155,76 @@ export default (api: IApi) => {
       api.logger.error('[SSR]', e);
     }
     return defaultHtml;
+  });
+
+  /**
+   * replace umi.server.js DEFAULT_HTML_PLACEHOLDER
+   */
+  const replaceHTMLPlaceholder = ({ serverPath, defaultHTML }: any) => {
+    const serverFile = fs.existsSync(serverPath)
+      ? fs.readFileSync(serverPath, 'utf-8')
+      : '';
+    if (serverFile && serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
+      console.log(
+        'serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER)',
+        serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER),
+      );
+      // has placeholder
+      const newServerFile = serverFile.replace(
+        new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
+        JSON.stringify(defaultHTML),
+      );
+      fs.writeFileSync(serverPath, newServerFile, 'utf-8');
+      console.log(
+        'serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER)',
+        newServerFile.indexOf(DEFAULT_HTML_PLACEHOLDER),
+      );
+    }
+  };
+
+  /**
+   * with server in ssr.devServerRender: false
+   */
+  api.onDevCompileDone(async ({ stats }) => {
+    console.log('onDevCompileDone');
+    const { devServerRender = true } = api.config?.ssr || {};
+    if (!devServerRender) {
+      const serverPath = path.join(
+        api.paths!.absOutputPath,
+        OUTPUT_SERVER_FILENAME,
+      );
+      const html = getHtmlGenerator({ api });
+
+      const defaultHTML = await html.getContent({
+        route: { path: '/' },
+        chunks: stats.compilation.chunks,
+      });
+      replaceHTMLPlaceholder({
+        serverPath,
+        defaultHTML,
+      });
+    }
+  });
+
+  /**
+   * replace default html string when build success
+   * [WARN] must exec before prerender plugin
+   */
+  api.onBuildComplete(({ err }) => {
+    console.log('onBuildComplete');
+    const serverPath = path.join(
+      api.paths!.absOutputPath,
+      OUTPUT_SERVER_FILENAME,
+    );
+    const defaultHTML = fs.readFileSync(
+      path.join(paths!.absOutputPath, 'utf-8'),
+    );
+    if (!err) {
+      replaceHTMLPlaceholder({
+        serverPath,
+        defaultHTML,
+      });
+    }
   });
 
   // 修改

@@ -22,3 +22,4 @@ output.txt
 /examples/*/app/public
 /examples/*/logs
 /examples/*/run
+/examples/*/.idea
