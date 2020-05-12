@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589252143014,
+  "lastUpdate": 1589262149546,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -2226,6 +2226,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.79%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "7680b422410acaa79eab88140f5db43e4c79f4b8",
+          "message": "feat: renderServer in ssr/ssr",
+          "timestamp": "2020-05-12T13:38:54+08:00",
+          "tree_id": "361040c3c8186e3d623ead30b9ce962d3a1b7b48",
+          "url": "https://github.com/umijs/umi/commit/7680b422410acaa79eab88140f5db43e4c79f4b8"
+        },
+        "date": 1589262146363,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1471,
+            "range": "±3.10%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2167,
+            "range": "±4.61%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
