@@ -108,10 +108,8 @@ function getRootContainer(
       </StaticRouter>
     ),
     args: {
-      // special rootContainer
-      // DISCUSS: history
-      // history,
       type: 'ssr',
+      history: opts.history,
       routes: opts.routes,
       plugin: opts.plugin,
     },
@@ -135,19 +133,6 @@ interface IRenderServer extends ILoadGetInitialPropsValue {
 export default async function renderServer(
   opts: IOpts,
 ): Promise<IRenderServer> {
-  const App = opts.plugin.applyPlugins({
-    type: ApplyPluginsType.modify,
-    key: 'rootContainer',
-    initialValue: <></>,
-    args: {
-      // special rootContainer
-      // DISCUSS: history
-      // history,
-      type: 'ssr',
-      routes: opts.routes,
-      plugin: opts.plugin,
-    },
-  });
   const ctx: IContext = {
     isServer: true,
     // server only
@@ -163,7 +148,6 @@ export default async function renderServer(
   const rootContainer = getRootContainer({
     ...opts,
     pageInitialProps,
-    // TODO
     appInitialProps: {},
   });
   if (opts.mode === 'stream') {

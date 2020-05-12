@@ -201,6 +201,7 @@ test.skip('renderServer wrapper getInitialProps', async () => {
         store,
       }
     }
+
     render() {
       const { children, ...restProps } = this.props;
       return React.cloneElement(children, restProps);
@@ -243,7 +244,7 @@ test.skip('renderServer wrapper getInitialProps', async () => {
     ],
   });
   expect(serverResult.pageHTML).toEqual(
-    '<div data-reactroot=""><h1>foo</h1><h2>foo</h2></div>',
+    '<div><h1>foo</h1><h2>foo</h2></div>',
   );
 })
 
