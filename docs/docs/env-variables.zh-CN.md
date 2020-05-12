@@ -124,6 +124,14 @@ $ PROGRESS=none umi dev
 $ SOCKET_SERVER=https://localhost:7001/ umi dev
 ```
 
+### SPEED_MEASURE
+
+分析 Webpack 编译时间，支持 `CONSOLE` 和 `JSON` 两种格式，默认是 `JSON`。
+
+```bash
+$ SPEED_MEASURE=CONSOLE umi dev
+```
+
 ### TERSER_CACHE
 
 默认开启 Terser 压缩缓存，值为 none 时禁用缓存。
