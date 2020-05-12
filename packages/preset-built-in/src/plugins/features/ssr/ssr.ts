@@ -18,12 +18,6 @@ export default (api: IApi) => {
   api.describe({
     key: 'ssr',
     config: {
-      default: {
-        forceInitial: false,
-        devServerRender: true,
-        mode: 'string',
-        staticMarkup: false,
-      },
       schema: (joi) => {
         return joi.object({
           forceInitial: joi
