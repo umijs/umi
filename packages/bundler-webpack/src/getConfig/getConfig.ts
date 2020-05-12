@@ -453,6 +453,31 @@ export default async function getConfig(
       createCSSRule: createCSSRuleFn,
     });
   }
+
+  // files has been loaded regexs
+  const excludeRegexs = webpackConfig.module.rules
+    .values()
+    .map((rule) => rule.get('test'));
+
+  // this rule will catch all modules fall through the others
+  // prettier-ignore
+  const excludeRule = webpackConfig.module
+    .rule('exclude')
+    .use('file-loader')
+      .loader(require.resolve('file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
+      })
+      .end()
+    .exclude
+      .add(/\.json$/)
+      .add(/\.html$/);
+
+  excludeRegexs.forEach((regex) => {
+    excludeRule.add(regex);
+  });
+
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
   // speed-measure-webpack-plugin
