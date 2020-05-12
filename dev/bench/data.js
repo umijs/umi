@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589278996145,
+  "lastUpdate": 1589279832765,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -2416,6 +2416,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.20%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "519aaea51835cf4867cec99649c44a9039d89fa7",
+          "message": "fix: remove default enable ssr",
+          "timestamp": "2020-05-12T18:34:24+08:00",
+          "tree_id": "4a2dcfa07f35cba57318d27a0288932d7d404fd7",
+          "url": "https://github.com/umijs/umi/commit/519aaea51835cf4867cec99649c44a9039d89fa7"
+        },
+        "date": 1589279829859,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1368,
+            "range": "±2.68%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2212,
+            "range": "±4.54%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
