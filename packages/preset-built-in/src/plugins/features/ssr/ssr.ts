@@ -110,7 +110,7 @@ export default (api: IApi) => {
     // DISCUSS: 是否需要强行改项目配置的方式，来开启 dev 下写 umi.server.js
     // force enable writeToDisk
     config.devServer.writeToDisk = (filePath: string) => {
-      return /(umi\.server\.js|index\.html|\.server\.js)$/.test(filePath);
+      return /(umi\.server\.js|\.server\.js)$/.test(filePath);
     };
     return config;
   });
@@ -165,20 +165,12 @@ export default (api: IApi) => {
       ? fs.readFileSync(serverPath, 'utf-8')
       : '';
     if (serverFile && serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
-      console.log(
-        'serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER)',
-        serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER),
-      );
       // has placeholder
       const newServerFile = serverFile.replace(
-        new RegExp(DEFAULT_HTML_PLACEHOLDER, 'g'),
+        new RegExp(`\'${DEFAULT_HTML_PLACEHOLDER}\'`, 'g'),
         JSON.stringify(defaultHTML),
       );
       fs.writeFileSync(serverPath, newServerFile, 'utf-8');
-      console.log(
-        'serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER)',
-        newServerFile.indexOf(DEFAULT_HTML_PLACEHOLDER),
-      );
     }
   };
 
@@ -215,7 +207,8 @@ export default (api: IApi) => {
       OUTPUT_SERVER_FILENAME,
     );
     const defaultHTML = fs.readFileSync(
-      path.join(paths!.absOutputPath, 'utf-8'),
+      path.join(api.paths!.absOutputPath, 'index.html'),
+      'utf-8',
     );
     if (!err) {
       replaceHTMLPlaceholder({
