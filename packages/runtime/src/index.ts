@@ -21,6 +21,7 @@ export {
   createBrowserHistory,
   createHashHistory,
   createMemoryHistory,
+  MemoryHistory,
 } from 'history-with-query';
 
 export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';

@@ -27,7 +27,7 @@ test('normal', async () => {
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
   });
-  expect(serverResult.html).toEqual(
+  expect(serverResult.pageHTML).toEqual(
     '<div data-reactroot=""><h1>foo</h1></div>',
   );
 
@@ -39,7 +39,7 @@ test('normal', async () => {
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
   });
-  expect(serverResultBar.html).toEqual(
+  expect(serverResultBar.pageHTML).toEqual(
     '<div data-reactroot=""><h1>bar</h1></div>',
   );
 });
@@ -70,7 +70,7 @@ test('ssr staticMarkup', async () => {
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
   });
-  expect(serverResultStatic.html).toEqual('<div><h1>foo</h1></div>');
+  expect(serverResultStatic.pageHTML).toEqual('<div><h1>foo</h1></div>');
 
   const serverResultBar = await renderServer({
     path: '/bar',
@@ -81,10 +81,10 @@ test('ssr staticMarkup', async () => {
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
   });
-  expect(serverResultBar.html).toEqual('<div><h1>bar</h1></div>');
+  expect(serverResultBar.pageHTML).toEqual('<div><h1>bar</h1></div>');
 });
 
-test('ssr stream', done => {
+test('ssr stream', (done) => {
   const routeChanges: string[] = [];
   const plugin = new Plugin({
     validKeys: ['onRouteChange', 'rootContainer'],
@@ -109,14 +109,14 @@ test('ssr stream', done => {
       { path: '/foo', component: () => <h1>foo</h1> },
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
-  }).then(({ html }) => {
+  }).then(({ pageHTML }) => {
     const expectBytes = new Buffer('<div data-reactroot=""><h1>foo</h1></div>');
     let bytes = new Buffer('');
-    expect(html instanceof Stream).toBeTruthy();
-    html.on('data', chunk => {
+    expect(pageHTML instanceof Stream).toBeTruthy();
+    pageHTML.on('data', (chunk) => {
       bytes = Buffer.concat([bytes, chunk]);
     });
-    html.on('end', () => {
+    pageHTML.on('end', () => {
       expect(bytes).toEqual(expectBytes);
       done();
     });

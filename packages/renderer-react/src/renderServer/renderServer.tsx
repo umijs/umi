@@ -1,31 +1,39 @@
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 import { Stream } from 'stream';
-import { Plugin, StaticRouter, ApplyPluginsType } from '@umijs/runtime';
+import {
+  Plugin,
+  StaticRouter,
+  ApplyPluginsType,
+  MemoryHistory,
+} from '@umijs/runtime';
 import { IRoute } from '..';
+import { loadGetInitialProps, ILoadGetInitialPropsValue } from './utils';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
-interface IOpts {
+export interface IOpts {
   path: string;
-  extraProps?: object;
-  getInitialPropsCtx?: object;
-  basename?: string;
+  history: MemoryHistory;
+  basename: string;
+  pathname: string;
+  plugin: Plugin;
   routes: IRoute[];
-  pageInitialProps?: object;
-  appInitialData?: object;
+  getInitialPropsCtx?: object;
   initialData?: any;
   context?: object;
   mode?: 'stream' | 'string';
   staticMarkup?: boolean;
   /** unused */
-  plugin: Plugin;
+  [key: string]: any;
 }
 
 /**
  * 处理 getInitialProps、路由 StaticRouter、数据预获取
  * @param opts
  */
-export function createServerElement(opts: IOpts): React.ReactElement {
+function getRootContainer(
+  opts: IOpts & ILoadGetInitialPropsValue,
+): React.ReactElement {
   const { path, context, basename = '/', ...renderRoutesProps } = opts;
   return renderRoutesProps.plugin.applyPlugins({
     type: ApplyPluginsType.modify,
@@ -51,21 +59,45 @@ export function createServerElement(opts: IOpts): React.ReactElement {
   });
 }
 
+interface IRenderServer extends ILoadGetInitialPropsValue {
+  pageHTML: string | Stream;
+}
+
 export default async function renderServer(
   opts: IOpts,
-): Promise<{ html: string | Stream }> {
-  const element = createServerElement(opts);
+): Promise<IRenderServer> {
+  const App = opts.plugin.applyPlugins({
+    type: ApplyPluginsType.modify,
+    key: 'rootContainer',
+    initialValue: <></>,
+    args: {
+      // special rootContainer
+      // DISCUSS: history
+      // history,
+      type: 'ssr',
+      routes: opts.routes,
+      plugin: opts.plugin,
+    },
+  });
+  // get pageInitialProps
+  const { pageInitialProps } = await loadGetInitialProps(opts);
+  const rootContainer = getRootContainer({
+    ...opts,
+    pageInitialProps,
+  });
   if (opts.mode === 'stream') {
     return {
-      html: ReactDOMServer[
+      pageHTML: ReactDOMServer[
         opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'
-      ](element),
+      ](rootContainer),
+      pageInitialProps,
     };
   }
   // by default
   return {
-    html: ReactDOMServer[
+    pageHTML: ReactDOMServer[
       opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'
-    ](element),
+    ](rootContainer),
+    pageInitialProps,
   };
 }

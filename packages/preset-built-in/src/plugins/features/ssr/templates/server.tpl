@@ -1,7 +1,8 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
-import { renderServer, matchRoutes } from '{{{ Renderer }}}';
-import { stripBasename, serialize, mergeStream, ReadableString, getComponentDisplayName, cheerio } from '{{{ Utils }}}';
+import { format } from 'url';
+import { renderServer } from '{{{ Renderer }}}';
+import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
 
 import { ApplyPluginsType, createMemoryHistory } from '{{{ RuntimePath }}}';
 import { plugin } from './plugin';
@@ -24,104 +25,11 @@ export interface IRender<T = string> {
   (params: IParams): Promise<IRenderResult<T>>;
 }
 
-export interface IGetInitialProps {
-
-}
-
-export interface IGetInitialPropsServer extends IGetInitialProps {
-  isServer: Boolean;
-  match: object;
-}
-
-const { getInitialData, modifyServerHTML } = plugin.applyPlugins({
+const { modifyServerHTML } = plugin.applyPlugins({
   key: 'ssr',
   type: ApplyPluginsType.modify,
   initialValue: {},
 });
-
-/**
- * get current page component getPageInitialProps data
- * @param params
- */
-const getInitial = async (params) => {
-  const { path, basename = '{{{ Basename }}}' } = params;
-  // handle basename
-  const location = stripBasename(basename, path);
-  const { pathname } = location;
-  // server history
-  const history = createMemoryHistory({
-    initialEntries: [location],
-  });
-  // via {routes} to find `getInitialProps`
-  const matched = matchRoutes(routes, pathname).map(async ({ route, match }) => {
-    // @ts-ignore
-    const { component, ...restRouteParams } = route;
-
-    if (component && component?.getInitialProps) {
-      const ctx = {
-        isServer: true,
-        match,
-        // server only
-        history,
-        ...(params.getInitialPropsCtx || {}),
-        ...restRouteParams,
-      };
-      const initialProps = component.getInitialProps
-        ? await component.getInitialProps(ctx)
-        : null;
-      return initialProps;
-    }
-  }).filter(Boolean);
-  const pageInitialProps = (await Promise.all(matched)).reduce((acc, curr) => Object.assign({}, acc, curr), {});
-
-  let appInitialData = {};
-  if (typeof getInitialData === 'function') {
-    const defaultInitialData = {
-      isServer: true,
-    };
-    appInitialData = await getInitialData(defaultInitialData);
-  }
-  return {
-    pageInitialProps,
-    appInitialData,
-  };
-}
-
-/**
- * handle html with rootContainer(rendered)
- * @param param0
- */
-const handleHTML = async ({ html, pageInitialProps, appInitialData, rootContainer, mountElementId = '{{{MountElementId}}}', mode = '{{{ Mode }}}' }) => {
-  const forceInitial = {{{ ForceInitial }}};
-  const windowInitialVars = {
-    ...(appInitialData && !forceInitial ? { 'window.g_initialData': serialize(appInitialData) } : {}),
-    ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
-  }
-  const htmlWithInitialData = html.replace(
-    '</head>',
-    `<script>
-      window.g_useSSR = true;
-      ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).concat('').join(';\n')}
-    </script>
-    </head>`
-  )
-
-  if (mode === 'stream') {
-    const containerString = `<div id="${mountElementId}">`;
-    const [beforeRootContainer, afterRootContainer] = htmlWithInitialData.split(containerString);
-
-    const beforeRootContainerStream = new ReadableString(beforeRootContainer);
-    const containerStream = new ReadableString(containerString);
-    const afterRootContainerStream = new ReadableString(afterRootContainer);
-    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainer, afterRootContainerStream);
-    return htmlStream;
-  }
-  return htmlWithInitialData
-    .replace(
-      `<div id="${mountElementId}"></div>`,
-      `<div id="${mountElementId}">${rootContainer}</div>`
-    )
-}
 
 /**
  * server render function
@@ -132,45 +40,46 @@ const render: IRender = async (params) => {
   const {
     path,
     htmlTemplate = '',
-    mountElementId = '{{{MountElementId}}}',
+    mountElementId = '{{{ MountElementId }}}',
     context = {},
     mode = '{{{ Mode }}}',
     basename = '{{{ Basename }}}',
-    staticMarkup = {{{StaticMarkup}}},
+    staticMarkup = {{{ StaticMarkup }}},
+    forceInitial = {{{ ForceInitial }}},
     getInitialPropsCtx,
   } = params;
 
   let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
   let rootContainer = '';
   try {
-    // getInitial
-    const { pageInitialProps, appInitialData } = await getInitial({
-      path,
-      basename,
-      getInitialPropsCtx,
+    // handle basename
+    const location = stripBasename(basename, path);
+    const { pathname } = location;
+    // server history
+    const history = createMemoryHistory({
+      initialEntries: [format(location)],
     });
+    // for renderServer
     const opts = {
       path,
+      history,
+      pathname,
       getInitialPropsCtx,
-      pageInitialProps,
-      appInitialData,
+      basename,
       context,
       mode,
+      plugin,
       staticMarkup,
       routes,
     }
 
     // renderServer get rootContainer
-    const serverResult = await renderServer({
-      ...opts,
-      basename,
-      plugin,
-    });
-    rootContainer = serverResult.html;
+    const { pageHTML, appInitialData, pageInitialProps } = await renderServer(opts);
+    rootContainer = pageHTML;
     if (html) {
       // plugin for modify html template
       html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio }) : html;
-      html = await handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode });
+      html = await handleHTML({ html, rootContainer, pageInitialProps, appInitialData, mountElementId, mode, forceInitial });
     }
   } catch (e) {
     // downgrade into csr

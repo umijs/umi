@@ -10,7 +10,6 @@ interface IOpts {
   extraProps?: object;
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
-  appInitialData?: object;
 }
 
 interface IGetRouteElementOpts {
@@ -62,21 +61,15 @@ function render({
     ...opts,
     routes: route.routes || [],
   });
-
   let { component: Component, wrappers } = route;
   if (Component) {
     const defaultPageInitialProps = process.env.__IS_SERVER
       ? {}
       : (window as any).g_initialProps;
-    const defaultAppInitialData = process.env.__IS_SERVER
-      ? {}
-      : (window as any).g_initialData;
     const newProps = {
       ...props,
       ...opts.extraProps,
       ...(opts.pageInitialProps || defaultPageInitialProps),
-      // TODO: refresh appInitialData when not exist window.g_initialData
-      ...(opts.appInitialData || defaultAppInitialData),
       route,
     };
     // @ts-ignore

@@ -29,7 +29,7 @@ export default (api: IApi) => {
           forceInitial: joi
             .boolean()
             .description(
-              'remove window.g_initialProps and window.getInitialData in html, to force execing Page getInitialProps and App getInitialData functions',
+              'remove window.g_initialProps in html, to force execing Page getInitialProps  functions',
             ),
           devServerRender: joi
             .boolean()

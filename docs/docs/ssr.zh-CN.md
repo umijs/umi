@@ -40,7 +40,7 @@ Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的
 
 - **开箱即用**：内置 SSR，一键开启，`umi dev` 即 SSR 预览，开发调试方便。
 - **服务端框架无关**：Umi 不耦合服务端框架（例如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)），无论是哪种框架或者 Serverless 模式，都可以非常简单进行集成。
-- **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps）的同时，增加了应用级数据获取（getInitialData），来解决之前全局数据的获取问题。
+- **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps），来解决之前全局数据的获取问题。
 - **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 HTML。
 - **支持渲染降级**：优先使用 SSR，如果服务端渲染失败，自动降级为客户端渲染（CSR），不影响正常业务流程。
 - **支持流式渲染**：`ssr: { mode: 'stream' }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
@@ -81,7 +81,7 @@ export default {
 
 服务端渲染的数据获取方式与 SPA（单页应用）有所不同，为了让客户端和服务端都能获取到同一份数据，我们提供了两个 应用级数据 和 页面级数据 方法。
 
-### 应用级数据获取
+<!-- ### 应用级数据获取
 
 提供 `getInitialData` 用来获取全局数据，透传到每个页面的 props 中，让所有页面都能共享消费这份数据：
 
@@ -111,7 +111,7 @@ export default (props) => {
     <div>{props.layout.name}</div>
   )
 }
-```
+``` -->
 
 ### 页面级数据获取
 

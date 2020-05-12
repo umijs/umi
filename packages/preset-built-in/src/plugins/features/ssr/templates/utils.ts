@@ -44,7 +44,7 @@ export function findRoute(routes: any[], path: string, basename: string = '/'): 
   }
 }
 
-export class ReadableString extends Readable {
+class ReadableString extends Readable {
   str: string
   sent: boolean
 
@@ -67,5 +67,40 @@ export class ReadableString extends Readable {
 // get displayName from Component
 export const getComponentDisplayName = (Component: any, defaultName = 'Unknown') => typeof Component === 'string' ? Component : (Component.displayName || Component.name || defaultName)
 
-export { serialize, mergeStream };
 export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio'
+
+/**
+ * handle html with rootContainer(rendered)
+ * @param param0
+ */
+export const handleHTML = async (opts: any) => {
+  const { html, pageInitialProps, appInitialData, rootContainer, mountElementId, mode, forceInitial } = opts;
+  const windowInitialVars = {
+    ...(appInitialData && !forceInitial ? { 'window.g_initialData': serialize(appInitialData) } : {}),
+    ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
+  }
+  const htmlWithInitialData = html.replace(
+    '</head>',
+    `<script>
+      window.g_useSSR = true;
+      ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).concat('').join(';\n')}
+    </script>
+    </head>`
+  )
+
+  if (mode === 'stream') {
+    const containerString = `<div id="${mountElementId}">`;
+    const [beforeRootContainer, afterRootContainer] = htmlWithInitialData.split(containerString);
+
+    const beforeRootContainerStream = new ReadableString(beforeRootContainer);
+    const containerStream = new ReadableString(containerString);
+    const afterRootContainerStream = new ReadableString(afterRootContainer);
+    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainer, afterRootContainerStream);
+    return htmlStream;
+  }
+  return htmlWithInitialData
+    .replace(
+      `<div id="${mountElementId}"></div>`,
+      `<div id="${mountElementId}">${rootContainer}</div>`
+    )
+}
