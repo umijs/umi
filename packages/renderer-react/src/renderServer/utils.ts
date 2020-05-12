@@ -1,5 +1,6 @@
 import { parse, UrlWithStringQuery } from 'url';
 import { matchRoutes } from 'react-router-config';
+import { IRoute } from '@umijs/types';
 
 import { IOpts } from './renderServer';
 
@@ -34,6 +35,10 @@ interface ILoadGetInitialPropsOpts extends IOpts {
   App?: React.ReactElement;
 }
 
+interface IPatchRoute extends IRoute {
+  component: any;
+}
+
 /**
  * get current page component getPageInitialProps data
  * @param params
@@ -46,9 +51,9 @@ export const loadGetInitialProps = async (
   const matched = matchRoutes(routes, pathname || '/')
     .map(async ({ route, match }) => {
       // @ts-ignore
-      const { component, ...restRouteParams } = route;
+      const { component, ...restRouteParams } = route as IPatchRoute;
 
-      if (component && component?.getInitialProps) {
+      if (component && (component as any)?.getInitialProps) {
         const ctx = {
           isServer: true,
           match,
