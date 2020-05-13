@@ -28,21 +28,21 @@ export default ({
       const defaultContent = await html.getContent({
         route,
         chunks: sharedMap.get('chunks'),
-      })
+      });
       const content = await api.applyPlugins({
-        key: 'modifyDevServerContent',
+        key: 'modifyDevContent',
         type: api.ApplyPluginsType.modify,
         initialValue: defaultContent,
         args: {
           req,
-        }
+        },
       });
       res.setHeader('Content-Type', 'text/html');
 
       // support stream content
       if (content instanceof Stream) {
         content.pipe(res);
-        content.on('end', function() {
+        content.on('end', function () {
           res.end();
         });
       } else {

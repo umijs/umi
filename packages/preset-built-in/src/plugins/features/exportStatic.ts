@@ -56,8 +56,7 @@ export default (api: IApi) => {
   });
 
   // modify export html using routes
-  api.modifyRouteMap(async (memo, { html }) => {
-    const routeMap = await html.getRouteMap();
+  api.modifyExportRouteMap(async (routeMap, { html }) => {
     const { exportStatic } = api.config;
     // for dynamic routes
     // TODO: test case

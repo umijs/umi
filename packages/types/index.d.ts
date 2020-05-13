@@ -193,8 +193,8 @@ export interface IApi extends PluginAPI {
       chunks: webpack.compilation.Chunk[];
     }
   >;
-  modifyDevServerContent: IModify<string | Stream, { req: Request }>;
-  modifyRouteMap: IModify<
+  modifyDevContent: IModify<string | Stream, { req: Request }>;
+  modifyExportRouteMap: IModify<
     { route: Pick<IRoute, 'path'>; file: string }[],
     { html: InstanceType<Html> }
   >;
