@@ -194,7 +194,6 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyDevServerContent: IModify<string | Stream, { req: Request }>;
-  modifyBuildContent: IModify<string, { route: IRoute; file: string }>;
   modifyRouteMap: IModify<
     { route: Pick<IRoute, 'path'>; file: string }[],
     { html: InstanceType<Html> }

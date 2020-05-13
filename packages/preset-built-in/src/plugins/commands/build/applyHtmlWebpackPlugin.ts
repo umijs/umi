@@ -17,18 +17,9 @@ export default function (api: IApi) {
             },
           });
           for (const { route, file } of routeMap) {
-            const defaultContent = await html.getContent({
+            const content = await html.getContent({
               route,
               chunks: compilation.chunks,
-            });
-            const content = await api.applyPlugins({
-              key: 'modifyBuildContent',
-              type: api.ApplyPluginsType.modify,
-              initialValue: defaultContent,
-              args: {
-                route,
-                file,
-              },
             });
             compilation.assets[file] = {
               source: () => content,

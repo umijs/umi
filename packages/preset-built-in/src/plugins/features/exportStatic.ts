@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, IRoute } from '@umijs/types';
-import { deepmerge, rimraf } from '@umijs/utils';
+import { deepmerge, rimraf, cheerio } from '@umijs/utils';
 import pathToRegexp from 'path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
@@ -80,38 +80,39 @@ export default (api: IApi) => {
     return routeMap;
   });
 
-  api.modifyBuildContent(async (memo, { route }) => {
-    const { absOutputPath } = api.paths;
-    const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+  api.modifyHTML(async ($, args) => {
+    const { route } = args;
+    const serverFilePath = join(api.paths!.absOutputPath, 'umi.server.js');
     const { ssr } = api.config;
-    if (ssr && existsSync(serverFilePath) && !isDynamicRoute(route!.path)) {
+    if (ssr && !isDynamicRoute(route!.path)) {
       try {
+        const htmlTemplate = $.html();
         // do server-side render
         const render = require(serverFilePath);
         const { html } = await render({
           path: route.path,
-          htmlTemplate: memo,
+          htmlTemplate,
         });
         api.logger.info(`${route.path} render success`);
-        return html;
+        return cheerio.load(html);
       } catch (e) {
         api.logger.error(`${route.path} render failed`, e);
         throw e;
       }
     }
-    return memo;
+    return $;
   });
 
-  api.onBuildComplete(({ err }) => {
-    if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
-      // remove umi.server.js
-      const { absOutputPath } = api.paths;
-      const serverFilePath = join(absOutputPath || '', 'umi.server.js');
-      if (existsSync(serverFilePath)) {
-        rimraf.sync(serverFilePath);
-      }
-    }
-  });
+  // api.onBuildComplete(({ err }) => {
+  //   if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
+  //     // remove umi.server.js
+  //     const { absOutputPath } = api.paths;
+  //     const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+  //     if (existsSync(serverFilePath)) {
+  //       rimraf.sync(serverFilePath);
+  //     }
+  //   }
+  // });
 
   function addHtmlSuffix(path: string, hasRoutes: boolean) {
     if (path === '/') return path;
