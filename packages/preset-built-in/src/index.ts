@@ -37,6 +37,7 @@ export default function () {
       require.resolve('./plugins/features/extraBabelPlugins'),
       require.resolve('./plugins/features/extraBabelPresets'),
       require.resolve('./plugins/features/extraPostCSSPlugins'),
+      require.resolve('./plugins/features/forkTSChecker'),
       require.resolve('./plugins/features/globalCSS'),
       require.resolve('./plugins/features/globalJS'),
       require.resolve('./plugins/features/hash'),
@@ -54,14 +55,13 @@ export default function () {
       require.resolve('./plugins/features/proxy'),
       require.resolve('./plugins/features/publicPath'),
       require.resolve('./plugins/features/runtimePublicPath'),
+      require.resolve('./plugins/features/ssr/ssr'),
       require.resolve('./plugins/features/singular'),
       require.resolve('./plugins/features/styleLoader'),
       require.resolve('./plugins/features/targets'),
       require.resolve('./plugins/features/terserOptions'),
       require.resolve('./plugins/features/theme'),
       require.resolve('./plugins/features/umiInfo'),
-      require.resolve('./plugins/features/forkTSChecker'),
-      require.resolve('./plugins/features/ssr/ssr'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
