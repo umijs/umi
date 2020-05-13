@@ -43,6 +43,7 @@ export default function (api: IApi) {
     'modifyHTMLChunks',
     'modifyDevServerContent',
     'modifyRouteMap',
+    'modifyBuildContent',
     'modifyPublicPathStr',
     'modifyRendererPath',
     'modifyRoutes',

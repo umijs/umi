@@ -1,12 +1,33 @@
+import { existsSync } from 'fs';
+import { join } from 'path';
+
 import { IApi, webpack, BundlerConfigType } from '@umijs/types';
 import { getHtmlGenerator } from '../htmlUtils';
+import { OUTPUT_SERVER_FILENAME } from '../../features/ssr/constants';
 
 export default function (api: IApi) {
+  // maybe hack but useful
+  function ensureServerFileExisted() {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (
+          existsSync(join(api.paths!.absOutputPath, OUTPUT_SERVER_FILENAME))
+        ) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 500);
+    });
+  }
   class HtmlWebpackPlugin {
     apply(compiler: webpack.Compiler) {
       compiler.hooks.emit.tapPromise(
         'UmiHtmlGeneration',
         async (compilation: any) => {
+          if (api.config.ssr) {
+            // waiting umi.server.js emited
+            await ensureServerFileExisted();
+          }
           const html = getHtmlGenerator({ api });
           const routeMap = await api.applyPlugins({
             key: 'modifyRouteMap',
@@ -17,10 +38,20 @@ export default function (api: IApi) {
             },
           });
           for (const { route, file } of routeMap) {
-            const content = await html.getContent({
+            const defaultContent = await html.getContent({
               route,
               chunks: compilation.chunks,
             });
+            const content = await api.applyPlugins({
+              key: 'modifyBuildContent',
+              type: api.ApplyPluginsType.modify,
+              initialValue: defaultContent,
+              args: {
+                route,
+                file,
+              },
+            });
+
             compilation.assets[file] = {
               source: () => content,
               size: () => content.length,

@@ -5,6 +5,7 @@ import { deepmerge, rimraf, cheerio } from '@umijs/utils';
 import pathToRegexp from 'path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
+import { OUTPUT_SERVER_FILENAME } from '../features/ssr/constants';
 
 export default (api: IApi) => {
   api.describe({
@@ -80,35 +81,42 @@ export default (api: IApi) => {
     return routeMap;
   });
 
-  api.modifyHTML(async ($, args) => {
+  api.modifyBuildContent(async (memo, args) => {
     const { route } = args;
-    const serverFilePath = join(api.paths!.absOutputPath, 'umi.server.js');
+    const serverFilePath = join(
+      api.paths!.absOutputPath,
+      OUTPUT_SERVER_FILENAME,
+    );
     const { ssr } = api.config;
-    if (ssr && api.env === 'production' && !isDynamicRoute(route!.path)) {
+    if (
+      ssr &&
+      api.env === 'production' &&
+      existsSync(serverFilePath) &&
+      !isDynamicRoute(route!.path)
+    ) {
       try {
-        const htmlTemplate = $.html();
         // do server-side render
         const render = require(serverFilePath);
         const { html } = await render({
           path: route.path,
-          htmlTemplate,
+          htmlTemplate: memo,
         });
         api.logger.info(`${route.path} render success`);
-        return cheerio.load(html);
+        return html;
       } catch (e) {
         api.logger.error(`${route.path} render failed`, e);
         throw e;
       }
     }
-    return $;
+    return memo;
   });
 
   api.onBuildComplete(({ err }) => {
     if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
       // remove umi.server.js
       const serverFilePath = join(
-        api.paths!.absOutputPath || '',
-        'umi.server.js',
+        api.paths!.absOutputPath,
+        OUTPUT_SERVER_FILENAME,
       );
       if (existsSync(serverFilePath)) {
         rimraf.sync(serverFilePath);

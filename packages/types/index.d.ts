@@ -198,6 +198,7 @@ export interface IApi extends PluginAPI {
     { route: Pick<IRoute, 'path'>; file: string }[],
     { html: InstanceType<Html> }
   >;
+  modifyBuildContent: IModify<string, { route: IRoute; file: string }>;
   chainWebpack: IModify<
     WebpackChain,
     {
