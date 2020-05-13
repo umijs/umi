@@ -93,29 +93,6 @@ test('html', async () => {
   );
 });
 
-const htmlTemplate = `<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
-    />
-    <link rel="stylesheet" href="/umi.css" />
-    <script>
-      window.routerBase = "/";
-    </script>
-    <script>
-      //! umi version: undefined
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-
-    <script src="/umi.js"></script>
-  </body>
-</html>`;
-
 test('ssr', async () => {
   const cwd = join(fixtures, 'ssr');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
@@ -137,7 +114,6 @@ test('ssr', async () => {
   const render = require(tmpServerFile).default;
   const { rootContainer, html } = await render({
     path: '/',
-    htmlTemplate,
     mountElementId: 'root',
   });
   const expectRootContainer =
@@ -169,7 +145,6 @@ test('ssr getInitialPropsCtx', async () => {
   const render = require(tmpServerFile).default;
   const { rootContainer, html } = await render({
     path: '/',
-    htmlTemplate,
     mountElementId: 'root',
     getInitialPropsCtx: {
       fromServerTitle: 'Server Title',
@@ -205,7 +180,6 @@ test('ssr using stream', (done) => {
       const render = require(tmpServerFile).default;
       render({
         path: '/',
-        htmlTemplate,
         mode: 'stream',
         mountElementId: 'root',
       }).then(({ html, rootContainer }) => {
