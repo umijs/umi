@@ -16,7 +16,7 @@ export default function (api: IApi) {
           clearInterval(interval);
           resolve();
         }
-      }, 500);
+      }, 300);
     });
   }
   class HtmlWebpackPlugin {
