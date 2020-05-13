@@ -84,7 +84,7 @@ export default (api: IApi) => {
     const { route } = args;
     const serverFilePath = join(api.paths!.absOutputPath, 'umi.server.js');
     const { ssr } = api.config;
-    if (ssr && !isDynamicRoute(route!.path)) {
+    if (ssr && api.env === 'production' && !isDynamicRoute(route!.path)) {
       try {
         const htmlTemplate = $.html();
         // do server-side render
