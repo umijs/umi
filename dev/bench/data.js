@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589332031922,
+  "lastUpdate": 1589332166662,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -2796,6 +2796,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.32%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "954c2ef21e24e473e3416264c987a76facdef851",
+          "message": "chore: reset bundler-webpack",
+          "timestamp": "2020-05-13T09:06:22+08:00",
+          "tree_id": "85a1583d4c241f69dd33e4510a5a04008e4315b3",
+          "url": "https://github.com/umijs/umi/commit/954c2ef21e24e473e3416264c987a76facdef851"
+        },
+        "date": 1589332163223,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1146,
+            "range": "±2.43%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1857,
+            "range": "±3.39%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
