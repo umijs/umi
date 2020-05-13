@@ -98,7 +98,7 @@ export default (api: IApi) => {
   api.modifyHTMLChunks(async (memo, opts) => {
     // remove server bundle entry in html
     // for dynamicImport
-    if (api.config.dynamicImport) {
+    if (api.config.dynamicImport && opts.chunks) {
       // TODO: page bind opposite chunks, now will bind all chunks
       const chunks = opts.chunks.map((chunk) => {
         return chunk.name;
