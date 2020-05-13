@@ -12,7 +12,6 @@ import {
   OUTPUT_SERVER_FILENAME,
   TMP_PLUGIN_DIR,
   CLIENT_EXPORTS,
-  DEFAULT_HTML_PLACEHOLDER,
 } from './constants';
 
 export default (api: IApi) => {
@@ -55,6 +54,12 @@ export default (api: IApi) => {
   api.onGenerateFiles(async () => {
     const serverTpl = path.join(winPath(__dirname), 'templates/server.tpl');
     const serverContent = fs.readFileSync(serverTpl, 'utf-8');
+    const html = getHtmlGenerator({ api });
+
+    const defaultHTML = await html.getContent({
+      route: { path: '/' },
+      noChunk: true,
+    });
 
     api.writeTmpFile({
       path: 'core/server.ts',
@@ -76,7 +81,7 @@ export default (api: IApi) => {
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
         Basename: api.config.base,
-        DEFAULT_HTML_PLACEHOLDER,
+        DEFAULT_HTML_PLACEHOLDER: JSON.stringify(defaultHTML),
       }),
     });
 
@@ -155,67 +160,6 @@ export default (api: IApi) => {
       api.logger.error('[SSR]', e);
     }
     return defaultHtml;
-  });
-
-  /**
-   * replace umi.server.js DEFAULT_HTML_PLACEHOLDER
-   */
-  const replaceHTMLPlaceholder = ({ serverPath, defaultHTML }: any) => {
-    const serverFile = fs.existsSync(serverPath)
-      ? fs.readFileSync(serverPath, 'utf-8')
-      : '';
-    if (serverFile) {
-      // has placeholder
-      const newServerFile = serverFile.replace(
-        new RegExp(`\'${DEFAULT_HTML_PLACEHOLDER}\'`, 'g'),
-        JSON.stringify(defaultHTML),
-      );
-      fs.writeFileSync(serverPath, newServerFile, 'utf-8');
-    }
-  };
-
-  /**
-   * with server in ssr.devServerRender: false
-   */
-  api.onDevCompileDone(async ({ stats }) => {
-    const { devServerRender = true } = api.config?.ssr || {};
-    if (!devServerRender) {
-      const serverPath = path.join(
-        api.paths!.absOutputPath,
-        OUTPUT_SERVER_FILENAME,
-      );
-      const html = getHtmlGenerator({ api });
-
-      const defaultHTML = await html.getContent({
-        route: { path: '/' },
-        chunks: stats.compilation.chunks,
-      });
-      replaceHTMLPlaceholder({
-        serverPath,
-        defaultHTML,
-      });
-    }
-  });
-
-  /**
-   * replace default html string when build success
-   * [WARN] must exec before prerender plugin
-   */
-  api.onBuildComplete(({ err, stats }) => {
-    const serverPath = path.join(
-      api.paths!.absOutputPath,
-      OUTPUT_SERVER_FILENAME,
-    );
-    if (!err) {
-      const defaultHTML = fs.readFileSync(
-        path.join(api.paths!.absOutputPath, 'index.html'),
-        'utf-8',
-      );
-      replaceHTMLPlaceholder({
-        serverPath,
-        defaultHTML,
-      });
-    }
   });
 
   // 修改

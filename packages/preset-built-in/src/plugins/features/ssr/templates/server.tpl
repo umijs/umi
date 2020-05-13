@@ -49,7 +49,7 @@ const render: IRender = async (params) => {
     getInitialPropsCtx,
   } = params;
 
-  let html = htmlTemplate || '{{{ DEFAULT_HTML_PLACEHOLDER }}}';
+  let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
   let rootContainer = '';
   try {
     // handle basename
