@@ -64,6 +64,10 @@ $ ANALYZE=1 umi dev
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_SSR
+
+对服务端包大小的分析，默认关闭，具体见 [服务端渲染#包大小分析](/zh-CN/docs/ssr#包大小分析)。
+
 ### BABEL_CACHE
 
 默认开启 Babel 编译缓存，值为 none 时禁用缓存。
