@@ -1,6 +1,9 @@
 name: Umi Benchmark
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   benchmark:

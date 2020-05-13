@@ -396,125 +396,6 @@ export default () => {
 
 构建之后使用低网络模拟就能看到效果。
 
-## ssr <Badge>3.2+</Badge>
-
-* Type: `object`
-* Default: `false`
-
-配置是否开启服务端渲染，配置如下：
-
-```js
-{
-  // 一键开启
-  ssr: {
-    // 更多配置
-    // forceInitial: false,
-    // devServerRender: true,
-    // mode: 'string',
-    // staticMarkup: false,
-  }
-}
-```
-
-配置说明：
-
-* `forceInitial`：客户端渲染时强制执行 `getInitialProps` 方法，常见的场景：静态站点希望每次访问时保持数据最新，以客户端渲染为主。
-* `devServerRender`：在 `umi dev` 开发模式下，执行渲染，用于 umi SSR 项目的快速开发、调试，服务端渲染效果所见即所得，同时我们考虑到可能会与服务端框架（如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)）结合做本地开发、调试，关闭后，在 `umi dev` 下不执行服务端渲染，但会生成 `umi.server.js`（Umi SSR 服务端渲染入口文件），渲染开发流程交由开发者处理。
-* `mode`：渲染模式，默认使用 `string` 字符串渲染，同时支持流式渲染 `mode: 'stream'`，减少 TTFB（浏览器开始收到服务器响应数据的时间） 时长。
-* `staticMarkup`：html 上的渲染属性（例如 React 渲染的 `data-reactroot`），常用于静态站点生成的场景上。
-
-注意：
-
-* 开启后，执行 `umi dev` 时，访问 http://localhost:8000 ，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
-* 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
-* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以开启 [exportStatic](#exportstatic) 配置，会在执行 `umi build` 构建时进行**预渲染**。
-
-了解更多，可点击 [服务端渲染文档](/docs/ssr)。
-
-## exportStatic
-
-* Type: `object`
-
-配置 html 的输出形式，默认只输出 `index.html`。
-
-如果需要预渲染，请开启 [ssr](#ssr-32) 配置，常用来解决没有服务端情况下，页面的 SEO 和首屏渲染提速。
-
-如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
-
-包含以下几个属性，
-
-* htmlSuffix，启用 `.html` 后缀。
-* dynamicRoot，部署到任意路径。
-* extraPaths，生成额外的路径页面，用法和场景见 [预渲染动态路由](/docs/ssr#预渲染动态路由)
-
-比如以下路由，
-
-```bash
-/
-/users
-/list
-```
-
-不开启 `exportStatic` 时，输出，
-
-```bash
-- index.html
-```
-
-设置 `exportStatic: {}` 后，输出，
-
-```bash
-- index.html
-- users/index.html
-- list/index.html
-```
-
-设置 `exportStatic: { htmlSuffix: true }` 后，输出，
-
-```bash
-- index.html
-- users.html
-- list.html
-```
-
-若有 [SEO](https://baike.baidu.com/item/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E4%BC%98%E5%8C%96/3132?fromtitle=SEO&fromid=102990) 需求，可开启 [ssr](#ssr) 配置，在 `umi build` 后，会路由（除静态路由外）渲染成有具体内容的静态 html 页面，例如如下路由配置：
-
-```jsx
-// .umirc.ts | config/config.ts
-{
-  routes: [
-    {
-      path: '/',
-      component: '@/layouts/Layout',
-      routes: [
-        { path: '/', component: '@/pages/Index' },
-        { path: '/bar', component: '@/pages/Bar' },
-        { path: '/news', component: '@/pages/News' },
-        { path: '/news/:id', component: '@/pages/NewsDetail' },
-      ]
-    },
-  ]
-}
-```
-
-设置 `{ ssr: {}, exportStatic: { }` 后，输出，
-
-会在编译后，生成如下产物：
-
-```bash
-- dist
-  - umi.js
-  - umi.css
-  - index.html
-  - bar
-    - index.html
-  - news
-    - index.html
-    - [id].html
-```
-
-考虑到预渲染后，大部分不会再用到 `umi.server.js` 服务端文件，构建完成后会删掉 `umi.server.js` 文件如果有调试、不删除 server 文件需求，可通过环境变量 `RM_SERVER_FILE=none` 来保留。
-
 ## externals
 
 * Type: `object`
@@ -961,6 +842,125 @@ __webpack_public_path__ = window.publicPath;
 ```
 
 然后 webpack 在异步加载 JS 等资源文件时会从 `window.publicPath` 里开始找。
+
+## ssr <Badge>3.2+</Badge>
+
+* Type: `object`
+* Default: `false`
+
+配置是否开启服务端渲染，配置如下：
+
+```js
+{
+  // 一键开启
+  ssr: {
+    // 更多配置
+    // forceInitial: false,
+    // devServerRender: true,
+    // mode: 'string',
+    // staticMarkup: false,
+  }
+}
+```
+
+配置说明：
+
+* `forceInitial`：客户端渲染时强制执行 `getInitialProps` 方法，常见的场景：静态站点希望每次访问时保持数据最新，以客户端渲染为主。
+* `devServerRender`：在 `umi dev` 开发模式下，执行渲染，用于 umi SSR 项目的快速开发、调试，服务端渲染效果所见即所得，同时我们考虑到可能会与服务端框架（如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)）结合做本地开发、调试，关闭后，在 `umi dev` 下不执行服务端渲染，但会生成 `umi.server.js`（Umi SSR 服务端渲染入口文件），渲染开发流程交由开发者处理。
+* `mode`：渲染模式，默认使用 `string` 字符串渲染，同时支持流式渲染 `mode: 'stream'`，减少 TTFB（浏览器开始收到服务器响应数据的时间） 时长。
+* `staticMarkup`：html 上的渲染属性（例如 React 渲染的 `data-reactroot`），常用于静态站点生成的场景上。
+
+注意：
+
+* 开启后，执行 `umi dev` 时，访问 http://localhost:8000 ，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
+* 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
+* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以开启 [exportStatic](#exportstatic) 配置，会在执行 `umi build` 构建时进行**预渲染**。
+
+了解更多，可点击 [服务端渲染文档](/docs/ssr)。
+
+## exportStatic
+
+* Type: `object`
+
+配置 html 的输出形式，默认只输出 `index.html`。
+
+如果需要预渲染，请开启 [ssr](#ssr-32) 配置，常用来解决没有服务端情况下，页面的 SEO 和首屏渲染提速。
+
+如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
+
+包含以下几个属性，
+
+* htmlSuffix，启用 `.html` 后缀。
+* dynamicRoot，部署到任意路径。
+* extraPaths，生成额外的路径页面，用法和场景见 [预渲染动态路由](/docs/ssr#预渲染动态路由)
+
+比如以下路由，
+
+```bash
+/
+/users
+/list
+```
+
+不开启 `exportStatic` 时，输出，
+
+```bash
+- index.html
+```
+
+设置 `exportStatic: {}` 后，输出，
+
+```bash
+- index.html
+- users/index.html
+- list/index.html
+```
+
+设置 `exportStatic: { htmlSuffix: true }` 后，输出，
+
+```bash
+- index.html
+- users.html
+- list.html
+```
+
+若有 [SEO](https://baike.baidu.com/item/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E4%BC%98%E5%8C%96/3132?fromtitle=SEO&fromid=102990) 需求，可开启 [ssr](#ssr) 配置，在 `umi build` 后，会路由（除静态路由外）渲染成有具体内容的静态 html 页面，例如如下路由配置：
+
+```jsx
+// .umirc.ts | config/config.ts
+{
+  routes: [
+    {
+      path: '/',
+      component: '@/layouts/Layout',
+      routes: [
+        { path: '/', component: '@/pages/Index' },
+        { path: '/bar', component: '@/pages/Bar' },
+        { path: '/news', component: '@/pages/News' },
+        { path: '/news/:id', component: '@/pages/NewsDetail' },
+      ]
+    },
+  ]
+}
+```
+
+设置 `{ ssr: {}, exportStatic: { }` 后，输出，
+
+会在编译后，生成如下产物：
+
+```bash
+- dist
+  - umi.js
+  - umi.css
+  - index.html
+  - bar
+    - index.html
+  - news
+    - index.html
+    - [id].html
+```
+
+考虑到预渲染后，大部分不会再用到 `umi.server.js` 服务端文件，构建完成后会删掉 `umi.server.js` 文件如果有调试、不删除 server 文件需求，可通过环境变量 `RM_SERVER_FILE=none` 来保留。
 
 ## scripts
 
