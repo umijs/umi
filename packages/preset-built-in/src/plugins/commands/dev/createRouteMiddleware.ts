@@ -30,7 +30,7 @@ export default ({
         chunks: sharedMap.get('chunks'),
       });
       const content = await api.applyPlugins({
-        key: 'modifyDevContent',
+        key: 'modifyDevHTMLContent',
         type: api.ApplyPluginsType.modify,
         initialValue: defaultContent,
         args: {

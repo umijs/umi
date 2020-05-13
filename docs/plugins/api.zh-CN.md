@@ -369,7 +369,7 @@ api.modifyExportRouteMap(async (defaultRouteMap, { html }) => {
 });
 ```
 
-### modifyDevContent <Badge>3.2+</Badge>
+### modifyDevHTMLContent <Badge>3.2+</Badge>
 
 `umi dev` 时修改输出的 HTML 内容。
 
@@ -380,7 +380,7 @@ api.modifyExportRouteMap(async (defaultRouteMap, { html }) => {
 例如希望 `/404` 路由直接返回 `Not Found`：
 
 ```js
-api.modifyDevContent(async (defaultHtml, { req }) => {
+api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
   if (req.path === '/404') {
     return 'Not Found';
   }
@@ -388,7 +388,7 @@ api.modifyDevContent(async (defaultHtml, { req }) => {
 })
 ```
 
-### modifyBuildContent <Badge>3.2+</Badge>
+### modifyProdHTMLContent <Badge>3.2+</Badge>
 
 `umi build` 时修改输出的 HTML 内容。
 
@@ -400,7 +400,7 @@ api.modifyDevContent(async (defaultHtml, { req }) => {
 例如可以在生成 HTML 文件前，做预渲染：
 
 ```js
-api.modifyBuildContent(async (content, args) => {
+api.modifyProdHTMLContent(async (content, args) => {
   const { route } = args;
   const render = require('your-renderer');
   return await render({

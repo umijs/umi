@@ -43,7 +43,7 @@ export default function (api: IApi) {
               chunks: compilation.chunks,
             });
             const content = await api.applyPlugins({
-              key: 'modifyBuildContent',
+              key: 'modifyProdHTMLContent',
               type: api.ApplyPluginsType.modify,
               initialValue: defaultContent,
               args: {

@@ -121,7 +121,7 @@ export default (api: IApi) => {
   });
 
   // modify devServer content
-  api.modifyDevContent(async (defaultHtml, { req }) => {
+  api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
     const { stream, devServerRender = true } = api.config?.ssr || {};
     const serverPath = path.join(
