@@ -199,3 +199,60 @@ test('ssr using stream', (done) => {
       });
     });
 });
+
+test('ssr htmlTemplate', async () => {
+  const cwd = join(fixtures, 'ssr-htmlTemplate');
+  const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
+
+  delete require.cache[tmpServerFile];
+
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+  });
+  await service.run({
+    name: 'g',
+    args: {
+      _: ['g', 'tmp'],
+    },
+  });
+  expect(existsSync(tmpServerFile)).toBeTruthy();
+
+  const render = require(tmpServerFile).default;
+  const { rootContainer, html } = await render({
+    path: '/',
+    mountElementId: 'root',
+    getInitialPropsCtx: {
+      fromServerTitle: 'Server Title',
+    },
+    htmlTemplate: `<!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+        />
+        <link rel="stylesheet" href="/umi.css" />
+        <script>console.log(1);</script>
+        <script>
+          window.routerBase = "/";
+        </script>
+        <script>
+          //! umi version: undefined
+        </script>
+      </head>
+      <body>
+        <div id="root"></div>
+
+        <script src="/umi.js"></script>
+      </body>
+    </html>`,
+  });
+  const expectRootContainer = '<div><h1>Server Title</h1></div>';
+  expect(rootContainer).toEqual(expectRootContainer);
+  expect(html).toMatch('<script>console.log(1);</script>');
+  const $ = cheerio.load(html);
+  expect($('#root').html()).toEqual(expectRootContainer);
+  rimraf.sync(join(cwd, '.umi-test'));
+});
