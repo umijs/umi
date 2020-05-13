@@ -18,6 +18,7 @@ English | [简体中文](./README.zh-CN.md)
 * 🚀 **Self Development**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
 * 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
 * 🚄 **Future Ready**, Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
+* 🌈 **Support SSR**, Starts Server-Side Render friendly.
 
 ## Getting Started
 
