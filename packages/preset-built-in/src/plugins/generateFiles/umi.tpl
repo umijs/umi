@@ -19,7 +19,7 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
       history: createHistory(args.hot),
       rootElement: '{{{ rootElement }}}',
 {{#enableTitle}}
-      defaultTitle: '{{{ defaultTitle }}}',
+      defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
     });
   },
