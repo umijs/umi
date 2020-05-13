@@ -78,7 +78,6 @@ export default (api: IApi) => {
       });
     }
     return routeMap;
-    return memo;
   });
 
   api.modifyBuildContent(async (memo, { route }) => {

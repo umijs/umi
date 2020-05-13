@@ -164,7 +164,7 @@ export default (api: IApi) => {
     const serverFile = fs.existsSync(serverPath)
       ? fs.readFileSync(serverPath, 'utf-8')
       : '';
-    if (serverFile && serverFile.indexOf(DEFAULT_HTML_PLACEHOLDER) > -1) {
+    if (serverFile) {
       // has placeholder
       const newServerFile = serverFile.replace(
         new RegExp(`\'${DEFAULT_HTML_PLACEHOLDER}\'`, 'g'),
@@ -201,16 +201,16 @@ export default (api: IApi) => {
    * replace default html string when build success
    * [WARN] must exec before prerender plugin
    */
-  api.onBuildComplete(({ err }) => {
+  api.onBuildComplete(({ err, stats }) => {
     const serverPath = path.join(
       api.paths!.absOutputPath,
       OUTPUT_SERVER_FILENAME,
     );
-    const defaultHTML = fs.readFileSync(
-      path.join(api.paths!.absOutputPath, 'index.html'),
-      'utf-8',
-    );
     if (!err) {
+      const defaultHTML = fs.readFileSync(
+        path.join(api.paths!.absOutputPath, 'index.html'),
+        'utf-8',
+      );
       replaceHTMLPlaceholder({
         serverPath,
         defaultHTML,
