@@ -1,9 +1,7 @@
 import { Readable } from 'stream';
 import { matchPath } from '@umijs/runtime';
 import { parse, UrlWithStringQuery } from 'url';
-// @ts-ignore
 import mergeStream from 'merge-stream';
-// @ts-ignore
 import serialize from 'serialize-javascript';
 
 function addLeadingSlash(path: string): string {

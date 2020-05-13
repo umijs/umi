@@ -2978,6 +2978,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/merge-stream@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/merge-stream/-/merge-stream-1.1.2.tgz#a880ff66b1fbbb5eef4958d015c5947a9334dbb1"
+  integrity sha512-7faLmaE99g/yX0Y9pF1neh2IUqOf/fXMOWCVzsXjqI1EJ91lrgXmaBKf6bRWM164lLyiHxHt6t/ZO/cIzq61XA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/mime@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
@@ -3141,6 +3148,11 @@
   integrity sha512-pOKLaubrAEMUItGNpgwl0HMFPrSAFic8oSVIvfu1UwcgGNmNyK9gyhBHKmBnUTwwVvpZfkzUC0GaMgnL6P86uA==
   dependencies:
     "@types/node" "*"
+
+"@types/serialize-javascript@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@types/serialize-javascript/-/serialize-javascript-1.5.0.tgz#bdd334cfbb4fc0eca1fc608da37ad733c86381eb"
+  integrity sha512-WxnnhYOtVJnDFznZPVdbW3NmUJXVyrdQtiq7/vUNg55fVI1B+BP+xp/4dgwIlQXaejbH8gCRu2txtu6LREzK8g==
 
 "@types/serve-static@*":
   version "1.13.3"
