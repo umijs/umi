@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589328183876,
+  "lastUpdate": 1589331759402,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -2720,6 +2720,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.57%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "45808948@qq.com",
+            "name": "ycjcl868",
+            "username": "ycjcl868"
+          },
+          "distinct": true,
+          "id": "702f459d9fe51c66ad670df470e5e9925a266281",
+          "message": "fix: get html using getHtmlGenerator",
+          "timestamp": "2020-05-13T08:59:55+08:00",
+          "tree_id": "b440b828dad2db01ed02ee212a8e6766b45ecc1b",
+          "url": "https://github.com/umijs/umi/commit/702f459d9fe51c66ad670df470e5e9925a266281"
+        },
+        "date": 1589331756371,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1438,
+            "range": "±3.11%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2101,
+            "range": "±4.66%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
