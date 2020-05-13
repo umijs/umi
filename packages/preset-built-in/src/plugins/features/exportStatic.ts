@@ -81,6 +81,7 @@ export default (api: IApi) => {
     return routeMap;
   });
 
+  // 不使用 api.modifyHTML 原因是不需要转 cheerio，提高预渲染效率
   api.modifyBuildContent(async (memo, args) => {
     const { route } = args;
     const serverFilePath = join(
