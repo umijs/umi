@@ -43,10 +43,8 @@ class Bundler {
         if (err || stats.hasErrors()) {
           try {
             console.log(stats.toString('errors-only'));
-          } catch (e) {
-            // throw error info
-            return reject(e);
-          }
+          } catch (e) {}
+          return reject(new Error('build failed'));
         }
         resolve({ stats });
       });
