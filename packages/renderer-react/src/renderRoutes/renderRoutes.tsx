@@ -27,6 +27,8 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
     );
 
     useEffect(() => {
+      // 首次渲染时，此时 window.g_initialProps 变量存在，不需要再走一次 getInitialProps，这样一次 SSR 就走了 2 次 getInitialProps
+      // 但是路由切换时，window.getInitialProps 会被赋为 null，这时候就走 getInitialProps 逻辑
       if (!(window as any).g_initialProps) {
         (async () => {
           const ctx = {
