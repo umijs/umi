@@ -322,13 +322,13 @@ export default {
 
 ### 预渲染动态路由
 
-预渲染默认情况下不会渲染动态路由里的所有页面，如果需要渲染动态路由中的页面，通过配置 `extraPaths`，例如：
+预渲染默认情况下不会渲染动态路由里的所有页面，如果需要渲染动态路由中的页面，通过配置 `extraRoutePaths`，例如：
 
 ```diff
 export default {
   ssr: {},
   exportStatic: {
-+   extraPaths: async () => {
++   extraRoutePaths: async () => {
 +     // const result = await request('https://your-api/news/list');
 +     return Promise.resolve(['/news/1', 'news/2']);
 +   }

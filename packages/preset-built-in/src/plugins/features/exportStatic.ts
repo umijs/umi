@@ -16,7 +16,7 @@ export default (api: IApi) => {
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
           // 不能通过直接 patch 路由的方式，拿不到 match.[id]，是一个 render paths 的概念
-          extraPaths: joi
+          extraRoutePaths: joi
             .function()
             .description('extra render paths only enable in ssr'),
         });
@@ -61,9 +61,9 @@ export default (api: IApi) => {
     const { exportStatic } = api.config;
     // for dynamic routes
     // TODO: test case
-    if (typeof exportStatic?.extraPaths === 'function') {
-      const extraPaths = await exportStatic?.extraPaths();
-      extraPaths?.forEach((path) => {
+    if (typeof exportStatic?.extraRoutePaths === 'function') {
+      const extraRoutePaths = await exportStatic?.extraRoutePaths();
+      extraRoutePaths?.forEach((path) => {
         const match = routeMap.find(({ route }: { route: IRoute }) => {
           return route.path && pathToRegexp(route.path).exec(path);
         });
