@@ -103,16 +103,16 @@ export default (api: IApi) => {
     return $;
   });
 
-  // api.onBuildComplete(({ err }) => {
-  //   if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
-  //     // remove umi.server.js
-  //     const { absOutputPath } = api.paths;
-  //     const serverFilePath = join(absOutputPath || '', 'umi.server.js');
-  //     if (existsSync(serverFilePath)) {
-  //       rimraf.sync(serverFilePath);
-  //     }
-  //   }
-  // });
+  api.onBuildComplete(({ err }) => {
+    if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
+      // remove umi.server.js
+      const { absOutputPath } = api.paths;
+      const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+      if (existsSync(serverFilePath)) {
+        rimraf.sync(serverFilePath);
+      }
+    }
+  });
 
   function addHtmlSuffix(path: string, hasRoutes: boolean) {
     if (path === '/') return path;
