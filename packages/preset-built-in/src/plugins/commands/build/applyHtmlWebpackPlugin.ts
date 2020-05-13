@@ -29,13 +29,10 @@ export default function (api: IApi) {
             await ensureServerFileExisted();
           }
           const html = getHtmlGenerator({ api });
-          const defaultRouteMap = api.config.exportStatic
-            ? await html.getRouteMap()
-            : [{ route: { path: '/' }, file: 'index.html' }];
           const routeMap = await api.applyPlugins({
             key: 'modifyExportRouteMap',
             type: api.ApplyPluginsType.modify,
-            initialValue: defaultRouteMap,
+            initialValue: [{ route: { path: '/' }, file: 'index.html' }],
             args: {
               html,
             },
