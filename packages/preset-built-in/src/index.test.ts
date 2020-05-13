@@ -96,6 +96,7 @@ test('html', async () => {
 test('ssr', async () => {
   const cwd = join(fixtures, 'ssr');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
+  const tmpExportFile = join(cwd, '.umi-test', 'core', 'umiExports.ts');
 
   delete require.cache[tmpServerFile];
 
@@ -110,6 +111,8 @@ test('ssr', async () => {
     },
   });
   expect(existsSync(tmpServerFile)).toBeTruthy();
+  const { isBrowser } = require(tmpExportFile);
+  expect(isBrowser()).toEqual(true);
 
   const render = require(tmpServerFile).default;
   const { rootContainer, html } = await render({
