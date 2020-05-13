@@ -49,6 +49,7 @@ export { parser };
 export { traverse };
 export { signale };
 
+export * from './ssr';
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';

@@ -490,7 +490,4 @@ export default () => {
 
 ### 如何判断当前页面是 SSR 还是 CSR？
 
-有两种方法：
-
-1. 在浏览器中打开控制台，将 `window.g_useSSR` 变量打出，不为 `undefined` 即开启。
-1. 查看网页源代码，如果 `<div id="root">` DOM 里的元素不为空，则是 SSR。
+查看网页源代码，如果 `<div id="root">` DOM 里的元素不为空，则是 SSR，否则为 CSR。
