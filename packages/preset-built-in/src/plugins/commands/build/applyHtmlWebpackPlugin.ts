@@ -1,6 +1,5 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
-
 import { IApi, webpack, BundlerConfigType } from '@umijs/types';
 import { getHtmlGenerator } from '../htmlUtils';
 import { OUTPUT_SERVER_FILENAME } from '../../features/ssr/constants';

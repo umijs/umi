@@ -1,10 +1,8 @@
 import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
-
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash } from '@umijs/utils';
-
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 
 import {
