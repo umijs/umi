@@ -106,8 +106,10 @@ export default (api: IApi) => {
   api.onBuildComplete(({ err }) => {
     if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
       // remove umi.server.js
-      const { absOutputPath } = api.paths;
-      const serverFilePath = join(absOutputPath || '', 'umi.server.js');
+      const serverFilePath = join(
+        api.paths!.absOutputPath || '',
+        'umi.server.js',
+      );
       if (existsSync(serverFilePath)) {
         rimraf.sync(serverFilePath);
       }
