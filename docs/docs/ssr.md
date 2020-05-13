@@ -43,7 +43,7 @@ Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的
 
 - **开箱即用**：内置 SSR，一键开启，`umi dev` 即 SSR 预览，开发调试方便。
 - **服务端框架无关**：Umi 不耦合服务端框架（例如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)），无论是哪种框架或者 Serverless 模式，都可以非常简单进行集成。
-- **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps）的同时，来解决之前全局数据的获取问题。
+- **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps），来解决之前全局数据的获取问题。
 - **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 HTML。
 - **支持渲染降级**：优先使用 SSR，如果服务端渲染失败，自动降级为客户端渲染（CSR），不影响正常业务流程。
 - **支持流式渲染**：`ssr: { mode: 'stream' }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
@@ -82,11 +82,11 @@ export default {
 
 ## 数据预获取
 
-服务端渲染的数据获取方式与 SPA（单页应用）有所不同，为了让客户端和服务端都能获取到同一份数据，我们提供了两个 应用级数据 和 页面级数据 方法。
+服务端渲染的数据获取方式与 SPA（单页应用）有所不同，为了让客户端和服务端都能获取到同一份数据，我们提供了 页面级数据 预获取。
 
-### 应用级数据获取
+<!-- ### 应用级数据获取
 
-<!-- 提供 `getInitialData` 用来获取全局数据，透传到每个页面的 props 中，让所有页面都能共享消费这份数据：
+提供 `getInitialData` 用来获取全局数据，透传到每个页面的 props 中，让所有页面都能共享消费这份数据：
 
 ```js
 // app.(ts|js)
@@ -118,6 +118,8 @@ export default (props) => {
 
 ### 页面级数据获取
 
+### 使用
+
 每个页面可能有单独的数据预获取逻辑，这里我们会获取页面组件上的 `getInitialProps` 静态方法，执行后将结果注入到该页面组件的 `props` 中，例如：
 
 ```tsx
@@ -133,7 +135,7 @@ const Home = (props) => {
   )
 }
 
-Home.getInitialProps = (async (params) => {
+Home.getInitialProps = (async (ctx) => {
   return Promise.resolve({
     data: {
       title: 'Hello World',
@@ -143,7 +145,7 @@ Home.getInitialProps = (async (params) => {
 
 /** 同时也可以使用 class 组件
 class Home extends React.Component {
-  static getInitialProps = (async (params) => {
+  static getInitialProps = (async (ctx) => {
     return Promise.resolve({
       data: {
         title: 'Hello World',
@@ -162,12 +164,15 @@ class Home extends React.Component {
 export default Home;
 ```
 
-`getInitialProps` 中有两个固定参数：
+`getInitialProps` 中有几个固定参数：
 
 - `match`： 与客户端页面 props 中的 `match` 保持一致，有当前路由的相关数据。
 - `isServer`：是否为服务端在执行该方法。
+- `history`：history 对象
 
-同时为了结合数据流框架，我们提供了 `modifyGetInitialPropsCtx` 方法，由插件或应用来扩展参数，例如 `dva`：
+### 扩展 ctx 参数
+
+为了结合数据流框架，我们提供了 `modifyGetInitialPropsCtx` 方法，由插件或应用来扩展 `ctx` 参数，以 `dva` 为例：
 
 ```jsx
 // plugin-dva/runtime.ts
@@ -203,6 +208,38 @@ export const ssr = {
 }
 ```
 
+同时可以使用 `getInitialPropsCtx` 将服务端参数扩展到 `ctx` 中，例如：
+
+```diff
+app.use(async (req, res) => {
+  // 或者从 CDN 上下载到 server 端
+  // const serverPath = await downloadServerBundle('http://cdn.com/bar/umi.server.js');
+  const render = require('./dist/umi.server');
+  res.setHeader('Content-Type', 'text/html');
+
+  const context = {};
+  const { html, error, rootContainer } = await render({
+    // 有需要可带上 query
+    path: req.url,
+    context,
+    getInitialPropsCtx: {
+      req,
+    },
+  });
+})
+```
+
+在使用的时候，就有 `req` 对象，不过需要注意的是，只在服务端执行时才有此参数：
+
+```js
+Page.getInitialProps = async (ctx) => {
+  if (ctx.isServer) {
+    // console.log(ctx.req);
+  }
+  return {};
+}
+```
+
 则在执行 `getInitialProps` 方法时，除了以上两个固定参数外，还会获取到 `title` 和 `store` 参数。
 
 关于 `getInitialProps` 执行逻辑和时机，这里需要注意：
@@ -234,9 +271,12 @@ app.use(async (req, res) => {
   const render = require('./dist/umi.server');
   res.setHeader('Content-Type', 'text/html');
 
+  const context = {};
   const { html, error, rootContainer } = await render({
     // 有需要可带上 query
     path: req.url,
+    context,
+
     // 可自定义 html 模板
     // htmlTemplate: defaultHtml,
 
@@ -276,7 +316,7 @@ app.use(async (req, res) => {
   htmlTemplate?: string;
   // 可选，页面内容挂载节点，与 htmlTemplate 配合使用，默认为 root
   mountElementId?: string;
-  // 上下文数据，可用来做 title 等渲染
+  // 上下文数据，可用来标记服务端渲染页面时的状态
   context?: object
 }
 ```
@@ -371,12 +411,12 @@ export default {
 
 ## 页面标题渲染
 
-为了更灵活地对页面标题展示，可以使用官方的 [@umijs/plugin-helmet](@umijs/plugin-helmet) 插件，该插件同时也支持服务端渲染标题，使用方式：
+[@umijs/preset-react](/plugins/preset-react#umijspreset-react) 插件集中已内置对标题的渲染，通过以下步骤使用：
 
 安装：
 
 ```bash
-$ yarn add @umijs/plugin-helmet
+$ yarn add @umijs/preset-react
 ```
 
 在页面中，即直接可以渲染标题：
@@ -418,7 +458,32 @@ export default {
 
 ### 与 dva 结合使用
 
-TODO
+[@umijs/preset-react](/plugins/preset-react#umijspreset-react) 插件集中已内置 dva，通过以下步骤使用：
+
+```bash
+$ yarn add @umijs/preset-react
+```
+
+开启 dva，并在 `models` 目录下创建 dva model：
+
+```js
+export default {
+  ssr: {},
+  dva: {}
+}
+```
+
+这时候 `getInitialProps(ctx)` 中的 `ctx` 就会有 `store` 属性，可执行 `dispatch`，并返回初始化数据。
+
+```js
+Page.getInitialProps = async (ctx) => {
+  const { store } = ctx;
+  store.dispatch({
+    type: 'bar/getData',
+  });
+  return store.getState();
+}
+```
 
 ## 包大小分析
 
