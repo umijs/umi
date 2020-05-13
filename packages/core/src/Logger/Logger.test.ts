@@ -1,5 +1,3 @@
-import { chalk } from '@umijs/utils';
-
 import Logger from './Logger';
 import UmiError from './UmiError';
 
