@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
 import { IApi, BundlerConfigType } from '@umijs/types';
-import { winPath, Mustache, lodash } from '@umijs/utils';
+import { winPath, Mustache, lodash, routeToChunkName } from '@umijs/utils';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
@@ -95,13 +95,20 @@ export default (api: IApi) => {
   });
 
   api.modifyHTMLChunks(async (memo, opts) => {
+    const { route } = opts;
     // remove server bundle entry in html
     // for dynamicImport
     if (api.config.dynamicImport && opts.chunks) {
-      // TODO: page bind opposite chunks, now will bind all chunks
-      const chunks = opts.chunks.map((chunk) => {
-        return chunk.name;
-      });
+      // different pages using correct chunks, not load all chunks
+      const chunkName = routeToChunkName({ route, cwd: api.cwd });
+      const chunks = opts.chunks
+        .map((chunk) => {
+          if (chunk.name === chunkName) {
+            return chunk.name;
+          }
+          return null;
+        })
+        .filter(Boolean);
       return lodash.uniq([...memo, ...chunks]);
     }
     return memo;
