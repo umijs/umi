@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@babel/core": "7.9.0",
+    "@types/jest": "25.2.2",
     "@umijs/babel-preset-umi": "3.1.4",
     "@umijs/utils": "3.1.4",
     "babel-core": "7.0.0-bridge.0",
