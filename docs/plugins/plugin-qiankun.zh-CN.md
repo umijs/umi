@@ -137,7 +137,7 @@ export default {
 ```js
 export default {
   base: `/${appName}`, // 子应用的 base，默认为 package.json 中的 name 字段
-  plugins: ['@umijs/plugin-qiankun'],
+  qiankun: {slave:{}} // 配置为子项目
 };
 ```
 
