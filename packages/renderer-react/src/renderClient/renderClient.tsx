@@ -71,7 +71,9 @@ export async function preloadComponent(
   readyRoutes: IRoute[],
   pathname = window.location.pathname,
 ): Promise<IRoute[]> {
-  for (const route of readyRoutes) {
+  // using matched routes not load all routes
+  const matchedRoutes = matchRoutes(readyRoutes, pathname) as IRoute[];
+  for (const route of matchedRoutes) {
     // load all preload function, because of only a chance to load
     if (route.component?.preload) {
       const preloadComponent = await route.component.preload();
@@ -112,6 +114,7 @@ export default function renderClient(opts: IOpts) {
     if (rootElement?.hasChildNodes()) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
+        // first load
         preloadComponent(opts.routes).then(function () {
           ReactDOM.hydrate(rootContainer, rootElement);
         });
