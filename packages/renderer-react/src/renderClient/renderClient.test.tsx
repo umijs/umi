@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, waitFor, getByText } from '@testing-library/react';
 import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
-import { delay } from '@umijs/utils';
 import renderClient, { preloadComponent } from './renderClient';
 
 afterEach(cleanup);
@@ -74,6 +73,15 @@ test('preloadComponent', async () => {
     },
     path: '/foo',
   });
+  const Common = ({ title }) => {
+    return <h1>{title}</h1>;
+  };
+
+  Common.getInitialProps = async ({ match }) => {
+    return {
+      title: match.path,
+    };
+  };
 
   const routes: any[] = [
     {
@@ -89,20 +97,19 @@ test('preloadComponent', async () => {
           path: '/foo',
           component: dynamic({
             loading: () => <div>loading</div>,
-            loader: async () => () => <h1>foo</h1>,
+            loader: async () => Common,
           }),
         },
         {
           path: '/bar',
           component: dynamic({
             loading: () => <div>loading</div>,
-            loader: async () => () => <h1>bar</h1>,
+            loader: async () => Common,
           }),
         },
       ],
     },
   ];
-
   // /foo
   const { container: originContainer } = render(
     renderClient({
@@ -113,18 +120,8 @@ test('preloadComponent', async () => {
     }),
   );
   expect(originContainer.innerHTML).toEqual('<div>loading</div>');
-  const newRoutes = await preloadComponent(routes, '/foo');
 
-  // not load when not match route
-  expect(
-    routes[0].routes.map((route) => ({
-      preload: !!route.component?.preload,
-      path: route.path,
-    })),
-  ).toEqual([
-    { path: '/foo', preload: false },
-    { path: '/bar', preload: true },
-  ]);
+  const newRoutes = await preloadComponent(routes);
   const { container } = render(
     renderClient({
       history,
@@ -133,14 +130,31 @@ test('preloadComponent', async () => {
       routes: newRoutes,
     }),
   );
-  expect(container.innerHTML).toEqual('<div class="layout"><h1>foo</h1></div>');
+  expect(container.innerHTML).toEqual(
+    '<div class="layout"><div>loading</div></div>',
+  );
+  await waitFor(() => getByText(container, '/foo'));
+  expect(container.innerHTML).toEqual(
+    '<div class="layout"><h1>/foo</h1></div>',
+  );
 
-  // route change
+  // history route change
   history.push({
     pathname: '/bar',
   });
-  // should trigger preload
-  expect(container.innerHTML).toEqual(
+  const { container: barContainer } = render(
+    renderClient({
+      history,
+      plugin,
+      rootElement: undefined,
+      routes: newRoutes,
+    }),
+  );
+  expect(barContainer.innerHTML).toEqual(
     '<div class="layout"><div>loading</div></div>',
+  );
+  await waitFor(() => getByText(container, '/bar'));
+  expect(barContainer.innerHTML).toEqual(
+    '<div class="layout"><h1>/bar</h1></div>',
   );
 });

@@ -1,6 +1,6 @@
 import * as ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
-import { ApplyPluginsType, Plugin, Router, matchPath } from '@umijs/runtime';
+import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import { matchRoutes } from 'react-router-config';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
@@ -42,7 +42,6 @@ function RouterComponent(props: IRouterComponentProps) {
           renderRoutesProps.defaultTitle ||
           '';
       }
-
       props.plugin.applyPlugins({
         key: 'onRouteChange',
         type: ApplyPluginsType.event,
@@ -54,7 +53,6 @@ function RouterComponent(props: IRouterComponentProps) {
         },
       });
     }
-
     routeChangeHandler(history.location, 'POP');
     return history.listen(routeChangeHandler);
   }, [history]);
@@ -115,7 +113,7 @@ export default function renderClient(opts: IOpts) {
     if (rootElement?.hasChildNodes()) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
-        // first load
+        // first loades);
         preloadComponent(opts.routes).then(function () {
           ReactDOM.hydrate(rootContainer, rootElement);
         });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
@@ -20,8 +20,8 @@ interface IGetRouteElementOpts {
 
 function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
   const { component, ...restRouteParams } = route;
-  const Component: any = route!.component;
-  return function ComponentWithInitialPropsFetch(props: any) {
+  let Component: any = route!.component;
+  function ComponentWithInitialPropsFetch(props: any) {
     const [initialProps, setInitialProps] = useState(
       () => (window as any).g_initialProps,
     );
@@ -31,17 +31,23 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
        * 1. 首次渲染时，此时 window.g_initialProps 变量存在，不需要再走一次 getInitialProps，这样一次 SSR 就走了 2 次 getInitialProps
        * 2. 但是路由切换时，window.getInitialProps 会被赋为 null，这时候就走 getInitialProps 逻辑
        * 3. 如果任何时候都走 2 次，配置 forceInitial: true，这个场景用于静态站点的首屏加载希望走最新数据
+       * 4. 开启动态加载后，会在执行 getInitialProps 前预加载下
        */
       if (!(window as any).g_initialProps) {
         (async () => {
+          // preload when enalbe dynamicImport
+          if (Component.preload) {
+            const preloadComponent = await Component.preload();
+            // for test case, really use .default
+            Component = preloadComponent.default || preloadComponent;
+          }
           const ctx = {
             isServer: false,
             match: props?.match,
             ...(opts.getInitialPropsCtx || {}),
             ...restRouteParams,
           };
-
-          if (Component!.getInitialProps) {
+          if (Component?.getInitialProps) {
             const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
               key: 'ssr',
               type: ApplyPluginsType.modify,
@@ -58,7 +64,11 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
       }
     }, [window.location.pathname, window.location.search]);
     return <Component {...props} {...initialProps} />;
-  };
+  }
+  // flag for having wrappered
+  ComponentWithInitialPropsFetch.wrapInitialPropsLoaded = true;
+  ComponentWithInitialPropsFetch.displayName = 'ComponentWithInitialPropsFetch';
+  return ComponentWithInitialPropsFetch;
 }
 
 // TODO: custom Switch
@@ -117,7 +127,12 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
   } else {
     // avoid mount and unmount with url hash change
-    if (!process.env.__IS_SERVER && route.component?.getInitialProps) {
+    if (
+      !process.env.__IS_SERVER &&
+      // make sure loaded once
+      !route.component?.wrapInitialPropsLoaded &&
+      (route.component?.getInitialProps || route.component?.preload)
+    ) {
       // client Render for enable ssr, but not sure SSR success
       route.component = wrapInitialPropsFetch(route, opts);
     }

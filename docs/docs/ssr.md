@@ -44,6 +44,7 @@ Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的
 - **开箱即用**：内置 SSR，一键开启，`umi dev` 即 SSR 预览，开发调试方便。
 - **服务端框架无关**：Umi 不耦合服务端框架（例如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)），无论是哪种框架或者 Serverless 模式，都可以非常简单进行集成。
 - **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps），来解决之前全局数据的获取问题。
+- **支持按需加载**：按需加载 `dynamicImport` 开启后，Umi 3 中会根据不同路由加载对应的资源文件（css/js）。
 - **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 HTML。
 - **支持渲染降级**：优先使用 SSR，如果服务端渲染失败，自动降级为客户端渲染（CSR），不影响正常业务流程。
 - **支持流式渲染**：`ssr: { mode: 'stream' }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
@@ -498,7 +499,7 @@ $ ANALYZE=1 umi build
 
 <img width="600" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80446129-8b8ac700-8948-11ea-82a8-54d94501a672.png" />
 
-## Q & A
+## FAQ
 
 ### window is not defined, document is not defined, navigator is not defined
 
@@ -538,6 +539,11 @@ export default () => {
   )
 }
 ```
+
+### antd pro 怎样使用服务端渲染？
+
+首先，[antd pro](https://github.com/ant-design/ant-design-pro/) 作为中后台项目,没有 SEO 需求，不适合做服务端渲染；
+从技术角度来讲，antd pro 在 render 里大量使用 DOM/BOM 方法，服务端渲染将 DOM/BOM 操作改至副作用（`useEffect` 或 `componentDidMount` 周期中），可以给 antd pro 提 PR。
 
 ### 为什么不能 external 服务端中的一些模块
 
