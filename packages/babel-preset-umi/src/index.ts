@@ -64,6 +64,7 @@ export default (context: any, opts: IOpts = {}) => {
       ],
     ].filter(Boolean),
     plugins: [
+      require('@babel/plugin-syntax-top-level-await').default,
       // Necessary to include regardless of the environment because
       // in practice some other transforms (such as object-rest-spread)
       // don't work without it: https://github.com/babel/babel/issues/7215
