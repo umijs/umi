@@ -16,7 +16,7 @@ export default (api: IApi) => {
 
   api.addBeforeMiddewares(() => {
     return (req, res, next) => {
-      if (req.path === `${api.config.publicPath}@@/devScripts.js`) {
+      if (req.path.includes('@@/devScripts.js')) {
         api
           .applyPlugins({
             key: 'addDevScripts',
