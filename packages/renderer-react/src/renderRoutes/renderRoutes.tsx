@@ -130,7 +130,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     if (
       !process.env.__IS_SERVER &&
       // make sure loaded once
-      !route.component?.wrapInitialPropsLoaded &&
+      !(route.component as any)?.wrapInitialPropsLoaded &&
       (route.component?.getInitialProps || route.component?.preload)
     ) {
       // client Render for enable ssr, but not sure SSR success

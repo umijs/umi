@@ -70,9 +70,9 @@ export async function preloadComponent(
   pathname = window.location.pathname,
 ): Promise<IRoute[]> {
   // using matched routes not load all routes
-  const matchedRoutes = matchRoutes(readyRoutes, pathname) as IRoute[];
+  const matchedRoutes = matchRoutes(readyRoutes, pathname);
   for (const matchRoute of matchedRoutes) {
-    const { route } = matchRoute;
+    const route = matchRoute.route as IRoute;
     // load all preload function, because of only a chance to load
     if (route.component?.preload) {
       const preloadComponent = await route.component.preload();
