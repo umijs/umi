@@ -49,11 +49,17 @@ test('normal', async () => {
   expect(routeChanges).toEqual(['POP /foo', 'PUSH /bar']);
 });
 
+const Common = ({ title }) => {
+  return <h1>{title}</h1>;
+};
+
+Common.getInitialProps = async ({ match }) => {
+  return {
+    title: match.path,
+  };
+};
+
 test('preloadComponent', async () => {
-  // not support node 8
-  if (process.versions.node.startsWith('8')) {
-    return;
-  }
   const history = createMemoryHistory({
     initialEntries: ['/foo'],
   });
@@ -77,15 +83,6 @@ test('preloadComponent', async () => {
     },
     path: '/foo',
   });
-  const Common = ({ title }) => {
-    return <h1>{title}</h1>;
-  };
-
-  Common.getInitialProps = async ({ match }) => {
-    return {
-      title: match.path,
-    };
-  };
 
   const routes: any[] = [
     {
@@ -125,40 +122,93 @@ test('preloadComponent', async () => {
   );
   expect(originContainer.innerHTML).toEqual('<div>loading</div>');
 
-  const newRoutes = await preloadComponent(routes);
+  await preloadComponent(routes, '/foo');
   const { container } = render(
     renderClient({
       history,
       plugin,
       rootElement: undefined,
-      routes: newRoutes,
+      routes,
     }),
-  );
-  expect(container.innerHTML).toEqual(
-    '<div class="layout"><div>loading</div></div>',
   );
   await waitFor(() => getByText(container, '/foo'));
   expect(container.innerHTML).toEqual(
     '<div class="layout"><h1>/foo</h1></div>',
   );
+});
+
+test('preloadComponent routeChange', async () => {
+  // not support node 8
+  const history = createMemoryHistory({
+    initialEntries: ['/foo'],
+  });
+  const routeChanges: string[] = [];
+  const plugin = new Plugin({
+    validKeys: ['onRouteChange', 'rootContainer'],
+  });
+  plugin.register({
+    apply: {
+      onRouteChange({ location, action }: any) {
+        routeChanges.push(`${action} ${location.pathname}`);
+      },
+      rootContainer(container: any, args: any) {
+        if (!(args.history && args.plugin && args.routes)) {
+          throw new Error(
+            'history, plugin or routes not exists in the args of rootContainer',
+          );
+        }
+        return container;
+      },
+    },
+    path: '/foo',
+  });
+
+  const routes: any[] = [
+    {
+      path: '/',
+      component: dynamic({
+        loading: () => <div>loading</div>,
+        loader: async () => (props) => (
+          <div className="layout">{props.children}</div>
+        ),
+      }),
+      routes: [
+        {
+          path: '/foo',
+          component: dynamic({
+            loading: () => <div>loading</div>,
+            loader: async () => Common,
+          }),
+        },
+        {
+          path: '/bar',
+          component: dynamic({
+            loading: () => <div>loading</div>,
+            loader: async () => Common,
+          }),
+        },
+      ],
+    },
+  ];
+  await preloadComponent(routes, '/foo');
 
   // history route change
   history.push({
     pathname: '/bar',
   });
-  const { container: barContainer } = render(
+  const { container } = render(
     renderClient({
       history,
       plugin,
       rootElement: undefined,
-      routes: newRoutes,
+      routes,
     }),
   );
-  expect(barContainer.innerHTML).toEqual(
+  expect(container.innerHTML).toEqual(
     '<div class="layout"><div>loading</div></div>',
   );
   await waitFor(() => getByText(container, '/bar'));
-  expect(barContainer.innerHTML).toEqual(
+  expect(container.innerHTML).toEqual(
     '<div class="layout"><h1>/bar</h1></div>',
   );
 });
