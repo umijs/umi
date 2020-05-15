@@ -16,5 +16,6 @@ export function parse(code: string): t.File {
       'optionalChaining',
       'decorators-legacy',
     ],
+    allowAwaitOutsideFunction: true,
   });
 }

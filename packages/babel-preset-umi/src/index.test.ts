@@ -250,3 +250,12 @@ test('logical assignment operators', () => {
   });
   expect(winPath(code!)).toContain(`a || (a = b);`);
 });
+
+test('top level await', () => {
+  const code = transformWithPreset(`await delay(1000);`, {
+    env: {
+      targets: { ie: 10 },
+    },
+  });
+  expect(code).toContain(`await delay(1000);`);
+});
