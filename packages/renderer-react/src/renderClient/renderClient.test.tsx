@@ -50,6 +50,10 @@ test('normal', async () => {
 });
 
 test('preloadComponent', async () => {
+  // not support node 8
+  if (process.versions.node.startsWith('8')) {
+    return;
+  }
   const history = createMemoryHistory({
     initialEntries: ['/foo'],
   });
