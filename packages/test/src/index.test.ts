@@ -47,7 +47,7 @@ test('run jest', async () => {
   });
 
   // @ts-ignore
-  expect(argsArr[0].notify).toEqual('notify');
+  expect(argsArr[0].notify).toEqual(true);
   // @ts-ignore
   expect(argsArr[0].updateSnapshot).toEqual(true);
   // @ts-ignore

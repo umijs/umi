@@ -53,7 +53,7 @@ export default async function (args: IUmiTestArgs) {
 
   // Generate jest options
   const argsConfig = Object.keys(CliOptions).reduce((prev, name) => {
-    if (args[name]) prev[name] = name;
+    if (args[name]) prev[name] = args[name];
 
     // Convert alias args into real one
     const { alias } = CliOptions[name];
