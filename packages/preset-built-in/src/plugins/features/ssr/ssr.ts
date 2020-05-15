@@ -169,6 +169,13 @@ export default (api: IApi) => {
     const { paths } = api;
     const { type } = opts;
     const serverEntryPath = path.join(paths!.absTmpPath, 'core/server.ts');
+    config.plugin('progress').tap(([args]) => [
+      {
+        ...args,
+        name: 'Client',
+      },
+    ]);
+
     if (type === BundlerConfigType.ssr) {
       config.entryPoints.clear();
       config.entry(CHUNK_NAME).add(serverEntryPath);
@@ -187,6 +194,12 @@ export default (api: IApi) => {
           ...args,
           'window.routerBase': JSON.stringify(api.config.base),
           'process.env.__IS_SERVER': true,
+        },
+      ]);
+      config.plugin('progress').tap(([args]) => [
+        {
+          ...args,
+          name: 'Server',
         },
       ]);
 
