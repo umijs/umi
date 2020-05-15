@@ -69,7 +69,7 @@ test('preloadComponent', async () => {
             'history, plugin or routes not exists in the args of rootContainer',
           );
         }
-        return <div>{container}</div>;
+        return container;
       },
     },
     path: '/foo',
@@ -77,21 +77,33 @@ test('preloadComponent', async () => {
 
   const routes: any[] = [
     {
-      path: '/foo',
+      path: '/',
       component: dynamic({
         loading: () => <div>loading</div>,
-        loader: async () => () => <h1>foo</h1>,
+        loader: async () => (props) => (
+          <div className="layout">{props.children}</div>
+        ),
       }),
-    },
-    {
-      path: '/bar',
-      component: dynamic({
-        loading: () => <div>loading</div>,
-        loader: async () => () => <h1>bar</h1>,
-      }),
+      routes: [
+        {
+          path: '/foo',
+          component: dynamic({
+            loading: () => <div>loading</div>,
+            loader: async () => () => <h1>foo</h1>,
+          }),
+        },
+        {
+          path: '/bar',
+          component: dynamic({
+            loading: () => <div>loading</div>,
+            loader: async () => () => <h1>bar</h1>,
+          }),
+        },
+      ],
     },
   ];
 
+  // /foo
   const { container: originContainer } = render(
     renderClient({
       history,
@@ -100,10 +112,19 @@ test('preloadComponent', async () => {
       routes,
     }),
   );
+  expect(originContainer.innerHTML).toEqual('<div>loading</div>');
+  const newRoutes = await preloadComponent(routes, '/foo');
 
-  expect(originContainer.innerHTML).toEqual('<div><div>loading</div></div>');
-
-  const newRoutes = await preloadComponent(routes, '/bar');
+  // not load when not match route
+  expect(
+    routes[0].routes.map((route) => ({
+      preload: !!route.component?.preload,
+      path: route.path,
+    })),
+  ).toEqual([
+    { path: '/foo', preload: false },
+    { path: '/bar', preload: true },
+  ]);
   const { container } = render(
     renderClient({
       history,
@@ -112,5 +133,14 @@ test('preloadComponent', async () => {
       routes: newRoutes,
     }),
   );
-  expect(container.innerHTML).toEqual('<div><h1>foo</h1></div>');
+  expect(container.innerHTML).toEqual('<div class="layout"><h1>foo</h1></div>');
+
+  // route change
+  history.push({
+    pathname: '/bar',
+  });
+  // should trigger preload
+  expect(container.innerHTML).toEqual(
+    '<div class="layout"><div>loading</div></div>',
+  );
 });
