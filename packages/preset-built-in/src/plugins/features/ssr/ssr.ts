@@ -204,6 +204,9 @@ export default (api: IApi) => {
       ]);
 
       config.externals([]);
+      if (config.plugins.get('manifest')) {
+        config.plugins.delete('manifest');
+      }
     } else {
       // define client bundler config
       config.plugin('define').tap(([args]) => [

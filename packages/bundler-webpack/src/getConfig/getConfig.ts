@@ -395,7 +395,7 @@ export default async function getConfig(
       }
 
       // manifest
-      if (config.manifest && !config.ssr) {
+      if (config.manifest) {
         webpackConfig
           .plugin('manifest')
           .use(require.resolve('webpack-manifest-plugin'), [
