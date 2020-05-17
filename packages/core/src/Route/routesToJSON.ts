@@ -59,10 +59,7 @@ export default function ({ routes, config, cwd }: IOpts) {
           if (config.dynamicImport.loading) {
             loading = `, loading: require('${config.dynamicImport.loading}').default`;
           }
-          const dynamicImportTpl = `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
-          return config?.ssr
-            ? `!process.env.__IS_SERVER ? ${dynamicImportTpl} : require('${component}').default`
-            : dynamicImportTpl;
+          return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
         } else {
           return `require('${value}').default`;
         }

@@ -3,6 +3,7 @@ import assert from 'assert';
 import * as path from 'path';
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
+import { webpack } from '@umijs/bundler-webpack';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
@@ -207,6 +208,11 @@ export default (api: IApi) => {
         .chunkFilename('[name].server.js')
         .libraryTarget('commonjs2');
 
+      config.plugin('limit-chunk').use(webpack.optimize.LimitChunkCountPlugin, [
+        {
+          maxChunks: 1,
+        },
+      ]);
       config.plugin('define').tap(([args]) => [
         {
           ...args,
