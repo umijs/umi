@@ -292,7 +292,6 @@ test('ssr dynamicImport', async () => {
   const expectRootContainer =
     '<div><ul><li>hello</li><li>world</li></ul></div>';
   expect(homeResult.rootContainer).toEqual(expectRootContainer);
-  console.log('html', homeResult.html);
   expect(homeResult.html).toMatch('<script src="/umi.js"></script>');
 
   // render /bar
@@ -301,7 +300,6 @@ test('ssr dynamicImport', async () => {
     mountElementId: 'root',
   });
   expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
-  console.log('BarResult html', BarResult.html);
   expect(BarResult.html).toMatch('<script src="/umi.js"></script>');
   rimraf.sync(join(cwd, '.umi-test'));
 });
