@@ -208,6 +208,7 @@ export default (api: IApi) => {
         .chunkFilename('[name].server.js')
         .libraryTarget('commonjs2');
 
+      // disable *.server.chunk.js, routes avoid dynamic and require in different mode.
       config.plugin('limit-chunk').use(webpack.optimize.LimitChunkCountPlugin, [
         {
           maxChunks: 1,

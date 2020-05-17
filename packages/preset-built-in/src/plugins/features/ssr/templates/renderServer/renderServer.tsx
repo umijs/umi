@@ -164,6 +164,7 @@ export default async function renderServer(
     return {
       pageHTML,
       pageInitialProps,
+      routesMatched,
     };
   }
   const pageHTML = ReactDOMServer[
