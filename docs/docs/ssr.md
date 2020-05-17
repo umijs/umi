@@ -335,6 +335,38 @@ app.use(async (req, res) => {
 }
 ```
 
+## 动态加载（dynamicImport）
+
+完美兼容客户端动态加载，配置如下：
+
+```js
+// .umirc.ts
+export default {
+  ssr: {},
+  dynamicImport: {},
+}
+```
+
+使用动态加载后，启动和构建会自动开启 [manifest]() 配置，并在产物目录中生成 `asset-manifest.json` 做资源映射，并自动将页面对应的资源注入到 HTML 中，避免开启动态加载后，**页面首屏闪烁**的问题。
+
+```bash
+- dist
+  - umi.server.js
+  - asset-manifest.json
+```
+
+则页面返回的 HTML 将增加对应 chunk（资源）：
+
+```diff
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/umi.css" />
++   <link rel="stylesheet" href="/p__index.chunk.css" />
+  </head>
+</html>
+```
+
 ## 使用流式渲染（Streaming）
 
 提供开箱即用的流式渲染功能，开启方式：

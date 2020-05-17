@@ -91,15 +91,19 @@ export const handleHTML = async (opts: any) => {
       }, []);
     if (chunks?.length > 0) {
       // only load css chunks to avoid page flashing
-      const cssChunks: string[] = []
+      const cssChunkSet = new Set<string>();
       chunks.forEach(chunk => {
         Object.keys(manifest || {}).forEach(manifestChunk => {
-          if (manifestChunk.indexOf(chunk) > -1 && /\.css$/.test(manifest[manifestChunk])) {
-            cssChunks.push(`<link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
+          if (manifestChunk !== 'umi.css'
+            && manifestChunk.indexOf(chunk) > -1
+            && /\.css$/.test(manifest[manifestChunk])
+          ) {
+            cssChunkSet.add(`<link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
           }
         })
       });
-      html = html.replace('</head>', `${cssChunks.join('\n')}\n</head>`);
+      // avoid repeat
+      html = html.replace('</head>', `${Array.from(cssChunkSet).join('\n')}\n</head>`);
     }
   }
   html = html.replace(
