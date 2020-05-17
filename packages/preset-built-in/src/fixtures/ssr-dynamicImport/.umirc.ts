@@ -2,11 +2,11 @@ import { IConfig } from '@umijs/types';
 
 export default {
   ssr: {},
-  // history: { type: 'memory' },
+  history: { type: 'memory' },
   dynamicImport: {},
   routes: [
     { path: '/bar', component: 'Bar' },
     { path: '/', component: 'index' },
   ],
-  // mountElementId: '',
+  mountElementId: '',
 } as IConfig;

@@ -79,6 +79,15 @@ export default (api: IApi) => {
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
         Basename: api.config.base,
+        PublicPath: api.config.publicPath,
+        ManifestPath: api.config.manifest
+          ? winPath(
+              path.join(
+                api.paths!.absOutputPath,
+                api.config.manifest.fileName || 'asset-manifest.json',
+              ),
+            )
+          : '',
         DEFAULT_HTML_PLACEHOLDER: JSON.stringify(defaultHTML),
       }),
     });
@@ -100,6 +109,12 @@ export default (api: IApi) => {
     config.devServer.writeToDisk = (filePath: string) => {
       return /(umi\.server\.js|\.server\.js)$/.test(filePath);
     };
+    // enable manifest
+    if (config.dynamicImport) {
+      config.manifest = {
+        ...(config.manifest || {}),
+      };
+    }
     return config;
   });
 

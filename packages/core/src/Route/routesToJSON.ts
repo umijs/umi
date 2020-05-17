@@ -53,7 +53,7 @@ export default function ({ routes, config, cwd }: IOpts) {
           typeof route.component === 'string'
             ? route.component.split(SEPARATOR)
             : [];
-        route._chunk = [`${config.publicPath}${webpackChunkName}`];
+        route._chunk = [webpackChunkName];
       }
     }
     if (route.routes) {

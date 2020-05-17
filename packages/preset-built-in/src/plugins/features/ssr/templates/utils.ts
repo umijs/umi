@@ -69,10 +69,10 @@ export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio'
 
 /**
  * handle html with rootContainer(rendered)
- * @param param0
+ * @param param
  */
 export const handleHTML = async (opts: any) => {
-  const { pageInitialProps, appInitialData, rootContainer, mountElementId, mode, forceInitial, routesMatched, dynamicImport } = opts;
+  const { pageInitialProps, appInitialData, rootContainer, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest, env, publicPath } = opts;
   let html = opts.html;
   // get chunks in `dynamicImport: {}`
 
@@ -87,10 +87,15 @@ export const handleHTML = async (opts: any) => {
         return [...(prev || []), ...chunk];
       }, []);
     if (chunks?.length > 0) {
-      const cssChunks = chunks.map(chunk => `<link rel="stylesheet" href="${chunk}.css" />`);
-      const jsChunks = chunks.map(chunk => `<script src="${chunk}.js"></script>`);
+      // only load css chunks to avoid page flashing
+      const cssChunks = chunks.map(chunk => {
+        let cssFile = manifest[`${chunk}.css`];
+        if (env === 'development') {
+          cssFile = `${publicPath}${chunk}.chunk.css`;
+        }
+        return cssFile ? `<link rel="stylesheet" href="${cssFile}" />` : null;
+      }).filter(Boolean);
       html = html.replace('</head>', `${cssChunks.join('\n')}\n</head>`);
-      html = html.replace('</body>', `${jsChunks.join('\n')}\n</body>`);
     }
   }
   html = html.replace(

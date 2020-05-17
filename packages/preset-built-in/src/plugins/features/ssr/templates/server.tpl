@@ -1,5 +1,6 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
+import { existsSync, readFileSync } from 'fs';
 import { format } from 'url';
 import renderServer from '{{{ Renderer }}}';
 import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
@@ -7,6 +8,10 @@ import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
 import { ApplyPluginsType, createMemoryHistory } from '{{{ RuntimePath }}}';
 import { plugin } from './plugin';
 import { routes } from './routes';
+
+// origin require module
+// https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
+const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 
 export interface IParams {
   path: string;
@@ -46,8 +51,10 @@ const render: IRender = async (params) => {
     basename = '{{{ Basename }}}',
     staticMarkup = {{{ StaticMarkup }}},
     forceInitial = {{{ ForceInitial }}},
+    manifestPath = '{{{ ManifestPath }}}',
     getInitialPropsCtx,
   } = params;
+  const env = '{{{ Env }}}';
 
   let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
   let rootContainer = '';
@@ -73,14 +80,19 @@ const render: IRender = async (params) => {
       routes,
     }
     const dynamicImport =  {{{ DynamicImport }}};
+    const publicPath = '{{{ PublicPath }}}';
+    let manifest = {};
+    if (env !== 'development' && dynamicImport && existsSync(manifestPath)) {
+      manifest = requireFunc(manifestPath);
+    }
 
     // renderServer get rootContainer
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);
     rootContainer = pageHTML;
     if (html) {
       // plugin for modify html template
-      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio, routesMatched, dynamicImport }) : html;
-      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport });
+      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio, routesMatched, dynamicImport, manifest, env, publicPath }) : html;
+      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest, env, publicPath });
     }
   } catch (e) {
     // downgrade into csr
