@@ -88,7 +88,7 @@ export const handleHTML = async (opts: any) => {
       }, []);
     if (chunks?.length > 0) {
       const cssChunks = chunks.map(chunk => `<link rel="stylesheet" href="${chunk}.css" />`);
-      const jsChunks = chunks.map(chunk => `<script href="${chunk}.js"></script>`);
+      const jsChunks = chunks.map(chunk => `<script src="${chunk}.js"></script>`);
       html = html.replace('</head>', `${cssChunks.join('\n')}\n</head>`);
       html = html.replace('</body>', `${jsChunks.join('\n')}\n</body>`);
     }
