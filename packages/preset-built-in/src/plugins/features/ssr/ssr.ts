@@ -41,6 +41,11 @@ export default (api: IApi) => {
       api.config.history?.type !== 'hash',
       'the `type` of `history` must be `browser` when using SSR',
     );
+    if (api.config.dynamicImport && api.config.ssr) {
+      api.logger.warn(
+        'The manifest file will be generated if enabling `dynamicImport` in ssr.',
+      );
+    }
   });
 
   // 再加一个 webpack instance
@@ -80,13 +85,8 @@ export default (api: IApi) => {
         ForceInitial: !!api.config.ssr?.forceInitial,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
-        ManifestPath: api.config.manifest
-          ? winPath(
-              path.join(
-                api.paths!.absOutputPath,
-                api.config.manifest.fileName || 'asset-manifest.json',
-              ),
-            )
+        ManifestFileName: api.config.manifest
+          ? api.config.manifest.fileName || 'asset-manifest.json'
           : '',
         DEFAULT_HTML_PLACEHOLDER: JSON.stringify(defaultHTML),
       }),
@@ -107,7 +107,10 @@ export default (api: IApi) => {
   api.modifyConfig((config) => {
     // force enable writeToDisk
     config.devServer.writeToDisk = (filePath: string) => {
-      return /(umi\.server\.js|\.server\.js)$/.test(filePath);
+      const manifestFile =
+        api.config?.manifest?.fileName || 'asset-manifest.json';
+      const regexp = new RegExp(`(${OUTPUT_SERVER_FILENAME}|${manifestFile})$`);
+      return regexp.test(filePath);
     };
     // enable manifest
     if (config.dynamicImport) {
@@ -176,6 +179,8 @@ export default (api: IApi) => {
       config.entryPoints.clear();
       config.entry(CHUNK_NAME).add(serverEntryPath);
       config.target('node');
+      // https://webpack.js.org/configuration/node/#node
+      config.node.set('__dirname', false);
       config.name(CHUNK_NAME);
       config.devtool(false);
 

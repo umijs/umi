@@ -1,6 +1,7 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync } from 'fs';
+import { join } from 'path';
 import { format } from 'url';
 import renderServer from '{{{ Renderer }}}';
 import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
@@ -51,7 +52,7 @@ const render: IRender = async (params) => {
     basename = '{{{ Basename }}}',
     staticMarkup = {{{ StaticMarkup }}},
     forceInitial = {{{ ForceInitial }}},
-    manifestPath = '{{{ ManifestPath }}}',
+    manifestFileName = '{{{ ManifestFileName }}}',
     getInitialPropsCtx,
   } = params;
   const env = '{{{ Env }}}';
@@ -80,10 +81,16 @@ const render: IRender = async (params) => {
       routes,
     }
     const dynamicImport =  {{{ DynamicImport }}};
-    const publicPath = '{{{ PublicPath }}}';
     let manifest = {};
-    if (env !== 'development' && dynamicImport && existsSync(manifestPath)) {
-      manifest = requireFunc(manifestPath);
+    const manifestPath = join(__dirname, manifestFileName);
+    if (dynamicImport && existsSync(manifestPath)) {
+      try {
+        manifest = requireFunc(manifestPath);
+      } catch (e) {
+        if (env !== 'production') {
+          console.error('manifest not found', e);
+        }
+      }
     }
 
     // renderServer get rootContainer
@@ -91,8 +98,8 @@ const render: IRender = async (params) => {
     rootContainer = pageHTML;
     if (html) {
       // plugin for modify html template
-      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio, routesMatched, dynamicImport, manifest, env, publicPath }) : html;
-      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest, env, publicPath });
+      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio, routesMatched, dynamicImport, manifest }) : html;
+      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest });
     }
   } catch (e) {
     // downgrade into csr

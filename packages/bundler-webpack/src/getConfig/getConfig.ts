@@ -369,6 +369,20 @@ export default async function getConfig(
       ]);
   }
 
+  const enableManifest = () => {
+    // manifest
+    if (config.manifest) {
+      webpackConfig
+        .plugin('manifest')
+        .use(require.resolve('webpack-manifest-plugin'), [
+          {
+            fileName: 'asset-manifest.json',
+            ...config.manifest,
+          },
+        ]);
+    }
+  };
+
   webpackConfig.when(
     isDev,
     (webpackConfig) => {
@@ -376,6 +390,9 @@ export default async function getConfig(
         webpackConfig
           .plugin('hmr')
           .use(bundleImplementor.HotModuleReplacementPlugin);
+      }
+      if (config.ssr && config.dynamicImport) {
+        enableManifest();
       }
     },
     (webpackConfig) => {
@@ -395,16 +412,7 @@ export default async function getConfig(
       }
 
       // manifest
-      if (config.manifest) {
-        webpackConfig
-          .plugin('manifest')
-          .use(require.resolve('webpack-manifest-plugin'), [
-            {
-              fileName: 'asset-manifest.json',
-              ...config.manifest,
-            },
-          ]);
-      }
+      enableManifest();
 
       // compress
       if (disableCompress) {

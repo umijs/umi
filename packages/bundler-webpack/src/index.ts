@@ -67,10 +67,14 @@ class Bundler {
       logLevel: 'silent',
       writeToDisk: devServer && devServer?.writeToDisk,
       watchOptions: {
+        // not watch outputPath dir and node_modules
         ignored:
           process.env.WATCH_IGNORED === 'none'
             ? undefined
-            : new RegExp(process.env.WATCH_IGNORED || 'node_modules'),
+            : new RegExp(
+                process.env.WATCH_IGNORED ||
+                  `(node_modules|${this.config.outputPath})`,
+              ),
       },
     });
 
