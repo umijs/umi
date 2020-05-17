@@ -54,15 +54,12 @@ export default function ({ routes, config, cwd }: IOpts) {
       case 'component':
         if (isFunctionComponent(value)) return value;
         if (config.dynamicImport) {
-          const [component, webpackChunkName, path] = value.split(SEPARATOR);
+          const [component, webpackChunkName] = value.split(SEPARATOR);
           let loading = '';
           if (config.dynamicImport.loading) {
             loading = `, loading: require('${config.dynamicImport.loading}').default`;
           }
-          const dynamicImportTpl = `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
-          return config?.ssr
-            ? `!process.env.__IS_SERVER ? ${dynamicImportTpl} : require('${component}').default`
-            : dynamicImportTpl;
+          return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
         } else {
           return `require('${value}').default`;
         }

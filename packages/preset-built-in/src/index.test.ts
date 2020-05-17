@@ -131,7 +131,6 @@ test('ssr', async () => {
 });
 
 test('ssr getInitialPropsCtx', async () => {
-  process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-getInitialPropsCtx');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
