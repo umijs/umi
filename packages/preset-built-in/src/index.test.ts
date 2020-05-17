@@ -266,11 +266,9 @@ test('ssr htmlTemplate', async () => {
 
 test('ssr dynamicImport', async () => {
   process.env.__IS_SERVER = true;
-  const env = process.env.NODE_ENV;
-  process.env.NODE_ENV = 'development';
   const cwd = join(fixtures, 'ssr-dynamicImport');
-  const tmpServerFile = join(cwd, '.umi', 'core', 'server.ts');
-
+  const corePath = join(cwd, '.umi-test', 'core');
+  const tmpServerFile = join(corePath, 'server.ts');
   delete require.cache[tmpServerFile];
 
   const service = new Service({
@@ -284,12 +282,17 @@ test('ssr dynamicImport', async () => {
     },
   });
   expect(existsSync(tmpServerFile)).toBeTruthy();
+  const manifest = {
+    'p__index.css': '/p__index.chunk.css',
+    'p__Bar.css': '/p__Bar.chunk.css',
+  };
 
   const render = require(tmpServerFile).default;
   // render /
   const homeResult = await render({
     path: '/',
     mountElementId: 'root',
+    manifest,
   });
   const expectRootContainer =
     '<div><ul><li>hello</li><li>world</li></ul></div>';
@@ -303,6 +306,7 @@ test('ssr dynamicImport', async () => {
   const BarResult = await render({
     path: '/bar',
     mountElementId: 'root',
+    manifest,
   });
   expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
 
@@ -311,5 +315,4 @@ test('ssr dynamicImport', async () => {
     '<link rel="stylesheet" href="/p__Bar.chunk.css" />',
   );
   rimraf.sync(join(cwd, '.umi-test'));
-  process.env.NODE_ENV = env;
 });

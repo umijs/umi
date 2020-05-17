@@ -52,7 +52,7 @@ const render: IRender = async (params) => {
     basename = '{{{ Basename }}}',
     staticMarkup = {{{ StaticMarkup }}},
     forceInitial = {{{ ForceInitial }}},
-    manifestFileName = '{{{ ManifestFileName }}}',
+    manifest,
     getInitialPropsCtx,
   } = params;
   const env = '{{{ Env }}}';
@@ -81,11 +81,9 @@ const render: IRender = async (params) => {
       routes,
     }
     const dynamicImport =  {{{ DynamicImport }}};
-    let manifest = {};
-    const manifestPath = join(__dirname, manifestFileName);
-    if (dynamicImport && existsSync(manifestPath)) {
+    if (dynamicImport && !manifest) {
       try {
-        manifest = requireFunc(manifestPath);
+        manifest = requireFunc(`./{{{ ManifestFileName }}}`);
       } catch (e) {
         if (env !== 'production') {
           console.error('manifest not found', e);
