@@ -52,9 +52,9 @@ const render: IRender = async (params) => {
     basename = '{{{ Basename }}}',
     staticMarkup = {{{ StaticMarkup }}},
     forceInitial = {{{ ForceInitial }}},
-    manifest,
     getInitialPropsCtx,
   } = params;
+  let manifest = params.manifest;
   const env = '{{{ Env }}}';
 
   let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
@@ -83,12 +83,9 @@ const render: IRender = async (params) => {
     const dynamicImport =  {{{ DynamicImport }}};
     if (dynamicImport && !manifest) {
       try {
+        // prerender not work because the manifest generation behind of the prerender
         manifest = requireFunc(`./{{{ ManifestFileName }}}`);
-      } catch (e) {
-        if (env !== 'production') {
-          console.error('manifest not found', e);
-        }
-      }
+      } catch (_) {}
     }
 
     // renderServer get rootContainer

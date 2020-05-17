@@ -101,6 +101,8 @@ export default (api: IApi) => {
         const { html } = await render({
           path: route.path,
           htmlTemplate: memo,
+          // prevent default manifest assets generation
+          manifest: {},
         });
         api.logger.info(`${route.path} render success`);
         return html;

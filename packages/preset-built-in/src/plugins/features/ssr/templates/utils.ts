@@ -1,6 +1,7 @@
 import { Readable } from 'stream';
 import { matchPath } from '@umijs/runtime';
 import { parse, UrlWithStringQuery } from 'url';
+import { routeToChunkName } from '@umijs/utils/lib/routes';
 import mergeStream from 'merge-stream';
 import serialize from 'serialize-javascript';
 
@@ -83,8 +84,10 @@ export const handleHTML = async (opts: any) => {
   if (dynamicImport) {
     const chunks = routesMatched
       .reduce((prev, curr) => {
-        const { _chunk: chunk = [] } = curr.route || {};
-        return [...(prev || []), ...chunk];
+        const chunk = routeToChunkName({
+          route: curr.route,
+        })
+        return [...(prev || []), chunk];
       }, []);
     if (chunks?.length > 0) {
       // only load css chunks to avoid page flashing

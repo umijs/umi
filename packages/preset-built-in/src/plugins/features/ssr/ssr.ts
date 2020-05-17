@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
 import { IApi, BundlerConfigType } from '@umijs/types';
-import { winPath, Mustache } from '@umijs/utils';
+import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
@@ -104,6 +104,25 @@ export default (api: IApi) => {
     });
   });
 
+  // run for dynamicImport in exportStatic
+  api.modifyHTMLChunks((memo, opts) => {
+    const { route } = opts;
+    // remove server bundle entry in html
+    // for dynamicImport
+    if (api.config.dynamicImport && api.env !== 'development' && opts.chunks) {
+      // different pages using correct chunks, not load all chunks
+      const chunkArr: string[] = [];
+      const chunkName = routeToChunkName({ route, cwd: api.cwd });
+      opts.chunks.forEach((chunk) => {
+        if (chunk.name.indexOf(chunkName || '') > -1) {
+          chunkArr.push(chunk.name);
+        }
+      });
+      return _.uniq([...memo, ...chunkArr]);
+    }
+    return memo;
+  });
+
   api.modifyConfig((config) => {
     // force enable writeToDisk
     config.devServer.writeToDisk = (filePath: string) => {
@@ -179,8 +198,6 @@ export default (api: IApi) => {
       config.entryPoints.clear();
       config.entry(CHUNK_NAME).add(serverEntryPath);
       config.target('node');
-      // https://webpack.js.org/configuration/node/#node
-      config.node.set('__dirname', false);
       config.name(CHUNK_NAME);
       config.devtool(false);
 
@@ -205,7 +222,7 @@ export default (api: IApi) => {
       ]);
 
       config.externals([]);
-      if (config.plugins.get('manifest')) {
+      if (config.plugins.has('manifest')) {
         config.plugins.delete('manifest');
       }
     } else {
