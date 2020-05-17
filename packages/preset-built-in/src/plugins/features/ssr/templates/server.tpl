@@ -1,14 +1,22 @@
 // umi.server.js
 import '{{{ RuntimePolyfill }}}';
-import { existsSync } from 'fs';
-import { join } from 'path';
 import { format } from 'url';
 import renderServer from '{{{ Renderer }}}';
 import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
 
-import { ApplyPluginsType, createMemoryHistory } from '{{{ RuntimePath }}}';
+import { ApplyPluginsType, createMemoryHistory{{ #DynamicImport }}, dynamic{{ /DynamicImport }} } from '{{{ RuntimePath }}}';
 import { plugin } from './plugin';
-import { routes } from './routes';
+
+// 主要为后面支持按需服务端渲染，单独用 routes 会全编译
+const routes = {{{ Routes }}};
+
+// allow user to extend routes
+plugin.applyPlugins({
+  key: 'patchRoutes',
+  type: ApplyPluginsType.event,
+  args: { routes },
+});
+
 
 // origin require module
 // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035

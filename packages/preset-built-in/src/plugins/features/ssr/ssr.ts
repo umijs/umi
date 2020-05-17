@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
+import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
 import { webpack } from '@umijs/bundler-webpack';
@@ -64,10 +65,16 @@ export default (api: IApi) => {
       noChunk: true,
     });
 
+    const routes = await api.getRoutes();
     api.writeTmpFile({
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
         Env: api.env,
+        Routes: new Route().getJSON({
+          routes,
+          config: api.config,
+          cwd: api.cwd,
+        }),
         RuntimePath: winPath(
           path.dirname(require.resolve('@umijs/runtime/package.json')),
         ),
