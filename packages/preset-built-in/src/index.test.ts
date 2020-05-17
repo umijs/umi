@@ -8,7 +8,10 @@ import { readFileSync, existsSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  delete process.env.__IS_SERVER;
+});
 
 test('api.writeTmpFile error in register stage', async () => {
   const cwd = join(fixtures, 'api-writeTmpFile');
@@ -128,6 +131,7 @@ test('ssr', async () => {
 });
 
 test('ssr getInitialPropsCtx', async () => {
+  process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-getInitialPropsCtx');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
@@ -204,6 +208,7 @@ test('ssr using stream', (done) => {
 });
 
 test('ssr htmlTemplate', async () => {
+  process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-htmlTemplate');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
 
@@ -257,5 +262,47 @@ test('ssr htmlTemplate', async () => {
   expect(html).toMatch('<script>console.log(1);</script>');
   const $ = cheerio.load(html);
   expect($('#root').html()).toEqual(expectRootContainer);
+  rimraf.sync(join(cwd, '.umi-test'));
+});
+
+test('ssr dynamicImport', async () => {
+  process.env.__IS_SERVER = true;
+  const cwd = join(fixtures, 'ssr-dynamicImport');
+  const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
+
+  delete require.cache[tmpServerFile];
+
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+  });
+  await service.run({
+    name: 'g',
+    args: {
+      _: ['g', 'tmp'],
+    },
+  });
+  expect(existsSync(tmpServerFile)).toBeTruthy();
+
+  const render = require(tmpServerFile).default;
+  // render /
+  const homeResult = await render({
+    path: '/',
+    mountElementId: 'root',
+  });
+  const expectRootContainer =
+    '<div><ul><li>hello</li><li>world</li></ul></div>';
+  expect(homeResult.rootContainer).toEqual(expectRootContainer);
+  console.log('html', homeResult.html);
+  expect(homeResult.html).toMatch('<script src="/umi.js"></script>');
+
+  // render /bar
+  const BarResult = await render({
+    path: '/bar',
+    mountElementId: 'root',
+  });
+  expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
+  console.log('BarResult html', BarResult.html);
+  expect(BarResult.html).toMatch('<script src="/umi.js"></script>');
   rimraf.sync(join(cwd, '.umi-test'));
 });
