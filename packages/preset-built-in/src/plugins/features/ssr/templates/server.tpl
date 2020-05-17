@@ -72,14 +72,15 @@ const render: IRender = async (params) => {
       staticMarkup,
       routes,
     }
+    const dynamicImport =  {{{ DynamicImport }}};
 
     // renderServer get rootContainer
-    const { pageHTML, pageInitialProps } = await renderServer(opts);
+    const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);
     rootContainer = pageHTML;
     if (html) {
       // plugin for modify html template
-      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio }) : html;
-      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial });
+      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio, routesMatched, dynamicImport }) : html;
+      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport });
     }
   } catch (e) {
     // downgrade into csr

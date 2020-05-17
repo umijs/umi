@@ -47,6 +47,14 @@ export default function ({ routes, config, cwd }: IOpts) {
         webpackChunkName,
         route.path || EMPTY_PATH,
       ].join(SEPARATOR);
+      // log _chunk for dynamicImport to load assets in html
+      if (config.ssr) {
+        const [_, webpackChunkName] =
+          typeof route.component === 'string'
+            ? route.component.split(SEPARATOR)
+            : [];
+        route._chunk = [`${config.publicPath}${webpackChunkName}`];
+      }
     }
     if (route.routes) {
       patchRoutes(route.routes);

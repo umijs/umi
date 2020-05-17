@@ -72,23 +72,39 @@ export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio'
  * @param param0
  */
 export const handleHTML = async (opts: any) => {
-  const { html, pageInitialProps, appInitialData, rootContainer, mountElementId, mode, forceInitial } = opts;
+  const { pageInitialProps, appInitialData, rootContainer, mountElementId, mode, forceInitial, routesMatched, dynamicImport } = opts;
+  let html = opts.html;
+  // get chunks in `dynamicImport: {}`
+
   const windowInitialVars = {
     ...(appInitialData && !forceInitial ? { 'window.g_initialData': serialize(appInitialData) } : {}),
     ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
   }
-  const htmlWithInitialData = html.replace(
+  if (dynamicImport) {
+    const chunks = routesMatched
+      .reduce((prev, curr) => {
+        const { _chunk: chunk = [] } = curr.route || {};
+        return [...(prev || []), ...chunk];
+      }, []);
+    if (chunks?.length > 0) {
+      const cssChunks = chunks.map(chunk => `<link rel="stylesheet" href="${chunk}.css" />`);
+      const jsChunks = chunks.map(chunk => `<script href="${chunk}.js"></script>`);
+      html = html.replace('</head>', `${cssChunks.join('\n')}\n</head>`);
+      html = html.replace('</body>', `${jsChunks.join('\n')}\n</body>`);
+    }
+  }
+  html = html.replace(
     '</head>',
     `<script>
       window.g_useSSR = true;
       ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).concat('').join(';\n')}
     </script>
     </head>`
-  )
+  );
 
   if (mode === 'stream') {
     const containerString = `<div id="${mountElementId}">`;
-    const [beforeRootContainer, afterRootContainer] = htmlWithInitialData.split(containerString);
+    const [beforeRootContainer, afterRootContainer] = html.split(containerString);
 
     const beforeRootContainerStream = new ReadableString(beforeRootContainer);
     const containerStream = new ReadableString(containerString);
@@ -96,7 +112,7 @@ export const handleHTML = async (opts: any) => {
     const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainer, afterRootContainerStream);
     return htmlStream;
   }
-  return htmlWithInitialData
+  return html
     .replace(
       `<div id="${mountElementId}"></div>`,
       `<div id="${mountElementId}">${rootContainer}</div>`

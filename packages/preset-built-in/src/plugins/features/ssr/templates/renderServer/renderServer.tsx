@@ -29,6 +29,7 @@ export interface IOpts {
 
 export interface ILoadGetInitialPropsValue {
   pageInitialProps: any;
+  routesMatched?: IRoute[];
 }
 
 interface ILoadGetInitialPropsOpts extends IOpts {
@@ -56,7 +57,8 @@ export const loadPageGetInitialProps = async ({ ctx,
   const { routes, pathname = opts.path } = opts;
 
   // via {routes} to find `getInitialProps`
-  const promises = matchRoutes(routes, pathname || '/')
+  const routesMatched = matchRoutes(routes, pathname || '/');
+  const promises = routesMatched
     .map(async ({ route, match }) => {
       const { component, ...restRouteParams } = route as IPatchRoute;
       let Component = component;
@@ -84,6 +86,7 @@ export const loadPageGetInitialProps = async ({ ctx,
 
   return {
     pageInitialProps,
+    routesMatched,
   };
 };
 
@@ -146,7 +149,7 @@ export default async function renderServer(
   }
   // await App.props.children.props.children.props.children.type.getInitialProps(ctx);
   // get pageInitialProps
-  const { pageInitialProps } = await loadPageGetInitialProps({
+  const { pageInitialProps, routesMatched } = await loadPageGetInitialProps({
     ctx,
     opts
   });
@@ -170,5 +173,6 @@ export default async function renderServer(
   return {
     pageHTML,
     pageInitialProps,
+    routesMatched,
   };
 }
