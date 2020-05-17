@@ -43,33 +43,6 @@ test('normal with dynamicImport', () => {
   );
 });
 
-test('ssr', () => {
-  const ret = routesToJSON({
-    routes: [
-      { path: '/', component: '@/pages/index.ts' },
-      { path: '/users/:id', component: '@/pages/users/[id].ts' },
-    ],
-    config: {
-      dynamicImport: true,
-      ssr: {},
-    },
-  });
-  expect(ret).toEqual(
-    `
-[
-  {
-    "path": "/",
-    "component": !process.env.__IS_SERVER ? dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')}) : require('@/pages/index.ts').default
-  },
-  {
-    "path": "/users/:id",
-    "component": !process.env.__IS_SERVER ? dynamic({ loader: () => import(/* webpackChunkName: 'p__users__id' */'@/pages/users/[id].ts')}) : require('@/pages/users/[id].ts').default
-  }
-]
-  `.trim(),
-  );
-});
-
 test('component with arrow function', () => {
   expect(
     routesToJSON({
