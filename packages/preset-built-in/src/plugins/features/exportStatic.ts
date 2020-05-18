@@ -98,14 +98,18 @@ export default (api: IApi) => {
       try {
         // do server-side render
         const render = require(serverFilePath);
-        const { html } = await render({
+        const { html, error } = await render({
           path: route.path,
           htmlTemplate: memo,
           // prevent default manifest assets generation
           manifest: {},
         });
         api.logger.info(`${route.path} render success`);
-        return html;
+        if (!error) {
+          return html;
+        } else {
+          api.logger.error('[SSR]', error);
+        }
       } catch (e) {
         api.logger.error(`${route.path} render failed`, e);
         throw e;

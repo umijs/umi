@@ -63,7 +63,7 @@ export const loadPageGetInitialProps = async ({ ctx,
       const { component, ...restRouteParams } = route as IPatchRoute;
       let Component = component;
       // preload for dynamicImport
-      if (Component.preload) {
+      if (Component?.preload) {
         const preloadComponent = await Component.preload();
         Component = preloadComponent.default || preloadComponent;
       }
