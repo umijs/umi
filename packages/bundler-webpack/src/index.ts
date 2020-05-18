@@ -1,8 +1,7 @@
-import { IConfig } from '@umijs/types';
+import { IConfig, BundlerConfigType } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
-import { ConfigType } from '@umijs/bundler-utils';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 
 interface IOpts {
@@ -45,6 +44,7 @@ class Bundler {
           try {
             console.log(stats.toString('errors-only'));
           } catch (e) {}
+          console.error(err);
           return reject(new Error('build failed'));
         }
         resolve({ stats });
@@ -60,15 +60,21 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
+    const { devServer, publicPath } = this.config;
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
-      publicPath: '/',
+      publicPath,
       logLevel: 'silent',
+      writeToDisk: devServer && devServer?.writeToDisk,
       watchOptions: {
+        // not watch outputPath dir and node_modules
         ignored:
           process.env.WATCH_IGNORED === 'none'
             ? undefined
-            : new RegExp(process.env.WATCH_IGNORED || 'node_modules'),
+            : new RegExp(
+                process.env.WATCH_IGNORED ||
+                  `(node_modules|${this.config.outputPath})`,
+              ),
       },
     });
 
@@ -144,4 +150,4 @@ class Bundler {
   }
 }
 
-export { Bundler, ConfigType, defaultWebpack as webpack };
+export { Bundler, BundlerConfigType, defaultWebpack as webpack };

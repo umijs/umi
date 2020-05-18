@@ -2,7 +2,7 @@ import { IApi } from '@umijs/types';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
 
 export default (api: IApi) => {
-  api.modifyBundleConfig((bundleConfig, { env, bundler: { id } }) => {
+  api.modifyBundleConfig((bundleConfig, { env, bundler: { id }, type }) => {
     if (env === 'development' && id === 'webpack') {
       bundleConfig.plugins?.push(
         new DevCompileDonePlugin({
@@ -19,6 +19,7 @@ export default (api: IApi) => {
                 type: api.ApplyPluginsType.event,
                 args: {
                   isFirstCompile,
+                  type,
                   stats,
                 },
               })

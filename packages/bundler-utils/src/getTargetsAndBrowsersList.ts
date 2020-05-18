@@ -1,9 +1,13 @@
-import { IConfig, ITargets } from '@umijs/types';
-import { ConfigType } from './enums';
+import {
+  IConfig,
+  ITargets,
+  BundlerConfigType,
+  IBundlerConfigType,
+} from '@umijs/types';
 
 interface IOpts {
   config: IConfig;
-  type: ConfigType;
+  type: IBundlerConfigType;
 }
 
 export default function ({ config, type }: IOpts) {
@@ -13,7 +17,7 @@ export default function ({ config, type }: IOpts) {
     .filter((key) => {
       // filter false and 0 targets
       if (targets[key] === false) return false;
-      if (type === ConfigType.ssr) return key === 'node';
+      if (type === BundlerConfigType.ssr) return key === 'node';
       else return key !== 'node';
     })
     .reduce((memo, key) => {

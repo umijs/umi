@@ -6,7 +6,7 @@ import { winPath } from '@umijs/utils';
 export function importsToStr(
   imports: { source: string; specifier?: string }[],
 ) {
-  return imports.map((imp) => {
+  return imports.map(imp => {
     const { source, specifier } = imp;
     if (specifier) {
       return `import ${specifier} from '${winPath(source)}';`;
@@ -16,12 +16,12 @@ export function importsToStr(
   });
 }
 
-export default function (api: IApi) {
+export default function(api: IApi) {
   const {
     utils: { Mustache },
   } = api;
 
-  api.onGenerateFiles(async (args) => {
+  api.onGenerateFiles(async args => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
     const rendererPath = await api.applyPlugins({
       key: 'modifyRendererPath',
@@ -39,6 +39,7 @@ export default function (api: IApi) {
           dirname(require.resolve('@umijs/runtime/package.json')),
         ),
         rootElement: api.config.mountElementId,
+        dynamicImport: !!api.config.dynamicImport,
         entryCode: (
           await api.applyPlugins({
             key: 'addEntryCode',

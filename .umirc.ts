@@ -1,4 +1,5 @@
 // Config for dumi
+import { defineConfig } from 'umi';
 
 function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
   const menus = {
@@ -106,7 +107,8 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
 
 const isDev = process.env.NODE_ENV === 'development';
 
-export default {
+export default defineConfig({
+  ssr: {},
   favicon: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   mode: 'site',
   title: 'UmiJS',
@@ -141,4 +143,4 @@ export default {
     : {
         ga: 'UA-149864185-1',
       },
-};
+});

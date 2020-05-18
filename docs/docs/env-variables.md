@@ -69,6 +69,10 @@ $ ANALYZE=1 umi dev
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_SSR
+
+对服务端包大小的分析，默认关闭，具体见 [服务端渲染#包大小分析](/zh-CN/docs/ssr#包大小分析)。
+
 ### BABEL_CACHE
 
 默认开启 Babel 编译缓存，值为 none 时禁用缓存。
@@ -164,3 +168,7 @@ WATCH_IGNORED=none umi dev
 # node_modules 下除 lodash 和 umi 监听，其他忽略
 WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
 ```
+
+### RM_SERVER_FILE
+
+预渲染下，默认会默认删除服务端渲染文件 `umi.server.js`，如果希望保留，使用 `RM_SERVER_FILE=none`。
