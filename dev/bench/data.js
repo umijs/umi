@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589781092846,
+  "lastUpdate": 1589783199578,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3404,6 +3404,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.78%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "199ba8fa39dec98ed0f21099402eb0135ced00ab",
+          "message": "fix: prerender error (#4696)",
+          "timestamp": "2020-05-18T14:24:18+08:00",
+          "tree_id": "6f83a51db953563198c492230f24eb32fe2f91f9",
+          "url": "https://github.com/umijs/umi/commit/199ba8fa39dec98ed0f21099402eb0135ced00ab"
+        },
+        "date": 1589783196565,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1365,
+            "range": "±2.58%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2236,
+            "range": "±3.59%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
