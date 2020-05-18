@@ -248,6 +248,7 @@ interface IManifest {
   fileName: string;
   publicPath: string;
   basePath: string;
+  writeToFileEmit: boolean;
 }
 
 interface ISSR {

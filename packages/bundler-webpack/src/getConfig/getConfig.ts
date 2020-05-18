@@ -371,7 +371,7 @@ export default async function getConfig(
 
   const enableManifest = () => {
     // manifest
-    if (config.manifest) {
+    if (config.manifest && type === BundlerConfigType.csr) {
       webpackConfig
         .plugin('manifest')
         .use(require.resolve('webpack-manifest-plugin'), [

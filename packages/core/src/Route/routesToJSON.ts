@@ -31,6 +31,9 @@ export default function ({ routes, config, cwd }: IOpts) {
         route,
         cwd,
       });
+      if (config?.ssr && config?.dynamicImport) {
+        route._chunkName = webpackChunkName;
+      }
       route.component = [
         route.component,
         webpackChunkName,

@@ -122,7 +122,7 @@ export default (api: IApi) => {
       const chunkArr: string[] = [];
       const chunkName = routeToChunkName({ route, cwd: api.cwd });
       opts.chunks.forEach((chunk) => {
-        if (chunk.name.indexOf(chunkName || '') > -1) {
+        if (chunk.name.includes(chunkName)) {
           chunkArr.push(chunk.name);
         }
       });
@@ -142,6 +142,7 @@ export default (api: IApi) => {
     // enable manifest
     if (config.dynamicImport) {
       config.manifest = {
+        writeToFileEmit: false,
         ...(config.manifest || {}),
       };
     }
@@ -236,9 +237,6 @@ export default (api: IApi) => {
       ]);
 
       config.externals([]);
-      if (config.plugins.has('manifest')) {
-        config.plugins.delete('manifest');
-      }
     } else {
       // define client bundler config
       config.plugin('define').tap(([args]) => [

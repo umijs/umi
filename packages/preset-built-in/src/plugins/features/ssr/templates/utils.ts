@@ -1,7 +1,6 @@
 import { Readable } from 'stream';
 import { matchPath } from '@umijs/runtime';
 import { parse, UrlWithStringQuery } from 'url';
-import { routeToChunkName } from '@umijs/utils/lib/routes';
 import mergeStream from 'merge-stream';
 import serialize from 'serialize-javascript';
 
@@ -84,10 +83,8 @@ export const handleHTML = async (opts: any) => {
   if (dynamicImport) {
     const chunks = routesMatched
       .reduce((prev, curr) => {
-        const chunk = routeToChunkName({
-          route: curr.route,
-        })
-        return [...(prev || []), chunk];
+        const _chunkName = curr.route?._chunkName;
+        return [...(prev || []), _chunkName].filter(Boolean);
       }, []);
     if (chunks?.length > 0) {
       // only load css chunks to avoid page flashing
@@ -95,7 +92,7 @@ export const handleHTML = async (opts: any) => {
       chunks.forEach(chunk => {
         Object.keys(manifest || {}).forEach(manifestChunk => {
           if (manifestChunk !== 'umi.css'
-            && manifestChunk.indexOf(chunk) > -1
+            && manifestChunk.includes(chunk)
             && /\.css$/.test(manifest[manifestChunk])
           ) {
             cssChunkSet.add(`<link rel="stylesheet" href="${manifest[manifestChunk]}" />`)

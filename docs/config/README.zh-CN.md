@@ -684,6 +684,7 @@ export default {
 * fileName，文件名，默认是 `asset-manifest.json`
 * publicPath，默认会使用 webpack 的 `output.publicPath` 配置
 * basePath，给所有文件路径加前缀
+* writeToFileEmit，开发模式下，写 manifest 到文件系统中
 
 注意：
 
