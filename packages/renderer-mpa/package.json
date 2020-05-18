@@ -1,6 +1,6 @@
 {
   "name": "@umijs/renderer-mpa",
-  "version": "3.1.4",
+  "version": "3.2.0-beta.12",
   "description": "@umijs/renderer-mpa",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
-    "@umijs/runtime": "3.1.4",
+    "@umijs/runtime": "3.2.0-beta.12",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
