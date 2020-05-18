@@ -1,4 +1,5 @@
 import { Readable } from 'stream';
+import { IRoute } from '@umijs/types';
 import { parse, UrlWithStringQuery } from 'url';
 import mergeStream from 'merge-stream';
 import serialize from 'serialize-javascript';
@@ -42,26 +43,37 @@ class ReadableString extends Readable {
   }
 }
 
-// get displayName from Component
-export const getComponentDisplayName = (Component: any, defaultName = 'Unknown') => typeof Component === 'string' ? Component : (Component.displayName || Component.name || defaultName)
-
 export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio'
+
+export interface IHandleHTMLOpts {
+  pageInitialProps: object;
+  rootContainer: string;
+  mountElementId: string;
+  mode: 'stream' | 'string';
+  forceInitial: boolean;
+  routesMatched: IRoute[];
+  html: string;
+  dynamicImport: boolean;
+  manifest: object;
+}
 
 /**
  * handle html with rootContainer(rendered)
  * @param param
  */
-export const handleHTML = async (opts: any) => {
-  const { pageInitialProps, appInitialData, rootContainer, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest } = opts;
+export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
+  const { pageInitialProps, rootContainer, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest } = opts;
   let html = opts.html;
+  if (typeof html !== 'string') {
+    return '';
+  }
   // get chunks in `dynamicImport: {}`
 
   const windowInitialVars = {
-    ...(appInitialData && !forceInitial ? { 'window.g_initialData': serialize(appInitialData) } : {}),
     ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
   }
-  if (dynamicImport) {
-    const chunks = routesMatched
+  if (dynamicImport && Array.isArray(routesMatched)) {
+    const chunks: string[] = routesMatched
       .reduce((prev, curr) => {
         const _chunkName = curr.route?._chunkName;
         return [...(prev || []), _chunkName].filter(Boolean);
@@ -99,7 +111,8 @@ export const handleHTML = async (opts: any) => {
     const beforeRootContainerStream = new ReadableString(beforeRootContainer);
     const containerStream = new ReadableString(containerString);
     const afterRootContainerStream = new ReadableString(afterRootContainer);
-    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainer, afterRootContainerStream);
+    const rootContainerStream = typeof rootContainer === 'string' ? new ReadableString(rootContainer) : rootContainer;
+    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainerStream, afterRootContainerStream);
     return htmlStream;
   }
   return html
