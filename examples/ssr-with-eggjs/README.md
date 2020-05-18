@@ -3,7 +3,8 @@
 ## Install
 
 ```sh
-$ npm install
+$ yarn add umi
+$ yarn
 ```
 
 ## Usage
