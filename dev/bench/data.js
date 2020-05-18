@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589352742027,
+  "lastUpdate": 1589781092846,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3366,6 +3366,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.25%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "da2ae777f66e2578fc0b9c64e0edc0e07216cb4c",
+          "message": "feat: Umi 3 SSR (#4499)\n\n* feat: getInitialProps\r\n\r\n* feat: getInitialProps\r\n\r\n* fix: htmlTemplate default\r\n\r\n* fix: csr html\r\n\r\n* feat: export isBrowser\r\n\r\n* fix: ci\r\n\r\n* fix: types\r\n\r\n* fix: types\r\n\r\n* fix: in browser to exec getInitialProps\r\n\r\n* fix: client getInitialProps mount and unmount repeatedly\r\n\r\n* fix: renderRoutes watch location\r\n\r\n* fix: test case\r\n\r\n* feat: support appInitialData\r\n\r\n* feat: export default render function\r\n\r\n* feat: inject default html template string into umi.server.js\r\n\r\n* feat: support StaticRotuer base\r\n\r\n* fix: StaticRouter double slash\r\n\r\n* feat: support stream render\r\n\r\n* fix: console\r\n\r\n* feat: support prerender\r\n\r\n* chore: remove umi.server.js when prerender ok\r\n\r\n* feat: staticMarkup\r\n\r\n* feat: ssr support dynamicImport\r\n\r\n* fix: prerender check\r\n\r\n* chore: hydrate and render using hasChildNodes()\r\n\r\n* chore: unused server dynamicImport\r\n\r\n* fix: prerender dynamic\r\n\r\n* fix: server render default value\r\n\r\n* docs: ssr api\r\n\r\n* fix: runtime build\r\n\r\n* feat: add api.modifyDevServerContent extend html content\r\n\r\n* fix: renderer\r\n\r\n* fix: prerender\r\n\r\n* feat: support dumi ssr\r\n\r\n* fix: test case\r\n\r\n* docs: use exportStatic\r\n\r\n* feat: support exportStatic to prerender html content string\r\n\r\n* fix: chunks\r\n\r\n* release: v3.2.0-beta.1\r\n\r\n* chore: precommit deps\r\n\r\n* fix: remove server add entry\r\n\r\n* chore: remove husky\r\n\r\n* chore: proxy types\r\n\r\n* fix: use ConfigType.ssr\r\n\r\n* fix: publicPath\r\n\r\n* chore: format history\r\n\r\n* chore: unused Capture\r\n\r\n* chore: ConfigType from @umijs/types\r\n\r\n* chore: ConfigType\r\n\r\n* fix: enum using index.ts\r\n\r\n* fix: enum types\r\n\r\n* fix: express req types\r\n\r\n* fix: ssr\r\n\r\n* fix: ssr assert check before run\r\n\r\n* fix: rename __IS_BROWSER into __IS_SERVER\r\n\r\n* feat: support modifyGetInitialPropsParams for dva model\r\n\r\n* fix: logger break newline\r\n\r\n* chore: unused prerender plugin\r\n\r\n* fix: prerender plugin\r\n\r\n* feat: add benchmarks\r\n\r\n* fix: benchmarks\r\n\r\n* fix: benchmark\r\n\r\n* fix: run\r\n\r\n* feat: add diff\r\n\r\n* fix: name\r\n\r\n* chore: yarn.lock\r\n\r\n* chore: benchmarks run in master\r\n\r\n* chore: test push\r\n\r\n* docs: add benchmarks\r\n\r\n* fix: exportStatic unused config\r\n\r\n* test: ssr test case\r\n\r\n* fix: remove ssr.test.ts\r\n\r\n* fix: remove unnecessary ssr webpack config\r\n\r\n* feat: add writeToDisk opts for devServer\r\n\r\n* fix: windows runtime polyfill\r\n\r\n* fix: remove exportStatic extraRoutes\r\n\r\n* docs: ssr\r\n\r\n* feat: dynamic routes prerender\r\n\r\n* fix: bundler error\r\n\r\n* fix: routesToJSON using condition output\r\n\r\n* fix: unused middleware filter\r\n\r\n* fix: unused devServer content filter\r\n\r\n* fix: webpack throw error\r\n\r\n* fix: isDynamicRoute use utils\r\n\r\n* chore: add test case stream\r\n\r\n* test: loadable component test case\r\n\r\n* chore: mean time\r\n\r\n* chore: benchmark\r\n\r\n* feat: add dynamicImport condition\r\n\r\n* chore: preloadComponent test case\r\n\r\n* fix: test case add cleanup\r\n\r\n* fix: ci\r\n\r\n* fix: ci\r\n\r\n* refactor: stream rename mode: stream\r\n\r\n* feat: support html modify\r\n\r\n* docs: title\r\n\r\n* docs: wrapper div\r\n\r\n* feat: extraPaths support function return Promise\r\n\r\n* docs: async extraPaths fetch\r\n\r\n* docs: analyze\r\n\r\n* release: v3.2.0-beta.2\r\n\r\n* fix: mode string\r\n\r\n* fix: mode\r\n\r\n* fix: tpl\r\n\r\n* fix: build html replace\r\n\r\n* feat: extraPaths use function\r\n\r\n* docs: external\r\n\r\n* feat: export getInitialProps types\r\n\r\n* feat: support layout getInitialProps\r\n\r\n* feat: support matchRoutes\r\n\r\n* fix: remove unused bundler type\r\n\r\n* fix: layout getInitialProps reset\r\n\r\n* fix: ssr dynamicImport bug\r\n\r\n* fix: watch location\r\n\r\n* docs: ssr class component\r\n\r\n* fix: server render basename\r\n\r\n* fix: modifyHTML and getInitialPropsParams\r\n\r\n* fix: ci\r\n\r\n* fix: ci\r\n\r\n* release: v3.2.0-beta.3\r\n\r\n* fix: pkg conflict\r\n\r\n* fix: server types\r\n\r\n* chore: benchmark workflows\r\n\r\n* docs: ssr\r\n\r\n* chore: add examples dirs\r\n\r\n* feat: add ssr-redux examples\r\n\r\n* feat: add ssr-redux examples\r\n\r\n* fix: clock\r\n\r\n* chore: rename modifyGetInitialPropsCtx\r\n\r\n* feat: modifyWindowInitialVars\r\n\r\n* chore: rename getInitialPropsCtx\r\n\r\n* fix: test ci and utils cheerio\r\n\r\n* chore: add modifyServerHTML\r\n\r\n* feat: support eggjs\r\n\r\n* fix: dev compile firstCompile\r\n\r\n* feat: support RM_SERVER_FILE\r\n\r\n* fix: prerender only in production\r\n\r\n* feat: support dva ssr\r\n\r\n* chore: format\r\n\r\n* release: v3.2.0-beta.6\r\n\r\n* chore: add benchmark\r\n\r\n* Revert \"release: v3.2.0-beta.6\"\r\n\r\nd06b77e174ff78fae7d4a70b5c4bfe3e5cf69088\r\n\r\n* fix: createMemoryHistory entries\r\n\r\n* fix: remove modifyGetInitialPropsCtx and modifyInitialProps\r\n\r\n* refactor: remove getInitialData, mv into renderServer\r\n\r\n* fix: types\r\n\r\n* feat: renderServer in ssr/ssr\r\n\r\n* refactor: getInitialProps\r\n\r\n* feat: add test case\r\n\r\n* chore: test case\r\n\r\n* chore: format\r\n\r\n* fix: remove default enable ssr\r\n\r\n* feat: add modifyGetInitialPropsCtx\r\n\r\n* fix: add plugin test case\r\n\r\n* feat: dumi\r\n\r\n* fix: prerender bug\r\n\r\n* fix: renderServer\r\n\r\n* fix: remove html webpack plugin in ssr\r\n\r\n* fix: remove console\r\n\r\n* fix: MemoryHistory\r\n\r\n* fix: chunk\r\n\r\n* fix: html replace\r\n\r\n* chore: html\r\n\r\n* fix: get html using getHtmlGenerator\r\n\r\n* fix: logger\r\n\r\n* chore: reset bundler-webpack\r\n\r\n* chore: unused htmlTemplate\r\n\r\n* test: htmlTemplate\r\n\r\n* chore: format\r\n\r\n* chore: unused modifyBuildContent\r\n\r\n* chore: modifyConfig\r\n\r\n* chore: format\r\n\r\n* chore: use in dev\r\n\r\n* feat: add modifyBuildContent\r\n\r\n* chore: comment\r\n\r\n* chore: format\r\n\r\n* chore: fix chunks\r\n\r\n* docs: reademe ssr\r\n\r\n* chore: readme\r\n\r\n* chore: merge-stream and serialize-javascript types\r\n\r\n* Update packages/preset-built-in/src/plugins/commands/build/applyHtmlWebpackPlugin.ts\r\n\r\nCo-authored-by: chencheng (云谦) <sorrycc@gmail.com>\r\n\r\n* chore: prest-built-in order\r\n\r\n* fix: routeMap api\r\n\r\n* fix: routeMap\r\n\r\n* docs: api plugin\r\n\r\n* chore: rename api\r\n\r\n* docs: ANALYZE_SSR\r\n\r\n* docs: RM_SERVER_FILE\r\n\r\n* chore: rename extraRoutePaths\r\n\r\n* chore: devServer\r\n\r\n* chore: format\r\n\r\n* fix: writeToDisk\r\n\r\n* chore: format\r\n\r\n* chore: comment\r\n\r\n* chore: docs\r\n\r\n* chore: utils for ssr window envs\r\n\r\n* chore: test isBrowser export\r\n\r\n* docs: ssr usage\r\n\r\n* feat: routeToChunkName using @umijs/utils, reuse in ssr\r\n\r\n* chore: not load all chunks\r\n\r\n* fix: matchRoute dynamic load\r\n\r\n* feat: support dynamicImport\r\n\r\n* fix: types\r\n\r\n* chore: node 8\r\n\r\n* chore: test case\r\n\r\n* chore: tweak WebpackBar using different name\r\n\r\n* release: v3.2.0-beta.9\r\n\r\n* Revert \"release: v3.2.0-beta.9\"\r\n\r\n8377f7c03daa0aac5867864fed6233ba36e2d1a6\r\n\r\n* fix: manifest not work\r\n\r\n* chore: add test case\r\n\r\n* fix: unused dynamicImport require\r\n\r\n* chore: test case\r\n\r\n* chore: renderServer\r\n\r\n* chore: remove routes\r\n\r\n* fix: server not code split\r\n\r\n* feat: support server html dynamicImport assets\r\n\r\n* fix: dynamicImport\r\n\r\n* fix: script load\r\n\r\n* chore: handleHTML\r\n\r\n* fix: dynamicImport ssr in manifest\r\n\r\n* feat: manifest\r\n\r\n* fix: using routeToChunkName\r\n\r\n* feat: support manifest\r\n\r\n* chore: remove dynamicImport\r\n\r\n* chore: use limit-chunk avoid routesToJSON change\r\n\r\n* fix: stream bug\r\n\r\n* chore: split routes into server.tpl\r\n\r\n* docs: manifest\r\n\r\n* fix: manifest load bug\r\n\r\n* chore: utils test\r\n\r\n* chore: add utils test\r\n\r\n* chore: unused cheerio\r\n\r\n* chore: comment\r\n\r\n* chore: comment\r\n\r\nCo-authored-by: pr <pr>\r\nCo-authored-by: chencheng (云谦) <sorrycc@gmail.com>",
+          "timestamp": "2020-05-18T13:48:52+08:00",
+          "tree_id": "08d6e65d49789884f80d379ff865088b54c11069",
+          "url": "https://github.com/umijs/umi/commit/da2ae777f66e2578fc0b9c64e0edc0e07216cb4c"
+        },
+        "date": 1589781089765,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1342,
+            "range": "±2.27%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2152,
+            "range": "±2.78%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
