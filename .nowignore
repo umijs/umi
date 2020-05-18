@@ -5,6 +5,6 @@ node_modules
 scripts
 packages
 e2e
-docs
 scripts
 !dist
+examples
