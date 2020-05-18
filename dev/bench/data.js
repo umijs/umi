@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589783199578,
+  "lastUpdate": 1589786996068,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3440,6 +3440,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2236,
             "range": "±3.59%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a0486df918a593d510b91155aad81fec38eef243",
+          "message": "chore: now shouldn't ignore docs (#4697)",
+          "timestamp": "2020-05-18T15:27:01+08:00",
+          "tree_id": "03f5b3654d76f41347da06c6f9f17a04bb630e21",
+          "url": "https://github.com/umijs/umi/commit/a0486df918a593d510b91155aad81fec38eef243"
+        },
+        "date": 1589786992939,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1264,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "79 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1969,
+            "range": "±3.61%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
