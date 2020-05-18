@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589792912714,
+  "lastUpdate": 1589793062483,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3518,6 +3518,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.24%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "leftstick@qq.com",
+            "name": "Howard.Zuo",
+            "username": "leftstick"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "25368f7e2d8dd5de478f16810ce7b313dc1c3845",
+          "message": "fix: #4661 (#4679)\n\ntest: fix ut",
+          "timestamp": "2020-05-18T17:08:26+08:00",
+          "tree_id": "4873b893091727f0fa6275056486b995d48aba3f",
+          "url": "https://github.com/umijs/umi/commit/25368f7e2d8dd5de478f16810ce7b313dc1c3845"
+        },
+        "date": 1589793055275,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1353,
+            "range": "±2.27%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2126,
+            "range": "±3.11%",
+            "unit": "ops/sec",
+            "extra": "48 samples"
           }
         ]
       }
