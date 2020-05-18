@@ -31,6 +31,7 @@ export default function ({ routes, config, cwd }: IOpts) {
         route,
         cwd,
       });
+      // 解决 SSR 开启动态加载后，页面闪烁问题
       if (config?.ssr && config?.dynamicImport) {
         route._chunkName = webpackChunkName;
       }
