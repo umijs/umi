@@ -1,5 +1,4 @@
 import { Readable } from 'stream';
-import { matchPath } from '@umijs/runtime';
 import { parse, UrlWithStringQuery } from 'url';
 import mergeStream from 'merge-stream';
 import serialize from 'serialize-javascript';
@@ -21,25 +20,6 @@ export function stripBasename(basename: string, path: string): UrlWithStringQuer
     ...location,
     pathname: addLeadingSlash(location.pathname.substr(base.length))
   };
-}
-
-export function findRoute(routes: any[], path: string, basename: string = '/'): any {
-  const { pathname } = stripBasename(basename, path);
-  for (const route of routes) {
-    if (route.routes) {
-      const routesMatch = findRoute(route.routes, path, basename);
-      if (routesMatch) {
-        return routesMatch;
-      }
-    } else if (matchPath(pathname || '', route)) {
-      // for get params (/news/1 => { params: { id： 1 } })
-      const match = matchPath(pathname || '', route) as any;
-      return {
-        ...route,
-        match,
-      };
-    }
-  }
 }
 
 class ReadableString extends Readable {
