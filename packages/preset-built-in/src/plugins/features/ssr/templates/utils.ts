@@ -67,11 +67,10 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   if (typeof html !== 'string') {
     return '';
   }
-  // get chunks in `dynamicImport: {}`
-
   const windowInitialVars = {
     ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
   }
+  // get chunks in `dynamicImport: {}`
   if (dynamicImport && Array.isArray(routesMatched)) {
     const chunks: string[] = routesMatched
       .reduce((prev, curr) => {
