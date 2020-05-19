@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589857851257,
+  "lastUpdate": 1589872484298,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3708,6 +3708,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.96%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c56edaf4c192d0e7b0c1456640a58dc3b1bc65ce",
+          "message": "docs: plugin and monaco-editor (#4705)\n\n* docs: plugin-helmet\r\n\r\n* docs: monaco-editor build\r\n\r\n* chore: config docs\r\n\r\n* docs: preset order",
+          "timestamp": "2020-05-19T15:12:16+08:00",
+          "tree_id": "5a48e61f5a122d0a0b44557b85ab059b946a0c67",
+          "url": "https://github.com/umijs/umi/commit/c56edaf4c192d0e7b0c1456640a58dc3b1bc65ce"
+        },
+        "date": 1589872480749,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1374,
+            "range": "±2.69%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2220,
+            "range": "±3.86%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
