@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589848982166,
+  "lastUpdate": 1589849031308,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3630,6 +3630,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2011,
             "range": "±3.57%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3b3614b0c3e0b862ae4573313d0e7467f46a2257",
+          "message": "fix: env config files type merge (#4665)",
+          "timestamp": "2020-05-19T08:41:10+08:00",
+          "tree_id": "8cc5657c0a8150ac9e4da80ca8c6e43346b8739b",
+          "url": "https://github.com/umijs/umi/commit/3b3614b0c3e0b862ae4573313d0e7467f46a2257"
+        },
+        "date": 1589849028179,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1258,
+            "range": "±2.64%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1938,
+            "range": "±2.96%",
             "unit": "ops/sec",
             "extra": "44 samples"
           }
