@@ -156,7 +156,6 @@ export default {
 编辑器打包，建议使用如下配置，避免构建报错：
 
 ```js
-// (.umirc.ts)|(config/config.ts)
 export default {
   chainWebpack: (config) => {
     config.plugin('monaco-editor-webpack-plugin').use(
