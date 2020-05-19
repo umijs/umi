@@ -110,7 +110,8 @@ export default function renderClient(opts: IOpts) {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
-    if (rootElement?.hasChildNodes()) {
+    // flag showing SSR successed
+    if (window.g_useSSR) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
         // first loades);
