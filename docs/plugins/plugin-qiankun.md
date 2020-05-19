@@ -136,7 +136,7 @@ export default {
           routes: [
             {
               path: '/app1/user',
-	          	component: './app1/user/index.js',
+	          component: './app1/user/index.js',
             },
 +            // 配置微应用 app1 关联的路由
 +            {

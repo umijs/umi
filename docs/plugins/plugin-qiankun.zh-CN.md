@@ -103,7 +103,7 @@ export default {
           routes: [
             {
               path: '/app1/user',
-	          component: './app1/user/index.js',
+              component: './app1/user/index.js',
             },
           ],
         },
@@ -132,12 +132,12 @@ export default {
           routes: [
             {
               path: '/app1/user',
-	          	component: './app1/user/index.js',
+	          component: './app1/user/index.js',
             },
 +            // 配置微应用 app1 关联的路由
 +            {
 +              path: '/app1/project',
-+	          	 microApp: 'app1',
++	           microApp: 'app1',
 +            },
           ],
         },
@@ -255,7 +255,7 @@ PORT=8081
      };
    });
    ```
-   
+
 2. 子应用在生命周期钩子中获取 props 消费数据（参考子应用运行时配置一节）
 
 ### 基于 Hooks 共享数据
