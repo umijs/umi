@@ -22,7 +22,7 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
 {{/dynamicImport}}
       rootElement: '{{{ rootElement }}}',
 {{#enableTitle}}
-      defaultTitle: '{{{ defaultTitle }}}',
+      defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
     });
   },
