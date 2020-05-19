@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589872484298,
+  "lastUpdate": 1589877389977,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3746,6 +3746,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.86%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e25d7921a88b6ca88b99f82a965ddcb0877ca6c6",
+          "message": "chore: flag to show ssr successed (#4708)\n\n* chore: flag to show ssr successed\r\n\r\n* docs: helmet menu",
+          "timestamp": "2020-05-19T16:34:09+08:00",
+          "tree_id": "71e91cbff7dfd8b579bdf4e65d78fe334d714488",
+          "url": "https://github.com/umijs/umi/commit/e25d7921a88b6ca88b99f82a965ddcb0877ca6c6"
+        },
+        "date": 1589877387271,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1613,
+            "range": "±2.50%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2384,
+            "range": "±5.06%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
