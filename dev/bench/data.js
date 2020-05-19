@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589793062483,
+  "lastUpdate": 1589848894326,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3556,6 +3556,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.11%",
             "unit": "ops/sec",
             "extra": "48 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolin.jcl@alibaba-inc.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1927572277f59e588efa2acdec86bbaa5b3cf49b",
+          "message": "fix: devServer must use / (#4702)",
+          "timestamp": "2020-05-19T08:38:48+08:00",
+          "tree_id": "9fe18ed43d34b1902868cb4db8e2b99196173ba7",
+          "url": "https://github.com/umijs/umi/commit/1927572277f59e588efa2acdec86bbaa5b3cf49b"
+        },
+        "date": 1589848891114,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1240,
+            "range": "±2.02%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1902,
+            "range": "±3.94%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
