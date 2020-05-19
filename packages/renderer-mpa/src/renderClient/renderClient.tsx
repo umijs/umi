@@ -62,7 +62,10 @@ export function renderClient(opts: IOpts): any {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     // @ts-ignore
-    ReactDOM[rootElement?.hasChildNodes() ? 'hydrate' : 'render'](rootContainer, rootElement);
+    ReactDOM[window.g_useSSR ? 'hydrate' : 'render'](
+      rootContainer,
+      rootElement,
+    );
   } else {
     return rootContainer;
   }
