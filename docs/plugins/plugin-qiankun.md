@@ -141,7 +141,7 @@ export default {
 +            // 配置微应用 app1 关联的路由
 +            {
 +              path: '/app1/project',
-+	          	 microApp: 'app1',
++	           microApp: 'app1',
 +            },
           ],
         },
