@@ -15,4 +15,4 @@
 * [plugin-locale](./plugin-locale)，国际化能力
 * [plugin-model](./plugin-model)，基于 hooks 的简易数据流
 * [plugin-request](./plugin-request)，基于 umi-request 和 umi-hooks 的请求方案
-
+* [plugin-helmet](./plugin-helmet)，整合 [react-helmet](https://github.com/nfl/react-helmet)，管理 HTML 文档标签（如标题、描述等）
