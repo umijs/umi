@@ -17,6 +17,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/plugins/plugin-crossorigin',
           '/plugins/plugin-dva',
           '/plugins/plugin-esbuild',
+          '/plugins/plugin-helmet',
           '/plugins/plugin-initial-state',
           '/plugins/plugin-layout',
           '/plugins/plugin-locale',
