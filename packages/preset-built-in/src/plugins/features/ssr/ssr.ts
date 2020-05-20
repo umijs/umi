@@ -196,12 +196,19 @@ export default (api: IApi) => {
     const { paths } = api;
     const { type } = opts;
     const serverEntryPath = path.join(paths!.absTmpPath, 'core/server.ts');
-    config.plugin('progress').tap(([args]) => [
-      {
-        ...args,
-        name: 'Client',
-      },
-    ]);
+
+    const modifyWebpackBar = (name: string) => {
+      if (config.plugins.has('progress')) {
+        config.plugin('progress').tap(([args]) => [
+          {
+            ...args,
+            name,
+          },
+        ]);
+      }
+    };
+
+    modifyWebpackBar('Client');
 
     if (type === BundlerConfigType.ssr) {
       config.entryPoints.clear();
@@ -229,12 +236,8 @@ export default (api: IApi) => {
           'process.env.__IS_SERVER': true,
         },
       ]);
-      config.plugin('progress').tap(([args]) => [
-        {
-          ...args,
-          name: 'Server',
-        },
-      ]);
+
+      modifyWebpackBar('Server');
 
       config.externals([]);
     } else {
