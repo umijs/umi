@@ -197,19 +197,6 @@ export default (api: IApi) => {
     const { type } = opts;
     const serverEntryPath = path.join(paths!.absTmpPath, 'core/server.ts');
 
-    const modifyWebpackBar = (name: string) => {
-      if (config.plugins.has('progress')) {
-        config.plugin('progress').tap(([args]) => [
-          {
-            ...args,
-            name,
-          },
-        ]);
-      }
-    };
-
-    modifyWebpackBar('Client');
-
     if (type === BundlerConfigType.ssr) {
       config.entryPoints.clear();
       config.entry(CHUNK_NAME).add(serverEntryPath);
@@ -236,8 +223,6 @@ export default (api: IApi) => {
           'process.env.__IS_SERVER': true,
         },
       ]);
-
-      modifyWebpackBar('Server');
 
       config.externals([]);
     } else {
