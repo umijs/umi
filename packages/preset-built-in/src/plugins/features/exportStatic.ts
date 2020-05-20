@@ -22,7 +22,8 @@ export default (api: IApi) => {
         });
       },
     },
-    enableBy: api.EnableBy.config,
+    // TODO: api.EnableBy.config 读取的 userConfig，modifyDefaultConfig hook 修改后对这个判断不起效
+    enableBy: () => api.config?.exportStatic,
   });
 
   api.modifyConfig((memo) => {
