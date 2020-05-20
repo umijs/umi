@@ -22,7 +22,7 @@ export default (api: IApi) => {
         });
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy: () => api.config?.exportStatic,
   });
 
   api.modifyConfig((memo) => {
