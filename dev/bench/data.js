@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589962266440,
+  "lastUpdate": 1589981458175,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3860,6 +3860,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.18%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "89de4957d734f96b987a3b9f30fae06f59e0fb0c",
+          "message": "chore: ssr progress and doc (#4720)\n\n* chore: ssr doc\r\n\r\n* fix: progress not found\r\n\r\n* chore: progress in bundler-webpack\r\n\r\n* docs: ssr",
+          "timestamp": "2020-05-20T21:28:28+08:00",
+          "tree_id": "0912a9cf02bd78771bccd0ca03ae55968b08c14d",
+          "url": "https://github.com/umijs/umi/commit/89de4957d734f96b987a3b9f30fae06f59e0fb0c"
+        },
+        "date": 1589981455321,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1390,
+            "range": "±2.06%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2168,
+            "range": "±3.63%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
