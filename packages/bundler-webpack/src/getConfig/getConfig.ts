@@ -334,7 +334,13 @@ export default async function getConfig(
 
   // progress
   if (!isWebpack5 && process.env.PROGRESS !== 'none') {
-    webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+    webpackConfig
+      .plugin('progress')
+      .use(require.resolve('webpackbar'), [
+        config.ssr
+          ? { name: type === BundlerConfigType.ssr ? 'Server' : 'Client' }
+          : {},
+      ]);
   }
 
   // copy
