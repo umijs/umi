@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590047150786,
+  "lastUpdate": 1590068349020,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3974,6 +3974,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.94%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "1344492820@qq.com",
+            "name": "zoomdong",
+            "username": "fireairforce"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b4e26d9c16fc8c1a05d18206e9226cc8a7702a57",
+          "message": "fix: uninitialized spell error (#4729)",
+          "timestamp": "2020-05-21T21:36:48+08:00",
+          "tree_id": "ce45e852fe51a6d8658672746d5761e85a2725dc",
+          "url": "https://github.com/umijs/umi/commit/b4e26d9c16fc8c1a05d18206e9226cc8a7702a57"
+        },
+        "date": 1590068345296,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1508,
+            "range": "±2.12%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2246,
+            "range": "±4.75%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
