@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1589981458175,
+  "lastUpdate": 1590045669705,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -3898,6 +3898,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.63%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2d133a78ddb872a33e88f160b73838e227ffa7ff",
+          "message": "fix: ssr runtime plugins modify not exec (#4730)\n\n* fix: ssr runtime plugins modify not exec\r\n\r\n* chore: client modifyGetInitialPropsCtx\r\n\r\n* chore: code format\r\n\r\n* chore: notReturn test case\r\n\r\n* chore: comment\r\n\r\n* fix: not resolve promise",
+          "timestamp": "2020-05-21T15:18:26+08:00",
+          "tree_id": "98ad58e0ceee09ed3351d5c2fca54311f88b098d",
+          "url": "https://github.com/umijs/umi/commit/2d133a78ddb872a33e88f160b73838e227ffa7ff"
+        },
+        "date": 1590045666595,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1296,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1922,
+            "range": "±4.10%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
