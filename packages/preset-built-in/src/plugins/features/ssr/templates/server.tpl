@@ -94,6 +94,7 @@ const render: IRender = async (params) => {
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);
     rootContainer = pageHTML;
     if (html) {
+      // plugin for modify html template
       html = await plugin.applyPlugins({
         key: 'ssr.modifyServerHTML',
         type: ApplyPluginsType.modify,
@@ -107,7 +108,6 @@ const render: IRender = async (params) => {
         },
         async: true,
       });
-      // plugin for modify html template
       html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest });
     }
   } catch (e) {
