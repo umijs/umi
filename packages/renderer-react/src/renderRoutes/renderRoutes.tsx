@@ -41,23 +41,23 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
             // for test case, really use .default
             Component = preloadComponent.default || preloadComponent;
           }
-          const ctx = {
+          const defaultCtx = {
             isServer: false,
             match: props?.match,
             ...(opts.getInitialPropsCtx || {}),
             ...restRouteParams,
           };
           if (Component?.getInitialProps) {
-            const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
-              key: 'ssr',
+            const ctx = await opts.plugin.applyPlugins({
+              key: 'ssr.modifyGetInitialPropsCtx',
               type: ApplyPluginsType.modify,
-              initialValue: {},
+              initialValue: defaultCtx,
+              async: true,
             });
-            if (typeof modifyGetInitialPropsCtx === 'function') {
-              modifyGetInitialPropsCtx(ctx);
-            }
 
-            const initialProps = await Component!.getInitialProps!(ctx);
+            const initialProps = await Component!.getInitialProps!(
+              ctx || defaultCtx,
+            );
             setInitialProps(initialProps);
           }
         })();

@@ -205,6 +205,7 @@ export default Home;
 export const ssr = {
   modifyGetInitialPropsCtx: async (ctx) => {
     ctx.title = 'params';
+    return ctx;
   }
 }
 ```

@@ -131,23 +131,19 @@ interface IRenderServer extends ILoadGetInitialPropsValue {
 export default async function renderServer(
   opts: IOpts,
 ): Promise<IRenderServer> {
-  const ctx: IContext = {
+  const defaultCtx = {
     isServer: true,
     // server only
     history: opts.history,
     ...(opts.getInitialPropsCtx || {}),
   };
   // modify ctx
-  const { modifyGetInitialPropsCtx } = opts.plugin.applyPlugins({
-    key: 'ssr',
+  const ctx = await opts.plugin.applyPlugins({
+    key: 'ssr.modifyGetInitialPropsCtx',
     type: ApplyPluginsType.modify,
-    initialValue: {},
-  });
-  // modify ctx
-  if (typeof modifyGetInitialPropsCtx === 'function') {
-    await modifyGetInitialPropsCtx(ctx);
-  }
-  // await App.props.children.props.children.props.children.type.getInitialProps(ctx);
+    initialValue: defaultCtx,
+    async: true,
+  }) || defaultCtx;
   // get pageInitialProps
   const { pageInitialProps, routesMatched } = await loadPageGetInitialProps({
     ctx,

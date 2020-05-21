@@ -343,25 +343,55 @@ test('renderServer plugin modifyGetInitialPropsCtx', async () => {
       ssr: {
         modifyGetInitialPropsCtx: async (ctx) => {
           ctx.title = 'Hello SSR';
+          return ctx;
         }
       },
     },
     path: '/foo',
   });
-  const Foo = (props) => <h1>{props.title}</h1>;
+
+  plugin.register({
+    apply: {
+      ssr: {
+        modifyGetInitialPropsCtx: async (ctx) => {
+          ctx.desc = 'Hello Desc';
+          return ctx;
+        }
+      },
+    },
+    path: '/bar',
+  });
+
+  plugin.register({
+    apply: {
+      ssr: {
+        modifyGetInitialPropsCtx: async (ctx) => {
+          // not return
+          ctx.notReturn = 'Hello notReturn';
+        }
+      },
+    },
+    path: '/bar',
+  });
+
+  const Foo = (props) => {
+    return <h1>{props.title}，{props.desc}</h1>
+  };
   Foo.getInitialProps = async (ctx) => {
     return {
       title: ctx.title,
+      desc: ctx.desc,
     }
   }
   const serverResult = await renderServer({
     path: '/foo',
     plugin,
+    staticMarkup: true,
     routes: [
       { path: '/foo', component: Foo },
     ],
   });
   expect(serverResult.pageHTML).toEqual(
-    '<div data-reactroot=""><h1>Hello SSR</h1></div>',
+    '<div><h1>Hello SSR，Hello Desc</h1></div>',
   );
 });

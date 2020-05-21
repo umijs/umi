@@ -130,6 +130,41 @@ test('ssr', async () => {
   rimraf.sync(join(cwd, '.umi-test'));
 });
 
+test('ssr modifyServerHTML', async () => {
+  const cwd = join(fixtures, 'ssr-modifyServerHTML');
+  const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
+  const tmpExportFile = join(cwd, '.umi-test', 'core', 'umiExports.ts');
+
+  delete require.cache[tmpServerFile];
+
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+  });
+  await service.run({
+    name: 'g',
+    args: {
+      _: ['g', 'tmp'],
+    },
+  });
+  expect(existsSync(tmpServerFile)).toBeTruthy();
+  const { isBrowser } = require(tmpExportFile);
+  expect(isBrowser()).toEqual(true);
+
+  const render = require(tmpServerFile).default;
+  const { rootContainer, html } = await render({
+    path: '/',
+    mountElementId: 'root',
+  });
+  const expectRootContainer =
+    '<div><ul><li>hello</li><li>world</li></ul></div>';
+  expect(rootContainer).toEqual(expectRootContainer);
+  expect(html).toMatch('<script>alert(123);</script>');
+  const $ = cheerio.load(html);
+  expect($('#root').html()).toEqual(expectRootContainer);
+  rimraf.sync(join(cwd, '.umi-test'));
+});
+
 test('ssr getInitialPropsCtx', async () => {
   const cwd = join(fixtures, 'ssr-getInitialPropsCtx');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
