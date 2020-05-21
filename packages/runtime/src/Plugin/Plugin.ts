@@ -52,10 +52,10 @@ export default class Plugin {
 
   getHooks(keyWithDot: string) {
     const [key, ...memberKeys] = keyWithDot.split('.');
-    let hooks = this.hooks[key];
+    let hooks = this.hooks[key] || [];
     if (memberKeys.length) {
       hooks = hooks
-        ?.map((hook: any) => {
+        .map((hook: any) => {
           try {
             let ret = hook;
             for (const memberKey of memberKeys) {
