@@ -55,7 +55,7 @@ export default class Plugin {
     let hooks = this.hooks[key];
     if (memberKeys.length) {
       hooks = hooks
-        .map((hook: any) => {
+        ?.map((hook: any) => {
           try {
             let ret = hook;
             for (const memberKey of memberKeys) {

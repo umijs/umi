@@ -39,12 +39,6 @@ export interface IRender<T = string> {
   (params: IParams): Promise<IRenderResult<T>>;
 }
 
-const { modifyServerHTML } = plugin.applyPlugins({
-  key: 'ssr',
-  type: ApplyPluginsType.modify,
-  initialValue: {},
-});
-
 /**
  * server render function
  * @param params
@@ -100,8 +94,20 @@ const render: IRender = async (params) => {
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);
     rootContainer = pageHTML;
     if (html) {
+      html = await plugin.applyPlugins({
+        key: 'ssr.modifyServerHTML',
+        type: ApplyPluginsType.modify,
+        initialValue: html,
+        args: {
+          context,
+          cheerio,
+          routesMatched,
+          dynamicImport,
+          manifest
+        },
+        async: true,
+      });
       // plugin for modify html template
-      html = typeof modifyServerHTML === 'function' ? await modifyServerHTML(html, { context, cheerio, routesMatched, dynamicImport, manifest }) : html;
       html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest });
     }
   } catch (e) {
