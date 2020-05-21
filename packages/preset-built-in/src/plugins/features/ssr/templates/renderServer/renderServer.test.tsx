@@ -361,6 +361,19 @@ test('renderServer plugin modifyGetInitialPropsCtx', async () => {
     },
     path: '/bar',
   });
+
+  plugin.register({
+    apply: {
+      ssr: {
+        modifyGetInitialPropsCtx: async (ctx) => {
+          // not return
+          ctx.notReturn = 'Hello notReturn';
+        }
+      },
+    },
+    path: '/bar',
+  });
+
   const Foo = (props) => {
     return <h1>{props.title}，{props.desc}</h1>
   };
