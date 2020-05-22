@@ -18,7 +18,11 @@ translateHelp: true
 在 umi 代码中加上 `debugger`，然后执行以下命令
 
 ```sh
-yarn debug examples/normal dev
+# 调试 umi dev
+$ yarn debug examples/normal dev
+
+# 调试 umi build
+$ yarn debug examples/normal build
 ```
 
 ![image](https://user-images.githubusercontent.com/13595509/82630300-e56b6d80-9c24-11ea-9966-5e9f38889518.png)
