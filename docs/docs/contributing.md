@@ -17,7 +17,7 @@ translateHelp: true
 
 在 umi 代码中加上 `debugger`，然后执行以下命令（确保先执行过 `yarn build -w` 将源码编译）
 
-```sh
+```bash
 # 调试 umi dev
 $ yarn debug examples/normal dev
 
