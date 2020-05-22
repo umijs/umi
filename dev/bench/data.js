@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590130230322,
+  "lastUpdate": 1590137395045,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4088,6 +4088,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.50%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chenjsh36@outlook.com",
+            "name": "chenjsh",
+            "username": "chenjsh36"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "54ff1d530cdd341e401b1b1257de1da66ca3e3a2",
+          "message": "Update plugin-request.md",
+          "timestamp": "2020-05-22T16:47:16+08:00",
+          "tree_id": "c24c70552e1f834c20258a4bf68d4eacf8826e08",
+          "url": "https://github.com/umijs/umi/commit/54ff1d530cdd341e401b1b1257de1da66ca3e3a2"
+        },
+        "date": 1590137391820,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1212,
+            "range": "±2.32%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1821,
+            "range": "±2.85%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
