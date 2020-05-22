@@ -15,7 +15,7 @@ translateHelp: true
 
 ## 如何调试 Umi 代码
 
-在 umi 代码中加上 `debugger`，然后执行以下命令
+在 umi 代码中加上 `debugger`，然后执行以下命令（确保先执行过 `yarn build -w` 将源码编译）
 
 ```sh
 # 调试 umi dev
