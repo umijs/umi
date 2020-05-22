@@ -112,9 +112,9 @@ umi-request 提供[中间件机制](https://github.com/umijs/umi-request#middlew
 export const request = {
   middlewares: [
     async function middlewareA(ctx, next) {
-      console.log('A before');
-      await next();
-      console.log('A after');
+      console.log('A before'); // 在这里做请求前的增强处理，如通用参数的添加
+      await next(); // 等待内置中间件和请求的完成
+      console.log('A after'); // 在这里做请求后的统一解析、增强处理
     },
     async function middlewareB(ctx, next) {
       console.log('B before');
