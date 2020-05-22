@@ -13,6 +13,18 @@ translateHelp: true
 
 参考 Umi Plugins 的 [CONTRIBUTING 文档](https://github.com/umijs/plugins/blob/master/CONTRIBUTING.md)。
 
+## 如何调试 Umi 代码
+
+在 umi 代码中加上 `debugger`，然后执行以下命令
+
+```sh
+yarn debug examples/normal dev
+```
+
+![image](https://user-images.githubusercontent.com/13595509/82630300-e56b6d80-9c24-11ea-9966-5e9f38889518.png)
+
+**注意**：提交代码前记得将 `debugger` 删除。
+
 ## 贡献文档
 
 Umi 使用 Umi 本身 + dumi 插件作为文档工具，
