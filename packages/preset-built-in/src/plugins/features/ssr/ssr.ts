@@ -117,15 +117,18 @@ export default (api: IApi) => {
     const { route } = opts;
     // remove server bundle entry in html
     // for dynamicImport
-    if (api.config.dynamicImport && api.env !== 'development' && opts.chunks) {
+    if (api.config.dynamicImport && api.env === 'production' && opts.chunks) {
       // different pages using correct chunks, not load all chunks
       const chunkArr: string[] = [];
       const chunkName = routeToChunkName({ route, cwd: api.cwd });
       opts.chunks.forEach((chunk) => {
-        if (chunk.name.includes(chunkName)) {
+        if (chunkName && chunk.name.includes(chunkName)) {
           chunkArr.push(chunk.name);
         }
       });
+      console.log('chunkArr', chunkArr);
+      console.log('route', route);
+      console.log('2332', _.uniq([...memo, ...chunkArr]));
       return _.uniq([...memo, ...chunkArr]);
     }
     return memo;
