@@ -35,7 +35,7 @@ export default (api: IApi) => {
       },
     },
     // 配置开启
-    enableBy: api.EnableBy.config,
+    enableBy: () => api.config?.ssr,
   });
 
   api.onStart(() => {
