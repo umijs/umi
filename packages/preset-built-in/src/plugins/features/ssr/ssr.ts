@@ -35,7 +35,9 @@ export default (api: IApi) => {
       },
     },
     // 配置开启
-    enableBy: () => api.userConfig?.ssr || api.config?.ssr,
+    enableBy: () =>
+      // TODO: api.EnableBy.config 读取的 userConfig，modifyDefaultConfig hook 修改后对这个判断不起效
+      'ssr' in api.userConfig ? api.userConfig.ssr : api.config?.ssr,
   });
 
   api.onStart(() => {
