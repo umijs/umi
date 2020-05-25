@@ -62,8 +62,8 @@ export default (api: IApi) => {
     const { exportStatic } = api.config;
     // for dynamic routes
     // TODO: test case
-    if (typeof exportStatic?.extraRoutePaths === 'function') {
-      const extraRoutePaths = await exportStatic?.extraRoutePaths();
+    if (exportStatic && typeof exportStatic.extraRoutePaths === 'function') {
+      const extraRoutePaths = await exportStatic.extraRoutePaths();
       extraRoutePaths?.forEach((path) => {
         const match = routeMap.find(({ route }: { route: IRoute }) => {
           return route.path && pathToRegexp(route.path).exec(path);
