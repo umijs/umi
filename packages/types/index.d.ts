@@ -273,7 +273,6 @@ interface BaseIConfig extends IConfigCore {
     (
       memo: WebpackChain,
       args: {
-        type: IBundlerConfigType;
         webpack: typeof webpack;
         env: env;
         createCSSRule: ICreateCSSRule;
