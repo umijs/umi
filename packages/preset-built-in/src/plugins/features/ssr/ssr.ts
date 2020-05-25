@@ -128,9 +128,6 @@ export default (api: IApi) => {
           chunkArr.push(chunk.name);
         }
       });
-      console.log('chunkArr', chunkArr);
-      console.log('route', route);
-      console.log('2332', _.uniq([...memo, ...chunkArr]));
       return _.uniq([...memo, ...chunkArr]);
     }
     return memo;
