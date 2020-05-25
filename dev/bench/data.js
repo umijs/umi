@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590390821693,
+  "lastUpdate": 1590393799579,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4200,6 +4200,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1945,
             "range": "±3.76%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "fex@0000o.net",
+            "name": "ouyangxin",
+            "username": "taixw2"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "153a3c78b653f6b93f9e70985f08c499e40637d4",
+          "message": "feat(ast): support static property (#4640)\n\n* feat(ast): support static property\r\n\r\n* refactor(ast): 删除无用的导出",
+          "timestamp": "2020-05-25T16:00:57+08:00",
+          "tree_id": "c3f052e5a58d68703ef8ac8f65f4e51d0e5de612",
+          "url": "https://github.com/umijs/umi/commit/153a3c78b653f6b93f9e70985f08c499e40637d4"
+        },
+        "date": 1590393796600,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1511,
+            "range": "±2.75%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2290,
+            "range": "±3.73%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
