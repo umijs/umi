@@ -58,11 +58,11 @@ export default function (api: IApi) {
     fn({
       path,
       content,
-      skipTSCheck = true,
+      skipTsCheck = true,
     }: {
       path: string;
       content: string;
-      skipTSCheck?: boolean;
+      skipTsCheck?: boolean;
     }) {
       assert(
         api.stage >= api.ServiceStage.pluginReady,
@@ -71,7 +71,7 @@ export default function (api: IApi) {
       const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
-        if (isTSFile(path) && skipTSCheck) {
+        if (isTSFile(path) && skipTsCheck) {
           // write @ts-nocheck into first line
           content = `// @ts-nocheck${EOL}${content}`;
         }

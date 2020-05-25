@@ -110,7 +110,7 @@ export interface IApi extends PluginAPI {
   stage: typeof Service.prototype.stage;
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: {
-    (args: { path: string; content: string; skipTSCheck?: boolean }): void;
+    (args: { path: string; content: string; skipTsCheck?: boolean }): void;
   };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
   babelRegister: typeof Service.prototype.babelRegister;
