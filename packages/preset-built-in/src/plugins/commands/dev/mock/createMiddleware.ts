@@ -1,5 +1,5 @@
 import { chokidar, signale, createDebug } from '@umijs/utils';
-import { RequestHandler } from '@umijs/types';
+import { RequestHandler, Request, Response, NextFunction } from '@umijs/types';
 import { cleanRequireCache, IGetMockDataResult, matchMock } from './utils';
 
 const debug = createDebug('umi:preset-build-in:mock:createMiddleware');
@@ -41,7 +41,7 @@ export default function (opts = {} as IMockOpts): ICreateMiddleware {
   });
 
   return {
-    middleware: (req, res, next) => {
+    middleware: (req: Request, res: Response, next: NextFunction) => {
       const match = data && matchMock(req, data);
       if (match) {
         debug(`mock matched: [${match.method}] ${match.path}`);

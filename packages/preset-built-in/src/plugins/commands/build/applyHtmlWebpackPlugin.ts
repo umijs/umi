@@ -10,7 +10,7 @@ export default function (api: IApi) {
     return new Promise((resolve) => {
       const interval = setInterval(() => {
         if (
-          existsSync(join(api.paths!.absOutputPath, OUTPUT_SERVER_FILENAME))
+          existsSync(join(api.paths.absOutputPath!, OUTPUT_SERVER_FILENAME))
         ) {
           clearInterval(interval);
           resolve();
