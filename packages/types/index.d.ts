@@ -87,6 +87,11 @@ type IPresetOrPlugin = string | [string, any];
 type IBabelPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
 
+type IRouteMap = Array<{ route: Pick<IRoute, 'path'>; file: string }>;
+interface IHtmlUtils extends Html {
+  getRouteMap: () => Promise<IRouteMap>;
+}
+
 export interface IApi extends PluginAPI {
   // properties
   paths: typeof Service.prototype.paths;
@@ -104,7 +109,9 @@ export interface IApi extends PluginAPI {
   EnableBy: typeof Service.prototype.EnableBy;
   stage: typeof Service.prototype.stage;
   ServiceStage: typeof Service.prototype.ServiceStage;
-  writeTmpFile: { (args: { path: string; content: string }): void };
+  writeTmpFile: {
+    (args: { path: string; content: string; skipTSCheck?: boolean }): void;
+  };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
   babelRegister: typeof Service.prototype.babelRegister;
   getRoutes: () => Promise<IRoute[]>;
@@ -194,10 +201,7 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyDevHTMLContent: IModify<string | Stream, { req: Request }>;
-  modifyExportRouteMap: IModify<
-    { route: Pick<IRoute, 'path'>; file: string }[],
-    { html: InstanceType<Html> }
-  >;
+  modifyExportRouteMap: IModify<IRouteMap, { html: IHtmlUtils }>;
   modifyProdHTMLContent: IModify<string, { route: IRoute; file: string }>;
   chainWebpack: IModify<
     WebpackChain,

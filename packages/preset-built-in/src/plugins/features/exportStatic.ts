@@ -62,8 +62,8 @@ export default (api: IApi) => {
     const { exportStatic } = api.config;
     // for dynamic routes
     // TODO: test case
-    if (typeof exportStatic?.extraRoutePaths === 'function') {
-      const extraRoutePaths = await exportStatic?.extraRoutePaths();
+    if (exportStatic && typeof exportStatic.extraRoutePaths === 'function') {
+      const extraRoutePaths = await exportStatic.extraRoutePaths();
       extraRoutePaths?.forEach((path) => {
         const match = routeMap.find(({ route }: { route: IRoute }) => {
           return route.path && pathToRegexp(route.path).exec(path);
@@ -86,7 +86,7 @@ export default (api: IApi) => {
   api.modifyProdHTMLContent(async (memo, args) => {
     const { route } = args;
     const serverFilePath = join(
-      api.paths!.absOutputPath,
+      api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
     );
     const { ssr } = api.config;
@@ -94,7 +94,7 @@ export default (api: IApi) => {
       ssr &&
       api.env === 'production' &&
       existsSync(serverFilePath) &&
-      !isDynamicRoute(route!.path)
+      !isDynamicRoute(route.path!)
     ) {
       try {
         // do server-side render
@@ -123,7 +123,7 @@ export default (api: IApi) => {
     if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
       // remove umi.server.js
       const serverFilePath = join(
-        api.paths!.absOutputPath,
+        api.paths.absOutputPath!,
         OUTPUT_SERVER_FILENAME,
       );
       if (existsSync(serverFilePath)) {

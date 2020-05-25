@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 import { winPath } from '@umijs/utils';
-import { getGlobalFile, isDynamicRoute } from './utils';
+import { getGlobalFile, isDynamicRoute, isTSFile } from './utils';
 
 test('getGlobalFile', () => {
   const existsSyncMock = jest
@@ -24,4 +24,14 @@ test('isDynamicRoute', () => {
   expect(isDynamicRoute('/a/b/:c/d/:id')).toBeTruthy();
   expect(isDynamicRoute(':id')).toBeTruthy();
   expect(isDynamicRoute(undefined)).toBeFalsy();
+});
+
+test('isTSFile', () => {
+  expect(isTSFile('/bar/foo/a.js')).toEqual(false);
+  expect(isTSFile('/bar/foo/a')).toEqual(false);
+  expect(isTSFile('/bar/foo/a.ts')).toEqual(true);
+  expect(isTSFile('/bar/foo/a.tsx')).toEqual(true);
+  expect(isTSFile('/bar/foo/a.d.ts')).toEqual(false);
+  expect(isTSFile(undefined)).toEqual(false);
+  expect(isTSFile('/bar/foo.ts/a.js')).toEqual(false);
 });

@@ -13,8 +13,9 @@ module.exports = (api) => {
 
   api.onTestFoo(() => {
     api.writeTmpFile({
-      path: 'foo',
+      path: 'foo.ts',
       content: 'foo',
+      skipTSCheck: false,
     });
   });
 };

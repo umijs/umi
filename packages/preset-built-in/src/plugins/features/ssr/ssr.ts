@@ -154,7 +154,7 @@ export default (api: IApi) => {
     // umi dev to enable server side render by default
     const { stream, devServerRender = true } = api.config?.ssr || {};
     const serverPath = path.join(
-      api.paths!.absOutputPath,
+      api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
     );
     // if dev clear cache
@@ -195,7 +195,7 @@ export default (api: IApi) => {
   api.chainWebpack(async (config, opts) => {
     const { paths } = api;
     const { type } = opts;
-    const serverEntryPath = path.join(paths!.absTmpPath, 'core/server.ts');
+    const serverEntryPath = path.join(paths.absTmpPath!, 'core/server.ts');
 
     if (type === BundlerConfigType.ssr) {
       config.entryPoints.clear();

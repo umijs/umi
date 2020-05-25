@@ -1,6 +1,7 @@
 import { Service } from '@umijs/core';
 import { Stream } from 'stream';
 import { join } from 'path';
+import { EOL } from 'os';
 import cheerio from 'cheerio';
 import { render, cleanup } from '@testing-library/react';
 import { rimraf } from '@umijs/utils';
@@ -37,6 +38,38 @@ test('api.writeTmpFile', async () => {
     args: {},
   });
   const tmpFile = join(cwd, '.umi-test', 'foo');
+  expect(readFileSync(tmpFile, 'utf-8')).toEqual('foo');
+  rimraf.sync(tmpFile);
+});
+
+test('api.writeTmpFile with ts-nocheck', async () => {
+  const cwd = join(fixtures, 'api-writeTmpFile-ts');
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  await service.run({
+    name: 'foo',
+    args: {},
+  });
+  const tmpFile = join(cwd, '.umi-test', 'foo.ts');
+  expect(readFileSync(tmpFile, 'utf-8')).toEqual(`// @ts-nocheck${EOL}foo`);
+  rimraf.sync(tmpFile);
+});
+
+test('api.writeTmpFile without ts-nocheck', async () => {
+  const cwd = join(fixtures, 'api-writeTmpFile-ts-check');
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('./index.ts')],
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  await service.run({
+    name: 'foo',
+    args: {},
+  });
+  const tmpFile = join(cwd, '.umi-test', 'foo.ts');
   expect(readFileSync(tmpFile, 'utf-8')).toEqual('foo');
   rimraf.sync(tmpFile);
 });
