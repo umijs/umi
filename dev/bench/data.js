@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590395568237,
+  "lastUpdate": 1590397841436,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4278,6 +4278,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.18%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b7abdc32b7c734f36fe999d43e1e3640b30ffd4c",
+          "message": "fix: ssr load all chunks when enable dynamicImport (#4751)\n\n* fix: ssr load all chunks when enable dynamicImport\r\n\r\n* fix: userConfig ssr\r\n\r\n* chore: enable ssr and exportStatic\r\n\r\n* chore: console.log",
+          "timestamp": "2020-05-25T17:08:11+08:00",
+          "tree_id": "a3b7854a54a8be810769623930a1de5f0ef4ba44",
+          "url": "https://github.com/umijs/umi/commit/b7abdc32b7c734f36fe999d43e1e3640b30ffd4c"
+        },
+        "date": 1590397838284,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1435,
+            "range": "±2.91%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2219,
+            "range": "±4.99%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
