@@ -493,7 +493,7 @@ dev 退出时触发。
 
 - 只针对 dev 命令有效
 
-### writeTmpFile({ path: string, content: string })
+### writeTmpFile({ path: string, content: string, tsNoCheck: boolean })
 
 写临时文件。
 
@@ -501,6 +501,7 @@ dev 退出时触发。
 
 - `path`：相对于临时文件夹的路径
 - `content`：文件内容
+- `tsNoCheck`：默认为 `true`，`path` 为 ts 或 tsx 文件，不检查 TypeScript 类型错误，如果希望插件对用户项目进行 TypeScript 类型检查，可以设置为 `false`。
 
 注：
 
