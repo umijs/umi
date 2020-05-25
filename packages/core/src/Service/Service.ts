@@ -43,7 +43,7 @@ export default class Service extends EventEmitter {
   pkg: IPackage;
   skipPluginIds: Set<string> = new Set<string>();
   // lifecycle stage
-  stage: ServiceStage = ServiceStage.uninitiialized;
+  stage: ServiceStage = ServiceStage.uninitialized;
   // registered commands
   commands: {
     [name: string]: ICommand | string;

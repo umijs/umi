@@ -93,3 +93,33 @@ $ yarn update:deps
 # add doc
 $ yarn docs add docs/routing --title Routing
 ```
+
+## Examples
+
+Umi 3 examples in `examples/*` directory
+
+## Benchmarks
+
+if you want to add a benchmark, you can add `examples/*/benchmark.js` like this:
+
+```js
+// examples/ssr-normal/benchmark.js
+module.exports = (suite) => {
+  // add tests
+  suite
+    // your logic
+    .add('ssr#normal /', )
+    // your logic
+    .add('ssr#normal#stream /');
+};
+```
+
+and run `yarn benchmark` to see the result:
+
+```bash
+$ node scripts/benchmarks.js
+☐  pending   building .../examples/ssr-normal
+☒  complete  success build .../examples/ssr-normal
+ssr#normal / x 2,400 ops/sec ±2.08% (76 runs sampled)
+ssr#normal#stream / x 4,026 ops/sec ±1.45% (50 runs sampled)
+```

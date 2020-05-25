@@ -49,7 +49,7 @@ async function clientRender() {
   await renderClient({
     children: require('./router').default,
     rootElement: 'root',
-    initialProps: window.g_useSSR && window.g_initialData,
+    initialProps: window.g_useSSR && window.g_initialProps,
     routes,
     plugins,
   });

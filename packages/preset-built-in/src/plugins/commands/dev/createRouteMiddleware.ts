@@ -1,4 +1,5 @@
 import { IApi, NextFunction, Request, Response } from '@umijs/types';
+import { Stream } from 'stream';
 import { extname, join } from 'path';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { getHtmlGenerator } from '../htmlUtils';
@@ -24,12 +25,29 @@ export default ({
           route = matchedRoutes[matchedRoutes.length - 1].route;
         }
       }
-      const content = await html.getContent({
+      const defaultContent = await html.getContent({
         route,
         chunks: sharedMap.get('chunks'),
       });
+      const content = await api.applyPlugins({
+        key: 'modifyDevHTMLContent',
+        type: api.ApplyPluginsType.modify,
+        initialValue: defaultContent,
+        args: {
+          req,
+        },
+      });
       res.setHeader('Content-Type', 'text/html');
-      res.send(content);
+
+      // support stream content
+      if (content instanceof Stream) {
+        content.pipe(res);
+        content.on('end', function () {
+          res.end();
+        });
+      } else {
+        res.send(content);
+      }
     }
 
     if (req.path === '/favicon.ico') {

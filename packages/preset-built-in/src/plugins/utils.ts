@@ -17,3 +17,6 @@ export const getGlobalFile: IGetGlobalFile = ({ absSrcPath, files }) => {
     .filter((file) => existsSync(file))
     .slice(0, 1);
 };
+
+export const isDynamicRoute = (path: string): boolean =>
+  !!path?.split('/')?.some?.((snippet) => snippet.startsWith(':'));

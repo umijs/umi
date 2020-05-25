@@ -1,11 +1,10 @@
-import { IConfig } from '@umijs/types';
+import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
-  ConfigType,
   getBabelDepsOpts,
   getBabelOpts,
   getBabelPresetOpts,
@@ -25,7 +24,7 @@ import resolveDefine from './resolveDefine';
 export interface IOpts {
   cwd: string;
   config: IConfig;
-  type: ConfigType;
+  type: IBundlerConfigType;
   env: 'development' | 'production';
   entry?: {
     [key: string]: string;
@@ -285,6 +284,7 @@ export default async function getConfig(
 
   // css
   css({
+    type,
     config,
     webpackConfig,
     isDev,
@@ -334,7 +334,13 @@ export default async function getConfig(
 
   // progress
   if (!isWebpack5 && process.env.PROGRESS !== 'none') {
-    webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+    webpackConfig
+      .plugin('progress')
+      .use(require.resolve('webpackbar'), [
+        config.ssr
+          ? { name: type === BundlerConfigType.ssr ? 'Server' : 'Client' }
+          : {},
+      ]);
   }
 
   // copy
@@ -369,6 +375,20 @@ export default async function getConfig(
       ]);
   }
 
+  const enableManifest = () => {
+    // manifest
+    if (config.manifest && type === BundlerConfigType.csr) {
+      webpackConfig
+        .plugin('manifest')
+        .use(require.resolve('webpack-manifest-plugin'), [
+          {
+            fileName: 'asset-manifest.json',
+            ...config.manifest,
+          },
+        ]);
+    }
+  };
+
   webpackConfig.when(
     isDev,
     (webpackConfig) => {
@@ -376,6 +396,9 @@ export default async function getConfig(
         webpackConfig
           .plugin('hmr')
           .use(bundleImplementor.HotModuleReplacementPlugin);
+      }
+      if (config.ssr && config.dynamicImport) {
+        enableManifest();
       }
     },
     (webpackConfig) => {
@@ -395,16 +418,7 @@ export default async function getConfig(
       }
 
       // manifest
-      if (config.manifest && !config.ssr) {
-        webpackConfig
-          .plugin('manifest')
-          .use(require.resolve('webpack-manifest-plugin'), [
-            {
-              fileName: 'asset-manifest.json',
-              ...config.manifest,
-            },
-          ]);
-      }
+      enableManifest();
 
       // compress
       if (disableCompress) {
@@ -419,7 +433,7 @@ export default async function getConfig(
                 config.terserOptions || {},
               ),
               sourceMap: config.devtool !== false,
-              cache: true,
+              cache: process.env.TERSER_CACHE !== 'none',
               parallel: true,
               extractComments: false,
             },
@@ -433,6 +447,7 @@ export default async function getConfig(
       webpackConfig,
       config,
       isDev,
+      type,
       browserslist,
       miniCSSExtractPluginLoaderPath,
       ...opts,
@@ -441,6 +456,7 @@ export default async function getConfig(
 
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
+      type,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
     });
@@ -456,7 +472,7 @@ export default async function getConfig(
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
   // speed-measure-webpack-plugin
-  if (process.env.SPEED_MEASURE && type === ConfigType.csr) {
+  if (process.env.SPEED_MEASURE && type === BundlerConfigType.csr) {
     const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
     const smpOption =
       process.env.SPEED_MEASURE === 'CONSOLE'

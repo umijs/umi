@@ -1,4 +1,11 @@
-import { IApi } from '@umijs/types';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { IApi, IRoute } from '@umijs/types';
+import { deepmerge, rimraf } from '@umijs/utils';
+import pathToRegexp from 'path-to-regexp';
+
+import { isDynamicRoute } from '../utils';
+import { OUTPUT_SERVER_FILENAME } from '../features/ssr/constants';
 
 export default (api: IApi) => {
   api.describe({
@@ -8,9 +15,15 @@ export default (api: IApi) => {
         return joi.object({
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
+          // 不能通过直接 patch 路由的方式，拿不到 match.[id]，是一个 render paths 的概念
+          extraRoutePaths: joi
+            .function()
+            .description('extra render paths only enable in ssr'),
         });
       },
     },
+    // TODO: api.EnableBy.config 读取的 userConfig，modifyDefaultConfig hook 修改后对这个判断不起效
+    enableBy: () => api.config?.exportStatic,
   });
 
   api.modifyConfig((memo) => {
@@ -28,8 +41,6 @@ export default (api: IApi) => {
   });
 
   api.onPatchRoutes(({ routes }) => {
-    if (!api.config.exportStatic) return;
-
     // copy / to /index.html
     let rootIndex = null;
     routes.forEach((route, index) => {
@@ -42,6 +53,82 @@ export default (api: IApi) => {
         ...routes[rootIndex],
         path: '/index.html',
       });
+    }
+  });
+
+  // modify export html using routes
+  api.modifyExportRouteMap(async (defaultRouteMap, { html }) => {
+    const routeMap = (await html.getRouteMap()) || defaultRouteMap;
+    const { exportStatic } = api.config;
+    // for dynamic routes
+    // TODO: test case
+    if (typeof exportStatic?.extraRoutePaths === 'function') {
+      const extraRoutePaths = await exportStatic?.extraRoutePaths();
+      extraRoutePaths?.forEach((path) => {
+        const match = routeMap.find(({ route }: { route: IRoute }) => {
+          return route.path && pathToRegexp(route.path).exec(path);
+        });
+        if (match) {
+          const newPath = deepmerge(match, {
+            route: {
+              path,
+            },
+            file: html.getHtmlPath(path),
+          });
+          routeMap.push(newPath);
+        }
+      });
+    }
+    return routeMap;
+  });
+
+  // 不使用 api.modifyHTML 原因是不需要转 cheerio，提高预渲染效率
+  api.modifyProdHTMLContent(async (memo, args) => {
+    const { route } = args;
+    const serverFilePath = join(
+      api.paths!.absOutputPath,
+      OUTPUT_SERVER_FILENAME,
+    );
+    const { ssr } = api.config;
+    if (
+      ssr &&
+      api.env === 'production' &&
+      existsSync(serverFilePath) &&
+      !isDynamicRoute(route!.path)
+    ) {
+      try {
+        // do server-side render
+        const render = require(serverFilePath);
+        const { html, error } = await render({
+          path: route.path,
+          htmlTemplate: memo,
+          // prevent default manifest assets generation
+          manifest: {},
+        });
+        api.logger.info(`${route.path} render success`);
+        if (!error) {
+          return html;
+        } else {
+          api.logger.error('[SSR]', error);
+        }
+      } catch (e) {
+        api.logger.error(`${route.path} render failed`, e);
+        throw e;
+      }
+    }
+    return memo;
+  });
+
+  api.onBuildComplete(({ err }) => {
+    if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
+      // remove umi.server.js
+      const serverFilePath = join(
+        api.paths!.absOutputPath,
+        OUTPUT_SERVER_FILENAME,
+      );
+      if (existsSync(serverFilePath)) {
+        rimraf.sync(serverFilePath);
+      }
     }
   });
 

@@ -4,6 +4,7 @@ export default (api: IApi) => {
   api.describe({
     key: 'devServer',
     config: {
+      default: {},
       schema(joi) {
         return joi
           .object({
@@ -12,6 +13,7 @@ export default (api: IApi) => {
             https: joi.alternatives(joi.object(), joi.boolean()),
             http2: joi.boolean(),
             headers: joi.object(),
+            writeToDisk: joi.alternatives(joi.boolean(), joi.function()),
           })
           .description('devServer configs')
           .unknown(true);

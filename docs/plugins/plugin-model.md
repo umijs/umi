@@ -1,37 +1,75 @@
----
-translateHelp: true
----
 
 # @umijs/plugin-model
 
+A simple state management solution based on `hooks` (can be replacement of `dva` in some cases).
 
-简易数据流，通常用于中台项目的全局共享数据。
+We've already know that custom `hooks` is designed for sharing stateful logics between components(states are fully isolated). So what if we need a way to share both logic and state just like `dva`, `mobx` provided? `@umijs/plugin-model` is what you are seeking for.
 
-## 启用方式
+## how to enable
 
-`src/models` 目录下有 hooks model 时启用。
+While hooks model file exists in`src/models`.
 
-## 介绍
+## introduction
 
-我们约定在 `src/models` 目录下的文件为项目定义的 model 文件。每个文件需要默认导出一个 function，该 function 定义了一个 Hook，不符合规范的文件我们会过滤掉。
+There is convention here, we scan hooks model files only in `src/models`. And only valid custom hooks module will be registered.
 
-文件名则对应最终 model 的 name，你可以通过插件提供的 API 来消费 model 中的数据。
+hooks model file name will be the `namespace` you are going to learn in [API/useModel](#usemodel) section.
 
-## 配置
+No black magic, hooks model file is just normal custom hooks module. See below example:
 
-该插件无配置项。
+**src/models/useAuthModel.js**
+
+```js
+import { useState, useCallback } from 'react'
+
+export default function useAuthModel() {
+  const [user, setUser] = useState(null)
+
+  const signin = useCallback((account, password) => {
+    // signin implementation
+    // setUser(user from signin API)
+  }, [])
+
+  const signout = useCallback(() => {
+    // signout implementation
+    // setUser(null)
+  }, [])
+
+  return {
+    user,
+    signin,
+    signout
+  }
+}
+```
+
+> `@umijs/plugin-model` will make states defined in hooks models as shared states automatically.
+
+
+### use model in components
+
+See [API/useModel](#usemodel)
+
+## configuration
+
+No configuration.
 
 ## API
 
 ### useModel
 
-`useModel` 是一个 Hook，提供消费 Model 的能力，使用示例如下：
+`useModel` is a custom hooks that provide developer the ability to consume hooks model：
 
 ```js
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, fetchUser } = useModel('user');
+  const { user, fetchUser } = useModel('user', model => ({ user: model.user, fetchUser: model.fetchUser }));
   return <>hello</>
 };
 ```
+
+`useModel` has two arguments, `namespace` and `updater`.
+
+- `namespace` - file name of hooks model, for example, `useAuthModel` in above section.
+- `updater` - optional. We will need it only if rerender on demand is required(performance related).

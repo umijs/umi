@@ -1,4 +1,4 @@
-import { IApi, IRoute, webpack } from '@umijs/types';
+import { IApi, IRoute, webpack, IBundlerConfigType } from '@umijs/types';
 import { extname, join } from 'path';
 import { existsSync } from 'fs';
 import { lodash } from '@umijs/utils';
@@ -120,6 +120,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         initialValue: api.config.chunks || ['umi'],
         args: {
           route: args.route,
+          chunks: args.chunks,
         },
       });
       const { cssFiles, jsFiles, headJSFiles } = chunksToFiles({

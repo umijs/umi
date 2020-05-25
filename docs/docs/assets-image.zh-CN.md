@@ -16,6 +16,29 @@ export default () => <img src={require('./foo.png')} />
 export default () => <img src={require('@/foo.png')} />
 ```
 
+## JS 里使用svg
+
+**组件式引入**
+
+```js
+import { ReactComponent as Logo } from './logo.svg'
+
+function Analysis() {
+  return <Logo width={90} height={120} />
+}
+```
+
+**url式引入**
+
+```js
+import logoSrc from './logo.svg'
+
+function Analysis() {
+  return <img src={logoSrc} alt="logo" />
+}
+```
+
+
 ## CSS 里使用图片
 
 通过相对路径引用。

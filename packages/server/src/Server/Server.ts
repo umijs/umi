@@ -14,7 +14,7 @@ import {
   RequestHandler as ProxyRequestHandler,
   Filter as ProxyFilter,
 } from 'http-proxy-middleware';
-import http from 'http';
+import * as http from 'http';
 import { ServerOptions } from 'spdy';
 import * as url from 'url';
 import https from 'https';
@@ -71,6 +71,7 @@ export interface IServerOpts {
   };
   onConnection?: (param: { connection: Connection; server: Server }) => void;
   onConnectionClose?: (param: { connection: Connection }) => void;
+  writeToDisk?: boolean | ((filePath: string) => boolean);
 }
 
 const defaultOpts: Required<PartialProps<IServerOpts>> = {
@@ -88,6 +89,7 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   // not use
   host: 'localhost',
   port: 8000,
+  writeToDisk: false,
 };
 
 class Server {
@@ -266,7 +268,9 @@ class Server {
       }
     }
 
-    const getProxyMiddleware = (proxyConfig: IServerProxyConfigItem) => {
+    const getProxyMiddleware = (
+      proxyConfig: IServerProxyConfigItem,
+    ): ProxyRequestHandler | undefined => {
       const context = proxyConfig.context || proxyConfig.path;
 
       // It is possible to use the `bypass` method without a `target`.
@@ -274,7 +278,7 @@ class Server {
       if (proxyConfig.target) {
         return createProxyMiddleware(context!, {
           ...proxyConfig,
-          onProxyRes(proxyRes: any, req, res) {
+          onProxyRes(proxyRes, req: any, res) {
             const target =
               typeof proxyConfig.target === 'object'
                 ? url.format(proxyConfig.target)
@@ -352,7 +356,7 @@ class Server {
           req.url = bypassUrl;
           next();
         } else if (proxyMiddleware) {
-          return proxyMiddleware(req, res, next);
+          return (proxyMiddleware as any)(req, res, next);
         } else {
           next();
         }

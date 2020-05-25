@@ -1,6 +1,12 @@
 import React from 'react';
-import { MemoryRouter, Plugin } from '@umijs/runtime';
-import { getByText, render, screen, wait } from '@testing-library/react';
+import { MemoryRouter, Plugin, Link } from '@umijs/runtime';
+import {
+  getByText,
+  render,
+  screen,
+  wait,
+  waitFor,
+} from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '..';
 
@@ -8,7 +14,24 @@ function TestInitialProps({ foo }: { foo: string }) {
   return <h1 data-testid="test">{foo}</h1>;
 }
 
-TestInitialProps.getInitialProps = async () => {
+let mountCount = 0;
+function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
+  React.useEffect(() => {
+    return () => {
+      mountCount++;
+    };
+  }, []);
+  return (
+    <div>
+      <h1 data-testid="test2">{foo}</h1>
+      <a href="#bar">link-bar</a>
+      <Link to="/get-initial-props">change-route</Link>
+      <h2 id="bar">h2-bar</h2>
+    </div>
+  );
+}
+
+const getInitialProps = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -17,6 +40,9 @@ TestInitialProps.getInitialProps = async () => {
     }, 100);
   });
 };
+
+TestInitialProps.getInitialProps = getInitialProps;
+TestInitialPropsWithoutUnmount.getInitialProps = getInitialProps;
 
 function TestInitialPropsParent({
   foo,
@@ -42,8 +68,7 @@ TestInitialPropsParent.getInitialProps = async () => {
     }, 100);
   });
 };
-
-const routes = renderRoutes({
+const routerConfig = {
   routes: [
     {
       path: '/layout',
@@ -91,6 +116,10 @@ const routes = renderRoutes({
     { path: '/redirect', redirect: '/d' },
     { path: '/d', component: () => <h1 data-testid="test">Redirect</h1> },
     { path: '/get-initial-props', component: TestInitialProps as any },
+    {
+      path: '/get-initial-props-without-unmount',
+      component: TestInitialPropsWithoutUnmount as any,
+    },
     {
       path: '/get-initial-props-embed',
       component: TestInitialPropsParent as any,
@@ -145,7 +174,8 @@ const routes = renderRoutes({
     { component: () => <h1 data-testid="test">Fallback</h1> },
   ],
   plugin: new Plugin(),
-});
+};
+let routes = renderRoutes(routerConfig);
 
 test('/layout', async () => {
   render(<MemoryRouter initialEntries={['/layout']}>{routes}</MemoryRouter>);
@@ -221,19 +251,42 @@ test('/pass-props', async () => {
 });
 
 test('/get-initial-props', async () => {
+  const newRoutes = renderRoutes(routerConfig);
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props']}>
-      {routes}
+      {newRoutes}
     </MemoryRouter>,
   );
-  await wait(() => getByText(container, 'bar'));
+  await waitFor(() => getByText(container, 'bar'));
+  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
+});
+
+test('/get-initial-props-without-unmount', async () => {
+  const newRoutes = renderRoutes(routerConfig);
+  const { container } = render(
+    <MemoryRouter initialEntries={['/get-initial-props-without-unmount']}>
+      {newRoutes}
+    </MemoryRouter>,
+  );
+  await waitFor(() => getByText(container, 'bar'));
+  expect((await screen.findByTestId('test2')).innerHTML).toEqual('bar');
+  expect(mountCount).toEqual(0);
+  // hash change
+  getByText(container, 'link-bar').click();
+  expect(mountCount).toEqual(0);
+
+  // change route
+  getByText(container, 'change-route').click();
+  expect(mountCount).toEqual(1);
+  await waitFor(() => getByText(container, 'bar'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
 });
 
 test('/get-initial-props-embed', async () => {
+  const newRoutes = renderRoutes(routerConfig);
   const { container } = render(
     <MemoryRouter initialEntries={['/get-initial-props-embed']}>
-      {routes}
+      {newRoutes}
     </MemoryRouter>,
   );
   await wait(() => getByText(container, 'bar'));
