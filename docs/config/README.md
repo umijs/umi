@@ -114,12 +114,35 @@ export default {
 }
 ```
 
+SSR 时，修改服务端构建配置
+
+```js
+import { BundlerConfigType } from 'umi';
+
+export default {
+  chainWebpack(memo, { type }) {
+    // 对 ssr bundler config 的修改
+    if (type === BundlerConfigType.ssr) {
+      // 服务端渲染构建扩展
+    }
+
+    // 对 csr bundler config 的修改
+    if (type === BundlerConfigType.csr) {
+      // 客户端渲染构建扩展
+    }
+
+    // ssr 和 csr 都扩展
+  }
+}
+```
+
 参数有，
 
 * memo，当前 webpack-chain对象
 * env，当前环境，`development`、`production` 或 `test` 等
 * webpack，webpack 实例，用于获取其内部插件
 * createCSSRule，用于扩展其他 CSS 实现，比如 sass, stylus
+* type，当前 webpack 实例类型，默认走 csr，如果开启 ssr，会有 ssr 的 webpack 实例
 
 ## chunks
 
