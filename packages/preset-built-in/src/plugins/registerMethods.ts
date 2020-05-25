@@ -1,5 +1,6 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
+import { EOL } from 'os';
 import { dirname, join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
@@ -53,7 +54,15 @@ export default function (api: IApi) {
 
   api.registerMethod({
     name: 'writeTmpFile',
-    fn({ path, content }: { path: string; content: string }) {
+    fn({
+      path,
+      content,
+      tsNoCheck = true,
+    }: {
+      path: string;
+      content: string;
+      tsNoCheck?: boolean;
+    }) {
       assert(
         api.stage >= api.ServiceStage.pluginReady,
         `api.writeTmpFile() should not execute in register stage.`,
@@ -61,6 +70,10 @@ export default function (api: IApi) {
       const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
+        if (/\.(ts|tsx)$/.test(path) && tsNoCheck) {
+          // write @ts-nocheck into first line
+          content = `// @ts-nocheck${EOL}${content}`;
+        }
         writeFileSync(absPath, content, 'utf-8');
       }
     },
