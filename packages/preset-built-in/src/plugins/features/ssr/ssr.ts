@@ -35,7 +35,9 @@ export default (api: IApi) => {
       },
     },
     // 配置开启
-    enableBy: () => api.config?.ssr,
+    enableBy: () =>
+      // TODO: api.EnableBy.config 读取的 userConfig，modifyDefaultConfig hook 修改后对这个判断不起效
+      'ssr' in api.userConfig ? api.userConfig.ssr : api.config?.ssr,
   });
 
   api.onStart(() => {
@@ -117,12 +119,12 @@ export default (api: IApi) => {
     const { route } = opts;
     // remove server bundle entry in html
     // for dynamicImport
-    if (api.config.dynamicImport && api.env !== 'development' && opts.chunks) {
+    if (api.config.dynamicImport && api.env === 'production' && opts.chunks) {
       // different pages using correct chunks, not load all chunks
       const chunkArr: string[] = [];
       const chunkName = routeToChunkName({ route, cwd: api.cwd });
       opts.chunks.forEach((chunk) => {
-        if (chunk.name.includes(chunkName)) {
+        if (chunkName && chunk.name.includes(chunkName)) {
           chunkArr.push(chunk.name);
         }
       });

@@ -83,6 +83,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
       chunks.forEach(chunk => {
         Object.keys(manifest || {}).forEach(manifestChunk => {
           if (manifestChunk !== 'umi.css'
+            && chunk
             && manifestChunk.includes(chunk)
             && /\.css$/.test(manifest[manifestChunk])
           ) {

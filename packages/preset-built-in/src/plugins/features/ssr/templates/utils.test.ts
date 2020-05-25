@@ -123,4 +123,15 @@ test('handleHTML dynamicImport', async () => {
   expect(withLayoutHTML).toContain("/public/vendors~p__index.chunk.css");
   expect(withLayoutHTML).toContain("/public/p__users.chunk.css");
 
+  const normalHTMl = await handleHTML({
+    ...opts,
+    routesMatched: [
+      { route: {
+        path: '/', _chunkName: ''
+      }},
+    ],
+  });
+  expect(normalHTMl).not.toContain("/public/p__index.chunk.css");
+  expect(normalHTMl).not.toContain("/public/vendors~p__index.chunk.css");
+  expect(normalHTMl).not.toContain("/public/p__users.chunk.css");
 })
