@@ -1,4 +1,3 @@
-
 module.exports = (api) => {
   api.registerCommand({
     name: 'foo',
@@ -16,7 +15,7 @@ module.exports = (api) => {
     api.writeTmpFile({
       path: 'foo.ts',
       content: 'foo',
-      tsNoCheck: false,
+      skipTSCheck: false,
     });
   });
 };

@@ -3,6 +3,7 @@ import assert from 'assert';
 import { EOL } from 'os';
 import { dirname, join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { isTSFile } from './utils';
 
 export default function (api: IApi) {
   [
@@ -57,11 +58,11 @@ export default function (api: IApi) {
     fn({
       path,
       content,
-      tsNoCheck = true,
+      skipTSCheck = true,
     }: {
       path: string;
       content: string;
-      tsNoCheck?: boolean;
+      skipTSCheck?: boolean;
     }) {
       assert(
         api.stage >= api.ServiceStage.pluginReady,
@@ -70,7 +71,7 @@ export default function (api: IApi) {
       const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
-        if (/\.(ts|tsx)$/.test(path) && tsNoCheck) {
+        if (isTSFile(path) && skipTSCheck) {
           // write @ts-nocheck into first line
           content = `// @ts-nocheck${EOL}${content}`;
         }
