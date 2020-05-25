@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590393799579,
+  "lastUpdate": 1590395568237,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4238,6 +4238,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2290,
             "range": "±3.73%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5f1813386b80e910634bcaaa2b4c2391bb9051b3",
+          "message": "chore: chainWebpack without type param (#4754)\n\n* chore: user config with chainWebpack not have type param\r\n\r\n* chore: type\r\n\r\n* docs: chainWebpack type",
+          "timestamp": "2020-05-25T16:30:17+08:00",
+          "tree_id": "63dcb78c6b94088794a1235392c9f3da41028ad8",
+          "url": "https://github.com/umijs/umi/commit/5f1813386b80e910634bcaaa2b4c2391bb9051b3"
+        },
+        "date": 1590395565019,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1391,
+            "range": "±2.68%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2176,
+            "range": "±4.18%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
