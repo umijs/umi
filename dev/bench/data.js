@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590499773762,
+  "lastUpdate": 1590499826799,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4354,6 +4354,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.60%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "626707841@qq.com",
+            "name": "Shen Ke",
+            "username": "rockhentai"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a3c859893c78968420162ee24bd0d10ae3117bce",
+          "message": "docs: add build script (#4766)\n\n* fix: add build script\r\n\r\n* Update examples/ssr-with-eggjs/README.md\r\n\r\nCo-authored-by: 信鑫-King <45808948@qq.com>\r\n\r\nCo-authored-by: 信鑫-King <45808948@qq.com>",
+          "timestamp": "2020-05-26T21:27:47+08:00",
+          "tree_id": "5c5e91b3e4657756f654296a15bee5d734a9a2ba",
+          "url": "https://github.com/umijs/umi/commit/a3c859893c78968420162ee24bd0d10ae3117bce"
+        },
+        "date": 1590499823670,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1232,
+            "range": "±2.15%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1925,
+            "range": "±4.13%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
