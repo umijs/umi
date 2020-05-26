@@ -15,3 +15,9 @@ Development
 $ npm run dev
 $ open http://localhost:7001/
 ```
+
+Build
+
+```sh
+$ npm run build
+```
