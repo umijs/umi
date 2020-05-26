@@ -165,7 +165,7 @@ export default (api: IApi) => {
         args: {},
       });
 
-      const server = new Server({
+      server = new Server({
         ...opts,
         compress: true,
         headers: {
