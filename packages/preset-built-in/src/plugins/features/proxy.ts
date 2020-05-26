@@ -5,10 +5,10 @@ export default (api: IApi) => {
     key: 'proxy',
     config: {
       onChange: () => {
-        const service = api.getServer();
-        if (service) {
+        const server = api.getServer();
+        if (server) {
           // refrest proxy service
-          service.setupProxy(api.config.proxy, true);
+          server.setupProxy(api.config.proxy, true);
         }
       },
       schema(joi) {
