@@ -18,6 +18,6 @@ $ open http://localhost:7001/
 
 Build
 
-```sh
+```bash
 $ npm run build
 ```
