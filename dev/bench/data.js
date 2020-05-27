@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590499826799,
+  "lastUpdate": 1590537869624,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4392,6 +4392,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.13%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "linyongkangm@foxmail.com",
+            "name": "linyongkang",
+            "username": "linyongkangm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "abd9d68dd04e1a63eafff3480fe29f42ccf7a0a3",
+          "message": "Update plugin-develop.zh-CN.md (#4767)\n\n文档修正",
+          "timestamp": "2020-05-27T08:01:54+08:00",
+          "tree_id": "8a3fe39053261084294b8be360ddcaa15426ec1c",
+          "url": "https://github.com/umijs/umi/commit/abd9d68dd04e1a63eafff3480fe29f42ccf7a0a3"
+        },
+        "date": 1590537866471,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1302,
+            "range": "±2.94%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2084,
+            "range": "±4.62%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
