@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590565472647,
+  "lastUpdate": 1590576776258,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4544,6 +4544,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.01%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "599c9807b3122ebcccf3bd61dde0143ba6411960",
+          "message": "feat: babel-plugin-import-to-await-require (#4774)",
+          "timestamp": "2020-05-27T18:50:22+08:00",
+          "tree_id": "b769f5e1ab9a923fb8861713bf68981b346f62c7",
+          "url": "https://github.com/umijs/umi/commit/599c9807b3122ebcccf3bd61dde0143ba6411960"
+        },
+        "date": 1590576773246,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1390,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2172,
+            "range": "±4.63%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
