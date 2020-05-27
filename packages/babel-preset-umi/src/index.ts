@@ -18,6 +18,7 @@ export interface IOpts {
   reactRemovePropTypes?: boolean;
   reactRequire?: boolean;
   dynamicImportNode?: boolean;
+  importToAwaitRequire?: object;
   autoCSSModules?: boolean;
   svgr?: object;
   import?: IImportPluginOpts[];
@@ -136,6 +137,10 @@ export default (context: any, opts: IOpts = {}) => {
             ];
           })
         : []),
+      opts.importToAwaitRequire && [
+        require.resolve('@umijs/babel-plugin-import-to-await-require'),
+        opts.importToAwaitRequire,
+      ],
       opts.lockCoreJS3 && [
         require.resolve('@umijs/babel-plugin-lock-core-js-3'),
         opts.lockCoreJS3,
