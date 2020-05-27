@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590537902238,
+  "lastUpdate": 1590555967189,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4468,6 +4468,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.08%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "afc163@gmail.com",
+            "name": "偏右",
+            "username": "afc163"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bd7d1ec42738dadd3d395c9bed0467f1fca796d3",
+          "message": "Update ssr.md (#4769)",
+          "timestamp": "2020-05-27T13:03:42+08:00",
+          "tree_id": "c012137951cc241b04945fbd197794d28128d4ba",
+          "url": "https://github.com/umijs/umi/commit/bd7d1ec42738dadd3d395c9bed0467f1fca796d3"
+        },
+        "date": 1590555964512,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1544,
+            "range": "±2.78%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2366,
+            "range": "±4.37%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
