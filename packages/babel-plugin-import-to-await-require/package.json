@@ -1,11 +1,12 @@
 {
-  "name": "@umijs/babel-plugin-auto-css-modules",
+  "name": "@umijs/babel-plugin-import-to-await-require",
   "version": "3.2.2",
-  "description": "@umijs/babel-plugin-auto-css-modules",
+  "description": "@umijs/babel-plugin-import-to-await-require",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -19,7 +20,7 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-auto-css-modules#readme",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-import-to-await-require#readme",
   "publishConfig": {
     "access": "public"
   },

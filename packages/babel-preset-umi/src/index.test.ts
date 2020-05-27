@@ -229,6 +229,19 @@ test('babel-plugin-auto-css-modules', () => {
   );
 });
 
+test('babel-plugin-import-to-await-require', () => {
+  const code = transformWithPreset(`import { Button } from 'antd';foo;`, {
+    env: {
+      targets: { ie: 10 },
+    },
+    importToAwaitRequire: {
+      libs: ['antd'],
+      remoteName: 'foo',
+    },
+  });
+  expect(code).toContain(`} = await import("foo/antd");`);
+});
+
 test('svgr', () => {
   const code = transformWithPreset(
     `import { ReactComponent } from './a.svg';`,

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import Loadable from './loadable';
 
 function waitFor(delay) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
 }
