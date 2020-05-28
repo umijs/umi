@@ -27,6 +27,61 @@ foo;
   );
 });
 
+test('namespace specifier', () => {
+  expect(
+    transformWithPlugin(`import * as a from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const a = await import("foo/antd");
+foo;
+    `.trim(),
+  );
+});
+
+test('namespace specifier with default specifier', () => {
+  expect(
+    transformWithPlugin(`import b, * as a from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const a = await import("foo/antd");
+const {
+  default: b
+} = a;
+foo;
+    `.trim(),
+  );
+});
+
+test('alias', () => {
+  expect(
+    transformWithPlugin(
+      `import a, { b, c as d } from '@bar/bigfish/antd'; foo;`,
+      {
+        libs: ['antd'],
+        remoteName: 'foo',
+        alias: {
+          '@bar/bigfish/antd': 'antd',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a,
+  b: b,
+  c: d
+} = await import("foo/antd");
+foo;
+    `.trim(),
+  );
+});
+
 test('invalid libs', () => {
   expect(
     transformWithPlugin(`import a, { b, c as d } from 'antdx'; foo;`, {
@@ -47,6 +102,28 @@ test('regex libs', () => {
       libs: [/antd\/es\/[^\/]+$/],
       remoteName: 'foo',
     }),
+  ).toEqual(
+    `
+const {
+  default: Button
+} = await import("foo/antd/es/button");
+foo;
+    `.trim(),
+  );
+});
+
+test('regex libs with alias', () => {
+  expect(
+    transformWithPlugin(
+      `import Button from '@bar/bigfish/antd/es/button'; foo;`,
+      {
+        libs: [/antd\/es\/[^\/]+$/, /@bar\/bigfish\/antd\/es\/[^\/]+$/],
+        remoteName: 'foo',
+        alias: {
+          '@bar/bigfish/antd': 'antd',
+        },
+      },
+    ),
   ).toEqual(
     `
 const {
