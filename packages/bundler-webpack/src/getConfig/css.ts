@@ -1,10 +1,11 @@
 import Config from 'webpack-chain';
-import { IConfig } from '@umijs/types';
+import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 // @ts-ignore
 import safePostCssParser from 'postcss-safe-parser';
 import { deepmerge } from '@umijs/utils';
 
 interface IOpts {
+  type: IBundlerConfigType;
   webpackConfig: Config;
   config: IConfig;
   isDev: boolean;
@@ -23,6 +24,7 @@ interface ICreateCSSRuleOpts extends IOpts {
 
 export function createCSSRule({
   webpackConfig,
+  type,
   config,
   lang,
   test,
@@ -51,16 +53,25 @@ export function createCSSRule({
           ),
         );
     } else {
+      if (type === BundlerConfigType.csr) {
+        rule
+          .use('extract-css-loader')
+          .loader(
+            miniCSSExtractPluginLoaderPath ||
+              require.resolve('mini-css-extract-plugin/dist/loader'),
+          )
+          .options({
+            publicPath: './',
+            hmr: isDev,
+          });
+      }
+    }
+
+    if (isDev && isCSSModules && config.cssModulesTypescriptLoader) {
       rule
-        .use('extract-css-loader')
-        .loader(
-          miniCSSExtractPluginLoaderPath ||
-            require.resolve('mini-css-extract-plugin/dist/loader'),
-        )
-        .options({
-          publicPath: './',
-          hmr: isDev,
-        });
+        .use('css-modules-typescript-loader')
+        .loader(require.resolve('css-modules-typescript-loader'))
+        .options(config.cssModulesTypescriptLoader);
     }
 
     rule
@@ -70,6 +81,8 @@ export function createCSSRule({
         deepmerge(
           {
             importLoaders: 1,
+            // https://webpack.js.org/loaders/css-loader/#onlylocals
+            ...(type === BundlerConfigType.ssr ? { onlyLocals: true } : {}),
             ...(isCSSModules
               ? {
                   modules: {
@@ -121,6 +134,7 @@ export function createCSSRule({
 }
 
 export default function ({
+  type,
   config,
   webpackConfig,
   isDev,
@@ -131,6 +145,7 @@ export default function ({
 }: IOpts) {
   // css
   createCSSRule({
+    type,
     webpackConfig,
     config,
     isDev,
@@ -143,6 +158,7 @@ export default function ({
   // less
   const theme = config.theme;
   createCSSRule({
+    type,
     webpackConfig,
     config,
     isDev,
@@ -163,18 +179,22 @@ export default function ({
   // extract css
   if (!config.styleLoader) {
     const hash = !isDev && config.hash ? '.[contenthash:8]' : '';
-    webpackConfig
-      .plugin('extract-css')
-      .use(
-        miniCSSExtractPluginPath || require.resolve('mini-css-extract-plugin'),
-        [
-          {
-            filename: `[name]${hash}.css`,
-            chunkFilename: `[name]${hash}.chunk.css`,
-            ignoreOrder: true,
-          },
-        ],
-      );
+    // only csr generator css files
+    if (type === BundlerConfigType.csr) {
+      webpackConfig
+        .plugin('extract-css')
+        .use(
+          miniCSSExtractPluginPath ||
+            require.resolve('mini-css-extract-plugin'),
+          [
+            {
+              filename: `[name]${hash}.css`,
+              chunkFilename: `[name]${hash}.chunk.css`,
+              ignoreOrder: true,
+            },
+          ],
+        );
+    }
   }
 
   if (!isDev && !disableCompress) {

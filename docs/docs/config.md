@@ -39,6 +39,8 @@ export default defineConfig({
 
 Create `.umirc.local.ts`, it will be deep merged with `.umirc.ts` while using `umi dev`.
 
+> Note: `.umirc.local.ts` is only available with `umi dev`. It won't work with `umi build` .
+
 For example:
 
 ```js

@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { IApi, IConfig } from '@umijs/types';
 import { Route } from '@umijs/core';
 import { winPath } from '@umijs/utils';
@@ -17,7 +17,9 @@ export default function (api: IApi) {
       path: 'core/routes.ts',
       content: Mustache.render(routesTpl, {
         routes: new Route().getJSON({ routes, config: api.config, cwd }),
-        runtimePath: winPath(require.resolve('@umijs/runtime')),
+        runtimePath: winPath(
+          dirname(require.resolve('@umijs/runtime/package.json')),
+        ),
         config: api.config,
       }),
     });

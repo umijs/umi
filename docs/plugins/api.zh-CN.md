@@ -349,6 +349,66 @@ api.modifyHTML(($, { routs }) => {
 
 TODO
 
+### modifyExportRouteMap <Badge>3.2+</Badge>
+
+修改导出路由对象 `routeMap`（路由与输出 HTML 的映射关系），触发时机在 HTML 文件生成之前，默认值为 `[{ route: { path: '/' }, file: 'index.html' }]`。
+
+参数：
+
+- `html`：HTML 工具类实例
+
+注：
+
+- 只在 `umi build` 时起效
+
+例如 `exportStatic` 插件根据路由生成对应 HTML：
+
+```js
+api.modifyExportRouteMap(async (defaultRouteMap, { html }) => {
+  return await html.getRouteMap();
+});
+```
+
+### modifyDevHTMLContent <Badge>3.2+</Badge>
+
+`umi dev` 时修改输出的 HTML 内容。
+
+参数：
+
+- `req`：Request 对象，可获取当前访问路径
+
+例如希望 `/404` 路由直接返回 `Not Found`：
+
+```js
+api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
+  if (req.path === '/404') {
+    return 'Not Found';
+  }
+  return defaultHtml;
+})
+```
+
+### modifyProdHTMLContent <Badge>3.2+</Badge>
+
+`umi build` 时修改输出的 HTML 内容。
+
+参数（相当于一个 `RouteMap` 对象）：
+
+- `route`：路由对象
+- `file`：输出 HTML 名称
+
+例如可以在生成 HTML 文件前，做预渲染：
+
+```js
+api.modifyProdHTMLContent(async (content, args) => {
+  const { route } = args;
+  const render = require('your-renderer');
+  return await render({
+    path: route.path,
+  })
+});
+```
+
 ### modifyPaths
 
 修改 paths 对象。
@@ -356,6 +416,10 @@ TODO
 参数：
 
 - `initialValue`: paths 对象
+
+### modifyRendererPath
+
+修改 renderer 路径，用于使用自定义的 renderer。
 
 ### modifyPublicPathStr
 
@@ -389,7 +453,7 @@ TODO
 
 修改路由数组。
 
-### onBuildCompelete({ err?, stats? })
+### onBuildComplete({ err?, stats? })
 
 构建完成时可以做的事。
 
@@ -429,7 +493,7 @@ dev 退出时触发。
 
 - 只针对 dev 命令有效
 
-### writeTmpFile({ path: string, content: string })
+### writeTmpFile({ path: string, content: string, skipTSCheck?: boolean })
 
 写临时文件。
 
@@ -437,6 +501,7 @@ dev 退出时触发。
 
 - `path`：相对于临时文件夹的路径
 - `content`：文件内容
+- `skipTSCheck`：默认为 `true`，`path` 为 ts 或 tsx 文件，不检查 TypeScript 类型错误，如果希望插件对用户项目进行 TypeScript 类型检查，可以设置为 `false`。
 
 注：
 

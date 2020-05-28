@@ -5,9 +5,13 @@ export default (api: IApi) => {
     key: 'dynamicImport',
     config: {
       schema(joi) {
-        return joi.object({
-          loading: joi.string(),
-        });
+        return joi
+          .object({
+            loading: joi
+              .string()
+              .description('loading the component before loaded'),
+          })
+          .description('Code splitting for performance optimization');
       },
     },
   });

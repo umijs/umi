@@ -6,7 +6,26 @@ export default function (api: IApi) {
     key: 'routes',
     config: {
       schema(joi) {
-        return joi.array().items(joi.object());
+        return joi.array().items(
+          joi
+            .object({
+              path: joi.string().description('Any valid URL path'),
+              component: joi
+                .alternatives(joi.string(), joi.function())
+                .description(
+                  'A React component to render only when the location matches.',
+                ),
+              wrappers: joi.array().items(joi.string()),
+              redirect: joi.string().description('navigate to a new location'),
+              exact: joi
+                .boolean()
+                .description(
+                  'When true, the active class/style will only be applied if the location is matched exactly.',
+                ),
+              routes: joi.array().items(joi.link('...')),
+            })
+            .unknown(),
+        );
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },

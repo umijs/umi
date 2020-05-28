@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 import { winPath, resolve } from '@umijs/utils';
 
 export default (api: IApi) => {
@@ -19,8 +19,6 @@ export default (api: IApi) => {
         // 替换成带 query 的 history
         // 由于用了 query-string，会额外引入 7.6K（压缩后，gzip 前），考虑换轻量的实现
         history: dirname(require.resolve('history-with-query/package.json')),
-        '@': paths.absSrcPath,
-        '@@': paths.absTmpPath,
       },
     },
   });
@@ -28,7 +26,9 @@ export default (api: IApi) => {
   function getUserLibDir({ library }: { library: string }) {
     if (
       (pkg.dependencies && pkg.dependencies[library]) ||
-      (pkg.devDependencies && pkg.devDependencies[library])
+      (pkg.devDependencies && pkg.devDependencies[library]) ||
+      // egg project using `clientDependencies` in ali tnpm
+      (pkg.clientDependencies && pkg.clientDependencies[library])
     ) {
       return winPath(
         dirname(
@@ -69,6 +69,11 @@ export default (api: IApi) => {
         getUserLibDir({ library: library.name }) || library.path,
       );
     });
+
+    // 选择在 chainWebpack 中进行以上 alias 的初始化，是为了支持用户使用 modifyPaths API 对 paths 进行改写
+    memo.resolve.alias.set('@', paths.absSrcPath as string);
+    memo.resolve.alias.set('@@', paths.absTmpPath as string);
+
     return memo;
   });
 };

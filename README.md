@@ -18,6 +18,7 @@ English | [简体中文](./README.zh-CN.md)
 * 🚀 **Self Development**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
 * 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
 * 🚄 **Future Ready**, Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
+* 🌈 **Support SSR**, Starts Server-Side Render friendly.
 
 ## Getting Started
 
@@ -28,7 +29,7 @@ Manually,
 $ mkdir myapp && cd myapp
 
 # Install dependency
-$ yarn add umi@next
+$ yarn add umi
 
 # Create page
 $ npx umi g page index --typescript --less
@@ -45,6 +46,7 @@ Or [Getting Started with Boilerplate](https://umijs.org/docs/getting-started).
 * [Newest Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28enhancement%29)
 * [Top Bugs 😱](https://github.com/umijs/umi/issues?q=is%3Aissue+is%3Aopen+label%3Atype%28bug%29+sort%3Areactions-%2B1-desc+) (Add your own votes using the 👍 reaction)
 * [Newest Bugs 🙀](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28bug%29)
+* [Benchmarks](https://umijs.github.io/umi/dev/bench/index.html)
 
 ## Contributors
 

@@ -11,7 +11,10 @@ export default function (api: IApi) {
     config: {
       schema(joi) {
         return joi.object().keys({
-          exclude: joi.array().items(joi.string()),
+          exclude: joi
+            .array()
+            .items(joi.string())
+            .description('exclude files not parse mock'),
         });
       },
     },

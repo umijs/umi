@@ -1,3 +1,4 @@
+import { BundlerConfigType } from '@umijs/types';
 import {
   BabelRegister,
   chalk,
@@ -7,7 +8,6 @@ import {
   rimraf,
   yParser,
 } from '@umijs/utils';
-import { ConfigType } from '@umijs/bundler-utils';
 import { basename, extname, join } from 'path';
 import { Server } from '@umijs/server';
 import assert from 'assert';
@@ -38,6 +38,16 @@ if (args.version && !command) {
 }
 
 (async () => {
+  const configPath = join(cwd, args.config || 'config.ts');
+  const babelRegister = new BabelRegister();
+  babelRegister.setOnlyMap({
+    key: 'config',
+    value: [configPath],
+  });
+  const config = existsSync(configPath)
+    ? compatESModuleRequire(require(configPath))
+    : {};
+
   let entry: string = args.entry;
   if (entry) {
     entry = join(cwd, entry);
@@ -58,16 +68,6 @@ if (args.version && !command) {
     entry = files[0]?.path!;
   }
 
-  const configPath = join(cwd, args.config || 'config.ts');
-  const babelRegister = new BabelRegister();
-  babelRegister.setOnlyMap({
-    key: 'config',
-    value: [configPath],
-  });
-  const config = existsSync(configPath)
-    ? compatESModuleRequire(require(configPath))
-    : {};
-
   const bundler = new Bundler({
     cwd,
     config,
@@ -75,9 +75,9 @@ if (args.version && !command) {
 
   const webpackConfig = await bundler.getConfig({
     env,
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
     hot: args.hot,
-    entry: {
+    entry: config.entry || {
       [basename(entry, extname(entry))]: entry,
     },
   });

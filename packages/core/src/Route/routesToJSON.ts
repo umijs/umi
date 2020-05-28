@@ -1,4 +1,4 @@
-import { lodash, winPath } from '@umijs/utils';
+import { lodash, routeToChunkName } from '@umijs/utils';
 import { IRoute } from './types';
 
 interface IOpts {
@@ -27,20 +27,14 @@ export default function ({ routes, config, cwd }: IOpts) {
 
   function patchRoute(route: IRoute) {
     if (route.component && !isFunctionComponent(route.component)) {
-      const webpackChunkName = route.component
-        .replace(new RegExp(`^${lastSlash(winPath(cwd || '/'))}`), '')
-        .replace(/^.(\/|\\)/, '')
-        .replace(/(\/|\\)/g, '__')
-        .replace(/\.jsx?$/, '')
-        .replace(/\.tsx?$/, '')
-        .replace(/^src__/, '')
-        // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
-        // ref: https://github.com/umijs/umi/issues/4155
-        .replace(/[\[\]]/g, '')
-        // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
-        .replace(/^.umi-production__/, 't__')
-        .replace(/^pages__/, 'p__')
-        .replace(/^page__/, 'p__');
+      const webpackChunkName = routeToChunkName({
+        route,
+        cwd,
+      });
+      // 解决 SSR 开启动态加载后，页面闪烁问题
+      if (config?.ssr && config?.dynamicImport) {
+        route._chunkName = webpackChunkName;
+      }
       route.component = [
         route.component,
         webpackChunkName,
@@ -64,7 +58,7 @@ export default function ({ routes, config, cwd }: IOpts) {
       case 'component':
         if (isFunctionComponent(value)) return value;
         if (config.dynamicImport) {
-          const [component, webpackChunkName, path] = value.split(SEPARATOR);
+          const [component, webpackChunkName] = value.split(SEPARATOR);
           let loading = '';
           if (config.dynamicImport.loading) {
             loading = `, loading: require('${config.dynamicImport.loading}').default`;

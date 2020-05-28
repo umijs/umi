@@ -14,6 +14,7 @@ translateHelp: true
 * [plugin-antd](./plugin-antd)，整合 antd UI 组件
 * [plugin-crossorigin](./plugin-crossorigin)，通常用于 JS 出错统计
 * [plugin-dva](./plugin-dva)，整合 dva
+* [plugin-helmet](./plugin-helmet)，整合 [react-helmet](https://github.com/nfl/react-helmet)，管理 HTML 文档标签（如标题、描述等）
 * [plugin-initial-state](./plugin-initial-state)，初始化数据管理
 * [plugin-layout](./plugin-layout)，配置启用 ant-design-pro 的布局
 * [plugin-locale](./plugin-locale)，国际化能力

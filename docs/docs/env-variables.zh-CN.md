@@ -64,6 +64,14 @@ $ ANALYZE=1 umi dev
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_SSR
+
+对服务端包大小的分析，默认关闭，具体见 [服务端渲染#包大小分析](/zh-CN/docs/ssr#包大小分析)。
+
+### BABEL_CACHE
+
+默认开启 Babel 编译缓存，值为 none 时禁用缓存。
+
 ### BABEL\_POLYFILL
 
 默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
@@ -120,6 +128,18 @@ $ PROGRESS=none umi dev
 $ SOCKET_SERVER=https://localhost:7001/ umi dev
 ```
 
+### SPEED_MEASURE
+
+分析 Webpack 编译时间，支持 `CONSOLE` 和 `JSON` 两种格式，默认是 `JSON`。
+
+```bash
+$ SPEED_MEASURE=CONSOLE umi dev
+```
+
+### TERSER_CACHE
+
+默认开启 Terser 压缩缓存，值为 none 时禁用缓存。
+
 ### UMI_ENV
 
 指定不同环境各自的配置文件，详见[配置#多环境多份配置](./config#多环境多份配置)。
@@ -143,3 +163,7 @@ WATCH_IGNORED=none umi dev
 # node_modules 下除 lodash 和 umi 监听，其他忽略
 WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
 ```
+
+### RM_SERVER_FILE
+
+预渲染下，默认会默认删除服务端渲染文件 `umi.server.js`，如果希望保留，使用 `RM_SERVER_FILE=none`。

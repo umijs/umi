@@ -1,7 +1,9 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
+import { EOL } from 'os';
 import { dirname, join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { isTSFile } from './utils';
 
 export default function (api: IApi) {
   [
@@ -14,6 +16,7 @@ export default function (api: IApi) {
     'onPatchRoutesBefore',
     'onDevCompileDone',
     'addBeforeMiddewares',
+    'addDevScripts',
     'addMiddewares',
     'addRuntimePlugin',
     'addRuntimePluginKey',
@@ -40,7 +43,11 @@ export default function (api: IApi) {
     'modifyBabelPresetOpts',
     'modifyBundleImplementor',
     'modifyHTMLChunks',
+    'modifyDevHTMLContent',
+    'modifyExportRouteMap',
+    'modifyProdHTMLContent',
     'modifyPublicPathStr',
+    'modifyRendererPath',
     'modifyRoutes',
   ].forEach((name) => {
     api.registerMethod({ name });
@@ -48,7 +55,15 @@ export default function (api: IApi) {
 
   api.registerMethod({
     name: 'writeTmpFile',
-    fn({ path, content }: { path: string; content: string }) {
+    fn({
+      path,
+      content,
+      skipTSCheck = true,
+    }: {
+      path: string;
+      content: string;
+      skipTSCheck?: boolean;
+    }) {
       assert(
         api.stage >= api.ServiceStage.pluginReady,
         `api.writeTmpFile() should not execute in register stage.`,
@@ -56,6 +71,10 @@ export default function (api: IApi) {
       const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
+        if (isTSFile(path) && skipTSCheck) {
+          // write @ts-nocheck into first line
+          content = `// @ts-nocheck${EOL}${content}`;
+        }
         writeFileSync(absPath, content, 'utf-8');
       }
     },

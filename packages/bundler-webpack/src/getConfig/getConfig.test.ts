@@ -1,4 +1,4 @@
-import { ConfigType } from '@umijs/bundler-utils';
+import { BundlerConfigType } from '@umijs/types';
 import { winPath } from '@umijs/utils';
 import getConfig from './getConfig';
 
@@ -7,7 +7,7 @@ test('normal', async () => {
     cwd: '/foo',
     config: {},
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.mode).toEqual('development');
   expect(config.devtool).toEqual('cheap-module-source-map');
@@ -30,7 +30,7 @@ test('opts.entry', async () => {
     cwd: '/foo',
     config: {},
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
     entry: {
       bar: 'bar.js',
     },
@@ -47,7 +47,7 @@ test('opts.entry + config.runtimePublicPath', async () => {
       runtimePublicPath: true,
     },
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
     entry: {
       bar: 'bar.js',
     },
@@ -63,16 +63,17 @@ test('opts.entry + opts.hot', async () => {
     cwd: '/foo',
     config: {},
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
     entry: {
       bar: 'bar.js',
     },
     hot: true,
   });
+  // webpackHotDevClient 不再有了
   // @ts-ignore
-  expect(config.entry!.bar[0]).toContain('webpackHotDevClient');
+  // expect(config.entry!.bar[0]).toContain('webpackHotDevClient');
   // @ts-ignore
-  expect(config.entry!.bar[1]).toEqual('bar.js');
+  expect(config.entry!.bar[0]).toEqual('bar.js');
 });
 
 test('config.devtool + development', async () => {
@@ -82,7 +83,7 @@ test('config.devtool + development', async () => {
       devtool: 'eval',
     },
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.devtool).toEqual('eval');
 });
@@ -92,7 +93,7 @@ test('no config.devtool + production', async () => {
     cwd: '/foo',
     config: {},
     env: 'production',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.devtool).toEqual(undefined);
 });
@@ -104,7 +105,7 @@ test('config.devtool + production', async () => {
       devtool: 'eval',
     },
     env: 'production',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.devtool).toEqual('eval');
 });
@@ -116,7 +117,7 @@ test('config.hash + production', async () => {
       hash: true,
     },
     env: 'production',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.output?.filename).toEqual('[name].[contenthash:8].js');
   expect(config.output?.chunkFilename).toEqual(
@@ -131,7 +132,7 @@ test('config.hash + production', async () => {
       hash: true,
     },
     env: 'production',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.output?.filename).toEqual('[name].[contenthash:8].js');
   expect(config.output?.chunkFilename).toEqual(
@@ -148,7 +149,7 @@ test('config.alias', async () => {
       },
     },
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.resolve?.alias).toEqual({
     bar: 'rab',
@@ -164,7 +165,7 @@ test('config.externals', async () => {
       },
     },
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.externals).toEqual({
     bar: 'window.Bar',
@@ -180,7 +181,7 @@ test('config.chainWebpack', async () => {
       },
     },
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.resolve?.alias).toEqual({
     foo: 'bar',
@@ -192,7 +193,7 @@ test('opts.chainWebpack', async () => {
     cwd: '/foo',
     config: {},
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
     chainWebpack(memo) {
       memo.resolve.alias.set('foo', 'bar');
       return memo;
@@ -210,7 +211,7 @@ test('config.manifest + production', async () => {
       manifest: {},
     },
     env: 'production',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(
     config.plugins?.filter((plugin) => {
@@ -225,7 +226,7 @@ test('env SPEED_MEASURE', async () => {
     cwd: '/foo',
     config: {},
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(
     config.plugins?.filter((plugin) => {
@@ -242,7 +243,7 @@ test('env SPEED_MEASURE = !CONSOLE', async () => {
     cwd: '/foo',
     config: {},
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   const p = config.plugins?.filter((plugin) => {
     return plugin instanceof require('speed-measure-webpack-plugin');
@@ -258,7 +259,7 @@ test('env COMPRESS = none + production', async () => {
     cwd: '/foo',
     config: {},
     env: 'production',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(config.optimization?.minimize).toEqual(false);
   delete process.env.COMPRESS;

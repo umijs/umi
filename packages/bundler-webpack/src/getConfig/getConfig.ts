@@ -1,25 +1,30 @@
-import { IConfig } from '@umijs/types';
+import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
-  ConfigType,
   getBabelDepsOpts,
   getBabelOpts,
   getBabelPresetOpts,
   getTargetsAndBrowsersList,
 } from '@umijs/bundler-utils';
+import { lodash } from '@umijs/utils';
 import css, { createCSSRule } from './css';
 import terserOptions from './terserOptions';
-import { objToStringified } from './utils';
-import shouldExclude from './shouldExclude';
+import {
+  TYPE_ALL_EXCLUDE,
+  isMatch,
+  excludeToPkgs,
+  es5ImcompatibleVersionsToPkg,
+} from './nodeModulesTransform';
+import resolveDefine from './resolveDefine';
 
 export interface IOpts {
   cwd: string;
   config: IConfig;
-  type: ConfigType;
+  type: IBundlerConfigType;
   env: 'development' | 'production';
   entry?: {
     [key: string]: string;
@@ -68,9 +73,10 @@ export default async function getConfig(
   if (entry) {
     Object.keys(entry).forEach((key) => {
       const e = webpackConfig.entry(key);
-      if (hot && isDev) {
-        e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
-      }
+      // 提供打包好的版本，不消耗 webpack 编译时间
+      // if (hot && isDev) {
+      //   e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
+      // }
       if (config.runtimePublicPath) {
         e.add(require.resolve('./runtimePublicPathEntry'));
       }
@@ -79,10 +85,14 @@ export default async function getConfig(
   }
 
   // devtool
+  const devtool = config.devtool as Config.DevTool;
   webpackConfig.devtool(
     isDev
-      ? (config.devtool as Config.DevTool) || 'cheap-module-source-map'
-      : (config.devtool as Config.DevTool),
+      ? // devtool 设为 false 时不 fallback 到 cheap-module-source-map
+        devtool === false
+        ? false
+        : devtool || 'cheap-module-source-map'
+      : devtool,
   );
 
   const useHash = config.hash && isProd;
@@ -92,7 +102,7 @@ export default async function getConfig(
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(config.publicPath!)
+    .publicPath((config.publicPath! as unknown) as string)
     // remove this after webpack@5
     // free memory of assets after emitting
     .futureEmitAssets(true)
@@ -177,28 +187,56 @@ export default async function getConfig(
         .options(babelOpts);
 
   // prettier-ignore
-  webpackConfig.module
+  const rule = webpackConfig.module
     .rule('js-in-node_modules')
-      .test(/\.(js|mjs)$/)
-      .include.add(/node_modules/).end()
-      // TODO: 处理 tnpm 下 @babel/runtime 路径变更问题
-      .exclude
-        .add((path) => {
-          return shouldExclude({ path });
-        })
+      .test(/\.(js|mjs)$/);
+
+  const nodeModulesTransform = config.nodeModulesTransform || {
+    type: 'all',
+    exclude: [],
+  };
+  if (nodeModulesTransform.type === 'all') {
+    const exclude = lodash.uniq([
+      ...TYPE_ALL_EXCLUDE,
+      ...(nodeModulesTransform.exclude || []),
+    ]);
+    const pkgs = excludeToPkgs({ exclude });
+    // prettier-ignore
+    rule
+      .include
+        .add(/node_modules/)
         .end()
-      .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
-        .options(getBabelDepsOpts({
-          cwd,
-          env,
-          config,
-        }));
+      .exclude.add((path) => {
+        return isMatch({ path, pkgs });
+      })
+        .end();
+  } else {
+    const pkgs = {
+      ...es5ImcompatibleVersionsToPkg(),
+      ...excludeToPkgs({ exclude: nodeModulesTransform.exclude || [] }),
+    };
+    rule.include
+      .add((path) => {
+        return isMatch({
+          path,
+          pkgs,
+        });
+      })
+      .end();
+  }
+
+  rule.use('babel-loader').loader(require.resolve('babel-loader')).options(
+    getBabelDepsOpts({
+      cwd,
+      env,
+      config,
+    }),
+  );
 
   // prettier-ignore
   webpackConfig.module
     .rule('images')
-    .test(/\.(png|jpe?g|gif|webp)(\?.*)?$/)
+    .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
     .use('url-loader')
       .loader(require.resolve('url-loader'))
       .options({
@@ -246,6 +284,7 @@ export default async function getConfig(
 
   // css
   css({
+    type,
     config,
     webpackConfig,
     isDev,
@@ -288,18 +327,20 @@ export default async function getConfig(
 
   // define
   webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
-    {
-      'process.env': objToStringified({
-        ...process.env,
-        NODE_ENV: env,
-      }),
-      ...objToStringified(config.define || {}),
-    },
+    resolveDefine({
+      define: config.define || {},
+    }),
   ] as any);
 
   // progress
   if (!isWebpack5 && process.env.PROGRESS !== 'none') {
-    webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+    webpackConfig
+      .plugin('progress')
+      .use(require.resolve('webpackbar'), [
+        config.ssr
+          ? { name: type === BundlerConfigType.ssr ? 'Server' : 'Client' }
+          : {},
+      ]);
   }
 
   // copy
@@ -334,6 +375,20 @@ export default async function getConfig(
       ]);
   }
 
+  const enableManifest = () => {
+    // manifest
+    if (config.manifest && type === BundlerConfigType.csr) {
+      webpackConfig
+        .plugin('manifest')
+        .use(require.resolve('webpack-manifest-plugin'), [
+          {
+            fileName: 'asset-manifest.json',
+            ...config.manifest,
+          },
+        ]);
+    }
+  };
+
   webpackConfig.when(
     isDev,
     (webpackConfig) => {
@@ -341,6 +396,9 @@ export default async function getConfig(
         webpackConfig
           .plugin('hmr')
           .use(bundleImplementor.HotModuleReplacementPlugin);
+      }
+      if (config.ssr && config.dynamicImport) {
+        enableManifest();
       }
     },
     (webpackConfig) => {
@@ -360,16 +418,7 @@ export default async function getConfig(
       }
 
       // manifest
-      if (config.manifest && !config.ssr) {
-        webpackConfig
-          .plugin('manifest')
-          .use(require.resolve('webpack-manifest-plugin'), [
-            {
-              fileName: 'asset-manifest.json',
-              ...config.manifest,
-            },
-          ]);
-      }
+      enableManifest();
 
       // compress
       if (disableCompress) {
@@ -384,7 +433,7 @@ export default async function getConfig(
                 config.terserOptions || {},
               ),
               sourceMap: config.devtool !== false,
-              cache: true,
+              cache: process.env.TERSER_CACHE !== 'none',
               parallel: true,
               extractComments: false,
             },
@@ -398,6 +447,7 @@ export default async function getConfig(
       webpackConfig,
       config,
       isDev,
+      type,
       browserslist,
       miniCSSExtractPluginLoaderPath,
       ...opts,
@@ -406,6 +456,7 @@ export default async function getConfig(
 
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
+      type,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
     });
@@ -413,6 +464,7 @@ export default async function getConfig(
   // 用户配置的 chainWebpack 优先级最高
   if (config.chainWebpack) {
     await config.chainWebpack(webpackConfig, {
+      type,
       env,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
@@ -421,7 +473,7 @@ export default async function getConfig(
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
   // speed-measure-webpack-plugin
-  if (process.env.SPEED_MEASURE && type === ConfigType.csr) {
+  if (process.env.SPEED_MEASURE && type === BundlerConfigType.csr) {
     const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
     const smpOption =
       process.env.SPEED_MEASURE === 'CONSOLE'

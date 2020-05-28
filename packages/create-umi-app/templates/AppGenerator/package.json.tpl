@@ -3,6 +3,7 @@
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
+    "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"

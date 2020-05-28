@@ -1,4 +1,4 @@
-import { IApi, RequestHandler, Request } from '@umijs/types';
+import { IApi, RequestHandler, Request, NextFunction } from '@umijs/types';
 import { winPath, createDebug, glob } from '@umijs/utils';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -129,7 +129,7 @@ function parseKey(key: string) {
 }
 
 function createHandler(method: any, path: any, handler: any): RequestHandler {
-  return function (req, res, next) {
+  return function (req: Request, res: Response, next: NextFunction) {
     if (BODY_PARSED_METHODS.includes(method)) {
       bodyParser.json({ limit: '5mb', strict: false })(req, res, () => {
         bodyParser.urlencoded({ limit: '5mb', extended: true })(
