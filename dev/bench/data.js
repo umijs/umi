@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590576776258,
+  "lastUpdate": 1590634889170,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4582,6 +4582,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.63%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b0716ac4f748a30febf11e63322eeff5d6ce0298",
+          "message": "fix: HMR dev bug (#4775)",
+          "timestamp": "2020-05-28T10:58:19+08:00",
+          "tree_id": "3339d1fcb04899166a4e9c3b1cf0d8052b869a4b",
+          "url": "https://github.com/umijs/umi/commit/b0716ac4f748a30febf11e63322eeff5d6ce0298"
+        },
+        "date": 1590634885877,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1224,
+            "range": "±2.47%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1802,
+            "range": "±4.69%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
