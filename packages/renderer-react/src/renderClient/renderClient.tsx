@@ -12,6 +12,7 @@ interface IRouterComponentProps {
   ssrProps?: object;
   defaultTitle?: string;
   dynamicImport?: boolean;
+  isServer?: boolean;
 }
 
 interface IOpts extends IRouterComponentProps {
