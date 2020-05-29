@@ -1,3 +1,3 @@
-fixtures/**/* linguist-detectable=false
-examples/**/* linguist-detectable=false
-node_modules linguist-detectable=false
+fixtures/* linguist-vendored=true
+examples/* linguist-vendored=true
+node_modules linguist-vendored=true
