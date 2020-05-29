@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590742592126,
+  "lastUpdate": 1590742695416,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4848,6 +4848,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.70%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "daqidaqi@qq.com",
+            "name": "大齐",
+            "username": "daqi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "de625fc6de95ebff72529e14253f0a4f21e9886f",
+          "message": "docs: plugin-dva.md dva 运行时配置 (#4785)\n\n* docs: plugin-dva.md\r\n\r\n* docs: plugin-dva.zh-CN.md",
+          "timestamp": "2020-05-29T16:55:16+08:00",
+          "tree_id": "e375c56707de1078910c45ed066b9e12fee13f2e",
+          "url": "https://github.com/umijs/umi/commit/de625fc6de95ebff72529e14253f0a4f21e9886f"
+        },
+        "date": 1590742692450,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1319,
+            "range": "±2.58%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2209,
+            "range": "±3.79%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
