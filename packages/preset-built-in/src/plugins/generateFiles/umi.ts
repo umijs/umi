@@ -31,6 +31,7 @@ export default function (api: IApi) {
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
+        disableFastRefresh: process.env.FAST_REFRESH === 'none',
         // @ts-ignore
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',

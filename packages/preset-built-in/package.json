@@ -24,6 +24,8 @@
     "access": "public"
   },
   "dependencies": {
+    "@umijs/fast-refresh-utils": "3.2.3",
+    "react-refresh": "^0.8.2",
     "@hapi/joi": "16.1.8",
     "@types/merge-stream": "1.1.2",
     "@types/multer": "1.4.3",

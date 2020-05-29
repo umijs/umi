@@ -85,6 +85,10 @@ $ ANALYZE=1 umi build
 
 默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
 
+### FAST_REFRESH
+
+默认开启 React Refresh 模块热加载，设置为 `none` 禁用，降级为修改后应用重新渲染。
+
 ### FORK_TS_CHECKER
 
 默认不开启 TypeScript 类型检查，值为 `1` 时启用。比如：

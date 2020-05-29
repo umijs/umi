@@ -27,7 +27,9 @@ function handleSuccess() {
 
   if (isHotUpdate) {
     tryApplyUpdates(() => {
-      ErrorOverlay.dismissBuildError();
+      if (!hasCompileErrors) {
+        ErrorOverlay.dismissBuildError();
+      }
     });
   }
 }

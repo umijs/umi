@@ -1,0 +1,38 @@
+{
+  "name": "@umijs/fast-refresh-utils",
+  "version": "3.2.3",
+  "description": "@umijs/fast-refresh-utils",
+  "main": "index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "ycjcl868 <45808948@qq.com> (https://github.com/ycjcl868)"
+  ],
+  "dependencies": {
+    "ansi-html": "^0.0.7",
+    "error-stack-parser": "^2.0.6",
+    "html-entities": "^1.2.1",
+    "lodash.debounce": "^4.0.8",
+    "native-url": "^0.2.6"
+  },
+  "peerDependencies": {
+    "react-refresh": "^0.8.2",
+    "webpack": "^4.43.0"
+  },
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/fast-refresh-utils#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}

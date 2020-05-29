@@ -1,7 +1,13 @@
-import { IApi } from '@umijs/types';
+import { IApi, BundlerConfigType } from '@umijs/types';
+import { Mustache } from '@umijs/utils';
 import { readFileSync } from 'fs';
+import { join } from 'path';
 
 export default (api: IApi) => {
+  const isDev = api.env === 'development';
+  // enable by default
+  const FAST_REFRESH = process.env.FAST_REFRESH !== 'none';
+
   api.describe({
     key: 'devScripts',
     config: {
@@ -10,7 +16,7 @@ export default (api: IApi) => {
       },
     },
     enableBy() {
-      return api.env === 'development';
+      return isDev;
     },
   });
 
@@ -42,6 +48,33 @@ export default (api: IApi) => {
     };
   });
 
+  api.chainWebpack((config, { type }) => {
+    if (type === BundlerConfigType.csr && isDev && FAST_REFRESH) {
+      const { FastRefreshWebpackPlugin } = require('@umijs/fast-refresh-utils');
+      config.plugin('fast-refresh-plugin').use(FastRefreshWebpackPlugin, [
+        {
+          type: 'react',
+          overlay: false,
+          useLegacyWDSSockets: true,
+        },
+      ]);
+    }
+    return config;
+  });
+
+  api.modifyBabelOpts((babelOpts) => {
+    if (isDev && FAST_REFRESH) {
+      // dev
+      babelOpts.plugins.push([
+        require.resolve('react-refresh/babel'),
+        {
+          skipEnvCheck: true,
+        },
+      ]);
+    }
+    return babelOpts;
+  });
+
   api.addHTMLHeadScripts(() => [
     {
       src: `${api.config.publicPath}@@/devScripts.js`,
@@ -49,60 +82,16 @@ export default (api: IApi) => {
   ]);
 
   api.onGenerateFiles(() => {
+    const devScriptsPath = join(__dirname, 'templates/devScripts.ts.tpl');
+    const devScriptsContent = readFileSync(devScriptsPath, 'utf-8');
     api.writeTmpFile({
       path: './core/devScripts.ts',
       content:
         process.env.HMR !== 'none'
-          ? `
-if (window.g_initWebpackHotDevClient) {
-  function tryApplyUpdates(onHotUpdateSuccess?: Function) {
-    // @ts-ignore
-    if (!module.hot) {
-      window.location.reload();
-      return;
-    }
-
-    function isUpdateAvailable() {
-      // @ts-ignore
-      return window.g_getMostRecentCompilationHash() !== __webpack_hash__;
-    }
-
-    // TODO: is update available?
-    // @ts-ignore
-    if (!isUpdateAvailable() || module.hot.status() !== 'idle') {
-      return;
-    }
-
-    function handleApplyUpdates(err: Error | null, updatedModules: any) {
-      if (err || !updatedModules || window.g_getHadRuntimeError()) {
-        window.location.reload();
-        return;
-      }
-
-      onHotUpdateSuccess?.();
-
-      if (isUpdateAvailable()) {
-        // While we were updating, there was a new update! Do it again.
-        tryApplyUpdates();
-      }
-    }
-
-    // @ts-ignore
-    module.hot.check(true).then(
-      function (updatedModules: any) {
-        handleApplyUpdates(null, updatedModules);
-      },
-      function (err: Error) {
-        handleApplyUpdates(err, null);
-      },
-    );
-  }
-
-  window.g_initWebpackHotDevClient({
-    tryApplyUpdates,
-  });
-}
-      `
+          ? Mustache.render(devScriptsContent, {
+              FAST_REFRESH,
+              RefreshRuntimePath: require.resolve('react-refresh/runtime'),
+            })
           : '',
     });
   });

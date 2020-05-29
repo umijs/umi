@@ -34,6 +34,7 @@ export default clientRender();
 
 {{{ entryCode }}}
 
+{{#disableFastRefresh}}
 // hot module replacement
 // @ts-ignore
 if (module.hot) {
@@ -42,3 +43,4 @@ if (module.hot) {
     getClientRender({ hot: true })();
   });
 }
+{{/disableFastRefresh}}
