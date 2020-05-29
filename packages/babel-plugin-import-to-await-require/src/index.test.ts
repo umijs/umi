@@ -155,3 +155,20 @@ foo;
     `.trim(),
   );
 });
+
+test('export', () => {
+  expect(
+    transformWithPlugin(`export { bar } from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const {
+  bar: bar
+} = await import("foo/antd");
+export { bar };
+foo;
+    `.trim(),
+  );
+});
