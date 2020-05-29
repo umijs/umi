@@ -20,6 +20,12 @@ export function specifiersToProperties(specifiers: any[]) {
         memo.properties.push(
           t.objectProperty(t.identifier('default'), s.local),
         );
+      } else if (t.isExportDefaultSpecifier(s)) {
+        memo.properties.push(
+          t.objectProperty(t.identifier('default'), s.exported),
+        );
+      } else if (t.isExportSpecifier(s)) {
+        memo.properties.push(t.objectProperty(s.local, s.exported));
       } else if (t.isImportNamespaceSpecifier(s)) {
         memo.namespaceIdentifier = s.local;
       } else {
@@ -60,6 +66,7 @@ export default function () {
           let index = path.node.body.length - 1;
           while (index >= 0) {
             const d = path.node.body[index];
+
             if (
               t.isImportDeclaration(d) &&
               isValidLib(d.source.value, opts.libs, opts.alias || {})
@@ -101,6 +108,36 @@ export default function () {
               }
               path.node.body.splice(index, 1);
             }
+
+            // export { bar } from 'foo';
+            if (
+              t.isExportNamedDeclaration(d) &&
+              d.source &&
+              isValidLib(d.source.value, opts.libs, opts.alias || {})
+            ) {
+              const {
+                properties,
+                namespaceIdentifier,
+              } = specifiersToProperties(d.specifiers);
+              const id = t.objectPattern(properties);
+              const init = t.awaitExpression(
+                t.callExpression(t.import(), [
+                  t.stringLiteral(
+                    `${opts.remoteName}/${getPath(
+                      d.source.value,
+                      opts.alias || {},
+                    )}`,
+                  ),
+                ]),
+              );
+              variableDeclarations.unshift(
+                t.variableDeclaration('const', [
+                  t.variableDeclarator(id, init),
+                ]),
+              );
+              d.source = null;
+            }
+
             index -= 1;
           }
           path.node.body = [...variableDeclarations, ...path.node.body];
