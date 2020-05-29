@@ -10,6 +10,7 @@ interface IOpts {
   extraProps?: object;
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
+  isServer?: boolean;
 }
 
 interface IGetRouteElementOpts {
@@ -88,7 +89,7 @@ function render({
   });
   let { component: Component, wrappers } = route;
   if (Component) {
-    const defaultPageInitialProps = process.env.__IS_SERVER
+    const defaultPageInitialProps = opts.isServer
       ? {}
       : (window as any).g_initialProps;
     const newProps = {
@@ -128,7 +129,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (
-      !process.env.__IS_SERVER &&
+      !opts.isServer &&
       // make sure loaded once
       !(route.component as any)?.wrapInitialPropsLoaded &&
       (route.component?.getInitialProps || route.component?.preload)
