@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590736923323,
+  "lastUpdate": 1590742592126,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4810,6 +4810,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.45%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a105560b4bca6b053961d947477b5c07502ea9b8",
+          "message": "feat: support hmr with async routes module (#4789)",
+          "timestamp": "2020-05-29T16:54:00+08:00",
+          "tree_id": "6cac90526d7190d35df67e7ac5faa47d5ae6d1cd",
+          "url": "https://github.com/umijs/umi/commit/a105560b4bca6b053961d947477b5c07502ea9b8"
+        },
+        "date": 1590742589014,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1328,
+            "range": "±2.45%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2092,
+            "range": "±4.70%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
