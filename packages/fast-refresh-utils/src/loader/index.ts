@@ -1,4 +1,4 @@
-const { Template } = require('webpack');
+import { Template } from 'webpack';
 const { refreshUtils } = require('../runtime/globals');
 
 const RefreshModuleRuntime = Template.getFunctionContent(
@@ -19,7 +19,7 @@ const RefreshModuleRuntime = Template.getFunctionContent(
  */
 function RefreshHotLoader(source, inputSourceMap) {
   // Use callback to allow source maps to pass through
-  this.callback(null, source + '\n\n' + RefreshModuleRuntime, inputSourceMap);
+  this.callback(null, `${source}\n\n${RefreshModuleRuntime}`, inputSourceMap);
 }
 
 module.exports = RefreshHotLoader;

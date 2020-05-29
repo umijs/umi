@@ -5,7 +5,7 @@ const {
   injectRefreshEntry,
   normalizeOptions,
 } = require('./helpers');
-const { errorOverlay, refreshUtils } = require('./runtime/globals');
+const { refreshUtils } = require('./runtime/globals');
 
 export default class ReactRefreshPlugin {
   /**
@@ -45,21 +45,9 @@ export default class ReactRefreshPlugin {
     );
 
     // Inject necessary modules to Webpack's global scope
-    let providedModules = {
+    const providePlugin = new webpack.ProvidePlugin({
       [refreshUtils]: require.resolve('./runtime/refreshUtils'),
-    };
-    console.log('this.option', this.options);
-    if (this.options.overlay === false) {
-      // Stub errorOverlay module so calls to it will be erased
-      const definePlugin = new webpack.DefinePlugin({ [errorOverlay]: false });
-      definePlugin.apply(compiler);
-    } else {
-      providedModules = {
-        ...providedModules,
-      };
-    }
-
-    const providePlugin = new webpack.ProvidePlugin(providedModules);
+    });
     providePlugin.apply(compiler);
 
     compiler.hooks.beforeRun.tap(this.constructor.name, (compiler) => {
