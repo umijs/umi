@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590804097193,
+  "lastUpdate": 1590804693864,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4924,6 +4924,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.54%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kid740246048@gmail.com",
+            "name": "GoodbyeNJN",
+            "username": "GoodbyeNJN"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c5641e74d711c3355bea849c989ff0cef232a131",
+          "message": "fix: added tsconfig.json in examples/srr-with-eggjs (#4792)",
+          "timestamp": "2020-05-30T10:08:52+08:00",
+          "tree_id": "053883921c1ab468d656d0907f611b04880d85ba",
+          "url": "https://github.com/umijs/umi/commit/c5641e74d711c3355bea849c989ff0cef232a131"
+        },
+        "date": 1590804690638,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1225,
+            "range": "±2.34%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1849,
+            "range": "±3.54%",
+            "unit": "ops/sec",
+            "extra": "47 samples"
           }
         ]
       }
