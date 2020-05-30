@@ -17,6 +17,8 @@
 </html>
 ```
 
+在umi3里配置title请查看 [配置标题](../config#title)。
+
 ## 配置模板
 
 模板里可通过 context 来获取到 umi 提供的变量，context 包含：
