@@ -34,7 +34,12 @@ export default function (api: IApi) {
         runtimePath: winPath(
           dirname(require.resolve('@umijs/runtime/package.json')),
         ),
-        plugins: plugins.map(winPath),
+        plugins: plugins.map((plugin: string, index: number) => {
+          return {
+            index,
+            path: winPath(plugin),
+          };
+        }),
       }),
     });
   });
