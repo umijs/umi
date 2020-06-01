@@ -17,7 +17,7 @@
 </html>
 ```
 
-在umi3里配置title请查看 [配置标题](../config#title)。
+在 umi 里配置 title 请查看 [配置标题](../config#title)。
 
 ## 配置模板
 
@@ -31,4 +31,3 @@
 ```html
 <link rel="icon" type="image/x-icon" href="<%= context.config.publicPath %>favicon.png" />
 ```
-
