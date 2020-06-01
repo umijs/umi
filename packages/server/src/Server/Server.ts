@@ -79,8 +79,9 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   beforeMiddlewares: [],
   compilerMiddleware: null,
   compress: true,
-  https: !!process.env.HTTPS,
-  http2: false,
+  // enable by default if add HTTP2
+  https: !!process.env.HTTP2 ? true : !!process.env.HTTPS,
+  http2: !!process.env.HTTP2,
   onListening: (argv) => argv,
   onConnection: () => {},
   onConnectionClose: () => {},
