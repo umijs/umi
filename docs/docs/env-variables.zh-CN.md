@@ -110,6 +110,8 @@ $ HTTPS=1 umi dev
 
 开启 [http2](https://baike.baidu.com/item/HTTP%202.0/12520156)，当开启时，默认会自动开启 [HTTPS](#HTTPS)
 
+> 目前 Node.js 版本需要在 10.0.0 以下，才可以使用
+
 ### HMR
 
 设为 `none` 时禁用代码热更新功能。

@@ -203,9 +203,13 @@ class Html {
     }
 
     html = $.html();
-    html = prettier.format(html, {
-      parser: 'html',
-    });
+    // Node 8 not support prettier v2
+    // https://github.com/prettier/eslint-plugin-prettier/issues/278
+    try {
+      html = prettier.format(html, {
+        parser: 'html',
+      });
+    } catch (_) {}
 
     return html;
   }
