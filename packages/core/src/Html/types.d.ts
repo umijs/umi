@@ -41,8 +41,8 @@ export interface IHtmlConfig {
   metas?: IHTMLTag[];
   links?: Partial<HTMLLinkElement>[];
   styles?: Partial<IStyle>[];
-  headScripts?: IScriptConfig;
-  scripts?: IScriptConfig;
+  headScripts?: IScript[];
+  scripts?: IScript[];
 }
 
 export interface IGetContentArgs extends IHtmlConfig {
