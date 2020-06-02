@@ -95,29 +95,27 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
       html = html.replace('</head>', `${Array.from(cssChunkSet).join('\n')}\n</head>`);
     }
   }
-  html = html.replace(
-    '</head>',
-    `<script>
-      window.g_useSSR = true;
-      ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).concat('').join(';\n')}
-    </script>
-    </head>`
-  );
+
+  const [rootHTML, newRootHTML] = [
+    `<div id="${mountElementId}"></div>`,
+    `<div id="${mountElementId}">${rootContainer}</div>\n\t<script>
+    window.g_useSSR = true;
+    ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`
+  ]
 
   if (mode === 'stream') {
-    const containerString = `<div id="${mountElementId}">`;
-    const [beforeRootContainer, afterRootContainer] = html.split(containerString);
+    const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
 
     const beforeRootContainerStream = new ReadableString(beforeRootContainer);
-    const containerStream = new ReadableString(containerString);
+    const containerStream = new ReadableString(newRootHTML);
     const afterRootContainerStream = new ReadableString(afterRootContainer);
-    const rootContainerStream = typeof rootContainer === 'string' ? new ReadableString(rootContainer) : rootContainer;
-    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainerStream, afterRootContainerStream);
+    // @ts-ignore
+    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, afterRootContainerStream);
     return htmlStream;
   }
   return html
     .replace(
-      `<div id="${mountElementId}"></div>`,
-      `<div id="${mountElementId}">${rootContainer}</div>`
+      rootHTML,
+      newRootHTML
     )
 }
