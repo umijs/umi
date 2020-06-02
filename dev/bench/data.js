@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591074018750,
+  "lastUpdate": 1591105057258,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5152,6 +5152,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.35%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "cc@fuckwall.cc",
+            "name": "GoodbyeNJN",
+            "username": "GoodbyeNJN"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ba5acf31745b86cbd0a3bbb398b7cf498c352286",
+          "message": "feat: added generic support for `IGetInitialProps` interface (#4817)",
+          "timestamp": "2020-06-02T21:34:50+08:00",
+          "tree_id": "6b684f620c8ed7900f4a03adeb53b8ce8603fb09",
+          "url": "https://github.com/umijs/umi/commit/ba5acf31745b86cbd0a3bbb398b7cf498c352286"
+        },
+        "date": 1591105054015,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1189,
+            "range": "±2.42%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1807,
+            "range": "±3.99%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
