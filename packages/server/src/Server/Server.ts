@@ -1,12 +1,6 @@
 // @ts-ignore
 import { Logger } from '@umijs/core';
-import {
-  lodash,
-  portfinder,
-  PartialProps,
-  semver,
-  createDebug,
-} from '@umijs/utils';
+import { lodash, portfinder, PartialProps, createDebug } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
 import {
   createProxyMiddleware,
@@ -15,7 +9,7 @@ import {
   Filter as ProxyFilter,
 } from 'http-proxy-middleware';
 import * as http from 'http';
-import { ServerOptions } from 'spdy';
+import spdy, { ServerOptions } from 'spdy';
 import * as url from 'url';
 import https from 'https';
 import compress, { CompressionOptions } from 'compression';
@@ -399,17 +393,12 @@ class Server {
   createServer() {
     const httpsOpts = this.getHttpsOptions();
     if (httpsOpts) {
-      //  on Node 10 and above. In those cases, only https will be used for now.
-      // node 10 or enable http2 => https.createServer
-      if (semver.gte(process.version, '10.0.0') || !this.isHttp2()) {
-        if (this.isHttp2()) {
-          console.warn(
-            '[WARN] HTTP/2 is currently unsupported for Node 10.0.0 and above, but will be supported once Express supports it',
-          );
-        }
-        this.listeningApp = https.createServer(httpsOpts, this.app);
+      // http2 using spdy
+      if (this.isHttp2()) {
+        this.listeningApp = spdy.createServer(httpsOpts, this.app);
       } else {
-        this.listeningApp = require('spdy').createServer(httpsOpts, this.app);
+        // https
+        this.listeningApp = https.createServer(httpsOpts, this.app);
       }
     } else {
       this.listeningApp = http.createServer(this.app);
