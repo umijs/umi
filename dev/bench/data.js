@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1590804693864,
+  "lastUpdate": 1591060112703,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -4962,6 +4962,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.54%",
             "unit": "ops/sec",
             "extra": "47 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "cff20@sina.com",
+            "name": "guosheng",
+            "username": "kyo4311"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f6ece39bba00e57a694dc4d31a721f037507d6c1",
+          "message": "docs: 修改默认模板时增加配置title提示。 (#4799)\n\n* docs: 修改默认模板时增加配置title提示。\r\n\r\n* Update docs/docs/html-template.zh-CN.md\r\n\r\nCo-authored-by: 信鑫-King <45808948@qq.com>\r\n\r\nCo-authored-by: 信鑫-King <45808948@qq.com>",
+          "timestamp": "2020-06-02T09:05:49+08:00",
+          "tree_id": "1432ab50f81dcbdd5c950a9b5055241b01b3a0a2",
+          "url": "https://github.com/umijs/umi/commit/f6ece39bba00e57a694dc4d31a721f037507d6c1"
+        },
+        "date": 1591060108914,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1457,
+            "range": "±2.57%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2227,
+            "range": "±3.89%",
+            "unit": "ops/sec",
+            "extra": "48 samples"
           }
         ]
       }
