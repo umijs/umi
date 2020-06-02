@@ -7,4 +7,4 @@ interface IParams extends Pick<IRouteComponentProps, 'match'> {
   isServer: Boolean;
 }
 
-export type IGetInitialProps = (params: IParams) => Promise<any>;
+export type IGetInitialProps<T = any> = (params: IParams) => Promise<T>;
