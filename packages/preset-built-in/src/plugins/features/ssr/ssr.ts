@@ -174,6 +174,7 @@ export default (api: IApi) => {
       const render = require(serverPath);
       const context = {};
       const { html, error } = await render({
+        origin: `${req.protocol}://${req.get('host')}`,
         // with query
         path: req.url,
         context,
