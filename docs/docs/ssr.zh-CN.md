@@ -166,6 +166,7 @@ export default Home;
 
 - `match`： 与客户端页面 props 中的 `match` 保持一致，有当前路由的相关数据。
 - `isServer`：是否为服务端在执行该方法。
+- `route`：当前路由对象
 - `history`：history 对象
 
 ### 扩展 ctx 参数
