@@ -124,7 +124,7 @@ export default (api: IApi) => {
       const chunkArr: string[] = [];
       const chunkName = routeToChunkName({ route, cwd: api.cwd });
       opts.chunks.forEach((chunk) => {
-        if (chunkName && chunk.name.includes(chunkName)) {
+        if (chunkName && chunk.name.startsWith(chunkName)) {
           chunkArr.push(chunk.name);
         }
       });
