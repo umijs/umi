@@ -96,12 +96,10 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
     }
   }
 
-  const [rootHTML, newRootHTML] = [
-    `<div id="${mountElementId}"></div>`,
-    `<div id="${mountElementId}">${rootContainer}</div>\n\t<script>
-    window.g_useSSR = true;
-    ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`
-  ]
+  const rootHTML = `<div id="${mountElementId}"></div>`;
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>\n\t<script>
+  window.g_useSSR = true;
+  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`
 
   if (mode === 'stream') {
     const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
