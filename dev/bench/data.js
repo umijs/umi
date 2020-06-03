@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591157631062,
+  "lastUpdate": 1591183772776,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5266,6 +5266,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.52%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "cc@fuckwall.cc",
+            "name": "GoodbyeNJN",
+            "username": "GoodbyeNJN"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3a7ddc6ffa2ac4134486c4486776dd4c65e18895",
+          "message": "docs: update some code styles (#4825)",
+          "timestamp": "2020-06-03T19:27:03+08:00",
+          "tree_id": "8af62fd9e9826d5396f4f754534c6ef423152c23",
+          "url": "https://github.com/umijs/umi/commit/3a7ddc6ffa2ac4134486c4486776dd4c65e18895"
+        },
+        "date": 1591183769638,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1368,
+            "range": "±2.58%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2174,
+            "range": "±4.30%",
+            "unit": "ops/sec",
+            "extra": "47 samples"
           }
         ]
       }
