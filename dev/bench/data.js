@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591155623018,
+  "lastUpdate": 1591157631062,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5228,6 +5228,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.46%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "7f7d51f5287c12a82b0caded34e98c8bd3bbbde7",
+          "message": "chore: build webpackHotDevClient",
+          "timestamp": "2020-06-03T12:10:17+08:00",
+          "tree_id": "9c8bc148468ba27f79a3a0a16d727ec6ea719cd2",
+          "url": "https://github.com/umijs/umi/commit/7f7d51f5287c12a82b0caded34e98c8bd3bbbde7"
+        },
+        "date": 1591157627496,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1267,
+            "range": "±2.71%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2053,
+            "range": "±3.52%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
