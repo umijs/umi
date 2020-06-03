@@ -26,7 +26,14 @@ export interface IParams {
   path: string;
   htmlTemplate?: string;
   mountElementId?: string;
-  context?: object
+  context?: object;
+  mode?: string;
+  basename?: string;
+  staticMarkup?: boolean;
+  forceInitial?: boolean;
+  getInitialPropsCtx?: object;
+  manifest?: string;
+  [k: string]?: any;
 }
 
 export interface IRenderResult<T> {
