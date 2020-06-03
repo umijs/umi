@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591105057258,
+  "lastUpdate": 1591155623018,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5190,6 +5190,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.99%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "admin@diamondyuan.com",
+            "name": "DiamondYuan",
+            "username": "DiamondYuan"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "abdcebfe754c17e2ffbf7f628550c28ced256623",
+          "message": "feat: server support force reload page (#4815)",
+          "timestamp": "2020-06-03T11:37:55+08:00",
+          "tree_id": "d78d0978abc7f96d446f22ed67b46f471785ddb1",
+          "url": "https://github.com/umijs/umi/commit/abdcebfe754c17e2ffbf7f628550c28ced256623"
+        },
+        "date": 1591155619998,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1381,
+            "range": "±2.88%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2049,
+            "range": "±3.46%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
