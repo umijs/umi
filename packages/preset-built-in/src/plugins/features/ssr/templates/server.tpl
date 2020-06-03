@@ -33,7 +33,7 @@ export interface IParams {
   forceInitial?: boolean;
   getInitialPropsCtx?: object;
   manifest?: string;
-  [k: string]?: any;
+  [k: string]: any;
 }
 
 export interface IRenderResult<T> {
