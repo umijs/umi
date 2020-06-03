@@ -248,4 +248,11 @@ export default (api: IApi) => {
       source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`,
     },
   ]);
+
+  api.addUmiExports(() => {
+    return {
+      specifiers: ['IRender', 'IParams', 'IRenderResult'],
+      source: `./${CHUNK_NAME}`,
+    };
+  });
 };
