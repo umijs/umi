@@ -18,7 +18,6 @@ plugin.applyPlugins({
   args: { routes },
 });
 
-
 // origin require module
 // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
@@ -27,7 +26,7 @@ const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_re
  * server render function
  * @param params
  */
-const render: IRender = async (params) => {
+const render: IServerRender = async (params) => {
   let error;
   const {
     path,
