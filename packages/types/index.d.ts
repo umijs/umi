@@ -347,6 +347,30 @@ type WithFalse<T> = {
   [P in keyof T]?: T[P] | false;
 };
 
+interface IServerRenderParams {
+  path: string;
+  htmlTemplate?: string;
+  mountElementId?: string;
+  context?: object;
+  mode?: string;
+  basename?: string;
+  staticMarkup?: boolean;
+  forceInitial?: boolean;
+  getInitialPropsCtx?: object;
+  manifest?: string;
+  [k: string]: any;
+}
+
+interface IServerRenderResult<T> {
+  rootContainer: T;
+  html?: T;
+  error?: Error;
+}
+
+interface IServerRender<T = string> {
+  (params: IServerRenderParams): Promise<IServerRenderResult<T>>;
+}
+
 export type IConfig = WithFalse<BaseIConfig>;
 
 export { webpack };
@@ -354,3 +378,4 @@ export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
 
 export { History, Location, IRouteProps, IRouteComponentProps };
+export { IServerRender, IServerRenderParams, IServerRenderResult };
