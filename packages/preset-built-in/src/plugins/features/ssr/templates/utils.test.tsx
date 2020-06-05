@@ -41,6 +41,7 @@ test('handleHTML normal', async () => {
     html: defaultHTML,
     mountElementId: 'root',
   });
+  expect(html).toContain('<!DOCTYPE html>');
   expect(html).toMatch('window.g_initialProps = {"username":"ycjcl868"};');
   expect(html).toMatch('<div id="root"><h1>ycjcl868</h1></div>');
 });
@@ -62,6 +63,7 @@ test('handleHTML stream', (done) => {
       bytes = Buffer.concat([bytes, chunk]);
     });
     html.on('end', () => {
+      expect(bytes.toString()).toContain('<!DOCTYPE html>');
       expect(bytes.toString()).toContain('<div id="root"><h1>ycjcl868</h1></div>');
       done();
     });

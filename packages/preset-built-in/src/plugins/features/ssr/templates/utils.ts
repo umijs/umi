@@ -103,11 +103,14 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`;
 
   if (mode === 'stream') {
+    const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
     const streamQueue = [
+      beforeRootContainer,
       `<div id="${mountElementId}">`,
       rootContainer,
       `</div>`,
       scriptsContent,
+      afterRootContainer,
     ].map(item => typeof item === 'string' ? new ReadableString(item) : item) as Readable[];
 
     const htmlStream = mergeStream(streamQueue);
