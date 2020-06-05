@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591326217938,
+  "lastUpdate": 1591339892206,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5416,6 +5416,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2212,
             "range": "±5.84%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8bc7aa70d38a2aab552dfb061bf01a783165a37e",
+          "message": "fix(bundler-webpack): rule include throw error when no package.json (#4841)",
+          "timestamp": "2020-06-05T14:49:13+08:00",
+          "tree_id": "e89c0fc676ad7c7ae57850942c2f77c7f6f3d30e",
+          "url": "https://github.com/umijs/umi/commit/8bc7aa70d38a2aab552dfb061bf01a783165a37e"
+        },
+        "date": 1591339889285,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1576,
+            "range": "±2.16%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2556,
+            "range": "±5.50%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
