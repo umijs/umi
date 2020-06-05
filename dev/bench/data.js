@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591318396809,
+  "lastUpdate": 1591321105280,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5342,6 +5342,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.48%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e603cf1b77ca020fef51476b10059e1eafc451a3",
+          "message": "fix(create-umi-app): pro-layout dep lost (#4838)",
+          "timestamp": "2020-06-05T09:36:06+08:00",
+          "tree_id": "7c64585a7034f347b7a5b02e4adeeb82e1b0a1c1",
+          "url": "https://github.com/umijs/umi/commit/e603cf1b77ca020fef51476b10059e1eafc451a3"
+        },
+        "date": 1591321102218,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1485,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2394,
+            "range": "±3.49%",
+            "unit": "ops/sec",
+            "extra": "47 samples"
           }
         ]
       }
