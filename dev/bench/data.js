@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591339892206,
+  "lastUpdate": 1591348257890,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5456,6 +5456,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.50%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9035de35641209f4aa39b71e214410f0a7527e5a",
+          "message": "feat: add props.routes for route components (#4842)\n\n* feat: add props.routes for route components\r\n\r\n* fix: props.routes should be root routes",
+          "timestamp": "2020-06-05T17:08:17+08:00",
+          "tree_id": "0b6b91ccb8eae139abe39a82985dc03f6deacae4",
+          "url": "https://github.com/umijs/umi/commit/9035de35641209f4aa39b71e214410f0a7527e5a"
+        },
+        "date": 1591348250951,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1358,
+            "range": "±2.20%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2204,
+            "range": "±4.20%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
