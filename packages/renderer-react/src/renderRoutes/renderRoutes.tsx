@@ -11,6 +11,7 @@ interface IOpts {
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
   isServer?: boolean;
+  rootRoutes?: IRoute[];
 }
 
 interface IGetRouteElementOpts {
@@ -72,8 +73,6 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
   return ComponentWithInitialPropsFetch;
 }
 
-// TODO: custom Switch
-// 1. keep alive
 function render({
   route,
   opts,
@@ -86,6 +85,7 @@ function render({
   const routes = renderRoutes({
     ...opts,
     routes: route.routes || [],
+    rootRoutes: opts.rootRoutes,
   });
   let { component: Component, wrappers } = route;
   if (Component) {
@@ -97,6 +97,7 @@ function render({
       ...opts.extraProps,
       ...(opts.pageInitialProps || defaultPageInitialProps),
       route,
+      routes: opts.rootRoutes,
     };
     // @ts-ignore
     let ret = <Component {...newProps}>{routes}</Component>;
@@ -155,7 +156,10 @@ export default function renderRoutes(opts: IOpts) {
         getRouteElement({
           route,
           index,
-          opts,
+          opts: {
+            ...opts,
+            rootRoutes: opts.rootRoutes || opts.routes,
+          },
         }),
       )}
     </Switch>
