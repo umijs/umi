@@ -23,7 +23,7 @@ export function stripBasename(basename: string, path: string): UrlWithStringQuer
   };
 }
 
-class ReadableString extends Readable {
+export class ReadableString extends Readable {
   str: string
   sent: boolean
 
@@ -97,18 +97,20 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   }
 
   const rootHTML = `<div id="${mountElementId}"></div>`;
-  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>\n\t<script>
+  const scriptsContent = `\n\t<script>
   window.g_useSSR = true;
-  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`
+  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`;
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`;
 
   if (mode === 'stream') {
-    const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
+    const streamQueue = [
+      `<div id="${mountElementId}">`,
+      rootContainer,
+      `</div>`,
+      scriptsContent,
+    ].map(item => typeof item === 'string' ? new ReadableString(item) : item) as Readable[];
 
-    const beforeRootContainerStream = new ReadableString(beforeRootContainer);
-    const containerStream = new ReadableString(newRootHTML);
-    const afterRootContainerStream = new ReadableString(afterRootContainer);
-    // @ts-ignore
-    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, afterRootContainerStream);
+    const htmlStream = mergeStream(streamQueue);
     return htmlStream;
   }
   return html
