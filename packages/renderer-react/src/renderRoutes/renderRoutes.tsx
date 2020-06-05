@@ -72,8 +72,6 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
   return ComponentWithInitialPropsFetch;
 }
 
-// TODO: custom Switch
-// 1. keep alive
 function render({
   route,
   opts,
@@ -97,6 +95,7 @@ function render({
       ...opts.extraProps,
       ...(opts.pageInitialProps || defaultPageInitialProps),
       route,
+      routes: opts.routes,
     };
     // @ts-ignore
     let ret = <Component {...newProps}>{routes}</Component>;

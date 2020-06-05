@@ -1,7 +1,9 @@
 ---
 translateHelp: true
 ---
+
 # 服务端渲染（SSR）
+
 
 ## 什么是服务端渲染？
 
@@ -290,6 +292,8 @@ app.use(async (req, res) => {
 
     // 扩展 getInitialProps 在服务端渲染中的参数
     // getInitialPropsCtx: {},
+
+    // manifest，正常情况下不需要
   });
 
   // support stream content
@@ -348,7 +352,7 @@ export default {
 }
 ```
 
-使用动态加载后，启动和构建会自动开启 [manifest](/config#manifest) 配置，并在产物目录中生成 `asset-manifest.json` 做资源映射，并自动将页面对应的资源注入到 HTML 中，避免开启动态加载后，**页面首屏闪烁**的问题。
+使用动态加载后，启动和构建会自动开启 [manifest](/zh-CN/config#manifest) 配置，并在产物目录中生成 `asset-manifest.json` 做资源映射，并自动将页面对应的资源注入到 HTML 中，避免开启动态加载后，**页面首屏闪烁**的问题。
 
 ```bash
 - dist
@@ -445,7 +449,7 @@ export default {
 
 ## 页面标题渲染
 
-[@umijs/preset-react](/plugins/preset-react#umijspreset-react) 插件集中已内置对标题的渲染，通过以下步骤使用：
+[@umijs/preset-react](/zh-CN/plugins/preset-react#umijspreset-react) 插件集中已内置对标题的渲染，通过以下步骤使用：
 
 安装：
 
@@ -492,7 +496,7 @@ export default {
 
 ### 与 dva 结合使用
 
-[@umijs/preset-react](/plugins/preset-react#umijspreset-react) 插件集中已内置 dva，通过以下步骤使用：
+[@umijs/preset-react](/zh-CN/plugins/preset-react#umijspreset-react) 插件集中已内置 dva，通过以下步骤使用：
 
 ```bash
 $ yarn add @umijs/preset-react
@@ -586,7 +590,7 @@ export default () => {
 
 综合考虑，Umi 3 SSR 不会对服务端文件（`umi.server.js`）做 external。
 
-### `Prop dangerouslySetInnerHTML did not match.` 报错
+### `Prop `dangerouslySetInnerHTML` did not match.` 报错
 
 只有 `div` 标签 `dangerouslySetInnerHTML` 属性才能被 SSR 渲染，正常的写法应该是：
 
