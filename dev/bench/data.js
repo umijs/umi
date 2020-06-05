@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591183772776,
+  "lastUpdate": 1591318396809,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5304,6 +5304,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.30%",
             "unit": "ops/sec",
             "extra": "47 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "1084037255@qq.com",
+            "name": "VSirrr",
+            "username": "VSirrr"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c33f4b60df266689b2cfde73e68539f009e43c47",
+          "message": "docs: 将“完整”修改为“完成” (#4820)",
+          "timestamp": "2020-06-05T08:50:52+08:00",
+          "tree_id": "c176a376c236456a9ccf2741870b7428efdb00ad",
+          "url": "https://github.com/umijs/umi/commit/c33f4b60df266689b2cfde73e68539f009e43c47"
+        },
+        "date": 1591318393891,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1566,
+            "range": "±2.39%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2397,
+            "range": "±4.48%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
