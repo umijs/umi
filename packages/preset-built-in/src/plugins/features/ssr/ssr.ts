@@ -267,12 +267,11 @@ export default (api: IApi) => {
           chunks: clientStats.compilation.chunks,
         }),
       );
-      const htmlPath = path.join(api.paths.absOutputPath!, 'index.html');
       const serverPath = path.join(
         api.paths.absOutputPath!,
         OUTPUT_SERVER_FILENAME,
       );
-      if (fs.existsSync(serverPath) && fs.existsSync(htmlPath)) {
+      if (fs.existsSync(serverPath)) {
         const serverContent = fs
           .readFileSync(serverPath, 'utf-8')
           .replace(placeholderHTML, defaultHTML);
