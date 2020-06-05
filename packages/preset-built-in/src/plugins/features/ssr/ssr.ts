@@ -63,7 +63,7 @@ export default (api: IApi) => {
     const html = getHtmlGenerator({ api });
 
     const defaultHTML = await html.getContent({
-      route: { path: '/' },
+      route: { path: api.config.publicPath },
       noChunk: true,
     });
 
@@ -248,4 +248,36 @@ export default (api: IApi) => {
       source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`,
     },
   ]);
+
+  // replace html default html template
+  // fixed: hash: true, defaultHTML not update
+  api.onBuildComplete(async ({ err, stats }) => {
+    if (!err && stats?.stats) {
+      const [clientStats] = stats.stats;
+      const html = getHtmlGenerator({ api });
+      const placeholderHTML = JSON.stringify(
+        await html.getContent({
+          route: { path: api.config.publicPath },
+          noChunk: true,
+        }),
+      );
+      const defaultHTML = JSON.stringify(
+        await html.getContent({
+          route: { path: api.config.publicPath },
+          chunks: clientStats.compilation.chunks,
+        }),
+      );
+      const htmlPath = path.join(api.paths.absOutputPath!, 'index.html');
+      const serverPath = path.join(
+        api.paths.absOutputPath!,
+        OUTPUT_SERVER_FILENAME,
+      );
+      if (fs.existsSync(serverPath) && fs.existsSync(htmlPath)) {
+        const serverContent = fs
+          .readFileSync(serverPath, 'utf-8')
+          .replace(placeholderHTML, defaultHTML);
+        fs.writeFileSync(serverPath, serverContent);
+      }
+    }
+  });
 };
