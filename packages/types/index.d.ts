@@ -353,7 +353,7 @@ interface IServerRenderParams {
   htmlTemplate?: string;
   mountElementId?: string;
   context?: object;
-  mode?: string | Stream;
+  mode?: 'string' | 'stream';
   basename?: string;
   staticMarkup?: boolean;
   forceInitial?: boolean;
