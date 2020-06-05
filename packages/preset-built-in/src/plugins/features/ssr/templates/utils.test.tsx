@@ -44,6 +44,7 @@ test('handleHTML normal', async () => {
   expect(html).toContain('<!DOCTYPE html>');
   expect(html).toMatch('window.g_initialProps = {"username":"ycjcl868"};');
   expect(html).toMatch('<div id="root"><h1>ycjcl868</h1></div>');
+  expect(html).toContain('</html>');
 });
 
 test('handleHTML stream', (done) => {
@@ -65,6 +66,7 @@ test('handleHTML stream', (done) => {
     html.on('end', () => {
       expect(bytes.toString()).toContain('<!DOCTYPE html>');
       expect(bytes.toString()).toContain('<div id="root"><h1>ycjcl868</h1></div>');
+      expect(bytes.toString()).toContain('</html>');
       done();
     });
   })
