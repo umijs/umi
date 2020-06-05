@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591321105280,
+  "lastUpdate": 1591326217938,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5380,6 +5380,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.49%",
             "unit": "ops/sec",
             "extra": "47 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3bb7c7e90b7f9777c1d49be2b93d30bc49066b06",
+          "message": "chore: ssr scripts behind root html (#4816)\n\n* chore: window.g_initialProps behind html root container\r\n\r\n* chore: unused memo\r\n\r\n* fix: stream\r\n\r\n* chore: split before root\r\n\r\n* fix: html",
+          "timestamp": "2020-06-05T11:01:01+08:00",
+          "tree_id": "397747d660758dd07456b8183fa72500fb7ab629",
+          "url": "https://github.com/umijs/umi/commit/3bb7c7e90b7f9777c1d49be2b93d30bc49066b06"
+        },
+        "date": 1591326214808,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1426,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2212,
+            "range": "±5.84%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
