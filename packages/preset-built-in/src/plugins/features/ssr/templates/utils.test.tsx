@@ -1,5 +1,7 @@
+import React from 'react';
+import { renderToStaticNodeStream } from 'react-dom/server';
 import { Stream } from 'stream';
-import { handleHTML } from './utils';
+import { handleHTML, ReadableString } from './utils';
 
 const defaultHTML = `<!DOCTYPE html>
 <html>
@@ -39,8 +41,10 @@ test('handleHTML normal', async () => {
     html: defaultHTML,
     mountElementId: 'root',
   });
+  expect(html).toContain('<!DOCTYPE html>');
   expect(html).toMatch('window.g_initialProps = {"username":"ycjcl868"};');
   expect(html).toMatch('<div id="root"><h1>ycjcl868</h1></div>');
+  expect(html).toContain('</html>');
 });
 
 test('handleHTML stream', (done) => {
@@ -49,7 +53,7 @@ test('handleHTML stream', (done) => {
       username: 'ycjcl868',
     },
     mode: 'stream',
-    rootContainer: '<h1>ycjcl868</h1>',
+    rootContainer: renderToStaticNodeStream(<h1>ycjcl868</h1>),
     html: defaultHTML,
     mountElementId: 'root',
   }).then(html => {
@@ -60,7 +64,9 @@ test('handleHTML stream', (done) => {
       bytes = Buffer.concat([bytes, chunk]);
     });
     html.on('end', () => {
+      expect(bytes.toString()).toContain('<!DOCTYPE html>');
       expect(bytes.toString()).toContain('<div id="root"><h1>ycjcl868</h1></div>');
+      expect(bytes.toString()).toContain('</html>');
       done();
     });
   })
@@ -131,4 +137,16 @@ test('handleHTML dynamicImport', async () => {
   });
   expect(normalHTMl).not.toContain("/public/p__index.chunk.css");
   expect(normalHTMl).not.toContain("/public/p__users.chunk.css");
+})
+
+test('ReadableString', (done) => {
+  const wrapperStream = new ReadableString('<div></div>');
+  let bytes = new Buffer('');
+    wrapperStream.on('data', (chunk) => {
+      bytes = Buffer.concat([bytes, chunk]);
+    });
+    wrapperStream.on('end', () => {
+      expect(bytes.toString()).toContain('<div></div>');
+      done();
+    });
 })

@@ -247,7 +247,7 @@ api.addHTMLScript(() => {
 
 ### addUmiExports
 
-添加需要 umi 额外导出的内容，返回值格式为 ``{ source: string, specifiers?: (string | { local: string, exported: string })[], exportAll?: boolean }```。
+添加需要 umi 额外导出的内容，返回值格式为 `{ source: string, specifiers?: (string | { local: string, exported: string })[], exportAll?: boolean }`。
 
 比如 `api.addUmiExports(() => { source: 'dva', specifiers: ['connect'] })`，然后就可以通过 `import { connect } from 'umi'` 使用 `dva` 的 `connect` 方法了。
 

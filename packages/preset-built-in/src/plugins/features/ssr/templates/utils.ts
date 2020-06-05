@@ -23,7 +23,7 @@ export function stripBasename(basename: string, path: string): UrlWithStringQuer
   };
 }
 
-class ReadableString extends Readable {
+export class ReadableString extends Readable {
   str: string
   sent: boolean
 
@@ -95,29 +95,30 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
       html = html.replace('</head>', `${Array.from(cssChunkSet).join('\n')}\n</head>`);
     }
   }
-  html = html.replace(
-    '</head>',
-    `<script>
-      window.g_useSSR = true;
-      ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).concat('').join(';\n')}
-    </script>
-    </head>`
-  );
+
+  const rootHTML = `<div id="${mountElementId}"></div>`;
+  const scriptsContent = `\n\t<script>
+  window.g_useSSR = true;
+  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`;
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`;
 
   if (mode === 'stream') {
-    const containerString = `<div id="${mountElementId}">`;
-    const [beforeRootContainer, afterRootContainer] = html.split(containerString);
+    const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
+    const streamQueue = [
+      beforeRootContainer,
+      `<div id="${mountElementId}">`,
+      rootContainer,
+      `</div>`,
+      scriptsContent,
+      afterRootContainer,
+    ].map(item => typeof item === 'string' ? new ReadableString(item) : item) as Readable[];
 
-    const beforeRootContainerStream = new ReadableString(beforeRootContainer);
-    const containerStream = new ReadableString(containerString);
-    const afterRootContainerStream = new ReadableString(afterRootContainer);
-    const rootContainerStream = typeof rootContainer === 'string' ? new ReadableString(rootContainer) : rootContainer;
-    const htmlStream = mergeStream(beforeRootContainerStream, containerStream, rootContainerStream, afterRootContainerStream);
+    const htmlStream = mergeStream(streamQueue);
     return htmlStream;
   }
   return html
     .replace(
-      `<div id="${mountElementId}"></div>`,
-      `<div id="${mountElementId}">${rootContainer}</div>`
+      rootHTML,
+      newRootHTML
     )
 }

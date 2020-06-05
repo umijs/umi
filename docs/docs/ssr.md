@@ -125,7 +125,7 @@ export default (props) => {
 
 ```tsx
 // pages/index.tsx
-import { IGetInitialProps } from 'umi;
+import { IGetInitialProps } from 'umi';
 import React from 'react';
 
 const Home = (props) => {
@@ -176,7 +176,7 @@ export default Home;
 
 为了结合数据流框架，我们提供了 `modifyGetInitialPropsCtx` 方法，由插件或应用来扩展 `ctx` 参数，以 `dva` 为例：
 
-```jsx
+```ts
 // plugin-dva/runtime.ts
 export const ssr = {
   modifyGetInitialPropsCtx: async (ctx) => {
@@ -187,7 +187,7 @@ export const ssr = {
 
 然后在页面中，可以通过获取到 `store`：
 
-```jsx
+```tsx
 // pages/index.tsx
 const Home = () => <div />;
 
@@ -213,7 +213,7 @@ export const ssr = {
 
 同时可以使用 `getInitialPropsCtx` 将服务端参数扩展到 `ctx` 中，例如：
 
-```diff
+```js
 app.use(async (req, res) => {
   // 或者从 CDN 上下载到 server 端
   // const serverPath = await downloadServerBundle('http://cdn.com/bar/umi.server.js');
@@ -369,7 +369,7 @@ export const ssr = {
 
 完美兼容客户端动态加载，配置如下：
 
-```js
+```ts
 // .umirc.ts
 export default {
   ssr: {},
@@ -484,7 +484,7 @@ $ yarn add @umijs/preset-react
 
 在页面中，即直接可以渲染标题：
 
-```jsx
+```tsx
 // pages/bar.tsx
 import React from 'react';
 import { Helmet } from 'umi';
