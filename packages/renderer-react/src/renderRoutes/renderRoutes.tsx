@@ -11,6 +11,7 @@ interface IOpts {
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
   isServer?: boolean;
+  rootRoutes?: IRoute[];
 }
 
 interface IGetRouteElementOpts {
@@ -84,6 +85,7 @@ function render({
   const routes = renderRoutes({
     ...opts,
     routes: route.routes || [],
+    rootRoutes: opts.rootRoutes,
   });
   let { component: Component, wrappers } = route;
   if (Component) {
@@ -95,7 +97,7 @@ function render({
       ...opts.extraProps,
       ...(opts.pageInitialProps || defaultPageInitialProps),
       route,
-      routes: opts.routes,
+      routes: opts.rootRoutes,
     };
     // @ts-ignore
     let ret = <Component {...newProps}>{routes}</Component>;
@@ -154,7 +156,10 @@ export default function renderRoutes(opts: IOpts) {
         getRouteElement({
           route,
           index,
-          opts,
+          opts: {
+            ...opts,
+            rootRoutes: opts.rootRoutes || opts.routes,
+          },
         }),
       )}
     </Switch>
