@@ -13,6 +13,47 @@ import {
   CLIENT_EXPORTS,
 } from './constants';
 
+/**
+ * onBuildComplete for test case
+ * replace default html template using client webpack bundle complete
+ * @param api
+ */
+export const onBuildComplete = (api: IApi, _isTest = false) => async ({
+  err,
+  stats,
+}: any) => {
+  if (!err && stats?.stats) {
+    const [clientStats] = stats.stats;
+    const html = getHtmlGenerator({ api });
+    const placeholderHTML = JSON.stringify(
+      await html.getContent({
+        route: { path: api.config.publicPath },
+        noChunk: true,
+      }),
+    );
+    const defaultHTML = JSON.stringify(
+      await html.getContent({
+        route: { path: api.config.publicPath },
+        chunks: clientStats.compilation.chunks,
+      }),
+    );
+    const serverPath = path.join(
+      api.paths.absOutputPath!,
+      OUTPUT_SERVER_FILENAME,
+    );
+    if (fs.existsSync(serverPath)) {
+      const serverContent = fs
+        .readFileSync(serverPath, 'utf-8')
+        .replace(placeholderHTML, defaultHTML);
+      // for test case
+      if (_isTest) {
+        return serverContent;
+      }
+      fs.writeFileSync(serverPath, serverContent);
+    }
+  }
+};
+
 export default (api: IApi) => {
   api.describe({
     key: 'ssr',
@@ -252,32 +293,5 @@ export default (api: IApi) => {
 
   // replace html default html template
   // fixed: hash: true, defaultHTML not update
-  api.onBuildComplete(async ({ err, stats }) => {
-    if (!err && stats?.stats) {
-      const [clientStats] = stats.stats;
-      const html = getHtmlGenerator({ api });
-      const placeholderHTML = JSON.stringify(
-        await html.getContent({
-          route: { path: api.config.publicPath },
-          noChunk: true,
-        }),
-      );
-      const defaultHTML = JSON.stringify(
-        await html.getContent({
-          route: { path: api.config.publicPath },
-          chunks: clientStats.compilation.chunks,
-        }),
-      );
-      const serverPath = path.join(
-        api.paths.absOutputPath!,
-        OUTPUT_SERVER_FILENAME,
-      );
-      if (fs.existsSync(serverPath)) {
-        const serverContent = fs
-          .readFileSync(serverPath, 'utf-8')
-          .replace(placeholderHTML, defaultHTML);
-        fs.writeFileSync(serverPath, serverContent);
-      }
-    }
-  });
+  api.onBuildComplete(onBuildComplete(api));
 };
