@@ -17,7 +17,7 @@ Build success.
 ```
 
 默认产物输出到项目的 `dist` 文件夹，你可以通过修改配置 `outputPath` 指定产物输出目录。
-默认编译时会将 `publish` 文件夹内的所有文件，原样拷贝到 `dist` 目录，如果你不需要这个特性，可以通过配置 `chainWebpack` 来删除它。
+默认编译时会将 `public` 文件夹内的所有文件，原样拷贝到 `dist` 目录，如果你不需要这个特性，可以通过配置 `chainWebpack` 来删除它。
 
 ```js
 export default {
@@ -28,7 +28,7 @@ export default {
 }
 ```
 
-> 注意：如果 `publish` 里面存在产物同名文件，如 `index.html`，将会导致产物文件被覆盖。
+> 注意：如果 `public` 里面存在产物同名文件，如 `index.html`，将会导致产物文件被覆盖。
 
 ## umi dev
 
