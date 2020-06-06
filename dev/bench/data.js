@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591348257890,
+  "lastUpdate": 1591403885804,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5494,6 +5494,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.20%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "57dc7a6f2951cc8ccffde727f4c874fe646c8212",
+          "message": "feat: support ssr.beforeRenderServer hook for polyfill (#4818)\n\n* feat: support ssr.beforeRenderServer hook for polyfill\r\n\r\n* fix: manifest chunk\r\n\r\n* fix: getInitialProps not add route\r\n\r\n* chore: fix dynamicImport",
+          "timestamp": "2020-06-06T08:35:22+08:00",
+          "tree_id": "d828624f3a92b6f290cd86230ded3cf297fd553e",
+          "url": "https://github.com/umijs/umi/commit/57dc7a6f2951cc8ccffde727f4c874fe646c8212"
+        },
+        "date": 1591403882662,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1308,
+            "range": "±2.54%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2133,
+            "range": "±4.33%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
