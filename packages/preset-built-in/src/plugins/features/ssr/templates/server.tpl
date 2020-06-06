@@ -29,6 +29,7 @@ const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_re
 const render: IServerRender = async (params) => {
   let error;
   const {
+    origin = '',
     path,
     htmlTemplate = '',
     mountElementId = '{{{ MountElementId }}}',
@@ -46,7 +47,7 @@ const render: IServerRender = async (params) => {
   let rootContainer = '';
   try {
     // handle basename
-    const location = stripBasename(basename, path);
+    const location = stripBasename(basename, `${origin}${path}`);
     const { pathname } = location;
     // server history
     const history = createMemoryHistory({
@@ -73,6 +74,21 @@ const render: IServerRender = async (params) => {
         manifest = requireFunc(`./{{{ ManifestFileName }}}`);
       } catch (_) {}
     }
+
+    // beforeRenderServer hook, for polyfill global.*
+    await plugin.applyPlugins({
+      key: 'ssr.beforeRenderServer',
+      type: ApplyPluginsType.event,
+      args: {
+        env,
+        path,
+        context,
+        history,
+        mode,
+        location,
+      },
+      async: true,
+    });
 
     // renderServer get rootContainer
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);

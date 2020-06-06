@@ -1,7 +1,9 @@
 ---
 translateHelp: true
 ---
+
 # 服务端渲染（SSR）
+
 
 ## 什么是服务端渲染？
 
@@ -125,7 +127,7 @@ export default (props) => {
 
 ```tsx
 // pages/index.tsx
-import { IGetInitialProps } from 'umi;
+import { IGetInitialProps } from 'umi';
 import React from 'react';
 
 const Home = (props) => {
@@ -169,13 +171,14 @@ export default Home;
 
 - `match`： 与客户端页面 props 中的 `match` 保持一致，有当前路由的相关数据。
 - `isServer`：是否为服务端在执行该方法。
+- `route`：当前路由对象
 - `history`：history 对象
 
 ### 扩展 ctx 参数
 
 为了结合数据流框架，我们提供了 `modifyGetInitialPropsCtx` 方法，由插件或应用来扩展 `ctx` 参数，以 `dva` 为例：
 
-```jsx
+```ts
 // plugin-dva/runtime.ts
 export const ssr = {
   modifyGetInitialPropsCtx: async (ctx) => {
@@ -186,7 +189,7 @@ export const ssr = {
 
 然后在页面中，可以通过获取到 `store`：
 
-```jsx
+```tsx
 // pages/index.tsx
 const Home = () => <div />;
 
@@ -212,7 +215,7 @@ export const ssr = {
 
 同时可以使用 `getInitialPropsCtx` 将服务端参数扩展到 `ctx` 中，例如：
 
-```diff
+```js
 app.use(async (req, res) => {
   // 或者从 CDN 上下载到 server 端
   // const serverPath = await downloadServerBundle('http://cdn.com/bar/umi.server.js');
@@ -290,6 +293,8 @@ app.use(async (req, res) => {
 
     // 扩展 getInitialProps 在服务端渲染中的参数
     // getInitialPropsCtx: {},
+
+    // manifest，正常情况下不需要
   });
 
   // support stream content
@@ -320,6 +325,8 @@ app.use(async (req, res) => {
   mountElementId?: string;
   // 上下文数据，可用来标记服务端渲染页面时的状态
   context?: object
+  // ${protocol}://${host} 扩展 location 对象
+  origin?: string;
 }
 ```
 
@@ -336,11 +343,37 @@ app.use(async (req, res) => {
 }
 ```
 
+## polyfill
+
+Umi 3 默认移除了 DOM/BOM 浏览器 API 在 Node.js 的 polyfill，如果应用确实需要 polyfill 一些浏览器对象，可以使用 `beforeRenderServer` 运行时事件 API 进行扩展
+
+```js
+// app.ts
+export const ssr = {
+  beforeRenderServer: async ({
+    env,
+    location,
+    history,
+    mode,
+    context,
+  }) => {
+    // global 为 Node.js 下的全局变量
+    // 避免直接 mock location，这样会造成一些环境判断失效
+    global.mockLocation = location;
+
+    // 国际化
+    if (location.pathname.indexOf('zh-CN') > -1) {
+      global.locale = 'zh-CN'
+    }
+  }
+}
+```
+
 ## 动态加载（dynamicImport）
 
 完美兼容客户端动态加载，配置如下：
 
-```js
+```ts
 // .umirc.ts
 export default {
   ssr: {},
@@ -348,7 +381,7 @@ export default {
 }
 ```
 
-使用动态加载后，启动和构建会自动开启 [manifest](/config#manifest) 配置，并在产物目录中生成 `asset-manifest.json` 做资源映射，并自动将页面对应的资源注入到 HTML 中，避免开启动态加载后，**页面首屏闪烁**的问题。
+使用动态加载后，启动和构建会自动开启 [manifest](/zh-CN/config#manifest) 配置，并在产物目录中生成 `asset-manifest.json` 做资源映射，并自动将页面对应的资源注入到 HTML 中，避免开启动态加载后，**页面首屏闪烁**的问题。
 
 ```bash
 - dist
@@ -445,7 +478,7 @@ export default {
 
 ## 页面标题渲染
 
-[@umijs/preset-react](/plugins/preset-react#umijspreset-react) 插件集中已内置对标题的渲染，通过以下步骤使用：
+[@umijs/preset-react](/zh-CN/plugins/preset-react#umijspreset-react) 插件集中已内置对标题的渲染，通过以下步骤使用：
 
 安装：
 
@@ -455,7 +488,7 @@ $ yarn add @umijs/preset-react
 
 在页面中，即直接可以渲染标题：
 
-```jsx
+```tsx
 // pages/bar.tsx
 import React from 'react';
 import { Helmet } from 'umi';
@@ -492,7 +525,7 @@ export default {
 
 ### 与 dva 结合使用
 
-[@umijs/preset-react](/plugins/preset-react#umijspreset-react) 插件集中已内置 dva，通过以下步骤使用：
+[@umijs/preset-react](/zh-CN/plugins/preset-react#umijspreset-react) 插件集中已内置 dva，通过以下步骤使用：
 
 ```bash
 $ yarn add @umijs/preset-react
@@ -586,7 +619,7 @@ export default () => {
 
 综合考虑，Umi 3 SSR 不会对服务端文件（`umi.server.js`）做 external。
 
-### `Prop dangerouslySetInnerHTML did not match.` 报错
+### `Prop `dangerouslySetInnerHTML` did not match.` 报错
 
 只有 `div` 标签 `dangerouslySetInnerHTML` 属性才能被 SSR 渲染，正常的写法应该是：
 
