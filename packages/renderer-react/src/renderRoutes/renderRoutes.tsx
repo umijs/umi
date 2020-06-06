@@ -46,6 +46,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
           const defaultCtx = {
             isServer: false,
             match: props?.match,
+            route,
             ...(opts.getInitialPropsCtx || {}),
             ...restRouteParams,
           };

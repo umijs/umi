@@ -26,7 +26,7 @@ export interface IParams {
   path: string;
   htmlTemplate?: string;
   mountElementId?: string;
-  context?: object
+  context?: object;
 }
 
 export interface IRenderResult<T> {
@@ -46,6 +46,7 @@ export interface IRender<T = string> {
 const render: IRender = async (params) => {
   let error;
   const {
+    origin = '',
     path,
     htmlTemplate = '',
     mountElementId = '{{{ MountElementId }}}',
@@ -63,7 +64,7 @@ const render: IRender = async (params) => {
   let rootContainer = '';
   try {
     // handle basename
-    const location = stripBasename(basename, path);
+    const location = stripBasename(basename, `${origin}${path}`);
     const { pathname } = location;
     // server history
     const history = createMemoryHistory({
@@ -90,6 +91,21 @@ const render: IRender = async (params) => {
         manifest = requireFunc(`./{{{ ManifestFileName }}}`);
       } catch (_) {}
     }
+
+    // beforeRenderServer hook, for polyfill global.*
+    await plugin.applyPlugins({
+      key: 'ssr.beforeRenderServer',
+      type: ApplyPluginsType.event,
+      args: {
+        env,
+        path,
+        context,
+        history,
+        mode,
+        location,
+      },
+      async: true,
+    });
 
     // renderServer get rootContainer
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);

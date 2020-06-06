@@ -84,7 +84,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
         Object.keys(manifest || {}).forEach(manifestChunk => {
           if (manifestChunk !== 'umi.css'
             && chunk
-            && manifestChunk.includes(chunk)
+            && manifestChunk.startsWith(chunk)
             && /\.css$/.test(manifest[manifestChunk])
           ) {
             cssChunkSet.add(`<link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
