@@ -171,6 +171,7 @@ export default Home;
 
 - `match`： 与客户端页面 props 中的 `match` 保持一致，有当前路由的相关数据。
 - `isServer`：是否为服务端在执行该方法。
+- `route`：当前路由对象
 - `history`：history 对象
 
 ### 扩展 ctx 参数
@@ -324,6 +325,8 @@ app.use(async (req, res) => {
   mountElementId?: string;
   // 上下文数据，可用来标记服务端渲染页面时的状态
   context?: object
+  // ${protocol}://${host} 扩展 location 对象
+  origin?: string;
 }
 ```
 
@@ -337,6 +340,32 @@ app.use(async (req, res) => {
   rootContainer: string | Stream;
   // 错误对象，服务端渲染错误后，值不为 null
   error?: Error;
+}
+```
+
+## polyfill
+
+Umi 3 默认移除了 DOM/BOM 浏览器 API 在 Node.js 的 polyfill，如果应用确实需要 polyfill 一些浏览器对象，可以使用 `beforeRenderServer` 运行时事件 API 进行扩展
+
+```js
+// app.ts
+export const ssr = {
+  beforeRenderServer: async ({
+    env,
+    location,
+    history,
+    mode,
+    context,
+  }) => {
+    // global 为 Node.js 下的全局变量
+    // 避免直接 mock location，这样会造成一些环境判断失效
+    global.mockLocation = location;
+
+    // 国际化
+    if (location.pathname.indexOf('zh-CN') > -1) {
+      global.locale = 'zh-CN'
+    }
+  }
 }
 ```
 
