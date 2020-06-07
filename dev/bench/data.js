@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591403885804,
+  "lastUpdate": 1591495919543,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5532,6 +5532,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.33%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "414689070@qq.com",
+            "name": "edtam",
+            "username": "edtam"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3f4b3362c845cc58489d9c9f6e7234ac505be645",
+          "message": "docs: fix typo (#4848)\n\n* docs: update cli.zh-CN.md\r\n\r\n* docs: update cli.md",
+          "timestamp": "2020-06-07T10:09:02+08:00",
+          "tree_id": "e3e88ccb531219364bac76fb85e847b8a4403140",
+          "url": "https://github.com/umijs/umi/commit/3f4b3362c845cc58489d9c9f6e7234ac505be645"
+        },
+        "date": 1591495916331,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 689,
+            "range": "±87.01%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1987,
+            "range": "±5.01%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
