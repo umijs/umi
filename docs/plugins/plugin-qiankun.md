@@ -269,6 +269,16 @@ PORT=8081
 1. 约定父应用中在 `src/rootExports.js` 里 export 内容
 2. 子应用中通过 `import { useRootExports } from 'umi'; const rootExports = useRootExports();` 取到
 
+### 配合 useModel 使用
+
+1. 如果同时启用了 @umijs/plugin-qiankun 和 @umijs/plugin-model，子应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
+
+```js
+  const masterProps = useModel('@@qiankun');
+```
+
+2. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 masterProps.setLoading(false)，可以标记微模块的整体 loading 为完成状态。
+
 ### <a name="masterOptions">MasterOptions</a>
 
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
