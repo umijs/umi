@@ -1,10 +1,11 @@
 import { join } from 'path';
 import { winPath } from '@umijs/utils';
 import { Service } from '@umijs/core';
-import { getMockData } from './utils';
+import { getMockData, getConflictPaths } from './utils';
+
+const fixtures = winPath(`${__dirname}/fixtures`);
 
 describe('umi-mock:getMockData', () => {
-  const fixtures = winPath(`${__dirname}/fixtures`);
   function stripPrefix(files: string[]) {
     return files.map((file) => file.replace(`${fixtures}/`, ''));
   }
@@ -212,4 +213,65 @@ describe('umi-mock:getMockData', () => {
       ]);
     });
   });
+});
+
+test('getConflictPaths', async () => {
+  const routes = [
+    {
+      path: '/',
+      redirect: '/home',
+    },
+    {
+      path: '/home',
+      component: './Home',
+    },
+    {
+      path: '/access',
+      component: './Access',
+    },
+    {
+      path: '/bar/',
+      routes: [
+        {
+          path: '/bar/mainIndex',
+          component: './TestFrame/MainIndex',
+        },
+      ],
+    },
+    {
+      path: '/users',
+      routes: [{ path: ':id', component: './Users' }],
+    },
+    {
+      path: 'withoutPrefix',
+      component: './Abc',
+    },
+  ];
+  const cwd = winPath(join(fixtures, 'conflict'));
+
+  const service = new Service({
+    cwd,
+    plugins: [],
+  });
+  await service.init();
+
+  const { mockData } = getMockData({
+    cwd,
+  });
+
+  const conflictPaths = getConflictPaths({
+    routes,
+    mockData,
+  });
+  expect(conflictPaths).toEqual([
+    {
+      path: '/',
+    },
+    {
+      path: '/home',
+    },
+    {
+      path: '/withoutPrefix',
+    },
+  ]);
 });

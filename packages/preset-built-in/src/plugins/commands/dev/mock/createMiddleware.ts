@@ -5,7 +5,7 @@ import { cleanRequireCache, IGetMockDataResult, matchMock } from './utils';
 const debug = createDebug('umi:preset-build-in:mock:createMiddleware');
 
 export interface IMockOpts extends IGetMockDataResult {
-  updateMockData: () => IGetMockDataResult;
+  updateMockData: () => Promise<IGetMockDataResult>;
 }
 
 interface ICreateMiddleware {
@@ -25,12 +25,12 @@ export default function (opts = {} as IMockOpts): ICreateMiddleware {
   });
   watcher
     .on('ready', () => debug('Initial scan complete. Ready for changes'))
-    .on('all', (event, file) => {
+    .on('all', async (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       errors.splice(0, errors.length);
       cleanRequireCache(mockWatcherPaths);
       // refresh data
-      data = updateMockData()?.mockData;
+      data = (await updateMockData())?.mockData;
       if (!errors.length) {
         signale.success(`Mock files parse success`);
       }
