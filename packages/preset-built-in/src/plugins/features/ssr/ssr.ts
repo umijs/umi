@@ -4,6 +4,7 @@ import * as path from 'path';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
+import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
@@ -156,17 +157,31 @@ export default (api: IApi) => {
   });
 
   // run for dynamicImport in exportStatic
-  api.modifyHTMLChunks((memo, opts) => {
+  api.modifyHTMLChunks(async (memo, opts) => {
     const { route } = opts;
     // remove server bundle entry in html
     // for dynamicImport
-    if (api.config.dynamicImport && api.env === 'production' && opts.chunks) {
+    if (
+      api.config.dynamicImport &&
+      api.env === 'production' &&
+      opts.chunks &&
+      route.path &&
+      route.component
+    ) {
       // different pages using correct chunks, not load all chunks
       const chunkArr: string[] = [];
-      const chunkName = routeToChunkName({ route, cwd: api.cwd });
-      opts.chunks.forEach((chunk) => {
-        if (chunkName && chunk.name.startsWith(chunkName)) {
-          chunkArr.push(chunk.name);
+      const routes = await api.getRoutes();
+      const matchedRoutes = matchRoutes(routes as RouteConfig[], route.path);
+      const chunks = _.uniq(
+        matchedRoutes.map((matchedRoute) =>
+          matchedRoute.route.component
+            ? routeToChunkName({ route: matchedRoute.route, cwd: api.cwd })
+            : null,
+        ),
+      );
+      chunks.forEach((chunk) => {
+        if (chunk && opts.chunks.find((c) => c.name.startsWith(chunk))) {
+          chunkArr.push(chunk);
         }
       });
       return _.uniq([...memo, ...chunkArr]);
