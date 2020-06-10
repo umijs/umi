@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591760653893,
+  "lastUpdate": 1591775080428,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5608,6 +5608,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.70%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d5c371d7c4a493ff5c997d9d3086d47bcf4e2a4a",
+          "message": "fix: ssr default HTML assets not hash (#4845)\n\n* fix: ssr default HTML assets not hash\r\n\r\n* chore: unused code\r\n\r\n* chore: test case\r\n\r\n* fix: SSG dynamicImport load chunks not right",
+          "timestamp": "2020-06-10T15:42:23+08:00",
+          "tree_id": "70ae83043dafbebf339b7ab424016eade45e777f",
+          "url": "https://github.com/umijs/umi/commit/d5c371d7c4a493ff5c997d9d3086d47bcf4e2a4a"
+        },
+        "date": 1591775077675,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1613,
+            "range": "±2.35%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2472,
+            "range": "±4.63%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
