@@ -246,8 +246,8 @@ export const getConflictPaths = ({
 }): Pick<IMockDataItem, 'path'>[] => {
   const conflictPaths: Pick<IMockDataItem, 'path'>[] = [];
   getFlatRoutes({ routes }).forEach((route) => {
-    const { path } = route;
-    if (path && !path.startsWith(':')) {
+    const { path, redirect } = route;
+    if (path && !path.startsWith(':') && !redirect) {
       const req = {
         path: !path.startsWith('/') ? `/${path}` : path,
         method: 'get',

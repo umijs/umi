@@ -218,6 +218,10 @@ describe('umi-mock:getMockData', () => {
 test('getConflictPaths', async () => {
   const routes = [
     {
+      path: '/',
+      redirect: '/home',
+    },
+    {
       path: '/home',
       component: './Home',
     },
@@ -247,9 +251,6 @@ test('getConflictPaths', async () => {
     mockData,
   });
   expect(conflictPaths).toEqual([
-    {
-      path: '/',
-    },
     {
       path: '/home',
     },
