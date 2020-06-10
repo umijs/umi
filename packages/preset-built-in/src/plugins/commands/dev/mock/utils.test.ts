@@ -218,29 +218,12 @@ describe('umi-mock:getMockData', () => {
 test('getConflictPaths', async () => {
   const routes = [
     {
-      path: '/',
-      redirect: '/home',
-    },
-    {
       path: '/home',
       component: './Home',
     },
     {
-      path: '/access',
-      component: './Access',
-    },
-    {
       path: '/bar/',
-      routes: [
-        {
-          path: '/bar/mainIndex',
-          component: './TestFrame/MainIndex',
-        },
-      ],
-    },
-    {
-      path: '/users',
-      routes: [{ path: ':id', component: './Users' }],
+      component: './TestFrame/MainIndex',
     },
     {
       path: 'withoutPrefix',
