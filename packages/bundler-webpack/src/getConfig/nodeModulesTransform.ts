@@ -25,6 +25,10 @@ interface IPkgs {
 // https://github.com/umijs/umi/blob/2.x/packages/af-webpack/src/getWebpackConfig/es5ImcompatibleVersions.js
 export function isMatch(opts: { path: string; pkgs: IPkgs }) {
   const pkgPath = getPkgPath(opts);
+
+  // 可能没有 package.json
+  if (!pkgPath) return false;
+
   if (pkgPath in pkgCache) return pkgCache[pkgPath];
 
   const { name, version } = require(pkgPath); // eslint-disable-line

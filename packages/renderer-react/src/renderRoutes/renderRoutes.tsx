@@ -10,6 +10,8 @@ interface IOpts {
   extraProps?: object;
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
+  isServer?: boolean;
+  rootRoutes?: IRoute[];
 }
 
 interface IGetRouteElementOpts {
@@ -44,6 +46,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
           const defaultCtx = {
             isServer: false,
             match: props?.match,
+            route,
             ...(opts.getInitialPropsCtx || {}),
             ...restRouteParams,
           };
@@ -71,8 +74,6 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
   return ComponentWithInitialPropsFetch;
 }
 
-// TODO: custom Switch
-// 1. keep alive
 function render({
   route,
   opts,
@@ -85,10 +86,11 @@ function render({
   const routes = renderRoutes({
     ...opts,
     routes: route.routes || [],
+    rootRoutes: opts.rootRoutes,
   });
   let { component: Component, wrappers } = route;
   if (Component) {
-    const defaultPageInitialProps = process.env.__IS_SERVER
+    const defaultPageInitialProps = opts.isServer
       ? {}
       : (window as any).g_initialProps;
     const newProps = {
@@ -96,6 +98,7 @@ function render({
       ...opts.extraProps,
       ...(opts.pageInitialProps || defaultPageInitialProps),
       route,
+      routes: opts.rootRoutes,
     };
     // @ts-ignore
     let ret = <Component {...newProps}>{routes}</Component>;
@@ -128,7 +131,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (
-      !process.env.__IS_SERVER &&
+      !opts.isServer &&
       // make sure loaded once
       !(route.component as any)?.wrapInitialPropsLoaded &&
       (route.component?.getInitialProps || route.component?.preload)
@@ -154,7 +157,10 @@ export default function renderRoutes(opts: IOpts) {
         getRouteElement({
           route,
           index,
-          opts,
+          opts: {
+            ...opts,
+            rootRoutes: opts.rootRoutes || opts.routes,
+          },
         }),
       )}
     </Switch>

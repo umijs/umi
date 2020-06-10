@@ -72,14 +72,27 @@ const routerConfig = {
   routes: [
     {
       path: '/layout',
-      component: (props) => (
+      component: (props: any) => (
         <>
           <h1 data-testid="layout">Layout</h1>
+          <h2 data-testid="routes">
+            {props.routes.map((r: any) => r.path).join(',')}
+          </h2>
           {props.children}
         </>
       ),
       routes: [
-        { path: '/layout', component: () => <h1 data-testid="test">Foo</h1> },
+        {
+          path: '/layout',
+          component: (props: any) => (
+            <>
+              <h1 data-testid="test">Foo</h1>>
+              <h2 data-testid="routes-embed">
+                {props.routes.map((r: any) => r.path).join(',')}
+              </h2>
+            </>
+          ),
+        },
       ],
     },
     {
@@ -93,7 +106,7 @@ const routerConfig = {
     },
     {
       path: '/users/:id',
-      component: (props) => {
+      component: (props: any) => {
         return <h1 data-testid="test">{(props as any).match.params.id}</h1>;
       },
     },
@@ -180,6 +193,12 @@ let routes = renderRoutes(routerConfig);
 test('/layout', async () => {
   render(<MemoryRouter initialEntries={['/layout']}>{routes}</MemoryRouter>);
   expect((await screen.findByTestId('layout')).innerHTML).toEqual('Layout');
+  expect((await screen.findByTestId('routes')).innerHTML).toContain(
+    '/layout,/layout-without-component,/users/:id',
+  );
+  expect((await screen.findByTestId('routes-embed')).innerHTML).toContain(
+    '/layout,/layout-without-component,/users/:id',
+  );
   expect((await screen.findByTestId('test')).innerHTML).toEqual('Foo');
 });
 

@@ -71,7 +71,7 @@ export const loadPageGetInitialProps = async ({ ctx,
       if (Component && (Component as any)?.getInitialProps) {
 
         // handle ctx
-        ctx = Object.assign(ctx, { match, ...restRouteParams });
+        ctx = Object.assign(ctx, { match, route, ...restRouteParams });
 
         return Component.getInitialProps
           ? await Component.getInitialProps(ctx)
