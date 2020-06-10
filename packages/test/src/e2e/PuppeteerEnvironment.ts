@@ -37,6 +37,8 @@ class PuppeteerEnvironment extends NodeEnvironment {
       );
     };
 
+    const getText = () => page.evaluate(() => document.body.innerText);
+
     /**
      * 滑动到页面底部，然后截图
      * 是为了解决懒加载的问题
@@ -90,6 +92,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
     this.global.waitTime = waitTime;
     this.global.page.fullPageScreenshot = fullPageScreenshot;
     this.global.page.setFamily = setFamily;
+    this.global.page.getText = getText;
   }
 
   async teardown() {

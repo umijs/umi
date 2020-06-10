@@ -23,3 +23,10 @@ test('home page should has img', async () => {
   );
   expect(text).toEqual('UmiJS');
 });
+
+test('home page test', async () => {
+  await page.goto('https://umijs.org');
+  await page.setFamily();
+  const text = await page.getText();
+  expect(text).toMatchSnapshot();
+});

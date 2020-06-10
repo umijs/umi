@@ -95,6 +95,7 @@ declare global {
       option?: Puppeteer.ScreenshotOptions,
     ) => Promise<string | Buffer>;
     setFamily: () => Promise<void>;
+    getText: () => Promise<string>;
   };
 
   namespace jest {
