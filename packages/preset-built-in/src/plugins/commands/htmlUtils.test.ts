@@ -9,14 +9,6 @@ test('getFlatRoutes', () => {
           redirect: '/home',
         },
         {
-          path: '/home',
-          component: './Home',
-        },
-        {
-          path: '/access',
-          component: './Access',
-        },
-        {
           path: '/bar/',
           routes: [
             {
@@ -35,14 +27,6 @@ test('getFlatRoutes', () => {
     {
       path: '/',
       redirect: '/home',
-    },
-    {
-      path: '/home',
-      component: './Home',
-    },
-    {
-      path: '/access',
-      component: './Access',
     },
     {
       path: '/bar/',
