@@ -192,6 +192,10 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
   return new Html();
 }
 
+/**
+ * flatten routes using routes config
+ * @param opts
+ */
 export function getFlatRoutes(opts: { routes: IRoute[] }): IRoute[] {
   return opts.routes.reduce((memo, route) => {
     const { routes, path } = route;
