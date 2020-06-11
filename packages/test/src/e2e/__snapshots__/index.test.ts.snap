@@ -1,3 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`home page test 1`] = `"UmiJSDocsConfigAPIGuidePluginsv2.xGitHub中文UmiJS🍙Extensibleenterprise-levelfront-endapplicationframework.GetStarted→ExtensibleUmiimplementsthecompletelifecycleandmakesitextensible,andUmi'sinternalfunctionsareallplugins.Umialsosupportpluginsandpresets.OutoftheBoxUmihasbuilt-inrouting,building,deployment,testing,andsoon.Itonlyrequiresonedependencytogetstarted.UmialsoprovidesanintegratedpresetforReactwithrichfunctionaries.EnterpriseIthasbeenverifiedby3000+projectsinAntFinancialandprojectsofAlibaba,Youku,Netease,飞猪,KouBeiandothercompanies.SelfDevelopmentIncludingmicrofrontendlibrary,componentpackaging,documentationtools,requestlibrary,hookslibrary,dataflow,etc.PerfectRoutingSupportsbothconfigurationroutingandconventionrouting,whilewithfunctionalcompleteness,suchasdynamicrouting,nestedrouting,permissionrouting,andsoon.FutureReadyUmi'scommunityisalsoexploringnewtechnologies.Forexample,modernmode,webpack@5,automatedexternal,bundlerless,etc.GettingStartedin3minutesManually,#Createdirectory$mkdirmyapp&&cdmyapp#Installdependency$yarnaddumi#Createpage$npxumigpageindex--typescript--less#Startdevelopment$npxumidevOrGettingStartedwithBoilerplate.ContributorsThisprojectexiststhankstoallthepeoplewhocontribute.Joinus!FeedbackGithubIssueDingTalkWechatumijs/umi/issuesOpen-sourceMITLicensed|Copyright©2017-presentPoweredbydumi."`;
+exports[`home page test 1`] = `
+"UmiJS
+DocsConfigAPIGuidePluginsv2.xGitHub中文
+UmiJS
+
+🍙 Extensible enterprise-level front-end application framework.
+
+Get Started →
+Extensible
+
+Umi implements the complete lifecycle and makes it extensible, and Umi's internal functions are all plugins. Umi also support plugins and presets.
+
+Out of the Box
+
+Umi has built-in routing, building, deployment, testing, and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionaries.
+
+Enterprise
+
+It has been verified by 3000+ projects in Ant Financial and projects of Alibaba, Youku, Netease, 飞猪, KouBei and other companies.
+
+Self Development
+
+Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
+
+Perfect Routing
+
+Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
+
+Future Ready
+
+Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
+
+Getting Started in 3 minutes
+
+Manually,
+
+# Create directory
+$ mkdir myapp && cd myapp
+# Install dependency
+$ yarn add umi
+# Create page
+$ npx umi g page index --typescript --less
+# Start development
+$ npx umi dev
+
+Or Getting Started with Boilerplate.
+
+Contributors
+
+This project exists thanks to all the people who contribute. Join us!
+
+Feedback
+Github Issue	DingTalk	Wechat
+umijs/umi/issues		
+
+Open-source MIT Licensed | Copyright © 2017-present
+Powered by dumi."
+`;
