@@ -84,7 +84,7 @@ interface ICreateCSSRule {
 }
 
 type IPresetOrPlugin = string | [string, any];
-type IBabelPresetOrPlugin = string | [string, any, string?];
+type IBabelPresetOrPlugin = Function | string | [string, any, string?];
 type env = 'development' | 'production';
 
 type IRouteMap = Array<{ route: Pick<IRoute, 'path'>; file: string }>;
