@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591844162120,
+  "lastUpdate": 1591950122290,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5684,6 +5684,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.39%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b8e3dd1de0371d75d89aabf963303bdf47fb26bd",
+          "message": "fix(types): babel plugin and preset could be Function (#4870)",
+          "timestamp": "2020-06-12T16:19:10+08:00",
+          "tree_id": "0cf0d268a38f9b75b4a05812687c30ee891824e5",
+          "url": "https://github.com/umijs/umi/commit/b8e3dd1de0371d75d89aabf963303bdf47fb26bd"
+        },
+        "date": 1591950118935,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1211,
+            "range": "±2.74%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1993,
+            "range": "±3.35%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
