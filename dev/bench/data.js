@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591950122290,
+  "lastUpdate": 1592312546487,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5722,6 +5722,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.35%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "shuaizhexu@gmail.com",
+            "name": "Albert 理斯特",
+            "username": "hbrls"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "69eb5dc49bd70d5829b7d689393331cba51dd079",
+          "message": "docs: zh -> zh-CN (#4882)\n\nCo-authored-by: 徐帅哲 <xushuaizhe@lattebank.com>",
+          "timestamp": "2020-06-16T20:59:39+08:00",
+          "tree_id": "6d299a610cbd7c6558f7ed487cdfb925cd213f2e",
+          "url": "https://github.com/umijs/umi/commit/69eb5dc49bd70d5829b7d689393331cba51dd079"
+        },
+        "date": 1592312543134,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1212,
+            "range": "±2.50%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1904,
+            "range": "±4.25%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
