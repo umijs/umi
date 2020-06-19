@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592399655209,
+  "lastUpdate": 1592531898985,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5796,6 +5796,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2411,
             "range": "±4.96%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "42933010+mytheart@users.noreply.github.com",
+            "name": "zhangYin",
+            "username": "mytheart"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3d206a7b97fb21b525141bb67fe97e4eb0c285b7",
+          "message": "docs: redux-logger usage",
+          "timestamp": "2020-06-19T09:55:44+08:00",
+          "tree_id": "800b4606ae5490dad4ad9b58de45b4697ca868eb",
+          "url": "https://github.com/umijs/umi/commit/3d206a7b97fb21b525141bb67fe97e4eb0c285b7"
+        },
+        "date": 1592531895782,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1403,
+            "range": "±2.62%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2403,
+            "range": "±5.08%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
