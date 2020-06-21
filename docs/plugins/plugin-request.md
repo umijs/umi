@@ -5,7 +5,7 @@ translateHelp: true
 # @umijs/plugin-request
 
 
-`@umijs/plugin-request` 基于 [umi-request](https://github.com/umijs/umi-request) 和 [@umijs/hooks](https://github.com/umijs/hooks) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
+`@umijs/plugin-request` 基于 [umi-request](https://github.com/umijs/umi-request) 和 [ahooks](http://ahooks.js.org/hooks) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
 ## 启用方式
 
@@ -137,7 +137,7 @@ export const request = {
 
 ### useRequest
 
-该插件内置了 [@umijs/use-request](https://hooks.umijs.org/zh-CN/async)，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
+该插件内置了 [@ahooksjs/use-request](https://ahooks.js.org/zh-CN/hooks/async)，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
 
 ```typescript
 import { useRequest } from 'umi';
@@ -156,7 +156,7 @@ export default () => {
 };
 ```
 
-更多配置你可以参考  [@umijs/use-request](https://hooks.umijs.org/zh-CN/async) 的文档，相比  `@umijs/use-request` 本身， `import { useRequest } from 'umi';` 有如下两点差异：
+更多配置你可以参考  [@ahooksjs/use-request](https://ahooks.js.org/zh-CN/hooks/async) 的文档，相比  `@ahooksjs/use-request` 本身， `import { useRequest } from 'umi';` 有如下三点差异：
 
 - 按照接口请求规范内置了 `formatResult: res => res?.data` 让你可以更方便的使用数据，当然你也可以自己配置 `formatResult` 来覆盖内置的这个逻辑。
 - 按照接口错误规范统一了错误处理逻辑。
