@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592531898985,
+  "lastUpdate": 1592810223158,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5834,6 +5834,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2403,
             "range": "±5.08%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "887049bc340d3f3529c2f57ce9c14dbe7a3cd639",
+          "message": "Revert \"chore: use import for plugin generation (#4794)\" (#4899)\n\nThis reverts commit 434a666a5562f8ef3308666c3df0baa9765e4a41.",
+          "timestamp": "2020-06-22T15:14:48+08:00",
+          "tree_id": "cba34100351d531f6438dc3a9c60965b1ca42e9a",
+          "url": "https://github.com/umijs/umi/commit/887049bc340d3f3529c2f57ce9c14dbe7a3cd639"
+        },
+        "date": 1592810219774,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1661,
+            "range": "±2.87%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2523,
+            "range": "±5.39%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
