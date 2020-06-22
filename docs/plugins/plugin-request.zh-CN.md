@@ -156,6 +156,8 @@ export default () => {
 - 按照接口请求规范内置了 `formatResult: res => res?.data` 让你可以更方便的使用数据，当然你也可以自己配置 `formatResult` 来覆盖内置的这个逻辑。
 - 按照接口错误规范统一了错误处理逻辑。
 
+需要注意的是，useRequest 的全局配置，之前为 `import { useAPIProvider } from '@umijs/use-request'`，现在修正为 `import { useRequestProvider } from 'ahooks'`;
+
 你也可以查看知乎专栏文章[《useRequest- 蚂蚁中台标准请求 Hooks》](https://zhuanlan.zhihu.com/p/106796295)了解 useRequest。
 
 ### request
