@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592810223158,
+  "lastUpdate": 1592820950210,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5874,6 +5874,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.39%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "576679268@qq.com",
+            "name": "砖家",
+            "username": "brickspert"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c4130f18dc69ca94fb4c7383560c801fa562b082",
+          "message": "chore: umi hooks to ahooks (#4897)\n\n* chore: umi hooks to ahooks\r\n\r\n* chore: 添加 useRequestProvider 引用文档说明\r\n\r\n* chore: 优化 pluginn-requst 文档",
+          "timestamp": "2020-06-22T18:13:26+08:00",
+          "tree_id": "c26851c59d93b861a4a387b43b8e806f69b366ad",
+          "url": "https://github.com/umijs/umi/commit/c4130f18dc69ca94fb4c7383560c801fa562b082"
+        },
+        "date": 1592820946917,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1427,
+            "range": "±2.59%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2367,
+            "range": "±4.57%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
