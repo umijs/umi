@@ -49,6 +49,9 @@ export default (api: IApi) => {
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
 
+      // enable https, HTTP/2 by default when using --https
+      const isHTTPS = process.env.HTTPS || args?.https;
+
       cleanTmpPathExceptCache({
         absTmpPath: paths.absTmpPath!,
       });
@@ -168,6 +171,7 @@ export default (api: IApi) => {
       server = new Server({
         ...opts,
         compress: true,
+        https: !!isHTTPS,
         headers: {
           'access-control-allow-origin': '*',
         },

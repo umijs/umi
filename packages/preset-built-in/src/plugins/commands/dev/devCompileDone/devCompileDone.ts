@@ -1,5 +1,8 @@
 import { IApi } from '@umijs/types';
+import { yParser } from '@umijs/utils';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
+
+const args = yParser(process.argv.slice(2));
 
 export default (api: IApi) => {
   api.modifyBundleConfig((bundleConfig, { env, bundler: { id }, type }) => {
@@ -8,7 +11,11 @@ export default (api: IApi) => {
         new DevCompileDonePlugin({
           port: api.getPort(),
           hostname: api.getHostname(),
-          https: !!(api.config?.devServer?.https || process.env.HTTPS),
+          https: !!(
+            api.config?.devServer?.https ||
+            process.env.HTTPS ||
+            args?.https
+          ),
           onCompileDone({ isFirstCompile, stats }) {
             if (isFirstCompile) {
               api.service.emit('firstDevCompileDone');

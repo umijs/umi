@@ -101,6 +101,16 @@ $ FORK_TS_CHECKER=1 umi dev
 $ FRIENDLY_ERROR=none umi dev
 ```
 
+### HTTPS
+
+localhost 开启 [https](https://baike.baidu.com/item/https/285356)
+
+```bash
+$ HTTPS=1 umi dev
+```
+
+同时也可以使用配置 `https: { key: '/path/key.pem', cert: '/path/cert.pem' }` 自定义证书。
+
 ### HMR
 
 设为 `none` 时禁用代码热更新功能。
