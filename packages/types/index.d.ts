@@ -22,6 +22,7 @@ import WebpackChain from 'webpack-chain';
 import { Express, NextFunction, RequestHandler } from 'express';
 import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
+import { Stream } from 'stream';
 
 export enum BundlerConfigType {
   csr = 'csr',
@@ -350,6 +351,30 @@ type WithFalse<T> = {
   [P in keyof T]?: T[P] | false;
 };
 
+interface IServerRenderParams {
+  path: string;
+  htmlTemplate?: string;
+  mountElementId?: string;
+  context?: object;
+  mode?: 'string' | 'stream';
+  basename?: string;
+  staticMarkup?: boolean;
+  forceInitial?: boolean;
+  getInitialPropsCtx?: object;
+  manifest?: string;
+  [k: string]: any;
+}
+
+interface IServerRenderResult<T = string | Stream> {
+  rootContainer: T;
+  html: T;
+  error: Error;
+}
+
+interface IServerRender<T = string> {
+  (params: IServerRenderParams): Promise<IServerRenderResult<T>>;
+}
+
 export type IConfig = WithFalse<BaseIConfig>;
 
 export { webpack };
@@ -357,3 +382,4 @@ export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
 
 export { History, Location, IRouteProps, IRouteComponentProps };
+export { IServerRender, IServerRenderParams, IServerRenderResult };

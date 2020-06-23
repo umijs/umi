@@ -3,6 +3,7 @@ import '{{{ RuntimePolyfill }}}';
 import { format } from 'url';
 import renderServer from '{{{ Renderer }}}';
 import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
+import { IServerRender } from '@umijs/types';
 
 import { ApplyPluginsType, createMemoryHistory{{ #DynamicImport }}, dynamic{{ /DynamicImport }} } from '{{{ RuntimePath }}}';
 import { plugin } from './plugin';
@@ -17,33 +18,15 @@ plugin.applyPlugins({
   args: { routes },
 });
 
-
 // origin require module
 // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
-
-export interface IParams {
-  path: string;
-  htmlTemplate?: string;
-  mountElementId?: string;
-  context?: object;
-}
-
-export interface IRenderResult<T> {
-  rootContainer: T;
-  html?: T;
-  error?: Error;
-}
-
-export interface IRender<T = string> {
-  (params: IParams): Promise<IRenderResult<T>>;
-}
 
 /**
  * server render function
  * @param params
  */
-const render: IRender = async (params) => {
+const render: IServerRender = async (params) => {
   let error;
   const {
     origin = '',
