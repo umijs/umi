@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592891615706,
+  "lastUpdate": 1592894323927,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5988,6 +5988,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.28%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "wangyuan0108@users.noreply.github.com",
+            "name": "wangyuan0108",
+            "username": "wangyuan0108"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "32836eff780e5e7306858e6c33096a32fb16236b",
+          "message": "Update getting-started.zh-CN.md (#4864)\n\n* Update getting-started.zh-CN.md\r\n\r\n* Update docs/docs/getting-started.zh-CN.md\r\n\r\nCo-authored-by: chencheng (云谦) <sorrycc@gmail.com>",
+          "timestamp": "2020-06-23T14:36:02+08:00",
+          "tree_id": "fc940a7ef69480b22146c0ddeb8211278140966c",
+          "url": "https://github.com/umijs/umi/commit/32836eff780e5e7306858e6c33096a32fb16236b"
+        },
+        "date": 1592894320249,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1461,
+            "range": "±2.42%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2292,
+            "range": "±4.58%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
