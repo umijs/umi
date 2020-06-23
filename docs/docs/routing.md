@@ -1,17 +1,17 @@
----
+-------
 translateHelp: true
----
+-------
 
 # Routing
 
 
-在 Umi 中，应用都是[单页应用](https://en.wikipedia.org/wiki/Single-page_application)，页面地址的跳转都是在浏览器端完成的，不会重新请求服务端获取 html，html 只在应用初始化时加载一次。所有页面由不同的组件构成，页面的切换其实就是不同组件的切换，你只需要在配置中把不同的路由路径和对应的组件关联上。
+In Umi, the applications are all [one-page applications](https://en.wikipedia.org /wiki/Single-page_application), the page address jumps are all in the It's done on the browser side, there is no re-request to the server to get the html, the html is only loaded once when the application is initialized. All pages are made up of different components, the page switch is actually a switch between different components, you just need to configure the different The route path is associated with the corresponding component.
 
-## 配置路由
+## Configuring Routes
 
-在配置文件中通过 `routes` 进行配置，格式为路由信息的数组。
+Configured in the configuration file via `routes` in the format of an array of routing information.
 
-比如：
+For example.
 
 ```js
 export default {
@@ -26,24 +26,24 @@ export default {
 
 * Type: `string`
 
-配置可以被 [path-to-regexp@^1.7.0](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) 理解的路径通配符。
+The configuration can be [path-to-regexp@^1.7.0](https:// github.com/pillarjs/path-to-regexp/tree/ v1.7.0) Understood path wildcards.
 
 ### component
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始找起。
+Configure the React component paths for rendering when location and path are matched. It can be absolute or relative, starting with `src/pages`. up.
 
-如果指向 `src` 目录的文件，可以用 `@`，也可以用 `../`。比如 `component: '@/layouts/basic'`，或者 `component: '../layouts/basic'`，推荐用前者。
+If pointing to a file in the `src` directory, you can use `@`, or `. /`. For example, `component: '@/layouts/basic'`, or `.../`. component: '.../layouts/basic'', the former is recommended. /layouts/basic'`, the former is recommended.
 
 ### exact
 
 * Type: `boolean`
 * Default: `false`
 
-表示是否严格匹配，即 location 是否和 path 完全对应上。
+Indicates if the location and path match exactly.
 
-比如：
+For example.
 
 ```js
 export default {
@@ -60,9 +60,9 @@ export default {
 
 ### routes
 
-配置子路由，通常在需要为多个路径增加 layout 组件时使用。
+Configure subroutes. usually used when you need to add layout components to multiple paths.
 
-比如：
+For example.
 
 ```js
 export default {
@@ -80,7 +80,7 @@ export default {
 }
 ```
 
-然后在 `src/layouts/index` 中通过 `props.children` 渲染子路由，
+Then in `src/layouts/index` pass the `props.children' ` rendering subroutes.
 
 ```jsx
 export default (props) => {
@@ -88,15 +88,15 @@ export default (props) => {
 }
 ```
 
-这样，访问 `/list` 和 `/admin` 就会带上 `src/layouts/index` 这个 layout 组件。
+This way, accessing `/list` and `/admin` will take `src/layouts/ index` This layout component.
 
 ### redirect
 
 * Type: `string`
 
-配置路由跳转。
+Configure route hopping.
 
-比如：
+For example.
 
 ```js
 export default {
@@ -107,15 +107,15 @@ export default {
 }
 ```
 
-访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
+Accessing `/` redirects you to `/list`, which is replaced by the `src/pages/list` file. to render.
 
 ### wrappers
 
-* Type: `string[]`
+* Type: `string[] `
 
-配置路由的高阶组件封装。
+Encapsulation of higher-level components for configuring routes.
 
-比如，可以用于路由级别的权限校验：
+For example. which can be used for route-level permission checks.
 
 ```js
 export default {
@@ -128,9 +128,8 @@ export default {
     { path: '/login', component: 'login' },
   ]
 }
-```
 
-然后在 `src/wrappers/auth` 中，
+Then in `src/wrappers/auth`.
 
 ```jsx
 export default (props) => {
@@ -143,15 +142,15 @@ export default (props) => {
 }
 ```
 
-这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
+This way, when you access `/user`, you do a permission check with `useAuth`, and if it passes, you render ` src/pages/user`, otherwise it goes to `/login`, from `src/pages /login` for rendering.
 
 ### title
 
 * Type: `string`
 
-配置路由的标题。
+Configuring Routes Header.
 
-## 页面跳转
+## Page Jump
 
 ```js
 import { history } from 'umi';
@@ -172,13 +171,13 @@ history.push({
 history.goBack();
 ```
 
-## hash 路由
+## hash routing
 
-详见 [配置#history](../config#history)。
+For details, see [Configuring #history] (... /config#history).
 
-## Link 组件
+## Link components
 
-比如：
+For example.
 
 ```jsx
 import { Link } from 'umi';
@@ -190,23 +189,24 @@ export default () => (
 );
 ```
 
-然后点击 `Users Page` 就会跳转到 `/users` 地址。
 
-注意：
+Then click on `Users Page` and you will be redirected to the `/users` address.
 
-* `Link` 只用于单页应用的内部跳转，如果是外部地址跳转请使用 `a` 标签
+Attention.
 
-## 路由组件参数
+* `Link` is only used for internal jumps for single page applications, use `a` tag for external address jumps
 
-路由组件可通过 `props` 获取到以下属性，
+## Routing component parameters
 
-* match，当前路由和 url match 后的对象，包含 `params`、`path`、`url` 和 `isExact` 属性
-* location，表示应用当前出于哪个位置，包含 `pathname`、`search`、`query` 等属性
-* history，同 [api#history](../api#history) 接口
-* route，当前路由配置，包含 `path`、`exact`、`component`、`routes` 等
-* routes，全部路由信息
+The following properties are available to the routing component via `props`.
 
-比如：
+* match, the object after the current route and url match, containing `params`, ` path`, `url` and `isExact` attributes
+* location, which indicates the current location of the application, including `pathname`, ` search`, `query` and other attributes
+* history, interface to [api#history](. /api#history)
+* route, current route configuration, including `path`, `exact`, `component' `, `routes` etc.
+* :: routes, all routing information
+
+For example.
 
 ```js
 export default function(props) {
@@ -215,9 +215,9 @@ export default function(props) {
 }
 ```
 
-## 传递参数给子路由
+## Passing parameters to subroutes
 
-通过 cloneElement，一次就好（Umi 2 时需要两次）。
+With cloneElement, once is fine (twice is needed for Umi 2).
 
 ```js
 import React from 'react';
