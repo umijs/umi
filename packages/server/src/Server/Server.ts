@@ -42,7 +42,6 @@ export interface IServerOpts {
   beforeMiddlewares?: RequestHandler<any>[];
   compilerMiddleware?: RequestHandler<any> | null;
   https?: IHttps | boolean;
-  http2?: boolean;
   headers?: {
     [key: string]: string;
   };
@@ -75,7 +74,6 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   compress: true,
   // enable by default if add HTTP2
   https: !!process.env.HTTP2 ? true : !!process.env.HTTPS,
-  http2: !!process.env.HTTP2,
   onListening: (argv) => argv,
   onConnection: () => {},
   onConnectionClose: () => {},
@@ -386,20 +384,11 @@ class Server {
     });
   }
 
-  private isHttp2() {
-    return this.opts.http2 !== false;
-  }
-
   createServer() {
     const httpsOpts = this.getHttpsOptions();
     if (httpsOpts) {
-      // http2 using spdy
-      if (this.isHttp2()) {
-        this.listeningApp = spdy.createServer(httpsOpts, this.app);
-      } else {
-        // https
-        this.listeningApp = https.createServer(httpsOpts, this.app);
-      }
+      // http2 using spdy, HTTP/2 by default when using https
+      this.listeningApp = spdy.createServer(httpsOpts, this.app);
     } else {
       this.listeningApp = http.createServer(this.app);
     }

@@ -205,7 +205,6 @@ test('https', async () => {
 test('http2 normal', (done) => {
   const server = new Server({
     https: true,
-    http2: true,
     beforeMiddlewares: [],
     afterMiddlewares: [],
     compilerMiddleware: (req, res, next) => {

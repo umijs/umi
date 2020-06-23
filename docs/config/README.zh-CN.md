@@ -339,8 +339,7 @@ if (false) {
 
 * port，端口号，默认 `8000`
 * host，默认 `0.0.0.0`
-* https，是否启用 https server
-* http2，是否启用 http2
+* https，是否启用 https server，同时也会开启 HTTP/2
 * writeToDisk，生成 `assets` 到文件系统
 
 启用 port 和 host 也可以通过环境变量 PORT 和 HOST 临时指定。

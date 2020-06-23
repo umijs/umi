@@ -19,7 +19,6 @@ export default (api: IApi) => {
                 .unknown(),
               joi.boolean(),
             ),
-            http2: joi.boolean(),
             headers: joi.object(),
             writeToDisk: joi.alternatives(joi.boolean(), joi.function()),
           })
