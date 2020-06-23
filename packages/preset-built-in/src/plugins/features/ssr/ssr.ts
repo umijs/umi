@@ -24,28 +24,24 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
   stats,
 }: any) => {
   if (!err && stats?.stats) {
+    const HTML_REG = /<html.*?<\/html>/m;
     const [clientStats] = stats.stats;
     const html = getHtmlGenerator({ api });
-    const placeholderHTML = JSON.stringify(
-      await html.getContent({
-        route: { path: api.config.publicPath },
-        noChunk: true,
-      }),
-    );
-    const defaultHTML = JSON.stringify(
-      await html.getContent({
-        route: { path: api.config.publicPath },
-        chunks: clientStats.compilation.chunks,
-      }),
-    );
+    const [defaultHTML] =
+      JSON.stringify(
+        await html.getContent({
+          route: { path: api.config.publicPath },
+          chunks: clientStats.compilation.chunks,
+        }),
+      ).match(HTML_REG) || [];
     const serverPath = path.join(
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
     );
-    if (fs.existsSync(serverPath)) {
+    if (fs.existsSync(serverPath) && defaultHTML) {
       const serverContent = fs
         .readFileSync(serverPath, 'utf-8')
-        .replace(placeholderHTML, defaultHTML);
+        .replace(HTML_REG, defaultHTML);
       // for test case
       if (_isTest) {
         return serverContent;
