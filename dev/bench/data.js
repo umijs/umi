@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592820950210,
+  "lastUpdate": 1592891593871,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -5912,6 +5912,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.57%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "46f6f0bdd47df968866d7aca231931d9ea2dda30",
+          "message": "feat: https and http2 cert (#4809)\n\n* fix: https cert using mkcert generate\r\n\r\n* feat: https and node 8 http2\r\n\r\n* chore: http2\r\n\r\n* chore: add test case\r\n\r\n* feat: https enable http2 by default\r\n\r\n* chore: https",
+          "timestamp": "2020-06-23T13:50:40+08:00",
+          "tree_id": "5a601102d1d0e12e9c685414a68c8633b1b828b7",
+          "url": "https://github.com/umijs/umi/commit/46f6f0bdd47df968866d7aca231931d9ea2dda30"
+        },
+        "date": 1592891590757,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1409,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2253,
+            "range": "±4.24%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
