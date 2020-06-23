@@ -64,7 +64,6 @@ export default (api: IApi) => {
     const routeMap = (await html.getRouteMap()) || defaultRouteMap;
     const { exportStatic } = api.config;
     // for dynamic routes
-    // TODO: test case
     if (exportStatic && typeof exportStatic.extraRoutePaths === 'function') {
       const extraRoutePaths = await exportStatic.extraRoutePaths();
       extraRoutePaths?.forEach((path) => {

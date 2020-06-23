@@ -84,7 +84,7 @@ interface ICreateCSSRule {
 }
 
 type IPresetOrPlugin = string | [string, any];
-type IBabelPresetOrPlugin = string | [string, any, string?];
+type IBabelPresetOrPlugin = Function | string | [string, any, string?];
 type env = 'development' | 'production';
 
 type IRouteMap = Array<{ route: Pick<IRoute, 'path'>; file: string }>;
@@ -133,7 +133,10 @@ export interface IApi extends PluginAPI {
   onPatchRouteBefore: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onPatchRoutesBefore: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
-  onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;
+  onBuildComplete: IEvent<{
+    err?: Error;
+    stats?: { stats: webpack.Stats[]; hash: string };
+  }>;
   onDevCompileDone: IEvent<{
     isFirstCompile: boolean;
     stats: webpack.Stats;

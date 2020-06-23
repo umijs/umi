@@ -40,7 +40,7 @@ $ npx umi dev
 
 Or [Getting Started with Boilerplate](https://umijs.org/docs/getting-started).
 
-## 链接
+## Links
 
 * [Top Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aissue+is%3Aopen+label%3Atype%28enhancement%29+sort%3Areactions-%2B1-desc+) (Add your own votes using the 👍 reaction)
 * [Newest Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28enhancement%29)

@@ -122,7 +122,7 @@ export default (props) => {
 
 ```tsx
 // pages/index.tsx
-import { IGetInitialProps } from 'umi;
+import { IGetInitialProps } from 'umi';
 import React from 'react';
 
 const Home = (props) => {
@@ -166,13 +166,14 @@ export default Home;
 
 - `match`： 与客户端页面 props 中的 `match` 保持一致，有当前路由的相关数据。
 - `isServer`：是否为服务端在执行该方法。
+- `route`：当前路由对象
 - `history`：history 对象
 
 ### 扩展 ctx 参数
 
 为了结合数据流框架，我们提供了 `modifyGetInitialPropsCtx` 方法，由插件或应用来扩展 `ctx` 参数，以 `dva` 为例：
 
-```jsx
+```ts
 // plugin-dva/runtime.ts
 export const ssr = {
   modifyGetInitialPropsCtx: async (ctx) => {
@@ -183,7 +184,7 @@ export const ssr = {
 
 然后在页面中，可以通过获取到 `store`：
 
-```jsx
+```tsx
 // pages/index.tsx
 const Home = () => <div />;
 
@@ -209,7 +210,7 @@ export const ssr = {
 
 同时可以使用 `getInitialPropsCtx` 将服务端参数扩展到 `ctx` 中，例如：
 
-```diff
+```js
 app.use(async (req, res) => {
   // 或者从 CDN 上下载到 server 端
   // const serverPath = await downloadServerBundle('http://cdn.com/bar/umi.server.js');
@@ -319,6 +320,8 @@ app.use(async (req, res) => {
   mountElementId?: string;
   // 上下文数据，可用来标记服务端渲染页面时的状态
   context?: object
+  // ${protocol}://${host} 扩展 location 对象
+  origin?: string;
 }
 ```
 
@@ -335,11 +338,37 @@ app.use(async (req, res) => {
 }
 ```
 
+## polyfill
+
+Umi 3 默认移除了 DOM/BOM 浏览器 API 在 Node.js 的 polyfill，如果应用确实需要 polyfill 一些浏览器对象，可以使用 `beforeRenderServer` 运行时事件 API 进行扩展
+
+```js
+// app.ts
+export const ssr = {
+  beforeRenderServer: async ({
+    env,
+    location,
+    history,
+    mode,
+    context,
+  }) => {
+    // global 为 Node.js 下的全局变量
+    // 避免直接 mock location，这样会造成一些环境判断失效
+    global.mockLocation = location;
+
+    // 国际化
+    if (location.pathname.indexOf('zh-CN') > -1) {
+      global.locale = 'zh-CN'
+    }
+  }
+}
+```
+
 ## 动态加载（dynamicImport）
 
 完美兼容客户端动态加载，配置如下：
 
-```js
+```ts
 // .umirc.ts
 export default {
   ssr: {},
@@ -454,7 +483,7 @@ $ yarn add @umijs/preset-react
 
 在页面中，即直接可以渲染标题：
 
-```jsx
+```tsx
 // pages/bar.tsx
 import React from 'react';
 import { Helmet } from 'umi';

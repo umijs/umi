@@ -4,6 +4,7 @@ import * as path from 'path';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
+import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
@@ -12,6 +13,47 @@ import {
   TMP_PLUGIN_DIR,
   CLIENT_EXPORTS,
 } from './constants';
+
+/**
+ * onBuildComplete for test case
+ * replace default html template using client webpack bundle complete
+ * @param api
+ */
+export const onBuildComplete = (api: IApi, _isTest = false) => async ({
+  err,
+  stats,
+}: any) => {
+  if (!err && stats?.stats) {
+    const [clientStats] = stats.stats;
+    const html = getHtmlGenerator({ api });
+    const placeholderHTML = JSON.stringify(
+      await html.getContent({
+        route: { path: api.config.publicPath },
+        noChunk: true,
+      }),
+    );
+    const defaultHTML = JSON.stringify(
+      await html.getContent({
+        route: { path: api.config.publicPath },
+        chunks: clientStats.compilation.chunks,
+      }),
+    );
+    const serverPath = path.join(
+      api.paths.absOutputPath!,
+      OUTPUT_SERVER_FILENAME,
+    );
+    if (fs.existsSync(serverPath)) {
+      const serverContent = fs
+        .readFileSync(serverPath, 'utf-8')
+        .replace(placeholderHTML, defaultHTML);
+      // for test case
+      if (_isTest) {
+        return serverContent;
+      }
+      fs.writeFileSync(serverPath, serverContent);
+    }
+  }
+};
 
 export default (api: IApi) => {
   api.describe({
@@ -63,7 +105,7 @@ export default (api: IApi) => {
     const html = getHtmlGenerator({ api });
 
     const defaultHTML = await html.getContent({
-      route: { path: '/' },
+      route: { path: api.config.publicPath },
       noChunk: true,
     });
 
@@ -115,17 +157,31 @@ export default (api: IApi) => {
   });
 
   // run for dynamicImport in exportStatic
-  api.modifyHTMLChunks((memo, opts) => {
+  api.modifyHTMLChunks(async (memo, opts) => {
     const { route } = opts;
     // remove server bundle entry in html
     // for dynamicImport
-    if (api.config.dynamicImport && api.env === 'production' && opts.chunks) {
+    if (
+      api.config.dynamicImport &&
+      api.env === 'production' &&
+      opts.chunks &&
+      route.path &&
+      route.component
+    ) {
       // different pages using correct chunks, not load all chunks
       const chunkArr: string[] = [];
-      const chunkName = routeToChunkName({ route, cwd: api.cwd });
-      opts.chunks.forEach((chunk) => {
-        if (chunkName && chunk.name.includes(chunkName)) {
-          chunkArr.push(chunk.name);
+      const routes = await api.getRoutes();
+      const matchedRoutes = matchRoutes(routes as RouteConfig[], route.path);
+      const chunks = _.uniq(
+        matchedRoutes.map((matchedRoute) =>
+          matchedRoute.route.component
+            ? routeToChunkName({ route: matchedRoute.route, cwd: api.cwd })
+            : null,
+        ),
+      );
+      chunks.forEach((chunk) => {
+        if (chunk && opts.chunks.find((c) => c.name.startsWith(chunk))) {
+          chunkArr.push(chunk);
         }
       });
       return _.uniq([...memo, ...chunkArr]);
@@ -174,6 +230,7 @@ export default (api: IApi) => {
       const render = require(serverPath);
       const context = {};
       const { html, error } = await render({
+        origin: `${req.protocol}://${req.get('host')}`,
         // with query
         path: req.url,
         context,
@@ -248,4 +305,8 @@ export default (api: IApi) => {
       source: `../${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}`,
     },
   ]);
+
+  // replace html default html template
+  // fixed: hash: true, defaultHTML not update
+  api.onBuildComplete(onBuildComplete(api));
 };

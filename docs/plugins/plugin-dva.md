@@ -117,7 +117,7 @@ export default {
 比如：
 
 ```ts
-import createLogger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import { message } from 'antd';
 
 export const dva = {

@@ -1,7 +1,7 @@
-import { IApi } from '@umijs/types';
+import { IApi, IRoute } from '@umijs/types';
 import { parseRequireDeps } from '@umijs/utils';
 import createMiddleware from './createMiddleware';
-import { getMockData, IGetMockDataResult } from './utils';
+import { getMockData, IGetMockDataResult, getConflictPaths } from './utils';
 
 export default function (api: IApi) {
   const { cwd, userConfig } = api;
@@ -48,20 +48,43 @@ export default function (api: IApi) {
     ...(userConfig?.mock?.exclude || []),
   ];
 
-  api.addBeforeMiddewares(() => {
+  api.addBeforeMiddewares(async () => {
+    const checkConflictPaths = async (
+      mockRes: IGetMockDataResult,
+    ): Promise<void> => {
+      const routes = await api.getRoutes();
+      const conflictPaths = getConflictPaths({
+        routes,
+        mockData: mockRes.mockData,
+      });
+      if (conflictPaths?.length > 0) {
+        // [WARN] for conflict path with routes config
+        api.logger.warn(
+          'mock paths',
+          conflictPaths.map((conflictPath) => conflictPath.path),
+          'conflicts with route config.',
+        );
+      }
+    };
     const mockResult = getMockData({
       cwd,
       ignore,
       registerBabel,
     });
+
+    // check whether conflict when starting
+    await checkConflictPaths(mockResult);
+
     const { middleware } = createMiddleware({
       ...mockResult,
-      updateMockData: () => {
+      updateMockData: async () => {
         const result = getMockData({
           cwd,
           ignore,
           registerBabel,
         }) as IGetMockDataResult;
+        // check whether conflict when updating
+        await checkConflictPaths(result);
         return result;
       },
     });
