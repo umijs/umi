@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592894323927,
+  "lastUpdate": 1592894341877,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6026,6 +6026,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.58%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kid740246048@gmail.com",
+            "name": "GoodbyeNJN",
+            "username": "GoodbyeNJN"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "013566c01933e705caafce3a58d5e267c3d8c388",
+          "message": "chore: Update typings (#4828)\n\n* chore: supplemented typings for server render params\r\n\r\n* chore: supplemented typings for `IGetInitialProps` params\r\n\r\n* chore: added typings exports of server render function\r\n\r\n* chore: fixed typings error\r\n\r\n* Revert \"chore: added typings exports of server render function\"\r\n\r\nThis reverts commit 985777ae432547706050938908e227245af8ee3d.\r\n\r\n* chore: move type define to @umijs/types\r\n\r\n* chore: fixed type name error\r\n\r\n* chore: update render result type\r\n\r\n* chore: Update packages/types/index.d.ts\r\n\r\nCo-authored-by: 信鑫-King <45808948@qq.com>\r\n\r\n* chore: Update packages/types/index.d.ts\r\n\r\nCo-authored-by: 信鑫-King <45808948@qq.com>",
+          "timestamp": "2020-06-23T14:36:32+08:00",
+          "tree_id": "a19ace4bf408609c17661494e6205d659c2b92c6",
+          "url": "https://github.com/umijs/umi/commit/013566c01933e705caafce3a58d5e267c3d8c388"
+        },
+        "date": 1592894338753,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1500,
+            "range": "±2.70%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2532,
+            "range": "±4.64%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
