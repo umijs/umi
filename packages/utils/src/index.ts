@@ -51,6 +51,7 @@ export { signale };
 
 export * from './ssr';
 export * from './routes';
+export { hasExportWithName } from './hasExportWithName/hasExportWithName';
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';
