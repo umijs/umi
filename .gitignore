@@ -14,3 +14,12 @@
 .now
 **/*.less.d.ts
 **/*.css.d.ts
+report.*.json
+output.txt
+/examples/*/dist
+/examples/*/node_modules
+/examples/*/yarn.lock
+/examples/*/app/public
+/examples/*/logs
+/examples/*/run
+/examples/*/.idea

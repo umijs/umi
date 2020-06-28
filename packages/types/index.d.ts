@@ -8,6 +8,7 @@ import {
   IHTMLTag,
   Service,
 } from '@umijs/core';
+import { Stream } from 'stream';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
@@ -18,14 +19,15 @@ import {
 } from '@umijs/renderer-react';
 import webpack from 'webpack';
 import WebpackChain from 'webpack-chain';
-import {
-  Express,
-  NextFunction,
-  Request,
-  Response,
-  RequestHandler,
-} from 'express';
+import { Express, NextFunction, RequestHandler } from 'express';
+import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
+import { Stream } from 'stream';
+
+export enum BundlerConfigType {
+  csr = 'csr',
+  ssr = 'ssr',
+}
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -70,9 +72,12 @@ export interface ITargets {
   [key: string]: number | boolean;
 }
 
+export type IBundlerConfigType = keyof typeof BundlerConfigType;
+
 interface ICreateCSSRule {
   (opts: {
     lang: string;
+    type: IBundlerConfigType;
     test: RegExp;
     loader?: string;
     options?: object;
@@ -80,8 +85,13 @@ interface ICreateCSSRule {
 }
 
 type IPresetOrPlugin = string | [string, any];
-type IBabelPresetOrPlugin = string | [string, any, string?];
+type IBabelPresetOrPlugin = Function | string | [string, any, string?];
 type env = 'development' | 'production';
+
+type IRouteMap = Array<{ route: Pick<IRoute, 'path'>; file: string }>;
+interface IHtmlUtils extends Html {
+  getRouteMap: () => Promise<IRouteMap>;
+}
 
 export interface IApi extends PluginAPI {
   // properties
@@ -100,7 +110,9 @@ export interface IApi extends PluginAPI {
   EnableBy: typeof Service.prototype.EnableBy;
   stage: typeof Service.prototype.stage;
   ServiceStage: typeof Service.prototype.ServiceStage;
-  writeTmpFile: { (args: { path: string; content: string }): void };
+  writeTmpFile: {
+    (args: { path: string; content: string; skipTSCheck?: boolean }): void;
+  };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
   babelRegister: typeof Service.prototype.babelRegister;
   getRoutes: () => Promise<IRoute[]>;
@@ -122,28 +134,43 @@ export interface IApi extends PluginAPI {
   onPatchRouteBefore: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onPatchRoutesBefore: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
-  onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;
-  onDevCompileDone: IEvent<{ isFirstCompile: boolean; stats: webpack.Stats }>;
+  onBuildComplete: IEvent<{
+    err?: Error;
+    stats?: { stats: webpack.Stats[]; hash: string };
+  }>;
+  onDevCompileDone: IEvent<{
+    isFirstCompile: boolean;
+    stats: webpack.Stats;
+    type: IBundlerConfigType;
+  }>;
 
   // ApplyPluginType.modify
-  modifyPaths: IModify<string[], null>;
+  modifyPaths: IModify<typeof Service.prototype.paths, null>;
   modifyRendererPath: IModify<string, null>;
   modifyPublicPathStr: IModify<string, { route: IRoute }>;
   modifyBundler: IModify<any, null>;
   modifyBundleConfigOpts: IModify<
     any,
-    { env: env; type: string; bundler: { id: string; version: number } }
+    {
+      env: env;
+      type: IBundlerConfigType;
+      bundler: { id: string; version: number };
+    }
   >;
   modifyBundleConfig: IModify<
     webpack.Configuration,
-    { env: env; type: string; bundler: { id: string; version: number } }
+    {
+      env: env;
+      type: IBundlerConfigType;
+      bundler: { id: string; version: number };
+    }
   >;
   modifyBundleConfigs: IModify<
     any[],
     {
       env: env;
       bundler: { id: string };
-      getConfig: ({ type }: { type: string }) => object;
+      getConfig: ({ type }: { type: IBundlerConfigType }) => object;
     }
   >;
   modifyBabelOpts: IModify<
@@ -171,11 +198,22 @@ export interface IApi extends PluginAPI {
   modifyRoutes: IModify<IRoute[], {}>;
   modifyHTMLChunks: IModify<
     (string | { name: string; headScript?: boolean })[],
-    { route: IRoute }
+    {
+      route: IRoute;
+      type?: IBundlerConfigType;
+      chunks: webpack.compilation.Chunk[];
+    }
   >;
+  modifyDevHTMLContent: IModify<string | Stream, { req: Request }>;
+  modifyExportRouteMap: IModify<IRouteMap, { html: IHtmlUtils }>;
+  modifyProdHTMLContent: IModify<string, { route: IRoute; file: string }>;
   chainWebpack: IModify<
     WebpackChain,
-    { webpack: typeof webpack; createCSSRule: ICreateCSSRule }
+    {
+      webpack: typeof webpack;
+      createCSSRule: ICreateCSSRule;
+      type: IBundlerConfigType;
+    }
   >;
 
   // ApplyPluginType.add
@@ -218,9 +256,17 @@ interface IManifest {
   fileName: string;
   publicPath: string;
   basePath: string;
+  writeToFileEmit: boolean;
 }
 
-export interface IConfig extends IConfigCore {
+interface ISSR {
+  forceInitial?: boolean;
+  devServerRender?: boolean;
+  mode?: 'string' | 'stream';
+  staticMarkup?: boolean;
+}
+
+interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };
@@ -231,6 +277,7 @@ export interface IConfig extends IConfigCore {
     (
       memo: WebpackChain,
       args: {
+        type: IBundlerConfigType;
         webpack: typeof webpack;
         env: env;
         createCSSRule: ICreateCSSRule;
@@ -253,13 +300,14 @@ export interface IConfig extends IConfigCore {
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
+    extraRoutePaths?: () => Promise<string[]>;
   };
   externals?: any;
   extraBabelPlugins?: IBabelPresetOrPlugin[];
   extraBabelPresets?: IBabelPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
   favicon?: string;
-  forkTSCheker?: object;
+  forkTSChecker?: object;
   hash?: boolean;
   headScripts?: IScriptConfig;
   history?: {
@@ -273,11 +321,7 @@ export interface IConfig extends IConfigCore {
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
   mpa?: object;
-  mock?:
-    | {
-        exclude?: string[];
-      }
-    | false;
+  mock?: { exclude?: string[] };
   mountElementId?: string;
   nodeModulesTransform?: {
     type: 'all' | 'none';
@@ -293,7 +337,7 @@ export interface IConfig extends IConfigCore {
   runtimePublicPath?: boolean;
   scripts?: IScriptConfig;
   singular?: boolean;
-  ssr?: object;
+  ssr?: ISSR;
   styleLoader?: object;
   styles?: IStyleConfig;
   targets?: ITargets;
@@ -303,8 +347,39 @@ export interface IConfig extends IConfigCore {
   [key: string]: any;
 }
 
+type WithFalse<T> = {
+  [P in keyof T]?: T[P] | false;
+};
+
+interface IServerRenderParams {
+  path: string;
+  htmlTemplate?: string;
+  mountElementId?: string;
+  context?: object;
+  mode?: 'string' | 'stream';
+  basename?: string;
+  staticMarkup?: boolean;
+  forceInitial?: boolean;
+  getInitialPropsCtx?: object;
+  manifest?: string;
+  [k: string]: any;
+}
+
+interface IServerRenderResult<T = string | Stream> {
+  rootContainer: T;
+  html: T;
+  error: Error;
+}
+
+interface IServerRender<T = string> {
+  (params: IServerRenderParams): Promise<IServerRenderResult<T>>;
+}
+
+export type IConfig = WithFalse<BaseIConfig>;
+
 export { webpack };
 export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
 
 export { History, Location, IRouteProps, IRouteComponentProps };
+export { IServerRender, IServerRenderParams, IServerRenderResult };

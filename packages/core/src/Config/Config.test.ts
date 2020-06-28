@@ -83,6 +83,18 @@ test('umi-env-dot-env', async () => {
   });
 });
 
+test('umi-env-dot-env-ext', async () => {
+  const cwd = join(fixtures, 'umi-env-dot-env-ext');
+  const s1 = new Service({
+    cwd,
+  });
+  expect(s1.userConfig).toEqual({
+    bar: 2,
+    foo: 3,
+    nest: 4,
+  });
+});
+
 test('umi-env throw error if env affix file not exist', async () => {
   const cwd = join(fixtures, 'umi-env');
   process.env.UMI_ENV = 'cloud2';

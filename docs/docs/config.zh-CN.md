@@ -39,6 +39,8 @@ export default defineConfig({
 
 可以新建 `.umirc.local.ts`，这份配置会和 `.umirc.ts` 做 deep merge 后形成最终配置。
 
+> 注：`.umirc.local.ts` 仅在 `umi dev` 时有效。`umi build` 时不会被加载。
+
 比如，
 
 ```js

@@ -55,6 +55,58 @@ export default foo;
   });
 });
 
+test('export an class directly', () => {
+  const props = getExportProps(`
+    export default class Page {
+      static a = 1
+      static b = '2'
+      static c = function() {}
+      static d = {
+        aa: '1',
+        bb: true,
+        cc: {
+          dd: 90
+        },
+        ee: [2],
+        ff: null,
+        gg: undefined,
+        hh: () => {},
+        jj() {}
+      }
+      static e = ['hh', { ff: 66 }, ['gg'], null, undefined, () => {}]
+      static f = true;
+      static g = false;
+      static i = null;
+      static j = undefined;
+      static h = true;
+    }
+  `);
+
+  expect(props).toEqual({
+    a: 1,
+    b: '2',
+    c: expect.any(Function),
+    d: {
+      aa: '1',
+      bb: true,
+      cc: {
+        dd: 90,
+      },
+      ee: [2],
+      ff: null,
+      gg: undefined,
+      hh: expect.any(Function),
+      jj: expect.any(Function),
+    },
+    e: ['hh', { ff: 66 }, ['gg'], null, undefined, expect.any(Function)],
+    f: true,
+    g: false,
+    i: null,
+    j: undefined,
+    h: true,
+  });
+});
+
 test('export an object directly', () => {
   const props = getExportProps(
     `

@@ -14,7 +14,7 @@ toc: menu
 * Type: `object`
 * Default: `{}`
 
-配置别名，对引用路径进行隐射。
+配置别名，对引用路径进行映射。
 
 比如：
 
@@ -112,12 +112,35 @@ export default {
 }
 ```
 
+SSR 时，修改服务端构建配置
+
+```js
+import { BundlerConfigType } from 'umi';
+
+export default {
+  chainWebpack(memo, { type }) {
+    // 对 ssr bundler config 的修改
+    if (type === BundlerConfigType.ssr) {
+      // 服务端渲染构建扩展
+    }
+
+    // 对 csr bundler config 的修改
+    if (type === BundlerConfigType.csr) {
+      // 客户端渲染构建扩展
+    }
+
+    // ssr 和 csr 都扩展
+  }
+}
+```
+
 参数有，
 
 * memo，当前 webpack-chain对象
 * env，当前环境，`development`、`production` 或 `test` 等
 * webpack，webpack 实例，用于获取其内部插件
 * createCSSRule，用于扩展其他 CSS 实现，比如 sass, stylus
+* type，当前 webpack 实例类型，默认走 csr，如果开启 ssr，会有 ssr 的 webpack 实例
 
 ## chunks
 
@@ -160,6 +183,26 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+若希望将 ClassName 类名变成驼峰命名形式，可配置：
+
+```js
+{
+  cssLoader: {
+    localsConvention: 'camelCase'
+  }
+}
+```
+
+则以下写法将自动转成驼峰命名：
+
+```tsx
+import React from 'react';
+
+import styles from './index.less'; // .bar-foo { font-size: 16px; }
+
+export default () => <div className={styles.barFoo}>Hello</div>;
+// => <div class="bar-foo___{hash}">Hello</div>
+```
 
 ## cssModulesTypescriptLoader <Badge>3.1+</Badge>
 
@@ -296,8 +339,8 @@ if (false) {
 
 * port，端口号，默认 `8000`
 * host，默认 `0.0.0.0`
-* https，是否启用 https server
-* http2，是否启用 http2
+* https，是否启用 https server，同时也会开启 HTTP/2
+* writeToDisk，生成 `assets` 到文件系统
 
 启用 port 和 host 也可以通过环境变量 PORT 和 HOST 临时指定。
 
@@ -380,12 +423,15 @@ export default () => {
 
 配置 html 的输出形式，默认只输出 `index.html`。
 
+如果需要预渲染，请开启 [ssr](#ssr-32) 配置，常用来解决没有服务端情况下，页面的 SEO 和首屏渲染提速。
+
 如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
 
-包含两个子属性，
+包含以下几个属性，
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
+* extraRoutePaths，生成额外的路径页面，用法和场景见 [预渲染动态路由](/zh-CN/docs/ssr#预渲染动态路由)
 
 比如以下路由，
 
@@ -416,6 +462,44 @@ export default () => {
 - users.html
 - list.html
 ```
+
+若有 [SEO](https://baike.baidu.com/item/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E4%BC%98%E5%8C%96/3132?fromtitle=SEO&fromid=102990) 需求，可开启 [ssr](#ssr) 配置，在 `umi build` 后，会路由（除静态路由外）渲染成有具体内容的静态 html 页面，例如如下路由配置：
+
+```jsx
+// .umirc.ts | config/config.ts
+{
+  routes: [
+    {
+      path: '/',
+      component: '@/layouts/Layout',
+      routes: [
+        { path: '/', component: '@/pages/Index' },
+        { path: '/bar', component: '@/pages/Bar' },
+        { path: '/news', component: '@/pages/News' },
+        { path: '/news/:id', component: '@/pages/NewsDetail' },
+      ]
+    },
+  ]
+}
+```
+
+设置 `{ ssr: {}, exportStatic: { }` 后，输出，
+
+会在编译后，生成如下产物：
+
+```bash
+- dist
+  - umi.js
+  - umi.css
+  - index.html
+  - bar
+    - index.html
+  - news
+    - index.html
+    - [id].html
+```
+
+考虑到预渲染后，大部分不会再用到 `umi.server.js` 服务端文件，构建完成后会删掉 `umi.server.js` 文件如果有调试、不删除 server 文件需求，可通过环境变量 `RM_SERVER_FILE=none` 来保留。
 
 ## externals
 
@@ -492,7 +576,7 @@ HTML 中会生成，
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
 ```
 
-## forkTSCheker
+## forkTSChecker
 
 * Type: `object`
 
@@ -622,6 +706,7 @@ export default {
 * fileName，文件名，默认是 `asset-manifest.json`
 * publicPath，默认会使用 webpack 的 `output.publicPath` 配置
 * basePath，给所有文件路径加前缀
+* writeToFileEmit，开发模式下，写 manifest 到文件系统中
 
 注意：
 
@@ -815,7 +900,7 @@ export default {
 * Type: `publicPath`
 * Default: `/`
 
-配置 publicPath。
+配置 webpack 的 publicPath。当打包的时候，webpack 会在静态文件路径前面添加 `publicPath` 的值，当你需要修改静态文件地址时，比如使用 CDN 部署，把 `publicPath` 的值设为 CDN 的值就可以。如果使用一些特殊的文件系统，比如混合开发或者 cordova 等技术，可以尝试将 `publicPath` 设置成 `./`。
 
 ## routes
 
@@ -864,6 +949,41 @@ __webpack_public_path__ = window.publicPath;
 
 然后 webpack 在异步加载 JS 等资源文件时会从 `window.publicPath` 里开始找。
 
+## ssr <Badge>3.2+</Badge>
+
+* Type: `object`
+* Default: `false`
+
+配置是否开启服务端渲染，配置如下：
+
+```js
+{
+  // 一键开启
+  ssr: {
+    // 更多配置
+    // forceInitial: false,
+    // devServerRender: true,
+    // mode: 'string,
+    // staticMarkup: false,
+  }
+}
+```
+
+配置说明：
+
+* `forceInitial`：客户端渲染时强制执行 `getInitialProps` 方法，常见的场景：静态站点希望每次访问时保持数据最新，以客户端渲染为主。
+* `devServerRender`：在 `umi dev` 开发模式下，执行渲染，用于 umi SSR 项目的快速开发、调试，服务端渲染效果所见即所得，同时我们考虑到可能会与服务端框架（如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)）结合做本地开发、调试，关闭后，在 `umi dev` 下不执行服务端渲染，但会生成 `umi.server.js`（Umi SSR 服务端渲染入口文件），渲染开发流程交由开发者处理。
+* `mode`：渲染模式，默认使用 `string` 字符串渲染，同时支持流式渲染 `mode: 'stream'`，减少 TTFB（浏览器开始收到服务器响应数据的时间） 时长。
+* `staticMarkup`：html 上的渲染属性（例如 React 渲染的 `data-reactroot`），常用于静态站点生成的场景上。
+
+注意：
+
+* 开启后，执行 `umi dev` 时，访问 http://localhost:8000 ，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
+* 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
+* 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以开启 [exportStatic](#exportstatic) 配置，会在执行 `umi build` 构建时进行**预渲染**。
+
+了解更多，可点击 [服务端渲染文档](/zh-CN/docs/ssr)。
+
 ## scripts
 
 * Type: `Array`
@@ -879,10 +999,6 @@ __webpack_public_path__ = window.publicPath;
 配置是否启用单数模式的目录。
 
 比如 `src/pages` 的约定在开启后为 `src/page` 目录，[@umijs/plugins](https://github.com/umijs/plugins) 里的插件也遵照此配置的约定。
-
-## ssr
-
-暂未在 umi@3 中实现。
 
 ## styleLoader
 

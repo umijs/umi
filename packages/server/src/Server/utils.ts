@@ -12,6 +12,7 @@ export const getCredentials = (opts: IServerOpts): IHttps => {
     key: join(__dirname, 'cert', 'key.pem'),
     cert: join(__dirname, 'cert', 'cert.pem'),
   };
+  // custom cert using https: { key: '', cert: '' }
   const serverOptions = (https === true
     ? defautlServerOptions
     : https) as IHttps;

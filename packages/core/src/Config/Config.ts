@@ -9,6 +9,7 @@ import {
   lodash,
   parseRequireDeps,
   winPath,
+  getFile,
   createDebug,
 } from '@umijs/utils';
 import assert from 'assert';
@@ -145,8 +146,20 @@ export default class Config {
     if (configFile) {
       let envConfigFile;
       if (process.env.UMI_ENV) {
-        envConfigFile = this.addAffix(configFile, process.env.UMI_ENV);
-        if (!existsSync(join(this.cwd, envConfigFile))) {
+        const envConfigFileName = this.addAffix(
+          configFile,
+          process.env.UMI_ENV,
+        );
+        const fileNameWithoutExt = envConfigFileName.replace(
+          extname(envConfigFileName),
+          '',
+        );
+        envConfigFile = getFile({
+          base: this.cwd,
+          fileNameWithoutExt,
+          type: 'javascript',
+        })?.filename;
+        if (!envConfigFile) {
           throw new Error(
             `get user config failed, ${envConfigFile} does not exist, but process.env.UMI_ENV is set to ${process.env.UMI_ENV}.`,
           );

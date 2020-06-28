@@ -9,6 +9,7 @@ export default (api: IApi) => {
           fileName: joi.string(),
           publicPath: joi.string(),
           basePath: joi.string(),
+          writeToFileEmit: joi.boolean(),
         });
       },
     },

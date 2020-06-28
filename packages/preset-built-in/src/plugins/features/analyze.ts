@@ -1,4 +1,5 @@
 import { IApi } from 'umi';
+import { BundlerConfigType } from '@umijs/types';
 
 export default (api: IApi) => {
   api.describe({
@@ -30,19 +31,21 @@ export default (api: IApi) => {
       },
     },
     enableBy: () => {
-      const ssr = api.config?.ssr;
-      return !!(
-        (process.env.ANALYZE && !ssr) ||
-        (process.env.ANALYZE_SSR && ssr)
-      );
+      return !!(process.env.ANALYZE || process.env.ANALYZE_SSR);
     },
   });
-  api.chainWebpack((webpackConfig) => {
-    webpackConfig
-      .plugin('bundle-analyzer')
-      .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
-        api.config?.analyze || {},
-      ]);
+  api.chainWebpack((webpackConfig, opts) => {
+    const { type } = opts;
+    if (
+      (type == BundlerConfigType.csr && !process.env.ANALYZE_SSR) ||
+      (type === BundlerConfigType.ssr && !process.env.ANALYZE)
+    ) {
+      webpackConfig
+        .plugin('bundle-analyzer')
+        .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
+          api.config?.analyze || {},
+        ]);
+    }
     return webpackConfig;
   });
 };

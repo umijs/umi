@@ -1,6 +1,5 @@
 import address from 'address';
 import chalk from 'chalk';
-import * as cheerio from 'cheerio';
 import spawn from 'cross-spawn';
 import * as chokidar from 'chokidar';
 import clipboardy from 'clipboardy';
@@ -28,7 +27,7 @@ export { spawn };
 export { semver };
 export { address };
 export { chalk };
-export { cheerio };
+export { default as cheerio } from './cheerio/cheerio';
 export { clipboardy };
 export { chokidar };
 export { createDebug, Debugger };
@@ -50,6 +49,8 @@ export { parser };
 export { traverse };
 export { signale };
 
+export * from './ssr';
+export * from './routes';
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';

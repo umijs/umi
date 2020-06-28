@@ -24,7 +24,7 @@ features:
     desc: 同时支持配置式路由和约定式路由，同时保持功能的完备性，比如动态路由、嵌套路由、权限路由等等。
   - icon: https://gw.alipayobjects.com/zos/basement_prod/d078a5a9-1cb3-4352-9f05-505c2e98bc95/k7788v4b_w102_h126.png
     title: 面向未来
-    desc: 在满足需求的同时，我们也不会停止对新技术的探索。比如 modern mode、webpack@5、自动化化 external、bundler less 等等。
+    desc: 在满足需求的同时，我们也不会停止对新技术的探索。比如 modern mode、webpack@5、自动化 external、bundler less 等等。
 footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [dumi](https://d.umijs.org/).
 
 ---
@@ -38,7 +38,7 @@ footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [du
 $ mkdir myapp && cd myapp
 
 # 安装依赖
-$ yarn add umi@next
+$ yarn add umi
 
 # 创建页面
 $ npx umi g page index --typescript --less

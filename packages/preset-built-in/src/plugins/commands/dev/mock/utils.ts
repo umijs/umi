@@ -1,4 +1,10 @@
-import { IApi, RequestHandler, Request } from '@umijs/types';
+import {
+  IApi,
+  RequestHandler,
+  Request,
+  NextFunction,
+  IRoute,
+} from '@umijs/types';
 import { winPath, createDebug, glob } from '@umijs/utils';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -6,6 +12,8 @@ import assert from 'assert';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import pathToRegexp from 'path-to-regexp';
+import { matchRoutes, RouteConfig } from 'react-router-config';
+import { getFlatRoutes } from '../../../commands/htmlUtils';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
@@ -22,7 +30,7 @@ interface IGetMockPaths extends Required<Pick<IApi, 'cwd'>> {
 }
 
 export interface IMockDataItem {
-  method: string[];
+  method: string;
   path: string;
   re: RegExp;
   keys: any[];
@@ -129,7 +137,7 @@ function parseKey(key: string) {
 }
 
 function createHandler(method: any, path: any, handler: any): RequestHandler {
-  return function (req, res, next) {
+  return function (req: Request, res: Response, next: NextFunction) {
     if (BODY_PARSED_METHODS.includes(method)) {
       bodyParser.json({ limit: '5mb', strict: false })(req, res, () => {
         bodyParser.urlencoded({ limit: '5mb', extended: true })(
@@ -196,7 +204,10 @@ function decodeParam(val: any) {
   }
 }
 
-export const matchMock = (req: Request, mockData: any[]) => {
+export const matchMock = (
+  req: Request,
+  mockData: IMockDataItem[],
+): IMockDataItem | undefined => {
   const { path: targetPath, method } = req;
   const targetMethod = method.toLowerCase();
 
@@ -220,4 +231,33 @@ export const matchMock = (req: Request, mockData: any[]) => {
       }
     }
   }
+};
+
+/**
+ * check if mock path conflict with router path
+ * @param param0
+ */
+export const getConflictPaths = ({
+  mockData,
+  routes,
+}: {
+  mockData: IMockDataItem[];
+  routes: IRoute[];
+}): Pick<IMockDataItem, 'path'>[] => {
+  const conflictPaths: Pick<IMockDataItem, 'path'>[] = [];
+  getFlatRoutes({ routes }).forEach((route) => {
+    const { path, redirect } = route;
+    if (path && !path.startsWith(':') && !redirect) {
+      const req = {
+        path: !path.startsWith('/') ? `/${path}` : path,
+        method: 'get',
+      } as Request;
+      const matched = matchMock(req, mockData);
+      if (matched) {
+        conflictPaths.push({ path: matched.path });
+      }
+    }
+  });
+
+  return conflictPaths;
 };

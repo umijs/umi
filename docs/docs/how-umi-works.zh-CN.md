@@ -6,7 +6,7 @@
 
 <img src="https://img.alicdn.com/tfs/TB1hE8ywrr1gK0jSZFDXXb9yVXa-1227-620.png" width="600">
 
-这张图是给内部框架 Bigfish 画的，套到 Umi 上同样合适。他把大家常用的技术栈进行整理，收敛到一起，让大家只用 Umi 就可以完整 80% 的日常工作。
+这张图是给内部框架 Bigfish 画的，套到 Umi 上同样合适。他把大家常用的技术栈进行整理，收敛到一起，让大家只用 Umi 就可以完成 80% 的日常工作。
 
 ## 插件和插件集
 

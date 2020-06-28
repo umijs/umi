@@ -2,8 +2,9 @@ import { FunctionComponent } from 'react';
 import { History, Location } from 'history-with-query';
 import { match } from 'react-router-dom';
 
-interface IComponent extends FunctionComponent {
+export interface IComponent extends FunctionComponent {
   getInitialProps?: Function;
+  preload?: () => Promise<any>;
 }
 
 export interface IRoute {
@@ -18,12 +19,15 @@ export interface IRoute {
   wrappers?: any[];
 }
 
-export interface IRouteComponentProps {
+export interface IRouteComponentProps<
+  Params extends { [K in keyof Params]?: string } = {},
+  Query extends { [K in keyof Query]?: string } = {}
+> {
   children: JSX.Element;
-  location: Location;
+  location: Location & { query: Query };
   route: IRoute;
   history: History;
-  match: match;
+  match: match<Params>;
 }
 
 export { default as renderClient } from './renderClient/renderClient';

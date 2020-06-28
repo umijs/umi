@@ -110,6 +110,26 @@ export default {
 
 表示是否启用 dva model 的热更新。
 
+## dva 运行时配置
+
+通过 `src/app.tsx` 文件配置 dva 创建时的参数。
+
+比如：
+
+```ts
+import { createLogger } from 'redux-logger';
+import { message } from 'antd';
+
+export const dva = {
+  config: {
+    onAction: createLogger(),
+    onError(e: Error) {
+      message.error(e.message, 3);
+    },
+  },
+};
+```
+
 ## umi 接口
 
 常用方法可从 umi 直接 import。

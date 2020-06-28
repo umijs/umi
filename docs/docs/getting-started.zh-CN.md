@@ -86,7 +86,7 @@ Starting the development server...
 
 ## 修改配置
 
-默认的脚手架内置了 @umijs/preset-react，包含布局、权限、国际化、dva、简易数据流等常用功能。比如想要 ant-design-pro 的布局，编辑 `.umirc.ts` 配置 `layout: {}`，
+默认的脚手架内置了 @umijs/preset-react，包含布局、权限、国际化、dva、简易数据流等常用功能。比如想要 ant-design-pro 的布局，编辑 `.umirc.ts` 配置 `layout: {}`，并且需要安装 `@ant-design/pro-layout`。
 
 ```diff
 import { defineConfig } from 'umi';
@@ -155,4 +155,3 @@ $ serve ./dist
 ### 部署
 
 本地验证完，就可以部署了。你需要把 `dist` 目录部署到服务器上。
-

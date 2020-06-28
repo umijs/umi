@@ -1,4 +1,4 @@
-import { IApi } from '@umijs/types';
+import { IApi, BundlerConfigType } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
 import { delay } from '@umijs/utils';
 import assert from 'assert';
@@ -27,8 +27,12 @@ export default (api: IApi) => {
   }
 
   const sharedMap = new Map();
-  api.onDevCompileDone(({ stats }) => {
-    // store chunks
+  api.onDevCompileDone(({ stats, type }) => {
+    // don't need ssr bundler chunks
+    if (type === BundlerConfigType.ssr) {
+      return;
+    }
+    // store client build chunks
     sharedMap.set('chunks', stats.compilation.chunks);
   });
 
@@ -44,6 +48,9 @@ export default (api: IApi) => {
       hostname = process.env.HOST || api.config.devServer?.host || '0.0.0.0';
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
+
+      // enable https, HTTP/2 by default when using --https
+      const isHTTPS = process.env.HTTPS || args?.https;
 
       cleanTmpPathExceptCache({
         absTmpPath: paths.absTmpPath!,
@@ -161,9 +168,10 @@ export default (api: IApi) => {
         args: {},
       });
 
-      const server = new Server({
+      server = new Server({
         ...opts,
         compress: true,
+        https: !!isHTTPS,
         headers: {
           'access-control-allow-origin': '*',
         },

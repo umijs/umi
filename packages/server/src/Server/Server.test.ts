@@ -1,6 +1,7 @@
 import express from 'express';
 import { Server as NetServer } from 'net';
 import http from 'http';
+import http2 from 'http2';
 import { got, delay } from '@umijs/utils';
 import portfinder from 'portfinder';
 import SockJS from 'sockjs-client';
@@ -201,6 +202,54 @@ test('https', async () => {
   server.listeningApp?.close();
 });
 
+test('http2 normal', (done) => {
+  const server = new Server({
+    https: true,
+    beforeMiddlewares: [],
+    afterMiddlewares: [],
+    compilerMiddleware: (req, res, next) => {
+      if (req.path === '/compiler') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('compiler');
+      } else {
+        next();
+      }
+    },
+  });
+  server
+    .listen({
+      port: 3006,
+      hostname: 'localhost',
+    })
+    .then(({ port, hostname }) => {
+      const client = http2.connect(`https://${hostname}:${port}`, {
+        rejectUnauthorized: false,
+      });
+      client.on('error', (err) => {
+        console.error(err);
+      });
+
+      const http2Req = client.request({ ':path': '/compiler' });
+
+      http2Req.on('response', (headers) => {
+        expect(headers[':status']).toEqual(200);
+      });
+
+      http2Req.setEncoding('utf8');
+      let data = '';
+      http2Req.on('data', (chunk) => {
+        data += chunk;
+      });
+      http2Req.on('end', () => {
+        expect(data).toEqual('compiler');
+        client.close();
+        server.listeningApp?.close();
+        done();
+      });
+      http2Req.end();
+    });
+});
+
 describe('proxy', () => {
   const host = 'localhost';
   let proxyServer1: http.Server;
@@ -322,6 +371,61 @@ describe('proxy', () => {
 
     const { body: proxy2Body } = await got(`http://${hostname}:${port}/api2`);
     expect(proxy2Body).toEqual(
+      JSON.stringify({
+        hello: 'umi proxy2',
+      }),
+    );
+    server.listeningApp?.close();
+  });
+
+  it('proxy config refresh', async () => {
+    const server = new Server({
+      beforeMiddlewares: [],
+      afterMiddlewares: [],
+      compilerMiddleware: (req, res, next) => {
+        if (req.path === '/compiler') {
+          res.end('compiler');
+        } else {
+          next();
+        }
+      },
+      proxy: {
+        '/api': {
+          target: `http://${host}:${proxyServer1Port}`,
+          changeOrigin: true,
+        },
+      },
+    });
+    const { port, hostname } = await server.listen({
+      port: 3000,
+      hostname: host,
+    });
+    const { body: compilerBody } = await got(
+      `http://${hostname}:${port}/compiler`,
+    );
+    expect(compilerBody).toEqual('compiler');
+
+    const { body: proxyBody } = await got(`http://${hostname}:${port}/api`);
+    expect(proxyBody).toEqual(
+      JSON.stringify({
+        hello: 'umi proxy',
+      }),
+    );
+
+    // change proxy config
+    const newProxy = {
+      // @ts-ignore
+      '/api2': {
+        target: `http://${host}:${proxyServer2Port}`,
+        changeOrigin: true,
+      },
+    };
+    server.setupProxy(newProxy, true);
+
+    const { body: proxyChangeBody } = await got(
+      `http://${hostname}:${port}/api2`,
+    );
+    expect(proxyChangeBody).toEqual(
       JSON.stringify({
         hello: 'umi proxy2',
       }),

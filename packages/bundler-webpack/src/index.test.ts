@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { getFile, rimraf, portfinder } from '@umijs/utils';
-import { ConfigType } from '@umijs/bundler-utils';
+import { BundlerConfigType } from '@umijs/types';
 import { Bundler } from './index';
 import { Server } from '@umijs/server';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
@@ -35,7 +35,7 @@ readdirSync(fixtures).forEach((fixture) => {
     const env = fixture.includes('-production') ? 'production' : 'development';
     const webpackConfig = await bundler.getConfig({
       env,
-      type: ConfigType.csr,
+      type: BundlerConfigType.csr,
       entry: {
         index: getFile({
           base: cwd,
@@ -86,7 +86,7 @@ test.skip('dev', async () => {
   // get config
   const webpackConfig = await bundler.getConfig({
     env: 'development',
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
     entry: {
       index: getFile({
         base: cwd,

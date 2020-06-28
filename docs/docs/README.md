@@ -16,7 +16,7 @@ Umi is the underlying front-end framework of Ant Financial, and has directly or 
 
 It mainly has the following functions:
 
-* 🎉 *extensible* Umi has realized the complete life cycle and made it plug-in. Umi's internal functions are also completed by plug-ins. Plug-ins and plug-in sets are also supported to meet the hierarchical needs of functionality and vertical domains.
+* 🎉 *Extensible* Umi has realized the complete life cycle and made it plug-in. Umi's internal functions are also completed by plug-ins. Plug-ins and plug-in sets are also supported to meet the hierarchical needs of functionality and vertical domains.
 * 📦 *Out of the box* Umi has built-in routing, building, deployment, testing, and so on, and requires only one dependency to get started. It also provides an integrated plug-in set for React with rich content, which can meet 80% of the daily development needs.
 * 🐠 *Enterprise level* Umi has been verified by Ant's internal 3000+ projects and company projects such as Ali, Youku, Netease, Flying Pig, Word of Mouth and so on.
 * 🚀 *Based on research* including micro-front end, component packaging, documentation tools, request library, hooks library, data flow, etc., to meet the peripheral needs of daily projects.

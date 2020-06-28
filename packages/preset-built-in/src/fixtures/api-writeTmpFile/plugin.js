@@ -1,4 +1,3 @@
-
 module.exports = (api) => {
   api.registerCommand({
     name: 'foo',

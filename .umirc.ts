@@ -1,4 +1,5 @@
 // Config for dumi
+import { defineConfig } from 'umi';
 
 function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
   const menus = {
@@ -15,10 +16,13 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/plugins/plugin-antd',
           '/plugins/plugin-crossorigin',
           '/plugins/plugin-dva',
+          '/plugins/plugin-esbuild',
+          '/plugins/plugin-helmet',
           '/plugins/plugin-initial-state',
           '/plugins/plugin-layout',
           '/plugins/plugin-locale',
           '/plugins/plugin-model',
+          '/plugins/plugin-preact',
           '/plugins/plugin-qiankun',
           '/plugins/plugin-request',
           '/plugins/plugin-sass',
@@ -104,7 +108,8 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
 
 const isDev = process.env.NODE_ENV === 'development';
 
-export default {
+export default defineConfig({
+  ssr: {},
   favicon: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   mode: 'site',
   title: 'UmiJS',
@@ -134,10 +139,9 @@ export default {
     type: 'none',
   },
   exportStatic: {},
-  dynamicImport: {},
   analytics: isDev
     ? false
     : {
         ga: 'UA-149864185-1',
       },
-};
+});

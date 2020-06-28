@@ -1,5 +1,5 @@
+import { BundlerConfigType } from '@umijs/types';
 import getTargetsAndBrowsersList from './getTargetsAndBrowsersList';
-import { ConfigType } from './enums';
 
 const configTargets = {
   ie: 10,
@@ -13,7 +13,7 @@ test('csr', () => {
     config: {
       targets: configTargets,
     },
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(targets).toEqual({
     chrome: 0,
@@ -26,7 +26,7 @@ test('csr', () => {
 test('csr with null targets', () => {
   const { targets, browserslist } = getTargetsAndBrowsersList({
     config: {},
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(targets).toEqual({});
   expect(browserslist).toEqual([]);
@@ -40,7 +40,7 @@ test('csr targets with false', () => {
         bar: false,
       },
     },
-    type: ConfigType.csr,
+    type: BundlerConfigType.csr,
   });
   expect(targets).toEqual({
     foo: 1,
@@ -52,7 +52,7 @@ test('ssr', () => {
     config: {
       targets: configTargets,
     },
-    type: ConfigType.ssr,
+    type: BundlerConfigType.ssr,
   });
   expect(targets).toEqual({
     node: 6,

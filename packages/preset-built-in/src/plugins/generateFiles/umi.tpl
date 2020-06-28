@@ -17,9 +17,13 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
       routes: require('./core/routes').routes,
       plugin,
       history: createHistory(args.hot),
+      isServer: process.env.__IS_SERVER,
+{{#dynamicImport}}
+      dynamicImport: {{{ dynamicImport }}},
+{{/dynamicImport}}
       rootElement: '{{{ rootElement }}}',
 {{#enableTitle}}
-      defaultTitle: '{{{ defaultTitle }}}',
+      defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
     });
   },
