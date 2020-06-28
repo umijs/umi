@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593313626319,
+  "lastUpdate": 1593357649258,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6254,6 +6254,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.89%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "48e0aa5f1efd87a42acd021bef3ecd7264957e15",
+          "message": " docs(qiankun): 更新 qiankun 2.0 插件文档 (#4427)\n\n* docs(qiankun): 更新 qiankun 插件文档\r\n\r\n(cherry picked from commit 9fa1c89768f68f563aae4e95769b71d5af0123ea)\r\n\r\n* docs(qiankun): translate\r\n\r\n* docs(qiankun): :drunk:\r\n\r\n* docs(qiankun): :drunk:\r\n\r\n* docs(qiankun): add changelog\r\n\r\n* docs(qiankun): 缩进调整\r\n\r\n* docs(qiankun): 更新文档\r\n\r\n* docs(qiankun): typo\r\n\r\n* docs(qiankun): typo\r\n\r\n* docs: 增加 qiankun 插件配合 useModel 使用的文档\r\n\r\n* docs(qiankun): update doc\r\n\r\nCo-authored-by: troy.lty <troy.lty@alipay.com>",
+          "timestamp": "2020-06-28T23:18:28+08:00",
+          "tree_id": "915913842765474e9be51f2a4eb4658703fc1985",
+          "url": "https://github.com/umijs/umi/commit/48e0aa5f1efd87a42acd021bef3ecd7264957e15"
+        },
+        "date": 1593357646219,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1514,
+            "range": "±3.48%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2379,
+            "range": "±4.33%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
