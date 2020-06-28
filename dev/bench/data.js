@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593357649258,
+  "lastUpdate": 1593358763566,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6292,6 +6292,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.33%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "be5084e90820b1754973a12665e89bffeff0bf6f",
+          "message": "docs(qiankun): fix indentation (#4922)",
+          "timestamp": "2020-06-28T23:36:53+08:00",
+          "tree_id": "232f6dd960f3804b4358b4677e7dc7e33d4133dd",
+          "url": "https://github.com/umijs/umi/commit/be5084e90820b1754973a12665e89bffeff0bf6f"
+        },
+        "date": 1593358760849,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1422,
+            "range": "±2.45%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2214,
+            "range": "±4.65%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
