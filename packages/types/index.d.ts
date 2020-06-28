@@ -314,6 +314,7 @@ interface BaseIConfig extends IConfigCore {
     type: 'browser' | 'hash' | 'memory';
     options?: object;
   };
+  runtimeHistory?: object;
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   lessLoader?: object;

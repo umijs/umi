@@ -62,6 +62,7 @@ export default function () {
       require.resolve('./plugins/features/terserOptions'),
       require.resolve('./plugins/features/theme'),
       require.resolve('./plugins/features/umiInfo'),
+      require.resolve('./plugins/features/runtimeHistory'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
