@@ -35,13 +35,13 @@ $ cd packages/plguin-qiankun && yarn start
 
 ## Usage
 
-### 主应用
+### 主应用配置
 
 #### 第一步：注册子应用
 
 子应用注册有两种方式，**二选一即可**
 
-##### 在构建期配置子应用
+##### a. 插件构建期配置子应用
 
 ```js
 export default {
@@ -63,7 +63,7 @@ export default {
 };
 ```
 
-##### 在运行时动态配置子应用（src/app.js 里开启）
+##### b. 运行时动态配置子应用（src/app.ts 里开启）
 
 ```js
 // 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
@@ -86,7 +86,7 @@ export const qiankun = fetch('/config').then(({ apps }}) => ({
 
 子应用的装载有两种方式，**二选一即可：**
 
-##### 使用路由绑定的方式
+##### <a name="RouteBased">a. 使用路由绑定的方式</a>
 
 假设我们的系统之前有这样的一些路由：
 
@@ -137,7 +137,7 @@ export default {
 +            // 配置微应用 app1 关联的路由
 +            {
 +              path: '/app1/project',
-+	           microApp: 'app1',
++	             microApp: 'app1',
 +            },
           ],
         },
@@ -156,7 +156,7 @@ export default {
 }
 ```
 
-##### <a name="MicroApp">使用 `<MicroApp />` 组件的方式</a>
+##### b. <a name="MicroApp">使用 `<MicroApp />` 组件的方式</a>
 
 我们可以直接使用 React 标签的方式加载我们已注册过的子应用：
 
@@ -175,7 +175,7 @@ export function MyPage() {
 }
 ```
 
-### 子应用
+### 子应用配置
 
 #### 第一步：插件注册（config.js）
 
@@ -187,18 +187,9 @@ export default {
 }
 ```
 
-如果子应用配置项为空，即 slave: {}，则可以省略配置：
-
-```js
-export default {
-  base: `/${appName}`, // 子应用的 base，默认为 package.json 中的 name 字段
-  plugins: ['@umijs/plugin-qiankun'],
-};
-```
-
 #### 第二步：配置运行时生命周期钩子（可选）
 
-在子应用的 `src/app.js` 里输出 `qiankun`，`props` 由主应用注入。
+如果你需要在子应用的生命周期期间加一些自定义逻辑，可以在子应用的 `src/app.ts` 里导出 `qiankun` 对象，并实现每一个生命周期钩子，其中钩子函数的入参 `props` 由主应用自动注入。
 
 ```js
 export const qiankun = {
@@ -227,11 +218,46 @@ PORT=8081
 
 详细配置参考：https://umijs.org/zh/guide/env-variables.html#port
 
-## 父子应用通讯
+### 父子应用通讯
 
 有两种方式可以实现
 
-### 基于 props 传递
+#### 配合 useModel 使用（推荐）
+
+1. 主应用使用下面任一方式透传数据：
+
+   1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
+
+      ```js
+      function MyPage() {
+        const [name, setName] = useState(null);
+        return <MicroApp name={name} onNameChange={newName => setName(newName)} />
+      }
+      ```
+      
+   2. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
+      ```ts
+   // src/app.ts
+   export function useQiankunStateForSlave() {
+        const [globalState, setGlobalState] = useState({});
+       
+        return {
+          globalState,
+          setGlobalState,
+        }
+      }
+      ```
+   
+2. 微应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
+
+   ```jsx
+   import { useModel } from 'umi';
+   const masterProps = useModel('qiankunStateFromMaster');
+   ```
+
+3. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 `masterProps.setLoading(false)`，可以标记微模块的整体 loading 为完成状态。
+
+#### 基于 props 传递
 
 类似 react 中组件间通信的方案
 
@@ -239,7 +265,7 @@ PORT=8081
 
    ```js
    // src/app.js
-
+   
    export const qiankun = fetch('/config').then(config => {
      return {
        apps: [
@@ -248,7 +274,8 @@ PORT=8081
            entry: '//localhost:2222',
            props: {
              onClick: event => console.log(event),
-             ...config,
+             name: 'xx',
+             age: 1,
            },
          },
        ],
@@ -258,32 +285,16 @@ PORT=8081
 
 2. 子应用在生命周期钩子中获取 props 消费数据（参考子应用运行时配置一节）
 
-### 基于 Hooks 共享数据
-
-由于方案基于 react hook，所以只能在 functional component 中使用相关 api，无法在 class component 中使用。
-
-1. 约定父应用中在 `src/rootExports.js` 里 export 内容
-2. 子应用中通过 `import { useRootExports } from 'umi'; const rootExports = useRootExports();` 取到
-
-### 配合 useModel 使用
-
-1. 如果同时启用了 @umijs/plugin-qiankun 和 @umijs/plugin-model，子应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
-
-```js
-  const masterProps = useModel('@@qiankun');
-```
-
-2. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 masterProps.setLoading(false)，可以标记微模块的整体 loading 为完成状态。
-
-### <a name="masterOptions">MasterOptions</a>
+### API
+#### <a name="masterOptions">MasterOptions</a>
 
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
-| apps | 子应用配置 | App[] | 是 |  |
+| apps | 子应用配置 | [App](#AppOpts)[] | 是 |  |
 | sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | false |
-| prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| string | 否 | true |
+| prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| 'all' | 否 | true |
 
-#### App
+#### <a name="AppOpts">App</a>
 
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
@@ -291,9 +302,87 @@ PORT=8081
 | entry | 子应用 html 地址 | string \| { script: string[], styles: [] } | 是 |  |
 | props | 主应用传递给子应用的数据 | object | 否 | {} |
 
+## 升级指南
+
+v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最新版本已获得更好的开发体验。
+
+1. 移除无必要的应用配置
+
+   ```diff
+   export default {
+     qiankun: {
+       master: {
+         apps: [
+           {
+             name: 'microApp',
+             entry: '//umi.dev.cnd/entry.html',
+   -         base: '/microApp',
+   -         mountElementId: 'microApp',
+   -         history: 'browser',
+           }
+         ]
+       }
+     }
+   }
+   ```
+
+2. 移除无必要的全局配置
+
+   ```diff
+   export default {
+     qiankun: {
+       master: {
+         apps: [],
+   -     defer: true,
+       }
+     }
+   }
+   ```
+
+3. 关联微应用
+
+   比如我们之前配置了微应用名为 `microApp` 的 base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
+
+   a. 增加 `/microApp` 的路由
+
+   ```jsx
+   export default {
+     routes: [
+       ...,
+       { path: '/microApp', microApp: 'microApp' }
+     ]
+   }
+   ```
+
+   **使用路由关联模式时，不再需要微应用的 base 配置必须跟主应用中的保持一致了。**
+
+   b. 在 `/microApp` 路由对应的组件里使用 `MicroApp`
+
+   ```jsx
+   export default {
+     routes: [
+       ...,
+       { path: '/microApp', component: 'MyPage' }
+     ]
+   }
+   ```
+
+   ```jsx
+   import { MicroApp } from 'umi';
+   export default MyPage() {
+     return (
+       <div>
+     		<MicroApp name="microApp" />
+   	  </div>
+     )
+   }
+   ```
+
+4. 移除一些无效配置，如 [手动添加子应用路由配置](https://github.com/umijs/umi-plugin-qiankun#1-主应用新建-pagessubappcontainerjs)
+
 ## CHANGELOG
 
-### 与 @umijs/plugin-qiankun 1.x 的变化
+### 与 @umijs/plugin-qiankun 2.3.0 之前版本的变化
 
 * 主应用注册子应用时不再需要手动配置 base 和 mountElementId。
 
@@ -302,10 +391,35 @@ PORT=8081
   现在只需要在注册完子应用后，在期望的路由下指定需要挂载的子应用的 name 即可。
 
 * 可以直接通过 `<MicroApp />` 组件的方式在任意位置挂载自己的子应用。详见 [API 说明](#MicroApp)
+
 * 不再支持主应用是 browser 路由模式，子应用是 hash 路由的混合模式。如果有场景需要可以通过自己使用 `<MicroApp />`组件加载子应用。
+
 * 移除了 base、mountElementId、defer 等配置，现在有更好的方式来解决这类问题，参见第一条。
+
 * rename `jsSandbox` -> `sandbox`，来自 qiankun2.0 的升级。
+
 * **完全兼容 1.x 插件。**
+
+## Roadmap
+
+- [ ] 动态 history type 支持
+
+  通过运行时设置微应用 props 的方式，修改微应用 history 相关配置，从而解耦微应用配置，如：
+
+  ```tsx
+  // HistoryOptions 配置见 https://github.com/ReactTraining/history/blob/master/docs/api-reference.md
+  type HistoryProp = { type: 'browser' | 'memory' | 'hash' } & HistoryOptions;
+  
+  <MicroApp history={{ type: 'browser', basename: '/microApp' }} />
+  ```
+
+- [ ] 运行时统一，针对多层嵌套微应用场景
+
+- [ ] 微应用自动 mountElementId，避免多个 umi 子应用 mountElementId 冲突
+
+- [ ] 自动 loading
+
+- [ ] 本地集成开发支持
 
 ## 相关
 
