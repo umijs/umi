@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593312721207,
+  "lastUpdate": 1593313539624,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6178,6 +6178,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.50%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d68e4c74acd0751873d8f1130059475e98d2c4d1",
+          "message": "Revert \"feat: support hmr with async routes module (#4789)\" (#4917)\n\nThis reverts commit a105560b4bca6b053961d947477b5c07502ea9b8.",
+          "timestamp": "2020-06-28T11:02:19+08:00",
+          "tree_id": "743db674ea2d0d76e33e855c2ea22c1f0018f50b",
+          "url": "https://github.com/umijs/umi/commit/d68e4c74acd0751873d8f1130059475e98d2c4d1"
+        },
+        "date": 1593313536056,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1127,
+            "range": "±5.44%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1841,
+            "range": "±5.31%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
