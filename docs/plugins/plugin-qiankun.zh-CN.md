@@ -372,8 +372,8 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    export default MyPage() {
      return (
        <div>
-     		<MicroApp name="microApp" />
-   	  </div>
+         <MicroApp name="microApp" />
+       </div>
      )
    }
    ```
@@ -402,7 +402,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
 
 ## Roadmap
 
-- [ ] 动态 history type 支持
+- [ ] 动态 history type 支持（即将到来 🎉）
 
   通过运行时设置微应用 props 的方式，修改微应用 history 相关配置，从而解耦微应用配置，如：
 
