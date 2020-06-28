@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593312631837,
+  "lastUpdate": 1593312721207,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6140,6 +6140,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.85%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "corona7@163.com",
+            "name": "zollero",
+            "username": "zollero"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "91202fea9c8c053d9cb4be0261790c823e2d2007",
+          "message": "docs: type error api.zh-CN.md (#4915)",
+          "timestamp": "2020-06-28T10:49:25+08:00",
+          "tree_id": "e86a104a4c1a188c3ab59b9ab5daf0665951ac84",
+          "url": "https://github.com/umijs/umi/commit/91202fea9c8c053d9cb4be0261790c823e2d2007"
+        },
+        "date": 1593312717953,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1362,
+            "range": "±2.87%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2116,
+            "range": "±5.50%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
