@@ -63,6 +63,7 @@ export default function () {
       require.resolve('./plugins/features/theme'),
       require.resolve('./plugins/features/umiInfo'),
       require.resolve('./plugins/features/runtimeHistory'),
+      require.resolve('./plugins/features/convention-404'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
