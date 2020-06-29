@@ -145,6 +145,9 @@ export default (context: any, opts: IOpts = {}) => {
         require.resolve('@umijs/babel-plugin-lock-core-js-3'),
         opts.lockCoreJS3,
       ],
+      opts.typescript && [
+        require.resolve('babel-plugin-transform-typescript-metadata'),
+      ],
     ].filter(Boolean),
   };
 };
