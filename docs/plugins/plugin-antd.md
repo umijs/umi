@@ -51,6 +51,39 @@ export default {
 
 启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
 
+### config
+
+使用 antd 的全局化配置。
+
+* Type: `object`
+* Default: `{}`
+
+支持 [ConfigProvider](https://ant.design/components/config-provider-cn/) 的配置。
+
+比如：
+
+```js
+export default {
+  antd: {
+    config:{
+        componentSize:'small'
+    }
+  },
+}
+```
+#### 运行时配置
+
+##### antd
+
+* Type: `object`
+
+```typescript
+// src/app.ts
+export const antd = {
+  componentSize:'small'
+}
+```
+
 ## FAQ
 
 ### 如何使用 antd 的其他版本？
