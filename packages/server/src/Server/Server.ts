@@ -1,12 +1,6 @@
 // @ts-ignore
 import { Logger } from '@umijs/core';
-import {
-  lodash,
-  portfinder,
-  PartialProps,
-  semver,
-  createDebug,
-} from '@umijs/utils';
+import { lodash, portfinder, PartialProps, createDebug } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
 import {
   createProxyMiddleware,
@@ -15,7 +9,7 @@ import {
   Filter as ProxyFilter,
 } from 'http-proxy-middleware';
 import * as http from 'http';
-import { ServerOptions } from 'spdy';
+import spdy, { ServerOptions } from 'spdy';
 import * as url from 'url';
 import https from 'https';
 import compress, { CompressionOptions } from 'compression';
@@ -48,7 +42,6 @@ export interface IServerOpts {
   beforeMiddlewares?: RequestHandler<any>[];
   compilerMiddleware?: RequestHandler<any> | null;
   https?: IHttps | boolean;
-  http2?: boolean;
   headers?: {
     [key: string]: string;
   };
@@ -79,8 +72,8 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   beforeMiddlewares: [],
   compilerMiddleware: null,
   compress: true,
-  https: !!process.env.HTTPS,
-  http2: false,
+  // enable by default if add HTTP2
+  https: !!process.env.HTTP2 ? true : !!process.env.HTTPS,
   onListening: (argv) => argv,
   onConnection: () => {},
   onConnectionClose: () => {},
@@ -391,18 +384,11 @@ class Server {
     });
   }
 
-  private isHttp2() {
-    return this.opts.http2 !== false;
-  }
-
   createServer() {
     const httpsOpts = this.getHttpsOptions();
     if (httpsOpts) {
-      if (semver.gte(process.version, '10.0.0') && !this.isHttp2()) {
-        this.listeningApp = https.createServer(httpsOpts, this.app);
-      } else {
-        this.listeningApp = require('spdy').createServer(httpsOpts, this.app);
-      }
+      // http2 using spdy, HTTP/2 by default when using https
+      this.listeningApp = spdy.createServer(httpsOpts, this.app);
     } else {
       this.listeningApp = http.createServer(this.app);
     }

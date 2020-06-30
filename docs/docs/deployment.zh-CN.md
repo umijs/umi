@@ -62,7 +62,7 @@ export default {
 
 ## 使用 runtime 的 publicPath
 
-对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh/config/#runtimepublicpath) 为解决。 
+对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh-CN/config/#runtimepublicpath) 为解决。 
 
 ```bash
 export default {

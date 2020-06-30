@@ -79,7 +79,7 @@ console.log(foo); // ['a', 'b']
 注：
 
 - fn 支持同步和异步，异步通过 Promise，返回值为 Promise 即为异步
-- fn 里的内容需结合 `api.appyPlugins` 的 type 参数来看 _ 如果是 `api.ApplyPluginsType.add`，需有返回值，这些返回值最终会被合成一个数组 _ 如果是 `api.ApplyPluginsType. modify`，需对第一个参数做修改，并返回 \* 如果是 `api.ApplyPluginsType. event`，无需返回值
+- fn 里的内容需结合 `api.appyPlugins` 的 type 参数来看 _ 如果是 `api.ApplyPluginsType.add`，需有返回值，这些返回值最终会被合成一个数组 _ 如果是 `api.ApplyPluginsType.modify`，需对第一个参数做修改，并返回 \* 如果是 `api.ApplyPluginsType.event`，无需返回值
 - stage 和 before 都是用于调整执行顺序的，参考 [tapable](https://github.com/webpack/tapable)
 - stage 默认是 0，设为 -1 或更少会提前执行，设为 1 或更多会后置执行
 

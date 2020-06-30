@@ -34,4 +34,4 @@ export default (props) => (
 );
 ```
 
-更多命令式的跳转方法，详见 [api#history](/zh/api#history)。
+更多命令式的跳转方法，详见 [api#history](/zh-CN/api#history)。

@@ -22,6 +22,7 @@ import WebpackChain from 'webpack-chain';
 import { Express, NextFunction, RequestHandler } from 'express';
 import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
+import { Stream } from 'stream';
 
 export enum BundlerConfigType {
   csr = 'csr',
@@ -84,7 +85,7 @@ interface ICreateCSSRule {
 }
 
 type IPresetOrPlugin = string | [string, any];
-type IBabelPresetOrPlugin = string | [string, any, string?];
+type IBabelPresetOrPlugin = Function | string | [string, any, string?];
 type env = 'development' | 'production';
 
 type IRouteMap = Array<{ route: Pick<IRoute, 'path'>; file: string }>;
@@ -313,6 +314,7 @@ interface BaseIConfig extends IConfigCore {
     type: 'browser' | 'hash' | 'memory';
     options?: object;
   };
+  runtimeHistory?: object;
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   lessLoader?: object;
@@ -350,6 +352,30 @@ type WithFalse<T> = {
   [P in keyof T]?: T[P] | false;
 };
 
+interface IServerRenderParams {
+  path: string;
+  htmlTemplate?: string;
+  mountElementId?: string;
+  context?: object;
+  mode?: 'string' | 'stream';
+  basename?: string;
+  staticMarkup?: boolean;
+  forceInitial?: boolean;
+  getInitialPropsCtx?: object;
+  manifest?: string;
+  [k: string]: any;
+}
+
+interface IServerRenderResult<T = string | Stream> {
+  rootContainer: T;
+  html: T;
+  error: Error;
+}
+
+interface IServerRender<T = string> {
+  (params: IServerRenderParams): Promise<IServerRenderResult<T>>;
+}
+
 export type IConfig = WithFalse<BaseIConfig>;
 
 export { webpack };
@@ -357,3 +383,4 @@ export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
 
 export { History, Location, IRouteProps, IRouteComponentProps };
+export { IServerRender, IServerRenderParams, IServerRenderResult };

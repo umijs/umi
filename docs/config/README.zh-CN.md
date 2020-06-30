@@ -339,8 +339,7 @@ if (false) {
 
 * port，端口号，默认 `8000`
 * host，默认 `0.0.0.0`
-* https，是否启用 https server
-* http2，是否启用 http2
+* https，是否启用 https server，同时也会开启 HTTP/2
 * writeToDisk，生成 `assets` 到文件系统
 
 启用 port 和 host 也可以通过环境变量 PORT 和 HOST 临时指定。
@@ -932,6 +931,22 @@ export default {
 
 * `component` 的值如果是相对路径，会以 `src/pages` 为基础路径开始解析
 * 如果配置了 `routes`，则优先使用配置式路由，且约定式路由会不生效
+
+## runtimeHistory
+
+* Type: `object`
+
+配置是否需要动态变更 history 类型。
+
+设置 runtimeHistory 后，可以在运行时动态修改 history 类型。
+
+```js
+import { setCreateHistoryOptions } from 'umi';
+
+setCreateHistoryOptions({
+  type: 'memory'
+});
+```
 
 ## runtimePublicPath
 
