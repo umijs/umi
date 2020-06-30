@@ -28,7 +28,11 @@ export default function (api: IApi) {
       join(
         __dirname,
         // @ts-ignore
-        api.config.history === false ? 'history.sham.tpl' : 'history.tpl',
+        api.config.runtimeHistory
+          ? 'history.runtime.tpl'
+          : api.config.history === false
+          ? 'history.sham.tpl'
+          : 'history.tpl',
       ),
       'utf-8',
     );
