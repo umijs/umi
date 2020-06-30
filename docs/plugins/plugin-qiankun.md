@@ -226,7 +226,7 @@ PORT=8081
 
 有两种方式可以实现
 
-#### 配合 useModel 使用（推荐）
+#### 配合 [useModel](https://umijs.org/plugins/plugin-model) 使用（推荐）
 
 1. 主应用使用下面任一方式透传数据：
 
@@ -256,7 +256,11 @@ PORT=8081
 
    ```jsx
    import { useModel } from 'umi';
-   const masterProps = useModel('qiankunStateFromMaster');
+   
+   function MyPage() {
+     const masterProps = useModel('@@qiankunStateFromMaster');
+     return <div>{ JSON.strigify(masterProps) }</div>;
+   }
    ```
 
 3. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 `masterProps.setLoading(false)`，可以标记微模块的整体 loading 为完成状态。
@@ -321,7 +325,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
              name: 'microApp',
              entry: '//umi.dev.cnd/entry.html',
    -         base: '/microApp',
-   -         mountElementId: 'microApp',
+   -         mountElementId: 'root-subapp',
    -         history: 'browser',
            }
          ]
@@ -343,7 +347,19 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    }
    ```
 
-3. 关联微应用
+3. 移除不必要的挂载容器
+
+   ```diff
+   -export default MyContainer() {
+   -  return (
+   -    <div>
+   -      <div id="root-subapp"></div>
+   -    </div>
+   -  )
+   -}
+   ```
+   
+4. 关联微应用
 
    比如我们之前配置了微应用名为 `microApp` 的 base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
 
@@ -382,7 +398,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    }
    ```
 
-4. 移除一些无效配置，如 [手动添加子应用路由配置](https://github.com/umijs/umi-plugin-qiankun#1-主应用新建-pagessubappcontainerjs)
+5. 移除一些无效配置，如 [手动添加子应用路由配置](https://github.com/umijs/umi-plugin-qiankun#1-主应用新建-pagessubappcontainerjs)
 
 ## CHANGELOG
 
