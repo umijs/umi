@@ -1,8 +1,6 @@
 const os = require('os');
 test('with img', async () => {
-  await page.goto(
-    'https://umijs.org/docs/how-umi-works#configurational-routing-and-contractual-routing',
-  );
+  await page.goto('https://umijs.org/zh-CN');
 
   const image = await page.screenshot({
     fullPage: true,

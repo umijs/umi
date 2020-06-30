@@ -7,6 +7,7 @@ import assert from 'assert';
 import { IUmiTestArgs } from '../types';
 
 export default function (cwd: string, args: IUmiTestArgs) {
+  const { OPEN_AUTO_E2E_FOR_UMI_TEST } = process.env;
   const testMatchTypes = ['spec', 'test'];
   const { e2e } = args;
 
@@ -46,7 +47,10 @@ export default function (cwd: string, args: IUmiTestArgs) {
     },
     setupFiles: [require.resolve('../../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../../helpers/setupFiles/jasmine')],
-    testEnvironment: winPath(join(__dirname, '../e2e/PuppeteerEnvironment')),
+    testEnvironment:
+      OPEN_AUTO_E2E_FOR_UMI_TEST === 'OPEN'
+        ? winPath(join(__dirname, '../e2e/PuppeteerEnvironment'))
+        : require.resolve('jest-environment-jsdom-fourteen'),
     testMatch: [
       `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
     ],

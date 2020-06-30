@@ -37,8 +37,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
       );
     };
 
-    const getText = () =>
-      page.evaluate(() => document.body.innerText);
+    const getText = () => page.evaluate(() => document.body.innerText);
 
     /**
      * 滑动到页面底部，然后截图
