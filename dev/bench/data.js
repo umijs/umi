@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593358763566,
+  "lastUpdate": 1593489102548,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6330,6 +6330,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.65%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "576679268@qq.com",
+            "name": "砖家",
+            "username": "brickspert"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1f2455647b45c245f6403f35bb6b3cc8468906f4",
+          "message": "feat: 支持动态修改 history 类型及属性 (#4910)\n\n* feat: 支持动态修改 history 类型及属性\r\n\r\n* feat: add runtimeHistory config\r\n\r\n* docs: add runtimeHistory doc",
+          "timestamp": "2020-06-30T11:49:05+08:00",
+          "tree_id": "a132427504b5965beb9ff26ccdd8db1b6bf35302",
+          "url": "https://github.com/umijs/umi/commit/1f2455647b45c245f6403f35bb6b3cc8468906f4"
+        },
+        "date": 1593489099856,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1428,
+            "range": "±2.99%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2440,
+            "range": "±4.59%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
