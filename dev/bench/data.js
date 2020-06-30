@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593489102548,
+  "lastUpdate": 1593498120233,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6368,6 +6368,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.59%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7d54c52d5d5fc33176510de51e97cbd285832a86",
+          "message": "docs(qiankun): fix typo and add useModel link (#4934)",
+          "timestamp": "2020-06-30T14:19:27+08:00",
+          "tree_id": "bee1929c15a5303fbb5b3b1a1ef5919a88d5324d",
+          "url": "https://github.com/umijs/umi/commit/7d54c52d5d5fc33176510de51e97cbd285832a86"
+        },
+        "date": 1593498117060,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1410,
+            "range": "±2.64%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2355,
+            "range": "±3.73%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
