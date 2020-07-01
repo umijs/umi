@@ -69,7 +69,9 @@ function findAssignmentExpressionProps(opts: {
         resolver.is(t.isAssignmentExpression(node) && node.right),
       );
       if (resolver) {
-        props[node.left.property.name] = resolver.get(node.right as any);
+        props[(node.left.property as any).name] = resolver.get(
+          node.right as any,
+        );
       }
     }
   }
