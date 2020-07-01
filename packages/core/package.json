@@ -24,8 +24,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.9.0",
-    "@babel/register": "7.9.0",
+    "@babel/core": "7.10.4",
+    "@babel/register": "7.10.4",
     "@hapi/joi": "16.1.8",
     "@types/ejs": "3.0.2",
     "@types/hapi__joi": "16.0.12",

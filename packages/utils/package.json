@@ -24,10 +24,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/parser": "7.9.4",
-    "@babel/register": "7.9.0",
-    "@babel/traverse": "7.9.5",
-    "@babel/types": "7.9.5",
+    "@babel/parser": "7.10.4",
+    "@babel/register": "7.10.4",
+    "@babel/traverse": "7.10.4",
+    "@babel/types": "7.10.4",
     "@types/cheerio": "0.22.17",
     "@types/color": "3.0.1",
     "@types/cross-spawn": "6.0.1",
