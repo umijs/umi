@@ -51,7 +51,7 @@
     "react-router-config": "5.1.1",
     "react-router-dom": "5.2.0",
     "regenerator-runtime": "0.13.5",
-    "serialize-javascript": "3.0.0",
+    "serialize-javascript": "4.0.0",
     "umi-webpack-bundle-analyzer": "3.5.0",
     "zlib": "1.0.5"
   }
