@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593575290483,
+  "lastUpdate": 1593578680900,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6444,6 +6444,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.05%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "008454ea4628b20a8f14817967142d74d695cce6",
+          "message": "dep: upgrade babel to 7.10 (#4943)\n\n* dep: upgrade babel to 7.10\r\n\r\n* fix: ts problem",
+          "timestamp": "2020-07-01T12:41:30+08:00",
+          "tree_id": "f5789061fc27f356e4f4319bed511965aa64606e",
+          "url": "https://github.com/umijs/umi/commit/008454ea4628b20a8f14817967142d74d695cce6"
+        },
+        "date": 1593578677338,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1346,
+            "range": "±2.67%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2208,
+            "range": "±5.33%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
