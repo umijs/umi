@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593578680900,
+  "lastUpdate": 1593582576958,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6482,6 +6482,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.33%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "248b8a4d79f2121b43fd1b5357c4d41d8ca55c88",
+          "message": "dep: upgrade deps (#4946)",
+          "timestamp": "2020-07-01T13:46:36+08:00",
+          "tree_id": "6b109637193411a631e12a220d5a98bfc484d2e4",
+          "url": "https://github.com/umijs/umi/commit/248b8a4d79f2121b43fd1b5357c4d41d8ca55c88"
+        },
+        "date": 1593582573778,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1190,
+            "range": "±2.70%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1886,
+            "range": "±6.13%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
