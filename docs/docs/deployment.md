@@ -5,29 +5,29 @@ translateHelp: true
 # Deployment
 
 
-## 默认方案
+## Plano padrão
 
-Umi 默认对新手友好，所以默认不做按需加载处理，`umi build` 后输出 `index.html`、`umi.js` 和 `umi.css` 三个文件。
+O Umi é amigável para iniciantes por padrão, por isso não faz o carregamento sob demanda por padrão. Depois do `umi build`, será gerado três arquivos:` index.html`, `umi.js` e` umi.css`.
 
-## 不输出 html 文件
+## Não produza arquivos html
 
-某些场景 html 文件交给后端输出，前端构建并不需要输出 html 文件，可配置环境变量 `HTML=none` 实现。
+Em alguns cenários, o arquivo html é entregue ao back-end para saída. A compilação do front-end não precisa gerar o arquivo html. Você pode configurar a variável de ambiente `HTML = none` para implementá-lo.
 
 ```bash
 $ HTML=none umi build
 ```
 
-## 部署 html 到非根目录
+## Implantar html no diretório não raiz
 
-经常有同学问这个问题：
+Os alunos costumam fazer esta pergunta:
 
-> 为什么我本地开发是好的，部署后就没反应了，而且没有报错？
+> Por que meu desenvolvimento local é bom, nenhuma resposta após a implantação e nenhum erro é relatado?
 
-**没有报错！** 这是应用部署在非根路径的典型现象。为啥会有这个问题？因为路由没有匹配上，比如你把应用部署在 `/xxx/` 下，然后访问 `/xxx/hello`，而代码里匹配的是 `/hello`，那就匹配不上了，而又没有定义 fallback 的路由，比如 404，那就会显示空白页。
+**Sem erros! ** Este é um fenômeno típico de aplicativos implantados em caminhos não raiz. Por que existe esse problema? Como a rota não corresponde, por exemplo, você implanta o aplicativo em `/ xxx /` e, em seguida, visita `/ xxx / hello`, e o código corresponde a` / hello`, então não será correspondente e não há definição. A rota de fallback, como 404, exibirá uma página em branco.
 
-怎么解决？
+Como lidar com isso?
 
-可通过配置 [base](../config#base) 解决。 
+Pode ser resolvido configurando [base] (../ config # base). 
 
 ```bash
 export default {
@@ -35,9 +35,9 @@ export default {
 };
 ```
 
-## 使用 hash history
+## Usar histórico de hash
 
-可通过配置 [history](../config#history) 为 `hash` 为解决。 
+Pode ser resolvido configurando [history] (../ config # history) para `hash`. 
 
 ```bash
 export default {
@@ -45,9 +45,9 @@ export default {
 };
 ```
 
-## 按需加载
+## Carga sob demanda
 
-要实现按需加载，需配置 [dynamicImport](../config#dynamicimport)。
+Para obter o carregamento sob demanda, você precisa configurar [dynamicImport] (../ config # dynamicimport).
 
 ```js
 export default {
@@ -55,9 +55,9 @@ export default {
 };
 ```
 
-## 静态资源在非根目录或 cdn
+## Recursos estáticos no diretório não raiz ou no cdn
 
-这时，就需要配置 [publicPath](../config#publicpath)。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
+No momento, você precisa configurar [publicPath] (../ config # publicpath). Quanto ao publicPath? Consulte especificamente [documentação do webpack] (https://webpack.js.org/configuration/output/#output-publicpath) e aponte-o para o caminho onde estão localizados os recursos estáticos (js, css, fotos, fontes, etc.).
 
 ```js
 export default {
@@ -65,9 +65,9 @@ export default {
 }
 ```
 
-## 使用 runtime 的 publicPath
+## Usar publicPath do tempo de execução
 
-对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh-CN/config/#runtimepublicpath) 为解决。 
+Para cenários em que o publicPath precisa ser gerenciado em html, como julgar o ambiente em html para produzir saídas diferentes, ele pode ser resolvido configurando [runtimePublicPath] (/ zh-CN / config / # runtimepublicpath).
 
 ```bash
 export default {
@@ -75,7 +75,7 @@ export default {
 };
 ```
 
-然后在 html 里输出：
+Em seguida, imprima em html:
 
 ```html
 <script>
@@ -83,11 +83,11 @@ window.publicPath = <%= YOUR PUBLIC_PATH %>
 </script>
 ```
 
-## 静态化
+## Estático
 
-在一些场景中，无法做服务端的 html fallback，即让每个路由都输出 index.html 的内容，那么就要做静态化。
+Em alguns cenários, não é possível fazer fallback HTML do lado do servidor, ou seja, para fazer com que cada rota produza o conteúdo de index.html, então ele precisa ser estático.
 
-比如上面的例子，我们在 .umirc.js 里配置：
+Por exemplo, no exemplo acima, configuramos em .umirc.js:
 
 ```js
 export default {
@@ -95,7 +95,7 @@ export default {
 }
 ```
 
-然后执行 umi build，会为每个路由输出一个 html 文件。
+Em seguida, execute umi build, que produzirá um arquivo html para cada rota.
 
 ```
 ./dist
@@ -109,11 +109,11 @@ export default {
     └── umi.f4cb51da.css
 ```
 
-> 注意：静态化暂不支持有变量路由的场景。
+> Nota: atualmente, a estatização não suporta cenários de roteamento variável.
 
-## HTML 后缀
+## Sufixo HTML
 
-有些静态化的场景里，是不会自动读索引文件的，比如支付宝的容器环境，那么就不能生成这种 html 文件，
+Em alguns cenários estáticos, o arquivo de índice não é lido automaticamente, como no ambiente de contêiner da Alipay, então esse arquivo html não pode ser gerado.
 
 ```
 ├── index.html
@@ -121,14 +121,14 @@ export default {
 │   └── index.html
 ```
 
-而是生成，
+Mas gere,
 
 ```
 ├── index.html
 └── list.html
 ```
 
-配置方式是在 .umirc.js 里，
+O método de configuração está em .umirc.js,
 
 ```js
 export default {
@@ -138,7 +138,7 @@ export default {
 }
 ```
 
-umi build 会生成，
+umi build irá gerar,
 
 ```
 ./dist
@@ -151,7 +151,7 @@ umi build 会生成，
     └── umi.cfe3ffab.css
 ```
 
-## 静态化后输出到任意路径
+## Após estático, envie para qualquer caminho
 
 ```js
 export default {
