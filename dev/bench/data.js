@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593582576958,
+  "lastUpdate": 1593583832546,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6518,6 +6518,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1886,
             "range": "±6.13%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7c5130d8dd66601307da387c1d37783283264b30",
+          "message": "dep: upgrade webpack to 4.43 (#4947)",
+          "timestamp": "2020-07-01T14:07:48+08:00",
+          "tree_id": "c21faad9f379e693da7df9fbe37e623f77e73da2",
+          "url": "https://github.com/umijs/umi/commit/7c5130d8dd66601307da387c1d37783283264b30"
+        },
+        "date": 1593583829334,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1464,
+            "range": "±3.04%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2297,
+            "range": "±5.18%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
