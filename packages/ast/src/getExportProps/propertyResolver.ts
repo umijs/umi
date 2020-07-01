@@ -156,13 +156,13 @@ export function findObjectMembers(node: t.ObjectExpression) {
   node.properties.forEach((p) => {
     if (t.isObjectMember(p) && t.isIdentifier(p.key)) {
       if (t.isObjectMethod(p)) {
-        target[p.key.name] = () => {};
+        target[(p.key as any).name] = () => {};
       } else {
         const resolver = NODE_RESOLVERS.find((resolver) =>
           resolver.is(p.value),
         );
         if (resolver) {
-          target[p.key.name] = resolver.get(p.value as any);
+          target[(p.key as any).name] = resolver.get(p.value as any);
         }
       }
     }

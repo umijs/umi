@@ -25,9 +25,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/cheerio": "0.22.17",
+    "@types/cheerio": "0.22.18",
     "@types/express": "4.17.6",
-    "@types/webpack": "4.41.12",
+    "@types/webpack": "4.41.18",
     "@types/webpack-bundle-analyzer": "2.13.3",
     "@umijs/babel-preset-umi": "3.2.6",
     "@umijs/core": "3.2.6",

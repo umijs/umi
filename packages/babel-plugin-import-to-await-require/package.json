@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/traverse": "7.10.0",
+    "@babel/traverse": "7.10.4",
     "@umijs/utils": "3.2.6"
   }
 }

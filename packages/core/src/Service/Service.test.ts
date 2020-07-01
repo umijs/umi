@@ -434,6 +434,20 @@ test('plugin syntax error', async () => {
   await expect(service.init()).rejects.toThrow(/Register plugin .+? failed/);
 });
 
+test('async plugin register', async () => {
+  const cwd = join(fixtures, 'asyncPluginRegister');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'foo'))],
+  });
+  await service.init();
+  const c1 = await service.applyPlugins({
+    key: 'count',
+    type: service.ApplyPluginsType.add,
+  });
+  expect(c1).toEqual(['foo']);
+});
+
 test('enableBy', async () => {
   const cwd = join(fixtures, 'enableBy');
   const service = new Service({
