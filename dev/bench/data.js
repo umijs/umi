@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593585653918,
+  "lastUpdate": 1593586799918,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6596,6 +6596,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.60%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "1319413542@qq.com",
+            "name": "依鹭",
+            "username": "Ariel-Cheng"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7dd561efadb1caaf1ca408586bd6f645bed8e712",
+          "message": "doc: update docs for plugin api (#4927)\n\nCo-authored-by: 依鹭 <jingcao.cjc@antfin.com>",
+          "timestamp": "2020-07-01T14:57:10+08:00",
+          "tree_id": "5aa57678b0c2f8104769bb7a2dbbe9ef0e24037f",
+          "url": "https://github.com/umijs/umi/commit/7dd561efadb1caaf1ca408586bd6f645bed8e712"
+        },
+        "date": 1593586796760,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1282,
+            "range": "±2.70%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2160,
+            "range": "±4.83%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
