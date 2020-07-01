@@ -45,7 +45,7 @@
     "@umijs/babel-plugin-auto-css-modules": "3.2.6",
     "@umijs/babel-plugin-import-to-await-require": "3.2.6",
     "@umijs/babel-plugin-lock-core-js-3": "3.2.6",
-    "babel-plugin-dynamic-import-node": "2.3.0",
+    "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-named-asset-import": "0.3.6",
     "babel-plugin-react-require": "3.1.3",
