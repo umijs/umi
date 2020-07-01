@@ -1,9 +1,14 @@
 {
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umijs/umi.git"
+  },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
+    "benchmark": "node scripts/benchmarks.js",
     "bootstrap": "node ./scripts/bootstrap.js",
     "build": "father-build",
     "debug": "node --inspect-brk packages/umi/bin/umi.js",
@@ -11,27 +16,22 @@
     "docs:build": "node ./packages/umi/bin/umi.js build",
     "docs:dev": "node ./packages/umi/bin/umi.js dev",
     "docs:sync": "node ./scripts/docs.js syncDocs",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
+    "now-build": "echo \"Hello\"",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "release": "node ./scripts/release.js",
+    "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
     "test": "cross-env OPEN_AUTO_E2E_FOR_UMI_TEST=OPEN umi-test",
     "test:coverage": "umi-test --coverage",
-    "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
-    "now-build": "echo \"Hello\"",
-    "benchmark": "node scripts/benchmarks.js",
     "update:deps": "yarn upgrade-interactive --latest"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node scripts/verifyCommit.js"
-  },
   "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write",
-      "git add"
-    ],
     "*.ts?(x)": [
       "prettier --parser=typescript --write",
+      "git add"
+    ],
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write",
       "git add"
     ]
   },
@@ -42,6 +42,8 @@
     "@types/babel__traverse": "7.0.12",
     "@types/jest": "^26.0.3",
     "@types/node": "^14.0.14",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "@umijs/core": "3.2.6",
     "@umijs/plugin-analytics": "^0.2.2",
     "@umijs/preset-dumi": "^1.0.31",
@@ -60,8 +62,8 @@
     "prettier": "^2.0.5",
     "yorkie": "^2.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/umijs/umi.git"
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
   }
 }
