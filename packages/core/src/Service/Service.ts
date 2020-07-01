@@ -7,6 +7,7 @@ import { existsSync } from 'fs';
 import Logger from '../Logger/Logger';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import loadDotEnv from './utils/loadDotEnv';
+import isPromise from './utils/isPromise';
 import PluginAPI from './PluginAPI';
 import {
   ApplyPluginsType,
@@ -180,7 +181,7 @@ export default class Service extends EventEmitter {
   async init() {
     this.setStage(ServiceStage.init);
     // we should have the final hooksByPluginId which is added with api.register()
-    this.initPresetsAndPlugins();
+    await this.initPresetsAndPlugins();
 
     // collect false configs, then add to this.skipPluginIds
     // skipPluginIds include two parts:
@@ -251,17 +252,17 @@ export default class Service extends EventEmitter {
     });
   }
 
-  initPresetsAndPlugins() {
+  async initPresetsAndPlugins() {
     this.setStage(ServiceStage.initPresets);
     this._extraPlugins = [];
     while (this.initialPresets.length) {
-      this.initPreset(this.initialPresets.shift()!);
+      await this.initPreset(this.initialPresets.shift()!);
     }
 
     this.setStage(ServiceStage.initPlugins);
     this._extraPlugins.push(...this.initialPlugins);
     while (this._extraPlugins.length) {
-      this.initPlugin(this._extraPlugins.shift()!);
+      await this.initPlugin(this._extraPlugins.shift()!);
     }
   }
 
@@ -313,7 +314,15 @@ export default class Service extends EventEmitter {
     });
   }
 
-  initPreset(preset: IPreset) {
+  async applyAPI(opts: { apply: Function; api: PluginAPI }) {
+    let ret = opts.apply()(opts.api);
+    if (isPromise(ret)) {
+      ret = await ret;
+    }
+    return ret || {};
+  }
+
+  async initPreset(preset: IPreset) {
     const { id, key, apply } = preset;
     preset.isPreset = true;
 
@@ -322,7 +331,10 @@ export default class Service extends EventEmitter {
     // register before apply
     this.registerPlugin(preset);
     // TODO: ...defaultConfigs 考虑要不要支持，可能这个需求可以通过其他渠道实现
-    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
+    const { presets, plugins, ...defaultConfigs } = await this.applyAPI({
+      api,
+      apply,
+    });
 
     // register extra presets and plugins
     if (presets) {
@@ -348,7 +360,7 @@ export default class Service extends EventEmitter {
     const extraPresets = lodash.clone(this._extraPresets);
     this._extraPresets = [];
     while (extraPresets.length) {
-      this.initPreset(extraPresets.shift()!);
+      await this.initPreset(extraPresets.shift()!);
     }
 
     if (plugins) {
@@ -368,14 +380,14 @@ export default class Service extends EventEmitter {
     }
   }
 
-  initPlugin(plugin: IPlugin) {
+  async initPlugin(plugin: IPlugin) {
     const { id, key, apply } = plugin;
 
     const api = this.getPluginAPI({ id, key, service: this });
 
     // register before apply
     this.registerPlugin(plugin);
-    apply()(api);
+    await this.applyAPI({ api, apply });
   }
 
   getPluginOptsWithKey(key: string) {
