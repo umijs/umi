@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593498120233,
+  "lastUpdate": 1593575290483,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6406,6 +6406,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.73%",
             "unit": "ops/sec",
             "extra": "46 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8df28d9b4885e25893c4f2c0a8bcf3e13f65a7e3",
+          "message": "feat: support async plugin register (#4942)\n\n* feat: support async plugin register\r\n\r\n* chore: add testcase",
+          "timestamp": "2020-07-01T11:45:30+08:00",
+          "tree_id": "304fd45df9da823ff8bbca95adedadac626f9976",
+          "url": "https://github.com/umijs/umi/commit/8df28d9b4885e25893c4f2c0a8bcf3e13f65a7e3"
+        },
+        "date": 1593575287333,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1313,
+            "range": "±2.95%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2021,
+            "range": "±5.05%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
