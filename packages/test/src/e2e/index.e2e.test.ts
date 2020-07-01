@@ -1,6 +1,5 @@
-const os = require('os');
 test('with img', async () => {
-  await page.goto('https://umijs.org/zh-CN');
+  await page.goto('https://umijs.org/zh-CN/docs');
 
   const image = await page.screenshot({
     fullPage: true,
@@ -17,7 +16,7 @@ test('home page should has img', async () => {
   await page.setFamily();
   const text = await page.$eval(
     '.__dumi-default-navbar-logo',
-    (e) => e.textContent,
+    e => e.textContent,
   );
   expect(text).toEqual('UmiJS');
 });

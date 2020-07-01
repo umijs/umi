@@ -1,7 +1,7 @@
 import { t, parser } from '@umijs/utils';
 
 export function parse(code: string): t.File {
-  return parser.parse(code, {
+  const file = parser.parse(code, {
     sourceType: 'module',
     plugins: [
       'jsx',
@@ -18,4 +18,5 @@ export function parse(code: string): t.File {
     ],
     allowAwaitOutsideFunction: true,
   });
+  return file as t.File;
 }
