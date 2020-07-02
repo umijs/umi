@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593657465310,
+  "lastUpdate": 1593669308099,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6672,6 +6672,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.92%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "252317+cyjake@users.noreply.github.com",
+            "name": "Chen Yangjian",
+            "username": "cyjake"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f2123e3723e910ca5e640047399bff355613982f",
+          "message": "dep: upgrade webpack-chain@6.5.0 for rule.resolve support (#4955)",
+          "timestamp": "2020-07-02T13:52:39+08:00",
+          "tree_id": "ae1cc9f8624705416b87c0d23c47a08e73d68721",
+          "url": "https://github.com/umijs/umi/commit/f2123e3723e910ca5e640047399bff355613982f"
+        },
+        "date": 1593669304945,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1456,
+            "range": "±2.67%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2465,
+            "range": "±4.48%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
