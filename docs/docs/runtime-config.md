@@ -55,9 +55,9 @@ For example, check authority before rendering
 import { history } from 'umi';
 
 export function render(oldRender) {
+  oldRender()
   fetch('/api/auth').then(auth => {
-    if (auth.isLogin) { oldRender() }
-    else { history.push('/login'); }
+    if (!auth.isLogin) { history.push('/login'); }
   });
 }
 ```
