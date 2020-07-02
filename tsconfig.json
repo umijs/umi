@@ -20,6 +20,7 @@
     "**/*.spec.ts",
     "lib",
     "fixtures",
+    "__snapshots__",
     "examples"
   ]
 }

@@ -53,3 +53,20 @@ test('run jest', async () => {
   // @ts-ignore
   expect(argsArr[0].config).toContain('"bar":1,"hoo":2,"foo":1');
 });
+
+test('home page should has img', async () => {
+  await page.goto('https://umijs.org');
+  await page.setFamily();
+  const text = await page.$eval(
+    '.__dumi-default-navbar-logo',
+    (e) => e.textContent,
+  );
+  expect(text).toEqual('UmiJS');
+});
+
+test('home page test', async () => {
+  await page.goto('https://umijs.org');
+  await page.setFamily();
+  const text = await page.getText();
+  expect(text).toMatchSnapshot();
+});
