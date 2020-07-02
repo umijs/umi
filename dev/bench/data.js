@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593586799918,
+  "lastUpdate": 1593657465310,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6634,6 +6634,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.83%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9dfe3402d0ef4536b3e60271861e0e3d8d4072b1",
+          "message": "docs(qiankun): finish stuff in roadmap (#4951)",
+          "timestamp": "2020-07-02T10:34:52+08:00",
+          "tree_id": "1432993623921857a4919d1428339d97e4b80005",
+          "url": "https://github.com/umijs/umi/commit/9dfe3402d0ef4536b3e60271861e0e3d8d4072b1"
+        },
+        "date": 1593657462272,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1331,
+            "range": "±2.43%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2069,
+            "range": "±4.92%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
