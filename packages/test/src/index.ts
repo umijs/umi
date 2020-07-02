@@ -102,7 +102,7 @@ declare global {
     interface Matchers<R> {
       toMatchImageSnapshot(options?: {
         noColors?: boolean;
-        dumpDiffToConsole: boolean;
+        dumpDiffToConsole?: boolean;
         failureThreshold?: number;
         blur: number;
         failureThresholdType?: 'percent' | 'pixel';

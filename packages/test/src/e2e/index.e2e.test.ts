@@ -1,22 +1,21 @@
-test('with img', async () => {
-  await page.goto('https://umijs.org/zh-CN/docs');
-  async function removeBanners(page: any) {
-    await page.evaluate(() => {
-      (
-        document.querySelectorAll('.__dumi-default-layout-footer-meta') || []
-      ).forEach((el) => el.remove());
-    });
-  }
-  await removeBanners(page);
-  const image = await page.screenshot({
-    fullPage: true,
-  });
-  expect(image).toMatchImageSnapshot({
-    dumpDiffToConsole: true,
-    failureThreshold: 0.2,
-    blur: 5,
-  });
-});
+// test('with img', async () => {
+//   await page.goto('https://umijs.org/zh-CN/docs');
+//   async function removeBanners(page: any) {
+//     await page.evaluate(() => {
+//       (
+//         document.querySelectorAll('.__dumi-default-layout-footer-meta') || []
+//       ).forEach((el) => el.remove());
+//     });
+//   }
+//   await removeBanners(page);
+//   const image = await page.screenshot({
+//     fullPage: true,
+//   });
+//   expect(image).toMatchImageSnapshot({
+//     failureThreshold: 0.2,
+//     blur: 5,
+//   });
+// });
 
 test('home page should has img', async () => {
   await page.goto('https://umijs.org');
