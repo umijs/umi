@@ -1,0 +1,1 @@
+export default {'/api/tmp': {tmp:1}}

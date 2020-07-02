@@ -1,6 +1,13 @@
 test('with img', async () => {
   await page.goto('https://umijs.org/zh-CN/docs');
-
+  async function removeBanners(page: any) {
+    await page.evaluate(() => {
+      (
+        document.querySelectorAll('.__dumi-default-layout-footer-meta') || []
+      ).forEach((el) => el.remove());
+    });
+  }
+  await removeBanners(page);
   const image = await page.screenshot({
     fullPage: true,
   });
@@ -16,7 +23,7 @@ test('home page should has img', async () => {
   await page.setFamily();
   const text = await page.$eval(
     '.__dumi-default-navbar-logo',
-    e => e.textContent,
+    (e) => e.textContent,
   );
   expect(text).toEqual('UmiJS');
 });
