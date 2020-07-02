@@ -1,7 +1,7 @@
 # Load On Demand
 
 
-## How to endable
+## How to enable
 
 **Common use case**：To reduce first screen download cost, component with huge implementation / dependency can be split in differnet bundle. Let's say we have component `HugeA` with huge 3rd-party dependency, and this `HugeA` will not be used in first screen, that means it can be split out. We shall use `dynamic` in this case.
 
