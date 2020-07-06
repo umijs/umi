@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594003915723,
+  "lastUpdate": 1594006363058,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6824,6 +6824,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.09%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f4db2de3a0b85bba5efc198d8d4a652a5a4c48da",
+          "message": "dep: upgrade fork-ts-checker-webpack-plugin@5, immer@7 (#4976)",
+          "timestamp": "2020-07-06T11:30:05+08:00",
+          "tree_id": "077615ac4e98aeb6a23c9118bc6f0b50db21e358",
+          "url": "https://github.com/umijs/umi/commit/f4db2de3a0b85bba5efc198d8d4a652a5a4c48da"
+        },
+        "date": 1594006360024,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1421,
+            "range": "±2.47%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2193,
+            "range": "±5.70%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
