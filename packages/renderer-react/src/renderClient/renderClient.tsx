@@ -17,6 +17,7 @@ interface IRouterComponentProps {
 
 interface IOpts extends IRouterComponentProps {
   rootElement?: string | HTMLElement;
+  callback?: () => void;
 }
 
 function RouterComponent(props: IRouterComponentProps) {
@@ -112,18 +113,19 @@ export default function renderClient(opts: IOpts) {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     // flag showing SSR successed
+    const callback = opts.callback || (() => {});
     if (window.g_useSSR) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
         // first loades);
         preloadComponent(opts.routes).then(function () {
-          ReactDOM.hydrate(rootContainer, rootElement);
+          ReactDOM.hydrate(rootContainer, rootElement, callback);
         });
       } else {
-        ReactDOM.hydrate(rootContainer, rootElement);
+        ReactDOM.hydrate(rootContainer, rootElement, callback);
       }
     } else {
-      ReactDOM.render(rootContainer, rootElement);
+      ReactDOM.render(rootContainer, rootElement, callback);
     }
   } else {
     return rootContainer;
