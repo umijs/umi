@@ -23,6 +23,7 @@ export interface IOpts {
   svgr?: object;
   import?: IImportPluginOpts[];
   lockCoreJS3?: object;
+  modify?: Function;
 }
 
 function toObject<T extends object>(obj: T | boolean): T | Partial<T> {
@@ -43,7 +44,7 @@ export default (context: any, opts: IOpts = {}) => {
     ],
   };
 
-  return {
+  const preset = {
     presets: [
       opts.env && [
         require('@babel/preset-env').default,
@@ -147,4 +148,6 @@ export default (context: any, opts: IOpts = {}) => {
       ],
     ].filter(Boolean),
   };
+
+  return opts.modify ? opts.modify(preset) : preset;
 };
