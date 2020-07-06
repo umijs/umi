@@ -57,5 +57,5 @@ test('ssr', () => {
   expect(targets).toEqual({
     node: 6,
   });
-  expect(browserslist).toEqual(['node >= 6']);
+  expect(browserslist).toEqual(['ie >= 10', 'chrome >= 0', 'firefox >= 0']);
 });

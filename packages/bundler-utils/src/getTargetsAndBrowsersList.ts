@@ -17,7 +17,6 @@ export default function ({ config, type }: IOpts) {
     .filter((key) => {
       // filter false and 0 targets
       if (targets[key] === false) return false;
-      if (type === BundlerConfigType.ssr) return key === 'node';
       else return key !== 'node';
     })
     .reduce((memo, key) => {
@@ -30,6 +29,16 @@ export default function ({ config, type }: IOpts) {
     Object.keys(targets).map((key) => {
       return `${key} >= ${targets[key] === true ? '0' : targets[key]}`;
     });
+
+  // targets ssr
+  if (type === BundlerConfigType.ssr) {
+    targets = Object.keys(targets)
+      .filter((key) => key === 'node')
+      .reduce((memo, key) => {
+        memo[key] = targets[key];
+        return memo;
+      }, {} as any);
+  }
 
   return {
     targets,
