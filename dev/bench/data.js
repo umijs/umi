@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1593867595913,
+  "lastUpdate": 1594003915723,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6786,6 +6786,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.73%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4300606229db0c558f4dd9a7eb1df881a3f12a09",
+          "message": "feat(babel-preset-umi): support modify with fn (#4975)",
+          "timestamp": "2020-07-06T10:49:15+08:00",
+          "tree_id": "17dcbce82351dbb5d12d47e2201deace55c44643",
+          "url": "https://github.com/umijs/umi/commit/4300606229db0c558f4dd9a7eb1df881a3f12a09"
+        },
+        "date": 1594003912843,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1465,
+            "range": "±2.65%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2546,
+            "range": "±4.09%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
