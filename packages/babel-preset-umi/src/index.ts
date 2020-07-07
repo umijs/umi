@@ -66,6 +66,16 @@ export default (context: any, opts: IOpts = {}) => {
       ],
     ].filter(Boolean),
     plugins: [
+      // https://github.com/webpack/webpack/issues/10227
+      [
+        require('@babel/plugin-proposal-optional-chaining').default,
+        { loose: false },
+      ],
+      // https://github.com/webpack/webpack/issues/10227
+      [
+        require('@babel/plugin-proposal-nullish-coalescing-operator').default,
+        { loose: false },
+      ],
       require('@babel/plugin-syntax-top-level-await').default,
       // Necessary to include regardless of the environment because
       // in practice some other transforms (such as object-rest-spread)
