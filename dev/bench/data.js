@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594101475697,
+  "lastUpdate": 1594131512642,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6938,6 +6938,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.53%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "db35504ade436a6b0aa09df7fd3eb0ee1711e491",
+          "message": "fix: fork-ts-webpack-plugin options (#4985)\n\n* fix: fork-ts-webpack-plugin options\r\n\r\n* chore: unknow() opts",
+          "timestamp": "2020-07-07T22:15:26+08:00",
+          "tree_id": "26e620ed5a0d4c3463807e9f093ff213cc6f5ece",
+          "url": "https://github.com/umijs/umi/commit/db35504ade436a6b0aa09df7fd3eb0ee1711e491"
+        },
+        "date": 1594131509166,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 728,
+            "range": "±95.93%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2234,
+            "range": "±4.26%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
