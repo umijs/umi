@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594006709630,
+  "lastUpdate": 1594101475697,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6900,6 +6900,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.34%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bcb4daadc1c1bba215e46ee1a0dfeced7ab57d62",
+          "message": "fix: SSR not supports node 14.x optional chaining (#4980)\n\n* chore: ci with node 14.x\r\n\r\n* fix: ssr for node 14\r\n\r\n* chore: modify logic getTargets and browsersList\r\n\r\n* fix: optional chain\r\n\r\n* chore: yarn.lock",
+          "timestamp": "2020-07-07T13:55:32+08:00",
+          "tree_id": "3b9827bdbf32aa15459cd526e3977f399bdd6e6f",
+          "url": "https://github.com/umijs/umi/commit/bcb4daadc1c1bba215e46ee1a0dfeced7ab57d62"
+        },
+        "date": 1594101472744,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1552,
+            "range": "±2.80%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2500,
+            "range": "±4.53%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
