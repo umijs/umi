@@ -10,46 +10,25 @@ interface IOpts {
   type: IBundlerConfigType;
 }
 
-/**
- * set default browserslist using `targets` config
- * client bundle: without node
- * server bundle: `targets` with node, `browserslist` without node
- *
- * @param param0
- */
 export default function ({ config, type }: IOpts) {
-  const configTargets: ITargets = config.targets || {};
+  let targets: ITargets = config.targets || {};
 
-  const targets = Object.keys(configTargets)
+  targets = Object.keys(targets)
     .filter((key) => {
       // filter false and 0 targets
-      if (configTargets[key] === false) return false;
-      if (type === BundlerConfigType.ssr) {
-        return key === 'node';
-      }
-      return key !== 'node';
+      if (targets[key] === false) return false;
+      if (type === BundlerConfigType.ssr) return key === 'node';
+      else return key !== 'node';
     })
     .reduce((memo, key) => {
-      memo[key] = configTargets[key];
+      memo[key] = targets[key];
       return memo;
     }, {} as any);
 
-  const browserTargets = Object.keys(configTargets)
-    .filter((key) => {
-      // filter false and 0 targets
-      if (configTargets[key] === false) return false;
-      return key !== 'node';
-    })
-    .reduce((memo, key) => {
-      memo[key] = configTargets[key];
-      return memo;
-    }, {} as any);
   const browserslist =
-    configTargets.browsers ||
-    Object.keys(browserTargets).map((key) => {
-      return `${key} >= ${
-        browserTargets[key] === true ? '0' : browserTargets[key]
-      }`;
+    targets.browsers ||
+    Object.keys(targets).map((key) => {
+      return `${key} >= ${targets[key] === true ? '0' : targets[key]}`;
     });
 
   return {
