@@ -15,6 +15,7 @@ export default (api: IApi) => {
             formatter: joi.alternatives(joi.string(), joi.object()),
             logger: joi.object(),
           })
+          .unknown()
           .description(
             'fork-ts-checker-webpack-plugin options see https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options',
           );
