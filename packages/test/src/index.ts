@@ -91,9 +91,7 @@ declare global {
   export const waitTime: (wait: number) => Promise<void>;
   export const browser: Puppeteer.Browser;
   export const page: Puppeteer.Page & {
-    fullPageScreenshot: (
-      option?: Puppeteer.ScreenshotOptions,
-    ) => Promise<string | Buffer>;
+
     setFamily: () => Promise<void>;
     getText: () => Promise<string>;
   };

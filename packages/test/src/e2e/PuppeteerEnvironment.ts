@@ -54,7 +54,6 @@ class PuppeteerEnvironment extends NodeEnvironment {
     });
 
     this.global.waitTime = waitTime;
-    this.global.page.fullPageScreenshot = fullPageScreenshot;
     this.global.page.setFamily = setFamily;
     this.global.page.getText = getText;
   }
