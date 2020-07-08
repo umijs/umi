@@ -220,7 +220,7 @@ export default function(props) {
 With cloneElement, it's fine once (Umi 2 requires twice).
 
 ```js
-import React from'react';
+import React from 'react';
 
 export default function Layout(props) {
   return React.Children.map(props.children, child => {
