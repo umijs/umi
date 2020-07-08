@@ -1,6 +1,5 @@
 import NodeEnvironment from 'jest-environment-jsdom-fourteen';
 import getBrowser from './getBrowser';
-import Puppeteer from 'puppeteer-core';
 
 class PuppeteerEnvironment extends NodeEnvironment {
   async setup() {
@@ -38,41 +37,6 @@ class PuppeteerEnvironment extends NodeEnvironment {
     };
 
     const getText = () => page.evaluate(() => document.body.innerText);
-
-    /**
-     * 滑动到页面底部，然后截图
-     * 是为了解决懒加载的问题
-     * @param rest
-     */
-    const fullPageScreenshot: (
-      option?: Puppeteer.ScreenshotOptions,
-    ) => Promise<string | Buffer> = async (options) => {
-      await page.evaluate(
-        () =>
-          new Promise<number>((resolve) => {
-            let totalHeight = 0;
-            const distance = 100;
-            const timer = setInterval(() => {
-              const { scrollHeight } = document.body;
-              window.scrollBy(0, distance);
-              totalHeight += distance;
-              if (totalHeight >= scrollHeight) {
-                clearInterval(timer);
-                window.scrollBy(0, 0);
-                setTimeout(() => {
-                  resolve(scrollHeight);
-                });
-              }
-            }, 100);
-          }),
-      );
-
-      const image = await page.screenshot({
-        fullPage: true,
-        ...options,
-      });
-      return image;
-    };
 
     const waitTime = (timeout: number) => {
       return new Promise((resolve) => {
