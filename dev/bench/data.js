@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594131512642,
+  "lastUpdate": 1594180492197,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -6974,6 +6974,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2234,
             "range": "±4.26%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c5aacc30c1abf9a86b8bb3af2a42c828b2449903",
+          "message": "fix(types): duplicated stream import (#4988)",
+          "timestamp": "2020-07-08T11:52:18+08:00",
+          "tree_id": "751015a2a79cef23c54b8e1ed4682253925b1b65",
+          "url": "https://github.com/umijs/umi/commit/c5aacc30c1abf9a86b8bb3af2a42c828b2449903"
+        },
+        "date": 1594180489447,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1467,
+            "range": "±2.68%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2173,
+            "range": "±4.22%",
             "unit": "ops/sec",
             "extra": "44 samples"
           }
