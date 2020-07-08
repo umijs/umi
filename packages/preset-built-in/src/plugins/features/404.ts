@@ -23,8 +23,6 @@ export function patchRoutes(routes: IRoute[], config) {
 }
 
 export default (api: IApi) => {
-  if (process.env.NODE_ENV !== 'development') return;
-
   api.modifyRoutes((routes: IRoute[]) => {
     return patchRoutes(routes, api.config);
   });
