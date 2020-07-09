@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594180798791,
+  "lastUpdate": 1594276379814,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7052,6 +7052,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.84%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "leftstick@qq.com",
+            "name": "Howard.Zuo",
+            "username": "leftstick"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b59419b9fcc99138763a30ed20d3275a0709a018",
+          "message": "docs: improvement of routing (#5001)",
+          "timestamp": "2020-07-09T14:30:26+08:00",
+          "tree_id": "886887e1cc66620f2fed567d102a06b252043b12",
+          "url": "https://github.com/umijs/umi/commit/b59419b9fcc99138763a30ed20d3275a0709a018"
+        },
+        "date": 1594276376769,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1427,
+            "range": "±2.32%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2276,
+            "range": "±5.34%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
