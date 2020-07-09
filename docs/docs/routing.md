@@ -113,9 +113,9 @@ export default {
 
 * Type: `string[]`
 
-配置路由的高阶组件封装。
+wrappers is HOC.
 
-比如，可以用于路由级别的权限校验：
+For example, you can run authorization check for a specific route: 
 
 ```js
 export default {
@@ -130,20 +130,22 @@ export default {
 }
 ```
 
-然后在 `src/wrappers/auth` 中，
+See below example as content of `src/wrappers/auth`,
 
 ```jsx
+import { Redirect } from 'umi'
+
 export default (props) => {
   const { isLogin } = useAuth();
   if (isLogin) {
     return <div>{ props.children }</div>;
   } else {
-    redirectTo('/login');
+    return <Redirect to="/login" />;
   }
 }
 ```
 
-这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
+With above configuration, user request of `/user` will be validated via `useAuth`. `src/pages/user` gets rendered or page redirected to `/login`.
 
 ### title
 

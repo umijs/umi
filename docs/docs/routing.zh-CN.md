@@ -128,12 +128,14 @@ export default {
 然后在 `src/wrappers/auth` 中，
 
 ```jsx
+import { Redirect } from 'umi'
+
 export default (props) => {
   const { isLogin } = useAuth();
   if (isLogin) {
     return <div>{ props.children }</div>;
   } else {
-    redirectTo('/login');
+    return <Redirect to="/login" />;
   }
 }
 ```
