@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594276379814,
+  "lastUpdate": 1594354006653,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7090,6 +7090,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.34%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "2548410@qq.com",
+            "name": "张仕传",
+            "username": "zhangshichuan"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "43985aa43058f36116943776b71ee223ab44cf35",
+          "message": "Update runtime-config.zh-CN.md (#5010)\n\n肯定 [会] 在插件里找到更多运行时的配置项",
+          "timestamp": "2020-07-10T12:04:05+08:00",
+          "tree_id": "ce1697ecb81582bce65b906c411539f257bda6a8",
+          "url": "https://github.com/umijs/umi/commit/43985aa43058f36116943776b71ee223ab44cf35"
+        },
+        "date": 1594354003537,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 711,
+            "range": "±96.12%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2435,
+            "range": "±4.24%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
