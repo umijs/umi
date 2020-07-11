@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594354006653,
+  "lastUpdate": 1594446129981,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7128,6 +7128,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.24%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "tlyspa@gmail.com",
+            "name": "KM.Seven",
+            "username": "7kms"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "441bf136610af4fb1ba993534236243139558305",
+          "message": "docs: update metas config description (#5013)",
+          "timestamp": "2020-07-11T13:39:39+08:00",
+          "tree_id": "1782522561500be3da446bfc7b1a57b15727f607",
+          "url": "https://github.com/umijs/umi/commit/441bf136610af4fb1ba993534236243139558305"
+        },
+        "date": 1594446126999,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1527,
+            "range": "±2.82%",
+            "unit": "ops/sec",
+            "extra": "68 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2397,
+            "range": "±5.41%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
