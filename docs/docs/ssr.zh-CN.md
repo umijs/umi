@@ -337,6 +337,8 @@ app.use(async (req, res) => {
   error?: Error;
 }
 ```
+## 示例
+目前做了两个示例分别是基于[koa](https://github.com/umijs/umi/tree/master/examples/ssr-koa)和[egg](https://github.com/umijs/umi/tree/master/examples/ssr-with-eggjs)的，示例内置dva数据流和国际化解决方案，代码部分有注释，可参照进行个性化的修改。
 
 ## polyfill
 

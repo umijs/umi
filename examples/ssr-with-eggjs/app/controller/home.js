@@ -1,15 +1,33 @@
 const { Controller } = require('egg');
-const restaurants = require('../data/restaurants.json');
 
 class HomeController extends Controller {
   async index() {
-    const { ctx } = this;
+    const { ctx, app } = this;
     global.host = `${ctx.request.protocol}://${ctx.request.host}`;
     global.href = ctx.request.href;
-    const render = require('../public/umi.server');
+    global._cookies = ctx.helper.parseCookie(ctx);
+    global._navigatorLang = ctx.helper.parseNavLang(ctx)
+    /**
+     *  这里可以根据自己的环境配置修改，
+     *  规则就是开发环境需要删除require缓存
+     *  重新load文件
+     *
+     */
+    const isDev = app.config.env != 'prod'
+    let render
+    if (!isDev) {
+      render = require('../public/umi.server')
+    } else {
+      delete require.cache[require.resolve('../public/umi.server')];
+      render = require('../public/umi.server')
+    }
+    ctx.type = 'text/html';
+    ctx.status = 200;
     const { err, html } = await render({
       path: ctx.request.url,
+      mode: 'stream'
     });
+
     if (err) {
       ctx.body = '404 Not Found';
       return;
@@ -18,24 +36,6 @@ class HomeController extends Controller {
     ctx.body = html;
   }
 
-  async api() {
-    const { ctx } = this;
-    if (ctx.path.indexOf('restaurants') > -1) {
-      ctx.status = 200;
-      ctx.body = restaurants;
-      return false;
-    }
-
-    const url = `https://h5.ele.me${ctx.path.replace(/^\/api/, '')}?${
-      ctx.querystring
-    }`;
-
-    const res = await this.ctx.curl(url, {
-      method: this.ctx.method,
-    });
-    ctx.body = res.data;
-    ctx.status = res.status;
-  }
 }
 
 module.exports = HomeController;

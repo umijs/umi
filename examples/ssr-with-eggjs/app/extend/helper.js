@@ -1,4 +1,13 @@
-const parseCookie = (ctx) => {
+exports.isMobile = (ctx) => {
+  const source = ctx.get('user-agent') || '';
+  let isMobile = false;
+  if (/mobile|android|iphone|ipad|phone/i.test(source)) {
+    isMobile = true
+  }
+  return isMobile;
+}
+
+exports.parseCookie = (ctx) => {
   let cookies = ctx.get('cookie')
   if (!cookies) {
     return []
@@ -14,7 +23,8 @@ const parseCookie = (ctx) => {
   return res;
 }
 
-const parseNavLang = (ctx) => {
+
+exports.parseNavLang = (ctx) => {
   // 服务端无法获取navigator.language，所以只能通过Accept-Language来判断浏览器语言。
   let navigatorLang;
   const clientLang = ctx.get('Accept-Language');
@@ -27,15 +37,3 @@ const parseNavLang = (ctx) => {
 }
 
 
-
-
-
-
-
-
-
-
-module.exports = {
-  parseCookie,
-  parseNavLang
-}

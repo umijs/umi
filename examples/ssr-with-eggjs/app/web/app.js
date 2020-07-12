@@ -1,5 +1,5 @@
 
-import { isBrowser, setLocale } from 'umi';
+import { isBrowser } from 'umi';
 import { setCookie, getCookie } from './utils/cookie'
 
 /**
