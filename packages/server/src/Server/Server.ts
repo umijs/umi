@@ -418,17 +418,23 @@ class Server {
         };
         this.opts.onListening(ret);
 
-        // setgid, setuid reduce the user permissions
-        const uid = parseInt(
-          process.env['SUDO_UID'] || `${process.getuid()}`,
-          10,
-        );
-        const gid = parseInt(
-          process.env['SUDO_GID'] || `${process.getgid()}`,
-          10,
-        );
-        process.setgid(gid);
-        process.setuid(uid);
+        // available on POSIX platforms
+        if (process.getgid) {
+          // setgid, setuid reduce the user permissions
+          const gid = parseInt(
+            process.env['SUDO_GID'] || `${process.getgid()}`,
+            10,
+          );
+          process.setgid(gid);
+        }
+        // available on POSIX platforms
+        if (process.getuid) {
+          const uid = parseInt(
+            process.env['SUDO_UID'] || `${process.getuid()}`,
+            10,
+          );
+          process.setuid(uid);
+        }
 
         resolve(ret);
       });
