@@ -113,6 +113,7 @@ export default (api: IApi) => {
         if (!error) {
           return html;
         } else {
+          serverRenderFailed = true;
           api.logger.error('[SSR]', error);
         }
       } catch (e) {
@@ -128,7 +129,10 @@ export default (api: IApi) => {
     if (
       !err &&
       api.config?.ssr &&
-      (process.env.RM_SERVER_FILE !== 'none' || !serverRenderFailed)
+      // RM_SERVER_FILE prior to serverFailed
+      (process.env.RM_SERVER_FILE
+        ? process.env.RM_SERVER_FILE !== 'none'
+        : !serverRenderFailed)
     ) {
       // remove umi.server.js
       const serverFilePath = join(
