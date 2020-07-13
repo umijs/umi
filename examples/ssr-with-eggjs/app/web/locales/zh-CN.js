@@ -1,5 +1,3 @@
-
-
 export default {
-  'umi': '你好 乌米',
+  umi: '你好 乌米',
 };

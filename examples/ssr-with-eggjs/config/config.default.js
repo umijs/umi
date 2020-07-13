@@ -9,7 +9,6 @@ module.exports = (appInfo) => {
   // add your config here
   config.middleware = [];
 
-
   config.assets = {
     publicPath: '/public/',
     devServer: {
@@ -26,7 +25,7 @@ module.exports = (appInfo) => {
     },
   };
 
-  config.proxy = true
+  config.proxy = true;
 
   config.security = {
     csrf: false,
