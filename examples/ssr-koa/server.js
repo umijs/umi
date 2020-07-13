@@ -70,4 +70,7 @@ app.use(async (ctx, next) => {
  */
 app.use(mount('/dist', require('koa-static')(root)));
 
+app.listen(7001);
+console.log('http://localhost:7001');
+
 module.exports = app.callback();
