@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594604060318,
+  "lastUpdate": 1594632139693,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7204,6 +7204,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.53%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "69f412e2a4744f30a23b73e252ce068e74b5d874",
+          "message": "dep: upgrade multiple deps (#5021)\n\n* dep: upgrade multiples deps\r\n\r\n* chore: code style\r\n\r\n* fix: build failed",
+          "timestamp": "2020-07-13T17:19:37+08:00",
+          "tree_id": "ed468b76ff849f304f25515282c06d15ae65e806",
+          "url": "https://github.com/umijs/umi/commit/69f412e2a4744f30a23b73e252ce068e74b5d874"
+        },
+        "date": 1594632136528,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1449,
+            "range": "±2.57%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2419,
+            "range": "±4.35%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
