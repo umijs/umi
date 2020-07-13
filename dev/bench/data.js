@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594446129981,
+  "lastUpdate": 1594604060318,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7166,6 +7166,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.41%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "yebeixiaohai@gmail.com",
+            "name": "小北",
+            "username": "williamnie"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8894af20f27a4292227a1901a48a5246ccdedaf5",
+          "message": "chore: koa-ssr-demo，内置dva数据流和国际化解决方案 (#5017)\n\n* 增加基于koa后端的ssrdemo，内置dva数据流和国际化解决方案\r\n\r\n* chore：ssr文档增加示例说明，修改ssr-koa代码，修改ssr-egg代码（增加国际化部分代码）\r\n\r\n* Update docs/docs/ssr.md\r\n\r\n* Update examples/ssr-koa/package.json\r\n\r\n* Update examples/ssr-koa/package.json\r\n\r\n* Update examples/ssr-koa/server.js\r\n\r\n* Update examples/ssr-with-eggjs/app/web/pages/index.js\r\n\r\nCo-authored-by: 信鑫-King <chaolinjin@gmail.com>",
+          "timestamp": "2020-07-13T09:31:16+08:00",
+          "tree_id": "831e2adfa08af6c187cfe08cc5e7ab85d72c0a9a",
+          "url": "https://github.com/umijs/umi/commit/8894af20f27a4292227a1901a48a5246ccdedaf5"
+        },
+        "date": 1594604057148,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1257,
+            "range": "±2.36%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1978,
+            "range": "±3.53%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
