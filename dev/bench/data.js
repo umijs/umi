@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594632139693,
+  "lastUpdate": 1594649241050,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7242,6 +7242,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.35%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "yebeixiaohai@gmail.com",
+            "name": "小北",
+            "username": "williamnie"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0e2b19c8f41d388113ed378aa2cf3cce8fdc1163",
+          "message": "chore: ssr-koa server example (#5026)\n\n* fix ssr-koa server bug\r\n\r\n* Apply suggestions from code review\r\n\r\nCo-authored-by: 信鑫-King <chaolinjin@gmail.com>",
+          "timestamp": "2020-07-13T22:04:28+08:00",
+          "tree_id": "68a1d2ce8b0ceab3be97729a1a18bf4427fb0c51",
+          "url": "https://github.com/umijs/umi/commit/0e2b19c8f41d388113ed378aa2cf3cce8fdc1163"
+        },
+        "date": 1594649238041,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1357,
+            "range": "±2.42%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2084,
+            "range": "±4.38%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
