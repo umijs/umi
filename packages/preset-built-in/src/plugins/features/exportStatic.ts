@@ -126,21 +126,25 @@ export default (api: IApi) => {
   });
 
   api.onBuildComplete(({ err }) => {
-    if (
-      !err &&
-      api.config?.ssr &&
+    if (!err && api.config?.ssr) {
+      if (serverRenderFailed) {
+        // tips: COMPRESS=none to debug
+        api.logger.info('You can use COMPRESS=none to debug.');
+      }
       // RM_SERVER_FILE prior to serverFailed
-      (process.env.RM_SERVER_FILE
-        ? process.env.RM_SERVER_FILE !== 'none'
-        : !serverRenderFailed)
-    ) {
-      // remove umi.server.js
-      const serverFilePath = join(
-        api.paths.absOutputPath!,
-        OUTPUT_SERVER_FILENAME,
-      );
-      if (existsSync(serverFilePath)) {
-        rimraf.sync(serverFilePath);
+      if (
+        process.env.RM_SERVER_FILE
+          ? process.env.RM_SERVER_FILE !== 'none'
+          : !serverRenderFailed
+      ) {
+        // remove umi.server.js
+        const serverFilePath = join(
+          api.paths.absOutputPath!,
+          OUTPUT_SERVER_FILENAME,
+        );
+        if (existsSync(serverFilePath)) {
+          rimraf.sync(serverFilePath);
+        }
       }
     }
   });
