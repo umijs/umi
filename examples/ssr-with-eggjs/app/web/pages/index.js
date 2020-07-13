@@ -8,7 +8,6 @@ const Home = (props) => {
   const changeLangs = () => {
 
     const lang = getLocale()
-    console.log('changeLangs', lang);
     const change = lang === 'zh-CN' ? 'en-US' : 'zh-CN'
     //     // 刷新页面
     // setLocale('zh-TW', true);
