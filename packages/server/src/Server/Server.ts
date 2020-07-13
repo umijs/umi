@@ -417,6 +417,19 @@ class Server {
           server: this,
         };
         this.opts.onListening(ret);
+
+        // setgid, setuid reduce the user permissions
+        const uid = parseInt(
+          process.env['SUDO_UID'] || `${process.getuid()}`,
+          10,
+        );
+        const gid = parseInt(
+          process.env['SUDO_GID'] || `${process.getgid()}`,
+          10,
+        );
+        process.setgid(gid);
+        process.setuid(uid);
+
         resolve(ret);
       });
     });
