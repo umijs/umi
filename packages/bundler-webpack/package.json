@@ -28,7 +28,7 @@
   "dependencies": {
     "@babel/core": "7.10.4",
     "@types/sockjs-client": "1.1.1",
-    "@types/webpack": "4.41.18",
+    "@types/webpack": "4.41.21",
     "@types/webpack-dev-middleware": "3.7.1",
     "@umijs/bundler-utils": "3.2.9",
     "@umijs/types": "3.2.9",
