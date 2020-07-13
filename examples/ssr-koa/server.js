@@ -2,7 +2,7 @@ const Koa = require('koa');
 const compress = require('koa-compress');
 const mount = require('koa-mount');
 const { join, extname } = require('path');
-const { parseCookie, parseNavLang } = require('./serverHelper')
+const { parseCookie, parseNavLang } = require('./serverHelper');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -16,7 +16,6 @@ app.use(
   }),
 );
 
-
 app.use(async (ctx, next) => {
   /**
    *  扩展global对象
@@ -28,9 +27,9 @@ app.use(async (ctx, next) => {
    *  同时获取浏览器的默认语言，处理好
    */
   global._cookies = parseCookie(ctx);
-  global._navigatorLang = parseNavLang(ctx)
+  global._navigatorLang = parseNavLang(ctx);
 
-  let render
+  let render;
   /**
    *  这里fix了由于没有使用内部server而造成的缓存问题，
    *  原因是require会带有缓存，在修改代码以后会不更新
@@ -42,21 +41,21 @@ app.use(async (ctx, next) => {
   // 符合要求的路由才进行服务端渲染，否则走静态文件逻辑
   if (!ext) {
     if (!isDev) {
-      render = require('./dist/umi.server')
+      render = require('./dist/umi.server');
     } else {
       delete require.cache[require.resolve('./dist/umi.server')];
-      render = require('./dist/umi.server')
+      render = require('./dist/umi.server');
     }
     // 这里默认是流失渲染
     ctx.type = 'text/html';
     ctx.status = 200;
     const { html, error } = await render({
       path: ctx.request.url,
-      mode: 'stream'
+      mode: 'stream',
     });
     if (error) {
       console.log('----------------服务端报错-------------------', error);
-      ctx.throw(500, error)
+      ctx.throw(500, error);
     }
     ctx.body = html;
   } else {
@@ -72,4 +71,3 @@ app.use(async (ctx, next) => {
 app.use(mount('/dist', require('koa-static')(root)));
 
 module.exports = app.callback();
-

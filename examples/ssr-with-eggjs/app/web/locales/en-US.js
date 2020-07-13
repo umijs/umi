@@ -1,4 +1,3 @@
-
 export default {
-  'umi': 'hello umi',
+  umi: 'hello umi',
 };
