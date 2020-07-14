@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594649241050,
+  "lastUpdate": 1594692140579,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7280,6 +7280,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.38%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "eb8459635f2ee4e7789b0ad7ec65e10e9ffb8650",
+          "message": "chore: SSG keep server file when failed (#5023)\n\n* chore: keep serverFile for ssg\r\n\r\n* chore: keep\r\n\r\n* chore: failed\r\n\r\n* chore: format",
+          "timestamp": "2020-07-14T09:59:38+08:00",
+          "tree_id": "fa0f50845df3b0153ccc0964e50f8f641ceea9dd",
+          "url": "https://github.com/umijs/umi/commit/eb8459635f2ee4e7789b0ad7ec65e10e9ffb8650"
+        },
+        "date": 1594692137411,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1409,
+            "range": "±2.77%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2343,
+            "range": "±5.74%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
