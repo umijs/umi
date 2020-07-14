@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594696105126,
+  "lastUpdate": 1594729172405,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7394,6 +7394,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.89%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9ec8d4153630a0a9a3c084f4960481fea5e09cca",
+          "message": "fix(ssr): beforeRenderServer before routes require (#5033)\n\n* fix(ssr): renderServer before routes require\r\n\r\n* chore: routes init once\r\n\r\n* chore: format",
+          "timestamp": "2020-07-14T20:16:44+08:00",
+          "tree_id": "949da0ea6b920c0b5ae8a3bc84e4c32948433628",
+          "url": "https://github.com/umijs/umi/commit/9ec8d4153630a0a9a3c084f4960481fea5e09cca"
+        },
+        "date": 1594729166037,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1675,
+            "range": "±1.90%",
+            "unit": "ops/sec",
+            "extra": "79 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2857,
+            "range": "±3.99%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
