@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594692140579,
+  "lastUpdate": 1594693228362,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7318,6 +7318,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.74%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f45e774fb7c6f2d1ae7da1b3acb9041d0f70c8bd",
+          "message": "dep: upgrade less to 3.12 (#5032)",
+          "timestamp": "2020-07-14T10:17:29+08:00",
+          "tree_id": "3438b9f8066694e34150672819603e6b73668284",
+          "url": "https://github.com/umijs/umi/commit/f45e774fb7c6f2d1ae7da1b3acb9041d0f70c8bd"
+        },
+        "date": 1594693225232,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 684,
+            "range": "±88.84%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1971,
+            "range": "±5.78%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
