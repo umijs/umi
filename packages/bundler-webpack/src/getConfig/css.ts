@@ -61,7 +61,7 @@ export function createCSSRule({
               require.resolve('mini-css-extract-plugin/dist/loader'),
           )
           .options({
-            publicPath: './',
+            publicPath: config.publicPath || './',
             hmr: isDev,
           });
       }
