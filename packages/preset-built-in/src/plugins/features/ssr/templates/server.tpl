@@ -45,6 +45,7 @@ const render: IServerRender = async (params) => {
     const history = createMemoryHistory({
       initialEntries: [format(location)],
     });
+
     /**
      * beforeRenderServer hook, for polyfill global.*
      */
