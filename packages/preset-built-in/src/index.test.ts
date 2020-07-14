@@ -113,7 +113,7 @@ test('html', async () => {
   expect(removeSpace($('head style').eq(0).html())).toEqual(`.a{color:red;}`);
   expect(removeSpace($('head style').eq(1).html())).toEqual(`.b{color:blue;}`);
   expect($('head script[src="//g.alicdn.com/ga.js"]')).toBeTruthy();
-  expect(removeSpace($('head script').eq(3).html())).toContain(
+  expect(removeSpace($('head script').eq(2).html())).toContain(
     `console.log(3)`,
   );
 

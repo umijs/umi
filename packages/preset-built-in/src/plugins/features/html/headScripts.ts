@@ -11,7 +11,11 @@ export default function (api: IApi) {
     },
   });
 
-  api.addHTMLHeadScripts(() => {
-    return getScripts(api.config?.headScripts || []);
+  // ensure userConfig headScripts add the front of `devScripts.ts`
+  api.addHTMLHeadScripts({
+    fn: () => {
+      return getScripts(api.config?.headScripts || []);
+    },
+    stage: -1,
   });
 }
