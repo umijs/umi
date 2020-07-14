@@ -2,14 +2,25 @@
 
 ## Environment setup
 
-First you need to have [node](https://nodejs.org/en/). Make sure the node version is 10.13 or above. ([nvm](https://github.com/creationix/nvm) is recommended to manage node version for Mac OSX)
+First you need to install [node](https://nodejs.org/en/). Make sure the node version is 10.13 or above. ([nvm](https://github.com/creationix/nvm) is recommended to manage node version for Mac OSX)
 
 ```bash
 $ node -v
 v10.13.0
 ```
 
-It is recommended to use yarn to manage npm dependencies and [use domestic sources](https://github.com/yiminghe/tyarn) (Ali users use internal network sources).
+We recommend to use [yarn](https://github.com/yarnpkg/yarn) to manage npm dependencies.
+
+```bash
+# install yarn globally
+$ npm i yarn -g
+# confirm yarn version
+$ yarn -v
+```
+
+### For Users in China
+
+We recommend to use [tyarn](https://github.com/yiminghe/tyarn) to improve performance:
 
 ```bash
 # install tyarn globally
@@ -34,7 +45,8 @@ $ mkdir myapp && cd myapp
 Create project using `@umijs/umi-app` as the template
 
 ```bash
-$ yarn create @umijs/umi-app
+$ yarn create @umijs/umi-app // if use yarn
+$ npx @umijs/create-umi-app // if use npm
 
 Copy:  .editorconfig
 Write: .gitignore
