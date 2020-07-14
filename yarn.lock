@@ -3412,14 +3412,13 @@
     dom-accessibility-api "^0.4.5"
     pretty-format "^25.5.0"
 
-"@testing-library/react@^10.4.5":
-  version "10.4.5"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-10.4.5.tgz#e66e004d6beb60a26b4e5d4e4d9989738d7077f3"
-  integrity sha512-M5A0W4VphBiEm4vgnq7vHC+/e4Bp/3iIOAWap1FtIiA+Zom6BtXpY3RSTOqc8bZsCcu9gFBZ/lxaiMW6uJddWg==
+"@testing-library/react@^10.4.6":
+  version "10.4.6"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-10.4.6.tgz#70a7cac35ac8256c22a8cb0c4779e0efefd218c6"
+  integrity sha512-pVcm8v0HxCEzrtasbC2bdhWM0P5X9o8a/xfBugC97uVVTmhVeGHj+5CdE1JYi/i2K+mCyeq5YqzHLW/gB+K12w==
   dependencies:
     "@babel/runtime" "^7.10.3"
     "@testing-library/dom" "^7.17.1"
-    semver "^7.3.2"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -3759,10 +3758,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.0.tgz#390ea202539c61c8fa6ba4428b57e05bc36dc47b"
   integrity sha512-uM4mnmsIIPK/yeO+42F2RQhGUIs39K2RFmugcJANppXe6J1nvH87PvzPZYpza7Xhhs8Yn9yIAVdLZ84z61+0xQ==
 
-"@types/node@14.0.22", "@types/node@^14.0.22":
-  version "14.0.22"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.22.tgz#23ea4d88189cec7d58f9e6b66f786b215eb61bdc"
-  integrity sha512-emeGcJvdiZ4Z3ohbmw93E/64jRzUHAItSHt8nF7M4TGgQTiWqFVGB8KNpLGFmUHmHLvjvBgFwVlqNcq+VuGv9g==
+"@types/node@14.0.23", "@types/node@^14.0.23":
+  version "14.0.23"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.23.tgz#676fa0883450ed9da0bb24156213636290892806"
+  integrity sha512-Z4U8yDAl5TFkmYsZdFPdjeMa57NOvnaf1tljHzhouaPEp7LCj2JKkejpI1ODviIAQuW4CcQmxkQ77rnLsOOoKw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -10988,12 +10987,11 @@ less-plugin-npm-import@2.1.0:
     request "^2.83.0"
     source-map "~0.6.0"
 
-less@3.11.3:
-  version "3.11.3"
-  resolved "https://registry.yarnpkg.com/less/-/less-3.11.3.tgz#2d853954fcfe0169a8af869620bcaa16563dcc1c"
-  integrity sha512-VkZiTDdtNEzXA3LgjQiC3D7/ejleBPFVvq+aRI9mIj+Zhmif5TvFPM244bT4rzkvOCvJ9q4zAztok1M7Nygagw==
+less@3.12.0:
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/less/-/less-3.12.0.tgz#f23f9bd94ba72495994865d84e3b5ac6ee8a0363"
+  integrity sha512-3mmSHFRP9hGxxQgAKgChfau1LO3ksV/zyZf1qd2ENyBV778NA9Ids99wFRA20jE+5prT7oScKod8PoGlxSe1gg==
   dependencies:
-    clone "^2.1.2"
     tslib "^1.10.0"
   optionalDependencies:
     errno "^0.1.1"
@@ -11001,8 +10999,7 @@ less@3.11.3:
     image-size "~0.5.0"
     make-dir "^2.1.0"
     mime "^1.4.1"
-    promise "^7.1.1"
-    request "^2.83.0"
+    native-request "^1.0.5"
     source-map "~0.6.0"
 
 less@3.9.0:
@@ -11540,10 +11537,10 @@ marked-terminal@4.1.0:
     node-emoji "^1.10.0"
     supports-hyperlinks "^2.1.0"
 
-marked@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-1.1.0.tgz#62504ad4d11550c942935ccc5e39d64e5a4c4e50"
-  integrity sha512-EkE7RW6KcXfMHy2PA7Jg0YJE1l8UPEZE8k45tylzmZM30/r1M1MUXWQfJlrSbsTeh7m/XTwHbWUENvAJZpp1YA==
+marked@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-1.1.1.tgz#e5d61b69842210d5df57b05856e0c91572703e6a"
+  integrity sha512-mJzT8D2yPxoPh7h0UXkB+dBj4FykPJ2OIfxAWeIHrvoHDkFxukV/29QxoFQoPM6RLEwhIFdJpmKBlqVM3s2ZIw==
 
 mathml-tag-names@^2.0.1, mathml-tag-names@^2.1.0:
   version "2.1.3"
@@ -12052,6 +12049,11 @@ nanomatch@^1.2.9:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+native-request@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/native-request/-/native-request-1.0.5.tgz#da67637c0a0ed0758243d1a688d647612f2d5a0a"
+  integrity sha512-7wU3DvBGAJQxWuMR3F62zrhB7hxNj2DdlC/eBVrCgavc6+ZpFZOqS/PsR7QyUPLMkFk0GvvzoeeOAZGLLnObnA==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -15341,7 +15343,7 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
-semver@7.3.2, semver@^7.3.2:
+semver@7.3.2:
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
   integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
