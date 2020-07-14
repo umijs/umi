@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/react": "^16.9.41",
+    "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@umijs/runtime": "3.2.9",
     "react": "^16.13.1",

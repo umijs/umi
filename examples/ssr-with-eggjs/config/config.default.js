@@ -9,18 +9,6 @@ module.exports = (appInfo) => {
   // add your config here
   config.middleware = [];
 
-  // locale
-  config.i18n = {
-    defaultLocale: 'zh-CN',
-  };
-
-  config.view = {
-    defaultViewEngine: 'nunjucks',
-    mapping: {
-      '.html': 'nunjucks',
-    },
-  };
-
   config.assets = {
     publicPath: '/public/',
     devServer: {
@@ -37,8 +25,13 @@ module.exports = (appInfo) => {
     },
   };
 
+  config.proxy = true;
+
   config.security = {
     csrf: false,
+    xframe: {
+      enable: false,
+    },
   };
 
   return config;
