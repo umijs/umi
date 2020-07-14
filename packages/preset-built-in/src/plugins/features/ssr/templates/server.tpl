@@ -12,6 +12,8 @@ import { plugin } from './plugin';
 // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
 const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
 
+let routes;
+
 /**
  * server render function
  * @param params
@@ -43,7 +45,9 @@ const render: IServerRender = async (params) => {
     const history = createMemoryHistory({
       initialEntries: [format(location)],
     });
-    // beforeRenderServer hook, for polyfill global.*
+    /**
+     * beforeRenderServer hook, for polyfill global.*
+     */
     await plugin.applyPlugins({
       key: 'ssr.beforeRenderServer',
       type: ApplyPluginsType.event,
@@ -57,15 +61,21 @@ const render: IServerRender = async (params) => {
       },
       async: true,
     });
-    // 主要为后面支持按需服务端渲染，单独用 routes 会全编译
-    const routes = {{{ Routes }}};
 
-    // allow user to extend routes
-    plugin.applyPlugins({
-      key: 'patchRoutes',
-      type: ApplyPluginsType.event,
-      args: { routes },
-    });
+    /**
+     * routes init and patch only once
+     * beforeRenderServer must before routes init avoding require error
+     */
+    if (!routes) {
+      // 主要为后面支持按需服务端渲染，单独用 routes 会全编译
+      routes = {{{ Routes }}};
+      // allow user to extend routes
+      plugin.applyPlugins({
+        key: 'patchRoutes',
+        type: ApplyPluginsType.event,
+        args: { routes },
+      });
+    }
 
     // for renderServer
     const opts = {
