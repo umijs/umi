@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594693228362,
+  "lastUpdate": 1594696105126,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7354,6 +7354,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1971,
             "range": "±5.78%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "11c23fee46454af9a7b6685807b9d162fec9f609",
+          "message": "chore: update dingtalk's qrcode",
+          "timestamp": "2020-07-14T11:04:58+08:00",
+          "tree_id": "b766190a6b4a40f08ec5575f56a50acc0d5585fb",
+          "url": "https://github.com/umijs/umi/commit/11c23fee46454af9a7b6685807b9d162fec9f609"
+        },
+        "date": 1594696101668,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1288,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1965,
+            "range": "±4.89%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
