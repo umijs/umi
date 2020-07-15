@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1594729172405,
+  "lastUpdate": 1594792474127,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7432,6 +7432,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.99%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ni184775761@gmail.com",
+            "name": "Neekey",
+            "username": "neekey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3a191088daff7791a56f01b7fefd8bb1afa508b5",
+          "message": "Add Scaffold command for npm users (#5035)",
+          "timestamp": "2020-07-15T13:51:59+08:00",
+          "tree_id": "83db7f672850c3ff87f98016cfa26e43a4a1c81b",
+          "url": "https://github.com/umijs/umi/commit/3a191088daff7791a56f01b7fefd8bb1afa508b5"
+        },
+        "date": 1594792471215,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1483,
+            "range": "±2.35%",
+            "unit": "ops/sec",
+            "extra": "79 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2340,
+            "range": "±3.75%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
