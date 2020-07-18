@@ -8,6 +8,19 @@ export default function (api: IApi) {
     paths,
     utils: { Mustache },
   } = api;
+  
+  const customizedRuntimePath = getFile({
+    base: api.paths.absSrcPath,
+    fileNameWithoutExt: 'app',
+    type: 'javascript',
+  })?.path;
+
+  if (customizedRuntimePath) {
+    api.addRuntimePlugin({
+      fn: () => customizedRuntimePath,
+      stage: -1 * Number.MAX_SAFE_INTEGER,
+    });
+  }
 
   api.onGenerateFiles(async (args) => {
     const pluginTpl = readFileSync(join(__dirname, 'plugin.tpl'), 'utf-8');
@@ -19,13 +32,7 @@ export default function (api: IApi) {
     const plugins = await api.applyPlugins({
       key: 'addRuntimePlugin',
       type: api.ApplyPluginsType.add,
-      initialValue: [
-        getFile({
-          base: paths.absSrcPath!,
-          fileNameWithoutExt: 'app',
-          type: 'javascript',
-        })?.path,
-      ].filter(Boolean),
+      initialValue: [],
     });
     api.writeTmpFile({
       path: 'core/plugin.ts',
