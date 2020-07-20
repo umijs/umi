@@ -719,7 +719,35 @@ export default {
 * Type: `Array`
 * Default: `[]`
 
-配置额外的 meta 标签。
+配置额外的 meta 标签。数组中可以配置`key:value`形式的对象。
+
+最终生成的meta标签格式为: `<meta key1="value1" key2="value2"/>`。
+
+如以下配置:
+```js
+export default {
+  metas:[
+    {
+      name: 'keywords',
+      content: 'umi, umijs'
+    },
+    {
+      name: 'description',
+      content: '🍙 插件化的企业级前端应用框架。'
+    },
+    {
+      bar: 'foo',
+    },
+  ],
+}
+```
+
+最终生成的html标签是:
+```html
+<meta name="keywords" content="umi, umijs"/>
+<meta name="description" content="🍙 插件化的企业级前端应用框架。"/>
+<meta bar="foo"/>
+```
 
 ## mock
 

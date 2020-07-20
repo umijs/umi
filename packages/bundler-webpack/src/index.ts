@@ -47,6 +47,7 @@ class Bundler {
           console.error(err);
           return reject(new Error('build failed'));
         }
+        // @ts-ignore
         resolve({ stats });
       });
     });

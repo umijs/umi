@@ -193,6 +193,42 @@ export default function(props) {
 
 这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
 
+## PrivateRoute
+
+By specify `wrappers` property in page component.
+
+For example, `src/pages/user`：
+
+```js
+import React from 'react'
+
+function User() {
+  return <>user profile</>
+}
+
+User.wrappers = ['@/wrappers/auth']
+
+export default User
+
+```
+
+See below example as content of  `src/wrappers/auth`,
+
+```jsx
+import { Redirect } from 'umi'
+
+export default (props) => {
+  const { isLogin } = useAuth();
+  if (isLogin) {
+    return <div>{ props.children }</div>;
+  } else {
+    return <Redirect to="/login" />;
+  }
+}
+```
+
+With above configuration, user request of `/user` will be validated via `useAuth`. `src/pages/user` gets rendered or page redirected to `/login`.
+
 ## 扩展路由属性
 
 支持在代码层通过导出静态属性的方式扩展路由。
