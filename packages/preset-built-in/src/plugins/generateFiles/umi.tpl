@@ -11,7 +11,7 @@ import { renderClient } from '{{{ rendererPath }}}';
 const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
-  initialValue: () => {
+  initialValue: (opts = {}) => {
     return renderClient({
       // @ts-ignore
       routes: require('./core/routes').routes,
@@ -21,7 +21,7 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
 {{#dynamicImport}}
       dynamicImport: {{{ dynamicImport }}},
 {{/dynamicImport}}
-      rootElement: '{{{ rootElement }}}',
+      rootElement: opts.rootElement || '{{{ rootElement }}}',
 {{#enableTitle}}
       defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
