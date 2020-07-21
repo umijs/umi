@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595229603033,
+  "lastUpdate": 1595334972324,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7544,6 +7544,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2234,
             "range": "±5.21%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "afc163@gmail.com",
+            "name": "偏右",
+            "username": "afc163"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "42acd799dce95307e47ca8b8b4995a04d9938ab7",
+          "message": "Update upgrade-antd-pro-to-umi-3.md",
+          "timestamp": "2020-07-21T20:33:30+08:00",
+          "tree_id": "8e77cc58f8b52f8dd1a6f0eee329bfa924454422",
+          "url": "https://github.com/umijs/umi/commit/42acd799dce95307e47ca8b8b4995a04d9938ab7"
+        },
+        "date": 1595334969484,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1340,
+            "range": "±2.64%",
+            "unit": "ops/sec",
+            "extra": "68 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2069,
+            "range": "±4.35%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
