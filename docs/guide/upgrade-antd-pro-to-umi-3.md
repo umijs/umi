@@ -4,7 +4,7 @@ nav:
 translateHelp: true
 ---
 
-# Upgrade Antd Pro to Umi 3
+# Upgrade Ant Design Pro to Umi 3
 
 
 迁移到 Umi 3 分三步，不到 10 分钟即可完成迁移：
