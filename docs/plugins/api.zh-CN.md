@@ -170,6 +170,12 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 在入口文件最后添加代码。
 
+```ts
+api.addEntryCode(() => {
+  return `console.log('works!')`
+})
+```
+
 ### addEntryCodeAhead
 
 在入口文件最前面（import 之后）添加代码。
@@ -177,6 +183,17 @@ api.skipPlugins(['@umijs/plugin-dva']);
 ### addEntryImports
 
 在入口文件现有 import 的后面添加 import。
+
+```ts
+api.addEntryImport(() => {
+  return [
+    {
+      source: '/modulePath/xxx.js',
+      specifier: 'moduleName',
+    }
+  ]
+});
+```
 
 ### addEntryImportsAhead
 
