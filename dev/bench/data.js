@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595334972324,
+  "lastUpdate": 1595482740288,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7584,6 +7584,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.35%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "randypriv@gmail.com",
+            "name": "Randy",
+            "username": "djyde"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b12baf7f2747e2d216534e87115a66283f8e02b4",
+          "message": "add `addEntryImports` example code (#5077)",
+          "timestamp": "2020-07-23T13:36:32+08:00",
+          "tree_id": "741cecd0105dd2dc94d193d5b1c58b676ee075c3",
+          "url": "https://github.com/umijs/umi/commit/b12baf7f2747e2d216534e87115a66283f8e02b4"
+        },
+        "date": 1595482737234,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1502,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2633,
+            "range": "±5.90%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
