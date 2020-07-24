@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595572113537,
+  "lastUpdate": 1595585046129,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7736,6 +7736,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.28%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5e83139e7995a96f04bbb17c2cd5368a739be0fa",
+          "message": "feat: runtime plugin support modifyClientRenderOpts (#5096)\n\n* feat: runtime plugin support modifyClientRenderOpts\r\n\r\n* chore: code style\r\n\r\n* chore: update docs for usage sence",
+          "timestamp": "2020-07-24T18:01:13+08:00",
+          "tree_id": "7fc3ca9eb057d52b77d9eab609d24310b31af19c",
+          "url": "https://github.com/umijs/umi/commit/5e83139e7995a96f04bbb17c2cd5368a739be0fa"
+        },
+        "date": 1595585042855,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 667,
+            "range": "±93.01%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2117,
+            "range": "±4.13%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
