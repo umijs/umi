@@ -12,13 +12,14 @@
 
 修改 clientRender 参数。
 
-比如：
+比如在微前端里动态修改渲染根节点：
 
 ```js
+let isSubApp = false;
 export function modifyClientRenderOpts(memo) {
   return {
     ...memo,
-    foo: 'bar',    
+    mountElementId: isSubApp ? 'sub-root' : memo.mountElementId,    
   };
 }
 ```
