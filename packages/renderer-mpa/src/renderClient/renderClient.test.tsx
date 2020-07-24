@@ -67,6 +67,7 @@ test('normal', () => {
     renderClient({
       plugin,
       routes,
+      path: '/foo',
       callback: () => {
         loading = false;
       },
