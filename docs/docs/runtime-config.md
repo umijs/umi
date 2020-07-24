@@ -11,6 +11,22 @@ As convention, `src/app.tsx` is the place you will put the runtime-config.
 
 ## Options
 
+### modifyClientRenderOpts(fn)
+
+Modify the opts of clientRender function.
+
+e.g. Modify the render root element in micro front-end solution.
+
+```js
+let isSubApp = false;
+export function modifyClientRenderOpts(memo) {
+  return {
+    ...memo,
+    mountElementId: isSubApp ? 'sub-root' : memo.mountElementId,    
+  };
+}
+```
+
 ### patchRoutes({ routes })
 
 Modify routing.
