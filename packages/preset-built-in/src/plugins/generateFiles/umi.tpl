@@ -13,7 +13,6 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
   type: ApplyPluginsType.compose,
   initialValue: (opts = {}) => {
     return renderClient({
-      ...opts,
       // @ts-ignore
       routes: require('./core/routes').routes,
       plugin,
