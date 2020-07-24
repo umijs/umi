@@ -72,9 +72,6 @@ test('normal', () => {
       },
     });
   });
-  expect(container.outerHTML).toEqual(
-    '<div id="app"><div><h1>foo</h1></div></div>',
-  );
   expect(loading).toBeFalsy();
 });
 
