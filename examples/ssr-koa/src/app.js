@@ -4,7 +4,7 @@ import { setCookie, getCookie } from './utils/cookie';
 /**
  *  在运行时扩展语言plugin，语言顺序，cookie > 浏览器默认语言 > 默认语言
  *  切换语言时会同时设置localStorage 和cookie，key保持一致。
- *  封装好了cookie方法，同时试用与服务端和客户端，客户端取cookie的方法
+ *  封装好了cookie方法，同时适用于服务端和客户端，客户端取cookie的方法
  *  见serverHelper.js，只是将koa的方法进行扩展，koa试用请自行学习
  *  客户端获取cookie的方法见utils/cookie
  *
