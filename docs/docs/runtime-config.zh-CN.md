@@ -8,6 +8,21 @@
 
 ## 配置项
 
+### modifyClientRenderOpts(fn)
+
+修改 clientRender 参数。
+
+比如：
+
+```js
+export function modifyClientRenderOpts(memo) {
+  return {
+    ...memo,
+    foo: 'bar',    
+  };
+}
+```
+
 ### patchRoutes({ routes })
 
 修改路由。

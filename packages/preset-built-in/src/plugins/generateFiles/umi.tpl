@@ -12,20 +12,25 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
   initialValue: () => {
-    return renderClient({
-      // @ts-ignore
-      routes: require('./core/routes').routes,
-      plugin,
-      history: createHistory(args.hot),
-      isServer: process.env.__IS_SERVER,
+    const opts = plugin.applyPlugins({
+      key: 'modifyClientRenderOpts',
+      type: ApplyPluginsType.modify,
+      initialValue: {
+        // @ts-ignore
+        routes: require('./core/routes').routes,
+        plugin,
+        history: createHistory(args.hot),
+        isServer: process.env.__IS_SERVER,
 {{#dynamicImport}}
-      dynamicImport: {{{ dynamicImport }}},
+        dynamicImport: {{{ dynamicImport }}},
 {{/dynamicImport}}
-      rootElement: '{{{ rootElement }}}',
+        rootElement: '{{{ rootElement }}}',
 {{#enableTitle}}
-      defaultTitle: `{{{ defaultTitle }}}`,
+        defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
+      }
     });
+    return renderClient(opts);
   },
   args,
 });

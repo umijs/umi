@@ -11,6 +11,21 @@ As convention, `src/app.tsx` is the place you will put the runtime-config.
 
 ## Options
 
+### modifyClientRenderOpts(fn)
+
+Modify the opts of clientRender function.
+
+e.g.
+
+```js
+export function modifyClientRenderOpts(memo) {
+  return {
+    ...memo,
+    foo: 'bar',    
+  };
+}
+```
+
 ### patchRoutes({ routes })
 
 Modify routing.
