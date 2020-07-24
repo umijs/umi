@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595557433552,
+  "lastUpdate": 1595557594991,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7660,6 +7660,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.63%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "justjavac@gmail.com",
+            "name": "迷渡",
+            "username": "justjavac"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "eaa93a0d30dadccd1bf95abdc12d28a9a171e171",
+          "message": "docs: fix code highlight (#5088)",
+          "timestamp": "2020-07-24T10:23:49+08:00",
+          "tree_id": "167fdd1764c930cf27eb0f94f9f8a568c897c49f",
+          "url": "https://github.com/umijs/umi/commit/eaa93a0d30dadccd1bf95abdc12d28a9a171e171"
+        },
+        "date": 1595557592044,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1316,
+            "range": "±3.02%",
+            "unit": "ops/sec",
+            "extra": "67 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2099,
+            "range": "±4.36%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
