@@ -9,6 +9,7 @@ interface IOpts {
   defaultTitle?: string;
   rootElement?: string | HTMLElement;
   path?: string;
+  callback?: () => void;
 }
 
 function getRootContainer(opts: { routes: any[]; path: string }) {
@@ -61,8 +62,8 @@ export function renderClient(opts: IOpts): any {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
-    // @ts-ignore
     const callback = opts.callback || (() => {});
+    // @ts-ignore
     ReactDOM[window.g_useSSR ? 'hydrate' : 'render'](
       rootContainer,
       rootElement,
