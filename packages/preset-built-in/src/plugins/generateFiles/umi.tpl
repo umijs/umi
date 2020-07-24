@@ -28,7 +28,7 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
 {{#enableTitle}}
         defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
-      }
+      },
     });
     return renderClient(opts);
   },
