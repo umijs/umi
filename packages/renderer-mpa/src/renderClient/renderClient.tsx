@@ -62,9 +62,11 @@ export function renderClient(opts: IOpts): any {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     // @ts-ignore
+    const callback = opts.callback || (() => {});
     ReactDOM[window.g_useSSR ? 'hydrate' : 'render'](
       rootContainer,
       rootElement,
+      callback,
     );
   } else {
     return rootContainer;

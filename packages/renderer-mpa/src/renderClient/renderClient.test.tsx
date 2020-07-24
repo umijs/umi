@@ -2,6 +2,7 @@ import React from 'react';
 import { Plugin } from '@umijs/runtime';
 import { renderClient } from './renderClient';
 import { render } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 
 test('normal', () => {
   const plugin = new Plugin({
@@ -60,6 +61,21 @@ test('normal', () => {
       path: '/haha',
     });
   }).toThrow(/Render failed, route of path \/haha not found\./);
+
+  let loading = true;
+  act(() => {
+    renderClient({
+      plugin,
+      routes,
+      callback: () => {
+        loading = false;
+      },
+    });
+  });
+  expect(container.outerHTML).toEqual(
+    '<div id="app"><div><h1>foo</h1></div></div>',
+  );
+  expect(loading).toBeFalsy();
 });
 
 test('do not support child routes', () => {
