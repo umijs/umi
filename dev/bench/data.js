@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595482740288,
+  "lastUpdate": 1595557433552,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7620,6 +7620,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2633,
             "range": "±5.90%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "723156735@qq.com",
+            "name": "ZHANGYU",
+            "username": "zhangyu1818"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5d0585e2ce96c0ce55998f7813b594d17f5ef3a3",
+          "message": "Update README.zh-CN.md (#5083)",
+          "timestamp": "2020-07-24T10:21:13+08:00",
+          "tree_id": "baa34becf4c88169be2628a5fd47e8b49189c6d3",
+          "url": "https://github.com/umijs/umi/commit/5d0585e2ce96c0ce55998f7813b594d17f5ef3a3"
+        },
+        "date": 1595557430295,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1373,
+            "range": "±2.45%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2161,
+            "range": "±4.63%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
