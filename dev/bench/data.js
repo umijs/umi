@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595557594991,
+  "lastUpdate": 1595572113537,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7698,6 +7698,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.36%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "32405058+zwh1666258377@users.noreply.github.com",
+            "name": "赵東澔",
+            "username": "zwh1666258377"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b954eb641153b240d135c9136fb1677953f9d469",
+          "message": "docs: koa-ssr 示例的注释错别字 (#5093)\n\n* Update app.js\r\n\r\n* Update app.js",
+          "timestamp": "2020-07-24T14:25:27+08:00",
+          "tree_id": "528abb8b2d2e4877f67fc6e296776085d755fd95",
+          "url": "https://github.com/umijs/umi/commit/b954eb641153b240d135c9136fb1677953f9d469"
+        },
+        "date": 1595572110031,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 675,
+            "range": "±89.85%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1903,
+            "range": "±4.28%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
