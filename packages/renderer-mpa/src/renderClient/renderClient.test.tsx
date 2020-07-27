@@ -1,8 +1,22 @@
-import React from 'react';
+import { cleanup, render } from '@testing-library/react';
 import { Plugin } from '@umijs/runtime';
-import { renderClient } from './renderClient';
-import { render } from '@testing-library/react';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
+import { renderClient } from './renderClient';
+
+let container: HTMLDivElement;
+beforeEach(() => {
+  container = document.createElement('div');
+  container.id = 'app';
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  document.body.removeChild(container);
+  // @ts-ignore
+  container = null;
+  cleanup();
+});
 
 test('normal', () => {
   const plugin = new Plugin({
@@ -67,7 +81,7 @@ test('normal', () => {
     renderClient({
       plugin,
       routes,
-      path: '/foo',
+      rootElement: 'app',
       callback: () => {
         loading = false;
       },
