@@ -19,7 +19,7 @@ let isSubApp = false;
 export function modifyClientRenderOpts(memo) {
   return {
     ...memo,
-    mountElementId: isSubApp ? 'sub-root' : memo.mountElementId,    
+    rootElement: isSubApp ? 'sub-root' : memo.rootElement,    
   };
 }
 ```
