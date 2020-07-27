@@ -1,9 +1,21 @@
 import React from 'react';
 import { render, cleanup, waitFor, getByText } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
 import renderClient, { preloadComponent } from './renderClient';
 
-afterEach(cleanup);
+let container;
+beforeEach(() => {
+  container = document.createElement('div');
+  container.id = 'app';
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  document.body.removeChild(container);
+  container = null;
+  cleanup();
+});
 
 test('normal', async () => {
   const history = createMemoryHistory({
@@ -41,6 +53,58 @@ test('normal', async () => {
     }),
   );
   expect(container.innerHTML).toEqual('<div><h1>foo</h1></div>');
+
+  history.push({
+    pathname: '/bar',
+  });
+  expect(container.innerHTML).toEqual('<div><h1>bar</h1></div>');
+  expect(routeChanges).toEqual(['POP /foo', 'PUSH /bar']);
+});
+
+test('normal with mount', async () => {
+  const history = createMemoryHistory({
+    initialEntries: ['/foo'],
+  });
+  const routeChanges: string[] = [];
+  const plugin = new Plugin({
+    validKeys: ['onRouteChange', 'rootContainer'],
+  });
+  plugin.register({
+    apply: {
+      onRouteChange({ location, action }: any) {
+        routeChanges.push(`${action} ${location.pathname}`);
+      },
+      rootContainer(container: any, args: any) {
+        if (!(args.history && args.plugin && args.routes)) {
+          throw new Error(
+            'history, plugin or routes not exists in the args of rootContainer',
+          );
+        }
+        return <div>{container}</div>;
+      },
+    },
+    path: '/foo',
+  });
+  let loading = true;
+  act(() => {
+    renderClient({
+      history,
+      plugin,
+      // #app
+      rootElement: 'app',
+      routes: [
+        { path: '/foo', component: () => <h1>foo</h1> },
+        { path: '/bar', component: () => <h1>bar</h1> },
+      ],
+      callback: () => {
+        loading = false;
+      },
+    });
+  });
+  expect(container.outerHTML).toEqual(
+    '<div id="app"><div><h1>foo</h1></div></div>',
+  );
+  expect(loading).toBeFalsy();
 
   history.push({
     pathname: '/bar',
