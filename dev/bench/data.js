@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595822073312,
+  "lastUpdate": 1595850598366,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7888,6 +7888,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.05%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ec56239c4a4d64f63eb16f00eacf8b7a555c31e9",
+          "message": "fix(runtime-config): add modifyClientRenderOpts to runtime plugin keys (#5108)",
+          "timestamp": "2020-07-27T19:47:27+08:00",
+          "tree_id": "2f101f4d4256db0f50334bf86277b483d59e7e49",
+          "url": "https://github.com/umijs/umi/commit/ec56239c4a4d64f63eb16f00eacf8b7a555c31e9"
+        },
+        "date": 1595850595348,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1492,
+            "range": "±2.46%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2288,
+            "range": "±5.61%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
