@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
@@ -11,6 +11,7 @@ interface IOpts {
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
   isServer?: boolean;
+  ssrProps?: object;
   rootRoutes?: IRoute[];
 }
 
@@ -131,6 +132,8 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (
+      // only when SSR config enable
+      opts.ssrProps &&
       !opts.isServer &&
       // make sure loaded once
       !(route.component as any)?.wrapInitialPropsLoaded &&
