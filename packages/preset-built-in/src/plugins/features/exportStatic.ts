@@ -114,7 +114,7 @@ export default (api: IApi) => {
           return html;
         } else {
           serverRenderFailed = true;
-          api.logger.error('[SSR]', error);
+          api.logger.error(`[SSR] ${route.path}`, error);
         }
       } catch (e) {
         serverRenderFailed = true;
