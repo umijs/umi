@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595850693731,
+  "lastUpdate": 1595993841930,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -7964,6 +7964,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.34%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "220711e16bb533895b0156f38f41a74c85e562d3",
+          "message": "chore: prerender path error log (#5115)",
+          "timestamp": "2020-07-29T11:34:59+08:00",
+          "tree_id": "60b47b40b0a620582565bb7e1c485872ac07f179",
+          "url": "https://github.com/umijs/umi/commit/220711e16bb533895b0156f38f41a74c85e562d3"
+        },
+        "date": 1595993838741,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1573,
+            "range": "±2.93%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2709,
+            "range": "±4.02%",
+            "unit": "ops/sec",
+            "extra": "46 samples"
           }
         ]
       }
