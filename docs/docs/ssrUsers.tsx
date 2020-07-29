@@ -15,6 +15,11 @@ const USERS = [
       'https://gw.alipayobjects.com/mdn/rms_6ab82c/afts/img/A*qPp4QKXu5HQAAAAAAAAAAABkARQnAQ',
   },
   {
+    name: '关于支付宝',
+    link: 'https://about.alipay.com/',
+    logo: 'https://gw.alipayobjects.com/zos/rmsportal/bsLuElJnYSyLnSOLjKth.png',
+  },
+  {
     name: 'INCLUSION 外滩大会',
     link: 'https://www.inclusionconf.com/',
     logo:
