@@ -11,6 +11,7 @@ interface IOpts {
   pageInitialProps?: object;
   getInitialPropsCtx?: object;
   isServer?: boolean;
+  ssrProps?: object;
   rootRoutes?: IRoute[];
 }
 
@@ -131,10 +132,12 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   } else {
     // avoid mount and unmount with url hash change
     if (
+      // only when SSR config enable
+      opts.ssrProps &&
       !opts.isServer &&
       // make sure loaded once
       !(route.component as any)?.wrapInitialPropsLoaded &&
-      route.component?.getInitialProps
+      (route.component?.getInitialProps || route.component?.preload)
     ) {
       // client Render for enable ssr, but not sure SSR success
       route.component = wrapInitialPropsFetch(route, opts);

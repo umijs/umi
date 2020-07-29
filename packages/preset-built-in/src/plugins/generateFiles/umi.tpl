@@ -21,6 +21,9 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
         plugin,
         history: createHistory(args.hot),
         isServer: process.env.__IS_SERVER,
+{{#enableSSR}}
+        ssrProps: {},
+{{/enableSSR}}
 {{#dynamicImport}}
         dynamicImport: {{{ dynamicImport }}},
 {{/dynamicImport}}

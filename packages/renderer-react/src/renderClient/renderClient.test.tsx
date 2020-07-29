@@ -201,7 +201,7 @@ test('preloadComponent', async () => {
   );
 });
 
-test('preloadComponent routeChange', async () => {
+test('preloadComponent routeChange with ssr', async () => {
   // not support node 8
   const history = createMemoryHistory({
     initialEntries: ['/foo'],
@@ -264,6 +264,7 @@ test('preloadComponent routeChange', async () => {
     renderClient({
       history,
       plugin,
+      ssrProps: {},
       rootElement: undefined,
       routes,
     }),

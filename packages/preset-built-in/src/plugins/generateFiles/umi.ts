@@ -39,6 +39,7 @@ export default function (api: IApi) {
           dirname(require.resolve('@umijs/runtime/package.json')),
         ),
         rootElement: api.config.mountElementId,
+        enableSSR: !!api.config.ssr,
         dynamicImport: !!api.config.dynamicImport,
         entryCode: (
           await api.applyPlugins({
