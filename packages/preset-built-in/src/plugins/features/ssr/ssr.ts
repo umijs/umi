@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
-import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
@@ -223,7 +222,7 @@ export default (api: IApi) => {
     }
 
     try {
-      const startTime = performance.nodeTiming.duration;
+      console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
       const render = require(serverPath);
       const context = {};
       const { html, error } = await render({
@@ -234,11 +233,8 @@ export default (api: IApi) => {
         htmlTemplate: defaultHtml,
         mountElementId: api.config?.mountElementId,
       });
-      const endTime = performance.nodeTiming.duration;
-      console.log(
-        `[SSR] ${stream ? 'stream' : ''} render ${req.url} start: ${(
-          endTime - startTime
-        ).toFixed(2)}ms`,
+      console.timeEnd(
+        `[SSR] ${stream ? 'stream' : ''} render ${req.url} start`,
       );
       if (error) {
         throw error;
