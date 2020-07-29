@@ -180,6 +180,7 @@ test('preloadComponent', async () => {
     renderClient({
       history,
       plugin,
+      ssrProps: {},
       rootElement: undefined,
       routes,
     }),
