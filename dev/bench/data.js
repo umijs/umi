@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596003369595,
+  "lastUpdate": 1596015759410,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8040,6 +8040,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.06%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5291ec8274c079cf9106176117adbcb96f7eafc1",
+          "message": "fix: dynamicImport rerender (#5124)\n\n* chore: ssr perf duration\r\n\r\n* fix: dynamicImport rerender\r\n\r\n* chore: format\r\n\r\n* chore: unused vars\r\n\r\n* chore: dynamicImport enable only config ssr\r\n\r\n* chore: test case\r\n\r\n* chore: test case",
+          "timestamp": "2020-07-29T17:39:58+08:00",
+          "tree_id": "ed9da16faa2af1ffdd71491d19acbffa34cee1a7",
+          "url": "https://github.com/umijs/umi/commit/5291ec8274c079cf9106176117adbcb96f7eafc1"
+        },
+        "date": 1596015756261,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1414,
+            "range": "±2.81%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2323,
+            "range": "±4.60%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
