@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { relative } from 'path';
+import { relative, dirname, join } from 'path';
 import { existsSync } from 'fs';
 import { Logger } from '@umijs/core';
 import {
@@ -24,6 +24,13 @@ export default function (api: IApi) {
       cleanTmpPathExceptCache({
         absTmpPath: paths.absTmpPath!,
       });
+
+      // for #5129, #4633
+      // ensure dev generated tmp files is removed
+      // this should work with "@@/*": ["src/.umi/*", "src/.umi-production/*"] in tsconfig.json
+      const devTmpPath = join(dirname(paths.absTmpPath!), '.umi');
+      logger.debug(`Clear devTmpPath: ${devTmpPath}`);
+      rimraf.sync(devTmpPath);
 
       // generate files
       await generateFiles({ api, watch: false });
