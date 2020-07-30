@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596019952197,
+  "lastUpdate": 1596083029440,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8344,6 +8344,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.34%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "陈小聪",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fd3bbbc5ab9a00751214627aa6e0ee0edade9309",
+          "message": "docs: add plugin api reference (#5128)",
+          "timestamp": "2020-07-30T12:20:43+08:00",
+          "tree_id": "264ee94a4527e9893817c693364c94a91ae86e69",
+          "url": "https://github.com/umijs/umi/commit/fd3bbbc5ab9a00751214627aa6e0ee0edade9309"
+        },
+        "date": 1596083026633,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1445,
+            "range": "±2.74%",
+            "unit": "ops/sec",
+            "extra": "69 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2346,
+            "range": "±4.09%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
