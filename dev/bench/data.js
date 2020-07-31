@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596188335848,
+  "lastUpdate": 1596189319705,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8420,6 +8420,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.99%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d2514a352a7c20f935fb569769daebf1ad50f5c7",
+          "message": "fix(Service): await onPluginReady events to avoid concurrent issue (#5139)",
+          "timestamp": "2020-07-31T17:51:50+08:00",
+          "tree_id": "c1b5041ac60fdc126852beb293851f698118d139",
+          "url": "https://github.com/umijs/umi/commit/d2514a352a7c20f935fb569769daebf1ad50f5c7"
+        },
+        "date": 1596189316764,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1310,
+            "range": "±2.06%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2162,
+            "range": "±4.59%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
