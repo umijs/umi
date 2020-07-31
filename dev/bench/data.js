@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596083029440,
+  "lastUpdate": 1596188335848,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8382,6 +8382,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.09%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "958c4fb862f808396702fb11c632c3c4af33644d",
+          "message": "feat(types): export BaseIConfig interface (#5140)",
+          "timestamp": "2020-07-31T17:35:15+08:00",
+          "tree_id": "7ad00a1128075b79fa46940b38994ad78ed7d2db",
+          "url": "https://github.com/umijs/umi/commit/958c4fb862f808396702fb11c632c3c4af33644d"
+        },
+        "date": 1596188332525,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 676,
+            "range": "±86.66%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2010,
+            "range": "±3.99%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
