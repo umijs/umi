@@ -26,7 +26,7 @@
   "dependencies": {
     "@babel/core": "7.10.4",
     "@babel/register": "7.10.4",
-    "@hapi/joi": "16.1.8",
+    "@hapi/joi": "17.1.1",
     "@types/ejs": "3.0.4",
     "@types/hapi__joi": "16.0.12",
     "@types/marked": "^1.1.0",
