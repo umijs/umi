@@ -265,7 +265,7 @@ interface ISSR {
   staticMarkup?: boolean;
 }
 
-interface BaseIConfig extends IConfigCore {
+export interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };
