@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596189737906,
+  "lastUpdate": 1596331286065,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8494,6 +8494,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1820,
             "range": "±3.50%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2545087aa62ad99d07ac15f25dea619c90e3e3f4",
+          "message": "docs: alipay ac (#5145)",
+          "timestamp": "2020-08-02T09:17:58+08:00",
+          "tree_id": "5ca92685956026d352700753c58c3ee62efcb7ae",
+          "url": "https://github.com/umijs/umi/commit/2545087aa62ad99d07ac15f25dea619c90e3e3f4"
+        },
+        "date": 1596331282701,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 661,
+            "range": "±89.27%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1928,
+            "range": "±5.39%",
             "unit": "ops/sec",
             "extra": "44 samples"
           }
