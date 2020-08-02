@@ -36,6 +36,12 @@ const USERS = [
     link: 'https://www.cainiao.com/',
     logo: 'https://gw.alicdn.com/tfs/TB1j3vTRXXXXXb8aXXXXXXXXXXX-342-120.png',
   },
+  {
+    name: 'Alipay 国际文档中心',
+    link: 'https://idocs.alipay.com/ac/',
+    logo:
+      'https://ac.alipay.com/storage/2020/6/4/5f7a45a1-3398-4029-8791-a9545a496642.svg',
+  },
 ];
 
 export default () => {
