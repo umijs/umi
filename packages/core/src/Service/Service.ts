@@ -214,7 +214,7 @@ export default class Service extends EventEmitter {
 
     // plugin is totally ready
     this.setStage(ServiceStage.pluginReady);
-    this.applyPlugins({
+    await this.applyPlugins({
       key: 'onPluginReady',
       type: ApplyPluginsType.event,
     });
