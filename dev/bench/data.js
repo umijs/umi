@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596426198100,
+  "lastUpdate": 1596435150172,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8646,6 +8646,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2644,
             "range": "±4.62%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "loper.tt@gmail.com",
+            "name": "mage3k",
+            "username": "mage3k"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "407e70895cb6aae69c1bde8edabe4a399ba8700d",
+          "message": "add missing field (#5148)\n\n* add missing field\r\n\r\n* add missing field\r\n\r\n* add missing field",
+          "timestamp": "2020-08-03T14:09:20+08:00",
+          "tree_id": "528fcac249e4f27230c7aa2d767a7c799188295f",
+          "url": "https://github.com/umijs/umi/commit/407e70895cb6aae69c1bde8edabe4a399ba8700d"
+        },
+        "date": 1596435147121,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1445,
+            "range": "±3.01%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2395,
+            "range": "±4.16%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
