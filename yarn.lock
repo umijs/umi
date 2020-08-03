@@ -5692,10 +5692,10 @@ cheerio@1.0.0-rc.3:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
-chokidar@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.0.tgz#b30611423ce376357c765b9b8f904b9fba3c0be8"
-  integrity sha512-aXAaho2VJtisB/1fg1+3nlLJqGOuewTzQpd/Tz0yTg2R0e4IGtshYvtjowyEumcBv2z+y4+kc75Mz7j5xJskcQ==
+chokidar@3.4.1, chokidar@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.1.tgz#e905bdecf10eaa0a0b1db0c664481cc4cbc22ba1"
+  integrity sha512-TQTJyr2stihpC4Sya9hs2Xh+O2wf+igjL36Y75xx2WdHuiICcn/XJza46Jwt0eT5hVpQOzo3FpY3cj3RVYLX0g==
   dependencies:
     anymatch "~3.1.1"
     braces "~3.0.2"
@@ -5738,21 +5738,6 @@ chokidar@^3.0.2:
     is-glob "~4.0.1"
     normalize-path "~3.0.0"
     readdirp "~3.3.0"
-  optionalDependencies:
-    fsevents "~2.1.2"
-
-chokidar@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.1.tgz#e905bdecf10eaa0a0b1db0c664481cc4cbc22ba1"
-  integrity sha512-TQTJyr2stihpC4Sya9hs2Xh+O2wf+igjL36Y75xx2WdHuiICcn/XJza46Jwt0eT5hVpQOzo3FpY3cj3RVYLX0g==
-  dependencies:
-    anymatch "~3.1.1"
-    braces "~3.0.2"
-    glob-parent "~5.1.0"
-    is-binary-path "~2.1.0"
-    is-glob "~4.0.1"
-    normalize-path "~3.0.0"
-    readdirp "~3.4.0"
   optionalDependencies:
     fsevents "~2.1.2"
 
