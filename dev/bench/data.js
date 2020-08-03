@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596331286065,
+  "lastUpdate": 1596426149807,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8534,6 +8534,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.39%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "scottjg@gmail.com",
+            "name": "Scott Goci",
+            "username": "scouttyg"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "264ecfa9afa9c85a0358e141564c847a86fa5a49",
+          "message": "Update README.md (#5143)",
+          "timestamp": "2020-08-03T11:39:07+08:00",
+          "tree_id": "c3a33d21a6fc4a2ed892a47aca34cbc42cb3ba1c",
+          "url": "https://github.com/umijs/umi/commit/264ecfa9afa9c85a0358e141564c847a86fa5a49"
+        },
+        "date": 1596426146394,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 666,
+            "range": "±91.09%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1974,
+            "range": "±5.62%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
