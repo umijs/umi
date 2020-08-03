@@ -17,6 +17,7 @@ export interface IRoute {
   strict?: boolean;
   sensitive?: boolean;
   wrappers?: any[];
+  name? string;
 }
 
 export interface IRouteComponentProps<
