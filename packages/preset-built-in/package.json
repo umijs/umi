@@ -39,7 +39,7 @@
     "@umijs/utils": "3.2.14",
     "cliui": "6.0.0",
     "es5-imcompatible-versions": "^0.1.62",
-    "fork-ts-checker-webpack-plugin": "5.0.7",
+    "fork-ts-checker-webpack-plugin": "5.0.12",
     "history-with-query": "4.10.3",
     "joi2types": "~1.0.7",
     "merge-stream": "2.0.0",
@@ -52,7 +52,7 @@
     "react-router-dom": "5.2.0",
     "regenerator-runtime": "0.13.5",
     "serialize-javascript": "4.0.0",
-    "umi-webpack-bundle-analyzer": "3.5.0",
+    "umi-webpack-bundle-analyzer": "3.6.0",
     "zlib": "1.0.5"
   }
 }

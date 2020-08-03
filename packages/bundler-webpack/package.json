@@ -55,8 +55,8 @@
     "strip-ansi": "6.0.0",
     "style-loader": "1.2.1",
     "url-loader": "4.1.0",
-    "webpack": "4.43.0",
-    "webpack-chain": "6.5.0",
+    "webpack": "4.44.1",
+    "webpack-chain": "6.5.1",
     "webpack-dev-middleware": "3.7.2",
     "webpack-manifest-plugin": "2.2.0",
     "webpackbar": "4.0.0"
