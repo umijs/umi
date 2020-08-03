@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596426149807,
+  "lastUpdate": 1596426165933,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8570,6 +8570,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1974,
             "range": "±5.62%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "scottjg@gmail.com",
+            "name": "Scott Goci",
+            "username": "scouttyg"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bb9b18e65a943828ac748a7291ab1bcbf64fd83f",
+          "message": "Update deployment.md (#5142)\n\nAn attempt to translate the untranslated `deployment.md` page for Umi",
+          "timestamp": "2020-08-03T11:39:25+08:00",
+          "tree_id": "fde0a85926983c1633e102bc0cd14c38cb45b625",
+          "url": "https://github.com/umijs/umi/commit/bb9b18e65a943828ac748a7291ab1bcbf64fd83f"
+        },
+        "date": 1596426162907,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1581,
+            "range": "±2.26%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2447,
+            "range": "±4.10%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
