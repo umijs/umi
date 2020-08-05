@@ -7,7 +7,6 @@ module.exports = (appInfo) => {
     consoleLevel: 'DEBUG',
   };
   config.assets = {
-    publicPath: '../app/public',
     devServer: {
       debug: true,
       autoPort: true,

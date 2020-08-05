@@ -13,7 +13,7 @@ module.exports = (appInfo, appConfig = {}) => {
   config.middleware = [];
 
   config.assets = {
-    publicPath: '/public/',
+    publicPath: '/public',
     devServer: {
       command: 'umi dev',
       env: {
@@ -28,6 +28,9 @@ module.exports = (appInfo, appConfig = {}) => {
   };
 
   config.view = {
+    mapping: {
+      '.html': 'nunjucks',
+    },
     defaultViewEngine: 'nunjucks',
   };
 
