@@ -1,4 +1,5 @@
 const { Controller } = require('egg');
+const render = require('../public/umi.server');
 
 class HomeController extends Controller {
   async index() {
@@ -13,14 +14,7 @@ class HomeController extends Controller {
      *  重新load文件
      *
      */
-    const isDev = app.config.env != 'prod';
-    let render;
-    if (!isDev) {
-      render = require('../public/umi.server');
-    } else {
-      delete require.cache[require.resolve('../public/umi.server')];
-      render = require('../public/umi.server');
-    }
+
     ctx.type = 'text/html';
     ctx.status = 200;
     const { err, html } = await render({
@@ -32,7 +26,10 @@ class HomeController extends Controller {
       ctx.body = '404 Not Found';
       return;
     }
-
+    const isDev = app.config.env != 'prod';
+    if (isDev) {
+      delete require.cache[require.resolve('../public/umi.server')];
+    }
     ctx.body = html;
   }
 }
