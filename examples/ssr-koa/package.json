@@ -3,7 +3,7 @@
   "scripts": {
     "build": "cross-env umi build",
     "start": "node server.js",
-    "dev": "node server.js & cross-env UMI_UI=none NODE_ENV=development concurrently \"umi dev\" ",
+    "dev": "cross-env UMI_UI=none NODE_ENV=development concurrently \"umi dev\" \"nodemon server.js\"",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
