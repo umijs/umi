@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596604720101,
+  "lastUpdate": 1596616467814,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8722,6 +8722,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2519,
             "range": "±5.08%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "陈小聪",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c73d9b82386d72a012c64cdebffefe684c00d8c0",
+          "message": "docs: add antd config (#4938)",
+          "timestamp": "2020-08-05T16:31:45+08:00",
+          "tree_id": "0d322938d7226ac9766f15d56eb9804820dffc3f",
+          "url": "https://github.com/umijs/umi/commit/c73d9b82386d72a012c64cdebffefe684c00d8c0"
+        },
+        "date": 1596616465033,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1367,
+            "range": "±1.99%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2087,
+            "range": "±3.77%",
             "unit": "ops/sec",
             "extra": "44 samples"
           }
