@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596435150172,
+  "lastUpdate": 1596604720101,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8686,6 +8686,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.16%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "yebeixiaohai@gmail.com",
+            "name": "小北",
+            "username": "williamnie"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1c21824acbdd8f257651f3bf89d7666bf11830d4",
+          "message": "fix: SSR dev 模式下 require 缓存带来的 OOM 问题 (#5169)\n\n* fix #5103 & 修复dev模式下require带来的oom问题\r\n\r\n* 暂时先改回去，热更新时重启server需要在想办法\r\n\r\n* fix: devServer ssr oom\r\n\r\n* chore: eggjs render example\r\n\r\n* fix: eggjs ssr demo\r\n\r\nCo-authored-by: ycjcl868 <45808948@qq.com>",
+          "timestamp": "2020-08-05T13:16:17+08:00",
+          "tree_id": "91da8950c38d97ac062946902aef3c5d11cba5ce",
+          "url": "https://github.com/umijs/umi/commit/1c21824acbdd8f257651f3bf89d7666bf11830d4"
+        },
+        "date": 1596604717268,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 770,
+            "range": "±101.48%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2519,
+            "range": "±5.08%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
