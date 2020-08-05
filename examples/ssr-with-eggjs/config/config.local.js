@@ -6,5 +6,13 @@ module.exports = (appInfo) => {
     level: 'NONE',
     consoleLevel: 'DEBUG',
   };
+  config.assets = {
+    publicPath: '../app/public',
+    devServer: {
+      debug: true,
+      autoPort: true,
+    },
+    dynamicLocalIP: false,
+  };
   return config;
 };
