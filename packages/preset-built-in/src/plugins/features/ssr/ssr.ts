@@ -212,11 +212,6 @@ export default (api: IApi) => {
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
     );
-    // if dev clear cache
-    if (require.cache[serverPath]) {
-      // replace default html
-      delete require.cache[serverPath];
-    }
 
     if (!devServerRender) {
       return defaultHtml;
@@ -242,6 +237,11 @@ export default (api: IApi) => {
       );
       if (error) {
         throw error;
+      }
+      // if dev clear cache, OOM
+      if (require.cache[serverPath]) {
+        // replace default html
+        delete require.cache[serverPath];
       }
       return html;
     } catch (e) {

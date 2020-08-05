@@ -9,6 +9,7 @@
 
 # production
 /dist
+config/manifest.json
 
 # misc
 .DS_Store
