@@ -38,9 +38,14 @@ const USERS = [
   },
   {
     name: 'Alipay 国际文档中心',
-    link: 'https://idocs.alipay.com/ac/',
+    link: 'https://global.alipay.com/docs/',
     logo:
       'https://ac.alipay.com/storage/2020/6/4/5f7a45a1-3398-4029-8791-a9545a496642.svg',
+  },
+  {
+    name: 'ZOLOZ 文档中心',
+    link: 'https://docs.zoloz.com/zoloz/saas/docs',
+    logo: 'https://www.zoloz.com/hubfs/logos/logo.svg',
   },
 ];
 
