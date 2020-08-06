@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596616467814,
+  "lastUpdate": 1596690243897,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8762,6 +8762,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.77%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "682fb7bbdc3b5ba61aa3917e01b4fc2328f21a6b",
+          "message": "docs: ssr cases (#5183)",
+          "timestamp": "2020-08-06T13:00:58+08:00",
+          "tree_id": "a7d017203b1219a37cd73275ee01da5fde8626bf",
+          "url": "https://github.com/umijs/umi/commit/682fb7bbdc3b5ba61aa3917e01b4fc2328f21a6b"
+        },
+        "date": 1596690240696,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1189,
+            "range": "±4.41%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1918,
+            "range": "±4.61%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
