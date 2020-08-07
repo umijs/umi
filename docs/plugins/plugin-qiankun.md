@@ -10,7 +10,11 @@ Umi plugin for [qiankun](https://github.com/umijs/qiankun).
 
 ## 启用方式
 
-配置 `qiankun` 开启。
+1. ```shell
+   yarn add @umijs/plugin-qiankun -D
+   ```
+
+2. 配置 `qiankun` 开启。
 
 ## 介绍
 
