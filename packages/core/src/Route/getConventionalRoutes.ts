@@ -170,6 +170,56 @@ function normalizeRoutes(routes: IRoute[]): IRoute[] {
   );
 }
 
+export const find404Route = (routes: IRoute[]): IRoute | null => {
+  for (const route of routes) {
+    if (route.path === '/404') {
+      return route;
+    }
+    if (route.routes) {
+      return find404Route(route.routes);
+    }
+  }
+
+  return null;
+}
+
+export const nestedAddDefault404 = (routes: IRoute[], notFoundRoute: IRoute) => {
+  for (const route of routes) {
+    if (route.routes) {
+      nestedAddDefault404(route.routes, notFoundRoute);
+    }
+  }
+
+  routes.push(notFoundRoute);
+}
+
+/**
+ * 为约定式路由中添加默认 404 路由
+ *
+ * 在能找到约定 404 路由组件 (如 `/404.tsx`) 的情况下，
+ * 给嵌套路由中的每一项 routes 末尾添加不匹配任何 path 的 404 路由
+ */
+export const addConventional404 = (routes: IRoute[]) => {
+  const notFoundRoute = find404Route(routes);
+
+  if (!notFoundRoute) {
+    return
+  }
+
+  if (!notFoundRoute.component && !notFoundRoute.redirect) {
+    throw new Error('Invalid route config for /404, no component and redirect');
+  }
+
+  const { component, redirect } = notFoundRoute;
+
+  nestedAddDefault404(
+    routes,
+    notFoundRoute.component
+      ? { component }
+      : { redirect },
+  );
+}
+
 export default function getRoutes(opts: IOpts) {
   const { root, relDir = '', config } = opts;
   const files = getFiles(join(root, relDir));
@@ -196,6 +246,8 @@ export default function getRoutes(opts: IOpts) {
       ];
     }
   }
+
+  addConventional404(routes);
 
   return routes;
 }
