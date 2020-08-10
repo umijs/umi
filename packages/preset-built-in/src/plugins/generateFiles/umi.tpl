@@ -1,14 +1,16 @@
 {{{ polyfillImports }}}
 {{{ importsAhead }}}
 import { plugin } from './core/plugin';
+import './core/pluginRegister';
 import { createHistory } from './core/history';
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
 import { renderClient } from '{{{ rendererPath }}}';
+import { routes } from './core/routes';
 {{{ imports }}}
 
 {{{ entryCodeAhead }}}
 
-const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
+const getClientRender = (args: { hot?: boolean; routes: any[] } = {}) => plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
   initialValue: () => {
@@ -16,8 +18,7 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
       key: 'modifyClientRenderOpts',
       type: ApplyPluginsType.modify,
       initialValue: {
-        // @ts-ignore
-        routes: require('./core/routes').routes,
+        routes: args.routes,
         plugin,
         history: createHistory(args.hot),
         isServer: process.env.__IS_SERVER,
@@ -38,7 +39,7 @@ const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
   args,
 });
 
-const clientRender = getClientRender();
+const clientRender = getClientRender({ routes });
 export default clientRender();
 
 {{{ entryCode }}}
@@ -48,6 +49,13 @@ export default clientRender();
 if (module.hot) {
   // @ts-ignore
   module.hot.accept('./core/routes', () => {
-    getClientRender({ hot: true })();
+    const ret = require('./core/routes');
+    if (ret.then) {
+      ret.then(({ routes }) => {
+        getClientRender({ hot: true, routes })();
+      });
+    } else {
+      getClientRender({ hot: true, routes: ret.routes })();
+    }
   });
 }
