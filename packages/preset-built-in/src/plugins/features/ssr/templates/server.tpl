@@ -7,6 +7,7 @@ import { IServerRender } from '@umijs/types';
 
 import { ApplyPluginsType, createMemoryHistory{{ #DynamicImport }}, dynamic{{ /DynamicImport }} } from '{{{ RuntimePath }}}';
 import { plugin } from './plugin';
+import './pluginRegister';
 
 // origin require module
 // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
