@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597111563878,
+  "lastUpdate": 1597111621545,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8876,6 +8876,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.03%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a64c815e5df687b6ea38f53bf54ebc5c923aa110",
+          "message": "feat: use import syntax(esm) for plugin and routes (#5199)\n\n* feat: use import syntax(esm) for plugin and routes\r\n\r\n* chore: remove duplicated code\r\n\r\n* chore: update lint-staged config\r\n\r\n* fix: ssr testcase",
+          "timestamp": "2020-08-11T10:04:29+08:00",
+          "tree_id": "7480acb2771f3bda7801c4b68a284139a2b6767a",
+          "url": "https://github.com/umijs/umi/commit/a64c815e5df687b6ea38f53bf54ebc5c923aa110"
+        },
+        "date": 1597111618330,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1492,
+            "range": "±2.14%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2327,
+            "range": "±4.82%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
