@@ -10,11 +10,16 @@ export default function (api: IApi) {
   } = api;
 
   api.onGenerateFiles(async (args) => {
-    const pluginTpl = readFileSync(join(__dirname, 'plugin.tpl'), 'utf-8');
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       type: api.ApplyPluginsType.add,
-      initialValue: ['modifyClientRenderOpts', 'patchRoutes', 'rootContainer', 'render', 'onRouteChange'],
+      initialValue: [
+        'modifyClientRenderOpts',
+        'patchRoutes',
+        'rootContainer',
+        'render',
+        'onRouteChange',
+      ],
     });
     const plugins = await api.applyPlugins({
       key: 'addRuntimePlugin',
@@ -29,13 +34,29 @@ export default function (api: IApi) {
     });
     api.writeTmpFile({
       path: 'core/plugin.ts',
-      content: Mustache.render(pluginTpl, {
-        validKeys,
-        runtimePath: winPath(
-          dirname(require.resolve('@umijs/runtime/package.json')),
-        ),
-        plugins: plugins.map(winPath),
-      }),
+      content: Mustache.render(
+        readFileSync(join(__dirname, 'plugin.tpl'), 'utf-8'),
+        {
+          validKeys,
+          runtimePath: winPath(
+            dirname(require.resolve('@umijs/runtime/package.json')),
+          ),
+        },
+      ),
+    });
+    api.writeTmpFile({
+      path: 'core/pluginRegister.ts',
+      content: Mustache.render(
+        readFileSync(join(__dirname, 'pluginRegister.tpl'), 'utf-8'),
+        {
+          plugins: plugins.map((plugin: string, index: number) => {
+            return {
+              index,
+              path: winPath(plugin),
+            };
+          }),
+        },
+      ),
     });
   });
 
