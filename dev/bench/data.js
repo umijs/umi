@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597111621545,
+  "lastUpdate": 1597112284307,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8912,6 +8912,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2327,
             "range": "±4.82%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "koldo.urrosolo@opendeusto.es",
+            "name": "koldou98",
+            "username": "koldou98"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bae9097e48a2da5a7aa828894093f106b59ed461",
+          "message": "docs: plugin-locale.md (#5155)\n\nTranslated with Google Traslate",
+          "timestamp": "2020-08-11T10:15:32+08:00",
+          "tree_id": "1a5549de284ad467d6a1ea400caeec267c15724a",
+          "url": "https://github.com/umijs/umi/commit/bae9097e48a2da5a7aa828894093f106b59ed461"
+        },
+        "date": 1597112281551,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1590,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2344,
+            "range": "±4.96%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
