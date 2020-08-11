@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1596770332178,
+  "lastUpdate": 1597111563878,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8838,6 +8838,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.23%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "zthxxx.me@gmail.com",
+            "name": "zthxxx",
+            "username": "zthxxx"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a510bc0bf0df1df4352dd1829e0b233fa3389ae9",
+          "message": "fix: dev server proxy with onProxyRes (#5202)",
+          "timestamp": "2020-08-11T10:03:12+08:00",
+          "tree_id": "ad8e05897ecf84c9ebac092d18de2a32b1ef7c5c",
+          "url": "https://github.com/umijs/umi/commit/a510bc0bf0df1df4352dd1829e0b233fa3389ae9"
+        },
+        "date": 1597111560302,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 690,
+            "range": "±94.00%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2375,
+            "range": "±4.03%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
