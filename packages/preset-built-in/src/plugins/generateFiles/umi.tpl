@@ -5,7 +5,7 @@ import './core/pluginRegister';
 import { createHistory } from './core/history';
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
 import { renderClient } from '{{{ rendererPath }}}';
-import { routes } from './core/routes';
+import { getRoutes } from './core/routes';
 {{{ imports }}}
 
 {{{ entryCodeAhead }}}
@@ -39,7 +39,7 @@ const getClientRender = (args: { hot?: boolean; routes: any[] } = {}) => plugin.
   args,
 });
 
-const clientRender = getClientRender({ routes });
+const clientRender = getClientRender({ routes: getRoutes() });
 export default clientRender();
 
 {{{ entryCode }}}
@@ -51,11 +51,11 @@ if (module.hot) {
   module.hot.accept('./core/routes', () => {
     const ret = require('./core/routes');
     if (ret.then) {
-      ret.then(({ routes }) => {
-        getClientRender({ hot: true, routes })();
+      ret.then(({ getRoutes }) => {
+        getClientRender({ hot: true, routes: getRoutes() })();
       });
     } else {
-      getClientRender({ hot: true, routes: ret.routes })();
+      getClientRender({ hot: true, routes: ret.getRoutes() })();
     }
   });
 }
