@@ -1,6 +1,6 @@
 # 迁移 create-react-app 到 umi
 
-> 本文档仅作为如何将 create-react-app 迁移到 umi 的基础指引，真实项目的迁移。你可能还需要阅读我们的文档，了解更多关于[插件](/zh-CN/plugins/preset-react)和[配置](/zh-CN/config)的相关信息。
+> 本文档仅作为如何将 create-react-app 迁移到 umi 的基础指引。真实项目的迁移，你可能还需要阅读我们的文档，了解更多关于[插件](/zh-CN/plugins/preset-react)和[配置](/zh-CN/config)的相关信息。
 
 其实将一个 create-react-app 项目迁移到 umi 是一件比较容易的事情。主要需要注意几个默认行为的差异。接下来，我们通过一下步骤，将 create-react-app 的初始项目迁移到 umi。
 
