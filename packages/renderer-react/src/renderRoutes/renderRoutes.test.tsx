@@ -69,6 +69,7 @@ TestInitialPropsParent.getInitialProps = async () => {
   });
 };
 const routerConfig = {
+  ssrProps: {},
   routes: [
     {
       path: '/layout',

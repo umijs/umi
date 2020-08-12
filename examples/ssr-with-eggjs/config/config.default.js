@@ -1,6 +1,9 @@
 'use strict';
+const path = require('path');
 
-module.exports = (appInfo) => {
+module.exports = (appInfo, appConfig = {}) => {
+  const assetsDir =
+    (appConfig.assets && appConfig.assets.assetsDir) || 'app/web';
   const config = (exports = {});
 
   // use for cookie sign key, should change to your own and keep security
@@ -10,19 +13,25 @@ module.exports = (appInfo) => {
   config.middleware = [];
 
   config.assets = {
-    publicPath: '/public/',
+    publicPath: '/public',
     devServer: {
-      debug: true,
       command: 'umi dev',
-      port: 8000,
       env: {
-        APP_ROOT: process.cwd() + '/app/web',
+        APP_ROOT: path.join(appInfo.baseDir, assetsDir),
+        PORT: '{port}',
         BROWSER: 'none',
         ESLINT: 'none',
-        SOCKET_SERVER: 'http://127.0.0.1:8000',
-        PUBLIC_PATH: 'http://127.0.0.1:8000',
+        SOCKET_SERVER: 'http://127.0.0.1:{port}',
+        PUBLIC_PATH: 'http://127.0.0.1:{port}',
       },
     },
+  };
+
+  config.view = {
+    mapping: {
+      '.html': 'nunjucks',
+    },
+    defaultViewEngine: 'nunjucks',
   };
 
   config.proxy = true;

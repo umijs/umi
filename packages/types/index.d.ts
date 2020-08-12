@@ -191,6 +191,7 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
+  modifyDepInfo: IModify<any, {}>;
   modifyConfig: IModify<IConfig, {}>;
   modifyDefaultConfig: IModify<IConfig, {}>;
   modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
@@ -265,7 +266,7 @@ interface ISSR {
   staticMarkup?: boolean;
 }
 
-interface BaseIConfig extends IConfigCore {
+export interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };

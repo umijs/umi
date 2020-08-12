@@ -6,5 +6,9 @@
 exports.assets = {
   enable: true,
   package: 'egg-view-assets',
-  env: ['local'],
+};
+
+exports.nunjucks = {
+  enable: true,
+  package: 'egg-view-nunjucks',
 };

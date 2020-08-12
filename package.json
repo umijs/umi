@@ -26,13 +26,11 @@
     "update:deps": "yarn upgrade-interactive --latest"
   },
   "lint-staged": {
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write",
-      "git add"
-    ],
     "*.{js,jsx,less,md,json}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
     ]
   },
   "devDependencies": {
@@ -44,12 +42,12 @@
     "@types/node": "^14.0.23",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "@umijs/core": "3.3.0-alpha.0",
+    "@umijs/core": "3.2.14",
     "@umijs/plugin-analytics": "^0.2.2",
     "@umijs/preset-dumi": "^1.0.33",
-    "@umijs/test": "3.3.0-alpha.0",
-    "@umijs/test-utils": "3.3.0-alpha.0",
-    "@umijs/utils": "3.3.0-alpha.0",
+    "@umijs/test": "3.2.14",
+    "@umijs/test-utils": "3.2.14",
+    "@umijs/utils": "3.2.14",
     "benchmark": "^2.1.4",
     "cross-env": "^7.0.2",
     "escape-goat": "^3.0.0",

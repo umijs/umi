@@ -8,6 +8,22 @@
 
 ## 配置项
 
+### modifyClientRenderOpts(fn)
+
+修改 clientRender 参数。
+
+比如在微前端里动态修改渲染根节点：
+
+```js
+let isSubApp = false;
+export function modifyClientRenderOpts(memo) {
+  return {
+    ...memo,
+    rootElement: isSubApp ? 'sub-root' : memo.rootElement,    
+  };
+}
+```
+
 ### patchRoutes({ routes })
 
 修改路由。
