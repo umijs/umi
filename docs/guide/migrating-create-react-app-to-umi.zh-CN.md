@@ -2,7 +2,7 @@
 
 > 本文档仅作为如何将 create-react-app 迁移到 umi 的基础指引。真实项目的迁移，你可能还需要阅读我们的文档，了解更多关于[插件](/zh-CN/plugins/preset-react)和[配置](/zh-CN/config)的相关信息。
 
-其实将一个 create-react-app 项目迁移到 umi 是一件比较容易的事情。主要需要注意几个默认行为的差异。接下来，我们通过一下步骤，将 create-react-app 的初始项目迁移到 umi。
+其实将一个 create-react-app 项目迁移到 umi 是一件比较容易的事情。主要需要注意几个默认行为的差异。接下来，我们通过以下步骤，将 create-react-app 的初始项目迁移到 umi。
 
 ## 依赖处理
 
@@ -58,7 +58,7 @@ export default ({ children }) => (
 
 将 `public/index.html` 中的内容，转移到 `src/pages/document.ejs`。
 
-create-react-app 中通过 `%PUBLIC_URL%` 取得部署路径， umi 中需要通过 [`context`](/zh-CN/docs/html-template#配置模板) 取值。
+create-react-app 中通过 `%PUBLIC_URL%` 取得部署路径，而 umi 中需要通过 [`context`](/zh-CN/docs/html-template#配置模板) 取值。
 
 ```diff
 - <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -67,7 +67,7 @@ create-react-app 中通过 `%PUBLIC_URL%` 取得部署路径， umi 中需要通
 
 ## 修改 eslint 配置
 
-将 package.json 中的 eslint 配置，转移到 `.eslintrc.js`。在 umi 项目中我们推荐统一使用 `@umijs/fabric`。当然，你可以使用你熟悉的任意配置。
+将 package.json 中的 eslint 配置，转移到 `.eslintrc.js`。在 umi 项目中我们推荐你使用 `@umijs/fabric`。当然，你可以使用你熟悉的任意配置。
 
 ```diff
 {
