@@ -16,7 +16,7 @@ export * from './utils';
 
 export default async function (args: IUmiTestArgs) {
   process.env.NODE_ENV = 'test';
-
+  const { OPEN_AUTO_E2E_FOR_UMI_TEST } = process.env;
   if (args.debug) {
     createDebug.enable('umi:test');
   }
@@ -44,8 +44,10 @@ export default async function (args: IUmiTestArgs) {
     existsSync(packageJSONPath) && require(packageJSONPath).jest;
   debug(`jest config from package.json: ${JSON.stringify(packageJestConfig)}`);
 
-  // if need install puppeteer
-  await initPuppeteer();
+  if (OPEN_AUTO_E2E_FOR_UMI_TEST === 'OPEN') {
+    // if need install puppeteer
+    await initPuppeteer();
+  }
 
   // Merge configs
   // user config and args config could have value function for modification
@@ -91,7 +93,6 @@ declare global {
   export const waitTime: (wait: number) => Promise<void>;
   export const browser: Puppeteer.Browser;
   export const page: Puppeteer.Page & {
-
     setFamily: () => Promise<void>;
     getText: () => Promise<string>;
   };
