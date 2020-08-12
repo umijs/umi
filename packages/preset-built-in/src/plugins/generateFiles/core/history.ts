@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { IApi } from '@umijs/types';
-import { winPath } from '@umijs/utils';
+import { runtimePath } from '../constants';
 
 export default function (api: IApi) {
   const {
@@ -53,9 +53,7 @@ export default function (api: IApi) {
           null,
           2,
         ),
-        runtimePath: winPath(
-          dirname(require.resolve('@umijs/runtime/package.json')),
-        ),
+        runtimePath,
       }),
     });
   });
