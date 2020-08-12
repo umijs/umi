@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { join } from 'path';
 import { IApi } from '@umijs/types';
 import { getFile, winPath } from '@umijs/utils';
+import { runtimePath } from '../constants';
 
 export default function (api: IApi) {
   const {
@@ -38,9 +39,7 @@ export default function (api: IApi) {
         readFileSync(join(__dirname, 'plugin.tpl'), 'utf-8'),
         {
           validKeys,
-          runtimePath: winPath(
-            dirname(require.resolve('@umijs/runtime/package.json')),
-          ),
+          runtimePath,
         },
       ),
     });

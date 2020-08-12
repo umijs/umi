@@ -642,6 +642,20 @@ api.modifyDefaultConfig((memo) => {
 });
 ```
 
+### modifyDepInfo
+
+添加依赖信息，包括 semver range 和别名信息。
+
+```js
+api.modifyDepInfo((memo) => {
+  memo['foo'] = {
+    range: pkg.dependencies.foo,
+    alias: [pathToFooPackage],
+  };
+  return memo;
+});
+```
+
 ### modifyHTML
 
 修改 HTML，基于 [cheerio](https://github.com/cheeriojs/cheerio) 的 ast。
