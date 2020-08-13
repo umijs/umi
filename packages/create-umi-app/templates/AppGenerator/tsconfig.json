@@ -2,8 +2,6 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "jsx": "react",
