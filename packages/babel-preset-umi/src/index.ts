@@ -84,6 +84,11 @@ export default (context: any, opts: IOpts = {}) => {
         require('@babel/plugin-transform-destructuring').default,
         { loose: false },
       ],
+      // https://www.npmjs.com/package/babel-plugin-transform-typescript-metadata#usage
+      // should be placed before @babel/plugin-proposal-decorators.
+      opts.typescript && [
+        require.resolve('babel-plugin-transform-typescript-metadata'),
+      ],
       [require('@babel/plugin-proposal-decorators').default, { legacy: true }],
       [
         require('@babel/plugin-proposal-class-properties').default,
