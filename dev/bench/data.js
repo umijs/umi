@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597286371037,
+  "lastUpdate": 1597311039040,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9026,6 +9026,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1946,
             "range": "±4.43%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b56f7f694ff514a1cc99a9bd3a1bcf4b08ac4965",
+          "message": "feat: support TypeScript DI (#4929)\n\n* feat: typescript di\r\n\r\n* chore: create umi\r\n\r\n* fix: test csae\r\n\r\n* chore: unused code\r\n\r\n* chore: tsconfig.json",
+          "timestamp": "2020-08-13T17:27:25+08:00",
+          "tree_id": "87c8d2d229b243e0660ba1ddcd1c27ca7b7d548c",
+          "url": "https://github.com/umijs/umi/commit/b56f7f694ff514a1cc99a9bd3a1bcf4b08ac4965"
+        },
+        "date": 1597311035653,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 657,
+            "range": "±88.85%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1848,
+            "range": "±4.36%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
