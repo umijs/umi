@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597205438050,
+  "lastUpdate": 1597286371037,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -8990,6 +8990,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.00%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "708460dcaa1a46f4f198f166676ae9e190afded4",
+          "message": "Revert \"docs: plugin-locale.md (#5155)\" (#5214)\n\nThis reverts commit bae9097e48a2da5a7aa828894093f106b59ed461.",
+          "timestamp": "2020-08-13T10:36:28+08:00",
+          "tree_id": "6f564ff2b95983147c958024d5e77d6d85a90cbb",
+          "url": "https://github.com/umijs/umi/commit/708460dcaa1a46f4f198f166676ae9e190afded4"
+        },
+        "date": 1597286367768,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 677,
+            "range": "±86.73%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1946,
+            "range": "±4.43%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
