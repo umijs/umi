@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597386775973,
+  "lastUpdate": 1597389325904,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9256,6 +9256,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.10%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6fd5b49460530ec1108bc15d3e88e69498e88aa0",
+          "message": "fix: umi dir undefined in ci (#5229)",
+          "timestamp": "2020-08-14T15:11:04+08:00",
+          "tree_id": "37f457e4b5ac72d5984a2535f9d687f806ab9ebf",
+          "url": "https://github.com/umijs/umi/commit/6fd5b49460530ec1108bc15d3e88e69498e88aa0"
+        },
+        "date": 1597389320926,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1331,
+            "range": "±2.20%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2157,
+            "range": "±3.54%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
