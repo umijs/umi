@@ -53,7 +53,7 @@ export function createCSSRule({
           ),
         );
     } else {
-      if (type === BundlerConfigType.csr) {
+      if (type === BundlerConfigType.csr && !config.styleLoader) {
         rule
           .use('extract-css-loader')
           .loader(

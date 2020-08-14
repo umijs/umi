@@ -177,6 +177,16 @@ export default async function getConfig(
         .loader(require.resolve('babel-loader'))
         .options(babelOpts);
 
+  // umi.js 走 babel 编译
+  // prettier-ignore
+  webpackConfig.module
+    .rule('js')
+      .test(/\.(js|mjs|jsx|ts|tsx)$/)
+      .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
+
   // prettier-ignore
   webpackConfig.module
     .rule('ts-in-node_modules')
