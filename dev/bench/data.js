@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597372561256,
+  "lastUpdate": 1597374082339,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9142,6 +9142,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.84%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "14d6ac1a3357160a90aa75162aa685b35bbf31be",
+          "message": "refactor: use function to get routes (#5211)",
+          "timestamp": "2020-08-14T10:58:24+08:00",
+          "tree_id": "ba583885eaf2148eafeca01fe1eb2a2d22b4660c",
+          "url": "https://github.com/umijs/umi/commit/14d6ac1a3357160a90aa75162aa685b35bbf31be"
+        },
+        "date": 1597374079071,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 652,
+            "range": "±89.54%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1865,
+            "range": "±4.28%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
