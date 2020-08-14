@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597311039040,
+  "lastUpdate": 1597372511623,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9066,6 +9066,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.36%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "425002189@qq.com",
+            "name": "NsNe",
+            "username": "NsNe"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "19ce942e58b468d7c55024c039624e30d3aceaef",
+          "message": "Update plugin-model.zh-CN.md (#5222)",
+          "timestamp": "2020-08-14T10:32:44+08:00",
+          "tree_id": "babe43ea505cfcab334f3900ad7ce5ce21a9c7c5",
+          "url": "https://github.com/umijs/umi/commit/19ce942e58b468d7c55024c039624e30d3aceaef"
+        },
+        "date": 1597372508728,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1605,
+            "range": "±2.30%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2578,
+            "range": "±4.01%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
