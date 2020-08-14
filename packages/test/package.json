@@ -26,7 +26,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.11.1",
     "@umijs/babel-preset-umi": "3.2.14",
     "@umijs/utils": "3.2.14",
     "babel-core": "7.0.0-bridge.0",
@@ -36,8 +36,8 @@
     "jest": "^25.4.0",
     "jest-cli": "^25.4.0",
     "jest-environment-jsdom-fourteen": "1.0.1",
-    "regenerator-runtime": "^0.13.5",
-    "whatwg-fetch": "^3.2.0"
+    "regenerator-runtime": "^0.13.7",
+    "whatwg-fetch": "^3.4.0"
   },
   "bin": {
     "umi-test": "bin/umi-test.js"
