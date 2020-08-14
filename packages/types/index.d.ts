@@ -191,7 +191,6 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
-  modifyDepInfo: IModify<any, {}>;
   modifyConfig: IModify<IConfig, {}>;
   modifyDefaultConfig: IModify<IConfig, {}>;
   modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
@@ -217,6 +216,7 @@ export interface IApi extends PluginAPI {
   >;
 
   // ApplyPluginType.add
+  addDepInfo: IAdd<null, { name: string; range: string; alias?: string[] }>;
   addDevScripts: IAdd<null, string>;
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
   addHTMLScripts: IAdd<{ route?: IRoute }, IScriptConfig>;

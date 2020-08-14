@@ -22,16 +22,19 @@ export default function (api: IApi) {
     utils: { Mustache },
   } = api;
 
-  api.modifyDepInfo((memo) => {
-    memo['@umijs/runtime'] = {
-      range: '3',
-      alias: [runtimePath],
-    };
-    memo['@umijs/renderer-react'] = {
-      range: '3',
-      alias: [renderReactPath],
-    };
-    return memo;
+  api.addDepInfo(() => {
+    return [
+      {
+        name: '@umijs/runtime',
+        range: '3',
+        alias: [runtimePath],
+      },
+      {
+        name: '@umijs/renderer-react',
+        range: '3',
+        alias: [renderReactPath],
+      },
+    ];
   });
 
   api.onGenerateFiles(async (args) => {

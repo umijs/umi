@@ -231,6 +231,20 @@ api.addBeforeMiddewares(() => {
 });
 ```
 
+### addDepInfo
+
+添加依赖信息，包括 semver range 和别名信息。
+
+```js
+api.addDepInfo((memo) => {
+  return {
+    name: 'foo',
+    range: pkg.dependencies.foo,
+    alias: [pathToFooPackage],
+  };
+});
+```
+
 ### addEntryCode
 
 在入口文件最后添加代码。
@@ -639,20 +653,6 @@ api.modifyDefaultConfig((memo) => {
     ...memo,
     ...defaultOptions,
   };
-});
-```
-
-### modifyDepInfo
-
-添加依赖信息，包括 semver range 和别名信息。
-
-```js
-api.modifyDepInfo((memo) => {
-  memo['foo'] = {
-    range: pkg.dependencies.foo,
-    alias: [pathToFooPackage],
-  };
-  return memo;
 });
 ```
 
