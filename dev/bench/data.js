@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597389325904,
+  "lastUpdate": 1597392516387,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9294,6 +9294,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.54%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c4ed4467d463da188e2b60f8e9ab9fed3d6e0f22",
+          "message": "fix: webpack compile multiple times after files changed (#5231)",
+          "timestamp": "2020-08-14T16:04:20+08:00",
+          "tree_id": "0b5a4fd3c63025fca26832cd09bfb86851c23d50",
+          "url": "https://github.com/umijs/umi/commit/c4ed4467d463da188e2b60f8e9ab9fed3d6e0f22"
+        },
+        "date": 1597392512416,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1304,
+            "range": "±1.89%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2023,
+            "range": "±4.62%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
