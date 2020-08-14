@@ -177,15 +177,18 @@ export default async function getConfig(
         .loader(require.resolve('babel-loader'))
         .options(babelOpts);
 
-  // umi.js 走 babel 编译
-  // prettier-ignore
-  webpackConfig.module
-    .rule('js')
-      .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
-      .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
-        .options(babelOpts);
+  // umi/dist/index.esm.js 走 babel 编译
+  // why? 极速模式下不打包 @umijs/runtime
+  if (process.env.UMI_DIR) {
+    // prettier-ignore
+    webpackConfig.module
+      .rule('js')
+        .test(/\.(js|mjs|jsx|ts|tsx)$/)
+        .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
+        .use('babel-loader')
+          .loader(require.resolve('babel-loader'))
+          .options(babelOpts);
+  }
 
   // prettier-ignore
   webpackConfig.module
