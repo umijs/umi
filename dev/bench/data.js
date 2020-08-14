@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597372511623,
+  "lastUpdate": 1597372561256,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9104,6 +9104,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.01%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "陈小聪",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e42af8c71ebd2a211d20eaa9f5d9d44b20a8a402",
+          "message": "docs: migrating-create-react-app-to-umi (#5206)\n\n* docs: migrating-create-react-app-to-umi\r\n\r\n* Update migrating-create-react-app-to-umi.md\r\n\r\n* chore: text style\r\n\r\n* chore: correct typos",
+          "timestamp": "2020-08-14T10:33:00+08:00",
+          "tree_id": "fd508fc57375fd4562f153f66d2b3a49c7e1d109",
+          "url": "https://github.com/umijs/umi/commit/e42af8c71ebd2a211d20eaa9f5d9d44b20a8a402"
+        },
+        "date": 1597372558074,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1170,
+            "range": "±2.58%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2014,
+            "range": "±3.84%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
