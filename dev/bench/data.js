@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597385624682,
+  "lastUpdate": 1597386775973,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9218,6 +9218,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.38%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "2e2c89d1dfa72e4c005d8ceb1b40287771c398b0",
+          "message": "feat: do babel transform for umi package file",
+          "timestamp": "2020-08-14T14:29:02+08:00",
+          "tree_id": "bdc9511bde26b475dd8daaf1b70e8270f8f2aa3f",
+          "url": "https://github.com/umijs/umi/commit/2e2c89d1dfa72e4c005d8ceb1b40287771c398b0"
+        },
+        "date": 1597386772668,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1403,
+            "range": "±2.83%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2309,
+            "range": "±4.10%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
