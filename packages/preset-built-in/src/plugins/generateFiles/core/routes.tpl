@@ -1,5 +1,8 @@
 import { ApplyPluginsType{{ #config.dynamicImport }}, dynamic{{ /config.dynamicImport }} } from '{{{ runtimePath }}}';
 import { plugin } from './plugin';
+{{ #loadingComponent }}
+import LoadingComponent from '{{{ loadingComponent }}}';
+{{ /loadingComponent }}
 
 export function getRoutes() {
   const routes = {{{ routes }}};

@@ -61,7 +61,7 @@ export default function ({ routes, config, cwd }: IOpts) {
           const [component, webpackChunkName] = value.split(SEPARATOR);
           let loading = '';
           if (config.dynamicImport.loading) {
-            loading = `, loading: require('${config.dynamicImport.loading}').default`;
+            loading = `, loading: LoadingComponent`;
           }
           return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
         } else {
