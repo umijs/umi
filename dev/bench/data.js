@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597395496398,
+  "lastUpdate": 1597555299436,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9408,6 +9408,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.73%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "b77b023211c3d2040b3c19d0d612bc0deae4f41d",
+          "message": "refactor: use esm for dynamic.loading component",
+          "timestamp": "2020-08-16T13:17:07+08:00",
+          "tree_id": "d994e15a32e9a3116cba0855e1ac56d9ecd549e0",
+          "url": "https://github.com/umijs/umi/commit/b77b023211c3d2040b3c19d0d612bc0deae4f41d"
+        },
+        "date": 1597555295951,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 656,
+            "range": "±96.46%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2025,
+            "range": "±4.42%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
