@@ -10,7 +10,7 @@ import { getRoutes } from './core/routes';
 
 {{{ entryCodeAhead }}}
 
-const getClientRender = (args: { hot?: boolean; routes: any[] } = {}) => plugin.applyPlugins({
+const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
   initialValue: () => {
@@ -18,7 +18,7 @@ const getClientRender = (args: { hot?: boolean; routes: any[] } = {}) => plugin.
       key: 'modifyClientRenderOpts',
       type: ApplyPluginsType.modify,
       initialValue: {
-        routes: args.routes,
+        routes: args.routes || getRoutes(),
         plugin,
         history: createHistory(args.hot),
         isServer: process.env.__IS_SERVER,
@@ -39,7 +39,7 @@ const getClientRender = (args: { hot?: boolean; routes: any[] } = {}) => plugin.
   args,
 });
 
-const clientRender = getClientRender({ routes: getRoutes() });
+const clientRender = getClientRender();
 export default clientRender();
 
 {{{ entryCode }}}
