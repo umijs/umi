@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597555299436,
+  "lastUpdate": 1597556906610,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9446,6 +9446,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.42%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3090dc2f123752c171a97a43e33cc6242436d397",
+          "message": "fix: patchRoutes should be after render (#5242)",
+          "timestamp": "2020-08-16T13:44:08+08:00",
+          "tree_id": "0d2146532b48c0ebb411633264cfd24eed00b4ca",
+          "url": "https://github.com/umijs/umi/commit/3090dc2f123752c171a97a43e33cc6242436d397"
+        },
+        "date": 1597556898441,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 718,
+            "range": "±91.54%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2205,
+            "range": "±3.89%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
