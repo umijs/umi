@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597556906610,
+  "lastUpdate": 1597624906778,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9484,6 +9484,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.89%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "randypriv@gmail.com",
+            "name": "Randy",
+            "username": "djyde"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "981c8dc9e464296abf2055570c6ae1be1f0c6b62",
+          "message": "Update runtime-config.zh-CN.md (#5237)",
+          "timestamp": "2020-08-17T08:37:42+08:00",
+          "tree_id": "c62b99d0a73bd7de5bb38d96f97d4a7e7dc68609",
+          "url": "https://github.com/umijs/umi/commit/981c8dc9e464296abf2055570c6ae1be1f0c6b62"
+        },
+        "date": 1597624903110,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1404,
+            "range": "±2.95%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2200,
+            "range": "±4.61%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
