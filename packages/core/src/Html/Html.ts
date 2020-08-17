@@ -116,7 +116,9 @@ class Html {
       filename: 'document.ejs',
     });
 
-    let $ = cheerio.load(html);
+    let $ = cheerio.load(html, {
+      decodeEntities: false,
+    });
 
     // metas
     metas.forEach((meta) => {

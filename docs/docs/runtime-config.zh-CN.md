@@ -70,7 +70,10 @@ import { history } from 'umi';
 export function render(oldRender) {
   fetch('/api/auth').then(auth => {
     if (auth.isLogin) { oldRender() }
-    else { history.push('/login'); }
+    else { 
+      history.push('/login'); 
+      oldRender()
+    }
   });
 }
 ```

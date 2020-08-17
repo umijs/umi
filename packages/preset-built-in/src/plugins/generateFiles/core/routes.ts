@@ -19,6 +19,7 @@ export default function (api: IApi) {
         routes: new Route().getJSON({ routes, config: api.config, cwd }),
         runtimePath,
         config: api.config,
+        loadingComponent: api.config.dynamicImport?.loading,
       }),
     });
   });

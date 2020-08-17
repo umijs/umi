@@ -5,19 +5,19 @@ translateHelp: true
 # @umijs/plugin-locale
 
 
-Internationalization plug-in, used to solve i18n problem.
+国际化插件，用于解决 i18n 问题。
 
-## Activation method
+## 启用方式
 
-The configuration `locale` is turned on.
+配置 `locale` 开启。
 
-## Introduction
+## 介绍
 
-Contains the following functions,
+包含以下功能，
 
-### Conventional multi-language support
+### 约定式多语言支持
 
-For example, in the following directory, the project has the internationalized language switch between `zh-CN` and `en-US`:
+比如以下目录，项目就拥有了 `zh-CN` 与 `en-US` 国际化语言切换：
 
 ```bash
 + src
@@ -27,9 +27,9 @@ For example, in the following directory, the project has the internationalized l
   + pages
 ```
 
-Naming convention for multi-language files: `<lang><separator (configured by baseSeparator)><COUNTRY>.js`
+多语言文件的命名规范：`<lang><分割符（通过 baseSeparator 配置）><COUNTRY>.js`
 
-The content specification of multilingual files: key-value literals, as follows:
+多语言文件的内容规范：键-值组成的字面量，如下：
 
 ```javascript
 // src/locales/zh-CN.js
@@ -45,28 +45,28 @@ export default {
 };
 ```
 
-> If the project is configured with `singular: true`, `locales` should be changed to `locale`
+> 如果项目配置了 `singular: true` ，`locales` 要改成 `locale`
 
 ### import from umi
 
-@umijs/plugin-locale is based on the react-intl package and supports all its apis. For details, please see [here](https://github.com/formatjs/react-intl/blob/master/docs/API.md). In order to facilitate the use, we have also added some other functions, here will list all the api, and show its functions.
+@umijs/plugin-locale 基于 react-intl 封装，支持其所有的 api，详情可以看 [这里](https://github.com/formatjs/react-intl/blob/master/docs/API.md)。为了方便使用我们也添加了一些其他的功能，这里将会列举所有的 api，并且展示它的功能。
 
 ### addLocale
 
-Add languages dynamically. After adding languages, you can get the list through [getAllLocales](#getAllLocales). addLocale three parameters.
+动态的增加语言，增加语言之后可以通过 [getAllLocales](#getAllLocales) 获得列表。addLocale 三个参数。
 
-- The key of the `name` language. For example: zh-TW
-- The id list of `message` language. For example: {// id list name: 'Hello, {name}',}
-- Corresponding `momentLocale` and `antd` configuration
+- `name` 语言的 key。例如 zh-TW
+- `message` 语言的 id 列表。 例如：{ // id 列表 name: '妳好，{name}', }
+- 相应的 `momentLocale` 和 `antd` 配置
 
 ```tsx
 import zhTW from 'antd/es/locale/zh_TW';
 
-// Dynamically add new languages
+// 动态增加新语言
 addLocale(
   'zh-TW',
   {
-    // id List
+    // id 列表
     name: '妳好，{name}',
   },
   {
@@ -78,7 +78,7 @@ addLocale(
 
 ### getAllLocales
 
-Get a list of all internationalized files currently obtained. By default, it will look for files similar to `en-US.(js|json|ts)` in the `locales` folder.
+获取当前获得所有国际化文件的列表，默认会在 `locales` 文件夹下寻找类似 `en-US.(js|json|ts)` 文件。
 
 ```tsx
 import { getAllLocales } from 'umi';
@@ -88,7 +88,7 @@ console.log(getAllLocales()); // [en-US,zh-CN,...]
 
 ### getLocale
 
-`getLocale` will get the currently selected language.
+`getLocale` 将获得当前选择的语言。
 
 ```tsx
 import { getLocale } from 'umi';
@@ -98,7 +98,7 @@ console.log(getLocale()); // en-US | zh-CN
 
 ### useIntl
 
-`useIntl` is the most commonly used api, it can get apis such as `formatMessage` for specific value binding.
+`useIntl` 是最常用的 api,它可以获得 `formatMessage` 等 api 来进行具体的值绑定。
 
 ```ts
 // en-US.json
@@ -133,29 +133,29 @@ export default function() {
 
 ### setLocale
 
-Set the switching language, the page will be refreshed by default. You can achieve dynamic switching without refresh by setting the second parameter to `false`.
+设置切换语言，默认会刷新页面，可以通过设置第二个参数为 `false` ，来实现无刷新动态切换。
 
 ```tsx
 import { setLocale } from 'umi';
 
-// Refresh page
+// 刷新页面
 setLocale('zh-TW', true);
 
-// Do not refresh the page
+// 不刷新页面
 setLocale('zh-TW', false);
 ```
 
 ![](https://user-images.githubusercontent.com/13595509/75084981-4e2c4680-555f-11ea-9ae2-4e6f953adcdc.gif)
 
-## Configuration
+## 配置
 
 * Type: `object`
 
-Directory convention:
+目录约定：
 
-### Build-time configuration
+### 构建时配置
 
-After enabling `locale: {}`, the default configuration is as follows:
+开启 `locale: {}` 后，默认是如下配置：
 
 ```js
 export default {
@@ -174,36 +174,36 @@ export default {
 * Type: `string`
 * Default: `-`
 
-The separator between country (lang) and language (language).
+国家（lang） 与 语言（language） 之间的分割符。
 
-By default, it is `-`, and the returned language and catalog files are `zh-CN`, `en-US`, `sk`, etc.
+默认情况下为 `-`，返回的语言及目录文件为 `zh-CN`、`en-US`、`sk` 等。
 
 #### default
 
 * Type: `string`
 * Default: `zh-CN`
 
-Default language. When no specific language is detected, the language specified in `default` will be displayed.
+默认语言，当检测不到具体语言时，展示 `default` 中指定的语言。
 
-> If `baseNavigator` is specified as `_`, `default` defaults to `zh_CN`.
+> 若 `baseNavigator` 指定为 `_`，`default` 默认为 `zh_CN`。
 
 #### antd
 
 * Type: `boolean`
 * Default: false
 
-After opening, support [antd internationalization](https://ant.design/docs/react/i18n-cn).
+开启后，支持 [antd 国际化](https://ant.design/docs/react/i18n-cn)。
 
 #### title
 
 * Type: `boolean`
 * Default: false
 
-Title internationalization.
+标题国际化。
 
-The `title` configured in the project and the `title` in the route can directly use the internationalization key and automatically be converted into the corresponding language copy, for example:
+在项目中配置的 `title` 及路由中的 `title` 可直接使用国际化 key，自动被转成对应语言的文案，例如：
 
-Under the `locales` directory:
+`locales` 目录下有：
 
 ```js
 // src/locales/zh-CN.js
@@ -219,7 +219,7 @@ export default {
 }
 ```
 
-The project configuration is as follows:
+项目配置如下：
 
 ```js
 // .umirc.js
@@ -239,27 +239,27 @@ export default {
 }
 ```
 
-When visiting the page:
+访问页面时：
 
-- `/` route, the title is `site-title` in Chinese, and `English Title` in English
-- `/about` route, the title is `About-Title` in Chinese, and `About Title` in English
+- `/` 路由，标题在中文时为 `站点 - 标题`，英文时为 `English Title`
+- `/about` 路由，标题在中文时为 `关于 - 标题`，英文时为 `About Title`
 
 #### baseNavigator
 
 * Type: `boolean`
 * Default: true
 
-Turn on browser language detection.
+开启浏览器语言检测。
 
-By default, the current locale is recognized according to: `umi_locale` value in `localStorage`> browser detection> default language set by [default](#default)> Chinese
+默认情况下，当前语言环境的识别按照：`localStorage` 中 `umi_locale` 值 > 浏览器检测 > [default](#default) 设置的默认语言 > 中文
 
-### Runtime configuration
+### 运行时配置
 
-Support some extensions and customizations to internationalization at runtime, such as custom language recognition.
+支持运行时对国际化做一些扩展与定制，例如自定义语言识别等。
 
 #### getLocale
 
-Customize the language acquisition logic, such as identifying the link `?locale=${lang}` as the language of the current page.
+自定义语言获取逻辑，比如识别链接 `?locale=${lang}` 当做当前页面的语言。
 
 ```js
 // src/app.js
@@ -276,13 +276,13 @@ export const locale = {
 
 #### setLocale
 
-Custom language switching logic. There are three parameters:
+自定义语言切换逻辑。其中有三个参数：
 
-- lang: The language to be switched
-- realReload: Whether the page needs to be refreshed, this is transparently transmitted by the page calling `setLocale(lang, true)`.
-- updater: Whether it is necessary to force update the internationalization status of the current component.
+- lang: 需要切换的语言
+- realReload: 是否需要刷新页面，这个是由页面调用 `setLocale(lang, true)` 透传。
+- updater：是否需要强制更新当前组件国际化状态。
 
-For example, according to the language to be switched, jump to the corresponding url:
+比如根据要切换的语言，跳转到相应 url：
 
 ```js
 // src/app.js
@@ -298,4 +298,4 @@ export const locale = {
 
 ### 为什么不要直接使用 formatMessage 这个语法糖？
 
-Although formatMessage is very convenient to use, it is out of the life cycle of react. The most serious problem is that it cannot trigger dom to re-render when switching languages. In order to solve this problem, we refresh the browser when switching languages. The user experience is very poor, so we recommend you to use [`useIntl`](#useIntl) or [`injectIntl`](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc), you can achieve the same function.
+虽然 formatMessage 使用起来会非常方便，但是它脱离了 react 的生命周期，最严重的问题就是切换语言时无法触发 dom 重新渲染。为了解决这个问题，我们切换语言时会刷新一下浏览器，用户体验很差，所以推荐大家使用 [`useIntl`](#useIntl) 或者 [`injectIntl`](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc)，可以实现同样的功能。

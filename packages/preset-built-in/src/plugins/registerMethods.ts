@@ -16,6 +16,7 @@ export default function (api: IApi) {
     'onPatchRoutesBefore',
     'onDevCompileDone',
     'addBeforeMiddewares',
+    'addDepInfo',
     'addDevScripts',
     'addMiddewares',
     'addRuntimePlugin',
@@ -42,7 +43,6 @@ export default function (api: IApi) {
     'modifyBabelOpts',
     'modifyBabelPresetOpts',
     'modifyBundleImplementor',
-    'modifyDepInfo',
     'modifyHTMLChunks',
     'modifyDevHTMLContent',
     'modifyExportRouteMap',
@@ -71,11 +71,11 @@ export default function (api: IApi) {
       );
       const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
+      if (isTSFile(path) && skipTSCheck) {
+        // write @ts-nocheck into first line
+        content = `// @ts-nocheck${EOL}${content}`;
+      }
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
-        if (isTSFile(path) && skipTSCheck) {
-          // write @ts-nocheck into first line
-          content = `// @ts-nocheck${EOL}${content}`;
-        }
         writeFileSync(absPath, content, 'utf-8');
       }
     },

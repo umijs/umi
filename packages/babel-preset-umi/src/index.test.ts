@@ -58,6 +58,60 @@ test('typescript with namespace', () => {
   expect(code).toContain(`var V = _N.V = 1;`);
 });
 
+test('typescript with metadata', () => {
+  const code = transformWithPreset(
+    `@Decorate
+    class MyClass {
+      constructor(
+        private generic: Generic<A>,
+        generic2: Generic<A, B>
+      ) {}
+
+      @Run
+      method(
+        generic: Inter<A>,
+        @Arg() generic2: InterGen<A, B>
+      ) {}
+    }`,
+    {
+      typescript: true,
+    },
+  );
+  expect(code).toContain('Reflect.metadata');
+});
+
+test('typescript with nest-injection', () => {
+  const code = transformWithPreset(
+    `import { AppService } from './app.service';
+
+    @Controller()
+    export class AppController {
+      constructor(private appService: AppService) {}
+
+      @Inject()
+      appService: AppService;
+
+      @Inject()
+      private appService2: AppService;
+
+      @Get()
+      getHello(): string {
+        return this.appService.getHello();
+      }
+    }`,
+    {
+      typescript: true,
+    },
+  );
+  expect(code).toContain('Reflect.metadata');
+  expect(code).toContain(
+    '_initializerDefineProperty(this, "appService", _descriptor, this);',
+  );
+  expect(code).toContain(
+    '_initializerDefineProperty(this, "appService2", _descriptor2, this);',
+  );
+});
+
 test('dynamic import', () => {
   const code = transformWithPreset(`import('./a');`, {});
   expect(code).toContain(`require('./a')`);
