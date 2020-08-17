@@ -10,14 +10,14 @@ export default function (cwd: string, args: IUmiTestArgs) {
   const { OPEN_AUTO_E2E_FOR_UMI_TEST } = process.env;
   const testMatchTypes = ['spec', 'test'];
   const { e2e } = args;
-
+  const isAutoE2e = OPEN_AUTO_E2E_FOR_UMI_TEST === 'OPEN';
   if (e2e) {
     testMatchTypes.push('e2e');
   }
-
   const isLerna = isLernaPackage(cwd);
   const hasPackage = isLerna && args.package;
   const testMatchPrefix = hasPackage ? `**/packages/${args.package}/` : '';
+
   const hasSrc = existsSync(join(cwd, 'src'));
 
   if (hasPackage) {
@@ -47,13 +47,19 @@ export default function (cwd: string, args: IUmiTestArgs) {
     },
     setupFiles: [require.resolve('../../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../../helpers/setupFiles/jasmine')],
-    testEnvironment:
-      OPEN_AUTO_E2E_FOR_UMI_TEST === 'OPEN'
-        ? winPath(join(__dirname, '../e2e/PuppeteerEnvironment'))
-        : require.resolve('jest-environment-jsdom-fourteen'),
-    testMatch: [
-      `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
-    ],
+    testEnvironment: isAutoE2e
+      ? winPath(join(__dirname, '../e2e/PuppeteerEnvironment'))
+      : require.resolve('jest-environment-jsdom-fourteen'),
+    testMatch: isAutoE2e
+      ? [`${testMatchPrefix}**/**.e2e.(j|t)s?(x)`]
+      : [
+          `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
+          // 之所以做这件事情是为了更高的性能，启动 chrome 也是需要耗费性能的
+          // 不需要 chrome 的就不需要启动了，现在还无法做到自动，只能通过这种方式
+          ...(OPEN_AUTO_E2E_FOR_UMI_TEST === 'CLOSE'
+            ? [`!${testMatchPrefix}**/**.e2e.(j|t)s?(x)`]
+            : []),
+        ],
     testPathIgnorePatterns: ['/node_modules/', '/fixtures/'],
     transform: {
       '^.+\\.(js|jsx|ts|tsx)$': require.resolve(

@@ -21,7 +21,8 @@
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "release": "node ./scripts/release.js",
     "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
-    "test": "cross-env OPEN_AUTO_E2E_FOR_UMI_TEST=OPEN umi-test",
+    "test": "cross-env OPEN_AUTO_E2E_FOR_UMI_TEST=CLOSE umi-test",
+    "test:e2e": "cross-env OPEN_AUTO_E2E_FOR_UMI_TEST=OPEN umi-test e2e",
     "test:coverage": "umi-test --coverage",
     "update:deps": "yarn upgrade-interactive --latest"
   },

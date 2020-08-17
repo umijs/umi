@@ -19,7 +19,8 @@ jobs:
           node-version: ${{ matrix.node_version }}
       - run: yarn --ignore-engines
       - run: yarn build
-      - run: yarn test --forceExit --runInBand --maxWorkers=1
+      - run: yarn test --forceExit
+      - run: yarn test:e2e --forceExit --runInBand --maxWorkers=1
         env:
           CI: true
           HEADLESS: false
