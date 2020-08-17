@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597624906778,
+  "lastUpdate": 1597633066655,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9520,6 +9520,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2200,
             "range": "±4.61%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cf5da156a2274bafd43e3752a34bd6a13fe5e0de",
+          "message": "fix: cn html encoding in build (#5244)",
+          "timestamp": "2020-08-17T10:53:58+08:00",
+          "tree_id": "ca858f715164991b775ce733d26fb7d224d5da64",
+          "url": "https://github.com/umijs/umi/commit/cf5da156a2274bafd43e3752a34bd6a13fe5e0de"
+        },
+        "date": 1597633063349,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1419,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2211,
+            "range": "±4.99%",
             "unit": "ops/sec",
             "extra": "43 samples"
           }
