@@ -32,4 +32,6 @@ jobs:
         env:
           PROGRESS: none
           CI: true
+          NODE_ENV: test
+          NODE_OPTIONS: --max_old_space_size=4096
         displayName: test
