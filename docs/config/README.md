@@ -9,16 +9,16 @@ toc: menu
 # Config
 
 
-以下配置项通过字母排序。
+The following configuration items are sorted alphabetically.
 
 ## alias
 
 * Type: `object`
 * Default: `{}`
 
-配置别名，对引用路径进行映射。
+Configure the alias to map the reference path.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -28,26 +28,26 @@ export default {
 }
 ```
 
-然后 `import('foo')`，实际上是 `import('/tmp/a/b/foo')`。
+Then `import('foo')`, actually it is `import('/tmp/a/b/foo')`.
 
-Umi 内置了以下别名：
+Umi has built-in the following aliases:
 
-* `@`，项目 src 目录
-* `@@`，临时目录，通常是 `src/.umi` 目录
-* `umi`，当前所运行的 umi 仓库目录
-* `react-router` 和 `react-router-dom`，底层路由库，锁定版本，打包时所有依赖了他们的地方使用同一个版本
-* `react` 和 `react-dom`，默认使用 `16.x` 版本，但如果项目里有依赖，会优先使用项目中依赖的版本
+* `@`, The project src directory
+* `@@`, Temporary directory, usually a `src/.umi` directory
+* `umi`, The currently running umi warehouse directory
+* `react-router` And `react-router-dom`, the underlying routing library, the locked version, the same version is used for all places that depend on them when packaging
+* `react` And `react-dom`, using the default `16.x` version, but if there are dependent on the project, it will give priority to the use of project-dependent version
 
 ## analyze
 
 * Type: `object`
 * Default: `{}`
 
-包模块结构分析工具，可以看到项目各模块的大小，按需优化。通过 `ANALYZE=1 umi build` 或 `ANALYZE=1 umi dev` 开启，默认 server 端口号为 `8888`，更多配置如下：
+Package module structure analysis tool, you can see the size of each module of the project and optimize it on demand. Through `ANALYZE=1 umi build` or `ANALYZE=1 umi dev` opening, the port number is the default server `8888`, additional configuration is as follows:
 
 ```js
 {
-  // 配置具体含义见：https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
+  // Please refer to the specific meaning of configuration: https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
   analyze: {
     analyzerMode: 'server',
     analyzerPort: 8888,
