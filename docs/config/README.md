@@ -932,6 +932,20 @@ export default {
 
 配置 webpack 的 publicPath。当打包的时候，webpack 会在静态文件路径前面添加 `publicPath` 的值，当你需要修改静态文件地址时，比如使用 CDN 部署，把 `publicPath` 的值设为 CDN 的值就可以。如果使用一些特殊的文件系统，比如混合开发或者 cordova 等技术，可以尝试将 `publicPath` 设置成 `./`。
 
+## request
+
+* Type: `object`
+
+dataField 对应接口统一格式中的数据字段，比如接口如果统一的规范是 { success: boolean, data: any} ，那么就不需要配置，这样你通过 useRequest 消费的时候会生成一个默认的 formatResult，直接返回 data 中的数据，方便使用。如果你的后端接口不符合这个规范，可以自行配置 dataField 。配置为 '' （空字符串）的时候不做处理。
+
+```js
+export default {
+  request: {
+    dataField: 'info'
+  }
+};
+```
+
 ## routes
 
 * Type: `Array(route)`
@@ -961,6 +975,9 @@ export default {
 
 * `component` 的值如果是相对路径，会以 `src/pages` 为基础路径开始解析
 * 如果配置了 `routes`，则优先使用配置式路由，且约定式路由会不生效
+
+
+
 
 ## runtimeHistory
 
