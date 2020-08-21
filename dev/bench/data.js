@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597637728228,
+  "lastUpdate": 1597976640538,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9598,6 +9598,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.73%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "marcos@marcosalberto.com.br",
+            "name": "Marcos Alberto",
+            "username": "marcosalberto"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9c908f7d6b1e7bbfde05fff878cab588589846f4",
+          "message": "Translate routing.md to English (#5262)",
+          "timestamp": "2020-08-21T10:20:42+08:00",
+          "tree_id": "4686f3c3557ba0d3cb4c831e9015f9f8902732a8",
+          "url": "https://github.com/umijs/umi/commit/9c908f7d6b1e7bbfde05fff878cab588589846f4"
+        },
+        "date": 1597976636261,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1879,
+            "range": "±2.54%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 3112,
+            "range": "±4.10%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
           }
         ]
       }
