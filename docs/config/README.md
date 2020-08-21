@@ -976,9 +976,6 @@ export default {
 * `component` 的值如果是相对路径，会以 `src/pages` 为基础路径开始解析
 * 如果配置了 `routes`，则优先使用配置式路由，且约定式路由会不生效
 
-
-
-
 ## runtimeHistory
 
 * Type: `object`
