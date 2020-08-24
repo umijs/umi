@@ -185,7 +185,7 @@ export function MyPage() {
 
 ### 子应用配置
 
-#### 第一步：插件注册（config.js）
+#### 第一步：插件注册（config/config.js 或 .umirc.js）
 
 ```js
 export default {
@@ -198,6 +198,8 @@ export default {
 #### 第二步：配置运行时生命周期钩子（可选）
 
 如果你需要在子应用的生命周期期间加一些自定义逻辑，可以在子应用的 `src/app.ts` 里导出 `qiankun` 对象，并实现每一个生命周期钩子，其中钩子函数的入参 `props` 由主应用自动注入。
+
+如果 src 目录下没有 app.ts 文件，则需要自行创建。
 
 ```js
 export const qiankun = {
