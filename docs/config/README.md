@@ -1010,7 +1010,7 @@ __webpack_public_path__ = window.publicPath;
     // 更多配置
     // forceInitial: false,
     // devServerRender: true,
-    // mode: 'string,
+    // mode: 'string',
     // staticMarkup: false,
   }
 }
