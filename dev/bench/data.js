@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597976640538,
+  "lastUpdate": 1598236782603,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9636,6 +9636,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.10%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49681036+blueju@users.noreply.github.com",
+            "name": "blueju",
+            "username": "blueju"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "670ae0836428975429dd73f8e06a6e7725a8890f",
+          "message": "doc(qiankun): update qiankun plugin doc (#5270)",
+          "timestamp": "2020-08-24T10:35:11+08:00",
+          "tree_id": "c422c74b0b64d1c6f7060d6af04db7bddbacae9c",
+          "url": "https://github.com/umijs/umi/commit/670ae0836428975429dd73f8e06a6e7725a8890f"
+        },
+        "date": 1598236779068,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 628,
+            "range": "±91.27%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1928,
+            "range": "±4.12%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
