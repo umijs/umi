@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598339625848,
+  "lastUpdate": 1598345766697,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9788,6 +9788,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.03%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8bd6d6eeca48cea07d91c05f30e55b04e0405990",
+          "message": "feat(babel-plugin-import-to-await-require): add hook onTransformDeps (#5290)\n\n* feat(babel-plugin-import-to-await-require): add hook onTransformDeps\r\n\r\n* chore: collect more info\r\n\r\n* fix: dep filter",
+          "timestamp": "2020-08-25T16:52:17+08:00",
+          "tree_id": "4da2dbe2924256d443a8a5b0adfa79fec0f1221d",
+          "url": "https://github.com/umijs/umi/commit/8bd6d6eeca48cea07d91c05f30e55b04e0405990"
+        },
+        "date": 1598345763404,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1443,
+            "range": "±2.65%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2587,
+            "range": "±4.87%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
