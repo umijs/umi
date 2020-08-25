@@ -176,4 +176,4 @@ WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
 
 ### RM_SERVER_FILE
 
-预渲染下，默认会删除服务端渲染文件 `umi.server.js`，如果希望保留，使用 `RM_SERVER_FILE=none`。 
+预渲染下，默认会删除服务端渲染文件 `umi.server.js`，如果希望保留，使用 `RM_SERVER_FILE=none`。
