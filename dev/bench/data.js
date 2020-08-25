@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598314234604,
+  "lastUpdate": 1598339625848,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9750,6 +9750,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.26%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "skymine96@gmail.com",
+            "name": "jere",
+            "username": "jerexyz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6fc4a855f664488935cc1ca9e23c603e98c173ee",
+          "message": "fix(dev-scripts): make process.env.SOCKET_SERVER working(close #4441) (#5288)\n\nCo-authored-by: Jared <xyzjere@gmail.com>",
+          "timestamp": "2020-08-25T15:09:57+08:00",
+          "tree_id": "7df43719bf965c0de38ab50683da18abe2e59e9a",
+          "url": "https://github.com/umijs/umi/commit/6fc4a855f664488935cc1ca9e23c603e98c173ee"
+        },
+        "date": 1598339622415,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1542,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2459,
+            "range": "±5.03%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
