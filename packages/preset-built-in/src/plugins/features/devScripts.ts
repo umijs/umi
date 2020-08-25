@@ -34,12 +34,14 @@ export default (api: IApi) => {
                 : [],
           })
           .then((scripts) => {
-            res
-              .end(scripts.join('\r\n\r\n'))
-              .replace(
-                /{}.SOCKET_SERVER/g,
-                JSON.stringify(process.env.SOCKET_SERVER),
-              );
+            res.end(
+              scripts
+                .join('\r\n\r\n')
+                .replace(
+                  /{}.SOCKET_SERVER/g,
+                  JSON.stringify(process.env.SOCKET_SERVER || ''),
+                ),
+            );
           });
       } else {
         next();
