@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598345766697,
+  "lastUpdate": 1598368186907,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9826,6 +9826,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.87%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "skymine96@gmail.com",
+            "name": "jere",
+            "username": "jerexyz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fefc837581be70f8651694dd9ef3e2a7639b9a9b",
+          "message": "fix(dev-scripts): fix SOCKET_SERVER replace error (#5289)\n\nCo-authored-by: Jared <xyzjere@gmail.com>",
+          "timestamp": "2020-08-25T23:05:58+08:00",
+          "tree_id": "68b154cc0e51127f8fe9b273d7219500587f6c32",
+          "url": "https://github.com/umijs/umi/commit/fefc837581be70f8651694dd9ef3e2a7639b9a9b"
+        },
+        "date": 1598368183753,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1633,
+            "range": "±2.78%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2507,
+            "range": "±5.15%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
