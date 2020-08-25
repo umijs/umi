@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598236791152,
+  "lastUpdate": 1598314234604,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9712,6 +9712,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.28%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "1130142064@qq.com",
+            "name": "Chess",
+            "username": "zhanyuzhang"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2bf75ded62e9cf2d4cf0ea14109068b6d7f78603",
+          "message": "删除重复文字“默认” (#5281)\n\n* 删除重复文字“默认”\r\n\r\n* docs: update docs\r\n\r\n* Update docs/docs/env-variables.zh-CN.md\r\n\r\nCo-authored-by: chencheng (云谦) <sorrycc@gmail.com>",
+          "timestamp": "2020-08-25T08:06:18+08:00",
+          "tree_id": "444f915800b800a61a25bee15698bf00218800b3",
+          "url": "https://github.com/umijs/umi/commit/2bf75ded62e9cf2d4cf0ea14109068b6d7f78603"
+        },
+        "date": 1598314231178,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 675,
+            "range": "±90.46%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2090,
+            "range": "±4.26%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
