@@ -48,10 +48,6 @@ function isMatchLib(path: string, libs: TLibs, alias: IAlias) {
   });
 }
 
-function isFromDeps(source: string) {
-  return source.charAt(0) !== '.' && source.charAt(0) !== '@';
-}
-
 function getPath(path: string, alias: IAlias) {
   const keys = Object.keys(alias);
   for (const key of keys) {
@@ -72,7 +68,7 @@ export default function () {
           while (index >= 0) {
             const d = path.node.body[index];
 
-            if (t.isImportDeclaration(d) && isFromDeps(d.source.value)) {
+            if (t.isImportDeclaration(d)) {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
@@ -128,16 +124,13 @@ export default function () {
               opts.onTransformDeps?.({
                 source: d.source.value,
                 file: path.hub.file.opts.filename,
+                isMatch: false,
                 isExportAllDeclaration: true,
               });
             }
 
             // export { bar } from 'foo';
-            if (
-              t.isExportNamedDeclaration(d) &&
-              d.source &&
-              isFromDeps(d.source.value)
-            ) {
+            if (t.isExportNamedDeclaration(d) && d.source) {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
