@@ -48,6 +48,10 @@ function isMatchLib(path: string, libs: TLibs, alias: IAlias) {
   });
 }
 
+function isFromDeps(source: string) {
+  return source.charAt(0) !== '.' && source.charAt(0) !== '@';
+}
+
 function getPath(path: string, alias: IAlias) {
   const keys = Object.keys(alias);
   for (const key of keys) {
@@ -68,7 +72,7 @@ export default function () {
           while (index >= 0) {
             const d = path.node.body[index];
 
-            if (t.isImportDeclaration(d)) {
+            if (t.isImportDeclaration(d) && isFromDeps(d.source.value)) {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
@@ -76,6 +80,7 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                file: path.hub.file.opts.filename,
                 isMatch,
               });
 
@@ -119,8 +124,20 @@ export default function () {
               }
             }
 
+            if (t.isExportAllDeclaration(d) && d.source) {
+              opts.onTransformDeps?.({
+                source: d.source.value,
+                file: path.hub.file.opts.filename,
+                isExportAllDeclaration: true,
+              });
+            }
+
             // export { bar } from 'foo';
-            if (t.isExportNamedDeclaration(d) && d.source) {
+            if (
+              t.isExportNamedDeclaration(d) &&
+              d.source &&
+              isFromDeps(d.source.value)
+            ) {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
@@ -128,14 +145,12 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                file: path.hub.file.opts.filename,
                 isMatch,
               });
 
               if (isMatch) {
-                const {
-                  properties,
-                  namespaceIdentifier,
-                } = specifiersToProperties(d.specifiers);
+                const { properties } = specifiersToProperties(d.specifiers);
                 const id = t.objectPattern(properties);
                 const init = t.awaitExpression(
                   t.callExpression(t.import(), [
