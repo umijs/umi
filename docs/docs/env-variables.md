@@ -179,6 +179,14 @@ WATCH_IGNORED=none umi dev
 WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
 ```
 
+## WEBPACK_PROFILE
+
+生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webapck Analyse](http://webpack.github.io/analyse) ，`WEBPACK_PROFILE` 值有 `verbose`、`normal`、`minimal`。比如：
+
+```bash
+$ WEBPACK_PROFILE=verbose umi build
+```
+
 ### RM_SERVER_FILE
 
 预渲染下，默认会默认删除服务端渲染文件 `umi.server.js`，如果希望保留，使用 `RM_SERVER_FILE=none`。
