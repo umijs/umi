@@ -130,6 +130,14 @@ $ HTTPS=1 umi dev
 $ PROGRESS=none umi dev
 ```
 
+## PROFILE
+
+生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webapck Analyse](http://webpack.github.io/analyse) 进行分析。比如：
+
+```bash
+$ PROFILE=verbose umi build
+```
+
 ### SOCKET_SERVER
 
 指定用于 HMR 的 socket 服务器。比如：

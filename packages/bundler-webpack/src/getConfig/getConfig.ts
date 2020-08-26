@@ -203,7 +203,6 @@ export default async function getConfig(
   const rule = webpackConfig.module
     .rule('js-in-node_modules')
       .test(/\.(js|mjs)$/);
-
   const nodeModulesTransform = config.nodeModulesTransform || {
     type: 'all',
     exclude: [],
@@ -386,6 +385,29 @@ export default async function getConfig(
           clearConsole: false,
         },
       ]);
+  }
+
+  // profile
+  if (process.env.PROFILE) {
+    webpackConfig.profile(true);
+    const statsInclude = [
+      'verbose',
+      'normal',
+      'none',
+      'minimal',
+      'errors-only',
+    ];
+    webpackConfig.stats(
+      (statsInclude.includes(process.env.PROFILE)
+        ? process.env.PROFILE
+        : 'verbose') as defaultWebpack.Options.Stats,
+    );
+    const StatsPlugin = require('stats-webpack-plugin');
+    webpackConfig.plugin('profile-stats-plugin').use(
+      new StatsPlugin('stats.json', {
+        chunkModules: true,
+      }),
+    );
   }
 
   const enableManifest = () => {

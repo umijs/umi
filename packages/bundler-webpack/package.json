@@ -59,6 +59,7 @@
     "webpack-chain": "6.5.1",
     "webpack-dev-middleware": "3.7.2",
     "webpack-manifest-plugin": "2.2.0",
+    "stats-webpack-plugin": "0.7.0",
     "webpackbar": "4.0.0"
   },
   "bin": {
