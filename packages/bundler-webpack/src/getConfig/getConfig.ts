@@ -404,6 +404,7 @@ export default async function getConfig(
     );
     const StatsPlugin = require('stats-webpack-plugin');
     webpackConfig.plugin('profile-stats-plugin').use(
+    webpackConfig.plugin('stats-webpack-plugin').use(
       new StatsPlugin('stats.json', {
         chunkModules: true,
       }),
