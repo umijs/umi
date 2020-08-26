@@ -47,6 +47,8 @@ $ cd packages/plguin-qiankun && yarn start
 
 ##### a. 插件构建期配置子应用
 
+> config/config.ts
+
 ```js
 export default {
   qiankun: {
@@ -67,21 +69,57 @@ export default {
 };
 ```
 
-##### b. 运行时动态配置子应用（src/app.ts 里开启）
+##### b. 运行时动态配置子应用
+
+> config/config.ts
+
+```js
+export default {
+  qiankun: {
+    master: {}
+  }
+};
+```
+
+> src/app.ts
 
 ```js
 // 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
-export const qiankun = fetch('/config').then(({ apps }}) => ({
-  // 注册子应用信息
-  apps,
-  // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
-  lifeCycles: {
-    afterMount: props => {
-      console.log(props);
-    },
-  },
-  // 支持更多的其他配置，详细看这里 https://qiankun.umijs.org/zh/api/#start-opts
-}));
+export const qiankun = fetch('/api/config')
+  .then((response) => {
+    return response.json();
+  })
+  .then((responseJson) => {
+    const { apps } = responseJson;
+    return new Promise((resolve, reject) => {
+      resolve({
+        // 注册子应用信息
+        apps,
+        // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
+        lifeCycles: {
+          afterMount: (props) => {
+            console.log(props);
+          }
+        }
+        // 支持更多的其他配置，详细看这里 https://qiankun.umijs.org/zh/api/#start-opts
+      });
+    });
+  });
+```
+
+> mock/config.ts
+
+```js
+export default {
+  'GET /api/config': {
+    apps: [
+      {
+        name: 'app1', // 唯一 id
+        entry: '//localhost:7001', // html entry
+      }
+    ]
+  }
+};
 ```
 
 完整的主应用配置项看这里 [masterOptions 配置列表](#masterOptions)
