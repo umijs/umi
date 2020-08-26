@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598429499100,
+  "lastUpdate": 1598429505107,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9902,6 +9902,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.54%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "74dfd39988e4ed9b135ead1d152951b29deb48a1",
+          "message": "feat: webpack profile plugin (#5295)\n\n* feat: webpack profile plugin\r\n\r\n* Update packages/bundler-webpack/src/getConfig/getConfig.ts\r\n\r\nCo-authored-by: chencheng (云谦) <sorrycc@gmail.com>\r\n\r\n* chore: rename\r\n\r\nCo-authored-by: chencheng (云谦) <sorrycc@gmail.com>",
+          "timestamp": "2020-08-26T16:00:06+08:00",
+          "tree_id": "9efd2167415c16ea643c714f17e3770429eb9199",
+          "url": "https://github.com/umijs/umi/commit/74dfd39988e4ed9b135ead1d152951b29deb48a1"
+        },
+        "date": 1598429501564,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1399,
+            "range": "±3.15%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2222,
+            "range": "±4.79%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
