@@ -135,14 +135,6 @@ $ HTTPS=1 umi dev
 $ PROGRESS=none umi dev
 ```
 
-## PROFILE
-
-生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webapck Analyse](http://webpack.github.io/analyse) 进行分析。比如：
-
-```bash
-$ PROFILE=verbose umi build
-```
-
 ### SOCKET_SERVER
 
 指定用于 HMR 的 socket 服务器。比如：
@@ -185,6 +177,14 @@ WATCH_IGNORED=none umi dev
 
 # node_modules 下除 lodash 和 umi 监听，其他忽略
 WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
+```
+
+## WEBPACK_PROFILE
+
+生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webapck Analyse](http://webpack.github.io/analyse) ，`WEBPACK_PROFILE` 值有 `verbose`、`normal`、`minimal`。比如：
+
+```bash
+$ WEBPACK_PROFILE=verbose umi build
 ```
 
 ### RM_SERVER_FILE

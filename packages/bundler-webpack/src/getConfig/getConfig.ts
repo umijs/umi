@@ -388,22 +388,15 @@ export default async function getConfig(
   }
 
   // profile
-  if (process.env.PROFILE) {
+  if (process.env.WEBPACK_PROFILE) {
     webpackConfig.profile(true);
-    const statsInclude = [
-      'verbose',
-      'normal',
-      'none',
-      'minimal',
-      'errors-only',
-    ];
+    const statsInclude = ['verbose', 'normal', 'minimal'];
     webpackConfig.stats(
-      (statsInclude.includes(process.env.PROFILE)
-        ? process.env.PROFILE
+      (statsInclude.includes(process.env.WEBPACK_PROFILE)
+        ? process.env.WEBPACK_PROFILE
         : 'verbose') as defaultWebpack.Options.Stats,
     );
     const StatsPlugin = require('stats-webpack-plugin');
-    webpackConfig.plugin('profile-stats-plugin').use(
     webpackConfig.plugin('stats-webpack-plugin').use(
       new StatsPlugin('stats.json', {
         chunkModules: true,
