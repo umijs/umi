@@ -176,7 +176,7 @@ WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
 
 ## WEBPACK_PROFILE
 
-生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webapck Analyse](http://webpack.github.io/analyse) ，`WEBPACK_PROFILE` 值有 `verbose`、`normal`、`minimal`。比如：
+生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webpack Xray](https://akx.github.io/webpack-xray) 或 [Webapck Analyse](http://webpack.github.io/analyse) ，`WEBPACK_PROFILE` 值有 `verbose`、`normal`、`minimal`。比如：
 
 ```bash
 $ WEBPACK_PROFILE=verbose umi build
