@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598596021728,
+  "lastUpdate": 1598607229799,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10054,6 +10054,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.49%",
             "unit": "ops/sec",
             "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cbc1c035a32a74d2f1ee8a6e13102ddbd07e4bfa",
+          "message": "fix: built-in mini-css-extract-plugin (#5316)\n\n* fix: built-in mini-css-extract-plugin\r\n\r\n* test: fix oom",
+          "timestamp": "2020-08-28T17:29:54+08:00",
+          "tree_id": "6db548b0ce3590568ff6c015da9af033f3f46d71",
+          "url": "https://github.com/umijs/umi/commit/cbc1c035a32a74d2f1ee8a6e13102ddbd07e4bfa"
+        },
+        "date": 1598607226610,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 759,
+            "range": "±99.58%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2463,
+            "range": "±3.84%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
