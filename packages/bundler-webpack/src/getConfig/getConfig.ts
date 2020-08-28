@@ -41,6 +41,7 @@ export interface IOpts {
   chainWebpack?: (webpackConfig: any, args: any) => Promise<any>;
   miniCSSExtractPluginPath?: string;
   miniCSSExtractPluginLoaderPath?: string;
+  __disableTerserForTest?: boolean;
 }
 
 export default async function getConfig(
@@ -452,7 +453,7 @@ export default async function getConfig(
       // compress
       if (disableCompress) {
         webpackConfig.optimization.minimize(false);
-      } else {
+      } else if (!opts.__disableTerserForTest) {
         webpackConfig.optimization
           .minimizer('terser')
           .use(require.resolve('terser-webpack-plugin'), [
