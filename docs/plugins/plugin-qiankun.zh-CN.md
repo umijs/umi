@@ -36,7 +36,7 @@ $ cd packages/plguin-qiankun && yarn start
 - ✔︎ 父子应用通讯
 - ✔︎ 子应用运行时配置自定义 `bootstrap()`、`mount()` 和 `unmount()`
 - ✔︎ 主应用、子应用联调
-- ✔︎ 子应用与子应用组合
+- ✔︎ 嵌套子应用
 
 ## Usage
 
