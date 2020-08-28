@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598429505107,
+  "lastUpdate": 1598584295847,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -9940,6 +9940,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.79%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "53a2d5bf467c4a9b803d8e378411c9dce923de1f",
+          "message": "fix(bundler-webpack): terser-webpack-plugin dep lost (#5309)",
+          "timestamp": "2020-08-28T11:07:33+08:00",
+          "tree_id": "3b48c85460402aa4ba75866cfb223e30db0195f1",
+          "url": "https://github.com/umijs/umi/commit/53a2d5bf467c4a9b803d8e378411c9dce923de1f"
+        },
+        "date": 1598584292829,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1404,
+            "range": "±2.21%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2215,
+            "range": "±5.08%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
