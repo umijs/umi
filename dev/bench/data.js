@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598584385909,
+  "lastUpdate": 1598596021728,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10014,6 +10014,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2347,
             "range": "±4.94%",
+            "unit": "ops/sec",
+            "extra": "45 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "576679268@qq.com",
+            "name": "砖家",
+            "username": "brickspert"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ee171ce410df81c9b857170192775bde8032c904",
+          "message": "doc(qiankun): add MicroAppWithMemoHistory & connectMaster doc (#5310)",
+          "timestamp": "2020-08-28T14:23:08+08:00",
+          "tree_id": "4ca907c97d16426306d9280629e328357865a591",
+          "url": "https://github.com/umijs/umi/commit/ee171ce410df81c9b857170192775bde8032c904"
+        },
+        "date": 1598596018549,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1423,
+            "range": "±2.32%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2428,
+            "range": "±4.49%",
             "unit": "ops/sec",
             "extra": "45 samples"
           }
