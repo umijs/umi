@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598607355719,
+  "lastUpdate": 1599020002144,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10130,6 +10130,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.36%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "118b4cf25cb262a094131b1f7e8c5accda646d69",
+          "message": "docs: change banner to black background",
+          "timestamp": "2020-09-02T12:08:39+08:00",
+          "tree_id": "e5afd1504bf83fd6314ee9f5e97c9ce7352bfcb8",
+          "url": "https://github.com/umijs/umi/commit/118b4cf25cb262a094131b1f7e8c5accda646d69"
+        },
+        "date": 1599019998679,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 700,
+            "range": "±91.56%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2108,
+            "range": "±4.92%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
