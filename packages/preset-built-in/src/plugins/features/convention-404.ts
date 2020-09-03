@@ -53,5 +53,7 @@ export default (api: IApi) => {
         ? { component }
         : { redirect },
     )
+
+    return routes
   })
 }
