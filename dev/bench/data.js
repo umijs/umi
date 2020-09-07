@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599448676654,
+  "lastUpdate": 1599448705056,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10282,6 +10282,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.31%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "yangwei1@outlook.com",
+            "name": "yang wei",
+            "username": "mortalYoung"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f3b3d632fc49ac43d0e2a4a2ef60fb7eb2fef6ee",
+          "message": "fix(plugins): improve plugin-qiankun examples (#5302)",
+          "timestamp": "2020-09-07T11:14:14+08:00",
+          "tree_id": "300e0125cb115895d37cf0d9854c077806fe62df",
+          "url": "https://github.com/umijs/umi/commit/f3b3d632fc49ac43d0e2a4a2ef60fb7eb2fef6ee"
+        },
+        "date": 1599448701943,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1367,
+            "range": "±3.12%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2166,
+            "range": "±5.46%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
