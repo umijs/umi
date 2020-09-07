@@ -28,7 +28,7 @@ jobs:
 
       - run:
           name: Run Tests
-          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=1
           no_output_timeout: 300m
 
       - run:

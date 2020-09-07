@@ -9,9 +9,6 @@
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },
-  "bin": {
-    "umi": "./node_modules/.bin/umi"
-  },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
       "prettier --write"
