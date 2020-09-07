@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599375177394,
+  "lastUpdate": 1599447664370,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10206,6 +10206,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.21%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "576679268@qq.com",
+            "name": "砖家",
+            "username": "brickspert"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "862597f212c4c8acbc5737bbdd9c5cc984f09685",
+          "message": "doc: reset plugin-qiankun doc (#5319)",
+          "timestamp": "2020-09-07T10:57:12+08:00",
+          "tree_id": "95410728bf947c9e9685d8cda424aa50a11c94e8",
+          "url": "https://github.com/umijs/umi/commit/862597f212c4c8acbc5737bbdd9c5cc984f09685"
+        },
+        "date": 1599447661209,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1445,
+            "range": "±2.99%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2327,
+            "range": "±3.81%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
