@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599448705056,
+  "lastUpdate": 1599448868922,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10320,6 +10320,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.46%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4157da6522568cc10439e67df17aa9a578a119b8",
+          "message": "fix: koa ssr demo (#5353)\n\n* fix: circle ci\r\n\r\n* fix: koa-ssr start error",
+          "timestamp": "2020-09-07T11:16:44+08:00",
+          "tree_id": "23a6b841e4e3eed93e22e8c14f8edad4aa7801e4",
+          "url": "https://github.com/umijs/umi/commit/4157da6522568cc10439e67df17aa9a578a119b8"
+        },
+        "date": 1599448860681,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 674,
+            "range": "±85.82%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1975,
+            "range": "±4.41%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
