@@ -72,7 +72,7 @@ export default {
 
 ```js
 // 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
-export const qiankun = fetch('/config').then(({ apps }}) => ({
+export const qiankun = fetch('/config').then(({ apps }) => ({
   // 注册子应用信息
   apps,
   // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
