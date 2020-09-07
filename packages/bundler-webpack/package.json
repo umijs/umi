@@ -35,7 +35,7 @@
     "@umijs/types": "3.2.19",
     "@umijs/utils": "3.2.19",
     "babel-loader": "8.1.0",
-    "copy-webpack-plugin": "5.1.1",
+    "copy-webpack-plugin": "6.1.0",
     "css-loader": "3.6.0",
     "css-modules-typescript-loader": "4.0.0",
     "file-loader": "6.0.0",
