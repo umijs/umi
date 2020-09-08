@@ -28,7 +28,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.11.1",
+    "@babel/core": "7.11.6",
     "@umijs/core": "3.2.19",
     "@umijs/preset-built-in": "3.2.19",
     "@umijs/runtime": "3.2.19",
