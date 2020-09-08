@@ -15,7 +15,8 @@ export default {
 
 ## Configuration
 
-We recommend configuring your app with `.umirc.ts`. It is possible to split your configurations into pieces and organize them in `config/config.ts` if your app requires complicated configuration. For example, if you need to configure routers, it would be a good choice to have it in an individual module alongside `config/config.ts`.
+If your configurations are not complicated, we recommend configuring your app with `.umirc.ts`;
+If your configurations are complicated, it is possible to split your configurations into pieces and organize them in `config/config.ts`. For example, if you need to configure routers, it would be a good choice to have it in an individual module called `config/routes.ts` alongside `config/config.ts`.
 
 You have to choose between `.umirc.ts` and `config/config.ts`, `.umirc.ts` has higher priority.
 
@@ -44,10 +45,10 @@ Create `.umirc.local.ts`, it will be deep merged with `.umirc.ts` while using `u
 For example:
 
 ```js
-// .umirc.ts
+// .umirc.ts or config/config.ts
 export default { a: 1, b: 2 };
 
-// .umirc.local.ts
+// .umirc.local.ts or config/config.local.ts
 export default { c: 'local' };
 ```
 
@@ -74,13 +75,13 @@ Environment variable `UMI_ENV` shall be used to identify configurations for diff
 For example:
 
 ```js
-// .umirc.js
+// .umirc.js or config/config.js
 export default { a: 1, b: 2 };
 
-// .umirc.cloud.js
+// .umirc.cloud.js or config/config.cloud.js
 export default { b: 'cloud', c: 'cloud' };
 
-// .umirc.local.js
+// .umirc.local.js or config/config.local.js
 export default { c: 'local' };
 ```
 
