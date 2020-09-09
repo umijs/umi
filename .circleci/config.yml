@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10.13-browsers
+      - image: circleci/node:10-browsers
 
     working_directory: ~/repo
 
@@ -10,16 +10,15 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: node-modules-{{ checksum "yarn.json" }}
+          key: yarn-packages-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install Dependencies
-          command: yarn --frozen-lockfile
+          command: yarn install --immutable
 
       - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
+          key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - ./node_modules
             - ~/.cache/yarn
 
       - run:
