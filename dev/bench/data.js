@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599610718716,
+  "lastUpdate": 1599623716371,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10434,6 +10434,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.78%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a1d24bddb33545c18ba5ac0461deadd2f8484bee",
+          "message": "fix: show explict error message when parsing conventional route components failed (#5384)\n\n* fix: show explict error message when parsing conventional route components failed\r\n\r\n* chore: update text",
+          "timestamp": "2020-09-09T11:50:29+08:00",
+          "tree_id": "42a228c6bb00371c6b7618997008ee5255e11f3f",
+          "url": "https://github.com/umijs/umi/commit/a1d24bddb33545c18ba5ac0461deadd2f8484bee"
+        },
+        "date": 1599623712651,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 596,
+            "range": "±100.41%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2102,
+            "range": "±6.09%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
