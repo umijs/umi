@@ -44,7 +44,7 @@ function getFiles(root: string) {
         if (!isReactComponent(content)) return false;
       } catch (e) {
         throw new Error(
-          `[CONVENTIONAL ROUTES] Parse ${absFile} failed, ${e.message}`,
+          `Parse conventional route component ${absFile} failed, ${e.message}`,
         );
       }
     }
@@ -106,7 +106,7 @@ function normalizeRoute(route: IRoute, opts: IOpts) {
       props = getExportProps(readFileSync(route.component, 'utf-8'));
     } catch (e) {
       throw new Error(
-        `[CONVENTIONAL ROUTES] Parse ${route.component} failed, ${e.message}`,
+        `Parse conventional route component ${route.component} failed, ${e.message}`,
       );
     }
     route.component = winPath(relative(join(opts.root, '..'), route.component));
