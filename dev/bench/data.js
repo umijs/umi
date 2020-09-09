@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599623716371,
+  "lastUpdate": 1599632389101,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10472,6 +10472,44 @@ window.BENCHMARK_DATA = {
             "range": "±6.09%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2cda1cf7484572aaaf88f7485216294132355c2c",
+          "message": "feat: use esm for wrappers when dynamicImport is configured (#5387)",
+          "timestamp": "2020-09-09T14:16:24+08:00",
+          "tree_id": "0fdcf900e8660bb81b37eca49e58cb83832e1938",
+          "url": "https://github.com/umijs/umi/commit/2cda1cf7484572aaaf88f7485216294132355c2c"
+        },
+        "date": 1599632386261,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1820,
+            "range": "±2.72%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2968,
+            "range": "±5.14%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
