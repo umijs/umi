@@ -126,6 +126,7 @@ export default (api: IApi) => {
           require.resolve('regenerator-runtime/runtime'),
         ),
         DynamicImport: !!api.config.dynamicImport,
+        LoadingComponent: api.config.dynamicImport?.loading,
         Utils: winPath(require.resolve('./templates/utils')),
         Mode: !!api.config.ssr?.mode || 'string',
         MountElementId: api.config.mountElementId,
