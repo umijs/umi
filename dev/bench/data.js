@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599575402640,
+  "lastUpdate": 1599610718716,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10396,6 +10396,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.97%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "scdzwyxst@gmail.com",
+            "name": "Peach",
+            "username": "PeachScript"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d16154ed8bd5890ec7ed2a41ced1a1b172c70bde",
+          "message": "docs: improve explanation for env config (#5381)",
+          "timestamp": "2020-09-09T08:14:46+08:00",
+          "tree_id": "f8906fd6ce8caa4cbc1eb3645e4f1b2d7d23fe8c",
+          "url": "https://github.com/umijs/umi/commit/d16154ed8bd5890ec7ed2a41ced1a1b172c70bde"
+        },
+        "date": 1599610715165,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1411,
+            "range": "±2.40%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2396,
+            "range": "±4.78%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
