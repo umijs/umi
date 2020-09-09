@@ -58,7 +58,7 @@ export const config = defineConfig({
 * Type: `boolean`
 * Default: `false`
 
-是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为改 key。该功能需要配置 `@umijs/plugin-locale` 使用。
+是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 `@umijs/plugin-locale` 使用。
 
 ### 运行时配置
 
