@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10-browsers
+      - image: circleci/node:latest-browsers
 
     working_directory: ~/repo
 
@@ -14,7 +14,7 @@ jobs:
 
       - run:
           name: Install Dependencies
-          command: yarn install --immutable
+          command: yarn install --immutable --immutable-cache --check-cache
 
       - save_cache:
           key: yarn-packages-{{ checksum "yarn.lock" }}
