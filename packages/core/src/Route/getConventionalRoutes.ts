@@ -40,7 +40,13 @@ function getFiles(root: string) {
     if (isFile) {
       if (!/\.(j|t)sx?$/.test(file)) return false;
       const content = readFileSync(absFile, 'utf-8');
-      if (!isReactComponent(content)) return false;
+      try {
+        if (!isReactComponent(content)) return false;
+      } catch (e) {
+        throw new Error(
+          `[CONVENTIONAL ROUTES] Parse ${absFile} failed, ${e.message}`,
+        );
+      }
     }
     return true;
   });
@@ -96,7 +102,13 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
 function normalizeRoute(route: IRoute, opts: IOpts) {
   let props: unknown = undefined;
   if (route.component) {
-    props = getExportProps(readFileSync(route.component, 'utf-8'));
+    try {
+      props = getExportProps(readFileSync(route.component, 'utf-8'));
+    } catch (e) {
+      throw new Error(
+        `[CONVENTIONAL ROUTES] Parse ${route.component} failed, ${e.message}`,
+      );
+    }
     route.component = winPath(relative(join(opts.root, '..'), route.component));
     route.component = `${opts.componentPrefix || '@/'}${route.component}`;
   }
