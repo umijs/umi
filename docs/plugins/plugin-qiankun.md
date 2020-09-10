@@ -1,3 +1,7 @@
+---
+translateHelp: true
+---
+
 # @umijs/plugin-qiankun
 
 Umi plugin for [qiankun](https://github.com/umijs/qiankun).
