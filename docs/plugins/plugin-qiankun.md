@@ -233,6 +233,8 @@ PORT=8081
 
 #### 配合 [useModel](https://umijs.org/zh-CN/plugins/plugin-model) 使用（推荐）
 
+> 需确保已安装 `@umijs/plugin-model` 或 `@umijs/preset-react`
+
 1. 主应用使用下面任一方式透传数据：
 
    1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
