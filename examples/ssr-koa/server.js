@@ -12,7 +12,13 @@ const app = new Koa();
 app.use(
   compress({
     threshold: 2048,
-    flush: require('zlib').Z_SYNC_FLUSH,
+    gzip: {
+      flush: require('zlib').constants.Z_SYNC_FLUSH,
+    },
+    deflate: {
+      flush: require('zlib').constants.Z_SYNC_FLUSH,
+    },
+    br: false, // 禁用br解决https gzip不生效加载缓慢问题
   }),
 );
 
