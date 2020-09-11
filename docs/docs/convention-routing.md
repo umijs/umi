@@ -6,7 +6,6 @@ translateHelp: true
 
 In addition to manually defined routing, Umi supports convention-based routing. This is also called file routing. It does not require manually configuring routes. Instead, the file system defines the routing. The routing configuration is derived from directories, files and their naming.
 
-**如果没有 routes 配置，Umi 会进入约定式路由模式**，然后分析 `src/pages` 目录拿到路由配置。
 **If there is no manual routing configuration file, Umi will fall back to the conventional routing mode**, analyzing the `src/pages` directory to discover the routing configuration.
 
 Consider the following file structure:
@@ -145,11 +144,11 @@ export default function Layout({ children, location, route, history, match }: IR
 }
 ```
 
-## 不同的全局 layout
+## Custom global layout
 
-你可能需要针对不同路由输出不同的全局 layout，Umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
+You may need to use different global layouts for different routes. Umi does not support different configuration files for that case, but you can still render different layouts based on the `props.location.pathname` attribute passed to the exported component in `src/layouts/index.tsx`.
 
-比如想要针对 `/login` 输出简单布局，
+For example, if you want to output a simple layout for `/login`,
 
 ```js
 export default function(props) {
@@ -167,11 +166,11 @@ export default function(props) {
 }
 ```
 
-## 404 路由
+## 404 routing
 
-约定 `src/pages/404.tsx` 为 404 页面，需返回 React 组件。
+Umi will take the contents of `src/pages/404.tsx` for the 404 page. It is expected to return React components.
 
-比如以下目录结构，
+For example, the following directory structure,
 
 ```bash
 .
@@ -181,7 +180,7 @@ export default function(props) {
     └── users.tsx
 ```
 
-会生成路由，
+corresponds to the routing
 
 ```js
 [
@@ -191,13 +190,13 @@ export default function(props) {
 ]
 ```
 
-这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
+If a user visits `/foo`, neither `/` nor `/users` will match, which is why the router will fall back to the 404 route and render `src/pages/404.tsx`.
 
-## PrivateRoute
+## Routing permissions
 
-By specify `wrappers` property in page component.
+Routes can be protected by specifying high-level component wrappers.
 
-For example, `src/pages/user`：
+For example, `src/pages/user` can define a `wrappers` property:
 
 ```js
 import React from 'react'
@@ -212,7 +211,7 @@ export default User
 
 ```
 
-See below example as content of  `src/wrappers/auth`,
+See below example as content of `src/wrappers/auth`,
 
 ```jsx
 import { Redirect } from 'umi'
@@ -227,13 +226,11 @@ export default (props) => {
 }
 ```
 
-With above configuration, user request of `/user` will be validated via `useAuth`. `src/pages/user` gets rendered or page redirected to `/login`.
+With the above configuration, user request to `/user` will be validated using the `useAuth` function. If successful, `src/pages/user` gets rendered, otherwise, the user will be redirected to `/login`.
 
-## 扩展路由属性
+## Extended routing attributes
 
-支持在代码层通过导出静态属性的方式扩展路由。
-
-比如：
+Umi supports extending routing at the code level by exporting static attributes.
 
 ```js
 function HomePage() {
@@ -245,4 +242,4 @@ HomePage.title = 'Home Page';
 export default HomePage;
 ```
 
-其中的 `title` 会附加到路由配置中。
+The `title` will be appended to the routing configuration.
