@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Convention Routing
 
 In addition to manually defined routing, Umi supports convention-based routing. This is also called file routing. It does not require manually configuring routes. Instead, the file system defines the routing. The routing configuration is derived from directories, files and their naming.
