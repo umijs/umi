@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599984534120,
+  "lastUpdate": 1599996060869,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10624,6 +10624,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.39%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "939431620@qq.com",
+            "name": "cherry-man",
+            "username": "luckymore"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fce0795662ef668545401c0d773ce9e7456130d6",
+          "message": ":memo: docs(plugins): link not exist because the branch name 'main' (#5404)\n\nCo-authored-by: zhangningning <zhangningning@xiaomi.com>",
+          "timestamp": "2020-09-13T19:14:46+08:00",
+          "tree_id": "cbee624a6c0b144d7d5c311b7b3a8ad4c4ca5100",
+          "url": "https://github.com/umijs/umi/commit/fce0795662ef668545401c0d773ce9e7456130d6"
+        },
+        "date": 1599996057390,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1361,
+            "range": "±3.25%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2199,
+            "range": "±4.59%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
