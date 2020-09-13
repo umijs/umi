@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599725121499,
+  "lastUpdate": 1599984534120,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10586,6 +10586,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.08%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "MasterCarl@users.noreply.github.com",
+            "name": "Carl Gödecken",
+            "username": "MasterCarl"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f379180779690c16c4ce2710f2ea4b187ad05acd",
+          "message": "Translate `convention-routing.md` to English (#5405)\n\n* Partial English translation of convention-routing.md\r\n\r\nTranslated using Google, then adapted\r\n\r\n* Remaining translation\r\n\r\n* Remove translateHelp label",
+          "timestamp": "2020-09-13T15:55:42+08:00",
+          "tree_id": "9d263b4c7a78ca9cdfdd1d954e52875e1b8e08cf",
+          "url": "https://github.com/umijs/umi/commit/f379180779690c16c4ce2710f2ea4b187ad05acd"
+        },
+        "date": 1599984523325,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1342,
+            "range": "±3.46%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2137,
+            "range": "±5.39%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
