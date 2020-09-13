@@ -49,7 +49,7 @@ export default {
 
 ### import from umi
 
-@umijs/plugin-locale 基于 react-intl 封装，支持其所有的 api，详情可以看 [这里](https://github.com/formatjs/react-intl/blob/master/docs/API.md)。为了方便使用我们也添加了一些其他的功能，这里将会列举所有的 api，并且展示它的功能。
+@umijs/plugin-locale 基于 react-intl 封装，支持其所有的 api，详情可以看 [这里](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md)。为了方便使用我们也添加了一些其他的功能，这里将会列举所有的 api，并且展示它的功能。
 
 ### addLocale
 
@@ -298,4 +298,4 @@ export const locale = {
 
 ### 为什么不要直接使用 formatMessage 这个语法糖？
 
-虽然 formatMessage 使用起来会非常方便，但是它脱离了 react 的生命周期，最严重的问题就是切换语言时无法触发 dom 重新渲染。为了解决这个问题，我们切换语言时会刷新一下浏览器，用户体验很差，所以推荐大家使用 [`useIntl`](#useIntl) 或者 [`injectIntl`](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc)，可以实现同样的功能。
+虽然 formatMessage 使用起来会非常方便，但是它脱离了 react 的生命周期，最严重的问题就是切换语言时无法触发 dom 重新渲染。为了解决这个问题，我们切换语言时会刷新一下浏览器，用户体验很差，所以推荐大家使用 [`useIntl`](#useIntl) 或者 [`injectIntl`](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md#injectintl-hoc)，可以实现同样的功能。
