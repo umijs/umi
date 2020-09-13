@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1599996060869,
+  "lastUpdate": 1600001462720,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10662,6 +10662,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.59%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "34082148+569202812@users.noreply.github.com",
+            "name": "昵称啦啦啦",
+            "username": "569202812"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bd9fe616b247b01f1a179d85a5dcce5eefa47302",
+          "message": "fix: ssr compress (#5394)",
+          "timestamp": "2020-09-13T05:47:01-07:00",
+          "tree_id": "f1a2c042937b599a97babf3370e8c868421e005a",
+          "url": "https://github.com/umijs/umi/commit/bd9fe616b247b01f1a179d85a5dcce5eefa47302"
+        },
+        "date": 1600001459420,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1484,
+            "range": "±2.33%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2287,
+            "range": "±3.92%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
