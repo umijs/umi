@@ -27,7 +27,7 @@ import { history } from 'umi';
 
 ### 如何动态修改 title ？
 
-可以通过 [react-document-title](https://github.com/gaearon/react-document-title) 动态修改 title 。
+可以通过 [plugin-helmet](/plugins/plugin-helmet) 插件动态修改 title 。
 
 ### layout 路由如何传值给子路由
 
@@ -55,7 +55,7 @@ e.g.
 
 需配置 NODE_PATH 环境变量，如使用 yarn，可通过执行 `yarn global bin` 拿到 bin 路径。
 
-### 配了 `dynamicImport.loadingComponent` 后外层报错不生效怎么办？
+### 配了 `dynamicImport.loading` 后外层报错不生效怎么办？
 
 组件报错有两种形式：
 
@@ -75,9 +75,9 @@ export default () => {
 }
 ```
 
-第二种不管怎么样都能正常抛错，第一种在开启 dynamicImport 并配置了 loadingComponent 时可能会不生效。
+第二种不管怎么样都能正常抛错，第一种在开启 dynamicImport 并配置了 loading 时可能会不生效。
 
-比如 loadingComponent 指向的文件内容为：
+比如 loading 指向的文件内容为：
 
 ```js
 export default () => <>loading...</>
@@ -87,7 +87,7 @@ export default () => <>loading...</>
 
 #### 解决
 
-loadingComponent 处理出错场景，比如：
+loading 处理出错场景，比如：
 
 ```js
 export default class extends React.PureComponent {
@@ -295,15 +295,13 @@ File sizes after gzip:
 
 ### 如何禁用掉每次刷新路由时出现的 loading... 状态？
 
-给 dynamicImport 配置加上 `loadingComponent: '() => <></>'`，比如：
+给 dynamicImport 配置加上 `loading: '() => <></>'`，比如：
 
 ```
 export default {
-  plugins: [
-    ['umi-plugin-react', {
-      dynamicImport: { loadingComponent: '() => <></>' },
-    }],
-  ]
+  dynamicImport: {
+    loading: '() => <></>
+  },
 }
 ```
 
