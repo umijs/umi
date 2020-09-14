@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600001462720,
+  "lastUpdate": 1600050003546,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10700,6 +10700,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.92%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "小虎oni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "259959fea09aab3547e786273f55d97ad61496b2",
+          "message": "docs: fix faq error (#5410)",
+          "timestamp": "2020-09-14T10:16:08+08:00",
+          "tree_id": "4eaf2f97c322b722750196a727c60b588acf6deb",
+          "url": "https://github.com/umijs/umi/commit/259959fea09aab3547e786273f55d97ad61496b2"
+        },
+        "date": 1600049999833,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1517,
+            "range": "±2.85%",
+            "unit": "ops/sec",
+            "extra": "70 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2497,
+            "range": "±4.35%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
