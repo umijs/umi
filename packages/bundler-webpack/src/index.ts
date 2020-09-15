@@ -64,7 +64,7 @@ class Bundler {
     const compiler = bundleImplementor(bundleConfigs);
     const { devServer, outputPath } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
-    const absOutputPath = join(this.cwd, outputPath || 'dist');
+    const absOutputPath = join(this.cwd, outputPath as string);
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
