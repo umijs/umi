@@ -3,6 +3,7 @@ import defaultWebpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
+import { join, sep } from 'path';
 
 interface IOpts {
   cwd: string;
@@ -61,7 +62,9 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
-    const { devServer } = this.config;
+    const { devServer, outputPath } = this.config;
+    // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
+    const absOutputPath = join(this.cwd, outputPath || 'dist');
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
@@ -75,7 +78,7 @@ class Bundler {
             ? undefined
             : new RegExp(
                 process.env.WATCH_IGNORED ||
-                  `^(node_modules|${this.config.outputPath}$)`,
+                  `(node_modules|${absOutputPath}${sep})`,
               ),
       },
     });
