@@ -267,8 +267,8 @@ export default (api: IApi) => {
       config.output
         .filename(OUTPUT_SERVER_FILENAME)
         .libraryExport('default')
-        // https://github.com/markdalgleish/static-site-generator-webpack-plugin/issues/130
-        .globalObject('this')
+        // https://github.com/markdalgleish/static-site-generator-webpack-plugin/issues/130#issuecomment-445435821
+        .globalObject(`typeof self !== 'undefined' ? self : this`)
         .chunkFilename('[name].server.js')
         .libraryTarget('commonjs2');
 
