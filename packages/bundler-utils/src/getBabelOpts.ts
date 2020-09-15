@@ -19,7 +19,7 @@ function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
     babelrc: false,
     cacheDirectory:
       process.env.BABEL_CACHE !== 'none'
-        ? `${prefix}.umi/.cache/babel-loader`
+        ? `${prefix}/.umi/.cache/babel-loader`
         : false,
   };
 }
