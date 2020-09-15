@@ -267,6 +267,7 @@ export default (api: IApi) => {
       config.output
         .filename(OUTPUT_SERVER_FILENAME)
         .libraryExport('default')
+        .globalObject('this')
         .chunkFilename('[name].server.js')
         .libraryTarget('commonjs2');
 
