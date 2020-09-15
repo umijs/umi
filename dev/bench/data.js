@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600186624473,
+  "lastUpdate": 1600186720887,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10814,6 +10814,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.15%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "448627663@qq.com",
+            "name": "xiaohuoni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "448627663@qq.com",
+            "name": "xiaohuoni",
+            "username": "xiaohuoni"
+          },
+          "distinct": true,
+          "id": "c7badba03d2ae90390a6d18068c0a013533155ed",
+          "message": "Revert \"fix: babel cacheDirectory error when use APP_ROOT\"\n\nThis reverts commit 84c0643c47f848de18c43fcc96984c1b615f5731.",
+          "timestamp": "2020-09-16T00:13:24+08:00",
+          "tree_id": "0a9af904792bbbd7366cb2dc886c9226c9fb4c65",
+          "url": "https://github.com/umijs/umi/commit/c7badba03d2ae90390a6d18068c0a013533155ed"
+        },
+        "date": 1600186717430,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1323,
+            "range": "±3.36%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2275,
+            "range": "±5.50%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
