@@ -11,7 +11,7 @@ interface IOpts {
 }
 
 function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
-  const prefix = existsSync(join(cwd, 'src')) ? join(cwd, 'src') : cwd;
+  const prefix = existsSync(join(cwd, 'src')) ? 'src/' : '';
   return {
     // Tell babel to guess the type, instead assuming all files are modules
     // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
@@ -19,7 +19,7 @@ function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
     babelrc: false,
     cacheDirectory:
       process.env.BABEL_CACHE !== 'none'
-        ? `${prefix}/.umi/.cache/babel-loader`
+        ? `${prefix}.umi/.cache/babel-loader`
         : false,
   };
 }
