@@ -1,4 +1,16 @@
-**/fixtures/**/*.js
-**/template/**/*.js
-**/bin/*.js
-**/website/*.js
+**/node_modules/**
+package.json
+
+# fixtures
+**/fixtures/**
+
+# templates
+**/templates/**
+
+# docs
+**/*.md
+
+# coverage
+/coverage
+/dist
+/.umi

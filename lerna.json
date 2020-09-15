@@ -1,8 +1,23 @@
 {
-  "lerna": "2.0.0",
-  "packages": [
-    "packages/*"
-  ],
-  "npmClient": "npm",
-  "version": "independent"
+  "version": "3.2.20",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "changelog": {
+    "repo": "umijs/umi-next",
+    "labels": {
+      "pr(enhancement)": ":rocket: Enhancement",
+      "pr(bug)": ":bug: Bug Fix",
+      "pr(documentation)": ":book: Documentation",
+      "pr(dependency)": ":deciduous_tree: Dependency",
+      "pr(chore)": ":turtle: Chore"
+    },
+    "cacheDir": ".changelog"
+  },
+  "ignoreChanges": [
+    "**/*.md",
+    "**/*.test.ts",
+    "**/*.e2e.ts",
+    "**/fixtures/**",
+    "**/test/**"
+  ]
 }

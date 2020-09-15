@@ -1,0 +1,7 @@
+
+.a { color: red; }
+.a { color: green; background: blue; }
+
+.safe-parser {
+  one: two: progid:DX(a='1', b='2');
+}

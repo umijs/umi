@@ -1,0 +1,22 @@
+{
+  "name": "umi",
+  "scope": "umijs",
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ],
+  "github": {
+    "enabled": false
+  },
+  "alias": ["umijs.org"]
+}
