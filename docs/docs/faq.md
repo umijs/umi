@@ -300,7 +300,7 @@ File sizes after gzip:
 ```
 export default {
   dynamicImport: {
-    loading: '() => <></>
+    loading: '() => <></>'
   },
 }
 ```
