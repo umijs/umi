@@ -75,7 +75,7 @@ class Bundler {
             ? undefined
             : new RegExp(
                 process.env.WATCH_IGNORED ||
-                  `(node_modules|${this.config.outputPath})`,
+                  `^(node_modules|${this.config.outputPath}$)`,
               ),
       },
     });
