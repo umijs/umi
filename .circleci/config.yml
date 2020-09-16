@@ -28,7 +28,9 @@ jobs:
 
       - run:
           name: Run Tests
-          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand
+          environment:
+            NODE_OPTIONS: --max_old_space_size=4096
+          command: yarn test:coverage --forceExit
           no_output_timeout: 300m
 
       - run:

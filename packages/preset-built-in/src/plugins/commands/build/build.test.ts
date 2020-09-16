@@ -12,7 +12,6 @@ test('build', async () => {
     presets: [require.resolve('../../../index.ts')],
     env: 'production',
   });
-
   await service.run({
     name: 'build',
   });
