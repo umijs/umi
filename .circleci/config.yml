@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:10.13-browsers
 
     working_directory: ~/repo
 
@@ -28,7 +28,7 @@ jobs:
 
       - run:
           name: Run Tests
-          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=1
+          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
 
       - run:
