@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600224143399,
+  "lastUpdate": 1600241246991,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10888,6 +10888,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2338,
             "range": "±5.06%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "小虎oni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "87a16f699984a6b5710a56fdc9108f3716f558a5",
+          "message": "fix: babel cache directory error when use APP_ROOT (#5424)\n\n* fix: babel cache directory error when use APP_ROOT\r\n\r\n* test: add test util\r\n\r\n* fix: winPath",
+          "timestamp": "2020-09-16T15:23:00+08:00",
+          "tree_id": "1931d59019c9c56b62f1a714ec8fabece54591ec",
+          "url": "https://github.com/umijs/umi/commit/87a16f699984a6b5710a56fdc9108f3716f558a5"
+        },
+        "date": 1600241243642,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 653,
+            "range": "±93.00%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2025,
+            "range": "±4.44%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
