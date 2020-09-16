@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600186720887,
+  "lastUpdate": 1600224143399,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10852,6 +10852,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.50%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "小虎oni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b305b9cd84b714ed2c0aa579796d88fbefe84c6a",
+          "message": "fix: watch ignored outputPath (#5422)\n\n* fix: watch ignored outputPath\r\n\r\n* fix: use absOutputPath\r\n\r\n* chore: code style",
+          "timestamp": "2020-09-16T10:38:14+08:00",
+          "tree_id": "4ff2212006c55de46ae6d7608f2d612be31da45d",
+          "url": "https://github.com/umijs/umi/commit/b305b9cd84b714ed2c0aa579796d88fbefe84c6a"
+        },
+        "date": 1600224139934,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1371,
+            "range": "±2.43%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2338,
+            "range": "±5.06%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
