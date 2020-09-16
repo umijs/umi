@@ -1,4 +1,5 @@
 import { IConfig } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
@@ -19,7 +20,7 @@ function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
     babelrc: false,
     cacheDirectory:
       process.env.BABEL_CACHE !== 'none'
-        ? `${prefix}/.umi/.cache/babel-loader`
+        ? winPath(`${prefix}/.umi/.cache/babel-loader`)
         : false,
   };
 }

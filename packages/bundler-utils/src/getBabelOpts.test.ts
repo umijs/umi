@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { join } from 'path';
 import {
   getBabelDepsOpts,
@@ -61,14 +62,13 @@ test('getBabelOpts with empty extraBabelPresets and extraBabelPlugins', () => {
 });
 
 test('getBabelOpts with src directory', () => {
+  const cwd = winPath(join(fixtures, 'with-src'));
   const ret = getBabelOpts({
-    cwd: join(fixtures, 'with-src'),
+    cwd,
     presetOpts: {},
     config: {},
   });
-  expect(ret.cacheDirectory).toEqual(
-    `${join(fixtures, 'with-src')}/src/.umi/.cache/babel-loader`,
-  );
+  expect(ret.cacheDirectory).toEqual(`${cwd}/src/.umi/.cache/babel-loader`);
 });
 
 test('getBabelDepsOpts', () => {

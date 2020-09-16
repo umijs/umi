@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@umijs/babel-preset-umi": "3.2.20",
-    "@umijs/types": "3.2.20"
+    "@umijs/types": "3.2.20",
+    "@umijs/utils": "3.2.20"
   }
 }
