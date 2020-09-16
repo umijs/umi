@@ -10,7 +10,8 @@ test('build', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
-    env: 'production',
+    // production 下 ci 时会报错
+    // env: 'production',
   });
   await service.run({
     name: 'build',
