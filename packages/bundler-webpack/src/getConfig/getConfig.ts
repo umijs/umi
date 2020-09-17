@@ -364,10 +364,19 @@ export default async function getConfig(
         to: absOutputPath,
       },
       ...(config.copy
-        ? config.copy.map((from) => ({
-            from: join(cwd, from),
-            to: absOutputPath,
-          }))
+        ? // @ts-ignore
+          config.copy.map((item) => {
+            if (typeof item === 'string') {
+              return {
+                from: join(cwd, item),
+                to: absOutputPath,
+              };
+            }
+            return {
+              from: join(cwd, item.from),
+              to: join(absOutputPath, item.to),
+            };
+          })
         : []),
     ].filter(Boolean),
   ]);
