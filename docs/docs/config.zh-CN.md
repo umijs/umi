@@ -15,9 +15,10 @@ export default {
 
 ## 配置文件
 
-推荐在 `.umirc.ts` 中写配置。如果配置比较复杂需要拆分，可以放到 `config/config.ts` 中，并把配置的一部分拆出去，比如路由。
+如果项目的配置不复杂，推荐在 `.umirc.ts` 中写配置；
+如果项目的配置比较复杂，可以将配置写在 `config/config.ts` 中，并把配置的一部分拆出去，比如路由配置可以拆成单独的 `config/routes.ts`。
 
-两者二选一，`.umirc.ts` 优先级更高。
+两种方式二选一，`.umirc.ts` 优先级更高。
 
 ## TypeScript 提示
 
@@ -44,10 +45,10 @@ export default defineConfig({
 比如，
 
 ```js
-// .umirc.ts
+// .umirc.ts 或者 config/config.ts
 export default { a: 1, b: 2 };
 
-// .umirc.local.ts
+// .umirc.local.ts 或者 config/config.local.ts
 export default { c: 'local' };
 ```
 
@@ -74,13 +75,13 @@ export default { c: 'local' };
 举个例子，
 
 ```js
-// .umirc.js
+// .umirc.js 或者 config/config.js
 export default { a: 1, b: 2 };
 
-// .umirc.cloud.js
+// .umirc.cloud.js 或者 config/config.cloud.js
 export default { b: 'cloud', c: 'cloud' };
 
-// .umirc.local.js
+// .umirc.local.js 或者 config/config.local.js
 export default { c: 'local' };
 ```
 

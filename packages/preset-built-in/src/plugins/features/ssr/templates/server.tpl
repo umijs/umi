@@ -6,6 +6,9 @@ import { stripBasename, cheerio, handleHTML } from '{{{ Utils }}}';
 import { IServerRender } from '@umijs/types';
 
 import { ApplyPluginsType, createMemoryHistory{{ #DynamicImport }}, dynamic{{ /DynamicImport }} } from '{{{ RuntimePath }}}';
+{{ #loadingComponent }}
+import LoadingComponent from '{{{ loadingComponent }}}';
+{{ /loadingComponent }}
 import { plugin } from './plugin';
 import './pluginRegister';
 

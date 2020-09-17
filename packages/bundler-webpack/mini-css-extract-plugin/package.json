@@ -1,0 +1,7 @@
+{
+  "name": "mini-css-extract-plugin",
+  "version": "0.9.0",
+  "dependencies": {
+    "webpack": "^4"
+  }
+}

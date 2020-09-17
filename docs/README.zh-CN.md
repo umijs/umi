@@ -59,4 +59,4 @@ This project exists thanks to all the people who contribute. [Join us!](/zh-CN/d
 
 | Github Issue | 钉钉群 | 微信群 |
 | --- | --- | --- |
-| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1WPiWNUY1gK0jSZFCXXcwqXXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB1pd1ce8r0gK0jSZFnXXbRRXXa-430-430.jpg" width="60" /> |
+| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1WPiWNUY1gK0jSZFCXXcwqXXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB1_oU.TND1gK0jSZFsXXbldVXa-585-591.jpg" width="60" /> |

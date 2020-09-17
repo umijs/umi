@@ -18,9 +18,9 @@ Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模�
 
 ## Examples
 
-导航是主应用，App1/App2 是子应用，App1/App2 也支持单独打开。
+导航是主应用，App1/App2 是子应用，App1/App2 也支持单独打开。主应用可以嵌套 APP1 和 APP2，App1 也可以嵌套 App2。
 
-![](https://img.alicdn.com/tfs/TB1ZMxEwKH2gK0jSZJnXXaT1FXa-1040-619.gif)
+![](https://gw.alipayobjects.com/mdn/rms_655822/afts/img/A*TroZSp_cH0MAAAAAAAAAAAAAARQnAQ)
 
 ```bash
 $ yarn
@@ -36,6 +36,7 @@ $ cd packages/plguin-qiankun && yarn start
 - ✔︎ 父子应用通讯
 - ✔︎ 子应用运行时配置自定义 `bootstrap()`、`mount()` 和 `unmount()`
 - ✔︎ 主应用、子应用联调
+- ✔︎ 嵌套子应用
 
 ## Usage
 
@@ -71,7 +72,7 @@ export default {
 
 ```js
 // 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
-export const qiankun = fetch('/config').then(({ apps }}) => ({
+export const qiankun = fetch('/config').then(({ apps }) => ({
   // 注册子应用信息
   apps,
   // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
@@ -228,6 +229,8 @@ PORT=8081
 
 #### 配合 [useModel](https://umijs.org/zh-CN/plugins/plugin-model) 使用（推荐）
 
+> 需确保已安装 `@umijs/plugin-model` 或 `@umijs/preset-react`
+
 1. 主应用使用下面任一方式透传数据：
 
    1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
@@ -241,8 +244,8 @@ PORT=8081
       
    2. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
       ```ts
-   // src/app.ts
-   export function useQiankunStateForSlave() {
+      // src/app.ts
+      export function useQiankunStateForSlave() {
         const [globalState, setGlobalState] = useState({});
        
         return {
@@ -261,6 +264,18 @@ PORT=8081
      const masterProps = useModel('@@qiankunStateFromMaster');
      return <div>{ JSON.strigify(masterProps) }</div>;
    }
+   ```
+
+   或者可以通过高阶组件 connectMaster 来获取主应用透传的 props
+
+   ```jsx
+   import { connectMaster } from 'umi';
+   
+   function MyPage(props) {
+     return <div>{ JSON.strigify(props) }</div>;
+   }
+
+   export default connectMaster(MyPage);
    ```
 
 3. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 `masterProps.setLoading(false)`，可以标记微模块的整体 loading 为完成状态。
@@ -292,6 +307,45 @@ PORT=8081
    ```
 
 2. 子应用在生命周期钩子中获取 props 消费数据（参考子应用运行时配置一节）
+
+### 嵌套子应用
+
+除了导航应用之外，App1 与 App2 均依赖浏览器 url，为了让 App1 嵌套 App2，两个应用同时存在，我们需要在运行时将 App2 的路由改为 memory 类型。
+
+1. 在 App1 中加入 master 配置
+
+```js
+export default {
+  qiankun: {
+    master: {
+      // 注册子应用信息
+      apps: [
+        {
+          name: 'app2', // 唯一 id
+          entry: '//localhost:7002', // html entry
+        },
+      ],
+    },
+  },
+};
+```
+
+2. 通过 `<MicroAppWithMemoHistory />` 引入 App2
+
+```diff
+import { MicroAppWithMemoHistory } from 'umi';
+
+export function MyPage() {
+  
+  return (
+    <div>
+      <div>
++        <MicroAppWithMemoHistory name="app2" url="/user" />
+      </div>
+    </div>
+  )
+}
+```
 
 ### API
 #### <a name="masterOptions">MasterOptions</a>

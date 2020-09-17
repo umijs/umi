@@ -41,6 +41,7 @@ export interface IOpts {
   chainWebpack?: (webpackConfig: any, args: any) => Promise<any>;
   miniCSSExtractPluginPath?: string;
   miniCSSExtractPluginLoaderPath?: string;
+  __disableTerserForTest?: boolean;
 }
 
 export default async function getConfig(
@@ -203,7 +204,6 @@ export default async function getConfig(
   const rule = webpackConfig.module
     .rule('js-in-node_modules')
       .test(/\.(js|mjs)$/);
-
   const nodeModulesTransform = config.nodeModulesTransform || {
     type: 'all',
     exclude: [],
@@ -388,6 +388,23 @@ export default async function getConfig(
       ]);
   }
 
+  // profile
+  if (process.env.WEBPACK_PROFILE) {
+    webpackConfig.profile(true);
+    const statsInclude = ['verbose', 'normal', 'minimal'];
+    webpackConfig.stats(
+      (statsInclude.includes(process.env.WEBPACK_PROFILE)
+        ? process.env.WEBPACK_PROFILE
+        : 'verbose') as defaultWebpack.Options.Stats,
+    );
+    const StatsPlugin = require('stats-webpack-plugin');
+    webpackConfig.plugin('stats-webpack-plugin').use(
+      new StatsPlugin('stats.json', {
+        chunkModules: true,
+      }),
+    );
+  }
+
   const enableManifest = () => {
     // manifest
     if (config.manifest && type === BundlerConfigType.csr) {
@@ -436,7 +453,7 @@ export default async function getConfig(
       // compress
       if (disableCompress) {
         webpackConfig.optimization.minimize(false);
-      } else {
+      } else if (!opts.__disableTerserForTest) {
         webpackConfig.optimization
           .minimizer('terser')
           .use(require.resolve('terser-webpack-plugin'), [

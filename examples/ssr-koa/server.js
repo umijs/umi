@@ -3,7 +3,6 @@ const compress = require('koa-compress');
 const mount = require('koa-mount');
 const { join, extname } = require('path');
 const { parseCookie, parseNavLang } = require('./serverHelper');
-const render = require('./dist/umi.server');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -13,10 +12,17 @@ const app = new Koa();
 app.use(
   compress({
     threshold: 2048,
-    flush: require('zlib').Z_SYNC_FLUSH,
+    gzip: {
+      flush: require('zlib').constants.Z_SYNC_FLUSH,
+    },
+    deflate: {
+      flush: require('zlib').constants.Z_SYNC_FLUSH,
+    },
+    br: false, // 禁用br解决https gzip不生效加载缓慢问题
   }),
 );
 
+let render;
 app.use(async (ctx, next) => {
   /**
    *  扩展global对象
@@ -33,7 +39,9 @@ app.use(async (ctx, next) => {
   const ext = extname(ctx.request.path);
   // 符合要求的路由才进行服务端渲染，否则走静态文件逻辑
   if (!ext) {
-
+    if (!render) {
+      render = require('./dist/umi.server');
+    }
     // 这里默认是流失渲染
     ctx.type = 'text/html';
     ctx.status = 200;
@@ -46,11 +54,11 @@ app.use(async (ctx, next) => {
       ctx.throw(500, error);
     }
     /**
-  *  这里fix了由于没有使用内部server而造成的缓存问题，
-  *  原因是require会带有缓存，在修改代码以后会不更新
-  *  这里判断的环境变量，如果是dev环境，自动删除require
-  *  缓存
-  */
+     *  这里fix了由于没有使用内部server而造成的缓存问题，
+     *  原因是require会带有缓存，在修改代码以后会不更新
+     *  这里判断的环境变量，如果是dev环境，自动删除require
+     *  缓存
+     */
     if (isDev) {
       delete require.cache[require.resolve('./dist/umi.server')];
     }
