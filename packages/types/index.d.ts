@@ -266,6 +266,11 @@ interface ISSR {
   staticMarkup?: boolean;
 }
 
+export interface ICopy {
+  from: string;
+  to: string;
+}
+
 export interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
@@ -288,7 +293,7 @@ export interface BaseIConfig extends IConfigCore {
   cssLoader?: object;
   cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
   cssnano?: object;
-  copy?: string[];
+  copy?: [string, ICopy];
   define?: {
     [key: string]: any;
   };
