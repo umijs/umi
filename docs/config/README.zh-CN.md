@@ -283,6 +283,38 @@ export default {
   - foo.js
 ```
 
+支持配置 from-to， 需要注意的是 from 是相对于 cwd 的路径，to是相对于输出路径的路径。
+
+比如你的目录结构如下，
+
+```js
++ src
+  - index.ts
++ bar
+  - bar.js
+```
+
+然后设置，
+
+```js
+export default {
+  copy: [
+   {
+     from:'bar/bar.js',
+     to:'some/bar.js'
+   }
+  ]
+}
+```
+
+编译完成后，会额外输出以下文件，
+
+```js
++ dist
+  + some
+    - bar.js
+```
+
 ## define
 
 * Type: `object`

@@ -1,4 +1,9 @@
-import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
+import {
+  IConfig,
+  IBundlerConfigType,
+  BundlerConfigType,
+  ICopy,
+} from '@umijs/types';
 import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
 import { join } from 'path';
@@ -364,10 +369,18 @@ export default async function getConfig(
         to: absOutputPath,
       },
       ...(config.copy
-        ? config.copy.map((from) => ({
-            from: join(cwd, from),
-            to: absOutputPath,
-          }))
+        ? config.copy.map((item: ICopy | string) => {
+            if (typeof item === 'string') {
+              return {
+                from: join(cwd, item),
+                to: absOutputPath,
+              };
+            }
+            return {
+              from: join(cwd, item.from),
+              to: join(absOutputPath, item.to),
+            };
+          })
         : []),
     ].filter(Boolean),
   ]);
