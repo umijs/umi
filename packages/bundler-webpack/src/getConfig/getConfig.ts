@@ -227,7 +227,7 @@ export default async function getConfig(
       .exclude.add((path) => {
         return isMatch({ path, pkgs });
       })
-      .end();
+        .end();
   } else {
     const pkgs = {
       ...es5ImcompatibleVersionsToPkg(),
