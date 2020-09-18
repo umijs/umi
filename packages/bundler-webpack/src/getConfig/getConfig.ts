@@ -120,10 +120,10 @@ export default async function getConfig(
     // 不能设为 false，因为 tnpm 是通过 link 处理依赖，设为 false tnpm 下会有大量的冗余模块
     .set('symlinks', true)
     .modules
-    .add('node_modules')
-    .add(join(__dirname, '../../node_modules'))
-    // TODO: 处理 yarn 全局安装时的 resolve 问题
-    .end()
+      .add('node_modules')
+      .add(join(__dirname, '../../node_modules'))
+      // TODO: 处理 yarn 全局安装时的 resolve 问题
+      .end()
     .extensions.merge([
       '.web.js',
       '.wasm',
@@ -176,12 +176,12 @@ export default async function getConfig(
   // prettier-ignore
   webpackConfig.module
     .rule('js')
-    .test(/\.(js|mjs|jsx|ts|tsx)$/)
-    .include.add(cwd).end()
-    .exclude.add(/node_modules/).end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.(js|mjs|jsx|ts|tsx)$/)
+      .include.add(cwd).end()
+      .exclude.add(/node_modules/).end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // umi/dist/index.esm.js 走 babel 编译
   // why? 极速模式下不打包 @umijs/runtime
@@ -189,26 +189,26 @@ export default async function getConfig(
     // prettier-ignore
     webpackConfig.module
       .rule('js')
-      .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
-      .use('babel-loader')
-      .loader(require.resolve('babel-loader'))
-      .options(babelOpts);
+        .test(/\.(js|mjs|jsx|ts|tsx)$/)
+        .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
+        .use('babel-loader')
+          .loader(require.resolve('babel-loader'))
+          .options(babelOpts);
   }
 
   // prettier-ignore
   webpackConfig.module
     .rule('ts-in-node_modules')
-    .test(/\.(jsx|ts|tsx)$/)
-    .include.add(/node_modules/).end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.(jsx|ts|tsx)$/)
+      .include.add(/node_modules/).end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // prettier-ignore
   const rule = webpackConfig.module
     .rule('js-in-node_modules')
-    .test(/\.(js|mjs)$/);
+      .test(/\.(js|mjs)$/);
   const nodeModulesTransform = config.nodeModulesTransform || {
     type: 'all',
     exclude: [],
@@ -222,8 +222,8 @@ export default async function getConfig(
     // prettier-ignore
     rule
       .include
-      .add(/node_modules/)
-      .end()
+        .add(/node_modules/)
+        .end()
       .exclude.add((path) => {
         return isMatch({ path, pkgs });
       })
@@ -256,49 +256,49 @@ export default async function getConfig(
     .rule('images')
     .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
     .use('url-loader')
-    .loader(require.resolve('url-loader'))
-    .options({
-      limit: config.inlineLimit || 10000,
-      name: 'static/[name].[hash:8].[ext]',
-      // require 图片的时候不用加 .default
-      esModule: false,
-      fallback: {
-        loader: require.resolve('file-loader'),
-        options: {
-          name: 'static/[name].[hash:8].[ext]',
-          esModule: false,
-        },
-      }
-    });
+      .loader(require.resolve('url-loader'))
+      .options({
+        limit: config.inlineLimit || 10000,
+        name: 'static/[name].[hash:8].[ext]',
+        // require 图片的时候不用加 .default
+        esModule: false,
+        fallback: {
+          loader: require.resolve('file-loader'),
+          options: {
+            name: 'static/[name].[hash:8].[ext]',
+            esModule: false,
+          },
+        }
+      });
 
   // prettier-ignore
   webpackConfig.module
     .rule('svg')
     .test(/\.(svg)(\?.*)?$/)
     .use('file-loader')
-    .loader(require.resolve('file-loader'))
-    .options({
-      name: 'static/[name].[hash:8].[ext]',
-      esModule: false,
-    });
+      .loader(require.resolve('file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
+      });
 
   // prettier-ignore
   webpackConfig.module
     .rule('fonts')
     .test(/\.(eot|woff|woff2|ttf)(\?.*)?$/)
     .use('file-loader')
-    .loader(require.resolve('file-loader'))
-    .options({
-      name: 'static/[name].[hash:8].[ext]',
-      esModule: false,
-    });
+      .loader(require.resolve('file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
+      });
 
   // prettier-ignore
   webpackConfig.module
     .rule('plaintext')
     .test(/\.(txt|text|md)$/)
     .use('raw-loader')
-    .loader(require.resolve('raw-loader'));
+      .loader(require.resolve('raw-loader'));
 
   // css
   css({
