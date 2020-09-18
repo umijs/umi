@@ -357,20 +357,24 @@ export default async function getConfig(
   }
 
   // copy
-  webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
-    [
-      existsSync(join(cwd, 'public')) && {
-        from: join(cwd, 'public'),
-        to: absOutputPath,
-      },
-      ...(config.copy
-        ? config.copy.map((from) => ({
-            from: join(cwd, from),
+  if (existsSync(join(cwd, 'public')) || config.copy) {
+    webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
+      {
+        patterns: [
+          existsSync(join(cwd, 'public')) && {
+            from: join(cwd, 'public'),
             to: absOutputPath,
-          }))
-        : []),
-    ].filter(Boolean),
-  ]);
+          },
+          ...(config.copy
+            ? config.copy.map((from) => ({
+                from: join(cwd, from),
+                to: absOutputPath,
+              }))
+            : []),
+        ].filter(Boolean),
+      },
+    ]);
+  }
 
   // timefix
   // webpackConfig
