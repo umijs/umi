@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600241246991,
+  "lastUpdate": 1600397797240,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10928,6 +10928,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.44%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "小虎oni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d6b8fc0ebe794773cf2776dff6feabc0ce311c8c",
+          "message": "feat: copy config support from-to (#5440)\n\n* feat: copy config support from-to\r\n\r\n* docs: config copy docs\r\n\r\n* fix: type error",
+          "timestamp": "2020-09-18T10:52:15+08:00",
+          "tree_id": "016c0615e4d66b6561271a88c12b9c97c856d680",
+          "url": "https://github.com/umijs/umi/commit/d6b8fc0ebe794773cf2776dff6feabc0ce311c8c"
+        },
+        "date": 1600397793629,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1198,
+            "range": "±2.74%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2007,
+            "range": "±5.33%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
