@@ -146,15 +146,15 @@ export default {
 +            // 配置微应用 app1 关联的路由
 +            {
 +              path: '/app1/project',
-+	             microApp: 'app1',
++              microApp: 'app1',
 +            },
           ],
         },
-+        // 配置 app2 关联的路由
-+        {
-+        	path: '/app2',
-+        	microApp: 'app2'
-+        },
++       // 配置 app2 关联的路由
++       {
++         path: '/app2',
++         microApp: 'app2'
++       },
         {
           path: '/',
           component: './index.js',
@@ -183,6 +183,71 @@ export function MyPage() {
   )
 }
 ```
+
+##### loading 动画与组件样式
+
+默认情况下，当我们检测到你使用的是 antd 组件库时，我们会在子应用加载期间自动增加一个 antd 的 loading 动画。
+
+如果你需要定制自己的 loading 动画，或者修改组件的样式，你可以这样处理：
+
+```jsx
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  
+  return (
+    <div>
+      <div>
+         <MicroApp 
+           name="app1"
+           // 自定义 loading 动画
+           loader={loading => <div>loading: {loading}</div>}
+           // 微应用容器 class
+           className="myContainer"
+           // wrapper class，仅开启 loading 动画时生效
+           wrapperClassName="myWrapper"
+         />
+      </div>
+    </div>
+  )
+}
+```
+
+路由模式下，你可以这样设置一些静态配置：
+
+```js
+{
+  path: '/user',
+  microApp: 'user',
+  microAppProps: {
+    className: 'myContainer',
+    wrapperClassName: 'myWrapper',
+  }
+},
+```
+
+或者，你可以通过设置 autoSetLoading false 来关闭自动的 loading 动画：
+
+```tsx
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  
+  return (
+    <div>
+      <div>
+         <MicroApp 
+           name="app1"
+           // 关闭 loading 动画
+           autoSetLoading={false}
+         />
+      </div>
+    </div>
+  )
+}
+```
+
+
 
 ### 子应用配置
 
