@@ -362,28 +362,34 @@ export default async function getConfig(
   }
 
   // copy
-  webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
-    [
-      existsSync(join(cwd, 'public')) && {
-        from: join(cwd, 'public'),
-        to: absOutputPath,
-      },
-      ...(config.copy
-        ? config.copy.map((item: ICopy | string) => {
-            if (typeof item === 'string') {
-              return {
-                from: join(cwd, item),
-                to: absOutputPath,
-              };
-            }
+  const copyPatterns = [
+    existsSync(join(cwd, 'public')) && {
+      from: join(cwd, 'public'),
+      to: absOutputPath,
+    },
+    ...(config.copy
+      ? config.copy.map((item: ICopy | string) => {
+          if (typeof item === 'string') {
             return {
-              from: join(cwd, item.from),
-              to: join(absOutputPath, item.to),
+              from: join(cwd, item),
+              to: absOutputPath,
             };
-          })
-        : []),
-    ].filter(Boolean),
-  ]);
+          }
+          return {
+            from: join(cwd, item.from),
+            to: join(absOutputPath, item.to),
+          };
+        })
+      : []),
+  ].filter(Boolean);
+
+  if (copyPatterns.length) {
+    webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
+      {
+        patterns: copyPatterns,
+      },
+    ]);
+  }
 
   // timefix
   // webpackConfig
