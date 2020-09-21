@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600397797240,
+  "lastUpdate": 1600677537155,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -10966,6 +10966,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.33%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xiaohuoni@users.noreply.github.com",
+            "name": "小虎oni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2631b13bffd612af775d0e6b2d7718ef57dfd88b",
+          "message": "feat: update copy-webpack-plugin@6.1.0 (#5442)\n\n* feat: update copy-webpack-plugin@6.1.0\r\n\r\n* chore: code style\r\n\r\n* chore: code style\r\n\r\n* chore: code style",
+          "timestamp": "2020-09-21T16:35:00+08:00",
+          "tree_id": "17361b0eeb89a765d5d08a98c774eca0b4c05564",
+          "url": "https://github.com/umijs/umi/commit/2631b13bffd612af775d0e6b2d7718ef57dfd88b"
+        },
+        "date": 1600677533931,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1439,
+            "range": "±2.20%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2374,
+            "range": "±4.90%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
