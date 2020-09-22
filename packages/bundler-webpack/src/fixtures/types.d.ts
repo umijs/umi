@@ -4,4 +4,5 @@ export interface IExpectOpts {
   indexJS: string;
   indexCSS: string;
   cwd: string;
+  ignored: undefined | RegExp
 }

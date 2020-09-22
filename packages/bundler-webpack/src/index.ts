@@ -54,6 +54,20 @@ class Bundler {
     });
   }
 
+  /**
+   * get ignored watch dirs regexp, for test case
+   */
+  getIgnoredWatchRegExp = (): undefined | RegExp => {
+    const { outputPath } = this.config;
+    console.log('this.cwd', this.cwd);
+    const absOutputPath = join(this.cwd, (outputPath as string) || 'dist');
+    return process.env.WATCH_IGNORED === 'none'
+      ? undefined
+      : new RegExp(
+          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath}${sep})`,
+        );
+  };
+
   setupDevServerOpts({
     bundleConfigs,
     bundleImplementor = defaultWebpack,
@@ -62,9 +76,8 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
-    const { devServer, outputPath } = this.config;
+    const { devServer } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
-    const absOutputPath = join(this.cwd, outputPath as string);
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
@@ -73,13 +86,7 @@ class Bundler {
       writeToDisk: devServer && devServer?.writeToDisk,
       watchOptions: {
         // not watch outputPath dir and node_modules
-        ignored:
-          process.env.WATCH_IGNORED === 'none'
-            ? undefined
-            : new RegExp(
-                process.env.WATCH_IGNORED ||
-                  `(node_modules|${absOutputPath}${sep})`,
-              ),
+        ignored: this.getIgnoredWatchRegExp(),
       },
     });
 
