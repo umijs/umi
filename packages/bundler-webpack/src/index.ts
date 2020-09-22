@@ -61,13 +61,13 @@ class Bundler {
   getIgnoredWatchRegExp = (): undefined | RegExp => {
     const { outputPath } = this.config;
     const absOutputPath = winPath(
-      join(this.cwd, (outputPath as string) || 'dist'),
+      join(this.cwd, (outputPath as string) || 'dist', sep),
     );
     // need ${sep} after outputPath
     return process.env.WATCH_IGNORED === 'none'
       ? undefined
       : new RegExp(
-          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath}${sep})`,
+          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
         );
   };
 
