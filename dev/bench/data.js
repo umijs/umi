@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600737255634,
+  "lastUpdate": 1600759574063,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11078,6 +11078,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2196,
             "range": "±6.00%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0d8048646d3ac56648adaadaea73049841957484",
+          "message": "doc: fix qiankun autoSetLoading introduction (#5455)",
+          "timestamp": "2020-09-22T15:14:23+08:00",
+          "tree_id": "91b32f168afa70897dcbdc2b5c1fadafb06a3898",
+          "url": "https://github.com/umijs/umi/commit/0d8048646d3ac56648adaadaea73049841957484"
+        },
+        "date": 1600759570472,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1281,
+            "range": "±1.97%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1974,
+            "range": "±4.17%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
