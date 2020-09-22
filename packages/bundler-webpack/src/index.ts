@@ -60,7 +60,6 @@ class Bundler {
    */
   getIgnoredWatchRegExp = (): undefined | RegExp => {
     const { outputPath } = this.config;
-    console.log('this.cwd', this.cwd);
     const absOutputPath = winPath(
       join(this.cwd, (outputPath as string) || 'dist'),
     );
