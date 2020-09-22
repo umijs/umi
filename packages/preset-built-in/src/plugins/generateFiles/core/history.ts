@@ -62,8 +62,15 @@ export default function (api: IApi) {
     // @ts-ignore
     if (api.config.history === false) return [];
 
+    if (api.config.runtimeHistory) {
+      return {
+        specifiers: ['history', 'setCreateHistoryOptions', 'getCreateHistoryOptions'],
+        source: `./history`,
+      };
+    }
+
     return {
-      specifiers: ['history', 'setCreateHistoryOptions', 'getCreateHistoryOptions'],
+      specifiers: ['history'],
       source: `./history`,
     };
   });
