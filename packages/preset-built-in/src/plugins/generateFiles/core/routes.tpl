@@ -1,4 +1,5 @@
-import * as umi from 'umi';
+import { ApplyPluginsType{{ #config.dynamicImport }}, dynamic{{ /config.dynamicImport }} } from '{{{ runtimePath }}}';
+import * as umiExports from './umiExports';
 import { plugin } from './plugin';
 {{ #loadingComponent }}
 import LoadingComponent from '{{{ loadingComponent }}}';
@@ -10,7 +11,7 @@ export function getRoutes() {
   // allow user to extend routes
   plugin.applyPlugins({
     key: 'patchRoutes',
-    type: umi.ApplyPluginsType.event,
+    type: ApplyPluginsType.event,
     args: { routes },
   });
 
