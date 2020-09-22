@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600763113396,
+  "lastUpdate": 1600763944473,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11270,6 +11270,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.08%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "708fd4be02119fdba64e5ca26648478da8e89aaa",
+          "message": "doc: 增加微应用引入提示 (#5459)",
+          "timestamp": "2020-09-22T16:34:41+08:00",
+          "tree_id": "58a79e99029d09ae65212b83e93cd5df83468fae",
+          "url": "https://github.com/umijs/umi/commit/708fd4be02119fdba64e5ca26648478da8e89aaa"
+        },
+        "date": 1600763941001,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 706,
+            "range": "±90.96%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2172,
+            "range": "±4.91%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
