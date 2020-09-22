@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600766310298,
+  "lastUpdate": 1600784164071,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11346,6 +11346,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.01%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a5908e36523d570e868774f63702848ccc99d949",
+          "message": "fix: dist regexp in windows os (#5462)\n\n* fix: windows bug in ignored watch files\r\n\r\n* fix: windows bug in ignored watch files«\r\n\r\n* chore: windows ci\r\n\r\n* chore: windows ci\r\n\r\n* chore: sep\r\n\r\n* chore: test\r\n\r\n* chore: console.log\r\n\r\n* chore: windows\r\n\r\n* chore: use anymatch in webpack\r\n\r\n* chore: format\r\n\r\n* chore: test\r\n\r\n* chore: anymatch\r\n\r\nCo-authored-by: pr <pr>",
+          "timestamp": "2020-09-22T22:10:59+08:00",
+          "tree_id": "fc65891b0592aaffb0c91e3b482c83465371436b",
+          "url": "https://github.com/umijs/umi/commit/a5908e36523d570e868774f63702848ccc99d949"
+        },
+        "date": 1600784158844,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 626,
+            "range": "±92.64%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1902,
+            "range": "±3.13%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
