@@ -60,9 +60,7 @@ class Bundler {
    */
   getIgnoredWatchRegExp = (): defaultWebpack.Options.WatchOptions['ignored'] => {
     const { outputPath } = this.config;
-    const absOutputPath = winPath(
-      join(this.cwd, (outputPath as string) || 'dist', '/'),
-    );
+    const absOutputPath = winPath(join(this.cwd, outputPath as string, '/'));
     // need ${sep} after outputPath
     return process.env.WATCH_IGNORED === 'none'
       ? undefined
