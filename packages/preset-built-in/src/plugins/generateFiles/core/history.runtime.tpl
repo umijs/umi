@@ -33,6 +33,6 @@ export const setCreateHistoryOptions = (newOpts: any = {}) => {
 };
 
 // 获取 history options 运行时配置
-export const getCreateHistoryOptions = () => options);
+export const getCreateHistoryOptions = () => options;
 
 export { history };
