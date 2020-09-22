@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600759574063,
+  "lastUpdate": 1600761381887,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11118,6 +11118,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.17%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "686e0031bd01e0e5f84676ebfacef1a320ccac32",
+          "message": "fix: dev's exit code when Service init failed (#4983)",
+          "timestamp": "2020-09-22T15:52:06+08:00",
+          "tree_id": "33bd423e915d95dab2213375a2c0a7922bfd9c68",
+          "url": "https://github.com/umijs/umi/commit/686e0031bd01e0e5f84676ebfacef1a320ccac32"
+        },
+        "date": 1600761378378,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1346,
+            "range": "±2.67%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2134,
+            "range": "±4.57%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
