@@ -63,7 +63,7 @@ export default function ({ routes, config, cwd }: IOpts) {
           if (config.dynamicImport.loading) {
             loading = `, loading: LoadingComponent`;
           }
-          return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
+          return `umi.dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
         } else {
           return `require('${value}').default`;
         }
@@ -74,7 +74,7 @@ export default function ({ routes, config, cwd }: IOpts) {
             if (config.dynamicImport.loading) {
               loading = `, loading: LoadingComponent`;
             }
-            return `dynamic({ loader: () => import(/* webpackChunkName: 'wrappers' */'${wrapper}')${loading}})`;
+            return `umi.dynamic({ loader: () => import(/* webpackChunkName: 'wrappers' */'${wrapper}')${loading}})`;
           } else {
             return `require('${wrapper}').default`;
           }
