@@ -20,9 +20,15 @@ readdirSync(fixtures).forEach((fixture) => {
     : test;
   fn(fixture, async () => {
     // get user config
-    let config = {};
+    let config = {
+      outputPath: 'dist',
+    };
     try {
-      config = require(join(cwd, 'config.ts')).default;
+      config = Object.assign(
+        {},
+        config,
+        require(join(cwd, 'config.ts')).default,
+      );
     } catch (e) {}
 
     // init bundler
@@ -55,13 +61,19 @@ readdirSync(fixtures).forEach((fixture) => {
     // expect
     let indexCSS = '';
     try {
-      indexCSS = readFileSync(join(cwd, 'dist/index.css'), 'utf-8');
+      indexCSS = readFileSync(
+        join(cwd, config.outputPath, 'index.css'),
+        'utf-8',
+      );
     } catch (e) {}
     require(join(cwd, 'expect.ts')).default({
-      indexJS: readFileSync(join(cwd, 'dist/index.js'), 'utf-8'),
+      indexJS: readFileSync(join(cwd, config.outputPath, 'index.js'), 'utf-8'),
       indexCSS,
-      files: readdirSync(join(cwd, 'dist')).filter((f) => f.charAt(0) !== '.'),
+      files: readdirSync(join(cwd, config.outputPath)).filter(
+        (f) => f.charAt(0) !== '.',
+      ),
       cwd,
+      ignored: bundler.getIgnoredWatchRegExp(),
     });
   });
 });

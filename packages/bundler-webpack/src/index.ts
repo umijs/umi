@@ -2,8 +2,9 @@ import { IConfig, BundlerConfigType } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
+import { winPath } from '@umijs/utils';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
-import { join, sep } from 'path';
+import { join } from 'path';
 
 interface IOpts {
   cwd: string;
@@ -54,6 +55,20 @@ class Bundler {
     });
   }
 
+  /**
+   * get ignored watch dirs regexp, for test case
+   */
+  getIgnoredWatchRegExp = (): defaultWebpack.Options.WatchOptions['ignored'] => {
+    const { outputPath } = this.config;
+    const absOutputPath = winPath(join(this.cwd, outputPath as string, '/'));
+    // need ${sep} after outputPath
+    return process.env.WATCH_IGNORED === 'none'
+      ? undefined
+      : new RegExp(
+          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
+        );
+  };
+
   setupDevServerOpts({
     bundleConfigs,
     bundleImplementor = defaultWebpack,
@@ -62,9 +77,8 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
-    const { devServer, outputPath } = this.config;
+    const { devServer } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
-    const absOutputPath = join(this.cwd, outputPath as string);
     // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
@@ -73,13 +87,7 @@ class Bundler {
       writeToDisk: devServer && devServer?.writeToDisk,
       watchOptions: {
         // not watch outputPath dir and node_modules
-        ignored:
-          process.env.WATCH_IGNORED === 'none'
-            ? undefined
-            : new RegExp(
-                process.env.WATCH_IGNORED ||
-                  `(node_modules|${absOutputPath}${sep})`,
-              ),
+        ignored: this.getIgnoredWatchRegExp(),
       },
     });
 
