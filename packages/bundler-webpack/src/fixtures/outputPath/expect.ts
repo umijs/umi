@@ -6,5 +6,6 @@ export default ({ ignored }: IExpectOpts) => {
   expect(ignored?.test(path.join(__dirname, 'bar'))).toBeFalsy();
   // issue: https://github.com/umijs/umi/issues/5416
   expect(ignored?.test(path.join(__dirname, 'distributor', 'index.tsx'))).toBeFalsy();
+  expect(ignored?.test(path.join(__dirname, 'distributor'))).toBeFalsy();
   expect(ignored?.test(path.join(__dirname, 'node_modules'))).toBeTruthy();
 }
