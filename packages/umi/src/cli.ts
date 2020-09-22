@@ -36,9 +36,11 @@ if (args.version && !args._[0]) {
         // http://nodejs.cn/api/process/signal_events.html
         process.on('SIGINT', () => {
           child.kill('SIGINT');
+          process.exit(1);
         });
         process.on('SIGTERM', () => {
           child.kill('SIGTERM');
+          process.exit(1);
         });
         break;
       default:
