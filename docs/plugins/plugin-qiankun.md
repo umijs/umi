@@ -97,6 +97,10 @@ export const qiankun = fetch('/config').then(({ apps }) => ({
 
 ##### <a name="RouteBased">a. 使用路由绑定的方式</a>
 
+<Alert type="info">
+建议使用这种方式来引入自带路由的子应用。
+</Alert>
+
 假设我们的系统之前有这样的一些路由：
 
 ```js
@@ -166,6 +170,11 @@ export default {
 ```
 
 ##### b. <a name="MicroApp">使用 `<MicroApp />` 组件的方式</a>
+
+<Alert type="info">
+建议使用这种方式来引入不带路由的子应用。
+否则请自行关注微应用依赖的路由跟当前浏览器 url 是否能正确匹配上，否则很容易出现微应用加载了，但是页面没有渲染出来的情况。
+</Alert>
 
 我们可以直接使用 React 标签的方式加载我们已注册过的子应用：
 
