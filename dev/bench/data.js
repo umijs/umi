@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600691108281,
+  "lastUpdate": 1600737255634,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11042,6 +11042,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.53%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "cdb2f14df61fc9ce7174356901011bde549eb5f9",
+          "message": "docs: update banner image",
+          "timestamp": "2020-09-22T09:09:42+08:00",
+          "tree_id": "a6a8b38a7f08aa1379e5c8bc8f1eaabb5029e17e",
+          "url": "https://github.com/umijs/umi/commit/cdb2f14df61fc9ce7174356901011bde549eb5f9"
+        },
+        "date": 1600737252137,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1359,
+            "range": "±2.28%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2196,
+            "range": "±6.00%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
