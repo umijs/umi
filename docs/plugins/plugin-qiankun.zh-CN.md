@@ -182,7 +182,24 @@ export function MyPage() {
 
 ##### loading 动画与组件样式
 
-默认情况下，当我们检测到你使用的是 antd 组件库时，我们会在子应用加载期间自动增加一个 antd 的 loading 动画。
+你可以通过配置 `autoSetLoading` 的方式，开启微应用的 loading 动画。
+
+```jsx
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  
+  return (
+    <div>
+      <div>
+         <MicroApp name="app1" autoSetLoading />
+      </div>
+    </div>
+  )
+}
+```
+
+默认情况下，当我们检测到你使用的是 antd 组件库时，loading 动画使用的是 antd Spin 组件。
 
 如果你需要定制自己的 loading 动画，或者修改组件的样式，你可以这样处理：
 
@@ -193,33 +210,33 @@ export function MyPage() {
   
   return (
     <div>
-      <div>
-         <MicroApp 
-           name="app1"
-           // 自定义 loading 动画
-           loader={loading => <div>loading: {loading}</div>}
-           // 微应用容器 class
-           className="myContainer"
-           // wrapper class，仅开启 loading 动画时生效
-           wrapperClassName="myWrapper"
-         />
-      </div>
+      <MicroApp
+        name="app1"
+        autoSetLoading
+        // 设置自定义 loading 动画
+        loader={loading => <div>loading: {loading}</div>}
+        // 微应用容器 class
+        className="myContainer"
+        // wrapper class，仅开启 loading 动画时生效
+        wrapperClassName="myWrapper"
+      />
     </div>
   )
 }
 ```
 
-路由模式下，你可以这样设置一些静态配置：
+路由模式下，你可以这样设置一些静态配置开启 loading 动画：
 
 ```js
 {
   path: '/user',
   microApp: 'user',
   microAppProps: {
+    autoSetLoading: true,
     className: 'myContainer',
     wrapperClassName: 'myWrapper',
   }
-},
+}
 ```
 
 或者，你可以通过设置 autoSetLoading false 来关闭自动的 loading 动画：
