@@ -62,12 +62,13 @@ class Bundler {
     const { outputPath } = this.config;
     console.log('this.cwd', this.cwd);
     const absOutputPath = winPath(
-      join(this.cwd, (outputPath as string) || 'dist', sep),
+      join(this.cwd, (outputPath as string) || 'dist'),
     );
+    // need ${sep} after outputPath
     return process.env.WATCH_IGNORED === 'none'
       ? undefined
       : new RegExp(
-          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
+          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath}${sep})`,
         );
   };
 
