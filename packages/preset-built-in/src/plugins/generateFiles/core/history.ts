@@ -63,7 +63,7 @@ export default function (api: IApi) {
     if (api.config.history === false) return [];
 
     return {
-      specifiers: ['history', 'setCreateHistoryOptions'],
+      specifiers: ['history', 'setCreateHistoryOptions', 'getCreateHistoryOptions'],
       source: `./history`,
     };
   });
