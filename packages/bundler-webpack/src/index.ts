@@ -4,7 +4,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import { winPath } from '@umijs/utils';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
-import { join, sep } from 'path';
+import { join } from 'path';
 
 interface IOpts {
   cwd: string;
@@ -58,10 +58,10 @@ class Bundler {
   /**
    * get ignored watch dirs regexp, for test case
    */
-  getIgnoredWatchRegExp = (): undefined | RegExp => {
+  getIgnoredWatchRegExp = (): defaultWebpack.Options.WatchOptions['ignored'] => {
     const { outputPath } = this.config;
     const absOutputPath = winPath(
-      join(this.cwd, (outputPath as string) || 'dist', sep),
+      join(this.cwd, (outputPath as string) || 'dist', '/'),
     );
     // need ${sep} after outputPath
     return process.env.WATCH_IGNORED === 'none'
