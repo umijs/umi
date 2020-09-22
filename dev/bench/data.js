@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600763028307,
+  "lastUpdate": 1600763033633,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11194,6 +11194,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.76%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "38946ff744f9acf95827e975ea09860be580f0e0",
+          "message": "feat: export umiExports and React in core/routes.ts (#5456)\n\n* refactor: export umi in core/routes.ts\r\n\r\n* fix: testcase\r\n\r\n* chore: export react",
+          "timestamp": "2020-09-22T16:19:34+08:00",
+          "tree_id": "379f8a26dd1235a71e6d5d6999fe8cfd294c236e",
+          "url": "https://github.com/umijs/umi/commit/38946ff744f9acf95827e975ea09860be580f0e0"
+        },
+        "date": 1600763030162,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1363,
+            "range": "±2.08%",
+            "unit": "ops/sec",
+            "extra": "79 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2309,
+            "range": "±4.26%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
