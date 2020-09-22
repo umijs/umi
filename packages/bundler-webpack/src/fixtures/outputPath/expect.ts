@@ -1,10 +1,7 @@
 import * as path from 'path';
 import { IExpectOpts } from '../types';
 
-export default ({ indexJS, ignored }: IExpectOpts) => {
-  expect(indexJS).toContain(`var foo = 'foo';`);
-  expect(indexJS).toContain(`___default.a.createElement("h1"`);
-  expect(indexJS).toContain(`"Bar");`);
+export default ({ ignored }: IExpectOpts) => {
   expect(ignored?.test(path.join(__dirname, 'bar', 'index.js'))).toBeTruthy();
   expect(ignored?.test(path.join(__dirname, 'node_modules'))).toBeTruthy();
 }
