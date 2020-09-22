@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600763944473,
+  "lastUpdate": 1600766310298,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11308,6 +11308,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.91%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "20bbce43387c1deb2e25b2efd4af4867e4fc8e71",
+          "message": "optimize: 仅 runtimeHistory 开启时才导出 setCreateHistoryOptions 和 getCreateHistoryOptions 方法 (#5461)",
+          "timestamp": "2020-09-22T17:09:53+08:00",
+          "tree_id": "96b72a957af9f007d6694dff23669ef7d272f6ef",
+          "url": "https://github.com/umijs/umi/commit/20bbce43387c1deb2e25b2efd4af4867e4fc8e71"
+        },
+        "date": 1600766303446,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1388,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2190,
+            "range": "±5.01%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
