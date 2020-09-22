@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600761381887,
+  "lastUpdate": 1600763028307,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11154,6 +11154,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2134,
             "range": "±4.57%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f692219a05b0524462f64cf4fb6f242c7193c8ac",
+          "message": "feat: add getCreateHistoryOptions api to get runtime history options (#5457)\n\n* feat: add getCreateHistoryOptions api to get runtime history options\r\n\r\n* chore: typo",
+          "timestamp": "2020-09-22T16:19:26+08:00",
+          "tree_id": "eed4d0409c03eaff7afecdb836cebe687d3a6f99",
+          "url": "https://github.com/umijs/umi/commit/f692219a05b0524462f64cf4fb6f242c7193c8ac"
+        },
+        "date": 1600763025290,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1431,
+            "range": "±2.54%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2300,
+            "range": "±4.76%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
