@@ -47,7 +47,7 @@ This project exists thanks to all the people who contribute. [[Contribute](https
 
 | Github Issue | 钉钉群 | 微信群 |
 | --- | --- | --- |
-| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1KxCae9f2gK0jSZFPXXXsopXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB1_oU.TND1gK0jSZFsXXbldVXa-585-591.jpg" width="60" /> |
+| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1KxCae9f2gK0jSZFPXXXsopXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB1KOhYk8FR4u4jSZFPXXanzFXa-547-550.png" width="60" /> |
 
 ## LICENSE
 

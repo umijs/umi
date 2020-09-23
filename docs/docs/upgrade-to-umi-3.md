@@ -146,6 +146,6 @@ Umi v3 做了非常多的细节改进和重构，我们尽可能收集了已知�
 
 也可以加 "Umi 3 升级问题互帮互助" 群，
 
-<img src="https://img.alicdn.com/tfs/TB1_oU.TND1gK0jSZFsXXbldVXa-585-591.jpg" width="60" />
+<img src="https://img.alicdn.com/tfs/TB1KOhYk8FR4u4jSZFPXXanzFXa-547-550.png" width="60" />
 
 扫上方二维码，并回复 **umi 3**。

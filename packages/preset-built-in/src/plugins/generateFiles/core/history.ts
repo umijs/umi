@@ -64,7 +64,11 @@ export default function (api: IApi) {
 
     if (api.config.runtimeHistory) {
       return {
-        specifiers: ['history', 'setCreateHistoryOptions', 'getCreateHistoryOptions'],
+        specifiers: [
+          'history',
+          'setCreateHistoryOptions',
+          'getCreateHistoryOptions',
+        ],
         source: `./history`,
       };
     }
