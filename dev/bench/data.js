@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600820831953,
+  "lastUpdate": 1600996310731,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11460,6 +11460,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.40%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "fortuneochi@gmail.com",
+            "name": "Fortune Ochi",
+            "username": "ofuochi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "da41799939023193c2cb76695d1ddfc5f67f7576",
+          "message": "Update README.md (#5470)\n\nUpdated \"front-line\" to \"front-end\" developers",
+          "timestamp": "2020-09-25T09:07:09+08:00",
+          "tree_id": "4a2226c5a1bd45f620e73b83b5bbe641cf11709c",
+          "url": "https://github.com/umijs/umi/commit/da41799939023193c2cb76695d1ddfc5f67f7576"
+        },
+        "date": 1600996307178,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 661,
+            "range": "±90.62%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2024,
+            "range": "±3.82%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
