@@ -18,10 +18,10 @@ export default function start({ scriptPath }: IOpts) {
     execArgv.splice(
       inspectArgvIndex,
       1,
-      inspectArgv.replace(/--inspect-brk=(.*)/, (match, s1) => {
+      inspectArgv.replace(/--inspect-brk=?(.*)/, (match, s1) => {
         let port;
         try {
-          port = parseInt(s1) + 1;
+          port = parseInt(s1 || '9229') + 1;
         } catch (e) {
           port = 9230; // node default inspect port plus 1.
         }
