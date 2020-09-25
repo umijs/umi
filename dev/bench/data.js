@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1600996310731,
+  "lastUpdate": 1600996330897,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11498,6 +11498,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.82%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "yangwei1@outlook.com",
+            "name": "野迂迂",
+            "username": "mortalYoung"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ef674b120c9a3188f0167a9fa2211d3cdbf60a21",
+          "message": "fix: resolve correct component and wrappers path in windows (#5469)",
+          "timestamp": "2020-09-25T09:08:08+08:00",
+          "tree_id": "d1d39f42378b6398a5e1a52d1d3ab0d6184f74a3",
+          "url": "https://github.com/umijs/umi/commit/ef674b120c9a3188f0167a9fa2211d3cdbf60a21"
+        },
+        "date": 1600996322971,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1540,
+            "range": "±2.11%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2344,
+            "range": "±5.67%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
