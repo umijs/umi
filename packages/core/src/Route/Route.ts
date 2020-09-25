@@ -2,6 +2,7 @@ import { lodash, winPath } from '@umijs/utils';
 import { join } from 'path';
 import { IConfig, IRoute } from '..';
 import assert from 'assert';
+import path from 'path';
 import getConventionalRoutes from './getConventionalRoutes';
 import routesToJSON from './routesToJSON';
 
@@ -108,7 +109,7 @@ class Route {
       !opts.isConventional &&
       typeof route.component === 'string' &&
       !route.component.startsWith('@/') &&
-      !route.component.startsWith('/')
+      !path.isAbsolute(route.component)
     ) {
       route.component = winPath(join(opts.root, route.component));
     }
@@ -116,7 +117,7 @@ class Route {
     // resolve wrappers path
     if (route.wrappers) {
       route.wrappers = route.wrappers.map((wrapper) => {
-        if (wrapper.startsWith('@/') || wrapper.startsWith('/')) {
+        if (wrapper.startsWith('@/') || path.isAbsolute(wrapper)) {
           return wrapper;
         } else {
           return winPath(join(opts.root, wrapper));
