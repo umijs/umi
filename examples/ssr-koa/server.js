@@ -42,12 +42,11 @@ app.use(async (ctx, next) => {
     if (!render) {
       render = require('./dist/umi.server');
     }
-    // 这里默认是流式渲染
+    // 这里默认是字符串渲染
     ctx.type = 'text/html';
     ctx.status = 200;
     const { html, error } = await render({
       path: ctx.request.url,
-      mode: 'stream',
     });
     if (error) {
       console.log('----------------服务端报错-------------------', error);
