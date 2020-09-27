@@ -73,7 +73,7 @@ export interface ITargets {
 
 export type IBundlerConfigType = keyof typeof BundlerConfigType;
 
-interface ICreateCSSRule {
+export interface ICreateCSSRule {
   (opts: {
     lang: string;
     type: IBundlerConfigType;
@@ -259,7 +259,7 @@ interface IManifest {
   writeToFileEmit: boolean;
 }
 
-interface ISSR {
+export interface ISSR {
   forceInitial?: boolean;
   devServerRender?: boolean;
   mode?: 'string' | 'stream';
