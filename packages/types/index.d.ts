@@ -252,7 +252,7 @@ export interface IApi extends PluginAPI {
 
 export { IRoute };
 
-interface IManifest {
+export interface IManifest {
   fileName: string;
   publicPath: string;
   basePath: string;
