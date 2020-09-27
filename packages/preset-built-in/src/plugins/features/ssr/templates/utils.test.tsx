@@ -59,7 +59,7 @@ test('handleHTML stream', (done) => {
   }).then(html => {
     expect(html instanceof Stream).toBeTruthy();
     expect(html instanceof Stream).toBeTruthy();
-    let bytes = new Buffer('');
+    let bytes = Buffer.from('');
     html.on('data', (chunk) => {
       bytes = Buffer.concat([bytes, chunk]);
     });
@@ -141,7 +141,7 @@ test('handleHTML dynamicImport', async () => {
 
 test('ReadableString', (done) => {
   const wrapperStream = new ReadableString('<div></div>');
-  let bytes = new Buffer('');
+  let bytes = Buffer.from('');
     wrapperStream.on('data', (chunk) => {
       bytes = Buffer.concat([bytes, chunk]);
     });

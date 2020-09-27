@@ -290,10 +290,10 @@ test('ssr using stream', (done) => {
       }).then(({ html, rootContainer }) => {
         expect(rootContainer instanceof Stream).toBeTruthy();
         expect(html instanceof Stream).toBeTruthy();
-        const expectBytes = new Buffer(
+        const expectBytes = Buffer.from(
           '<div><ul><li>hello</li><li>world</li></ul></div>',
         );
-        let bytes = new Buffer('');
+        let bytes = Buffer.from('');
         rootContainer.on('data', (chunk) => {
           bytes = Buffer.concat([bytes, chunk]);
         });

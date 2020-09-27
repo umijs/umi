@@ -42,7 +42,7 @@ app.use(async (ctx, next) => {
     if (!render) {
       render = require('./dist/umi.server');
     }
-    // 这里默认是流失渲染
+    // 这里默认是流式渲染
     ctx.type = 'text/html';
     ctx.status = 200;
     const { html, error } = await render({
