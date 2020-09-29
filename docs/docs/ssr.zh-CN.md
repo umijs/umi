@@ -606,6 +606,35 @@ export default () => {
   )
 }
 ```
+3.如果是第三方库可以通过 umi 提供的 `dynamic` 动态加载组件
+```
+import React from 'react';
+import { dynamic } from 'umi';
+
+const renderLoading = () => <p>组件动态加载中...</p>
+
+export default dynamic({
+    loader: async () => {
+        // 动态加载第三方组件
+        const { default: DynamicComponent } = await import(
+            /* webpackChunkName: "dynamic-component" */ 'dynamic-component'
+        );
+        return DynamicComponent;
+    },
+    loading: () => renderLoading(),
+});
+```
+避免ssr渲染时报 ` did not match.`警告，使用时候ssr应当渲染相同`loading`组件
+```
+import React from 'react';
+import { isBrowser } from 'umi';
+import DynamicComponent from 'DynamicComponent';
+
+export default () => {
+  if(isBrowser()) return <DynamicComponent />
+  return renderLoading()
+}
+```
 
 ### antd pro 怎样使用服务端渲染？
 
