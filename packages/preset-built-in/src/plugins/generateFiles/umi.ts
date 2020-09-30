@@ -48,6 +48,7 @@ export default function (api: IApi) {
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
         // @ts-ignore
+        base: api.config.base,
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
         rendererPath: winPath(rendererPath),

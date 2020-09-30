@@ -16,6 +16,7 @@ interface IRouterComponentProps {
 }
 
 interface IOpts extends IRouterComponentProps {
+  base: string;
   rootElement?: string | HTMLElement;
   callback?: () => void;
 }
@@ -113,13 +114,20 @@ export default function renderClient(opts: IOpts) {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     const callback = opts.callback || (() => {});
-    
-    // flag showing SSR successed    
+
+    // flag showing SSR successed
     if (window.g_useSSR) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
         // first loades);
-        preloadComponent(opts.routes).then(function () {
+        const routerBase = opts.base;
+        const defaultRouterBase = '/';
+        let pathname = window.location.pathname;
+        if (routerBase && routerBase !== defaultRouterBase) {
+          const routerBaseReg = new RegExp(`^${routerBase}`);
+          pathname = pathname.replace(routerBaseReg, '') || defaultRouterBase;
+        }
+        preloadComponent(opts.routes, pathname).then(function () {
           ReactDOM.hydrate(rootContainer, rootElement, callback);
         });
       } else {

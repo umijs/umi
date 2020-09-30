@@ -18,6 +18,7 @@ const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin
       key: 'modifyClientRenderOpts',
       type: ApplyPluginsType.modify,
       initialValue: {
+        base: '{{{base}}}',
         routes: args.routes || getRoutes(),
         plugin,
         history: createHistory(args.hot),
