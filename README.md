@@ -6,23 +6,23 @@ English | [简体中文](./README.zh-CN.md)
 
 🍙 Extensible enterprise-level front-end application framework.
 
-> Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
+> Please follow the project's author [sorrycc](https://github.com/sorrycc) and start the project to show your ❤️ and support.
 
 ---
 
 ## Features
 
-* 🎉 **Extensible**, Umi implements the complete lifecycle and makes it extensible, and Umi's internal functions are all plugins. Umi also support plugins and presets.
-* 📦 **Out of the Box**, Umi has built-in routing, building, deployment, testing, and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionaries.
-* 🐠 **Enterprise**, It has been verified by 3000+ projects in Ant Financial and projects of Alibaba, Youku, Netease, 飞猪, KouBei and other companies.
-* 🚀 **Self Development**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
-* 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
-* 🚄 **Future Ready**, Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
+* 🎉 **Extensible**, Umi implements the complete lifecycle of application framework and makes it extensible, and its internal functions are all based in plugins. Aprt from that, Umi also supports plugins and presets.
+* 📦 **Out of the Box**, Umi has built-in router, building, deployment, testing and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionalities.
+* 🐠 **Enterprise**, It has been used by 3000+ projects in Ant Financial. Apart from that, it's also been widely used in Alibaba, Youku, Netease, 飞猪, KouBei and other companies.
+* 🚀 **Self Implemented**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
+* 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing and so on.
+* 🚄 **Future Orientied**, Umi community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
 * 🌈 **Support SSR**, Starts Server-Side Render friendly.
 
 ## Getting Started
 
-Manually,
+Manual setup,
 
 ```bash
 # Create directory
