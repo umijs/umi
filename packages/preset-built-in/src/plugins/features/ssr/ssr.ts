@@ -89,6 +89,14 @@ export default (api: IApi) => {
         'The manifest file will be generated if enabling `dynamicImport` in ssr.',
       );
     }
+    // ref: https://github.com/umijs/umi/issues/5501
+    if (!process.env.WATCH_IGNORED) {
+      const { outputPath } = api.config;
+      const absOutputPath = winPath(
+        path.join(api.cwd, outputPath as string, '/'),
+      );
+      process.env.WATCH_IGNORED = `(node_modules|${absOutputPath}(?!${OUTPUT_SERVER_FILENAME}))`;
+    }
   });
 
   // 再加一个 webpack instance
