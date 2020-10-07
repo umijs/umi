@@ -34,7 +34,7 @@ export default {
 ### exact
 
 * Type: `boolean`
-* Default: `false`
+* Default: `true`
 
 表示是否严格匹配，即 location 是否和 path 完全对应上。
 
