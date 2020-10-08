@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602149254171,
+  "lastUpdate": 1602149282025,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11572,6 +11572,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1886,
             "range": "±4.05%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1d8bd049039d916d755fe9e95aee081126afcb48",
+          "message": "fix: ssr dev hot fresh bug (#5508)",
+          "timestamp": "2020-10-08T17:24:05+08:00",
+          "tree_id": "51ce2e3b04920158c96e244d0e3f32136158548e",
+          "url": "https://github.com/umijs/umi/commit/1d8bd049039d916d755fe9e95aee081126afcb48"
+        },
+        "date": 1602149278620,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1461,
+            "range": "±2.46%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2451,
+            "range": "±4.99%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
