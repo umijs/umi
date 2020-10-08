@@ -14,6 +14,7 @@ declare namespace NodeJS {
     BABEL_CACHE: null | 'none';
     COMPRESS: null | 'none';
     WATCH: null | 'none';
+    WATCH_IGNORED: null | string;
     SYSTEM_BELL: null | 'none';
     ANALYZE: string;
     ANALYZE_SSR: string;
