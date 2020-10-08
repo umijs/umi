@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602149282025,
+  "lastUpdate": 1602149370313,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11612,6 +11612,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.99%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2de577ed78c2df2a2a16933e97b77920366fcf6c",
+          "message": "fix: ssr stream helmet bug and node runtime engines (#5486)\n\n* chore: Buffer from\r\n\r\n* chore: default use mode string\r\n\r\n* chore: engines\r\n\r\n* chore: comment",
+          "timestamp": "2020-10-08T17:25:15+08:00",
+          "tree_id": "ff62140dd56a783a0546f4f5f74f12a627991fd0",
+          "url": "https://github.com/umijs/umi/commit/2de577ed78c2df2a2a16933e97b77920366fcf6c"
+        },
+        "date": 1602149366948,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1460,
+            "range": "±3.33%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2363,
+            "range": "±3.65%",
+            "unit": "ops/sec",
+            "extra": "44 samples"
           }
         ]
       }
