@@ -185,6 +185,16 @@ const routerConfig = {
 };
 let routes = renderRoutes(routerConfig);
 
+beforeEach(() => {
+  window.g_useSSR = true;
+  window.g_initialProps = null;
+});
+
+afterEach(() => {
+  delete window.g_useSSR;
+  delete window.g_initialProps;
+});
+
 test('/layout', async () => {
   render(<MemoryRouter initialEntries={['/layout']}>{routes}</MemoryRouter>);
   expect((await screen.findByTestId('layout')).innerHTML).toEqual('Layout');
