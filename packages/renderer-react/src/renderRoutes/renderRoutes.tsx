@@ -36,35 +36,37 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
        * 3. 如果任何时候都走 2 次，配置 forceInitial: true，这个场景用于静态站点的首屏加载希望走最新数据
        * 4. 开启动态加载后，会在执行 getInitialProps 前预加载下
        */
-      if (!(window as any).g_initialProps) {
-        (async () => {
-          // preload when enalbe dynamicImport
-          if (Component.preload) {
-            const preloadComponent = await Component.preload();
-            // for test case, really use .default
-            Component = preloadComponent.default || preloadComponent;
-          }
-          const defaultCtx = {
-            isServer: false,
-            match: props?.match,
-            route,
-            ...(opts.getInitialPropsCtx || {}),
-            ...restRouteParams,
-          };
-          if (Component?.getInitialProps) {
-            const ctx = await opts.plugin.applyPlugins({
-              key: 'ssr.modifyGetInitialPropsCtx',
-              type: ApplyPluginsType.modify,
-              initialValue: defaultCtx,
-              async: true,
-            });
+      const handleGetInitialProps = async () => {
+        // preload when enalbe dynamicImport
+        if (Component.preload) {
+          const preloadComponent = await Component.preload();
+          // for test case, really use .default
+          Component = preloadComponent.default || preloadComponent;
+        }
+        const defaultCtx = {
+          isServer: false,
+          match: props?.match,
+          route,
+          ...(opts.getInitialPropsCtx || {}),
+          ...restRouteParams,
+        };
+        if (Component?.getInitialProps) {
+          const ctx = await opts.plugin.applyPlugins({
+            key: 'ssr.modifyGetInitialPropsCtx',
+            type: ApplyPluginsType.modify,
+            initialValue: defaultCtx,
+            async: true,
+          });
 
-            const initialProps = await Component!.getInitialProps!(
-              ctx || defaultCtx,
-            );
-            setInitialProps(initialProps);
-          }
-        })();
+          const initialProps = await Component!.getInitialProps!(
+            ctx || defaultCtx,
+          );
+          setInitialProps(initialProps);
+        }
+      };
+      // null 时，一定会触发 getInitialProps 执行
+      if ((window as any).g_initialProps === null) {
+        handleGetInitialProps();
       }
     }, [window.location.pathname, window.location.search]);
     return <Component {...props} {...initialProps} />;

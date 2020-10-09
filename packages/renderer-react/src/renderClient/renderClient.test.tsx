@@ -9,11 +9,15 @@ beforeEach(() => {
   container = document.createElement('div');
   container.id = 'app';
   document.body.appendChild(container);
+  window.g_useSSR = true;
+  window.g_initialProps = null;
 });
 
 afterEach(() => {
   document.body.removeChild(container);
   container = null;
+  delete window.g_useSSR;
+  delete window.g_initialProps;
   cleanup();
 });
 

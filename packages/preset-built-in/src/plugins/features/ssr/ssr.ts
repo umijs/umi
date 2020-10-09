@@ -57,20 +57,28 @@ export default (api: IApi) => {
     key: 'ssr',
     config: {
       schema: (joi) => {
-        return joi.object({
-          forceInitial: joi
-            .boolean()
-            .description(
-              'remove window.g_initialProps in html, to force execing Page getInitialProps  functions',
+        return joi
+          .object({
+            forceInitial: joi
+              .boolean()
+              .description('force execing Page getInitialProps functions'),
+            removeWindowInitialProps: joi
+              .boolean()
+              .description('remove window.g_initialProps in html'),
+            devServerRender: joi
+              .boolean()
+              .description('disable serve-side render in umi dev mode.'),
+            mode: joi.string().valid('stream', 'string'),
+            staticMarkup: joi
+              .boolean()
+              .description('static markup in static site'),
+          })
+          .without('forceInitial', ['removeWindowInitialProps'])
+          .error(
+            new Error(
+              'The `removeWindowInitialProps` cannot be enabled when `forceInitial` has been enabled at the same time.',
             ),
-          devServerRender: joi
-            .boolean()
-            .description('disable serve-side render in umi dev mode.'),
-          mode: joi.string().valid('stream', 'string'),
-          staticMarkup: joi
-            .boolean()
-            .description('static markup in static site'),
-        });
+          );
       },
     },
     // 配置开启
@@ -141,6 +149,7 @@ export default (api: IApi) => {
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        RemoveWindowInitialProps: !!api.config.ssr?.removeWindowInitialProps,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
         ManifestFileName: api.config.manifest

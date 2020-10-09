@@ -111,10 +111,13 @@ export function createCSSRule({
               // https://github.com/csstools/postcss-preset-env
               require('postcss-preset-env')({
                 // TODO: set browsers
-                autoprefixer: {
-                  ...config.autoprefixer,
-                  overrideBrowserslist: browserslist,
-                },
+                autoprefixer:
+                  type === BundlerConfigType.ssr
+                    ? false
+                    : {
+                        ...config.autoprefixer,
+                        overrideBrowserslist: browserslist,
+                      },
                 // https://cssdb.org/
                 stage: 3,
               }),

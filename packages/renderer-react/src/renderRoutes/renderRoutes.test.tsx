@@ -1,12 +1,6 @@
 import React from 'react';
 import { MemoryRouter, Plugin, Link } from '@umijs/runtime';
-import {
-  getByText,
-  render,
-  screen,
-  wait,
-  waitFor,
-} from '@testing-library/react';
+import { getByText, render, screen, waitFor } from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '..';
 
@@ -191,6 +185,16 @@ const routerConfig = {
 };
 let routes = renderRoutes(routerConfig);
 
+beforeEach(() => {
+  window.g_useSSR = true;
+  window.g_initialProps = null;
+});
+
+afterEach(() => {
+  delete window.g_useSSR;
+  delete window.g_initialProps;
+});
+
 test('/layout', async () => {
   render(<MemoryRouter initialEntries={['/layout']}>{routes}</MemoryRouter>);
   expect((await screen.findByTestId('layout')).innerHTML).toEqual('Layout');
@@ -266,7 +270,7 @@ test('/pass-props', async () => {
   const { container } = render(
     <MemoryRouter initialEntries={['/pass-props']}>{routes}</MemoryRouter>,
   );
-  await wait(() => getByText(container, 'bar'));
+  await waitFor(() => getByText(container, 'bar'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
 });
 
@@ -309,8 +313,8 @@ test('/get-initial-props-embed', async () => {
       {newRoutes}
     </MemoryRouter>,
   );
-  await wait(() => getByText(container, 'bar'));
-  await wait(() => getByText(container, 'parent'));
+  await waitFor(() => getByText(container, 'bar'));
+  await waitFor(() => getByText(container, 'parent'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
   expect((await screen.findByTestId('test-parent')).innerHTML).toEqual(
     'parent',

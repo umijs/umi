@@ -47,6 +47,38 @@ test('handleHTML normal', async () => {
   expect(html).toContain('</html>');
 });
 
+test('handleHTML using removeWindowInitialProps', async () => {
+  const html = await handleHTML({
+    pageInitialProps: {
+      username: 'ycjcl868',
+    },
+    removeWindowInitialProps: true,
+    rootContainer: '<h1>ycjcl868</h1>',
+    html: defaultHTML,
+    mountElementId: 'root',
+  });
+  expect(html).toContain('<!DOCTYPE html>');
+  expect(html).not.toMatch('window.g_initialProps');
+  expect(html).toMatch('<div id="root"><h1>ycjcl868</h1></div>');
+  expect(html).toContain('</html>');
+});
+
+test('handleHTML using forceInitial', async () => {
+  const html = await handleHTML({
+    pageInitialProps: {
+      username: 'ycjcl868',
+    },
+    rootContainer: '<h1>ycjcl868</h1>',
+    forceInitial: true,
+    html: defaultHTML,
+    mountElementId: 'root',
+  });
+  expect(html).toContain('<!DOCTYPE html>');
+  expect(html).toMatch('window.g_initialProps = null;');
+  expect(html).toMatch('<div id="root"><h1>ycjcl868</h1></div>');
+  expect(html).toContain('</html>');
+});
+
 test('handleHTML stream', (done) => {
   handleHTML({
     pageInitialProps: {

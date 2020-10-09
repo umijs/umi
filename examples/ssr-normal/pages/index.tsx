@@ -1056,7 +1056,7 @@ const fetch = () =>
   ]);
 
 const Home = (props) => {
-  const { result } = props;
+  const { result = [] } = props;
 
   return (
     <div>
