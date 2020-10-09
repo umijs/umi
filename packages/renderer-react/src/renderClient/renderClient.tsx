@@ -26,7 +26,7 @@ function RouterComponent(props: IRouterComponentProps) {
   useEffect(() => {
     // first time using window.g_initialProps
     // switch route fetching data, if exact route reset window.getInitialProps
-    if ((window as any).g_initialProps) {
+    if ((window as any).g_useSSR) {
       (window as any).g_initialProps = null;
     }
     function routeChangeHandler(location: any, action?: string) {
@@ -113,8 +113,8 @@ export default function renderClient(opts: IOpts) {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     const callback = opts.callback || (() => {});
-    
-    // flag showing SSR successed    
+
+    // flag showing SSR successed
     if (window.g_useSSR) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
