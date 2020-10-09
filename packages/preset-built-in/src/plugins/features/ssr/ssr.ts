@@ -60,9 +60,10 @@ export default (api: IApi) => {
         return joi.object({
           forceInitial: joi
             .boolean()
-            .description(
-              'remove window.g_initialProps in html, to force execing Page getInitialProps  functions',
-            ),
+            .description('force execing Page getInitialProps functions'),
+          removeWindowInitialProps: joi
+            .boolean()
+            .description('remove window.g_initialProps in html'),
           devServerRender: joi
             .boolean()
             .description('disable serve-side render in umi dev mode.'),
@@ -141,6 +142,7 @@ export default (api: IApi) => {
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        RemoveWindowInitialProps: !!api.config.ssr?.removeWindowInitialProps,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
         ManifestFileName: api.config.manifest

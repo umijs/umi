@@ -1041,6 +1041,7 @@ __webpack_public_path__ = window.publicPath;
   ssr: {
     // 更多配置
     // forceInitial: false,
+    // removeWindowInitialProps: false
     // devServerRender: true,
     // mode: 'string',
     // staticMarkup: false,
@@ -1051,6 +1052,7 @@ __webpack_public_path__ = window.publicPath;
 配置说明：
 
 * `forceInitial`：客户端渲染时强制执行 `getInitialProps` 方法，常见的场景：静态站点希望每次访问时保持数据最新，以客户端渲染为主。
+* `removeWindowInitialProps`: HTML 中移除 `window.getInitialProps` 变量，避免 HTML 中有大量数据影响 SEO 效果，场景：静态站点
 * `devServerRender`：在 `umi dev` 开发模式下，执行渲染，用于 umi SSR 项目的快速开发、调试，服务端渲染效果所见即所得，同时我们考虑到可能会与服务端框架（如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)）结合做本地开发、调试，关闭后，在 `umi dev` 下不执行服务端渲染，但会生成 `umi.server.js`（Umi SSR 服务端渲染入口文件），渲染开发流程交由开发者处理。
 * `mode`：渲染模式，默认使用 `string` 字符串渲染，同时支持流式渲染 `mode: 'stream'`，减少 TTFB（浏览器开始收到服务器响应数据的时间） 时长。
 * `staticMarkup`：html 上的渲染属性（例如 React 渲染的 `data-reactroot`），常用于静态站点生成的场景上。
