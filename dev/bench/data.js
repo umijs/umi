@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602149370313,
+  "lastUpdate": 1602235825865,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11650,6 +11650,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.65%",
             "unit": "ops/sec",
             "extra": "44 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7682cf897abe92dcdb141d65331a9e112dff15ef",
+          "message": "feat: SSR removeWindowInitialProps & fix warning in autoprefixer (#5513)\n\n* chore: upgrade serialize-javascript to 4.0\r\n\r\n* feat: add `ssr.removeWindowInitialProps`\r\n\r\n* fix: warning in ssr style\r\n\r\n* chore: test use waitFor\r\n\r\n* chore: g_useSSR\r\n\r\n* chore: test case\r\n\r\n* chore: test case\r\n\r\n* chore: global window\r\n\r\n* chore: azure\r\n\r\n* chore: ci\r\n\r\n* chore: cache",
+          "timestamp": "2020-10-09T17:25:52+08:00",
+          "tree_id": "a8125edb9d04eaab30bf56876437ee35747dd50a",
+          "url": "https://github.com/umijs/umi/commit/7682cf897abe92dcdb141d65331a9e112dff15ef"
+        },
+        "date": 1602235822305,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 592,
+            "range": "±83.36%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1935,
+            "range": "±4.48%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
