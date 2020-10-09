@@ -1062,6 +1062,7 @@ __webpack_public_path__ = window.publicPath;
 * 开启后，执行 `umi dev` 时，访问 http://localhost:8000 ，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
 * 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
 * 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以开启 [exportStatic](#exportstatic) 配置，会在执行 `umi build` 构建时进行**预渲染**。
+* `removeWindowInitialProps` 与 `forceInitial` 不可同时使用
 
 了解更多，可点击 [服务端渲染文档](/zh-CN/docs/ssr)。
 
