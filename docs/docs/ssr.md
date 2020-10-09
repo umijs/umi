@@ -639,6 +639,11 @@ export default () => {
   return renderLoading()
 }
 ```
+
+### Helmet 结合 stream 渲染无法显示 title
+
+因为 react-helmet 暂不支持 stream 渲染，如果使用 Helmet ，请使用 `mode: 'string'` 方式渲染。[nfl/react-helmet#322](https://github.com/nfl/react-helmet/issues/322)
+
 ### antd pro 怎样使用服务端渲染？
 
 首先，[antd pro](https://github.com/ant-design/ant-design-pro/) 作为中后台项目,没有 SEO 需求，不适合做服务端渲染；

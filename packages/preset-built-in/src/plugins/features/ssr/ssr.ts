@@ -57,20 +57,28 @@ export default (api: IApi) => {
     key: 'ssr',
     config: {
       schema: (joi) => {
-        return joi.object({
-          forceInitial: joi
-            .boolean()
-            .description(
-              'remove window.g_initialProps in html, to force execing Page getInitialProps  functions',
+        return joi
+          .object({
+            forceInitial: joi
+              .boolean()
+              .description('force execing Page getInitialProps functions'),
+            removeWindowInitialProps: joi
+              .boolean()
+              .description('remove window.g_initialProps in html'),
+            devServerRender: joi
+              .boolean()
+              .description('disable serve-side render in umi dev mode.'),
+            mode: joi.string().valid('stream', 'string'),
+            staticMarkup: joi
+              .boolean()
+              .description('static markup in static site'),
+          })
+          .without('forceInitial', ['removeWindowInitialProps'])
+          .error(
+            new Error(
+              'The `removeWindowInitialProps` cannot be enabled when `forceInitial` has been enabled at the same time.',
             ),
-          devServerRender: joi
-            .boolean()
-            .description('disable serve-side render in umi dev mode.'),
-          mode: joi.string().valid('stream', 'string'),
-          staticMarkup: joi
-            .boolean()
-            .description('static markup in static site'),
-        });
+          );
       },
     },
     // 配置开启
@@ -88,6 +96,14 @@ export default (api: IApi) => {
       api.logger.warn(
         'The manifest file will be generated if enabling `dynamicImport` in ssr.',
       );
+    }
+    // ref: https://github.com/umijs/umi/issues/5501
+    if (!process.env.WATCH_IGNORED) {
+      const { outputPath } = api.config;
+      const absOutputPath = winPath(
+        path.join(api.cwd, outputPath as string, '/'),
+      );
+      process.env.WATCH_IGNORED = `(node_modules|${absOutputPath}(?!${OUTPUT_SERVER_FILENAME}))`;
     }
   });
 
@@ -133,6 +149,7 @@ export default (api: IApi) => {
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        RemoveWindowInitialProps: !!api.config.ssr?.removeWindowInitialProps,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
         ManifestFileName: api.config.manifest
@@ -266,6 +283,7 @@ export default (api: IApi) => {
 
       config.output
         .filename(OUTPUT_SERVER_FILENAME)
+        // avoid using `require().default`, just using `require()`
         .libraryExport('default')
         .chunkFilename('[name].server.js')
         .libraryTarget('commonjs2');

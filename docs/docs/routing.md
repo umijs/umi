@@ -35,7 +35,7 @@ If you point to a file in the `src` directory, you can use either `@` or `../`. 
 ### exact
 
 * Type: `boolean`
-* Default: `false`
+* Default: `true`
 
 Indicates whether it is a strict match, that is, whether location and path exactly correspond.
 

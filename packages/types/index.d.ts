@@ -261,6 +261,7 @@ interface IManifest {
 
 interface ISSR {
   forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
   devServerRender?: boolean;
   mode?: 'string' | 'stream';
   staticMarkup?: boolean;
@@ -366,6 +367,7 @@ interface IServerRenderParams {
   basename?: string;
   staticMarkup?: boolean;
   forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
   getInitialPropsCtx?: object;
   manifest?: string;
   [k: string]: any;
