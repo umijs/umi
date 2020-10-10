@@ -1,8 +1,8 @@
 ---
 name: 'Bug report'
 about: 'Report a bug to help us improve'
-title: ''
-labels: ''
+title: '[Bug] say something'
+labels: 'type(bug)'
 assignees: ''
 ---
 

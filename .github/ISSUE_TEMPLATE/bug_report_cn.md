@@ -1,8 +1,8 @@
 ---
 name: '缺陷问题反馈'
 about: '反馈问题以帮助我们改进'
-title: ''
-labels: ''
+title: '[Bug] '
+labels: 'type(bug)'
 assignees: ''
 ---
 
