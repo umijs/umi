@@ -10,7 +10,6 @@ import {
   QuestionCircleOutlined,
   CheckOutlined,
   MessageOutlined,
-  CodeOutlined,
 } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
@@ -19,7 +18,6 @@ import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import FooterToolbar from './FooterToolbar';
 import EditorIcon from '@/components/icons/Editor';
-import Shell from '@/components/Shell';
 import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
 import event, { MESSAGES } from '@/message';
@@ -127,7 +125,6 @@ const Footer: React.SFC<IFooterProps> = props => {
 
   const actionCls = cls(styles.section, styles.action);
   const logCls = cls(actionCls, styles.log);
-  const shellCls = cls(actionCls, styles.shell);
 
   const LocaleText = ({ locale: textLocale, checked, style }) => (
     <span style={style}>
@@ -214,55 +211,6 @@ const Footer: React.SFC<IFooterProps> = props => {
         >
           <Logs logs={logs} type={type} className={styles['section-drawer-logs']} />
         </Drawer>
-        <Drawer
-          title={
-            <FooterToolbar
-              title={formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
-              resizeAxis="y"
-              onResize={size => {
-                const newHeight = terminalHeight + size.deltaY;
-                dispatch({
-                  type: 'changeSize',
-                  payload: {
-                    terminalHeight: newHeight,
-                  },
-                });
-                if (fitAddon) {
-                  fitAddon.fit();
-                }
-              }}
-              onClose={() => togglePanel('terminal')}
-              onClear={() => terminal.clear()}
-              onScrollBottom={() => terminal.scrollToBottom()}
-            />
-          }
-          getContainer={drawerContainerRef.current}
-          destroyOnClose={false}
-          closable={false}
-          visible={visible.terminal}
-          placement="bottom"
-          mask={false}
-          className={styles['section-drawer']}
-          height={terminalHeight}
-        >
-          {typeof visible.terminal === 'boolean' && (
-            // init shell socket when open Drawer
-            <Shell
-              // style hide / show, not dom
-              visible={!!visible.terminal}
-              ref={(ref, fitAddon) =>
-                dispatch({
-                  type: 'initTerminal',
-                  payload: {
-                    terminal: ref,
-                    fitAddon,
-                  },
-                })
-              }
-              className={styles['section-drawer-shell']}
-            />
-          )}
-        </Drawer>
       </div>
       <div className={styles.statusBar}>
         <div className={styles['statusBar-left']}>
@@ -289,12 +237,6 @@ const Footer: React.SFC<IFooterProps> = props => {
             <ProfileFilled style={{ marginRight: 4 }} />{' '}
             {formatMessage({ id: 'org.umi.ui.global.log' })}
           </div>
-          {projectDashboard && (
-            <div className={shellCls} onClick={() => togglePanel('terminal')}>
-              <CodeOutlined style={{ marginRight: 4 }} />{' '}
-              {formatMessage({ id: 'org.umi.ui.global.terminal' })}
-            </div>
-          )}
         </div>
 
         {!!key && (
