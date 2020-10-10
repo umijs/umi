@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602318282862,
+  "lastUpdate": 1602319309302,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11802,6 +11802,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.98%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "18625909+yorshka20@users.noreply.github.com",
+            "name": "李小康",
+            "username": "yorshka20"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "504692d5617725575f73025e769860488357395d",
+          "message": "docs: Update runtime-config.md (#5520)\n\nfix a spell mistake",
+          "timestamp": "2020-10-10T16:37:53+08:00",
+          "tree_id": "f3ac93027be2b8e89f23ba1d99e831be4f6935f2",
+          "url": "https://github.com/umijs/umi/commit/504692d5617725575f73025e769860488357395d"
+        },
+        "date": 1602319301942,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1346,
+            "range": "±2.90%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2405,
+            "range": "±5.34%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
