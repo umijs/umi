@@ -1,0 +1,32 @@
+{
+  "name": "@umijs/plugin-vue",
+  "version": "3.2.22",
+  "description": "@umijs/plugin-vue",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-vue#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "vue-loader": "16.0.0-beta.8",
+    "@umijs/renderer-vue": "3.2.22",
+    "@vue/compiler-sfc": "3.0.0"
+  }
+}
