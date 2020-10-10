@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602236387884,
+  "lastUpdate": 1602300203833,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11726,6 +11726,44 @@ window.BENCHMARK_DATA = {
             "range": "±6.15%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xyang0110@126.com",
+            "name": "PPxu",
+            "username": "ppxu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "83098502f76d84f899f5677ed8022807ab0e91af",
+          "message": "docs: update config scripts link (#5519)",
+          "timestamp": "2020-10-10T11:19:07+08:00",
+          "tree_id": "2f29f8918a2b2ead8831cebe783e980bf3a40cfa",
+          "url": "https://github.com/umijs/umi/commit/83098502f76d84f899f5677ed8022807ab0e91af"
+        },
+        "date": 1602300200443,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1081,
+            "range": "±2.45%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1910,
+            "range": "±5.70%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
