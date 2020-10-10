@@ -78,7 +78,7 @@ function publishToNpm() {
       console.log(`[${repo}] npm publish --tag next`);
       shell.exec(`npm publish --tag next`);
     } else {
-      console.log(`[${repo}] npm publish`);
+      console.log(`[${repo}] npm publish --tag latest-2`);
       shell.exec(`npm publish`);
     }
   });
