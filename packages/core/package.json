@@ -1,0 +1,49 @@
+{
+  "name": "@umijs/core",
+  "version": "3.2.23",
+  "description": "@umijs/core",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/core": "7.11.6",
+    "@babel/register": "7.11.5",
+    "@hapi/joi": "16.1.8",
+    "@types/ejs": "3.0.4",
+    "@types/hapi__joi": "16.0.12",
+    "@types/marked": "^1.1.0",
+    "@types/marked-terminal": "^3.1.1",
+    "@types/prettier": "2.1.0",
+    "@types/tapable": "1.0.6",
+    "@umijs/ast": "3.2.23",
+    "@umijs/babel-preset-umi": "3.2.23",
+    "@umijs/error-code-map": "^1.0.1",
+    "@umijs/utils": "3.2.23",
+    "dotenv": "8.2.0",
+    "ejs": "3.1.5",
+    "marked": "1.1.1",
+    "marked-terminal": "4.1.0",
+    "os-locale": "5.0.0",
+    "prettier": "2.1.1",
+    "set-value": "3.0.2",
+    "tapable": "1.1.3"
+  }
+}

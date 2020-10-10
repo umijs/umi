@@ -1,49 +1,64 @@
 {
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "build": "./scripts/build.js",
-    "changelog": "lerna-changelog",
-    "test": "node scripts/test.js",
-    "test:coverage": "./packages/umi-test/bin/umi-test.js --coverage",
-    "debug": "./packages/umi-test/bin/umi-test.js",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "lint": "eslint --ext .js packages",
-    "precommit": "lint-staged",
-    "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
-    "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
-    "publish": "npm test && ./scripts/publish.js",
-    "ui:dev": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js dev",
-    "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build"
+    "bootstrap": "node ./scripts/bootstrap.js",
+    "build": "father-build",
+    "debug": "node --inspect-brk packages/umi/bin/umi.js",
+    "docs": "node ./scripts/docs.js",
+    "docs:build": "node ./packages/umi/bin/umi.js build",
+    "docs:dev": "node ./packages/umi/bin/umi.js dev",
+    "docs:sync": "node ./scripts/docs.js syncDocs",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "link:umi": "cd packages/umi && yarn link && cd -",
+    "release": "node ./scripts/release.js",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
+    "now-build": "echo \"Hello\"",
+    "benchmark": "node scripts/benchmarks.js",
+    "update:deps": "yarn upgrade-interactive --latest"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma all --single-quote --write",
-      "git add"
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
     ]
   },
   "devDependencies": {
-    "babel-eslint": "10.0.1",
-    "chokidar": "2.0.4",
-    "coveralls": "3.0.2",
-    "dva": "2.4.1",
-    "eslint": "5.10.0",
-    "eslint-config-airbnb": "17.1.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.2",
-    "eslint-plugin-react": "7.11.1",
-    "form-data": "^2.3.3",
-    "got": "9.3.2",
-    "husky": "1.2.0",
-    "lerna": "3.6.0",
-    "lerna-changelog": "0.8.2",
-    "lint-staged": "8.1.0",
-    "prettier": "1.15.3",
-    "puppeteer": "1.11.0",
-    "react-router-dom": "4.3.1",
-    "react-test-renderer": "16.6.3",
-    "shelljs": "0.8.3",
-    "test-build-result": "^1.0.1",
-    "umi-tools": "^0.3.1"
+    "@babel/core": "7.10.4",
+    "@testing-library/react": "^10.4.6",
+    "@types/babel__core": "7.1.9",
+    "@types/babel__traverse": "7.0.13",
+    "@types/jest": "^26.0.4",
+    "@types/node": "^14.0.23",
+    "@umijs/core": "3.2.23",
+    "@umijs/plugin-analytics": "^0.2.2",
+    "@umijs/preset-dumi": "^1.0.33",
+    "@umijs/test": "3.2.23",
+    "@umijs/test-utils": "3.2.23",
+    "@umijs/utils": "3.2.23",
+    "benchmark": "^2.1.4",
+    "escape-goat": "^3.0.0",
+    "father-build": "^1.18.1",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.2.11",
+    "new-github-release-url": "^1.0.0",
+    "npm-run-all": "^4.1.5",
+    "open": "^7.0.4",
+    "prettier": "^2.0.5",
+    "yorkie": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umijs/umi.git"
   }
 }

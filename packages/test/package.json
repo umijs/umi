@@ -1,0 +1,45 @@
+{
+  "name": "@umijs/test",
+  "version": "3.2.23",
+  "description": "@umijs/test",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "helpers",
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/test#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/core": "7.11.6",
+    "@umijs/babel-preset-umi": "3.2.23",
+    "@umijs/utils": "3.2.23",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^25.4.0",
+    "core-js": "3.6.5",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "^25.4.0",
+    "jest-cli": "^25.4.0",
+    "jest-environment-jsdom-fourteen": "1.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "whatwg-fetch": "^3.4.1"
+  },
+  "bin": {
+    "umi-test": "bin/umi-test.js"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "normal",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build"
+  },
+  "private": true,
+  "peerDependencies": {
+    "umi": "latest"
+  },
+  "license": "ISC"
+}

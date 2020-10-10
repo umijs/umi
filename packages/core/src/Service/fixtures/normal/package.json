@@ -1,0 +1,16 @@
+{
+  "name": "foo",
+  "dependencies": {
+    "@alipay/umi-preset-bigfish": "1",
+    "@umijs/preset-1": "1",
+    "umi-preset-1": "1",
+    "@umijs/plugin-1": "1",
+    "umi-plugin-1": "1"
+  },
+  "devDependencies": {
+    "@umijs/preset-2": "1",
+    "umi-preset-2": "1",
+    "@umijs/plugin-2": "1",
+    "umi-plugin-2": "1"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "browserslist": [
-    "ie>8", "Safari >= 6"
-  ],
-  "autoprefixer": {
-    "flexbox": true
-  },
-  "disableCSSModules": true
-}

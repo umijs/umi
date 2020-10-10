@@ -1,173 +1,441 @@
 ---
-sidebarDepth: 2
+nav:
+  title: API
+toc: menu
 ---
 
 # API
 
-## Route
 
-### umi/link
+## 基本 API
 
-Navigation via route declaration.
+### dynamic
 
-Example:
+Load component dynamically on demand.
 
-```markup
-import Link from 'umi/link';
+**Common use case**：To reduce first screen download cost, component with huge implementation / dependency can be split in differnet bundle. Let's say we have component `HugeA` with huge 3rd-party dependency, and this `HugeA` will not be used in first screen, that means it can be split out. We shall use `dynamic` in this case.
 
+**Why use `dynamic`**：It includes functions like `split chunks`, `async chunks loader`, `loading state maintainance`, so developers is free from those technical details and is able to focus their business.
+
+Usually work with [dynamic import syntax](https://github.com/tc39/proposal-dynamic-import).
+
+
+**Create dynamic component**
+
+```js
+import { dynamic } from 'umi';
+
+export default dynamic({
+  loader: async function() {
+    // webpackChunkName tells webpack create separate bundle for HugeA
+    const { default: HugeA } = await import(/* webpackChunkName: "external_A" */ './HugeA');
+    return HugeA;
+  },
+});
+```
+
+**Use dynamic component**
+
+```js
+import React from 'react';
+import AsyncHugeA from './AsyncHugeA';
+
+// import as normal component
+// with below benefits out of box:
+// 1. download bundle automatically
+// 2. give a loading splash while downloading (customizable)
+// 3. display HugeA whenever component downloaded
 export default () => {
-  <div>
-    /* Normal use */
-    <Link to="/list">Go to list page</Link>
-    
-    /* With query string */
-    <Link to="/list?a=b">Go to list page</Link>
-
-    /* Include child component */
-    <Link to="/list?a=b"><button>Go to list page</button></Link>
-  </div>
+  return <AsyncHugeA />;
 }
 ```
 
-### umi/router
+### history
 
-Programmatic navigation via four router methods
-
-#### router.push(path)
-
-Add one entry to the browser's history.
-
-Example:
+可用于获取当前路由信息，
 
 ```js
-import router from 'umi/router';
+import { history } from 'umi';
 
-// Normal navigation without query string
-router.push('/list');
+// history 栈里的实体个数
+console.log(history.length);
 
-// With query string
-router.push('/list?a=b');
-router.push({
+// 当前 history 跳转的 action，有 PUSH、REPLACE 和 POP 三种类型
+console.log(history.action);
+
+// location 对象，包含 pathname、search 和 hash
+console.log(history.location.pathname);
+console.log(history.location.search);
+console.log(history.location.hash);
+```
+
+可用于路由跳转，
+
+```js
+import { history } from 'umi';
+
+// 跳转到指定路由
+history.push('/list');
+
+// 带参数跳转到指定路由
+history.push('/list?a=b');
+history.push({
   pathname: '/list',
   query: {
     a: 'b',
   },
 });
-# Object without property `pathname` will throw an error 
-router.push({
-  query: {}
+
+// 跳转到上一个路由
+history.goBack();
+```
+
+也可用于路由监听，
+
+```js
+import { history } from 'umi';
+
+const unlisten = history.listen((location, action) => {
+  console.log(location.pathname);
+});
+unlisten();
+```
+
+### plugin
+
+> 主要在插件利用，项目代码中一般用不到。
+
+运行时插件接口，是 Umi 内置的跑在浏览器里的一套插件体系。
+
+比如：
+
+```js
+import { plugin, ApplyPluginsType } from 'umi';
+
+// 注册插件
+plugin.register({
+  apply: { dva: { foo: 1 } },
+  path: 'foo',
+});
+plugin.register({
+  apply: { dva: { bar: 1 } },
+  path: 'bar',
+});
+
+// 执行插件
+// 得到 { foo: 1, bar: 1 }
+plugin.applyPlugins({
+  key: 'dva',
+  type: ApplyPluginsType.modify,
+  initialValue: {},
+  args: {},
+  async: false,
 });
 ```
 
-#### router.replace(path)
+参数属性包含：
 
-Replace current page. Accept same parameter as [router.push()](#router.push\(path\)) 
+* **key**，坑位的 key
+* **type**，执行方式类型，详见 [ApplyPluginsType](#ApplyPluginsType)
+* **initialValue**，初始值
+* **args**，参数
+* **async**，是否异步执行且返回 Promise
 
-#### router.go(n)
+### ApplyPluginsType
 
-Move back or forward through history.
+> 主要在插件利用，项目代码中一般用不到。
 
-Example:
+运行时插件执行类型，enum 类型，包含三个属性：
 
-```js
-import router from 'umi/router';
+* **compose**，用于合并执行多个函数，函数可决定前序函数的执行时机
+* **modify**，用于修改值
+* **event**，用于执行事件，前面没有依赖关系
 
-router.go(-1);
-router.go(2);
-```
+## 路由
 
-#### router.goBack()
+### Link
 
-Move backward.
+Provides declarative, accessible navigation around your application.
 
-Example:
-
-```js
-import router from 'umi/router';
-router.goBack();
-```
-
-### umi/navlink
-
-See: [https://reacttraining.com/react-router/web/api/NavLink](https://reacttraining.com/react-router/web/api/NavLink)
-
-### umi/redirect
-
-Redirection.
-
-Example:
-
-```js
-import Redirect from 'umi/redirect';
-<Redirect to="/login" />
-```
-
-See: [https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
-
-### umi/prompt
-
-Example.
-
-```js
-import Prompt from 'umi/prompt';
+```tsx
+import { Link } from 'umi';
 
 export default () => {
   return (
-    <>
-      <h1>Prompt</h1>
-      <Prompt
-        when={true}
-        message={(location) => {
-          return window.confirm(`confirm to leave to ${location.pathname}?`);
+    <div>
+      {/* A string representation of the Link location */}
+      <Link to="/about">About</Link>
+
+      {/* A string representation of the Link location,
+          created by concatenating the location’s pathname,
+          search, and hash properties
+      */}
+      <Link to="/courses?sort=name">Courses</Link>
+
+      {/* An object representation of the Link location */}
+      <Link
+        to={{
+          pathname: "/list",
+          search: "?sort=name",
+          hash: "#the-hash",
+          state: { fromDashboard: true },
+        }}
+      >
+        List
+      </Link>
+
+      {/* A function to which current location is 
+          passed as an argument and which should
+          return location representation as a string
+          or as an object
+      */}
+      <Link
+        to={location => {
+          return { ...location, pathname: "/profile" };
         }}
       />
-    </>
+
+      {/* When true, clicking the link will replace
+          the current entry in the history stack
+          instead of adding a new one
+      */}
+      <Link to="/courses" replace />
+
+      {/* 
+          forward reference
+      */}
+      <Link
+        to="/courses"
+        innerRef={node => {
+          // `node` refers to the mounted DOM element
+          // or null when unmounted
+        }}
+      />
+    </div>
   );
-}
+};
 ```
 
-See：[https://reacttraining.com/react-router/web/api/Prompt](https://reacttraining.com/react-router/web/api/Prompt)
+### NavLink
 
-### umi/withRouter
+A special version of the `<Link>` that will add styling attributes to the rendered element when it matches the current URL.
 
-See: [https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
+```tsx
+import { NavLink } from 'umi';
 
-## Performance
+export default () => {
+  return (
+    <div>
+      {/* same as Link */}
+      <NavLink to="/about">About</NavLink>
 
-### umi/dynamic
+      {/* The class to give the element when it is active.
+          The default given class is active.
+          This will be joined with the className prop
+      */}
+      <NavLink to="/faq" activeClassName="selected">
+        FAQs
+      </NavLink>
 
-Dynamically loading components based on [react-loadable](https://github.com/jamiebuilds/react-loadable).
+      {/* The styles to apply to the element when it is active */}
+      <NavLink
+        to="/faq"
+        activeStyle={{
+          fontWeight: "bold",
+          color: "red",
+        }}
+      >
+        FAQs
+      </NavLink>
 
-#### dynamic(options)
+      {/* When true, the active class/style will only be applied
+          if the location is matched exactly.
+      */}
+      <NavLink exact to="/profile" activeClassName="selected">
+        Profile
+      </NavLink>
 
-Example:
+      {/* When true, the trailing slash on a location’s pathname
+          will be taken into consideration when determining if
+          the location matches the current URL.
+      */}
+      <NavLink strict to="/profile/" activeClassName="selected">
+        Profile
+      </NavLink>
 
-```js
-import dynamic from 'umi/dynamic';
+      {/* A function to add extra logic for determining whether
+          the link is active. This should be used if you want to
+          do more than verify that the link’s pathname matches
+          the current URL’s pathname.
+      */}
+      <NavLink
+        to="/profile"
+        exact
+        activeClassName="selected"
+        isActive={(match, location) => {
+          if (!match) {
+            return false;
+          }
+          return location.search.includes("name");
+        }}
+      >
+        Profile
+      </NavLink>
+    </div>
+  );
+};
+```
 
-// Render component with 1s delay
-const App = dynamic({
-  loader: () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(() => <div>I will render after 1s</div>);
-      }, /* 1s */1000);
-    }));
-  },
-});
+### Prompt
 
-// Or use `async function`
-const delay = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
-const App = dynamic({
-  loader: async function() {
-    await delay(/* 1s */1000);
-    return () => <div>I will render after 1s</div>;
-  },
+Used to prompt the user before navigating away from a page. When your application enters a state that should prevent the user from navigating away (like a form is half-filled out), render a `<Prompt>`.
+
+```tsx
+import { Prompt } from 'umi';
+
+export default () => {
+  return (
+    <div>
+      {/* The message to prompt the user with when
+          they try to navigate away.
+      */}
+      <Prompt message="Will you leave?" />
+
+      {/* Will be called with the next location and action the
+          user is attempting to navigate to. Return a string
+          to show a prompt to the user or true to allow the 
+          transition
+      */}
+      <Prompt
+        message={location => {
+          return location.pathname !== "/" ? true : `Are are sure you want to back to home page?`;
+        }}
+      />
+
+      {/* Instead of conditionally rendering a <Prompt> behind a guard,
+          you can always render it but pass when={true} or when={false}
+          to prevent or allow navigation accordingly.
+      */}
+      <Prompt when={formIsHalfFilledOut} message="Are you sure?" />
+    </div>
+  );
+};
+```
+
+### withRouter
+
+You can get access to the `history`, `location`, `match` objects via the `withRouter` higher-order component. `withRouter` will pass updated `match`, `location`, and `history` props to the wrapped component whenever it renders
+
+```tsx
+import { withRouter } from "umi";
+
+export default withRouter(({ history, location, match }) => {
+  return (
+    <div>
+      <ul>
+        <li>history: {history.action}</li>
+        <li>location: {location.pathname}</li>
+        <li>match: {`${match.isExact}`}</li>
+      </ul>
+    </div>
+  );
 });
 ```
 
-## Build
+### useHistory
 
-### umi/babel
+The `useHistory` hook gives you access to the `history` instance that you may use to navigate.
 
-Make umi's babel configuration extensible.
+```tsx
+import { useHistory } from "umi";
+
+export default () => {
+  const history = useHistory()
+  return (
+    <div>
+      <ul>
+        <li>history: {history.action}</li>
+      </ul>
+    </div>
+  );
+};
+```
+
+### useLocation
+
+The `useLocation` hook returns the `location` object that represents the current URL. You can think about it like a `useState` that returns a new location whenever the URL changes.
+
+```tsx
+import { useLocation } from "umi";
+
+export default () => {
+  const location = useLocation()
+  return (
+    <div>
+      <ul>
+        <li>location: {location.pathname}</li>
+      </ul>
+    </div>
+  );
+};
+```
+
+### useParams
+
+`useParams` returns an object of key/value pairs of URL parameters. Use it to access `match.params` of the current route.
+
+```tsx
+import { useParams } from "umi";
+
+export default () => {
+  const params = useParams()
+  return (
+    <div>
+      <ul>
+        <li>params: {JSON.stringify(params)}</li>
+      </ul>
+    </div>
+  );
+};
+```
+
+### useRouteMatch
+
+The `useRouteMatch` hook attempts to match the current URL in the same way that a Route would. It’s mostly useful for getting access to the match data without actually rendering a `<Route />`
+
+```tsx
+import { useRouteMatch } from "umi";
+
+export default () => {
+  const match = useRouteMatch()
+  return (
+    <div>
+      <ul>
+        <li>match: {JSON.stringify(match.params)}</li>
+      </ul>
+    </div>
+  );
+};
+```
+
+## node 侧接口
+
+> 通过 package.json 的 main 字段露出，且不存在于 modules 字段里。
+
+### Service
+
+Umi 内核的 Service 方法，用于测试，或调用 Umi 底层命令。
+
+### utils
+
+utils 方法，给插件使用，和插件里的 api.utils 是同一个底层库。
+
+### defineConfig
+
+用于校验和提示用户配置类型，详见[配置#TypeScript 提示](TODO)。
+
+## 插件类型定义
+
+### IApi
+
+### IConfig

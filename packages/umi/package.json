@@ -1,73 +1,44 @@
 {
   "name": "umi",
-  "version": "2.4.3",
-  "description": "Pluggable enterprise-level react application framework.",
-  "dependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/runtime": "7.2.0",
-    "@types/react": "16.x",
-    "@types/react-router-dom": "4.x",
-    "babel-preset-umi": "1.3.0",
-    "debug": "4.1.0",
-    "dotenv": "6.2.0",
-    "is-windows": "1.0.2",
-    "lodash": "4.17.11",
-    "react-loadable": "5.5.0",
-    "resolve-cwd": "2.0.0",
-    "semver": "5.6.0",
-    "signale": "1.3.0",
-    "umi-build-dev": "1.4.3",
-    "umi-utils": "1.3.1",
-    "update-notifier": "2.5.0",
-    "yargs-parser": "11.1.1"
-  },
-  "module": "index.js",
-  "sideEffects": [
-    "./lib/renderRoutes.js"
+  "version": "3.2.23",
+  "description": "umi",
+  "main": "index.js",
+  "types": "types.d.ts",
+  "files": [
+    "lib",
+    "dist",
+    "types.d.ts",
+    "bin"
   ],
-  "bin": {
-    "umi": "./bin/umi.js"
-  },
-  "license": "MIT",
+  "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi"
+    "url": "https://github.com/umijs/umi"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi",
+  "keywords": [
+    "umi"
+  ],
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
-  "bugs": {
-    "url": "https://github.com/umijs/umi/issues"
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
+  "publishConfig": {
+    "access": "public"
   },
-  "files": [
-    "lib",
-    "src",
-    "bin",
-    "index.js",
-    "babel.js",
-    "dynamic.d.ts",
-    "link.d.ts",
-    "navlink.d.ts",
-    "prompt.d.ts",
-    "redirect.d.ts",
-    "router.d.ts",
-    "withRouter.d.ts"
-  ],
-  "umiTools": {
-    "browserFiles": [
-      "src/createHistory.js",
-      "src/dynamic.js",
-      "src/link.js",
-      "src/navlink.js",
-      "src/prompt.js",
-      "src/redirect.js",
-      "src/renderRoutes.js",
-      "src/Route.js",
-      "src/router.js",
-      "src/runtimePlugin.js",
-      "src/utils.js",
-      "src/withRouter.js"
-    ]
-  }
+  "dependencies": {
+    "@babel/core": "7.11.6",
+    "@umijs/core": "3.2.23",
+    "@umijs/preset-built-in": "3.2.23",
+    "@umijs/runtime": "3.2.23",
+    "@umijs/types": "3.2.23",
+    "@umijs/utils": "3.2.23",
+    "react": "^16.13.1",
+    "resolve-cwd": "3.0.0"
+  },
+  "bin": {
+    "umi": "bin/umi.js"
+  },
+  "module": "dist/index.esm.js"
 }

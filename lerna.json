@@ -1,21 +1,23 @@
 {
+  "version": "3.2.23",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "changelog": {
+    "repo": "umijs/umi-next",
     "labels": {
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
-      "documentation": ":book: Documentation"
+      "pr(enhancement)": ":rocket: Enhancement",
+      "pr(bug)": ":bug: Bug Fix",
+      "pr(documentation)": ":book: Documentation",
+      "pr(dependency)": ":deciduous_tree: Dependency",
+      "pr(chore)": ":turtle: Chore"
     },
-    "repo": "umijs/umi",
     "cacheDir": ".changelog"
   },
-  "packages": [
-    "packages/*"
-  ],
-  "command": {
-    "version": {
-      "exact": true
-    }
-  },
-  "npmClient": "yarn",
-  "version": "independent"
+  "ignoreChanges": [
+    "**/*.md",
+    "**/*.test.ts",
+    "**/*.e2e.ts",
+    "**/fixtures/**",
+    "**/test/**"
+  ]
 }

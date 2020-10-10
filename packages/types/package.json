@@ -1,0 +1,38 @@
+{
+  "name": "@umijs/types",
+  "version": "3.2.23",
+  "description": "@umijs/types",
+  "main": "lib/index.js",
+  "types": "index",
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/types#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@types/cheerio": "0.22.21",
+    "@types/express": "4.17.7",
+    "@types/webpack": "4.41.21",
+    "@types/webpack-bundle-analyzer": "3.8.0",
+    "@umijs/babel-preset-umi": "3.2.23",
+    "@umijs/core": "3.2.23",
+    "@umijs/server": "3.2.23",
+    "@umijs/utils": "3.2.23",
+    "webpack-chain": "6.5.1"
+  }
+}
