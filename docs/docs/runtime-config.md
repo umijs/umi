@@ -80,7 +80,7 @@ export function render(oldRender) {
 
 ### onRouteChange({ routes, matchedRoutes, location, action })
 
-Change something at route initialization/chaning phase.
+Change something at route initialization/changing phase.
 
 For example, event tracking and analysis:
 
