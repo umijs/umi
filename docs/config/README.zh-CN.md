@@ -1068,7 +1068,7 @@ __webpack_public_path__ = window.publicPath;
 * Type: `Array`
 * Default: `[]`
 
-同 [headScripts](TODO)，配置 `<body>` 里的额外脚本。
+同 [headScripts](#headscripts)，配置 `<body>` 里的额外脚本。
 
 ## singular
 
