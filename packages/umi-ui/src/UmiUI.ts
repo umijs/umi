@@ -24,7 +24,6 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
-import initTerminal, { resizeTerminal } from './terminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
@@ -849,22 +848,6 @@ export default class UmiUI {
         );
       }
 
-      /**
-       * Terminal shell resize server
-       */
-      app.get('/terminal/resize', async (req, res) => {
-        const rows = parseInt(req.query.rows || 30);
-        const cols = parseInt(req.query.cols || 180);
-        try {
-          resizeTerminal({ rows, cols });
-          res.send({
-            success: true,
-            rows,
-            cols,
-          });
-        } catch (_) {}
-      });
-
       app.get('/', async (req, res) => {
         const isMini = 'mini' in req.query;
         debug('isMini', isMini);
@@ -1080,7 +1063,6 @@ export default class UmiUI {
         prefix: '/umiui',
         log: () => {},
       });
-      initTerminal.call(this, server);
       this.socketServer = ss;
       this.server = server;
     });
