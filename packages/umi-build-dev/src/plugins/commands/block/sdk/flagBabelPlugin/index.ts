@@ -121,8 +121,12 @@ export default () => {
   }
 
   function isInBlackList(node, path) {
-    if (t.isJSXElement(node)) {
-      const name = node.openingElement.name.name;
+    if (
+      t.isJSXElement(node) ||
+      // 支持某些场景下提前编译为 React.createElement 的场景
+      (isReactCreateElement(node) && node.arguments.length && t.isIdentifier(node.arguments[0]))
+    ) {
+      const name = t.isJSXElement(node) ? node.openingElement.name.name : node.arguments[0].name;
       if (path.scope.hasBinding(name)) {
         const p = path.scope.getBinding(name).path;
         const { source } = p.parentPath.node;
