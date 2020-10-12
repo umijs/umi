@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602319309302,
+  "lastUpdate": 1602487003857,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11840,6 +11840,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.34%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0a04a63d482353e4f60be779cdc6c9852035908c",
+          "message": "doc: use another variable name to avoid conflict (#5528)",
+          "timestamp": "2020-10-12T15:12:42+08:00",
+          "tree_id": "73edb2441ad58a8fc7a130b17d696825fd133b6c",
+          "url": "https://github.com/umijs/umi/commit/0a04a63d482353e4f60be779cdc6c9852035908c"
+        },
+        "date": 1602487000988,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1327,
+            "range": "±2.62%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2338,
+            "range": "±5.67%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
