@@ -337,11 +337,11 @@ PORT=8081
       ```ts
       // src/app.ts
       export function useQiankunStateForSlave() {
-        const [globalState, setGlobalState] = useState({});
+        const [masterState, setMasterState] = useState({});
        
         return {
-          globalState,
-          setGlobalState,
+          masterState,
+          setMasterState,
         }
       }
       ```
