@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602595612158,
+  "lastUpdate": 1602596238450,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11916,6 +11916,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.50%",
             "unit": "ops/sec",
             "extra": "38 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "github@amazingdesign.eu",
+            "name": "Mateusz Choma",
+            "username": "chomamateusz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b7ccdf0ea624989a813ae4c05228ba01ba259a54",
+          "message": "Local verification not authentication (#5534)\n\n'Local authentication' is a misleading term that could suggest user that app at this point authenticates user somehow.",
+          "timestamp": "2020-10-13T21:32:17+08:00",
+          "tree_id": "46c91d9253c25dfb560b7b27c5e123caf6bb5e07",
+          "url": "https://github.com/umijs/umi/commit/b7ccdf0ea624989a813ae4c05228ba01ba259a54"
+        },
+        "date": 1602596235197,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1212,
+            "range": "±3.25%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2386,
+            "range": "±3.61%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
