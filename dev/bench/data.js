@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602487003857,
+  "lastUpdate": 1602595612158,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11876,6 +11876,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2338,
             "range": "±5.67%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "email@fishplusorange.com",
+            "name": "FishPlusOrange",
+            "username": "FishPlusOrange"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "12d74067151fa856e4dbf8c93fc0a6427d1360b4",
+          "message": "docs: change 飞猪 to Fliggy (#5537)",
+          "timestamp": "2020-10-13T21:22:43+08:00",
+          "tree_id": "266d200afde7367c222b8a608577af979d0cb559",
+          "url": "https://github.com/umijs/umi/commit/12d74067151fa856e4dbf8c93fc0a6427d1360b4"
+        },
+        "date": 1602595605734,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1283,
+            "range": "±2.70%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2361,
+            "range": "±4.50%",
             "unit": "ops/sec",
             "extra": "38 samples"
           }
