@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 import { Route } from '@umijs/core';
 import { runtimePath } from '../constants';
 
@@ -19,7 +20,7 @@ export default function (api: IApi) {
         routes: new Route().getJSON({ routes, config: api.config, cwd }),
         runtimePath,
         config: api.config,
-        loadingComponent: api.config.dynamicImport?.loading,
+        loadingComponent: winPath(api.config.dynamicImport?.loading),
       }),
     });
   });

@@ -141,7 +141,7 @@ export default (api: IApi) => {
         RuntimePolyfill: winPath(
           require.resolve('regenerator-runtime/runtime'),
         ),
-        loadingComponent: api.config.dynamicImport?.loading,
+        loadingComponent: winPath(api.config.dynamicImport?.loading),
         DynamicImport: !!api.config.dynamicImport,
         Utils: winPath(require.resolve('./templates/utils')),
         Mode: !!api.config.ssr?.mode || 'string',
