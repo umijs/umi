@@ -17,6 +17,8 @@ interface IOpts {
 // 可能是目录，没有后缀，比如 [post]/add.tsx
 // 可能是文件，有后缀，比如 [id].tsx
 const RE_DYNAMIC_ROUTE = /^\[(.+?)\]/;
+// $id$ 可选动态路由
+const RE_DYNAMIC_OPTIONAL_ROUTE = /^\$(.+?)\$/;
 
 function getFiles(root: string) {
   if (!existsSync(root)) return [];
@@ -56,7 +58,8 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
   const { root, relDir = '' } = opts;
   const absFile = join(root, relDir, file);
   const stats = statSync(absFile);
-  const __isDynamic = RE_DYNAMIC_ROUTE.test(file);
+  const __isDynamic =
+    RE_DYNAMIC_ROUTE.test(file) || RE_DYNAMIC_OPTIONAL_ROUTE.test(file);
 
   if (stats.isDirectory()) {
     const relFile = join(relDir, file);
@@ -124,6 +127,7 @@ function normalizePath(path: string, opts: IOpts) {
     .map((p) => {
       // dynamic route
       p = p.replace(RE_DYNAMIC_ROUTE, ':$1');
+      p = p.replace(RE_DYNAMIC_OPTIONAL_ROUTE, ':$1?');
       return p;
     })
     .join('/');
