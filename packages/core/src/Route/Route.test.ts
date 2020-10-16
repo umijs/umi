@@ -158,12 +158,12 @@ test('conventional normal', async () => {
         {
           path: '/workspace/:name?/edit',
           exact: true,
-          component: '@/pages/workspace/$name$/edit.tsx',
+          component: '@/pages/workspace/[name$]/edit.tsx',
         },
         {
           path: '/workspace/:name?/:patch',
           exact: true,
-          component: '@/pages/workspace/$name$/[patch].tsx',
+          component: '@/pages/workspace/[name$]/[patch].tsx',
         },
         {
           path: '/users',
@@ -194,7 +194,7 @@ test('conventional normal', async () => {
         {
           path: '/:post/:patch?',
           exact: true,
-          component: '@/pages/[post]/$patch$.tsx',
+          component: '@/pages/[post]/[patch$].tsx',
         },
       ],
     },

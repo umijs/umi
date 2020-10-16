@@ -71,22 +71,22 @@ convention routing will produce the following routing configuration:
 
 ## Dynamic optional routing
 
-Per convention, file path components enclosed in `$$` will be dynamically optional routed.
+Per convention, file path components enclosed in `[ $]` will be dynamically optional routed.
 
 For example：
 
-* `src/pages/users/$id$.tsx` becomes `/users/:id?`
-* `src/pages/users/$id$/settings.tsx` becomes `/users/:id?/settings`
+* `src/pages/users/[id$].tsx` becomes `/users/:id?`
+* `src/pages/users/[id$]/settings.tsx` becomes `/users/:id?/settings`
 
 In a more complete example, given the following file structure:
 
 ```bash
 .
   └── pages
-    └── $post$
+    └── [post$]
       └── comments.tsx
     └── users
-      └── $id$.tsx
+      └── [id$].tsx
     └── index.tsx
 ```
 
@@ -95,11 +95,11 @@ convention routing will produce the following routing configuration:
 ```js
 [
   { exact: true, path: '/', component: '@/pages/index' },
-  { exact: true, path: '/users/:id?', component: '@/pages/users/$id$' },
+  { exact: true, path: '/users/:id?', component: '@/pages/users/[id$]' },
   {
     exact: true,
     path: '/:post?/comments',
-    component: '@/pages/$post$/comments',
+    component: '@/pages/[post$]/comments',
   },
 ];
 ```

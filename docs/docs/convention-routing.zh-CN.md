@@ -71,22 +71,22 @@
 
 ## 动态可选路由
 
-约定 `$$` 包裹的文件或文件夹为动态可选路由。
+约定 `[ $]` 包裹的文件或文件夹为动态可选路由。
 
 比如：
 
-* `src/pages/users/$id$.tsx` 会成为 `/users/:id?`
-* `src/pages/users/$id$/settings.tsx` 会成为 `/users/:id?/settings`
+* `src/pages/users/[id$].tsx` 会成为 `/users/:id?`
+* `src/pages/users/[id$]/settings.tsx` 会成为 `/users/:id?/settings`
 
 举个完整的例子，比如以下文件结构，
 
 ```bash
 .
   └── pages
-    └── $post$
+    └── [post$]
       └── comments.tsx
     └── users
-      └── $id$.tsx
+      └── [id$].tsx
     └── index.tsx
 ```
 
@@ -95,11 +95,11 @@
 ```js
 [
   { exact: true, path: '/', component: '@/pages/index' },
-  { exact: true, path: '/users/:id?', component: '@/pages/users/$id$' },
+  { exact: true, path: '/users/:id?', component: '@/pages/users/[id$]' },
   {
     exact: true,
     path: '/:post?/comments',
-    component: '@/pages/$post$/comments',
+    component: '@/pages/[post$]/comments',
   },
 ];
 ```

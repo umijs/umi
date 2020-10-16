@@ -16,9 +16,9 @@ interface IOpts {
 // 考虑多种情况：
 // 可能是目录，没有后缀，比如 [post]/add.tsx
 // 可能是文件，有后缀，比如 [id].tsx
-const RE_DYNAMIC_ROUTE = /^\[(.+?)\]/;
-// $id$ 可选动态路由
-const RE_DYNAMIC_OPTIONAL_ROUTE = /^\$(.+?)\$/;
+const RE_DYNAMIC_ROUTE = /^\[(.+?)([^\$])\]/;
+// [id$] 可选动态路由
+const RE_DYNAMIC_OPTIONAL_ROUTE = /^\[(.+?)\$\]/;
 
 function getFiles(root: string) {
   if (!existsSync(root)) return [];
@@ -126,7 +126,7 @@ function normalizePath(path: string, opts: IOpts) {
     .split('/')
     .map((p) => {
       // dynamic route
-      p = p.replace(RE_DYNAMIC_ROUTE, ':$1');
+      p = p.replace(RE_DYNAMIC_ROUTE, ':$1$2');
       p = p.replace(RE_DYNAMIC_OPTIONAL_ROUTE, ':$1?');
       return p;
     })
