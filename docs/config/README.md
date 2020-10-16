@@ -9,16 +9,16 @@ toc: menu
 # Config
 
 
-以下配置项通过字母排序。
+The following configuration items are sorted alphabetically.
 
 ## alias
 
 * Type: `object`
 * Default: `{}`
 
-配置别名，对引用路径进行映射。
+Configure the alias to map the reference path.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -28,15 +28,15 @@ export default {
 }
 ```
 
-然后 `import('foo')`，实际上是 `import('/tmp/a/b/foo')`。
+Then ʻimport('foo')` is actually ʻimport('/tmp/a/b/foo')`.
 
 Umi 内置了以下别名：
 
-* `@`，项目 src 目录
-* `@@`，临时目录，通常是 `src/.umi` 目录
-* `umi`，当前所运行的 umi 仓库目录
-* `react-router` 和 `react-router-dom`，底层路由库，锁定版本，打包时所有依赖了他们的地方使用同一个版本
-* `react` 和 `react-dom`，默认使用 `16.x` 版本，但如果项目里有依赖，会优先使用项目中依赖的版本
+* `@`，project src directory
+* `@@`，temporary directory, usually `src/.umi` directory
+* `umi`，the currently running umi warehouse directory
+* `react-router` and `react-router-dom`，low-level routing library, locked version, use the same version for all places that depend on them when packaging
+* `react` and `react-dom`，use the `16.x` version by default, but if there are dependencies in the project, the dependent version in the project will be used first
 
 ## analyze
 
