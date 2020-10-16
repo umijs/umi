@@ -128,7 +128,7 @@ function normalizePath(path: string, opts: IOpts) {
 
       // :post$ => :post?
       if (p.endsWith('$')) {
-        p = p.substring(0, -1) + '?';
+        p = p.slice(0, -1) + '?';
       }
       return p;
     })
