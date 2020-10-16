@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602819514680,
+  "lastUpdate": 1602839724450,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11992,6 +11992,44 @@ window.BENCHMARK_DATA = {
             "range": "±6.02%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "rockSandy@163.com",
+            "name": "rockSandy",
+            "username": "rockSandy"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9cfd768d07c1592525b57a93c7383c3c47c8f58a",
+          "message": "fix: bug (#5552)",
+          "timestamp": "2020-10-16T17:10:48+08:00",
+          "tree_id": "2de20259d70df98e48ecbff9b189c4786e8f5b22",
+          "url": "https://github.com/umijs/umi/commit/9cfd768d07c1592525b57a93c7383c3c47c8f58a"
+        },
+        "date": 1602839720436,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 599,
+            "range": "±85.73%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1923,
+            "range": "±5.17%",
+            "unit": "ops/sec",
+            "extra": "36 samples"
           }
         ]
       }
