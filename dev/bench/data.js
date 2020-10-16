@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602596238450,
+  "lastUpdate": 1602819514680,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -11954,6 +11954,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.61%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "rockSandy@163.com",
+            "name": "rockSandy",
+            "username": "rockSandy"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "818a47478586489d0e5b206c8ced771d519b4875",
+          "message": "feat: support optional dynamic route (#5551)\n\n* feat: suppoert optional dynamic route\r\n\r\n* feat: update dynamic optional routing docs\r\n\r\n* feat: update symbol\r\n\r\n* feat: optimize code\r\n\r\n* feat: optimize code",
+          "timestamp": "2020-10-16T11:33:56+08:00",
+          "tree_id": "1919579441c1f26069308595242f4f89bc23b9a2",
+          "url": "https://github.com/umijs/umi/commit/818a47478586489d0e5b206c8ced771d519b4875"
+        },
+        "date": 1602819510821,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 576,
+            "range": "±82.94%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1836,
+            "range": "±6.02%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
