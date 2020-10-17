@@ -134,7 +134,7 @@ export default {
 }
 ```
 
-参数有，
+参数有：
 
 * memo，当前 webpack-chain对象
 * env，当前环境，`development`、`production` 或 `test` 等
