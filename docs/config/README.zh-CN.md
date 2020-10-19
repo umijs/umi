@@ -134,7 +134,7 @@ export default {
 }
 ```
 
-参数有，
+参数有：
 
 * memo，当前 webpack-chain对象
 * env，当前环境，`development`、`production` 或 `test` 等
@@ -367,7 +367,7 @@ if (false) {
 
 配置开发服务器。
 
-包含以下子配置项，
+包含以下子配置项：
 
 * port，端口号，默认 `8000`
 * host，默认 `0.0.0.0`
@@ -459,7 +459,7 @@ export default () => {
 
 如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
 
-包含以下几个属性，
+包含以下几个属性：
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
@@ -689,7 +689,7 @@ export default {
 
 配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md)。
 
-包含以下子配置项，
+包含以下子配置项：
 
 * type，可选 `browser`、`hash` 和 `memory`
 * options，传给 create{{{ type }}}History 的配置项，每个类型器的配置项不同
@@ -733,7 +733,7 @@ export default {
 
 配置是否需要生成额外用于描述产物的 manifest 文件，默认会生成 `asset-manifest.json`。
 
-包含以下子配置项，
+包含以下子配置项：
 
 * fileName，文件名，默认是 `asset-manifest.json`
 * publicPath，默认会使用 webpack 的 `output.publicPath` 配置
@@ -786,7 +786,7 @@ export default {
 
 配置 mock 属性。
 
-包含以下子属性，
+包含以下子属性：
 
 * exclude，格式为 `Array(string)`，用于忽略不需要走 mock 的文件
 
@@ -825,7 +825,7 @@ export default {
 
 设置 node\_modules 目录下依赖文件的编译方式。
 
-子配置项包含，
+子配置项包含：
 
 * `type`，类型，可选 `all` 和 `none`
 * `exclude`，忽略的依赖库，包名，暂不支持绝对路径
