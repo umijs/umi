@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1602839724450,
+  "lastUpdate": 1603074886138,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12030,6 +12030,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.17%",
             "unit": "ops/sec",
             "extra": "36 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xrkffgg@vip.qq.com",
+            "name": "xrk",
+            "username": "xrkffgg"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d1755a07331b9c8b90a6a1f7efa86ace67794429",
+          "message": "docs: fix punctuation typo (#5556)\n\n* docs: fix punctuation typo\r\n\r\n* docs: add more",
+          "timestamp": "2020-10-19T10:30:49+08:00",
+          "tree_id": "645aa83efa483b1bd7f5608f89e23110afd9a3f6",
+          "url": "https://github.com/umijs/umi/commit/d1755a07331b9c8b90a6a1f7efa86ace67794429"
+        },
+        "date": 1603074882818,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1231,
+            "range": "±2.96%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2272,
+            "range": "±5.11%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
