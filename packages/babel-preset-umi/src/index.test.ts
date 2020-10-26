@@ -121,7 +121,7 @@ test('typescript key remapping types', () => {
       typescript: true,
     },
   );
-  expect(code).toContain('');
+  expect(code).toContain('"use strict"');
 });
 
 test('dynamic import', () => {
