@@ -112,6 +112,18 @@ test('typescript with nest-injection', () => {
   );
 });
 
+test('typescript key remapping types', () => {
+  const code = transformWithPreset(
+    `type Options = {
+      [K in "noImplicitAny" | "strictNullChecks" | "strictFunctionTypes"]?: boolean
+    };`,
+    {
+      typescript: true,
+    },
+  );
+  expect(code).toContain('');
+});
+
 test('dynamic import', () => {
   const code = transformWithPreset(`import('./a');`, {});
   expect(code).toContain(`require('./a')`);
