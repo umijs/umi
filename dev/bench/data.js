@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1603681157428,
+  "lastUpdate": 1603875737274,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12144,6 +12144,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.22%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "65456108+Verena99@users.noreply.github.com",
+            "name": "Verena99",
+            "username": "Verena99"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6e54c00f130064c1cdbce05f4b88e4a354cf129b",
+          "message": "docs: 'output' was written as 'outpput' incorrectly (#5578)",
+          "timestamp": "2020-10-28T01:57:58-07:00",
+          "tree_id": "350b8b6807fe8bac4ee6442e6db1b9704819572a",
+          "url": "https://github.com/umijs/umi/commit/6e54c00f130064c1cdbce05f4b88e4a354cf129b"
+        },
+        "date": 1603875733314,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 646,
+            "range": "±90.44%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2062,
+            "range": "±5.18%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
