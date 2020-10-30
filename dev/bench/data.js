@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1603875737274,
+  "lastUpdate": 1604075570130,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12182,6 +12182,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.18%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "heshi.net288@hotmail.com",
+            "name": "KellenHe",
+            "username": "KellenHe"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1375dbfabaff7159360e2dae6a94b5805937b801",
+          "message": "Update config.zh-CN.md (#5574)\n\n指定UMI_ENV=cloud时，拿到的配置应该是\r\n{\r\n  a: 1,\r\n  b: 'cloud',\r\n  c: 'cloud',\r\n}",
+          "timestamp": "2020-10-30T09:28:45-07:00",
+          "tree_id": "3040ffe3cac1f791066c64fa0be735c707fdaa7c",
+          "url": "https://github.com/umijs/umi/commit/1375dbfabaff7159360e2dae6a94b5805937b801"
+        },
+        "date": 1604075566273,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1202,
+            "range": "±3.35%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2105,
+            "range": "±6.27%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
