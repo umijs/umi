@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604075570130,
+  "lastUpdate": 1604136365948,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12220,6 +12220,44 @@ window.BENCHMARK_DATA = {
             "range": "±6.27%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "318ab44c26c2cdc70b3062597058825f48f62b73",
+          "message": "chore: ci (#5599)\n\n* chore: ci\r\n\r\n* fix: azure-piplines\r\n\r\n* fix: lock\r\n\r\n* chore: maxworkers\r\n\r\n* fix: job\r\n\r\n* chore: command\r\n\r\n* chore: command\r\n\r\n* chore: commmand\r\n\r\n* chore: yml\r\n\r\n* chore: yarn lock",
+          "timestamp": "2020-10-31T02:22:07-07:00",
+          "tree_id": "b72c95fc7daa85d89faf69c21c66efb67b67b3ec",
+          "url": "https://github.com/umijs/umi/commit/318ab44c26c2cdc70b3062597058825f48f62b73"
+        },
+        "date": 1604136362343,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1224,
+            "range": "±2.87%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2371,
+            "range": "±4.30%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
