@@ -352,7 +352,7 @@ PORT=8081
    import { useModel } from 'umi';
    
    function MyPage() {
-     const masterProps = useModel('@@qiankunStateFromMaster');
+     const { masterState, setMasterState } = useModel('@@qiankunStateFromMaster');
      return <div>{ JSON.strigify(masterProps) }</div>;
    }
    ```
