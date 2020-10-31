@@ -24,7 +24,7 @@ jobs:
           command: yarn build
       - run:
           name: Run Tests
-          command: yarn test:coverage --forceExit --detectOpenHandles --runInBand --maxWorkers=1
+          command: yarn test:coverage --forceExit --detectOpenHandles --maxWorkers=4
           no_output_timeout: 300m
       - run:
           name: Generate coverage
