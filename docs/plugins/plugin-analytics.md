@@ -7,13 +7,13 @@ translateHelp: true
 
 Analytics for [Baidu Tongji](https://tongji.baidu.com/) and [Google Analytics](https://analytics.google.com/analytics/web/).
 
-## 启用方式
+## How to enable
 
-配置启用。
+Configuration is enabled.
 
-## 配置
+## Configuration
 
-比如：
+such as:
 
 ```javascript
 export default {
@@ -26,21 +26,21 @@ export default {
 
 ### ga
 
-Google 统计代码。
+Google statistics code.
 
 ### baidu
 
-百度统计代码。
+Baidu statistics code.
 
-比如 `hm.src = "https://hm.baidu.com/hm.js?5a66c03cxxxxxx554f2b9e13";`，那么这里应该配 `5a66c03cxxxxxx554f2b9e13`。
+For example, `hm.src = "https://hm.baidu.com/hm.js?5a66c03cxxxxxx554f2b9e13";`, then `5a66c03cxxxxxx554f2b9e13` should be configured here.
 
-## 百度事件跟踪
+## Baidu Event Tracking
 
-> 在 JS 中调用事件跟踪代码。 `window._hmt.push(['_trackEvent', category, action, opt_label, opt_value]);`
+> Call the event tracking code in JS. `window._hmt.push(['_trackEvent', category, action, opt_label, opt_value]);`
 
-| 参数 | 说明 |
+| Parameters | Description |
 | :-- | :-: |
-| category | 要监控的目标的类型名称，通常是同一组目标的名字，比如"视频"、"音乐"、"软件"、"游戏"等等。该项必填，不填、填"-"的事件会被抛弃。 |
-| action | 用户跟目标交互的行为，如"播放"、"暂停"、"下载"等等。该项必填，不填、填"-"的事件会被抛弃。 |
-| opt_label | 事件的一些额外信息，通常可以是歌曲的名称、软件的名称、链接的名称等等。该项选填，不填、填"-"代表此项为空。 |
-| opt_value | 事件的一些数值信息，比如权重、时长、价格等等，在报表中可以看到其平均值等数据。该项可选。 |
+| category | The type name of the target to be monitored, usually the name of the same group of targets, such as "video", "music", "software", "game" and so on. This item is required. Events that are not filled or filled with "-" will be discarded. |
+| action | The behavior of the user interacting with the target, such as "play", "pause", "download", etc. This item is required. Events that are left blank or filled with "-" will be discarded. |
+| opt_label | Some additional information about the event, usually the name of the song, the name of the software, the name of the link, etc. This item is optional, if it is not filled, or "-" means this item is empty. |
+| opt_value | Some numerical information of the event, such as weight, duration, price, etc. You can see the average value and other data in the report. This item is optional. |
