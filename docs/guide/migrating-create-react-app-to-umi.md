@@ -58,11 +58,11 @@ Move the page components to the [`src/pages`](/zh-CN/docs/convention-routing) di
 
 ![image](https://user-images.githubusercontent.com/11746742/89971217-3d969680-dc8d-11ea-8d4e-c60b1e9431ba.png)
 
-## [HTML template](/docs/html-template)
+## [HTML template](/zh-CN/docs/html-template)
 
 Transfer the content in `public/index.html` to `src/pages/document.ejs`.
 
-In create-react-app, the deployment path is obtained through `%PUBLIC_URL%`, while in umi, the value needs to be obtained through [`context`](/docs/html-template) template.
+In create-react-app, the deployment path is obtained through `%PUBLIC_URL%`, while in umi, the value needs to be obtained through [`context`](/zh-CN/docs/html-template) template.
 
 ```diff
 - <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
