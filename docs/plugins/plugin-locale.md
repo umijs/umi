@@ -49,7 +49,7 @@ export default {
 
 ### import from umi
 
-@umijs/plugin-locale is based on the react-intl package and supports all its apis. For details, please see [here](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api .md). In order to facilitate the use, we have also added some other functions, here will list all the api, and show its functions.
+@umijs/plugin-locale is based on the react-intl package and supports all its apis. For details, please see [here](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md). In order to facilitate the use, we have also added some other functions, here will list all the api, and show its functions.
 
 ### addLocale
 
@@ -298,4 +298,4 @@ export const locale = {
 
 ### Why not just use formatMessage as a syntactic sugar?
 
-Although formatMessage is very convenient to use, it is out of the life cycle of react. The most serious problem is that it cannot trigger dom to re-render when switching languages. In order to solve this problem, we refresh the browser when switching languages. The user experience is very poor, so it is recommended that you use [ʻuseIntl`](#useIntl) or [ʻinjectIntl`](https://github.com/formatjs/ formatjs/blob/main/website/docs/react-intl/api.md#injectintl-hoc) can achieve the same function.
+Although formatMessage is very convenient to use, it is out of the life cycle of react. The most serious problem is that it cannot trigger dom to re-render when switching languages. In order to solve this problem, we refresh the browser when switching languages. The user experience is very poor, so it is recommended that you use [ʻuseIntl`](#useIntl) or [ʻinjectIntl`](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md#injectintl-hoc) can achieve the same function.
