@@ -5,18 +5,18 @@ translateHelp: true
 # @umijs/plugin-crossorigin
 
 
-为所有非三方脚本加上 `crossorigin="anonymous"` 属性，通常用于统计脚本错误。
+Add the `crossorigin="anonymous"` attribute to all non-third party scripts, which is usually used to count script errors.
 
-## 启用方式
+## How to enable
 
-配置开启。
+The configuration is turned on.
 
-## 配置
+## Configuration
 
 * Type: `boolean`
 * Default: `false`
 
-比如：
+such as:
 
 ```js
 export default {
