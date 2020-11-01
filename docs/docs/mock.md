@@ -5,13 +5,13 @@ translateHelp: true
 # Mock Data
 
 
-Mock 数据是前端开发过程中必不可少的一环，是分离前后端开发的关键链路。通过预先跟服务器端约定好的接口，模拟请求数据甚至逻辑，能够让前端开发独立自主，不会被服务端的开发所阻塞。
+Mock data is an indispensable part of the front-end development process and a key link to separate the front-end and back-end development. Through pre-appointed interfaces with the server to simulate request data and even logic, front-end development can be independent and will not be blocked by server-side development.
 
-## 约定式 Mock 文件
+## Conventional Mock File
 
-Umi 约定 `/mock` 文件夹下所有文件为 mock 文件。
+Umi agrees that all files in the `/mock` folder are mock files.
 
-比如：
+such as:
 
 ```bash
 .
@@ -23,38 +23,38 @@ Umi 约定 `/mock` 文件夹下所有文件为 mock 文件。
         └── index.tsx
 ```
 
-`/mock` 下的 `api.ts` 和 `users.ts` 会被解析为 mock 文件。
+ʻapi.ts` and ʻusers.ts` under `/mock` will be parsed as mock files.
 
-## 编写 Mock 文件
+## Write mock file
 
-如果 `/mock/api.ts` 的内容如下，
+If the content of `/mock/api.ts` is as follows,
 
 ```js
 export default {
-  // 支持值为 Object 和 Array
-  'GET /api/users': { users: [1, 2] },
+  // Supported values ​​are Object and Array
+  'GET /api/users': {users: [1, 2] },
 
-  // GET 可忽略
-  '/api/users/1': { id: 1 },
+  // GET can be ignored
+  '/api/users/1': {id: 1 },
 
-  // 支持自定义函数，API 参考 express@4
+  // Support custom functions, API reference express@4
   'POST /api/users/create': (req, res) => {
-    // 添加跨域请求头
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Add cross-domain request header
+    res.setHeader('Access-Control-Allow-Origin','*');
     res.end('ok');
   },
 }
 ```
 
-然后访问 `/api/users` 就能得到 `{ users: [1,2] }` 的响应，其他以此类推。
+Then visit `/api/users` to get the response of `{ users: [1,2] }`, and so on.
 
-## 配置 Mock
+## Configure Mock
 
-详见[配置#mock](/config#mock)。
+See [Configuration#mock](/config#mock) for details.
 
-## 如何关闭 Mock？
+## How to turn off Mock?
 
-可以通过配置关闭，
+Can be closed by configuration,
 
 ```js
 export default {
@@ -62,17 +62,17 @@ export default {
 };
 ```
 
-也可以通过环境变量临时关闭，
+It can also be temporarily closed through environment variables,
 
 ```bash
 $ MOCK=none umi dev
 ```
 
-## 引入 Mock.js
+## Introduce Mock.js
 
-[Mock.js](http://mockjs.com/) 是常用的辅助生成模拟数据的三方库，借助他可以提升我们的 mock 数据能力。
+[Mock.js](http://mockjs.com/) is a commonly used third-party library to assist in generating simulation data. With the help of it, we can improve our mock data capabilities.
 
-比如：
+such as:
 
 ```js
 import mockjs from 'mockjs';
