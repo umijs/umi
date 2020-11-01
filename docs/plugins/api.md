@@ -112,8 +112,8 @@ api.registerCommand({
 
 Note:
 
--ʻAlias` is an alias, such as the alias g of generate
--The parameter of `fn` is `{ args }`, and the format of args is the same as the parsing result of [yargs](https://github.com/yargs/yargs). Note that the command itself in `_` is removed , Such as executing ʻumi generate page foo`, ʻargs._` is `['page','foo']`
+- ʻAlias` is an alias, such as the alias g of generate
+- The parameter of `fn` is `{ args }`, and the format of args is the same as the parsing result of [yargs](https://github.com/yargs/yargs). Note that the command itself in `_` is removed , Such as executing ʻumi generate page foo`, ʻargs._` is `['page','foo']`
 
 ### registerMethod({ name: string, fn?: Function, exitsError?: boolean })
 
@@ -129,8 +129,8 @@ api.registerMethod({
 
 Note:
 
--Except @umijs/preset-build-in, it is generally not recommended to register additional methods, because there is no ts prompt, just use ʻapi.register()` directly
--ʻExitsError` defaults to true, and an error is reported if the method exists
+- Except @umijs/preset-build-in, it is generally not recommended to register additional methods, because there is no ts prompt, just use ʻapi.register()` directly
+- ʻExitsError` defaults to true, and an error is reported if the method exists
 
 ### registerPresets(presets: string[])
 
