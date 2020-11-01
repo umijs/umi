@@ -141,4 +141,4 @@ const PageA = props => {
 };
 ```
 
-The return value of ʻuseAccess()` ʻaccess` is the set of permissions defined in the third step, which can be used to control the code execution flow in the component. The `<Access>` component has two attributes of ʻaccessible` and `fallback`. When ʻaccessible` is `true`, child components will be rendered, and when ʻaccessible` is `false`, `ReactNode corresponding to the `fallback` attribute will be rendered `.
+The return value of ʻuseAccess()` ʻaccess` is the set of permissions defined in the third step, which can be used to control the code execution flow in the component. The `<Access>` component has two attributes of ʻaccessible` and `fallback`. When ʻaccessible` is `true`, child components will be rendered, and when ʻaccessible` is `false`, `ReactNode corresponding to the `fallback` attribute will be rendered.
