@@ -147,18 +147,18 @@ export default {
               path: '/app1/user',
 	          component: './app1/user/index.js',
             },
-+            // 配置微应用 app1 关联的路由
-+            {
-+              path: '/app1/project',
-+              microApp: 'app1',
-+            },
+            // Configure the route associated with the micro application app1
+            {
+              path:'/app1/project',
+              microApp:'app1',
+            },
           ],
         },
-+       // 配置 app2 关联的路由
-+       {
-+         path: '/app2',
-+         microApp: 'app2'
-+       },
+        // Configure the route associated with app2
+        {
+          path: '/app2',
+          microApp: 'app2'
+        },
         {
           path: '/',
           component: './index.js',
@@ -581,8 +581,11 @@ v2.3.0 is fully compatible with versions prior to v2, but we still recommend tha
   ```
 
 - [] Unified runtime, aiming at multi-level nested micro application scenarios
+
 - [] Micro-applications automatically mountElementId, avoiding multiple umi sub-application mountElementId conflicts
+
 - [] Automatic loading
+
 - [] Local integrated development support
 
 ## Related
