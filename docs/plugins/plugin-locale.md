@@ -251,7 +251,7 @@ When visiting the page:
 
 Turn on browser language detection.
 
-By default, the current locale is recognized as follows: ʻumi_locale` value in `localStorage`> browser detection> default language set by [default](#default)> Chinese
+By default, the current locale is recognized as follows: ʻumi_locale` value in `localStorage` > browser detection > default language set by [default](#default)> Chinese. 
 
 ### Runtime configuration
 
@@ -278,9 +278,9 @@ export const locale = {
 
 Custom language switching logic. There are three parameters:
 
--lang: The language to be switched
--realReload: Whether the page needs to be refreshed, this is transparently transmitted by the page calling `setLocale(lang, true)`.
--updater: Whether it is necessary to forcibly update the internationalization status of the current component.
+- lang: The language to be switched
+- realReload: Whether the page needs to be refreshed, this is transparently transmitted by the page calling `setLocale(lang, true)`.
+- updater: Whether it is necessary to forcibly update the internationalization status of the current component.
 
 For example, according to the language to be switched, jump to the corresponding url:
 
