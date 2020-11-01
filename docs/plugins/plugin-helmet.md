@@ -5,22 +5,22 @@ translateHelp: true
 # @umijs/plugin-helmet
 
 
-整合 [react-helmet](https://github.com/nfl/react-helmet)，管理 HTML 文档标签（如标题、描述等）。
+Integrate [react-helmet](https://github.com/nfl/react-helmet) to manage HTML document tags (such as title, description, etc.).
 
-## 启用方式
+## How to enable
 
-默认开启。
+It is turned on by default.
 
-## 介绍
+## Introduction
 
-包含以下功能，
+Contains the following functions,
 
-1. 导出 [react-helmet](https://github.com/nfl/react-helmet#example) API，直接从 umi 中导入
-1. 支持[服务端渲染（SSR）](/zh-CN/docs/ssr)
+1. Export [react-helmet](https://github.com/nfl/react-helmet#example) API and import directly from umi
+1. Support [Server Rendering (SSR)](/zh-CN/docs/ssr)
 
 ![helmet](https://user-images.githubusercontent.com/13595509/82291009-b8c41580-99da-11ea-8d77-128f59a273e5.png)
 
-## 使用
+## Use
 
 ```js
 import React from 'react';
@@ -43,13 +43,13 @@ export default Application;
 
 ## FAQ
 
-### 标题闪一下没了
+### The title flashes and disappears
 
-react-helmet 与 umi 中的 title 配置不能同时使用，可以通过配置 `title: false` 关闭默认标题配置
+The title configuration in react-helmet and umi cannot be used at the same time, you can turn off the default title configuration by configuring `title: false`
 
-### 内容被编码
+### Content is encoded
 
-可配置 Helmet 组件属性 `encodeSpecialCharacters`，来关闭内容被编码
+Configurable Helmet component property ʻencodeSpecialCharacters` to close the content being encoded
 
 ```jsx
 <Helmet encodeSpecialCharacters={false}>
