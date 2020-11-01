@@ -8,7 +8,7 @@ const args = yParser(process.argv.slice(2));
 const command = args._[0];
 const docsDir = join(cwd, 'docs');
 
-// 以下文档已翻译，无需同步中文版为英文版
+// The following documents have been translated, no need to synchronize the Chinese version to the English version
 const DOC_SYNC_BLACKLIST = [
   'README.zh-CN.md',
   'docs/README.zh-CN.md',
