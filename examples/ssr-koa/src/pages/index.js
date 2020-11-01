@@ -26,7 +26,7 @@ const Home = (props) => {
           id: 'umi',
         })}
       </h2>
-      <Button onClick={changeLangs}>切换语言</Button>
+      <Button onClick={changeLangs}>Switch language</Button>
     </div>
   );
 };
