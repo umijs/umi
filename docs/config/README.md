@@ -47,7 +47,7 @@ Package module structure analysis tool, you can see the size of each module of t
 
 ```js
 {
-  // 配置具体含义见：https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
+  // See the specific meaning of configuration：https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
   analyze: {
     analyzerMode: 'server',
     analyzerPort: 8888,
@@ -342,7 +342,7 @@ note:
 
 The built-in defined attribute,
 
-* process.env.NODE\_ENV，值为 `development` 或 `production`
+* process.env.NODE\_ENV，Value is `development` or `production`
 
 If you have some code that you do not want to run in the generation environment, such as assertion judgment, you can do this,
 
@@ -445,7 +445,7 @@ Then create a new one in the src directory `Loading.tsx`，
 import React from 'react';
 
 export default () => {
-  return <div>加载中...</div>;
+  return <div>Loading...</div>;
 }
 ```
 
@@ -670,7 +670,7 @@ If you want to use additional attributes, you can use the object format，
 export default {
   headScripts: [
     { src: '/foo.js', defer: true },
-    { content: `alert('你好');`, charset: 'utf-8' },
+    { content: `alert('Hello there');`, charset: 'utf-8' },
   ],
 }
 ```
@@ -680,7 +680,7 @@ Will generate HTML，
 ```html
 <head>
   <script src="/foo.js" defer></script>
-  <script charset="utf-8">alert('你好');</script>
+  <script charset="utf-8">alert('Hello there');</script>
 </head>
 ```
 
@@ -1037,9 +1037,9 @@ Configure whether to enable server-side rendering, the configuration is as follo
 
 ```js
 {
-  // 一键开启
+  // One key to open
   ssr: {
-    // 更多配置
+    // More configuration
     // forceInitial: false,
     // removeWindowInitialProps: false
     // devServerRender: true,
