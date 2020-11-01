@@ -10,9 +10,7 @@ translateHelp: true
 
 ### applyPlugins({ key: string, type: api.ApplyPluginsType, initialValue?: any, args?: any })
 
-Obtain the data after the hooks registered by the register are executed.
-
-e.g.
+Obtain the data after the hooks registered by the register are executed. e.g.: 
 
 ```ts
 const foo = await api.applyPlugins({
@@ -25,9 +23,7 @@ console.log(foo); // ['a', 'b']
 
 ### describe({ id?: string, key?: string, config?: { default, schema, onChange } })
 
-The registration phase is executed to describe the id, key, configuration information, activation method, etc. of the plug-in or plug-in set.
-
-e.g.
+The registration phase is executed to describe the id, key, configuration information, activation method, etc. of the plug-in or plug-in set. e.g.: 
 
 ```ts
 api.describe({
@@ -52,9 +48,7 @@ Note:
 
 ### register({ key: string, fn: Function, pluginId?: string, before?: string, stage?: number })
 
-Register the hooks available for ʻapi.applyPlugins`.
-
-e.g.
+Register the hooks available for ʻapi.applyPlugins`. e.g.: 
 
 ```ts
 // 可同步
@@ -95,9 +89,7 @@ Note:
 
 ### registerCommand({ name: string, alias?: string, fn: Function })
 
-Register the command.
-
-e.g.
+Register the command. e.g.: 
 
 ```ts
 api.registerCommand({
@@ -134,9 +126,7 @@ Note:
 
 ### registerPresets(presets: string[])
 
-Register the plug-in set, the parameter is a path array.
-
-e.g.
+Register the plug-in set, the parameter is a path array. e.g.: 
 
 ```ts
 api.registerPresets([
@@ -179,9 +169,7 @@ api.hasPlugins(['@umijs/plugin-dva']);
 
 Determine whether a certain plug-in set is registered.
 
-The id rule of the plugin set,
-
-e.g.
+The id rule of the plugin set, e.g.: 
 
 ```ts
 // Determine if there is a registration @umijs/preset-ui
@@ -194,9 +182,7 @@ Note:
 
 ### skipPlugins(pluginIds: string[])
 
-Declare which plugins need to be disabled, and the parameter is an array of plugin id.
-
-e.g.
+Declare which plugins need to be disabled, and the parameter is an array of plugin id. e.g.: 
 
 ```ts
 // Disable plugin-dva plugin
@@ -209,9 +195,7 @@ A method extended by ʻapi.registerMethod()`.
 
 ### addBeforeMiddewares
 
-Middleware added before webpack compiler middleware, the return value format is express middleware.
-
-e.g.
+Middleware added before webpack compiler middleware, the return value format is express middleware. e.g.: 
 
 ```ts
 api.addBeforeMiddewares(() => {
@@ -241,9 +225,7 @@ api.addDepInfo((memo) => {
 
 ### addEntryCode
 
-Add code at the end of the entry file.
-
-e.g.
+Add code at the end of the entry file. e.g.: 
 
 ```ts
 api.addEntryCode(() => {
@@ -253,9 +235,7 @@ api.addEntryCode(() => {
 
 ### addEntryCodeAhead
 
-Add code at the beginning of the entry file (after import).
-
-e.g.
+Add code at the beginning of the entry file (after import). e.g.:
 
 ```ts
 api.addEntryCodeAhead(() => {
@@ -265,9 +245,7 @@ api.addEntryCodeAhead(() => {
 
 ### addEntryImports
 
-Add import after the existing import in the entry file.
-
-e.g.
+Add import after the existing import in the entry file. e.g.: 
 
 ```ts
 api.addEntryImport(() => {
@@ -282,9 +260,7 @@ api.addEntryImport(() => {
 
 ### addEntryImportsAhead
 
-Add import before the existing import of the entry file.
-
-e.g.
+Add import before the existing import of the entry file. e.g.: 
 
 ```ts
 api.addEntryImportsAhead(() => [{ source: 'anypackage' }]);
@@ -292,9 +268,7 @@ api.addEntryImportsAhead(() => [{ source: 'anypackage' }]);
 
 ### addHTMLMetas
 
-Add meta tags in HTML.
-
-e.g.
+Add meta tags in HTML. e.g.: 
 
 ```ts
 api.addHTMLMetas(() => {
@@ -308,9 +282,7 @@ api.addHTMLMetas(() => {
 
 ### addHTMLLinks
 
-Add the Link tag in the HTML.
-
-e.g.
+Add the Link tag in the HTML. e.g.: 
 
 ```ts
 api.addHTMLLinks(() => {
@@ -325,9 +297,7 @@ api.addHTMLLinks(() => {
 
 ### addHTMLStyles
 
-Add the Style tag to the HTML.
-
-e.g.
+Add the Style tag to the HTML. e.g.: 
 
 ```ts
 api.addHTMLStyles(() => {
@@ -339,9 +309,7 @@ api.addHTMLStyles(() => {
 
 ### addHTMLScripts
 
-Add script at the end of HTML.
-
-e.g.
+Add script at the end of HTML. e.g.: 
 
 ```ts
 api.addHTMLScript(() => {
@@ -357,9 +325,7 @@ api.addHTMLScript(() => {
 
 ### addHTMLHeadScripts
 
-Add script to the HTML head.
-
-e.g.
+Add script to the HTML head. e.g.: 
 
 ```ts
 api.addHTMLHeadScripts(() => {
@@ -375,9 +341,7 @@ api.addHTMLHeadScripts(() => {
 
 ### addMiddewares
 
-The middleware added after the webpack compiler middleware, the return value format is express middleware.
-
-e.g.
+The middleware added after the webpack compiler middleware, the return value format is express middleware. e.g.: 
 
 ```ts
 api.addMiddewares(async (ctx: Context, next: any) => {
@@ -389,9 +353,7 @@ api.addMiddewares(async (ctx: Context, next: any) => {
 
 ### addPolyfillImports
 
-Add supplementary related imports and execute them at the top of the entire application.
-
-e.g.
+Add supplementary related imports and execute them at the top of the entire application. e.g.: 
 
 ```ts
 api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
@@ -399,9 +361,7 @@ api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
 
 ### addProjectFirstLibraries
 
-Add a list of dependent libraries that give priority to project dependencies, and the return value is `{ name: string; path: string }`。
-
-e.g.
+Add a list of dependent libraries that give priority to project dependencies, and the return value is `{ name: string; path: string }`. e.g.: 
 
 ```ts
 api.addProjectFirstLibraries(() => ({
@@ -416,9 +376,7 @@ such as:
 
 ### addRuntimePlugin
 
-Add a runtime plug-in, and the return value format is a string representing the file path.
-
-e.g.
+Add a runtime plug-in, and the return value format is a string representing the file path. e.g.: 
 
 ```ts
 api.addRuntimePlugin(() => join(__dirname, './runtime'));
@@ -426,9 +384,7 @@ api.addRuntimePlugin(() => join(__dirname, './runtime'));
 
 ### addRuntimePluginKey
 
-Add the key of the runtime plug-in, and the return value format is a string.
-
-e.g.
+Add the key of the runtime plug-in, and the return value format is a string. e.g.: 
 
 ```ts
 api.addRuntimePluginKey(() => 'some');
@@ -459,9 +415,7 @@ api.addTmpGenerateWatcherPaths(() => [
 
 ### chainWebpack(config, { webpack })
 
-Modify the webpack configuration via [webpack-chain](https://github.com/neutrinojs/webpack-chain).
-
-such as:
+Modify the webpack configuration via [webpack-chain](https://github.com/neutrinojs/webpack-chain). Such as:
 
 ```ts
 api.chainWebpack((config, { webpack, env, createCSSRule }) => {
@@ -489,9 +443,7 @@ const Port = api.getPort()
 
 ### getHostname()
 
-Get hostname, valid when dev.
-
-e.g.
+Get hostname, valid when dev. e.g.: 
 
 ```ts
 const hostname = api.getHostname()
@@ -499,9 +451,7 @@ const hostname = api.getHostname()
 
 ### modifyBabelOpts
 
-Modify babel configuration items.
-
-e.g.
+Modify babel configuration items. e.g.: 
 
 ```ts
 api.modifyBabelOpts(babelOpts => {
@@ -519,9 +469,7 @@ api.modifyBabelOpts(babelOpts => {
 
 ### modifyBabelPresetOpts
 
-Modify the configuration items of @umijs/babel-preset-umi.
-
-e.g.
+Modify the configuration items of @umijs/babel-preset-umi. e.g.: 
 
 ```ts
 api.modifyBabelPresetOpts(opts => {
@@ -537,9 +485,7 @@ api.modifyBabelPresetOpts(opts => {
 
 ### modifyBundleConfig
 
-Modify the bundle configuration.
-
-e.g.
+Modify the bundle configuration. e.g.: 
 
 ```ts
 api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
@@ -555,9 +501,7 @@ parameter:
 
 ### modifyBundleConfigs
 
-Modify the bundle configuration array, for example, it can be used for dll and modern mode processing.
-
-e.g.
+Modify the bundle configuration array, for example, it can be used for dll and modern mode processing. e.g.: 
 
 ```ts
 api.modifyBundleConfigs(async (memo, { getConfig }) => {
@@ -571,9 +515,7 @@ parameter:
 
 ### modifyBundleConfigOpts
 
-Modify the function parameters to get bundleConfig.
-
-e.g.
+Modify the function parameters to get bundleConfig. e.g.: 
 
 ```ts
 api.modifyBundleConfigOpts(memo => {
@@ -587,9 +529,7 @@ api.modifyBundleConfigOpts(memo => {
 
 ### modifyBundleImplementor
 
-For example, it is used to switch to webpack@5 or others.
-
-e.g.
+For example, it is used to switch to webpack@5 or others. e.g.: 
 
 ```ts
 import webpack from 'webpack';
@@ -602,9 +542,7 @@ api.modifyBundleImplementor(() => {
 
 ### modifyBundler
 
-For example, it is used to switch to parcel or rollup for construction.
-
-e.g.
+For example, it is used to switch to parcel or rollup for construction. e.g.: 
 
 ```ts
 api.modifyBundler(() => {
@@ -614,9 +552,7 @@ api.modifyBundler(() => {
 
 ### modifyConfig
 
-Modify the final configuration。
-
-e.g.
+Modify the final configuration. e.g.: 
 
 ```ts
 api.modifyConfig((memo) => {
@@ -729,9 +665,7 @@ api.modifyProdHTMLContent(async (content, args) => {
 
 ### modifyPaths
 
-Modify the paths object.
-
-e.g.
+Modify the paths object. e.g.: 
 
 ```ts
 api.modifyPaths(async (paths) => {
@@ -745,9 +679,7 @@ parameter:
 
 ### modifyRendererPath
 
-Modify the renderer path to use a custom renderer.
-
-e.g.
+Modify the renderer path to use a custom renderer. e.g.: 
 
 ```ts
 api.modifyRendererPath(() => {
@@ -757,9 +689,7 @@ api.modifyRendererPath(() => {
 
 ### modifyPublicPathStr
 
-Modify the publicPath string.
-
-e.g.
+Modify the publicPath string. e.g.: 
 
 ```ts
 api.modifyPublicPathStr(() => {
@@ -777,9 +707,7 @@ Note:
 
 ### modifyRoutes
 
-Modify routing.
-
-e.g.
+Modify routing. e.g.: 
 
 ```ts
 api.modifyRoutes((routes: any[]) => {
@@ -918,9 +846,7 @@ api.onPluginReady(() => {
 
 ### onStart()
 
-Triggered before the command registration function is executed. You can use config and paths.
-
-e.g.
+Triggered before the command registration function is executed. You can use config and paths. e.g.: 
 
 ```ts
 api.onStart(() => {
@@ -998,9 +924,7 @@ The current path.
 
 ### env
 
-That is process.env.NODE_ENV, there may be `development`, `production` and `test`.
-
-such as,
+That is process.env.NODE_ENV, there may be `development`, `production` and `test`. Such as,
 
 - Command line ʻumi dev --foo`, args is `{ _: [], foo: true }`
 - Command line ʻumi g page index --typescript --less`, args is `{ _: ['page','index'], typescript: true, less: true }`
@@ -1066,7 +990,7 @@ Pure user configuration is the content in `.umirc` or `config/config`, without a
 
 Note:
 
--The difference with config is that you can get it during the registration phase
+- The difference with config is that you can get it during the registration phase
 
 ### utils
 
@@ -1129,23 +1053,23 @@ Types of
 
 Note:
 
--In principle, methods with similar functions are not allowed to use other methods to reduce the overall size, such as got for requests and yargs for parameter processing
--When writing a plug-in, in addition to ʻapi.utils`, it can also be accessed through ʻimport {utils} from'umi'`, usually used for files that are not the main entrance of the plug-in
+- In principle, methods with similar functions are not allowed to use other methods to reduce the overall size, such as got for requests and yargs for parameter processing
+- When writing a plug-in, in addition to ʻapi.utils`, it can also be accessed through ʻimport {utils} from'umi'`, usually used for files that are not the main entrance of the plug-in
 
 ### ApplyPluginsType
 
 Provide the type of type parameter for ʻapi.applyPlugins()`, including three types:
 
--add
--modify
--event
+- add
+- modify
+- event
 
 ### ConfigChangeType
 
 Provide config.onChange type for ʻapi.describe()`, currently contains two types:
 
--restart, restart the dev process, the default is this
--regenerateTmpFiles, regenerate temporary files
+- restart, restart the dev process, the default is this
+- regenerateTmpFiles, regenerate temporary files
 
 ### EnableBy
 
@@ -1165,5 +1089,5 @@ The enumeration type of `stage` is usually used for comparison with `stage`.
 
 Environment variables that can be used.
 
--UMI_VERSION, umi version number
--UMI_DIR, the folder path where ʻumi/package.json` is located
+- UMI_VERSION, umi version number
+- UMI_DIR, the folder path where ʻumi/package.json` is located
