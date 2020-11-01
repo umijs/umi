@@ -51,7 +51,7 @@ Note:
 Register the hooks available for ʻapi.applyPlugins`. e.g.: 
 
 ```ts
-// 可同步
+// Synchronous
 api.register({
   key: 'foo',
   fn() {
@@ -59,7 +59,7 @@ api.register({
   },
 });
 
-// 可异步
+// Can be asynchronous
 api.register({
   key: 'foo',
   async fn() {
