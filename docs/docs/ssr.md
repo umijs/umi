@@ -2,60 +2,60 @@
 translateHelp: true
 ---
 
-# 服务端渲染（SSR）
+# Server rendering (SSR)
 
 
-## 什么是服务端渲染？
+## What is server-side rendering?
 
-> 首先我们先了解下，以及是否符合我们的业务场景，再决定是否需要使用。
+> First, we first understand and whether it is in line with our business scenario, and then decide whether to use it.
 
-服务端渲染（Server-Side Rendering），是指由**服务侧**完成页面的 HTML 结构拼接的页面处理技术，发送到浏览器，然后为其绑定状态与事件，成为完全可交互页面的过程。
+Server-Side Rendering refers to the page processing technology where the HTML structure of the page is spliced ​​on the **server side**, sent to the browser, and then bound to the state and events to become a fully interactive page process.
 
-这么讲可能比较学术，那通过两张图来更容易地说清楚。
+This may be more academic, but it will be easier to make it clear through two pictures.
 
-第一张，单页应用（SPA）和服务端渲染过的（SSR）站点在**社交分享**时的区别：
+The first is the difference between a single-page application (SPA) and a server-side rendered (SSR) site in **social sharing**:
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png" width="600" />
 
 
-第二张，**白屏时间**上 SSR 较少，因为当 HTML 文档返回时，已经有对应的内容。（见 Network）
+In the second picture, there is less SSR on the **white screen time** because when the HTML document returns, there is already corresponding content. (See Network)
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80308316-e74a3880-8800-11ea-9a20-2d9d153fe9d1.png" />
 
-综上两图可知，SSR 常用于以下两个场景：
+Based on the above two figures, SSR is often used in the following two scenarios:
 
-1. 有 **SEO 诉求**，用在搜索引擎检索以及社交分享，用在前台类应用。
-1. **首屏渲染**时长有要求，常用在移动端、弱网情况下。
+1. There are **SEO requirements**, used in search engine retrieval and social sharing, used in front-end applications.
+1. **First screen rendering** time is required, usually in mobile terminal and weak network conditions.
 
-> 也就是说，如果你是中后台应用（如 antd pro、管理后台等），请谨慎考虑是否使用 SSR。
+> In other words, if you are a mid-to-back-end application (such as antd pro, back-end management, etc.), please carefully consider whether to use SSR.
 
-## 什么是预渲染？
+## What is pre-rendering?
 
-服务端渲染，首先得有后端服务器（一般是 Node.js）才可以使用，如果我没有后端服务器，也想用在上面提到的两个场景，那么推荐使用**预渲染**。
+Server-side rendering requires a back-end server (usually Node.js) before it can be used. If I don't have a back-end server and want to use the two scenarios mentioned above, then **pre-rendering** is recommended.
 
-预渲染与服务端渲染唯一的不同点在于**渲染时机**，服务端渲染的时机是在用户访问时执行渲染（即**实时渲染**，数据一般是最新的），预渲染的时机是在项目构建时，当用户访问时，数据不是一定是最新的（如果数据没有实时性，则可以直接考虑预渲染）。
+The only difference between pre-rendering and server-side rendering is **rendering timing**, the timing of server-side rendering is to perform rendering when the user visits (ie **real-time rendering**, the data is generally the latest), and the timing of pre-rendering When the project is built, when the user accesses it, the data is not necessarily the latest (if the data is not real-time, you can directly consider pre-rendering).
 
-预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 HTML 文件。无需使用 web 服务器实时动态编译 HTML，适用于**静态站点生成**。
+Pre Render performs rendering during construction and generates static HTML files from rendered HTML fragments. No need to use web server to dynamically compile HTML in real time, suitable for **static site generation**.
 
-## Umi 服务端渲染特性
+## Umi server rendering features
 
-> 早在 Umi 2.8+ 版本时，Umi 已具备 SSR 能力，只是使用上对新手而言，门槛较高。
+> As early as the Umi 2.8+ version, Umi already has SSR capabilities, but for novices, the threshold is higher.
 
-Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的提升，具有以下特性：
+Umi 3 combines its own business scenarios to do a lot of optimization and development experience improvement on SSR, with the following features:
 
-- **开箱即用**：内置 SSR，一键开启，`umi dev` 即 SSR 预览，开发调试方便。
-- **服务端框架无关**：Umi 不耦合服务端框架（例如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)），无论是哪种框架或者 Serverless 模式，都可以非常简单进行集成。
-- **支持应用和页面级数据预获取**：Umi 3 中延续了 Umi 2 中的页面数据预获取（getInitialProps），来解决之前全局数据的获取问题。
-- **支持按需加载**：按需加载 `dynamicImport` 开启后，Umi 3 中会根据不同路由加载对应的资源文件（css/js）。
-- **内置预渲染功能**：Umi 3 中内置了预渲染功能，不再通过安装额外插件使用，同时开启 `ssr` 和 `exportStatic`，在 `umi build` 构建时会编译出渲染后的 HTML。
-- **支持渲染降级**：优先使用 SSR，如果服务端渲染失败，自动降级为客户端渲染（CSR），不影响正常业务流程。
-- **支持流式渲染**：`ssr: { mode: 'stream' }` 即可开启流式渲染，流式 SSR 较正常 SSR 有更少的 [TTFB](https://baike.baidu.com/item/TTFB)（发出页面请求到接收到应答数据第一个字节所花费的毫秒数） 时间。
-- **兼容客户端动态加载**：在 Umi 2 中同时使用 SSR 和 dynamicImport（动态加载）会有一些问题，在 Umi 3 中可同时开启使用。
-- **SSR 功能插件化**：Umi 3 内置的 SSR 功能基本够用，若不满足需求或者想自定义渲染方法，可通过提供的 API 来自定义。
+-**Out of the box**: Built-in SSR, one key to open, ʻumi dev` is SSR preview, convenient for development and debugging. 
+-**Server-side framework independent**: Umi does not couple server-side frameworks (for example, [Egg.js](https://eggjs.org/), [Express](https://expressjs.com/), [Koa ](https://koajs.com/)), no matter which framework or serverless mode, it can be integrated very easily.
+-**Support application and page-level data pre-acquisition**: Umi 3 continues the page data pre-acquisition (getInitialProps) in Umi 2 to solve the previous global data acquisition problem.
+-**Support on-demand loading**: On-demand loading of `dynamicImport` is enabled, Umi 3 will load the corresponding resource files (css/js) according to different routes.
+-**Built-in pre-rendering function**: Umi 3 has a built-in pre-rendering function, which is no longer used by installing additional plug-ins. At the same time, enable `ssr` and ʻexportStatic`, and the rendered image will be compiled when ʻumi build` is built. HTML.
+-**Support rendering degradation**: SSR is preferred. If server-side rendering fails, it will be automatically downgraded to client-side rendering (CSR) without affecting normal business processes.
+-**Support streaming rendering**: `ssr: {mode:'stream' }` to enable streaming rendering, streaming SSR has less [TTFB](https://baike.baidu. com/item/TTFB) (the number of milliseconds it takes from sending a page request to receiving the first byte of the response data) time.
+-**Compatible with client dynamic loading**: Using SSR and dynamicImport (dynamic loading) at the same time in Umi 2 will cause some problems, and Umi 3 can be used at the same time.
+-**SSR function plug-in**: The built-in SSR function of Umi 3 is basically sufficient. If you do not meet your needs or want to customize the rendering method, you can customize it through the provided API.
 
-## 启用服务端渲染
+## Enable server-side rendering
 
-默认情况下，服务端渲染功能是关闭的，你需要在使用之前通过配置开启：
+By default, the server-side rendering function is disabled, you need to enable it through configuration before using:
 
 ```js
 export default {
