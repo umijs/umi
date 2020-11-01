@@ -227,4 +227,4 @@ Ran all test suites.
 ✨  Done in 14.01s.
 ```
 
-The complete code of this example is in [umi-plugin-main-path](https://github.com/alitajs/umi-plugin-main-path)。
+The complete code of this example is in [umi-plugin-main-path](https://github.com/alitajs/umi-plugin-main-path). 
