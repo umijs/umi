@@ -5,12 +5,12 @@ translateHelp: true
 # @umijs/plugin-preact
 
 
-切换 react 为 preact。
+Switch react to preact.
 
-## 启用方式
+## How to enable
 
-默认开启。
+It is turned on by default.
 
-## 注意
+## Note
 
-* 你使用的 ui 库可能不兼容 preact，比如 antd
+* The ui library you use may not be compatible with preact, such as antd
