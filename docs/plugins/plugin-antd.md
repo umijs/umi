@@ -5,40 +5,40 @@ translateHelp: true
 # @umijs/plugin-antd
 
 
-整合 antd 组件库。
+Integrate antd component library.
 
-## 启用方式
+## How to enable
 
-配置开启。
+The configuration is turned on.
 
-## 介绍
+## Introduction
 
-包含以下功能，
+Contains the following functions,
 
-1. 内置 [antd](https://ant.design/)，目前内置版本是 `^4.0.0`
-2. 内置 [antd-mobile](https://mobile.ant.design/)，目前内置版本是 `^2.3.1`
-2. 基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
-3. 使用 antd@4 时，可一键切换为暗色主题，见下图
+1. Built-in [antd](https://ant.design/), the current built-in version is `^4.0.0`
+2. Built-in [antd-mobile](https://mobile.ant.design/), the current built-in version is `^2.3.1`
+2. Compile on demand based on [babel-plugin-import](https://github.com/ant-design/babel-plugin-import)
+3. When using antd@4, you can switch to the dark theme with one click, see the picture below
 
 ![](https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*mYU9R4YFxscAAAAAAAAAAABkARQnAQ)
 
-## 配置
+## Configuration
 
 ### dark
 
-开启暗色主题。
+Turn on dark theme.
 
 * Type: `boolean`
 * Default: `false`
 
 ### compact
 
-开启紧凑主题。
+Open compact theme.
 
 * Type: `boolean`
 * Default: `false`
 
-比如：
+such as:
 
 ```js
 export default {
@@ -49,18 +49,18 @@ export default {
 }
 ```
 
-启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
+Enable dark theme, only supported when antd uses version 4. Compact themes are supported when ʻantd@>4.1.0`.
 
 ### config
 
-使用 antd 的全局化配置。
+Use antd's global configuration.
 
-* Type: `object`
+* Type: ʻobject`
 * Default: `{}`
 
-支持 [ConfigProvider](https://ant.design/components/config-provider-cn/) 的配置。
+Support the configuration of [ConfigProvider](https://ant.design/components/config-provider-cn/).
 
-比如：
+such as:
 
 ```js
 export default {
@@ -71,7 +71,8 @@ export default {
   },
 }
 ```
-#### 运行时配置
+
+### Runtime configuration
 
 ##### antd
 
@@ -86,10 +87,10 @@ export const antd = {
 
 ## FAQ
 
-### 如何使用 antd 的其他版本？
+### How to use other versions of antd?
 
-在项目中显式安装 antd 依赖。
+Explicitly install antd dependencies in the project.
 
-### 没有 TypeScript 提示怎么办？
+### What if there is no TypeScript prompt?
 
-在项目中安装 antd 依赖。
+Install antd dependencies in the project.
