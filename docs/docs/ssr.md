@@ -43,15 +43,15 @@ Pre Render performs rendering during construction and generates static HTML file
 
 Umi 3 combines its own business scenarios to do a lot of optimization and development experience improvement on SSR, with the following features:
 
--**Out of the box**: Built-in SSR, one key to open, ʻumi dev` is SSR preview, convenient for development and debugging. 
--**Server-side framework independent**: Umi does not couple server-side frameworks (for example, [Egg.js](https://eggjs.org/), [Express](https://expressjs.com/), [Koa ](https://koajs.com/)), no matter which framework or serverless mode, it can be integrated very easily.
--**Support application and page-level data pre-acquisition**: Umi 3 continues the page data pre-acquisition (getInitialProps) in Umi 2 to solve the previous global data acquisition problem.
--**Support on-demand loading**: On-demand loading of `dynamicImport` is enabled, Umi 3 will load the corresponding resource files (css/js) according to different routes.
--**Built-in pre-rendering function**: Umi 3 has a built-in pre-rendering function, which is no longer used by installing additional plug-ins. At the same time, enable `ssr` and ʻexportStatic`, and the rendered image will be compiled when ʻumi build` is built. HTML.
--**Support rendering degradation**: SSR is preferred. If server-side rendering fails, it will be automatically downgraded to client-side rendering (CSR) without affecting normal business processes.
--**Support streaming rendering**: `ssr: {mode:'stream' }` to enable streaming rendering, streaming SSR has less [TTFB](https://baike.baidu. com/item/TTFB) (the number of milliseconds it takes from sending a page request to receiving the first byte of the response data) time.
--**Compatible with client dynamic loading**: Using SSR and dynamicImport (dynamic loading) at the same time in Umi 2 will cause some problems, and Umi 3 can be used at the same time.
--**SSR function plug-in**: The built-in SSR function of Umi 3 is basically sufficient. If you do not meet your needs or want to customize the rendering method, you can customize it through the provided API.
+- **Out of the box**: Built-in SSR, one key to open, ʻumi dev` is SSR preview, convenient for development and debugging. 
+- **Server-side framework independent**: Umi does not couple server-side frameworks (for example, [Egg.js](https://eggjs.org/), [Express](https://expressjs.com/), [Koa ](https://koajs.com/)), no matter which framework or serverless mode, it can be integrated very easily.
+- **Support application and page-level data pre-acquisition**: Umi 3 continues the page data pre-acquisition (getInitialProps) in Umi 2 to solve the previous global data acquisition problem.
+- **Support on-demand loading**: On-demand loading of `dynamicImport` is enabled, Umi 3 will load the corresponding resource files (css/js) according to different routes.
+- **Built-in pre-rendering function**: Umi 3 has a built-in pre-rendering function, which is no longer used by installing additional plug-ins. At the same time, enable `ssr` and ʻexportStatic`, and the rendered image will be compiled when ʻumi build` is built. HTML.
+- **Support rendering degradation**: SSR is preferred. If server-side rendering fails, it will be automatically downgraded to client-side rendering (CSR) without affecting normal business processes.
+- **Support streaming rendering**: `ssr: {mode:'stream' }` to enable streaming rendering, streaming SSR has less [TTFB](https://baike.baidu. com/item/TTFB) (the number of milliseconds it takes from sending a page request to receiving the first byte of the response data) time.
+- **Compatible with client dynamic loading**: Using SSR and dynamicImport (dynamic loading) at the same time in Umi 2 will cause some problems, and Umi 3 can be used at the same time.
+- **SSR function plug-in**: The built-in SSR function of Umi 3 is basically sufficient. If you do not meet your needs or want to customize the rendering method, you can customize it through the provided API.
 
 ## Enable server-side rendering
 
