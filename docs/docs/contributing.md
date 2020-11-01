@@ -18,10 +18,10 @@ Refer to [CONTRIBUTING document](https://github.com/umijs/plugins/blob/master/CO
 Add `debugger` to the umi code, then execute the following command (make sure to execute `yarn build -w` to compile the source code)
 
 ```bash
-# 调试 umi dev
+# debugging umi dev
 $ yarn debug examples/normal dev
 
-# 调试 umi build
+# debugging umi build
 $ yarn debug examples/normal build
 ```
 
