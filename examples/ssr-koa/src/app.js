@@ -2,11 +2,11 @@ import { isBrowser, setLocale } from 'umi';
 import { setCookie, getCookie } from './utils/cookie';
 
 /**
- *  在运行时扩展语言plugin，语言顺序，cookie > 浏览器默认语言 > 默认语言
- *  切换语言时会同时设置localStorage 和cookie，key保持一致。
- *  封装好了cookie方法，同时适用于服务端和客户端，客户端取cookie的方法
- *  见serverHelper.js，只是将koa的方法进行扩展，koa试用请自行学习
- *  客户端获取cookie的方法见utils/cookie
+ * Expand language plugin, language order, cookie at runtime> browser default language> default language
+ * When switching languages, localStorage and cookies will be set at the same time, and the keys will remain the same.
+ * The cookie method is encapsulated, and it is suitable for both the server and the client, and the method for the client to get the cookie
+ * See serverHelper.js, just expand the koa method, please learn by yourself for koa trial
+ * Please refer to utils/cookie for the method of client obtain cookie
  *
  */
 export const locale = {
@@ -17,10 +17,10 @@ export const locale = {
         ? 'zh-CN'
         : 'en-US';
       /**
-       *  最后默认是中文，这里可以根据自身项目需要修改
-       *  或者可以将locale单独定义一个config，即给umirc
-       *  也可以导入到这里，赋值给默认语言，这样修改一个地方
-       *  就可以完成默认语言的修改
+       * The final default is Chinese, here you can modify it according to your own project needs
+       * Or you can define a config for locale separately, that is, give umirc
+       * You can also import it here, assign it to the default language, and modify a place like this
+       * You can complete the modification of the default language
        *
        */
       lang = getCookie('umi_locale') || navigatorLang || 'zh-CN';
@@ -31,11 +31,11 @@ export const locale = {
   },
   setLocale({ lang, realReload = false, updater }) {
     if (!isBrowser()) {
-      console.error('---------设置语音失败非浏览器环境--------');
+      console.error('---------Setting voice failed in non-browser environment--------');
       return;
     }
     if (!lang) {
-      console.error('---------必须输入要切换的语言，否则无法切换--------');
+      console.error('---------The language to be switched must be entered, otherwise it cannot be switched--------');
       return;
     }
     localStorage.setItem('umi_locale', lang);
