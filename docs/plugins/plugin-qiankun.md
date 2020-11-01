@@ -8,21 +8,21 @@ Umi plugin for [qiankun](https://github.com/umijs/qiankun).
 
 [![NPM version](https://img.shields.io/npm/v/@umijs/plugin-qiankun.svg?style=flat)](https://npmjs.org/package/@umijs/plugin-qiankun) [![Build Status](https://img.shields.io/travis/umijs/umi-plugin-qiankun.svg?style=flat)](https://travis-ci.org/umijs/umi-plugin-qiankun) [![NPM downloads](http://img.shields.io/npm/dm/@umijs/plugin-qiankun.svg?style=flat)](https://npmjs.org/package/@umijs/plugin-qiankun)
 
-## 启用方式
+## How to enable
 
 1. ```shell
    yarn add @umijs/plugin-qiankun -D
    ```
 
-2. 配置 `qiankun` 开启。
+2. Configure `qiankun` to open.
 
-## 介绍
+## Introduction
 
-Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模式。 
+Umi application opens [qiankun](https://github.com/umijs/qiankun) micro-frontend mode with one click.
 
 ## Examples
 
-导航是主应用，App1/App2 是子应用，App1/App2 也支持单独打开。主应用可以嵌套 APP1 和 APP2，App1 也可以嵌套 App2。
+Navigation is the main application, App1/App2 are sub-applications, and App1/App2 can also be opened separately. The main application can nest APP1 and APP2, and App1 can also nest App2.
 
 ![](https://gw.alipayobjects.com/mdn/rms_655822/afts/img/A*TroZSp_cH0MAAAAAAAAAAAAAARQnAQ)
 
@@ -34,36 +34,36 @@ $ cd packages/plguin-qiankun && yarn start
 
 ## Features
 
-- ✔︎ 基于 qiankun
-- ✔︎ 支持主应用和子应用都用 umi
-- ✔︎ 支持通过 `<MicroApp />` 组件引入子应用
-- ✔︎ 父子应用通讯
-- ✔︎ 子应用运行时配置自定义 `bootstrap()`、`mount()` 和 `unmount()`
-- ✔︎ 主应用、子应用联调
-- ✔︎ 嵌套子应用
+- ✔︎ Based on qiankun
+- ✔︎ Support the main application and sub-applications to use umi
+- ✔︎ Support the introduction of sub-applications through the `<MicroApp />` component
+- ✔︎ Father-son app communication
+- ✔︎ Customize `bootstrap()`, `mount()` and ʻunmount()` when sub-application is running
+- ✔︎ Joint debugging of main application and sub-application
+- ✔︎ Nested sub-applications
 
 ## Usage
 
-### 主应用配置
+### Main application configuration
 
-#### 第一步：注册子应用
+#### Step 1: Register sub-application
 
-子应用注册有两种方式，**二选一即可**
+There are two ways to register sub-applications, **choose one of the two**
 
-##### a. 插件构建期配置子应用
+##### a. Configure sub-applications during plugin construction
 
 ```js
 export default {
   qiankun: {
     master: {
-      // 注册子应用信息
+      // Register sub-application information
       apps: [
         {
-          name: 'app1', // 唯一 id
-          entry: '//localhost:7001', // html entry
+          name:'app1', // unique id
+          entry:'//localhost:7001', // html entry
         },
         {
-          name: 'app2', // 唯一 id
+          name:'app2', // unique id
           entry: '//localhost:7002', // html entry
         },
       ],
@@ -72,36 +72,36 @@ export default {
 };
 ```
 
-##### b. 运行时动态配置子应用（src/app.ts 里开启）
+##### b. Dynamic configuration of sub-applications at runtime (open in src/app.ts)
 
 ```js
-// 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
+// Obtain the sub-application configuration from the interface, the qiankun variable exported is a promise
 export const qiankun = fetch('/config').then(({ apps }) => ({
-  // 注册子应用信息
+  // Register sub-application information
   apps,
-  // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
+  // Please see https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles for complete lifecycle hooks
   lifeCycles: {
     afterMount: props => {
       console.log(props);
     },
   },
-  // 支持更多的其他配置，详细看这里 https://qiankun.umijs.org/zh/api/#start-opts
+  // Support more other configurations, see here for details https://qiankun.umijs.org/zh/api/#start-opts
 }));
 ```
 
-完整的主应用配置项看这里 [masterOptions 配置列表](#masterOptions)
+For the complete master application configuration items, see here [masterOptions configuration list](#masterOptions)
 
-#### 第二步：装载子应用
+#### Step 2: Load the sub-application
 
-子应用的装载有两种方式，**二选一即可：**
+There are two ways to load sub-applications, **choose one of the two:**
 
-##### <a name="RouteBased">a. 使用路由绑定的方式</a>
+##### <a name="RouteBased">a. Use routing binding method</a>
 
 <Alert type="info">
-建议使用这种方式来引入自带路由的子应用。
+  It is recommended to use this method to import sub-applications with their own routes.  
 </Alert>
 
-假设我们的系统之前有这样的一些路由：
+Suppose our system has some routes like this before:
 
 ```js
 export default {
@@ -130,7 +130,7 @@ export default {
 }
 ```
 
-我们现在想在 `/app1/project` 和 `/app2` 这两个路径时分别加载微应用 app1 和 app2，只需要增加这样一些配置即可：
+We now want to load the micro-applications app1 and app2 in the two paths `/app1/project` and `/app2`, respectively. We only need to add some configurations like this:
 
 ```diff
 export default {
@@ -169,14 +169,14 @@ export default {
 }
 ```
 
-##### b. <a name="MicroApp">使用 `<MicroApp />` 组件的方式</a>
+##### b. <a name="MicroApp">How to use the `<MicroApp />` component</a>
 
 <Alert type="info">
-建议使用这种方式来引入不带路由的子应用。
-否则请自行关注微应用依赖的路由跟当前浏览器 url 是否能正确匹配上，否则很容易出现微应用加载了，但是页面没有渲染出来的情况。
+  It is recommended to use this method to import sub-applications without routing.
+  Otherwise, please pay attention to whether the route that the micro-app depends on can correctly match the current browser url, otherwise it is easy for the micro-app to load, but the page is not rendered.
 </Alert>
 
-我们可以直接使用 React 标签的方式加载我们已注册过的子应用：
+We can directly use React tags to load the sub-applications we have registered:
 
 ```diff
 import { MicroApp } from 'umi';
@@ -193,9 +193,9 @@ export function MyPage() {
 }
 ```
 
-##### loading 动画与组件样式
+##### loading animation and component style
 
-你可以通过配置 `autoSetLoading` 的方式，开启微应用的 loading 动画。
+You can turn on the loading animation of the micro application by configuring ʻautoSetLoading`.
 
 ```jsx
 import { MicroApp } from 'umi';
@@ -212,9 +212,9 @@ export function MyPage() {
 }
 ```
 
-默认情况下，当我们检测到你使用的是 antd 组件库时，loading 动画使用的是 antd Spin 组件。
+By default, when we detect that you are using the antd component library, the loading animation uses the antd Spin component.
 
-如果你需要定制自己的 loading 动画，或者修改组件的样式，你可以这样处理：
+If you need to customize your own loading animation, or modify the style of a component, you can handle it like this:
 
 ```jsx
 import { MicroApp } from 'umi';
@@ -226,11 +226,11 @@ export function MyPage() {
       <MicroApp
         name="app1"
         autoSetLoading
-        // 设置自定义 loading 动画
+        // Set up custom loading animation
         loader={loading => <div>loading: {loading}</div>}
-        // 微应用容器 class
+        // Micro application container class
         className="myContainer"
-        // wrapper class，仅开启 loading 动画时生效
+        // wrapper class, only takes effect when loading animation is turned on
         wrapperClassName="myWrapper"
       />
     </div>
@@ -238,7 +238,7 @@ export function MyPage() {
 }
 ```
 
-路由模式下，你可以这样设置一些静态配置开启 loading 动画：
+In routing mode, you can set some static configuration to enable loading animation like this:
 
 ```js
 {
@@ -252,7 +252,7 @@ export function MyPage() {
 }
 ```
 
-或者，你可以通过设置 autoSetLoading false 来关闭自动的 loading 动画：
+Or, you can turn off the automatic loading animation by setting autoSetLoading false:
 
 ```tsx
 import { MicroApp } from 'umi';
@@ -264,7 +264,7 @@ export function MyPage() {
       <div>
          <MicroApp 
            name="app1"
-           // 关闭 loading 动画
+           // Close the loading animation
            autoSetLoading={false}
          />
       </div>
@@ -273,11 +273,9 @@ export function MyPage() {
 }
 ```
 
+### Sub-application configuration
 
-
-### 子应用配置
-
-#### 第一步：插件注册（config.js）
+#### The first step: plug-in registration (config.js)
 
 ```js
 export default {
@@ -287,48 +285,48 @@ export default {
 }
 ```
 
-#### 第二步：配置运行时生命周期钩子（可选）
+#### Step 2: Configure runtime lifecycle hooks (optional)
 
-如果你需要在子应用的生命周期期间加一些自定义逻辑，可以在子应用的 `src/app.ts` 里导出 `qiankun` 对象，并实现每一个生命周期钩子，其中钩子函数的入参 `props` 由主应用自动注入。
+If you need to add some custom logic during the life cycle of the sub-application, you can export the `qiankun` object in the `src/app.ts` of the sub-application, and implement each life cycle hook, where the hook function's input parameters` props` is automatically injected by the main application.
 
 ```js
 export const qiankun = {
-  // 应用加载之前
+  // Before the application loads
   async bootstrap(props) {
     console.log('app1 bootstrap', props);
   },
-  // 应用 render 之前触发
+  // Triggered before applying render
   async mount(props) {
     console.log('app1 mount', props);
   },
-  // 应用卸载之后触发
+  // Triggered after the app is uninstalled
   async unmount(props) {
     console.log('app1 unmount', props);
   },
 };
 ```
 
-#### 环境变量配置
+#### Environment variable configuration
 
-为了获得更好地本地开发及调试体验，我们建议您提前在子应用中指定应用启动的具体端口号，如通过`.env`指定
+In order to get a better local development and debugging experience, we recommend that you specify the specific port number of the application startup in the sub-application in advance, such as through `.env`
 
 ```yml
 PORT=8081
 ```
 
-详细配置参考：https://umijs.org/zh/guide/env-variables.html#port
+Detailed configuration reference: https://umijs.org/zh/guide/env-variables.html#port
 
-### 父子应用通讯
+### Father-son app communication
 
-有两种方式可以实现
+There are two ways to achieve
 
-#### 配合 [useModel](https://umijs.org/zh-CN/plugins/plugin-model) 使用（推荐）
+#### Use with [useModel](https://umijs.org/zh-CN/plugins/plugin-model) (recommended)
 
-> 需确保已安装 `@umijs/plugin-model` 或 `@umijs/preset-react`
+> Make sure you have installed `@umijs/plugin-model` or `@umijs/preset-react`
 
-1. 主应用使用下面任一方式透传数据：
+1. The main application uses any of the following methods to transparently transmit data:
 
-   1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
+   1. If you use the [MicroApp](#MicroApp) component mode to consume micro-applications, then the data transfer method is the same as the normal react component communication, and it can be passed directly through props:
 
       ```js
       function MyPage() {
@@ -337,7 +335,7 @@ PORT=8081
       }
       ```
       
-   2. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
+   2. If you use [route-binding](#RouteBased) to consume micro-applications, then you need to export a `useQiankunStateForSlave` function in `src/app.ts`, and the return value of the function will be passed to the micro-application as props, such as :
       ```ts
       // src/app.ts
       export function useQiankunStateForSlave() {
@@ -350,7 +348,7 @@ PORT=8081
       }
       ```
    
-2. 微应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
+2. A global model is automatically generated in the micro application, and the props values ​​transparently transmitted by the main application can be obtained in any component.
 
    ```jsx
    import { useModel } from 'umi';
@@ -361,7 +359,7 @@ PORT=8081
    }
    ```
 
-   或者可以通过高阶组件 connectMaster 来获取主应用透传的 props
+   Or you can get the props transparently transmitted by the main application through the high-level component connectMaster
 
    ```jsx
    import { connectMaster } from 'umi';
@@ -373,13 +371,13 @@ PORT=8081
    export default connectMaster(MyPage);
    ```
 
-3. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 `masterProps.setLoading(false)`，可以标记微模块的整体 loading 为完成状态。
+3. When used together with `<MicroApp />`, an additional setLoading attribute will be passed to the sub-application, and `masterProps.setLoading(false)` can be executed at the appropriate time in the sub-application to mark the overall loading of the micro-module as complete status.
 
-#### 基于 props 传递
+#### Based on props
 
-类似 react 中组件间通信的方案
+Similar to the scheme of communication between components in react
 
-1. 主应用中配置 apps 时以 props 将数据传递下去（参考主应用运行时配置一节）
+1. When configuring apps in the main application, use props to pass data down (refer to the main application runtime configuration section)
 
    ```js
    // src/app.js
@@ -401,13 +399,13 @@ PORT=8081
    });
    ```
 
-2. 子应用在生命周期钩子中获取 props 消费数据（参考子应用运行时配置一节）
+2. The sub-application obtains props consumption data in the lifecycle hook (refer to the section on sub-application runtime configuration)
 
-### 嵌套子应用
+### Nested sub-applications
 
-除了导航应用之外，App1 与 App2 均依赖浏览器 url，为了让 App1 嵌套 App2，两个应用同时存在，我们需要在运行时将 App2 的路由改为 memory 类型。
+In addition to navigation applications, App1 and App2 both rely on browser URLs. In order to allow App1 to nest App2, the two applications exist at the same time, we need to change the route of App2 to memory type at runtime.
 
-1. 在 App1 中加入 master 配置
+1. Add master configuration in App1
 
 ```js
 export default {
@@ -416,7 +414,7 @@ export default {
       // 注册子应用信息
       apps: [
         {
-          name: 'app2', // 唯一 id
+          name: 'app2', // Unique id
           entry: '//localhost:7002', // html entry
         },
       ],
@@ -425,7 +423,7 @@ export default {
 };
 ```
 
-2. 通过 `<MicroAppWithMemoHistory />` 引入 App2
+2. Introduce App2 through `<MicroAppWithMemoHistory />`
 
 ```diff
 import { MicroAppWithMemoHistory } from 'umi';
@@ -445,25 +443,25 @@ export function MyPage() {
 ### API
 #### <a name="masterOptions">MasterOptions</a>
 
-| 配置 | 说明 | 类型 | 是否必填 | 默认值 |
+| Configuration | Description | Type | Required or not | Default value |
 | --- | --- | --- | --- | --- |
-| apps | 子应用配置 | [App](#AppOpts)[] | 是 |  |
-| sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | false |
-| prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| 'all' | 否 | true |
+| apps | Sub-application configuration | [App](#AppOpts)[] | Yes | |
+| sandbox | Whether to enable the sandbox, [Details](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | No | false |
+| prefetch | Whether to enable the prefetch feature, [detailed description](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \|'all' | no | true |
 
 #### <a name="AppOpts">App</a>
 
-| 配置 | 说明 | 类型 | 是否必填 | 默认值 |
+| Configuration | Description | Type | Required or not | Default value |
 | --- | --- | --- | --- | --- |
-| name | 子应用唯一 id | string | 是 |  |
-| entry | 子应用 html 地址 | string \| { script: string[], styles: [] } | 是 |  |
-| props | 主应用传递给子应用的数据 | object | 否 | {} |
+| name | unique id of sub-application | string | yes | |
+| entry | Sub-application html address | string \| {script: string[], styles: []} | Yes | |
+| props | Data passed from the main application to the sub-application | object | No | {} |
 
-## 升级指南
+## Upgrade guide
 
-v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最新版本已获得更好的开发体验。
+v2.3.0 is fully compatible with versions prior to v2, but we still recommend that you upgrade to the latest version to get a better development experience.
 
-1. 移除无必要的应用配置
+1. Remove unnecessary application configuration
 
    ```diff
    export default {
@@ -483,7 +481,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    }
    ```
 
-2. 移除无必要的全局配置
+2. Remove unnecessary global configuration
 
    ```diff
    export default {
@@ -496,7 +494,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    }
    ```
 
-3. 移除不必要的挂载容器
+3. Remove unnecessary mount containers
 
    ```diff
    -export default MyContainer() {
@@ -508,11 +506,11 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    -}
    ```
    
-4. 关联微应用
+4. Associated micro applications
 
-   比如我们之前配置了微应用名为 `microApp` 的 base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
+   For example, we previously configured the base of the microapp named `microApp` as `/microApp` and mountElementId as `subapp-container`, then we only need (choose one):
 
-   a. 增加 `/microApp` 的路由
+   a. Add route for `/microApp`
 
    ```jsx
    export default {
@@ -523,9 +521,9 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    }
    ```
 
-   **使用路由关联模式时，不再需要微应用的 base 配置必须跟主应用中的保持一致了。**
+   **When using the routing association mode, the base configuration of the micro application is no longer required to be consistent with the main application. **
 
-   b. 在 `/microApp` 路由对应的组件里使用 `MicroApp`
+   b. Use `MicroApp` in the component corresponding to `/microApp` route
 
    ```jsx
    export default {
@@ -547,49 +545,46 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    }
    ```
 
-5. 移除一些无效配置，如 [手动添加子应用路由配置](https://github.com/umijs/umi-plugin-qiankun#1-主应用新建-pagessubappcontainerjs)
+5.Remove some invalid configurations, such as [Manually add sub-app routing configuration](https://github.com/umijs/umi-plugin-qiankun#1-New main application-pagessubappcontainerjs)
 
 ## CHANGELOG
 
-### 与 @umijs/plugin-qiankun 2.3.0 之前版本的变化
+### Changes with @umijs/plugin-qiankun before 2.3.0
 
-* 主应用注册子应用时不再需要手动配置 base 和 mountElementId。
+* It is no longer necessary to manually configure base and mountElementId when the main application registers the sub-application.
 
-  这类方式会导致很多关联问题，最典型的是如果我们需要将子应用挂载到某一个具体的子路由下时，常出现由于挂载点还未初始化或已被销毁导致的问题。
+  This type of method will cause many association problems. The most typical one is that if we need to mount a sub-application to a specific sub-route, problems often arise because the mount point has not been initialized or has been destroyed.
 
-  现在只需要在注册完子应用后，在期望的路由下指定需要挂载的子应用的 name 即可。
+  Now just after registering the sub-application, specify the name of the sub-application that needs to be mounted under the desired route.
 
-* 可以直接通过 `<MicroApp />` 组件的方式在任意位置挂载自己的子应用。详见 [API 说明](#MicroApp)
+* You can directly mount your own sub-applications at any location through the `<MicroApp />` component. See [API Description](#MicroApp) for details
 
-* 不再支持主应用是 browser 路由模式，子应用是 hash 路由的混合模式。如果有场景需要可以通过自己使用 `<MicroApp />`组件加载子应用。
+* The main application is no longer supported in browser routing mode, and the sub-application is a hybrid mode of hash routing. If you need a scene, you can load sub-applications by yourself using the `<MicroApp />` component.
 
-* 移除了 base、mountElementId、defer 等配置，现在有更好的方式来解决这类问题，参见第一条。
+* The base, mountElementId, defer and other configurations have been removed, and there are now better ways to solve this type of problem, see Article 1.
 
-* rename `jsSandbox` -> `sandbox`，来自 qiankun2.0 的升级。
+* rename `jsSandbox` -> `sandbox`, an upgrade from qiankun2.0.
 
-* **完全兼容 1.x 插件。**
+* **Fully compatible with 1.x plugins. **
 
 ## Roadmap
 
-- [x] 动态 history type 支持（即将到来 🎉），依赖 umi: ^3.2.7, @umijs/plugin-qiankun: ^2.4.0
+-[x] Dynamic history type support (coming soon 🎉), dependent on umi: ^3.2.7, @umijs/plugin-qiankun: ^2.4.0
 
-  通过运行时设置微应用 props 的方式，修改微应用 history 相关配置，从而解耦微应用配置，如：
+  By setting the micro-application props at runtime, modify the micro-application history related configuration to decouple the micro-application configuration, such as:
 
   ```tsx
-  // HistoryOptions 配置见 https://github.com/ReactTraining/history/blob/master/docs/api-reference.md
+  // HistoryOptions, see configuration https://github.com/ReactTraining/history/blob/master/docs/api-reference.md
   type HistoryProp = { type: 'browser' | 'memory' | 'hash' } & HistoryOptions;
   
   <MicroApp history={{ type: 'browser', basename: '/microApp' }} />
   ```
 
-- [ ] 运行时统一，针对多层嵌套微应用场景
+- [] Unified runtime, aiming at multi-level nested micro application scenarios
+- [] Micro-applications automatically mountElementId, avoiding multiple umi sub-application mountElementId conflicts
+- [] Automatic loading
+- [] Local integrated development support
 
-- [ ] 微应用自动 mountElementId，避免多个 umi 子应用 mountElementId 冲突
-
-- [ ] 自动 loading
-
-- [ ] 本地集成开发支持
-
-## 相关
+## Related
 
 - [https://github.com/umijs/plugins/issues/64](https://github.com/umijs/plugins/issues/64)
