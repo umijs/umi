@@ -106,7 +106,9 @@ module.exports = {
 
 ### Use ʻumi-test` instead of `react-scripts test`
 
-For related modifications, please check the **dependency handling** mentioned above. Just use `umi-test`：
+For related modifications, please see **dependency handling** section above. 
+
+Test using `umi-test`：
 
 ```bash
 $ umi-test
