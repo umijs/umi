@@ -5,18 +5,18 @@ translateHelp: true
 # @umijs/preset-react
 
 
-针对 react 应用的插件集。
+A collection of plugins for react applications.
 
-包含：
+contain:
 
-* [plugin-access](./plugin-access)，权限管理
-* [plugin-analytics](./plugin-analytics)，统计管理
-* [plugin-antd](./plugin-antd)，整合 antd UI 组件
-* [plugin-crossorigin](./plugin-crossorigin)，通常用于 JS 出错统计
-* [plugin-dva](./plugin-dva)，整合 dva
-* [plugin-helmet](./plugin-helmet)，整合 [react-helmet](https://github.com/nfl/react-helmet)，管理 HTML 文档标签（如标题、描述等）
-* [plugin-initial-state](./plugin-initial-state)，初始化数据管理
-* [plugin-layout](./plugin-layout)，配置启用 ant-design-pro 的布局
-* [plugin-locale](./plugin-locale)，国际化能力
-* [plugin-model](./plugin-model)，基于 hooks 的简易数据流
-* [plugin-request](./plugin-request)，基于 umi-request 和 umi-hooks 的请求方案
+* [plugin-access](./plugin-access), authority management
+* [plugin-analytics](./plugin-analytics), statistics management
+* [plugin-antd](./plugin-antd), integrate antd UI components
+* [plugin-crossorigin](./plugin-crossorigin), usually used for JS error statistics
+* [plugin-dva](./plugin-dva), integrate dva
+* [plugin-helmet](./plugin-helmet), integrate [react-helmet](https://github.com/nfl/react-helmet), manage HTML document tags (such as title, description, etc.)
+* [plugin-initial-state](./plugin-initial-state), initialize data management
+* [plugin-layout](./plugin-layout), configure the layout that enables ant-design-pro
+* [plugin-locale](./plugin-locale), internationalization capability
+* [plugin-model](./plugin-model), a simple data flow based on hooks
+* [plugin-request](./plugin-request), a request scheme based on umi-request and umi-hooks
