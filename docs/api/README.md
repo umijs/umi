@@ -50,7 +50,7 @@ export default () => {
 }
 ```
 
-### History
+### history
 
 `history` can be used to obtain current routing information,
 
