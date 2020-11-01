@@ -161,7 +161,7 @@ Note:
 - If you use it during the registration stage, you can only judge whether a plug-in was registered **before it**. e.g.: 
 
 ```ts
-// 判断是否有注册 @umijs/plugin-dva
+// Determine if there is a registration @umijs/plugin-dva
 api.hasPlugins(['@umijs/plugin-dva']);
 ```
 
@@ -534,7 +534,7 @@ For example, it is used to switch to webpack@5 or others. e.g.:
 ```ts
 import webpack from 'webpack';
 
-// 换成 webpack@5
+// Change to webpack@5
 api.modifyBundleImplementor(() => {
   return webpack;
 });
@@ -1023,33 +1023,33 @@ Contains external libraries:
 - `traverse`: derived from `@babel/traverse`, traverse AST nodes recursively.
 - `t`: derived from `@babel/types`, a Lodash-style tool library for AST nodes. It contains methods for constructing, verifying, and transforming AST nodes. The tool library contains thoughtful tools and methods, which are very useful for writing and processing AST logic.
 
-Internal tool approach
+Internal tools approach
 
--ʻIsBrowser`, to determine whether it is in the browser environment.
--ʻIsWindows`, to determine whether it is currently a windows system.
--ʻIsSSR`, whether SSR success in client.
--ʻIsLernaPackage`, to determine whether there is a `lerna.json` file.
--`winPath`, convert the file path to a window compatible path, used to add code like `require('/xxx/xxx.js')` to the code.
--`winEOL`, in the windows environment, many tools will automatically change the newline character lf to crlf. In order to test accurately, you need to convert the newline character.
--`compatESModuleRequire`, compatible with ESModule and Require is Require.
--`mergeConfig`, merge objects.
--`randomColor`, generate colors randomly.
--`delay`, delay function.
--`Generator`, `mustache` template code generation.
--`BabelRegister`, a simple package of `@babel/register`.
--`parseRequireDeps`, get the local dependency of a specific file.
--`cleanRequireCache`, clean up the references of specific Module in require cache and parent.children.
--`getWindowInitialProps`, get window.g_initialProps.
--`getFile`, get the full extension of files in a specific directory, the matching order of javascript files `['.ts','.tsx','.js','.jsx']`, the matching order of css files` ['.less','.sass','.scss','.stylus','.css']`.
--`routeToChunkName`, transform route component into webpack chunkName.
+- ʻIsBrowser`, to determine whether it is in the browser environment.
+- ʻIsWindows`, to determine whether it is currently a windows system.
+- ʻIsSSR`, whether SSR success in client.
+- ʻIsLernaPackage`, to determine whether there is a `lerna.json` file.
+- `winPath`, convert the file path to a window compatible path, used to add code like `require('/xxx/xxx.js')` to the code.
+- `winEOL`, in the windows environment, many tools will automatically change the newline character lf to crlf. In order to test accurately, you need to convert the newline character.
+- `compatESModuleRequire`, compatible with ESModule and Require is Require.
+- `mergeConfig`, merge objects.
+- `randomColor`, generate colors randomly.
+- `delay`, delay function.
+- `Generator`, `mustache` template code generation.
+- `BabelRegister`, a simple package of `@babel/register`.
+- `parseRequireDeps`, get the local dependency of a specific file.
+- `cleanRequireCache`, clean up the references of specific Module in require cache and parent.children.
+- `getWindowInitialProps`, get window.g_initialProps.
+- `getFile`, get the full extension of files in a specific directory, the matching order of javascript files `['.ts','.tsx','.js','.jsx']`, the matching order of css files` ['.less','.sass','.scss','.stylus','.css']`.
+- `routeToChunkName`, transform route component into webpack chunkName.
 
 Types of
 
--ʻArgsType<T extends (...args: any[]) => any>`, get the function parameter array type.
--`PartialKeys<T>`, find the key in T whose type is undefined.
--`PartialProps<T>`, take out the properties of T whose type is undefined.
--`NodeEnv`: Union type'development' |'production' |'test'.
--ʻOmit<T, U>`, exclude the U key in T.
+- ʻArgsType<T extends (...args: any[]) => any>`, get the function parameter array type.
+- `PartialKeys<T>`, find the key in T whose type is undefined.
+- `PartialProps<T>`, take out the properties of T whose type is undefined.
+- `NodeEnv`: Union type'development' |'production' |'test'.
+- ʻOmit<T, U>`, exclude the U key in T.
 
 Note:
 
