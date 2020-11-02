@@ -35,9 +35,10 @@ jobs:
         displayName: install
       - script: yarn build
         displayName: build
-      - script: NODE_OPTIONS=--max_old_space_size=4096 yarn test --forceExit --detectOpenHandles --maxWorkers=4
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
+          NODE_OPTIONS: --max_old_space_size=4096
           CI: true
         displayName: test
   - job: linux_test
@@ -66,8 +67,9 @@ jobs:
       - script: yarn --frozen-lockfile
       - script: yarn build
         displayName: build
-      - script: NODE_OPTIONS=--max_old_space_size=4096 yarn test --forceExit --detectOpenHandles --maxWorkers=4
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
+          NODE_OPTIONS: --max_old_space_size=4096
           CI: true
         displayName: test
