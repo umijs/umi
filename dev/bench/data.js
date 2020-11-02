@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604136365948,
+  "lastUpdate": 1604333776029,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12258,6 +12258,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.30%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bf75a5110fa104688c92ecef4e2578dc293e1bed",
+          "message": "fix: missing module loader when using APP_ROOT (#5607)\n\n* fix: missing module loader when using APP_ROOT\r\n\r\n* chore: azure pipelines\r\n\r\n* chore: script\r\n\r\n* chore: vars\r\n\r\n* chore: windows env",
+          "timestamp": "2020-11-02T08:12:11-08:00",
+          "tree_id": "957ccd085bdc77544276775abf8619625ee84c88",
+          "url": "https://github.com/umijs/umi/commit/bf75a5110fa104688c92ecef4e2578dc293e1bed"
+        },
+        "date": 1604333772387,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1222,
+            "range": "±2.56%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2211,
+            "range": "±4.53%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
