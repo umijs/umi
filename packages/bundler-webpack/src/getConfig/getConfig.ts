@@ -177,7 +177,12 @@ export default async function getConfig(
   webpackConfig.module
     .rule('js')
       .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      .include.add(cwd).end()
+      .include.add([
+        cwd,
+        // import module out of cwd using APP_ROOT
+        // issue: https://github.com/umijs/umi/issues/5594
+        ...(process.env.APP_ROOT ? [process.cwd()] : [])
+      ]).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
