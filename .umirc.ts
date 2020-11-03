@@ -109,9 +109,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
 const isDev = process.env.NODE_ENV === 'development';
 
 export default defineConfig({
-  ssr: {
-    staticMarkup: true,
-  },
+  ssr: {},
   favicon: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   mode: 'site',
   title: 'UmiJS',
