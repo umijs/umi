@@ -21,8 +21,8 @@ export {
   createBrowserHistory,
   createHashHistory,
   createMemoryHistory,
-} from 'history-with-query';
-export type { MemoryHistory } from 'history-with-query';
+} from '@umijs/history';
+export type { MemoryHistory } from '@umijs/history';
 
 export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';
 export { default as dynamic } from './dynamic/dynamic';

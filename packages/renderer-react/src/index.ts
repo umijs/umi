@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { History, Location } from 'history-with-query';
+import { History, Location } from '@umijs/history';
 import { match } from 'react-router-dom';
 
 export interface IComponent extends FunctionComponent {

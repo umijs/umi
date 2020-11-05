@@ -1830,6 +1830,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.7.6":
+  version "7.12.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
+  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.10.4.tgz#3251996c4200ebc71d1a8fc405fba940f36ba278"
@@ -3825,6 +3832,14 @@
     stylelint-config-standard "^18.3.0"
     stylelint-declaration-block-no-ignored-properties "^2.1.0"
     stylelint-order "^3.0.0"
+
+"@umijs/history@5.0.0-beta.1":
+  version "5.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@umijs/history/-/history-5.0.0-beta.1.tgz#82820802f558e56d7468ec7e4a3edcd4e332aee9"
+  integrity sha512-kNLvy+LJB7/AWAKMV5bACsRpIlPdpOckXlyWSPrTI07ytdIG+kbW/J25OgtFlgjvZunFOVXtkxYLYNoAsxyQ4g==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+    query-string "^6.13.6"
 
 "@umijs/plugin-analytics@^0.2.2":
   version "0.2.2"
@@ -8197,18 +8212,6 @@ hastscript@^5.0.0:
 hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
-
-history-with-query@4.10.3:
-  version "4.10.3"
-  resolved "https://registry.yarnpkg.com/history-with-query/-/history-with-query-4.10.3.tgz#9430a6f59a223796a68a436c0c4c7590233805a6"
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-    loose-envify "^1.2.0"
-    query-string "^6.11.0"
-    resolve-pathname "^3.0.0"
-    tiny-invariant "^1.0.2"
-    tiny-warning "^1.0.0"
-    value-equal "^1.0.1"
 
 history@^4.9.0:
   version "4.10.1"
@@ -12678,9 +12681,10 @@ query-string@^4.1.0:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-query-string@^6.11.0:
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.12.0.tgz#fa0fe5b3ddf4d040d1236b80672949ab33d5cf80"
+query-string@^6.13.6:
+  version "6.13.6"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.13.6.tgz#e5ac7c74f2a5da43fbca0b883b4f0bafba439966"
+  integrity sha512-/WWZ7d9na6s2wMEGdVCVgKWE9Rt7nYyNIf7k8xmHXcesPMlEzicWo3lbYwHyA4wBktI2KrXxxZeACLbE84hvSQ==
   dependencies:
     decode-uri-component "^0.2.0"
     split-on-first "^1.0.0"

@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/react-router": "5.1.8",
     "@types/react-router-dom": "5.1.5",
-    "history-with-query": "4.10.3",
+    "@umijs/history": "5.0.0-beta.1",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "use-subscription": "1.4.1"

@@ -21,7 +21,7 @@ import webpack from 'webpack';
 import WebpackChain from 'webpack-chain';
 import { Express, NextFunction, RequestHandler } from 'express';
 import { Request, Response } from 'express-serve-static-core';
-import { History, Location } from 'history-with-query';
+import { History, Location } from '@umijs/history';
 
 export enum BundlerConfigType {
   csr = 'csr',
