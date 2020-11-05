@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "3.2.24",
+  "version": "3.2.25",
   "description": "umi",
   "main": "index.js",
   "types": "types.d.ts",
@@ -29,11 +29,11 @@
   },
   "dependencies": {
     "@babel/core": "7.11.6",
-    "@umijs/core": "3.2.24",
-    "@umijs/preset-built-in": "3.2.24",
-    "@umijs/runtime": "3.2.24",
-    "@umijs/types": "3.2.24",
-    "@umijs/utils": "3.2.24",
+    "@umijs/core": "3.2.25",
+    "@umijs/preset-built-in": "3.2.25",
+    "@umijs/runtime": "3.2.25",
+    "@umijs/types": "3.2.25",
+    "@umijs/utils": "3.2.25",
     "react": "^16.13.1",
     "resolve-cwd": "3.0.0"
   },
