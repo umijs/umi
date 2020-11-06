@@ -12,7 +12,7 @@ export function getExportProps(code: string) {
   traverse.default(ast, {
     Program: {
       enter(path) {
-        const node = path.node as t.Program;
+        const node = path.node;
         const defaultExport = findExportDefault(node);
         if (!defaultExport) return;
 
