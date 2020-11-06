@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604657531401,
+  "lastUpdate": 1604657718229,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12448,6 +12448,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.55%",
             "unit": "ops/sec",
             "extra": "38 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d68d868c6084df569f7a8fb6c573a981944c12e4",
+          "message": "upgrade: babel 7.12 (#5573)\n\n* feat: typescript 4.1\r\n\r\n* upgrade: babel 7.12\r\n\r\n* chore: types\r\n\r\n* chore: test case\r\n\r\n* fix: isServer\r\n\r\n* chore: ci\r\n\r\n* chore: yarn.lock\r\n\r\n* chore: isServer\r\n\r\n* chore: is server\r\n\r\n* chore: macos azure\r\n\r\n* chore: babel v\r\n\r\n* chore: types\r\n\r\n* chore: timeout\r\n\r\n* chore: clean",
+          "timestamp": "2020-11-06T18:11:30+08:00",
+          "tree_id": "d9b42ae12ff999d522992bab99a118caf2ef5f08",
+          "url": "https://github.com/umijs/umi/commit/d68d868c6084df569f7a8fb6c573a981944c12e4"
+        },
+        "date": 1604657714769,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1251,
+            "range": "±3.30%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2132,
+            "range": "±4.66%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
