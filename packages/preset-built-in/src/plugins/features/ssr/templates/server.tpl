@@ -95,7 +95,7 @@ const render: IServerRender = async (params) => {
       plugin,
       staticMarkup,
       routes,
-      isServer: process.env && process.env.__IS_SERVER,
+      isServer: process?.env?.__IS_SERVER,
     }
     const dynamicImport =  {{{ DynamicImport }}};
     if (dynamicImport && !manifest) {
