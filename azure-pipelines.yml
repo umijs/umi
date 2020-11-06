@@ -9,7 +9,7 @@ trigger:
 
 jobs:
   - job: windows_test
-    timeoutInMinutes: 30
+    timeoutInMinutes: 35
     pool:
       vmImage: 'windows-latest'
     strategy:
@@ -22,7 +22,7 @@ jobs:
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
     steps:
       - checkout: self
-        clean: all
+        clean: true
         fetchDepth: 1
       - task: Cache@2
         inputs:
@@ -55,7 +55,7 @@ jobs:
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
     steps:
       - checkout: self
-        clean: all
+        clean: true
         fetchDepth: 1
       - task: Cache@2
         inputs:
@@ -88,7 +88,7 @@ jobs:
     steps:
       - checkout: self
         clean: all
-        fetchDepth: 1
+        clean: true
       - task: Cache@2
         inputs:
           key: 'yarn | "$(Agent.OS)" | yarn.lock'
