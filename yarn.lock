@@ -8198,9 +8198,10 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
 
-history-with-query@4.10.3:
-  version "4.10.3"
-  resolved "https://registry.yarnpkg.com/history-with-query/-/history-with-query-4.10.3.tgz#9430a6f59a223796a68a436c0c4c7590233805a6"
+history-with-query@4.10.4:
+  version "4.10.4"
+  resolved "https://registry.yarnpkg.com/history-with-query/-/history-with-query-4.10.4.tgz#8161ff3c5044e29dfaeb73e7587eb3d4c1a8090e"
+  integrity sha512-JnskQK8X+PbRFHSdDAExhoJyhLnlLZL+UuHQuQhys+Se9/ukRDRBWU4JVTjsiIfbv1fcEmR3oqKW56OYmk5M5w==
   dependencies:
     "@babel/runtime" "^7.1.2"
     loose-envify "^1.2.0"
