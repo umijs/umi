@@ -87,8 +87,8 @@ jobs:
       YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
     steps:
       - checkout: self
-        clean: all
         clean: true
+        fetchDepth: 1
       - task: Cache@2
         inputs:
           key: 'yarn | "$(Agent.OS)" | yarn.lock'
