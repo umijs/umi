@@ -9,9 +9,14 @@ import { readFileSync, existsSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
 
+beforeEach(() => {
+  if (process.env.__IS_SERVER) {
+    delete process.env.__IS_SERVER;
+  }
+});
+
 afterEach(() => {
   cleanup();
-  delete process.env.__IS_SERVER;
 });
 
 test('api.writeTmpFile error in register stage', async () => {
