@@ -21,7 +21,7 @@ const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin
         routes: args.routes || getRoutes(),
         plugin,
         history: createHistory(args.hot),
-        isServer: process?.env?.__IS_SERVER,
+        isServer: process.env.__IS_SERVER,
 {{#enableSSR}}
         ssrProps: {},
 {{/enableSSR}}
