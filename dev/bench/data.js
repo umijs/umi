@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604654939403,
+  "lastUpdate": 1604657531401,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12410,6 +12410,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.30%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7734b4937432b37dd22a721d7a7d3557109d4e1e",
+          "message": "fix: runtimePublicPath with eggjs bug (#5630)",
+          "timestamp": "2020-11-06T18:07:24+08:00",
+          "tree_id": "4ee206f3b64fa5d9cf1c26b00f95c7ddfe835397",
+          "url": "https://github.com/umijs/umi/commit/7734b4937432b37dd22a721d7a7d3557109d4e1e"
+        },
+        "date": 1604657527465,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 572,
+            "range": "±82.58%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1691,
+            "range": "±3.55%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
