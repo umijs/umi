@@ -955,6 +955,8 @@ export default {
 
 然后访问 `/api/users` 就能访问到 [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) 的数据。
 
+> 注意：proxy 配置仅在 dev 时生效。
+
 ## publicPath
 
 * Type: `publicPath`
