@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604658222309,
+  "lastUpdate": 1604905103090,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12524,6 +12524,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.71%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "448627663@qq.com",
+            "name": "xiaohuoni",
+            "username": "xiaohuoni"
+          },
+          "committer": {
+            "email": "448627663@qq.com",
+            "name": "xiaohuoni",
+            "username": "xiaohuoni"
+          },
+          "distinct": true,
+          "id": "2a36daed95240c48620df46c563d3db18ac1a6fa",
+          "message": "docs: add proxy tip",
+          "timestamp": "2020-11-09T14:54:12+08:00",
+          "tree_id": "3dd52aac725842fbf5dd223807573982d305e381",
+          "url": "https://github.com/umijs/umi/commit/2a36daed95240c48620df46c563d3db18ac1a6fa"
+        },
+        "date": 1604905099730,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1088,
+            "range": "±2.55%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2080,
+            "range": "±4.77%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
