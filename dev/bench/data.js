@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604905103090,
+  "lastUpdate": 1604908920031,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12562,6 +12562,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.77%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "qixian.cs@outlook.com",
+            "name": "陈帅",
+            "username": "chenshuai2144"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2cf8330e84255aab36f30000511a748007349b65",
+          "message": "修改文档，使其符合现在的推荐用法 (#5646)",
+          "timestamp": "2020-11-09T15:58:24+08:00",
+          "tree_id": "497b735a6ddb98228560b2c72882dacb7b4c4703",
+          "url": "https://github.com/umijs/umi/commit/2cf8330e84255aab36f30000511a748007349b65"
+        },
+        "date": 1604908916800,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1391,
+            "range": "±3.02%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2461,
+            "range": "±5.02%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
