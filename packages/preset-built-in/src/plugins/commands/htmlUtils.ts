@@ -105,6 +105,9 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
       }
 
+      // window.resourceBaseUrl 用来兼容 egg.js 项目注入的 publicPath
+      publicPathStr = `window.resourceBaseUrl || ${publicPathStr};`;
+
       publicPathStr = await api.applyPlugins({
         key: 'modifyPublicPathStr',
         type: api.ApplyPluginsType.modify,
@@ -146,8 +149,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
             // 只在设置了 runtimePublicPath 或 exportStatic?.dynamicRoot 时才会用到
             // 设置了 exportStatic?.dynamicRoot 时会自动设置 runtimePublicPath
             api.config.runtimePublicPath && {
-              // window.resourceBaseUrl 用来兼容 egg.js 项目注入的 publicPath
-              content: `window.publicPath = window.resourceBaseUrl || ${publicPathStr};`,
+              content: `window.publicPath = ${publicPathStr};`,
             },
           ].filter(Boolean),
         }),
