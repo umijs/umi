@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604908920031,
+  "lastUpdate": 1605062686062,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12600,6 +12600,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.02%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "37980800b8b0a9b69faf6e65b82fca5402c7f0f9",
+          "message": "fix: put window.resourceBaseUrl into publicPathStr that we could modify it by modifyPublicPathStr (#5653)",
+          "timestamp": "2020-11-10T18:40:16-08:00",
+          "tree_id": "d9c004ebc72f0abc064298fade70b6d936a4920c",
+          "url": "https://github.com/umijs/umi/commit/37980800b8b0a9b69faf6e65b82fca5402c7f0f9"
+        },
+        "date": 1605062682457,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 540,
+            "range": "±84.55%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1844,
+            "range": "±3.91%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
