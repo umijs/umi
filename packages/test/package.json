@@ -30,14 +30,14 @@
     "@umijs/babel-preset-umi": "3.2.27",
     "@umijs/utils": "3.2.27",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^25.4.0",
+    "babel-jest": "^26.6.3",
     "core-js": "3.6.5",
     "identity-obj-proxy": "3.0.0",
-    "jest": "^25.4.0",
-    "jest-cli": "^25.4.0",
-    "jest-environment-jsdom-fourteen": "1.0.1",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
+    "jest-environment-jsdom": "^26.6.2",
     "regenerator-runtime": "^0.13.7",
-    "whatwg-fetch": "^3.4.1"
+    "whatwg-fetch": "^3.5.0"
   },
   "bin": {
     "umi-test": "bin/umi-test.js"
