@@ -59,7 +59,7 @@ readdirSync(fixtures).forEach((fixture) => {
       await bundler.build({
         bundleConfigs: [webpackConfig],
       });
-    }, 50000);
+    }, 100000);
 
     it(fixture, () => {
       // expect
