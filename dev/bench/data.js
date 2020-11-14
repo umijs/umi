@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605162227498,
+  "lastUpdate": 1605326324171,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12714,6 +12714,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.31%",
             "unit": "ops/sec",
             "extra": "37 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "onlylingstudio@gmail.com",
+            "name": "LING_ZI_QING",
+            "username": "onlyling"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "347d6c000529bebde8bdcd2bf10d6ed459bbd0bc",
+          "message": "fix: IGetInitialProps match.params (#5672)\n\n修复 TypeScript 类型声明缺失。\r\n\r\n```\r\nimport React from \"react\";\r\nimport { IGetInitialProps } from \"umi\";\r\n\r\ninterface GetInitialProps {\r\n  matchId: string;\r\n}\r\n\r\ninterface DemoProps extends GetInitialProps {}\r\n\r\nconst Demo: React.FC<DemoProps> & {\r\n  getInitialProps: IGetInitialProps<GetInitialProps, { id: string }>;\r\n} = ({ matchId }) => {\r\n  //  www.demo.com/demo/4\r\n  return (\r\n    <div>\r\n      <h1>Page demo</h1>\r\n\r\n      {/* 4 | null */}\r\n      <p>{matchId}</p>\r\n    </div>\r\n  );\r\n};\r\n\r\nDemo.getInitialProps = async (params) => {\r\n  console.log(params.match.params.id);\r\n\r\n  return {\r\n    matchId: params.match.params.id,\r\n  };\r\n};\r\n\r\nexport default Demo;\r\n```",
+          "timestamp": "2020-11-13T19:54:43-08:00",
+          "tree_id": "b1a72f90d7727b2f9d40c6abdeceb084ca845cc3",
+          "url": "https://github.com/umijs/umi/commit/347d6c000529bebde8bdcd2bf10d6ed459bbd0bc"
+        },
+        "date": 1605326320642,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 673,
+            "range": "±83.13%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2220,
+            "range": "±4.44%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
