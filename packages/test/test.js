@@ -9,6 +9,7 @@ console.log(m);
   'index.ts',
   {
     automock: false,
+    browser: false,
     cache: true,
     cacheDirectory:
       '/private/var/folders/s8/vkxjf21s6bl76mjqswh9xsqw0000gn/T/jest_dx',
@@ -28,6 +29,7 @@ console.log(m);
     globals: {},
     haste: {
       computeSha1: false,
+      providesModuleNodeModules: [],
       throwOnModuleCollision: false,
     },
     moduleDirectories: ['node_modules'],
