@@ -18,6 +18,7 @@ export default function mergeConfig<
   T extends Record<string, any>,
   U extends Record<string, any>
 >(defaultConfig: T, ...configs: (AnyConfig<T, U> | null | undefined)[]) {
+  // @ts-ignore
   const ret: Partial<CalculatedConfig<T, U>> = { ...defaultConfig };
   configs.forEach((config) => {
     if (!config) return;
