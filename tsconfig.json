@@ -5,6 +5,7 @@
     "jsx": "preserve",
     "allowJs": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "strict": true,
