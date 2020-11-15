@@ -43,8 +43,6 @@ export default function (cwd: string, args: IUmiTestArgs) {
     },
     setupFiles: [require.resolve('../../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../../helpers/setupFiles/jasmine')],
-    // jest-environment-jsdom will break `require('*.css')` syntax
-    // fix: TypeError: (0 , _escapeRegExp(...).default) is not a function
     testEnvironment: require.resolve('jest-environment-jsdom'),
     testMatch: [
       `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
