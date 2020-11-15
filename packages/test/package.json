@@ -35,9 +35,9 @@
     "identity-obj-proxy": "3.0.0",
     "jest": "^25.4.0",
     "jest-cli": "^25.4.0",
-    "jest-environment-jsdom": "^26.6.2",
+    "jest-environment-jsdom-fourteen": "1.0.1",
     "regenerator-runtime": "^0.13.7",
-    "whatwg-fetch": "^3.5.0"
+    "whatwg-fetch": "^3.4.1"
   },
   "bin": {
     "umi-test": "bin/umi-test.js"
