@@ -23,7 +23,7 @@ export default (api: IApi) => {
         .use(require('@pmmmwh/react-refresh-webpack-plugin'), [
           { overlay: false },
         ]);
-      debug('FastRefresh loaded');
+      debug('FastRefresh webpack loaded');
     }
     return memo;
   });
@@ -32,6 +32,7 @@ export default (api: IApi) => {
     fn: (babelOpts, { type }) => {
       if (api.env === 'development' && type === BundlerConfigType.csr) {
         babelOpts.plugins.push([require.resolve('react-refresh/babel')]);
+        debug('FastRefresh babel loaded');
       }
       return babelOpts;
     },
