@@ -182,6 +182,7 @@ export interface IApi extends PluginAPI {
     },
     {
       env: env;
+      type?: IBundlerConfigType;
     }
   >;
   modifyBabelPresetOpts: IModify<
