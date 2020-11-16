@@ -5,6 +5,10 @@ const { createDebug } = utils;
 const debug = createDebug('umi:preset-build-in:fastRefresh');
 
 export default (api: IApi) => {
+  /**
+   * enable by default, back up using view rerender
+   * ssr can't work with fastRefresh
+   */
   api.describe({
     key: 'fastRefresh',
     config: {
@@ -12,8 +16,6 @@ export default (api: IApi) => {
         return joi.object();
       },
     },
-    // enable by default, back up using view rerender
-    enableBy: api.EnableBy.register,
   });
 
   api.chainWebpack((memo, { type }) => {
