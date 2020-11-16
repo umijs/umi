@@ -1,4 +1,8 @@
-import { IApi, BundlerConfigType } from 'umi';
+import { IApi, BundlerConfigType, utils } from 'umi';
+
+const { createDebug } = utils;
+
+const debug = createDebug('umi:preset-build-in:fastRefresh');
 
 export default (api: IApi) => {
   api.describe({
@@ -19,6 +23,7 @@ export default (api: IApi) => {
         .use(require('@pmmmwh/react-refresh-webpack-plugin'), [
           { overlay: false },
         ]);
+      debug('FastRefresh loaded');
     }
     return memo;
   });
