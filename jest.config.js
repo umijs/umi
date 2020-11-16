@@ -1,7 +1,9 @@
 module.exports = {
   // disable css files mock for bundler-webpack's css import tests
   moduleNameMapper: {},
-  transformIgnorePatterns: ['/node_modules/(?!([^/]*?terser)/)/'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!([^/]*?umi|[^/]*?umi-test|[^/]*?terser)/',
+  ],
   collectCoverageFrom(memo) {
     return memo.concat([
       // benchmarks
