@@ -28,6 +28,7 @@ jobs:
       - name: install
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --ignore-engines
+      - run: yarn list
       - run: yarn build
       - run: yarn test --forceExit
         env:

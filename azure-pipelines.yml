@@ -33,6 +33,8 @@ jobs:
         displayName: Cache Yarn packages
       - script: yarn --frozen-lockfile
         displayName: install
+      - script: yarn list
+        displayName: list
       - script: yarn build
         displayName: build
       - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
@@ -64,6 +66,8 @@ jobs:
           path: $(YARN_CACHE_FOLDER)
         displayName: Cache Yarn packages
       - script: yarn --frozen-lockfile
+      - script: yarn list
+        displayName: list
       - script: yarn build
         displayName: build
       - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
@@ -95,6 +99,8 @@ jobs:
           path: $(YARN_CACHE_FOLDER)
         displayName: Cache Yarn packages
       - script: yarn --frozen-lockfile
+      - script: yarn list
+        displayName: list
       - script: yarn build
         displayName: build
       - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
