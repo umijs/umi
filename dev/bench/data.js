@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605326324171,
+  "lastUpdate": 1605497434021,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12752,6 +12752,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.44%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "27bf8e586ecc25c58c27094e453c01d0028fd7e5",
+          "message": "chore: upgrade father-build (#5674)\n\n* chore: upgrade father-build\r\n\r\n* chore: babel-core\r\n\r\n* chore: esmodule\r\n\r\n* chore: babel\r\n\r\n* chore: @babel/core",
+          "timestamp": "2020-11-15T19:26:13-08:00",
+          "tree_id": "a46db0085069c072ba02ea1cd10574375596c1cb",
+          "url": "https://github.com/umijs/umi/commit/27bf8e586ecc25c58c27094e453c01d0028fd7e5"
+        },
+        "date": 1605497430733,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 645,
+            "range": "±87.37%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2146,
+            "range": "±6.10%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
