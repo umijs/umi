@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605497434021,
+  "lastUpdate": 1605510238296,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12790,6 +12790,44 @@ window.BENCHMARK_DATA = {
             "range": "±6.10%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "qixian.cs@outlook.com",
+            "name": "陈帅",
+            "username": "chenshuai2144"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8eee42f2fbcd95d735782488da685ad05375014b",
+          "message": "📖 docs(layout): 优化文档中令人费解的部分 (#5655)",
+          "timestamp": "2020-11-15T22:59:45-08:00",
+          "tree_id": "1f5a4f3ae6f3dc3813a51b95593ebb108bd7d3c7",
+          "url": "https://github.com/umijs/umi/commit/8eee42f2fbcd95d735782488da685ad05375014b"
+        },
+        "date": 1605510235061,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1294,
+            "range": "±2.89%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2244,
+            "range": "±5.44%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
