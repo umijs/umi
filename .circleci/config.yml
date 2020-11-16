@@ -20,9 +20,6 @@ jobs:
             - ./node_modules
             - ~/.cache/yarn
       - run:
-        name: Run Yarn List
-        command: yarn list
-      - run:
           name: Run Build
           command: yarn build
       - run:
