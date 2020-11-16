@@ -18,20 +18,53 @@ In order to further reduce the cost of research and development, we tried to bui
 
 ## Configuration
 
-### Build-time configuration
+### Configuration during construction
 
-The theme and other configurations of `layout` can be configured through the configuration file.
+You can configure the theme of `layout` through the configuration file, in [`config/config.ts`](https://github.com/ant-design/ant-design-pro/blob/4a2cb720bfcdab34f2b41a3b629683329c783690/config/config.ts#L15) write like this:
 
 ```tsx
-import { defineConfig } from 'umi';
+Import {defineConfig} from'umi';
 
-export const config = defineConfig({
-  layout: {
-    name: 'Ant Design',
-    locale: true,
+Export const config = defineConfig({
+  layout:{
+    //Support anything that does not require dom
+    // https://procomponents.ant.design/components/layout#prolayout
+    Name: "Ant Design",
+    Region: correct,
+    Layout: "side",
   },
 });
 ```
+
+#### Name
+
+- Type: `string`
+- Default value: `name` in package.json
+
+Product name, default package name.
+
+#### Trademark
+
+- Type: `string`
+- Default value: Ant Design logo
+
+Product mark
+
+#### theme
+
+- Type: `string`
+- Default: `pro`
+
+The specified layout theme, choose between `pro` and `tech` (`tech` is only reflected in Ant's internal framework Bigfish).
+
+#### Locales
+
+- Type: Boolean
+- Default value: "false"
+
+With this switch, the plugin will search for `menu in the locales file. [key]`The corresponding copywriting, replace and change the key. This function needs to be configured to use `@umijs/plugin-locale`.
+
+config supports all non-dom configurations and transmits them transparently to [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout).
 
 #### name
 
@@ -63,21 +96,38 @@ Whether to start international configuration. After opening, the menu name confi
 
 ### Runtime configuration
 
-The Layout plug-in allows to log out and customize ErrorBoundary and other functions through runtime configuration.
+It is not possible to use dom during construction, so some configurations may need to be configured at runtime. We can do the following configuration in [`src/app.tsx`](export const layout = ({):
 
-```tsx | pure
-// src/app.js
-export const layout = {
-  // do something
-  logout: () => {},
-  // https://procomponents.ant.design/components/layout
-  rightRender: (initInfo) => {
-    return <Icon />;
-  }, // return string || ReactNode;
+```tsx
+import React from 'react';
+import {
+  BasicLayoutProps,
+  Settings as LayoutSettings,
+} from '@ant-design/pro-layout';
+
+export const layout = ({
+  initialState,
+}: {
+  initialState: { settings?: LayoutSettings; currentUser?: API.CurrentUser };
+}): BasicLayoutProps => {
+  return {
+    rightContentRender: () => <RightContent />,
+    footerRender: () => <Footer />,
+    onPageChange: () => {
+      const { currentUser } = initialState;
+      const { location } = history;
+      // If you are not logged in, redirect to login
+      if (!currentUser && location.pathname !== '/user/login') {
+        history.push('/user/login');
+      }
+    },
+    menuHeaderRender: undefined,
+    ...initialState?.settings,
+  };
 };
 ```
 
-In addition to the specific configurations supported by the plugins below, the runtime configuration supports all build-time configurations and transmits them to `@ant-design/pro-layout`.
+The runtime configuration is very flexible, but the corresponding performance may be relatively poor. In addition to the unique configuration supported by the following plugins, the runtime configuration supports all build-time configurations and transparently transmits them to [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout).
 
 #### logout
 
