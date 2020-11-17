@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605599845032,
+  "lastUpdate": 1605599860888,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12942,6 +12942,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.93%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vijai.r@gmail.com",
+            "name": "Vijay Rajagopal",
+            "username": "virajago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b6008022db9f0a62dd62e270590e078efdc72b69",
+          "message": "Update html-template.md (#5554)",
+          "timestamp": "2020-11-16T23:53:26-08:00",
+          "tree_id": "605313d5e506edd89f505b2203ff4fcff7d7c664",
+          "url": "https://github.com/umijs/umi/commit/b6008022db9f0a62dd62e270590e078efdc72b69"
+        },
+        "date": 1605599857429,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1162,
+            "range": "±2.85%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2310,
+            "range": "±4.69%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
