@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605599876149,
+  "lastUpdate": 1605600676743,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13018,6 +13018,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.60%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "jiyingzhi0808@gmail.com",
+            "name": "Yingzhi Ji",
+            "username": "yingzhiji"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "02977bb38a14dbc567b0830ac175ef95a66b2f88",
+          "message": "Update routing.zh-CN.md (#5487)\n\n修复错别字“出于”–>“处于”",
+          "timestamp": "2020-11-17T00:06:33-08:00",
+          "tree_id": "80e400a2691f96a99be028e0db8f337db3681406",
+          "url": "https://github.com/umijs/umi/commit/02977bb38a14dbc567b0830ac175ef95a66b2f88"
+        },
+        "date": 1605600669071,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 587,
+            "range": "±83.26%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1913,
+            "range": "±3.99%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
