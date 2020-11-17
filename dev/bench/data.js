@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605600676743,
+  "lastUpdate": 1605601101545,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13056,6 +13056,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.99%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49451713+Rezahasani1378@users.noreply.github.com",
+            "name": "Reza Hasani",
+            "username": "Rezahasani1378"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a12a81b5ffbfa0b4b218271f4ae58ec92c3ac9cd",
+          "message": "Added 'routes' to routing arrays (#5635)",
+          "timestamp": "2020-11-17T00:13:27-08:00",
+          "tree_id": "d9021c2e37edcd21d629bfb036ed765e85d354d9",
+          "url": "https://github.com/umijs/umi/commit/a12a81b5ffbfa0b4b218271f4ae58ec92c3ac9cd"
+        },
+        "date": 1605601093655,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 585,
+            "range": "±83.31%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1820,
+            "range": "±4.94%",
+            "unit": "ops/sec",
+            "extra": "36 samples"
           }
         ]
       }
