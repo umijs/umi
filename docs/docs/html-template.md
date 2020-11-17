@@ -4,10 +4,9 @@ translateHelp: true
 
 # HTML Template
 
+## Modify the default template
 
-## 修改默认模板
-
-新建 `src/pages/document.ejs`，umi 约定如果这个文件存在，会作为默认模板，比如：
+Create a new `src/pages/document.ejs`，umi agrees that if this file exists, it will be used as the default template, for example:
 
 ```html
 <!doctype html>
@@ -21,17 +20,16 @@ translateHelp: true
 </body>
 </html>
 ```
+To configure the title in umi, please check [Configuration Title](../config#title).
 
-在 umi 里配置 title 请查看 [配置标题](../config#title)。
+## Configuration template
 
-## 配置模板
+In the template, the variables provided by umi can be obtained through context. The context contains:
 
-模板里可通过 context 来获取到 umi 提供的变量，context 包含：
+* `route`，routing information, valid when multiple static HTML needs to be packaged (that is, when exportStatic is configured)
+* `config`，user configuration information
 
-* `route`，路由信息，需要打包出多个静态 HTML 时（即配置了 exportStatic 时）有效
-* `config`，用户配置信息
-
-比如：
+such as:
 
 ```html
 <link rel="icon" type="image/x-icon" href="<%= context.config.publicPath %>favicon.png" />
