@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605510238296,
+  "lastUpdate": 1605598322899,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12828,6 +12828,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.44%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "wangyuan0108@users.noreply.github.com",
+            "name": "wangyuan0108",
+            "username": "wangyuan0108"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "44782786149d5906861f38b0f9afc66caa095d81",
+          "message": "Update plugin-layout.zh-CN.md (#5385)\n\ntitle的国际化和菜单的国际化容易混淆，导致取key取的不对。有一个错别字。菜单的国际化key是name字段的值，在嵌套路由的时候，由于还有一级menu字段，容易混淆特指出文案的取值方式。",
+          "timestamp": "2020-11-17T15:28:15+08:00",
+          "tree_id": "d02c19f8b385370b0e3867efee164cc8593d713d",
+          "url": "https://github.com/umijs/umi/commit/44782786149d5906861f38b0f9afc66caa095d81"
+        },
+        "date": 1605598319844,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1378,
+            "range": "±2.48%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2433,
+            "range": "±5.15%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
