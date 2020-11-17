@@ -71,7 +71,38 @@
 
 ## 动态可选路由
 
-暂不支持。
+约定 `[ $]` 包裹的文件或文件夹为动态可选路由。
+
+比如：
+
+* `src/pages/users/[id$].tsx` 会成为 `/users/:id?`
+* `src/pages/users/[id$]/settings.tsx` 会成为 `/users/:id?/settings`
+
+举个完整的例子，比如以下文件结构，
+
+```bash
+.
+  └── pages
+    └── [post$]
+      └── comments.tsx
+    └── users
+      └── [id$].tsx
+    └── index.tsx
+```
+
+会生成路由配置，
+
+```js
+[
+  { exact: true, path: '/', component: '@/pages/index' },
+  { exact: true, path: '/users/:id?', component: '@/pages/users/[id$]' },
+  {
+    exact: true,
+    path: '/:post?/comments',
+    component: '@/pages/[post$]/comments',
+  },
+];
+```
 
 ## 嵌套路由
 

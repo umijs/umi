@@ -105,6 +105,9 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
       }
 
+      // window.resourceBaseUrl 用来兼容 egg.js 项目注入的 publicPath
+      publicPathStr = `window.resourceBaseUrl || ${publicPathStr};`;
+
       publicPathStr = await api.applyPlugins({
         key: 'modifyPublicPathStr',
         type: api.ApplyPluginsType.modify,

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "3.2.23",
+  "version": "3.2.27",
   "description": "@umijs/bundler-webpack",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -30,13 +30,13 @@
     "anymatch": "3.1.1"
   },
   "dependencies": {
-    "@babel/core": "7.11.6",
+    "@babel/core": "7.12.3",
     "@types/sockjs-client": "1.1.1",
     "@types/webpack": "4.41.22",
     "@types/webpack-dev-middleware": "3.7.2",
-    "@umijs/bundler-utils": "3.2.23",
-    "@umijs/types": "3.2.23",
-    "@umijs/utils": "3.2.23",
+    "@umijs/bundler-utils": "3.2.27",
+    "@umijs/types": "3.2.27",
+    "@umijs/utils": "3.2.27",
     "babel-loader": "8.1.0",
     "copy-webpack-plugin": "6.1.0",
     "css-loader": "3.6.0",
