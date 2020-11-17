@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605599860888,
+  "lastUpdate": 1605599876149,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -12978,6 +12978,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2310,
             "range": "±4.69%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "55792257+itellyou-com@users.noreply.github.com",
+            "name": "ITELLYOU",
+            "username": "itellyou-com"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "130704126c9de9d607bb6b0372e0a3a727b63188",
+          "message": "Update ssr.md (#5505)\n\n增加使用第三库报 window is not defined, document is not defined, navigator is not defined解决办法",
+          "timestamp": "2020-11-16T23:52:34-08:00",
+          "tree_id": "85a7b4cc547f9d5046aa84b63d192ade205d2cf0",
+          "url": "https://github.com/umijs/umi/commit/130704126c9de9d607bb6b0372e0a3a727b63188"
+        },
+        "date": 1605599872518,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 658,
+            "range": "±84.25%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2089,
+            "range": "±5.60%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
