@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605601101545,
+  "lastUpdate": 1605602638111,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13094,6 +13094,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.94%",
             "unit": "ops/sec",
             "extra": "36 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "99c6e8c15d67060aec6c2ac6b696f0b1c1d81b1a",
+          "message": "fix(dynamicImport): `dynamicImport.loading` path parse error in windows os (#5545)\n\n* fix: windows dynamicImport loading path error\r\n\r\n* chore: winPath\r\n\r\n* chore: loading logic",
+          "timestamp": "2020-11-17T00:39:33-08:00",
+          "tree_id": "3652c6b41b691699136121d503f1497aca588195",
+          "url": "https://github.com/umijs/umi/commit/99c6e8c15d67060aec6c2ac6b696f0b1c1d81b1a"
+        },
+        "date": 1605602634624,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 606,
+            "range": "±86.41%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2064,
+            "range": "±5.18%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
