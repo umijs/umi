@@ -1,5 +1,5 @@
 import ReactDOMServer from 'react-dom/server';
-import { ReactElement } from 'react';
+import React from 'react';
 import { Stream } from 'stream';
 import { matchRoutes } from 'react-router-config';
 import {
@@ -33,7 +33,7 @@ export interface ILoadGetInitialPropsValue {
 }
 
 interface ILoadGetInitialPropsOpts extends IOpts {
-  App?: ReactElement;
+  App?: React.ReactElement;
 }
 
 interface IPatchRoute extends IRoute {
@@ -96,7 +96,7 @@ export const loadPageGetInitialProps = async ({ ctx,
  */
 function getRootContainer(
   opts: IOpts & ILoadGetInitialPropsValue,
-): ReactElement {
+): React.ReactElement {
   const { path, context, basename = '/', ...renderRoutesProps } = opts;
   return renderRoutesProps.plugin.applyPlugins({
     type: ApplyPluginsType.modify,
