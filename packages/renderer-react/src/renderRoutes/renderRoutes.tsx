@@ -1,4 +1,4 @@
-import { useEffect, useState, createElement } from 'react';
+import React, { useEffect, useState, createElement } from 'react';
 import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
