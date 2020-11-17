@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605602638111,
+  "lastUpdate": 1605603179323,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13132,6 +13132,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.18%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "431a1874748b25161c5d6231982c2aa3cc1db4c5",
+          "message": "chore: upgrade terser plugin (#5683)",
+          "timestamp": "2020-11-17T00:48:23-08:00",
+          "tree_id": "36b912a280a5974d199d78c37337e080d93ef261",
+          "url": "https://github.com/umijs/umi/commit/431a1874748b25161c5d6231982c2aa3cc1db4c5"
+        },
+        "date": 1605603175592,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 633,
+            "range": "±86.73%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1966,
+            "range": "±5.41%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
