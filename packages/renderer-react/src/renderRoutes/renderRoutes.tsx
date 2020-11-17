@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, createElement } from 'react';
 import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
@@ -110,7 +110,7 @@ function render({
     if (wrappers) {
       let len = wrappers.length - 1;
       while (len >= 0) {
-        ret = React.createElement(wrappers[len], newProps, ret);
+        ret = createElement(wrappers[len], newProps, ret);
         len -= 1;
       }
     }
