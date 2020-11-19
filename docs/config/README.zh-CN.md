@@ -955,6 +955,8 @@ export default {
 
 然后访问 `/api/users` 就能访问到 [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) 的数据。
 
+> 注意：proxy 配置仅在 dev 时生效。
+
 ## publicPath
 
 * Type: `publicPath`
@@ -1020,10 +1022,10 @@ setCreateHistoryOptions({
 启用后，打包时会额外加上这一段，
 
 ```js
-__webpack_public_path__ = window.publicPath;
+__webpack_public_path__ = window.resourceBaseUrl || window.publicPath;
 ```
 
-然后 webpack 在异步加载 JS 等资源文件时会从 `window.publicPath` 里开始找。
+然后 webpack 在异步加载 JS 等资源文件时会从 `window.resourceBaseUrl` 或 `window.publicPath` 里开始找。
 
 ## ssr <Badge>3.2+</Badge>
 

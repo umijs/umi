@@ -57,7 +57,7 @@ In a more complete example, given the following file structure:
 convention routing will produce the following routing configuration:
 
 ```js
-[
+routes: [
   { exact: true, path: '/', component: '@/pages/index' },
   { exact: true, path: '/users/:id', component: '@/pages/users/[id]' },
   { exact: true, path: '/:post/', component: '@/pages/[post]/index' },
@@ -93,7 +93,7 @@ In a more complete example, given the following file structure:
 convention routing will produce the following routing configuration:
 
 ```js
-[
+routes: [
   { exact: true, path: '/', component: '@/pages/index' },
   { exact: true, path: '/users/:id?', component: '@/pages/users/[id$]' },
   {
@@ -122,7 +122,7 @@ For example, the following directory structure
 will result in the following routing:
 
 ```js
-[
+routes: [
   { exact: false, path: '/users', component: '@/pages/users/_layout',
     routes: [
       { exact: true, path: '/users', component: '@/pages/users/index' },
@@ -151,7 +151,7 @@ For example, the following directory structure,
 will result in the following routing:
 
 ```js
-[
+routes: [
   { exact: false, path: '/', component: '@/layouts/index',
     routes: [
       { exact: true, path: '/', component: '@/pages/index' },
@@ -210,7 +210,7 @@ For example, the following directory structure,
 corresponds to the routing
 
 ```js
-[
+routes: [
   { exact: true, path: '/', component: '@/pages/index' },
   { exact: true, path: '/users', component: '@/pages/users' },
   { component: '@/pages/404' },
