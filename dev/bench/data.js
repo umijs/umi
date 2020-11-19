@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605754114750,
+  "lastUpdate": 1605759476484,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13208,6 +13208,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.70%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "10ba6f3b78fbd84fe9c19711ad20ab3edd585ef0",
+          "message": "chore: upgrade fork-ts plugin version (#5614)\n\n* chore: upgrade fork-ts-checker-webpack-plugin\r\n\r\n* chore: typescript\r\n\r\n* chore: site staticMarkup\r\n\r\n* chore: fork\r\n\r\n* chore: staticMarkup",
+          "timestamp": "2020-11-18T20:13:49-08:00",
+          "tree_id": "916e1af16a902fc9a24e7184a6ba5970ac2798a2",
+          "url": "https://github.com/umijs/umi/commit/10ba6f3b78fbd84fe9c19711ad20ab3edd585ef0"
+        },
+        "date": 1605759473000,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1296,
+            "range": "±2.95%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2451,
+            "range": "±5.06%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
