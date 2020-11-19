@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605603179323,
+  "lastUpdate": 1605754114750,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13170,6 +13170,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.41%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a3d4d79e32676b3e39982f92eade446700a2f213",
+          "message": "feat: support react 17 (#5690)\n\n* feat: support react 17\r\n\r\n* feat: support react 17\r\n\r\n* feat: react 17\r\n\r\n* chore: react\r\n\r\n* docs: use react 17",
+          "timestamp": "2020-11-18T18:43:47-08:00",
+          "tree_id": "8399882e85b43d32d7d1d3d7eee951698115a770",
+          "url": "https://github.com/umijs/umi/commit/a3d4d79e32676b3e39982f92eade446700a2f213"
+        },
+        "date": 1605754110923,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 601,
+            "range": "±83.82%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1747,
+            "range": "±4.70%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
