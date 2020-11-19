@@ -20,15 +20,18 @@
 
 ### 构建时配置
 
-可以通过配置文件配置 `layout` 的主题等配置。
+可以通过配置文件配置 `layout` 的主题等配置, 在 [`config/config.ts`](https://github.com/ant-design/ant-design-pro/blob/4a2cb720bfcdab34f2b41a3b629683329c783690/config/config.ts#L15) 中这样写：
 
 ```tsx
 import { defineConfig } from 'umi';
 
 export const config = defineConfig({
   layout: {
+    // 支持任何不需要 dom 的
+    // https://procomponents.ant.design/components/layout#prolayout
     name: 'Ant Design',
     locale: true,
+    layout: 'side',
   },
 });
 ```
@@ -59,25 +62,44 @@ export const config = defineConfig({
 - Type: `boolean`
 - Default: `false`
 
-是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为改 key。该功能需要配置 `@umijs/plugin-locale` 使用。
+是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 `@umijs/plugin-locale` 使用。
+
+config 支持所有的非 dom 配置并透传给 [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout)。
 
 ### 运行时配置
 
-Layout 插件允许通过运行时的配置退出登陆、自定义 ErrorBoundary 等功能。
+在构建时是无法使用 dom 的，所以有些配置可能需要运行时来配置，我们可以在 [`src/app.tsx`](export const layout = ({) 中做如下配置:
 
-```tsx | pure
-// src/app.js
-export const layout = {
-  // do something
-  logout: () => {},
-  // https://procomponents.ant.design/components/layout
-  rightRender: (initInfo) => {
-    return <Icon />;
-  }, // return string || ReactNode;
+```tsx
+import React from 'react';
+import {
+  BasicLayoutProps,
+  Settings as LayoutSettings,
+} from '@ant-design/pro-layout';
+
+export const layout = ({
+  initialState,
+}: {
+  initialState: { settings?: LayoutSettings; currentUser?: API.CurrentUser };
+}): BasicLayoutProps => {
+  return {
+    rightContentRender: () => <RightContent />,
+    footerRender: () => <Footer />,
+    onPageChange: () => {
+      const { currentUser } = initialState;
+      const { location } = history;
+      // 如果没有登录，重定向到 login
+      if (!currentUser && location.pathname !== '/user/login') {
+        history.push('/user/login');
+      }
+    },
+    menuHeaderRender: undefined,
+    ...initialState?.settings,
+  };
 };
 ```
 
-除了下面的插件支持的特有配置外，运行时配置支持所有的构建时配置并透传给 `@ant-design/pro-layout`。
+运行时配置非常灵活，但是相应的性能可能比较差，除了下面的插件支持的特有配置外，运行时配置支持所有的构建时配置并透传给 [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout)。
 
 #### logout
 
