@@ -10,6 +10,58 @@ translateHelp: true
 
 不是。文档中的 `.ts` 替换为 `.js` 同样有效，因为不想每次都带上 `.(j|t)sx?`。
 
+### 使用 React 17
+
+在 `package.json` 中升级 React 依赖
+
+```diff
+- "react": "^16.0.0",
++ "react": "^17.0.0",
+- "react-dom": "^16.0.0",
++ "react-dom": "^17.0.0",
+```
+
+去掉 `import React from 'react'` 模块引入
+
+```diff
+- import React from 'react';
+
+function App() {
+  return <h1>Hello World</h1>;
+}
+```
+
+同时 `tsconfig.json` 修改 `jsx` 配置：
+
+```diff
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+-   "jsx": "react",
++   "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "./",
+    "strict": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@@/*": ["src/.umi/*"]
+    },
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "mock/**/*",
+    "src/**/*",
+    "config/**/*",
+    ".umirc.ts",
+    "typings.d.ts"
+  ]
+}
+```
+
 ### import from umi 没有定义怎么办？
 
 比如：
@@ -300,7 +352,7 @@ File sizes after gzip:
 ```
 export default {
   dynamicImport: {
-    loading: '() => <></>
+    loading: '() => <></>'
   },
 }
 ```
