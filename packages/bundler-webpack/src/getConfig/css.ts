@@ -58,11 +58,12 @@ export function createCSSRule({
           .use('extract-css-loader')
           .loader(
             miniCSSExtractPluginLoaderPath ||
-              require.resolve('mini-css-extract-plugin/dist/loader'),
+              require('mini-css-extract-plugin').loader,
           )
           .options({
             publicPath: './',
-            hmr: isDev,
+            // the hmr option was removed, HMR will work automatically when HotModuleReplacement plugin used or webpack-dev-server with enabled the hot option
+            // hmr: isDev,
           });
       }
     }
