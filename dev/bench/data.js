@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605839593365,
+  "lastUpdate": 1605842403477,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13284,6 +13284,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.87%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0958c6f838d054d8e4ae2209add43bc20feca024",
+          "message": "chore: print error when dynamic load component failed (#5705)",
+          "timestamp": "2020-11-20T11:15:16+08:00",
+          "tree_id": "c245908ed1af2089d34ef6b393c4e1996885f1b6",
+          "url": "https://github.com/umijs/umi/commit/0958c6f838d054d8e4ae2209add43bc20feca024"
+        },
+        "date": 1605842399840,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 538,
+            "range": "±89.65%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1849,
+            "range": "±5.19%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
