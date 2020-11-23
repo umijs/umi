@@ -89,12 +89,6 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
     logger.appendLog('🎉  Success TypeScript to JavaScript\n');
   }
 
-  if (uni18n) {
-    logger.appendLog('🌏  Start remove i18n code');
-    require('../../../../remove-locale').default(generator.blockFolderPath, uni18n);
-    logger.appendLog('🎉  Success remove i18n code\n');
-  }
-
   ctx.stages.generator = generator;
 };
 
