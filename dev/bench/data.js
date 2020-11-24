@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606202158853,
+  "lastUpdate": 1606209188244,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13360,6 +13360,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.28%",
             "unit": "ops/sec",
             "extra": "43 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "328080339@qq.com",
+            "name": "awei.yu",
+            "username": "aweiu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6a8c65a83e197478c84ff7db6ff80476e1993bb0",
+          "message": "docs: 物理缓存 => 持久缓存 (#5730)\n\n官方的说法是：[persistent-caching](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#persistent-caching) （持久缓存）\r\n看到「物理缓存」吓得我虎躯一震，以为 webpack5 还能改造硬盘了。。",
+          "timestamp": "2020-11-24T01:09:22-08:00",
+          "tree_id": "abe33590b29f6dc88d2132fee95fba1fbcda77d6",
+          "url": "https://github.com/umijs/umi/commit/6a8c65a83e197478c84ff7db6ff80476e1993bb0"
+        },
+        "date": 1606209176065,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1497,
+            "range": "±2.76%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2588,
+            "range": "±5.06%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
