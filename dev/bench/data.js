@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605842403477,
+  "lastUpdate": 1606202158853,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13322,6 +13322,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.19%",
             "unit": "ops/sec",
             "extra": "38 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kuitos.lau@gmail.com",
+            "name": "Kuitos",
+            "username": "kuitos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b0fe789b1887bf37d6dc20ce1f83b2d7cf85c378",
+          "message": "docs(qiankun): 新增运行时配置微应用路由文档 (#5725)",
+          "timestamp": "2020-11-24T15:12:00+08:00",
+          "tree_id": "ebe8a15a710fb3498daae269a4bfb1edbb06c11c",
+          "url": "https://github.com/umijs/umi/commit/b0fe789b1887bf37d6dc20ce1f83b2d7cf85c378"
+        },
+        "date": 1606202153664,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1427,
+            "range": "±3.13%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2635,
+            "range": "±4.28%",
+            "unit": "ops/sec",
+            "extra": "43 samples"
           }
         ]
       }
