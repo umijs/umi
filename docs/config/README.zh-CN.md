@@ -154,7 +154,6 @@ export default {
   chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
-        minimize: true,
         splitChunks: {
           chunks: 'all',
           minSize: 30000,
