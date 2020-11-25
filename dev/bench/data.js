@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606312425580,
+  "lastUpdate": 1606312496990,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13512,6 +13512,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.20%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "bunnytooth99@gmail.com",
+            "name": "Jack Liang",
+            "username": "JackLLLLL"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "dde029996bc1bd87169b71af458a394c19f8b2db",
+          "message": "Update plugin-dva.zh-CN.md (#5736)\n\nfix: typo",
+          "timestamp": "2020-11-25T05:51:02-08:00",
+          "tree_id": "bece36605e86e01f422dda1962fccf4d240c4571",
+          "url": "https://github.com/umijs/umi/commit/dde029996bc1bd87169b71af458a394c19f8b2db"
+        },
+        "date": 1606312493685,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1412,
+            "range": "±2.77%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2358,
+            "range": "±4.48%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
