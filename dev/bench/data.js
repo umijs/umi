@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606295164420,
+  "lastUpdate": 1606312425580,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13474,6 +13474,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.81%",
             "unit": "ops/sec",
             "extra": "36 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "de805079ba08d7aa5778660a5021b8b587b1bd91",
+          "message": "docs: cannot assign exports faq (#5738)",
+          "timestamp": "2020-11-25T05:49:24-08:00",
+          "tree_id": "13b6ea0dd1940077c324e799bd885abdb6028639",
+          "url": "https://github.com/umijs/umi/commit/de805079ba08d7aa5778660a5021b8b587b1bd91"
+        },
+        "date": 1606312422029,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1229,
+            "range": "±3.04%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2205,
+            "range": "±5.20%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
