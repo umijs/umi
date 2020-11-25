@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606312496990,
+  "lastUpdate": 1606312863056,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13550,6 +13550,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.48%",
             "unit": "ops/sec",
             "extra": "38 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "65aa3bc578476ac450e9bea5f008e86330580156",
+          "message": "chore: upgrade father-build 1.19 (#5695)\n\n* chore: father-build 1.19\r\n\r\n* chore: father-build",
+          "timestamp": "2020-11-25T05:55:52-08:00",
+          "tree_id": "2b736c038d576f19b8ac4f48483db64ae5b05d51",
+          "url": "https://github.com/umijs/umi/commit/65aa3bc578476ac450e9bea5f008e86330580156"
+        },
+        "date": 1606312859253,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1229,
+            "range": "±3.59%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2080,
+            "range": "±4.81%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
