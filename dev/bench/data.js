@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606209188244,
+  "lastUpdate": 1606289579498,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13398,6 +13398,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.06%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "11816938748db601c40d741c74231b7a1bf1312e",
+          "message": "docs: splitChunks using minimize will oom (#5733)",
+          "timestamp": "2020-11-24T23:28:38-08:00",
+          "tree_id": "be0a03e166bfedbc621277d398280d5047c50444",
+          "url": "https://github.com/umijs/umi/commit/11816938748db601c40d741c74231b7a1bf1312e"
+        },
+        "date": 1606289576102,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1240,
+            "range": "±3.31%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2195,
+            "range": "±4.89%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
