@@ -420,3 +420,18 @@ export default Header;
 ### 部署在静态文件服务时，如搭配 cordova 使用，页面空白，提示找不到文件？
 
 可以尝试配置 `publicPath: './',`
+
+### Cannot assign to read only property 'exports' of object '#<Object>'
+
+出现这个报错，一般是在一个文件里混用了 `import` 和 `module.exports`
+
+推荐统一改成 ES Module 标准导入、导出形式：
+
+```diff
+import { A } from './a';
+
+- module.exports = A;
++ export default A;
+```
+
+如果需要改动的文件比较多，可以 `npm i @babel/plugin-transform-modules-commonjs -D`，然后在 umi 配置文件中加上 `extraBabelPlugins: ['@babel/plugin-transform-modules-commonjs']`。
