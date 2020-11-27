@@ -11,7 +11,7 @@
 包含以下功能，
 
 * **内置 dva**，默认版本是 `^2.6.0-beta.20`，如果项目中有依赖，会优先使用项目中依赖的版本。
-* **约定是到 model 组织方式**，不用手动注册 model
+* **约定式的 model 组织方式**，不用手动注册 model
 * **文件名即 namespace**，model 内如果没有声明 namespace，会以文件名作为 namespace
 * **内置 dva-loading**，直接 connect `loading` 字段使用即可
 * **支持 immer**，通过配置 `immer` 开启
