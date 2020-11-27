@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "7.12.9",
     "@babel/register": "7.12.1",
     "@hapi/joi": "16.1.8",
     "@types/ejs": "3.0.4",
