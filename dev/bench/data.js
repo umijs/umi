@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606449788924,
+  "lastUpdate": 1606455138373,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13626,6 +13626,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.05%",
             "unit": "ops/sec",
             "extra": "37 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3f202ee2c118be08ae00e23ede9879b632f7a30d",
+          "message": "Revert \"chore: babel (#5745)\" (#5746)\n\nThis reverts commit 76d2f0367850b493f2b53c76247d893cc1e2e95f.",
+          "timestamp": "2020-11-26T21:26:43-08:00",
+          "tree_id": "2b736c038d576f19b8ac4f48483db64ae5b05d51",
+          "url": "https://github.com/umijs/umi/commit/3f202ee2c118be08ae00e23ede9879b632f7a30d"
+        },
+        "date": 1606455135003,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 638,
+            "range": "±88.78%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2126,
+            "range": "±4.39%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
