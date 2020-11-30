@@ -97,6 +97,27 @@ export default {
     memo.plugins.delete('progress');
     memo.plugins.delete('friendly-error');
     memo.plugins.delete('copy');
+    
+    //修改图片输出目录,图片输出为：图片名.格式
+    memo.module
+      .rule('images')
+      .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
+      .use('url-loader')
+      .loader(require.resolve('url-loader'))
+      .tap((options) => {
+        const newOptions = {
+          ...options,
+          name: 'static/[name].[ext]', //如需要在打包后的static文件夹下放入img文件且图片名带hash数：/img/[name].[hash:8].[ext]
+          fallback: {
+            ...options.fallback,
+            options: {
+              name: 'static/[name].[ext]', //如需要在打包后的static文件夹下放入img文件且图片名带hash数：/img/[name].[hash:8].[ext]
+              esModule: false,
+            },
+          },
+        };
+        return newOptions;
+      });
   }
 }
 ```
