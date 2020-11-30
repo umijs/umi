@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606725431004,
+  "lastUpdate": 1606736030617,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13702,6 +13702,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.38%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "scdzwyxst@gmail.com",
+            "name": "Peach",
+            "username": "PeachScript"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "435403a6dfaf5e4b1b2854dc7c6e64c416cba00d",
+          "message": "refactor(dev): access env when dev related method be called (#5756)",
+          "timestamp": "2020-11-30T03:29:14-08:00",
+          "tree_id": "6da645390e6f085fc94598ec356c2a28b3cd5a43",
+          "url": "https://github.com/umijs/umi/commit/435403a6dfaf5e4b1b2854dc7c6e64c416cba00d"
+        },
+        "date": 1606736027485,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1286,
+            "range": "±3.61%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2317,
+            "range": "±4.99%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
