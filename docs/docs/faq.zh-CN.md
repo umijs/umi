@@ -8,13 +8,18 @@
 
 ### 使用 React 17
 
-在 `package.json` 中升级 React 依赖
+在 `package.json` 中升级 React 依赖，同时安装 TypeScript 4.1 及以上
 
 ```diff
-- "react": "^16.0.0",
-+ "react": "^17.0.0",
-- "react-dom": "^16.0.0",
-+ "react-dom": "^17.0.0",
+	"dependencies": {
+-   "react": "^16.0.0",
++   "react": "^17.0.0",
+-   "react-dom": "^16.0.0",
++   "react-dom": "^17.0.0",
+  },
+  "devDependencies": {
++   "typescript": "^4.1.0"
+  }
 ```
 
 去掉 `import React from 'react'` 模块引入
