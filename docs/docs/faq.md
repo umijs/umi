@@ -422,6 +422,30 @@ export default Header;
 
 > 注意：图片大小小于 10 k 时会走 base64。即不会被拷贝到 public 文件夹下，而是以 base64 的资源存在。
 
+### build之后图片名带了hash串？
+
+  chainWebpack(config, { env, webpack, createCSSRule }) {
+    config.module
+      .rule('images')
+      .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
+      .use('url-loader')
+      .loader(require.resolve('url-loader'))
+      .tap(options => {
+        const newOptions = {
+          ...options,
+          name: 'static/[name].[ext]',//若需要hash串，改为static/[name].[hash:8].[ext]---注：:8代表hash位数
+          fallback: {
+            ...options.fallback,
+            options: {
+              name: 'static/[name].[ext]',//若需要hash串，改为static/[name].[hash:8].[ext]
+              esModule: false,
+            },
+          },
+        };
+        return newOptions;
+      });
+  },
+
 ### 部署在静态文件服务时，如搭配 cordova 使用，页面空白，提示找不到文件？
 
 可以尝试配置 `publicPath: './',`
