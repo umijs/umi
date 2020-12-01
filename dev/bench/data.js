@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606736030617,
+  "lastUpdate": 1606793714184,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13738,6 +13738,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2317,
             "range": "±4.99%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "scdzwyxst@gmail.com",
+            "name": "Peach",
+            "username": "PeachScript"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "19c68fada78edafdb9958c264977d59ff2313445",
+          "message": "docs: use html entities to avoid deploy error (#5758)",
+          "timestamp": "2020-11-30T19:30:11-08:00",
+          "tree_id": "10c26581427083355acbd007b92829eb842d61ae",
+          "url": "https://github.com/umijs/umi/commit/19c68fada78edafdb9958c264977d59ff2313445"
+        },
+        "date": 1606793710802,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1249,
+            "range": "±2.99%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2351,
+            "range": "±6.26%",
             "unit": "ops/sec",
             "extra": "42 samples"
           }
