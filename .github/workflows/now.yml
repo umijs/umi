@@ -14,7 +14,6 @@ jobs:
           yarn build
           yarn docs:build
       - name: deploy
-        timeout-minutes: 3
         env:
           BUILD_ID: ${{ github.sha }}
           ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
