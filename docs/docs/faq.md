@@ -426,7 +426,7 @@ export default Header;
 
 可以尝试配置 `publicPath: './',`
 
-### Cannot assign to read only property 'exports' of object '#<Object>'
+### Cannot assign to read only property 'exports' of object '#&lt;Object&gt;'
 
 出现这个报错，一般是在一个文件里混用了 `import` 和 `module.exports`
 
