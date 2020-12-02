@@ -348,12 +348,12 @@ File sizes after gzip:
 
 ### 如何禁用掉每次刷新路由时出现的 loading... 状态？
 
-给 dynamicImport 配置加上 `loading: '() => <></>'`，比如：
+给 dynamicImport 配置加上 `loadingComponent: '() => <></>'`，比如：
 
 ```
 export default {
   dynamicImport: {
-    loading: '() => <></>'
+    loadingComponent: '() => <></>'
   },
 }
 ```
