@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606898524692,
+  "lastUpdate": 1606975102139,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13892,6 +13892,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.38%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4060c03c05e736b5865ffe5f105ff2966dcbd806",
+          "message": "fix: box-orient css removed (#5776)",
+          "timestamp": "2020-12-02T21:53:24-08:00",
+          "tree_id": "8b39e05b34fd14d76cf4003846112330e24a35ba",
+          "url": "https://github.com/umijs/umi/commit/4060c03c05e736b5865ffe5f105ff2966dcbd806"
+        },
+        "date": 1606975094705,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1192,
+            "range": "±2.76%",
+            "unit": "ops/sec",
+            "extra": "74 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2097,
+            "range": "±4.91%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
