@@ -350,18 +350,18 @@ File sizes after gzip:
 
 给 dynamicImport 引入一个空组件比如 `Loading.tsx` ，内容如下：
 ```typescript
-//components/Loading.tsx
+// components/Loading.tsx
 
 import React from 'react';
 
 export default () => <></>;
 ```
-```
+```typescript
 export default {
   dynamicImport: {
-    loading: '@/components/Loading'
+    loading: '@/components/Loading',
   },
-}
+};
 ```
 
 ## Test

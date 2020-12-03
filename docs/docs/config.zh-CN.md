@@ -22,7 +22,7 @@ export default {
 
 export default [
     { exact: true, path: '/', component: 'index' },
-}
+];
 ```
 ```typescript
 // config/config.ts
