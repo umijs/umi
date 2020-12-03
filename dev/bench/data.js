@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606983013930,
+  "lastUpdate": 1606983124961,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13968,6 +13968,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.48%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xpc1993@gmail.com",
+            "name": "hehe",
+            "username": "hehex9"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f4db7793f633939e650e7a3fb9db15450cbc987d",
+          "message": "ci: skip workflows via paths-ignore (#5770)",
+          "timestamp": "2020-12-03T00:06:41-08:00",
+          "tree_id": "1abf5ff767a0d6f5d6c63ea4478be517a05b2c5d",
+          "url": "https://github.com/umijs/umi/commit/f4db7793f633939e650e7a3fb9db15450cbc987d"
+        },
+        "date": 1606983121437,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 580,
+            "range": "±86.41%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1967,
+            "range": "±4.24%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
