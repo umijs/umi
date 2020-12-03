@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606975102139,
+  "lastUpdate": 1606983013930,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -13928,6 +13928,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2097,
             "range": "±4.91%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "silence_zhpf@aliyun.com",
+            "name": "silence",
+            "username": "hackers267"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c5c766dc7caad433331ecf16babd620eaaa96cab",
+          "message": "fix the spelling mistake (#5777)\n\nchange the line 28 `cd packages/plguin-qiankun && yarn start` to `cd packages/plugin-qiankun && yarn start`",
+          "timestamp": "2020-12-03T00:04:47-08:00",
+          "tree_id": "c21cc95fb57ffc3c96025b39c32c039df3708473",
+          "url": "https://github.com/umijs/umi/commit/c5c766dc7caad433331ecf16babd620eaaa96cab"
+        },
+        "date": 1606983010370,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 661,
+            "range": "±83.60%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2095,
+            "range": "±5.48%",
             "unit": "ops/sec",
             "extra": "39 samples"
           }
