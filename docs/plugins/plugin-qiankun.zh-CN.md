@@ -25,7 +25,7 @@ Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模�
 ```bash
 $ yarn
 $ yarn build
-$ cd packages/plguin-qiankun && yarn start
+$ cd packages/plugin-qiankun && yarn start
 ```
 
 ## Features
