@@ -22,6 +22,7 @@ export default (api: IApi) => {
     if (api.env === 'development' && type === BundlerConfigType.csr) {
       memo
         .plugin('fastRefresh')
+        .after('hmr')
         .use(require('@pmmmwh/react-refresh-webpack-plugin'), [
           { overlay: false },
         ]);
