@@ -41,7 +41,7 @@ export interface IOpts {
   targets?: any;
   browserslist?: any;
   bundleImplementor?: typeof defaultWebpack;
-  modifyBabelOpts?: (opts: object) => Promise<any>;
+  modifyBabelOpts?: (opts: object, args?: any) => Promise<any>;
   modifyBabelPresetOpts?: (opts: object) => Promise<any>;
   chainWebpack?: (webpackConfig: any, args: any) => Promise<any>;
   miniCSSExtractPluginPath?: string;
@@ -170,7 +170,9 @@ export default async function getConfig(
     presetOpts,
   });
   if (modifyBabelOpts) {
-    babelOpts = await modifyBabelOpts(babelOpts);
+    babelOpts = await modifyBabelOpts(babelOpts, {
+      type,
+    });
   }
 
   // prettier-ignore

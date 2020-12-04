@@ -76,6 +76,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
         'title_zh-CN': 'Umi 进阶',
         children: [
           '/docs/load-on-demand',
+          '/docs/fast-refresh',
           '/docs/deployment',
           '/docs/use-umi-ui',
           '/docs/ssr',

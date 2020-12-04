@@ -615,6 +615,14 @@ HTML 中会生成，
 
 开启 TypeScript 编译时类型检查，默认关闭。
 
+## fastRefresh <Badge>3.3+</Badge>
+
+* Type: `object`
+
+快速刷新（Fast Refresh），开发时可以**保持组件状态**，同时编辑提供**即时反馈**。
+
+[文档](/docs/fast-refresh)
+
 ## hash
 
 * Type: `boolean`

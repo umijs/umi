@@ -43,11 +43,12 @@ export async function getBundleAndConfigs({
         },
         // @ts-ignore
         bundleImplementor,
-        async modifyBabelOpts(opts: any) {
+        async modifyBabelOpts(opts: any, args?: any) {
           return await api.applyPlugins({
             type: api.ApplyPluginsType.modify,
             key: 'modifyBabelOpts',
             initialValue: opts,
+            args,
           });
         },
         async modifyBabelPresetOpts(opts: any) {
