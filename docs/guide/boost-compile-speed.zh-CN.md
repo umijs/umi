@@ -150,31 +150,16 @@ export default {
 编辑器打包，建议使用如下配置，避免构建报错：
 
 ```js
+import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+
 export default {
-  chainWebpack: (config) => {
-    config.plugin('monaco-editor-webpack-plugin').use(
-      // 更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-      new MonacoWebpackPlugin(),
-    );
-    config
-    .plugin('d1-ignore')
-      .use(
-        // eslint-disable-next-line
-        require('webpack/lib/IgnorePlugin'), [
-          /^((fs)|(path)|(os)|(crypto)|(source-map-support))$/, /vs(\/|\\)language(\/|\\)typescript(\/|\\)lib/
-        ]
-      )
-    .end()
-    .plugin('d1-replace')
-      .use(
-        // eslint-disable-next-line
-        require('webpack/lib/ContextReplacementPlugin'),
-        [
-          /monaco-editor(\\|\/)esm(\\|\/)vs(\\|\/)editor(\\|\/)common(\\|\/)services/,
-          __dirname,
-        ]
-      )
-    return config;
+  chainWebpack: (memo) => {
+    // 更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+    memo.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [
+      // 按需配置
+      { languages: ['javascript'] }
+    ]);
+    return memo;
   }
 }
 ```
