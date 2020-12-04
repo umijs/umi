@@ -20,7 +20,8 @@ export default (api: IApi) => {
   });
 
   api.chainWebpack((memo, { type }) => {
-    if (type === BundlerConfigType.csr) {
+    // must add api.env, test env needed.
+    if (api.env === 'development' && type === BundlerConfigType.csr) {
       memo
         .plugin('fastRefresh')
         .after('hmr')
@@ -34,7 +35,7 @@ export default (api: IApi) => {
 
   api.modifyBabelOpts({
     fn: (babelOpts, { type }) => {
-      if (type === BundlerConfigType.csr) {
+      if (api.env === 'development' && type === BundlerConfigType.csr) {
         babelOpts.plugins.push([require.resolve('react-refresh/babel')]);
         debug('FastRefresh babel loaded');
       }
