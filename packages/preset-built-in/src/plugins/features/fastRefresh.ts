@@ -16,7 +16,7 @@ export default (api: IApi) => {
         return joi.object();
       },
     },
-    enableBy: api.EnableBy.config && api.env === 'development',
+    enableBy: api.EnableBy.config,
   });
 
   api.chainWebpack((memo, { type }) => {
