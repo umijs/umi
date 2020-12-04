@@ -10,14 +10,13 @@ test('build', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
-    // production 下 ci 时会报错
-    // env: 'production',
+    env: 'production',
   });
   await service.run({
     name: 'build',
   });
 
   expect(existsSync(join(cwd, 'dist', 'umi.js'))).toEqual(true);
-  // expect(existsSync(join(cwd, 'dist', 'index.html'))).toEqual(true);
+  expect(existsSync(join(cwd, 'dist', 'index.html'))).toEqual(true);
   rimraf.sync(join(cwd, 'dist'));
 });
