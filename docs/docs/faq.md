@@ -352,14 +352,20 @@ File sizes after gzip:
 
 ### 如何禁用掉每次刷新路由时出现的 loading... 状态？
 
-给 dynamicImport 配置加上 `loading: '() => <></>'`，比如：
+给 dynamicImport 引入一个空组件比如 `Loading.tsx` ，内容如下：
+```typescript
+// components/Loading.tsx
 
+import React from 'react';
+
+export default () => <></>;
 ```
+```typescript
 export default {
   dynamicImport: {
-    loading: '() => <></>'
+    loading: '@/components/Loading',
   },
-}
+};
 ```
 
 ## Test
