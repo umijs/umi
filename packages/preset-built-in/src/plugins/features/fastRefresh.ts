@@ -16,10 +16,11 @@ export default (api: IApi) => {
         return joi.object();
       },
     },
+    enableBy: api.EnableBy.config && api.env === 'development',
   });
 
   api.chainWebpack((memo, { type }) => {
-    if (api.env === 'development' && type === BundlerConfigType.csr) {
+    if (type === BundlerConfigType.csr) {
       memo
         .plugin('fastRefresh')
         .after('hmr')
@@ -33,7 +34,7 @@ export default (api: IApi) => {
 
   api.modifyBabelOpts({
     fn: (babelOpts, { type }) => {
-      if (api.env === 'development' && type === BundlerConfigType.csr) {
+      if (type === BundlerConfigType.csr) {
         babelOpts.plugins.push([require.resolve('react-refresh/babel')]);
         debug('FastRefresh babel loaded');
       }

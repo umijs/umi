@@ -6,9 +6,11 @@ translateHelp: true
 
 > 快速刷新（Fast Refresh）是 React 官方为 React Native 开发的模块热替换（HMR）方案，由于其核心实现与平台无关，同时也适用于 Web。
 
-Fast Refresh 功能最大的特性是：开发环境下，可以**保持组件状态**，同时编辑提供**即时反馈**。由于其不错的容错性，Umi 中将默认开启 Fast Refresh。
+Fast Refresh 功能最大的特性是：开发环境下，可以**保持组件状态**，同时编辑提供**即时反馈**。
 
 ## 怎样使用？
+
+在[配置文件](/docs/config)加上 `fastRefresh: {}` 即可开启
 
 这张 gif 动图展示的是使用 Fast Refresh 特性的开发体验，可以看出，修改组件代码后，用户名和密码**状态保持**，这将提升应用本地研发体验。
 
