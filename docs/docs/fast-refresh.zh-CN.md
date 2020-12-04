@@ -26,7 +26,7 @@ Fast Refresh 功能最大的特性是：开发环境下，可以**保持组件�
 推荐写函数命名组件，例如：
 
 
-Good:
+✅ Good:
 
 ```javascript
 const Foo = () => {};
@@ -34,7 +34,7 @@ const Foo = () => {};
 export default Foo;
 ```
 
-Bad:
+❌ Bad:
 
 ```javascript
 export default () => {};
