@@ -9,7 +9,6 @@ import { watchPkg } from './watchPkg';
 
 export default (api: IApi) => {
   const {
-    env,
     paths,
     utils: { chalk, portfinder },
   } = api;
@@ -197,8 +196,9 @@ export default (api: IApi) => {
   api.registerMethod({
     name: 'getPort',
     fn() {
+      // access env when method be called, to allow other plugin run dev command manually
       assert(
-        env === 'development',
+        api.env === 'development',
         `api.getPort() is only valid in development.`,
       );
       return port;
@@ -209,7 +209,7 @@ export default (api: IApi) => {
     name: 'getHostname',
     fn() {
       assert(
-        env === 'development',
+        api.env === 'development',
         `api.getHostname() is only valid in development.`,
       );
       return hostname;
@@ -220,7 +220,7 @@ export default (api: IApi) => {
     name: 'getServer',
     fn() {
       assert(
-        env === 'development',
+        api.env === 'development',
         `api.getServer() is only valid in development.`,
       );
       return server;

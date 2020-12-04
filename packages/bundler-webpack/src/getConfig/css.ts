@@ -58,12 +58,12 @@ export function createCSSRule({
           .use('extract-css-loader')
           .loader(
             miniCSSExtractPluginLoaderPath ||
-              require('../../mini-css-extract-plugin/dist/index').default
-                .loader,
+              require('mini-css-extract-plugin').loader,
           )
           .options({
             publicPath: './',
-            hmr: isDev,
+            // the hmr option was removed, HMR will work automatically when HotModuleReplacement plugin used or webpack-dev-server with enabled the hot option
+            // hmr: isDev,
           });
       }
     }
@@ -189,7 +189,7 @@ export default function ({
         .plugin('extract-css')
         .use(
           miniCSSExtractPluginPath ||
-            require('../../mini-css-extract-plugin/dist/index').default,
+            require.resolve('mini-css-extract-plugin'),
           [
             {
               filename: `[name]${hash}.css`,

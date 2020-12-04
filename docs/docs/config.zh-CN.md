@@ -16,9 +16,27 @@ export default {
 ## 配置文件
 
 如果项目的配置不复杂，推荐在 `.umirc.ts` 中写配置；
-如果项目的配置比较复杂，可以将配置写在 `config/config.ts` 中，并把配置的一部分拆出去，比如路由配置可以拆成单独的 `config/routes.ts`。
+如果项目的配置比较复杂，可以将配置写在 `config/config.ts` 中，并把配置的一部分拆分出去，比如路由配置可以拆分成单独的 `routes.ts`：
+```typescript
+// config/routes.ts
 
-两种方式二选一，`.umirc.ts` 优先级更高。
+export default [
+    { exact: true, path: '/', component: 'index' },
+];
+```
+```typescript
+// config/config.ts
+
+import { defineConfig } from 'umi';
+import routes from './routes';
+
+export default defineConfig({
+  routes: routes,
+});
+
+```
+
+推荐两种配置方式二选一，`.umirc.ts` 优先级更高。
 
 ## TypeScript 提示
 
