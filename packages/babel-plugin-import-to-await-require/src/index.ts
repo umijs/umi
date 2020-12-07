@@ -1,5 +1,5 @@
-import { t } from '@umijs/utils';
-import * as traverse from '@babel/traverse';
+import * as t from '@babel/types';
+import type { Visitor, NodePath } from '@babel/traverse';
 
 type TLibs = (RegExp | string)[];
 
@@ -62,7 +62,7 @@ export default function () {
   return {
     visitor: {
       Program: {
-        exit(path: traverse.NodePath<t.Program>, { opts }: { opts: IOpts }) {
+        exit(path: NodePath<t.Program>, { opts }: { opts: IOpts }) {
           const variableDeclarations = [];
           let index = path.node.body.length - 1;
           while (index >= 0) {
@@ -169,6 +169,6 @@ export default function () {
           path.node.body = [...variableDeclarations, ...path.node.body];
         },
       },
-    } as traverse.Visitor,
+    } as Visitor,
   };
 }
