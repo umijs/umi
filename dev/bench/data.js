@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607048881736,
+  "lastUpdate": 1607333792576,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14042,6 +14042,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 2302,
             "range": "±4.61%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xpc1993@gmail.com",
+            "name": "hehe",
+            "username": "hehex9"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a9cbc89c2dd6c4a386dee983e2c4ad1c3ceb01cc",
+          "message": "chore: move babel-plugin-auto-css-modules deps to devDeps (#5764)\n\n* chore: move deps to devDependencies\r\n\r\n* chore: address comment\r\n\r\n* chore: add peer deps",
+          "timestamp": "2020-12-07T01:31:03-08:00",
+          "tree_id": "e83df34dc22b4a47976f27fdee5a67dd06864747",
+          "url": "https://github.com/umijs/umi/commit/a9cbc89c2dd6c4a386dee983e2c4ad1c3ceb01cc"
+        },
+        "date": 1607333788942,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 595,
+            "range": "±89.88%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2032,
+            "range": "±5.52%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
