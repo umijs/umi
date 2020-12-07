@@ -29,5 +29,8 @@
   },
   "devDependencies": {
     "@babel/traverse": "7.12.5"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.12.3"
   }
 }
