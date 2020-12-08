@@ -359,7 +359,6 @@ export default async function getConfig(
 
   // progress
   if (process.env.PROGRESS !== 'none') {
-    console.log('webpackbar');
     webpackConfig
       .plugin('progress')
       .use(require.resolve('webpackbar'), [
