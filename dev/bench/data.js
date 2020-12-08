@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607398526460,
+  "lastUpdate": 1607399861467,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14120,6 +14120,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.76%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ac3d2b3656aa2f57914486c04a150f32ea2323a8",
+          "message": "chore(webpack): upgrade plugins support webpack 5 (#5794)\n\n* chore: upgrade webpackbar support webpack 5\r\n\r\n* chore: console\r\n\r\n* chore: mini-css-extract-plugin\r\n\r\n* chore: fork ts checker",
+          "timestamp": "2020-12-07T19:52:07-08:00",
+          "tree_id": "a5ea705f5ed9d62468a002325bef41da625b3dd8",
+          "url": "https://github.com/umijs/umi/commit/ac3d2b3656aa2f57914486c04a150f32ea2323a8"
+        },
+        "date": 1607399857749,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 602,
+            "range": "±91.97%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1936,
+            "range": "±5.12%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
