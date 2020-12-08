@@ -295,7 +295,7 @@ export interface BaseIConfig extends IConfigCore {
   cssLoader?: object;
   cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
   cssnano?: object;
-  copy?: [string | ICopy];
+  copy?: (string | ICopy)[];
   define?: {
     [key: string]: any;
   };
