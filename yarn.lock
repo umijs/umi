@@ -7825,10 +7825,10 @@ fork-stream@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/fork-stream/-/fork-stream-0.0.4.tgz#db849fce77f6708a5f8f386ae533a0907b54ae70"
 
-fork-ts-checker-webpack-plugin@6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.0.3.tgz#8932dbc5094ebb363a9136ba23230a041ed0be14"
-  integrity sha512-0cUpN1Hpx7SXZR97e3W50tG2sVHFIrZxbimkXQGVdjpX0qme9iV2g1sXd3t07/kzvmQ82nHujjQTblR22M/NOg==
+fork-ts-checker-webpack-plugin@6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.0.5.tgz#20d8766b644833cc5c600b9b7c6fbba0c8087419"
+  integrity sha512-2jIHv2RhXzSxWtvRQX/ZtOxd5joo+FQYzn+sJ/hyLqApKGgvjMEMF951GnvuSNPheGsqiVzIDjvSZo1qRtry1Q==
   dependencies:
     "@babel/code-frame" "^7.8.3"
     "@types/json-schema" "^7.0.5"
