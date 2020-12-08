@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607399861467,
+  "lastUpdate": 1607403666387,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14158,6 +14158,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.12%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "lcya86@qq.com",
+            "name": "刘春洋",
+            "username": "lcya86"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5a7766252b4c0e353a8025a9181e33a31e5d326c",
+          "message": "fix config copy type (#5795)\n\nCo-authored-by: chunyang.liu@unicareer.com <chunyang.liu@unicareer.com>",
+          "timestamp": "2020-12-07T20:56:11-08:00",
+          "tree_id": "2dbd59dd6e5efc5412dab378f5db149447cd8496",
+          "url": "https://github.com/umijs/umi/commit/5a7766252b4c0e353a8025a9181e33a31e5d326c"
+        },
+        "date": 1607403662897,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1308,
+            "range": "±3.50%",
+            "unit": "ops/sec",
+            "extra": "71 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2340,
+            "range": "±4.77%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
