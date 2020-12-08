@@ -68,7 +68,7 @@
     "webpack-dev-middleware": "3.7.2",
     "webpack-manifest-plugin": "2.2.0",
     "webpack-sources": "^1.1.0",
-    "webpackbar": "4.0.0"
+    "webpackbar": "5.0.0-3"
   },
   "bin": {
     "bundler-webpack": "bin/bundler-webpack.js"
