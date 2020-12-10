@@ -182,6 +182,7 @@ export interface IApi extends PluginAPI {
     },
     {
       env: env;
+      type?: IBundlerConfigType;
     }
   >;
   modifyBabelPresetOpts: IModify<
@@ -294,7 +295,7 @@ export interface BaseIConfig extends IConfigCore {
   cssLoader?: object;
   cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
   cssnano?: object;
-  copy?: [string | ICopy];
+  copy?: (string | ICopy)[];
   define?: {
     [key: string]: any;
   };
@@ -314,6 +315,7 @@ export interface BaseIConfig extends IConfigCore {
   extraPostCSSPlugins?: any[];
   favicon?: string;
   forkTSChecker?: object;
+  fastRefresh?: object;
   hash?: boolean;
   headScripts?: IScriptConfig;
   history?: {

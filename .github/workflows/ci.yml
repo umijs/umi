@@ -1,6 +1,12 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - '.github/**/*.md'
+      - 'examples/**'
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   build:

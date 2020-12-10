@@ -613,6 +613,14 @@ HTML 中会生成，
 
 开启 TypeScript 编译时类型检查，默认关闭。
 
+## fastRefresh <Badge>3.3+</Badge>
+
+* Type: `object`
+
+快速刷新（Fast Refresh），开发时可以**保持组件状态**，同时编辑提供**即时反馈**。
+
+[文档](/zh-CN/docs/fast-refresh)
+
 ## hash
 
 * Type: `boolean`
@@ -686,7 +694,7 @@ export default {
 * Type: `object`
 * Default: `{ type: 'browser' }`
 
-配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md)。
+配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/getting-started.md)。
 
 包含以下子配置项：
 

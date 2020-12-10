@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.github/**/*.md'
+      - 'examples/**'
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   benchmark:
