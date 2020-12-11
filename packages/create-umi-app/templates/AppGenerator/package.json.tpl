@@ -20,14 +20,16 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^5.0.12",
+    "@ant-design/pro-layout": "^6.5.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^{{{ version }}}",
-    "lint-staged": "^10.0.7",
-    "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "umi": "^{{{ version }}}",
     "yorkie": "^2.0.0"
+  },
+  "devDependencies": {
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1",
   }
 }
