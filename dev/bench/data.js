@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607403754043,
+  "lastUpdate": 1607832945601,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14234,6 +14234,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.86%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "707885370@qq.com",
+            "name": "FM",
+            "username": "screetBloom"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "86aff59bc5f5fc92f85f090c94755a09e26f48d8",
+          "message": "chore: update the tpl of create app (#5810)",
+          "timestamp": "2020-12-12T20:10:56-08:00",
+          "tree_id": "0d2947e8df7d54c2d6eef636fb81a874daebea3a",
+          "url": "https://github.com/umijs/umi/commit/86aff59bc5f5fc92f85f090c94755a09e26f48d8"
+        },
+        "date": 1607832938652,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1347,
+            "range": "±2.80%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2485,
+            "range": "±4.66%",
+            "unit": "ops/sec",
+            "extra": "38 samples"
           }
         ]
       }
