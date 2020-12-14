@@ -81,6 +81,7 @@ export function createCSSRule({
         deepmerge(
           {
             importLoaders: 1,
+            sourceMap: true,
             // https://webpack.js.org/loaders/css-loader/#onlylocals
             ...(type === BundlerConfigType.ssr ? { onlyLocals: true } : {}),
             ...(isCSSModules
