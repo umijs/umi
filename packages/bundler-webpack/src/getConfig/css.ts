@@ -62,7 +62,6 @@ export function createCSSRule({
           )
           .options({
             publicPath: './',
-            hmr: isDev,
           });
       }
     }
