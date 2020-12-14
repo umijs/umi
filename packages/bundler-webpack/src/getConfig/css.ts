@@ -64,8 +64,6 @@ export function createCSSRule({
             publicPath: './',
             // https://github.com/umijs/umi/issues/5801
             esModule: false,
-            // the hmr option was removed, HMR will work automatically when HotModuleReplacement plugin used or webpack-dev-server with enabled the hot option
-            // hmr: isDev,
           });
       }
     }
