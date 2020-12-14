@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607938801074,
+  "lastUpdate": 1607941813704,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14310,6 +14310,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.54%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0c842142f3e118c3376454a92f8448e65d0d462e",
+          "message": "chore: upgrade mini-css-extract-plugin (#5818)\n\n* fix: css sourcemap in development\r\n\r\n* chore: yarn.lock\r\n\r\n* chore: remove gitleaks\r\n\r\n* chore: hmr\\\r\n\r\n* chore: sourceMap\r\n\r\n* chore: sourceMap\r\n\r\n* chore: sourceMap\r\n\r\n* chore: sourceMap\r\n\r\n* chore: comment",
+          "timestamp": "2020-12-14T02:25:32-08:00",
+          "tree_id": "01e0c1e638a79ee95ad18bfe54e8732047d930dd",
+          "url": "https://github.com/umijs/umi/commit/0c842142f3e118c3376454a92f8448e65d0d462e"
+        },
+        "date": 1607941810575,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1449,
+            "range": "±2.52%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2605,
+            "range": "±4.46%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
