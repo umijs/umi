@@ -62,6 +62,7 @@ export function createCSSRule({
           )
           .options({
             publicPath: './',
+            esModule: false,
           });
       }
     }
@@ -80,8 +81,6 @@ export function createCSSRule({
         deepmerge(
           {
             importLoaders: 1,
-            // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/529
-            sourceMap: config.devtool === 'source-map',
             // https://webpack.js.org/loaders/css-loader/#onlylocals
             ...(type === BundlerConfigType.ssr ? { onlyLocals: true } : {}),
             ...(isCSSModules
