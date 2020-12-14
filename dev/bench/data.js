@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607832945601,
+  "lastUpdate": 1607938801074,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14272,6 +14272,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.66%",
             "unit": "ops/sec",
             "extra": "38 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chaolinjin@gmail.com",
+            "name": "信鑫-King",
+            "username": "ycjcl868"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8276fa1451711b82646ca6389daaf230b0248bd0",
+          "message": "fix: css modules esModule error (#5820)\n\n* fix: css modules esModule error\r\n\r\n* chore: upgrade style-loader",
+          "timestamp": "2020-12-14T01:34:49-08:00",
+          "tree_id": "353d13a2c9fb4a333b74b06fced363a78f04dca1",
+          "url": "https://github.com/umijs/umi/commit/8276fa1451711b82646ca6389daaf230b0248bd0"
+        },
+        "date": 1607938797655,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1177,
+            "range": "±3.20%",
+            "unit": "ops/sec",
+            "extra": "73 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2046,
+            "range": "±4.54%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
