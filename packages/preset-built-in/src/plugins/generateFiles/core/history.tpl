@@ -1,4 +1,4 @@
-import { {{{ creator }}} } from '{{{ runtimePath }}}';
+import { {{{ creator }}}, History } from '{{{ runtimePath }}}';
 
 let options = {{{ options }}};
 if ((<any>window).routerBase) {
@@ -6,7 +6,7 @@ if ((<any>window).routerBase) {
 }
 
 // remove initial history because of ssr
-let history: any = process.env.__IS_SERVER ? null : {{{ creator }}}(options);
+let history: History = process.env.__IS_SERVER ? null : {{{ creator }}}(options);
 export const createHistory = (hotReload = false) => {
   if (!hotReload) {
     history = {{{ creator }}}(options);
