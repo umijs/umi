@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "lint-staged": "^10.0.7",
-    "prettier": "^1.19.1",
+    "prettier": "^1.19.1"
   }
 }
