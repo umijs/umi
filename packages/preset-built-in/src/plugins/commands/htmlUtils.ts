@@ -106,7 +106,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       }
 
       // window.resourceBaseUrl 用来兼容 egg.js 项目注入的 publicPath
-      publicPathStr = `window.publicPath || window.resourceBaseUrl || ${publicPathStr};`;
+      publicPathStr = `window.resourceBaseUrl || window.publicPath || ${publicPathStr};`;
 
       publicPathStr = await api.applyPlugins({
         key: 'modifyPublicPathStr',
