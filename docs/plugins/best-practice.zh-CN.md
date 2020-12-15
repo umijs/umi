@@ -1,11 +1,106 @@
----
-translateHelp: true
----
+# 插件开发最佳实践
 
-# Plugin Test
+## 插件执行顺序调整
 
+插件机制底层使用 [tapable](https://github.com/webpack/tapable)，支持插件顺序调换、支持异步（async），执行权重默认为 **0**
 
-## 为什么要测试？
+例如，有两个插件 `bar` 和 `foo`，
+
+```js
+// bar 插件
+api.addHTMLScripts(() => {
+  return [
+    'https://bar.js',
+  ]
+});
+
+// foo 插件
+api.addHTMLScripts(() => {
+  return [
+    'https://foo.js',
+  ]
+});
+```
+
+bar 插件先于 foo 插件注册，这时候执行出来的结果是：
+
+```html
+<script src="https://bar.js"></script>
+<script src="https://foo.js"></script>
+```
+
+此时希望 foo 插件先于 bar 插件，可以用 `stage` 字段，改成如下结构：
+
+```diff
+// bar 插件
+api.addHTMLScripts(() => {
+  return [
+    'https://bar.js',
+  ]
+});
+
+// foo 插件
+- api.addHTMLScripts(() => {
+-   return [
+-     'https://foo.js',
+-   ]
+- });
+
++ api.addHTMLScripts({
++  fn: () => {
++   return [
++     'https://foo.js',
++   ]
++  },
++  stage: 1,
++ });
+```
+
+这时候执行结果就是：
+
+```html
+<script src="https://foo.js"></script>
+<script src="https://bar.js"></script>
+```
+
+同时，也可以使用 `name` 与 `before` 决定两个插件之间执行顺序：
+
+```diff
+// bar 插件
+- api.addHTMLScripts(() => {
+-   return [
+-    'https://bar.js',
+-   ]
+- });
++ api.addHTMLScripts({
++  fn: () => {
++   return [
++     'https://bar.js',
++   ]
++  },
++  name: 'bar'
++ });
+
+// foo 插件
+- api.addHTMLScripts(() => {
+-   return [
+-     'https://foo.js',
+-   ]
+- });
+
++ api.addHTMLScripts({
++  fn: () => {
++   return [
++     'https://foo.js',
++   ]
++  },
++  before: 'bar'
++ });
+```
+
+## 插件测试
+
+### 为什么要测试？
 
 Umi 3 我们采用微内核的架构，意味着大部分功能以插件的形式加载。
 
@@ -27,7 +122,7 @@ Umi 3 我们采用微内核的架构，意味着大部分功能以插件的形�
 - E2E（可选）占 5%
 - 基准测试（可选）
 
-## 测试框架
+### 测试框架
 
 > 注：建议用于测试的 Node.js 版本 ≥ 10
 
@@ -53,7 +148,7 @@ Umi 3 我们采用微内核的架构，意味着大部分功能以插件的形�
 }
 ```
 
-## 测试约定
+### 测试约定
 
 目录规范
 
@@ -105,7 +200,7 @@ module.exports = {
 
 </details>
 
-## 单元测试
+### 单元测试
 
 插件单元测试可以拆分成：
 
@@ -115,14 +210,14 @@ module.exports = {
 
 我们以 `umi-plugin-bar` 插件为例，循序渐进地学习 Umi 插件测试。
 
-### 插件功能
+#### 插件功能
 
 `umi-plugin-bar` 插件提供的功能有：
 
 - 从 `umi` 可以导出常用的 `utils` 方法
 - 根据配置的 `config.ga = { code: 'yourId' }`，加载一段 ga 统计脚本
 
-#### 纯函数测试
+##### 纯函数测试
 
 > 这里我们约定测试用例使用 test 书写单测，不推荐使用 `describe` + `it` 测试用例嵌套。
 
@@ -137,7 +232,7 @@ test('getUserName', () => {
 });
 ```
 
-#### 临时文件测试
+##### 临时文件测试
 
 为了测试导出的工具类函数在组件里能正常使用，先创建一个首页 `src/fixtures/normal/index.tsx`
 
@@ -181,7 +276,7 @@ test('normal tmp', async () => {
 });
 ```
 
-#### html 测试
+##### html 测试
 
 在 `src/fixtures/normal/.umirc.ts` 配置中添加 `ga: { code: 'testId' }` 方便测试 html 功能。
 
@@ -207,7 +302,7 @@ test('normal html', async () => {
 });
 ```
 
-### 运行
+#### 运行
 
 运行 `yarn test`，测试用例就通过了，🎉
 
@@ -233,18 +328,14 @@ Ran all test suites.
 
 如果你喜欢 TDD（测试驱动开发），可以使用 `yarn test -w` 监听，[更多用法](https://github.com/umijs/umi/blob/master/docs/packages/test.md#usage)。
 
-## E2E 测试
+### E2E 测试
 
 TODO
 
-## 示例代码
+### 示例代码
 
 完整实例代码可参照：
 
 - [ycjcl868/umi3-plugin-test](https://github.com/ycjcl868/umi3-plugin-test)
 - [@umijs/plugin-locale](https://github.com/umijs/plugins/tree/master/packages/plugin-locale) 国际化插件
 - [@umijs/plugin-dva](https://github.com/umijs/plugins/tree/master/packages/plugin-dva) dva 插件
-
-## TODO
-
-- Umi UI 插件测试方案
