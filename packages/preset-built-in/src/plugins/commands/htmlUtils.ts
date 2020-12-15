@@ -106,7 +106,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       }
 
       // window.resourceBaseUrl 用来兼容 egg.js 项目注入的 publicPath
-      publicPathStr = `window.resourceBaseUrl || ${publicPathStr};`;
+      publicPathStr = `window.publicPath || window.resourceBaseUrl || ${publicPathStr};`;
 
       publicPathStr = await api.applyPlugins({
         key: 'modifyPublicPathStr',
@@ -143,7 +143,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
             // routerBase 只在部署路径不固定时才会用到，exportStatic.dynamicRoot
             // UPDATE: 内部 render 会依赖 routerBase，先始终生成
             /* api.config.exportStatic?.dynamicRoot && */ {
-              content: `window.routerBase = ${routerBaseStr};`,
+              content: `window.routerBase = window.routerBase || ${routerBaseStr};`,
             },
             // html 里的 publicPath
             // 只在设置了 runtimePublicPath 或 exportStatic?.dynamicRoot 时才会用到
