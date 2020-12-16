@@ -22,7 +22,7 @@ export {
   createHashHistory,
   createMemoryHistory,
 } from 'history-with-query';
-export type { MemoryHistory } from 'history-with-query';
+export type { MemoryHistory, History } from 'history-with-query';
 
 export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';
 export { default as dynamic } from './dynamic/dynamic';
