@@ -47,6 +47,22 @@ test('handleHTML normal', async () => {
   expect(html).toContain('</html>');
 });
 
+test('handleHTML with $', async () => {
+  const html = await handleHTML({
+    pageInitialProps: {
+      username: '`$`',
+    },
+    rootContainer: '<h1>`$`</h1>',
+    html: defaultHTML,
+    mountElementId: 'root',
+  });
+  expect(html).toContain('<!DOCTYPE html>');
+  expect(html).toMatch('window.g_initialProps = {"username":"$"};');
+  expect(html).toMatch('<div id="root"><h1>`$`</h1></div>');
+  expect(html).toContain('</html>');
+});
+
+
 test('handleHTML using removeWindowInitialProps', async () => {
   const html = await handleHTML({
     pageInitialProps: {
