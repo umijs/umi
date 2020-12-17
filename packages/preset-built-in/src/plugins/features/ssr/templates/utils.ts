@@ -102,7 +102,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   const scriptsContent = `\n\t<script>
   window.g_useSSR = true;
   ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]};`).join('\n')}\n\t</script>`;
-  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`;
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent.replace(/\$/g,'$$$')}`;
 
   if (mode === 'stream') {
     const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
