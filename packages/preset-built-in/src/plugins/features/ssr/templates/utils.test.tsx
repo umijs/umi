@@ -57,7 +57,7 @@ test('handleHTML with $', async () => {
     mountElementId: 'root',
   });
   expect(html).toContain('<!DOCTYPE html>');
-  expect(html).toMatch('window.g_initialProps = {"username":"$"};');
+  expect(html).toMatch('window.g_initialProps = {"username":\"`$`\"};');
   expect(html).toMatch('<div id="root"><h1>`$`</h1></div>');
   expect(html).toContain('</html>');
 });
