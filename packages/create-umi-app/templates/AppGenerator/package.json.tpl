@@ -34,9 +34,5 @@
     "react-dom": "^16.12.0",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
-  },
-  "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
   }
 }
