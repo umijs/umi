@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608119837334,
+  "lastUpdate": 1608259743137,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14576,6 +14576,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.46%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "robin_v@126.com",
+            "name": "robin",
+            "username": "robinv8"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c7e1fb3a68be4008e6cc486a843d84fb8c395484",
+          "message": "fix: ssr replace() method dollar $ signs (#5842)\n\nssr模式下， replace（）方法中出现美元符号会引起模板渲染异常",
+          "timestamp": "2020-12-17T18:43:51-08:00",
+          "tree_id": "088222b5fc20df17db7c50e6c8be19a127e0385d",
+          "url": "https://github.com/umijs/umi/commit/c7e1fb3a68be4008e6cc486a843d84fb8c395484"
+        },
+        "date": 1608259739705,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1217,
+            "range": "±2.73%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2250,
+            "range": "±5.66%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
