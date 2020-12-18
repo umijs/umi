@@ -410,7 +410,7 @@ utils 方法，给插件使用，和插件里的 api.utils 是同一个底层库
 
 ### defineConfig
 
-用于校验和提示用户配置类型，详见[配置#TypeScript 提示](TODO)。
+用于校验和提示用户配置类型，详见[配置#TypeScript 提示](../config#typescript-提示)。
 
 ## 插件类型定义
 
