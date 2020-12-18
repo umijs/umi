@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608260456451,
+  "lastUpdate": 1608292730767,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14652,6 +14652,44 @@ window.BENCHMARK_DATA = {
             "range": "±3.62%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "baoyx007@gmail.com",
+            "name": "Haven",
+            "username": "Baoyx007"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "066344a7ba7a0877007129146ba54d401d2efa0e",
+          "message": "fix: csr not call getInitialProps in ssr config (#5852)\n\ncsr时, g_initialProps 为 undefined",
+          "timestamp": "2020-12-18T03:54:23-08:00",
+          "tree_id": "ef96813696e7daa084d092cf8daff9dcee128c31",
+          "url": "https://github.com/umijs/umi/commit/066344a7ba7a0877007129146ba54d401d2efa0e"
+        },
+        "date": 1608292727699,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1412,
+            "range": "±2.62%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2333,
+            "range": "±4.68%",
+            "unit": "ops/sec",
+            "extra": "39 samples"
           }
         ]
       }
