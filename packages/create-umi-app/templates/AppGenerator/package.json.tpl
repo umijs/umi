@@ -22,14 +22,21 @@
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
     "@umijs/preset-react": "1.x",
-    "@umijs/test": "^{{{ version }}}",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "umi": "^{{{ version }}}",
-    "yorkie": "^2.0.0"
+    "umi": "^{{{ version }}}"
   },
   "devDependencies": {
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@umijs/test": "^{{{ version }}}",
     "lint-staged": "^10.0.7",
-    "prettier": "^1.19.1"
+    "prettier": "^2.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "typescript": "^4.1.2",
+    "yorkie": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   }
 }
