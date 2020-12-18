@@ -65,7 +65,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
         }
       };
       // null 时，一定会触发 getInitialProps 执行
-      if ((window as any).g_initialProps === null) {
+      if (!(window as any).g_initialProps) {
         handleGetInitialProps();
       }
     }, [window.location.pathname, window.location.search]);
