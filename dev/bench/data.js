@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608292730767,
+  "lastUpdate": 1608303447132,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14690,6 +14690,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.68%",
             "unit": "ops/sec",
             "extra": "39 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "xrkffgg@vip.qq.com",
+            "name": "xrkffgg",
+            "username": "xrkffgg"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "519d41dfc3ad4cc5bda51ce3988dde61ee13abea",
+          "message": "chore: update create app template (#5847)\n\n* chore: update create app template\r\n\r\n* fix: peer",
+          "timestamp": "2020-12-18T06:51:42-08:00",
+          "tree_id": "e5d1f932ef80db646fb71f8b429dd97c62b3eebf",
+          "url": "https://github.com/umijs/umi/commit/519d41dfc3ad4cc5bda51ce3988dde61ee13abea"
+        },
+        "date": 1608303442973,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1190,
+            "range": "±2.99%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2229,
+            "range": "±4.95%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
