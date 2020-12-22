@@ -89,7 +89,7 @@ Notice：
 
 ## Configuration for multiple environments
 
-Environment variable `UMI_ENV` shall be used to identify configurations for different environemtns.
+Environment variable `UMI_ENV` shall be used to identify configurations for different environments.
 
 For example:
 
