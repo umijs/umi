@@ -146,7 +146,7 @@ export default (api: IApi) => {
           winPath(api.config.dynamicImport?.loading),
         DynamicImport: !!api.config.dynamicImport,
         Utils: winPath(require.resolve('./templates/utils')),
-        Mode: !!api.config.ssr?.mode || 'string',
+        Mode: api.config.ssr?.mode ?? 'string',
         MountElementId: api.config.mountElementId,
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
