@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608523035984,
+  "lastUpdate": 1608777421464,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14764,6 +14764,44 @@ window.BENCHMARK_DATA = {
             "name": "ssr#normal#stream /",
             "value": 1974,
             "range": "±3.91%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "baoyx007@gmail.com",
+            "name": "Haven",
+            "username": "Baoyx007"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "22b8a1b5fce69723cd5029436214ee9ffdcd402f",
+          "message": "fix(ssr): Mode should be 'stream' or 'string' (#5875)\n\nwhen set mode, then it become true in server.ts",
+          "timestamp": "2020-12-23T18:32:27-08:00",
+          "tree_id": "35c5801744381cf876de3f70190e36f68cedaa95",
+          "url": "https://github.com/umijs/umi/commit/22b8a1b5fce69723cd5029436214ee9ffdcd402f"
+        },
+        "date": 1608777418397,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1433,
+            "range": "±2.85%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2469,
+            "range": "±5.10%",
             "unit": "ops/sec",
             "extra": "41 samples"
           }
