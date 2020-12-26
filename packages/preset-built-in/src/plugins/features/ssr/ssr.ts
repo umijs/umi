@@ -25,7 +25,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
   stats,
 }: any) => {
   if (!err && stats?.stats) {
-    const HTML_REG = /<html.*?<\/html>/m;
+    const HTML_REG = /<html.*?<\/html>/mg;
     const [clientStats] = stats.stats;
     const html = getHtmlGenerator({ api });
     const [defaultHTML] =
@@ -42,7 +42,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
     if (fs.existsSync(serverPath) && defaultHTML) {
       const serverContent = fs
         .readFileSync(serverPath, 'utf-8')
-        .replace(HTML_REG, defaultHTML);
+        .replace(HTML_REG, (match) => match.includes(`umi version: ${process.env.UMI_VERSION}`) ? defaultHTML : match);
       // for test case
       if (_isTest) {
         return serverContent;
