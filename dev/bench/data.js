@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608959535043,
+  "lastUpdate": 1609173257305,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14842,6 +14842,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.64%",
             "unit": "ops/sec",
             "extra": "37 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "fjc0kb@gmail.com",
+            "name": "Jay Fong",
+            "username": "fjc0k"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2046d3be2a36e21399f1cf9e66241e9066ab237b",
+          "message": "fix(types): export missing types (#5893)",
+          "timestamp": "2020-12-29T00:29:15+08:00",
+          "tree_id": "8d08316cd559f12bf695e8aaf48a3bb8c0eb94fa",
+          "url": "https://github.com/umijs/umi/commit/2046d3be2a36e21399f1cf9e66241e9066ab237b"
+        },
+        "date": 1609173253996,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 654,
+            "range": "±88.84%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2211,
+            "range": "±4.77%",
+            "unit": "ops/sec",
+            "extra": "42 samples"
           }
         ]
       }
