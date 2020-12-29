@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609173257305,
+  "lastUpdate": 1609234600744,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14880,6 +14880,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.77%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "6b0fcc7737f34a33e0bbe9d472773bab13e43a77",
+          "message": "docs: update wechat's qrcode",
+          "timestamp": "2020-12-29T17:30:28+08:00",
+          "tree_id": "055d817a58fe4c023f7853214f5ba13a931c1fb7",
+          "url": "https://github.com/umijs/umi/commit/6b0fcc7737f34a33e0bbe9d472773bab13e43a77"
+        },
+        "date": 1609234596995,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 602,
+            "range": "±77.53%",
+            "unit": "ops/sec",
+            "extra": "77 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1948,
+            "range": "±4.72%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
