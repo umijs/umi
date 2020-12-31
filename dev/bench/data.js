@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609234600744,
+  "lastUpdate": 1609385351231,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14918,6 +14918,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.72%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "baoyx007@gmail.com",
+            "name": "Haven",
+            "username": "Baoyx007"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fceb6e5e9ffb5721f9897e84fb6d2a91b862ca1c",
+          "message": "fix(ssr): getInitialProps should has `history` in csr (#5898)\n\naccording to [doc](https://umijs.org/zh-CN/docs/ssr#%E9%A1%B5%E9%9D%A2%E7%BA%A7%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96)",
+          "timestamp": "2020-12-30T19:24:34-08:00",
+          "tree_id": "7ec62a7826a979eb4841dd119eafea535381309c",
+          "url": "https://github.com/umijs/umi/commit/fceb6e5e9ffb5721f9897e84fb6d2a91b862ca1c"
+        },
+        "date": 1609385347987,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1390,
+            "range": "±2.25%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2419,
+            "range": "±5.49%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
