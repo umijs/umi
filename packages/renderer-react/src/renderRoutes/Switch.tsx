@@ -15,7 +15,7 @@ export default function Switch(props: any) {
           (child: { props: { path: string; from: string } }) => {
             if (match === null && isValidElement(child)) {
               element = child;
-              const path = child.props.path || child.props.from;
+              const path = child.props.microAppBase || child.props.path || child.props.from;
               match = path
                 ? matchPath(location.pathname, { ...child.props, path })
                 : context.match;
