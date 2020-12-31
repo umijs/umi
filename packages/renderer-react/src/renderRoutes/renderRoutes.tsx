@@ -123,6 +123,7 @@ function render({
 
 function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   const routeProps = {
+    microAppBase: route.microAppBase || '', // 添加一行
     key: route.key || index,
     exact: route.exact,
     strict: route.strict,
