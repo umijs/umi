@@ -12,7 +12,7 @@ export default function Switch(props: any) {
 
         Children.forEach(
           children,
-          (child: { props: { path: string; from: string } }) => {
+          (child: { props: { microAppBase: string, path: string; from: string } }) => {
             if (match === null && isValidElement(child)) {
               element = child;
               const path = child.props.microAppBase || child.props.path || child.props.from;
