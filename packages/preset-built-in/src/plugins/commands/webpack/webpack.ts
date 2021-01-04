@@ -1,6 +1,8 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
 import { getBundleAndConfigs } from '../buildDevUtils';
+import { toString } from 'webpack-chain';
+import { highlight } from 'cli-highlight';
 
 export default (api: IApi) => {
   api.registerCommand({
@@ -31,7 +33,8 @@ export default (api: IApi) => {
       }
 
       if (api.args.print !== false) {
-        console.log(config);
+        const output = toString(config, { verbose: true });
+        console.log(highlight(output, { language: 'js' }));
       }
       return config;
     },

@@ -176,14 +176,14 @@ $ umi webpack
 {
   mode: 'development',
   devtool: 'cheap-module-source-map',
-  node:{ },
-  output:{ },
-  resolve:{ },
-  module:{
-    rules:[ ]
+  node: {},
+  output: {},
+  resolve: {},
+  module: {
+    rules: []
   },
-  plugins:[ ],
-  entry:{ }
+  plugins: []
+  entry: {}
 }
 
 $ umi webpack --rules
@@ -202,14 +202,18 @@ $ umi webpack --rules
 
 $ umi webpack --rule=js
 
+/* config.module.rule('js') */
 {
   test: /\.(js|mjs|jsx|ts|tsx)$/,
   include: [ 'xx/umi' ],
   exclude: [ /node_modules/ ],
-  use:[
+  use: [
+    /* config.module.rule('js').use('babel-loader') */
     {
       loader:'xx/babel-loader/lib/index.js',
-      options: [Object]
+      options: {
+        sourceType: 'unambiguous'
+      }
     }
   ]
 }
@@ -227,12 +231,12 @@ $ umi webpack --plugins
 
 $ umi webpack --plugin=extract-css
 
-MiniCssExtractPlugin {
-  options:{
+/* config.plugin('extract-css') */
+new (require('xx/mini-css-extract-plugin/dist/cjs.js'))(
+  {
     filename: '[name].css',
-    moduleFilename: [Function: moduleFilename],
-    ignoreOrder: true,
-    chunkFilename: '[name].chunk.css'
+    chunkFilename: '[name].chunk.css',
+    ignoreOrder: true
   }
-}
+)
 ```
