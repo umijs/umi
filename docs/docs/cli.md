@@ -236,3 +236,12 @@ MiniCssExtractPlugin {
   }
 }
 ```
+
+默认会打印 development 的配置，如需查看 production 配置，需要指定环境变量：
+
+```bash
+$ NODE_ENV=production umi webpack
+
+{
+  mode: 'production'
+}

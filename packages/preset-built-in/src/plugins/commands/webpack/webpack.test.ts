@@ -20,6 +20,40 @@ test('webpack', async () => {
   expect(config.mode).toEqual('development');
 });
 
+test('webpack in production', async () => {
+  const cwd = join(fixtures, 'webpack');
+  const service = new Service({
+    cwd,
+    env: 'production',
+    presets: [require.resolve('../../../index.ts')],
+  });
+  const config = await service.run({
+    name: 'webpack',
+    args: {
+      print: false,
+    },
+  });
+  // @ts-ignore
+  expect(config.mode).toEqual('production');
+});
+
+test('webpack in test', async () => {
+  const cwd = join(fixtures, 'webpack');
+  const service = new Service({
+    cwd,
+    env: 'test',
+    presets: [require.resolve('../../../index.ts')],
+  });
+  const config = await service.run({
+    name: 'webpack',
+    args: {
+      print: false,
+    },
+  });
+  // @ts-ignore
+  expect(config.mode).toEqual('development');
+});
+
 test('webpack with plugins', async () => {
   const cwd = join(fixtures, 'webpack');
   const service = new Service({
