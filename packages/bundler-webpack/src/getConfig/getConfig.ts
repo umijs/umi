@@ -10,7 +10,6 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
-  getBabelDepsOpts,
   getBabelOpts,
   getBabelPresetOpts,
   getTargetsAndBrowsersList,
@@ -250,13 +249,10 @@ export default async function getConfig(
       .end();
   }
 
-  rule.use('babel-loader').loader(require.resolve('babel-loader')).options(
-    getBabelDepsOpts({
-      cwd,
-      env,
-      config,
-    }),
-  );
+  rule
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts);
 
   // prettier-ignore
   webpackConfig.module
