@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609574796335,
+  "lastUpdate": 1609830562138,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -14994,6 +14994,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.28%",
             "unit": "ops/sec",
             "extra": "42 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "jiyingzhi0808@gmail.com",
+            "name": "Yingzhi Ji",
+            "username": "yingzhiji"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "67fd2e07adca552cbb944b13b3ec6be8b70d78e4",
+          "message": "fix: cssModulesTypescriptLoader.mode should be optional (#5917)\n\nCo-authored-by: 纪颖志 <jiyingzhi@black-unique.com>",
+          "timestamp": "2021-01-05T15:04:10+08:00",
+          "tree_id": "fe80fc79fd68a0bb38c3752fdce7336a14a2acd0",
+          "url": "https://github.com/umijs/umi/commit/67fd2e07adca552cbb944b13b3ec6be8b70d78e4"
+        },
+        "date": 1609830558727,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1233,
+            "range": "±2.53%",
+            "unit": "ops/sec",
+            "extra": "75 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2155,
+            "range": "±4.77%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
