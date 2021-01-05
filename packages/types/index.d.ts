@@ -293,7 +293,7 @@ export interface BaseIConfig extends IConfigCore {
   };
   chunks?: string[];
   cssLoader?: object;
-  cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
+  cssModulesTypescriptLoader?: { mode?: 'verify' | 'emit' };
   cssnano?: object;
   copy?: (string | ICopy)[];
   define?: {
