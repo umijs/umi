@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609830562138,
+  "lastUpdate": 1609832431846,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -15032,6 +15032,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.77%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "jiyingzhi0808@gmail.com",
+            "name": "Yingzhi Ji",
+            "username": "yingzhiji"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3a9a1dcee89bbf44924cf0220369a19ce743f68f",
+          "message": "feat: add test and docs for umi webpack in production (#5920)\n\n* feat: add test and docs for umi webpack in production\r\n\r\n* feat: add test and docs for umi webpack in production\r\n\r\n* feat: add test and docs for umi webpack in production\r\n\r\nCo-authored-by: 纪颖志 <jiyingzhi@black-unique.com>",
+          "timestamp": "2021-01-05T15:35:28+08:00",
+          "tree_id": "25081d8c159e95199b24a562c324497330f5eb8c",
+          "url": "https://github.com/umijs/umi/commit/3a9a1dcee89bbf44924cf0220369a19ce743f68f"
+        },
+        "date": 1609832428268,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1280,
+            "range": "±3.55%",
+            "unit": "ops/sec",
+            "extra": "70 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2236,
+            "range": "±5.98%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
