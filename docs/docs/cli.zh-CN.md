@@ -240,3 +240,4 @@ $ NODE_ENV=production umi webpack
 {
   mode: 'production'
 }
+```
