@@ -62,6 +62,21 @@ function RouterComponent(props: IRouterComponentProps) {
   return <Router history={history}>{renderRoutes(renderRoutesProps)}</Router>;
 }
 
+function addLeadingSlash(path: string): string {
+  return path.charAt(0) === '/' ? path : '/' + path;
+}
+
+// from react-router
+export function stripBasename(basename: string, pathname: string) {
+  if (!basename || !pathname) return pathname;
+
+  const base = addLeadingSlash(basename);
+
+  if (pathname.indexOf(base) !== 0) return pathname;
+
+  return addLeadingSlash(pathname.substr(base.length));
+}
+
 /**
  * preload for SSR in dynamicImport
  * exec preload Promise function before ReactDOM.hydrate
@@ -69,8 +84,10 @@ function RouterComponent(props: IRouterComponentProps) {
  */
 export async function preloadComponent(
   readyRoutes: IRoute[],
-  pathname = window.location.pathname,
+  pathname?: string,
 ): Promise<IRoute[]> {
+  pathname =
+    pathname ?? stripBasename(window['routerBase'], window.location.pathname);
   // using matched routes not load all routes
   const matchedRoutes = matchRoutes(readyRoutes, pathname);
   for (const matchRoute of matchedRoutes) {
