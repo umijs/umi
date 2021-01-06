@@ -190,7 +190,7 @@ export const routes: IBestAFSRoute[] = [
 
 菜单上显示的 Icon。
 
-> icon name 为 组件名小写后去掉 `outlined` 或者 `filled` 或者 `twotone`，所得值。举例：`<UserOutlined />` 的 icon name 即： `user`。
+> icon name 为组件名去掉 `Outlined` 或者 `Filled` 或者 `TwoTone`，所得值。举例：`<FileTextOutlined />` 的 icon name 即： `FileText`。
 
 #### flatMenu
 
