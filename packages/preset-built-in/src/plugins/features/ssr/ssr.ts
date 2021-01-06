@@ -25,7 +25,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
   stats,
 }: any) => {
   if (!err && stats?.stats) {
-    const HTML_REG = /<html.*?<\/html>/gm;
+    const HTML_REG = /<html.*?<\/html>/m;
     const [clientStats] = stats.stats;
     const html = getHtmlGenerator({ api });
     const [defaultHTML] =
@@ -35,6 +35,15 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
           chunks: clientStats.compilation.chunks,
         }),
       ).match(HTML_REG) || [];
+
+    const [defaultNoChunkHTML] =
+      JSON.stringify(
+        await html.getContent({
+          route: { path: api.config.publicPath },
+          noChunk: true,
+        }),
+      ).match(HTML_REG) || [];
+
     const serverPath = path.join(
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
@@ -42,9 +51,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
     if (fs.existsSync(serverPath) && defaultHTML) {
       const serverContent = fs
         .readFileSync(serverPath, 'utf-8')
-        .replace(HTML_REG, (match) =>
-          match.includes(`umi version:`) ? defaultHTML : match,
-        );
+        .replace(defaultNoChunkHTML, defaultHTML);
       // for test case
       if (_isTest) {
         return serverContent;
