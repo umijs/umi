@@ -14,11 +14,11 @@ readdirSync(fixtures).forEach((fixture) => {
   if (statSync(cwd).isFile()) return;
 
   const fn = fixture.includes('-only')
-    ? test.only
+    ? describe.only
     : fixture.startsWith('x-')
-    ? xtest
-    : test;
-  fn(fixture, async () => {
+    ? xdescribe
+    : describe;
+  fn(fixture, () => {
     // get user config
     let config = {
       outputPath: 'dist',
@@ -30,50 +30,58 @@ readdirSync(fixtures).forEach((fixture) => {
         require(join(cwd, 'config.ts')).default,
       );
     } catch (e) {}
-
     // init bundler
     const bundler = new Bundler({
       config,
       cwd,
     });
 
-    // get config
-    const env = fixture.includes('-production') ? 'production' : 'development';
-    const webpackConfig = await bundler.getConfig({
-      env,
-      type: BundlerConfigType.csr,
-      entry: {
-        index: getFile({
-          base: cwd,
-          fileNameWithoutExt: 'index',
-          type: 'javascript',
-        })!.path,
-      },
-    });
-    webpackConfig.devtool = false;
+    beforeAll(async () => {
+      // get config
+      const env = fixture.includes('-production')
+        ? 'production'
+        : 'development';
+      const webpackConfig = await bundler.getConfig({
+        env,
+        type: BundlerConfigType.csr,
+        entry: {
+          index: getFile({
+            base: cwd,
+            fileNameWithoutExt: 'index',
+            type: 'javascript',
+          })!.path,
+        },
+      });
+      webpackConfig.devtool = false;
 
-    // build
-    rimraf.sync(join(cwd, 'dist'));
-    await bundler.build({
-      bundleConfigs: [webpackConfig],
-    });
+      // build
+      rimraf.sync(join(cwd, 'dist'));
+      await bundler.build({
+        bundleConfigs: [webpackConfig],
+      });
+    }, 100000);
 
-    // expect
-    let indexCSS = '';
-    try {
-      indexCSS = readFileSync(
-        join(cwd, config.outputPath, 'index.css'),
-        'utf-8',
-      );
-    } catch (e) {}
-    require(join(cwd, 'expect.ts')).default({
-      indexJS: readFileSync(join(cwd, config.outputPath, 'index.js'), 'utf-8'),
-      indexCSS,
-      files: readdirSync(join(cwd, config.outputPath)).filter(
-        (f) => f.charAt(0) !== '.',
-      ),
-      cwd,
-      ignored: bundler.getIgnoredWatchRegExp(),
+    it(fixture, () => {
+      // expect
+      let indexCSS = '';
+      try {
+        indexCSS = readFileSync(
+          join(cwd, config.outputPath, 'index.css'),
+          'utf-8',
+        );
+      } catch (e) {}
+      require(join(cwd, 'expect.ts')).default({
+        indexJS: readFileSync(
+          join(cwd, config.outputPath, 'index.js'),
+          'utf-8',
+        ),
+        indexCSS,
+        files: readdirSync(join(cwd, config.outputPath)).filter(
+          (f) => f.charAt(0) !== '.',
+        ),
+        cwd,
+        ignored: bundler.getIgnoredWatchRegExp(),
+      });
     });
   });
 });

@@ -41,7 +41,7 @@ export interface IOpts {
   targets?: any;
   browserslist?: any;
   bundleImplementor?: typeof defaultWebpack;
-  modifyBabelOpts?: (opts: object) => Promise<any>;
+  modifyBabelOpts?: (opts: object, args?: any) => Promise<any>;
   modifyBabelPresetOpts?: (opts: object) => Promise<any>;
   chainWebpack?: (webpackConfig: any, args: any) => Promise<any>;
   miniCSSExtractPluginPath?: string;
@@ -170,14 +170,21 @@ export default async function getConfig(
     presetOpts,
   });
   if (modifyBabelOpts) {
-    babelOpts = await modifyBabelOpts(babelOpts);
+    babelOpts = await modifyBabelOpts(babelOpts, {
+      type,
+    });
   }
 
   // prettier-ignore
   webpackConfig.module
     .rule('js')
       .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      .include.add(cwd).end()
+      .include.add([
+        cwd,
+        // import module out of cwd using APP_ROOT
+        // issue: https://github.com/umijs/umi/issues/5594
+        ...(process.env.APP_ROOT ? [process.cwd()] : [])
+      ]).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
@@ -351,7 +358,7 @@ export default async function getConfig(
   ] as any);
 
   // progress
-  if (!isWebpack5 && process.env.PROGRESS !== 'none') {
+  if (process.env.PROGRESS !== 'none') {
     webpackConfig
       .plugin('progress')
       .use(require.resolve('webpackbar'), [

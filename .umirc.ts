@@ -32,7 +32,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
       {
         title: 'Plugin Develop',
         'title_zh-CN': '插件开发',
-        children: ['/plugins/api', '/plugins/test'],
+        children: ['/plugins/api', '/plugins/best-practice'],
       },
     ],
     '/docs': [
@@ -76,6 +76,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
         'title_zh-CN': 'Umi 进阶',
         children: [
           '/docs/load-on-demand',
+          '/docs/fast-refresh',
           '/docs/deployment',
           '/docs/use-umi-ui',
           '/docs/ssr',

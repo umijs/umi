@@ -49,14 +49,17 @@ export function patchRoutes({ routes }) {
   merge(routes, extraRoutes);
 }
 
-export function render() {
-  fetch('/api/routes').then((res) => { extraRoutes = res.routes })
+export function render(oldRender) {
+  fetch('/api/routes').then(res=>res.json()).then((res) => { 
+    extraRoutes = res.routes;
+    oldRender();
+  })
 }
 ```
 
 注意：
 
-* 直接 routes，不需要返回
+* 直接修改routes，不需要返回
 
 ### render(oldRender: Function)
 

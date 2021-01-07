@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.github/**/*.md'
+      - 'examples/**'
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   benchmark:
@@ -28,7 +33,6 @@ jobs:
           HEADLESS: false
           PROGRESS: none
           NODE_ENV: test
-          NODE_OPTIONS: --max_old_space_size=4096
       - name: Run benchmark
         run: npm run benchmark | tee output.txt
         env:

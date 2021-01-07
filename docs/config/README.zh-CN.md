@@ -134,7 +134,7 @@ export default {
 }
 ```
 
-参数有，
+参数有：
 
 * memo，当前 webpack-chain对象
 * env，当前环境，`development`、`production` 或 `test` 等
@@ -154,7 +154,6 @@ export default {
   chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
-        minimize: true,
         splitChunks: {
           chunks: 'all',
           minSize: 30000,
@@ -367,7 +366,7 @@ if (false) {
 
 配置开发服务器。
 
-包含以下子配置项，
+包含以下子配置项：
 
 * port，端口号，默认 `8000`
 * host，默认 `0.0.0.0`
@@ -459,7 +458,7 @@ export default () => {
 
 如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
 
-包含以下几个属性，
+包含以下几个属性：
 
 * htmlSuffix，启用 `.html` 后缀。
 * dynamicRoot，部署到任意路径。
@@ -614,6 +613,14 @@ HTML 中会生成，
 
 开启 TypeScript 编译时类型检查，默认关闭。
 
+## fastRefresh <Badge>3.3+</Badge>
+
+* Type: `object`
+
+快速刷新（Fast Refresh），开发时可以**保持组件状态**，同时编辑提供**即时反馈**。
+
+[文档](/zh-CN/docs/fast-refresh)
+
 ## hash
 
 * Type: `boolean`
@@ -687,9 +694,9 @@ export default {
 * Type: `object`
 * Default: `{ type: 'browser' }`
 
-配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md)。
+配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/getting-started.md)。
 
-包含以下子配置项，
+包含以下子配置项：
 
 * type，可选 `browser`、`hash` 和 `memory`
 * options，传给 create{{{ type }}}History 的配置项，每个类型器的配置项不同
@@ -733,7 +740,7 @@ export default {
 
 配置是否需要生成额外用于描述产物的 manifest 文件，默认会生成 `asset-manifest.json`。
 
-包含以下子配置项，
+包含以下子配置项：
 
 * fileName，文件名，默认是 `asset-manifest.json`
 * publicPath，默认会使用 webpack 的 `output.publicPath` 配置
@@ -786,7 +793,7 @@ export default {
 
 配置 mock 属性。
 
-包含以下子属性，
+包含以下子属性：
 
 * exclude，格式为 `Array(string)`，用于忽略不需要走 mock 的文件
 
@@ -825,7 +832,7 @@ export default {
 
 设置 node\_modules 目录下依赖文件的编译方式。
 
-子配置项包含，
+子配置项包含：
 
 * `type`，类型，可选 `all` 和 `none`
 * `exclude`，忽略的依赖库，包名，暂不支持绝对路径
@@ -955,12 +962,26 @@ export default {
 
 然后访问 `/api/users` 就能访问到 [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) 的数据。
 
+> 注意：proxy 配置仅在 dev 时生效。
+
 ## publicPath
 
 * Type: `publicPath`
 * Default: `/`
 
-配置 webpack 的 publicPath。当打包的时候，webpack 会在静态文件路径前面添加 `publicPath` 的值，当你需要修改静态文件地址时，比如使用 CDN 部署，把 `publicPath` 的值设为 CDN 的值就可以。如果使用一些特殊的文件系统，比如混合开发或者 cordova 等技术，可以尝试将 `publicPath` 设置成 `./`。
+配置 webpack 的 publicPath。当打包的时候，webpack 会在静态文件路径前面添加 `publicPath` 的值，当你需要修改静态文件地址时，比如使用 CDN 部署，把 `publicPath` 的值设为 CDN 的值就可以。如果使用一些特殊的文件系统，比如混合开发或者 cordova 等技术，可以尝试将 `publicPath` 设置成 `./` 相对路径。
+
+> 相对路径 `./` 有一些限制，例如不支持多层路由 `/foo/bar`，只支持单层路径 `/foo`
+
+如果你的应用部署在域名的子路径上，例如 `https://www.your-app.com/foo/`，你需要设置 `publicPath` 为 `/foo/`，如果同时要兼顾开发环境正常调试，你可以这样配置：
+
+```js
+import { defineConfig } from 'umi';
+
+export default defineConfig({
+  publicPath: process.env.NODE_ENV === 'production' ? '/foo/' : '/'
+})
+```
 
 ## routes
 
@@ -1020,10 +1041,10 @@ setCreateHistoryOptions({
 启用后，打包时会额外加上这一段，
 
 ```js
-__webpack_public_path__ = window.publicPath;
+__webpack_public_path__ = window.resourceBaseUrl || window.publicPath;
 ```
 
-然后 webpack 在异步加载 JS 等资源文件时会从 `window.publicPath` 里开始找。
+然后 webpack 在异步加载 JS 等资源文件时会从 `window.resourceBaseUrl` 或 `window.publicPath` 里开始找。
 
 ## ssr <Badge>3.2+</Badge>
 
@@ -1038,6 +1059,7 @@ __webpack_public_path__ = window.publicPath;
   ssr: {
     // 更多配置
     // forceInitial: false,
+    // removeWindowInitialProps: false
     // devServerRender: true,
     // mode: 'string',
     // staticMarkup: false,
@@ -1048,6 +1070,7 @@ __webpack_public_path__ = window.publicPath;
 配置说明：
 
 * `forceInitial`：客户端渲染时强制执行 `getInitialProps` 方法，常见的场景：静态站点希望每次访问时保持数据最新，以客户端渲染为主。
+* `removeWindowInitialProps`: HTML 中移除 `window.getInitialProps` 变量，避免 HTML 中有大量数据影响 SEO 效果，场景：静态站点
 * `devServerRender`：在 `umi dev` 开发模式下，执行渲染，用于 umi SSR 项目的快速开发、调试，服务端渲染效果所见即所得，同时我们考虑到可能会与服务端框架（如 [Egg.js](https://eggjs.org/)、[Express](https://expressjs.com/)、[Koa](https://koajs.com/)）结合做本地开发、调试，关闭后，在 `umi dev` 下不执行服务端渲染，但会生成 `umi.server.js`（Umi SSR 服务端渲染入口文件），渲染开发流程交由开发者处理。
 * `mode`：渲染模式，默认使用 `string` 字符串渲染，同时支持流式渲染 `mode: 'stream'`，减少 TTFB（浏览器开始收到服务器响应数据的时间） 时长。
 * `staticMarkup`：html 上的渲染属性（例如 React 渲染的 `data-reactroot`），常用于静态站点生成的场景上。
@@ -1057,6 +1080,7 @@ __webpack_public_path__ = window.publicPath;
 * 开启后，执行 `umi dev` 时，访问 http://localhost:8000 ，默认将单页应用（SPA）渲染成 html 片段，片段可以通过开发者工具『显示网页源代码』进行查看。
 * 执行 `umi build`，产物会额外生成 `umi.server.js` 文件，此文件运行在 Node.js 服务端，用于做服务端渲染，渲染 html 片段。
 * 如果应用没有 Node.js 服务端，又希望生成 html 片段做 SEO（搜索引擎优化），可以开启 [exportStatic](#exportstatic) 配置，会在执行 `umi build` 构建时进行**预渲染**。
+* `removeWindowInitialProps` 与 `forceInitial` 不可同时使用
 
 了解更多，可点击 [服务端渲染文档](/zh-CN/docs/ssr)。
 
@@ -1065,7 +1089,7 @@ __webpack_public_path__ = window.publicPath;
 * Type: `Array`
 * Default: `[]`
 
-同 [headScripts](TODO)，配置 `<body>` 里的额外脚本。
+同 [headScripts](#headscripts)，配置 `<body>` 里的额外脚本。
 
 ## singular
 

@@ -17,6 +17,9 @@
       "prettier --parser=typescript --write"
     ]
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
     "@ant-design/pro-layout": "^5.0.12",
     "@umijs/preset-react": "^1.5.17",

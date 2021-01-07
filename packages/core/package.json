@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "3.2.22",
+  "version": "3.3.3",
   "description": "@umijs/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,8 +24,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.11.6",
-    "@babel/register": "7.11.5",
+    "@babel/core": "7.12.3",
+    "@babel/register": "7.12.1",
     "@hapi/joi": "16.1.8",
     "@types/ejs": "3.0.4",
     "@types/hapi__joi": "16.0.12",
@@ -33,10 +33,10 @@
     "@types/marked-terminal": "^3.1.1",
     "@types/prettier": "2.1.0",
     "@types/tapable": "1.0.6",
-    "@umijs/ast": "3.2.22",
-    "@umijs/babel-preset-umi": "3.2.22",
+    "@umijs/ast": "3.3.3",
+    "@umijs/babel-preset-umi": "3.3.3",
     "@umijs/error-code-map": "^1.0.1",
-    "@umijs/utils": "3.2.22",
+    "@umijs/utils": "3.3.3",
     "dotenv": "8.2.0",
     "ejs": "3.1.5",
     "marked": "1.1.1",

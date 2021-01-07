@@ -39,7 +39,7 @@ For example：
 
 ### dist
 
-Default location of outpput of `umi build`
+Default location of output of `umi build`
 
 ### mock
 

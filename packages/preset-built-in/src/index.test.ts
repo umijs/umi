@@ -9,9 +9,14 @@ import { readFileSync, existsSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
 
+beforeEach(() => {
+  if (process.env.__IS_SERVER) {
+    delete process.env.__IS_SERVER;
+  }
+});
+
 afterEach(() => {
   cleanup();
-  delete process.env.__IS_SERVER;
 });
 
 test('api.writeTmpFile error in register stage', async () => {
@@ -290,10 +295,10 @@ test('ssr using stream', (done) => {
       }).then(({ html, rootContainer }) => {
         expect(rootContainer instanceof Stream).toBeTruthy();
         expect(html instanceof Stream).toBeTruthy();
-        const expectBytes = new Buffer(
+        const expectBytes = Buffer.from(
           '<div><ul><li>hello</li><li>world</li></ul></div>',
         );
-        let bytes = new Buffer('');
+        let bytes = Buffer.from('');
         rootContainer.on('data', (chunk) => {
           bytes = Buffer.concat([bytes, chunk]);
         });

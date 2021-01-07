@@ -6,6 +6,63 @@
 
 不是。文档中的 `.ts` 替换为 `.js` 同样有效，因为不想每次都带上 `.(j|t)sx?`。
 
+### 使用 React 17
+
+在 `package.json` 中升级 React 依赖，同时安装 TypeScript 4.1 及以上
+
+```diff
+	"dependencies": {
+-   "react": "^16.0.0",
++   "react": "^17.0.0",
+-   "react-dom": "^16.0.0",
++   "react-dom": "^17.0.0",
+  },
+  "devDependencies": {
++   "typescript": "^4.1.0"
+  }
+```
+
+去掉 `import React from 'react'` 模块引入
+
+```diff
+- import React from 'react';
+
+function App() {
+  return <h1>Hello World</h1>;
+}
+```
+
+同时 `tsconfig.json` 修改 `jsx` 配置：
+
+```diff
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+-   "jsx": "react",
++   "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "./",
+    "strict": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@@/*": ["src/.umi/*"]
+    },
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "mock/**/*",
+    "src/**/*",
+    "config/**/*",
+    ".umirc.ts",
+    "typings.d.ts"
+  ]
+}
+```
+
 ### import from umi 没有定义怎么办？
 
 比如：
@@ -291,14 +348,20 @@ File sizes after gzip:
 
 ### 如何禁用掉每次刷新路由时出现的 loading... 状态？
 
-给 dynamicImport 配置加上 `loading: '() => <></>'`，比如：
+给 dynamicImport 引入一个空组件比如 `Loading.tsx` ，内容如下：
+```typescript
+// components/Loading.tsx
 
+import React from 'react';
+
+export default () => <></>;
 ```
+```typescript
 export default {
   dynamicImport: {
-    loading: '() => <></>'
+    loading: '@/components/Loading',
   },
-}
+};
 ```
 
 ## Test
@@ -364,3 +427,18 @@ export default Header;
 ### 部署在静态文件服务时，如搭配 cordova 使用，页面空白，提示找不到文件？
 
 可以尝试配置 `publicPath: './',`
+
+### Cannot assign to read only property 'exports' of object '#&lt;Object&gt;'
+
+出现这个报错，一般是在一个文件里混用了 `import` 和 `module.exports`
+
+推荐统一改成 ES Module 标准导入、导出形式：
+
+```diff
+import { A } from './a';
+
+- module.exports = A;
++ export default A;
+```
+
+如果需要改动的文件比较多，可以 `npm i @babel/plugin-transform-modules-commonjs -D`，然后在 umi 配置文件中加上 `extraBabelPlugins: ['@babel/plugin-transform-modules-commonjs']`。

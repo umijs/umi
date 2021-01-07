@@ -143,9 +143,9 @@ tree ./dist
 └── umi.js
 ```
 
-### Local authentication
+### Local verification
 
-Before publishing, you can `serve` do local authentication
+Before publishing, you can `serve` check the build locally.
 
 ```bash
 $ yarn global add serve
@@ -163,7 +163,7 @@ $ serve ./dist
    └────────────────────────────────────────────────────┘
 ```
 
-Access [http://localhost:5000](http://localhost:5000) and under normal circumstances `yarn start` should be executed
+Access [http://localhost:5000](http://localhost:5000) and built assets from `./dist` folder will be served.
 
 ## Deploy
 

@@ -2,7 +2,7 @@
 
 The difference between runtime-config and config is execution timing, runtime-config is evaluated while your app running in browser. Therefor, `function`, `jsx`, `import` and other **browser-runnable** snippets can be used.
 
-> `node` exclusive dependencies should not working.
+> `node` exclusive dependencies should not work.
 
 
 ## How to use
@@ -80,7 +80,7 @@ export function render(oldRender) {
 
 ### onRouteChange({ routes, matchedRoutes, location, action })
 
-Change something at route initialization/chaning phase.
+Change something at route initialization/changing phase.
 
 For example, event tracking and analysis:
 

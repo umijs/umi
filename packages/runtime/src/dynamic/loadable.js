@@ -24,7 +24,12 @@
 // https://github.com/zeit/next.js/blob/canary/packages/next/next-server/lib/loadable.js
 // Modified
 
-import React from 'react';
+import {
+  createElement,
+  useContext,
+  useImperativeHandle,
+  forwardRef,
+} from 'react';
 import { useSubscription } from 'use-subscription';
 import { LoadableContext } from './loadable-context';
 
@@ -108,7 +113,7 @@ function resolve(obj) {
 }
 
 function render(loaded, props) {
-  return React.createElement(resolve(loaded), props);
+  return createElement(resolve(loaded), props);
 }
 
 function createLoadableComponent(loadFn, options) {
@@ -164,10 +169,10 @@ function createLoadableComponent(loadFn, options) {
   const LoadableComponent = (props, ref) => {
     init();
 
-    const context = React.useContext(LoadableContext);
+    const context = useContext(LoadableContext);
     const state = useSubscription(subscription);
 
-    React.useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({
       retry: subscription.retry,
     }));
 
@@ -178,7 +183,10 @@ function createLoadableComponent(loadFn, options) {
     }
 
     if (state.loading || state.error) {
-      return React.createElement(opts.loading, {
+      if (process.env.NODE_ENV === 'development' && state.error) {
+        console.error(`[@umijs/runtime] load component failed`, state.error);
+      }
+      return createElement(opts.loading, {
         isLoading: state.loading,
         pastDelay: state.pastDelay,
         timedOut: state.timedOut,
@@ -192,7 +200,7 @@ function createLoadableComponent(loadFn, options) {
     }
   };
 
-  const LoadableComponentWithRef = React.forwardRef(LoadableComponent);
+  const LoadableComponentWithRef = forwardRef(LoadableComponent);
   // add static method in React.forwardRef
   // https://github.com/facebook/react/issues/17830
   LoadableComponentWithRef.preload = () => init();

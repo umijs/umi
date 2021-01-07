@@ -73,7 +73,7 @@ export interface ITargets {
 
 export type IBundlerConfigType = keyof typeof BundlerConfigType;
 
-interface ICreateCSSRule {
+export interface ICreateCSSRule {
   (opts: {
     lang: string;
     type: IBundlerConfigType;
@@ -182,6 +182,7 @@ export interface IApi extends PluginAPI {
     },
     {
       env: env;
+      type?: IBundlerConfigType;
     }
   >;
   modifyBabelPresetOpts: IModify<
@@ -252,15 +253,16 @@ export interface IApi extends PluginAPI {
 
 export { IRoute };
 
-interface IManifest {
+export interface IManifest {
   fileName: string;
   publicPath: string;
   basePath: string;
   writeToFileEmit: boolean;
 }
 
-interface ISSR {
+export interface ISSR {
   forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
   devServerRender?: boolean;
   mode?: 'string' | 'stream';
   staticMarkup?: boolean;
@@ -291,9 +293,9 @@ export interface BaseIConfig extends IConfigCore {
   };
   chunks?: string[];
   cssLoader?: object;
-  cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
+  cssModulesTypescriptLoader?: { mode?: 'verify' | 'emit' };
   cssnano?: object;
-  copy?: [string, ICopy];
+  copy?: (string | ICopy)[];
   define?: {
     [key: string]: any;
   };
@@ -313,6 +315,7 @@ export interface BaseIConfig extends IConfigCore {
   extraPostCSSPlugins?: any[];
   favicon?: string;
   forkTSChecker?: object;
+  fastRefresh?: object;
   hash?: boolean;
   headScripts?: IScriptConfig;
   history?: {
@@ -366,6 +369,7 @@ interface IServerRenderParams {
   basename?: string;
   staticMarkup?: boolean;
   forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
   getInitialPropsCtx?: object;
   manifest?: string;
   [k: string]: any;

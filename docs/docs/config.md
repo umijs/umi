@@ -16,7 +16,26 @@ export default {
 ## Configuration
 
 If your configurations are not complicated, we recommend configuring your app with `.umirc.ts`;
-If your configurations are complicated, it is possible to split your configurations into pieces and organize them in `config/config.ts`. For example, if you need to configure routers, it would be a good choice to have it in an individual module called `config/routes.ts` alongside `config/config.ts`.
+If your configurations are complicated, it is possible to split your configurations into pieces and organize them in `config/config.ts`. For example, if you need to configure routers, it would be a good choice to have it in an individual module called `routes.ts`.
+
+```typescript
+// config/routes.ts
+
+export default [
+    { exact: true, path: '/', component: 'index' },
+];
+```
+```typescript
+// config/config.ts
+
+import { defineConfig } from 'umi';
+import routes from './routes';
+
+export default defineConfig({
+  routes: routes,
+});
+
+```
 
 You have to choose between `.umirc.ts` and `config/config.ts`, `.umirc.ts` has higher priority.
 
@@ -70,7 +89,7 @@ Notice：
 
 ## Configuration for multiple environments
 
-Environment variable `UMI_ENV` shall be used to identify configurations for different environemtns.
+Environment variable `UMI_ENV` shall be used to identify configurations for different environments.
 
 For example:
 

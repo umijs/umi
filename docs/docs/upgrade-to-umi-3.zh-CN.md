@@ -135,13 +135,22 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 + @import url(~foo/bar.css);
 ```
 
+### 动态路由
+umi3中不再使用`$`来标识动态路，约定 `[]`包裹的文件或文件夹为动态路由，`[ $]`为可选的动态路由
+
+比如:
+
+- `src/pages/users/[id].tsx` 会成为 `/users/:id`
+- `src/pages/users/[id$].tsx` 会成为 `/users/:id?`
+
+
 ## 遇到问题
 
 Umi v3 做了非常多的细节改进和重构，我们尽可能收集了已知的所有不兼容变化和相关影响，但是有可能还是有一些场景我们没有考虑到。如果你在升级过程中遇到了问题，请到 [Github issues](https://github.com/umijs/umi/issues) 进行反馈。我们会尽快响应和相应改进这篇文档。
 
 也可以加 "Umi 3 升级问题互帮互助" 群，
 
-<img src="https://img.alicdn.com/tfs/TB1KOhYk8FR4u4jSZFPXXanzFXa-547-550.png" width="60" />
+<img src="https://img.alicdn.com/imgextra/i4/O1CN01n6OPuW1Rc2fNmUMok_!!6000000002131-0-tps-560-720.jpg" width="60" />
 
 扫上方二维码，并回复 **umi 3**。
 

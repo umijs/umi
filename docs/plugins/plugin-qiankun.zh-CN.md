@@ -25,7 +25,7 @@ Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模�
 ```bash
 $ yarn
 $ yarn build
-$ cd packages/plguin-qiankun && yarn start
+$ cd packages/plugin-qiankun && yarn start
 ```
 
 ## Features
@@ -141,7 +141,7 @@ export default {
           routes: [
             {
               path: '/app1/user',
-	          component: './app1/user/index.js',
+              component: './app1/user/index.js',
             },
 +            // 配置微应用 app1 关联的路由
 +            {
@@ -162,6 +162,64 @@ export default {
       ],
     },
   ],
+}
+```
+
+微应用路由也可以配置在运行时，通过 src/app.ts 添加：
+
+```ts
+export const qiankun = fetch('/config').then(({ apps }) => {
+  return {
+    apps,
+    routes: [
+      {
+        path: '/app1',
+        microApp: 'app1',
+      }    
+    ]
+  }
+});
+```
+
+运行时注册的路由会自动关联到你配置的根路由下面，比如你的路由是这样的：
+
+```ts
+export default {
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/index.js',
+      routes: [
+        {
+          path: '/test',
+          component: './test.js',
+        },
+      ],
+    },
+  ]
+}
+```
+
+完成了上面的运行时微应用路由配置后，你的路由结构会合自动并成这样的：
+
+```diff
+export default {
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/index.js',
+      routes: [
++       {
++         path: '/app1',
++         microApp: 'app1',
++       },
+        {
+          path: '/test',
+          component: './test.js',
+        },
+      ],
+    },
+  ]
 }
 ```
 
@@ -208,7 +266,7 @@ export function MyPage() {
 }
 ```
 
-默认情况下，当我们检测到你使用的是 antd 组件库时，loading 动画使用的是 antd Spin 组件。
+默认情况下，当我们检测到你使用的是 antd 组件库时，loading 动画使用的是 [antd Spin](https://ant.design/components/spin-cn/) 组件。
 
 如果你需要定制自己的 loading 动画，或者修改组件的样式，你可以这样处理：
 
@@ -285,7 +343,7 @@ export default {
 
 #### 第二步：配置运行时生命周期钩子（可选）
 
-如果你需要在子应用的生命周期期间加一些自定义逻辑，可以在子应用的 `src/app.ts` 里导出 `qiankun` 对象，并实现每一个生命周期钩子，其中钩子函数的入参 `props` 由主应用自动注入。
+插件会自动为你创建好 qiankun 子应用需要的生命周期钩子，但是如果你想在生命周期期间加一些自定义逻辑，可以在子应用的 `src/app.ts` 里导出 `qiankun` 对象，并实现每一个生命周期钩子，其中钩子函数的入参 `props` 由主应用自动注入。
 
 ```js
 export const qiankun = {
@@ -337,11 +395,11 @@ PORT=8081
       ```ts
       // src/app.ts
       export function useQiankunStateForSlave() {
-        const [globalState, setGlobalState] = useState({});
+        const [masterState, setMasterState] = useState({});
        
         return {
-          globalState,
-          setGlobalState,
+          masterState,
+          setMasterState,
         }
       }
       ```
@@ -444,6 +502,7 @@ export function MyPage() {
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
 | apps | 子应用配置 | [App](#AppOpts)[] | 是 |  |
+| routes | 子应用运行时需要注册的微应用路由 | [Route](#RouteOpts)[] | 否 | N/A |
 | sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | false |
 | prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| 'all' | 否 | true |
 
@@ -454,6 +513,14 @@ export function MyPage() {
 | name | 子应用唯一 id | string | 是 |  |
 | entry | 子应用 html 地址 | string \| { script: string[], styles: [] } | 是 |  |
 | props | 主应用传递给子应用的数据 | object | 否 | {} |
+
+#### <a name="RouteOpts">Route</a>
+
+| 配置 | 说明 | 类型 | 是否必填 | 默认值 |
+| --- | --- | --- | --- | --- |
+| path | 路由 path | string | 是 |  |
+| microApp | 关联的微应用名称 | string | 是 |  |
+| microAppProps | 微应用配置 | {autoSetLoading: boolean, className: string, wrapperClassName: string} | 否 | {} |
 
 ## 升级指南
 

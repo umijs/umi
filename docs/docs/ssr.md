@@ -33,7 +33,7 @@ translateHelp: true
 
 服务端渲染，首先得有后端服务器（一般是 Node.js）才可以使用，如果我没有后端服务器，也想用在上面提到的两个场景，那么推荐使用**预渲染**。
 
-预渲染与服务端渲染唯一的不同点在于**渲染时机**，服务端渲染的时机是在用户访问时执行渲染（即**实时渲染**，数据一般是最新的），预渲染的时机是在项目构建时，当用户访问时，数据不是一定是最新的（如果数据没有实时性，则可以直接考虑预渲染）。
+预渲染与服务端渲染唯一的不同点在于**渲染时机**，服务端渲染的时机是在用户访问时执行渲染（即**实时渲染**，数据一般是最新的），预渲染的时机是在项目构建时，当用户访问时，数据不一定是最新的（如果数据没有实时性，则可以直接考虑预渲染）。
 
 预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 HTML 文件。无需使用 web 服务器实时动态编译 HTML，适用于**静态站点生成**。
 
@@ -613,6 +613,36 @@ export default () => {
   )
 }
 ```
+3.如果是第三方库可以通过 umi 提供的 `dynamic` 动态加载组件
+```
+import React from 'react';
+import { dynamic } from 'umi';
+const renderLoading = () => <p>组件动态加载中...</p>
+export default dynamic({
+    loader: async () => {
+        // 动态加载第三方组件
+        const { default: DynamicComponent } = await import(
+            /* webpackChunkName: "dynamic-component" */ 'dynamic-component'
+        );
+        return DynamicComponent;
+    },
+    loading: () => renderLoading(),
+});
+```
+避免ssr渲染时报 ` did not match.`警告，使用时候ssr应当渲染相同`loading`组件
+```
+import React from 'react';
+import { isBrowser } from 'umi';
+import DynamicComponent from 'DynamicComponent';
+export default () => {
+  if(isBrowser()) return <DynamicComponent />
+  return renderLoading()
+}
+```
+
+### Helmet 结合 stream 渲染无法显示 title
+
+因为 react-helmet 暂不支持 stream 渲染，如果使用 Helmet ，请使用 `mode: 'string'` 方式渲染。[nfl/react-helmet#322](https://github.com/nfl/react-helmet/issues/322)
 
 ### antd pro 怎样使用服务端渲染？
 
