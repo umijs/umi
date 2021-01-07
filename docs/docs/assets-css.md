@@ -5,7 +5,7 @@ translateHelp: true
 # Use CSS
 
 
-> This document uses css as an example, the same applies to .less files.
+> This document uses css as an example, the same applies to `.less` files.
 
 ## Global Styling
 
