@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1610089278602,
+  "lastUpdate": 1610089902984,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -15108,6 +15108,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.44%",
             "unit": "ops/sec",
             "extra": "41 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng",
+            "username": "sorrycc"
+          },
+          "distinct": true,
+          "id": "3aa6c9c00642a6110dc5e5c0ab29048e285004bf",
+          "message": "release: v3.3.4",
+          "timestamp": "2021-01-08T14:57:13+08:00",
+          "tree_id": "36a31f0baf2fdad2b352857471d3a9072fc5816e",
+          "url": "https://github.com/umijs/umi/commit/3aa6c9c00642a6110dc5e5c0ab29048e285004bf"
+        },
+        "date": 1610089899177,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 630,
+            "range": "±92.56%",
+            "unit": "ops/sec",
+            "extra": "72 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 1974,
+            "range": "±4.96%",
+            "unit": "ops/sec",
+            "extra": "40 samples"
           }
         ]
       }
