@@ -30,7 +30,7 @@ export default function(initialState) {
 
 ### 扩展的路由配置
 
-配合 Layout 插件你可以很简单是实现针对某些页码的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
+配合 Layout 插件你可以很简单的实现针对某些页面的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
 
 ```typescript
 // config/route.ts
