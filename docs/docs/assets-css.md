@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Use CSS
 
 
@@ -30,7 +26,7 @@ For instance:
 // CSS Modules
 import styles from './foo.css';
 
-// 非 CSS Modules
+// Non-CSS Modules
 import './foo.css';
 ```
 
