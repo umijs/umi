@@ -310,6 +310,7 @@ export interface BaseIConfig extends IConfigCore {
     extraRoutePaths?: () => Promise<string[]>;
   };
   externals?: any;
+  extraBabelIncludes?: string[];
   extraBabelPlugins?: IBabelPresetOrPlugin[];
   extraBabelPresets?: IBabelPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
