@@ -554,6 +554,27 @@ export default {
 
 简单理解的话，可以理解为 `import react from 'react'` 会被替换为 `const react = window.React`。
 
+## extraBabelIncludes
+
+* Type: `Array`
+* Default: `[]`
+
+配置额外需要做 babel 编译的 npm 包或目录。
+
+比如：
+
+```js
+export default {
+  extraBabelIncludes: [
+    // 支持绝对路径
+    join(__dirname, '../../common'),
+
+    // 支持 npm 包
+    'react-monaco-editor',
+  ],
+}
+```
+
 ## extraBabelPlugins
 
 * Type: `Array`

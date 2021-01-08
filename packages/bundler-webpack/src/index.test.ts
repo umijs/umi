@@ -2,8 +2,8 @@ import { join } from 'path';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { getFile, rimraf, portfinder } from '@umijs/utils';
 import { BundlerConfigType } from '@umijs/types';
-import { Bundler } from './index';
 import { Server } from '@umijs/server';
+import { Bundler } from './index';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
 
 const fixtures = join(__dirname, 'fixtures');
@@ -118,6 +118,7 @@ test.skip('dev', async () => {
   const port = await portfinder.getPortPromise({
     port: 8000,
   });
+  // @ts-ignore
   webpackConfig.plugins!.push(new DevCompileDonePlugin({ port }));
   const devServerOpts = bundler.setupDevServerOpts({
     bundleConfigs: [webpackConfig],
