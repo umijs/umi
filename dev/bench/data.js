@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609832431846,
+  "lastUpdate": 1610089278602,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -15070,6 +15070,44 @@ window.BENCHMARK_DATA = {
             "range": "±5.98%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sorrycc@gmail.com",
+            "name": "chencheng (云谦)",
+            "username": "sorrycc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e163aab2d6270a8f07facc9eac1ca5780aafc43f",
+          "message": "feat: support extraBabelIncludes (#5942)\n\n* dep: upgrade babel and other deps\r\n\r\n* feat: support extraBabelIncludes",
+          "timestamp": "2021-01-08T14:49:44+08:00",
+          "tree_id": "c1a98c3925349720257bd4a4003a5b48b84dd22a",
+          "url": "https://github.com/umijs/umi/commit/e163aab2d6270a8f07facc9eac1ca5780aafc43f"
+        },
+        "date": 1610089275435,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1532,
+            "range": "±2.38%",
+            "unit": "ops/sec",
+            "extra": "78 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2772,
+            "range": "±4.44%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
