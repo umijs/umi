@@ -20,10 +20,11 @@ Build
 ```bash
 $ npm run build
 ```
-# 国际化
- 目前是按照cookie > 浏览器默认语言 > 默认语言顺序选择
- 由于服务端获取不到localStorage，所以要通过cookie将
- 所需信息带到服务端
 
-# 部署
- egg内置了cluster模式，执行yarn start即可，详情见[egg官网](https://eggjs.org)
+# Globalization
+- Currently it is selected in the order of cookie> browser default language> default language
+- Since the server cannot get localStorage, it needs to be
+- Bring the required information to the server
+
+# Deployment
+- Egg has built-in cluster mode, just execute yarn start, please refer to [egg official website](https://eggjs.org)
