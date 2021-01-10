@@ -5,31 +5,31 @@ translateHelp: true
 # @umijs/plugin-dva
 
 
-整合 dva 数据流。
+Integrate dva data flow.
 
-## 启用方式
+## How to enable
 
-配置开启。
+The configuration is turned on.
 
-## 介绍
+## Introduction
 
-包含以下功能，
+Contains the following functions,
 
-* **内置 dva**，默认版本是 `^2.6.0-beta.20`，如果项目中有依赖，会优先使用项目中依赖的版本。
-* **约定是到 model 组织方式**，不用手动注册 model
-* **文件名即 namespace**，model 内如果没有声明 namespace，会以文件名作为 namespace
-* **内置 dva-loading**，直接 connect `loading` 字段使用即可
-* **支持 immer**，通过配置 `immer` 开启
+* **Built-in dva**, the default version is `^2.6.0-beta.20`, if there are dependencies in the project, the dependent version in the project will be used first.
+* **The convention is to organize the model**, no need to manually register the model
+* **File name is namespace**, if no namespace is declared in the model, the file name will be used as the namespace
+* **Built-in dva-loading**, you can directly connect the `loading` field to use
+* **Support immer**, enabled by configuring ʻimmer`
 
-### 约定式的 model 组织方式
+### Conventional model organization
 
-符合以下规则的文件会被认为是 model 文件，
+Files that meet the following rules will be considered model files.
 
-* `src/models` 下的文件
-* `src/pages` 下，子目录中 models 目录下的文件
-* `src/pages` 下，所有 model.ts 文件
+* Files under `src/models`
+* Under `src/pages`, the files in the models directory in the subdirectory
+* Under `src/pages`, all model.ts files
 
-比如：
+such as:
 
 ```bash
 + src
@@ -39,39 +39,39 @@ translateHelp: true
     + bar/model.ts
 ```
 
-其中 `a.ts`，`b.ts` 和 `model.ts` 如果其内容是有效 dva model 写法，则会被认为是 model 文件。
+Among them, `a.ts`, `b.ts` and `model.ts` will be regarded as model files if their contents are valid dva model.
 
-### dva model 校验
+### dva model verification
 
-默认，上一小节的找到的文件，会做一次校验，校验通过后，才会被添加到最终到 dva model 列表。
+By default, the files found in the previous section will be verified once, and will be added to the final dva model list after the verification is passed.
 
-一些示例，
+Some examples,
 
 ```typescript
-// 通过
-export default { namespace: 'foo' };
-export default { reducers: 'foo' };
+// pass
+export default {namespace:'foo' };
+export default {reducers:'foo' };
 
-// 通过
-const model = { namespace: 'foo' };
+// pass
+const model = {namespace:'foo' };
 export default model;
 
-// 通过，支持 dva-model-extend
+// Pass, support dva-model-extend
 import dvaModelExtend from 'dva-model-extend';
 export default dvaModelExtend(baseModel, {
   namespace: 'foo',
 });
 
-// 通过
-export default <Model>{ namespace: 'foo' };
+// pass
+export default <Model>{ namespace:'foo' };
 
-// 不通过
-export default { foo: 'bar' };
+// Fail
+export default {foo:'bar' };
 ```
 
-## 配置
+## Configuration
 
-比如：
+such as:
 
 ```js
 export default {
@@ -87,34 +87,34 @@ export default {
 * Type: `boolean`
 * Default: `false`
 
-是否跳过 model 验证。
+Whether to skip model verification.
 
 ### extraModels
 
 * Type: `string[]`
 * Default: `[]`
 
-配置额外到 dva model。
+Configure additional to dva model.
 
 ### immer
 
 * Type: `boolean`
 * Default: `false`
 
-表示是否启用 immer 以方便修改 reducer。
+Indicates whether to enable immer to facilitate modification of reducer.
 
 ### hmr
 
 * Type: `boolean`
 * Default: `false`
 
-表示是否启用 dva model 的热更新。
+Indicates whether to enable hot update of dva model.
 
-## dva 运行时配置
+## dva runtime configuration
 
-通过 `src/app.tsx` 文件配置 dva 创建时的参数。
+Configure the parameters when dva is created through the `src/app.tsx` file.
 
-比如：
+such as:
 
 ```ts
 import { createLogger } from 'redux-logger';
@@ -130,53 +130,53 @@ export const dva = {
 };
 ```
 
-## umi 接口
+## umi interface
 
-常用方法可从 umi 直接 import。
+Common methods can be directly imported from umi.
 
-比如：
+such as:
 
 ```js
 import { connect } from 'umi';
 ```
 
-接口包含，
+The interface contains,
 
 ### connect
 
-绑定数据到组件。
+Bind data to the component.
 
 ### getDvaApp
 
-获取 dva 实例，即之前的 `window.g_app`。
+Get the dva instance, which is the previous `window.g_app`.
 
 ### useDispatch
 
-hooks 的方式获取 dispatch，dva 为 2.6.x 时有效。
+Obtain dispatch by hooks, valid when dva is 2.6.x.
 
 ### useSelector
 
-hooks 的方式获取部分数据，dva 为 2.6.x 时有效。
+Part of the data is obtained by hooks, valid when dva is 2.6.x.
 
 ### useStore
 
-hooks 的方式获取 store，dva 为 2.6.x 时有效。
+The store is obtained by hooks, and it is valid when dva is 2.6.x.
 
-## 命令
+## Command
 
 ### umi dva list model
 
-查看项目中包含了哪些 model。
+Check which models are included in the project.
 
 ```bash
 $ umi dva list model
 ```
 
-## 类型
+## Types of
 
-通过 umi 导出类型：`ConnectRC`，`ConnectProps`，`Dispatch`，`Action`，`Reducer`，`ImmerReducer`，`Effect`，`Subscription`，和所有 `model` 文件中导出的类型。
+Export types via umi: `ConnectRC`, `ConnectProps`, `Dispatch`, `Action`, `Reducer`, ʻImmerReducer`, ʻEffect`, `Subscription`, and all exported types in `model` files.
 
-### model 用例
+### model use cases
 
 ```ts
 import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
@@ -193,7 +193,7 @@ export interface IndexModelType {
   };
   reducers: {
     save: Reducer<IndexModelState>;
-    // 启用 immer 之后
+    // After enabling immer
     // save: ImmerReducer<IndexModelState>;
   };
   subscriptions: { setup: Subscription };
@@ -217,7 +217,7 @@ const IndexModel: IndexModelType = {
         ...action.payload,
       };
     },
-    // 启用 immer 之后
+    // After enabling immer
     // save(state, action) {
     //   state.name = action.payload;
     // },
@@ -238,7 +238,7 @@ const IndexModel: IndexModelType = {
 export default IndexModel;
 ```
 
-### page 用例
+### page use case
 
 ```tsx
 import React, { FC } from 'react';
@@ -260,7 +260,8 @@ export default connect(({ index, loading }: { index: IndexModelState; loading: L
 }))(IndexPage);
 
 ```
-或者
+
+or
 
 ```tsx
 import React from 'react';
@@ -284,15 +285,15 @@ export default connect(({ index, loading }: { index: IndexModelState; loading: L
 
 ## FAQ
 
-### import { connect 等 API } from umi 无效？
+### import {connect etc API} from umi invalid?
 
-检查：
+an examination:
 
-1. dva 配置有没有开启，该插件是配置开启的
-2. 有没有有效的 dva model，可通过执行 `umi dva list model` 检查，或者执行 `umi g tmp` 后查看 `src/.umi/plugin-dva/dva.ts` 中检查 model 注册情况
+1. Is the dva configuration enabled? The plug-in is enabled by the configuration
+2. If there is a valid dva model, you can check the model registration by executing `umi dva list model`, or after executing `umi g tmp`, check the model registration in `src/.umi/plugin-dva/dva.ts`
 
-以及 tsconfig.json 等定义问题，参考 [FAQ#import from umi 没有定义怎么办？](../docs/faq#import-from-umi-没有定义怎么办？)
+As well as the definition of tsconfig.json, please refer to [FAQ#import from umi, what if there is no definition? ](../docs/faq#import-from-umi-what if there is no definition?)
 
-### 我的 model 写法很动态，不能被识别出来怎么办？
+### My model is written very dynamic and cannot be recognized, what should I do?
 
-配置 `dva: { skipModelValidate: true }` 关闭 dva 的 model 校验。
+Configure `dva: {skipModelValidate: true }` to turn off dva's model validation.
