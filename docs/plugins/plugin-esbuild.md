@@ -4,18 +4,17 @@ translateHelp: true
 
 # @umijs/plugin-esbuild
 
+> Experimental function, there may be holes, but the effect is outstanding.
 
-> 试验性功能，可能有坑，但效果拔群。
+Use esbuild as the compressor.
 
-使用 esbuild 作为压缩器。
+## How to enable
 
-## 启用方式
+The configuration is turned on.
 
-配置开启。
+## Configuration
 
-## 配置
-
-比如：
+such as:
 
 ```js
 export default {
