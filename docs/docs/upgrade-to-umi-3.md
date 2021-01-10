@@ -5,11 +5,11 @@ translateHelp: true
 # Upgrade to Umi 3
 
 
-本文档将帮助你从 Umi 2.x 版本升级到 Umi 3.x 版本。
+This document will help you upgrade from Umi 2.x version to Umi 3.x version.
 
 ## package.json
 
-修改 `umi` 的版本为 `^3.0.0` 或以上，
+Modify the version of `umi` to `^3.0.0` or above,
 
 ```diff
 {
@@ -20,21 +20,21 @@ translateHelp: true
 }
 ```
 
-由于 Umi 3 需要 Node 10.13 或以上，如果之前有配 engines，需确认下版本号。
+Since Umi 3 requires Node 10.13 or above, if you have engines before, you need to confirm the version number.
 
 ## tsconfig.json
 
-为了有更好的 ts 提示，需配置 `@@` 为 `["src/.umi/*"]`。
+In order to have a better ts prompt, you need to configure `@@` as `["src/.umi/*"]`.
 
 ```diff
 + "@@/*": ["src/.umi/*"]
 ```
 
-## 升级 umi-plugin-react 为 @umijs/preset-react
+## Upgrade umi-plugin-react to @umijs/preset-react
 
-如果之前有使用 `umi-plugin-react`，以下是修改的步骤。
+If you have used `umi-plugin-react` before, here are the steps to modify it.
 
-先在 package.json 中修改依赖，
+First modify the dependencies in package.json,
 
 ```diff
 {
@@ -45,7 +45,7 @@ translateHelp: true
 }
 ```
 
-然后由于 Umi 3 的配置方式是拍平的方式，还需要修改配置，
+Then since the configuration of Umi 3 is flat, the configuration needs to be modified.
 
 ```diff
 export default {
@@ -62,50 +62,50 @@ export default {
 }
 ```
 
-注意：
+note:
 
-1. 无需重复注册插件，Umi 3 会自动注册依赖中的 Umi 插件
-2. 配置提取到外面
+1. No need to register plug-ins repeatedly, Umi 3 will automatically register Umi plug-ins in dependencies
+2. Extract the configuration to the outside
 
-功能变化，
+Functional changes,
 
-* 删除了 routes、library、dll、hardSource、pwa、hd、fastClick、chunks，不可继续使用
-* 内置 dynamicImport、title、scripts、headScripts、metas 和 links 到 Umi 中，可继续使用
-* 其他功能不变
+* Deleted routes, library, dll, hardSource, pwa, hd, fastClick, chunks, no longer available
+* Built-in dynamicImport, title, scripts, headScripts, metas and links into Umi, you can continue to use it
+* Other functions remain unchanged
 
-## 配置层
+## Configuration layer
 
-Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查找。
+Umi 3 has made a lot of simplifications in the configuration layer. The following changes are sorted in alphabetical order for easy searching.
 
-* 删除 browserslist，和 targets 重复了
-* 删除 babel，基本用不上
-* 修改 cssLoaderOptions 命名为 cssLoader
-* 删除 cssLoaderVersion，只保留 css-loader@2 的版本
-* 删除 cssPublicPath，css 引用的资源文件用相对路径 `./` 可满足所有场景，没有必要再配
-* 删除 disableGlobalVariables，始终无全局变量，无需配置
-* 删除 disableRedirectHoist，始终不再做 redirect hoist
-* 删除 disableCSSModules 和 cssModulesWithAffix，Umi 3 自动识别 css modules 的使用，无需配置
-* 删除 extraBabelIncludes 和 es5ImcompatibleVersions，node\_modules 也走 babel 编译后就没有意义了，无需配置
-* 修改 history 格式为 `{ type, options }` ，不再支持 string 格式
-* 修改 lessLoaderOptions 命名为 lessLoader
-* 删除 minimizer，只保留 terserjs
-* 修改 plugins 的格式为字符串，需要先确保依赖的插件是否升级到 Umi 3，然后修改方式参考前面 umi-plugin-react 的修改方式
-* 删除 sass，不再支持，后续会以插件的方式提供
-* 删除 treeShaking，已内置，无需配置
-* 删除 tsConfigFile，没有必要
-* 删除 typescript，TypeScript 编译交给 babel 处理后，之前 ts-loader 的配置就没有意义了
-* 删除 uglifyJSOptions，没有必要
-* 删除 urlLoaderExcludes，没有必要
+* Delete browserslist and duplicate targets
+* Delete babel, basically no use
+* Modify cssLoaderOptions and name it cssLoader
+* Delete cssLoaderVersion, only keep the version of css-loader@2
+* Delete cssPublicPath, and use relative path `./` for resource files referenced by css to satisfy all scenarios, no need to reconfigure
+* Delete disableGlobalVariables, there is always no global variables, no need to configure
+* Delete disableRedirectHoist and never do redirect hoist anymore
+* Delete disableCSSModules and cssModulesWithAffix, Umi 3 automatically recognizes the use of css modules, no configuration is required
+* Delete extraBabelIncludes and es5ImcompatibleVersions, node\_modules will also go to Babel after compilation, it is meaningless, no configuration
+* Modify the history format to `{ type, options }`, the string format is no longer supported
+* Modify lessLoaderOptions to be named lessLoader
+* Delete minimizer, only keep terserjs
+* To modify the format of plugins to a string, you need to make sure that the dependent plugin is upgraded to Umi 3, and then refer to the modification method of umi-plugin-react above
+* Delete sass, no longer support, follow-up will be provided as a plug-in
+* Delete treeShaking, already built-in, no need to configure
+* Delete tsConfigFile, no need
+* Delete typescript, after TypeScript compilation is handed over to babel, the previous configuration of ts-loader is meaningless
+* Delete uglifyJSOptions, no need
+* Delete urlLoaderExcludes, no need
 
-## 环境变量层
+## Environment variable layer
 
-## 代码层
+## Code layer
 
 ### import all from umi
 
-不再保留 `umi/xxx` 的接口，全部从 umi 中 import。
+The interface of `umi/xxx` is no longer retained, and all are imported from umi.
 
-比如：
+such as:
 
 ```diff
 - import Link from 'umi/link';
@@ -114,7 +114,7 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 
 ### umi/router
 
-改用 `history` 代替。
+Use `history` instead.
 
 ```diff
 - import router from 'umi/router';
@@ -124,28 +124,28 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 + history.push('/foo');
 ```
 
-### CSS 里引用别名或三方库
+### Reference aliases or third-party libraries in CSS
 
-需要加 `~` 前缀。
+Need to add `~` prefix.
 
-比如：
+such as:
 
 ```diff
-# 别名
-- background: url(@/assets/logo.png);
+# Alias
+-background: url(@/assets/logo.png);
 + background: url(~@/assets/logo.png);
 
-# 三方库
-- @import url(foo/bar.css);
+#三方库
+-@import url(foo/bar.css);
 + @import url(~foo/bar.css);
 ```
 
-## 遇到问题
+## Encounter problems
 
-Umi v3 做了非常多的细节改进和重构，我们尽可能收集了已知的所有不兼容变化和相关影响，但是有可能还是有一些场景我们没有考虑到。如果你在升级过程中遇到了问题，请到 [Github issues](https://github.com/umijs/umi/issues) 进行反馈。我们会尽快响应和相应改进这篇文档。
+Umi v3 has made a lot of detailed improvements and reconstructions. We have collected all known incompatible changes and related impacts as much as possible, but there may still be some scenarios that we have not considered. If you encounter problems during the upgrade process, please go to [Github issues](https://github.com/umijs/umi/issues) for feedback. We will respond as soon as possible and improve this document accordingly.
 
-也可以加 "Umi 3 升级问题互帮互助" 群，
+You can also add the "Umi 3 upgrade problem mutual help and mutual assistance" group,
 
 <img src="https://img.alicdn.com/imgextra/i4/O1CN01n6OPuW1Rc2fNmUMok_!!6000000002131-0-tps-560-720.jpg" width="60" />
 
-扫上方二维码，并回复 **umi 3**。
+Scan the QR code above and reply **umi 3**.
