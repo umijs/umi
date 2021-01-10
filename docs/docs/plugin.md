@@ -4,20 +4,19 @@ translateHelp: true
 
 # Plugin
 
+## Plug-in id and key
 
-## 插件的 id 和 key
+Each plug-in corresponds to an id and a key, **id is shorthand for path**, **key is a unique value for configuration after further simplified**.
 
-每个插件都会对应一个 id 和一个 key，**id 是路径的简写**，**key 是进一步简化后用于配置的唯一值**。
+For example, the plugin `/node_modules/@umijs/plugin-foo/index.js`, usually, its id is `@umijs/plugin-foo` and its key is `foo`.
 
-比如插件 `/node_modules/@umijs/plugin-foo/index.js`，通常来说，其 id 为 `@umijs/plugin-foo`，key 为 `foo`。
+## Enable plugin
 
-## 启用插件
+There are multiple ways to enable plugins,
 
-插件有多种启用方式，
+### package.json dependencies
 
-### package.json 依赖
-
-Umi 会自动检测 `dependencies` 和 `devDependencies` 里的 umi 插件，比如：
+Umi will automatically detect the umi plugins in `dependencies` and `devDependencies`, for example:
 
 ```json
 {
@@ -27,11 +26,11 @@ Umi 会自动检测 `dependencies` 和 `devDependencies` 里的 umi 插件，比
 }
 ```
 
-那么 `@umijs/preset-react` 会自动被注册，无需在配置里重复声明。
+Then `@umijs/preset-react` will be automatically registered, no need to repeat the declaration in the configuration.
 
-### 配置
+### Configuration
 
-在配置里可通过 `presets` 和 `plugins` 配置插件，比如：
+In the configuration, plugins can be configured through `presets` and `plugins`, for example:
 
 ```js
 export default {
@@ -40,43 +39,43 @@ export default {
 }
 ```
 
-通常用于几种情况：
+Usually used in several situations:
 
-1. 项目相对路径的插件
-2. 非 npm 包入口文件的插件
+1. Project relative path plugin
+2. Plug-ins for non-npm package entry files
 
-注意：
+note:
 
-* 请不要配置 npm 包的插件，否则会报重复注册的错误
+* Please do not configure the plug-in of the npm package, otherwise it will report a duplicate registration error
 
-### 环境变量
+### Environment variables
 
-还可通过环境变量 `UMI\_PRESETS` 和 `UMI\_PLUGINS` 注册额外插件。
+You can also register additional plugins through the environment variables `UMI\_PRESETS` and `UMI\_PLUGINS`.
 
-比如：
+such as:
 
 ```bash
 $ UMI_PRESETS=/a/b/preset.js umi dev
 ```
 
-注意：
+note:
 
-* 项目里不建议使用，通常用于基于 umi 的框架二次封装
+* Not recommended in the project, usually used for secondary packaging based on umi framework
 
-## 检查插件注册情况
+## Check plugin registration
 
-### 通过命令行
+### Via the command line
 
-可以执行以下命令，
+You can execute the following commands,
 
 ```bash
 $ umi plugin list
 
-# 顺便看看他们分别用了哪些 key
+# By the way, see which keys they use
 $ umi plugin list --key
 ```
 
-结果通常如下，
+The result is usually as follows,
 
 ```bash
   Plugins:
@@ -90,17 +89,17 @@ $ umi plugin list --key
     - ...
 ```
 
-### 在插件里感知其他插件
+### Perceive other plugins in the plugin
 
-可通过 `api.hasPlugins(pluginId[])` 和 `api.hasPresets(pluginId[])` 的方式感知其他插件，详见插件 API。
+You can perceive other plug-ins by means of `api.hasPlugins(pluginId[])` and `api.hasPresets(pluginId[])`, see the plug-in API for details.
 
-## 禁用插件
+## Disable plugin
 
-有两种方式可禁用插件，
+There are two ways to disable plugins,
 
-### 配置 key 为 false
+### Configure key to false
 
-比如：
+such as:
 
 ```js
 export default {
@@ -108,15 +107,15 @@ export default {
 }
 ```
 
-会禁用 Umi 内置的 mock 插件及其功能。
+Umi's built-in mock plugin and its functions will be disabled.
 
-### 在插件里禁用其他插件
+### Disable other plugins in the plugin
 
-可通过 `api.skipPlugins(pluginId[])` 的方式禁用，详见插件 API。
+It can be disabled by means of ʻapi.skipPlugins(pluginId[])`, see plugin API for details.
 
-## 配置插件
+## Configure plugin
 
-通过插件的 key 来配置插件，比如：
+Configure the plug-in through its key, such as:
 
 ```js
 export default {
@@ -124,9 +123,9 @@ export default {
 }
 ```
 
-这里的 mock 是 mock 插件的 key。
+The mock here is the key of the mock plugin.
 
-再比如我们安装一个插件 `umi-plugin-bar`，其 key 默认是 `bar`，就可以这么配置，
+For another example, if we install a plug-in `umi-plugin-bar`, its key default is `bar`, so it can be configured like this,
 
 ```js
 export default {
