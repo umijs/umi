@@ -4,23 +4,23 @@ import React from 'react';
 
 const USERS = [
   {
-    name: '蚂蚁集团官网',
+    name: 'Ant Group official website',
     link: 'https://www.antgroup.com',
     logo: 'https://img.alicdn.com/tfs/TB1olOTGXY7gK0jSZKzXXaikpXa-2145-498.png',
   },
   {
-    name: '罗汉堂官网',
+    name: 'Arhat Hall official website',
     link: 'https://www.luohanacademy.com/',
     logo:
       'https://gw.alipayobjects.com/mdn/rms_6ab82c/afts/img/A*qPp4QKXu5HQAAAAAAAAAAABkARQnAQ',
   },
   {
-    name: '关于支付宝',
+    name: 'About Alipay',
     link: 'https://about.alipay.com/',
     logo: 'https://gw.alipayobjects.com/zos/rmsportal/bsLuElJnYSyLnSOLjKth.png',
   },
   {
-    name: 'INCLUSION 外滩大会',
+    name: 'INCLUSION Bund Conference',
     link: 'https://www.inclusionconf.com/',
     logo:
       'https://gw.alipayobjects.com/mdn/rms_60f090/afts/img/A*nipGQJEKyWEAAAAAAAAAAABkARQnAQ',
@@ -32,18 +32,18 @@ const USERS = [
       'https://ac.alipay.com/storage/2020/7/21/3ba523c1-ec48-48fc-9618-52302d05e01c.svg',
   },
   {
-    name: '菜鸟网络官网',
+    name: 'Cainiao official website',
     link: 'https://www.cainiao.com/',
     logo: 'https://gw.alicdn.com/tfs/TB1j3vTRXXXXXb8aXXXXXXXXXXX-342-120.png',
   },
   {
-    name: 'Alipay 国际文档中心',
+    name: 'Alipay International Document Center',
     link: 'https://global.alipay.com/docs/',
     logo:
       'https://ac.alipay.com/storage/2020/6/4/5f7a45a1-3398-4029-8791-a9545a496642.svg',
   },
   {
-    name: 'ZOLOZ 文档中心',
+    name: 'ZOLOZ Document Center',
     link: 'https://docs.zoloz.com/zoloz/saas/docs',
     logo: 'https://www.zoloz.com/hubfs/logos/logo.svg',
   },
