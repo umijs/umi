@@ -4,7 +4,6 @@ translateHelp: true
 
 # 如何做编译提速
 
-
 如果遇到编译慢，增量编译慢，内存爆掉，OOM 等问题，可尝试以下方法。
 
 ## 配置 `nodeModulesTransform` 为  `{ type: 'none' }`
@@ -101,6 +100,7 @@ export default {
 
 ```js
 export default {
+  dynamicImport: {},
   chunks: ['vendors', 'umi'],
   chainWebpack: function (config, { webpack }) {
     config.merge({
@@ -180,7 +180,7 @@ export default {
 先安装依赖，
 
 ```bash
-$ yarn add @umijs/plugin-esbuild
+yarn add @umijs/plugin-esbuild
 ```
 
 然后在配置里开启，
@@ -198,5 +198,5 @@ export default {
 编译慢中压缩时间占了大部分，所以如果编译时不压缩可节约大量的时间和内存消耗，但尺寸会增加不少。通过环境变量 `COMPRESS=none` 可跳过压缩。
 
 ```bash
-$ COMPRESS=none umi build
+COMPRESS=none umi build
 ```
