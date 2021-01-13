@@ -93,10 +93,12 @@ export default {
 
 ### immer
 
-* Type: `boolean`
+* Type: `boolean | object`
 * Default: `false`
 
 表示是否启用 immer 以方便修改 reducer。
+
+注：如需兼容 IE11，需配置 `{ immer: { enableES5: true }}`。
 
 ### hmr
 
