@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1610089902984,
+  "lastUpdate": 1610504905193,
   "repoUrl": "https://github.com/umijs/umi",
   "entries": {
     "Benchmark": [
@@ -15146,6 +15146,44 @@ window.BENCHMARK_DATA = {
             "range": "±4.96%",
             "unit": "ops/sec",
             "extra": "40 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "scdzwyxst@gmail.com",
+            "name": "Peach",
+            "username": "PeachScript"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e24a2bb7dcac1b9ae4b1ed7b32c2a3636ea24b18",
+          "message": "chore: upgrade cheerio types (#5975)",
+          "timestamp": "2021-01-12T18:16:54-08:00",
+          "tree_id": "bb905d32770bce9c103273e10f1aa17c9962400e",
+          "url": "https://github.com/umijs/umi/commit/e24a2bb7dcac1b9ae4b1ed7b32c2a3636ea24b18"
+        },
+        "date": 1610504901719,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "ssr#normal /",
+            "value": 1458,
+            "range": "±2.95%",
+            "unit": "ops/sec",
+            "extra": "76 samples"
+          },
+          {
+            "name": "ssr#normal#stream /",
+            "value": 2483,
+            "range": "±4.67%",
+            "unit": "ops/sec",
+            "extra": "41 samples"
           }
         ]
       }
