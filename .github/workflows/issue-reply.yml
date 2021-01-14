@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: help wanted
         if: github.event.label.name == 'PR Welcome' || github.event.label.name == 'help wanted'
-        uses: actions-cool/issues-helper@v1
+        uses: actions-cool/issues-helper@v1.2
         with:
           actions: 'create-comment'
           issue-number: ${{ github.event.issue.number }}
@@ -19,9 +19,20 @@ jobs:
 
             你好 @${{ github.event.issue.user.login }}，我们完全同意你的提议/反馈，欢迎直接在此仓库创建一个 Pull Request 来解决这个问题。请务必填写 Pull Request 内的预设模板，提供改动所需相应的 changelog、测试用例、文档等，并确保 CI 通过，我们会尽快进行 Review，提前感谢和期待您的贡献。
 
+      - name: Question
+        if: github.event.label.name == 'Question'
+        uses: actions-cool/issues-helper@v1.2
+        with:
+          actions: 'create-comment,close-issue'
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello @${{ github.event.issue.user.login }}, we use GitHub issues to trace bugs or discuss plans of Umi. So, please don't ask usage questions here. You can try to open a new discussion in [umi discussions](https://github.com/umijs/umi/discussions), select `Q&A` to ask questions.
+
+            你好 @${{ github.event.issue.user.login }}，Umi Issue 板块是用于 bug 反馈与需求讨论的地方。请勿询问如何使用的问题，你可以试着在 [umi discussions](https://github.com/umijs/umi/discussions) 新开一个 discussion，选择 `Q&A` 类别进行提问。
+
       - name: Need Reproduce
         if: github.event.label.name == 'Need Reproduce'
-        uses: actions-cool/issues-helper@v1
+        uses: actions-cool/issues-helper@v1.2
         with:
           actions: 'create-comment'
           issue-number: ${{ github.event.issue.number }}
@@ -29,3 +40,5 @@ jobs:
             Hello @${{ github.event.issue.user.login }}. In order to facilitate location and troubleshooting, we need you to provide a realistic example. Please use `yarn create @umijs/umi-app` to create and upload it to your GitHub repository.
 
             你好 @${{ github.event.issue.user.login }}, 为了方便定位和排查问题，我们需要你提供一个重现实例。请使用 `yarn create @umijs/umi-app` 创建，并上传到你的 GitHub 仓库。
+
+            ![](https://gw.alipayobjects.com/zos/antfincdn/y9kwg7DVCd/reproduce.gif)
