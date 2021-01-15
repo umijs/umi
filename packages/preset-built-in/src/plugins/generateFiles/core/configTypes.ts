@@ -27,7 +27,7 @@ export default (api: IApi) => {
       );
     const content = await joi2Types(joi.object(properties).unknown(), {
       interfaceName: 'IConfigFromPlugins',
-      bannerComment: '/** Created by Umi Plugin **/',
+      bannerComment: '// Created by Umi Plugin',
     });
     api.writeTmpFile({
       path: 'core/pluginConfig.d.ts',
