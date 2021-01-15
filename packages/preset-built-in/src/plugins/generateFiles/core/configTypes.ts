@@ -31,7 +31,7 @@ export default (api: IApi) => {
       interfaceName,
       bannerComment: '// Created by Umi Plugin',
     }).catch(() => {
-      return `export interface ${interfaceName} {}`;
+      return Promise.resolve(`export interface ${interfaceName} {}`);
     });
     api.writeTmpFile({
       path: 'core/pluginConfig.d.ts',
