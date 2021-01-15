@@ -25,9 +25,13 @@ export default (api: IApi) => {
         }),
         {},
       );
+    const interfaceName = 'IConfigFromPlugins';
+    // catch
     const content = await joi2Types(joi.object(properties).unknown(), {
-      interfaceName: 'IConfigFromPlugins',
+      interfaceName,
       bannerComment: '// Created by Umi Plugin',
+    }).catch(() => {
+      return `export interface ${interfaceName} {}`;
     });
     api.writeTmpFile({
       path: 'core/pluginConfig.d.ts',
