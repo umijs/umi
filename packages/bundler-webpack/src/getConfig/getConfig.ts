@@ -6,7 +6,7 @@ import {
 } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
-import { join } from 'path';
+import { join, isAbsolute } from 'path';
 import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
@@ -201,8 +201,8 @@ export default async function getConfig(
             .include
             .add((a) => {
               // 支持绝对路径匹配
-              if (include.startsWith('/')) {
-                return a.startsWith(include);
+              if (isAbsolute(include)) {
+                return isAbsolute(include);
               }
 
               // 支持 node_modules 下的 npm 包
