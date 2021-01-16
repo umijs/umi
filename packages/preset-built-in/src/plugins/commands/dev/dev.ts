@@ -40,10 +40,12 @@ export default (api: IApi) => {
     description: 'start a dev server for development',
     fn: async function ({ args }) {
       const defaultPort =
+        // @ts-ignore
         process.env.PORT || args?.port || api.config.devServer?.port;
       port = await portfinder.getPortPromise({
         port: defaultPort ? parseInt(String(defaultPort), 10) : 8000,
       });
+      // @ts-ignore
       hostname = process.env.HOST || api.config.devServer?.host || '0.0.0.0';
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });

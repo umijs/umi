@@ -3,8 +3,8 @@ import defaultWebpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import { winPath } from '@umijs/utils';
-import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 import { join } from 'path';
+import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 
 interface IOpts {
   cwd: string;
