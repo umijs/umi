@@ -48,7 +48,7 @@ export default function (api: IApi) {
     ...(userConfig?.mock?.exclude || []),
   ];
 
-  api.addBeforeMiddewares(async () => {
+  api.addBeforeMiddlewares(async () => {
     const checkConflictPaths = async (
       mockRes: IGetMockDataResult,
     ): Promise<void> => {

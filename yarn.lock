@@ -3524,12 +3524,6 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/cheerio@0.22.21":
-  version "0.22.21"
-  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.21.tgz#5e37887de309ba11b2e19a6e14cad7874b31a8a3"
-  dependencies:
-    "@types/node" "*"
-
 "@types/cheerio@0.22.23":
   version "0.22.23"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.23.tgz#74bcfee9c5ee53f619711dca953a89fe5cfa4eb4"
