@@ -14,7 +14,7 @@ export default (api: IApi) => {
     },
   });
 
-  api.addBeforeMiddewares(() => {
+  api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       if (req.path.includes('@@/devScripts.js')) {
         api

@@ -214,14 +214,14 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 通过 `api.registerMethod()` 扩展的方法。
 
-### addBeforeMiddewares
+### addBeforeMiddlewares
 
 添加在 webpack compiler 中间件之前的中间件，返回值格式为 express 中间件。
 
 e.g.
 
 ```ts
-api.addBeforeMiddewares(() => {
+api.addBeforeMiddlewares(() => {
   return (req, res, next) => {
     if (false) {
       res.end('end');
@@ -380,14 +380,14 @@ api.addHTMLHeadScripts(() => {
 });
 ```
 
-### addMiddewares
+### addMiddlewares
 
 添加在 webpack compiler 中间件之后的中间件，返回值格式为 express 中间件。
 
 e.g.
 
 ```ts
-api.addMiddewares(async (ctx: Context, next: any) => {
+api.addMiddlewares(async (ctx: Context, next: any) => {
   // do something before request
   await next();
   // do something after request
