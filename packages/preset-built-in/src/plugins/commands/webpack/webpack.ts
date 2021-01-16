@@ -1,5 +1,6 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
+import { inspect } from 'util';
 import { getBundleAndConfigs } from '../buildDevUtils';
 
 export default (api: IApi) => {
@@ -31,7 +32,9 @@ export default (api: IApi) => {
       }
 
       if (api.args.print !== false) {
-        console.log(config);
+        // print object with util.inspect
+        // ref: https://stackoverflow.com/questions/10729276/how-can-i-get-the-full-object-in-node-jss-console-log-rather-than-object
+        console.log(inspect(config, false, null, true));
       }
       return config;
     },
