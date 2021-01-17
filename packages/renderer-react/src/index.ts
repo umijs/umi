@@ -27,6 +27,7 @@ export interface IRouteComponentProps<
   children: JSX.Element;
   location: Location & { query: Query };
   route: IRoute;
+  routes: IRoute[];
   history: History;
   match: match<Params>;
 }
