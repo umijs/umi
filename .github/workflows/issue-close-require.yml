@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: need reproduce
-        uses: actions-cool/issues-helper@v1.7
+        uses: actions-cool/issues-helper@v1.11
         with:
           actions: 'close-issues'
           labels: 'Need Reproduce'
@@ -19,7 +19,7 @@ jobs:
             由于该 issue 被标记为需要可复现步骤，却 3 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
 
       - name: need more info
-        uses: actions-cool/issues-helper@v1.7
+        uses: actions-cool/issues-helper@v1.11
         with:
           actions: 'close-issues'
           labels: 'Need More Info'
@@ -27,3 +27,11 @@ jobs:
           body: |
             Since the issue was labeled with `Need More Info`, but no response in 3 days. This issue will be closed. If you have any questions, you can comment and reply.
             由于该 issue 被标记为需要更多信息，却 3 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
+            
+      - name: close inactive
+        uses: actions-cool/issues-helper@v1.11
+        with:
+          actions: 'close-issues'
+          inactive-day: 90
+          body: |
+            It's inactive above 3 months, feel free to reopen if still have problems.
