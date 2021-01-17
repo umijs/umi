@@ -30,8 +30,8 @@
     "@umijs/test": "^{{{ version }}}",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "17.x",
+    "react-dom": "17.x",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }
