@@ -450,6 +450,21 @@ export default () => {
 
 构建之后使用低网络模拟就能看到效果。
 
+## dynamicImportSyntax
+
+* Type: `object`
+* Default: `false`
+
+如果你不需要路由按需加载，只需要支持 `import()` 语法的 code splitting，可使用此配置。
+
+比如：
+
+```js
+export default {
+  dynamicImportSyntax: {},
+}
+```
+
 ## exportStatic
 
 * Type: `object`
