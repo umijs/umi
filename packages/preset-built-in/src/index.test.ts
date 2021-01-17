@@ -79,7 +79,7 @@ test('api.writeTmpFile without ts-nocheck', async () => {
   rimraf.sync(tmpFile);
 });
 
-test('global js', async () => {
+xtest('global js', async () => {
   const cwd = join(fixtures, 'global-files');
   const service = new Service({
     cwd,
@@ -368,7 +368,7 @@ test('ssr htmlTemplate', async () => {
   rimraf.sync(join(cwd, '.umi-test'));
 });
 
-test('ssr dynamicImport', async () => {
+xtest('ssr dynamicImport', async () => {
   process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-dynamicImport');
   const corePath = join(cwd, '.umi-test', 'core');
