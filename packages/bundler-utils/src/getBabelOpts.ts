@@ -26,10 +26,11 @@ function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
 }
 
 export function getBabelPresetOpts(opts: IOpts) {
+  const { config } = opts;
   return {
     // @ts-ignore
     nodeEnv: opts.env,
-    dynamicImportNode: !opts.config.dynamicImport,
+    dynamicImportNode: !config.dynamicImport && !config.dynamicImportSyntax,
     autoCSSModules: true,
     svgr: true,
     env: {
@@ -74,7 +75,8 @@ export function getBabelDepsOpts({
         require.resolve('@umijs/babel-preset-umi/dependency'),
         {
           nodeEnv: env,
-          dynamicImportNode: !config.dynamicImport,
+          dynamicImportNode:
+            !config.dynamicImport && !config.dynamicImportSyntax,
         },
       ],
     ],

@@ -306,6 +306,7 @@ export interface BaseIConfig extends IConfigCore {
   dynamicImport?: {
     loading?: string;
   };
+  dynamicImportSyntax?: {};
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
