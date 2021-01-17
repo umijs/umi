@@ -29,9 +29,11 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-config": "^5.0.1",
     "@umijs/runtime": "3.3.5",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "react-router-config": "5.1.1"
+  },
+  "peerDependencies": {
+    "react": "16.x || 17.x",
+    "react-dom": "16.x || 17.x"
   },
   "module": "dist/index.esm.js"
 }

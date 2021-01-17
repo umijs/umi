@@ -18,7 +18,7 @@ export default function ({ api }: { api: IApi }) {
         target: join(api.paths.absPagesPath!, `${path}${jsExt}`),
         context: {
           path,
-          name: basename(path),
+          name: basename(path as string),
           cssExt,
         },
       });

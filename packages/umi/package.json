@@ -34,7 +34,8 @@
     "@umijs/runtime": "3.3.5",
     "@umijs/types": "3.3.5",
     "@umijs/utils": "3.3.5",
-    "react": "^16.13.1",
+    "react": "16.x",
+    "react-dom": "16.x",
     "resolve-cwd": "3.0.0"
   },
   "bin": {
