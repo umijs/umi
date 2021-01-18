@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-plugin-lock-core-js-3",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "@umijs/babel-plugin-lock-core-js-3",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.3.5",
+    "@umijs/utils": "3.3.6",
     "core-js": "3.6.5"
   }
 }

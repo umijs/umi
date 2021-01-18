@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "@umijs/utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
