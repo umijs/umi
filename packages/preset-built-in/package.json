@@ -46,8 +46,6 @@
     "merge-stream": "2.0.0",
     "multer": "1.4.2",
     "path-to-regexp": "^1.7.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "react-refresh": "0.9.0",
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",
@@ -56,5 +54,8 @@
     "serialize-javascript": "5.0.1",
     "umi-webpack-bundle-analyzer": "3.6.0",
     "zlib": "1.0.5"
+  },
+  "peerDependencies": {
+    "react": "16.x || 17.x"
   }
 }

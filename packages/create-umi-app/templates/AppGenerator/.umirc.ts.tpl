@@ -9,4 +9,5 @@ export default defineConfig({
     { path: '/', component: '@/pages/index' },
   ],
 {{ /conventionRoutes }}
+  fastRefresh: {},
 });

@@ -152,7 +152,8 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
 
   const assets = json.assets
     ? json.assets
-    : json?.children?.reduce((acc, child) => acc.concat(child?.assets), []);
+    : // @ts-ignore
+      json?.children?.reduce((acc, child) => acc.concat(child?.assets), []);
 
   const seenNames = new Map();
   const isJS = (val: string) => /\.js$/.test(val);

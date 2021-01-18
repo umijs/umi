@@ -209,7 +209,9 @@ $ umi webpack --rule=js
   use:[
     {
       loader:'xx/babel-loader/lib/index.js',
-      options: [Object]
+      options: {
+        sourceType: 'unambiguous'
+      }
     }
   ]
 }

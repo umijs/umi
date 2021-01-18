@@ -40,10 +40,12 @@ export default (api: IApi) => {
     description: 'start a dev server for development',
     fn: async function ({ args }) {
       const defaultPort =
+        // @ts-ignore
         process.env.PORT || args?.port || api.config.devServer?.port;
       port = await portfinder.getPortPromise({
         port: defaultPort ? parseInt(String(defaultPort), 10) : 8000,
       });
+      // @ts-ignore
       hostname = process.env.HOST || api.config.devServer?.host || '0.0.0.0';
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
@@ -154,18 +156,34 @@ export default (api: IApi) => {
         bundleImplementor,
       });
 
-      const beforeMiddlewares = await api.applyPlugins({
-        key: 'addBeforeMiddewares',
-        type: api.ApplyPluginsType.add,
-        initialValue: [],
-        args: {},
-      });
-      const middlewares = await api.applyPlugins({
-        key: 'addMiddewares',
-        type: api.ApplyPluginsType.add,
-        initialValue: [],
-        args: {},
-      });
+      const beforeMiddlewares = [
+        ...(await api.applyPlugins({
+          key: 'addBeforeMiddewares',
+          type: api.ApplyPluginsType.add,
+          initialValue: [],
+          args: {},
+        })),
+        ...(await api.applyPlugins({
+          key: 'addBeforeMiddlewares',
+          type: api.ApplyPluginsType.add,
+          initialValue: [],
+          args: {},
+        })),
+      ];
+      const middlewares = [
+        ...(await api.applyPlugins({
+          key: 'addMiddewares',
+          type: api.ApplyPluginsType.add,
+          initialValue: [],
+          args: {},
+        })),
+        ...(await api.applyPlugins({
+          key: 'addMiddlewares',
+          type: api.ApplyPluginsType.add,
+          initialValue: [],
+          args: {},
+        })),
+      ];
 
       server = new Server({
         ...opts,
