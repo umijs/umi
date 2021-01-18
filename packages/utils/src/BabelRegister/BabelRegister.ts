@@ -21,8 +21,8 @@ export default class BabelRegister {
         .reduce<string[]>((memo, key) => {
           return memo.concat(this.only[key]);
         }, [])
-        .map((path) => (existsSync(path) ? realpathSync(path) : path))
-        .map(winPath),
+        .map(winPath)
+        .map((path) => (existsSync(path) ? realpathSync(path) : path)),
     );
     require('@babel/register')({
       presets: [require.resolve('@umijs/babel-preset-umi/node')],
