@@ -52,7 +52,6 @@ readdirSync(fixtures).forEach((fixture) => {
           })!.path,
         },
       });
-      webpackConfig.devtool = false;
 
       // build
       rimraf.sync(join(cwd, 'dist'));
@@ -64,9 +63,14 @@ readdirSync(fixtures).forEach((fixture) => {
     it(fixture, () => {
       // expect
       let indexCSS = '';
+      let indexCSSMap = '';
       try {
         indexCSS = readFileSync(
           join(cwd, config.outputPath, 'index.css'),
+          'utf-8',
+        );
+        indexCSSMap = readFileSync(
+          join(cwd, config.outputPath, 'index.css.map'),
           'utf-8',
         );
       } catch (e) {}
@@ -76,6 +80,7 @@ readdirSync(fixtures).forEach((fixture) => {
           'utf-8',
         ),
         indexCSS,
+        indexCSSMap,
         files: readdirSync(join(cwd, config.outputPath)).filter(
           (f) => f.charAt(0) !== '.',
         ),

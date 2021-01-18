@@ -62,8 +62,7 @@ export function createCSSRule({
           )
           .options({
             publicPath: './',
-            // https://github.com/umijs/umi/issues/5801
-            esModule: false,
+            hmr: isDev,
           });
       }
     }
