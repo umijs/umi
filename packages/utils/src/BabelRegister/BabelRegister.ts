@@ -1,3 +1,4 @@
+import { existsSync, realpathSync } from 'fs';
 import { createDebug, lodash, winPath } from '../';
 
 const debug = createDebug('umi:utils:BabelRegister');
@@ -20,6 +21,7 @@ export default class BabelRegister {
         .reduce<string[]>((memo, key) => {
           return memo.concat(this.only[key]);
         }, [])
+        .map((path) => (existsSync(path) ? realpathSync(path) : path))
         .map(winPath),
     );
     require('@babel/register')({
