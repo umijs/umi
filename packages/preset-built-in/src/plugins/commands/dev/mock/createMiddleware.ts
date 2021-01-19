@@ -1,4 +1,4 @@
-import { chokidar, signale, createDebug } from '@umijs/utils';
+import { chokidar, signale, createDebug, lodash } from '@umijs/utils';
 import { RequestHandler, Request, Response, NextFunction } from '@umijs/types';
 import { cleanRequireCache, IGetMockDataResult, matchMock } from './utils';
 
@@ -25,16 +25,20 @@ export default function (opts = {} as IMockOpts): ICreateMiddleware {
   });
   watcher
     .on('ready', () => debug('Initial scan complete. Ready for changes'))
-    .on('all', async (event, file) => {
-      debug(`[${event}] ${file}, reload mock data`);
-      errors.splice(0, errors.length);
-      cleanRequireCache(mockWatcherPaths);
-      // refresh data
-      data = (await updateMockData())?.mockData;
-      if (!errors.length) {
-        signale.success(`Mock files parse success`);
-      }
-    });
+    .on(
+      'all',
+      // debounce avoiding too much file change events
+      lodash.debounce(async (event, file) => {
+        debug(`[${event}] ${file}, reload mock data`);
+        errors.splice(0, errors.length);
+        cleanRequireCache(mockWatcherPaths);
+        // refresh data
+        data = (await updateMockData())?.mockData;
+        if (!errors.length) {
+          signale.success(`Mock files parse success`);
+        }
+      }, 300),
+    );
   // close
   process.once('SIGINT', async () => {
     await watcher.close();

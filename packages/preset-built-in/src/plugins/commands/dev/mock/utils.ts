@@ -12,7 +12,6 @@ import assert from 'assert';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import pathToRegexp from 'path-to-regexp';
-import { matchRoutes, RouteConfig } from 'react-router-config';
 import { getFlatRoutes } from '../../../commands/htmlUtils';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
