@@ -1025,7 +1025,7 @@ export default defineConfig({
 
 配置路由。
 
-umi 的路由基于 [react-router@5](https://reacttraining.com/react-router/web/guides/quick-start) 实现，配置和 react-router 基本一致，详见[路由配置](TODO)章节。
+umi 的路由基于 [react-router@5](https://reacttraining.com/react-router/web/guides/quick-start) 实现，配置和 react-router 基本一致，详见[路由配置](./docs/routing)章节。
 
 比如：
 
