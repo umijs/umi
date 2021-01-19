@@ -1,4 +1,4 @@
-import { IApi, IRoute } from '@umijs/types';
+import { IApi } from '@umijs/types';
 import { parseRequireDeps } from '@umijs/utils';
 import createMiddleware from './createMiddleware';
 import { getMockData, IGetMockDataResult, getConflictPaths } from './utils';
