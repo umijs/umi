@@ -31,6 +31,8 @@ footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [du
 
 ## 三分钟上手 Umi
 
+[![Edit umi](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/umi-2d4js?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fpages%2Findex.tsx&theme=dark)
+
 手动创建文件，
 
 ```bash
