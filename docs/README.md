@@ -31,6 +31,8 @@ footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [du
 
 ## Getting Started in 3 minutes
 
+[![Edit umi](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/umi-2d4js?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fpages%2Findex.tsx&theme=dark)
+
 Manually,
 
 ```bash

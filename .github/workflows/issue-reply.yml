@@ -37,8 +37,8 @@ jobs:
           actions: 'create-comment'
           issue-number: ${{ github.event.issue.number }}
           body: |
-            Hello @${{ github.event.issue.user.login }}. In order to facilitate location and troubleshooting, we need you to provide a realistic example. Please use `yarn create @umijs/umi-app` to create and upload it to your GitHub repository.
+            Hello @${{ github.event.issue.user.login }}. In order to facilitate location and troubleshooting, we need you to provide a realistic example. Please forking these link [codesandbox umi](https://codesandbox.io/s/umi-2d4js?file=/src/pages/index.tsx) or using `yarn create @umijs/umi-app` to create and upload it to your GitHub repository.
 
-            你好 @${{ github.event.issue.user.login }}, 为了方便定位和排查问题，我们需要你提供一个重现实例。请使用 `yarn create @umijs/umi-app` 创建，并上传到你的 GitHub 仓库。
+            你好 @${{ github.event.issue.user.login }}, 为了方便定位和排查问题，我们需要你提供一个重现实例，请提供一个尽可能精简的链接 [codesandbox umi](https://codesandbox.io/s/umi-2d4js?file=/src/pages/index.tsx) 或使用 `yarn create @umijs/umi-app` 创建，并上传到你的 GitHub 仓库。
 
             ![](https://gw.alipayobjects.com/zos/antfincdn/y9kwg7DVCd/reproduce.gif)
