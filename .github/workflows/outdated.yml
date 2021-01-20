@@ -1,12 +1,18 @@
 name: Outdated Version Action
 
-on: push
+on:
+  push:
+      paths-ignore:
+        - '.github/**/*.md'
+        - 'examples/**'
+        - 'docs/**'
+        - '*.md'
 
 jobs:
   outdated-version:
     runs-on: ubuntu-latest
     steps:
       - name: outdated version
-        uses: ycjcl868@outdated-version-action@v1
+        uses: ycjcl868/outdated-version-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
