@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: outdated version
-        uses: ycjcl868/outdated-version-action@v1
+        uses: ycjcl868/outdated-version-action@v1.x
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
