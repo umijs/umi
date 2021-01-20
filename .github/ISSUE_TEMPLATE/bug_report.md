@@ -20,7 +20,7 @@ assignees: ''
 
 ## Mini Showcase Repository(REQUIRED)
 
-> Please provide a link by forking these links [codesandbox umi](https://codesandbox.io/s/umi-2d4js?file=/src/pages/index.tsx) or using `yarn create @umijs/umi-app` then upload to your GitHub
+> Please provide a link by forking these link [codesandbox umi](https://codesandbox.io/s/umi-2d4js?file=/src/pages/index.tsx) or using `yarn create @umijs/umi-app` then upload to your GitHub
 > 请提供一个尽可能精简的链接 [codesandbox umi](https://codesandbox.io/s/umi-2d4js?file=/src/pages/index.tsx) 或使用 `yarn create @umijs/umi-app` 创建，并上传到你的 GitHub 仓库
 
 <!-- 为节约大家的时间，无复现步骤的 ISSUE 会被关闭，提供之后再 REOPEN -->
