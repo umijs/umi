@@ -24,29 +24,11 @@ jobs:
           command: yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: bash <(curl -s https://codecov.io/bash)
-  npm_build:
-    executor: node
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm run bootstrap
-      - run: npm run build
-      - run: npm run ui:build
-      - run:
-          command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
-          no_output_timeout: 300m
-      - run: bash <(curl -s https://codecov.io/bash)
 workflows:
   version: 2
   build-test:
     jobs:
       - yarn_build:
-          filters:
-            branches:
-              ignore:
-                - gh-pages
-                - /release\/.*/
-      - npm_build:
           filters:
             branches:
               ignore:
