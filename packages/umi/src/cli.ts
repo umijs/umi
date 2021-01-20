@@ -34,9 +34,12 @@ if (args.version && !args._[0]) {
         });
         // ref:
         // http://nodejs.cn/api/process/signal_events.html
+        // https://lisk.io/blog/development/why-we-stopped-using-npm-start-child-processes
         process.on('SIGINT', () => {
           child.kill('SIGINT');
-          process.exit(1);
+          // ref:
+          // https://github.com/umijs/umi/issues/6009
+          process.exit(0);
         });
         process.on('SIGTERM', () => {
           child.kill('SIGTERM');
