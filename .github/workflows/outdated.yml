@@ -1,8 +1,6 @@
 name: Outdated Version Action
 
-on:
-  pull_request:
-    types: [opened]
+on: pull_request
 
 jobs:
   outdated-version:
