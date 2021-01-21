@@ -6,8 +6,8 @@ on:
 
 jobs:
   outdated-version:
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/version')
     steps:
       - uses: actions/checkout@v2
       - name: install
