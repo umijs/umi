@@ -1,12 +1,8 @@
 name: Outdated Version Action
 
 on:
-  push:
-      paths-ignore:
-        - '.github/**/*.md'
-        - 'examples/**'
-        - 'docs/**'
-        - '*.md'
+  pull_request:
+    types: [opened]
 
 jobs:
   outdated-version:
