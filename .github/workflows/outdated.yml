@@ -14,5 +14,6 @@ jobs:
     steps:
       - name: outdated version
         uses: ycjcl868/outdated-version-action@v1
+        run: yarn install
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
