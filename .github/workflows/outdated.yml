@@ -1,14 +1,15 @@
 name: Outdated Version Action
 
-on: pull_request
+on:
+  issue_comment:
+    types: [created]
 
 jobs:
   outdated-version:
     runs-on: ubuntu-latest
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/version')
     steps:
       - uses: actions/checkout@v2
-        with:
-         fetch-depth: '1'
       - name: install
         run: yarn --ignore-engines
       - name: outdated version
