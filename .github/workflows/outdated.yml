@@ -6,7 +6,7 @@ on:
 
 jobs:
   outdated-version:
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/version')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
