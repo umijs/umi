@@ -1,14 +1,15 @@
-on:
-  pull_request
 name: Outdated Version Action
+
+on:
+  issue_comment:
+    types: [created]
+
 jobs:
   outdated-version:
-    name: Outdated Version
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/version')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: install
         run: yarn --ignore-engines
       - name: outdated version
