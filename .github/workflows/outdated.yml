@@ -12,8 +12,9 @@ jobs:
   outdated-version:
     runs-on: ubuntu-latest
     steps:
+      - name: install
+        run: yarn install
       - name: outdated version
         uses: ycjcl868/outdated-version-action@v1
-        run: yarn install
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
