@@ -2,6 +2,7 @@ import React from 'react';
 import { render, cleanup, waitFor, getByText } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
+import { delay } from '@umijs/utils';
 import renderClient, { preloadComponent } from './renderClient';
 
 let container;
@@ -232,28 +233,58 @@ test('preloadComponent routeChange with ssr', async () => {
     path: '/foo',
   });
 
+  const Layout = (props) => <div className="layout">{props.children}</div>;
+
+  const Foo = (props) => {
+    const { title } = props;
+    const ref = React.useRef(0);
+    React.useEffect(() => {
+      // test whether rerender
+      ref.current += 1;
+    }, []);
+    return (
+      <div>
+        <h1>{title}</h1>
+        <p id="count">{ref.current}</p>
+      </div>
+    );
+  };
+  Foo.getInitialProps = async ({ match }) => {
+    return {
+      title: match.path,
+    };
+  };
+
+  const Bar = (props) => {
+    const { title } = props;
+    return <h1>{title}</h1>;
+  };
+  Bar.getInitialProps = async ({ match }) => {
+    return {
+      title: match.path,
+    };
+  };
+
   const routes: any[] = [
     {
       path: '/',
       component: dynamic({
         loading: () => <div>loading</div>,
-        loader: async () => (props) => (
-          <div className="layout">{props.children}</div>
-        ),
+        loader: async () => Layout,
       }),
       routes: [
         {
           path: '/foo',
           component: dynamic({
             loading: () => <div>loading</div>,
-            loader: async () => Common,
+            loader: async () => Foo,
           }),
         },
         {
           path: '/bar',
           component: dynamic({
             loading: () => <div>loading</div>,
-            loader: async () => Common,
+            loader: async () => Bar,
           }),
         },
       ],
@@ -277,8 +308,25 @@ test('preloadComponent routeChange with ssr', async () => {
   expect(container.innerHTML).toEqual(
     '<div class="layout"><div>loading</div></div>',
   );
+  console.log('container', container.innerHTML);
   await waitFor(() => getByText(container, '/bar'));
   expect(container.innerHTML).toEqual(
     '<div class="layout"><h1>/bar</h1></div>',
   );
+
+  history.push({
+    pathname: '/foo',
+  });
+  const fooExpectedContent =
+    '<div class="layout"><div><h1></h1><p id="count">0</p></div></div>';
+  expect(container.innerHTML).toEqual(fooExpectedContent);
+  history.push({
+    pathname: '/bar',
+  });
+  await delay(100);
+  history.push({
+    pathname: '/foo',
+  });
+  // ensure count equal 0
+  expect(container.innerHTML).toEqual(fooExpectedContent);
 });
