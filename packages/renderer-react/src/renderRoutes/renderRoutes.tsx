@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createElement } from 'react';
+import React, { useEffect, useState, useMemo, createElement } from 'react';
 import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
 import { IRoute, IComponent } from '..';
 import Switch from './Switch';
@@ -25,51 +25,43 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
   const { component, ...restRouteParams } = route;
   let Component: any = route!.component;
   function ComponentWithInitialPropsFetch(props: any) {
-    const [initialProps, setInitialProps] = useState(
-      () => (window as any).g_initialProps,
-    );
-
-    useEffect(() => {
-      /**
-       * 1. 首次渲染时，此时 window.g_initialProps 变量存在，不需要再走一次 getInitialProps，这样一次 SSR 就走了 2 次 getInitialProps
-       * 2. 但是路由切换时，window.getInitialProps 会被赋为 null，这时候就走 getInitialProps 逻辑
-       * 3. 如果任何时候都走 2 次，配置 forceInitial: true，这个场景用于静态站点的首屏加载希望走最新数据
-       * 4. 开启动态加载后，会在执行 getInitialProps 前预加载下
-       */
-      const handleGetInitialProps = async () => {
-        // preload when enalbe dynamicImport
-        if (Component.preload) {
-          const preloadComponent = await Component.preload();
-          // for test case, really use .default
-          Component = preloadComponent.default || preloadComponent;
-        }
-        const defaultCtx = {
-          isServer: false,
-          match: props?.match,
-          history: props?.history,
-          route,
-          ...(opts.getInitialPropsCtx || {}),
-          ...restRouteParams,
-        };
-        if (Component?.getInitialProps) {
-          const ctx = await opts.plugin.applyPlugins({
-            key: 'ssr.modifyGetInitialPropsCtx',
-            type: ApplyPluginsType.modify,
-            initialValue: defaultCtx,
-            async: true,
-          });
-
-          const initialProps = await Component!.getInitialProps!(
-            ctx || defaultCtx,
-          );
-          setInitialProps(initialProps);
-        }
-      };
+    /**
+     * 1. 首次渲染时，此时 window.g_initialProps 变量存在，不需要再走一次 getInitialProps，这样一次 SSR 就走了 2 次 getInitialProps
+     * 2. 但是路由切换时，window.getInitialProps 会被赋为 null，这时候就走 getInitialProps 逻辑
+     * 3. 如果任何时候都走 2 次，配置 forceInitial: true，这个场景用于静态站点的首屏加载希望走最新数据
+     * 4. 开启动态加载后，会在执行 getInitialProps 前预加载下
+     */
+    const initialProps = useMemo(async () => {
+      if ((window as any).g_initialProps) {
+        return (window as any).g_initialProps;
+      }
       // null 时，一定会触发 getInitialProps 执行
-      if (!(window as any).g_initialProps) {
-        handleGetInitialProps();
+      // preload when enalbe dynamicImport
+      if (Component.preload) {
+        const preloadComponent = await Component.preload();
+        // for test case, really use .default
+        Component = preloadComponent.default || preloadComponent;
+      }
+      const defaultCtx = {
+        isServer: false,
+        match: props?.match,
+        history: props?.history,
+        route,
+        ...(opts.getInitialPropsCtx || {}),
+        ...restRouteParams,
+      };
+      if (Component?.getInitialProps) {
+        const ctx = await opts.plugin.applyPlugins({
+          key: 'ssr.modifyGetInitialPropsCtx',
+          type: ApplyPluginsType.modify,
+          initialValue: defaultCtx,
+          async: true,
+        });
+
+        return await Component!.getInitialProps!(ctx || defaultCtx);
       }
     }, [window.location.pathname, window.location.search]);
+
     return <Component {...props} {...initialProps} />;
   }
   // flag for having wrappered
