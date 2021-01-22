@@ -38,7 +38,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
        */
       const handleGetInitialProps = async () => {
         // preload when enalbe dynamicImport
-        let preloadComponent:any;
+        let preloadComponent: any = Component;
         if (Component.preload) {
           preloadComponent = await Component.preload();
           // for test case, really use .default
