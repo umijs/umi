@@ -9,6 +9,7 @@ function TestInitialProps({ foo }: { foo: string }) {
 }
 
 let mountCount = 0;
+let renderCount = 0;
 function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
   React.useEffect(() => {
     return () => {
@@ -25,6 +26,14 @@ function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
   );
 }
 
+function TestInitialPropsWithMount({ foo }: { foo: string }) {
+  React.useEffect(() => {
+    mountCount++;
+  }, []);
+  renderCount++;
+  return <h1 data-testid="test">{foo}</h1>;
+}
+
 const getInitialProps = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -37,6 +46,7 @@ const getInitialProps = async () => {
 
 TestInitialProps.getInitialProps = getInitialProps;
 TestInitialPropsWithoutUnmount.getInitialProps = getInitialProps;
+TestInitialPropsWithMount.getInitialProps = getInitialProps;
 
 function TestInitialPropsParent({
   foo,
@@ -129,6 +139,10 @@ const routerConfig = {
       component: TestInitialPropsWithoutUnmount as any,
     },
     {
+      path: '/get-initial-props-with-mount',
+      component: TestInitialPropsWithMount as any,
+    },
+    {
       path: '/get-initial-props-embed',
       component: TestInitialPropsParent as any,
       routes: [
@@ -188,6 +202,8 @@ let routes = renderRoutes(routerConfig);
 beforeEach(() => {
   window.g_useSSR = true;
   window.g_initialProps = null;
+  mountCount = 0;
+  renderCount = 0;
 });
 
 afterEach(() => {
@@ -304,6 +320,24 @@ test('/get-initial-props-without-unmount', async () => {
   expect(mountCount).toEqual(1);
   await waitFor(() => getByText(container, 'bar'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
+});
+
+test('/get-initial-props-with-mount', async () => {
+  const newRoutes = renderRoutes(routerConfig);
+
+  expect(mountCount).toEqual(0);
+  expect(renderCount).toEqual(0);
+
+  const { container } = render(
+    <MemoryRouter initialEntries={['/get-initial-props-with-mount']}>
+      {newRoutes}
+    </MemoryRouter>,
+  );
+
+  await waitFor(() => getByText(container, 'bar'));
+
+  expect(mountCount).toEqual(1);
+  expect(renderCount).toEqual(2);
 });
 
 test('/get-initial-props-embed', async () => {

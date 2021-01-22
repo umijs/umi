@@ -38,10 +38,11 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
        */
       const handleGetInitialProps = async () => {
         // preload when enalbe dynamicImport
+        let preloadComponent: any = Component;
         if (Component.preload) {
-          const preloadComponent = await Component.preload();
+          preloadComponent = await Component.preload();
           // for test case, really use .default
-          Component = preloadComponent.default || preloadComponent;
+          preloadComponent = preloadComponent.default || preloadComponent;
         }
         const defaultCtx = {
           isServer: false,
@@ -51,7 +52,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
           ...(opts.getInitialPropsCtx || {}),
           ...restRouteParams,
         };
-        if (Component?.getInitialProps) {
+        if (preloadComponent?.getInitialProps) {
           const ctx = await opts.plugin.applyPlugins({
             key: 'ssr.modifyGetInitialPropsCtx',
             type: ApplyPluginsType.modify,
@@ -59,7 +60,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
             async: true,
           });
 
-          const initialProps = await Component!.getInitialProps!(
+          const initialProps = await preloadComponent!.getInitialProps!(
             ctx || defaultCtx,
           );
           setInitialProps(initialProps);
