@@ -128,7 +128,7 @@ interface IRenderServer extends ILoadGetInitialPropsValue {
  *
  * @param opts
  */
-export default async function renderServer(
+export async function renderServer(
   opts: IOpts,
 ): Promise<IRenderServer> {
   const defaultCtx = {

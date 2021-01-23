@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stream } from 'stream';
 import { Plugin } from '@umijs/runtime';
-import renderServer from './renderServer';
+import { renderServer } from './renderServer';
 
 test('renderServer normal', async () => {
   const routeChanges: string[] = [];
