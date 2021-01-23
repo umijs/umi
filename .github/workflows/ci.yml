@@ -35,7 +35,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --ignore-engines
       - run: yarn build
-      - run: yarn test packages/preset-built-in --forceExit
+      - run: yarn test packages/preset-built-in packages/bundler-webpack packages/babel-preset-umi --forceExit
         env:
           CI: true
           HEADLESS: false
