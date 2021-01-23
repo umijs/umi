@@ -410,12 +410,15 @@ test('ssr dynamicImport', async () => {
     '<link rel="stylesheet" href="/p__index.chunk.css" />',
   );
 
+  // without webpack, so export default
+  const renderFunc = require(tmpServerFile).default;
   // render /bar
-  const BarResult = await render({
+  const BarResult = await renderFunc({
     path: '/bar',
     mountElementId: 'root',
     manifest,
   });
+  console.log('BarResult', BarResult);
   expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
 
   expect(BarResult.html).toMatch('<script src="/umi.js"></script>');

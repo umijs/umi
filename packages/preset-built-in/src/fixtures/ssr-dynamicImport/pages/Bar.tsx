@@ -7,10 +7,10 @@ const Bar = props => {
   );
 };
 
-Bar.getInitialProps = () => {
-  return Promise.resolve({
+Bar.getInitialProps = async () => {
+  return {
     title: 'Bar',
-  });
+  };
 };
 
 export default Bar;
