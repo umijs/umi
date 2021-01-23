@@ -35,7 +35,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --ignore-engines
       - run: yarn build
-      - run: yarn test --forceExit
+      - run: yarn test packages/preset-built-in/src/index.test.ts --forceExit
         env:
           CI: true
           HEADLESS: false
