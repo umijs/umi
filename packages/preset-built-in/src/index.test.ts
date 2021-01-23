@@ -410,14 +410,12 @@ test('ssr dynamicImport', async () => {
     '<link rel="stylesheet" href="/p__index.chunk.css" />',
   );
 
-  console.log('manifest', manifest);
   // render /bar
   const BarResult = await render({
     path: '/bar',
     mountElementId: 'root',
     manifest,
   });
-  console.log('BarResult', BarResult);
   expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
 
   expect(BarResult.html).toMatch('<script src="/umi.js"></script>');
