@@ -370,7 +370,7 @@ test('ssr htmlTemplate', async () => {
   rimraf.sync(join(cwd, '.umi-test'));
 });
 
-test('ssr dynamicImport', async () => {
+test.only('ssr dynamicImport', async () => {
   // @ts-ignore
   process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-dynamicImport');
@@ -410,15 +410,13 @@ test('ssr dynamicImport', async () => {
     '<link rel="stylesheet" href="/p__index.chunk.css" />',
   );
 
-  // without webpack, so export default
-  const renderFunc = require(tmpServerFile).default;
   // render /bar
-  const BarResult = await renderFunc({
+  const BarResult = await render({
     path: '/bar',
     mountElementId: 'root',
     manifest,
   });
-  console.log('BarResult', BarResult);
+  console.error('BarResult error', BarResult.error);
   expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
 
   expect(BarResult.html).toMatch('<script src="/umi.js"></script>');
