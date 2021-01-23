@@ -58,7 +58,6 @@ export const loadPageGetInitialProps = async ({ ctx,
 
   // via {routes} to find `getInitialProps`
   const routesMatched = matchRoutes(routes, pathname || '/');
-  console.log('---loadPageGetInitialProps step1--');
   const promises = routesMatched
     .map(async ({ route, match }) => {
       const { component, ...restRouteParams } = route as IPatchRoute;
@@ -66,7 +65,6 @@ export const loadPageGetInitialProps = async ({ ctx,
       // preload for dynamicImport
       if (Component?.preload) {
         const preloadComponent = await Component.preload();
-        console.log('---loadPageGetInitialProps step2--');
         Component = preloadComponent?.default || preloadComponent;
       }
 
@@ -81,12 +79,10 @@ export const loadPageGetInitialProps = async ({ ctx,
       }
     })
     .filter(Boolean);
-    console.log('---loadPageGetInitialProps step3--');
   const pageInitialProps = (await Promise.all(promises)).reduce(
     (acc, curr) => Object.assign({}, acc, curr),
     {},
   );
-  console.log('---loadPageGetInitialProps step4--');
 
   return {
     pageInitialProps,
@@ -141,7 +137,6 @@ export default async function renderServer(
     history: opts.history,
     ...(opts.getInitialPropsCtx || {}),
   };
-  console.log('-----renderServer step-1---')
   // modify ctx
   const ctx = await opts.plugin.applyPlugins({
     key: 'ssr.modifyGetInitialPropsCtx',
@@ -149,7 +144,6 @@ export default async function renderServer(
     initialValue: defaultCtx,
     async: true,
   }) || defaultCtx;
-  console.log('-----renderServer step-2---')
   // get pageInitialProps
   const { pageInitialProps, routesMatched } = await loadPageGetInitialProps({
     ctx,
@@ -159,7 +153,6 @@ export default async function renderServer(
     ...opts,
     pageInitialProps,
   });
-  console.log('-----renderServer step-3---')
   if (opts.mode === 'stream') {
     const pageHTML = ReactDOMServer[
       opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'
@@ -173,7 +166,6 @@ export default async function renderServer(
   const pageHTML = ReactDOMServer[
     opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'
   ](rootContainer);
-  console.log('-----renderServer step-4---')
   // by default
   return {
     pageHTML,

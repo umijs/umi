@@ -416,7 +416,6 @@ test('ssr dynamicImport', async () => {
     mountElementId: 'root',
     manifest,
   });
-  console.error('BarResult error', BarResult.error);
   expect(BarResult.rootContainer).toEqual('<h2>Bar</h2>');
 
   expect(BarResult.html).toMatch('<script src="/umi.js"></script>');

@@ -50,7 +50,6 @@ const render: IServerRender = async (params) => {
     const history = createMemoryHistory({
       initialEntries: [format(location)],
     });
-    console.log('-----step---1----');
     /**
      * beforeRenderServer hook, for polyfill global.*
      */
@@ -98,17 +97,14 @@ const render: IServerRender = async (params) => {
       isServer: process.env.__IS_SERVER,
     }
     const dynamicImport =  {{{ DynamicImport }}};
-    console.log('-----step---2----');
     if (dynamicImport && !manifest) {
       try {
         // prerender not work because the manifest generation behind of the prerender
         manifest = requireFunc(`./{{{ ManifestFileName }}}`);
       } catch (_) {}
     }
-    console.log('-----step---3----');
     // renderServer get rootContainer
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);
-    console.log('-----step---4----');
     rootContainer = pageHTML;
     if (html) {
       // plugin for modify html template
@@ -125,7 +121,6 @@ const render: IServerRender = async (params) => {
         },
         async: true,
       });
-      console.log('-----step---5----');
       html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest });
     }
   } catch (e) {
