@@ -11,11 +11,11 @@ beforeEach(() => {
   document.body.appendChild(container);
 });
 
-afterEach(() => {
+afterEach(async () => {
   document.body.removeChild(container);
   // @ts-ignore
   container = null;
-  cleanup();
+  await cleanup();
 });
 
 test('normal', () => {

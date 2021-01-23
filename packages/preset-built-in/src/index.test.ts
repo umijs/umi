@@ -15,9 +15,7 @@ beforeEach(() => {
   }
 });
 
-afterEach(() => {
-  cleanup();
-});
+afterEach(cleanup);
 
 test('api.writeTmpFile error in register stage', async () => {
   const cwd = join(fixtures, 'api-writeTmpFile');

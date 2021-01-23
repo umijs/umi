@@ -13,12 +13,12 @@ beforeEach(() => {
   window.g_initialProps = null;
 });
 
-afterEach(() => {
+afterEach(async () => {
   document.body.removeChild(container);
   container = null;
   delete window.g_useSSR;
   delete window.g_initialProps;
-  cleanup();
+  await cleanup();
 });
 
 test('normal', async () => {
