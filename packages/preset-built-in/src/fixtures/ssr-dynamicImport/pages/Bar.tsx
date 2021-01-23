@@ -8,10 +8,10 @@ const Bar = props => {
   );
 };
 
-Bar.getInitialProps = async () => {
-  return {
+Bar.getInitialProps = () => {
+  return Promise.resolve({
     title: 'Bar',
-  };
+  });
 };
 
 export default Bar;
