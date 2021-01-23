@@ -128,7 +128,7 @@ interface IRenderServer extends ILoadGetInitialPropsValue {
  *
  * @param opts
  */
-export async function renderServer(
+export default async function renderServer(
   opts: IOpts,
 ): Promise<IRenderServer> {
   const defaultCtx = {
@@ -137,6 +137,7 @@ export async function renderServer(
     history: opts.history,
     ...(opts.getInitialPropsCtx || {}),
   };
+  console.log('-----renderServer step-1---')
   // modify ctx
   const ctx = await opts.plugin.applyPlugins({
     key: 'ssr.modifyGetInitialPropsCtx',
@@ -144,6 +145,7 @@ export async function renderServer(
     initialValue: defaultCtx,
     async: true,
   }) || defaultCtx;
+  console.log('-----renderServer step-2---')
   // get pageInitialProps
   const { pageInitialProps, routesMatched } = await loadPageGetInitialProps({
     ctx,
@@ -153,6 +155,7 @@ export async function renderServer(
     ...opts,
     pageInitialProps,
   });
+  console.log('-----renderServer step-3---')
   if (opts.mode === 'stream') {
     const pageHTML = ReactDOMServer[
       opts.staticMarkup ? 'renderToStaticNodeStream' : 'renderToNodeStream'
@@ -166,6 +169,7 @@ export async function renderServer(
   const pageHTML = ReactDOMServer[
     opts.staticMarkup ? 'renderToStaticMarkup' : 'renderToString'
   ](rootContainer);
+  console.log('-----renderServer step-4---')
   // by default
   return {
     pageHTML,
