@@ -370,7 +370,7 @@ test('ssr htmlTemplate', async () => {
   rimraf.sync(join(cwd, '.umi-test'));
 });
 
-xtest('ssr dynamicImport', async () => {
+test('ssr dynamicImport', async () => {
   // @ts-ignore
   process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-dynamicImport');
