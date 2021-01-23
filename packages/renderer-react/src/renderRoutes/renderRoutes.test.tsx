@@ -356,7 +356,7 @@ test('/get-initial-props-embed', async () => {
   );
 });
 
-test('/wrappers', async () => {
+test('/wrappers', () => {
   const { container } = render(
     <MemoryRouter initialEntries={['/wrappers']}>{routes}</MemoryRouter>,
   );
