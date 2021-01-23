@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter, Plugin, Link } from '@umijs/runtime';
-import { getByText, render, screen, waitFor } from '@testing-library/react';
+import { getByText, render, screen, waitFor, cleanup } from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '..';
 
@@ -206,9 +206,10 @@ beforeEach(() => {
   renderCount = 0;
 });
 
-afterEach(() => {
+afterEach(async () => {
   delete window.g_useSSR;
   delete window.g_initialProps;
+  cleanup();
 });
 
 test('/layout', async () => {
