@@ -368,7 +368,7 @@ test('ssr htmlTemplate', async () => {
   rimraf.sync(join(cwd, '.umi-test'));
 });
 
-test('ssr dynamicImport', async () => {
+xtest('ssr dynamicImport', async () => {
   // @ts-ignore
   process.env.__IS_SERVER = true;
   const cwd = join(fixtures, 'ssr-dynamicImport');
@@ -408,35 +408,6 @@ test('ssr dynamicImport', async () => {
     '<link rel="stylesheet" href="/p__index.chunk.css" />',
   );
 
-  rimraf.sync(join(cwd, '.umi-test'));
-});
-
-test('ssr dynamicImport bar', async () => {
-  // @ts-ignore
-  process.env.__IS_SERVER = true;
-  const cwd = join(fixtures, 'ssr-dynamicImport');
-  const corePath = join(cwd, '.umi-test', 'core');
-  const tmpServerFile = join(corePath, 'server.ts');
-  delete require.cache[tmpServerFile];
-
-  const service = new Service({
-    cwd,
-    presets: [require.resolve('./index.ts')],
-  });
-  await service.run({
-    name: 'g',
-    args: {
-      _: ['g', 'tmp'],
-    },
-  });
-  expect(existsSync(tmpServerFile)).toBeTruthy();
-  const manifest = {
-    'p__index.css': '/p__index.chunk.css',
-    'p__Bar.css': '/p__Bar.chunk.css',
-  };
-
-  // without webpack, so export default
-  const render = require(tmpServerFile).default;
   // render /bar
   const BarResult = await render({
     path: '/bar',
