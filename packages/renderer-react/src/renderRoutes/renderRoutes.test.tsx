@@ -323,7 +323,7 @@ test('/get-initial-props-without-unmount', async () => {
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
 });
 
-test('/get-initial-props-with-mount', async () => {
+test('/get-initial-props-with-mount', () => {
   const newRoutes = renderRoutes(routerConfig);
 
   expect(mountCount).toEqual(0);
