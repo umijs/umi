@@ -7,7 +7,7 @@ const Bar = props => {
   );
 };
 
-Bar.getInitialProps = async () => {
+Bar.getInitialProps = () => {
   return {
     title: 'Bar',
   };

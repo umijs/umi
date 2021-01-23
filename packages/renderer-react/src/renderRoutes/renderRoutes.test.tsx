@@ -209,7 +209,7 @@ beforeEach(() => {
 afterEach(async () => {
   delete window.g_useSSR;
   delete window.g_initialProps;
-  cleanup();
+  await cleanup();
 });
 
 test('/layout', async () => {
