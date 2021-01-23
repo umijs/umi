@@ -291,39 +291,7 @@ test('/pass-props', async () => {
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
 });
 
-test('/get-initial-props', async () => {
-  const newRoutes = renderRoutes(routerConfig);
-  const { container } = render(
-    <MemoryRouter initialEntries={['/get-initial-props']}>
-      {newRoutes}
-    </MemoryRouter>,
-  );
-  await waitFor(() => getByText(container, 'bar'));
-  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
-});
-
-test('/get-initial-props-without-unmount', async () => {
-  const newRoutes = renderRoutes(routerConfig);
-  const { container } = render(
-    <MemoryRouter initialEntries={['/get-initial-props-without-unmount']}>
-      {newRoutes}
-    </MemoryRouter>,
-  );
-  await waitFor(() => getByText(container, 'bar'));
-  expect((await screen.findByTestId('test2')).innerHTML).toEqual('bar');
-  expect(mountCount).toEqual(0);
-  // hash change
-  getByText(container, 'link-bar').click();
-  expect(mountCount).toEqual(0);
-
-  // change route
-  getByText(container, 'change-route').click();
-  expect(mountCount).toEqual(1);
-  await waitFor(() => getByText(container, 'bar'));
-  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
-});
-
-test('/get-initial-props-with-mount', () => {
+test('/get-initial-props-with-mount', async () => {
   const newRoutes = renderRoutes(routerConfig);
 
   expect(mountCount).toEqual(0);
