@@ -58,6 +58,7 @@ export const loadPageGetInitialProps = async ({ ctx,
 
   // via {routes} to find `getInitialProps`
   const routesMatched = matchRoutes(routes, pathname || '/');
+  console.log('---loadPageGetInitialProps step1--');
   const promises = routesMatched
     .map(async ({ route, match }) => {
       const { component, ...restRouteParams } = route as IPatchRoute;
@@ -65,7 +66,8 @@ export const loadPageGetInitialProps = async ({ ctx,
       // preload for dynamicImport
       if (Component?.preload) {
         const preloadComponent = await Component.preload();
-        Component = preloadComponent.default || preloadComponent;
+        console.log('---loadPageGetInitialProps step2--');
+        Component = preloadComponent?.default || preloadComponent;
       }
 
       if (Component && (Component as any)?.getInitialProps) {
@@ -79,10 +81,12 @@ export const loadPageGetInitialProps = async ({ ctx,
       }
     })
     .filter(Boolean);
+    console.log('---loadPageGetInitialProps step3--');
   const pageInitialProps = (await Promise.all(promises)).reduce(
     (acc, curr) => Object.assign({}, acc, curr),
     {},
   );
+  console.log('---loadPageGetInitialProps step4--');
 
   return {
     pageInitialProps,
