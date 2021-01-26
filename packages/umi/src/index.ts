@@ -21,6 +21,7 @@ export {
   Plugin,
   ApplyPluginsType,
   dynamic,
+  isBrowser,
 } from '@umijs/runtime';
 export type { MemoryHistory } from '@umijs/runtime';
 

@@ -26,3 +26,4 @@ export type { MemoryHistory, History } from 'history-with-query';
 
 export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';
 export { default as dynamic } from './dynamic/dynamic';
+export { isBrowser } from './utils/index';
