@@ -233,7 +233,8 @@ export default (api: IApi) => {
       OUTPUT_SERVER_FILENAME,
     );
 
-    if (!devServerRender) {
+    // /.hot-update.json => not server side render to avoiding OOM
+    if (!devServerRender || req.path.includes('.hot-update.json')) {
       return defaultHtml;
     }
 
