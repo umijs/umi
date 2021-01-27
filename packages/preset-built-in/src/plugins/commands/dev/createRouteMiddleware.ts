@@ -4,7 +4,15 @@ import { extname, join } from 'path';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { getHtmlGenerator } from '../htmlUtils';
 
-const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
+const ASSET_EXTNAMES = [
+  '.ico',
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.svg',
+  '.json',
+];
 
 export default ({
   api,
