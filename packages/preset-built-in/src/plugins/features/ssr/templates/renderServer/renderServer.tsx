@@ -65,7 +65,7 @@ export const loadPageGetInitialProps = async ({ ctx,
       // preload for dynamicImport
       if (Component?.preload) {
         const preloadComponent = await Component.preload();
-        Component = preloadComponent.default || preloadComponent;
+        Component = preloadComponent?.default || preloadComponent;
       }
 
       if (Component && (Component as any)?.getInitialProps) {
