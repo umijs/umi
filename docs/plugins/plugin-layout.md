@@ -186,6 +186,9 @@ export const routes: IBestAFSRoute[] = [
     },
     // more features view
     // https://beta-pro.ant.design/docs/advanced-menu
+    // ---
+    // open path in new tab
+    target: '_blank',
     // Do not show top bar
     headerRender: false,
     // Do not show footer
