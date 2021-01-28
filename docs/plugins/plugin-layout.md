@@ -143,7 +143,7 @@ In the UI that is used to configure the default Layout at runtime, the processin
 - Type: `(initialState) => React.ReactNode`
 - Default: Display user name, avatar, logout related components
 
-`InitialState`is obtained from the`@umijs/plugin-initial-state` plugin and needs to be used together.
+`InitialState`is obtained from the `@umijs/plugin-initial-state` plugin and needs to be used together.
 
 #### onError
 
@@ -221,7 +221,7 @@ The name displayed on the menu, otherwise it will not be displayed.
 
 The Icon displayed on the menu.
 
-> The icon name is the lower case of the component name and then remove the `outlined`or`filled`or`twotone`to obtain the value. Example: The icon name of`<UserOutlined />`is: `user`.
+> The icon name is the lower case of the component name and then remove the `outlined` or `filled` or `twotone` to obtain the value. Example: The icon name of`<UserOutlined />`is: `user`.
 
 #### flatMenu
 
