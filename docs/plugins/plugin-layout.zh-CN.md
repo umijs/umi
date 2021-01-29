@@ -108,7 +108,7 @@ export const layout = ({
 
 用于运行时配置默认 Layout 的 UI 中，点击退出登录的处理逻辑，默认不做处理。
 
-> 注：默认在顶部右侧并不会显示退出按钮，需要在运行配置中配合`@umijs/plugin-intial-state`的`getInitialState`返回一个对象，才可以显示
+> 注：默认在顶部右侧并不会显示退出按钮，需要在运行配置中配合 `@umijs/plugin-intial-state` 的 `getInitialState` 返回一个对象，才可以显示
 
 #### rightRender
 
@@ -158,6 +158,9 @@ export const routes: IBestAFSRoute[] = [
     },
     // 更多功能查看
     // https://beta-pro.ant.design/docs/advanced-menu
+    // ---
+    // 新页面打开
+    target: '_blank',
     // 不展示顶栏
     headerRender: false,
     // 不展示页脚
