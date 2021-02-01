@@ -33,9 +33,9 @@ test('dev', async () => {
   const { destroy } = await service.run({
     name: 'dev',
   });
+  destroy();
   const res = await compileDone();
   expect(res).toBeTruthy();
-  destroy();
 });
 
 test('dev-writeToDisk', async () => {
@@ -58,9 +58,9 @@ test('dev-writeToDisk', async () => {
   const { destroy } = await service.run({
     name: 'dev',
   });
+  destroy();
   const res = await compileDone();
   expect(res).toBeTruthy();
   expect(existsSync(join(distPath, 'index.html'))).toBeTruthy();
-  destroy();
   rimraf.sync(distPath);
 });
