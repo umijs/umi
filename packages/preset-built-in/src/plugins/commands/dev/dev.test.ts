@@ -1,28 +1,66 @@
+import { existsSync } from 'fs';
 import { Service } from '@umijs/core';
+import { rimraf } from '@umijs/utils';
 import { join } from 'path';
 
 const fixtures = join(__dirname, '../../../fixtures');
+let WATCH = process.env.WATCH;
 
-xtest('dev', (done) => {
-  const cwd = join(fixtures, 'dev');
+beforeAll(() => {
   process.env.WATCH = 'none';
+});
+
+afterAll(() => {
+  process.env.WATCH = WATCH;
+});
+
+test('dev', async () => {
+  const cwd = join(fixtures, 'dev');
+
+  const compileDone = () =>
+    new Promise((resolve) => {
+      service.on('firstDevCompileDone', () => {
+        resolve(true);
+      });
+    });
 
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
     env: 'development',
   });
-  service
-    .run({
-      name: 'dev',
-    })
-    .then(({ port, hostname, listeningApp, server, destroy }: any) => {
-      console.log(`test`, hostname, port);
+
+  const { destroy } = await service.run({
+    name: 'dev',
+  });
+  const res = await compileDone();
+  expect(res).toBeTruthy();
+  destroy();
+});
+
+test('dev-writeToDisk', async () => {
+  const cwd = join(fixtures, 'dev-writeToDisk');
+  const distPath = join(cwd, 'dist');
+
+  const compileDone = () =>
+    new Promise((resolve) => {
       service.on('firstDevCompileDone', () => {
-        console.log('firstDevCompileDone', 'h');
-        destroy();
-        console.log(2);
-        done();
+        resolve(true);
       });
     });
+
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('../../../index.ts')],
+    env: 'development',
+  });
+
+  const { destroy } = await service.run({
+    name: 'dev',
+  });
+  const res = await compileDone();
+  expect(res).toBeTruthy();
+  expect(existsSync(join(distPath, 'index.html'))).toBeTruthy();
+  destroy();
+  rimraf.sync(distPath);
 });
