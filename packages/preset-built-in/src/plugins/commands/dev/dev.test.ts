@@ -30,12 +30,20 @@ test('dev', async () => {
     env: 'development',
   });
 
-  const { destroy } = await service.run({
+  // @ts-ignore
+  const { destroy, compilerMiddleware: instance } = await service.run({
     name: 'dev',
   });
-  destroy();
+
   const res = await compileDone();
   expect(res).toBeTruthy();
+  // fix test webpack not exit
+  if (instance.context.watching.closed) {
+    destroy();
+  }
+  instance.close(() => {
+    destroy();
+  });
 });
 
 test('dev-writeToDisk', async () => {
@@ -55,7 +63,7 @@ test('dev-writeToDisk', async () => {
     env: 'development',
   });
 
-  const { destroy } = await service.run({
+  const { destroy, compilerMiddleware: instance } = await service.run({
     name: 'dev',
   });
   destroy();
@@ -63,4 +71,11 @@ test('dev-writeToDisk', async () => {
   expect(res).toBeTruthy();
   expect(existsSync(join(distPath, 'index.html'))).toBeTruthy();
   rimraf.sync(distPath);
+  // fix test webpack not exit
+  if (instance.context.watching.closed) {
+    destroy();
+  }
+  instance.close(() => {
+    destroy();
+  });
 });
