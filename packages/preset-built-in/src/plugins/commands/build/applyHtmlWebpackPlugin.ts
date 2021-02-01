@@ -13,7 +13,7 @@ export default function (api: IApi) {
           existsSync(join(api.paths.absOutputPath!, OUTPUT_SERVER_FILENAME))
         ) {
           clearInterval(interval);
-          resolve();
+          resolve({});
         }
       }, 300);
     });
@@ -26,7 +26,7 @@ export default function (api: IApi) {
           if (api.config.ssr) {
             // not emit html file assets in SSR
             // avoid SSR not work
-            if (api.env === 'development') {
+            if (api.env !== 'production') {
               return;
             }
             // waiting umi.server.js emited
