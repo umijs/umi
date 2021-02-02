@@ -24,11 +24,6 @@ export default function (api: IApi) {
         'UmiHtmlGeneration',
         async (compilation: any) => {
           if (api.config.ssr) {
-            // not emit html file assets in SSR
-            // avoid SSR not work
-            if (api.env !== 'production') {
-              return;
-            }
             // waiting umi.server.js emited
             await ensureServerFileExisted();
           }
@@ -68,7 +63,10 @@ export default function (api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
+    const enableWriteToDisk =
+      api.config.devServer && api.config.devServer?.writeToDisk;
     if (
+      (env === 'production' || enableWriteToDisk) &&
       id === 'webpack' &&
       process.env.HTML !== 'none' &&
       // avoid ssr bundler build override index.html
