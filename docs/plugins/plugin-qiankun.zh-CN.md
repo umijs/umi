@@ -573,7 +573,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    
 4. 关联微应用
 
-   比如我们之前配置了微应用名为 `microApp` 的 base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
+   比如我们之前配置了一个微应用名为 `microApp` ，base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
 
    a. 增加 `/microApp` 的路由（推荐）
 
@@ -647,9 +647,9 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
 
 - [ ] 运行时统一，针对多层嵌套微应用场景
 
-- [ ] 微应用自动 mountElementId，避免多个 umi 子应用 mountElementId 冲突
+- [x] 微应用自动 mountElementId，避免多个 umi 子应用 mountElementId 冲突
 
-- [ ] 自动 loading
+- [x] 自动 loading
 
 - [ ] 本地集成开发支持
 

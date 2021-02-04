@@ -18,7 +18,7 @@ Umi plugin for [qiankun](https://github.com/umijs/qiankun).
 
 ## 介绍
 
-Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模式。 
+Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模式。
 
 ## Examples
 
@@ -29,7 +29,7 @@ Umi 应用一键开启 [qiankun](https://github.com/umijs/qiankun) 微前端模�
 ```bash
 $ yarn
 $ yarn build
-$ cd packages/plguin-qiankun && yarn start
+$ cd packages/plugin-qiankun && yarn start
 ```
 
 ## Features
@@ -386,28 +386,28 @@ PORT=8081
 
 1. 主应用使用下面任一方式透传数据：
 
-   1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
+  1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
 
-      ```js
-      function MyPage() {
-        const [name, setName] = useState(null);
-        return <MicroApp name={name} onNameChange={newName => setName(newName)} />
-      }
-      ```
+     ```js
+     function MyPage() {
+       const [name, setName] = useState(null);
+       return <MicroApp name={name} onNameChange={newName => setName(newName)} />
+     }
+     ```
+
+  2. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
+     ```ts
+     // src/app.ts
+     export function useQiankunStateForSlave() {
+       const [masterState, setMasterState] = useState({});
       
-   2. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
-      ```ts
-      // src/app.ts
-      export function useQiankunStateForSlave() {
-        const [masterState, setMasterState] = useState({});
-       
-        return {
-          masterState,
-          setMasterState,
-        }
-      }
-      ```
-   
+       return {
+         masterState,
+         setMasterState,
+       }
+     }
+     ```
+
 2. 微应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
 
    ```jsx
@@ -574,10 +574,10 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    -  )
    -}
    ```
-   
+
 4. 关联微应用
 
-   比如我们之前配置了微应用名为 `microApp` 的 base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
+   比如我们之前配置了一个微应用名为 `microApp` ，base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
 
    a. 增加 `/microApp` 的路由（推荐）
 
@@ -651,9 +651,9 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
 
 - [ ] 运行时统一，针对多层嵌套微应用场景
 
-- [ ] 微应用自动 mountElementId，避免多个 umi 子应用 mountElementId 冲突
+- [x] 微应用自动 mountElementId，避免多个 umi 子应用 mountElementId 冲突
 
-- [ ] 自动 loading
+- [x] 自动 loading
 
 - [ ] 本地集成开发支持
 
