@@ -13,7 +13,7 @@ export default function (api: IApi) {
           existsSync(join(api.paths.absOutputPath!, OUTPUT_SERVER_FILENAME))
         ) {
           clearInterval(interval);
-          resolve();
+          resolve({});
         }
       }, 300);
     });
@@ -63,8 +63,10 @@ export default function (api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
+    const enableWriteToDisk =
+      api.config.devServer && api.config.devServer?.writeToDisk;
     if (
-      env === 'production' &&
+      (env === 'production' || enableWriteToDisk) &&
       id === 'webpack' &&
       process.env.HTML !== 'none' &&
       // avoid ssr bundler build override index.html

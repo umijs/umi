@@ -206,6 +206,7 @@ export default (api: IApi) => {
       });
       return {
         ...listenRet,
+        compilerMiddleware: opts.compilerMiddleware,
         destroy,
       };
     },
