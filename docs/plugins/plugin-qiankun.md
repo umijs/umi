@@ -579,7 +579,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
 
    比如我们之前配置了微应用名为 `microApp` 的 base 为 `/microApp` ，mountElementId 为 `subapp-container`， 那么我们只需要（二选一）：
 
-   a. 增加 `/microApp` 的路由
+   a. 增加 `/microApp` 的路由（推荐）
 
    ```jsx
    export default {
@@ -608,7 +608,7 @@ v2.3.0 完全兼容 v2 之前的版本，但我们还是建议您能升级到最
    export default MyPage() {
      return (
        <div>
-         <MicroApp name="microApp" />
+         <MicroApp name="microApp" base="/microApp" />
        </div>
      )
    }
