@@ -1,7 +1,7 @@
-import { IApi, utils } from 'umi';
+import { IApi } from '@umijs/types';
+import { deepmerge } from '@umijs/utils';
 
 export default (api: IApi) => {
-  const { deepmerge } = utils;
   api.describe({
     key: 'forkTSChecker',
     config: {

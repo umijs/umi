@@ -1,6 +1,5 @@
-import { IApi, BundlerConfigType, utils } from 'umi';
-
-const { createDebug } = utils;
+import { IApi, BundlerConfigType } from '@umijs/types';
+import { createDebug } from '@umijs/utils';
 
 const debug = createDebug('umi:preset-build-in:fastRefresh');
 
