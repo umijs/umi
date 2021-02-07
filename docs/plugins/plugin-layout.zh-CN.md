@@ -138,12 +138,6 @@ Layout 插件会基于 umi 的路由，封装了更多的配置项，支持更�
 - 布局路由级别展示/隐藏相关配置。
 - 与权限插件结合，配置式实现权限路由的功能。
 
-新增如下配置项：
-
-- menu
-- layout
-- access
-
 示例如下：
 
 ```typescript
@@ -152,10 +146,8 @@ export const routes: IBestAFSRoute[] = [
   {
     path: '/welcome',
     component: 'IndexPage',
-    menu: {
-      name: '欢迎', // 兼容此写法
-      icon: 'testicon',
-    },
+    name: '欢迎', // 兼容此写法
+    icon: 'testicon',
     // 更多功能查看
     // https://beta-pro.ant.design/docs/advanced-menu
     // ---
@@ -171,10 +163,12 @@ export const routes: IBestAFSRoute[] = [
     menuHeaderRender: false,
     // 权限配置，需要与 plugin-access 插件配合使用
     access: 'canRead',
-    // 隐藏子节点
+    // 隐藏子菜单
     hideChildrenInMenu: true,
-    // 隐藏自己和子节点
+    // 隐藏自己和子菜单
     hideInMenu: true,
+    // 在面包屑中隐藏
+    hideInBreadcrumb: true,
     // 子项往上提，仍旧展示,
     flatMenu: true,
   },
@@ -207,3 +201,48 @@ export const routes: IBestAFSRoute[] = [
 当 Layout 插件配合 `@umijs/plugin-access` 插件使用时生效。
 
 权限插件会将用户在这里配置的 access 字符串与当前用户所有权限做匹配，如果找到相同的项，并当该权限的值为 false，则当用户访问该路由时，默认展示 403 页面。
+
+#### locale
+
+- Type: `string`
+
+菜单的国际化配置，国际化的 key 是 `menu.${submenu-name}.${name}`。
+
+#### icon
+
+- Type: `string`
+
+antd 的 icon，为了按需加载 layout 插件会帮你自动转化为 Antd icon 的 dom。支持类型可以在 antd 中[找到](https://ant.design/components/icon-cn/)。
+
+#### flatMenu
+
+- Type: `boolean`
+
+打平菜单，如果只想要子级的 menu 不展示的自己，可以配置为 true
+
+```tsx
+const before = [{ name: '111' }, { name: '222', children: [{ name: '333' }] }];
+// flatMenu = true
+const after = [{ name: '111' }, { name: '222' }, { name: '333' }];
+```
+
+#### xxxRender
+
+- Type: `boolean`
+
+xxxRender 设置为 false，即可不展示部分 layout 模块
+
+- `headerRender=false` 不显示顶栏
+- `footerRender=false` 不显示页脚
+- `menuRender=false` 不显示菜单
+- `menuHeaderRender=false` 不显示菜单的 title 和 logo
+
+### hideInXXX
+
+- Type: `boolean`
+
+hideInXXX 可以让管理 menu 的渲染。
+
+- `hideChildrenInMenu=true` 隐藏子菜单
+- `hideInMenu=true` 隐藏自己和子菜单
+- `hideInBreadcrumb=true` 在面包屑中隐藏
