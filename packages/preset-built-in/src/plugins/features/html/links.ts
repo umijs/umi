@@ -1,4 +1,5 @@
 import { IApi } from '@umijs/types';
+import { deepUniq } from './utils';
 
 export default function (api: IApi) {
   api.describe({
@@ -11,6 +12,6 @@ export default function (api: IApi) {
   });
 
   api.addHTMLLinks(() => {
-    return api.config?.links || [];
+    return deepUniq(api.config?.links || []);
   });
 }
