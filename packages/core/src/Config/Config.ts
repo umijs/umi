@@ -34,9 +34,10 @@ interface IOpts {
   cwd: string;
   service: Service;
   localConfig?: boolean;
+  configFiles?: string[];
 }
 
-const CONFIG_FILES = [
+const DEFAULT_CONFIG_FILES = [
   '.umirc.ts',
   '.umirc.js',
   'config/config.ts',
@@ -51,11 +52,16 @@ export default class Config {
   config?: object;
   localConfig?: boolean;
   configFile?: string | null;
+  configFiles = DEFAULT_CONFIG_FILES;
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd || process.cwd();
     this.service = opts.service;
     this.localConfig = opts.localConfig;
+
+    if (Array.isArray(opts.configFiles)) {
+      this.configFiles = lodash.uniq(opts.configFiles.concat(this.configFiles));
+    }
   }
 
   async getDefaultConfig() {
@@ -212,14 +218,16 @@ export default class Config {
 
   getConfigFile(): string | null {
     // TODO: support custom config file
-    const configFile = CONFIG_FILES.find((f) => existsSync(join(this.cwd, f)));
+    const configFile = this.configFiles.find((f) =>
+      existsSync(join(this.cwd, f)),
+    );
     return configFile ? winPath(configFile) : null;
   }
 
   getWatchFilesAndDirectories() {
     const umiEnv = process.env.UMI_ENV;
-    const configFiles = lodash.clone(CONFIG_FILES);
-    CONFIG_FILES.forEach((f) => {
+    const configFiles = lodash.clone(this.configFiles);
+    this.configFiles.forEach((f) => {
       if (this.localConfig) configFiles.push(this.addAffix(f, 'local'));
       if (umiEnv) configFiles.push(this.addAffix(f, umiEnv));
     });
