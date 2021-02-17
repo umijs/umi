@@ -24,7 +24,7 @@ export default class BabelRegister {
         .map(winPath)
         .map((path) => (existsSync(path) ? realpathSync(path) : path)),
     );
-    require('@babel/register')({
+    require('@umijs/deps/compiled/babel/register')({
       presets: [require.resolve('@umijs/babel-preset-umi/node')],
       ignore: [/node_modules/],
       only,

@@ -1,4 +1,4 @@
-import joi from '@hapi/joi';
+import joi from '@umijs/deps/compiled/@hapi/joi';
 import { yargs } from '@umijs/utils';
 import { EnableBy } from './enums';
 

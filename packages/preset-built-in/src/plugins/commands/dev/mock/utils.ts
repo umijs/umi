@@ -10,8 +10,8 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
 import bodyParser from 'body-parser';
-import multer from 'multer';
-import pathToRegexp from 'path-to-regexp';
+import multer from '@umijs/deps/compiled/multer';
+import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
 import { getFlatRoutes } from '../../../commands/htmlUtils';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];

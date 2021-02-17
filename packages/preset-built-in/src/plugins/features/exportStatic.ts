@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, IRoute } from '@umijs/types';
 import { deepmerge, rimraf } from '@umijs/utils';
-import pathToRegexp from 'path-to-regexp';
+import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
 import { OUTPUT_SERVER_FILENAME } from '../features/ssr/constants';

@@ -2,7 +2,7 @@ import { join } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
 import { BabelRegister, lodash, NodeEnv } from '@umijs/utils';
-import { AsyncSeriesWaterfallHook } from 'tapable';
+import { AsyncSeriesWaterfallHook } from '@umijs/deps/compiled/tapable';
 import { existsSync } from 'fs';
 import Logger from '../Logger/Logger';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';

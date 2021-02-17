@@ -3,5 +3,5 @@ export {
   createProxyMiddleware,
   Options,
   RequestHandler,
-} from 'http-proxy-middleware';
+} from '@umijs/deps/compiled/http-proxy-middleware';
 export { default as Server, IServerOpts } from './Server/Server';

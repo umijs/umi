@@ -1,9 +1,9 @@
-import ejs from 'ejs';
+import ejs from '@umijs/deps/compiled/ejs';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
 import { cheerio } from '@umijs/utils';
-import prettier from 'prettier';
+import prettier from '@umijs/deps/reexported/prettier';
 import { IConfig } from '..';
 import { IOpts, IGetContentArgs, IScript } from './types';
 
@@ -117,6 +117,7 @@ class Html {
     });
 
     let $ = cheerio.load(html, {
+      // @ts-ignore
       decodeEntities: false,
     });
 

@@ -28,15 +28,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.12.10",
     "@umijs/core": "3.3.7",
+    "@umijs/deps": "0.2.3",
     "@umijs/preset-built-in": "3.3.7",
     "@umijs/runtime": "3.3.7",
     "@umijs/types": "3.3.7",
     "@umijs/utils": "3.3.7",
     "react": "16.x",
-    "react-dom": "16.x",
-    "resolve-cwd": "3.0.0"
+    "react-dom": "16.x"
   },
   "bin": {
     "umi": "bin/umi.js"

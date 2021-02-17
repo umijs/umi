@@ -13,7 +13,7 @@ import {
   createDebug,
 } from '@umijs/utils';
 import assert from 'assert';
-import joi from '@hapi/joi';
+import joi from '@umijs/deps/compiled/@hapi/joi';
 import Service from '../Service/Service';
 import { ServiceStage } from '../Service/enums';
 import {

@@ -1,10 +1,11 @@
-import marked from 'marked';
-import TerminalRenderer from 'marked-terminal';
+import marked from '@umijs/deps/compiled/marked';
+import TerminalRenderer from '@umijs/deps/compiled/marked-terminal';
 import { chalk } from '@umijs/utils';
 import UmiError, { ERROR_CODE_MAP } from './UmiError';
 import Common from './Common';
 
 marked.setOptions({
+  // @ts-ignore
   renderer: new TerminalRenderer(),
 });
 
@@ -43,7 +44,7 @@ export default class Logger extends Common {
       );
     }
 
-    const osLocale = require('os-locale');
+    const osLocale = require('@umijs/deps/compiled/os-locale');
     const lang = osLocale.sync();
 
     if (lang === 'zh-CN') {
