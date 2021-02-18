@@ -14,7 +14,7 @@
 - 新增 `api.skipPlugins(pluginIds: string[])`，用于禁用插件
 - 配置项的值为 `false` 时，相关插件也会禁用
 - 插件注册阶段只能拿到 userConfig，而不能拿到 config（config 是 merge 了 defaultConfig 之后的）
-- `api.paths` 等插件注册结束后才 ready，paths 中仅保留 `cwd`, `absNodeModulesPath`, `absSrcPath`, `absOutputPath` 和 `absTmpPath`
+- `api.paths` 等插件注册结束后才 ready，paths 中仅保留 `cwd`, `absNodeModulesPath`, `absSrcPath`, `absOutputPath`, `absTmpPath` 和 `absPackageJSONPath`
 - `absTmpPath` 从 `src/pages/.umi` 调整到 `src/.umi`，因为有些应用场景没有 pages 目录，比如 father-doc
 - `api.writeTmpFile` 只能在 `api.onGenerateFiles` 中使用
 - 删除 `api.modifyEntryRender` 接口

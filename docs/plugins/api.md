@@ -101,13 +101,13 @@ e.g.
 
 ```ts
 api.registerCommand({
-    name: 'generate',
-    alias: 'g',
-    fn: async ({ args }) => {
-      await delay(100);
-      return `hello ${api.args.projectName}`;
-    },
-  });
+  name: 'generate',
+  alias: 'g',
+  fn: async ({ args }) => {
+    await delay(100);
+    return `hello ${api.args.projectName}`;
+  },
+});
 ```
 
 注：
@@ -123,10 +123,12 @@ e.g.
 
 ```ts
 api.registerMethod({
-    name: 'foo',
-    fn() { return 'foo'; },
-    exitsError: false,
-  });
+  name: 'foo',
+  fn() {
+    return 'foo';
+  },
+  exitsError: false,
+});
 ```
 
 注：
@@ -142,9 +144,9 @@ e.g.
 
 ```ts
 api.registerPresets([
-    { id: 'preset_2', key: 'preset2', apply: () => () => {} },
-    require.resolve('./preset_3'),
-  ]);
+  { id: 'preset_2', key: 'preset2', apply: () => () => {} },
+  require.resolve('./preset_3'),
+]);
 ```
 
 ### registerPlugins(plugins: string[])
@@ -155,9 +157,9 @@ e.g.
 
 ```ts
 api.registerPlugins([
-    { id: 'preset_2', key: 'preset2', apply: () => () => {} },
-    require.resolve('./preset_3'),
-  ]);
+  { id: 'preset_2', key: 'preset2', apply: () => () => {} },
+  require.resolve('./preset_3'),
+]);
 ```
 
 ### hasPlugins(pluginIds: string[])
@@ -253,8 +255,8 @@ e.g.
 
 ```ts
 api.addEntryCode(() => {
-  return `console.log('works!')`
-})
+  return `console.log('works!')`;
+});
 ```
 
 ### addEntryCodeAhead
@@ -265,8 +267,8 @@ e.g.
 
 ```ts
 api.addEntryCodeAhead(() => {
-  return `console.log('works!')`
-})
+  return `console.log('works!')`;
+});
 ```
 
 ### addEntryImports
@@ -281,8 +283,8 @@ api.addEntryImport(() => {
     {
       source: '/modulePath/xxx.js',
       specifier: 'moduleName',
-    }
-  ]
+    },
+  ];
 });
 ```
 
@@ -304,9 +306,10 @@ e.g.
 
 ```ts
 api.addHTMLMetas(() => {
-  return [{
+  return [
+    {
       name: 'keywords',
-      content: 'umi, umijs'
+      content: 'umi, umijs',
     },
   ];
 });
@@ -320,7 +323,8 @@ e.g.
 
 ```ts
 api.addHTMLLinks(() => {
-  return [{
+  return [
+    {
       rel: 'shortcut icon',
       type: 'image/x-icon',
       href: api.config.favicon!,
@@ -337,9 +341,11 @@ e.g.
 
 ```ts
 api.addHTMLStyles(() => {
-  return [{
-    content:`.className { }`
-  }];
+  return [
+    {
+      content: `.className { }`,
+    },
+  ];
 });
 ```
 
@@ -460,9 +466,7 @@ api.addRuntimePluginKey(() => 'some');
 e.g.
 
 ```ts
-api.addTmpGenerateWatcherPaths(() => [
-    './app.ts',
-]);
+api.addTmpGenerateWatcherPaths(() => ['./app.ts']);
 ```
 
 ### chainWebpack(config, { webpack })
@@ -494,7 +498,7 @@ api.chainWebpack((config, { webpack, env, createCSSRule }) => {
 e.g.
 
 ```ts
-const Port = api.getPort()
+const Port = api.getPort();
 ```
 
 ### getHostname()
@@ -504,7 +508,7 @@ const Port = api.getPort()
 e.g.
 
 ```ts
-const hostname = api.getHostname()
+const hostname = api.getHostname();
 ```
 
 ### modifyBabelOpts
@@ -514,17 +518,14 @@ const hostname = api.getHostname()
 e.g.
 
 ```ts
-api.modifyBabelOpts(babelOpts => {
-    const hmr = api.config.dva?.hmr;
-    if (hmr) {
-      const hmrOpts = lodash.isPlainObject(hmr) ? hmr : {};
-      babelOpts.plugins.push([
-        require.resolve('babel-plugin-dva-hmr'),
-        hmrOpts,
-      ]);
-    }
-    return babelOpts;
-  });
+api.modifyBabelOpts((babelOpts) => {
+  const hmr = api.config.dva?.hmr;
+  if (hmr) {
+    const hmrOpts = lodash.isPlainObject(hmr) ? hmr : {};
+    babelOpts.plugins.push([require.resolve('babel-plugin-dva-hmr'), hmrOpts]);
+  }
+  return babelOpts;
+});
 ```
 
 ### modifyBabelPresetOpts
@@ -534,15 +535,15 @@ api.modifyBabelOpts(babelOpts => {
 e.g.
 
 ```ts
-api.modifyBabelPresetOpts(opts => {
-    return {
-      ...opts,
-      import: (opts.import || []).concat([
-        { libraryName: 'antd', libraryDirectory: 'es', style: true },
-        { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
-      ]),
-    };
-  });
+api.modifyBabelPresetOpts((opts) => {
+  return {
+    ...opts,
+    import: (opts.import || []).concat([
+      { libraryName: 'antd', libraryDirectory: 'es', style: true },
+      { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
+    ]),
+  };
+});
 ```
 
 ### modifyBundleConfig
@@ -553,8 +554,8 @@ e.g.
 
 ```ts
 api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
-    // do something
-    return bundleConfig;
+  // do something
+  return bundleConfig;
 });
 ```
 
@@ -586,7 +587,7 @@ api.modifyBundleConfigs(async (memo, { getConfig }) => {
 e.g.
 
 ```ts
-api.modifyBundleConfigOpts(memo => {
+api.modifyBundleConfigOpts((memo) => {
   memo.miniCSSExtractPluginPath = require.resolve('mini-css-extract-plugin');
   memo.miniCSSExtractPluginLoaderPath = require.resolve(
     'mini-css-extract-plugin/dist/loader',
@@ -671,7 +672,7 @@ api.modifyHTML(($, { routs }) => {
 
 ### modifyHTMLChunks
 
-修改 html 中的js文件引入，可以用于不同的页面使用，不同的 [chunks](../config#chunks) 配置。
+修改 html 中的 js 文件引入，可以用于不同的页面使用，不同的 [chunks](../config#chunks) 配置。
 
 e.g.
 
@@ -719,7 +720,7 @@ api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
     return 'Not Found';
   }
   return defaultHtml;
-})
+});
 ```
 
 ### modifyProdHTMLContent <Badge>3.2+</Badge>
@@ -739,7 +740,7 @@ api.modifyProdHTMLContent(async (content, args) => {
   const render = require('your-renderer');
   return await render({
     path: route.path,
-  })
+  });
 });
 ```
 
@@ -832,7 +833,6 @@ api.onPatchRouteBefore(({ route }) => {
   }
 });
 ```
-
 
 ### onPatchRoutes({ routes, parentRoute })
 
@@ -929,11 +929,11 @@ e.g.
 
 ```ts
 api.onGenerateFiles(() => {
-    api.writeTmpFile({
-      path: 'any.ts',
-      content: '',
-    });
+  api.writeTmpFile({
+    path: 'any.ts',
+    content: '',
   });
+});
 ```
 
 ### onPluginReady()
@@ -988,11 +988,11 @@ e.g.
 
 ```ts
 api.onGenerateFiles(() => {
-    api.writeTmpFile({
-      path: 'any.ts',
-      content: '',
-    });
+  api.writeTmpFile({
+    path: 'any.ts',
+    content: '',
   });
+});
 ```
 
 参数：
@@ -1052,7 +1052,7 @@ api.onGenerateFiles(() => {
 其中 `api.logger.profile` 可用于性能耗时记录，例如：
 
 ```ts
-export default api => {
+export default (api) => {
   api.logger.profile('barId');
   setTimeout(() => {
     api.logger.profile('barId');
@@ -1079,6 +1079,7 @@ export default api => {
 - `absOutputPath`，输出路径，默认是 `./dist`
 - `absNodeModulesPath`，node_modules 目录绝对路径
 - `aliasedTmpPath`，以 `@` 开头的临时路径，通常用于
+- `absPackageJSONPath`, package.json 文件的绝对路径
 
 注：
 
@@ -1106,8 +1107,8 @@ Service 运行阶段。
 
 ### utils
 
-utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts)。
-包含外部库：
+utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts)。包含外部库：
+
 - `lodash` : 导出自 `lodash`, 实用的 js 工具库。
 - `got` : 导出自 `got`, 轻量级的请求库。
 - `deepmerge` : 导出自 `deepmerge`, 将两个对象的可以枚举属性深度合并。
@@ -1123,7 +1124,7 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/b
 - `portfinder` : 导出自 `portfinder`, 常用于在判断端口是否被占用或者获取没有被占用的端口等场景。
 - `glob` : 导出自 `glob`, 用于获取匹配对应规则的文件。
 - `pkgUp` : 导出自 `pkg-up`, 查找最近的 package.json 文件。
-- `resolve` : 导出自 `resolve`,  实现了 node 的 require.resolve() 算法, 提供了方便处理获取模块完整路径相关需求的方法。
+- `resolve` : 导出自 `resolve`, 实现了 node 的 require.resolve() 算法, 提供了方便处理获取模块完整路径相关需求的方法。
 - `spawn` : 导出自 `cross-spawn` , 已经封装好了 Node.js 子进程（child_process）模块下 `spawn` 函数的跨平台写法的相关细节, 直接使用其调用系统上的命令如 `npm` 即可。
 - `execa`: 导出自 `execa`, 更好的子进程管理工具。相当于衍生一个 shell，传入的 command 字符串在该 shell 中直接处理。
 - `mkdirp` : 导出自 `mkdirp`, node 中 `mkdir -p` 功能的实现, 用于在 Node.js 中递归式创建目录及其子目录。
@@ -1135,6 +1136,7 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/b
 - `t` : 导出自 `@babel/types`, 用于 AST 节点的 Lodash 式工具库。它包含了构造、验证以及变换 AST 节点的方法。 该工具库包含考虑周到的工具方法，对编写处理 AST 逻辑非常有用。
 
 内部工具方法
+
 - `isBrowser`, 判断是否在浏览器环境。
 - `isWindows`, 判断当前是否是 windows 系统。
 - `isSSR`, whether SSR success in client。
@@ -1148,12 +1150,13 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/b
 - `Generator`, `mustache` 模版代码生成。
 - `BabelRegister`, `@babel/register` 的简易封装。
 - `parseRequireDeps`, 获取特定文件的本地依赖。
-- `cleanRequireCache`, 清理特定 Module 在 require cache 以及 parent.children  中的引用。
+- `cleanRequireCache`, 清理特定 Module 在 require cache 以及 parent.children 中的引用。
 - `getWindowInitialProps`, 获取 window.g_initialProps。
 - `getFile`, 获取特定目录中文件的完整扩展名，javascript 文件的匹配顺序 `['.ts', '.tsx', '.js', '.jsx']`，css 文件的匹配顺序 `['.less', '.sass', '.scss', '.stylus', '.css']`。
 - `routeToChunkName`, transform route component into webpack chunkName。
 
 类型
+
 - `ArgsType<T extends (...args: any[]) => any>`, 获取函数参数数组类型。
 - `PartialKeys<T>`, 找出 T 中类型是 undefined 的 key。
 - `PartialProps<T>`, 取出 T 中类型是 undefined 的属性。
