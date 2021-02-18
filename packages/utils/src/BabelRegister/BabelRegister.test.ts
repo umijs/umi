@@ -6,7 +6,7 @@ beforeEach(() => {
 
 test('normal', () => {
   const args: any[] = [];
-  jest.doMock('@babel/register', () => {
+  jest.doMock('@umijs/deps/compiled/babel/register', () => {
     return (opts: object) => {
       args.push(opts);
     };
@@ -17,7 +17,7 @@ test('normal', () => {
 
 test('setOnlyMap', () => {
   const args: any[] = [];
-  jest.doMock('@babel/register', () => {
+  jest.doMock('@umijs/deps/compiled/babel/register', () => {
     return (opts: object) => {
       args.push(opts);
     };

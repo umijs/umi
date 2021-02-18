@@ -9,7 +9,7 @@ import { winPath, createDebug, glob } from '@umijs/utils';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
-import bodyParser from 'body-parser';
+import bodyParser from '@umijs/deps/compiled/body-parser';
 import multer from '@umijs/deps/compiled/multer';
 import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
 import { getFlatRoutes } from '../../../commands/htmlUtils';
