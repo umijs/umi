@@ -1,11 +1,11 @@
-import express from 'express';
+import express from '@umijs/deps/compiled/express';
 import { Server as NetServer } from 'net';
 import http from 'http';
 import http2 from 'http2';
 import { got, delay } from '@umijs/utils';
-import portfinder from 'portfinder';
+import portfinder from '@umijs/deps/compiled/portfinder';
 import SockJS from 'sockjs-client';
-import sockjs, { Connection } from 'sockjs';
+import sockjs, { Connection } from '@umijs/deps/compiled/sockjs';
 import Server from './Server';
 
 function initSocket({

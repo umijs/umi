@@ -2883,13 +2883,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/compression@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@types/compression/-/compression-1.7.0.tgz#8dc2a56604873cf0dd4e746d9ae4d31ae77b2390"
-  integrity sha512-3LzWUM+3k3XdWOUk/RO+uSjv7YWOatYq2QADJntK1pjkk4DfVP0KrIEPDnXRJxAAGKe0VpIPRmlINLDuCedZWw==
-  dependencies:
-    "@types/express" "*"
-
 "@types/connect@*":
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.34.tgz#170a40223a6d666006d93ca128af2beb1d9b1901"
@@ -2907,7 +2900,7 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
 
-"@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
+"@types/express-serve-static-core@*":
   version "4.17.18"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.18.tgz#8371e260f40e0e1ca0c116a9afcd9426fa094c40"
   integrity sha512-m4JTwx5RUBNZvky/JJ8swEJPKFd8si08pPF2PfizYjGZOKr/svUWPcoUmLow6MmPzhasphB7gSTINY67xn3JNA==
@@ -2915,16 +2908,6 @@
     "@types/node" "*"
     "@types/qs" "*"
     "@types/range-parser" "*"
-
-"@types/express@*":
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.11.tgz#debe3caa6f8e5fcda96b47bd54e2f40c4ee59545"
-  integrity sha512-no+R6rW60JEc59977wIxreQVsIEOAYwgCqldrA/vkpCnbD7MqTefO97lmoBe4WE0F156bC4uLSP1XHDOySnChg==
-  dependencies:
-    "@types/body-parser" "*"
-    "@types/express-serve-static-core" "^4.17.18"
-    "@types/qs" "*"
-    "@types/serve-static" "*"
 
 "@types/express@4.17.7":
   version "4.17.7"
@@ -3166,24 +3149,10 @@
   resolved "https://registry.yarnpkg.com/@types/sockjs-client/-/sockjs-client-1.1.1.tgz#1ef133b5a79d51447a93ce16164706c0164b5548"
   integrity sha512-DaTdN4kfPNxu0otmQlxhmYeCjtY8cHmJsU6LqiFOrhytIkx8Txq06PwAWYzha7nMkEyju44a3NDpqCKiHn/NZQ==
 
-"@types/sockjs@0.3.32":
-  version "0.3.32"
-  resolved "https://registry.yarnpkg.com/@types/sockjs/-/sockjs-0.3.32.tgz#922cdb2f16bf0387410414407df93a55a884c1a8"
-  integrity sha512-KivrihaB55i/6fzR7vvE7XdpYTEAvP7I1/pJeq2bev2lJlb2SY8+3c5Nz3ICrRroehV3GezLK96B05Kx9+d0DA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/source-list-map@*":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@types/source-list-map/-/source-list-map-0.1.2.tgz#0078836063ffaf17412349bba364087e0ac02ec9"
   integrity sha512-K5K+yml8LTo9bWJI/rECfIPrGgxdpeNbj+d53lwN4QjW1MCwlkhUms+gtdzigTeUyBr09+u8BwOIY3MXvHdcsA==
-
-"@types/spdy@3.4.4":
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/@types/spdy/-/spdy-3.4.4.tgz#3282fd4ad8c4603aa49f7017dd520a08a345b2bc"
-  integrity sha512-N9LBlbVRRYq6HgYpPkqQc3a9HJ/iEtVZToW6xlTtJiMhmRJ7jJdV7TaZQJw/Ve/1ePUsQiCTDc4JMuzzag94GA==
-  dependencies:
-    "@types/node" "*"
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -3266,10 +3235,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@umijs/deps@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.4.tgz#0b7255f3adb76aaada651f5161816dfd6f613dd1"
-  integrity sha512-2ok/k2UTJ66uL2o38dL6Ges5RNL6IcWiTcodv5O6Pe6FCEJm5Rt2yTtTfCUlgzbbBfpORdyzfXOPW5hYX5+iHw==
+"@umijs/deps@0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.6.tgz#e457563a5ba9b2de188db9f969098a49356479e8"
+  integrity sha512-sfp2YMzc8I8k1nPVmS2jpBrr+UAGPfwsi1KtAcdejtnZexiKrL3LQQJxDJK34Fnk105/iJ+q5PZD56W0YLlPjA==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"

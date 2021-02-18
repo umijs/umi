@@ -1,13 +1,13 @@
-import marked from '@umijs/deps/compiled/marked';
-import TerminalRenderer from '@umijs/deps/compiled/marked-terminal';
+// import marked from '@umijs/deps/compiled/marked';
+// import TerminalRenderer from '@umijs/deps/compiled/marked-terminal';
 import { chalk } from '@umijs/utils';
 import UmiError, { ERROR_CODE_MAP } from './UmiError';
 import Common from './Common';
 
-marked.setOptions({
-  // @ts-ignore
-  renderer: new TerminalRenderer(),
-});
+// marked.setOptions({
+//   // @ts-ignore
+//   renderer: new TerminalRenderer(),
+// });
 
 interface ILogErrorOpts {
   detailsOnly?: boolean;
@@ -47,17 +47,17 @@ export default class Logger extends Common {
     const osLocale = require('@umijs/deps/compiled/os-locale');
     const lang = osLocale.sync();
 
-    if (lang === 'zh-CN') {
-      console.error(
-        `\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(
-          details['zh-CN'],
-        )}`,
-      );
-    } else {
-      console.error(
-        `\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details.en)}`,
-      );
-    }
+    // if (lang === 'zh-CN') {
+    //   console.error(
+    //     `\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(
+    //       details['zh-CN'],
+    //     )}`,
+    //   );
+    // } else {
+    //   console.error(
+    //     `\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details.en)}`,
+    //   );
+    // }
 
     if (!detailsOnly && e.stack) {
       console.error(
