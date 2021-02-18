@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { EOL } from 'os';
 import assert from 'assert';
 import * as path from 'path';
 import serialize from 'serialize-javascript';
@@ -8,10 +9,12 @@ import { IApi, BundlerConfigType } from '@umijs/types';
 import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
+import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
   OUTPUT_SERVER_FILENAME,
+  OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
   CLIENT_EXPORTS,
 } from './constants';
@@ -212,7 +215,9 @@ export default (api: IApi) => {
     config.devServer.writeToDisk = (filePath: string) => {
       const manifestFile =
         api.config?.manifest?.fileName || 'asset-manifest.json';
-      const regexp = new RegExp(`(${OUTPUT_SERVER_FILENAME}|${manifestFile})$`);
+      const regexp = new RegExp(
+        `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME}|${manifestFile})$`,
+      );
       return regexp.test(filePath);
     };
     // enable manifest
@@ -296,6 +301,14 @@ export default (api: IApi) => {
         {
           maxChunks: 1,
         },
+      ]);
+      config.plugin('generate-server-type').use(ServerTypePlugin, [
+        [
+          {
+            name: OUTPUT_SERVER_TYPE_FILENAME,
+            content: `import { IServerRender } from 'umi';${EOL}export = render;${EOL}export as namespace render;${EOL}declare const render: IServerRender;`,
+          },
+        ],
       ]);
       config.plugin('define').tap(([args]) => [
         {
