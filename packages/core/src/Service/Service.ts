@@ -84,6 +84,7 @@ export default class Service extends EventEmitter {
     absPagesPath?: string;
     absOutputPath?: string;
     absTmpPath?: string;
+    absPackageJSONPath?: string;
   } = {};
   env: string | undefined;
   ApplyPluginsType = ApplyPluginsType;

@@ -8,7 +8,8 @@ export type IServicePathKeys =
   | 'absOutputPath'
   | 'absSrcPath'
   | 'absPagesPath'
-  | 'absTmpPath';
+  | 'absTmpPath'
+  | 'absPackageJSONPath';
 
 export type IServicePaths = {
   [key in IServicePathKeys]: string;

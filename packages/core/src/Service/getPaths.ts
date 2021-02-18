@@ -38,5 +38,6 @@ export default function getServicePaths({
     absSrcPath,
     absPagesPath,
     absTmpPath: join(absSrcPath, tmpDir),
+    absPackageJSONPath: join(cwd, 'package.json'),
   });
 }

@@ -29,6 +29,7 @@ test('empty', () => {
     absSrcPath: '',
     absTmpPath: '.umi',
     cwd: '',
+    absPackageJSONPath: 'package.json',
   });
 });
 
@@ -50,6 +51,7 @@ test('empty production', () => {
     absSrcPath: '',
     absTmpPath: '.umi-production',
     cwd: '',
+    absPackageJSONPath: 'package.json',
   });
 });
 
@@ -73,6 +75,7 @@ test('empty config singular', () => {
     absSrcPath: '',
     absTmpPath: '.umi',
     cwd: '',
+    absPackageJSONPath: 'package.json',
   });
 });
 
@@ -96,6 +99,7 @@ test('empty config outputPath', () => {
     absSrcPath: '',
     absTmpPath: '.umi',
     cwd: '',
+    absPackageJSONPath: 'package.json',
   });
 });
 
@@ -117,6 +121,7 @@ test('src', () => {
     absSrcPath: 'src',
     absTmpPath: 'src/.umi',
     cwd: '',
+    absPackageJSONPath: 'package.json',
   });
 });
 
@@ -140,5 +145,6 @@ test('src config singular', () => {
     absSrcPath: 'src',
     absTmpPath: 'src/.umi',
     cwd: '',
+    absPackageJSONPath: 'package.json',
   });
 });
