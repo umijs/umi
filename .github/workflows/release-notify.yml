@@ -1,0 +1,23 @@
+name: Release Notify
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify for the Dingtalk group
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DINGTALK_GROUP_TOKEN }}
+          secret: ${{ secrets.DINGTALK_GROUP_SIGN }}
+          body: |
+            {
+              "msgtype": "markdown",
+              "markdown": {
+                  "title": "${{github.event.release.tag_name}} released",
+                  "text": "# [${{github.event.release.tag_name}}](${{github.event.release.html_url}}) released:\n${{github.event.release.body}}"
+              }
+            }

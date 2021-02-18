@@ -50,7 +50,6 @@ const render: IServerRender = async (params) => {
     const history = createMemoryHistory({
       initialEntries: [format(location)],
     });
-
     /**
      * beforeRenderServer hook, for polyfill global.*
      */
@@ -104,7 +103,6 @@ const render: IServerRender = async (params) => {
         manifest = requireFunc(`./{{{ ManifestFileName }}}`);
       } catch (_) {}
     }
-
     // renderServer get rootContainer
     const { pageHTML, pageInitialProps, routesMatched } = await renderServer(opts);
     rootContainer = pageHTML;

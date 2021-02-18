@@ -30,6 +30,6 @@
     "@types/sockjs": "0.3.32",
     "@types/spdy": "3.4.4",
     "@umijs/utils": "3.3.7",
-    "@umijs/deps": "0.2.3"
+    "@umijs/deps": "0.2.4"
   }
 }

@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import assert from 'assert';
 import * as path from 'path';
+import serialize from 'serialize-javascript';
 import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
@@ -157,7 +158,7 @@ export default (api: IApi) => {
         ManifestFileName: api.config.manifest
           ? api.config.manifest.fileName || 'asset-manifest.json'
           : '',
-        DEFAULT_HTML_PLACEHOLDER: JSON.stringify(defaultHTML),
+        DEFAULT_HTML_PLACEHOLDER: serialize(defaultHTML),
       }),
     });
 

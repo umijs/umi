@@ -32,7 +32,7 @@
   "dependencies": {
     "@babel/core": "7.12.10",
     "@umijs/bundler-utils": "3.3.7",
-    "@umijs/deps": "0.2.3",
+    "@umijs/deps": "0.2.4",
     "@umijs/types": "3.3.7",
     "@umijs/utils": "3.3.7",
     "babel-loader": "8.2.2",

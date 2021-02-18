@@ -11,7 +11,7 @@ export function getExportProps(code: string) {
   let props: unknown = undefined;
   traverse.default(ast, {
     Program: {
-      enter(path) {
+      enter(path: any) {
         const node = path.node;
         const defaultExport = findExportDefault(node);
         if (!defaultExport) return;

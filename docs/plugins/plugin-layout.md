@@ -143,7 +143,7 @@ In the UI that is used to configure the default Layout at runtime, the processin
 - Type: `(initialState) => React.ReactNode`
 - Default: Display user name, avatar, logout related components
 
-`InitialState`is obtained from the`@umijs/plugin-initial-state` plugin and needs to be used together.
+`InitialState`is obtained from the `@umijs/plugin-initial-state` plugin and needs to be used together.
 
 #### onError
 
@@ -180,12 +180,13 @@ export const routes: IBestAFSRoute[] = [
   {
     path: '/welcome',
     component: 'IndexPage',
-    menu: {
-      name: 'Welcome', // compatible with this writing
-      icon: 'testicon',
-    },
+    name: 'Welcome', // compatible with this writing
+    icon: 'testicon',
     // more features view
     // https://beta-pro.ant.design/docs/advanced-menu
+    // ---
+    // open path in new tab
+    target: '_blank',
     // Do not show top bar
     headerRender: false,
     // Do not show footer
@@ -200,6 +201,8 @@ export const routes: IBestAFSRoute[] = [
     hideChildrenInMenu: true,
     // hide yourself and child nodes
     hideInMenu: true,
+    // hide in breadcrumbs
+    hideInBreadcrumb: true,
     // The child item is raised up and still displayed,
     flatMenu: true,
   },
@@ -218,7 +221,7 @@ The name displayed on the menu, otherwise it will not be displayed.
 
 The Icon displayed on the menu.
 
-> The icon name is the lower case of the component name and then remove the `outlined`or`filled`or`twotone`to obtain the value. Example: The icon name of`<UserOutlined />`is: `user`.
+> The icon name is the lower case of the component name and then remove the `outlined` or `filled` or `twotone` to obtain the value. Example: The icon name of`<UserOutlined />`is: `user`.
 
 #### flatMenu
 
@@ -232,3 +235,48 @@ The Icon displayed on the menu.
 It takes effect when the Layout plugin is used in conjunction with the `@umijs/plugin-access` plugin.
 
 The permission plugin will match the access string configured by the user here with all the permissions of the current user. If the same item is found and the value of the permission is false, the 403 page will be displayed by default when the user accesses the route.
+
+#### locale
+
+-Type: `string`
+
+The internationalization configuration of the menu, the internationalization key is `menu.${submenu-name}.${name}`.
+
+#### icon
+
+-Type: `string`
+
+The antd icon, in order to load the layout plug-in on demand, will automatically convert it to the dom of the Antd icon. Support types can be found in antd (https://ant.design/components/icon-cn/).
+
+#### flatMenu
+
+-Type: `boolean`
+
+Flatten the menu. If you only want the child menu to not show yourself, you can configure it to true
+
+```tsx
+const before = [{ name: '111' }, { name: '222', children: [{ name: '333' }] }];
+// flatMenu = true
+const after = [{ name: '111' }, { name: '222' }, { name: '333' }];
+```
+
+#### xxxRender
+
+-Type: `boolean`
+
+If xxxRender is set to false, some layout modules will not be displayed
+
+- `headerRender=false` does not show the top bar
+- `footerRender=false` does not show footer
+- `menuRender=false` does not show the menu
+- `menuHeaderRender=false` does not display the title and logo of the menu
+
+### hideInXXX
+
+-Type: `boolean`
+
+hideInXXX can manage the rendering of the menu.
+
+- `hideChildrenInMenu=true` to hide the child menu
+- `hideInMenu=true` hide yourself and submenus
+- `hideInBreadcrumb=true` hide in breadcrumbs
