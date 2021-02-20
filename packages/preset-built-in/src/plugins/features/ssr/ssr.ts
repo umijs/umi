@@ -250,7 +250,7 @@ export default (api: IApi) => {
   // modify devServer content
   api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
-    const { stream, devServerRender = true } = api.config?.ssr || {};
+    const { mode, devServerRender = true } = api.config?.ssr || {};
     const serverPath = path.join(
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
@@ -274,7 +274,7 @@ export default (api: IApi) => {
       });
       const endTime = performance.nodeTiming.duration;
       console.log(
-        `[SSR] ${stream ? 'stream' : ''} render ${req.url} start: ${(
+        `[SSR] ${mode === 'stream' ? 'stream' : ''} render ${req.url} start: ${(
           endTime - startTime
         ).toFixed(2)}ms`,
       );
