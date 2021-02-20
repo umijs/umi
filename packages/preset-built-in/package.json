@@ -38,6 +38,7 @@
     "@umijs/server": "3.3.7",
     "@umijs/types": "3.3.7",
     "@umijs/utils": "3.3.7",
+    "clear-module": "4.1.1",
     "cliui": "6.0.0",
     "es5-imcompatible-versions": "^0.1.62",
     "fork-ts-checker-webpack-plugin": "6.0.5",

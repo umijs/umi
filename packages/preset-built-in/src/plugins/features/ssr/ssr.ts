@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { EOL } from 'os';
 import assert from 'assert';
 import * as path from 'path';
+import clearModule from 'clear-module';
 import serialize from 'serialize-javascript';
 import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
@@ -230,6 +231,11 @@ export default (api: IApi) => {
     return config;
   });
 
+  api.onDevCompileDone(() => {
+    // clear require cache
+    clearModule.match(new RegExp(_.escapeRegExp(OUTPUT_SERVER_FILENAME)));
+  });
+
   // modify devServer content
   api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
@@ -245,7 +251,7 @@ export default (api: IApi) => {
 
     try {
       const startTime = performance.nodeTiming.duration;
-      const render = require(serverPath);
+      let render = require(serverPath);
       const context = {};
       const { html, error } = await render({
         origin: `${req.protocol}://${req.get('host')}`,
@@ -264,11 +270,7 @@ export default (api: IApi) => {
       if (error) {
         throw error;
       }
-      // if dev clear cache, OOM
-      if (require.cache[serverPath]) {
-        // replace default html
-        delete require.cache[serverPath];
-      }
+      render = null;
       return html;
     } catch (e) {
       api.logger.error('[SSR]', e);
