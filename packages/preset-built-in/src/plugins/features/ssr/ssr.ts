@@ -2,12 +2,17 @@ import * as fs from 'fs';
 import { EOL } from 'os';
 import assert from 'assert';
 import * as path from 'path';
-import clearModule from 'clear-module';
 import serialize from 'serialize-javascript';
 import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
-import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
+import {
+  winPath,
+  Mustache,
+  lodash as _,
+  routeToChunkName,
+  cleanRequireCache,
+} from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
 import ServerTypePlugin from './serverTypePlugin';
@@ -231,9 +236,15 @@ export default (api: IApi) => {
     return config;
   });
 
+  // make sure to clear umi.server.js cache
   api.onDevCompileDone(() => {
+    const serverExp = new RegExp(_.escapeRegExp(OUTPUT_SERVER_FILENAME));
     // clear require cache
-    clearModule.match(new RegExp(_.escapeRegExp(OUTPUT_SERVER_FILENAME)));
+    for (const moduleId of Object.keys(require.cache)) {
+      if (serverExp.test(moduleId)) {
+        cleanRequireCache(moduleId);
+      }
+    }
   });
 
   // modify devServer content
