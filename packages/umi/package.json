@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@umijs/core": "3.3.7",
-    "@umijs/deps": "0.2.9",
+    "@umijs/deps": "0.2.11",
     "@umijs/preset-built-in": "3.3.7",
     "@umijs/runtime": "3.3.7",
     "@umijs/types": "3.3.7",
