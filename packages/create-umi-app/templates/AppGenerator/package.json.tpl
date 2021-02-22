@@ -25,8 +25,8 @@
     "umi": "^{{{ version }}}"
   },
   "devDependencies": {
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@umijs/test": "^{{{ version }}}",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
