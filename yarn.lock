@@ -3235,10 +3235,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@umijs/deps@0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.8.tgz#4ff9fad3eecb977cc3f03c7da1380d878c67e737"
-  integrity sha512-y/7aY3UWKo8CkLS8IfdTsFhNHbCU+0N80nfULF4YXPJc2IqwzbYPJ7bsvvseetyP1eb51slSua/7zYKy/WIEtA==
+"@umijs/deps@0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.9.tgz#f601028fe080b8ba62a4f08da3ed4288e1f3616f"
+  integrity sha512-Ce5lLyC4B6tPmAGbpDYrRJhHqZf50Q+k8iY5NuHH5RneuKAs+T/8bpR0HslSPW+NltW6VOX4MvdU9ZUvatcSQA==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"

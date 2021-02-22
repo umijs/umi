@@ -29,7 +29,6 @@ import { getPkgPath, shouldTransform } from './pkgMatch';
 
 function onWebpackInitWithPromise() {
   return new Promise<void>((resolve) => {
-    // @ts-ignore
     defaultWebpack.onWebpackInit(() => {
       resolve();
     });
