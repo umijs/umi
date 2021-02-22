@@ -1,5 +1,5 @@
 import { IConfig, BundlerConfigType } from '@umijs/types';
-import defaultWebpack from 'webpack';
+import defaultWebpack from '@umijs/deps/compiled/webpack';
 import webpackDevMiddleware from '@umijs/deps/compiled/webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import { winPath } from '@umijs/utils';
