@@ -4,8 +4,6 @@ const mount = require('koa-mount');
 const { join, extname } = require('path');
 const { parseCookie, parseNavLang } = require('./serverHelper');
 
-const isDev = process.env.NODE_ENV === 'development';
-
 const root = join(__dirname, 'dist');
 
 const app = new Koa();
