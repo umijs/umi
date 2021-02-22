@@ -1,4 +1,4 @@
-import Config from '@umijs/deps/compiled/webpack-chain';
+import Config from 'webpack-chain';
 import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 // @ts-ignore
 import safePostCssParser from 'postcss-safe-parser';

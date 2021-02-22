@@ -32,7 +32,7 @@
   "dependencies": {
     "@babel/core": "7.12.10",
     "@umijs/bundler-utils": "3.3.7",
-    "@umijs/deps": "0.2.7",
+    "@umijs/deps": "0.2.8",
     "@umijs/types": "3.3.7",
     "@umijs/utils": "3.3.7",
     "babel-loader": "8.2.2",
@@ -46,11 +46,11 @@
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.2",
     "react-error-overlay": "6.0.8",
-    "schema-utils": "^1.0.0",
     "sockjs-client": "1.5.0",
     "strip-ansi": "6.0.0",
     "terser-webpack-plugin": "4.2.3",
-    "webpack": "4.44.1"
+    "webpack": "4.44.1",
+    "webpack-chain": "6.5.1"
   },
   "bin": {
     "bundler-webpack": "bin/bundler-webpack.js"

@@ -4,8 +4,8 @@ import {
   BundlerConfigType,
   ICopy,
 } from '@umijs/types';
-import defaultWebpack from 'webpack';
-import Config from '@umijs/deps/compiled/webpack-chain';
+import * as defaultWebpack from '@umijs/deps/compiled/webpack';
+import Config from 'webpack-chain';
 import { join, isAbsolute } from 'path';
 import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
@@ -26,6 +26,15 @@ import {
 } from './nodeModulesTransform';
 import resolveDefine from './resolveDefine';
 import { getPkgPath, shouldTransform } from './pkgMatch';
+
+function onWebpackInitWithPromise() {
+  return new Promise<void>((resolve) => {
+    // @ts-ignore
+    defaultWebpack.onWebpackInit(() => {
+      resolve();
+    });
+  });
+}
 
 export interface IOpts {
   cwd: string;
@@ -53,6 +62,7 @@ export interface IOpts {
 export default async function getConfig(
   opts: IOpts,
 ): Promise<defaultWebpack.Configuration> {
+  await onWebpackInitWithPromise();
   const {
     cwd,
     config,

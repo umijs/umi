@@ -1,6 +1,12 @@
 import { BundlerConfigType } from '@umijs/types';
 import { winPath } from '@umijs/utils';
+// @ts-ignore
+import { init } from '@umijs/deps/compiled/webpack';
 import getConfig from './getConfig';
+
+beforeAll(() => {
+  init();
+});
 
 test('normal', async () => {
   const config = await getConfig({
