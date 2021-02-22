@@ -60,6 +60,7 @@ export default class Config {
     this.localConfig = opts.localConfig;
 
     if (Array.isArray(opts.configFiles)) {
+      // 配置的优先读取
       this.configFiles = lodash.uniq(opts.configFiles.concat(this.configFiles));
     }
   }

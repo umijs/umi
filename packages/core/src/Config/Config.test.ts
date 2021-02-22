@@ -26,6 +26,24 @@ test('umirc-typescript', async () => {
   expect(service.userConfig).toEqual({ foo: 'bar' });
 });
 
+test('custom-config-file', async () => {
+  const cwd = join(fixtures, 'custom-config-file');
+  const service = new Service({
+    cwd,
+    configFiles: ['.foorc.js'],
+  });
+  expect(service.userConfig).toEqual({ foo: 'bar' });
+});
+
+test('custom-config-file-ts', async () => {
+  const cwd = join(fixtures, 'custom-config-file-ts');
+  const service = new Service({
+    cwd,
+    configFiles: ['.foorc.ts'],
+  });
+  expect(service.userConfig).toEqual({ foo: 'bar' });
+});
+
 test('config-config', async () => {
   const cwd = join(fixtures, 'config-config');
   const service = new Service({
