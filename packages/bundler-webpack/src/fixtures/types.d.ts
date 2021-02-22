@@ -1,5 +1,5 @@
 
-import * as webpack from 'webpack';
+import * as webpack from '@umijs/deps/compiled/webpack';
 
 export interface IExpectOpts {
   files: string[];
