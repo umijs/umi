@@ -1,6 +1,5 @@
 import { lodash } from '@umijs/utils';
-// @ts-ignore
-import set from 'set-value';
+import set from '@umijs/deps/compiled/set-value';
 
 export function updateUserConfigWithKey({
   key,

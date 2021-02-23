@@ -1,4 +1,5 @@
-import color from 'color';
+// @ts-ignore
+import color from '@umijs/deps/compiled/color';
 
 const ratio = 0.618033988749895;
 let hue = Math.random();

@@ -1,6 +1,12 @@
 import React from 'react';
 import { MemoryRouter, Plugin, Link } from '@umijs/runtime';
-import { getByText, render, screen, waitFor, cleanup } from '@testing-library/react';
+import {
+  getByText,
+  render,
+  screen,
+  waitFor,
+  cleanup,
+} from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '..';
 
@@ -91,7 +97,7 @@ const routerConfig = {
           path: '/layout',
           component: (props: any) => (
             <>
-              <h1 data-testid="test">Foo</h1>>
+              <h1 data-testid="test">Foo</h1>
               <h2 data-testid="routes-embed">
                 {props.routes.map((r: any) => r.path).join(',')}
               </h2>

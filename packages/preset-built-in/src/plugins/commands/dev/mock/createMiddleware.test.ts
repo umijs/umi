@@ -2,9 +2,7 @@ import { join } from 'path';
 import { writeFileSync } from 'fs';
 import { Service } from '@umijs/core';
 import { Server } from '@umijs/server';
-import { winPath, portfinder } from '@umijs/utils';
-import got from 'got';
-import rimraf from 'rimraf';
+import { winPath, got, rimraf } from '@umijs/utils';
 import createMiddleware from './createMiddleware';
 import { getMockData } from './utils';
 

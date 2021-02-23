@@ -129,7 +129,7 @@ const WARN_AFTER_BUNDLE_GZIP_SIZE = 1.8 * 1024 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1 * 1024 * 1024;
 
 export function printFileSizes(stats: webpack.Stats, dir: string) {
-  const ui = require('cliui')({ width: 80 });
+  const ui = require('@umijs/deps/compiled/cliui')({ width: 80 });
   const json = stats.toJson({
     hash: false,
     modules: false,

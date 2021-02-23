@@ -28,7 +28,7 @@ export default (api: IApi) => {
   api.chainWebpack((webpackConfig) => {
     webpackConfig
       .plugin('fork-ts-checker')
-      .use(require('fork-ts-checker-webpack-plugin'), [
+      .use(require('@umijs/deps/compiled/fork-ts-checker-webpack-plugin'), [
         deepmerge(
           {
             formatter: 'codeframe',

@@ -25,12 +25,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/cheerio": "0.22.23",
-    "@types/express": "4.17.7",
-    "@types/webpack": "4.41.21",
     "@types/webpack-bundle-analyzer": "3.8.0",
     "@umijs/babel-preset-umi": "3.3.8",
     "@umijs/core": "3.3.8",
+    "@umijs/deps": "0.2.18",
     "@umijs/server": "3.3.8",
     "@umijs/utils": "3.3.8",
     "webpack-chain": "6.5.1"

@@ -1,6 +1,12 @@
 import { BundlerConfigType } from '@umijs/types';
 import { winPath } from '@umijs/utils';
+// @ts-ignore
+import { init } from '@umijs/deps/compiled/webpack';
 import getConfig from './getConfig';
+
+beforeAll(() => {
+  init();
+});
 
 test('normal', async () => {
   const config = await getConfig({
@@ -229,7 +235,10 @@ test('config.manifest + production', async () => {
   });
   expect(
     config.plugins?.filter((plugin) => {
-      return plugin instanceof require('webpack-manifest-plugin');
+      return (
+        plugin instanceof
+        require('@umijs/deps/compiled/webpack-manifest-plugin')
+      );
     }).length,
   ).toEqual(1);
 });
@@ -245,9 +254,13 @@ test('env SPEED_MEASURE', async () => {
   });
   expect(
     config.plugins?.filter((plugin) => {
-      return plugin instanceof require('speed-measure-webpack-plugin');
+      return (
+        plugin instanceof
+        require('@umijs/deps/compiled/speed-measure-webpack-plugin')
+      );
     }).length,
   ).toEqual(1);
+  // @ts-ignore
   delete process.env.SPEED_MEASURE;
 });
 
@@ -262,10 +275,14 @@ test('env SPEED_MEASURE = !CONSOLE', async () => {
     type: BundlerConfigType.csr,
   });
   const p = config.plugins?.filter((plugin) => {
-    return plugin instanceof require('speed-measure-webpack-plugin');
+    return (
+      plugin instanceof
+      require('@umijs/deps/compiled/speed-measure-webpack-plugin')
+    );
   })[0];
   // @ts-ignore
   expect(p.options.outputFormat).toEqual('json');
+  // @ts-ignore
   delete process.env.SPEED_MEASURE;
 });
 
@@ -279,5 +296,6 @@ test('env COMPRESS = none + production', async () => {
     type: BundlerConfigType.csr,
   });
   expect(config.optimization?.minimize).toEqual(false);
+  // @ts-ignore
   delete process.env.COMPRESS;
 });

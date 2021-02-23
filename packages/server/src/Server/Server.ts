@@ -1,19 +1,22 @@
 // @ts-ignore
 import { Logger } from '@umijs/core';
 import { lodash, portfinder, PartialProps, createDebug } from '@umijs/utils';
-import express, { Express, RequestHandler } from 'express';
+import express, { Express, RequestHandler } from '@umijs/deps/compiled/express';
 import {
   createProxyMiddleware,
   Options as ProxyOptions,
   RequestHandler as ProxyRequestHandler,
   Filter as ProxyFilter,
-} from 'http-proxy-middleware';
+} from '@umijs/deps/compiled/http-proxy-middleware';
 import * as http from 'http';
-import spdy, { ServerOptions } from 'spdy';
+import spdy, { ServerOptions } from '@umijs/deps/compiled/spdy';
 import * as url from 'url';
 import https from 'https';
-import compress, { CompressionOptions } from 'compression';
-import sockjs, { Connection, Server as SocketServer } from 'sockjs';
+import compress, { CompressionOptions } from '@umijs/deps/compiled/compression';
+import sockjs, {
+  Connection,
+  Server as SocketServer,
+} from '@umijs/deps/compiled/sockjs';
 import { getCredentials } from './utils';
 
 const logger = new Logger('@umijs/server');
