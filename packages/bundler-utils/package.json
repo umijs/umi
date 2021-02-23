@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "@umijs/bundler-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,8 +24,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.3.7",
-    "@umijs/types": "3.3.7",
-    "@umijs/utils": "3.3.7"
+    "@umijs/babel-preset-umi": "3.3.8",
+    "@umijs/types": "3.3.8",
+    "@umijs/utils": "3.3.8"
   }
 }

@@ -4,8 +4,6 @@ const mount = require('koa-mount');
 const { join, extname } = require('path');
 const { parseCookie, parseNavLang } = require('./serverHelper');
 
-const isDev = process.env.NODE_ENV === 'development';
-
 const root = join(__dirname, 'dist');
 
 const app = new Koa();
@@ -51,15 +49,6 @@ app.use(async (ctx, next) => {
     if (error) {
       console.log('----------------服务端报错-------------------', error);
       ctx.throw(500, error);
-    }
-    /**
-     *  这里fix了由于没有使用内部server而造成的缓存问题，
-     *  原因是require会带有缓存，在修改代码以后会不更新
-     *  这里判断的环境变量，如果是dev环境，自动删除require
-     *  缓存
-     */
-    if (isDev) {
-      delete require.cache[require.resolve('./dist/umi.server')];
     }
     ctx.body = html;
   } else {

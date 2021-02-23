@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "@umijs/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,9 +26,9 @@
   "dependencies": {
     "@babel/core": "7.12.10",
     "@babel/register": "7.12.10",
-    "@umijs/ast": "3.3.7",
-    "@umijs/babel-preset-umi": "3.3.7",
+    "@umijs/ast": "3.3.8",
+    "@umijs/babel-preset-umi": "3.3.8",
     "@umijs/deps": "0.2.18",
-    "@umijs/utils": "3.3.7"
+    "@umijs/utils": "3.3.8"
   }
 }
