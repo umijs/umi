@@ -6,7 +6,13 @@ import serialize from 'serialize-javascript';
 import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
-import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
+import {
+  winPath,
+  Mustache,
+  lodash as _,
+  routeToChunkName,
+  cleanRequireCache,
+} from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
 import ServerTypePlugin from './serverTypePlugin';
@@ -230,10 +236,21 @@ export default (api: IApi) => {
     return config;
   });
 
+  // make sure to clear umi.server.js cache
+  api.onDevCompileDone(() => {
+    const serverExp = new RegExp(_.escapeRegExp(OUTPUT_SERVER_FILENAME));
+    // clear require cache
+    for (const moduleId of Object.keys(require.cache)) {
+      if (serverExp.test(moduleId)) {
+        cleanRequireCache(moduleId);
+      }
+    }
+  });
+
   // modify devServer content
   api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
-    const { stream, devServerRender = true } = api.config?.ssr || {};
+    const { mode, devServerRender = true } = api.config?.ssr || {};
     const serverPath = path.join(
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
@@ -245,7 +262,7 @@ export default (api: IApi) => {
 
     try {
       const startTime = performance.nodeTiming.duration;
-      const render = require(serverPath);
+      let render = require(serverPath);
       const context = {};
       const { html, error } = await render({
         origin: `${req.protocol}://${req.get('host')}`,
@@ -257,18 +274,14 @@ export default (api: IApi) => {
       });
       const endTime = performance.nodeTiming.duration;
       console.log(
-        `[SSR] ${stream ? 'stream' : ''} render ${req.url} start: ${(
+        `[SSR] ${mode === 'stream' ? 'stream' : ''} render ${req.url} start: ${(
           endTime - startTime
         ).toFixed(2)}ms`,
       );
       if (error) {
         throw error;
       }
-      // if dev clear cache, OOM
-      if (require.cache[serverPath]) {
-        // replace default html
-        delete require.cache[serverPath];
-      }
+      render = null;
       return html;
     } catch (e) {
       api.logger.error('[SSR]', e);
