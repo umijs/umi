@@ -1,6 +1,7 @@
 const { yParser, execa, chalk } = require('@umijs/utils');
 const { join } = require('path');
 const { writeFileSync } = require('fs');
+const getRepoInfo = require('git-repo-info');
 const newGithubReleaseUrl = require('new-github-release-url');
 const open = require('open');
 const exec = require('./utils/exec');
@@ -121,7 +122,8 @@ async function release() {
 
     // Push
     logStep(`git push`);
-    await exec('git', ['push', 'origin', 'master', '--tags']);
+    const { branch } = getRepoInfo();
+    await exec('git', ['push', 'origin', branch, '--tags']);
   }
 
   // Publish
