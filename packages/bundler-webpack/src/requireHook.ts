@@ -1,6 +1,11 @@
 const hookPropertyMap = new Map(
   [
     ['webpack', '@umijs/deps/compiled/webpack'],
+    ['webpack/lib/Compilation', '@umijs/deps/compiled/webpack/Compilation'],
+    [
+      'webpack/lib/RequestShortener',
+      '@umijs/deps/compiled/webpack/RequestShortener',
+    ],
     // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
   ].map(([request, replacement]) => [request, require.resolve(replacement)]),
 );

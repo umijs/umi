@@ -1,6 +1,12 @@
 module.exports = {
   // disable css files mock for bundler-webpack's css import tests
-  moduleNameMapper: {},
+  moduleNameMapper: {
+    // terser-webpack-plugin
+    '^webpack$': '@umijs/deps/compiled/webpack',
+    '^webpack/lib/Compilation$': '@umijs/deps/compiled/webpack/Compilation',
+    '^webpack/lib/RequestShortener$':
+      '@umijs/deps/compiled/webpack/RequestShortener',
+  },
   transformIgnorePatterns: ['/node_modules/(?!.*@babel)[^/]+?/'],
   collectCoverageFrom(memo) {
     return memo.concat([
