@@ -63,9 +63,9 @@ export default function (api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
-    // only `userConfig.devServer` can emit the html file in development
+    // only CSR and config `devServer.writeToDist`
     const enableWriteToDisk =
-      api.userConfig?.devServer && api.userConfig.devServer?.writeToDisk;
+      api.config.devServer && api.config.devServer.writeToDisk;
     if (
       (env === 'production' || enableWriteToDisk) &&
       id === 'webpack' &&
