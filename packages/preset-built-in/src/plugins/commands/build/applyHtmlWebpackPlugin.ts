@@ -63,6 +63,7 @@ export default function (api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
+    // only `userConfig.devServer` can emit the html file in development
     const enableWriteToDisk =
       api.userConfig?.devServer && api.userConfig.devServer?.writeToDisk;
     if (
