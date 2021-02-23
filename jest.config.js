@@ -15,6 +15,7 @@ module.exports = {
       '!packages/bundler-webpack/src/getConfig/setPublicPath.ts',
       '!packages/bundler-webpack/src/getConfig/runtimePublicPathEntry.ts',
       '!packages/bundler-webpack/src/webpackHotDevClient/*',
+      '!packages/bundler-webpack/src/webpack/*',
 
       // cli 入口不测
       '!packages/bundler-webpack/src/cli.ts',

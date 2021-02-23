@@ -1,4 +1,4 @@
-import * as t from '@babel/types';
+import { t } from '@umijs/utils';
 import type { Visitor, NodePath } from '@babel/traverse';
 
 type TLibs = (RegExp | string)[];

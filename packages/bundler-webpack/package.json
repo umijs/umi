@@ -30,7 +30,6 @@
     "anymatch": "3.1.1"
   },
   "dependencies": {
-    "@babel/core": "7.12.10",
     "@umijs/bundler-utils": "3.3.7",
     "@umijs/deps": "0.2.17",
     "@umijs/types": "3.3.7",
