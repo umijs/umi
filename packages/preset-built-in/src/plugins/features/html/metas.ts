@@ -1,4 +1,5 @@
 import { IApi } from '@umijs/types';
+import { deepUniq } from './utils';
 
 export default function (api: IApi) {
   api.describe({
@@ -11,6 +12,6 @@ export default function (api: IApi) {
   });
 
   api.addHTMLMetas(() => {
-    return api.config?.metas || [];
+    return deepUniq(api.config?.metas || []);
   });
 }

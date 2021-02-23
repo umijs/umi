@@ -65,3 +65,15 @@ test('routeToChunkName cwd', () => {
     }),
   ).toEqual('p__users__id');
 });
+
+test('routeToChunkName cwd escape char', () => {
+  expect(
+    routeToChunkName({
+      route: {
+        path: '/users/:id',
+        component: '/users/c++/pages/users/[id].jsx',
+      },
+      cwd: '/users/c++',
+    }),
+  ).toEqual('p__users__id');
+});

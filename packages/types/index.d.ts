@@ -385,8 +385,8 @@ interface IServerRenderResult<T = string | Stream> {
   error: Error;
 }
 
-interface IServerRender<T = string> {
-  (params: IServerRenderParams): Promise<IServerRenderResult<T>>;
+interface IServerRender {
+  (params: IServerRenderParams): Promise<IServerRenderResult>;
 }
 
 export type IConfig = WithFalse<BaseIConfig>;
