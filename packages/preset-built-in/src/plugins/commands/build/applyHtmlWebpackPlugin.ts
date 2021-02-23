@@ -64,7 +64,7 @@ export default function (api: IApi) {
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
     const enableWriteToDisk =
-      api.config.devServer && api.config.devServer?.writeToDisk;
+      api.userConfig?.devServer && api.userConfig.devServer?.writeToDisk;
     if (
       (env === 'production' || enableWriteToDisk) &&
       id === 'webpack' &&
