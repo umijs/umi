@@ -1,17 +1,5 @@
-// import marked from '@umijs/deps/compiled/marked';
-// import TerminalRenderer from '@umijs/deps/compiled/marked-terminal';
 import { chalk } from '@umijs/utils';
-import UmiError, { ERROR_CODE_MAP } from './UmiError';
 import Common from './Common';
-
-// marked.setOptions({
-//   // @ts-ignore
-//   renderer: new TerminalRenderer(),
-// });
-
-interface ILogErrorOpts {
-  detailsOnly?: boolean;
-}
 
 export default class Logger extends Common {
   protected LOG = chalk.black.bgBlue('LOG');
@@ -19,55 +7,6 @@ export default class Logger extends Common {
   protected WARN = chalk.black.bgHex('#faad14')('WARN');
   protected ERROR = chalk.black.bgRed('ERROR');
   protected PROFILE = chalk.black.bgCyan('PROFILE');
-
-  private isUmiError(error: Error): error is UmiError {
-    return !!(error instanceof UmiError);
-  }
-
-  /**
-   *
-   * @param e only print UmiError
-   * @param opts
-   */
-  private printUmiError(e: UmiError, opts = {} as ILogErrorOpts) {
-    const { detailsOnly } = opts;
-    const { code } = e;
-
-    if (!code) return;
-
-    const { message, details } = ERROR_CODE_MAP[code];
-    console.error(`\n${chalk.bgRed.black('ERROR CODE')} ${chalk.red(code)}`);
-
-    if (!detailsOnly) {
-      console.error(
-        `\n${chalk.bgRed.black('ERROR')} ${chalk.red(e.message || message)}`,
-      );
-    }
-
-    const osLocale = require('@umijs/deps/compiled/os-locale');
-    const lang = osLocale.sync();
-
-    // if (lang === 'zh-CN') {
-    //   console.error(
-    //     `\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(
-    //       details['zh-CN'],
-    //     )}`,
-    //   );
-    // } else {
-    //   console.error(
-    //     `\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details.en)}`,
-    //   );
-    // }
-
-    if (!detailsOnly && e.stack) {
-      console.error(
-        `${chalk.bgRed.black(' STACK ')}\n\n${e.stack
-          .split('\n')
-          .slice(1)
-          .join('\n')}`,
-      );
-    }
-  }
 
   public log(...args: any) {
     // TODO: node env production
@@ -83,12 +22,7 @@ export default class Logger extends Common {
   }
 
   public error(...args: any) {
-    if (this.isUmiError(args?.[0])) {
-      // @ts-ignore
-      this.printUmiError(...args);
-    } else {
-      console.error(this.ERROR, ...args);
-    }
+    console.error(this.ERROR, ...args);
   }
 
   public warn(...args: any) {
