@@ -5,7 +5,7 @@ export default function Route(props: any) {
   return (
     <RouterContext.Consumer>
       {(context: any) => {
-        const { location } = context;
+        const location = props.location || context.location;
         const match = props.computedMatch;
         const newProps = { ...context, location, match };
         let { render } = props;

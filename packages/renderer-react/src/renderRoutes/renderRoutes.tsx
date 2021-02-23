@@ -86,13 +86,16 @@ function render({
 }: {
   route: IRoute;
   opts: IOpts;
-  props: object;
+  props: any;
 }) {
-  const routes = renderRoutes({
-    ...opts,
-    routes: route.routes || [],
-    rootRoutes: opts.rootRoutes,
-  });
+  const routes = renderRoutes(
+    {
+      ...opts,
+      routes: route.routes || [],
+      rootRoutes: opts.rootRoutes,
+    },
+    { location: props.location },
+  );
   let { component: Component, wrappers } = route;
   if (Component) {
     const defaultPageInitialProps = opts.isServer
@@ -157,9 +160,9 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   }
 }
 
-export default function renderRoutes(opts: IOpts) {
+export default function renderRoutes(opts: IOpts, switchProps = {}) {
   return opts.routes ? (
-    <Switch>
+    <Switch {...switchProps}>
       {opts.routes.map((route, index) =>
         getRouteElement({
           route,

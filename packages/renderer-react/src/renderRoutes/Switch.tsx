@@ -6,7 +6,7 @@ export default function Switch(props: any) {
     <RouterContext.Consumer>
       {(context: any) => {
         const { children, ...extraProps } = props;
-        const { location } = context;
+        const location = props.location || context.location;
         let element: any,
           match: object | null = null;
 
