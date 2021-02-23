@@ -1,8 +1,6 @@
 import { join } from 'path';
 import { getCredentials } from './utils';
 
-jest.mock('@umijs/error-code-map', () => ({}));
-
 jest.mock('fs', () => ({
   readFileSync(filename) {
     return filename;
