@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@umijs/bundler-utils": "3.3.7",
-    "@umijs/deps": "0.2.17",
+    "@umijs/deps": "0.2.18",
     "@umijs/types": "3.3.7",
     "@umijs/utils": "3.3.7",
     "normalize-url": "1.9.1",

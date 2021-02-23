@@ -164,7 +164,7 @@ export default (context: any, opts: IOpts = {}) => {
           loaderMap: {
             svg: {
               ReactComponent: `${require.resolve(
-                '@svgr/webpack',
+                '@umijs/deps/compiled/babel/svgr-webpack',
               )}?-svgo,+titleProp,+ref![path]`,
             },
           },

@@ -318,7 +318,9 @@ test('svgr', () => {
       svgr: {},
     },
   );
-  expect(winPath(code!)).toContain(`index.js?-svgo,+titleProp,+ref!./a.svg");`);
+  expect(winPath(code!)).toContain(
+    `svgr-webpack.js?-svgo,+titleProp,+ref!./a.svg");`,
+  );
 });
 
 test('logical assignment operators', () => {

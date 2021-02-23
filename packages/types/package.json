@@ -28,7 +28,7 @@
     "@types/webpack-bundle-analyzer": "3.8.0",
     "@umijs/babel-preset-umi": "3.3.7",
     "@umijs/core": "3.3.7",
-    "@umijs/deps": "0.2.17",
+    "@umijs/deps": "0.2.18",
     "@umijs/server": "3.3.7",
     "@umijs/utils": "3.3.7",
     "webpack-chain": "6.5.1"
