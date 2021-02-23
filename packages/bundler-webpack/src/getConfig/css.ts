@@ -58,7 +58,7 @@ export function createCSSRule({
           .use('extract-css-loader')
           .loader(
             miniCSSExtractPluginLoaderPath ||
-              require('mini-css-extract-plugin').loader,
+              require('../webpack/plugins/mini-css-extract-plugin').loader,
           )
           .options({
             publicPath: './',
@@ -190,7 +190,7 @@ export default function ({
         .plugin('extract-css')
         .use(
           miniCSSExtractPluginPath ||
-            require.resolve('mini-css-extract-plugin'),
+            require.resolve('../webpack/plugins/mini-css-extract-plugin'),
           [
             {
               filename: `[name]${hash}.css`,

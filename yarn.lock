@@ -3235,10 +3235,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@umijs/deps@0.2.12":
-  version "0.2.12"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.12.tgz#0237c51ef6c9737cfe0aff45df2d86589618eb67"
-  integrity sha512-e1O5BCR899RGyYyu5fDC0dKyzg0c8+3PZCds+Zx05DedOTFv0556kADw+v8j1wRUjxIO2oCwkbfdgV56Pato0w==
+"@umijs/deps@0.2.15":
+  version "0.2.15"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.15.tgz#bd202a721ee321a2c3e0fc5b092f775061b0e7dc"
+  integrity sha512-CgTqH0+RGmjDyt+MhXvjjZwkEDtcaZFdUKMvKS8nuTx4lS7rde8sd1X2oBvuIOWk+Z5nAiNdWvWiYiRazx/xJA==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"
@@ -9543,16 +9543,6 @@ mini-create-react-context@^0.4.0:
     "@babel/runtime" "^7.12.1"
     tiny-warning "^1.0.3"
 
-mini-css-extract-plugin@0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-0.12.0.tgz#ddeb74fd6304ca9f99c1db74acc7d5b507705454"
-  integrity sha512-z6PQCe9rd1XUwZ8gMaEVwwRyZlrYy8Ba1gRjFP5HcV51HkXX+XlwZ+a1iAYTjSYwgNBXoNR7mhx79mDpOn5fdw==
-  dependencies:
-    loader-utils "^1.1.0"
-    normalize-url "1.9.1"
-    schema-utils "^1.0.0"
-    webpack-sources "^1.1.0"
-
 mini-store@^3.0.1:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/mini-store/-/mini-store-3.0.6.tgz#44b86be5b2877271224ce0689b3a35a2dffb1ca9"
@@ -14367,7 +14357,7 @@ webpack-chain@6.5.1:
     deepmerge "^1.5.2"
     javascript-stringify "^2.0.1"
 
-webpack-sources@^1.1.0, webpack-sources@^1.4.3:
+webpack-sources@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.4.3.tgz#eedd8ec0b928fbf1cbfe994e22d2d890f330a933"
   integrity sha512-lgTS3Xhv1lCOKo7SA5TjKXMjpSM4sBjNV5+q2bqesbSPs5FjGmU6jjtBSkX9b4qW87vDIsCIlUPOEhbZrMdjeQ==
