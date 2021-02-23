@@ -63,7 +63,6 @@ export default function (api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
-    // only CSR and config `devServer.writeToDist`
     const enableWriteToDisk =
       api.config.devServer && api.config.devServer.writeToDisk;
     if (
