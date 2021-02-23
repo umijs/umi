@@ -28,7 +28,7 @@
     "@babel/register": "7.12.10",
     "@umijs/ast": "3.3.7",
     "@umijs/babel-preset-umi": "3.3.7",
-    "@umijs/deps": "0.2.16",
+    "@umijs/deps": "0.2.17",
     "@umijs/error-code-map": "^1.0.1",
     "@umijs/utils": "3.3.7"
   }

@@ -169,7 +169,7 @@ export default function ({
     isDev,
     lang: 'less',
     test: /\.(less)(\?.*)?$/,
-    loader: 'less-loader',
+    loader: require.resolve('@umijs/deps/compiled/less-loader'),
     options: deepmerge(
       {
         modifyVars: theme,

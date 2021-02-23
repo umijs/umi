@@ -26,6 +26,6 @@
   "dependencies": {
     "@types/node": "14.0.23",
     "@umijs/utils": "3.3.7",
-    "@umijs/deps": "0.2.16"
+    "@umijs/deps": "0.2.17"
   }
 }

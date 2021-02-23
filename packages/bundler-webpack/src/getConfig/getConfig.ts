@@ -197,7 +197,7 @@ export default async function getConfig(
       ]).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
+        .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
         .options(babelOpts);
 
   if (config.extraBabelIncludes) {
@@ -221,7 +221,7 @@ export default async function getConfig(
             })
             .end()
           .use('babel-loader')
-            .loader(require.resolve('babel-loader'))
+            .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
             .options(babelOpts);
     });
   }
@@ -235,7 +235,7 @@ export default async function getConfig(
         .test(/\.(js|mjs|jsx)$/)
         .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
         .use('babel-loader')
-          .loader(require.resolve('babel-loader'))
+          .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
           .options(babelOpts);
   }
 
@@ -245,7 +245,7 @@ export default async function getConfig(
       .test(/\.(jsx|ts|tsx)$/)
       .include.add(/node_modules/).end()
       .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
+        .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
         .options(babelOpts);
 
   // prettier-ignore
@@ -286,13 +286,16 @@ export default async function getConfig(
       .end();
   }
 
-  rule.use('babel-loader').loader(require.resolve('babel-loader')).options(
-    getBabelDepsOpts({
-      cwd,
-      env,
-      config,
-    }),
-  );
+  rule
+    .use('babel-loader')
+    .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
+    .options(
+      getBabelDepsOpts({
+        cwd,
+        env,
+        config,
+      }),
+    );
 
   // prettier-ignore
   webpackConfig.module

@@ -32,12 +32,9 @@
   "dependencies": {
     "@babel/core": "7.12.10",
     "@umijs/bundler-utils": "3.3.7",
-    "@umijs/deps": "0.2.16",
+    "@umijs/deps": "0.2.17",
     "@umijs/types": "3.3.7",
     "@umijs/utils": "3.3.7",
-    "babel-loader": "8.2.2",
-    "less": "3.12.2",
-    "less-loader": "5.0.0",
     "normalize-url": "1.9.1",
     "postcss": "7.0.32",
     "postcss-flexbugs-fixes": "4.2.1",

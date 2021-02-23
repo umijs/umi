@@ -1,3 +1,4 @@
+// @ts-ignore
 const hookPropertyMap = new Map(
   [
     ['webpack', '@umijs/deps/compiled/webpack'],
@@ -10,7 +11,9 @@ const hookPropertyMap = new Map(
   ].map(([request, replacement]) => [request, require.resolve(replacement)]),
 );
 
+// @ts-ignore
 const mod = require('module');
+// @ts-ignore
 const resolveFilename = mod._resolveFilename;
 mod._resolveFilename = function (
   request: string,
