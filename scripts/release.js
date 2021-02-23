@@ -145,7 +145,11 @@ async function release() {
             isNext ? 'with next tag' : ''
           }`,
         );
-        const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
+        let cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
+        // one-time password from your authenticator
+        if (args.otp) {
+          cliArgs = cliArgs.concat(['--otp', args.otp]);
+        }
         const { stdout } = execa.sync('npm', cliArgs, {
           cwd: pkgPath,
         });
