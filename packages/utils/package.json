@@ -24,6 +24,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/deps": "0.2.18"
+    "@umijs/deps": "0.2.20"
   }
 }

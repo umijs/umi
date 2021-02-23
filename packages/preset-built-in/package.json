@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
+    "bundled",
     "lib"
   ],
   "repository": {
@@ -24,11 +25,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@types/react-router-config": "5.0.1",
     "@umijs/babel-preset-umi": "3.4.0-beta.1",
     "@umijs/bundler-webpack": "3.4.0-beta.1",
-    "@umijs/deps": "0.2.18",
+    "@umijs/deps": "0.2.20",
     "@umijs/renderer-mpa": "3.4.0-beta.1",
     "@umijs/renderer-react": "3.4.0-beta.1",
     "@umijs/runtime": "3.4.0-beta.1",
@@ -37,6 +37,11 @@
     "@umijs/utils": "3.4.0-beta.1",
     "es5-imcompatible-versions": "^0.1.62",
     "history-with-query": "4.10.4",
+    "ansi-html": "^0.0.7",
+    "error-stack-parser": "^2.0.6",
+    "html-entities": "^1.2.1",
+    "native-url": "^0.2.6",
+    "source-map": "^0.7.3",
     "react-refresh": "0.9.0",
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",

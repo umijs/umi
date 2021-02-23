@@ -1,12 +1,35 @@
 // @ts-ignore
+const files = [
+  'webpack/lib/Compilation',
+  'webpack/lib/dependencies/ConstDependency',
+  'webpack/lib/javascript/JavascriptParserHelpers',
+  'webpack/lib/LibraryTemplatePlugin',
+  'webpack/lib/node/NodeTargetPlugin',
+  'webpack/lib/node/NodeTemplatePlugin',
+  'webpack/lib/NormalModule',
+  'webpack/lib/RequestShortener',
+  'webpack/lib/RuntimeGlobals',
+  'webpack/lib/RuntimeModule',
+  'webpack/lib/optimize/LimitChunkCountPlugin',
+  'webpack/lib/ParserHelpers',
+  'webpack/lib/SingleEntryPlugin',
+  'webpack/lib/Template',
+];
+
+function getFileName(filePath: string) {
+  return filePath.split('/').slice(-1)[0];
+}
+
+const filesMap = files.map((file) => {
+  const fileName = getFileName(file);
+  return [file, `@umijs/deps/compiled/webpack/${fileName}`];
+});
+
+// @ts-ignore
 const hookPropertyMap = new Map(
   [
     ['webpack', '@umijs/deps/compiled/webpack'],
-    ['webpack/lib/Compilation', '@umijs/deps/compiled/webpack/Compilation'],
-    [
-      'webpack/lib/RequestShortener',
-      '@umijs/deps/compiled/webpack/RequestShortener',
-    ],
+    ...filesMap,
     // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
   ].map(([request, replacement]) => [request, require.resolve(replacement)]),
 );
