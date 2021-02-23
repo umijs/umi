@@ -24,8 +24,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.12.10",
-    "@babel/register": "7.12.10",
     "@umijs/ast": "3.4.0-beta.1",
     "@umijs/babel-preset-umi": "3.4.0-beta.1",
     "@umijs/deps": "0.2.18",
