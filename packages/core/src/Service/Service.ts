@@ -28,6 +28,7 @@ export interface IServiceOpts {
   pkg?: IPackage;
   presets?: string[];
   plugins?: string[];
+  configFiles?: string[];
   env?: NodeEnv;
 }
 
@@ -113,10 +114,15 @@ export default class Service extends EventEmitter {
 
     // get user config without validation
     logger.debug('get user config');
+    const configFiles = opts.configFiles;
     this.configInstance = new Config({
       cwd: this.cwd,
       service: this,
       localConfig: this.env === 'development',
+      configFiles:
+        Array.isArray(configFiles) && !!configFiles[0]
+          ? configFiles
+          : undefined,
     });
     this.userConfig = this.configInstance.getUserConfig();
     logger.debug('userConfig:');
