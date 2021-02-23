@@ -2,11 +2,11 @@ import { chalk } from '@umijs/utils';
 import Common from './Common';
 
 export default class Logger extends Common {
-  protected LOG = chalk.black.bgBlue('LOG');
-  protected INFO = chalk.black.bgBlue('INFO');
-  protected WARN = chalk.black.bgHex('#faad14')('WARN');
-  protected ERROR = chalk.black.bgRed('ERROR');
-  protected PROFILE = chalk.black.bgCyan('PROFILE');
+  public LOG = chalk.black.bgBlue('LOG');
+  public INFO = chalk.black.bgBlue('INFO');
+  public WARN = chalk.black.bgHex('#faad14')('WARN');
+  public ERROR = chalk.black.bgRed('ERROR');
+  public PROFILE = chalk.black.bgCyan('PROFILE');
 
   public log(...args: any) {
     // TODO: node env production

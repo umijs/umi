@@ -1,5 +1,4 @@
 import Logger from './Logger';
-import UmiError from './UmiError';
 
 describe('Logger', () => {
   afterEach(() => {
@@ -69,23 +68,6 @@ describe('Logger', () => {
       logger.error(normalError);
       expect(errorMockFn).toBeCalled();
       expect(errorMockFn).toBeCalledWith(logger.ERROR, normalError);
-      spy.mockRestore();
-    });
-
-    it('umi error', () => {
-      const errorMockFn = jest.fn();
-      const spy = jest
-        .spyOn(global.console, 'error')
-        .mockImplementation(errorMockFn);
-      const logger = new Logger('error');
-      // Umi Error
-      const umiError = new UmiError({
-        code: 'ERR_CORE_PLUGIN_RESOLVE_FAILED',
-        message: 'test',
-      });
-      logger.error(umiError);
-      expect(errorMockFn).toBeCalled();
-      expect(umiError.code).toEqual('ERR_CORE_PLUGIN_RESOLVE_FAILED');
       spy.mockRestore();
     });
   });
