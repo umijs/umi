@@ -1,6 +1,6 @@
 {
   "name": "@umijs/types",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "@umijs/types",
   "main": "lib/index.js",
   "types": "index",
@@ -29,10 +29,10 @@
     "@types/express": "4.17.7",
     "@types/webpack": "4.41.21",
     "@types/webpack-bundle-analyzer": "3.8.0",
-    "@umijs/babel-preset-umi": "3.3.7",
-    "@umijs/core": "3.3.7",
-    "@umijs/server": "3.3.7",
-    "@umijs/utils": "3.3.7",
+    "@umijs/babel-preset-umi": "3.3.8",
+    "@umijs/core": "3.3.8",
+    "@umijs/server": "3.3.8",
+    "@umijs/utils": "3.3.8",
     "webpack-chain": "6.5.1"
   }
 }
