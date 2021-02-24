@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
+    "bundled",
     "lib"
   ],
   "repository": {
@@ -24,11 +25,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@types/react-router-config": "5.0.1",
     "@umijs/babel-preset-umi": "3.4.0-beta.1",
     "@umijs/bundler-webpack": "3.4.0-beta.1",
-    "@umijs/deps": "0.2.18",
+    "@umijs/deps": "0.2.21",
     "@umijs/renderer-mpa": "3.4.0-beta.1",
     "@umijs/renderer-react": "3.4.0-beta.1",
     "@umijs/runtime": "3.4.0-beta.1",

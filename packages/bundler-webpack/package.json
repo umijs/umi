@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@umijs/bundler-utils": "3.4.0-beta.1",
-    "@umijs/deps": "0.2.18",
+    "@umijs/deps": "0.2.21",
     "@umijs/types": "3.4.0-beta.1",
     "@umijs/utils": "3.4.0-beta.1",
     "normalize-url": "1.9.1",
@@ -43,7 +43,9 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.2",
-    "terser-webpack-plugin": "4.2.3",
+    "jest-worker": "26.6.2",
+    "terser": "5.6.0",
+    "webpack-sources": "^1.4.3",
     "webpack-chain": "6.5.1"
   },
   "bin": {

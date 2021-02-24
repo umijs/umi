@@ -1,11 +1,20 @@
+const {
+  files,
+  getFileName,
+} = require('./packages/bundler-webpack/lib/requireHook');
+
+const webpackModuleNameMapper = files.reduce((memo, file) => {
+  const fileName = getFileName(file);
+  memo[`^${file}$`] = `@umijs/deps/compiled/webpack/${fileName}`;
+  return memo;
+}, {});
+
 module.exports = {
   // disable css files mock for bundler-webpack's css import tests
   moduleNameMapper: {
     // terser-webpack-plugin
     '^webpack$': '@umijs/deps/compiled/webpack',
-    '^webpack/lib/Compilation$': '@umijs/deps/compiled/webpack/Compilation',
-    '^webpack/lib/RequestShortener$':
-      '@umijs/deps/compiled/webpack/RequestShortener',
+    ...webpackModuleNameMapper,
   },
   transformIgnorePatterns: ['/node_modules/(?!.*@babel)[^/]+?/'],
   collectCoverageFrom(memo) {
