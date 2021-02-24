@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "3.4.0-beta.2",
+  "version": "3.4.0-beta.3",
   "description": "@umijs/babel-preset-umi",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@babel/runtime": "7.12.5",
-    "@umijs/babel-plugin-auto-css-modules": "3.4.0-beta.2",
-    "@umijs/babel-plugin-import-to-await-require": "3.4.0-beta.2",
-    "@umijs/babel-plugin-lock-core-js-3": "3.4.0-beta.2"
+    "@umijs/babel-plugin-auto-css-modules": "3.4.0-beta.3",
+    "@umijs/babel-plugin-import-to-await-require": "3.4.0-beta.3",
+    "@umijs/babel-plugin-lock-core-js-3": "3.4.0-beta.3"
   }
 }
