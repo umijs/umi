@@ -1,4 +1,4 @@
-const url = require('native-url');
+const url = require('@umijs/deps/compiled/native-url');
 const getCurrentScriptSource = require('./getCurrentScriptSource');
 const parseQuery = require('./parseQuery');
 

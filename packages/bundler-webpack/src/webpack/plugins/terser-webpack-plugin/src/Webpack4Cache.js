@@ -1,8 +1,8 @@
 import os from 'os';
 
-import cacache from 'cacache';
-import findCacheDir from 'find-cache-dir';
-import serialize from 'serialize-javascript';
+import cacache from '@umijs/deps/compiled/cacache';
+import findCacheDir from '@umijs/deps/compiled/find-cache-dir';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
 
 export default class Webpack4Cache {
   constructor(compilation, options, weakCache) {

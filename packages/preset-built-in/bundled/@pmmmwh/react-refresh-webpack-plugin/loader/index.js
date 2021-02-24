@@ -9,7 +9,7 @@ const {
   SourceMapConsumer,
   SourceMapGenerator,
   SourceNode,
-} = require('source-map');
+} = require('@umijs/deps/compiled/source-map');
 const { Template } = require('webpack');
 
 /**

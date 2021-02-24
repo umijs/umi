@@ -1,6 +1,6 @@
 /* global __webpack_dev_server_client__ */
 
-const url = require('native-url');
+const url = require('@umijs/deps/compiled/native-url');
 const getSocketUrlParts = require('./utils/getSocketUrlParts');
 
 /**

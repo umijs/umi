@@ -1,7 +1,7 @@
 import path from 'path';
 import os from 'os';
 
-import { SourceMapConsumer } from 'source-map';
+import { SourceMapConsumer } from '@umijs/deps/compiled/source-map';
 import webpack, {
   util,
   ModuleFilenameHelpers,
@@ -11,9 +11,9 @@ import webpack, {
 } from 'webpack';
 import RequestShortener from 'webpack/lib/RequestShortener';
 
-import serialize from 'serialize-javascript';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
 import terserPackageJson from 'terser/package.json';
-import pLimit from 'p-limit';
+import pLimit from '@umijs/deps/compiled/p-limit';
 import Worker from 'jest-worker';
 
 import { minify as minifyFn } from './minify';
