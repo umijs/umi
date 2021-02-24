@@ -119,10 +119,14 @@ export default async function getConfig(
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
     .publicPath((config.publicPath! as unknown) as string)
-    // remove this after webpack@5
-    // free memory of assets after emitting
-    .futureEmitAssets(true)
     .pathinfo(isDev || disableCompress);
+
+  if (!isWebpack5) {
+    webpackConfig.output
+      // remove this after webpack@5
+      // free memory of assets after emitting
+      .futureEmitAssets(true);
+  }
 
   // resolve
   // prettier-ignore
@@ -364,18 +368,20 @@ export default async function getConfig(
   }
 
   // node shims
-  webpackConfig.node.merge({
-    setImmediate: false,
-    module: 'empty',
-    dns: 'mock',
-    http2: 'empty',
-    process: 'mock',
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
-  });
+  if (!isWebpack5) {
+    webpackConfig.node.merge({
+      setImmediate: false,
+      module: 'empty',
+      dns: 'mock',
+      http2: 'empty',
+      process: 'mock',
+      dgram: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty',
+    });
+  }
 
   // plugins -> ignore moment locale
   if (config.ignoreMomentLocale) {

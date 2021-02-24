@@ -11,7 +11,7 @@ interface IOpts {
   config: IConfig;
 }
 
-defaultWebpack.init();
+defaultWebpack.init(!!process.env.USE_WEBPACK_5);
 require('./requireHook').init();
 
 class Bundler {

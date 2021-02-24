@@ -66,6 +66,7 @@ export default function () {
       require.resolve('./plugins/features/theme'),
       require.resolve('./plugins/features/umiInfo'),
       require.resolve('./plugins/features/runtimeHistory'),
+      require.resolve('./plugins/features/webpack5'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
