@@ -1,5 +1,4 @@
-// @ts-ignore
-const files = [
+export const files = [
   'webpack/lib/Compilation',
   'webpack/lib/dependencies/ConstDependency',
   'webpack/lib/javascript/JavascriptParserHelpers',
@@ -16,35 +15,34 @@ const files = [
   'webpack/lib/Template',
 ];
 
-function getFileName(filePath: string) {
+export function getFileName(filePath: string) {
   return filePath.split('/').slice(-1)[0];
 }
 
-const filesMap = files.map((file) => {
-  const fileName = getFileName(file);
-  return [file, `@umijs/deps/compiled/webpack/${fileName}`];
-});
+export function init() {
+  const filesMap = files.map((file) => {
+    const fileName = getFileName(file);
+    return [file, `@umijs/deps/compiled/webpack/${fileName}`];
+  });
 
-// @ts-ignore
-const hookPropertyMap = new Map(
-  [
-    ['webpack', '@umijs/deps/compiled/webpack'],
-    ...filesMap,
-    // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
-  ].map(([request, replacement]) => [request, require.resolve(replacement)]),
-);
+  const hookPropertyMap = new Map(
+    [
+      ['webpack', '@umijs/deps/compiled/webpack'],
+      ...filesMap,
+      // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
+    ].map(([request, replacement]) => [request, require.resolve(replacement)]),
+  );
 
-// @ts-ignore
-const mod = require('module');
-// @ts-ignore
-const resolveFilename = mod._resolveFilename;
-mod._resolveFilename = function (
-  request: string,
-  parent: any,
-  isMain: boolean,
-  options: any,
-) {
-  const hookResolved = hookPropertyMap.get(request);
-  if (hookResolved) request = hookResolved;
-  return resolveFilename.call(mod, request, parent, isMain, options);
-};
+  const mod = require('module');
+  const resolveFilename = mod._resolveFilename;
+  mod._resolveFilename = function (
+    request: string,
+    parent: any,
+    isMain: boolean,
+    options: any,
+  ) {
+    const hookResolved = hookPropertyMap.get(request);
+    if (hookResolved) request = hookResolved;
+    return resolveFilename.call(mod, request, parent, isMain, options);
+  };
+}

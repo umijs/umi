@@ -12,7 +12,7 @@ interface IOpts {
 }
 
 defaultWebpack.init();
-require('./requireHook');
+require('./requireHook').init();
 
 class Bundler {
   static id = 'webpack';
