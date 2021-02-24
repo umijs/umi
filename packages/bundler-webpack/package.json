@@ -43,7 +43,14 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.2",
-    "terser-webpack-plugin": "4.2.3",
+    "cacache": "15.0.5",
+    "find-cache-dir": "3.3.1",
+    "jest-worker": "26.6.2",
+    "p-limit": "3.1.0",
+    "serialize-javascript": "5.0.1",
+    "source-map": "0.6.1",
+    "terser": "5.6.0",
+    "webpack-sources": "^1.4.3",
     "webpack-chain": "6.5.1"
   },
   "bin": {

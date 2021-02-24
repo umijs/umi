@@ -526,7 +526,7 @@ export default async function getConfig(
       } else if (!opts.__disableTerserForTest) {
         webpackConfig.optimization
           .minimizer('terser')
-          .use(require.resolve('terser-webpack-plugin'), [
+          .use(require.resolve('../webpack/plugins/terser-webpack-plugin'), [
             {
               terserOptions: deepmerge(
                 terserOptions,
