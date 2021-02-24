@@ -1,8 +1,8 @@
 import { Readable } from 'stream';
 import { IRoute } from '@umijs/types';
 import { parse, UrlWithStringQuery } from 'url';
-import mergeStream from 'merge-stream';
-import serialize from 'serialize-javascript';
+import mergeStream from '@umijs/deps/compiled/merge-stream';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
 
 function addLeadingSlash(path: string): string {
   return path.charAt(0) === "/" ? path : "/" + path;

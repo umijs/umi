@@ -4,7 +4,7 @@ import {
   BundlerConfigType,
   ICopy,
 } from '@umijs/types';
-import defaultWebpack from 'webpack';
+import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import Config from 'webpack-chain';
 import { join, isAbsolute } from 'path';
 import { existsSync } from 'fs';
@@ -26,6 +26,14 @@ import {
 } from './nodeModulesTransform';
 import resolveDefine from './resolveDefine';
 import { getPkgPath, shouldTransform } from './pkgMatch';
+
+function onWebpackInitWithPromise() {
+  return new Promise<void>((resolve) => {
+    defaultWebpack.onWebpackInit(() => {
+      resolve();
+    });
+  });
+}
 
 export interface IOpts {
   cwd: string;
@@ -53,6 +61,7 @@ export interface IOpts {
 export default async function getConfig(
   opts: IOpts,
 ): Promise<defaultWebpack.Configuration> {
+  await onWebpackInitWithPromise();
   const {
     cwd,
     config,
@@ -188,7 +197,7 @@ export default async function getConfig(
       ]).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
+        .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
         .options(babelOpts);
 
   if (config.extraBabelIncludes) {
@@ -199,7 +208,7 @@ export default async function getConfig(
         .rule(rule)
           .test(/\.(js|mjs|jsx)$/)
             .include
-            .add((a) => {
+            .add((a: any) => {
               // 支持绝对路径匹配
               if (isAbsolute(include)) {
                 return isAbsolute(include);
@@ -212,7 +221,7 @@ export default async function getConfig(
             })
             .end()
           .use('babel-loader')
-            .loader(require.resolve('babel-loader'))
+            .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
             .options(babelOpts);
     });
   }
@@ -226,7 +235,7 @@ export default async function getConfig(
         .test(/\.(js|mjs|jsx)$/)
         .include.add(join(process.env.UMI_DIR as string, 'dist', 'index.esm.js')).end()
         .use('babel-loader')
-          .loader(require.resolve('babel-loader'))
+          .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
           .options(babelOpts);
   }
 
@@ -236,7 +245,7 @@ export default async function getConfig(
       .test(/\.(jsx|ts|tsx)$/)
       .include.add(/node_modules/).end()
       .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
+        .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
         .options(babelOpts);
 
   // prettier-ignore
@@ -258,7 +267,7 @@ export default async function getConfig(
       .include
         .add(/node_modules/)
         .end()
-      .exclude.add((path) => {
+      .exclude.add((path: any) => {
         return isMatch({ path, pkgs });
       })
         .end();
@@ -268,7 +277,7 @@ export default async function getConfig(
       ...excludeToPkgs({ exclude: nodeModulesTransform.exclude || [] }),
     };
     rule.include
-      .add((path) => {
+      .add((path: any) => {
         return isMatch({
           path,
           pkgs,
@@ -277,27 +286,30 @@ export default async function getConfig(
       .end();
   }
 
-  rule.use('babel-loader').loader(require.resolve('babel-loader')).options(
-    getBabelDepsOpts({
-      cwd,
-      env,
-      config,
-    }),
-  );
+  rule
+    .use('babel-loader')
+    .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
+    .options(
+      getBabelDepsOpts({
+        cwd,
+        env,
+        config,
+      }),
+    );
 
   // prettier-ignore
   webpackConfig.module
     .rule('images')
     .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
     .use('url-loader')
-      .loader(require.resolve('url-loader'))
+      .loader(require.resolve('@umijs/deps/compiled/url-loader'))
       .options({
         limit: config.inlineLimit || 10000,
         name: 'static/[name].[hash:8].[ext]',
         // require 图片的时候不用加 .default
         esModule: false,
         fallback: {
-          loader: require.resolve('file-loader'),
+          loader: require.resolve('@umijs/deps/compiled/file-loader'),
           options: {
             name: 'static/[name].[hash:8].[ext]',
             esModule: false,
@@ -310,7 +322,7 @@ export default async function getConfig(
     .rule('svg')
     .test(/\.(svg)(\?.*)?$/)
     .use('file-loader')
-      .loader(require.resolve('file-loader'))
+      .loader(require.resolve('@umijs/deps/compiled/file-loader'))
       .options({
         name: 'static/[name].[hash:8].[ext]',
         esModule: false,
@@ -321,7 +333,7 @@ export default async function getConfig(
     .rule('fonts')
     .test(/\.(eot|woff|woff2|ttf)(\?.*)?$/)
     .use('file-loader')
-      .loader(require.resolve('file-loader'))
+      .loader(require.resolve('@umijs/deps/compiled/file-loader'))
       .options({
         name: 'static/[name].[hash:8].[ext]',
         esModule: false,
@@ -332,7 +344,7 @@ export default async function getConfig(
     .rule('plaintext')
     .test(/\.(txt|text|md)$/)
     .use('raw-loader')
-      .loader(require.resolve('raw-loader'));
+      .loader(require.resolve('@umijs/deps/compiled/raw-loader'));
 
   // css
   css({
@@ -388,7 +400,7 @@ export default async function getConfig(
   if (process.env.PROGRESS !== 'none') {
     webpackConfig
       .plugin('progress')
-      .use(require.resolve('webpackbar'), [
+      .use(require.resolve('@umijs/deps/compiled/webpackbar'), [
         config.ssr
           ? { name: type === BundlerConfigType.ssr ? 'Server' : 'Client' }
           : {},
@@ -418,11 +430,13 @@ export default async function getConfig(
   ].filter(Boolean);
 
   if (copyPatterns.length) {
-    webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
-      {
-        patterns: copyPatterns,
-      },
-    ]);
+    webpackConfig
+      .plugin('copy')
+      .use(require.resolve('@umijs/deps/compiled/copy-webpack-plugin'), [
+        {
+          patterns: copyPatterns,
+        },
+      ]);
   }
 
   // timefix
@@ -434,11 +448,14 @@ export default async function getConfig(
   if (process.env.FRIENDLY_ERROR !== 'none') {
     webpackConfig
       .plugin('friendly-error')
-      .use(require.resolve('friendly-errors-webpack-plugin'), [
-        {
-          clearConsole: false,
-        },
-      ]);
+      .use(
+        require.resolve('@umijs/deps/compiled/friendly-errors-webpack-plugin'),
+        [
+          {
+            clearConsole: false,
+          },
+        ],
+      );
   }
 
   // profile
@@ -450,7 +467,7 @@ export default async function getConfig(
         ? process.env.WEBPACK_PROFILE
         : 'verbose') as defaultWebpack.Options.Stats,
     );
-    const StatsPlugin = require('stats-webpack-plugin');
+    const StatsPlugin = require('@umijs/deps/compiled/stats-webpack-plugin');
     webpackConfig.plugin('stats-webpack-plugin').use(
       new StatsPlugin('stats.json', {
         chunkModules: true,
@@ -463,7 +480,7 @@ export default async function getConfig(
     if (config.manifest && type === BundlerConfigType.csr) {
       webpackConfig
         .plugin('manifest')
-        .use(require.resolve('webpack-manifest-plugin'), [
+        .use(require.resolve('@umijs/deps/compiled/webpack-manifest-plugin'), [
           {
             fileName: 'asset-manifest.json',
             ...config.manifest,
@@ -509,7 +526,7 @@ export default async function getConfig(
       } else if (!opts.__disableTerserForTest) {
         webpackConfig.optimization
           .minimizer('terser')
-          .use(require.resolve('terser-webpack-plugin'), [
+          .use(require.resolve('../webpack/plugins/terser-webpack-plugin'), [
             {
               terserOptions: deepmerge(
                 terserOptions,
@@ -546,6 +563,7 @@ export default async function getConfig(
   }
   // 用户配置的 chainWebpack 优先级最高
   if (config.chainWebpack) {
+    // @ts-ignore
     await config.chainWebpack(webpackConfig, {
       type,
       env,
@@ -558,7 +576,7 @@ export default async function getConfig(
 
   // speed-measure-webpack-plugin
   if (process.env.SPEED_MEASURE && type === BundlerConfigType.csr) {
-    const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+    const SpeedMeasurePlugin = require('@umijs/deps/compiled/speed-measure-webpack-plugin');
     const smpOption =
       process.env.SPEED_MEASURE === 'CONSOLE'
         ? { outputFormat: 'human', outputTarget: console.log }

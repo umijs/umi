@@ -42,9 +42,11 @@ export default (api: IApi) => {
     ) {
       webpackConfig
         .plugin('bundle-analyzer')
-        .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
-          api.config?.analyze || {},
-        ]);
+        .use(
+          require('@umijs/deps/compiled/umi-webpack-bundle-analyzer')
+            .BundleAnalyzerPlugin,
+          [api.config?.analyze || {}],
+        );
     }
     return webpackConfig;
   });

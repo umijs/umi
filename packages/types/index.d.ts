@@ -17,9 +17,13 @@ import {
   IRouteComponentProps,
   IRoute as IRouteProps,
 } from '@umijs/renderer-react';
-import webpack from 'webpack';
+import webpack from '@umijs/deps/compiled/webpack';
 import WebpackChain from 'webpack-chain';
-import { Express, NextFunction, RequestHandler } from 'express';
+import {
+  Express,
+  NextFunction,
+  RequestHandler,
+} from '@umijs/deps/compiled/express';
 import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
 

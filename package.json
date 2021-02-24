@@ -41,12 +41,12 @@
     "@types/babel__traverse": "7.0.13",
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.23",
-    "@umijs/core": "3.3.9",
+    "@umijs/core": "3.4.0-beta.2",
     "@umijs/plugin-analytics": "^0.2.2",
     "@umijs/preset-dumi": "^1.0.33",
-    "@umijs/test": "3.3.9",
-    "@umijs/test-utils": "3.3.9",
-    "@umijs/utils": "3.3.9",
+    "@umijs/test": "3.4.0-beta.2",
+    "@umijs/test-utils": "3.4.0-beta.2",
+    "@umijs/utils": "3.4.0-beta.2",
     "benchmark": "^2.1.4",
     "escape-goat": "^3.0.0",
     "father-build": "^1.19.0",
@@ -56,8 +56,7 @@
     "npm-run-all": "^4.1.5",
     "open": "^7.0.4",
     "prettier": "^2.0.5",
-    "yorkie": "^2.0.0",
-    "git-repo-info": "^2.1.1"
+    "yorkie": "^2.0.0"
   },
   "repository": {
     "type": "git",

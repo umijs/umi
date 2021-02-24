@@ -7,12 +7,12 @@ import {
 } from './propertyResolver';
 
 export function getExportProps(code: string) {
-  const ast = parse(code) as babel.types.File;
+  const ast = parse(code);
   let props: unknown = undefined;
   traverse.default(ast, {
     Program: {
-      enter(path) {
-        const node = path.node as t.Program;
+      enter(path: any) {
+        const node = path.node;
         const defaultExport = findExportDefault(node);
         if (!defaultExport) return;
 

@@ -25,9 +25,10 @@ export default (api: IApi) => {
       memo
         .plugin('fastRefresh')
         .after('hmr')
-        .use(require('@pmmmwh/react-refresh-webpack-plugin'), [
-          { overlay: false },
-        ]);
+        .use(
+          require('../../../bundled/@pmmmwh/react-refresh-webpack-plugin/lib'),
+          [{ overlay: false }],
+        );
       debug('FastRefresh webpack loaded');
     }
     return memo;

@@ -1,6 +1,6 @@
 import { IConfig, BundlerConfigType } from '@umijs/types';
-import defaultWebpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
+import * as defaultWebpack from '@umijs/deps/compiled/webpack';
+import webpackDevMiddleware from '@umijs/deps/compiled/webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import { winPath, lodash as _ } from '@umijs/utils';
 import { join } from 'path';
@@ -10,6 +10,9 @@ interface IOpts {
   cwd: string;
   config: IConfig;
 }
+
+defaultWebpack.init();
+require('./requireHook').init();
 
 class Bundler {
   static id = 'webpack';
@@ -40,7 +43,7 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): Promise<{ stats: defaultWebpack.Stats }> {
     return new Promise((resolve, reject) => {
-      const compiler = bundleImplementor(bundleConfigs);
+      const compiler = bundleImplementor.webpack(bundleConfigs);
       compiler.run((err, stats) => {
         if (err || stats.hasErrors()) {
           try {
@@ -49,6 +52,7 @@ class Bundler {
           console.error(err);
           return reject(new Error('build failed'));
         }
+
         // @ts-ignore
         resolve({ stats });
       });
@@ -78,16 +82,13 @@ class Bundler {
     bundleConfigs: defaultWebpack.Configuration[];
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
-    const compiler = bundleImplementor(bundleConfigs);
-    const { ssr, devServer } = this.config;
+    const compiler = bundleImplementor.webpack(bundleConfigs);
+    const { devServer } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
-    // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
       publicPath: '/',
       logLevel: 'silent',
-      // if `ssr` set false, next() into server-side render
-      ...(ssr ? { index: false } : {}),
       writeToDisk: devServer && devServer?.writeToDisk,
       watchOptions: {
         // not watch outputPath dir and node_modules

@@ -1,4 +1,4 @@
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp } from '@umijs/deps/compiled/lodash';
 import winPath from './winPath/winPath';
 
 function lastSlash(str: string) {

@@ -63,6 +63,7 @@ test('dev-writeToDisk', async () => {
     env: 'development',
   });
 
+  // @ts-ignore
   const { destroy, compilerMiddleware: instance } = await service.run({
     name: 'dev',
   });

@@ -2,7 +2,7 @@ import { Service } from '@umijs/core';
 import { Stream } from 'stream';
 import { join } from 'path';
 import { EOL } from 'os';
-import cheerio from 'cheerio';
+import cheerio from '@umijs/deps/compiled/cheerio';
 import { render, cleanup } from '@testing-library/react';
 import { rimraf } from '@umijs/utils';
 import { readFileSync, existsSync } from 'fs';

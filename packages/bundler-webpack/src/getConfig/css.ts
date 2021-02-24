@@ -42,7 +42,7 @@ export function createCSSRule({
   function applyLoaders(rule: Config.Rule<Config.Rule>, isCSSModules: boolean) {
     if (config.styleLoader) {
       rule
-        .use('style-loader')
+        .use('@umijs/deps/compiled/style-loader')
         .loader(require.resolve('style-loader'))
         .options(
           deepmerge(
@@ -58,7 +58,7 @@ export function createCSSRule({
           .use('extract-css-loader')
           .loader(
             miniCSSExtractPluginLoaderPath ||
-              require('mini-css-extract-plugin').loader,
+              require('../webpack/plugins/mini-css-extract-plugin').loader,
           )
           .options({
             publicPath: './',
@@ -70,13 +70,15 @@ export function createCSSRule({
     if (isDev && isCSSModules && config.cssModulesTypescriptLoader) {
       rule
         .use('css-modules-typescript-loader')
-        .loader(require.resolve('css-modules-typescript-loader'))
+        .loader(
+          require.resolve('@umijs/deps/compiled/css-modules-typescript-loader'),
+        )
         .options(config.cssModulesTypescriptLoader);
     }
 
     rule
       .use('css-loader')
-      .loader(require.resolve('css-loader'))
+      .loader(require.resolve('@umijs/deps/compiled/css-loader'))
       .options(
         deepmerge(
           {
@@ -167,7 +169,7 @@ export default function ({
     isDev,
     lang: 'less',
     test: /\.(less)(\?.*)?$/,
-    loader: 'less-loader',
+    loader: require.resolve('@umijs/deps/compiled/less-loader'),
     options: deepmerge(
       {
         modifyVars: theme,
@@ -188,7 +190,7 @@ export default function ({
         .plugin('extract-css')
         .use(
           miniCSSExtractPluginPath ||
-            require.resolve('mini-css-extract-plugin'),
+            require.resolve('../webpack/plugins/mini-css-extract-plugin'),
           [
             {
               filename: `[name]${hash}.css`,
@@ -203,17 +205,22 @@ export default function ({
   if (!isDev && !disableCompress) {
     webpackConfig
       .plugin('optimize-css')
-      .use(require.resolve('optimize-css-assets-webpack-plugin'), [
-        {
-          cssProcessorOptions: {
-            // https://github.com/postcss/postcss-safe-parser
-            // TODO: 待验证功能
-            parser: safePostCssParser,
+      .use(
+        require.resolve(
+          '@umijs/deps/compiled/optimize-css-assets-webpack-plugin',
+        ),
+        [
+          {
+            cssProcessorOptions: {
+              // https://github.com/postcss/postcss-safe-parser
+              // TODO: 待验证功能
+              parser: safePostCssParser,
+            },
+            cssProcessorPluginOptions: {
+              preset: ['default', config.cssnano],
+            },
           },
-          cssProcessorPluginOptions: {
-            preset: ['default', config.cssnano],
-          },
-        },
-      ]);
+        ],
+      );
   }
 }

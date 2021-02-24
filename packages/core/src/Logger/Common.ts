@@ -1,9 +1,5 @@
 import { createDebug, Debugger } from '@umijs/utils';
 
-interface ILogErrorOpts {
-  detailsOnly?: boolean;
-}
-
 abstract class Common {
   public debug: Debugger;
   protected namespace: string;
