@@ -9,7 +9,6 @@ import {
   Service,
 } from '@umijs/core';
 import { Stream } from 'stream';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
@@ -283,7 +282,7 @@ export interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };
-  analyze?: BundleAnalyzerPlugin.Options;
+  analyze?: object;
   autoprefixer?: object;
   base?: string;
   chainWebpack?: {

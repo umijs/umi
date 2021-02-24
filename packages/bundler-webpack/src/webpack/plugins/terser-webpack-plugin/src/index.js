@@ -21,7 +21,7 @@ import { minify as minifyFn } from './minify';
 // webpack 5 exposes the sources property to ensure the right version of webpack-sources is used
 const { SourceMapSource, RawSource, ConcatSource } =
   // eslint-disable-next-line global-require
-  webpack.sources || require('webpack-sources');
+  webpack.sources || require('@umijs/deps/compiled/webpack-sources');
 
 class TerserPlugin {
   constructor(options = {}) {

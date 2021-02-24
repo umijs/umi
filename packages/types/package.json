@@ -25,7 +25,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/webpack-bundle-analyzer": "3.8.0",
     "@umijs/babel-preset-umi": "3.4.0-beta.2",
     "@umijs/core": "3.4.0-beta.2",
     "@umijs/deps": "0.2.21",
