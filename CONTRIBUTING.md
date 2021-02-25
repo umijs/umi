@@ -61,6 +61,7 @@ $ npm run release
 $ npm run release -- --publish-only
 $ npm run release -- --skip-git-status-check
 $ npm run release -- --skip-build
+$ npm run release -- --enable-otp
 ```
 
 ## Create new package
