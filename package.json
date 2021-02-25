@@ -50,13 +50,14 @@
     "benchmark": "^2.1.4",
     "escape-goat": "^3.0.0",
     "father-build": "^1.19.0",
+    "git-repo-info": "^2.1.1",
+    "inquirer": "^7.3.3",
     "lerna": "^3.22.1",
     "lint-staged": "^10.2.11",
     "new-github-release-url": "^1.0.0",
     "npm-run-all": "^4.1.5",
     "open": "^7.0.4",
     "prettier": "^2.0.5",
-    "git-repo-info": "^2.1.1",
     "yorkie": "^2.0.0"
   },
   "repository": {
