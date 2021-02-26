@@ -147,7 +147,7 @@ async function release() {
       );
       let cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
       // one-time password from your authenticator
-      if (args.enableOtp) {
+      if (args.otp) {
         const { otp } = await inquirer.prompt({
           name: 'otp',
           type: 'input',
