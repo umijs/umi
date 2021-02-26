@@ -43,7 +43,7 @@
     "@types/node": "^14.0.23",
     "@umijs/core": "3.4.0-beta.3",
     "@umijs/plugin-analytics": "^0.2.2",
-    "@umijs/preset-dumi": "^1.0.33",
+    "@umijs/preset-dumi": "^1.1.6",
     "@umijs/test": "3.4.0-beta.3",
     "@umijs/test-utils": "3.4.0-beta.3",
     "@umijs/utils": "3.4.0-beta.3",

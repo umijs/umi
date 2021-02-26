@@ -3561,10 +3561,10 @@
   resolved "https://registry.yarnpkg.com/@umijs/plugin-analytics/-/plugin-analytics-0.2.2.tgz#575fd231d4327ea13413217aa1b5fc6bdd89465e"
   integrity sha512-dVDzUfgIdEwdCC6a5IsMYpIPI+bEZjBEqIhAvw9dic6Vk77w9RxQxyRfW11dDmdXLAwWphp22NntQNt1ejZPtg==
 
-"@umijs/preset-dumi@^1.0.33":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.1.4.tgz#6e06a203f6badc329629e6a243fea721dc8e5e87"
-  integrity sha512-CkyNWsaS9BeD6BWSuoYQFKnmqwqJ7WYUuc6R53LL6jWeBppBRD80AhzPAMCO/snO2ZcLhZ/v9AR6rlNkrBt88Q==
+"@umijs/preset-dumi@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.1.6.tgz#ab9dfdfd09019d7bcb00562cbfe1560bffd58efa"
+  integrity sha512-qB4Qepww6ZdZUSeHFS020cE4SzxcKzsBW99NJs3h4st7FKP7UA6bWgnUc65PAzq0R/BlwIPQqJyJ0iuDL9GIVQ==
   dependencies:
     "@babel/core" "^7.7.2"
     "@babel/generator" "^7.7.2"
@@ -3580,7 +3580,7 @@
     copy-text-to-clipboard "^2.2.0"
     deepmerge "^4.2.2"
     dumi-assets-types "1.0.0"
-    dumi-theme-default "1.0.4"
+    dumi-theme-default "1.0.6"
     enhanced-resolve "^4.1.1"
     github-slugger "^1.3.0"
     hast-util-has-property "^1.0.4"
@@ -3604,6 +3604,7 @@
     remark-rehype "^8.0.0"
     remark-stringify "^9.0.0"
     slash2 "^2.0.0"
+    terser "^5.5.1"
     unified "^8.4.1"
     unist-util-visit "^2.0.1"
     unist-util-visit-parents "^3.0.1"
@@ -6221,10 +6222,10 @@ dumi-assets-types@1.0.0:
   resolved "https://registry.yarnpkg.com/dumi-assets-types/-/dumi-assets-types-1.0.0.tgz#d5368cb11045b203bf1ef1080e553b2287a2ec81"
   integrity sha512-7nhSeWM15vybbUAMPLZsdls2jKoHB2UU4P1RM6kLPucuS8eC/HSmufquFqTTYtX4oIDLHGtil/dVtMreNGwhdA==
 
-dumi-theme-default@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/dumi-theme-default/-/dumi-theme-default-1.0.4.tgz#b7cb18c873c898fc9dd743763397cea7eccac7ab"
-  integrity sha512-FP3IdCSYuyoI0wPjX9WYaOnMnRVrMmgsShknVbOQdTI/gH7vND500K+S3osUyq3UuEo602pqijgTehc2pYp2/Q==
+dumi-theme-default@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/dumi-theme-default/-/dumi-theme-default-1.0.6.tgz#4f9aff984b26f03a3d67a04739124f48957a81fd"
+  integrity sha512-jQ8AiV635fav/mLw3ATmcbLPHVuS/Nuxm0izWGh8H1Q9KGGzqJgKqnm0YAifO8QudtlSJwiR+7tJNRmH3gp61A==
   dependencies:
     prism-react-renderer "^1.1.1"
     prismjs "^1.21.0"
@@ -14440,7 +14441,7 @@ ternary-stream@^2.0.1:
     merge-stream "^1.0.0"
     through2 "^2.0.1"
 
-terser@5.6.0, terser@^5.0.0:
+terser@5.6.0, terser@^5.0.0, terser@^5.5.1:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.6.0.tgz#138cdf21c5e3100b1b3ddfddf720962f88badcd2"
   integrity sha512-vyqLMoqadC1uR0vywqOZzriDYzgEkNJFK4q9GeyOBHIbiECHiWLKcWfbQWAUaPfxkjDhapSlZB9f7fkMrvkVjA==
