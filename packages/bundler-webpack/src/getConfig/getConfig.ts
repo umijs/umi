@@ -119,10 +119,14 @@ export default async function getConfig(
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
     .publicPath((config.publicPath! as unknown) as string)
-    // remove this after webpack@5
-    // free memory of assets after emitting
-    .futureEmitAssets(true)
     .pathinfo(isDev || disableCompress);
+
+  if (!isWebpack5) {
+    webpackConfig.output
+      // remove this after webpack@5
+      // free memory of assets after emitting
+      .futureEmitAssets(true);
+  }
 
   // resolve
   // prettier-ignore
@@ -364,18 +368,20 @@ export default async function getConfig(
   }
 
   // node shims
-  webpackConfig.node.merge({
-    setImmediate: false,
-    module: 'empty',
-    dns: 'mock',
-    http2: 'empty',
-    process: 'mock',
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
-  });
+  if (!isWebpack5) {
+    webpackConfig.node.merge({
+      setImmediate: false,
+      module: 'empty',
+      dns: 'mock',
+      http2: 'empty',
+      process: 'mock',
+      dgram: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty',
+    });
+  }
 
   // plugins -> ignore moment locale
   if (config.ignoreMomentLocale) {
@@ -573,6 +579,33 @@ export default async function getConfig(
     });
   }
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
+
+  // node polyfills
+  const nodeLibs = require('node-libs-browser');
+  if (isWebpack5) {
+    // @ts-ignore
+    ret.resolve.fallback = {
+      // @ts-ignore
+      ...ret.resolve.fallback,
+      ...Object.keys(nodeLibs).reduce((memo, key) => {
+        if (nodeLibs[key]) {
+          memo[key] = nodeLibs[key];
+        }
+        return memo;
+      }, {}),
+
+      // disable unnecessary node libs
+      http: false,
+      https: false,
+      punycode: false,
+      stream: false,
+      _stream_duplex: false,
+      _stream_passthrough: false,
+      _stream_readable: false,
+      _stream_transform: false,
+      _stream_writable: false,
+    };
+  }
 
   // speed-measure-webpack-plugin
   if (process.env.SPEED_MEASURE && type === BundlerConfigType.csr) {

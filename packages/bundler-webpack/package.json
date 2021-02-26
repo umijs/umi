@@ -34,10 +34,11 @@
   },
   "dependencies": {
     "@umijs/bundler-utils": "3.4.0-beta.3",
-    "@umijs/deps": "0.2.21",
+    "@umijs/deps": "0.2.24",
     "@umijs/types": "3.4.0-beta.3",
     "@umijs/utils": "3.4.0-beta.3",
     "jest-worker": "26.6.2",
+    "node-libs-browser": "2.2.1",
     "normalize-url": "1.9.1",
     "postcss": "7.0.32",
     "postcss-flexbugs-fixes": "4.2.1",

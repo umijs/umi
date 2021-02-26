@@ -360,6 +360,9 @@ export interface BaseIConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   title?: string;
+  webpack5?: {
+    lazyCompilation?: object;
+  };
   [key: string]: any;
 }
 
