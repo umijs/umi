@@ -1,6 +1,8 @@
 const { yParser, execa, chalk } = require('@umijs/utils');
 const { join } = require('path');
 const { writeFileSync } = require('fs');
+const getRepoInfo = require('git-repo-info');
+const inquirer = require('inquirer');
 const newGithubReleaseUrl = require('new-github-release-url');
 const open = require('open');
 const exec = require('./utils/exec');
@@ -121,7 +123,8 @@ async function release() {
 
     // Push
     logStep(`git push`);
-    await exec('git', ['push', 'origin', 'master', '--tags']);
+    const { branch } = getRepoInfo();
+    await exec('git', ['push', 'origin', branch, '--tags']);
   }
 
   // Publish
@@ -130,27 +133,35 @@ async function release() {
   logStep(`publish packages: ${chalk.blue(pkgs.join(', '))}`);
   const currVersion = require('../lerna').version;
   const isNext = isNextVersion(currVersion);
-  pkgs
-    .sort((a) => {
-      return a === 'umi' ? 1 : -1;
-    })
-    .forEach((pkg, index) => {
-      const pkgPath = join(cwd, 'packages', pkg);
-      const { name, version } = require(join(pkgPath, 'package.json'));
-      if (version === currVersion) {
-        console.log(
-          `[${index + 1}/${pkgs.length}] Publish package ${name} ${
-            isNext ? 'with next tag' : ''
-          }`,
-        );
-        const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
-        const { stdout } = execa.sync('npm', cliArgs, {
-          cwd: pkgPath,
+  const releasePkgs = pkgs.sort((a) => {
+    return a === 'umi' ? 1 : -1;
+  });
+  for (const [index, pkg] of releasePkgs.entries()) {
+    const pkgPath = join(cwd, 'packages', pkg);
+    const { name, version } = require(join(pkgPath, 'package.json'));
+    if (version === currVersion) {
+      console.log(
+        `[${index + 1}/${pkgs.length}] Publish package ${name} ${
+          isNext ? 'with next tag' : ''
+        }`,
+      );
+      let cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
+      // one-time password from your authenticator
+      if (args.otp) {
+        const { otp } = await inquirer.prompt({
+          name: 'otp',
+          type: 'input',
+          message: 'This operation requires a one-time password:',
+          validate: (msg) => !!msg,
         });
-        console.log(stdout);
+        cliArgs = cliArgs.concat(['--otp', otp]);
       }
-    });
-
+      const { stdout } = execa.sync('npm', cliArgs, {
+        cwd: pkgPath,
+      });
+      console.log(stdout);
+    }
+  }
   logStep('create github release');
   const tag = `v${currVersion}`;
   const changelog = releaseNotes(tag);

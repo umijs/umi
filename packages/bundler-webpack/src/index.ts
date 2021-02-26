@@ -83,12 +83,14 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor.webpack(bundleConfigs);
-    const { devServer } = this.config;
+    const { ssr, devServer } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
       publicPath: '/',
       logLevel: 'silent',
+      // if `ssr` set false, next() into server-side render
+      ...(ssr ? { index: false } : {}),
       writeToDisk: devServer && devServer?.writeToDisk,
       watchOptions: {
         // not watch outputPath dir and node_modules
