@@ -3541,15 +3541,14 @@
     set-value "3.0.2"
     tapable "1.1.3"
 
-"@umijs/deps@0.2.23":
-  version "0.2.23"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.23.tgz#7dc3cee08736d3b8ed923b467b47653f47135578"
-  integrity sha512-98Dydea+fDTaL0o/jOb7KwWooXFAm65IiYezmOpu+sVShNsSg1jRHvO6qZSRT/umSi7MG6C3IIRfY+hXlgZVdQ==
+"@umijs/deps@0.2.24":
+  version "0.2.24"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.24.tgz#5538ec61bfa5269acaff58e9b641f9b2095a48dc"
+  integrity sha512-InSgIWToqmQ399TUfA3CDsluyuNGNhuJR5PnO/nUN8QVhS47HYmeNTN8i1yqHFVYYrx8MrfSPBZM8gJkWdajNA==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"
     jest-worker "24.9.0"
-    node-libs-browser "2.2.1"
     prettier "2.2.1"
 
 "@umijs/error-code-map@^1.0.1":
@@ -4441,14 +4440,14 @@ bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.5.5:
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
-  version "4.11.9"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
-  integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.12.0.tgz#775b3f278efbb9718eec7361f483fb36fbbfea88"
+  integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
 
 bn.js@^5.0.0, bn.js@^5.1.1:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.3.tgz#beca005408f642ebebea80b042b4d18d2ac0ee6b"
-  integrity sha512-GkTiFpjFtUzU9CbMeJ5iazkCzGL3jrhzerzZIuqLABjbwRaFt33I9tUdSNryIptM+RxDet6OKm2WnLXzW51KsQ==
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.0.tgz#358860674396c6997771a9d051fcc1b57d4ae002"
+  integrity sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==
 
 body-parser@1.19.0:
   version "1.19.0"

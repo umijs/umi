@@ -7,7 +7,12 @@ export default (api: IApi) => {
     config: {
       schema(joi) {
         return joi.object().keys({
-          lazyCompilation: joi.object(),
+          // Ref: https://webpack.js.org/configuration/experiments/#experimentslazycompilation
+          lazyCompilation: joi.object().keys({
+            entries: joi.boolean(),
+            imports: joi.boolean(),
+            test: joi.any(),
+          }),
         });
       },
     },
@@ -22,6 +27,7 @@ export default (api: IApi) => {
   });
 
   api.modifyBundleConfig((memo) => {
+    // @ts-ignore
     if (api.config.webpack5!.lazyCompilation) {
       // @ts-ignore
       memo.experiments = {
@@ -30,6 +36,8 @@ export default (api: IApi) => {
         lazyCompilation: {
           // client: '@umijs/deps/compiled/webpack/5/lazy-compilation-web.js',
           backend: require('@umijs/deps/compiled/webpack/5/lazyCompilationBackend.js'),
+          entries: false,
+          // @ts-ignore
           ...api.config.webpack5!.lazyCompilation,
         },
       };

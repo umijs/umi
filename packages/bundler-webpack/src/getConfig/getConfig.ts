@@ -580,6 +580,33 @@ export default async function getConfig(
   }
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
+  // node polyfills
+  const nodeLibs = require('node-libs-browser');
+  if (isWebpack5) {
+    // @ts-ignore
+    ret.resolve.fallback = {
+      // @ts-ignore
+      ...ret.resolve.fallback,
+      ...Object.keys(nodeLibs).reduce((memo, key) => {
+        if (nodeLibs[key]) {
+          memo[key] = nodeLibs[key];
+        }
+        return memo;
+      }, {}),
+
+      // disable unnecessary node libs
+      http: false,
+      https: false,
+      punycode: false,
+      stream: false,
+      _stream_duplex: false,
+      _stream_passthrough: false,
+      _stream_readable: false,
+      _stream_transform: false,
+      _stream_writable: false,
+    };
+  }
+
   // speed-measure-webpack-plugin
   if (process.env.SPEED_MEASURE && type === BundlerConfigType.csr) {
     const SpeedMeasurePlugin = require('@umijs/deps/compiled/speed-measure-webpack-plugin');
