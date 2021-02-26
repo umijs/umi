@@ -369,7 +369,7 @@ export const qiankun = {
 PORT=8081
 ```
 
-详细配置参考：https://umijs.org/zh/guide/env-variables.html#port
+详细配置参考：https://umijs.org/docs/env-variables#port
 
 ### 父子应用通讯
 
