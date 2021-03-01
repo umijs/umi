@@ -1236,7 +1236,7 @@ export default {
 - 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签
 - 如果需要自行通过 react-helmet 等方式渲染 title，配 `title: false` 可禁用内置的 title 渲染机制
 
-## webpack5
+## webpack5 <Badge>3.4+</Badge>
 
 - Type: `object`
 - Default: `false`
