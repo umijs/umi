@@ -6,6 +6,7 @@ import assert from 'assert';
 
 interface IGetContentArgs {
   route: IRoute;
+  assets?: any;
   chunks?: any;
   noChunk?: boolean;
 }
@@ -123,6 +124,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         initialValue: api.config.chunks || ['umi'],
         args: {
           route: args.route,
+          assets: args.assets,
           chunks: args.chunks,
         },
       });

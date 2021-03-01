@@ -39,6 +39,7 @@ export default function (api: IApi) {
           for (const { route, file } of routeMap) {
             const defaultContent = await html.getContent({
               route,
+              assets: compilation.assets,
               chunks: compilation.chunks,
             });
             const content = await api.applyPlugins({
