@@ -1241,7 +1241,7 @@ export default {
 - Type: `object`
 - Default: `false`
 
-使用 webpack 5 代替 webpack 5 进行构建。
+使用 webpack 5 代替 webpack 4 进行构建。
 
 物理缓存功能默认开启，可通过设置环境变量 `WEBPACK_FS_CACHE` 为 `none` 来禁用。
 
