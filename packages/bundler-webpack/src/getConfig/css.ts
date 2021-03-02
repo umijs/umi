@@ -42,8 +42,8 @@ export function createCSSRule({
   function applyLoaders(rule: Config.Rule<Config.Rule>, isCSSModules: boolean) {
     if (config.styleLoader) {
       rule
-        .use('@umijs/deps/compiled/style-loader')
-        .loader(require.resolve('style-loader'))
+        .use('style-loader')
+        .loader(require.resolve('@umijs/deps/compiled/style-loader'))
         .options(
           deepmerge(
             {
