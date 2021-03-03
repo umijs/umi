@@ -26,7 +26,7 @@ export default (api: IApi) => {
         .plugin('fastRefresh')
         .after('hmr')
         .use(
-          require('../../../bundled/@pmmmwh/react-refresh-webpack-plugin/lib'),
+          require('../../../../bundled/@pmmmwh/react-refresh-webpack-plugin/lib'),
           [{ overlay: false }],
         );
       debug('FastRefresh webpack loaded');
@@ -37,7 +37,11 @@ export default (api: IApi) => {
   api.modifyBabelOpts({
     fn: (babelOpts, { type }) => {
       if (api.env === 'development' && type === BundlerConfigType.csr) {
-        babelOpts.plugins.push([require.resolve('react-refresh/babel')]);
+        // need add before @babel/plugin-transform-typescript
+        babelOpts.plugins.push(
+          [require.resolve('./babel-plugin-modify-anonymous')],
+          [require.resolve('react-refresh/babel')],
+        );
         debug('FastRefresh babel loaded');
       }
       return babelOpts;
