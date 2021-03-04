@@ -8,7 +8,7 @@ export default (babel) => {
       // @ts-ignore
       ExportDefaultDeclaration(path, state) {
         const def = path.node.declaration;
-        const named = t.identifier(`Abc${Math.floor(Math.random() * 100)}`);
+        const named = t.identifier(`Abc1`);
         const { filename } = state.file.opts;
         if (
           /^\.(tsx|jsx)$/.test(extname(filename)) &&
@@ -16,16 +16,13 @@ export default (babel) => {
           !/(^|\/)\.[^\/\.]/g.test(filename) &&
           !filename.includes('node_modules')
         ) {
-          console.log('filename', filename);
           if (t.isArrowFunctionExpression(def)) {
             const varDec = t.variableDeclaration('const', [
               t.variableDeclarator(named, def),
             ]);
-            path.insertBefore(varDec);
-            const [varDeclPath] = path.replaceWith(
-              t.exportDefaultDeclaration(named),
-            );
+            const [varDeclPath] = path.insertBefore(varDec);
             path.scope.registerDeclaration(varDeclPath);
+            path.replaceWith(t.exportDefaultDeclaration(named));
           } else if (t.isFunctionDeclaration(def) && !def.id) {
             def.id = named;
           }

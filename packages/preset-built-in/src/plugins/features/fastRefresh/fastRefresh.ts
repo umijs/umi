@@ -37,7 +37,6 @@ export default (api: IApi) => {
   api.modifyBabelOpts({
     fn: (babelOpts, { type }) => {
       if (api.env === 'development' && type === BundlerConfigType.csr) {
-        // need add before @babel/plugin-transform-typescript
         babelOpts.plugins.push(
           [require.resolve('./babel-plugin-modify-anonymous')],
           [require.resolve('react-refresh/babel')],
