@@ -60,6 +60,7 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
         await generate();
       }, 100),
     );
+    watchers.push(watcher);
   }
 
   return unwatch;
