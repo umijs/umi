@@ -251,8 +251,14 @@ export interface IApi extends PluginAPI {
   addEntryCodeAhead: IAdd<null, string>;
   addTmpGenerateWatcherPaths: IAdd<null, string>;
   addBeforeMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  /**
+   * @deprecated
+   */
   addBeforeMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
   addMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  /**
+   * @deprecated
+   */
   addMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
 }
 
