@@ -43,6 +43,9 @@ export default (babel) => {
             !relativePath.includes('node_modules')
           ) {
             let componentName = path2Component(relativePath);
+            if (!componentName) {
+              return;
+            }
 
             // solve identifier conflict
             const identifiers = Object.keys(path.scope.bindings || {});
