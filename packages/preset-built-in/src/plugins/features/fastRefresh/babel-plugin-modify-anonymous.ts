@@ -17,7 +17,7 @@ export const path2Component = (filePath: string): string => {
     .replace(ext, '')
     .split(sep)
     // upperFirst
-    .map(_.upperFirst)
+    .map((item) => _.upperFirst(item.replace(/\W/g, '')))
     .join('');
   return filePathWithoutExt;
 };
