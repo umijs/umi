@@ -26,56 +26,51 @@ export const path2Component = (filePath: string): string => {
 export default (babel) => {
   const { types: t } = babel;
 
-  const conflictVisitor = {
-    Identifier(identifierPath) {
-      const { componentName } = this;
-      if (identifierPath.node.name === componentName) {
-        identifiers;
-      }
-    },
-  };
-
   return {
     name: 'babel-plugin-modify-anonymouse',
     visitor: {
       // @ts-ignore
       ExportDefaultDeclaration: {
         enter(path, state) {
-          const def = path.node.declaration;
-          const { cwd, filename } = state.file.opts;
-          const relativePath = relative(cwd, filename);
+          try {
+            const def = path.node.declaration;
+            const { cwd, filename } = state.file.opts;
+            const relativePath = relative(cwd, filename);
 
-          if (
-            /^\.(tsx|jsx)$/.test(extname(relativePath)) &&
-            // hidden relativePath
-            !/(^|\/)\.[^\/\.]/g.test(relativePath) &&
-            !relativePath.includes('node_modules')
-          ) {
-            let componentName = path2Component(relativePath);
+            if (
+              /^\.(tsx|jsx)$/.test(extname(relativePath)) &&
+              // hidden relativePath
+              !/(^|\/)\.[^\/\.]/g.test(relativePath) &&
+              !relativePath.includes('node_modules')
+            ) {
+              let componentName = path2Component(relativePath);
 
-            // solve identifier conflict
-            const identifiers = Object.keys(path.scope.bindings || {});
-            // add index if conflict
-            let idx = 0;
-            // loop util componentName conflict
-            while (identifiers.includes(componentName)) {
-              componentName = `${componentName}${idx}`;
-              idx += 1;
+              // solve identifier conflict
+              const identifiers = Object.keys(path.scope.bindings || {});
+              // add index if conflict
+              let idx = 0;
+              // loop util componentName conflict
+              while (identifiers.includes(componentName)) {
+                componentName = `${componentName}${idx}`;
+                idx += 1;
+              }
+
+              // generate component name identifier
+              const named = t.identifier(componentName);
+
+              if (t.isArrowFunctionExpression(def)) {
+                const varDec = t.variableDeclaration('const', [
+                  t.variableDeclarator(named, def),
+                ]);
+                const [varDeclPath] = path.insertBefore(varDec);
+                path.scope.registerDeclaration(varDeclPath);
+                path.replaceWith(t.exportDefaultDeclaration(named));
+              } else if (t.isFunctionDeclaration(def) && !def.id) {
+                def.id = named;
+              }
             }
-
-            // generate component name identifier
-            const named = t.identifier(componentName);
-
-            if (t.isArrowFunctionExpression(def)) {
-              const varDec = t.variableDeclaration('const', [
-                t.variableDeclarator(named, def),
-              ]);
-              const [varDeclPath] = path.insertBefore(varDec);
-              path.scope.registerDeclaration(varDeclPath);
-              path.replaceWith(t.exportDefaultDeclaration(named));
-            } else if (t.isFunctionDeclaration(def) && !def.id) {
-              def.id = named;
-            }
+          } catch (_) {
+            // slient
           }
         },
       },
