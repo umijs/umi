@@ -86,6 +86,66 @@ test('normal arrow function', () => {
   );
 });
 
+test('HOC not support', () => {
+  const opts = {
+    cwd: '/a/b/c',
+    filename: '/a/b/c/src/index.tsx',
+  };
+  expect(
+    runPlugin(
+      `
+    import { Button } from '@alipay/tech-ui';
+    import { connect } from 'dva';
+    import { List, Foo } from 'antd';
+
+
+    const { Item } = List;
+    const FooBtn = Foo;
+
+    function Hello() {}
+
+    export default connect()(() => {
+      const Bbaaa = {};
+      return <div>
+        <Button />
+        <Button />
+        <Item />
+        <Item />
+        <FooBtn />
+      </div>;
+    });
+  `,
+      opts,
+    ).code,
+  ).toEqual(
+    runPlugin(
+      `
+    import { Button } from '@alipay/tech-ui';
+    import { connect } from 'dva';
+    import { List, Foo } from 'antd';
+
+
+    const { Item } = List;
+    const FooBtn = Foo;
+
+    function Hello() {}
+
+    export default connect()(() => {
+      const Bbaaa = {};
+      return <div>
+        <Button />
+        <Button />
+        <Item />
+        <Item />
+        <FooBtn />
+      </div>;
+    });
+    `,
+      { ...opts, plugins: [] },
+    ).code,
+  );
+});
+
 test('normal anonymous function', () => {
   const opts = {
     cwd: '/a/b/c',
