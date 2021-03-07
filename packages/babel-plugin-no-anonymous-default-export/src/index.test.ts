@@ -16,7 +16,7 @@ function runPlugin(
         },
       ],
     ],
-    plugins: [[require.resolve('./babel-plugin-modify-anonymous')]],
+    plugins: [[require.resolve('./index')]],
     ...opts,
   });
 

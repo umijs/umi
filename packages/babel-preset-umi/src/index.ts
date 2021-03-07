@@ -24,6 +24,7 @@ export interface IOpts {
   import?: IImportPluginOpts[];
   lockCoreJS3?: object;
   modify?: Function;
+  noAnonymousDefaultExport?: boolean;
 }
 
 function toObject<T extends object>(obj: T | boolean): T | Partial<T> {
@@ -186,6 +187,9 @@ export default (context: any, opts: IOpts = {}) => {
       opts.lockCoreJS3 && [
         require.resolve('@umijs/babel-plugin-lock-core-js-3'),
         opts.lockCoreJS3,
+      ],
+      opts.noAnonymousDefaultExport && [
+        require.resolve('@umijs/babel-plugin-no-anonymous-default-export'),
       ],
     ].filter(Boolean),
   };

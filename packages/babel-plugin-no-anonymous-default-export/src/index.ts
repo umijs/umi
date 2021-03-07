@@ -1,5 +1,5 @@
 import { lodash as _ } from '@umijs/utils';
-import { parse, relative, extname, format, sep } from 'path';
+import { parse, relative, extname, sep } from 'path';
 
 /**
  * convert path into componentName
@@ -27,7 +27,6 @@ export default (babel) => {
   const { types: t } = babel;
 
   return {
-    name: 'babel-plugin-modify-anonymouse',
     visitor: {
       // @ts-ignore
       ExportDefaultDeclaration: {

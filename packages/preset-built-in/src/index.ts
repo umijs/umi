@@ -40,7 +40,7 @@ export default function () {
       require.resolve('./plugins/features/extraBabelPresets'),
       require.resolve('./plugins/features/extraPostCSSPlugins'),
       require.resolve('./plugins/features/forkTSChecker'),
-      require.resolve('./plugins/features/fastRefresh/fastRefresh'),
+      require.resolve('./plugins/features/fastRefresh'),
       require.resolve('./plugins/features/globalCSS'),
       require.resolve('./plugins/features/globalJS'),
       require.resolve('./plugins/features/hash'),

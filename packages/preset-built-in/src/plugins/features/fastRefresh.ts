@@ -26,7 +26,7 @@ export default (api: IApi) => {
         .plugin('fastRefresh')
         .after('hmr')
         .use(
-          require('../../../../bundled/@pmmmwh/react-refresh-webpack-plugin/lib'),
+          require('../../../bundled/@pmmmwh/react-refresh-webpack-plugin/lib'),
           [{ overlay: false }],
         );
       debug('FastRefresh webpack loaded');
@@ -34,13 +34,21 @@ export default (api: IApi) => {
     return memo;
   });
 
+  // enable no-anonymous-default-export
+  api.modifyBabelPresetOpts((opts, { type }) => {
+    if (api.env === 'development' && type === BundlerConfigType.csr) {
+      return {
+        ...opts,
+        noAnonymousDefaultExport: true,
+      };
+    }
+    return opts;
+  });
+
   api.modifyBabelOpts({
     fn: (babelOpts, { type }) => {
       if (api.env === 'development' && type === BundlerConfigType.csr) {
-        babelOpts.plugins.push(
-          [require.resolve('./babel-plugin-modify-anonymous')],
-          [require.resolve('react-refresh/babel')],
-        );
+        babelOpts.plugins.push([require.resolve('react-refresh/babel')]);
         debug('FastRefresh babel loaded');
       }
       return babelOpts;

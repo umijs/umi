@@ -192,6 +192,7 @@ export interface IApi extends PluginAPI {
     IBabelPresetUmiOpts,
     {
       env: env;
+      type?: IBundlerConfigType;
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
