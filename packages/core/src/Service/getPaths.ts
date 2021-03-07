@@ -21,8 +21,8 @@ export default function getServicePaths({
   env?: string;
 }): IServicePaths {
   let absSrcPath = cwd;
-  if (isDirectoryAndExist(join(cwd, 'src'))) {
-    absSrcPath = join(cwd, 'src');
+  if (isDirectoryAndExist(join(cwd, config.srcPath || 'src'))) {
+    absSrcPath = join(cwd, config.srcPath || 'src');
   }
   const absPagesPath = config.singular
     ? join(absSrcPath, 'page')

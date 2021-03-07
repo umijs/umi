@@ -142,3 +142,26 @@ test('src config singular', () => {
     cwd: '',
   });
 });
+
+test('src config srcPath', () => {
+  const cwd = join(fixtures, 'getPaths-with-h5');
+  expect(
+    stripCwd(
+      getPaths({
+        cwd,
+        config: {
+          srcPath: 'h5'
+        },
+        env: 'development',
+      }),
+      cwd,
+    ),
+  ).toEqual({
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'dist',
+    absPagesPath: 'h5/pages',
+    absSrcPath: 'h5',
+    absTmpPath: 'h5/.umi',
+    cwd: '',
+  });
+});
