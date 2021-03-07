@@ -25,7 +25,10 @@ class Html {
     path = path.replace(/^\//, '');
     path = path.replace(/\/$/, '');
 
-    if (this.config.exportStatic?.htmlSuffix || path === 'index.html') {
+    if (
+      (this.config.exportStatic && this.config.exportStatic.htmlSuffix) ||
+      path === 'index.html'
+    ) {
       return `${path}`;
     } else {
       return `${path}/index.html`;
@@ -36,8 +39,11 @@ class Html {
     const htmlPath = this.getHtmlPath(path);
     const len = htmlPath.split('/').length;
     return (
-      Array(this.config.exportStatic?.htmlSuffix ? len : len - 1).join('../') ||
-      './'
+      Array(
+        this.config.exportStatic && this.config.exportStatic.htmlSuffix
+          ? len
+          : len - 1,
+      ).join('../') || './'
     );
   }
 
@@ -46,7 +52,7 @@ class Html {
       return opts.file;
     }
     const file = opts.file.charAt(0) === '/' ? opts.file.slice(1) : opts.file;
-    if (this.config.exportStatic?.dynamicRoot) {
+    if (this.config.exportStatic && this.config.exportStatic.dynamicRoot) {
       return `${this.getRelPathToPublicPath(opts.path || '/')}${file}`;
     } else {
       return `${this.config.publicPath}${file}`;
