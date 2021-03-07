@@ -131,7 +131,7 @@ export interface IApi extends PluginAPI {
   onPluginReady: IEvent<null>;
   onStart: IEvent<{ args: object }>;
   onExit: IEvent<{ signal: 'SIGINT' | 'SIGQUIT' | 'SIGTERM' }>;
-  onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
+  onGenerateFiles: IEvent<{ files: { event: string; path: string }[] }>;
   onPatchRoute: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRouteBefore: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
