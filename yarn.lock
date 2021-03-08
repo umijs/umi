@@ -3546,10 +3546,10 @@
     set-value "3.0.2"
     tapable "1.1.3"
 
-"@umijs/deps@0.2.24":
-  version "0.2.24"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.24.tgz#5538ec61bfa5269acaff58e9b641f9b2095a48dc"
-  integrity sha512-InSgIWToqmQ399TUfA3CDsluyuNGNhuJR5PnO/nUN8QVhS47HYmeNTN8i1yqHFVYYrx8MrfSPBZM8gJkWdajNA==
+"@umijs/deps@0.2.25":
+  version "0.2.25"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.25.tgz#6a174f2584b42b7de956232a27d7ea16ab47c540"
+  integrity sha512-2VjhjpkgEuEAXeI4ofcSN5oQWLvLtoP7nAb/Zd8bW30ho9BwUa+PAHxYLz/4Rskz6+n1gtfjJZIml3o0ZXjVtw==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"

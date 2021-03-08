@@ -131,7 +131,7 @@ export interface IApi extends PluginAPI {
   onPluginReady: IEvent<null>;
   onStart: IEvent<{ args: object }>;
   onExit: IEvent<{ signal: 'SIGINT' | 'SIGQUIT' | 'SIGTERM' }>;
-  onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
+  onGenerateFiles: IEvent<{ files: { event: string; path: string }[] }>;
   onPatchRoute: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRouteBefore: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
@@ -252,8 +252,14 @@ export interface IApi extends PluginAPI {
   addEntryCodeAhead: IAdd<null, string>;
   addTmpGenerateWatcherPaths: IAdd<null, string>;
   addBeforeMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  /**
+   * @deprecated
+   */
   addBeforeMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
   addMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  /**
+   * @deprecated
+   */
   addMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
 }
 
