@@ -28,6 +28,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@umijs/bundler-webpack": "3.4.0-beta.5",
     "@umijs/core": "3.4.0-beta.5",
     "@umijs/deps": "0.2.25",
     "@umijs/preset-built-in": "3.4.0-beta.5",
