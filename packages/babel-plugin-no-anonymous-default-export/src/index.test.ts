@@ -35,24 +35,8 @@ test('normal arrow function', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     export default () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
   `,
       opts,
@@ -60,28 +44,38 @@ test('normal arrow function', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     const SrcIndex = () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
     export default SrcIndex;
     `,
       { ...opts, plugins: [] },
+    ).code,
+  );
+
+  // change filename
+  const componentOpts = {
+    cwd: '/a/b/c',
+    filename: '/a/b/c/components/About.tsx',
+  };
+  expect(
+    runPlugin(
+      `
+    export default () => {
+      return <p>Hello</p>;
+    };
+  `,
+      componentOpts,
+    ).code,
+  ).toEqual(
+    runPlugin(
+      `
+    const ComponentsAbout = () => {
+      return <p>Hello</p>;
+    };
+    export default ComponentsAbout;
+    `,
+      { ...componentOpts, plugins: [] },
     ).code,
   );
 });
@@ -94,25 +88,10 @@ test('HOC not support', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
     import { connect } from 'dva';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
 
     export default connect()(() => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     });
   `,
       opts,
@@ -120,25 +99,10 @@ test('HOC not support', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
     import { connect } from 'dva';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
 
     export default connect()(() => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     });
     `,
       { ...opts, plugins: [] },
@@ -154,24 +118,8 @@ test('normal anonymous function', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     export default function () {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
   `,
       opts,
@@ -179,24 +127,8 @@ test('normal anonymous function', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     export default function SrcIndex() {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
     `,
       { ...opts, plugins: [] },
@@ -212,24 +144,10 @@ test('conflict declaration anonymous arrow function', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
     function SrcIndex() {}
 
     export default () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
   `,
       opts,
@@ -237,24 +155,10 @@ test('conflict declaration anonymous arrow function', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
     function SrcIndex() {}
 
     const SrcIndex0 = () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
 
     export default SrcIndex0;
@@ -272,24 +176,10 @@ test('conflict declaration anonymous function', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
     function SrcIndex() {}
 
     export default function () {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
   `,
       opts,
@@ -297,24 +187,10 @@ test('conflict declaration anonymous function', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
     function SrcIndex() {}
 
     export default function SrcIndex0() {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
     `,
       { ...opts, plugins: [] },
@@ -328,87 +204,12 @@ test('no valid path', () => {
     filename: '/a/b/c/node_modules/antd/index.tsx',
   };
   const source = `
-  import { Button } from '@alipay/tech-ui';
-  import { List, Foo } from 'antd';
-
-
-  const { Item } = List;
-  const FooBtn = Foo;
-
-  function Hello() {}
-
   export default () => {
-    const Bbaaa = {};
-    return <div>
-      <Button />
-      <Button />
-      <Item />
-      <Item />
-      <FooBtn />
-    </div>;
+    return <p>Hello</p>;
   };
 `;
   expect(runPlugin(source, opts).code).toEqual(
     runPlugin(source, { ...opts, plugins: [] }).code,
-  );
-});
-
-test('normal arrow function components', () => {
-  const opts = {
-    cwd: '/a/b/c',
-    filename: '/a/b/c/components/About.tsx',
-  };
-  expect(
-    runPlugin(
-      `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
-    export default () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
-    };
-  `,
-      opts,
-    ).code,
-  ).toEqual(
-    runPlugin(
-      `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
-    const ComponentsAbout = () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
-    };
-    export default ComponentsAbout;
-    `,
-      { ...opts, plugins: [] },
-    ).code,
   );
 });
 
@@ -420,24 +221,8 @@ test('normal arrow function dynamic path', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     export default () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
   `,
       opts,
@@ -445,24 +230,8 @@ test('normal arrow function dynamic path', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     const SrcPagesId = () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
     export default SrcPagesId;
     `,
@@ -479,24 +248,8 @@ test('with chinese name', () => {
   expect(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     export default () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
   `,
       opts,
@@ -504,24 +257,8 @@ test('with chinese name', () => {
   ).toEqual(
     runPlugin(
       `
-    import { Button } from '@alipay/tech-ui';
-    import { List, Foo } from 'antd';
-
-
-    const { Item } = List;
-    const FooBtn = Foo;
-
-    function Hello() {}
-
     const SrcPages = () => {
-      const Bbaaa = {};
-      return <div>
-        <Button />
-        <Button />
-        <Item />
-        <Item />
-        <FooBtn />
-      </div>;
+      return <p>Hello</p>;
     };
     export default SrcPages;
     `,
