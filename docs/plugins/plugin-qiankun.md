@@ -506,7 +506,7 @@ export function MyPage() {
 | --- | --- | --- | --- | --- |
 | apps | 子应用配置 | [App](#AppOpts)[] | 是 |  |
 | routes | 子应用运行时需要注册的微应用路由 | [Route](#RouteOpts)[] | 否 | N/A |
-| sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | false |
+| sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | true |
 | prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| 'all' | 否 | true |
 
 #### <a name="AppOpts">App</a>
