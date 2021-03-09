@@ -10,7 +10,7 @@ function runPlugin(
     sourceType: 'module',
     presets: [
       [
-        require.resolve('@babel/preset-react'),
+        require.resolve('@umijs/deps/compiled/babel/preset-react'),
         {
           development: true,
         },
