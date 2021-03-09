@@ -51,11 +51,12 @@ export async function getBundleAndConfigs({
             args,
           });
         },
-        async modifyBabelPresetOpts(opts: any) {
+        async modifyBabelPresetOpts(opts: any, args?: any) {
           return await api.applyPlugins({
             type: api.ApplyPluginsType.modify,
             key: 'modifyBabelPresetOpts',
             initialValue: opts,
+            args,
           });
         },
         async chainWebpack(webpackConfig: any, opts: any) {
