@@ -5,6 +5,7 @@ import { Service } from './ServiceWithBuiltIn';
 import fork from './utils/fork';
 import getCwd from './utils/getCwd';
 import getPkg from './utils/getPkg';
+import initWebpack from './initWebpack';
 
 // process.argv: [node, umi.js, command, args]
 const args = yParser(process.argv.slice(2), {
@@ -50,6 +51,8 @@ if (args.version && !args._[0]) {
         const name = args._[0];
         if (name === 'build') {
           process.env.NODE_ENV = 'production';
+          // Init webpack version determination and require hook for build command
+          initWebpack();
         }
         await new Service({
           cwd: getCwd(),

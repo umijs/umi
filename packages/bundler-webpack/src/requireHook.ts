@@ -19,7 +19,13 @@ export function getFileName(filePath: string) {
   return filePath.split('/').slice(-1)[0];
 }
 
+let inited = false;
+
 export function init() {
+  // Allow run once
+  if (inited) return;
+  inited = true;
+
   const filesMap = files.map((file) => {
     const fileName = getFileName(file);
     return [file, `@umijs/deps/compiled/webpack/${fileName}`];

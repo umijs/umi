@@ -1,11 +1,12 @@
 {
-  "name": "@umijs/bundler-utils",
+  "name": "@umijs/babel-plugin-no-anonymous-default-export",
   "version": "3.4.0",
-  "description": "@umijs/bundler-utils",
+  "description": "@umijs/babel-plugin-no-anonymous-default-export",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -15,17 +16,15 @@
     "umi"
   ],
   "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+    "ycjcl868 <chaolinjin@gmail.com> (https://github.com/ycjcl868)"
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-no-anonymous-default-export#readme",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.4.0",
-    "@umijs/types": "3.4.0",
     "@umijs/utils": "3.4.0"
   }
 }

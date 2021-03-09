@@ -34,6 +34,17 @@ export default (api: IApi) => {
     return memo;
   });
 
+  // enable no-anonymous-default-export
+  api.modifyBabelPresetOpts((opts, { type }) => {
+    if (api.env === 'development' && type === BundlerConfigType.csr) {
+      return {
+        ...opts,
+        noAnonymousDefaultExport: true,
+      };
+    }
+    return opts;
+  });
+
   api.modifyBabelOpts({
     fn: (babelOpts, { type }) => {
       if (api.env === 'development' && type === BundlerConfigType.csr) {

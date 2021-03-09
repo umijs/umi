@@ -2993,6 +2993,11 @@
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
   integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
 
+"@types/dedent@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@types/dedent/-/dedent-0.7.0.tgz#155f339ca404e6dd90b9ce46a3f78fd69ca9b050"
+  integrity sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==
+
 "@types/ejs@3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.0.5.tgz#95a3a1c3d9603eba80fe67ff56da1ba275ef2eda"
@@ -3541,10 +3546,10 @@
     set-value "3.0.2"
     tapable "1.1.3"
 
-"@umijs/deps@0.2.25":
-  version "0.2.25"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.25.tgz#6a174f2584b42b7de956232a27d7ea16ab47c540"
-  integrity sha512-2VjhjpkgEuEAXeI4ofcSN5oQWLvLtoP7nAb/Zd8bW30ho9BwUa+PAHxYLz/4Rskz6+n1gtfjJZIml3o0ZXjVtw==
+"@umijs/deps@0.2.31":
+  version "0.2.31"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.31.tgz#44f1ddf35ee6d5e004f8b31a07761dcae6fedd13"
+  integrity sha512-1dIGPAqZ+cOTq9VjOizt+ueYGKTyBRPLzJMi/Caro2tdF/6BBUck4gQ3ehpeEZPvV+k6YJfz0S2pBNrLyfOeHw==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"
@@ -14866,6 +14871,11 @@ umask@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/umask/-/umask-1.1.0.tgz#f29cebf01df517912bb58ff9c4e50fde8e33320d"
   integrity sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=
+
+umi-plugin-hire@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/umi-plugin-hire/-/umi-plugin-hire-1.0.3.tgz#68e341803f6b9cbc3b5a9dc5ade8dc9b891325e8"
+  integrity sha512-sEzQUEB5L14t4vRpRDaiPiEGh/Evk3L6AF9xCH0PibK1ztKBlsRhCa0SooEGLvzzCjBlnIK8gGcQh7wiEFpFRg==
 
 unc-path-regex@^0.1.2:
   version "0.1.2"

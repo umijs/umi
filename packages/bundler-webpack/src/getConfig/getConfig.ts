@@ -51,7 +51,7 @@ export interface IOpts {
   browserslist?: any;
   bundleImplementor?: typeof defaultWebpack;
   modifyBabelOpts?: (opts: object, args?: any) => Promise<any>;
-  modifyBabelPresetOpts?: (opts: object) => Promise<any>;
+  modifyBabelPresetOpts?: (opts: object, args?: any) => Promise<any>;
   chainWebpack?: (webpackConfig: any, args: any) => Promise<any>;
   miniCSSExtractPluginPath?: string;
   miniCSSExtractPluginLoaderPath?: string;
@@ -176,7 +176,9 @@ export default async function getConfig(
     targets,
   });
   if (modifyBabelPresetOpts) {
-    presetOpts = await modifyBabelPresetOpts(presetOpts);
+    presetOpts = await modifyBabelPresetOpts(presetOpts, {
+      type,
+    });
   }
   let babelOpts = getBabelOpts({
     cwd,
