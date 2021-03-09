@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "3.4.0-beta.5",
+  "version": "3.4.0-beta.6",
   "description": "umi",
   "main": "index.js",
   "types": "types.d.ts",
@@ -28,13 +28,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-webpack": "3.4.0-beta.5",
-    "@umijs/core": "3.4.0-beta.5",
+    "@umijs/bundler-webpack": "3.4.0-beta.6",
+    "@umijs/core": "3.4.0-beta.6",
     "@umijs/deps": "0.2.29",
-    "@umijs/preset-built-in": "3.4.0-beta.5",
-    "@umijs/runtime": "3.4.0-beta.5",
-    "@umijs/types": "3.4.0-beta.5",
-    "@umijs/utils": "3.4.0-beta.5",
+    "@umijs/preset-built-in": "3.4.0-beta.6",
+    "@umijs/runtime": "3.4.0-beta.6",
+    "@umijs/types": "3.4.0-beta.6",
+    "@umijs/utils": "3.4.0-beta.6",
     "react": "16.x",
     "react-dom": "16.x"
   },
