@@ -58,6 +58,7 @@
     "npm-run-all": "^4.1.5",
     "open": "^7.0.4",
     "prettier": "^2.0.5",
+    "umi-plugin-hire": "^1.0.3",
     "yorkie": "^2.0.0"
   },
   "repository": {

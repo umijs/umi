@@ -139,6 +139,29 @@ export default defineConfig({
     type: 'none',
   },
   exportStatic: {},
+  hire: {
+    title: '蚂蚁体验技术部正寻觅前端',
+
+    content: `
+<p><strong>招聘团队：</strong>蚂蚁体验技术部（玉伯）- 平台前端技术部（偏右）</p>
+<p><strong>招聘层级：</strong>P5 ~ P8</p>
+<p><strong>\u3000技术栈：</strong>不限</p>
+<p><strong>工作城市：</strong>杭州、上海、成都</p>
+<p><strong>\u3000内推人：</strong>云谦，微信 sorryccpro</p>
+<p><strong>面试效率：</strong>一周面完</p>
+<p><strong>团队作品：</strong></p>
+<ul style="margin-bottom:8px">
+  <li>Ant Design · 西湖区最流行设计语言</li>
+  <li>Umi · 企业级前端开发框架</li>
+  <li>dumi · React 组件研发工具</li>
+  <li>qiankun · 微前端泰斗</li>
+  <li>ahooks · React Hooks 库</li>
+</ul>
+<p style="margin-bottom:16px">有求职意向 or 希望了解蚂蚁情况 or 希望切磋技术 or 职业规划交流的 or 简历评估的，都欢迎加我微信：sorryccpro，备注尊姓大名 + 所在公司 ❤️，或者发简历到邮箱 sorrycc#gmail.com</p>
+      `.trim(),
+    email: 'sorrycc@gmail.com',
+    slogan: '在寻找心仪的工作吗？',
+  },
   analytics: isDev
     ? false
     : {

@@ -14867,6 +14867,11 @@ umask@^1.1.0:
   resolved "https://registry.yarnpkg.com/umask/-/umask-1.1.0.tgz#f29cebf01df517912bb58ff9c4e50fde8e33320d"
   integrity sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=
 
+umi-plugin-hire@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/umi-plugin-hire/-/umi-plugin-hire-1.0.3.tgz#68e341803f6b9cbc3b5a9dc5ade8dc9b891325e8"
+  integrity sha512-sEzQUEB5L14t4vRpRDaiPiEGh/Evk3L6AF9xCH0PibK1ztKBlsRhCa0SooEGLvzzCjBlnIK8gGcQh7wiEFpFRg==
+
 unc-path-regex@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
