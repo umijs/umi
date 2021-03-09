@@ -1,14 +1,17 @@
-import { join } from 'path';
 import { chalk, yParser } from '@umijs/utils';
 import { Service } from './ServiceWithBuiltIn';
 import getCwd from './utils/getCwd';
 import getPkg from './utils/getPkg';
+import initWebpack from './initWebpack';
 
 const args = yParser(process.argv.slice(2));
 
 (async () => {
   try {
     process.env.NODE_ENV = 'development';
+    // Init webpack version determination and require hook
+    initWebpack();
+
     const service = new Service({
       cwd: getCwd(),
       pkg: getPkg(process.cwd()),
