@@ -11,7 +11,7 @@ export default class DevCompileDonePlugin {
   }
   apply(compiler: webpack.Compiler) {
     let isFirstCompile = true;
-    compiler.hooks.done.tap('DevFirstCompileDone', (stats: any) => {
+    compiler.hooks.done.tap('DevFirstCompileDone', (stats) => {
       if (stats.hasErrors()) {
         // make sound
         if (process.env.SYSTEM_BELL !== 'none') {
