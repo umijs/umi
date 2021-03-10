@@ -8,7 +8,7 @@ import webpack, {
   SourceMapDevToolPlugin,
   javascript,
   version as webpackVersion,
-} from 'webpack';
+} from '@umijs/deps/compiled/webpack';
 import RequestShortener from 'webpack/lib/RequestShortener';
 
 import serialize from '@umijs/deps/compiled/serialize-javascript';
