@@ -352,6 +352,16 @@ export default async function getConfig(
     .use('raw-loader')
       .loader(require.resolve('@umijs/deps/compiled/raw-loader'));
 
+  if (config.workerLoader) {
+    // prettier-ignore
+    webpackConfig.module
+      .rule('worker')
+      .test(/.*worker.(ts|js)/)
+      .use('worker-loader')
+        .loader(require.resolve('@umijs/deps/compiled/worker-loader'))
+        .options(config.workerLoader);
+  }
+
   // css
   css({
     type,

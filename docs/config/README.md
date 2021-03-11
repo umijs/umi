@@ -1249,3 +1249,10 @@ export default {
 包含以下子配置项：
 
 - lazyCompilation，是否启用基于路由的按需编译
+
+## workerLoader <Badge>3.4.1+</Badge>
+
+- Type: `object`
+- Default: `false`
+
+开启 worker-loader 功能。

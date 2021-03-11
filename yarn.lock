@@ -2945,10 +2945,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@umijs/deps@0.2.34":
-  version "0.2.34"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.2.34.tgz#3d748c5818da53f013d16dbb686c1b00e4409a4b"
-  integrity sha512-6PUTf2IeMh1V1k0aoFOT4Z7gs3vYPOxkDuKsjglT+UrQxa8Wfm613U7LecnkC6nv3wZk23oolGmE6fjMgtYfSw==
+"@umijs/deps@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.3.3.tgz#b712f7b66c5d2339e7833fc2547b7b50b8390ade"
+  integrity sha512-MO13OHd77nXObz1B5xaYOc/ZxdVyaaV6ZRIVVxsWKsB941zEJC9lImvga7ZMd7d3Fy6+M7HRi9LsCo8PHUhp5Q==
   dependencies:
     chokidar "3.5.1"
     clipboardy "2.3.0"
