@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { EOL } from 'os';
 import assert from 'assert';
 import * as path from 'path';
-import serialize from 'serialize-javascript';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
 import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
