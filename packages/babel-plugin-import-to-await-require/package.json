@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-plugin-import-to-await-require",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "@umijs/babel-plugin-import-to-await-require",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.4.0"
+    "@umijs/utils": "3.4.1"
   },
   "devDependencies": {
     "@babel/traverse": "7.12.5"
