@@ -488,12 +488,16 @@ export default async function getConfig(
     if (config.manifest && type === BundlerConfigType.csr) {
       webpackConfig
         .plugin('manifest')
-        .use(require.resolve('@umijs/deps/compiled/webpack-manifest-plugin'), [
-          {
-            fileName: 'asset-manifest.json',
-            ...config.manifest,
-          },
-        ]);
+        .use(
+          require('@umijs/deps/compiled/webpack-manifest-plugin')
+            .WebpackManifestPlugin,
+          [
+            {
+              fileName: 'asset-manifest.json',
+              ...config.manifest,
+            },
+          ],
+        );
     }
   };
 
