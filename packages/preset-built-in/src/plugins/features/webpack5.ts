@@ -36,7 +36,9 @@ export default (api: IApi) => {
         // @ts-ignore
         ...memo.experiments,
         lazyCompilation: {
-          // client: '@umijs/deps/compiled/webpack/5/lazy-compilation-web.js',
+          // client: require.resolve(
+          //   '@umijs/deps/compiled/webpack/5/lazy-compilation-web.js',
+          // ),
           backend: require('@umijs/deps/compiled/webpack/5/lazyCompilationBackend.js'),
           entries: false,
           // @ts-ignore
