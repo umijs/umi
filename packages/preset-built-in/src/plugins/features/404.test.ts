@@ -97,3 +97,10 @@ test('404 with redirect', () => {
     { redirect: '/foo' },
   ]);
 });
+
+test('404 not found', () => {
+  const routes = [{ path: '/404' }, { path: '/b' }];
+  expect(() => {
+    patchRoutes(routes, { exportStatic: false });
+  }).toThrow(/Invalid route config for \/404/);
+});
