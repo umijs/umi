@@ -178,7 +178,7 @@ test('export *', () => {
     transformWithPlugin(`export * from 'antd'; foo;`, {
       libs: ['antd'],
       remoteName: 'foo',
-      libAllExports: { antd: ['a', 'b', 'c'] },
+      exportAllMembers: { antd: ['a', 'b', 'c'] },
     }),
   ).toEqual(
     `

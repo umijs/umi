@@ -12,7 +12,7 @@ export interface IOpts {
   remoteName: string;
   alias?: IAlias;
   onTransformDeps?: Function;
-  libAllExports?: Record<string, string[]>;
+  exportAllMembers?: Record<string, string[]>;
 }
 
 export function specifiersToProperties(specifiers: any[]) {
@@ -135,7 +135,7 @@ export default function () {
                 isExportAllDeclaration: true,
               });
 
-              if (isMatch && opts.libAllExports?.[d.source.value]) {
+              if (isMatch && opts.exportAllMembers?.[d.source.value]) {
                 const id = t.identifier('__all_exports');
                 const init = t.awaitExpression(
                   t.callExpression(t.import(), [
@@ -154,12 +154,12 @@ export default function () {
                 );
 
                 // replace node with export const { a, b, c } = __all_exports
-                // a, b, c was declared from opts.libAllExports
+                // a, b, c was declared from opts.exportAllMembers
                 path.node.body[index] = t.exportNamedDeclaration(
                   t.variableDeclaration('const', [
                     t.variableDeclarator(
                       t.objectPattern(
-                        opts.libAllExports[d.source.value].map((m) =>
+                        opts.exportAllMembers[d.source.value].map((m) =>
                           t.objectProperty(t.identifier(m), t.identifier(m)),
                         ),
                       ),
