@@ -10,37 +10,37 @@ toc: content
 
 ## What is Umi?
 
-Umi, Chinese can be pronounced Umi , a scalable enterprise-class front-end application framework. Umi is based on routing, and supports both configuration routing and contracted routing to ensure the completeness of routing functions and to expand its functions. It is then complemented with a complete plug-in system for the life cycle, covering every life cycle from source code to build products, supporting various function extensions and business requirements.
+Umi, from the Chinese word **乌米** , is a scalable enterprise-class front-end application framework. Umi is based on routing, and supports both configuration routing and convention routing to ensure complete routing function experience. It is also complemented with a complete life cycle plug-in system, covering every use case from source code to build products, and supports many function extensions and business requirements.
 
-Umi is the underlying front-end framework of Ant Financial, and has directly or indirectly served 3000+ applications, including java, node, H5 wireless, offline (hybrid) applications, pure front-end assets applications, CMS applications, etc. He has served our internal users well, and hopes that he can also serve external users.
+Umi is the underlying front-end framework of Ant Financial, and has directly or indirectly served 3000+ applications, including java, node, H5 wireless, offline (hybrid) applications, pure front-end assets applications, CMS applications, etc. It has served our internal users well, and we hope that it can also serve external users.
 
-It mainly has the following functions:
+Umi mainly serves the following functions:
 
-* 🎉 *Extensible* Umi has realized the complete life cycle and made it plug-in. Umi's internal functions are also completed by plug-ins. Plug-ins and plug-in sets are also supported to meet the hierarchical needs of functionality and vertical domains.
-* 📦 *Out of the box* Umi has built-in routing, building, deployment, testing, and so on, and requires only one dependency to get started. It also provides an integrated plug-in set for React with rich content, which can meet 80% of the daily development needs.
-* 🐠 *Enterprise level* Umi has been verified by Ant's internal 3000+ projects and company projects such as Ali, Youku, Netease, Flying Pig, Word of Mouth and so on.
-* 🚀 *Based on research* including micro-front end, component packaging, documentation tools, request library, hooks library, data flow, etc., to meet the peripheral needs of daily projects.
-* 🌴 *Complete routing* which supports both configuration routing and convention routing, while maintaining functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
-* 🚄 *Facing the future* while meeting the needs, we will not stop exploring new technologies. Such as dll speedup, modern mode, webpack @ 5, automated external, bundler less and so on.
+- 🎉 _Extensible_ Umi has realized the complete life cycle and made it extendable via plug-ins. Umi's internal functions are also extendable via plug-ins. Plug-ins and plug-in sets are also supported to meet the hierarchical needs of functionality and vertical domains.
+- 📦 _Out of the box_ Umi has built-in routing, building, deployment, testing, and so on, and requires only one dependency to get started. It also provides an integrated plug-in set for React with rich content, which can meet 80% of the daily development needs.
+- 🐠 _Enterprise level_ Umi has been verified by Ant's internal 3000+ projects and company projects such as Ali, Youku, Netease, Flying Pig, Word of Mouth and so on.
+- 🚀 _Based on research_ including micro-front end, component packaging, documentation tools, request library, hooks library, data flow, etc., to meet the peripheral needs of daily projects.
+- 🌴 _Complete routing_ which supports both configuration routing and convention routing, while maintaining functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
+- 🚄 _Forward looking_ while meeting the current needs of today, Umi will not stop exploring new technologies to meet the needs of tomorrow as well. This will include things such as dll speedup, modern mode, webpack @ 5, automated external, bundler less and much more.
 
-## When is umi not used?
+## When should umi not be used?
 
-If you,
+If you:
 
-* Require a browser that supports IE 8 or lower
-* Need to support React < 16.8
-* Need to run Node < 10
-* Require a lot of webpack customization
-* Need to use a different routing scheme
+- Require a browser support for IE 8 or lower
+- Need to support React < 16.8
+- Need to run Node < 10
+- Require a lot of webpack customization
+- Need to use a different routing scheme
 
 Then Umi may not be right for you.
 
-## Why not?
+## Why use umi over these other tools and frameworks?
 
 ### [create-react-app](https://github.com/facebook/create-react-app)
 
-`create-react-app` is a webpack-based packaging layer solution that includes build, dev, lint, etc. He has achieved the ultimate experience in the packaging layer, but does not include routing, is not a framework, and does not support configuration. Therefore, if you want to modify some configurations based on him, or you want to do technical convergence outside the packaging layer, you will encounter difficulties.
+`create-react-app` is a webpack-based packaging layer solution that includes build, dev, lint, etc. While it is a great packaging layer solution, it does not include support for routing, is not a framework, and does not support configuration. Therefore, if you want to modify some configurations based on it, or if you want to do technical convergence outside the packaging layer, you will encounter difficulties.
 
 ### [next.js](https://github.com/zeit/next.js)
 
-`next.js` is a good choice. Many of Umi's functions are made by referring to `next.js`. To say that there are some places that are not as good as Umi, I think it may not be close enough to the business and not grounded enough. For example, the deep integration of antd and dva, such as internationalization, permissions, data flow, configurable routing, patch schemes, external aspects of automation, etc. will only be encountered by front-line developers.
+On the whole, `next.js` is a good choice; in fact, many of Umi's functions were inspired by `next.js`. There are a few places, however, that we feel `next.js` is not as good as Umi, such as not being grounded to the needs of enterprise applications and businesses. For example, Umi, with the deep integration of antd and dva, along with the support for features such as internationalization, permissions, data flow, configurable routing, patch schemes, external aspects of automation, etc, includes many things out of the box that will be frequently encountered by front-end developers.

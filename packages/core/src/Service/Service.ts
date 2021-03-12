@@ -2,7 +2,7 @@ import { join } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
 import { BabelRegister, lodash, NodeEnv } from '@umijs/utils';
-import { AsyncSeriesWaterfallHook } from 'tapable';
+import { AsyncSeriesWaterfallHook } from '@umijs/deps/compiled/tapable';
 import { existsSync } from 'fs';
 import Logger from '../Logger/Logger';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
@@ -28,6 +28,7 @@ export interface IServiceOpts {
   pkg?: IPackage;
   presets?: string[];
   plugins?: string[];
+  configFiles?: string[];
   env?: NodeEnv;
 }
 
@@ -113,10 +114,15 @@ export default class Service extends EventEmitter {
 
     // get user config without validation
     logger.debug('get user config');
+    const configFiles = opts.configFiles;
     this.configInstance = new Config({
       cwd: this.cwd,
       service: this,
       localConfig: this.env === 'development',
+      configFiles:
+        Array.isArray(configFiles) && !!configFiles[0]
+          ? configFiles
+          : undefined,
     });
     this.userConfig = this.configInstance.getUserConfig();
     logger.debug('userConfig:');
@@ -214,7 +220,7 @@ export default class Service extends EventEmitter {
 
     // plugin is totally ready
     this.setStage(ServiceStage.pluginReady);
-    this.applyPlugins({
+    await this.applyPlugins({
       key: 'onPluginReady',
       type: ApplyPluginsType.event,
     });

@@ -1,4 +1,4 @@
-import * as ReactDOM from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import React, { useEffect } from 'react';
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import { matchRoutes } from 'react-router-config';
@@ -17,6 +17,7 @@ interface IRouterComponentProps {
 
 interface IOpts extends IRouterComponentProps {
   rootElement?: string | HTMLElement;
+  callback?: () => void;
 }
 
 function RouterComponent(props: IRouterComponentProps) {
@@ -25,7 +26,7 @@ function RouterComponent(props: IRouterComponentProps) {
   useEffect(() => {
     // first time using window.g_initialProps
     // switch route fetching data, if exact route reset window.getInitialProps
-    if ((window as any).g_initialProps) {
+    if ((window as any).g_useSSR) {
       (window as any).g_initialProps = null;
     }
     function routeChangeHandler(location: any, action?: string) {
@@ -111,19 +112,21 @@ export default function renderClient(opts: IOpts) {
       typeof opts.rootElement === 'string'
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
+    const callback = opts.callback || (() => {});
+
     // flag showing SSR successed
     if (window.g_useSSR) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component
         // first loades);
         preloadComponent(opts.routes).then(function () {
-          ReactDOM.hydrate(rootContainer, rootElement);
+          hydrate(rootContainer, rootElement, callback);
         });
       } else {
-        ReactDOM.hydrate(rootContainer, rootElement);
+        hydrate(rootContainer, rootElement, callback);
       }
     } else {
-      ReactDOM.render(rootContainer, rootElement);
+      render(rootContainer, rootElement, callback);
     }
   } else {
     return rootContainer;

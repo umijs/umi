@@ -15,7 +15,11 @@
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
+    "@umijs/preset-react": "^1.5.17",
     "cross-env": "^5.2.0",
     "egg": "^2.12.0",
     "egg-scripts": "^2.10.0",
@@ -23,10 +27,8 @@
     "egg-view-nunjucks": "^2.2.0",
     "prop-types": "^15.6.2",
     "qs": "^6.7.0",
+    "umi": "^3.2.9",
     "url": "^0.11.0"
-  },
-  "peerDependencies": {
-    "umi": "latest"
   },
   "devDependencies": {
     "@types/qs": "^6.5.3",

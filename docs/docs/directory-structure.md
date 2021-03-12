@@ -1,22 +1,21 @@
 # Directory structure
 
-
 A fundamental structure as below:
 
-	.
-	├── package.json
-	├── .umirc.ts
-	├── .env
-	├── dist
-	├── mock
-	├── public
-	└── src
-	    ├── .umi
-	    ├── layouts/index.tsx
-	    ├── pages
-	        ├── index.less
-	        └── index.tsx
-	    └── app.ts
+    .
+    ├── package.json
+    ├── .umirc.ts
+    ├── .env
+    ├── dist
+    ├── mock
+    ├── public
+    └── src
+        ├── .umi
+        ├── layouts/index.tsx
+        ├── pages
+            ├── index.less
+            └── index.tsx
+        └── app.ts
 
 ## Root
 
@@ -34,12 +33,12 @@ Environments
 
 For example：
 
-	PORT=8888
-	COMPRESS=none
+    PORT=8888
+    COMPRESS=none
 
 ### dist
 
-Default location of outpput of `umi build`
+Default location of output of `umi build`
 
 ### mock
 
@@ -66,4 +65,3 @@ All router entries here.
 ### app.ts
 
 Runtime configuration module, provide expansibility at runtime. Such as router, render update.
-

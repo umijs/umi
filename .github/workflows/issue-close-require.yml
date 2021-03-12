@@ -1,0 +1,29 @@
+name: Issue Close Require
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  close-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: need reproduce
+        uses: actions-cool/issues-helper@v1.7
+        with:
+          actions: 'close-issues'
+          labels: 'Need Reproduce'
+          inactive-day: 3
+          body: |
+            Since the issue was labeled with `Need Reproduce`, but no response in 3 days. This issue will be closed. If you have any questions, you can comment and reply.
+            由于该 issue 被标记为需要可复现步骤，却 3 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
+
+      - name: need more info
+        uses: actions-cool/issues-helper@v1.7
+        with:
+          actions: 'close-issues'
+          labels: 'Need More Info'
+          inactive-day: 3
+          body: |
+            Since the issue was labeled with `Need More Info`, but no response in 3 days. This issue will be closed. If you have any questions, you can comment and reply.
+            由于该 issue 被标记为需要更多信息，却 3 天未收到回应。现关闭 issue，若有任何问题，可评论回复。

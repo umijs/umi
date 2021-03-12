@@ -1,4 +1,3 @@
-
 # @umijs/plugin-access
 
 ## 启用方式
@@ -11,13 +10,13 @@
 
 ```javascript
 // src/access.ts
-export default function(initialState) {
+export default function (initialState) {
   const { userId, role } = initialState;
- 
+
   return {
     canReadFoo: true,
     canUpdateFoo: role === 'admin',
-    canDeleteFoo: foo => {
+    canDeleteFoo: (foo) => {
       return foo.ownerId === userId;
     },
   };
@@ -30,22 +29,22 @@ export default function(initialState) {
 
 ### 扩展的路由配置
 
-配合 Layout 插件你可以很简单是实现针对某些页码的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
+配合 Layout 插件你可以很简单的实现针对某些页面的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
 
 ```typescript
 // config/route.ts
-export const routes =  [
+export const routes = [
   {
     path: '/pageA',
     component: 'PageA',
     access: 'canReadPageA', // 权限定义返回值的某个 key
-  }
-]
+  },
+];
 ```
 
 #### access
 
-* Type: `string`
+- Type: `string`
 
 对应的权限名称。
 
@@ -59,14 +58,14 @@ export const routes =  [
 import React from 'react';
 import { useAccess } from 'umi';
 
-const PageA = props => {
+const PageA = (props) => {
   const { foo } = props;
   const access = useAccess();
- 
+
   if (access.canReadFoo) {
     // 如果可以读取 Foo，则...
   }
- 
+
   return <>TODO</>;
 };
 
@@ -77,24 +76,23 @@ export default PageA;
 
 ### Access
 
-可以在业务组件中使用插件提供的 React hook `useAccess` 以及组件 `<Access />` 对应用进行权限控制了。
-组件 `Access` 支持的属性如下：
+可以在业务组件中使用插件提供的 React hook `useAccess` 以及组件 `<Access />` 对应用进行权限控制了。组件 `Access` 支持的属性如下：
 
 #### accessible
 
-* Type: `boolean`
+- Type: `boolean`
 
-是否有权限，通常通过 `useAccess` 获取后传入进来。
+是否有权限，通常通过 `useAccess`  获取后传入进来。
 
 #### fallback
 
-* Type: `React.ReactNode`
+- Type: `React.ReactNode`
 
 无权限时的显示，默认无权限不显示任何内容。
 
 ### children
 
-* Type: `React.ReactNode`
+- Type: `React.ReactNode`
 
 有权限时的显示。
 
@@ -104,14 +102,14 @@ export default PageA;
 import React from 'react';
 import { useAccess, Access } from 'umi';
 
-const PageA = props => {
+const PageA = (props) => {
   const { foo } = props;
   const access = useAccess(); // access 的成员: canReadFoo, canUpdateFoo, canDeleteFoo
- 
+
   if (access.canReadFoo) {
     // 如果可以读取 Foo，则...
   }
- 
+
   return (
     <div>
       <Access

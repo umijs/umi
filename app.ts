@@ -1,4 +1,5 @@
 // Config for dumi
+import './app.less';
 
 export const onRouteChange = ({ location }: any) => {
   // back top

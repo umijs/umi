@@ -6,5 +6,12 @@ module.exports = (appInfo) => {
     level: 'NONE',
     consoleLevel: 'DEBUG',
   };
+  config.assets = {
+    devServer: {
+      debug: true,
+      autoPort: true,
+    },
+    dynamicLocalIP: false,
+  };
   return config;
 };

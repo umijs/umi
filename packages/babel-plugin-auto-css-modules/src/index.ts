@@ -1,5 +1,5 @@
-import { NodePath, Visitor } from '@babel/traverse';
-import { t } from '@umijs/utils';
+import type { NodePath, Visitor } from '@babel/traverse';
+import type { ImportDeclaration } from '@babel/types';
 import { extname } from 'path';
 
 export interface IOpts {
@@ -12,7 +12,7 @@ export default function () {
   return {
     visitor: {
       ImportDeclaration(
-        path: NodePath<t.ImportDeclaration>,
+        path: NodePath<ImportDeclaration>,
         { opts }: { opts: IOpts },
       ) {
         const {

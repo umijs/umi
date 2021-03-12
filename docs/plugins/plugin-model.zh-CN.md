@@ -1,9 +1,8 @@
-
 # @umijs/plugin-model
 
 一种基于 `hooks` 范式的简易数据管理方案（部分场景可以取代 `dva`），通常用于中台项目的全局共享数据。
 
-我们都知道自定义 `hooks` 是逻辑复用的利器，但我们也知道她不能复用状态，就和 `react` 内置的 `hooks` 一样，每次调用产生的状态都是相互隔离、无关的。那么，在业务开发中，如果我们需要提取的逻辑和状态都希望能够在多个组件中『共享』，就像其他数据流管理工具（`dva`, `mobx`）一样，`@umijs/plugin-model` 就是一个不错的选择。
+我们都知道自定义 `hooks` 是逻辑复用的利器，但我们也知道它不能复用状态，就和 `react` 内置的 `hooks` 一样，每次调用产生的状态都是相互隔离、无关的。那么，在业务开发中，如果我们需要提取的逻辑和状态都希望能够在多个组件中『共享』，就像其他数据流管理工具（`dva`, `mobx`）一样，`@umijs/plugin-model` 就是一个不错的选择。
 
 ## 启用方式
 
@@ -20,31 +19,30 @@
 **src/models/useAuthModel.js**
 
 ```js
-import { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react';
 
 export default function useAuthModel() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   const signin = useCallback((account, password) => {
     // signin implementation
     // setUser(user from signin API)
-  }, [])
+  }, []);
 
   const signout = useCallback(() => {
     // signout implementation
     // setUser(null)
-  }, [])
+  }, []);
 
   return {
     user,
     signin,
-    signout
-  }
+    signout,
+  };
 }
 ```
 
 > 使用者书写的就是一个普通的自定义 `hooks`，但 `@umijs/plugin-model` 把其中的状态变成了『全局状态』，多个组件中使用该 `model` 时，拿到的同一份状态。
-
 
 ### 在组件中使用 model
 
@@ -64,8 +62,11 @@ export default function useAuthModel() {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, fetchUser } = useModel('user', model => ({ user: model.user, fetchUser: model.fetchUser }));
-  return <>hello</>
+  const { user, fetchUser } = useModel('user', (model) => ({
+    user: model.user,
+    fetchUser: model.fetchUser,
+  }));
+  return <>hello</>;
 };
 ```
 

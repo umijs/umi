@@ -1,17 +1,12 @@
----
-translateHelp: true
----
-
 # Use CSS
 
+> This document uses css as an example, the same applies to `.less` files.
 
-> 本文档以 css 为示例，把后缀换成 `.less` 同样适用。
+## Global Styling
 
-## 全局样式
+Umi recognizes `src/global.css` as global style, if the file exists, its styles will be applied to the files first.
 
-Umi 中约定 `src/global.css` 为全局样式，如果存在此文件，会被自动引入到入口文件最前面。
-
-比如用于覆盖样式，
+As an example of global style:
 
 ```css
 .ant-select-selection {
@@ -22,22 +17,22 @@ Umi 中约定 `src/global.css` 为全局样式，如果存在此文件，会被�
 
 ## CSS Modules
 
-Umi 会自动识别 CSS Modules 的使用，你把他当做 CSS Modules 用时才是 CSS Modules。
+Umi will automatically recognize the use of CSS Modules. When you use it as CSS Modules, it is CSS Modules.
 
-比如：
+For instance:
 
 ```js
 // CSS Modules
 import styles from './foo.css';
 
-// 非 CSS Modules
+// Non-CSS Modules
 import './foo.css';
 ```
 
-## CSS 预处理器
+## CSS Preprocessor
 
-Umi 内置支持 less，不支持 sass 和 stylus，但如果有需求，可以通过 chainWebpack 配置或者 umi 插件的形式支持。
+Umi has built-in support for less, and does not support sass and stylus, but if you need it, you can configure it through chainWebpack or umi plugin.
 
-## CSS 中引入三方库
+## CSS third party libraries
 
-TODO：别名的使用。
+TODO: The use of aliases.

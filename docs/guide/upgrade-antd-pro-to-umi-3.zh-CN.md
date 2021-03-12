@@ -68,7 +68,7 @@ export default defineConfig({
   cssLoader: {
     // 这里的 modules 可以接受 getLocalIdent
     modules: {
-      getLocalIdent:(
+      getLocalIdent: (
         context: {
           resourcePath: string;
         },
@@ -93,9 +93,9 @@ export default defineConfig({
         }
         return localName;
       },
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 ### 代码层修改
@@ -115,7 +115,7 @@ Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中�
 + } from 'umi';
 ```
 
-**注意：**不建议直接使用 formatMessage，推荐大家使用 [useIntl](/zh-CN/plugins/plugin-locale#useintl) 或者 [injectIntl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc)，可以实现同样的功能。
+**注意：**不建议直接使用 formatMessage，推荐大家使用 [useIntl](/zh-CN/plugins/plugin-locale#useintl) 或者 [injectIntl](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md#injectintl-hoc)，可以实现同样的功能。
 
 路由跳转使用 `history`：
 

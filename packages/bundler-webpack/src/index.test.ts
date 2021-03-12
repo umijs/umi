@@ -2,8 +2,8 @@ import { join } from 'path';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { getFile, rimraf, portfinder } from '@umijs/utils';
 import { BundlerConfigType } from '@umijs/types';
-import { Bundler } from './index';
 import { Server } from '@umijs/server';
+import { Bundler } from './index';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
 
 const fixtures = join(__dirname, 'fixtures');
@@ -14,54 +14,79 @@ readdirSync(fixtures).forEach((fixture) => {
   if (statSync(cwd).isFile()) return;
 
   const fn = fixture.includes('-only')
-    ? test.only
+    ? describe.only
     : fixture.startsWith('x-')
-    ? xtest
-    : test;
-  fn(fixture, async () => {
+    ? xdescribe
+    : describe;
+  fn(fixture, () => {
     // get user config
-    let config = {};
+    let config = {
+      outputPath: 'dist',
+    };
     try {
-      config = require(join(cwd, 'config.ts')).default;
+      config = Object.assign(
+        {},
+        config,
+        require(join(cwd, 'config.ts')).default,
+      );
     } catch (e) {}
-
     // init bundler
     const bundler = new Bundler({
       config,
       cwd,
     });
 
-    // get config
-    const env = fixture.includes('-production') ? 'production' : 'development';
-    const webpackConfig = await bundler.getConfig({
-      env,
-      type: BundlerConfigType.csr,
-      entry: {
-        index: getFile({
-          base: cwd,
-          fileNameWithoutExt: 'index',
-          type: 'javascript',
-        })!.path,
-      },
-    });
-    webpackConfig.devtool = false;
+    beforeAll(async () => {
+      // get config
+      const env = fixture.includes('-production')
+        ? 'production'
+        : 'development';
+      const webpackConfig = await bundler.getConfig({
+        env,
+        type: BundlerConfigType.csr,
+        entry: {
+          index: getFile({
+            base: cwd,
+            fileNameWithoutExt: 'index',
+            type: 'javascript',
+          })!.path,
+        },
+      });
 
-    // build
-    rimraf.sync(join(cwd, 'dist'));
-    await bundler.build({
-      bundleConfigs: [webpackConfig],
-    });
+      // build
+      rimraf.sync(join(cwd, 'dist'));
+      await bundler.build({
+        bundleConfigs: [webpackConfig],
+      });
+    }, 100000);
 
-    // expect
-    let indexCSS = '';
-    try {
-      indexCSS = readFileSync(join(cwd, 'dist/index.css'), 'utf-8');
-    } catch (e) {}
-    require(join(cwd, 'expect.ts')).default({
-      indexJS: readFileSync(join(cwd, 'dist/index.js'), 'utf-8'),
-      indexCSS,
-      files: readdirSync(join(cwd, 'dist')).filter((f) => f.charAt(0) !== '.'),
-      cwd,
+    it(fixture, () => {
+      // expect
+      let indexCSS = '';
+      let indexCSSMap = '';
+      try {
+        indexCSS = readFileSync(
+          join(cwd, config.outputPath, 'index.css'),
+          'utf-8',
+        );
+        indexCSSMap = readFileSync(
+          join(cwd, config.outputPath, 'index.css.map'),
+          'utf-8',
+        );
+      } catch (e) {}
+      require(join(cwd, 'expect.ts')).default({
+        indexJS: readFileSync(
+          join(cwd, config.outputPath, 'index.js'),
+          'utf-8',
+        ),
+        indexCSS,
+        indexCSSMap,
+        files: readdirSync(join(cwd, config.outputPath)).filter(
+          (f) => f.charAt(0) !== '.',
+        ),
+        cwd,
+        ignored: bundler.getIgnoredWatchRegExp(),
+      });
     });
   });
 });
@@ -98,6 +123,7 @@ test.skip('dev', async () => {
   const port = await portfinder.getPortPromise({
     port: 8000,
   });
+  // @ts-ignore
   webpackConfig.plugins!.push(new DevCompileDonePlugin({ port }));
   const devServerOpts = bundler.setupDevServerOpts({
     bundleConfigs: [webpackConfig],

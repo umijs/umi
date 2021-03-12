@@ -6,6 +6,7 @@ import assert from 'assert';
 
 interface IGetContentArgs {
   route: IRoute;
+  assets?: any;
   chunks?: any;
   noChunk?: boolean;
 }
@@ -105,6 +106,9 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
       }
 
+      // window.resourceBaseUrl 用来兼容 egg.js 项目注入的 publicPath
+      publicPathStr = `window.resourceBaseUrl || ${publicPathStr};`;
+
       publicPathStr = await api.applyPlugins({
         key: 'modifyPublicPathStr',
         type: api.ApplyPluginsType.modify,
@@ -120,6 +124,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         initialValue: api.config.chunks || ['umi'],
         args: {
           route: args.route,
+          assets: args.assets,
           chunks: args.chunks,
         },
       });

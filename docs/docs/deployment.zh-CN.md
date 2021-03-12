@@ -22,7 +22,7 @@ $ HTML=none umi build
 
 怎么解决？
 
-可通过配置 [base](../config#base) 解决。 
+可通过配置 [base](../config#base) 解决。
 
 ```bash
 export default {
@@ -32,7 +32,7 @@ export default {
 
 ## 使用 hash history
 
-可通过配置 [history](../config#history) 为 `hash` 为解决。 
+可通过配置 [history](../config#history) 为 `hash` 为解决。
 
 ```bash
 export default {
@@ -56,15 +56,15 @@ export default {
 
 ```js
 export default {
-  publicPath: "http://yourcdn/path/to/static/"
-}
+  publicPath: 'http://yourcdn/path/to/static/',
+};
 ```
 
 ## 使用 runtime 的 publicPath
 
-对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh-CN/config/#runtimepublicpath) 为解决。 
+对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh-CN/config/#runtimepublicpath) 为解决。
 
-```bash
+```js
 export default {
   runtimePublicPath: true,
 };
@@ -74,7 +74,7 @@ export default {
 
 ```html
 <script>
-window.publicPath = <%= YOUR PUBLIC_PATH %>
+  window.publicPath = <%= YOUR PUBLIC_PATH %>
 </script>
 ```
 
@@ -87,7 +87,7 @@ window.publicPath = <%= YOUR PUBLIC_PATH %>
 ```js
 export default {
   exportStatic: {},
-}
+};
 ```
 
 然后执行 umi build，会为每个路由输出一个 html 文件。
@@ -130,7 +130,7 @@ export default {
   exportStatic: {
     htmlSuffix: true,
   },
-}
+};
 ```
 
 umi build 会生成，
@@ -154,6 +154,5 @@ export default {
     htmlSuffix: true,
     dynamicRoot: true,
   },
-}
+};
 ```
-

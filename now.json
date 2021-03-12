@@ -1,5 +1,4 @@
 {
-  "name": "umi",
   "scope": "umijs",
   "version": 2,
   "builds": [
@@ -17,6 +16,5 @@
   ],
   "github": {
     "enabled": false
-  },
-  "alias": ["umijs.org"]
+  }
 }

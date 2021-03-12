@@ -1,5 +1,5 @@
 import React from 'react';
-import { getByText, render, wait } from '@testing-library/react';
+import { getByText, render, waitFor } from '@testing-library/react';
 import dynamic from './dynamic';
 
 const delay = (timeout: number) =>
@@ -14,7 +14,7 @@ test('dynamic', async () => {
   });
   const { container } = render(<App />);
   expect(container.innerHTML).toEqual('<p>loading...</p>');
-  await wait(() => getByText(container, 'App'));
+  await waitFor(() => getByText(container, 'App'));
   expect(container.innerHTML).toEqual('<h1>App</h1>');
 });
 
@@ -25,7 +25,7 @@ test('dynamic + Promise args', async () => {
   });
   const { container } = render(<App />);
   expect(container.innerHTML).toEqual('<p>loading...</p>');
-  await wait(() => getByText(container, 'App'));
+  await waitFor(() => getByText(container, 'App'));
   expect(container.innerHTML).toEqual('<h1>App</h1>');
 });
 

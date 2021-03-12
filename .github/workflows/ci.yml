@@ -1,13 +1,19 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - '.github/**/*.md'
+      - 'examples/**'
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: [8.x, 10.x, 12.x, 14.x]
+        node_version: [10.x, 12.x, 14.x]
         os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
@@ -17,13 +23,21 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
-      - run: yarn --ignore-engines
+      - name: restore lerna
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn --ignore-engines
       - run: yarn build
-      - run: yarn test --forceExit
+      - run: yarn test --detectOpenHandles --maxWorkers=4 --forceExit
         env:
           CI: true
           HEADLESS: false
           PROGRESS: none
           NODE_ENV: test
-          NODE_OPTIONS: --max_old_space_size=4096
-

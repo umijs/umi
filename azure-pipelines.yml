@@ -9,26 +9,95 @@ trigger:
 
 jobs:
   - job: windows_test
-    timeoutInMinutes: 30
+    timeoutInMinutes: 35
     pool:
-      vmImage: 'vs2017-win2016'
+      vmImage: 'windows-latest'
     strategy:
       matrix:
-        node_8_x:
-          node_version: 8.x
         node_10_x:
           node_version: 10.x
         node_12_x:
           node_version: 12.x
+    variables:
+      YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
     steps:
       - checkout: self
-        clean: all
+        clean: true
         fetchDepth: 1
-      - script: yarn install
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(Agent.OS)" | yarn.lock'
+          restoreKeys: |
+             yarn | "$(Agent.OS)"
+          path: $(YARN_CACHE_FOLDER)
+        displayName: Cache Yarn packages
+      - script: yarn --frozen-lockfile
         displayName: install
       - script: yarn build
         displayName: build
-      - script: yarn test --forceExit --detectOpenHandles --runInBand
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
+        env:
+          PROGRESS: none
+          CI: true
+        displayName: test
+  - job: linux_test
+    timeoutInMinutes: 30
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        node_10_x:
+          node_version: 10.x
+        node_12_x:
+          node_version: 12.x
+    variables:
+      YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+    steps:
+      - checkout: self
+        clean: true
+        fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(Agent.OS)" | yarn.lock'
+          restoreKeys: |
+             yarn | "$(Agent.OS)"
+          path: $(YARN_CACHE_FOLDER)
+        displayName: Cache Yarn packages
+      - script: yarn --frozen-lockfile
+      - script: yarn build
+        displayName: build
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
+        env:
+          PROGRESS: none
+          CI: true
+        displayName: test
+  - job: macos_test
+    timeoutInMinutes: 30
+    pool:
+      vmImage: 'macOS-latest'
+    strategy:
+      matrix:
+        node_10_x:
+          node_version: 10.x
+        node_12_x:
+          node_version: 12.x
+    variables:
+      YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+    steps:
+      - checkout: self
+        clean: true
+        fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(Agent.OS)" | yarn.lock'
+          restoreKeys: |
+              yarn | "$(Agent.OS)"
+          path: $(YARN_CACHE_FOLDER)
+        displayName: Cache Yarn packages
+      - script: yarn --frozen-lockfile
+      - script: yarn build
+        displayName: build
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
           CI: true

@@ -14,18 +14,18 @@ export default {
     { exact: true, path: '/', component: 'index' },
     { exact: true, path: '/user', component: 'user' },
   ],
-}
+};
 ```
 
 ### path
 
-* Type: `string`
+- Type: `string`
 
 配置可以被 [path-to-regexp@^1.7.0](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) 理解的路径通配符。
 
 ### component
 
-* Type: `string`
+- Type: `string`
 
 配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始找起。
 
@@ -33,8 +33,8 @@ export default {
 
 ### exact
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `true`
 
 表示是否严格匹配，即 location 是否和 path 完全对应上。
 
@@ -45,12 +45,12 @@ export default {
   routes: [
     // url 为 /one/two 时匹配失败
     { path: '/one', exact: true },
-    
+
     // url 为 /one/two 时匹配成功
     { path: '/one' },
     { path: '/one', exact: false },
   ],
-}
+};
 ```
 
 ### routes
@@ -70,24 +70,24 @@ export default {
         { path: '/list', component: 'list' },
         { path: '/admin', component: 'admin' },
       ],
-    }, 
+    },
   ],
-}
+};
 ```
 
 然后在 `src/layouts/index` 中通过 `props.children` 渲染子路由，
 
 ```jsx
 export default (props) => {
-  return <div style={{ padding: 20 }}>{ props.children }</div>;
-}
+  return <div style={{ padding: 20 }}>{props.children}</div>;
+};
 ```
 
 这样，访问 `/list` 和 `/admin` 就会带上 `src/layouts/index` 这个 layout 组件。
 
 ### redirect
 
-* Type: `string`
+- Type: `string`
 
 配置路由跳转。
 
@@ -99,14 +99,14 @@ export default {
     { exact: true, path: '/', redirect: '/list' },
     { exact: true, path: '/list', component: 'list' },
   ],
-}
+};
 ```
 
 访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
 
 ### wrappers
 
-* Type: `string[]`
+- Type: `string[]`
 
 配置路由的高阶组件封装。
 
@@ -115,34 +115,32 @@ export default {
 ```js
 export default {
   routes: [
-    { path: '/user', component: 'user',
-      wrappers: [
-        '@/wrappers/auth',
-      ],
-    },
+    { path: '/user', component: 'user', wrappers: ['@/wrappers/auth'] },
     { path: '/login', component: 'login' },
-  ]
-}
+  ],
+};
 ```
 
 然后在 `src/wrappers/auth` 中，
 
 ```jsx
+import { Redirect } from 'umi';
+
 export default (props) => {
   const { isLogin } = useAuth();
   if (isLogin) {
-    return <div>{ props.children }</div>;
+    return <div>{props.children}</div>;
   } else {
-    redirectTo('/login');
+    return <Redirect to="/login" />;
   }
-}
+};
 ```
 
 这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
 
 ### title
 
-* Type: `string`
+- Type: `string`
 
 配置路由的标题。
 
@@ -189,22 +187,22 @@ export default () => (
 
 注意：
 
-* `Link` 只用于单页应用的内部跳转，如果是外部地址跳转请使用 `a` 标签
+- `Link` 只用于单页应用的内部跳转，如果是外部地址跳转请使用 `a` 标签
 
 ## 路由组件参数
 
 路由组件可通过 `props` 获取到以下属性，
 
-* match，当前路由和 url match 后的对象，包含 `params`、`path`、`url` 和 `isExact` 属性
-* location，表示应用当前出于哪个位置，包含 `pathname`、`search`、`query` 等属性
-* history，同 [api#history](../api#history) 接口
-* route，当前路由配置，包含 `path`、`exact`、`component`、`routes` 等
-* routes，全部路由信息
+- match，当前路由和 url match 后的对象，包含 `params`、`path`、`url` 和 `isExact` 属性
+- location，表示应用当前处于哪个位置，包含 `pathname`、`search`、`query` 等属性
+- history，同 [api#history](../api#history) 接口
+- route，当前路由配置，包含 `path`、`exact`、`component`、`routes` 等
+- routes，全部路由信息
 
 比如：
 
 ```js
-export default function(props) {
+export default function (props) {
   console.log(props.route);
   return <div>Home Page</div>;
 }
@@ -218,7 +216,7 @@ export default function(props) {
 import React from 'react';
 
 export default function Layout(props) {
-  return React.Children.map(props.children, child => {
+  return React.Children.map(props.children, (child) => {
     return React.cloneElement(child, { foo: 'bar' });
   });
 }

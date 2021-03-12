@@ -61,6 +61,7 @@ $ npm run release
 $ npm run release -- --publish-only
 $ npm run release -- --skip-git-status-check
 $ npm run release -- --skip-build
+$ npm run release -- --otp
 ```
 
 ## Create new package
@@ -108,7 +109,7 @@ module.exports = (suite) => {
   // add tests
   suite
     // your logic
-    .add('ssr#normal /', )
+    .add('ssr#normal /')
     // your logic
     .add('ssr#normal#stream /');
 };

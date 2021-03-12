@@ -1,4 +1,4 @@
-import { createHashHistory, createMemoryHistory, createBrowserHistory } from '{{{ runtimePath }}}';
+import { createHashHistory, createMemoryHistory, createBrowserHistory, History } from '{{{ runtimePath }}}';
 
 let options = {{{ options }}};
 if ((<any>window).routerBase) {
@@ -6,7 +6,7 @@ if ((<any>window).routerBase) {
 }
 
 // remove initial history because of ssr
-let history: any = process.env.__IS_SERVER ? null : {{{ creator }}}(options);
+let history: History = process.env.__IS_SERVER ? null : {{{ creator }}}(options);
 export const createHistory = (hotReload = false) => {
   if (!hotReload) {
     switch(options.type){
@@ -31,5 +31,8 @@ export const createHistory = (hotReload = false) => {
 export const setCreateHistoryOptions = (newOpts: any = {}) => {
   options = { ...options, ...newOpts };
 };
+
+// 获取 history options 运行时配置
+export const getCreateHistoryOptions = () => options;
 
 export { history };

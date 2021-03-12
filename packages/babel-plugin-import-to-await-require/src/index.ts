@@ -1,5 +1,5 @@
 import { t } from '@umijs/utils';
-import * as traverse from '@babel/traverse';
+import type { Visitor, NodePath } from '@babel/traverse';
 
 type TLibs = (RegExp | string)[];
 
@@ -11,6 +11,7 @@ export interface IOpts {
   libs: TLibs;
   remoteName: string;
   alias?: IAlias;
+  onTransformDeps?: Function;
 }
 
 export function specifiersToProperties(specifiers: any[]) {
@@ -37,7 +38,7 @@ export function specifiersToProperties(specifiers: any[]) {
   );
 }
 
-function isValidLib(path: string, libs: TLibs, alias: IAlias) {
+function isMatchLib(path: string, libs: TLibs, alias: IAlias) {
   return libs.concat(Object.keys(alias)).some((lib) => {
     if (typeof lib === 'string') {
       return lib === path;
@@ -61,81 +62,106 @@ export default function () {
   return {
     visitor: {
       Program: {
-        exit(path: traverse.NodePath<t.Program>, { opts }: { opts: IOpts }) {
+        exit(path: NodePath<t.Program>, { opts }: { opts: IOpts }) {
           const variableDeclarations = [];
           let index = path.node.body.length - 1;
           while (index >= 0) {
             const d = path.node.body[index];
 
-            if (
-              t.isImportDeclaration(d) &&
-              isValidLib(d.source.value, opts.libs, opts.alias || {})
-            ) {
-              const {
-                properties,
-                namespaceIdentifier,
-              } = specifiersToProperties(d.specifiers);
-              const id = t.objectPattern(properties);
-              const init = t.awaitExpression(
-                t.callExpression(t.import(), [
-                  t.stringLiteral(
-                    `${opts.remoteName}/${getPath(
-                      d.source.value,
-                      opts.alias || {},
-                    )}`,
-                  ),
-                ]),
+            if (t.isImportDeclaration(d)) {
+              const isMatch = isMatchLib(
+                d.source.value,
+                opts.libs,
+                opts.alias || {},
               );
-              if (namespaceIdentifier) {
-                if (properties.length) {
+              opts.onTransformDeps?.({
+                source: d.source.value,
+                file: path.hub.file.opts.filename,
+                isMatch,
+              });
+
+              if (isMatch) {
+                const {
+                  properties,
+                  namespaceIdentifier,
+                } = specifiersToProperties(d.specifiers);
+                const id = t.objectPattern(properties);
+                const init = t.awaitExpression(
+                  t.callExpression(t.import(), [
+                    t.stringLiteral(
+                      `${opts.remoteName}/${getPath(
+                        d.source.value,
+                        opts.alias || {},
+                      )}`,
+                    ),
+                  ]),
+                );
+                if (namespaceIdentifier) {
+                  if (properties.length) {
+                    variableDeclarations.unshift(
+                      t.variableDeclaration('const', [
+                        t.variableDeclarator(id, namespaceIdentifier),
+                      ]),
+                    );
+                  }
                   variableDeclarations.unshift(
                     t.variableDeclaration('const', [
-                      t.variableDeclarator(id, namespaceIdentifier),
+                      t.variableDeclarator(namespaceIdentifier, init),
+                    ]),
+                  );
+                } else {
+                  variableDeclarations.unshift(
+                    t.variableDeclaration('const', [
+                      t.variableDeclarator(id, init),
                     ]),
                   );
                 }
-                variableDeclarations.unshift(
-                  t.variableDeclaration('const', [
-                    t.variableDeclarator(namespaceIdentifier, init),
+                path.node.body.splice(index, 1);
+              }
+            }
+
+            if (t.isExportAllDeclaration(d) && d.source) {
+              opts.onTransformDeps?.({
+                source: d.source.value,
+                file: path.hub.file.opts.filename,
+                isMatch: false,
+                isExportAllDeclaration: true,
+              });
+            }
+
+            // export { bar } from 'foo';
+            if (t.isExportNamedDeclaration(d) && d.source) {
+              const isMatch = isMatchLib(
+                d.source.value,
+                opts.libs,
+                opts.alias || {},
+              );
+              opts.onTransformDeps?.({
+                source: d.source.value,
+                file: path.hub.file.opts.filename,
+                isMatch,
+              });
+
+              if (isMatch) {
+                const { properties } = specifiersToProperties(d.specifiers);
+                const id = t.objectPattern(properties);
+                const init = t.awaitExpression(
+                  t.callExpression(t.import(), [
+                    t.stringLiteral(
+                      `${opts.remoteName}/${getPath(
+                        d.source.value,
+                        opts.alias || {},
+                      )}`,
+                    ),
                   ]),
                 );
-              } else {
                 variableDeclarations.unshift(
                   t.variableDeclaration('const', [
                     t.variableDeclarator(id, init),
                   ]),
                 );
+                d.source = null;
               }
-              path.node.body.splice(index, 1);
-            }
-
-            // export { bar } from 'foo';
-            if (
-              t.isExportNamedDeclaration(d) &&
-              d.source &&
-              isValidLib(d.source.value, opts.libs, opts.alias || {})
-            ) {
-              const {
-                properties,
-                namespaceIdentifier,
-              } = specifiersToProperties(d.specifiers);
-              const id = t.objectPattern(properties);
-              const init = t.awaitExpression(
-                t.callExpression(t.import(), [
-                  t.stringLiteral(
-                    `${opts.remoteName}/${getPath(
-                      d.source.value,
-                      opts.alias || {},
-                    )}`,
-                  ),
-                ]),
-              );
-              variableDeclarations.unshift(
-                t.variableDeclaration('const', [
-                  t.variableDeclarator(id, init),
-                ]),
-              );
-              d.source = null;
             }
 
             index -= 1;
@@ -143,6 +169,6 @@ export default function () {
           path.node.body = [...variableDeclarations, ...path.node.body];
         },
       },
-    } as traverse.Visitor,
+    } as Visitor,
   };
 }

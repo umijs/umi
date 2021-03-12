@@ -5,6 +5,9 @@
     "dev": "umi dev",
     "build": "umi build"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "private": true,
   "peerDependencies": {
     "umi": "latest"

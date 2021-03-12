@@ -314,8 +314,8 @@ test('renderServer stream', (done) => {
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
   }).then(({ pageHTML }) => {
-    const expectBytes = new Buffer('<div data-reactroot=""><h1>foo</h1></div>');
-    let bytes = new Buffer('');
+    const expectBytes = Buffer.from('<div data-reactroot=""><h1>foo</h1></div>');
+    let bytes = Buffer.from('');
     expect(pageHTML instanceof Stream).toBeTruthy();
     pageHTML.on('data', (chunk) => {
       bytes = Buffer.concat([bytes, chunk]);

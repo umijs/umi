@@ -1,0 +1,47 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "cross-env umi build",
+    "start": "node server.js",
+    "dev": "cross-env UMI_UI=none NODE_ENV=development concurrently \"umi dev\" \"nodemon server.js\"",
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "^5.0.12",
+    "@umijs/preset-react": "^1.5.17",
+    "@umijs/test": "^3.2.9",
+    "lint-staged": "^10.0.7",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "umi": "^3.2.9"
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "yorkie": "^2.0.0",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
+    "got": "^11.5.0",
+    "http-proxy-middleware": "^1.0.5",
+    "koa": "^2.13.0",
+    "koa-compress": "^5.0.1",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "koa-websocket": "^6.0.0",
+    "koa2-proxy-middleware": "^0.0.4",
+    "nodemon": "^2.0.4"
+  }
+}

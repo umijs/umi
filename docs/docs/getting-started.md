@@ -2,14 +2,25 @@
 
 ## Environment setup
 
-First you need to have [node](https://nodejs.org/en/). Make sure the node version is 10.13 or above. ([nvm](https://github.com/creationix/nvm) is recommended to manage node version for Mac OSX)
+First you need to install [node](https://nodejs.org/en/). Make sure the node version is 10.13 or above. ([nvm](https://github.com/creationix/nvm) is recommended to manage node version for Mac OSX)
 
 ```bash
 $ node -v
 v10.13.0
 ```
 
-It is recommended to use yarn to manage npm dependencies and [use domestic sources](https://github.com/yiminghe/tyarn) (Ali users use internal network sources).
+We recommend to use [yarn](https://github.com/yarnpkg/yarn) to manage npm dependencies.
+
+```bash
+# install yarn globally
+$ npm i yarn -g
+# confirm yarn version
+$ yarn -v
+```
+
+### For Users in China
+
+We recommend to use [tyarn](https://github.com/yiminghe/tyarn) to improve performance:
 
 ```bash
 # install tyarn globally
@@ -34,7 +45,8 @@ $ mkdir myapp && cd myapp
 Create project using `@umijs/umi-app` as the template
 
 ```bash
-$ yarn create @umijs/umi-app
+$ yarn create @umijs/umi-app // if use yarn
+$ npx @umijs/create-umi-app // if use npm
 
 Copy:  .editorconfig
 Write: .gitignore
@@ -85,9 +97,7 @@ Open [http://localhost:8000/](http://localhost:8000/) in your browser, you can s
 
 ## Change setting
 
-The default scaffolding has built-in `@umijs/preset-react`, including common functions such as 
-layout, permissions, internationalization, dva, and simple data flow. 
-For example you want ant-design-pro layout, editing `.umirc`.ts configuration layout: `{}`
+The default scaffolding has built-in `@umijs/preset-react`, including common functions such as layout, permissions, internationalization, dva, and simple data flow. For example you want ant-design-pro layout, editing `.umirc`.ts configuration layout: `{}`
 
 ```diff
 import { defineConfig } from 'umi';
@@ -131,9 +141,9 @@ tree ./dist
 └── umi.js
 ```
 
-### Local authentication
+### Local verification
 
-Before publishing, you can `serve` do local authentication
+Before publishing, you can `serve` check the build locally.
 
 ```bash
 $ yarn global add serve
@@ -151,7 +161,7 @@ $ serve ./dist
    └────────────────────────────────────────────────────┘
 ```
 
-Access [http://localhost:5000](http://localhost:5000) and under normal circumstances `yarn start` should be executed
+Access [http://localhost:5000](http://localhost:5000) and built assets from `./dist` folder will be served.
 
 ## Deploy
 

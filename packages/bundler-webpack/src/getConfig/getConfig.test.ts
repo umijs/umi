@@ -1,9 +1,16 @@
 import { BundlerConfigType } from '@umijs/types';
 import { winPath } from '@umijs/utils';
+// @ts-ignore
+import { init } from '@umijs/deps/compiled/webpack';
 import getConfig from './getConfig';
+
+beforeAll(() => {
+  init();
+});
 
 test('normal', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'development',
@@ -27,6 +34,7 @@ test('normal', async () => {
 
 test('opts.entry', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'development',
@@ -42,6 +50,7 @@ test('opts.entry', async () => {
 
 test('opts.entry + config.runtimePublicPath', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       runtimePublicPath: true,
@@ -60,6 +69,7 @@ test('opts.entry + config.runtimePublicPath', async () => {
 
 test('opts.entry + opts.hot', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'development',
@@ -78,6 +88,7 @@ test('opts.entry + opts.hot', async () => {
 
 test('config.devtool + development', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       devtool: 'eval',
@@ -90,6 +101,7 @@ test('config.devtool + development', async () => {
 
 test('no config.devtool + production', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'production',
@@ -100,6 +112,7 @@ test('no config.devtool + production', async () => {
 
 test('config.devtool + production', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       devtool: 'eval',
@@ -112,6 +125,7 @@ test('config.devtool + production', async () => {
 
 test('config.hash + production', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       hash: true,
@@ -127,6 +141,7 @@ test('config.hash + production', async () => {
 
 test('config.hash + production', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       hash: true,
@@ -142,6 +157,7 @@ test('config.hash + production', async () => {
 
 test('config.alias', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       alias: {
@@ -158,6 +174,7 @@ test('config.alias', async () => {
 
 test('config.externals', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       externals: {
@@ -174,6 +191,7 @@ test('config.externals', async () => {
 
 test('config.chainWebpack', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       chainWebpack(memo) {
@@ -190,6 +208,7 @@ test('config.chainWebpack', async () => {
 
 test('opts.chainWebpack', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'development',
@@ -206,6 +225,7 @@ test('opts.chainWebpack', async () => {
 
 test('config.manifest + production', async () => {
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {
       manifest: {},
@@ -215,7 +235,11 @@ test('config.manifest + production', async () => {
   });
   expect(
     config.plugins?.filter((plugin) => {
-      return plugin instanceof require('webpack-manifest-plugin');
+      return (
+        plugin instanceof
+        require('@umijs/deps/compiled/webpack-manifest-plugin')
+          .WebpackManifestPlugin
+      );
     }).length,
   ).toEqual(1);
 });
@@ -223,6 +247,7 @@ test('config.manifest + production', async () => {
 test('env SPEED_MEASURE', async () => {
   process.env.SPEED_MEASURE = 'CONSOLE';
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'development',
@@ -230,9 +255,13 @@ test('env SPEED_MEASURE', async () => {
   });
   expect(
     config.plugins?.filter((plugin) => {
-      return plugin instanceof require('speed-measure-webpack-plugin');
+      return (
+        plugin instanceof
+        require('@umijs/deps/compiled/speed-measure-webpack-plugin')
+      );
     }).length,
   ).toEqual(1);
+  // @ts-ignore
   delete process.env.SPEED_MEASURE;
 });
 
@@ -240,27 +269,34 @@ test('env SPEED_MEASURE = !CONSOLE', async () => {
   // @ts-ignore
   process.env.SPEED_MEASURE = '2';
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'development',
     type: BundlerConfigType.csr,
   });
   const p = config.plugins?.filter((plugin) => {
-    return plugin instanceof require('speed-measure-webpack-plugin');
+    return (
+      plugin instanceof
+      require('@umijs/deps/compiled/speed-measure-webpack-plugin')
+    );
   })[0];
   // @ts-ignore
   expect(p.options.outputFormat).toEqual('json');
+  // @ts-ignore
   delete process.env.SPEED_MEASURE;
 });
 
 test('env COMPRESS = none + production', async () => {
   process.env.COMPRESS = 'none';
   const config = await getConfig({
+    __disableTerserForTest: true,
     cwd: '/foo',
     config: {},
     env: 'production',
     type: BundlerConfigType.csr,
   });
   expect(config.optimization?.minimize).toEqual(false);
+  // @ts-ignore
   delete process.env.COMPRESS;
 });

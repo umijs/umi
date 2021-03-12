@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi, IRoute } from '@umijs/types';
 import { deepmerge, rimraf } from '@umijs/utils';
-import pathToRegexp from 'path-to-regexp';
+import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
 
 import { isDynamicRoute } from '../utils';
 import { OUTPUT_SERVER_FILENAME } from '../features/ssr/constants';
@@ -84,6 +84,8 @@ export default (api: IApi) => {
     return routeMap;
   });
 
+  // for debug prerender error
+  let serverRenderFailed = false;
   // 不使用 api.modifyHTML 原因是不需要转 cheerio，提高预渲染效率
   api.modifyProdHTMLContent(async (memo, args) => {
     const { route } = args;
@@ -111,9 +113,11 @@ export default (api: IApi) => {
         if (!error) {
           return html;
         } else {
-          api.logger.error('[SSR]', error);
+          serverRenderFailed = true;
+          api.logger.error(`[SSR] ${route.path}`, error);
         }
       } catch (e) {
+        serverRenderFailed = true;
         api.logger.error(`${route.path} render failed`, e);
         throw e;
       }
@@ -122,14 +126,25 @@ export default (api: IApi) => {
   });
 
   api.onBuildComplete(({ err }) => {
-    if (!err && api.config?.ssr && process.env.RM_SERVER_FILE !== 'none') {
-      // remove umi.server.js
-      const serverFilePath = join(
-        api.paths.absOutputPath!,
-        OUTPUT_SERVER_FILENAME,
-      );
-      if (existsSync(serverFilePath)) {
-        rimraf.sync(serverFilePath);
+    if (!err && api.config?.ssr) {
+      if (serverRenderFailed) {
+        // tips: COMPRESS=none to debug
+        api.logger.info('You can use COMPRESS=none to debug.');
+      }
+      // RM_SERVER_FILE prior to serverFailed
+      if (
+        process.env.RM_SERVER_FILE
+          ? process.env.RM_SERVER_FILE !== 'none'
+          : !serverRenderFailed
+      ) {
+        // remove umi.server.js
+        const serverFilePath = join(
+          api.paths.absOutputPath!,
+          OUTPUT_SERVER_FILENAME,
+        );
+        if (existsSync(serverFilePath)) {
+          rimraf.sync(serverFilePath);
+        }
       }
     }
   });

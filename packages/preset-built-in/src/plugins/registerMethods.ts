@@ -15,8 +15,11 @@ export default function (api: IApi) {
     'onPatchRoutes',
     'onPatchRoutesBefore',
     'onDevCompileDone',
+    'addBeforeMiddlewares',
     'addBeforeMiddewares',
+    'addDepInfo',
     'addDevScripts',
+    'addMiddlewares',
     'addMiddewares',
     'addRuntimePlugin',
     'addRuntimePluginKey',
@@ -70,11 +73,11 @@ export default function (api: IApi) {
       );
       const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
+      if (isTSFile(path) && skipTSCheck) {
+        // write @ts-nocheck into first line
+        content = `// @ts-nocheck${EOL}${content}`;
+      }
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
-        if (isTSFile(path) && skipTSCheck) {
-          // write @ts-nocheck into first line
-          content = `// @ts-nocheck${EOL}${content}`;
-        }
         writeFileSync(absPath, content, 'utf-8');
       }
     },

@@ -2,11 +2,11 @@
 
 如果遇到编译慢，增量编译慢，内存爆掉，OOM 等问题，可尝试以下方法。
 
-## 配置 `nodeModulesTransform` 为  `{ type: 'none' }`
+## 配置 `nodeModulesTransform` 为 `{ type: 'none' }`
 
 > 需要 Umi 3.1 。
 
-Umi 默认编译 node\_modules 下的文件，带来一些收益的同时，也增加了额外的编译时间。如果不希望 node\_modules 下的文件走 babel 编译，可通过以下配置减少 40% 到 60% 的编译时间。
+Umi 默认编译 node_modules 下的文件，带来一些收益的同时，也增加了额外的编译时间。如果不希望 node_modules 下的文件走 babel 编译，可通过以下配置减少 40% 到 60% 的编译时间。
 
 ```js
 export default {
@@ -14,7 +14,7 @@ export default {
     type: 'none',
     exclude: [],
   },
-}
+};
 ```
 
 ## 查看包结构
@@ -25,7 +25,7 @@ export default {
 
 注意：
 
-* `umi dev` 可以实时修改和查看，但会引入一些开发依赖，注意忽略
+- `umi dev` 可以实时修改和查看，但会引入一些开发依赖，注意忽略
 
 ## 配置 externals
 
@@ -37,20 +37,23 @@ export default {
 export default {
   // 配置 external
   externals: {
-    'react': 'window.React',
+    react: 'window.React',
     'react-dom': 'window.ReactDOM',
   },
 
   // 引入被 external 库的 scripts
   // 区分 development 和 production，使用不同的产物
-  scripts: process.env.NODE_ENV === 'development' ? [
-    'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.development.js',
-    'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.development.js',
-  ] : [
-    'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.production.min.js',
-    'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.production.min.js',
-  ],
-}
+  scripts:
+    process.env.NODE_ENV === 'development'
+      ? [
+          'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.development.js',
+          'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.development.js',
+        ]
+      : [
+          'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.production.min.js',
+          'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.production.min.js',
+        ],
+};
 ```
 
 注意：
@@ -81,12 +84,12 @@ export default {
     edge: false,
     ios: false,
   },
-}
+};
 ```
 
 注意：
 
-* 把浏览器设为 false 则不会包含他的补丁
+- 把浏览器设为 false 则不会包含他的补丁
 
 ## 调整 splitChunks 策略，减少整体尺寸
 
@@ -96,11 +99,11 @@ export default {
 
 ```js
 export default {
+  dynamicImport: {},
   chunks: ['vendors', 'umi'],
   chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
-        minimize: true,
         splitChunks: {
           chunks: 'all',
           minSize: 30000,
@@ -116,13 +119,13 @@ export default {
             },
           },
         },
-      }
+      },
     });
   },
-}
+};
 ```
 
-## 通过 NODE\_OPTIONS 设置内存上限
+## 通过 NODE_OPTIONS 设置内存上限
 
 如果出现 OOM，也可以通过增加内存上限尝试解决。比如 `NODE_OPTIONS=--max_old_space_size=4096` 设置为 4G。
 
@@ -151,33 +154,18 @@ export default {
 编辑器打包，建议使用如下配置，避免构建报错：
 
 ```js
+import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+
 export default {
-  chainWebpack: (config) => {
-    config.plugin('monaco-editor-webpack-plugin').use(
-      // 更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-      new MonacoWebpackPlugin(),
-    );
-    config
-    .plugin('d1-ignore')
-      .use(
-        // eslint-disable-next-line
-        require('webpack/lib/IgnorePlugin'), [
-          /^((fs)|(path)|(os)|(crypto)|(source-map-support))$/, /vs(\/|\\)language(\/|\\)typescript(\/|\\)lib/
-        ]
-      )
-    .end()
-    .plugin('d1-replace')
-      .use(
-        // eslint-disable-next-line
-        require('webpack/lib/ContextReplacementPlugin'),
-        [
-          /monaco-editor(\\|\/)esm(\\|\/)vs(\\|\/)editor(\\|\/)common(\\|\/)services/,
-          __dirname,
-        ]
-      )
-    return config;
-  }
-}
+  chainWebpack: (memo) => {
+    // 更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+    memo.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [
+      // 按需配置
+      { languages: ['javascript'] },
+    ]);
+    return memo;
+  },
+};
 ```
 
 ## 替换压缩器为 esbuild
@@ -199,7 +187,7 @@ $ yarn add @umijs/plugin-esbuild
 ```js
 export default {
   esbuild: {},
-}
+};
 ```
 
 ## 不压缩
@@ -211,4 +199,3 @@ export default {
 ```bash
 $ COMPRESS=none umi build
 ```
-

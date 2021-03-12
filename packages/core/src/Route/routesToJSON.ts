@@ -61,7 +61,7 @@ export default function ({ routes, config, cwd }: IOpts) {
           const [component, webpackChunkName] = value.split(SEPARATOR);
           let loading = '';
           if (config.dynamicImport.loading) {
-            loading = `, loading: require('${config.dynamicImport.loading}').default`;
+            loading = `, loading: LoadingComponent`;
           }
           return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
         } else {
@@ -69,7 +69,15 @@ export default function ({ routes, config, cwd }: IOpts) {
         }
       case 'wrappers':
         const wrappers = value.map((wrapper: string) => {
-          return `require('${wrapper}').default`;
+          if (config.dynamicImport) {
+            let loading = '';
+            if (config.dynamicImport.loading) {
+              loading = `, loading: LoadingComponent`;
+            }
+            return `dynamic({ loader: () => import(/* webpackChunkName: 'wrappers' */'${wrapper}')${loading}})`;
+          } else {
+            return `require('${wrapper}').default`;
+          }
         });
         return `[${wrappers.join(', ')}]`;
       default:

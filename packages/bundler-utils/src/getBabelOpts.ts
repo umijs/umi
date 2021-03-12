@@ -1,4 +1,5 @@
 import { IConfig } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
@@ -11,7 +12,7 @@ interface IOpts {
 }
 
 function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
-  const prefix = existsSync(join(cwd, 'src')) ? 'src/' : '';
+  const prefix = existsSync(join(cwd, 'src')) ? join(cwd, 'src') : cwd;
   return {
     // Tell babel to guess the type, instead assuming all files are modules
     // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
@@ -19,16 +20,17 @@ function getBasicBabelLoaderOpts({ cwd }: { cwd: string }) {
     babelrc: false,
     cacheDirectory:
       process.env.BABEL_CACHE !== 'none'
-        ? `${prefix}.umi/.cache/babel-loader`
+        ? winPath(`${prefix}/.umi/.cache/babel-loader`)
         : false,
   };
 }
 
 export function getBabelPresetOpts(opts: IOpts) {
+  const { config } = opts;
   return {
     // @ts-ignore
     nodeEnv: opts.env,
-    dynamicImportNode: !opts.config.dynamicImport,
+    dynamicImportNode: !config.dynamicImport && !config.dynamicImportSyntax,
     autoCSSModules: true,
     svgr: true,
     env: {
@@ -73,7 +75,8 @@ export function getBabelDepsOpts({
         require.resolve('@umijs/babel-preset-umi/dependency'),
         {
           nodeEnv: env,
-          dynamicImportNode: !config.dynamicImport,
+          dynamicImportNode:
+            !config.dynamicImport && !config.dynamicImportSyntax,
         },
       ],
     ],

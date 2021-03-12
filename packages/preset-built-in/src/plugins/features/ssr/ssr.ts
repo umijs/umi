@@ -1,15 +1,26 @@
 import * as fs from 'fs';
+import { EOL } from 'os';
 import assert from 'assert';
 import * as path from 'path';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
+import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
 import { IApi, BundlerConfigType } from '@umijs/types';
-import { winPath, Mustache, lodash as _, routeToChunkName } from '@umijs/utils';
+import {
+  winPath,
+  Mustache,
+  lodash as _,
+  routeToChunkName,
+  cleanRequireCache,
+} from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
+import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
   OUTPUT_SERVER_FILENAME,
+  OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
   CLIENT_EXPORTS,
 } from './constants';
@@ -56,20 +67,28 @@ export default (api: IApi) => {
     key: 'ssr',
     config: {
       schema: (joi) => {
-        return joi.object({
-          forceInitial: joi
-            .boolean()
-            .description(
-              'remove window.g_initialProps in html, to force execing Page getInitialProps  functions',
+        return joi
+          .object({
+            forceInitial: joi
+              .boolean()
+              .description('force execing Page getInitialProps functions'),
+            removeWindowInitialProps: joi
+              .boolean()
+              .description('remove window.g_initialProps in html'),
+            devServerRender: joi
+              .boolean()
+              .description('disable serve-side render in umi dev mode.'),
+            mode: joi.string().valid('stream', 'string'),
+            staticMarkup: joi
+              .boolean()
+              .description('static markup in static site'),
+          })
+          .without('forceInitial', ['removeWindowInitialProps'])
+          .error(
+            new Error(
+              'The `removeWindowInitialProps` cannot be enabled when `forceInitial` has been enabled at the same time.',
             ),
-          devServerRender: joi
-            .boolean()
-            .description('disable serve-side render in umi dev mode.'),
-          mode: joi.string().valid('stream', 'string'),
-          staticMarkup: joi
-            .boolean()
-            .description('static markup in static site'),
-        });
+          );
       },
     },
     // 配置开启
@@ -87,6 +106,14 @@ export default (api: IApi) => {
       api.logger.warn(
         'The manifest file will be generated if enabling `dynamicImport` in ssr.',
       );
+    }
+    // ref: https://github.com/umijs/umi/issues/5501
+    if (!process.env.WATCH_IGNORED) {
+      const { outputPath } = api.config;
+      const absOutputPath = winPath(
+        path.join(api.cwd, outputPath as string, '/'),
+      );
+      process.env.WATCH_IGNORED = `(node_modules|${absOutputPath}(?!${OUTPUT_SERVER_FILENAME}))`;
     }
   });
 
@@ -124,19 +151,23 @@ export default (api: IApi) => {
         RuntimePolyfill: winPath(
           require.resolve('regenerator-runtime/runtime'),
         ),
+        loadingComponent:
+          api.config.dynamicImport?.loading &&
+          winPath(api.config.dynamicImport?.loading),
         DynamicImport: !!api.config.dynamicImport,
         Utils: winPath(require.resolve('./templates/utils')),
-        Mode: !!api.config.ssr?.mode || 'string',
+        Mode: api.config.ssr?.mode ?? 'string',
         MountElementId: api.config.mountElementId,
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        RemoveWindowInitialProps: !!api.config.ssr?.removeWindowInitialProps,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
         ManifestFileName: api.config.manifest
           ? api.config.manifest.fileName || 'asset-manifest.json'
           : '',
-        DEFAULT_HTML_PLACEHOLDER: JSON.stringify(defaultHTML),
+        DEFAULT_HTML_PLACEHOLDER: serialize(defaultHTML),
       }),
     });
 
@@ -190,7 +221,9 @@ export default (api: IApi) => {
     config.devServer.writeToDisk = (filePath: string) => {
       const manifestFile =
         api.config?.manifest?.fileName || 'asset-manifest.json';
-      const regexp = new RegExp(`(${OUTPUT_SERVER_FILENAME}|${manifestFile})$`);
+      const regexp = new RegExp(
+        `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME}|${manifestFile})$`,
+      );
       return regexp.test(filePath);
     };
     // enable manifest
@@ -203,27 +236,33 @@ export default (api: IApi) => {
     return config;
   });
 
+  // make sure to clear umi.server.js cache
+  api.onDevCompileDone(() => {
+    const serverExp = new RegExp(_.escapeRegExp(OUTPUT_SERVER_FILENAME));
+    // clear require cache
+    for (const moduleId of Object.keys(require.cache)) {
+      if (serverExp.test(moduleId)) {
+        cleanRequireCache(moduleId);
+      }
+    }
+  });
+
   // modify devServer content
   api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
     // umi dev to enable server side render by default
-    const { stream, devServerRender = true } = api.config?.ssr || {};
+    const { mode, devServerRender = true } = api.config?.ssr || {};
     const serverPath = path.join(
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
     );
-    // if dev clear cache
-    if (require.cache[serverPath]) {
-      // replace default html
-      delete require.cache[serverPath];
-    }
 
     if (!devServerRender) {
       return defaultHtml;
     }
 
     try {
-      console.time(`[SSR] ${stream ? 'stream' : ''} render ${req.url} start`);
-      const render = require(serverPath);
+      const startTime = performance.nodeTiming.duration;
+      let render = require(serverPath);
       const context = {};
       const { html, error } = await render({
         origin: `${req.protocol}://${req.get('host')}`,
@@ -233,12 +272,16 @@ export default (api: IApi) => {
         htmlTemplate: defaultHtml,
         mountElementId: api.config?.mountElementId,
       });
-      console.timeEnd(
-        `[SSR] ${stream ? 'stream' : ''} render ${req.url} start`,
+      const endTime = performance.nodeTiming.duration;
+      console.log(
+        `[SSR] ${mode === 'stream' ? 'stream' : ''} render ${req.url} start: ${(
+          endTime - startTime
+        ).toFixed(2)}ms`,
       );
       if (error) {
         throw error;
       }
+      render = null;
       return html;
     } catch (e) {
       api.logger.error('[SSR]', e);
@@ -261,6 +304,7 @@ export default (api: IApi) => {
 
       config.output
         .filename(OUTPUT_SERVER_FILENAME)
+        // avoid using `require().default`, just using `require()`
         .libraryExport('default')
         .chunkFilename('[name].server.js')
         .libraryTarget('commonjs2');
@@ -270,6 +314,14 @@ export default (api: IApi) => {
         {
           maxChunks: 1,
         },
+      ]);
+      config.plugin('generate-server-type').use(ServerTypePlugin, [
+        [
+          {
+            name: OUTPUT_SERVER_TYPE_FILENAME,
+            content: `import { IServerRender } from 'umi';${EOL}export = render;${EOL}export as namespace render;${EOL}declare const render: IServerRender;`,
+          },
+        ],
       ]);
       config.plugin('define').tap(([args]) => [
         {

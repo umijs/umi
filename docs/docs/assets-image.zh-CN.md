@@ -7,37 +7,36 @@
 比如：
 
 ```js
-export default () => <img src={require('./foo.png')} />
+export default () => <img src={require('./foo.png')} />;
 ```
 
 支持别名，比如通过 `@` 指向 src 目录：
 
 ```js
-export default () => <img src={require('@/foo.png')} />
+export default () => <img src={require('@/foo.png')} />;
 ```
 
-## JS 里使用svg
+## JS 里使用 svg
 
 **组件式引入**
 
 ```js
-import { ReactComponent as Logo } from './logo.svg'
+import { ReactComponent as Logo } from './logo.svg';
 
 function Analysis() {
-  return <Logo width={90} height={120} />
+  return <Logo width={90} height={120} />;
 }
 ```
 
-**url式引入**
+**url 式引入**
 
 ```js
-import logoSrc from './logo.svg'
+import logoSrc from './logo.svg';
 
 function Analysis() {
-  return <img src={logoSrc} alt="logo" />
+  return <img src={logoSrc} alt="logo" />;
 }
 ```
-
 
 ## CSS 里使用图片
 
@@ -71,7 +70,7 @@ CSS 里也支持别名，但需要在前面加 `~` 前缀，
 1. 先把图片传到 cdn，然后在 JS 和 CSS 中使用图片的绝对路径
 2. 把图片放在项目里，然后在 JS 和 CSS 中通过相对路径的方式使用
 
-前者不会有任何问题；后者，如果在 JS 中引用相对路径的图片时，在发布时会根据 publicPath 绝对引入路径，所以就算没有开启 dynamicImport 时，也需要注意 publicPath 的正确性。
+前者不会有任何问题；后者，如果在 JS 中引用相对路径的图片时，在发布时会根据 publicPath 引入绝对路径，所以就算没有开启 dynamicImport 时，也需要注意 publicPath 的正确性。
 
 ## Base64 编译
 

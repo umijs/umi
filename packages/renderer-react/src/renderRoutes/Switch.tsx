@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement, Children, cloneElement } from 'react';
 import { __RouterContext as RouterContext, matchPath } from '@umijs/runtime';
 
 export default function Switch(props: any) {
@@ -6,14 +6,14 @@ export default function Switch(props: any) {
     <RouterContext.Consumer>
       {(context: any) => {
         const { children, ...extraProps } = props;
-        const { location } = context;
+        const location = props.location || context.location;
         let element: any,
           match: object | null = null;
 
-        React.Children.forEach(
+        Children.forEach(
           children,
           (child: { props: { path: string; from: string } }) => {
-            if (match === null && React.isValidElement(child)) {
+            if (match === null && isValidElement(child)) {
               element = child;
               const path = child.props.path || child.props.from;
               match = path
@@ -24,7 +24,7 @@ export default function Switch(props: any) {
         );
 
         return match
-          ? React.cloneElement(element, {
+          ? cloneElement(element, {
               location,
               computedMatch: match,
               layoutProps: extraProps,

@@ -6,7 +6,6 @@ toc: menu
 
 # API
 
-
 ## 基本 API
 
 ### dynamic
@@ -19,16 +18,17 @@ Load component dynamically on demand.
 
 Usually work with [dynamic import syntax](https://github.com/tc39/proposal-dynamic-import).
 
-
 **Create dynamic component**
 
 ```js
 import { dynamic } from 'umi';
 
 export default dynamic({
-  loader: async function() {
+  loader: async function () {
     // webpackChunkName tells webpack create separate bundle for HugeA
-    const { default: HugeA } = await import(/* webpackChunkName: "external_A" */ './HugeA');
+    const { default: HugeA } = await import(
+      /* webpackChunkName: "external_A" */ './HugeA'
+    );
     return HugeA;
   },
 });
@@ -47,7 +47,7 @@ import AsyncHugeA from './AsyncHugeA';
 // 3. display HugeA whenever component downloaded
 export default () => {
   return <AsyncHugeA />;
-}
+};
 ```
 
 ### history
@@ -135,11 +135,11 @@ plugin.applyPlugins({
 
 参数属性包含：
 
-* **key**，坑位的 key
-* **type**，执行方式类型，详见 [ApplyPluginsType](#ApplyPluginsType)
-* **initialValue**，初始值
-* **args**，参数
-* **async**，是否异步执行且返回 Promise
+- **key**，坑位的 key
+- **type**，执行方式类型，详见 [ApplyPluginsType](#ApplyPluginsType)
+- **initialValue**，初始值
+- **args**，参数
+- **async**，是否异步执行且返回 Promise
 
 ### ApplyPluginsType
 
@@ -147,9 +147,9 @@ plugin.applyPlugins({
 
 运行时插件执行类型，enum 类型，包含三个属性：
 
-* **compose**，用于合并执行多个函数，函数可决定前序函数的执行时机
-* **modify**，用于修改值
-* **event**，用于执行事件，前面没有依赖关系
+- **compose**，用于合并执行多个函数，函数可决定前序函数的执行时机
+- **modify**，用于修改值
+- **event**，用于执行事件，前面没有依赖关系
 
 ## 路由
 
@@ -175,9 +175,9 @@ export default () => {
       {/* An object representation of the Link location */}
       <Link
         to={{
-          pathname: "/list",
-          search: "?sort=name",
-          hash: "#the-hash",
+          pathname: '/list',
+          search: '?sort=name',
+          hash: '#the-hash',
           state: { fromDashboard: true },
         }}
       >
@@ -190,8 +190,8 @@ export default () => {
           or as an object
       */}
       <Link
-        to={location => {
-          return { ...location, pathname: "/profile" };
+        to={(location) => {
+          return { ...location, pathname: '/profile' };
         }}
       />
 
@@ -206,7 +206,7 @@ export default () => {
       */}
       <Link
         to="/courses"
-        innerRef={node => {
+        innerRef={(node) => {
           // `node` refers to the mounted DOM element
           // or null when unmounted
         }}
@@ -241,8 +241,8 @@ export default () => {
       <NavLink
         to="/faq"
         activeStyle={{
-          fontWeight: "bold",
-          color: "red",
+          fontWeight: 'bold',
+          color: 'red',
         }}
       >
         FAQs
@@ -276,7 +276,7 @@ export default () => {
           if (!match) {
             return false;
           }
-          return location.search.includes("name");
+          return location.search.includes('name');
         }}
       >
         Profile
@@ -307,8 +307,10 @@ export default () => {
           transition
       */}
       <Prompt
-        message={location => {
-          return location.pathname !== "/" ? true : `Are are sure you want to back to home page?`;
+        message={(location) => {
+          return location.pathname !== '/'
+            ? true
+            : `Are are sure you want to back to home page?`;
         }}
       />
 
@@ -327,7 +329,7 @@ export default () => {
 You can get access to the `history`, `location`, `match` objects via the `withRouter` higher-order component. `withRouter` will pass updated `match`, `location`, and `history` props to the wrapped component whenever it renders
 
 ```tsx
-import { withRouter } from "umi";
+import { withRouter } from 'umi';
 
 export default withRouter(({ history, location, match }) => {
   return (
@@ -347,10 +349,10 @@ export default withRouter(({ history, location, match }) => {
 The `useHistory` hook gives you access to the `history` instance that you may use to navigate.
 
 ```tsx
-import { useHistory } from "umi";
+import { useHistory } from 'umi';
 
 export default () => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <div>
       <ul>
@@ -366,10 +368,10 @@ export default () => {
 The `useLocation` hook returns the `location` object that represents the current URL. You can think about it like a `useState` that returns a new location whenever the URL changes.
 
 ```tsx
-import { useLocation } from "umi";
+import { useLocation } from 'umi';
 
 export default () => {
-  const location = useLocation()
+  const location = useLocation();
   return (
     <div>
       <ul>
@@ -385,10 +387,10 @@ export default () => {
 `useParams` returns an object of key/value pairs of URL parameters. Use it to access `match.params` of the current route.
 
 ```tsx
-import { useParams } from "umi";
+import { useParams } from 'umi';
 
 export default () => {
-  const params = useParams()
+  const params = useParams();
   return (
     <div>
       <ul>
@@ -404,10 +406,10 @@ export default () => {
 The `useRouteMatch` hook attempts to match the current URL in the same way that a Route would. It’s mostly useful for getting access to the match data without actually rendering a `<Route />`
 
 ```tsx
-import { useRouteMatch } from "umi";
+import { useRouteMatch } from 'umi';
 
 export default () => {
-  const match = useRouteMatch()
+  const match = useRouteMatch();
   return (
     <div>
       <ul>
@@ -425,6 +427,19 @@ export default () => {
 ### Service
 
 Umi 内核的 Service 方法，用于测试，或调用 Umi 底层命令。
+
+#### 自定义配置文件
+
+umi 默认会依次（相对应用根目录）读取`.umirc.ts`、`.umirc.js`、`config/config.ts`、`config/config.js`作为用户配置文件，也可以自定义用户配置文件（优先级高于默认的配置文件）：
+
+```tsx
+new Service({
+  configFiles: ['.mycustomrc.ts', 'config/mycustom.ts'],
+  // ... other options
+});
+```
+
+自定义用户配置文件通常用于基于 umi 或 umi-core 深度定制开发框架的场景。
 
 ### utils
 

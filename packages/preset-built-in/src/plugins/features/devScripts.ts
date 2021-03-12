@@ -14,7 +14,7 @@ export default (api: IApi) => {
     },
   });
 
-  api.addBeforeMiddewares(() => {
+  api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       if (req.path.includes('@@/devScripts.js')) {
         api
@@ -34,7 +34,14 @@ export default (api: IApi) => {
                 : [],
           })
           .then((scripts) => {
-            res.end(scripts.join('\r\n\r\n'));
+            res.end(
+              scripts
+                .join('\r\n\r\n')
+                .replace(
+                  /{}.SOCKET_SERVER/g,
+                  JSON.stringify(process.env.SOCKET_SERVER || ''),
+                ),
+            );
           });
       } else {
         next();

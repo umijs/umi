@@ -1,3 +1,4 @@
+import { escapeRegExp } from '@umijs/deps/compiled/lodash';
 import winPath from './winPath/winPath';
 
 function lastSlash(str: string) {
@@ -19,7 +20,10 @@ export const routeToChunkName: IRouteToChunkName = (
 ) => {
   return typeof route.component === 'string'
     ? route.component
-        .replace(new RegExp(`^${lastSlash(winPath(cwd || '/'))}`), '')
+        .replace(
+          new RegExp(`^${escapeRegExp(lastSlash(winPath(cwd || '/')))}`),
+          '',
+        )
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
         .replace(/\.jsx?$/, '')

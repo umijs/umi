@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
+import { runtimePath, renderReactPath } from './constants';
 
 export function importsToStr(
   imports: { source: string; specifier?: string }[],
@@ -21,12 +22,27 @@ export default function (api: IApi) {
     utils: { Mustache },
   } = api;
 
+  api.addDepInfo(() => {
+    return [
+      {
+        name: '@umijs/runtime',
+        range: '3',
+        alias: [runtimePath],
+      },
+      {
+        name: '@umijs/renderer-react',
+        range: '3',
+        alias: [renderReactPath],
+      },
+    ];
+  });
+
   api.onGenerateFiles(async (args) => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
     const rendererPath = await api.applyPlugins({
       key: 'modifyRendererPath',
       type: api.ApplyPluginsType.modify,
-      initialValue: require.resolve('@umijs/renderer-react'),
+      initialValue: renderReactPath,
     });
     api.writeTmpFile({
       path: 'umi.ts',
@@ -35,10 +51,9 @@ export default function (api: IApi) {
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
         rendererPath: winPath(rendererPath),
-        runtimePath: winPath(
-          dirname(require.resolve('@umijs/runtime/package.json')),
-        ),
+        runtimePath,
         rootElement: api.config.mountElementId,
+        enableSSR: !!api.config.ssr,
         dynamicImport: !!api.config.dynamicImport,
         entryCode: (
           await api.applyPlugins({

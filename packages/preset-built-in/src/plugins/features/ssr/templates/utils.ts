@@ -1,8 +1,8 @@
 import { Readable } from 'stream';
 import { IRoute } from '@umijs/types';
 import { parse, UrlWithStringQuery } from 'url';
-import mergeStream from 'merge-stream';
-import serialize from 'serialize-javascript';
+import mergeStream from '@umijs/deps/compiled/merge-stream';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
 
 function addLeadingSlash(path: string): string {
   return path.charAt(0) === "/" ? path : "/" + path;
@@ -51,6 +51,7 @@ export interface IHandleHTMLOpts {
   mountElementId: string;
   mode: 'stream' | 'string';
   forceInitial: boolean;
+  removeWindowInitialProps: boolean;
   routesMatched: IRoute[];
   html: string;
   dynamicImport: boolean;
@@ -62,13 +63,13 @@ export interface IHandleHTMLOpts {
  * @param param
  */
 export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
-  const { pageInitialProps, rootContainer, mountElementId, mode, forceInitial, routesMatched, dynamicImport, manifest } = opts;
+  const { pageInitialProps, rootContainer, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest } = opts;
   let html = opts.html;
   if (typeof html !== 'string') {
     return '';
   }
   const windowInitialVars = {
-    ...(pageInitialProps && !forceInitial ? { 'window.g_initialProps': serialize(pageInitialProps) } : {}),
+    ...(pageInitialProps && !removeWindowInitialProps ? { 'window.g_initialProps': serialize(forceInitial ? null : pageInitialProps) } : {}),
   }
   // get chunks in `dynamicImport: {}`
   if (dynamicImport && Array.isArray(routesMatched)) {
@@ -85,6 +86,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
           if (manifestChunk !== 'umi.css'
             && chunk
             && manifestChunk.startsWith(chunk)
+            && manifest
             && /\.css$/.test(manifest[manifestChunk])
           ) {
             cssChunkSet.add(`<link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
@@ -99,8 +101,9 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   const rootHTML = `<div id="${mountElementId}"></div>`;
   const scriptsContent = `\n\t<script>
   window.g_useSSR = true;
-  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]}`).join(';\n')};\n\t</script>`;
-  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`;
+  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]};`).join('\n')}\n\t</script>`;
+  // https://github.com/umijs/umi/issues/5840
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`.replace(/\$/g,'$$$');
 
   if (mode === 'stream') {
     const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);

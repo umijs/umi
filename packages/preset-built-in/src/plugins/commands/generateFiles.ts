@@ -5,11 +5,14 @@ import { join } from 'path';
 export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
   const { paths } = api;
 
-  async function generate() {
-    api.logger.debug('generate files');
+  async function generate(files?: { event: string; path: string }[]) {
+    api.logger.debug('generate files', files);
     await api.applyPlugins({
       key: 'onGenerateFiles',
       type: api.ApplyPluginsType.event,
+      args: {
+        files: files || [],
+      },
     });
   }
 
@@ -53,13 +56,20 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
       ignored: /(^|[\/\\])(_mock.js$|\..)/,
       ignoreInitial: true,
     });
-    watcher.on(
-      'all',
-      lodash.throttle(async (event, path) => {
-        // debug(`${event} ${path}`);
-        await generate();
-      }, 100),
-    );
+    let timer: any = null;
+    let files: { event: string; path: string }[] = [];
+    watcher.on('all', (event: string, path: string) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      files.push({ event, path: winPath(path) });
+      timer = setTimeout(async () => {
+        timer = null;
+        await generate(files);
+        files = [];
+      }, 2000);
+    });
+    watchers.push(watcher);
   }
 
   return unwatch;

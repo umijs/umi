@@ -18,16 +18,17 @@ toc: menu
 
 通常搭配 [动态 import 语法](https://github.com/tc39/proposal-dynamic-import) 使用。
 
-
 **封装一个异步组件**
 
 ```js
 import { dynamic } from 'umi';
 
 export default dynamic({
-  loader: async function() {
+  loader: async function () {
     // 这里的注释 webpackChunkName 可以指导 webpack 将该组件 HugeA 以这个名字单独拆出去
-    const { default: HugeA } = await import(/* webpackChunkName: "external_A" */ './HugeA');
+    const { default: HugeA } = await import(
+      /* webpackChunkName: "external_A" */ './HugeA'
+    );
     return HugeA;
   },
 });
@@ -46,7 +47,7 @@ import AsyncHugeA from './AsyncHugeA';
 // 3. 异步组件加载完毕后，显示异步组件
 export default () => {
   return <AsyncHugeA />;
-}
+};
 ```
 
 ### history
@@ -134,11 +135,11 @@ plugin.applyPlugins({
 
 参数属性包含：
 
-* **key**，坑位的 key
-* **type**，执行方式类型，详见 [ApplyPluginsType](#ApplyPluginsType)
-* **initialValue**，初始值
-* **args**，参数
-* **async**，是否异步执行且返回 Promise
+- **key**，坑位的 key
+- **type**，执行方式类型，详见 [ApplyPluginsType](#ApplyPluginsType)
+- **initialValue**，初始值
+- **args**，参数
+- **async**，是否异步执行且返回 Promise
 
 ### ApplyPluginsType
 
@@ -146,9 +147,9 @@ plugin.applyPlugins({
 
 运行时插件执行类型，enum 类型，包含三个属性：
 
-* **compose**，用于合并执行多个函数，函数可决定前序函数的执行时机
-* **modify**，用于修改值
-* **event**，用于执行事件，前面没有依赖关系
+- **compose**，用于合并执行多个函数，函数可决定前序函数的执行时机
+- **modify**，用于修改值
+- **event**，用于执行事件，前面没有依赖关系
 
 ## 路由
 
@@ -177,9 +178,9 @@ export default () => {
       */}
       <Link
         to={{
-          pathname: "/list",
-          search: "?sort=name",
-          hash: "#the-hash",
+          pathname: '/list',
+          search: '?sort=name',
+          hash: '#the-hash',
           state: { fromDashboard: true },
         }}
       >
@@ -190,8 +191,8 @@ export default () => {
           附带所有当前 location 上的参数
       */}
       <Link
-        to={location => {
-          return { ...location, pathname: "/profile" };
+        to={(location) => {
+          return { ...location, pathname: '/profile' };
         }}
       />
 
@@ -205,7 +206,7 @@ export default () => {
       */}
       <Link
         to="/courses"
-        innerRef={node => {
+        innerRef={(node) => {
           // `node` refers to the mounted DOM element
           // or null when unmounted
         }}
@@ -237,8 +238,8 @@ export default () => {
       <NavLink
         to="/faq"
         activeStyle={{
-          fontWeight: "bold",
-          color: "red",
+          fontWeight: 'bold',
+          color: 'red',
         }}
       >
         FAQs
@@ -263,7 +264,7 @@ export default () => {
           if (!match) {
             return false;
           }
-          return location.search.includes("name");
+          return location.search.includes('name');
         }}
       >
         Profile
@@ -288,8 +289,8 @@ export default () => {
 
       {/* 用户要跳转到首页时，提示一个选择 */}
       <Prompt
-        message={location => {
-          return location.pathname !== "/" ? true : `您确定要跳转到首页么？`;
+        message={(location) => {
+          return location.pathname !== '/' ? true : `您确定要跳转到首页么？`;
         }}
       />
 
@@ -302,10 +303,10 @@ export default () => {
 
 ### withRouter
 
-高阶组件，可以通过 `withRouter` 获取到 `history`、`location`、`match` 对象 
+高阶组件，可以通过 `withRouter` 获取到 `history`、`location`、`match` 对象
 
 ```tsx
-import { withRouter } from "umi";
+import { withRouter } from 'umi';
 
 export default withRouter(({ history, location, match }) => {
   return (
@@ -325,10 +326,10 @@ export default withRouter(({ history, location, match }) => {
 hooks，获取 `history` 对象
 
 ```tsx
-import { useHistory } from "umi";
+import { useHistory } from 'umi';
 
 export default () => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <div>
       <ul>
@@ -344,10 +345,10 @@ export default () => {
 hooks，获取 `location` 对象
 
 ```tsx
-import { useLocation } from "umi";
+import { useLocation } from 'umi';
 
 export default () => {
-  const location = useLocation()
+  const location = useLocation();
   return (
     <div>
       <ul>
@@ -363,10 +364,10 @@ export default () => {
 hooks，获取 `params` 对象。 `params` 对象为动态路由（例如：`/users/:id`）里的参数键值对。
 
 ```tsx
-import { useParams } from "umi";
+import { useParams } from 'umi';
 
 export default () => {
-  const params = useParams()
+  const params = useParams();
   return (
     <div>
       <ul>
@@ -382,10 +383,10 @@ export default () => {
 获取当前路由的匹配信息。
 
 ```tsx
-import { useRouteMatch } from "umi";
+import { useRouteMatch } from 'umi';
 
 export default () => {
-  const match = useRouteMatch()
+  const match = useRouteMatch();
   return (
     <div>
       <ul>
@@ -410,7 +411,7 @@ utils 方法，给插件使用，和插件里的 api.utils 是同一个底层库
 
 ### defineConfig
 
-用于校验和提示用户配置类型，详见[配置#TypeScript 提示](TODO)。
+用于校验和提示用户配置类型，详见[配置#TypeScript 提示](../config#typescript-提示)。
 
 ## 插件类型定义
 

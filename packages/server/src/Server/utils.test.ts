@@ -1,17 +1,15 @@
 import { join } from 'path';
 import { getCredentials } from './utils';
 
-jest.mock('@umijs/error-code-map', () => ({}));
-
 jest.mock('fs', () => ({
-  readFileSync(filename) {
+  readFileSync(filename: string) {
     return filename;
   },
 }));
 
 describe('ServerUtils', () => {
   describe('getCredentials', () => {
-    let spyError;
+    let spyError: any;
     beforeAll(() => {
       spyError = jest
         .spyOn(global.console, 'error')

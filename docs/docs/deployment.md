@@ -1,33 +1,28 @@
----
-translateHelp: true
----
-
 # Deployment
 
+## Umi's default scheme
 
-## 默认方案
+Umi tries to be novice-friendly, so by default it does not do on-demand processing. After running `umi build`, three files, `index.html`, `umi.js` and `umi.css`, will be generated.
 
-Umi 默认对新手友好，所以默认不做按需加载处理，`umi build` 后输出 `index.html`、`umi.js` 和 `umi.css` 三个文件。
+## Suppress output of html files
 
-## 不输出 html 文件
-
-某些场景 html 文件交给后端输出，前端构建并不需要输出 html 文件，可配置环境变量 `HTML=none` 实现。
+In some scenarios, the html file is handled by the back-end, and so the front-end does not need to output the html file. To account for this, you can use the environment variable `HTML=none` in your configuration:
 
 ```bash
 $ HTML=none umi build
 ```
 
-## 部署 html 到非根目录
+## Deploy html to a non-root directory
 
-经常有同学问这个问题：
+Users frequently ask the question:
 
-> 为什么我本地开发是好的，部署后就没反应了，而且没有报错？
+> Why does my local development environment look good, but after deploying to production, there is no response, and there are no errors reported?
 
-**没有报错！** 这是应用部署在非根路径的典型现象。为啥会有这个问题？因为路由没有匹配上，比如你把应用部署在 `/xxx/` 下，然后访问 `/xxx/hello`，而代码里匹配的是 `/hello`，那就匹配不上了，而又没有定义 fallback 的路由，比如 404，那就会显示空白页。
+This commonly happens when the application is deployed to a non-root path. Why does this happen? In a nutshell it is because the route does not match: when you deploy the application under `/xxx/`, and then visit `/xxx/hello`, the code matches `/hello`, which will not match, and since the fallback route is not defined, such as a 404, a blank page will be displayed instead.
 
-怎么解决？
+How can you fix this?
 
-可通过配置 [base](../config#base) 解决。 
+To fix this issue, you can configure the [base path](../config#base):
 
 ```bash
 export default {
@@ -35,9 +30,9 @@ export default {
 };
 ```
 
-## 使用 hash history
+## Use hash history
 
-可通过配置 [history](../config#history) 为 `hash` 为解决。 
+If you wish to change the way history is managed to use a hash history, you can change the [history](../config#history) variable to type `hash` to solve this.
 
 ```bash
 export default {
@@ -45,9 +40,9 @@ export default {
 };
 ```
 
-## 按需加载
+## Load on demand
 
-要实现按需加载，需配置 [dynamicImport](../config#dynamicimport)。
+To achieve on-demand loading, you can configure [dynamicImport](../config#dynamicimport) to do so.
 
 ```js
 export default {
@@ -55,19 +50,19 @@ export default {
 };
 ```
 
-## 静态资源在非根目录或 cdn
+## Static resources are in a non-root directory or cdn
 
-这时，就需要配置 [publicPath](../config#publicpath)。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
+If your static resources are in a non-root directory or through a cdn, you'll need to configure the [publicPath](../config#publicpath) variable and point it to the path where the static resources (js, css, pictures, fonts, etc.) are located. To learn more about what the `publicPath` configuration option does, please see the [webpack documentation](https://webpack.js.org/configuration/output/#output-publicpath) for details.
 
 ```js
 export default {
-  publicPath: "http://yourcdn/path/to/static/"
-}
+  publicPath: 'http://yourcdn/path/to/static/',
+};
 ```
 
-## 使用 runtime 的 publicPath
+## Use a runtime publicPath
 
-对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh-CN/config/#runtimepublicpath) 为解决。 
+For scenarios where you need to manage publicPath in html, such as determining the environment in html to generate different outputs, you can configure [runtimePublicPath](/zh-CN/config/#runtimepublicpath) to solve it.
 
 ```bash
 export default {
@@ -75,27 +70,27 @@ export default {
 };
 ```
 
-然后在 html 里输出：
+Then output in html:
 
 ```html
 <script>
-window.publicPath = <%= YOUR PUBLIC_PATH %>
+  window.publicPath = <%= YOUR PUBLIC_PATH %>
 </script>
 ```
 
-## 静态化
+## Static
 
-在一些场景中，无法做服务端的 html fallback，即让每个路由都输出 index.html 的内容，那么就要做静态化。
+In some scenarios, server-side html fallback cannot be done, and so, to make each route output the content of index.html, you'll need to configure the `exportStatic` variable.
 
-比如上面的例子，我们在 .umirc.js 里配置：
+For example, in the above example, we can configure in .umirc.js:
 
 ```js
 export default {
   exportStatic: {},
-}
+};
 ```
 
-然后执行 umi build，会为每个路由输出一个 html 文件。
+And then execute umi build, which will output an html file for each route.
 
 ```
 ./dist
@@ -109,11 +104,11 @@ export default {
     └── umi.f4cb51da.css
 ```
 
-> 注意：静态化暂不支持有变量路由的场景。
+> Note: the Static option currently does not support variable routing.
 
-## HTML 后缀
+## HTML suffix
 
-有些静态化的场景里，是不会自动读索引文件的，比如支付宝的容器环境，那么就不能生成这种 html 文件，
+In some static scenarios, the index file under folders cannot be automatically read, such as in Alipay’s container environment, so html files cannot be generated.
 
 ```
 ├── index.html
@@ -121,24 +116,24 @@ export default {
 │   └── index.html
 ```
 
-而是生成，
+To handle this, you can use the `htmlSuffix` configuration variable, to make your output look instead like this:
 
 ```
 ├── index.html
 └── list.html
 ```
 
-配置方式是在 .umirc.js 里，
+To do so, configure your .umirc.js file as follows:
 
 ```js
 export default {
   exportStatic: {
     htmlSuffix: true,
   },
-}
+};
 ```
 
-umi build 会生成，
+umi build will generate,
 
 ```
 ./dist
@@ -151,7 +146,7 @@ umi build 会生成，
     └── umi.cfe3ffab.css
 ```
 
-## 静态化后输出到任意路径
+## Static output to any path
 
 ```js
 export default {
@@ -159,5 +154,5 @@ export default {
     htmlSuffix: true,
     dynamicRoot: true,
   },
-}
+};
 ```

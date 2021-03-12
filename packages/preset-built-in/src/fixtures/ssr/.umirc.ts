@@ -6,5 +6,8 @@ export default {
   routes: [
     { path: '/', component: 'index' },
   ],
+  nodeModulesTransform: {
+    type: 'none'
+  },
   mountElementId: '',
 } as IConfig;

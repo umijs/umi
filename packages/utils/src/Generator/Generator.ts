@@ -36,7 +36,7 @@ class Generator {
       dot: true,
       ignore: ['**/node_modules/**'],
     });
-    files.forEach((file) => {
+    files.forEach((file: any) => {
       const absFile = join(opts.path, file);
       if (statSync(absFile).isDirectory()) return;
       if (file.endsWith('.tpl')) {

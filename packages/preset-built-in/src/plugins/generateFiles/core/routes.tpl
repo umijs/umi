@@ -1,13 +1,20 @@
+import React from 'react';
 import { ApplyPluginsType{{ #config.dynamicImport }}, dynamic{{ /config.dynamicImport }} } from '{{{ runtimePath }}}';
+import * as umiExports from './umiExports';
 import { plugin } from './plugin';
+{{ #loadingComponent }}
+import LoadingComponent from '{{{ loadingComponent }}}';
+{{ /loadingComponent }}
 
-const routes = {{{ routes }}};
+export function getRoutes() {
+  const routes = {{{ routes }}};
 
-// allow user to extend routes
-plugin.applyPlugins({
-  key: 'patchRoutes',
-  type: ApplyPluginsType.event,
-  args: { routes },
-});
+  // allow user to extend routes
+  plugin.applyPlugins({
+    key: 'patchRoutes',
+    type: ApplyPluginsType.event,
+    args: { routes },
+  });
 
-export { routes };
+  return routes;
+}

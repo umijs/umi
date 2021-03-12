@@ -44,7 +44,7 @@ export default {
 
 ### import from umi
 
-@umijs/plugin-locale 基于 react-intl 封装，支持其所有的 api，详情可以看 [这里](https://github.com/formatjs/react-intl/blob/master/docs/API.md)。为了方便使用我们也添加了一些其他的功能，这里将会列举所有的 api，并且展示它的功能。
+@umijs/plugin-locale 基于 react-intl 封装，支持其所有的 api，详情可以看 [这里](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md)。为了方便使用我们也添加了一些其他的功能，这里将会列举所有的 api，并且展示它的功能。
 
 ### addLocale
 
@@ -108,7 +108,7 @@ export default {
 import React, { useState } from 'react';
 import { useIntl } from 'umi';
 
-export default function() {
+export default function () {
   const intl = useIntl();
   return (
     <button type="primary">
@@ -144,7 +144,7 @@ setLocale('zh-TW', false);
 
 ## 配置
 
-* Type: `object`
+- Type: `object`
 
 目录约定：
 
@@ -160,14 +160,14 @@ export default {
     title: false,
     baseNavigator: true,
     baseSeparator: '-',
-  }
-}
+  },
+};
 ```
 
 #### baseSeparator
 
-* Type: `string`
-* Default: `-`
+- Type: `string`
+- Default: `-`
 
 国家（lang） 与 语言（language） 之间的分割符。
 
@@ -175,8 +175,8 @@ export default {
 
 #### default
 
-* Type: `string`
-* Default: `zh-CN`
+- Type: `string`
+- Default: `zh-CN`
 
 默认语言，当检测不到具体语言时，展示 `default` 中指定的语言。
 
@@ -184,15 +184,15 @@ export default {
 
 #### antd
 
-* Type: `boolean`
-* Default: false
+- Type: `boolean`
+- Default: false
 
 开启后，支持 [antd 国际化](https://ant.design/docs/react/i18n-cn)。
 
 #### title
 
-* Type: `boolean`
-* Default: false
+- Type: `boolean`
+- Default: false
 
 标题国际化。
 
@@ -205,13 +205,13 @@ export default {
 export default {
   'site.title': '站点 - 标题',
   'about.title': '关于 - 标题',
-}
+};
 
 // src/locales/en-US.js
 export default {
   'site.title': 'English Title',
   'about.title': 'About - Title',
-}
+};
 ```
 
 项目配置如下：
@@ -229,9 +229,9 @@ export default {
       path: '/about',
       component: 'About',
       title: 'about.title',
-    }
-  ]
-}
+    },
+  ],
+};
 ```
 
 访问页面时：
@@ -241,8 +241,8 @@ export default {
 
 #### baseNavigator
 
-* Type: `boolean`
-* Default: true
+- Type: `boolean`
+- Default: true
 
 开启浏览器语言检测。
 
@@ -266,7 +266,7 @@ export const locale = {
     const { locale = 'zh-CN' } = qs.parse(search, { ignoreQueryPrefix: true });
     return locale;
   },
-}
+};
 ```
 
 #### setLocale
@@ -285,12 +285,12 @@ export const locale = {
   setLocale({ lang, realReload, updater }) {
     history.push(`/?locale=${lang}`);
     updater();
-  }
-}
+  },
+};
 ```
 
 ## FAQ
 
 ### 为什么不要直接使用 formatMessage 这个语法糖？
 
-虽然 formatMessage 使用起来会非常方便，但是它脱离了 react 的生命周期，最严重的问题就是切换语言时无法触发 dom 重新渲染。为了解决这个问题，我们切换语言时会刷新一下浏览器，用户体验很差，所以推荐大家使用 [`useIntl`](#useIntl) 或者 [`injectIntl`](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc)，可以实现同样的功能。
+虽然 formatMessage 使用起来会非常方便，但是它脱离了 react 的生命周期，最严重的问题就是切换语言时无法触发 dom 重新渲染。为了解决这个问题，我们切换语言时会刷新一下浏览器，用户体验很差，所以推荐大家使用 [`useIntl`](#useIntl) 或者 [`injectIntl`](https://github.com/formatjs/formatjs/blob/main/website/docs/react-intl/api.md#injectintl-hoc)，可以实现同样的功能。

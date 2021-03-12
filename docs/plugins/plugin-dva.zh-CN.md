@@ -10,19 +10,19 @@
 
 包含以下功能，
 
-* **内置 dva**，默认版本是 `^2.6.0-beta.20`，如果项目中有依赖，会优先使用项目中依赖的版本。
-* **约定是到 model 组织方式**，不用手动注册 model
-* **文件名即 namespace**，model 内如果没有声明 namespace，会以文件名作为 namespace
-* **内置 dva-loading**，直接 connect `loading` 字段使用即可
-* **支持 immer**，通过配置 `immer` 开启
+- **内置 dva**，默认版本是 `^2.6.0-beta.20`，如果项目中有依赖，会优先使用项目中依赖的版本。
+- **约定式的 model 组织方式**，不用手动注册 model
+- **文件名即 namespace**，model 内如果没有声明 namespace，会以文件名作为 namespace
+- **内置 dva-loading**，直接 connect `loading` 字段使用即可
+- **支持 immer**，通过配置 `immer` 开启
 
 ### 约定式的 model 组织方式
 
 符合以下规则的文件会被认为是 model 文件，
 
-* `src/models` 下的文件
-* `src/pages` 下，子目录中 models 目录下的文件
-* `src/pages` 下，所有 model.ts 文件
+- `src/models` 下的文件
+- `src/pages` 下，子目录中 models 目录下的文件
+- `src/pages` 下，所有 model.ts 文件
 
 比如：
 
@@ -74,34 +74,36 @@ export default {
     immer: true,
     hmr: false,
   },
-}
+};
 ```
 
 ### skipModelValidate
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `false`
 
 是否跳过 model 验证。
 
 ### extraModels
 
-* Type: `string[]`
-* Default: `[]`
+- Type: `string[]`
+- Default: `[]`
 
 配置额外到 dva model。
 
 ### immer
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean | object`
+- Default: `false`
 
 表示是否启用 immer 以方便修改 reducer。
 
+注：如需兼容 IE11，需配置 `{ immer: { enableES5: true }}`。
+
 ### hmr
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `false`
 
 表示是否启用 dva model 的热更新。
 
@@ -202,8 +204,7 @@ const IndexModel: IndexModelType = {
   },
 
   effects: {
-    *query({ payload }, { call, put }) {
-    },
+    *query({ payload }, { call, put }) {},
   },
   reducers: {
     save(state, action) {
@@ -223,11 +224,11 @@ const IndexModel: IndexModelType = {
         if (pathname === '/') {
           dispatch({
             type: 'query',
-          })
+          });
         }
       });
-    }
-  }
+    },
+  },
 };
 
 export default IndexModel;
@@ -246,15 +247,17 @@ interface PageProps extends ConnectProps {
 
 const IndexPage: FC<PageProps> = ({ index, dispatch }) => {
   const { name } = index;
-  return <div >Hello {name}</div>;
+  return <div>Hello {name}</div>;
 };
 
-export default connect(({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
-  index,
-  loading: loading.models.index,
-}))(IndexPage);
-
+export default connect(
+  ({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
+    index,
+    loading: loading.models.index,
+  }),
+)(IndexPage);
 ```
+
 或者
 
 ```tsx
@@ -268,13 +271,15 @@ interface PageProps {
 
 const IndexPage: ConnectRC<PageProps> = ({ index, dispatch }) => {
   const { name } = index;
-  return <div >Hello {name}</div>;
+  return <div>Hello {name}</div>;
 };
 
-export default connect(({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
-  index,
-  loading: loading.models.index,
-}))(IndexPage);
+export default connect(
+  ({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
+    index,
+    loading: loading.models.index,
+  }),
+)(IndexPage);
 ```
 
 ## FAQ

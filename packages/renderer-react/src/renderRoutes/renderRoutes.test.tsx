@@ -4,8 +4,8 @@ import {
   getByText,
   render,
   screen,
-  wait,
   waitFor,
+  cleanup,
 } from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '..';
@@ -15,6 +15,7 @@ function TestInitialProps({ foo }: { foo: string }) {
 }
 
 let mountCount = 0;
+let renderCount = 0;
 function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
   React.useEffect(() => {
     return () => {
@@ -31,6 +32,14 @@ function TestInitialPropsWithoutUnmount({ foo }: { foo: string }) {
   );
 }
 
+function TestInitialPropsWithMount({ foo }: { foo: string }) {
+  React.useEffect(() => {
+    mountCount++;
+  }, []);
+  renderCount++;
+  return <h1 data-testid="test">{foo}</h1>;
+}
+
 const getInitialProps = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -43,6 +52,7 @@ const getInitialProps = async () => {
 
 TestInitialProps.getInitialProps = getInitialProps;
 TestInitialPropsWithoutUnmount.getInitialProps = getInitialProps;
+TestInitialPropsWithMount.getInitialProps = getInitialProps;
 
 function TestInitialPropsParent({
   foo,
@@ -69,6 +79,7 @@ TestInitialPropsParent.getInitialProps = async () => {
   });
 };
 const routerConfig = {
+  ssrProps: {},
   routes: [
     {
       path: '/layout',
@@ -86,7 +97,7 @@ const routerConfig = {
           path: '/layout',
           component: (props: any) => (
             <>
-              <h1 data-testid="test">Foo</h1>>
+              <h1 data-testid="test">Foo</h1>
               <h2 data-testid="routes-embed">
                 {props.routes.map((r: any) => r.path).join(',')}
               </h2>
@@ -132,6 +143,10 @@ const routerConfig = {
     {
       path: '/get-initial-props-without-unmount',
       component: TestInitialPropsWithoutUnmount as any,
+    },
+    {
+      path: '/get-initial-props-with-mount',
+      component: TestInitialPropsWithMount as any,
     },
     {
       path: '/get-initial-props-embed',
@@ -189,6 +204,19 @@ const routerConfig = {
   plugin: new Plugin(),
 };
 let routes = renderRoutes(routerConfig);
+
+beforeEach(() => {
+  window.g_useSSR = true;
+  window.g_initialProps = null;
+  mountCount = 0;
+  renderCount = 0;
+});
+
+afterEach(async () => {
+  delete window.g_useSSR;
+  delete window.g_initialProps;
+  await cleanup();
+});
 
 test('/layout', async () => {
   render(<MemoryRouter initialEntries={['/layout']}>{routes}</MemoryRouter>);
@@ -265,40 +293,26 @@ test('/pass-props', async () => {
   const { container } = render(
     <MemoryRouter initialEntries={['/pass-props']}>{routes}</MemoryRouter>,
   );
-  await wait(() => getByText(container, 'bar'));
-  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
-});
-
-test('/get-initial-props', async () => {
-  const newRoutes = renderRoutes(routerConfig);
-  const { container } = render(
-    <MemoryRouter initialEntries={['/get-initial-props']}>
-      {newRoutes}
-    </MemoryRouter>,
-  );
   await waitFor(() => getByText(container, 'bar'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
 });
 
-test('/get-initial-props-without-unmount', async () => {
+test('/get-initial-props-with-mount', async () => {
   const newRoutes = renderRoutes(routerConfig);
+
+  expect(mountCount).toEqual(0);
+  expect(renderCount).toEqual(0);
+
   const { container } = render(
-    <MemoryRouter initialEntries={['/get-initial-props-without-unmount']}>
+    <MemoryRouter initialEntries={['/get-initial-props-with-mount']}>
       {newRoutes}
     </MemoryRouter>,
   );
-  await waitFor(() => getByText(container, 'bar'));
-  expect((await screen.findByTestId('test2')).innerHTML).toEqual('bar');
-  expect(mountCount).toEqual(0);
-  // hash change
-  getByText(container, 'link-bar').click();
-  expect(mountCount).toEqual(0);
 
-  // change route
-  getByText(container, 'change-route').click();
+  await waitFor(() => getByText(container, 'bar'));
+
   expect(mountCount).toEqual(1);
-  await waitFor(() => getByText(container, 'bar'));
-  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
+  expect(renderCount).toEqual(2);
 });
 
 test('/get-initial-props-embed', async () => {
@@ -308,15 +322,15 @@ test('/get-initial-props-embed', async () => {
       {newRoutes}
     </MemoryRouter>,
   );
-  await wait(() => getByText(container, 'bar'));
-  await wait(() => getByText(container, 'parent'));
+  await waitFor(() => getByText(container, 'bar'));
+  await waitFor(() => getByText(container, 'parent'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
   expect((await screen.findByTestId('test-parent')).innerHTML).toEqual(
     'parent',
   );
 });
 
-test('/wrappers', async () => {
+test('/wrappers', () => {
   const { container } = render(
     <MemoryRouter initialEntries={['/wrappers']}>{routes}</MemoryRouter>,
   );

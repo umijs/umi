@@ -9,7 +9,6 @@ import {
   Service,
 } from '@umijs/core';
 import { Stream } from 'stream';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
@@ -17,12 +16,15 @@ import {
   IRouteComponentProps,
   IRoute as IRouteProps,
 } from '@umijs/renderer-react';
-import webpack from 'webpack';
+import webpack from '@umijs/deps/compiled/webpack';
 import WebpackChain from 'webpack-chain';
-import { Express, NextFunction, RequestHandler } from 'express';
+import {
+  Express,
+  NextFunction,
+  RequestHandler,
+} from '@umijs/deps/compiled/express';
 import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
-import { Stream } from 'stream';
 
 export enum BundlerConfigType {
   csr = 'csr',
@@ -74,7 +76,7 @@ export interface ITargets {
 
 export type IBundlerConfigType = keyof typeof BundlerConfigType;
 
-interface ICreateCSSRule {
+export interface ICreateCSSRule {
   (opts: {
     lang: string;
     type: IBundlerConfigType;
@@ -129,7 +131,7 @@ export interface IApi extends PluginAPI {
   onPluginReady: IEvent<null>;
   onStart: IEvent<{ args: object }>;
   onExit: IEvent<{ signal: 'SIGINT' | 'SIGQUIT' | 'SIGTERM' }>;
-  onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
+  onGenerateFiles: IEvent<{ files: { event: string; path: string }[] }>;
   onPatchRoute: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRouteBefore: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
   onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
@@ -183,12 +185,14 @@ export interface IApi extends PluginAPI {
     },
     {
       env: env;
+      type?: IBundlerConfigType;
     }
   >;
   modifyBabelPresetOpts: IModify<
     IBabelPresetUmiOpts,
     {
       env: env;
+      type?: IBundlerConfigType;
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
@@ -217,6 +221,7 @@ export interface IApi extends PluginAPI {
   >;
 
   // ApplyPluginType.add
+  addDepInfo: IAdd<null, { name: string; range: string; alias?: string[] }>;
   addDevScripts: IAdd<null, string>;
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
   addHTMLScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
@@ -246,31 +251,45 @@ export interface IApi extends PluginAPI {
   addEntryCode: IAdd<null, string>;
   addEntryCodeAhead: IAdd<null, string>;
   addTmpGenerateWatcherPaths: IAdd<null, string>;
+  addBeforeMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  /**
+   * @deprecated
+   */
   addBeforeMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  addMiddlewares: IAdd<{ service: Service }, RequestHandler<any>>;
+  /**
+   * @deprecated
+   */
   addMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
 }
 
 export { IRoute };
 
-interface IManifest {
+export interface IManifest {
   fileName: string;
   publicPath: string;
   basePath: string;
   writeToFileEmit: boolean;
 }
 
-interface ISSR {
+export interface ISSR {
   forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
   devServerRender?: boolean;
   mode?: 'string' | 'stream';
   staticMarkup?: boolean;
 }
 
-interface BaseIConfig extends IConfigCore {
+export interface ICopy {
+  from: string;
+  to: string;
+}
+
+export interface BaseIConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };
-  analyze?: BundleAnalyzerPlugin.Options;
+  analyze?: object;
   autoprefixer?: object;
   base?: string;
   chainWebpack?: {
@@ -286,9 +305,9 @@ interface BaseIConfig extends IConfigCore {
   };
   chunks?: string[];
   cssLoader?: object;
-  cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
+  cssModulesTypescriptLoader?: { mode?: 'verify' | 'emit' };
   cssnano?: object;
-  copy?: string[];
+  copy?: (string | ICopy)[];
   define?: {
     [key: string]: any;
   };
@@ -297,17 +316,20 @@ interface BaseIConfig extends IConfigCore {
   dynamicImport?: {
     loading?: string;
   };
+  dynamicImportSyntax?: {};
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
     extraRoutePaths?: () => Promise<string[]>;
   };
   externals?: any;
+  extraBabelIncludes?: string[];
   extraBabelPlugins?: IBabelPresetOrPlugin[];
   extraBabelPresets?: IBabelPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
   favicon?: string;
   forkTSChecker?: object;
+  fastRefresh?: object;
   hash?: boolean;
   headScripts?: IScriptConfig;
   history?: {
@@ -345,6 +367,9 @@ interface BaseIConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   title?: string;
+  webpack5?: {
+    lazyCompilation?: object;
+  };
   [key: string]: any;
 }
 
@@ -361,6 +386,7 @@ interface IServerRenderParams {
   basename?: string;
   staticMarkup?: boolean;
   forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
   getInitialPropsCtx?: object;
   manifest?: string;
   [k: string]: any;
@@ -372,8 +398,8 @@ interface IServerRenderResult<T = string | Stream> {
   error: Error;
 }
 
-interface IServerRender<T = string> {
-  (params: IServerRenderParams): Promise<IServerRenderResult<T>>;
+interface IServerRender {
+  (params: IServerRenderParams): Promise<IServerRenderResult>;
 }
 
 export type IConfig = WithFalse<BaseIConfig>;

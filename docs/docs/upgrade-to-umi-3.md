@@ -4,7 +4,6 @@ translateHelp: true
 
 # Upgrade to Umi 3
 
-
 本文档将帮助你从 Umi 2.x 版本升级到 Umi 3.x 版本。
 
 ## package.json
@@ -69,33 +68,33 @@ export default {
 
 功能变化，
 
-* 删除了 routes、library、dll、hardSource、pwa、hd、fastClick、chunks，不可继续使用
-* 内置 dynamicImport、title、scripts、headScripts、metas 和 links 到 Umi 中，可继续使用
-* 其他功能不变
+- 删除了 routes、library、dll、hardSource、pwa、hd、fastClick、chunks，不可继续使用
+- 内置 dynamicImport、title、scripts、headScripts、metas 和 links 到 Umi 中，可继续使用
+- 其他功能不变
 
 ## 配置层
 
 Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查找。
 
-* 删除 browserslist，和 targets 重复了
-* 删除 babel，基本用不上
-* 修改 cssLoaderOptions 命名为 cssLoader
-* 删除 cssLoaderVersion，只保留 css-loader@2 的版本
-* 删除 cssPublicPath，css 引用的资源文件用相对路径 `./` 可满足所有场景，没有必要再配
-* 删除 disableGlobalVariables，始终无全局变量，无需配置
-* 删除 disableRedirectHoist，始终不再做 redirect hoist
-* 删除 disableCSSModules 和 cssModulesWithAffix，Umi 3 自动识别 css modules 的使用，无需配置
-* 删除 extraBabelIncludes 和 es5ImcompatibleVersions，node\_modules 也走 babel 编译后就没有意义了，无需配置
-* 修改 history 格式为 `{ type, options }` ，不再支持 string 格式
-* 修改 lessLoaderOptions 命名为 lessLoader
-* 删除 minimizer，只保留 terserjs
-* 修改 plugins 的格式为字符串，需要先确保依赖的插件是否升级到 Umi 3，然后修改方式参考前面 umi-plugin-react 的修改方式
-* 删除 sass，不再支持，后续会以插件的方式提供
-* 删除 treeShaking，已内置，无需配置
-* 删除 tsConfigFile，没有必要
-* 删除 typescript，TypeScript 编译交给 babel 处理后，之前 ts-loader 的配置就没有意义了
-* 删除 uglifyJSOptions，没有必要
-* 删除 urlLoaderExcludes，没有必要
+- 删除 browserslist，和 targets 重复了
+- 删除 babel，基本用不上
+- 修改 cssLoaderOptions 命名为 cssLoader
+- 删除 cssLoaderVersion，只保留 css-loader@2 的版本
+- 删除 cssPublicPath，css 引用的资源文件用相对路径 `./` 可满足所有场景，没有必要再配
+- 删除 disableGlobalVariables，始终无全局变量，无需配置
+- 删除 disableRedirectHoist，始终不再做 redirect hoist
+- 删除 disableCSSModules 和 cssModulesWithAffix，Umi 3 自动识别 css modules 的使用，无需配置
+- 删除 extraBabelIncludes 和 es5ImcompatibleVersions，node_modules 也走 babel 编译后就没有意义了，无需配置
+- 修改 history 格式为 `{ type, options }` ，不再支持 string 格式
+- 修改 lessLoaderOptions 命名为 lessLoader
+- 删除 minimizer，只保留 terserjs
+- 修改 plugins 的格式为字符串，需要先确保依赖的插件是否升级到 Umi 3，然后修改方式参考前面 umi-plugin-react 的修改方式
+- 删除 sass，不再支持，后续会以插件的方式提供
+- 删除 treeShaking，已内置，无需配置
+- 删除 tsConfigFile，没有必要
+- 删除 typescript，TypeScript 编译交给 babel 处理后，之前 ts-loader 的配置就没有意义了
+- 删除 uglifyJSOptions，没有必要
+- 删除 urlLoaderExcludes，没有必要
 
 ## 环境变量层
 
@@ -146,6 +145,6 @@ Umi v3 做了非常多的细节改进和重构，我们尽可能收集了已知�
 
 也可以加 "Umi 3 升级问题互帮互助" 群，
 
-<img src="https://img.alicdn.com/tfs/TB1pd1ce8r0gK0jSZFnXXbRRXXa-430-430.jpg" width="60" />
+<img src="https://img.alicdn.com/imgextra/i4/O1CN01n6OPuW1Rc2fNmUMok_!!6000000002131-0-tps-560-720.jpg" width="60" />
 
 扫上方二维码，并回复 **umi 3**。

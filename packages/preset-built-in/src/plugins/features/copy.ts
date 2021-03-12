@@ -5,7 +5,15 @@ export default (api: IApi) => {
     key: 'copy',
     config: {
       schema(joi) {
-        return joi.array().items(joi.string());
+        return joi.array().items(
+          joi.alternatives(
+            joi.object({
+              from: joi.string(),
+              to: joi.string(),
+            }),
+            joi.string(),
+          ),
+        );
       },
     },
   });

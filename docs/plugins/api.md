@@ -4,14 +4,24 @@ translateHelp: true
 
 # Plugin API
 
-
 ## 核心方法
 
 [Service](https://github.com/umijs/umi/blob/master/packages/core/src/Service/Service.ts) 和 [PluginAPI](https://github.com/umijs/umi/blob/master/packages/core/src/Service/PluginAPI.ts) 里定义的方法。
 
 ### applyPlugins({ key: string, type: api.ApplyPluginsType, initialValue?: any, args?: any })
 
-TODO。
+取得 register 注册的 hooks 执行后的数据。
+
+e.g.
+
+```ts
+const foo = await api.applyPlugins({
+  key: 'foo',
+  type: api.ApplyPluginsType.add,
+  initialValue: [],
+});
+console.log(foo); // ['a', 'b']
+```
 
 ### describe({ id?: string, key?: string, config?: { default, schema, onChange } })
 
@@ -19,7 +29,7 @@ TODO。
 
 e.g.
 
-```js
+```ts
 api.describe({
   key: 'history',
   config: {
@@ -46,7 +56,7 @@ api.describe({
 
 e.g.
 
-```js
+```ts
 // 可同步
 api.register({
   key: 'foo',
@@ -67,7 +77,7 @@ api.register({
 
 然后通过 `api.applyPlugins` 即可拿到 `['a', 'b']`，
 
-```js
+```ts
 const foo = await api.applyPlugins({
   key: 'foo',
   type: api.ApplyPluginsType.add,
@@ -87,6 +97,19 @@ console.log(foo); // ['a', 'b']
 
 注册命令。
 
+e.g.
+
+```ts
+api.registerCommand({
+  name: 'generate',
+  alias: 'g',
+  fn: async ({ args }) => {
+    await delay(100);
+    return `hello ${api.args.projectName}`;
+  },
+});
+```
+
 注：
 
 - `alias` 为别名，比如 generate 的别名 g
@@ -95,6 +118,18 @@ console.log(foo); // ['a', 'b']
 ### registerMethod({ name: string, fn?: Function, exitsError?: boolean })
 
 往 api 上注册方法。可以是 `api.register()` 的快捷使用方式，便于调用；也可以不是，如果有提供 `fn`，则执行 `fn` 定义的函数。
+
+e.g.
+
+```ts
+api.registerMethod({
+  name: 'foo',
+  fn() {
+    return 'foo';
+  },
+  exitsError: false,
+});
+```
 
 注：
 
@@ -105,9 +140,27 @@ console.log(foo); // ['a', 'b']
 
 注册插件集，参数为路径数组。
 
+e.g.
+
+```ts
+api.registerPresets([
+  { id: 'preset_2', key: 'preset2', apply: () => () => {} },
+  require.resolve('./preset_3'),
+]);
+```
+
 ### registerPlugins(plugins: string[])
 
 注册插件，参数为路径数组。
+
+e.g.
+
+```ts
+api.registerPlugins([
+  { id: 'preset_2', key: 'preset2', apply: () => () => {} },
+  require.resolve('./preset_3'),
+]);
+```
 
 ### hasPlugins(pluginIds: string[])
 
@@ -125,7 +178,7 @@ console.log(foo); // ['a', 'b']
 
 e.g.
 
-```js
+```ts
 // 判断是否有注册 @umijs/plugin-dva
 api.hasPlugins(['@umijs/plugin-dva']);
 ```
@@ -138,7 +191,7 @@ api.hasPlugins(['@umijs/plugin-dva']);
 
 e.g.
 
-```js
+```ts
 // 判断是否有注册 @umijs/preset-ui
 api.hasPresets(['@umijs/preset-ui']);
 ```
@@ -153,7 +206,7 @@ api.hasPresets(['@umijs/preset-ui']);
 
 e.g.
 
-```js
+```ts
 // 禁用 plugin-dva 插件
 api.skipPlugins(['@umijs/plugin-dva']);
 ```
@@ -162,43 +215,147 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 通过 `api.registerMethod()` 扩展的方法。
 
-### addBeforeMiddewares
+### addBeforeMiddlewares
 
 添加在 webpack compiler 中间件之前的中间件，返回值格式为 express 中间件。
+
+e.g.
+
+```ts
+api.addBeforeMiddlewares(() => {
+  return (req, res, next) => {
+    if (false) {
+      res.end('end');
+    } else {
+      next();
+    }
+  };
+});
+```
+
+### addDepInfo
+
+添加依赖信息，包括 semver range 和别名信息。
+
+```js
+api.addDepInfo((memo) => {
+  return {
+    name: 'foo',
+    range: pkg.dependencies.foo,
+    alias: [pathToFooPackage],
+  };
+});
+```
 
 ### addEntryCode
 
 在入口文件最后添加代码。
 
+e.g.
+
+```ts
+api.addEntryCode(() => {
+  return `console.log('works!')`;
+});
+```
+
 ### addEntryCodeAhead
 
 在入口文件最前面（import 之后）添加代码。
+
+e.g.
+
+```ts
+api.addEntryCodeAhead(() => {
+  return `console.log('works!')`;
+});
+```
 
 ### addEntryImports
 
 在入口文件现有 import 的后面添加 import。
 
+e.g.
+
+```ts
+api.addEntryImport(() => {
+  return [
+    {
+      source: '/modulePath/xxx.js',
+      specifier: 'moduleName',
+    },
+  ];
+});
+```
+
 ### addEntryImportsAhead
 
 在入口文件现有 import 的前面添加 import。
+
+e.g.
+
+```ts
+api.addEntryImportsAhead(() => [{ source: 'anypackage' }]);
+```
 
 ### addHTMLMetas
 
 在 HTML 中添加 meta 标签。
 
+e.g.
+
+```ts
+api.addHTMLMetas(() => {
+  return [
+    {
+      name: 'keywords',
+      content: 'umi, umijs',
+    },
+  ];
+});
+```
+
 ### addHTMLLinks
 
 在 HTML 中添加 Link 标签。
+
+e.g.
+
+```ts
+api.addHTMLLinks(() => {
+  return [
+    {
+      rel: 'shortcut icon',
+      type: 'image/x-icon',
+      href: api.config.favicon!,
+    },
+  ];
+});
+```
 
 ### addHTMLStyles
 
 在 HTML 中添加 Style 标签。
 
+e.g.
+
+```ts
+api.addHTMLStyles(() => {
+  return [
+    {
+      content: `.className { }`,
+    },
+  ];
+});
+```
+
 ### addHTMLScripts
 
 在 HTML 尾部添加脚本。
 
-```js
+e.g.
+
+```ts
 api.addHTMLScript(() => {
   return [
     {
@@ -214,17 +371,56 @@ api.addHTMLScript(() => {
 
 在 HTML 头部添加脚本。
 
-### addMiddewares
+e.g.
+
+```ts
+api.addHTMLHeadScripts(() => {
+  return [
+    {
+      content: '',
+      src: '',
+      // ...attrs
+    },
+  ];
+});
+```
+
+### addMiddlewares
 
 添加在 webpack compiler 中间件之后的中间件，返回值格式为 express 中间件。
+
+e.g.
+
+```ts
+api.addMiddlewares(async (ctx: Context, next: any) => {
+  // do something before request
+  await next();
+  // do something after request
+});
+```
 
 ### addPolyfillImports
 
 添加补充相关的 import，在整个应用的最前面执行。
 
+e.g.
+
+```ts
+api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
+```
+
 ### addProjectFirstLibraries
 
 添加以项目依赖为优先的依赖库列表，返回值为 `{ name: string; path: string }`。
+
+e.g.
+
+```ts
+api.addProjectFirstLibraries(() => ({
+  name: 'antd',
+  path: dirname(require.resolve('antd/package.json')),
+}));
+```
 
 比如：
 
@@ -234,9 +430,21 @@ api.addHTMLScript(() => {
 
 添加运行时插件，返回值格式为表示文件路径的字符串。
 
+e.g.
+
+```ts
+api.addRuntimePlugin(() => join(__dirname, './runtime'));
+```
+
 ### addRuntimePluginKey
 
 添加运行时插件的 key，返回值格式为字符串。
+
+e.g.
+
+```ts
+api.addRuntimePluginKey(() => 'some');
+```
 
 内置的初始值有：
 
@@ -255,13 +463,19 @@ api.addHTMLScript(() => {
 
 添加重新临时文件生成的监听路径。
 
+e.g.
+
+```ts
+api.addTmpGenerateWatcherPaths(() => ['./app.ts']);
+```
+
 ### chainWebpack(config, { webpack })
 
 通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。
 
 比如：
 
-```js
+```ts
 api.chainWebpack((config, { webpack, env, createCSSRule }) => {
   // Set alias
   config.resolve.alias.set('a', 'path/to/a');
@@ -281,21 +495,69 @@ api.chainWebpack((config, { webpack, env, createCSSRule }) => {
 
 获取端口号，dev 时有效。
 
+e.g.
+
+```ts
+const Port = api.getPort();
+```
+
 ### getHostname()
 
 获取 hostname，dev 时有效。
+
+e.g.
+
+```ts
+const hostname = api.getHostname();
+```
 
 ### modifyBabelOpts
 
 修改 babel 配置项。
 
+e.g.
+
+```ts
+api.modifyBabelOpts((babelOpts) => {
+  const hmr = api.config.dva?.hmr;
+  if (hmr) {
+    const hmrOpts = lodash.isPlainObject(hmr) ? hmr : {};
+    babelOpts.plugins.push([require.resolve('babel-plugin-dva-hmr'), hmrOpts]);
+  }
+  return babelOpts;
+});
+```
+
 ### modifyBabelPresetOpts
 
 修改 @umijs/babel-preset-umi 的配置项。
 
+e.g.
+
+```ts
+api.modifyBabelPresetOpts((opts) => {
+  return {
+    ...opts,
+    import: (opts.import || []).concat([
+      { libraryName: 'antd', libraryDirectory: 'es', style: true },
+      { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
+    ]),
+  };
+});
+```
+
 ### modifyBundleConfig
 
 修改 bundle 配置。
+
+e.g.
+
+```ts
+api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
+  // do something
+  return bundleConfig;
+});
+```
 
 参数：
 
@@ -306,6 +568,14 @@ api.chainWebpack((config, { webpack, env, createCSSRule }) => {
 
 修改 bundle 配置数组，比如可用于 dll、modern mode 的处理。
 
+e.g.
+
+```ts
+api.modifyBundleConfigs(async (memo, { getConfig }) => {
+  return [...memo];
+});
+```
+
 参数：
 
 - `args` _ `getConfig()`：用于获取额外的一份配置 _ `env`：即 api.env \* `bundler`：包含 id 和 version，比如：`{ id: 'webpack': version: 4 }`
@@ -314,17 +584,59 @@ api.chainWebpack((config, { webpack, env, createCSSRule }) => {
 
 修改获取 bundleConfig 的函数参数。
 
+e.g.
+
+```ts
+api.modifyBundleConfigOpts((memo) => {
+  memo.miniCSSExtractPluginPath = require.resolve('mini-css-extract-plugin');
+  memo.miniCSSExtractPluginLoaderPath = require.resolve(
+    'mini-css-extract-plugin/dist/loader',
+  );
+  return memo;
+});
+```
+
 ### modifyBundleImplementor
 
 比如用于切换到 webpack@5 或其他。
+
+e.g.
+
+```ts
+import webpack from 'webpack';
+
+// 换成 webpack@5
+api.modifyBundleImplementor(() => {
+  return webpack;
+});
+```
 
 ### modifyBundler
 
 比如用于切换到 parcel 或 rollup 做构建。
 
+e.g.
+
+```ts
+api.modifyBundler(() => {
+  return require('@umijs/bundler-rollup').Bundler;
+});
+```
+
 ### modifyConfig
 
 修改最终配置。
+
+e.g.
+
+```ts
+api.modifyConfig((memo) => {
+  return {
+    ...memo,
+    ...defaultOptions,
+  };
+});
+```
 
 注：
 
@@ -334,11 +646,24 @@ api.chainWebpack((config, { webpack, env, createCSSRule }) => {
 
 修改默认配置。
 
+e.g.
+
+```ts
+api.modifyDefaultConfig((memo) => {
+  return {
+    ...memo,
+    ...defaultOptions,
+  };
+});
+```
+
 ### modifyHTML
 
 修改 HTML，基于 [cheerio](https://github.com/cheeriojs/cheerio) 的 ast。
 
-```js
+e.g.
+
+```ts
 api.modifyHTML(($, { routs }) => {
   $('h2').addClass('welcome');
   return $;
@@ -347,7 +672,17 @@ api.modifyHTML(($, { routs }) => {
 
 ### modifyHTMLChunks
 
-TODO
+修改 html 中的 js 文件引入，可以用于不同的页面使用，不同的 [chunks](../config#chunks) 配置。
+
+e.g.
+
+```ts
+api.modifyHTMLChunks(async (memo, opts) => {
+  const { route } = opts;
+  // do something
+  return memo;
+});
+```
 
 ### modifyExportRouteMap <Badge>3.2+</Badge>
 
@@ -363,7 +698,7 @@ TODO
 
 例如 `exportStatic` 插件根据路由生成对应 HTML：
 
-```js
+```ts
 api.modifyExportRouteMap(async (defaultRouteMap, { html }) => {
   return await html.getRouteMap();
 });
@@ -379,13 +714,13 @@ api.modifyExportRouteMap(async (defaultRouteMap, { html }) => {
 
 例如希望 `/404` 路由直接返回 `Not Found`：
 
-```js
+```ts
 api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
   if (req.path === '/404') {
     return 'Not Found';
   }
   return defaultHtml;
-})
+});
 ```
 
 ### modifyProdHTMLContent <Badge>3.2+</Badge>
@@ -399,19 +734,27 @@ api.modifyDevHTMLContent(async (defaultHtml, { req }) => {
 
 例如可以在生成 HTML 文件前，做预渲染：
 
-```js
+```ts
 api.modifyProdHTMLContent(async (content, args) => {
   const { route } = args;
   const render = require('your-renderer');
   return await render({
     path: route.path,
-  })
+  });
 });
 ```
 
 ### modifyPaths
 
 修改 paths 对象。
+
+e.g.
+
+```ts
+api.modifyPaths(async (paths) => {
+  return memo;
+});
+```
 
 参数：
 
@@ -421,9 +764,25 @@ api.modifyProdHTMLContent(async (content, args) => {
 
 修改 renderer 路径，用于使用自定义的 renderer。
 
+e.g.
+
+```ts
+api.modifyRendererPath(() => {
+  return dirname(require.resolve('@umijs/renderer-mpa/package.json'));
+});
+```
+
 ### modifyPublicPathStr
 
 修改 publicPath 字符串。
+
+e.g.
+
+```ts
+api.modifyPublicPathStr(() => {
+  return api.config.publicPath || '/';
+});
+```
 
 参数：
 
@@ -437,25 +796,105 @@ api.modifyProdHTMLContent(async (content, args) => {
 
 修改路由。
 
+e.g.
+
+```ts
+api.modifyRoutes((routes: any[]) => {
+  return resetMainPath(routes, api.config.mainPath);
+});
+```
+
 ### onPatchRoute({ route, parentRoute })
 
 修改路由项。
+
+e.g.
+
+```ts
+api.onPatchRoute(({ route }) => {
+  if (!api.config.exportStatic?.htmlSuffix) return;
+  if (route.path) {
+    route.path = addHtmlSuffix(route.path, !!route.routes);
+  }
+});
+```
 
 ### onPatchRouteBefore({ route, parentRoute })
 
 修改路由项。
 
+e.g.
+
+```ts
+api.onPatchRouteBefore(({ route }) => {
+  if (!api.config.exportStatic?.htmlSuffix) return;
+  if (route.path) {
+    route.path = addHtmlSuffix(route.path, !!route.routes);
+  }
+});
+```
+
 ### onPatchRoutes({ routes, parentRoute })
 
 修改路由数组。
+
+e.g.
+
+```ts
+api.onPatchRoutes(({ routes }) => {
+  // copy / to /index.html
+  let rootIndex = null;
+  routes.forEach((route, index) => {
+    if (route.path === '/' && route.exact) {
+      rootIndex = index;
+    }
+  });
+  if (rootIndex !== null) {
+    routes.splice(rootIndex, 0, {
+      ...routes[rootIndex],
+      path: '/index.html',
+    });
+  }
+});
+```
 
 ### onPatchRoutesBefore({ routes, parentRoute })
 
 修改路由数组。
 
+e.g.
+
+```ts
+api.onPatchRoutesBefore(({ routes }) => {
+  // copy / to /index.html
+  let rootIndex = null;
+  routes.forEach((route, index) => {
+    if (route.path === '/' && route.exact) {
+      rootIndex = index;
+    }
+  });
+  if (rootIndex !== null) {
+    routes.splice(rootIndex, 0, {
+      ...routes[rootIndex],
+      path: '/index.html',
+    });
+  }
+});
+```
+
 ### onBuildComplete({ err?, stats? })
 
 构建完成时可以做的事。
+
+e.g.
+
+```ts
+api.onBuildComplete(({ err }) => {
+  if (!err) {
+    // do something
+  }
+});
+```
 
 注：
 
@@ -465,6 +904,19 @@ api.modifyProdHTMLContent(async (content, args) => {
 
 编译完成时可以做的事。
 
+e.g.
+
+```ts
+api.onDevCompileDone(({ stats, type }) => {
+  // don't need ssr bundler chunks
+  if (type === BundlerConfigType.ssr) {
+    return;
+  }
+  // store client build chunks
+  sharedMap.set('chunks', stats.compilation.chunks);
+});
+```
+
 注：
 
 - 不包含编译失败
@@ -473,17 +925,52 @@ api.modifyProdHTMLContent(async (content, args) => {
 
 生成临时文件，触发时机在 webpack 编译之前。
 
+e.g.
+
+```ts
+api.onGenerateFiles(() => {
+  api.writeTmpFile({
+    path: 'any.ts',
+    content: '',
+  });
+});
+```
+
 ### onPluginReady()
 
 在插件初始化完成触发。在 `onStart` 之前，此时还没有 config 和 paths，他们尚未解析好。
+
+e.g.
+
+```ts
+api.onPluginReady(() => {
+  // do something
+});
+```
 
 ### onStart()
 
 在命令注册函数执行前触发。可以使用 config 和 paths。
 
+e.g.
+
+```ts
+api.onStart(() => {
+  // do something
+});
+```
+
 ### onExit()
 
 dev 退出时触发。
+
+e.g.
+
+```ts
+api.onExit(() => {
+  // do something
+});
+```
 
 参数：
 
@@ -496,6 +983,17 @@ dev 退出时触发。
 ### writeTmpFile({ path: string, content: string, skipTSCheck?: boolean })
 
 写临时文件。
+
+e.g.
+
+```ts
+api.onGenerateFiles(() => {
+  api.writeTmpFile({
+    path: 'any.ts',
+    content: '',
+  });
+});
+```
 
 参数：
 
@@ -554,7 +1052,7 @@ dev 退出时触发。
 其中 `api.logger.profile` 可用于性能耗时记录，例如：
 
 ```ts
-export default api => {
+export default (api) => {
   api.logger.profile('barId');
   setTimeout(() => {
     api.logger.profile('barId');
@@ -608,7 +1106,61 @@ Service 运行阶段。
 
 ### utils
 
-utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts)。
+utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts)。包含外部库：
+
+- `lodash` : 导出自 `lodash`, 实用的 js 工具库。
+- `got` : 导出自 `got`, 轻量级的请求库。
+- `deepmerge` : 导出自 `deepmerge`, 将两个对象的可以枚举属性深度合并。
+- `semver` : 导出自 `semver`, 用于实现版本号的解析和比较，规范版本号的格式。常见于版本过低提示用户升级等场景。
+- `Mustache` : 导出自 `mustache`, 无逻辑的模版语法，是 JavaScript 中的 mustache 模板系统的零依赖实现。
+- `address` : 导出自 `address`, 用于获取当前计算机的 IP ，MAC 和 DNS 服务器地址等。
+- `cheerio` : 导出自 `cheerio`, 用于方便的处理爬取到的网页内容，在服务端对 DOM 结构进行方便的操作。
+- `clipboardy` : 导出自 `clipboardy`, 用于对剪贴板内容写入与读取的处理。
+- `chokidar` : 导出自 `chokidar`, 用于监听文件的变化。
+- `createDebug`, `Debugger` : 导出自 `debug`, 用于控制调试日志的输出。
+- `chalk` : 导出自 `chalk`, 常用于在终端中输出彩色文字，支持链式调用，能够设置文本样式、颜色、背景色等。
+- `signale` : 导出自 `signale`, 用于日志记录、状态报告以及处理其他 Node 模块和应用的输出渲染方式。
+- `portfinder` : 导出自 `portfinder`, 常用于在判断端口是否被占用或者获取没有被占用的端口等场景。
+- `glob` : 导出自 `glob`, 用于获取匹配对应规则的文件。
+- `pkgUp` : 导出自 `pkg-up`, 查找最近的 package.json 文件。
+- `resolve` : 导出自 `resolve`, 实现了 node 的 require.resolve() 算法, 提供了方便处理获取模块完整路径相关需求的方法。
+- `spawn` : 导出自 `cross-spawn` , 已经封装好了 Node.js 子进程（child_process）模块下 `spawn` 函数的跨平台写法的相关细节, 直接使用其调用系统上的命令如 `npm` 即可。
+- `execa`: 导出自 `execa`, 更好的子进程管理工具。相当于衍生一个 shell，传入的 command 字符串在该 shell 中直接处理。
+- `mkdirp` : 导出自 `mkdirp`, node 中 `mkdir -p` 功能的实现, 用于在 Node.js 中递归式创建目录及其子目录。
+- `rimraf` : 导出自 `rimraf`, node 中 `rm -rf` 功能的实现,
+- `yargs` : 导出自 `yargs`, 用于创建交互式命令行工具，能够方便的处理命令行参数。
+- `yParser` : 导出自 `yargs-parser`, `yargs` 使用的强大 option 解析器, 用于解析命令行参数。
+- `parser` : 导出自 `@babel/parser`, 解析代码生成 AST 抽象语法树。
+- `traverse` : 导出自 `@babel/traverse`, 对 AST 节点进行递归遍历。
+- `t` : 导出自 `@babel/types`, 用于 AST 节点的 Lodash 式工具库。它包含了构造、验证以及变换 AST 节点的方法。 该工具库包含考虑周到的工具方法，对编写处理 AST 逻辑非常有用。
+
+内部工具方法
+
+- `isBrowser`, 判断是否在浏览器环境。
+- `isWindows`, 判断当前是否是 windows 系统。
+- `isSSR`, whether SSR success in client。
+- `isLernaPackage`, 判断是否存在 `lerna.json` 文件。
+- `winPath`, 将文件路径转换为兼容 window 的路径，用于在代码中添加 `require('/xxx/xxx.js')` 之类的代码。
+- `winEOL`, 在 windows 环境下，很多工具都会把换行符 lf 自动改成 crlf, 为了测试精准需要将换行符转化一下。
+- `compatESModuleRequire`, 兼容 ESModule 以及 Require 为 Require。
+- `mergeConfig`, 对象合并。
+- `randomColor`, 随机生成颜色。
+- `delay`, 延迟函数。
+- `Generator`, `mustache` 模版代码生成。
+- `BabelRegister`, `@babel/register` 的简易封装。
+- `parseRequireDeps`, 获取特定文件的本地依赖。
+- `cleanRequireCache`, 清理特定 Module 在 require cache 以及 parent.children 中的引用。
+- `getWindowInitialProps`, 获取 window.g_initialProps。
+- `getFile`, 获取特定目录中文件的完整扩展名，javascript 文件的匹配顺序 `['.ts', '.tsx', '.js', '.jsx']`，css 文件的匹配顺序 `['.less', '.sass', '.scss', '.stylus', '.css']`。
+- `routeToChunkName`, transform route component into webpack chunkName。
+
+类型
+
+- `ArgsType<T extends (...args: any[]) => any>`, 获取函数参数数组类型。
+- `PartialKeys<T>`, 找出 T 中类型是 undefined 的 key。
+- `PartialProps<T>`, 取出 T 中类型是 undefined 的属性。
+- `NodeEnv`: 联合类型 'development' | 'production' | 'test'。
+- `Omit<T, U>`, 排除 T 中的 U key。
 
 注：
 

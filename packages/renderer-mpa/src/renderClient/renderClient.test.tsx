@@ -1,7 +1,22 @@
-import React from 'react';
+import { cleanup, render } from '@testing-library/react';
 import { Plugin } from '@umijs/runtime';
+import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { renderClient } from './renderClient';
-import { render } from '@testing-library/react';
+
+let container: HTMLDivElement;
+beforeEach(() => {
+  container = document.createElement('div');
+  container.id = 'app';
+  document.body.appendChild(container);
+});
+
+afterEach(async () => {
+  document.body.removeChild(container);
+  // @ts-ignore
+  container = null;
+  await cleanup();
+});
 
 test('normal', () => {
   const plugin = new Plugin({
@@ -60,6 +75,19 @@ test('normal', () => {
       path: '/haha',
     });
   }).toThrow(/Render failed, route of path \/haha not found\./);
+
+  let loading = true;
+  act(() => {
+    renderClient({
+      plugin,
+      routes,
+      rootElement: 'app',
+      callback: () => {
+        loading = false;
+      },
+    });
+  });
+  expect(loading).toBeFalsy();
 });
 
 test('do not support child routes', () => {

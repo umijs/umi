@@ -4,7 +4,6 @@ translateHelp: true
 
 # Env Variables
 
-
 ## 设置环境变量
 
 ### 执行命令时添加
@@ -49,13 +48,13 @@ $ umi dev
 
 按字母排序。
 
-### APP\_ROOT
+### APP_ROOT
 
 指定项目根目录。
 
 注意：
 
-* APP\_ROOT 不能配在 `.env` 中，只能在命令行里添加
+- APP_ROOT 不能配在 `.env` 中，只能在命令行里添加
 
 ### ANALYZE
 
@@ -77,7 +76,7 @@ $ ANALYZE=1 umi build
 
 默认开启 Babel 编译缓存，值为 none 时禁用缓存。
 
-### BABEL\_POLYFILL
+### BABEL_POLYFILL
 
 默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
 
@@ -177,6 +176,22 @@ WATCH_IGNORED=none umi dev
 
 # node_modules 下除 lodash 和 umi 监听，其他忽略
 WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
+```
+
+### WEBPACK_FS_CACHE
+
+Disable fs cache of webpack 5.
+
+```bash
+$ WEBPACK_FS_CACHE=none umi dev
+```
+
+### WEBPACK_PROFILE
+
+生成 umi 构建性能分析文件 `dist/stats.json`，结合 [Webpack Xray](https://akx.github.io/webpack-xray) 或 [Webapck Analyse](http://webpack.github.io/analyse) ，`WEBPACK_PROFILE` 值有 `verbose`、`normal`、`minimal`。比如：
+
+```bash
+$ WEBPACK_PROFILE=verbose umi build
 ```
 
 ### RM_SERVER_FILE

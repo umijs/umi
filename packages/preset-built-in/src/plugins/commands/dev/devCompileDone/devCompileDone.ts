@@ -12,7 +12,7 @@ export default (api: IApi) => {
           port: api.getPort(),
           hostname: api.getHostname(),
           https: !!(
-            api.config?.devServer?.https ||
+            (api.config?.devServer && api.config?.devServer?.https) ||
             process.env.HTTPS ||
             args?.https
           ),

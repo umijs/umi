@@ -1,3 +1,4 @@
+import { existsSync, realpathSync } from 'fs';
 import { createDebug, lodash, winPath } from '../';
 
 const debug = createDebug('umi:utils:BabelRegister');
@@ -20,9 +21,10 @@ export default class BabelRegister {
         .reduce<string[]>((memo, key) => {
           return memo.concat(this.only[key]);
         }, [])
-        .map(winPath),
+        .map(winPath)
+        .map((path) => (existsSync(path) ? realpathSync(path) : path)),
     );
-    require('@babel/register')({
+    require('@umijs/deps/compiled/babel/register')({
       presets: [require.resolve('@umijs/babel-preset-umi/node')],
       ignore: [/node_modules/],
       only,
