@@ -23,6 +23,15 @@ export function patchRoutes(routes: IRoute[], config: IConfig) {
 }
 
 export default (api: IApi) => {
+  api.describe({
+    key: '404',
+    config: {
+      schema(joi) {
+        return joi.boolean();
+      },
+    },
+  });
+  if (api.userConfig['404']) return;
   api.modifyRoutes((routes: IRoute[]) => {
     return patchRoutes(routes, api.config);
   });
