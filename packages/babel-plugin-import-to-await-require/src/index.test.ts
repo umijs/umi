@@ -172,3 +172,24 @@ foo;
     `.trim(),
   );
 });
+
+test('export *', () => {
+  expect(
+    transformWithPlugin(`export * from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+      exportAllMembers: { antd: ['a', 'b', 'c'] },
+    }),
+  ).toEqual(
+    `
+const __all_exports = await import("foo/antd");
+
+export const {
+  a: a,
+  b: b,
+  c: c
+} = __all_exports;
+foo;
+    `.trim(),
+  );
+});
