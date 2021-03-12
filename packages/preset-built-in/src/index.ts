@@ -17,6 +17,7 @@ export default function () {
       require.resolve('./plugins/generateFiles/umi'),
 
       // bundle configs
+      require.resolve('./plugins/features/404'),
       require.resolve('./plugins/features/alias'),
       require.resolve('./plugins/features/analyze'),
       require.resolve('./plugins/features/autoprefixer'),
@@ -68,7 +69,6 @@ export default function () {
       require.resolve('./plugins/features/runtimeHistory'),
       require.resolve('./plugins/features/webpack5'),
       require.resolve('./plugins/features/workerLoader'),
-      require.resolve('./plugins/features/404'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),

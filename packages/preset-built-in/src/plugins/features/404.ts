@@ -1,4 +1,4 @@
-import { IApi, IRoute, IConfig } from 'umi';
+import { IApi, IRoute, IConfig } from '@umijs/types';
 
 export function patchRoutes(routes: IRoute[], config: IConfig) {
   let notFoundIndex = null;
