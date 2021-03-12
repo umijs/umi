@@ -12,6 +12,7 @@ export interface IOpts {
   remoteName: string;
   alias?: IAlias;
   onTransformDeps?: Function;
+  libAllExports?: Record<string, string[]>;
 }
 
 export function specifiersToProperties(specifiers: any[]) {
@@ -120,13 +121,53 @@ export default function () {
               }
             }
 
+            // export * from 'foo';
             if (t.isExportAllDeclaration(d) && d.source) {
+              const isMatch = isMatchLib(
+                d.source.value,
+                opts.libs,
+                opts.alias || {},
+              );
               opts.onTransformDeps?.({
                 source: d.source.value,
                 file: path.hub.file.opts.filename,
                 isMatch: false,
                 isExportAllDeclaration: true,
               });
+
+              if (isMatch && opts.libAllExports?.[d.source.value]) {
+                const id = t.identifier('__all_exports');
+                const init = t.awaitExpression(
+                  t.callExpression(t.import(), [
+                    t.stringLiteral(
+                      `${opts.remoteName}/${getPath(
+                        d.source.value,
+                        opts.alias || {},
+                      )}`,
+                    ),
+                  ]),
+                );
+                variableDeclarations.unshift(
+                  t.variableDeclaration('const', [
+                    t.variableDeclarator(id, init),
+                  ]),
+                );
+
+                // replace node with export const { a, b, c } = __all_exports
+                // a, b, c was declared from opts.libAllExports
+                path.node.body[index] = t.exportNamedDeclaration(
+                  t.variableDeclaration('const', [
+                    t.variableDeclarator(
+                      t.objectPattern(
+                        opts.libAllExports[d.source.value].map((m) =>
+                          t.objectProperty(t.identifier(m), t.identifier(m)),
+                        ),
+                      ),
+                      t.identifier('__all_exports'),
+                    ),
+                  ]),
+                );
+              }
             }
 
             // export { bar } from 'foo';
