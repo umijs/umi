@@ -31,7 +31,7 @@ export default (api: IApi) => {
       },
     },
   });
-  if (api.userConfig['404']) return;
+  if (api.userConfig['404'] === false) return;
   api.modifyRoutes((routes: IRoute[]) => {
     return patchRoutes(routes, api.config);
   });
