@@ -141,6 +141,7 @@ export default (api: IApi) => {
           routes,
           config: api.config,
           cwd: api.cwd,
+          isServer: true,
         }),
         RuntimePath: winPath(
           path.dirname(require.resolve('@umijs/runtime/package.json')),
