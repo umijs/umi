@@ -137,7 +137,12 @@ class Route {
     return getConventionalRoutes(opts);
   }
 
-  getJSON(opts: { routes: IRoute[]; config: IConfig; cwd: string }) {
+  getJSON(opts: {
+    routes: IRoute[];
+    config: IConfig;
+    cwd: string;
+    isServer?: boolean;
+  }) {
     return routesToJSON(opts);
   }
 
