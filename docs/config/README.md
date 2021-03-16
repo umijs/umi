@@ -10,6 +10,13 @@ toc: menu
 
 以下配置项通过字母排序。
 
+## 404
+
+- Type: `boolean`
+- Default: `true`
+
+约定式路由中 404 页面的生效规则，可通过设置为 false 关闭。
+
 ## alias
 
 - Type: `object`

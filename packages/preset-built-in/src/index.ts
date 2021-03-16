@@ -17,6 +17,7 @@ export default function () {
       require.resolve('./plugins/generateFiles/umi'),
 
       // bundle configs
+      require.resolve('./plugins/features/404'),
       require.resolve('./plugins/features/alias'),
       require.resolve('./plugins/features/analyze'),
       require.resolve('./plugins/features/autoprefixer'),
