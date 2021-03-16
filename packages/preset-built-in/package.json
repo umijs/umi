@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/react-router-config": "5.0.1",
+    "@types/react-router-config": "5.0.2",
     "@umijs/babel-preset-umi": "3.4.3-beta.1",
     "@umijs/bundler-webpack": "3.4.3-beta.1",
     "@umijs/deps": "0.4.2",

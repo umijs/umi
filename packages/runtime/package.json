@@ -25,12 +25,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/react-router": "5.1.8",
-    "@types/react-router-dom": "5.1.5",
+    "@types/react-router": "5.1.12",
+    "@types/react-router-dom": "5.1.7",
     "history-with-query": "4.10.4",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "use-subscription": "1.4.1"
+    "use-subscription": "1.5.1"
   },
   "peerDependencies": {
     "react": "16.x || 17.x"
