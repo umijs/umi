@@ -1,8 +1,10 @@
 import { Readable } from 'stream';
+import { EOL } from 'os';
 import { IRoute } from '@umijs/types';
 import { parse, UrlWithStringQuery } from 'url';
 import mergeStream from '@umijs/deps/compiled/merge-stream';
 import serialize from '@umijs/deps/compiled/serialize-javascript';
+import { WRAPPERS_CHUNK_NAME } from '../constants';
 
 function addLeadingSlash(path: string): string {
   return path.charAt(0) === "/" ? path : "/" + path;
@@ -59,6 +61,28 @@ export interface IHandleHTMLOpts {
 }
 
 /**
+ * get page chunks with routes
+ *
+ * @param routeMatched
+ */
+ const getPageChunks = (routeMatched: IHandleHTMLOpts['routesMatched']): string[] => {
+  const chunks: string[] = [];
+  const recursive = (routes: any[]) => {
+    for (let i = 0; i < routes.length;i++) {
+      const route = routes[i];
+      if (route?._chunkName && chunks.indexOf(route._chunkName) < 0) {
+        chunks.push(route._chunkName);
+      }
+      if (Array.isArray(route?.wrappers) && route?.wrappers.length > 0 && chunks.indexOf(WRAPPERS_CHUNK_NAME) < 0) {
+        chunks.push(WRAPPERS_CHUNK_NAME);
+      }
+    }
+  }
+  recursive(routeMatched);
+  return chunks;
+}
+
+/**
  * handle html with rootContainer(rendered)
  * @param param
  */
@@ -73,28 +97,25 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   }
   // get chunks in `dynamicImport: {}`
   if (dynamicImport && Array.isArray(routesMatched)) {
-    const chunks: string[] = routesMatched
-      .reduce((prev, curr) => {
-        const _chunkName = curr.route?._chunkName;
-        return [...(prev || []), _chunkName].filter(Boolean);
-      }, []);
+    const chunks: string[] = getPageChunks(routesMatched.map(routeMatched => routeMatched?.route));
     if (chunks?.length > 0) {
       // only load css chunks to avoid page flashing
-      const cssChunkSet = new Set<string>();
+      const cssChunkSet: string[] = [];
       chunks.forEach(chunk => {
         Object.keys(manifest || {}).forEach(manifestChunk => {
           if (manifestChunk !== 'umi.css'
             && chunk
-            && manifestChunk.startsWith(chunk)
+            // issue: https://github.com/umijs/umi/issues/6259
+            && (manifestChunk.startsWith(chunk) || manifestChunk.indexOf(`~${chunk}`) > -1)
             && manifest
             && /\.css$/.test(manifest[manifestChunk])
           ) {
-            cssChunkSet.add(`<link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
+            cssChunkSet.push(`<link rel="preload" href="${manifest[manifestChunk]}"/><link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
           }
         })
       });
       // avoid repeat
-      html = html.replace('</head>', `${Array.from(cssChunkSet).join('\n')}\n</head>`);
+      html = html.replace('</head>', `${cssChunkSet.join(EOL)}${EOL}</head>`);
     }
   }
 

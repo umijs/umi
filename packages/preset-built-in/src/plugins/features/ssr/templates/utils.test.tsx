@@ -201,6 +201,71 @@ test('handleHTML dynamicImport', async () => {
   expect(normalHTMl).not.toContain("/public/p__users.chunk.css");
 })
 
+test('handleHTML complex', async () => {
+  const complexOpts = {
+    pageInitialProps: {
+      username: 'ycjcl868',
+    },
+    rootContainer: '<h1>ycjcl868</h1>',
+    html: defaultHTML,
+    dynamicImport: true,
+    manifest: {
+      "layouts__index.css": "/layouts__index.chunk.css",
+      "layouts__index.js": "/layouts__index.js",
+      "p__index.css": "/p__index.chunk.css",
+      "p__index.js": "/p__index.js",
+      "p__me.css": "/p__me.chunk.css",
+      "p__me.js": "/p__me.js",
+      "umi.css": "/umi.css",
+      "umi.js": "/umi.js",
+      "wrappers.css": "/wrappers.chunk.css",
+      "wrappers.js": "/wrappers.js",
+      "index.html": "/index.html"
+    },
+    mountElementId: 'root',
+  }
+  const complexHTMl = await handleHTML({
+    ...complexOpts,
+    routesMatched: [
+      {
+        "route": {
+          "path": "/",
+          "routes": [
+            {
+              "path": "/about",
+              "wrappers": [null],
+              "routes": [
+                { "path": "/about/me", "exact": true, "_chunkName": "p__me" }
+              ],
+              "_chunkName": "p__index"
+            }
+          ],
+          "_chunkName": "layouts__index"
+        },
+        "match": { "path": "/", "url": "/", "isExact": false, "params": {} }
+      },
+      {
+        "route": {
+          "path": "/about",
+          "wrappers": [null],
+          "routes": [{ "path": "/about/me", "exact": true, "_chunkName": "p__me" }],
+          "_chunkName": "p__index"
+        },
+        "match": {
+          "path": "/about",
+          "url": "/about",
+          "isExact": true,
+          "params": {}
+        }
+      }
+    ]
+    ,
+  });
+  expect(complexHTMl).toContain('/layouts__index.chunk.css');
+  expect(complexHTMl).toContain("/p__index.chunk.css");
+  expect(complexHTMl).toContain("/wrappers.chunk.css");
+})
+
 test('ReadableString', (done) => {
   const wrapperStream = new ReadableString('<div></div>');
   let bytes = Buffer.from('');
