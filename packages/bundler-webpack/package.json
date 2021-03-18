@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/sockjs-client": "1.1.1",
     "anymatch": "3.1.1",
-    "react-error-overlay": "6.0.8",
+    "react-error-overlay": "6.0.9",
     "sockjs-client": "1.5.0",
     "strip-ansi": "6.0.0"
   },
