@@ -22,16 +22,19 @@ export default function (api: IApi) {
     utils: { Mustache },
   } = api;
 
+  const umiVersion = process.env.MFSU_USE_LATEST_UMI
+    ? '3'
+    : process.env.UMI_VERSION;
   api.addDepInfo(() => {
     return [
       {
         name: '@umijs/runtime',
-        range: '3',
+        range: umiVersion,
         alias: [runtimePath],
       },
       {
         name: '@umijs/renderer-react',
-        range: '3',
+        range: umiVersion,
         alias: [renderReactPath],
       },
     ];
