@@ -104,11 +104,9 @@ export function createCSSRule({
         deepmerge(
           {
             // Necessary for external CSS imports to work
-            // https://github.com/facebookincubator/create-react-app/issues/2677
-            ident: 'postcss',
             // https://github.com/webpack-contrib/postcss-loader/commit/6eb44ed7f011d827838ba99736d476ac61ac1089
             postcssOptions: {
-              plugins: () => [
+              plugins: [
                 // https://github.com/luisrudge/postcss-flexbugs-fixes
                 require('postcss-flexbugs-fixes'),
                 // https://github.com/csstools/postcss-preset-env
@@ -125,6 +123,14 @@ export function createCSSRule({
                   // https://cssdb.org/
                   stage: 3,
                 }),
+                // ...(type === BundlerConfigType.ssr
+                //   ? []
+                //   : [
+                //       require('autoprefixer')({
+                //         ...config.autoprefixer,
+                //         overrideBrowserslist: browserslist,
+                //       }),
+                //     ]),
                 ...(config.extraPostCSSPlugins
                   ? config.extraPostCSSPlugins
                   : []),

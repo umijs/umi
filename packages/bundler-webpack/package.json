@@ -43,7 +43,7 @@
     "postcss": "8.2.8",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-loader": "4.2.0",
-    "autoprefixer": "10.2.5",
+    "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.2",
     "terser": "5.6.0",
     "webpack-chain": "6.5.1"
