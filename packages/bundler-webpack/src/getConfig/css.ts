@@ -123,17 +123,6 @@ export function createCSSRule({
                   // https://cssdb.org/
                   stage: 3,
                 }),
-                // ...(type === BundlerConfigType.ssr
-                //   ? []
-                //   : [
-                //       require('autoprefixer')({
-                //         ...config.autoprefixer,
-                //         overrideBrowserslist: browserslist,
-                //       }),
-                //     ]),
-                ...(config.extraPostCSSPlugins
-                  ? config.extraPostCSSPlugins
-                  : []),
               ],
             },
           },
