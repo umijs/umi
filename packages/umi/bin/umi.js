@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('v8-compile-cache');
+
 const resolveCwd = require('@umijs/deps/compiled/resolve-cwd');
 
 const { name, bin } = require('../package.json');
