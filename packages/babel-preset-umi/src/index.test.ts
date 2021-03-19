@@ -32,6 +32,21 @@ test('esm', () => {
   expect(code).toContain(`import { a } from './a';`);
 });
 
+test('typescript 4.2 abstract Construct Signatures', () => {
+  const code = transformWithPreset(
+    `
+abstract class Shape {
+    abstract getArea(): number;
+}
+  `,
+    {
+      typescript: true,
+    },
+  );
+  expect(code).toContain(`var Shape = function Shape() {`);
+  expect(code).toContain(`_classCallCheck(this, Shape);`);
+});
+
 test('typescript', () => {
   const code = transformWithPreset(
     `
