@@ -89,7 +89,7 @@ export const qiankun = fetch('/config').then(({ apps }) => ({
 }));
 ```
 
-完整的主应用配置项看这里 [masterOptions 配置列表](#masterOptions)
+完整的主应用配置项看这里 [masterOptions 配置列表](#masteroptions)
 
 #### 第二步：装载子应用
 
@@ -381,32 +381,31 @@ PORT=8081
 
 1. 主应用使用下面任一方式透传数据：
 
-1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
+  1. 如果你用的 [MicroApp](#MicroApp) 组件模式消费微应用，那么数据传递的方式就跟普通的 react 组件通信是一样的，直接通过 props 传递即可：
 
-   ```js
-   function MyPage() {
-     const [name, setName] = useState(null);
-     return (
-       <MicroApp name={name} onNameChange={(newName) => setName(newName)} />
-     );
-   }
-   ```
+     ```js
+     function MyPage() {
+       const [name, setName] = useState(null);
+       return (
+         <MicroApp name={name} onNameChange={(newName) => setName(newName)} />
+       );
+     }
+     ```
 
-1. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
+  2. 如果你用的 [路由绑定式](#RouteBased) 消费微应用，那么你需要在 `src/app.ts` 里导出一个 `useQiankunStateForSlave` 函数，函数的返回值将作为 props 传递给微应用，如：
+     ```ts
+     // src/app.ts
+     export function useQiankunStateForSlave() {
+       const [masterState, setMasterState] = useState({});
 
-   ```ts
-   // src/app.ts
-   export function useQiankunStateForSlave() {
-     const [masterState, setMasterState] = useState({});
+       return {
+         masterState,
+         setMasterState,
+       };
+     }
+     ```
 
-     return {
-       masterState,
-       setMasterState,
-     };
-   }
-   ```
-
-1. 微应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
+2. 微应用中会自动生成一个全局 model，可以在任意组件中获取主应用透传的 props 的值。
 
    ```jsx
    import { useModel } from 'umi';
@@ -429,7 +428,7 @@ PORT=8081
    export default connectMaster(MyPage);
    ```
 
-1. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 `masterProps.setLoading(false)`，可以标记微模块的整体 loading 为完成状态。
+3. 和 `<MicroApp />` 的方式一同使用时，会额外向子应用传递一个 setLoading 的属性，在子应用中合适的时机执行 `masterProps.setLoading(false)`，可以标记微模块的整体 loading 为完成状态。
 
 #### 基于 props 传递
 
@@ -500,24 +499,25 @@ export function MyPage() {
 
 ### API
 
-#### <a name="masterOptions">MasterOptions</a>
+#### MasterOptions
 
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
-| apps | 子应用配置 | [App](#AppOpts)[] | 是 |  |
-| routes | 子应用运行时需要注册的微应用路由 | [Route](#RouteOpts)[] | 否 | N/A |
+| apps | 子应用配置 | [App](#app)[] | 是 |  |
+| routes | 子应用运行时需要注册的微应用路由 | [Route](#route)[] | 否 | N/A |
 | sandbox | 是否启用沙箱，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean | 否 | true |
 | prefetch | 是否启用 prefetch 特性，[详细说明](https://qiankun.umijs.org/zh/api/#start-opts) | boolean \| 'all' | 否 | true |
 
-#### <a name="AppOpts">App</a>
+#### App
 
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
 | name | 子应用唯一 id | string | 是 |  |
 | entry | 子应用 html 地址 | string \| { script: string[], styles: [] } | 是 |  |
+| credentials | 拉取 entry 时是否需要携带cookie，[详见](https://qiankun.umijs.org/zh/faq#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%8B%89%E5%8F%96%E5%BE%AE%E5%BA%94%E7%94%A8-entry-%E6%97%B6-cookie-%E6%9C%AA%E6%90%BA%E5%B8%A6%E7%9A%84%E9%97%AE%E9%A2%98) | boolean | 否 | false |
 | props | 主应用传递给子应用的数据 | object | 否 | {} |
 
-#### <a name="RouteOpts">Route</a>
+#### Route
 
 | 配置 | 说明 | 类型 | 是否必填 | 默认值 |
 | --- | --- | --- | --- | --- |
