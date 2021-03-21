@@ -1,0 +1,135 @@
+:root {
+	--order: 1;
+}
+
+.test-custom-properties {
+	order: var(--order);
+}
+
+.test-logical-properties-and-values {
+	margin: logical 1px 2px 3px 4px;
+	order: 3;
+	padding-block: 5px;
+}
+
+.test-nesting-rules {
+	order: 4;
+
+	& p {
+		order: 5;
+	}
+
+	order: 6;
+}
+
+@custom-media --narrow-window (max-width: 30em);
+
+@media (--narrow-window) {
+	.test-custom-media-queries {
+		order: 7;
+	}
+}
+
+@media (480px <= width < 768px) {
+	.test-media-query-ranges {
+		order: 8;
+	}
+}
+
+@custom-media --dark-mode (prefers-color-scheme: dark);
+
+@media (--dark-mode) {
+	body {
+		background-color: black;
+		color: white;
+	}
+}
+
+@custom-selector :--heading h1, h2, h3, h4, h5, h6;
+
+.test-custom-selectors:--heading {
+	order: 9;
+}
+
+.test-case-insensitive-attributes[frame=hsides i] {
+	order: 10;
+}
+
+.test-gray-function {
+	color: gray(50);
+	color: gray(50 / 50%);
+}
+
+.test-rebeccapurple-color {
+	color: rebeccapurple;
+	order: 11;
+}
+
+.test-hexadecimal-alpha-notation {
+	background-color: #f3f3f3f3;
+	color: #0003;
+	order: 12;
+}
+
+.test-color-functional-notation {
+	color: rgb(70% 13.5% 13.5% / 50%);
+	order: 13;
+}
+
+.test-lab-function {
+	background-color: lab(40 56.6 39);
+	color: lch(40 68.8 34.5 / 50%);
+	order: 14;
+}
+
+.test-system-ui-font-family {
+	font-family: system-ui;
+	order: 15;
+}
+
+.test-font-variant-property {
+	font-variant-caps: small-caps;
+	order: 16;
+}
+
+.test-all-property {
+	all: initial;
+	order: 17;
+}
+
+.test-matches-pseudo-class:matches(:first-child, .special) {
+	order: 18;
+}
+
+.test-not-pseudo-class:not(:first-child, .special) {
+	order: 19;
+}
+
+.test-any-link-pseudo-class:any-link {
+	order: 20;
+}
+
+.test-dir-pseudo-class:dir(rtl) {
+	order: 21;
+}
+
+.test-overflow-wrap-property {
+	order: 22;
+	overflow-wrap: break-word;
+}
+
+.test-focus-visible-pseudo-class:focus-visible {
+	order: 23;
+}
+
+.test-double-position-gradients {
+	background-image: conic-gradient(yellowgreen 40%, gold 0deg 75%, #f06 0deg);
+}
+
+.test-blank-pseudo-class:blank {
+	background-color: yellow;
+}
+
+.test-has-pseudo-class:has(.inner-class) {
+	background-color: yellow;
+}
