@@ -554,7 +554,7 @@ export default {
     react: 'window.React',
   },
   scripts: [
-    'https://unpkg.com/browse/react@16.12.0/umd/react.production.min.js',
+    'https://unpkg.com/react@17.0.1/umd/react.production.min.js',
   ],
 };
 ```
