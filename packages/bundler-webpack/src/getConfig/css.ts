@@ -109,6 +109,14 @@ export function createCSSRule({
               plugins: [
                 // https://github.com/luisrudge/postcss-flexbugs-fixes
                 require('postcss-flexbugs-fixes'),
+                // TODO: upgrade postcss-preset-env
+                // https://github.com/csstools/postcss-preset-env/issues/191
+                require('postcss-preset-env')({
+                  // TODO: set browsers
+                  autoprefixer: false,
+                  // https://cssdb.org/
+                  stage: 3,
+                }),
                 ...(type === BundlerConfigType.ssr
                   ? []
                   : [

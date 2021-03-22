@@ -41,9 +41,10 @@
     "node-libs-browser": "2.2.1",
     "normalize-url": "1.9.1",
     "postcss": "8.2.8",
+    "autoprefixer": "10.2.5",
+    "postcss-preset-env": "6.7.0",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-loader": "4.2.0",
-    "autoprefixer": "10.2.5",
     "postcss-safe-parser": "5.0.2",
     "terser": "5.6.0",
     "webpack-chain": "6.5.1"
