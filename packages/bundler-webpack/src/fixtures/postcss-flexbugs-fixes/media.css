@@ -1,0 +1,11 @@
+@media screen and (width >= 500px) and (width <= 1200px) {
+  .bar {
+    display: block;
+  }
+}
+
+@media screen and (600px <= width <= 1000px) {
+  .bar {
+    display: block;
+  }
+}

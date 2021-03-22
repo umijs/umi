@@ -1,0 +1,8 @@
+.standard-grid {
+  gap: 20px;
+}
+
+.spaced-grid {
+  column-gap: 40px;
+  row-gap: 20px;
+}
