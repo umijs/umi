@@ -104,30 +104,26 @@ export function createCSSRule({
         deepmerge(
           {
             // Necessary for external CSS imports to work
-            // https://github.com/webpack-contrib/postcss-loader/commit/6eb44ed7f011d827838ba99736d476ac61ac1089
-            postcssOptions: {
-              plugins: [
-                // https://github.com/luisrudge/postcss-flexbugs-fixes
-                require('postcss-flexbugs-fixes'),
-                // https://github.com/csstools/postcss-preset-env
-                // TODO: https://github.com/csstools/postcss-preset-env/issues/191
-                require('postcss-preset-env')({
-                  // TODO: set browsers
-                  autoprefixer:
-                    type === BundlerConfigType.ssr
-                      ? false
-                      : {
-                          ...config.autoprefixer,
-                          overrideBrowserslist: browserslist,
-                        },
-                  // https://cssdb.org/
-                  stage: 3,
-                }),
-                ...(config.extraPostCSSPlugins
-                  ? config.extraPostCSSPlugins
-                  : []),
-              ],
-            },
+            // https://github.com/facebookincubator/create-react-app/issues/2677
+            ident: 'postcss',
+            plugins: () => [
+              // https://github.com/luisrudge/postcss-flexbugs-fixes
+              require('postcss-flexbugs-fixes'),
+              // https://github.com/csstools/postcss-preset-env
+              require('postcss-preset-env')({
+                // TODO: set browsers
+                autoprefixer:
+                  type === BundlerConfigType.ssr
+                    ? false
+                    : {
+                        ...config.autoprefixer,
+                        overrideBrowserslist: browserslist,
+                      },
+                // https://cssdb.org/
+                stage: 3,
+              }),
+              ...(config.extraPostCSSPlugins ? config.extraPostCSSPlugins : []),
+            ],
           },
           config.postcssLoader || {},
         ),
