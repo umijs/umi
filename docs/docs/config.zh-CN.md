@@ -119,6 +119,6 @@ export default { c: 'local' };
 {
   a: 1,
   b: 'cloud',
-  c: 'cloud',
+  c: 'local',
 }
 ```
