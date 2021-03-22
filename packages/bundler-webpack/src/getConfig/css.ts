@@ -109,20 +109,14 @@ export function createCSSRule({
               plugins: [
                 // https://github.com/luisrudge/postcss-flexbugs-fixes
                 require('postcss-flexbugs-fixes'),
-                // https://github.com/csstools/postcss-preset-env
-                // TODO: https://github.com/csstools/postcss-preset-env/issues/191
-                require('postcss-preset-env')({
-                  // TODO: set browsers
-                  autoprefixer:
-                    type === BundlerConfigType.ssr
-                      ? false
-                      : {
-                          ...config.autoprefixer,
-                          overrideBrowserslist: browserslist,
-                        },
-                  // https://cssdb.org/
-                  stage: 3,
-                }),
+                ...(type === BundlerConfigType.ssr
+                  ? []
+                  : [
+                      require('autoprefixer')({
+                        ...config.autoprefixer,
+                        overrideBrowserslist: browserslist,
+                      }),
+                    ]),
                 ...(config.extraPostCSSPlugins
                   ? config.extraPostCSSPlugins
                   : []),
