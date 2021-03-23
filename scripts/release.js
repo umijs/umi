@@ -26,7 +26,7 @@ function logStep(name) {
 
 async function release() {
   // Check git status
-  if (!args.skipGitStatusCheck) {
+  if (!args.skipGitStatusCheck && !args.publishOnly) {
     const gitStatus = execa.sync('git', ['status', '--porcelain']).stdout;
     if (gitStatus.length) {
       printErrorAndExit(`Your git status is not clean. Aborting.`);
@@ -38,9 +38,11 @@ async function release() {
   }
 
   // get release notes
-  logStep('get release notes');
-  const releaseNotes = await getChangelog();
-  console.log(releaseNotes(''));
+  if (!args.publishOnly) {
+    logStep('get release notes');
+    const releaseNotes = await getChangelog();
+    console.log(releaseNotes(''));
+  }
 
   // Check npm registry
   logStep('check npm registry');
