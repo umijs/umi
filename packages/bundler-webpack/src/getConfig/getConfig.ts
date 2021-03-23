@@ -599,6 +599,11 @@ export default async function getConfig(
   // node polyfills
   const nodeLibs = require('node-libs-browser');
   if (isWebpack5) {
+    ret.plugins!.push(
+      new bundleImplementor.ProvidePlugin({
+        process: nodeLibs['process'],
+      }),
+    );
     // @ts-ignore
     ret.resolve.fallback = {
       // @ts-ignore
