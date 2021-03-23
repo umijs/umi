@@ -26,7 +26,7 @@
   "dependencies": {
     "@umijs/ast": "3.4.5",
     "@umijs/babel-preset-umi": "3.4.5",
-    "@umijs/deps": "0.6.0",
+    "@umijs/deps": "0.7.1",
     "@umijs/utils": "3.4.5"
   }
 }

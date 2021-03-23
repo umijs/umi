@@ -36,7 +36,7 @@ export function init() {
   const hookPropertyMap = new Map(
     [
       ['webpack', '@umijs/deps/compiled/webpack'],
-      ['webpack/package.json', '@umijs/deps/compiled/webpack/package.json'],
+      ['webpack/package.json', '@umijs/deps/compiled/webpack/pkgInfo'],
       ...filesMap,
       // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
     ].map(([request, replacement]) => [request, require.resolve(replacement)]),
