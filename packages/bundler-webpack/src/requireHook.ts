@@ -3,6 +3,7 @@ export const files = [
   'webpack/lib/dependencies/ConstDependency',
   'webpack/lib/javascript/JavascriptParserHelpers',
   'webpack/lib/LibraryTemplatePlugin',
+  'webpack/lib/LoaderTargetPlugin',
   'webpack/lib/node/NodeTargetPlugin',
   'webpack/lib/node/NodeTemplatePlugin',
   'webpack/lib/NormalModule',
@@ -13,6 +14,7 @@ export const files = [
   'webpack/lib/ParserHelpers',
   'webpack/lib/SingleEntryPlugin',
   'webpack/lib/Template',
+  'webpack/lib/webworker/WebWorkerTemplatePlugin',
 ];
 
 export function getFileName(filePath: string) {
@@ -34,6 +36,7 @@ export function init() {
   const hookPropertyMap = new Map(
     [
       ['webpack', '@umijs/deps/compiled/webpack'],
+      ['webpack/package.json', '@umijs/deps/compiled/webpack/package.json'],
       ...filesMap,
       // ['webpack-sources', '@umijs/deps/compiled/webpack/sources'],
     ].map(([request, replacement]) => [request, require.resolve(replacement)]),
