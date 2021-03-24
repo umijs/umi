@@ -52,7 +52,7 @@ class Bundler {
           console.error(err);
           return reject(new Error('build failed'));
         }
-
+        compiler.close()
         // @ts-ignore
         resolve({ stats });
       });
