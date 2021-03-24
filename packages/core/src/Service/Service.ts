@@ -180,8 +180,8 @@ export default class Service extends EventEmitter {
   loadEnv() {
     const basePath = join(this.cwd, '.env');
     const localPath = `${basePath}.local`;
-    loadDotEnv(basePath);
     loadDotEnv(localPath);
+    loadDotEnv(basePath);
   }
 
   async init() {
