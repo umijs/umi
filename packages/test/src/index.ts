@@ -30,7 +30,11 @@ export default async function (args: IUmiTestArgs) {
 
   const cwd = args.cwd || process.cwd();
 
-  // Read config from cwd/jest.config.js
+  // Read config from cwd/jest.config.ts or cwd/jest.config.js
+  const userJestConfigTsFile = join(cwd, 'jest.config.ts');
+  const userJestConfigTs =
+    existsSync(userJestConfigTsFile) && require(userJestConfigTsFile);
+
   const userJestConfigFile = join(cwd, 'jest.config.js');
   const userJestConfig =
     existsSync(userJestConfigFile) && require(userJestConfigFile);
@@ -47,6 +51,7 @@ export default async function (args: IUmiTestArgs) {
   const config = mergeConfig(
     createDefaultConfig(cwd, args),
     packageJestConfig,
+    userJestConfigTs,
     userJestConfig,
   );
   debug(`final config: ${JSON.stringify(config)}`);
