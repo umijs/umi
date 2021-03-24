@@ -7,6 +7,15 @@ import getCwd from './utils/getCwd';
 import getPkg from './utils/getPkg';
 import initWebpack from './initWebpack';
 
+const v = process.version;
+
+if (v && parseInt(v.slice(1)) < 10) {
+  console.log(chalk.red(`Your node ${v} is not supported by umi, please upgrade to 10 or above.`));
+  process.exit(1);
+} else if (v && parseInt(v.slice(1)) > 14) {
+  console.log(chalk.yellow(`Your node ${v} is not supported by umi, please use node 10, node 12 or node 14.`));
+}
+
 // process.argv: [node, umi.js, command, args]
 const args = yParser(process.argv.slice(2), {
   alias: {
