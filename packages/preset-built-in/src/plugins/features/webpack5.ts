@@ -30,7 +30,11 @@ export default (api: IApi) => {
   api.modifyBundleConfig((memo) => {
     // lazy compilation
     // @ts-ignore
-    if (api.config.webpack5!.lazyCompilation) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      api.config.webpack5 &&
+      api.config.webpack5.lazyCompilation
+    ) {
       // @ts-ignore
       memo.experiments = {
         // @ts-ignore
