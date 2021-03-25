@@ -619,12 +619,14 @@ export default async function getConfig(
       http: false,
       https: false,
       punycode: false,
-      stream: false,
-      _stream_duplex: false,
-      _stream_passthrough: false,
-      _stream_readable: false,
-      _stream_transform: false,
-      _stream_writable: false,
+      // mammoth deps on these
+      // ref: https://github.com/umijs/umi/issues/6318
+      // stream: false,
+      // _stream_duplex: false,
+      // _stream_passthrough: false,
+      // _stream_readable: false,
+      // _stream_transform: false,
+      // _stream_writable: false,
     };
   }
 
