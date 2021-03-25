@@ -52,7 +52,9 @@ class Bundler {
           console.error(err);
           return reject(new Error('build failed'));
         }
-        compiler.close()
+        // ref: https://github.com/webpack/webpack/issues/12345#issuecomment-755273757
+        // @ts-ignore
+        compiler.close();
         // @ts-ignore
         resolve({ stats });
       });
