@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install
-        run: yarn --ignore-engines
+        run: yarn --ignore-engines --frozen-lockfile
       - name: outdated version
         uses: ycjcl868/outdated-version-action@v1
         with:

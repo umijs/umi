@@ -33,7 +33,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: install
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn --ignore-engines
+        run: yarn --ignore-engines --frozen-lockfile
       - run: yarn build
       - run: yarn test --detectOpenHandles --maxWorkers=4 --forceExit
         env:
