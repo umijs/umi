@@ -54,7 +54,7 @@ class Bundler {
         }
         // ref: https://github.com/webpack/webpack/issues/12345#issuecomment-755273757
         // @ts-ignore
-        compiler.close();
+        compiler.close?.();
         // @ts-ignore
         resolve({ stats });
       });
