@@ -38,9 +38,10 @@ async function release() {
   }
 
   // get release notes
+  let releaseNotes;
   if (!args.publishOnly) {
     logStep('get release notes');
-    const releaseNotes = await getChangelog();
+    releaseNotes = await getChangelog();
     console.log(releaseNotes(''));
   }
 
