@@ -4,7 +4,6 @@ translateHelp: true
 
 # @umijs/plugin-esbuild
 
-
 > 试验性功能，可能有坑，但效果拔群。
 
 使用 esbuild 作为压缩器。
@@ -20,5 +19,17 @@ translateHelp: true
 ```js
 export default {
   esbuild: {},
-}
+};
+```
+
+### target
+
+使用 [esbuild#target](https://esbuild.github.io/api/#target) 配置，例如转成 ES5：
+
+```js
+export default {
+  esbuild: {
+    target: 'es5',
+  },
+};
 ```
