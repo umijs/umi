@@ -15,5 +15,17 @@
 ```js
 export default {
   esbuild: {},
-}
+};
+```
+
+### target
+
+使用 [esbuild#target](https://esbuild.github.io/api/#target) 配置，例如转成 ES5：
+
+```js
+export default {
+  esbuild: {
+    target: 'es5',
+  },
+};
 ```
