@@ -51,5 +51,5 @@ test('run jest', async () => {
   // @ts-ignore
   expect(argsArr[0].updateSnapshot).toEqual(true);
   // @ts-ignore
-  expect(argsArr[0].config).toContain('"bar":1,"hoo":2,"baz":1,"foo":1');
+  expect(argsArr[0].config).toContain('"bar":1,"hoo":2,"bail":1000,"foo":1');
 });
