@@ -6,9 +6,7 @@ const cwd = join(fixtures, 'normal');
 
 test('test loadTsConfigError when ts-node is not installed', async () => {
   // mock ts-node is undefined
-  jest.mock('ts-node', () => {}, {
-    virtual: true,
-  });
+  jest.mock('ts-node', () => ({}));
 
   const userJestConfigTsFile = join(cwd, 'jest.config.ts');
   await expect(loadTSConfigFile(userJestConfigTsFile)).rejects.toThrow();
