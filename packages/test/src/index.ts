@@ -1,15 +1,13 @@
 import { runCLI } from 'jest';
 // @ts-ignore
 import { createDebug, mergeConfig } from '@umijs/utils';
-import { interopRequireDefault } from 'jest-util';
-import { Service } from 'ts-node';
-import { Config } from '@jest/types';
 import { options as CliOptions } from 'jest-cli/build/cli/args';
 import assert from 'assert';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
 import { IUmiTestArgs, PickedJestCliOptions } from './types';
+import { loadTSConfigFile } from './utils';
 
 const debug = createDebug('umi:test');
 
@@ -43,11 +41,7 @@ export default async function (args: IUmiTestArgs) {
       userJestConfigTs = await loadTSConfigFile(userJestConfigTsFile);
       debug(`config from jest.config.ts: ${JSON.stringify(userJestConfigTs)}`);
     } catch (loadTsFileError) {
-      throw new Error(
-        `Load ts file with jest-util@${
-          require('jest-util/package.json').version
-        } failed`,
-      );
+      throw loadTsFileError;
     }
   }
 
@@ -102,40 +96,3 @@ export default async function (args: IUmiTestArgs) {
   // Throw error when run failed
   assert(result.results.success, `Test with jest failed`);
 }
-
-// Load the TypeScript configuration
-const loadTSConfigFile = async (
-  configPath: Config.Path,
-): Promise<Config.InitialOptions> => {
-  let registerer: Service;
-
-  // Register TypeScript compiler instance
-  try {
-    registerer = require('ts-node').register({
-      compilerOptions: {
-        module: 'CommonJS',
-      },
-    });
-  } catch (e) {
-    if (e.code === 'MODULE_NOT_FOUND') {
-      throw new Error(
-        `Jest: 'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${e.message}`,
-      );
-    }
-
-    throw e;
-  }
-
-  registerer.enabled(true);
-
-  let configObject = interopRequireDefault(require(configPath)).default;
-
-  // In case the config is a function which imports more Typescript code
-  if (typeof configObject === 'function') {
-    configObject = await configObject();
-  }
-
-  registerer.enabled(false);
-
-  return configObject;
-};
