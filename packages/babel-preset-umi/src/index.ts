@@ -191,6 +191,13 @@ export default (context: any, opts: IOpts = {}) => {
       opts.noAnonymousDefaultExport && [
         require.resolve('@umijs/babel-plugin-no-anonymous-default-export'),
       ],
+      [
+        require('@babel/plugin-proposal-record-and-tuple').default,
+        {
+          syntaxType: 'hash',
+          importPolyfill: true,
+        },
+      ],
     ].filter(Boolean),
   };
 
