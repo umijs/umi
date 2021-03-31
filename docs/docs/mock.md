@@ -4,14 +4,13 @@ translateHelp: true
 
 # Mock Data
 
+Mock Data is essential to decouple the front-end development from backend development. By following the predefined backend contract, Mock Data can simulate the backend data and logic, which makes the front-end development unaffected by the progress of backend development. 
 
-Mock 数据是前端开发过程中必不可少的一环，是分离前后端开发的关键链路。通过预先跟服务器端约定好的接口，模拟请求数据甚至逻辑，能够让前端开发独立自主，不会被服务端的开发所阻塞。
+## Convention-based Mock Files
 
-## 约定式 Mock 文件
+By convention, all files under `/mock` are treated as mock files by Umi.
 
-Umi 约定 `/mock` 文件夹下所有文件为 mock 文件。
-
-比如：
+For example：
 
 ```bash
 .
@@ -23,38 +22,38 @@ Umi 约定 `/mock` 文件夹下所有文件为 mock 文件。
         └── index.tsx
 ```
 
-`/mock` 下的 `api.ts` 和 `users.ts` 会被解析为 mock 文件。
+In this case, `api.ts` and `users.ts` will be picked up as mock files。
 
-## 编写 Mock 文件
+## Sample Mock File
 
-如果 `/mock/api.ts` 的内容如下，
+Given the mock file `/mock/api.ts` with following content，
 
 ```js
 export default {
-  // 支持值为 Object 和 Array
+  // support Object and Array as return data
   'GET /api/users': { users: [1, 2] },
 
-  // GET 可忽略
+  // GET can be omitted
   '/api/users/1': { id: 1 },
 
-  // 支持自定义函数，API 参考 express@4
+  // support customized functions，please refer to express@4 for more details of the API
   'POST /api/users/create': (req, res) => {
-    // 添加跨域请求头
+    // add cors header
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.end('ok');
   },
 }
 ```
 
-然后访问 `/api/users` 就能得到 `{ users: [1,2] }` 的响应，其他以此类推。
+when requesting `/api/users`, `{ users: [1,2] }` will be returned.
 
-## 配置 Mock
+## Mock Configuration
 
-详见[配置#mock](/config#mock)。
+Refer to [Config#mock](/config#mock) for more details。
 
-## 如何关闭 Mock？
+## How to disable Mock？
 
-可以通过配置关闭，
+Disable Mock with configuration，
 
 ```js
 export default {
@@ -62,23 +61,23 @@ export default {
 };
 ```
 
-也可以通过环境变量临时关闭，
+Disable Mock using environment variable，
 
 ```bash
 $ MOCK=none umi dev
 ```
 
-## 引入 Mock.js
+## Use Mock.js
 
-[Mock.js](http://mockjs.com/) 是常用的辅助生成模拟数据的三方库，借助他可以提升我们的 mock 数据能力。
+[Mock.js](http://mockjs.com/) a great 3rd-party library for mocking data，which has more capabilities.
 
-比如：
+Sample code：
 
 ```js
 import mockjs from 'mockjs';
 
 export default {
-  // 使用 mockjs 等三方库
+  // use mockjs
   'GET /api/tags': mockjs.mock({
     'list|100': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
   }),
