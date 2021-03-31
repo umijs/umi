@@ -31,8 +31,6 @@
     "@umijs/babel-plugin-auto-css-modules": "3.4.7",
     "@umijs/babel-plugin-import-to-await-require": "3.4.7",
     "@umijs/babel-plugin-lock-core-js-3": "3.4.7",
-    "@umijs/babel-plugin-no-anonymous-default-export": "3.4.7",
-    "@babel/plugin-proposal-record-and-tuple": "7.13.0",
-    "@bloomberg/record-tuple-polyfill": "0.0.3"
+    "@umijs/babel-plugin-no-anonymous-default-export": "3.4.7"
   }
 }

@@ -27,7 +27,7 @@
   "dependencies": {
     "@umijs/babel-preset-umi": "3.4.7",
     "@umijs/core": "3.4.7",
-    "@umijs/deps": "0.7.1",
+    "@umijs/deps": "0.8.0",
     "@umijs/server": "3.4.7",
     "@umijs/utils": "3.4.7",
     "webpack-chain": "6.5.1"

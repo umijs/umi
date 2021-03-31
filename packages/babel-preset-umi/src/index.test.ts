@@ -364,7 +364,7 @@ test('record', () => {
   });
   expect(code).toContain(`\"use strict\";
 
-var _recordTuplePolyfill = require(\"@bloomberg/record-tuple-polyfill\");
+var _recordTuplePolyfill = require(\"@umijs/deps/reexported/record-tuple-polyfill\");
 
 (0, _recordTuplePolyfill.Record)({
   x: 1,
@@ -380,7 +380,7 @@ test('tuple', () => {
   });
   expect(code).toContain(`\"use strict\";
 
-var _recordTuplePolyfill = require(\"@bloomberg/record-tuple-polyfill\");
+var _recordTuplePolyfill = require(\"@umijs/deps/reexported/record-tuple-polyfill\");
 
 (0, _recordTuplePolyfill.Tuple)(1, 2, 3);`);
 });
