@@ -2955,6 +2955,17 @@
     jest-worker "24.9.0"
     prettier "2.2.1"
 
+"@umijs/deps@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.8.1.tgz#b20f9b3b2cf67ba85306e2c1f6c720c687c5ce95"
+  integrity sha512-BfvWUblKdBzSyTWiX4Z4SmCu7yno5ypJquSx05ruPnZ9ZTxZIs4g+9Z3ow4yIvCBK/fFbRcBs4Os4fIPW3kmhg==
+  dependencies:
+    "@bloomberg/record-tuple-polyfill" "0.0.3"
+    chokidar "3.5.1"
+    clipboardy "2.3.0"
+    jest-worker "24.9.0"
+    prettier "2.2.1"
+
 "@umijs/plugin-analytics@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@umijs/plugin-analytics/-/plugin-analytics-0.2.2.tgz#575fd231d4327ea13413217aa1b5fc6bdd89465e"
