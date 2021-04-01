@@ -53,7 +53,7 @@ export default (api: IApi) => {
         type: 'filesystem',
         // using umi version as `cache.version`
         version: process.env.UMI_VERSION,
-        buildDependencies: { config: [__filename] },
+        buildDependencies: { config: [join(process.cwd(), 'package.json')] },
         cacheDirectory: join(api.paths.absTmpPath!, '.cache', 'webpack'),
       };
       // 缓存失效会有日志，这里清除下日志
