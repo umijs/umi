@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Mock Data
 
 Mock Data is essential to decouple the front-end development from backend development. By following the predefined backend contract, Mock Data can simulate the backend data and logic, which makes the front-end development unaffected by the progress of backend development. 
