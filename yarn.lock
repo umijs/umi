@@ -1238,6 +1238,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bloomberg/record-tuple-polyfill@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@bloomberg/record-tuple-polyfill/-/record-tuple-polyfill-0.0.3.tgz#0b03d18b88a30894caab14abd669b1cbbf47b843"
+  integrity sha512-sBnCqW0nqofE47mxFnw+lvx6kzsQstwaQMVkh66qm/A6IlsnH7WsyGuVXTou8RF2wL4W7ybOoHPvP2WgIo6rhQ==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -2939,11 +2944,12 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@umijs/deps@0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.7.1.tgz#a83ff42dc75fcd5695946eda525e0ad9513abbe1"
-  integrity sha512-ssi0EFNxX9Vb/dk1Cannngl+AiAawvc3ypGYs8XNYFC68/tzpGO7tf3NR5BcZNIMcV6GZYi3iN62YlYu/Zyz1w==
+"@umijs/deps@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.8.1.tgz#b20f9b3b2cf67ba85306e2c1f6c720c687c5ce95"
+  integrity sha512-BfvWUblKdBzSyTWiX4Z4SmCu7yno5ypJquSx05ruPnZ9ZTxZIs4g+9Z3ow4yIvCBK/fFbRcBs4Os4fIPW3kmhg==
   dependencies:
+    "@bloomberg/record-tuple-polyfill" "0.0.3"
     chokidar "3.5.1"
     clipboardy "2.3.0"
     jest-worker "24.9.0"

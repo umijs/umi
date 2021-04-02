@@ -355,3 +355,32 @@ test('top level await', () => {
   });
   expect(code).toContain(`await delay(1000);`);
 });
+
+test('record', () => {
+  const code = transformWithPreset(`#{ x: 1, y: 2 }`, {
+    env: {
+      targets: { ie: 10 },
+    },
+  });
+  expect(code).toContain(`\"use strict\";
+
+var _recordTuplePolyfill = require(\"@umijs/deps/reexported/record-tuple-polyfill\");
+
+(0, _recordTuplePolyfill.Record)({
+  x: 1,
+  y: 2
+});`);
+});
+
+test('tuple', () => {
+  const code = transformWithPreset(`#[1, 2, 3];`, {
+    env: {
+      targets: { ie: 10 },
+    },
+  });
+  expect(code).toContain(`\"use strict\";
+
+var _recordTuplePolyfill = require(\"@umijs/deps/reexported/record-tuple-polyfill\");
+
+(0, _recordTuplePolyfill.Tuple)(1, 2, 3);`);
+});
