@@ -12,13 +12,13 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Features
 
-* 🎉 **Extensible**, Umi implements the complete lifecycle and makes it extensible, and Umi's internal functions are all plugins. Umi also support plugins and presets.
-* 📦 **Out of the Box**, Umi has built-in routing, building, deployment, testing, and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionaries.
-* 🐠 **Enterprise**, It has been verified by 3000+ projects in Ant Financial and projects of Alibaba, Youku, Netease, Fliggy, KouBei and other companies.
-* 🚀 **Self Development**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
-* 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
-* 🚄 **Future Ready**, Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
-* 🌈 **Support SSR**, Starts Server-Side Render friendly.
+- 🎉 **Extensible**, Umi implements the complete lifecycle and makes it extensible, and Umi's internal functions are all plugins. Umi also support plugins and presets.
+- 📦 **Out of the Box**, Umi has built-in routing, building, deployment, testing, and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionaries.
+- 🐠 **Enterprise**, It has been verified by 3000+ projects in Ant Financial and projects of Alibaba, Youku, Netease, Fliggy, KouBei and other companies.
+- 🚀 **Self Development**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
+- 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
+- 🚄 **Future Ready**, Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
+- 🌈 **Support SSR**, Starts Server-Side Render friendly.
 
 ## Getting Started
 
@@ -44,11 +44,11 @@ Or [Getting Started with Boilerplate](https://umijs.org/docs/getting-started).
 
 ## Links
 
-* [Top Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aissue+is%3Aopen+label%3Atype%28enhancement%29+sort%3Areactions-%2B1-desc+) (Add your own votes using the 👍 reaction)
-* [Newest Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28enhancement%29)
-* [Top Bugs 😱](https://github.com/umijs/umi/issues?q=is%3Aissue+is%3Aopen+label%3Atype%28bug%29+sort%3Areactions-%2B1-desc+) (Add your own votes using the 👍 reaction)
-* [Newest Bugs 🙀](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28bug%29)
-* [Benchmarks](https://umijs.github.io/umi/dev/bench/index.html)
+- [Top Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aissue+is%3Aopen+label%3Atype%28enhancement%29+sort%3Areactions-%2B1-desc+) (Add your own votes using the 👍 reaction)
+- [Newest Feature Requests](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28enhancement%29)
+- [Top Bugs 😱](https://github.com/umijs/umi/issues?q=is%3Aissue+is%3Aopen+label%3Atype%28bug%29+sort%3Areactions-%2B1-desc+) (Add your own votes using the 👍 reaction)
+- [Newest Bugs 🙀](https://github.com/umijs/umi/issues?q=is%3Aopen+is%3Aissue+label%3Atype%28bug%29)
+- [Benchmarks](https://umijs.github.io/umi/dev/bench/index.html)
 
 ## Contributors
 
@@ -60,7 +60,7 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 
 | Github Issue | 钉钉群 | 微信群 |
 | --- | --- | --- |
-| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1WPiWNUY1gK0jSZFCXXcwqXXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/imgextra/i4/O1CN01n6OPuW1Rc2fNmUMok_!!6000000002131-0-tps-560-720.jpg" width="60" /> |
+| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/imgextra/i1/O1CN01ELxCL91aNEQCOC4WR_!!6000000003317-0-tps-1284-1644.jpg" width="60" /> | <img src="https://img.alicdn.com/imgextra/i1/O1CN01SXbs9I28PhUahMoWZ_!!6000000007925-0-tps-1170-1503.jpg" width="60" /> |
 
 ## LICENSE
 

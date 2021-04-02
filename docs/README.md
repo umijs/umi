@@ -26,7 +26,6 @@ features:
     title: Future Ready
     desc: Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
 footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [dumi](https://d.umijs.org/).
-
 ---
 
 ## Getting Started in 3 minutes
@@ -61,4 +60,4 @@ This project exists thanks to all the people who contribute. [Join us!](/docs/co
 
 | Github Issue | DingTalk | Wechat |
 | --- | --- | --- |
-| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1WPiWNUY1gK0jSZFCXXcwqXXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/imgextra/i4/O1CN01n6OPuW1Rc2fNmUMok_!!6000000002131-0-tps-560-720.jpg" width="60" /> |
+| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/imgextra/i1/O1CN01ELxCL91aNEQCOC4WR_!!6000000003317-0-tps-1284-1644.jpg" width="60" /> | <img src="https://img.alicdn.com/imgextra/i1/O1CN01SXbs9I28PhUahMoWZ_!!6000000007925-0-tps-1170-1503.jpg" width="60" /> |
