@@ -529,16 +529,17 @@ test('resolvePackage with APP_ROOT specified', () => {
   expect(service.pkg.name).toEqual('foo');
 });
 
-test('path no string', async () => {
+test('path no string', () => {
   const cwd = join(fixtures, 'no-package-json');
 
   // 'as any' for ignore ts
   const path = ['umi-plugin-dva', { immer: true }] as any;
-  const service = new Service({
-    cwd,
-    plugins: [path],
-  });
-  await expect(service.init()).rejects.toThrow(
+  expect(() => {
+    new Service({
+      cwd,
+      plugins: [path],
+    });
+  }).toThrow(
     `Plugin resolved failed, Please check your plugins config, it must be array of string.\nError Plugin Config: ${JSON.stringify(
       path,
     )}`,
