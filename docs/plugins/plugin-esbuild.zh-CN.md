@@ -29,3 +29,15 @@ export default {
   },
 };
 ```
+
+### pure
+
+使用 [esbuild#pure](https://esbuild.github.io/api/#pure) 配置，例如移除 `console`:
+
+```js
+export default {
+  esbuild: {
+    pure: ['console.log', 'console.info'],
+  },
+};
+```
