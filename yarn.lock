@@ -2944,17 +2944,6 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@umijs/deps@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.8.0.tgz#5f4ba8d7f2438ae668f9ed02a6ebaafde116ef0b"
-  integrity sha512-w4UAVI+FQHMT1cUird0xNJOlR8LL5cMyahpnu9yqVEw3elT7+QyYbak9OSazqAs4Zg0FBpmpcg6HFy3+QN7pgg==
-  dependencies:
-    "@bloomberg/record-tuple-polyfill" "0.0.3"
-    chokidar "3.5.1"
-    clipboardy "2.3.0"
-    jest-worker "24.9.0"
-    prettier "2.2.1"
-
 "@umijs/deps@0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@umijs/deps/-/deps-0.8.1.tgz#b20f9b3b2cf67ba85306e2c1f6c720c687c5ce95"
