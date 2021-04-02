@@ -61,6 +61,13 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
       type === PluginType.preset ? 'userConfigPresets' : 'userConfigPlugins'
     ] as any) || []),
   ].map((path) => {
+    if (typeof path !== 'string') {
+      throw new Error(
+        `Plugin resolved failed, Please check your plugins config, it must be array of string.\nError Plugin Config: ${JSON.stringify(
+          path,
+        )}`,
+      );
+    }
     return resolve.sync(path, {
       basedir: opts.cwd,
       extensions: ['.js', '.ts'],
