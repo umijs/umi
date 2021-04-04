@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import Config from 'webpack-chain';
 import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 // @ts-ignore
@@ -174,6 +175,7 @@ export default function ({
       {
         modifyVars: theme,
         javascriptEnabled: true,
+        paths: [resolve(process.cwd(), "./node_modules")],
       },
       config.lessLoader || {},
     ),
