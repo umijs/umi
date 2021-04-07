@@ -25,6 +25,9 @@ export default (api: IApi) => {
       console.log('Bundle with webpack 5...');
     }
     process.env.USE_WEBPACK_5 = '1';
+    if (process.env.WEBPACK_FS_CACHE !== 'none') {
+      process.env.BABEL_CACHE = 'none';
+    }
   });
 
   api.modifyBundleConfig((memo) => {
@@ -67,15 +70,6 @@ export default (api: IApi) => {
           : {}),
       };
     }
-
-    api.modifyBabelOpts((memo) => {
-      // 开启 persistent caching 后，不再需要 babel cache 了
-      // 只要不禁用物理缓存，就禁用 babel 缓存
-      if (process.env.WEBPACK_FS_CACHE !== 'none') {
-        memo.cacheDirectory = false;
-      }
-      return memo;
-    });
 
     return memo;
   });
