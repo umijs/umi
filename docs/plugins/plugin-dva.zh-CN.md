@@ -10,19 +10,19 @@
 
 包含以下功能，
 
-* **内置 dva**，默认版本是 `^2.6.0-beta.20`，如果项目中有依赖，会优先使用项目中依赖的版本。
-* **约定式的 model 组织方式**，不用手动注册 model
-* **文件名即 namespace**，model 内如果没有声明 namespace，会以文件名作为 namespace
-* **内置 dva-loading**，直接 connect `loading` 字段使用即可
-* **支持 immer**，通过配置 `immer` 开启
+- **内置 dva**，默认版本是 `^2.6.0-beta.20`，如果项目中有依赖，会优先使用项目中依赖的版本。
+- **约定式的 model 组织方式**，不用手动注册 model
+- **文件名即 namespace**，model 内如果没有声明 namespace，会以文件名作为 namespace
+- **内置 dva-loading**，直接 connect `loading` 字段使用即可
+- **支持 immer**，通过配置 `immer` 开启
 
 ### 约定式的 model 组织方式
 
 符合以下规则的文件会被认为是 model 文件，
 
-* `src/models` 下的文件
-* `src/pages` 下，子目录中 models 目录下的文件
-* `src/pages` 下，所有 model.ts 文件
+- `src/models` 下的文件
+- `src/pages` 下，子目录中 models 目录下的文件
+- `src/pages` 下，所有 model.ts 文件
 
 比如：
 
@@ -74,27 +74,27 @@ export default {
     immer: true,
     hmr: false,
   },
-}
+};
 ```
 
 ### skipModelValidate
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `false`
 
 是否跳过 model 验证。
 
 ### extraModels
 
-* Type: `string[]`
-* Default: `[]`
+- Type: `string[]`
+- Default: `[]`
 
 配置额外到 dva model。
 
 ### immer
 
-* Type: `boolean | object`
-* Default: `false`
+- Type: `boolean | object`
+- Default: `false`
 
 表示是否启用 immer 以方便修改 reducer。
 
@@ -102,10 +102,34 @@ export default {
 
 ### hmr
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `false`
 
 表示是否启用 dva model 的热更新。
+
+### disableModelsReExport
+
+- Type: `boolean`
+- Default: `false`
+
+表示禁用 dva models 类型导出，默认会将 model 导出的类型挂载到 `umi` 上，例如：
+
+```js
+// models/index.ts
+export interface FooModelType {}
+
+// src/*
+import { FooModelType } from 'umi';
+```
+
+设置为 `true` 后，将不再挂载类型到 `umi` 上。
+
+### lazyLoad
+
+- Type: `boolean`
+- Default: `false`
+
+懒加载 dva models，如果项目里 models 依赖了 `import from umi` 导出模块，建议开启，避免循环依赖导致模块 undefined 问题。
 
 ## dva 运行时配置
 
@@ -204,8 +228,7 @@ const IndexModel: IndexModelType = {
   },
 
   effects: {
-    *query({ payload }, { call, put }) {
-    },
+    *query({ payload }, { call, put }) {},
   },
   reducers: {
     save(state, action) {
@@ -225,11 +248,11 @@ const IndexModel: IndexModelType = {
         if (pathname === '/') {
           dispatch({
             type: 'query',
-          })
+          });
         }
       });
-    }
-  }
+    },
+  },
 };
 
 export default IndexModel;
@@ -248,15 +271,17 @@ interface PageProps extends ConnectProps {
 
 const IndexPage: FC<PageProps> = ({ index, dispatch }) => {
   const { name } = index;
-  return <div >Hello {name}</div>;
+  return <div>Hello {name}</div>;
 };
 
-export default connect(({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
-  index,
-  loading: loading.models.index,
-}))(IndexPage);
-
+export default connect(
+  ({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
+    index,
+    loading: loading.models.index,
+  }),
+)(IndexPage);
 ```
+
 或者
 
 ```tsx
@@ -270,13 +295,15 @@ interface PageProps {
 
 const IndexPage: ConnectRC<PageProps> = ({ index, dispatch }) => {
   const { name } = index;
-  return <div >Hello {name}</div>;
+  return <div>Hello {name}</div>;
 };
 
-export default connect(({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
-  index,
-  loading: loading.models.index,
-}))(IndexPage);
+export default connect(
+  ({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
+    index,
+    loading: loading.models.index,
+  }),
+)(IndexPage);
 ```
 
 ## FAQ
@@ -293,3 +320,14 @@ export default connect(({ index, loading }: { index: IndexModelState; loading: L
 ### 我的 model 写法很动态，不能被识别出来怎么办？
 
 配置 `dva: { skipModelValidate: true }` 关闭 dva 的 model 校验。
+
+### TypeError: Object(...) is not a function
+
+常见于 dva model 里使用了 `import from 'umi'` 模块，循环依赖导致模块无法加载，可通过以下配置解决：
+
+```js
+dva: {
+  disableModelsReExport: true,
+  lazyLoad: true,
+}
+```
