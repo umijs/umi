@@ -122,7 +122,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   const rootHTML = `<div id="${mountElementId}"></div>`;
   const scriptsContent = `\n\t<script>
   window.g_useSSR = true;
-  ${Object.keys(windowInitialVars || {}).map(name => `${name} = ${windowInitialVars[name]};`).join('\n')}\n\t</script>`;
+  ${Object.keys(windowInitialVars).map(name => `${name} = ${windowInitialVars[name]};`).join('\n')}\n\t</script>`;
   // https://github.com/umijs/umi/issues/5840
   const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`.replace(/\$/g,'$$$');
 
