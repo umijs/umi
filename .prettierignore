@@ -14,3 +14,6 @@ package.json
 /coverage
 /dist
 /.umi
+
+# deps
+/packages/deps
