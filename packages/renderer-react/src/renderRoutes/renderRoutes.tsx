@@ -97,6 +97,7 @@ function render({
     { location: props.location },
   );
   let { component: Component, wrappers } = route;
+  let children = routes;
   if (Component) {
     const defaultPageInitialProps = opts.isServer
       ? {}
@@ -108,6 +109,7 @@ function render({
       route,
       routes: opts.rootRoutes,
     };
+
     // @ts-ignore
     let ret = <Component {...newProps}>{routes}</Component>;
 
@@ -120,10 +122,20 @@ function render({
       }
     }
 
-    return ret;
+    children = ret;
   } else {
-    return routes;
+    children = routes;
   }
+
+  return opts.plugin.applyPlugins({
+    type: ApplyPluginsType.modify,
+    key: 'routerContainer',
+    initialValue: children,
+    args: {
+      routes: opts.routes,
+      plugin: opts.plugin,
+    },
+  });
 }
 
 function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {

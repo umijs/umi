@@ -18,6 +18,7 @@ export default function (api: IApi) {
         'modifyClientRenderOpts',
         'patchRoutes',
         'rootContainer',
+        'routerContainer',
         'render',
         'onRouteChange',
       ],

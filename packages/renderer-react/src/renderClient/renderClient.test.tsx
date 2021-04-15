@@ -1,7 +1,12 @@
 import React from 'react';
 import { render, cleanup, waitFor, getByText } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
+import {
+  createMemoryHistory,
+  Plugin,
+  dynamic,
+  useLocation,
+} from '@umijs/runtime';
 import renderClient, { preloadComponent } from './renderClient';
 
 let container;
@@ -281,4 +286,68 @@ test('preloadComponent routeChange with ssr', async () => {
   expect(container.innerHTML).toEqual(
     '<div class="layout"><h1>/bar</h1></div>',
   );
+});
+
+test('routerContainer should get location info', async () => {
+  const history = createMemoryHistory({
+    initialEntries: ['/foo'],
+  });
+  const routeChanges: string[] = [];
+  const plugin = new Plugin({
+    validKeys: ['onRouteChange', 'rootContainer', 'routerContainer'],
+  });
+  plugin.register({
+    apply: {
+      onRouteChange({ location, action }: any) {
+        routeChanges.push(`${action} ${location.pathname}`);
+      },
+      rootContainer(container: any, args: any) {
+        if (!(args.history && args.plugin && args.routes)) {
+          throw new Error(
+            'history, plugin or routes not exists in the args of rootContainer',
+          );
+        }
+        return <div>{container}</div>;
+      },
+      routerContainer(children: any, args: any) {
+        const Temp = () => {
+          const { pathname } = useLocation();
+          return (
+            <>
+              {children}
+              <h2>{pathname}</h2>
+            </>
+          );
+        };
+        return (
+          <span>
+            <Temp />
+          </span>
+        );
+      },
+    },
+    path: '/foo',
+  });
+  const { container } = render(
+    renderClient({
+      history,
+      plugin,
+      rootElement: undefined,
+      routes: [
+        { path: '/foo', component: () => <h1>foo</h1> },
+        { path: '/bar', component: () => <h1>bar</h1> },
+      ],
+    }),
+  );
+  expect(container.innerHTML).toEqual(
+    '<div><span><h1>foo</h1><h2>/foo</h2></span></div>',
+  );
+
+  history.push({
+    pathname: '/bar',
+  });
+  expect(container.innerHTML).toEqual(
+    '<div><span><h1>bar</h1><h2>/bar</h2></span></div>',
+  );
+  expect(routeChanges).toEqual(['POP /foo', 'PUSH /bar']);
 });
