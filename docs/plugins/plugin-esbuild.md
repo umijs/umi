@@ -33,16 +33,3 @@ export default {
   },
 };
 ```
-
-### pure
-
-Use [esbuild#pure](https://esbuild.github.io/api/#pure) config, For example remove `console`:
-
-```js
-export default {
-  esbuild: {
-    target: 'es5',
-    pure: ['console.log', 'console.info'],
-  },
-};
-```
