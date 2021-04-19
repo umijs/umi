@@ -116,27 +116,30 @@
   /************************************************************************/
   /******/ {
     /***/ '+YyL':
-      /*!**************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/strip-ansi/index.js ***!
-  \**************************************************************/
+      /*!***********************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/strip-ansi/index.js ***!
+  \***********************************************************************************/
       /*! no static exports found */
       /*! exports used: default */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
 
-        const ansiRegex = __webpack_require__(/*! ansi-regex */ 'tLVl');
+        var ansiRegex = __webpack_require__(/*! ansi-regex */ 'tLVl');
 
-        module.exports = (string) =>
-          typeof string === 'string' ? string.replace(ansiRegex(), '') : string;
+        module.exports = function (string) {
+          return typeof string === 'string'
+            ? string.replace(ansiRegex(), '')
+            : string;
+        };
 
         /***/
       },
 
     /***/ '/4mQ':
-      /*!***********************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/websocket.js ***!
-  \***********************************************************************************/
+      /*!********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/websocket.js ***!
+  \********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -150,7 +153,9 @@
           WebsocketDriver = __webpack_require__(
             /*! ./driver/websocket */ 'WhmW',
           );
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -161,39 +166,44 @@
 
           EventEmitter.call(this);
           debug('constructor', transUrl);
-
           var self = this;
           var url = urlUtils.addPath(transUrl, '/websocket');
+
           if (url.slice(0, 5) === 'https') {
             url = 'wss' + url.slice(5);
           } else {
             url = 'ws' + url.slice(4);
           }
-          this.url = url;
 
+          this.url = url;
           this.ws = new WebsocketDriver(this.url, [], options);
+
           this.ws.onmessage = function (e) {
             debug('message event', e.data);
             self.emit('message', e.data);
-          };
-          // Firefox has an interesting bug. If a websocket connection is
+          }; // Firefox has an interesting bug. If a websocket connection is
           // created after onunload, it stays alive even when user
           // navigates away from the page. In such situation let's lie -
           // let's not open the ws connection at all. See:
           // https://github.com/sockjs/sockjs-client/issues/28
           // https://bugzilla.mozilla.org/show_bug.cgi?id=696085
+
           this.unloadRef = utils.unloadAdd(function () {
             debug('unload');
             self.ws.close();
           });
+
           this.ws.onclose = function (e) {
             debug('close event', e.code, e.reason);
             self.emit('close', e.code, e.reason);
+
             self._cleanup();
           };
+
           this.ws.onerror = function (e) {
             debug('error event', e);
             self.emit('close', 1006, 'WebSocket connection broken');
+
             self._cleanup();
           };
         }
@@ -209,7 +219,9 @@
         WebSocketTransport.prototype.close = function () {
           debug('close');
           var ws = this.ws;
+
           this._cleanup();
+
           if (ws) {
             ws.close();
           }
@@ -218,9 +230,11 @@
         WebSocketTransport.prototype._cleanup = function () {
           debug('_cleanup');
           var ws = this.ws;
+
           if (ws) {
             ws.onmessage = ws.onclose = ws.onerror = null;
           }
+
           utils.unloadDel(this.unloadRef);
           this.unloadRef = this.ws = null;
           this.removeAllListeners();
@@ -230,23 +244,22 @@
           debug('enabled');
           return !!WebsocketDriver;
         };
-        WebSocketTransport.transportName = 'websocket';
 
-        // In theory, ws should require 1 round trip. But in chrome, this is
+        WebSocketTransport.transportName = 'websocket'; // In theory, ws should require 1 round trip. But in chrome, this is
         // not very stable over SSL. Most likely a ws connection requires a
         // separate SSL connection, in which case 2 round trips are an
         // absolute minumum.
-        WebSocketTransport.roundTrips = 2;
 
+        WebSocketTransport.roundTrips = 2;
         module.exports = WebSocketTransport;
 
         /***/
       },
 
     /***/ '/ZST':
-      /*!*****************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/requires-port/index.js ***!
-  \*****************************************************************/
+      /*!**************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/requires-port/index.js ***!
+  \**************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -262,10 +275,10 @@
          * @returns {Boolean} Is it a default port for the given protocol
          * @api private
          */
+
         module.exports = function required(port, protocol) {
           protocol = protocol.split(':')[0];
           port = +port;
-
           if (!port) return false;
 
           switch (protocol) {
@@ -294,9 +307,9 @@
       },
 
     /***/ '/bpo':
-      /*!***************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/event/close.js ***!
-  \***************************************************************************/
+      /*!************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/event/close.js ***!
+  \************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -305,6 +318,7 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           Event = __webpack_require__(/*! ./event */ 'uFOv');
+
         function CloseEvent() {
           Event.call(this);
           this.initEvent('close', false, false);
@@ -314,7 +328,6 @@
         }
 
         inherits(CloseEvent, Event);
-
         module.exports = CloseEvent;
 
         /***/
@@ -336,9 +349,9 @@
       },
 
     /***/ '01Zg':
-      /*!*************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/url-parse/index.js ***!
-  \*************************************************************/
+      /*!**********************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/url-parse/index.js ***!
+  \**********************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -352,17 +365,16 @@
             whitespace =
               '[\\x09\\x0A\\x0B\\x0C\\x0D\\x20\\xA0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u202F\\u205F\\u3000\\u2028\\u2029\\uFEFF]',
             left = new RegExp('^' + whitespace + '+');
-
           /**
            * Trim a given string.
            *
            * @param {String} str String to trim.
            * @public
            */
+
           function trimLeft(str) {
             return (str ? str : '').toString().replace(left, '');
           }
-
           /**
            * These are the parse rules for the URL parser, it informs the parser
            * about:
@@ -375,6 +387,7 @@
            * 3. Inherit from location if non existing in the parser.
            * 4. `toLowerCase` the resulting value.
            */
+
           var rules = [
             ['#', 'hash'], // Extract from the back.
             ['?', 'query'], // Extract from the back.
@@ -388,7 +401,6 @@
             [/:(\d+)$/, 'port', undefined, 1], // RegExp the back.
             [NaN, 'hostname', undefined, 1, 1], // Set left over.
           ];
-
           /**
            * These properties should not be copied or inherited from. This is only needed
            * for all non blob URL's as a blob URL does not include a hash, only the
@@ -397,8 +409,11 @@
            * @type {Object}
            * @private
            */
-          var ignore = { hash: 1, query: 1 };
 
+          var ignore = {
+            hash: 1,
+            query: 1,
+          };
           /**
            * The location object differs when your code is loaded through a normal page,
            * Worker or through a worker using a blob. And with the blobble begins the
@@ -411,17 +426,15 @@
            * @returns {Object} lolcation object.
            * @public
            */
+
           function lolcation(loc) {
             var globalVar;
-
             if (typeof window !== 'undefined') globalVar = window;
             else if (typeof global !== 'undefined') globalVar = global;
             else if (typeof self !== 'undefined') globalVar = self;
             else globalVar = {};
-
             var location = globalVar.location || {};
             loc = loc || location;
-
             var finaldestination = {},
               type = typeof loc,
               key;
@@ -430,7 +443,10 @@
               finaldestination = new Url(unescape(loc.pathname), {});
             } else if ('string' === type) {
               finaldestination = new Url(loc, {});
-              for (key in ignore) delete finaldestination[key];
+
+              for (key in ignore) {
+                delete finaldestination[key];
+              }
             } else if ('object' === type) {
               for (key in loc) {
                 if (key in ignore) continue;
@@ -444,7 +460,6 @@
 
             return finaldestination;
           }
-
           /**
            * @typedef ProtocolExtract
            * @type Object
@@ -460,22 +475,20 @@
            * @return {ProtocolExtract} Extracted information.
            * @private
            */
+
           function extractProtocol(address) {
             address = trimLeft(address);
-
             var match = protocolre.exec(address),
               protocol = match[1] ? match[1].toLowerCase() : '',
               slashes = !!(match[2] && match[2].length >= 2),
               rest =
                 match[2] && match[2].length === 1 ? '/' + match[3] : match[3];
-
             return {
               protocol: protocol,
               slashes: slashes,
               rest: rest,
             };
           }
-
           /**
            * Resolve a relative URL pathname against a base URL pathname.
            *
@@ -484,9 +497,9 @@
            * @return {String} Resolved pathname.
            * @private
            */
+
           function resolve(relative, base) {
             if (relative === '') return base;
-
             var path = (base || '/')
                 .split('/')
                 .slice(0, -1)
@@ -511,10 +524,8 @@
 
             if (unshift) path.unshift('');
             if (last === '.' || last === '..') path.push('');
-
             return path.join('/');
           }
-
           /**
            * The actual URL instance. Instead of returning an object we've opted-in to
            * create an actual constructor as it's much more memory efficient and
@@ -529,6 +540,7 @@
            * @param {Boolean|Function} [parser] Parser for the query string.
            * @private
            */
+
           function Url(address, location, parser) {
             address = trimLeft(address);
 
@@ -545,9 +557,7 @@
               instructions = rules.slice(),
               type = typeof location,
               url = this,
-              i = 0;
-
-            //
+              i = 0; //
             // The following if statements allows this module two have compatibility with
             // 2 different API:
             //
@@ -558,28 +568,26 @@
             //    arguments. The supplied object will be used as default values / fall-back
             //    for relative paths.
             //
+
             if ('object' !== type && 'string' !== type) {
               parser = location;
               location = null;
             }
 
             if (parser && 'function' !== typeof parser) parser = qs.parse;
-
-            location = lolcation(location);
-
-            //
+            location = lolcation(location); //
             // Extract protocol information before running the instructions.
             //
+
             extracted = extractProtocol(address || '');
             relative = !extracted.protocol && !extracted.slashes;
             url.slashes = extracted.slashes || (relative && location.slashes);
             url.protocol = extracted.protocol || location.protocol || '';
-            address = extracted.rest;
-
-            //
+            address = extracted.rest; //
             // When the authority component is absent the URL starts with a path
             // component.
             //
+
             if (!extracted.slashes) instructions[3] = [/(.*)/, 'pathname'];
 
             for (; i < instructions.length; i++) {
@@ -612,25 +620,22 @@
 
               url[key] =
                 url[key] ||
-                (relative && instruction[3] ? location[key] || '' : '');
-
-              //
+                (relative && instruction[3] ? location[key] || '' : ''); //
               // Hostname, host and protocol should be lowercased so they can be used to
               // create a proper `origin`.
               //
-              if (instruction[4]) url[key] = url[key].toLowerCase();
-            }
 
-            //
+              if (instruction[4]) url[key] = url[key].toLowerCase();
+            } //
             // Also parse the supplied query string in to an object. If we're supplied
             // with a custom parser as function use that instead of the default build-in
             // parser.
             //
-            if (parser) url.query = parser(url.query);
 
-            //
+            if (parser) url.query = parser(url.query); //
             // If the URL is relative, resolve the pathname against the base URL.
             //
+
             if (
               relative &&
               location.slashes &&
@@ -638,30 +643,28 @@
               (url.pathname !== '' || location.pathname !== '')
             ) {
               url.pathname = resolve(url.pathname, location.pathname);
-            }
-
-            //
+            } //
             // Default to a / for pathname if none exists. This normalizes the URL
             // to always have a /
             //
+
             if (url.pathname.charAt(0) !== '/' && url.hostname) {
               url.pathname = '/' + url.pathname;
-            }
-
-            //
+            } //
             // We should not add port numbers if they are already the default port number
             // for a given protocol. As the host also contains the port number we're going
             // override it with the hostname which contains no port number.
             //
+
             if (!required(url.port, url.protocol)) {
               url.host = url.hostname;
               url.port = '';
-            }
-
-            //
+            } //
             // Parse down the `auth` for the username and password.
             //
+
             url.username = url.password = '';
+
             if (url.auth) {
               instruction = url.auth.split(':');
               url.username = instruction[0] || '';
@@ -671,14 +674,12 @@
             url.origin =
               url.protocol && url.host && url.protocol !== 'file:'
                 ? url.protocol + '//' + url.host
-                : 'null';
-
-            //
+                : 'null'; //
             // The href is just the compiled result.
             //
+
             url.href = url.toString();
           }
-
           /**
            * This is convenience method for changing properties in the URL instance to
            * insure that they all propagate correctly.
@@ -692,6 +693,7 @@
            * @returns {URL} URL instance for chaining.
            * @public
            */
+
           function set(part, value, fn) {
             var url = this;
 
@@ -718,7 +720,6 @@
 
               case 'hostname':
                 url[part] = value;
-
                 if (url.port) value += ':' + url.port;
                 url.host = value;
                 break;
@@ -745,11 +746,13 @@
               case 'pathname':
               case 'hash':
                 if (value) {
-                  var char = part === 'pathname' ? '/' : '#';
-                  url[part] = value.charAt(0) !== char ? char + value : value;
+                  var _char = part === 'pathname' ? '/' : '#';
+
+                  url[part] = value.charAt(0) !== _char ? _char + value : value;
                 } else {
                   url[part] = value;
                 }
+
                 break;
 
               default:
@@ -758,7 +761,6 @@
 
             for (var i = 0; i < rules.length; i++) {
               var ins = rules[i];
-
               if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
             }
 
@@ -766,12 +768,9 @@
               url.protocol && url.host && url.protocol !== 'file:'
                 ? url.protocol + '//' + url.host
                 : 'null';
-
             url.href = url.toString();
-
             return url;
           }
-
           /**
            * Transform the properties back in to a valid and full URL string.
            *
@@ -779,17 +778,15 @@
            * @returns {String} Compiled version of the URL.
            * @public
            */
+
           function toString(stringify) {
             if (!stringify || 'function' !== typeof stringify)
               stringify = qs.stringify;
-
             var query,
               url = this,
               protocol = url.protocol;
-
             if (protocol && protocol.charAt(protocol.length - 1) !== ':')
               protocol += ':';
-
             var result = protocol + (url.slashes ? '//' : '');
 
             if (url.username) {
@@ -799,34 +796,31 @@
             }
 
             result += url.host + url.pathname;
-
             query =
               'object' === typeof url.query ? stringify(url.query) : url.query;
             if (query) result += '?' !== query.charAt(0) ? '?' + query : query;
-
             if (url.hash) result += url.hash;
-
             return result;
           }
 
-          Url.prototype = { set: set, toString: toString };
-
-          //
+          Url.prototype = {
+            set: set,
+            toString: toString,
+          }; //
           // Expose the URL parser and some additional properties that might be useful for
           // others or testing.
           //
+
           Url.extractProtocol = extractProtocol;
           Url.location = lolcation;
           Url.trimLeft = trimLeft;
           Url.qs = qs;
-
           module.exports = Url;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -834,9 +828,9 @@
       },
 
     /***/ '0HJ4':
-      /*!****************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/lib/ajax-based.js ***!
-  \****************************************************************************************/
+      /*!*************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/lib/ajax-based.js ***!
+  \*************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -846,7 +840,9 @@
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           urlUtils = __webpack_require__(/*! ../../utils/url */ 'rCFf'),
           SenderReceiver = __webpack_require__(/*! ./sender-receiver */ 'rt9q');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -854,9 +850,13 @@
           return function (url, payload, callback) {
             debug('create ajax sender', url, payload);
             var opt = {};
+
             if (typeof payload === 'string') {
-              opt.headers = { 'Content-type': 'text/plain' };
+              opt.headers = {
+                'Content-type': 'text/plain',
+              };
             }
+
             var ajaxUrl = urlUtils.addPath(url, '/xhr_send');
             var xo = new AjaxObject('POST', ajaxUrl, payload, opt);
             xo.once('finish', function (status) {
@@ -866,13 +866,13 @@
               if (status !== 200 && status !== 204) {
                 return callback(new Error('http status ' + status));
               }
+
               callback();
             });
             return function () {
               debug('abort');
               xo.close();
               xo = null;
-
               var err = new Error('Aborted');
               err.code = 1000;
               callback(err);
@@ -892,16 +892,15 @@
         }
 
         inherits(AjaxBasedTransport, SenderReceiver);
-
         module.exports = AjaxBasedTransport;
 
         /***/
       },
 
     /***/ '4WVH':
-      /*!*********************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/event/eventtarget.js ***!
-  \*********************************************************************************/
+      /*!******************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/event/eventtarget.js ***!
+  \******************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -923,12 +922,14 @@
           if (!(eventType in this._listeners)) {
             this._listeners[eventType] = [];
           }
-          var arr = this._listeners[eventType];
-          // #4
+
+          var arr = this._listeners[eventType]; // #4
+
           if (arr.indexOf(listener) === -1) {
             // Make a copy so as not to interfere with a current dispatchEvent.
             arr = arr.concat([listener]);
           }
+
           this._listeners[eventType] = arr;
         };
 
@@ -937,10 +938,13 @@
           listener,
         ) {
           var arr = this._listeners[eventType];
+
           if (!arr) {
             return;
           }
+
           var idx = arr.indexOf(listener);
+
           if (idx !== -1) {
             if (arr.length > 1) {
               // Make a copy so as not to interfere with a current dispatchEvent.
@@ -950,26 +954,29 @@
             } else {
               delete this._listeners[eventType];
             }
+
             return;
           }
         };
 
         EventTarget.prototype.dispatchEvent = function () {
           var event = arguments[0];
-          var t = event.type;
-          // equivalent of Array.prototype.slice.call(arguments, 0);
+          var t = event.type; // equivalent of Array.prototype.slice.call(arguments, 0);
+
           var args =
-            arguments.length === 1 ? [event] : Array.apply(null, arguments);
-          // TODO: This doesn't match the real behavior; per spec, onfoo get
+            arguments.length === 1 ? [event] : Array.apply(null, arguments); // TODO: This doesn't match the real behavior; per spec, onfoo get
           // their place in line from the /first/ time they're set from
           // non-null. Although WebKit bumps it to the end every time it's
           // set.
+
           if (this['on' + t]) {
             this['on' + t].apply(this, args);
           }
+
           if (t in this._listeners) {
             // Grab a reference to the listeners list. removeEventListener may alter the list.
             var listeners = this._listeners[t];
+
             for (var i = 0; i < listeners.length; i++) {
               listeners[i].apply(this, args);
             }
@@ -982,9 +989,9 @@
       },
 
     /***/ '4zOr':
-      /*!************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/location.js ***!
-  \************************************************************************/
+      /*!*********************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/location.js ***!
+  \*********************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -999,12 +1006,11 @@
             href: 'http://localhost/',
             hash: '',
           };
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -1012,9 +1018,9 @@
       },
 
     /***/ '56u7':
-      /*!*******************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/receiver/htmlfile.js ***!
-  \*******************************************************************************************/
+      /*!****************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/receiver/htmlfile.js ***!
+  \****************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1027,7 +1033,9 @@
             EventEmitter = __webpack_require__(/*! events */ '7ZNq')
               .EventEmitter,
             random = __webpack_require__(/*! ../../utils/random */ '6/Oc');
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
@@ -1036,36 +1044,37 @@
             EventEmitter.call(this);
             var self = this;
             iframeUtils.polluteGlobalNamespace();
-
             this.id = 'a' + random.string(6);
             url = urlUtils.addQuery(
               url,
               'c=' + decodeURIComponent(iframeUtils.WPrefix + '.' + this.id),
             );
-
             debug('using htmlfile', HtmlfileReceiver.htmlfileEnabled);
             var constructFunc = HtmlfileReceiver.htmlfileEnabled
               ? iframeUtils.createHtmlfile
               : iframeUtils.createIframe;
-
             global[iframeUtils.WPrefix][this.id] = {
-              start: function () {
+              start: function start() {
                 debug('start');
                 self.iframeObj.loaded();
               },
-              message: function (data) {
+              message: function message(data) {
                 debug('message', data);
                 self.emit('message', data);
               },
-              stop: function () {
+              stop: function stop() {
                 debug('stop');
+
                 self._cleanup();
+
                 self._close('network');
               },
             };
             this.iframeObj = constructFunc(url, function () {
               debug('callback');
+
               self._cleanup();
+
               self._close('permanent');
             });
           }
@@ -1074,16 +1083,20 @@
 
           HtmlfileReceiver.prototype.abort = function () {
             debug('abort');
+
             this._cleanup();
+
             this._close('user');
           };
 
           HtmlfileReceiver.prototype._cleanup = function () {
             debug('_cleanup');
+
             if (this.iframeObj) {
               this.iframeObj.cleanup();
               this.iframeObj = null;
             }
+
             delete global[iframeUtils.WPrefix][this.id];
           };
 
@@ -1093,10 +1106,10 @@
             this.removeAllListeners();
           };
 
-          HtmlfileReceiver.htmlfileEnabled = false;
+          HtmlfileReceiver.htmlfileEnabled = false; // obfuscate to avoid firewalls
 
-          // obfuscate to avoid firewalls
           var axo = ['Active'].concat('Object').join('X');
+
           if (axo in global) {
             try {
               HtmlfileReceiver.htmlfileEnabled = !!new global[axo]('htmlfile');
@@ -1107,14 +1120,12 @@
 
           HtmlfileReceiver.enabled =
             HtmlfileReceiver.htmlfileEnabled || iframeUtils.iframeEnabled;
-
           module.exports = HtmlfileReceiver;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -1122,9 +1133,9 @@
       },
 
     /***/ '5Fgh':
-      /*!************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/info-iframe-receiver.js ***!
-  \************************************************************************************/
+      /*!*********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/info-iframe-receiver.js ***!
+  \*********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1138,10 +1149,10 @@
             /*! ./transport/sender/xhr-local */ 'r4pD',
           ),
           InfoAjax = __webpack_require__(/*! ./info-ajax */ 'hnW3');
+
         function InfoReceiverIframe(transUrl) {
           var self = this;
           EventEmitter.call(this);
-
           this.ir = new InfoAjax(transUrl, XHRLocalObject);
           this.ir.once('finish', function (info, rtt) {
             self.ir = null;
@@ -1150,7 +1161,6 @@
         }
 
         inherits(InfoReceiverIframe, EventEmitter);
-
         InfoReceiverIframe.transportName = 'iframe-info-receiver';
 
         InfoReceiverIframe.prototype.close = function () {
@@ -1158,6 +1168,7 @@
             this.ir.close();
             this.ir = null;
           }
+
           this.removeAllListeners();
         };
 
@@ -1167,36 +1178,35 @@
       },
 
     /***/ '6/Oc':
-      /*!****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/random.js ***!
-  \****************************************************************************/
+      /*!*************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/random.js ***!
+  \*************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
 
-        var crypto = __webpack_require__(/*! crypto */ 'mM4f');
-
-        // This string has length 32, a power of 2, so the modulus doesn't introduce a
+        var crypto = __webpack_require__(/*! crypto */ 'mM4f'); // This string has length 32, a power of 2, so the modulus doesn't introduce a
         // bias.
+
         var _randomStringChars = 'abcdefghijklmnopqrstuvwxyz012345';
         module.exports = {
-          string: function (length) {
+          string: function string(length) {
             var max = _randomStringChars.length;
             var bytes = crypto.randomBytes(length);
             var ret = [];
+
             for (var i = 0; i < length; i++) {
               ret.push(_randomStringChars.substr(bytes[i] % max, 1));
             }
+
             return ret.join('');
           },
-
-          number: function (max) {
+          number: function number(max) {
             return Math.floor(Math.random() * max);
           },
-
-          numberString: function (max) {
+          numberString: function numberString(max) {
             var t = ('' + (max - 1)).length;
             var p = new Array(t + 1).join('0');
             return (p + this.number(max)).slice(-t);
@@ -1207,9 +1217,9 @@
       },
 
     /***/ '7ZNq':
-      /*!*****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/event/emitter.js ***!
-  \*****************************************************************************/
+      /*!**************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/event/emitter.js ***!
+  \**************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1218,6 +1228,7 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           EventTarget = __webpack_require__(/*! ./eventtarget */ '4WVH');
+
         function EventEmitter() {
           EventTarget.call(this);
         }
@@ -1251,15 +1262,18 @@
         EventEmitter.prototype.emit = function () {
           var type = arguments[0];
           var listeners = this._listeners[type];
+
           if (!listeners) {
             return;
-          }
-          // equivalent of Array.prototype.slice.call(arguments, 1);
+          } // equivalent of Array.prototype.slice.call(arguments, 1);
+
           var l = arguments.length;
           var args = new Array(l - 1);
+
           for (var ai = 1; ai < l; ai++) {
             args[ai - 1] = arguments[ai];
           }
+
           for (var i = 0; i < listeners.length; i++) {
             listeners[i].apply(this, args);
           }
@@ -1269,16 +1283,15 @@
           EventTarget.prototype.addEventListener;
         EventEmitter.prototype.removeListener =
           EventTarget.prototype.removeEventListener;
-
         module.exports.EventEmitter = EventEmitter;
 
         /***/
       },
 
     /***/ B9mN:
-      /*!****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/node-libs-browser/mock/process.js ***!
-  \****************************************************************************/
+      /*!*************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/node-libs-browser/mock/process.js ***!
+  \*************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1305,9 +1318,11 @@
         (function () {
           var cwd = '/';
           var path;
+
           exports.cwd = function () {
             return cwd;
           };
+
           exports.chdir = function (dir) {
             if (!path) path = __webpack_require__(/*! path */ 'oNVP');
             cwd = path.resolve(dir, cwd);
@@ -1315,15 +1330,16 @@
         })();
 
         exports.exit = exports.kill = exports.umask = exports.dlopen = exports.uptime = exports.memoryUsage = exports.uvCounters = function () {};
+
         exports.features = {};
 
         /***/
       },
 
     /***/ BRW5:
-      /*!*********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/entry.js ***!
-  \*********************************************************************/
+      /*!******************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/entry.js ***!
+  \******************************************************************************************/
       /*! no static exports found */
       /*! exports used: default */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1336,18 +1352,16 @@
 
           module.exports = __webpack_require__(/*! ./main */ 'QnYj')(
             transportList,
-          );
+          ); // TODO can't get rid of this until all servers do
 
-          // TODO can't get rid of this until all servers do
           if ('_sockjs_onload' in global) {
             setTimeout(global._sockjs_onload, 1);
           }
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -1355,9 +1369,9 @@
       },
 
     /***/ DdFD:
-      /*!*************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/log.js ***!
-  \*************************************************************************/
+      /*!**********************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/log.js ***!
+  \**********************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1385,14 +1399,12 @@
               ? function () {}
               : logObject.log;
           });
-
           module.exports = logObject;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -1400,9 +1412,9 @@
       },
 
     /***/ EfWO:
-      /*!*****************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/url/url.js ***!
-  \*****************************************************/
+      /*!**************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/url/url.js ***!
+  \**************************************************************************/
       /*! no static exports found */
       /*! exports used: default */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -1430,13 +1442,13 @@
         // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
         var punycode = __webpack_require__(/*! punycode */ 'q3/s');
+
         var util = __webpack_require__(/*! ./util */ 's+nu');
 
         exports.parse = urlParse;
         exports.resolve = urlResolve;
         exports.resolveObject = urlResolveObject;
         exports.format = urlFormat;
-
         exports.Url = Url;
 
         function Url() {
@@ -1452,12 +1464,10 @@
           this.pathname = null;
           this.path = null;
           this.href = null;
-        }
-
-        // Reference: RFC 3986, RFC 1808, RFC 2396
-
+        } // Reference: RFC 3986, RFC 1808, RFC 2396
         // define these here so at least they only have to be
         // compiled once on the first module load.
+
         var protocolPattern = /^([a-z0-9.+-]+:)/i,
           portPattern = /:[0-9]*$/,
           // Special case for a simple path URL
@@ -1505,7 +1515,6 @@
 
         function urlParse(url, parseQueryString, slashesDenoteHost) {
           if (url && util.isObject(url) && url instanceof Url) return url;
-
           var u = new Url();
           u.parse(url, parseQueryString, slashesDenoteHost);
           return u;
@@ -1520,11 +1529,10 @@
             throw new TypeError(
               "Parameter 'url' must be a string, not " + typeof url,
             );
-          }
-
-          // Copy chrome, IE, opera backslash-handling behavior.
+          } // Copy chrome, IE, opera backslash-handling behavior.
           // Back slashes before the query string get converted to forward slashes
           // See: https://code.google.com/p/chromium/issues/detail?id=25916
+
           var queryIndex = url.indexOf('?'),
             splitter =
               queryIndex !== -1 && queryIndex < url.indexOf('#') ? '?' : '#',
@@ -1532,22 +1540,23 @@
             slashRegex = /\\/g;
           uSplit[0] = uSplit[0].replace(slashRegex, '/');
           url = uSplit.join(splitter);
-
-          var rest = url;
-
-          // trim before proceeding.
+          var rest = url; // trim before proceeding.
           // This is to support parse stuff like "  http://foo.com  \n"
+
           rest = rest.trim();
 
           if (!slashesDenoteHost && url.split('#').length === 1) {
             // Try fast path regexp
             var simplePath = simplePathPattern.exec(rest);
+
             if (simplePath) {
               this.path = rest;
               this.href = rest;
               this.pathname = simplePath[1];
+
               if (simplePath[2]) {
                 this.search = simplePath[2];
+
                 if (parseQueryString) {
                   this.query = querystring.parse(this.search.substr(1));
                 } else {
@@ -1557,28 +1566,30 @@
                 this.search = '';
                 this.query = {};
               }
+
               return this;
             }
           }
 
           var proto = protocolPattern.exec(rest);
+
           if (proto) {
             proto = proto[0];
             var lowerProto = proto.toLowerCase();
             this.protocol = lowerProto;
             rest = rest.substr(proto.length);
-          }
-
-          // figure out if it's got a host
+          } // figure out if it's got a host
           // user@server is *always* interpreted as a hostname, and url
           // resolution will treat //foo/bar as host=foo,path=bar because that's
           // how the browser resolves relative URLs.
+
           if (
             slashesDenoteHost ||
             proto ||
             rest.match(/^\/\/[^@\/]+@[^@\/]+/)
           ) {
             var slashes = rest.substr(0, 2) === '//';
+
             if (slashes && !(proto && hostlessProtocol[proto])) {
               rest = rest.substr(2);
               this.slashes = true;
@@ -1600,21 +1611,20 @@
             // ex:
             // http://a@b@c/ => user:a@b host:c
             // http://a@b?@c => user:a host:c path:/?@c
-
             // v0.12 TODO(isaacs): This is not quite how Chrome does things.
             // Review our test case against browsers more comprehensively.
-
             // find the first instance of any hostEndingChars
             var hostEnd = -1;
+
             for (var i = 0; i < hostEndingChars.length; i++) {
               var hec = rest.indexOf(hostEndingChars[i]);
               if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
                 hostEnd = hec;
-            }
-
-            // at this point, either we have an explicit point where the
+            } // at this point, either we have an explicit point where the
             // auth portion cannot go past, or the last @ char is the decider.
+
             var auth, atSign;
+
             if (hostEnd === -1) {
               // atSign can be anywhere.
               atSign = rest.lastIndexOf('@');
@@ -1622,50 +1632,47 @@
               // atSign must be in auth portion.
               // http://a@b/c@d => host:b auth:a path:/c@d
               atSign = rest.lastIndexOf('@', hostEnd);
-            }
-
-            // Now we have a portion which is definitely the auth.
+            } // Now we have a portion which is definitely the auth.
             // Pull that off.
+
             if (atSign !== -1) {
               auth = rest.slice(0, atSign);
               rest = rest.slice(atSign + 1);
               this.auth = decodeURIComponent(auth);
-            }
+            } // the host is the remaining to the left of the first non-host char
 
-            // the host is the remaining to the left of the first non-host char
             hostEnd = -1;
+
             for (var i = 0; i < nonHostChars.length; i++) {
               var hec = rest.indexOf(nonHostChars[i]);
               if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
                 hostEnd = hec;
-            }
-            // if we still have not hit it, then the entire thing is a host.
+            } // if we still have not hit it, then the entire thing is a host.
+
             if (hostEnd === -1) hostEnd = rest.length;
-
             this.host = rest.slice(0, hostEnd);
-            rest = rest.slice(hostEnd);
+            rest = rest.slice(hostEnd); // pull out port.
 
-            // pull out port.
-            this.parseHost();
-
-            // we've indicated that there is a hostname,
+            this.parseHost(); // we've indicated that there is a hostname,
             // so even if it's empty, it has to be present.
-            this.hostname = this.hostname || '';
 
-            // if hostname begins with [ and ends with ]
+            this.hostname = this.hostname || ''; // if hostname begins with [ and ends with ]
             // assume that it's an IPv6 address.
+
             var ipv6Hostname =
               this.hostname[0] === '[' &&
-              this.hostname[this.hostname.length - 1] === ']';
+              this.hostname[this.hostname.length - 1] === ']'; // validate a little.
 
-            // validate a little.
             if (!ipv6Hostname) {
               var hostparts = this.hostname.split(/\./);
+
               for (var i = 0, l = hostparts.length; i < l; i++) {
                 var part = hostparts[i];
                 if (!part) continue;
+
                 if (!part.match(hostnamePartPattern)) {
                   var newpart = '';
+
                   for (var j = 0, k = part.length; j < k; j++) {
                     if (part.charCodeAt(j) > 127) {
                       // we replace non-ASCII char with a temporary placeholder
@@ -1675,19 +1682,22 @@
                     } else {
                       newpart += part[j];
                     }
-                  }
-                  // we test again with ASCII char only
+                  } // we test again with ASCII char only
+
                   if (!newpart.match(hostnamePartPattern)) {
                     var validParts = hostparts.slice(0, i);
                     var notHost = hostparts.slice(i + 1);
                     var bit = part.match(hostnamePartStart);
+
                     if (bit) {
                       validParts.push(bit[1]);
                       notHost.unshift(bit[2]);
                     }
+
                     if (notHost.length) {
                       rest = '/' + notHost.join('.') + rest;
                     }
+
                     this.hostname = validParts.join('.');
                     break;
                   }
@@ -1713,20 +1723,19 @@
             var p = this.port ? ':' + this.port : '';
             var h = this.hostname || '';
             this.host = h + p;
-            this.href += this.host;
-
-            // strip [ and ] from the hostname
+            this.href += this.host; // strip [ and ] from the hostname
             // the host field still retains them, though
+
             if (ipv6Hostname) {
               this.hostname = this.hostname.substr(1, this.hostname.length - 2);
+
               if (rest[0] !== '/') {
                 rest = '/' + rest;
               }
             }
-          }
-
-          // now rest is set to the post-host stuff.
+          } // now rest is set to the post-host stuff.
           // chop off any delim chars.
+
           if (!unsafeProtocol[lowerProto]) {
             // First, make 100% sure that any "autoEscape" chars get
             // escaped, even if encodeURIComponent doesn't think they
@@ -1735,51 +1744,56 @@
               var ae = autoEscape[i];
               if (rest.indexOf(ae) === -1) continue;
               var esc = encodeURIComponent(ae);
+
               if (esc === ae) {
                 esc = escape(ae);
               }
+
               rest = rest.split(ae).join(esc);
             }
-          }
+          } // chop off from the tail first.
 
-          // chop off from the tail first.
           var hash = rest.indexOf('#');
+
           if (hash !== -1) {
             // got a fragment string.
             this.hash = rest.substr(hash);
             rest = rest.slice(0, hash);
           }
+
           var qm = rest.indexOf('?');
+
           if (qm !== -1) {
             this.search = rest.substr(qm);
             this.query = rest.substr(qm + 1);
+
             if (parseQueryString) {
               this.query = querystring.parse(this.query);
             }
+
             rest = rest.slice(0, qm);
           } else if (parseQueryString) {
             // no query string, but parseQueryString still requested
             this.search = '';
             this.query = {};
           }
+
           if (rest) this.pathname = rest;
+
           if (slashedProtocol[lowerProto] && this.hostname && !this.pathname) {
             this.pathname = '/';
-          }
+          } //to support http.request
 
-          //to support http.request
           if (this.pathname || this.search) {
             var p = this.pathname || '';
             var s = this.search || '';
             this.path = p + s;
-          }
+          } // finally, reconstruct the href based on what has been validated.
 
-          // finally, reconstruct the href based on what has been validated.
           this.href = this.format();
           return this;
-        };
+        }; // format a parsed object into a url string
 
-        // format a parsed object into a url string
         function urlFormat(obj) {
           // ensure it's an object, and not a string url.
           // If it's an obj, this is a no-op.
@@ -1792,6 +1806,7 @@
 
         Url.prototype.format = function () {
           var auth = this.auth || '';
+
           if (auth) {
             auth = encodeURIComponent(auth);
             auth = auth.replace(/%3A/i, ':');
@@ -1812,6 +1827,7 @@
               (this.hostname.indexOf(':') === -1
                 ? this.hostname
                 : '[' + this.hostname + ']');
+
             if (this.port) {
               host += ':' + this.port;
             }
@@ -1826,11 +1842,9 @@
           }
 
           var search = this.search || (query && '?' + query) || '';
-
-          if (protocol && protocol.substr(-1) !== ':') protocol += ':';
-
-          // only the slashedProtocols get the //.  Not mailto:, xmpp:, etc.
+          if (protocol && protocol.substr(-1) !== ':') protocol += ':'; // only the slashedProtocols get the //.  Not mailto:, xmpp:, etc.
           // unless they had them to begin with.
+
           if (
             this.slashes ||
             ((!protocol || slashedProtocol[protocol]) && host !== false)
@@ -1844,12 +1858,10 @@
 
           if (hash && hash.charAt(0) !== '#') hash = '#' + hash;
           if (search && search.charAt(0) !== '?') search = '?' + search;
-
           pathname = pathname.replace(/[?#]/g, function (match) {
             return encodeURIComponent(match);
           });
           search = search.replace('#', '%23');
-
           return protocol + host + pathname + search + hash;
         };
 
@@ -1875,31 +1887,29 @@
 
           var result = new Url();
           var tkeys = Object.keys(this);
+
           for (var tk = 0; tk < tkeys.length; tk++) {
             var tkey = tkeys[tk];
             result[tkey] = this[tkey];
-          }
-
-          // hash is always overridden, no matter what.
+          } // hash is always overridden, no matter what.
           // even href="" will remove it.
-          result.hash = relative.hash;
 
-          // if the relative url is empty, then there's nothing left to do here.
+          result.hash = relative.hash; // if the relative url is empty, then there's nothing left to do here.
+
           if (relative.href === '') {
             result.href = result.format();
             return result;
-          }
+          } // hrefs like //foo/bar always cut to the protocol.
 
-          // hrefs like //foo/bar always cut to the protocol.
           if (relative.slashes && !relative.protocol) {
             // take everything except the protocol from relative
             var rkeys = Object.keys(relative);
+
             for (var rk = 0; rk < rkeys.length; rk++) {
               var rkey = rkeys[rk];
               if (rkey !== 'protocol') result[rkey] = relative[rkey];
-            }
+            } //urlParse appends trailing / to urls like http://www.example.com
 
-            //urlParse appends trailing / to urls like http://www.example.com
             if (
               slashedProtocol[result.protocol] &&
               result.hostname &&
@@ -1923,18 +1933,23 @@
             // anything else is assumed to be absolute.
             if (!slashedProtocol[relative.protocol]) {
               var keys = Object.keys(relative);
+
               for (var v = 0; v < keys.length; v++) {
                 var k = keys[v];
                 result[k] = relative[k];
               }
+
               result.href = result.format();
               return result;
             }
 
             result.protocol = relative.protocol;
+
             if (!relative.host && !hostlessProtocol[relative.protocol]) {
               var relPath = (relative.pathname || '').split('/');
-              while (relPath.length && !(relative.host = relPath.shift()));
+
+              while (relPath.length && !(relative.host = relPath.shift())) {}
+
               if (!relative.host) relative.host = '';
               if (!relative.hostname) relative.hostname = '';
               if (relPath[0] !== '') relPath.unshift('');
@@ -1943,18 +1958,20 @@
             } else {
               result.pathname = relative.pathname;
             }
+
             result.search = relative.search;
             result.query = relative.query;
             result.host = relative.host || '';
             result.auth = relative.auth;
             result.hostname = relative.hostname || relative.host;
-            result.port = relative.port;
-            // to support http.request
+            result.port = relative.port; // to support http.request
+
             if (result.pathname || result.search) {
               var p = result.pathname || '';
               var s = result.search || '';
               result.path = p + s;
             }
+
             result.slashes = result.slashes || relative.slashes;
             result.href = result.format();
             return result;
@@ -1970,30 +1987,35 @@
             removeAllDots = mustEndAbs,
             srcPath = (result.pathname && result.pathname.split('/')) || [],
             relPath = (relative.pathname && relative.pathname.split('/')) || [],
-            psychotic = result.protocol && !slashedProtocol[result.protocol];
-
-          // if the url is a non-slashed url, then relative
+            psychotic = result.protocol && !slashedProtocol[result.protocol]; // if the url is a non-slashed url, then relative
           // links like ../.. should be able
           // to crawl up to the hostname, as well.  This is strange.
           // result.protocol has already been set by now.
           // Later on, put the first path part into the host field.
+
           if (psychotic) {
             result.hostname = '';
             result.port = null;
+
             if (result.host) {
               if (srcPath[0] === '') srcPath[0] = result.host;
               else srcPath.unshift(result.host);
             }
+
             result.host = '';
+
             if (relative.protocol) {
               relative.hostname = null;
               relative.port = null;
+
               if (relative.host) {
                 if (relPath[0] === '') relPath[0] = relative.host;
                 else relPath.unshift(relative.host);
               }
+
               relative.host = null;
             }
+
             mustEndAbs = mustEndAbs && (relPath[0] === '' || srcPath[0] === '');
           }
 
@@ -2009,8 +2031,7 @@
                 : result.hostname;
             result.search = relative.search;
             result.query = relative.query;
-            srcPath = relPath;
-            // fall through to the dot-handling below.
+            srcPath = relPath; // fall through to the dot-handling below.
           } else if (relPath.length) {
             // it's relative
             // throw away the existing file, and take the new path instead.
@@ -2024,27 +2045,30 @@
             // like href='?foo'.
             // Put this after the other two cases because it simplifies the booleans
             if (psychotic) {
-              result.hostname = result.host = srcPath.shift();
-              //occationaly the auth can get stuck only in host
+              result.hostname = result.host = srcPath.shift(); //occationaly the auth can get stuck only in host
               //this especially happens in cases like
               //url.resolveObject('mailto:local1@domain1', 'local2@domain2')
+
               var authInHost =
                 result.host && result.host.indexOf('@') > 0
                   ? result.host.split('@')
                   : false;
+
               if (authInHost) {
                 result.auth = authInHost.shift();
                 result.host = result.hostname = authInHost.shift();
               }
             }
+
             result.search = relative.search;
-            result.query = relative.query;
-            //to support http.request
+            result.query = relative.query; //to support http.request
+
             if (!util.isNull(result.pathname) || !util.isNull(result.search)) {
               result.path =
                 (result.pathname ? result.pathname : '') +
                 (result.search ? result.search : '');
             }
+
             result.href = result.format();
             return result;
           }
@@ -2052,31 +2076,32 @@
           if (!srcPath.length) {
             // no path at all.  easy.
             // we've already handled the other stuff above.
-            result.pathname = null;
-            //to support http.request
+            result.pathname = null; //to support http.request
+
             if (result.search) {
               result.path = '/' + result.search;
             } else {
               result.path = null;
             }
+
             result.href = result.format();
             return result;
-          }
-
-          // if a url ENDs in . or .., then it must get a trailing slash.
+          } // if a url ENDs in . or .., then it must get a trailing slash.
           // however, if it ends in anything else non-slashy,
           // then it must NOT get a trailing slash.
+
           var last = srcPath.slice(-1)[0];
           var hasTrailingSlash =
             ((result.host || relative.host || srcPath.length > 1) &&
               (last === '.' || last === '..')) ||
-            last === '';
-
-          // strip single dots, resolve double dots to parent dir
+            last === ''; // strip single dots, resolve double dots to parent dir
           // if the path tries to go above the root, `up` ends up > 0
+
           var up = 0;
+
           for (var i = srcPath.length; i >= 0; i--) {
             last = srcPath[i];
+
             if (last === '.') {
               srcPath.splice(i, 1);
             } else if (last === '..') {
@@ -2086,9 +2111,8 @@
               srcPath.splice(i, 1);
               up--;
             }
-          }
+          } // if the path is allowed to go above the root, restore leading ..s
 
-          // if the path is allowed to go above the root, restore leading ..s
           if (!mustEndAbs && !removeAllDots) {
             for (; up--; up) {
               srcPath.unshift('..');
@@ -2108,22 +2132,22 @@
           }
 
           var isAbsolute =
-            srcPath[0] === '' || (srcPath[0] && srcPath[0].charAt(0) === '/');
+            srcPath[0] === '' || (srcPath[0] && srcPath[0].charAt(0) === '/'); // put the host back
 
-          // put the host back
           if (psychotic) {
             result.hostname = result.host = isAbsolute
               ? ''
               : srcPath.length
               ? srcPath.shift()
-              : '';
-            //occationaly the auth can get stuck only in host
+              : ''; //occationaly the auth can get stuck only in host
             //this especially happens in cases like
             //url.resolveObject('mailto:local1@domain1', 'local2@domain2')
+
             var authInHost =
               result.host && result.host.indexOf('@') > 0
                 ? result.host.split('@')
                 : false;
+
             if (authInHost) {
               result.auth = authInHost.shift();
               result.host = result.hostname = authInHost.shift();
@@ -2141,14 +2165,14 @@
             result.path = null;
           } else {
             result.pathname = srcPath.join('/');
-          }
+          } //to support request.http
 
-          //to support request.http
           if (!util.isNull(result.pathname) || !util.isNull(result.search)) {
             result.path =
               (result.pathname ? result.pathname : '') +
               (result.search ? result.search : '');
           }
+
           result.auth = relative.auth || result.auth;
           result.slashes = result.slashes || relative.slashes;
           result.href = result.format();
@@ -2158,13 +2182,17 @@
         Url.prototype.parseHost = function () {
           var host = this.host;
           var port = portPattern.exec(host);
+
           if (port) {
             port = port[0];
+
             if (port !== ':') {
               this.port = port.substr(1);
             }
+
             host = host.substr(0, host.length - port.length);
           }
+
           if (host) this.hostname = host;
         };
 
@@ -2172,9 +2200,9 @@
       },
 
     /***/ F4Ei:
-      /*!****************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/receiver/jsonp.js ***!
-  \****************************************************************************************/
+      /*!*************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/receiver/jsonp.js ***!
+  \*************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -2188,7 +2216,9 @@
             inherits = __webpack_require__(/*! inherits */ 'qW1w'),
             EventEmitter = __webpack_require__(/*! events */ '7ZNq')
               .EventEmitter;
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
@@ -2196,21 +2226,19 @@
             debug(url);
             var self = this;
             EventEmitter.call(this);
-
             utils.polluteGlobalNamespace();
-
             this.id = 'a' + random.string(6);
             var urlWithId = urlUtils.addQuery(
               url,
               'c=' + encodeURIComponent(utils.WPrefix + '.' + this.id),
             );
-
             global[utils.WPrefix][this.id] = this._callback.bind(this);
-            this._createScript(urlWithId);
 
-            // Fallback mostly for Konqueror - stupid timer, 35 seconds shall be plenty.
+            this._createScript(urlWithId); // Fallback mostly for Konqueror - stupid timer, 35 seconds shall be plenty.
+
             this.timeoutId = setTimeout(function () {
               debug('timeout');
+
               self._abort(
                 new Error('JSONP script loaded abnormally (timeout)'),
               );
@@ -2221,9 +2249,11 @@
 
           JsonpReceiver.prototype.abort = function () {
             debug('abort');
+
             if (global[utils.WPrefix][this.id]) {
               var err = new Error('JSONP user aborted read');
               err.code = 1000;
+
               this._abort(err);
             }
           };
@@ -2233,6 +2263,7 @@
 
           JsonpReceiver.prototype._callback = function (data) {
             debug('_callback', data);
+
             this._cleanup();
 
             if (this.aborting) {
@@ -2243,13 +2274,16 @@
               debug('message', data);
               this.emit('message', data);
             }
+
             this.emit('close', null, 'network');
             this.removeAllListeners();
           };
 
           JsonpReceiver.prototype._abort = function (err) {
             debug('_abort', err);
+
             this._cleanup();
+
             this.aborting = true;
             this.emit('close', err.code, err.message);
             this.removeAllListeners();
@@ -2258,24 +2292,28 @@
           JsonpReceiver.prototype._cleanup = function () {
             debug('_cleanup');
             clearTimeout(this.timeoutId);
+
             if (this.script2) {
               this.script2.parentNode.removeChild(this.script2);
               this.script2 = null;
             }
+
             if (this.script) {
-              var script = this.script;
-              // Unfortunately, you can't really abort script loading of
+              var script = this.script; // Unfortunately, you can't really abort script loading of
               // the script.
+
               script.parentNode.removeChild(script);
               script.onreadystatechange = script.onerror = script.onload = script.onclick = null;
               this.script = null;
             }
+
             delete global[utils.WPrefix][this.id];
           };
 
           JsonpReceiver.prototype._scriptError = function () {
             debug('_scriptError');
             var self = this;
+
             if (this.errorTimer) {
               return;
             }
@@ -2302,18 +2340,21 @@
             script.type = 'text/javascript';
             script.charset = 'UTF-8';
             script.onerror = this._scriptError.bind(this);
+
             script.onload = function () {
               debug('onload');
-              self._abort(new Error('JSONP script loaded abnormally (onload)'));
-            };
 
-            // IE9 fires 'error' event after onreadystatechange or before, in random order.
+              self._abort(new Error('JSONP script loaded abnormally (onload)'));
+            }; // IE9 fires 'error' event after onreadystatechange or before, in random order.
             // Use loadedOkay to determine if actually errored
+
             script.onreadystatechange = function () {
               debug('onreadystatechange', script.readyState);
+
               if (/loaded|closed/.test(script.readyState)) {
                 if (script && script.htmlFor && script.onclick) {
                   self.loadedOkay = true;
+
                   try {
                     // In IE, actually execute the script.
                     script.onclick();
@@ -2321,6 +2362,7 @@
                     // intentionally empty
                   }
                 }
+
                 if (script) {
                   self._abort(
                     new Error(
@@ -2329,8 +2371,7 @@
                   );
                 }
               }
-            };
-            // IE: event/htmlFor/onclick trick.
+            }; // IE: event/htmlFor/onclick trick.
             // One can't rely on proper order for onreadystatechange. In order to
             // make sure, set a 'htmlFor' and 'event' properties, so that
             // script code will be installed as 'onclick' handler for the
@@ -2340,6 +2381,7 @@
             //   http://jaubourg.net/2010/07/loading-script-as-onclick-handler-of.html
             // Also, read on that about script ordering:
             //   http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
+
             if (
               typeof script.async === 'undefined' &&
               global.document.attachEvent
@@ -2355,6 +2397,7 @@
                 } catch (x) {
                   // intentionally empty
                 }
+
                 script.async = true;
               } else {
                 // Opera, second sync script hack
@@ -2368,34 +2411,108 @@
                 script.async = script2.async = false;
               }
             }
+
             if (typeof script.async !== 'undefined') {
               script.async = true;
             }
 
             var head = global.document.getElementsByTagName('head')[0];
             head.insertBefore(script, head.firstChild);
+
             if (script2) {
               head.insertBefore(script2, head.firstChild);
             }
           };
 
           module.exports = JsonpReceiver;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
         /***/
       },
 
+    /***/ FzHg:
+      /*!**********************************!*\
+  !*** (webpack)/4/amd-options.js ***!
+  \**********************************/
+      /*! no static exports found */
+      /*! all exports used */
+      /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+      /***/ function (module, exports) {
+        /* WEBPACK VAR INJECTION */ (function (
+          __webpack_amd_options__,
+          __dirname,
+        ) {
+          module.exports = /******/ (function () {
+            // webpackBootstrap
+            /******/ var __webpack_modules__ = {
+              /***/ 579: /***/ function (module) {
+                /* globals __webpack_amd_options__ */
+                module.exports = __webpack_amd_options__;
+
+                /***/
+              },
+
+              /******/
+            }; // The module cache
+            /************************************************************************/
+            /******/ /******/ var __webpack_module_cache__ = {}; // The require function
+            /******/
+            /******/ /******/ function __nccwpck_require__(moduleId) {
+              /******/ // Check if module is in cache
+              /******/ if (__webpack_module_cache__[moduleId]) {
+                /******/ return __webpack_module_cache__[moduleId].exports;
+                /******/
+              } // Create a new module (and put it into the cache)
+              /******/ /******/ var module = (__webpack_module_cache__[
+                moduleId
+              ] = {
+                /******/ // no module.id needed
+                /******/ // no module.loaded needed
+                /******/ exports: {},
+                /******/
+              }); // Execute the module function
+              /******/
+              /******/ /******/ var threw = true;
+              /******/ try {
+                /******/ __webpack_modules__[moduleId](
+                  module,
+                  module.exports,
+                  __nccwpck_require__,
+                );
+                /******/ threw = false;
+                /******/
+              } finally {
+                /******/ if (threw) delete __webpack_module_cache__[moduleId];
+                /******/
+              } // Return the exports of the module
+              /******/
+              /******/ /******/ return module.exports;
+              /******/
+            } /* webpack/runtime/compat */ /******/
+            /******/
+            /************************************************************************/
+            /******/ /******/ __nccwpck_require__.ab =
+              __dirname +
+              '/'; /************************************************************************/ // module exports must be returned from runtime so entry inlining is disabled // startup // Load entry module and return exports
+            /******/ /******/ /******/ /******/ return __nccwpck_require__(579);
+            /******/
+          })();
+          /* WEBPACK VAR INJECTION */
+        }.call(this, {}, '/'));
+
+        /***/
+      },
+
     /***/ 'G/uq':
-      /*!***************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/xdr-streaming.js ***!
-  \***************************************************************************************/
+      /*!************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/xdr-streaming.js ***!
+  \************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -2407,8 +2524,7 @@
             /*! ./lib/ajax-based */ '0HJ4',
           ),
           XhrReceiver = __webpack_require__(/*! ./receiver/xhr */ 'Ng+W'),
-          XDRObject = __webpack_require__(/*! ./sender/xdr */ 'nxOW');
-        // According to:
+          XDRObject = __webpack_require__(/*! ./sender/xdr */ 'nxOW'); // According to:
         //   http://stackoverflow.com/questions/1641507/detect-browser-support-for-cross-domain-xmlhttprequests
         //   http://hacks.mozilla.org/2009/07/cross-site-xmlhttprequest-with-cors/
 
@@ -2416,6 +2532,7 @@
           if (!XDRObject.enabled) {
             throw new Error('Transport created when disabled');
           }
+
           AjaxBasedTransport.call(
             this,
             transUrl,
@@ -2431,6 +2548,7 @@
           if (info.cookie_needed || info.nullOrigin) {
             return false;
           }
+
           return XDRObject.enabled && info.sameScheme;
         };
 
@@ -2443,9 +2561,9 @@
       },
 
     /***/ HWmT:
-      /*!*****************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/sender/xhr-cors.js ***!
-  \*****************************************************************************************/
+      /*!**************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/sender/xhr-cors.js ***!
+  \**************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -2454,23 +2572,175 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           XhrDriver = __webpack_require__(/*! ../driver/xhr */ 'x5MC');
+
         function XHRCorsObject(method, url, payload, opts) {
           XhrDriver.call(this, method, url, payload, opts);
         }
 
         inherits(XHRCorsObject, XhrDriver);
-
         XHRCorsObject.enabled = XhrDriver.enabled && XhrDriver.supportsCORS;
-
         module.exports = XHRCorsObject;
 
         /***/
       },
 
+    /***/ IyRk:
+      /*!*****************************!*\
+  !*** (webpack)/4/global.js ***!
+  \*****************************/
+      /*! no static exports found */
+      /*! all exports used */
+      /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+      /***/ function (module, exports) {
+        /* WEBPACK VAR INJECTION */ (function (__dirname) {
+          module.exports =
+            /******/
+            (function () {
+              // webpackBootstrap
+
+              /******/
+              var __webpack_modules__ = {
+                /***/
+                33:
+                  /***/
+                  function _(module) {
+                    var g; // This works in non-strict mode
+
+                    g = (function () {
+                      return this;
+                    })();
+
+                    try {
+                      // This works if eval is allowed (see CSP)
+                      g = g || new Function('return this')();
+                    } catch (e) {
+                      // This works if the window reference is available
+                      if (typeof window === 'object') g = window;
+                    } // g can still be undefined, but nothing to do about it...
+                    // We return undefined, instead of nothing here, so it's
+                    // easier to handle this case. if(!global) { ...}
+
+                    module.exports = g;
+                    /***/
+                  },
+                /******/
+              };
+              /************************************************************************/
+
+              /******/
+              // The module cache
+
+              /******/
+
+              var __webpack_module_cache__ = {};
+              /******/
+
+              /******/
+              // The require function
+
+              /******/
+
+              function __nccwpck_require__(moduleId) {
+                /******/
+                // Check if module is in cache
+
+                /******/
+                if (__webpack_module_cache__[moduleId]) {
+                  /******/
+                  return __webpack_module_cache__[moduleId].exports;
+                  /******/
+                }
+                /******/
+                // Create a new module (and put it into the cache)
+
+                /******/
+
+                var module = (__webpack_module_cache__[moduleId] = {
+                  /******/
+                  // no module.id needed
+
+                  /******/
+                  // no module.loaded needed
+
+                  /******/
+                  exports: {},
+                  /******/
+                });
+                /******/
+
+                /******/
+                // Execute the module function
+
+                /******/
+
+                var threw = true;
+                /******/
+
+                try {
+                  /******/
+                  __webpack_modules__[moduleId](
+                    module,
+                    module.exports,
+                    __nccwpck_require__,
+                  );
+                  /******/
+
+                  threw = false;
+                  /******/
+                } finally {
+                  /******/
+                  if (threw) delete __webpack_module_cache__[moduleId];
+                  /******/
+                }
+                /******/
+
+                /******/
+                // Return the exports of the module
+
+                /******/
+
+                return module.exports;
+                /******/
+              }
+              /******/
+
+              /************************************************************************/
+
+              /******/
+
+              /* webpack/runtime/compat */
+
+              /******/
+
+              /******/
+
+              __nccwpck_require__.ab = __dirname + '/';
+              /************************************************************************/
+
+              /******/
+              // module exports must be returned from runtime so entry inlining is disabled
+
+              /******/
+              // startup
+
+              /******/
+              // Load entry module and return exports
+
+              /******/
+
+              return __nccwpck_require__(33);
+              /******/
+            })();
+          /* WEBPACK VAR INJECTION */
+        }.call(this, '/'));
+
+        /***/
+      },
+
     /***/ 'K/id':
-      /*!*************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/eventsource.js ***!
-  \*************************************************************************************/
+      /*!**********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/eventsource.js ***!
+  \**********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -2486,6 +2756,7 @@
           ),
           XHRCorsObject = __webpack_require__(/*! ./sender/xhr-cors */ 'HWmT'),
           EventSourceDriver = __webpack_require__(/*! eventsource */ 'vmN6');
+
         function EventSourceTransport(transUrl) {
           if (!EventSourceTransport.enabled()) {
             throw new Error('Transport created when disabled');
@@ -2508,16 +2779,15 @@
 
         EventSourceTransport.transportName = 'eventsource';
         EventSourceTransport.roundTrips = 2;
-
         module.exports = EventSourceTransport;
 
         /***/
       },
 
     /***/ KyBg:
-      /*!*************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/lib/polling.js ***!
-  \*************************************************************************************/
+      /*!**********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/lib/polling.js ***!
+  \**********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -2526,7 +2796,9 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           EventEmitter = __webpack_require__(/*! events */ '7ZNq').EventEmitter;
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -2536,6 +2808,7 @@
           this.Receiver = Receiver;
           this.receiveUrl = receiveUrl;
           this.AjaxObject = AjaxObject;
+
           this._scheduleReceiver();
         }
 
@@ -2548,12 +2821,10 @@
             this.receiveUrl,
             this.AjaxObject,
           ));
-
           poll.on('message', function (msg) {
             debug('message', msg);
             self.emit('message', msg);
           });
-
           poll.once('close', function (code, reason) {
             debug('close', code, reason, self.pollIsClosing);
             self.poll = poll = null;
@@ -2573,6 +2844,7 @@
           debug('abort');
           this.removeAllListeners();
           this.pollIsClosing = true;
+
           if (this.poll) {
             this.poll.abort();
           }
@@ -2584,9 +2856,9 @@
       },
 
     /***/ MR5Q:
-      /*!***************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/event.js ***!
-  \***************************************************************************/
+      /*!************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/event.js ***!
+  \************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -2596,25 +2868,23 @@
           var random = __webpack_require__(/*! ./random */ '6/Oc');
 
           var onUnload = {},
-            afterUnload = false,
-            // detect google chrome packaged apps because they don't allow the 'unload' event
+            afterUnload = false, // detect google chrome packaged apps because they don't allow the 'unload' event
             isChromePackagedApp =
               global.chrome && global.chrome.app && global.chrome.app.runtime;
           module.exports = {
-            attachEvent: function (event, listener) {
+            attachEvent: function attachEvent(event, listener) {
               if (typeof global.addEventListener !== 'undefined') {
                 global.addEventListener(event, listener, false);
               } else if (global.document && global.attachEvent) {
                 // IE quirks.
                 // According to: http://stevesouders.com/misc/test-postmessage.php
                 // the message gets delivered only to 'document', not 'window'.
-                global.document.attachEvent('on' + event, listener);
-                // I get 'window' for ie8.
+                global.document.attachEvent('on' + event, listener); // I get 'window' for ie8.
+
                 global.attachEvent('on' + event, listener);
               }
             },
-
-            detachEvent: function (event, listener) {
+            detachEvent: function detachEvent(event, listener) {
               if (typeof global.addEventListener !== 'undefined') {
                 global.removeEventListener(event, listener, false);
               } else if (global.document && global.detachEvent) {
@@ -2622,27 +2892,26 @@
                 global.detachEvent('on' + event, listener);
               }
             },
-
-            unloadAdd: function (listener) {
+            unloadAdd: function unloadAdd(listener) {
               if (isChromePackagedApp) {
                 return null;
               }
 
               var ref = random.string(8);
               onUnload[ref] = listener;
+
               if (afterUnload) {
                 setTimeout(this.triggerUnloadCallbacks, 0);
               }
+
               return ref;
             },
-
-            unloadDel: function (ref) {
+            unloadDel: function unloadDel(ref) {
               if (ref in onUnload) {
                 delete onUnload[ref];
               }
             },
-
-            triggerUnloadCallbacks: function () {
+            triggerUnloadCallbacks: function triggerUnloadCallbacks() {
               for (var ref in onUnload) {
                 onUnload[ref]();
                 delete onUnload[ref];
@@ -2650,25 +2919,24 @@
             },
           };
 
-          var unloadTriggered = function () {
+          var unloadTriggered = function unloadTriggered() {
             if (afterUnload) {
               return;
             }
+
             afterUnload = true;
             module.exports.triggerUnloadCallbacks();
-          };
-
-          // 'unload' alone is not reliable in opera within an iframe, but we
+          }; // 'unload' alone is not reliable in opera within an iframe, but we
           // can't use `beforeunload` as IE fires it on javascript: links.
+
           if (!isChromePackagedApp) {
             module.exports.attachEvent('unload', unloadTriggered);
           }
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -2681,27 +2949,27 @@
   \********************************************************************/
       /*! no exports provided */
       /*! all exports used */
-      /*! ModuleConcatenation bailout: Cannot concat with /Users/jcl/github/umi/node_modules/react-error-overlay/lib/index.js (<- Module is not an ECMAScript module) */
-      /*! ModuleConcatenation bailout: Cannot concat with /Users/jcl/github/umi/node_modules/sockjs-client/lib/entry.js (<- Module is not an ECMAScript module) */
-      /*! ModuleConcatenation bailout: Cannot concat with /Users/jcl/github/umi/node_modules/strip-ansi/index.js (<- Module is not an ECMAScript module) */
-      /*! ModuleConcatenation bailout: Cannot concat with /Users/jcl/github/umi/node_modules/url/url.js (<- Module is not an ECMAScript module) */
+      /*! ModuleConcatenation bailout: Cannot concat with /Users/chencheng/code/github.com/umijs/umi/node_modules/react-error-overlay/lib/index.js (<- Module is not an ECMAScript module) */
+      /*! ModuleConcatenation bailout: Cannot concat with /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/entry.js (<- Module is not an ECMAScript module) */
+      /*! ModuleConcatenation bailout: Cannot concat with /Users/chencheng/code/github.com/umijs/umi/node_modules/strip-ansi/index.js (<- Module is not an ECMAScript module) */
+      /*! ModuleConcatenation bailout: Cannot concat with /Users/chencheng/code/github.com/umijs/umi/node_modules/url/url.js (<- Module is not an ECMAScript module) */
       /***/ function (module, __webpack_exports__, __webpack_require__) {
         'use strict';
         // ESM COMPAT FLAG
         __webpack_require__.r(__webpack_exports__);
 
-        // EXTERNAL MODULE: /Users/jcl/github/umi/node_modules/sockjs-client/lib/entry.js
+        // EXTERNAL MODULE: /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/entry.js
         var entry = __webpack_require__('BRW5');
         var entry_default = /*#__PURE__*/ __webpack_require__.n(entry);
 
-        // EXTERNAL MODULE: /Users/jcl/github/umi/node_modules/url/url.js
+        // EXTERNAL MODULE: /Users/chencheng/code/github.com/umijs/umi/node_modules/url/url.js
         var url = __webpack_require__('EfWO');
         var url_default = /*#__PURE__*/ __webpack_require__.n(url);
 
-        // EXTERNAL MODULE: /Users/jcl/github/umi/node_modules/react-error-overlay/lib/index.js
+        // EXTERNAL MODULE: /Users/chencheng/code/github.com/umijs/umi/node_modules/react-error-overlay/lib/index.js
         var lib = __webpack_require__('PJ1o');
 
-        // EXTERNAL MODULE: /Users/jcl/github/umi/node_modules/strip-ansi/index.js
+        // EXTERNAL MODULE: /Users/chencheng/code/github.com/umijs/umi/node_modules/strip-ansi/index.js
         var strip_ansi = __webpack_require__('+YyL');
         var strip_ansi_default = /*#__PURE__*/ __webpack_require__.n(
           strip_ansi,
@@ -3101,9 +3369,9 @@
       },
 
     /***/ 'Ng+W':
-      /*!**************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/receiver/xhr.js ***!
-  \**************************************************************************************/
+      /*!***********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/receiver/xhr.js ***!
+  \***********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -3112,7 +3380,9 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           EventEmitter = __webpack_require__(/*! events */ '7ZNq').EventEmitter;
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -3120,18 +3390,19 @@
           debug(url);
           EventEmitter.call(this);
           var self = this;
-
           this.bufferPosition = 0;
-
           this.xo = new AjaxObject('POST', url, null);
           this.xo.on('chunk', this._chunkHandler.bind(this));
           this.xo.once('finish', function (status, text) {
             debug('finish', status, text);
+
             self._chunkHandler(status, text);
+
             self.xo = null;
             var reason = status === 200 ? 'network' : 'permanent';
             debug('close', reason);
             self.emit('close', null, reason);
+
             self._cleanup();
           });
         }
@@ -3140,6 +3411,7 @@
 
         XhrReceiver.prototype._chunkHandler = function (status, text) {
           debug('_chunkHandler', status);
+
           if (status !== 200 || !text) {
             return;
           }
@@ -3147,10 +3419,13 @@
           for (var idx = -1; ; this.bufferPosition += idx + 1) {
             var buf = text.slice(this.bufferPosition);
             idx = buf.indexOf('\n');
+
             if (idx === -1) {
               break;
             }
+
             var msg = buf.slice(0, idx);
+
             if (msg) {
               debug('message', msg);
               this.emit('message', msg);
@@ -3165,12 +3440,14 @@
 
         XhrReceiver.prototype.abort = function () {
           debug('abort');
+
           if (this.xo) {
             this.xo.close();
             debug('close');
             this.emit('close', null, 'user');
             this.xo = null;
           }
+
           this._cleanup();
         };
 
@@ -3180,17 +3457,17 @@
       },
 
     /***/ Nhts:
-      /*!*********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/shims.js ***!
-  \*********************************************************************/
+      /*!******************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/shims.js ***!
+  \******************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
         /* eslint-disable */
-        /* jscs: disable */
 
+        /* jscs: disable */
         // pulled specific shims from https://github.com/es-shims/es5-shim
 
         var ArrayPrototype = Array.prototype;
@@ -3198,14 +3475,16 @@
         var FunctionPrototype = Function.prototype;
         var StringPrototype = String.prototype;
         var array_slice = ArrayPrototype.slice;
-
         var _toString = ObjectPrototype.toString;
-        var isFunction = function (val) {
+
+        var isFunction = function isFunction(val) {
           return ObjectPrototype.toString.call(val) === '[object Function]';
         };
+
         var isArray = function isArray(obj) {
           return _toString.call(obj) === '[object Array]';
         };
+
         var isString = function isString(obj) {
           return _toString.call(obj) === '[object String]';
         };
@@ -3220,16 +3499,22 @@
               /* this is ES3 */
               return false;
             }
-          })();
-
-        // Define configurable, writable and non-enumerable props
+          })(); // Define configurable, writable and non-enumerable props
         // if they don't exist.
+
         var defineProperty;
+
         if (supportsDescriptors) {
-          defineProperty = function (object, name, method, forceAssign) {
+          defineProperty = function defineProperty(
+            object,
+            name,
+            method,
+            forceAssign,
+          ) {
             if (!forceAssign && name in object) {
               return;
             }
+
             Object.defineProperty(object, name, {
               configurable: true,
               enumerable: false,
@@ -3238,14 +3523,25 @@
             });
           };
         } else {
-          defineProperty = function (object, name, method, forceAssign) {
+          defineProperty = function defineProperty(
+            object,
+            name,
+            method,
+            forceAssign,
+          ) {
             if (!forceAssign && name in object) {
               return;
             }
+
             object[name] = method;
           };
         }
-        var defineProperties = function (object, map, forceAssign) {
+
+        var defineProperties = function defineProperties(
+          object,
+          map,
+          forceAssign,
+        ) {
           for (var name in map) {
             if (ObjectPrototype.hasOwnProperty.call(map, name)) {
               defineProperty(object, name, map[name], forceAssign);
@@ -3253,43 +3549,40 @@
           }
         };
 
-        var toObject = function (o) {
+        var toObject = function toObject(o) {
           if (o == null) {
             // this matches both null and undefined
             throw new TypeError("can't convert " + o + ' to object');
           }
-          return Object(o);
-        };
 
-        //
+          return Object(o);
+        }; //
         // Util
         // ======
         //
-
         // ES5 9.4
         // http://es5.github.com/#x9.4
         // http://jsperf.com/to-integer
 
         function toInteger(num) {
           var n = +num;
+
           if (n !== n) {
             // isNaN
             n = 0;
           } else if (n !== 0 && n !== 1 / 0 && n !== -(1 / 0)) {
             n = (n > 0 || -1) * Math.floor(Math.abs(n));
           }
+
           return n;
         }
 
         function ToUint32(x) {
           return x >>> 0;
-        }
-
-        //
+        } //
         // Function
         // ========
         //
-
         // ES-5 15.3.4.5
         // http://es5.github.com/#x15.3.4.5
 
@@ -3299,16 +3592,16 @@
           bind: function bind(that) {
             // .length is 1
             // 1. Let Target be the this value.
-            var target = this;
-            // 2. If IsCallable(Target) is false, throw a TypeError exception.
+            var target = this; // 2. If IsCallable(Target) is false, throw a TypeError exception.
+
             if (!isFunction(target)) {
               throw new TypeError(
                 'Function.prototype.bind called on incompatible ' + target,
               );
-            }
-            // 3. Let A be a new (possibly empty) internal list of all of the
+            } // 3. Let A be a new (possibly empty) internal list of all of the
             //   argument values provided after thisArg (arg1, arg2 etc), in order.
             // XXX slicedArgs will stand in for "A" if used
+
             var args = array_slice.call(arguments, 1); // for normal call
             // 4. Let F be a new native ECMAScript object.
             // 11. Set the [[Prototype]] internal property of F to the standard
@@ -3319,7 +3612,8 @@
             //   15.3.4.5.2.
             // 14. Set the [[HasInstance]] internal property of F as described in
             //   15.3.4.5.3.
-            var binder = function () {
+
+            var binder = function binder() {
               if (this instanceof bound) {
                 // 15.3.4.5.2 [[Construct]]
                 // When the [[Construct]] internal method of a function object,
@@ -3336,14 +3630,15 @@
                 //   values as the list ExtraArgs in the same order.
                 // 5. Return the result of calling the [[Construct]] internal
                 //   method of target providing args as the arguments.
-
                 var result = target.apply(
                   this,
                   args.concat(array_slice.call(arguments)),
                 );
+
                 if (Object(result) === result) {
                   return result;
                 }
+
                 return this;
               } else {
                 // 15.3.4.5.1 [[Call]]
@@ -3363,36 +3658,32 @@
                 // 5. Return the result of calling the [[Call]] internal method
                 //   of target providing boundThis as the this value and
                 //   providing args as the arguments.
-
                 // equiv: target.call(this, ...boundArgs, ...args)
                 return target.apply(
                   that,
                   args.concat(array_slice.call(arguments)),
                 );
               }
-            };
-
-            // 15. If the [[Class]] internal property of Target is "Function", then
+            }; // 15. If the [[Class]] internal property of Target is "Function", then
             //     a. Let L be the length property of Target minus the length of A.
             //     b. Set the length own property of F to either 0 or L, whichever is
             //       larger.
             // 16. Else set the length own property of F to 0.
 
-            var boundLength = Math.max(0, target.length - args.length);
-
-            // 17. Set the attributes of the length own property of F to the values
+            var boundLength = Math.max(0, target.length - args.length); // 17. Set the attributes of the length own property of F to the values
             //   specified in 15.3.5.1.
+
             var boundArgs = [];
+
             for (var i = 0; i < boundLength; i++) {
               boundArgs.push('$' + i);
-            }
-
-            // XXX Build a dynamic function with desired amount of arguments is the only
+            } // XXX Build a dynamic function with desired amount of arguments is the only
             // way to set the length property of a function.
             // In environments where Content Security Policies enabled (Chrome extensions,
             // for ex.) all use of eval or Function costructor throws an exception.
             // However in all of these environments Function.prototype.bind exists
             // and so this code will never be executed.
+
             var bound = Function(
               'binder',
               'return function (' +
@@ -3402,14 +3693,11 @@
 
             if (target.prototype) {
               Empty.prototype = target.prototype;
-              bound.prototype = new Empty();
-              // Clean up dangling references.
+              bound.prototype = new Empty(); // Clean up dangling references.
+
               Empty.prototype = null;
-            }
-
-            // TODO
+            } // TODO
             // 18. Set the [[Extensible]] internal property of F to true.
-
             // TODO
             // 19. Let thrower be the [[ThrowTypeError]] function Object (13.2.3).
             // 20. Call the [[DefineOwnProperty]] internal method of F with
@@ -3420,28 +3708,26 @@
             //   arguments "arguments", PropertyDescriptor {[[Get]]: thrower,
             //   [[Set]]: thrower, [[Enumerable]]: false, [[Configurable]]: false},
             //   and false.
-
             // TODO
             // NOTE Function objects created using Function.prototype.bind do not
             // have a prototype property or the [[Code]], [[FormalParameters]], and
             // [[Scope]] internal properties.
             // XXX can't delete prototype in pure-js.
-
             // 22. Return F.
+
             return bound;
           },
-        });
-
-        //
+        }); //
         // Array
         // =====
         //
-
         // ES5 15.4.3.2
         // http://es5.github.com/#x15.4.3.2
         // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
-        defineProperties(Array, { isArray: isArray });
 
+        defineProperties(Array, {
+          isArray: isArray,
+        });
         var boxedString = Object('a');
         var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
 
@@ -3449,36 +3735,40 @@
           // Check node 0.6.21 bug where third parameter is not boxed
           var properlyBoxesNonStrict = true;
           var properlyBoxesStrict = true;
+
           if (method) {
             method.call('foo', function (_, __, context) {
               if (typeof context !== 'object') {
                 properlyBoxesNonStrict = false;
               }
             });
-
             method.call(
               [1],
               function () {
                 'use strict';
+
                 properlyBoxesStrict = typeof this === 'string';
               },
               'x',
             );
           }
+
           return !!method && properlyBoxesNonStrict && properlyBoxesStrict;
         };
 
         defineProperties(
           ArrayPrototype,
           {
-            forEach: function forEach(fun /*, thisp*/) {
+            forEach: function forEach(
+              fun,
+              /*, thisp*/
+            ) {
               var object = toObject(this),
                 self = splitString && isString(this) ? this.split('') : object,
                 thisp = arguments[1],
                 i = -1,
-                length = self.length >>> 0;
+                length = self.length >>> 0; // If no callback function or if callback is not a callable function
 
-              // If no callback function or if callback is not a callable function
               if (!isFunction(fun)) {
                 throw new TypeError(); // TODO message
               }
@@ -3494,17 +3784,19 @@
             },
           },
           !properlyBoxesContext(ArrayPrototype.forEach),
-        );
-
-        // ES5 15.4.4.14
+        ); // ES5 15.4.4.14
         // http://es5.github.com/#x15.4.4.14
         // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
+
         var hasFirefox2IndexOfBug =
           Array.prototype.indexOf && [0, 1].indexOf(1, 2) !== -1;
         defineProperties(
           ArrayPrototype,
           {
-            indexOf: function indexOf(sought /*, fromIndex */) {
+            indexOf: function indexOf(
+              sought,
+              /*, fromIndex */
+            ) {
               var self =
                   splitString && isString(this)
                     ? this.split('')
@@ -3516,31 +3808,29 @@
               }
 
               var i = 0;
+
               if (arguments.length > 1) {
                 i = toInteger(arguments[1]);
-              }
+              } // handle negative indices
 
-              // handle negative indices
               i = i >= 0 ? i : Math.max(0, length + i);
+
               for (; i < length; i++) {
                 if (i in self && self[i] === sought) {
                   return i;
                 }
               }
+
               return -1;
             },
           },
           hasFirefox2IndexOfBug,
-        );
-
-        //
+        ); //
         // String
         // ======
         //
-
         // ES5 15.5.4.14
         // http://es5.github.com/#x15.5.4.14
-
         // [bugfix, IE lt 9, firefox 4, Konqueror, Opera, obscure browsers]
         // Many browsers do not split properly with regular expressions or they
         // do not perform the split correctly under obscure conditions.
@@ -3554,6 +3844,7 @@
         //    '.'.split(/()()/) should be ["."], not ["", "", "."]
 
         var string_split = StringPrototype.split;
+
         if (
           'ab'.split(/(?:ab)*/).length !== 2 ||
           '.'.split(/(.?)(.?)/).length !== 4 ||
@@ -3567,11 +3858,11 @@
 
             StringPrototype.split = function (separator, limit) {
               var string = this;
+
               if (separator === void 0 && limit === 0) {
                 return [];
-              }
+              } // If `separator` is not a regex, use native split
 
-              // If `separator` is not a regex, use native split
               if (_toString.call(separator) !== '[object RegExp]') {
                 return string_split.call(this, separator, limit);
               }
@@ -3581,7 +3872,8 @@
                   (separator.ignoreCase ? 'i' : '') +
                   (separator.multiline ? 'm' : '') +
                   (separator.extended ? 'x' : '') + // Proposed for ES6
-                  (separator.sticky ? 'y' : ''), // Firefox 3+
+                  (separator.sticky ? 'y' : ''),
+                // Firefox 3+
                 lastLastIndex = 0,
                 // Make `global` and avoid `lastIndex` issues by working with a copy
                 separator2,
@@ -3590,6 +3882,7 @@
                 lastLength;
               separator = new RegExp(separator.source, flags + 'g');
               string += ''; // Type-convert
+
               if (!compliantExecNpcg) {
                 // Doesn't need flags gy, but they don't hurt
                 separator2 = new RegExp(
@@ -3604,17 +3897,20 @@
                * If negative number: 4294967296 - Math.floor(Math.abs(limit))
                * If other: Type-convert, then use the above rules
                */
+
               limit =
                 limit === void 0
                   ? -1 >>> 0 // Math.pow(2, 32) - 1
                   : ToUint32(limit);
+
               while ((match = separator.exec(string))) {
                 // `separator.lastIndex` is not reliable cross-browser
                 lastIndex = match.index + match[0].length;
+
                 if (lastIndex > lastLastIndex) {
-                  output.push(string.slice(lastLastIndex, match.index));
-                  // Fix browsers whose `exec` methods don't consistently return `undefined` for
+                  output.push(string.slice(lastLastIndex, match.index)); // Fix browsers whose `exec` methods don't consistently return `undefined` for
                   // nonparticipating capturing groups
+
                   if (!compliantExecNpcg && match.length > 1) {
                     match[0].replace(separator2, function () {
                       for (var i = 1; i < arguments.length - 2; i++) {
@@ -3624,19 +3920,24 @@
                       }
                     });
                   }
+
                   if (match.length > 1 && match.index < string.length) {
                     ArrayPrototype.push.apply(output, match.slice(1));
                   }
+
                   lastLength = match[0].length;
                   lastLastIndex = lastIndex;
+
                   if (output.length >= limit) {
                     break;
                   }
                 }
+
                 if (separator.lastIndex === match.index) {
                   separator.lastIndex++; // Avoid an infinite loop
                 }
               }
+
               if (lastLastIndex === string.length) {
                 if (lastLength || !separator.test('')) {
                   output.push('');
@@ -3644,11 +3945,10 @@
               } else {
                 output.push(string.slice(lastLastIndex));
               }
+
               return output.length > limit ? output.slice(0, limit) : output;
             };
-          })();
-
-          // [bugfix, chrome]
+          })(); // [bugfix, chrome]
           // If separator is undefined, then the result array contains just one String,
           // which is the this value (converted to a String). If limit is not undefined,
           // then the output array is truncated so that it contains no more than limit
@@ -3659,15 +3959,15 @@
             if (separator === void 0 && limit === 0) {
               return [];
             }
+
             return string_split.call(this, separator, limit);
           };
-        }
-
-        // ECMA-262, 3rd B.2.3
+        } // ECMA-262, 3rd B.2.3
         // Not an ECMAScript standard, although ECMAScript 3rd Edition has a
         // non-normative section suggesting uniform semantics and it should be
         // normalized across all browsers
         // [bugfix, IE lt 9] IE < 9 substr() with negative value not working in IE
+
         var string_substr = StringPrototype.substr;
         var hasNegativeSubstrBug = ''.substr && '0b'.substr(-1) !== 'b';
         defineProperties(
@@ -3692,9 +3992,9 @@
       },
 
     /***/ PJ1o:
-      /*!***************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/react-error-overlay/lib/index.js ***!
-  \***************************************************************************/
+      /*!************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/react-error-overlay/lib/index.js ***!
+  \************************************************************************************************/
       /*! no static exports found */
       /*! exports used: dismissBuildError, reportBuildError, startReportingRuntimeErrors */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -3705,19 +4005,28 @@
           })(window, function () {
             return (function (e) {
               var t = {};
+
               function r(n) {
                 if (t[n]) return t[n].exports;
-                var o = (t[n] = { i: n, l: !1, exports: {} });
+                var o = (t[n] = {
+                  i: n,
+                  l: !1,
+                  exports: {},
+                });
                 return (
                   e[n].call(o.exports, o, o.exports, r), (o.l = !0), o.exports
                 );
               }
+
               return (
                 (r.m = e),
                 (r.c = t),
                 (r.d = function (e, t, n) {
                   r.o(e, t) ||
-                    Object.defineProperty(e, t, { enumerable: !0, get: n });
+                    Object.defineProperty(e, t, {
+                      enumerable: !0,
+                      get: n,
+                    });
                 }),
                 (r.r = function (e) {
                   'undefined' != typeof Symbol &&
@@ -3725,7 +4034,9 @@
                     Object.defineProperty(e, Symbol.toStringTag, {
                       value: 'Module',
                     }),
-                    Object.defineProperty(e, '__esModule', { value: !0 });
+                    Object.defineProperty(e, '__esModule', {
+                      value: !0,
+                    });
                 }),
                 (r.t = function (e, t) {
                   if ((1 & t && (e = r(e)), 8 & t)) return e;
@@ -3740,7 +4051,7 @@
                     }),
                     2 & t && 'string' != typeof e)
                   )
-                    for (var o in e)
+                    for (var o in e) {
                       r.d(
                         n,
                         o,
@@ -3748,13 +4059,14 @@
                           return e[t];
                         }.bind(null, o),
                       );
+                    }
                   return n;
                 }),
                 (r.n = function (e) {
                   var t =
                     e && e.__esModule
                       ? function () {
-                          return e.default;
+                          return e['default'];
                         }
                       : function () {
                           return e;
@@ -3777,8 +4089,10 @@
                   if (3 === arguments.length) return r;
                   throw new Error('"' + t + '" is a required argument.');
                 };
+
                 var r = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.]*)(?::(\d+))?(\S*)$/,
                   n = /^data:.+\,.+$/;
+
                 function o(e) {
                   var t = e.match(r);
                   return t
@@ -3791,6 +4105,7 @@
                       }
                     : null;
                 }
+
                 function a(e) {
                   var t = '';
                   return (
@@ -3803,13 +4118,16 @@
                     t
                   );
                 }
+
                 function i(e) {
                   var r = e,
                     n = o(e);
+
                   if (n) {
                     if (!n.path) return e;
                     r = n.path;
                   }
+
                   for (
                     var i,
                       l = t.isAbsolute(r),
@@ -3818,7 +4136,7 @@
                       s = u.length - 1;
                     s >= 0;
                     s--
-                  )
+                  ) {
                     '.' === (i = u[s])
                       ? u.splice(s, 1)
                       : '..' === i
@@ -3827,11 +4145,14 @@
                         ('' === i
                           ? (u.splice(s + 1, c), (c = 0))
                           : (u.splice(s, 2), c--));
+                  }
+
                   return (
                     '' === (r = u.join('/')) && (r = l ? '/' : '.'),
                     n ? ((n.path = r), a(n)) : r
                   );
                 }
+
                 (t.urlParse = o),
                   (t.urlGenerate = a),
                   (t.normalize = i),
@@ -3854,6 +4175,7 @@
                   }),
                   (t.relative = function (e, t) {
                     '' === e && (e = '.'), (e = e.replace(/\/$/, ''));
+
                     for (var r = 0; 0 !== t.indexOf(e + '/'); ) {
                       var n = e.lastIndexOf('/');
                       if (n < 0) return t;
@@ -3861,12 +4183,15 @@
                         return t;
                       ++r;
                     }
+
                     return Array(r + 1).join('../') + t.substr(e.length + 1);
                   });
                 var l = !('__proto__' in Object.create(null));
+
                 function u(e) {
                   return e;
                 }
+
                 function c(e) {
                   if (!e) return !1;
                   var t = e.length;
@@ -3883,13 +4208,18 @@
                     95 !== e.charCodeAt(t - 9)
                   )
                     return !1;
-                  for (var r = t - 10; r >= 0; r--)
+
+                  for (var r = t - 10; r >= 0; r--) {
                     if (36 !== e.charCodeAt(r)) return !1;
+                  }
+
                   return !0;
                 }
+
                 function s(e, t) {
                   return e === t ? 0 : e > t ? 1 : -1;
                 }
+
                 (t.toSetString = l
                   ? u
                   : function (e) {
@@ -3953,15 +4283,24 @@
                       ? (e.splice(n, 1), r++)
                       : r && (e.splice(n, 1), r--);
                   }
-                  if (t) for (; r--; r) e.unshift('..');
+
+                  if (t)
+                    for (; r--; r) {
+                      e.unshift('..');
+                    }
                   return e;
                 }
+
                 function n(e, t) {
                   if (e.filter) return e.filter(t);
-                  for (var r = [], n = 0; n < e.length; n++)
+
+                  for (var r = [], n = 0; n < e.length; n++) {
                     t(e[n], n, e) && r.push(e[n]);
+                  }
+
                   return r;
                 }
+
                 (t.resolve = function () {
                   for (
                     var e = '', t = !1, o = arguments.length - 1;
@@ -3975,6 +4314,7 @@
                       );
                     a && ((e = a + '/' + e), (t = '/' === a.charAt(0)));
                   }
+
                   return (
                     (t ? '/' : '') +
                       (e = r(
@@ -4018,11 +4358,15 @@
                   }),
                   (t.relative = function (e, r) {
                     function n(e) {
-                      for (var t = 0; t < e.length && '' === e[t]; t++);
-                      for (var r = e.length - 1; r >= 0 && '' === e[r]; r--);
+                      for (var t = 0; t < e.length && '' === e[t]; t++) {}
+
+                      for (var r = e.length - 1; r >= 0 && '' === e[r]; r--) {}
+
                       return t > r ? [] : e.slice(t, r - t + 1);
                     }
+
                     (e = t.resolve(e).substr(1)), (r = t.resolve(r).substr(1));
+
                     for (
                       var o = n(e.split('/')),
                         a = n(r.split('/')),
@@ -4031,13 +4375,19 @@
                         u = 0;
                       u < i;
                       u++
-                    )
+                    ) {
                       if (o[u] !== a[u]) {
                         l = u;
                         break;
                       }
+                    }
+
                     var c = [];
-                    for (u = l; u < o.length; u++) c.push('..');
+
+                    for (u = l; u < o.length; u++) {
+                      c.push('..');
+                    }
+
                     return (c = c.concat(a.slice(l))).join('/');
                   }),
                   (t.sep = '/'),
@@ -4045,6 +4395,7 @@
                   (t.dirname = function (e) {
                     if (('string' != typeof e && (e += ''), 0 === e.length))
                       return '.';
+
                     for (
                       var t = e.charCodeAt(0),
                         r = 47 === t,
@@ -4053,13 +4404,15 @@
                         a = e.length - 1;
                       a >= 1;
                       --a
-                    )
+                    ) {
                       if (47 === (t = e.charCodeAt(a))) {
                         if (!o) {
                           n = a;
                           break;
                         }
                       } else o = !1;
+                    }
+
                     return -1 === n
                       ? r
                         ? '/'
@@ -4075,15 +4428,19 @@
                         r = 0,
                         n = -1,
                         o = !0;
-                      for (t = e.length - 1; t >= 0; --t)
+
+                      for (t = e.length - 1; t >= 0; --t) {
                         if (47 === e.charCodeAt(t)) {
                           if (!o) {
                             r = t + 1;
                             break;
                           }
                         } else -1 === n && ((o = !1), (n = t + 1));
+                      }
+
                       return -1 === n ? '' : e.slice(r, n);
                     })(e);
+
                     return (
                       t &&
                         r.substr(-1 * t.length) === t &&
@@ -4093,6 +4450,7 @@
                   }),
                   (t.extname = function (e) {
                     'string' != typeof e && (e += '');
+
                     for (
                       var t = -1,
                         r = 0,
@@ -4116,6 +4474,7 @@
                         break;
                       }
                     }
+
                     return -1 === t ||
                       -1 === n ||
                       0 === a ||
@@ -4142,6 +4501,7 @@
                   o = r(1),
                   a = r(6).ArraySet,
                   i = r(10).MappingList;
+
                 function l(e) {
                   e || (e = {}),
                     (this._file = o.getArg(e, 'file', null)),
@@ -4152,10 +4512,14 @@
                     (this._mappings = new i()),
                     (this._sourcesContents = null);
                 }
+
                 (l.prototype._version = 3),
                   (l.fromSourceMap = function (e) {
                     var t = e.sourceRoot,
-                      r = new l({ file: e.file, sourceRoot: t });
+                      r = new l({
+                        file: e.file,
+                        sourceRoot: t,
+                      });
                     return (
                       e.eachMapping(function (e) {
                         var n = {
@@ -4217,6 +4581,7 @@
                   }),
                   (l.prototype.applySourceMap = function (e, t, r) {
                     var n = t;
+
                     if (null == t) {
                       if (null == e.file)
                         throw new Error(
@@ -4224,6 +4589,7 @@
                         );
                       n = e.file;
                     }
+
                     var i = this._sourceRoot;
                     null != i && (n = o.relative(i, n));
                     var l = new a(),
@@ -4242,6 +4608,7 @@
                           (t.originalColumn = a.column),
                           null != a.name && (t.name = a.name));
                       }
+
                       var c = t.source;
                       null == c || l.has(c) || l.add(c);
                       var s = t.name;
@@ -4321,7 +4688,9 @@
                       h++
                     ) {
                       if (((e = ''), (t = p[h]).generatedLine !== l))
-                        for (i = 0; t.generatedLine !== l; ) (e += ';'), l++;
+                        for (i = 0; t.generatedLine !== l; ) {
+                          (e += ';'), l++;
+                        }
                       else if (h > 0) {
                         if (!o.compareByGeneratedPositionsInflated(t, p[h - 1]))
                           continue;
@@ -4343,6 +4712,7 @@
                             (s = r))),
                         (d += e);
                     }
+
                     return d;
                   }),
                   (l.prototype._generateSourcesContent = function (e, t) {
@@ -4390,11 +4760,13 @@
                     o = (function (e) {
                       return e < 0 ? 1 + (-e << 1) : 0 + (e << 1);
                     })(e);
+
                   do {
                     (t = 31 & o),
                       (o >>>= 5) > 0 && (t |= 32),
                       (r += n.encode(t));
                   } while (o > 0);
+
                   return r;
                 }),
                   (t.decode = function (e, t, r) {
@@ -4405,6 +4777,7 @@
                       u = e.length,
                       c = 0,
                       s = 0;
+
                     do {
                       if (t >= u)
                         throw new Error(
@@ -4416,6 +4789,7 @@
                         );
                       (o = !!(32 & a)), (c += (a &= 31) << s), (s += 5);
                     } while (o);
+
                     (r.value = ((l = (i = c) >> 1), 1 == (1 & i) ? -l : l)),
                       (r.rest = t);
                   });
@@ -4424,13 +4798,17 @@
                 var n = r(1),
                   o = Object.prototype.hasOwnProperty,
                   a = 'undefined' != typeof Map;
+
                 function i() {
                   (this._array = []),
                     (this._set = a ? new Map() : Object.create(null));
                 }
+
                 (i.fromArray = function (e, t) {
-                  for (var r = new i(), n = 0, o = e.length; n < o; n++)
+                  for (var r = new i(), n = 0, o = e.length; n < o; n++) {
                     r.add(e[n], t);
+                  }
+
                   return r;
                 }),
                   (i.prototype.size = function () {
@@ -4453,11 +4831,13 @@
                   (i.prototype.indexOf = function (e) {
                     if (a) {
                       var t = this._set.get(e);
+
                       if (t >= 0) return t;
                     } else {
                       var r = n.toSetString(e);
                       if (o.call(this._set, r)) return this._set[r];
                     }
+
                     throw new Error('"' + e + '" is not in the set.');
                   }),
                   (i.prototype.at = function (e) {
@@ -4471,6 +4851,7 @@
               },
               function (e, t, r) {
                 'use strict';
+
                 function n(e) {
                   return (
                     Array.isArray(e) || (e = [e]),
@@ -4484,7 +4865,7 @@
                               value: e,
                             };
                           })
-                          .catch(function (e) {
+                          ['catch'](function (e) {
                             return {
                               isFulfilled: !1,
                               isRejected: !0,
@@ -4495,13 +4876,17 @@
                     )
                   );
                 }
-                Object.defineProperty(t, '__esModule', { value: !0 }),
+
+                Object.defineProperty(t, '__esModule', {
+                  value: !0,
+                }),
                   (t.settle = n),
-                  (t.default = n);
+                  (t['default'] = n);
               },
               function (e, t, r) {
                 var n = (function (e) {
                   'use strict';
+
                   var t,
                     r = Object.prototype,
                     n = r.hasOwnProperty,
@@ -4509,6 +4894,7 @@
                     a = o.iterator || '@@iterator',
                     i = o.asyncIterator || '@@asyncIterator',
                     l = o.toStringTag || '@@toStringTag';
+
                   function u(e, t, r) {
                     return (
                       Object.defineProperty(e, t, {
@@ -4520,13 +4906,15 @@
                       e[t]
                     );
                   }
+
                   try {
                     u({}, '');
                   } catch (e) {
-                    u = function (e, t, r) {
+                    u = function u(e, t, r) {
                       return (e[t] = r);
                     };
                   }
+
                   function c(e, t, r, n) {
                     var o = t && t.prototype instanceof m ? t : m,
                       a = Object.create(o.prototype),
@@ -4537,19 +4925,24 @@
                         return function (o, a) {
                           if (n === p)
                             throw new Error('Generator is already running');
+
                           if (n === h) {
                             if ('throw' === o) throw a;
                             return L();
                           }
+
                           for (r.method = o, r.arg = a; ; ) {
                             var i = r.delegate;
+
                             if (i) {
                               var l = _(i, r);
+
                               if (l) {
                                 if (l === g) continue;
                                 return l;
                               }
                             }
+
                             if ('next' === r.method) r.sent = r._sent = r.arg;
                             else if ('throw' === r.method) {
                               if (n === f) throw ((n = h), r.arg);
@@ -4559,10 +4952,15 @@
                                 r.abrupt('return', r.arg);
                             n = p;
                             var u = s(e, t, r);
+
                             if ('normal' === u.type) {
                               if (((n = r.done ? h : d), u.arg === g)) continue;
-                              return { value: u.arg, done: r.done };
+                              return {
+                                value: u.arg,
+                                done: r.done,
+                              };
                             }
+
                             'throw' === u.type &&
                               ((n = h), (r.method = 'throw'), (r.arg = u.arg));
                           }
@@ -4571,30 +4969,45 @@
                       a
                     );
                   }
+
                   function s(e, t, r) {
                     try {
-                      return { type: 'normal', arg: e.call(t, r) };
+                      return {
+                        type: 'normal',
+                        arg: e.call(t, r),
+                      };
                     } catch (e) {
-                      return { type: 'throw', arg: e };
+                      return {
+                        type: 'throw',
+                        arg: e,
+                      };
                     }
                   }
+
                   e.wrap = c;
                   var f = 'suspendedStart',
                     d = 'suspendedYield',
                     p = 'executing',
                     h = 'completed',
                     g = {};
+
                   function m() {}
+
                   function v() {}
+
                   function y() {}
+
                   var b = {};
+
                   b[a] = function () {
                     return this;
                   };
+
                   var w = Object.getPrototypeOf,
                     k = w && w(w(P([])));
                   k && k !== r && n.call(k, a) && (b = k);
                   var E = (y.prototype = m.prototype = Object.create(b));
+
                   function S(e) {
                     ['next', 'throw', 'return'].forEach(function (t) {
                       u(e, t, function (e) {
@@ -4602,13 +5015,16 @@
                       });
                     });
                   }
+
                   function x(e, t) {
                     var r;
+
                     this._invoke = function (o, a) {
                       function i() {
                         return new t(function (r, i) {
                           !(function r(o, a, i, l) {
                             var u = s(e[o], e, a);
+
                             if ('throw' !== u.type) {
                               var c = u.arg,
                                 f = c.value;
@@ -4632,19 +5048,23 @@
                                     },
                                   );
                             }
+
                             l(u.arg);
                           })(o, a, r, i);
                         });
                       }
+
                       return (r = r ? r.then(i, i) : i());
                     };
                   }
+
                   function _(e, r) {
                     var n = e.iterator[r.method];
+
                     if (n === t) {
                       if (((r.delegate = null), 'throw' === r.method)) {
                         if (
-                          e.iterator.return &&
+                          e.iterator['return'] &&
                           ((r.method = 'return'),
                           (r.arg = t),
                           _(e, r),
@@ -4656,8 +5076,10 @@
                             "The iterator does not provide a 'throw' method",
                           ));
                       }
+
                       return g;
                     }
+
                     var o = s(n, e.iterator, r.arg);
                     if ('throw' === o.type)
                       return (
@@ -4683,42 +5105,64 @@
                         (r.delegate = null),
                         g);
                   }
+
                   function C(e) {
-                    var t = { tryLoc: e[0] };
+                    var t = {
+                      tryLoc: e[0],
+                    };
                     1 in e && (t.catchLoc = e[1]),
                       2 in e && ((t.finallyLoc = e[2]), (t.afterLoc = e[3])),
                       this.tryEntries.push(t);
                   }
+
                   function O(e) {
                     var t = e.completion || {};
                     (t.type = 'normal'), delete t.arg, (e.completion = t);
                   }
+
                   function T(e) {
-                    (this.tryEntries = [{ tryLoc: 'root' }]),
+                    (this.tryEntries = [
+                      {
+                        tryLoc: 'root',
+                      },
+                    ]),
                       e.forEach(C, this),
                       this.reset(!0);
                   }
+
                   function P(e) {
                     if (e) {
                       var r = e[a];
                       if (r) return r.call(e);
                       if ('function' == typeof e.next) return e;
+
                       if (!isNaN(e.length)) {
                         var o = -1,
                           i = function r() {
-                            for (; ++o < e.length; )
+                            for (; ++o < e.length; ) {
                               if (n.call(e, o))
                                 return (r.value = e[o]), (r.done = !1), r;
+                            }
+
                             return (r.value = t), (r.done = !0), r;
                           };
+
                         return (i.next = i);
                       }
                     }
-                    return { next: L };
+
+                    return {
+                      next: L,
+                    };
                   }
+
                   function L() {
-                    return { value: t, done: !0 };
+                    return {
+                      value: t,
+                      done: !0,
+                    };
                   }
+
                   return (
                     (v.prototype = E.constructor = y),
                     (y.constructor = v),
@@ -4741,7 +5185,9 @@
                       );
                     }),
                     (e.awrap = function (e) {
-                      return { __await: e };
+                      return {
+                        __await: e,
+                      };
                     }),
                     S(x.prototype),
                     (x.prototype[i] = function () {
@@ -4767,7 +5213,11 @@
                     }),
                     (e.keys = function (e) {
                       var t = [];
-                      for (var r in e) t.push(r);
+
+                      for (var r in e) {
+                        t.push(r);
+                      }
+
                       return (
                         t.reverse(),
                         function r() {
@@ -4775,6 +5225,7 @@
                             var n = t.pop();
                             if (n in e) return (r.value = n), (r.done = !1), r;
                           }
+
                           return (r.done = !0), r;
                         }
                       );
@@ -4782,7 +5233,7 @@
                     (e.values = P),
                     (T.prototype = {
                       constructor: T,
-                      reset: function (e) {
+                      reset: function reset(e) {
                         if (
                           ((this.prev = 0),
                           (this.next = 0),
@@ -4794,21 +5245,23 @@
                           this.tryEntries.forEach(O),
                           !e)
                         )
-                          for (var r in this)
+                          for (var r in this) {
                             't' === r.charAt(0) &&
                               n.call(this, r) &&
                               !isNaN(+r.slice(1)) &&
                               (this[r] = t);
+                          }
                       },
-                      stop: function () {
+                      stop: function stop() {
                         this.done = !0;
                         var e = this.tryEntries[0].completion;
                         if ('throw' === e.type) throw e.arg;
                         return this.rval;
                       },
-                      dispatchException: function (e) {
+                      dispatchException: function dispatchException(e) {
                         if (this.done) throw e;
                         var r = this;
+
                         function o(n, o) {
                           return (
                             (l.type = 'throw'),
@@ -4818,13 +5271,16 @@
                             !!o
                           );
                         }
+
                         for (var a = this.tryEntries.length - 1; a >= 0; --a) {
                           var i = this.tryEntries[a],
                             l = i.completion;
                           if ('root' === i.tryLoc) return o('end');
+
                           if (i.tryLoc <= this.prev) {
                             var u = n.call(i, 'catchLoc'),
                               c = n.call(i, 'finallyLoc');
+
                             if (u && c) {
                               if (this.prev < i.catchLoc)
                                 return o(i.catchLoc, !0);
@@ -4844,9 +5300,10 @@
                           }
                         }
                       },
-                      abrupt: function (e, t) {
+                      abrupt: function abrupt(e, t) {
                         for (var r = this.tryEntries.length - 1; r >= 0; --r) {
                           var o = this.tryEntries[r];
+
                           if (
                             o.tryLoc <= this.prev &&
                             n.call(o, 'finallyLoc') &&
@@ -4856,6 +5313,7 @@
                             break;
                           }
                         }
+
                         a &&
                           ('break' === e || 'continue' === e) &&
                           a.tryLoc <= t &&
@@ -4872,7 +5330,7 @@
                             : this.complete(i)
                         );
                       },
-                      complete: function (e, t) {
+                      complete: function complete(e, t) {
                         if ('throw' === e.type) throw e.arg;
                         return (
                           'break' === e.type || 'continue' === e.type
@@ -4885,7 +5343,7 @@
                           g
                         );
                       },
-                      finish: function (e) {
+                      finish: function finish(e) {
                         for (var t = this.tryEntries.length - 1; t >= 0; --t) {
                           var r = this.tryEntries[t];
                           if (r.finallyLoc === e)
@@ -4894,21 +5352,25 @@
                             );
                         }
                       },
-                      catch: function (e) {
+                      catch: function _catch(e) {
                         for (var t = this.tryEntries.length - 1; t >= 0; --t) {
                           var r = this.tryEntries[t];
+
                           if (r.tryLoc === e) {
                             var n = r.completion;
+
                             if ('throw' === n.type) {
                               var o = n.arg;
                               O(r);
                             }
+
                             return o;
                           }
                         }
+
                         throw new Error('illegal catch attempt');
                       },
-                      delegateYield: function (e, r, n) {
+                      delegateYield: function delegateYield(e, r, n) {
                         return (
                           (this.delegate = {
                             iterator: P(e),
@@ -4923,6 +5385,7 @@
                     e
                   );
                 })(e.exports);
+
                 try {
                   regeneratorRuntime = n;
                 } catch (e) {
@@ -4953,11 +5416,16 @@
               },
               function (e, t, r) {
                 var n = r(1);
+
                 function o() {
                   (this._array = []),
                     (this._sorted = !0),
-                    (this._last = { generatedLine: -1, generatedColumn: 0 });
+                    (this._last = {
+                      generatedLine: -1,
+                      generatedColumn: 0,
+                    });
                 }
+
                 (o.prototype.unsortedForEach = function (e, t) {
                   this._array.forEach(e, t);
                 }),
@@ -4993,6 +5461,7 @@
                   a = r(6).ArraySet,
                   i = r(5),
                   l = r(13).quickSort;
+
                 function u(e) {
                   var t = e;
                   return (
@@ -5001,6 +5470,7 @@
                     null != t.sections ? new f(t) : new c(t)
                   );
                 }
+
                 function c(e) {
                   var t = e;
                   'string' == typeof e &&
@@ -5029,6 +5499,7 @@
                     (this._mappings = c),
                     (this.file = s);
                 }
+
                 function s() {
                   (this.generatedLine = 0),
                     (this.generatedColumn = 0),
@@ -5037,6 +5508,7 @@
                     (this.originalColumn = null),
                     (this.name = null);
                 }
+
                 function f(e) {
                   var t = e;
                   'string' == typeof e &&
@@ -5046,7 +5518,10 @@
                   if (r != this._version)
                     throw new Error('Unsupported version: ' + r);
                   (this._sources = new a()), (this._names = new a());
-                  var i = { line: -1, column: 0 };
+                  var i = {
+                    line: -1,
+                    column: 0,
+                  };
                   this._sections = o.map(function (e) {
                     if (e.url)
                       throw new Error(
@@ -5071,13 +5546,14 @@
                     );
                   });
                 }
+
                 (u.fromSourceMap = function (e) {
                   return c.fromSourceMap(e);
                 }),
                   (u.prototype._version = 3),
                   (u.prototype.__generatedMappings = null),
                   Object.defineProperty(u.prototype, '_generatedMappings', {
-                    get: function () {
+                    get: function get() {
                       return (
                         this.__generatedMappings ||
                           this._parseMappings(this._mappings, this.sourceRoot),
@@ -5087,7 +5563,7 @@
                   }),
                   (u.prototype.__originalMappings = null),
                   Object.defineProperty(u.prototype, '_originalMappings', {
-                    get: function () {
+                    get: function get() {
                       return (
                         this.__originalMappings ||
                           this._parseMappings(this._mappings, this.sourceRoot),
@@ -5109,16 +5585,20 @@
                   (u.prototype.eachMapping = function (e, t, r) {
                     var o,
                       a = t || null;
+
                     switch (r || u.GENERATED_ORDER) {
                       case u.GENERATED_ORDER:
                         o = this._generatedMappings;
                         break;
+
                       case u.ORIGINAL_ORDER:
                         o = this._originalMappings;
                         break;
+
                       default:
                         throw new Error('Unknown order of iteration.');
                     }
+
                     var i = this.sourceRoot;
                     o.map(function (e) {
                       var t =
@@ -5150,6 +5630,7 @@
                     )
                       return [];
                     r.source = this._sources.indexOf(r.source);
+
                     var a = [],
                       i = this._findMapping(
                         r,
@@ -5159,6 +5640,7 @@
                         n.compareByOriginalPositions,
                         o.LEAST_UPPER_BOUND,
                       );
+
                     if (i >= 0) {
                       var l = this._originalMappings[i];
                       if (void 0 === e.column)
@@ -5166,7 +5648,7 @@
                           var u = l.originalLine;
                           l && l.originalLine === u;
 
-                        )
+                        ) {
                           a.push({
                             line: n.getArg(l, 'generatedLine', null),
                             column: n.getArg(l, 'generatedColumn', null),
@@ -5177,12 +5659,13 @@
                             ),
                           }),
                             (l = this._originalMappings[++i]);
+                        }
                       else
                         for (
                           var c = l.originalColumn;
                           l && l.originalLine === t && l.originalColumn == c;
 
-                        )
+                        ) {
                           a.push({
                             line: n.getArg(l, 'generatedLine', null),
                             column: n.getArg(l, 'generatedColumn', null),
@@ -5193,7 +5676,9 @@
                             ),
                           }),
                             (l = this._originalMappings[++i]);
+                        }
                     }
+
                     return a;
                   }),
                   (t.SourceMapConsumer = u),
@@ -5209,6 +5694,7 @@
                         t.sourceRoot,
                       )),
                       (t.file = e._file);
+
                     for (
                       var i = e._mappings.toArray().slice(),
                         u = (t.__generatedMappings = []),
@@ -5230,13 +5716,14 @@
                           f.push(g)),
                         u.push(g);
                     }
+
                     return (
                       l(t.__originalMappings, n.compareByOriginalPositions), t
                     );
                   }),
                   (c.prototype._version = 3),
                   Object.defineProperty(c.prototype, 'sources', {
-                    get: function () {
+                    get: function get() {
                       return this._sources.toArray().map(function (e) {
                         return null != this.sourceRoot
                           ? n.join(this.sourceRoot, e)
@@ -5265,7 +5752,7 @@
                         E = [];
                       y < v;
 
-                    )
+                    ) {
                       if (';' === e.charAt(y)) f++, y++, (d = 0);
                       else if (',' === e.charAt(y)) y++;
                       else {
@@ -5273,14 +5760,17 @@
                           (r = new s()).generatedLine = f, u = y;
                           u < v && !this._charIsMappingSeparator(e, u);
                           u++
-                        );
+                        ) {}
+
                         if ((a = b[(o = e.slice(y, u))])) y += o.length;
                         else {
-                          for (a = []; y < u; )
+                          for (a = []; y < u; ) {
                             i.decode(e, y, w),
                               (c = w.value),
                               (y = w.rest),
                               a.push(c);
+                          }
+
                           if (2 === a.length)
                             throw new Error(
                               'Found a source, but no line and column',
@@ -5305,6 +5795,8 @@
                           E.push(r),
                           'number' == typeof r.originalLine && k.push(r);
                       }
+                    }
+
                     l(E, n.compareByGeneratedPositionsDeflated),
                       (this.__generatedMappings = E),
                       l(k, n.compareByOriginalPositions),
@@ -5325,13 +5817,16 @@
                   (c.prototype.computeColumnSpans = function () {
                     for (var e = 0; e < this._generatedMappings.length; ++e) {
                       var t = this._generatedMappings[e];
+
                       if (e + 1 < this._generatedMappings.length) {
                         var r = this._generatedMappings[e + 1];
+
                         if (t.generatedLine === r.generatedLine) {
                           t.lastGeneratedColumn = r.generatedColumn - 1;
                           continue;
                         }
                       }
+
                       t.lastGeneratedColumn = 1 / 0;
                     }
                   }),
@@ -5348,8 +5843,10 @@
                         n.compareByGeneratedPositionsDeflated,
                         n.getArg(e, 'bias', u.GREATEST_LOWER_BOUND),
                       );
+
                     if (r >= 0) {
                       var o = this._generatedMappings[r];
+
                       if (o.generatedLine === t.generatedLine) {
                         var a = n.getArg(o, 'source', null);
                         null !== a &&
@@ -5368,6 +5865,7 @@
                         );
                       }
                     }
+
                     return {
                       source: null,
                       line: null,
@@ -5393,6 +5891,7 @@
                     )
                       return this.sourcesContent[this._sources.indexOf(e)];
                     var r;
+
                     if (
                       null != this.sourceRoot &&
                       (r = n.urlParse(this.sourceRoot))
@@ -5408,6 +5907,7 @@
                           this._sources.indexOf('/' + e)
                         ];
                     }
+
                     if (t) return null;
                     throw new Error('"' + e + '" is not in the SourceMap.');
                   }),
@@ -5418,7 +5918,12 @@
                         (t = n.relative(this.sourceRoot, t)),
                       !this._sources.has(t))
                     )
-                      return { line: null, column: null, lastColumn: null };
+                      return {
+                        line: null,
+                        column: null,
+                        lastColumn: null,
+                      };
+
                     var r = {
                         source: (t = this._sources.indexOf(t)),
                         originalLine: n.getArg(e, 'line'),
@@ -5432,6 +5937,7 @@
                         n.compareByOriginalPositions,
                         n.getArg(e, 'bias', u.GREATEST_LOWER_BOUND),
                       );
+
                     if (o >= 0) {
                       var a = this._originalMappings[o];
                       if (a.source === r.source)
@@ -5441,21 +5947,29 @@
                           lastColumn: n.getArg(a, 'lastGeneratedColumn', null),
                         };
                     }
-                    return { line: null, column: null, lastColumn: null };
+
+                    return {
+                      line: null,
+                      column: null,
+                      lastColumn: null,
+                    };
                   }),
                   (t.BasicSourceMapConsumer = c),
                   (f.prototype = Object.create(u.prototype)),
                   (f.prototype.constructor = u),
                   (f.prototype._version = 3),
                   Object.defineProperty(f.prototype, 'sources', {
-                    get: function () {
-                      for (var e = [], t = 0; t < this._sections.length; t++)
+                    get: function get() {
+                      for (var e = [], t = 0; t < this._sections.length; t++) {
                         for (
                           var r = 0;
                           r < this._sections[t].consumer.sources.length;
                           r++
-                        )
+                        ) {
                           e.push(this._sections[t].consumer.sources[r]);
+                        }
+                      }
+
                       return e;
                     },
                   }),
@@ -5485,7 +5999,12 @@
                               : 0),
                           bias: e.bias,
                         })
-                      : { source: null, line: null, column: null, name: null };
+                      : {
+                          source: null,
+                          line: null,
+                          column: null,
+                          name: null,
+                        };
                   }),
                   (f.prototype.hasContentsOfAllSources = function () {
                     return this._sections.every(function (e) {
@@ -5498,14 +6017,17 @@
                         e,
                         !0,
                       );
+
                       if (n) return n;
                     }
+
                     if (t) return null;
                     throw new Error('"' + e + '" is not in the SourceMap.');
                   }),
                   (f.prototype.generatedPositionFor = function (e) {
                     for (var t = 0; t < this._sections.length; t++) {
                       var r = this._sections[t];
+
                       if (
                         -1 !== r.consumer.sources.indexOf(n.getArg(e, 'source'))
                       ) {
@@ -5522,12 +6044,17 @@
                           };
                       }
                     }
-                    return { line: null, column: null };
+
+                    return {
+                      line: null,
+                      column: null,
+                    };
                   }),
                   (f.prototype._parseMappings = function (e, t) {
                     (this.__generatedMappings = []),
                       (this.__originalMappings = []);
-                    for (var r = 0; r < this._sections.length; r++)
+
+                    for (var r = 0; r < this._sections.length; r++) {
                       for (
                         var o = this._sections[r],
                           a = o.consumer._generatedMappings,
@@ -5537,11 +6064,14 @@
                       ) {
                         var u = a[i],
                           c = o.consumer._sources.at(u.source);
+
                         null !== o.consumer.sourceRoot &&
                           (c = n.join(o.consumer.sourceRoot, c)),
                           this._sources.add(c),
                           (c = this._sources.indexOf(c));
+
                         var s = o.consumer._names.at(u.name);
+
                         this._names.add(s), (s = this._names.indexOf(s));
                         var f = {
                           source: c,
@@ -5561,6 +6091,8 @@
                           'number' == typeof f.originalLine &&
                             this.__originalMappings.push(f);
                       }
+                    }
+
                     l(
                       this.__generatedMappings,
                       n.compareByGeneratedPositionsDeflated,
@@ -5574,6 +6106,7 @@
                   (t.LEAST_UPPER_BOUND = 2),
                   (t.search = function (e, r, n, o) {
                     if (0 === r.length) return -1;
+
                     var a = (function e(r, n, o, a, i, l) {
                       var u = Math.floor((n - r) / 2) + r,
                         c = i(o, a[u], !0);
@@ -5595,8 +6128,13 @@
                         ? -1
                         : r;
                     })(-1, r.length, e, r, n, o || t.GREATEST_LOWER_BOUND);
+
                     if (a < 0) return -1;
-                    for (; a - 1 >= 0 && 0 === n(r[a], r[a - 1], !0); ) --a;
+
+                    for (; a - 1 >= 0 && 0 === n(r[a], r[a - 1], !0); ) {
+                      --a;
+                    }
+
                     return a;
                   });
               },
@@ -5605,6 +6143,7 @@
                   var n = e[t];
                   (e[t] = e[r]), (e[r] = n);
                 }
+
                 function n(e, t, o, a) {
                   if (o < a) {
                     var i = o - 1;
@@ -5615,14 +6154,19 @@
                       Math.round(s + Math.random() * (f - s))),
                       a,
                     );
-                    for (var l = e[a], u = o; u < a; u++)
+
+                    for (var l = e[a], u = o; u < a; u++) {
                       t(e[u], l) <= 0 && r(e, (i += 1), u);
+                    }
+
                     r(e, i + 1, u);
                     var c = i + 1;
                     n(e, t, o, c - 1), n(e, t, c + 1, a);
                   }
+
                   var s, f;
                 }
+
                 t.quickSort = function (e, t) {
                   n(e, t, 0, e.length - 1);
                 };
@@ -5632,6 +6176,7 @@
                   o = r(1),
                   a = /(\r?\n)/,
                   i = '$$$isSourceNode$$$';
+
                 function l(e, t, r, n, o) {
                   (this.children = []),
                     (this.sourceContents = {}),
@@ -5642,12 +6187,14 @@
                     (this[i] = !0),
                     null != n && this.add(n);
                 }
+
                 (l.fromStringWithSourceMap = function (e, t, r) {
                   var n = new l(),
                     i = e.split(a),
                     u = 0,
-                    c = function () {
+                    c = function c() {
                       return e() + (e() || '');
+
                       function e() {
                         return u < i.length ? i[u++] : void 0;
                       }
@@ -5655,6 +6202,7 @@
                     s = 1,
                     f = 0,
                     d = null;
+
                   return (
                     t.eachMapping(function (e) {
                       if (null !== d) {
@@ -5667,15 +6215,21 @@
                             void (d = e)
                           );
                         }
+
                         p(d, c()), s++, (f = 0);
                       }
-                      for (; s < e.generatedLine; ) n.add(c()), s++;
+
+                      for (; s < e.generatedLine; ) {
+                        n.add(c()), s++;
+                      }
+
                       if (f < e.generatedColumn) {
                         var r = i[u];
                         n.add(r.substr(0, e.generatedColumn)),
                           (i[u] = r.substr(e.generatedColumn)),
                           (f = e.generatedColumn);
                       }
+
                       d = e;
                     }, this),
                     u < i.length &&
@@ -5688,6 +6242,7 @@
                     }),
                     n
                   );
+
                   function p(e, t) {
                     if (null === e || void 0 === e.source) n.add(t);
                     else {
@@ -5715,8 +6270,9 @@
                   }),
                   (l.prototype.prepend = function (e) {
                     if (Array.isArray(e))
-                      for (var t = e.length - 1; t >= 0; t--)
+                      for (var t = e.length - 1; t >= 0; t--) {
                         this.prepend(e[t]);
+                      }
                     else {
                       if (!e[i] && 'string' != typeof e)
                         throw new TypeError(
@@ -5728,7 +6284,7 @@
                     return this;
                   }),
                   (l.prototype.walk = function (e) {
-                    for (var t, r = 0, n = this.children.length; r < n; r++)
+                    for (var t, r = 0, n = this.children.length; r < n; r++) {
                       (t = this.children[r])[i]
                         ? t.walk(e)
                         : '' !== t &&
@@ -5738,16 +6294,21 @@
                             column: this.column,
                             name: this.name,
                           });
+                    }
                   }),
                   (l.prototype.join = function (e) {
                     var t,
                       r,
                       n = this.children.length;
+
                     if (n > 0) {
-                      for (t = [], r = 0; r < n - 1; r++)
+                      for (t = [], r = 0; r < n - 1; r++) {
                         t.push(this.children[r]), t.push(e);
+                      }
+
                       t.push(this.children[r]), (this.children = t);
                     }
+
                     return this;
                   }),
                   (l.prototype.replaceRight = function (e, t) {
@@ -5768,12 +6329,16 @@
                     this.sourceContents[o.toSetString(e)] = t;
                   }),
                   (l.prototype.walkSourceContents = function (e) {
-                    for (var t = 0, r = this.children.length; t < r; t++)
+                    for (var t = 0, r = this.children.length; t < r; t++) {
                       this.children[t][i] &&
                         this.children[t].walkSourceContents(e);
+                    }
+
                     var n = Object.keys(this.sourceContents);
-                    for (t = 0, r = n.length; t < r; t++)
+
+                    for (t = 0, r = n.length; t < r; t++) {
                       e(o.fromSetString(n[t]), this.sourceContents[n[t]]);
+                    }
                   }),
                   (l.prototype.toString = function () {
                     var e = '';
@@ -5785,7 +6350,11 @@
                     );
                   }),
                   (l.prototype.toStringWithSourceMap = function (e) {
-                    var t = { code: '', line: 1, column: 0 },
+                    var t = {
+                        code: '',
+                        line: 1,
+                        column: 0,
+                      },
                       r = new n(e),
                       o = !1,
                       a = null,
@@ -5804,8 +6373,14 @@
                                 u === n.name) ||
                                 r.addMapping({
                                   source: n.source,
-                                  original: { line: n.line, column: n.column },
-                                  generated: { line: t.line, column: t.column },
+                                  original: {
+                                    line: n.line,
+                                    column: n.column,
+                                  },
+                                  generated: {
+                                    line: t.line,
+                                    column: t.column,
+                                  },
                                   name: n.name,
                                 }),
                               (a = n.source),
@@ -5815,11 +6390,15 @@
                               (o = !0))
                             : o &&
                               (r.addMapping({
-                                generated: { line: t.line, column: t.column },
+                                generated: {
+                                  line: t.line,
+                                  column: t.column,
+                                },
                               }),
                               (a = null),
                               (o = !1));
-                        for (var c = 0, s = e.length; c < s; c++)
+
+                        for (var c = 0, s = e.length; c < s; c++) {
                           10 === e.charCodeAt(c)
                             ? (t.line++,
                               (t.column = 0),
@@ -5839,17 +6418,22 @@
                                     name: n.name,
                                   }))
                             : t.column++;
+                        }
                       }),
                       this.walkSourceContents(function (e, t) {
                         r.setSourceContent(e, t);
                       }),
-                      { code: t.code, map: r }
+                      {
+                        code: t.code,
+                        map: r,
+                      }
                     );
                   }),
                   (t.SourceNode = l);
               },
               function (e, t, r) {
                 'use strict';
+
                 r.r(t),
                   r.d(t, 'setEditorHandler', function () {
                     return ue;
@@ -5873,33 +6457,40 @@
                     return ge;
                   });
                 var n = null;
+
                 function o(e, t) {
                   if (t.error) {
                     var r = t.error;
                     r instanceof Error ? e(r) : e(new Error(r));
                   }
                 }
+
                 function a(e, t) {
                   null === n &&
                     ((n = o.bind(void 0, t)), e.addEventListener('error', n));
                 }
+
                 var i = null;
+
                 function l(e, t) {
                   if (null == t || null == t.reason)
                     return e(new Error('Unknown'));
                   var r = t.reason;
                   return r instanceof Error ? e(r) : e(new Error(r));
                 }
+
                 function u(e, t) {
                   null === i &&
                     ((i = l.bind(void 0, t)),
                     e.addEventListener('unhandledrejection', i));
                 }
+
                 var c = !1,
                   s = 10,
                   f = 50;
+
                 var d = [],
-                  p = function () {
+                  p = function p() {
                     'undefined' != typeof console &&
                       ((console.reactStack = function (e) {
                         return d.push(e);
@@ -5908,12 +6499,12 @@
                         return d.pop();
                       }));
                   },
-                  h = function () {
+                  h = function h() {
                     'undefined' != typeof console &&
                       ((console.reactStack = void 0),
                       (console.reactStackEnd = void 0));
                   },
-                  g = function (e, t) {
+                  g = function g(e, t) {
                     if ('undefined' != typeof console) {
                       var r = console[e];
                       'function' == typeof r &&
@@ -5928,10 +6519,12 @@
                               throw e;
                             });
                           }
+
                           return r.apply(this, arguments);
                         });
                     }
                   };
+
                 function m(e, t) {
                   return (m =
                     Object.setPrototypeOf ||
@@ -5939,12 +6532,14 @@
                       return (e.__proto__ = t), e;
                     })(e, t);
                 }
+
                 function v(e, t, r) {
                   return (v = (function () {
                     if ('undefined' == typeof Reflect || !Reflect.construct)
                       return !1;
                     if (Reflect.construct.sham) return !1;
                     if ('function' == typeof Proxy) return !0;
+
                     try {
                       return (
                         Date.prototype.toString.call(
@@ -5964,11 +6559,17 @@
                         return r && m(o, r.prototype), o;
                       }).apply(null, arguments);
                 }
+
                 function y(e, t) {
                   (null == t || t > e.length) && (t = e.length);
-                  for (var r = 0, n = new Array(t); r < t; r++) n[r] = e[r];
+
+                  for (var r = 0, n = new Array(t); r < t; r++) {
+                    n[r] = e[r];
+                  }
+
                   return n;
                 }
+
                 function b(e) {
                   return (
                     (function (e) {
@@ -6005,6 +6606,7 @@
                     })()
                   );
                 }
+
                 function w(e, t) {
                   for (var r = 0; r < t.length; r++) {
                     var n = t[r];
@@ -6014,13 +6616,16 @@
                       Object.defineProperty(e, n.key, n);
                   }
                 }
+
                 function k(e, t, r) {
                   return t && w(e.prototype, t), r && w(e, r), e;
                 }
+
                 function E(e, t) {
                   if (!(e instanceof t))
                     throw new TypeError('Cannot call a class as a function');
                 }
+
                 var S = function e(t, r) {
                     var n =
                       arguments.length > 2 &&
@@ -6093,17 +6698,18 @@
                         (this._scriptCode = a),
                         (this._originalScriptCode = s);
                     }
+
                     return (
                       k(e, [
                         {
                           key: 'getFunctionName',
-                          value: function () {
+                          value: function value() {
                             return this.functionName || '(anonymous function)';
                           },
                         },
                         {
                           key: 'getSource',
-                          value: function () {
+                          value: function value() {
                             var e = '';
                             return (
                               null != this.fileName &&
@@ -6118,7 +6724,7 @@
                         },
                         {
                           key: 'toString',
-                          value: function () {
+                          value: function value() {
                             var e = this.getFunctionName(),
                               t = this.getSource();
                             return ''
@@ -6131,6 +6737,7 @@
                     );
                   })(),
                   _ = /\(?(.+?)(?::(\d+))?(?::(\d+))?\)?$/;
+
                 function C(e) {
                   return _.exec(e)
                     .slice(1)
@@ -6139,8 +6746,10 @@
                       return isNaN(t) ? e : t;
                     });
                 }
+
                 var O = /^\s*(at|in)\s.+(:\d+)/,
                   T = /(^|@)\S+:\d+|.+line\s+\d+\s+>\s+(eval|Function).+/;
+
                 function P(e) {
                   return e
                     .filter(function (e) {
@@ -6162,6 +6771,7 @@
                           [r.join('@') || (t ? 'eval' : null)].concat(b(C(n))),
                         );
                       }
+
                       -1 !== e.indexOf('(eval ') &&
                         (e = e.replace(/(\(eval at [^()]*)|(\),.*$)/g, '')),
                         -1 !== e.indexOf('(at ') &&
@@ -6171,6 +6781,7 @@
                       return v(x, [o.join(' ') || null].concat(b(C(a))));
                     });
                 }
+
                 function L(e) {
                   if (null == e)
                     throw new Error('You cannot pass a null object.');
@@ -6181,8 +6792,10 @@
                     'The error you provided does not contain a stack trace.',
                   );
                 }
+
                 var R = r(0),
                   A = r.n(R);
+
                 function N(e, t, r, n, o, a, i) {
                   try {
                     var l = e[a](i),
@@ -6190,38 +6803,46 @@
                   } catch (e) {
                     return void r(e);
                   }
+
                   l.done ? t(u) : Promise.resolve(u).then(n, o);
                 }
+
                 function j(e) {
                   return function () {
                     var t = this,
                       r = arguments;
                     return new Promise(function (n, o) {
                       var a = e.apply(t, r);
+
                       function i(e) {
                         N(a, n, o, i, l, 'next', e);
                       }
+
                       function l(e) {
                         N(a, n, o, i, l, 'throw', e);
                       }
+
                       i(void 0);
                     });
                   };
                 }
+
                 var M = r(3),
                   I = (function () {
                     function e(t) {
                       E(this, e), (this.__source_map = t);
                     }
+
                     return (
                       k(e, [
                         {
                           key: 'getOriginalPosition',
-                          value: function (e, t) {
+                          value: function value(e, t) {
                             var r = this.__source_map.originalPositionFor({
                               line: e,
                               column: t,
                             });
+
                             return {
                               line: r.line,
                               column: r.column,
@@ -6231,24 +6852,28 @@
                         },
                         {
                           key: 'getGeneratedPosition',
-                          value: function (e, t, r) {
+                          value: function value(e, t, r) {
                             var n = this.__source_map.generatedPositionFor({
                               source: e,
                               line: t,
                               column: r,
                             });
-                            return { line: n.line, column: n.column };
+
+                            return {
+                              line: n.line,
+                              column: n.column,
+                            };
                           },
                         },
                         {
                           key: 'getSource',
-                          value: function (e) {
+                          value: function value(e) {
                             return this.__source_map.sourceContentFor(e);
                           },
                         },
                         {
                           key: 'getSources',
-                          value: function () {
+                          value: function value() {
                             return this.__source_map.sources;
                           },
                         },
@@ -6256,6 +6881,7 @@
                       e
                     );
                   })();
+
                 function D(e, t) {
                   for (
                     var r = /\/\/[#@] ?sourceMappingURL=([^\s'"]+)\s*$/gm,
@@ -6267,6 +6893,7 @@
                     if (null == o) break;
                     n = o;
                   }
+
                   return n && n[1]
                     ? Promise.resolve(n[1].toString())
                     : Promise.reject(
@@ -6276,23 +6903,27 @@
                         ),
                       );
                 }
+
                 function z(e, t) {
                   return q.apply(this, arguments);
                 }
+
                 function q() {
                   return (q = j(
                     A.a.mark(function e(t, r) {
                       var n, o, a, i, l, u;
                       return A.a.wrap(function (e) {
-                        for (;;)
+                        for (;;) {
                           switch ((e.prev = e.next)) {
                             case 0:
                               return (e.next = 2), D(t, r);
+
                             case 2:
                               if (0 !== (n = e.sent).indexOf('data:')) {
                                 e.next = 14;
                                 break;
                               }
+
                               if (
                                 ((o = /^data:application\/json;([\w=:"-]+;)*base64,/),
                                 (a = n.match(o)))
@@ -6300,9 +6931,11 @@
                                 e.next = 8;
                                 break;
                               }
+
                               throw new Error(
                                 'Sorry, non-base64 inline source-map encoding is not supported.',
                               );
+
                             case 8:
                               return (
                                 (n = n.substring(a[0].length)),
@@ -6313,6 +6946,7 @@
                                   new I(new M.SourceMapConsumer(n)),
                                 )
                               );
+
                             case 14:
                               return (
                                 (i = t.lastIndexOf('/')),
@@ -6322,6 +6956,7 @@
                                   return e.json();
                                 })
                               );
+
                             case 18:
                               return (
                                 (u = e.sent),
@@ -6330,28 +6965,37 @@
                                   new I(new M.SourceMapConsumer(u)),
                                 )
                               );
+
                             case 20:
                             case 'end':
                               return e.stop();
                           }
+                        }
                       }, e);
                     }),
                   )).apply(this, arguments);
                 }
+
                 function F(e, t, r) {
                   'string' == typeof r && (r = r.split('\n'));
+
                   for (
                     var n = [], o = Math.max(0, e - 1 - t);
                     o <= Math.min(r.length - 1, e - 1 + t);
                     ++o
-                  )
+                  ) {
                     n.push(new S(o + 1, r[o], o === e - 1));
+                  }
+
                   return n;
                 }
+
                 var U = r(7);
+
                 function B(e) {
                   return H.apply(this, arguments);
                 }
+
                 function H() {
                   return (H = j(
                     A.a.mark(function e(t) {
@@ -6360,7 +7004,7 @@
                         o,
                         a = arguments;
                       return A.a.wrap(function (e) {
-                        for (;;)
+                        for (;;) {
                           switch ((e.prev = e.next)) {
                             case 0:
                               return (
@@ -6380,7 +7024,7 @@
                                         A.a.mark(function e(t) {
                                           var r, o, a;
                                           return A.a.wrap(function (e) {
-                                            for (;;)
+                                            for (;;) {
                                               switch ((e.prev = e.next)) {
                                                 case 0:
                                                   return (
@@ -6400,22 +7044,26 @@
                                                       return e.text();
                                                     })
                                                   );
+
                                                 case 3:
                                                   return (
                                                     (o = e.sent),
                                                     (e.next = 6),
                                                     z(t, o)
                                                   );
+
                                                 case 6:
                                                   (a = e.sent),
                                                     (n[t] = {
                                                       fileSource: o,
                                                       map: a,
                                                     });
+
                                                 case 8:
                                                 case 'end':
                                                   return e.stop();
                                               }
+                                            }
                                           }, e);
                                         }),
                                       );
@@ -6426,6 +7074,7 @@
                                   ),
                                 )
                               );
+
                             case 6:
                               return e.abrupt(
                                 'return',
@@ -6457,27 +7106,35 @@
                                   );
                                 }),
                               );
+
                             case 7:
                             case 'end':
                               return e.stop();
                           }
+                        }
                       }, e);
                     }),
                   )).apply(this, arguments);
                 }
+
                 var $ = r(2),
                   V = r.n($);
+
                 function W(e, t) {
                   var r = -1,
                     n = -1;
+
                   do {
                     ++r, (n = t.indexOf(e, n + 1));
                   } while (-1 !== n);
+
                   return r;
                 }
+
                 function G(e, t) {
                   return Q.apply(this, arguments);
                 }
+
                 function Q() {
                   return (Q = j(
                     A.a.mark(function e(t, r) {
@@ -6487,7 +7144,7 @@
                         i,
                         l = arguments;
                       return A.a.wrap(function (e) {
-                        for (;;)
+                        for (;;) {
                           switch ((e.prev = e.next)) {
                             case 0:
                               if (
@@ -6500,16 +7157,20 @@
                                 e.next = 7;
                                 break;
                               }
+
                               return (
                                 (e.next = 6),
                                 fetch(a).then(function (e) {
                                   return e.text();
                                 })
                               );
+
                             case 6:
                               o = e.sent;
+
                             case 7:
                               return (e.next = 9), z(a, o);
+
                             case 9:
                               return (
                                 (i = e.sent),
@@ -6593,15 +7254,18 @@
                                   }),
                                 )
                               );
+
                             case 11:
                             case 'end':
                               return e.stop();
                           }
+                        }
                       }, e);
                     }),
                   )).apply(this, arguments);
                 }
-                var Y = function (e) {
+
+                var Y = function Y(e) {
                     arguments.length > 1 &&
                       void 0 !== arguments[1] &&
                       arguments[1];
@@ -6637,7 +7301,7 @@
                           });
                     });
                   },
-                  X = function (e) {
+                  X = function X(e) {
                     return function (t) {
                       var r =
                         arguments.length > 1 &&
@@ -6653,7 +7317,7 @@
                               stackFrames: n,
                             });
                         })
-                        .catch(function (e) {
+                        ['catch'](function (e) {
                           console.log(
                             'Could not get the stack frames of error:',
                             e,
@@ -6661,6 +7325,7 @@
                         });
                     };
                   };
+
                 function K(e) {
                   var t =
                       arguments.length > 1 && void 0 !== arguments[1]
@@ -6708,6 +7373,7 @@
                           var l = t[i],
                             u = l.fileName,
                             c = l.lineNumber;
+
                           if (
                             null != u &&
                             null != c &&
@@ -6729,8 +7395,13 @@
                               .concat(c, ')\n');
                           }
                         }
-                        return { message: o, stack: a };
+
+                        return {
+                          message: o,
+                          stack: a,
+                        };
                       })(e, n);
+
                       r(
                         {
                           message: o.message,
@@ -6760,6 +7431,7 @@
                     }
                   );
                 }
+
                 var J = {
                   position: 'fixed',
                   top: '0',
@@ -6779,12 +7451,15 @@
                   ae = [],
                   ie = null,
                   le = null;
+
                 function ue(e) {
                   (ne = e), ee && me();
                 }
+
                 function ce(e) {
                   (oe = e), me();
                 }
+
                 function se(e) {
                   var t =
                     arguments.length > 1 && void 0 !== arguments[1]
@@ -6792,9 +7467,11 @@
                       : {};
                   (ie = t), X(pe(t))(e);
                 }
+
                 function fe() {
                   (oe = null), me();
                 }
+
                 function de(e) {
                   if (null !== le) throw new Error('Already listening');
                   e.launchEditorEndpoint &&
@@ -6804,7 +7481,8 @@
                     (ie = e),
                     (le = K(pe(e), e.filename));
                 }
-                var pe = function (e) {
+
+                var pe = function pe(e) {
                   return function (t) {
                     try {
                       'function' == typeof e.onError && e.onError.call(null);
@@ -6819,18 +7497,22 @@
                     }
                   };
                 };
+
                 function he() {
                   (ae = []), me();
                 }
+
                 function ge() {
                   if (null === le) throw new Error('Not currently listening');
                   ie = null;
+
                   try {
                     le();
                   } finally {
                     le = null;
                   }
                 }
+
                 function me() {
                   if (!te)
                     if (re) ve();
@@ -6838,11 +7520,13 @@
                       te = !0;
                       var e = window.document.createElement('iframe');
                       !(function (e, t) {
-                        for (var r in (e.setAttribute('style', ''), t))
+                        for (var r in (e.setAttribute('style', ''), t)) {
                           t.hasOwnProperty(r) && (e.style[r] = t[r]);
+                        }
                       })(e, J),
                         (e.onload = function () {
                           var t = e.contentDocument;
+
                           if (null != t && null != t.body) {
                             ee = e;
                             var r = e.contentWindow.document.createElement(
@@ -6856,6 +7540,7 @@
                         window.document.body.appendChild(e);
                     }
                 }
+
                 function ve() {
                   if (!ie) throw new Error('Expected options to be injected.');
                   if (!ee) throw new Error('Iframe has not been created yet.');
@@ -6869,6 +7554,7 @@
                     (ee = null),
                     (re = !1));
                 }
+
                 (window.__REACT_ERROR_OVERLAY_GLOBAL_HOOK__ =
                   window.__REACT_ERROR_OVERLAY_GLOBAL_HOOK__ || {}),
                   (window.__REACT_ERROR_OVERLAY_GLOBAL_HOOK__.iframeReady = function () {
@@ -6893,9 +7579,9 @@
       },
 
     /***/ Q8t3:
-      /*!*********************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/lib/buffered-sender.js ***!
-  \*********************************************************************************************/
+      /*!******************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/lib/buffered-sender.js ***!
+  \******************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -6904,7 +7590,9 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           EventEmitter = __webpack_require__(/*! events */ '7ZNq').EventEmitter;
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -6921,12 +7609,11 @@
         BufferedSender.prototype.send = function (message) {
           debug('send', message);
           this.sendBuffer.push(message);
+
           if (!this.sendStop) {
             this.sendSchedule();
           }
-        };
-
-        // For polling transports in a situation when in the message callback,
+        }; // For polling transports in a situation when in the message callback,
         // new message is being send. If the sending connection was started
         // before receiving one, it is possible to saturate the network and
         // timeout due to the lack of receiving socket. To avoid that we delay
@@ -6934,15 +7621,18 @@
         // connection be started beforehand. This is only a halfmeasure and
         // does not fix the big problem, but it does make the tests go more
         // stable on slow networks.
+
         BufferedSender.prototype.sendScheduleWait = function () {
           debug('sendScheduleWait');
           var self = this;
           var tref;
+
           this.sendStop = function () {
             debug('sendStop');
             self.sendStop = null;
             clearTimeout(tref);
           };
+
           tref = setTimeout(function () {
             debug('timeout');
             self.sendStop = null;
@@ -6953,10 +7643,12 @@
         BufferedSender.prototype.sendSchedule = function () {
           debug('sendSchedule', this.sendBuffer.length);
           var self = this;
+
           if (this.sendBuffer.length > 0) {
             var payload = '[' + this.sendBuffer.join(',') + ']';
             this.sendStop = this.sender(this.url, payload, function (err) {
               self.sendStop = null;
+
               if (err) {
                 debug('error', err);
                 self.emit('close', err.code || 1006, 'Sending error: ' + err);
@@ -6976,7 +7668,9 @@
 
         BufferedSender.prototype.close = function () {
           debug('close');
+
           this._cleanup();
+
           if (this.sendStop) {
             this.sendStop();
             this.sendStop = null;
@@ -6989,9 +7683,9 @@
       },
 
     /***/ QDjb:
-      /*!******************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport-list.js ***!
-  \******************************************************************************/
+      /*!***************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport-list.js ***!
+  \***************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7006,9 +7700,7 @@
           __webpack_require__(/*! ./transport/eventsource */ 'K/id'),
           __webpack_require__(/*! ./transport/lib/iframe-wrap */ 'zC0X')(
             __webpack_require__(/*! ./transport/eventsource */ 'K/id'),
-          ),
-
-          // polling transports
+          ), // polling transports
           __webpack_require__(/*! ./transport/htmlfile */ 'hTJ1'),
           __webpack_require__(/*! ./transport/lib/iframe-wrap */ 'zC0X')(
             __webpack_require__(/*! ./transport/htmlfile */ 'hTJ1'),
@@ -7025,9 +7717,9 @@
       },
 
     /***/ QnYj:
-      /*!********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/main.js ***!
-  \********************************************************************/
+      /*!*****************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/main.js ***!
+  \*****************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7057,40 +7749,43 @@
               /*! ./event/trans-message */ 'burc',
             ),
             InfoReceiver = __webpack_require__(/*! ./info-receiver */ 'pn9d');
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
-          var transports;
+          var transports; // follow constructor steps defined at http://dev.w3.org/html5/websockets/#the-websocket-interface
 
-          // follow constructor steps defined at http://dev.w3.org/html5/websockets/#the-websocket-interface
           function SockJS(url, protocols, options) {
             if (!(this instanceof SockJS)) {
               return new SockJS(url, protocols, options);
             }
+
             if (arguments.length < 1) {
               throw new TypeError(
                 "Failed to construct 'SockJS: 1 argument required, but only 0 present",
               );
             }
-            EventTarget.call(this);
 
+            EventTarget.call(this);
             this.readyState = SockJS.CONNECTING;
             this.extensions = '';
-            this.protocol = '';
+            this.protocol = ''; // non-standard extension
 
-            // non-standard extension
             options = options || {};
+
             if (options.protocols_whitelist) {
               log.warn(
                 "'protocols_whitelist' is DEPRECATED. Use 'transports' instead.",
               );
             }
+
             this._transportsWhitelist = options.transports;
             this._transportOptions = options.transportOptions || {};
             this._timeout = options.timeout || 0;
-
             var sessionId = options.sessionId || 8;
+
             if (typeof sessionId === 'function') {
               this._generateSessionId = sessionId;
             } else if (typeof sessionId === 'number') {
@@ -7103,10 +7798,10 @@
               );
             }
 
-            this._server = options.server || random.numberString(1000);
+            this._server = options.server || random.numberString(1000); // Step 1 of WS spec - parse and validate the url. Issue #8
 
-            // Step 1 of WS spec - parse and validate the url. Issue #8
             var parsedUrl = new URL(url);
+
             if (!parsedUrl.host || !parsedUrl.protocol) {
               throw new SyntaxError("The URL '" + url + "' is invalid");
             } else if (parsedUrl.hash) {
@@ -7122,8 +7817,8 @@
               );
             }
 
-            var secure = parsedUrl.protocol === 'https:';
-            // Step 2 - don't allow secure origin with an insecure protocol
+            var secure = parsedUrl.protocol === 'https:'; // Step 2 - don't allow secure origin with an insecure protocol
+
             if (loc.protocol === 'https:' && !secure) {
               // exception is 127.0.0.0/8 and ::1 urls
               if (!urlUtils.isLoopbackAddr(parsedUrl.hostname)) {
@@ -7131,17 +7826,15 @@
                   'SecurityError: An insecure SockJS connection may not be initiated from a page loaded over HTTPS',
                 );
               }
-            }
-
-            // Step 3 - check port access - no need here
+            } // Step 3 - check port access - no need here
             // Step 4 - parse protocols argument
+
             if (!protocols) {
               protocols = [];
             } else if (!Array.isArray(protocols)) {
               protocols = [protocols];
-            }
+            } // Step 5 - check protocols argument
 
-            // Step 5 - check protocols argument
             var sortedProtocols = protocols.sort();
             sortedProtocols.forEach(function (proto, i) {
               if (!proto) {
@@ -7149,6 +7842,7 @@
                   "The protocols entry '" + proto + "' is invalid.",
                 );
               }
+
               if (
                 i < sortedProtocols.length - 1 &&
                 proto === sortedProtocols[i + 1]
@@ -7157,29 +7851,25 @@
                   "The protocols entry '" + proto + "' is duplicated.",
                 );
               }
-            });
+            }); // Step 6 - convert origin
 
-            // Step 6 - convert origin
             var o = urlUtils.getOrigin(loc.href);
-            this._origin = o ? o.toLowerCase() : null;
+            this._origin = o ? o.toLowerCase() : null; // remove the trailing slash
 
-            // remove the trailing slash
-            parsedUrl.set('pathname', parsedUrl.pathname.replace(/\/+$/, ''));
+            parsedUrl.set('pathname', parsedUrl.pathname.replace(/\/+$/, '')); // store the sanitized url
 
-            // store the sanitized url
             this.url = parsedUrl.href;
-            debug('using url', this.url);
-
-            // Step 7 - start connection in background
+            debug('using url', this.url); // Step 7 - start connection in background
             // obtain server info
             // http://sockjs.github.io/sockjs-protocol/sockjs-protocol-0.3.3.html#section-26
+
             this._urlInfo = {
               nullOrigin: !browser.hasDomain(),
               sameOrigin: urlUtils.isOriginEqual(this.url, loc.href),
               sameScheme: urlUtils.isSchemeEqual(this.url, loc.href),
             };
-
             this._ir = new InfoReceiver(this.url, this._urlInfo);
+
             this._ir.once('finish', this._receiveInfo.bind(this));
           }
 
@@ -7193,22 +7883,21 @@
             // Step 1
             if (code && !userSetCode(code)) {
               throw new Error('InvalidAccessError: Invalid code');
-            }
-            // Step 2.4 states the max is 123 bytes, but we are just checking length
+            } // Step 2.4 states the max is 123 bytes, but we are just checking length
+
             if (reason && reason.length > 123) {
               throw new SyntaxError('reason argument has an invalid length');
-            }
+            } // Step 3.1
 
-            // Step 3.1
             if (
               this.readyState === SockJS.CLOSING ||
               this.readyState === SockJS.CLOSED
             ) {
               return;
-            }
+            } // TODO look at docs to determine how to set this
 
-            // TODO look at docs to determine how to set this
             var wasClean = true;
+
             this._close(code || 1000, reason || 'Normal closure', wasClean);
           };
 
@@ -7218,19 +7907,21 @@
             if (typeof data !== 'string') {
               data = '' + data;
             }
+
             if (this.readyState === SockJS.CONNECTING) {
               throw new Error(
                 'InvalidStateError: The connection has not been established yet',
               );
             }
+
             if (this.readyState !== SockJS.OPEN) {
               return;
             }
+
             this._transport.send(escape.quote(data));
           };
 
           SockJS.version = __webpack_require__(/*! ./version */ 'RODr');
-
           SockJS.CONNECTING = 0;
           SockJS.OPEN = 1;
           SockJS.CLOSING = 2;
@@ -7239,19 +7930,20 @@
           SockJS.prototype._receiveInfo = function (info, rtt) {
             debug('_receiveInfo', rtt);
             this._ir = null;
+
             if (!info) {
               this._close(1002, 'Cannot connect to server');
-              return;
-            }
 
-            // establish a round-trip timeout (RTO) based on the
+              return;
+            } // establish a round-trip timeout (RTO) based on the
             // round-trip time (RTT)
-            this._rto = this.countRTO(rtt);
-            // allow server to override url used for the actual transport
+
+            this._rto = this.countRTO(rtt); // allow server to override url used for the actual transport
+
             this._transUrl = info.base_url ? info.base_url : this.url;
             info = objectUtils.extend(info, this._urlInfo);
-            debug('info', info);
-            // determine list of desired and supported transports
+            debug('info', info); // determine list of desired and supported transports
+
             var enabledTransports = transports.filterToEnabled(
               this._transportsWhitelist,
               info,
@@ -7269,6 +7961,7 @@
               Transport = this._transports.shift()
             ) {
               debug('attempt', Transport.transportName);
+
               if (Transport.needBody) {
                 if (
                   !global.document.body ||
@@ -7277,13 +7970,14 @@
                     global.document.readyState !== 'interactive')
                 ) {
                   debug('waiting for body');
+
                   this._transports.unshift(Transport);
+
                   eventUtils.attachEvent('load', this._connect.bind(this));
                   return;
                 }
-              }
+              } // calculate timeout based on RTO and round trips. Default to 5s
 
-              // calculate timeout based on RTO and round trips. Default to 5s
               var timeoutMs = Math.max(
                 this._timeout,
                 this._rto * Transport.roundTrips || 5000,
@@ -7293,7 +7987,6 @@
                 timeoutMs,
               );
               debug('using timeout', timeoutMs);
-
               var transportUrl = urlUtils.addPath(
                 this._transUrl,
                 '/' + this._server + '/' + this._generateSessionId(),
@@ -7309,14 +8002,15 @@
               transportObj.once('close', this._transportClose.bind(this));
               transportObj.transportName = Transport.transportName;
               this._transport = transportObj;
-
               return;
             }
+
             this._close(2000, 'All transports failed', false);
           };
 
           SockJS.prototype._transportTimeout = function () {
             debug('_transportTimeout');
+
             if (this.readyState === SockJS.CONNECTING) {
               if (this._transport) {
                 this._transport.close();
@@ -7331,13 +8025,14 @@
             var self = this,
               type = msg.slice(0, 1),
               content = msg.slice(1),
-              payload;
+              payload; // first check for messages that don't need a payload
 
-            // first check for messages that don't need a payload
             switch (type) {
               case 'o':
                 this._open();
+
                 return;
+
               case 'h':
                 this.dispatchEvent(new Event('heartbeat'));
                 debug('heartbeat', this.transport);
@@ -7365,23 +8060,29 @@
                     self.dispatchEvent(new TransportMessageEvent(p));
                   });
                 }
+
                 break;
+
               case 'm':
                 debug('message', this.transport, payload);
                 this.dispatchEvent(new TransportMessageEvent(payload));
                 break;
+
               case 'c':
                 if (Array.isArray(payload) && payload.length === 2) {
                   this._close(payload[0], payload[1], true);
                 }
+
                 break;
             }
           };
 
           SockJS.prototype._transportClose = function (code, reason) {
             debug('_transportClose', this.transport, code, reason);
+
             if (this._transport) {
               this._transport.removeAllListeners();
+
               this._transport = null;
               this.transport = null;
             }
@@ -7392,6 +8093,7 @@
               this.readyState === SockJS.CONNECTING
             ) {
               this._connect();
+
               return;
             }
 
@@ -7404,11 +8106,13 @@
               this._transport && this._transport.transportName,
               this.readyState,
             );
+
             if (this.readyState === SockJS.CONNECTING) {
               if (this._transportTimeoutId) {
                 clearTimeout(this._transportTimeoutId);
                 this._transportTimeoutId = null;
               }
+
               this.readyState = SockJS.OPEN;
               this.transport = this._transport.transportName;
               this.dispatchEvent(new Event('open'));
@@ -7433,11 +8137,15 @@
 
             if (this._ir) {
               forceFail = true;
+
               this._ir.close();
+
               this._ir = null;
             }
+
             if (this._transport) {
               this._transport.close();
+
               this._transport = null;
               this.transport = null;
             }
@@ -7461,17 +8169,15 @@
                 e.wasClean = wasClean || false;
                 e.code = code || 1000;
                 e.reason = reason;
-
                 this.dispatchEvent(e);
                 this.onmessage = this.onclose = this.onerror = null;
                 debug('disconnected');
               }.bind(this),
               0,
             );
-          };
-
-          // See: http://www.erg.abdn.ac.uk/~gerrit/dccp/notes/ccid2/rto_estimator/
+          }; // See: http://www.erg.abdn.ac.uk/~gerrit/dccp/notes/ccid2/rto_estimator/
           // and RFC 2988.
+
           SockJS.prototype.countRTO = function (rtt) {
             // In a local environment, when using IE8/9 and the `jsonp-polling`
             // transport the time needed to establish a connection (the time that pass
@@ -7482,23 +8188,25 @@
             if (rtt > 100) {
               return 4 * rtt; // rto > 400msec
             }
+
             return 300 + rtt; // 300msec < rto <= 400msec
           };
 
           module.exports = function (availableTransports) {
             transports = transport(availableTransports);
+
             __webpack_require__(/*! ./iframe-bootstrap */ 'k5s6')(
               SockJS,
               availableTransports,
             );
+
             return SockJS;
           };
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -7506,9 +8214,9 @@
       },
 
     /***/ RODr:
-      /*!***********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/version.js ***!
-  \***********************************************************************/
+      /*!********************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/version.js ***!
+  \********************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7519,9 +8227,9 @@
       },
 
     /***/ RV4G:
-      /*!***************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/xhr-streaming.js ***!
-  \***************************************************************************************/
+      /*!************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/xhr-streaming.js ***!
+  \************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7540,10 +8248,12 @@
               /*! ./sender/xhr-local */ 'r4pD',
             ),
             browser = __webpack_require__(/*! ../utils/browser */ 'nw7E');
+
           function XhrStreamingTransport(transUrl) {
             if (!XHRLocalObject.enabled && !XHRCorsObject.enabled) {
               throw new Error('Transport created when disabled');
             }
+
             AjaxBasedTransport.call(
               this,
               transUrl,
@@ -7558,9 +8268,9 @@
           XhrStreamingTransport.enabled = function (info) {
             if (info.nullOrigin) {
               return false;
-            }
-            // Opera doesn't support xhr-streaming #60
+            } // Opera doesn't support xhr-streaming #60
             // But it might be able to #92
+
             if (browser.isOpera()) {
               return false;
             }
@@ -7570,19 +8280,17 @@
 
           XhrStreamingTransport.transportName = 'xhr-streaming';
           XhrStreamingTransport.roundTrips = 2; // preflight, ajax
-
           // Safari gets confused when a streaming ajax request is started
           // before onload. This causes the load indicator to spin indefinetely.
           // Only require body when used in a browser
+
           XhrStreamingTransport.needBody = !!global.document;
-
           module.exports = XhrStreamingTransport;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -7590,32 +8298,32 @@
       },
 
     /***/ ReUS:
-      /*!****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/escape.js ***!
-  \****************************************************************************/
+      /*!*************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/escape.js ***!
+  \*************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
 
-        var JSON3 = __webpack_require__(/*! json3 */ 'enUK');
-
-        // Some extra characters that Chrome gets wrong, and substitutes with
+        var JSON3 = __webpack_require__(/*! json3 */ 'enUK'); // Some extra characters that Chrome gets wrong, and substitutes with
         // something else on the wire.
         // eslint-disable-next-line no-control-regex, no-misleading-character-class
-        var extraEscapable = /[\x00-\x1f\ud800-\udfff\ufffe\uffff\u0300-\u0333\u033d-\u0346\u034a-\u034c\u0350-\u0352\u0357-\u0358\u035c-\u0362\u0374\u037e\u0387\u0591-\u05af\u05c4\u0610-\u0617\u0653-\u0654\u0657-\u065b\u065d-\u065e\u06df-\u06e2\u06eb-\u06ec\u0730\u0732-\u0733\u0735-\u0736\u073a\u073d\u073f-\u0741\u0743\u0745\u0747\u07eb-\u07f1\u0951\u0958-\u095f\u09dc-\u09dd\u09df\u0a33\u0a36\u0a59-\u0a5b\u0a5e\u0b5c-\u0b5d\u0e38-\u0e39\u0f43\u0f4d\u0f52\u0f57\u0f5c\u0f69\u0f72-\u0f76\u0f78\u0f80-\u0f83\u0f93\u0f9d\u0fa2\u0fa7\u0fac\u0fb9\u1939-\u193a\u1a17\u1b6b\u1cda-\u1cdb\u1dc0-\u1dcf\u1dfc\u1dfe\u1f71\u1f73\u1f75\u1f77\u1f79\u1f7b\u1f7d\u1fbb\u1fbe\u1fc9\u1fcb\u1fd3\u1fdb\u1fe3\u1feb\u1fee-\u1fef\u1ff9\u1ffb\u1ffd\u2000-\u2001\u20d0-\u20d1\u20d4-\u20d7\u20e7-\u20e9\u2126\u212a-\u212b\u2329-\u232a\u2adc\u302b-\u302c\uaab2-\uaab3\uf900-\ufa0d\ufa10\ufa12\ufa15-\ufa1e\ufa20\ufa22\ufa25-\ufa26\ufa2a-\ufa2d\ufa30-\ufa6d\ufa70-\ufad9\ufb1d\ufb1f\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufb4e\ufff0-\uffff]/g,
-          extraLookup;
 
-        // This may be quite slow, so let's delay until user actually uses bad
+        var extraEscapable = /[\x00-\x1f\ud800-\udfff\ufffe\uffff\u0300-\u0333\u033d-\u0346\u034a-\u034c\u0350-\u0352\u0357-\u0358\u035c-\u0362\u0374\u037e\u0387\u0591-\u05af\u05c4\u0610-\u0617\u0653-\u0654\u0657-\u065b\u065d-\u065e\u06df-\u06e2\u06eb-\u06ec\u0730\u0732-\u0733\u0735-\u0736\u073a\u073d\u073f-\u0741\u0743\u0745\u0747\u07eb-\u07f1\u0951\u0958-\u095f\u09dc-\u09dd\u09df\u0a33\u0a36\u0a59-\u0a5b\u0a5e\u0b5c-\u0b5d\u0e38-\u0e39\u0f43\u0f4d\u0f52\u0f57\u0f5c\u0f69\u0f72-\u0f76\u0f78\u0f80-\u0f83\u0f93\u0f9d\u0fa2\u0fa7\u0fac\u0fb9\u1939-\u193a\u1a17\u1b6b\u1cda-\u1cdb\u1dc0-\u1dcf\u1dfc\u1dfe\u1f71\u1f73\u1f75\u1f77\u1f79\u1f7b\u1f7d\u1fbb\u1fbe\u1fc9\u1fcb\u1fd3\u1fdb\u1fe3\u1feb\u1fee-\u1fef\u1ff9\u1ffb\u1ffd\u2000-\u2001\u20d0-\u20d1\u20d4-\u20d7\u20e7-\u20e9\u2126\u212a-\u212b\u2329-\u232a\u2adc\u302b-\u302c\uaab2-\uaab3\uf900-\ufa0d\ufa10\ufa12\ufa15-\ufa1e\ufa20\ufa22\ufa25-\ufa26\ufa2a-\ufa2d\ufa30-\ufa6d\ufa70-\ufad9\ufb1d\ufb1f\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufb4e\ufff0-\uffff]/g,
+          extraLookup; // This may be quite slow, so let's delay until user actually uses bad
         // characters.
-        var unrollLookup = function (escapable) {
+
+        var unrollLookup = function unrollLookup(escapable) {
           var i;
           var unrolled = {};
           var c = [];
+
           for (i = 0; i < 65536; i++) {
             c.push(String.fromCharCode(i));
           }
+
           escapable.lastIndex = 0;
           c.join('').replace(escapable, function (a) {
             unrolled[a] =
@@ -7624,17 +8332,16 @@
           });
           escapable.lastIndex = 0;
           return unrolled;
-        };
-
-        // Quote string, also taking care of unicode characters that browsers
+        }; // Quote string, also taking care of unicode characters that browsers
         // often break. Especially, take care of unicode surrogates:
         // http://en.wikipedia.org/wiki/Mapping_of_Unicode_characters#Surrogates
-        module.exports = {
-          quote: function (string) {
-            var quoted = JSON3.stringify(string);
 
-            // In most cases this should be very fast and good enough.
+        module.exports = {
+          quote: function quote(string) {
+            var quoted = JSON3.stringify(string); // In most cases this should be very fast and good enough.
+
             extraEscapable.lastIndex = 0;
+
             if (!extraEscapable.test(quoted)) {
               return quoted;
             }
@@ -7653,26 +8360,31 @@
       },
 
     /***/ TvDy:
-      /*!*******************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/transport.js ***!
-  \*******************************************************************************/
+      /*!****************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/transport.js ***!
+  \****************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
 
-        var debug = function () {};
+        var debug = function debug() {};
+
         if (false) {
         }
 
         module.exports = function (availableTransports) {
           return {
-            filterToEnabled: function (transportsWhitelist, info) {
+            filterToEnabled: function filterToEnabled(
+              transportsWhitelist,
+              info,
+            ) {
               var transports = {
                 main: [],
                 facade: [],
               };
+
               if (!transportsWhitelist) {
                 transportsWhitelist = [];
               } else if (typeof transportsWhitelist === 'string') {
@@ -7703,6 +8415,7 @@
                 if (trans.enabled(info)) {
                   debug('enabled', trans.transportName);
                   transports.main.push(trans);
+
                   if (trans.facadeTransport) {
                     transports.facade.push(trans.facadeTransport);
                   }
@@ -7719,9 +8432,9 @@
       },
 
     /***/ WhmW:
-      /*!*******************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/browser/websocket.js ***!
-  \*******************************************************************************************/
+      /*!****************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/browser/websocket.js ***!
+  \****************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7729,6 +8442,7 @@
         'use strict';
         /* WEBPACK VAR INJECTION */ (function (global) {
           var Driver = global.WebSocket || global.MozWebSocket;
+
           if (Driver) {
             module.exports = function WebSocketBrowserDriver(url) {
               return new Driver(url);
@@ -7736,12 +8450,11 @@
           } else {
             module.exports = undefined;
           }
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -7749,9 +8462,9 @@
       },
 
     /***/ XMJ0:
-      /*!**********************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/receiver/eventsource.js ***!
-  \**********************************************************************************************/
+      /*!*******************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/receiver/eventsource.js ***!
+  \*******************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7761,26 +8474,31 @@
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           EventEmitter = __webpack_require__(/*! events */ '7ZNq').EventEmitter,
           EventSourceDriver = __webpack_require__(/*! eventsource */ 'vmN6');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
         function EventSourceReceiver(url) {
           debug(url);
           EventEmitter.call(this);
-
           var self = this;
           var es = (this.es = new EventSourceDriver(url));
+
           es.onmessage = function (e) {
             debug('message', e.data);
             self.emit('message', decodeURI(e.data));
           };
+
           es.onerror = function (e) {
-            debug('error', es.readyState, e);
-            // ES on reconnection has readyState = 0 or 1.
+            debug('error', es.readyState, e); // ES on reconnection has readyState = 0 or 1.
             // on network error it's CLOSED = 2
+
             var reason = es.readyState !== 2 ? 'network' : 'permanent';
+
             self._cleanup();
+
             self._close(reason);
           };
         }
@@ -7789,13 +8507,16 @@
 
         EventSourceReceiver.prototype.abort = function () {
           debug('abort');
+
           this._cleanup();
+
           this._close('user');
         };
 
         EventSourceReceiver.prototype._cleanup = function () {
           debug('cleanup');
           var es = this.es;
+
           if (es) {
             es.onmessage = es.onerror = null;
             es.close();
@@ -7805,10 +8526,10 @@
 
         EventSourceReceiver.prototype._close = function (reason) {
           debug('close', reason);
-          var self = this;
-          // Safari and chrome < 15 crash if we close window before
+          var self = this; // Safari and chrome < 15 crash if we close window before
           // waiting for ES cleanup. See:
           // https://code.google.com/p/chromium/issues/detail?id=89155
+
           setTimeout(function () {
             self.emit('close', null, reason);
             self.removeAllListeners();
@@ -7821,9 +8542,9 @@
       },
 
     /***/ YAuw:
-      /*!***************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/info-iframe.js ***!
-  \***************************************************************************/
+      /*!************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/info-iframe.js ***!
+  \************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7841,7 +8562,9 @@
             InfoReceiverIframe = __webpack_require__(
               /*! ./info-iframe-receiver */ '5Fgh',
             );
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
@@ -7849,16 +8572,16 @@
             var self = this;
             EventEmitter.call(this);
 
-            var go = function () {
+            var go = function go() {
               var ifr = (self.ifr = new IframeTransport(
                 InfoReceiverIframe.transportName,
                 url,
                 baseUrl,
               ));
-
               ifr.once('message', function (msg) {
                 if (msg) {
                   var d;
+
                   try {
                     d = JSON3.parse(msg);
                   } catch (e) {
@@ -7872,16 +8595,15 @@
                     rtt = d[1];
                   self.emit('finish', info, rtt);
                 }
+
                 self.close();
               });
-
               ifr.once('close', function () {
                 self.emit('finish');
                 self.close();
               });
-            };
+            }; // TODO this seems the same as the 'needBody' from transports
 
-            // TODO this seems the same as the 'needBody' from transports
             if (!global.document.body) {
               utils.attachEvent('load', go);
             } else {
@@ -7899,17 +8621,17 @@
             if (this.ifr) {
               this.ifr.close();
             }
+
             this.removeAllListeners();
             this.ifr = null;
           };
 
           module.exports = InfoIframe;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -7917,9 +8639,9 @@
       },
 
     /***/ YCV4:
-      /*!******************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/querystringify/index.js ***!
-  \******************************************************************/
+      /*!***************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/querystringify/index.js ***!
+  \***************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -7928,7 +8650,6 @@
 
         var has = Object.prototype.hasOwnProperty,
           undef;
-
         /**
          * Decode a URI encoded string.
          *
@@ -7936,6 +8657,7 @@
          * @returns {String|Null} The decoded string.
          * @api private
          */
+
         function decode(input) {
           try {
             return decodeURIComponent(input.replace(/\+/g, ' '));
@@ -7943,7 +8665,6 @@
             return null;
           }
         }
-
         /**
          * Attempts to encode a given input.
          *
@@ -7951,6 +8672,7 @@
          * @returns {String|Null} The encoded string.
          * @api private
          */
+
         function encode(input) {
           try {
             return encodeURIComponent(input);
@@ -7958,7 +8680,6 @@
             return null;
           }
         }
-
         /**
          * Simple query string parser.
          *
@@ -7966,6 +8687,7 @@
          * @returns {Object}
          * @api public
          */
+
         function querystring(query) {
           var parser = /([^=?#&]+)=?([^&]*)/g,
             result = {},
@@ -7973,9 +8695,7 @@
 
           while ((part = parser.exec(query))) {
             var key = decode(part[1]),
-              value = decode(part[2]);
-
-            //
+              value = decode(part[2]); //
             // Prevent overriding of existing properties. This ensures that build-in
             // methods like `toString` or __proto__ are not overriden by malicious
             // querystrings.
@@ -7983,13 +8703,13 @@
             // In the case if failed decoding, we want to omit the key/value pairs
             // from the result.
             //
+
             if (key === null || value === null || key in result) continue;
             result[key] = value;
           }
 
           return result;
         }
-
         /**
          * Transform a query string to an object.
          *
@@ -7998,26 +8718,24 @@
          * @returns {String}
          * @api public
          */
+
         function querystringify(obj, prefix) {
           prefix = prefix || '';
-
           var pairs = [],
             value,
-            key;
-
-          //
+            key; //
           // Optionally prefix with a '?' if needed
           //
+
           if ('string' !== typeof prefix) prefix = '?';
 
           for (key in obj) {
             if (has.call(obj, key)) {
-              value = obj[key];
-
-              //
+              value = obj[key]; //
               // Edge cases where we actually want to encode the value to an empty
               // string instead of the stringified value.
               //
+
               if (
                 !value &&
                 (value === null || value === undef || isNaN(value))
@@ -8026,23 +8744,21 @@
               }
 
               key = encode(key);
-              value = encode(value);
-
-              //
+              value = encode(value); //
               // If we failed to encode the strings, we should bail out as we don't
               // want to add invalid strings to the query.
               //
+
               if (key === null || value === null) continue;
               pairs.push(key + '=' + value);
             }
           }
 
           return pairs.length ? prefix + pairs.join('&') : '';
-        }
-
-        //
+        } //
         // Expose the module.
         //
+
         exports.stringify = querystringify;
         exports.parse = querystring;
 
@@ -8050,9 +8766,9 @@
       },
 
     /***/ ZQWX:
-      /*!*****************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/sender/xhr-fake.js ***!
-  \*****************************************************************************************/
+      /*!**************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/sender/xhr-fake.js ***!
+  \**************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -8062,10 +8778,11 @@
         var EventEmitter = __webpack_require__(/*! events */ '7ZNq')
             .EventEmitter,
           inherits = __webpack_require__(/*! inherits */ 'qW1w');
-        function XHRFake(/* method, url, payload, opts */) {
+
+        function XHRFake() {
+          /* method, url, payload, opts */
           var self = this;
           EventEmitter.call(this);
-
           this.to = setTimeout(function () {
             self.emit('finish', 200, '{}');
           }, XHRFake.timeout);
@@ -8078,90 +8795,15 @@
         };
 
         XHRFake.timeout = 2000;
-
         module.exports = XHRFake;
 
         /***/
       },
 
-    /***/ bndf:
-      /*!**********************************!*\
-  !*** (webpack)/4/amd-options.js ***!
-  \**********************************/
-      /*! no static exports found */
-      /*! all exports used */
-      /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-      /***/ function (module, exports) {
-        /* WEBPACK VAR INJECTION */ (function (
-          __webpack_amd_options__,
-          __dirname,
-        ) {
-          module.exports = /******/ (function () {
-            // webpackBootstrap
-            /******/ var __webpack_modules__ = {
-              /***/ 579: /***/ function (module) {
-                /* globals __webpack_amd_options__ */
-                module.exports = __webpack_amd_options__;
-
-                /***/
-              },
-
-              /******/
-            }; // The module cache
-            /************************************************************************/
-            /******/ /******/ var __webpack_module_cache__ = {}; // The require function
-            /******/
-            /******/ /******/ function __nccwpck_require__(moduleId) {
-              /******/ // Check if module is in cache
-              /******/ if (__webpack_module_cache__[moduleId]) {
-                /******/ return __webpack_module_cache__[moduleId].exports;
-                /******/
-              } // Create a new module (and put it into the cache)
-              /******/ /******/ var module = (__webpack_module_cache__[
-                moduleId
-              ] = {
-                /******/ // no module.id needed
-                /******/ // no module.loaded needed
-                /******/ exports: {},
-                /******/
-              }); // Execute the module function
-              /******/
-              /******/ /******/ var threw = true;
-              /******/ try {
-                /******/ __webpack_modules__[moduleId](
-                  module,
-                  module.exports,
-                  __nccwpck_require__,
-                );
-                /******/ threw = false;
-                /******/
-              } finally {
-                /******/ if (threw) delete __webpack_module_cache__[moduleId];
-                /******/
-              } // Return the exports of the module
-              /******/
-              /******/ /******/ return module.exports;
-              /******/
-            } /* webpack/runtime/compat */
-            /******/
-            /************************************************************************/
-            /******/ /******/
-            /******/ __nccwpck_require__.ab =
-              __dirname +
-              '/'; /************************************************************************/ // module exports must be returned from runtime so entry inlining is disabled // startup // Load entry module and return exports
-            /******/ /******/ /******/ /******/ return __nccwpck_require__(579);
-            /******/
-          })();
-          /* WEBPACK VAR INJECTION */
-        }.call(this, {}, '/'));
-
-        /***/
-      },
-
     /***/ burc:
-      /*!***********************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/event/trans-message.js ***!
-  \***********************************************************************************/
+      /*!********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/event/trans-message.js ***!
+  \********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -8170,6 +8812,7 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           Event = __webpack_require__(/*! ./event */ 'uFOv');
+
         function TransportMessageEvent(data) {
           Event.call(this);
           this.initEvent('message', false, false);
@@ -8177,16 +8820,15 @@
         }
 
         inherits(TransportMessageEvent, Event);
-
         module.exports = TransportMessageEvent;
 
         /***/
       },
 
     /***/ eCk1:
-      /*!**********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/facade.js ***!
-  \**********************************************************************/
+      /*!*******************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/facade.js ***!
+  \*******************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -8195,6 +8837,7 @@
 
         var JSON3 = __webpack_require__(/*! json3 */ 'enUK'),
           iframeUtils = __webpack_require__(/*! ./utils/iframe */ 'fwyQ');
+
         function FacadeJS(transport) {
           this._transport = transport;
           transport.on('message', this._transportMessage.bind(this));
@@ -8204,14 +8847,18 @@
         FacadeJS.prototype._transportClose = function (code, reason) {
           iframeUtils.postMessage('c', JSON3.stringify([code, reason]));
         };
+
         FacadeJS.prototype._transportMessage = function (frame) {
           iframeUtils.postMessage('t', frame);
         };
+
         FacadeJS.prototype._send = function (data) {
           this._transport.send(data);
         };
+
         FacadeJS.prototype._close = function () {
           this._transport.close();
+
           this._transport.removeAllListeners();
         };
 
@@ -8221,9 +8868,9 @@
       },
 
     /***/ enUK:
-      /*!*************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/json3/lib/json3.js ***!
-  \*************************************************************/
+      /*!**********************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/json3/lib/json3.js ***!
+  \**********************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -8234,25 +8881,22 @@
             // Detect the `define` function exposed by asynchronous module loaders. The
             // strict `define` check is necessary for compatibility with `r.js`.
             var isLoader =
-              true && __webpack_require__(/*! !webpack amd options */ 'bndf');
+              true && __webpack_require__(/*! !webpack amd options */ 'FzHg'); // A set of types used to distinguish objects from primitives.
 
-            // A set of types used to distinguish objects from primitives.
             var objectTypes = {
               function: true,
               object: true,
-            };
+            }; // Detect the `exports` object exposed by CommonJS implementations.
 
-            // Detect the `exports` object exposed by CommonJS implementations.
             var freeExports =
               objectTypes[typeof exports] &&
               exports &&
               !exports.nodeType &&
-              exports;
-
-            // Use the `global` object exposed by Node (including Browserify via
+              exports; // Use the `global` object exposed by Node (including Browserify via
             // `insert-module-globals`), Narwhal, and Ringo as the default context,
             // and the `window` object in browsers. Rhino exports a `global` function
             // instead.
+
             var root = (objectTypes[typeof window] && window) || this,
               freeGlobal =
                 freeExports &&
@@ -8269,15 +8913,13 @@
                 freeGlobal.self === freeGlobal)
             ) {
               root = freeGlobal;
-            }
-
-            // Public: Initializes JSON 3 using the given `context` object, attaching the
+            } // Public: Initializes JSON 3 using the given `context` object, attaching the
             // `stringify` and `parse` functions to the specified `exports` object.
+
             function runInContext(context, exports) {
               context || (context = root.Object());
-              exports || (exports = root.Object());
+              exports || (exports = root.Object()); // Native constructor aliases.
 
-              // Native constructor aliases.
               var Number = context.Number || root.Number,
                 String = context.String || root.String,
                 Object = context.Object || root.Object,
@@ -8285,22 +8927,19 @@
                 SyntaxError = context.SyntaxError || root.SyntaxError,
                 TypeError = context.TypeError || root.TypeError,
                 Math = context.Math || root.Math,
-                nativeJSON = context.JSON || root.JSON;
+                nativeJSON = context.JSON || root.JSON; // Delegate to the native `stringify` and `parse` implementations.
 
-              // Delegate to the native `stringify` and `parse` implementations.
               if (typeof nativeJSON == 'object' && nativeJSON) {
                 exports.stringify = nativeJSON.stringify;
                 exports.parse = nativeJSON.parse;
-              }
+              } // Convenience aliases.
 
-              // Convenience aliases.
               var objectProto = Object.prototype,
                 getClass = objectProto.toString,
                 isProperty = objectProto.hasOwnProperty,
-                undefined;
-
-              // Internal: Contains `try...catch` logic used by other functions.
+                undefined; // Internal: Contains `try...catch` logic used by other functions.
               // This prevents other functions from being deoptimized.
+
               function attempt(func, errorFunc) {
                 try {
                   func();
@@ -8309,9 +8948,8 @@
                     errorFunc();
                   }
                 }
-              }
+              } // Test the `Date#getUTC*` methods. Based on work by @Yaffle.
 
-              // Test the `Date#getUTC*` methods. Based on work by @Yaffle.
               var isExtended = new Date(-3509827334573292);
               attempt(function () {
                 // The `getUTCFullYear`, `Month`, and `Date` methods return nonsensical
@@ -8324,16 +8962,17 @@
                   isExtended.getUTCMinutes() == 37 &&
                   isExtended.getUTCSeconds() == 6 &&
                   isExtended.getUTCMilliseconds() == 708;
-              });
-
-              // Internal: Determines whether the native `JSON.stringify` and `parse`
+              }); // Internal: Determines whether the native `JSON.stringify` and `parse`
               // implementations are spec-compliant. Based on work by Ken Snyder.
+
               function has(name) {
                 if (has[name] != null) {
                   // Return cached feature test result.
                   return has[name];
                 }
+
                 var isSupported;
+
                 if (name == 'bug-string-char-index') {
                   // IE <= 7 doesn't support accessing string characters using square
                   // bracket notation. IE 8 only supports this for primitives.
@@ -8348,22 +8987,19 @@
                 } else if (name == 'date-serialization') {
                   // Indicates whether `Date`s can be serialized accurately by `JSON.stringify`.
                   isSupported = has('json-stringify') && isExtended;
+
                   if (isSupported) {
                     var stringify = exports.stringify;
                     attempt(function () {
-                      isSupported =
-                        // JSON 2, Prototype <= 1.7, and older WebKit builds incorrectly
+                      isSupported = // JSON 2, Prototype <= 1.7, and older WebKit builds incorrectly
                         // serialize extended years.
                         stringify(new Date(-8.64e15)) ==
-                          '"-271821-04-20T00:00:00.000Z"' &&
-                        // The milliseconds are optional in ES 5, but required in 5.1.
+                          '"-271821-04-20T00:00:00.000Z"' && // The milliseconds are optional in ES 5, but required in 5.1.
                         stringify(new Date(8.64e15)) ==
-                          '"+275760-09-13T00:00:00.000Z"' &&
-                        // Firefox <= 11.0 incorrectly serializes years prior to 0 as negative
+                          '"+275760-09-13T00:00:00.000Z"' && // Firefox <= 11.0 incorrectly serializes years prior to 0 as negative
                         // four-digit years instead of six-digit years. Credits: @Yaffle.
                         stringify(new Date(-621987552e5)) ==
-                          '"-000001-01-01T00:00:00.000Z"' &&
-                        // Safari <= 5.1.5 and Opera >= 10.53 incorrectly serialize millisecond
+                          '"-000001-01-01T00:00:00.000Z"' && // Safari <= 5.1.5 and Opera >= 10.53 incorrectly serialize millisecond
                         // values less than 1000. Credits: @Yaffle.
                         stringify(new Date(-1)) == '"1969-12-31T23:59:59.999Z"';
                     });
@@ -8371,61 +9007,51 @@
                 } else {
                   var value,
                     serialized =
-                      '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
-                  // Test `JSON.stringify`.
+                      '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}'; // Test `JSON.stringify`.
+
                   if (name == 'json-stringify') {
                     var stringify = exports.stringify,
                       stringifySupported = typeof stringify == 'function';
+
                     if (stringifySupported) {
                       // A test function object with a custom `toJSON` method.
-                      (value = function () {
+                      (value = function value() {
                         return 1;
                       }).toJSON = value;
                       attempt(
                         function () {
-                          stringifySupported =
-                            // Firefox 3.1b1 and b2 serialize string, number, and boolean
+                          stringifySupported = // Firefox 3.1b1 and b2 serialize string, number, and boolean
                             // primitives as object literals.
-                            stringify(0) === '0' &&
-                            // FF 3.1b1, b2, and JSON 2 serialize wrapped primitives as object
+                            stringify(0) === '0' && // FF 3.1b1, b2, and JSON 2 serialize wrapped primitives as object
                             // literals.
                             stringify(new Number()) === '0' &&
-                            stringify(new String()) == '""' &&
-                            // FF 3.1b1, 2 throw an error if the value is `null`, `undefined`, or
+                            stringify(new String()) == '""' && // FF 3.1b1, 2 throw an error if the value is `null`, `undefined`, or
                             // does not define a canonical JSON representation (this applies to
                             // objects with `toJSON` properties as well, *unless* they are nested
                             // within an object or array).
-                            stringify(getClass) === undefined &&
-                            // IE 8 serializes `undefined` as `"undefined"`. Safari <= 5.1.7 and
+                            stringify(getClass) === undefined && // IE 8 serializes `undefined` as `"undefined"`. Safari <= 5.1.7 and
                             // FF 3.1b3 pass this test.
-                            stringify(undefined) === undefined &&
-                            // Safari <= 5.1.7 and FF 3.1b3 throw `Error`s and `TypeError`s,
+                            stringify(undefined) === undefined && // Safari <= 5.1.7 and FF 3.1b3 throw `Error`s and `TypeError`s,
                             // respectively, if the value is omitted entirely.
-                            stringify() === undefined &&
-                            // FF 3.1b1, 2 throw an error if the given value is not a number,
+                            stringify() === undefined && // FF 3.1b1, 2 throw an error if the given value is not a number,
                             // string, array, object, Boolean, or `null` literal. This applies to
                             // objects with custom `toJSON` methods as well, unless they are nested
                             // inside object or array literals. YUI 3.0.0b1 ignores custom `toJSON`
                             // methods entirely.
                             stringify(value) === '1' &&
-                            stringify([value]) == '[1]' &&
-                            // Prototype <= 1.6.1 serializes `[undefined]` as `"[]"` instead of
+                            stringify([value]) == '[1]' && // Prototype <= 1.6.1 serializes `[undefined]` as `"[]"` instead of
                             // `"[null]"`.
-                            stringify([undefined]) == '[null]' &&
-                            // YUI 3.0.0b1 fails to serialize `null` literals.
-                            stringify(null) == 'null' &&
-                            // FF 3.1b1, 2 halts serialization if an array contains a function:
+                            stringify([undefined]) == '[null]' && // YUI 3.0.0b1 fails to serialize `null` literals.
+                            stringify(null) == 'null' && // FF 3.1b1, 2 halts serialization if an array contains a function:
                             // `[1, true, getClass, 1]` serializes as "[1,true,],". FF 3.1b3
                             // elides non-JSON values from objects and arrays, unless they
                             // define custom `toJSON` methods.
                             stringify([undefined, getClass, null]) ==
-                              '[null,null,null]' &&
-                            // Simple serialization test. FF 3.1b1 uses Unicode escape sequences
+                              '[null,null,null]' && // Simple serialization test. FF 3.1b1 uses Unicode escape sequences
                             // where character escape codes are expected (e.g., `\b` => `\u0008`).
                             stringify({
                               a: [value, true, false, null, '\x00\b\n\f\r\t'],
-                            }) == serialized &&
-                            // FF 3.1b1 and b2 ignore the `filter` and `width` arguments.
+                            }) == serialized && // FF 3.1b1 and b2 ignore the `filter` and `width` arguments.
                             stringify(null, value) === '1' &&
                             stringify([1, 2], null, 1) == '[\n 1,\n 2\n]';
                         },
@@ -8434,12 +9060,14 @@
                         },
                       );
                     }
+
                     isSupported = stringifySupported;
-                  }
-                  // Test `JSON.parse`.
+                  } // Test `JSON.parse`.
+
                   if (name == 'json-parse') {
                     var parse = exports.parse,
                       parseSupported;
+
                     if (typeof parse == 'function') {
                       attempt(
                         function () {
@@ -8451,11 +9079,13 @@
                             value = parse(serialized);
                             parseSupported =
                               value['a'].length == 5 && value['a'][0] === 1;
+
                             if (parseSupported) {
                               attempt(function () {
                                 // Safari <= 5.1.2 and FF 3.1b1 allow unescaped tabs in strings.
                                 parseSupported = !parse('"\t"');
                               });
+
                               if (parseSupported) {
                                 attempt(function () {
                                   // FF 4.0 and 4.0.1 allow leading `+` signs and leading
@@ -8464,6 +9094,7 @@
                                   parseSupported = parse('01') !== 1;
                                 });
                               }
+
                               if (parseSupported) {
                                 attempt(function () {
                                   // FF 4.0, 4.0.1, and Rhino 1.7R3-R4 allow trailing decimal
@@ -8480,11 +9111,14 @@
                         },
                       );
                     }
+
                     isSupported = parseSupported;
                   }
                 }
+
                 return (has[name] = !!isSupported);
               }
+
               has['bug-string-char-index'] = has['date-serialization'] = has[
                 'json'
               ] = has['json-stringify'] = has['json-parse'] = null;
@@ -8496,37 +9130,34 @@
                   numberClass = '[object Number]',
                   stringClass = '[object String]',
                   arrayClass = '[object Array]',
-                  booleanClass = '[object Boolean]';
+                  booleanClass = '[object Boolean]'; // Detect incomplete support for accessing string characters by index.
 
-                // Detect incomplete support for accessing string characters by index.
-                var charIndexBuggy = has('bug-string-char-index');
-
-                // Internal: Normalizes the `for...in` iteration algorithm across
+                var charIndexBuggy = has('bug-string-char-index'); // Internal: Normalizes the `for...in` iteration algorithm across
                 // environments. Each enumerated key is yielded to a `callback` function.
-                var forOwn = function (object, callback) {
+
+                var _forOwn = function forOwn(object, callback) {
                   var size = 0,
                     Properties,
                     dontEnums,
-                    property;
-
-                  // Tests for bugs in the current environment's `for...in` algorithm. The
+                    property; // Tests for bugs in the current environment's `for...in` algorithm. The
                   // `valueOf` property inherits the non-enumerable flag from
                   // `Object.prototype` in older versions of IE, Netscape, and Mozilla.
-                  (Properties = function () {
-                    this.valueOf = 0;
-                  }).prototype.valueOf = 0;
 
-                  // Iterate over a new instance of the `Properties` class.
+                  (Properties = function Properties() {
+                    this.valueOf = 0;
+                  }).prototype.valueOf = 0; // Iterate over a new instance of the `Properties` class.
+
                   dontEnums = new Properties();
+
                   for (property in dontEnums) {
                     // Ignore all properties inherited from `Object.prototype`.
                     if (isProperty.call(dontEnums, property)) {
                       size++;
                     }
                   }
-                  Properties = dontEnums = null;
 
-                  // Normalize the iteration algorithm.
+                  Properties = dontEnums = null; // Normalize the iteration algorithm.
+
                   if (!size) {
                     // A list of non-enumerable properties inherited from `Object.prototype`.
                     dontEnums = [
@@ -8537,10 +9168,10 @@
                       'isPrototypeOf',
                       'hasOwnProperty',
                       'constructor',
-                    ];
-                    // IE <= 8, Mozilla 1.0, and Netscape 6.2 ignore shadowed non-enumerable
+                    ]; // IE <= 8, Mozilla 1.0, and Netscape 6.2 ignore shadowed non-enumerable
                     // properties.
-                    forOwn = function (object, callback) {
+
+                    _forOwn = function forOwn(object, callback) {
                       var isFunction = getClass.call(object) == functionClass,
                         property,
                         length;
@@ -8550,6 +9181,7 @@
                           objectTypes[typeof object.hasOwnProperty] &&
                           object.hasOwnProperty) ||
                         isProperty;
+
                       for (property in object) {
                         // Gecko <= 1.0 enumerates the `prototype` property of functions under
                         // certain conditions; IE does not.
@@ -8559,8 +9191,8 @@
                         ) {
                           callback(property);
                         }
-                      }
-                      // Manually invoke the callback for each non-enumerable property.
+                      } // Manually invoke the callback for each non-enumerable property.
+
                       for (
                         length = dontEnums.length;
                         (property = dontEnums[--length]);
@@ -8573,10 +9205,11 @@
                     };
                   } else {
                     // No bugs detected; use the standard `for...in` algorithm.
-                    forOwn = function (object, callback) {
+                    _forOwn = function forOwn(object, callback) {
                       var isFunction = getClass.call(object) == functionClass,
                         property,
                         isConstructor;
+
                       for (property in object) {
                         if (
                           !(isFunction && property == 'prototype') &&
@@ -8585,9 +9218,9 @@
                         ) {
                           callback(property);
                         }
-                      }
-                      // Manually invoke the callback for the `constructor` property due to
+                      } // Manually invoke the callback for the `constructor` property due to
                       // cross-environment inconsistencies.
+
                       if (
                         isConstructor ||
                         isProperty.call(object, (property = 'constructor'))
@@ -8596,15 +9229,15 @@
                       }
                     };
                   }
-                  return forOwn(object, callback);
-                };
 
-                // Public: Serializes a JavaScript `value` as a JSON string. The optional
+                  return _forOwn(object, callback);
+                }; // Public: Serializes a JavaScript `value` as a JSON string. The optional
                 // `filter` argument may specify either a function that alters how object and
                 // array members are serialized, or an array of strings and numbers that
                 // indicates which properties should be serialized. The optional `width`
                 // argument may be either a string or number that specifies the indentation
                 // level of the output.
+
                 if (!has('json-stringify') && !has('date-serialization')) {
                   // Internal: A map of control characters and their escaped equivalents.
                   var Escapes = {
@@ -8615,19 +9248,18 @@
                     10: '\\n',
                     13: '\\r',
                     9: '\\t',
-                  };
-
-                  // Internal: Converts `value` into a zero-padded string such that its
+                  }; // Internal: Converts `value` into a zero-padded string such that its
                   // length is at least equal to `width`. The `width` must be <= 6.
+
                   var leadingZeroes = '000000';
-                  var toPaddedString = function (width, value) {
+
+                  var toPaddedString = function toPaddedString(width, value) {
                     // The `|| 0` expression is necessary to work around a bug in
                     // Opera <= 7.54u2 where `0 == -0`, but `String(-0) !== "0"`.
                     return (leadingZeroes + (value || 0)).slice(-width);
-                  };
+                  }; // Internal: Serializes a date object.
 
-                  // Internal: Serializes a date object.
-                  var serializeDate = function (value) {
+                  var _serializeDate = function serializeDate(value) {
                     var getData,
                       year,
                       month,
@@ -8636,12 +9268,12 @@
                       hours,
                       minutes,
                       seconds,
-                      milliseconds;
-                    // Define additional utility methods if the `Date` methods are buggy.
+                      milliseconds; // Define additional utility methods if the `Date` methods are buggy.
+
                     if (!isExtended) {
-                      var floor = Math.floor;
-                      // A mapping between the months of the year and the number of days between
+                      var floor = Math.floor; // A mapping between the months of the year and the number of days between
                       // January 1st and the first of the respective month.
+
                       var Months = [
                         0,
                         31,
@@ -8655,10 +9287,10 @@
                         273,
                         304,
                         334,
-                      ];
-                      // Internal: Calculates the number of days between the Unix epoch and the
+                      ]; // Internal: Calculates the number of days between the Unix epoch and the
                       // first day of the given month.
-                      var getDay = function (year, month) {
+
+                      var getDay = function getDay(year, month) {
                         return (
                           Months[month] +
                           365 * (year - 1970) +
@@ -8667,36 +9299,40 @@
                           floor((year - 1601 + month) / 400)
                         );
                       };
-                      getData = function (value) {
+
+                      getData = function getData(value) {
                         // Manually compute the year, month, date, hours, minutes,
                         // seconds, and milliseconds if the `getUTC*` methods are
                         // buggy. Adapted from @Yaffle's `date-shim` project.
                         date = floor(value / 864e5);
+
                         for (
                           year = floor(date / 365.2425) + 1970 - 1;
                           getDay(year + 1, 0) <= date;
                           year++
-                        );
+                        ) {}
+
                         for (
                           month = floor((date - getDay(year, 0)) / 30.42);
                           getDay(year, month + 1) <= date;
                           month++
-                        );
-                        date = 1 + date - getDay(year, month);
-                        // The `time` value specifies the time within the day (see ES
+                        ) {}
+
+                        date = 1 + date - getDay(year, month); // The `time` value specifies the time within the day (see ES
                         // 5.1 section 15.9.1.2). The formula `(A % B + B) % B` is used
                         // to compute `A modulo B`, as the `%` operator does not
                         // correspond to the `modulo` operation for negative numbers.
-                        time = ((value % 864e5) + 864e5) % 864e5;
-                        // The hours, minutes, seconds, and milliseconds are obtained by
+
+                        time = ((value % 864e5) + 864e5) % 864e5; // The hours, minutes, seconds, and milliseconds are obtained by
                         // decomposing the time within the day. See section 15.9.1.10.
+
                         hours = floor(time / 36e5) % 24;
                         minutes = floor(time / 6e4) % 60;
                         seconds = floor(time / 1e3) % 60;
                         milliseconds = time % 1e3;
                       };
                     } else {
-                      getData = function (value) {
+                      getData = function getData(value) {
                         year = value.getUTCFullYear();
                         month = value.getUTCMonth();
                         date = value.getUTCDate();
@@ -8706,13 +9342,14 @@
                         milliseconds = value.getUTCMilliseconds();
                       };
                     }
-                    serializeDate = function (value) {
+
+                    _serializeDate = function serializeDate(value) {
                       if (value > -1 / 0 && value < 1 / 0) {
                         // Dates are serialized according to the `Date#toJSON` method
                         // specified in ES 5.1 section 15.9.5.44. See section 15.9.1.15
                         // for the ISO 8601 date time string format.
-                        getData(value);
-                        // Serialize extended years correctly.
+                        getData(value); // Serialize extended years correctly.
+
                         value =
                           (year <= 0 || year >= 1e4
                             ? (year < 0 ? '-' : '+') +
@@ -8721,16 +9358,14 @@
                           '-' +
                           toPaddedString(2, month + 1) +
                           '-' +
-                          toPaddedString(2, date) +
-                          // Months, dates, hours, minutes, and seconds should have two
+                          toPaddedString(2, date) + // Months, dates, hours, minutes, and seconds should have two
                           // digits; milliseconds should have three.
                           'T' +
                           toPaddedString(2, hours) +
                           ':' +
                           toPaddedString(2, minutes) +
                           ':' +
-                          toPaddedString(2, seconds) +
-                          // Milliseconds are optional in ES 5.0, but required in 5.1.
+                          toPaddedString(2, seconds) + // Milliseconds are optional in ES 5.0, but required in 5.1.
                           '.' +
                           toPaddedString(3, milliseconds) +
                           'Z';
@@ -8738,22 +9373,23 @@
                       } else {
                         value = null;
                       }
+
                       return value;
                     };
-                    return serializeDate(value);
-                  };
 
-                  // For environments with `JSON.stringify` but buggy date serialization,
+                    return _serializeDate(value);
+                  }; // For environments with `JSON.stringify` but buggy date serialization,
                   // we override the native `Date#toJSON` implementation with a
                   // spec-compliant one.
+
                   if (has('json-stringify') && !has('date-serialization')) {
                     // Internal: the `Date#toJSON` implementation used to override the native one.
-                    function dateToJSON(key) {
-                      return serializeDate(this);
-                    }
+                    var dateToJSON = function dateToJSON(key) {
+                      return _serializeDate(this);
+                    }; // Public: `JSON.stringify`. See ES 5.1 section 15.12.3.
 
-                    // Public: `JSON.stringify`. See ES 5.1 section 15.12.3.
                     var nativeStringify = exports.stringify;
+
                     exports.stringify = function (source, filter, width) {
                       var nativeToJSON = Date.prototype.toJSON;
                       Date.prototype.toJSON = dateToJSON;
@@ -8767,18 +9403,23 @@
                     // their escaped equivalents. This is an implementation of the
                     // `Quote(value)` operation defined in ES 5.1 section 15.12.3.
                     var unicodePrefix = '\\u00';
-                    var escapeChar = function (character) {
+
+                    var escapeChar = function escapeChar(character) {
                       var charCode = character.charCodeAt(0),
                         escaped = Escapes[charCode];
+
                       if (escaped) {
                         return escaped;
                       }
+
                       return (
                         unicodePrefix + toPaddedString(2, charCode.toString(16))
                       );
                     };
+
                     var reEscape = /[\x00-\x1f\x22\x5c]/g;
-                    var quote = function (value) {
+
+                    var quote = function quote(value) {
                       reEscape.lastIndex = 0;
                       return (
                         '"' +
@@ -8787,11 +9428,10 @@
                           : value) +
                         '"'
                       );
-                    };
-
-                    // Internal: Recursively serializes an object. Implements the
+                    }; // Internal: Recursively serializes an object. Implements the
                     // `Str(key, holder)`, `JO(value)`, and `JA(value)` operations.
-                    var serialize = function (
+
+                    var serialize = function serialize(
                       property,
                       object,
                       callback,
@@ -8813,36 +9453,41 @@
                         // Necessary for host object support.
                         value = object[property];
                       });
+
                       if (typeof value == 'object' && value) {
                         if (
                           value.getUTCFullYear &&
                           getClass.call(value) == dateClass &&
                           value.toJSON === Date.prototype.toJSON
                         ) {
-                          value = serializeDate(value);
+                          value = _serializeDate(value);
                         } else if (typeof value.toJSON == 'function') {
                           value = value.toJSON(property);
                         }
                       }
+
                       if (callback) {
                         // If a replacement function was provided, call it to obtain the value
                         // for serialization.
                         value = callback.call(object, property, value);
-                      }
-                      // Exit early if value is `undefined` or `null`.
+                      } // Exit early if value is `undefined` or `null`.
+
                       if (value == undefined) {
                         return value === undefined ? value : 'null';
                       }
-                      type = typeof value;
-                      // Only call `getClass` if the value is an object.
+
+                      type = typeof value; // Only call `getClass` if the value is an object.
+
                       if (type == 'object') {
                         className = getClass.call(value);
                       }
+
                       switch (className || type) {
                         case 'boolean':
                         case booleanClass:
                           // Booleans are represented literally.
                           return '' + value;
+
                         case 'number':
                         case numberClass:
                           // JSON numbers must be finite. `Infinity` and `NaN` are serialized as
@@ -8850,12 +9495,13 @@
                           return value > -1 / 0 && value < 1 / 0
                             ? '' + value
                             : 'null';
+
                         case 'string':
                         case stringClass:
                           // Strings are double-quoted and escaped.
                           return quote('' + value);
-                      }
-                      // Recursively serialize objects and arrays.
+                      } // Recursively serialize objects and arrays.
+
                       if (typeof value == 'object') {
                         // Check for cyclic structures. This is a linear search; performance
                         // is inversely proportional to the number of unique nested objects.
@@ -8864,13 +9510,14 @@
                             // Cyclic structures cannot be serialized by `JSON.stringify`.
                             throw TypeError();
                           }
-                        }
-                        // Add the object to the stack of traversed objects.
+                        } // Add the object to the stack of traversed objects.
+
                         stack.push(value);
-                        results = [];
-                        // Save the current indentation level and indent one additional level.
+                        results = []; // Save the current indentation level and indent one additional level.
+
                         prefix = indentation;
                         indentation += whitespace;
+
                         if (className == arrayClass) {
                           // Recursively serialize array elements.
                           for (
@@ -8891,6 +9538,7 @@
                               element === undefined ? 'null' : element,
                             );
                           }
+
                           result = results.length
                             ? whitespace
                               ? '[\n' +
@@ -8905,7 +9553,7 @@
                           // Recursively serialize object members. Members are selected from
                           // either a user-specified list of property names, or the object
                           // itself.
-                          forOwn(properties || value, function (property) {
+                          _forOwn(properties || value, function (property) {
                             var element = serialize(
                               property,
                               value,
@@ -8915,6 +9563,7 @@
                               indentation,
                               stack,
                             );
+
                             if (element !== undefined) {
                               // According to ES 5.1 section 15.12.3: "If `gap` {whitespace}
                               // is not the empty string, let `member` {quote(property) + ":"}
@@ -8930,6 +9579,7 @@
                               );
                             }
                           });
+
                           result = results.length
                             ? whitespace
                               ? '{\n' +
@@ -8940,23 +9590,25 @@
                                 '}'
                               : '{' + results.join(',') + '}'
                             : '{}';
-                        }
-                        // Remove the object from the traversed object stack.
+                        } // Remove the object from the traversed object stack.
+
                         stack.pop();
                         return result;
                       }
-                    };
+                    }; // Public: `JSON.stringify`. See ES 5.1 section 15.12.3.
 
-                    // Public: `JSON.stringify`. See ES 5.1 section 15.12.3.
                     exports.stringify = function (source, filter, width) {
                       var whitespace, callback, properties, className;
+
                       if (objectTypes[typeof filter] && filter) {
                         className = getClass.call(filter);
+
                         if (className == functionClass) {
                           callback = filter;
                         } else if (className == arrayClass) {
                           // Convert the property names array into a makeshift set.
                           properties = {};
+
                           for (
                             var index = 0, length = filter.length, value;
                             index < length;
@@ -8964,6 +9616,7 @@
                           ) {
                             value = filter[index++];
                             className = getClass.call(value);
+
                             if (
                               className == '[object String]' ||
                               className == '[object Number]'
@@ -8973,8 +9626,10 @@
                           }
                         }
                       }
+
                       if (width) {
                         className = getClass.call(width);
+
                         if (className == numberClass) {
                           // Convert the `width` to an integer and create a string containing
                           // `width` number of space characters.
@@ -8982,6 +9637,7 @@
                             if (width > 10) {
                               width = 10;
                             }
+
                             for (whitespace = ''; whitespace.length < width; ) {
                               whitespace += ' ';
                             }
@@ -8990,10 +9646,10 @@
                           whitespace =
                             width.length <= 10 ? width : width.slice(0, 10);
                         }
-                      }
-                      // Opera <= 7.54u2 discards the values associated with empty string keys
+                      } // Opera <= 7.54u2 discards the values associated with empty string keys
                       // (`""`) only if they are used directly within an object member list
                       // (e.g., `!("" in { "": 1})`).
+
                       return serialize(
                         '',
                         ((value = {}), (value[''] = source), value),
@@ -9005,14 +9661,12 @@
                       );
                     };
                   }
-                }
+                } // Public: Parses a JSON source string.
 
-                // Public: Parses a JSON source string.
                 if (!has('json-parse')) {
-                  var fromCharCode = String.fromCharCode;
-
-                  // Internal: A map of escaped control characters and their unescaped
+                  var fromCharCode = String.fromCharCode; // Internal: A map of escaped control characters and their unescaped
                   // equivalents.
+
                   var Unescapes = {
                     92: '\\',
                     34: '"',
@@ -9022,21 +9676,18 @@
                     110: '\n',
                     102: '\f',
                     114: '\r',
-                  };
+                  }; // Internal: Stores the parser state.
 
-                  // Internal: Stores the parser state.
-                  var Index, Source;
+                  var Index, Source; // Internal: Resets the parser state and throws a `SyntaxError`.
 
-                  // Internal: Resets the parser state and throws a `SyntaxError`.
-                  var abort = function () {
+                  var abort = function abort() {
                     Index = Source = null;
                     throw SyntaxError();
-                  };
-
-                  // Internal: Returns the next token, or `"$"` if the parser has reached
+                  }; // Internal: Returns the next token, or `"$"` if the parser has reached
                   // the end of the source string. A token may be a string, number, `null`
                   // literal, or Boolean literal.
-                  var lex = function () {
+
+                  var lex = function lex() {
                     var source = Source,
                       length = source.length,
                       value,
@@ -9044,8 +9695,10 @@
                       position,
                       isSigned,
                       charCode;
+
                     while (Index < length) {
                       charCode = source.charCodeAt(Index);
+
                       switch (charCode) {
                         case 9:
                         case 10:
@@ -9055,6 +9708,7 @@
                           // feeds, and space characters.
                           Index++;
                           break;
+
                         case 123:
                         case 125:
                         case 91:
@@ -9068,6 +9722,7 @@
                             : source[Index];
                           Index++;
                           return value;
+
                         case 34:
                           // `"` delimits a JSON string; advance to the next character and
                           // begin parsing the string. String tokens are prefixed with the
@@ -9075,6 +9730,7 @@
                           // end-of-string tokens.
                           for (value = '@', Index++; Index < length; ) {
                             charCode = source.charCodeAt(Index);
+
                             if (charCode < 32) {
                               // Unescaped ASCII control characters (those with a code unit
                               // less than the space character) are not permitted.
@@ -9084,6 +9740,7 @@
                               // control character (including `"`, `\`, and `/`) or Unicode
                               // escape sequence.
                               charCode = source.charCodeAt(++Index);
+
                               switch (charCode) {
                                 case 92:
                                 case 34:
@@ -9097,19 +9754,21 @@
                                   value += Unescapes[charCode];
                                   Index++;
                                   break;
+
                                 case 117:
                                   // `\u` marks the beginning of a Unicode escape sequence.
                                   // Advance to the first character and validate the
                                   // four-digit code point.
                                   begin = ++Index;
+
                                   for (
                                     position = Index + 4;
                                     Index < position;
                                     Index++
                                   ) {
-                                    charCode = source.charCodeAt(Index);
-                                    // A valid sequence comprises four hexdigits (case-
+                                    charCode = source.charCodeAt(Index); // A valid sequence comprises four hexdigits (case-
                                     // insensitive) that form a single hexadecimal value.
+
                                     if (
                                       !(
                                         (charCode >= 48 && charCode <= 57) ||
@@ -9120,12 +9779,13 @@
                                       // Invalid Unicode escape sequence.
                                       abort();
                                     }
-                                  }
-                                  // Revive the escaped character.
+                                  } // Revive the escaped character.
+
                                   value += fromCharCode(
                                     '0x' + source.slice(begin, Index),
                                   );
                                   break;
+
                                 default:
                                   // Invalid escape sequence.
                                   abort();
@@ -9136,36 +9796,39 @@
                                 // string.
                                 break;
                               }
+
                               charCode = source.charCodeAt(Index);
-                              begin = Index;
-                              // Optimize for the common case where a string is valid.
+                              begin = Index; // Optimize for the common case where a string is valid.
+
                               while (
                                 charCode >= 32 &&
                                 charCode != 92 &&
                                 charCode != 34
                               ) {
                                 charCode = source.charCodeAt(++Index);
-                              }
-                              // Append the string as-is.
+                              } // Append the string as-is.
+
                               value += source.slice(begin, Index);
                             }
                           }
+
                           if (source.charCodeAt(Index) == 34) {
                             // Advance to the next character and return the revived string.
                             Index++;
                             return value;
-                          }
-                          // Unterminated string.
+                          } // Unterminated string.
+
                           abort();
+
                         default:
                           // Parse numbers and literals.
-                          begin = Index;
-                          // Advance past the negative sign, if one is specified.
+                          begin = Index; // Advance past the negative sign, if one is specified.
+
                           if (charCode == 45) {
                             isSigned = true;
                             charCode = source.charCodeAt(++Index);
-                          }
-                          // Parse an integer or floating-point value.
+                          } // Parse an integer or floating-point value.
+
                           if (charCode >= 48 && charCode <= 57) {
                             // Leading zeroes are interpreted as octal literals.
                             if (
@@ -9176,68 +9839,77 @@
                               // Illegal octal literal.
                               abort();
                             }
-                            isSigned = false;
-                            // Parse the integer component.
+
+                            isSigned = false; // Parse the integer component.
+
                             for (
                               ;
                               Index < length &&
                               ((charCode = source.charCodeAt(Index)),
                               charCode >= 48 && charCode <= 57);
                               Index++
-                            );
-                            // Floats cannot contain a leading decimal point; however, this
+                            ) {} // Floats cannot contain a leading decimal point; however, this
                             // case is already accounted for by the parser.
+
                             if (source.charCodeAt(Index) == 46) {
-                              position = ++Index;
-                              // Parse the decimal component.
+                              position = ++Index; // Parse the decimal component.
+
                               for (; position < length; position++) {
                                 charCode = source.charCodeAt(position);
+
                                 if (charCode < 48 || charCode > 57) {
                                   break;
                                 }
                               }
+
                               if (position == Index) {
                                 // Illegal trailing decimal.
                                 abort();
                               }
+
                               Index = position;
-                            }
-                            // Parse exponents. The `e` denoting the exponent is
+                            } // Parse exponents. The `e` denoting the exponent is
                             // case-insensitive.
+
                             charCode = source.charCodeAt(Index);
+
                             if (charCode == 101 || charCode == 69) {
-                              charCode = source.charCodeAt(++Index);
-                              // Skip past the sign following the exponent, if one is
+                              charCode = source.charCodeAt(++Index); // Skip past the sign following the exponent, if one is
                               // specified.
+
                               if (charCode == 43 || charCode == 45) {
                                 Index++;
-                              }
-                              // Parse the exponential component.
+                              } // Parse the exponential component.
+
                               for (
                                 position = Index;
                                 position < length;
                                 position++
                               ) {
                                 charCode = source.charCodeAt(position);
+
                                 if (charCode < 48 || charCode > 57) {
                                   break;
                                 }
                               }
+
                               if (position == Index) {
                                 // Illegal empty exponent.
                                 abort();
                               }
+
                               Index = position;
-                            }
-                            // Coerce the parsed value to a JavaScript number.
+                            } // Coerce the parsed value to a JavaScript number.
+
                             return +source.slice(begin, Index);
-                          }
-                          // A negative sign may only precede numbers.
+                          } // A negative sign may only precede numbers.
+
                           if (isSigned) {
                             abort();
-                          }
-                          // `true`, `false`, and `null` literals.
+                          } // `true`, `false`, and `null` literals.
+
                           var temp = source.slice(Index, Index + 4);
+
                           if (temp == 'true') {
                             Index += 4;
                             return true;
@@ -9250,46 +9922,49 @@
                           } else if (temp == 'null') {
                             Index += 4;
                             return null;
-                          }
-                          // Unrecognized token.
+                          } // Unrecognized token.
+
                           abort();
                       }
-                    }
-                    // Return the sentinel `$` character if the parser has reached the end
+                    } // Return the sentinel `$` character if the parser has reached the end
                     // of the source string.
-                    return '$';
-                  };
 
-                  // Internal: Parses a JSON `value` token.
-                  var get = function (value) {
+                    return '$';
+                  }; // Internal: Parses a JSON `value` token.
+
+                  var get = function get(value) {
                     var results, hasMembers;
+
                     if (value == '$') {
                       // Unexpected end of input.
                       abort();
                     }
+
                     if (typeof value == 'string') {
                       if (
                         (charIndexBuggy ? value.charAt(0) : value[0]) == '@'
                       ) {
                         // Remove the sentinel `@` character.
                         return value.slice(1);
-                      }
-                      // Parse object and array literals.
+                      } // Parse object and array literals.
+
                       if (value == '[') {
                         // Parses a JSON array, returning a new JavaScript array.
                         results = [];
+
                         for (;;) {
-                          value = lex();
-                          // A closing square bracket marks the end of the array literal.
+                          value = lex(); // A closing square bracket marks the end of the array literal.
+
                           if (value == ']') {
                             break;
-                          }
-                          // If the array literal contains elements, the current token
+                          } // If the array literal contains elements, the current token
                           // should be a comma separating the previous element from the
                           // next.
+
                           if (hasMembers) {
                             if (value == ',') {
                               value = lex();
+
                               if (value == ']') {
                                 // Unexpected trailing `,` in array literal.
                                 abort();
@@ -9300,28 +9975,32 @@
                             }
                           } else {
                             hasMembers = true;
-                          }
-                          // Elisions and leading commas are not permitted.
+                          } // Elisions and leading commas are not permitted.
+
                           if (value == ',') {
                             abort();
                           }
+
                           results.push(get(value));
                         }
+
                         return results;
                       } else if (value == '{') {
                         // Parses a JSON object, returning a new JavaScript object.
                         results = {};
+
                         for (;;) {
-                          value = lex();
-                          // A closing curly brace marks the end of the object literal.
+                          value = lex(); // A closing curly brace marks the end of the object literal.
+
                           if (value == '}') {
                             break;
-                          }
-                          // If the object literal contains members, the current token
+                          } // If the object literal contains members, the current token
                           // should be a comma separator.
+
                           if (hasMembers) {
                             if (value == ',') {
                               value = lex();
+
                               if (value == '}') {
                                 // Unexpected trailing `,` in object literal.
                                 abort();
@@ -9332,10 +10011,10 @@
                             }
                           } else {
                             hasMembers = true;
-                          }
-                          // Leading commas are not permitted, object property names must be
+                          } // Leading commas are not permitted, object property names must be
                           // double-quoted strings, and a `:` must separate each property
                           // name and value.
+
                           if (
                             value == ',' ||
                             typeof value != 'string' ||
@@ -9345,60 +10024,63 @@
                           ) {
                             abort();
                           }
+
                           results[value.slice(1)] = get(lex());
                         }
+
                         return results;
-                      }
-                      // Unexpected token encountered.
+                      } // Unexpected token encountered.
+
                       abort();
                     }
-                    return value;
-                  };
 
-                  // Internal: Updates a traversed object member.
-                  var update = function (source, property, callback) {
+                    return value;
+                  }; // Internal: Updates a traversed object member.
+
+                  var update = function update(source, property, callback) {
                     var element = walk(source, property, callback);
+
                     if (element === undefined) {
                       delete source[property];
                     } else {
                       source[property] = element;
                     }
-                  };
-
-                  // Internal: Recursively traverses a parsed JSON object, invoking the
+                  }; // Internal: Recursively traverses a parsed JSON object, invoking the
                   // `callback` function for each value. This is an implementation of the
                   // `Walk(holder, name)` operation defined in ES 5.1 section 15.12.2.
-                  var walk = function (source, property, callback) {
+
+                  var walk = function walk(source, property, callback) {
                     var value = source[property],
                       length;
+
                     if (typeof value == 'object' && value) {
                       // `forOwn` can't be used to traverse an array in Opera <= 8.54
                       // because its `Object#hasOwnProperty` implementation returns `false`
                       // for array indices (e.g., `![1, 2, 3].hasOwnProperty("0")`).
                       if (getClass.call(value) == arrayClass) {
                         for (length = value.length; length--; ) {
-                          update(getClass, forOwn, value, length, callback);
+                          update(getClass, _forOwn, value, length, callback);
                         }
                       } else {
-                        forOwn(value, function (property) {
+                        _forOwn(value, function (property) {
                           update(value, property, callback);
                         });
                       }
                     }
-                    return callback.call(source, property, value);
-                  };
 
-                  // Public: `JSON.parse`. See ES 5.1 section 15.12.2.
+                    return callback.call(source, property, value);
+                  }; // Public: `JSON.parse`. See ES 5.1 section 15.12.2.
+
                   exports.parse = function (source, callback) {
                     var result, value;
                     Index = 0;
                     Source = '' + source;
-                    result = get(lex());
-                    // If a JSON string contains multiple tokens, it is invalid.
+                    result = get(lex()); // If a JSON string contains multiple tokens, it is invalid.
+
                     if (lex() != '$') {
                       abort();
-                    }
-                    // Reset the parser state.
+                    } // Reset the parser state.
+
                     Index = Source = null;
                     return callback && getClass.call(callback) == functionClass
                       ? walk(
@@ -9423,31 +10105,29 @@
               var nativeJSON = root.JSON,
                 previousJSON = root.JSON3,
                 isRestored = false;
-
               var JSON3 = runInContext(
                 root,
                 (root.JSON3 = {
                   // Public: Restores the original value of the global `JSON` object and
                   // returns a reference to the `JSON3` object.
-                  noConflict: function () {
+                  noConflict: function noConflict() {
                     if (!isRestored) {
                       isRestored = true;
                       root.JSON = nativeJSON;
                       root.JSON3 = previousJSON;
                       nativeJSON = previousJSON = null;
                     }
+
                     return JSON3;
                   },
                 }),
               );
-
               root.JSON = {
                 parse: JSON3.parse,
                 stringify: JSON3.stringify,
               };
-            }
+            } // Export for asynchronous module loaders.
 
-            // Export for asynchronous module loaders.
             if (isLoader) {
               !((__WEBPACK_AMD_DEFINE_RESULT__ = function () {
                 return JSON3;
@@ -9456,15 +10136,14 @@
                 (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
             }
           }.call(this));
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../@umijs/deps/compiled/webpack/4/module.js */ 'oi7r',
+            /*! ./../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/module.js */ 'hOG+',
           )(module),
           __webpack_require__(
-            /*! ./../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -9472,9 +10151,9 @@
       },
 
     /***/ fwyQ:
-      /*!****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/iframe.js ***!
-  \****************************************************************************/
+      /*!*************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/iframe.js ***!
+  \*************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -9484,21 +10163,21 @@
           var eventUtils = __webpack_require__(/*! ./event */ 'MR5Q'),
             JSON3 = __webpack_require__(/*! json3 */ 'enUK'),
             browser = __webpack_require__(/*! ./browser */ 'nw7E');
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
           module.exports = {
             WPrefix: '_jp',
             currentWindowId: null,
-
-            polluteGlobalNamespace: function () {
+            polluteGlobalNamespace: function polluteGlobalNamespace() {
               if (!(module.exports.WPrefix in global)) {
                 global[module.exports.WPrefix] = {};
               }
             },
-
-            postMessage: function (type, data) {
+            postMessage: function postMessage(type, data) {
               if (global.parent !== global) {
                 global.parent.postMessage(
                   JSON3.stringify({
@@ -9512,45 +10191,52 @@
                 debug('Cannot postMessage, no parent window.', type, data);
               }
             },
-
-            createIframe: function (iframeUrl, errorCallback) {
+            createIframe: function createIframe(iframeUrl, errorCallback) {
               var iframe = global.document.createElement('iframe');
               var tref, unloadRef;
-              var unattach = function () {
+
+              var unattach = function unattach() {
                 debug('unattach');
-                clearTimeout(tref);
-                // Explorer had problems with that.
+                clearTimeout(tref); // Explorer had problems with that.
+
                 try {
                   iframe.onload = null;
                 } catch (x) {
                   // intentionally empty
                 }
+
                 iframe.onerror = null;
               };
-              var cleanup = function () {
+
+              var cleanup = function cleanup() {
                 debug('cleanup');
+
                 if (iframe) {
-                  unattach();
-                  // This timeout makes chrome fire onbeforeunload event
+                  unattach(); // This timeout makes chrome fire onbeforeunload event
                   // within iframe. Without the timeout it goes straight to
                   // onunload.
+
                   setTimeout(function () {
                     if (iframe) {
                       iframe.parentNode.removeChild(iframe);
                     }
+
                     iframe = null;
                   }, 0);
                   eventUtils.unloadDel(unloadRef);
                 }
               };
-              var onerror = function (err) {
+
+              var onerror = function onerror(err) {
                 debug('onerror', err);
+
                 if (iframe) {
                   cleanup();
                   errorCallback(err);
                 }
               };
-              var post = function (msg, origin) {
+
+              var post = function post(msg, origin) {
                 debug('post', msg, origin);
                 setTimeout(function () {
                   try {
@@ -9568,18 +10254,21 @@
               iframe.src = iframeUrl;
               iframe.style.display = 'none';
               iframe.style.position = 'absolute';
+
               iframe.onerror = function () {
                 onerror('onerror');
               };
+
               iframe.onload = function () {
-                debug('onload');
-                // `onload` is triggered before scripts on the iframe are
+                debug('onload'); // `onload` is triggered before scripts on the iframe are
                 // executed. Give it few seconds to actually load stuff.
+
                 clearTimeout(tref);
                 tref = setTimeout(function () {
                   onerror('onload timeout');
                 }, 2000);
               };
+
               global.document.body.appendChild(iframe);
               tref = setTimeout(function () {
                 onerror('timeout');
@@ -9591,18 +10280,19 @@
                 loaded: unattach,
               };
             },
-
             /* eslint no-undef: "off", new-cap: "off" */
-            createHtmlfile: function (iframeUrl, errorCallback) {
+            createHtmlfile: function createHtmlfile(iframeUrl, errorCallback) {
               var axo = ['Active'].concat('Object').join('X');
               var doc = new global[axo]('htmlfile');
               var tref, unloadRef;
               var iframe;
-              var unattach = function () {
+
+              var unattach = function unattach() {
                 clearTimeout(tref);
                 iframe.onerror = null;
               };
-              var cleanup = function () {
+
+              var cleanup = function cleanup() {
                 if (doc) {
                   unattach();
                   eventUtils.unloadDel(unloadRef);
@@ -9611,14 +10301,17 @@
                   CollectGarbage();
                 }
               };
-              var onerror = function (r) {
+
+              var onerror = function onerror(r) {
                 debug('onerror', r);
+
                 if (doc) {
                   cleanup();
                   errorCallback(r);
                 }
               };
-              var post = function (msg, origin) {
+
+              var post = function post(msg, origin) {
                 try {
                   // When the iframe is not loaded, IE raises an exception
                   // on 'contentWindow'.
@@ -9650,9 +10343,11 @@
               iframe = doc.createElement('iframe');
               c.appendChild(iframe);
               iframe.src = iframeUrl;
+
               iframe.onerror = function () {
                 onerror('onerror');
               };
+
               tref = setTimeout(function () {
                 onerror('timeout');
               }, 15000);
@@ -9664,8 +10359,8 @@
               };
             },
           };
-
           module.exports.iframeEnabled = false;
+
           if (global.document) {
             // postMessage misbehaves in konqueror 4.6.5 - the messages are delivered with
             // huge delay, or not at all.
@@ -9674,22 +10369,181 @@
                 typeof global.postMessage === 'object') &&
               !browser.isKonqueror();
           }
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
         /***/
       },
 
+    /***/ 'hOG+':
+      /*!*****************************!*\
+  !*** (webpack)/4/module.js ***!
+  \*****************************/
+      /*! no static exports found */
+      /*! all exports used */
+      /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+      /***/ function (module, exports) {
+        /* WEBPACK VAR INJECTION */ (function (__dirname) {
+          module.exports =
+            /******/
+            (function () {
+              // webpackBootstrap
+
+              /******/
+              var __webpack_modules__ = {
+                /***/
+                503:
+                  /***/
+                  function _(module) {
+                    module.exports = function (module) {
+                      if (!module.webpackPolyfill) {
+                        module.deprecate = function () {};
+
+                        module.paths = []; // module.parent = undefined by default
+
+                        if (!module.children) module.children = [];
+                        Object.defineProperty(module, 'loaded', {
+                          enumerable: true,
+                          get: function get() {
+                            return module.l;
+                          },
+                        });
+                        Object.defineProperty(module, 'id', {
+                          enumerable: true,
+                          get: function get() {
+                            return module.i;
+                          },
+                        });
+                        module.webpackPolyfill = 1;
+                      }
+
+                      return module;
+                    };
+                    /***/
+                  },
+                /******/
+              };
+              /************************************************************************/
+
+              /******/
+              // The module cache
+
+              /******/
+
+              var __webpack_module_cache__ = {};
+              /******/
+
+              /******/
+              // The require function
+
+              /******/
+
+              function __nccwpck_require__(moduleId) {
+                /******/
+                // Check if module is in cache
+
+                /******/
+                if (__webpack_module_cache__[moduleId]) {
+                  /******/
+                  return __webpack_module_cache__[moduleId].exports;
+                  /******/
+                }
+                /******/
+                // Create a new module (and put it into the cache)
+
+                /******/
+
+                var module = (__webpack_module_cache__[moduleId] = {
+                  /******/
+                  // no module.id needed
+
+                  /******/
+                  // no module.loaded needed
+
+                  /******/
+                  exports: {},
+                  /******/
+                });
+                /******/
+
+                /******/
+                // Execute the module function
+
+                /******/
+
+                var threw = true;
+                /******/
+
+                try {
+                  /******/
+                  __webpack_modules__[moduleId](
+                    module,
+                    module.exports,
+                    __nccwpck_require__,
+                  );
+                  /******/
+
+                  threw = false;
+                  /******/
+                } finally {
+                  /******/
+                  if (threw) delete __webpack_module_cache__[moduleId];
+                  /******/
+                }
+                /******/
+
+                /******/
+                // Return the exports of the module
+
+                /******/
+
+                return module.exports;
+                /******/
+              }
+              /******/
+
+              /************************************************************************/
+
+              /******/
+
+              /* webpack/runtime/compat */
+
+              /******/
+
+              /******/
+
+              __nccwpck_require__.ab = __dirname + '/';
+              /************************************************************************/
+
+              /******/
+              // module exports must be returned from runtime so entry inlining is disabled
+
+              /******/
+              // startup
+
+              /******/
+              // Load entry module and return exports
+
+              /******/
+
+              return __nccwpck_require__(503);
+              /******/
+            })();
+          /* WEBPACK VAR INJECTION */
+        }.call(this, '/'));
+
+        /***/
+      },
+
     /***/ hTJ1:
-      /*!**********************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/htmlfile.js ***!
-  \**********************************************************************************/
+      /*!*******************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/htmlfile.js ***!
+  \*******************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -9706,10 +10560,12 @@
           AjaxBasedTransport = __webpack_require__(
             /*! ./lib/ajax-based */ '0HJ4',
           );
+
         function HtmlFileTransport(transUrl) {
           if (!HtmlfileReceiver.enabled) {
             throw new Error('Transport created when disabled');
           }
+
           AjaxBasedTransport.call(
             this,
             transUrl,
@@ -9727,16 +10583,15 @@
 
         HtmlFileTransport.transportName = 'htmlfile';
         HtmlFileTransport.roundTrips = 2;
-
         module.exports = HtmlFileTransport;
 
         /***/
       },
 
     /***/ hnW3:
-      /*!*************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/info-ajax.js ***!
-  \*************************************************************************/
+      /*!**********************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/info-ajax.js ***!
+  \**********************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -9748,21 +10603,23 @@
           inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           JSON3 = __webpack_require__(/*! json3 */ 'enUK'),
           objectUtils = __webpack_require__(/*! ./utils/object */ 'uIkj');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
         function InfoAjax(url, AjaxObject) {
           EventEmitter.call(this);
-
           var self = this;
           var t0 = +new Date();
           this.xo = new AjaxObject('GET', url);
-
           this.xo.once('finish', function (status, text) {
             var info, rtt;
+
             if (status === 200) {
               rtt = +new Date() - t0;
+
               if (text) {
                 try {
                   info = JSON3.parse(text);
@@ -9775,6 +10632,7 @@
                 info = {};
               }
             }
+
             self.emit('finish', info, rtt);
             self.removeAllListeners();
           });
@@ -9793,9 +10651,9 @@
       },
 
     /***/ k5s6:
-      /*!********************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/iframe-bootstrap.js ***!
-  \********************************************************************************/
+      /*!*****************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/iframe-bootstrap.js ***!
+  \*****************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -9811,7 +10669,9 @@
           ),
           iframeUtils = __webpack_require__(/*! ./utils/iframe */ 'fwyQ'),
           loc = __webpack_require__(/*! ./location */ '4zOr');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -9822,30 +10682,33 @@
               transportMap[at.facadeTransport.transportName] =
                 at.facadeTransport;
             }
-          });
-
-          // hard-coded for the info iframe
+          }); // hard-coded for the info iframe
           // TODO see if we can make this more dynamic
+
           transportMap[InfoIframeReceiver.transportName] = InfoIframeReceiver;
           var parentOrigin;
-
           /* eslint-disable camelcase */
+
           SockJS.bootstrap_iframe = function () {
             /* eslint-enable camelcase */
             var facade;
             iframeUtils.currentWindowId = loc.hash.slice(1);
-            var onMessage = function (e) {
+
+            var onMessage = function onMessage(e) {
               if (e.source !== parent) {
                 return;
               }
+
               if (typeof parentOrigin === 'undefined') {
                 parentOrigin = e.origin;
               }
+
               if (e.origin !== parentOrigin) {
                 return;
               }
 
               var iframeMessage;
+
               try {
                 iframeMessage = JSON3.parse(e.data);
               } catch (ignored) {
@@ -9856,21 +10719,24 @@
               if (iframeMessage.windowId !== iframeUtils.currentWindowId) {
                 return;
               }
+
               switch (iframeMessage.type) {
                 case 's':
                   var p;
+
                   try {
                     p = JSON3.parse(iframeMessage.data);
                   } catch (ignored) {
                     debug('bad json', iframeMessage.data);
                     break;
                   }
+
                   var version = p[0];
                   var transport = p[1];
                   var transUrl = p[2];
                   var baseUrl = p[3];
-                  debug(version, transport, transUrl, baseUrl);
-                  // change this to semver logic
+                  debug(version, transport, transUrl, baseUrl); // change this to semver logic
+
                   if (version !== SockJS.version) {
                     throw new Error(
                       'Incompatible SockJS! Main site uses:' +
@@ -9898,25 +10764,29 @@
                         ')',
                     );
                   }
+
                   facade = new FacadeJS(
                     new transportMap[transport](transUrl, baseUrl),
                   );
                   break;
+
                 case 'm':
                   facade._send(iframeMessage.data);
+
                   break;
+
                 case 'c':
                   if (facade) {
                     facade._close();
                   }
+
                   facade = null;
                   break;
               }
             };
 
-            eventUtils.attachEvent('message', onMessage);
+            eventUtils.attachEvent('message', onMessage); // Start
 
-            // Start
             iframeUtils.postMessage('s');
           };
         };
@@ -9925,9 +10795,9 @@
       },
 
     /***/ kABF:
-      /*!**************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/sender/jsonp.js ***!
-  \**************************************************************************************/
+      /*!***********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/sender/jsonp.js ***!
+  \***********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -9936,7 +10806,9 @@
         /* WEBPACK VAR INJECTION */ (function (global) {
           var random = __webpack_require__(/*! ../../utils/random */ '6/Oc'),
             urlUtils = __webpack_require__(/*! ../../utils/url */ 'rCFf');
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
@@ -9944,6 +10816,7 @@
 
           function createIframe(id) {
             debug('createIframe', id);
+
             try {
               // ie6 dynamic iframes with target="" support (thanks Chris Lambacher)
               return global.document.createElement(
@@ -9964,26 +10837,25 @@
             form.method = 'POST';
             form.enctype = 'application/x-www-form-urlencoded';
             form.acceptCharset = 'UTF-8';
-
             area = global.document.createElement('textarea');
             area.name = 'd';
             form.appendChild(area);
-
             global.document.body.appendChild(form);
           }
 
           module.exports = function (url, payload, callback) {
             debug(url, payload);
+
             if (!form) {
               createForm();
             }
+
             var id = 'a' + random.string(8);
             form.target = id;
             form.action = urlUtils.addQuery(
               urlUtils.addPath(url, '/jsonp_send'),
               'i=' + id,
             );
-
             var iframe = createIframe(id);
             iframe.id = id;
             iframe.style.display = 'none';
@@ -9994,51 +10866,58 @@
             } catch (e) {
               // seriously broken browsers get here
             }
+
             form.submit();
 
-            var completed = function (err) {
+            var completed = function completed(err) {
               debug('completed', id, err);
+
               if (!iframe.onerror) {
                 return;
               }
-              iframe.onreadystatechange = iframe.onerror = iframe.onload = null;
-              // Opera mini doesn't like if we GC iframe
+
+              iframe.onreadystatechange = iframe.onerror = iframe.onload = null; // Opera mini doesn't like if we GC iframe
               // immediately, thus this timeout.
+
               setTimeout(function () {
                 debug('cleaning up', id);
                 iframe.parentNode.removeChild(iframe);
                 iframe = null;
               }, 500);
-              area.value = '';
-              // It is not possible to detect if the iframe succeeded or
+              area.value = ''; // It is not possible to detect if the iframe succeeded or
               // failed to submit our form.
+
               callback(err);
             };
+
             iframe.onerror = function () {
               debug('onerror', id);
               completed();
             };
+
             iframe.onload = function () {
               debug('onload', id);
               completed();
             };
+
             iframe.onreadystatechange = function (e) {
               debug('onreadystatechange', id, iframe.readyState, e);
+
               if (iframe.readyState === 'complete') {
                 completed();
               }
             };
+
             return function () {
               debug('aborted', id);
               completed(new Error('Aborted'));
             };
           };
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -10046,9 +10925,9 @@
       },
 
     /***/ mM4f:
-      /*!************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/browser-crypto.js ***!
-  \************************************************************************************/
+      /*!*********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/browser-crypto.js ***!
+  \*********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10064,18 +10943,19 @@
           } else {
             module.exports.randomBytes = function (length) {
               var bytes = new Array(length);
+
               for (var i = 0; i < length; i++) {
                 bytes[i] = Math.floor(Math.random() * 256);
               }
+
               return bytes;
             };
           }
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -10083,9 +10963,9 @@
       },
 
     /***/ mp2Y:
-      /*!***************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/jsonp-polling.js ***!
-  \***************************************************************************************/
+      /*!************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/jsonp-polling.js ***!
+  \************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10106,10 +10986,12 @@
             ),
             JsonpReceiver = __webpack_require__(/*! ./receiver/jsonp */ 'F4Ei'),
             jsonpSender = __webpack_require__(/*! ./sender/jsonp */ 'kABF');
+
           function JsonPTransport(transUrl) {
             if (!JsonPTransport.enabled()) {
               throw new Error('Transport created when disabled');
             }
+
             SenderReceiver.call(
               this,
               transUrl,
@@ -10128,14 +11010,12 @@
           JsonPTransport.transportName = 'jsonp-polling';
           JsonPTransport.roundTrips = 1;
           JsonPTransport.needBody = true;
-
           module.exports = JsonPTransport;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -10143,9 +11023,9 @@
       },
 
     /***/ nw7E:
-      /*!*****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/browser.js ***!
-  \*****************************************************************************/
+      /*!**************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/browser.js ***!
+  \**************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10153,21 +11033,18 @@
         'use strict';
         /* WEBPACK VAR INJECTION */ (function (global) {
           module.exports = {
-            isOpera: function () {
+            isOpera: function isOpera() {
               return (
                 global.navigator && /opera/i.test(global.navigator.userAgent)
               );
             },
-
-            isKonqueror: function () {
+            isKonqueror: function isKonqueror() {
               return (
                 global.navigator &&
                 /konqueror/i.test(global.navigator.userAgent)
               );
-            },
-
-            // #187 wrap document.domain in try/catch because of WP8 from file:///
-            hasDomain: function () {
+            }, // #187 wrap document.domain in try/catch because of WP8 from file:///
+            hasDomain: function hasDomain() {
               // non-browser client always has a domain
               if (!global.document) {
                 return true;
@@ -10180,12 +11057,11 @@
               }
             },
           };
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -10193,9 +11069,9 @@
       },
 
     /***/ nxOW:
-      /*!************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/sender/xdr.js ***!
-  \************************************************************************************/
+      /*!*********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/sender/xdr.js ***!
+  \*********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10208,11 +11084,11 @@
             eventUtils = __webpack_require__(/*! ../../utils/event */ 'MR5Q'),
             browser = __webpack_require__(/*! ../../utils/browser */ 'nw7E'),
             urlUtils = __webpack_require__(/*! ../../utils/url */ 'rCFf');
-          var debug = function () {};
-          if (false) {
-          }
 
-          // References:
+          var debug = function debug() {};
+
+          if (false) {
+          } // References:
           //   http://ajaxian.com/archives/100-line-ajax-wrapper
           //   http://msdn.microsoft.com/en-us/library/cc288060(v=VS.85).aspx
 
@@ -10220,7 +11096,6 @@
             debug(method, url);
             var self = this;
             EventEmitter.call(this);
-
             setTimeout(function () {
               self._start(method, url, payload);
             }, 0);
@@ -10231,37 +11106,47 @@
           XDRObject.prototype._start = function (method, url, payload) {
             debug('_start');
             var self = this;
-            var xdr = new global.XDomainRequest();
-            // IE caches even POSTs
+            var xdr = new global.XDomainRequest(); // IE caches even POSTs
+
             url = urlUtils.addQuery(url, 't=' + +new Date());
 
             xdr.onerror = function () {
               debug('onerror');
+
               self._error();
             };
+
             xdr.ontimeout = function () {
               debug('ontimeout');
+
               self._error();
             };
+
             xdr.onprogress = function () {
               debug('progress', xdr.responseText);
               self.emit('chunk', 200, xdr.responseText);
             };
+
             xdr.onload = function () {
               debug('load');
               self.emit('finish', 200, xdr.responseText);
+
               self._cleanup(false);
             };
+
             this.xdr = xdr;
             this.unloadRef = eventUtils.unloadAdd(function () {
               self._cleanup(true);
             });
+
             try {
               // Fails with AccessDenied if port number is bogus
               this.xdr.open(method, url);
+
               if (this.timeout) {
                 this.xdr.timeout = this.timeout;
               }
+
               this.xdr.send(payload);
             } catch (x) {
               this._error();
@@ -10270,18 +11155,21 @@
 
           XDRObject.prototype._error = function () {
             this.emit('finish', 0, '');
+
             this._cleanup(false);
           };
 
           XDRObject.prototype._cleanup = function (abort) {
             debug('cleanup', abort);
+
             if (!this.xdr) {
               return;
             }
+
             this.removeAllListeners();
             eventUtils.unloadDel(this.unloadRef);
-
             this.xdr.ontimeout = this.xdr.onerror = this.xdr.onprogress = this.xdr.onload = null;
+
             if (abort) {
               try {
                 this.xdr.abort();
@@ -10289,24 +11177,23 @@
                 // intentionally empty
               }
             }
+
             this.unloadRef = this.xdr = null;
           };
 
           XDRObject.prototype.close = function () {
             debug('close');
+
             this._cleanup(true);
-          };
+          }; // IE 8/9 if the request target uses the same scheme - #79
 
-          // IE 8/9 if the request target uses the same scheme - #79
           XDRObject.enabled = !!(global.XDomainRequest && browser.hasDomain());
-
           module.exports = XDRObject;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -10314,9 +11201,9 @@
       },
 
     /***/ oNVP:
-      /*!*******************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/path-browserify/index.js ***!
-  \*******************************************************************/
+      /*!****************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/path-browserify/index.js ***!
+  \****************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10324,7 +11211,6 @@
         /* WEBPACK VAR INJECTION */ (function (process) {
           // .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
           // backported and transplited with Babel, with backwards-compat fixes
-
           // Copyright Joyent, Inc. and other Node contributors.
           //
           // Permission is hereby granted, free of charge, to any person obtaining a
@@ -10345,7 +11231,6 @@
           // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
           // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
           // USE OR OTHER DEALINGS IN THE SOFTWARE.
-
           // resolves . and .. elements in a path array with directory names there
           // must be no slashes, empty elements, or device names (c:\) in the array
           // (so also no leading and trailing slashes - it does not distinguish
@@ -10353,8 +11238,10 @@
           function normalizeArray(parts, allowAboveRoot) {
             // if the path tries to go above the root, `up` ends up > 0
             var up = 0;
+
             for (var i = parts.length - 1; i >= 0; i--) {
               var last = parts[i];
+
               if (last === '.') {
                 parts.splice(i, 1);
               } else if (last === '..') {
@@ -10364,9 +11251,8 @@
                 parts.splice(i, 1);
                 up--;
               }
-            }
+            } // if the path is allowed to go above the root, restore leading ..s
 
-            // if the path is allowed to go above the root, restore leading ..s
             if (allowAboveRoot) {
               for (; up--; up) {
                 parts.unshift('..');
@@ -10374,10 +11260,9 @@
             }
 
             return parts;
-          }
-
-          // path.resolve([from ...], to)
+          } // path.resolve([from ...], to)
           // posix version
+
           exports.resolve = function () {
             var resolvedPath = '',
               resolvedAbsolute = false;
@@ -10387,9 +11272,8 @@
               i >= -1 && !resolvedAbsolute;
               i--
             ) {
-              var path = i >= 0 ? arguments[i] : process.cwd();
+              var path = i >= 0 ? arguments[i] : process.cwd(); // Skip empty and invalid entries
 
-              // Skip empty and invalid entries
               if (typeof path !== 'string') {
                 throw new TypeError(
                   'Arguments to path.resolve must be strings',
@@ -10400,29 +11284,24 @@
 
               resolvedPath = path + '/' + resolvedPath;
               resolvedAbsolute = path.charAt(0) === '/';
-            }
-
-            // At this point the path should be resolved to a full absolute path, but
+            } // At this point the path should be resolved to a full absolute path, but
             // handle relative paths to be safe (might happen when process.cwd() fails)
-
             // Normalize the path
+
             resolvedPath = normalizeArray(
               filter(resolvedPath.split('/'), function (p) {
                 return !!p;
               }),
               !resolvedAbsolute,
             ).join('/');
-
             return (resolvedAbsolute ? '/' : '') + resolvedPath || '.';
-          };
-
-          // path.normalize(path)
+          }; // path.normalize(path)
           // posix version
+
           exports.normalize = function (path) {
             var isAbsolute = exports.isAbsolute(path),
-              trailingSlash = substr(path, -1) === '/';
+              trailingSlash = substr(path, -1) === '/'; // Normalize the path
 
-            // Normalize the path
             path = normalizeArray(
               filter(path.split('/'), function (p) {
                 return !!p;
@@ -10433,19 +11312,18 @@
             if (!path && !isAbsolute) {
               path = '.';
             }
+
             if (path && trailingSlash) {
               path += '/';
             }
 
             return (isAbsolute ? '/' : '') + path;
-          };
+          }; // posix version
 
-          // posix version
           exports.isAbsolute = function (path) {
             return path.charAt(0) === '/';
-          };
+          }; // posix version
 
-          // posix version
           exports.join = function () {
             var paths = Array.prototype.slice.call(arguments, 0);
             return exports.normalize(
@@ -10453,24 +11331,26 @@
                 if (typeof p !== 'string') {
                   throw new TypeError('Arguments to path.join must be strings');
                 }
+
                 return p;
               }).join('/'),
             );
-          };
-
-          // path.relative(from, to)
+          }; // path.relative(from, to)
           // posix version
+
           exports.relative = function (from, to) {
             from = exports.resolve(from).substr(1);
             to = exports.resolve(to).substr(1);
 
             function trim(arr) {
               var start = 0;
+
               for (; start < arr.length; start++) {
                 if (arr[start] !== '') break;
               }
 
               var end = arr.length - 1;
+
               for (; end >= 0; end--) {
                 if (arr[end] !== '') break;
               }
@@ -10481,9 +11361,9 @@
 
             var fromParts = trim(from.split('/'));
             var toParts = trim(to.split('/'));
-
             var length = Math.min(fromParts.length, toParts.length);
             var samePartsLength = length;
+
             for (var i = 0; i < length; i++) {
               if (fromParts[i] !== toParts[i]) {
                 samePartsLength = i;
@@ -10492,12 +11372,12 @@
             }
 
             var outputParts = [];
+
             for (var i = samePartsLength; i < fromParts.length; i++) {
               outputParts.push('..');
             }
 
             outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
             return outputParts.join('/');
           };
 
@@ -10508,12 +11388,18 @@
             if (typeof path !== 'string') path = path + '';
             if (path.length === 0) return '.';
             var code = path.charCodeAt(0);
-            var hasRoot = code === 47; /*/*/
+            var hasRoot = code === 47;
+            /*/*/
             var end = -1;
             var matchedSlash = true;
+
             for (var i = path.length - 1; i >= 1; --i) {
               code = path.charCodeAt(i);
-              if (code === 47 /*/*/) {
+
+              if (
+                code === 47
+                /*/*/
+              ) {
                 if (!matchedSlash) {
                   end = i;
                   break;
@@ -10525,24 +11411,28 @@
             }
 
             if (end === -1) return hasRoot ? '/' : '.';
+
             if (hasRoot && end === 1) {
               // return '//';
               // Backwards-compat fix:
               return '/';
             }
+
             return path.slice(0, end);
           };
 
           function basename(path) {
             if (typeof path !== 'string') path = path + '';
-
             var start = 0;
             var end = -1;
             var matchedSlash = true;
             var i;
 
             for (i = path.length - 1; i >= 0; --i) {
-              if (path.charCodeAt(i) === 47 /*/*/) {
+              if (
+                path.charCodeAt(i) === 47
+                /*/*/
+              ) {
                 // If we reached a path separator that was not part of a set of path
                 // separators at the end of the string, stop now
                 if (!matchedSlash) {
@@ -10559,15 +11449,16 @@
 
             if (end === -1) return '';
             return path.slice(start, end);
-          }
-
-          // Uses a mixed approach for backwards-compatibility, as ext behavior changed
+          } // Uses a mixed approach for backwards-compatibility, as ext behavior changed
           // in new Node.js versions, so only basename() above is backported here
+
           exports.basename = function (path, ext) {
             var f = basename(path);
+
             if (ext && f.substr(-1 * ext.length) === ext) {
               f = f.substr(0, f.length - ext.length);
             }
+
             return f;
           };
 
@@ -10576,28 +11467,39 @@
             var startDot = -1;
             var startPart = 0;
             var end = -1;
-            var matchedSlash = true;
-            // Track the state of characters (if any) we see before our first dot and
+            var matchedSlash = true; // Track the state of characters (if any) we see before our first dot and
             // after any path separator we find
+
             var preDotState = 0;
+
             for (var i = path.length - 1; i >= 0; --i) {
               var code = path.charCodeAt(i);
-              if (code === 47 /*/*/) {
+
+              if (
+                code === 47
+                /*/*/
+              ) {
                 // If we reached a path separator that was not part of a set of path
                 // separators at the end of the string, stop now
                 if (!matchedSlash) {
                   startPart = i + 1;
                   break;
                 }
+
                 continue;
               }
+
               if (end === -1) {
                 // We saw the first non-path separator, mark this as the end of our
                 // extension
                 matchedSlash = false;
                 end = i + 1;
               }
-              if (code === 46 /*.*/) {
+
+              if (
+                code === 46
+                /*.*/
+              ) {
                 // If this is our first dot, mark it as the start of our extension
                 if (startDot === -1) startDot = i;
                 else if (preDotState !== 1) preDotState = 1;
@@ -10610,29 +11512,29 @@
 
             if (
               startDot === -1 ||
-              end === -1 ||
-              // We saw a non-dot character immediately before the dot
-              preDotState === 0 ||
-              // The (right-most) trimmed path component is exactly '..'
+              end === -1 || // We saw a non-dot character immediately before the dot
+              preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
               (preDotState === 1 &&
                 startDot === end - 1 &&
                 startDot === startPart + 1)
             ) {
               return '';
             }
+
             return path.slice(startDot, end);
           };
 
           function filter(xs, f) {
             if (xs.filter) return xs.filter(f);
             var res = [];
+
             for (var i = 0; i < xs.length; i++) {
               if (f(xs[i], i, xs)) res.push(xs[i]);
             }
-            return res;
-          }
 
-          // String.prototype.substr - negative index don't work in IE8
+            return res;
+          } // String.prototype.substr - negative index don't work in IE8
+
           var substr =
             'ab'.substr(-1) === 'b'
               ? function (str, start, len) {
@@ -10642,7 +11544,6 @@
                   if (start < 0) start = str.length + start;
                   return str.substr(start, len);
                 };
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
@@ -10654,101 +11555,10 @@
         /***/
       },
 
-    /***/ oi7r:
-      /*!*****************************!*\
-  !*** (webpack)/4/module.js ***!
-  \*****************************/
-      /*! no static exports found */
-      /*! all exports used */
-      /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-      /***/ function (module, exports) {
-        /* WEBPACK VAR INJECTION */ (function (__dirname) {
-          module.exports = /******/ (function () {
-            // webpackBootstrap
-            /******/ var __webpack_modules__ = {
-              /***/ 503: /***/ function (module) {
-                module.exports = function (module) {
-                  if (!module.webpackPolyfill) {
-                    module.deprecate = function () {};
-                    module.paths = [];
-                    // module.parent = undefined by default
-                    if (!module.children) module.children = [];
-                    Object.defineProperty(module, 'loaded', {
-                      enumerable: true,
-                      get: function () {
-                        return module.l;
-                      },
-                    });
-                    Object.defineProperty(module, 'id', {
-                      enumerable: true,
-                      get: function () {
-                        return module.i;
-                      },
-                    });
-                    module.webpackPolyfill = 1;
-                  }
-                  return module;
-                };
-
-                /***/
-              },
-
-              /******/
-            }; // The module cache
-            /************************************************************************/
-            /******/ /******/ var __webpack_module_cache__ = {}; // The require function
-            /******/
-            /******/ /******/ function __nccwpck_require__(moduleId) {
-              /******/ // Check if module is in cache
-              /******/ if (__webpack_module_cache__[moduleId]) {
-                /******/ return __webpack_module_cache__[moduleId].exports;
-                /******/
-              } // Create a new module (and put it into the cache)
-              /******/ /******/ var module = (__webpack_module_cache__[
-                moduleId
-              ] = {
-                /******/ // no module.id needed
-                /******/ // no module.loaded needed
-                /******/ exports: {},
-                /******/
-              }); // Execute the module function
-              /******/
-              /******/ /******/ var threw = true;
-              /******/ try {
-                /******/ __webpack_modules__[moduleId](
-                  module,
-                  module.exports,
-                  __nccwpck_require__,
-                );
-                /******/ threw = false;
-                /******/
-              } finally {
-                /******/ if (threw) delete __webpack_module_cache__[moduleId];
-                /******/
-              } // Return the exports of the module
-              /******/
-              /******/ /******/ return module.exports;
-              /******/
-            } /* webpack/runtime/compat */
-            /******/
-            /************************************************************************/
-            /******/ /******/
-            /******/ __nccwpck_require__.ab =
-              __dirname +
-              '/'; /************************************************************************/ // module exports must be returned from runtime so entry inlining is disabled // startup // Load entry module and return exports
-            /******/ /******/ /******/ /******/ return __nccwpck_require__(503);
-            /******/
-          })();
-          /* WEBPACK VAR INJECTION */
-        }.call(this, '/'));
-
-        /***/
-      },
-
     /***/ pn9d:
-      /*!*****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/info-receiver.js ***!
-  \*****************************************************************************/
+      /*!**************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/info-receiver.js ***!
+  \**************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10771,7 +11581,9 @@
           ),
           InfoIframe = __webpack_require__(/*! ./info-iframe */ 'YAuw'),
           InfoAjax = __webpack_require__(/*! ./info-ajax */ 'hnW3');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -10779,30 +11591,31 @@
           debug(baseUrl);
           var self = this;
           EventEmitter.call(this);
-
           setTimeout(function () {
             self.doXhr(baseUrl, urlInfo);
           }, 0);
         }
 
-        inherits(InfoReceiver, EventEmitter);
-
-        // TODO this is currently ignoring the list of available transports and the whitelist
+        inherits(InfoReceiver, EventEmitter); // TODO this is currently ignoring the list of available transports and the whitelist
 
         InfoReceiver._getReceiver = function (baseUrl, url, urlInfo) {
           // determine method of CORS support (if needed)
           if (urlInfo.sameOrigin) {
             return new InfoAjax(url, XHRLocal);
           }
+
           if (XHRCors.enabled) {
             return new InfoAjax(url, XHRCors);
           }
+
           if (XDR.enabled && urlInfo.sameScheme) {
             return new InfoAjax(url, XDR);
           }
+
           if (InfoIframe.enabled()) {
             return new InfoIframe(baseUrl, url);
           }
+
           return new InfoAjax(url, XHRFake);
         };
 
@@ -10810,18 +11623,19 @@
           var self = this,
             url = urlUtils.addPath(baseUrl, '/info');
           debug('doXhr', url);
-
           this.xo = InfoReceiver._getReceiver(baseUrl, url, urlInfo);
-
           this.timeoutRef = setTimeout(function () {
             debug('timeout');
+
             self._cleanup(false);
+
             self.emit('finish');
           }, InfoReceiver.timeout);
-
           this.xo.once('finish', function (info, rtt) {
             debug('finish', info, rtt);
+
             self._cleanup(true);
+
             self.emit('finish', info, rtt);
           });
         };
@@ -10830,29 +11644,31 @@
           debug('_cleanup');
           clearTimeout(this.timeoutRef);
           this.timeoutRef = null;
+
           if (!wasClean && this.xo) {
             this.xo.close();
           }
+
           this.xo = null;
         };
 
         InfoReceiver.prototype.close = function () {
           debug('close');
           this.removeAllListeners();
+
           this._cleanup(false);
         };
 
         InfoReceiver.timeout = 8000;
-
         module.exports = InfoReceiver;
 
         /***/
       },
 
     /***/ prCu:
-      /*!*******************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/querystring-es3/index.js ***!
-  \*******************************************************************/
+      /*!****************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/querystring-es3/index.js ***!
+  \****************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10870,9 +11686,9 @@
       },
 
     /***/ 'q3/s':
-      /*!**********************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/node-libs-browser/node_modules/punycode/punycode.js ***!
-  \**********************************************************************************************/
+      /*!*******************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/node-libs-browser/node_modules/punycode/punycode.js ***!
+  \*******************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -10884,6 +11700,7 @@
             var freeExports = true && exports && !exports.nodeType && exports;
             var freeModule = true && module && !module.nodeType && module;
             var freeGlobal = typeof global == 'object' && global;
+
             if (
               freeGlobal.global === freeGlobal ||
               freeGlobal.window === freeGlobal ||
@@ -10891,15 +11708,17 @@
             ) {
               root = freeGlobal;
             }
-
             /**
              * The `punycode` object.
              * @name punycode
              * @type Object
              */
+
             var punycode,
               /** Highest positive signed 32-bit float value */
-              maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
+              maxInt = 2147483647,
+              // aka. 0x7FFFFFFF or 2^31-1
+
               /** Bootstring parameters */
               base = 36,
               tMin = 1,
@@ -10907,12 +11726,18 @@
               skew = 38,
               damp = 700,
               initialBias = 72,
-              initialN = 128, // 0x80
-              delimiter = '-', // '\x2D'
+              initialN = 128,
+              // 0x80
+              delimiter = '-',
+              // '\x2D'
+
               /** Regular expressions */
               regexPunycode = /^xn--/,
-              regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
-              regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
+              regexNonASCII = /[^\x20-\x7E]/,
+              // unprintable ASCII chars + non-ASCII chars
+              regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g,
+              // RFC 3490 separators
+
               /** Error messages */
               errors = {
                 overflow: 'Overflow: input needs wider integers to process',
@@ -10925,7 +11750,6 @@
               stringFromCharCode = String.fromCharCode,
               /** Temporary variable */
               key;
-
             /*--------------------------------------------------------------------------*/
 
             /**
@@ -10934,10 +11758,10 @@
              * @param {String} type The error type.
              * @returns {Error} Throws a `RangeError` with the applicable error message.
              */
+
             function error(type) {
               throw new RangeError(errors[type]);
             }
-
             /**
              * A generic `Array#map` utility function.
              * @private
@@ -10946,15 +11770,17 @@
              * item.
              * @returns {Array} A new array of values returned by the callback function.
              */
+
             function map(array, fn) {
               var length = array.length;
               var result = [];
+
               while (length--) {
                 result[length] = fn(array[length]);
               }
+
               return result;
             }
-
             /**
              * A simple `Array#map`-like wrapper to work with domain name strings or email
              * addresses.
@@ -10965,22 +11791,23 @@
              * @returns {Array} A new string of characters returned by the callback
              * function.
              */
+
             function mapDomain(string, fn) {
               var parts = string.split('@');
               var result = '';
+
               if (parts.length > 1) {
                 // In email addresses, only the domain name should be punycoded. Leave
                 // the local part (i.e. everything up to `@`) intact.
                 result = parts[0] + '@';
                 string = parts[1];
-              }
-              // Avoid `split(regex)` for IE8 compatibility. See #17.
+              } // Avoid `split(regex)` for IE8 compatibility. See #17.
+
               string = string.replace(regexSeparators, '\x2E');
               var labels = string.split('.');
               var encoded = map(labels, fn).join('.');
               return result + encoded;
             }
-
             /**
              * Creates an array containing the numeric code points of each Unicode
              * character in the string. While JavaScript uses UCS-2 internally,
@@ -10994,17 +11821,21 @@
              * @param {String} string The Unicode input string (UCS-2).
              * @returns {Array} The new array of code points.
              */
+
             function ucs2decode(string) {
               var output = [],
                 counter = 0,
                 length = string.length,
                 value,
                 extra;
+
               while (counter < length) {
                 value = string.charCodeAt(counter++);
+
                 if (value >= 0xd800 && value <= 0xdbff && counter < length) {
                   // high surrogate, and there is a next character
                   extra = string.charCodeAt(counter++);
+
                   if ((extra & 0xfc00) == 0xdc00) {
                     // low surrogate
                     output.push(
@@ -11020,9 +11851,9 @@
                   output.push(value);
                 }
               }
+
               return output;
             }
-
             /**
              * Creates a string based on an array of numeric code points.
              * @see `punycode.ucs2.decode`
@@ -11031,9 +11862,11 @@
              * @param {Array} codePoints The array of numeric code points.
              * @returns {String} The new Unicode string (UCS-2).
              */
+
             function ucs2encode(array) {
               return map(array, function (value) {
                 var output = '';
+
                 if (value > 0xffff) {
                   value -= 0x10000;
                   output += stringFromCharCode(
@@ -11041,11 +11874,11 @@
                   );
                   value = 0xdc00 | (value & 0x3ff);
                 }
+
                 output += stringFromCharCode(value);
                 return output;
               }).join('');
             }
-
             /**
              * Converts a basic code point into a digit/integer.
              * @see `digitToBasic()`
@@ -11055,19 +11888,22 @@
              * representing integers) in the range `0` to `base - 1`, or `base` if
              * the code point does not represent a value.
              */
+
             function basicToDigit(codePoint) {
               if (codePoint - 48 < 10) {
                 return codePoint - 22;
               }
+
               if (codePoint - 65 < 26) {
                 return codePoint - 65;
               }
+
               if (codePoint - 97 < 26) {
                 return codePoint - 97;
               }
+
               return base;
             }
-
             /**
              * Converts a digit/integer into a basic code point.
              * @see `basicToDigit()`
@@ -11079,31 +11915,34 @@
              * used; else, the lowercase form is used. The behavior is undefined
              * if `flag` is non-zero and `digit` has no uppercase form.
              */
+
             function digitToBasic(digit, flag) {
               //  0..25 map to ASCII a..z or A..Z
               // 26..35 map to ASCII 0..9
               return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
             }
-
             /**
              * Bias adaptation function as per section 3.4 of RFC 3492.
              * https://tools.ietf.org/html/rfc3492#section-3.4
              * @private
              */
+
             function adapt(delta, numPoints, firstTime) {
               var k = 0;
               delta = firstTime ? floor(delta / damp) : delta >> 1;
               delta += floor(delta / numPoints);
+
               for (
                 ;
-                /* no initialization */ delta > (baseMinusTMin * tMax) >> 1;
+                /* no initialization */
+                delta > (baseMinusTMin * tMax) >> 1;
                 k += base
               ) {
                 delta = floor(delta / baseMinusTMin);
               }
+
               return floor(k + ((baseMinusTMin + 1) * delta) / (delta + skew));
             }
-
             /**
              * Converts a Punycode string of ASCII-only symbols to a string of Unicode
              * symbols.
@@ -11111,6 +11950,7 @@
              * @param {String} input The Punycode string of ASCII-only symbols.
              * @returns {String} The resulting string of Unicode symbols.
              */
+
             function decode(input) {
               // Don't use UCS-2
               var output = [],
@@ -11128,13 +11968,12 @@
                 digit,
                 t,
                 /** Cached calculation results */
-                baseMinusT;
-
-              // Handle the basic code points: let `basic` be the number of input code
+                baseMinusT; // Handle the basic code points: let `basic` be the number of input code
               // points before the last delimiter, or `0` if there is none, then copy
               // the first basic code points to the output.
 
               basic = input.lastIndexOf(delimiter);
+
               if (basic < 0) {
                 basic = 0;
               }
@@ -11144,10 +11983,9 @@
                 if (input.charCodeAt(j) >= 0x80) {
                   error('not-basic');
                 }
-                output.push(input.charCodeAt(j));
-              }
 
-              // Main decoding loop: start just after the last delimiter if any basic code
+                output.push(input.charCodeAt(j));
+              } // Main decoding loop: start just after the last delimiter if any basic code
               // points were copied; start at the beginning otherwise.
 
               for (
@@ -11161,8 +11999,9 @@
                 // if we increase `i` as we go, then subtract off its starting
                 // value at the end to obtain `delta`.
                 for (
-                  oldi = i, w = 1, k = base /* no condition */;
+                  oldi = i, w = 1, k = base;
                   ;
+                  /* no condition */
                   k += base
                 ) {
                   if (index >= inputLength) {
@@ -11183,6 +12022,7 @@
                   }
 
                   baseMinusT = base - t;
+
                   if (w > floor(maxInt / baseMinusT)) {
                     error('overflow');
                   }
@@ -11191,24 +12031,21 @@
                 }
 
                 out = output.length + 1;
-                bias = adapt(i - oldi, out, oldi == 0);
-
-                // `i` was supposed to wrap around from `out` to `0`,
+                bias = adapt(i - oldi, out, oldi == 0); // `i` was supposed to wrap around from `out` to `0`,
                 // incrementing `n` each time, so we'll fix that now:
+
                 if (floor(i / out) > maxInt - n) {
                   error('overflow');
                 }
 
                 n += floor(i / out);
-                i %= out;
+                i %= out; // Insert `n` at position `i` of the output
 
-                // Insert `n` at position `i` of the output
                 output.splice(i++, 0, n);
               }
 
               return ucs2encode(output);
             }
-
             /**
              * Converts a string of Unicode symbols (e.g. a domain name label) to a
              * Punycode string of ASCII-only symbols.
@@ -11216,6 +12053,7 @@
              * @param {String} input The string of Unicode symbols.
              * @returns {String} The resulting Punycode string of ASCII-only symbols.
              */
+
             function encode(input) {
               var n,
                 delta,
@@ -11234,51 +12072,46 @@
                 /** Cached calculation results */
                 handledCPCountPlusOne,
                 baseMinusT,
-                qMinusT;
+                qMinusT; // Convert the input in UCS-2 to Unicode
 
-              // Convert the input in UCS-2 to Unicode
-              input = ucs2decode(input);
+              input = ucs2decode(input); // Cache the length
 
-              // Cache the length
-              inputLength = input.length;
+              inputLength = input.length; // Initialize the state
 
-              // Initialize the state
               n = initialN;
               delta = 0;
-              bias = initialBias;
+              bias = initialBias; // Handle the basic code points
 
-              // Handle the basic code points
               for (j = 0; j < inputLength; ++j) {
                 currentValue = input[j];
+
                 if (currentValue < 0x80) {
                   output.push(stringFromCharCode(currentValue));
                 }
               }
 
-              handledCPCount = basicLength = output.length;
-
-              // `handledCPCount` is the number of code points that have been handled;
+              handledCPCount = basicLength = output.length; // `handledCPCount` is the number of code points that have been handled;
               // `basicLength` is the number of basic code points.
-
               // Finish the basic string - if it is not empty - with a delimiter
+
               if (basicLength) {
                 output.push(delimiter);
-              }
+              } // Main encoding loop:
 
-              // Main encoding loop:
               while (handledCPCount < inputLength) {
                 // All non-basic code points < n have been handled already. Find the next
                 // larger one:
                 for (m = maxInt, j = 0; j < inputLength; ++j) {
                   currentValue = input[j];
+
                   if (currentValue >= n && currentValue < m) {
                     m = currentValue;
                   }
-                }
-
-                // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+                } // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
                 // but guard against overflow
+
                 handledCPCountPlusOne = handledCPCount + 1;
+
                 if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
                   error('overflow');
                 }
@@ -11295,11 +12128,18 @@
 
                   if (currentValue == n) {
                     // Represent delta as a generalized variable-length integer
-                    for (q = delta, k = base /* no condition */; ; k += base) {
+                    for (
+                      q = delta, k = base;
+                      ;
+                      /* no condition */
+                      k += base
+                    ) {
                       t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+
                       if (q < t) {
                         break;
                       }
+
                       qMinusT = q - t;
                       baseMinusT = base - t;
                       output.push(
@@ -11324,9 +12164,9 @@
                 ++delta;
                 ++n;
               }
+
               return output.join('');
             }
-
             /**
              * Converts a Punycode string representing a domain name or an email address
              * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
@@ -11338,6 +12178,7 @@
              * @returns {String} The Unicode representation of the given Punycode
              * string.
              */
+
             function toUnicode(input) {
               return mapDomain(input, function (string) {
                 return regexPunycode.test(string)
@@ -11345,7 +12186,6 @@
                   : string;
               });
             }
-
             /**
              * Converts a Unicode string representing a domain name or an email address to
              * Punycode. Only the non-ASCII parts of the domain name will be converted,
@@ -11357,6 +12197,7 @@
              * @returns {String} The Punycode representation of the given domain name or
              * email address.
              */
+
             function toASCII(input) {
               return mapDomain(input, function (string) {
                 return regexNonASCII.test(string)
@@ -11364,10 +12205,10 @@
                   : string;
               });
             }
-
             /*--------------------------------------------------------------------------*/
 
             /** Define the public API */
+
             punycode = {
               /**
                * A string representing the current Punycode.js version number.
@@ -11375,6 +12216,7 @@
                * @type String
                */
               version: '1.4.1',
+
               /**
                * An object of methods to convert from JavaScript's internal character
                * representation (UCS-2) to Unicode code points, and back.
@@ -11391,10 +12233,10 @@
               toASCII: toASCII,
               toUnicode: toUnicode,
             };
-
             /** Expose `punycode` */
             // Some AMD build optimizers, like r.js, check for specific condition patterns
             // like the following:
+
             if (true) {
               !((__WEBPACK_AMD_DEFINE_RESULT__ = function () {
                 return punycode;
@@ -11404,15 +12246,14 @@
             } else {
             }
           })(this);
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/module.js */ 'oi7r',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/module.js */ 'hOG+',
           )(module),
           __webpack_require__(
-            /*! ./../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -11420,9 +12261,9 @@
       },
 
     /***/ qW1w:
-      /*!***********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/inherits/inherits_browser.js ***!
-  \***********************************************************************/
+      /*!********************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/inherits/inherits_browser.js ***!
+  \********************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11447,7 +12288,9 @@
           module.exports = function inherits(ctor, superCtor) {
             if (superCtor) {
               ctor.super_ = superCtor;
-              var TempCtor = function () {};
+
+              var TempCtor = function TempCtor() {};
+
               TempCtor.prototype = superCtor.prototype;
               ctor.prototype = new TempCtor();
               ctor.prototype.constructor = ctor;
@@ -11459,9 +12302,9 @@
       },
 
     /***/ 'r/K9':
-      /*!********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/querystring-es3/decode.js ***!
-  \********************************************************************/
+      /*!*****************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/querystring-es3/decode.js ***!
+  \*****************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11487,10 +12330,10 @@
         // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
         // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
         // USE OR OTHER DEALINGS IN THE SOFTWARE.
-
         // If obj.hasOwnProperty has been overridden, then calling
         // obj.hasOwnProperty(prop) will break.
         // See: https://github.com/joyent/node/issues/1707
+
         function hasOwnProperty(obj, prop) {
           return Object.prototype.hasOwnProperty.call(obj, prop);
         }
@@ -11506,14 +12349,14 @@
 
           var regexp = /\+/g;
           qs = qs.split(sep);
-
           var maxKeys = 1000;
+
           if (options && typeof options.maxKeys === 'number') {
             maxKeys = options.maxKeys;
           }
 
-          var len = qs.length;
-          // maxKeys <= 0 means that we should not limit keys count
+          var len = qs.length; // maxKeys <= 0 means that we should not limit keys count
+
           if (maxKeys > 0 && len > maxKeys) {
             len = maxKeys;
           }
@@ -11559,9 +12402,9 @@
       },
 
     /***/ r4pD:
-      /*!******************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/sender/xhr-local.js ***!
-  \******************************************************************************************/
+      /*!***************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/sender/xhr-local.js ***!
+  \***************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11570,25 +12413,29 @@
 
         var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
           XhrDriver = __webpack_require__(/*! ../driver/xhr */ 'x5MC');
-        function XHRLocalObject(method, url, payload /*, opts */) {
+
+        function XHRLocalObject(
+          method,
+          url,
+          payload,
+          /*, opts */
+        ) {
           XhrDriver.call(this, method, url, payload, {
             noCredentials: true,
           });
         }
 
         inherits(XHRLocalObject, XhrDriver);
-
         XHRLocalObject.enabled = XhrDriver.enabled;
-
         module.exports = XHRLocalObject;
 
         /***/
       },
 
     /***/ rCFf:
-      /*!*************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/url.js ***!
-  \*************************************************************************/
+      /*!**********************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/url.js ***!
+  \**********************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11597,49 +12444,47 @@
 
         var URL = __webpack_require__(/*! url-parse */ '01Zg');
 
-        var debug = function () {};
+        var debug = function debug() {};
+
         if (false) {
         }
 
         module.exports = {
-          getOrigin: function (url) {
+          getOrigin: function getOrigin(url) {
             if (!url) {
               return null;
             }
 
             var p = new URL(url);
+
             if (p.protocol === 'file:') {
               return null;
             }
 
             var port = p.port;
+
             if (!port) {
               port = p.protocol === 'https:' ? '443' : '80';
             }
 
             return p.protocol + '//' + p.hostname + ':' + port;
           },
-
-          isOriginEqual: function (a, b) {
+          isOriginEqual: function isOriginEqual(a, b) {
             var res = this.getOrigin(a) === this.getOrigin(b);
             debug('same', a, b, res);
             return res;
           },
-
-          isSchemeEqual: function (a, b) {
+          isSchemeEqual: function isSchemeEqual(a, b) {
             return a.split(':')[0] === b.split(':')[0];
           },
-
-          addPath: function (url, path) {
+          addPath: function addPath(url, path) {
             var qs = url.split('?');
             return qs[0] + path + (qs[1] ? '?' + qs[1] : '');
           },
-
-          addQuery: function (url, q) {
+          addQuery: function addQuery(url, q) {
             return url + (url.indexOf('?') === -1 ? '?' + q : '&' + q);
           },
-
-          isLoopbackAddr: function (addr) {
+          isLoopbackAddr: function isLoopbackAddr(addr) {
             return (
               /^127\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$/i.test(addr) ||
               /^\[::1\]$/.test(addr)
@@ -11651,9 +12496,9 @@
       },
 
     /***/ rt9q:
-      /*!*********************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/lib/sender-receiver.js ***!
-  \*********************************************************************************************/
+      /*!******************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/lib/sender-receiver.js ***!
+  \******************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11664,7 +12509,9 @@
           urlUtils = __webpack_require__(/*! ../../utils/url */ 'rCFf'),
           BufferedSender = __webpack_require__(/*! ./buffered-sender */ 'Q8t3'),
           Polling = __webpack_require__(/*! ./polling */ 'KyBg');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -11679,7 +12526,6 @@
           debug(pollUrl);
           var self = this;
           BufferedSender.call(this, transUrl, senderFunc);
-
           this.poll = new Polling(Receiver, pollUrl, AjaxObject);
           this.poll.on('message', function (msg) {
             debug('poll message', msg);
@@ -11699,6 +12545,7 @@
           BufferedSender.prototype.close.call(this);
           debug('close');
           this.removeAllListeners();
+
           if (this.poll) {
             this.poll.abort();
             this.poll = null;
@@ -11711,9 +12558,9 @@
       },
 
     /***/ 's+nu':
-      /*!******************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/url/util.js ***!
-  \******************************************************/
+      /*!***************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/url/util.js ***!
+  \***************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11721,16 +12568,16 @@
         'use strict';
 
         module.exports = {
-          isString: function (arg) {
+          isString: function isString(arg) {
             return typeof arg === 'string';
           },
-          isObject: function (arg) {
+          isObject: function isObject(arg) {
             return typeof arg === 'object' && arg !== null;
           },
-          isNull: function (arg) {
+          isNull: function isNull(arg) {
             return arg === null;
           },
-          isNullOrUndefined: function (arg) {
+          isNullOrUndefined: function isNullOrUndefined(arg) {
             return arg == null;
           },
         };
@@ -11739,9 +12586,9 @@
       },
 
     /***/ sVH8:
-      /*!*************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/xdr-polling.js ***!
-  \*************************************************************************************/
+      /*!**********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/xdr-polling.js ***!
+  \**********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11757,10 +12604,12 @@
           ),
           XhrReceiver = __webpack_require__(/*! ./receiver/xhr */ 'Ng+W'),
           XDRObject = __webpack_require__(/*! ./sender/xdr */ 'nxOW');
+
         function XdrPollingTransport(transUrl) {
           if (!XDRObject.enabled) {
             throw new Error('Transport created when disabled');
           }
+
           AjaxBasedTransport.call(
             this,
             transUrl,
@@ -11771,7 +12620,6 @@
         }
 
         inherits(XdrPollingTransport, AjaxBasedTransport);
-
         XdrPollingTransport.enabled = XdrStreamingTransport.enabled;
         XdrPollingTransport.transportName = 'xdr-polling';
         XdrPollingTransport.roundTrips = 2; // preflight, ajax
@@ -11782,21 +12630,27 @@
       },
 
     /***/ tLVl:
-      /*!**************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/strip-ansi/node_modules/ansi-regex/index.js ***!
-  \**************************************************************************************/
+      /*!***********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/strip-ansi/node_modules/ansi-regex/index.js ***!
+  \***********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
 
-        module.exports = ({ onlyFirst = false } = {}) => {
-          const pattern = [
+        module.exports = function () {
+          var _ref =
+              arguments.length > 0 && arguments[0] !== undefined
+                ? arguments[0]
+                : {},
+            _ref$onlyFirst = _ref.onlyFirst,
+            onlyFirst = _ref$onlyFirst === void 0 ? false : _ref$onlyFirst;
+
+          var pattern = [
             '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
             '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))',
           ].join('|');
-
           return new RegExp(pattern, onlyFirst ? undefined : 'g');
         };
 
@@ -11804,9 +12658,9 @@
       },
 
     /***/ uFOv:
-      /*!***************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/event/event.js ***!
-  \***************************************************************************/
+      /*!************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/event/event.js ***!
+  \************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11830,21 +12684,21 @@
         };
 
         Event.prototype.stopPropagation = function () {};
+
         Event.prototype.preventDefault = function () {};
 
         Event.CAPTURING_PHASE = 1;
         Event.AT_TARGET = 2;
         Event.BUBBLING_PHASE = 3;
-
         module.exports = Event;
 
         /***/
       },
 
     /***/ uIkj:
-      /*!****************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/utils/object.js ***!
-  \****************************************************************************/
+      /*!*************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/utils/object.js ***!
+  \*************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11852,24 +12706,27 @@
         'use strict';
 
         module.exports = {
-          isObject: function (obj) {
+          isObject: function isObject(obj) {
             var type = typeof obj;
             return type === 'function' || (type === 'object' && !!obj);
           },
-
-          extend: function (obj) {
+          extend: function extend(obj) {
             if (!this.isObject(obj)) {
               return obj;
             }
+
             var source, prop;
+
             for (var i = 1, length = arguments.length; i < length; i++) {
               source = arguments[i];
+
               for (prop in source) {
                 if (Object.prototype.hasOwnProperty.call(source, prop)) {
                   obj[prop] = source[prop];
                 }
               }
             }
+
             return obj;
           },
         };
@@ -11878,21 +12735,20 @@
       },
 
     /***/ vmN6:
-      /*!*********************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/browser/eventsource.js ***!
-  \*********************************************************************************************/
+      /*!******************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/browser/eventsource.js ***!
+  \******************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         /* WEBPACK VAR INJECTION */ (function (global) {
           module.exports = global.EventSource;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -11900,9 +12756,9 @@
       },
 
     /***/ 'vtV/':
-      /*!*************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/xhr-polling.js ***!
-  \*************************************************************************************/
+      /*!**********************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/xhr-polling.js ***!
+  \**********************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11918,10 +12774,12 @@
           XHRLocalObject = __webpack_require__(
             /*! ./sender/xhr-local */ 'r4pD',
           );
+
         function XhrPollingTransport(transUrl) {
           if (!XHRLocalObject.enabled && !XHRCorsObject.enabled) {
             throw new Error('Transport created when disabled');
           }
+
           AjaxBasedTransport.call(
             this,
             transUrl,
@@ -11941,6 +12799,7 @@
           if (XHRLocalObject.enabled && info.sameOrigin) {
             return true;
           }
+
           return XHRCorsObject.enabled;
         };
 
@@ -11953,9 +12812,9 @@
       },
 
     /***/ x5MC:
-      /*!**********************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/browser/abstract-xhr.js ***!
-  \**********************************************************************************************/
+      /*!*******************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/browser/abstract-xhr.js ***!
+  \*******************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -11968,7 +12827,9 @@
             utils = __webpack_require__(/*! ../../utils/event */ 'MR5Q'),
             urlUtils = __webpack_require__(/*! ../../utils/url */ 'rCFf'),
             XHR = global.XMLHttpRequest;
-          var debug = function () {};
+
+          var debug = function debug() {};
+
           if (false) {
           }
 
@@ -11976,7 +12837,6 @@
             debug(method, url);
             var self = this;
             EventEmitter.call(this);
-
             setTimeout(function () {
               self._start(method, url, payload, opts);
             }, 0);
@@ -12001,34 +12861,41 @@
             if (!this.xhr) {
               debug('no xhr');
               this.emit('finish', 0, 'no xhr support');
+
               this._cleanup();
+
               return;
-            }
+            } // several browsers cache POSTs
 
-            // several browsers cache POSTs
-            url = urlUtils.addQuery(url, 't=' + +new Date());
-
-            // Explorer tends to keep connection open, even after the
+            url = urlUtils.addQuery(url, 't=' + +new Date()); // Explorer tends to keep connection open, even after the
             // tab gets closed: http://bugs.jquery.com/ticket/5280
+
             this.unloadRef = utils.unloadAdd(function () {
               debug('unload cleanup');
+
               self._cleanup(true);
             });
+
             try {
               this.xhr.open(method, url, true);
+
               if (this.timeout && 'timeout' in this.xhr) {
                 this.xhr.timeout = this.timeout;
+
                 this.xhr.ontimeout = function () {
                   debug('xhr timeout');
                   self.emit('finish', 0, '');
+
                   self._cleanup(false);
                 };
               }
             } catch (e) {
-              debug('exception', e);
-              // IE raises an exception on wrong port.
+              debug('exception', e); // IE raises an exception on wrong port.
+
               this.emit('finish', 0, '');
+
               this._cleanup(false);
+
               return;
             }
 
@@ -12036,12 +12903,12 @@
               (!opts || !opts.noCredentials) &&
               AbstractXHRObject.supportsCORS
             ) {
-              debug('withCredentials');
-              // Mozilla docs says https://developer.mozilla.org/en/XMLHttpRequest :
+              debug('withCredentials'); // Mozilla docs says https://developer.mozilla.org/en/XMLHttpRequest :
               // "This never affects same-site requests."
 
               this.xhr.withCredentials = true;
             }
+
             if (opts && opts.headers) {
               for (var key in opts.headers) {
                 this.xhr.setRequestHeader(key, opts.headers[key]);
@@ -12053,6 +12920,7 @@
                 var x = self.xhr;
                 var text, status;
                 debug('readyState', x.readyState);
+
                 switch (x.readyState) {
                   case 3:
                     // IE doesn't like peeking into responseText or status
@@ -12063,34 +12931,38 @@
                     } catch (e) {
                       // intentionally empty
                     }
-                    debug('status', status);
-                    // IE returns 1223 for 204: http://bugs.jquery.com/ticket/1450
+
+                    debug('status', status); // IE returns 1223 for 204: http://bugs.jquery.com/ticket/1450
+
                     if (status === 1223) {
                       status = 204;
-                    }
+                    } // IE does return readystate == 3 for 404 answers.
 
-                    // IE does return readystate == 3 for 404 answers.
                     if (status === 200 && text && text.length > 0) {
                       debug('chunk');
                       self.emit('chunk', status, text);
                     }
+
                     break;
+
                   case 4:
                     status = x.status;
-                    debug('status', status);
-                    // IE returns 1223 for 204: http://bugs.jquery.com/ticket/1450
+                    debug('status', status); // IE returns 1223 for 204: http://bugs.jquery.com/ticket/1450
+
                     if (status === 1223) {
                       status = 204;
-                    }
-                    // IE returns this for a bad port
+                    } // IE returns this for a bad port
                     // http://msdn.microsoft.com/en-us/library/windows/desktop/aa383770(v=vs.85).aspx
+
                     if (status === 12005 || status === 12029) {
                       status = 0;
                     }
 
                     debug('finish', status, x.responseText);
                     self.emit('finish', status, x.responseText);
+
                     self._cleanup(false);
+
                     break;
                 }
               }
@@ -12100,20 +12972,23 @@
               self.xhr.send(payload);
             } catch (e) {
               self.emit('finish', 0, '');
+
               self._cleanup(false);
             }
           };
 
           AbstractXHRObject.prototype._cleanup = function (abort) {
             debug('cleanup');
+
             if (!this.xhr) {
               return;
             }
-            this.removeAllListeners();
-            utils.unloadDel(this.unloadRef);
 
-            // IE needs this field to be a function
+            this.removeAllListeners();
+            utils.unloadDel(this.unloadRef); // IE needs this field to be a function
+
             this.xhr.onreadystatechange = function () {};
+
             if (this.xhr.ontimeout) {
               this.xhr.ontimeout = null;
             }
@@ -12125,31 +13000,37 @@
                 // intentionally empty
               }
             }
+
             this.unloadRef = this.xhr = null;
           };
 
           AbstractXHRObject.prototype.close = function () {
             debug('close');
+
             this._cleanup(true);
           };
 
-          AbstractXHRObject.enabled = !!XHR;
-          // override XMLHttpRequest for IE6/7
+          AbstractXHRObject.enabled = !!XHR; // override XMLHttpRequest for IE6/7
           // obfuscate to avoid firewalls
+
           var axo = ['Active'].concat('Object').join('X');
+
           if (!AbstractXHRObject.enabled && axo in global) {
             debug('overriding xmlhttprequest');
-            XHR = function () {
+
+            XHR = function XHR() {
               try {
                 return new global[axo]('Microsoft.XMLHTTP');
               } catch (e) {
                 return null;
               }
             };
+
             AbstractXHRObject.enabled = !!new XHR();
           }
 
           var cors = false;
+
           try {
             cors = 'withCredentials' in new XHR();
           } catch (ignored) {
@@ -12157,119 +13038,27 @@
           }
 
           AbstractXHRObject.supportsCORS = cors;
-
           module.exports = AbstractXHRObject;
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
         /***/
       },
 
-    /***/ y4hX:
-      /*!*****************************!*\
-  !*** (webpack)/4/global.js ***!
-  \*****************************/
-      /*! no static exports found */
-      /*! all exports used */
-      /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-      /***/ function (module, exports) {
-        /* WEBPACK VAR INJECTION */ (function (__dirname) {
-          module.exports = /******/ (function () {
-            // webpackBootstrap
-            /******/ var __webpack_modules__ = {
-              /***/ 33: /***/ function (module) {
-                var g;
-
-                // This works in non-strict mode
-                g = (function () {
-                  return this;
-                })();
-
-                try {
-                  // This works if eval is allowed (see CSP)
-                  g = g || new Function('return this')();
-                } catch (e) {
-                  // This works if the window reference is available
-                  if (typeof window === 'object') g = window;
-                }
-
-                // g can still be undefined, but nothing to do about it...
-                // We return undefined, instead of nothing here, so it's
-                // easier to handle this case. if(!global) { ...}
-
-                module.exports = g;
-
-                /***/
-              },
-
-              /******/
-            }; // The module cache
-            /************************************************************************/
-            /******/ /******/ var __webpack_module_cache__ = {}; // The require function
-            /******/
-            /******/ /******/ function __nccwpck_require__(moduleId) {
-              /******/ // Check if module is in cache
-              /******/ if (__webpack_module_cache__[moduleId]) {
-                /******/ return __webpack_module_cache__[moduleId].exports;
-                /******/
-              } // Create a new module (and put it into the cache)
-              /******/ /******/ var module = (__webpack_module_cache__[
-                moduleId
-              ] = {
-                /******/ // no module.id needed
-                /******/ // no module.loaded needed
-                /******/ exports: {},
-                /******/
-              }); // Execute the module function
-              /******/
-              /******/ /******/ var threw = true;
-              /******/ try {
-                /******/ __webpack_modules__[moduleId](
-                  module,
-                  module.exports,
-                  __nccwpck_require__,
-                );
-                /******/ threw = false;
-                /******/
-              } finally {
-                /******/ if (threw) delete __webpack_module_cache__[moduleId];
-                /******/
-              } // Return the exports of the module
-              /******/
-              /******/ /******/ return module.exports;
-              /******/
-            } /* webpack/runtime/compat */
-            /******/
-            /************************************************************************/
-            /******/ /******/
-            /******/ __nccwpck_require__.ab =
-              __dirname +
-              '/'; /************************************************************************/ // module exports must be returned from runtime so entry inlining is disabled // startup // Load entry module and return exports
-            /******/ /******/ /******/ /******/ return __nccwpck_require__(33);
-            /******/
-          })();
-          /* WEBPACK VAR INJECTION */
-        }.call(this, '/'));
-
-        /***/
-      },
-
     /***/ ytOc:
-      /*!********************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/iframe.js ***!
-  \********************************************************************************/
+      /*!*****************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/iframe.js ***!
+  \*****************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
       /***/ function (module, exports, __webpack_require__) {
         'use strict';
-
         // Few cool transports do work only for same-origin. In order to make
         // them work cross-domain we shall use iframe, served from the
         // remote domain. New browsers have capabilities to communicate with
@@ -12286,7 +13075,9 @@
           iframeUtils = __webpack_require__(/*! ../utils/iframe */ 'fwyQ'),
           eventUtils = __webpack_require__(/*! ../utils/event */ 'MR5Q'),
           random = __webpack_require__(/*! ../utils/random */ '6/Oc');
-        var debug = function () {};
+
+        var debug = function debug() {};
+
         if (false) {
         }
 
@@ -12294,25 +13085,22 @@
           if (!IframeTransport.enabled()) {
             throw new Error('Transport created when disabled');
           }
-          EventEmitter.call(this);
 
+          EventEmitter.call(this);
           var self = this;
           this.origin = urlUtils.getOrigin(baseUrl);
           this.baseUrl = baseUrl;
           this.transUrl = transUrl;
           this.transport = transport;
           this.windowId = random.string(8);
-
           var iframeUrl =
             urlUtils.addPath(baseUrl, '/iframe.html') + '#' + this.windowId;
           debug(transport, transUrl, iframeUrl);
-
           this.iframeObj = iframeUtils.createIframe(iframeUrl, function (r) {
             debug('err callback');
             self.emit('close', 1006, 'Unable to load an iframe (' + r + ')');
             self.close();
           });
-
           this.onmessageCallback = this._message.bind(this);
           eventUtils.attachEvent('message', this.onmessageCallback);
         }
@@ -12322,8 +13110,10 @@
         IframeTransport.prototype.close = function () {
           debug('close');
           this.removeAllListeners();
+
           if (this.iframeObj) {
             eventUtils.detachEvent('message', this.onmessageCallback);
+
             try {
               // When the iframe is not loaded, IE raises an exception
               // on 'contentWindow'.
@@ -12331,6 +13121,7 @@
             } catch (x) {
               // intentionally empty
             }
+
             this.iframeObj.cleanup();
             this.iframeObj = null;
             this.onmessageCallback = this.iframeObj = null;
@@ -12339,12 +13130,14 @@
 
         IframeTransport.prototype._message = function (e) {
           debug('message', e.data);
+
           if (!urlUtils.isOriginEqual(e.origin, this.origin)) {
             debug('not same origin', e.origin, this.origin);
             return;
           }
 
           var iframeMessage;
+
           try {
             iframeMessage = JSON3.parse(e.data);
           } catch (ignored) {
@@ -12363,8 +13156,8 @@
 
           switch (iframeMessage.type) {
             case 's':
-              this.iframeObj.loaded();
-              // window global dependency
+              this.iframeObj.loaded(); // window global dependency
+
               this.postMessage(
                 's',
                 JSON3.stringify([
@@ -12375,17 +13168,21 @@
                 ]),
               );
               break;
+
             case 't':
               this.emit('message', iframeMessage.data);
               break;
+
             case 'c':
               var cdata;
+
               try {
                 cdata = JSON3.parse(iframeMessage.data);
               } catch (ignored) {
                 debug('bad json', iframeMessage.data);
                 return;
               }
+
               this.emit('close', cdata[0], cdata[1]);
               this.close();
               break;
@@ -12415,16 +13212,15 @@
 
         IframeTransport.transportName = 'iframe';
         IframeTransport.roundTrips = 2;
-
         module.exports = IframeTransport;
 
         /***/
       },
 
     /***/ zC0X:
-      /*!*****************************************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/sockjs-client/lib/transport/lib/iframe-wrap.js ***!
-  \*****************************************************************************************/
+      /*!**************************************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/sockjs-client/lib/transport/lib/iframe-wrap.js ***!
+  \**************************************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -12434,6 +13230,7 @@
           var inherits = __webpack_require__(/*! inherits */ 'qW1w'),
             IframeTransport = __webpack_require__(/*! ../iframe */ 'ytOc'),
             objectUtils = __webpack_require__(/*! ../../utils/object */ 'uIkj');
+
           module.exports = function (transport) {
             function IframeWrapTransport(transUrl, baseUrl) {
               IframeTransport.call(
@@ -12463,15 +13260,13 @@
               IframeTransport.roundTrips + transport.roundTrips - 1; // html, javascript (2) + transport - no CORS (1)
 
             IframeWrapTransport.facadeTransport = transport;
-
             return IframeWrapTransport;
           };
-
           /* WEBPACK VAR INJECTION */
         }.call(
           this,
           __webpack_require__(
-            /*! ./../../../../@umijs/deps/compiled/webpack/4/global.js */ 'y4hX',
+            /*! ./../../../../../packages/bundler-webpack/node_modules/@umijs/deps/compiled/webpack/4/global.js */ 'IyRk',
           ),
         ));
 
@@ -12479,9 +13274,9 @@
       },
 
     /***/ zHZo:
-      /*!********************************************************************!*\
-  !*** /Users/jcl/github/umi/node_modules/querystring-es3/encode.js ***!
-  \********************************************************************/
+      /*!*****************************************************************************************!*\
+  !*** /Users/chencheng/code/github.com/umijs/umi/node_modules/querystring-es3/encode.js ***!
+  \*****************************************************************************************/
       /*! no static exports found */
       /*! all exports used */
       /*! ModuleConcatenation bailout: Module is not an ECMAScript module */
@@ -12508,7 +13303,7 @@
         // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
         // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-        var stringifyPrimitive = function (v) {
+        var stringifyPrimitive = function stringifyPrimitive(v) {
           switch (typeof v) {
             case 'string':
               return v;
@@ -12527,6 +13322,7 @@
         module.exports = function (obj, sep, eq, name) {
           sep = sep || '&';
           eq = eq || '=';
+
           if (obj === null) {
             obj = undefined;
           }
@@ -12534,6 +13330,7 @@
           if (typeof obj === 'object') {
             return map(objectKeys(obj), function (k) {
               var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+
               if (isArray(obj[k])) {
                 return map(obj[k], function (v) {
                   return ks + encodeURIComponent(stringifyPrimitive(v));
@@ -12561,9 +13358,11 @@
         function map(xs, f) {
           if (xs.map) return xs.map(f);
           var res = [];
+
           for (var i = 0; i < xs.length; i++) {
             res.push(f(xs[i], i));
           }
+
           return res;
         }
 
@@ -12571,9 +13370,11 @@
           Object.keys ||
           function (obj) {
             var res = [];
+
             for (var key in obj) {
               if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
             }
+
             return res;
           };
 

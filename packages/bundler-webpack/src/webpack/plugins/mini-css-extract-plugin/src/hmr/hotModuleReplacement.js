@@ -11,7 +11,7 @@ const srcByModuleId = Object.create(null);
 
 const noDocument = typeof document === 'undefined';
 
-const { forEach } = Array.prototype;
+const forEach = Array.prototype.forEach;
 
 function debounce(fn, time) {
   let timeout = 0;
@@ -37,13 +37,13 @@ function getCurrentScriptUrl(moduleId) {
 
   if (!src) {
     if (document.currentScript) {
-      ({ src } = document.currentScript);
+      src = document.currentScript.src;
     } else {
       const scripts = document.getElementsByTagName('script');
       const lastScriptTag = scripts[scripts.length - 1];
 
       if (lastScriptTag) {
-        ({ src } = lastScriptTag);
+        src = lastScriptTag.src;
       }
     }
 
@@ -66,11 +66,11 @@ function getCurrentScriptUrl(moduleId) {
       return [src.replace('.js', '.css')];
     }
 
-    return fileMap.split(',').map((mapRule) => {
-      const reg = new RegExp(`${filename}\\.js$`, 'g');
+    return fileMap.split(',').map(function (mapRule) {
+      const reg = new RegExp('${filename}\\.js$', 'g');
 
       return normalizeUrl(
-        src.replace(reg, `${mapRule.replace(/{fileName}/g, filename)}.css`),
+        src.replace(reg, mapRule.replace(/{fileName}/g, filename) + '.css'),
         { stripWWW: false },
       );
     });
@@ -108,17 +108,17 @@ function updateCss(el, url) {
 
   newEl.isLoaded = false;
 
-  newEl.addEventListener('load', () => {
+  newEl.addEventListener('load', function () {
     newEl.isLoaded = true;
     el.parentNode.removeChild(el);
   });
 
-  newEl.addEventListener('error', () => {
+  newEl.addEventListener('error', function () {
     newEl.isLoaded = true;
     el.parentNode.removeChild(el);
   });
 
-  newEl.href = `${url}?${Date.now()}`;
+  newEl.href = url + '?' + Date.now();
 
   if (el.nextSibling) {
     el.parentNode.insertBefore(newEl, el.nextSibling);
@@ -134,7 +134,7 @@ function getReloadUrl(href, src) {
   href = normalizeUrl(href, { stripWWW: false });
 
   // eslint-disable-next-line array-callback-return
-  src.some((url) => {
+  src.some(function (url) {
     if (href.indexOf(src) > -1) {
       ret = url;
     }
@@ -147,7 +147,7 @@ function reloadStyle(src) {
   const elements = document.querySelectorAll('link');
   let loaded = false;
 
-  forEach.call(elements, (el) => {
+  forEach.call(elements, function (el) {
     if (!el.href) {
       return;
     }
@@ -175,7 +175,7 @@ function reloadStyle(src) {
 function reloadAll() {
   const elements = document.querySelectorAll('link');
 
-  forEach.call(elements, (el) => {
+  forEach.call(elements, function (el) {
     if (el.visited === true) {
       return;
     }

@@ -25,6 +25,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "bundleWebpackHotDevClient": "COMPRESS=none ./bin/bundler-webpack.js build && node ./scripts/patchWebpackHotDevClient.js"
+  },
   "devDependencies": {
     "@types/sockjs-client": "1.1.1",
     "anymatch": "3.1.1",
