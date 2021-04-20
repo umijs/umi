@@ -30,7 +30,6 @@ Fast Refresh 功能最大的特性是：开发环境下，可以**保持组件�
 
 推荐写函数命名组件，例如：
 
-
 ✅ Good:
 
 ```javascript
@@ -44,3 +43,9 @@ export default Foo;
 ```javascript
 export default () => {};
 ```
+
+## FAQ
+
+### TypeError: Cannot read property 'forEach' of undefined
+
+Please check the version of the browser extension React DevTools, whether it is less than v4, and please upgrade to v4 version can be solved.[issue#6432](https://github.com/umijs/umi/issues/6432)
