@@ -10,6 +10,7 @@ const files = [
   'webpack/lib/LoaderTargetPlugin',
   'webpack/lib/node/NodeTargetPlugin',
   'webpack/lib/node/NodeTemplatePlugin',
+  'webpack/lib/ModuleFilenameHelpers',
   'webpack/lib/NormalModule',
   'webpack/lib/RequestShortener',
   'webpack/lib/RuntimeGlobals',

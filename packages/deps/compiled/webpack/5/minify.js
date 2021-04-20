@@ -2,7 +2,7 @@ module.exports =
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 573:
+/***/ 737:
 /***/ (function(__unused_webpack_module, exports) {
 
 (function (global, factory) {
@@ -5221,7 +5221,7 @@ module.exports =
 
   // Acorn is a tiny, fast JavaScript parser written in JavaScript.
 
-  var version = "8.1.0";
+  var version = "8.1.1";
 
   Parser.acorn = {
     Parser: Parser,
@@ -5297,12 +5297,11 @@ module.exports =
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=acorn.js.map
 
 
 /***/ }),
 
-/***/ 149:
+/***/ 998:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -5311,7 +5310,7 @@ module.exports =
 
 const {
   minify: terserMinify
-} = __nccwpck_require__(222);
+} = __nccwpck_require__(348);
 /** @typedef {import("source-map").RawSourceMap} RawSourceMap */
 
 /** @typedef {import("./index.js").ExtractCommentsOptions} ExtractCommentsOptions */
@@ -5579,11 +5578,11 @@ module.exports.transform = transform;
 
 /***/ }),
 
-/***/ 222:
+/***/ 348:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 (function (global, factory) {
- true ? factory(exports, __nccwpck_require__(6)) :
+ true ? factory(exports, __nccwpck_require__(554)) :
 0;
 }(this, (function (exports, MOZ_SourceMap) { 'use strict';
 
@@ -5826,6 +5825,7 @@ function keep_name(keep_setting, name) {
 }
 
 var lineTerminatorEscape = {
+    "\0": "0",
     "\n": "n",
     "\r": "r",
     "\u2028": "u2028",
@@ -5833,7 +5833,8 @@ var lineTerminatorEscape = {
 };
 function regexp_source_fix(source) {
     // V8 does not escape line terminators in regexp patterns in node 12
-    return source.replace(/[\n\r\u2028\u2029]/g, function (match, offset) {
+    // We'll also remove literal \0
+    return source.replace(/[\0\n\r\u2028\u2029]/g, function (match, offset) {
         var escaped = source[offset - 1] == "\\"
             && (source[offset - 2] != "\\"
             || /(?:^|[^\\])(?:\\{2})*$/.test(source.slice(0, offset - 1)));
@@ -9597,6 +9598,9 @@ var AST_Lambda = DEFNODE("Lambda", "name argnames uses_arguments is_generator as
 
         if (this.name) push(this.name);
     },
+    is_braceless() {
+        return this.body[0] instanceof AST_Return && this.body[0].value;
+    }
 }, AST_Scope);
 
 var AST_Accessor = DEFNODE("Accessor", null, {
@@ -13254,6 +13258,7 @@ function OutputStream(options) {
         var p = output.parent();
         return p instanceof AST_PropAccess && p.expression === this
             || p instanceof AST_Call && p.expression === this
+            || p instanceof AST_Binary && p.operator === "**" && p.left === this
             || output.option("safari10") && p instanceof AST_UnaryPrefix;
     });
 
@@ -14471,7 +14476,9 @@ function OutputStream(options) {
         source = regexp_source_fix(source);
         flags = flags ? sort_regexp_flags(flags) : "";
         source = source.replace(r_slash_script, slash_script_replace);
+
         output.print(output.to_utf8(`/${source}/${flags}`));
+
         const parent = output.parent();
         if (
             parent instanceof AST_Binary
@@ -15767,6 +15774,12 @@ AST_Node.prototype.size = function (compressor, stack) {
     let size = 0;
     walk_parent(this, (node, info) => {
         size += node._size(info);
+
+        // Braceless arrow functions have fake "return" statements
+        if (node instanceof AST_Arrow && node.is_braceless()) {
+            size += node.body[0].value._size(info);
+            return true;
+        }
     }, stack || (compressor && compressor.stack));
 
     // just to save a bit of memory
@@ -15811,7 +15824,6 @@ AST_With.prototype._size = () => 6;
 
 AST_Expansion.prototype._size = () => 3;
 
-/*#__INLINE__*/
 const lambda_modifiers = func =>
     (func.is_generator ? 1 : 0) + (func.async ? 6 : 0);
 
@@ -15840,7 +15852,9 @@ AST_Arrow.prototype._size = function () {
         args_and_arrow += 2;
     }
 
-    return lambda_modifiers(this) + args_and_arrow + (Array.isArray(this.body) ? list_overhead(this.body) : this.body._size());
+    const body_overhead = this.is_braceless() ? 0 : list_overhead(this.body) + 2;
+
+    return lambda_modifiers(this) + args_and_arrow + body_overhead;
 };
 
 AST_Destructuring.prototype._size = () => 2;
@@ -17422,8 +17436,11 @@ function tighten_body(statements, compressor) {
                 || node instanceof AST_Debugger
                 || node instanceof AST_Destructuring
                 || node instanceof AST_Expansion
-                   && node.expression instanceof AST_Symbol
-                   && node.expression.definition().references.length > 1
+                    && node.expression instanceof AST_Symbol
+                    && (
+                        node.expression instanceof AST_This
+                        || node.expression.definition().references.length > 1
+                    )
                 || node instanceof AST_IterationStatement && !(node instanceof AST_For)
                 || node instanceof AST_LoopControl
                 || node instanceof AST_Try
@@ -18592,7 +18609,13 @@ function is_undefined(node, compressor) {
     });
     def_may_throw_on_access(AST_Dot, function(compressor) {
         if (!is_strict(compressor)) return false;
-        if (this.expression instanceof AST_Function && this.property == "prototype") return false;
+
+        if (this.property == "prototype") {
+            return !(
+                this.expression instanceof AST_Function
+                || this.expression instanceof AST_Class
+            );
+        }
         return true;
     });
     def_may_throw_on_access(AST_Chain, function(compressor) {
@@ -27957,6 +27980,7 @@ var domprops = [
     "exponent",
     "exponentialRampToValueAtTime",
     "exportKey",
+    "exports",
     "extend",
     "extensions",
     "extentNode",
@@ -32354,7 +32378,7 @@ async function run_cli({ program, packageJson, fs, path }) {
             if (program.parse) {
                 if (program.parse.acorn) {
                     files = convert_ast(function(toplevel, name) {
-                        return __nccwpck_require__(573).parse(files[name], {
+                        return __nccwpck_require__(737).parse(files[name], {
                             ecmaVersion: 2018,
                             locations: true,
                             program: toplevel,
@@ -32659,7 +32683,7 @@ exports.minify = minify;
 
 /***/ }),
 
-/***/ 99:
+/***/ 971:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -32766,7 +32790,7 @@ exports.I = ArraySet;
 
 /***/ }),
 
-/***/ 9:
+/***/ 997:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -32806,7 +32830,7 @@ exports.I = ArraySet;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const base64 = __nccwpck_require__(177);
+const base64 = __nccwpck_require__(570);
 
 // A single base 64 digit can contain 6 bits of data. For the base 64 variable
 // length quantities we use in the source map spec, the first bit is the sign,
@@ -32884,7 +32908,7 @@ exports.encode = function base64VLQ_encode(aValue) {
 
 /***/ }),
 
-/***/ 177:
+/***/ 570:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -32909,7 +32933,7 @@ exports.encode = function(number) {
 
 /***/ }),
 
-/***/ 990:
+/***/ 66:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -33023,7 +33047,7 @@ exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
 
 /***/ }),
 
-/***/ 288:
+/***/ 798:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -33033,7 +33057,7 @@ exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-const util = __nccwpck_require__(515);
+const util = __nccwpck_require__(346);
 
 /**
  * Determine whether mappingB is after mappingA with respect to generated
@@ -33110,7 +33134,7 @@ exports.H = MappingList;
 
 /***/ }),
 
-/***/ 180:
+/***/ 966:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 if (typeof fetch === "function") {
@@ -33157,7 +33181,7 @@ if (typeof fetch === "function") {
 
 /***/ }),
 
-/***/ 825:
+/***/ 786:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 var __webpack_unused_export__;
@@ -33168,12 +33192,12 @@ var __webpack_unused_export__;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-const util = __nccwpck_require__(515);
-const binarySearch = __nccwpck_require__(990);
-const ArraySet = __nccwpck_require__(99)/* .ArraySet */ .I;
-const base64VLQ = __nccwpck_require__(9); // eslint-disable-line no-unused-vars
-const readWasm = __nccwpck_require__(180);
-const wasm = __nccwpck_require__(405);
+const util = __nccwpck_require__(346);
+const binarySearch = __nccwpck_require__(66);
+const ArraySet = __nccwpck_require__(971)/* .ArraySet */ .I;
+const base64VLQ = __nccwpck_require__(997); // eslint-disable-line no-unused-vars
+const readWasm = __nccwpck_require__(966);
+const wasm = __nccwpck_require__(870);
 
 const INTERNAL = Symbol("smcInternal");
 
@@ -34419,7 +34443,7 @@ function _factoryBSM(aSourceMap, aSourceMapURL) {
 
 /***/ }),
 
-/***/ 985:
+/***/ 172:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -34429,10 +34453,10 @@ function _factoryBSM(aSourceMap, aSourceMapURL) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-const base64VLQ = __nccwpck_require__(9);
-const util = __nccwpck_require__(515);
-const ArraySet = __nccwpck_require__(99)/* .ArraySet */ .I;
-const MappingList = __nccwpck_require__(288)/* .MappingList */ .H;
+const base64VLQ = __nccwpck_require__(997);
+const util = __nccwpck_require__(346);
+const ArraySet = __nccwpck_require__(971)/* .ArraySet */ .I;
+const MappingList = __nccwpck_require__(798)/* .MappingList */ .H;
 
 /**
  * An instance of the SourceMapGenerator represents a source map which is
@@ -34839,7 +34863,7 @@ exports.SourceMapGenerator = SourceMapGenerator;
 
 /***/ }),
 
-/***/ 595:
+/***/ 11:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -34849,8 +34873,8 @@ exports.SourceMapGenerator = SourceMapGenerator;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-const SourceMapGenerator = __nccwpck_require__(985).SourceMapGenerator;
-const util = __nccwpck_require__(515);
+const SourceMapGenerator = __nccwpck_require__(172).SourceMapGenerator;
+const util = __nccwpck_require__(346);
 
 // Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
 // operating systems these days (capturing the result).
@@ -35250,7 +35274,7 @@ exports.SourceNode = SourceNode;
 
 /***/ }),
 
-/***/ 515:
+/***/ 346:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -35803,10 +35827,10 @@ exports.computeSourceURL = computeSourceURL;
 
 /***/ }),
 
-/***/ 405:
+/***/ 870:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-const readWasm = __nccwpck_require__(180);
+const readWasm = __nccwpck_require__(966);
 
 /**
  * Provide the JIT with a nice shape / hidden class.
@@ -35917,7 +35941,7 @@ module.exports = function wasm() {
 
 /***/ }),
 
-/***/ 6:
+/***/ 554:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /*
@@ -35925,9 +35949,9 @@ module.exports = function wasm() {
  * Licensed under the New BSD license. See LICENSE.txt or:
  * http://opensource.org/licenses/BSD-3-Clause
  */
-exports.SourceMapGenerator = __nccwpck_require__(985).SourceMapGenerator;
-exports.SourceMapConsumer = __nccwpck_require__(825).SourceMapConsumer;
-exports.SourceNode = __nccwpck_require__(595).SourceNode;
+exports.SourceMapGenerator = __nccwpck_require__(172).SourceMapGenerator;
+exports.SourceMapConsumer = __nccwpck_require__(786).SourceMapConsumer;
+exports.SourceNode = __nccwpck_require__(11).SourceNode;
 
 
 /***/ }),
@@ -35998,6 +36022,6 @@ module.exports = require("path");;
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(149);
+/******/ 	return __nccwpck_require__(998);
 /******/ })()
 ;

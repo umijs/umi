@@ -10,6 +10,7 @@ module.exports = function () {
     LibraryTemplatePlugin: require('webpack/lib/LibraryTemplatePlugin'),
     NodeTargetPlugin: require('webpack/lib/node/NodeTargetPlugin'),
     NodeTemplatePlugin: require('webpack/lib/node/NodeTemplatePlugin'),
+    ModuleFilenameHelpers: require('webpack/lib/ModuleFilenameHelpers'),
     NormalModule: require('webpack/lib/NormalModule'),
     RequestShortener: require('webpack/lib/RequestShortener'),
     // RuntimeGlobals: require('webpack/lib/RuntimeGlobals'),
