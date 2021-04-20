@@ -51,7 +51,7 @@
     "benchmark": "^2.1.4",
     "dedent": "^0.7.0",
     "escape-goat": "^3.0.0",
-    "father-build": "^1.19.0",
+    "father-build": "1.19.2",
     "git-repo-info": "^2.1.1",
     "inquirer": "^7.3.3",
     "lerna": "^3.22.1",
