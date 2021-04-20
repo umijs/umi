@@ -2397,7 +2397,7 @@
     npmlog "^4.1.2"
     upath "^1.2.0"
 
-"@lerna/project@3.21.0", "@lerna/project@^3.21.0":
+"@lerna/project@3.21.0":
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/@lerna/project/-/project-3.21.0.tgz#5d784d2d10c561a00f20320bcdb040997c10502d"
   integrity sha512-xT1mrpET2BF11CY32uypV2GPtPVm6Hgtha7D81GQP9iAitk9EccrdNjYGt5UBYASl4CIDXBRxwmTTVGfrCx82A==
@@ -7845,10 +7845,10 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
-father-build@^1.19.0:
-  version "1.19.4"
-  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.19.4.tgz#82d3d0cd584e0aa3eb56880c9820140cce1dac67"
-  integrity sha512-ub3sqUI6/LsZju0n+AL11VpPvhKZud5XjUpP/gZG4UOeYDPtI4TNWcuniBY9Rvg84OIEBh/WXfpe5p9FF00snA==
+father-build@1.19.2:
+  version "1.19.2"
+  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.19.2.tgz#4bea41eed6c94dd8e4330c1bdf238b6a2f769e80"
+  integrity sha512-Q5NtpE+LMD8i5utrIEUCb2po4y2HP/jvg7sucwVdOOCOBJny33t/wGybQEOLOLZYOFqw7tR0wPLFsvPnN9d0uw==
   dependencies:
     "@babel/core" "7.12.3"
     "@babel/plugin-proposal-class-properties" "7.12.1"
@@ -7865,7 +7865,6 @@ father-build@^1.19.0:
     "@babel/preset-react" "7.12.1"
     "@babel/preset-typescript" "7.12.1"
     "@babel/register" "7.12.1"
-    "@lerna/project" "^3.21.0"
     "@rollup/plugin-babel" "5.2.1"
     "@rollup/plugin-commonjs" "16.0.0"
     "@rollup/plugin-inject" "4.0.2"
