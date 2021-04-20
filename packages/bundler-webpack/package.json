@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@umijs/bundler-utils": "3.4.10",
-    "@umijs/deps": "0.8.1",
+    "@umijs/deps": "3.4.10",
     "@umijs/types": "3.4.10",
     "@umijs/utils": "3.4.10",
     "jest-worker": "26.6.2",
