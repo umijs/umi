@@ -593,7 +593,7 @@ describe('proxy', () => {
           target: `http://${host}:${proxyServer1Port}`,
           changeOrigin: true,
           bypass(req) {
-            if (req.url === '/api/compiler') {
+            if ((req as any).url === '/api/compiler') {
               return '/bypass';
             }
             return null;

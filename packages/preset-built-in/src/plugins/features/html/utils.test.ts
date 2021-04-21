@@ -69,7 +69,7 @@ test('getScripts other', () => {
     '',
     undefined,
     {},
-  ];
+  ] as string[];
 
   expect(getScripts(option2)).toEqual([
     {

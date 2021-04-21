@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { deepUniq } from './utils';
+import { deepUniq, IHTMLTag } from './utils';
 
 export default function (api: IApi) {
   api.describe({
@@ -12,6 +12,6 @@ export default function (api: IApi) {
   });
 
   api.addHTMLMetas(() => {
-    return deepUniq(api.config?.metas || []);
+    return deepUniq(api.config?.metas || []) as IHTMLTag[];
   });
 }

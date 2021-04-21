@@ -99,7 +99,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       let routerBaseStr = JSON.stringify(api.config.base);
       let publicPathStr = JSON.stringify(api.config.publicPath);
 
-      if (api.config.exportStatic?.dynamicRoot) {
+      if (api.config.exportStatic && api.config.exportStatic?.dynamicRoot) {
         routerBaseStr = `location.pathname.split('/').slice(0, -${
           args.route.path!.split('/').length - 1
         }).concat('').join('/')`;

@@ -30,14 +30,14 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
-    if (memo.exportStatic?.dynamicRoot) {
+    if (memo.exportStatic && memo.exportStatic?.dynamicRoot) {
       memo.runtimePublicPath = true;
     }
     return memo;
   });
 
   api.onPatchRoute(({ route }) => {
-    if (!api.config.exportStatic?.htmlSuffix) return;
+    if (api.config.exportStatic && !api.config.exportStatic?.htmlSuffix) return;
     if (route.path) {
       route.path = addHtmlSuffix(route.path, !!route.routes);
     }

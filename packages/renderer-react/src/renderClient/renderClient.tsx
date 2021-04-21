@@ -1,8 +1,8 @@
 import { hydrate, render } from 'react-dom';
 import React, { useEffect } from 'react';
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
-import { matchRoutes } from 'react-router-config';
-import { IRoute } from '..';
+import { matchRoutes, RouteConfig } from 'react-router-config';
+import { IComponent, IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
 interface IRouterComponentProps {
@@ -30,7 +30,10 @@ function RouterComponent(props: IRouterComponentProps) {
       (window as any).g_initialProps = null;
     }
     function routeChangeHandler(location: any, action?: string) {
-      const matchedRoutes = matchRoutes(props.routes, location.pathname);
+      const matchedRoutes = matchRoutes(
+        props.routes as RouteConfig[],
+        location.pathname,
+      );
 
       // Set title
       if (
@@ -72,11 +75,11 @@ export async function preloadComponent(
   pathname = window.location.pathname,
 ): Promise<IRoute[]> {
   // using matched routes not load all routes
-  const matchedRoutes = matchRoutes(readyRoutes, pathname);
+  const matchedRoutes = matchRoutes(readyRoutes as RouteConfig[], pathname);
   for (const matchRoute of matchedRoutes) {
     const route = matchRoute.route as IRoute;
     // load all preload function, because of only a chance to load
-    if (route.component?.preload) {
+    if (typeof route.component !== 'string' && route.component?.preload) {
       const preloadComponent = await route.component.preload();
       route.component = preloadComponent.default || preloadComponent;
     }

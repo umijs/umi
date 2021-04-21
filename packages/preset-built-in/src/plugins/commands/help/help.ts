@@ -1,3 +1,4 @@
+import { ICommand } from '@umijs/core/lib/Service/types';
 import { IApi } from '@umijs/types';
 import { chalk, lodash } from '@umijs/utils';
 import assert from 'assert';
@@ -30,7 +31,7 @@ export default (api: IApi) => {
     fn({ args }) {
       const commandName = args._[0];
       if (commandName) {
-        const command = api.service.commands[commandName];
+        const command = api.service.commands[commandName] as ICommand;
         assert(command, `Command ${commandName} not found.`);
         console.log(`
   Usage: umi ${commandName} [options]

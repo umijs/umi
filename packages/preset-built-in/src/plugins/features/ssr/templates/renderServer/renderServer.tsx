@@ -13,9 +13,9 @@ import { renderRoutes } from '@umijs/renderer-react';
 
 export interface IOpts {
   path: string;
-  history: MemoryHistory;
-  basename: string;
-  pathname: string;
+  history?: MemoryHistory;
+  basename?: string;
+  pathname?: string;
   plugin: Plugin;
   routes: IRoute[];
   getInitialPropsCtx?: object;
@@ -52,8 +52,13 @@ interface IContext {
  * get current page component getPageInitialProps data
  * @param params
  */
-export const loadPageGetInitialProps = async ({ ctx,
-  opts, }: { ctx: IContext, opts: ILoadGetInitialPropsOpts }): Promise<ILoadGetInitialPropsValue> => {
+export const loadPageGetInitialProps = async ({
+  ctx,
+  opts,
+}: {
+  ctx: IContext;
+  opts: ILoadGetInitialPropsOpts;
+}): Promise<ILoadGetInitialPropsValue> => {
   const { routes, pathname = opts.path } = opts;
 
   // via {routes} to find `getInitialProps`
@@ -69,7 +74,6 @@ export const loadPageGetInitialProps = async ({ ctx,
       }
 
       if (Component && (Component as any)?.getInitialProps) {
-
         // handle ctx
         ctx = Object.assign(ctx, { match, route, ...restRouteParams });
 
@@ -138,19 +142,20 @@ export default async function renderServer(
     ...(opts.getInitialPropsCtx || {}),
   };
   // modify ctx
-  const ctx = await opts.plugin.applyPlugins({
-    key: 'ssr.modifyGetInitialPropsCtx',
-    type: ApplyPluginsType.modify,
-    initialValue: defaultCtx,
-    async: true,
-  }) || defaultCtx;
+  const ctx =
+    (await opts.plugin.applyPlugins({
+      key: 'ssr.modifyGetInitialPropsCtx',
+      type: ApplyPluginsType.modify,
+      initialValue: defaultCtx,
+      async: true,
+    })) || defaultCtx;
   // get pageInitialProps
   const { pageInitialProps, routesMatched } = await loadPageGetInitialProps({
     ctx,
-    opts
+    opts,
   });
   const rootContainer = getRootContainer({
-    ...opts,
+    ...(opts as IOpts),
     pageInitialProps,
   });
   if (opts.mode === 'stream') {

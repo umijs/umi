@@ -1,1 +1,1 @@
-import '../utils'
+import '../utils';

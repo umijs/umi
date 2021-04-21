@@ -17,6 +17,7 @@
     "dist",
     "**/*.spec.ts",
     "lib",
+    "loadable.js",
     "fixtures",
     "examples"
   ]

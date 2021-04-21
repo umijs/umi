@@ -30,7 +30,7 @@ export default (babel) => {
     visitor: {
       // @ts-ignore
       ExportDefaultDeclaration: {
-        enter(path, state) {
+        enter(path: any, state: any) {
           const def = path.node.declaration;
           const { cwd, filename } = state.file.opts;
           const relativePath = relative(cwd, filename);

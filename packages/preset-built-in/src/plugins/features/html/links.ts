@@ -1,3 +1,4 @@
+import { IHTMLTag } from '@umijs/core';
 import { IApi } from '@umijs/types';
 import { deepUniq } from './utils';
 
@@ -12,6 +13,6 @@ export default function (api: IApi) {
   });
 
   api.addHTMLLinks(() => {
-    return deepUniq(api.config?.links || []);
+    return deepUniq(api.config?.links || []) as IHTMLTag[];
   });
 }

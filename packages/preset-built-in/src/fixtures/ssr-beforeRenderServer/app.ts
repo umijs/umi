@@ -1,5 +1,6 @@
 export const ssr = {
-  beforeRenderServer: async ({ location }) => {
+  beforeRenderServer: async ({ location }: any) => {
+    //@ts-ignore
     global.mockLocation = location;
-  }
-}
+  },
+};

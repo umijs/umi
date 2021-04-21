@@ -23,6 +23,7 @@ test('isDynamicRoute', () => {
   expect(isDynamicRoute('/a/b/:c/:id')).toBeTruthy();
   expect(isDynamicRoute('/a/b/:c/d/:id')).toBeTruthy();
   expect(isDynamicRoute(':id')).toBeTruthy();
+  // @ts-expect-error
   expect(isDynamicRoute(undefined)).toBeFalsy();
 });
 
@@ -32,6 +33,7 @@ test('isTSFile', () => {
   expect(isTSFile('/bar/foo/a.ts')).toEqual(true);
   expect(isTSFile('/bar/foo/a.tsx')).toEqual(true);
   expect(isTSFile('/bar/foo/a.d.ts')).toEqual(false);
+  // @ts-expect-error
   expect(isTSFile(undefined)).toEqual(false);
   expect(isTSFile('/bar/foo.ts/a.js')).toEqual(false);
 });

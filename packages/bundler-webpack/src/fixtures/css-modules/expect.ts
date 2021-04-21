@@ -7,4 +7,4 @@ export default ({ indexCSS, indexCSSMap, indexJS }: IExpectOpts) => {
   expect(indexCSSMap).toContain('css-modules/b.css');
 
   expect(indexJS).toMatch(/__webpack_require__\.n\(_empty_less_modules.+\)/i);
-}
+};

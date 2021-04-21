@@ -11,7 +11,7 @@ export interface IRoute {
   path?: string;
   exact?: boolean;
   redirect?: string;
-  component?: IComponent;
+  component?: IComponent | string;
   routes?: IRoute[];
   key?: any;
   strict?: boolean;

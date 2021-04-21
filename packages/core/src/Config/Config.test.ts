@@ -6,6 +6,7 @@ const fixtures = join(__dirname, 'fixtures');
 const { NODE_ENV } = process.env;
 afterEach(() => {
   // reset UMI_ENV
+  // @ts-ignore
   delete process.env.UMI_ENV;
   process.env.NODE_ENV = NODE_ENV;
 });
