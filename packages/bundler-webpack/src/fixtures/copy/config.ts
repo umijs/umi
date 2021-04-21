@@ -3,11 +3,11 @@ export default {
     'b.ts',
     {
       from: 'c.ts',
-      to: ''
+      to: '',
     },
     {
       from: 'utils/d.ts',
-      to: ''
-    }
-  ]
-}
+      to: '',
+    },
+  ],
+};

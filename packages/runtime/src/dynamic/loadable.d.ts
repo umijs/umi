@@ -2,9 +2,17 @@ import React from 'react';
 
 declare namespace LoadableExport {
   interface ILoadable {
-    <P = {}>(opts: any): React.ComponentClass<P>;
-    Map<P = {}>(opts: any): React.ComponentType<P>;
+    <P = {}>(opts: {
+      render?: (loaded: Record<string, any>, props: P) => any;
+      [key: string]: any;
+    }): React.ComponentClass<P> & ILoadable;
+    Map<P = {}>(opts: {
+      render?: (loaded: Record<string, any>, props: P) => any;
+      [key: string]: any;
+    }): React.ComponentType<P>;
     preloadAll(): Promise<any>;
+    preloadReady(): Promise<any>;
+    preload(): Promise<any>;
   }
 }
 

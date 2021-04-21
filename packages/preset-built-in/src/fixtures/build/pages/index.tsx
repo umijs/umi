@@ -1,2 +1,1 @@
-
-export default () => <h1>index page</h1>
+export default () => <h1>index page</h1>;

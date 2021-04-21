@@ -7,5 +7,6 @@ test('esm', () => {
 });
 
 test('cjs', () => {
+  // @ts-expect-error
   expect(compatESModuleRequire('foo')).toEqual('foo');
 });

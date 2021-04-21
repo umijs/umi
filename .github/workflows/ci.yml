@@ -35,6 +35,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --ignore-engines
       - run: yarn build
+      - run: yarn run tsc --noEmit
       - run: yarn test --detectOpenHandles --maxWorkers=4 --forceExit
         env:
           CI: true

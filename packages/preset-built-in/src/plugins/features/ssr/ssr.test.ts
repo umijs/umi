@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { Service } from '@umijs/core';
 import { onBuildComplete } from './ssr';
+import { IApi } from '@umijs/types';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -32,7 +33,7 @@ test('onBuildComplete normal', async () => {
     ],
   };
 
-  const buildComplete = onBuildComplete(api, true);
+  const buildComplete = onBuildComplete(api as IApi, true);
   const serverContent = await buildComplete({
     err: null,
     stats,

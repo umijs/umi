@@ -1,2 +1,4 @@
+//@ts-ignore
 import('./a');
-import(/* webpackChunkName: "b" */'./b');
+//@ts-ignore
+import(/* webpackChunkName: "b" */ './b');

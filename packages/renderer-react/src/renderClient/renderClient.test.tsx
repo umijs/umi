@@ -4,7 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
 import renderClient, { preloadComponent } from './renderClient';
 
-let container;
+let container: any;
+
 beforeEach(() => {
   container = document.createElement('div');
   container.id = 'app';
@@ -117,7 +118,9 @@ test('normal with mount', async () => {
   expect(routeChanges).toEqual(['POP /foo', 'PUSH /bar']);
 });
 
-const Common = ({ title }) => {
+const Common: React.FC<{ title: string }> & {
+  getInitialProps: (props: any) => any;
+} = ({ title }) => {
   return <h1>{title}</h1>;
 };
 
@@ -157,7 +160,7 @@ test('preloadComponent', async () => {
       path: '/',
       component: dynamic({
         loading: () => <div>loading</div>,
-        loader: async () => (props) => (
+        loader: async () => (props: React.PropsWithChildren<{}>) => (
           <div className="layout">{props.children}</div>
         ),
       }),
@@ -237,7 +240,7 @@ test('preloadComponent routeChange with ssr', async () => {
       path: '/',
       component: dynamic({
         loading: () => <div>loading</div>,
-        loader: async () => (props) => (
+        loader: async () => (props: React.PropsWithChildren<{}>) => (
           <div className="layout">{props.children}</div>
         ),
       }),

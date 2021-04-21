@@ -1,3 +1,4 @@
+import type { MergedStream } from '@umijs/deps/compiled/merge-stream';
 import React from 'react';
 import { renderToStaticNodeStream } from 'react-dom/server';
 import { Stream } from 'stream';
@@ -29,8 +30,8 @@ const defaultHTML = `<!DOCTYPE html>
 
 test('handleHTML empty without html', async () => {
   const html = await handleHTML();
-  expect(html).toContain('')
-})
+  expect(html).toContain('');
+});
 
 test('handleHTML normal', async () => {
   const html = await handleHTML({
@@ -57,7 +58,7 @@ test('handleHTML with $', async () => {
     mountElementId: 'root',
   });
   expect(html).toContain('<!DOCTYPE html>');
-  expect(html).toMatch('window.g_initialProps = {"username":\"`$`\"};');
+  expect(html).toMatch('window.g_initialProps = {"username":"`$`"};');
   expect(html).toMatch('<div id="root"><h1>`$`</h1></div>');
   expect(html).toContain('</html>');
 });
@@ -118,21 +119,23 @@ test('handleHTML stream', (done) => {
     rootContainer: renderToStaticNodeStream(<h1>ycjcl868</h1>),
     html: defaultHTML,
     mountElementId: 'root',
-  }).then(html => {
+  }).then((html) => {
     expect(html instanceof Stream).toBeTruthy();
     expect(html instanceof Stream).toBeTruthy();
     let bytes = Buffer.from('');
-    html.on('data', (chunk) => {
+    (html as MergedStream).on('data', (chunk) => {
       bytes = Buffer.concat([bytes, chunk]);
     });
-    html.on('end', () => {
+    (html as MergedStream).on('end', () => {
       expect(bytes.toString()).toContain('<!DOCTYPE html>');
-      expect(bytes.toString()).toContain('<div id="root"><h1>ycjcl868</h1></div>');
+      expect(bytes.toString()).toContain(
+        '<div id="root"><h1>ycjcl868</h1></div>',
+      );
       expect(bytes.toString()).toContain('</html>');
       done();
     });
-  })
-})
+  });
+});
 
 test('handleHTML dynamicImport', async () => {
   const opts = {
@@ -143,63 +146,78 @@ test('handleHTML dynamicImport', async () => {
     html: defaultHTML,
     dynamicImport: true,
     manifest: {
-      "p__index.css": "/public/p__index.chunk.css",
-      "p__index.js": "/public/p__index.js",
-      "p__users.css": "/public/p__users.chunk.css",
-      "p__users.js": "/public/p__users.js",
-      "umi.css": "/public/umi.css",
-      "umi.js": "/public/umi.js",
-      "vendors~p__index.css": "/public/vendors~p__index.chunk.css",
-      "vendors~p__index.js": "/public/vendors~p__index.js",
-      "index.html": "/public/index.html",
+      'p__index.css': '/public/p__index.chunk.css',
+      'p__index.js': '/public/p__index.js',
+      'p__users.css': '/public/p__users.chunk.css',
+      'p__users.js': '/public/p__users.js',
+      'umi.css': '/public/umi.css',
+      'umi.js': '/public/umi.js',
+      'vendors~p__index.css': '/public/vendors~p__index.chunk.css',
+      'vendors~p__index.js': '/public/vendors~p__index.js',
+      'index.html': '/public/index.html',
     },
     mountElementId: 'root',
-  }
+  };
   const homeHTML = await handleHTML({
     ...opts,
     routesMatched: [
-      { route: {
-        path: '/', _chunkName: 'p__index'
-      } },
+      {
+        route: {
+          path: '/',
+          _chunkName: 'p__index',
+        },
+      },
     ],
   });
-  expect(homeHTML).toContain("/public/p__index.chunk.css");
+  expect(homeHTML).toContain('/public/p__index.chunk.css');
 
   const usersHTML = await handleHTML({
     ...opts,
     routesMatched: [
-      { route: {
-        path: '/users', _chunkName: 'p__users'
-      } },
+      {
+        route: {
+          path: '/users',
+          _chunkName: 'p__users',
+        },
+      },
     ],
   });
-  expect(usersHTML).toContain("/public/p__users.chunk.css");
+  expect(usersHTML).toContain('/public/p__users.chunk.css');
 
   const withLayoutHTML = await handleHTML({
     ...opts,
     routesMatched: [
-      { route: {
-        path: '/', _chunkName: 'p__index'
-      } },
-      { route: {
-        path: '/users', _chunkName: 'p__users'
-      } },
+      {
+        route: {
+          path: '/',
+          _chunkName: 'p__index',
+        },
+      },
+      {
+        route: {
+          path: '/users',
+          _chunkName: 'p__users',
+        },
+      },
     ],
   });
-  expect(withLayoutHTML).toContain("/public/p__index.chunk.css");
-  expect(withLayoutHTML).toContain("/public/p__users.chunk.css");
+  expect(withLayoutHTML).toContain('/public/p__index.chunk.css');
+  expect(withLayoutHTML).toContain('/public/p__users.chunk.css');
 
   const normalHTMl = await handleHTML({
     ...opts,
     routesMatched: [
-      { route: {
-        path: '/', _chunkName: ''
-      }},
+      {
+        route: {
+          path: '/',
+          _chunkName: '',
+        },
+      },
     ],
   });
-  expect(normalHTMl).not.toContain("/public/p__index.chunk.css");
-  expect(normalHTMl).not.toContain("/public/p__users.chunk.css");
-})
+  expect(normalHTMl).not.toContain('/public/p__index.chunk.css');
+  expect(normalHTMl).not.toContain('/public/p__users.chunk.css');
+});
 
 test('handleHTML complex', async () => {
   const complexOpts = {
@@ -210,70 +228,67 @@ test('handleHTML complex', async () => {
     html: defaultHTML,
     dynamicImport: true,
     manifest: {
-      "layouts__index.css": "/layouts__index.chunk.css",
-      "layouts__index.js": "/layouts__index.js",
-      "p__index.css": "/p__index.chunk.css",
-      "p__index.js": "/p__index.js",
-      "p__me.css": "/p__me.chunk.css",
-      "p__me.js": "/p__me.js",
-      "umi.css": "/umi.css",
-      "umi.js": "/umi.js",
-      "wrappers.css": "/wrappers.chunk.css",
-      "wrappers.js": "/wrappers.js",
-      "index.html": "/index.html"
+      'layouts__index.css': '/layouts__index.chunk.css',
+      'layouts__index.js': '/layouts__index.js',
+      'p__index.css': '/p__index.chunk.css',
+      'p__index.js': '/p__index.js',
+      'p__me.css': '/p__me.chunk.css',
+      'p__me.js': '/p__me.js',
+      'umi.css': '/umi.css',
+      'umi.js': '/umi.js',
+      'wrappers.css': '/wrappers.chunk.css',
+      'wrappers.js': '/wrappers.js',
+      'index.html': '/index.html',
     },
     mountElementId: 'root',
-  }
+  };
   const complexHTMl = await handleHTML({
     ...complexOpts,
     routesMatched: [
       {
-        "route": {
-          "path": "/",
-          "routes": [
+        route: {
+          path: '/',
+          routes: [
             {
-              "path": "/about",
-              "wrappers": [null],
-              "routes": [
-                { "path": "/about/me", "exact": true, "_chunkName": "p__me" }
-              ],
-              "_chunkName": "p__index"
-            }
+              path: '/about',
+              wrappers: [null],
+              routes: [{ path: '/about/me', exact: true, _chunkName: 'p__me' }],
+              _chunkName: 'p__index',
+            },
           ],
-          "_chunkName": "layouts__index"
+          _chunkName: 'layouts__index',
         },
-        "match": { "path": "/", "url": "/", "isExact": false, "params": {} }
+        match: { path: '/', url: '/', isExact: false, params: {} },
       },
       {
-        "route": {
-          "path": "/about",
-          "wrappers": [null],
-          "routes": [{ "path": "/about/me", "exact": true, "_chunkName": "p__me" }],
-          "_chunkName": "p__index"
+        route: {
+          path: '/about',
+          wrappers: [null],
+          routes: [{ path: '/about/me', exact: true, _chunkName: 'p__me' }],
+          _chunkName: 'p__index',
         },
-        "match": {
-          "path": "/about",
-          "url": "/about",
-          "isExact": true,
-          "params": {}
-        }
-      }
-    ]
-    ,
+        match: {
+          path: '/about',
+          url: '/about',
+          isExact: true,
+          params: {},
+        },
+      },
+    ],
   });
   expect(complexHTMl).toContain('/layouts__index.chunk.css');
-  expect(complexHTMl).toContain("/p__index.chunk.css");
-  expect(complexHTMl).toContain("/wrappers.chunk.css");
-})
+  expect(complexHTMl).toContain('/p__index.chunk.css');
+  expect(complexHTMl).toContain('/wrappers.chunk.css');
+});
 
 test('ReadableString', (done) => {
   const wrapperStream = new ReadableString('<div></div>');
   let bytes = Buffer.from('');
-    wrapperStream.on('data', (chunk) => {
-      bytes = Buffer.concat([bytes, chunk]);
-    });
-    wrapperStream.on('end', () => {
-      expect(bytes.toString()).toContain('<div></div>');
-      done();
-    });
-})
+  wrapperStream.on('data', (chunk) => {
+    bytes = Buffer.concat([bytes, chunk]);
+  });
+  wrapperStream.on('end', () => {
+    expect(bytes.toString()).toContain('<div></div>');
+    done();
+  });
+});

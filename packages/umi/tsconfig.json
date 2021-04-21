@@ -19,6 +19,7 @@
     "**/*.spec.ts",
     "lib",
     "fixtures",
+    "bin",
     "examples"
   ]
 }

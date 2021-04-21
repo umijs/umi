@@ -3,6 +3,6 @@ export default {
     ie: 11,
   },
   nodeModulesTransform: {
-    type: 'none'
-  }
-}
+    type: 'none',
+  },
+};

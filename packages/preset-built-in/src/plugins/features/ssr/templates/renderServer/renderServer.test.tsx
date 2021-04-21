@@ -61,14 +61,14 @@ test('renderServer layout', async () => {
     path: '/foo',
   });
   let execFlag = false;
-  class Layout extends React.Component {
-    static async getInitialProps(ctx) {
+  class Layout extends React.Component<{ titleLayout: string; title: string }> {
+    static async getInitialProps(ctx: any) {
       execFlag = true;
       ctx.layout = 'layoutCtx';
       return {
         title: 'layout',
         titleLayout: 'titleLayout',
-      }
+      };
     }
 
     render() {
@@ -79,15 +79,15 @@ test('renderServer layout', async () => {
           <h3>{this.props.title}</h3>
           {this.props.children}
         </div>
-      )
+      );
     }
   }
-  class Foo extends React.Component {
-    static async getInitialProps(ctx) {
+  class Foo extends React.Component<{ layout: string; title: string }> {
+    static async getInitialProps(ctx: any) {
       return {
         layout: ctx.layout,
-        title: 'foo'
-      }
+        title: 'foo',
+      };
     }
     render() {
       return (
@@ -95,7 +95,7 @@ test('renderServer layout', async () => {
           <h4>{this.props.title}</h4>
           <h5>{this.props.layout}</h5>
         </>
-      )
+      );
     }
   }
 
@@ -106,9 +106,7 @@ test('renderServer layout', async () => {
       {
         path: '/',
         component: Layout,
-        routes: [
-          { path: '/foo', component: Foo }
-        ]
+        routes: [{ path: '/foo', component: Foo }],
       },
     ],
   });
@@ -122,29 +120,25 @@ test('renderServer getInitialProps', async () => {
   const plugin = new Plugin({
     validKeys: ['onRouteChange', 'rootContainer'],
   });
-  class Foo extends React.Component {
-    static async getInitialProps(ctx) {
+  class Foo extends React.Component<{ foo: string }> {
+    static async getInitialProps() {
       return {
-        foo: 'foo'
-      }
+        foo: 'foo',
+      };
     }
     render() {
-      return (
-        <h1>{this.props.foo}</h1>
-      )
+      return <h1>{this.props.foo}</h1>;
     }
   }
 
-  class Bar extends React.Component {
-    static async getInitialProps(ctx) {
+  class Bar extends React.Component<{ bar: string }> {
+    static async getInitialProps() {
       return {
-        bar: 'bar'
-      }
+        bar: 'bar',
+      };
     }
     render() {
-      return (
-        <h1>{this.props.bar}</h1>
-      )
+      return <h1>{this.props.bar}</h1>;
     }
   }
   plugin.register({
@@ -164,7 +158,7 @@ test('renderServer getInitialProps', async () => {
     pathname: '/foo',
     routes: [
       { path: '/foo', component: Foo },
-      { path: '/bar', component: Bar},
+      { path: '/bar', component: Bar },
     ],
   });
   expect(serverResult.pageHTML).toEqual(
@@ -192,27 +186,30 @@ test.skip('renderServer wrapper getInitialProps', async () => {
   });
 
   class Wrapper extends React.Component {
-    static async getInitialProps(ctx) {
+    static async getInitialProps(ctx: any) {
       const store = {
         name: 'foo',
-      }
-      ctx.store = store
+      };
+      ctx.store = store;
       return {
         store,
-      }
+      };
     }
 
     render() {
       const { children, ...restProps } = this.props;
-      return React.cloneElement(children, restProps);
+      return React.cloneElement(<>{children}</>, restProps);
     }
   }
 
-  class Foo extends React.Component {
-    static async getInitialProps(ctx) {
+  class Foo extends React.Component<{
+    name: string;
+    store: any;
+  }> {
+    static async getInitialProps(ctx: any) {
       return {
         name: ctx.store?.name,
-      }
+      };
     }
     render() {
       return (
@@ -220,7 +217,7 @@ test.skip('renderServer wrapper getInitialProps', async () => {
           <h1>{this.props.name}</h1>
           <h2>{this.props.store?.name}</h2>
         </div>
-      )
+      );
     }
   }
 
@@ -239,14 +236,10 @@ test.skip('renderServer wrapper getInitialProps', async () => {
     path: '/foo',
     plugin,
     pathname: '/foo',
-    routes: [
-      { path: '/foo', component: Foo },
-    ],
+    routes: [{ path: '/foo', component: Foo }],
   });
-  expect(serverResult.pageHTML).toEqual(
-    '<div><h1>foo</h1><h2>foo</h2></div>',
-  );
-})
+  expect(serverResult.pageHTML).toEqual('<div><h1>foo</h1><h2>foo</h2></div>');
+});
 
 test('renderServer staticMarkup', async () => {
   const routeChanges: string[] = [];
@@ -314,13 +307,15 @@ test('renderServer stream', (done) => {
       { path: '/bar', component: () => <h1>bar</h1> },
     ],
   }).then(({ pageHTML }) => {
-    const expectBytes = Buffer.from('<div data-reactroot=""><h1>foo</h1></div>');
+    const expectBytes = Buffer.from(
+      '<div data-reactroot=""><h1>foo</h1></div>',
+    );
     let bytes = Buffer.from('');
     expect(pageHTML instanceof Stream).toBeTruthy();
-    pageHTML.on('data', (chunk) => {
+    (pageHTML as Stream).on('data', (chunk) => {
       bytes = Buffer.concat([bytes, chunk]);
     });
-    pageHTML.on('end', () => {
+    (pageHTML as Stream).on('end', () => {
       expect(bytes).toEqual(expectBytes);
       done();
     });
@@ -341,10 +336,10 @@ test('renderServer plugin modifyGetInitialPropsCtx', async () => {
         return <div>{container}</div>;
       },
       ssr: {
-        modifyGetInitialPropsCtx: async (ctx) => {
+        modifyGetInitialPropsCtx: async (ctx: any) => {
           ctx.title = 'Hello SSR';
           return ctx;
-        }
+        },
       },
     },
     path: '/foo',
@@ -353,10 +348,10 @@ test('renderServer plugin modifyGetInitialPropsCtx', async () => {
   plugin.register({
     apply: {
       ssr: {
-        modifyGetInitialPropsCtx: async (ctx) => {
+        modifyGetInitialPropsCtx: async (ctx: any) => {
           ctx.desc = 'Hello Desc';
           return ctx;
-        }
+        },
       },
     },
     path: '/bar',
@@ -365,31 +360,36 @@ test('renderServer plugin modifyGetInitialPropsCtx', async () => {
   plugin.register({
     apply: {
       ssr: {
-        modifyGetInitialPropsCtx: async (ctx) => {
+        modifyGetInitialPropsCtx: async (ctx: any) => {
           // not return
           ctx.notReturn = 'Hello notReturn';
-        }
+        },
       },
     },
     path: '/bar',
   });
 
-  const Foo = (props) => {
-    return <h1>{props.title}，{props.desc}</h1>
+  const Foo: React.FC<{ title: string; desc: string }> & {
+    getInitialProps: (props: any) => any;
+  } = (props) => {
+    return (
+      <h1>
+        {props.title}，{props.desc}
+      </h1>
+    );
   };
   Foo.getInitialProps = async (ctx) => {
     return {
       title: ctx.title,
       desc: ctx.desc,
-    }
-  }
+    };
+  };
+
   const serverResult = await renderServer({
     path: '/foo',
     plugin,
     staticMarkup: true,
-    routes: [
-      { path: '/foo', component: Foo },
-    ],
+    routes: [{ path: '/foo', component: Foo }],
   });
   expect(serverResult.pageHTML).toEqual(
     '<div><h1>Hello SSR，Hello Desc</h1></div>',

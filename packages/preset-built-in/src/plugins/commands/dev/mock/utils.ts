@@ -26,6 +26,14 @@ export interface IOpts {
 interface IGetMockPaths extends Required<Pick<IApi, 'cwd'>> {
   ignore?: string[];
   registerBabel?: (paths: string[]) => void;
+  paths?: {
+    cwd?: string;
+    absNodeModulesPath?: string;
+    absSrcPath?: string;
+    absPagesPath?: string;
+    absOutputPath?: string;
+    absTmpPath?: string;
+  };
 }
 
 export interface IMockDataItem {
@@ -135,13 +143,13 @@ function parseKey(key: string) {
   };
 }
 
-function createHandler(method: any, path: any, handler: any): RequestHandler {
-  return function (req: Request, res: Response, next: NextFunction) {
+function createHandler(method: any, path: any, handler: any) {
+  return (function (req: Request, res: any, next: NextFunction) {
     if (BODY_PARSED_METHODS.includes(method)) {
       bodyParser.json({ limit: '5mb', strict: false })(req, res, () => {
         bodyParser.urlencoded({ limit: '5mb', extended: true })(
           req,
-          res,
+          res as any,
           () => {
             sendData();
           },
@@ -160,7 +168,7 @@ function createHandler(method: any, path: any, handler: any): RequestHandler {
         res.json(handler);
       }
     }
-  };
+  } as unknown) as RequestHandler;
 }
 
 export const normalizeConfig = (config: any) => {
@@ -230,6 +238,7 @@ export const matchMock = (
       }
     }
   }
+  return undefined;
 };
 
 /**

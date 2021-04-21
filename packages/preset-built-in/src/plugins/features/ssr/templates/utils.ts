@@ -7,11 +7,14 @@ import serialize from '@umijs/deps/compiled/serialize-javascript';
 import { WRAPPERS_CHUNK_NAME } from '../constants';
 
 function addLeadingSlash(path: string): string {
-  return path.charAt(0) === "/" ? path : "/" + path;
+  return path.charAt(0) === '/' ? path : '/' + path;
 }
 
 // from react-router
-export function stripBasename(basename: string, path: string): UrlWithStringQuery {
+export function stripBasename(
+  basename: string,
+  path: string,
+): UrlWithStringQuery {
   const location = parse(path);
   if (!basename) return location;
 
@@ -21,35 +24,35 @@ export function stripBasename(basename: string, path: string): UrlWithStringQuer
 
   return {
     ...location,
-    pathname: addLeadingSlash(location.pathname.substr(base.length))
+    pathname: addLeadingSlash(location.pathname.substr(base.length)),
   };
 }
 
 export class ReadableString extends Readable {
-  str: string
-  sent: boolean
+  str: string;
+  sent: boolean;
 
-  constructor (str: string) {
-    super()
-    this.str = str
-    this.sent = false
+  constructor(str: string) {
+    super();
+    this.str = str;
+    this.sent = false;
   }
 
-  _read () {
+  _read() {
     if (!this.sent) {
-      this.push(Buffer.from(this.str))
-      this.sent = true
+      this.push(Buffer.from(this.str));
+      this.sent = true;
     } else {
-      this.push(null)
+      this.push(null);
     }
   }
 }
 
-export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio'
+export { default as cheerio } from '@umijs/utils/lib/cheerio/cheerio';
 
 export interface IHandleHTMLOpts {
   pageInitialProps: object;
-  rootContainer: string;
+  rootContainer: string | NodeJS.ReadableStream;
   mountElementId: string;
   mode: 'stream' | 'string';
   forceInitial: boolean;
@@ -65,54 +68,82 @@ export interface IHandleHTMLOpts {
  *
  * @param routeMatched
  */
- const getPageChunks = (routeMatched: IHandleHTMLOpts['routesMatched']): string[] => {
+const getPageChunks = (
+  routeMatched: IHandleHTMLOpts['routesMatched'],
+): string[] => {
   const chunks: string[] = [];
   const recursive = (routes: any[]) => {
-    for (let i = 0; i < routes.length;i++) {
+    for (let i = 0; i < routes.length; i++) {
       const route = routes[i];
       if (route?._chunkName && chunks.indexOf(route._chunkName) < 0) {
         chunks.push(route._chunkName);
       }
-      if (Array.isArray(route?.wrappers) && route?.wrappers.length > 0 && chunks.indexOf(WRAPPERS_CHUNK_NAME) < 0) {
+      if (
+        Array.isArray(route?.wrappers) &&
+        route?.wrappers.length > 0 &&
+        chunks.indexOf(WRAPPERS_CHUNK_NAME) < 0
+      ) {
         chunks.push(WRAPPERS_CHUNK_NAME);
       }
     }
-  }
+  };
   recursive(routeMatched);
   return chunks;
-}
+};
 
 /**
  * handle html with rootContainer(rendered)
  * @param param
  */
 export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
-  const { pageInitialProps, rootContainer, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest } = opts;
+  const {
+    pageInitialProps,
+    rootContainer,
+    mountElementId,
+    mode,
+    forceInitial,
+    removeWindowInitialProps,
+    routesMatched,
+    dynamicImport,
+    manifest,
+  } = opts;
   let html = opts.html;
   if (typeof html !== 'string') {
     return '';
   }
   const windowInitialVars = {
-    ...(pageInitialProps && !removeWindowInitialProps ? { 'window.g_initialProps': serialize(forceInitial ? null : pageInitialProps) } : {}),
-  }
+    ...(pageInitialProps && !removeWindowInitialProps
+      ? {
+          'window.g_initialProps': serialize(
+            forceInitial ? null : pageInitialProps,
+          ),
+        }
+      : {}),
+  };
   // get chunks in `dynamicImport: {}`
   if (dynamicImport && Array.isArray(routesMatched)) {
-    const chunks: string[] = getPageChunks(routesMatched.map(routeMatched => routeMatched?.route));
+    const chunks: string[] = getPageChunks(
+      routesMatched.map((routeMatched) => routeMatched?.route),
+    );
     if (chunks?.length > 0) {
       // only load css chunks to avoid page flashing
       const cssChunkSet: string[] = [];
-      chunks.forEach(chunk => {
-        Object.keys(manifest || {}).forEach(manifestChunk => {
-          if (manifestChunk !== 'umi.css'
-            && chunk
+      chunks.forEach((chunk) => {
+        Object.keys(manifest || {}).forEach((manifestChunk) => {
+          if (
+            manifestChunk !== 'umi.css' &&
+            chunk &&
             // issue: https://github.com/umijs/umi/issues/6259
-            && (manifestChunk.startsWith(chunk) || manifestChunk.indexOf(`~${chunk}`) > -1)
-            && manifest
-            && /\.css$/.test(manifest[manifestChunk])
+            (manifestChunk.startsWith(chunk) ||
+              manifestChunk.indexOf(`~${chunk}`) > -1) &&
+            manifest &&
+            /\.css$/.test(manifest[manifestChunk])
           ) {
-            cssChunkSet.push(`<link rel="preload" href="${manifest[manifestChunk]}"/><link rel="stylesheet" href="${manifest[manifestChunk]}" />`)
+            cssChunkSet.push(
+              `<link rel="preload" href="${manifest[manifestChunk]}"/><link rel="stylesheet" href="${manifest[manifestChunk]}" />`,
+            );
           }
-        })
+        });
       });
       // avoid repeat
       html = html.replace('</head>', `${cssChunkSet.join(EOL)}${EOL}</head>`);
@@ -122,9 +153,14 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   const rootHTML = `<div id="${mountElementId}"></div>`;
   const scriptsContent = `\n\t<script>
   window.g_useSSR = true;
-  ${Object.keys(windowInitialVars).map(name => `${name} = ${windowInitialVars[name]};`).join('\n')}\n\t</script>`;
+  ${Object.keys(windowInitialVars)
+    .map((name) => `${name} = ${windowInitialVars[name]};`)
+    .join('\n')}\n\t</script>`;
   // https://github.com/umijs/umi/issues/5840
-  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`.replace(/\$/g,'$$$');
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`.replace(
+    /\$/g,
+    '$$$',
+  );
 
   if (mode === 'stream') {
     const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
@@ -135,14 +171,12 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
       `</div>`,
       scriptsContent,
       afterRootContainer,
-    ].map(item => typeof item === 'string' ? new ReadableString(item) : item) as Readable[];
+    ].map((item) =>
+      typeof item === 'string' ? new ReadableString(item) : item,
+    ) as Readable[];
 
     const htmlStream = mergeStream(streamQueue);
     return htmlStream;
   }
-  return html
-    .replace(
-      rootHTML,
-      newRootHTML
-    )
-}
+  return html.replace(rootHTML, newRootHTML);
+};

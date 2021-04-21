@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (props) => {
+export default (props: React.PropsWithChildren<{}>) => {
   return (
     <div>
       <h1>bar</h1>

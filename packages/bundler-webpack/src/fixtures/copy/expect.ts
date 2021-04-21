@@ -6,4 +6,4 @@ export default ({ files }: IExpectOpts) => {
   expect(files).toContain(`index.js`);
   expect(files).toContain(`c.ts`);
   expect(files).toContain(`d.ts`);
-}
+};

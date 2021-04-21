@@ -1,6 +1,6 @@
 import { IApi, IRoute, IConfig } from '@umijs/types';
 
-export function patchRoutes(routes: IRoute[], config: IConfig) {
+export function patchRoutes(routes: IRoute[], config: IConfig): IRoute[] {
   let notFoundIndex = null;
   routes.forEach((route, index) => {
     if (route.path === '/404') {
@@ -20,6 +20,7 @@ export function patchRoutes(routes: IRoute[], config: IConfig) {
       throw new Error('Invalid route config for /404');
     }
   }
+  return routes;
 }
 
 export default (api: IApi) => {

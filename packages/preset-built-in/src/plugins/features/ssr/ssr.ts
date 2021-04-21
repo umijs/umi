@@ -5,7 +5,7 @@ import * as path from 'path';
 import serialize from '@umijs/deps/compiled/serialize-javascript';
 import { performance } from 'perf_hooks';
 import { Route } from '@umijs/core';
-import { IApi, BundlerConfigType } from '@umijs/types';
+import { IApi, BundlerConfigType, ISSR } from '@umijs/types';
 import {
   winPath,
   Mustache,
@@ -60,6 +60,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
       fs.writeFileSync(serverPath, serverContent);
     }
   }
+  return undefined;
 };
 
 export default (api: IApi) => {
@@ -99,9 +100,10 @@ export default (api: IApi) => {
 
   api.onStart(() => {
     assert(
-      api.config.history?.type !== 'hash',
+      api.config.history && api.config.history?.type !== 'hash',
       'the `type` of `history` must be `browser` when using SSR',
     );
+
     if (api.config.dynamicImport && api.config.ssr) {
       api.logger.warn(
         'The manifest file will be generated if enabling `dynamicImport` in ssr.',
@@ -133,6 +135,8 @@ export default (api: IApi) => {
     });
 
     const routes = await api.getRoutes();
+    const ssr = api.config.ssr as ISSR;
+    const dynamicImport = api.config.dynamicImport as { loading: string };
     api.writeTmpFile({
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
@@ -153,16 +157,15 @@ export default (api: IApi) => {
           require.resolve('regenerator-runtime/runtime'),
         ),
         loadingComponent:
-          api.config.dynamicImport?.loading &&
-          winPath(api.config.dynamicImport?.loading),
-        DynamicImport: !!api.config.dynamicImport,
+          dynamicImport?.loading && winPath(dynamicImport?.loading),
+        DynamicImport: !!dynamicImport,
         Utils: winPath(require.resolve('./templates/utils')),
-        Mode: api.config.ssr?.mode ?? 'string',
+        Mode: ssr.mode ?? 'string',
         MountElementId: api.config.mountElementId,
-        StaticMarkup: !!api.config.ssr?.staticMarkup,
+        StaticMarkup: !!ssr?.staticMarkup,
         // @ts-ignore
-        ForceInitial: !!api.config.ssr?.forceInitial,
-        RemoveWindowInitialProps: !!api.config.ssr?.removeWindowInitialProps,
+        ForceInitial: !!ssr?.forceInitial,
+        RemoveWindowInitialProps: !!ssr?.removeWindowInitialProps,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
         ManifestFileName: api.config.manifest
@@ -216,21 +219,26 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((config) => {
-    // force enable writeToDisk
-    config.devServer.writeToDisk = (filePath: string) => {
-      const manifestFile =
-        api.config?.manifest?.fileName || 'asset-manifest.json';
-      const regexp = new RegExp(
-        `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME}|${manifestFile})$`,
-      );
-      return regexp.test(filePath);
-    };
-    // enable manifest
-    if (config.dynamicImport) {
-      config.manifest = {
-        writeToFileEmit: false,
-        ...(config.manifest || {}),
+    if (config && config.devServer) {
+      // force enable writeToDisk
+      config.devServer.writeToDisk = (filePath: string) => {
+        if (api.config?.manifest) {
+          const manifestFile =
+            api.config?.manifest?.fileName || 'asset-manifest.json';
+          const regexp = new RegExp(
+            `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME}|${manifestFile})$`,
+          );
+          return regexp.test(filePath);
+        }
+        return false;
       };
+      // enable manifest
+      if (config.dynamicImport) {
+        config.manifest = {
+          writeToFileEmit: false,
+          ...(config.manifest || {}),
+        };
+      }
     }
     return config;
   });

@@ -8,7 +8,7 @@
 
 /// <reference types="node"/>
 
-interface MergedStream extends NodeJS.ReadWriteStream {
+export interface MergedStream extends NodeJS.ReadWriteStream {
     add(source: NodeJS.ReadableStream | ReadonlyArray<NodeJS.ReadableStream>): MergedStream;
     isEmpty(): boolean;
 }

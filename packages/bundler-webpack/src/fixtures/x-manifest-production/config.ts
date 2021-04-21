@@ -1,5 +1,5 @@
 export default {
   manifest: {
-    publicPath: '/foo/'
-  }
-}
+    publicPath: '/foo/',
+  },
+};

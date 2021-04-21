@@ -11,13 +11,16 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "declaration": true
+    "declaration": true,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
     "dist",
+    "packages/deps/compiled/webpack",
     "**/*.spec.ts",
     "lib",
+    "loadable.js",
     "fixtures",
     "examples"
   ]

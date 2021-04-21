@@ -1,4 +1,3 @@
-
 import * as webpack from '@umijs/deps/compiled/webpack';
 
 export interface IExpectOpts {
@@ -7,5 +6,5 @@ export interface IExpectOpts {
   indexCSS: string;
   indexCSSMap: string;
   cwd: string;
-  ignored: webpack.Options.WatchOptions['ignored']
+  ignored: webpack.Options.WatchOptions['ignored'];
 }

@@ -2,13 +2,17 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Loadable from './loadable';
 
-function waitFor(delay) {
+function waitFor(delay: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
 }
 
-function createLoader(delay, loader, error) {
+function createLoader(
+  delay: number,
+  loader: null | (() => void),
+  error?: Error,
+) {
   return () => {
     return waitFor(delay).then(() => {
       if (loader) {
@@ -20,11 +24,15 @@ function createLoader(delay, loader, error) {
   };
 }
 
-function MyLoadingComponent(props) {
+function MyLoadingComponent(
+  props: React.PropsWithChildren<{
+    prop: string;
+  }>,
+) {
   return <div>MyLoadingComponent {JSON.stringify(props)}</div>;
 }
 
-function MyComponent(props) {
+function MyComponent(props: React.PropsWithChildren<{ prop: string }>) {
   return <div>MyComponent {JSON.stringify(props)}</div>;
 }
 
@@ -35,7 +43,7 @@ afterEach(async () => {
 });
 
 test('server side rendering', async () => {
-  let LoadableMyComponent = Loadable({
+  let LoadableMyComponent = Loadable<{ prop: string }>({
     loader: createLoader(400, () => require('../__fixtures__/component')),
     loading: MyLoadingComponent,
   });
@@ -48,7 +56,7 @@ test('server side rendering', async () => {
 });
 
 test('server side rendering es6', async () => {
-  let LoadableMyComponent = Loadable({
+  let LoadableMyComponent = Loadable<{ prop: string }>({
     loader: createLoader(400, () => require('../__fixtures__/component.es6')),
     loading: MyLoadingComponent,
   });
@@ -61,7 +69,7 @@ test('server side rendering es6', async () => {
 });
 
 test('preload', async () => {
-  let LoadableMyComponent = Loadable({
+  let LoadableMyComponent = Loadable<{ prop: string }>({
     loader: createLoader(400, () => MyComponent),
     loading: MyLoadingComponent,
   });
@@ -80,7 +88,7 @@ test('preload', async () => {
 });
 
 test('render', async () => {
-  let LoadableMyComponent = Loadable({
+  let LoadableMyComponent = Loadable<{ prop: string }>({
     loader: createLoader(400, () => ({ MyComponent })),
     loading: MyLoadingComponent,
     render(loaded, props) {
@@ -96,7 +104,7 @@ test('render', async () => {
 });
 
 test('loadable map success', async () => {
-  let LoadableMyComponent = Loadable.Map({
+  let LoadableMyComponent = Loadable.Map<{ prop: string }>({
     loader: {
       a: createLoader(200, () => ({ MyComponent })),
       b: createLoader(400, () => ({ MyComponent })),
@@ -121,7 +129,9 @@ test('loadable map success', async () => {
 });
 
 test('loadable map error', async () => {
-  let LoadableMyComponent = Loadable.Map({
+  let LoadableMyComponent = Loadable.Map<{
+    prop: string;
+  }>({
     loader: {
       a: createLoader(200, () => ({ MyComponent })),
       b: createLoader(400, null, new Error('test error')),
@@ -147,15 +157,15 @@ test('loadable map error', async () => {
 
 describe('preloadReady', () => {
   beforeEach(() => {
-    global.__webpack_modules__ = { 1: true, 2: true };
+    (global as any).__webpack_modules__ = { 1: true, 2: true };
   });
 
   afterEach(() => {
-    delete global.__webpack_modules__;
+    delete (global as any).__webpack_modules__;
   });
 
   test('undefined', async () => {
-    let LoadableMyComponent = Loadable({
+    let LoadableMyComponent = Loadable<{ prop: string }>({
       loader: createLoader(200, () => MyComponent),
       loading: MyLoadingComponent,
     });
@@ -168,7 +178,7 @@ describe('preloadReady', () => {
   });
 
   test('one', async () => {
-    let LoadableMyComponent = Loadable({
+    let LoadableMyComponent = Loadable<{ prop: string }>({
       loader: createLoader(200, () => MyComponent),
       loading: MyLoadingComponent,
       webpack: () => [1],
@@ -182,7 +192,7 @@ describe('preloadReady', () => {
   });
 
   test('many', async () => {
-    let LoadableMyComponent = Loadable({
+    let LoadableMyComponent = Loadable<{ prop: string }>({
       loader: createLoader(200, () => MyComponent),
       loading: MyLoadingComponent,
       webpack: () => [1, 2],
@@ -196,7 +206,7 @@ describe('preloadReady', () => {
   });
 
   test('missing', async () => {
-    let LoadableMyComponent = Loadable({
+    let LoadableMyComponent = Loadable<{ prop: string }>({
       loader: createLoader(200, () => MyComponent),
       loading: MyLoadingComponent,
       webpack: () => [1, 42],
@@ -210,7 +220,7 @@ describe('preloadReady', () => {
   });
 
   test('delay with 0', () => {
-    let LoadableMyComponent = Loadable({
+    let LoadableMyComponent = Loadable<{ prop: string }>({
       loader: createLoader(300, () => MyComponent),
       loading: MyLoadingComponent,
       delay: 0,

@@ -1,5 +1,5 @@
 export interface IRoute {
-  component?: string;
+  component?: any;
   exact?: boolean;
   path?: string;
   routes?: IRoute[];

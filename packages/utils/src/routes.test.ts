@@ -50,7 +50,7 @@ test('routeToChunkName no route', () => {
       route: {},
     }),
   ).toEqual('');
-
+  // @ts-expect-error
   expect(routeToChunkName()).toEqual('');
 });
 

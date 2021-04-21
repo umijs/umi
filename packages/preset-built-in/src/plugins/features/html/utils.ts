@@ -59,7 +59,7 @@ export const getStyles = (option: IStyleConfig): [IHTMLTag[], IHTMLTag[]] => {
       }
       if (typeof style === 'object') {
         // is style object
-        styleObj.push(style);
+        styleObj.push((style as unknown) as IHTMLTag);
       }
     });
   }

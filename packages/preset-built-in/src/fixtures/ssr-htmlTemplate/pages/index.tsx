@@ -1,6 +1,8 @@
 import React from 'react';
 
-const TestParams = props => {
+const TestParams: React.FC<{ fromServerTitle: string }> & {
+  getInitialProps: (props: any) => any;
+} = (props) => {
   const { fromServerTitle } = props;
 
   return (

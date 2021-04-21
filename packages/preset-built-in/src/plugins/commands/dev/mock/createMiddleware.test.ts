@@ -40,7 +40,7 @@ describe('createMiddleware', () => {
     });
     const { middleware, watcher: middlewareWatcher } = createMiddleware({
       ...mockOpts,
-      updateMockData: () =>
+      updateMockData: async () =>
         getMockData({
           cwd,
           ignore: service.userConfig.mock?.exclude,

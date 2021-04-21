@@ -6,7 +6,7 @@ interface ILoadableOptions {
   loader?: Function;
 }
 
-export default function (opts: any) {
+export default function (opts: any): any {
   let loadableFn = Loadable;
   let loadableOptions: ILoadableOptions = {
     loading: ({ error, isLoading }: { error: Error; isLoading: boolean }) => {
