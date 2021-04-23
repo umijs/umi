@@ -99,6 +99,14 @@ $ yarn docs add docs/routing --title Routing
 
 Umi 3 examples in `examples/*` directory
 
+### Running the Examples apps
+
+Running examples can be done with:
+
+```sh
+yarn example dev examples/normal
+```
+
 ## Benchmarks
 
 if you want to add a benchmark, you can add `examples/*/benchmark.js` like this:
@@ -109,7 +117,7 @@ module.exports = (suite) => {
   // add tests
   suite
     // your logic
-    .add('ssr#normal /', )
+    .add('ssr#normal /')
     // your logic
     .add('ssr#normal#stream /');
 };
