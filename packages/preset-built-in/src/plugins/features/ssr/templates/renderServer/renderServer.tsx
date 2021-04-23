@@ -119,6 +119,7 @@ function getRootContainer(
       history: opts.history,
       routes: opts.routes,
       plugin: opts.plugin,
+      app: opts.app
     },
   });
 }
@@ -157,6 +158,8 @@ export default async function renderServer(
   const rootContainer = getRootContainer({
     ...(opts as IOpts),
     pageInitialProps,
+    // 保持 rootContainer 执行时 dva 对象的一致性
+    app: ctx.app
   });
   if (opts.mode === 'stream') {
     const pageHTML = ReactDOMServer[
