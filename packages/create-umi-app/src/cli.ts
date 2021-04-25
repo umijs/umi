@@ -6,6 +6,7 @@ const args = yParser(process.argv.slice(2), {
   alias: {
     version: ['v'],
     help: ['h'],
+    example: ['e'],
   },
   boolean: ['version'],
 });
