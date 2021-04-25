@@ -37,12 +37,7 @@ export default (api: IApi) => {
   });
 
   api.onPatchRoute(({ route }) => {
-    // window 下 : 不是一个合法路径，所以需要处理一下
-    // 不直接删除是为了保证 render 可以生效
-    if (route.path?.includes(':')) {
-      route.path = route.path.replace(/:/g, '.');
-    }
-
+    route.path = fixRoutePathInWindows(route.path);
     if (api.config.exportStatic && !api.config.exportStatic?.htmlSuffix) return;
     if (route.path) {
       route.path = addHtmlSuffix(route.path, !!route.routes);
@@ -154,13 +149,22 @@ export default (api: IApi) => {
       }
     }
   });
-
-  function addHtmlSuffix(path: string, hasRoutes: boolean) {
-    if (path === '/') return path;
-    if (hasRoutes) {
-      return path.endsWith('/') ? path : `${path}(.html)?`;
-    } else {
-      return path.endsWith('/') ? `${path.slice(0, -1)}.html` : `${path}.html`;
-    }
-  }
 };
+
+export function fixRoutePathInWindows(path?: string) {
+  // window 下 : 不是一个合法路径，所以需要处理一下
+  // 不直接删除是为了保证 render 可以生效
+  if (!path || !path?.includes(':')) {
+    return path;
+  }
+  return path.replace(/:/g, '.');
+}
+
+export function addHtmlSuffix(path: string, hasRoutes: boolean) {
+  if (path === '/') return path;
+  if (hasRoutes) {
+    return path.endsWith('/') ? path : `${path}(.html)?`;
+  } else {
+    return path.endsWith('/') ? `${path.slice(0, -1)}.html` : `${path}.html`;
+  }
+}

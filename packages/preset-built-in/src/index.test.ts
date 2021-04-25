@@ -135,7 +135,6 @@ test('html', async () => {
 test('ssr', async () => {
   const cwd = join(fixtures, 'ssr');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
-  const tmpExportFile = join(cwd, '.umi-test', 'core', 'umiExports.ts');
 
   delete require.cache[tmpServerFile];
 
