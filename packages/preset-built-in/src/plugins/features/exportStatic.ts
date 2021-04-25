@@ -37,6 +37,12 @@ export default (api: IApi) => {
   });
 
   api.onPatchRoute(({ route }) => {
+    // window 下 : 不是一个合法路径，所以需要处理一下
+    // 不直接删除是为了保证 render 可以生效
+    if (route.path?.includes(':')) {
+      route.path = route.path.replace(/:/g, '.');
+    }
+
     if (api.config.exportStatic && !api.config.exportStatic?.htmlSuffix) return;
     if (route.path) {
       route.path = addHtmlSuffix(route.path, !!route.routes);
