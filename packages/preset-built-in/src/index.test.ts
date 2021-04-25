@@ -166,7 +166,6 @@ test('ssr', async () => {
 test('ssr modifyServerHTML', async () => {
   const cwd = join(fixtures, 'ssr-modifyServerHTML');
   const tmpServerFile = join(cwd, '.umi-test', 'core', 'server.ts');
-  const tmpExportFile = join(cwd, '.umi-test', 'core', 'umiExports.ts');
 
   delete require.cache[tmpServerFile];
 
@@ -415,4 +414,18 @@ xtest('ssr dynamicImport', async () => {
     '<link rel="stylesheet" href="/p__Bar.chunk.css" />',
   );
   rimraf.sync(join(cwd, '.umi-test'));
+});
+
+test('exportStatic', async () => {
+  const cwd = join(fixtures, 'exportStatic');
+  const service = new Service({
+    cwd,
+    presets: [require.resolve('../lib/index.js')],
+  });
+  await service.run({
+    name: 'build',
+    args: {},
+  });
+  expect(existsSync(join(cwd, 'dist', 'index.html'))).toBeTruthy();
+  expect(existsSync(join(cwd, 'dist', 'list', '.id.html'))).toBeTruthy();
 });
