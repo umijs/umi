@@ -52,6 +52,7 @@ export default (api: IApi) => {
         rootIndex = index;
       }
     });
+
     if (rootIndex !== null) {
       routes.splice(rootIndex, 0, {
         ...routes[rootIndex],

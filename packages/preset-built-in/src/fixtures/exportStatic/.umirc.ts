@@ -2,7 +2,7 @@ import { IConfig } from "@umijs/types";
 
 export default {
   routes: [
-    { path: "/", component: "index" },
+    { path: "/", component: "index", exact: true, },
     { path: "/home", component: "index" },
     { path: "/list/:id", component: "index" }
   ],
