@@ -20,9 +20,10 @@ jobs:
         with:
           fetch-depth: '1'
       - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node_version }}
+          registry-url: 'https://registry.yarnpkg.com'
       - name: restore lerna
         id: cache
         uses: actions/cache@v2
