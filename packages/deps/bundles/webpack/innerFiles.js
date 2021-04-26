@@ -3,6 +3,7 @@ const { join } = require('path');
 
 const files = [
   'webpack/lib/Compilation',
+  'webpack/lib/Chunk',
   'webpack/lib/dependencies/ConstDependency',
   'webpack/lib/ExternalsPlugin',
   'webpack/lib/javascript/JavascriptParserHelpers',
