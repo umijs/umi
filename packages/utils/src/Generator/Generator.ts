@@ -19,15 +19,15 @@ class Generator {
   }
 
   async run() {
-    const questions = await this.prompting();
+    const questions = this.prompting();
     if (questions && questions.length > 0) {
       this.prompts = await prompts(questions);
     }
     await this.writing();
   }
 
-  async prompting() {
-    return [];
+  prompting() {
+    return [] as any;
   }
 
   async writing() {}
