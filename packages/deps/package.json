@@ -1,6 +1,6 @@
 {
   "name": "@umijs/deps",
-  "version": "3.4.12",
+  "version": "3.4.13",
   "description": "@umijs/deps",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -102,8 +102,8 @@
     "@types/webpack-sources": "1.4.2",
     "@types/yargs": "15.0.12",
     "@types/yargs-parser": "20.2.0",
-    "@umijs/babel-plugin-auto-css-modules": "3.4.12",
-    "@umijs/babel-plugin-import-to-await-require": "3.4.12",
+    "@umijs/babel-plugin-auto-css-modules": "3.4.13",
+    "@umijs/babel-plugin-import-to-await-require": "3.4.13",
     "@vercel/ncc": "0.27.0",
     "address": "1.1.2",
     "ansi-html": "0.0.7",
