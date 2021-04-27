@@ -31,3 +31,11 @@ test('avoid cycle', () => {
   );
   expect(ret).toEqual(['./a.ts', './b.ts', './c.ts']);
 });
+
+test('non-existent files or directories', () => {
+  const fixture = join(fixtures, 'not-exist');
+  const ret = parseRequireDeps(join(fixture, '.umirc.ts')).map((p) =>
+    p.replace(winPath(fixture), '.'),
+  );
+  expect(ret).toEqual(['./.umirc.ts', './config/foo.ts', './src/a.js']);
+});

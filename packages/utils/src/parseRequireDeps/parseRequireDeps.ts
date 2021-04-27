@@ -13,14 +13,19 @@ function parse(filePath: string): string[] {
   return (crequire(content) as any[])
     .map<string>((o) => o.path)
     .filter((path) => path.charAt(0) === '.')
-    .map((path) =>
-      winPath(
-        resolve.sync(path, {
-          basedir: dirname(filePath),
-          extensions: ['.tsx', '.ts', '.jsx', '.js'],
-        }),
-      ),
-    );
+    .map((path) => {
+      try {
+        return winPath(
+          resolve.sync(path, {
+            basedir: dirname(filePath),
+            extensions: ['.tsx', '.ts', '.jsx', '.js'],
+          }),
+        );
+      } catch (error) {
+        // console.debug('[parseRequireDeps.parse]', error);
+        return '';
+      }
+    });
 }
 
 export default function parseRequireDeps(filePath: string): string[] {
@@ -29,7 +34,7 @@ export default function parseRequireDeps(filePath: string): string[] {
 
   while (paths.length) {
     // 避免依赖循环
-    const extraPaths = lodash.pullAll(parse(paths.shift()!), ret);
+    const extraPaths = lodash.pullAll(parse(paths.shift()!), [...ret, '']);
     if (extraPaths.length) {
       paths.push(...extraPaths);
       ret.push(...extraPaths);
