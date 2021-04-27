@@ -2,6 +2,7 @@ const { writeFileSync } = require('fs');
 const { join } = require('path');
 
 const files = [
+  'webpack/lib/Chunk',
   'webpack/lib/Compilation',
   'webpack/lib/dependencies/ConstDependency',
   'webpack/lib/ExternalsPlugin',
