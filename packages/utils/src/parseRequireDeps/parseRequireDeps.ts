@@ -22,7 +22,7 @@ function parse(filePath: string): string[] {
           }),
         );
       } catch (error) {
-        // console.debug('[parseRequireDeps.parse]', error);
+        console.log(`${error.code} path: ${path}`);
         return '';
       }
     });
