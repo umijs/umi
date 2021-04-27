@@ -89,9 +89,9 @@ function dts({ name }) {
   // 'webpack-sources',
   // 'yargs',
   // 'yargs-parser',
+  'prompts'
 ].forEach(name => {
   dts({
     name,
   });
 });
-

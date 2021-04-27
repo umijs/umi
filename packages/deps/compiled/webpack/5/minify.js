@@ -158,6 +158,7 @@ module.exports =
     regexp: new TokenType("regexp", startsExpr),
     string: new TokenType("string", startsExpr),
     name: new TokenType("name", startsExpr),
+    privateId: new TokenType("privateId", startsExpr),
     eof: new TokenType("eof"),
 
     // Punctuation token types.
@@ -562,6 +563,11 @@ module.exports =
 
     // For RegExp validation
     this.regexpState = null;
+
+    // The stack of private names.
+    // Each element has two properties: 'declared' and 'used'.
+    // When it exited from the outermost class definition, all used private names must be declared.
+    this.privateNameStack = [];
   };
 
   var prototypeAccessors = { inFunction: { configurable: true },inGenerator: { configurable: true },inAsync: { configurable: true },allowSuper: { configurable: true },allowDirectSuper: { configurable: true },treatFunctionsAsVar: { configurable: true },inNonArrowFunction: { configurable: true } };
@@ -573,12 +579,22 @@ module.exports =
   };
 
   prototypeAccessors.inFunction.get = function () { return (this.currentVarScope().flags & SCOPE_FUNCTION) > 0 };
-  prototypeAccessors.inGenerator.get = function () { return (this.currentVarScope().flags & SCOPE_GENERATOR) > 0 };
-  prototypeAccessors.inAsync.get = function () { return (this.currentVarScope().flags & SCOPE_ASYNC) > 0 };
-  prototypeAccessors.allowSuper.get = function () { return (this.currentThisScope().flags & SCOPE_SUPER) > 0 };
+  prototypeAccessors.inGenerator.get = function () { return (this.currentVarScope().flags & SCOPE_GENERATOR) > 0 && !this.currentThisScope().inClassFieldInit };
+  prototypeAccessors.inAsync.get = function () { return (this.currentVarScope().flags & SCOPE_ASYNC) > 0 && !this.currentThisScope().inClassFieldInit };
+  prototypeAccessors.allowSuper.get = function () {
+    var ref = this.currentThisScope();
+      var flags = ref.flags;
+      var inClassFieldInit = ref.inClassFieldInit;
+    return (flags & SCOPE_SUPER) > 0 || inClassFieldInit
+  };
   prototypeAccessors.allowDirectSuper.get = function () { return (this.currentThisScope().flags & SCOPE_DIRECT_SUPER) > 0 };
   prototypeAccessors.treatFunctionsAsVar.get = function () { return this.treatFunctionsAsVarInScope(this.currentScope()) };
-  prototypeAccessors.inNonArrowFunction.get = function () { return (this.currentThisScope().flags & SCOPE_FUNCTION) > 0 };
+  prototypeAccessors.inNonArrowFunction.get = function () {
+    var ref = this.currentThisScope();
+      var flags = ref.flags;
+      var inClassFieldInit = ref.inClassFieldInit;
+    return (flags & SCOPE_FUNCTION) > 0 || inClassFieldInit
+  };
 
   Parser.extend = function extend () {
       var plugins = [], len = arguments.length;
@@ -1331,6 +1347,7 @@ module.exports =
 
     this.parseClassId(node, isStatement);
     this.parseClassSuper(node);
+    var privateNameMap = this.enterClassBody();
     var classBody = this.startNode();
     var hadConstructor = false;
     classBody.body = [];
@@ -1342,75 +1359,152 @@ module.exports =
         if (element.type === "MethodDefinition" && element.kind === "constructor") {
           if (hadConstructor) { this.raise(element.start, "Duplicate constructor in the same class"); }
           hadConstructor = true;
+        } else if (element.key.type === "PrivateIdentifier" && isPrivateNameConflicted(privateNameMap, element)) {
+          this.raiseRecoverable(element.key.start, ("Identifier '#" + (element.key.name) + "' has already been declared"));
         }
       }
     }
     this.strict = oldStrict;
     this.next();
     node.body = this.finishNode(classBody, "ClassBody");
+    this.exitClassBody();
     return this.finishNode(node, isStatement ? "ClassDeclaration" : "ClassExpression")
   };
 
   pp$1.parseClassElement = function(constructorAllowsSuper) {
-    var this$1 = this;
-
     if (this.eat(types.semi)) { return null }
 
-    var method = this.startNode();
-    var tryContextual = function (k, noLineBreak) {
-      if ( noLineBreak === void 0 ) noLineBreak = false;
-
-      var start = this$1.start, startLoc = this$1.startLoc;
-      if (!this$1.eatContextual(k)) { return false }
-      if (this$1.type !== types.parenL && (!noLineBreak || !this$1.canInsertSemicolon())) { return true }
-      if (method.key) { this$1.unexpected(); }
-      method.computed = false;
-      method.key = this$1.startNodeAt(start, startLoc);
-      method.key.name = k;
-      this$1.finishNode(method.key, "Identifier");
-      return false
-    };
-
-    method.kind = "method";
-    method.static = tryContextual("static");
-    var isGenerator = this.eat(types.star);
+    var ecmaVersion = this.options.ecmaVersion;
+    var node = this.startNode();
+    var keyName = "";
+    var isGenerator = false;
     var isAsync = false;
-    if (!isGenerator) {
-      if (this.options.ecmaVersion >= 8 && tryContextual("async", true)) {
-        isAsync = true;
-        isGenerator = this.options.ecmaVersion >= 9 && this.eat(types.star);
-      } else if (tryContextual("get")) {
-        method.kind = "get";
-      } else if (tryContextual("set")) {
-        method.kind = "set";
+    var kind = "method";
+
+    // Parse modifiers
+    node.static = false;
+    if (this.eatContextual("static")) {
+      if (this.isClassElementNameStart() || this.type === types.star) {
+        node.static = true;
+      } else {
+        keyName = "static";
       }
     }
-    if (!method.key) { this.parsePropertyName(method); }
-    var key = method.key;
-    var allowsDirectSuper = false;
-    if (!method.computed && !method.static && (key.type === "Identifier" && key.name === "constructor" ||
-        key.type === "Literal" && key.value === "constructor")) {
-      if (method.kind !== "method") { this.raise(key.start, "Constructor can't have get/set modifier"); }
-      if (isGenerator) { this.raise(key.start, "Constructor can't be a generator"); }
-      if (isAsync) { this.raise(key.start, "Constructor can't be an async method"); }
-      method.kind = "constructor";
-      allowsDirectSuper = constructorAllowsSuper;
-    } else if (method.static && key.type === "Identifier" && key.name === "prototype") {
-      this.raise(key.start, "Classes may not have a static property named prototype");
+    if (!keyName && ecmaVersion >= 8 && this.eatContextual("async")) {
+      if ((this.isClassElementNameStart() || this.type === types.star) && !this.canInsertSemicolon()) {
+        isAsync = true;
+      } else {
+        keyName = "async";
+      }
     }
-    this.parseClassMethod(method, isGenerator, isAsync, allowsDirectSuper);
-    if (method.kind === "get" && method.value.params.length !== 0)
-      { this.raiseRecoverable(method.value.start, "getter should have no params"); }
-    if (method.kind === "set" && method.value.params.length !== 1)
-      { this.raiseRecoverable(method.value.start, "setter should have exactly one param"); }
-    if (method.kind === "set" && method.value.params[0].type === "RestElement")
-      { this.raiseRecoverable(method.value.params[0].start, "Setter cannot use rest params"); }
-    return method
+    if (!keyName && (ecmaVersion >= 9 || !isAsync) && this.eat(types.star)) {
+      isGenerator = true;
+    }
+    if (!keyName && !isAsync && !isGenerator) {
+      var lastValue = this.value;
+      if (this.eatContextual("get") || this.eatContextual("set")) {
+        if (this.isClassElementNameStart()) {
+          kind = lastValue;
+        } else {
+          keyName = lastValue;
+        }
+      }
+    }
+
+    // Parse element name
+    if (keyName) {
+      // 'async', 'get', 'set', or 'static' were not a keyword contextually.
+      // The last token is any of those. Make it the element name.
+      node.computed = false;
+      node.key = this.startNodeAt(this.lastTokStart, this.lastTokStartLoc);
+      node.key.name = keyName;
+      this.finishNode(node.key, "Identifier");
+    } else {
+      this.parseClassElementName(node);
+    }
+
+    // Parse element value
+    if (ecmaVersion < 13 || this.type === types.parenL || kind !== "method" || isGenerator || isAsync) {
+      var isConstructor = !node.static && checkKeyName(node, "constructor");
+      var allowsDirectSuper = isConstructor && constructorAllowsSuper;
+      // Couldn't move this check into the 'parseClassMethod' method for backward compatibility.
+      if (isConstructor && kind !== "method") { this.raise(node.key.start, "Constructor can't have get/set modifier"); }
+      node.kind = isConstructor ? "constructor" : kind;
+      this.parseClassMethod(node, isGenerator, isAsync, allowsDirectSuper);
+    } else {
+      this.parseClassField(node);
+    }
+
+    return node
+  };
+
+  pp$1.isClassElementNameStart = function() {
+    return (
+      this.type === types.name ||
+      this.type === types.privateId ||
+      this.type === types.num ||
+      this.type === types.string ||
+      this.type === types.bracketL ||
+      this.type.keyword
+    )
+  };
+
+  pp$1.parseClassElementName = function(element) {
+    if (this.type === types.privateId) {
+      if (this.value === "constructor") {
+        this.raise(this.start, "Classes can't have an element named '#constructor'");
+      }
+      element.computed = false;
+      element.key = this.parsePrivateIdent();
+    } else {
+      this.parsePropertyName(element);
+    }
   };
 
   pp$1.parseClassMethod = function(method, isGenerator, isAsync, allowsDirectSuper) {
-    method.value = this.parseMethod(isGenerator, isAsync, allowsDirectSuper);
+    // Check key and flags
+    var key = method.key;
+    if (method.kind === "constructor") {
+      if (isGenerator) { this.raise(key.start, "Constructor can't be a generator"); }
+      if (isAsync) { this.raise(key.start, "Constructor can't be an async method"); }
+    } else if (method.static && checkKeyName(method, "prototype")) {
+      this.raise(key.start, "Classes may not have a static property named prototype");
+    }
+
+    // Parse value
+    var value = method.value = this.parseMethod(isGenerator, isAsync, allowsDirectSuper);
+
+    // Check value
+    if (method.kind === "get" && value.params.length !== 0)
+      { this.raiseRecoverable(value.start, "getter should have no params"); }
+    if (method.kind === "set" && value.params.length !== 1)
+      { this.raiseRecoverable(value.start, "setter should have exactly one param"); }
+    if (method.kind === "set" && value.params[0].type === "RestElement")
+      { this.raiseRecoverable(value.params[0].start, "Setter cannot use rest params"); }
+
     return this.finishNode(method, "MethodDefinition")
+  };
+
+  pp$1.parseClassField = function(field) {
+    if (checkKeyName(field, "constructor")) {
+      this.raise(field.key.start, "Classes can't have a field named 'constructor'");
+    } else if (field.static && checkKeyName(field, "prototype")) {
+      this.raise(field.key.start, "Classes can't have a static field named 'prototype'");
+    }
+
+    if (this.eat(types.eq)) {
+      // To raise SyntaxError if 'arguments' exists in the initializer.
+      var scope = this.currentThisScope();
+      var inClassFieldInit = scope.inClassFieldInit;
+      scope.inClassFieldInit = true;
+      field.value = this.parseMaybeAssign();
+      scope.inClassFieldInit = inClassFieldInit;
+    } else {
+      field.value = null;
+    }
+    this.semicolon();
+
+    return this.finishNode(field, "PropertyDefinition")
   };
 
   pp$1.parseClassId = function(node, isStatement) {
@@ -1428,6 +1522,65 @@ module.exports =
   pp$1.parseClassSuper = function(node) {
     node.superClass = this.eat(types._extends) ? this.parseExprSubscripts() : null;
   };
+
+  pp$1.enterClassBody = function() {
+    var element = {declared: Object.create(null), used: []};
+    this.privateNameStack.push(element);
+    return element.declared
+  };
+
+  pp$1.exitClassBody = function() {
+    var ref = this.privateNameStack.pop();
+    var declared = ref.declared;
+    var used = ref.used;
+    var len = this.privateNameStack.length;
+    var parent = len === 0 ? null : this.privateNameStack[len - 1];
+    for (var i = 0; i < used.length; ++i) {
+      var id = used[i];
+      if (!has(declared, id.name)) {
+        if (parent) {
+          parent.used.push(id);
+        } else {
+          this.raiseRecoverable(id.start, ("Private field '#" + (id.name) + "' must be declared in an enclosing class"));
+        }
+      }
+    }
+  };
+
+  function isPrivateNameConflicted(privateNameMap, element) {
+    var name = element.key.name;
+    var curr = privateNameMap[name];
+
+    var next = "true";
+    if (element.type === "MethodDefinition" && (element.kind === "get" || element.kind === "set")) {
+      next = (element.static ? "s" : "i") + element.kind;
+    }
+
+    // `class { get #a(){}; static set #a(_){} }` is also conflict.
+    if (
+      curr === "iget" && next === "iset" ||
+      curr === "iset" && next === "iget" ||
+      curr === "sget" && next === "sset" ||
+      curr === "sset" && next === "sget"
+    ) {
+      privateNameMap[name] = "true";
+      return false
+    } else if (!curr) {
+      privateNameMap[name] = next;
+      return false
+    } else {
+      return true
+    }
+  }
+
+  function checkKeyName(node, name) {
+    var computed = node.computed;
+    var key = node.key;
+    return !computed && (
+      key.type === "Identifier" && key.name === name ||
+      key.type === "Literal" && key.value === name
+    )
+  }
 
   // Parses module export declaration.
 
@@ -2194,6 +2347,8 @@ module.exports =
       else if (this.strict && node.operator === "delete" &&
                node.argument.type === "Identifier")
         { this.raiseRecoverable(node.start, "Deleting local variable in strict mode"); }
+      else if (node.operator === "delete" && isPrivateFieldAccess(node.argument))
+        { this.raiseRecoverable(node.start, "Private fields can not be deleted"); }
       else { sawUnary = true; }
       expr = this.finishNode(node, update ? "UpdateExpression" : "UnaryExpression");
     } else {
@@ -2215,6 +2370,13 @@ module.exports =
     else
       { return expr }
   };
+
+  function isPrivateFieldAccess(node) {
+    return (
+      node.type === "MemberExpression" && node.property.type === "PrivateIdentifier" ||
+      node.type === "ChainExpression" && isPrivateFieldAccess(node.expression)
+    )
+  }
 
   // Parse call, dot, and `[]`-subscript expressions.
 
@@ -2264,9 +2426,15 @@ module.exports =
     if (computed || (optional && this.type !== types.parenL && this.type !== types.backQuote) || this.eat(types.dot)) {
       var node = this.startNodeAt(startPos, startLoc);
       node.object = base;
-      node.property = computed ? this.parseExpression() : this.parseIdent(this.options.allowReserved !== "never");
+      if (computed) {
+        node.property = this.parseExpression();
+        this.expect(types.bracketR);
+      } else if (this.type === types.privateId && base.type !== "Super") {
+        node.property = this.parsePrivateIdent();
+      } else {
+        node.property = this.parseIdent(this.options.allowReserved !== "never");
+      }
       node.computed = !!computed;
-      if (computed) { this.expect(types.bracketR); }
       if (optionalSupported) {
         node.optional = optional;
       }
@@ -2938,6 +3106,8 @@ module.exports =
       { this.raiseRecoverable(start, "Cannot use 'yield' as identifier inside a generator"); }
     if (this.inAsync && name === "await")
       { this.raiseRecoverable(start, "Cannot use 'await' as identifier inside an async function"); }
+    if (this.currentThisScope().inClassFieldInit && name === "arguments")
+      { this.raiseRecoverable(start, "Cannot use 'arguments' in class field initializer"); }
     if (this.keywords.test(name))
       { this.raise(start, ("Unexpected keyword '" + name + "'")); }
     if (this.options.ecmaVersion < 6 &&
@@ -2979,6 +3149,26 @@ module.exports =
       if (node.name === "await" && !this.awaitIdentPos)
         { this.awaitIdentPos = node.start; }
     }
+    return node
+  };
+
+  pp$3.parsePrivateIdent = function() {
+    var node = this.startNode();
+    if (this.type === types.privateId) {
+      node.name = this.value;
+    } else {
+      this.unexpected();
+    }
+    this.next();
+    this.finishNode(node, "PrivateIdentifier");
+
+    // For validating existence
+    if (this.privateNameStack.length === 0) {
+      this.raise(node.start, ("Private field '#" + (node.name) + "' must be declared in an enclosing class"));
+    } else {
+      this.privateNameStack[this.privateNameStack.length - 1].used.push(node);
+    }
+
     return node
   };
 
@@ -3042,6 +3232,8 @@ module.exports =
     this.lexical = [];
     // A list of lexically-declared FunctionDeclaration names in the current lexical scope
     this.functions = [];
+    // A switch to disallow the identifier reference 'arguments'
+    this.inClassFieldInit = false;
   };
 
   // The functions in this module keep track of declared variables in the current scope in order to detect duplicate variable names.
@@ -4739,6 +4931,20 @@ module.exports =
     return this.finishOp(types.question, 1)
   };
 
+  pp$9.readToken_numberSign = function() { // '#'
+    var ecmaVersion = this.options.ecmaVersion;
+    var code = 35; // '#'
+    if (ecmaVersion >= 13) {
+      ++this.pos;
+      code = this.fullCharCodeAtPos();
+      if (isIdentifierStart(code, true) || code === 92 /* '\' */) {
+        return this.finishToken(types.privateId, this.readWord1())
+      }
+    }
+
+    this.raise(this.pos, "Unexpected character '" + codePointToString$1(code) + "'");
+  };
+
   pp$9.getTokenFromCode = function(code) {
     switch (code) {
     // The interpretation of a dot depends on whether it is followed
@@ -4810,6 +5016,9 @@ module.exports =
 
     case 126: // '~'
       return this.finishOp(types.prefix, 1)
+
+    case 35: // '#'
+      return this.readToken_numberSign()
     }
 
     this.raise(this.pos, "Unexpected character '" + codePointToString$1(code) + "'");
@@ -5221,7 +5430,7 @@ module.exports =
 
   // Acorn is a tiny, fast JavaScript parser written in JavaScript.
 
-  var version = "8.1.1";
+  var version = "8.2.1";
 
   Parser.acorn = {
     Parser: Parser,
@@ -5786,7 +5995,7 @@ function mergeSort(array, cmp) {
 function makePredicate(words) {
     if (!Array.isArray(words)) words = words.split(" ");
 
-    return new Set(words);
+    return new Set(words.sort());
 }
 
 function map_add(map, key, value) {
@@ -7041,7 +7250,7 @@ function parse($TEXT, options) {
                 if (is_if_body) {
                     croak("classes are not allowed as the body of an if");
                 }
-                return class_(AST_DefClass);
+                return class_(AST_DefClass, is_export_default);
 
               case "function":
                 next();
@@ -8236,7 +8445,7 @@ function parse($TEXT, options) {
         return new AST_Object({ properties: a });
     });
 
-    function class_(KindOfClass) {
+    function class_(KindOfClass, is_export_default) {
         var start, method, class_name, extends_, a = [];
 
         S.input.push_directives_stack(); // Push directive stack, but not scope stack
@@ -8247,7 +8456,11 @@ function parse($TEXT, options) {
         }
 
         if (KindOfClass === AST_DefClass && !class_name) {
-            unexpected();
+            if (is_export_default) {
+                KindOfClass = AST_ClassExpression;
+            } else {
+                unexpected();
+            }
         }
 
         if (S.token.value == "extends") {
@@ -8280,9 +8493,9 @@ function parse($TEXT, options) {
     }
 
     function concise_method_or_getset(name, start, is_class) {
-        var get_method_name_ast = function(name, start) {
+        const get_symbol_ast = (name, SymbolClass = AST_SymbolMethod) => {
             if (typeof name === "string" || typeof name === "number") {
-                return new AST_SymbolMethod({
+                return new SymbolClass({
                     start,
                     name: "" + name,
                     end: prev()
@@ -8292,47 +8505,71 @@ function parse($TEXT, options) {
             }
             return name;
         };
-        const get_class_property_key_ast = (name) => {
-            if (typeof name === "string" || typeof name === "number") {
-                return new AST_SymbolClassProperty({
-                    start: property_token,
-                    end: property_token,
-                    name: "" + name
-                });
-            } else if (name === null) {
-                unexpected();
-            }
-            return name;
-        };
-        var privatename = start.type == "privatename";
+
+        const is_not_method_start = () =>
+            !is("punc", "(") && !is("punc", ",") && !is("punc", "}") && !is("operator", "=");
+
         var is_async = false;
         var is_static = false;
         var is_generator = false;
-        var property_token = start;
-        if (is_class && name === "static" && !is("punc", "(")) {
+        var is_private = false;
+        var accessor_type = null;
+
+        if (is_class && name === "static" && is_not_method_start()) {
             is_static = true;
-            property_token = S.token;
-            privatename = property_token.type == "privatename";
             name = as_property_name();
         }
-        if (name === "async" && !is("punc", "(") && !is("punc", ",") && !is("punc", "}") && !is("operator", "=")) {
+        if (name === "async" && is_not_method_start()) {
             is_async = true;
-            property_token = S.token;
-            privatename = property_token.type == "privatename";
             name = as_property_name();
         }
-        if (name === null) {
+        if (prev().type === "operator" && prev().value === "*") {
             is_generator = true;
-            property_token = S.token;
-            privatename = property_token.type == "privatename";
             name = as_property_name();
-            if (name === null) {
-                unexpected();
+        }
+        if ((name === "get" || name === "set") && is_not_method_start()) {
+            accessor_type = name;
+            name = as_property_name();
+        }
+        if (prev().type === "privatename") {
+            is_private = true;
+        }
+
+        const property_token = prev();
+
+        if (accessor_type != null) {
+            if (!is_private) {
+                const AccessorClass = accessor_type === "get"
+                    ? AST_ObjectGetter
+                    : AST_ObjectSetter;
+
+                name = get_symbol_ast(name);
+                return new AccessorClass({
+                    start,
+                    static: is_static,
+                    key: name,
+                    quote: name instanceof AST_SymbolMethod ? property_token.quote : undefined,
+                    value: create_accessor(),
+                    end: prev()
+                });
+            } else {
+                const AccessorClass = accessor_type === "get"
+                    ? AST_PrivateGetter
+                    : AST_PrivateSetter;
+
+                return new AccessorClass({
+                    start,
+                    static: is_static,
+                    key: get_symbol_ast(name),
+                    value: create_accessor(),
+                    end: prev(),
+                });
             }
         }
+
         if (is("punc", "(")) {
-            name = get_method_name_ast(name, start);
-            const AST_MethodVariant = privatename
+            name = get_symbol_ast(name);
+            const AST_MethodVariant = is_private
                 ? AST_PrivateMethod
                 : AST_ConciseMethod;
             var node = new AST_MethodVariant({
@@ -8348,57 +8585,13 @@ function parse($TEXT, options) {
             });
             return node;
         }
-        const setter_token = S.token;
-        if ((name === "get" || name === "set") && setter_token.type === "privatename") {
-            next();
 
-            const AST_AccessorVariant =
-                name === "get"
-                    ? AST_PrivateGetter
-                    : AST_PrivateSetter;
-
-            return new AST_AccessorVariant({
-                start,
-                static: is_static,
-                key: get_method_name_ast(setter_token.value, start),
-                value: create_accessor(),
-                end: prev(),
-            });
-        }
-
-        if (name == "get") {
-            if (!is("punc") || is("punc", "[")) {
-                name = get_method_name_ast(as_property_name(), start);
-                return new AST_ObjectGetter({
-                    start : start,
-                    static: is_static,
-                    key   : name,
-                    quote : name instanceof AST_SymbolMethod ?
-                            setter_token.quote : undefined,
-                    value : create_accessor(),
-                    end   : prev()
-                });
-            }
-        } else if (name == "set") {
-            if (!is("punc") || is("punc", "[")) {
-                name = get_method_name_ast(as_property_name(), start);
-                return new AST_ObjectSetter({
-                    start : start,
-                    static: is_static,
-                    key   : name,
-                    quote : name instanceof AST_SymbolMethod ?
-                            setter_token.quote : undefined,
-                    value : create_accessor(),
-                    end   : prev()
-                });
-            }
-        }
         if (is_class) {
-            const key = get_class_property_key_ast(name);
+            const key = get_symbol_ast(name, AST_SymbolClassProperty);
             const quote = key instanceof AST_SymbolClassProperty
                 ? property_token.quote
                 : undefined;
-            const AST_ClassPropertyVariant = privatename
+            const AST_ClassPropertyVariant = is_private
                 ? AST_ClassPrivateProperty
                 : AST_ClassProperty;
             if (is("operator", "=")) {
@@ -8620,8 +8813,17 @@ function parse($TEXT, options) {
             semicolon();
         } else if ((node = statement(is_default)) instanceof AST_Definitions && is_default) {
             unexpected(node.start);
-        } else if (node instanceof AST_Definitions || node instanceof AST_Lambda || node instanceof AST_DefClass) {
+        } else if (
+            node instanceof AST_Definitions
+            || node instanceof AST_Defun
+            || node instanceof AST_DefClass
+        ) {
             exported_definition = node;
+        } else if (
+            node instanceof AST_ClassExpression
+            || node instanceof AST_Function
+        ) {
+            exported_value = node;
         } else if (node instanceof AST_SimpleStatement) {
             exported_value = node.body;
         } else {
@@ -9600,6 +9802,18 @@ var AST_Lambda = DEFNODE("Lambda", "name argnames uses_arguments is_generator as
     },
     is_braceless() {
         return this.body[0] instanceof AST_Return && this.body[0].value;
+    },
+    // Default args and expansion don't count, so .argnames.length doesn't cut it
+    length_property() {
+        let length = 0;
+
+        for (const arg of this.argnames) {
+            if (arg instanceof AST_SymbolFunarg || arg instanceof AST_Destructuring) {
+                length++;
+            }
+        }
+
+        return length;
     }
 }, AST_Scope);
 
@@ -16229,11 +16443,8 @@ const TOP       = 0b0000010000000000;
 
 const CLEAR_BETWEEN_PASSES = SQUEEZED | OPTIMIZED | TOP;
 
-/*@__INLINE__*/
 const has_flag = (node, flag) => node.flags & flag;
-/*@__INLINE__*/
 const set_flag = (node, flag) => { node.flags |= flag; };
-/*@__INLINE__*/
 const clear_flag = (node, flag) => { node.flags &= ~flag; };
 
 class Compressor extends TreeWalker {
@@ -16276,7 +16487,7 @@ class Compressor extends TreeWalker {
             properties    : !false_by_default,
             pure_getters  : !false_by_default && "strict",
             pure_funcs    : null,
-            reduce_funcs  : null,  // legacy
+            reduce_funcs  : !false_by_default,
             reduce_vars   : !false_by_default,
             sequences     : !false_by_default,
             side_effects  : !false_by_default,
@@ -16576,7 +16787,7 @@ function is_modified(compressor, tw, node, value, level, immutable) {
         && parent.expression === node
         && !(value instanceof AST_Arrow)
         && !(value instanceof AST_Class)
-        && !parent.is_expr_pure(compressor)
+        && !parent.is_callee_pure(compressor)
         && (!(value instanceof AST_Function)
             || !(parent instanceof AST_New) && value.contains_this())) {
         return true;
@@ -16881,9 +17092,6 @@ function is_modified(compressor, tw, node, value, level, immutable) {
         return true;
     });
     def_reduce_vars(AST_Call, function (tw) {
-        // TODO this block should just be { return } but
-        // for some reason the _walk function of AST_Call walks the callee last
-
         this.expression.walk(tw);
 
         if (this.optional) {
@@ -18957,9 +19165,7 @@ var static_fns = convert_to_predicate({
         if (compressor.option("unsafe")) {
             var fn = function() {};
             fn.node = this;
-            fn.toString = function() {
-                return this.node.print_to_string();
-            };
+            fn.toString = () => this.print_to_string();
             return fn;
         }
         return this;
@@ -19140,6 +19346,14 @@ var static_fns = convert_to_predicate({
             "POSITIVE_INFINITY",
         ],
     });
+    const regexp_flags = new Set([
+        "dotAll",
+        "global",
+        "ignoreCase",
+        "multiline",
+        "sticky",
+        "unicode",
+    ]);
     def_eval(AST_PropAccess, function(compressor, depth) {
         if (this.optional) {
             const obj = this.expression._eval(compressor, depth);
@@ -19172,12 +19386,19 @@ var static_fns = convert_to_predicate({
                 val = global_objs[exp.name];
             } else {
                 val = exp._eval(compressor, depth + 1);
+                if (val instanceof RegExp) {
+                    if (key == "source") {
+                        return regexp_source_fix(val.source);
+                    } else if (key == "flags" || regexp_flags.has(key)) {
+                        return val[key];
+                    }
+                }
                 if (!val || val === exp || !HOP(val, key)) return this;
                 if (typeof val == "function") switch (key) {
                   case "name":
                     return val.node.name ? val.node.name.name : "";
                   case "length":
-                    return val.node.argnames.length;
+                    return val.node.length_property();
                   default:
                     return this;
                 }
@@ -19229,6 +19450,7 @@ var static_fns = convert_to_predicate({
                 var arg = this.args[i];
                 var value = arg._eval(compressor, depth);
                 if (arg === value) return this;
+                if (arg instanceof AST_Lambda) return this;
                 args.push(value);
             }
             try {
@@ -19328,7 +19550,7 @@ var static_fns = convert_to_predicate({
 });
 
 var global_pure_fns = makePredicate("Boolean decodeURI decodeURIComponent Date encodeURI encodeURIComponent Error escape EvalError isFinite isNaN Number Object parseFloat parseInt RangeError ReferenceError String SyntaxError TypeError unescape URIError");
-AST_Call.DEFMETHOD("is_expr_pure", function(compressor) {
+AST_Call.DEFMETHOD("is_callee_pure", function(compressor) {
     if (compressor.option("unsafe")) {
         var expr = this.expression;
         var first_arg = (this.args && this.args[0] && this.args[0].evaluate(compressor));
@@ -19398,7 +19620,7 @@ const pure_prop_access_globals = new Set([
     });
     def_has_side_effects(AST_Call, function(compressor) {
         if (
-            !this.is_expr_pure(compressor)
+            !this.is_callee_pure(compressor)
             && (!this.expression.is_call_pure(compressor)
                 || this.expression.has_side_effects(compressor))
         ) {
@@ -19560,7 +19782,7 @@ const pure_prop_access_globals = new Set([
     def_may_throw(AST_Call, function(compressor) {
         if (this.optional && is_nullish(this.expression)) return false;
         if (any(this.args, compressor)) return true;
-        if (this.is_expr_pure(compressor)) return false;
+        if (this.is_callee_pure(compressor)) return false;
         if (this.expression.may_throw(compressor)) return true;
         return !(this.expression instanceof AST_Lambda)
             || any(this.expression.body, compressor);
@@ -20438,7 +20660,7 @@ AST_Scope.DEFMETHOD("hoist_properties", function(compressor) {
             return make_node(AST_Undefined, this);
         }
 
-        if (!this.is_expr_pure(compressor)) {
+        if (!this.is_callee_pure(compressor)) {
             if (this.expression.is_call_pure(compressor)) {
                 var exprs = this.args.slice();
                 exprs.unshift(this.expression.expression);
@@ -21458,7 +21680,7 @@ def_optimize(AST_Call, function(self, compressor) {
 
     var stat = is_func && fn.body[0];
     var is_regular_func = is_func && !fn.is_generator && !fn.async;
-    var can_inline = is_regular_func && compressor.option("inline") && !self.is_expr_pure(compressor);
+    var can_inline = is_regular_func && compressor.option("inline") && !self.is_callee_pure(compressor);
     if (can_inline && stat instanceof AST_Return) {
         let returned = stat.value;
         if (!returned || returned.is_constant_expression()) {
@@ -22484,11 +22706,17 @@ def_optimize(AST_SymbolRef, function(self, compressor) {
         let fixed = self.fixed_value();
         let single_use = def.single_use
             && !(parent instanceof AST_Call
-                && (parent.is_expr_pure(compressor))
+                && (parent.is_callee_pure(compressor))
                     || has_annotation(parent, _NOINLINE))
             && !(parent instanceof AST_Export
                 && fixed instanceof AST_Lambda
                 && fixed.name);
+
+        if (single_use && fixed instanceof AST_Node) {
+            single_use =
+                !fixed.has_side_effects(compressor)
+                && !fixed.may_throw(compressor);
+        }
 
         if (single_use && (fixed instanceof AST_Lambda || fixed instanceof AST_Class)) {
             if (retain_top_func(fixed, compressor)) {
@@ -22496,7 +22724,8 @@ def_optimize(AST_SymbolRef, function(self, compressor) {
             } else if (def.scope !== self.scope
                 && (def.escaped == 1
                     || has_flag(fixed, INLINED)
-                    || within_array_or_object_literal(compressor))) {
+                    || within_array_or_object_literal(compressor)
+                    || !compressor.option("reduce_funcs"))) {
                 single_use = false;
             } else if (recursive_ref(compressor, def)) {
                 single_use = false;
@@ -22512,6 +22741,7 @@ def_optimize(AST_SymbolRef, function(self, compressor) {
                 }
             }
         }
+
         if (single_use && fixed instanceof AST_Lambda) {
             single_use =
                 def.scope === self.scope
@@ -22520,15 +22750,6 @@ def_optimize(AST_SymbolRef, function(self, compressor) {
                     && parent.expression === self
                     && !scope_encloses_variables_in_this_scope(nearest_scope, fixed)
                     && !(fixed.name && fixed.name.definition().recursive_refs > 0);
-        }
-        if (single_use && fixed instanceof AST_Class) {
-            const extends_inert = !fixed.extends
-                || !fixed.extends.may_throw(compressor)
-                    && !fixed.extends.has_side_effects(compressor);
-            single_use = extends_inert
-                && !fixed.properties.some(prop =>
-                    prop.may_throw(compressor) || prop.has_side_effects(compressor)
-                );
         }
 
         if (single_use && fixed) {
@@ -22606,6 +22827,7 @@ def_optimize(AST_SymbolRef, function(self, compressor) {
             }
         }
     }
+
     return self;
 });
 
@@ -23192,27 +23414,40 @@ function safe_to_flatten(value, compressor) {
 
 AST_PropAccess.DEFMETHOD("flatten_object", function(key, compressor) {
     if (!compressor.option("properties")) return;
+    if (key === "__proto__") return;
+
     var arrows = compressor.option("unsafe_arrows") && compressor.option("ecma") >= 2015;
     var expr = this.expression;
     if (expr instanceof AST_Object) {
         var props = expr.properties;
+
         for (var i = props.length; --i >= 0;) {
             var prop = props[i];
+
             if ("" + (prop instanceof AST_ConciseMethod ? prop.key.name : prop.key) == key) {
-                if (!props.every((prop) => {
-                    return prop instanceof AST_ObjectKeyVal
-                        || arrows && prop instanceof AST_ConciseMethod && !prop.is_generator;
-                })) break;
-                if (!safe_to_flatten(prop.value, compressor)) break;
+                const all_props_flattenable = props.every((p) =>
+                    (p instanceof AST_ObjectKeyVal
+                        || arrows && p instanceof AST_ConciseMethod && !p.is_generator
+                    )
+                    && !p.computed_key()
+                );
+
+                if (!all_props_flattenable) return;
+                if (!safe_to_flatten(prop.value, compressor)) return;
+
                 return make_node(AST_Sub, this, {
                     expression: make_node(AST_Array, expr, {
                         elements: props.map(function(prop) {
                             var v = prop.value;
-                            if (v instanceof AST_Accessor) v = make_node(AST_Function, v, v);
+                            if (v instanceof AST_Accessor) {
+                                v = make_node(AST_Function, v, v);
+                            }
+
                             var k = prop.key;
                             if (k instanceof AST_Node && !(k instanceof AST_SymbolMethod)) {
                                 return make_sequence(prop, [ k, v ]);
                             }
+
                             return v;
                         })
                     }),
@@ -32012,6 +32247,7 @@ async function minify(files, options) {
         rename: undefined,
         safari10: false,
         sourceMap: false,
+        spidermonkey: false,
         timings: false,
         toplevel: false,
         warnings: false,
@@ -32083,20 +32319,32 @@ async function minify(files, options) {
     if (files instanceof AST_Toplevel) {
         toplevel = files;
     } else {
-        if (typeof files == "string") {
+        if (typeof files == "string" || (options.parse.spidermonkey && !Array.isArray(files))) {
             files = [ files ];
         }
         options.parse = options.parse || {};
         options.parse.toplevel = null;
-        for (var name in files) if (HOP(files, name)) {
-            options.parse.filename = name;
-            options.parse.toplevel = parse(files[name], options.parse);
-            if (options.sourceMap && options.sourceMap.content == "inline") {
-                if (Object.keys(files).length > 1)
-                    throw new Error("inline source map only works with singular input");
-                options.sourceMap.content = read_source_map(files[name]);
+
+        if (options.parse.spidermonkey) {
+            options.parse.toplevel = AST_Node.from_mozilla_ast(Object.keys(files).reduce(function(toplevel, name) {
+                if (!toplevel) return files[name];
+                toplevel.body = toplevel.body.concat(files[name].body);
+                return toplevel;
+            }, null));
+        } else {
+            delete options.parse.spidermonkey;
+
+            for (var name in files) if (HOP(files, name)) {
+                options.parse.filename = name;
+                options.parse.toplevel = parse(files[name], options.parse);
+                if (options.sourceMap && options.sourceMap.content == "inline") {
+                    if (Object.keys(files).length > 1)
+                        throw new Error("inline source map only works with singular input");
+                    options.sourceMap.content = read_source_map(files[name]);
+                }
             }
         }
+
         toplevel = options.parse.toplevel;
     }
     if (quoted_props && options.mangle.properties.keep_quoted !== "strict") {
@@ -32132,6 +32380,9 @@ async function minify(files, options) {
     if (options.format.ast) {
         result.ast = toplevel;
     }
+    if (options.format.spidermonkey) {
+        result.ast = toplevel.to_mozilla_ast();
+    }
     if (!HOP(options.format, "code") || options.format.code) {
         if (options.sourceMap) {
             options.format.source_map = await SourceMap({
@@ -32149,6 +32400,7 @@ async function minify(files, options) {
         }
         delete options.format.ast;
         delete options.format.code;
+        delete options.format.spidermonkey;
         var stream = OutputStream(options.format);
         toplevel.print(stream);
         result.code = stream.get();

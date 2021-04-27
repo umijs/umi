@@ -110,21 +110,21 @@ unlisten();
 比如：
 
 ```js
-import { plugin, ApplyPluginsType } from 'umi';
+import { Plugin, ApplyPluginsType } from 'umi';
 
 // 注册插件
-plugin.register({
+Plugin.register({
   apply: { dva: { foo: 1 } },
   path: 'foo',
 });
-plugin.register({
+Plugin.register({
   apply: { dva: { bar: 1 } },
   path: 'bar',
 });
 
 // 执行插件
 // 得到 { foo: 1, bar: 1 }
-plugin.applyPlugins({
+Plugin.applyPlugins({
   key: 'dva',
   type: ApplyPluginsType.modify,
   initialValue: {},

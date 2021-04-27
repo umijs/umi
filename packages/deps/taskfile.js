@@ -390,6 +390,16 @@ export async function ncc_path_to_regexp(task, opts) {
     .target('compiled/path-to-regexp');
 }
 
+externals['prompts'] = '@umijs/deps/compiled/prompts';
+export async function ncc_prompts(task, opts) {
+  await task
+    .source(
+      opts.src || relative(__dirname, require.resolve('prompts'))
+    )
+    .ncc({ packageName: 'prompts', externals })
+    .target('compiled/prompts');
+}
+
 externals['less'] = '@umijs/deps/compiled/less';
 export async function ncc_less(task, opts) {
   await task
@@ -915,6 +925,7 @@ export async function ncc(task) {
       'ncc_http_proxy_middleware',
       'ncc_immer',
       'ncc_path_to_regexp',
+      'ncc_prompts',
       'ncc_loader_utils',
       'ncc_lodash',
       'ncc_less',

@@ -27,7 +27,7 @@
     "commit-msg": "node scripts/verifyCommit.js"
   },
   "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
+    "*.{jsx,less,md,json}": [
       "prettier --write"
     ],
     "*.ts?(x)": [
@@ -42,13 +42,14 @@
     "@types/dedent": "^0.7.0",
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.23",
-    "@umijs/core": "3.4.11",
+    "@umijs/core": "3.4.13",
     "@umijs/plugin-analytics": "^0.2.2",
     "@umijs/preset-dumi": "^1.1.6",
-    "@umijs/test": "3.4.11",
-    "@umijs/test-utils": "3.4.11",
-    "@umijs/utils": "3.4.11",
+    "@umijs/test": "3.4.13",
+    "@umijs/test-utils": "3.4.13",
+    "@umijs/utils": "3.4.13",
     "benchmark": "^2.1.4",
+    "coffee": "^5.4.0",
     "dedent": "^0.7.0",
     "escape-goat": "^3.0.0",
     "father-build": "1.19.2",

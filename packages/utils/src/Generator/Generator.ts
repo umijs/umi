@@ -1,6 +1,6 @@
 import { copyFileSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dirname, relative, join } from 'path';
-import { chalk, mkdirp, Mustache, yargs, glob } from '../index';
+import { chalk, mkdirp, Mustache, yargs, glob, prompts } from '../index';
 
 interface IOpts {
   cwd: string;
@@ -10,14 +10,22 @@ interface IOpts {
 class Generator {
   cwd: string;
   args: yargs.Arguments;
+  prompts: any;
 
   constructor({ cwd, args }: IOpts) {
     this.cwd = cwd;
     this.args = args;
+    this.prompts = {};
   }
 
   async run() {
+    const questions = this.prompting();
+    this.prompts = await prompts(questions);
     await this.writing();
+  }
+
+  prompting() {
+    return [] as any;
   }
 
   async writing() {}

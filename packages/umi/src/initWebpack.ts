@@ -26,9 +26,12 @@ export default () => {
   const configContent = configFile ? readFileSync(configFile, 'utf-8') : '';
 
   // TODO: detect with ast
-  const haveWebpack5 = configContent.includes('webpack5:');
+  const haveWebpack5 =
+    configContent.includes('webpack5:') &&
+    !configContent.includes('// webpack5:') &&
+    !configContent.includes('//webpack5:');
 
-  if (haveWebpack5) {
+  if (haveWebpack5 || process.env.USE_WEBPACK_5) {
     process.env.USE_WEBPACK_5 = '1';
     init(true);
   } else {
