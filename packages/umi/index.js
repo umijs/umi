@@ -1,4 +1,3 @@
-//@ts-ignore
 let ex = require('./lib/cjs');
 try {
   const umiExports = require('@@/core/umiExports');
