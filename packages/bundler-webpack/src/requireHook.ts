@@ -1,4 +1,5 @@
 export const files = [
+  'webpack/lib/Chunk',
   'webpack/lib/Compilation',
   'webpack/lib/dependencies/ConstDependency',
   'webpack/lib/javascript/JavascriptParserHelpers',
