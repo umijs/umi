@@ -131,6 +131,7 @@
     "deepmerge": "4.2.2",
     "dotenv": "8.2.0",
     "dts-bundle-generator": "^5.6.0",
+    "dts-packer": "^0.0.1-alpha.1",
     "ejs": "3.1.5",
     "error-stack-parser": "2.0.6",
     "execa": "4.0.3",
