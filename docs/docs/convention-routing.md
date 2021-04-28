@@ -164,9 +164,9 @@ routes: [
 A custom global `layout` could be defined as:
 
 ```tsx
-import { IRouteComponentProps } from 'umi'
+import { RouteComponentProps } from 'umi'
 
-export default function Layout({ children, location, route, history, match }: IRouteComponentProps) {
+export default function Layout({ children, location, route, history, match }: RouteComponentProps) {
   return children
 }
 ```
