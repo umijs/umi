@@ -60,6 +60,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
       fs.writeFileSync(serverPath, serverContent);
     }
   }
+  return undefined;
 };
 
 export default (api: IApi) => {
@@ -99,6 +100,7 @@ export default (api: IApi) => {
 
   api.onStart(() => {
     assert(
+      // @ts-ignore
       api.config.history?.type !== 'hash',
       'the `type` of `history` must be `browser` when using SSR',
     );
@@ -133,6 +135,7 @@ export default (api: IApi) => {
     });
 
     const routes = await api.getRoutes();
+
     api.writeTmpFile({
       path: 'core/server.ts',
       content: Mustache.render(serverContent, {
@@ -153,15 +156,20 @@ export default (api: IApi) => {
           require.resolve('regenerator-runtime/runtime'),
         ),
         loadingComponent:
+          // @ts-ignore
           api.config.dynamicImport?.loading &&
+          // @ts-ignore
           winPath(api.config.dynamicImport?.loading),
         DynamicImport: !!api.config.dynamicImport,
         Utils: winPath(require.resolve('./templates/utils')),
+        // @ts-ignore
         Mode: api.config.ssr?.mode ?? 'string',
         MountElementId: api.config.mountElementId,
+        // @ts-ignore
         StaticMarkup: !!api.config.ssr?.staticMarkup,
         // @ts-ignore
         ForceInitial: !!api.config.ssr?.forceInitial,
+        // @ts-ignore
         RemoveWindowInitialProps: !!api.config.ssr?.removeWindowInitialProps,
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
@@ -217,8 +225,10 @@ export default (api: IApi) => {
 
   api.modifyConfig((config) => {
     // force enable writeToDisk
+    // @ts-ignore
     config.devServer.writeToDisk = (filePath: string) => {
       const manifestFile =
+        // @ts-ignore
         api.config?.manifest?.fileName || 'asset-manifest.json';
       const regexp = new RegExp(
         `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME}|${manifestFile})$`,
