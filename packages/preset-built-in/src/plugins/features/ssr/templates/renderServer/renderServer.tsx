@@ -119,6 +119,7 @@ function getRootContainer(
       history: opts.history,
       routes: opts.routes,
       plugin: opts.plugin,
+      ctx: opts.ctx,
     },
   });
 }
@@ -157,6 +158,7 @@ export default async function renderServer(
   const rootContainer = getRootContainer({
     ...(opts as IOpts),
     pageInitialProps,
+    ctx,
   });
   if (opts.mode === 'stream') {
     const pageHTML = ReactDOMServer[
