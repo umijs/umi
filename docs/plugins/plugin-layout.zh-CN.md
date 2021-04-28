@@ -191,8 +191,10 @@ export const routes: IBestAFSRoute[] = [
 
 #### flatMenu
 
-- Type: `boolean` 默认为 false 在菜单中只隐藏此项，子项往上提，仍旧展示。
+- Type: `boolean` 
 - Default: `false`
+
+默认为 false 在菜单中只隐藏此项，子项往上提，仍旧展示。
 
 #### access
 
