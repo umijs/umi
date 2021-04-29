@@ -1,10 +1,11 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { Stream } from 'stream';
 import { IApi, IRoute } from '@umijs/types';
 import { deepmerge, rimraf } from '@umijs/utils';
 import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
 
-import { isDynamicRoute } from '../utils';
+import { isDynamicRoute, streamToString } from '../utils';
 import { OUTPUT_SERVER_FILENAME } from '../features/ssr/constants';
 
 export default (api: IApi) => {
@@ -113,7 +114,8 @@ export default (api: IApi) => {
         });
         api.logger.info(`${route.path} render success`);
         if (!error) {
-          return html;
+          // convert into string if html instance stream
+          return html instanceof Stream ? streamToString(html) : html;
         } else {
           serverRenderFailed = true;
           api.logger.error(`[SSR] ${route.path}`, error);

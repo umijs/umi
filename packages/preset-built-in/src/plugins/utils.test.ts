@@ -1,7 +1,13 @@
 import fs from 'fs';
 import { join } from 'path';
 import { winPath } from '@umijs/utils';
-import { getGlobalFile, isDynamicRoute, isTSFile } from './utils';
+import {
+  getGlobalFile,
+  isDynamicRoute,
+  isTSFile,
+  streamToString,
+} from './utils';
+import { Stream } from 'stream';
 
 test('getGlobalFile', () => {
   const existsSyncMock = jest
@@ -36,4 +42,14 @@ test('isTSFile', () => {
   // @ts-expect-error
   expect(isTSFile(undefined)).toEqual(false);
   expect(isTSFile('/bar/foo.ts/a.js')).toEqual(false);
+});
+
+test('streamToString', async () => {
+  const { Readable } = Stream;
+
+  // @ts-ignore
+  const helloStream = new Readable.from(['hello', ' ', 'world']);
+
+  const helloString = await streamToString(helloStream);
+  expect(helloString).toEqual('hello world');
 });
