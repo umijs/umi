@@ -61,6 +61,16 @@ export default (api: IApi) => {
         buildDependencies: { config: [join(api.cwd, 'package.json')] },
         cacheDirectory: join(api.paths.absTmpPath!, '.cache', 'webpack'),
       };
+      // tnpm 安装依赖的情况 webpack 默认的 managedPaths 不生效
+      // 使用 immutablePaths 避免 node_modules 的内容被写入缓存
+      // tnpm 安装的依赖路径中同时包含包名和版本号，满足 immutablePaths 使用的条件
+      // ref: smallfish
+      if (/*isTnpm*/ require('react-router/package').__npminstall_done) {
+        // @ts-ignore
+        memo.snapshot = {
+          immutablePaths: [api.paths.absNodeModulesPath],
+        };
+      }
       // 缓存失效会有日志，这里清除下日志
       // @ts-ignore
       memo.infrastructureLogging = {
