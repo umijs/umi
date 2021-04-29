@@ -12,6 +12,7 @@
     "docs:build": "node ./packages/umi/bin/umi.js build",
     "docs:dev": "node ./packages/umi/bin/umi.js dev",
     "docs:sync": "node ./scripts/docs.js syncDocs",
+    "example": "node ./scripts/example",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
     "release": "node ./scripts/release.js",
