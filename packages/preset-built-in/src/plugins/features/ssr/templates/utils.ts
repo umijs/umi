@@ -95,7 +95,7 @@ const getPageChunks = (
  * handle html with rootContainer(rendered)
  * @param param
  */
-export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
+export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}): Promise<string | NodeJS.ReadableStream> => {
   const {
     pageInitialProps,
     rootContainer,
@@ -156,11 +156,6 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
   ${Object.keys(windowInitialVars)
     .map((name) => `${name} = ${windowInitialVars[name]};`)
     .join('\n')}\n\t</script>`;
-  // https://github.com/umijs/umi/issues/5840
-  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`.replace(
-    /\$/g,
-    '$$$',
-  );
 
   if (mode === 'stream') {
     const [beforeRootContainer, afterRootContainer] = html.split(rootHTML);
@@ -178,5 +173,11 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}) => {
     const htmlStream = mergeStream(streamQueue);
     return htmlStream;
   }
+
+  // https://github.com/umijs/umi/issues/5840
+  const newRootHTML = `<div id="${mountElementId}">${rootContainer}</div>${scriptsContent}`.replace(
+    /\$/g,
+    '$$$',
+  );
   return html.replace(rootHTML, newRootHTML);
 };

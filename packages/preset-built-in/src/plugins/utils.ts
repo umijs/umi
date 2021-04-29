@@ -1,4 +1,5 @@
 import { existsSync } from 'fs';
+import { Stream } from 'stream';
 import { join } from 'path';
 
 type IGetGlobalFile = (opts: {
@@ -32,3 +33,19 @@ export const isTSFile = (path: string): boolean => {
     /\.(ts|tsx)$/.test(path)
   );
 };
+
+/**
+ * stream convert string
+ * refs:  https://stackoverflow.com/questions/10623798/how-do-i-read-the-contents-of-a-node-js-stream-into-a-string-variable
+ *
+ * @param stream
+ * @returns
+ */
+export function streamToString(stream: Stream): Promise<string> {
+  const chunks: Buffer[] = [];
+  return new Promise((resolve, reject) => {
+    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    stream.on('error', (err) => reject(err));
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+  });
+}

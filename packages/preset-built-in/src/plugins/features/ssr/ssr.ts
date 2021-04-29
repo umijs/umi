@@ -57,7 +57,7 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
       if (_isTest) {
         return serverContent;
       }
-      fs.writeFileSync(serverPath, serverContent);
+      await fs.promises.writeFile(serverPath, serverContent);
     }
   }
   return undefined;
@@ -126,7 +126,7 @@ export default (api: IApi) => {
 
   api.onGenerateFiles(async () => {
     const serverTpl = path.join(winPath(__dirname), 'templates/server.tpl');
-    const serverContent = fs.readFileSync(serverTpl, 'utf-8');
+    const serverContent = await fs.promises.readFile(serverTpl, 'utf-8');
     const html = getHtmlGenerator({ api });
 
     const defaultHTML = await html.getContent({
@@ -180,7 +180,7 @@ export default (api: IApi) => {
       }),
     });
 
-    const clientExportsContent = fs.readFileSync(
+    const clientExportsContent = await fs.promises.readFile(
       path.join(winPath(__dirname), `templates/${CLIENT_EXPORTS}.tpl`),
       'utf-8',
     );
