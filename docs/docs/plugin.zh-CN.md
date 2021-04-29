@@ -46,7 +46,7 @@ export default {
 
 ### 环境变量
 
-还可通过环境变量 `UMI\_PRESETS` 和 `UMI\_PLUGINS` 注册额外插件。
+还可通过环境变量 `UMI_PRESETS` 和 `UMI_PLUGINS` 注册额外插件。
 
 比如：
 
