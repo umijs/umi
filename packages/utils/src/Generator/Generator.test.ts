@@ -12,6 +12,10 @@ test('normal', async () => {
   rimraf.sync(dist);
   const target = join(dist, 'a.js');
   class NormalGenerator extends Generator {
+    prompting() {
+      return [] as any;
+    }
+
     async writing(): Promise<any> {
       this.copyTpl({
         context: {
@@ -41,27 +45,4 @@ test('normal', async () => {
   expect(readFileSync(join(dist, './dir', 'b.js'), 'utf-8').trim()).toEqual(
     `alert('abc');`,
   );
-});
-
-test('prompting', async () => {
-  const cwd = join(fixtures, 'prompts');
-  const dist = join(cwd, 'dist');
-  const cli = join(cwd, 'cli');
-  rimraf.sync(dist);
-  const target = join(dist, 'a.js');
-  const templatePath = join(cwd, 'a.js.tpl');
-  const response = await new Coffee({
-    method: 'fork',
-    cmd: cli,
-    opt: { cwd },
-    args: [target, templatePath],
-  })
-    .on('stdout', (buf, { proc }) => {
-      if (buf.includes('What is your project named')) {
-        proc.stdin.write('a\n');
-      }
-    })
-    .end();
-  expect(response.code).toBe(0);
-  expect(readFileSync(target, 'utf-8').trim()).toEqual(`alert('bar');`);
 });
