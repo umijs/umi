@@ -189,11 +189,6 @@ export const routes: IBestAFSRoute[] = [
 
 > icon name 为 组件名小写后去掉 `outlined` 或者 `filled` 或者 `twotone`，所得值。举例：`<UserOutlined />` 的 icon name 即： `user`。
 
-#### flatMenu
-
-- Type: `boolean` 默认为 false 在菜单中只隐藏此项，子项往上提，仍旧展示。
-- Default: `false`
-
 #### access
 
 - Type: `string`
@@ -218,7 +213,9 @@ antd 的 icon，为了按需加载 layout 插件会帮你自动转化为 Antd ic
 
 - Type: `boolean`
 
-打平菜单，如果只想要子级的 menu 不展示的自己，可以配置为 true
+默认为 false，为true时在菜单中只隐藏此项，子项往上提，仍旧展示。
+
+打平菜单，如果只想要子级的 menu 不展示自己的，可以配置为 true。
 
 ```tsx
 const before = [{ name: '111' }, { name: '222', children: [{ name: '333' }] }];
