@@ -1,5 +1,4 @@
 import { join } from 'path';
-import { Coffee } from 'coffee';
 import Generator from './Generator';
 import { readFileSync } from 'fs';
 import { rimraf } from '../index';
