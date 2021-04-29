@@ -408,7 +408,7 @@ PORT=8081
 
    function MyPage() {
      const masterProps = useModel('@@qiankunStateFromMaster');
-     return <div>{JSON.strigify(masterProps)}</div>;
+     return <div>{JSON.stringify(masterProps)}</div>;
    }
    ```
 
@@ -418,7 +418,7 @@ PORT=8081
    import { connectMaster } from 'umi';
 
    function MyPage(props) {
-     return <div>{JSON.strigify(props)}</div>;
+     return <div>{JSON.stringify(props)}</div>;
    }
 
    export default connectMaster(MyPage);
