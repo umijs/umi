@@ -22,7 +22,7 @@
 
 - `src/models` 下的文件
 - `src/pages` 下，子目录中 models 目录下的文件
-- `src/pages` 下，所有 model.ts 文件
+- `src/pages` 下，所有 model.ts 文件(不区分任何字母大小写)
 
 比如：
 
