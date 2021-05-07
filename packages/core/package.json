@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "3.4.14",
+  "version": "3.4.15",
   "description": "@umijs/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,9 +24,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/ast": "3.4.14",
-    "@umijs/babel-preset-umi": "3.4.14",
-    "@umijs/deps": "3.4.14",
-    "@umijs/utils": "3.4.14"
+    "@umijs/ast": "3.4.15",
+    "@umijs/babel-preset-umi": "3.4.15",
+    "@umijs/deps": "3.4.15",
+    "@umijs/utils": "3.4.15"
   }
 }
