@@ -322,6 +322,18 @@ export default async function getConfig(
           },
         }
       });
+  
+  // prettier-ignore
+  webpackConfig.module
+    .rule('pdf')
+    .test(/\.(pdf)(\?.*)?$/)
+    .use('file-loader')
+      .loader(require.resolve('@umijs/deps/compiled/file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
+      });
+
 
   // prettier-ignore
   webpackConfig.module
