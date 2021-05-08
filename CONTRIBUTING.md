@@ -107,6 +107,25 @@ Running examples can be done with:
 yarn example dev examples/normal
 ```
 
+### Create new examples
+
+Such as creating example `hello-world`.
+
+```bash
+$ mkdir -p examples/hello-world
+$yarn bootstrap:example
+```
+
+Then you will find the `README.md` and `package.json` is generated in `examples/hello-world`.
+
+```bash
+$ tree examples/hello-world
+examples/hello-world
+├── pages/index.tsx
+├── README.md
+└── package.json
+```
+
 ## Benchmarks
 
 if you want to add a benchmark, you can add `examples/*/benchmark.js` like this:
