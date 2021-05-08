@@ -17,3 +17,18 @@ test('generate app', async () => {
   expect(existsSync(join(cwd, 'src', 'pages', 'index.tsx'))).toEqual(true);
   rimraf.sync(cwd);
 });
+
+test('generate example app', async () => {
+  await runGenerator({
+    cwd,
+    args: {
+      _: ['example-name'],
+      example: 'normal',
+      $0: '',
+    },
+  });
+  expect(existsSync(join(cwd, 'example-name', 'pages', 'index.tsx'))).toEqual(
+    true,
+  );
+  rimraf.sync(cwd);
+});

@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "bootstrap": "node ./scripts/bootstrap.js",
+    "bootstrap:examples": "node ./scripts/bootstrap-examples.js",
     "build": "father-build",
     "start": "npm run build && npm run docs:dev",
     "debug": "node --inspect-brk packages/umi/bin/umi.js",
