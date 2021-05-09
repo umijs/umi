@@ -19,15 +19,16 @@ test('generate app', async () => {
 });
 
 test('generate example app', async () => {
+  const exampleName = 'example';
   await runGenerator({
-    cwd,
+    cwd: fixtures,
     args: {
-      _: ['example-name'],
+      _: [exampleName],
       example: 'normal',
       $0: '',
     },
   });
-  const target = join(cwd, 'example-name', 'pages', 'index.tsx');
+  const target = join(fixtures, exampleName, 'pages', 'index.tsx');
   expect(existsSync(target)).toEqual(true);
-  rimraf.sync(cwd);
+  rimraf.sync(join(fixtures, exampleName));
 });
