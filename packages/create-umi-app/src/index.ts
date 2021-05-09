@@ -14,7 +14,7 @@ export default async ({
     const temp = {
       name: (args._[0] || args.example) as string,
       url: 'https://github.com/umijs/umi',
-      path: join('examples', args.example + ''),
+      path: `examples/${args.example}`,
     };
     const pkg = await download(cwd, temp);
     return;
