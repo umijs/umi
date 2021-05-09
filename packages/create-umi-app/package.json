@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@umijs/utils": "3.4.15",
-    "load-examples": "1.0.3"
+    "load-examples": "1.0.4"
   },
   "bin": {
     "create-umi-app": "bin/create-umi-app.js"
