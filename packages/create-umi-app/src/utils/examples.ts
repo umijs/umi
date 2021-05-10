@@ -27,15 +27,13 @@ export async function getRepoInfo(
 
   // Support repos whose entire purpose is to be a umi example, e.g.
   // https://github.com/:username/:umijs-example-repo-name.
-  if (t === undefined) {
-    const infoResponse = await got(
-      `https://api.github.com/repos/${username}/${name}`,
-    ).catch((e) => {
-      throw new Error(e);
-    });
-    const info = JSON.parse(infoResponse.body);
-    return { username, name, branch: info['default_branch'], filePath };
-  }
+  const infoResponse = await got(
+    `https://api.github.com/repos/${username}/${name}`,
+  ).catch((e) => {
+    throw new Error(e);
+  });
+  const info = JSON.parse(infoResponse.body);
+  return { username, name, branch: info['default_branch'], filePath };
 }
 
 export function hasExample(name: string): Promise<boolean> {
