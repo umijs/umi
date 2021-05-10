@@ -35,7 +35,7 @@ jobs:
         displayName: install
       - script: yarn build
         displayName: build
-      - script: yarn test --forceExit --detectOpenHandles --runInBand
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
           CI: true
