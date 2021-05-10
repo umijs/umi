@@ -77,6 +77,7 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                // @ts-ignore
                 file: path.hub.file.opts.filename,
                 isMatch,
               });
@@ -130,6 +131,7 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                // @ts-ignore
                 file: path.hub.file.opts.filename,
                 isMatch: false,
                 isExportAllDeclaration: true,
@@ -179,6 +181,7 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                // @ts-ignore
                 file: path.hub.file.opts.filename,
                 isMatch,
               });
