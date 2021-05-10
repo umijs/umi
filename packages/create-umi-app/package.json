@@ -1,6 +1,6 @@
 {
   "name": "@umijs/create-umi-app",
-  "version": "3.4.18",
+  "version": "3.4.19",
   "description": "@umijs/create-umi-app",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,8 +26,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.4.18",
-    "@umijs/deps": "3.4.18"
+    "@umijs/utils": "3.4.19",
+    "@umijs/deps": "3.4.19"
   },
   "bin": {
     "create-umi-app": "bin/create-umi-app.js"
