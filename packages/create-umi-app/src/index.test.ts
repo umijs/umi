@@ -17,18 +17,3 @@ test('generate app', async () => {
   expect(existsSync(join(cwd, 'src', 'pages', 'index.tsx'))).toEqual(true);
   rimraf.sync(cwd);
 });
-
-test('generate example app', async () => {
-  const exampleName = 'example';
-  await runGenerator({
-    cwd: fixtures,
-    args: {
-      _: [exampleName],
-      example: 'normal',
-      $0: '',
-    },
-  });
-  const target = join(fixtures, exampleName, 'pages', 'index.tsx');
-  expect(existsSync(target)).toEqual(true);
-  rimraf.sync(join(fixtures, exampleName));
-});

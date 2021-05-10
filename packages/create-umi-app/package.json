@@ -26,8 +26,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.4.15",
-    "load-examples": "1.0.5"
+    "@umijs/utils": "3.4.15"
   },
   "bin": {
     "create-umi-app": "bin/create-umi-app.js"
