@@ -113,7 +113,7 @@ Such as creating example `hello-world`.
 
 ```bash
 $ mkdir -p examples/hello-world
-$ yarn bootstrap:example
+$ yarn bootstrap:examples
 ```
 
 Then you will find the `README.md` and `package.json` is generated in `examples/hello-world`.
