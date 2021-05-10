@@ -11,7 +11,7 @@ export default async ({
   args: yargs.Arguments;
 }) => {
   if (args.example) {
-    const has = await hasExample(args.example);
+    const has = await hasExample(`${args.example}`);
     if (!has) {
       throw new Error(`umi example: ${args.example} is no found`);
     }
