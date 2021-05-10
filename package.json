@@ -36,10 +36,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.14.0",
     "@testing-library/react": "^10.4.6",
-    "@types/babel__core": "7.1.9",
-    "@types/babel__traverse": "7.0.13",
+    "@types/babel__core": "7.1.14",
+    "@types/babel__traverse": "7.11.1",
     "@types/dedent": "^0.7.0",
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.23",
