@@ -17,3 +17,31 @@ test('generate app', async () => {
   expect(existsSync(join(cwd, 'src', 'pages', 'index.tsx'))).toEqual(true);
   rimraf.sync(cwd);
 });
+
+test('generate example app', async () => {
+  const exampleName = 'example';
+  await runGenerator({
+    cwd: fixtures,
+    args: {
+      _: [exampleName],
+      example: 'normal',
+      $0: '',
+    },
+  });
+  const target = join(fixtures, exampleName, 'pages', 'index.tsx');
+  expect(existsSync(target)).toEqual(true);
+  rimraf.sync(join(fixtures, exampleName));
+});
+
+test('example is no found', async () => {
+  await expect(
+    runGenerator({
+      cwd: fixtures,
+      args: {
+        _: [],
+        example: 'normal123',
+        $0: '',
+      },
+    }),
+  ).rejects.toThrow(/umi example: normal123 is no found/);
+});

@@ -44,6 +44,16 @@ export async function ncc_ansi_html(task, opts) {
     .target('compiled/ansi-html');
 }
 
+externals['async-retry'] = '@umijs/deps/compiled/async-retry';
+export async function ncc_async_retry(task, opts) {
+  await task
+    .source(
+      opts.src || relative(__dirname, require.resolve('async-retry'))
+    )
+    .ncc({ packageName: 'async-retry', externals })
+    .target('compiled/async-retry');
+}
+
 export async function ncc_babel_bundle(task, opts) {
   const bundleExternals = { ...externals }
   for (const pkg of Object.keys(babelBundlePackages))
@@ -632,6 +642,16 @@ export async function ncc_sockjs(task, opts) {
     )
     .ncc({ packageName: 'sockjs', externals })
     .target('compiled/sockjs');
+}
+
+externals['sort-package-json'] = '@umijs/deps/compiled/sort-package-json';
+export async function ncc_sort_package_json(task, opts) {
+  await task
+    .source(
+      opts.src || relative(__dirname, require.resolve('sort-package-json'))
+    )
+    .ncc({ packageName: 'sort-package-json', externals })
+    .target('compiled/sort-package-json');
 }
 
 // webpack 4 打包时不能 external source-map，应该是用了不同版本

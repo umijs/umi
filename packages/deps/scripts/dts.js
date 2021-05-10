@@ -92,6 +92,8 @@ function dts({ name }) {
   // 'yargs',
   // 'yargs-parser',
   // 'prompts',
+  // 'async-retry',
+  // 'sort-package-json',
 ].forEach(name => {
   dts({
     name,
