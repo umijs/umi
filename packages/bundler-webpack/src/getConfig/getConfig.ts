@@ -611,6 +611,8 @@ export default async function getConfig(
       ...Object.keys(nodeLibs).reduce((memo, key) => {
         if (nodeLibs[key]) {
           memo[key] = nodeLibs[key];
+        } else {
+          memo[key] = false;
         }
         return memo;
       }, {}),
