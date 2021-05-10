@@ -1,6 +1,6 @@
 {
   "name": "@umijs/types",
-  "version": "3.4.18",
+  "version": "3.4.19",
   "description": "@umijs/types",
   "main": "lib/index.js",
   "types": "index",
@@ -25,11 +25,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.4.18",
-    "@umijs/core": "3.4.18",
-    "@umijs/deps": "3.4.18",
-    "@umijs/server": "3.4.18",
-    "@umijs/utils": "3.4.18",
+    "@umijs/babel-preset-umi": "3.4.19",
+    "@umijs/core": "3.4.19",
+    "@umijs/deps": "3.4.19",
+    "@umijs/server": "3.4.19",
+    "@umijs/utils": "3.4.19",
     "webpack-chain": "6.5.1"
   }
 }
