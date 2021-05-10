@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { mkdirp, rimraf, chalk, glob, retry, sortPackage } from '@umijs/utils';
-
+import prettier from '@umijs/deps/reexported/prettier';
 import { downloadAndExtractRepo, getRepoInfo } from './examples';
 
 export class DownloadError extends Error {}
@@ -15,7 +15,7 @@ function globList(patternList: any[], options: any) {
   return fileList;
 }
 
-const filterPkg = (pkgObject: Object = {}, ignoreList: any[] = []) => {
+export const filterPkg = (pkgObject: Object = {}, ignoreList: any[] = []) => {
   const devObj = {};
   Object.keys(pkgObject).forEach((key) => {
     const isIgnore = ignoreList.some((reg) => {
@@ -98,7 +98,10 @@ export default async function download(
     fs.writeFileSync(
       path.resolve(projectPath, 'package.json'),
       // 删除一个包之后 json会多了一些空行。sortPackage 可以删除掉并且排序
-      JSON.stringify(sortPackage(projectPkg)),
+      // prettier 会容忍一个空行
+      prettier.format(JSON.stringify(sortPackage(projectPkg)), {
+        parser: 'json',
+      }),
     );
   }
   // Clean up useless files

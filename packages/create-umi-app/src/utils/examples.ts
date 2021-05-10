@@ -30,23 +30,12 @@ export async function getRepoInfo(
   if (t === undefined) {
     const infoResponse = await got(
       `https://api.github.com/repos/${username}/${name}`,
-    ).catch((e) => e);
-    if (infoResponse.statusCode !== 200) {
-      return;
-    }
+    ).catch((e) => {
+      throw new Error(e);
+    });
     const info = JSON.parse(infoResponse.body);
     return { username, name, branch: info['default_branch'], filePath };
   }
-
-  // If examplePath is available, the branch name takes the entire path
-  const branch = examplePath
-    ? `${_branch}/${file.join('/')}`.replace(new RegExp(`/${filePath}|/$`), '')
-    : _branch;
-
-  if (username && name && branch && t === 'tree') {
-    return { username, name, branch, filePath };
-  }
-  return;
 }
 
 export function hasExample(name: string): Promise<boolean> {
