@@ -101,7 +101,7 @@ Umi 3 examples in `examples/*` directory
 
 ### Running the Examples apps
 
-Running examples can be done with:
+Running examples:
 
 ```sh
 yarn example dev examples/normal
