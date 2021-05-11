@@ -7,6 +7,16 @@ import download from './utils/download';
 const fixtures = join(__dirname, 'fixtures');
 const cwd = join(fixtures, 'generate');
 
+let oldCwd = process.cwd();
+
+beforeEach(() => {
+  oldCwd = process.cwd();
+});
+
+afterEach(() => {
+  process.chdir(oldCwd);
+});
+
 test('download pkg create-umi', async () => {
   const exampleName = 'example';
 
