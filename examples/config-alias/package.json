@@ -12,10 +12,11 @@
   },
   "keywords": [
     "umi",
-    "umi examples"
+    "umi examples",
+    "alias"
   ],
   "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+    "xiaohuoni <xiaohuoni@gmail.com> (https://github.com/xiaohuoni)"
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",

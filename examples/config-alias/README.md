@@ -1,6 +1,6 @@
 # config-alias
 
-TODO
+Create aliases to import or require certain modules more easily.
 
 ## How to use
 
