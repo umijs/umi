@@ -41,7 +41,6 @@ export default async function download(
   const projectPath = path.join(base, name);
 
   const root = path.resolve(projectPath);
-  rimraf.sync(projectPath);
 
   const envOptions = {
     cwd: projectPath,
@@ -76,12 +75,13 @@ export default async function download(
       await retry(() => downloadAndExtractRepo(root, repoInfo2), {
         retries: 3,
       });
-      const packageJsonPath = path.resolve(projectPath, 'package.json');
+      const packageJsonPath = path.join(root, 'package.json');
       if (!fs.existsSync(packageJsonPath)) {
         console.log(`${packageJsonPath} is no find`);
         return;
       }
       const pkg = require(packageJsonPath);
+      console.log();
       // gen package.json
       if (pkg['create-umi']) {
         const { ignoreScript = [], ignoreDependencies = [] } =

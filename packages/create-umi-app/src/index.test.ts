@@ -7,6 +7,22 @@ import download from './utils/download';
 const fixtures = join(__dirname, 'fixtures');
 const cwd = join(fixtures, 'generate');
 
+test('download pkg create-umi', async () => {
+  const exampleName = 'example';
+
+  const temp = {
+    name: exampleName,
+    url: 'https://github.com/xiaohuoni/umi-start-template',
+    path: '',
+  };
+  await download(fixtures, temp);
+  const target = join(fixtures, exampleName, 'src', 'pages', 'index.js');
+  expect(existsSync(target)).toEqual(true);
+  const removefile = join(fixtures, exampleName, 'something.js');
+  expect(existsSync(removefile)).toEqual(false);
+  rimraf.sync(join(fixtures, exampleName));
+});
+
 test('generate app', async () => {
   await runGenerator({
     cwd,
@@ -70,21 +86,5 @@ test('invalid url', async () => {
     path: '',
   };
   await expect(download(fixtures, temp)).rejects.toThrow(/Invalid URL:/);
-  rimraf.sync(join(fixtures, exampleName));
-});
-
-test('download pkg create-umi', async () => {
-  const exampleName = 'example';
-
-  const temp = {
-    name: exampleName,
-    url: 'https://github.com/xiaohuoni/umi-start-template',
-    path: '',
-  };
-  await download(fixtures, temp);
-  const target = join(fixtures, exampleName, 'src', 'pages', 'index.js');
-  expect(existsSync(target)).toEqual(true);
-  const removefile = join(fixtures, exampleName, 'something.js');
-  expect(existsSync(removefile)).toEqual(false);
   rimraf.sync(join(fixtures, exampleName));
 });
