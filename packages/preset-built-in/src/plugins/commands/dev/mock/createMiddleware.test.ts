@@ -97,7 +97,7 @@ describe('createMiddleware', () => {
     expect(body).toEqual(`{"a":1}`);
   });
 
-  it('watch', async () => {
+  xit('watch', async () => {
     const absTmpFile = winPath(join(cwd, 'mock/tmp.js'));
     writeFileSync(absTmpFile, `export default {'/api/tmp': {tmp:1}}`, 'utf-8');
     await delay(500);
