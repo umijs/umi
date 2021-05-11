@@ -65,6 +65,10 @@ if (args.version && !args._[0]) {
           // Init webpack version determination and require hook for build command
           initWebpack();
         }
+        if (name === 'generate' || name === 'g') {
+          // Init webpack version determination and require hook for build command
+          initWebpack();
+        }
         await new Service({
           cwd: getCwd(),
           pkg: getPkg(process.cwd()),
