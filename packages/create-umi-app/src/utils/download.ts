@@ -6,7 +6,7 @@ import { downloadAndExtractRepo, getRepoInfo } from './examples';
 
 export class DownloadError extends Error {}
 
-function globList(patternList: any[], options: any) {
+export function globList(patternList: any[], options: any) {
   let fileList = [] as any;
   patternList.forEach((pattern) => {
     fileList = [...fileList, ...glob.sync(pattern, options)];
@@ -58,7 +58,9 @@ export default async function download(
         `${gitUrl}/${pathUrl}`,
       )}. Only GitHub repositories are supported. Please use a GitHub URL and try again.`,
     );
-    return;
+    throw new Error(
+      `Invalid URL: ${gitUrl}/${pathUrl}. Only GitHub repositories are supported. Please use a GitHub URL and try again.`,
+    );
   }
   let repoInfo = await getRepoInfo(repoUrl, pathUrl);
 
@@ -74,48 +76,49 @@ export default async function download(
       await retry(() => downloadAndExtractRepo(root, repoInfo2), {
         retries: 3,
       });
+      const packageJsonPath = path.resolve(projectPath, 'package.json');
+      if (!fs.existsSync(packageJsonPath)) {
+        console.log(`${packageJsonPath} is no find`);
+        return;
+      }
+      const pkg = require(packageJsonPath);
+      // gen package.json
+      if (pkg['create-umi']) {
+        const { ignoreScript = [], ignoreDependencies = [] } =
+          pkg['create-umi'];
+        // filter scripts and devDependencies
+        const projectPkg = {
+          ...pkg,
+          scripts: filterPkg(pkg.scripts, ignoreScript),
+          devDependencies: filterPkg(pkg.devDependencies, ignoreDependencies),
+        };
+        // remove create-umi config
+        // delete projectPkg["create-umi"];
+        fs.writeFileSync(
+          path.resolve(projectPath, 'package.json'),
+          // 删除一个包之后 json会多了一些空行。sortPackage 可以删除掉并且排序
+          // prettier 会容忍一个空行
+          prettier.format(JSON.stringify(sortPackage(projectPkg)), {
+            parser: 'json',
+          }),
+        );
+      }
+      // Clean up useless files
+      if (pkg['create-umi'] && pkg['create-umi'].ignore) {
+        console.log('Clean up...');
+        const ignoreFiles = pkg['create-umi'].ignore;
+        const fileList = globList(ignoreFiles, envOptions);
+
+        fileList.forEach((filePath: string) => {
+          const targetPath = path.resolve(projectPath, filePath);
+          rimraf.sync(targetPath);
+          console.log(`Remove ${targetPath} Success!`);
+        });
+        console.log(`Download ${gitUrl} Success!`);
+      }
+      return { ...pkg, temp };
     }
   } catch (reason) {
     throw new DownloadError(reason);
   }
-  const packageJsonPath = path.resolve(projectPath, 'package.json');
-  if (!fs.existsSync(packageJsonPath)) {
-    console.log(`${packageJsonPath} is no find`);
-    return;
-  }
-  const pkg = require(packageJsonPath);
-  // gen package.json
-  if (pkg['create-umi']) {
-    const { ignoreScript = [], ignoreDependencies = [] } = pkg['create-umi'];
-    // filter scripts and devDependencies
-    const projectPkg = {
-      ...pkg,
-      scripts: filterPkg(pkg.scripts, ignoreScript),
-      devDependencies: filterPkg(pkg.devDependencies, ignoreDependencies),
-    };
-    // remove create-umi config
-    // delete projectPkg["create-umi"];
-    fs.writeFileSync(
-      path.resolve(projectPath, 'package.json'),
-      // 删除一个包之后 json会多了一些空行。sortPackage 可以删除掉并且排序
-      // prettier 会容忍一个空行
-      prettier.format(JSON.stringify(sortPackage(projectPkg)), {
-        parser: 'json',
-      }),
-    );
-  }
-  // Clean up useless files
-  if (pkg['create-umi'] && pkg['create-umi'].ignore) {
-    console.log('Clean up...');
-    const ignoreFiles = pkg['create-umi'].ignore;
-    const fileList = globList(ignoreFiles, envOptions);
-
-    fileList.forEach((filePath: string) => {
-      const targetPath = path.resolve(projectPath, filePath);
-      rimraf.sync(targetPath);
-      console.log(`Remove ${targetPath} Success!`);
-    });
-    console.log(`Download ${gitUrl} Success!`);
-  }
-  return { ...pkg, temp };
 }

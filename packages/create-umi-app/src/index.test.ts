@@ -47,6 +47,32 @@ test('example is no found', async () => {
   ).rejects.toThrow(/umi example: normal123 is no found/);
 });
 
+test('download error repo', async () => {
+  const exampleName = 'example';
+
+  const temp = {
+    name: exampleName,
+    url: 'https://github.com/xiaohuoni/download-error-repo',
+    path: '',
+  };
+  await expect(download(fixtures, temp)).rejects.toThrow(
+    'HTTPError: Response code 404 (Not Found)',
+  );
+  rimraf.sync(join(fixtures, exampleName));
+});
+
+test('invalid url', async () => {
+  const exampleName = 'example';
+
+  const temp = {
+    name: exampleName,
+    url: 'https://gitee.com/xiaohuoni/download-error-repo',
+    path: '',
+  };
+  await expect(download(fixtures, temp)).rejects.toThrow(/Invalid URL:/);
+  rimraf.sync(join(fixtures, exampleName));
+});
+
 test('download pkg create-umi', async () => {
   const exampleName = 'example';
 
@@ -61,17 +87,4 @@ test('download pkg create-umi', async () => {
   const removefile = join(fixtures, exampleName, 'something.js');
   expect(existsSync(removefile)).toEqual(false);
   rimraf.sync(join(fixtures, exampleName));
-});
-
-test('download error repo', async () => {
-  const exampleName = 'example';
-
-  const temp = {
-    name: exampleName,
-    url: 'https://github.com/xiaohuoni/download-error-repo',
-    path: '',
-  };
-  await expect(download(fixtures, temp)).rejects.toThrow(
-    'HTTPError: Response code 404 (Not Found)',
-  );
 });
