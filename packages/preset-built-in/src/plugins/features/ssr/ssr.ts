@@ -30,38 +30,37 @@ import {
  * replace default html template using client webpack bundle complete
  * @param api
  */
-export const onBuildComplete = (api: IApi, _isTest = false) => async ({
-  err,
-  stats,
-}: any) => {
-  if (!err && stats?.stats) {
-    const HTML_REG = /<html.*?<\/html>/m;
-    const [clientStats] = stats.stats;
-    const html = getHtmlGenerator({ api });
-    const [defaultHTML] =
-      JSON.stringify(
-        await html.getContent({
-          route: { path: api.config.publicPath },
-          chunks: clientStats.compilation.chunks,
-        }),
-      ).match(HTML_REG) || [];
-    const serverPath = path.join(
-      api.paths.absOutputPath!,
-      OUTPUT_SERVER_FILENAME,
-    );
-    if (fs.existsSync(serverPath) && defaultHTML) {
-      const serverContent = fs
-        .readFileSync(serverPath, 'utf-8')
-        .replace(HTML_REG, defaultHTML);
-      // for test case
-      if (_isTest) {
-        return serverContent;
+export const onBuildComplete =
+  (api: IApi, _isTest = false) =>
+  async ({ err, stats }: any) => {
+    if (!err && stats?.stats) {
+      const HTML_REG = /<html.*?<\/html>/m;
+      const [clientStats] = stats.stats;
+      const html = getHtmlGenerator({ api });
+      const [defaultHTML] =
+        JSON.stringify(
+          await html.getContent({
+            route: { path: api.config.publicPath },
+            chunks: clientStats.compilation.chunks,
+          }),
+        ).match(HTML_REG) || [];
+      const serverPath = path.join(
+        api.paths.absOutputPath!,
+        OUTPUT_SERVER_FILENAME,
+      );
+      if (fs.existsSync(serverPath) && defaultHTML) {
+        const serverContent = fs
+          .readFileSync(serverPath, 'utf-8')
+          .replace(HTML_REG, defaultHTML);
+        // for test case
+        if (_isTest) {
+          return serverContent;
+        }
+        await fs.promises.writeFile(serverPath, serverContent);
       }
-      await fs.promises.writeFile(serverPath, serverContent);
     }
-  }
-  return undefined;
-};
+    return undefined;
+  };
 
 export default (api: IApi) => {
   api.describe({
@@ -186,7 +185,9 @@ export default (api: IApi) => {
     );
     api.writeTmpFile({
       path: `${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}.ts`,
-      content: clientExportsContent,
+      content: Mustache.render(clientExportsContent, {
+        SSRUtils: winPath(require.resolve('@umijs/utils/lib/ssr')),
+      }),
     });
   });
 
