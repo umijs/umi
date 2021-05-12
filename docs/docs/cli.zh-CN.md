@@ -142,7 +142,7 @@ $ umi help <command>
 查看当前使用的 umi 的版本号，可以使用别名 `-v` 调用。
 
 ```bash
-$ umi version
+$ umi -version
 $ umi -v
 ```
 
