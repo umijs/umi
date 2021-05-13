@@ -16,6 +16,7 @@ const reserveExportsNames = [
 interface IUmiExport {
   source: string;
   exportAll?: boolean;
+  specifier?: string;
   specifiers?: any[];
 }
 
@@ -28,13 +29,16 @@ export function generateExports({
 }) {
   assert(item.source, 'source should be supplied.');
   assert(
-    item.exportAll || item.specifiers,
-    'exportAll or specifiers should be supplied.',
+    item.exportAll || item.specifiers || item.specifier,
+    'exportAll specifiers or specifier should be supplied.',
   );
   assert(
     !reserveLibrarys.includes(item.source),
     `${item.source} is reserve library, Please don't use it.`,
   );
+  if (item.specifier) {
+    return `export ${item.specifier} from '${winPath(item.source)}';`;
+  }
   if (item.exportAll) {
     return `export * from '${winPath(item.source)}';`;
   }

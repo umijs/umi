@@ -22,6 +22,17 @@ test('export specifiers', () => {
   expect(exportSpecifiers).toBe("export { connect } from 'dva';");
 });
 
+test('export specifier', () => {
+  const exportSpecifiers = generateExports({
+    item: {
+      specifier: '* as DVA',
+      source: 'dva',
+    },
+    umiExportsHook: {},
+  });
+  expect(exportSpecifiers).toBe("export * as DVA from 'dva';");
+});
+
 test('export alias', () => {
   const exportAlias = generateExports({
     item: {

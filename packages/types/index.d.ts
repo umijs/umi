@@ -115,7 +115,9 @@ export interface IApi extends PluginAPI {
   writeTmpFile: {
     (args: { path: string; content: string; skipTSCheck?: boolean }): void;
   };
-  registerGenerator: { (args: { key: string; Generator: typeof Generator }): void };
+  registerGenerator: {
+    (args: { key: string; Generator: typeof Generator }): void;
+  };
   babelRegister: typeof Service.prototype.babelRegister;
   getRoutes: () => Promise<IRoute[]>;
   hasPlugins: typeof Service.prototype.hasPlugins;
@@ -232,6 +234,7 @@ export interface IApi extends PluginAPI {
     null,
     {
       source: string;
+      specifier?: string;
       specifiers?: (
         | string
         | {
