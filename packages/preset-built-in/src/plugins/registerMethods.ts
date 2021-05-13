@@ -82,4 +82,20 @@ export default function (api: IApi) {
       }
     },
   });
+
+  api.registerMethod({
+    name: 'getConfigPath',
+    fn() {
+      const DEFAULT_CONFIG_FILES = [
+        '.umirc.ts',
+        '.umirc.js',
+        'config/config.ts',
+        'config/config.js',
+      ];
+      const configFilePath =
+        DEFAULT_CONFIG_FILES.filter((f) => existsSync(join(api.cwd, f)))[0] ||
+        null;
+      return configFilePath;
+    },
+  });
 }

@@ -6,6 +6,8 @@ import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
 import { watchPkg } from './watchPkg';
+import { existsSync } from 'fs';
+import { join } from 'path';
 
 export default (api: IApi) => {
   const {
@@ -61,6 +63,14 @@ export default (api: IApi) => {
       // generate files
       const unwatchGenerateFiles = await generateFiles({ api, watch });
       if (unwatchGenerateFiles) unwatchs.push(unwatchGenerateFiles);
+
+      const { mfsu } = api.userConfig;
+      if (mfsu) {
+        await api.applyPlugins({
+          key: 'mfsu',
+          type: api.ApplyPluginsType.add,
+        });
+      }
 
       if (watch) {
         // watch pkg changes
