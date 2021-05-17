@@ -225,9 +225,7 @@ test('http2 normal', (done) => {
       const client = http2.connect(`https://${hostname}:${port}`, {
         rejectUnauthorized: false,
       });
-      client.on('error', (err) => {
-        console.error(err);
-      });
+      client.on('error', console.error);
 
       const http2Req = client.request({ ':path': '/compiler' });
 
