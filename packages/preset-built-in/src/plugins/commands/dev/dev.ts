@@ -25,16 +25,6 @@ export default (api: IApi) => {
     server?.listeningApp?.close();
   }
 
-  const sharedMap = new Map();
-  api.onDevCompileDone(({ stats, type }) => {
-    // don't need ssr bundler chunks
-    if (type === BundlerConfigType.ssr) {
-      return;
-    }
-    // store client build chunks
-    sharedMap.set('chunks', stats.compilation.chunks);
-  });
-
   api.registerCommand({
     name: 'dev',
     description: 'start a dev server for development',
@@ -111,14 +101,16 @@ export default (api: IApi) => {
                 api.logger.info(`Config ${reloadConfigs.join(', ')} changed.`);
                 api.restartServer();
               } else {
-                api.service.userConfig = api.service.configInstance.getUserConfig();
+                api.service.userConfig =
+                  api.service.configInstance.getUserConfig();
 
                 // TODO: simplify, 和 Service 里的逻辑重复了
                 // 需要 Service 露出方法
                 const defaultConfig = await api.applyPlugins({
                   key: 'modifyDefaultConfig',
                   type: api.ApplyPluginsType.modify,
-                  initialValue: await api.service.configInstance.getDefaultConfig(),
+                  initialValue:
+                    await api.service.configInstance.getDefaultConfig(),
                 });
                 api.service.config = await api.applyPlugins({
                   key: 'modifyConfig',
@@ -146,15 +138,13 @@ export default (api: IApi) => {
       await delay(500);
 
       // dev
-      const {
-        bundler,
-        bundleConfigs,
-        bundleImplementor,
-      } = await getBundleAndConfigs({ api, port });
-      const opts: IServerOpts = bundler.setupDevServerOpts({
-        bundleConfigs: bundleConfigs,
-        bundleImplementor,
-      });
+      const { bundler, bundleConfigs, bundleImplementor } =
+        await getBundleAndConfigs({ api, port });
+      const opts: ReturnType<typeof bundler.setupDevServerOpts> =
+        bundler.setupDevServerOpts({
+          bundleConfigs: bundleConfigs,
+          bundleImplementor,
+        });
 
       const beforeMiddlewares = [
         ...(await api.applyPlugins({
@@ -185,6 +175,11 @@ export default (api: IApi) => {
         })),
       ];
 
+      api.registerMethod({
+        name: 'getBundlerStats',
+        fn: opts.getBundlerStats,
+      });
+
       server = new Server({
         ...opts,
         compress: true,
@@ -194,10 +189,7 @@ export default (api: IApi) => {
         },
         proxy: api.config.proxy,
         beforeMiddlewares,
-        afterMiddlewares: [
-          ...middlewares,
-          createRouteMiddleware({ api, sharedMap }),
-        ],
+        afterMiddlewares: [...middlewares, createRouteMiddleware({ api })],
         ...(api.config.devServer || {}),
       });
       const listenRet = await server.listen({

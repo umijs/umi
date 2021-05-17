@@ -41,7 +41,7 @@ class Bundler {
   }: {
     bundleConfigs: defaultWebpack.Configuration[];
     bundleImplementor?: typeof defaultWebpack;
-  }): Promise<{ stats: defaultWebpack.Stats }> {
+  }): Promise<{ stats: defaultWebpack.Stats[] }> {
     return new Promise((resolve, reject) => {
       const compiler = bundleImplementor.webpack(bundleConfigs);
       compiler.run((err, stats) => {
@@ -64,18 +64,19 @@ class Bundler {
   /**
    * get ignored watch dirs regexp, for test case
    */
-  getIgnoredWatchRegExp = (): defaultWebpack.Options.WatchOptions['ignored'] => {
-    const { outputPath } = this.config;
-    const absOutputPath = _.escapeRegExp(
-      winPath(join(this.cwd, outputPath as string, '/')),
-    );
-    // need ${sep} after outputPath
-    return process.env.WATCH_IGNORED === 'none'
-      ? undefined
-      : new RegExp(
-          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
-        );
-  };
+  getIgnoredWatchRegExp =
+    (): defaultWebpack.Options.WatchOptions['ignored'] => {
+      const { outputPath } = this.config;
+      const absOutputPath = _.escapeRegExp(
+        winPath(join(this.cwd, outputPath as string, '/')),
+      );
+      // need ${sep} after outputPath
+      return process.env.WATCH_IGNORED === 'none'
+        ? undefined
+        : new RegExp(
+            process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
+          );
+    };
 
   setupDevServerOpts({
     bundleConfigs,
@@ -83,7 +84,7 @@ class Bundler {
   }: {
     bundleConfigs: defaultWebpack.Configuration[];
     bundleImplementor?: typeof defaultWebpack;
-  }): IServerOpts {
+  }): IServerOpts & { getBundlerStats: () => defaultWebpack.Stats[] } {
     const compiler = bundleImplementor.webpack(bundleConfigs);
     const { ssr, devServer } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
@@ -133,10 +134,14 @@ class Bundler {
 
     let _stats: defaultWebpack.Stats | null = null;
 
+    let bundleStats: defaultWebpack.Stats[] = [];
+    const getBundlerStats = () => bundleStats;
+
     return {
+      getBundlerStats,
       compilerMiddleware,
       onListening: ({ server }) => {
-        function addHooks(compiler: defaultWebpack.Compiler) {
+        function addHooks(compiler: defaultWebpack.Compiler, idx: number) {
           const { compile, invalid, done } = compiler.hooks;
           compile.tap('umi-dev-server', () => {
             server.sockWrite({ type: 'invalid' });
@@ -151,12 +156,14 @@ class Bundler {
               stats: getStats(stats),
             });
             _stats = stats;
+            // store all stats
+            bundleStats[idx] = stats;
           });
         }
         if (compiler.compilers) {
           compiler.compilers.forEach(addHooks);
         } else {
-          addHooks(compiler as any);
+          addHooks(compiler as any, 0);
         }
       },
       onConnection: ({ connection, server }) => {

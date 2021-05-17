@@ -115,13 +115,16 @@ export interface IApi extends PluginAPI {
   writeTmpFile: {
     (args: { path: string; content: string; skipTSCheck?: boolean }): void;
   };
-  registerGenerator: { (args: { key: string; Generator: typeof Generator }): void };
+  registerGenerator: {
+    (args: { key: string; Generator: typeof Generator }): void;
+  };
   babelRegister: typeof Service.prototype.babelRegister;
   getRoutes: () => Promise<IRoute[]>;
   hasPlugins: typeof Service.prototype.hasPlugins;
   hasPresets: typeof Service.prototype.hasPresets;
 
   // methods from dev command
+  getBundlerStats: IGetter<webpack.Stats[]>;
   getPort: IGetter<number>;
   getHostname: IGetter<string>;
   getServer: IGetter<Server>;

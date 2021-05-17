@@ -14,13 +14,7 @@ const ASSET_EXTNAMES = [
   '.json',
 ];
 
-export default ({
-  api,
-  sharedMap,
-}: {
-  api: IApi;
-  sharedMap: Map<string, string>;
-}) => {
+export default ({ api }: { api: IApi }) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     async function sendHtml() {
       const html = getHtmlGenerator({ api });
@@ -33,9 +27,11 @@ export default ({
           route = matchedRoutes[matchedRoutes.length - 1].route;
         }
       }
+      const [clientStats] = api.getBundlerStats();
+      const chunks = clientStats?.compilation.chunks || [];
       const defaultContent = await html.getContent({
         route,
-        chunks: sharedMap.get('chunks'),
+        chunks,
       });
       const content = await api.applyPlugins({
         key: 'modifyDevHTMLContent',
