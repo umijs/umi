@@ -49,7 +49,9 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   for (let dep of Object.keys(deps)) {
     await writeFile(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
-      `export * from "${dep}";import D from "${dep}";export default D;`,
+      ['antd'].includes(dep)
+        ? `export * from "${dep}";`
+        : `export * from "${dep}";import D from "${dep}";export default D;`,
       {
         flag: 'w+',
       },

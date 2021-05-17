@@ -1,5 +1,5 @@
 import { IApi } from 'umi';
-import { join, resolve } from 'path';
+import { join, parse } from 'path';
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 
@@ -9,6 +9,11 @@ import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
 
 import { renderReactPath, runtimePath } from '../../generateFiles/constants';
+import { lodash } from '@umijs/utils';
+import mime from 'mime';
+
+import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
+import AntdIconPlugin from './babel-antd-icon-plugin';
 
 const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
@@ -18,7 +23,19 @@ const checkConfig = (api: IApi) => {
   return true;
 };
 
-const requireDeps = ['@umijs/renderer-react', '@umijs/runtime', 'react'];
+// 必须安装的模块
+const requireDeps = ['react', 'react-router-dom', 'react-router'];
+
+// 不打包的模块
+const defaultExcludeDeps = ['umi'];
+
+// 需要重新定向导出的模块
+const defaultRedirect = {
+  umi: {
+    Link: 'react-router-dom',
+    ApplyPluginsType: runtimePath,
+  },
+};
 
 export const getPrevDeps = (api: IApi) => {
   const infoPath = join(getMfsuTmpPath(api), './info.json');
@@ -38,31 +55,68 @@ export const getMfsuTmpPath = (api: IApi) => {
   return join(api.paths.absTmpPath!, '.mfsu');
 };
 
+export const getAlias = async (api: IApi) => {
+  const depInfo: {
+    name: string;
+    renge: string;
+    alias?: string[];
+  }[] = await api.applyPlugins({
+    key: 'addDepInfo',
+    type: api.ApplyPluginsType.add,
+    initialValue: [],
+  });
+
+  const aliasResult = {};
+
+  depInfo.forEach((dinfo) => {
+    const { name, alias = [] } = dinfo;
+    alias.forEach((alia) => {
+      aliasResult[alia] = name;
+    });
+  });
+  return aliasResult;
+};
+
+export const getExtraDeps = (api: IApi) => [
+  ...(api.userConfig.mfsu.extraDeps || []),
+];
+
 export default function (api: IApi) {
   api.register({
     key: 'mfsu',
     async fn() {
-      // 检查配置
       if (!checkConfig(api)) {
         throw new Error('未开启对应配置');
       }
 
-      // 获取 deps
-      const deps = getDeps();
+      let deps = getDeps();
 
-      // 确保存在 @umijs/runtime 和 @umijs/renderer-react 依赖
-      requireDeps.forEach((requireDep) => {
-        if (!deps[requireDep]) {
-          deps[requireDep] = '*';
+      requireDeps
+        .concat(Object.values(await getAlias(api)))
+        .forEach((requireDep) => {
+          if (!deps[requireDep]) {
+            deps[requireDep] = '*';
+          }
+        });
+
+      const extraDeps = getExtraDeps(api);
+
+      if (extraDeps) {
+        extraDeps.forEach((ed) => {
+          deps[ed] = '*';
+        });
+      }
+
+      defaultExcludeDeps.forEach((ded) => {
+        if (deps[ded]) {
+          delete deps[ded];
         }
       });
 
-      // 检查需不需要重新构建
       if (!isEqual(getPrevDeps(api), deps)) {
-        // 构建
         await preBuild(api, deps);
       }
-      // 监听
+
       const unwatch = watchDeps({
         api: api,
         cwd: process.cwd(),
@@ -78,9 +132,25 @@ export default function (api: IApi) {
     key: 'mfsu',
     config: {
       schema(joi) {
-        return joi.object().description('open mfsu feature');
+        return joi
+          .object({
+            extraDeps: joi.array(),
+            redirect: joi.object(),
+          })
+          .description('open mfsu feature');
       },
     },
+  });
+
+  // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
+  api.modifyBabelPresetOpts({
+    fn: (opts) => {
+      if (api.userConfig.mfsu) {
+        opts.import = [];
+      }
+      return opts;
+    },
+    stage: 99,
   });
 
   /** 暴露文件 */
@@ -97,7 +167,7 @@ export default function (api: IApi) {
           encoding: 'utf-8',
         })
           .then((value) => {
-            res.setHeader('content-type', 'application/javascript');
+            res.setHeader('content-type', mime.lookup(parse(req.url).ext));
             res.send(value);
           })
           .catch((err) => {
@@ -108,10 +178,14 @@ export default function (api: IApi) {
   });
 
   /** 修改 webpack 配置 */
-  api.chainWebpack((memo) => {
+  api.chainWebpack(async (memo) => {
     if (!api.userConfig.mfsu) {
       return memo;
     }
+    const userRedirect = api.userConfig.mfsu.redirect || {};
+
+    const redirect = lodash.merge(defaultRedirect, userRedirect);
+
     memo.module
       .rule('import-to-await-require')
       .test(/\.(js|jsx|ts|tsx|mjs)$/)
@@ -129,25 +203,27 @@ export default function (api: IApi) {
       .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
       .options({
         plugins: [
+          AntdIconPlugin,
+          [BebelImportRedirectPlugin, redirect],
           [
             require.resolve('@umijs/babel-plugin-import-to-await-require'),
             {
               libs: Array.from(
                 new Set([
-                  ...Object.keys(getDeps()),
+                  ...Object.keys(getDeps()).filter(
+                    (d) => !defaultExcludeDeps.includes(d),
+                  ),
                   ...requireDeps.filter(
                     (requireDep) =>
                       !['@umijs/runtime', '@umijs/renderer-react'].includes(
                         requireDep,
                       ),
                   ),
+                  ...getExtraDeps(api),
                 ]),
               ),
               remoteName: 'mf',
-              alias: {
-                [runtimePath]: '@umijs/runtime',
-                [renderReactPath]: '@umijs/renderer-react',
-              },
+              alias: await getAlias(api),
             },
           ],
         ],
@@ -163,5 +239,9 @@ export default function (api: IApi) {
     return memo.merge({
       experiments: { topLevelAwait: true },
     });
+  });
+  // 注入模块到window对象下，兼容某些包，例如：deep-extend
+  api.addEntryCodeAhead(() => {
+    return `\n// mfsu inject module to window. \nimport { Buffer } from 'buffer';\nwindow.Buffer = Buffer;\n`;
   });
 }

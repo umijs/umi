@@ -120,7 +120,7 @@ export function cleanTmpPathExceptCache({
 }) {
   if (!existsSync(absTmpPath)) return;
   readdirSync(absTmpPath).forEach((file) => {
-    if (file === `.cache`) return;
+    if (file === `.cache` || file === `.mfsu`) return;
     rimraf.sync(join(absTmpPath, file));
   });
 }
