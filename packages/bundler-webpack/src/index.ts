@@ -84,7 +84,9 @@ class Bundler {
   }: {
     bundleConfigs: defaultWebpack.Configuration[];
     bundleImplementor?: typeof defaultWebpack;
-  }): IServerOpts & { getBundlerStats: () => defaultWebpack.Stats[] } {
+  }): IServerOpts & {
+    getBundlerStats: () => Array<defaultWebpack.Stats | null>;
+  } {
     const compiler = bundleImplementor.webpack(bundleConfigs);
     const { ssr, devServer } = this.config;
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
@@ -134,7 +136,7 @@ class Bundler {
 
     let _stats: defaultWebpack.Stats | null = null;
 
-    let bundleStats: defaultWebpack.Stats[] = [];
+    let bundleStats: Array<defaultWebpack.Stats | null> = [];
     const getBundlerStats = () => bundleStats;
 
     return {

@@ -124,7 +124,7 @@ export interface IApi extends PluginAPI {
   hasPresets: typeof Service.prototype.hasPresets;
 
   // methods from dev command
-  getBundlerStats: IGetter<webpack.Stats[]>;
+  getBundlerStats: IGetter<Array<webpack.Stats | null>>;
   getPort: IGetter<number>;
   getHostname: IGetter<string>;
   getServer: IGetter<Server>;
