@@ -55,6 +55,7 @@ export default function (api: IApi) {
             absTmpPath: paths.absTmpPath!,
           });
         }
+        // @ts-ignore
         printFileSizes(stats, relative(process.cwd(), paths.absOutputPath!));
         await api.applyPlugins({
           key: 'onBuildComplete',
