@@ -33,7 +33,12 @@ export enum BundlerConfigType {
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
-  (args: { fn: { (args: T): void }; before?: string; stage?: number }): void;
+  (args: { 
+    fn: { (args: T): void }; 
+    name?: string;
+    before?: string | string[]; 
+    stage?: number 
+  }): void;
 }
 
 interface IModify<T, U> {
@@ -41,12 +46,14 @@ interface IModify<T, U> {
   (fn: { (initialValue: T, args: U): Promise<T> }): void;
   (args: {
     fn: { (initialValue: T, args: U): T };
-    before?: string;
+    name?: string;
+    before?: string | string[];
     stage?: number;
   }): void;
   (args: {
     fn: { (initialValue: T, args: U): Promise<T> };
-    before?: string;
+    name?: string;
+    before?: string | string[]; 
     stage?: number;
   }): void;
 }
@@ -54,9 +61,19 @@ interface IModify<T, U> {
 interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
   (fn: { (args: T): Promise<U | U[]> }): void;
-  (args: { fn: { (args: T): U | U[] }; before?: string; stage?: number }): void;
+  (args: { 
+    fn: { (args: T): U | U[] }; 
+    name?: string;
+    before?: string | string[]; 
+    stage?: number 
+  }): void;
   (args: {
-    fn: { (args: T): Promise<U | U[]>; before?: string; stage?: number };
+    fn: { 
+      (args: T): Promise<U | U[]>; 
+      name?: string;
+      before?: string | string[]; 
+      stage?: number 
+    };
   }): void;
 }
 
