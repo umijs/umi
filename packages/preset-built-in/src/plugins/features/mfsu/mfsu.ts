@@ -135,7 +135,10 @@ export default function (api: IApi) {
           .description('open mfsu feature');
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy() {
+      // 暂时只支持在 dev 时开启
+      return api.userConfig.mfsu && api.env === 'development';
+    },
   });
 
   // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
