@@ -1,15 +1,14 @@
 import { Bundler } from '@umijs/bundler-webpack';
-import { join } from 'path';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
+import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
+import { existsSync } from 'fs';
+import { mkdir, readdir, unlink, writeFile } from 'fs/promises';
 import { cloneDeep } from 'lodash';
+import { join } from 'path';
 import { IApi } from 'umi';
-import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { readdir, writeFile, unlink } from 'fs/promises';
 import webpack from 'webpack';
 import { getMfsuTmpPath } from '.';
-import { existsSync } from 'fs';
-import { mkdir } from 'fs/promises';
-import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
+import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 

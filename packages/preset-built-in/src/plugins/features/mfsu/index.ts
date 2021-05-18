@@ -1,19 +1,16 @@
-import { IApi } from 'umi';
-import { join, parse } from 'path';
-import { readFile } from 'fs/promises';
+import { lodash } from '@umijs/utils';
 import { existsSync } from 'fs';
-
-import webpack from 'webpack';
+import { readFile } from 'fs/promises';
 import { isEqual } from 'lodash';
+import mime from 'mime';
+import { join, parse } from 'path';
+import { IApi } from 'umi';
+import webpack from 'webpack';
+import { runtimePath } from '../../generateFiles/constants';
+import AntdIconPlugin from './babel-antd-icon-plugin';
+import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
-
-import { renderReactPath, runtimePath } from '../../generateFiles/constants';
-import { lodash } from '@umijs/utils';
-import mime from 'mime';
-
-import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
-import AntdIconPlugin from './babel-antd-icon-plugin';
 
 const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;

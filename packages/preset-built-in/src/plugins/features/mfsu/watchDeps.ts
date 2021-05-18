@@ -1,7 +1,7 @@
-import { join } from 'path';
-import { getPrevDeps } from '.';
 import { chokidar, lodash } from '@umijs/utils';
+import { join } from 'path';
 import { IApi } from 'umi';
+import { getPrevDeps } from '.';
 
 export function watchDeps(opts: {
   api: IApi;

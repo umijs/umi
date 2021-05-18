@@ -1,6 +1,6 @@
 // @ts-nocheck
-import type { Visitor, NodePath } from '@babel/traverse';
-import { t, lodash } from '@umijs/utils';
+import type { NodePath } from '@babel/traverse';
+import { lodash, t } from '@umijs/utils';
 
 export interface IRedirect {
   [from: string]: {
