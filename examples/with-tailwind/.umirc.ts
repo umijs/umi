@@ -12,6 +12,5 @@ export default defineConfig({
       purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.jsx'],
     }),
     require('postcss-nested'),
-    require('autoprefixer'),
   ],
 });
