@@ -2,12 +2,9 @@ import { IApi } from 'umi';
 import { join, parse } from 'path';
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
-
 import webpack from 'webpack';
-import { isEqual } from 'lodash';
 import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
-
 import { renderReactPath, runtimePath } from '../../generateFiles/constants';
 import { lodash } from '@umijs/utils';
 import mime from 'mime';
@@ -113,7 +110,7 @@ export default function (api: IApi) {
         }
       });
 
-      if (!isEqual(getPrevDeps(api), deps)) {
+      if (!lodash.isEqual(getPrevDeps(api), deps)) {
         await preBuild(api, deps);
       }
 

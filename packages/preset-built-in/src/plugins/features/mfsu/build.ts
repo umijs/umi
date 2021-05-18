@@ -1,7 +1,6 @@
 import { Bundler } from '@umijs/bundler-webpack';
 import { join } from 'path';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
-import { cloneDeep } from 'lodash';
 import { IApi } from 'umi';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import { readdir, writeFile, unlink } from 'fs/promises';
@@ -10,6 +9,7 @@ import { getMfsuTmpPath } from '.';
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
+import { lodash } from '@umijs/utils';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -34,7 +34,9 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   const bundler = new Bundler({ cwd: process.cwd(), config: {} });
   const { bundleConfigs } = await getBundleAndConfigs({ api }); // 获取原本的配置
 
-  const mfConfig: defaultWebpack.Configuration = cloneDeep(bundleConfigs[0]);
+  const mfConfig: defaultWebpack.Configuration = lodash.cloneDeep(
+    bundleConfigs[0],
+  );
 
   if (!mfConfig) {
     throw new Error('找不到 Webpack 配置');
@@ -109,11 +111,10 @@ export const preBuild = async (api: IApi, deps: Deps) => {
         }),
       );
     }
-    // TODO: 对 webpack process bar 修改配置或者删除？区分普通的build
+
     const stat = await bundler.build({ bundleConfigs: [mfConfig] });
 
     // 构建这次打包的依赖表，用于 diff
     await writeFile(join(tmpDir, './info.json'), JSON.stringify(deps));
-    // webpack({});
   }
 };
