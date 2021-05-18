@@ -9,7 +9,7 @@ export default defineConfig({
   extraPostCSSPlugins: [
     require('postcss-import'),
     require('tailwindcss')({
-      purge: ['./src/**/*.html', './src/**/*.tsx', './src/**/*.jsx'],
+      config: './tailwind.config.js',
     }),
     require('postcss-nested'),
   ],
