@@ -93,7 +93,7 @@ export default function () {
       require.resolve('./plugins/commands/webpack/webpack'),
 
       // mfsu
-      require.resolve('./plugins/features/mfsu/index'),
+      require.resolve('./plugins/features/mfsu/mfsu'),
     ],
   };
 }

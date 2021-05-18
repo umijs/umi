@@ -1,7 +1,6 @@
 import { lodash } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { readFile } from 'fs/promises';
-import { isEqual } from 'lodash';
 import mime from 'mime';
 import { join, parse } from 'path';
 import { IApi } from 'umi';
@@ -110,7 +109,7 @@ export default function (api: IApi) {
         }
       });
 
-      if (!isEqual(getPrevDeps(api), deps)) {
+      if (!lodash.isEqual(getPrevDeps(api), deps)) {
         await preBuild(api, deps);
       }
 
