@@ -553,9 +553,7 @@ export default {
   externals: {
     react: 'window.React',
   },
-  scripts: [
-    'https://unpkg.com/react@17.0.1/umd/react.production.min.js',
-  ],
+  scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 };
 ```
 
@@ -813,6 +811,33 @@ export default {
 <meta name="keywords" content="umi, umijs" />
 <meta name="description" content="🍙 插件化的企业级前端应用框架。" />
 <meta bar="foo" />
+```
+
+## mfsu
+
+- Type: `Object`
+- Default : `{}`
+
+开启 mfsu 功能并且添加相关配置。
+
+开启该功能需要同时开启 `webpack5` 和 `dynamicImport`.
+
+包含以下子属性
+
+- extraDeps: `Array(string)`。mfsu 会对 `package.json` 中的 dependencies 和 peerDependencies 进行打包。如果项目中包含了某些不存在 `package.json` 或者不符合 es 规范的包，可以在此添加。
+
+- redirect: `Object`。重定向依赖，适用于部分 plugin 不在统一的位置引入。例如：`import {message} from '@umijs/plugin-request/lib/ui';` => `import {message} from 'antd';`
+
+```js
+mfsu: {
+  extraDeps: ['rc-util/es/hooks/useMergedState', 'swagger-ui-react'],
+  redirect: {
+    '@umijs/plugin-request/lib/ui': {
+      message: 'antd',
+      notification: 'antd',
+    },
+  },
+},
 ```
 
 ## mock
