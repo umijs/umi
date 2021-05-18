@@ -78,9 +78,8 @@ export const getExtraDeps = (api: IApi) => [
 ];
 
 export default function (api: IApi) {
-  api.register({
-    key: 'mfsu',
-    async fn() {
+  api.onStart(async ({ name }) => {
+    if (name === 'dev') {
       if (!checkConfig(api)) {
         throw new Error('未开启对应配置');
       }
@@ -121,7 +120,7 @@ export default function (api: IApi) {
           api.restartServer();
         },
       });
-    },
+    }
   });
 
   api.describe({

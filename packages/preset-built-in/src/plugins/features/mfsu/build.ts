@@ -1,8 +1,9 @@
 import { Bundler } from '@umijs/bundler-webpack';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
+import { lodash, mkdirp } from '@umijs/utils';
 import { existsSync } from 'fs';
-import { mkdir, readdir, unlink, writeFile } from 'fs/promises';
+import { readdir, unlink, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
@@ -21,7 +22,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   const tmpDir = getMfsuTmpPath(api);
 
   if (!existsSync(tmpDir)) {
-    await mkdir(tmpDir);
+    await mkdirp(tmpDir);
   }
 
   // 清除原先的目录
