@@ -135,17 +135,18 @@ export default function (api: IApi) {
           .description('open mfsu feature');
       },
     },
+    enableBy: api.EnableBy.config,
   });
 
   // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
   api.modifyBabelPresetOpts({
     fn: (opts) => {
-      if (api.userConfig.mfsu) {
-        opts.import = [];
-      }
-      return opts;
+      return {
+        ...opts,
+        import: [],
+      };
     },
-    stage: 99,
+    stage: Infinity,
   });
 
   /** 暴露文件 */
@@ -174,9 +175,6 @@ export default function (api: IApi) {
 
   /** 修改 webpack 配置 */
   api.chainWebpack(async (memo) => {
-    if (!api.userConfig.mfsu) {
-      return memo;
-    }
     const userRedirect = api.userConfig.mfsu.redirect || {};
 
     const redirect = lodash.merge(defaultRedirect, userRedirect);
