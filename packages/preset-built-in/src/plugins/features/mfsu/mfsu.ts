@@ -48,7 +48,7 @@ export const getDeps = (): Deps => {
 };
 
 export const getMfsuTmpPath = (api: IApi) => {
-  return join(api.paths.absTmpPath!, '.mfsu');
+  return join(api.paths.absTmpPath!, '.cache', '.mfsu');
 };
 
 export const getAlias = async (api: IApi) => {
