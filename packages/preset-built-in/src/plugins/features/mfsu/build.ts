@@ -5,7 +5,7 @@ import { IApi } from 'umi';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import { readdir, writeFile, unlink } from 'fs/promises';
 import webpack from 'webpack';
-import { getMfsuTmpPath } from '.';
+import { getMfsuTmpPath } from './mfsu';
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';

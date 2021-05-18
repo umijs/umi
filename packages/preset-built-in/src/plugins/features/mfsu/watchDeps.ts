@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { getPrevDeps } from '.';
+import { getPrevDeps } from './mfsu';
 import { chokidar, lodash } from '@umijs/utils';
 import { IApi } from 'umi';
 
