@@ -2,7 +2,7 @@ import { Bundler } from '@umijs/bundler-webpack';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { lodash, mkdirp } from '@umijs/utils';
-import { existsSync, readdir, unlink, writeFile } from 'fs';
+import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
@@ -25,8 +25,8 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   }
 
   // 清除原先的目录
-  (await readdir(tmpDir)).forEach(async (dir) => {
-    await unlink(join(tmpDir, dir));
+  readdirSync(tmpDir).forEach((dir) => {
+    unlinkSync(join(tmpDir, dir));
   });
 
   const bundler = new Bundler({ cwd: process.cwd(), config: {} });
@@ -47,7 +47,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
 
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
-    await writeFile(
+    writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       ['antd'].includes(dep)
         ? `export * from "${dep}";`
@@ -58,7 +58,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     );
   }
   const entryFile = '"😛"';
-  await writeFile(join(tmpDir, './index.js'), entryFile);
+  writeFileSync(join(tmpDir, './index.js'), entryFile);
 
   if (mfConfig.plugins) {
     mfConfig.stats = 'none';
@@ -113,6 +113,6 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     const stat = await bundler.build({ bundleConfigs: [mfConfig] });
 
     // 构建这次打包的依赖表，用于 diff
-    await writeFile(join(tmpDir, './info.json'), JSON.stringify(deps));
+    writeFileSync(join(tmpDir, './info.json'), JSON.stringify(deps));
   }
 };
