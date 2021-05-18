@@ -64,19 +64,18 @@ class Bundler {
   /**
    * get ignored watch dirs regexp, for test case
    */
-  getIgnoredWatchRegExp =
-    (): defaultWebpack.Options.WatchOptions['ignored'] => {
-      const { outputPath } = this.config;
-      const absOutputPath = _.escapeRegExp(
-        winPath(join(this.cwd, outputPath as string, '/')),
-      );
-      // need ${sep} after outputPath
-      return process.env.WATCH_IGNORED === 'none'
-        ? undefined
-        : new RegExp(
-            process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
-          );
-    };
+  getIgnoredWatchRegExp = (): defaultWebpack.Options.WatchOptions['ignored'] => {
+    const { outputPath } = this.config;
+    const absOutputPath = _.escapeRegExp(
+      winPath(join(this.cwd, outputPath as string, '/')),
+    );
+    // need ${sep} after outputPath
+    return process.env.WATCH_IGNORED === 'none'
+      ? undefined
+      : new RegExp(
+          process.env.WATCH_IGNORED || `(node_modules|${absOutputPath})`,
+        );
+  };
 
   setupDevServerOpts({
     bundleConfigs,
