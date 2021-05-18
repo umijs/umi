@@ -1,6 +1,5 @@
 import { lodash } from '@umijs/utils';
-import { existsSync } from 'fs';
-import { readFile } from 'fs/promises';
+import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { join, parse } from 'path';
 import { IApi } from 'umi';
@@ -162,16 +161,12 @@ export default function (api: IApi) {
       ) {
         next();
       } else {
-        readFile(join(getMfsuTmpPath(api), '.' + req.url), {
-          encoding: 'utf-8',
-        })
-          .then((value) => {
-            res.setHeader('content-type', mime.lookup(parse(req.url).ext));
-            res.send(value);
-          })
-          .catch((err) => {
-            res.send(err);
-          });
+        const value = readFileSync(
+          join(getMfsuTmpPath(api), '.' + req.url),
+          'utf-8',
+        );
+        res.setHeader('content-type', mime.lookup(parse(req.url).ext));
+        res.send(value);
       }
     };
   });
