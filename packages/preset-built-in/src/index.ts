@@ -49,6 +49,7 @@ export default function () {
       require.resolve('./plugins/features/inlineLimit'),
       require.resolve('./plugins/features/lessLoader'),
       require.resolve('./plugins/features/manifest'),
+      require.resolve('./plugins/features/mfsu/mfsu'),
       require.resolve('./plugins/features/mountElementId'),
       require.resolve('./plugins/features/mpa'),
       require.resolve('./plugins/features/nodeModulesTransform'),
@@ -91,9 +92,6 @@ export default function () {
       require.resolve('./plugins/commands/plugin/plugin'),
       require.resolve('./plugins/commands/version/version'),
       require.resolve('./plugins/commands/webpack/webpack'),
-
-      // mfsu
-      require.resolve('./plugins/features/mfsu/mfsu'),
     ],
   };
 }

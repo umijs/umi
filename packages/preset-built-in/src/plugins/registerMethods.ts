@@ -1,8 +1,8 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { EOL } from 'os';
 import { dirname, join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { isTSFile } from './utils';
 
 export default function (api: IApi) {
@@ -80,22 +80,6 @@ export default function (api: IApi) {
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
         writeFileSync(absPath, content, 'utf-8');
       }
-    },
-  });
-
-  api.registerMethod({
-    name: 'getConfigPath',
-    fn() {
-      const DEFAULT_CONFIG_FILES = [
-        '.umirc.ts',
-        '.umirc.js',
-        'config/config.ts',
-        'config/config.js',
-      ];
-      const configFilePath =
-        DEFAULT_CONFIG_FILES.filter((f) => existsSync(join(api.cwd, f)))[0] ||
-        null;
-      return configFilePath;
     },
   });
 }

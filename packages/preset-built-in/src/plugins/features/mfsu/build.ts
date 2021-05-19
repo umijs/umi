@@ -1,15 +1,13 @@
 import { Bundler } from '@umijs/bundler-webpack';
-import { join } from 'path';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
-import { IApi } from 'umi';
-import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { readdir, writeFile, unlink } from 'fs/promises';
-import webpack from 'webpack';
-import { getMfsuTmpPath } from './mfsu';
-import { existsSync } from 'fs';
-import { mkdir } from 'fs/promises';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
-import { lodash } from '@umijs/utils';
+import { lodash, mkdirp } from '@umijs/utils';
+import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'fs';
+import { join } from 'path';
+import { IApi } from 'umi';
+import webpack from 'webpack';
+import { getBundleAndConfigs } from '../../commands/buildDevUtils';
+import { getMfsuTmpPath } from './mfsu';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -23,12 +21,12 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   const tmpDir = getMfsuTmpPath(api);
 
   if (!existsSync(tmpDir)) {
-    await mkdir(tmpDir);
+    await mkdirp(tmpDir);
   }
 
   // 清除原先的目录
-  (await readdir(tmpDir)).forEach(async (dir) => {
-    await unlink(join(tmpDir, dir));
+  readdirSync(tmpDir).forEach((dir) => {
+    unlinkSync(join(tmpDir, dir));
   });
 
   const bundler = new Bundler({ cwd: process.cwd(), config: {} });
@@ -49,7 +47,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
 
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
-    await writeFile(
+    writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       ['antd'].includes(dep)
         ? `export * from "${dep}";`
@@ -60,7 +58,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     );
   }
   const entryFile = '"😛"';
-  await writeFile(join(tmpDir, './index.js'), entryFile);
+  writeFileSync(join(tmpDir, './index.js'), entryFile);
 
   if (mfConfig.plugins) {
     mfConfig.stats = 'none';
@@ -115,6 +113,6 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     const stat = await bundler.build({ bundleConfigs: [mfConfig] });
 
     // 构建这次打包的依赖表，用于 diff
-    await writeFile(join(tmpDir, './info.json'), JSON.stringify(deps));
+    writeFileSync(join(tmpDir, './info.json'), JSON.stringify(deps));
   }
 };

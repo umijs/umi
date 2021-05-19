@@ -1,16 +1,14 @@
-import { IApi } from 'umi';
+import { lodash } from '@umijs/utils';
+import { existsSync, readFileSync } from 'fs';
+import mime from 'mime';
 import { join, parse } from 'path';
-import { readFile } from 'fs/promises';
-import { existsSync } from 'fs';
+import { IApi } from 'umi';
 import webpack from 'webpack';
+import { runtimePath } from '../../generateFiles/constants';
+import AntdIconPlugin from './babel-antd-icon-plugin';
+import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
-import { renderReactPath, runtimePath } from '../../generateFiles/constants';
-import { lodash } from '@umijs/utils';
-import mime from 'mime';
-
-import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
-import AntdIconPlugin from './babel-antd-icon-plugin';
 
 const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
@@ -49,7 +47,7 @@ export const getDeps = (): Deps => {
 };
 
 export const getMfsuTmpPath = (api: IApi) => {
-  return join(api.paths.absTmpPath!, '.mfsu');
+  return join(api.paths.absTmpPath!, '.cache', '.mfsu');
 };
 
 export const getAlias = async (api: IApi) => {
@@ -79,9 +77,8 @@ export const getExtraDeps = (api: IApi) => [
 ];
 
 export default function (api: IApi) {
-  api.register({
-    key: 'mfsu',
-    async fn() {
+  api.onStart(async ({ name }) => {
+    if (name === 'dev') {
       if (!checkConfig(api)) {
         throw new Error('未开启对应配置');
       }
@@ -122,7 +119,7 @@ export default function (api: IApi) {
           api.restartServer();
         },
       });
-    },
+    }
   });
 
   api.describe({
@@ -137,17 +134,21 @@ export default function (api: IApi) {
           .description('open mfsu feature');
       },
     },
+    enableBy() {
+      // 暂时只支持在 dev 时开启
+      return api.userConfig.mfsu && api.env === 'development';
+    },
   });
 
   // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
   api.modifyBabelPresetOpts({
     fn: (opts) => {
-      if (api.userConfig.mfsu) {
-        opts.import = [];
-      }
-      return opts;
+      return {
+        ...opts,
+        import: [],
+      };
     },
-    stage: 99,
+    stage: Infinity,
   });
 
   /** 暴露文件 */
@@ -160,25 +161,18 @@ export default function (api: IApi) {
       ) {
         next();
       } else {
-        readFile(join(getMfsuTmpPath(api), '.' + req.url), {
-          encoding: 'utf-8',
-        })
-          .then((value) => {
-            res.setHeader('content-type', mime.lookup(parse(req.url).ext));
-            res.send(value);
-          })
-          .catch((err) => {
-            res.send(err);
-          });
+        const value = readFileSync(
+          join(getMfsuTmpPath(api), '.' + req.url),
+          'utf-8',
+        );
+        res.setHeader('content-type', mime.lookup(parse(req.url).ext));
+        res.send(value);
       }
     };
   });
 
   /** 修改 webpack 配置 */
   api.chainWebpack(async (memo) => {
-    if (!api.userConfig.mfsu) {
-      return memo;
-    }
     const userRedirect = api.userConfig.mfsu.redirect || {};
 
     const redirect = lodash.merge(defaultRedirect, userRedirect);

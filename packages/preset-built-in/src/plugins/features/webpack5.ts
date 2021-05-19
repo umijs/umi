@@ -1,6 +1,5 @@
 import { IApi } from '@umijs/types';
 import { join } from 'path';
-import { existsSync } from 'fs';
 
 export default (api: IApi) => {
   api.describe({
@@ -55,7 +54,7 @@ export default (api: IApi) => {
 
     // 缓存默认开启，可通过环境变量关闭
     if (process.env.WEBPACK_FS_CACHE !== 'none') {
-      const userConfigPath = api.getConfigPath();
+      const { configFile } = api.service.configInstance;
 
       memo.cache = {
         type: 'filesystem',
@@ -64,8 +63,8 @@ export default (api: IApi) => {
         buildDependencies: {
           config: [
             join(api.cwd, 'package.json'),
-            api.userConfig.mfsu && userConfigPath
-              ? join(api.cwd, userConfigPath)
+            api.config.webpack5 && configFile
+              ? join(api.cwd, configFile)
               : undefined,
           ].filter(Boolean),
         },

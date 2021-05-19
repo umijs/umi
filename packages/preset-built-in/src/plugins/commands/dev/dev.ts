@@ -1,13 +1,11 @@
-import { IApi, BundlerConfigType } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
+import { BundlerConfigType, IApi } from '@umijs/types';
 import { delay } from '@umijs/utils';
 import assert from 'assert';
 import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
-import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
+import createRouteMiddleware from './createRouteMiddleware';
 import { watchPkg } from './watchPkg';
-import { existsSync } from 'fs';
-import { join } from 'path';
 
 export default (api: IApi) => {
   const {
@@ -64,14 +62,6 @@ export default (api: IApi) => {
       const unwatchGenerateFiles = await generateFiles({ api, watch });
       if (unwatchGenerateFiles) unwatchs.push(unwatchGenerateFiles);
 
-      const { mfsu } = api.userConfig;
-      if (mfsu) {
-        await api.applyPlugins({
-          key: 'mfsu',
-          type: api.ApplyPluginsType.add,
-        });
-      }
-
       if (watch) {
         // watch pkg changes
         const unwatchPkg = watchPkg({
@@ -121,14 +111,16 @@ export default (api: IApi) => {
                 api.logger.info(`Config ${reloadConfigs.join(', ')} changed.`);
                 api.restartServer();
               } else {
-                api.service.userConfig = api.service.configInstance.getUserConfig();
+                api.service.userConfig =
+                  api.service.configInstance.getUserConfig();
 
                 // TODO: simplify, 和 Service 里的逻辑重复了
                 // 需要 Service 露出方法
                 const defaultConfig = await api.applyPlugins({
                   key: 'modifyDefaultConfig',
                   type: api.ApplyPluginsType.modify,
-                  initialValue: await api.service.configInstance.getDefaultConfig(),
+                  initialValue:
+                    await api.service.configInstance.getDefaultConfig(),
                 });
                 api.service.config = await api.applyPlugins({
                   key: 'modifyConfig',
@@ -156,11 +148,8 @@ export default (api: IApi) => {
       await delay(500);
 
       // dev
-      const {
-        bundler,
-        bundleConfigs,
-        bundleImplementor,
-      } = await getBundleAndConfigs({ api, port });
+      const { bundler, bundleConfigs, bundleImplementor } =
+        await getBundleAndConfigs({ api, port });
       const opts: IServerOpts = bundler.setupDevServerOpts({
         bundleConfigs: bundleConfigs,
         bundleImplementor,
