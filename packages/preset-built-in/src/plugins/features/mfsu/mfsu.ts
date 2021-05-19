@@ -41,10 +41,10 @@ export const getPrevDeps = (api: IApi) => {
 };
 
 export const getDeps = (): Deps => {
-  const { dependencies = {}, peerDependencies = {} } = require(join(
-    process.cwd(),
-    'package.json',
-  ));
+  const pkgPath = join(process.cwd(), 'package.json');
+  const { dependencies = {}, peerDependencies = {} } = existsSync(pkgPath)
+    ? require(pkgPath)
+    : {};
   const deps = { ...dependencies, ...peerDependencies };
   return deps;
 };
