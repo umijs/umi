@@ -37,6 +37,11 @@ if (args.version && !args._[0]) {
   args._[0] = 'help';
 }
 
+// allow parent framework to modify the title
+if (process.title === 'node') {
+  process.title = 'umi';
+}
+
 (async () => {
   try {
     switch (args._[0]) {
