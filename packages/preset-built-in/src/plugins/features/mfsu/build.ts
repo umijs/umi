@@ -7,7 +7,7 @@ import { join } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { getMfsuTmpPath } from './mfsu';
+import { getMfsuTmpPath, getAlias } from './mfsu';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -67,6 +67,18 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     mfConfig.output!.path = tmpDir;
     mfConfig.output!.filename = prefix + 'index.js';
     mfConfig.output!.libraryTarget = 'commonjs';
+
+    // 添加 alias，避免用户手动安装 @umijs/renderer-react 和 @umijs/runtime
+    const alias = await getAlias(api, { reverse: true });
+    mfConfig.resolve = lodash.merge(
+      {
+        ...mfConfig.resolve,
+      },
+      {
+        alias,
+      },
+    );
+
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
@@ -90,12 +102,14 @@ export const preBuild = async (api: IApi, deps: Deps) => {
       });
     });
 
-    // 删除 DevCompileDonePlugin 和 WebpackBarPlugin
+    // 删除 DevCompileDonePlugin、WebpackBarPlugin和BundleAnalyzerPlugin
     mfConfig.plugins.forEach((plugin, index) => {
       if (
-        ['DevCompileDonePlugin', 'WebpackBarPlugin'].includes(
-          plugin.constructor.name,
-        )
+        [
+          'DevCompileDonePlugin',
+          'WebpackBarPlugin',
+          'BundleAnalyzerPlugin',
+        ].includes(plugin.constructor.name)
       ) {
         mfConfig.plugins!.splice(index, 1);
       }

@@ -13,9 +13,12 @@ import { watchDeps } from './watchDeps';
 const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
   if (!webpack5 || !dynamicImport) {
-    return false;
+    throw new Error(
+      `未开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
+        !dynamicImport ? 'dynamicImport' : ''
+      }`,
+    );
   }
-  return true;
 };
 
 // 必须安装的模块
@@ -50,7 +53,7 @@ export const getMfsuTmpPath = (api: IApi) => {
   return join(api.paths.absTmpPath!, '.cache', '.mfsu');
 };
 
-export const getAlias = async (api: IApi) => {
+export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
   const depInfo: {
     name: string;
     renge: string;
@@ -66,7 +69,13 @@ export const getAlias = async (api: IApi) => {
   depInfo.forEach((dinfo) => {
     const { name, alias = [] } = dinfo;
     alias.forEach((alia) => {
-      aliasResult[alia] = name;
+      if (opts?.reverse) {
+        // exp: {'@umijs/runtime' : '/aaa/bbb/ccc'}
+        aliasResult[name] = alia;
+      } else {
+        // exp: {'/aaa/bbb/ccc' : '@umijs/runtime'}
+        aliasResult[alia] = name;
+      }
     });
   });
   return aliasResult;
@@ -79,9 +88,7 @@ export const getExtraDeps = (api: IApi) => [
 export default function (api: IApi) {
   api.onStart(async ({ name }) => {
     if (name === 'dev') {
-      if (!checkConfig(api)) {
-        throw new Error('未开启对应配置');
-      }
+      checkConfig(api);
 
       let deps = getDeps();
 
@@ -204,12 +211,7 @@ export default function (api: IApi) {
                   ...Object.keys(getDeps()).filter(
                     (d) => !defaultExcludeDeps.includes(d),
                   ),
-                  ...requireDeps.filter(
-                    (requireDep) =>
-                      !['@umijs/runtime', '@umijs/renderer-react'].includes(
-                        requireDep,
-                      ),
-                  ),
+                  ...requireDeps,
                   ...getExtraDeps(api),
                 ]),
               ),
