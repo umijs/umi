@@ -135,7 +135,14 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     path: route.path,
   };
   if (route.redirect) {
-    return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
+    const withSearch = route.search;
+    return (
+      <Redirect
+        {...routeProps}
+        from={route.path}
+        to={withSearch ? `${route.redirect}${location.search}` : route.redirect}
+      />
+    );
   } else {
     // avoid mount and unmount with url hash change
     if (
