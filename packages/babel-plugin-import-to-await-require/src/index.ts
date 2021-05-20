@@ -1,5 +1,5 @@
+import type { NodePath, Visitor } from '@babel/traverse';
 import { t } from '@umijs/utils';
-import type { Visitor, NodePath } from '@babel/traverse';
 
 type TLibs = (RegExp | string)[];
 
@@ -77,15 +77,14 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                // @ts-ignore
                 file: path.hub.file.opts.filename,
                 isMatch,
               });
 
               if (isMatch) {
-                const {
-                  properties,
-                  namespaceIdentifier,
-                } = specifiersToProperties(d.specifiers);
+                const { properties, namespaceIdentifier } =
+                  specifiersToProperties(d.specifiers);
                 const id = t.objectPattern(properties);
                 const init = t.awaitExpression(
                   t.callExpression(t.import(), [
@@ -130,6 +129,7 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                // @ts-ignore
                 file: path.hub.file.opts.filename,
                 isMatch: false,
                 isExportAllDeclaration: true,
@@ -179,6 +179,7 @@ export default function () {
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
+                // @ts-ignore
                 file: path.hub.file.opts.filename,
                 isMatch,
               });

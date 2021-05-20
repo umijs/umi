@@ -1,11 +1,11 @@
-import { join } from 'path';
 import { chalk, yParser } from '@umijs/utils';
 import { existsSync } from 'fs';
+import { join } from 'path';
+import initWebpack from './initWebpack';
 import { Service } from './ServiceWithBuiltIn';
 import fork from './utils/fork';
 import getCwd from './utils/getCwd';
 import getPkg from './utils/getPkg';
-import initWebpack from './initWebpack';
 
 const v = process.version;
 
@@ -37,6 +37,11 @@ if (args.version && !args._[0]) {
   args._[0] = 'help';
 }
 
+// allow parent framework to modify the title
+if (process.title === 'node') {
+  process.title = 'umi';
+}
+
 (async () => {
   try {
     switch (args._[0]) {
@@ -62,9 +67,11 @@ if (args.version && !args._[0]) {
         const name = args._[0];
         if (name === 'build') {
           process.env.NODE_ENV = 'production';
-          // Init webpack version determination and require hook for build command
-          initWebpack();
         }
+
+        // Init webpack version determination and require hook for build command
+        initWebpack();
+
         await new Service({
           cwd: getCwd(),
           pkg: getPkg(process.cwd()),

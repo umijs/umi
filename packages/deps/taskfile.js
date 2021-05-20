@@ -63,6 +63,8 @@ const babelBundlePackages = {
   '@babel/code-frame': '@umijs/deps/compiled/babel/code-frame',
   '@babel/core': '@umijs/deps/compiled/babel/core',
   '@babel/parser': '@umijs/deps/compiled/babel/parser',
+  '@babel/template': '@umijs/deps/compiled/babel/template',
+  '@babel/generator': '@umijs/deps/compiled/babel/generator',
   '@babel/register': '@umijs/deps/compiled/babel/register',
   '@babel/traverse': '@umijs/deps/compiled/babel/traverse',
   '@babel/types': '@umijs/deps/compiled/babel/types',

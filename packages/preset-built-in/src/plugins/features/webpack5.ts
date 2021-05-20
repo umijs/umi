@@ -77,6 +77,8 @@ export default (api: IApi) => {
       if (/*isTnpm*/ require('react-router/package').__npminstall_done) {
         // @ts-ignore
         memo.snapshot = {
+          // @ts-ignore
+          ...(memo.snapshot || {}),
           immutablePaths: [api.paths.absNodeModulesPath],
         };
       }

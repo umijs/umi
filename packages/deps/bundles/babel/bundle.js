@@ -10,6 +10,14 @@ function parser() {
   return require('@babel/parser');
 }
 
+function template() {
+  return require('@babel/template');
+}
+
+function generator() {
+  return require('@babel/generator');
+}
+
 function register() {
   return require('@babel/register');
 }
@@ -125,6 +133,9 @@ function pluginProposalRecordAndTuple() {
 module.exports = {
   codeFrame,
   core,
+  parser,
+  template,
+  generator,
   parser,
   register,
   traverse,
