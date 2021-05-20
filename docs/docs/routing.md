@@ -104,6 +104,7 @@ export default {
 ```
 
 Visiting `/` will jump to `/list`, which will be rendered by the `src/pages/list` file.
+Add option `search: true`，which will redirect with location.search。
 
 ### wrappers
 

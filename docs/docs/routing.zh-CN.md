@@ -103,6 +103,7 @@ export default {
 ```
 
 访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
+配置 `search: true`，跳转时会带上当前 location.search。
 
 ### wrappers
 
