@@ -56,7 +56,7 @@ export const getMfsuTmpPath = (api: IApi) => {
 export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
   const depInfo: {
     name: string;
-    renge: string;
+    range: string;
     alias?: string[];
   }[] = await api.applyPlugins({
     key: 'addDepInfo',
