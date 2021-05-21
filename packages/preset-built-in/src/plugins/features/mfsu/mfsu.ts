@@ -143,7 +143,9 @@ export default function (api: IApi) {
     },
     enableBy() {
       // 暂时只支持在 dev 时开启
-      return api.userConfig.mfsu && api.env === 'development';
+      return (
+        api.userConfig.mfsu && (api.env === 'development' || process.env.MFSUC)
+      );
     },
   });
 
@@ -232,9 +234,5 @@ export default function (api: IApi) {
     return memo.merge({
       experiments: { topLevelAwait: true },
     });
-  });
-  // 注入模块到window对象下，兼容某些包，例如：deep-extend
-  api.addEntryCodeAhead(() => {
-    return `\n// mfsu inject module to window. \nimport { Buffer } from 'buffer';\nwindow.Buffer = Buffer;\n`;
   });
 }

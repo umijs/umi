@@ -8,6 +8,7 @@ import { IApi } from 'umi';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import { getMfsuTmpPath, getAlias } from './mfsu';
+import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -15,7 +16,7 @@ export type Deps = {
   [pkg: string]: string;
 };
 
-export const prefix = '__umi_mfsu_';
+export const prefix = 'mf-va_';
 
 export const preBuild = async (api: IApi, deps: Deps) => {
   const tmpDir = getMfsuTmpPath(api);
@@ -79,6 +80,9 @@ export const preBuild = async (api: IApi, deps: Deps) => {
       },
     );
 
+    // 修改 chunk 名
+    mfConfig.plugins.push(new ModifyChunkNamePlugin());
+
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
@@ -124,8 +128,16 @@ export const preBuild = async (api: IApi, deps: Deps) => {
       );
     }
 
-    const stat = await bundler.build({ bundleConfigs: [mfConfig] });
+    // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
+    // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
+    mfConfig.plugins.push(
+      // @ts-ignore
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+    );
 
+    const stat = await bundler.build({ bundleConfigs: [mfConfig] });
     // 构建这次打包的依赖表，用于 diff
     writeFileSync(join(tmpDir, './info.json'), JSON.stringify(deps));
   }
