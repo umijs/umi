@@ -4,7 +4,6 @@ translateHelp: true
 
 # 插件开发
 
-
 在 Umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：
 
 ```js
@@ -69,7 +68,7 @@ yarn create umi --plugin
 $ yarn
 ```
 
-> 你也可以使用 npm install ，因为有编写测试，所以安装了 puppetee，如果你安装失败，可能需要科学上网，或者使用淘宝源。
+> 你也可以使用 npm install ，因为有编写测试，所以安装了 puppeteer，如果你安装失败，可能需要科学上网，或者使用淘宝源。
 
 ### Umi@3 插件命名特性
 

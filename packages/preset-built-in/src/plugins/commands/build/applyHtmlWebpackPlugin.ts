@@ -1,8 +1,17 @@
+import { BundlerConfigType, IApi, webpack } from '@umijs/types';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import { IApi, webpack, BundlerConfigType } from '@umijs/types';
-import { getHtmlGenerator } from '../htmlUtils';
 import { OUTPUT_SERVER_FILENAME } from '../../features/ssr/constants';
+import { getHtmlGenerator } from '../htmlUtils';
+
+export function fixRoutePathInWindows(path?: string) {
+  // window 下 : 不是一个合法路径，所以需要处理一下
+  // 不直接删除是为了保证 render 可以生效
+  if (!path || !path?.includes(':')) {
+    return path;
+  }
+  return path.replace(/:/g, '.');
+}
 
 export default function (api: IApi) {
   // maybe hack but useful
@@ -52,7 +61,7 @@ export default function (api: IApi) {
               },
             });
 
-            compilation.assets[file] = {
+            compilation.assets[fixRoutePathInWindows(file)!] = {
               source: () => content,
               size: () => content.length,
             };

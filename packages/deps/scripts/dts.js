@@ -41,6 +41,8 @@ function dts({ name }) {
 // - babel 相关
 [
   // babel 相关的先打包，然后再手动处理
+  // '@babel/template',
+  // '@babel/generator',
   // '@babel/types',
   // '@babel/traverse',
   // '@babel/parser',
@@ -89,7 +91,7 @@ function dts({ name }) {
   // 'webpack-sources',
   // 'yargs',
   // 'yargs-parser',
-  'prompts'
+  // 'prompts',
 ].forEach(name => {
   dts({
     name,

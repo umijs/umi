@@ -1,12 +1,4 @@
-import { addHtmlSuffix, fixRoutePathInWindows } from './exportStatic';
-
-test('exportStatic for :id', async () => {
-  expect(fixRoutePathInWindows('/:id')).toBe('/.id');
-});
-
-test('exportStatic for /id', async () => {
-  expect(fixRoutePathInWindows('/id')).toBe('/id');
-});
+import { addHtmlSuffix } from './exportStatic';
 
 test('addHtmlSuffix for /', async () => {
   expect(addHtmlSuffix('/', true)).toBe('/');

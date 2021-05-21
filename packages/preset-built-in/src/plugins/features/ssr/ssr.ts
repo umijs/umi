@@ -1,67 +1,66 @@
+import { webpack } from '@umijs/bundler-webpack';
+import { Route } from '@umijs/core';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
+import { BundlerConfigType, IApi } from '@umijs/types';
+import {
+  cleanRequireCache,
+  lodash as _,
+  Mustache,
+  routeToChunkName,
+  winPath,
+} from '@umijs/utils';
+import assert from 'assert';
 import * as fs from 'fs';
 import { EOL } from 'os';
-import assert from 'assert';
 import * as path from 'path';
-import serialize from '@umijs/deps/compiled/serialize-javascript';
 import { performance } from 'perf_hooks';
-import { Route } from '@umijs/core';
-import { IApi, BundlerConfigType } from '@umijs/types';
-import {
-  winPath,
-  Mustache,
-  lodash as _,
-  routeToChunkName,
-  cleanRequireCache,
-} from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
-import { webpack } from '@umijs/bundler-webpack';
-import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
+  CLIENT_EXPORTS,
   OUTPUT_SERVER_FILENAME,
   OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
-  CLIENT_EXPORTS,
 } from './constants';
+import ServerTypePlugin from './serverTypePlugin';
 
 /**
  * onBuildComplete for test case
  * replace default html template using client webpack bundle complete
  * @param api
  */
-export const onBuildComplete = (api: IApi, _isTest = false) => async ({
-  err,
-  stats,
-}: any) => {
-  if (!err && stats?.stats) {
-    const HTML_REG = /<html.*?<\/html>/m;
-    const [clientStats] = stats.stats;
-    const html = getHtmlGenerator({ api });
-    const [defaultHTML] =
-      JSON.stringify(
-        await html.getContent({
-          route: { path: api.config.publicPath },
-          chunks: clientStats.compilation.chunks,
-        }),
-      ).match(HTML_REG) || [];
-    const serverPath = path.join(
-      api.paths.absOutputPath!,
-      OUTPUT_SERVER_FILENAME,
-    );
-    if (fs.existsSync(serverPath) && defaultHTML) {
-      const serverContent = fs
-        .readFileSync(serverPath, 'utf-8')
-        .replace(HTML_REG, defaultHTML);
-      // for test case
-      if (_isTest) {
-        return serverContent;
+export const onBuildComplete =
+  (api: IApi, _isTest = false) =>
+  async ({ err, stats }: any) => {
+    if (!err && stats?.stats) {
+      const HTML_REG = /<html.*?<\/html>/m;
+      const [clientStats] = stats.stats;
+      const html = getHtmlGenerator({ api });
+      const [defaultHTML] =
+        JSON.stringify(
+          await html.getContent({
+            route: { path: api.config.publicPath },
+            chunks: clientStats.compilation.chunks,
+          }),
+        ).match(HTML_REG) || [];
+      const serverPath = path.join(
+        api.paths.absOutputPath!,
+        OUTPUT_SERVER_FILENAME,
+      );
+      if (fs.existsSync(serverPath) && defaultHTML) {
+        const serverContent = fs
+          .readFileSync(serverPath, 'utf-8')
+          .replace(HTML_REG, defaultHTML);
+        // for test case
+        if (_isTest) {
+          return serverContent;
+        }
+        await fs.promises.writeFile(serverPath, serverContent);
       }
-      await fs.promises.writeFile(serverPath, serverContent);
     }
-  }
-  return undefined;
-};
+    return undefined;
+  };
 
 export default (api: IApi) => {
   api.describe({
@@ -186,7 +185,9 @@ export default (api: IApi) => {
     );
     api.writeTmpFile({
       path: `${TMP_PLUGIN_DIR}/${CLIENT_EXPORTS}.ts`,
-      content: clientExportsContent,
+      content: Mustache.render(clientExportsContent, {
+        SSRUtils: winPath(require.resolve('@umijs/utils/lib/ssr')),
+      }),
     });
   });
 

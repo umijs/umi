@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "3.4.14",
+  "version": "3.4.21",
   "description": "@umijs/bundler-webpack",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -29,17 +29,17 @@
     "bundleWebpackHotDevClient": "COMPRESS=none ./bin/bundler-webpack.js build && node ./scripts/patchWebpackHotDevClient.js"
   },
   "devDependencies": {
-    "@types/sockjs-client": "1.1.1",
+    "@types/sockjs-client": "1.5.0",
     "anymatch": "3.1.1",
     "react-error-overlay": "6.0.9",
     "sockjs-client": "1.5.0",
     "strip-ansi": "6.0.0"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "3.4.14",
-    "@umijs/deps": "3.4.14",
-    "@umijs/types": "3.4.14",
-    "@umijs/utils": "3.4.14",
+    "@umijs/bundler-utils": "3.4.21",
+    "@umijs/deps": "3.4.21",
+    "@umijs/types": "3.4.21",
+    "@umijs/utils": "3.4.21",
     "jest-worker": "26.6.2",
     "node-libs-browser": "2.2.1",
     "normalize-url": "1.9.1",

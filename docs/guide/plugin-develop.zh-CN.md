@@ -64,7 +64,7 @@ yarn create umi --plugin
 $ yarn
 ```
 
-> 你也可以使用 npm install ，因为有编写测试，所以安装了 puppetee，如果你安装失败，可能需要科学上网，或者使用淘宝源。
+> 你也可以使用 npm install ，因为有编写测试，所以安装了 puppeteer，如果你安装失败，可能需要科学上网，或者使用淘宝源。
 
 ### Umi@3 插件命名特性
 

@@ -101,10 +101,29 @@ Umi 3 examples in `examples/*` directory
 
 ### Running the Examples apps
 
-Running examples can be done with:
+Running examples:
 
 ```sh
 yarn example dev examples/normal
+```
+
+### Create new examples
+
+Such as creating example `hello-world`.
+
+```bash
+$ mkdir -p examples/hello-world
+$ yarn bootstrap:examples
+```
+
+Then you will find the `README.md` and `package.json` is generated in `examples/hello-world`.
+
+```bash
+$ tree examples/hello-world
+examples/hello-world
+├── pages/index.tsx
+├── README.md
+└── package.json
 ```
 
 ## Benchmarks
