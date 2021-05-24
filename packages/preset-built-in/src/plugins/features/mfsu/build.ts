@@ -58,9 +58,12 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   for (let dep of Object.keys(deps)) {
     writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
-      ['antd'].includes(dep)
-        ? `export * from "${dep}";`
-        : `export * from "${dep}";import D from "${dep}";export default D;`,
+      [
+        ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
+        ['antd'].includes(dep)
+          ? `export * from "${dep}";`
+          : `export * from "${dep}";import D from "${dep}";export default D;`,
+      ].join('\n'),
       {
         flag: 'w+',
       },
@@ -79,6 +82,9 @@ export const preBuild = async (api: IApi, deps: Deps) => {
 
     // 添加 alias，避免用户手动安装 @umijs/renderer-react 和 @umijs/runtime
     const alias = await getAlias(api, { reverse: true });
+
+    console.log('paths', require.resolve('core-js'));
+
     mfConfig.resolve = lodash.merge(
       {
         ...mfConfig.resolve,
@@ -86,6 +92,14 @@ export const preBuild = async (api: IApi, deps: Deps) => {
       {
         alias,
       },
+      // core-js
+      process.env.BABEL_POLYFILL !== 'none'
+        ? {
+            alias: {
+              'core-js': require.resolve('core-js'),
+            },
+          }
+        : {},
     );
 
     // 修改 chunk 名
@@ -145,7 +159,6 @@ export const preBuild = async (api: IApi, deps: Deps) => {
         Buffer: ['buffer', 'Buffer'],
       }),
     );
-
     const stat = await bundler.build({ bundleConfigs: [mfConfig] });
 
     // 修改 remoteEntry.js，为拉取依赖添加 hash（缓存相关功能）

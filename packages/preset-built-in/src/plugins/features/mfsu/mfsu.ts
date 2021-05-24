@@ -23,7 +23,14 @@ const checkConfig = (api: IApi) => {
 };
 
 // 必须安装的模块
-const requireDeps = ['react', 'react-router-dom', 'react-router'];
+const requireDeps = [
+  'react',
+  'react-router-dom',
+  'react-router',
+  ...(process.env.BABEL_POLYFILL !== 'none'
+    ? ['core-js', 'regenerator-runtime/runtime']
+    : []),
+];
 
 // 不打包的模块
 const defaultExcludeDeps = ['umi'];
@@ -161,6 +168,38 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
+  // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
+  api.modifyBabelOpts({
+    fn: async (opts) => {
+      const userRedirect = api.userConfig.mfsu.redirect || {};
+      const redirect = lodash.merge(defaultRedirect, userRedirect);
+      opts.presets[0][1].env.useBuiltIns = false;
+      opts.plugins = [
+        AntdIconPlugin,
+        [BebelImportRedirectPlugin, redirect],
+        [
+          require.resolve('@umijs/babel-plugin-import-to-await-require'),
+          {
+            libs: Array.from(
+              new Set([
+                ...Object.keys(getDeps()).filter(
+                  (d) => !defaultExcludeDeps.includes(d),
+                ),
+                ...requireDeps,
+                ...getExtraDeps(api),
+              ]),
+            ),
+            remoteName: 'mf',
+            alias: await getAlias(api),
+          },
+        ],
+        ...opts.plugins,
+      ];
+      return opts;
+    },
+    stage: Infinity - 1,
+  });
+
   /** 暴露文件 */
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
@@ -188,47 +227,6 @@ export default function (api: IApi) {
 
   /** 修改 webpack 配置 */
   api.chainWebpack(async (memo) => {
-    const userRedirect = api.userConfig.mfsu.redirect || {};
-
-    const redirect = lodash.merge(defaultRedirect, userRedirect);
-
-    memo.module
-      .rule('import-to-await-require')
-      .test(/\.(js|jsx|ts|tsx|mjs)$/)
-      .exclude.add(/node_modules/)
-      .end()
-      .include.add([
-        api.cwd,
-        // import module out of cwd using APP_ROOT
-        // issue: https://github.com/umijs/umi/issues/5594
-        ...(process.env.APP_ROOT ? [process.cwd()] : []),
-      ])
-      .end()
-      .before('js')
-      .use('babel-lodaer')
-      .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
-      .options({
-        plugins: [
-          AntdIconPlugin,
-          [BebelImportRedirectPlugin, redirect],
-          [
-            require.resolve('@umijs/babel-plugin-import-to-await-require'),
-            {
-              libs: Array.from(
-                new Set([
-                  ...Object.keys(getDeps()).filter(
-                    (d) => !defaultExcludeDeps.includes(d),
-                  ),
-                  ...requireDeps,
-                  ...getExtraDeps(api),
-                ]),
-              ),
-              remoteName: 'mf',
-              alias: await getAlias(api),
-            },
-          ],
-        ],
-      });
     memo.plugin('mf').use(
       new webpack.container.ModuleFederationPlugin({
         name: 'umi-app',
