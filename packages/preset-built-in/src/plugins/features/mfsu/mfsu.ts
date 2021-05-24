@@ -9,6 +9,7 @@ import AntdIconPlugin from './babel-antd-icon-plugin';
 import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
+import url from 'url';
 
 const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
@@ -163,18 +164,23 @@ export default function (api: IApi) {
   /** 暴露文件 */
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
+      const { pathname } = url.parse(req.url);
       if (
         !api.userConfig.mfsu ||
         req.url === '/' ||
-        !existsSync(join(getMfsuTmpPath(api), '.' + req.url))
+        !existsSync(join(getMfsuTmpPath(api), '.' + pathname))
       ) {
         next();
       } else {
         const value = readFileSync(
-          join(getMfsuTmpPath(api), '.' + req.url),
+          join(getMfsuTmpPath(api), '.' + pathname),
           'utf-8',
         );
-        res.setHeader('content-type', mime.lookup(parse(req.url).ext));
+        res.setHeader('content-type', mime.lookup(parse(pathname || '').ext));
+        // 排除入口文件，因为 hash 是入口文件控制的
+        if (!/remoteEntry.js/.test(req.url)) {
+          res.setHeader('cache-control', 'max-age=31536000,immutable');
+        }
         res.send(value);
       }
     };

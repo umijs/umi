@@ -2,13 +2,21 @@ import { Bundler } from '@umijs/bundler-webpack';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { lodash, mkdirp } from '@umijs/utils';
-import { existsSync, readdirSync, unlinkSync, writeFileSync } from 'fs';
+import {
+  existsSync,
+  readdirSync,
+  unlinkSync,
+  writeFileSync,
+  readFileSync,
+} from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import { getMfsuTmpPath, getAlias } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
+import { transform } from '@babel/core';
+import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -83,11 +91,12 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     // 修改 chunk 名
     mfConfig.plugins.push(new ModifyChunkNamePlugin());
 
+    const remoteEntryFilename = prefix + 'remoteEntry.js';
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
         name: 'mf',
-        filename: prefix + 'remoteEntry.js',
+        filename: remoteEntryFilename,
         exposes,
       }),
     );
@@ -138,6 +147,26 @@ export const preBuild = async (api: IApi, deps: Deps) => {
     );
 
     const stat = await bundler.build({ bundleConfigs: [mfConfig] });
+
+    // 修改 remoteEntry.js，为拉取依赖添加 hash（缓存相关功能）
+    const remoteEntryPath = join(tmpDir, remoteEntryFilename);
+    const remoteEntryFileContent = readFileSync(remoteEntryPath, 'utf-8');
+
+    const hash = Date.now()
+      .toString()
+      .split('')
+      .reduce(function (a: number, b: string) {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return a & a;
+      }, 0);
+
+    writeFileSync(
+      remoteEntryPath,
+      transform(remoteEntryFileContent, {
+        filename: remoteEntryFilename,
+        plugins: [[ModifyRemoteEntryPlugin, { hash }]],
+      })!.code!,
+    );
     // 构建这次打包的依赖表，用于 diff
     writeFileSync(join(tmpDir, './info.json'), JSON.stringify(deps));
   }
