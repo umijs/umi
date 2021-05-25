@@ -215,7 +215,7 @@ export default class Config {
       ret = deepmerge(ret, config, {
         customMerge: (key) => {
           if (key === 'chunks') {
-            return (_previous, current) => current;
+            return (previous, current) => Array.isArray(current) ? current : previous;
           } else {
             return undefined;
           }
