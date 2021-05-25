@@ -97,7 +97,7 @@ jobs:
       - script: yarn --frozen-lockfile
       - script: yarn build
         displayName: build
-      - script: NODE_OPTIONS='--max-old-space-size=8192'yarn test --forceExit --detectOpenHandles --maxWorkers=4
+      - script: NODE_OPTIONS='--max-old-space-size=8192' yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
           CI: true
