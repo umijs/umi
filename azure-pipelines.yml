@@ -35,7 +35,7 @@ jobs:
         displayName: install
       - script: yarn build
         displayName: build
-      - script: set NODE_OPTIONS='--max-old-space-size=8192' yarn test --forceExit --detectOpenHandles --maxWorkers=4
+      - script: set NODE_OPTIONS='--max-old-space-size=8192' && yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
           CI: true
