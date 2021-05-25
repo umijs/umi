@@ -79,7 +79,7 @@ const getPackages = require('./utils/getPackages');
       'pages',
       'index.tsx',
     );
-    if (args.force || !existsSync(indexPath)) {
+    if (!existsSync(indexPath)) {
       await mkdirp(join(indexPath, '..'));
       writeFileSync(indexPath, `import React from 'react';
 import type { FC } from 'react';

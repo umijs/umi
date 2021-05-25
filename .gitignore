@@ -19,7 +19,7 @@ report.*.json
 output.txt
 /examples/*/dist
 /packages/bundler-webpack/src/fixtures/outputPath/bar
-/examples/*/node_modules
+/examples/**/node_modules
 /examples/*/yarn.lock
 /examples/*/app/public
 /examples/*/logs
