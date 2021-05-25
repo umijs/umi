@@ -217,7 +217,7 @@ export default async function getConfig(
             .add((a: any) => {
               // 支持绝对路径匹配
               if (isAbsolute(include)) {
-                return isAbsolute(include);
+                return a.includes(include);
               }
 
               // 支持 node_modules 下的 npm 包
