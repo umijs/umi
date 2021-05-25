@@ -35,6 +35,9 @@ const getPackages = require('./utils/getPackages');
         keywords: ['umi', 'umi examples'],
         authors: ['chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)'],
         license: 'MIT',
+        dependencies: {
+          umi: "latest"
+        },
         bugs: 'http://github.com/umijs/umi/issues',
         homepage: `https://github.com/umijs/umi/tree/master/examples/${shortName}#readme`,
       };
