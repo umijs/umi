@@ -1,0 +1,8 @@
+{
+  "name": "head",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "react": "^16.0.0"
+  },
+  "license": "MIT"
+}
