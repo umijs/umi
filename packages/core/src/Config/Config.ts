@@ -212,7 +212,15 @@ export default class Config {
     let ret = {};
     for (const config of configs) {
       // TODO: 精细化处理，比如处理 dotted config key
-      ret = deepmerge(ret, config);
+      ret = deepmerge(ret, config, {
+        customMerge: (key) => {
+          if (key === 'chunks') {
+            return (_previous, current) => current;
+          } else {
+            return undefined;
+          }
+        },
+      });
     }
     return ret;
   }
