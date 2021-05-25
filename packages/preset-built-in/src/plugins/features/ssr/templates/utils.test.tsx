@@ -156,6 +156,12 @@ test('handleHTML dynamicImport', async () => {
       'vendors~p__index.js': '/public/vendors~p__index.js',
       'index.html': '/public/index.html',
     },
+    assets: {
+      'umi': ['/public/umi.css', '/public/umi.js'],
+      'vendors~p__index': ['/public/vendors~p__index.chunk.css', '/public/vendors~p__index.js'],
+      'p__index': ['/public/p__index.chunk.css', '/public/p__index.js'],
+      'p__users': ['/public/p__users.chunk.css', '/public/p__users.js'],
+    },
     mountElementId: 'root',
   };
   const homeHTML = await handleHTML({
@@ -239,6 +245,13 @@ test('handleHTML complex', async () => {
       'wrappers.css': '/wrappers.chunk.css',
       'wrappers.js': '/wrappers.js',
       'index.html': '/index.html',
+    },
+    assets: {
+      'umi': ['/umi.css', '/umi.js'],
+      'layouts__index': ['/layouts__index.chunk.css', '/layouts__index.js'],
+      'p__index': ['/p__index.chunk.css', '/p__index.js'],
+      'p__me': ['/p__me.chunk.css', '/p__me.js'],
+      'wrappers': ['/wrappers.chunk.css', '/wrappers.js'],
     },
     mountElementId: 'root',
   };

@@ -36,6 +36,7 @@ const render: IServerRender = async (params) => {
     getInitialPropsCtx,
   } = params;
   let manifest = params.manifest;
+  let assets = params.assets;
   const env = '{{{ Env }}}';
 
   let html = htmlTemplate || {{{ DEFAULT_HTML_PLACEHOLDER }}};
@@ -97,6 +98,7 @@ const render: IServerRender = async (params) => {
       try {
         // prerender not work because the manifest generation behind of the prerender
         manifest = requireFunc(`./{{{ ManifestFileName }}}`);
+        assets = requireFunc('./chunk-manifest.json');
       } catch (_) {}
     }
     // renderServer get rootContainer
@@ -113,11 +115,12 @@ const render: IServerRender = async (params) => {
           cheerio,
           routesMatched,
           dynamicImport,
-          manifest
+          manifest,
+          assets
         },
         async: true,
       });
-      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest });
+      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest, assets });
     }
   } catch (e) {
     // downgrade into csr

@@ -61,6 +61,7 @@ export interface IHandleHTMLOpts {
   html: string;
   dynamicImport: boolean;
   manifest: object;
+  assets: object
 }
 
 /**
@@ -106,6 +107,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}): Promise<s
     routesMatched,
     dynamicImport,
     manifest,
+    assets,
   } = opts;
   let html = opts.html;
   if (typeof html !== 'string') {
@@ -124,27 +126,16 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}): Promise<s
   if (dynamicImport && Array.isArray(routesMatched)) {
     const chunks: string[] = getPageChunks(
       routesMatched.map((routeMatched) => routeMatched?.route),
-    );
-    if (chunks?.length > 0) {
-      // only load css chunks to avoid page flashing
-      const cssChunkSet: string[] = [];
-      chunks.forEach((chunk) => {
-        Object.keys(manifest || {}).forEach((manifestChunk) => {
-          if (
-            manifestChunk !== 'umi.css' &&
-            chunk &&
-            // issue: https://github.com/umijs/umi/issues/6259
-            (manifestChunk.startsWith(chunk) ||
-              manifestChunk.indexOf(`~${chunk}`) > -1) &&
-            manifest &&
-            /\.css$/.test(manifest[manifestChunk])
-          ) {
-            cssChunkSet.push(
-              `<link rel="preload" href="${manifest[manifestChunk]}"/><link rel="stylesheet" href="${manifest[manifestChunk]}" />`,
-            );
-          }
-        });
-      });
+      );
+      if (chunks?.length > 0) {
+        // only load css chunks to avoid page flashing
+        const cssChunkSet: string[] = [];
+        chunks.forEach((chunk) => {
+          if(!assets || !Array.isArray(assets[chunk])) return;
+          assets[chunk].forEach((resource: string) => {
+            if (/\.css$/.test(resource)) cssChunkSet.push(`<link rel="preload" href="${resource}" as="style" /><link rel="stylesheet" href="${resource}" />`);
+          })
+        })
       // avoid repeat
       html = html.replace('</head>', `${cssChunkSet.join(EOL)}${EOL}</head>`);
     }

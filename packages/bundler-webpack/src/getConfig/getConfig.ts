@@ -7,7 +7,7 @@ import {
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import Config from 'webpack-chain';
 import { join, isAbsolute } from 'path';
-import { existsSync } from 'fs';
+import { writeFileSync, existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
   getBabelDepsOpts,
@@ -498,16 +498,48 @@ export default async function getConfig(
     if (config.manifest && type === BundlerConfigType.csr) {
       webpackConfig
         .plugin('manifest')
-        .use(
-          require('@umijs/deps/compiled/webpack-manifest-plugin')
-            .WebpackManifestPlugin,
-          [
-            {
-              fileName: 'asset-manifest.json',
-              ...config.manifest,
+        .use(require('@umijs/deps/compiled/webpack-assets-manifest'), [
+          {
+            output: 'asset-manifest.json',
+            publicPath: true,
+            writeToDisk: true,
+            customize: ({ key, value }: { key: string; value: string }) => {
+              // You can prevent adding items to the manifest by returning false.
+              if (key.toLowerCase().endsWith('.map')) return false;
+              return { key, value };
             },
-          ],
-        );
+            done: (manifest: any, stats: any) => {
+              const chunkFileName = join(absOutputPath, 'chunk-manifest.json');
+              try {
+                const fileFilter = (file: string) => !file.endsWith('.map');
+                const addPath = (file: string) => manifest.getPublicPath(file);
+                const chunkFiles = stats.compilation.chunkGroups.reduce(
+                  (acc: any[], c: any) => {
+                    acc[c.name] = [
+                      ...(acc[c.name] || []),
+                      ...c.chunks.reduce(
+                        (files: any[], cc: any) => [
+                          ...files,
+                          ...cc.files.filter(fileFilter).map(addPath),
+                        ],
+                        [],
+                      ),
+                    ];
+                    return acc;
+                  },
+                  Object.create(null),
+                );
+                writeFileSync(
+                  chunkFileName,
+                  JSON.stringify(chunkFiles, null, 2),
+                );
+              } catch (error) {
+                console.error(`ERROR: Cannot write ${chunkFileName}: `, error);
+                if (!isDev) process.exit(1);
+              }
+            },
+          },
+        ]);
     }
   };
 

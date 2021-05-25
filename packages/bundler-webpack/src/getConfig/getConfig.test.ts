@@ -237,8 +237,7 @@ test('config.manifest + production', async () => {
     config.plugins?.filter((plugin) => {
       return (
         plugin instanceof
-        require('@umijs/deps/compiled/webpack-manifest-plugin')
-          .WebpackManifestPlugin
+        require('@umijs/deps/compiled/webpack-assets-manifest')
       );
     }).length,
   ).toEqual(1);

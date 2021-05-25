@@ -756,6 +756,16 @@ export async function ncc_webpack_manifest_plugin(task, opts) {
     .target('compiled/webpack-manifest-plugin');
 }
 
+externals['webpack-assets-manifest'] = '@umijs/deps/compiled/webpack-assets-manifest';
+export async function ncc_webpack_assets_manifest(task, opts) {
+  await task
+    .source(
+      opts.src || relative(__dirname, require.resolve('webpack-assets-manifest'))
+    )
+    .ncc({ packageName: 'webpack-assets-manifest', externals })
+    .target('compiled/webpack-assets-manifest');
+}
+
 externals['webpackbar'] = '@umijs/deps/compiled/webpackbar';
 export async function ncc_webpackbar(task, opts) {
   await task
@@ -962,6 +972,7 @@ export async function ncc(task) {
       'ncc_webpack_chain',
       'ncc_webpack_dev_middleware', // webpack-dev-middleware
       'ncc_webpack_manifest_plugin', // webpack-manifest-plugin
+      'ncc_webpack_assets_manifest', // webpack-assets-manifest
       'ncc_webpackbar',
       'ncc_yargs_parser',
       'ncc_yargs',
