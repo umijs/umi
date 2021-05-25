@@ -9,7 +9,7 @@ export function watchDeps(opts: {
   onChange: Function;
 }) {
   const pkgPath = join(opts.cwd, 'package.json');
-  const preDeps = getPrevDeps(opts.api);
+  const preDeps = getPrevDeps(opts.api, { mode: 'development' });
   const watcher = chokidar.watch(pkgPath, {
     ignoreInitial: true,
   });

@@ -1,5 +1,5 @@
 import { lodash } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, readdir, copyFileSync } from 'fs';
 import mime from 'mime';
 import { join, parse } from 'path';
 import { IApi } from 'umi';
@@ -10,6 +10,10 @@ import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
 import url from 'url';
+import { Logger } from '@umijs/core';
+const logger = new Logger('umi:preset-build-in');
+
+export type TMode = 'production' | 'development';
 
 const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
@@ -43,22 +47,59 @@ const defaultRedirect = {
   },
 };
 
-export const getPrevDeps = (api: IApi) => {
-  const infoPath = join(getMfsuTmpPath(api), './info.json');
+export const getPrevDeps = (
+  api: IApi,
+  { path, mode }: { path?: string; mode: TMode },
+) => {
+  const infoPath = join(path || getMfsuPath(api, { mode }), './info.json');
   return existsSync(infoPath) ? require(infoPath) : {};
 };
 
-export const getDeps = (): Deps => {
+export const getDeps = async (api: IApi) => {
   const pkgPath = join(process.cwd(), 'package.json');
   const { dependencies = {}, peerDependencies = {} } = existsSync(pkgPath)
     ? require(pkgPath)
     : {};
-  const deps = { ...dependencies, ...peerDependencies };
+  const deps: Deps = { ...dependencies, ...peerDependencies };
+  requireDeps
+    .concat(Object.values(await getAlias(api)))
+    .forEach((requireDep) => {
+      if (!deps[requireDep]) {
+        deps[requireDep] = '*';
+      }
+    });
+
+  const extraDeps = getIncludeDeps(api);
+
+  if (extraDeps) {
+    extraDeps.forEach((ed) => {
+      deps[ed] = '*';
+    });
+  }
+
+  getExcludeDeps(api).forEach((ded) => {
+    if (deps[ded]) {
+      delete deps[ded];
+    }
+  });
   return deps;
 };
 
-export const getMfsuTmpPath = (api: IApi) => {
-  return join(api.paths.absTmpPath!, '.cache', '.mfsu');
+export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
+  if (mode === 'development') {
+    const configPath = api.userConfig.mfsu?.development?.output;
+    return configPath
+      ? join(process.cwd(), configPath)
+      : join(api.paths.absTmpPath!, '.cache', '.mfsu');
+  } else if (mode === 'production') {
+    const configPath = api.userConfig.mfsu?.production?.output;
+    return configPath
+      ? join(process.cwd(), configPath)
+      : join(process.cwd(), './.mfsu-production');
+  }
+  throw new Error(
+    '未知的 mode 参数：' + mode + ', 应为 development 或 production',
+  );
 };
 
 export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
@@ -89,41 +130,24 @@ export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
   return aliasResult;
 };
 
-export const getExtraDeps = (api: IApi) => [
-  ...(api.userConfig.mfsu.extraDeps || []),
+export const getIncludeDeps = (api: IApi) => [
+  ...(api.userConfig.mfsu.includes || []),
+];
+export const getExcludeDeps = (api: IApi) => [
+  ...defaultExcludeDeps,
+  ...(api.userConfig.mfsu.excludes || []),
 ];
 
 export default function (api: IApi) {
   api.onStart(async ({ name }) => {
+    checkConfig(api);
+
+    const deps = await getDeps(api);
+
+    // dev mode
     if (name === 'dev') {
-      checkConfig(api);
-
-      let deps = getDeps();
-
-      requireDeps
-        .concat(Object.values(await getAlias(api)))
-        .forEach((requireDep) => {
-          if (!deps[requireDep]) {
-            deps[requireDep] = '*';
-          }
-        });
-
-      const extraDeps = getExtraDeps(api);
-
-      if (extraDeps) {
-        extraDeps.forEach((ed) => {
-          deps[ed] = '*';
-        });
-      }
-
-      defaultExcludeDeps.forEach((ded) => {
-        if (deps[ded]) {
-          delete deps[ded];
-        }
-      });
-
-      if (!lodash.isEqual(getPrevDeps(api), deps)) {
-        await preBuild(api, deps);
+      if (!lodash.isEqual(getPrevDeps(api, { mode: 'development' }), deps)) {
+        await preBuild(api, { deps, mode: 'development' });
       }
 
       const unwatch = watchDeps({
@@ -135,6 +159,32 @@ export default function (api: IApi) {
         },
       });
     }
+    // prod mode
+    if (name === 'build') {
+      if (!lodash.isEqual(getPrevDeps(api, { mode: 'production' }), deps)) {
+        await preBuild(api, {
+          deps,
+          mode: 'production',
+          outputPath: getMfsuPath(api, { mode: 'production' }),
+        });
+      }
+    }
+  });
+
+  // 针对 production 模式，build 完后将产物移动到 dist 中
+  api.onBuildComplete(() => {
+    const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
+    readdir(mfsuProdPath, (err, files) => {
+      if (err) {
+        throw err;
+      }
+      files.forEach((file) => {
+        copyFileSync(
+          join(mfsuProdPath, file),
+          join(process.cwd(), './dist', file),
+        );
+      });
+    });
   });
 
   api.describe({
@@ -143,16 +193,24 @@ export default function (api: IApi) {
       schema(joi) {
         return joi
           .object({
-            extraDeps: joi.array(),
+            includes: joi.array(),
+            excludes: joi.array(),
             redirect: joi.object(),
+            development: joi.object({
+              output: joi.string(),
+            }),
+            production: joi.object({
+              output: joi.string(),
+            }),
           })
           .description('open mfsu feature');
       },
     },
     enableBy() {
-      // 暂时只支持在 dev 时开启
       return (
-        api.userConfig.mfsu && (api.env === 'development' || process.env.MFSUC)
+        (api.env === 'development' && api.userConfig.mfsu) ||
+        (api.env === 'production' && api.userConfig.mfsu?.production) ||
+        process.env.MFSUC
       );
     },
   });
@@ -168,12 +226,12 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
-  // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
+  // 为 babel 提供相关插件
   api.modifyBabelOpts({
     fn: async (opts) => {
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const redirect = lodash.merge(defaultRedirect, userRedirect);
-      opts.presets[0][1].env.useBuiltIns = false;
+      opts.presets[0][1].env.useBuiltIns = false; // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
       opts.plugins = [
         AntdIconPlugin,
         [BebelImportRedirectPlugin, redirect],
@@ -182,11 +240,11 @@ export default function (api: IApi) {
           {
             libs: Array.from(
               new Set([
-                ...Object.keys(getDeps()).filter(
-                  (d) => !defaultExcludeDeps.includes(d),
+                ...Object.keys(await getDeps(api)).filter(
+                  (d) => !getExcludeDeps(api).includes(d),
                 ),
                 ...requireDeps,
-                ...getExtraDeps(api),
+                ...getIncludeDeps(api),
               ]),
             ),
             remoteName: 'mf',
@@ -207,12 +265,14 @@ export default function (api: IApi) {
       if (
         !api.userConfig.mfsu ||
         req.url === '/' ||
-        !existsSync(join(getMfsuTmpPath(api), '.' + pathname))
+        !existsSync(
+          join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
+        )
       ) {
         next();
       } else {
         const value = readFileSync(
-          join(getMfsuTmpPath(api), '.' + pathname),
+          join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
           'utf-8',
         );
         res.setHeader('content-type', mime.lookup(parse(pathname || '').ext));

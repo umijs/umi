@@ -13,7 +13,7 @@ import { join } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { getMfsuTmpPath, getAlias } from './mfsu';
+import { getMfsuPath, getAlias, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 import { transform } from '@babel/core';
 import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
@@ -26,8 +26,17 @@ export type Deps = {
 
 export const prefix = 'mf-va_';
 
-export const preBuild = async (api: IApi, deps: Deps) => {
-  const tmpDir = getMfsuTmpPath(api);
+interface IPreBuildOpts {
+  deps: Deps;
+  mode?: TMode;
+  outputPath?: string;
+}
+
+export const preBuild = async (
+  api: IApi,
+  { deps = {}, mode = 'development', outputPath = '' }: IPreBuildOpts,
+) => {
+  const tmpDir = outputPath || getMfsuPath(api, { mode });
 
   if (!existsSync(tmpDir)) {
     await mkdirp(tmpDir);
@@ -73,6 +82,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
   writeFileSync(join(tmpDir, './index.js'), entryFile);
 
   if (mfConfig.plugins) {
+    mfConfig.mode = mode;
     mfConfig.stats = 'none';
     // @ts-ignore
     mfConfig.entry = join(tmpDir, 'index.js');
@@ -82,8 +92,6 @@ export const preBuild = async (api: IApi, deps: Deps) => {
 
     // 添加 alias，避免用户手动安装 @umijs/renderer-react 和 @umijs/runtime
     const alias = await getAlias(api, { reverse: true });
-
-    console.log('paths', require.resolve('core-js'));
 
     mfConfig.resolve = lodash.merge(
       {
@@ -129,14 +137,23 @@ export const preBuild = async (api: IApi, deps: Deps) => {
       });
     });
 
-    // 删除 DevCompileDonePlugin、WebpackBarPlugin和BundleAnalyzerPlugin
+    // 删除部分不需要的插件
     mfConfig.plugins.forEach((plugin, index) => {
       if (
         [
           'DevCompileDonePlugin',
           'WebpackBarPlugin',
           'BundleAnalyzerPlugin',
+          'HtmlWebpackPlugin',
         ].includes(plugin.constructor.name)
+      ) {
+        mfConfig.plugins!.splice(index, 1);
+      }
+
+      if (
+        plugin.constructor.name === 'ModuleFederationPlugin' &&
+        // @ts-ignore
+        plugin._options.name === 'umi-app'
       ) {
         mfConfig.plugins!.splice(index, 1);
       }
@@ -159,6 +176,7 @@ export const preBuild = async (api: IApi, deps: Deps) => {
         Buffer: ['buffer', 'Buffer'],
       }),
     );
+
     const stat = await bundler.build({ bundleConfigs: [mfConfig] });
 
     // 修改 remoteEntry.js，为拉取依赖添加 hash（缓存相关功能）
