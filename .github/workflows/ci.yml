@@ -37,7 +37,7 @@ jobs:
         run: yarn --ignore-engines
       - run: yarn build
       - run: yarn run tsc --noEmit
-      - run: yarn test --detectOpenHandles --maxWorkers=1 --forceExit
+      - run: NODE_OPTIONS='--max-old-space-size=8192' yarn test --detectOpenHandles --maxWorkers=1 --forceExit
         env:
           CI: true
           HEADLESS: false
