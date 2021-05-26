@@ -15,6 +15,8 @@ import {
 } from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
+// @ts-ignore
+import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
 import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
@@ -25,8 +27,6 @@ import {
   CLIENT_EXPORTS,
   CHUNK_MANIFEST,
 } from './constants';
-
-import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
 
 class ManifestChunksMapPlugin {
   constructor(public opts: { api: IApi }) {
