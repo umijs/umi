@@ -387,7 +387,9 @@ export default (api: IApi) => {
 
       config.externals([]);
     } else {
-      config.plugin('BatmanPlugin').use(ManifestChunksMapPlugin, [{ api }]);
+      config
+        .plugin('ManifestChunksMap')
+        .use(ManifestChunksMapPlugin, [{ api }]);
       // define client bundler config
       config.plugin('define').tap(([args]) => [
         {
