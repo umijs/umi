@@ -125,25 +125,17 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}): Promise<s
     const chunks: string[] = getPageChunks(
       routesMatched.map((routeMatched) => routeMatched?.route),
     );
+    // @ts-ignore
+    const assets = manifest?._chunksMap;
     if (chunks?.length > 0) {
       // only load css chunks to avoid page flashing
       const cssChunkSet: string[] = [];
       chunks.forEach((chunk) => {
-        Object.keys(manifest || {}).forEach((manifestChunk) => {
-          if (
-            manifestChunk !== 'umi.css' &&
-            chunk &&
-            // issue: https://github.com/umijs/umi/issues/6259
-            (manifestChunk.startsWith(chunk) ||
-              manifestChunk.indexOf(`~${chunk}`) > -1) &&
-            manifest &&
-            /\.css$/.test(manifest[manifestChunk])
-          ) {
-            cssChunkSet.push(
-              `<link rel="preload" href="${manifest[manifestChunk]}"/><link rel="stylesheet" href="${manifest[manifestChunk]}" />`,
-            );
-          }
-        });
+        if(!assets || !Array.isArray(assets[chunk])) return;
+
+        assets[chunk].forEach((resource: string) => {
+          if (/\.css$/.test(resource)) cssChunkSet.push(`<link rel="preload" href="${resource}" as="style" /><link rel="stylesheet" href="${resource}" />`);
+        })
       });
       // avoid repeat
       html = html.replace('</head>', `${cssChunkSet.join(EOL)}${EOL}</head>`);
