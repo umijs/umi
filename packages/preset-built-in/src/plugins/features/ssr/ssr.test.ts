@@ -9,6 +9,7 @@ const fixtures = join(__dirname, 'fixtures');
 test('onBuildComplete normal', async () => {
   const writeFileSpy = jest
     .spyOn(promises, 'writeFile')
+    // @ts-ignore
     .mockImplementation(async (_, content) => {
       return content;
     });
