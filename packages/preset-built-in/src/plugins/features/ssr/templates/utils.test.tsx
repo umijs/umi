@@ -155,6 +155,12 @@ test('handleHTML dynamicImport', async () => {
       'vendors~p__index.css': '/public/vendors~p__index.chunk.css',
       'vendors~p__index.js': '/public/vendors~p__index.js',
       'index.html': '/public/index.html',
+      _chunksMap: {
+        'umi': ['/public/umi.css', '/public/umi.js'],
+        'vendors~p__index': ['/public/vendors~p__index.chunk.css', '/public/vendors~p__index.js'],
+        'p__index': ['/public/p__index.chunk.css', '/public/p__index.js'],
+        'p__users': ['/public/p__users.chunk.css', '/public/p__users.js'],
+      }
     },
     mountElementId: 'root',
   };
@@ -239,6 +245,13 @@ test('handleHTML complex', async () => {
       'wrappers.css': '/wrappers.chunk.css',
       'wrappers.js': '/wrappers.js',
       'index.html': '/index.html',
+      _chunksMap: {
+        'umi': ['/umi.css', '/umi.js'],
+        'layouts__index': ['/layouts__index.chunk.css', '/layouts__index.js'],
+        'p__index': ['/p__index.chunk.css', '/p__index.js'],
+        'p__me': ['/p__me.chunk.css', '/p__me.js'],
+        'wrappers': ['/wrappers.chunk.css', '/wrappers.js'],
+      }
     },
     mountElementId: 'root',
   };

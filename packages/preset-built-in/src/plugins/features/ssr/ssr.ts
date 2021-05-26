@@ -15,6 +15,8 @@ import {
 } from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { webpack } from '@umijs/bundler-webpack';
+// @ts-ignore
+import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
 import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
@@ -23,44 +25,89 @@ import {
   OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
   CLIENT_EXPORTS,
+  CHUNK_MANIFEST,
 } from './constants';
+
+class ManifestChunksMapPlugin {
+  constructor(public opts: { api: IApi }) {
+    this.opts = opts;
+  }
+
+  apply(compiler: webpack.Compiler) {
+    let chunkGroups: any;
+    const { beforeEmit } = getCompilerHooks(compiler);
+
+    compiler.hooks.emit.tapPromise(
+      'ManifestChunksMapPlugin',
+      async (compilation: any) => {
+        chunkGroups = compilation.chunkGroups;
+      },
+    );
+
+    beforeEmit.tap('ManifestChunksMapPlugin', (manifest: object) => {
+      if (chunkGroups) {
+        const fileFilter = (file: string) =>
+          !file.endsWith('.map') && !file.endsWith('.hot-update.js');
+        const addPath = (file: string) =>
+          `${this.opts.api.config.publicPath}${file}`;
+        try {
+          const _chunksMap = chunkGroups.reduce((acc: any[], c: any) => {
+            acc[c.name] = [
+              ...(acc[c.name] || []),
+              ...c.chunks.reduce(
+                (files: any[], cc: any) => [
+                  ...files,
+                  ...cc.files.filter(fileFilter).map(addPath),
+                ],
+                [],
+              ),
+            ];
+            return acc;
+          }, {});
+          return {
+            // IMPORTANT: hard code for `_chunkMap` field
+            _chunksMap,
+            ...manifest,
+          };
+        } catch (e) {
+          this.opts.api.logger.error('[SSR chunkMap ERROR]', e);
+        }
+      }
+      return manifest;
+    });
+  }
+}
 
 /**
  * onBuildComplete for test case
  * replace default html template using client webpack bundle complete
  * @param api
  */
-export const onBuildComplete =
-  (api: IApi, _isTest = false) =>
-  async ({ err, stats }: any) => {
-    if (!err && stats?.stats) {
-      const HTML_REG = /<html.*?<\/html>/m;
-      const [clientStats] = stats.stats;
-      const html = getHtmlGenerator({ api });
-      const [defaultHTML] =
-        JSON.stringify(
-          await html.getContent({
-            route: { path: api.config.publicPath },
-            chunks: clientStats.compilation.chunks,
-          }),
-        ).match(HTML_REG) || [];
-      const serverPath = path.join(
-        api.paths.absOutputPath!,
-        OUTPUT_SERVER_FILENAME,
-      );
-      if (fs.existsSync(serverPath) && defaultHTML) {
-        const serverContent = fs
-          .readFileSync(serverPath, 'utf-8')
-          .replace(HTML_REG, defaultHTML);
-        // for test case
-        if (_isTest) {
-          return serverContent;
-        }
-        await fs.promises.writeFile(serverPath, serverContent);
-      }
+export const onBuildComplete = (api: IApi) => async ({ err, stats }: any) => {
+  if (!err && stats?.stats) {
+    const HTML_REG = /<html.*?<\/html>/m;
+    const [clientStats] = stats.stats;
+    const html = getHtmlGenerator({ api });
+    const [defaultHTML] =
+      JSON.stringify(
+        await html.getContent({
+          route: { path: api.config.publicPath },
+          chunks: clientStats.compilation.chunks,
+        }),
+      ).match(HTML_REG) || [];
+    const serverPath = path.join(
+      api.paths.absOutputPath!,
+      OUTPUT_SERVER_FILENAME,
+    );
+    if (fs.existsSync(serverPath) && defaultHTML) {
+      const serverContent = fs
+        .readFileSync(serverPath, 'utf-8')
+        .replace(HTML_REG, defaultHTML);
+      await fs.promises.writeFile(serverPath, serverContent);
     }
-    return undefined;
-  };
+  }
+  return undefined;
+};
 
 export default (api: IApi) => {
   api.describe({
@@ -173,7 +220,7 @@ export default (api: IApi) => {
         Basename: api.config.base,
         PublicPath: api.config.publicPath,
         ManifestFileName: api.config.manifest
-          ? api.config.manifest.fileName || 'asset-manifest.json'
+          ? api.config.manifest.fileName || CHUNK_MANIFEST
           : '',
         DEFAULT_HTML_PLACEHOLDER: serialize(defaultHTML),
       }),
@@ -228,18 +275,15 @@ export default (api: IApi) => {
     // force enable writeToDisk
     // @ts-ignore
     config.devServer.writeToDisk = (filePath: string) => {
-      const manifestFile =
-        // @ts-ignore
-        api.config?.manifest?.fileName || 'asset-manifest.json';
       const regexp = new RegExp(
-        `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME}|${manifestFile})$`,
+        `(${OUTPUT_SERVER_FILENAME}|${OUTPUT_SERVER_TYPE_FILENAME})$`,
       );
       return regexp.test(filePath);
     };
     // enable manifest
     if (config.dynamicImport) {
       config.manifest = {
-        writeToFileEmit: false,
+        writeToFileEmit: true,
         ...(config.manifest || {}),
       };
     }
@@ -343,6 +387,9 @@ export default (api: IApi) => {
 
       config.externals([]);
     } else {
+      config
+        .plugin('ManifestChunksMap')
+        .use(ManifestChunksMapPlugin, [{ api }]);
       // define client bundler config
       config.plugin('define').tap(([args]) => [
         {
