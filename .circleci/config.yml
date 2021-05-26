@@ -23,6 +23,9 @@ jobs:
           name: Run Build
           command: yarn build
       - run:
+          name: Run Type Check
+          command: yarn run tsc --noEmit
+      - run:
           name: Run Tests
           command: yarn test:coverage --forceExit --detectOpenHandles --runInBand
           no_output_timeout: 300m
