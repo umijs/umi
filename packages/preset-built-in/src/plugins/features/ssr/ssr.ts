@@ -83,10 +83,7 @@ class ManifestChunksMapPlugin {
  * replace default html template using client webpack bundle complete
  * @param api
  */
-export const onBuildComplete = (api: IApi, _isTest = false) => async ({
-  err,
-  stats,
-}: any) => {
+export const onBuildComplete = (api: IApi) => async ({ err, stats }: any) => {
   if (!err && stats?.stats) {
     const HTML_REG = /<html.*?<\/html>/m;
     const [clientStats] = stats.stats;
@@ -106,10 +103,6 @@ export const onBuildComplete = (api: IApi, _isTest = false) => async ({
       const serverContent = fs
         .readFileSync(serverPath, 'utf-8')
         .replace(HTML_REG, defaultHTML);
-      // for test case
-      if (_isTest) {
-        return serverContent;
-      }
       await fs.promises.writeFile(serverPath, serverContent);
     }
   }
