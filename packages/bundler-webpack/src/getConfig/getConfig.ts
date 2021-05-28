@@ -556,7 +556,11 @@ export default async function getConfig(
               ),
               sourceMap: config.devtool !== false,
               cache: process.env.TERSER_CACHE !== 'none',
-              parallel: true,
+              // 兼容内部流程系统，读到的 cpu 数并非真实的
+              // 使用 SIGMA_MAX_PROCESSORS_LIMIT 指定真核数
+              parallel: process.env.SIGMA_MAX_PROCESSORS_LIMIT
+                ? parseInt(process.env.SIGMA_MAX_PROCESSORS_LIMIT, 10)
+                : true,
               extractComments: false,
             },
           ]);
