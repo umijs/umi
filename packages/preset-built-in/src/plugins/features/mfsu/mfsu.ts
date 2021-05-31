@@ -86,6 +86,14 @@ export const getDeps = async (api: IApi) => {
       delete deps[ded];
     }
   });
+
+  // remove "@umijs/plugin-*" and "umi-plugin-"
+  Object.keys(deps).forEach((key) => {
+    if (/^(@umijs\/plugin-|umi-plugin-)/.test(key)) {
+      delete deps[key];
+    }
+  });
+
   return deps;
 };
 
@@ -134,17 +142,18 @@ export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
   return aliasResult;
 };
 
-export const getIncludeDeps = (api: IApi) => [
-  ...((api.userConfig.mfsu.includes as string[])
-    .map((include) => {
-      if (include.endsWith('/*')) {
-        return getFuzzyIncludes(include);
-      } else {
-        return include;
-      }
-    })
-    .flat() || []),
-];
+export const getIncludeDeps = (api: IApi) =>
+  [
+    ...((api.userConfig.mfsu.includes as string[])
+      ?.map((include) => {
+        if (include.endsWith('/*')) {
+          return getFuzzyIncludes(include);
+        } else {
+          return include;
+        }
+      })
+      .flat() || []),
+  ] as string[];
 
 export const getExcludeDeps = (api: IApi) => [
   ...defaultExcludeDeps,
