@@ -11,6 +11,8 @@ import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
 import url from 'url';
 import { Logger } from '@umijs/core';
+import { getFuzzyIncludes } from './utils';
+
 const logger = new Logger('umi:preset-build-in');
 
 export type TMode = 'production' | 'development';
@@ -31,6 +33,8 @@ const requireDeps = [
   'react',
   'react-router-dom',
   'react-router',
+  'react/jsx-runtime',
+  'react/jsx-dev-runtime',
   ...(process.env.BABEL_POLYFILL !== 'none'
     ? ['core-js', 'regenerator-runtime/runtime']
     : []),
@@ -131,8 +135,17 @@ export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
 };
 
 export const getIncludeDeps = (api: IApi) => [
-  ...(api.userConfig.mfsu.includes || []),
+  ...((api.userConfig.mfsu.includes as string[])
+    .map((include) => {
+      if (include.endsWith('/*')) {
+        return getFuzzyIncludes(include);
+      } else {
+        return include;
+      }
+    })
+    .flat() || []),
 ];
+
 export const getExcludeDeps = (api: IApi) => [
   ...defaultExcludeDeps,
   ...(api.userConfig.mfsu.excludes || []),
