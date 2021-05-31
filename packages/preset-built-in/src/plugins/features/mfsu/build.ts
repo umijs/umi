@@ -44,7 +44,10 @@ export const preBuild = async (
 
   // 清除原先的目录
   readdirSync(tmpDir).forEach((dir) => {
-    unlinkSync(join(tmpDir, dir));
+    // 不删除 diff 文件
+    if (dir !== 'info.json') {
+      unlinkSync(join(tmpDir, dir));
+    }
   });
 
   const bundler = new Bundler({ cwd: process.cwd(), config: {} });

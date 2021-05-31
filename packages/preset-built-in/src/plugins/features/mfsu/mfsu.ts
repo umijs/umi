@@ -11,7 +11,7 @@ import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
 import url from 'url';
 import { Logger } from '@umijs/core';
-import { getFuzzyIncludes } from './utils';
+import { getFuzzyIncludes, shouldBuild } from './utils';
 
 const logger = new Logger('umi:preset-build-in');
 
@@ -168,7 +168,7 @@ export default function (api: IApi) {
 
     // dev mode
     if (name === 'dev') {
-      if (!lodash.isEqual(getPrevDeps(api, { mode: 'development' }), deps)) {
+      if (shouldBuild(getPrevDeps(api, { mode: 'development' }), deps)) {
         await preBuild(api, { deps, mode: 'development' });
       }
 
