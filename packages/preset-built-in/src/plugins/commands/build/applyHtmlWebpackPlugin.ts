@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { platform } from 'os';
 import { IApi, webpack, BundlerConfigType } from '@umijs/types';
 import { getHtmlGenerator } from '../htmlUtils';
 import { OUTPUT_SERVER_FILENAME } from '../../features/ssr/constants';
@@ -7,7 +8,7 @@ import { OUTPUT_SERVER_FILENAME } from '../../features/ssr/constants';
 export function fixRoutePathInWindows(path?: string) {
   // window 下 : 不是一个合法路径，所以需要处理一下
   // 不直接删除是为了保证 render 可以生效
-  if (!path || !path?.includes(':')) {
+  if (!path || !path?.includes(':') || platform() !== 'win32') {
     return path;
   }
   return path.replace(/:/g, '.');
