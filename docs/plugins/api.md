@@ -269,14 +269,15 @@ api.addEntryCodeAhead(() => {
 })
 ```
 
-### addEntryImports
+### 
+s
 
 在入口文件现有 import 的后面添加 import。
 
 e.g.
 
 ```ts
-api.addEntryImport(() => {
+api.addEntryImports(() => {
   return [
     {
       source: '/modulePath/xxx.js',
@@ -350,7 +351,7 @@ api.addHTMLStyles(() => {
 e.g.
 
 ```ts
-api.addHTMLScript(() => {
+api.addHTMLScripts(() => {
   return [
     {
       content: '',
