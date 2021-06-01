@@ -1,5 +1,6 @@
 import { Service } from '@umijs/core';
 import { join } from 'path';
+import { platform } from 'os';
 import * as acorn from 'acorn';
 import { rimraf } from '@umijs/utils';
 import { readFileSync, existsSync } from 'fs';
@@ -35,7 +36,11 @@ test('build', async () => {
 });
 
 test('exportStatic for :id', async () => {
-  expect(fixRoutePathInWindows('/:id')).toBe('/:id');
+  if (platform() !== 'win32') {
+    expect(fixRoutePathInWindows('/:id')).toBe('/:id');
+  } else {
+    expect(fixRoutePathInWindows('/:id')).toBe('/.id');
+  }
 });
 
 test('exportStatic for /id', async () => {
