@@ -1,0 +1,26 @@
+{
+  "name": "config-define",
+  "version": "0.0.1",
+  "description": "config-define",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/config-define#readme"
+}
