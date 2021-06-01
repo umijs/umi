@@ -3,7 +3,7 @@ import { join } from 'path';
 import * as acorn from 'acorn';
 import { rimraf } from '@umijs/utils';
 import { readFileSync, existsSync } from 'fs';
-import {fixRoutePathInWindows} from './applyHtmlWebpackPlugin'
+import { fixRoutePathInWindows } from './applyHtmlWebpackPlugin';
 
 const fixtures = join(__dirname, '../../../fixtures');
 const cwd = join(fixtures, 'build');
@@ -34,9 +34,8 @@ test('build', async () => {
   rimraf.sync(join(cwd, 'dist'));
 });
 
-
 test('exportStatic for :id', async () => {
-  expect(fixRoutePathInWindows('/:id')).toBe('/.id');
+  expect(fixRoutePathInWindows('/:id')).toBe('/:id');
 });
 
 test('exportStatic for /id', async () => {
