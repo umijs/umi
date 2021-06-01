@@ -277,7 +277,7 @@ api.addEntryCodeAhead(() => {
 e.g.
 
 ```ts
-api.addEntryImport(() => {
+api.addEntryImports(() => {
   return [
     {
       source: '/modulePath/xxx.js',
@@ -351,7 +351,7 @@ api.addHTMLStyles(() => {
 e.g.
 
 ```ts
-api.addHTMLScript(() => {
+api.addHTMLScripts(() => {
   return [
     {
       content: '',
