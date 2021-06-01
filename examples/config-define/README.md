@@ -1,6 +1,6 @@
 # config-define
 
-TODO
+Used to provide available variables to the code.
 
 ## How to use
 
