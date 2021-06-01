@@ -269,8 +269,7 @@ api.addEntryCodeAhead(() => {
 })
 ```
 
-### 
-s
+### addEntryImports
 
 在入口文件现有 import 的后面添加 import。
 
