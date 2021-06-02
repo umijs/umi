@@ -35,6 +35,8 @@ export const routeToChunkName: IRouteToChunkName = (
         .replace(/[\[\]]/g, '')
         // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
         .replace(/^.umi-production__/, 't__')
+        // .umi 开头的 webpackChunkName 在使用 plugin-layout 插件时会导致代理异常，eg: /api/** 无法匹配到 /api/.umi__plugin-layout__Layout
+        .replace(/^.umi__/, 't__')
         .replace(/^pages__/, 'p__')
         .replace(/^page__/, 'p__')
     : '';
