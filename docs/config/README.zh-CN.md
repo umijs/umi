@@ -237,8 +237,8 @@ export default {
 
 ## cssnano
 
-- Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
-- Default: `{}`
+- Type: `object`
+- Default: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
 
 设置 [cssnano 配置项](https://cssnano.co/docs/optimisations/)，基于 default 的配置集合。
 
