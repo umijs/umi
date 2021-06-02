@@ -17,7 +17,7 @@ const logger = new Logger('umi:preset-build-in');
 
 export type TMode = 'production' | 'development';
 
-const checkConfig = (api: IApi) => {
+export const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
   if (!webpack5 || !dynamicImport) {
     throw new Error(
@@ -33,8 +33,14 @@ const requireDeps = [
   'react',
   'react-router-dom',
   'react-router',
-  'react/jsx-runtime',
-  'react/jsx-dev-runtime',
+  ...['react/jsx-runtime', 'react/jsx-dev-runtime'].filter((dep) => {
+    try {
+      require(join(process.cwd(), 'node_modules', dep));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }),
   ...(process.env.BABEL_POLYFILL !== 'none'
     ? ['core-js', 'regenerator-runtime/runtime']
     : []),
@@ -60,7 +66,7 @@ export const getPrevDeps = (
 };
 
 export const getDeps = async (api: IApi) => {
-  const pkgPath = join(process.cwd(), 'package.json');
+  const pkgPath = join(api.cwd, 'package.json');
   const { dependencies = {}, peerDependencies = {} } = existsSync(pkgPath)
     ? require(pkgPath)
     : {};
@@ -101,13 +107,13 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   if (mode === 'development') {
     const configPath = api.userConfig.mfsu?.development?.output;
     return configPath
-      ? join(process.cwd(), configPath)
+      ? join(api.cwd, configPath)
       : join(api.paths.absTmpPath!, '.cache', '.mfsu');
   } else if (mode === 'production') {
     const configPath = api.userConfig.mfsu?.production?.output;
     return configPath
-      ? join(process.cwd(), configPath)
-      : join(process.cwd(), './.mfsu-production');
+      ? join(api.cwd, configPath)
+      : join(api.cwd, './.mfsu-production');
   }
   throw new Error(
     '未知的 mode 参数：' + mode + ', 应为 development 或 production',
@@ -174,7 +180,7 @@ export default function (api: IApi) {
 
       const unwatch = watchDeps({
         api: api,
-        cwd: process.cwd(),
+        cwd: api.cwd,
         onChange: () => {
           unwatch();
           api.restartServer();
@@ -201,10 +207,7 @@ export default function (api: IApi) {
         throw err;
       }
       files.forEach((file) => {
-        copyFileSync(
-          join(mfsuProdPath, file),
-          join(process.cwd(), './dist', file),
-        );
+        copyFileSync(join(mfsuProdPath, file), join(api.cwd, './dist', file));
       });
     });
   });

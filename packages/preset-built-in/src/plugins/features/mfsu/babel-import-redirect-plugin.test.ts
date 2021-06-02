@@ -9,7 +9,6 @@ function transformWithPlugin(code: string, opts: IRedirect) {
   })!.code;
 }
 
-// TODO: 用例不对，待修复
 xtest('normal', () => {
   expect(
     transformWithPlugin(
@@ -23,7 +22,7 @@ xtest('normal', () => {
   ).toEqual(
     `
 import xumi, { Access } from "umi";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";foo;
     `.trim(),
   );
 });
