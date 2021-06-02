@@ -240,7 +240,7 @@ export default {
 - Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
 - Default: `{}`
 
-设置 [cssnano 配置项](https://cssnano.co/optimisations/)，基于 default 的配置集合。
+设置 [cssnano 配置项](https://cssnano.co/docs/optimisations/)，基于 default 的配置集合。
 
 比如：`.box { background: url("./css/../img/cat.jpg"); }` 默认会被压缩成 `.box { background: url(img/cat.jpg); }` ，如果不想要这个特性，可以设置，
 
