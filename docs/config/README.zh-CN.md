@@ -824,19 +824,32 @@ export default {
 
 包含以下子属性
 
-- extraDeps: `Array(string)`。mfsu 会对 `package.json` 中的 dependencies 和 peerDependencies 进行打包。如果项目中包含了某些不存在 `package.json` 或者不符合 es 规范的包，可以在此添加。
+- includes: `Array(string)`。额外添加到预编译的依赖项。
 
-- redirect: `Object`。重定向依赖，适用于部分 plugin 不在统一的位置引入。例如：`import {message} from '@umijs/plugin-request/lib/ui';` => `import {message} from 'antd';`
+- exludes: `Array(string)`。不进行预编译的依赖。
+
+- redirect: `Object`。重定向依赖，适用于部分 plugin 不在统一的位置引入。例如：`import {message} from '@umijs/plugin-request/lib/ui';` => `import {message} from 'antd';`。
+
+- development: `{ output: String }`。可以通过 output 自定义 dev 模式下的输出路径。用于将预编译文件同步到 git。
+
+- production: `{ output: String }`。在生产模式中使用 mfsu。如果额外设置了 output，将会将生产模式预编译依赖编译到 output 下。
 
 ```js
 mfsu: {
-  extraDeps: ['rc-util/es/hooks/useMergedState', 'swagger-ui-react'],
+  includes: ['rc-util/es/hooks/useMergedState', 'swagger-ui-react'],
+  excludes : [],
   redirect: {
     '@umijs/plugin-request/lib/ui': {
       message: 'antd',
       notification: 'antd',
     },
   },
+  development : {
+    output : "./.mfsu-dev",
+  },
+  production : {
+    output : "./mfsu-prod",
+  }
 },
 ```
 
