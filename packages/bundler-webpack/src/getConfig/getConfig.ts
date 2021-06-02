@@ -117,7 +117,7 @@ export default async function getConfig(
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(config.publicPath! as unknown as string)
+    .publicPath((config.publicPath! as unknown) as string)
     .pathinfo(isDev || disableCompress);
 
   if (!isWebpack5) {
@@ -216,7 +216,7 @@ export default async function getConfig(
             .add((a: any) => {
               // 支持绝对路径匹配
               if (isAbsolute(include)) {
-                return isAbsolute(include);
+                return a.includes(include);
               }
 
               // 支持 node_modules 下的 npm 包
@@ -555,7 +555,11 @@ export default async function getConfig(
               ),
               sourceMap: config.devtool !== false,
               cache: process.env.TERSER_CACHE !== 'none',
-              parallel: true,
+              // 兼容内部流程系统，读到的 cpu 数并非真实的
+              // 使用 SIGMA_MAX_PROCESSORS_LIMIT 指定真核数
+              parallel: process.env.SIGMA_MAX_PROCESSORS_LIMIT
+                ? parseInt(process.env.SIGMA_MAX_PROCESSORS_LIMIT, 10)
+                : true,
               extractComments: false,
             },
           ]);

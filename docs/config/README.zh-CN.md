@@ -733,7 +733,7 @@ export default {
 
 ## ignoreMomentLocale
 
-- Type: `true`
+- Type: `boolean`
 - Default: `false`
 
 忽略 moment 的 locale 文件，用于减少尺寸。

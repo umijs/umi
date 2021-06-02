@@ -1,7 +1,7 @@
 import { Service } from '@umijs/core';
 import { Stream } from 'stream';
 import { join } from 'path';
-import { EOL } from 'os';
+import { EOL, platform } from 'os';
 import cheerio from '@umijs/deps/compiled/cheerio';
 import { render, cleanup } from '@testing-library/react';
 import { rimraf } from '@umijs/utils';
@@ -427,5 +427,9 @@ test('exportStatic', async () => {
     args: {},
   });
   expect(existsSync(join(cwd, 'dist', 'index.html'))).toBeTruthy();
-  expect(existsSync(join(cwd, 'dist', 'list', '.id.html'))).toBeTruthy();
+  if (platform() === 'win32') {
+    expect(existsSync(join(cwd, 'dist', 'list', '.id.html'))).toBeTruthy();
+  } else {
+    expect(existsSync(join(cwd, 'dist', 'list', ':id.html'))).toBeTruthy();
+  }
 });

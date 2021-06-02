@@ -35,6 +35,9 @@ const getPackages = require('./utils/getPackages');
         keywords: ['umi', 'umi examples'],
         authors: ['chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)'],
         license: 'MIT',
+        dependencies: {
+          umi: "latest"
+        },
         bugs: 'http://github.com/umijs/umi/issues',
         homepage: `https://github.com/umijs/umi/tree/master/examples/${shortName}#readme`,
       };
@@ -79,7 +82,7 @@ const getPackages = require('./utils/getPackages');
       'pages',
       'index.tsx',
     );
-    if (args.force || !existsSync(indexPath)) {
+    if (!existsSync(indexPath)) {
       await mkdirp(join(indexPath, '..'));
       writeFileSync(indexPath, `import React from 'react';
 import type { FC } from 'react';

@@ -1,8 +1,9 @@
 import { Service } from '@umijs/core';
-import { rimraf } from '@umijs/utils';
-import * as acorn from 'acorn';
-import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+import { platform } from 'os';
+import * as acorn from 'acorn';
+import { rimraf } from '@umijs/utils';
+import { readFileSync, existsSync } from 'fs';
 import { fixRoutePathInWindows } from './applyHtmlWebpackPlugin';
 
 const fixtures = join(__dirname, '../../../fixtures');
@@ -35,7 +36,11 @@ test('build', async () => {
 });
 
 test('exportStatic for :id', async () => {
-  expect(fixRoutePathInWindows('/:id')).toBe('/.id');
+  if (platform() !== 'win32') {
+    expect(fixRoutePathInWindows('/:id')).toBe('/:id');
+  } else {
+    expect(fixRoutePathInWindows('/:id')).toBe('/.id');
+  }
 });
 
 test('exportStatic for /id', async () => {
