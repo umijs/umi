@@ -11,7 +11,7 @@ import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
 import url from 'url';
 import { Logger } from '@umijs/core';
-import { getFuzzyIncludes, shouldBuild } from './utils';
+import { copy, getFuzzyIncludes, shouldBuild } from './utils';
 
 const logger = new Logger('umi:preset-build-in');
 
@@ -202,14 +202,15 @@ export default function (api: IApi) {
   // 针对 production 模式，build 完后将产物移动到 dist 中
   api.onBuildComplete(() => {
     const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
-    readdir(mfsuProdPath, (err, files) => {
-      if (err) {
-        throw err;
-      }
-      files.forEach((file) => {
-        copyFileSync(join(mfsuProdPath, file), join(api.cwd, './dist', file));
-      });
-    });
+    copy(mfsuProdPath, join(api.cwd, './dist'));
+    // readdir(mfsuProdPath, (err, files) => {
+    //   if (err) {
+    //     throw err;
+    //   }
+    //   files.forEach((file) => {
+    //     copyFileSync(join(mfsuProdPath, file), join(api.cwd, './dist', file));
+    //   });
+    // });
   });
 
   api.describe({

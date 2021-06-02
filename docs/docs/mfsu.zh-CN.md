@@ -41,12 +41,12 @@ MFSU 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 > warning: 由于预编译依赖无法实现 tree-shaking，不建议在打包大小敏感的项目中启用生产模式。
 
 - 在执行 `umi build` 时，将会开始产出 mfsu 预编译依赖，随后将产物合并到 umi 的输出目录中。
-- 同样，再次执行 `build` 是，mfsu 将会与之前的产物 diff，如果依赖没有变动，则不再进行 mfsu 预编译。
+- 同样，再次执行 `build` 时，mfsu 将会与之前的产物 diff，如果依赖没有变动，则不再进行 mfsu 预编译。
 - 随着项目趋于稳定，依赖的添加变少。使用 mfsu 的 prod 模式可以极快地加快生产构建过程。
 
 ## 我正确开启了 mfsu 吗？
 
-因为部分库还未兼容 mfsu，导致无法在 mfsu 模式下正常使用，例如 `plugin-dumi`。以及部分依赖可能没有被正确包括，导致没有被 mfsu 覆盖。
+因为部分库还未兼容 mfsu，导致无法在 mfsu 模式下正常使用，例如 `@umijs/preset-dumi`。以及部分依赖可能没有被正确包括，导致没有被 mfsu 覆盖。
 
 因此，需要检查项目依赖是否被 mfsu 完全覆盖。我们可以借助 umi 自带的 webpack-analyze 进行依赖分析。
 
@@ -56,7 +56,7 @@ MFSU 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 ## 在 antd-pro 中使用
 
-在默认的 antd-pro 中启用 mfsu，需要添加如果配置：
+在默认的 antd-pro 中启用 mfsu，需要添加以下配置：
 
 ```js
 mfsu: {

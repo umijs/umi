@@ -1,5 +1,5 @@
 import { lodash } from '@umijs/utils';
-import { readdirSync } from 'fs';
+import { readdirSync, copyFileSync, statSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { Deps } from './build';
 
@@ -70,4 +70,25 @@ export const shouldBuild = (prevDeps: Deps, curDeps: Deps): boolean => {
     return true;
   }
   return false;
+};
+
+export const copy = (fromDir: string, toDir: string) => {
+  const fn = (dir: string, preserveDir: string) => {
+    const _dir = readdirSync(dir);
+    _dir.forEach((value) => {
+      const _path = join(dir, value);
+      const stat = statSync(_path);
+      if (stat.isDirectory()) {
+        const _toDir = join(toDir, preserveDir, value);
+        if (!existsSync(_toDir)) {
+          mkdirSync(_toDir);
+        }
+        fn(_path, join(preserveDir, value));
+      } else {
+        const toDest = join(toDir, preserveDir);
+        copyFileSync(_path, join(toDest, value));
+      }
+    });
+  };
+  fn(fromDir, '');
 };
