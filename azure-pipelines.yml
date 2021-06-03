@@ -35,10 +35,11 @@ jobs:
         displayName: install
       - script: yarn build
         displayName: build
-      - script: set NODE_OPTIONS='--max-old-space-size=4071' && yarn test --forceExit --detectOpenHandles --maxWorkers=2
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=2
         env:
           PROGRESS: none
           CI: true
+          NODE_OPTIONS: --max-old-space-size=16384
         displayName: test
   - job: linux_test
     timeoutInMinutes: 30
@@ -66,10 +67,11 @@ jobs:
       - script: yarn --frozen-lockfile
       - script: yarn build
         displayName: build
-      - script: NODE_OPTIONS='--max-old-space-size=4071' yarn test --forceExit --detectOpenHandles --maxWorkers=4
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
           CI: true
+          NODE_OPTIONS: --max-old-space-size=16384
         displayName: test
   - job: macos_test
     timeoutInMinutes: 30
@@ -97,8 +99,9 @@ jobs:
       - script: yarn --frozen-lockfile
       - script: yarn build
         displayName: build
-      - script: NODE_OPTIONS='--max-old-space-size=4071' yarn test --forceExit --detectOpenHandles --maxWorkers=4
+      - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
           CI: true
+          NODE_OPTIONS: --max-old-space-size=16384
         displayName: test
