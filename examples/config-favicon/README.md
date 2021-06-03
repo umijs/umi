@@ -1,6 +1,6 @@
 # config-favicon
 
-TODO
+Quickly configure the website via favicon
 
 ## How to use
 
