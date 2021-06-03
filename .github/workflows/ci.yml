@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: '1'
+          fetch-depth: 0
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v2
         with:
