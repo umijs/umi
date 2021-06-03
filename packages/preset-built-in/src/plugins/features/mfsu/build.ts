@@ -58,7 +58,7 @@ export const preBuild = async (
   );
 
   if (!mfConfig) {
-    throw new Error('找不到 Webpack 配置');
+    throw new Error('[MFSU] 预编译找不到 Webpack 配置');
   }
 
   const exposes = {};
