@@ -37,7 +37,7 @@
     "@umijs/utils": "3.4.24",
     "es5-imcompatible-versions": "^0.1.62",
     "history-with-query": "4.10.4",
-    "mine": "^0.1.0",
+    "mime": "2.5.2",
     "react-refresh": "0.9.0",
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",
@@ -46,5 +46,8 @@
   },
   "peerDependencies": {
     "react": "16.x || 17.x"
+  },
+  "devDependencies": {
+    "@types/mime": "^2.0.3"
   }
 }
