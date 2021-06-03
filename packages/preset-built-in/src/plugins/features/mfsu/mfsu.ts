@@ -197,7 +197,7 @@ export default function (api: IApi) {
   // 针对 production 模式，build 完后将产物移动到 dist 中
   api.onBuildComplete(() => {
     const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
-    copy(mfsuProdPath, join(api.cwd, './dist'));
+    copy(mfsuProdPath, join(api.cwd, api.userConfig.outputPath || './dist'));
   });
 
   api.describe({
@@ -267,7 +267,7 @@ export default function (api: IApi) {
       ];
       return opts;
     },
-    stage: Infinity - 1,
+    stage: Infinity,
   });
 
   /** 暴露文件 */
@@ -299,11 +299,13 @@ export default function (api: IApi) {
 
   /** 修改 webpack 配置 */
   api.chainWebpack(async (memo) => {
+    const remotePath =
+      api.env === 'production' ? api.userConfig.publicPath || '/' : '/';
     memo.plugin('mf').use(
       new webpack.container.ModuleFederationPlugin({
         name: 'umi-app',
         remotes: {
-          mf: 'mf@/' + prefix + 'remoteEntry.js',
+          mf: 'mf@' + remotePath + prefix + 'remoteEntry.js',
         },
       }),
     );
