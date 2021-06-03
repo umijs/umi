@@ -79,30 +79,33 @@ class ManifestChunksMapPlugin {
 }
 
 /**
- * onBuildComplete for test case
- * replace default html template using client webpack bundle complete
+ * export `onBuildComplete` just for the unit case
+ * replace default html placeholder with the latest html (hash)
  * @param api
  */
 export const onBuildComplete = (api: IApi) => async ({ err, stats }: any) => {
   if (!err && stats?.stats) {
-    const HTML_REG = /<html.*?<\/html>/m;
+    // get content between `<html>*</html>`
+    const HTML_REG = /\\u003Chtml.*?\\u003C\\u002Fhtml\\u003E/m;
     const [clientStats] = stats.stats;
-    const html = getHtmlGenerator({ api });
-    const [defaultHTML] =
-      JSON.stringify(
-        await html.getContent({
-          route: { path: api.config.publicPath },
-          chunks: clientStats.compilation.chunks,
-        }),
-      ).match(HTML_REG) || [];
+    const htmlGenerator = getHtmlGenerator({ api });
+    const latestHTML = serialize(
+      await htmlGenerator.getContent({
+        route: { path: api.config.publicPath },
+        chunks: clientStats.compilation.chunks,
+      }),
+    );
+    const [htmlContent] = latestHTML.match(HTML_REG) || [];
     const serverPath = path.join(
       api.paths.absOutputPath!,
       OUTPUT_SERVER_FILENAME,
     );
-    if (fs.existsSync(serverPath) && defaultHTML) {
-      const serverContent = fs
-        .readFileSync(serverPath, 'utf-8')
-        .replace(HTML_REG, defaultHTML);
+
+    // replace `umi.server.js` default html into latest serialize html
+    if (fs.existsSync(serverPath) && latestHTML) {
+      const serverContent = (
+        await fs.promises.readFile(serverPath, 'utf-8')
+      ).replace(HTML_REG, htmlContent);
       await fs.promises.writeFile(serverPath, serverContent);
     }
   }
