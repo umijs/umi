@@ -1,5 +1,5 @@
 import { lodash } from '@umijs/utils';
-import { existsSync, readFileSync, readdir, copyFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { join, parse } from 'path';
 import { IApi } from 'umi';
@@ -12,8 +12,6 @@ import { watchDeps } from './watchDeps';
 import url from 'url';
 import { Logger } from '@umijs/core';
 import { copy, getFuzzyIncludes, shouldBuild } from './utils';
-
-const logger = new Logger('umi:preset-build-in');
 
 export type TMode = 'production' | 'development';
 
@@ -33,6 +31,7 @@ const requireDeps = [
   'react',
   'react-router-dom',
   'react-router',
+  'react-dom',
   ...['react/jsx-runtime', 'react/jsx-dev-runtime'].filter((dep) => {
     try {
       require(join(process.cwd(), 'node_modules', dep));
@@ -109,15 +108,12 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
     return configPath
       ? join(api.cwd, configPath)
       : join(api.paths.absTmpPath!, '.cache', '.mfsu');
-  } else if (mode === 'production') {
+  } else {
     const configPath = api.userConfig.mfsu?.production?.output;
     return configPath
       ? join(api.cwd, configPath)
       : join(api.cwd, './.mfsu-production');
   }
-  throw new Error(
-    '未知的 mode 参数：' + mode + ', 应为 development 或 production',
-  );
 };
 
 export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
@@ -227,8 +223,7 @@ export default function (api: IApi) {
     enableBy() {
       return (
         (api.env === 'development' && api.userConfig.mfsu) ||
-        (api.env === 'production' && api.userConfig.mfsu?.production) ||
-        process.env.MFSUC
+        (api.env === 'production' && api.userConfig.mfsu?.production)
       );
     },
   });

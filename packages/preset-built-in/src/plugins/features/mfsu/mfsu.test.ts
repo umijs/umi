@@ -36,8 +36,6 @@ xtest('functions: get mfsu path', () => {
 
   expect(getMfsuPath(api, { mode: 'development' })).toEqual('/work/foo/bar');
   expect(getMfsuPath(api, { mode: 'production' })).toEqual('/work/xxx/yyy/zzz');
-  // @ts-ignore
-  expect(getMfsuPath(api, { mode: 'xxxx' })).toThrowError();
 });
 
 xtest('functions: get include dependencies', () => {
