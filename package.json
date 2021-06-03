@@ -1,58 +1,7 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "bootstrap": "node ./scripts/bootstrap.js",
-    "build": "father-build",
-    "docs": "node ./scripts/docs.js",
-    "docs:build": "node ./packages/umi/bin/umi.js build",
-    "docs:dev": "node ./packages/umi/bin/umi.js dev",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "link:umi": "cd packages/umi && yarn link && cd -",
-    "now-build": "yarn build && yarn docs:build",
-    "release": "node ./scripts/release.js",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage",
-    "test:update": "umi-test --updateSnapshot",
-    "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
-    "update:deps": "yarn upgrade-interactive --latest"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node scripts/verifyCommit.js"
-  },
-  "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write",
-      "git add"
-    ]
-  },
   "devDependencies": {
-    "@babel/core": "7.8.4",
-    "@testing-library/react": "^9.4.0",
-    "@types/babel__core": "7.1.6",
-    "@types/babel__traverse": "7.0.9",
-    "@types/jest": "^25.1.1",
-    "@types/node": "^13.7.6",
-    "@umijs/core": "3.0.0-beta.36",
-    "@umijs/preset-dumi": "^1.0.0-beta.11",
-    "@umijs/test": "3.0.0-beta.36",
-    "@umijs/utils": "3.0.0-beta.36",
-    "father-build": "^1.17.2",
-    "lerna": "^3.20.2",
-    "lint-staged": "^10.0.8",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^1.19.1",
-    "yorkie": "^2.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/umijs/umi-next.git"
+    "prettier": "^2.3.0",
+    "prettier-plugin-organize-imports": "^2.1.0"
   }
 }

@@ -1,13 +1,2 @@
 /node_modules
-/packages/*/lib
-/packages/*/dist
 /packages/*/node_modules
-/coverage
-/.nyc_output
-/.changelog
-/dist
-.DS_Store
-.umi
-.umi-production
-.umi-test
-**/fixtures/**/dist
