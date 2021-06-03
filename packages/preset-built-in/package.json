@@ -42,12 +42,10 @@
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",
     "react-router-dom": "5.2.0",
-    "regenerator-runtime": "0.13.5"
+    "regenerator-runtime": "0.13.5",
+    "@types/mime": "2.0.3"
   },
   "peerDependencies": {
     "react": "16.x || 17.x"
   },
-  "devDependencies": {
-    "@types/mime": "2.0.3"
-  }
 }
