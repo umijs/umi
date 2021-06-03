@@ -243,7 +243,12 @@ export default function (api: IApi) {
     fn: async (opts) => {
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const redirect = lodash.merge(defaultRedirect, userRedirect);
-      opts.presets[0][1].env.useBuiltIns = false; // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
+      // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
+      opts.presets?.forEach((preset) => {
+        if (preset instanceof Array && /babel-preset-umi/.test(preset[0])) {
+          preset[1].env.useBuiltIns = false;
+        }
+      });
       opts.plugins = [
         AntdIconPlugin,
         [BebelImportRedirectPlugin, redirect],
