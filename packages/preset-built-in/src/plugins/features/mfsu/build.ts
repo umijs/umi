@@ -15,7 +15,8 @@ import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import { getMfsuPath, getAlias, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
-import { transform } from '@babel/core';
+// @ts-ignore
+import { transform } from '@umijs/deps/compiled/babel/core';
 import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
