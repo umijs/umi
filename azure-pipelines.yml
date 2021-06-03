@@ -33,8 +33,12 @@ jobs:
         displayName: Cache Yarn packages
       - script: yarn --frozen-lockfile
         displayName: install
+        env:
+          NODE_OPTIONS: --max-old-space-size=16384
       - script: yarn build
         displayName: build
+        env:
+          NODE_OPTIONS: --max-old-space-size=16384
       - script: yarn test --forceExit --detectOpenHandles --maxWorkers=2
         env:
           PROGRESS: none
@@ -65,8 +69,12 @@ jobs:
           path: $(YARN_CACHE_FOLDER)
         displayName: Cache Yarn packages
       - script: yarn --frozen-lockfile
+        env:
+          NODE_OPTIONS: --max-old-space-size=16384
       - script: yarn build
         displayName: build
+        env:
+          NODE_OPTIONS: --max-old-space-size=16384
       - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
@@ -97,8 +105,12 @@ jobs:
           path: $(YARN_CACHE_FOLDER)
         displayName: Cache Yarn packages
       - script: yarn --frozen-lockfile
+        env:
+          NODE_OPTIONS: --max-old-space-size=16384
       - script: yarn build
         displayName: build
+        env:
+          NODE_OPTIONS: --max-old-space-size=16384
       - script: yarn test --forceExit --detectOpenHandles --maxWorkers=4
         env:
           PROGRESS: none
