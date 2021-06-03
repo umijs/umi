@@ -50,7 +50,7 @@ export const preBuild = async (
     }
   });
 
-  const bundler = new Bundler({ cwd: process.cwd(), config: {} });
+  const bundler = new Bundler({ cwd: api.cwd, config: {} });
   const { bundleConfigs } = await getBundleAndConfigs({ api }); // 获取原本的配置
 
   const mfConfig: defaultWebpack.Configuration = lodash.cloneDeep(
@@ -58,7 +58,7 @@ export const preBuild = async (
   );
 
   if (!mfConfig) {
-    throw new Error('找不到 Webpack 配置');
+    throw new Error('[MFSU] 预编译找不到 Webpack 配置');
   }
 
   const exposes = {};

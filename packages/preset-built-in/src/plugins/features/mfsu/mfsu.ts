@@ -18,7 +18,7 @@ export const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
   if (!webpack5 || !dynamicImport) {
     throw new Error(
-      `未开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
+      `[MFSU] MFSU 功能要求同时开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
         !dynamicImport ? 'dynamicImport' : ''
       }`,
     );
@@ -206,8 +206,8 @@ export default function (api: IApi) {
       schema(joi) {
         return joi
           .object({
-            includes: joi.array(),
-            excludes: joi.array(),
+            includes: joi.array().items(joi.string()),
+            excludes: joi.array().items(joi.string()),
             redirect: joi.object(),
             development: joi.object({
               output: joi.string(),
