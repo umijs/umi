@@ -203,14 +203,6 @@ export default function (api: IApi) {
   api.onBuildComplete(() => {
     const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
     copy(mfsuProdPath, join(api.cwd, './dist'));
-    // readdir(mfsuProdPath, (err, files) => {
-    //   if (err) {
-    //     throw err;
-    //   }
-    //   files.forEach((file) => {
-    //     copyFileSync(join(mfsuProdPath, file), join(api.cwd, './dist', file));
-    //   });
-    // });
   });
 
   api.describe({
