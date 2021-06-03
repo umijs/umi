@@ -1,8 +1,8 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { EOL } from 'os';
 import { dirname, join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { isTSFile } from './utils';
 
 export default function (api: IApi) {

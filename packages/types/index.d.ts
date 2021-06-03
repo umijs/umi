@@ -1,30 +1,30 @@
-import {
-  IConfig as IConfigCore,
-  IRoute,
-  PluginAPI,
-  Html,
-  IStyleConfig,
-  IScriptConfig,
-  IHTMLTag,
-  Service,
-} from '@umijs/core';
-import { Stream } from 'stream';
-import { Server, IServerOpts } from '@umijs/server';
-import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import {
-  IRouteComponentProps,
-  IRoute as IRouteProps,
-} from '@umijs/renderer-react';
-import webpack from '@umijs/deps/compiled/webpack';
-import WebpackChain from 'webpack-chain';
+  Html,
+  IConfig as IConfigCore,
+  IHTMLTag,
+  IRoute,
+  IScriptConfig,
+  IStyleConfig,
+  PluginAPI,
+  Service,
+} from '@umijs/core';
 import {
   Express,
   NextFunction,
   RequestHandler,
 } from '@umijs/deps/compiled/express';
+import webpack from '@umijs/deps/compiled/webpack';
+import {
+  IRoute as IRouteProps,
+  IRouteComponentProps,
+} from '@umijs/renderer-react';
+import { IServerOpts, Server } from '@umijs/server';
+import { Generator } from '@umijs/utils';
 import { Request, Response } from 'express-serve-static-core';
 import { History, Location } from 'history-with-query';
+import { Stream } from 'stream';
+import WebpackChain from 'webpack-chain';
 
 export enum BundlerConfigType {
   csr = 'csr',
@@ -33,11 +33,11 @@ export enum BundlerConfigType {
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
-  (args: { 
-    fn: { (args: T): void }; 
+  (args: {
+    fn: { (args: T): void };
     name?: string;
-    before?: string | string[]; 
-    stage?: number 
+    before?: string | string[];
+    stage?: number;
   }): void;
 }
 
@@ -53,7 +53,7 @@ interface IModify<T, U> {
   (args: {
     fn: { (initialValue: T, args: U): Promise<T> };
     name?: string;
-    before?: string | string[]; 
+    before?: string | string[];
     stage?: number;
   }): void;
 }
@@ -61,18 +61,18 @@ interface IModify<T, U> {
 interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
   (fn: { (args: T): Promise<U | U[]> }): void;
-  (args: { 
-    fn: { (args: T): U | U[] }; 
+  (args: {
+    fn: { (args: T): U | U[] };
     name?: string;
-    before?: string | string[]; 
-    stage?: number 
+    before?: string | string[];
+    stage?: number;
   }): void;
   (args: {
-    fn: { 
-      (args: T): Promise<U | U[]>; 
+    fn: {
+      (args: T): Promise<U | U[]>;
       name?: string;
-      before?: string | string[]; 
-      stage?: number 
+      before?: string | string[];
+      stage?: number;
     };
   }): void;
 }
@@ -132,7 +132,9 @@ export interface IApi extends PluginAPI {
   writeTmpFile: {
     (args: { path: string; content: string; skipTSCheck?: boolean }): void;
   };
-  registerGenerator: { (args: { key: string; Generator: typeof Generator }): void };
+  registerGenerator: {
+    (args: { key: string; Generator: typeof Generator }): void;
+  };
   babelRegister: typeof Service.prototype.babelRegister;
   getRoutes: () => Promise<IRoute[]>;
   hasPlugins: typeof Service.prototype.hasPlugins;
@@ -146,7 +148,7 @@ export interface IApi extends PluginAPI {
 
   // ApplyPluginType.event
   onPluginReady: IEvent<null>;
-  onStart: IEvent<{ args: object }>;
+  onStart: IEvent<{ args: object; name: string }>;
   onExit: IEvent<{ signal: 'SIGINT' | 'SIGQUIT' | 'SIGTERM' }>;
   onGenerateFiles: IEvent<{ files: { event: string; path: string }[] }>;
   onPatchRoute: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
@@ -281,6 +283,11 @@ export interface IApi extends PluginAPI {
 }
 
 export { IRoute };
+export { webpack };
+export { Html, IScriptConfig, IStyleConfig };
+export { Request, Express, Response, NextFunction, RequestHandler };
+export { History, Location, IRouteProps, IRouteComponentProps };
+export { IServerRender, IServerRenderParams, IServerRenderResult };
 
 export interface IManifest {
   fileName: string;
@@ -420,10 +427,3 @@ interface IServerRender {
 }
 
 export type IConfig = WithFalse<BaseIConfig>;
-
-export { webpack };
-export { Html, IScriptConfig, IStyleConfig };
-export { Request, Express, Response, NextFunction, RequestHandler };
-
-export { History, Location, IRouteProps, IRouteComponentProps };
-export { IServerRender, IServerRenderParams, IServerRenderResult };

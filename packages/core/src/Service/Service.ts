@@ -1,14 +1,12 @@
-import { join } from 'path';
-import { EventEmitter } from 'events';
-import assert from 'assert';
-import { BabelRegister, lodash, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from '@umijs/deps/compiled/tapable';
+import { BabelRegister, lodash, NodeEnv } from '@umijs/utils';
+import assert from 'assert';
+import { EventEmitter } from 'events';
 import { existsSync } from 'fs';
+import { join } from 'path';
+import Config from '../Config/Config';
+import { getUserConfigWithKey } from '../Config/utils/configUtils';
 import Logger from '../Logger/Logger';
-import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
-import loadDotEnv from './utils/loadDotEnv';
-import isPromise from './utils/isPromise';
-import PluginAPI from './PluginAPI';
 import {
   ApplyPluginsType,
   ConfigChangeType,
@@ -16,10 +14,12 @@ import {
   PluginType,
   ServiceStage,
 } from './enums';
-import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
-import Config from '../Config/Config';
-import { getUserConfigWithKey } from '../Config/utils/configUtils';
 import getPaths from './getPaths';
+import PluginAPI from './PluginAPI';
+import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
+import isPromise from './utils/isPromise';
+import loadDotEnv from './utils/loadDotEnv';
+import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 
 const logger = new Logger('umi:core:Service');
 
@@ -547,6 +547,7 @@ ${name} from ${plugin.path} register failed.`);
       key: 'onStart',
       type: ApplyPluginsType.event,
       args: {
+        name,
         args,
       },
     });

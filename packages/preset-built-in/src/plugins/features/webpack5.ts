@@ -54,11 +54,20 @@ export default (api: IApi) => {
 
     // 缓存默认开启，可通过环境变量关闭
     if (process.env.WEBPACK_FS_CACHE !== 'none') {
+      const { configFile } = api.service.configInstance;
+
       memo.cache = {
         type: 'filesystem',
         // using umi version as `cache.version`
         version: process.env.UMI_VERSION,
-        buildDependencies: { config: [join(api.cwd, 'package.json')] },
+        buildDependencies: {
+          config: [
+            join(api.cwd, 'package.json'),
+            api.config.webpack5 && configFile
+              ? join(api.cwd, configFile)
+              : undefined,
+          ].filter(Boolean),
+        },
         cacheDirectory: join(api.paths.absTmpPath!, '.cache', 'webpack'),
       };
       // tnpm 安装依赖的情况 webpack 默认的 managedPaths 不生效

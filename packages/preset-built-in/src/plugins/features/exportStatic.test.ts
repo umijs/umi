@@ -1,7 +1,5 @@
 import { addHtmlSuffix } from './exportStatic';
 
-
-
 test('addHtmlSuffix for /', async () => {
   expect(addHtmlSuffix('/', true)).toBe('/');
   expect(addHtmlSuffix('/', false)).toBe('/');

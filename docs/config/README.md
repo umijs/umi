@@ -554,9 +554,7 @@ export default {
   externals: {
     react: 'window.React',
   },
-  scripts: [
-    'https://unpkg.com/react@17.0.1/umd/react.production.min.js',
-  ],
+  scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 };
 ```
 
@@ -814,6 +812,33 @@ export default {
 <meta name="keywords" content="umi, umijs" />
 <meta name="description" content="🍙 插件化的企业级前端应用框架。" />
 <meta bar="foo" />
+```
+
+## mfsu
+
+- Type: `Object`
+- Default : `{}`
+
+Turn on the MFSU functionality and add the associated configuration.
+
+To enable this feature, you need to open both `webpack5` and `dynamicImport`.
+
+Contains sub-attributes
+
+- extraDeps: `Array(string)`. MFSU packages dependencies and peerDependencies in `package.json`. If your project contains packages that do not already have `package.json` or do not conform to the ES specification, you can add them here.
+
+- redirect: `Object`. Redirect dependencies, which apply when parts of the Plugin are not introduced in a uniform location. For example: `import {message} from '@umijs/plugin-request/lib/ui;` => `import {message} from 'antd';`
+
+```js
+mfsu: {
+  extraDeps: ['rc-util/es/hooks/useMergedState', 'swagger-ui-react'],
+  redirect: {
+    '@umijs/plugin-request/lib/ui': {
+      message: 'antd',
+      notification: 'antd',
+    },
+  },
+},
 ```
 
 ## mock

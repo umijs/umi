@@ -1,8 +1,8 @@
-import { join } from 'path';
-import { writeFileSync } from 'fs';
 import { Service } from '@umijs/core';
 import { Server } from '@umijs/server';
-import { winPath, got, rimraf } from '@umijs/utils';
+import { got, rimraf, winPath } from '@umijs/utils';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 import createMiddleware from './createMiddleware';
 import { getMockData } from './utils';
 

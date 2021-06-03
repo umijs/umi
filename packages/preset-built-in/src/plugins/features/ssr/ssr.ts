@@ -1,30 +1,30 @@
+import { webpack } from '@umijs/bundler-webpack';
+import { Route } from '@umijs/core';
+import serialize from '@umijs/deps/compiled/serialize-javascript';
+import { BundlerConfigType, IApi } from '@umijs/types';
+import {
+  cleanRequireCache,
+  lodash as _,
+  Mustache,
+  routeToChunkName,
+  winPath,
+} from '@umijs/utils';
+import assert from 'assert';
 import * as fs from 'fs';
 import { EOL } from 'os';
-import assert from 'assert';
 import * as path from 'path';
-import serialize from '@umijs/deps/compiled/serialize-javascript';
 import { performance } from 'perf_hooks';
-import { Route } from '@umijs/core';
-import { IApi, BundlerConfigType } from '@umijs/types';
-import {
-  winPath,
-  Mustache,
-  lodash as _,
-  routeToChunkName,
-  cleanRequireCache,
-} from '@umijs/utils';
 import { matchRoutes, RouteConfig } from 'react-router-config';
-import { webpack } from '@umijs/bundler-webpack';
 // @ts-ignore
 import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
 import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
   CHUNK_NAME,
+  CLIENT_EXPORTS,
   OUTPUT_SERVER_FILENAME,
   OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
-  CLIENT_EXPORTS,
   CHUNK_MANIFEST,
 } from './constants';
 

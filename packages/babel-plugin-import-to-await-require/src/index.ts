@@ -1,5 +1,5 @@
+import type { NodePath, Visitor } from '@babel/traverse';
 import { t } from '@umijs/utils';
-import type { Visitor, NodePath } from '@babel/traverse';
 
 type TLibs = (RegExp | string)[];
 
@@ -83,10 +83,8 @@ export default function () {
               });
 
               if (isMatch) {
-                const {
-                  properties,
-                  namespaceIdentifier,
-                } = specifiersToProperties(d.specifiers);
+                const { properties, namespaceIdentifier } =
+                  specifiersToProperties(d.specifiers);
                 const id = t.objectPattern(properties);
                 const init = t.awaitExpression(
                   t.callExpression(t.import(), [

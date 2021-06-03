@@ -1,12 +1,11 @@
+import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
+import { IApi, IRoute } from '@umijs/types';
+import { deepmerge, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { Stream } from 'stream';
-import { IApi, IRoute } from '@umijs/types';
-import { deepmerge, rimraf } from '@umijs/utils';
-import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
-
-import { isDynamicRoute, streamToString } from '../utils';
 import { OUTPUT_SERVER_FILENAME } from '../features/ssr/constants';
+import { isDynamicRoute, streamToString } from '../utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -152,8 +151,6 @@ export default (api: IApi) => {
     }
   });
 };
-
-
 
 export function addHtmlSuffix(path: string, hasRoutes: boolean) {
   if (path === '/') return path;

@@ -1,31 +1,30 @@
 import {
-  IConfig,
-  IBundlerConfigType,
-  BundlerConfigType,
-  ICopy,
-} from '@umijs/types';
-import * as defaultWebpack from '@umijs/deps/compiled/webpack';
-import Config from 'webpack-chain';
-import { join, isAbsolute } from 'path';
-import { existsSync } from 'fs';
-import { deepmerge } from '@umijs/utils';
-import {
   getBabelDepsOpts,
   getBabelOpts,
   getBabelPresetOpts,
   getTargetsAndBrowsersList,
 } from '@umijs/bundler-utils';
-import { lodash } from '@umijs/utils';
-import css, { createCSSRule } from './css';
-import terserOptions from './terserOptions';
+import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import {
-  TYPE_ALL_EXCLUDE,
-  isMatch,
-  excludeToPkgs,
+  BundlerConfigType,
+  IBundlerConfigType,
+  IConfig,
+  ICopy,
+} from '@umijs/types';
+import { deepmerge, lodash } from '@umijs/utils';
+import { existsSync } from 'fs';
+import { isAbsolute, join } from 'path';
+import Config from 'webpack-chain';
+import css, { createCSSRule } from './css';
+import {
   es5ImcompatibleVersionsToPkg,
+  excludeToPkgs,
+  isMatch,
+  TYPE_ALL_EXCLUDE,
 } from './nodeModulesTransform';
-import resolveDefine from './resolveDefine';
 import { getPkgPath, shouldTransform } from './pkgMatch';
+import resolveDefine from './resolveDefine';
+import terserOptions from './terserOptions';
 
 function onWebpackInitWithPromise() {
   return new Promise<void>((resolve) => {

@@ -1,7 +1,7 @@
-import React from 'react';
-import type { FC } from 'react';
 import { Header } from '@/components';
 import { Footer } from 'component';
+import type { FC } from 'react';
+import React from 'react';
 
 const IndexPage: FC = () => {
   return (

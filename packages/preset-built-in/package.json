@@ -37,6 +37,7 @@
     "@umijs/utils": "3.4.24",
     "es5-imcompatible-versions": "^0.1.62",
     "history-with-query": "4.10.4",
+    "mime": "1.6.0",
     "react-refresh": "0.9.0",
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",

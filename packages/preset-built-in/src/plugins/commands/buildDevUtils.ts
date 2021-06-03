@@ -1,8 +1,8 @@
-import { IApi, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
 import { Bundler as DefaultBundler, webpack } from '@umijs/bundler-webpack';
-import { join, resolve } from 'path';
+import { BundlerConfigType, IApi, IBundlerConfigType } from '@umijs/types';
+import { chalk, rimraf } from '@umijs/utils';
 import { existsSync, readdirSync, readFileSync } from 'fs';
-import { rimraf, chalk } from '@umijs/utils';
+import { join, resolve } from 'path';
 import zlib from 'zlib';
 
 type Env = 'development' | 'production';

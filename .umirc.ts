@@ -79,6 +79,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/docs/deployment',
           '/docs/use-umi-ui',
           '/docs/ssr',
+          '/docs/mfsu',
         ],
       },
       {
