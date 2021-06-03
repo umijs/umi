@@ -21,7 +21,7 @@ export const checkConfig = (api: IApi) => {
   const { webpack5, dynamicImport } = api.config;
   if (!webpack5 || !dynamicImport) {
     throw new Error(
-      `未开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
+      `[MFSU] MFSU 功能要求同时开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
         !dynamicImport ? 'dynamicImport' : ''
       }`,
     );
