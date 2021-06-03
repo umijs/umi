@@ -292,10 +292,7 @@ export default function (api: IApi) {
           join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
           'utf-8',
         );
-        res.setHeader(
-          'content-type',
-          mime.getType(parse(pathname || '').ext) || '',
-        );
+        res.setHeader('content-type', mime.lookup(parse(pathname || '').ext));
         // 排除入口文件，因为 hash 是入口文件控制的
         if (!/remoteEntry.js/.test(req.url)) {
           res.setHeader('cache-control', 'max-age=31536000,immutable');
