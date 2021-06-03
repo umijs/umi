@@ -1,8 +1,10 @@
-# MFSU（Module Federation Speed Up）
+# mfsu（Module Federation Speed Up）
+
+版本要求：3.5+
 
 ## 什么是 mfsu
 
-MFSU 是一种基于 webpack5 新特性 Module Federation 的打包提速方案。
+mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案。
 
 假设我们的应用为 A。mfsu 构建一个暴露所有依赖的虚拟应用 B，然后预先构建 B。然后 A 使用 B 中预先编译好的依赖。从而节省了 A 的编译时间，达到编译提速的效果。
 
@@ -24,7 +26,7 @@ MFSU 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 由于 mfsu 全量编译依赖，首次构建速度较慢。建议在本地环境将预构建完成，并将产物同步到 git，这样在服务器部署的时间将会压缩到 5s 左右！
 
-> 由于尚未支持 dumi，本次测试去除了 `@umijs/preset-dumi`
+> 由于尚未增加对 dumi 的支持，本次测试去除了 `@umijs/preset-dumi`
 >
 > 由于设备性能不稳定，测试可能存在部分误差
 
@@ -54,7 +56,11 @@ MFSU 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 ## 我正确开启了 mfsu 吗？
 
-因为部分库还未兼容 mfsu，导致无法在 mfsu 模式下正常使用，例如 `@umijs/preset-dumi`。以及部分依赖可能没有被正确包括，导致没有被 mfsu 覆盖。
+为了 mfsu 发挥最好的效果，全部的依赖都应当进行预编译。
+
+由于 mfsu 目前仅支持处理静态 import 语句引入的依赖，其他方式（例如 require 和 await import）引入的依赖无法覆盖到。如果某个库中使用了其他引入语句，会导致 mfsu 无法发挥最好的性能，例如 `@umijs/preset-dumi`。
+
+另一方面，一部分依赖由 umi 的 plugin 引入，但是未在 package.json 中包含，导致没有被 mfsu 覆盖。
 
 因此，需要检查项目依赖是否被 mfsu 完全覆盖。我们可以借助 umi 自带的 webpack-analyze 进行依赖分析。
 
@@ -110,7 +116,7 @@ import React from 'react';
 const { default: React } = await import('mf/react');
 ```
 
-但是部分库可能使用了奇怪的姿势：
+但是部分库没有使用 ES Module 的方式引入，例如使用 require 引入：
 
 ```js
 // 库代码
@@ -144,6 +150,8 @@ import useMergedState from 'rc-util/es/hooks/useMergedState';
 这样，就会把这个引入添加到预编译中，并且提供入口，解决了多实例的问题。
 
 其他相关的一些依赖 alias，也可以放在 appDepInfo 中，mfsu 在启动时会读取这个配置。
+
+> 如果要进行深度依赖引入，请从`es`而非`lib`目录引入。
 
 ### umi 的动态 plugin
 
