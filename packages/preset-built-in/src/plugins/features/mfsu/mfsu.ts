@@ -10,7 +10,6 @@ import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
 import { watchDeps } from './watchDeps';
 import url from 'url';
-import { Logger } from '@umijs/core';
 import { copy, getFuzzyIncludes, shouldBuild } from './utils';
 
 export type TMode = 'production' | 'development';
