@@ -1,0 +1,26 @@
+{
+  "name": "config-favicon",
+  "version": "0.0.1",
+  "description": "config-favicon",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples"
+  ],
+  "authors": [
+    "ahwgs <ah_wgs@126.com> (https://github.com/ahwgs)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/config-favicon#readme"
+}
