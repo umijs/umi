@@ -47,8 +47,8 @@ test('onBuildComplete normal', async () => {
   });
   const serverContent = await writeFileSpy.mock.results[0].value;
   expect(writeFileSpy).toHaveBeenCalled();
-  expect(serverContent).toContain('/umi.6f4c357e.css');
-  expect(serverContent).toContain('/umi.e1837763.js');
+  expect(serverContent).toContain('\\u002Fumi.6f4c357e.css');
+  expect(serverContent).toContain('\\u002Fumi.e1837763.js');
 
   writeFileSpy.mockClear();
 });
