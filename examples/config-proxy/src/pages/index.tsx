@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import type { FC } from 'react';
 
+interface IUser {
+  id: number;
+  name: string;
+}
+
 const IndexPage: FC = () => {
-  const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
 
   const getData = () => {
     fetch('/api/users')
@@ -18,7 +23,7 @@ const IndexPage: FC = () => {
 
   return (
     <div>
-      {users.map((user: { id: number; name: string }) => (
+      {users.map((user: IUser) => (
         <li key={user.id}>{user.name}</li>
       ))}
 
