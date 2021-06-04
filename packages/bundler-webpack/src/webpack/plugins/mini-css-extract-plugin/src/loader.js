@@ -10,6 +10,7 @@ import LimitChunkCountPlugin from '@umijs/deps/compiled/webpack/LimitChunkCountP
 import NormalModule from '@umijs/deps/compiled/webpack/NormalModule';
 import CssDependency from './CssDependency';
 import { findModuleById, evalModuleCode } from './utils';
+import { winPath } from '@umijs/utils';
 
 const pluginName = 'mini-css-extract-plugin';
 
@@ -25,7 +26,12 @@ function hotLoader(content, context) {
       // ${Date.now()}
       var cssReload = require(${loaderUtils.stringifyRequest(
         context.context,
-        path.join(__dirname, '../../../../../src/webpack/plugins/mini-css-extract-plugin/src/hmr/hotModuleReplacement.js'),
+        winPath(
+          path.join(
+            __dirname,
+            '../../../../../src/webpack/plugins/mini-css-extract-plugin/src/hmr/hotModuleReplacement.js',
+          ),
+        ),
       )})(module.id, ${JSON.stringify({
     ...context.options,
     locals: !!context.locals,

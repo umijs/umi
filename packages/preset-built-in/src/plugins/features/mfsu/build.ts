@@ -1,7 +1,7 @@
 import { Bundler } from '@umijs/bundler-webpack';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
-import { lodash, mkdirp } from '@umijs/utils';
+import { lodash, mkdirp, winPath } from '@umijs/utils';
 import {
   existsSync,
   readdirSync,
@@ -71,7 +71,7 @@ export const preBuild = async (
 
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
-    const requireFrom = alias[dep] || dep;
+    const requireFrom = winPath(alias[dep]) || dep;
     writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       [
