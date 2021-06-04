@@ -52,6 +52,7 @@
     "@umijs/utils": "3.5.0-beta.2",
     "benchmark": "^2.1.4",
     "dedent": "^0.7.0",
+    "esbuild": "^0.12.5",
     "escape-goat": "^3.0.0",
     "father-build": "1.19.2",
     "git-repo-info": "^2.1.1",

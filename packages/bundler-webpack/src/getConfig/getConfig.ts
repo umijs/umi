@@ -361,6 +361,8 @@ export default async function getConfig(
         .options(config.workerLoader);
   }
 
+  webpackConfig.module.noParse(/css\/hotModuleReplacement/);
+
   // css
   css({
     type,
