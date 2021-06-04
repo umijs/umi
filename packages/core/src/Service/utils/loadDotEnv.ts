@@ -1,5 +1,5 @@
-import { readFileSync, existsSync } from 'fs';
 import { parse } from '@umijs/deps/compiled/dotenv';
+import { existsSync, readFileSync } from 'fs';
 
 /**
  * dotenv wrapper

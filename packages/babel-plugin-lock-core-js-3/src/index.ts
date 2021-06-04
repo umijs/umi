@@ -1,5 +1,5 @@
-import { dirname } from 'path';
 import { t } from '@umijs/utils';
+import { dirname } from 'path';
 
 const CORE_JS_PATH = dirname(require.resolve('core-js/package.json'));
 

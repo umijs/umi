@@ -1,6 +1,6 @@
+import { ApplyPluginsType, Plugin } from '@umijs/runtime';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ApplyPluginsType, Plugin } from '@umijs/runtime';
 
 interface IOpts {
   routes: any[];

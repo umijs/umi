@@ -1,6 +1,8 @@
 import { webpack } from '@umijs/bundler-webpack';
 import { Route } from '@umijs/core';
 import serialize from '@umijs/deps/compiled/serialize-javascript';
+// @ts-ignore
+import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
 import { BundlerConfigType, IApi } from '@umijs/types';
 import {
   cleanRequireCache,
@@ -15,18 +17,16 @@ import { EOL } from 'os';
 import * as path from 'path';
 import { performance } from 'perf_hooks';
 import { matchRoutes, RouteConfig } from 'react-router-config';
-// @ts-ignore
-import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
-import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
+  CHUNK_MANIFEST,
   CHUNK_NAME,
   CLIENT_EXPORTS,
   OUTPUT_SERVER_FILENAME,
   OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
-  CHUNK_MANIFEST,
 } from './constants';
+import ServerTypePlugin from './serverTypePlugin';
 
 class ManifestChunksMapPlugin {
   constructor(public opts: { api: IApi }) {
@@ -83,34 +83,36 @@ class ManifestChunksMapPlugin {
  * replace default html placeholder with the latest html (hash)
  * @param api
  */
-export const onBuildComplete = (api: IApi) => async ({ err, stats }: any) => {
-  if (!err && stats?.stats) {
-    // get content between `<html>*</html>`
-    const HTML_REG = /\\u003Chtml.*?\\u003C\\u002Fhtml\\u003E/m;
-    const [clientStats] = stats.stats;
-    const htmlGenerator = getHtmlGenerator({ api });
-    const latestHTML = serialize(
-      await htmlGenerator.getContent({
-        route: { path: api.config.publicPath },
-        chunks: clientStats.compilation.chunks,
-      }),
-    );
-    const [htmlContent] = latestHTML.match(HTML_REG) || [];
-    const serverPath = path.join(
-      api.paths.absOutputPath!,
-      OUTPUT_SERVER_FILENAME,
-    );
+export const onBuildComplete =
+  (api: IApi) =>
+  async ({ err, stats }: any) => {
+    if (!err && stats?.stats) {
+      // get content between `<html>*</html>`
+      const HTML_REG = /\\u003Chtml.*?\\u003C\\u002Fhtml\\u003E/m;
+      const [clientStats] = stats.stats;
+      const htmlGenerator = getHtmlGenerator({ api });
+      const latestHTML = serialize(
+        await htmlGenerator.getContent({
+          route: { path: api.config.publicPath },
+          chunks: clientStats.compilation.chunks,
+        }),
+      );
+      const [htmlContent] = latestHTML.match(HTML_REG) || [];
+      const serverPath = path.join(
+        api.paths.absOutputPath!,
+        OUTPUT_SERVER_FILENAME,
+      );
 
-    // replace `umi.server.js` default html into latest serialize html
-    if (fs.existsSync(serverPath) && latestHTML) {
-      const serverContent = (
-        await fs.promises.readFile(serverPath, 'utf-8')
-      ).replace(HTML_REG, htmlContent);
-      await fs.promises.writeFile(serverPath, serverContent);
+      // replace `umi.server.js` default html into latest serialize html
+      if (fs.existsSync(serverPath) && latestHTML) {
+        const serverContent = (
+          await fs.promises.readFile(serverPath, 'utf-8')
+        ).replace(HTML_REG, htmlContent);
+        await fs.promises.writeFile(serverPath, serverContent);
+      }
     }
-  }
-  return undefined;
-};
+    return undefined;
+  };
 
 export default (api: IApi) => {
   api.describe({

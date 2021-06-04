@@ -1,14 +1,14 @@
-import React from 'react';
-import { MemoryRouter, Plugin, Link } from '@umijs/runtime';
 import {
+  cleanup,
   getByText,
   render,
   screen,
   waitFor,
-  cleanup,
 } from '@testing-library/react';
-import renderRoutes from './renderRoutes';
+import { Link, MemoryRouter, Plugin } from '@umijs/runtime';
+import React from 'react';
 import { IRoute } from '..';
+import renderRoutes from './renderRoutes';
 
 function TestInitialProps({ foo }: { foo: string }) {
   return <h1 data-testid="test">{foo}</h1>;

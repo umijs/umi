@@ -14,8 +14,7 @@ test('getScripts string', () => {
   expect(getScripts(option1)).toEqual([]);
   expect(getScripts(option2)).toEqual([
     {
-      src:
-        'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+      src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
     },
   ]);
   expect(getScripts(option3)).toEqual([
@@ -25,8 +24,7 @@ test('getScripts string', () => {
   ]);
   expect(getScripts(option4)).toEqual([
     {
-      src:
-        'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+      src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
     },
     {
       content: 'alert(1);',
@@ -37,8 +35,7 @@ test('getScripts string', () => {
 test('getScripts object', () => {
   const option2 = [
     {
-      src:
-        'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+      src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
       crossOrigin: 'anonymous',
     },
     'alert(1);',
@@ -47,16 +44,14 @@ test('getScripts object', () => {
 
   expect(getScripts(option2)).toEqual([
     {
-      src:
-        'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+      src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
       crossOrigin: 'anonymous',
     },
     {
       content: 'alert(1);',
     },
     {
-      src:
-        'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+      src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
     },
   ]);
 });
@@ -76,8 +71,7 @@ test('getScripts other', () => {
       content: 'console.log(1);',
     },
     {
-      src:
-        'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+      src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
     },
   ]);
 });

@@ -1,7 +1,7 @@
-import { join } from 'path';
-import { winPath } from '@umijs/utils';
 import { Service } from '@umijs/core';
-import { getMockData, getConflictPaths } from './utils';
+import { winPath } from '@umijs/utils';
+import { join } from 'path';
+import { getConflictPaths, getMockData } from './utils';
 
 const fixtures = winPath(`${__dirname}/fixtures`);
 

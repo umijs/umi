@@ -1,7 +1,7 @@
-import { IApi } from '@umijs/types';
+import joi from '@umijs/deps/compiled/@hapi/joi';
 // @ts-ignore
 import joi2Types from '@umijs/deps/compiled/joi2types';
-import joi from '@umijs/deps/compiled/@hapi/joi';
+import { IApi } from '@umijs/types';
 
 export default (api: IApi) => {
   api.onGenerateFiles(async () => {

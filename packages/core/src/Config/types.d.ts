@@ -1,5 +1,5 @@
-import { IRoute } from '..';
 import { BaseIConfig } from '@umijs/types';
+import { IRoute } from '..';
 
 type WithFalse<T> = {
   [P in keyof T]?: T[P] | false;

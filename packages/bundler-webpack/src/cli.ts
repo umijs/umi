@@ -1,3 +1,4 @@
+import { Server } from '@umijs/server';
 import { BundlerConfigType } from '@umijs/types';
 import {
   BabelRegister,
@@ -8,12 +9,11 @@ import {
   rimraf,
   yParser,
 } from '@umijs/utils';
-import { basename, extname, join } from 'path';
-import { Server } from '@umijs/server';
 import assert from 'assert';
 import { existsSync } from 'fs';
-import { Bundler } from './index';
+import { basename, extname, join } from 'path';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
+import { Bundler } from './index';
 
 const args = yParser(process.argv.slice(2), {
   alias: {

@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'react';
 import { History, Location } from 'history-with-query';
+import { FunctionComponent } from 'react';
 import { match } from 'react-router-dom';
 
 export interface IComponent extends FunctionComponent {
@@ -22,7 +22,7 @@ export interface IRoute {
 
 export interface IRouteComponentProps<
   Params extends { [K in keyof Params]?: string } = {},
-  Query extends { [K in keyof Query]?: string } = {}
+  Query extends { [K in keyof Query]?: string } = {},
 > {
   children: JSX.Element;
   location: Location & { query: Query };

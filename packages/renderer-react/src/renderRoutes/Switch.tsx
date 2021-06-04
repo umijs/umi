@@ -1,5 +1,5 @@
-import React, { isValidElement, Children, cloneElement } from 'react';
-import { __RouterContext as RouterContext, matchPath } from '@umijs/runtime';
+import { matchPath, __RouterContext as RouterContext } from '@umijs/runtime';
+import React, { Children, cloneElement, isValidElement } from 'react';
 
 export default function Switch(props: any) {
   return (

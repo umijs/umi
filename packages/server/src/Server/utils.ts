@@ -1,8 +1,8 @@
-import * as fs from 'fs';
-import { join } from 'path';
 import { Logger } from '@umijs/core';
 import immer from '@umijs/deps/compiled/immer';
-import { IServerOpts, IHttps } from './Server';
+import * as fs from 'fs';
+import { join } from 'path';
+import { IHttps, IServerOpts } from './Server';
 
 const logger = new Logger('@umijs/server:utils');
 
@@ -13,9 +13,9 @@ export const getCredentials = (opts: IServerOpts): IHttps => {
     cert: join(__dirname, 'cert', 'cert.pem'),
   };
   // custom cert using https: { key: '', cert: '' }
-  const serverOptions = (https === true
-    ? defautlServerOptions
-    : https) as IHttps;
+  const serverOptions = (
+    https === true ? defautlServerOptions : https
+  ) as IHttps;
   if (!serverOptions?.key || !serverOptions?.cert) {
     const err = new Error(
       `Both options.https.key and options.https.cert are required.`,

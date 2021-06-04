@@ -1,7 +1,7 @@
-import { IApi } from '@umijs/types';
-import { relative } from 'path';
-import { existsSync } from 'fs';
 import { Logger } from '@umijs/core';
+import { IApi } from '@umijs/types';
+import { existsSync } from 'fs';
+import { relative } from 'path';
 import {
   cleanTmpPathExceptCache,
   getBundleAndConfigs,
@@ -29,11 +29,8 @@ export default function (api: IApi) {
       await generateFiles({ api, watch: false });
 
       // build
-      const {
-        bundler,
-        bundleConfigs,
-        bundleImplementor,
-      } = await getBundleAndConfigs({ api });
+      const { bundler, bundleConfigs, bundleImplementor } =
+        await getBundleAndConfigs({ api });
       try {
         // clear output path before exec build
         if (process.env.CLEAR_OUTPUT !== 'none') {

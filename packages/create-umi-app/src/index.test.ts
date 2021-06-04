@@ -1,6 +1,6 @@
-import { join } from 'path';
 import { rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
+import { join } from 'path';
 import runGenerator from './index';
 
 const fixtures = join(__dirname, 'fixtures');

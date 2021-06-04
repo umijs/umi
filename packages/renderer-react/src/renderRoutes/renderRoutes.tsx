@@ -1,8 +1,8 @@
-import React, { useEffect, useState, createElement } from 'react';
-import { Plugin, Redirect, ApplyPluginsType } from '@umijs/runtime';
-import { IRoute, IComponent } from '..';
-import Switch from './Switch';
+import { ApplyPluginsType, Plugin, Redirect } from '@umijs/runtime';
+import React, { createElement, useEffect, useState } from 'react';
+import { IComponent, IRoute } from '..';
 import Route from './Route';
+import Switch from './Switch';
 
 interface IOpts {
   routes: IRoute[];

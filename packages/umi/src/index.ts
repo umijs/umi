@@ -1,29 +1,28 @@
+// @ts-ignore
+export * from '@@/core/umiExports';
 export {
+  ApplyPluginsType,
+  createBrowserHistory,
+  createHashHistory,
+  createMemoryHistory,
+  dynamic,
+  isBrowser,
   Link,
+  matchPath,
+  MemoryRouter,
   NavLink,
+  Plugin,
   Prompt,
   Redirect,
   Route,
   Router,
   StaticRouter,
-  MemoryRouter,
   Switch,
-  matchPath,
-  withRouter,
   useHistory,
   useLocation,
   useParams,
   useRouteMatch,
+  withRouter,
   __RouterContext,
-  createBrowserHistory,
-  createHashHistory,
-  createMemoryHistory,
-  Plugin,
-  ApplyPluginsType,
-  dynamic,
-  isBrowser,
 } from '@umijs/runtime';
 export type { MemoryHistory } from '@umijs/runtime';
-
-// @ts-ignore
-export * from '@@/core/umiExports';

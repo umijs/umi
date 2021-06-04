@@ -1,6 +1,6 @@
+import { transform } from '@babel/core';
 import { deepmerge, winPath } from '@umijs/utils';
 import { join } from 'path';
-import { transform } from '@babel/core';
 import { IOpts } from './index';
 
 const DEFAULT_OPTS = {

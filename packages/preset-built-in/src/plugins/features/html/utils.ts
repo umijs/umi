@@ -1,5 +1,5 @@
-import { lodash } from '@umijs/utils';
 import { IScriptConfig, IStyleConfig } from '@umijs/types';
+import { lodash } from '@umijs/utils';
 
 export interface IHTMLTag {
   [key: string]: string;
@@ -59,7 +59,7 @@ export const getStyles = (option: IStyleConfig): [IHTMLTag[], IHTMLTag[]] => {
       }
       if (typeof style === 'object') {
         // is style object
-        styleObj.push((style as unknown) as IHTMLTag);
+        styleObj.push(style as unknown as IHTMLTag);
       }
     });
   }

@@ -1,9 +1,8 @@
-import { join, dirname } from 'path';
 import { IApi } from '@umijs/types';
-import { Generator, chalk } from '@umijs/utils';
+import { chalk, Generator, mkdirp } from '@umijs/utils';
 import { writeFileSync } from 'fs';
+import { dirname, join } from 'path';
 import { getHtmlGenerator } from '../../htmlUtils';
-import { mkdirp } from '@umijs/utils';
 
 export default function ({ api }: { api: IApi }) {
   return class PageGenerator extends Generator {

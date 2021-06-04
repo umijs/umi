@@ -1,11 +1,11 @@
 import ejs from '@umijs/deps/compiled/ejs';
+import prettier from '@umijs/deps/reexported/prettier';
+import { cheerio } from '@umijs/utils';
+import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import assert from 'assert';
-import { cheerio } from '@umijs/utils';
-import prettier from '@umijs/deps/reexported/prettier';
 import { IConfig } from '..';
-import { IOpts, IGetContentArgs, IScript } from './types';
+import { IGetContentArgs, IOpts, IScript } from './types';
 
 class Html {
   config: IConfig;

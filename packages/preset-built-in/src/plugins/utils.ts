@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
-import { Stream } from 'stream';
 import { join } from 'path';
+import { Stream } from 'stream';
 
 type IGetGlobalFile = (opts: {
   absSrcPath: string;

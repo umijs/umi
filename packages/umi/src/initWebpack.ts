@@ -1,5 +1,5 @@
-import { init } from '@umijs/deps/compiled/webpack';
 import { init as initRequreHook } from '@umijs/bundler-webpack/lib/requireHook';
+import { init } from '@umijs/deps/compiled/webpack';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 

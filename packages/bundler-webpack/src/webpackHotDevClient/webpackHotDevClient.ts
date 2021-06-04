@@ -1,8 +1,8 @@
-import SockJS from 'sockjs-client';
-import url from 'url';
 // @ts-ignore
 import * as ErrorOverlay from 'react-error-overlay';
+import SockJS from 'sockjs-client';
 import stripAnsi from 'strip-ansi';
+import url from 'url';
 import formatWebpackMessages from './formatWebpackMessages';
 
 let hadRuntimeError = false;

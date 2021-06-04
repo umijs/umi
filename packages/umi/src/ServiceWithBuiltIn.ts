@@ -1,5 +1,5 @@
-import { dirname, join } from 'path';
 import { IServiceOpts, Service as CoreService } from '@umijs/core';
+import { dirname } from 'path';
 
 class Service extends CoreService {
   constructor(opts: IServiceOpts) {

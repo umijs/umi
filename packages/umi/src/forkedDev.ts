@@ -1,8 +1,8 @@
 import { chalk, yParser } from '@umijs/utils';
+import initWebpack from './initWebpack';
 import { Service } from './ServiceWithBuiltIn';
 import getCwd from './utils/getCwd';
 import getPkg from './utils/getPkg';
-import initWebpack from './initWebpack';
 
 const args = yParser(process.argv.slice(2));
 

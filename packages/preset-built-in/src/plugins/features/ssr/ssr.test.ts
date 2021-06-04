@@ -1,8 +1,8 @@
-import { join } from 'path';
 import { Service } from '@umijs/core';
-import { onBuildComplete } from './ssr';
 import { IApi } from '@umijs/types';
 import { promises } from 'fs';
+import { join } from 'path';
+import { onBuildComplete } from './ssr';
 
 const fixtures = join(__dirname, 'fixtures');
 

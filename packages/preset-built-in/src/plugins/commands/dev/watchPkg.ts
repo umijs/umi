@@ -1,7 +1,7 @@
-import { join } from 'path';
-import { chokidar, winPath, lodash } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
 import { isPluginOrPreset, PluginType } from '@umijs/core';
+import { chokidar, lodash, winPath } from '@umijs/utils';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
 
 function getUmiPlugins(opts: { pkg: any }) {
   return Object.keys({

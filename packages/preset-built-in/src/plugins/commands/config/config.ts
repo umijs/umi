@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { chalk, lodash } from '@umijs/utils';
+import { chalk } from '@umijs/utils';
 
 export default (api: IApi) => {
   api.registerCommand({

@@ -1,8 +1,8 @@
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
-import { runtimePath, renderReactPath } from './constants';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { renderReactPath, runtimePath } from './constants';
 
 export function importsToStr(
   imports: { source: string; specifier?: string }[],

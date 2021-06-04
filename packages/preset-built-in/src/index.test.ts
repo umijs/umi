@@ -1,11 +1,11 @@
+import { cleanup, render } from '@testing-library/react';
 import { Service } from '@umijs/core';
-import { Stream } from 'stream';
-import { join } from 'path';
-import { EOL, platform } from 'os';
 import cheerio from '@umijs/deps/compiled/cheerio';
-import { render, cleanup } from '@testing-library/react';
 import { rimraf } from '@umijs/utils';
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
+import { EOL, platform } from 'os';
+import { join } from 'path';
+import { Stream } from 'stream';
 
 const fixtures = join(__dirname, 'fixtures');
 

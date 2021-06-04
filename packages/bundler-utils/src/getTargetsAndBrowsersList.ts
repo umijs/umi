@@ -1,8 +1,8 @@
 import {
-  IConfig,
-  ITargets,
   BundlerConfigType,
   IBundlerConfigType,
+  IConfig,
+  ITargets,
 } from '@umijs/types';
 
 interface IOpts {

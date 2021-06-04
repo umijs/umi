@@ -1,11 +1,9 @@
-import { join } from 'path';
 import { IApi } from 'umi';
 import {
-  getDeps,
-  getMfsuPath,
-  getIncludeDeps,
-  getExcludeDeps,
   checkConfig,
+  getExcludeDeps,
+  getIncludeDeps,
+  getMfsuPath,
 } from './mfsu';
 
 xtest('check config', () => {

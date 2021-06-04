@@ -1,14 +1,14 @@
-import { basename, dirname, extname, join, relative } from 'path';
-import { existsSync } from 'fs';
-import assert from 'assert';
 import {
   compatESModuleRequire,
   createDebug,
+  lodash,
+  pkgUp,
   resolve,
   winPath,
-  pkgUp,
-  lodash,
 } from '@umijs/utils';
+import assert from 'assert';
+import { existsSync } from 'fs';
+import { basename, dirname, extname, join, relative } from 'path';
 import { PluginType } from '../enums';
 import { IPackage, IPlugin } from '../types';
 
