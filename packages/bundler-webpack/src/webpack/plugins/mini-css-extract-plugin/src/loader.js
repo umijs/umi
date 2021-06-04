@@ -1,15 +1,15 @@
-import path from 'path';
-
 import loaderUtils from '@umijs/deps/compiled/loader-utils';
 import { version as webpackVersion } from '@umijs/deps/compiled/webpack';
-import NodeTemplatePlugin from '@umijs/deps/compiled/webpack/NodeTemplatePlugin';
-import NodeTargetPlugin from '@umijs/deps/compiled/webpack/NodeTargetPlugin';
 import LibraryTemplatePlugin from '@umijs/deps/compiled/webpack/LibraryTemplatePlugin';
-import SingleEntryPlugin from '@umijs/deps/compiled/webpack/SingleEntryPlugin';
 import LimitChunkCountPlugin from '@umijs/deps/compiled/webpack/LimitChunkCountPlugin';
+import NodeTargetPlugin from '@umijs/deps/compiled/webpack/NodeTargetPlugin';
+import NodeTemplatePlugin from '@umijs/deps/compiled/webpack/NodeTemplatePlugin';
 import NormalModule from '@umijs/deps/compiled/webpack/NormalModule';
+import SingleEntryPlugin from '@umijs/deps/compiled/webpack/SingleEntryPlugin';
+import { winPath } from '@umijs/utils';
+import path from 'path';
 import CssDependency from './CssDependency';
-import { findModuleById, evalModuleCode } from './utils';
+import { evalModuleCode, findModuleById } from './utils';
 
 const pluginName = 'mini-css-extract-plugin';
 
@@ -25,7 +25,12 @@ function hotLoader(content, context) {
       // ${Date.now()}
       var cssReload = require(${loaderUtils.stringifyRequest(
         context.context,
-        path.join(__dirname, '../../../../../bundled/css/hotModuleReplacement.js'),
+        winPath(
+          path.join(
+            __dirname,
+            '../../../../../bundled/css/hotModuleReplacement.js',
+          ),
+        ),
       )})(module.id, ${JSON.stringify({
     ...context.options,
     locals: !!context.locals,
