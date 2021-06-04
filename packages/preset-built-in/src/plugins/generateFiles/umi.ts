@@ -57,6 +57,7 @@ export default function (api: IApi) {
         runtimePath,
         rootElement: api.config.mountElementId,
         enableSSR: !!api.config.ssr,
+        enableHistory: !!api.config.history,
         dynamicImport: !!api.config.dynamicImport,
         entryCode: (
           await api.applyPlugins({
