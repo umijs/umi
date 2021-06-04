@@ -275,6 +275,14 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
+  api.addDepInfo(() => [
+    {
+      name: 'core-js',
+      range: '3.6.5',
+      alias: [require.resolve('core-js')],
+    },
+  ]);
+
   /** 暴露文件 */
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
