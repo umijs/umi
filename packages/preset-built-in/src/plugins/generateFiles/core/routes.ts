@@ -1,8 +1,8 @@
-import { readFileSync } from 'fs';
-import { extname, join } from 'path';
+import { Route } from '@umijs/core';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
-import { Route } from '@umijs/core';
+import { readFileSync } from 'fs';
+import { extname, join } from 'path';
 import { runtimePath } from '../constants';
 
 const ROUTE_FILE_EXT_LIST = ['.js', '.jsx', '.tsx'];

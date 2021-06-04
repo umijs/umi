@@ -1,7 +1,7 @@
 import { IApi } from '@umijs/types';
+import createHTMLGenerator from './HTMLGenerator/createHTMLGenerator';
 import createPageGenerator from './PageGenerator/createPageGenerator';
 import createTmpGenerator from './TmpGenerator/createTmpGenerator';
-import createHTMLGenerator from './HTMLGenerator/createHTMLGenerator';
 
 interface IRegisterGenerator {
   key: string;

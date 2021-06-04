@@ -1,8 +1,8 @@
-import { IApi, IRoute, webpack, IBundlerConfigType } from '@umijs/types';
-import { extname, join } from 'path';
-import { existsSync } from 'fs';
+import { IApi, IRoute, webpack } from '@umijs/types';
 import { lodash } from '@umijs/utils';
 import assert from 'assert';
+import { existsSync } from 'fs';
+import { extname, join } from 'path';
 
 interface IGetContentArgs {
   route: IRoute;

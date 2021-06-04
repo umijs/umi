@@ -1,5 +1,5 @@
-import { winPath } from '@umijs/utils';
 import { transform } from '@babel/core';
+import { winPath } from '@umijs/utils';
 
 function transformWithPlugin(code: string) {
   const filename = 'file.js';

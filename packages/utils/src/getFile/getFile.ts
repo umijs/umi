@@ -1,5 +1,5 @@
-import { join } from 'path';
 import { existsSync } from 'fs';
+import { join } from 'path';
 import winPath from '../winPath/winPath';
 
 /**

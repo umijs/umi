@@ -1,5 +1,5 @@
 import { webpack } from '@umijs/types';
-import { chalk, clipboardy, address } from '@umijs/utils';
+import { address, chalk, clipboardy } from '@umijs/utils';
 
 interface IOpts {
   port: number;

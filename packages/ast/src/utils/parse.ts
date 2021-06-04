@@ -1,4 +1,4 @@
-import { t, parser } from '@umijs/utils';
+import { parser, t } from '@umijs/utils';
 
 export function parse(code: string): t.File {
   return parser.parse(code, {

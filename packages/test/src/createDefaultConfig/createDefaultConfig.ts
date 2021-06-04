@@ -1,8 +1,8 @@
 // @ts-ignore
 import { isLernaPackage } from '@umijs/utils';
+import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import assert from 'assert';
 import { IUmiTestArgs } from '../types';
 
 export default function (cwd: string, args: IUmiTestArgs) {
@@ -55,9 +55,8 @@ export default function (cwd: string, args: IUmiTestArgs) {
       '^.+\\.(css|less|sass|scss|stylus)$': require.resolve(
         '../../helpers/transformers/css',
       ),
-      '^(?!.*\\.(js|jsx|ts|tsx|css|less|sass|scss|stylus|json)$)': require.resolve(
-        '../../helpers/transformers/file',
-      ),
+      '^(?!.*\\.(js|jsx|ts|tsx|css|less|sass|scss|stylus|json)$)':
+        require.resolve('../../helpers/transformers/file'),
     },
     verbose: true,
     transformIgnorePatterns: [

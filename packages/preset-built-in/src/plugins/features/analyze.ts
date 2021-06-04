@@ -1,5 +1,5 @@
-import { IApi } from 'umi';
 import { BundlerConfigType } from '@umijs/types';
+import { IApi } from 'umi';
 
 export default (api: IApi) => {
   api.describe({

@@ -1,9 +1,9 @@
 import { t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
 import {
-  NODE_RESOLVERS,
   findArrayElements,
   findObjectMembers,
+  NODE_RESOLVERS,
 } from './propertyResolver';
 
 export function getExportProps(code: string) {

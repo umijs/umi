@@ -1,10 +1,10 @@
-import { runCLI } from 'jest';
 // @ts-ignore
 import { createDebug, mergeConfig } from '@umijs/utils';
-import { options as CliOptions } from 'jest-cli/build/cli/args';
 import assert from 'assert';
-import { join } from 'path';
 import { existsSync } from 'fs';
+import { runCLI } from 'jest';
+import { options as CliOptions } from 'jest-cli/build/cli/args';
+import { join } from 'path';
 import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
 import { IUmiTestArgs, PickedJestCliOptions } from './types';
 

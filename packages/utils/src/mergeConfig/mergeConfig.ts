@@ -8,7 +8,7 @@ type AnyConfig<T extends Record<string, any>, U extends Record<string, any>> = {
 
 type CalculatedConfig<
   T extends Record<string, any>,
-  U extends Record<string, any>
+  U extends Record<string, any>,
 > = T &
   {
     [V in keyof U]: V extends keyof T ? T[V] : U[V];
@@ -16,7 +16,7 @@ type CalculatedConfig<
 
 export default function mergeConfig<
   T extends Record<string, any>,
-  U extends Record<string, any>
+  U extends Record<string, any>,
 >(defaultConfig: T, ...configs: (AnyConfig<T, U> | null | undefined)[]) {
   const ret = { ...defaultConfig } as Partial<CalculatedConfig<T, U>>;
   configs.forEach((config) => {

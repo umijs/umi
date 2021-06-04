@@ -1,7 +1,7 @@
-import { join } from 'path';
 import { winPath } from '@umijs/utils';
-import Service from './Service';
+import { join } from 'path';
 import { ApplyPluginsType } from './enums';
+import Service from './Service';
 
 const fixtures = join(__dirname, 'fixtures');
 

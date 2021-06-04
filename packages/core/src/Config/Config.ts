@@ -1,21 +1,21 @@
-import { existsSync } from 'fs';
-import { extname, join } from 'path';
+import joi from '@umijs/deps/compiled/@hapi/joi';
 import {
   chalk,
   chokidar,
-  compatESModuleRequire,
-  deepmerge,
   cleanRequireCache,
+  compatESModuleRequire,
+  createDebug,
+  deepmerge,
+  getFile,
   lodash,
   parseRequireDeps,
   winPath,
-  getFile,
-  createDebug,
 } from '@umijs/utils';
 import assert from 'assert';
-import joi from '@umijs/deps/compiled/@hapi/joi';
-import Service from '../Service/Service';
+import { existsSync } from 'fs';
+import { extname, join } from 'path';
 import { ServiceStage } from '../Service/enums';
+import Service from '../Service/Service';
 import {
   getUserConfigWithKey,
   updateUserConfigWithKey,

@@ -1,9 +1,9 @@
 import { Service } from '@umijs/core';
-import { join } from 'path';
-import { platform } from 'os';
-import * as acorn from 'acorn';
 import { rimraf } from '@umijs/utils';
-import { readFileSync, existsSync } from 'fs';
+import * as acorn from 'acorn';
+import { existsSync, readFileSync } from 'fs';
+import { platform } from 'os';
+import { join } from 'path';
 import { fixRoutePathInWindows } from './applyHtmlWebpackPlugin';
 
 const fixtures = join(__dirname, '../../../fixtures');

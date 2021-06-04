@@ -1,5 +1,5 @@
-import React from 'react';
 import { getByText, render, waitFor } from '@testing-library/react';
+import React from 'react';
 import dynamic from './dynamic';
 
 const delay = (timeout: number) =>

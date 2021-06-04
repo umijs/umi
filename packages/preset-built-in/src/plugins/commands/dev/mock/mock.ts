@@ -1,7 +1,7 @@
 import { IApi } from '@umijs/types';
 import { parseRequireDeps } from '@umijs/utils';
 import createMiddleware from './createMiddleware';
-import { getMockData, IGetMockDataResult, getConflictPaths } from './utils';
+import { getConflictPaths, getMockData, IGetMockDataResult } from './utils';
 
 export default function (api: IApi) {
   const { cwd, userConfig } = api;

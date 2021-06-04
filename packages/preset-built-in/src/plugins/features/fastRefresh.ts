@@ -1,4 +1,4 @@
-import { IApi, BundlerConfigType, utils } from 'umi';
+import { BundlerConfigType, IApi, utils } from 'umi';
 
 const { createDebug } = utils;
 

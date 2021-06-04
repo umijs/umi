@@ -1,8 +1,8 @@
-import { hydrate, render } from 'react-dom';
-import React, { useEffect } from 'react';
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
+import React, { useEffect } from 'react';
+import { hydrate, render } from 'react-dom';
 import { matchRoutes, RouteConfig } from 'react-router-config';
-import { IComponent, IRoute } from '..';
+import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
 interface IRouterComponentProps {

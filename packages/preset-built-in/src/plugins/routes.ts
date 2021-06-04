@@ -1,5 +1,5 @@
-import { IApi } from '@umijs/types';
 import { Route } from '@umijs/core';
+import { IApi } from '@umijs/types';
 
 export default function (api: IApi) {
   api.describe({

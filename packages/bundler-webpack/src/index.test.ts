@@ -1,10 +1,10 @@
-import { join } from 'path';
-import { readdirSync, readFileSync, statSync } from 'fs';
-import { getFile, rimraf, portfinder } from '@umijs/utils';
-import { BundlerConfigType } from '@umijs/types';
 import { Server } from '@umijs/server';
-import { Bundler } from './index';
+import { BundlerConfigType } from '@umijs/types';
+import { getFile, portfinder, rimraf } from '@umijs/utils';
+import { readdirSync, readFileSync, statSync } from 'fs';
+import { join } from 'path';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
+import { Bundler } from './index';
 
 const fixtures = join(__dirname, 'fixtures');
 

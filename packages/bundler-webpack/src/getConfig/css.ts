@@ -1,8 +1,8 @@
-import Config from 'webpack-chain';
-import { IConfig, IBundlerConfigType, BundlerConfigType } from '@umijs/types';
+import { BundlerConfigType, IBundlerConfigType, IConfig } from '@umijs/types';
+import { deepmerge } from '@umijs/utils';
 // @ts-ignore
 import safePostCssParser from 'postcss-safe-parser';
-import { deepmerge } from '@umijs/utils';
+import Config from 'webpack-chain';
 
 interface IOpts {
   type: IBundlerConfigType;

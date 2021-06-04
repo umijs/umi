@@ -1,29 +1,27 @@
 export {
+  createBrowserHistory,
+  createHashHistory,
+  createMemoryHistory,
+} from 'history-with-query';
+export type { History, MemoryHistory } from 'history-with-query';
+export { __RouterContext } from 'react-router';
+export {
   Link,
+  matchPath,
+  MemoryRouter,
   NavLink,
   Prompt,
   Redirect,
   Route,
   Router,
   StaticRouter,
-  MemoryRouter,
   Switch,
-  matchPath,
-  withRouter,
   useHistory,
   useLocation,
   useParams,
   useRouteMatch,
+  withRouter,
 } from 'react-router-dom';
-export { __RouterContext } from 'react-router';
-
-export {
-  createBrowserHistory,
-  createHashHistory,
-  createMemoryHistory,
-} from 'history-with-query';
-export type { MemoryHistory, History } from 'history-with-query';
-
-export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';
 export { default as dynamic } from './dynamic/dynamic';
+export { ApplyPluginsType, default as Plugin } from './Plugin/Plugin';
 export { isBrowser } from './utils/index';

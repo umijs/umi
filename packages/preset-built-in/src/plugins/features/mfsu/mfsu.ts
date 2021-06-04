@@ -3,14 +3,14 @@ import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { join, parse } from 'path';
 import { IApi } from 'umi';
+import url from 'url';
 import webpack from 'webpack';
 import { runtimePath } from '../../generateFiles/constants';
 import AntdIconPlugin from './babel-antd-icon-plugin';
 import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
-import { watchDeps } from './watchDeps';
-import url from 'url';
 import { copy, getFuzzyIncludes, shouldBuild } from './utils';
+import { watchDeps } from './watchDeps';
 
 export type TMode = 'production' | 'development';
 

@@ -1,6 +1,6 @@
-import { existsSync } from 'fs';
 import { Service } from '@umijs/core';
 import { rimraf } from '@umijs/utils';
+import { existsSync } from 'fs';
 import { join } from 'path';
 
 const fixtures = join(__dirname, '../../../fixtures');
