@@ -72,14 +72,52 @@ export const preBuild = async (
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
     const requireFrom = alias[dep] ? winPath(alias[dep]) : dep;
+
+    /** 判断是否存在默认导出 */
+    let hasDefaultExport = false;
+    let ref = '';
+    const depPath = join(api.paths.absNodeModulesPath!, dep);
+    if (existsSync(depPath)) {
+      ref = require.resolve(require.resolve(depPath));
+      try {
+        hasDefaultExport = !!require(depPath).default;
+      } catch (err) {
+        const file = readFileSync(require.resolve(depPath), 'utf-8');
+        hasDefaultExport =
+          /module.exports/.test(file) ||
+          /exports.default/.test(file) ||
+          /export default/.test(file);
+      }
+    } else {
+      // 对于深度依赖尝试直接读取
+      ['.js', '.ts', '.tsx', '.jsx'].forEach((ext) => {
+        try {
+          const file = readFileSync(depPath + ext, 'utf-8');
+          hasDefaultExport =
+            /module.exports/.test(file) ||
+            /exports.default/.test(file) ||
+            /export default/.test(file);
+          ref = require.resolve(depPath + ext);
+        } catch (err) {}
+      });
+    }
+
     writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       [
         ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
-        ['antd'].includes(dep)
-          ? `export * from "${requireFrom}";`
-          : `export * from "${requireFrom}";import D from "${requireFrom}";export default D;`,
-      ].join('\n'),
+        (hasDefaultExport
+          ? `
+        import _ from '${requireFrom}';\nexport * from '${requireFrom}';\nexport default _;
+        `
+          : `
+        import * as _ from '${requireFrom}';\nexport default _;\nexport * from '${requireFrom}';
+        `
+        ).trim(),
+        `// #ref=${ref}`,
+      ]
+        .join('\n')
+        .trim(),
     );
   }
   const entryFile = '"😛"';
