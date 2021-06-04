@@ -1,7 +1,7 @@
 const { readFileSync, writeFileSync } = require('fs');
 const { join } = require('path');
 
-const filePath = join(__dirname, '../bundled/webpackHotDevClient.js');
+const filePath = join(__dirname, '../bundled/js/webpackHotDevClient.js');
 const content = readFileSync(filePath, 'utf-8');
 writeFileSync(
   filePath,

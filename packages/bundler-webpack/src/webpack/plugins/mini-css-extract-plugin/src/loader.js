@@ -25,7 +25,7 @@ function hotLoader(content, context) {
       // ${Date.now()}
       var cssReload = require(${loaderUtils.stringifyRequest(
         context.context,
-        path.join(__dirname, '../../../../../src/webpack/plugins/mini-css-extract-plugin/src/hmr/hotModuleReplacement.js'),
+        path.join(__dirname, '../../../../../bundled/css/hotModuleReplacement.js'),
       )})(module.id, ${JSON.stringify({
     ...context.options,
     locals: !!context.locals,
