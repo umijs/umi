@@ -1,8 +1,8 @@
-import { IConfig, BundlerConfigType } from '@umijs/types';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import webpackDevMiddleware from '@umijs/deps/compiled/webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
-import { winPath, lodash as _ } from '@umijs/utils';
+import { BundlerConfigType, IConfig } from '@umijs/types';
+import { lodash as _, winPath } from '@umijs/utils';
 import { join } from 'path';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 

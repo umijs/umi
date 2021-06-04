@@ -1,6 +1,6 @@
-import { relative } from 'path';
 import { IApi } from '@umijs/types';
 import { createDebug } from '@umijs/utils';
+import { relative } from 'path';
 import { getGlobalFile } from '../utils';
 
 const debug = createDebug('umi:preset-build-in:global-js');

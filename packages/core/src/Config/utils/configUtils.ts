@@ -1,5 +1,5 @@
-import { lodash } from '@umijs/utils';
 import set from '@umijs/deps/compiled/set-value';
+import { lodash } from '@umijs/utils';
 
 export function updateUserConfigWithKey({
   key,

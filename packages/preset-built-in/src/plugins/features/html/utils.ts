@@ -1,5 +1,5 @@
-import { lodash } from '@umijs/utils';
 import { IScriptConfig, IStyleConfig } from '@umijs/types';
+import { lodash } from '@umijs/utils';
 
 export interface IHTMLTag {
   [key: string]: string;

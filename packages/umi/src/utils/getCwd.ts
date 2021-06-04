@@ -1,4 +1,4 @@
-import { join, isAbsolute } from 'path';
+import { isAbsolute, join } from 'path';
 
 export default () => {
   let cwd = process.cwd();

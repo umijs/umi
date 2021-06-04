@@ -1,5 +1,5 @@
 import { lodash } from '@umijs/utils';
-import { readdirSync, copyFileSync, statSync, existsSync, mkdirSync } from 'fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import { Deps } from './build';
 

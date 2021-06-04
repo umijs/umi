@@ -1,5 +1,5 @@
-import Html from './Html';
 import { join } from 'path';
+import Html from './Html';
 
 const fixtures = join(__dirname, 'fixtures');
 

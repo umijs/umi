@@ -1,7 +1,7 @@
-import { BundlerConfigType } from '@umijs/types';
-import { winPath } from '@umijs/utils';
 // @ts-ignore
 import { init } from '@umijs/deps/compiled/webpack';
+import { BundlerConfigType } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 import getConfig from './getConfig';
 
 beforeAll(() => {

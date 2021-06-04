@@ -1,4 +1,4 @@
-import { join, isAbsolute } from 'path';
+import { join } from 'path';
 import getCwd from './getCwd';
 
 export default (dir: string) => {

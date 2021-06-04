@@ -1,6 +1,6 @@
 import { join } from 'path';
-import parseRequireDeps from './parseRequireDeps';
 import winPath from '../winPath/winPath';
+import parseRequireDeps from './parseRequireDeps';
 
 const fixtures = join(__dirname, 'fixtures');
 

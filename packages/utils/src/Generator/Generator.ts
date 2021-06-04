@@ -1,6 +1,6 @@
 import { copyFileSync, readFileSync, statSync, writeFileSync } from 'fs';
-import { dirname, relative, join } from 'path';
-import { chalk, mkdirp, Mustache, yargs, glob, prompts } from '../index';
+import { dirname, join, relative } from 'path';
+import { chalk, glob, mkdirp, Mustache, prompts, yargs } from '../index';
 
 interface IOpts {
   cwd: string;

@@ -1,7 +1,7 @@
-import { IApi } from '@umijs/types';
-import { relative } from 'path';
-import { existsSync } from 'fs';
 import { Logger } from '@umijs/core';
+import { IApi } from '@umijs/types';
+import { existsSync } from 'fs';
+import { relative } from 'path';
 import {
   cleanTmpPathExceptCache,
   getBundleAndConfigs,

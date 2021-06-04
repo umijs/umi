@@ -1,5 +1,5 @@
-import { chokidar, signale, createDebug, lodash } from '@umijs/utils';
-import { RequestHandler, Request, Response, NextFunction } from '@umijs/types';
+import { NextFunction, Request, RequestHandler, Response } from '@umijs/types';
+import { chokidar, createDebug, lodash, signale } from '@umijs/utils';
 import { cleanRequireCache, IGetMockDataResult, matchMock } from './utils';
 
 const debug = createDebug('umi:preset-build-in:mock:createMiddleware');

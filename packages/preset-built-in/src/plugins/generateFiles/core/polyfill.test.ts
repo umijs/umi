@@ -1,7 +1,7 @@
-import { generateTmp } from '@umijs/test-utils';
 import { Service } from '@umijs/core';
-import { join } from 'path';
+import { generateTmp } from '@umijs/test-utils';
 import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const fixtures = join(__dirname, 'fixtures', 'polyfill');
 

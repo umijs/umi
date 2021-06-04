@@ -1,5 +1,5 @@
 import { lodash as _ } from '@umijs/utils';
-import { parse, relative, extname, sep } from 'path';
+import { extname, parse, relative, sep } from 'path';
 
 /**
  * convert path into componentName

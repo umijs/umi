@@ -1,13 +1,13 @@
+import { winPath } from '@umijs/utils';
 import fs from 'fs';
 import { join } from 'path';
-import { winPath } from '@umijs/utils';
+import { Stream } from 'stream';
 import {
   getGlobalFile,
   isDynamicRoute,
   isTSFile,
   streamToString,
 } from './utils';
-import { Stream } from 'stream';
 
 test('getGlobalFile', () => {
   const existsSyncMock = jest

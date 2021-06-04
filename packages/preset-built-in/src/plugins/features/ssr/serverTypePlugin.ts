@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from 'fs';
 import { webpack } from '@umijs/types';
+import { existsSync, readFileSync } from 'fs';
 
 /**
  * generate assets when webpack bundler emit

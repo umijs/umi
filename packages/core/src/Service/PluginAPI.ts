@@ -1,11 +1,11 @@
-import assert from 'assert';
 import * as utils from '@umijs/utils';
-import Logger from '../Logger/Logger';
-import Service from './Service';
-import { isValidPlugin, pathToObj } from './utils/pluginUtils';
-import { EnableBy, PluginType, ServiceStage } from './enums';
-import { ICommand, IHook, IPlugin, IPluginConfig, IPreset } from './types';
+import assert from 'assert';
 import Html from '../Html/Html';
+import Logger from '../Logger/Logger';
+import { EnableBy, PluginType, ServiceStage } from './enums';
+import Service from './Service';
+import { ICommand, IHook, IPlugin, IPluginConfig, IPreset } from './types';
+import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 
 interface IOpts {
   id: string;

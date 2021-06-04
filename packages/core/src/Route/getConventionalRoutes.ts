@@ -1,10 +1,10 @@
+import { getExportProps, isReactComponent } from '@umijs/ast';
+import { getFile, winPath } from '@umijs/utils';
+import assert from 'assert';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { basename, extname, join, relative } from 'path';
-import { getFile, winPath } from '@umijs/utils';
-import { getExportProps, isReactComponent } from '@umijs/ast';
-import assert from 'assert';
-import { IRoute } from './types';
 import { IConfig } from '..';
+import { IRoute } from './types';
 
 interface IOpts {
   root: string;

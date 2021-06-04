@@ -1,6 +1,8 @@
 import { webpack } from '@umijs/bundler-webpack';
 import { Route } from '@umijs/core';
 import serialize from '@umijs/deps/compiled/serialize-javascript';
+// @ts-ignore
+import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
 import { BundlerConfigType, IApi } from '@umijs/types';
 import {
   cleanRequireCache,
@@ -15,18 +17,16 @@ import { EOL } from 'os';
 import * as path from 'path';
 import { performance } from 'perf_hooks';
 import { matchRoutes, RouteConfig } from 'react-router-config';
-// @ts-ignore
-import { getCompilerHooks } from '@umijs/deps/compiled/webpack-manifest-plugin';
-import ServerTypePlugin from './serverTypePlugin';
 import { getHtmlGenerator } from '../../commands/htmlUtils';
 import {
+  CHUNK_MANIFEST,
   CHUNK_NAME,
   CLIENT_EXPORTS,
   OUTPUT_SERVER_FILENAME,
   OUTPUT_SERVER_TYPE_FILENAME,
   TMP_PLUGIN_DIR,
-  CHUNK_MANIFEST,
 } from './constants';
+import ServerTypePlugin from './serverTypePlugin';
 
 class ManifestChunksMapPlugin {
   constructor(public opts: { api: IApi }) {

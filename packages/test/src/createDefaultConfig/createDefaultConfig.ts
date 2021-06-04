@@ -1,8 +1,8 @@
 // @ts-ignore
 import { isLernaPackage } from '@umijs/utils';
+import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import assert from 'assert';
 import { IUmiTestArgs } from '../types';
 
 export default function (cwd: string, args: IUmiTestArgs) {

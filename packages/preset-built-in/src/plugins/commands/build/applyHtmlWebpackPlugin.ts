@@ -1,9 +1,9 @@
 import { BundlerConfigType, IApi, webpack } from '@umijs/types';
 import { existsSync } from 'fs';
-import { join } from 'path';
 import { platform } from 'os';
-import { getHtmlGenerator } from '../htmlUtils';
+import { join } from 'path';
 import { OUTPUT_SERVER_FILENAME } from '../../features/ssr/constants';
+import { getHtmlGenerator } from '../htmlUtils';
 
 export function fixRoutePathInWindows(path?: string) {
   // window 下 : 不是一个合法路径，所以需要处理一下

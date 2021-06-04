@@ -1,17 +1,17 @@
-import {
-  IApi,
-  RequestHandler,
-  Request,
-  NextFunction,
-  IRoute,
-} from '@umijs/types';
-import { winPath, createDebug, glob } from '@umijs/utils';
-import { join } from 'path';
-import { existsSync } from 'fs';
-import assert from 'assert';
 import bodyParser from '@umijs/deps/compiled/body-parser';
 import multer from '@umijs/deps/compiled/multer';
 import pathToRegexp from '@umijs/deps/compiled/path-to-regexp';
+import {
+  IApi,
+  IRoute,
+  NextFunction,
+  Request,
+  RequestHandler,
+} from '@umijs/types';
+import { createDebug, glob, winPath } from '@umijs/utils';
+import assert from 'assert';
+import { existsSync } from 'fs';
+import { join } from 'path';
 import { getFlatRoutes } from '../../../commands/htmlUtils';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];

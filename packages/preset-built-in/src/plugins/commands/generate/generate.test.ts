@@ -1,7 +1,7 @@
 import { Service } from '@umijs/core';
-import { join } from 'path';
 import { rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
+import { join } from 'path';
 
 const fixtures = join(__dirname, '../../../fixtures');
 const cwd = join(fixtures, 'generate');

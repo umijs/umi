@@ -1,5 +1,5 @@
-import { isLernaPackage } from '../index';
 import { join } from 'path';
+import { isLernaPackage } from '../index';
 
 const fixtures = join(__dirname, 'fixtures');
 

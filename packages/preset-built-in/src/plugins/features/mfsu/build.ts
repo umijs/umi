@@ -1,23 +1,23 @@
 import { Bundler } from '@umijs/bundler-webpack';
+// @ts-ignore
+import { transform } from '@umijs/deps/compiled/babel/core';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { lodash, mkdirp, winPath } from '@umijs/utils';
 import {
   existsSync,
   readdirSync,
+  readFileSync,
   unlinkSync,
   writeFileSync,
-  readFileSync,
 } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { getMfsuPath, getAlias, TMode } from './mfsu';
-import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
-// @ts-ignore
-import { transform } from '@umijs/deps/compiled/babel/core';
 import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
+import { getAlias, getMfsuPath, TMode } from './mfsu';
+import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 

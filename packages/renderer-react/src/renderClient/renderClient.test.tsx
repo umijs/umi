@@ -1,7 +1,7 @@
+import { cleanup, getByText, render, waitFor } from '@testing-library/react';
+import { createMemoryHistory, dynamic, Plugin } from '@umijs/runtime';
 import React from 'react';
-import { render, cleanup, waitFor, getByText } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { createMemoryHistory, Plugin, dynamic } from '@umijs/runtime';
 import renderClient, { preloadComponent } from './renderClient';
 
 let container: any;

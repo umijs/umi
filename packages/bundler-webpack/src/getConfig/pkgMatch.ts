@@ -1,5 +1,5 @@
-import { dirname } from 'path';
 import { pkgUp } from '@umijs/utils';
+import { dirname } from 'path';
 
 const pkgPathCache = {};
 

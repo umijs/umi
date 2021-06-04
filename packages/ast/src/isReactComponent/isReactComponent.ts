@@ -1,4 +1,4 @@
-import { traverse, t } from '@umijs/utils';
+import { traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
 
 export function isReactComponent(code: string) {

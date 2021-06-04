@@ -1,6 +1,6 @@
+import { IApi } from '@umijs/types';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from '@umijs/types';
 
 export default (api: IApi) => {
   api.describe({

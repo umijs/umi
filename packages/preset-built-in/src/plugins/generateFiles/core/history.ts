@@ -1,6 +1,6 @@
+import { IApi } from '@umijs/types';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { IApi } from '@umijs/types';
 import { runtimePath } from '../constants';
 
 export default function (api: IApi) {
