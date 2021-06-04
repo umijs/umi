@@ -1,0 +1,26 @@
+{
+  "name": "config-base",
+  "version": "0.0.1",
+  "description": "config-base",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples"
+  ],
+  "authors": [
+    "xiaohuoni <xiaohuoni@gmail.com> (https://github.com/xiaohuoni)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/config-base#readme"
+}

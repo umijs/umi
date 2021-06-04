@@ -2,7 +2,9 @@
 {{{ importsAhead }}}
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
+{{#enableHistory}}
 import { createHistory } from './core/history';
+{{/enableHistory}}
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
 import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/routes';
@@ -20,7 +22,9 @@ const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin
       initialValue: {
         routes: args.routes || getRoutes(),
         plugin,
+{{#enableHistory}}
         history: createHistory(args.hot),
+{{/enableHistory}}
         isServer: process.env.__IS_SERVER,
 {{#enableSSR}}
         ssrProps: {},

@@ -1,0 +1,23 @@
+{
+  "name": "with-tailwind",
+  "version": "1.0.0",
+  "description": "UmiJs with tailwindcss",
+  "main": "index.js",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "UmiJs",
+    "tailwind"
+  ],
+  "author": "beysong",
+  "license": "ISC",
+  "dependencies": {
+    "postcss": "7.x",
+    "postcss-import": "12.x",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "umi": "latest"
+  }
+}

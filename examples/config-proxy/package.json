@@ -1,0 +1,30 @@
+{
+  "name": "config-proxy",
+  "version": "0.0.1",
+  "description": "config-proxy",
+  "scripts": {
+    "start": "cross-env APP_ENV=dev umi dev",
+    "start:test": "cross-env APP_ENV=test umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples"
+  ],
+  "authors": [
+    "ahwgs <ah_wgs@126.com> (https://github.com/ahwgs)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/config-proxy#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
