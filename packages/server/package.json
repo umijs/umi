@@ -1,6 +1,6 @@
 {
   "name": "@umijs/server",
-  "version": "3.5.0-beta.1",
+  "version": "3.5.0-beta.4",
   "description": "@umijs/server",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/deps": "3.5.0-beta.1",
-    "@umijs/utils": "3.5.0-beta.1"
+    "@umijs/deps": "3.5.0-beta.4",
+    "@umijs/utils": "3.5.0-beta.4"
   }
 }

@@ -29,7 +29,7 @@ function hotLoader(content, context) {
         winPath(
           path.join(
             __dirname,
-            '../../../../../src/webpack/plugins/mini-css-extract-plugin/src/hmr/hotModuleReplacement.js',
+            '../../../../../bundled/css/hotModuleReplacement.js',
           ),
         ),
       )})(module.id, ${JSON.stringify({

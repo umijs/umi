@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "3.5.0-beta.1",
+  "version": "3.5.0-beta.4",
   "description": "@umijs/bundler-webpack",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,7 +26,8 @@
     "access": "public"
   },
   "scripts": {
-    "bundleWebpackHotDevClient": "COMPRESS=none ./bin/bundler-webpack.js build && node ./scripts/patchWebpackHotDevClient.js"
+    "bundleWebpackHotDevClient": "BABEL_CACHE=none COMPRESS=none ./bin/bundler-webpack.js build && node ./scripts/patchWebpackHotDevClient.js",
+    "bundleHotModuleReplacement": "node scripts/bundleHotModuleReplacement.js"
   },
   "devDependencies": {
     "@types/sockjs-client": "1.5.0",
@@ -36,10 +37,10 @@
     "strip-ansi": "6.0.0"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "3.5.0-beta.1",
-    "@umijs/deps": "3.5.0-beta.1",
-    "@umijs/types": "3.5.0-beta.1",
-    "@umijs/utils": "3.5.0-beta.1",
+    "@umijs/bundler-utils": "3.5.0-beta.4",
+    "@umijs/deps": "3.5.0-beta.4",
+    "@umijs/types": "3.5.0-beta.4",
+    "@umijs/utils": "3.5.0-beta.4",
     "jest-worker": "26.6.2",
     "node-libs-browser": "2.2.1",
     "normalize-url": "1.9.1",

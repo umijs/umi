@@ -1,5 +1,5 @@
 export default {
-  outputPath: './bundled/',
+  outputPath: './bundled/js/',
   entry: {
     webpackHotDevClient: './src/webpackHotDevClient/webpackHotDevClient',
   },

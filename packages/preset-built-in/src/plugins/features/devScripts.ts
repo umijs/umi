@@ -26,7 +26,7 @@ export default (api: IApi) => {
                 ? [
                     readFileSync(
                       require.resolve(
-                        '@umijs/bundler-webpack/bundled/webpackHotDevClient',
+                        '@umijs/bundler-webpack/bundled/js/webpackHotDevClient',
                       ),
                       'utf-8',
                     ),
