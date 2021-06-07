@@ -55,10 +55,10 @@ if (module.hot) {
     const ret = require('./core/routes');
     if (ret.then) {
       ret.then(({ getRoutes }) => {
-        getClientRender({ hot: true, routes: getRoutes(), appId })();
+        getClientRender({ hot: true, routes: getRoutes(), appId: pluginArgs.appId})();
       });
     } else {
-      getClientRender({ hot: true, routes: ret.getRoutes(), appId })();
+      getClientRender({ hot: true, routes: ret.getRoutes(), appId: pluginArgs.appId })();
     }
   });
 }
