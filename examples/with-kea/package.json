@@ -1,0 +1,32 @@
+{
+  "name": "with-kea",
+  "version": "0.0.1",
+  "description": "with-kea",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples"
+  ],
+  "authors": [
+    "xiaohuoni <xiaohuoni@gmail.com> (https://github.com/xiaohuoni)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "kea": "^2.4.2",
+    "kea-loaders": "^0.4.0",
+    "kea-router": "^0.5.3",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "reselect": "^4.0.0",
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/with-kea#readme"
+}
