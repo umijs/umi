@@ -8,6 +8,8 @@ import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/routes';
 {{{ imports }}}
 
+const pluginArgs = {};
+
 {{{ entryCodeAhead }}}
 
 const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin.applyPlugins({
@@ -33,13 +35,14 @@ const getClientRender = (args: { hot?: boolean; routes?: any[] } = {}) => plugin
         defaultTitle: `{{{ defaultTitle }}}`,
 {{/enableTitle}}
       },
+      args,
     });
     return renderClient(opts);
   },
   args,
 });
 
-const clientRender = getClientRender();
+const clientRender = getClientRender(pluginArgs);
 export default clientRender();
 
 {{{ entryCode }}}
@@ -52,10 +55,10 @@ if (module.hot) {
     const ret = require('./core/routes');
     if (ret.then) {
       ret.then(({ getRoutes }) => {
-        getClientRender({ hot: true, routes: getRoutes() })();
+        getClientRender({ hot: true, routes: getRoutes(), appId })();
       });
     } else {
-      getClientRender({ hot: true, routes: ret.getRoutes() })();
+      getClientRender({ hot: true, routes: ret.getRoutes(), appId })();
     }
   });
 }
