@@ -36,16 +36,38 @@ const UserInfo = () => {
 
 const CreateUser = () => {
   const onCreate = useCallback(() => {
-    fetch('/api/users/create', { method: 'POST' })
+    const formData = new FormData();
+    formData.append('name', 'ahwgs');
+    fetch('/api/users/create', {
+      method: 'POST',
+      body: formData,
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 0) {
-          alert('create success');
+          alert(`create success! name：${res.data.name}`);
         }
       });
   }, []);
 
-  return <button onClick={onCreate}>创建</button>;
+  return <button onClick={onCreate}>Create User</button>;
+};
+
+const Http500 = () => {
+  const onHandle = useCallback((code) => {
+    fetch(`/api/status/${code}`).then((res) => {
+      if (res.status !== 200) {
+        alert(res.statusText);
+      }
+    });
+  }, []);
+
+  return (
+    <>
+      <button onClick={() => onHandle(500)}>Mock Http 500</button>
+      <button onClick={() => onHandle(403)}>Mock Http 403</button>
+    </>
+  );
 };
 
 const IndexPage = () => {
@@ -57,12 +79,15 @@ const IndexPage = () => {
       <UserInfo></UserInfo>
       <p>POST /api/users/create</p>
       <CreateUser></CreateUser>
-
+      <p>MOCK HTTP STATUS</p>
+      <Http500></Http500>
       <p>tip</p>
-
       <p>
         If we want to close the mock,We can set the environment variable
         MOCK=none,such as package.json start:no-mock
+      </p>
+      <p>
+        more config : https://umijs.org/zh-CN/docs/mock#mock-%E6%95%B0%E6%8D%AE
       </p>
     </div>
   );
