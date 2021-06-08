@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "config-define",
   "scripts": {
-    "start": "umi dev",
+    "start": "UMI_ENV=dev umi dev",
     "build": "umi build"
   },
   "repository": {
