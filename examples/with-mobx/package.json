@@ -1,7 +1,7 @@
 {
-  "name": "with-kea",
+  "name": "with-mobx",
   "version": "0.0.1",
-  "description": "with-kea",
+  "description": "with-mobx",
   "scripts": {
     "start": "umi dev",
     "build": "umi build"
@@ -13,21 +13,17 @@
   "keywords": [
     "umi",
     "umi examples",
-    "kea"
+    "mobx"
   ],
   "authors": [
     "xiaohuoni <xiaohuoni@gmail.com> (https://github.com/xiaohuoni)"
   ],
   "license": "MIT",
   "dependencies": {
-    "kea": "^2.4.2",
-    "kea-loaders": "^0.4.0",
-    "kea-router": "^0.5.3",
-    "react-redux": "^7.2.4",
-    "redux": "^4.1.0",
-    "reselect": "^4.0.0",
+    "mobx": "^6.3.2",
+    "mobx-react": "^7.2.0",
     "umi": "latest"
   },
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/examples/with-kea#readme"
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/with-mobx#readme"
 }
