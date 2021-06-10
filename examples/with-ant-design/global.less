@@ -1,0 +1,29 @@
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+:root {
+  --backgroundColor: #000;
+  --primaryColor: red;
+  --textColorSecondary: rgba(0, 0, 0, 0.45);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 14px;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+body {
+  background-color: var(--backgroundColor);
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.ant-form-item-label > label {
+  color: red !important;
+}
