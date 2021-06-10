@@ -1,0 +1,29 @@
+{
+  "name": "with-ant-design",
+  "version": "0.0.1",
+  "description": "with-ant-design",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples",
+    "antd"
+  ],
+  "authors": [
+    "xiaohuoni <xiaohuoni@gmail.com> (https://github.com/xiaohuoni)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ant-design/icons": "^4.6.2",
+    "@umijs/plugin-antd": "^0.10.0",
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/with-ant-design#readme"
+}
