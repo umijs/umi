@@ -1,0 +1,31 @@
+{
+  "name": "with-sentry",
+  "version": "0.0.1",
+  "description": "with-sentry",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples",
+    "sentry"
+  ],
+  "authors": [
+    "xiaohuoni <xiaohuoni@gmail.com> (https://github.com/xiaohuoni)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "umi": "latest",
+    "@umijs/plugin-antd": "0.9.1",
+    "@umijs/plugin-dva": "0.12.1",
+    "@umijs/plugin-request": "2.5.2",
+    "@alitajs/sentry": "1.0.3"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/with-sentry#readme"
+}
