@@ -413,6 +413,7 @@ interface IServerRenderParams {
   removeWindowInitialProps?: boolean;
   getInitialPropsCtx?: object;
   manifest?: string;
+  publicPath?: string;
   [k: string]: any;
 }
 

@@ -34,6 +34,7 @@ const render: IServerRender = async (params) => {
     forceInitial = {{{ ForceInitial }}},
     removeWindowInitialProps = {{{ RemoveWindowInitialProps }}},
     getInitialPropsCtx,
+    publicPath,
   } = params;
   let manifest = params.manifest;
   const env = '{{{ Env }}}';
@@ -117,7 +118,7 @@ const render: IServerRender = async (params) => {
         },
         async: true,
       });
-      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest });
+      html = await handleHTML({ html, rootContainer, pageInitialProps, mountElementId, mode, forceInitial, removeWindowInitialProps, routesMatched, dynamicImport, manifest, publicPath });
     }
   } catch (e) {
     // downgrade into csr

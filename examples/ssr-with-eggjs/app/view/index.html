@@ -14,6 +14,6 @@
   window.routerBase = '/';
   window.resourceBaseUrl = '{{ helper.assets.resourceBase }}';
 </script>
-{{ helper.assets.getScript('umi.js') | safe }}
+<script href="{{ helper.assets.getURL('umi.js') | safe }}"></script>
 </body>
 </html>

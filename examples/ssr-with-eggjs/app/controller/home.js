@@ -15,9 +15,12 @@ class HomeController extends Controller {
     // 先走 eggjs 的v iew 渲染
     const htmlTemplate = await ctx.view.render('index.html');
 
+    const publicPath = ctx.helper.assets.resourceBase;
+
     // 将 html 模板传到服务端渲染函数中
     const { error, html } = await this.serverRender({
       path: ctx.url,
+      publicPath,
       getInitialPropsCtx: {},
       htmlTemplate,
     });

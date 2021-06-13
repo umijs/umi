@@ -1,5 +1,5 @@
-import { defineConfig } from 'umi';
 import { join } from 'path';
+import { defineConfig } from 'umi';
 
 const cwd = process.cwd();
 const manifest = join(cwd, 'config/manifest.json');
@@ -8,6 +8,7 @@ export default defineConfig({
   ssr: {
     devServerRender: false,
   },
+  dynamicImport: {},
   hash: true,
   outputPath: '../public',
   manifest: {

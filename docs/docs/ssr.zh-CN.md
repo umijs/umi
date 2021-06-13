@@ -12,7 +12,6 @@
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png" width="600" />
 
-
 第二张，**白屏时间**上 SSR 较少，因为当 HTML 文档返回时，已经有对应的内容。（见 Network）
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80308316-e74a3880-8800-11ea-9a20-2d9d153fe9d1.png" />
@@ -55,7 +54,7 @@ Umi 3 结合自身业务场景，在 SSR 上做了大量优化及开发体验的
 ```js
 export default {
   ssr: {},
-}
+};
 ```
 
 ## 开发
@@ -69,13 +68,12 @@ export default {
 如果与后端框架在开发模式下一起使用时，可通过配置来关闭 `umi dev` 下的服务端渲染行为：
 
 ```js
-
 export default {
   ssr: {
     // 默认为 true
     devServerRender: false,
   },
-}
+};
 ```
 
 ## 数据预获取
@@ -179,7 +177,7 @@ export const ssr = {
   modifyGetInitialPropsCtx: async (ctx) => {
     ctx.store = getApp()._store;
   },
-}
+};
 ```
 
 然后在页面中，可以通过获取到 `store`：
@@ -191,7 +189,7 @@ const Home = () => <div />;
 Home.getInitialProps = async (ctx) => {
   const state = ctx.store.getState();
   return state;
-}
+};
 
 export default Home;
 ```
@@ -204,8 +202,8 @@ export const ssr = {
   modifyGetInitialPropsCtx: async (ctx) => {
     ctx.title = 'params';
     return ctx;
-  }
-}
+  },
+};
 ```
 
 同时可以使用 `getInitialPropsCtx` 将服务端参数扩展到 `ctx` 中，例如：
@@ -226,7 +224,7 @@ app.use(async (req, res) => {
       req,
     },
   });
-})
+});
 ```
 
 在使用的时候，就有 `req` 对象，不过需要注意的是，只在服务端执行时才有此参数：
@@ -237,7 +235,7 @@ Page.getInitialProps = async (ctx) => {
     // console.log(ctx.req);
   }
   return {};
-}
+};
 ```
 
 则在执行 `getInitialProps` 方法时，除了以上两个固定参数外，还会获取到 `title` 和 `store` 参数。
@@ -290,18 +288,19 @@ app.use(async (req, res) => {
     // getInitialPropsCtx: {},
 
     // manifest，正常情况下不需要
+    // publicPath，可选运行时
   });
 
   // support stream content
   if (content instanceof Stream) {
     html.pipe(res);
-    html.on('end', function() {
+    html.on('end', function () {
       res.end();
     });
   } else {
     res.send(res);
   }
-})
+});
 ```
 
 `render` 方法参数和返回值如下：
@@ -337,8 +336,10 @@ app.use(async (req, res) => {
   error?: Error;
 }
 ```
+
 ## 示例
-目前做了两个示例分别是基于[koa](https://github.com/umijs/umi/tree/master/examples/ssr-koa)和[egg](https://github.com/umijs/umi/tree/master/examples/ssr-with-eggjs)的，示例内置dva数据流和国际化解决方案，代码部分有注释，可参照进行个性化的修改。
+
+目前做了两个示例分别是基于[koa](https://github.com/umijs/umi/tree/master/examples/ssr-koa)和[egg](https://github.com/umijs/umi/tree/master/examples/ssr-with-eggjs)的，示例内置 dva 数据流和国际化解决方案，代码部分有注释，可参照进行个性化的修改。
 
 ## polyfill
 
@@ -347,23 +348,17 @@ Umi 3 默认移除了 DOM/BOM 浏览器 API 在 Node.js 的 polyfill，如果应
 ```js
 // app.ts
 export const ssr = {
-  beforeRenderServer: async ({
-    env,
-    location,
-    history,
-    mode,
-    context,
-  }) => {
+  beforeRenderServer: async ({ env, location, history, mode, context }) => {
     // global 为 Node.js 下的全局变量
     // 避免直接 mock location，这样会造成一些环境判断失效
     global.mockLocation = location;
 
     // 国际化
     if (location.pathname.indexOf('zh-CN') > -1) {
-      global.locale = 'zh-CN'
+      global.locale = 'zh-CN';
     }
-  }
-}
+  },
+};
 ```
 
 ## 动态加载（dynamicImport）
@@ -375,7 +370,7 @@ export const ssr = {
 export default {
   ssr: {},
   dynamicImport: {},
-}
+};
 ```
 
 使用动态加载后，启动和构建会自动开启 [manifest](/zh-CN/config#manifest) 配置，并在产物目录中生成 `asset-manifest.json` 做资源映射，并自动将页面对应的资源注入到 HTML 中，避免开启动态加载后，**页面首屏闪烁**的问题。
@@ -407,7 +402,7 @@ export default {
   ssr: {
     mode: 'stream',
   },
-}
+};
 ```
 
 ## 使用预渲染
@@ -420,7 +415,7 @@ export default {
 export default {
   ssr: {},
   exportStatic: {},
-}
+};
 ```
 
 执行 `umi build`，会将输出渲染后的 HTML
@@ -490,7 +485,7 @@ $ yarn add @umijs/preset-react
 import React from 'react';
 import { Helmet } from 'umi';
 
-export default props => {
+export default (props) => {
   return (
     <>
       {/* 可自定义需不需要编码 */}
@@ -513,7 +508,7 @@ export default props => {
 export default {
   ssr: {},
   exportStatic: {},
-}
+};
 ```
 
 <img src="https://user-images.githubusercontent.com/13595509/80310631-52e6d280-880e-11ea-9a9a-0942c0e24658.png" width="600" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" />
@@ -533,8 +528,8 @@ $ yarn add @umijs/preset-react
 ```js
 export default {
   ssr: {},
-  dva: {}
-}
+  dva: {},
+};
 ```
 
 这时候 `getInitialProps(ctx)` 中的 `ctx` 就会有 `store` 属性，可执行 `dispatch`，并返回初始化数据。
@@ -546,7 +541,7 @@ Page.getInitialProps = async (ctx) => {
     type: 'bar/getData',
   });
   return store.getState();
-}
+};
 ```
 
 ## 包大小分析
@@ -606,7 +601,9 @@ export default () => {
   )
 }
 ```
+
 3.如果是第三方库可以通过 umi 提供的 `dynamic` 动态加载组件
+
 ```
 import React from 'react';
 import { dynamic } from 'umi';
@@ -624,7 +621,9 @@ export default dynamic({
     loading: () => renderLoading(),
 });
 ```
-避免ssr渲染时报 ` did not match.`警告，使用时候ssr应当渲染相同`loading`组件
+
+避免 ssr 渲染时报 ` did not match.`警告，使用时候 ssr 应当渲染相同`loading`组件
+
 ```
 import React from 'react';
 import { isBrowser } from 'umi';
@@ -642,8 +641,7 @@ export default () => {
 
 ### antd pro 怎样使用服务端渲染？
 
-首先，[antd pro](https://github.com/ant-design/ant-design-pro/) 作为中后台项目,没有 SEO 需求，不适合做服务端渲染；
-从技术角度来讲，antd pro 在 render 里大量使用 DOM/BOM 方法，服务端渲染将 DOM/BOM 操作改至副作用（`useEffect` 或 `componentDidMount` 周期中），可以给 antd pro 提 PR。
+首先，[antd pro](https://github.com/ant-design/ant-design-pro/) 作为中后台项目,没有 SEO 需求，不适合做服务端渲染；从技术角度来讲，antd pro 在 render 里大量使用 DOM/BOM 方法，服务端渲染将 DOM/BOM 操作改至副作用（`useEffect` 或 `componentDidMount` 周期中），可以给 antd pro 提 PR。
 
 ### 为什么不能 external 服务端中的一些模块
 

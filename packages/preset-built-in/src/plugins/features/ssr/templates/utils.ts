@@ -61,6 +61,7 @@ export interface IHandleHTMLOpts {
   html: string;
   dynamicImport: boolean;
   manifest: object;
+  publicPath: string;
 }
 
 /**
@@ -105,6 +106,7 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}): Promise<s
     removeWindowInitialProps,
     routesMatched,
     dynamicImport,
+    publicPath,
     manifest,
   } = opts;
   let html = opts.html;
@@ -134,7 +136,10 @@ export const handleHTML = async (opts: Partial<IHandleHTMLOpts> = {}): Promise<s
         if(!assets || !Array.isArray(assets[chunk])) return;
 
         assets[chunk].forEach((resource: string) => {
-          if (/\.css$/.test(resource)) cssChunkSet.push(`<link rel="preload" href="${resource}" as="style" /><link rel="stylesheet" href="${resource}" />`);
+          if (/\.css$/.test(resource)) {
+            const href = `${publicPath || ''}${resource}`;
+            cssChunkSet.push(`<link rel="preload" href="${href}" as="style" /><link rel="stylesheet" href="${href}" />`)
+          };
         })
       });
       // avoid repeat
