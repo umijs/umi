@@ -9,7 +9,7 @@ function transformWithPlugin(code: string, opts: Opts) {
   })!.code;
 }
 
-xtest('normal', () => {
+test('normal', () => {
   expect(
     transformWithPlugin(
       `
@@ -33,19 +33,19 @@ xtest('normal', () => {
     ),
   ).toEqual(
     `
-    (()=>{
-      __webpack_require__.l = ()=>{
-          script.src = url + "?hash=123";
-      }
+    (() => {
+  __webpack_require__.l = () => {
+    script.src = url + "?hash=123";
+  };
 
-      const foo = ()=>{
-        script.src = url;
-      }
+  const foo = () => {
+    script.src = url;
+  };
 
-      const obj = {};
+  const obj = {};
 
-      obj.fn = ()=>{}
-    })();
+  obj.fn = () => {};
+})();
     `.trim(),
   );
 });

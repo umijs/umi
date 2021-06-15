@@ -9,7 +9,7 @@ function transformWithPlugin(code: string, opts: IRedirect) {
   })!.code;
 }
 
-xtest('normal', () => {
+test('normal', () => {
   expect(
     transformWithPlugin(
       `import xumi,{Link,Access,ApplyPluginsType} from 'umi'; foo;`,
@@ -21,8 +21,9 @@ xtest('normal', () => {
     ),
   ).toEqual(
     `
-import xumi, { Access } from "umi";
-import { Link } from "react-router-dom";foo;
+import xumi, { Access, ApplyPluginsType } from "umi";
+import { Link } from "react-router-dom";
+foo;
     `.trim(),
   );
 });

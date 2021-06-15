@@ -2,6 +2,7 @@ import { Bundler } from '@umijs/bundler-webpack';
 // @ts-ignore
 import { transform } from '@umijs/deps/compiled/babel/core';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
+// @ts-ignore
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { lodash, mkdirp, winPath } from '@umijs/utils';
 import {
@@ -18,6 +19,7 @@ import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
 import { getAlias, getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
+import { figureOutExport } from './utils';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -76,10 +78,10 @@ export const preBuild = async (
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       [
         ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
-        ['antd'].includes(dep)
-          ? `export * from "${requireFrom}";`
-          : `export * from "${requireFrom}";import D from "${requireFrom}";export default D;`,
-      ].join('\n'),
+        await figureOutExport(api.cwd, requireFrom),
+      ]
+        .join('\n')
+        .trim(),
     );
   }
   const entryFile = '"😛"';
