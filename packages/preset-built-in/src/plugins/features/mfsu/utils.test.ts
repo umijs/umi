@@ -99,7 +99,7 @@ test('figure out export', async () => {
     `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 
-  // cjs: import file without ext.
+  // import file without ext.
   mkdirSync(join(testNodeModules, 'xxx'));
   const cjsAbsPath = join(testNodeModules, 'xxx', 'runtime.js');
   writeFileSync(cjsAbsPath, 'export default "EXPORT"');
