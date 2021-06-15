@@ -1,4 +1,4 @@
-import { rimraf } from '@umijs/utils';
+import { rimraf, winPath } from '@umijs/utils';
 import { mkdirSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { dependenceDiff, figureOutExport, getExportStatement } from './utils';
@@ -59,22 +59,22 @@ test('get export statement', () => {
 });
 
 test('figure out export', async () => {
-  const testPath = join(__dirname, '.umi-test');
-  const testNodeModules = join(testPath, 'node_modules');
+  const testPath = winPath(join(__dirname, '.umi-test'));
+  const testNodeModules = winPath(join(testPath, 'node_modules'));
   rimraf.sync(testPath);
   mkdirSync(testPath);
   mkdirSync(testNodeModules);
 
   // test package name import
-  mkdirSync(join(testNodeModules, 'foo'));
+  mkdirSync(winPath(join(testNodeModules, 'foo')));
   writeFileSync(
-    join(testNodeModules, 'foo', 'package.json'),
+    winPath(join(testNodeModules, 'foo', 'package.json')),
     JSON.stringify({
       module: 'index.js',
     }),
   );
   writeFileSync(
-    join(testNodeModules, 'foo', 'index.js'),
+    winPath(join(testNodeModules, 'foo', 'index.js')),
     `
     export default 'A';
   `,
@@ -83,7 +83,7 @@ test('figure out export', async () => {
     `import _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
   writeFileSync(
-    join(testNodeModules, 'foo', 'index.js'),
+    winPath(join(testNodeModules, 'foo', 'index.js')),
     `
     exports = {a:'A'};
   `,
@@ -92,31 +92,31 @@ test('figure out export', async () => {
     `import * as _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
   // esm: test abs path import
-  let asbPath = resolve(testNodeModules, 'bar');
-  mkdirSync(join(testNodeModules, 'bar'));
-  writeFileSync(join(asbPath, 'bar.js'), 'export default "A";');
+  let asbPath = winPath(resolve(testNodeModules, 'bar'));
+  mkdirSync(winPath(join(testNodeModules, 'bar')));
+  writeFileSync(winPath(join(asbPath, 'bar.js')), 'export default "A";');
   writeFileSync(
-    join(asbPath, 'package.json'),
+    winPath(join(asbPath, 'package.json')),
     JSON.stringify({ main: 'bar.js' }),
   );
   expect(
-    await figureOutExport(testPath, resolve(testNodeModules, 'bar')),
+    await figureOutExport(testPath, winPath(resolve(testNodeModules, 'bar'))),
   ).toEqual(
     `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 
   // import file without ext.
-  mkdirSync(join(testNodeModules, 'xxx'));
-  asbPath = join(testNodeModules, 'xxx', 'runtime.js');
+  mkdirSync(winPath(join(testNodeModules, 'xxx')));
+  asbPath = winPath(join(testNodeModules, 'xxx', 'runtime.js'));
   writeFileSync(asbPath, 'export default "EXPORT"');
   expect(await figureOutExport(testPath, 'xxx/runtime')).toEqual(
     `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 
   // direct reference
-  mkdirSync(join(testNodeModules, 'yyy'));
-  mkdirSync(join(testNodeModules, 'yyy', 'dist'));
-  asbPath = resolve(testNodeModules, 'yyy', 'dist', 'index.js');
+  mkdirSync(winPath(join(testNodeModules, 'yyy')));
+  mkdirSync(winPath(join(testNodeModules, 'yyy', 'dist')));
+  asbPath = winPath(resolve(testNodeModules, 'yyy', 'dist', 'index.js'));
   writeFileSync(asbPath, 'exports.a = "1";');
   expect(await figureOutExport(testPath, asbPath)).toEqual(
     `import * as _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
