@@ -92,10 +92,16 @@ test('figure out export', async () => {
     `import * as _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
   // esm: test abs path import
-  let asbPath = join(testNodeModules, 'bar', 'bar.js');
+  let asbPath = resolve(testNodeModules, 'bar');
   mkdirSync(join(testNodeModules, 'bar'));
-  writeFileSync(asbPath, 'export default "A";');
-  expect(await figureOutExport(testPath, asbPath)).toEqual(
+  writeFileSync(join(asbPath, 'bar.js'), 'export default "A";');
+  writeFileSync(
+    join(asbPath, 'package.json'),
+    JSON.stringify({ main: 'bar.js' }),
+  );
+  expect(
+    await figureOutExport(testPath, resolve(testNodeModules, 'bar')),
+  ).toEqual(
     `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 
