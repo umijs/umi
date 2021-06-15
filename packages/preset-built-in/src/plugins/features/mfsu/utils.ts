@@ -116,7 +116,7 @@ const parseFileExport = async (filePath: string, packageName: string) => {
   const [imports, exports] = parse(file);
   // cjs
   if (!imports.length && !exports.length) {
-    // try require: entry added by depInfo can't be reconized, such as: 'renderer-react/dist/index.js'
+    // try require: entry added by depInfo can't be recognized, such as: 'renderer-react/dist/index.js'
     try {
       const { default: _default } = require(filePath);
       return getExportStatement(packageName, !!_default);
@@ -166,7 +166,7 @@ const readPathImport = (absPath: string) => {
 };
 
 export const figureOutExport = (cwd: string, entry: string) => {
-  if (entry.startsWith('/')) {
+  if (entry.startsWith('/') || /^[A-Za-z]\:\\/.test(entry)) {
     return readPathImport(entry);
   } else {
     return readPackageImport(join(cwd, 'node_modules', entry), entry);
