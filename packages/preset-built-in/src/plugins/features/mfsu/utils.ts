@@ -1,4 +1,4 @@
-import { lodash } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { init, parse } from 'es-module-lexer';
 import {
   copyFileSync,
@@ -103,9 +103,9 @@ export const copy = (fromDir: string, toDir: string) => {
 
 export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
   (hasDefault
-    ? `import _ from "${importFrom}";`
-    : `import * as _ from "${importFrom}";`) +
-  `\nexport default _;\nexport * from "${importFrom}";`;
+    ? `import _ from "${winPath(importFrom)}";`
+    : `import * as _ from "${winPath(importFrom)}";`) +
+  `\nexport default _;\nexport * from "${winPath(importFrom)}";`;
 
 const parseFileExport = async (filePath: string, packageName: string) => {
   if (!existsSync(filePath)) {
@@ -166,8 +166,8 @@ const readPathImport = (absPath: string) => {
 };
 
 export const figureOutExport = (cwd: string, entry: string) => {
-  if (entry.startsWith('/') || /^[A-Za-z]\:\\/.test(entry)) {
-    return readPathImport(entry);
+  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
+    return readPathImport(winPath(entry));
   } else {
     return readPackageImport(join(cwd, 'node_modules', entry), entry);
   }
