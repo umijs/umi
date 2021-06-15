@@ -1,6 +1,6 @@
 import { rimraf } from '@umijs/utils';
 import { mkdirSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { dependenceDiff, figureOutExport, getExportStatement } from './utils';
 
 test('dependenceDiff', () => {
@@ -92,7 +92,7 @@ test('figure out export', async () => {
     `import * as _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
   // esm: test abs path import
-  const asbPath = join(testNodeModules, 'bar', 'bar.js');
+  let asbPath = join(testNodeModules, 'bar', 'bar.js');
   mkdirSync(join(testNodeModules, 'bar'));
   writeFileSync(asbPath, 'export default "A";');
   expect(await figureOutExport(testPath, asbPath)).toEqual(
@@ -101,9 +101,18 @@ test('figure out export', async () => {
 
   // import file without ext.
   mkdirSync(join(testNodeModules, 'xxx'));
-  const cjsAbsPath = join(testNodeModules, 'xxx', 'runtime.js');
-  writeFileSync(cjsAbsPath, 'export default "EXPORT"');
+  asbPath = join(testNodeModules, 'xxx', 'runtime.js');
+  writeFileSync(asbPath, 'export default "EXPORT"');
   expect(await figureOutExport(testPath, 'xxx/runtime')).toEqual(
-    `import _ from "${cjsAbsPath}";\nexport default _;\nexport * from "${cjsAbsPath}";`,
+    `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
+  );
+
+  // direct reference
+  mkdirSync(join(testNodeModules, 'yyy'));
+  mkdirSync(join(testNodeModules, 'yyy', 'dist'));
+  asbPath = resolve(testNodeModules, 'yyy', 'dist', 'index.js');
+  writeFileSync(asbPath, 'exports.a = "1";');
+  expect(await figureOutExport(testPath, asbPath)).toEqual(
+    `import * as _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 });
