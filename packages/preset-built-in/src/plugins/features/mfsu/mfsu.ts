@@ -195,7 +195,9 @@ export default function (api: IApi) {
   });
 
   // 针对 production 模式，build 完后将产物移动到 dist 中
-  api.onBuildComplete(() => {
+  api.onBuildComplete(({ err }) => {
+    if (err) return;
+
     const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
     copy(mfsuProdPath, join(api.cwd, api.userConfig.outputPath || './dist'));
   });
