@@ -165,8 +165,6 @@ export default function (api: IApi) {
   api.onStart(async ({ name }) => {
     checkConfig(api);
 
-    console.log('api.', api.paths);
-
     const deps = await getDeps(api);
 
     // dev mode
