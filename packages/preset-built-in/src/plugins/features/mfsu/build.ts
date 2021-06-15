@@ -2,6 +2,7 @@ import { Bundler } from '@umijs/bundler-webpack';
 // @ts-ignore
 import { transform } from '@umijs/deps/compiled/babel/core';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
+// @ts-ignore
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { lodash, mkdirp, winPath } from '@umijs/utils';
 import {
