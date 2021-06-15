@@ -73,8 +73,6 @@ export const preBuild = async (
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
     const requireFrom = alias[dep] ? winPath(alias[dep]) : dep;
-
-    /** 判断是否存在默认导出 */
     writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       [
