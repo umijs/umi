@@ -18,6 +18,7 @@ import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
 import { getAlias, getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
+import { figureOutExport } from './utils';
 
 const resolveDep = (dep: string) => dep.replace(/\//g, '_');
 
@@ -74,47 +75,11 @@ export const preBuild = async (
     const requireFrom = alias[dep] ? winPath(alias[dep]) : dep;
 
     /** 判断是否存在默认导出 */
-    let hasDefaultExport = false;
-    let ref = '';
-    const depPath = join(api.paths.absNodeModulesPath!, dep);
-    if (existsSync(depPath)) {
-      ref = require.resolve(require.resolve(depPath));
-      try {
-        hasDefaultExport = !!require(depPath).default;
-      } catch (err) {
-        const file = readFileSync(require.resolve(depPath), 'utf-8');
-        hasDefaultExport =
-          /module.exports/.test(file) ||
-          /exports.default/.test(file) ||
-          /export default/.test(file);
-      }
-    } else {
-      // 对于深度依赖尝试直接读取
-      ['.js', '.ts', '.tsx', '.jsx'].forEach((ext) => {
-        try {
-          const file = readFileSync(depPath + ext, 'utf-8');
-          hasDefaultExport =
-            /module.exports/.test(file) ||
-            /exports.default/.test(file) ||
-            /export default/.test(file);
-          ref = require.resolve(depPath + ext);
-        } catch (err) {}
-      });
-    }
-
     writeFileSync(
       join(tmpDir, resolveDep(prefix + dep + '.js')),
       [
         ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
-        (hasDefaultExport
-          ? `
-        import _ from '${requireFrom}';\nexport * from '${requireFrom}';\nexport default _;
-        `
-          : `
-        import * as _ from '${requireFrom}';\nexport default _;\nexport * from '${requireFrom}';
-        `
-        ).trim(),
-        `// #ref=${ref}`,
+        await figureOutExport(api.cwd, requireFrom),
       ]
         .join('\n')
         .trim(),

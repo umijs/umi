@@ -1,5 +1,13 @@
 import { lodash } from '@umijs/utils';
-import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'fs';
+import { init, parse } from 'es-module-lexer';
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+} from 'fs';
 import { join } from 'path';
 import { Deps } from './build';
 
@@ -91,4 +99,76 @@ export const copy = (fromDir: string, toDir: string) => {
     });
   };
   fn(fromDir, '');
+};
+
+const getExportStatement = (importFrom: string, hasDefault: boolean) =>
+  (hasDefault
+    ? `import _ from "${importFrom}"`
+    : `\nimport * as _ from "${importFrom}";`) +
+  `\nexport default _;\nexport * from "${importFrom}";`;
+
+const parseFileExport = async (filePath: string, packageName: string) => {
+  if (!existsSync(filePath)) {
+    return '';
+  }
+  const file = readFileSync(filePath, 'utf-8');
+  await init;
+  const [imports, exports] = parse(file);
+  // cjs
+  if (!imports.length && !exports.length) {
+    // try require: entry added by depInfo can't be reconized, such as: 'renderer-react/dist/index.js'
+    try {
+      const { default: _default } = require(filePath);
+      return getExportStatement(packageName, !!_default);
+    } catch (err) {
+      return getExportStatement(packageName, false);
+    }
+  }
+  // esm
+  if (exports.length) {
+    return getExportStatement(packageName, exports.includes('default'));
+  } else {
+    return `import "${packageName}";`;
+  }
+};
+
+const readPackageImport = (packagePath: string, packageName: string) => {
+  const packageJson = join(packagePath, 'package.json');
+  if (existsSync(packageJson)) {
+    const { module, main } = JSON.parse(
+      readFileSync(packageJson, 'utf-8') || '{}',
+    );
+    try {
+      const entry = join(packagePath, module || main || 'index.js');
+      return parseFileExport(entry, packageName);
+    } catch (err) {
+      throw new Error(err);
+    }
+  } else {
+    // try add ext. such as: 'regenerator-runtime/runtime' means 'regenerator-runtime/runtime.js'
+    const exts = ['.js', '.ts', '.jsx', '.tsx'];
+    for (let i = 0; i < exts.length; i++) {
+      const filename = packagePath + exts[i];
+      if (existsSync(filename)) {
+        return parseFileExport(filename, filename);
+      }
+    }
+    return `import "${packageName}";`;
+  }
+};
+
+const readPathImport = (absPath: string) => {
+  if (statSync(absPath).isDirectory()) {
+    return readPackageImport(absPath, absPath);
+  } else {
+    return parseFileExport(absPath, absPath);
+  }
+};
+
+export const figureOutExport = (cwd: string, entry: string) => {
+  if (entry.startsWith('/')) {
+    return readPathImport(entry);
+  } else {
+    return readPackageImport(join(cwd, 'node_modules', entry), entry);
+  }
 };
