@@ -18,11 +18,11 @@ test('functions: get mfsu path', () => {
     cwd: '/work/',
   };
 
-  expect(getMfsuPath(api, { mode: 'development' })).toEqual(
-    winPath('/work/foo/bar'),
+  expect(winPath(getMfsuPath(api, { mode: 'development' }))).toEqual(
+    '/work/foo/bar',
   );
-  expect(getMfsuPath(api, { mode: 'production' })).toEqual(
-    winPath('/work/xxx/yyy/zzz'),
+  expect(winPath(getMfsuPath(api, { mode: 'production' }))).toEqual(
+    '/work/xxx/yyy/zzz',
   );
 });
 
