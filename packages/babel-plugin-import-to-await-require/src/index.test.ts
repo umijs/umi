@@ -193,3 +193,17 @@ foo;
     `.trim(),
   );
 });
+
+test('dynamic import', () => {
+  expect(
+    transformWithPlugin(`const foo = import('antd'); foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const foo = import("foo/antd");
+foo;
+    `.trim(),
+  );
+});

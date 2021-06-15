@@ -1,4 +1,4 @@
-import type { NodePath, Visitor } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import { t } from '@umijs/utils';
 
 type TLibs = (RegExp | string)[];
@@ -211,6 +211,32 @@ export default function () {
           path.node.body = [...variableDeclarations, ...path.node.body];
         },
       },
-    } as Visitor,
+
+      CallExpression(
+        path: NodePath<t.CallExpression>,
+        { opts }: { opts: IOpts },
+      ) {
+        const { node } = path;
+        if (
+          t.isImport(node.callee) &&
+          node.arguments.length === 1 &&
+          node.arguments[0].type === 'StringLiteral'
+        ) {
+          const value = node.arguments[0].value;
+          const isMatch = isMatchLib(value, opts.libs, opts.alias || {});
+          opts.onTransformDeps?.({
+            source: value,
+            // @ts-ignore
+            file: path.hub.file.opts.filename,
+            isMatch,
+          });
+          if (isMatch) {
+            node.arguments[0] = t.stringLiteral(
+              `${opts.remoteName}/${getPath(value, opts.alias || {})}`,
+            );
+          }
+        }
+      },
+    },
   };
 }
