@@ -1,4 +1,5 @@
 import { transform } from '@babel/core';
+import { join } from 'path';
 import { IOpts } from './index';
 
 function transformWithPlugin(code: string, opts: IOpts) {
@@ -54,6 +55,47 @@ const {
   default: b
 } = a;
 foo;
+    `.trim(),
+  );
+});
+
+test('match all', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a, { b, c as d } from '/bar/bigfish/ajv'; foo;
+import bar from 'lodash'; bar;
+import g from 'lodash-not-exists'; g;
+import e from '@/components/E'; e;
+import f from './f'; f;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        alias: {
+          '/bar/bigfish/ajv': 'ajv',
+        },
+        cwd: join(__dirname, '../../../'),
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a,
+  b: b,
+  c: d
+} = await import("foo/ajv");
+const {
+  default: bar
+} = await import("foo/lodash");
+foo;
+bar;
+import g from 'lodash-not-exists';
+g;
+import e from '@/components/E';
+e;
+import f from './f';
+f;
     `.trim(),
   );
 });

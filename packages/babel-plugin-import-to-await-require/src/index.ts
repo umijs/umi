@@ -8,11 +8,13 @@ interface IAlias {
 }
 
 export interface IOpts {
-  libs: TLibs;
+  libs?: TLibs;
+  matchAll?: boolean;
   remoteName: string;
   alias?: IAlias;
   onTransformDeps?: Function;
   exportAllMembers?: Record<string, string[]>;
+  cwd?: string;
 }
 
 export function specifiersToProperties(specifiers: any[]) {
@@ -39,12 +41,37 @@ export function specifiersToProperties(specifiers: any[]) {
   );
 }
 
-function isMatchLib(path: string, libs: TLibs, alias: IAlias) {
-  return libs.concat(Object.keys(alias)).some((lib) => {
+function isMatchLib(
+  path: string,
+  libs: TLibs | undefined,
+  matchAll: boolean | undefined,
+  alias: IAlias,
+  cwd: string | undefined,
+) {
+  if (matchAll) {
+    path = alias[path] || path;
+    if (path.charAt(0) === '/') {
+      return false;
+    } else if (path.charAt(0) === '.') {
+      return false;
+    } else {
+      const pkgName = path.split('/')[0];
+      try {
+        require.resolve(`${cwd}/node_modules/${pkgName}/package.json`);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+  }
+
+  return (libs || []).concat(Object.keys(alias)).some((lib) => {
     if (typeof lib === 'string') {
       return lib === path;
-    } else {
+    } else if (lib instanceof RegExp) {
       return lib.test(path);
+    } else {
+      throw new Error('Unsupported lib format.');
     }
   });
 }
@@ -73,7 +100,9 @@ export default function () {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
+                opts.matchAll,
                 opts.alias || {},
+                opts.cwd,
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -125,7 +154,9 @@ export default function () {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
+                opts.matchAll,
                 opts.alias || {},
+                opts.cwd,
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -175,7 +206,9 @@ export default function () {
               const isMatch = isMatchLib(
                 d.source.value,
                 opts.libs,
+                opts.matchAll,
                 opts.alias || {},
+                opts.cwd,
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -223,7 +256,13 @@ export default function () {
           node.arguments[0].type === 'StringLiteral'
         ) {
           const value = node.arguments[0].value;
-          const isMatch = isMatchLib(value, opts.libs, opts.alias || {});
+          const isMatch = isMatchLib(
+            value,
+            opts.libs,
+            opts.matchAll,
+            opts.alias || {},
+            opts.cwd,
+          );
           opts.onTransformDeps?.({
             source: value,
             // @ts-ignore

@@ -1,4 +1,4 @@
-import { lodash } from '@umijs/utils';
+import { chalk, lodash } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { join, parse } from 'path';
@@ -266,6 +266,25 @@ export default function (api: IApi) {
             ),
             remoteName: 'mf',
             alias: await getAlias(api),
+            onTransformDeps(opts: {
+              file: string;
+              source: string;
+              isMatch: boolean;
+              isExportAllDeclaration?: boolean;
+            }) {
+              const file = opts.file.replace(api.paths.absSrcPath! + '/', '@/');
+              if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
+                if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch)
+                  return;
+                if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
+                  return;
+                console.log(
+                  `> import ${chalk[opts.isMatch ? 'green' : 'red'](
+                    opts.source,
+                  )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
+                );
+              }
+            },
           },
         ],
         ...opts.plugins,
