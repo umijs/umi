@@ -91,18 +91,21 @@ test('figure out export', async () => {
   expect(await figureOutExport(testPath, 'foo')).toEqual(
     `import * as _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
-  // esm: test abs path import
+  // abs path import
   let asbPath = winPath(resolve(testNodeModules, 'bar'));
   mkdirSync(winPath(join(testNodeModules, 'bar')));
   writeFileSync(winPath(join(asbPath, 'bar.js')), 'export default "A";');
-  writeFileSync(
-    winPath(join(asbPath, 'package.json')),
-    JSON.stringify({ main: 'bar.js' }),
-  );
   expect(
-    await figureOutExport(testPath, winPath(resolve(testNodeModules, 'bar'))),
+    await figureOutExport(
+      testPath,
+      winPath(resolve(testNodeModules, 'bar/bar.js')),
+    ),
   ).toEqual(
-    `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
+    `import _ from "${winPath(
+      join(asbPath, 'bar.js'),
+    )}";\nexport default _;\nexport * from "${winPath(
+      join(asbPath, 'bar.js'),
+    )}";`,
   );
 
   // import file without ext.
