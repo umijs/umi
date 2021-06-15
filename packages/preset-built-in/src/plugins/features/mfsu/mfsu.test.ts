@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { IApi } from 'umi';
 import { getExcludeDeps, getIncludeDeps, getMfsuPath } from './mfsu';
 
@@ -17,8 +18,12 @@ test('functions: get mfsu path', () => {
     cwd: '/work/',
   };
 
-  expect(getMfsuPath(api, { mode: 'development' })).toEqual('/work/foo/bar');
-  expect(getMfsuPath(api, { mode: 'production' })).toEqual('/work/xxx/yyy/zzz');
+  expect(getMfsuPath(api, { mode: 'development' })).toEqual(
+    winPath('/work/foo/bar'),
+  );
+  expect(getMfsuPath(api, { mode: 'production' })).toEqual(
+    winPath('/work/xxx/yyy/zzz'),
+  );
 });
 
 test('functions: get include dependencies', () => {
