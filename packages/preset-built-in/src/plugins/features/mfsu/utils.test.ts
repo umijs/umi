@@ -93,8 +93,11 @@ test('figure out export', async () => {
   );
   // abs path import
   let asbPath = winPath(resolve(testNodeModules, 'bar'));
-  mkdirSync(winPath(join(testNodeModules, 'bar')));
-  writeFileSync(winPath(join(asbPath, 'bar.js')), 'export default "A";');
+  mkdirSync(asbPath);
+  writeFileSync(
+    winPath(join(asbPath, 'bar.js')),
+    'export default function func(){return;};',
+  );
   expect(
     await figureOutExport(
       testPath,
