@@ -3720,10 +3720,10 @@
   resolved "https://registry.yarnpkg.com/@umijs/plugin-analytics/-/plugin-analytics-0.2.2.tgz#575fd231d4327ea13413217aa1b5fc6bdd89465e"
   integrity sha512-dVDzUfgIdEwdCC6a5IsMYpIPI+bEZjBEqIhAvw9dic6Vk77w9RxQxyRfW11dDmdXLAwWphp22NntQNt1ejZPtg==
 
-"@umijs/preset-dumi@^1.1.6":
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.1.17.tgz#4f829ae1f45724bc7720830d97403981779bfc07"
-  integrity sha512-g/dV2ZbcFKWGwsQUFj5QdDEmmoUcxr84JUxQuGU/XO2SfixdbOM3rLr8j9kKH/qGOEa8CAZKsDCe0HCQaVdelg==
+"@umijs/preset-dumi@^1.1.19":
+  version "1.1.19"
+  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.1.19.tgz#0848b711bfc312582a242a196c00a3e45549232f"
+  integrity sha512-0QgpC+GB7K0wDnVw5aHonWQamdxKAPviIBQdsZV0aJZhCL+1Dqhr6h4JDrzp37reielXDkTFelXBeESi/YMZKg==
   dependencies:
     "@babel/core" "^7.7.2"
     "@babel/generator" "^7.7.2"
@@ -3739,7 +3739,7 @@
     copy-text-to-clipboard "^2.2.0"
     deepmerge "^4.2.2"
     dumi-assets-types "1.0.0"
-    dumi-theme-default "1.1.0"
+    dumi-theme-default "1.1.2"
     enhanced-resolve "^4.1.1"
     github-slugger "^1.3.0"
     hast-util-has-property "^1.0.4"
@@ -7030,10 +7030,10 @@ dumi-assets-types@1.0.0:
   resolved "https://registry.yarnpkg.com/dumi-assets-types/-/dumi-assets-types-1.0.0.tgz#d5368cb11045b203bf1ef1080e553b2287a2ec81"
   integrity sha512-7nhSeWM15vybbUAMPLZsdls2jKoHB2UU4P1RM6kLPucuS8eC/HSmufquFqTTYtX4oIDLHGtil/dVtMreNGwhdA==
 
-dumi-theme-default@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/dumi-theme-default/-/dumi-theme-default-1.1.0.tgz#9c38af33d0a1dd98d24c79da0e06d0474aecd0d6"
-  integrity sha512-dElHtXpkRcSNcg0l3y6U8lWwEQUZOXTt/id6hiRtQnUuRkjwsUqpUBOHj9GFgtSpqeKEPRjemE8ukEYWH7cKJA==
+dumi-theme-default@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/dumi-theme-default/-/dumi-theme-default-1.1.2.tgz#c20bc1862d25a1849bc6a9b116c9a373020fefc0"
+  integrity sha512-eV1hrJvruhQs4swP12kbWdevdDAbe/aFt+Filw9O7gEd8s4DCKXq0zhbhqzfQzfmkFVBJdsmU+AIeIHzZL+swA==
   dependencies:
     prism-react-renderer "^1.1.1"
     prismjs "^1.21.0"
