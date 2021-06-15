@@ -101,10 +101,10 @@ export const copy = (fromDir: string, toDir: string) => {
   fn(fromDir, '');
 };
 
-const getExportStatement = (importFrom: string, hasDefault: boolean) =>
+export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
   (hasDefault
-    ? `import _ from "${importFrom}"`
-    : `\nimport * as _ from "${importFrom}";`) +
+    ? `import _ from "${importFrom}";`
+    : `import * as _ from "${importFrom}";`) +
   `\nexport default _;\nexport * from "${importFrom}";`;
 
 const parseFileExport = async (filePath: string, packageName: string) => {

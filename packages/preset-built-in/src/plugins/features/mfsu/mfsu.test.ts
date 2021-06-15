@@ -1,22 +1,7 @@
 import { IApi } from 'umi';
-import {
-  checkConfig,
-  getExcludeDeps,
-  getIncludeDeps,
-  getMfsuPath,
-} from './mfsu';
+import { getExcludeDeps, getIncludeDeps, getMfsuPath } from './mfsu';
 
-xtest('check config', () => {
-  // @ts-ignore
-  const api: IApi = {
-    config: {
-      webpack5: {},
-    },
-  };
-  expect(checkConfig(api)).toThrowError();
-});
-
-xtest('functions: get mfsu path', () => {
+test('functions: get mfsu path', () => {
   // @ts-ignore
   let api: IApi = {
     userConfig: {
@@ -36,7 +21,7 @@ xtest('functions: get mfsu path', () => {
   expect(getMfsuPath(api, { mode: 'production' })).toEqual('/work/xxx/yyy/zzz');
 });
 
-xtest('functions: get include dependencies', () => {
+test('functions: get include dependencies', () => {
   // @ts-ignore
   let api: IApi = {
     userConfig: {
@@ -48,7 +33,7 @@ xtest('functions: get include dependencies', () => {
   expect(getIncludeDeps(api)).toEqual(['aaaaa', 'bbbbb/ccccc']);
 });
 
-xtest('functions: get exclude dependencies', () => {
+test('functions: get exclude dependencies', () => {
   // @ts-ignore
   let api: IApi = {
     userConfig: {
