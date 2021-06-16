@@ -70,20 +70,24 @@ export const preBuild = async (
   });
 
   const alias = await getAlias(api, { reverse: true });
-
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
     const requireFrom = alias[dep] ? winPath(alias[dep]) : dep;
-    writeFileSync(
-      join(tmpDir, resolveDep(prefix + dep + '.js')),
-      [
-        ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
-        await figureOutExport(api.cwd, requireFrom),
-      ]
-        .join('\n')
-        .trim(),
-    );
+    try {
+      writeFileSync(
+        join(tmpDir, resolveDep(prefix + dep + '.js')),
+        [
+          ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
+          await figureOutExport(api.cwd, requireFrom),
+        ]
+          .join('\n')
+          .trim(),
+      );
+    } catch (err) {
+      throw new Error('[MFSU] build virtual application failed.' + err);
+    }
   }
+
   const entryFile = '"😛"';
   writeFileSync(join(tmpDir, './index.js'), entryFile);
 

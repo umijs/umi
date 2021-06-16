@@ -101,6 +101,17 @@ export const copy = (fromDir: string, toDir: string) => {
   fn(fromDir, '');
 };
 
+export const filenameFallback = (absPath: string) => {
+  const exts = ['.js', '.ts', '.jsx', '.tsx'];
+  for (let i = 0; i < exts.length; i++) {
+    const filename = absPath + exts[i];
+    if (existsSync(filename)) {
+      return parseFileExport(filename, filename);
+    }
+  }
+  return `import "${absPath}";`;
+};
+
 export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
   (hasDefault
     ? `import _ from "${winPath(importFrom)}";`
@@ -146,22 +157,19 @@ const readPackageImport = (packagePath: string, packageName: string) => {
     }
   } else {
     // try add ext. such as: 'regenerator-runtime/runtime' means 'regenerator-runtime/runtime.js'
-    const exts = ['.js', '.ts', '.jsx', '.tsx'];
-    for (let i = 0; i < exts.length; i++) {
-      const filename = packagePath + exts[i];
-      if (existsSync(filename)) {
-        return parseFileExport(filename, filename);
-      }
-    }
-    return `import "${packageName}";`;
+    return filenameFallback(packagePath);
   }
 };
 
 const readPathImport = (absPath: string) => {
-  if (statSync(absPath).isDirectory()) {
-    return readPackageImport(absPath, absPath);
-  } else {
-    return parseFileExport(absPath, absPath);
+  try {
+    if (statSync(absPath).isDirectory()) {
+      return readPackageImport(absPath, absPath);
+    } else {
+      return parseFileExport(absPath, absPath);
+    }
+  } catch (error) {
+    return filenameFallback(absPath);
   }
 };
 

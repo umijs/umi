@@ -10,7 +10,6 @@ import AntdIconPlugin from './babel-antd-icon-plugin';
 import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
 import { copy, getFuzzyIncludes, shouldBuild } from './utils';
-import { watchDeps } from './watchDeps';
 
 export type TMode = 'production' | 'development';
 
@@ -68,37 +67,23 @@ export const getDeps = async (api: IApi) => {
   const { dependencies = {}, peerDependencies = {} } = existsSync(pkgPath)
     ? require(pkgPath)
     : {};
-  const deps: Deps = { ...dependencies, ...peerDependencies };
-  requireDeps
-    .concat(Object.values(await getAlias(api)))
-    .forEach((requireDep) => {
-      if (!deps[requireDep]) {
-        deps[requireDep] = '*';
-      }
-    });
+  const packageDependencies: Deps = { ...dependencies, ...peerDependencies };
 
-  const extraDeps = getIncludeDeps(api);
-
-  if (extraDeps) {
-    extraDeps.forEach((ed) => {
-      deps[ed] = '*';
-    });
-  }
-
-  getExcludeDeps(api).forEach((ded) => {
-    if (deps[ded]) {
-      delete deps[ded];
-    }
-  });
-
-  // remove "@umijs/plugin-*" and "umi-plugin-"
-  Object.keys(deps).forEach((key) => {
-    if (/^(@umijs\/plugin-|umi-plugin-)/.test(key)) {
-      delete deps[key];
-    }
-  });
-
-  return deps;
+  let deps = Array.from(
+    new Set(
+      userDeps.concat(api.userConfig.mfsu.includes || []).filter((_dep) => {
+        return (
+          !(api.userConfig.excludes || []).includes(_dep) ||
+          /^(@umijs\/plugin-|umi-plugin-)/.test(_dep)
+        );
+      }),
+    ),
+  );
+  return deps.reduce((memo, dep) => {
+    const version = packageDependencies[dep];
+    memo[dep] = version || '*';
+    return memo;
+  }, {});
 };
 
 export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
@@ -161,45 +146,39 @@ export const getExcludeDeps = (api: IApi) => [
   ...(api.userConfig.mfsu.excludes || []),
 ];
 
+let userDeps: string[] = [];
+
 export default function (api: IApi) {
   api.onStart(async ({ name }) => {
+    userDeps = [];
     checkConfig(api);
-
-    const deps = await getDeps(api);
-
-    // dev mode
-    if (name === 'dev') {
-      if (shouldBuild(getPrevDeps(api, { mode: 'development' }), deps)) {
-        await preBuild(api, { deps, mode: 'development' });
-      }
-
-      const unwatch = watchDeps({
-        api: api,
-        cwd: api.cwd,
-        onChange: () => {
-          unwatch();
-          api.restartServer();
-        },
-      });
-    }
-    // prod mode
-    if (name === 'build') {
-      if (!lodash.isEqual(getPrevDeps(api, { mode: 'production' }), deps)) {
-        await preBuild(api, {
-          deps,
-          mode: 'production',
-          outputPath: getMfsuPath(api, { mode: 'production' }),
-        });
-      }
-    }
   });
 
   // 针对 production 模式，build 完后将产物移动到 dist 中
-  api.onBuildComplete(({ err }) => {
+  api.onBuildComplete(async ({ err }) => {
     if (err) return;
-
+    const deps = await getDeps(api);
+    if (!lodash.isEqual(getPrevDeps(api, { mode: 'production' }), deps)) {
+      await preBuild(api, {
+        deps,
+        mode: 'production',
+        outputPath: getMfsuPath(api, { mode: 'production' }),
+      });
+    }
     const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
     copy(mfsuProdPath, join(api.cwd, api.userConfig.outputPath || './dist'));
+  });
+
+  api.onDevCompileDone(async () => {
+    try {
+      const deps = await getDeps(api);
+      if (shouldBuild(getPrevDeps(api, { mode: 'development' }), deps)) {
+        await preBuild(api, { deps, mode: 'development' });
+        userDeps = [];
+      }
+    } catch (error) {
+      throw new Error('[MFSU] build failed.' + error);
+    }
   });
 
   api.describe({
@@ -224,7 +203,8 @@ export default function (api: IApi) {
     enableBy() {
       return (
         (api.env === 'development' && api.userConfig.mfsu) ||
-        (api.env === 'production' && api.userConfig.mfsu?.production)
+        (api.env === 'production' && api.userConfig.mfsu?.production) ||
+        process.env.MFSUC
       );
     },
   });
@@ -240,9 +220,15 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
+  const webpackAlias = {};
+
   // 为 babel 提供相关插件
   api.modifyBabelOpts({
     fn: async (opts) => {
+      const depInfoAlias = await getAlias(api, { reverse: true });
+
+      webpackAlias['core-js'] = depInfoAlias['core-js'];
+
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const redirect = lodash.merge(defaultRedirect, userRedirect);
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
@@ -257,17 +243,10 @@ export default function (api: IApi) {
         [
           require.resolve('@umijs/babel-plugin-import-to-await-require'),
           {
-            libs: Array.from(
-              new Set([
-                ...Object.keys(await getDeps(api)).filter(
-                  (d) => !getExcludeDeps(api).includes(d),
-                ),
-                ...requireDeps,
-                ...getIncludeDeps(api),
-              ]),
-            ),
             remoteName: 'mf',
-            alias: await getAlias(api),
+            matchAll: true,
+            webpackAlias: webpackAlias,
+            cwd: api.cwd,
             onTransformDeps(opts: {
               file: string;
               source: string;
@@ -286,6 +265,8 @@ export default function (api: IApi) {
                   )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
                 );
               }
+              // collect dependencies
+              opts.isMatch && userDeps.push(opts.source);
             },
           },
         ],
@@ -333,6 +314,7 @@ export default function (api: IApi) {
 
   /** 修改 webpack 配置 */
   api.chainWebpack(async (memo) => {
+    Object.assign(webpackAlias, memo.toConfig().resolve?.alias || {});
     const remotePath =
       api.env === 'production' ? api.userConfig.publicPath || '/' : '/';
     memo.plugin('mf').use(
