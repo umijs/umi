@@ -1,5 +1,4 @@
 import { transform } from '@babel/core';
-import { join } from 'path';
 import { IOpts } from './index';
 
 function transformWithPlugin(code: string, opts: IOpts) {
@@ -55,47 +54,6 @@ const {
   default: b
 } = a;
 foo;
-    `.trim(),
-  );
-});
-
-test('match all', () => {
-  expect(
-    transformWithPlugin(
-      `
-import a, { b, c as d } from '/bar/bigfish/ajv'; foo;
-import bar from 'lodash'; bar;
-import g from 'lodash-not-exists'; g;
-import e from '@/components/E'; e;
-import f from './f'; f;
-`,
-      {
-        matchAll: true,
-        remoteName: 'foo',
-        alias: {
-          '/bar/bigfish/ajv': 'ajv',
-        },
-        cwd: join(__dirname, '../../../'),
-      },
-    ),
-  ).toEqual(
-    `
-const {
-  default: a,
-  b: b,
-  c: d
-} = await import("foo/ajv");
-const {
-  default: bar
-} = await import("foo/lodash");
-foo;
-bar;
-import g from 'lodash-not-exists';
-g;
-import e from '@/components/E';
-e;
-import f from './f';
-f;
     `.trim(),
   );
 });
@@ -246,6 +204,170 @@ test('dynamic import', () => {
     `
 const foo = import("foo/antd");
 foo;
+    `.trim(),
+  );
+});
+
+test('match all absolute file with node_modules', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '/foo/node_modules/bar'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo//foo/node_modules/bar");
+a;
+    `.trim(),
+  );
+});
+
+test('match all absolute file without node_modules', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '/foo/bar'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+      },
+    ),
+  ).toEqual(
+    `
+import a from '/foo/bar';
+a;
+    `.trim(),
+  );
+});
+
+test('match all relative file', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from './foo'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+      },
+    ),
+  ).toEqual(
+    `
+import a from './foo';
+a;
+    `.trim(),
+  );
+});
+
+test('match all project alias', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '@/a'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@': '/myapp/src/',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@/a';
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@/a'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@/': '/myapp/src/',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@/a';
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@/a'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@/a': '/myapp/src/a.js',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@/a';
+a;
+    `.trim(),
+  );
+});
+
+test('match all node_modules alias', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '@/a'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@': '/myapp/node_modules/at',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@/a");
+a;
+    `.trim(),
+  );
+});
+
+test('match all dep without alias', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from 'antd'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/antd");
+a;
     `.trim(),
   );
 });
