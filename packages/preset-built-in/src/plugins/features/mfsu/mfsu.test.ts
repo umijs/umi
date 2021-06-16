@@ -1,6 +1,6 @@
 import { winPath } from '@umijs/utils';
 import { IApi } from 'umi';
-import { getExcludeDeps, getIncludeDeps, getMfsuPath } from './mfsu';
+import { getMfsuPath } from './mfsu';
 
 test('functions: get mfsu path', () => {
   // @ts-ignore
@@ -24,28 +24,4 @@ test('functions: get mfsu path', () => {
   expect(winPath(getMfsuPath(api, { mode: 'production' }))).toEqual(
     '/work/xxx/yyy/zzz',
   );
-});
-
-test('functions: get include dependencies', () => {
-  // @ts-ignore
-  let api: IApi = {
-    userConfig: {
-      mfsu: {
-        includes: ['aaaaa', 'bbbbb/ccccc'],
-      },
-    },
-  };
-  expect(getIncludeDeps(api)).toEqual(['aaaaa', 'bbbbb/ccccc']);
-});
-
-test('functions: get exclude dependencies', () => {
-  // @ts-ignore
-  let api: IApi = {
-    userConfig: {
-      mfsu: {
-        excludes: ['xxxx'],
-      },
-    },
-  };
-  expect(getExcludeDeps(api)).toEqual(['umi', 'xxxx']);
 });
