@@ -9,7 +9,7 @@ import { runtimePath } from '../../generateFiles/constants';
 import AntdIconPlugin from './babel-antd-icon-plugin';
 import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { Deps, preBuild, prefix } from './build';
-import { copy, getFuzzyIncludes, shouldBuild } from './utils';
+import { copy, shouldBuild } from './utils';
 
 export type TMode = 'production' | 'development';
 
@@ -23,28 +23,6 @@ export const checkConfig = (api: IApi) => {
     );
   }
 };
-
-// 必须安装的模块
-const requireDeps = [
-  'react',
-  'react-router-dom',
-  'react-router',
-  'react-dom',
-  ...['react/jsx-runtime', 'react/jsx-dev-runtime'].filter((dep) => {
-    try {
-      require(join(process.cwd(), 'node_modules', dep));
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }),
-  ...(process.env.BABEL_POLYFILL !== 'none'
-    ? ['core-js', 'regenerator-runtime/runtime']
-    : []),
-];
-
-// 不打包的模块
-const defaultExcludeDeps = ['umi'];
 
 // 需要重新定向导出的模块
 const defaultRedirect = {
@@ -128,24 +106,6 @@ export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
   return aliasResult;
 };
 
-export const getIncludeDeps = (api: IApi) =>
-  [
-    ...((api.userConfig.mfsu.includes as string[])
-      ?.map((include) => {
-        if (include.endsWith('/*')) {
-          return getFuzzyIncludes(include);
-        } else {
-          return include;
-        }
-      })
-      .flat() || []),
-  ] as string[];
-
-export const getExcludeDeps = (api: IApi) => [
-  ...defaultExcludeDeps,
-  ...(api.userConfig.mfsu.excludes || []),
-];
-
 let userDeps: string[] = [];
 
 export default function (api: IApi) {
@@ -226,8 +186,9 @@ export default function (api: IApi) {
   api.modifyBabelOpts({
     fn: async (opts) => {
       const depInfoAlias = await getAlias(api, { reverse: true });
-
       webpackAlias['core-js'] = depInfoAlias['core-js'];
+      webpackAlias['regenerator-runtime/runtime'] =
+        depInfoAlias['regenerator-runtime/runtime'];
 
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const redirect = lodash.merge(defaultRedirect, userRedirect);
@@ -282,6 +243,11 @@ export default function (api: IApi) {
       name: 'core-js',
       range: '3.6.5',
       alias: [require.resolve('core-js')],
+    },
+    {
+      name: 'regenerator-runtime/runtime',
+      range: '*',
+      alias: [require.resolve('regenerator-runtime/runtime')],
     },
   ]);
 

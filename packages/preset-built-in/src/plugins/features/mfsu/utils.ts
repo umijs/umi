@@ -109,7 +109,11 @@ export const filenameFallback = (absPath: string) => {
       return parseFileExport(filename, filename);
     }
   }
-  return `import "${absPath}";`;
+  const indexJs = join(absPath, 'index.js'); // runtime-regenerator
+  if (existsSync(indexJs)) {
+    return parseFileExport(indexJs, indexJs);
+  }
+  return `import "${absPath}"; // filename fallback`;
 };
 
 export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
@@ -139,7 +143,7 @@ const parseFileExport = async (filePath: string, packageName: string) => {
   if (exports.length) {
     return getExportStatement(packageName, exports.includes('default'));
   } else {
-    return `import "${packageName}";`;
+    return `import "${packageName}"; // no export fallback`;
   }
 };
 

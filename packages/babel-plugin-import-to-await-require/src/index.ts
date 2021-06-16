@@ -71,6 +71,7 @@ function isMatchLib(
   webpackAlias: IAlias,
 ) {
   if (matchAll) {
+    if (path === 'umi') return false;
     if (isAbsolute(path)) {
       return RE_NODE_MODULES.test(path) || RE_UMI_LOCAL_DEV.test(path);
     } else if (path.charAt(0) === '.') {
