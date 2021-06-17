@@ -1,4 +1,5 @@
 import { chalk, lodash } from '@umijs/utils';
+import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { join, parse } from 'path';
@@ -117,28 +118,21 @@ export default function (api: IApi) {
   // 针对 production 模式，build 完后将产物移动到 dist 中
   api.onBuildComplete(async ({ err }) => {
     if (err) return;
-    const deps = await getDeps(api);
-    if (!lodash.isEqual(getPrevDeps(api, { mode: 'production' }), deps)) {
-      await preBuild(api, {
-        deps,
-        mode: 'production',
-        webpackAlias,
-        outputPath: getMfsuPath(api, { mode: 'production' }),
-      });
-    }
+    await buildDeps({
+      mode: 'production',
+    });
     const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
     copy(mfsuProdPath, join(api.cwd, api.userConfig.outputPath || './dist'));
   });
 
   api.onDevCompileDone(async () => {
     try {
-      const deps = await getDeps(api);
-      if (shouldBuild(getPrevDeps(api, { mode: 'development' }), deps)) {
-        await preBuild(api, { deps, webpackAlias, mode: 'development' });
-        userDeps = [];
-      }
-    } catch (error) {
-      throw new Error('[MFSU] build failed.' + error);
+      await buildDeps({
+        mode: 'development',
+        watch: true,
+      });
+    } catch (err) {
+      throw new Error('[MFSU] build failed.' + err.message);
     }
   });
 
@@ -298,5 +292,53 @@ export default function (api: IApi) {
     return memo.merge({
       experiments: { topLevelAwait: true },
     });
+  });
+
+  // TODO: support watch
+  async function buildDeps(opts: {
+    mode?: TMode;
+    watch?: boolean;
+    force?: boolean;
+  }) {
+    const mode = opts.mode || 'development';
+    assert(
+      ['development', 'production'].includes(mode),
+      `[MFSU] Unsupported mode ${mode}, expect development or production.`,
+    );
+    const deps = await getDeps(api);
+    if (opts.force || shouldBuild(getPrevDeps(api, { mode }), deps, mode)) {
+      await preBuild(api, {
+        deps,
+        mode,
+        webpackAlias,
+        outputPath: getMfsuPath(api, { mode }),
+      });
+      // TODO: 更细的处理
+      userDeps = [];
+    }
+  }
+
+  // npx umi mfsu build
+  // npx umi mfsu build --mode production
+  // npx umi mfsu build --mode development --watch
+  // npx umi mfsu build --mode development --force
+  api.registerCommand({
+    name: 'mfsu',
+    async fn({ args }) {
+      switch (args._[0]) {
+        case 'build':
+          console.log('[MFSU] build deps...');
+          await buildDeps({
+            mode: args.mode as TMode,
+            force: args.force as boolean,
+            watch: args.watch as boolean,
+          });
+          break;
+        default:
+          throw new Error(
+            `[MFSU] Unsupported subcommand ${args._[0]} for mfsu.`,
+          );
+      }
+    },
   });
 }

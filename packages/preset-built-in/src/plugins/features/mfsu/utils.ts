@@ -10,6 +10,7 @@ import {
 } from 'fs';
 import { join } from 'path';
 import { Deps } from './build';
+import { TMode } from './mfsu';
 
 // a/b/c/* => a/b/c/x,a/b/c/y ,a/b/c/z
 export const getFuzzyIncludes = (include: string) => {
@@ -72,7 +73,14 @@ export const dependenceDiff = (
   return 'REMOVE';
 };
 
-export const shouldBuild = (prevDeps: Deps, curDeps: Deps): boolean => {
+export const shouldBuild = (
+  prevDeps: Deps,
+  curDeps: Deps,
+  mode: TMode,
+): boolean => {
+  if (mode === 'production') {
+    return !lodash.isEqual(prevDeps, curDeps);
+  }
   const result = dependenceDiff(prevDeps, curDeps);
   if (result === 'MODIFY' || result === 'ADD') {
     return true;
