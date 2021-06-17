@@ -37,6 +37,7 @@ interface IPreBuildOpts {
 
 export const preBuild = async (
   api: IApi,
+  webpackAlias: Object = {},
   { deps = {}, mode = 'development', outputPath = '' }: IPreBuildOpts,
 ) => {
   const tmpDir = outputPath || getMfsuPath(api, { mode });
@@ -73,9 +74,13 @@ export const preBuild = async (
   });
 
   const alias = await getAlias(api, { reverse: true });
+
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
-    const requireFrom = alias[dep] ? winPath(alias[dep]) : dep;
+    const requireFrom = alias[dep]
+      ? winPath(alias[dep])
+      : webpackAlias[dep] || dep;
+
     try {
       writeFileSync(
         join(tmpDir, resolveDep(prefix + dep + '.js')),

@@ -109,6 +109,7 @@ export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
 let userDeps: string[] = [];
 
 export default function (api: IApi) {
+  const webpackAlias = {};
   api.onStart(async ({ name }) => {
     userDeps = [];
     checkConfig(api);
@@ -119,7 +120,7 @@ export default function (api: IApi) {
     if (err) return;
     const deps = await getDeps(api);
     if (!lodash.isEqual(getPrevDeps(api, { mode: 'production' }), deps)) {
-      await preBuild(api, {
+      await preBuild(api, webpackAlias, {
         deps,
         mode: 'production',
         outputPath: getMfsuPath(api, { mode: 'production' }),
@@ -133,7 +134,7 @@ export default function (api: IApi) {
     try {
       const deps = await getDeps(api);
       if (shouldBuild(getPrevDeps(api, { mode: 'development' }), deps)) {
-        await preBuild(api, { deps, mode: 'development' });
+        await preBuild(api, webpackAlias, { deps, mode: 'development' });
         userDeps = [];
       }
     } catch (error) {
@@ -179,8 +180,6 @@ export default function (api: IApi) {
     },
     stage: Infinity,
   });
-
-  const webpackAlias = {};
 
   // 为 babel 提供相关插件
   api.modifyBabelOpts({
