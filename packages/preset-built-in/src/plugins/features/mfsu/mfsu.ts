@@ -122,6 +122,7 @@ export default function (api: IApi) {
       await preBuild(api, {
         deps,
         mode: 'production',
+        webpackAlias,
         outputPath: getMfsuPath(api, { mode: 'production' }),
       });
     }
