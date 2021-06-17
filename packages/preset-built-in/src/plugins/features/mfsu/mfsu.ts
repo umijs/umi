@@ -133,7 +133,7 @@ export default function (api: IApi) {
     try {
       const deps = await getDeps(api);
       if (shouldBuild(getPrevDeps(api, { mode: 'development' }), deps)) {
-        await preBuild(api, { deps, mode: 'development' });
+        await preBuild(api, { deps, webpackAlias, mode: 'development' });
         userDeps = [];
       }
     } catch (error) {
@@ -281,6 +281,7 @@ export default function (api: IApi) {
   });
 
   /** 修改 webpack 配置 */
+  // TODO: 改成从 webpack 配置里获取
   api.chainWebpack(async (memo) => {
     Object.assign(webpackAlias, memo.toConfig().resolve?.alias || {});
     const remotePath =

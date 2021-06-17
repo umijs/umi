@@ -17,7 +17,7 @@ import { IApi } from 'umi';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import ModifyRemoteEntryPlugin from './babel-modify-remote-entry-plugin';
-import { getAlias, getMfsuPath, TMode } from './mfsu';
+import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 import { figureOutExport } from './utils';
 
@@ -27,17 +27,27 @@ export type Deps = {
   [pkg: string]: string;
 };
 
+export type Alias = {
+  [pkg: string]: string;
+};
+
 export const prefix = 'mf-va_';
 
 interface IPreBuildOpts {
   deps: Deps;
   mode?: TMode;
   outputPath?: string;
+  webpackAlias?: Alias;
 }
 
 export const preBuild = async (
   api: IApi,
-  { deps = {}, mode = 'development', outputPath = '' }: IPreBuildOpts,
+  {
+    deps = {},
+    mode = 'development',
+    webpackAlias = {},
+    outputPath = '',
+  }: IPreBuildOpts,
 ) => {
   const tmpDir = outputPath || getMfsuPath(api, { mode });
 
@@ -72,10 +82,9 @@ export const preBuild = async (
     );
   });
 
-  const alias = await getAlias(api, { reverse: true });
   // 构建虚拟应用
   for (let dep of Object.keys(deps)) {
-    const requireFrom = alias[dep] ? winPath(alias[dep]) : dep;
+    const requireFrom = webpackAlias[dep] ? winPath(webpackAlias[dep]) : dep;
     try {
       writeFileSync(
         join(tmpDir, resolveDep(prefix + dep + '.js')),
