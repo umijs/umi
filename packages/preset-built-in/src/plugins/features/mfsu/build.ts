@@ -27,18 +27,27 @@ export type Deps = {
   [pkg: string]: string;
 };
 
+export type Alias = {
+  [pkg: string]: string;
+};
+
 export const prefix = 'mf-va_';
 
 interface IPreBuildOpts {
   deps: Deps;
   mode?: TMode;
   outputPath?: string;
+  webpackAlias?: Alias;
 }
 
 export const preBuild = async (
   api: IApi,
-  webpackAlias: Object = {},
-  { deps = {}, mode = 'development', outputPath = '' }: IPreBuildOpts,
+  {
+    deps = {},
+    mode = 'development',
+    webpackAlias = {},
+    outputPath = '',
+  }: IPreBuildOpts,
 ) => {
   const tmpDir = outputPath || getMfsuPath(api, { mode });
 
