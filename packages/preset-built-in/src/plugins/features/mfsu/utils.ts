@@ -107,7 +107,7 @@ export const copy = (fromDir: string, toDir: string) => {
 
 export const filenameFallback = async (absPath: string): Promise<string> => {
   try {
-    const exts = ['.js', '.ts', '.jsx', '.tsx'];
+    const exts = ['.esm.js', '.js', '.ts', '.jsx', '.tsx'];
     for (let i = 0; i < exts.length; i++) {
       const filename = absPath + exts[i];
       if (existsSync(filename)) {
@@ -124,11 +124,20 @@ export const filenameFallback = async (absPath: string): Promise<string> => {
   }
 };
 
-export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
-  (hasDefault
-    ? `import _ from "${winPath(importFrom)}";`
-    : `import * as _ from "${winPath(importFrom)}";`) +
-  `\nexport default _;\nexport * from "${winPath(importFrom)}";`;
+export const getExportStatement = (
+  importFrom: string,
+  cjs: boolean,
+  hasDefault: boolean,
+) =>
+  cjs
+    ? `import _ from "${winPath(
+        importFrom,
+      )}";\nexport default _;\nexport * from "${winPath(importFrom)}";`
+    : `${
+        hasDefault
+          ? `import _ from "${winPath(importFrom)}";\nexport default _;`
+          : ''
+      }\nexport * from "${winPath(importFrom)}";`;
 
 const parseFileExport = async (filePath: string, packageName: string) => {
   try {
@@ -145,11 +154,15 @@ const parseFileExport = async (filePath: string, packageName: string) => {
     }
     // cjs
     if (!imports.length && !exports.length) {
-      return getExportStatement(packageName, false);
+      return getExportStatement(packageName, true, false);
     }
     // esm
     if (exports.length) {
-      return getExportStatement(packageName, exports.includes('default'));
+      return getExportStatement(
+        packageName,
+        false,
+        exports.includes('default'),
+      );
     } else {
       return `import "${packageName}"; // no export fallback`;
     }
