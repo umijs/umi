@@ -81,39 +81,47 @@ export const shouldBuild = (prevDeps: Deps, curDeps: Deps): boolean => {
 };
 
 export const copy = (fromDir: string, toDir: string) => {
-  const fn = (dir: string, preserveDir: string) => {
-    const _dir = readdirSync(dir);
-    _dir.forEach((value) => {
-      const _path = join(dir, value);
-      const stat = statSync(_path);
-      if (stat.isDirectory()) {
-        const _toDir = join(toDir, preserveDir, value);
-        if (!existsSync(_toDir)) {
-          mkdirSync(_toDir);
+  try {
+    const fn = (dir: string, preserveDir: string) => {
+      const _dir = readdirSync(dir);
+      _dir.forEach((value) => {
+        const _path = join(dir, value);
+        const stat = statSync(_path);
+        if (stat.isDirectory()) {
+          const _toDir = join(toDir, preserveDir, value);
+          if (!existsSync(_toDir)) {
+            mkdirSync(_toDir);
+          }
+          fn(_path, join(preserveDir, value));
+        } else {
+          const toDest = join(toDir, preserveDir);
+          copyFileSync(_path, join(toDest, value));
         }
-        fn(_path, join(preserveDir, value));
-      } else {
-        const toDest = join(toDir, preserveDir);
-        copyFileSync(_path, join(toDest, value));
-      }
-    });
-  };
-  fn(fromDir, '');
+      });
+    };
+    fn(fromDir, '');
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const filenameFallback = (absPath: string) => {
-  const exts = ['.js', '.ts', '.jsx', '.tsx'];
-  for (let i = 0; i < exts.length; i++) {
-    const filename = absPath + exts[i];
-    if (existsSync(filename)) {
-      return parseFileExport(filename, filename);
+export const filenameFallback = async (absPath: string): Promise<string> => {
+  try {
+    const exts = ['.js', '.ts', '.jsx', '.tsx'];
+    for (let i = 0; i < exts.length; i++) {
+      const filename = absPath + exts[i];
+      if (existsSync(filename)) {
+        return await parseFileExport(filename, filename);
+      }
     }
+    const indexJs = join(absPath, 'index.js'); // runtime-regenerator
+    if (existsSync(indexJs)) {
+      return parseFileExport(indexJs, indexJs);
+    }
+    return `import "${absPath}"; // filename fallback`;
+  } catch (error) {
+    throw error;
   }
-  const indexJs = join(absPath, 'index.js'); // runtime-regenerator
-  if (existsSync(indexJs)) {
-    return parseFileExport(indexJs, indexJs);
-  }
-  return `import "${absPath}"; // filename fallback`;
 };
 
 export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
@@ -123,64 +131,81 @@ export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
   `\nexport default _;\nexport * from "${winPath(importFrom)}";`;
 
 const parseFileExport = async (filePath: string, packageName: string) => {
-  if (!existsSync(filePath)) {
-    return '';
-  }
-  const file = readFileSync(filePath, 'utf-8');
-  await init;
-  const [imports, exports] = parse(file);
-  // cjs
-  if (!imports.length && !exports.length) {
-    // try require: entry added by depInfo can't be recognized, such as: 'renderer-react/dist/index.js'
+  try {
+    if (!existsSync(filePath)) {
+      return '';
+    }
+    const file = readFileSync(filePath, 'utf-8');
+    await init;
     try {
-      const { default: _default } = require(filePath);
-      return getExportStatement(packageName, !!_default);
-    } catch (err) {
+      var [imports, exports] = parse(file);
+    } catch (error) {
+      console.log(error);
+      throw `parse ${filePath} error.` + error;
+    }
+    // cjs
+    if (!imports.length && !exports.length) {
       return getExportStatement(packageName, false);
     }
-  }
-  // esm
-  if (exports.length) {
-    return getExportStatement(packageName, exports.includes('default'));
-  } else {
-    return `import "${packageName}"; // no export fallback`;
-  }
-};
-
-const readPackageImport = (packagePath: string, packageName: string) => {
-  const packageJson = join(packagePath, 'package.json');
-  if (existsSync(packageJson)) {
-    const { module, main } = JSON.parse(
-      readFileSync(packageJson, 'utf-8') || '{}',
-    );
-    try {
-      const entry = join(packagePath, module || main || 'index.js');
-      return parseFileExport(entry, packageName);
-    } catch (err) {
-      throw new Error(err);
-    }
-  } else {
-    // try add ext. such as: 'regenerator-runtime/runtime' means 'regenerator-runtime/runtime.js'
-    return filenameFallback(packagePath);
-  }
-};
-
-const readPathImport = (absPath: string) => {
-  try {
-    if (statSync(absPath).isDirectory()) {
-      return readPackageImport(absPath, absPath);
+    // esm
+    if (exports.length) {
+      return getExportStatement(packageName, exports.includes('default'));
     } else {
-      return parseFileExport(absPath, absPath);
+      return `import "${packageName}"; // no export fallback`;
     }
   } catch (error) {
-    return filenameFallback(absPath);
+    throw error;
   }
 };
 
-export const figureOutExport = (cwd: string, entry: string) => {
-  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
-    return readPathImport(winPath(entry));
-  } else {
-    return readPackageImport(join(cwd, 'node_modules', entry), entry);
+const readPackageImport = (
+  packagePath: string,
+  packageName: string,
+): Promise<string> => {
+  const packageJson = join(packagePath, 'package.json');
+  try {
+    if (existsSync(packageJson)) {
+      const { module, main } = JSON.parse(
+        readFileSync(packageJson, 'utf-8') || '{}',
+      );
+      const entry = join(packagePath, module || main || 'index.js');
+      return parseFileExport(entry, packageName);
+    } else {
+      // try add ext. such as: 'regenerator-runtime/runtime' means 'regenerator-runtime/runtime.js'
+      return filenameFallback(packagePath);
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+const readPathImport = async (absPath: string) => {
+  try {
+    if (existsSync(absPath)) {
+      if (statSync(absPath).isDirectory()) {
+        return readPackageImport(absPath, absPath);
+      } else {
+        return parseFileExport(absPath, absPath);
+      }
+    } else {
+      return filenameFallback(absPath);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const figureOutExport = async (
+  cwd: string,
+  entry: string,
+): Promise<string> => {
+  try {
+    if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
+      return readPathImport(winPath(entry));
+    } else {
+      return readPackageImport(join(cwd, 'node_modules', entry), entry);
+    }
+  } catch (error) {
+    throw error;
   }
 };
