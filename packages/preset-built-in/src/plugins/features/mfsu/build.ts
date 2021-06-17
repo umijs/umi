@@ -66,7 +66,10 @@ export const preBuild = async (
 
   const exposes = {};
   Object.keys(deps).forEach((dep) => {
-    exposes[`./${dep}`] = join(tmpDir, resolveDep(prefix + dep + '.js'));
+    exposes[`./${dep}`.replace(api.cwd, '$CWD$')] = join(
+      tmpDir,
+      resolveDep(prefix + dep + '.js'),
+    );
   });
 
   const alias = await getAlias(api, { reverse: true });

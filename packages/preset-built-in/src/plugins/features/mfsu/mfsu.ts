@@ -207,7 +207,9 @@ export default function (api: IApi) {
             remoteName: 'mf',
             matchAll: true,
             webpackAlias: webpackAlias,
-            cwd: api.cwd,
+            alias: {
+              [api.cwd]: '$CWD$',
+            },
             onTransformDeps(opts: {
               file: string;
               source: string;
