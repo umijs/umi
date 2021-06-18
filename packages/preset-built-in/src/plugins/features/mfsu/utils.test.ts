@@ -58,7 +58,7 @@ test('dependenceDiff', () => {
 //   );
 // });
 
-test('figure out export', async () => {
+xtest('figure out export', async () => {
   const testPath = winPath(join(__dirname, '.umi-test'));
   const testNodeModules = winPath(join(testPath, 'node_modules'));
   rimraf.sync(testPath);
