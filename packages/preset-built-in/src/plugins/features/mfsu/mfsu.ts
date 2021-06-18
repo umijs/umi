@@ -265,6 +265,12 @@ export default function (api: IApi) {
           }
           debug('write cache');
           depInfo.writeCache();
+
+          const server = api.getServer();
+          if (server) {
+            debug(`refresh server`);
+            server.sockWrite({ type: 'ok', data: { reload: true } });
+          }
         },
       });
     }
