@@ -38,26 +38,44 @@ class Bundler {
   async build({
     bundleConfigs,
     bundleImplementor = defaultWebpack,
+    watch,
+    onBuildComplete,
   }: {
     bundleConfigs: defaultWebpack.Configuration[];
     bundleImplementor?: typeof defaultWebpack;
-  }): Promise<{ stats: defaultWebpack.Stats }> {
+    watch?: boolean;
+    onBuildComplete?: any;
+  }): Promise<{ stats?: defaultWebpack.Stats; compiler: any }> {
     return new Promise((resolve, reject) => {
       const compiler = bundleImplementor.webpack(bundleConfigs);
-      compiler.run((err, stats) => {
-        if (err || stats.hasErrors()) {
-          try {
-            console.log(stats.toString('errors-only'));
-          } catch (e) {}
-          console.error(err);
-          return reject(new Error('build failed'));
-        }
-        // ref: https://github.com/webpack/webpack/issues/12345#issuecomment-755273757
-        // @ts-ignore
-        compiler.close?.();
-        // @ts-ignore
-        resolve({ stats });
-      });
+      if (watch) {
+        compiler.watch({}, (err, stats) => {
+          onBuildComplete?.(err, stats);
+          if (err || stats.hasErrors()) {
+            try {
+              console.log(stats.toString('errors-only'));
+            } catch (e) {}
+            console.error(err);
+          }
+        });
+        resolve({ compiler });
+      } else {
+        compiler.run((err, stats) => {
+          onBuildComplete?.(err, stats);
+          if (err || stats.hasErrors()) {
+            try {
+              console.log(stats.toString('errors-only'));
+            } catch (e) {}
+            console.error(err);
+            return reject(new Error('build failed'));
+          }
+          // ref: https://github.com/webpack/webpack/issues/12345#issuecomment-755273757
+          // @ts-ignore
+          compiler.close?.();
+          // @ts-ignore
+          resolve({ stats, compiler });
+        });
+      }
     });
   }
 

@@ -1,5 +1,6 @@
 import type { NodePath } from '@babel/traverse';
 import { t } from '@umijs/utils';
+import { extname, isAbsolute } from 'path';
 
 type TLibs = (RegExp | string)[];
 
@@ -12,9 +13,9 @@ export interface IOpts {
   matchAll?: boolean;
   remoteName: string;
   alias?: IAlias;
+  webpackAlias?: IAlias;
   onTransformDeps?: Function;
   exportAllMembers?: Record<string, string[]>;
-  cwd?: string;
 }
 
 export function specifiersToProperties(specifiers: any[]) {
@@ -41,27 +42,49 @@ export function specifiersToProperties(specifiers: any[]) {
   );
 }
 
+const RE_NODE_MODULES = /node_modules/;
+const RE_UMI_LOCAL_DEV = /umi\/packages\//;
+
+function getAlias(opts: { path: string; webpackAlias: IAlias }) {
+  for (const key of Object.keys(opts.webpackAlias)) {
+    const path = isJSFile(opts.webpackAlias[key]) ? key : addLastSlash(key);
+    if (opts.path.startsWith(path)) {
+      return opts.webpackAlias[key];
+    }
+  }
+  return null;
+}
+
+function isJSFile(path: string) {
+  return ['.js', '.jsx', '.ts', '.tsx'].includes(extname(path));
+}
+
+function addLastSlash(path: string) {
+  return path.endsWith('/') ? path : `${path}/`;
+}
+
 function isMatchLib(
   path: string,
   libs: TLibs | undefined,
   matchAll: boolean | undefined,
   alias: IAlias,
-  cwd: string | undefined,
+  webpackAlias: IAlias,
 ) {
   if (matchAll) {
-    path = alias[path] || path;
-    if (path.charAt(0) === '/') {
-      return false;
+    if (path === 'umi' || path === 'dumi') return false;
+
+    if (isAbsolute(path)) {
+      return RE_NODE_MODULES.test(path) || RE_UMI_LOCAL_DEV.test(path);
     } else if (path.charAt(0) === '.') {
       return false;
     } else {
-      const pkgName = path.split('/')[0];
-      try {
-        require.resolve(`${cwd}/node_modules/${pkgName}/package.json`);
-        return true;
-      } catch (e) {
-        return false;
+      const aliasPath = getAlias({ path, webpackAlias });
+      if (aliasPath) {
+        return (
+          RE_NODE_MODULES.test(aliasPath) || RE_UMI_LOCAL_DEV.test(aliasPath)
+        );
       }
+      return true;
     }
   }
 
@@ -102,7 +125,7 @@ export default function () {
                 opts.libs,
                 opts.matchAll,
                 opts.alias || {},
-                opts.cwd,
+                opts.webpackAlias || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -156,7 +179,7 @@ export default function () {
                 opts.libs,
                 opts.matchAll,
                 opts.alias || {},
-                opts.cwd,
+                opts.webpackAlias || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -208,7 +231,7 @@ export default function () {
                 opts.libs,
                 opts.matchAll,
                 opts.alias || {},
-                opts.cwd,
+                opts.webpackAlias || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -245,36 +268,35 @@ export default function () {
         },
       },
 
-      CallExpression(
-        path: NodePath<t.CallExpression>,
-        { opts }: { opts: IOpts },
-      ) {
-        const { node } = path;
-        if (
-          t.isImport(node.callee) &&
-          node.arguments.length === 1 &&
-          node.arguments[0].type === 'StringLiteral'
-        ) {
-          const value = node.arguments[0].value;
-          const isMatch = isMatchLib(
-            value,
-            opts.libs,
-            opts.matchAll,
-            opts.alias || {},
-            opts.cwd,
-          );
-          opts.onTransformDeps?.({
-            source: value,
-            // @ts-ignore
-            file: path.hub.file.opts.filename,
-            isMatch,
-          });
-          if (isMatch) {
-            node.arguments[0] = t.stringLiteral(
-              `${opts.remoteName}/${getPath(value, opts.alias || {})}`,
+      CallExpression: {
+        exit(path: NodePath<t.CallExpression>, { opts }: { opts: IOpts }) {
+          const { node } = path;
+          if (
+            t.isImport(node.callee) &&
+            node.arguments.length === 1 &&
+            node.arguments[0].type === 'StringLiteral'
+          ) {
+            const value = node.arguments[0].value;
+            const isMatch = isMatchLib(
+              value,
+              opts.libs,
+              opts.matchAll,
+              opts.alias || {},
+              opts.webpackAlias || {},
             );
+            opts.onTransformDeps?.({
+              source: value,
+              // @ts-ignore
+              file: path.hub.file.opts.filename,
+              isMatch,
+            });
+            if (isMatch) {
+              node.arguments[0] = t.stringLiteral(
+                `${opts.remoteName}/${getPath(value, opts.alias || {})}`,
+              );
+            }
           }
-        }
+        },
       },
     },
   };

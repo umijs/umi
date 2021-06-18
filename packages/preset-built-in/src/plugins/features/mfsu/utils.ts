@@ -8,8 +8,9 @@ import {
   readFileSync,
   statSync,
 } from 'fs';
-import { join } from 'path';
+import { join, parse as pathParse } from 'path';
 import { Deps } from './build';
+import { TMode } from './mfsu';
 
 // a/b/c/* => a/b/c/x,a/b/c/y ,a/b/c/z
 export const getFuzzyIncludes = (include: string) => {
@@ -72,7 +73,14 @@ export const dependenceDiff = (
   return 'REMOVE';
 };
 
-export const shouldBuild = (prevDeps: Deps, curDeps: Deps): boolean => {
+export const shouldBuild = (
+  prevDeps: Deps,
+  curDeps: Deps,
+  mode: TMode,
+): boolean => {
+  if (mode === 'production') {
+    return !lodash.isEqual(prevDeps, curDeps);
+  }
   const result = dependenceDiff(prevDeps, curDeps);
   if (result === 'MODIFY' || result === 'ADD') {
     return true;
@@ -81,94 +89,147 @@ export const shouldBuild = (prevDeps: Deps, curDeps: Deps): boolean => {
 };
 
 export const copy = (fromDir: string, toDir: string) => {
-  const fn = (dir: string, preserveDir: string) => {
-    const _dir = readdirSync(dir);
-    _dir.forEach((value) => {
-      const _path = join(dir, value);
-      const stat = statSync(_path);
-      if (stat.isDirectory()) {
-        const _toDir = join(toDir, preserveDir, value);
-        if (!existsSync(_toDir)) {
-          mkdirSync(_toDir);
+  try {
+    const fn = (dir: string, preserveDir: string) => {
+      const _dir = readdirSync(dir);
+      _dir.forEach((value) => {
+        const _path = join(dir, value);
+        const stat = statSync(_path);
+        if (stat.isDirectory()) {
+          const _toDir = join(toDir, preserveDir, value);
+          if (!existsSync(_toDir)) {
+            mkdirSync(_toDir);
+          }
+          fn(_path, join(preserveDir, value));
+        } else {
+          const toDest = join(toDir, preserveDir);
+          copyFileSync(_path, join(toDest, value));
         }
-        fn(_path, join(preserveDir, value));
-      } else {
-        const toDest = join(toDir, preserveDir);
-        copyFileSync(_path, join(toDest, value));
-      }
-    });
-  };
-  fn(fromDir, '');
+      });
+    };
+    fn(fromDir, '');
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const getExportStatement = (importFrom: string, hasDefault: boolean) =>
-  (hasDefault
-    ? `import _ from "${winPath(importFrom)}";`
-    : `import * as _ from "${winPath(importFrom)}";`) +
-  `\nexport default _;\nexport * from "${winPath(importFrom)}";`;
+export const filenameFallback = async (absPath: string): Promise<string> => {
+  try {
+    const exts = ['.esm.js', '.mjs', '.js', '.ts', '.jsx', '.tsx'];
+    if (exts.includes(pathParse(absPath).ext)) {
+      return await parseFileExport(absPath, absPath);
+    }
+
+    for (let i = 0; i < exts.length; i++) {
+      const filename = absPath + exts[i];
+      if (existsSync(filename)) {
+        return await parseFileExport(filename, filename);
+      }
+    }
+    const indexJs = join(absPath, 'index.js'); // runtime-regenerator
+    if (existsSync(indexJs)) {
+      return parseFileExport(indexJs, indexJs);
+    }
+    return `import "${absPath}"; // filename fallback`;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getExportStatement = (
+  importFrom: string,
+  cjs: boolean,
+  hasDefault: boolean,
+) =>
+  cjs
+    ? `import _ from "${winPath(
+        importFrom,
+      )}";\nexport default _;\nexport * from "${winPath(importFrom)}";`
+    : `${
+        hasDefault
+          ? `import _ from "${winPath(importFrom)}";\nexport default _;`
+          : ''
+      }\nexport * from "${winPath(importFrom)}";`;
 
 const parseFileExport = async (filePath: string, packageName: string) => {
-  if (!existsSync(filePath)) {
-    return '';
-  }
-  const file = readFileSync(filePath, 'utf-8');
-  await init;
-  const [imports, exports] = parse(file);
-  // cjs
-  if (!imports.length && !exports.length) {
-    // try require: entry added by depInfo can't be recognized, such as: 'renderer-react/dist/index.js'
-    try {
-      const { default: _default } = require(filePath);
-      return getExportStatement(packageName, !!_default);
-    } catch (err) {
-      return getExportStatement(packageName, false);
+  try {
+    if (!existsSync(filePath)) {
+      return '';
     }
-  }
-  // esm
-  if (exports.length) {
-    return getExportStatement(packageName, exports.includes('default'));
-  } else {
-    return `import "${packageName}";`;
+    const file = readFileSync(filePath, 'utf-8');
+    await init;
+    try {
+      var [imports, exports] = parse(file);
+    } catch (error) {
+      throw `parse ${filePath} error.` + error;
+    }
+    // cjs
+    if (!imports.length && !exports.length) {
+      return getExportStatement(packageName, true, false);
+    }
+    // esm
+    if (exports.length) {
+      return getExportStatement(
+        packageName,
+        false,
+        exports.includes('default'),
+      );
+    } else {
+      return `import "${packageName}"; // no export fallback`;
+    }
+  } catch (error) {
+    throw error;
   }
 };
 
-const readPackageImport = (packagePath: string, packageName: string) => {
+const readPackageImport = (
+  packagePath: string,
+  packageName: string,
+): Promise<string> => {
   const packageJson = join(packagePath, 'package.json');
-  if (existsSync(packageJson)) {
-    const { module, main } = JSON.parse(
-      readFileSync(packageJson, 'utf-8') || '{}',
-    );
-    try {
+  try {
+    if (existsSync(packageJson)) {
+      const { module, main } = JSON.parse(
+        readFileSync(packageJson, 'utf-8') || '{}',
+      );
       const entry = join(packagePath, module || main || 'index.js');
       return parseFileExport(entry, packageName);
-    } catch (err) {
-      throw new Error(err);
+    } else {
+      // try add ext. such as: 'regenerator-runtime/runtime' means 'regenerator-runtime/runtime.js'
+      return filenameFallback(packagePath);
     }
-  } else {
-    // try add ext. such as: 'regenerator-runtime/runtime' means 'regenerator-runtime/runtime.js'
-    const exts = ['.js', '.ts', '.jsx', '.tsx'];
-    for (let i = 0; i < exts.length; i++) {
-      const filename = packagePath + exts[i];
-      if (existsSync(filename)) {
-        return parseFileExport(filename, filename);
+  } catch (err) {
+    throw err;
+  }
+};
+
+const readPathImport = async (absPath: string) => {
+  try {
+    if (existsSync(absPath)) {
+      if (statSync(absPath).isDirectory()) {
+        return readPackageImport(absPath, absPath);
+      } else {
+        return parseFileExport(absPath, absPath);
       }
+    } else {
+      return filenameFallback(absPath);
     }
-    return `import "${packageName}";`;
+  } catch (error) {
+    throw error;
   }
 };
 
-const readPathImport = (absPath: string) => {
-  if (statSync(absPath).isDirectory()) {
-    return readPackageImport(absPath, absPath);
-  } else {
-    return parseFileExport(absPath, absPath);
-  }
-};
-
-export const figureOutExport = (cwd: string, entry: string) => {
-  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
-    return readPathImport(winPath(entry));
-  } else {
-    return readPackageImport(join(cwd, 'node_modules', entry), entry);
+export const figureOutExport = async (
+  cwd: string,
+  entry: string,
+): Promise<string> => {
+  try {
+    if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
+      return readPathImport(winPath(entry));
+    } else {
+      return readPackageImport(join(cwd, 'node_modules', entry), entry);
+    }
+  } catch (error) {
+    throw error;
   }
 };
