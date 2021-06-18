@@ -4,7 +4,7 @@ import { Compiler } from '@umijs/deps/compiled/webpack';
 // @ts-ignore
 import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { IApi } from '@umijs/types';
-import { lodash } from '@umijs/utils';
+import { createDebug, lodash } from '@umijs/utils';
 import assert from 'assert';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
@@ -15,6 +15,8 @@ import { IDeps } from './DepInfo';
 import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 import { figureOutExport } from './utils';
+
+const debug = createDebug('umi:mfsu:DepBuilder');
 
 const normalizeDepPath = (dep: string) => {
   return dep.replace(/\//g, '_');
@@ -44,10 +46,13 @@ export default class DepBuilder {
       const watch = this.mode === 'development';
       const { compiler } = await bundler.build({
         bundleConfigs: [mfConfig],
-        watch,
+        // TODO: 支持 watch 模式
+        // 因为 exposes 暂不支持动态变更
+        watch: false,
         onBuildComplete: opts.onBuildComplete,
       });
-      this.compiler = compiler;
+      // TODO: 支持 watch 模式
+      // this.compiler = compiler;
     }
   }
 
@@ -109,6 +114,13 @@ export default class DepBuilder {
 
     // 修改 chunk 名
     mfConfig.plugins.push(new ModifyChunkNamePlugin());
+
+    // @ts-ignore
+    if (mfConfig.cache && mfConfig.cache.cacheDirectory) {
+      // @ts-ignore
+      mfConfig.cache.cacheDirectory = join(this.tmpDir, '.webpackFSCache');
+    }
+    debug('config.cache', mfConfig.cache);
 
     const remoteEntryFilename = MF_VA_PREFIX + 'remoteEntry.js';
     const exposes = {};
