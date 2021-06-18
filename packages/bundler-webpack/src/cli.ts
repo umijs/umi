@@ -88,6 +88,7 @@ if (args.version && !command) {
     const { stats } = await bundler.build({
       bundleConfigs: [webpackConfig],
     });
+    // @ts-ignore
     console.log(stats.toString('normal'));
   } else if (command === 'dev') {
     const port = await portfinder.getPortPromise({

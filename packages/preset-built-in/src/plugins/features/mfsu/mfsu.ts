@@ -1,16 +1,20 @@
-import { chalk, lodash } from '@umijs/utils';
+import { chalk, createDebug, lodash, mkdirp } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
-import { join, parse } from 'path';
+import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
 import url from 'url';
 import webpack from 'webpack';
 import { runtimePath } from '../../generateFiles/constants';
 import AntdIconPlugin from './babel-antd-icon-plugin';
 import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
-import { Deps, preBuild, prefix } from './build';
-import { copy, shouldBuild } from './utils';
+import { MF_VA_PREFIX } from './constants';
+import DepBuilder from './DepBuilder';
+import DepInfo from './DepInfo';
+import { copy } from './utils';
+
+const debug = createDebug('umi:mfsu');
 
 export type TMode = 'production' | 'development';
 
@@ -34,38 +38,6 @@ const defaultRedirect = {
   },
 };
 
-export const getPrevDeps = (
-  api: IApi,
-  { path, mode }: { path?: string; mode: TMode },
-) => {
-  const infoPath = join(path || getMfsuPath(api, { mode }), './info.json');
-  return existsSync(infoPath) ? require(infoPath) : {};
-};
-
-export const getDeps = async (api: IApi) => {
-  const pkgPath = join(api.cwd, 'package.json');
-  const { dependencies = {}, peerDependencies = {} } = existsSync(pkgPath)
-    ? require(pkgPath)
-    : {};
-  const packageDependencies: Deps = { ...dependencies, ...peerDependencies };
-
-  let deps = Array.from(
-    new Set(
-      userDeps.concat(api.userConfig.mfsu.includes || []).filter((_dep) => {
-        return (
-          !(api.userConfig.excludes || []).includes(_dep) ||
-          /^(@umijs\/plugin-|umi-plugin-)/.test(_dep)
-        );
-      }),
-    ),
-  );
-  return deps.reduce((memo, dep) => {
-    const version = packageDependencies[dep];
-    memo[dep] = version || '*';
-    return memo;
-  }, {});
-};
-
 export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   if (mode === 'development') {
     const configPath = api.userConfig.mfsu?.development?.output;
@@ -80,62 +52,57 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   }
 };
 
-export const getAlias = async (api: IApi, opts?: { reverse?: boolean }) => {
-  const depInfo: {
-    name: string;
-    range: string;
-    alias?: string[];
-  }[] = await api.applyPlugins({
-    key: 'addDepInfo',
-    type: api.ApplyPluginsType.add,
-    initialValue: [],
-  });
-
-  const aliasResult = {};
-
-  depInfo.forEach((dinfo) => {
-    const { name, alias = [] } = dinfo;
-    alias.forEach((alia) => {
-      if (opts?.reverse) {
-        // exp: {'@umijs/runtime' : '/aaa/bbb/ccc'}
-        aliasResult[name] = alia;
-      } else {
-        // exp: {'/aaa/bbb/ccc' : '@umijs/runtime'}
-        aliasResult[alia] = name;
-      }
-    });
-  });
-  return aliasResult;
-};
-
-let userDeps: string[] = [];
-
 export default function (api: IApi) {
   const webpackAlias = {};
-  api.onStart(async ({ name }) => {
-    userDeps = [];
+  let depInfo: DepInfo;
+  let depBuilder: DepBuilder;
+  let mode: TMode = 'development';
+
+  api.onStart(async ({ name, args }) => {
     checkConfig(api);
+
+    if (name === 'build') {
+      mode = 'production';
+      // @ts-ignore
+    } else if (name === 'mfsu' && args._[1] === 'build' && args.mode) {
+      // @ts-ignore
+      mode = args.mode;
+    }
+    assert(
+      ['development', 'production'].includes(mode),
+      `[MFSU] Unsupported mode ${mode}, expect development or production.`,
+    );
+
+    debug(`mode: ${mode}`);
+
+    const tmpDir = getMfsuPath(api, { mode });
+    debug(`tmpDir: ${tmpDir}`);
+    if (!existsSync(tmpDir)) {
+      mkdirp.sync(tmpDir);
+    }
+    depInfo = new DepInfo({
+      tmpDir,
+      mode,
+      cwd: api.cwd,
+    });
+    debug('load cache');
+    depInfo.loadCache();
+    depBuilder = new DepBuilder({
+      tmpDir,
+      mode,
+      api,
+    });
   });
 
-  // 针对 production 模式，build 完后将产物移动到 dist 中
   api.onBuildComplete(async ({ err }) => {
     if (err) return;
-    await buildDeps({
-      mode: 'production',
-    });
-    const mfsuProdPath = getMfsuPath(api, { mode: 'production' });
-    copy(mfsuProdPath, join(api.cwd, api.userConfig.outputPath || './dist'));
+    debug(`build deps in production`);
+    await buildDeps();
   });
 
   api.onDevCompileDone(async () => {
-    try {
-      await buildDeps({
-        mode: 'development',
-        watch: true,
-      });
-    } catch (err) {
-      throw new Error('[MFSU] build failed.' + err.message);
-    }
+    debug(`build deps in development`);
+    await buildDeps();
   });
 
   api.describe({
@@ -180,16 +147,14 @@ export default function (api: IApi) {
   // 为 babel 提供相关插件
   api.modifyBabelOpts({
     fn: async (opts) => {
-      const depInfoAlias = await getAlias(api, { reverse: true });
-      webpackAlias['core-js'] = depInfoAlias['core-js'];
-      webpackAlias['regenerator-runtime/runtime'] =
-        depInfoAlias['regenerator-runtime/runtime'];
-
-      // umi alias
-      // api.config.alias
+      webpackAlias['core-js'] = dirname(
+        require.resolve('core-js/package.json'),
+      );
+      webpackAlias['regenerator-runtime/runtime'] = require.resolve(
+        'regenerator-runtime/runtime',
+      );
       webpackAlias['dumi/theme'] =
         api.paths.absNodeModulesPath + '/@umijs/preset-dumi/lib/theme/index.js';
-
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const redirect = lodash.merge(defaultRedirect, userRedirect);
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
@@ -230,10 +195,9 @@ export default function (api: IApi) {
               }
               // collect dependencies
               // TODO: 正则匹配应该被删除，因为 mf/ 开始的包不应该再被匹配
-              opts.isMatch &&
-                // await import begin with "mf/"
-                !/^mf\//.test(opts.source) &&
-                userDeps.push(opts.source);
+              if (opts.isMatch && !/^mf\//.test(opts.source)) {
+                depInfo.addTmpDep(opts.source);
+              }
             },
           },
         ],
@@ -243,19 +207,6 @@ export default function (api: IApi) {
     },
     stage: Infinity,
   });
-
-  api.addDepInfo(() => [
-    {
-      name: 'core-js',
-      range: '3.6.5',
-      alias: [require.resolve('core-js')],
-    },
-    {
-      name: 'regenerator-runtime/runtime',
-      range: '*',
-      alias: [require.resolve('regenerator-runtime/runtime')],
-    },
-  ]);
 
   /** 暴露文件 */
   api.addBeforeMiddlewares(() => {
@@ -294,7 +245,7 @@ export default function (api: IApi) {
       new webpack.container.ModuleFederationPlugin({
         name: 'umi-app',
         remotes: {
-          mf: 'mf@' + remotePath + prefix + 'remoteEntry.js',
+          mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
         },
       }),
     );
@@ -304,26 +255,37 @@ export default function (api: IApi) {
   });
 
   // TODO: support watch
-  async function buildDeps(opts: {
-    mode?: TMode;
-    watch?: boolean;
-    force?: boolean;
-  }) {
-    const mode = opts.mode || 'development';
-    assert(
-      ['development', 'production'].includes(mode),
-      `[MFSU] Unsupported mode ${mode}, expect development or production.`,
-    );
-    const deps = await getDeps(api);
-    if (opts.force || shouldBuild(getPrevDeps(api, { mode }), deps, mode)) {
-      await preBuild(api, {
-        deps,
-        mode,
+  async function buildDeps(opts: { watch?: boolean; force?: boolean } = {}) {
+    const { shouldBuild } = depInfo.loadTmpDeps();
+    debug(`shouldBuild: ${shouldBuild}, force: ${opts.force}`);
+    if (opts.force || shouldBuild) {
+      await depBuilder.build({
+        deps: depInfo.data.deps,
         webpackAlias,
-        outputPath: getMfsuPath(api, { mode }),
+        onBuildComplete(err: any, stats: any) {
+          debug(`build complete with err ${err}`);
+          if (err || stats.hasErrors()) {
+            return;
+          }
+          debug('write cache');
+          depInfo.writeCache();
+
+          const server = api.getServer();
+          if (server) {
+            debug(`refresh server`);
+            server.sockWrite({ type: 'ok', data: { reload: true } });
+          }
+        },
       });
-      // TODO: 更细的处理
-      userDeps = [];
+    }
+
+    if (mode === 'production') {
+      // production 模式，build 完后将产物移动到 dist 中
+      debug(`copy mf output files to dist`);
+      copy(
+        depBuilder.tmpDir,
+        join(api.cwd, api.userConfig.outputPath || './dist'),
+      );
     }
   }
 
@@ -338,7 +300,6 @@ export default function (api: IApi) {
         case 'build':
           console.log('[MFSU] build deps...');
           await buildDeps({
-            mode: args.mode as TMode,
             force: args.force as boolean,
             watch: args.watch as boolean,
           });
