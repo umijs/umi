@@ -98,12 +98,12 @@ export default class DepBuilder {
       bundleConfigs[0],
     );
 
-    // mfConfig.mode = mode;
     mfConfig.stats = 'none';
     mfConfig.entry = join(this.tmpDir, 'index.js');
     mfConfig.output!.path = this.tmpDir;
-    mfConfig.output!.filename = MF_VA_PREFIX + 'index.js';
-    // mfConfig.output!.libraryTarget = 'commonjs';
+    // TODO: css hash
+    mfConfig.output!.filename = '[name].[contenthash:8].js';
+    mfConfig.output!.chunkFilename = '[name].[contenthash:8].async.js';
 
     mfConfig.plugins = mfConfig.plugins || [];
 
