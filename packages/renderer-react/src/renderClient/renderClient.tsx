@@ -1,9 +1,11 @@
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import React, { useEffect } from 'react';
-import { hydrate, render } from 'react-dom';
+import ReactDOM, { hydrate, render } from 'react-dom';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
+
+let reactRoot: any = null;
 
 interface IRouterComponentProps {
   routes: IRoute[];
@@ -116,20 +118,29 @@ export default function renderClient(opts: IOpts) {
         ? document.getElementById(opts.rootElement)
         : opts.rootElement;
     const callback = opts.callback || (() => {});
-
-    // flag showing SSR successed
-    if (window.g_useSSR) {
-      if (opts.dynamicImport) {
-        // dynamicImport should preload current route component
-        // first loades);
-        preloadComponent(opts.routes).then(function () {
-          hydrate(rootContainer, rootElement, callback);
+    if (process.env.UMI_APP_USE_REACT18) {
+      //TODO: opts.dynamicImport
+      if (!reactRoot) {
+        reactRoot = (ReactDOM as any).createRoot(rootElement, {
+          hydrate: window.g_useSSR,
         });
-      } else {
-        hydrate(rootContainer, rootElement, callback);
       }
+      reactRoot.render(rootContainer);
     } else {
-      render(rootContainer, rootElement, callback);
+      // flag showing SSR successed
+      if (window.g_useSSR) {
+        if (opts.dynamicImport) {
+          // dynamicImport should preload current route component
+          // first loades);
+          preloadComponent(opts.routes).then(function () {
+            hydrate(rootContainer, rootElement, callback);
+          });
+        } else {
+          hydrate(rootContainer, rootElement, callback);
+        }
+      } else {
+        render(rootContainer, rootElement, callback);
+      }
     }
   } else {
     return rootContainer;

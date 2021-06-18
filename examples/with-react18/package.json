@@ -1,0 +1,28 @@
+{
+  "name": "with-react18",
+  "version": "0.0.1",
+  "description": "with-react18",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi",
+    "umi examples"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.0.0-alpha-43f4cc160",
+    "react-dom": "^18.0.0-alpha-43f4cc160",
+    "umi": "latest"
+  },
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/examples/with-react18#readme"
+}
