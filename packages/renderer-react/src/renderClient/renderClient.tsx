@@ -119,13 +119,18 @@ export default function renderClient(opts: IOpts) {
         : opts.rootElement;
     const callback = opts.callback || (() => {});
     if (process.env.UMI_APP_USE_REACT18) {
-      //TODO: opts.dynamicImport
       if (!reactRoot) {
         reactRoot = (ReactDOM as any).createRoot(rootElement, {
           hydrate: window.g_useSSR,
         });
       }
-      reactRoot.render(rootContainer);
+      if (opts.dynamicImport) {
+        preloadComponent(opts.routes).then(function () {
+          reactRoot.render(rootContainer);
+        });
+      } else {
+        reactRoot.render(rootContainer);
+      }
     } else {
       // flag showing SSR successed
       if (window.g_useSSR) {
