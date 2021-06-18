@@ -1,4 +1,5 @@
 /node_modules
+/**/node_modules
 /packages/*/lib
 /packages/*/dist
 /packages/*/node_modules
@@ -25,3 +26,4 @@ output.txt
 /examples/*/logs
 /examples/*/run
 /examples/*/.idea
+packages/bundler-webpack/src/fixtures/with-react18/yarn.lock

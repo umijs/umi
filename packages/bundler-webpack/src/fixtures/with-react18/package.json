@@ -1,0 +1,7 @@
+{
+  "name": "with-react18",
+  "dependencies": {
+    "react": "^18.0.0-alpha-43f4cc160",
+    "react-dom": "^18.0.0-alpha-43f4cc160"
+  }
+}

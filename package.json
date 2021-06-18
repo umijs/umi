@@ -17,6 +17,7 @@
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
     "release": "node ./scripts/release.js",
+    "preinstall": "cd packages/bundler-webpack/src/fixtures/with-react18 && yarn install",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
