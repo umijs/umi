@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "3.5.0-beta.4",
+  "version": "3.5.0-beta.5",
   "description": "@umijs/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,9 +24,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/ast": "3.5.0-beta.4",
-    "@umijs/babel-preset-umi": "3.5.0-beta.4",
-    "@umijs/deps": "3.5.0-beta.4",
-    "@umijs/utils": "3.5.0-beta.4"
+    "@umijs/ast": "3.5.0-beta.5",
+    "@umijs/babel-preset-umi": "3.5.0-beta.5",
+    "@umijs/deps": "3.5.0-beta.5",
+    "@umijs/utils": "3.5.0-beta.5"
   }
 }
