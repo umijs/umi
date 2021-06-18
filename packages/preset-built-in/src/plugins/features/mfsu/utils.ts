@@ -8,7 +8,7 @@ import {
   readFileSync,
   statSync,
 } from 'fs';
-import { join } from 'path';
+import { join, parse as pathParse } from 'path';
 import { Deps } from './build';
 import { TMode } from './mfsu';
 
@@ -115,7 +115,11 @@ export const copy = (fromDir: string, toDir: string) => {
 
 export const filenameFallback = async (absPath: string): Promise<string> => {
   try {
-    const exts = ['.esm.js', '.js', '.ts', '.jsx', '.tsx'];
+    const exts = ['.esm.js', '.mjs', '.js', '.ts', '.jsx', '.tsx'];
+    if (exts.includes(pathParse(absPath).ext)) {
+      return await parseFileExport(absPath, absPath);
+    }
+
     for (let i = 0; i < exts.length; i++) {
       const filename = absPath + exts[i];
       if (existsSync(filename)) {
@@ -157,7 +161,6 @@ const parseFileExport = async (filePath: string, packageName: string) => {
     try {
       var [imports, exports] = parse(file);
     } catch (error) {
-      console.log(error);
       throw `parse ${filePath} error.` + error;
     }
     // cjs

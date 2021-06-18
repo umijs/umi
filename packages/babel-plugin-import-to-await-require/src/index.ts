@@ -71,7 +71,8 @@ function isMatchLib(
   webpackAlias: IAlias,
 ) {
   if (matchAll) {
-    if (path === 'umi') return false;
+    if (path === 'umi' || path === 'dumi') return false;
+
     if (isAbsolute(path)) {
       return RE_NODE_MODULES.test(path) || RE_UMI_LOCAL_DEV.test(path);
     } else if (path.charAt(0) === '.') {
@@ -267,36 +268,35 @@ export default function () {
         },
       },
 
-      CallExpression(
-        path: NodePath<t.CallExpression>,
-        { opts }: { opts: IOpts },
-      ) {
-        const { node } = path;
-        if (
-          t.isImport(node.callee) &&
-          node.arguments.length === 1 &&
-          node.arguments[0].type === 'StringLiteral'
-        ) {
-          const value = node.arguments[0].value;
-          const isMatch = isMatchLib(
-            value,
-            opts.libs,
-            opts.matchAll,
-            opts.alias || {},
-            opts.webpackAlias || {},
-          );
-          opts.onTransformDeps?.({
-            source: value,
-            // @ts-ignore
-            file: path.hub.file.opts.filename,
-            isMatch,
-          });
-          if (isMatch) {
-            node.arguments[0] = t.stringLiteral(
-              `${opts.remoteName}/${getPath(value, opts.alias || {})}`,
+      CallExpression: {
+        exit(path: NodePath<t.CallExpression>, { opts }: { opts: IOpts }) {
+          const { node } = path;
+          if (
+            t.isImport(node.callee) &&
+            node.arguments.length === 1 &&
+            node.arguments[0].type === 'StringLiteral'
+          ) {
+            const value = node.arguments[0].value;
+            const isMatch = isMatchLib(
+              value,
+              opts.libs,
+              opts.matchAll,
+              opts.alias || {},
+              opts.webpackAlias || {},
             );
+            opts.onTransformDeps?.({
+              source: value,
+              // @ts-ignore
+              file: path.hub.file.opts.filename,
+              isMatch,
+            });
+            if (isMatch) {
+              node.arguments[0] = t.stringLiteral(
+                `${opts.remoteName}/${getPath(value, opts.alias || {})}`,
+              );
+            }
           }
-        }
+        },
       },
     },
   };

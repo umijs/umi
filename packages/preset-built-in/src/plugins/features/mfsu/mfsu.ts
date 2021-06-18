@@ -29,6 +29,7 @@ export const checkConfig = (api: IApi) => {
 const defaultRedirect = {
   umi: {
     Link: 'react-router-dom',
+    NavLink: 'react-router-dom',
     ApplyPluginsType: runtimePath,
   },
 };
@@ -184,6 +185,11 @@ export default function (api: IApi) {
       webpackAlias['regenerator-runtime/runtime'] =
         depInfoAlias['regenerator-runtime/runtime'];
 
+      // umi alias
+      // api.config.alias
+      webpackAlias['dumi/theme'] =
+        api.paths.absNodeModulesPath + '/@umijs/preset-dumi/lib/theme/index.js';
+
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const redirect = lodash.merge(defaultRedirect, userRedirect);
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
@@ -223,7 +229,11 @@ export default function (api: IApi) {
                 );
               }
               // collect dependencies
-              opts.isMatch && userDeps.push(opts.source);
+              // TODO: 正则匹配应该被删除，因为 mf/ 开始的包不应该再被匹配
+              opts.isMatch &&
+                // await import begin with "mf/"
+                !/^mf\//.test(opts.source) &&
+                userDeps.push(opts.source);
             },
           },
         ],
