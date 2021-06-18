@@ -11,7 +11,7 @@ import {
   IConfig,
   ICopy,
 } from '@umijs/types';
-import { deepmerge, lodash } from '@umijs/utils';
+import { deepmerge, lodash, semver, winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import Config from 'webpack-chain';
@@ -83,6 +83,13 @@ export default async function getConfig(
   const isDev = env === 'development';
   const isProd = env === 'production';
   const disableCompress = process.env.COMPRESS === 'none';
+  const reactDomVersion = require(winPath(
+    join(cwd, 'node_modules', 'react-dom', 'package.json'),
+  )).version;
+  const useReact18 =
+    Boolean(reactDomVersion) &&
+    (semver.gte(reactDomVersion!, '18.0.0') ||
+      semver.coerce(reactDomVersion)?.version === '18.0.0');
 
   // entry
   if (entry) {
@@ -409,7 +416,10 @@ export default async function getConfig(
   // define
   webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
     resolveDefine({
-      define: config.define || {},
+      define: {
+        ...(config.define || {}),
+        'process.env.UMI_APP_USE_REACT18': JSON.stringify(useReact18),
+      },
     }),
   ] as any);
 
