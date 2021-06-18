@@ -83,9 +83,13 @@ export default async function getConfig(
   const isDev = env === 'development';
   const isProd = env === 'production';
   const disableCompress = process.env.COMPRESS === 'none';
-  const reactDomVersion = require(winPath(
+  let reactDomVersion = '0.0.0';
+  const reactDomPath = winPath(
     join(cwd, 'node_modules', 'react-dom', 'package.json'),
-  )).version;
+  );
+  if (existsSync(reactDomPath)) {
+    reactDomVersion = require(reactDomPath).version;
+  }
   const useReact18 =
     Boolean(reactDomVersion) &&
     (semver.gte(reactDomVersion!, '18.0.0') ||
