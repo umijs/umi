@@ -49,7 +49,7 @@ export default function (api: IApi) {
             absTmpPath: paths.absTmpPath!,
           });
         }
-        printFileSizes(stats, relative(process.cwd(), paths.absOutputPath!));
+        printFileSizes(stats!, relative(process.cwd(), paths.absOutputPath!));
         await api.applyPlugins({
           key: 'onBuildComplete',
           type: api.ApplyPluginsType.event,

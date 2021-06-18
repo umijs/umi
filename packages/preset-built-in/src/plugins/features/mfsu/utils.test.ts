@@ -1,7 +1,7 @@
 import { rimraf, winPath } from '@umijs/utils';
 import { mkdirSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
-import { dependenceDiff, figureOutExport, getExportStatement } from './utils';
+import { dependenceDiff, figureOutExport } from './utils';
 
 test('dependenceDiff', () => {
   expect(
@@ -49,14 +49,14 @@ test('dependenceDiff', () => {
   ).toEqual('MODIFY');
 });
 
-test('get export statement', () => {
-  expect(getExportStatement('react', true)).toEqual(
-    'import _ from "react";\nexport default _;\nexport * from "react";',
-  );
-  expect(getExportStatement('react', false)).toEqual(
-    'import * as _ from "react";\nexport default _;\nexport * from "react";',
-  );
-});
+// test('get export statement', () => {
+//   expect(getExportStatement('react', true)).toEqual(
+//     'import _ from "react";\nexport default _;\nexport * from "react";',
+//   );
+//   expect(getExportStatement('react', false)).toEqual(
+//     'import * as _ from "react";\nexport default _;\nexport * from "react";',
+//   );
+// });
 
 test('figure out export', async () => {
   const testPath = winPath(join(__dirname, '.umi-test'));
