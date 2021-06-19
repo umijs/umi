@@ -2,40 +2,40 @@
 translateHelp: true
 ---
 
-# 服务端渲染（SSR）
+# Server side rendering
 
 
-## 什么是服务端渲染？
+## What is server side rendering ?
 
-> 首先我们先了解下，以及是否符合我们的业务场景，再决定是否需要使用。
+> Firstly we need to check that SSR approach fits to our business
 
-服务端渲染（Server-Side Rendering），是指由**服务侧**完成页面的 HTML 结构拼接的页面处理技术，发送到浏览器，然后为其绑定状态与事件，成为完全可交互页面的过程。
+Server side rendering，describe process of move responsibility of rendering HTML code on server side, and send ready document to user's browser where code is hydrating and becomes full interactive。
 
-这么讲可能比较学术，那通过两张图来更容易地说清楚。
+Maybe it will be easier to understand these two concepts looking at pictures below
 
-第一张，单页应用（SPA）和服务端渲染过的（SSR）站点在**社交分享**时的区别：
+First example it's preview of content in social media. On the first page when we use only CSR approach website cannot detect our content, in SSR rendering shared links can read description and titles directly from our websites.
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png" width="600" />
 
 
-第二张，**白屏时间**上 SSR 较少，因为当 HTML 文档返回时，已经有对应的内容。（见 Network）
+On first image using SSR，you can see that document already contains necessary content to display the page（Look at network Panel in devtools）
 
 <img style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px 0px;" src="https://user-images.githubusercontent.com/13595509/80308316-e74a3880-8800-11ea-9a20-2d9d153fe9d1.png" />
 
-综上两图可知，SSR 常用于以下两个场景：
+Looking at pictures above we can see potential two benefits：
 
-1. 有 **SEO 诉求**，用在搜索引擎检索以及社交分享，用在前台类应用。
-1. **首屏渲染**时长有要求，常用在移动端、弱网情况下。
+1. It supports **SEO**，SSR generetes HTML code which is available for web crawlers.
+1. Increase website rendering performance (we already have content which should be displayed and there is no requirements to wait when Javascript file, will make this job on client side)。
 
-> 也就是说，如果你是中后台应用（如 antd pro、管理后台等），请谨慎考虑是否使用 SSR。
+> In other words if you are thinking about creating strictly backend managment panel / dashboard, please consider SSR, which can be not necessary.
 
-## 什么是预渲染？
+## What is pre-rendering？
 
-服务端渲染，首先得有后端服务器（一般是 Node.js）才可以使用，如果我没有后端服务器，也想用在上面提到的两个场景，那么推荐使用**预渲染**。
+Server side rendering requires from us to use backend server（in most of the cases it will be Node.js）If you don't have backend server and you want take advantage of SSR mentioned above we recommend you to use **pre rendering**。
 
-预渲染与服务端渲染唯一的不同点在于**渲染时机**，服务端渲染的时机是在用户访问时执行渲染（即**实时渲染**，数据一般是最新的），预渲染的时机是在项目构建时，当用户访问时，数据不一定是最新的（如果数据没有实时性，则可以直接考虑预渲染）。
+Difference between SSR and pre-rendering is **render time**，SSR is build every time when user's send request（we can call it **real time rendering**，because given data are the most up-to-date），Pre-rendering creates final pages during build time, it means that when user enter website, their data are not the latest（If your page doesn't require real time data and change frequently rarely you should consider pre-rendering）。
 
-预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 HTML 文件。无需使用 web 服务器实时动态编译 HTML，适用于**静态站点生成**。
+Pre rendering performs rendering and creating static HTML files which can be used without needs to use web-server like Node，适用于**Static side generation (SSG)**。
 
 ## Umi 服务端渲染特性
 
