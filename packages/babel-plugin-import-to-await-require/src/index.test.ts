@@ -216,14 +216,14 @@ import a from '/foo/node_modules/bar'; a;
 `,
       {
         matchAll: true,
-        remoteName: 'foo',
+        remoteName: 'mf',
       },
     ),
   ).toEqual(
     `
 const {
   default: a
-} = await import("foo//foo/node_modules/bar");
+} = await import("mf//foo/node_modules/bar");
 a;
     `.trim(),
   );

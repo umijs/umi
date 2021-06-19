@@ -67,11 +67,13 @@ function isMatchLib(
   path: string,
   libs: TLibs | undefined,
   matchAll: boolean | undefined,
+  remoteName: string,
   alias: IAlias,
   webpackAlias: IAlias,
 ) {
   if (matchAll) {
     if (path === 'umi' || path === 'dumi') return false;
+    if (path.startsWith(`${remoteName}/`)) return false;
 
     if (isAbsolute(path)) {
       return RE_NODE_MODULES.test(path) || RE_UMI_LOCAL_DEV.test(path);
@@ -124,6 +126,7 @@ export default function () {
                 d.source.value,
                 opts.libs,
                 opts.matchAll,
+                opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
               );
@@ -178,6 +181,7 @@ export default function () {
                 d.source.value,
                 opts.libs,
                 opts.matchAll,
+                opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
               );
@@ -230,6 +234,7 @@ export default function () {
                 d.source.value,
                 opts.libs,
                 opts.matchAll,
+                opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
               );
@@ -281,6 +286,7 @@ export default function () {
               value,
               opts.libs,
               opts.matchAll,
+              opts.remoteName,
               opts.alias || {},
               opts.webpackAlias || {},
             );
