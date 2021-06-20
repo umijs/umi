@@ -182,6 +182,7 @@ export default class DepBuilder {
       mfConfig.plugins.push(
         new WebpackBarPlugin({
           name: MF_PROGRESS_NAME,
+          color: '#faac00',
         }),
       );
     }
