@@ -1,3 +1,4 @@
+import { BundlerConfigType } from '@umijs/types';
 import { chalk, createDebug, lodash, mkdirp } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
@@ -145,9 +146,6 @@ export default function (api: IApi) {
       webpackAlias['regenerator-runtime/runtime'] = require.resolve(
         'regenerator-runtime/runtime',
       );
-      // TODO: 为什么有这段？dumi 没有设 alias 吗？而且 node_modules 加路径不一定能正确找到
-      webpackAlias['dumi/theme'] =
-        api.paths.absNodeModulesPath + '/@umijs/preset-dumi/lib/theme/index.js';
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const defaultRedirect = {
         // @ts-ignore
@@ -232,22 +230,30 @@ export default function (api: IApi) {
   });
 
   /** 修改 webpack 配置 */
-  // TODO: 改成从 webpack 配置里获取
-  api.chainWebpack(async (memo) => {
-    Object.assign(webpackAlias, memo.toConfig().resolve?.alias || {});
-    const remotePath =
-      api.env === 'production' ? api.userConfig.publicPath || '/' : '/';
-    memo.plugin('mf').use(
-      new webpack.container.ModuleFederationPlugin({
-        name: 'umi-app',
-        remotes: {
-          mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
-        },
-      }),
-    );
-    return memo.merge({
-      experiments: { topLevelAwait: true },
-    });
+  api.register({
+    key: 'modifyBundleConfig',
+    fn(memo: any, { type }: { type: BundlerConfigType }) {
+      if (type === BundlerConfigType.csr) {
+        Object.assign(webpackAlias, memo.resolve!.alias || {});
+
+        const remotePath = api.config.publicPath;
+        memo.plugins.push(
+          new webpack.container.ModuleFederationPlugin({
+            name: 'umi-app',
+            remotes: {
+              mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
+            },
+          }),
+        );
+
+        memo.experiments = {
+          ...memo.experiments,
+          topLevelAwait: true,
+        };
+      }
+      return memo;
+    },
+    stage: Infinity,
   });
 
   // TODO: support watch
