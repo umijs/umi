@@ -6,12 +6,12 @@ import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
 import url from 'url';
 import webpack from 'webpack';
-import { runtimePath } from '../../generateFiles/constants';
 import AntdIconPlugin from './babel-antd-icon-plugin';
 import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
-import { MF_VA_PREFIX } from './constants';
+import { MF_NAME, MF_VA_PREFIX } from './constants';
 import DepBuilder from './DepBuilder';
 import DepInfo from './DepInfo';
+import { getUmiRedirect } from './getUmiRedirect';
 import { copy } from './utils';
 
 const debug = createDebug('umi:mfsu');
@@ -27,15 +27,6 @@ export const checkConfig = (api: IApi) => {
       }`,
     );
   }
-};
-
-// 需要重新定向导出的模块
-const defaultRedirect = {
-  umi: {
-    Link: 'react-router-dom',
-    NavLink: 'react-router-dom',
-    ApplyPluginsType: runtimePath,
-  },
 };
 
 export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
@@ -153,9 +144,14 @@ export default function (api: IApi) {
       webpackAlias['regenerator-runtime/runtime'] = require.resolve(
         'regenerator-runtime/runtime',
       );
+      // TODO: 为什么有这段？dumi 没有设 alias 吗？而且 node_modules 加路径不一定能正确找到
       webpackAlias['dumi/theme'] =
         api.paths.absNodeModulesPath + '/@umijs/preset-dumi/lib/theme/index.js';
       const userRedirect = api.userConfig.mfsu.redirect || {};
+      const defaultRedirect = {
+        // @ts-ignore
+        umi: await getUmiRedirect(process.env.UMI_DIR),
+      };
       const redirect = lodash.merge(defaultRedirect, userRedirect);
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
       opts.presets?.forEach((preset) => {
@@ -169,7 +165,7 @@ export default function (api: IApi) {
         [
           require.resolve('@umijs/babel-plugin-import-to-await-require'),
           {
-            remoteName: 'mf',
+            remoteName: MF_NAME,
             matchAll: true,
             webpackAlias: webpackAlias,
             alias: {
@@ -194,8 +190,7 @@ export default function (api: IApi) {
                 );
               }
               // collect dependencies
-              // TODO: 正则匹配应该被删除，因为 mf/ 开始的包不应该再被匹配
-              if (opts.isMatch && !/^mf\//.test(opts.source)) {
+              if (opts.isMatch) {
                 depInfo.addTmpDep(opts.source);
               }
             },
