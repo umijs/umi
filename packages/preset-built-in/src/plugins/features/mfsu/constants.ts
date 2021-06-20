@@ -7,4 +7,4 @@ export const MF_PROGRESS_NAME = 'MFSU';
 export const MF_PROGRESS_COLOR = '#faac00';
 
 // cache file name
-export const DEP_INFO_CACHE_FILE = 'info.json';
+export const DEP_INFO_CACHE_FILE = 'MFSU_CACHE.json';
