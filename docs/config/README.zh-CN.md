@@ -813,7 +813,7 @@ export default {
 <meta bar="foo" />
 ```
 
-## mfsu
+## mfsu <Badge>3.5+</Badge>
 
 - Type: `Object`
 - Default : `{}`
