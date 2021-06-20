@@ -2,8 +2,9 @@ export const CWD = '$CWD$';
 export const MF_VA_PREFIX = 'mf-va_';
 export const MF_NAME = 'mf';
 
-// 进度条前置名称
+// dep build progress bar
 export const MF_PROGRESS_NAME = 'MFSU';
+export const MF_PROGRESS_COLOR = '#faac00';
 
-// 缓存文件
+// cache file name
 export const DEP_INFO_CACHE_FILE = 'info.json';

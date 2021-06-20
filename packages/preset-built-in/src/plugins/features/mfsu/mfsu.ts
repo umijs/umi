@@ -75,6 +75,7 @@ export default function (api: IApi) {
       tmpDir,
       mode,
       cwd: api.cwd,
+      webpackAlias,
     });
     debug('load cache');
     depInfo.loadCache();

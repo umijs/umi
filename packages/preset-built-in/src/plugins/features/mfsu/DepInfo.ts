@@ -3,6 +3,7 @@ import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { DEP_INFO_CACHE_FILE } from './constants';
+import { getDepVersion } from './getDepVersion';
 import { TMode } from './mfsu';
 
 const debug = createDebug('umi:mfsu:DepInfo');
@@ -35,12 +36,19 @@ export default class DepInfo {
   public mode: TMode;
   public tmpDeps: IDeps;
   public cachePath: string;
+  public webpackAlias: any;
 
-  constructor(opts: { tmpDir: string; cwd: string; mode: TMode }) {
+  constructor(opts: {
+    tmpDir: string;
+    cwd: string;
+    mode: TMode;
+    webpackAlias: any;
+  }) {
     this.cwd = opts.cwd;
     this.cacheDir = opts.tmpDir;
     this.mode = opts.mode;
     this.tmpDeps = {};
+    this.webpackAlias = opts.webpackAlias || {};
     this.cachePath = join(this.cacheDir!, DEP_INFO_CACHE_FILE);
 
     assert(
@@ -77,8 +85,11 @@ export default class DepInfo {
     if (typeof dep === 'object' && dep.key && dep.version) {
       this.setTmpDep(dep);
     } else if (typeof dep === 'string') {
-      // TODO: find package.json with this.cwd, webpack alias or abs path
-      let version: string = '*';
+      const version = getDepVersion({
+        dep,
+        cwd: this.cwd,
+        webpackAlias: this.webpackAlias,
+      });
       this.setTmpDep({ key: dep, version });
     }
   }

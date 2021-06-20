@@ -10,7 +10,13 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { CWD, MF_NAME, MF_PROGRESS_NAME, MF_VA_PREFIX } from './constants';
+import {
+  CWD,
+  MF_NAME,
+  MF_PROGRESS_COLOR,
+  MF_PROGRESS_NAME,
+  MF_VA_PREFIX,
+} from './constants';
 import { IDeps } from './DepInfo';
 import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
@@ -182,13 +188,14 @@ export default class DepBuilder {
       mfConfig.plugins.push(
         new WebpackBarPlugin({
           name: MF_PROGRESS_NAME,
-          color: '#faac00',
+          color: MF_PROGRESS_COLOR,
         }),
       );
     }
 
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
+    // TODO: 确认是否有必要
     mfConfig.plugins.push(
       // @ts-ignore
       new webpack.ProvidePlugin({
