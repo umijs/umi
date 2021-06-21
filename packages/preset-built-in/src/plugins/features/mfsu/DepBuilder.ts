@@ -77,12 +77,7 @@ export default class DepBuilder {
         const requireFrom = webpackAlias[dep] || dep;
         writeFileSync(
           join(this.tmpDir, normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`)),
-          [
-            // TODO: antd 的 less 处理方式
-            ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
-            await figureOutExport(this.api.cwd, requireFrom),
-            '',
-          ]
+          [await figureOutExport(this.api.cwd, requireFrom), '']
             .join('\n')
             .trimLeft(),
           'utf-8',

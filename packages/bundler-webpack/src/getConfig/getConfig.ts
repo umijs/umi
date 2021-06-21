@@ -200,7 +200,12 @@ export default async function getConfig(
         // issue: https://github.com/umijs/umi/issues/5594
         ...(process.env.APP_ROOT ? [process.cwd()] : [])
       ]).end()
-      .exclude.add(/node_modules/).end()
+      .exclude
+        .add(/node_modules/)
+        // don't compile mfsu temp files
+        // TODO: do not hard code
+        .add(/\.mfsu/)
+        .end()
       .use('babel-loader')
         .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
         .options(babelOpts);

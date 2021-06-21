@@ -7,8 +7,7 @@ import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
 import url from 'url';
 import webpack from 'webpack';
-import AntdIconPlugin from './babel-antd-icon-plugin';
-import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
+import BabelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { MF_NAME, MF_VA_PREFIX } from './constants';
 import DepBuilder from './DepBuilder';
 import DepInfo from './DepInfo';
@@ -20,12 +19,15 @@ const debug = createDebug('umi:mfsu');
 export type TMode = 'production' | 'development';
 
 export const checkConfig = (api: IApi) => {
-  const { webpack5, dynamicImport } = api.config;
-  if (!webpack5 || !dynamicImport) {
-    throw new Error(
-      `[MFSU] MFSU 功能要求同时开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
-        !dynamicImport ? 'dynamicImport' : ''
-      }`,
+  const { webpack5, dynamicImport, mfsu } = api.config;
+  assert(webpack5, `[MFSU] mfsu need webpack5 config.`);
+  assert(dynamicImport, `[MFSU] mfsu need dynamicImport config.`);
+
+  // .mfsu directory do not match babel-loader
+  if (mfsu && mfsu.production.output) {
+    assert(
+      /\.mfsu/.test(mfsu.production.output),
+      `[MFSU] mfsu.production.output must match /\.mfsu/.`,
     );
   }
 };
@@ -131,7 +133,36 @@ export default function (api: IApi) {
     fn: (opts) => {
       return {
         ...opts,
-        import: [],
+        importToAwaitRequire: {
+          remoteName: MF_NAME,
+          matchAll: true,
+          webpackAlias: webpackAlias,
+          alias: {
+            [api.cwd]: '$CWD$',
+          },
+          onTransformDeps(opts: {
+            file: string;
+            source: string;
+            isMatch: boolean;
+            isExportAllDeclaration?: boolean;
+          }) {
+            const file = opts.file.replace(api.paths.absSrcPath! + '/', '@/');
+            if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
+              if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch) return;
+              if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
+                return;
+              console.log(
+                `> import ${chalk[opts.isMatch ? 'green' : 'red'](
+                  opts.source,
+                )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
+              );
+            }
+            // collect dependencies
+            if (opts.isMatch) {
+              depInfo.addTmpDep(opts.source);
+            }
+          },
+        },
       };
     },
     stage: Infinity,
@@ -146,6 +177,7 @@ export default function (api: IApi) {
       webpackAlias['regenerator-runtime/runtime'] = require.resolve(
         'regenerator-runtime/runtime',
       );
+
       const userRedirect = api.userConfig.mfsu.redirect || {};
       const defaultRedirect = {
         // @ts-ignore
@@ -159,42 +191,8 @@ export default function (api: IApi) {
         }
       });
       opts.plugins = [
-        AntdIconPlugin,
-        [BebelImportRedirectPlugin, redirect],
-        [
-          require.resolve('@umijs/babel-plugin-import-to-await-require'),
-          {
-            remoteName: MF_NAME,
-            matchAll: true,
-            webpackAlias: webpackAlias,
-            alias: {
-              [api.cwd]: '$CWD$',
-            },
-            onTransformDeps(opts: {
-              file: string;
-              source: string;
-              isMatch: boolean;
-              isExportAllDeclaration?: boolean;
-            }) {
-              const file = opts.file.replace(api.paths.absSrcPath! + '/', '@/');
-              if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
-                if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch)
-                  return;
-                if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
-                  return;
-                console.log(
-                  `> import ${chalk[opts.isMatch ? 'green' : 'red'](
-                    opts.source,
-                  )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
-                );
-              }
-              // collect dependencies
-              if (opts.isMatch) {
-                depInfo.addTmpDep(opts.source);
-              }
-            },
-          },
-        ],
+        // AntdIconPlugin,
+        [BabelImportRedirectPlugin, redirect],
         ...opts.plugins,
       ];
       return opts;
@@ -271,8 +269,8 @@ export default function (api: IApi) {
           debug('write cache');
           depInfo.writeCache();
 
-          const server = api.getServer();
-          if (server) {
+          if (mode === 'development') {
+            const server = api.getServer();
             debug(`refresh server`);
             server.sockWrite({ type: 'ok', data: { reload: true } });
           }
