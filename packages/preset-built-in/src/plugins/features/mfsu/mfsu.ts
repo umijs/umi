@@ -256,8 +256,7 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
-  // TODO: support watch
-  async function buildDeps(opts: { watch?: boolean; force?: boolean } = {}) {
+  async function buildDeps(opts: { force?: boolean } = {}) {
     const { shouldBuild } = depInfo.loadTmpDeps();
     debug(`shouldBuild: ${shouldBuild}, force: ${opts.force}`);
     if (opts.force || shouldBuild) {
@@ -293,7 +292,6 @@ export default function (api: IApi) {
 
   // npx umi mfsu build
   // npx umi mfsu build --mode production
-  // npx umi mfsu build --mode development --watch
   // npx umi mfsu build --mode development --force
   api.registerCommand({
     name: 'mfsu',
@@ -303,7 +301,6 @@ export default function (api: IApi) {
           console.log('[MFSU] build deps...');
           await buildDeps({
             force: args.force as boolean,
-            watch: args.watch as boolean,
           });
           break;
         default:
