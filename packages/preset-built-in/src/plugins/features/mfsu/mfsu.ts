@@ -24,7 +24,13 @@ export const checkConfig = (api: IApi) => {
   assert(dynamicImport, `[MFSU] mfsu need dynamicImport config.`);
 
   // .mfsu directory do not match babel-loader
-  if (mfsu && mfsu.production.output) {
+  if (mfsu && mfsu.development && mfsu.development.output) {
+    assert(
+      /\.mfsu/.test(mfsu.development.output),
+      `[MFSU] mfsu.development.output must match /\.mfsu/.`,
+    );
+  }
+  if (mfsu && mfsu.production && mfsu.production.output) {
     assert(
       /\.mfsu/.test(mfsu.production.output),
       `[MFSU] mfsu.production.output must match /\.mfsu/.`,
