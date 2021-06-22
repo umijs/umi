@@ -9,9 +9,11 @@ type Env = 'development' | 'production';
 
 export async function getBundleAndConfigs({
   api,
+  mfsu,
   port,
 }: {
   api: IApi;
+  mfsu?: boolean;
   port?: number;
 }) {
   // bundler
@@ -37,6 +39,7 @@ export async function getBundleAndConfigs({
         env,
         type,
         port,
+        mfsu,
         hot: type === BundlerConfigType.csr && process.env.HMR !== 'none',
         entry: {
           umi: join(api.paths.absTmpPath!, 'umi.ts'),

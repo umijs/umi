@@ -47,6 +47,7 @@ export default class DepBuilder {
       // start webpack
       const { bundleConfigs, bundler } = await getBundleAndConfigs({
         api: this.api,
+        mfsu: true,
       });
       assert(
         bundleConfigs.length && bundleConfigs[0],
@@ -104,14 +105,6 @@ export default class DepBuilder {
     mfConfig.stats = 'none';
     mfConfig.entry = join(this.tmpDir, 'index.js');
     mfConfig.output!.path = this.tmpDir;
-    // TODO: css hash
-    mfConfig.output!.filename = '[name].[contenthash:8].js';
-    mfConfig.output!.chunkFilename = '[name].[contenthash:8].async.js';
-
-    mfConfig.plugins = mfConfig.plugins || [];
-
-    // 修改 chunk 名
-    mfConfig.plugins.push(new ModifyChunkNamePlugin());
 
     // @ts-ignore
     if (mfConfig.cache && mfConfig.cache.cacheDirectory) {
@@ -128,6 +121,13 @@ export default class DepBuilder {
         normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`),
       );
     });
+
+    mfConfig.plugins = mfConfig.plugins || [];
+
+    // 修改 chunk 名
+    mfConfig.plugins.push(new ModifyChunkNamePlugin());
+
+    // mf 插件
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
@@ -136,22 +136,6 @@ export default class DepBuilder {
         exposes,
       }),
     );
-
-    // TODO: 删除 babel plugin 和 webpack plugin 应该可以有更好的组织方式
-    // 这个打包应该剔除 import-to-await-require 插件
-    mfConfig.module!.rules.forEach((rule) => {
-      // @ts-ignore
-      rule?.use?.forEach((u) => {
-        if (/babel-loader/.test(u.loader)) {
-          // @ts-ignore
-          u?.options?.plugins?.forEach((plugin, index) => {
-            if (/import-to-await-require/.test(plugin[0])) {
-              u?.options?.plugins.splice(index, 1);
-            }
-          });
-        }
-      });
-    });
 
     // 删除部分不需要的插件
     mfConfig.plugins.forEach((plugin, index) => {

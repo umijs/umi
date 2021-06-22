@@ -46,6 +46,7 @@ export interface IOpts {
   port?: number;
   babelOpts?: object;
   babelOptsForDep?: object;
+  mfsu?: boolean;
   targets?: any;
   browserslist?: any;
   bundleImplementor?: typeof defaultWebpack;
@@ -69,6 +70,7 @@ export default async function getConfig(
     entry,
     hot,
     port,
+    mfsu,
     bundleImplementor = defaultWebpack,
     modifyBabelOpts,
     modifyBabelPresetOpts,
@@ -110,7 +112,7 @@ export default async function getConfig(
       : devtool,
   );
 
-  const useHash = config.hash && isProd;
+  const useHash = (mfsu && isDev) || (config.hash && isProd);
   const absOutputPath = join(cwd, config.outputPath || 'dist');
 
   webpackConfig.output
