@@ -126,6 +126,11 @@ export default class DepInfo {
 
     // 配置变更后，强制 build
     if (!lodash.isEqual(this.getConfig(), this.data.config)) {
+      debug(
+        `config changed, new: ${JSON.stringify(
+          this.getConfig(),
+        )}, origin: ${JSON.stringify(this.data.config)}`,
+      );
       return true;
     }
 
