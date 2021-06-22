@@ -53,7 +53,7 @@ export default class DepBuilder {
       const { compiler } = await bundler.build({
         bundleConfigs: [mfConfig],
         // TODO: 支持 watch 模式
-        // 因为 exposes 暂不支持动态变更
+        // 因为 exposes 不支持动态变更，所以暂不能使用 webpack 的 watch 模式
         watch: false,
         onBuildComplete: opts.onBuildComplete,
       });

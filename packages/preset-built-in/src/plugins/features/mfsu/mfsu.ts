@@ -1,5 +1,5 @@
 import { BundlerConfigType } from '@umijs/types';
-import { chalk, createDebug, lodash, mkdirp } from '@umijs/utils';
+import { chalk, createDebug, mkdirp } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
@@ -65,8 +65,9 @@ export default function (api: IApi) {
       mode = 'production';
       // @ts-ignore
     } else if (name === 'mfsu' && args._[1] === 'build' && args.mode) {
+      // umi mfsu build --mode
       // @ts-ignore
-      mode = args.mode;
+      mode = args.mode || 'development';
     }
     assert(
       ['development', 'production'].includes(mode),
@@ -114,7 +115,6 @@ export default function (api: IApi) {
           .object({
             includes: joi.array().items(joi.string()),
             excludes: joi.array().items(joi.string()),
-            redirect: joi.object(),
             development: joi.object({
               output: joi.string(),
             }),
@@ -184,12 +184,6 @@ export default function (api: IApi) {
         'regenerator-runtime/runtime',
       );
 
-      const userRedirect = api.userConfig.mfsu.redirect || {};
-      const defaultRedirect = {
-        // @ts-ignore
-        umi: await getUmiRedirect(process.env.UMI_DIR),
-      };
-      const redirect = lodash.merge(defaultRedirect, userRedirect);
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
       opts.presets?.forEach((preset) => {
         if (preset instanceof Array && /babel-preset-umi/.test(preset[0])) {
@@ -198,7 +192,13 @@ export default function (api: IApi) {
       });
       opts.plugins = [
         // AntdIconPlugin,
-        [BabelImportRedirectPlugin, redirect],
+        [
+          BabelImportRedirectPlugin,
+          {
+            // @ts-ignore
+            umi: await getUmiRedirect(process.env.UMI_DIR),
+          },
+        ],
         ...opts.plugins,
       ];
       return opts;
