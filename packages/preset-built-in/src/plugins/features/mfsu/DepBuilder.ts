@@ -1,4 +1,3 @@
-import { Bundler } from '@umijs/bundler-webpack';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import { Compiler } from '@umijs/deps/compiled/webpack';
 // @ts-ignore
@@ -46,9 +45,17 @@ export default class DepBuilder {
 
     if (!this.compiler) {
       // start webpack
-      // TODO: 这里的 config 传啥？
-      const bundler = new Bundler({ cwd: this.api.cwd, config: {} });
-      const mfConfig = await this.getWebpackConfig(opts.deps);
+      const { bundleConfigs, bundler } = await getBundleAndConfigs({
+        api: this.api,
+      });
+      assert(
+        bundleConfigs.length && bundleConfigs[0],
+        `[MFSU] 预编译找不到 Webpack 配置`,
+      );
+      let mfConfig: defaultWebpack.Configuration = lodash.cloneDeep(
+        bundleConfigs[0],
+      );
+      mfConfig = this.updateWebpackConfig(mfConfig, opts.deps);
       const watch = this.mode === 'development';
       const { compiler } = await bundler.build({
         bundleConfigs: [mfConfig],
@@ -93,17 +100,7 @@ export default class DepBuilder {
     writeFileSync(join(this.tmpDir, './index.js'), entryFile);
   }
 
-  async getWebpackConfig(deps: IDeps) {
-    // 获取原本的配置
-    const { bundleConfigs } = await getBundleAndConfigs({ api: this.api });
-    assert(
-      bundleConfigs.length && bundleConfigs[0],
-      `[MFSU] 预编译找不到 Webpack 配置`,
-    );
-    const mfConfig: defaultWebpack.Configuration = lodash.cloneDeep(
-      bundleConfigs[0],
-    );
-
+  updateWebpackConfig(mfConfig: defaultWebpack.Configuration, deps: IDeps) {
     mfConfig.stats = 'none';
     mfConfig.entry = join(this.tmpDir, 'index.js');
     mfConfig.output!.path = this.tmpDir;
