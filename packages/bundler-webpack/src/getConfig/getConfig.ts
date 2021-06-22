@@ -525,7 +525,8 @@ export default async function getConfig(
   webpackConfig.when(
     isDev,
     (webpackConfig) => {
-      if (hot) {
+      // mfsu 构建如果有 hmr，会和主应用的 hmr 冲突，因为公用一套全局变量
+      if (!mfsu && hot) {
         webpackConfig
           .plugin('hmr')
           .use(bundleImplementor.HotModuleReplacementPlugin);
