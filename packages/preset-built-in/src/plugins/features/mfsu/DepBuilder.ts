@@ -9,6 +9,7 @@ import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
 import { CWD, MF_NAME, MF_VA_PREFIX } from './constants';
 import { IDeps } from './DepInfo';
+import { getAliasedDep } from './getDepVersion';
 import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 import { figureOutExport } from './utils';
@@ -74,7 +75,10 @@ export default class DepBuilder {
 
     for (let dep of Object.keys(deps)) {
       try {
-        const requireFrom = webpackAlias[dep] || dep;
+        const requireFrom = getAliasedDep({
+          dep,
+          webpackAlias,
+        });
         writeFileSync(
           join(this.tmpDir, normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`)),
           [await figureOutExport(this.api.cwd, requireFrom), '']

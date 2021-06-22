@@ -14,14 +14,8 @@ function addLastSlash(path: string) {
   return path.endsWith('/') ? path : `${path}/`;
 }
 
-export function getDepVersion(opts: {
-  dep: string;
-  cwd: string;
-  webpackAlias?: IAlias;
-}) {
-  const originDep = opts.dep;
+export function getAliasedDep(opts: { dep: string; webpackAlias?: IAlias }) {
   let dep = opts.dep;
-  let version = '*';
   const webpackAlias = opts.webpackAlias || {};
 
   // get aliased dep
@@ -45,6 +39,18 @@ export function getDepVersion(opts: {
       }
     }
   }
+
+  return dep;
+}
+
+export function getDepVersion(opts: {
+  dep: string;
+  cwd: string;
+  webpackAlias?: IAlias;
+}) {
+  const originDep = opts.dep;
+  let version = '*';
+  const dep = getAliasedDep(opts);
 
   // absolute
   if (isAbsolute(dep)) {
