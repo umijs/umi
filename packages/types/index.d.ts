@@ -175,6 +175,7 @@ export interface IApi extends PluginAPI {
     {
       env: env;
       type: IBundlerConfigType;
+      mfsu: boolean;
       bundler: { id: string; version: number };
     }
   >;
@@ -183,6 +184,7 @@ export interface IApi extends PluginAPI {
     {
       env: env;
       type: IBundlerConfigType;
+      mfsu: boolean;
       bundler: { id: string; version: number };
     }
   >;
@@ -204,14 +206,16 @@ export interface IApi extends PluginAPI {
     },
     {
       env: env;
-      type?: IBundlerConfigType;
+      mfsu: boolean;
+      type: IBundlerConfigType;
     }
   >;
   modifyBabelPresetOpts: IModify<
     IBabelPresetUmiOpts,
     {
       env: env;
-      type?: IBundlerConfigType;
+      type: IBundlerConfigType;
+      mfsu: boolean;
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
@@ -236,6 +240,7 @@ export interface IApi extends PluginAPI {
       webpack: typeof webpack;
       createCSSRule: ICreateCSSRule;
       type: IBundlerConfigType;
+      mfsu: boolean;
     }
   >;
 

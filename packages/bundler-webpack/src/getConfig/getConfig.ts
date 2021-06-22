@@ -179,6 +179,7 @@ export default async function getConfig(
   if (modifyBabelPresetOpts) {
     presetOpts = await modifyBabelPresetOpts(presetOpts, {
       type,
+      mfsu,
     });
   }
   let babelOpts = getBabelOpts({
@@ -189,6 +190,7 @@ export default async function getConfig(
   if (modifyBabelOpts) {
     babelOpts = await modifyBabelOpts(babelOpts, {
       type,
+      mfsu,
     });
   }
 
@@ -595,6 +597,7 @@ export default async function getConfig(
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
       type,
+      mfsu,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
     });

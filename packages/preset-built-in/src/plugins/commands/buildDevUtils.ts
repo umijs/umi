@@ -76,6 +76,7 @@ export async function getBundleAndConfigs({
       args: {
         ...bundlerArgs,
         type,
+        mfsu,
       },
     });
     return await api.applyPlugins({
@@ -85,6 +86,7 @@ export async function getBundleAndConfigs({
       args: {
         ...bundlerArgs,
         type,
+        mfsu,
       },
     });
   }
