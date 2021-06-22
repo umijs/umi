@@ -133,27 +133,6 @@ export default class DepBuilder {
       }),
     );
 
-    // 删除部分不需要的插件
-    mfConfig.plugins.forEach((plugin, index) => {
-      if (
-        [
-          'DevCompileDonePlugin',
-          'BundleAnalyzerPlugin',
-          'HtmlWebpackPlugin',
-        ].includes(plugin.constructor.name)
-      ) {
-        mfConfig.plugins!.splice(index, 1);
-      }
-
-      if (
-        plugin.constructor.name === 'ModuleFederationPlugin' &&
-        // @ts-ignore
-        plugin._options.name === 'umi-app'
-      ) {
-        mfConfig.plugins!.splice(index, 1);
-      }
-    });
-
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
     // TODO: 确认是否有必要

@@ -235,8 +235,8 @@ export default function (api: IApi) {
   /** 修改 webpack 配置 */
   api.register({
     key: 'modifyBundleConfig',
-    fn(memo: any, { type }: { type: BundlerConfigType }) {
-      if (type === BundlerConfigType.csr) {
+    fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
+      if (!mfsu && type === BundlerConfigType.csr) {
         Object.assign(webpackAlias, memo.resolve!.alias || {});
 
         const remotePath = api.config.publicPath;

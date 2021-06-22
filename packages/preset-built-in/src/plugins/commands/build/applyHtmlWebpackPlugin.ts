@@ -73,18 +73,21 @@ export default function (api: IApi) {
     }
   }
 
-  api.modifyBundleConfig((bundleConfig, { env, type, bundler: { id } }) => {
-    const enableWriteToDisk =
-      api.config.devServer && api.config.devServer.writeToDisk;
-    if (
-      (env === 'production' || enableWriteToDisk) &&
-      id === 'webpack' &&
-      process.env.HTML !== 'none' &&
-      // avoid ssr bundler build override index.html
-      type === BundlerConfigType.csr
-    ) {
-      bundleConfig.plugins?.unshift(new HtmlWebpackPlugin());
-    }
-    return bundleConfig;
-  });
+  api.modifyBundleConfig(
+    (bundleConfig, { env, mfsu, type, bundler: { id } }) => {
+      const enableWriteToDisk =
+        api.config.devServer && api.config.devServer.writeToDisk;
+      if (
+        !mfsu &&
+        (env === 'production' || enableWriteToDisk) &&
+        id === 'webpack' &&
+        process.env.HTML !== 'none' &&
+        // avoid ssr bundler build override index.html
+        type === BundlerConfigType.csr
+      ) {
+        bundleConfig.plugins?.unshift(new HtmlWebpackPlugin());
+      }
+      return bundleConfig;
+    },
+  );
 }
