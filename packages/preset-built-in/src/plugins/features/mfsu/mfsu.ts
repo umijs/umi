@@ -113,8 +113,6 @@ export default function (api: IApi) {
       schema(joi) {
         return joi
           .object({
-            includes: joi.array().items(joi.string()),
-            excludes: joi.array().items(joi.string()),
             development: joi.object({
               output: joi.string(),
             }),

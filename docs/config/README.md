@@ -825,15 +825,11 @@ To enable this feature, you need to open both `webpack5` and `dynamicImport`.
 
 Contains sub-attributes
 
-- includes: `Array(string)`。额外添加到预编译的依赖项。
-- excludes: `Array(string)`。不进行预编译的依赖。
 - development: `{ output: String }`。可以通过 output 自定义 dev 模式下的输出路径。用于将预编译文件同步到 git。
 - production: `{ output: String }`。在生产模式中使用 mfsu。如果额外设置了 output，将会将生产模式预编译依赖编译到 output 下。
 
 ```js
 mfsu: {
-  includes: ['rc-util/es/hooks/useMergedState', 'swagger-ui-react'],
-  excludes : [],
   development : {
     output : "./.mfsu-dev",
   },
