@@ -1,3 +1,4 @@
+import { IApi, IConfig } from '@umijs/types';
 import { createDebug, lodash } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
@@ -21,6 +22,7 @@ export interface IDeps {
 
 export interface IData {
   deps: IDeps;
+  config: Partial<IConfig>;
 }
 
 export interface ITmpDep {
@@ -36,13 +38,16 @@ export default class DepInfo {
   public tmpDeps: IDeps;
   public cachePath: string;
   public webpackAlias: any;
+  private api: IApi;
 
   constructor(opts: {
     tmpDir: string;
+    api: IApi;
     cwd: string;
     mode: TMode;
     webpackAlias: any;
   }) {
+    this.api = opts.api;
     this.cwd = opts.cwd;
     this.cacheDir = opts.tmpDir;
     this.mode = opts.mode;
@@ -57,6 +62,7 @@ export default class DepInfo {
 
     this.data = {
       deps: {},
+      config: {},
     };
   }
 
@@ -103,6 +109,7 @@ export default class DepInfo {
     const shouldBuild = this.shouldBuild();
     if (shouldBuild) {
       Object.assign(this.data.deps, this.tmpDeps);
+      this.data.config = this.getConfig();
       // clear tmp deps
       this.tmpDeps = {};
     }
@@ -111,8 +118,15 @@ export default class DepInfo {
 
   shouldBuild(): boolean {
     debug('tmpDeps', this.tmpDeps);
+
+    // 没有变更，不 build
     if (!Object.keys(this.tmpDeps).length) {
       return false;
+    }
+
+    // 配置变更后，强制 build
+    if (!lodash.isEqual(this.getConfig(), this.data.config)) {
+      return true;
     }
 
     debug('this.data.deps', this.data.deps);
@@ -127,6 +141,13 @@ export default class DepInfo {
       }
       return false;
     }
+  }
+
+  getConfig() {
+    return {
+      // 目前只有 theme 会触发依赖重新编译
+      theme: this.api.config.theme || {},
+    };
   }
 
   writeCache() {

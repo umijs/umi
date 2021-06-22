@@ -84,6 +84,7 @@ export default function (api: IApi) {
     depInfo = new DepInfo({
       tmpDir,
       mode,
+      api,
       cwd: api.cwd,
       webpackAlias,
     });
