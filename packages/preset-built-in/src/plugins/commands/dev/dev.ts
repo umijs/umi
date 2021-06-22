@@ -26,13 +26,18 @@ export default (api: IApi) => {
   }
 
   const sharedMap = new Map();
-  api.onDevCompileDone(({ stats, type }) => {
-    // don't need ssr bundler chunks
-    if (type === BundlerConfigType.ssr) {
-      return;
-    }
-    // store client build chunks
-    sharedMap.set('chunks', stats.compilation.chunks);
+
+  api.onDevCompileDone({
+    fn({ stats, type }) {
+      // don't need ssr bundler chunks
+      if (type === BundlerConfigType.ssr) {
+        return;
+      }
+      // store client build chunks
+      sharedMap.set('chunks', stats.compilation.chunks);
+    },
+    // 在 commands/dev/dev.ts 的 onDevCompileDone 前执行，避免卡主
+    stage: -1,
   });
 
   api.registerCommand({
