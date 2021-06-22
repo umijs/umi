@@ -373,6 +373,7 @@ export default async function getConfig(
   // css
   css({
     type,
+    mfsu,
     config,
     webpackConfig,
     isDev,

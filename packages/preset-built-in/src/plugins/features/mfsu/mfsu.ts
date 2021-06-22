@@ -135,39 +135,49 @@ export default function (api: IApi) {
 
   // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
   api.modifyBabelPresetOpts({
-    fn: (opts) => {
+    fn: (opts, args) => {
       return {
         ...opts,
-        importToAwaitRequire: {
-          remoteName: MF_NAME,
-          matchAll: true,
-          webpackAlias: webpackAlias,
-          alias: {
-            [api.cwd]: '$CWD$',
-          },
-          onTransformDeps(opts: {
-            file: string;
-            source: string;
-            isMatch: boolean;
-            isExportAllDeclaration?: boolean;
-          }) {
-            const file = opts.file.replace(api.paths.absSrcPath! + '/', '@/');
-            if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
-              if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch) return;
-              if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
-                return;
-              console.log(
-                `> import ${chalk[opts.isMatch ? 'green' : 'red'](
-                  opts.source,
-                )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
-              );
-            }
-            // collect dependencies
-            if (opts.isMatch) {
-              depInfo.addTmpDep(opts.source);
-            }
-          },
-        },
+        ...(args.mfsu
+          ? {}
+          : {
+              importToAwaitRequire: {
+                remoteName: MF_NAME,
+                matchAll: true,
+                webpackAlias: webpackAlias,
+                alias: {
+                  [api.cwd]: '$CWD$',
+                },
+                onTransformDeps(opts: {
+                  file: string;
+                  source: string;
+                  isMatch: boolean;
+                  isExportAllDeclaration?: boolean;
+                }) {
+                  const file = opts.file.replace(
+                    api.paths.absSrcPath! + '/',
+                    '@/',
+                  );
+                  if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
+                    if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch)
+                      return;
+                    if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
+                      return;
+                    console.log(
+                      `> import ${chalk[opts.isMatch ? 'green' : 'red'](
+                        opts.source,
+                      )} from ${file}, ${
+                        opts.isMatch ? 'MATCHED' : 'UNMATCHED'
+                      }`,
+                    );
+                  }
+                  // collect dependencies
+                  if (opts.isMatch) {
+                    depInfo.addTmpDep(opts.source);
+                  }
+                },
+              },
+            }),
       };
     },
     stage: Infinity,
@@ -236,18 +246,20 @@ export default function (api: IApi) {
   api.register({
     key: 'modifyBundleConfig',
     fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
-      if (!mfsu && type === BundlerConfigType.csr) {
+      if (type === BundlerConfigType.csr) {
         Object.assign(webpackAlias, memo.resolve!.alias || {});
 
-        const remotePath = api.config.publicPath;
-        memo.plugins.push(
-          new webpack.container.ModuleFederationPlugin({
-            name: 'umi-app',
-            remotes: {
-              mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
-            },
-          }),
-        );
+        if (!mfsu) {
+          const remotePath = api.config.publicPath;
+          memo.plugins.push(
+            new webpack.container.ModuleFederationPlugin({
+              name: 'umi-app',
+              remotes: {
+                mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
+              },
+            }),
+          );
+        }
 
         memo.experiments = {
           ...memo.experiments,

@@ -6,6 +6,7 @@ import Config from 'webpack-chain';
 
 interface IOpts {
   type: IBundlerConfigType;
+  mfsu?: boolean;
   webpackConfig: Config;
   config: IConfig;
   isDev: boolean;
@@ -140,6 +141,7 @@ export function createCSSRule({
 
 export default function ({
   type,
+  mfsu,
   config,
   webpackConfig,
   isDev,
