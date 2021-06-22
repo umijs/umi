@@ -1,7 +1,5 @@
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import { Compiler } from '@umijs/deps/compiled/webpack';
-// @ts-ignore
-import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { IApi } from '@umijs/types';
 import { createDebug, lodash } from '@umijs/utils';
 import assert from 'assert';
@@ -9,13 +7,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import {
-  CWD,
-  MF_NAME,
-  MF_PROGRESS_COLOR,
-  MF_PROGRESS_NAME,
-  MF_VA_PREFIX,
-} from './constants';
+import { CWD, MF_NAME, MF_VA_PREFIX } from './constants';
 import { IDeps } from './DepInfo';
 import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
@@ -142,7 +134,6 @@ export default class DepBuilder {
       if (
         [
           'DevCompileDonePlugin',
-          'WebpackBarPlugin',
           'BundleAnalyzerPlugin',
           'HtmlWebpackPlugin',
         ].includes(plugin.constructor.name)
@@ -158,16 +149,6 @@ export default class DepBuilder {
         mfConfig.plugins!.splice(index, 1);
       }
     });
-
-    // 重新构建一个 WebpackBarPlugin
-    if (process.env.PROGRESS !== 'none') {
-      mfConfig.plugins.push(
-        new WebpackBarPlugin({
-          name: MF_PROGRESS_NAME,
-          color: MF_PROGRESS_COLOR,
-        }),
-      );
-    }
 
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向

@@ -425,7 +425,12 @@ export default async function getConfig(
     webpackConfig
       .plugin('progress')
       .use(require.resolve('@umijs/deps/compiled/webpackbar'), [
-        config.ssr
+        mfsu
+          ? {
+              name: 'MFSU',
+              color: '#faac00',
+            }
+          : config.ssr
           ? { name: type === BundlerConfigType.ssr ? 'Server' : 'Client' }
           : {},
       ]);
