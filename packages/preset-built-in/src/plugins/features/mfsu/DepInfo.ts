@@ -21,7 +21,6 @@ export interface IDeps {
 
 export interface IData {
   deps: IDeps;
-  buildStatus: BUILD_STATUS;
 }
 
 export interface ITmpDep {
@@ -58,7 +57,6 @@ export default class DepInfo {
 
     this.data = {
       deps: {},
-      buildStatus: BUILD_STATUS.IDLE,
     };
   }
 
@@ -69,10 +67,6 @@ export default class DepInfo {
         debug('cache exists');
         const data = JSON.parse(readFileSync(path, 'utf-8')) as IData;
         assert(data.deps, `[MFSU] cache parse failed, deps not found.`);
-        assert(
-          'buildStatus' in data,
-          `[MFSU] cache parse failed, buildStatus not found.`,
-        );
         this.data = data;
       }
     } catch (e) {
@@ -138,9 +132,5 @@ export default class DepInfo {
   writeCache() {
     const content = JSON.stringify(this.data, null, 2);
     writeFileSync(this.cachePath, content, 'utf-8');
-  }
-
-  setBuildStatus(buildStatus: BUILD_STATUS) {
-    this.data.buildStatus = buildStatus;
   }
 }

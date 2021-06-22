@@ -818,11 +818,11 @@ export default {
 - Type: `Object`
 - Default : `{}`
 
-开启 mfsu 功能并且添加相关配置。
+开启 mfsu 功能。
 
-开启该功能需要同时开启 `webpack5` 和 `dynamicImport`.
+注：开启该功能需要同时开启 `webpack5` 和 `dynamicImport`.
 
-包含以下子属性
+包含以下子属性，
 
 - development: `{ output: String }`。可以通过 output 自定义 dev 模式下的输出路径。用于将预编译文件同步到 git。
 - production: `{ output: String }`。在生产模式中使用 mfsu。如果额外设置了 output，将会将生产模式预编译依赖编译到 output 下。
