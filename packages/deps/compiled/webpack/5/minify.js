@@ -1,4 +1,3 @@
-module.exports =
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -327,9 +326,10 @@ module.exports =
   var defaultOptions = {
     // `ecmaVersion` indicates the ECMAScript version to parse. Must be
     // either 3, 5, 6 (or 2015), 7 (2016), 8 (2017), 9 (2018), 10
-    // (2019), 11 (2020), 12 (2021), or `"latest"` (the latest version
-    // the library supports). This influences support for strict mode,
-    // the set of reserved words, and support for new syntax features.
+    // (2019), 11 (2020), 12 (2021), 13 (2022), or `"latest"` (the
+    // latest version the library supports). This influences support
+    // for strict mode, the set of reserved words, and support for
+    // new syntax features.
     ecmaVersion: null,
     // `sourceType` indicates the mode the code should be parsed in.
     // Can be either `"script"` or `"module"`. This influences global
@@ -356,9 +356,13 @@ module.exports =
     // appearing at the top of the program, and an import.meta expression
     // in a script isn't considered an error.
     allowImportExportEverywhere: false,
+    // By default, await identifiers are allowed to appear at the top-level scope only if ecmaVersion >= 2022.
     // When enabled, await identifiers are allowed to appear at the top-level scope,
     // but they are still not allowed in non-async functions.
-    allowAwaitOutsideFunction: false,
+    allowAwaitOutsideFunction: null,
+    // When enabled, super identifiers are not constrained to
+    // appearing in methods and do not raise an error when they appear elsewhere.
+    allowSuperOutsideMethod: null,
     // When enabled, hashbang directive in the beginning of file
     // is allowed and treated as a line comment.
     allowHashBang: false,
@@ -434,6 +438,8 @@ module.exports =
 
     if (options.allowReserved == null)
       { options.allowReserved = options.ecmaVersion < 5; }
+    if (options.allowAwaitOutsideFunction == null)
+      { options.allowAwaitOutsideFunction = options.ecmaVersion >= 13; }
 
     if (isArray(options.onToken)) {
       var tokens = options.onToken;
@@ -545,6 +551,7 @@ module.exports =
 
     // Used to signify the start of a potential arrow function
     this.potentialArrowAt = -1;
+    this.potentialArrowInForAwait = false;
 
     // Positions to delayed-check that yield/await does not exist in default parameters.
     this.yieldPos = this.awaitPos = this.awaitIdentPos = 0;
@@ -579,13 +586,13 @@ module.exports =
   };
 
   prototypeAccessors.inFunction.get = function () { return (this.currentVarScope().flags & SCOPE_FUNCTION) > 0 };
-  prototypeAccessors.inGenerator.get = function () { return (this.currentVarScope().flags & SCOPE_GENERATOR) > 0 && !this.currentThisScope().inClassFieldInit };
-  prototypeAccessors.inAsync.get = function () { return (this.currentVarScope().flags & SCOPE_ASYNC) > 0 && !this.currentThisScope().inClassFieldInit };
+  prototypeAccessors.inGenerator.get = function () { return (this.currentVarScope().flags & SCOPE_GENERATOR) > 0 && !this.currentVarScope().inClassFieldInit };
+  prototypeAccessors.inAsync.get = function () { return (this.currentVarScope().flags & SCOPE_ASYNC) > 0 && !this.currentVarScope().inClassFieldInit };
   prototypeAccessors.allowSuper.get = function () {
     var ref = this.currentThisScope();
       var flags = ref.flags;
       var inClassFieldInit = ref.inClassFieldInit;
-    return (flags & SCOPE_SUPER) > 0 || inClassFieldInit
+    return (flags & SCOPE_SUPER) > 0 || inClassFieldInit || this.options.allowSuperOutsideMethod
   };
   prototypeAccessors.allowDirectSuper.get = function () { return (this.currentThisScope().flags & SCOPE_DIRECT_SUPER) > 0 };
   prototypeAccessors.treatFunctionsAsVar.get = function () { return this.treatFunctionsAsVarInScope(this.currentScope()) };
@@ -810,13 +817,14 @@ module.exports =
     // Statement) is allowed here. If context is not empty then only a Statement
     // is allowed. However, `let [` is an explicit negative lookahead for
     // ExpressionStatement, so special-case it first.
-    if (nextCh === 91) { return true } // '['
+    if (nextCh === 91 || nextCh === 92 || nextCh > 0xd7ff && nextCh < 0xdc00) { return true } // '[', '/', astral
     if (context) { return false }
 
     if (nextCh === 123) { return true } // '{'
     if (isIdentifierStart(nextCh, true)) {
       var pos = next + 1;
-      while (isIdentifierChar(this.input.charCodeAt(pos), true)) { ++pos; }
+      while (isIdentifierChar(nextCh = this.input.charCodeAt(pos), true)) { ++pos; }
+      if (nextCh === 92 || nextCh > 0xd7ff && nextCh < 0xdc00) { return true }
       var ident = this.input.slice(next, pos);
       if (!keywordRelationalOperator.test(ident)) { return true }
     }
@@ -832,10 +840,11 @@ module.exports =
 
     skipWhiteSpace.lastIndex = this.pos;
     var skip = skipWhiteSpace.exec(this.input);
-    var next = this.pos + skip[0].length;
+    var next = this.pos + skip[0].length, after;
     return !lineBreak.test(this.input.slice(this.pos, next)) &&
       this.input.slice(next, next + 8) === "function" &&
-      (next + 8 === this.input.length || !isIdentifierChar(this.input.charAt(next + 8)))
+      (next + 8 === this.input.length ||
+       !(isIdentifierChar(after = this.input.charCodeAt(next + 8)) || after > 0xd7ff && after < 0xdc00))
   };
 
   // Parse a single statement.
@@ -1001,7 +1010,7 @@ module.exports =
       return this.parseFor(node, init$1)
     }
     var refDestructuringErrors = new DestructuringErrors;
-    var init = this.parseExpression(true, refDestructuringErrors);
+    var init = this.parseExpression(awaitAt > -1 ? "await" : true, refDestructuringErrors);
     if (this.type === types._in || (this.options.ecmaVersion >= 6 && this.isContextual("of"))) {
       if (this.options.ecmaVersion >= 9) {
         if (this.type === types._in) {
@@ -2200,13 +2209,13 @@ module.exports =
   // and object pattern might appear (so it's possible to raise
   // delayed syntax error at correct position).
 
-  pp$3.parseExpression = function(noIn, refDestructuringErrors) {
+  pp$3.parseExpression = function(forInit, refDestructuringErrors) {
     var startPos = this.start, startLoc = this.startLoc;
-    var expr = this.parseMaybeAssign(noIn, refDestructuringErrors);
+    var expr = this.parseMaybeAssign(forInit, refDestructuringErrors);
     if (this.type === types.comma) {
       var node = this.startNodeAt(startPos, startLoc);
       node.expressions = [expr];
-      while (this.eat(types.comma)) { node.expressions.push(this.parseMaybeAssign(noIn, refDestructuringErrors)); }
+      while (this.eat(types.comma)) { node.expressions.push(this.parseMaybeAssign(forInit, refDestructuringErrors)); }
       return this.finishNode(node, "SequenceExpression")
     }
     return expr
@@ -2215,9 +2224,9 @@ module.exports =
   // Parse an assignment expression. This includes applications of
   // operators like `+=`.
 
-  pp$3.parseMaybeAssign = function(noIn, refDestructuringErrors, afterLeftParse) {
+  pp$3.parseMaybeAssign = function(forInit, refDestructuringErrors, afterLeftParse) {
     if (this.isContextual("yield")) {
-      if (this.inGenerator) { return this.parseYield(noIn) }
+      if (this.inGenerator) { return this.parseYield(forInit) }
       // The tokenizer will assume an expression is allowed after
       // `yield`, but this isn't that kind of yield
       else { this.exprAllowed = false; }
@@ -2234,9 +2243,11 @@ module.exports =
     }
 
     var startPos = this.start, startLoc = this.startLoc;
-    if (this.type === types.parenL || this.type === types.name)
-      { this.potentialArrowAt = this.start; }
-    var left = this.parseMaybeConditional(noIn, refDestructuringErrors);
+    if (this.type === types.parenL || this.type === types.name) {
+      this.potentialArrowAt = this.start;
+      this.potentialArrowInForAwait = forInit === "await";
+    }
+    var left = this.parseMaybeConditional(forInit, refDestructuringErrors);
     if (afterLeftParse) { left = afterLeftParse.call(this, left, startPos, startLoc); }
     if (this.type.isAssign) {
       var node = this.startNodeAt(startPos, startLoc);
@@ -2254,7 +2265,7 @@ module.exports =
         { this.checkLValSimple(left); }
       node.left = left;
       this.next();
-      node.right = this.parseMaybeAssign(noIn);
+      node.right = this.parseMaybeAssign(forInit);
       return this.finishNode(node, "AssignmentExpression")
     } else {
       if (ownDestructuringErrors) { this.checkExpressionErrors(refDestructuringErrors, true); }
@@ -2266,16 +2277,16 @@ module.exports =
 
   // Parse a ternary conditional (`?:`) operator.
 
-  pp$3.parseMaybeConditional = function(noIn, refDestructuringErrors) {
+  pp$3.parseMaybeConditional = function(forInit, refDestructuringErrors) {
     var startPos = this.start, startLoc = this.startLoc;
-    var expr = this.parseExprOps(noIn, refDestructuringErrors);
+    var expr = this.parseExprOps(forInit, refDestructuringErrors);
     if (this.checkExpressionErrors(refDestructuringErrors)) { return expr }
     if (this.eat(types.question)) {
       var node = this.startNodeAt(startPos, startLoc);
       node.test = expr;
       node.consequent = this.parseMaybeAssign();
       this.expect(types.colon);
-      node.alternate = this.parseMaybeAssign(noIn);
+      node.alternate = this.parseMaybeAssign(forInit);
       return this.finishNode(node, "ConditionalExpression")
     }
     return expr
@@ -2283,11 +2294,11 @@ module.exports =
 
   // Start the precedence parser.
 
-  pp$3.parseExprOps = function(noIn, refDestructuringErrors) {
+  pp$3.parseExprOps = function(forInit, refDestructuringErrors) {
     var startPos = this.start, startLoc = this.startLoc;
     var expr = this.parseMaybeUnary(refDestructuringErrors, false);
     if (this.checkExpressionErrors(refDestructuringErrors)) { return expr }
-    return expr.start === startPos && expr.type === "ArrowFunctionExpression" ? expr : this.parseExprOp(expr, startPos, startLoc, -1, noIn)
+    return expr.start === startPos && expr.type === "ArrowFunctionExpression" ? expr : this.parseExprOp(expr, startPos, startLoc, -1, forInit)
   };
 
   // Parse binary operators with the operator precedence parsing
@@ -2296,9 +2307,9 @@ module.exports =
   // defer further parser to one of its callers when it encounters an
   // operator that has a lower precedence than the set it is parsing.
 
-  pp$3.parseExprOp = function(left, leftStartPos, leftStartLoc, minPrec, noIn) {
+  pp$3.parseExprOp = function(left, leftStartPos, leftStartLoc, minPrec, forInit) {
     var prec = this.type.binop;
-    if (prec != null && (!noIn || this.type !== types._in)) {
+    if (prec != null && (!forInit || this.type !== types._in)) {
       if (prec > minPrec) {
         var logical = this.type === types.logicalOR || this.type === types.logicalAND;
         var coalesce = this.type === types.coalesce;
@@ -2310,12 +2321,12 @@ module.exports =
         var op = this.value;
         this.next();
         var startPos = this.start, startLoc = this.startLoc;
-        var right = this.parseExprOp(this.parseMaybeUnary(null, false), startPos, startLoc, prec, noIn);
+        var right = this.parseExprOp(this.parseMaybeUnary(null, false), startPos, startLoc, prec, forInit);
         var node = this.buildBinary(leftStartPos, leftStartLoc, left, right, op, logical || coalesce);
         if ((logical && this.type === types.coalesce) || (coalesce && (this.type === types.logicalOR || this.type === types.logicalAND))) {
           this.raiseRecoverable(this.start, "Logical expressions and coalesce expressions cannot be mixed. Wrap either by parentheses");
         }
-        return this.parseExprOp(node, leftStartPos, leftStartLoc, minPrec, noIn)
+        return this.parseExprOp(node, leftStartPos, leftStartLoc, minPrec, forInit)
       }
     }
     return left
@@ -2331,7 +2342,7 @@ module.exports =
 
   // Parse unary operators, both prefix and postfix.
 
-  pp$3.parseMaybeUnary = function(refDestructuringErrors, sawUnary) {
+  pp$3.parseMaybeUnary = function(refDestructuringErrors, sawUnary, incDec) {
     var startPos = this.start, startLoc = this.startLoc, expr;
     if (this.isContextual("await") && (this.inAsync || (!this.inFunction && this.options.allowAwaitOutsideFunction))) {
       expr = this.parseAwait();
@@ -2341,7 +2352,7 @@ module.exports =
       node.operator = this.value;
       node.prefix = true;
       this.next();
-      node.argument = this.parseMaybeUnary(null, true);
+      node.argument = this.parseMaybeUnary(null, true, update);
       this.checkExpressionErrors(refDestructuringErrors, true);
       if (update) { this.checkLValSimple(node.argument); }
       else if (this.strict && node.operator === "delete" &&
@@ -2365,10 +2376,14 @@ module.exports =
       }
     }
 
-    if (!sawUnary && this.eat(types.starstar))
-      { return this.buildBinary(startPos, startLoc, expr, this.parseMaybeUnary(null, false), "**", false) }
-    else
-      { return expr }
+    if (!incDec && this.eat(types.starstar)) {
+      if (sawUnary)
+        { this.unexpected(this.lastTokStart); }
+      else
+        { return this.buildBinary(startPos, startLoc, expr, this.parseMaybeUnary(null, false), "**", false) }
+    } else {
+      return expr
+    }
   };
 
   function isPrivateFieldAccess(node) {
@@ -2520,7 +2535,8 @@ module.exports =
       if (canBeArrow && !this.canInsertSemicolon()) {
         if (this.eat(types.arrow))
           { return this.parseArrowExpression(this.startNodeAt(startPos, startLoc), [id], false) }
-        if (this.options.ecmaVersion >= 8 && id.name === "async" && this.type === types.name && !containsEsc) {
+        if (this.options.ecmaVersion >= 8 && id.name === "async" && this.type === types.name && !containsEsc &&
+            (!this.potentialArrowInForAwait || this.value !== "of" || this.containsEsc)) {
           id = this.parseIdent(false);
           if (this.canInsertSemicolon() || !this.eat(types.arrow))
             { this.unexpected(); }
@@ -3174,7 +3190,7 @@ module.exports =
 
   // Parses yield expression inside generator.
 
-  pp$3.parseYield = function(noIn) {
+  pp$3.parseYield = function(forInit) {
     if (!this.yieldPos) { this.yieldPos = this.start; }
 
     var node = this.startNode();
@@ -3184,7 +3200,7 @@ module.exports =
       node.argument = null;
     } else {
       node.delegate = this.eat(types.star);
-      node.argument = this.parseMaybeAssign(noIn);
+      node.argument = this.parseMaybeAssign(forInit);
     }
     return this.finishNode(node, "YieldExpression")
   };
@@ -3565,7 +3581,7 @@ module.exports =
 
   var RegExpValidationState = function RegExpValidationState(parser) {
     this.parser = parser;
-    this.validFlags = "gim" + (parser.options.ecmaVersion >= 6 ? "uy" : "") + (parser.options.ecmaVersion >= 9 ? "s" : "");
+    this.validFlags = "gim" + (parser.options.ecmaVersion >= 6 ? "uy" : "") + (parser.options.ecmaVersion >= 9 ? "s" : "") + (parser.options.ecmaVersion >= 13 ? "d" : "");
     this.unicodeProperties = data[parser.options.ecmaVersion >= 12 ? 12 : parser.options.ecmaVersion];
     this.source = "";
     this.flags = "";
@@ -4710,9 +4726,9 @@ module.exports =
 
   pp$9.fullCharCodeAtPos = function() {
     var code = this.input.charCodeAt(this.pos);
-    if (code <= 0xd7ff || code >= 0xe000) { return code }
+    if (code <= 0xd7ff || code >= 0xdc00) { return code }
     var next = this.input.charCodeAt(this.pos + 1);
-    return (code << 10) + next - 0x35fdc00
+    return next <= 0xdbff || next >= 0xe000 ? code : (code << 10) + next - 0x35fdc00
   };
 
   pp$9.skipBlockComment = function() {
@@ -5430,7 +5446,7 @@ module.exports =
 
   // Acorn is a tiny, fast JavaScript parser written in JavaScript.
 
-  var version = "8.2.1";
+  var version = "8.4.0";
 
   Parser.acorn = {
     Parser: Parser,
@@ -5526,8 +5542,6 @@ const {
 
 /** @typedef {import("./index.js").CustomMinifyFunction} CustomMinifyFunction */
 
-/** @typedef {import("./index.js").MinifyOptions} MinifyOptions */
-
 /** @typedef {import("terser").MinifyOptions} TerserMinifyOptions */
 
 /** @typedef {import("terser").MinifyOutput} MinifyOutput */
@@ -5541,13 +5555,17 @@ const {
 /** @typedef {import("./index.js").ExtractCommentsCondition} ExtractCommentsCondition */
 
 /**
+ * @typedef {Object.<any, any>} CustomMinifyOptions
+ */
+
+/**
  * @typedef {Object} InternalMinifyOptions
  * @property {string} name
  * @property {string} input
- * @property {RawSourceMap | undefined} inputSourceMap
+ * @property {RawSourceMap} [inputSourceMap]
  * @property {ExtractCommentsOptions} extractComments
- * @property {CustomMinifyFunction | undefined} minify
- * @property {MinifyOptions} minifyOptions
+ * @property {CustomMinifyFunction} [minify]
+ * @property {TerserMinifyOptions | CustomMinifyOptions} minifyOptions
  */
 
 /**
@@ -5569,12 +5587,18 @@ const {
 
 
 function buildTerserOptions(terserOptions = {}) {
+  // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
   return { ...terserOptions,
+    compress: typeof terserOptions.compress === "boolean" ? terserOptions.compress : { ...terserOptions.compress
+    },
+    // ecma: terserOptions.ecma,
+    // ie8: terserOptions.ie8,
+    // keep_classnames: terserOptions.keep_classnames,
+    // keep_fnames: terserOptions.keep_fnames,
     mangle: terserOptions.mangle == null ? true : typeof terserOptions.mangle === "boolean" ? terserOptions.mangle : { ...terserOptions.mangle
     },
-    // Ignoring sourceMap from options
-    // eslint-disable-next-line no-undefined
-    sourceMap: undefined,
+    // module: terserOptions.module,
+    // nameCache: { ...terserOptions.toplevel },
     // the `output` option is deprecated
     ...(terserOptions.format ? {
       format: {
@@ -5586,7 +5610,14 @@ function buildTerserOptions(terserOptions = {}) {
         beautify: false,
         ...terserOptions.output
       }
-    })
+    }),
+    parse: { ...terserOptions.parse
+    },
+    // safari10: terserOptions.safari10,
+    // Ignoring sourceMap from options
+    // eslint-disable-next-line no-undefined
+    sourceMap: undefined // toplevel: terserOptions.toplevel
+
   };
 }
 /**
@@ -36232,8 +36263,9 @@ module.exports = require("path");;
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -36270,10 +36302,13 @@ module.exports = require("path");;
 /******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+/******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(998);
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(998);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
