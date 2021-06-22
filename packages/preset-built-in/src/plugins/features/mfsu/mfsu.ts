@@ -1,4 +1,5 @@
-import { chalk, createDebug, lodash, mkdirp } from '@umijs/utils';
+import { BundlerConfigType } from '@umijs/types';
+import { chalk, createDebug, mkdirp } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
@@ -6,12 +7,11 @@ import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
 import url from 'url';
 import webpack from 'webpack';
-import { runtimePath } from '../../generateFiles/constants';
-import AntdIconPlugin from './babel-antd-icon-plugin';
-import BebelImportRedirectPlugin from './babel-import-redirect-plugin';
-import { MF_VA_PREFIX } from './constants';
+import BabelImportRedirectPlugin from './babel-import-redirect-plugin';
+import { MF_NAME, MF_VA_PREFIX } from './constants';
 import DepBuilder from './DepBuilder';
 import DepInfo from './DepInfo';
+import { getUmiRedirect } from './getUmiRedirect';
 import { copy } from './utils';
 
 const debug = createDebug('umi:mfsu');
@@ -19,23 +19,23 @@ const debug = createDebug('umi:mfsu');
 export type TMode = 'production' | 'development';
 
 export const checkConfig = (api: IApi) => {
-  const { webpack5, dynamicImport } = api.config;
-  if (!webpack5 || !dynamicImport) {
-    throw new Error(
-      `[MFSU] MFSU 功能要求同时开启对应配置: ${!webpack5 ? 'webpack5' : ''} ${
-        !dynamicImport ? 'dynamicImport' : ''
-      }`,
+  const { webpack5, dynamicImport, mfsu } = api.config;
+  assert(webpack5, `[MFSU] mfsu need webpack5 config.`);
+  assert(dynamicImport, `[MFSU] mfsu need dynamicImport config.`);
+
+  // .mfsu directory do not match babel-loader
+  if (mfsu && mfsu.development && mfsu.development.output) {
+    assert(
+      /\.mfsu/.test(mfsu.development.output),
+      `[MFSU] mfsu.development.output must match /\.mfsu/.`,
     );
   }
-};
-
-// 需要重新定向导出的模块
-const defaultRedirect = {
-  umi: {
-    Link: 'react-router-dom',
-    NavLink: 'react-router-dom',
-    ApplyPluginsType: runtimePath,
-  },
+  if (mfsu && mfsu.production && mfsu.production.output) {
+    assert(
+      /\.mfsu/.test(mfsu.production.output),
+      `[MFSU] mfsu.production.output must match /\.mfsu/.`,
+    );
+  }
 };
 
 export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
@@ -65,8 +65,9 @@ export default function (api: IApi) {
       mode = 'production';
       // @ts-ignore
     } else if (name === 'mfsu' && args._[1] === 'build' && args.mode) {
+      // umi mfsu build --mode
       // @ts-ignore
-      mode = args.mode;
+      mode = args.mode || 'development';
     }
     assert(
       ['development', 'production'].includes(mode),
@@ -83,7 +84,9 @@ export default function (api: IApi) {
     depInfo = new DepInfo({
       tmpDir,
       mode,
+      api,
       cwd: api.cwd,
+      webpackAlias,
     });
     debug('load cache');
     depInfo.loadCache();
@@ -111,9 +114,6 @@ export default function (api: IApi) {
       schema(joi) {
         return joi
           .object({
-            includes: joi.array().items(joi.string()),
-            excludes: joi.array().items(joi.string()),
-            redirect: joi.object(),
             development: joi.object({
               output: joi.string(),
             }),
@@ -138,7 +138,36 @@ export default function (api: IApi) {
     fn: (opts) => {
       return {
         ...opts,
-        import: [],
+        importToAwaitRequire: {
+          remoteName: MF_NAME,
+          matchAll: true,
+          webpackAlias: webpackAlias,
+          alias: {
+            [api.cwd]: '$CWD$',
+          },
+          onTransformDeps(opts: {
+            file: string;
+            source: string;
+            isMatch: boolean;
+            isExportAllDeclaration?: boolean;
+          }) {
+            const file = opts.file.replace(api.paths.absSrcPath! + '/', '@/');
+            if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
+              if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch) return;
+              if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
+                return;
+              console.log(
+                `> import ${chalk[opts.isMatch ? 'green' : 'red'](
+                  opts.source,
+                )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
+              );
+            }
+            // collect dependencies
+            if (opts.isMatch) {
+              depInfo.addTmpDep(opts.source);
+            }
+          },
+        },
       };
     },
     stage: Infinity,
@@ -153,10 +182,7 @@ export default function (api: IApi) {
       webpackAlias['regenerator-runtime/runtime'] = require.resolve(
         'regenerator-runtime/runtime',
       );
-      webpackAlias['dumi/theme'] =
-        api.paths.absNodeModulesPath + '/@umijs/preset-dumi/lib/theme/index.js';
-      const userRedirect = api.userConfig.mfsu.redirect || {};
-      const redirect = lodash.merge(defaultRedirect, userRedirect);
+
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
       opts.presets?.forEach((preset) => {
         if (preset instanceof Array && /babel-preset-umi/.test(preset[0])) {
@@ -164,41 +190,12 @@ export default function (api: IApi) {
         }
       });
       opts.plugins = [
-        AntdIconPlugin,
-        [BebelImportRedirectPlugin, redirect],
+        // AntdIconPlugin,
         [
-          require.resolve('@umijs/babel-plugin-import-to-await-require'),
+          BabelImportRedirectPlugin,
           {
-            remoteName: 'mf',
-            matchAll: true,
-            webpackAlias: webpackAlias,
-            alias: {
-              [api.cwd]: '$CWD$',
-            },
-            onTransformDeps(opts: {
-              file: string;
-              source: string;
-              isMatch: boolean;
-              isExportAllDeclaration?: boolean;
-            }) {
-              const file = opts.file.replace(api.paths.absSrcPath! + '/', '@/');
-              if (process.env.MFSU_DEBUG && !opts.source.startsWith('.')) {
-                if (process.env.MFSU_DEBUG === 'MATCHED' && !opts.isMatch)
-                  return;
-                if (process.env.MFSU_DEBUG === 'UNMATCHED' && opts.isMatch)
-                  return;
-                console.log(
-                  `> import ${chalk[opts.isMatch ? 'green' : 'red'](
-                    opts.source,
-                  )} from ${file}, ${opts.isMatch ? 'MATCHED' : 'UNMATCHED'}`,
-                );
-              }
-              // collect dependencies
-              // TODO: 正则匹配应该被删除，因为 mf/ 开始的包不应该再被匹配
-              if (opts.isMatch && !/^mf\//.test(opts.source)) {
-                depInfo.addTmpDep(opts.source);
-              }
-            },
+            // @ts-ignore
+            umi: await getUmiRedirect(process.env.UMI_DIR),
           },
         ],
         ...opts.plugins,
@@ -236,26 +233,33 @@ export default function (api: IApi) {
   });
 
   /** 修改 webpack 配置 */
-  // TODO: 改成从 webpack 配置里获取
-  api.chainWebpack(async (memo) => {
-    Object.assign(webpackAlias, memo.toConfig().resolve?.alias || {});
-    const remotePath =
-      api.env === 'production' ? api.userConfig.publicPath || '/' : '/';
-    memo.plugin('mf').use(
-      new webpack.container.ModuleFederationPlugin({
-        name: 'umi-app',
-        remotes: {
-          mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
-        },
-      }),
-    );
-    return memo.merge({
-      experiments: { topLevelAwait: true },
-    });
+  api.register({
+    key: 'modifyBundleConfig',
+    fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
+      if (!mfsu && type === BundlerConfigType.csr) {
+        Object.assign(webpackAlias, memo.resolve!.alias || {});
+
+        const remotePath = api.config.publicPath;
+        memo.plugins.push(
+          new webpack.container.ModuleFederationPlugin({
+            name: 'umi-app',
+            remotes: {
+              mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
+            },
+          }),
+        );
+
+        memo.experiments = {
+          ...memo.experiments,
+          topLevelAwait: true,
+        };
+      }
+      return memo;
+    },
+    stage: Infinity,
   });
 
-  // TODO: support watch
-  async function buildDeps(opts: { watch?: boolean; force?: boolean } = {}) {
+  async function buildDeps(opts: { force?: boolean } = {}) {
     const { shouldBuild } = depInfo.loadTmpDeps();
     debug(`shouldBuild: ${shouldBuild}, force: ${opts.force}`);
     if (opts.force || shouldBuild) {
@@ -270,8 +274,8 @@ export default function (api: IApi) {
           debug('write cache');
           depInfo.writeCache();
 
-          const server = api.getServer();
-          if (server) {
+          if (mode === 'development') {
+            const server = api.getServer();
             debug(`refresh server`);
             server.sockWrite({ type: 'ok', data: { reload: true } });
           }
@@ -291,7 +295,6 @@ export default function (api: IApi) {
 
   // npx umi mfsu build
   // npx umi mfsu build --mode production
-  // npx umi mfsu build --mode development --watch
   // npx umi mfsu build --mode development --force
   api.registerCommand({
     name: 'mfsu',
@@ -301,7 +304,6 @@ export default function (api: IApi) {
           console.log('[MFSU] build deps...');
           await buildDeps({
             force: args.force as boolean,
-            watch: args.watch as boolean,
           });
           break;
         default:

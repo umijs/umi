@@ -1,4 +1,4 @@
-import { lodash, winPath } from '@umijs/utils';
+import { winPath } from '@umijs/utils';
 import { init, parse } from 'es-module-lexer';
 import {
   copyFileSync,
@@ -9,84 +9,6 @@ import {
   statSync,
 } from 'fs';
 import { join, parse as pathParse } from 'path';
-import { Deps } from './build';
-import { TMode } from './mfsu';
-
-// a/b/c/* => a/b/c/x,a/b/c/y ,a/b/c/z
-export const getFuzzyIncludes = (include: string) => {
-  const includeDeepArray = include.split('/');
-  const resolvePath = join(
-    process.cwd(),
-    'node_modules',
-    includeDeepArray.slice(0, includeDeepArray.length - 1).join('/'),
-  );
-  const dir = readdirSync(resolvePath);
-  const includes = dir
-    .map((fileName) => {
-      if (fileName.endsWith('.d.ts')) {
-        return;
-      }
-      return includeDeepArray
-        .slice(0, includeDeepArray.length - 1)
-        .concat(fileName.split('.')[0])
-        .join('/');
-    })
-    .filter(Boolean);
-  return includes;
-};
-
-type DiffResultType = 'ADD' | 'REMOVE' | 'EQUAL' | 'MODIFY'; // 增加 ｜ 删除 ｜ 相等 ｜ 更改（更改依赖版本或删除同时更改依赖版本）
-
-export const dependenceDiff = (
-  prevDeps: Deps,
-  curDeps: Deps,
-): DiffResultType => {
-  if (lodash.isEqual(prevDeps, curDeps)) {
-    return 'EQUAL';
-  }
-  const prevDepKeys = Object.keys(prevDeps);
-  const curDepKeys = Object.keys(curDeps);
-
-  if (prevDepKeys.length === curDepKeys.length) {
-    if (
-      lodash.intersection(prevDepKeys, curDepKeys).length === prevDepKeys.length
-    ) {
-      // 用户依赖数量不变，但不完全相等，说明改变了某依赖的版本
-      return 'MODIFY';
-    }
-  }
-
-  // 依赖数量变多
-  if (curDepKeys.length > prevDepKeys.length) {
-    return 'ADD';
-  } else {
-    // 依赖数量变少时，需要同时关注用户是否改变了版本
-    const difference = lodash.difference(prevDepKeys, curDepKeys);
-    for (let i = 0; i < prevDepKeys.length; i++) {
-      const key = prevDepKeys[i];
-      if (!difference.includes(key) && prevDeps[key] !== curDeps[key]) {
-        return 'MODIFY';
-      }
-    }
-  }
-
-  return 'REMOVE';
-};
-
-export const shouldBuild = (
-  prevDeps: Deps,
-  curDeps: Deps,
-  mode: TMode,
-): boolean => {
-  if (mode === 'production') {
-    return !lodash.isEqual(prevDeps, curDeps);
-  }
-  const result = dependenceDiff(prevDeps, curDeps);
-  if (result === 'MODIFY' || result === 'ADD') {
-    return true;
-  }
-  return false;
-};
 
 export const copy = (fromDir: string, toDir: string) => {
   try {
@@ -130,7 +52,7 @@ export const filenameFallback = async (absPath: string): Promise<string> => {
     if (existsSync(indexJs)) {
       return parseFileExport(indexJs, indexJs);
     }
-    return `import "${absPath}"; // filename fallback`;
+    return `import "${absPath}"; export {}; // filename fallback`;
   } catch (error) {
     throw error;
   }
@@ -175,7 +97,7 @@ const parseFileExport = async (filePath: string, packageName: string) => {
         exports.includes('default'),
       );
     } else {
-      return `import "${packageName}"; // no export fallback`;
+      return `import "${packageName}"; export {}; // no export fallback`;
     }
   } catch (error) {
     throw error;

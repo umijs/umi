@@ -27,7 +27,7 @@ export function chunksToFiles(opts: {
 }): { cssFiles: string[]; jsFiles: string[]; headJSFiles: string[] } {
   let chunksMap: IChunkMap = {};
   if (opts.chunks) {
-    chunksMap = opts.chunks.reduce((memo, chunk) => {
+    chunksMap = Array.from(opts.chunks).reduce((memo, chunk) => {
       const key = chunk.name || chunk.id;
       if (key && chunk.files) {
         chunk.files.forEach((file) => {

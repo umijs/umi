@@ -1,8 +1,10 @@
+import { IApi, IConfig } from '@umijs/types';
 import { createDebug, lodash } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { DEP_INFO_CACHE_FILE } from './constants';
+import { getDepVersion } from './getDepVersion';
 import { TMode } from './mfsu';
 
 const debug = createDebug('umi:mfsu:DepInfo');
@@ -20,7 +22,7 @@ export interface IDeps {
 
 export interface IData {
   deps: IDeps;
-  buildStatus: BUILD_STATUS;
+  config: Partial<IConfig>;
 }
 
 export interface ITmpDep {
@@ -35,12 +37,22 @@ export default class DepInfo {
   public mode: TMode;
   public tmpDeps: IDeps;
   public cachePath: string;
+  public webpackAlias: any;
+  private api: IApi;
 
-  constructor(opts: { tmpDir: string; cwd: string; mode: TMode }) {
+  constructor(opts: {
+    tmpDir: string;
+    api: IApi;
+    cwd: string;
+    mode: TMode;
+    webpackAlias: any;
+  }) {
+    this.api = opts.api;
     this.cwd = opts.cwd;
     this.cacheDir = opts.tmpDir;
     this.mode = opts.mode;
     this.tmpDeps = {};
+    this.webpackAlias = opts.webpackAlias || {};
     this.cachePath = join(this.cacheDir!, DEP_INFO_CACHE_FILE);
 
     assert(
@@ -50,7 +62,7 @@ export default class DepInfo {
 
     this.data = {
       deps: {},
-      buildStatus: BUILD_STATUS.IDLE,
+      config: {},
     };
   }
 
@@ -61,10 +73,6 @@ export default class DepInfo {
         debug('cache exists');
         const data = JSON.parse(readFileSync(path, 'utf-8')) as IData;
         assert(data.deps, `[MFSU] cache parse failed, deps not found.`);
-        assert(
-          'buildStatus' in data,
-          `[MFSU] cache parse failed, buildStatus not found.`,
-        );
         this.data = data;
       }
     } catch (e) {
@@ -77,8 +85,11 @@ export default class DepInfo {
     if (typeof dep === 'object' && dep.key && dep.version) {
       this.setTmpDep(dep);
     } else if (typeof dep === 'string') {
-      // TODO: find package.json with this.cwd, webpack alias or abs path
-      let version: string = '*';
+      const version = getDepVersion({
+        dep,
+        cwd: this.cwd,
+        webpackAlias: this.webpackAlias,
+      });
       this.setTmpDep({ key: dep, version });
     }
   }
@@ -98,6 +109,7 @@ export default class DepInfo {
     const shouldBuild = this.shouldBuild();
     if (shouldBuild) {
       Object.assign(this.data.deps, this.tmpDeps);
+      this.data.config = this.getConfig();
       // clear tmp deps
       this.tmpDeps = {};
     }
@@ -106,8 +118,20 @@ export default class DepInfo {
 
   shouldBuild(): boolean {
     debug('tmpDeps', this.tmpDeps);
+
+    // 没有变更，不 build
     if (!Object.keys(this.tmpDeps).length) {
       return false;
+    }
+
+    // 配置变更后，强制 build
+    if (!lodash.isEqual(this.getConfig(), this.data.config)) {
+      debug(
+        `config changed, new: ${JSON.stringify(
+          this.getConfig(),
+        )}, origin: ${JSON.stringify(this.data.config)}`,
+      );
+      return true;
     }
 
     debug('this.data.deps', this.data.deps);
@@ -124,12 +148,15 @@ export default class DepInfo {
     }
   }
 
+  getConfig() {
+    return {
+      // 目前只有 theme 会触发依赖重新编译
+      theme: this.api.config.theme || {},
+    };
+  }
+
   writeCache() {
     const content = JSON.stringify(this.data, null, 2);
     writeFileSync(this.cachePath, content, 'utf-8');
-  }
-
-  setBuildStatus(buildStatus: BUILD_STATUS) {
-    this.data.buildStatus = buildStatus;
   }
 }

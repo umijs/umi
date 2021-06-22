@@ -19,9 +19,9 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.chainWebpack((memo, { type }) => {
+  api.chainWebpack((memo, { type, mfsu }) => {
     // must add api.env, test env needed.
-    if (api.env === 'development' && type === BundlerConfigType.csr) {
+    if (!mfsu && api.env === 'development' && type === BundlerConfigType.csr) {
       memo
         .plugin('fastRefresh')
         .after('hmr')
@@ -35,8 +35,8 @@ export default (api: IApi) => {
   });
 
   // enable no-anonymous-default-export
-  api.modifyBabelPresetOpts((opts, { type }) => {
-    if (api.env === 'development' && type === BundlerConfigType.csr) {
+  api.modifyBabelPresetOpts((opts, { type, mfsu }) => {
+    if (!mfsu && api.env === 'development' && type === BundlerConfigType.csr) {
       return {
         ...opts,
         noAnonymousDefaultExport: true,
@@ -46,8 +46,12 @@ export default (api: IApi) => {
   });
 
   api.modifyBabelOpts({
-    fn: (babelOpts, { type }) => {
-      if (api.env === 'development' && type === BundlerConfigType.csr) {
+    fn: (babelOpts, { type, mfsu }) => {
+      if (
+        !mfsu &&
+        api.env === 'development' &&
+        type === BundlerConfigType.csr
+      ) {
         babelOpts.plugins.push([require.resolve('react-refresh/babel')]);
         debug('FastRefresh babel loaded');
       }

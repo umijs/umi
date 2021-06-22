@@ -1,8 +1,5 @@
-import { Bundler } from '@umijs/bundler-webpack';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import { Compiler } from '@umijs/deps/compiled/webpack';
-// @ts-ignore
-import WebpackBarPlugin from '@umijs/deps/compiled/webpackbar';
 import { IApi } from '@umijs/types';
 import { createDebug, lodash } from '@umijs/utils';
 import assert from 'assert';
@@ -10,8 +7,9 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { CWD, MF_NAME, MF_PROGRESS_NAME, MF_VA_PREFIX } from './constants';
+import { CWD, MF_NAME, MF_VA_PREFIX } from './constants';
 import { IDeps } from './DepInfo';
+import { getAliasedDep } from './getDepVersion';
 import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
 import { figureOutExport } from './utils';
@@ -40,14 +38,23 @@ export default class DepBuilder {
 
     if (!this.compiler) {
       // start webpack
-      // TODO: 这里的 config 传啥？
-      const bundler = new Bundler({ cwd: this.api.cwd, config: {} });
-      const mfConfig = await this.getWebpackConfig(opts.deps);
+      const { bundleConfigs, bundler } = await getBundleAndConfigs({
+        api: this.api,
+        mfsu: true,
+      });
+      assert(
+        bundleConfigs.length && bundleConfigs[0],
+        `[MFSU] 预编译找不到 Webpack 配置`,
+      );
+      let mfConfig: defaultWebpack.Configuration = lodash.cloneDeep(
+        bundleConfigs[0],
+      );
+      mfConfig = this.updateWebpackConfig(mfConfig, opts.deps);
       const watch = this.mode === 'development';
       const { compiler } = await bundler.build({
         bundleConfigs: [mfConfig],
         // TODO: 支持 watch 模式
-        // 因为 exposes 暂不支持动态变更
+        // 因为 exposes 不支持动态变更，所以暂不能使用 webpack 的 watch 模式
         watch: false,
         onBuildComplete: opts.onBuildComplete,
       });
@@ -68,15 +75,13 @@ export default class DepBuilder {
 
     for (let dep of Object.keys(deps)) {
       try {
-        const requireFrom = webpackAlias[dep] || dep;
+        const requireFrom = getAliasedDep({
+          dep,
+          webpackAlias,
+        });
         writeFileSync(
           join(this.tmpDir, normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`)),
-          [
-            // TODO: antd 的 less 处理方式
-            ['antd'].includes(dep) ? 'import "antd/dist/antd.less";' : '',
-            await figureOutExport(this.api.cwd, requireFrom),
-            '',
-          ]
+          [await figureOutExport(this.api.cwd, requireFrom), '']
             .join('\n')
             .trimLeft(),
           'utf-8',
@@ -92,28 +97,10 @@ export default class DepBuilder {
     writeFileSync(join(this.tmpDir, './index.js'), entryFile);
   }
 
-  async getWebpackConfig(deps: IDeps) {
-    // 获取原本的配置
-    const { bundleConfigs } = await getBundleAndConfigs({ api: this.api });
-    assert(
-      bundleConfigs.length && bundleConfigs[0],
-      `[MFSU] 预编译找不到 Webpack 配置`,
-    );
-    const mfConfig: defaultWebpack.Configuration = lodash.cloneDeep(
-      bundleConfigs[0],
-    );
-
+  updateWebpackConfig(mfConfig: defaultWebpack.Configuration, deps: IDeps) {
     mfConfig.stats = 'none';
     mfConfig.entry = join(this.tmpDir, 'index.js');
     mfConfig.output!.path = this.tmpDir;
-    // TODO: css hash
-    mfConfig.output!.filename = '[name].[contenthash:8].js';
-    mfConfig.output!.chunkFilename = '[name].[contenthash:8].async.js';
-
-    mfConfig.plugins = mfConfig.plugins || [];
-
-    // 修改 chunk 名
-    mfConfig.plugins.push(new ModifyChunkNamePlugin());
 
     // @ts-ignore
     if (mfConfig.cache && mfConfig.cache.cacheDirectory) {
@@ -130,6 +117,13 @@ export default class DepBuilder {
         normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`),
       );
     });
+
+    mfConfig.plugins = mfConfig.plugins || [];
+
+    // 修改 chunk 名
+    mfConfig.plugins.push(new ModifyChunkNamePlugin());
+
+    // mf 插件
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
@@ -139,55 +133,9 @@ export default class DepBuilder {
       }),
     );
 
-    // TODO: 删除 babel plugin 和 webpack plugin 应该可以有更好的组织方式
-    // 这个打包应该剔除 import-to-await-require 插件
-    mfConfig.module!.rules.forEach((rule) => {
-      // @ts-ignore
-      rule?.use?.forEach((u) => {
-        if (/babel-loader/.test(u.loader)) {
-          // @ts-ignore
-          u?.options?.plugins?.forEach((plugin, index) => {
-            if (/import-to-await-require/.test(plugin[0])) {
-              u?.options?.plugins.splice(index, 1);
-            }
-          });
-        }
-      });
-    });
-
-    // 删除部分不需要的插件
-    mfConfig.plugins.forEach((plugin, index) => {
-      if (
-        [
-          'DevCompileDonePlugin',
-          'WebpackBarPlugin',
-          'BundleAnalyzerPlugin',
-          'HtmlWebpackPlugin',
-        ].includes(plugin.constructor.name)
-      ) {
-        mfConfig.plugins!.splice(index, 1);
-      }
-
-      if (
-        plugin.constructor.name === 'ModuleFederationPlugin' &&
-        // @ts-ignore
-        plugin._options.name === 'umi-app'
-      ) {
-        mfConfig.plugins!.splice(index, 1);
-      }
-    });
-
-    // 重新构建一个 WebpackBarPlugin
-    if (process.env.PROGRESS !== 'none') {
-      mfConfig.plugins.push(
-        new WebpackBarPlugin({
-          name: MF_PROGRESS_NAME,
-        }),
-      );
-    }
-
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
+    // TODO: 确认是否有必要
     mfConfig.plugins.push(
       // @ts-ignore
       new webpack.ProvidePlugin({

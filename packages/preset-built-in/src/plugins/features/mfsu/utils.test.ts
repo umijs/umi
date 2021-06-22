@@ -1,62 +1,7 @@
 import { rimraf, winPath } from '@umijs/utils';
 import { mkdirSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
-import { dependenceDiff, figureOutExport } from './utils';
-
-test('dependenceDiff', () => {
-  expect(
-    dependenceDiff(
-      {
-        antd: '4.0.0',
-      },
-      {
-        antd: '3.0.0',
-      },
-    ),
-  ).toEqual('MODIFY');
-  expect(
-    dependenceDiff(
-      {
-        antd: '4.0.0',
-      },
-      {
-        antd: '4.0.0',
-        lodash: '0.0.0',
-      },
-    ),
-  ).toEqual('ADD');
-  expect(
-    dependenceDiff(
-      {
-        antd: '4.0.0',
-        lodash: '0.0.0',
-      },
-      {
-        antd: '4.0.0',
-      },
-    ),
-  ).toEqual('REMOVE');
-  expect(
-    dependenceDiff(
-      {
-        antd: '4.0.0',
-        lodash: '0.0.0',
-      },
-      {
-        antd: '3.0.0',
-      },
-    ),
-  ).toEqual('MODIFY');
-});
-
-// test('get export statement', () => {
-//   expect(getExportStatement('react', true)).toEqual(
-//     'import _ from "react";\nexport default _;\nexport * from "react";',
-//   );
-//   expect(getExportStatement('react', false)).toEqual(
-//     'import * as _ from "react";\nexport default _;\nexport * from "react";',
-//   );
-// });
+import { figureOutExport } from './utils';
 
 xtest('figure out export', async () => {
   const testPath = winPath(join(__dirname, '.umi-test'));

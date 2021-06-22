@@ -46,6 +46,7 @@ export interface IOpts {
   port?: number;
   babelOpts?: object;
   babelOptsForDep?: object;
+  mfsu?: boolean;
   targets?: any;
   browserslist?: any;
   bundleImplementor?: typeof defaultWebpack;
@@ -69,6 +70,7 @@ export default async function getConfig(
     entry,
     hot,
     port,
+    mfsu,
     bundleImplementor = defaultWebpack,
     modifyBabelOpts,
     modifyBabelPresetOpts,
@@ -110,7 +112,7 @@ export default async function getConfig(
       : devtool,
   );
 
-  const useHash = config.hash && isProd;
+  const useHash = (mfsu && isDev) || (config.hash && isProd);
   const absOutputPath = join(cwd, config.outputPath || 'dist');
 
   webpackConfig.output
@@ -177,6 +179,7 @@ export default async function getConfig(
   if (modifyBabelPresetOpts) {
     presetOpts = await modifyBabelPresetOpts(presetOpts, {
       type,
+      mfsu,
     });
   }
   let babelOpts = getBabelOpts({
@@ -187,6 +190,7 @@ export default async function getConfig(
   if (modifyBabelOpts) {
     babelOpts = await modifyBabelOpts(babelOpts, {
       type,
+      mfsu,
     });
   }
 
@@ -200,7 +204,12 @@ export default async function getConfig(
         // issue: https://github.com/umijs/umi/issues/5594
         ...(process.env.APP_ROOT ? [process.cwd()] : [])
       ]).end()
-      .exclude.add(/node_modules/).end()
+      .exclude
+        .add(/node_modules/)
+        // don't compile mfsu temp files
+        // TODO: do not hard code
+        .add(/\.mfsu/)
+        .end()
       .use('babel-loader')
         .loader(require.resolve('@umijs/deps/compiled/babel-loader'))
         .options(babelOpts);
@@ -418,7 +427,12 @@ export default async function getConfig(
     webpackConfig
       .plugin('progress')
       .use(require.resolve('@umijs/deps/compiled/webpackbar'), [
-        config.ssr
+        mfsu
+          ? {
+              name: 'MFSU',
+              color: '#faac00',
+            }
+          : config.ssr
           ? { name: type === BundlerConfigType.ssr ? 'Server' : 'Client' }
           : {},
       ]);
@@ -513,7 +527,8 @@ export default async function getConfig(
   webpackConfig.when(
     isDev,
     (webpackConfig) => {
-      if (hot) {
+      // mfsu 构建如果有 hmr，会和主应用的 hmr 冲突，因为公用一套全局变量
+      if (!mfsu && hot) {
         webpackConfig
           .plugin('hmr')
           .use(bundleImplementor.HotModuleReplacementPlugin);
@@ -582,6 +597,7 @@ export default async function getConfig(
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
       type,
+      mfsu,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
     });

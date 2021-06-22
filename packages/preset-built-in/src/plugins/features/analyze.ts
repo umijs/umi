@@ -35,10 +35,11 @@ export default (api: IApi) => {
     },
   });
   api.chainWebpack((webpackConfig, opts) => {
-    const { type } = opts;
+    const { type, mfsu } = opts;
     if (
-      (type == BundlerConfigType.csr && !process.env.ANALYZE_SSR) ||
-      (type === BundlerConfigType.ssr && !process.env.ANALYZE)
+      !mfsu &&
+      ((type == BundlerConfigType.csr && !process.env.ANALYZE_SSR) ||
+        (type === BundlerConfigType.ssr && !process.env.ANALYZE))
     ) {
       webpackConfig
         .plugin('bundle-analyzer')
