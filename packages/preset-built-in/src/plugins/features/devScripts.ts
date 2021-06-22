@@ -82,7 +82,7 @@ if (window.g_initWebpackHotDevClient) {
 
     function handleApplyUpdates(err: Error | null, updatedModules: any) {
       if (err || !updatedModules || window.g_getHadRuntimeError()) {
-        // window.location.reload();
+        window.location.reload();
         return;
       }
 
