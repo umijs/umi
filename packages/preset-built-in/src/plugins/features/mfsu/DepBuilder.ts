@@ -16,8 +16,8 @@ import { figureOutExport } from './utils';
 
 const debug = createDebug('umi:mfsu:DepBuilder');
 
-const normalizeDepPath = (dep: string) => {
-  return dep.replace(/\//g, '_');
+const normalizeDepPath = (dep: string, cwd: string) => {
+  return dep.replace(cwd, CWD).replace(/\//g, '_');
 };
 
 export default class DepBuilder {
@@ -80,7 +80,10 @@ export default class DepBuilder {
           webpackAlias,
         });
         writeFileSync(
-          join(this.tmpDir, normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`)),
+          join(
+            this.tmpDir,
+            normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`, this.api.cwd),
+          ),
           [await figureOutExport(this.api.cwd, requireFrom), '']
             .join('\n')
             .trimLeft(),
@@ -101,6 +104,8 @@ export default class DepBuilder {
     mfConfig.stats = 'none';
     mfConfig.entry = join(this.tmpDir, 'index.js');
     mfConfig.output!.path = this.tmpDir;
+    // disable devtool
+    mfConfig.devtool = false;
 
     // @ts-ignore
     if (mfConfig.cache && mfConfig.cache.cacheDirectory) {
@@ -114,7 +119,7 @@ export default class DepBuilder {
     Object.keys(deps).forEach((dep) => {
       exposes[`./${dep}`.replace(this.api.cwd, CWD)] = join(
         this.tmpDir,
-        normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`),
+        normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`, this.api.cwd),
       );
     });
 
