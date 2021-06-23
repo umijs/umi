@@ -40,7 +40,9 @@ const cjsModeEsmParser = (code: string) => {
     ...code.matchAll(
       /Object\.defineProperty\(\s*exports\s*\,\s*[\"|\'](\w+)[\"|\']/g,
     ),
-  ].map((result) => result[1]);
+  ]
+    .map((result) => result[1])
+    .concat([...code.matchAll(/exports\.(\w+)/g)].map((result) => result[1]));
 };
 
 export const filenameFallback = async (absPath: string): Promise<string> => {
