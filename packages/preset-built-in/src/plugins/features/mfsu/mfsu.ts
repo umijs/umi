@@ -133,7 +133,6 @@ export default function (api: IApi) {
     },
   });
 
-  // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
   api.modifyBabelPresetOpts({
     fn: (opts, args) => {
       return {
@@ -183,7 +182,6 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
-  // 为 babel 提供相关插件
   api.modifyBabelOpts({
     fn: async (opts) => {
       webpackAlias['core-js'] = dirname(
@@ -215,7 +213,6 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
-  /** 暴露文件 */
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const { pathname } = url.parse(req.url);
@@ -242,7 +239,7 @@ export default function (api: IApi) {
     };
   });
 
-  /** 修改 webpack 配置 */
+  // 修改 webpack 配置
   api.register({
     key: 'modifyBundleConfig',
     fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
