@@ -371,6 +371,10 @@ export interface BaseIConfig extends IConfigCore {
   lessLoader?: object;
   links?: Partial<HTMLLinkElement>[];
   manifest?: Partial<IManifest>;
+  mfsu?: {
+    development?: { output?: string };
+    production?: { output?: string };
+  };
   metas?: Partial<HTMLMetaElement>[];
   mpa?: object;
   mock?: { exclude?: string[] };

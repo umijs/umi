@@ -104,6 +104,8 @@ export default class DepBuilder {
     mfConfig.stats = 'none';
     mfConfig.entry = join(this.tmpDir, 'index.js');
     mfConfig.output!.path = this.tmpDir;
+    // disable devtool
+    mfConfig.devtool = false;
 
     // @ts-ignore
     if (mfConfig.cache && mfConfig.cache.cacheDirectory) {
