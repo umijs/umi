@@ -161,7 +161,6 @@ export const figureOutExport = async (
   cwd: string,
   entry: string,
 ): Promise<string> => {
-  /dumi/.test(entry) && console.log(console.log(entry));
   if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
     return readPathImport(winPath(entry));
   } else {
