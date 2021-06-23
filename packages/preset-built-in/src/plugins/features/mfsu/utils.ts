@@ -35,7 +35,7 @@ export const copy = (fromDir: string, toDir: string) => {
   }
 };
 
-const cjsModeEsmParser = (code: string) => {
+export const cjsModeEsmParser = (code: string) => {
   return [
     ...code.matchAll(
       /Object\.defineProperty\(\s*exports\s*\,\s*[\"|\'](\w+)[\"|\']/g,
