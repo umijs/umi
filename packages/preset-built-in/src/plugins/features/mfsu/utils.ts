@@ -35,6 +35,14 @@ export const copy = (fromDir: string, toDir: string) => {
   }
 };
 
+const cjsModeEsmParser = (code: string) => {
+  return [
+    ...code.matchAll(
+      /Object\.defineProperty\(\s*exports\s*\,\s*[\"|\'](\w+)[\"|\']/g,
+    ),
+  ].map((result) => result[1]);
+};
+
 export const filenameFallback = async (absPath: string): Promise<string> => {
   try {
     const exts = ['.esm.js', '.mjs', '.js', '.ts', '.jsx', '.tsx'];
@@ -87,6 +95,14 @@ const parseFileExport = async (filePath: string, packageName: string) => {
     }
     // cjs
     if (!imports.length && !exports.length) {
+      const cjsModeEsmExport = cjsModeEsmParser(file);
+      if (cjsModeEsmExport && cjsModeEsmExport.includes('__esModule')) {
+        if (cjsModeEsmExport.includes('default')) {
+          return getExportStatement(packageName, false, true);
+        } else {
+          return getExportStatement(packageName, false, false);
+        }
+      }
       return getExportStatement(packageName, true, false);
     }
     // esm
@@ -145,13 +161,10 @@ export const figureOutExport = async (
   cwd: string,
   entry: string,
 ): Promise<string> => {
-  try {
-    if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
-      return readPathImport(winPath(entry));
-    } else {
-      return readPackageImport(join(cwd, 'node_modules', entry), entry);
-    }
-  } catch (error) {
-    throw error;
+  /dumi/.test(entry) && console.log(console.log(entry));
+  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
+    return readPathImport(winPath(entry));
+  } else {
+    return readPackageImport(join(cwd, 'node_modules', entry), entry);
   }
 };
