@@ -19,9 +19,7 @@ const debug = createDebug('umi:mfsu');
 export type TMode = 'production' | 'development';
 
 export const checkConfig = (api: IApi) => {
-  const { webpack5, dynamicImport, mfsu } = api.config;
-  assert(webpack5, `[MFSU] mfsu need webpack5 config.`);
-  assert(dynamicImport, `[MFSU] mfsu need dynamicImport config.`);
+  const { mfsu } = api.config;
 
   // .mfsu directory do not match babel-loader
   if (mfsu && mfsu.development && mfsu.development.output) {
@@ -98,6 +96,15 @@ export default function (api: IApi) {
     });
   });
 
+  api.modifyConfig((memo) => {
+    return {
+      ...memo,
+
+      // enable dynamicImport when mfsu is enabled
+      dynamicImport: memo.dynamicImport || {},
+    };
+  });
+
   api.onBuildComplete(async ({ err }) => {
     if (err) return;
     debug(`build deps in production`);
@@ -129,7 +136,7 @@ export default function (api: IApi) {
       return (
         (api.env === 'development' && api.userConfig.mfsu) ||
         (api.env === 'production' && api.userConfig.mfsu?.production) ||
-        process.env.MFSUC
+        process.env.ENABLE_MFSU
       );
     },
   });
