@@ -136,7 +136,7 @@ export default function (api: IApi) {
       return (
         (api.env === 'development' && api.userConfig.mfsu) ||
         (api.env === 'production' && api.userConfig.mfsu?.production) ||
-        process.env.MFSUC
+        process.env.ENABLE_MFSU
       );
     },
   });
