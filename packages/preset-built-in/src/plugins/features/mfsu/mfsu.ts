@@ -40,11 +40,13 @@ export const checkConfig = (api: IApi) => {
 
 export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   if (mode === 'development') {
+    //@ts-ignore
     const configPath = api.config.mfsu?.development?.output;
     return configPath
       ? join(api.cwd, configPath)
       : join(api.paths.absTmpPath!, '.cache', '.mfsu');
   } else {
+    //@ts-ignore
     const configPath = api.config.mfsu?.production?.output;
     return configPath
       ? join(api.cwd, configPath)
@@ -127,6 +129,7 @@ export default function (api: IApi) {
     enableBy() {
       return (
         (api.env === 'development' && api.config.mfsu) ||
+        //@ts-ignore
         (api.env === 'production' && api.config.mfsu?.production) ||
         process.env.MFSUC
       );
