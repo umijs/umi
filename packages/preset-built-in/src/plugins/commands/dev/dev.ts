@@ -35,6 +35,8 @@ export default (api: IApi) => {
       }
       // store client build chunks
       sharedMap.set('chunks', stats.compilation.chunks);
+
+      // mfsu ad
       if (process.env.MFSU_AD !== 'none') {
         const { startTime = 0, endTime = 0 } = stats || {};
         const diff = endTime - startTime;
