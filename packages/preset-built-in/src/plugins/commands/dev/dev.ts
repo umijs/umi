@@ -28,13 +28,31 @@ export default (api: IApi) => {
   const sharedMap = new Map();
 
   api.onDevCompileDone({
-    fn({ stats, type }) {
+    fn({ stats, type, isFirstCompile }) {
       // don't need ssr bundler chunks
       if (type === BundlerConfigType.ssr) {
         return;
       }
       // store client build chunks
       sharedMap.set('chunks', stats.compilation.chunks);
+
+      // mfsu ad
+      if (process.env.MFSU_AD !== 'none') {
+        const { startTime = 0, endTime = 0 } = stats || {};
+        const diff = endTime - startTime;
+        const devStartTips =
+          '启动时间有点慢，试试新出的 MFSU 方案，1s+ 完成启动，详见 https://github.com/umijs/umi/issues/6766';
+        const hmrTips =
+          '热更新有点慢，试试新出的 MFSU 方案，让热更新回到 500ms 内，详见 https://github.com/umijs/umi/issues/6766';
+        if (isFirstCompile && diff > 30000) {
+          console.log();
+          console.log(chalk.red.bold(devStartTips));
+        }
+        if (!isFirstCompile && diff > 3000) {
+          console.log();
+          console.log(chalk.red.bold(hmrTips));
+        }
+      }
     },
     // 在 commands/dev/dev.ts 的 onDevCompileDone 前执行，避免卡主
     stage: -1,
