@@ -54,6 +54,7 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
 
 export default function (api: IApi) {
   const webpackAlias = {};
+  const webpackExternals = {};
   let depInfo: DepInfo;
   let depBuilder: DepBuilder;
   let mode: TMode = 'development';
@@ -143,7 +144,8 @@ export default function (api: IApi) {
               importToAwaitRequire: {
                 remoteName: MF_NAME,
                 matchAll: true,
-                webpackAlias: webpackAlias,
+                webpackAlias,
+                webpackExternals,
                 alias: {
                   [api.cwd]: '$CWD$',
                 },
@@ -245,6 +247,11 @@ export default function (api: IApi) {
     fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
       if (type === BundlerConfigType.csr) {
         Object.assign(webpackAlias, memo.resolve!.alias || {});
+        assert(
+          typeof (memo.externals || {}) === 'object',
+          `[MFSU] Unsupported externals config format, only support object, but got ${memo.externals}`,
+        );
+        Object.assign(webpackExternals, memo.externals || {});
 
         if (!mfsu) {
           const remotePath = api.config.publicPath;
