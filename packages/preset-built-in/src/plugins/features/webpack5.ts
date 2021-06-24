@@ -4,7 +4,15 @@ import { join } from 'path';
 export default (api: IApi) => {
   api.describe({
     key: 'webpack5',
-    enableBy: api.EnableBy.config,
+    enableBy() {
+      return (
+        // 需要和 USE_WEBPACK_5 区分开，因为有 mfsu 配置不一定开启 webpack 5
+        process.env.ENABLE_WEBPACK_5 ||
+        api.userConfig.webpack5 ||
+        (api.env === 'development' && api.userConfig.mfsu) ||
+        (api.env === 'production' && api.userConfig.mfsu?.production)
+      );
+    },
     config: {
       schema(joi) {
         return joi.object().keys({
@@ -35,7 +43,7 @@ export default (api: IApi) => {
   api.modifyBundleConfig((memo) => {
     // lazy compilation
     // @ts-ignore
-    if (api.env === 'development' && api.config.webpack5.lazyCompilation) {
+    if (api.env === 'development' && api.config.webpack5?.lazyCompilation) {
       // @ts-ignore
       memo.experiments = {
         // @ts-ignore

@@ -1,7 +1,10 @@
 import { init as initRequreHook } from '@umijs/bundler-webpack/lib/requireHook';
 import { init } from '@umijs/deps/compiled/webpack';
+import { createDebug } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+
+const debug = createDebug('umi:cli:initWebpack');
 
 const DEFAULT_CONFIG_FILES = [
   '.umirc.ts',
@@ -31,9 +34,15 @@ export default () => {
 
   // TODO: detect with ast
   const haveWebpack5 =
-    configContent.includes('webpack5:') &&
-    !configContent.includes('// webpack5:') &&
-    !configContent.includes('//webpack5:');
+    (configContent.includes('webpack5:') &&
+      !configContent.includes('// webpack5:') &&
+      !configContent.includes('//webpack5:')) ||
+    (configContent.includes('mfsu:') &&
+      !configContent.includes('// mfsu:') &&
+      !configContent.includes('//mfsu:'));
+
+  debug(`haveWebpack5: ${haveWebpack5}`);
+  debug(`process.env.USE_WEBPACK_5: ${process.env.USE_WEBPACK_5}`);
 
   if (haveWebpack5 || process.env.USE_WEBPACK_5) {
     process.env.USE_WEBPACK_5 = '1';
