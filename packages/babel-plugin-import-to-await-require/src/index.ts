@@ -8,12 +8,17 @@ interface IAlias {
   [key: string]: string;
 }
 
+interface IExternals {
+  [key: string]: string;
+}
+
 export interface IOpts {
   libs?: TLibs;
   matchAll?: boolean;
   remoteName: string;
   alias?: IAlias;
   webpackAlias?: IAlias;
+  webpackExternals?: IExternals;
   onTransformDeps?: Function;
   exportAllMembers?: Record<string, string[]>;
 }
@@ -70,10 +75,16 @@ function isMatchLib(
   remoteName: string,
   alias: IAlias,
   webpackAlias: IAlias,
+  webpackExternals: IExternals,
 ) {
   if (matchAll) {
     if (path === 'umi' || path === 'dumi') return false;
     if (path.startsWith(`${remoteName}/`)) return false;
+
+    // TODO: support more external types
+    if (typeof webpackExternals === 'object' && webpackExternals[path]) {
+      return false;
+    }
 
     if (isAbsolute(path)) {
       return RE_NODE_MODULES.test(path) || RE_UMI_LOCAL_DEV.test(path);
@@ -129,6 +140,7 @@ export default function () {
                 opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
+                opts.webpackExternals || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -184,6 +196,7 @@ export default function () {
                 opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
+                opts.webpackExternals || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -237,6 +250,7 @@ export default function () {
                 opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
+                opts.webpackExternals || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -291,6 +305,7 @@ export default function () {
             opts.remoteName,
             opts.alias || {},
             opts.webpackAlias || {},
+            opts.webpackExternals || {},
           );
           opts.onTransformDeps?.({
             source: value,

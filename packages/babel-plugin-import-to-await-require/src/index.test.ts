@@ -327,6 +327,28 @@ a;
   );
 });
 
+test('match all externals', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from 'bar'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackExternals: {
+          bar: 'window.Bar',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from 'bar';
+a;
+    `.trim(),
+  );
+});
+
 test('match all node_modules alias', () => {
   expect(
     transformWithPlugin(
