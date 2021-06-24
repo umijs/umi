@@ -40,12 +40,12 @@ export const checkConfig = (api: IApi) => {
 
 export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   if (mode === 'development') {
-    const configPath = api.userConfig.mfsu?.development?.output;
+    const configPath = api.config.mfsu?.development?.output;
     return configPath
       ? join(api.cwd, configPath)
       : join(api.paths.absTmpPath!, '.cache', '.mfsu');
   } else {
-    const configPath = api.userConfig.mfsu?.production?.output;
+    const configPath = api.config.mfsu?.production?.output;
     return configPath
       ? join(api.cwd, configPath)
       : join(api.cwd, './.mfsu-production');
@@ -126,8 +126,8 @@ export default function (api: IApi) {
     },
     enableBy() {
       return (
-        (api.env === 'development' && api.userConfig.mfsu) ||
-        (api.env === 'production' && api.userConfig.mfsu?.production) ||
+        (api.env === 'development' && api.config.mfsu) ||
+        (api.env === 'production' && api.config.mfsu?.production) ||
         process.env.MFSUC
       );
     },
@@ -217,7 +217,7 @@ export default function (api: IApi) {
     return (req, res, next) => {
       const { pathname } = url.parse(req.url);
       if (
-        !api.userConfig.mfsu ||
+        !api.config.mfsu ||
         req.url === '/' ||
         !existsSync(
           join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
@@ -248,6 +248,9 @@ export default function (api: IApi) {
 
         if (!mfsu) {
           const remotePath = api.config.publicPath;
+          // Cannot read property 'ModuleFederationPlugin' of undefined
+          // webpack5 has to be used, but it's not.
+          // It can be opened through environment variable USE_WEBPACK_5
           memo.plugins.push(
             new webpack.container.ModuleFederationPlugin({
               name: 'umi-app',

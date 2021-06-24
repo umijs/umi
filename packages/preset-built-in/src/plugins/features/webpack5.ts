@@ -4,7 +4,9 @@ import { join } from 'path';
 export default (api: IApi) => {
   api.describe({
     key: 'webpack5',
-    enableBy: api.EnableBy.config,
+    // support configure enable in modifyDefaultConfig
+    // It needs to be combined with USE_WEBPACK_5 for normal use
+    // enableBy: api.EnableBy.config,
     config: {
       schema(joi) {
         return joi.object().keys({
@@ -35,7 +37,7 @@ export default (api: IApi) => {
   api.modifyBundleConfig((memo) => {
     // lazy compilation
     // @ts-ignore
-    if (api.env === 'development' && api.config.webpack5.lazyCompilation) {
+    if (api.env === 'development' && api.config?.webpack5?.lazyCompilation) {
       // @ts-ignore
       memo.experiments = {
         // @ts-ignore

@@ -5,7 +5,7 @@ import { getMfsuPath } from './mfsu';
 test('functions: get mfsu path', () => {
   // @ts-ignore
   let api: IApi = {
-    userConfig: {
+    config: {
       mfsu: {
         development: {
           output: './foo/bar',
