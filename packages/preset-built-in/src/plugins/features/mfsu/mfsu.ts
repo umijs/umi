@@ -200,6 +200,7 @@ export default function (api: IApi) {
         'regenerator-runtime/runtime',
       );
 
+      // @ts-ignore
       const umiRedirect = await getUmiRedirect(process.env.UMI_DIR);
 
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
