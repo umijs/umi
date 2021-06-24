@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { cjsModeEsmParser, figureOutExport } from './utils';
 
-xtest('figure out export', async () => {
+test('figure out export', async () => {
   const testPath = winPath(join(__dirname, '.umi-test'));
   const testNodeModules = winPath(join(testPath, 'node_modules'));
   rimraf.sync(testPath);
@@ -34,7 +34,7 @@ xtest('figure out export', async () => {
   `,
   );
   expect(await figureOutExport(testPath, 'foo')).toEqual(
-    `import * as _ from "foo";\nexport default _;\nexport * from "foo";`,
+    `import _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
   // abs path import
   let asbPath = winPath(resolve(testNodeModules, 'bar'));
@@ -70,7 +70,7 @@ xtest('figure out export', async () => {
   asbPath = winPath(resolve(testNodeModules, 'yyy', 'dist', 'index.js'));
   writeFileSync(asbPath, 'exports.a = "1";');
   expect(await figureOutExport(testPath, asbPath)).toEqual(
-    `import * as _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
+    `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 });
 
