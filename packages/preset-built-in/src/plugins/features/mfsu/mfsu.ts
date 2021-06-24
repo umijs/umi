@@ -200,6 +200,9 @@ export default function (api: IApi) {
         'regenerator-runtime/runtime',
       );
 
+      // @ts-ignore
+      const umiRedirect = await getUmiRedirect(process.env.UMI_DIR);
+
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
       opts.presets?.forEach((preset) => {
         if (preset instanceof Array && /babel-preset-umi/.test(preset[0])) {
@@ -211,8 +214,8 @@ export default function (api: IApi) {
         [
           BabelImportRedirectPlugin,
           {
-            // @ts-ignore
-            umi: await getUmiRedirect(process.env.UMI_DIR),
+            umi: umiRedirect,
+            dumi: umiRedirect,
           },
         ],
         ...opts.plugins,
