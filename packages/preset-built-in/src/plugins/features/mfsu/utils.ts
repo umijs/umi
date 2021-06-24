@@ -62,7 +62,7 @@ export const filenameFallback = async (absPath: string): Promise<string> => {
     if (existsSync(indexJs)) {
       return parseFileExport(indexJs, indexJs);
     }
-    return `import "${absPath}"; export {}; // filename fallback`;
+    return `import "${winPath(absPath)}"; export {}; // filename fallback`;
   } catch (error) {
     throw error;
   }
@@ -115,7 +115,9 @@ const parseFileExport = async (filePath: string, packageName: string) => {
         exports.includes('default'),
       );
     } else {
-      return `import "${packageName}"; export {}; // no export fallback`;
+      return `import "${winPath(
+        packageName,
+      )}"; export {}; // no export fallback`;
     }
   } catch (error) {
     throw error;
@@ -163,9 +165,9 @@ export const figureOutExport = async (
   cwd: string,
   entry: string,
 ): Promise<string> => {
-  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(winPath(entry))) {
-    return readPathImport(winPath(entry));
+  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(entry)) {
+    return readPathImport(entry);
   } else {
-    return readPackageImport(join(cwd, 'node_modules', entry), entry);
+    return readPackageImport(winPath(join(cwd, 'node_modules', entry)), entry);
   }
 };

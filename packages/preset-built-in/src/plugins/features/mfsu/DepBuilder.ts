@@ -1,7 +1,7 @@
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import { Compiler } from '@umijs/deps/compiled/webpack';
 import { IApi } from '@umijs/types';
-import { createDebug, lodash } from '@umijs/utils';
+import { createDebug, lodash, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
@@ -17,7 +17,7 @@ import { figureOutExport } from './utils';
 const debug = createDebug('umi:mfsu:DepBuilder');
 
 const normalizeDepPath = (dep: string, cwd: string) => {
-  return dep.replace(cwd, CWD).replace(/\//g, '_');
+  return dep.replace(cwd, CWD).replace(/\//g, '_').replace(/\:/g, '_');
 };
 
 export default class DepBuilder {
@@ -80,11 +80,13 @@ export default class DepBuilder {
           webpackAlias,
         });
         writeFileSync(
-          join(
-            this.tmpDir,
-            normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`, this.api.cwd),
+          winPath(
+            join(
+              this.tmpDir,
+              normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`, this.api.cwd),
+            ),
           ),
-          [await figureOutExport(this.api.cwd, requireFrom), '']
+          [await figureOutExport(this.api.cwd, winPath(requireFrom)), '']
             .join('\n')
             .trimLeft(),
           'utf-8',
