@@ -100,6 +100,8 @@ test('cjs mode esm', () => {
   exports {Love};
 
   exportsILoveYou = "1";
+
+  exports["something"] = undefined;
   
   `;
 
@@ -109,5 +111,6 @@ test('cjs mode esm', () => {
     'bbbb',
     'Foo',
     'default',
+    'something',
   ]);
 });

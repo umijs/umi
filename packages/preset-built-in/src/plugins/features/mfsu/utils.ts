@@ -42,7 +42,13 @@ export const cjsModeEsmParser = (code: string) => {
     ),
   ]
     .map((result) => result[1])
-    .concat([...code.matchAll(/exports\.(\w+)/g)].map((result) => result[1]));
+    .concat(
+      [...code.matchAll(/exports(\.|\[(\'|\"))(\w+)(\s*|(\'|\")\])\s*\=/g)].map(
+        (result) => {
+          return result[Math.floor(result.length / 2)];
+        },
+      ),
+    );
 };
 
 export const filenameFallback = async (absPath: string): Promise<string> => {
