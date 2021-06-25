@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 
@@ -50,19 +51,19 @@ export function getFilePath(path: string) {
   // 2. 加后缀
   const pathWithExt = getPathWithExt(path);
   if (pathWithExt) {
-    return pathWithExt;
+    return winPath(pathWithExt);
   }
 
   // 3. path + package.json
   const pathWithPkgJSON = getPathWithPkgJSON(path);
   if (pathWithPkgJSON) {
-    return pathWithPkgJSON;
+    return winPath(pathWithPkgJSON);
   }
 
   // 4. path + index.js
   const pathWithIndexFile = getPathWithIndexFile(path);
   if (pathWithIndexFile) {
-    return pathWithIndexFile;
+    return winPath(pathWithIndexFile);
   }
 
   return null;
