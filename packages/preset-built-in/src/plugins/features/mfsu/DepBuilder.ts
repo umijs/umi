@@ -92,9 +92,11 @@ export default class DepBuilder {
           'utf-8',
         );
       } catch (err) {
-        throw new Error(
-          '[MFSU] Build virtual application failed.' + err.message,
+        const e = new Error(
+          `[MFSU] Build virtual application failed since ${err.message}.`,
         );
+        e.stack = err.stack;
+        throw e;
       }
     }
 
