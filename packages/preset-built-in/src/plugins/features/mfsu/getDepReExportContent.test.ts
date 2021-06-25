@@ -122,7 +122,7 @@ exports.Foo = void 0;
   ).toEqual(`export * from 'foo';`);
 });
 
-test('cjs mode esm', () => {
+test('cjs mode esm parser', () => {
   const file = `
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -140,6 +140,7 @@ test('cjs mode esm', () => {
   exports.default = "123123";
   exports {Love};
   exportsILoveYou = "1";
+  exports["something"] = undefined;
   `;
   expect(cjsModeEsmParser(file)).toEqual([
     '__esModule',
@@ -147,5 +148,6 @@ test('cjs mode esm', () => {
     'bbbb',
     'Foo',
     'default',
+    'something',
   ]);
 });
