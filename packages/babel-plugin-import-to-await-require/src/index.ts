@@ -52,9 +52,20 @@ const RE_UMI_LOCAL_DEV = /umi\/packages\//;
 
 function getAlias(opts: { path: string; webpackAlias: IAlias }) {
   for (const key of Object.keys(opts.webpackAlias)) {
+    const value = opts.webpackAlias[key];
+    // exact alias
+    // ref: https://webpack.js.org/configuration/resolve/#resolvealias
+    if (key.endsWith('$')) {
+      if (opts.path === key.slice(0, -1)) return value;
+      continue;
+    }
+
+    if (opts.path === key) {
+      return value;
+    }
     const path = isJSFile(opts.webpackAlias[key]) ? key : addLastSlash(key);
     if (opts.path.startsWith(path)) {
-      return opts.webpackAlias[key];
+      return value;
     }
   }
   return null;

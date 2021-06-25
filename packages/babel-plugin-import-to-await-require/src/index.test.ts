@@ -373,6 +373,113 @@ a;
   );
 });
 
+test('match all alias equal', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react': '/test/node_modules/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@alipay/bigfish/react");
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react': '/test/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@alipay/bigfish/react';
+a;
+    `.trim(),
+  );
+});
+
+test('match all alias exact', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react$': '/test/node_modules/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@alipay/bigfish/react");
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react$': '/test/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@alipay/bigfish/react';
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react/haha'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react$': '/test/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@alipay/bigfish/react/haha");
+a;
+    `.trim(),
+  );
+});
+
 test('match all dep without alias', () => {
   expect(
     transformWithPlugin(
