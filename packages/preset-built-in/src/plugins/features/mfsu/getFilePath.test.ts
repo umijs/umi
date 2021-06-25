@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { join } from 'path';
 import { getFilePath } from './getFilePath';
 
@@ -5,7 +6,7 @@ const fixtures = join(__dirname, 'fixtures', 'getFilePath');
 
 function format(path: string | null) {
   if (!path) return path;
-  return path.replace(fixtures, '$CWD$');
+  return path.replace(winPath(fixtures), '$CWD$');
 }
 
 test('file exists', () => {
