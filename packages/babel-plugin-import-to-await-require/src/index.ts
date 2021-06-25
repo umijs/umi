@@ -89,7 +89,8 @@ function isMatchLib(
   webpackExternals: IExternals,
 ) {
   if (matchAll) {
-    if (path === 'umi' || path === 'dumi') return false;
+    if (path === 'umi' || path === 'dumi' || path === '@alipay/bigfish')
+      return false;
     if (path.startsWith(`${remoteName}/`)) return false;
     // e.g. @umijs/deps/compiled/babel/svgr-webpack.js?-svgo,+titleProp,+ref!./umi.svg
     // dynamic path, don't match

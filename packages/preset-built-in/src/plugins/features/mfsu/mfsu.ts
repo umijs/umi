@@ -216,6 +216,7 @@ export default function (api: IApi) {
           {
             umi: umiRedirect,
             dumi: umiRedirect,
+            '@alipay/bigfish': umiRedirect,
           },
         ],
         ...opts.plugins,
