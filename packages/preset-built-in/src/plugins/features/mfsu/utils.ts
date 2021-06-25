@@ -1,5 +1,4 @@
 import { winPath } from '@umijs/utils';
-import { init, parse } from 'es-module-lexer';
 import {
   copyFileSync,
   existsSync,
@@ -8,7 +7,8 @@ import {
   readFileSync,
   statSync,
 } from 'fs';
-import { join, parse as pathParse } from 'path';
+import { isAbsolute, join, parse as pathParse } from 'path';
+import { getDepReExportContent } from './getDepReExportContent';
 
 export const copy = (fromDir: string, toDir: string) => {
   try {
@@ -68,60 +68,13 @@ export const filenameFallback = async (absPath: string): Promise<string> => {
   }
 };
 
-export const getExportStatement = (
-  importFrom: string,
-  cjs: boolean,
-  hasDefault: boolean,
-) =>
-  cjs
-    ? `import _ from "${winPath(
-        importFrom,
-      )}";\nexport default _;\nexport * from "${winPath(importFrom)}";`
-    : `${
-        hasDefault
-          ? `import _ from "${winPath(importFrom)}";\nexport default _;`
-          : ''
-      }\nexport * from "${winPath(importFrom)}";`;
-
 const parseFileExport = async (filePath: string, packageName: string) => {
-  try {
-    if (!existsSync(filePath)) {
-      return '';
-    }
-    const file = readFileSync(filePath, 'utf-8');
-    await init;
-    try {
-      var [imports, exports] = parse(file);
-    } catch (error) {
-      throw `parse ${filePath} error.` + error;
-    }
-    // cjs
-    if (!imports.length && !exports.length) {
-      const cjsModeEsmExport = cjsModeEsmParser(file);
-      if (cjsModeEsmExport && cjsModeEsmExport.includes('__esModule')) {
-        if (cjsModeEsmExport.includes('default')) {
-          return getExportStatement(packageName, false, true);
-        } else {
-          return getExportStatement(packageName, false, false);
-        }
-      }
-      return getExportStatement(packageName, true, false);
-    }
-    // esm
-    if (exports.length) {
-      return getExportStatement(
-        packageName,
-        false,
-        exports.includes('default'),
-      );
-    } else {
-      return `import "${winPath(
-        packageName,
-      )}"; export {}; // no export fallback`;
-    }
-  } catch (error) {
-    throw error;
-  }
+  const content = readFileSync(filePath, 'utf-8');
+  return getDepReExportContent({
+    content,
+    filePath,
+    importFrom: packageName,
+  });
 };
 
 const readPackageImport = (
@@ -163,11 +116,14 @@ const readPathImport = async (absPath: string) => {
 
 export const figureOutExport = async (
   cwd: string,
-  entry: string,
+  importFrom: string,
 ): Promise<string> => {
-  if (entry.startsWith('/') || /^[A-Za-z]\:\//.test(entry)) {
-    return readPathImport(entry);
+  if (isAbsolute(importFrom)) {
+    return readPathImport(importFrom);
   } else {
-    return readPackageImport(winPath(join(cwd, 'node_modules', entry)), entry);
+    return readPackageImport(
+      winPath(join(cwd, 'node_modules', importFrom)),
+      importFrom,
+    );
   }
 };
