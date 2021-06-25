@@ -37,7 +37,12 @@ export default (api: IApi) => {
       sharedMap.set('chunks', stats.compilation.chunks);
 
       // mfsu ad
-      if (process.env.MFSU_AD !== 'none') {
+      if (
+        // allow user to disable mfsu ad
+        process.env.MFSU_AD !== 'none' &&
+        // mfsu is not enable
+        !(api.config.mfsu || process.env.ENABLE_MFSU)
+      ) {
         const { startTime = 0, endTime = 0 } = stats || {};
         const diff = endTime - startTime;
         const devStartTips =
