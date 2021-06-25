@@ -27,7 +27,9 @@ function getPathWithPkgJSON(path: string) {
     if (existsSync(pkgPath)) {
       const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
       // ref: https://webpack.js.org/configuration/resolve/#resolvemainfields
-      const entry = pkg.browser || pkg.module || pkg.main || 'index.js';
+      // TODO: support browser object
+      // ref: https://unpkg.alibaba-inc.com/browse/react-dom@17.0.2/package.json
+      const entry = /*pkg.browser ||*/ pkg.module || pkg.main || 'index.js';
       return getPathWithExt(join(path, entry));
     }
   }
