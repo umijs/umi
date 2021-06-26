@@ -1,5 +1,10 @@
 // @ts-ignore
-import { createDebug, mergeConfig } from '@umijs/utils';
+import {
+  BabelRegister,
+  compatESModuleRequire,
+  createDebug,
+  mergeConfig,
+} from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { runCLI } from 'jest';
@@ -11,6 +16,9 @@ import { IUmiTestArgs, PickedJestCliOptions } from './types';
 const debug = createDebug('umi:test');
 
 export * from './utils';
+
+const useJestConfig = ['jest.config.js', 'jest.config.ts'];
+const babelRegister = new BabelRegister();
 
 export default async function (args: IUmiTestArgs) {
   process.env.NODE_ENV = 'test';
@@ -31,10 +39,19 @@ export default async function (args: IUmiTestArgs) {
   const cwd = args.cwd || process.cwd();
 
   // Read config from cwd/jest.config.js
-  const userJestConfigFile = join(cwd, 'jest.config.js');
-  const userJestConfig =
-    existsSync(userJestConfigFile) && require(userJestConfigFile);
+  const userJestConfigFiles = useJestConfig.map((configName) =>
+    join(cwd, configName),
+  );
+
+  const userJestConfig = userJestConfigFiles.find((configCwd) =>
+    existsSync(configCwd),
+  );
   debug(`config from jest.config.js: ${JSON.stringify(userJestConfig)}`);
+
+  if (userJestConfig) {
+    babelRegister.setOnlyMap({ key: 'jest-config', value: [userJestConfig] });
+  }
+  debug(`jest config: ${JSON.stringify(userJestConfig)}`);
 
   // Read jest config from package.json
   const packageJSONPath = join(cwd, 'package.json');
@@ -47,7 +64,7 @@ export default async function (args: IUmiTestArgs) {
   const config = mergeConfig(
     createDefaultConfig(cwd, args),
     packageJestConfig,
-    userJestConfig,
+    userJestConfig ? compatESModuleRequire(require(userJestConfig)) : {},
   );
   debug(`final config: ${JSON.stringify(config)}`);
 
