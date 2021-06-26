@@ -5,10 +5,17 @@ export async function getDepReExportContent(opts: {
   filePath?: string;
   importFrom: string;
 }) {
-  if (/\.css$/.test(opts.filePath || opts.importFrom)) {
+  if (opts.filePath && /\.(css|less|scss|sass)$/.test(opts.filePath)) {
     return `import '${opts.importFrom}';`;
   }
+
   try {
+    if (opts.filePath && !/\.(js|jsx|mjs|ts|tsx)$/.test(opts.filePath)) {
+      const matchResult = opts.filePath.match(/\.([a-zA-Z]+)$/);
+      throw new Error(
+        `${matchResult ? matchResult[0] : 'file type'} not support!`,
+      );
+    }
     const { exports, isCJS } = await parseWithCJSSupport(opts.content);
     // cjs
     if (isCJS) {
