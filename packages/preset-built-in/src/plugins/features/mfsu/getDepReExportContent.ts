@@ -5,6 +5,9 @@ export async function getDepReExportContent(opts: {
   filePath?: string;
   importFrom: string;
 }) {
+  if (/\.css$/.test(opts.filePath)) {
+    return `import '${opts.importFrom}';`;
+  }
   try {
     const { exports, isCJS } = await parseWithCJSSupport(opts.content);
     // cjs
