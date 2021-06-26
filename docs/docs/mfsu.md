@@ -8,13 +8,13 @@ MFSU is a speed-up package solution based on the new WebPack5 feature Module Fed
 
 Therefore, turning on MFSU can significantly reduce the time required for hot updates. In production mode, you can also greatly improve deployment efficiency by compiling dependencies ahead of time.
 
-## 提速效果
+## Speed up Effect
 
 Take the ANTD-Pro initialization project as an example:
 
-### dev 阶段
+### dev phase
 
-测试过程：
+The testing process：
 
 1. `yarn create umi`, select Ant-design-pro V5 to initialize the project.
 2. `yarn` install dependencies and start testing Normal mode.
@@ -28,7 +28,7 @@ As the number of dependencies increases, the improvement will be more pronounced
 
 > _**Time is life.**_ ———Lu xun
 
-### build 阶段
+### build phase
 
 <img src="https://img.alicdn.com/imgextra/i4/O1CN01oOSedp1PPYg64lvCB_!!6000000001833-2-tps-1304-936.png" width="50%" />
 
@@ -36,22 +36,22 @@ When MFSU production mode is enabled, it is recommended to pre-build in the loca
 
 > Due to unstable equipment performance, there may be partial error in the test.
 
-## 使用
+## Usage
 
-### 开发阶段
+### The development phase
 
 1. Initialize an UMI application.
 2. Add `webpack5:{}`, `dynamicImport:{}` and `mfsu:{}` to config.ts.
 3. `umi dev` starts the project. MFSU's progress bar appears while the dependency is being built. At this point the application may be suspended or the dependency may not exist. Please wait.
 4. When cooperating with multiple people, you can configure `mfsu.development.output` to precompile the dependency output directory and add it to Git. When other developers start up, you can avoid the process of compiling the dependency again.
 
-#### 特性
+#### features
 
 - Precompilation: By default, precompilation will build dependencies under `~/.umi/.cache/.mfsu`. The Webpack cache is also used to reduce the time required to recompile dependencies.
 - Diff: When precompiled, this dependency information is built into `~/.mfsu/ mfsu_cache. json` for the dependency diff.
 - Persistent cache: For requests with pre-compiled dependencies, `cache-control: max-age=31536000,immutable` is enabled, reducing the time it takes for the browser to refresh and pull dependencies.
 
-### 构建阶段
+### The construction phase
 
 > warning: Since the precompiled dependencies implement part of Tree-shaking, it is not recommended to enable production mode in a package size sensitive project.
 
@@ -60,7 +60,7 @@ When MFSU production mode is enabled, it is recommended to pre-build in the loca
 3. UMI builds the dependencies into `~/dist`, and MFSU moves the production precompiled dependencies into the output directory.
 4. You can add `~/.mfsu-production` to Git using MFSU production mode. At deployment time, only the application files are compiled, which is extremely fast.
 
-## 我正确开启了 mfsu 吗？
+## Did I turn on MFSU correctly?
 
 To get the best out of MFSU, all dependencies should be precompiled.
 
@@ -70,7 +70,7 @@ It is recommended that you check if the project dependencies are fully overwritt
 - Check webpack-analyze for dependencies loaded from `./node_modules`. If not, the project is dependent and overridden by MFSU.
 - If it still exists, please give us feedback through issue. We look forward to working with you to make MFSU better.
 
-## 在 antd-pro 中使用
+## Used in ANTD - Pro
 
 MFSU already has perfect support for ANTD-Pro and Dumi. Enabling MFSU in the default ANTD-Pro is as easy as using it in any other project:
 
@@ -78,7 +78,7 @@ MFSU already has perfect support for ANTD-Pro and Dumi. Enabling MFSU in the def
 mfsu: {},
 ```
 
-## 常见问题
+## Q&A
 
 ### 1. react: Invalid hook call. Hooks can only be called inside of the body of a function component
 
