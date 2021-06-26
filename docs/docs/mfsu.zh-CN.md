@@ -8,17 +8,19 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 因此，开启 mfsu 可以大幅减少热更新所需的时间。在生产模式，也可以通过提前编译依赖，大幅增加部署效率。
 
-<!-- ## 提速效果
+## 提速效果
 
 以 antd-pro 初始化项目为例：
 
 ### dev 阶段
 
-![基准测试](https://img.alicdn.com/imgextra/i1/O1CN01HwndzM1Y9pc4X1iFK_!!6000000003017-55-tps-1000-376.svg)
+![测试](https://img.alicdn.com/imgextra/i3/O1CN01HMNHEV1PSJ3N0tm9L_!!6000000001839-2-tps-1234-453.png)
 
-![大依赖场景](https://img.alicdn.com/imgextra/i1/O1CN01Kq9Omc1uWCVJx9QaT_!!6000000006044-55-tps-1000-376.svg)
+启用 mfsu 后，热启动得到 **10 倍** 提升。热更新提升 **50%** 以上。
 
-启用 mfsu 后，冷启动速度少量增加。热启动和热更新速度得到了极大提升，尤其在依赖数量增多时。
+随着依赖数量的增多，提升将会更加显著！
+
+> _**时间就是生命。**_ ———鲁迅
 
 ### build 阶段
 
@@ -26,7 +28,7 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 由于 mfsu 全量编译依赖，首次构建速度较慢。建议在本地环境将预构建完成，并将产物同步到 git，这样在服务器部署的时间将会压缩到 5s 左右！
 
-> 由于设备性能不稳定，测试可能存在部分误差 -->
+> 由于设备性能不稳定，测试可能存在部分误差
 
 ## 使用
 
