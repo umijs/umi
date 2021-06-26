@@ -44,9 +44,7 @@ import React from 'react';
 import './index.css';
 
 export default ({ children }) => (
-    <React.StrictMode>
-        {children}
-    </React.StrictMode>
+  <React.StrictMode>{children}</React.StrictMode>
 );
 ```
 
@@ -94,14 +92,16 @@ module.exports = {
 
 ### 增加测试配置引用
 
-新建配置文件 `jest.config.js`，编写如下配置：
+新建配置文件 `jest.config.js` or `jest.config.ts`，编写如下配置：
 
 ```js
 module.exports = {
-    "setupFilesAfterEnv": [
-        "<rootDir>/src/setupTests.js"
-    ]
-}
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+};
+// or
+export default {
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+};
 ```
 
 ### 使用 `umi-test` 替代 `react-scripts test`
