@@ -27,6 +27,12 @@ test('package json second', () => {
   ).toEqual(`$CWD$/package-json-second/foo/bar.js`);
 });
 
+test('package json directory', () => {
+  expect(
+    format(getFilePath(join(fixtures, 'package-json-directory', 'foo'))),
+  ).toEqual(`$CWD$/package-json-directory/foo/bar/index.js`);
+});
+
 test('directory index third', () => {
   expect(
     format(getFilePath(join(fixtures, 'directory-index-third', 'foo'))),
