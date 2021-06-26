@@ -30,14 +30,15 @@ function getPathWithPkgJSON(path: string) {
       // TODO: support browser object
       // ref: https://unpkg.alibaba-inc.com/browse/react-dom@17.0.2/package.json
       const entry = /*pkg.browser ||*/ pkg.module || pkg.main || 'index.js';
-      return getPathWithExt(join(path, entry));
+      const target = join(path, entry);
+      return getPathWithExt(target) || getPathWithIndexFile(target);
     }
   }
   return null;
 }
 
 function getPathWithIndexFile(path: string) {
-  if (statSync(path).isDirectory()) {
+  if (existsSync(path) && statSync(path).isDirectory()) {
     for (const extName of EXT_NAMES) {
       const indexFilePath = join(path, `index${extName}`);
       if (existsSync(indexFilePath) && statSync(indexFilePath).isFile()) {

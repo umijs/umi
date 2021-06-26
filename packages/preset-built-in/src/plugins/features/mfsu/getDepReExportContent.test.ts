@@ -3,16 +3,32 @@ import {
   getDepReExportContent,
 } from './getDepReExportContent';
 
-xtest('parse failed', () => {
-  expect(() => {
-    getDepReExportContent({
+test('parse failed', async () => {
+  try {
+    await getDepReExportContent({
       content: `foo(;`,
       importFrom: ``,
       filePath: 'bar.ts',
-    }).catch((e) => {
-      throw e;
     });
-  }).toThrow(/Parse file bar.ts failed,/);
+  } catch (e) {
+    expect(e).toEqual(new Error('Parse file bar.ts failed, Parse error @:1:1'));
+  }
+});
+
+test('not support file type', async () => {
+  try {
+    await getDepReExportContent({
+      content: `
+        im txt.
+      `,
+      filePath: `foo/bar.txt`,
+      importFrom: 'foo/bar.txt',
+    });
+  } catch (e) {
+    expect(e).toEqual(
+      new Error('Parse file foo/bar.txt failed, .txt not support!'),
+    );
+  }
 });
 
 test('esm export default', async () => {
