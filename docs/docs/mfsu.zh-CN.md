@@ -14,6 +14,12 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 ### dev 阶段
 
+测试过程：
+
+1. `yarn create umi`，选择 ant-design-pro v5 初始化项目。
+2. `yarn` 安装依赖，开始测试 normal 模式。
+3. 删除 `.umi` 缓存目录，开启 mfsu 开始测试 mfsu 模式。
+
 ![测试](https://img.alicdn.com/imgextra/i3/O1CN01HMNHEV1PSJ3N0tm9L_!!6000000001839-2-tps-1234-453.png)
 
 启用 mfsu 后，热启动得到 **10 倍** 提升。热更新提升 **50%** 以上。
@@ -41,9 +47,9 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 #### 特性
 
-1. 预编译：默认情况下，预编译将会将依赖构建到 `~/.umi/.cache/.mfsu` 下。并且使用了 webpack 缓存，减少再次编译依赖的时间。
-2. diff：预编译时，会将本次的依赖信息构建到 `~/.mfsu/MFSU_CACHE.json` 中，用于依赖的 diff。
-3. 持久化缓存：对于预编译依赖的请求，开启了`cache-control: max-age=31536000,immutable`，减少浏览器刷新拉取依赖的时间。
+- 预编译：默认情况下，预编译将会将依赖构建到 `~/.umi/.cache/.mfsu` 下。并且使用了 webpack 缓存，减少再次编译依赖的时间。
+- diff：预编译时，会将本次的依赖信息构建到 `~/.mfsu/MFSU_CACHE.json` 中，用于依赖的 diff。
+- 持久化缓存：对于预编译依赖的请求，开启了`cache-control: max-age=31536000,immutable`，减少浏览器刷新拉取依赖的时间。
 
 ### 构建阶段
 

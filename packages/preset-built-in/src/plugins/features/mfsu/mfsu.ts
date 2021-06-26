@@ -96,13 +96,19 @@ export default function (api: IApi) {
     });
   });
 
-  api.modifyConfig((memo) => {
-    return {
-      ...memo,
+  api.modifyConfig({
+    fn(memo) {
+      return {
+        ...memo,
 
-      // enable dynamicImport when mfsu is enabled
-      dynamicImport: memo.dynamicImport || {},
-    };
+        // Always enable dynamicImport when mfsu is enabled
+        dynamicImport: memo.dynamicImport || {},
+
+        // Lock chunks when mfsu is enabled
+        chunks: ['umi'],
+      };
+    },
+    stage: Infinity,
   });
 
   api.onBuildComplete(async ({ err }) => {
