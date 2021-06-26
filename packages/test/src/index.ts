@@ -46,7 +46,6 @@ export default async function (args: IUmiTestArgs) {
   const userJestConfig = userJestConfigFiles.find((configCwd) =>
     existsSync(configCwd),
   );
-  debug(`config from jest.config.js: ${JSON.stringify(userJestConfig)}`);
 
   if (userJestConfig) {
     babelRegister.setOnlyMap({ key: 'jest-config', value: [userJestConfig] });
