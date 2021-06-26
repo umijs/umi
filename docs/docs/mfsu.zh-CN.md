@@ -39,13 +39,18 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 #### 特性
 
-### prod 模式
+1. 预编译：默认情况下，预编译将会将依赖构建到 `~/.umi/.cache/.mfsu` 下。并且使用了 webpack 缓存，减少再次编译依赖的时间。
+2. diff：预编译时，会将本次的依赖信息构建到 `~/.mfsu/MFSU_CACHE.json` 中，用于依赖的 diff。
+3. 持久化缓存：对于预编译依赖的请求，开启了`cache-control: max-age=31536000,immutable`，减少浏览器刷新拉取依赖的时间。
+
+### 构建阶段
 
 > warning: 由于预编译依赖实现了部分的 tree-shaking，不建议在打包大小敏感的项目中启用生产模式。
 
-- 在执行 `umi build` 时，将会开始产出 mfsu 预编译依赖，随后将产物合并到 umi 的输出目录中。
-- 同样，再次执行 `build` 时，mfsu 将会与之前的产物 diff，如果依赖没有变动，则不再进行 mfsu 预编译。
-- 随着项目趋于稳定，依赖的添加变少。使用 mfsu 的 prod 模式可以极快地加快生产构建过程。
+1. 配置 config.ts：`mfsu.production = {}`以开启生产模式。
+2. 执行命令：`umi build`，默认情况下将会将生产依赖预编译到 `~/.mfsu-production` 中。
+3. umi 会将依赖外的产物构建到 `~/dist` 中，mfsu 再将生产预编译依赖移动到输出目录中。
+4. 使用 mfsu 生产模式，可以将 `~/.mfsu-production` 添加到 git 中。在部署时，仅编译应用文件，速度快到飞起。
 
 ## 我正确开启了 mfsu 吗？
 
@@ -54,7 +59,7 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 建议首次启动时，检查项目依赖是否被 mfsu 完全覆盖。我们可以借助 umi 自带的 webpack-analyze 进行依赖分析。
 
 - `ANALYZE=1 umi dev`启动项目，检查是否正常启动。如果遇到问题，可以提 issue 或者检查下方常见问题。
-- 检查是否存在从 `./node_modules` 加载的依赖。如果没有，说明项目依赖以及都被 mfsu 覆盖。
+- 检查 webpack-analyze 是否存在从 `./node_modules` 加载的依赖。如果没有，说明项目依赖以及都被 mfsu 覆盖。
 - 如果还存在，请通过 issue 反馈给我们，我们期待和您一起把 mfsu 变得更好。
 
 ## 在 antd-pro 中使用
