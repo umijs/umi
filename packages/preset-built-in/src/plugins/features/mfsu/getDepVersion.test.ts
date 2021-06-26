@@ -3,6 +3,15 @@ import { getDepVersion } from './getDepVersion';
 
 const root = join(__dirname, '../../../../../../');
 
+test('absolute with invalid package.json', () => {
+  expect(
+    getDepVersion({
+      dep: join(root, 'node_modules/@babel/runtime/helpers/esm/slicedToArray'),
+      cwd: root,
+    }),
+  ).toMatch(/^7\./);
+});
+
 test('absolute', () => {
   expect(
     getDepVersion({
