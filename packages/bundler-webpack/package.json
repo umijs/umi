@@ -31,10 +31,7 @@
   },
   "devDependencies": {
     "@types/sockjs-client": "1.5.0",
-    "anymatch": "3.1.1",
-    "react-error-overlay": "6.0.9",
-    "sockjs-client": "1.5.0",
-    "strip-ansi": "6.0.0"
+    "anymatch": "3.1.1"
   },
   "dependencies": {
     "@umijs/bundler-utils": "3.5.0-beta.15",
@@ -49,6 +46,9 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.2",
+    "react-error-overlay": "6.0.9",
+    "sockjs-client": "1.5.0",
+    "strip-ansi": "6.0.0",
     "terser": "5.6.0",
     "webpack-chain": "6.5.1"
   },

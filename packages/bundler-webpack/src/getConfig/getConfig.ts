@@ -90,10 +90,9 @@ export default async function getConfig(
   if (entry) {
     Object.keys(entry).forEach((key) => {
       const e = webpackConfig.entry(key);
-      // 提供打包好的版本，不消耗 webpack 编译时间
-      // if (hot && isDev) {
-      //   e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
-      // }
+      if (hot && isDev) {
+        e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
+      }
       if (config.runtimePublicPath) {
         e.add(require.resolve('./runtimePublicPathEntry'));
       }

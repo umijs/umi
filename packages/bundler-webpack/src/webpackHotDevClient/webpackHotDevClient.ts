@@ -77,50 +77,48 @@ function handleErrors(errors: any) {
   });
 }
 
-let tryApplyUpdates: any = null;
+function tryApplyUpdates(onHotUpdateSuccess?: Function) {
+  // @ts-ignore
+  if (!module.hot) {
+    window.location.reload();
+    return;
+  }
 
-// function tryApplyUpdates(onHotUpdateSuccess?: Function) {
-//   // @ts-ignore
-//   if (!module.hot) {
-//     window.location.reload();
-//     return;
-//   }
-//
-//   function isUpdateAvailable() {
-//     // @ts-ignore
-//     return mostRecentCompilationHash !== __webpack_hash__;
-//   }
-//
-//   // TODO: is update available?
-//   // @ts-ignore
-//   if (!isUpdateAvailable() || module.hot.status() !== 'idle') {
-//     return;
-//   }
-//
-//   function handleApplyUpdates(err: Error | null, updatedModules: any) {
-//     if (err || !updatedModules || hadRuntimeError) {
-//       window.location.reload();
-//       return;
-//     }
-//
-//     onHotUpdateSuccess?.();
-//
-//     if (isUpdateAvailable()) {
-//       // While we were updating, there was a new update! Do it again.
-//       tryApplyUpdates();
-//     }
-//   }
-//
-//   // @ts-ignore
-//   module.hot.check(true).then(
-//     function (updatedModules: any) {
-//       handleApplyUpdates(null, updatedModules);
-//     },
-//     function (err: Error) {
-//       handleApplyUpdates(err, null);
-//     },
-//   );
-// }
+  function isUpdateAvailable() {
+    // @ts-ignore
+    return mostRecentCompilationHash !== __webpack_hash__;
+  }
+
+  // TODO: is update available?
+  // @ts-ignore
+  if (!isUpdateAvailable() || module.hot.status() !== 'idle') {
+    return;
+  }
+
+  function handleApplyUpdates(err: Error | null, updatedModules: any) {
+    if (err || !updatedModules || hadRuntimeError) {
+      window.location.reload();
+      return;
+    }
+
+    onHotUpdateSuccess?.();
+
+    if (isUpdateAvailable()) {
+      // While we were updating, there was a new update! Do it again.
+      tryApplyUpdates();
+    }
+  }
+
+  // @ts-ignore
+  module.hot.check(true).then(
+    function (updatedModules: any) {
+      handleApplyUpdates(null, updatedModules);
+    },
+    function (err: Error) {
+      handleApplyUpdates(err, null);
+    },
+  );
+}
 
 const showPending = (): HTMLDivElement => {
   const el = document.createElement('div');
@@ -230,20 +228,3 @@ function initSocket() {
     }
   };
 }
-
-// TODO: improve this
-// @ts-ignore
-window.g_initWebpackHotDevClient = function (opts: {
-  tryApplyUpdates: Function;
-}) {
-  tryApplyUpdates = opts.tryApplyUpdates;
-  initSocket();
-};
-// @ts-ignore
-window.g_getMostRecentCompilationHash = () => {
-  return mostRecentCompilationHash;
-};
-// @ts-ignore
-window.g_getHadRuntimeError = () => {
-  return hadRuntimeError;
-};
