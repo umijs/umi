@@ -178,7 +178,7 @@ function getSocketHost() {
 
 function initSocket() {
   const host = getSocketHost();
-  sock = new SockJS(`${host}/dev-server`);
+  sock = new SockJS(`${host}/dev-server`, undefined, { timeout: 5000 });
 
   sock.onopen = () => {
     retries = 0;
