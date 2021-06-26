@@ -8,12 +8,17 @@ interface IAlias {
   [key: string]: string;
 }
 
+interface IExternals {
+  [key: string]: string;
+}
+
 export interface IOpts {
   libs?: TLibs;
   matchAll?: boolean;
   remoteName: string;
   alias?: IAlias;
   webpackAlias?: IAlias;
+  webpackExternals?: IExternals;
   onTransformDeps?: Function;
   exportAllMembers?: Record<string, string[]>;
 }
@@ -47,9 +52,20 @@ const RE_UMI_LOCAL_DEV = /umi\/packages\//;
 
 function getAlias(opts: { path: string; webpackAlias: IAlias }) {
   for (const key of Object.keys(opts.webpackAlias)) {
+    const value = opts.webpackAlias[key];
+    // exact alias
+    // ref: https://webpack.js.org/configuration/resolve/#resolvealias
+    if (key.endsWith('$')) {
+      if (opts.path === key.slice(0, -1)) return value;
+      continue;
+    }
+
+    if (opts.path === key) {
+      return value;
+    }
     const path = isJSFile(opts.webpackAlias[key]) ? key : addLastSlash(key);
     if (opts.path.startsWith(path)) {
-      return opts.webpackAlias[key];
+      return value;
     }
   }
   return null;
@@ -70,10 +86,20 @@ function isMatchLib(
   remoteName: string,
   alias: IAlias,
   webpackAlias: IAlias,
+  webpackExternals: IExternals,
 ) {
   if (matchAll) {
-    if (path === 'umi' || path === 'dumi') return false;
+    if (path === 'umi' || path === 'dumi' || path === '@alipay/bigfish')
+      return false;
     if (path.startsWith(`${remoteName}/`)) return false;
+    // e.g. @umijs/deps/compiled/babel/svgr-webpack.js?-svgo,+titleProp,+ref!./umi.svg
+    // dynamic path, don't match
+    if (path.includes('babel/svgr-webpack')) return false;
+
+    // TODO: support more external types
+    if (typeof webpackExternals === 'object' && webpackExternals[path]) {
+      return false;
+    }
 
     if (isAbsolute(path)) {
       return RE_NODE_MODULES.test(path) || RE_UMI_LOCAL_DEV.test(path);
@@ -129,6 +155,7 @@ export default function () {
                 opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
+                opts.webpackExternals || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -184,6 +211,7 @@ export default function () {
                 opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
+                opts.webpackExternals || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -237,6 +265,7 @@ export default function () {
                 opts.remoteName,
                 opts.alias || {},
                 opts.webpackAlias || {},
+                opts.webpackExternals || {},
               );
               opts.onTransformDeps?.({
                 source: d.source.value,
@@ -291,6 +320,7 @@ export default function () {
             opts.remoteName,
             opts.alias || {},
             opts.webpackAlias || {},
+            opts.webpackExternals || {},
           );
           opts.onTransformDeps?.({
             source: value,

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/types",
-  "version": "3.5.0-beta.8",
+  "version": "3.5.0-beta.15",
   "description": "@umijs/types",
   "main": "lib/index.js",
   "types": "index",
@@ -25,11 +25,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.5.0-beta.8",
-    "@umijs/core": "3.5.0-beta.8",
-    "@umijs/deps": "3.5.0-beta.8",
-    "@umijs/server": "3.5.0-beta.8",
-    "@umijs/utils": "3.5.0-beta.8",
+    "@umijs/babel-preset-umi": "3.5.0-beta.15",
+    "@umijs/core": "3.5.0-beta.15",
+    "@umijs/deps": "3.5.0-beta.15",
+    "@umijs/server": "3.5.0-beta.15",
+    "@umijs/utils": "3.5.0-beta.15",
     "webpack-chain": "6.5.1"
   }
 }

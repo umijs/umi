@@ -22,24 +22,6 @@ export default function (api: IApi) {
     utils: { Mustache },
   } = api;
 
-  const umiVersion = process.env.MFSU_USE_LATEST_UMI
-    ? '3'
-    : process.env.UMI_VERSION;
-  api.addDepInfo(() => {
-    return [
-      {
-        name: '@umijs/runtime',
-        range: umiVersion,
-        alias: [runtimePath],
-      },
-      {
-        name: '@umijs/renderer-react',
-        range: umiVersion,
-        alias: [renderReactPath],
-      },
-    ];
-  });
-
   api.onGenerateFiles(async (args) => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
     const rendererPath = await api.applyPlugins({

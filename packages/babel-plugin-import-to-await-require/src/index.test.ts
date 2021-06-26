@@ -327,6 +327,28 @@ a;
   );
 });
 
+test('match all externals', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from 'bar'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackExternals: {
+          bar: 'window.Bar',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from 'bar';
+a;
+    `.trim(),
+  );
+});
+
 test('match all node_modules alias', () => {
   expect(
     transformWithPlugin(
@@ -346,6 +368,113 @@ import a from '@/a'; a;
 const {
   default: a
 } = await import("foo/@/a");
+a;
+    `.trim(),
+  );
+});
+
+test('match all alias equal', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react': '/test/node_modules/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@alipay/bigfish/react");
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react': '/test/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@alipay/bigfish/react';
+a;
+    `.trim(),
+  );
+});
+
+test('match all alias exact', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react$': '/test/node_modules/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@alipay/bigfish/react");
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react$': '/test/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+import a from '@alipay/bigfish/react';
+a;
+    `.trim(),
+  );
+  expect(
+    transformWithPlugin(
+      `
+import a from '@alipay/bigfish/react/haha'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackAlias: {
+          '@alipay/bigfish/react$': '/test/react',
+        },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: a
+} = await import("foo/@alipay/bigfish/react/haha");
 a;
     `.trim(),
   );

@@ -19,9 +19,7 @@ const debug = createDebug('umi:mfsu');
 export type TMode = 'production' | 'development';
 
 export const checkConfig = (api: IApi) => {
-  const { webpack5, dynamicImport, mfsu } = api.config;
-  assert(webpack5, `[MFSU] mfsu need webpack5 config.`);
-  assert(dynamicImport, `[MFSU] mfsu need dynamicImport config.`);
+  const { mfsu } = api.config;
 
   // .mfsu directory do not match babel-loader
   if (mfsu && mfsu.development && mfsu.development.output) {
@@ -54,6 +52,7 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
 
 export default function (api: IApi) {
   const webpackAlias = {};
+  const webpackExternals = {};
   let depInfo: DepInfo;
   let depBuilder: DepBuilder;
   let mode: TMode = 'development';
@@ -97,6 +96,15 @@ export default function (api: IApi) {
     });
   });
 
+  api.modifyConfig((memo) => {
+    return {
+      ...memo,
+
+      // enable dynamicImport when mfsu is enabled
+      dynamicImport: memo.dynamicImport || {},
+    };
+  });
+
   api.onBuildComplete(async ({ err }) => {
     if (err) return;
     debug(`build deps in production`);
@@ -128,12 +136,11 @@ export default function (api: IApi) {
       return (
         (api.env === 'development' && api.userConfig.mfsu) ||
         (api.env === 'production' && api.userConfig.mfsu?.production) ||
-        process.env.MFSUC
+        process.env.ENABLE_MFSU
       );
     },
   });
 
-  // 部分插件会开启 @babel/import-plugin，但是会影响 mfsu 模式的使用，在此强制关闭
   api.modifyBabelPresetOpts({
     fn: (opts, args) => {
       return {
@@ -144,7 +151,8 @@ export default function (api: IApi) {
               importToAwaitRequire: {
                 remoteName: MF_NAME,
                 matchAll: true,
-                webpackAlias: webpackAlias,
+                webpackAlias,
+                webpackExternals,
                 alias: {
                   [api.cwd]: '$CWD$',
                 },
@@ -183,7 +191,6 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
-  // 为 babel 提供相关插件
   api.modifyBabelOpts({
     fn: async (opts) => {
       webpackAlias['core-js'] = dirname(
@@ -192,6 +199,9 @@ export default function (api: IApi) {
       webpackAlias['regenerator-runtime/runtime'] = require.resolve(
         'regenerator-runtime/runtime',
       );
+
+      // @ts-ignore
+      const umiRedirect = await getUmiRedirect(process.env.UMI_DIR);
 
       // 降低 babel-preset-umi 的优先级，保证 core-js 可以被插件及时编译
       opts.presets?.forEach((preset) => {
@@ -204,8 +214,9 @@ export default function (api: IApi) {
         [
           BabelImportRedirectPlugin,
           {
-            // @ts-ignore
-            umi: await getUmiRedirect(process.env.UMI_DIR),
+            umi: umiRedirect,
+            dumi: umiRedirect,
+            '@alipay/bigfish': umiRedirect,
           },
         ],
         ...opts.plugins,
@@ -215,7 +226,6 @@ export default function (api: IApi) {
     stage: Infinity,
   });
 
-  /** 暴露文件 */
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const { pathname } = url.parse(req.url);
@@ -242,12 +252,17 @@ export default function (api: IApi) {
     };
   });
 
-  /** 修改 webpack 配置 */
+  // 修改 webpack 配置
   api.register({
     key: 'modifyBundleConfig',
     fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
       if (type === BundlerConfigType.csr) {
         Object.assign(webpackAlias, memo.resolve!.alias || {});
+        assert(
+          typeof (memo.externals || {}) === 'object',
+          `[MFSU] Unsupported externals config format, only support object, but got ${memo.externals}`,
+        );
+        Object.assign(webpackExternals, memo.externals || {});
 
         if (!mfsu) {
           const remotePath = api.config.publicPath;

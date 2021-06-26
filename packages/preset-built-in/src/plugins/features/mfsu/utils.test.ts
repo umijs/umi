@@ -3,6 +3,31 @@ import { mkdirSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { figureOutExport } from './utils';
 
+// const fixtures = join(__dirname, 'fixtures', 'utils');
+// const absFixtures = join(fixtures, 'absolute');
+//
+// function format(str: string) {
+//   return str.replace(new RegExp(__dirname, 'g'), '$CWD$');
+// }
+
+// test('abs esm export default', async () => {
+//   expect(
+//     format(await figureOutExport('', join(absFixtures, 'export-default.js'))),
+//   ).toEqual(``);
+// });
+//
+// test('abs esm export some', async () => {
+//   expect(
+//     format(await figureOutExport('', join(absFixtures, 'export-default.js'))),
+//   ).toEqual(``);
+// });
+//
+// test('abs esm export * from', async () => {
+//   expect(
+//     format(await figureOutExport('', join(absFixtures, 'export-*.js'))),
+//   ).toEqual(``);
+// });
+
 xtest('figure out export', async () => {
   const testPath = winPath(join(__dirname, '.umi-test'));
   const testNodeModules = winPath(join(testPath, 'node_modules'));
@@ -34,7 +59,7 @@ xtest('figure out export', async () => {
   `,
   );
   expect(await figureOutExport(testPath, 'foo')).toEqual(
-    `import * as _ from "foo";\nexport default _;\nexport * from "foo";`,
+    `import _ from "foo";\nexport default _;\nexport * from "foo";`,
   );
   // abs path import
   let asbPath = winPath(resolve(testNodeModules, 'bar'));
@@ -70,6 +95,6 @@ xtest('figure out export', async () => {
   asbPath = winPath(resolve(testNodeModules, 'yyy', 'dist', 'index.js'));
   writeFileSync(asbPath, 'exports.a = "1";');
   expect(await figureOutExport(testPath, asbPath)).toEqual(
-    `import * as _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
+    `import _ from "${asbPath}";\nexport default _;\nexport * from "${asbPath}";`,
   );
 });

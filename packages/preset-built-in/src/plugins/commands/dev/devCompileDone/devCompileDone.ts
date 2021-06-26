@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { yParser } from '@umijs/utils';
+import { chalk, yParser } from '@umijs/utils';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
 
 const args = yParser(process.argv.slice(2));
@@ -31,7 +31,9 @@ export default (api: IApi) => {
                     stats,
                   },
                 })
-                .catch((e) => {});
+                .catch((e) => {
+                  console.error(chalk.red(e.stack));
+                });
             },
             onCompileFail() {},
           }),
