@@ -222,7 +222,7 @@ export default function () {
                 source: d.source.value,
                 // @ts-ignore
                 file: path.hub.file.opts.filename,
-                isMatch: false,
+                isMatch: isMatch && opts.exportAllMembers?.[d.source.value],
                 isExportAllDeclaration: true,
               });
 
