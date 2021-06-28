@@ -32,7 +32,7 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 
 <img src="https://img.alicdn.com/imgextra/i4/O1CN01oOSedp1PPYg64lvCB_!!6000000001833-2-tps-1304-936.png" width="50%" />
 
-启用 mfsu production 模式时，建议在本地环境将预构建完成，并将产物同步到 git，这样在服务器部署的速度将会得到约 **30 倍** 的提升！
+启用 mfsu production 模式时，建议在本地环境将预编译过程完成，并将产物同步到 git，这样在服务器部署的速度将会得到约 **30 倍** 的提升！
 
 > 由于设备性能不稳定，测试可能存在部分误差
 
