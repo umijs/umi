@@ -194,6 +194,43 @@ foo;
   );
 });
 
+test('export * with empty exportAllMembers', () => {
+  expect(
+    transformWithPlugin(`export * from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+      exportAllMembers: { antd: [] },
+    }),
+  ).toEqual(
+    `
+1;
+foo;
+    `.trim(),
+  );
+});
+
+test('export * with empty exportAllMembers and export default', () => {
+  expect(
+    transformWithPlugin(
+      `export * from 'antd'; export { default as antd } from 'antd'; foo;`,
+      {
+        libs: ['antd'],
+        remoteName: 'foo',
+        exportAllMembers: { antd: [] },
+      },
+    ),
+  ).toEqual(
+    `
+const {
+  default: antd
+} = await import("foo/antd");
+1;
+export { antd };
+foo;
+    `.trim(),
+  );
+});
+
 test('export { abc } from', () => {
   expect(
     transformWithPlugin(`export { abc } from 'antd'; foo;`, {

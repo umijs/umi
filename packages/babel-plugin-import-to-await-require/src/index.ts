@@ -222,42 +222,51 @@ export default function () {
                 source: d.source.value,
                 // @ts-ignore
                 file: path.hub.file.opts.filename,
-                isMatch: isMatch && opts.exportAllMembers?.[d.source.value],
+                isMatch:
+                  isMatch && opts.exportAllMembers?.[d.source.value]?.length,
                 isExportAllDeclaration: true,
               });
 
               if (isMatch && opts.exportAllMembers?.[d.source.value]) {
-                const id = t.identifier('__all_exports');
-                const init = t.awaitExpression(
-                  t.callExpression(t.import(), [
-                    t.stringLiteral(
-                      `${opts.remoteName}/${getPath(
-                        d.source.value,
-                        opts.alias || {},
-                      )}`,
-                    ),
-                  ]),
-                );
-                variableDeclarations.unshift(
-                  t.variableDeclaration('const', [
-                    t.variableDeclarator(id, init),
-                  ]),
-                );
-
-                // replace node with export const { a, b, c } = __all_exports
-                // a, b, c was declared from opts.exportAllMembers
-                path.node.body[index] = t.exportNamedDeclaration(
-                  t.variableDeclaration('const', [
-                    t.variableDeclarator(
-                      t.objectPattern(
-                        opts.exportAllMembers[d.source.value].map((m) =>
-                          t.objectProperty(t.identifier(m), t.identifier(m)),
-                        ),
+                if (opts.exportAllMembers[d.source.value].length) {
+                  const id = t.identifier('__all_exports');
+                  const init = t.awaitExpression(
+                    t.callExpression(t.import(), [
+                      t.stringLiteral(
+                        `${opts.remoteName}/${getPath(
+                          d.source.value,
+                          opts.alias || {},
+                        )}`,
                       ),
-                      t.identifier('__all_exports'),
-                    ),
-                  ]),
-                );
+                    ]),
+                  );
+                  variableDeclarations.unshift(
+                    t.variableDeclaration('const', [
+                      t.variableDeclarator(id, init),
+                    ]),
+                  );
+
+                  // replace node with export const { a, b, c } = __all_exports
+                  // a, b, c was declared from opts.exportAllMembers
+                  path.node.body[index] = t.exportNamedDeclaration(
+                    t.variableDeclaration('const', [
+                      t.variableDeclarator(
+                        t.objectPattern(
+                          opts.exportAllMembers[d.source.value].map((m) =>
+                            t.objectProperty(t.identifier(m), t.identifier(m)),
+                          ),
+                        ),
+                        t.identifier('__all_exports'),
+                      ),
+                    ]),
+                  );
+                }
+                // 有些 export * 只是为了类型
+                else {
+                  path.node.body[index] = t.expressionStatement(
+                    t.numericLiteral(1),
+                  );
+                }
               }
             }
 
