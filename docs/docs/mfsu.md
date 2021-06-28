@@ -32,7 +32,7 @@ As the number of dependencies increases, the improvement will be more pronounced
 
 <img src="https://img.alicdn.com/imgextra/i4/O1CN01oOSedp1PPYg64lvCB_!!6000000001833-2-tps-1304-936.png" width="50%" />
 
-When MFSU production mode is enabled, it is recommended to pre-build in the local environment and synchronize the production to Git, so that the speed of deployment on the server can be increased by about **30**!
+When the MFSU production mode is enabled, it is recommended to complete the precompile process in the local environment and synchronize the product to Git, which will increase the deployment speed on the server by about **30**!
 
 > Due to unstable equipment performance, there may be partial error in the test.
 
