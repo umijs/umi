@@ -391,6 +391,11 @@ export default async function getConfig(
     });
   }
 
+  if (isWebpack5) {
+    // @ts-ignore
+    webpackConfig.target(['web', 'es5']);
+  }
+
   // plugins -> ignore moment locale
   if (config.ignoreMomentLocale) {
     webpackConfig
