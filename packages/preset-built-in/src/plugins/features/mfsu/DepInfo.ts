@@ -1,5 +1,5 @@
 import { IApi, IConfig } from '@umijs/types';
-import { createDebug, lodash } from '@umijs/utils';
+import { createDebug, lodash, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
@@ -76,7 +76,7 @@ export default class DepInfo {
 
         const normalizedDeps = {};
         Object.keys(data.deps).forEach((key) => {
-          const normalizeKey = key.replace(CWD, this.api.cwd);
+          const normalizeKey = key.replace(CWD, winPath(this.api.cwd));
           normalizedDeps[normalizeKey] = data.deps[key];
         });
         data.deps = normalizedDeps;
@@ -165,7 +165,7 @@ export default class DepInfo {
   writeCache() {
     const noAbsDeps = {};
     Object.keys(this.data.deps).forEach((depName) => {
-      const noAbsDepName = depName.replace(this.api.cwd, CWD);
+      const noAbsDepName = depName.replace(winPath(this.api.cwd), CWD);
       noAbsDeps[noAbsDepName] = this.data.deps[depName];
     });
 
