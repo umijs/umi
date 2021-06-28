@@ -227,9 +227,13 @@ export default function () {
                 isExportAllDeclaration: true,
               });
 
+              const exportAllIdentifier = t.identifier(
+                `__all_exports_${d.source.value.replace(/(@|\/|-)/g, '_')}`,
+              );
+
               if (isMatch && opts.exportAllMembers?.[d.source.value]) {
                 if (opts.exportAllMembers[d.source.value].length) {
-                  const id = t.identifier('__all_exports');
+                  const id = exportAllIdentifier;
                   const init = t.awaitExpression(
                     t.callExpression(t.import(), [
                       t.stringLiteral(
@@ -256,7 +260,7 @@ export default function () {
                             t.objectProperty(t.identifier(m), t.identifier(m)),
                           ),
                         ),
-                        t.identifier('__all_exports'),
+                        exportAllIdentifier,
                       ),
                     ]),
                   );

@@ -175,20 +175,20 @@ foo;
 
 test('export *', () => {
   expect(
-    transformWithPlugin(`export * from 'antd'; foo;`, {
-      libs: ['antd'],
+    transformWithPlugin(`export * from '@ant-design/pro-table'; foo;`, {
+      libs: ['@ant-design/pro-table'],
       remoteName: 'foo',
-      exportAllMembers: { antd: ['a', 'b', 'c'] },
+      exportAllMembers: { '@ant-design/pro-table': ['a', 'b', 'c'] },
     }),
   ).toEqual(
     `
-const __all_exports = await import("foo/antd");
+const __all_exports__ant_design_pro_table = await import("foo/@ant-design/pro-table");
 
 export const {
   a: a,
   b: b,
   c: c
-} = __all_exports;
+} = __all_exports__ant_design_pro_table;
 foo;
     `.trim(),
   );
