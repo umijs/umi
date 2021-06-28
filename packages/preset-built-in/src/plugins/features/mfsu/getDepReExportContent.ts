@@ -1,4 +1,5 @@
 import { init, parse } from 'es-module-lexer';
+import { matchAll } from './utils';
 
 export async function getDepReExportContent(opts: {
   content: string;
@@ -55,21 +56,16 @@ export async function getDepReExportContent(opts: {
 }
 
 export const cjsModeEsmParser = (code: string) => {
-  return [
-    ...code.matchAll(
-      /Object\.defineProperty\(\s*exports\s*\,\s*[\"|\'](\w+)[\"|\']/g,
-    ),
-  ]
-    .map((result) => result[1])
+  return matchAll(
+    /Object\.defineProperty\(\s*exports\s*\,\s*[\"|\'](\w+)[\"|\']/g,
+    code,
+  )
     .concat(
       // Support export['default']
       // ref: https://unpkg.alibaba-inc.com/browse/echarts-for-react@2.0.16/lib/core.js
-      [...code.matchAll(/exports(\.|\[(\'|\"))(\w+)(\s*|(\'|\")\])\s*\=/g)].map(
-        (result) => {
-          return result[Math.floor(result.length / 2)];
-        },
-      ),
-    );
+      matchAll(/exports(?:\.|\[(?:\'|\"))(\w+)(?:\s*|(?:\'|\")\])\s*\=/g, code),
+    )
+    .map((result) => result[1]);
 };
 
 async function parseWithCJSSupport(content: string) {

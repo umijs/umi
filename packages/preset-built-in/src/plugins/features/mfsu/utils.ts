@@ -55,3 +55,12 @@ export const figureOutExport = async (
     importFrom: winPath(importFrom),
   });
 };
+
+export const matchAll = (regexp: RegExp, str: string) => {
+  const result = [];
+  let match;
+  while ((match = regexp.exec(str)) !== null) {
+    result.push(match);
+  }
+  return result;
+};
