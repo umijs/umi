@@ -3,7 +3,7 @@ import { createDebug, lodash } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { DEP_INFO_CACHE_FILE } from './constants';
+import { CWD, DEP_INFO_CACHE_FILE } from './constants';
 import { getDepVersion } from './getDepVersion';
 import { TMode } from './mfsu';
 
@@ -73,6 +73,13 @@ export default class DepInfo {
         debug('cache exists');
         const data = JSON.parse(readFileSync(path, 'utf-8')) as IData;
         assert(data.deps, `[MFSU] cache parse failed, deps not found.`);
+
+        const normalizedDeps = {};
+        Object.keys(data.deps).forEach((key) => {
+          const normalizeKey = key.replace(CWD, this.api.cwd);
+          normalizedDeps[normalizeKey] = data.deps[key];
+        });
+        data.deps = normalizedDeps;
         this.data = data;
       }
     } catch (e) {
@@ -156,7 +163,13 @@ export default class DepInfo {
   }
 
   writeCache() {
-    const content = JSON.stringify(this.data, null, 2);
+    const noAbsDeps = {};
+    Object.keys(this.data.deps).forEach((depName) => {
+      const noAbsDepName = depName.replace(this.api.cwd, CWD);
+      noAbsDeps[noAbsDepName] = this.data.deps[depName];
+    });
+
+    const content = JSON.stringify({ ...this.data, deps: noAbsDeps }, null, 2);
     writeFileSync(this.cachePath, content, 'utf-8');
   }
 }
