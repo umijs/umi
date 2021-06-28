@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "3.5.0-beta.17",
+  "version": "3.5.0-beta.18",
   "description": "@umijs/bundler-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,8 +24,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.5.0-beta.17",
-    "@umijs/types": "3.5.0-beta.17",
-    "@umijs/utils": "3.5.0-beta.17"
+    "@umijs/babel-preset-umi": "3.5.0-beta.18",
+    "@umijs/types": "3.5.0-beta.18",
+    "@umijs/utils": "3.5.0-beta.18"
   }
 }
