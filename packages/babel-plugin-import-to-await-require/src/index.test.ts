@@ -194,6 +194,60 @@ foo;
   );
 });
 
+test('export { abc } from', () => {
+  expect(
+    transformWithPlugin(`export { abc } from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+      exportAllMembers: { antd: ['a', 'b', 'c'] },
+    }),
+  ).toEqual(
+    `
+const {
+  abc: abc
+} = await import("foo/antd");
+export { abc };
+foo;
+    `.trim(),
+  );
+});
+
+test('export { a as b } from', () => {
+  expect(
+    transformWithPlugin(`export { a as b } from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+      exportAllMembers: { antd: ['a', 'b', 'c'] },
+    }),
+  ).toEqual(
+    `
+const {
+  a: b
+} = await import("foo/antd");
+export { b };
+foo;
+    `.trim(),
+  );
+});
+
+test('export { default as XXX } from', () => {
+  expect(
+    transformWithPlugin(`export { default as XXX } from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+      exportAllMembers: { antd: ['a', 'b', 'c'] },
+    }),
+  ).toEqual(
+    `
+const {
+  default: XXX
+} = await import("foo/antd");
+export { XXX };
+foo;
+    `.trim(),
+  );
+});
+
 test('dynamic import', () => {
   expect(
     transformWithPlugin(`const foo = import('antd'); foo;`, {
