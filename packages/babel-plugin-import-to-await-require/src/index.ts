@@ -92,9 +92,14 @@ function isMatchLib(
     if (path === 'umi' || path === 'dumi' || path === '@alipay/bigfish')
       return false;
     if (path.startsWith(`${remoteName}/`)) return false;
+
+    // don't match dynamic path
     // e.g. @umijs/deps/compiled/babel/svgr-webpack.js?-svgo,+titleProp,+ref!./umi.svg
-    // dynamic path, don't match
     if (path.includes('babel/svgr-webpack')) return false;
+
+    // don't match webpack loader
+    // e.g. !!dumi-raw-code-loader!/path/to/VerticalProgress/index.module.less?dumi-raw-code
+    if (path.startsWith('!!')) return false;
 
     // TODO: support more external types
     if (typeof webpackExternals === 'object' && webpackExternals[path]) {
