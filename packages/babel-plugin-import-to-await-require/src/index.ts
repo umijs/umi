@@ -293,6 +293,12 @@ export default function () {
                   ]),
                 );
                 d.source = null;
+                d.specifiers.forEach((node) => {
+                  if (t.isExportSpecifier(node)) {
+                    // @ts-ignore
+                    node.local = node.exported;
+                  }
+                });
               }
             }
 
