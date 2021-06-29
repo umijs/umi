@@ -182,13 +182,13 @@ test('export *', () => {
     }),
   ).toEqual(
     `
-const __all_exports = await import("foo/antd");
+const __all_exports_antd = await import("foo/antd");
 
 export const {
   a: a,
   b: b,
   c: c
-} = __all_exports;
+} = __all_exports_antd;
 foo;
     `.trim(),
   );
