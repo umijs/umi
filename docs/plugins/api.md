@@ -350,7 +350,7 @@ api.addHTMLStyles(() => {
 e.g.
 
 ```ts
-api.addHTMLScript(() => {
+api.addHTMLScripts(() => {
   return [
     {
       content: '',
