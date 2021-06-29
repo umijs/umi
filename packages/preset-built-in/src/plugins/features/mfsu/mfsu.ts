@@ -240,7 +240,7 @@ export default function (api: IApi) {
       const { pathname } = url.parse(req.url);
       if (
         !api.userConfig.mfsu ||
-        req.url === '/' ||
+        pathname === '/' ||
         !existsSync(
           join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
         )
