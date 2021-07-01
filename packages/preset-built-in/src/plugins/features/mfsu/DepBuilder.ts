@@ -141,39 +141,18 @@ export default class DepBuilder {
         exposes,
       }),
     );
-
-    // MonacoEditorWebpackPlugin 已经被污染，获取配置重新构建
+    // 删除 MonacoEditorWebpackPlugin 的 Hack 插件
     const hasMonacoPlugin = mfConfig.plugins.some((plugin) => {
       return plugin.constructor.name === 'MonacoEditorWebpackPlugin';
     });
     if (hasMonacoPlugin) {
-      let options: any = {};
       mfConfig.plugins.forEach((plugin, index) => {
-        if (plugin.constructor.name === 'MonacoEditorWebpackPlugin') {
-          // @ts-ignore
-          options = plugin.options;
-        }
         if (
-          ['MonacoEditorWebpackPlugin', 'Hack'].includes(
-            plugin.constructor.name,
-          )
+          ['MonacoEditorWebpackPluginHack'].includes(plugin.constructor.name)
         ) {
           mfConfig.plugins!.splice(index, 1);
         }
       });
-      const MonacoEditorWebpackPlugin = require(join(
-        this.api.cwd,
-        'node_modules',
-        'monaco-editor-webpack-plugin',
-      ));
-      const { languages = [], features = [] } = options;
-      mfConfig.plugins.push(
-        new MonacoEditorWebpackPlugin({
-          ...options,
-          languages: languages.map((language: any) => language.label),
-          features: features.map((feature: any) => feature.label),
-        }),
-      );
     }
 
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下

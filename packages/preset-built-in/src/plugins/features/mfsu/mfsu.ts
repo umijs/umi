@@ -295,7 +295,7 @@ export default function (api: IApi) {
 
         if (hasMonacoPlugin) {
           memo.plugins.push(
-            new (class Hack {
+            new (class MonacoEditorWebpackPluginHack {
               apply(compiler: webpack.Compiler) {
                 const taps: { type: string; fn: Function; name: string }[] =
                   compiler.hooks.make['taps'];
