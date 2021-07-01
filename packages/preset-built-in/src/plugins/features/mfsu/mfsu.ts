@@ -5,7 +5,6 @@ import { existsSync, readFileSync } from 'fs';
 import mime from 'mime';
 import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
-import url from 'url';
 import webpack from 'webpack';
 import BabelImportRedirectPlugin from './babel-import-redirect-plugin';
 import { MF_NAME, MF_VA_PREFIX } from './constants';
@@ -53,6 +52,7 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
 export default function (api: IApi) {
   const webpackAlias = {};
   const webpackExternals = {};
+  let publicPath = '/';
   let depInfo: DepInfo;
   let depBuilder: DepBuilder;
   let mode: TMode = 'development';
@@ -237,26 +237,23 @@ export default function (api: IApi) {
 
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
-      const { pathname } = url.parse(req.url);
+      const path = req.path;
+      const filePath = path.replace(new RegExp(`^${publicPath}`), '/').slice(1);
+      const mfsuPath = getMfsuPath(api, { mode: 'development' });
       if (
         !api.userConfig.mfsu ||
-        pathname === '/' ||
-        !existsSync(
-          join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
-        )
+        path === '/' ||
+        !existsSync(join(mfsuPath, filePath))
       ) {
         next();
       } else {
-        const value = readFileSync(
-          join(getMfsuPath(api, { mode: 'development' }), '.' + pathname),
-          'utf-8',
-        );
-        res.setHeader('content-type', mime.lookup(parse(pathname || '').ext));
+        const content = readFileSync(join(mfsuPath, filePath), 'utf-8');
+        res.setHeader('content-type', mime.lookup(parse(path || '').ext));
         // 排除入口文件，因为 hash 是入口文件控制的
         if (!/remoteEntry.js/.test(req.url)) {
           res.setHeader('cache-control', 'max-age=31536000,immutable');
         }
-        res.send(value);
+        res.send(content);
       }
     };
   });
@@ -272,9 +269,10 @@ export default function (api: IApi) {
           `[MFSU] Unsupported externals config format, only support object, but got ${memo.externals}`,
         );
         Object.assign(webpackExternals, memo.externals || {});
+        publicPath = memo.output.publicPath;
 
         if (!mfsu) {
-          const remotePath = api.config.publicPath;
+          const remotePath = memo.output.publicPath;
           memo.plugins.push(
             new webpack.container.ModuleFederationPlugin({
               name: 'umi-app',
