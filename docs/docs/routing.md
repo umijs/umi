@@ -1,6 +1,6 @@
 # Routing
 
-In Umi, applications are [single-page](https://en.wikipedia.org/wiki/Single-page_application)) applications, and the page address jumps are done on the browser side, and the server will not be re-requested for html, and html is only loaded once when the application is initialized. All pages are composed of different components. The switching of pages is actually the switching of different components. You only need to associate different routing paths with corresponding components in the configuration.
+In Umi, applications are [single-page](https://en.wikipedia.org/wiki/Single-page_application)) applications, and the page address jumps are done on the browser side, and the server will not be re-requested for html, and html is only loaded once when the application is initialized. All pages are of different composed components. The switching of pages is actually the switching of different components. You only need to associate different routing paths with corresponding components in the configuration.
 
 
 ## Configuring Routing
