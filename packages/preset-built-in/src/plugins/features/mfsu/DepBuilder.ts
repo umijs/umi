@@ -147,7 +147,7 @@ export default class DepBuilder {
       return plugin.constructor.name === 'MonacoEditorWebpackPlugin';
     });
     if (hasMonacoPlugin) {
-      let options;
+      let options: any = {};
       mfConfig.plugins.forEach((plugin, index) => {
         if (plugin.constructor.name === 'MonacoEditorWebpackPlugin') {
           // @ts-ignore
@@ -158,7 +158,7 @@ export default class DepBuilder {
             plugin.constructor.name,
           )
         ) {
-          mfConfig.plugins.splice(index, 1);
+          mfConfig.plugins!.splice(index, 1);
         }
       });
       const MonacoEditorWebpackPlugin = require(join(
@@ -170,8 +170,8 @@ export default class DepBuilder {
       mfConfig.plugins.push(
         new MonacoEditorWebpackPlugin({
           ...options,
-          languages: languages.map((language) => language.label),
-          features: features.map((feature) => feature.label),
+          languages: languages.map((language: any) => language.label),
+          features: features.map((feature: any) => feature.label),
         }),
       );
     }
