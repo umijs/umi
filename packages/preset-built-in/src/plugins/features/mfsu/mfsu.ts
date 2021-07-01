@@ -272,12 +272,11 @@ export default function (api: IApi) {
         publicPath = memo.output.publicPath;
 
         if (!mfsu) {
-          const remotePath = memo.output.publicPath;
           memo.plugins.push(
             new webpack.container.ModuleFederationPlugin({
               name: 'umi-app',
               remotes: {
-                mf: 'mf@' + remotePath + MF_VA_PREFIX + 'remoteEntry.js',
+                mf: 'mf@' + MF_VA_PREFIX + 'remoteEntry.js',
               },
             }),
           );

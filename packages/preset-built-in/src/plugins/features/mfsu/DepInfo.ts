@@ -157,8 +157,9 @@ export default class DepInfo {
 
   getConfig() {
     return {
-      // 目前只有 theme 会触发依赖重新编译
+      // 会触发依赖重新编译的配置
       theme: this.api.config.theme || {},
+      runtimePublicPath: this.api.config.runtimePublicPath || false,
     };
   }
 
