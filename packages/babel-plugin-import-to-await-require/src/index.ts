@@ -1,5 +1,5 @@
 import type { NodePath } from '@babel/traverse';
-import { t } from '@umijs/utils';
+import { t, winPath } from '@umijs/utils';
 import { extname, isAbsolute } from 'path';
 
 type TLibs = (RegExp | string)[];
@@ -95,7 +95,7 @@ function isMatchLib(
 
     // don't match dynamic path
     // e.g. @umijs/deps/compiled/babel/svgr-webpack.js?-svgo,+titleProp,+ref!./umi.svg
-    if (path.includes('babel/svgr-webpack')) return false;
+    if (winPath(path).includes('babel/svgr-webpack')) return false;
 
     // don't match webpack loader
     // e.g. !!dumi-raw-code-loader!/path/to/VerticalProgress/index.module.less?dumi-raw-code
