@@ -142,6 +142,40 @@ export default class DepBuilder {
       }),
     );
 
+    // MonacoEditorWebpackPlugin 已经被污染，获取配置重新构建
+    const hasMonacoPlugin = mfConfig.plugins.some((plugin) => {
+      return plugin.constructor.name === 'MonacoEditorWebpackPlugin';
+    });
+    if (hasMonacoPlugin) {
+      let options;
+      mfConfig.plugins.forEach((plugin, index) => {
+        if (plugin.constructor.name === 'MonacoEditorWebpackPlugin') {
+          // @ts-ignore
+          options = plugin.options;
+        }
+        if (
+          ['MonacoEditorWebpackPlugin', 'Hack'].includes(
+            plugin.constructor.name,
+          )
+        ) {
+          mfConfig.plugins.splice(index, 1);
+        }
+      });
+      const MonacoEditorWebpackPlugin = require(join(
+        this.api.cwd,
+        'node_modules',
+        'monaco-editor-webpack-plugin',
+      ));
+      const { languages = [], features = [] } = options;
+      mfConfig.plugins.push(
+        new MonacoEditorWebpackPlugin({
+          ...options,
+          languages: languages.map((language) => language.label),
+          features: features.map((feature) => feature.label),
+        }),
+      );
+    }
+
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
     // TODO: 确认是否有必要
