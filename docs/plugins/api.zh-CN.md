@@ -664,7 +664,7 @@ api.modifyDefaultConfig((memo) => {
 e.g.
 
 ```ts
-api.modifyHTML(($, { routs }) => {
+api.modifyHTML(($, { route }) => {
   $('h2').addClass('welcome');
   return $;
 });
