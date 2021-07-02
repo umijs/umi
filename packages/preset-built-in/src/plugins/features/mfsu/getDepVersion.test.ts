@@ -129,6 +129,24 @@ test('normal', () => {
   ).toMatch(/^7\./);
 });
 
+test('support parent node_modules', () => {
+  expect(
+    getDepVersion({
+      dep: '@babel/core',
+      cwd: __dirname,
+    }),
+  ).toMatch(/^7\./);
+});
+
+test('support parent node_modules with deep import', () => {
+  expect(
+    getDepVersion({
+      dep: '@babel/core/src/xxx.js',
+      cwd: __dirname,
+    }),
+  ).toMatch(/^7\./);
+});
+
 test('no package found with alias', () => {
   expect(() => {
     getDepVersion({
