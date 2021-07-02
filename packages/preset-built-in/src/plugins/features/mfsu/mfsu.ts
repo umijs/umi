@@ -7,7 +7,7 @@ import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
 import BabelImportRedirectPlugin from './babel-import-redirect-plugin';
-import { MF_NAME, MF_VA_PREFIX } from './constants';
+import { DEFAULT_MF_NAME, MF_VA_PREFIX } from './constants';
 import DepBuilder from './DepBuilder';
 import DepInfo from './DepInfo';
 import { getUmiRedirect } from './getUmiRedirect';
@@ -134,6 +134,7 @@ export default function (api: IApi) {
             production: joi.object({
               output: joi.string(),
             }),
+            mfName: joi.string(),
             exportAllMembers: joi.object(),
           })
           .description('open mfsu feature');
@@ -156,7 +157,9 @@ export default function (api: IApi) {
           ? {}
           : {
               importToAwaitRequire: {
-                remoteName: MF_NAME,
+                remoteName:
+                  (api.config.mfsu && api.config.mfsu.mfName) ||
+                  DEFAULT_MF_NAME,
                 matchAll: true,
                 webpackAlias,
                 webpackExternals,
@@ -272,11 +275,13 @@ export default function (api: IApi) {
         publicPath = memo.output.publicPath;
 
         if (!mfsu) {
+          const mfName =
+            (api.config.mfsu && api.config.mfsu.mfName) || DEFAULT_MF_NAME;
           memo.plugins.push(
             new webpack.container.ModuleFederationPlugin({
               name: 'umi-app',
               remotes: {
-                mf: 'mf@' + MF_VA_PREFIX + 'remoteEntry.js',
+                [mfName]: `${mfName}@${MF_VA_PREFIX}remoteEntry.js`,
               },
             }),
           );
