@@ -7,7 +7,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { CWD, MF_NAME, MF_VA_PREFIX } from './constants';
+import { CWD, DEFAULT_MF_NAME, MF_VA_PREFIX } from './constants';
 import { IDeps } from './DepInfo';
 import { getAliasedDep } from './getDepVersion';
 import { getMfsuPath, TMode } from './mfsu';
@@ -137,7 +137,9 @@ export default class DepBuilder {
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
-        name: MF_NAME,
+        name:
+          (this.api.config.mfsu && this.api.config.mfsu.mfName) ||
+          DEFAULT_MF_NAME,
         filename: remoteEntryFilename,
         exposes,
       }),
