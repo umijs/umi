@@ -1,6 +1,5 @@
 import { pkgUp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { existsSync } from 'fs';
 import { dirname, extname, isAbsolute, join } from 'path';
 
 interface IAlias {
@@ -73,23 +72,10 @@ export function getDepVersion(opts: {
     );
     version = tmpVersion;
   } else {
-    let pkg;
-    let cwd = opts.cwd;
-    let count = 0;
-    const depSplited = dep.split('/');
-    const name =
-      dep.charAt(0) === '@' ? depSplited.slice(0, 2).join('/') : depSplited[0];
-    while (!pkg && cwd !== '/' && count < 10) {
-      const pkgPath = join(cwd, 'node_modules', name);
-      if (existsSync(pkgPath)) {
-        pkg = pkgPath;
-        break;
-      }
-      cwd = join(cwd, '..');
-      count += 1;
-    }
+    const pkg = pkgUp.sync({
+      cwd: join(opts.cwd, 'node_modules', dep),
+    });
     assert(pkg, `[MFSU] package.json not found for dep ${originDep}`);
-    // TODO: 这个可能走不到了
     assert(
       winPath(pkg) !== winPath(join(opts.cwd, 'package.json')),
       `[MFSU] package.json not found for dep ${originDep}`,
