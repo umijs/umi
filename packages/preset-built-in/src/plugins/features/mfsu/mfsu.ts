@@ -293,7 +293,7 @@ export default function (api: IApi) {
           return plugin.constructor.name === 'MonacoEditorWebpackPlugin';
         });
 
-        if (hasMonacoPlugin) {
+        if (hasMonacoPlugin && !mfsu) {
           memo.plugins.push(
             new (class MonacoEditorWebpackPluginHack {
               apply(compiler: webpack.Compiler) {
