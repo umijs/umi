@@ -41,10 +41,19 @@ export const figureOutExport = async (
   cwd: string,
   importFrom: string,
 ): Promise<string> => {
-  const absImportFrom = isAbsolute(importFrom)
-    ? importFrom
-    : join(cwd, 'node_modules', importFrom);
-  const filePath = getFilePath(absImportFrom);
+  let filePath;
+  if (isAbsolute(importFrom)) {
+    filePath = getFilePath(importFrom);
+  } else {
+    let count = 0;
+    while (!filePath && cwd !== '/' && count <= 10) {
+      try {
+        const absImportFrom = join(cwd, 'node_modules', importFrom);
+        filePath = getFilePath(absImportFrom);
+      } catch (e) {}
+      cwd = join(cwd, '..');
+    }
+  }
 
   assert(filePath, `filePath not found of ${importFrom}`);
 
