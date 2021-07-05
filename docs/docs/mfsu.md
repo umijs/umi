@@ -41,7 +41,7 @@ When the MFSU production mode is enabled, it is recommended to complete the prec
 ### The development phase
 
 1. Initialize an UMI application.
-2. Add `webpack5:{}`, `dynamicImport:{}` and `mfsu:{}` to config.ts.
+2. Add `mfsu:{}` to config.ts.
 3. `umi dev` starts the project. MFSU's progress bar appears while the dependency is being built. At this point the application may be suspended or the dependency may not exist. Please wait.
 4. When cooperating with multiple people, you can configure `mfsu.development.output` to precompile the dependency output directory and add it to Git. When other developers start up, you can avoid the process of compiling the dependency again.
 
@@ -80,7 +80,11 @@ mfsu: {},
 
 ## Q&A
 
-### 1. react: Invalid hook call. Hooks can only be called inside of the body of a function component
+### 1. Can't read property 'ModuleFederationPlugin' of undefined.
+
+Please make sure `mfsu:{}` is added to `config.ts` and not ` config.dev.ts` or `config.prod.ts`.
+
+### 2. react: Invalid hook call. Hooks can only be called inside of the body of a function component
 
 MFSU precompiles import and import() dependencies. If a project exports a copy of React from precompile and `node_modules` at the same time due to some unexpected syntax, there will be a multi-instance problem with React.
 
@@ -100,7 +104,7 @@ Because of the Hooks implementation mechanism, React will throw errors.
 
 When the project is started in `ANALYZE=1 umi dev`, you can determine whether the project introduces React in `node_modules`. If so, you need to try modifying the import statement.
 
-### 2. React-router-dom: You should not use \<Link\> outside a \<Router\>
+### 3. React-router-dom: You should not use \<Link\> outside a \<Router\>
 
 Umi is a dynamic definition that consists of fixed exports and plugins, so it cannot be precompiled.
 
