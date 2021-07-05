@@ -632,7 +632,7 @@ export default async function getConfig(
       // disable unnecessary node libs
       http: false,
       https: false,
-      punycode: false,
+      // punycode: false,
       // mammoth deps on these
       // ref: https://github.com/umijs/umi/issues/6318
       // stream: false,
