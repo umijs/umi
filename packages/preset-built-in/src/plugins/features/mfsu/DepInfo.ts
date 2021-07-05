@@ -2,7 +2,7 @@ import { IApi, IConfig } from '@umijs/types';
 import { createDebug, lodash, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { CWD, DEP_INFO_CACHE_FILE, MF_VA_PREFIX } from './constants';
 import { getDepVersion } from './getDepVersion';
 import { TMode } from './mfsu';
@@ -144,7 +144,11 @@ export default class DepInfo {
     }
 
     // 没有
-    if (!existsSync(join(this.cachePath, `${MF_VA_PREFIX}remoteEntry.js`))) {
+    if (
+      !existsSync(
+        join(dirname(this.cachePath), `${MF_VA_PREFIX}remoteEntry.js`),
+      )
+    ) {
       return true;
     }
 
