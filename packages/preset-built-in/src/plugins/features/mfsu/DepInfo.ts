@@ -143,7 +143,7 @@ export default class DepInfo {
       return false;
     }
 
-    // 没有
+    // 没有 remoteEntry 时始终预编译依赖
     if (!existsSync(join(this.cacheDir, `${MF_VA_PREFIX}remoteEntry.js`))) {
       return true;
     }
