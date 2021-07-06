@@ -818,7 +818,7 @@ export default {
 - Type: `Object`
 - Default : `{}`
 
-开启 mfsu 功能  并添加相关配置。
+开启 mfsu 功能并添加相关配置。
 
 > 开启该功能将会自动开启 `webpack5` 和 `dynamicImport`.
 
