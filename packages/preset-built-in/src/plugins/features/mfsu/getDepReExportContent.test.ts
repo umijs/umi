@@ -160,6 +160,8 @@ test('cjs mode esm parser', () => {
 
   var index_0 = __webpack_exports__["dddfault"] = (createExtensibleEditor(editor_BraftEditor));
 
+  __webpack_require__.d( __webpack_exports__ , "getDecorators", function() { return getDecorators; });
+
   `;
   expect(cjsModeEsmParser(file)).toEqual([
     '__esModule',
@@ -169,5 +171,6 @@ test('cjs mode esm parser', () => {
     'default',
     'something',
     'dddfault',
+    'getDecorators',
   ]);
 });

@@ -70,6 +70,13 @@ export const cjsModeEsmParser = (code: string) => {
       // ref: https://github.com/margox/braft-editor/blob/master/dist/index.js#L8429
       matchAll(/__webpack_exports__\[(?:\"|\')(\w+)(?:\"|\')\]\s*\=/g, code),
     )
+    .concat(
+      // Same as above
+      matchAll(
+        /__webpack_require__\.d\(\s*__webpack_exports__\s*,\s*(?:\"|\')(\w+)(?:\"|\')\s*,/g,
+        code,
+      ),
+    )
     .map((result) => result[1]);
 };
 
