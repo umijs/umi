@@ -65,6 +65,11 @@ export const cjsModeEsmParser = (code: string) => {
       // ref: https://unpkg.alibaba-inc.com/browse/echarts-for-react@2.0.16/lib/core.js
       matchAll(/exports(?:\.|\[(?:\'|\"))(\w+)(?:\s*|(?:\'|\")\])\s*\=/g, code),
     )
+    .concat(
+      // Support __webpack_exports__["default"]
+      // ref: https://github.com/margox/braft-editor/blob/master/dist/index.js#L8429
+      matchAll(/__webpack_exports__\[(?:\"|\')(\w+)(?:\"|\')\]\s*\=/g, code),
+    )
     .map((result) => result[1]);
 };
 

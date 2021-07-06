@@ -157,6 +157,9 @@ test('cjs mode esm parser', () => {
   exports {Love};
   exportsILoveYou = "1";
   exports["something"] = undefined;
+
+  var index_0 = __webpack_exports__["dddfault"] = (createExtensibleEditor(editor_BraftEditor));
+
   `;
   expect(cjsModeEsmParser(file)).toEqual([
     '__esModule',
@@ -165,5 +168,6 @@ test('cjs mode esm parser', () => {
     'Foo',
     'default',
     'something',
+    'dddfault',
   ]);
 });
