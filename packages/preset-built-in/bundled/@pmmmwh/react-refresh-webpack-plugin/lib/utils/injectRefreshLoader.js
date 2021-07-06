@@ -6,35 +6,45 @@ const path = require('path');
  * @returns {boolean}
  */
 
+/**
+ * @typedef {Object} InjectLoaderOptions
+ * @property {MatchObject} match A function to include/exclude files to be processed.
+ * @property {import('../../loader/types').ReactRefreshLoaderOptions} [options] Options passed to the loader.
+ */
+
 const resolvedLoader = require.resolve('../../loader');
 
 /**
  * Injects refresh loader to all JavaScript-like and user-specified files.
- * @param {*} data Module factory creation data.
- * @param {MatchObject} matchObject A function to include/exclude files to be processed.
+ * @param {*} moduleData Module factory creation data.
+ * @param {InjectLoaderOptions} injectOptions Options to alter how the loader is injected.
  * @returns {*} The injected module factory creation data.
  */
-function injectRefreshLoader(data, matchObject) {
+function injectRefreshLoader(moduleData, injectOptions) {
+  const { match, options } = injectOptions;
+
   if (
     // Include and exclude user-specified files
-    matchObject(data.resource) &&
-    // Skip plugin's runtime utils to prevent self-referencing -
-    // this is useful when using the plugin as a direct dependency.
-    !data.resource.includes(path.join(__dirname, '../runtime/RefreshUtils')) &&
+    match(moduleData.resource) &&
+    // Skip react-refresh and the plugin's runtime utils to prevent self-referencing -
+    // this is useful when using the plugin as a direct dependency,
+    // or when node_modules are specified to be processed.
+    !moduleData.resource.includes(path.dirname(require.resolve('react-refresh'))) &&
+    !moduleData.resource.includes(path.join(__dirname, '../runtime/RefreshUtils')) &&
     // Check to prevent double injection
-    !data.loaders.find(({ loader }) => loader === resolvedLoader)
+    !moduleData.loaders.find(({ loader }) => loader === resolvedLoader)
   ) {
     // As we inject runtime code for each module,
     // it is important to run the injected loader after everything.
     // This way we can ensure that all code-processing have been done,
     // and we won't risk breaking tools like Flow or ESLint.
-    data.loaders.unshift({
+    moduleData.loaders.unshift({
       loader: resolvedLoader,
-      options: undefined,
+      options,
     });
   }
 
-  return data;
+  return moduleData;
 }
 
 module.exports = injectRefreshLoader;

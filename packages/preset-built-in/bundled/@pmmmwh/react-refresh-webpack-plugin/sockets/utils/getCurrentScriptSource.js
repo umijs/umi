@@ -11,12 +11,13 @@ function getCurrentScriptSource() {
 
   // Fallback to getting all scripts running in the document.
   const scriptElements = document.scripts || [];
-  const currentScript = scriptElements[scriptElements.length - 1];
-  if (currentScript) {
+  const scriptElementsWithSrc = Array.prototype.filter.call(scriptElements, function (elem) {
+    return elem.getAttribute('src');
+  });
+  if (scriptElementsWithSrc.length) {
+    const currentScript = scriptElementsWithSrc[scriptElementsWithSrc.length - 1];
     return currentScript.getAttribute('src');
   }
-
-  throw new Error('[React Refresh] Failed to get current script source!');
 }
 
-module.exports = getCurrentScriptSource;
+export default getCurrentScriptSource;

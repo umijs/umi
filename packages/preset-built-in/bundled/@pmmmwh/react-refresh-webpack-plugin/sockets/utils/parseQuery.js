@@ -30,4 +30,4 @@ function parseQuery(querystring) {
     }, {});
 }
 
-module.exports = parseQuery;
+export default parseQuery;

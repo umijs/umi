@@ -11,9 +11,7 @@ function getSocketIntegration(integrationType) {
       break;
     }
     case 'whm': {
-      resolvedSocketIntegration = require.resolve(
-        '../../sockets/WHMEventSource',
-      );
+      resolvedSocketIntegration = require.resolve('../../sockets/WHMEventSource');
       break;
     }
     case 'wps': {
