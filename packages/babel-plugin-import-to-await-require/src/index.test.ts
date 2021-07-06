@@ -82,6 +82,36 @@ foo;
   );
 });
 
+test('css', () => {
+  expect(
+    transformWithPlugin(`import styles from './a.css'; foo;`, {
+      libs: [],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const {
+  default: styles
+} = await import("./a.css");
+foo;
+    `.trim(),
+  );
+});
+
+test('css without specifiers', () => {
+  expect(
+    transformWithPlugin(`import './a.css'; foo;`, {
+      libs: [],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const {} = await import("./a.css");
+foo;
+    `.trim(),
+  );
+});
+
 test('invalid libs', () => {
   expect(
     transformWithPlugin(`import a, { b, c as d } from 'antdx'; foo;`, {

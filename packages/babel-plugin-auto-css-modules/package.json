@@ -23,8 +23,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@umijs/utils": "3.5.3"
+  },
   "devDependencies": {
-    "@babel/traverse": "7.14.0",
-    "@babel/types": "7.14.1"
+    "@umijs/deps": "3.5.3"
   }
 }
