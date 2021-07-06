@@ -177,13 +177,12 @@ export default (context: any, opts: IOpts = {}) => {
             ];
           })
         : []),
+      opts.autoCSSModules && [
+        require.resolve('@umijs/babel-plugin-auto-css-modules'),
+      ],
       opts.importToAwaitRequire && [
         require.resolve('@umijs/babel-plugin-import-to-await-require'),
         opts.importToAwaitRequire,
-      ],
-      // 需要放 importToAwaitRequire 后面
-      opts.autoCSSModules && [
-        require.resolve('@umijs/babel-plugin-auto-css-modules'),
       ],
       opts.lockCoreJS3 && [
         require.resolve('@umijs/babel-plugin-lock-core-js-3'),

@@ -96,6 +96,19 @@ const {
 foo;
     `.trim(),
   );
+  expect(
+    transformWithPlugin(`import styles from './a.css?modules'; foo;`, {
+      libs: [],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const {
+  default: styles
+} = await import("./a.css?modules");
+foo;
+    `.trim(),
+  );
 });
 
 test('css without specifiers', () => {
