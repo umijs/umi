@@ -22,7 +22,7 @@ function getPathWithExt(path: string) {
 
 function getPathWithPkgJSON(path: string) {
   // TODO: 这里是否会有 symlink 问题?
-  if (statSync(path).isDirectory()) {
+  if (existsSync(path) && statSync(path).isDirectory()) {
     const pkgPath = join(path, 'package.json');
     if (existsSync(pkgPath)) {
       const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));

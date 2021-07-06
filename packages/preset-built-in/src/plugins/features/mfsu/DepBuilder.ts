@@ -7,11 +7,12 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import webpack from 'webpack';
 import { getBundleAndConfigs } from '../../commands/buildDevUtils';
-import { CWD, MF_NAME, MF_VA_PREFIX } from './constants';
+import { CWD, DEFAULT_MF_NAME, MF_VA_PREFIX } from './constants';
 import { IDeps } from './DepInfo';
 import { getAliasedDep } from './getDepVersion';
 import { getMfsuPath, TMode } from './mfsu';
 import ModifyChunkNamePlugin from './modifyChunkNamePlugin';
+import { RuntimePublicPathPlugin } from './RuntimePublicPathPlugin';
 import { figureOutExport } from './utils';
 
 const debug = createDebug('umi:mfsu:DepBuilder');
@@ -136,11 +137,18 @@ export default class DepBuilder {
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
-        name: MF_NAME,
+        name:
+          (this.api.config.mfsu && this.api.config.mfsu.mfName) ||
+          DEFAULT_MF_NAME,
         filename: remoteEntryFilename,
         exposes,
       }),
     );
+
+    // runtimePublicPath 替换插件
+    if (this.api.config.runtimePublicPath) {
+      mfConfig.plugins.push(new RuntimePublicPathPlugin());
+    }
 
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
