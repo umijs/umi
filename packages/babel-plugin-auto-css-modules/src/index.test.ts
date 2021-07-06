@@ -5,7 +5,12 @@ function transformWithPlugin(code: string, opts: IOpts) {
   const filename = 'file.js';
   return transform(code, {
     filename,
-    plugins: [[require.resolve('./index.ts'), opts]],
+    plugins: [
+      require.resolve(
+        '@umijs/deps/compiled/babel/plugin-syntax-top-level-await',
+      ),
+      [require.resolve('./index.ts'), opts],
+    ],
   })!.code;
 }
 
@@ -27,6 +32,15 @@ test('css modules', () => {
   );
   expect(transformWithPlugin(`import styles from 'a.styl';`, {})).toEqual(
     `import styles from "a.styl?modules";`,
+  );
+});
+
+test('with top level await', () => {
+  expect(
+    transformWithPlugin(`const styles = await import('a.css');`, {}),
+  ).toEqual(`const styles = await import("a.css?modules");`);
+  expect(transformWithPlugin(`await import('a.css');`, {})).toEqual(
+    `await import('a.css');`,
   );
 });
 

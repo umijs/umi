@@ -169,17 +169,23 @@ export default function () {
                 isMatch,
               });
 
-              if (isMatch) {
+              if (
+                isMatch ||
+                // css 走异步加载，修复 mfsu 场景下样式覆盖顺序的问题
+                /\.(css|less|sass|scss|stylus|styl)$/.test(d.source.value)
+              ) {
                 const { properties, namespaceIdentifier } =
                   specifiersToProperties(d.specifiers);
                 const id = t.objectPattern(properties);
                 const init = t.awaitExpression(
                   t.callExpression(t.import(), [
                     t.stringLiteral(
-                      `${opts.remoteName}/${getPath(
-                        d.source.value,
-                        opts.alias || {},
-                      )}`,
+                      isMatch
+                        ? `${opts.remoteName}/${getPath(
+                            d.source.value,
+                            opts.alias || {},
+                          )}`
+                        : d.source.value,
                     ),
                   ]),
                 );
