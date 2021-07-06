@@ -157,6 +157,17 @@ test('cjs mode esm parser', () => {
   exports {Love};
   exportsILoveYou = "1";
   exports["something"] = undefined;
+
+  var index_0 = __webpack_exports__["dddfault"] = (createExtensibleEditor(editor_BraftEditor));
+
+  __webpack_require__.d( __webpack_exports__ , "getDecorators", function() { return getDecorators; });
+
+  __webpack_require__.d(__webpack_exports__, {
+    "qqqqqq": function() { return /* binding */ clipboard; },
+    "wwwwww": function() { return /* binding */ clipboard; },
+    "eeeeee" : ()=>{ {"ddd":123} }
+  });
+
   `;
   expect(cjsModeEsmParser(file)).toEqual([
     '__esModule',
@@ -165,5 +176,10 @@ test('cjs mode esm parser', () => {
     'Foo',
     'default',
     'something',
+    'dddfault',
+    'getDecorators',
+    'qqqqqq',
+    'wwwwww',
+    'eeeeee',
   ]);
 });
