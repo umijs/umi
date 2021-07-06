@@ -162,6 +162,12 @@ test('cjs mode esm parser', () => {
 
   __webpack_require__.d( __webpack_exports__ , "getDecorators", function() { return getDecorators; });
 
+  __webpack_require__.d(__webpack_exports__, {
+    "qqqqqq": function() { return /* binding */ clipboard; },
+    "wwwwww": function() { return /* binding */ clipboard; },
+    "eeeeee" : ()=>{ {"ddd":123} }
+  });
+
   `;
   expect(cjsModeEsmParser(file)).toEqual([
     '__esModule',
@@ -172,5 +178,8 @@ test('cjs mode esm parser', () => {
     'something',
     'dddfault',
     'getDecorators',
+    'qqqqqq',
+    'wwwwww',
+    'eeeeee',
   ]);
 });
