@@ -300,7 +300,7 @@ export default function (api: IApi) {
                 const taps: { type: string; fn: Function; name: string }[] =
                   compiler.hooks.make['taps'];
                 compiler.hooks.make['taps'] = taps.filter((tap) => {
-                  // ref: https://github.com/microsoft/monaco-editor-webpack-plugin/blob/main/src/plugins/AddWorkerEntryPointPlugin.ts#L34
+                  // ref: https://github.com/microsoft/monaco-editor-webpack-plugin/blob/3e40369/src/plugins/AddWorkerEntryPointPlugin.ts#L34
                   return !(tap.name === 'AddWorkerEntryPointPlugin');
                 });
               }
