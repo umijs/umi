@@ -5,56 +5,21 @@
 const originalFetch = global.fetch;
 delete global.fetch;
 
+const { getOptions } = require('@umijs/deps/compiled/loader-utils');
+const { validate: validateOptions } = require('schema-utils');
+const { SourceMapConsumer, SourceNode } = require('@umijs/deps/compiled/source-map');
 const {
-  SourceMapConsumer,
-  SourceMapGenerator,
-  SourceNode,
-} = require('@umijs/deps/compiled/source-map');
-const { Template } = require('webpack');
+  getIdentitySourceMap,
+  getModuleSystem,
+  getRefreshModuleRuntime,
+  normalizeOptions,
+} = require('./utils');
+const schema = require('./options.json');
 
-/**
- * Generates an identity source map from a source file.
- * @param {string} source The content of the source file.
- * @param {string} resourcePath The name of the source file.
- * @returns {import('source-map').RawSourceMap} The identity source map.
- */
-function getIdentitySourceMap(source, resourcePath) {
-  const sourceMap = new SourceMapGenerator();
-  sourceMap.setSourceContent(resourcePath, source);
-
-  source.split('\n').forEach((line, index) => {
-    sourceMap.addMapping({
-      source: resourcePath,
-      original: {
-        line: index + 1,
-        column: 0,
-      },
-      generated: {
-        line: index + 1,
-        column: 0,
-      },
-    });
-  });
-
-  return sourceMap.toJSON();
-}
-
-/**
- * Gets a runtime template from provided function.
- * @param {function(): void} fn A function containing the runtime template.
- * @returns {string} The "sanitized" runtime template.
- */
-function getTemplate(fn) {
-  return Template.getFunctionContent(fn).trim().replace(/^ {2}/gm, '');
-}
-
-const RefreshSetupRuntime = getTemplate(
-  require('./RefreshSetup.runtime'),
-).replace(
-  '$RefreshRuntimePath$',
-  require.resolve('react-refresh/runtime').replace(/\\/g, '/'),
-);
-const RefreshModuleRuntime = getTemplate(require('./RefreshModule.runtime'));
+const RefreshRuntimePath = require
+  .resolve('react-refresh/runtime.js')
+  .replace(/\\/g, '/')
+  .replace(/'/g, "\\'");
 
 /**
  * A simple Webpack loader to inject react-refresh HMR code into modules.
@@ -67,7 +32,27 @@ const RefreshModuleRuntime = getTemplate(require('./RefreshModule.runtime'));
  * @returns {void}
  */
 function ReactRefreshLoader(source, inputSourceMap, meta) {
+  let options = getOptions(this);
+  validateOptions(schema, options, {
+    baseDataPath: 'options',
+    name: 'React Refresh Loader',
+  });
+
+  options = normalizeOptions(options);
+
   const callback = this.async();
+
+  const { ModuleFilenameHelpers, Template } = this._compiler.webpack || require('webpack');
+
+  const RefreshSetupRuntimes = {
+    cjs: Template.asString(
+      `__webpack_require__.$Refresh$.runtime = require('${RefreshRuntimePath}');`
+    ),
+    esm: Template.asString([
+      `import * as __react_refresh_runtime__ from '${RefreshRuntimePath}';`,
+      `__webpack_require__.$Refresh$.runtime = __react_refresh_runtime__;`,
+    ]),
+  };
 
   /**
    * @this {import('webpack').loader.LoaderContext}
@@ -76,6 +61,14 @@ function ReactRefreshLoader(source, inputSourceMap, meta) {
    * @returns {Promise<[string, import('source-map').RawSourceMap]>}
    */
   async function _loader(source, inputSourceMap) {
+    const moduleSystem = await getModuleSystem.call(this, ModuleFilenameHelpers, options);
+
+    const RefreshSetupRuntime = RefreshSetupRuntimes[moduleSystem];
+    const RefreshModuleRuntime = getRefreshModuleRuntime(Template, {
+      const: options.const,
+      moduleSystem,
+    });
+
     if (this.sourceMap) {
       let originalSourceMap = inputSourceMap;
       if (!originalSourceMap) {
@@ -84,7 +77,7 @@ function ReactRefreshLoader(source, inputSourceMap, meta) {
 
       const node = SourceNode.fromStringWithSourceMap(
         source,
-        await new SourceMapConsumer(originalSourceMap),
+        await new SourceMapConsumer(originalSourceMap)
       );
 
       node.prepend([RefreshSetupRuntime, '\n\n']);
@@ -93,10 +86,7 @@ function ReactRefreshLoader(source, inputSourceMap, meta) {
       const { code, map } = node.toStringWithSourceMap();
       return [code, map.toJSON()];
     } else {
-      return [
-        [RefreshSetupRuntime, source, RefreshModuleRuntime].join('\n\n'),
-        inputSourceMap,
-      ];
+      return [[RefreshSetupRuntime, source, RefreshModuleRuntime].join('\n\n'), inputSourceMap];
     }
   }
 
@@ -106,7 +96,7 @@ function ReactRefreshLoader(source, inputSourceMap, meta) {
     },
     (error) => {
       callback(error);
-    },
+    }
   );
 }
 

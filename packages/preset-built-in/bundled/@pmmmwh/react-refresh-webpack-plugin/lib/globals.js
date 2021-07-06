@@ -1,13 +1,22 @@
-const { version } = require('webpack');
+/**
+ * Gets current bundle's global scope identifier for React Refresh.
+ * @param {Record<string, string>} runtimeGlobals The Webpack runtime globals.
+ * @returns {string} The React Refresh global scope within the Webpack bundle.
+ */
+module.exports.getRefreshGlobalScope = (runtimeGlobals) => {
+  return `${runtimeGlobals.require || '__webpack_require__'}.$Refresh$`;
+};
 
-// Parse Webpack's major version: x.y.z => x
-const webpackVersion = parseInt(version || '', 10);
+/**
+ * Gets current Webpack version according to features on the compiler instance.
+ * @param {import('webpack').Compiler} compiler The current Webpack compiler instance.
+ * @returns {number} The current Webpack version.
+ */
+module.exports.getWebpackVersion = (compiler) => {
+  if (!compiler.hooks) {
+    throw new Error(`[ReactRefreshPlugin] Webpack version is not supported!`);
+  }
 
-let webpackGlobals = {};
-if (webpackVersion === 5) {
-  webpackGlobals = require('webpack/lib/RuntimeGlobals');
-}
-
-module.exports.webpackVersion = webpackVersion;
-module.exports.webpackRequire = webpackGlobals.require || '__webpack_require__';
-module.exports.refreshGlobal = `${module.exports.webpackRequire}.$Refresh$`;
+  // Webpack v5+ implements compiler caching
+  return 'cache' in compiler ? 5 : 4;
+};

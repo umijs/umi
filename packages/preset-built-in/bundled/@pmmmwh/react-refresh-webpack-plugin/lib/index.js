@@ -1,55 +1,27 @@
+const { validate: validateOptions } = require('schema-utils');
+const { getRefreshGlobalScope, getWebpackVersion } = require('./globals');
 const {
-  DefinePlugin,
-  ModuleFilenameHelpers,
-  ProvidePlugin,
-  Template,
-} = require('webpack');
-const ConstDependency = require('webpack/lib/dependencies/ConstDependency');
-const { refreshGlobal, webpackRequire, webpackVersion } = require('./globals');
-const {
-  createError,
-  getParserHelpers,
+  getAdditionalEntries,
+  getIntegrationEntry,
   getRefreshGlobal,
   getSocketIntegration,
   injectRefreshEntry,
   injectRefreshLoader,
+  makeRefreshRuntimeModule,
   normalizeOptions,
 } = require('./utils');
-
-// Mapping of react-refresh globals to Webpack runtime globals
-const REPLACEMENTS = {
-  $RefreshRuntime$: {
-    expr: `${refreshGlobal}.runtime`,
-    req: [webpackRequire, `${refreshGlobal}.runtime`],
-    type: 'object',
-  },
-  $RefreshSetup$: {
-    expr: `${refreshGlobal}.setup`,
-    req: [webpackRequire, `${refreshGlobal}.setup`],
-    type: 'function',
-  },
-  $RefreshCleanup$: {
-    expr: `${refreshGlobal}.cleanup`,
-    req: [webpackRequire, `${refreshGlobal}.cleanup`],
-    type: 'function',
-  },
-  $RefreshReg$: {
-    expr: `${refreshGlobal}.register`,
-    req: [webpackRequire, `${refreshGlobal}.register`],
-    type: 'function',
-  },
-  $RefreshSig$: {
-    expr: `${refreshGlobal}.signature`,
-    req: [webpackRequire, `${refreshGlobal}.signature`],
-    type: 'function',
-  },
-};
+const schema = require('./options.json');
 
 class ReactRefreshPlugin {
   /**
    * @param {import('./types').ReactRefreshPluginOptions} [options] Options for react-refresh-plugin.
    */
   constructor(options = {}) {
+    validateOptions(schema, options, {
+      name: 'React Refresh Plugin',
+      baseDataPath: 'options',
+    });
+
     /**
      * @readonly
      * @type {import('./types').NormalizedPluginOptions}
@@ -63,12 +35,6 @@ class ReactRefreshPlugin {
    * @returns {void}
    */
   apply(compiler) {
-    // Throw if we encounter an unsupported Webpack version,
-    // since things will most likely not work.
-    if (webpackVersion !== 4 && webpackVersion !== 5) {
-      throw createError(`Webpack v${webpackVersion} is not supported!`);
-    }
-
     // Skip processing in non-development mode, but allow manual force-enabling
     if (
       // Webpack do not set process.env.NODE_ENV, so we need to check for mode.
@@ -82,49 +48,150 @@ class ReactRefreshPlugin {
       return;
     }
 
-    // Inject react-refresh context to all Webpack entry points
-    compiler.options.entry = injectRefreshEntry(
-      compiler.options.entry,
-      this.options,
-    );
+    const webpackVersion = getWebpackVersion(compiler);
+    const logger = compiler.getInfrastructureLogger(this.constructor.name);
 
-    // Inject necessary modules to bundle's global scope
+    // Get Webpack imports from compiler instance (if available) -
+    // this allow mono-repos to use different versions of Webpack without conflicts.
+    const webpack = compiler.webpack || require('webpack');
+    const {
+      DefinePlugin,
+      EntryDependency,
+      EntryPlugin,
+      ModuleFilenameHelpers,
+      NormalModule,
+      ProvidePlugin,
+      RuntimeGlobals,
+      Template,
+    } = webpack;
+
+    // Inject react-refresh context to all Webpack entry points.
+    // This should create `EntryDependency` objects when available,
+    // and fallback to patching the `entry` object for legacy workflows.
+    const addEntries = getAdditionalEntries({
+      devServer: compiler.options.devServer,
+      options: this.options,
+    });
+    if (EntryPlugin) {
+      // Prepended entries does not care about injection order,
+      // so we can utilise EntryPlugin for simpler logic.
+      addEntries.prependEntries.forEach((entry) => {
+        new EntryPlugin(compiler.context, entry, { name: undefined }).apply(compiler);
+      });
+
+      const integrationEntry = getIntegrationEntry(this.options.overlay.sockIntegration);
+      const socketEntryData = [];
+      compiler.hooks.make.tap(
+        { name: this.constructor.name, stage: Number.POSITIVE_INFINITY },
+        (compilation) => {
+          // Exhaustively search all entries for `integrationEntry`.
+          // If found, mark those entries and the index of `integrationEntry`.
+          for (const [name, entryData] of compilation.entries.entries()) {
+            const index = entryData.dependencies.findIndex(
+              (dep) => dep.request && dep.request.includes(integrationEntry)
+            );
+            if (index !== -1) {
+              socketEntryData.push({ name, index });
+            }
+          }
+        }
+      );
+
+      // Overlay entries need to be injected AFTER integration's entry,
+      // so we will loop through everything in `finishMake` instead of `make`.
+      // This ensures we can traverse all entry points and inject stuff with the correct order.
+      addEntries.overlayEntries.forEach((entry, idx, arr) => {
+        compiler.hooks.finishMake.tapPromise(
+          { name: this.constructor.name, stage: Number.MIN_SAFE_INTEGER + (arr.length - idx - 1) },
+          (compilation) => {
+            // Only hook into the current compiler
+            if (compilation.compiler !== compiler) {
+              return Promise.resolve();
+            }
+
+            const injectData = socketEntryData.length ? socketEntryData : [{ name: undefined }];
+            return Promise.all(
+              injectData.map(({ name, index }) => {
+                return new Promise((resolve, reject) => {
+                  const options = { name };
+                  const dep = EntryPlugin.createDependency(entry, options);
+                  compilation.addEntry(compiler.context, dep, options, (err) => {
+                    if (err) return reject(err);
+
+                    // If the entry is not a global one,
+                    // and we have registered the index for integration entry,
+                    // we will reorder all entry dependencies to our desired order.
+                    // That is, to have additional entries DIRECTLY behind integration entry.
+                    if (name && typeof index !== 'undefined') {
+                      const entryData = compilation.entries.get(name);
+                      entryData.dependencies.splice(
+                        index + 1,
+                        0,
+                        entryData.dependencies.splice(entryData.dependencies.length - 1, 1)[0]
+                      );
+                    }
+
+                    resolve();
+                  });
+                });
+              })
+            ).then(() => {});
+          }
+        );
+      });
+    } else {
+      compiler.options.entry = injectRefreshEntry(compiler.options.entry, addEntries);
+    }
+
+    // Inject necessary modules and variables to bundle's global scope
+    const refreshGlobal = getRefreshGlobalScope(RuntimeGlobals || {});
+    /** @type {Record<string, string | boolean>}*/
+    const definedModules = {
+      // Mapping of react-refresh globals to Webpack runtime globals
+      $RefreshReg$: `${refreshGlobal}.register`,
+      $RefreshSig$: `${refreshGlobal}.signature`,
+      'typeof $RefreshReg$': 'function',
+      'typeof $RefreshSig$': 'function',
+
+      // Library mode
+      __react_refresh_library__: JSON.stringify(
+        Template.toIdentifier(
+          this.options.library ||
+            compiler.options.output.uniqueName ||
+            compiler.options.output.library
+        )
+      ),
+    };
     /** @type {Record<string, string>} */
-    let providedModules = {
+    const providedModules = {
       __react_refresh_utils__: require.resolve('./runtime/RefreshUtils'),
     };
 
     if (this.options.overlay === false) {
-      // Stub errorOverlay module so calls to it can be erased
-      const definePlugin = new DefinePlugin({
-        __react_refresh_error_overlay__: false,
-        __react_refresh_init_socket__: false,
-      });
-      definePlugin.apply(compiler);
+      // Stub errorOverlay module so their calls can be erased
+      definedModules.__react_refresh_error_overlay__ = false;
+      definedModules.__react_refresh_polyfill_url__ = false;
+      definedModules.__react_refresh_socket__ = false;
     } else {
-      providedModules = {
-        ...providedModules,
-        ...(this.options.overlay.module && {
-          __react_refresh_error_overlay__: require.resolve(
-            this.options.overlay.module,
-          ),
-        }),
-        ...(this.options.overlay.sockIntegration && {
-          __react_refresh_init_socket__: getSocketIntegration(
-            this.options.overlay.sockIntegration,
-          ),
-        }),
-      };
+      definedModules.__react_refresh_polyfill_url__ = this.options.overlay.useURLPolyfill || false;
+
+      if (this.options.overlay.module) {
+        providedModules.__react_refresh_error_overlay__ = require.resolve(
+          this.options.overlay.module
+        );
+      }
+      if (this.options.overlay.sockIntegration) {
+        providedModules.__react_refresh_socket__ = getSocketIntegration(
+          this.options.overlay.sockIntegration
+        );
+      }
     }
 
-    const providePlugin = new ProvidePlugin(providedModules);
-    providePlugin.apply(compiler);
+    new DefinePlugin(definedModules).apply(compiler);
+    new ProvidePlugin(providedModules).apply(compiler);
 
-    const matchObject = ModuleFilenameHelpers.matchObject.bind(
-      undefined,
-      this.options,
-    );
-    const { evaluateToString, toConstantDependency } = getParserHelpers();
+    const match = ModuleFilenameHelpers.matchObject.bind(undefined, this.options);
+    let loggedHotWarning = false;
     compiler.hooks.compilation.tap(
       this.constructor.name,
       (compilation, { normalModuleFactory }) => {
@@ -132,12 +199,6 @@ class ReactRefreshPlugin {
         if (compilation.compiler !== compiler) {
           return;
         }
-
-        // Set template for ConstDependency which is used by parser hooks
-        compilation.dependencyTemplates.set(
-          ConstDependency,
-          new ConstDependency.Template(),
-        );
 
         // Tap into version-specific compilation hooks
         switch (webpackVersion) {
@@ -174,7 +235,7 @@ class ReactRefreshPlugin {
                 const lines = source.split('\n');
                 // Webpack generates this line when the MainTemplate is called
                 const moduleInitializationLineNumber = lines.findIndex((line) =>
-                  line.includes('modules[moduleId].call('),
+                  line.includes('modules[moduleId].call(')
                 );
                 // Unable to find call to module execution -
                 // this happens if the current module does not call MainTemplate.
@@ -184,7 +245,7 @@ class ReactRefreshPlugin {
                 }
 
                 const moduleInterceptor = Template.asString([
-                  `${refreshGlobal}.init();`,
+                  `${refreshGlobal}.setup(moduleId);`,
                   'try {',
                   Template.indent(lines[moduleInitializationLineNumber]),
                   '} finally {',
@@ -199,74 +260,78 @@ class ReactRefreshPlugin {
                     ? Template.indent(moduleInterceptor)
                     : moduleInterceptor,
                   '',
-                  ...lines.slice(
-                    moduleInitializationLineNumber + 1,
-                    lines.length,
-                  ),
+                  ...lines.slice(moduleInitializationLineNumber + 1, lines.length),
                 ]);
-              },
+              }
             );
 
             compilation.mainTemplate.hooks.requireExtensions.tap(
               this.constructor.name,
               // Setup react-refresh globals as extensions to Webpack's require function
               (source) => {
-                return Template.asString([source, '', getRefreshGlobal()]);
-              },
+                return Template.asString([source, '', getRefreshGlobal(Template)]);
+              }
             );
 
             normalModuleFactory.hooks.afterResolve.tap(
               this.constructor.name,
               // Add react-refresh loader to process files that matches specified criteria
               (data) => {
-                return injectRefreshLoader(data, matchObject);
-              },
+                return injectRefreshLoader(data, {
+                  match,
+                  options: { const: false, esModule: false },
+                });
+              }
             );
 
             compilation.hooks.normalModuleLoader.tap(
-              // `Infinity` ensures this check will run only after all other taps
-              { name: this.constructor.name, stage: Infinity },
+              // `Number.POSITIVE_INFINITY` ensures this check will run only after all other taps
+              { name: this.constructor.name, stage: Number.POSITIVE_INFINITY },
               // Check for existence of the HMR runtime -
               // it is the foundation to this plugin working correctly
               (context) => {
-                if (!context.hot) {
-                  throw createError(
+                if (!context.hot && !loggedHotWarning) {
+                  logger.warn(
                     [
                       'Hot Module Replacement (HMR) is not enabled!',
                       'React Refresh requires HMR to function properly.',
-                    ].join(' '),
+                    ].join(' ')
                   );
+                  loggedHotWarning = true;
                 }
-              },
+              }
             );
 
             break;
           }
           case 5: {
-            const NormalModule = require('webpack/lib/NormalModule');
-            const RuntimeGlobals = require('webpack/lib/RuntimeGlobals');
-            const ReactRefreshRuntimeModule = require('./runtime/RefreshRuntimeModule');
+            // Set factory for EntryDependency which is used to initialise the module
+            compilation.dependencyFactories.set(EntryDependency, normalModuleFactory);
 
+            const ReactRefreshRuntimeModule = makeRefreshRuntimeModule(webpack);
             compilation.hooks.additionalTreeRuntimeRequirements.tap(
               this.constructor.name,
               // Setup react-refresh globals with a Webpack runtime module
               (chunk, runtimeRequirements) => {
-                runtimeRequirements.add(
-                  RuntimeGlobals.interceptModuleExecution,
-                );
-                compilation.addRuntimeModule(
-                  chunk,
-                  new ReactRefreshRuntimeModule(),
-                );
-              },
+                runtimeRequirements.add(RuntimeGlobals.interceptModuleExecution);
+                runtimeRequirements.add(RuntimeGlobals.moduleCache);
+                runtimeRequirements.add(refreshGlobal);
+                compilation.addRuntimeModule(chunk, new ReactRefreshRuntimeModule());
+              }
             );
 
             normalModuleFactory.hooks.afterResolve.tap(
               this.constructor.name,
               // Add react-refresh loader to process files that matches specified criteria
               (resolveData) => {
-                injectRefreshLoader(resolveData.createData, matchObject);
-              },
+                injectRefreshLoader(resolveData.createData, {
+                  match,
+                  options: {
+                    const: compilation.runtimeTemplate.supportsConst(),
+                    esModule: this.options.esModule,
+                  },
+                });
+              }
             );
 
             NormalModule.getCompilationHooks(compilation).loader.tap(
@@ -275,58 +340,25 @@ class ReactRefreshPlugin {
               // Check for existence of the HMR runtime -
               // it is the foundation to this plugin working correctly
               (context) => {
-                if (!context.hot) {
-                  throw createError(
+                if (!context.hot && !loggedHotWarning) {
+                  logger.warn(
                     [
                       'Hot Module Replacement (HMR) is not enabled!',
                       'React Refresh requires HMR to function properly.',
-                    ].join(' '),
+                    ].join(' ')
                   );
+                  loggedHotWarning = true;
                 }
-              },
+              }
             );
 
             break;
           }
           default: {
-            throw createError(
-              `Encountered unexpected Webpack version (v${webpackVersion})`,
-            );
+            // Do nothing - this should be an impossible case
           }
         }
-
-        /**
-         * Transform global calls into Webpack runtime calls.
-         * @param {*} parser
-         * @returns {void}
-         */
-        const parserHandler = (parser) => {
-          Object.entries(REPLACEMENTS).forEach(([key, info]) => {
-            parser.hooks.expression
-              .for(key)
-              .tap(
-                this.constructor.name,
-                toConstantDependency(parser, info.expr, info.req),
-              );
-
-            if (info.type) {
-              parser.hooks.evaluateTypeof
-                .for(key)
-                .tap(this.constructor.name, evaluateToString(info.type));
-            }
-          });
-        };
-
-        normalModuleFactory.hooks.parser
-          .for('javascript/auto')
-          .tap(this.constructor.name, parserHandler);
-        normalModuleFactory.hooks.parser
-          .for('javascript/dynamic')
-          .tap(this.constructor.name, parserHandler);
-        normalModuleFactory.hooks.parser
-          .for('javascript/esm')
-          .tap(this.constructor.name, parserHandler);
-      },
+      }
     );
   }
 }

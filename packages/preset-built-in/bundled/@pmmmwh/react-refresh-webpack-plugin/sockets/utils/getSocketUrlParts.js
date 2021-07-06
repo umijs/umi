@@ -1,14 +1,13 @@
-const url = require('@umijs/deps/compiled/native-url');
-const getCurrentScriptSource = require('./getCurrentScriptSource');
-const parseQuery = require('./parseQuery');
+import getCurrentScriptSource from './getCurrentScriptSource.js';
+import parseQuery from './parseQuery.js';
 
 /**
  * @typedef {Object} SocketUrlParts
  * @property {string} [auth]
- * @property {string} [hostname]
+ * @property {string} hostname
  * @property {string} [protocol]
- * @property {string} [pathname]
- * @property {string} [port]
+ * @property {string} pathname
+ * @property {string} port
  */
 
 /**
@@ -19,42 +18,40 @@ const parseQuery = require('./parseQuery');
  */
 function getSocketUrlParts(resourceQuery) {
   const scriptSource = getCurrentScriptSource();
-  const urlParts = url.parse(scriptSource);
+
+  let url = {};
+  try {
+    // The placeholder `baseURL` with `window.location.href`,
+    // is to allow parsing of path-relative or protocol-relative URLs,
+    // and will have no effect if `scriptSource` is a fully valid URL.
+    url = new URL(scriptSource, window.location.href);
+  } catch (e) {
+    // URL parsing failed, do nothing.
+    // We will still proceed to see if we can recover using `resourceQuery`
+  }
 
   /** @type {string | undefined} */
   let auth;
-  let hostname = urlParts.hostname;
-  let protocol = urlParts.protocol;
+  /** @type {string | undefined} */
+  let hostname = url.hostname;
+  /** @type {string | undefined} */
+  let protocol = url.protocol;
   let pathname = '/sockjs-node'; // This is hard-coded in WDS
-  let port = urlParts.port;
+  /** @type {string | undefined} */
+  let port = url.port;
 
-  // FIXME:
-  // This is a hack to work-around `native-url`'s parse method,
-  // which filters out falsy values when concatenating the `auth` string.
-  // In reality, we need to check for both values to correctly inject them.
-  // Ref: GoogleChromeLabs/native-url#32
-  // The placeholder `baseURL` is to allow parsing of relative paths,
-  // and will have no effect if `scriptSource` is a proper URL.
-  const authUrlParts = new URL(scriptSource, 'http://foo.bar');
   // Parse authentication credentials in case we need them
-  if (authUrlParts.username) {
-    auth = authUrlParts.username;
-
+  if (url.username) {
     // Since HTTP basic authentication does not allow empty username,
     // we only include password if the username is not empty.
-    if (authUrlParts.password) {
-      // Result: <username>:<password>
-      auth = auth.concat(':', authUrlParts.password);
-    }
+    // Result: <username>:<password>
+    auth = [url.username, url.password].filter(Boolean).join(':');
   }
 
   // Check for IPv4 and IPv6 host addresses that corresponds to `any`/`empty`.
   // This is important because `hostname` can be empty for some hosts,
   // such as `about:blank` or `file://` URLs.
-  const isEmptyHostname =
-    urlParts.hostname === '0.0.0.0' ||
-    urlParts.hostname === '::' ||
-    urlParts.hostname === null;
+  const isEmptyHostname = url.hostname === '0.0.0.0' || url.hostname === '[::]' || !url.hostname;
 
   // We only re-assign the hostname if we are using HTTP/HTTPS protocols
   if (
@@ -72,8 +69,8 @@ function getSocketUrlParts(resourceQuery) {
     protocol = window.location.protocol;
   }
 
-  // We only re-assign port when it is not available or `empty`
-  if (!port || port === '0') {
+  // We only re-assign port when it is not available
+  if (!port) {
     port = window.location.port;
   }
 
@@ -84,6 +81,22 @@ function getSocketUrlParts(resourceQuery) {
   pathname = parsedQuery.sockPath || pathname;
   port = parsedQuery.sockPort || port;
 
+  // Make sure the protocol from resource query has a trailing colon
+  if (parsedQuery.sockProtocol) {
+    protocol = parsedQuery.sockProtocol + ':';
+  }
+
+  if (!hostname || !pathname || !port) {
+    throw new Error(
+      [
+        '[React Refresh] Failed to get an URL for the socket connection.',
+        "This usually means that the current executed script doesn't have a `src` attribute set.",
+        'You should either specify the socket path parameters under the `devServer` key in your Webpack config, or use the `overlay` option.',
+        'https://github.com/pmmmwh/react-refresh-webpack-plugin/blob/main/docs/API.md#overlay',
+      ].join('\n')
+    );
+  }
+
   return {
     auth: auth,
     hostname: hostname,
@@ -93,4 +106,4 @@ function getSocketUrlParts(resourceQuery) {
   };
 }
 
-module.exports = getSocketUrlParts;
+export default getSocketUrlParts;

@@ -2,6 +2,7 @@
   "additionalProperties": false,
   "type": "object",
   "definitions": {
+    "Path": { "type": "string" },
     "MatchCondition": {
       "anyOf": [{ "instanceof": "RegExp" }, { "$ref": "#/definitions/Path" }]
     },
@@ -9,6 +10,24 @@
       "type": "array",
       "items": { "$ref": "#/definitions/MatchCondition" },
       "minItems": 1
+    },
+    "ESModuleOptions": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "exclude": {
+          "anyOf": [
+            { "$ref": "#/definitions/MatchCondition" },
+            { "$ref": "#/definitions/MatchConditions" }
+          ]
+        },
+        "include": {
+          "anyOf": [
+            { "$ref": "#/definitions/MatchCondition" },
+            { "$ref": "#/definitions/MatchConditions" }
+          ]
+        }
+      }
     },
     "OverlayOptions": {
       "additionalProperties": false,
@@ -30,12 +49,19 @@
         "sockHost": { "type": "string" },
         "sockPath": { "type": "string" },
         "sockPort": { "type": "number", "minimum": 0 },
-        "useLegacyWDSSockets": { "type": "boolean" }
+        "sockProtocol": { "enum": ["http", "https", "ws", "wss"] },
+        "useLegacyWDSSockets": { "type": "boolean" },
+        "useURLPolyfill": { "type": "boolean" }
       }
-    },
-    "Path": { "type": "string", "absolutePath": true }
+    }
   },
   "properties": {
+    "esModule": {
+      "anyOf": [
+        { "type": "boolean" },
+        { "$ref": "#/definitions/ESModuleOptions" }
+      ]
+    },
     "exclude": {
       "anyOf": [
         { "$ref": "#/definitions/MatchCondition" },
@@ -49,6 +75,7 @@
         { "$ref": "#/definitions/MatchConditions" }
       ]
     },
+    "library": { "type": "string" },
     "overlay": {
       "anyOf": [
         { "type": "boolean" },

@@ -1,7 +1,7 @@
 /* global __webpack_dev_server_client__ */
 
-const url = require('@umijs/deps/compiled/native-url');
-const getSocketUrlParts = require('./utils/getSocketUrlParts');
+import getSocketUrlParts from './utils/getSocketUrlParts.js';
+import getUrlFromParts from './utils/getUrlFromParts';
 
 /**
  * Initializes a socket server for HMR for webpack-dev-server.
@@ -14,7 +14,17 @@ function initWDSSocket(messageHandler, resourceQuery) {
     const SocketClient = __webpack_dev_server_client__;
 
     const urlParts = getSocketUrlParts(resourceQuery);
-    const connection = new SocketClient(url.format(urlParts));
+
+    let enforceWs = false;
+    if (
+      typeof SocketClient.name !== 'undefined' &&
+      SocketClient.name !== null &&
+      SocketClient.name.toLowerCase().includes('websocket')
+    ) {
+      enforceWs = true;
+    }
+
+    const connection = new SocketClient(getUrlFromParts(urlParts, enforceWs));
 
     connection.onMessage(function onSocketMessage(data) {
       const message = JSON.parse(data);
@@ -23,4 +33,4 @@ function initWDSSocket(messageHandler, resourceQuery) {
   }
 }
 
-module.exports = initWDSSocket;
+export const init = initWDSSocket;
