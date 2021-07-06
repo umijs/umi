@@ -41,7 +41,7 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 ### 开发阶段
 
 1. 初始化一个 umi 应用。
-2. 在 config.ts 中添加 `webpack5:{}`,`dynamicImport:{}` 和 `mfsu:{}`。
+2. 在 config.ts 中添加 `mfsu:{}`。
 3. `umi dev` 启动项目。在构建依赖时，会出现 MFSU 的进度条，此时应用可能会被挂起或显示依赖不存在，请稍等。
 4. 多人合作时，可以配置 `mfsu.development.output` 配置预编译依赖输出目录并添加到 git 中，在其他开发者启动时，就可以免去再次编译依赖的过程。
 
@@ -80,7 +80,11 @@ mfsu: {},
 
 ## 常见问题
 
-### 1. react: Invalid hook call. Hooks can only be called inside of the body of a function component
+### 1. Can't read property 'ModuleFederationPlugin' of undefined.
+
+请确认 `mfsu:{}` 被添加到 `config.ts` 而不是 `config.dev.ts` 或者 `config.prod.ts`。
+
+### 2. react: Invalid hook call. Hooks can only be called inside of the body of a function component
 
 mfsu 的原理是将 import 和 import() 引入的依赖进行预编译，如果因为一些意料之外的语法，导致项目同时从预编译和`node_modules`同时导出了一份 React，将会产生 React 的多实例问题。
 
@@ -100,7 +104,7 @@ var React = _interopRequireDefault('react'); // mfsu cannot recognize
 
 在 `ANALYZE=1 umi dev` 启动项目时，可以判断项目是否在 `node_modules` 中引入 React。如果是，需要尝试修改引入语句。
 
-### 2. React-router-dom: You should not use \<Link\> outside a \<Router\>
+### 3. React-router-dom: You should not use \<Link\> outside a \<Router\>
 
 umi 是一个动态的定义，由一些固定的导出和 plugin 组成，因此无法对 umi 进行预编译。
 
