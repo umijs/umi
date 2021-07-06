@@ -113,7 +113,7 @@ export const cjsModeEsmParser = (code: string) => {
 
         return [
           ...matchAll(
-            /(?:\"|\')(\w+)(?:\"|\')\s*\:\s*(?:function|\(\)\=\>)/g,
+            /(?:\"|\')(\w+)(?:\"|\')\s*\:\s*(?:function|\()/g,
             result,
           ),
         ];
