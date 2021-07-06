@@ -821,7 +821,7 @@ export default {
 
 Turn on the MFSU functionality and add the associated configuration.
 
-> enabling this feature will automatically enable `webpack5` and `dynamicImport`.
+> Enabling this feature will automatically enable `webpack5` and `dynamicImport`.
 
 Contains sub-attributes
 
