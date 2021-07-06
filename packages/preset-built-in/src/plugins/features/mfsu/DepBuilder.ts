@@ -141,19 +141,6 @@ export default class DepBuilder {
         exposes,
       }),
     );
-    // 删除 MonacoEditorWebpackPlugin 的 Hack 插件
-    const hasMonacoPlugin = mfConfig.plugins.some((plugin) => {
-      return plugin.constructor.name === 'MonacoEditorWebpackPlugin';
-    });
-    if (hasMonacoPlugin) {
-      mfConfig.plugins.forEach((plugin, index) => {
-        if (
-          ['MonacoEditorWebpackPluginHack'].includes(plugin.constructor.name)
-        ) {
-          mfConfig.plugins!.splice(index, 1);
-        }
-      });
-    }
 
     // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
     // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
