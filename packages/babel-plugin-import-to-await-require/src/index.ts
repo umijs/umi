@@ -172,7 +172,9 @@ export default function () {
               if (
                 isMatch ||
                 // css 走异步加载，修复 mfsu 场景下样式覆盖顺序的问题
-                /\.(css|less|sass|scss|stylus|styl)$/.test(d.source.value)
+                /\.(css|less|sass|scss|stylus|styl)(\?.+?)?$/.test(
+                  d.source.value,
+                )
               ) {
                 const { properties, namespaceIdentifier } =
                   specifiersToProperties(d.specifiers);
