@@ -35,7 +35,12 @@ export function specifiersToProperties(specifiers: any[]) {
           t.objectProperty(t.identifier('default'), s.exported),
         );
       } else if (t.isExportSpecifier(s)) {
-        memo.properties.push(t.objectProperty(s.local, s.exported));
+        if (t.isIdentifier(s.exported, { name: 'default' })) {
+          memo.defaultIdentifier = s.local.name;
+          memo.properties.push(t.objectProperty(s.local, s.local));
+        } else {
+          memo.properties.push(t.objectProperty(s.local, s.exported));
+        }
       } else if (t.isImportNamespaceSpecifier(s)) {
         memo.namespaceIdentifier = s.local;
       } else {
@@ -43,7 +48,7 @@ export function specifiersToProperties(specifiers: any[]) {
       }
       return memo;
     },
-    { properties: [], namespaceIdentifier: null },
+    { properties: [], namespaceIdentifier: null, defaultIdentifier: null },
   );
 }
 
@@ -148,6 +153,7 @@ export default function () {
       Program: {
         exit(path: NodePath<t.Program>, { opts }: { opts: IOpts }) {
           const variableDeclarations = [];
+          const exportDefaultDeclarations = [];
           let index = path.node.body.length - 1;
           while (index >= 0) {
             const d = path.node.body[index];
@@ -301,7 +307,8 @@ export default function () {
               });
 
               if (isMatch) {
-                const { properties } = specifiersToProperties(d.specifiers);
+                const { properties, defaultIdentifier } =
+                  specifiersToProperties(d.specifiers);
                 const id = t.objectPattern(properties);
                 const init = t.awaitExpression(
                   t.callExpression(t.import(), [
@@ -319,18 +326,42 @@ export default function () {
                   ]),
                 );
                 d.source = null;
-                d.specifiers.forEach((node) => {
-                  if (t.isExportSpecifier(node)) {
-                    // @ts-ignore
-                    node.local = node.exported;
-                  }
+                d.specifiers = d.specifiers.filter((node) => {
+                  return !(
+                    t.isExportSpecifier(node) &&
+                    t.isIdentifier(node.exported) &&
+                    node.exported.name === 'default'
+                  );
                 });
+                if (d.specifiers.length) {
+                  d.specifiers.forEach((node) => {
+                    if (
+                      t.isExportSpecifier(node) &&
+                      t.isIdentifier(node.local) &&
+                      t.isIdentifier(node.exported)
+                    ) {
+                      node.local = node.exported;
+                    }
+                  });
+                } else {
+                  path.node.body.splice(index, 1);
+                }
+
+                if (defaultIdentifier) {
+                  exportDefaultDeclarations.push(
+                    t.exportDefaultDeclaration(t.identifier(defaultIdentifier)),
+                  );
+                }
               }
             }
 
             index -= 1;
           }
-          path.node.body = [...variableDeclarations, ...path.node.body];
+          path.node.body = [
+            ...variableDeclarations,
+            ...path.node.body,
+            ...exportDefaultDeclarations,
+          ];
         },
       },
 
