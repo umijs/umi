@@ -286,11 +286,6 @@ export default function (api: IApi) {
             }),
           );
         }
-
-        memo.experiments = {
-          ...memo.experiments,
-          topLevelAwait: true,
-        };
       }
       return memo;
     },
