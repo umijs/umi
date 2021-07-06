@@ -286,6 +286,25 @@ export default function (api: IApi) {
             }),
           );
         }
+
+        // 避免 MonacoEditorWebpackPlugin 在项目编译阶段重复编译 worker
+        const hasMonacoPlugin = memo.plugins.some((plugin: object) => {
+          return plugin.constructor.name === 'MonacoEditorWebpackPlugin';
+        });
+        if (hasMonacoPlugin && !mfsu) {
+          memo.plugins.push(
+            new (class MonacoEditorWebpackPluginHack {
+              apply(compiler: webpack.Compiler) {
+                const taps: { type: string; fn: Function; name: string }[] =
+                  compiler.hooks.make['taps'];
+                compiler.hooks.make['taps'] = taps.filter((tap) => {
+                  // ref: https://github.com/microsoft/monaco-editor-webpack-plugin/blob/3e40369/src/plugins/AddWorkerEntryPointPlugin.ts#L34
+                  return !(tap.name === 'AddWorkerEntryPointPlugin');
+                });
+              }
+            })(),
+          );
+        }
       }
       return memo;
     },
