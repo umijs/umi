@@ -80,7 +80,7 @@ export const cjsModeEsmParser = (code: string) => {
     )
     .concat(
       // Support __webpack_require__.d(__webpack_exports__, {"default": function() { return /* binding */ clipboard; }});
-      // ref: https://unpkg.alibaba-inc.com/browse/clipboard@2.0.8/dist/clipboard.js
+      // ref: https://unpkg.alibaba-inc.com/browse/clipboard@2.0.8/dist/clipboard.js L26
       ...matchAll(
         /__webpack_require__\.d\(\s*__webpack_exports__\s*,\s*(\{)/g,
         code,
