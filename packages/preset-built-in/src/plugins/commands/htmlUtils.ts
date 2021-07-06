@@ -146,12 +146,14 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
             // UPDATE: 内部 render 会依赖 routerBase，先始终生成
             /* api.config.exportStatic?.dynamicRoot && */ {
               content: `window.routerBase = ${routerBaseStr};`,
+              id: 'umi-router-base',
             },
             // html 里的 publicPath
             // 只在设置了 runtimePublicPath 或 exportStatic?.dynamicRoot 时才会用到
             // 设置了 exportStatic?.dynamicRoot 时会自动设置 runtimePublicPath
             api.config.runtimePublicPath && {
               content: `window.publicPath = ${publicPathStr};`,
+              id: 'umi-public-path',
             },
           ].filter(Boolean),
         }),
