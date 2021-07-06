@@ -3,7 +3,7 @@ import { createDebug, lodash, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { CWD, DEP_INFO_CACHE_FILE } from './constants';
+import { CWD, DEP_INFO_CACHE_FILE, MF_VA_PREFIX } from './constants';
 import { getDepVersion } from './getDepVersion';
 import { TMode } from './mfsu';
 
@@ -22,6 +22,7 @@ export interface IDeps {
 
 export interface IData {
   deps: IDeps;
+  tmpDeps: IDeps;
   config: Partial<IConfig>;
 }
 
@@ -35,10 +36,10 @@ export default class DepInfo {
   public cacheDir: string;
   public cwd: string;
   public mode: TMode;
-  public tmpDeps: IDeps;
   public cachePath: string;
   public webpackAlias: any;
   private api: IApi;
+  private debouncedWriteCache: Function;
 
   constructor(opts: {
     tmpDir: string;
@@ -51,9 +52,9 @@ export default class DepInfo {
     this.cwd = opts.cwd;
     this.cacheDir = opts.tmpDir;
     this.mode = opts.mode;
-    this.tmpDeps = {};
     this.webpackAlias = opts.webpackAlias || {};
     this.cachePath = join(this.cacheDir!, DEP_INFO_CACHE_FILE);
+    this.debouncedWriteCache = lodash.debounce(this.writeCache.bind(this), 300);
 
     assert(
       ['development', 'production'].includes(this.mode),
@@ -63,6 +64,7 @@ export default class DepInfo {
     this.data = {
       deps: {},
       config: {},
+      tmpDeps: {},
     };
   }
 
@@ -80,6 +82,12 @@ export default class DepInfo {
           normalizedDeps[normalizeKey] = data.deps[key];
         });
         data.deps = normalizedDeps;
+        const normalizedTmpDeps = {};
+        Object.keys(data.tmpDeps || {}).forEach((key) => {
+          const normalizeKey = key.replace(CWD, winPath(this.api.cwd));
+          normalizedDeps[normalizeKey] = data.tmpDeps[key];
+        });
+        data.tmpDeps = normalizedTmpDeps;
         this.data = data;
       }
     } catch (e) {
@@ -102,33 +110,42 @@ export default class DepInfo {
   }
 
   setTmpDep(opts: { key: string; version: string }) {
-    if (this.tmpDeps[opts.key] && this.tmpDeps[opts.key] !== opts.version) {
+    if (
+      this.data.tmpDeps[opts.key] &&
+      this.data.tmpDeps[opts.key] !== opts.version
+    ) {
       throw new Error(
         `[MFSU] dep ${opts.key} conflicts of ${opts.version} and ${
-          this.tmpDeps[opts.key]
+          this.data.tmpDeps[opts.key]
         }`,
       );
     }
-    this.tmpDeps[opts.key] = opts.version;
+    this.data.tmpDeps[opts.key] = opts.version;
+    this.debouncedWriteCache();
   }
 
   loadTmpDeps(): { shouldBuild: boolean } {
     const shouldBuild = this.shouldBuild();
     if (shouldBuild) {
-      Object.assign(this.data.deps, this.tmpDeps);
+      Object.assign(this.data.deps, this.data.tmpDeps);
       this.data.config = this.getConfig();
       // clear tmp deps
-      this.tmpDeps = {};
+      this.data.tmpDeps = {};
     }
     return { shouldBuild };
   }
 
   shouldBuild(): boolean {
-    debug('tmpDeps', this.tmpDeps);
+    debug('tmpDeps', this.data.tmpDeps);
 
     // 没有变更，不 build
-    if (!Object.keys(this.tmpDeps).length) {
+    if (!Object.keys(this.data.tmpDeps).length) {
       return false;
+    }
+
+    // 没有 remoteEntry 时始终预编译依赖
+    if (!existsSync(join(this.cacheDir, `${MF_VA_PREFIX}remoteEntry.js`))) {
+      return true;
     }
 
     // 配置变更后，强制 build
@@ -143,11 +160,11 @@ export default class DepInfo {
 
     debug('this.data.deps', this.data.deps);
     if (this.mode === 'production') {
-      return !lodash.isEqual(this.tmpDeps, this.data.deps);
+      return !lodash.isEqual(this.data.tmpDeps, this.data.deps);
     } else {
-      for (const key of Object.keys(this.tmpDeps)) {
+      for (const key of Object.keys(this.data.tmpDeps)) {
         // 新增或修改
-        if (this.data.deps[key] !== this.tmpDeps[key]) {
+        if (this.data.deps[key] !== this.data.tmpDeps[key]) {
           return true;
         }
       }
@@ -157,8 +174,9 @@ export default class DepInfo {
 
   getConfig() {
     return {
-      // 目前只有 theme 会触发依赖重新编译
+      // 会触发依赖重新编译的配置
       theme: this.api.config.theme || {},
+      runtimePublicPath: this.api.config.runtimePublicPath || false,
     };
   }
 

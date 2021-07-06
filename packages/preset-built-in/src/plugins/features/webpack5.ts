@@ -60,6 +60,14 @@ export default (api: IApi) => {
       };
     }
 
+    // 默认开启 top level await
+    // @ts-ignore
+    memo.experiments = {
+      // @ts-ignore
+      ...memo.experiments,
+      topLevelAwait: true,
+    };
+
     // 缓存默认开启，可通过环境变量关闭
     if (process.env.WEBPACK_FS_CACHE !== 'none') {
       const { configFile } = api.service.configInstance;

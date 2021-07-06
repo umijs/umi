@@ -632,7 +632,11 @@ export default async function getConfig(
       // disable unnecessary node libs
       http: false,
       https: false,
-      punycode: false,
+
+      // css hotModuleReplacement depends on punycode
+      // ref: https://github.com/charpeni/react-native-url-polyfill/issues/140
+      // punycode: false,
+
       // mammoth deps on these
       // ref: https://github.com/umijs/umi/issues/6318
       // stream: false,
