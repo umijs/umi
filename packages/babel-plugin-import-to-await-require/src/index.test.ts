@@ -216,6 +216,40 @@ foo;
   );
 });
 
+test('export as', () => {
+  expect(
+    transformWithPlugin(`export { bar as xx } from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const {
+  bar: xx
+} = await import("foo/antd");
+export { xx };
+foo;
+    `.trim(),
+  );
+});
+
+test('export as default', () => {
+  expect(
+    transformWithPlugin(`export { bar as default } from 'antd'; foo;`, {
+      libs: ['antd'],
+      remoteName: 'foo',
+    }),
+  ).toEqual(
+    `
+const {
+  bar: bar
+} = await import("foo/antd");
+foo;
+export default bar;
+    `.trim(),
+  );
+});
+
 test('export *', () => {
   expect(
     transformWithPlugin(`export * from 'antd'; foo;`, {
