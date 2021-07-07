@@ -11,7 +11,7 @@ test('parse failed', async () => {
       filePath: 'bar.ts',
     });
   } catch (e) {
-    expect(e).toEqual(new Error('Parse file bar.ts failed, Parse error @:1:1'));
+    expect(e.message).toContain('Parse file bar.ts failed');
   }
 });
 
@@ -58,6 +58,16 @@ test('esm export *', async () => {
       importFrom: 'foo',
     }),
   ).toEqual(`export * from 'foo';`);
+});
+
+test('support jsx and tsx', async () => {
+  expect(
+    await getDepReExportContent({
+      content: `<div />; export default 1;`,
+      filePath: 'a.jsx',
+      importFrom: 'foo',
+    }),
+  ).toEqual(`import _ from 'foo';\nexport default _;`);
 });
 
 test('esm only import', async () => {

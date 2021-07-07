@@ -1,4 +1,6 @@
+import { transform } from '@umijs/deps/reexported/esbuild';
 import { init, parse } from 'es-module-lexer';
+import { extname } from 'path';
 import { matchAll } from './utils';
 
 export async function getDepReExportContent(opts: {
@@ -6,7 +8,10 @@ export async function getDepReExportContent(opts: {
   filePath?: string;
   importFrom: string;
 }) {
-  if (opts.filePath && /\.(css|less|scss|sass)$/.test(opts.filePath)) {
+  if (
+    opts.filePath &&
+    /\.(css|less|scss|sass|stylus|styl)$/.test(opts.filePath)
+  ) {
     return `import '${opts.importFrom}';`;
   }
 
@@ -17,7 +22,10 @@ export async function getDepReExportContent(opts: {
         `${matchResult ? matchResult[0] : 'file type'} not support!`,
       );
     }
-    const { exports, isCJS } = await parseWithCJSSupport(opts.content);
+    const { exports, isCJS } = await parseWithCJSSupport(
+      opts.content,
+      opts.filePath,
+    );
     // cjs
     if (isCJS) {
       return [
@@ -122,7 +130,20 @@ export const cjsModeEsmParser = (code: string) => {
     .map((result) => result[1]);
 };
 
-async function parseWithCJSSupport(content: string) {
+async function parseWithCJSSupport(content: string, filePath?: string) {
+  // Support tsx and jsx
+  if (filePath && /\.(tsx|jsx)$/.test(filePath)) {
+    content = (
+      await transform(content, {
+        sourcemap: false,
+        sourcefile: filePath,
+        format: 'esm',
+        target: 'es6',
+        loader: extname(filePath).slice(1) as 'tsx' | 'jsx',
+      })
+    ).code;
+  }
+
   await init;
   const [imports, exports] = parse(content);
   let isCJS = !imports.length && !exports.length;
