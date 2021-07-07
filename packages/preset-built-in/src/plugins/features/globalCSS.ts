@@ -25,7 +25,7 @@ export default (api: IApi) => {
   api.addEntryCodeAhead(
     () =>
       `${globalCSSFile
-        .map((file) => `require('${winPath(relative(absTmpPath, file))}');`)
+        .map((file) => `import '${winPath(relative(absTmpPath, file))}';`)
         .join('')}`,
   );
 };
