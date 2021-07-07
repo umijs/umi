@@ -39,6 +39,7 @@
     "@bloomberg/record-tuple-polyfill": "0.0.3",
     "chokidar": "3.5.1",
     "clipboardy": "2.3.0",
+    "esbuild": "0.12.15",
     "jest-worker": "24.9.0",
     "prettier": "2.2.1"
   },
