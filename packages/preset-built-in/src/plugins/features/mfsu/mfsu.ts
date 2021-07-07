@@ -57,6 +57,16 @@ export default function (api: IApi) {
   let depBuilder: DepBuilder;
   let mode: TMode = 'development';
 
+  api.onPluginReady({
+    fn() {
+      const command = process.argv[2];
+      if (['dev', 'build'].includes(command)) {
+        console.log(chalk.hex('#faac00')('MFSU Enabled'));
+      }
+    },
+    stage: 2,
+  });
+
   api.onStart(async ({ name, args }) => {
     checkConfig(api);
 
