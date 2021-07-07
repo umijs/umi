@@ -135,6 +135,7 @@ async function parseWithCJSSupport(content: string, filePath?: string) {
   if (filePath && /\.(tsx|jsx)$/.test(filePath)) {
     content = (
       await transform(content, {
+        sourcemap: false,
         sourcefile: filePath,
         format: 'esm',
         target: 'es6',
