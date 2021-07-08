@@ -827,6 +827,9 @@ Contains sub-attributes
 
 - development: `{ output: String }`。可以通过 output 自定义 dev 模式下的输出路径。用于将预编译文件同步到 git。
 - production: `{ output: String }`。在生产模式中使用 mfsu。如果额外设置了 output，将会将生产模式预编译依赖编译到 output 下。
+- mfName： `string`。指定预编译依赖的变量名，默认为 `mf`，比如可在 qiankun 主应用里配置
+- exportAllMembers
+- chunks: `string[]`。mfsu 阶段的 chunks 写死了 `['umi']`，可通过此配置项强行修改
 
 ```js
 mfsu: {
