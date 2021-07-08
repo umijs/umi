@@ -111,6 +111,11 @@ export default class DepBuilder {
     mfConfig.output!.path = this.tmpDir;
     // disable devtool
     mfConfig.devtool = false;
+    // disable library
+    // library 会影响 external 的语法，导致报错
+    // ref: https://github.com/umijs/plugins/blob/6d3fc2d/packages/plugin-qiankun/src/slave/index.ts#L83
+    if (mfConfig.output?.library) delete mfConfig.output.library;
+    if (mfConfig.output?.libraryTarget) delete mfConfig.output.libraryTarget;
 
     // @ts-ignore
     if (mfConfig.cache && mfConfig.cache.cacheDirectory) {
