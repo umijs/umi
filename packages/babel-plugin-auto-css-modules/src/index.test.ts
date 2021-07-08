@@ -35,12 +35,21 @@ test('css modules', () => {
   );
 });
 
-test('with top level await', () => {
+test('css with top level await', () => {
   expect(
     transformWithPlugin(`const styles = await import('a.css');`, {}),
   ).toEqual(`const styles = await import("a.css?modules");`);
   expect(transformWithPlugin(`await import('a.css');`, {})).toEqual(
     `await import('a.css');`,
+  );
+});
+
+test('none css with top level await', () => {
+  expect(transformWithPlugin(`const styles = await import('a');`, {})).toEqual(
+    `const styles = await import('a');`,
+  );
+  expect(transformWithPlugin(`await import('a');`, {})).toEqual(
+    `await import('a');`,
   );
 });
 

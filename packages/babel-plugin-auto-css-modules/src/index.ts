@@ -36,7 +36,8 @@ export default function () {
           t.isCallExpression(node.init.argument) &&
           t.isImport(node.init.argument.callee) &&
           node.init.argument.arguments.length === 1 &&
-          t.isStringLiteral(node.init.argument.arguments[0])
+          t.isStringLiteral(node.init.argument.arguments[0]) &&
+          CSS_EXT_NAMES.includes(extname(node.init.argument.arguments[0].value))
         ) {
           node.init.argument.arguments[0].value = `${
             node.init.argument.arguments[0].value
