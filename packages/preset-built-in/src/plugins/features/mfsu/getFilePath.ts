@@ -71,3 +71,15 @@ export function getFilePath(path: string) {
 
   return null;
 }
+
+// 当 APP_ROOT 有值，但 依赖(package.json) 仍然安装在 process.cwd() 时
+// 返回正常可用的 cwd
+export function getProperCwd(cwd: string) {
+  const rawCwd = process.cwd();
+  const pkgLocationWithCwd = existsSync(join(cwd, 'package.json'));
+
+  if (pkgLocationWithCwd) {
+    return cwd;
+  }
+  return rawCwd;
+}
