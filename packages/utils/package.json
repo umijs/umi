@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "3.5.6",
+  "version": "3.5.7",
   "description": "@umijs/utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,6 +24,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/deps": "3.5.6"
+    "@umijs/deps": "3.5.7"
   }
 }
