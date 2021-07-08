@@ -176,6 +176,7 @@ export default class DepInfo {
     return {
       // 会触发依赖重新编译的配置
       theme: this.api.config.theme || {},
+      externals: this.api.config.externals || {},
       runtimePublicPath: this.api.config.runtimePublicPath || false,
     };
   }
