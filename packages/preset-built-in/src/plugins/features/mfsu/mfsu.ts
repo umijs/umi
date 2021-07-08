@@ -116,7 +116,7 @@ export default function (api: IApi) {
 
         // Lock chunks when mfsu is enabled
         // @ts-ignore
-        chunks: api.config.mfsu?.chunks || ['umi'],
+        chunks: memo.mfsu?.chunks || ['umi'],
       };
     },
     stage: Infinity,
