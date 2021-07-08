@@ -115,7 +115,8 @@ export default function (api: IApi) {
         dynamicImport: memo.dynamicImport || {},
 
         // Lock chunks when mfsu is enabled
-        chunks: ['umi'],
+        // @ts-ignore
+        chunks: api.config.mfsu?.chunks || ['umi'],
       };
     },
     stage: Infinity,
@@ -146,6 +147,7 @@ export default function (api: IApi) {
             }),
             mfName: joi.string(),
             exportAllMembers: joi.object(),
+            chunks: joi.array().items(joi.string()),
           })
           .description('open mfsu feature');
       },
