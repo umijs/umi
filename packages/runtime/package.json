@@ -1,6 +1,6 @@
 {
   "name": "@umijs/runtime",
-  "version": "3.5.5",
+  "version": "3.5.6",
   "description": "@umijs/runtime",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
