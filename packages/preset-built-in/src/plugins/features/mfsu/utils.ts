@@ -10,7 +10,7 @@ import {
 } from 'fs';
 import { isAbsolute, join } from 'path';
 import { getDepReExportContent } from './getDepReExportContent';
-import { getFilePath } from './getFilePath';
+import { getFilePath, getProperCwd } from './getFilePath';
 
 export const copy = (fromDir: string, toDir: string) => {
   try {
@@ -43,8 +43,19 @@ export const figureOutExport = async (
 ): Promise<string> => {
   const absImportFrom = isAbsolute(importFrom)
     ? importFrom
-    : join(cwd, 'node_modules', importFrom);
+    : join(getProperCwd(cwd), 'node_modules', importFrom);
   const filePath = getFilePath(absImportFrom);
+
+  // @ts-ignore
+  const isNodeBuiltinModule = !!process.binding('natives')[importFrom];
+
+  // useful while running with target = electron-renderer
+  if (isNodeBuiltinModule) {
+    return Promise.resolve(`
+    const _ = require('${importFrom}');
+    module.exports = _;
+    `);
+  }
 
   assert(filePath, `filePath not found of ${importFrom}`);
 

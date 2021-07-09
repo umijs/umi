@@ -1,6 +1,6 @@
 import { winPath } from '@umijs/utils';
 import { join } from 'path';
-import { getFilePath } from './getFilePath';
+import { getFilePath, getProperCwd } from './getFilePath';
 
 const fixtures = join(__dirname, 'fixtures', 'getFilePath');
 
@@ -8,6 +8,19 @@ function format(path: string | null) {
   if (!path) return path;
   return path.replace(winPath(fixtures), '$CWD$');
 }
+
+let oldAppRoot = process.env.APP_ROOT;
+let oldCwd = process.cwd();
+
+beforeEach(() => {
+  oldAppRoot = process.env.APP_ROOT;
+  oldCwd = process.cwd();
+});
+
+afterEach(() => {
+  process.env.APP_ROOT = oldAppRoot;
+  process.chdir(oldCwd);
+});
 
 test('file exists', () => {
   expect(
@@ -43,4 +56,20 @@ test('directory index mjs', () => {
   expect(
     format(getFilePath(join(fixtures, 'directory-index-mjs', 'foo'))),
   ).toEqual(`$CWD$/directory-index-mjs/foo/index.mjs`);
+});
+
+test('cwd should be APP_ROOT', () => {
+  process.chdir(join(fixtures, 'package-json-in-approot'));
+  process.env.APP_ROOT = join(fixtures, 'package-json-in-approot', 'app');
+  expect(format(getProperCwd(process.env.APP_ROOT))).toEqual(
+    `$CWD$/package-json-in-approot/app`,
+  );
+});
+
+test('cwd should be process.cwd()', () => {
+  process.chdir(join(fixtures, 'package-json-notin-approot'));
+  process.env.APP_ROOT = join(fixtures, 'package-json-notin-approot', 'app');
+  expect(format(getProperCwd(process.env.APP_ROOT))).toEqual(
+    `$CWD$/package-json-notin-approot`,
+  );
 });
