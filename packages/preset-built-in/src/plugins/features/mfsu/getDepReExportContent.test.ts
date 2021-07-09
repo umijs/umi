@@ -193,3 +193,28 @@ test('cjs mode esm parser', () => {
     'eeeeee',
   ]);
 });
+
+test('import a json file', async () => {
+  expect(
+    await getDepReExportContent({
+      content: `
+{
+  "name": "test"
+}
+`,
+      importFrom: 'test/package.json',
+      filePath: '/test/package.json',
+    }),
+  ).toEqual(`import _ from 'test/package.json';\nexport default _;`);
+});
+
+test('import a json but with invalid JSON content', async () => {
+  expect(
+    await getDepReExportContent({
+      content: `
+export const name = "test";
+`,
+      importFrom: 'test/package.json',
+    }),
+  ).toEqual(`export * from 'test/package.json';`);
+});

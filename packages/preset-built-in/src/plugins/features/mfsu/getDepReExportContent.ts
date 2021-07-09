@@ -16,12 +16,19 @@ export async function getDepReExportContent(opts: {
   }
 
   try {
-    if (opts.filePath && !/\.(js|jsx|mjs|ts|tsx)$/.test(opts.filePath)) {
+    if (opts.filePath && !/\.(js|jsx|mjs|ts|tsx|json)$/.test(opts.filePath)) {
       const matchResult = opts.filePath.match(/\.([a-zA-Z]+)$/);
       throw new Error(
         `${matchResult ? matchResult[0] : 'file type'} not support!`,
       );
     }
+
+    if (isJsonFile(opts.filePath)) {
+      return [`import _ from '${opts.importFrom}';`, `export default _;`].join(
+        '\n',
+      );
+    }
+
     const { exports, isCJS } = await parseWithCJSSupport(
       opts.content,
       opts.filePath,
@@ -129,6 +136,10 @@ export const cjsModeEsmParser = (code: string) => {
     )
     .map((result) => result[1]);
 };
+
+function isJsonFile(filePath?: string) {
+  return filePath && filePath.endsWith('.json');
+}
 
 async function parseWithCJSSupport(content: string, filePath?: string) {
   // Support tsx and jsx
