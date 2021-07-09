@@ -5,6 +5,24 @@ const IndexPage: FC = () => {
   return (
     <div>
       <p>
+        By configuring <a href="https://umijs.org/config#define">define</a>,
+        example:
+      </p>
+      <p>
+        <pre>
+          {`
+        export default {
+          define: {
+            REACT_APP: process.env.REACT_APP
+          },
+        };          
+        `}
+        </pre>
+      </p>
+      <p>
+        In this way, the REACT_APP variable can be accessed in the component.
+      </p>
+      <p>
         You can use define config to set different values based on environment
         variables
       </p>
