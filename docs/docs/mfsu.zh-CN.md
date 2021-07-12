@@ -67,7 +67,7 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 建议首次启动时，检查项目依赖是否被 mfsu 完全覆盖。我们可以借助 umi 自带的 webpack-analyze 进行依赖分析。
 
 - `ANALYZE=1 umi dev`启动项目，检查是否正常启动。如果遇到问题，可以提 issue 或者检查下方常见问题。
-- 检查 webpack-analyze 是否存在从 `./node_modules` 加载的依赖。如果没有，说明项目依赖以及都被 mfsu 覆盖。
+- 检查 webpack-analyze 是否存在从 `./node_modules` 加载的依赖。如果没有，说明项目依赖已经都被 mfsu 覆盖。
 - 如果还存在，请通过 issue 反馈给我们，我们期待和您一起把 mfsu 变得更好。
 
 ## 在 antd-pro 中使用
