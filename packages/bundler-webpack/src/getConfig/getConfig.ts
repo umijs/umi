@@ -616,6 +616,13 @@ export default async function getConfig(
         process: nodeLibs['process'],
       }),
     );
+    ret.plugins!.push(
+      // ref: https://github.com/umijs/umi/issues/6914
+      // @ts-ignore
+      new bundleImplementor.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+    );
     // @ts-ignore
     ret.resolve.fallback = {
       // @ts-ignore
