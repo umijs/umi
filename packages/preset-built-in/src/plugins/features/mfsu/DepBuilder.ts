@@ -155,16 +155,6 @@ export default class DepBuilder {
       mfConfig.plugins.push(new RuntimePublicPathPlugin());
     }
 
-    // 因为 webpack5 不会自动注入 node-libs-browser，因此手动操作一下
-    // 包已经在 bundle-webpack/getConfig 中通过 fallback 注入，在此仅针对特殊包制定指向
-    // TODO: 确认是否有必要
-    mfConfig.plugins.push(
-      // @ts-ignore
-      new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }),
-    );
-
     return mfConfig;
   }
 }
