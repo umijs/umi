@@ -2,7 +2,7 @@
 nav:
   title: Config
   order: 2
-translateHelp: true
+translateHelp: false
 toc: menu
 ---
 
