@@ -17,22 +17,23 @@ function addLastSlash(path: string) {
 export function getAliasedDep(opts: { dep: string; webpackAlias?: IAlias }) {
   let dep = opts.dep;
   const webpackAlias = opts.webpackAlias || {};
-
-  // get aliased dep
+  // Support config.resolve.alias.xyz$
+  // https://webpack.docschina.org/configuration/resolve/
   for (const key of Object.keys(webpackAlias)) {
+    let aliasKey = key.endsWith('$') ? key.slice(0, -1) : key;
     const value = webpackAlias[key];
     if (isJSFile(value)) {
-      if (dep === key) {
+      if (dep === aliasKey) {
         dep = value;
         break;
       }
     } else {
-      if (dep === key) {
+      if (dep === aliasKey) {
         dep = value;
         break;
       }
 
-      const slashedKey = addLastSlash(key);
+      const slashedKey = addLastSlash(aliasKey);
       if (dep.startsWith(slashedKey)) {
         dep = dep.replace(new RegExp(`^${slashedKey}`), addLastSlash(value));
         break;

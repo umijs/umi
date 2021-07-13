@@ -109,6 +109,16 @@ test('alias to dep', () => {
       },
     }),
   ).toMatch(/^7\./);
+
+  expect(
+    getDepVersion({
+      dep: 'aa/bb/cc',
+      cwd: root,
+      webpackAlias: {
+        'aa/bb/cc$': join(root, 'node_modules', 'react'),
+      },
+    }),
+  ).toMatch(/^1/);
 });
 
 test('normal deep dep', () => {
