@@ -95,21 +95,22 @@ export default class DepInfo {
     }
   }
 
-  addTmpDep(dep: string | ITmpDep) {
+  addTmpDep(dep: string | ITmpDep, from: string) {
     debug(`add tmp dep ${dep}`);
     if (typeof dep === 'object' && dep.key && dep.version) {
-      this.setTmpDep(dep);
+      this.setTmpDep({ ...dep, from });
     } else if (typeof dep === 'string') {
       const version = getDepVersion({
         dep,
         cwd: this.cwd,
         webpackAlias: this.webpackAlias,
+        from,
       });
-      this.setTmpDep({ key: dep, version });
+      this.setTmpDep({ key: dep, version, from });
     }
   }
 
-  setTmpDep(opts: { key: string; version: string }) {
+  setTmpDep(opts: { key: string; version: string; from: string }) {
     if (
       this.data.tmpDeps[opts.key] &&
       this.data.tmpDeps[opts.key] !== opts.version
