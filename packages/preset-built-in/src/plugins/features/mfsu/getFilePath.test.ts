@@ -6,7 +6,7 @@ const fixtures = join(__dirname, 'fixtures', 'getFilePath');
 
 function format(path: string | null) {
   if (!path) return path;
-  return path.replace(winPath(fixtures), '$CWD$');
+  return winPath(path).replace(winPath(fixtures), '$CWD$');
 }
 
 let oldAppRoot = process.env.APP_ROOT;
