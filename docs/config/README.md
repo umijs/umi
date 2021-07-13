@@ -720,7 +720,7 @@ export default {
 - Type: `object`
 - Default: `{ type: 'browser' }`
 
-配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md)。
+配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/getting-started.md)。
 
 包含以下子配置项：
 
