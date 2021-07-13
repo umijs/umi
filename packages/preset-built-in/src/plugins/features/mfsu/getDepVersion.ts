@@ -47,6 +47,7 @@ export function getDepVersion(opts: {
   dep: string;
   cwd: string;
   webpackAlias?: IAlias;
+  from?: string;
 }) {
   const originDep = opts.dep;
   let version = '*';
@@ -61,24 +62,30 @@ export function getDepVersion(opts: {
     // ref: https://unpkg.alibaba-inc.com/browse/@babel/runtime@7.14.6/helpers/esm/package.json
     while (!tmpVersion && count <= 10) {
       const pkg = pkgUp.sync({ cwd: tmpDep });
-      assert(pkg, `[MFSU] package.json not found for dep ${originDep}`);
+      assert(
+        pkg,
+        `[MFSU] package.json not found for dep ${originDep} which is imported from ${opts.from}`,
+      );
       tmpVersion = require(pkg).version;
       tmpDep = dirname(dirname(pkg));
       count += 1;
     }
     assert(
       count !== 10,
-      `[MFSU] infinite loop when finding version for dep ${originDep}`,
+      `[MFSU] infinite loop when finding version for dep ${originDep} which is imported from ${opts.from}`,
     );
     version = tmpVersion;
   } else {
     const pkg = pkgUp.sync({
       cwd: join(opts.cwd, 'node_modules', dep),
     });
-    assert(pkg, `[MFSU] package.json not found for dep ${originDep}`);
+    assert(
+      pkg,
+      `[MFSU] package.json not found for dep ${originDep} which is imported from ${opts.from}`,
+    );
     assert(
       winPath(pkg) !== winPath(join(opts.cwd, 'package.json')),
-      `[MFSU] package.json not found for dep ${originDep}`,
+      `[MFSU] package.json not found for dep ${originDep} which is imported from ${opts.from}`,
     );
     version = require(pkg).version;
   }
