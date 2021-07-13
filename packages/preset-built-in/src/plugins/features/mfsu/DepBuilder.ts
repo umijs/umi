@@ -26,15 +26,28 @@ export default class DepBuilder {
   public mode: TMode;
   public compiler: Compiler | null;
   public tmpDir: string;
+  public isBuilding: boolean;
+  private onBuildCompleteQueue: Function[];
 
   constructor(opts: { api: IApi; mode: TMode; tmpDir: string }) {
     this.api = opts.api;
     this.mode = opts.mode;
     this.tmpDir = opts.tmpDir || getMfsuPath(this.api, { mode: opts.mode });
     this.compiler = null;
+    this.isBuilding = false;
+    this.onBuildCompleteQueue = [];
+  }
+
+  onBuildComplete(fn: Function) {
+    if (this.isBuilding) {
+      this.onBuildCompleteQueue.push(fn);
+    } else {
+      fn();
+    }
   }
 
   async build(opts: { deps: IDeps; webpackAlias: any; onBuildComplete: any }) {
+    this.isBuilding = true;
     await this.writeMFFiles(opts.deps, opts.webpackAlias);
 
     if (!this.compiler) {
@@ -57,7 +70,11 @@ export default class DepBuilder {
         // TODO: 支持 watch 模式
         // 因为 exposes 不支持动态变更，所以暂不能使用 webpack 的 watch 模式
         watch: false,
-        onBuildComplete: opts.onBuildComplete,
+        onBuildComplete: (err: any, stats: any) => {
+          this.isBuilding = false;
+          this.onBuildCompleteQueue.forEach((fn) => fn());
+          opts.onBuildComplete(err, stats);
+        },
       });
       // TODO: 支持 watch 模式
       // this.compiler = compiler;
