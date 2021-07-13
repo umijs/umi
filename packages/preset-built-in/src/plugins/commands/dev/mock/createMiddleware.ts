@@ -55,5 +55,5 @@ export default function (opts = {} as IMockOpts): ICreateMiddleware {
       }
     },
     watcher,
-  };
+  } as ICreateMiddleware;
 }
