@@ -13,7 +13,8 @@ export default function () {
           if (t.isStringLiteral(node.arguments[0])) {
             const val = node.arguments[0].value;
             // ./core/routes 在 .umi/umi.ts 里通过 hmr 使用，是正常的
-            if (val !== './core/routes') {
+            // @babel/runtime 在 .umi/dumi/demos/index.ts 里有使用
+            if (val !== './core/routes' && !val.includes('@babel/runtime')) {
               console.warn(
                 chalk.yellow(
                   // @ts-ignore
