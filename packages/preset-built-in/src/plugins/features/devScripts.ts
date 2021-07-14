@@ -109,6 +109,8 @@ if (window.g_initWebpackHotDevClient) {
     tryApplyUpdates,
   });
 }
+
+export const __mfsu = 1;
       `
           : '',
     });
