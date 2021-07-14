@@ -253,7 +253,11 @@ export default function (api: IApi) {
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const path = req.path;
-      if (path.startsWith('/mf-va_') || path.startsWith('/mf-dep_')) {
+      if (
+        path.startsWith('/mf-va_') ||
+        path.startsWith('/mf-dep_') ||
+        path.startsWith('/mf-static/')
+      ) {
         depBuilder.onBuildComplete(() => {
           const filePath = path
             .replace(new RegExp(`^${publicPath}`), '/')

@@ -298,6 +298,8 @@ export default async function getConfig(
       }),
     );
 
+  const staticDir = mfsu ? 'mf-static' : 'static';
+
   // prettier-ignore
   webpackConfig.module
     .rule('images')
@@ -306,13 +308,13 @@ export default async function getConfig(
       .loader(require.resolve('@umijs/deps/compiled/url-loader'))
       .options({
         limit: config.inlineLimit || 10000,
-        name: 'static/[name].[hash:8].[ext]',
+        name: `${staticDir}/[name].[hash:8].[ext]`,
         // require 图片的时候不用加 .default
         esModule: false,
         fallback: {
           loader: require.resolve('@umijs/deps/compiled/file-loader'),
           options: {
-            name: 'static/[name].[hash:8].[ext]',
+            name: `${staticDir}/[name].[hash:8].[ext]`,
             esModule: false,
           },
         }
@@ -325,7 +327,7 @@ export default async function getConfig(
     .use('file-loader')
       .loader(require.resolve('@umijs/deps/compiled/file-loader'))
       .options({
-        name: 'static/[name].[hash:8].[ext]',
+        name: `${staticDir}/[name].[hash:8].[ext]`,
         esModule: false,
       });
 
@@ -336,7 +338,7 @@ export default async function getConfig(
     .use('file-loader')
       .loader(require.resolve('@umijs/deps/compiled/file-loader'))
       .options({
-        name: 'static/[name].[hash:8].[ext]',
+        name: `${staticDir}/[name].[hash:8].[ext]`,
         esModule: false,
       });
 

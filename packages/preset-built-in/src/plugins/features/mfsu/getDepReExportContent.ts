@@ -8,6 +8,7 @@ export async function getDepReExportContent(opts: {
   filePath?: string;
   importFrom: string;
 }) {
+  // Support CSS
   if (
     opts.filePath &&
     /\.(css|less|scss|sass|stylus|styl)$/.test(opts.filePath)
@@ -15,17 +16,23 @@ export async function getDepReExportContent(opts: {
     return `import '${opts.importFrom}';`;
   }
 
+  // Support Assets Files
+  if (
+    opts.filePath &&
+    /\.(json|svg|png|jpe?g|gif|webp|ico|eot|woff|woff2|ttf|txt|text|md)$/.test(
+      opts.filePath,
+    )
+  ) {
+    return `
+import _ from '${opts.importFrom}';
+export default _;`.trim();
+  }
+
   try {
-    if (opts.filePath && !/\.(js|jsx|mjs|ts|tsx|json)$/.test(opts.filePath)) {
+    if (opts.filePath && !/\.(js|jsx|mjs|ts|tsx)$/.test(opts.filePath)) {
       const matchResult = opts.filePath.match(/\.([a-zA-Z]+)$/);
       throw new Error(
         `${matchResult ? matchResult[0] : 'file type'} not support!`,
-      );
-    }
-
-    if (isJsonFile(opts.filePath)) {
-      return [`import _ from '${opts.importFrom}';`, `export default _;`].join(
-        '\n',
       );
     }
 
@@ -136,10 +143,6 @@ export const cjsModeEsmParser = (code: string) => {
     )
     .map((result) => result[1]);
 };
-
-function isJsonFile(filePath?: string) {
-  return filePath && filePath.endsWith('.json');
-}
 
 async function parseWithCJSSupport(content: string, filePath?: string) {
   // Support tsx and jsx
