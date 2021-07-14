@@ -205,7 +205,7 @@ export default function (api: IApi) {
                   }
                   // collect dependencies
                   if (opts.isMatch) {
-                    depInfo.addTmpDep(opts.source);
+                    depInfo.addTmpDep(opts.source, file);
                   }
                 },
               },
