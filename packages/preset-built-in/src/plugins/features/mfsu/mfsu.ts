@@ -7,6 +7,7 @@ import { dirname, join, parse } from 'path';
 import { IApi } from 'umi';
 import webpack from 'webpack';
 import BabelImportRedirectPlugin from './babel-import-redirect-plugin';
+import BabelPluginWarnRequire from './babel-plugin-warn-require';
 import { DEFAULT_MF_NAME, MF_VA_PREFIX } from './constants';
 import DepBuilder from './DepBuilder';
 import DepInfo from './DepInfo';
@@ -234,7 +235,7 @@ export default function (api: IApi) {
         }
       });
       opts.plugins = [
-        // AntdIconPlugin,
+        BabelPluginWarnRequire,
         [
           BabelImportRedirectPlugin,
           {
