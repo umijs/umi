@@ -15,9 +15,7 @@ function addLastSlash(path: string) {
 }
 
 export function getAliasedDep(opts: { dep: string; webpackAlias?: IAlias }) {
-  // webpackAlias = { aa/bb/cc$ : 'xxxxxx/xxx/node_modules/xxx' }
-
-  let dep = opts.dep; // aa/bb/cc/dd
+  let dep = opts.dep;
   const webpackAlias = opts.webpackAlias || {};
   for (const key of Object.keys(webpackAlias)) {
     // Support config.resolve.alias.xyz$
