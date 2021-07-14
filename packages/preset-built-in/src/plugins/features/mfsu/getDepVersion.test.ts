@@ -129,6 +129,15 @@ test('normal', () => {
   ).toMatch(/^7\./);
 });
 
+test('native modules', () => {
+  expect(
+    getDepVersion({
+      dep: 'fs',
+      cwd: root,
+    }),
+  ).toMatch(/\*/);
+});
+
 test('no package found with alias', () => {
   expect(() => {
     getDepVersion({

@@ -75,6 +75,10 @@ export function getDepVersion(opts: {
       `[MFSU] infinite loop when finding version for dep ${originDep} which is imported from ${opts.from}`,
     );
     version = tmpVersion;
+    // @ts-ignore
+  } else if (!!process.binding('natives')[dep]) {
+    // native module 功能稳定，不需要更新
+    version = '*';
   } else {
     const pkg = pkgUp.sync({
       cwd: join(opts.cwd, 'node_modules', dep),
