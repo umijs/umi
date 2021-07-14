@@ -119,6 +119,49 @@ test('alias to dep', () => {
       },
     }),
   ).toMatch(/^1/);
+  expect(
+    getDepVersion({
+      dep: 'aa/bb/cc/dd',
+      cwd: root,
+      webpackAlias: {
+        'aa/bb/cc$': join(root, 'node_modules', 'react'),
+        'aa/bb/cc': join(root, 'node_modules', 'core-js'),
+      },
+    }),
+  ).toMatch(/^3/);
+  expect(() => {
+    try {
+      getDepVersion({
+        dep: 'aa/bb/cc/dd',
+        cwd: root,
+        webpackAlias: {
+          'aa/bb/cc$': join(root, 'node_modules', 'react'),
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }).toThrow(/\[MFSU\]/);
+  expect(
+    getDepVersion({
+      dep: 'aa/bb/cc/dd',
+      cwd: root,
+      webpackAlias: {
+        'aa/bb/cc$': join(root, 'node_modules', 'react'),
+        'aa/bb/cc/dd': join(root, 'node_modules', 'core-js'),
+      },
+    }),
+  ).toMatch(/^3/);
+  expect(
+    getDepVersion({
+      dep: 'aa/bb/cc/dd',
+      cwd: root,
+      webpackAlias: {
+        'aa/bb/cc$': join(root, 'node_modules', 'react'),
+        'aa/bb': join(root, 'node_modules', 'core-js'),
+      },
+    }),
+  ).toMatch(/^3/);
 });
 
 test('normal deep dep', () => {
