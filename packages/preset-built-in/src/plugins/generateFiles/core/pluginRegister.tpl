@@ -9,3 +9,5 @@ import * as Plugin_{{{ index }}} from '{{{ path }}}';
     path: '{{{ path }}}',
   });
 {{/plugins}}
+
+export const __mfsu = 1;
