@@ -257,9 +257,9 @@ export default function (api: IApi) {
     return (req, res, next) => {
       const path = req.path;
       if (
-        path.startsWith('/mf-va_') ||
-        path.startsWith('/mf-dep_') ||
-        path.startsWith('/mf-static/')
+        path.startsWith(`${api.config.publicPath}mf-va_`) ||
+        path.startsWith(`${api.config.publicPath}mf-dep_`) ||
+        path.startsWith(`${api.config.publicPath}mf-static/`)
       ) {
         depBuilder.onBuildComplete(() => {
           const filePath = path
