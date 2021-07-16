@@ -20,6 +20,7 @@ export default function (api: IApi) {
         'rootContainer',
         'render',
         'onRouteChange',
+        '__mfsu',
       ],
     });
     const plugins = await api.applyPlugins({
