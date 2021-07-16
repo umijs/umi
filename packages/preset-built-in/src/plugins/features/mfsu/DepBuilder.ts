@@ -156,12 +156,16 @@ export default class DepBuilder {
     mfConfig.plugins.push(new ModifyChunkNamePlugin());
 
     // mf 插件
+    const name =
+      (this.api.config.mfsu && this.api.config.mfsu.mfName) || DEFAULT_MF_NAME;
     mfConfig.plugins.push(
       //@ts-ignore
       new webpack.container.ModuleFederationPlugin({
-        name:
-          (this.api.config.mfsu && this.api.config.mfsu.mfName) ||
-          DEFAULT_MF_NAME,
+        library: {
+          type: 'global',
+          name,
+        },
+        name,
         filename: remoteEntryFilename,
         exposes,
       }),
