@@ -256,10 +256,14 @@ export default function (api: IApi) {
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const path = req.path;
+      // we should remove the first "." to prevent incorrect target such as: ./mf-va_.
+      // because we usually set publicPath: ./ for electron app
+      const publicPath = (api.config.publicPath as string).startsWith('./') ? '/' : api.config.publicPath;
+
       if (
-        path.startsWith(`${api.config.publicPath}mf-va_`) ||
-        path.startsWith(`${api.config.publicPath}mf-dep_`) ||
-        path.startsWith(`${api.config.publicPath}mf-static/`)
+        path.startsWith(`${publicPath}mf-va_`) ||
+        path.startsWith(`${publicPath}mf-dep_`) ||
+        path.startsWith(`${publicPath}mf-static/`)
       ) {
         depBuilder.onBuildComplete(() => {
           const filePath = path
