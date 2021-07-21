@@ -51,12 +51,12 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   }
 };
 
-export const normalizeReqPath = (configPublicPath: string, reqPath: string) => {
-  let normalPublicPath = '';
-  if (configPublicPath.startsWith('http')) {
-    normalPublicPath = new URL(configPublicPath).pathname;
+export const normalizeReqPath = (api: IApi, reqPath: string) => {
+  let normalPublicPath = api.config.publicPath as string;
+  if (/^https?\:\/\//.test(normalPublicPath)) {
+    normalPublicPath = new URL(normalPublicPath).pathname;
   } else {
-    normalPublicPath = configPublicPath.replace(/^(?:\.+\/?)+/, '/'); // normalPublicPath should start with '/'
+    normalPublicPath = normalPublicPath.replace(/^(?:\.+\/?)+/, '/'); // normalPublicPath should start with '/'
   }
   const isMfAssets =
     reqPath.startsWith(`${normalPublicPath}mf-va_`) ||
@@ -277,10 +277,7 @@ export default function (api: IApi) {
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const path = req.path;
-      const { isMfAssets, fileRelativePath } = normalizeReqPath(
-        api.config.publicPath as string,
-        req.path,
-      );
+      const { isMfAssets, fileRelativePath } = normalizeReqPath(api, req.path);
       if (isMfAssets) {
         depBuilder.onBuildComplete(() => {
           const mfsuPath = getMfsuPath(api, { mode: 'development' });

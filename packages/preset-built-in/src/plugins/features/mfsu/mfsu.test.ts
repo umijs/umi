@@ -28,27 +28,46 @@ test('functions: get mfsu path', () => {
 
 test('normalizeReqPath', () => {
   // publicPath should be normalized as '/'
-  expect(normalizeReqPath('/', '/mf-va_xxxxxxxxxxx.js')).toStrictEqual({
+  expect(
+    normalizeReqPath(
+      { config: { publicPath: '/' } } as IApi,
+      '/mf-va_xxxxxxxxxxx.js',
+    ),
+  ).toStrictEqual({
     isMfAssets: true,
     normalPublicPath: '/',
     fileRelativePath: 'mf-va_xxxxxxxxxxx.js',
   });
 
-  expect(normalizeReqPath('./', '/mf-dep_xxxxxx.js')).toStrictEqual({
+  expect(
+    normalizeReqPath(
+      { config: { publicPath: './' } } as IApi,
+      '/mf-dep_xxxxxx.js',
+    ),
+  ).toStrictEqual({
     isMfAssets: true,
     normalPublicPath: '/',
     fileRelativePath: 'mf-dep_xxxxxx.js',
   });
 
-  expect(normalizeReqPath('../../../', '/mf-dep_xxxxxx.js')).toStrictEqual({
+  expect(
+    normalizeReqPath(
+      { config: { publicPath: '../../../' } } as IApi,
+      '/mf-dep_xxxxxx.js',
+    ),
+  ).toStrictEqual({
     isMfAssets: true,
     normalPublicPath: '/',
     fileRelativePath: 'mf-dep_xxxxxx.js',
   });
 
   // not mfsu asserts
+
   expect(
-    normalizeReqPath('../../../', '/a/b/c/mf-dep_xxxxxx.js'),
+    normalizeReqPath(
+      { config: { publicPath: '../../../' } } as IApi,
+      '/a/b/c/mf-dep_xxxxxx.js',
+    ),
   ).toStrictEqual({
     isMfAssets: false,
     normalPublicPath: '/',
@@ -57,15 +76,10 @@ test('normalizeReqPath', () => {
 
   // publicPath should be normalized as '/xxx/xxx/'
   expect(
-    normalizeReqPath('./public_path/', '/public_path/mf-dep_xxxxxx.js'),
-  ).toStrictEqual({
-    isMfAssets: true,
-    normalPublicPath: '/public_path/',
-    fileRelativePath: 'mf-dep_xxxxxx.js',
-  });
-
-  expect(
-    normalizeReqPath('../../public_path/', '/public_path/mf-dep_xxxxxx.js'),
+    normalizeReqPath(
+      { config: { publicPath: './public_path/' } } as IApi,
+      '/public_path/mf-dep_xxxxxx.js',
+    ),
   ).toStrictEqual({
     isMfAssets: true,
     normalPublicPath: '/public_path/',
@@ -74,7 +88,18 @@ test('normalizeReqPath', () => {
 
   expect(
     normalizeReqPath(
-      './public_path/a/b/c/',
+      { config: { publicPath: '../../public_path/' } } as IApi,
+      '/public_path/mf-dep_xxxxxx.js',
+    ),
+  ).toStrictEqual({
+    isMfAssets: true,
+    normalPublicPath: '/public_path/',
+    fileRelativePath: 'mf-dep_xxxxxx.js',
+  });
+
+  expect(
+    normalizeReqPath(
+      { config: { publicPath: './public_path/a/b/c/' } } as IApi,
       '/public_path/a/b/c/mf-static/cfile.html',
     ),
   ).toStrictEqual({
@@ -84,8 +109,12 @@ test('normalizeReqPath', () => {
   });
 
   // not mfsu asserts
+
   expect(
-    normalizeReqPath('./public_path/', '/public_path/a/b/c/mf-dep_xxxxxx.js'),
+    normalizeReqPath(
+      { config: { publicPath: './public_path/' } } as IApi,
+      '/public_path/a/b/c/mf-dep_xxxxxx.js',
+    ),
   ).toStrictEqual({
     isMfAssets: false,
     normalPublicPath: '/public_path/',
@@ -95,7 +124,9 @@ test('normalizeReqPath', () => {
   // publicPath with hosts
   expect(
     normalizeReqPath(
-      'http://10.0.0.111/public_path/a/b/c/',
+      {
+        config: { publicPath: 'http://10.0.0.111/public_path/a/b/c/' },
+      } as IApi,
       '/public_path/a/b/c/mf-static/cfile.html',
     ),
   ).toStrictEqual({
@@ -106,7 +137,7 @@ test('normalizeReqPath', () => {
 
   expect(
     normalizeReqPath(
-      'http://umijs.org/public_path/a/b/c/',
+      { config: { publicPath: 'http://umijs.org/public_path/a/b/c/' } } as IApi,
       '/public_path/a/b/c/mf-static/cfile.html',
     ),
   ).toStrictEqual({
@@ -116,8 +147,12 @@ test('normalizeReqPath', () => {
   });
 
   // not mfsu asserts
+
   expect(
-    normalizeReqPath('http://umijs.org/', '/a/b/c/mf-static/cfile.html'),
+    normalizeReqPath(
+      { config: { publicPath: 'http://umijs.org/' } } as IApi,
+      '/a/b/c/mf-static/cfile.html',
+    ),
   ).toStrictEqual({
     isMfAssets: false,
     normalPublicPath: '/',
