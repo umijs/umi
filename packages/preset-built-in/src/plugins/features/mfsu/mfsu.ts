@@ -258,12 +258,24 @@ export default function (api: IApi) {
       const path = req.path;
       // we should remove the first "." to prevent incorrect target such as: ./mf-va_.
       // because we usually set publicPath: ./ for electron app
-      const publicPath = (api.config.publicPath as string).startsWith('./') ? '/' : api.config.publicPath;
+      const publicPath = (api.config.publicPath as string).startsWith('./')
+        ? '/'
+        : api.config.publicPath;
+
+      // 支持用户配置 splitChunks 和 chunks
+      const chunks: string[] = api.userConfig.chunks || [];
 
       if (
         path.startsWith(`${publicPath}mf-va_`) ||
         path.startsWith(`${publicPath}mf-dep_`) ||
-        path.startsWith(`${publicPath}mf-static/`)
+        path.startsWith(`${publicPath}mf-static/`) ||
+        chunks
+          .filter((chunk) => chunk !== 'umi')
+          .some(
+            (chunk) =>
+              path.startsWith(`${publicPath}${chunk}`) &&
+              !new RegExp('^' + publicPath + chunk + '.js(.map)*$').test(path),
+          )
       ) {
         depBuilder.onBuildComplete(() => {
           const filePath = path
