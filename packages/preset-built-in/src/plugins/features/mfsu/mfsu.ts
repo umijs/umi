@@ -308,19 +308,18 @@ export default function (api: IApi) {
         res.send(content);
       };
 
-      if (isMfAssets) {
-        if (isBuilding) {
-          let timer = setInterval(() => {
-            if (!isBuilding) {
-              handleMfRequest();
-              clearInterval(timer);
-            }
-          }, 2000);
-        } else {
-          handleMfRequest();
-        }
+      if (!isMfAssets) {
+        return next();
+      }
+      if (isBuilding) {
+        const timer = setInterval(() => {
+          if (!isBuilding) {
+            handleMfRequest();
+            clearInterval(timer);
+          }
+        }, 2000);
       } else {
-        next();
+        handleMfRequest();
       }
     };
   });
