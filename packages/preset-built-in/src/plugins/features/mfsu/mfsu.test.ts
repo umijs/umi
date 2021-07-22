@@ -158,4 +158,47 @@ test('normalizeReqPath', () => {
     normalPublicPath: '/',
     fileRelativePath: 'a/b/c/mf-static/cfile.html',
   });
+
+  expect(
+    normalizeReqPath(
+      // @ts-ignore
+      {
+        config: { publicPath: '/public/' },
+        userConfig: { chunks: ['umi', 'xxxx'] },
+      },
+      '/public/xxxx.xyz.async.js',
+    ),
+  ).toStrictEqual({
+    isMfAssets: true,
+    normalPublicPath: '/public/',
+    fileRelativePath: 'xxxx.xyz.async.js',
+  });
+  expect(
+    normalizeReqPath(
+      // @ts-ignore
+      {
+        config: { publicPath: '/public/' },
+        userConfig: { chunks: ['umi', 'xxxx'] },
+      },
+      '/public/xxxx.js',
+    ),
+  ).toStrictEqual({
+    isMfAssets: false,
+    normalPublicPath: '/public/',
+    fileRelativePath: 'xxxx.js',
+  });
+  expect(
+    normalizeReqPath(
+      // @ts-ignore
+      {
+        config: { publicPath: '/public/' },
+        userConfig: { chunks: ['umi', 'xxxx'] },
+      },
+      '/public/xxxx.js.map',
+    ),
+  ).toStrictEqual({
+    isMfAssets: false,
+    normalPublicPath: '/public/',
+    fileRelativePath: 'xxxx.js.map',
+  });
 });

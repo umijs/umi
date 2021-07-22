@@ -52,7 +52,7 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
 };
 
 export const normalizeReqPath = (api: IApi, reqPath: string) => {
-  const chunks: string[] = api.userConfig.chunks || [];
+  const chunks: string[] = api.userConfig?.chunks || [];
   let normalPublicPath = api.config.publicPath as string;
   if (/^https?\:\/\//.test(normalPublicPath)) {
     normalPublicPath = new URL(normalPublicPath).pathname;
