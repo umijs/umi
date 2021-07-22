@@ -28,6 +28,7 @@ export default class DepBuilder {
   public tmpDir: string;
   public isBuilding: boolean;
   private onBuildCompleteQueue: Function[];
+  private onBuildStartQueue: Function[];
 
   constructor(opts: { api: IApi; mode: TMode; tmpDir: string }) {
     this.api = opts.api;
@@ -36,17 +37,19 @@ export default class DepBuilder {
     this.compiler = null;
     this.isBuilding = false;
     this.onBuildCompleteQueue = [];
+    this.onBuildStartQueue = [];
   }
 
   onBuildComplete(fn: Function) {
-    if (this.isBuilding) {
-      this.onBuildCompleteQueue.push(fn);
-    } else {
-      fn();
-    }
+    this.onBuildCompleteQueue.push(fn);
+  }
+
+  onBuildStart(fn: Function) {
+    this.onBuildStartQueue.push(fn);
   }
 
   async build(opts: { deps: IDeps; webpackAlias: any; onBuildComplete: any }) {
+    this.onBuildStartQueue.forEach((fn) => fn());
     this.isBuilding = true;
     await this.writeMFFiles(opts.deps, opts.webpackAlias);
 
