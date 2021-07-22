@@ -52,6 +52,7 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
 };
 
 export const normalizeReqPath = (api: IApi, reqPath: string) => {
+  const chunks: string[] = api.userConfig.chunks || [];
   let normalPublicPath = api.config.publicPath as string;
   if (/^https?\:\/\//.test(normalPublicPath)) {
     normalPublicPath = new URL(normalPublicPath).pathname;
@@ -61,7 +62,16 @@ export const normalizeReqPath = (api: IApi, reqPath: string) => {
   const isMfAssets =
     reqPath.startsWith(`${normalPublicPath}mf-va_`) ||
     reqPath.startsWith(`${normalPublicPath}mf-dep_`) ||
-    reqPath.startsWith(`${normalPublicPath}mf-static/`);
+    reqPath.startsWith(`${normalPublicPath}mf-static/`) ||
+    chunks
+      .filter((chunk) => chunk !== 'umi')
+      .some(
+        (chunk) =>
+          reqPath.startsWith(`${normalPublicPath}${chunk}`) &&
+          !new RegExp('^' + normalPublicPath + chunk + '.js(.map)*$').test(
+            reqPath,
+          ),
+      );
   const fileRelativePath = reqPath
     .replace(new RegExp(`^${normalPublicPath}`), '/')
     .slice(1);
