@@ -7,9 +7,25 @@ export default function () {
         let hasExport = false;
         path.node.body.forEach((node) => {
           if (
+            // esm
             t.isExportNamedDeclaration(node) ||
             t.isExportDefaultDeclaration(node) ||
-            t.isExportAllDeclaration(node)
+            t.isExportAllDeclaration(node) ||
+            // cjs
+            (t.isExpressionStatement(node) &&
+              t.isAssignmentExpression(node.expression) &&
+              t.isMemberExpression(node.expression.left) &&
+              // exports.xxx =
+              (t.isIdentifier(node.expression.left.object, {
+                name: 'exports',
+              }) ||
+                // module.exports =
+                (t.isIdentifier(node.expression.left.object, {
+                  name: 'module',
+                }) &&
+                  t.isIdentifier(node.expression.left.property, {
+                    name: 'exports',
+                  }))))
           ) {
             hasExport = true;
           }
