@@ -179,6 +179,10 @@ export default class DepInfo {
       theme: this.api.config.theme || {},
       externals: this.api.config.externals || {},
       runtimePublicPath: this.api.config.runtimePublicPath || false,
+
+      // umi 版本变更后需要重新编译一次
+      // TODO: ModuleGraph 上线后可以删掉这个
+      umiVersion: process.env.UMI_VERSION,
     };
   }
 
