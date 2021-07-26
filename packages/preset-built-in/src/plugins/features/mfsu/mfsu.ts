@@ -51,6 +51,27 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   }
 };
 
+export const normalizeReqPath = (api: IApi, reqPath: string) => {
+  let normalPublicPath = api.config.publicPath as string;
+  if (/^https?\:\/\//.test(normalPublicPath)) {
+    normalPublicPath = new URL(normalPublicPath).pathname;
+  } else {
+    normalPublicPath = normalPublicPath.replace(/^(?:\.+\/?)+/, '/'); // normalPublicPath should start with '/'
+  }
+  const isMfAssets =
+    reqPath.startsWith(`${normalPublicPath}mf-va_`) ||
+    reqPath.startsWith(`${normalPublicPath}mf-dep_`) ||
+    reqPath.startsWith(`${normalPublicPath}mf-static/`);
+  const fileRelativePath = reqPath
+    .replace(new RegExp(`^${normalPublicPath}`), '/')
+    .slice(1);
+  return {
+    isMfAssets,
+    normalPublicPath,
+    fileRelativePath,
+  };
+};
+
 export default function (api: IApi) {
   const webpackAlias = {};
   const webpackExternals = {};
@@ -256,21 +277,14 @@ export default function (api: IApi) {
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const path = req.path;
-      // we should remove the first "." to prevent incorrect target such as: ./mf-va_.
-      // because we usually set publicPath: ./ for electron app
-      const publicPath = (api.config.publicPath as string).startsWith('./') ? '/' : api.config.publicPath;
-
-      if (
-        path.startsWith(`${publicPath}mf-va_`) ||
-        path.startsWith(`${publicPath}mf-dep_`) ||
-        path.startsWith(`${publicPath}mf-static/`)
-      ) {
+      const { isMfAssets, fileRelativePath } = normalizeReqPath(api, req.path);
+      if (isMfAssets) {
         depBuilder.onBuildComplete(() => {
-          const filePath = path
-            .replace(new RegExp(`^${publicPath}`), '/')
-            .slice(1);
           const mfsuPath = getMfsuPath(api, { mode: 'development' });
-          const content = readFileSync(join(mfsuPath, filePath), 'utf-8');
+          const content = readFileSync(
+            join(mfsuPath, fileRelativePath),
+            'utf-8',
+          );
           res.setHeader('content-type', mime.lookup(parse(path || '').ext));
           // 排除入口文件，因为 hash 是入口文件控制的
           if (!/remoteEntry.js/.test(req.url)) {
