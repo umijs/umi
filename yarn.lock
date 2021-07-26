@@ -12154,7 +12154,7 @@ miller-rabin@^4.0.0:
     bn.js "^4.0.0"
     brorand "^1.0.1"
 
-mime-db@1.48.0, "mime-db@>= 1.43.0 < 2", mime-db@^1.2.0:
+mime-db@1.48.0, "mime-db@>= 1.43.0 < 2":
   version "1.48.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.48.0.tgz#e35b31045dd7eada3aaad537ed88a33afbef2d1d"
   integrity sha512-FM3QwxV+TnZYQ2aRqhlKBMHxk10lTbMt3bBkMAp54ddrNeVSfcQYOOKuGuy3Ddrm38I04If834fOUSq1yzslJQ==
@@ -12166,12 +12166,10 @@ mime-types@^2.1.12, mime-types@^2.1.27, mime-types@~2.1.19, mime-types@~2.1.24:
   dependencies:
     mime-db "1.48.0"
 
-mime@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.0.tgz#447c1ac7a6e4df33e3eebf13419bd736f99067f0"
-  integrity sha1-RHwax6bk3zPj7r8TQZvXNvmQZ/A=
-  dependencies:
-    mime-db "^1.2.0"
+mime@1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.6.tgz#591d84d3653a6b0b4a3b9df8de5aa8108e72e5e0"
+  integrity sha1-WR2E02U6awtKO5343lqoEI5y5eA=
 
 mime@1.6.0, mime@^1.4.1:
   version "1.6.0"
