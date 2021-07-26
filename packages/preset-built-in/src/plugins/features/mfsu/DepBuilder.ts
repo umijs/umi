@@ -73,6 +73,7 @@ export default class DepBuilder {
         onBuildComplete: (err: any, stats: any) => {
           this.isBuilding = false;
           this.onBuildCompleteQueue.forEach((fn) => fn());
+          this.onBuildCompleteQueue = [];
           opts.onBuildComplete(err, stats);
         },
       });
