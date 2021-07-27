@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-plugin-auto-css-modules",
-  "version": "3.5.13",
+  "version": "3.5.14",
   "description": "@umijs/babel-plugin-auto-css-modules",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,9 +24,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.5.13"
+    "@umijs/utils": "3.5.14"
   },
   "devDependencies": {
-    "@umijs/deps": "3.5.13"
+    "@umijs/deps": "3.5.14"
   }
 }
