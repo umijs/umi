@@ -28,6 +28,7 @@
     "@umijs/babel-preset-umi": "3.5.14",
     "@umijs/core": "3.5.14",
     "@umijs/deps": "3.5.14",
+    "@umijs/renderer-react": "3.5.14",
     "@umijs/server": "3.5.14",
     "@umijs/utils": "3.5.14",
     "webpack-chain": "6.5.1"
