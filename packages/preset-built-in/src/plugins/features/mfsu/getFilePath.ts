@@ -29,9 +29,15 @@ function getPathWithPkgJSON(path: string) {
       // ref: https://webpack.js.org/configuration/resolve/#resolvemainfields
       // TODO: support browser object
       // ref: https://unpkg.alibaba-inc.com/browse/react-dom@17.0.2/package.json
-      const entry = /*pkg.browser ||*/ pkg.module || pkg.main || 'index.js';
-      const target = join(path, entry);
-      return getPathWithExt(target) || getPathWithIndexFile(target);
+      const indexTarget = join(path, 'index.js');
+      return (
+        (pkg.module && getPathWithExt(join(path, pkg.module))) ||
+        getPathWithIndexFile(join(path, pkg.module)) ||
+        (pkg.main && getPathWithExt(join(path, pkg.main))) ||
+        getPathWithIndexFile(join(path, pkg.main)) ||
+        getPathWithExt(indexTarget) ||
+        getPathWithIndexFile(indexTarget)
+      );
     }
   }
   return null;
