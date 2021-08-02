@@ -67,7 +67,14 @@ export default _;`.trim();
       }
 
       if (!hasExports) {
-        ret.push(`import '${opts.importFrom}';`);
+        // 只有 __esModule 的全量导出
+        if (exports.includes('__esModule')) {
+          ret.push(`import _ from '${opts.importFrom}';`);
+          ret.push(`export default _;`);
+          ret.push(`export * from '${opts.importFrom}';`);
+        } else {
+          ret.push(`import '${opts.importFrom}';`);
+        }
       }
 
       return ret.join('\n');

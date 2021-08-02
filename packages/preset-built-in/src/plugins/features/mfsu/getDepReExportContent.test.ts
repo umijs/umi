@@ -148,6 +148,25 @@ exports.Foo = void 0;
   ).toEqual(`export * from 'foo';`);
 });
 
+test('__esModule only', async () => {
+  expect(
+    // ref: @%INNER_SCOPE%/radiant-util
+    await getDepReExportContent({
+      content: `
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+tslib_1.__exportStar(require("./constant"), exports);
+tslib_1.__exportStar(require("./number/math"), exports);
+tslib_1.__exportStar(require("./number/format"), exports);
+tslib_1.__exportStar(require("./date"), exports);
+tslib_1.__exportStar(require("./collection/transform"), exports);
+`,
+      importFrom: 'foo',
+    }),
+  ).toEqual(`import _ from 'foo';\nexport default _;\nexport * from 'foo';`);
+});
+
 test('cjs mode esm parser', () => {
   const file = `
   Object.defineProperty(exports, "__esModule", {
