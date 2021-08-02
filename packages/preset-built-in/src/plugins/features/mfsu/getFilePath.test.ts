@@ -40,6 +40,12 @@ test('package json second', () => {
   ).toEqual(`$CWD$/package-json-second/foo/bar.js`);
 });
 
+test('package json not found module', () => {
+  expect(
+    format(getFilePath(join(fixtures, 'package-json-not-found-module', 'foo'))),
+  ).toEqual(`$CWD$/package-json-not-found-module/foo/bar.js`);
+});
+
 test('package json directory', () => {
   expect(
     format(getFilePath(join(fixtures, 'package-json-directory', 'foo'))),
