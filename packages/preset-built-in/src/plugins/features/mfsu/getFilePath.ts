@@ -31,10 +31,12 @@ function getPathWithPkgJSON(path: string) {
       // ref: https://unpkg.alibaba-inc.com/browse/react-dom@17.0.2/package.json
       const indexTarget = join(path, 'index.js');
       return (
-        (pkg.module && getPathWithExt(join(path, pkg.module))) ||
-        getPathWithIndexFile(join(path, pkg.module)) ||
-        (pkg.main && getPathWithExt(join(path, pkg.main))) ||
-        getPathWithIndexFile(join(path, pkg.main)) ||
+        (pkg.module &&
+          (getPathWithExt(join(path, pkg.module)) ||
+            getPathWithIndexFile(join(path, pkg.module)))) ||
+        (pkg.main &&
+          (getPathWithExt(join(path, pkg.main)) ||
+            getPathWithIndexFile(join(path, pkg.main)))) ||
         getPathWithExt(indexTarget) ||
         getPathWithIndexFile(indexTarget)
       );
