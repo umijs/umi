@@ -64,7 +64,7 @@ export default function useAuthModel() {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, fetchUser } = useModel('user', model => ({ user: model.user, fetchUser: model.fetchUser }));
+  const { user, signin } = useModel('useAuthModel', model => ({ user: model.user, signin: model.signin }));
   return <>hello</>
 };
 ```
