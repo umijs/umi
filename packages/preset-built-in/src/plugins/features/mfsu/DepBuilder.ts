@@ -105,7 +105,15 @@ export default class DepBuilder {
               normalizeDepPath(`${MF_VA_PREFIX}${dep}.js`, this.api.cwd),
             ),
           ),
-          [await figureOutExport(this.api.cwd, winPath(requireFrom)), '']
+          [
+            await figureOutExport(
+              this.api.cwd,
+              winPath(requireFrom),
+              // @ts-ignore
+              !!this.api.config.mfsu!.ignoreNodeBuiltInModules,
+            ),
+            '',
+          ]
             .join('\n')
             .trimLeft(),
           'utf-8',
