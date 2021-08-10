@@ -829,6 +829,7 @@ export default {
 - mfName： `string`。指定预编译依赖的变量名，默认为 `mf`，比如可在 qiankun 主应用里配置
 - exportAllMembers
 - chunks: `string[]`。mfsu 阶段的 chunks 写死了 `['umi']`，可通过此配置项强行修改
+- ignoreNodeBuiltInModules: `boolean`。配为 `true` 时不预编译 node 原生包，适用于 electron renderer
 
 ```js
 mfsu: {

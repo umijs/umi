@@ -40,6 +40,7 @@ export const copy = (fromDir: string, toDir: string) => {
 export const figureOutExport = async (
   cwd: string,
   importFrom: string,
+  ignoreNodeBuiltInModules?: boolean,
 ): Promise<string> => {
   const absImportFrom = isAbsolute(importFrom)
     ? importFrom
@@ -51,10 +52,18 @@ export const figureOutExport = async (
 
   // useful while running with target = electron-renderer
   if (isNodeBuiltinModule) {
-    return Promise.resolve(`
-    const _ = require('${importFrom}');
-    module.exports = _;
-    `);
+    if (ignoreNodeBuiltInModules) {
+      return `
+const _ = require('${importFrom}');
+module.exports = _;
+      `;
+    } else {
+      return [
+        `import _ from '${importFrom}';`,
+        `export default _;`,
+        `export * from '${importFrom}';`,
+      ].join('\n');
+    }
   }
 
   assert(filePath, `filePath not found of ${importFrom}`);

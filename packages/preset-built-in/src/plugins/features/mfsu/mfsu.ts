@@ -171,6 +171,7 @@ export default function (api: IApi) {
             mfName: joi.string(),
             exportAllMembers: joi.object(),
             chunks: joi.array().items(joi.string()),
+            ignoreNodeBuiltInModules: joi.boolean(),
           })
           .description('open mfsu feature');
       },
