@@ -74,7 +74,7 @@ export const normalizeReqPath = (api: IApi, reqPath: string) => {
 
 export default function (api: IApi) {
   const webpackAlias = {};
-  const webpackExternals = [];
+  const webpackExternals: any[] = [];
   let publicPath = '/';
   let depInfo: DepInfo;
   let depBuilder: DepBuilder;
