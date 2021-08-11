@@ -8,9 +8,12 @@ interface IAlias {
   [key: string]: string;
 }
 
-interface IExternals {
-  [key: string]: string;
-}
+type IExternal =
+  | {
+      [key: string]: string;
+    }
+  | Function;
+type IExternals = IExternal[] | {};
 
 export interface IOpts {
   libs?: TLibs;
@@ -84,6 +87,40 @@ function addLastSlash(path: string) {
   return path.endsWith('/') ? path : `${path}/`;
 }
 
+function makeArray<T>(item: any): T[] {
+  return Array.isArray(item) ? item : [item];
+}
+
+function isExternals(opts: { webpackExternals: IExternals; path: string }) {
+  const webpackExternals = makeArray<IExternal>(opts.webpackExternals);
+  const path = opts.path;
+  if (
+    webpackExternals.some((webpackExternal) =>
+      isExternal({
+        webpackExternal,
+        path,
+      }),
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function isExternal(opts: { webpackExternal: IExternal; path: string }) {
+  if (typeof opts.webpackExternal === 'object') {
+    return opts.webpackExternal[opts.path];
+  } else if (typeof opts.webpackExternal === 'function') {
+    let ret = false;
+    opts.webpackExternal({}, opts.path, (_: any, b: any) => {
+      ret = !!b;
+    });
+    return ret;
+  } else {
+    return false;
+  }
+}
+
 function isMatchLib(
   path: string,
   libs: TLibs | undefined,
@@ -106,8 +143,12 @@ function isMatchLib(
     // e.g. !!dumi-raw-code-loader!/path/to/VerticalProgress/index.module.less?dumi-raw-code
     if (path.startsWith('!!')) return false;
 
-    // TODO: support more external types
-    if (typeof webpackExternals === 'object' && webpackExternals[path]) {
+    if (
+      isExternals({
+        webpackExternals,
+        path,
+      })
+    ) {
       return false;
     }
 
