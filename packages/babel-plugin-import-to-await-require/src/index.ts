@@ -109,7 +109,7 @@ function isExternals(opts: { webpackExternals: IExternals; path: string }) {
 
 function isExternal(opts: { webpackExternal: IExternal; path: string }) {
   if (typeof opts.webpackExternal === 'object') {
-    return opts.webpackExternal[opts.path];
+    return !!opts.webpackExternal[opts.path];
   } else if (typeof opts.webpackExternal === 'function') {
     let ret = false;
     opts.webpackExternal({}, opts.path, (_: any, b: any) => {
