@@ -143,7 +143,6 @@ function isMatchLib(
     // e.g. !!dumi-raw-code-loader!/path/to/VerticalProgress/index.module.less?dumi-raw-code
     if (path.startsWith('!!')) return false;
 
-    // TODO: support more external types
     if (
       isExternals({
         webpackExternals,
