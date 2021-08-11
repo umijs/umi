@@ -517,6 +517,59 @@ a;
   );
 });
 
+test('match all externals array', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from 'bar'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackExternals: [
+          {
+            bar: 'window.Bar',
+          },
+        ],
+      },
+    ),
+  ).toEqual(
+    `
+import a from 'bar';
+a;
+    `.trim(),
+  );
+});
+
+test('match all externals array + function', () => {
+  expect(
+    transformWithPlugin(
+      `
+import a from 'bar'; a;
+`,
+      {
+        matchAll: true,
+        remoteName: 'foo',
+        webpackExternals: [
+          // @ts-ignore
+          (context, request, callback) => {
+            if (request === 'bar') {
+              return callback(null, 'bar');
+            } else {
+              return callback();
+            }
+          },
+        ],
+      },
+    ),
+  ).toEqual(
+    `
+import a from 'bar';
+a;
+    `.trim(),
+  );
+});
+
 test('match all node_modules alias', () => {
   expect(
     transformWithPlugin(
