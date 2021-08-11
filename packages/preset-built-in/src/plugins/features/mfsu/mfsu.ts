@@ -74,7 +74,7 @@ export const normalizeReqPath = (api: IApi, reqPath: string) => {
 
 export default function (api: IApi) {
   const webpackAlias = {};
-  const webpackExternals = {};
+  const webpackExternals: any[] = [];
   let publicPath = '/';
   let depInfo: DepInfo;
   let depBuilder: DepBuilder;
@@ -305,11 +305,10 @@ export default function (api: IApi) {
     fn(memo: any, { type, mfsu }: { mfsu: boolean; type: BundlerConfigType }) {
       if (type === BundlerConfigType.csr) {
         Object.assign(webpackAlias, memo.resolve!.alias || {});
-        assert(
-          typeof (memo.externals || {}) === 'object',
-          `[MFSU] Unsupported externals config format, only support object, but got ${memo.externals}`,
+        const externals = memo.externals || {};
+        webpackExternals.push(
+          ...(Array.isArray(externals) ? externals : [externals]),
         );
-        Object.assign(webpackExternals, memo.externals || {});
         publicPath = memo.output.publicPath;
 
         if (!mfsu) {
