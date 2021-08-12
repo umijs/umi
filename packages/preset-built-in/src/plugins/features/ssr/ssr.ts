@@ -12,7 +12,7 @@ import {
   winPath,
 } from '@umijs/utils';
 import assert from 'assert';
-import * as fs from 'fs';
+import fs from 'fs';
 import { EOL } from 'os';
 import * as path from 'path';
 import { performance } from 'perf_hooks';
