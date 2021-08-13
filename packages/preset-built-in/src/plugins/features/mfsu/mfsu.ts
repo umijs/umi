@@ -84,7 +84,7 @@ export default function (api: IApi) {
     fn() {
       const command = process.argv[2];
       if (['dev', 'build'].includes(command)) {
-        console.log(chalk.hex('#faac00')('MFSU Enabled'));
+        console.log(chalk.hex('#faac00')('⏱️  MFSU Enabled'));
       }
     },
     stage: 2,
