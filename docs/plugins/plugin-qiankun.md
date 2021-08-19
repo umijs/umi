@@ -286,7 +286,7 @@ export function MyPage() {
         loader={(loading) => <div>loading: {loading}</div>}
         // 微应用容器 class
         className="myContainer"
-        // wrapper class，仅开启 loading 动画时生效
+        // wrapper class，仅开启 loading 或 errorBoundary 时生效
         wrapperClassName="myWrapper"
       />
     </div>
@@ -323,6 +323,106 @@ export function MyPage() {
           autoSetLoading={false}
         />
       </div>
+    </div>
+  );
+}
+```
+
+##### 错误边界与微应用加载状态
+
+你可以通过配置 `autoCaptureError` 的方式，捕获微应用加载的生命周期中出现的错误：
+
+```jsx
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  return (
+    <div>
+      <div>
+        <MicroApp name="app1" autoCaptureError />
+      </div>
+    </div>
+  );
+}
+```
+
+默认情况下，当我们检测到你使用的是 antd 组件库时，ErrorBoundary 会使用 [antd Result](https://ant.design/components/result-cn/) 组件。
+
+如果你需要修改组件的样式，你可以这样处理：
+
+```jsx
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  return (
+    <div>
+      <MicroApp
+        name="app1"
+        autoCaptureError
+        // 设置自定义 errorBoundary 组件
+        errorBoundary={(error) => <div>Error: {error.message}</div>}
+        // 微应用容器 class
+        className="myContainer"
+        // wrapper class，仅开启 loading 或 errorBoundary 动画时生效
+        wrapperClassName="myWrapper"
+      />
+    </div>
+  );
+}
+```
+
+路由模式下，你可以这样设置一些静态配置来调整 errorBoundary 组件的外观：
+
+```js
+{
+  path: '/user',
+  microApp: 'user',
+  microAppProps: {
+    autoCaptureError: true,
+    className: 'myContainer',
+    wrapperClassName: 'myWrapper',
+  }
+}
+```
+
+或者，你可以通过设置 autoCaptureError false 来关闭默认的报错提示：
+
+```tsx
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  return (
+    <div>
+      <div>
+        <MicroApp
+          name="app1"
+          // 关闭错误捕获界面
+          autoCaptureError={false}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+如果你需要实时获取子应用的加载状态，可以通过 ref 获取 microApp 的实例：
+
+```jsx
+import { useRef, useEffect } from 'react';
+import { MicroApp } from 'umi';
+
+export function MyPage() {
+  const microAppRef = useRef(null);
+
+  useEffect(() => {
+    microAppRef.current.mountPromise.then(() => {
+      console.log('app1 mount');
+    });
+  }, []);
+
+  return (
+    <div>
+      <MicroApp ref={microAppRef} name="app1" />
     </div>
   );
 }
