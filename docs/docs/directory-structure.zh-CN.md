@@ -2,20 +2,20 @@
 
 一个基础的 Umi 项目大致是这样的，
 
-	.
-	├── package.json
-	├── .umirc.ts
-	├── .env
-	├── dist
-	├── mock
-	├── public
-	└── src
-	    ├── .umi
-	    ├── layouts/index.tsx
-	    ├── pages
-	        ├── index.less
-	        └── index.tsx
-	    └── app.ts
+    .
+    ├── package.json
+    ├── .umirc.ts
+    ├── .env
+    ├── dist
+    ├── mock
+    ├── public
+    └── src
+        ├── .umi
+        ├── layouts/index.tsx
+        ├── pages
+            ├── index.less
+            └── index.tsx
+        └── app.ts
 
 ## 根目录
 
@@ -33,8 +33,8 @@
 
 比如：
 
-	PORT=8888
-	COMPRESS=none
+    PORT=8888
+    COMPRESS=none
 
 ### dist 目录
 
@@ -61,6 +61,14 @@
 ### pages 目录
 
 所有路由组件存放在这里。
+
+### global.(js|ts)
+
+此文件会在入口文件的最前面被自动引入，可以在这里加载补丁，做一些初始化的操作等。
+
+### global.(css|less|sass|scss)
+
+此文件不走 css modules，且会自动被引入，可以在这里写全局样式，以及做样式覆盖。
 
 ### app.ts
 
