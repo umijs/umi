@@ -1,1 +1,1 @@
-module.exports = require('./bundle').template();
+module.exports = require('./').template();

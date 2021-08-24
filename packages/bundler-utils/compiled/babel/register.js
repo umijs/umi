@@ -1,1 +1,1 @@
-module.exports = require('./bundle').register();
+module.exports = require('./').register();

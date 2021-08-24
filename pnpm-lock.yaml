@@ -58,6 +58,9 @@ importers:
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.14.2
       es-module-lexer: 0.7.1
+      esbuild: 0.12.22
+    dependencies:
+      esbuild: 0.12.22
     devDependencies:
       '@babel/code-frame': 7.14.5
       '@babel/core': 7.15.0
@@ -76,6 +79,24 @@ importers:
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.14.2
       es-module-lexer: 0.7.1
+
+  packages/bundler-utils/compiled/@babel/code-frame:
+    specifiers: {}
+
+  packages/bundler-utils/compiled/@babel/generator:
+    specifiers: {}
+
+  packages/bundler-utils/compiled/@babel/parser:
+    specifiers: {}
+
+  packages/bundler-utils/compiled/@babel/template:
+    specifiers: {}
+
+  packages/bundler-utils/compiled/@babel/traverse:
+    specifiers: {}
+
+  packages/bundler-utils/compiled/@babel/types:
+    specifiers: {}
 
   packages/bundler-utils/compiled/es-module-lexer:
     specifiers: {}
@@ -97,6 +118,9 @@ importers:
       webpack: 5.51.1
       webpack-sources: 3.2.0
 
+  packages/bundler-webpack/bundles/webpack/packages:
+    specifiers: {}
+
   packages/bundler-webpack/compiled/schema-utils:
     specifiers: {}
 
@@ -107,6 +131,9 @@ importers:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack-sources:
+    specifiers: {}
+
+  packages/core:
     specifiers: {}
 
   packages/umi:
@@ -2882,6 +2909,12 @@ packages:
     hasBin: true
     requiresBuild: true
     dev: true
+
+  /esbuild/0.12.22:
+    resolution: {integrity: sha512-yWCr9RoFehpqoe/+MwZXJpYOEIt7KOEvNnjIeMZpMSyQt+KCBASM3y7yViiN5dJRphf1wGdUz1+M4rTtWd/ulA==}
+    hasBin: true
+    requiresBuild: true
+    dev: false
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}

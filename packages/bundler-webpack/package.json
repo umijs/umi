@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
     "build:deps": "zx ../../scripts/bundleDeps.mjs",
-    "dev": "npm run build -- --watch"
+    "dev": "npm run build -- --watch",
+    "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs"
   },
   "repository": {
     "type": "git",
@@ -25,29 +26,32 @@
   "publishConfig": {
     "access": "public"
   },
+  "compiledConfig": {
+    "deps": [
+      "schema-utils",
+      "tapable",
+      "webpack-sources",
+      "./bundles/webpack/bundle"
+    ],
+    "externals": {
+      "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
+      "schema-utils": "$$LOCAL",
+      "tapable": "$$LOCAL",
+      "webpack-sources": "$$LOCAL"
+    },
+    "noMinify": [
+      "webpack",
+      "./bundles/webpack/bundle"
+    ],
+    "extraDtsDeps": [
+      "webpack"
+    ]
+  },
   "devDependencies": {
     "@types/webpack-sources": "3.2.0",
     "schema-utils": "3.1.1",
     "tapable": "2.2.0",
     "webpack": "5.51.1",
     "webpack-sources": "3.2.0"
-  },
-  "compiledConfig": {
-    "deps": [
-      "schema-utils",
-      "tapable",
-      "webpack",
-      "webpack-sources"
-    ],
-    "externals": {
-      "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
-      "schema-utils": "$$LOCAL",
-      "tapable": "$$LOCAL",
-      "webpack": "$$LOCAL",
-      "webpack-sources": "$$LOCAL"
-    },
-    "noMinify": [
-      "webpack"
-    ]
   }
 }

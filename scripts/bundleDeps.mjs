@@ -25,64 +25,94 @@ export async function buildDep(opts) {
   }
 
   if (!opts.dtsOnly) {
-    const { code, assets } = await ncc(entry, {
-      externals: opts.webpackExternals,
-      minify: !!opts.minify,
-    });
-
-    // assets
-    for (const key of Object.keys(assets)) {
-      const asset = assets[key];
-      const data = asset.source;
-      const filePath = join(target, key);
-      fs.ensureDirSync(dirname(filePath));
-      writeFileSync(join(target, key), data);
+    if (opts.isDependency) {
+      fs.ensureDirSync(target);
+      writeFileSync(
+        join(target, 'index.js'),
+        `
+const exported = require("${opts.pkgName}");
+Object.keys(exported).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === exported[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return exported[key];
     }
+  });
+});
+      `.trim() + '\n',
+        'utf-8',
+      );
+    } else {
+      const { code, assets } = await ncc(entry, {
+        externals: opts.webpackExternals,
+        minify: !!opts.minify,
+      });
 
-    // entry code
-    fs.ensureDirSync(target);
-    writeFileSync(join(target, 'index.js'), code, 'utf-8');
+      // assets
+      for (const key of Object.keys(assets)) {
+        const asset = assets[key];
+        const data = asset.source;
+        const filePath = join(target, key);
+        fs.ensureDirSync(dirname(filePath));
+        writeFileSync(join(target, key), data);
+      }
+
+      // entry code
+      fs.ensureDirSync(target);
+      writeFileSync(join(target, 'index.js'), code, 'utf-8');
+    }
   }
 
   // license & package.json
   if (opts.pkgName) {
-    fs.ensureDirSync(target);
-    const pkgRoot = dirname(
-      resolve.sync(`${opts.pkgName}/package.json`, {
-        basedir: opts.base,
-      }),
-    );
-    if (existsSync(join(pkgRoot, 'LICENSE'))) {
-      writeFileSync(
-        join(target, 'LICENSE'),
-        readFileSync(join(pkgRoot, 'LICENSE'), 'utf-8'),
+    if (opts.isDependency) {
+      fs.ensureDirSync(target);
+      fs.writeFileSync(
+        join(target, 'index.d.ts'),
+        `export * from '${opts.pkgName}';\n`,
         'utf-8',
       );
-    }
-    const {
-      name,
-      main = 'index.js',
-      author,
-      license,
-      types,
-      typing,
-    } = JSON.parse(readFileSync(join(pkgRoot, 'package.json'), 'utf-8'));
-    fs.writeJSONSync(join(target, 'package.json'), {
-      ...{},
-      ...{ name, main: `${basename(main, '.' + extname(main))}` },
-      ...(author ? { author } : undefined),
-      ...(license ? { license } : undefined),
-      ...(types ? { types } : undefined),
-      ...(typing ? { typing } : undefined),
-    });
+    } else {
+      fs.ensureDirSync(target);
+      const pkgRoot = dirname(
+        resolve.sync(`${opts.pkgName}/package.json`, {
+          basedir: opts.base,
+        }),
+      );
+      if (existsSync(join(pkgRoot, 'LICENSE'))) {
+        writeFileSync(
+          join(target, 'LICENSE'),
+          readFileSync(join(pkgRoot, 'LICENSE'), 'utf-8'),
+          'utf-8',
+        );
+      }
+      const {
+        name,
+        main = 'index.js',
+        author,
+        license,
+        types,
+        typing,
+      } = JSON.parse(readFileSync(join(pkgRoot, 'package.json'), 'utf-8'));
+      fs.writeJSONSync(join(target, 'package.json'), {
+        ...{},
+        ...{ name, main: `${basename(main, '.' + extname(main))}` },
+        ...(author ? { author } : undefined),
+        ...(license ? { license } : undefined),
+        ...(types ? { types } : undefined),
+        ...(typing ? { typing } : undefined),
+      });
 
-    // dts
-    new Package({
-      cwd: opts.base,
-      name: opts.pkgName,
-      typesRoot: target,
-      externals: opts.dtsExternals,
-    });
+      // dts
+      new Package({
+        cwd: opts.base,
+        name: opts.pkgName,
+        typesRoot: target,
+        externals: opts.dtsExternals,
+      });
+    }
   }
 
   // copy files in packages
@@ -101,6 +131,7 @@ export async function buildDep(opts) {
 
 const base = process.cwd();
 const pkg = fs.readJSONSync(join(base, 'package.json'));
+const pkgDeps = pkg.dependencies || {};
 const {
   deps,
   externals,
@@ -135,5 +166,6 @@ for (const dep of argv.dep
     clean: argv.clean,
     minify: !noMinify.includes(dep),
     dtsOnly: extraDtsDeps.includes(dep),
+    isDependency: dep in pkgDeps,
   });
 }

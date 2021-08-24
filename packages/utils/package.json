@@ -24,30 +24,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "chokidar": "3.5.2",
-    "clipboardy": "2.3.0"
-  },
-  "devDependencies": {
-    "@types/cross-spawn": "6.0.2",
-    "@types/debug": "4.1.7",
-    "@types/lodash": "4.14.172",
-    "@types/rimraf": "3.0.2",
-    "@types/semver": "7.3.8",
-    "address": "1.1.2",
-    "axios": "0.21.1",
-    "chalk": "4.1.2",
-    "cheerio": "1.0.0-rc.10",
-    "cross-spawn": "7.0.3",
-    "debug": "4.3.2",
-    "fs-extra": "10.0.0",
-    "globby": "11.0.4",
-    "lodash": "4.17.21",
-    "portfinder": "1.0.28",
-    "rimraf": "3.0.2",
-    "semver": "7.3.5",
-    "yargs-parser": "18.1.3"
-  },
   "compiledConfig": {
     "deps": [
       "address",
@@ -79,5 +55,29 @@
       "semver": "$$LOCAL",
       "yargs-parser": "$$LOCAL"
     }
+  },
+  "dependencies": {
+    "chokidar": "3.5.2",
+    "clipboardy": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "6.0.2",
+    "@types/debug": "4.1.7",
+    "@types/lodash": "4.14.172",
+    "@types/rimraf": "3.0.2",
+    "@types/semver": "7.3.8",
+    "address": "1.1.2",
+    "axios": "0.21.1",
+    "chalk": "4.1.2",
+    "cheerio": "1.0.0-rc.10",
+    "cross-spawn": "7.0.3",
+    "debug": "4.3.2",
+    "fs-extra": "10.0.0",
+    "globby": "11.0.4",
+    "lodash": "4.17.21",
+    "portfinder": "1.0.28",
+    "rimraf": "3.0.2",
+    "semver": "7.3.5",
+    "yargs-parser": "18.1.3"
   }
 }
