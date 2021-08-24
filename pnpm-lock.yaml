@@ -155,12 +155,12 @@ importers:
       cross-spawn: 7.0.3
       debug: 4.3.2
       fs-extra: 10.0.0
-      globby: 11.0.4
+      globby: 12.0.1
       lodash: 4.17.21
       portfinder: 1.0.28
       rimraf: 3.0.2
       semver: 7.3.5
-      yargs-parser: 18.1.3
+      yargs-parser: 20.2.9
     dependencies:
       chokidar: 3.5.2
       clipboardy: 2.3.0
@@ -177,12 +177,12 @@ importers:
       cross-spawn: 7.0.3
       debug: 4.3.2
       fs-extra: 10.0.0
-      globby: 11.0.4
+      globby: 12.0.1
       lodash: 4.17.21
       portfinder: 1.0.28
       rimraf: 3.0.2
       semver: 7.3.5
-      yargs-parser: 18.1.3
+      yargs-parser: 20.2.9
 
   packages/utils/compiled/address:
     specifiers: {}
@@ -2749,11 +2749,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
-
-  /decamelize/1.2.0:
-    resolution: {integrity: sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=}
-    engines: {node: '>=0.10.0'}
     dev: true
 
   /decimal.js/10.3.1:
@@ -5446,14 +5441,6 @@ packages:
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
-    dev: true
-
-  /yargs-parser/18.1.3:
-    resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
-    engines: {node: '>=6'}
-    dependencies:
-      camelcase: 5.3.1
-      decamelize: 1.2.0
     dev: true
 
   /yargs-parser/20.2.9:
