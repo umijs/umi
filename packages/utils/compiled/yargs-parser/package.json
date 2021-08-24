@@ -1,1 +1,1 @@
-{"name":"yargs-parser","main":"index.js","author":"Ben Coe <ben@npmjs.com>","license":"ISC"}
+{"name":"yargs-parser","main":"index.cjs","author":"Ben Coe <ben@npmjs.com>","license":"ISC"}
