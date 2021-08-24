@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
+    "build:deps": "zx ../../scripts/bundleDeps.mjs",
     "dev": "npm run build -- --watch"
   },
   "repository": {
@@ -23,5 +24,30 @@
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-webpack#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/webpack-sources": "3.2.0",
+    "schema-utils": "3.1.1",
+    "tapable": "2.2.0",
+    "webpack": "5.51.1",
+    "webpack-sources": "3.2.0"
+  },
+  "compiledConfig": {
+    "deps": [
+      "schema-utils",
+      "tapable",
+      "webpack",
+      "webpack-sources"
+    ],
+    "externals": {
+      "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
+      "schema-utils": "$$LOCAL",
+      "tapable": "$$LOCAL",
+      "webpack": "$$LOCAL",
+      "webpack-sources": "$$LOCAL"
+    },
+    "noMinify": [
+      "webpack"
+    ]
   }
 }

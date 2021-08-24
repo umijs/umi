@@ -1,0 +1,67 @@
+{
+  "name": "@umijs/bundler-utils",
+  "version": "4.0.0-alpha.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
+    "build:deps": "zx ../../scripts/bundleDeps.mjs",
+    "dev": "npm run build -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-utils#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@babel/code-frame": "7.14.5",
+    "@babel/core": "7.15.0",
+    "@babel/generator": "7.15.0",
+    "@babel/parser": "7.15.3",
+    "@babel/preset-env": "7.15.0",
+    "@babel/preset-react": "7.14.5",
+    "@babel/preset-typescript": "7.15.0",
+    "@babel/register": "7.15.3",
+    "@babel/template": "7.14.5",
+    "@babel/traverse": "7.15.0",
+    "@babel/types": "7.15.0",
+    "@types/babel__code-frame": "7.0.3",
+    "@types/babel__generator": "7.6.3",
+    "@types/babel__parser": "7.1.1",
+    "@types/babel__template": "7.4.1",
+    "@types/babel__traverse": "7.14.2",
+    "es-module-lexer": "0.7.1"
+  },
+  "compiledConfig": {
+    "deps": [
+      "es-module-lexer",
+      "./bundles/babel/bundle"
+    ],
+    "externals": {
+      "debug": "@umijs/utils/compiled/debug",
+      "es-module-lexer": "$$LOCAL"
+    },
+    "noMinify": [
+      "./bundles/babel/bundle"
+    ],
+    "extraDtsDeps": [
+      "@babel/code-frame",
+      "@babel/generator",
+      "@babel/parser",
+      "@babel/template",
+      "@babel/traverse",
+      "@babel/types"
+    ]
+  }
+}
