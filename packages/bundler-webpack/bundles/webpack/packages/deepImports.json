@@ -1,0 +1,12 @@
+[
+  "webpack/lib/Chunk",
+  "webpack/lib/Compilation",
+  "webpack/lib/LibraryTemplatePlugin",
+  "webpack/lib/LoaderTargetPlugin",
+  "webpack/lib/ModuleFilenameHelpers",
+  "webpack/lib/NormalModule",
+  "webpack/lib/RuntimeGlobals",
+  "webpack/lib/RuntimeModule",
+  "webpack/lib/SingleEntryPlugin",
+  "webpack/lib/Template"
+]

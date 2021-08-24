@@ -24,6 +24,32 @@
   "publishConfig": {
     "access": "public"
   },
+  "compiledConfig": {
+    "deps": [
+      "es-module-lexer",
+      "esbuild",
+      "./bundles/babel/bundle"
+    ],
+    "externals": {
+      "debug": "@umijs/utils/compiled/debug",
+      "esbuild": "$$LOCAL",
+      "es-module-lexer": "$$LOCAL"
+    },
+    "noMinify": [
+      "./bundles/babel/bundle"
+    ],
+    "extraDtsDeps": [
+      "@babel/code-frame",
+      "@babel/generator",
+      "@babel/parser",
+      "@babel/template",
+      "@babel/traverse",
+      "@babel/types"
+    ]
+  },
+  "dependencies": {
+    "esbuild": "0.12.22"
+  },
   "devDependencies": {
     "@babel/code-frame": "7.14.5",
     "@babel/core": "7.15.0",
@@ -42,26 +68,5 @@
     "@types/babel__template": "7.4.1",
     "@types/babel__traverse": "7.14.2",
     "es-module-lexer": "0.7.1"
-  },
-  "compiledConfig": {
-    "deps": [
-      "es-module-lexer",
-      "./bundles/babel/bundle"
-    ],
-    "externals": {
-      "debug": "@umijs/utils/compiled/debug",
-      "es-module-lexer": "$$LOCAL"
-    },
-    "noMinify": [
-      "./bundles/babel/bundle"
-    ],
-    "extraDtsDeps": [
-      "@babel/code-frame",
-      "@babel/generator",
-      "@babel/parser",
-      "@babel/template",
-      "@babel/traverse",
-      "@babel/types"
-    ]
   }
 }
