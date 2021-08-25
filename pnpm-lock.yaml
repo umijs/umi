@@ -110,12 +110,14 @@ importers:
       schema-utils: 3.1.1
       tapable: 2.2.0
       webpack: 5.51.1
+      webpack-5-chain: 8.0.0
       webpack-sources: 3.2.0
     devDependencies:
       '@types/webpack-sources': 3.2.0
       schema-utils: 3.1.1
       tapable: 2.2.0
       webpack: 5.51.1
+      webpack-5-chain: 8.0.0
       webpack-sources: 3.2.0
 
   packages/bundler-webpack/bundles/webpack/packages:
@@ -128,6 +130,9 @@ importers:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack:
+    specifiers: {}
+
+  packages/bundler-webpack/compiled/webpack-5-chain:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack-sources:
@@ -2770,6 +2775,11 @@ packages:
     resolution: {integrity: sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=}
     dev: true
 
+  /deepmerge/1.5.2:
+    resolution: {integrity: sha512-95k0GDqvBjZavkuvzx/YqVLv/6YYa17fz6ILMSf7neqQITCPbnfEnQvEgMPNjH4kgobe7+WIL0yJEHku+H3qtQ==}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
   /deepmerge/4.2.2:
     resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
     engines: {node: '>=0.10.0'}
@@ -3545,6 +3555,10 @@ packages:
     dependencies:
       html-escaper: 2.0.2
       istanbul-lib-report: 3.0.0
+    dev: true
+
+  /javascript-stringify/2.1.0:
+    resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
     dev: true
 
   /jest-changed-files/27.0.6:
@@ -5302,6 +5316,14 @@ packages:
   /webidl-conversions/6.1.0:
     resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==}
     engines: {node: '>=10.4'}
+    dev: true
+
+  /webpack-5-chain/8.0.0:
+    resolution: {integrity: sha512-NYe8/XwN4mRrjQw4NvlobDIGyWXWwgPXx3J8sKlW9WbxDuBVuuEsQhiIqnbOlyj7MNhA2NhldBeAC63pOPJmpg==}
+    engines: {node: '>=10'}
+    dependencies:
+      deepmerge: 1.5.2
+      javascript-stringify: 2.1.0
     dev: true
 
   /webpack-sources/3.2.0:

@@ -30,6 +30,7 @@
     "deps": [
       "schema-utils",
       "tapable",
+      "webpack-5-chain",
       "webpack-sources",
       "./bundles/webpack/bundle"
     ],
@@ -37,6 +38,7 @@
       "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
       "schema-utils": "$$LOCAL",
       "tapable": "$$LOCAL",
+      "webpack-5-chain":  "$$LOCAL",
       "webpack-sources": "$$LOCAL"
     },
     "noMinify": [
@@ -52,6 +54,7 @@
     "schema-utils": "3.1.1",
     "tapable": "2.2.0",
     "webpack": "5.51.1",
+    "webpack-5-chain": "8.0.0",
     "webpack-sources": "3.2.0"
   }
 }
