@@ -36448,6 +36448,328 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ 29111:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxDecorators = __nccwpck_require__(42303);
+
+var _helperCreateClassFeaturesPlugin = __nccwpck_require__(45037);
+
+var _transformerLegacy = __nccwpck_require__(94591);
+
+var _default = (0, _helperPluginUtils.declare)((api, options) => {
+  api.assertVersion(7);
+  const {
+    legacy = false
+  } = options;
+
+  if (typeof legacy !== "boolean") {
+    throw new Error("'legacy' must be a boolean.");
+  }
+
+  const {
+    decoratorsBeforeExport
+  } = options;
+
+  if (decoratorsBeforeExport === undefined) {
+    if (!legacy) {
+      throw new Error("The decorators plugin requires a 'decoratorsBeforeExport' option," + " whose value must be a boolean. If you want to use the legacy" + " decorators semantics, you can set the 'legacy: true' option.");
+    }
+  } else {
+    if (legacy) {
+      throw new Error("'decoratorsBeforeExport' can't be used with legacy decorators.");
+    }
+
+    if (typeof decoratorsBeforeExport !== "boolean") {
+      throw new Error("'decoratorsBeforeExport' must be a boolean.");
+    }
+  }
+
+  if (legacy) {
+    return {
+      name: "proposal-decorators",
+      inherits: _pluginSyntaxDecorators.default,
+
+      manipulateOptions({
+        generatorOpts
+      }) {
+        generatorOpts.decoratorsBeforeExport = decoratorsBeforeExport;
+      },
+
+      visitor: _transformerLegacy.default
+    };
+  }
+
+  return (0, _helperCreateClassFeaturesPlugin.createClassFeaturePlugin)({
+    name: "proposal-decorators",
+    api,
+    feature: _helperCreateClassFeaturesPlugin.FEATURES.decorators,
+
+    manipulateOptions({
+      generatorOpts,
+      parserOpts
+    }) {
+      parserOpts.plugins.push(["decorators", {
+        decoratorsBeforeExport
+      }]);
+      generatorOpts.decoratorsBeforeExport = decoratorsBeforeExport;
+    }
+
+  });
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 94591:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _core = __nccwpck_require__(50921);
+
+const buildClassDecorator = (0, _core.template)(`
+  DECORATOR(CLASS_REF = INNER) || CLASS_REF;
+`);
+const buildClassPrototype = (0, _core.template)(`
+  CLASS_REF.prototype;
+`);
+const buildGetDescriptor = (0, _core.template)(`
+    Object.getOwnPropertyDescriptor(TARGET, PROPERTY);
+`);
+const buildGetObjectInitializer = (0, _core.template)(`
+    (TEMP = Object.getOwnPropertyDescriptor(TARGET, PROPERTY), (TEMP = TEMP ? TEMP.value : undefined), {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        initializer: function(){
+            return TEMP;
+        }
+    })
+`);
+const WARNING_CALLS = new WeakSet();
+
+function applyEnsureOrdering(path) {
+  const decorators = (path.isClass() ? [path].concat(path.get("body.body")) : path.get("properties")).reduce((acc, prop) => acc.concat(prop.node.decorators || []), []);
+  const identDecorators = decorators.filter(decorator => !_core.types.isIdentifier(decorator.expression));
+  if (identDecorators.length === 0) return;
+  return _core.types.sequenceExpression(identDecorators.map(decorator => {
+    const expression = decorator.expression;
+    const id = decorator.expression = path.scope.generateDeclaredUidIdentifier("dec");
+    return _core.types.assignmentExpression("=", id, expression);
+  }).concat([path.node]));
+}
+
+function applyClassDecorators(classPath) {
+  if (!hasClassDecorators(classPath.node)) return;
+  const decorators = classPath.node.decorators || [];
+  classPath.node.decorators = null;
+  const name = classPath.scope.generateDeclaredUidIdentifier("class");
+  return decorators.map(dec => dec.expression).reverse().reduce(function (acc, decorator) {
+    return buildClassDecorator({
+      CLASS_REF: _core.types.cloneNode(name),
+      DECORATOR: _core.types.cloneNode(decorator),
+      INNER: acc
+    }).expression;
+  }, classPath.node);
+}
+
+function hasClassDecorators(classNode) {
+  return !!(classNode.decorators && classNode.decorators.length);
+}
+
+function applyMethodDecorators(path, state) {
+  if (!hasMethodDecorators(path.node.body.body)) return;
+  return applyTargetDecorators(path, state, path.node.body.body);
+}
+
+function hasMethodDecorators(body) {
+  return body.some(node => {
+    var _node$decorators;
+
+    return (_node$decorators = node.decorators) == null ? void 0 : _node$decorators.length;
+  });
+}
+
+function applyObjectDecorators(path, state) {
+  if (!hasMethodDecorators(path.node.properties)) return;
+  return applyTargetDecorators(path, state, path.node.properties);
+}
+
+function applyTargetDecorators(path, state, decoratedProps) {
+  const name = path.scope.generateDeclaredUidIdentifier(path.isClass() ? "class" : "obj");
+  const exprs = decoratedProps.reduce(function (acc, node) {
+    const decorators = node.decorators || [];
+    node.decorators = null;
+    if (decorators.length === 0) return acc;
+
+    if (node.computed) {
+      throw path.buildCodeFrameError("Computed method/property decorators are not yet supported.");
+    }
+
+    const property = _core.types.isLiteral(node.key) ? node.key : _core.types.stringLiteral(node.key.name);
+    const target = path.isClass() && !node.static ? buildClassPrototype({
+      CLASS_REF: name
+    }).expression : name;
+
+    if (_core.types.isClassProperty(node, {
+      static: false
+    })) {
+      const descriptor = path.scope.generateDeclaredUidIdentifier("descriptor");
+      const initializer = node.value ? _core.types.functionExpression(null, [], _core.types.blockStatement([_core.types.returnStatement(node.value)])) : _core.types.nullLiteral();
+      node.value = _core.types.callExpression(state.addHelper("initializerWarningHelper"), [descriptor, _core.types.thisExpression()]);
+      WARNING_CALLS.add(node.value);
+      acc = acc.concat([_core.types.assignmentExpression("=", _core.types.cloneNode(descriptor), _core.types.callExpression(state.addHelper("applyDecoratedDescriptor"), [_core.types.cloneNode(target), _core.types.cloneNode(property), _core.types.arrayExpression(decorators.map(dec => _core.types.cloneNode(dec.expression))), _core.types.objectExpression([_core.types.objectProperty(_core.types.identifier("configurable"), _core.types.booleanLiteral(true)), _core.types.objectProperty(_core.types.identifier("enumerable"), _core.types.booleanLiteral(true)), _core.types.objectProperty(_core.types.identifier("writable"), _core.types.booleanLiteral(true)), _core.types.objectProperty(_core.types.identifier("initializer"), initializer)])]))]);
+    } else {
+      acc = acc.concat(_core.types.callExpression(state.addHelper("applyDecoratedDescriptor"), [_core.types.cloneNode(target), _core.types.cloneNode(property), _core.types.arrayExpression(decorators.map(dec => _core.types.cloneNode(dec.expression))), _core.types.isObjectProperty(node) || _core.types.isClassProperty(node, {
+        static: true
+      }) ? buildGetObjectInitializer({
+        TEMP: path.scope.generateDeclaredUidIdentifier("init"),
+        TARGET: _core.types.cloneNode(target),
+        PROPERTY: _core.types.cloneNode(property)
+      }).expression : buildGetDescriptor({
+        TARGET: _core.types.cloneNode(target),
+        PROPERTY: _core.types.cloneNode(property)
+      }).expression, _core.types.cloneNode(target)]));
+    }
+
+    return acc;
+  }, []);
+  return _core.types.sequenceExpression([_core.types.assignmentExpression("=", _core.types.cloneNode(name), path.node), _core.types.sequenceExpression(exprs), _core.types.cloneNode(name)]);
+}
+
+function decoratedClassToExpression({
+  node,
+  scope
+}) {
+  if (!hasClassDecorators(node) && !hasMethodDecorators(node.body.body)) {
+    return;
+  }
+
+  const ref = node.id ? _core.types.cloneNode(node.id) : scope.generateUidIdentifier("class");
+  return _core.types.variableDeclaration("let", [_core.types.variableDeclarator(ref, _core.types.toExpression(node))]);
+}
+
+var _default = {
+  ExportDefaultDeclaration(path) {
+    const decl = path.get("declaration");
+    if (!decl.isClassDeclaration()) return;
+    const replacement = decoratedClassToExpression(decl);
+
+    if (replacement) {
+      const [varDeclPath] = path.replaceWithMultiple([replacement, _core.types.exportNamedDeclaration(null, [_core.types.exportSpecifier(_core.types.cloneNode(replacement.declarations[0].id), _core.types.identifier("default"))])]);
+
+      if (!decl.node.id) {
+        path.scope.registerDeclaration(varDeclPath);
+      }
+    }
+  },
+
+  ClassDeclaration(path) {
+    const replacement = decoratedClassToExpression(path);
+
+    if (replacement) {
+      path.replaceWith(replacement);
+    }
+  },
+
+  ClassExpression(path, state) {
+    const decoratedClass = applyEnsureOrdering(path) || applyClassDecorators(path, state) || applyMethodDecorators(path, state);
+    if (decoratedClass) path.replaceWith(decoratedClass);
+  },
+
+  ObjectExpression(path, state) {
+    const decoratedObject = applyEnsureOrdering(path) || applyObjectDecorators(path, state);
+    if (decoratedObject) path.replaceWith(decoratedObject);
+  },
+
+  AssignmentExpression(path, state) {
+    if (!WARNING_CALLS.has(path.node.right)) return;
+    path.replaceWith(_core.types.callExpression(state.addHelper("initializerDefineProperty"), [_core.types.cloneNode(path.get("left.object").node), _core.types.stringLiteral(path.get("left.property").node.name || path.get("left.property").node.value), _core.types.cloneNode(path.get("right.arguments")[0].node), _core.types.cloneNode(path.get("right.arguments")[1].node)]));
+  },
+
+  CallExpression(path, state) {
+    if (path.node.arguments.length !== 3) return;
+    if (!WARNING_CALLS.has(path.node.arguments[2])) return;
+
+    if (path.node.callee.name !== state.addHelper("defineProperty").name) {
+      return;
+    }
+
+    path.replaceWith(_core.types.callExpression(state.addHelper("initializerDefineProperty"), [_core.types.cloneNode(path.get("arguments")[0].node), _core.types.cloneNode(path.get("arguments")[1].node), _core.types.cloneNode(path.get("arguments.2.arguments")[0].node), _core.types.cloneNode(path.get("arguments.2.arguments")[1].node)]));
+  }
+
+};
+exports.default = _default;
+
+/***/ }),
+
+/***/ 61831:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxDoExpressions = __nccwpck_require__(57812);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+  return {
+    name: "proposal-do-expressions",
+    inherits: _pluginSyntaxDoExpressions.default,
+    visitor: {
+      DoExpression: {
+        exit(path) {
+          const {
+            node
+          } = path;
+
+          if (node.async) {
+            return;
+          }
+
+          const body = node.body.body;
+
+          if (body.length) {
+            path.replaceExpressionWithStatements(body);
+          } else {
+            path.replaceWith(path.scope.buildUndefinedNode());
+          }
+        }
+
+      }
+    }
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ 66239:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -36494,6 +36816,61 @@ var _default = (0, _helperPluginUtils.declare)(api => {
         if (!SUPPORTED_MODULES.includes(modules)) {
           throw new Error(MODULES_NOT_FOUND);
         }
+      }
+
+    }
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 60701:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxExportDefaultFrom = __nccwpck_require__(66154);
+
+var _core = __nccwpck_require__(50921);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+  return {
+    name: "proposal-export-default-from",
+    inherits: _pluginSyntaxExportDefaultFrom.default,
+    visitor: {
+      ExportNamedDeclaration(path) {
+        const {
+          node,
+          scope
+        } = path;
+        const {
+          specifiers
+        } = node;
+        if (!_core.types.isExportDefaultSpecifier(specifiers[0])) return;
+        const specifier = specifiers.shift();
+        const {
+          exported
+        } = specifier;
+        const uid = scope.generateUidIdentifier(exported.name);
+        const nodes = [_core.types.importDeclaration([_core.types.importDefaultSpecifier(uid)], _core.types.cloneNode(node.source)), _core.types.exportNamedDeclaration(null, [_core.types.exportSpecifier(_core.types.cloneNode(uid), exported)])];
+
+        if (specifiers.length >= 1) {
+          nodes.push(node);
+        }
+
+        const [importDeclaration] = path.replaceWithMultiple(nodes);
+        path.scope.registerDeclaration(importDeclaration);
       }
 
     }
@@ -36568,6 +36945,84 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ 41801:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxFunctionBind = __nccwpck_require__(21485);
+
+var _core = __nccwpck_require__(50921);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+
+  function getTempId(scope) {
+    let id = scope.path.getData("functionBind");
+    if (id) return _core.types.cloneNode(id);
+    id = scope.generateDeclaredUidIdentifier("context");
+    return scope.path.setData("functionBind", id);
+  }
+
+  function getStaticContext(bind, scope) {
+    const object = bind.object || bind.callee.object;
+    return scope.isStatic(object) && (_core.types.isSuper(object) ? _core.types.thisExpression() : object);
+  }
+
+  function inferBindContext(bind, scope) {
+    const staticContext = getStaticContext(bind, scope);
+    if (staticContext) return _core.types.cloneNode(staticContext);
+    const tempId = getTempId(scope);
+
+    if (bind.object) {
+      bind.callee = _core.types.sequenceExpression([_core.types.assignmentExpression("=", tempId, bind.object), bind.callee]);
+    } else {
+      bind.callee.object = _core.types.assignmentExpression("=", tempId, bind.callee.object);
+    }
+
+    return _core.types.cloneNode(tempId);
+  }
+
+  return {
+    name: "proposal-function-bind",
+    inherits: _pluginSyntaxFunctionBind.default,
+    visitor: {
+      CallExpression({
+        node,
+        scope
+      }) {
+        const bind = node.callee;
+        if (!_core.types.isBindExpression(bind)) return;
+        const context = inferBindContext(bind, scope);
+        node.callee = _core.types.memberExpression(bind.callee, _core.types.identifier("call"));
+        node.arguments.unshift(context);
+      },
+
+      BindExpression(path) {
+        const {
+          node,
+          scope
+        } = path;
+        const context = inferBindContext(node, scope);
+        path.replaceWith(_core.types.callExpression(_core.types.memberExpression(node.callee, _core.types.identifier("bind")), [context]));
+      }
+
+    }
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ 63112:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -36581,7 +37036,7 @@ exports.default = void 0;
 
 var _helperPluginUtils = __nccwpck_require__(81566);
 
-var _pluginSyntaxJsonStrings = __nccwpck_require__(71204);
+var _pluginSyntaxJsonStrings = __nccwpck_require__(14726);
 
 var _default = (0, _helperPluginUtils.declare)(api => {
   api.assertVersion(7);
@@ -37614,6 +38069,442 @@ exports.transform = transform;
 
 /***/ }),
 
+/***/ 16045:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxPartialApplication = __nccwpck_require__(8617);
+
+var _core = __nccwpck_require__(50921);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+
+  function hasArgumentPlaceholder(node) {
+    return node.arguments.some(arg => _core.types.isArgumentPlaceholder(arg));
+  }
+
+  function unwrapArguments(node, scope) {
+    const init = [];
+
+    for (let i = 0; i < node.arguments.length; i++) {
+      if (!_core.types.isArgumentPlaceholder(node.arguments[i]) && !_core.types.isImmutable(node.arguments[i])) {
+        const id = scope.generateUidIdentifierBasedOnNode(node.arguments[i], "param");
+        scope.push({
+          id
+        });
+
+        if (_core.types.isSpreadElement(node.arguments[i])) {
+          init.push(_core.types.assignmentExpression("=", _core.types.cloneNode(id), _core.types.arrayExpression([_core.types.spreadElement(node.arguments[i].argument)])));
+          node.arguments[i].argument = _core.types.cloneNode(id);
+        } else {
+          init.push(_core.types.assignmentExpression("=", _core.types.cloneNode(id), node.arguments[i]));
+          node.arguments[i] = _core.types.cloneNode(id);
+        }
+      }
+    }
+
+    return init;
+  }
+
+  function replacePlaceholders(node, scope) {
+    const placeholders = [];
+    const args = [];
+    node.arguments.forEach(arg => {
+      if (_core.types.isArgumentPlaceholder(arg)) {
+        const id = scope.generateUid("_argPlaceholder");
+        placeholders.push(_core.types.identifier(id));
+        args.push(_core.types.identifier(id));
+      } else {
+        args.push(arg);
+      }
+    });
+    return [placeholders, args];
+  }
+
+  return {
+    name: "proposal-partial-application",
+    inherits: _pluginSyntaxPartialApplication.default,
+    visitor: {
+      CallExpression(path) {
+        if (!hasArgumentPlaceholder(path.node)) {
+          return;
+        }
+
+        const {
+          node,
+          scope
+        } = path;
+        const functionLVal = path.scope.generateUidIdentifierBasedOnNode(node.callee);
+        const sequenceParts = [];
+        const argsInitializers = unwrapArguments(node, scope);
+        const [placeholdersParams, args] = replacePlaceholders(node, scope);
+        scope.push({
+          id: functionLVal
+        });
+
+        if (node.callee.type === "MemberExpression") {
+          const receiverLVal = path.scope.generateUidIdentifierBasedOnNode(node.callee.object);
+          scope.push({
+            id: receiverLVal
+          });
+          sequenceParts.push(_core.types.assignmentExpression("=", _core.types.cloneNode(receiverLVal), node.callee.object), _core.types.assignmentExpression("=", _core.types.cloneNode(functionLVal), _core.types.memberExpression(_core.types.cloneNode(receiverLVal), node.callee.property)), ...argsInitializers, _core.types.functionExpression(_core.types.cloneNode(node.callee.property), placeholdersParams, _core.types.blockStatement([_core.types.returnStatement(_core.types.callExpression(_core.types.memberExpression(_core.types.cloneNode(functionLVal), _core.types.identifier("call")), [_core.types.cloneNode(receiverLVal), ...args]))], []), false, false));
+        } else {
+          sequenceParts.push(_core.types.assignmentExpression("=", _core.types.cloneNode(functionLVal), node.callee), ...argsInitializers, _core.types.functionExpression(_core.types.cloneNode(node.callee), placeholdersParams, _core.types.blockStatement([_core.types.returnStatement(_core.types.callExpression(_core.types.cloneNode(functionLVal), args))], []), false, false));
+        }
+
+        path.replaceWith(_core.types.sequenceExpression(sequenceParts));
+      }
+
+    }
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 31421:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _core = __nccwpck_require__(50921);
+
+const buildOptimizedSequenceExpression = ({
+  call,
+  path,
+  placeholder
+}) => {
+  const {
+    callee: calledExpression
+  } = call;
+  const pipelineLeft = path.node.left;
+
+  const assign = _core.types.assignmentExpression("=", _core.types.cloneNode(placeholder), pipelineLeft);
+
+  let optimizeArrow = _core.types.isArrowFunctionExpression(calledExpression) && _core.types.isExpression(calledExpression.body) && !calledExpression.async && !calledExpression.generator;
+  let param;
+
+  if (optimizeArrow) {
+    const {
+      params
+    } = calledExpression;
+
+    if (params.length === 1 && _core.types.isIdentifier(params[0])) {
+      param = params[0];
+    } else if (params.length > 0) {
+      optimizeArrow = false;
+    }
+  } else if (_core.types.isIdentifier(calledExpression, {
+    name: "eval"
+  })) {
+    const evalSequence = _core.types.sequenceExpression([_core.types.numericLiteral(0), calledExpression]);
+
+    call.callee = evalSequence;
+    path.scope.push({
+      id: _core.types.cloneNode(placeholder)
+    });
+    return _core.types.sequenceExpression([assign, call]);
+  }
+
+  if (optimizeArrow && !param) {
+    return _core.types.sequenceExpression([pipelineLeft, calledExpression.body]);
+  }
+
+  path.scope.push({
+    id: _core.types.cloneNode(placeholder)
+  });
+
+  if (param) {
+    path.get("right").scope.rename(param.name, placeholder.name);
+    return _core.types.sequenceExpression([assign, calledExpression.body]);
+  }
+
+  return _core.types.sequenceExpression([assign, call]);
+};
+
+var _default = buildOptimizedSequenceExpression;
+exports.default = _default;
+
+/***/ }),
+
+/***/ 92022:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _core = __nccwpck_require__(50921);
+
+var _buildOptimizedSequenceExpression = __nccwpck_require__(31421);
+
+const fsharpVisitor = {
+  BinaryExpression(path) {
+    const {
+      scope,
+      node
+    } = path;
+    const {
+      operator,
+      left,
+      right
+    } = node;
+    if (operator !== "|>") return;
+    const placeholder = scope.generateUidIdentifierBasedOnNode(left);
+    const call = right.type === "AwaitExpression" ? _core.types.awaitExpression(_core.types.cloneNode(placeholder)) : _core.types.callExpression(right, [_core.types.cloneNode(placeholder)]);
+    const sequence = (0, _buildOptimizedSequenceExpression.default)({
+      placeholder,
+      call,
+      path
+    });
+    path.replaceWith(sequence);
+  }
+
+};
+var _default = fsharpVisitor;
+exports.default = _default;
+
+/***/ }),
+
+/***/ 82773:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _core = __nccwpck_require__(50921);
+
+const topicReferenceReplacementVisitor = {
+  TopicReference(path) {
+    path.replaceWith(_core.types.cloneNode(this.topicVariable));
+  }
+
+};
+var _default = {
+  BinaryExpression: {
+    exit(path) {
+      const {
+        scope,
+        node
+      } = path;
+
+      if (node.operator !== "|>") {
+        return;
+      }
+
+      const topicVariable = scope.generateUidIdentifierBasedOnNode(node);
+      const pipeBodyPath = path.get("right");
+      scope.push({
+        id: topicVariable
+      });
+
+      if (pipeBodyPath.node.type === "TopicReference") {
+        pipeBodyPath.replaceWith(_core.types.cloneNode(topicVariable));
+      } else {
+        pipeBodyPath.traverse(topicReferenceReplacementVisitor, {
+          topicVariable
+        });
+      }
+
+      path.replaceWith(_core.types.sequenceExpression([_core.types.assignmentExpression("=", _core.types.cloneNode(topicVariable), node.left), node.right]));
+    }
+
+  }
+};
+exports.default = _default;
+
+/***/ }),
+
+/***/ 12442:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxPipelineOperator = __nccwpck_require__(52206);
+
+var _minimalVisitor = __nccwpck_require__(62398);
+
+var _hackVisitor = __nccwpck_require__(82773);
+
+var _fsharpVisitor = __nccwpck_require__(92022);
+
+var _smartVisitor = __nccwpck_require__(21743);
+
+const visitorsPerProposal = {
+  minimal: _minimalVisitor.default,
+  hack: _hackVisitor.default,
+  fsharp: _fsharpVisitor.default,
+  smart: _smartVisitor.default
+};
+
+var _default = (0, _helperPluginUtils.declare)((api, options) => {
+  api.assertVersion(7);
+  const {
+    proposal
+  } = options;
+
+  if (proposal === "smart") {
+    console.warn(`The smart-mix pipe operator is deprecated. Use "proposal": "hack" instead.`);
+  }
+
+  return {
+    name: "proposal-pipeline-operator",
+    inherits: _pluginSyntaxPipelineOperator.default,
+    visitor: visitorsPerProposal[options.proposal]
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 62398:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _core = __nccwpck_require__(50921);
+
+var _buildOptimizedSequenceExpression = __nccwpck_require__(31421);
+
+const minimalVisitor = {
+  BinaryExpression(path) {
+    const {
+      scope,
+      node
+    } = path;
+    const {
+      operator,
+      left,
+      right
+    } = node;
+    if (operator !== "|>") return;
+    const placeholder = scope.generateUidIdentifierBasedOnNode(left);
+
+    const call = _core.types.callExpression(right, [_core.types.cloneNode(placeholder)]);
+
+    path.replaceWith((0, _buildOptimizedSequenceExpression.default)({
+      placeholder,
+      call,
+      path
+    }));
+  }
+
+};
+var _default = minimalVisitor;
+exports.default = _default;
+
+/***/ }),
+
+/***/ 21743:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _core = __nccwpck_require__(50921);
+
+const updateTopicReferenceVisitor = {
+  PipelinePrimaryTopicReference(path) {
+    path.replaceWith(_core.types.cloneNode(this.topicId));
+  },
+
+  PipelineTopicExpression(path) {
+    path.skip();
+  }
+
+};
+const smartVisitor = {
+  BinaryExpression(path) {
+    const {
+      scope
+    } = path;
+    const {
+      node
+    } = path;
+    const {
+      operator,
+      left,
+      right
+    } = node;
+    if (operator !== "|>") return;
+    const placeholder = scope.generateUidIdentifierBasedOnNode(left);
+    scope.push({
+      id: placeholder
+    });
+    let call;
+
+    if (_core.types.isPipelineTopicExpression(right)) {
+      path.get("right").traverse(updateTopicReferenceVisitor, {
+        topicId: placeholder
+      });
+      call = right.expression;
+    } else {
+      let callee = right.callee;
+
+      if (_core.types.isIdentifier(callee, {
+        name: "eval"
+      })) {
+        callee = _core.types.sequenceExpression([_core.types.numericLiteral(0), callee]);
+      }
+
+      call = _core.types.callExpression(callee, [_core.types.cloneNode(placeholder)]);
+    }
+
+    path.replaceWith(_core.types.sequenceExpression([_core.types.assignmentExpression("=", _core.types.cloneNode(placeholder), left), call]));
+  }
+
+};
+var _default = smartVisitor;
+exports.default = _default;
+
+/***/ }),
+
 /***/ 69945:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -37799,6 +38690,92 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ 83354:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _pluginSyntaxRecordAndTuple = __nccwpck_require__(71204);
+
+var _core = __nccwpck_require__(50921);
+
+var _helperModuleImports = __nccwpck_require__(55464);
+
+var _helperValidatorOption = __nccwpck_require__(64588);
+
+const v = new _helperValidatorOption.OptionValidator("@babel/plugin-proposal-record-and-tuple");
+
+var _default = (0, _helperPluginUtils.declare)((api, options) => {
+  api.assertVersion(7);
+  const polyfillModuleName = v.validateStringOption("polyfillModuleName", options.polyfillModuleName, "@bloomberg/record-tuple-polyfill");
+  const shouldImportPolyfill = v.validateBooleanOption("importPolyfill", options.importPolyfill, !!options.polyfillModuleName);
+  const importCaches = new WeakMap();
+
+  function getOr(map, key, getDefault) {
+    let value = map.get(key);
+    if (!value) map.set(key, value = getDefault());
+    return value;
+  }
+
+  function getBuiltIn(name, path, programPath) {
+    if (!shouldImportPolyfill) return _core.types.identifier(name);
+
+    if (!programPath) {
+      throw new Error("Internal error: unable to find the Program node.");
+    }
+
+    const cacheKey = `${name}:${(0, _helperModuleImports.isModule)(programPath)}`;
+    const cache = getOr(importCaches, programPath.node, () => new Map());
+    const localBindingName = getOr(cache, cacheKey, () => {
+      return (0, _helperModuleImports.addNamed)(programPath, name, polyfillModuleName, {
+        importedInterop: "uncompiled"
+      }).name;
+    });
+    return _core.types.identifier(localBindingName);
+  }
+
+  return {
+    name: "proposal-record-and-tuple",
+    inherits: _pluginSyntaxRecordAndTuple.default,
+    visitor: {
+      Program(path, state) {
+        state.programPath = path;
+      },
+
+      RecordExpression(path, state) {
+        const record = getBuiltIn("Record", path, state.programPath);
+
+        const object = _core.types.objectExpression(path.node.properties);
+
+        const wrapped = _core.types.callExpression(record, [object]);
+
+        path.replaceWith(wrapped);
+      },
+
+      TupleExpression(path, state) {
+        const tuple = getBuiltIn("Tuple", path, state.programPath);
+
+        const wrapped = _core.types.callExpression(tuple, path.node.elements);
+
+        path.replaceWith(wrapped);
+      }
+
+    }
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ 81746:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -37924,6 +38901,92 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ 42303:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _default = (0, _helperPluginUtils.declare)((api, options) => {
+  api.assertVersion(7);
+  const {
+    legacy = false
+  } = options;
+
+  if (typeof legacy !== "boolean") {
+    throw new Error("'legacy' must be a boolean.");
+  }
+
+  const {
+    decoratorsBeforeExport
+  } = options;
+
+  if (decoratorsBeforeExport === undefined) {
+    if (!legacy) {
+      throw new Error("The '@babel/plugin-syntax-decorators' plugin requires a" + " 'decoratorsBeforeExport' option, whose value must be a boolean." + " If you want to use the legacy decorators semantics, you can set" + " the 'legacy: true' option.");
+    }
+  } else {
+    if (legacy) {
+      throw new Error("'decoratorsBeforeExport' can't be used with legacy decorators.");
+    }
+
+    if (typeof decoratorsBeforeExport !== "boolean") {
+      throw new Error("'decoratorsBeforeExport' must be a boolean.");
+    }
+  }
+
+  return {
+    name: "syntax-decorators",
+
+    manipulateOptions(opts, parserOpts) {
+      parserOpts.plugins.push(legacy ? "decorators-legacy" : ["decorators", {
+        decoratorsBeforeExport
+      }]);
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 57812:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+  return {
+    name: "syntax-do-expressions",
+
+    manipulateOptions(opts, parserOpts) {
+      parserOpts.plugins.push("doExpressions");
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ 83330:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -37944,6 +39007,35 @@ var _default = (0, _helperPluginUtils.declare)(api => {
 
     manipulateOptions(opts, parserOpts) {
       parserOpts.plugins.push("dynamicImport");
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 66154:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+  return {
+    name: "syntax-export-default-from",
+
+    manipulateOptions(opts, parserOpts) {
+      parserOpts.plugins.push("exportDefaultFrom");
     }
 
   };
@@ -37982,7 +39074,36 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 71204:
+/***/ 21485:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+  return {
+    name: "syntax-function-bind",
+
+    manipulateOptions(opts, parserOpts) {
+      parserOpts.plugins.push("functionBind");
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 14726:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -38218,6 +39339,86 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ 8617:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _default = (0, _helperPluginUtils.declare)(api => {
+  api.assertVersion(7);
+  return {
+    name: "syntax-partial-application",
+
+    manipulateOptions(opts, parserOpts) {
+      parserOpts.plugins.push("partialApplication");
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 52206:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+const PIPELINE_PROPOSALS = ["minimal", "fsharp", "hack", "smart"];
+const TOPIC_TOKENS = ["%", "#"];
+const documentationURL = "https://babeljs.io/docs/en/babel-plugin-proposal-pipeline-operator";
+
+var _default = (0, _helperPluginUtils.declare)((api, {
+  proposal,
+  topicToken
+}) => {
+  api.assertVersion(7);
+
+  if (typeof proposal !== "string" || !PIPELINE_PROPOSALS.includes(proposal)) {
+    const proposalList = PIPELINE_PROPOSALS.map(p => `"${p}"`).join(", ");
+    throw new Error(`The pipeline plugin requires a "proposal" option. "proposal" must be one of: ${proposalList}. See <${documentationURL}>.`);
+  }
+
+  if (proposal === "hack" && !TOPIC_TOKENS.includes(topicToken)) {
+    const topicTokenList = TOPIC_TOKENS.map(t => `"${t}"`).join(", ");
+    throw new Error(`The pipeline plugin in "proposal": "hack" mode also requires a "topicToken" option. "topicToken" must be one of: ${topicTokenList}. See <${documentationURL}>.`);
+  }
+
+  return {
+    name: "syntax-pipeline-operator",
+
+    manipulateOptions(opts, parserOpts) {
+      parserOpts.plugins.push(["pipelineOperator", {
+        proposal,
+        topicToken
+      }]);
+      opts.generatorOpts.topicToken = topicToken;
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ 14932:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -38238,6 +39439,38 @@ var _default = (0, _helperPluginUtils.declare)(api => {
 
     manipulateOptions(opts, parserOpts) {
       parserOpts.plugins.push("privateIn");
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ 71204:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _default = (0, _helperPluginUtils.declare)((api, options) => {
+  api.assertVersion(7);
+  return {
+    name: "syntax-record-and-tuple",
+
+    manipulateOptions(opts, parserOpts) {
+      opts.generatorOpts.recordAndTupleSyntaxType = options.syntaxType;
+      parserOpts.plugins.push(["recordAndTuple", {
+        syntaxType: options.syntaxType
+      }]);
     }
 
   };
@@ -44373,6 +45606,284 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ 23388:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = _default;
+
+var _path = __nccwpck_require__(85622);
+
+var _module = __nccwpck_require__(32282);
+
+function _default(moduleName, dirname, absoluteRuntime) {
+  if (absoluteRuntime === false) return moduleName;
+  return resolveAbsoluteRuntime(moduleName, _path.resolve(dirname, absoluteRuntime === true ? "." : absoluteRuntime));
+}
+
+function resolveAbsoluteRuntime(moduleName, dirname) {
+  try {
+    return _path.dirname((((v, w) => (v = v.split("."), w = w.split("."), +v[0] > +w[0] || v[0] == w[0] && +v[1] >= +w[1]))(process.versions.node, "8.9") ? require.resolve : (r, {
+      paths: [b]
+    }, M = __nccwpck_require__(32282)) => {
+      let f = M._findPath(r, M._nodeModulePaths(b).concat(b));
+
+      if (f) return f;
+      f = new Error(`Cannot resolve module '${r}'`);
+      f.code = "MODULE_NOT_FOUND";
+      throw f;
+    })(`${moduleName}/package.json`, {
+      paths: [dirname]
+    })).replace(/\\/g, "/");
+  } catch (err) {
+    if (err.code !== "MODULE_NOT_FOUND") throw err;
+    throw Object.assign(new Error(`Failed to resolve "${moduleName}" relative to "${dirname}"`), {
+      code: "BABEL_RUNTIME_NOT_FOUND",
+      runtime: moduleName,
+      dirname
+    });
+  }
+}
+
+/***/ }),
+
+/***/ 60553:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.hasMinVersion = hasMinVersion;
+
+var _semver = __nccwpck_require__(22164);
+
+function hasMinVersion(minVersion, runtimeVersion) {
+  if (!runtimeVersion) return true;
+  if (_semver.valid(runtimeVersion)) runtimeVersion = `^${runtimeVersion}`;
+  return !_semver.intersects(`<${minVersion}`, runtimeVersion) && !_semver.intersects(`>=8.0.0`, runtimeVersion);
+}
+
+/***/ }),
+
+/***/ 46117:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _helperPluginUtils = __nccwpck_require__(81566);
+
+var _helperModuleImports = __nccwpck_require__(55464);
+
+var _core = __nccwpck_require__(50921);
+
+var _helpers = __nccwpck_require__(60553);
+
+var _getRuntimePath = __nccwpck_require__(23388);
+
+var _babelPluginPolyfillCorejs = __nccwpck_require__(57784);
+
+var _babelPluginPolyfillCorejs2 = __nccwpck_require__(17844);
+
+var _babelPluginPolyfillRegenerator = __nccwpck_require__(84292);
+
+const pluginCorejs2 = _babelPluginPolyfillCorejs.default || _babelPluginPolyfillCorejs;
+const pluginCorejs3 = _babelPluginPolyfillCorejs2.default || _babelPluginPolyfillCorejs2;
+const pluginRegenerator = _babelPluginPolyfillRegenerator.default || _babelPluginPolyfillRegenerator;
+const pluginsCompat = "#__secret_key__@babel/runtime__compatibility";
+
+function supportsStaticESM(caller) {
+  return !!(caller != null && caller.supportsStaticESM);
+}
+
+var _default = (0, _helperPluginUtils.declare)((api, options, dirname) => {
+  api.assertVersion(7);
+  const {
+    corejs,
+    helpers: useRuntimeHelpers = true,
+    regenerator: useRuntimeRegenerator = true,
+    useESModules = false,
+    version: runtimeVersion = "7.0.0-beta.0",
+    absoluteRuntime = false
+  } = options;
+  let proposals = false;
+  let rawVersion;
+
+  if (typeof corejs === "object" && corejs !== null) {
+    rawVersion = corejs.version;
+    proposals = Boolean(corejs.proposals);
+  } else {
+    rawVersion = corejs;
+  }
+
+  const corejsVersion = rawVersion ? Number(rawVersion) : false;
+
+  if (![false, 2, 3].includes(corejsVersion)) {
+    throw new Error(`The \`core-js\` version must be false, 2 or 3, but got ${JSON.stringify(rawVersion)}.`);
+  }
+
+  if (proposals && (!corejsVersion || corejsVersion < 3)) {
+    throw new Error("The 'proposals' option is only supported when using 'corejs: 3'");
+  }
+
+  if (typeof useRuntimeRegenerator !== "boolean") {
+    throw new Error("The 'regenerator' option must be undefined, or a boolean.");
+  }
+
+  if (typeof useRuntimeHelpers !== "boolean") {
+    throw new Error("The 'helpers' option must be undefined, or a boolean.");
+  }
+
+  if (typeof useESModules !== "boolean" && useESModules !== "auto") {
+    throw new Error("The 'useESModules' option must be undefined, or a boolean, or 'auto'.");
+  }
+
+  if (typeof absoluteRuntime !== "boolean" && typeof absoluteRuntime !== "string") {
+    throw new Error("The 'absoluteRuntime' option must be undefined, a boolean, or a string.");
+  }
+
+  if (typeof runtimeVersion !== "string") {
+    throw new Error(`The 'version' option must be a version string.`);
+  }
+
+  const DUAL_MODE_RUNTIME = "7.13.0";
+  const supportsCJSDefault = (0, _helpers.hasMinVersion)(DUAL_MODE_RUNTIME, runtimeVersion);
+
+  function has(obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
+  }
+
+  if (has(options, "useBuiltIns")) {
+    if (options.useBuiltIns) {
+      throw new Error("The 'useBuiltIns' option has been removed. The @babel/runtime " + "module now uses builtins by default.");
+    } else {
+      throw new Error("The 'useBuiltIns' option has been removed. Use the 'corejs'" + "option to polyfill with `core-js` via @babel/runtime.");
+    }
+  }
+
+  if (has(options, "polyfill")) {
+    if (options.polyfill === false) {
+      throw new Error("The 'polyfill' option has been removed. The @babel/runtime " + "module now skips polyfilling by default.");
+    } else {
+      throw new Error("The 'polyfill' option has been removed. Use the 'corejs'" + "option to polyfill with `core-js` via @babel/runtime.");
+    }
+  }
+
+  if (has(options, "moduleName")) {
+    throw new Error("The 'moduleName' option has been removed. @babel/transform-runtime " + "no longer supports arbitrary runtimes. If you were using this to " + "set an absolute path for Babel's standard runtimes, please use the " + "'absoluteRuntime' option.");
+  }
+
+  const esModules = useESModules === "auto" ? api.caller(supportsStaticESM) : useESModules;
+  const injectCoreJS2 = corejsVersion === 2;
+  const injectCoreJS3 = corejsVersion === 3;
+  const moduleName = injectCoreJS3 ? "@babel/runtime-corejs3" : injectCoreJS2 ? "@babel/runtime-corejs2" : "@babel/runtime";
+  const HEADER_HELPERS = ["interopRequireWildcard", "interopRequireDefault"];
+  const modulePath = (0, _getRuntimePath.default)(moduleName, dirname, absoluteRuntime);
+
+  function createCorejsPlgin(plugin, options, regeneratorPlugin) {
+    return (api, _, filename) => {
+      return Object.assign({}, plugin(api, options, filename), {
+        inherits: regeneratorPlugin
+      });
+    };
+  }
+
+  function createRegeneratorPlugin(options) {
+    if (!useRuntimeRegenerator) return undefined;
+    return (api, _, filename) => {
+      return pluginRegenerator(api, options, filename);
+    };
+  }
+
+  const corejsExt = absoluteRuntime ? ".js" : "";
+  return {
+    name: "transform-runtime",
+    inherits: injectCoreJS2 ? createCorejsPlgin(pluginCorejs2, {
+      method: "usage-pure",
+      [pluginsCompat]: {
+        runtimeVersion,
+        useBabelRuntime: modulePath,
+        ext: corejsExt
+      }
+    }, createRegeneratorPlugin({
+      method: "usage-pure",
+      [pluginsCompat]: {
+        useBabelRuntime: modulePath
+      }
+    })) : injectCoreJS3 ? createCorejsPlgin(pluginCorejs3, {
+      method: "usage-pure",
+      version: 3,
+      proposals,
+      [pluginsCompat]: {
+        useBabelRuntime: modulePath,
+        ext: corejsExt
+      }
+    }, createRegeneratorPlugin({
+      method: "usage-pure",
+      [pluginsCompat]: {
+        useBabelRuntime: modulePath
+      }
+    })) : createRegeneratorPlugin({
+      method: "usage-pure",
+      [pluginsCompat]: {
+        useBabelRuntime: modulePath
+      }
+    }),
+
+    pre(file) {
+      if (!useRuntimeHelpers) return;
+      file.set("helperGenerator", name => {
+        if (file.availableHelper && !file.availableHelper(name, runtimeVersion)) {
+          return;
+        }
+
+        const isInteropHelper = HEADER_HELPERS.indexOf(name) !== -1;
+        const blockHoist = isInteropHelper && !(0, _helperModuleImports.isModule)(file.path) ? 4 : undefined;
+        const helpersDir = esModules && file.path.node.sourceType === "module" ? "helpers/esm" : "helpers";
+        return addDefaultImport(`${modulePath}/${helpersDir}/${name}`, name, blockHoist, true);
+      });
+      const cache = new Map();
+
+      function addDefaultImport(source, nameHint, blockHoist, isHelper = false) {
+        const cacheKey = (0, _helperModuleImports.isModule)(file.path);
+        const key = `${source}:${nameHint}:${cacheKey || ""}`;
+        let cached = cache.get(key);
+
+        if (cached) {
+          cached = _core.types.cloneNode(cached);
+        } else {
+          cached = (0, _helperModuleImports.addDefault)(file.path, source, {
+            importedInterop: isHelper && supportsCJSDefault ? "compiled" : "uncompiled",
+            nameHint,
+            blockHoist
+          });
+          cache.set(key, cached);
+        }
+
+        return cached;
+      }
+    }
+
+  };
+});
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ 49183:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -46141,7 +47652,7 @@ var _pluginSyntaxDynamicImport = __nccwpck_require__(83330);
 
 var _pluginSyntaxExportNamespaceFrom = __nccwpck_require__(82350);
 
-var _pluginSyntaxJsonStrings = __nccwpck_require__(71204);
+var _pluginSyntaxJsonStrings = __nccwpck_require__(14726);
 
 var _pluginSyntaxLogicalAssignmentOperators = __nccwpck_require__(48243);
 
@@ -46263,7 +47774,7 @@ var _transformTaggedTemplateCaching = __nccwpck_require__(46144);
 
 var _transformSafariBlockShadowing = __nccwpck_require__(96008);
 
-var _transformSafariForShadowing = __nccwpck_require__(42245);
+var _transformSafariForShadowing = __nccwpck_require__(98737);
 
 var _pluginBugfixV8SpreadParametersInOptionalChaining = __nccwpck_require__(81037);
 
@@ -47451,7 +48962,7 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 42245:
+/***/ 98737:
 /***/ ((module, exports) => {
 
 "use strict";
@@ -93667,7 +95178,7 @@ exports.SourceNode = __nccwpck_require__(7092).SourceNode;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var util = __nccwpck_require__(98737);
+var util = __nccwpck_require__(8875);
 var has = Object.prototype.hasOwnProperty;
 var hasNativeMap = typeof Map !== "undefined";
 
@@ -94134,7 +95645,7 @@ exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var util = __nccwpck_require__(98737);
+var util = __nccwpck_require__(8875);
 
 /**
  * Determine whether mappingB is after mappingA with respect to generated
@@ -94342,7 +95853,7 @@ var __webpack_unused_export__;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var util = __nccwpck_require__(98737);
+var util = __nccwpck_require__(8875);
 var binarySearch = __nccwpck_require__(41806);
 var ArraySet = __nccwpck_require__(17191)/* .ArraySet */ .I;
 var base64VLQ = __nccwpck_require__(7414);
@@ -95495,7 +97006,7 @@ __webpack_unused_export__ = IndexedSourceMapConsumer;
  */
 
 var base64VLQ = __nccwpck_require__(7414);
-var util = __nccwpck_require__(98737);
+var util = __nccwpck_require__(8875);
 var ArraySet = __nccwpck_require__(17191)/* .ArraySet */ .I;
 var MappingList = __nccwpck_require__(99917)/* .MappingList */ .H;
 
@@ -95928,7 +97439,7 @@ var __webpack_unused_export__;
  */
 
 var SourceMapGenerator = __nccwpck_require__(50059)/* .SourceMapGenerator */ .h;
-var util = __nccwpck_require__(98737);
+var util = __nccwpck_require__(8875);
 
 // Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
 // operating systems these days (capturing the result).
@@ -96337,7 +97848,7 @@ __webpack_unused_export__ = SourceNode;
 
 /***/ }),
 
-/***/ 98737:
+/***/ 8875:
 /***/ ((__unused_webpack_module, exports) => {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -97928,15 +99439,37 @@ module.exports = new Map([
 module.exports = {
   codeFrame: () => __nccwpck_require__(12677),
   core: () => __nccwpck_require__(50921),
-  parser: () => __nccwpck_require__(12182),
-  template: () => __nccwpck_require__(83028),
   generator: () => __nccwpck_require__(51750),
-  register: () => __nccwpck_require__(93021),
-  traverse: () => __nccwpck_require__(90736),
-  types: () => __nccwpck_require__(28182),
+  parser: () => __nccwpck_require__(12182),
+
+  // tc39
+  pluginProposalDecorators: () => __nccwpck_require__(29111),
+  pluginProposalDoExpressions: () =>
+    __nccwpck_require__(61831),
+  pluginProposalExportDefaultFrom: () =>
+    __nccwpck_require__(60701),
+  pluginProposalExportNamespaceFrom: () =>
+    __nccwpck_require__(1770),
+  pluginProposalFunctionBind: () =>
+    __nccwpck_require__(41801),
+  pluginProposalPartialApplication: () =>
+    __nccwpck_require__(16045),
+  pluginProposalPipelineOperator: () =>
+    __nccwpck_require__(12442),
+  pluginProposalRecordAndTuple: () =>
+    __nccwpck_require__(83354),
+
+  pluginTransformRuntime: () => __nccwpck_require__(46117),
+
+  // preset
   presetEnv: () => __nccwpck_require__(31448),
   presetReact: () => __nccwpck_require__(47460),
   presetTypescript: () => __nccwpck_require__(83989),
+
+  register: () => __nccwpck_require__(93021),
+  template: () => __nccwpck_require__(83028),
+  traverse: () => __nccwpck_require__(90736),
+  types: () => __nccwpck_require__(28182),
 };
 
 
