@@ -95,6 +95,7 @@ Object.keys(exported).forEach(function (key) {
         license,
         types,
         typing,
+        typings,
       } = JSON.parse(readFileSync(join(pkgRoot, 'package.json'), 'utf-8'));
       fs.writeJSONSync(join(target, 'package.json'), {
         ...{},
@@ -103,6 +104,7 @@ Object.keys(exported).forEach(function (key) {
         ...(license ? { license } : undefined),
         ...(types ? { types } : undefined),
         ...(typing ? { typing } : undefined),
+        ...(typings ? { typings } : undefined),
       });
 
       // dts
