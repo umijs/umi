@@ -23,5 +23,10 @@
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/babel-preset-umi#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.15.3",
+    "@bloomberg/record-tuple-polyfill": "0.0.3",
+    "@umijs/bundler-utils": "4.0.0-alpha.1"
   }
 }

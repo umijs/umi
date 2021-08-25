@@ -40,6 +40,7 @@
     ],
     "extraDtsDeps": [
       "@babel/code-frame",
+      "@babel/core",
       "@babel/generator",
       "@babel/parser",
       "@babel/template",
@@ -48,6 +49,7 @@
     ]
   },
   "dependencies": {
+    "@umijs/utils": "4.0.0-alpha.1",
     "esbuild": "0.12.22"
   },
   "devDependencies": {
@@ -55,6 +57,15 @@
     "@babel/core": "7.15.0",
     "@babel/generator": "7.15.0",
     "@babel/parser": "7.15.3",
+    "@babel/plugin-transform-runtime": "7.15.0",
+    "@babel/plugin-proposal-decorators": "7.14.5",
+    "@babel/plugin-proposal-do-expressions": "7.14.5",
+    "@babel/plugin-proposal-export-default-from": "7.14.5",
+    "@babel/plugin-proposal-export-namespace-from": "7.14.5",
+    "@babel/plugin-proposal-function-bind": "7.14.5",
+    "@babel/plugin-proposal-partial-application": "7.14.5",
+    "@babel/plugin-proposal-pipeline-operator": "7.15.0",
+    "@babel/plugin-proposal-record-and-tuple": "7.14.5",
     "@babel/preset-env": "7.15.0",
     "@babel/preset-react": "7.14.5",
     "@babel/preset-typescript": "7.15.0",
