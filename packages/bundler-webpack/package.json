@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "compiled"
   ],
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
@@ -26,6 +27,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "devDependencies": {
+    "@types/webpack-sources": "3.2.0",
+    "schema-utils": "3.1.1",
+    "tapable": "2.2.0",
+    "webpack": "5.51.1",
+    "webpack-5-chain": "8.0.0",
+    "webpack-sources": "3.2.0"
+  },
   "compiledConfig": {
     "deps": [
       "schema-utils",
@@ -38,7 +47,7 @@
       "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
       "schema-utils": "$$LOCAL",
       "tapable": "$$LOCAL",
-      "webpack-5-chain":  "$$LOCAL",
+      "webpack-5-chain": "$$LOCAL",
       "webpack-sources": "$$LOCAL"
     },
     "noMinify": [
@@ -48,13 +57,5 @@
     "extraDtsDeps": [
       "webpack"
     ]
-  },
-  "devDependencies": {
-    "@types/webpack-sources": "3.2.0",
-    "schema-utils": "3.1.1",
-    "tapable": "2.2.0",
-    "webpack": "5.51.1",
-    "webpack-5-chain": "8.0.0",
-    "webpack-sources": "3.2.0"
   }
 }

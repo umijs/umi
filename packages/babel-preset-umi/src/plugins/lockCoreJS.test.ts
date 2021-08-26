@@ -1,4 +1,5 @@
 import { transform } from '@umijs/bundler-utils/compiled/babel/core';
+import { winPath } from '@umijs/utils';
 
 interface IOpts {
   code: string;
@@ -21,5 +22,5 @@ test('only replace core-js/', () => {
     },
   });
   expect(code).toContain(`import 'a';\nimport 'core-js';`);
-  expect(code).toContain('node_modules/core-js/foo');
+  expect(winPath(code)).toContain('node_modules/core-js/foo');
 });
