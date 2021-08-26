@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { existsSync } from 'fs';
 
 const root = join(__dirname, '..');
 const pkgDir = join(root, 'packages');
@@ -107,24 +108,26 @@ async function bootstrapPkg(opts) {
     if (!fs.existsSync(srcDir)) {
       await $`mkdir ${srcDir}`;
     }
-    await fs.writeFile(
-      join(pkgDir, 'src', 'index.ts'),
-      `
+    if (!existsSync(join(pkgDir, 'src', 'index.ts'))) {
+      await fs.writeFile(
+        join(pkgDir, 'src', 'index.ts'),
+        `
 export default () => {
   return '${name}';
 };\n`.trimLeft(),
-      'utf-8',
-    );
-    await fs.writeFile(
-      join(pkgDir, 'src', 'index.test.ts'),
-      `
+        'utf-8',
+      );
+      await fs.writeFile(
+        join(pkgDir, 'src', 'index.test.ts'),
+        `
 import index from './index';
 
 test('normal', () => {
   expect(index()).toEqual('${name}');
 });\n`.trimLeft(),
-      'utf-8',
-    );
+        'utf-8',
+      );
+    }
 
     // set excludeFolder for webstorm
     setExcludeFolder({ pkg: opts.pkg });
