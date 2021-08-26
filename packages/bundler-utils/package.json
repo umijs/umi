@@ -4,7 +4,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "compiled"
   ],
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
@@ -23,30 +24,6 @@
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-utils#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "compiledConfig": {
-    "deps": [
-      "es-module-lexer",
-      "esbuild",
-      "./bundles/babel/bundle"
-    ],
-    "externals": {
-      "debug": "@umijs/utils/compiled/debug",
-      "esbuild": "$$LOCAL",
-      "es-module-lexer": "$$LOCAL"
-    },
-    "noMinify": [
-      "./bundles/babel/bundle"
-    ],
-    "extraDtsDeps": [
-      "@babel/code-frame",
-      "@babel/core",
-      "@babel/generator",
-      "@babel/parser",
-      "@babel/template",
-      "@babel/traverse",
-      "@babel/types"
-    ]
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-alpha.1",
@@ -79,5 +56,29 @@
     "@types/babel__template": "7.4.1",
     "@types/babel__traverse": "7.14.2",
     "es-module-lexer": "0.7.1"
+  },
+  "compiledConfig": {
+    "deps": [
+      "es-module-lexer",
+      "esbuild",
+      "./bundles/babel/bundle"
+    ],
+    "externals": {
+      "debug": "@umijs/utils/compiled/debug",
+      "esbuild": "$$LOCAL",
+      "es-module-lexer": "$$LOCAL"
+    },
+    "noMinify": [
+      "./bundles/babel/bundle"
+    ],
+    "extraDtsDeps": [
+      "@babel/code-frame",
+      "@babel/core",
+      "@babel/generator",
+      "@babel/parser",
+      "@babel/template",
+      "@babel/traverse",
+      "@babel/types"
+    ]
   }
 }

@@ -57,48 +57,46 @@ async function bootstrapPkg(opts) {
     const pkgPkgJSON = fs.existsSync(pkgPkgJSONPath)
       ? require(pkgPkgJSONPath)
       : {};
-    await fs.writeFile(
+    fs.writeJSONSync(
       pkgPkgJSONPath,
-      JSON.stringify(
-        Object.assign(
-          {
-            name,
-            version: getVersion(),
-            description: name,
-            main: 'dist/index.js',
-            types: 'dist/index.d.ts',
-            files: ['dist'],
-            scripts: {
-              build: 'rimraf dist && tsup src/index.ts --dts --format cjs',
-              dev: 'npm run build -- --watch',
-            },
-            repository: {
-              type: 'git',
-              url: 'https://github.com/umijs/umi-next',
-            },
-            authors: [
-              'chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)',
-            ],
-            license: 'MIT',
-            bugs: 'http://github.com/umijs/umi-next/issues',
-            homepage: `https://github.com/umijs/umi-next/tree/master/packages/${opts.pkg}#readme`,
-            publishConfig: {
-              access: 'public',
-            },
+
+      Object.assign(
+        {
+          name,
+          version: getVersion(),
+          description: name,
+          main: 'dist/index.js',
+          types: 'dist/index.d.ts',
+          files: ['dist'],
+          scripts: {
+            build: 'rimraf dist && tsup src/index.ts --dts --format cjs',
+            dev: 'npm run build -- --watch',
           },
-          {
-            authors: pkgPkgJSON.authors,
-            compiledConfig: pkgPkgJSON.compiledConfig,
-            description: pkgPkgJSON.description,
-            dependencies: pkgPkgJSON.dependencies,
-            devDependencies: pkgPkgJSON.devDependencies,
-            scripts: pkgPkgJSON.scripts,
+          repository: {
+            type: 'git',
+            url: 'https://github.com/umijs/umi-next',
           },
-        ),
-        null,
-        2,
+          authors: [
+            'chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)',
+          ],
+          license: 'MIT',
+          bugs: 'http://github.com/umijs/umi-next/issues',
+          homepage: `https://github.com/umijs/umi-next/tree/master/packages/${opts.pkg}#readme`,
+          publishConfig: {
+            access: 'public',
+          },
+        },
+        {
+          authors: pkgPkgJSON.authors,
+          files: pkgPkgJSON.files,
+          scripts: pkgPkgJSON.scripts,
+          description: pkgPkgJSON.description,
+          dependencies: pkgPkgJSON.dependencies,
+          devDependencies: pkgPkgJSON.devDependencies,
+          compiledConfig: pkgPkgJSON.compiledConfig,
+        },
       ),
-      'utf-8',
+      { spaces: '  ' },
     );
 
     // README.md

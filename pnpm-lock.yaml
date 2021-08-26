@@ -41,12 +41,15 @@ importers:
       '@babel/runtime': 7.15.3
       '@bloomberg/record-tuple-polyfill': 0.0.3
       '@umijs/bundler-utils': 4.0.0-alpha.1
+      '@umijs/utils': 4.0.0-alpha.1
       core-js: 3.16.3
     dependencies:
       '@babel/runtime': 7.15.3
       '@bloomberg/record-tuple-polyfill': 0.0.3
       '@umijs/bundler-utils': link:../bundler-utils
       core-js: 3.16.3
+    devDependencies:
+      '@umijs/utils': link:../utils
 
   packages/bundler-utils:
     specifiers:
