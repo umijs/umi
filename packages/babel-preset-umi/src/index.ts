@@ -1,5 +1,7 @@
 import { dirname } from 'path';
 import { Env } from './types';
+import lockCoreJS from './plugins/lockCoreJS';
+import dynamicImportNode from './plugins/dynamicImportNode';
 
 interface IOpts {
   env: Env;
@@ -7,6 +9,8 @@ interface IOpts {
   presetReact: any;
   presetTypeScript: any;
   pluginTransformRuntime: any;
+  pluginLockCoreJS: any;
+  pluginDynamicImportNode: any;
 }
 
 export default (context: any, opts: IOpts) => {
@@ -133,6 +137,9 @@ export default (context: any, opts: IOpts) => {
           ...opts.pluginTransformRuntime,
         },
       ],
+      // none official plugins
+      opts.pluginLockCoreJS && [lockCoreJS],
+      opts.pluginDynamicImportNode && [dynamicImportNode],
     ].filter(Boolean),
   };
 };

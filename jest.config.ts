@@ -1,7 +1,7 @@
 import type { Config } from '@jest/types';
 
 export default {
-  testMatch: ['**/packages/*/src/*.test.ts'],
+  testMatch: ['**/packages/*/src/**/*.test.ts'],
   transform: {
     '^.+\\.(ts)$': 'ts-jest',
   },

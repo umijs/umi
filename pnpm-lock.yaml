@@ -41,10 +41,12 @@ importers:
       '@babel/runtime': 7.15.3
       '@bloomberg/record-tuple-polyfill': 0.0.3
       '@umijs/bundler-utils': 4.0.0-alpha.1
+      core-js: 3.16.3
     dependencies:
       '@babel/runtime': 7.15.3
       '@bloomberg/record-tuple-polyfill': 0.0.3
       '@umijs/bundler-utils': link:../bundler-utils
+      core-js: 3.16.3
 
   packages/bundler-utils:
     specifiers:
@@ -2868,6 +2870,11 @@ packages:
       browserslist: 4.16.8
       semver: 7.0.0
     dev: true
+
+  /core-js/3.16.3:
+    resolution: {integrity: sha512-lM3GftxzHNtPNUJg0v4pC2RC6puwMd6VZA7vXUczi+SKmCWSf4JwO89VJGMqbzmB7jlK7B5hr3S64PqwFL49cA==}
+    requiresBuild: true
+    dev: false
 
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
