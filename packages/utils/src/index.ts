@@ -1,3 +1,1 @@
-export default () => {
-  return '@umijs/utils';
-};
+export * from './winPath/winPath';
