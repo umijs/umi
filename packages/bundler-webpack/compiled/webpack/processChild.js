@@ -1,119 +1,7 @@
-/******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 763:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.PARENT_MESSAGE_CUSTOM =
-  exports.PARENT_MESSAGE_SETUP_ERROR =
-  exports.PARENT_MESSAGE_CLIENT_ERROR =
-  exports.PARENT_MESSAGE_OK =
-  exports.CHILD_MESSAGE_END =
-  exports.CHILD_MESSAGE_CALL =
-  exports.CHILD_MESSAGE_INITIALIZE =
-    void 0;
-
-/**
- * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-// import type {ResourceLimits} from 'worker_threads';
-// This is not present in the Node 12 typings
-// Because of the dynamic nature of a worker communication process, all messages
-// coming from any of the other processes cannot be typed. Thus, many types
-// include "unknown" as a TS type, which is (unfortunately) correct here.
-const CHILD_MESSAGE_INITIALIZE = 0;
-exports.CHILD_MESSAGE_INITIALIZE = CHILD_MESSAGE_INITIALIZE;
-const CHILD_MESSAGE_CALL = 1;
-exports.CHILD_MESSAGE_CALL = CHILD_MESSAGE_CALL;
-const CHILD_MESSAGE_END = 2;
-exports.CHILD_MESSAGE_END = CHILD_MESSAGE_END;
-const PARENT_MESSAGE_OK = 0;
-exports.PARENT_MESSAGE_OK = PARENT_MESSAGE_OK;
-const PARENT_MESSAGE_CLIENT_ERROR = 1;
-exports.PARENT_MESSAGE_CLIENT_ERROR = PARENT_MESSAGE_CLIENT_ERROR;
-const PARENT_MESSAGE_SETUP_ERROR = 2;
-exports.PARENT_MESSAGE_SETUP_ERROR = PARENT_MESSAGE_SETUP_ERROR;
-const PARENT_MESSAGE_CUSTOM = 3;
-exports.PARENT_MESSAGE_CUSTOM = PARENT_MESSAGE_CUSTOM;
-
-
-/***/ }),
-
-/***/ 87:
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 87;
-module.exports = webpackEmptyContext;
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __nccwpck_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		var threw = true;
-/******/ 		try {
-/******/ 			__webpack_modules__[moduleId](module, module.exports, __nccwpck_require__);
-/******/ 			threw = false;
-/******/ 		} finally {
-/******/ 			if(threw) delete __webpack_module_cache__[moduleId];
-/******/ 		}
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
-/************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-
+'use strict';
 
 function _types() {
-  const data = __nccwpck_require__(763);
+  const data = require('../types');
 
   _types = function () {
     return data;
@@ -206,7 +94,7 @@ function reportError(error, type) {
 }
 
 function end() {
-  const main = __nccwpck_require__(87)(file);
+  const main = require(file);
 
   if (!main.teardown) {
     exitProcess();
@@ -222,7 +110,7 @@ function exitProcess() {
 }
 
 function execMethod(method, args) {
-  const main = __nccwpck_require__(87)(file);
+  const main = require(file);
 
   let fn;
 
@@ -266,9 +154,3 @@ function execFunction(fn, ctx, args, onResult, onError) {
     onResult(result);
   }
 }
-
-})();
-
-module.exports = __webpack_exports__;
-/******/ })()
-;
