@@ -1,4 +1,4 @@
-import { $, path, fs, argv, chalk } from 'zx';
+import { $, argv, chalk, fs, path } from 'zx';
 
 (async () => {
   const root = path.join(__dirname, '..');

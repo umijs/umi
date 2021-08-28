@@ -1,4 +1,4 @@
-import { fs, chalk } from 'zx';
+import { chalk, fs } from 'zx';
 
 const msgPath = process.env.GIT_PARAMS as string;
 const msg = fs.readFileSync(msgPath, 'utf-8').trim();
