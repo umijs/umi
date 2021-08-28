@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
-    "dev": "npm run build -- --watch"
+    "dev": "pnpm build -- --watch"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
   "license": "MIT",
-  "bugs": "http://github.com/umijs/umi-next/issues",
+  "bugs": "https://github.com/umijs/umi-next/issues",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-vite#readme",
   "publishConfig": {
     "access": "public"

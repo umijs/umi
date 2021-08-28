@@ -71,7 +71,7 @@ import { $, path, fs, argv, chalk } from 'zx';
             files: ['dist'],
             scripts: {
               build: 'rimraf dist && tsup src/index.ts --dts --format cjs',
-              dev: 'npm run build -- --watch',
+              dev: 'pnpm build -- --watch',
             },
             repository: {
               type: 'git',
@@ -81,7 +81,7 @@ import { $, path, fs, argv, chalk } from 'zx';
               'chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)',
             ],
             license: 'MIT',
-            bugs: 'http://github.com/umijs/umi-next/issues',
+            bugs: 'https://github.com/umijs/umi-next/issues',
             homepage: `https://github.com/umijs/umi-next/tree/master/packages/${opts.pkg}#readme`,
             publishConfig: {
               access: 'public',
@@ -136,7 +136,7 @@ test('normal', () => {
       // set excludeFolder for webstorm
       setExcludeFolder({ pkg: opts.pkg });
 
-      console.log(chalk.green(`${opts.pkg} bootstraped`));
+      console.log(chalk.green(`${opts.pkg} bootstrapped`));
     }
   }
 })();
