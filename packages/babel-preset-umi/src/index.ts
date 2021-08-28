@@ -1,7 +1,7 @@
 import { dirname } from 'path';
-import { Env } from './types';
-import lockCoreJS from './plugins/lockCoreJS';
 import dynamicImportNode from './plugins/dynamicImportNode';
+import lockCoreJS from './plugins/lockCoreJS';
+import { Env } from './types';
 
 interface IOpts {
   env: Env;

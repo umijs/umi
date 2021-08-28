@@ -1,8 +1,8 @@
+import { join } from 'path';
 import { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
-import { Env, IConfig } from '../types';
 import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
-import { join } from 'path';
+import { Env, IConfig } from '../types';
 import { addRules } from './addRules';
 
 interface IOpts {
