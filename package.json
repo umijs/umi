@@ -11,7 +11,7 @@
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.7",
     "@types/resolve": "^1.20.1",
-    "@vercel/ncc": "^0.29.2",
+    "@vercel/ncc": "^0.30.0",
     "dts-packer": "^0.0.1-alpha.1",
     "esno": "^0.9.1",
     "jest": "^27.0.6",
