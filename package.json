@@ -2,7 +2,7 @@
   "private": true,
   "version": "4.0.0-alpha.1",
   "scripts": {
-    "bootstrap": "zx scripts/bootstrap.mjs",
+    "bootstrap": "esno scripts/bootstrap.ts",
     "build": "pnpm -r --filter ./packages run build",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
     "test": "jest"
@@ -10,8 +10,10 @@
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.7",
+    "@types/resolve": "^1.20.1",
     "@vercel/ncc": "^0.29.2",
     "dts-packer": "^0.0.1-alpha.1",
+    "esno": "^0.9.1",
     "jest": "^27.0.6",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
@@ -23,11 +25,11 @@
     "tsup": "^4.12.5",
     "typescript": "^4.3.5",
     "yorkie": "^2.0.0",
-    "zx": "^2.0.0"
+    "zx": "^4.0.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged",
-    "commit-msg": "zx scripts/verifyCommit.mjs"
+    "commit-msg": "esno scripts/verifyCommit.ts"
   },
   "lint-staged": {
     "*.{jsx,less,md,json}": [

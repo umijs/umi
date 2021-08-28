@@ -1,1 +1,1 @@
-{"name":"axios","main":"index.js","author":"Matt Zabriskie","license":"MIT"}
+{"name":"axios","main":"index.js","author":"Matt Zabriskie","license":"MIT","typings":"./index.d.ts"}
