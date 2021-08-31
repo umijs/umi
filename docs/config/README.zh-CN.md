@@ -837,7 +837,7 @@ mfsu: {
     output : "./.mfsu-dev",
   },
   production : {
-    output : "./mfsu-prod",
+    output : "./.mfsu-prod",
   }
 },
 ```
