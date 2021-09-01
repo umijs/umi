@@ -23,7 +23,7 @@ importers:
       ts-node: ^10.1.0
       typescript: ^4.3.5
       yorkie: ^2.0.0
-      zx: ^4.0.0
+      zx: ^4.1.1
     devDependencies:
       '@types/jest': 26.0.24
       '@types/node': 16.6.2
@@ -44,7 +44,7 @@ importers:
       ts-node: 10.2.1_c780171742f6906a053a603dfa210a4e
       typescript: 4.3.5
       yorkie: 2.0.0
-      zx: 4.0.0
+      zx: 4.1.1
 
   packages/babel-preset-umi:
     specifiers:
@@ -6008,8 +6008,8 @@ packages:
       strip-indent: 2.0.0
     dev: true
 
-  /zx/4.0.0:
-    resolution: {integrity: sha512-BOKVWyRunZakzH6cn8BvZUlDEQG4VAECmtEZeu+3t6ETDkg606ceG54UUjxQsCFmSL+Bh5HXil75J0IltDmAlQ==}
+  /zx/4.1.1:
+    resolution: {integrity: sha512-KMC3s+Dk2IpAxvpgb0dKzLNE3NuFRz9LIVrJamLTpLtN1S3waiEsaRMYrc3SOJN/tT3V6elkwXg2xozHTeO83g==}
     engines: {node: '>= 14.8.0'}
     hasBin: true
     dependencies:

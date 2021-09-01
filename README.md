@@ -8,4 +8,4 @@ A framework in react community.
 
 ## LICENSE
 
-[MIT](https://github.com/umijs/umi/blob/master/LICENSE)
+[MIT](./LICENSE)
