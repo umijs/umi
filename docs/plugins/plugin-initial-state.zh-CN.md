@@ -30,6 +30,15 @@ export async function getInitialState() {
 }
 ```
 
+### initialStateConfig
+`initialStateConfig` 是 `getInitialState` 的补充配置，`getInitialState` 支持异步的设置，在初始化没有完成之前我们展示了一个 loading，initialStateConfig 可以配置这个 loading。
+```typescript
+/** 获取用户信息比较慢的时候会展示一个 loading */
+export const initialStateConfig = {
+  loading: <Spin />,
+};
+```
+
 ## API
 
 ### useModel
