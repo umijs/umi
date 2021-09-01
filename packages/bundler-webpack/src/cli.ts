@@ -18,7 +18,9 @@ if (command === 'build') {
     ]);
     assert(entry, `Build failed: entry not found.`);
     await build({
-      config: {},
+      config: {
+        jsMinifier: args['js-minifier'],
+      },
       cwd,
       entry: {
         [getEntryKey(entry)]: entry,

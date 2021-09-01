@@ -3,7 +3,8 @@ import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
 import { Env, IConfig } from '../types';
-import { addJavaScriptRules } from './addJavaScriptRules';
+import { applyCompress } from './compress';
+import { applyJavaScriptRules } from './javaScriptRules';
 
 interface IOpts {
   cwd: string;
@@ -16,6 +17,12 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   const { userConfig } = opts;
   const isDev = opts.env === Env.development;
   const config = new Config();
+  const applyOpts = {
+    config,
+    userConfig,
+    cwd: opts.cwd,
+    env: opts.env,
+  };
 
   // mode
   config.mode(opts.env);
@@ -82,12 +89,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // node polyfill
 
   // rules
-  await addJavaScriptRules({
-    config,
-    userConfig,
-    cwd: opts.cwd,
-    env: opts.env,
-  });
+  await applyJavaScriptRules(applyOpts);
 
   // plugins
   // ignoreMomentLocale [?]
@@ -99,6 +101,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // manifest
   // hmr
   // compress
+  applyCompress(applyOpts);
   // speed measure
 
   // chain webpack

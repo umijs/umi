@@ -8,24 +8,25 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@swc/core": "^1.2.83",
     "@types/jest": "^26.0.24",
-    "@types/node": "^16.4.7",
+    "@types/node": "^16.7.10",
     "@types/resolve": "^1.20.1",
-    "@umijs/bundler-webpack": "file:./packages/bundler-webpack",
-    "@umijs/bundler-utils": "file:./packages/bundler-utils",
-    "@umijs/utils": "file:./packages/utils",
+    "@umijs/bundler-utils": "link:packages/bundler-utils",
+    "@umijs/bundler-webpack": "link:packages/bundler-webpack",
+    "@umijs/utils": "link:packages/utils",
     "@vercel/ncc": "^0.30.0",
     "dts-packer": "^0.0.1-alpha.1",
     "esno": "^0.9.1",
-    "jest": "^27.0.6",
+    "jest": "^27.1.0",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "prettier-plugin-organize-imports": "^2.3.3",
     "resolve": "^1.20.0",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.4",
-    "ts-node": "^10.1.0",
-    "typescript": "^4.3.5",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2",
     "yorkie": "^2.0.0",
     "zx": "^4.1.1"
   },
@@ -40,5 +41,8 @@
     "*.ts?(x)": [
       "prettier --parser=typescript --write"
     ]
+  },
+  "dependencies": {
+    "uglify-js": "^3.14.1"
   }
 }
