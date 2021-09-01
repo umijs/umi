@@ -24,6 +24,11 @@ export function getExportProps(code: string) {
           });
         } else if (t.isObjectExpression(defaultExport)) {
           props = findObjectMembers(defaultExport);
+        } else if (
+          t.isTSAsExpression(defaultExport) &&
+          t.isObjectExpression(defaultExport.expression)
+        ) {
+          props = findObjectMembers(defaultExport.expression);
         } else if (t.isArrayExpression(defaultExport)) {
           props = findArrayElements(defaultExport);
         } else {

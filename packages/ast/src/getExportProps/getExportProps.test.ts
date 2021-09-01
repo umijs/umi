@@ -165,3 +165,22 @@ export function foo () {}
   );
   expect(props).toEqual(undefined);
 });
+
+test('no default export', () => {
+  const props = getExportProps(
+    `
+    export default {
+         custom: true,
+         menu: {
+           name: 'THIS-IS-MENU-NAME',
+         },
+    } as any;
+    `,
+  );
+  expect(props).toEqual({
+    custom: true,
+    menu: {
+      name: 'THIS-IS-MENU-NAME',
+    },
+  });
+});
