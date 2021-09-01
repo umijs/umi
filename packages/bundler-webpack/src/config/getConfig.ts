@@ -1,9 +1,9 @@
 import { join } from 'path';
-import { Configuration } from '../../compiled/webpack';
+import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
 import { Env, IConfig } from '../types';
-import { addRules } from './addRules';
+import { addJavaScriptRules } from './addJavaScriptRules';
 
 interface IOpts {
   cwd: string;
@@ -12,7 +12,7 @@ interface IOpts {
   userConfig: IConfig;
 }
 
-export function getConfig(opts: IOpts): Configuration {
+export async function getConfig(opts: IOpts): Promise<Configuration> {
   const { userConfig } = opts;
   const isDev = opts.env === Env.development;
   const config = new Config();
@@ -48,7 +48,7 @@ export function getConfig(opts: IOpts): Configuration {
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(userConfig.publicPath)
+    .publicPath(userConfig.publicPath || '/')
     .pathinfo(isDev || disableCompress);
 
   // resolve
@@ -59,7 +59,7 @@ export function getConfig(opts: IOpts): Configuration {
       .add('node_modules')
       .end()
     .alias
-      .merge(userConfig.alias)
+      .merge(userConfig.alias || {})
       .end()
     .extensions
       .merge([
@@ -82,7 +82,12 @@ export function getConfig(opts: IOpts): Configuration {
   // node polyfill
 
   // rules
-  addRules({ config, userConfig });
+  await addJavaScriptRules({
+    config,
+    userConfig,
+    cwd: opts.cwd,
+    env: opts.env,
+  });
 
   // plugins
   // ignoreMomentLocale [?]
@@ -95,6 +100,14 @@ export function getConfig(opts: IOpts): Configuration {
   // hmr
   // compress
   // speed measure
+
+  // chain webpack
+  if (userConfig.chainWebpack) {
+    await userConfig.chainWebpack(config, {
+      env: opts.env,
+      webpack: webpack,
+    });
+  }
 
   const webpackConfig = config.toConfig();
   webpackConfig;

@@ -70,7 +70,8 @@ import { $, argv, chalk, fs, path } from 'zx';
             types: 'dist/index.d.ts',
             files: ['dist'],
             scripts: {
-              build: 'rimraf dist && tsup src/index.ts --dts --format cjs',
+              build: 'pnpm tsc',
+              'build:deps': 'pnpm esno ../../scripts/bundleDeps.ts',
               dev: 'pnpm build -- --watch',
             },
             repository: {
@@ -89,6 +90,7 @@ import { $, argv, chalk, fs, path } from 'zx';
           },
           {
             authors: pkgPkgJSON.authors,
+            bin: pkgPkgJSON.bin,
             files: pkgPkgJSON.files,
             scripts: pkgPkgJSON.scripts,
             description: pkgPkgJSON.description,
@@ -104,6 +106,20 @@ import { $, argv, chalk, fs, path } from 'zx';
       await fs.writeFile(
         path.join(pkgDir, 'README.md'),
         `# ${name}\n`,
+        'utf-8',
+      );
+
+      // tsconfig.json
+      await fs.writeFile(
+        path.join(pkgDir, 'tsconfig.json'),
+        `{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src"]
+}\n`,
         'utf-8',
       );
 
