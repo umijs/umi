@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "esnext",
+    "paths": {
+      "@umijs/utils": ["./packages/utils"]
+    },
+  },
+  "exclude": [
+    "**/fixtures",
+    "**/*.test.ts"
+  ]
+}

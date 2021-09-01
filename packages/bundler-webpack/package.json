@@ -4,12 +4,16 @@
   "description": "@umijs/bundler-webpack",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "bundler-webpack": "bin/bundler-webpack.js"
+  },
   "files": [
-    "dist",
-    "compiled"
+    "bin",
+    "compiled",
+    "dist"
   ],
   "scripts": {
-    "build": "rimraf dist && tsup src/index.ts --dts --format cjs",
+    "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs"
@@ -27,8 +31,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@umijs/babel-preset-umi": "4.0.0-alpha.1",
+    "@umijs/utils": "4.0.0-alpha.1",
+    "es5-imcompatible-versions": "^0.1.73",
+    "jest-worker": "27.1.0"
+  },
   "devDependencies": {
     "@types/webpack-sources": "3.2.0",
+    "babel-loader": "8.2.2",
     "schema-utils": "3.1.1",
     "tapable": "2.2.0",
     "webpack": "5.51.1",
@@ -37,6 +48,7 @@
   },
   "compiledConfig": {
     "deps": [
+      "babel-loader",
       "schema-utils",
       "tapable",
       "webpack-5-chain",
@@ -44,7 +56,9 @@
       "./bundles/webpack/bundle"
     ],
     "externals": {
+      "@babel/core": "@umijs/bundler-utils/compiled/babel/core",
       "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
+      "jest-worker": "jest-worker",
       "schema-utils": "$$LOCAL",
       "tapable": "$$LOCAL",
       "webpack-5-chain": "$$LOCAL",
@@ -56,6 +70,9 @@
     ],
     "extraDtsDeps": [
       "webpack"
+    ],
+    "excludeDtsDeps": [
+      "babel-loader"
     ]
   }
 }

@@ -3,4 +3,6 @@ interface IOpts {
   config: object;
 }
 
-export function dev(opts: IOpts) {}
+export function dev(opts: IOpts) {
+  opts;
+}

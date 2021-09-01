@@ -13,7 +13,7 @@ interface IOpts {
   pluginDynamicImportNode: any;
 }
 
-export default (context: any, opts: IOpts) => {
+export default (_context: any, opts: IOpts) => {
   return {
     presets: [
       [

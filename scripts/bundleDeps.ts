@@ -49,6 +49,8 @@ Object.keys(exported).forEach(function (key) {
       const { code, assets } = await ncc(entry, {
         externals: opts.webpackExternals,
         minify: !!opts.minify,
+        target: 'es5',
+        assetBuilds: true,
       });
 
       // assets
@@ -111,12 +113,16 @@ Object.keys(exported).forEach(function (key) {
       });
 
       // dts
-      new Package({
-        cwd: opts.base,
-        name: opts.pkgName,
-        typesRoot: target,
-        externals: opts.dtsExternals,
-      });
+      if (opts.noDts) {
+        console.log(chalk.yellow(`Do not build dts for ${opts.pkgName}`));
+      } else {
+        new Package({
+          cwd: opts.base,
+          name: opts.pkgName,
+          typesRoot: target,
+          externals: opts.dtsExternals,
+        });
+      }
     }
   }
 
@@ -147,6 +153,7 @@ Object.keys(exported).forEach(function (key) {
     externals,
     noMinify = [],
     extraDtsDeps = [],
+    excludeDtsDeps = [],
   } = pkg.compiledConfig;
 
   const webpackExternals: Record<string, string> = {};
@@ -176,6 +183,7 @@ Object.keys(exported).forEach(function (key) {
       clean: argv.clean,
       minify: !noMinify.includes(dep),
       dtsOnly: extraDtsDeps.includes(dep),
+      noDts: excludeDtsDeps.includes(dep),
       isDependency: dep in pkgDeps,
     });
   }
