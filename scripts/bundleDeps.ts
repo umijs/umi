@@ -46,20 +46,58 @@ Object.keys(exported).forEach(function (key) {
         'utf-8',
       );
     } else {
+      const filesToCopy: string[] = [];
       const { code, assets } = await ncc(entry, {
         externals: opts.webpackExternals,
         minify: !!opts.minify,
         target: 'es5',
-        assetBuilds: true,
+        assetBuilds: false,
+        customEmit(filePath: string, { id }: any) {
+          if (
+            (opts.file === './bundles/webpack/bundle' &&
+              filePath.endsWith('.runtime.js')) ||
+            (opts.pkgName === 'terser-webpack-plugin' &&
+              filePath.endsWith('./utils') &&
+              id.endsWith('terser-webpack-plugin/dist/index.js'))
+          ) {
+            filesToCopy.push(
+              resolve.sync(filePath, {
+                basedir: path.dirname(id),
+              }),
+            );
+            return `'./${path.basename(filePath)}'`;
+          }
+        },
       });
 
       // assets
+      console.log('filesToCopy', filesToCopy);
       for (const key of Object.keys(assets)) {
         const asset = assets[key];
         const data = asset.source;
         const filePath = path.join(target, key);
         fs.ensureDirSync(path.dirname(filePath));
         fs.writeFileSync(path.join(target, key), data);
+      }
+
+      // filesToCopy
+      for (const fileToCopy of filesToCopy) {
+        let content = fs.readFileSync(fileToCopy, 'utf-8');
+        for (const key of Object.keys(opts.webpackExternals)) {
+          content = content.replace(
+            new RegExp(`require\\\(['"]${key}['"]\\\)`, 'gm'),
+            `require('${opts.webpackExternals[key]}')`,
+          );
+          content = content.replace(
+            new RegExp(`require\\\(['"]${key}/package(\.json)?['"]\\\)`, 'gm'),
+            `require('${opts.webpackExternals[key]}/package.json')`,
+          );
+        }
+        fs.writeFileSync(
+          path.join(target, path.basename(fileToCopy)),
+          content,
+          'utf-8',
+        );
       }
 
       // entry code
@@ -153,11 +191,12 @@ Object.keys(exported).forEach(function (key) {
     externals,
     noMinify = [],
     extraDtsDeps = [],
+    extraDtsExternals = [],
     excludeDtsDeps = [],
   } = pkg.compiledConfig;
 
   const webpackExternals: Record<string, string> = {};
-  const dtsExternals = [...extraDtsDeps];
+  const dtsExternals = [...extraDtsDeps, ...extraDtsExternals];
   Object.keys(externals).forEach((name) => {
     const val = externals[name];
     if (val === '$$LOCAL') {

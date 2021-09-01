@@ -42,6 +42,8 @@
     "babel-loader": "8.2.2",
     "schema-utils": "3.1.1",
     "tapable": "2.2.0",
+    "terser": "5.7.2",
+    "terser-webpack-plugin": "5.2.0",
     "webpack": "5.51.1",
     "webpack-5-chain": "8.0.0",
     "webpack-sources": "3.2.0"
@@ -51,24 +53,37 @@
       "babel-loader",
       "schema-utils",
       "tapable",
+      "terser",
+      "terser-webpack-plugin",
       "webpack-5-chain",
       "webpack-sources",
       "./bundles/webpack/bundle"
     ],
     "externals": {
+      "@swc/core": "@swc/core",
       "@babel/core": "@umijs/bundler-utils/compiled/babel/core",
       "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
+      "esbuild": "@umijs/bundler-utils/compiled/esbuild",
       "jest-worker": "jest-worker",
       "schema-utils": "$$LOCAL",
       "tapable": "$$LOCAL",
+      "terser": "$$LOCAL",
+      "terser-webpack-plugin": "$$LOCAL",
+      "uglify-js": "uglify-js",
       "webpack-5-chain": "$$LOCAL",
       "webpack-sources": "$$LOCAL"
     },
     "noMinify": [
-      "webpack",
+      "terser-webpack-plugin",
       "./bundles/webpack/bundle"
     ],
     "extraDtsDeps": [
+      "webpack"
+    ],
+    "extraDtsExternals": [
+      "@swc/core",
+      "esbuild",
+      "uglify-js",
       "webpack"
     ],
     "excludeDtsDeps": [

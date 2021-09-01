@@ -12,6 +12,20 @@ export enum Transpiler {
   none = 'none',
 }
 
+export enum JSMinifier {
+  terser = 'terser',
+  swc = 'swc',
+  esbuild = 'esbuild',
+  uglifyJs = 'uglifyJs',
+  none = 'none',
+}
+
+export enum CSSMinifier {
+  esbuild = 'esbuild',
+  cssnano = 'cssnano',
+  none = 'none',
+}
+
 type WebpackConfig = Required<Configuration>;
 type IBabelPlugin = string | [string, { [key: string]: any }];
 
@@ -23,6 +37,10 @@ export interface IConfig {
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   hash?: any;
+  jsMinifier?: JSMinifier;
+  jsMinifierOptions?: { [key: string]: any };
+  cssMinifier?: CSSMinifier;
+  cssMinifierOptions?: { [key: string]: any };
   outputPath?: string;
   publicPath?: string;
   srcTranspiler?: Transpiler;
