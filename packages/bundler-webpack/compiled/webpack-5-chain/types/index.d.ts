@@ -4,7 +4,7 @@ import {
   WebpackPluginInstance,
   RuleSetRule,
   ResolveOptions,
-} from '../../webpack';
+} from '@umijs/bunder-webpack/compiled/webpack';
 import * as https from 'https';
 
 export = Config;
