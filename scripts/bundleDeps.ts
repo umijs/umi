@@ -18,7 +18,12 @@ export async function buildDep(opts: any) {
 
   let entry;
   if (opts.pkgName) {
-    entry = require.resolve(opts.pkgName, {
+    let resolvePath = opts.pkgName;
+    // mini-css-extract-plugin 用 dist/cjs 为入口会有问题
+    if (opts.pkgName === 'mini-css-extract-plugin') {
+      resolvePath = 'mini-css-extract-plugin/dist/index';
+    }
+    entry = require.resolve(resolvePath, {
       paths: [nodeModulesPath],
     });
   } else {
@@ -103,6 +108,27 @@ Object.keys(exported).forEach(function (key) {
       // entry code
       fs.ensureDirSync(target);
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');
+
+      // patch
+      if (opts.pkgName === 'mini-css-extract-plugin') {
+        fs.copySync(
+          path.join(nodeModulesPath, opts.pkgName, 'dist', 'hmr'),
+          path.join(target, 'hmr'),
+        );
+        fs.copyFileSync(
+          path.join(nodeModulesPath, opts.pkgName, 'dist', 'utils.js'),
+          path.join(target, 'utils.js'),
+        );
+        fs.copyFileSync(
+          path.join(
+            nodeModulesPath,
+            opts.pkgName,
+            'dist',
+            'loader-options.json',
+          ),
+          path.join(target, 'loader-options.json'),
+        );
+      }
     }
   }
 
@@ -129,20 +155,12 @@ Object.keys(exported).forEach(function (key) {
           'utf-8',
         );
       }
-      const {
-        name,
-        main = 'index.js',
-        author,
-        license,
-        types,
-        typing,
-        typings,
-      } = JSON.parse(
+      const { name, author, license, types, typing, typings } = JSON.parse(
         fs.readFileSync(path.join(pkgRoot, 'package.json'), 'utf-8'),
       );
       fs.writeJSONSync(path.join(target, 'package.json'), {
         ...{},
-        ...{ name, main: `${path.basename(main, '.' + path.extname(main))}` },
+        ...{ name },
         ...(author ? { author } : undefined),
         ...(license ? { license } : undefined),
         ...(types ? { types } : undefined),
@@ -160,6 +178,21 @@ Object.keys(exported).forEach(function (key) {
           typesRoot: target,
           externals: opts.dtsExternals,
         });
+
+        // patch
+        if (opts.pkgName === 'webpack-5-chain') {
+          const filePath = path.join(target, 'types/index.d.ts');
+          fs.writeFileSync(
+            filePath,
+            fs
+              .readFileSync(filePath, 'utf-8')
+              .replace(
+                `} from 'webpack';`,
+                `} from '@umijs/bunder-webpack/compiled/webpack';`,
+              ),
+            'utf-8',
+          );
+        }
       }
     }
   }

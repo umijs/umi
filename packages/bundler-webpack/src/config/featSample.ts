@@ -1,4 +1,4 @@
-import Config from '../../compiled/webpack-5-chain';
+import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -8,7 +8,7 @@ interface IOpts {
   env: Env;
 }
 
-export function applyCompress(opts: IOpts) {
+export async function applyCompress(opts: IOpts) {
   const { config, userConfig, cwd, env } = opts;
   config;
   userConfig;

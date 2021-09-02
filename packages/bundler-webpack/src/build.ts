@@ -10,22 +10,32 @@ interface IOpts {
   onBuildComplete?: Function;
 }
 
-export async function build(opts: IOpts) {
+export async function build(opts: IOpts): Promise<void> {
   const config = await getConfig({
     cwd: opts.cwd,
     env: Env.production,
     entry: opts.entry,
     userConfig: opts.config,
   });
-  const compiler = webpack(config);
-  compiler.run((err, stats) => {
-    opts.onBuildComplete?.(err, stats);
-    if (err || stats?.hasErrors()) {
-      if (err) console.error(err);
-      if (stats) console.error(stats.toString('errors-only'));
-    } else {
-      console.log(chalk.green(`Build success.`));
-    }
-    compiler.close(() => {});
+  return new Promise((resolve, reject) => {
+    const compiler = webpack(config);
+    compiler.run((err, stats) => {
+      opts.onBuildComplete?.(err, stats);
+      if (err || stats?.hasErrors()) {
+        if (err) {
+          console.error(err);
+          reject(err);
+        }
+        if (stats) {
+          const errorMsg = stats.toString('errors-only');
+          console.error(errorMsg);
+          reject(new Error(errorMsg));
+        }
+      } else {
+        console.log(chalk.green(`Build success.`));
+        resolve();
+      }
+      compiler.close(() => {});
+    });
   });
 }

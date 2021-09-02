@@ -40,7 +40,13 @@
   "devDependencies": {
     "@types/webpack-sources": "3.2.0",
     "babel-loader": "8.2.2",
+    "css-loader": "6.2.0",
+    "less": "4.1.1",
+    "less-loader": "10.0.1",
+    "mini-css-extract-plugin": "2.2.2",
+    "sass-loader": "12.1.0",
     "schema-utils": "3.1.1",
+    "style-loader": "3.2.1",
     "tapable": "2.2.0",
     "terser": "5.7.2",
     "terser-webpack-plugin": "5.2.0",
@@ -51,7 +57,13 @@
   "compiledConfig": {
     "deps": [
       "babel-loader",
+      "css-loader",
+      "less",
+      "less-loader",
+      "mini-css-extract-plugin",
+      "sass-loader",
       "schema-utils",
+      "style-loader",
       "tapable",
       "terser",
       "terser-webpack-plugin",
@@ -65,6 +77,7 @@
       "es-module-lexer": "@umijs/bundler-utils/compiled/es-module-lexer",
       "esbuild": "@umijs/bundler-utils/compiled/esbuild",
       "jest-worker": "jest-worker",
+      "less": "$$LOCAL",
       "schema-utils": "$$LOCAL",
       "tapable": "$$LOCAL",
       "terser": "$$LOCAL",
@@ -74,8 +87,9 @@
       "webpack-sources": "$$LOCAL"
     },
     "noMinify": [
+      "./bundles/webpack/bundle",
       "terser-webpack-plugin",
-      "./bundles/webpack/bundle"
+      "mini-css-extract-plugin"
     ],
     "extraDtsDeps": [
       "webpack"
@@ -87,7 +101,13 @@
       "webpack"
     ],
     "excludeDtsDeps": [
-      "babel-loader"
+      "babel-loader",
+      "css-loader",
+      "less",
+      "less-loader",
+      "sass-loader",
+      "mini-css-extract-plugin",
+      "style-loader"
     ]
   }
 }

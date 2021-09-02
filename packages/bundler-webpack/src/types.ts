@@ -32,6 +32,11 @@ type IBabelPlugin = string | [string, { [key: string]: any }];
 export interface IConfig {
   alias?: Record<string, string>;
   chainWebpack?: Function;
+  cssLoader?: { [key: string]: any };
+  cssLoaderModules?: { [key: string]: any };
+  cssMinifier?: CSSMinifier;
+  cssMinifierOptions?: { [key: string]: any };
+  depTranspiler?: Transpiler;
   devtool?: any;
   externals?: WebpackConfig['externals'];
   extraBabelPlugins?: IBabelPlugin[];
@@ -39,11 +44,11 @@ export interface IConfig {
   hash?: any;
   jsMinifier?: JSMinifier;
   jsMinifierOptions?: { [key: string]: any };
-  cssMinifier?: CSSMinifier;
-  cssMinifierOptions?: { [key: string]: any };
+  lessLoader?: { [key: string]: any };
   outputPath?: string;
   publicPath?: string;
+  sassLoader?: { [key: string]: any };
   srcTranspiler?: Transpiler;
-  depTranspiler?: Transpiler;
+  styleLoader?: { [key: string]: any };
   [key: string]: any;
 }
