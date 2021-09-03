@@ -55,12 +55,12 @@ import { $, argv, chalk, fs, path } from 'zx';
 
       // package.json
       const pkgPkgJSONPath = path.join(pkgDir, 'package.json');
-      const pkgPkgJSON = fs.existsSync(pkgPkgJSONPath)
+      const hasPkgJSON = fs.existsSync(pkgPkgJSONPath);
+      const pkgPkgJSON = hasPkgJSON
         ? require(pkgPkgJSONPath)
         : {};
       fs.writeJSONSync(
         pkgPkgJSONPath,
-
         Object.assign(
           {
             name,
@@ -89,14 +89,16 @@ import { $, argv, chalk, fs, path } from 'zx';
             },
           },
           {
-            authors: pkgPkgJSON.authors,
-            bin: pkgPkgJSON.bin,
-            files: pkgPkgJSON.files,
-            scripts: pkgPkgJSON.scripts,
-            description: pkgPkgJSON.description,
-            dependencies: pkgPkgJSON.dependencies,
-            devDependencies: pkgPkgJSON.devDependencies,
-            compiledConfig: pkgPkgJSON.compiledConfig,
+            ...(hasPkgJSON ? {
+              authors: pkgPkgJSON.authors,
+              bin: pkgPkgJSON.bin,
+              files: pkgPkgJSON.files,
+              scripts: pkgPkgJSON.scripts,
+              description: pkgPkgJSON.description,
+              dependencies: pkgPkgJSON.dependencies,
+              devDependencies: pkgPkgJSON.devDependencies,
+              compiledConfig: pkgPkgJSON.compiledConfig,
+            } : {})
           },
         ),
         { spaces: '  ' },
@@ -105,7 +107,7 @@ import { $, argv, chalk, fs, path } from 'zx';
       // README.md
       await fs.writeFile(
         path.join(pkgDir, 'README.md'),
-        `# ${name}\n`,
+        `# ${name}\n\nSee our website [umijs](https://umijs.org) for more information.`,
         'utf-8',
       );
 
