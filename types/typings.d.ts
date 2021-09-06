@@ -5,3 +5,4 @@ interface Window {
 declare module '@umijs/bundler-webpack/lib/requireHook';
 
 declare module '*.less';
+declare module '*.avif';
