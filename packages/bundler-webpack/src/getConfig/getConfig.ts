@@ -322,6 +322,17 @@ export default async function getConfig(
 
   // prettier-ignore
   webpackConfig.module
+  .rule('avif')
+  .test(/\.(avif)(\?.*)?$/)
+  .use('file-loader')
+    .loader(require.resolve('@umijs/deps/compiled/file-loader'))
+    .options({
+      name: `${staticDir}/[name].[hash:8].[ext]`,
+      esModule: false,
+    });
+
+  // prettier-ignore
+  webpackConfig.module
     .rule('svg')
     .test(/\.(svg)(\?.*)?$/)
     .use('file-loader')
