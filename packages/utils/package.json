@@ -48,6 +48,7 @@
     "portfinder": "1.0.28",
     "rimraf": "3.0.2",
     "semver": "7.3.5",
+    "strip-ansi": "6.0.0",
     "yargs-parser": "20.2.9"
   },
   "compiledConfig": {
@@ -65,6 +66,7 @@
       "portfinder",
       "rimraf",
       "semver",
+      "strip-ansi",
       "yargs-parser"
     ],
     "externals": {
@@ -81,6 +83,7 @@
       "portfinder": "$$LOCAL",
       "rimraf": "$$LOCAL",
       "semver": "$$LOCAL",
+      "strip-ansi": "$$LOCAL",
       "yargs-parser": "$$LOCAL"
     }
   }

@@ -47,6 +47,7 @@
     "less-loader": "10.0.1",
     "mini-css-extract-plugin": "2.2.2",
     "postcss": "8.3.6",
+    "purgecss-webpack-plugin": "4.0.3",
     "sass-loader": "12.1.0",
     "schema-utils": "3.1.1",
     "style-loader": "3.2.1",
@@ -55,6 +56,7 @@
     "terser-webpack-plugin": "5.2.0",
     "webpack": "5.51.1",
     "webpack-5-chain": "8.0.0",
+    "webpack-bundle-analyzer": "4.4.2",
     "webpack-sources": "3.2.0"
   },
   "compiledConfig": {
@@ -67,6 +69,7 @@
       "less-loader",
       "mini-css-extract-plugin",
       "postcss",
+      "purgecss-webpack-plugin",
       "sass-loader",
       "schema-utils",
       "style-loader",
@@ -74,6 +77,7 @@
       "terser",
       "terser-webpack-plugin",
       "webpack-5-chain",
+      "webpack-bundle-analyzer",
       "webpack-sources",
       "./bundles/webpack/bundle"
     ],
@@ -97,7 +101,8 @@
     "noMinify": [
       "./bundles/webpack/bundle",
       "terser-webpack-plugin",
-      "mini-css-extract-plugin"
+      "mini-css-extract-plugin",
+      "purgecss-webpack-plugin"
     ],
     "extraDtsDeps": [
       "webpack"
@@ -116,9 +121,11 @@
       "less",
       "less-loader",
       "postcss",
+      "purgecss-webpack-plugin",
       "sass-loader",
       "mini-css-extract-plugin",
-      "style-loader"
+      "style-loader",
+      "webpack-bundle-analyzer"
     ]
   }
 }

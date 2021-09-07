@@ -11,7 +11,9 @@ import pkgUp from '../compiled/pkg-up';
 import portfinder from '../compiled/portfinder';
 import rimraf from '../compiled/rimraf';
 import semver from '../compiled/semver';
+import stripAnsi from '../compiled/strip-ansi';
 import yParser from '../compiled/yargs-parser';
+import * as logger from './logger/logger';
 
 export * from './winPath/winPath';
 export {
@@ -24,9 +26,11 @@ export {
   fsExtra,
   // globby,
   lodash,
+  logger,
   pkgUp,
   portfinder,
   rimraf,
   semver,
+  stripAnsi,
   yParser,
 };

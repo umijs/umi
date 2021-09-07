@@ -1,4 +1,3 @@
-import { chalk } from '@umijs/utils';
 import webpack from '../compiled/webpack';
 import { getConfig } from './config/getConfig';
 import { Env, IConfig } from './types';
@@ -23,16 +22,15 @@ export async function build(opts: IOpts): Promise<void> {
       opts.onBuildComplete?.(err, stats);
       if (err || stats?.hasErrors()) {
         if (err) {
-          console.error(err);
+          // console.error(err);
           reject(err);
         }
         if (stats) {
           const errorMsg = stats.toString('errors-only');
-          console.error(errorMsg);
+          // console.error(errorMsg);
           reject(new Error(errorMsg));
         }
       } else {
-        console.log(chalk.green(`Build success.`));
         resolve();
       }
       compiler.close(() => {});
