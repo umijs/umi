@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import { build } from './build';
-import { JSMinifier } from './types';
+import { CSSMinifier, JSMinifier } from './types';
 
 interface IOpts {
   files: Record<string, string>;
@@ -25,6 +25,7 @@ for (const fixture of readdirSync(fixtures)) {
     await build({
       config: {
         jsMinifier: JSMinifier.none,
+        cssMinifier: CSSMinifier.none,
       },
       cwd: base,
       entry: {
