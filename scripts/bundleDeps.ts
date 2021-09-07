@@ -63,7 +63,10 @@ Object.keys(exported).forEach(function (key) {
               filePath.endsWith('.runtime.js')) ||
             (opts.pkgName === 'terser-webpack-plugin' &&
               filePath.endsWith('./utils') &&
-              id.endsWith('terser-webpack-plugin/dist/index.js'))
+              id.endsWith('terser-webpack-plugin/dist/index.js')) ||
+            (opts.pkgName === 'css-minimizer-webpack-plugin' &&
+              filePath.endsWith('./utils') &&
+              id.endsWith('css-minimizer-webpack-plugin/dist/index.js'))
           ) {
             filesToCopy.push(
               resolve.sync(filePath, {
