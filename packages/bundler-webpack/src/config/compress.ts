@@ -2,8 +2,8 @@
 import CSSMinimizerWebpackPlugin from '@umijs/bundler-webpack/compiled/css-minimizer-webpack-plugin';
 import TerserPlugin from '../../compiled/terser-webpack-plugin';
 import Config from '../../compiled/webpack-5-chain';
+import ESBuildCSSMinifyPlugin from '../plugins/ESBuildCSSMinifyPlugin';
 import { CSSMinifier, Env, IConfig, JSMinifier } from '../types';
-import ESBuildCSSMinifyPlugin from './ESBuildCSSMinifyPlugin';
 
 interface IOpts {
   config: Config;

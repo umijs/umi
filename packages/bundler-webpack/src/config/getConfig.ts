@@ -5,8 +5,12 @@ import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
 import { Env, IConfig } from '../types';
 import { applyCompress } from './compress';
 import { applyCSSRules } from './cssRules';
+import { applyDefinePlugin } from './definePlugin';
+import { applyIgnorePlugin } from './ignorePlugin';
 import { applyJavaScriptRules } from './javaScriptRules';
 import { applyMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
+import { applyProgressPlugin } from './progressPlugin';
+import { applyWebpackBundleAnalyzer } from './webpackBundleAnalyzer';
 
 interface IOpts {
   cwd: string;
@@ -97,17 +101,26 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // plugins
   // mini-css-extract-plugin
   await applyMiniCSSExtractPlugin(applyOpts);
-  // ignoreMomentLocale [?]
+  // ignoreMomentLocale
+  await applyIgnorePlugin(applyOpts);
   // define
+  await applyDefinePlugin(applyOpts);
   // progress
+  await applyProgressPlugin(applyOpts);
   // copy
   // friendly-error
-  // profile
   // manifest
   // hmr
+  if (isDev) {
+    config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
+  }
   // compress
   await applyCompress(applyOpts);
+  // purgecss
+  // await applyPurgeCSSWebpackPlugin(applyOpts);
   // speed measure
+  // analyzer
+  await applyWebpackBundleAnalyzer(applyOpts);
 
   // chain webpack
   if (userConfig.chainWebpack) {

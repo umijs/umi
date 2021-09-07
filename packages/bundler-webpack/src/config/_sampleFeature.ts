@@ -8,7 +8,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyCompress(opts: IOpts) {
+export async function applySampleFeature(opts: IOpts) {
   const { config, userConfig, cwd, env } = opts;
   config;
   userConfig;
