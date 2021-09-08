@@ -1,8 +1,22 @@
+import { getConfig } from './config/config';
+import { createServer } from './server/server';
+import { Env, IConfig } from './types';
+
 interface IOpts {
   cwd: string;
-  config: object;
+  config: IConfig;
+  entry: Record<string, string>;
 }
 
-export function dev(opts: IOpts) {
-  opts;
+export async function dev(opts: IOpts) {
+  const webpackConfig = await getConfig({
+    cwd: opts.cwd,
+    env: Env.production,
+    entry: opts.entry,
+    userConfig: opts.config,
+  });
+  await createServer({
+    webpackConfig,
+    userConfig: opts.config,
+  });
 }

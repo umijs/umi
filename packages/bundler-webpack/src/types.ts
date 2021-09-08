@@ -56,5 +56,6 @@ export interface IConfig {
   srcTranspiler?: Transpiler;
   styleLoader?: { [key: string]: any };
   targets?: { [key: string]: any };
+  writeToDisk?: boolean;
   [key: string]: any;
 }
