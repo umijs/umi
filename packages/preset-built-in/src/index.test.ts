@@ -433,37 +433,3 @@ test('exportStatic', async () => {
     expect(existsSync(join(cwd, 'dist', 'list', ':id.html'))).toBeTruthy();
   }
 });
-
-test('ssr prerender', async () => {
-  const cwd = join(fixtures, 'ssr-prerender');
-  const service = new Service({
-    cwd,
-    env: 'production',
-    presets: [require.resolve('../lib/index.js')],
-  });
-  await service.run({
-    name: 'build',
-    args: {},
-  });
-  expect(existsSync(join(cwd, 'dist', 'index.html'))).toBeTruthy();
-  const html = readFileSync(join(cwd, 'dist', 'index.html'), 'utf8');
-  expect(
-    html.includes('<div id="root"><div><h2>prerender</h2></div></div>'),
-  ).toBeTruthy();
-});
-
-test('ssr prerender false', async () => {
-  const cwd = join(fixtures, 'ssr-prerender-no');
-  const service = new Service({
-    cwd,
-    env: 'production',
-    presets: [require.resolve('../lib/index.js')],
-  });
-  await service.run({
-    name: 'build',
-    args: {},
-  });
-  expect(existsSync(join(cwd, 'dist', 'index.html'))).toBeTruthy();
-  const html = readFileSync(join(cwd, 'dist', 'index.html'), 'utf8');
-  expect(html.includes('<div id="root"></div>')).toBeTruthy();
-});

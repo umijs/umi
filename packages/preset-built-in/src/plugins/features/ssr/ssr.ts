@@ -134,11 +134,6 @@ export default (api: IApi) => {
             staticMarkup: joi
               .boolean()
               .description('static markup in static site'),
-            prerender: joi
-              .boolean()
-              .description(
-                'whether to enable pre-rendering when umi build export static mode',
-              ),
           })
           .without('forceInitial', ['removeWindowInitialProps'])
           .error(
