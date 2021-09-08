@@ -330,7 +330,7 @@ Ran all test suites.
 ✨  Done in 5.40s.
 ```
 
-如果你喜欢 TDD（测试驱动开发），可以使用 `yarn test -w` 监听，[更多用法](https://github.com/umijs/umi/blob/master/docs/packages/test.md#usage)。
+如果你喜欢 TDD（测试驱动开发），可以使用 `yarn test -w` 监听，[更多用法](https://github.com/umijs/umi/blob/master/memo/packages/test.md#usage)。
 
 ### E2E 测试
 
