@@ -48,6 +48,9 @@ const expects: Record<string, Function> = {
       `var react_namespaceObject = {"foo":"react"};`,
     );
   },
+  'node-polyfill'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`exports.join = function() {`);
+  },
   'postcss-autoprefixer'({ files }: IOpts) {
     expect(files['index.css']).toContain(
       `.a { display: -ms-flexbox; display: flex; }`,

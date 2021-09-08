@@ -11,6 +11,7 @@ import { applyDefinePlugin } from './definePlugin';
 import { applyIgnorePlugin } from './ignorePlugin';
 import { applyJavaScriptRules } from './javaScriptRules';
 import { applyMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
+import { applyNodePolyfill } from './nodePolyfill';
 import { applyProgressPlugin } from './progressPlugin';
 import { applySpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 import { applyWebpackBundleAnalyzer } from './webpackBundleAnalyzer';
@@ -101,7 +102,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // target
   config.target(['web', 'es5']);
 
-  // TODO: node polyfill
+  // node polyfill
+  await applyNodePolyfill(applyOpts);
 
   // rules
   await applyJavaScriptRules(applyOpts);
