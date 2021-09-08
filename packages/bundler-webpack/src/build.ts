@@ -10,14 +10,14 @@ interface IOpts {
 }
 
 export async function build(opts: IOpts): Promise<void> {
-  const config = await getConfig({
+  const webpackConfig = await getConfig({
     cwd: opts.cwd,
     env: Env.production,
     entry: opts.entry,
     userConfig: opts.config,
   });
   return new Promise((resolve, reject) => {
-    const compiler = webpack(config);
+    const compiler = webpack(webpackConfig);
     compiler.run((err, stats) => {
       opts.onBuildComplete?.(err, stats);
       if (err || stats?.hasErrors()) {
