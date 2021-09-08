@@ -50,7 +50,7 @@ async function cssnanoMinify(data, inputSourceMap, minimizerOptions = {
   } // eslint-disable-next-line global-require
 
 
-  const postcss = require('@umijs/bundler-webpack/compiled/postcss'); // eslint-disable-next-line global-require
+  const postcss = require('postcss'); // eslint-disable-next-line global-require
 
 
   const cssnano = require('@umijs/bundler-webpack/compiled/cssnano');
