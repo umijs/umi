@@ -51,6 +51,7 @@
     "sass-loader": "12.1.0",
     "schema-utils": "3.1.1",
     "style-loader": "3.2.1",
+    "speed-measure-webpack-plugin": "1.5.0",
     "tapable": "2.2.0",
     "terser": "5.7.2",
     "terser-webpack-plugin": "5.2.0",
@@ -73,6 +74,7 @@
       "sass-loader",
       "schema-utils",
       "style-loader",
+      "speed-measure-webpack-plugin",
       "tapable",
       "terser",
       "terser-webpack-plugin",
@@ -120,10 +122,11 @@
       "cssnano",
       "less",
       "less-loader",
+      "mini-css-extract-plugin",
       "postcss",
       "purgecss-webpack-plugin",
       "sass-loader",
-      "mini-css-extract-plugin",
+      "speed-measure-webpack-plugin",
       "style-loader",
       "webpack-bundle-analyzer"
     ]

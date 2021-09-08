@@ -176,6 +176,7 @@ importers:
       purgecss-webpack-plugin: 4.0.3
       sass-loader: 12.1.0
       schema-utils: 3.1.1
+      speed-measure-webpack-plugin: 1.5.0
       style-loader: 3.2.1
       tapable: 2.2.0
       terser: 5.7.2
@@ -202,6 +203,7 @@ importers:
       purgecss-webpack-plugin: 4.0.3_5f021820e21d1917ddfcb06c1763c69d
       sass-loader: 12.1.0_webpack@5.51.1
       schema-utils: 3.1.1
+      speed-measure-webpack-plugin: 1.5.0_webpack@5.51.1
       style-loader: 3.2.1_webpack@5.51.1
       tapable: 2.2.0
       terser: 5.7.2
@@ -263,6 +265,9 @@ importers:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack-5-chain:
+    specifiers: {}
+
+  packages/bundler-webpack/compiled/webpack-bundle-analyzer:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack-sources:
@@ -6385,6 +6390,16 @@ packages:
   /source-map/0.7.3:
     resolution: {integrity: sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==}
     engines: {node: '>= 8'}
+    dev: true
+
+  /speed-measure-webpack-plugin/1.5.0_webpack@5.51.1:
+    resolution: {integrity: sha512-Re0wX5CtM6gW7bZA64ONOfEPEhwbiSF/vz6e2GvadjuaPrQcHTQdRGsD8+BE7iUOysXH8tIenkPCQBEcspXsNg==}
+    engines: {node: '>=6.0.0'}
+    peerDependencies:
+      webpack: ^1 || ^2 || ^3 || ^4 || ^5
+    dependencies:
+      chalk: 4.1.2
+      webpack: 5.51.1_5f021820e21d1917ddfcb06c1763c69d
     dev: true
 
   /split/0.3.3:
