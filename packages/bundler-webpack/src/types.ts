@@ -48,6 +48,7 @@ export interface IConfig {
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { [key: string]: any };
   outputPath?: string;
+  postcssLoader?: { [key: string]: any };
   publicPath?: string;
   purgeCSS?: { [key: string]: any };
   sassLoader?: { [key: string]: any };
