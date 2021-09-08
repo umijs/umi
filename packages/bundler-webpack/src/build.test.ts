@@ -13,6 +13,17 @@ const expects: Record<string, Function> = {
     expect(files['index.css']).toContain(`color: red;`);
     expect(files['index.js']).toContain(`console.log('index')`);
   },
+  alias({ files }: IOpts) {
+    expect(files['index.js']).toContain(`const a = 'react';`);
+  },
+  'postcss-autoprefixer'({ files }: IOpts) {
+    expect(files['index.css']).toContain(
+      `.a { display: -ms-flexbox; display: flex; }`,
+    );
+  },
+  'postcss-flexbugs-fixes'({ files }: IOpts) {
+    expect(files['index.css']).toContain(`.foo { flex: 1 1; }`);
+  },
 };
 
 const fixtures = join(__dirname, 'fixtures');
@@ -20,10 +31,16 @@ for (const fixture of readdirSync(fixtures)) {
   if (fixture.startsWith('.')) continue;
   const base = join(fixtures, fixture);
   if (statSync(base).isFile()) continue;
+  if (fixture.startsWith('x-')) continue;
 
   test(`build ${fixture}`, async () => {
+    let config: Record<string, any> = {};
+    try {
+      config = require(join(base, 'config.ts')).default;
+    } catch (e) {}
     await build({
       config: {
+        ...config,
         jsMinifier: JSMinifier.none,
         cssMinifier: CSSMinifier.none,
       },

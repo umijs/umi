@@ -83,13 +83,30 @@ export async function applyCSSRules(opts: IOpts) {
           ...userConfig.cssLoader,
         });
 
-      // TODO: postcss-loader
-      // rule
-      //   .use('postcss-loader')
-      //   .loader(
-      //     require.resolve('@umijs/bundler-webpack/compiled/postcss-loader'),
-      //   )
-      //   .options({});
+      rule
+        .use('postcss-loader')
+        .loader(
+          require.resolve('@umijs/bundler-webpack/compiled/postcss-loader'),
+        )
+        .options({
+          postcssOptions: {
+            ident: 'postcss',
+            plugins: [
+              [
+                require('postcss-preset-env')({
+                  browsers: ['ie >= 10'],
+                  autoprefixer: {
+                    flexbox: 'no-2009',
+                    ...userConfig.autoprefixer,
+                  },
+                  stage: 3,
+                }),
+                // require('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
+              ],
+            ],
+            ...userConfig.postcssLoader,
+          },
+        });
 
       if (loader) {
         rule

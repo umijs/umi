@@ -5,7 +5,7 @@ import {
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { logger } from '@umijs/utils';
 
-const PLUGIN_NAME = 'ProgressBarPlugin';
+const PLUGIN_NAME = 'ProgressPlugin';
 interface IOpts {}
 
 class UmiProgressPlugin extends ProgressPlugin {
