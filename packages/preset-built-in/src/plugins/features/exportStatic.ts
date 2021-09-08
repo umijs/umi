@@ -96,7 +96,8 @@ export default (api: IApi) => {
     );
     const { ssr } = api.config;
     if (
-      ssr &&
+      ssr && 
+      ssr.prerender !== false &&
       api.env === 'production' &&
       existsSync(serverFilePath) &&
       !isDynamicRoute(route.path!)
