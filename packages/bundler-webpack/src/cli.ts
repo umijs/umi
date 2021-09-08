@@ -22,8 +22,6 @@ if (command === 'build') {
     try {
       await build({
         config: {
-          jsMinifier: args['js-minifier'],
-          cssMinifier: args['css-minifier'],
           ...args,
         },
         cwd,

@@ -9,20 +9,49 @@ interface IOpts {
 
 const expects: Record<string, Function> = {
   alias({ files }: IOpts) {
-    expect(files['index.js']).toContain(`const a = 'react';`);
+    expect(files['index.js']).toContain(`var a = 'react';`);
+  },
+  chainWebpack({ files }: IOpts) {
+    expect(files['index.js']).toContain(`var a = 'react';`);
+  },
+  'css-modules'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`var a_module = ({"a":"`);
+  },
+  'css-modules-auto'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`var amodules = ({"a":"`);
+  },
+  define({ files }: IOpts) {
+    expect(files['index.js']).toContain(`console.log("1");`);
+    expect(files['index.js']).toContain(`console.log("2");`);
+    expect(files['index.js']).toContain(`console.log("3");`);
+    expect(files['index.js']).toContain(`console.log("test");`);
+  },
+  externals({ files }: IOpts) {
+    expect(files['index.js']).toContain(
+      `var external_React_namespaceObject = React;`,
+    );
+  },
+  json({ files }: IOpts) {
+    expect(files['index.js']).toContain(
+      `var react_namespaceObject = {"foo":"react"};`,
+    );
   },
   'postcss-autoprefixer'({ files }: IOpts) {
     expect(files['index.css']).toContain(
       `.a { display: -ms-flexbox; display: flex; }`,
     );
   },
+  'postcss-extra-postcss-plugins'({ files }: IOpts) {
+    expect(files['index.css']).toContain(`-webkit-overflow-scrolling: touch;`);
+  },
   'postcss-flexbugs-fixes'({ files }: IOpts) {
     expect(files['index.css']).toContain(`.foo { flex: 1 1; }`);
   },
   targets({ files }: IOpts) {
-    expect(Object.keys(files).length).toEqual(2);
-    expect(files['index.css']).toContain(`color: red;`);
-    expect(files['index.js']).toContain(`console.log('index')`);
+    expect(files['index.js']).toContain(`var foo = 'foo';`);
+  },
+  theme({ files }: IOpts) {
+    expect(files['index.css']).toContain(`color: green;`);
   },
 };
 
