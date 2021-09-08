@@ -307,7 +307,6 @@ export interface ISSR {
   devServerRender?: boolean;
   mode?: 'string' | 'stream';
   staticMarkup?: boolean;
-  prerender?: boolean;
 }
 
 export interface ICopy {
