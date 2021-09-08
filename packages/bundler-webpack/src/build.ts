@@ -1,5 +1,5 @@
 import webpack from '../compiled/webpack';
-import { getConfig } from './config/getConfig';
+import { getConfig } from './config/config';
 import { Env, IConfig } from './types';
 
 interface IOpts {

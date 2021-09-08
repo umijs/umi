@@ -4,6 +4,7 @@ import Config from '../../compiled/webpack-5-chain';
 import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
 import { Env, IConfig } from '../types';
 import { getBrowsersList } from '../utils/getBrowsersList';
+import { applyAssetRules } from './assetRules';
 import { applyCompress } from './compress';
 import { applyCSSRules } from './cssRules';
 import { applyDefinePlugin } from './definePlugin';
@@ -105,6 +106,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // rules
   await applyJavaScriptRules(applyOpts);
   await applyCSSRules(applyOpts);
+  await applyAssetRules(applyOpts);
 
   // plugins
   // mini-css-extract-plugin
