@@ -36,7 +36,9 @@ class UmiProgressPlugin extends ProgressPlugin {
       hasWarnings;
       if (hasErrors) {
         errors.forEach((error) => {
-          logger.error(`${error.moduleName!}:${error.loc}`);
+          logger.error(
+            `${error.moduleName!}${error.loc ? `:${error.loc}` : ''}`,
+          );
           console.log(error.message);
         });
       } else {

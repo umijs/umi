@@ -10,6 +10,7 @@ import { applyIgnorePlugin } from './ignorePlugin';
 import { applyJavaScriptRules } from './javaScriptRules';
 import { applyMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
 import { applyProgressPlugin } from './progressPlugin';
+import { applySpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 import { applyWebpackBundleAnalyzer } from './webpackBundleAnalyzer';
 
 interface IOpts {
@@ -92,7 +93,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // target
   config.target(['web', 'es5']);
 
-  // node polyfill
+  // TODO: node polyfill
 
   // rules
   await applyJavaScriptRules(applyOpts);
@@ -107,9 +108,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await applyDefinePlugin(applyOpts);
   // progress
   await applyProgressPlugin(applyOpts);
-  // copy
-  // friendly-error
-  // manifest
+  // TODO: copy
+  // TODO: friendly-error
+  // TODO: manifest
   // hmr
   if (isDev) {
     config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
@@ -118,7 +119,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await applyCompress(applyOpts);
   // purgecss
   // await applyPurgeCSSWebpackPlugin(applyOpts);
-  // speed measure
   // analyzer
   await applyWebpackBundleAnalyzer(applyOpts);
 
@@ -130,7 +130,13 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     });
   }
 
-  const webpackConfig = config.toConfig();
-  webpackConfig;
+  let webpackConfig = config.toConfig();
+
+  // speed measure
+  // TODO: mini-css-extract-plugin 报错
+  webpackConfig = await applySpeedMeasureWebpackPlugin({
+    webpackConfig,
+  });
+
   return webpackConfig;
 }
