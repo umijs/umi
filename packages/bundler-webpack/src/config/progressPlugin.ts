@@ -10,10 +10,6 @@ interface IOpts {
 }
 
 export async function applyProgressPlugin(opts: IOpts) {
-  const { config, userConfig, cwd, env } = opts;
-  config;
-  userConfig;
-  cwd;
-  env;
+  const { config } = opts;
   config.plugin('progress-plugin').use(ProgressPlugin, [{}]);
 }

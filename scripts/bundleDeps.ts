@@ -1,7 +1,7 @@
 // @ts-ignore
 import ncc from '@vercel/ncc';
 import resolve from 'resolve';
-import { argv, chalk, fs, path } from 'zx';
+import 'zx/globals';
 // import { Package } from 'dts-packer';
 // @ts-ignore
 import { Package } from '/Users/chencheng/code/github.com/sorrycc/dts-packer/dist/Package.js';

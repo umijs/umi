@@ -1,4 +1,4 @@
-import { $, argv, chalk, fs, path } from 'zx';
+import 'zx/globals';
 
 (async () => {
   const root = path.join(__dirname, '..');
@@ -56,9 +56,7 @@ import { $, argv, chalk, fs, path } from 'zx';
       // package.json
       const pkgPkgJSONPath = path.join(pkgDir, 'package.json');
       const hasPkgJSON = fs.existsSync(pkgPkgJSONPath);
-      const pkgPkgJSON = hasPkgJSON
-        ? require(pkgPkgJSONPath)
-        : {};
+      const pkgPkgJSON = hasPkgJSON ? require(pkgPkgJSONPath) : {};
       fs.writeJSONSync(
         pkgPkgJSONPath,
         Object.assign(
@@ -89,16 +87,18 @@ import { $, argv, chalk, fs, path } from 'zx';
             },
           },
           {
-            ...(hasPkgJSON ? {
-              authors: pkgPkgJSON.authors,
-              bin: pkgPkgJSON.bin,
-              files: pkgPkgJSON.files,
-              scripts: pkgPkgJSON.scripts,
-              description: pkgPkgJSON.description,
-              dependencies: pkgPkgJSON.dependencies,
-              devDependencies: pkgPkgJSON.devDependencies,
-              compiledConfig: pkgPkgJSON.compiledConfig,
-            } : {})
+            ...(hasPkgJSON
+              ? {
+                  authors: pkgPkgJSON.authors,
+                  bin: pkgPkgJSON.bin,
+                  files: pkgPkgJSON.files,
+                  scripts: pkgPkgJSON.scripts,
+                  description: pkgPkgJSON.description,
+                  dependencies: pkgPkgJSON.dependencies,
+                  devDependencies: pkgPkgJSON.devDependencies,
+                  compiledConfig: pkgPkgJSON.compiledConfig,
+                }
+              : {}),
           },
         ),
         { spaces: '  ' },
