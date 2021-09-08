@@ -3,7 +3,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import Config from '../../compiled/webpack-5-chain';
 import { Env, IConfig, Transpiler } from '../types';
-import { es5ImcompatibleVersionsToPkg, isMatch } from './depMatch';
+import { es5ImcompatibleVersionsToPkg, isMatch } from '../utils/depMatch';
 
 interface IOpts {
   config: Config;
@@ -80,6 +80,7 @@ export async function applyJavaScriptRules(opts: IOpts) {
             process.env.BABEL_CACHE !== 'none'
               ? winPath(`${prefix}/.umi/.cache/babel-loader`)
               : false,
+          targets: userConfig.targets,
           presets: [
             [
               require.resolve('@umijs/babel-preset-umi'),

@@ -42,6 +42,7 @@ export interface IConfig {
   externals?: WebpackConfig['externals'];
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
+  extraPostCSSPlugins?: any[];
   hash?: any;
   ignoreMomentLocale?: boolean;
   jsMinifier?: JSMinifier;
@@ -54,5 +55,6 @@ export interface IConfig {
   sassLoader?: { [key: string]: any };
   srcTranspiler?: Transpiler;
   styleLoader?: { [key: string]: any };
+  targets?: { [key: string]: any };
   [key: string]: any;
 }
