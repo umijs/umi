@@ -6,6 +6,7 @@ interface IOpts {
   userConfig: IConfig;
   cwd: string;
   env: Env;
+  browsers: any;
 }
 
 export async function applyCSSRules(opts: IOpts) {
@@ -92,18 +93,16 @@ export async function applyCSSRules(opts: IOpts) {
           postcssOptions: {
             ident: 'postcss',
             plugins: [
-              [
-                require('postcss-preset-env')({
-                  browsers: ['ie >= 10'],
-                  autoprefixer: {
-                    flexbox: 'no-2009',
-                    ...userConfig.autoprefixer,
-                  },
-                  stage: 3,
-                }),
-                // require('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
-              ],
-            ],
+              require('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
+              require('postcss-preset-env')({
+                browsers: opts.browsers,
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                  ...userConfig.autoprefixer,
+                },
+                stage: 3,
+              }),
+            ].concat(userConfig.extraPostCSSPlugins || []),
             ...userConfig.postcssLoader,
           },
         });

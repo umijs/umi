@@ -8,11 +8,6 @@ interface IOpts {
 }
 
 const expects: Record<string, Function> = {
-  normal({ files }: IOpts) {
-    expect(Object.keys(files).length).toEqual(2);
-    expect(files['index.css']).toContain(`color: red;`);
-    expect(files['index.js']).toContain(`console.log('index')`);
-  },
   alias({ files }: IOpts) {
     expect(files['index.js']).toContain(`const a = 'react';`);
   },
@@ -23,6 +18,11 @@ const expects: Record<string, Function> = {
   },
   'postcss-flexbugs-fixes'({ files }: IOpts) {
     expect(files['index.css']).toContain(`.foo { flex: 1 1; }`);
+  },
+  targets({ files }: IOpts) {
+    expect(Object.keys(files).length).toEqual(2);
+    expect(files['index.css']).toContain(`color: red;`);
+    expect(files['index.js']).toContain(`console.log('index')`);
   },
 };
 
