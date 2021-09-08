@@ -98,7 +98,6 @@
       "less": "$$LOCAL",
       "cssnano": "$$LOCAL",
       "postcss": "postcss",
-      "schema-utils": "$$LOCAL",
       "tapable": "$$LOCAL",
       "terser": "$$LOCAL",
       "terser-webpack-plugin": "$$LOCAL",

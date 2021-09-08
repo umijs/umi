@@ -20,9 +20,11 @@ export async function applyCSSRules(opts: IOpts) {
       loader: require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
       loaderOptions: {
         implementation: require.resolve('@umijs/bundler-webpack/compiled/less'),
-        modifyVars: userConfig.theme,
-        javascriptEnabled: true,
-        ...userConfig.lessLoader,
+        lessOptions: {
+          modifyVars: userConfig.theme,
+          javascriptEnabled: true,
+          ...userConfig.lessLoader,
+        },
       },
     },
     {
@@ -34,14 +36,17 @@ export async function applyCSSRules(opts: IOpts) {
   ];
 
   for (const { name, test, loader, loaderOptions } of rulesConfig) {
-    const rule = config.module.rule(name).test(test);
+    const rule = config.module.rule(name);
     const nestRulesConfig = [
-      {
-        rule: rule.oneOf('css-modules').resourceQuery(/modules/),
+      userConfig.autoCSSModules && {
+        rule: rule
+          .test(test)
+          .oneOf('css-modules')
+          .resourceQuery(/modules/),
         isCSSModules: true,
       },
-      { rule: rule.oneOf('css'), isCSSModules: false },
-    ];
+      { rule: rule.test(test).oneOf('css'), isCSSModules: false },
+    ].filter(Boolean);
     for (const { rule, isCSSModules } of nestRulesConfig) {
       if (userConfig.styleLoader) {
         rule

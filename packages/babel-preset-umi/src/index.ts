@@ -1,4 +1,5 @@
 import { dirname } from 'path';
+import autoCSSModules from './plugins/autoCSSModules';
 import dynamicImportNode from './plugins/dynamicImportNode';
 import lockCoreJS from './plugins/lockCoreJS';
 import { Env } from './types';
@@ -11,6 +12,7 @@ interface IOpts {
   pluginTransformRuntime: any;
   pluginLockCoreJS: any;
   pluginDynamicImportNode: any;
+  pluginAutoCSSModules: any;
 }
 
 export default (_context: any, opts: IOpts) => {
@@ -140,6 +142,7 @@ export default (_context: any, opts: IOpts) => {
       // none official plugins
       opts.pluginLockCoreJS && [lockCoreJS],
       opts.pluginDynamicImportNode && [dynamicImportNode],
+      opts.pluginAutoCSSModules && [autoCSSModules],
     ].filter(Boolean),
   };
 };

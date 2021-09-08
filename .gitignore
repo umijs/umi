@@ -3,3 +3,4 @@
 /packages/*/dist
 /packages/*/tsconfig.tsbuildinfo
 /packages/*/src/**/fixtures/*/dist
+/packages/*/src/**/fixtures/*/.umi

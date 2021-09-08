@@ -29,11 +29,8 @@ export async function applyJavaScriptRules(opts: IOpts) {
       .end()
       .exclude.add(/node_modules/)
       .end(),
-    config.module
-      .rule('jsx-ts-tsx')
-      .test(/\.(jsx|ts|tsx)$/)
-      .include.add(/node_modules/)
-      .end(),
+
+    config.module.rule('jsx-ts-tsx').test(/\.(jsx|ts|tsx)$/),
     config.module
       .rule('extra-src')
       .test(/\.(js|mjs)$/)
@@ -92,6 +89,7 @@ export async function applyJavaScriptRules(opts: IOpts) {
                 pluginTransformRuntime: {},
                 pluginLockCoreJS: {},
                 pluginDynamicImportNode: false,
+                pluginAutoCSSModules: userConfig.autoCSSModules,
               },
             ],
             ...(userConfig.extraBabelPresets || []).filter(Boolean),
