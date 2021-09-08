@@ -11,6 +11,18 @@ const expects: Record<string, Function> = {
   alias({ files }: IOpts) {
     expect(files['index.js']).toContain(`var a = 'react';`);
   },
+  'asset-avif'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`.avif"`);
+  },
+  'asset-fallback'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`.mp3"`);
+  },
+  'asset-image-large'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`.png"`);
+  },
+  'asset-image-small'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`"data:image/png;base64,`);
+  },
   chainWebpack({ files }: IOpts) {
     expect(files['index.js']).toContain(`var a = 'react';`);
   },
