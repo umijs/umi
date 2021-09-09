@@ -167,6 +167,7 @@ importers:
       '@umijs/utils': 4.0.0-alpha.1
       autoprefixer: 10.3.4
       babel-loader: 8.2.2
+      compression: 1.7.4
       css-loader: 6.2.0
       css-minimizer-webpack-plugin: 3.0.2
       cssnano: 5.0.8
@@ -209,6 +210,7 @@ importers:
       '@types/ws': 7.4.7
       autoprefixer: 10.3.4_postcss@8.3.6
       babel-loader: 8.2.2_webpack@5.51.1
+      compression: 1.7.4
       css-loader: 6.2.0_webpack@5.51.1
       css-minimizer-webpack-plugin: 3.0.2_webpack@5.51.1
       cssnano: 5.0.8_postcss@8.3.6
@@ -297,6 +299,9 @@ importers:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack-bundle-analyzer:
+    specifiers: {}
+
+  packages/bundler-webpack/compiled/webpack-dev-middleware:
     specifiers: {}
 
   packages/bundler-webpack/compiled/webpack-sources:
@@ -3175,6 +3180,11 @@ packages:
     resolution: {integrity: sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=}
     dev: false
 
+  /bytes/3.0.0:
+    resolution: {integrity: sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=}
+    engines: {node: '>= 0.8'}
+    dev: true
+
   /bytes/3.1.0:
     resolution: {integrity: sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==}
     engines: {node: '>= 0.8'}
@@ -3425,6 +3435,26 @@ packages:
 
   /commondir/1.0.1:
     resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
+    dev: true
+
+  /compressible/2.0.18:
+    resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      mime-db: 1.49.0
+    dev: true
+
+  /compression/1.7.4:
+    resolution: {integrity: sha512-jaSIDzP9pZVS4ZfQ+TzvtiWhdpFhE2RDHz8QJkpX9SIpLq88VueF5jJw6t+6CUQcAoA6t+x89MLrWAqpfDE8iQ==}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      accepts: 1.3.7
+      bytes: 3.0.0
+      compressible: 2.0.18
+      debug: 2.6.9
+      on-headers: 1.0.2
+      safe-buffer: 5.1.2
+      vary: 1.1.2
     dev: true
 
   /concat-map/0.0.1:
@@ -6087,6 +6117,11 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       ee-first: 1.1.1
+    dev: true
+
+  /on-headers/1.0.2:
+    resolution: {integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==}
+    engines: {node: '>= 0.8'}
     dev: true
 
   /once/1.4.0:

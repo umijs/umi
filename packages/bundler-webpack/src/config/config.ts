@@ -65,7 +65,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     opts.cwd,
     userConfig.outputPath || DEFAULT_OUTPUT_PATH,
   );
-  const useHash = isDev || (userConfig.hash && !isDev);
+  const useHash = userConfig.hash && !isDev;
   const disableCompress = process.env.COMPRESS === 'none';
   config.output
     .path(absOutputPath)
