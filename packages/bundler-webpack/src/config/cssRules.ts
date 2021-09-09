@@ -45,7 +45,10 @@ export async function applyCSSRules(opts: IOpts) {
           .resourceQuery(/modules/),
         isCSSModules: true,
       },
-      { rule: rule.test(test).oneOf('css'), isCSSModules: false },
+      {
+        rule: rule.test(test).oneOf('css').sideEffects(true),
+        isCSSModules: false,
+      },
     ].filter(Boolean);
     for (const { rule, isCSSModules } of nestRulesConfig) {
       if (userConfig.styleLoader) {
