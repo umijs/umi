@@ -32,6 +32,9 @@ const expects: Record<string, Function> = {
   'css-modules-auto'({ files }: IOpts) {
     expect(files['index.js']).toContain(`var amodules = ({"a":"`);
   },
+  'css-side-effects'({ files }: IOpts) {
+    expect(files['index.css']).toContain(`color: red;`);
+  },
   define({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("1");`);
     expect(files['index.js']).toContain(`console.log("2");`);
