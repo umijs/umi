@@ -18,5 +18,6 @@ export async function dev(opts: IOpts) {
   await createServer({
     webpackConfig,
     userConfig: opts.config,
+    cwd: opts.cwd,
   });
 }
