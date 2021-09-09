@@ -13,11 +13,15 @@ interface IOpts {
 }
 
 export async function applyCompress(opts: IOpts) {
-  const { config, userConfig } = opts;
+  const { config, userConfig, env } = opts;
   const jsMinifier = userConfig.jsMinifier || JSMinifier.esbuild;
   const cssMinifier = userConfig.cssMinifier || CSSMinifier.esbuild;
 
-  if (jsMinifier === JSMinifier.none && cssMinifier === CSSMinifier.none) {
+  if (
+    env === Env.development ||
+    process.env.COMPRESS === 'none' ||
+    (jsMinifier === JSMinifier.none && cssMinifier === CSSMinifier.none)
+  ) {
     config.optimization.minimize(false);
     return;
   }

@@ -11,7 +11,7 @@ interface IOpts {
 export async function dev(opts: IOpts) {
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
-    env: Env.production,
+    env: Env.development,
     entry: opts.entry,
     userConfig: opts.config,
   });

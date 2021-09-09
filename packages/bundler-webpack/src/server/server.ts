@@ -18,6 +18,9 @@ export async function createServer(opts: IOpts) {
   const { webpackConfig, userConfig } = opts;
   const app = express();
 
+  // compression
+  app.use(require('@umijs/bundler-webpack/compiled/compression')());
+
   const compiler = webpack(webpackConfig);
   const compilerMiddleware = webpackDevMiddleware(compiler, {
     publicPath: '/',
@@ -25,6 +28,9 @@ export async function createServer(opts: IOpts) {
     // watchOptions: { ignored }
   });
   app.use(compilerMiddleware);
+
+  // mock
+  // proxy
 
   const server = http.createServer(app);
   const ws = createWebSocketServer(server);
