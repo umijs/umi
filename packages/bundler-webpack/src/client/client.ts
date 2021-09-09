@@ -11,7 +11,15 @@ const host = location.host;
 const socket = new WebSocket(`ws://${host}`, 'webpack-hmr');
 
 socket.addEventListener('message', async ({ data }) => {
-  handleMessage(JSON.parse(data)).catch(console.error);
+  data = JSON.parse(data);
+  if (data.type === 'connected') {
+    console.log(`[webpack] connected.`);
+    // proxy(nginx, docker) hmr ws maybe caused timeout,
+    // so send ping package let ws keep alive.
+    pingTimer = setInterval(() => socket.send('ping'), 30000);
+  } else {
+    handleMessage(data).catch(console.error);
+  }
 });
 
 socket.addEventListener('close', () => {
@@ -189,12 +197,6 @@ function tryApplyUpdates(onHotUpdateSuccess?: Function) {
 async function handleMessage(payload: any) {
   // console.log('[payload]', payload);
   switch (payload.type) {
-    case 'connected':
-      console.log(`[webpack] connected.`);
-      // proxy(nginx, docker) hmr ws maybe caused timeout,
-      // so send ping package let ws keep alive.
-      pingTimer = setInterval(() => socket.send('ping'), 30000);
-      break;
     case MESSAGE_TYPE.hash:
       handleAvailableHash(payload.data);
       break;
