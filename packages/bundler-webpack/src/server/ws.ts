@@ -8,9 +8,8 @@ export function createWebSocketServer(server: Server) {
   });
 
   server.on('upgrade', (req, socket, head) => {
-    if (req.headers['sec-websocket-protocol'] === 'HMR_HEADER') {
-      // @ts-ignore
-      wss.handleUpgrade(req, socket, head, (ws) => {
+    if (req.headers['sec-websocket-protocol'] === 'webpack-hmr') {
+      wss.handleUpgrade(req, socket as any, head, (ws) => {
         wss.emit('connection', ws, req);
       });
     }

@@ -1,4 +1,4 @@
-import { stripAnsi } from '@umijs/utils';
+import stripAnsi from '@umijs/utils/compiled/strip-ansi';
 
 const friendlySyntaxErrorLabel = 'Syntax error:';
 
@@ -6,8 +6,21 @@ function isLikelyASyntaxError(message: string): boolean {
   return stripAnsi(message).indexOf(friendlySyntaxErrorLabel) !== -1;
 }
 
-export function formatMessage(message: string) {
-  let lines = message.split('\n');
+export function formatMessage(
+  message: string | { message: string } | { message: string }[],
+) {
+  let lines: string[] = [];
+  if (typeof message === 'string') {
+    lines = message.split('\n');
+  } else if ('message' in message) {
+    lines = message['message'].split('\n');
+  } else if (Array.isArray(message)) {
+    message.forEach((message) => {
+      if ('message' in message) {
+        lines = message['message'].split('\n');
+      }
+    });
+  }
 
   // Strip webpack-added headers off errors/warnings
   // https://github.com/webpack/webpack/blob/master/lib/ModuleError.js

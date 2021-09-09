@@ -38,7 +38,8 @@
     "jest-worker": "27.1.0",
     "node-libs-browser": "2.2.1",
     "postcss": "8.3.6",
-    "postcss-preset-env": "6.7.0"
+    "postcss-preset-env": "6.7.0",
+    "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
     "@types/express": "4.17.13",
