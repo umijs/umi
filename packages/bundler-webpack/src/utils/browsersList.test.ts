@@ -1,4 +1,4 @@
-import { getBrowsersList } from './getBrowsersList';
+import { getBrowsersList } from './browsersList';
 
 test('normal', () => {
   expect(

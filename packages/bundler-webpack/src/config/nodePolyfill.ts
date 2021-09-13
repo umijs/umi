@@ -9,7 +9,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyNodePolyfill(opts: IOpts) {
+export async function addNodePolyfill(opts: IOpts) {
   const { config } = opts;
 
   const nodeLibs = require('node-libs-browser');

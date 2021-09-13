@@ -8,7 +8,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyAssetRules(opts: IOpts) {
+export async function addAssetRules(opts: IOpts) {
   const { config, userConfig } = opts;
 
   const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);

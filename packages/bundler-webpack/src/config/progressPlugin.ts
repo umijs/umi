@@ -9,7 +9,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyProgressPlugin(opts: IOpts) {
+export async function addProgressPlugin(opts: IOpts) {
   const { config } = opts;
   config.plugin('progress-plugin').use(ProgressPlugin, [{}]);
 }

@@ -7,7 +7,7 @@ interface IOpts {
   webpackConfig: Configuration;
 }
 
-export async function applySpeedMeasureWebpackPlugin(opts: IOpts) {
+export async function addSpeedMeasureWebpackPlugin(opts: IOpts) {
   let webpackConfig = opts.webpackConfig;
   if (process.env.SPEED_MEASURE) {
     const smpOption =

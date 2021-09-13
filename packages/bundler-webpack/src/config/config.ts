@@ -3,18 +3,18 @@ import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
 import { Env, IConfig } from '../types';
-import { getBrowsersList } from '../utils/getBrowsersList';
-import { applyAssetRules } from './assetRules';
-import { applyCompress } from './compress';
-import { applyCSSRules } from './cssRules';
-import { applyDefinePlugin } from './definePlugin';
-import { applyIgnorePlugin } from './ignorePlugin';
-import { applyJavaScriptRules } from './javaScriptRules';
-import { applyMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
-import { applyNodePolyfill } from './nodePolyfill';
-import { applyProgressPlugin } from './progressPlugin';
-import { applySpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
-import { applyWebpackBundleAnalyzer } from './webpackBundleAnalyzer';
+import { getBrowsersList } from '../utils/browsersList';
+import { addAssetRules } from './assetRules';
+import { addBundleAnalyzerPlugin } from './bundleAnalyzerPlugin';
+import { addCompressPlugin } from './compressPlugin';
+import { addCSSRules } from './cssRules';
+import { addDefinePlugin } from './definePlugin';
+import { addIgnorePlugin } from './ignorePlugin';
+import { addJavaScriptRules } from './javaScriptRules';
+import { addMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
+import { addNodePolyfill } from './nodePolyfill';
+import { addProgressPlugin } from './progressPlugin';
+import { addSpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 
 interface IOpts {
   cwd: string;
@@ -106,22 +106,22 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   config.target(['web', 'es5']);
 
   // node polyfill
-  await applyNodePolyfill(applyOpts);
+  await addNodePolyfill(applyOpts);
 
   // rules
-  await applyJavaScriptRules(applyOpts);
-  await applyCSSRules(applyOpts);
-  await applyAssetRules(applyOpts);
+  await addJavaScriptRules(applyOpts);
+  await addCSSRules(applyOpts);
+  await addAssetRules(applyOpts);
 
   // plugins
   // mini-css-extract-plugin
-  await applyMiniCSSExtractPlugin(applyOpts);
+  await addMiniCSSExtractPlugin(applyOpts);
   // ignoreMomentLocale
-  await applyIgnorePlugin(applyOpts);
+  await addIgnorePlugin(applyOpts);
   // define
-  await applyDefinePlugin(applyOpts);
+  await addDefinePlugin(applyOpts);
   // progress
-  await applyProgressPlugin(applyOpts);
+  await addProgressPlugin(applyOpts);
   // TODO: copy
   // TODO: friendly-error
   // TODO: manifest
@@ -130,11 +130,11 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
   }
   // compress
-  await applyCompress(applyOpts);
+  await addCompressPlugin(applyOpts);
   // purgecss
   // await applyPurgeCSSWebpackPlugin(applyOpts);
   // analyzer
-  await applyWebpackBundleAnalyzer(applyOpts);
+  await addBundleAnalyzerPlugin(applyOpts);
 
   // chain webpack
   if (userConfig.chainWebpack) {
@@ -148,7 +148,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
 
   // speed measure
   // TODO: mini-css-extract-plugin 报错
-  webpackConfig = await applySpeedMeasureWebpackPlugin({
+  webpackConfig = await addSpeedMeasureWebpackPlugin({
     webpackConfig,
   });
 
