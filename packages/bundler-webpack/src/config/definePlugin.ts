@@ -37,7 +37,7 @@ export function resolveDefine(opts: { define: any }) {
   };
 }
 
-export async function applyDefinePlugin(opts: IOpts) {
+export async function addDefinePlugin(opts: IOpts) {
   const { config, userConfig } = opts;
   config.plugin('define').use(DefinePlugin, [
     resolveDefine({

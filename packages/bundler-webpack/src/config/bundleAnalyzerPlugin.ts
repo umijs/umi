@@ -10,7 +10,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyWebpackBundleAnalyzer(opts: IOpts) {
+export async function addBundleAnalyzerPlugin(opts: IOpts) {
   const { config } = opts;
   if (process.env.ANALYZE) {
     config.plugin('webpack-bundle-analyzer').use(BundleAnalyzerPlugin, [

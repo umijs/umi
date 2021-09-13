@@ -23,6 +23,7 @@ export async function createServer(opts: IOpts) {
   // compression
   app.use(require('@umijs/bundler-webpack/compiled/compression')());
 
+  // webpack dev middleware
   const compiler = webpack(
     Array.isArray(webpackConfig) ? webpackConfig : [webpackConfig],
   );
@@ -89,6 +90,8 @@ export async function createServer(opts: IOpts) {
   // mock
   // proxy
 
+  // index.html
+  // TODO: remove me
   app.get('/', (_req, res, next) => {
     res.set('Content-Type', 'text/html');
     const htmlPath = join(opts.cwd, 'index.html');

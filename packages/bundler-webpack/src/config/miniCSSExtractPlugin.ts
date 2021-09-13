@@ -10,7 +10,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyMiniCSSExtractPlugin(opts: IOpts) {
+export async function addMiniCSSExtractPlugin(opts: IOpts) {
   const { config, userConfig, env } = opts;
 
   const hash =

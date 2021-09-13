@@ -12,7 +12,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyCompress(opts: IOpts) {
+export async function addCompressPlugin(opts: IOpts) {
   const { config, userConfig, env } = opts;
   const jsMinifier = userConfig.jsMinifier || JSMinifier.esbuild;
   const cssMinifier = userConfig.cssMinifier || CSSMinifier.esbuild;

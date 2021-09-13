@@ -12,7 +12,7 @@ interface IOpts {
   env: Env;
 }
 
-export async function applyJavaScriptRules(opts: IOpts) {
+export async function addJavaScriptRules(opts: IOpts) {
   const { config, userConfig, cwd, env } = opts;
 
   const depPkgs = Object.assign({}, es5ImcompatibleVersionsToPkg());

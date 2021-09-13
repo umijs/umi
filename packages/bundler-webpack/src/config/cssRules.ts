@@ -9,7 +9,7 @@ interface IOpts {
   browsers: any;
 }
 
-export async function applyCSSRules(opts: IOpts) {
+export async function addCSSRules(opts: IOpts) {
   const { config, userConfig } = opts;
 
   const rulesConfig = [
