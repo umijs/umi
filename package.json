@@ -16,7 +16,7 @@
     "@umijs/bundler-webpack": "link:packages/bundler-webpack",
     "@umijs/utils": "link:packages/utils",
     "@vercel/ncc": "^0.30.0",
-    "dts-packer": "^0.0.1-alpha.1",
+    "dts-packer": "^0.0.2",
     "esno": "^0.9.1",
     "jest": "^27.1.0",
     "lint-staged": "^11.1.2",
