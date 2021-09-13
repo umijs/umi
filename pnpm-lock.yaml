@@ -12,7 +12,7 @@ importers:
       '@umijs/bundler-webpack': link:packages/bundler-webpack
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': ^0.30.0
-      dts-packer: ^0.0.1-alpha.1
+      dts-packer: ^0.0.2
       esno: ^0.9.1
       jest: ^27.1.0
       lint-staged: ^11.1.2
@@ -37,7 +37,7 @@ importers:
       '@umijs/bundler-webpack': link:packages/bundler-webpack
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.30.0
-      dts-packer: 0.0.1-alpha.1
+      dts-packer: 0.0.2
       esno: 0.9.1
       jest: 27.1.0_ts-node@10.2.1
       lint-staged: 11.1.2
@@ -317,6 +317,16 @@ importers:
 
   packages/core:
     specifiers: {}
+
+  packages/mfsu:
+    specifiers:
+      '@umijs/bundler-utils': 4.0.0-alpha.1
+      '@umijs/bundler-webpack': 4.0.0-alpha.1
+      '@umijs/utils': 4.0.0-alpha.1
+    dependencies:
+      '@umijs/bundler-utils': link:../bundler-utils
+      '@umijs/bundler-webpack': link:../bundler-webpack
+      '@umijs/utils': link:../utils
 
   packages/umi:
     specifiers: {}
@@ -3978,10 +3988,11 @@ packages:
       domhandler: 4.2.2
     dev: true
 
-  /dts-packer/0.0.1-alpha.1:
-    resolution: {integrity: sha512-+300+4u+Ih4AVyKw+/38qKuO0irei9sMs8LprxW0SXew3fVK2W+vzTTsaWmyfQvchJI6tu7nf9Sxg//g6nmKjg==}
+  /dts-packer/0.0.2:
+    resolution: {integrity: sha512-fqL3wy2ghCyO/NCWIIfAYudj+h5htorYXuZzCUqM5/GYwaZiAYzpLtxQ/shB2tWwuM5A5YmWibxed1kQUQyeaA==}
     hasBin: true
     dependencies:
+      chalk: 4.1.2
       got: 11.8.2
       is-core-module: 2.6.0
       mkdirp: 1.0.4
