@@ -27,7 +27,7 @@ export function getAliasedPath({
     // e.g. foo: path/to/foo.js
     const slashedKey = isJSFile(aliasValue) ? key : addLastSlash(key);
     if (importValue.startsWith(slashedKey)) {
-      return aliasValue;
+      return importValue.replace(key, aliasValue);
     }
   }
 }

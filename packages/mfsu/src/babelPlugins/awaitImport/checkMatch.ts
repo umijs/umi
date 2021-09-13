@@ -1,5 +1,6 @@
 import * as Babel from '@umijs/bundler-utils/compiled/babel/core';
 import { winPath } from '@umijs/utils';
+import assert from 'assert';
 import { isAbsolute } from 'path';
 import type { IOpts } from './awaitImport';
 import { getAliasedPath } from './getAliasedPath';
@@ -7,22 +8,31 @@ import { isExternals } from './isExternals';
 
 // const UNMATCH_LIBS = ['umi', 'dumi', '@alipay/bigfish'];
 const RE_NODE_MODULES = /node_modules/;
-const RE_UMI_LOCAL_DEV = /umi\/packages\//;
+const RE_UMI_LOCAL_DEV = /umi(-next)?\/packages\//;
 
 export function checkMatch({
   value,
   path,
   opts,
   isExportAll,
+  depth,
 }: {
   value: string;
-  path: Babel.NodePath;
-  opts: IOpts;
+  path?: Babel.NodePath;
+  opts?: IOpts;
   isExportAll?: boolean;
-}) {
-  let isMatch = false;
+  depth?: number;
+}): { isMatch: boolean; replaceValue: string } {
+  let isMatch;
   let replaceValue = '';
+  depth = depth || 1;
 
+  assert(
+    depth <= 10,
+    `endless loop detected in checkMatch, please check your alias config.`,
+  );
+
+  opts = opts || {};
   const remoteName = opts.remoteName || 'mf';
   if (
     // unMatch specified libs
@@ -49,8 +59,13 @@ export function checkMatch({
       alias: opts.alias || {},
     });
     if (aliasedPath) {
-      isMatch =
-        RE_NODE_MODULES.test(aliasedPath) || RE_UMI_LOCAL_DEV.test(aliasedPath);
+      return checkMatch({
+        value: aliasedPath,
+        path,
+        opts,
+        isExportAll,
+        depth: depth + 1,
+      });
     } else {
       isMatch = true;
     }
@@ -61,7 +76,7 @@ export function checkMatch({
   }
 
   if (isMatch) {
-    replaceValue = `${remoteName}/${getPath({ value, opts })}`;
+    replaceValue = `${remoteName}/${value}`;
   }
 
   opts.onTransformDeps?.({
@@ -69,7 +84,7 @@ export function checkMatch({
     replaceValue,
     isMatch,
     // @ts-ignore
-    file: path.hub.file.opts.filename,
+    file: path?.hub.file.opts.filename,
   });
 
   return {
@@ -78,6 +93,7 @@ export function checkMatch({
   };
 }
 
+// TODO: REMOVE ME
 export function getPath({ value, opts }: { value: string; opts: IOpts }) {
   const alias = opts.alias || {};
   for (const key of Object.keys(alias)) {
