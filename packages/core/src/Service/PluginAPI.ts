@@ -40,7 +40,6 @@ export default class PluginAPI {
     id?: string;
     key?: string;
     config?: IPluginConfig;
-    onChange?: any;
     enableBy?: EnableBy | (() => boolean);
   } = {}) {
     const { plugins } = this.service;
