@@ -16,12 +16,14 @@ export function checkMatch({
   opts,
   isExportAll,
   depth,
+  cache,
 }: {
   value: string;
   path?: Babel.NodePath;
   opts?: IOpts;
   isExportAll?: boolean;
   depth?: number;
+  cache?: Map<string, any>;
 }): { isMatch: boolean; replaceValue: string } {
   let isMatch;
   let replaceValue = '';
@@ -79,13 +81,33 @@ export function checkMatch({
     replaceValue = `${remoteName}/${value}`;
   }
 
+  // @ts-ignore
+  const file = path?.hub.file.opts.filename;
   opts.onTransformDeps?.({
     sourceValue: value,
     replaceValue,
     isMatch,
-    // @ts-ignore
-    file: path?.hub.file.opts.filename,
+    file,
   });
+
+  if (cache) {
+    let mod;
+    if (cache.has(file)) {
+      mod = cache.get(file);
+    } else {
+      mod = {
+        matched: new Set(),
+        unMatched: new Set(),
+      };
+      cache.set(file, mod);
+    }
+
+    mod[isMatch ? 'matched' : 'unMatched'].add({
+      sourceValue: value,
+      replaceValue,
+      file,
+    });
+  }
 
   return {
     isMatch,
