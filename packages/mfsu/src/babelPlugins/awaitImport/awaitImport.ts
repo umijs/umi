@@ -5,6 +5,7 @@ import { parseSpecifiers } from './parseSpecifiers';
 
 export interface IOpts {
   onTransformDeps?: Function;
+  onCollect?: Function;
   exportAllMembers?: Record<string, string[]>;
   unMatchLibs?: string[];
   remoteName?: string;
@@ -18,6 +19,21 @@ function isCSS(val: string) {
 
 export default function () {
   return {
+    pre() {
+      // @ts-ignore
+      this.cache = new Map<string, any>();
+    },
+    post(state: any) {
+      // @ts-ignore
+      const { cache } = this;
+      if (cache.has(state.opts.filename)) {
+        // @ts-ignore
+        this.opts.onCollect?.({
+          file: state.opts.filename,
+          data: cache.get(state.opts.filename),
+        });
+      }
+    },
     visitor: {
       Program: {
         exit(path: Babel.NodePath<t.Program>, { opts }: { opts: IOpts }) {
@@ -33,6 +49,8 @@ export default function () {
             // import { x } from 'x';
             if (t.isImportDeclaration(node)) {
               const { isMatch, replaceValue } = checkMatch({
+                // @ts-ignore
+                cache: this.cache,
                 value: node.source.value,
                 opts,
                 path,
@@ -72,6 +90,8 @@ export default function () {
             // export * from 'x';
             else if (t.isExportAllDeclaration(node)) {
               const { isMatch, replaceValue } = checkMatch({
+                // @ts-ignore
+                cache: this.cache,
                 value: node.source.value,
                 opts,
                 path,
@@ -124,6 +144,8 @@ export default function () {
             // export { x } from 'x';
             else if (t.isExportNamedDeclaration(node) && node.source) {
               const { isMatch, replaceValue } = checkMatch({
+                // @ts-ignore
+                cache: this.cache,
                 value: node.source.value,
                 opts,
                 path,
@@ -188,6 +210,8 @@ export default function () {
           node.arguments[0].type === 'StringLiteral'
         ) {
           const { isMatch, replaceValue } = checkMatch({
+            // @ts-ignore
+            cache: this.cache,
             value: node.arguments[0].value,
             opts,
             path,

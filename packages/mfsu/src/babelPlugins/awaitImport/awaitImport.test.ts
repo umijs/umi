@@ -96,3 +96,29 @@ export const {
 } = __all_exports_a;`,
   );
 });
+
+test('onCollectData', () => {
+  let data: any;
+  expect(
+    doTransform({
+      code: `import a from 'a'; import b from './b'; import('c');`,
+      opts: {
+        onCollect(_data: any) {
+          data = _data.data;
+        },
+      },
+    }),
+  ).toEqual(
+    `const {
+  default: a
+} = await import("mf/a");
+import b from './b';
+import("mf/c");`,
+  );
+  expect(Array.from(data.matched).map((item: any) => item.sourceValue)).toEqual(
+    ['c', 'a'],
+  );
+  expect(
+    Array.from(data.unMatched).map((item: any) => item.sourceValue),
+  ).toEqual(['./b']);
+});
