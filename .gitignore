@@ -1,6 +1,7 @@
 /node_modules
 /examples/*/.mfsu
 /examples/*/.umi
+/examples/*/dist
 /examples/*/node_modules
 /packages/*/node_modules
 /packages/*/dist

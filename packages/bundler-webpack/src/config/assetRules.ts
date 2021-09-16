@@ -6,6 +6,7 @@ interface IOpts {
   userConfig: IConfig;
   cwd: string;
   env: Env;
+  staticPathPrefix: string;
 }
 
 export async function addAssetRules(opts: IOpts) {
@@ -23,6 +24,9 @@ export async function addAssetRules(opts: IOpts) {
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
+    })
+    .generator({
+      filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
   rule
@@ -33,6 +37,9 @@ export async function addAssetRules(opts: IOpts) {
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
+    })
+    .generator({
+      filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
   rule
@@ -42,5 +49,8 @@ export async function addAssetRules(opts: IOpts) {
     .add(/\.html$/)
     .add(/\.json$/)
     .end()
-    .type('asset/resource');
+    .type('asset/resource')
+    .generator({
+      filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
+    });
 }
