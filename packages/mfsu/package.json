@@ -27,7 +27,9 @@
   },
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-alpha.1",
-    "@umijs/bundler-webpack": "4.0.0-alpha.1",
     "@umijs/utils": "4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@umijs/bundler-webpack": "4.0.0-alpha.1"
   }
 }
