@@ -3,7 +3,8 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { REMOTE_FILE_FULL } from '../constants';
 import { Dep } from '../dep/dep';
-import { MFSU } from '../index';
+import { MFSU } from '../mfsu';
+import { DepChunkIdPrefixPlugin } from '../webpackPlugins/depChunkIdPrefixPlugin';
 
 interface IOpts {
   mfsu: MFSU;
@@ -75,8 +76,9 @@ export class DepBuilder {
     if (depConfig.output?.libraryTarget) delete depConfig.output.libraryTarget;
 
     depConfig.plugins = depConfig.plugins || [];
+    depConfig.plugins.push(new DepChunkIdPrefixPlugin());
     const exposes = opts.deps.reduce<Record<string, string>>((memo, dep) => {
-      exposes[`./${dep.shortFile}`] = join(
+      memo[`./${dep.shortFile}`] = join(
         this.opts.mfsu.opts.tmpBase!,
         dep.filePath,
       );

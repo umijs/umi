@@ -21,20 +21,20 @@ export async function getModuleExports({
         loader: extname(filePath).slice(1) as 'tsx' | 'jsx',
       })
     ).code;
-
-    await init;
-    const [imports, exports] = parse(content);
-    let isCJS = !imports.length && !exports.length;
-    let cjsEsmExports = null;
-    if (isCJS) {
-      cjsEsmExports = getCJSExports({ content });
-      if (cjsEsmExports.includes('__esModule')) {
-        isCJS = false;
-      }
-    }
-    return {
-      exports: cjsEsmExports || exports,
-      isCJS,
-    };
   }
+
+  await init;
+  const [imports, exports] = parse(content);
+  let isCJS = !imports.length && !exports.length;
+  let cjsEsmExports = null;
+  if (isCJS) {
+    cjsEsmExports = getCJSExports({ content });
+    if (cjsEsmExports.includes('__esModule')) {
+      isCJS = false;
+    }
+  }
+  return {
+    exports: cjsEsmExports || exports,
+    isCJS,
+  };
 }

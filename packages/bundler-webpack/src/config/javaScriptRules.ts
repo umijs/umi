@@ -1,6 +1,4 @@
-import { chalk, winPath } from '@umijs/utils';
-import { existsSync } from 'fs';
-import { join } from 'path';
+import { chalk } from '@umijs/utils';
 import Config from '../../compiled/webpack-5-chain';
 import { Env, IConfig, Transpiler } from '../types';
 import { es5ImcompatibleVersionsToPkg, isMatch } from '../utils/depMatch';
@@ -10,6 +8,7 @@ interface IOpts {
   userConfig: IConfig;
   cwd: string;
   env: Env;
+  extraBabelPlugins: any[];
 }
 
 export async function addJavaScriptRules(opts: IOpts) {
@@ -61,7 +60,7 @@ export async function addJavaScriptRules(opts: IOpts) {
       .end(),
   ];
 
-  const prefix = existsSync(join(cwd, 'src')) ? join(cwd, 'src') : cwd;
+  // const prefix = existsSync(join(cwd, 'src')) ? join(cwd, 'src') : cwd;
   const srcTranspiler = userConfig.srcTranspiler || Transpiler.babel;
   srcRules.forEach((rule) => {
     if (srcTranspiler === Transpiler.babel) {
@@ -73,10 +72,10 @@ export async function addJavaScriptRules(opts: IOpts) {
           // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
           sourceType: 'unambiguous',
           babelrc: false,
-          cacheDirectory:
-            process.env.BABEL_CACHE !== 'none'
-              ? winPath(`${prefix}/.umi/.cache/babel-loader`)
-              : false,
+          cacheDirectory: false,
+          // process.env.BABEL_CACHE !== 'none'
+          //   ? winPath(`${prefix}/.umi/.cache/babel-loader`)
+          //   : false,
           targets: userConfig.targets,
           presets: [
             [
@@ -94,7 +93,10 @@ export async function addJavaScriptRules(opts: IOpts) {
             ],
             ...(userConfig.extraBabelPresets || []).filter(Boolean),
           ],
-          plugins: (userConfig.extraBabelPlugins || []).filter(Boolean),
+          plugins: [
+            ...opts.extraBabelPlugins,
+            ...(userConfig.extraBabelPlugins || []),
+          ].filter(Boolean),
         });
     } else {
       throw new Error(`Unsupported srcTranspiler ${srcTranspiler}.`);
