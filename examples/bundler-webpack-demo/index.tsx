@@ -5,4 +5,6 @@ function App() {
   return <div>App</div>;
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// @ts-ignore
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
