@@ -12,7 +12,7 @@ interface IOpts {
 
 export async function dev(opts: IOpts) {
   const mfsu = new MFSU({
-    implementor: webpack,
+    implementor: webpack as any,
   });
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
@@ -30,7 +30,10 @@ export async function dev(opts: IOpts) {
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,
   });
-  mfsu.setWebpackConfig({ config: webpackConfig, depConfig });
+  mfsu.setWebpackConfig({
+    config: webpackConfig as any,
+    depConfig: depConfig as any,
+  });
   await createServer({
     webpackConfig,
     userConfig: opts.config,
