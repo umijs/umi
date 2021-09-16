@@ -16,6 +16,7 @@
   },
   "exclude": [
     "**/node_modules",
+    "**/examples",
     "**/dist",
     "**/fixtures",
     "**/*.test.ts"
