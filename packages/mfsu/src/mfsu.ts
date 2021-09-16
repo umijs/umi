@@ -111,7 +111,6 @@ export class MFSU {
   }
 
   getMiddlewares() {
-    // @ts-ignore
     return [
       (req: Request, res: Response, next: NextFunction) => {
         const publicPath = '/';
@@ -120,18 +119,20 @@ export class MFSU {
           req.path.startsWith(`${publicPath}mf-dep_`) ||
           req.path.startsWith(`${publicPath}mf-static/`);
         if (isMF) {
-          if (!req.path.includes(REMOTE_FILE)) {
-            res.setHeader('cache-control', 'max-age=31536000,immutable');
-          }
-          const relativePath = req.path.replace(
-            new RegExp(`^${publicPath}`),
-            '/',
-          );
-          const content = readFileSync(
-            join(this.opts.tmpBase!, relativePath),
-            'utf-8',
-          );
-          res.send(content);
+          this.depBuilder.onBuildComplete(() => {
+            if (!req.path.includes(REMOTE_FILE)) {
+              res.setHeader('cache-control', 'max-age=31536000,immutable');
+            }
+            const relativePath = req.path.replace(
+              new RegExp(`^${publicPath}`),
+              '/',
+            );
+            const content = readFileSync(
+              join(this.opts.tmpBase!, relativePath),
+              'utf-8',
+            );
+            res.send(content);
+          });
         } else {
           next();
         }
