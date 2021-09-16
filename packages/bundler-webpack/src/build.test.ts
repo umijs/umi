@@ -90,7 +90,7 @@ for (const fixture of readdirSync(fixtures)) {
     let config: Record<string, any> = {};
     try {
       config = require(join(base, 'config.ts')).default;
-    } catch (e) { }
+    } catch (e) {}
     await build({
       config: {
         ...config,
