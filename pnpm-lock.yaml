@@ -334,14 +334,16 @@ importers:
 
   packages/mfsu:
     specifiers:
+      '@types/express': 4.17.13
       '@umijs/bundler-utils': 4.0.0-alpha.1
-      '@umijs/bundler-webpack': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
+      webpack: 5.51.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
     devDependencies:
-      '@umijs/bundler-webpack': link:../bundler-webpack
+      '@types/express': 4.17.13
+      webpack: 5.51.1_5f021820e21d1917ddfcb06c1763c69d
 
   packages/mfsu/fixtures/getFilePath/js-file-first/foo:
     specifiers: {}

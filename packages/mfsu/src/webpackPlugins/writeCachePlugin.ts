@@ -1,4 +1,4 @@
-import { Cache, Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import { Cache, Compiler } from 'webpack';
 
 interface IOpts {
   onWriteCache: Function;

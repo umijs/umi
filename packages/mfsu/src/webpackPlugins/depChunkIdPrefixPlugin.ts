@@ -1,4 +1,4 @@
-import { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import { Compiler } from 'webpack';
 import { MF_DEP_PREFIX } from '../constants';
 
 const pluginId = 'MFSUDepChunkIdPrefix';

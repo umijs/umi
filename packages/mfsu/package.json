@@ -30,6 +30,7 @@
     "@umijs/utils": "4.0.0-alpha.1"
   },
   "devDependencies": {
-    "@umijs/bundler-webpack": "4.0.0-alpha.1"
+    "@types/express": "4.17.13",
+    "webpack": "5.51.1"
   }
 }
