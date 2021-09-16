@@ -1,7 +1,7 @@
-import { lodash } from '@umijs/utils';
+import { fsExtra, lodash } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
-import { MFSU } from './index';
+import { dirname, join } from 'path';
+import { MFSU } from './mfsu';
 import { ModuleGraph } from './moduleGraph';
 
 interface IOpts {
@@ -31,6 +31,8 @@ export class DepInfo {
     if (this.moduleGraph.hasDepChanged()) {
       return true;
     }
+
+    return false;
   }
 
   snapshot() {
@@ -49,6 +51,7 @@ export class DepInfo {
   }
 
   writeCache() {
+    fsExtra.mkdirpSync(dirname(this.cacheFilePath));
     writeFileSync(
       this.cacheFilePath,
       JSON.stringify(

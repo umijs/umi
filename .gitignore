@@ -1,4 +1,5 @@
 /node_modules
+/examples/*/.mfsu
 /examples/*/.umi
 /examples/*/node_modules
 /packages/*/node_modules

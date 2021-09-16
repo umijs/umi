@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import * as process from 'process';
 import { MF_VA_PREFIX } from '../constants';
-import { MFSU } from '../index';
+import { MFSU } from '../mfsu';
 import { trimFileContent } from '../utils/trimFileContent';
 import { getExposeFromContent } from './getExposeFromContent';
 import { getFilePath } from './getFilePath';
@@ -54,7 +54,7 @@ export * from '${this.file}';
     const realFile = this.getRealFile();
     assert(realFile, `filePath not found of ${this.file}`);
     const content = readFileSync(realFile, 'utf-8');
-    return getExposeFromContent({
+    return await getExposeFromContent({
       content,
       filePath: realFile,
       dep: this,
@@ -67,7 +67,7 @@ export * from '${this.file}';
       : // TODO: support config dep module resolver
         [this.cwd, this.cwd !== process.cwd() && process.cwd()]
           .filter(Boolean)
-          .map((base: any) => join(base, this.file));
+          .map((base: any) => join(base, 'node_modules', this.file));
     for (const path of absFiles) {
       const realFile = getFilePath({ path });
       if (realFile) return realFile;

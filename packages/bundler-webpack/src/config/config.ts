@@ -20,6 +20,7 @@ interface IOpts {
   cwd: string;
   env: Env;
   entry: Record<string, string>;
+  extraBabelPlugins?: any[];
   userConfig: IConfig;
 }
 
@@ -35,6 +36,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     userConfig,
     cwd: opts.cwd,
     env: opts.env,
+    extraBabelPlugins: opts.extraBabelPlugins || [],
     browsers: getBrowsersList({
       targets: userConfig.targets,
     }),
@@ -46,7 +48,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // entry
   Object.keys(opts.entry).forEach((key) => {
     const entry = config.entry(key);
-    // TODO: hot
     // TODO: runtimePublicPath
     if (isDev) {
       entry.add(require.resolve('../client/client'));
@@ -104,6 +105,11 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
 
   // target
   config.target(['web', 'es5']);
+
+  // experiments
+  config.experiments({
+    topLevelAwait: true,
+  });
 
   // node polyfill
   await addNodePolyfill(applyOpts);

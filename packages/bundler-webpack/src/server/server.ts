@@ -14,6 +14,8 @@ interface IOpts {
   cwd: string;
   webpackConfig: Configuration;
   userConfig: IConfig;
+  beforeMiddlewares?: any[];
+  afterMiddlewares?: any[];
 }
 
 export async function createServer(opts: IOpts) {
@@ -22,6 +24,11 @@ export async function createServer(opts: IOpts) {
 
   // compression
   app.use(require('@umijs/bundler-webpack/compiled/compression')());
+
+  // TODO: headers
+
+  // before middlewares
+  (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
 
   // webpack dev middleware
   const compiler = webpack(
@@ -90,6 +97,9 @@ export async function createServer(opts: IOpts) {
   // mock
   // proxy
 
+  // after middlewares
+  (opts.afterMiddlewares || []).forEach((m) => app.use(m));
+
   // index.html
   // TODO: remove me
   app.get('/', (_req, res, next) => {
@@ -105,7 +115,6 @@ export async function createServer(opts: IOpts) {
 
   const server = http.createServer(app);
   const ws = createWebSocketServer(server);
-  ws;
 
   const port = process.env.PORT || 8000;
   server.listen(port, () => {
