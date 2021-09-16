@@ -47,6 +47,14 @@ export class DepBuilder {
     });
   }
 
+  onBuildComplete(fn: Function) {
+    if (this.isBuilding) {
+      this.completeFns.push(fn);
+    } else {
+      fn();
+    }
+  }
+
   async writeMFFiles(opts: { deps: Dep[] }) {
     const tmpBase = this.opts.mfsu.opts.tmpBase!;
 
