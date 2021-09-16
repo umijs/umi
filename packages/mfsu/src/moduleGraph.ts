@@ -21,7 +21,7 @@ interface IDep {
 export class ModuleGraph {
   fileToModules = new Map<string, ModuleNode>();
   depToModules = new Map<string, ModuleNode>();
-  depSnapshotModules: Record<string, any> = {};
+  depSnapshotModules: Record<string, { file: string; version: string }> = {};
   rootModules = new Set<ModuleNode>();
   constructor() {}
 
@@ -96,7 +96,7 @@ export class ModuleGraph {
 
   getDepsInfo(mods: Map<string, ModuleNode>) {
     return Array.from(mods.keys()).reduce<
-      Record<string, { file: string; version: string | null }>
+      Record<string, { file: string; version: string }>
     >((memo, key) => {
       memo[key] = this.getDepInfo(mods.get(key)!);
       return memo;
@@ -106,7 +106,7 @@ export class ModuleGraph {
   getDepInfo(mod: ModuleNode) {
     return {
       file: mod.file,
-      version: mod.version,
+      version: mod.version!,
     };
   }
 

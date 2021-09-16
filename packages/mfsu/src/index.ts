@@ -4,10 +4,16 @@ import {
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { logger } from '@umijs/utils';
 import { join } from 'path';
+import * as process from 'process';
 import awaitImport from './babelPlugins/awaitImport/awaitImport';
 import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
-import { MF_VA_PREFIX } from './constants';
-import { DepBuilder } from './depBuilder';
+import {
+  DEFAULT_MF_NAME,
+  DEFAULT_TMP_DIR_NAME,
+  REMOTE_FILE_FULL,
+} from './constants';
+import { Dep } from './dep/dep';
+import { DepBuilder } from './depBuilder/depBuilder';
 import { DepInfo } from './depInfo';
 import { Mode } from './types';
 import { makeArray } from './utils/makeArray';
@@ -15,12 +21,14 @@ import { BuildDepPlugin } from './webpackPlugins/buildDepPlugin';
 import { WriteCachePlugin } from './webpackPlugins/writeCachePlugin';
 
 interface IOpts {
+  cwd?: string;
+  excludeNodeNatives?: boolean;
   exportAllMembers?: Record<string, string[]>;
+  getCacheDependency?: Function;
   mfName?: string;
+  mode?: Mode;
   tmpBase?: string;
   unMatchLibs?: string[];
-  mode?: Mode;
-  getCacheDependency?: Function;
 }
 
 export class MFSU {
@@ -33,30 +41,33 @@ export class MFSU {
   public depBuilder: DepBuilder = new DepBuilder({
     mfsu: this,
   });
+  public depConfig: Configuration | null = null;
   constructor(opts: IOpts) {
     this.opts = opts;
-    this.opts.mfName = this.opts.mfName || 'mf';
-    this.opts.tmpBase = this.opts.tmpBase || join(process.cwd(), '.mfsu');
+    this.opts.mfName = this.opts.mfName || DEFAULT_MF_NAME;
+    this.opts.tmpBase =
+      this.opts.tmpBase || join(process.cwd(), DEFAULT_TMP_DIR_NAME);
     this.opts.mode = this.opts.mode || Mode.development;
     this.opts.getCacheDependency = this.opts.getCacheDependency || (() => ({}));
+    this.opts.cwd = this.opts.cwd || process.cwd();
   }
 
-  init() {}
-
-  updateWebpackConfig(opts: { config: Configuration }) {
+  setWebpackConfig(opts: { config: Configuration; depConfig: Configuration }) {
     const { mfName } = this.opts;
 
+    /**
+     * config
+     */
     // set alias and externals with reference for babel plugin
     Object.assign(this.alias, opts.config.resolve?.alias || {});
     this.externals.push(...makeArray(opts.config.externals || []));
-
     opts.config.plugins = opts.config.plugins || [];
     opts.config.plugins!.push(
       ...[
         new container.ModuleFederationPlugin({
           name: '__',
           remotes: {
-            [mfName!]: `${mfName}@${MF_VA_PREFIX}remoteEntry.js`,
+            [mfName!]: `${mfName}@${REMOTE_FILE_FULL}`,
           },
         }),
         new BuildDepPlugin({
@@ -73,12 +84,24 @@ export class MFSU {
         }),
       ],
     );
+
+    /**
+     * depConfig
+     */
+    this.depConfig = opts.depConfig;
   }
 
   async buildDeps() {
     if (!this.depInfo.shouldBuild()) return;
     this.depInfo.snapshot();
-    await this.depBuilder.build();
+    const deps = Dep.buildDeps({
+      deps: this.depInfo.moduleGraph.depSnapshotModules,
+      cwd: this.opts.cwd!,
+      mfsu: this,
+    });
+    await this.depBuilder.build({
+      deps,
+    });
   }
 
   getMiddlewares() {
@@ -92,7 +115,7 @@ export class MFSU {
         awaitImport,
         {
           onTransformDeps: () => {},
-          onCollectData: ({
+          onCollect: ({
             file,
             data,
           }: {
