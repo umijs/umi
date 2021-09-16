@@ -7,6 +7,7 @@ import { getBrowsersList } from '../utils/browsersList';
 import { addAssetRules } from './assetRules';
 import { addBundleAnalyzerPlugin } from './bundleAnalyzerPlugin';
 import { addCompressPlugin } from './compressPlugin';
+import { addCopyPlugin } from './copyPlugin';
 import { addCSSRules } from './cssRules';
 import { addDefinePlugin } from './definePlugin';
 import { addIgnorePlugin } from './ignorePlugin';
@@ -133,7 +134,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addDefinePlugin(applyOpts);
   // progress
   await addProgressPlugin(applyOpts);
-  // TODO: copy
+  // copy
+  await addCopyPlugin(applyOpts);
   // TODO: friendly-error
   // TODO: manifest
   // hmr
