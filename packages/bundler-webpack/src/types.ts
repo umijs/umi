@@ -26,12 +26,18 @@ export enum CSSMinifier {
   none = 'none',
 }
 
+export interface ICopy {
+  from: string;
+  to: string;
+}
+
 type WebpackConfig = Required<Configuration>;
 type IBabelPlugin = string | [string, { [key: string]: any }];
 
 export interface IConfig {
   alias?: Record<string, string>;
   chainWebpack?: Function;
+  copy?: ICopy[] | string[];
   cssLoader?: { [key: string]: any };
   cssLoaderModules?: { [key: string]: any };
   cssMinifier?: CSSMinifier;
