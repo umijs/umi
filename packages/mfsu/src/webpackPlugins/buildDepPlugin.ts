@@ -1,4 +1,4 @@
-import { Compiler, Stats } from '@umijs/bundler-webpack/compiled/webpack';
+import type { Compiler, Stats } from 'webpack';
 
 interface IOpts {
   onCompileDone: Function;

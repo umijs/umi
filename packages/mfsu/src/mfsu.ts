@@ -1,15 +1,9 @@
-import type {
-  NextFunction,
-  Request,
-  Response,
-} from '@umijs/bundler-webpack/compiled/express';
-import webpack, {
-  Configuration,
-} from '@umijs/bundler-webpack/compiled/webpack';
 import { logger } from '@umijs/utils';
+import type { NextFunction, Request, Response } from 'express';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as process from 'process';
+import webpack, { Configuration } from 'webpack';
 import autoExport from './babelPlugins/autoExport';
 import awaitImport from './babelPlugins/awaitImport/awaitImport';
 import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
