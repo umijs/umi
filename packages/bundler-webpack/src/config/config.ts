@@ -21,6 +21,9 @@ interface IOpts {
   env: Env;
   entry: Record<string, string>;
   extraBabelPlugins?: any[];
+  hash?: boolean;
+  hmr?: boolean;
+  staticPathPrefix?: string;
   userConfig: IConfig;
 }
 
@@ -40,6 +43,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     browsers: getBrowsersList({
       targets: userConfig.targets,
     }),
+    staticPathPrefix:
+      opts.staticPathPrefix !== undefined ? opts.staticPathPrefix : 'static/',
   };
 
   // mode
@@ -49,7 +54,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   Object.keys(opts.entry).forEach((key) => {
     const entry = config.entry(key);
     // TODO: runtimePublicPath
-    if (isDev) {
+    if (isDev && opts.hmr) {
       entry.add(require.resolve('../client/client'));
     }
     entry.add(opts.entry[key]);
@@ -69,7 +74,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     opts.cwd,
     userConfig.outputPath || DEFAULT_OUTPUT_PATH,
   );
-  const useHash = userConfig.hash && !isDev;
+  const useHash = opts.hash || (userConfig.hash && !isDev);
   const disableCompress = process.env.COMPRESS === 'none';
   config.output
     .path(absOutputPath)
@@ -132,7 +137,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // TODO: friendly-error
   // TODO: manifest
   // hmr
-  if (isDev) {
+  if (isDev && opts.hmr) {
     config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
   }
   // compress

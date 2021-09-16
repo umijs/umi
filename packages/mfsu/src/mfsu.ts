@@ -16,6 +16,9 @@ import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
 import {
   DEFAULT_MF_NAME,
   DEFAULT_TMP_DIR_NAME,
+  MF_DEP_PREFIX,
+  MF_STATIC_PREFIX,
+  MF_VA_PREFIX,
   REMOTE_FILE,
   REMOTE_FILE_FULL,
 } from './constants';
@@ -115,9 +118,9 @@ export class MFSU {
       (req: Request, res: Response, next: NextFunction) => {
         const publicPath = '/';
         const isMF =
-          req.path.startsWith(`${publicPath}mf-va_`) ||
-          req.path.startsWith(`${publicPath}mf-dep_`) ||
-          req.path.startsWith(`${publicPath}mf-static/`);
+          req.path.startsWith(`${publicPath}${MF_VA_PREFIX}`) ||
+          req.path.startsWith(`${publicPath}${MF_DEP_PREFIX}`) ||
+          req.path.startsWith(`${publicPath}${MF_STATIC_PREFIX}`);
         if (isMF) {
           this.depBuilder.onBuildComplete(() => {
             if (!req.path.includes(REMOTE_FILE)) {
