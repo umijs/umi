@@ -164,6 +164,7 @@ importers:
       '@types/webpack-sources': 3.2.0
       '@types/ws': 7.4.7
       '@umijs/babel-preset-umi': 4.0.0-alpha.1
+      '@umijs/mfsu': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
       autoprefixer: 10.3.4
       babel-loader: 8.2.2
@@ -199,6 +200,7 @@ importers:
       ws: 8.2.1
     dependencies:
       '@umijs/babel-preset-umi': link:../babel-preset-umi
+      '@umijs/mfsu': link:../mfsu
       '@umijs/utils': link:../utils
       es5-imcompatible-versions: 0.1.73
       jest-worker: 27.1.0
