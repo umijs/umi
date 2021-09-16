@@ -325,8 +325,24 @@ importers:
       '@umijs/utils': 4.0.0-alpha.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
-      '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/utils': link:../utils
+    devDependencies:
+      '@umijs/bundler-webpack': link:../bundler-webpack
+
+  packages/mfsu/fixtures/getFilePath/js-file-first/foo:
+    specifiers: {}
+
+  packages/mfsu/fixtures/getFilePath/package-json-directory/foo:
+    specifiers: {}
+
+  packages/mfsu/fixtures/getFilePath/package-json-in-approot/app:
+    specifiers: {}
+
+  packages/mfsu/fixtures/getFilePath/package-json-not-found-module/foo:
+    specifiers: {}
+
+  packages/mfsu/fixtures/getFilePath/package-json-second/foo:
+    specifiers: {}
 
   packages/umi:
     specifiers: {}

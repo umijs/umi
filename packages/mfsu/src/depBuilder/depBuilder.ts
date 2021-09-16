@@ -1,4 +1,3 @@
-import webpack, { container } from '@umijs/bundler-webpack/compiled/webpack';
 import { lodash } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
@@ -24,7 +23,7 @@ export class DepBuilder {
 
     const config = this.getWebpackConfig({ deps: opts.deps });
     return new Promise((resolve, reject) => {
-      const compiler = webpack(config);
+      const compiler = this.opts.mfsu.opts.implementor(config);
       compiler.run((err, stats) => {
         this.isBuilding = false;
         this.completeFns.forEach((fn) => fn());
@@ -84,7 +83,7 @@ export class DepBuilder {
       return memo;
     }, {});
     depConfig.plugins.push(
-      new container.ModuleFederationPlugin({
+      new this.opts.mfsu.opts.implementor.container.ModuleFederationPlugin({
         library: {
           type: 'global',
           name: mfName,

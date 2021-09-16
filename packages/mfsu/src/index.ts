@@ -1,6 +1,5 @@
-import {
+import webpack, {
   Configuration,
-  container,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { logger } from '@umijs/utils';
 import { join } from 'path';
@@ -29,6 +28,7 @@ interface IOpts {
   mode?: Mode;
   tmpBase?: string;
   unMatchLibs?: string[];
+  implementor: typeof webpack;
 }
 
 export class MFSU {
@@ -64,7 +64,7 @@ export class MFSU {
     opts.config.plugins = opts.config.plugins || [];
     opts.config.plugins!.push(
       ...[
-        new container.ModuleFederationPlugin({
+        new this.opts.implementor.container.ModuleFederationPlugin({
           name: '__',
           remotes: {
             [mfName!]: `${mfName}@${REMOTE_FILE_FULL}`,
