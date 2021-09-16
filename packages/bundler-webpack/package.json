@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@umijs/babel-preset-umi": "4.0.0-alpha.1",
+    "@umijs/mfsu": "4.0.0-alpha.1",
     "@umijs/utils": "4.0.0-alpha.1",
     "es5-imcompatible-versions": "^0.1.73",
     "jest-worker": "27.1.0",
