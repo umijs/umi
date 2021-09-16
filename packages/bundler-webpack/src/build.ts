@@ -1,3 +1,4 @@
+import { rimraf } from '@umijs/utils';
 import webpack from '../compiled/webpack';
 import { getConfig } from './config/config';
 import { Env, IConfig } from './types';
@@ -7,6 +8,7 @@ interface IOpts {
   entry: Record<string, string>;
   config: IConfig;
   onBuildComplete?: Function;
+  clean?: boolean;
 }
 
 export async function build(opts: IOpts): Promise<void> {
@@ -17,6 +19,7 @@ export async function build(opts: IOpts): Promise<void> {
     userConfig: opts.config,
   });
   return new Promise((resolve, reject) => {
+    rimraf.sync(webpackConfig.output!.path!);
     const compiler = webpack(webpackConfig);
     compiler.run((err, stats) => {
       opts.onBuildComplete?.(err, stats);

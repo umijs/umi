@@ -1,5 +1,3 @@
-// @ts-ignore
-import CopyPlugin from '@umijs/bundler-webpack/compiled/copy-webpack-plugin';
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -23,6 +21,7 @@ export async function addCopyPlugin(opts: IOpts) {
           if (typeof item === 'string') {
             return {
               from: join(cwd, item),
+              to: item,
             };
           }
           return {
@@ -34,10 +33,12 @@ export async function addCopyPlugin(opts: IOpts) {
       : []),
   ].filter(Boolean);
   if (copyPatterns.length) {
-    config.plugin('copy').use(CopyPlugin, [
-      {
-        patterns: copyPatterns,
-      },
-    ]);
+    config
+      .plugin('copy')
+      .use(require('@umijs/bundler-webpack/compiled/copy-webpack-plugin'), [
+        {
+          patterns: copyPatterns,
+        },
+      ]);
   }
 }
