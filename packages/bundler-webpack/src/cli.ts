@@ -1,4 +1,5 @@
-import { chalk, yParser } from '@umijs/utils';
+import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import { chalk, registerESBuild, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -17,15 +18,23 @@ const entry = tryPaths([
   join(cwd, 'index.ts'),
 ]);
 
+registerESBuild({
+  implementor: esbuild,
+});
+let config = {};
+const configFile = join(cwd, args.config || 'config.ts');
+if (existsSync(configFile)) {
+  config = require(configFile).default;
+}
+Object.assign(config, args);
+
 if (command === 'build') {
   (async () => {
     process.env.NODE_ENV = 'production';
     assert(entry, `Build failed: entry not found.`);
     try {
       await build({
-        config: {
-          ...args,
-        },
+        config,
         cwd,
         entry: {
           [getEntryKey(entry)]: entry,
@@ -41,7 +50,7 @@ if (command === 'build') {
     try {
       assert(entry, `Build failed: entry not found.`);
       await dev({
-        config: { ...args },
+        config,
         cwd,
         entry: {
           [getEntryKey(entry)]: entry,

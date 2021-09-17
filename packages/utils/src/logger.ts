@@ -1,4 +1,4 @@
-import chalk from '../../compiled/chalk';
+import chalk from '../compiled/chalk';
 
 export const prefixes = {
   wait: chalk.cyan('wait') + '  -',

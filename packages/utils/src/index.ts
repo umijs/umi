@@ -13,9 +13,10 @@ import rimraf from '../compiled/rimraf';
 import semver from '../compiled/semver';
 import stripAnsi from '../compiled/strip-ansi';
 import yParser from '../compiled/yargs-parser';
-import * as logger from './logger/logger';
+import * as logger from './logger';
 
-export * from './winPath/winPath';
+export * from './registerESBuild';
+export * from './winPath';
 export {
   address,
   axios,
