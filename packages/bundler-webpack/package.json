@@ -118,6 +118,7 @@
       "terser": "$$LOCAL",
       "terser-webpack-plugin": "$$LOCAL",
       "uglify-js": "uglify-js",
+      "webpack": "$$LOCAL",
       "webpack-5-chain": "$$LOCAL",
       "webpack-sources": "$$LOCAL",
       "ws": "$$LOCAL"
