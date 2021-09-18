@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { chalk, registerESBuild, yParser } from '@umijs/utils';
+import { chalk, register, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -18,11 +18,12 @@ const entry = tryPaths([
   join(cwd, 'index.ts'),
 ]);
 
-registerESBuild({
-  implementor: esbuild,
-});
 let config = {};
 const configFile = join(cwd, args.config || 'config.ts');
+register.register({
+  implementor: esbuild,
+});
+register.clearFiles();
 if (existsSync(configFile)) {
   config = require(configFile).default;
 }
