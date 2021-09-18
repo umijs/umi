@@ -23,5 +23,21 @@
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/core#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@umijs/bundler-utils": "4.0.0-alpha.1",
+    "@umijs/utils": "4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@types/hapi__joi": "17.1.7",
+    "@hapi/joi": "17.1.1"
+  },
+  "compiledConfig": {
+    "deps": [
+      "@hapi/joi"
+    ],
+    "externals": {
+      "@hapi/joi": "$$LOCAL"
+    }
   }
 }
