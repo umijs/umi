@@ -1,3 +1,5 @@
+import * as chokidar from 'chokidar';
+import * as clipboardy from 'clipboardy';
 import address from '../compiled/address';
 import axios from '../compiled/axios';
 import chalk from '../compiled/chalk';
@@ -21,6 +23,8 @@ export {
   axios,
   chalk,
   cheerio,
+  chokidar,
+  clipboardy,
   crossSpawn,
   debug,
   fsExtra,

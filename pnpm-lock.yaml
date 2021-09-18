@@ -340,12 +340,17 @@ importers:
       '@types/hapi__joi': 17.1.7
       '@umijs/bundler-utils': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
+      just-diff: 3.1.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
     devDependencies:
       '@hapi/joi': 17.1.1
       '@types/hapi__joi': 17.1.7
+      just-diff: 3.1.1
+
+  packages/core/compiled/@hapi/joi:
+    specifiers: {}
 
   packages/mfsu:
     specifiers:
@@ -5799,6 +5804,10 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.8
+    dev: true
+
+  /just-diff/3.1.1:
+    resolution: {integrity: sha512-sdMWKjRq8qWZEjDcVA6llnUT8RDEBIfOiGpYFPYa9u+2c39JCsejktSP7mj5eRid5EIvTzIpQ2kDOCw1Nq9BjQ==}
     dev: true
 
   /keyv/4.0.3:
