@@ -1,33 +1,102 @@
-// [x] get config file
-// [x] support .local and UMI_ENV
-// [x] read config
-// [x] validate config
-// watch config
-// note: 不支持没有 config 文件启动后，新增 config 文件的监听
-
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { lodash, register } from '@umijs/utils';
+import { chokidar, lodash, register } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import joi from '../../compiled/@hapi/joi';
-import { DEFAULT_CONFIG_FILES, LOCAL_EXT, SHORT_ENV } from '../constants';
+import { diff } from '../../compiled/just-diff';
+import {
+  DEFAULT_CONFIG_FILES,
+  LOCAL_EXT,
+  SHORT_ENV,
+  WATCH_DEBOUNCE_STEP,
+} from '../constants';
 import { Env } from '../types';
-import { addExt } from './utils';
+import { addExt, getAbsFiles } from './utils';
 
 interface IOpts {
   cwd: string;
   env: Env;
+  specifiedEnv?: string;
 }
+
+type ISchema = Record<string, any>;
+
+type IOnChangeTypes = Record<string, string | Function>;
 
 export class Config {
   public opts: IOpts;
+  public mainConfigFile: string | null;
+  public prevConfig: any;
   constructor(opts: IOpts) {
     this.opts = opts;
+    this.mainConfigFile = Config.getMainConfigFile(this.opts);
+    this.prevConfig = null;
+  }
+
+  getConfig(opts: { defaultConfig: any; schema: ISchema }) {
+    const configFiles = Config.getConfigFiles({
+      mainConfigFile: this.mainConfigFile,
+      env: this.opts.env,
+      specifiedEnv: this.opts.specifiedEnv,
+    });
+    const { config, files } = Config.getUserConfig({
+      configFiles,
+    });
+    Config.validateConfig({ config, schemas: opts.schema });
+    return (this.prevConfig = {
+      config: lodash.merge(opts.defaultConfig, config),
+      userConfig: config,
+      files,
+    });
+  }
+
+  watch(opts: {
+    files: string[];
+    defaultConfig: Record<string, any>;
+    schema: ISchema;
+    onChangeTypes: IOnChangeTypes;
+    onChange: (opts: {
+      data: ReturnType<typeof Config.diffConfigs>;
+      event: string;
+      path: string;
+    }) => void;
+  }) {
+    const watcher = chokidar.watch(
+      [
+        ...opts.files,
+        ...(this.mainConfigFile
+          ? []
+          : getAbsFiles({ files: DEFAULT_CONFIG_FILES, cwd: this.opts.cwd })),
+      ],
+      {
+        ignoreInitial: true,
+        cwd: this.opts.cwd,
+      },
+    );
+    watcher.on(
+      'all',
+      lodash.debounce((event, path) => {
+        const { config: origin } = this.prevConfig;
+        const { config: updated, files } = this.getConfig(opts);
+        watcher.add(files);
+        const data = Config.diffConfigs({
+          origin,
+          updated,
+          onChangeTypes: opts.onChangeTypes,
+        });
+        opts.onChange({
+          data,
+          event,
+          path,
+        });
+      }, WATCH_DEBOUNCE_STEP),
+    );
+    return () => watcher.close();
   }
 
   static getMainConfigFile(opts: { cwd: string }) {
-    let mainConfigFile;
+    let mainConfigFile = null;
     for (const configFile of DEFAULT_CONFIG_FILES) {
       const absConfigFile = join(opts.cwd, configFile);
       if (existsSync(absConfigFile)) {
@@ -39,12 +108,13 @@ export class Config {
   }
 
   static getConfigFiles(opts: {
-    mainConfigFile: string;
+    mainConfigFile: string | null;
     env: Env;
-    specifiedEnv: string;
+    specifiedEnv?: string;
   }) {
     const ret: string[] = [];
-    const { mainConfigFile, specifiedEnv } = opts;
+    const { mainConfigFile } = opts;
+    const specifiedEnv = opts.specifiedEnv || '';
     if (mainConfigFile) {
       const env = SHORT_ENV[opts.env] || opts.env;
       ret.push(
@@ -87,7 +157,7 @@ export class Config {
     };
   }
 
-  static validateConfig(opts: { config: any; schemas: Record<string, any> }) {
+  static validateConfig(opts: { config: any; schemas: ISchema }) {
     const errors = new Map<string, Error>();
     const configKeys = new Set(Object.keys(opts.config));
     for (const key of Object.keys(opts.schemas)) {
@@ -112,5 +182,32 @@ ${Array.from(errors.keys()).map((key) => {
       configKeys.size === 0,
       `Invalid config keys: ${Array.from(configKeys).join(', ')}`,
     );
+  }
+
+  static diffConfigs(opts: {
+    origin: any;
+    updated: any;
+    onChangeTypes: IOnChangeTypes;
+  }) {
+    const patch = diff(opts.origin, opts.updated);
+    const changes: Record<string, string[]> = {};
+    const fns: Function[] = [];
+    for (const item of patch) {
+      const key = item.path[0];
+      const onChange = opts.onChangeTypes[key];
+      assert(onChange, `Invalid onChange config for key ${key}`);
+      if (typeof onChange === 'string') {
+        changes[onChange] ||= [];
+        changes[onChange].push(String(key));
+      } else if (typeof onChange === 'function') {
+        fns.push(onChange);
+      } else {
+        throw new Error(`Invalid onChange value for key ${key}`);
+      }
+    }
+    return {
+      changes,
+      fns,
+    };
   }
 }

@@ -12,3 +12,4 @@ export const SHORT_ENV = {
 };
 
 export const LOCAL_EXT = '.local';
+export const WATCH_DEBOUNCE_STEP = 300;
