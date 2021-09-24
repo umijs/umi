@@ -1027,7 +1027,7 @@ api.onGenerateFiles(() => {
 
 注：
 
-- 注册阶段不能获取到，所以不能在外面 `const { config } = api;` 然后在函数体里使用，而是需要在里面通过 `api.paths.cwd` 使用
+- 注册阶段不能获取到，所以不能在外面 `const { config } = api;` 然后在函数体里使用，而是需要在里面通过 `api.config` 使用
 
 ### cwd
 
