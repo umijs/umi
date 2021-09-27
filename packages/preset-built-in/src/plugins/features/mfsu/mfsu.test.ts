@@ -158,4 +158,27 @@ test('normalizeReqPath', () => {
     normalPublicPath: '/',
     fileRelativePath: 'a/b/c/mf-static/cfile.html',
   });
+
+  // monaco editor worker
+  expect(
+    normalizeReqPath(
+      { config: { publicPath: '/' } } as IApi,
+      '/json.worker.js',
+    ),
+  ).toStrictEqual({
+    isMfAssets: true,
+    normalPublicPath: '/',
+    fileRelativePath: 'json.worker.js',
+  });
+
+  expect(
+    normalizeReqPath(
+      { config: { publicPath: '/a' } } as IApi,
+      '/a/json.worker.js',
+    ),
+  ).toStrictEqual({
+    isMfAssets: true,
+    normalPublicPath: '/a',
+    fileRelativePath: '/json.worker.js',
+  });
 });
