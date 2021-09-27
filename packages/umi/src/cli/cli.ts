@@ -29,7 +29,7 @@ setNodeTitle();
         args,
       });
     } catch (e: any) {
-      logger.error(e.message);
+      logger.error(e);
       process.exit(1);
     }
   }

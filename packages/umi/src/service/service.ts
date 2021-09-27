@@ -11,7 +11,7 @@ export class Service extends CoreService {
       frameworkName: FRAMEWORK_NAME,
       presets: [
         require.resolve('@umijs/preset-built-in'),
-        ...(opts.presets || []),
+        ...(opts?.presets || []),
       ],
     });
   }
