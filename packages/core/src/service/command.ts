@@ -4,6 +4,7 @@ import { Plugin } from './plugin';
 export interface IOpts {
   name: string;
   description?: string;
+  options?: string;
   details?: string;
   fn: {
     ({ args }: { args: yParser.Arguments }): void;
@@ -14,6 +15,7 @@ export interface IOpts {
 export class Command {
   name: string;
   description?: string;
+  options?: string;
   details?: string;
   fn: {
     ({ args }: { args: yParser.Arguments }): void;
@@ -22,6 +24,7 @@ export class Command {
   constructor(opts: IOpts) {
     this.name = opts.name;
     this.description = opts.description;
+    this.options = opts.options;
     this.details = opts.details;
     this.fn = opts.fn;
     this.plugin = opts.plugin;
