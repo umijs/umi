@@ -1,4 +1,4 @@
-import { lodash } from '@umijs/utils';
+import { lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -34,7 +34,7 @@ interface IOpts {
 export class Service {
   private opts: IOpts;
   appData: Record<string, any> = {};
-  args: { _: string[]; [key: string]: any } = { _: [] };
+  args: yParser.Arguments = { _: [], $0: '' };
   commands: Record<string, Command> = {};
   config: Record<string, any> = {};
   configSchemas: Record<string, any> = {};
@@ -198,7 +198,7 @@ export class Service {
       key: 'modifyConfig',
       initialValue: configManager.getConfig({
         schemas: this.configSchemas,
-      }),
+      }).config,
     });
     const defaultConfig = await this.applyPlugins({
       key: 'modifyDefaultConfig',
@@ -327,6 +327,7 @@ export class Service {
         ConfigChangeType,
         EnableBy,
         ServiceStage,
+        service: this,
       },
     });
     let ret = opts.plugin.apply()(proxyPluginAPI);
@@ -365,4 +366,8 @@ export class Service {
     // EnableBy.register
     return true;
   }
+}
+
+export interface IServicePluginAPI {
+  args: yParser.Arguments;
 }
