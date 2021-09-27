@@ -17,4 +17,6 @@ config
 service
 
 * 不支持单数目录
-* 
+* 删除 onPluginReady，统一用 onStart
+* 新增 modifyAppData 和 onCheck
+* 通用化，移除 umi 元素

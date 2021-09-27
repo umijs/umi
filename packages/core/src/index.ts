@@ -1,3 +1,1 @@
-export default () => {
-  return '@umijs/core';
-};
+export * from './service/service';

@@ -18,6 +18,7 @@ interface IOpts {
   cwd: string;
   env: Env;
   specifiedEnv?: string;
+  defaultConfigFiles?: string[];
 }
 
 type ISchema = Record<string, any>;
@@ -70,7 +71,10 @@ export class Config {
         ...opts.files,
         ...(this.mainConfigFile
           ? []
-          : getAbsFiles({ files: DEFAULT_CONFIG_FILES, cwd: this.opts.cwd })),
+          : getAbsFiles({
+              files: this.opts.defaultConfigFiles || DEFAULT_CONFIG_FILES,
+              cwd: this.opts.cwd,
+            })),
       ],
       {
         ignoreInitial: true,
@@ -98,9 +102,12 @@ export class Config {
     return () => watcher.close();
   }
 
-  static getMainConfigFile(opts: { cwd: string }) {
+  static getMainConfigFile(opts: {
+    cwd: string;
+    defaultConfigFiles?: string[];
+  }) {
     let mainConfigFile = null;
-    for (const configFile of DEFAULT_CONFIG_FILES) {
+    for (const configFile of opts.defaultConfigFiles || DEFAULT_CONFIG_FILES) {
       const absConfigFile = join(opts.cwd, configFile);
       if (existsSync(absConfigFile)) {
         mainConfigFile = absConfigFile;

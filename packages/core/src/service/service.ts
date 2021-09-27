@@ -2,8 +2,10 @@ import { lodash } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import * as process from 'process';
 import { AsyncSeriesWaterfallHook } from '../../compiled/tapable';
 import { Config } from '../config/config';
+import { DEFAULT_FRAMEWORK_NAME } from '../constants';
 import {
   ApplyPluginsType,
   ConfigChangeType,
@@ -25,6 +27,7 @@ interface IOpts {
   plugins?: string[];
   presets?: string[];
   frameworkName?: string;
+  defaultConfigFiles?: string[];
 }
 
 export class Service {
@@ -152,9 +155,20 @@ export class Service {
     let pkg: Record<string, string | Record<string, any>> = {};
     try {
       pkg = require(join(this.cwd, 'package.json'));
-    } catch (_e) {}
+    } catch (_e) {
+      // APP_ROOT
+      if (this.cwd !== process.cwd()) {
+        try {
+          pkg = require(join(process.cwd(), 'package.json'));
+        } catch (_e) {}
+      }
+    }
     // get user config
-    const configManager = new Config({ cwd: '', env: this.env });
+    const configManager = new Config({
+      cwd: '',
+      env: this.env,
+      defaultConfigFiles: this.opts.defaultConfigFiles,
+    });
     this.userConfig = configManager.getUserConfig().config;
     // get paths (move after?)
     // resolve initial presets and plugins
@@ -166,6 +180,7 @@ export class Service {
       ),
       presets: this.opts.presets,
       userConfig: this.userConfig,
+      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
     });
     // register presets and plugins
     this.stage = ServiceStage.initPresets;
@@ -176,13 +191,6 @@ export class Service {
     while (plugins.length) {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
     }
-    // Removed: init hooks which is used by applyPlugins
-    // applyPlugin onPluginReady
-    // 这个时机有点问题，config 没有好之前，isPluginReady 判断可能失效
-    // TODO: 合并到 onStart
-    // await this.applyPlugins({
-    //   key: 'onPluginReady',
-    // });
     // setup api.config from modifyConfig and modifyDefaultConfig
     this.stage = ServiceStage.resolveConfig;
     const config = await this.applyPlugins({
@@ -199,7 +207,7 @@ export class Service {
     const paths = getPaths({
       cwd: this.cwd,
       env: this.env,
-      prefix: this.opts.frameworkName || 'umi',
+      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
     });
     if (this.config.outputPath) {
       paths.absOutputPath = join(this.cwd, this.config.outputPath);

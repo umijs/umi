@@ -124,6 +124,7 @@ export class Plugin {
     userConfig: any;
     plugins?: string[];
     presets?: string[];
+    prefix: string;
   }) {
     function get(type: 'plugin' | 'preset') {
       const types = `${type}s` as 'plugins' | 'presets';
@@ -131,9 +132,9 @@ export class Plugin {
         // opts
         ...(opts[types] || []),
         // env
-        // ...(process.env[`UMI_${types.toUpperCase()}`] || '')
-        //   .split(',')
-        //   .filter(Boolean),
+        ...(process.env[`${opts.prefix}_${types}`.toUpperCase()] || '')
+          .split(',')
+          .filter(Boolean),
         // dependencies
         ...Object.keys(opts.pkg.devDependencies || {})
           .concat(Object.keys(opts.pkg.dependencies || {}))
