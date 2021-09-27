@@ -368,6 +368,7 @@ export class Service {
   }
 }
 
+// TODO: more props
 export interface IServicePluginAPI {
   args: yParser.Arguments;
 }

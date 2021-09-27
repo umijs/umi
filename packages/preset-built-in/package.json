@@ -26,6 +26,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "umi": "4.0.0-alpha.1"
+    "@umijs/core": "4.0.0-alpha.1"
   }
 }
