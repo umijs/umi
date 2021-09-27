@@ -34,7 +34,7 @@ setNodeTitle(`${FRAMEWORK_NAME}-dev`);
       process.exit(0);
     }
   } catch (e: any) {
-    logger.error(e.message);
+    logger.error(e);
     process.exit(1);
   }
 })();

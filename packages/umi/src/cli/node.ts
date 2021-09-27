@@ -1,5 +1,4 @@
 import { logger } from '@umijs/utils';
-import * as process from 'process';
 import { FRAMEWORK_NAME, MIN_NODE_VERSION } from '../constants';
 
 export function checkVersion() {
@@ -20,7 +19,6 @@ export function checkLocal() {
 
 export function setNodeTitle(name?: string) {
   if (process.title === 'node') {
-    // @ts-ignore
     process.title = name || FRAMEWORK_NAME;
   }
 }
