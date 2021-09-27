@@ -7,6 +7,7 @@ export default (api: PluginAPI) => {
     'modifyAppData',
     'modifyConfig',
     'modifyDefaultConfig',
+    'modifyPaths',
   ].forEach((name) => {
     api.registerMethod({ name });
   });

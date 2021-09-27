@@ -14,6 +14,7 @@ import {
 import { Command } from './command';
 import { loadEnv } from './env';
 import { Hook } from './hook';
+import { getPaths } from './path';
 import { Plugin } from './plugin';
 import { PluginAPI } from './pluginAPI';
 import { isPromise } from './utils';
@@ -23,6 +24,7 @@ interface IOpts {
   env: Env;
   plugins?: string[];
   presets?: string[];
+  frameworkName?: string;
 }
 
 export class Service {
@@ -36,8 +38,9 @@ export class Service {
   cwd: string;
   env: Env;
   hooks: Record<string, Hook[]> = {};
-  // preset is plugin with different type
   name: string = '';
+  paths: Record<string, string> = {};
+  // preset is plugin with different type
   plugins: Record<string, Plugin> = {};
   pluginMethods: Record<string, { plugin: Plugin; fn: Function }> = {};
   skipPluginIds: Set<string> = new Set<string>();
@@ -193,6 +196,18 @@ export class Service {
       initialValue: this.configDefaults,
     });
     this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
+    const paths = getPaths({
+      cwd: this.cwd,
+      env: this.env,
+      prefix: this.opts.frameworkName || 'umi',
+    });
+    if (this.config.outputPath) {
+      paths.absOutputPath = join(this.cwd, this.config.outputPath);
+    }
+    this.paths = await this.applyPlugins({
+      key: 'modifyPaths',
+      initialValue: paths,
+    });
     // applyPlugin collect app data
     // TODO: some data is mutable
     this.stage = ServiceStage.collectAppData;
@@ -289,13 +304,14 @@ export class Service {
       service: this,
       pluginAPI,
       serviceProps: [
-        'name',
-        'args',
-        'cwd',
         'appData',
-        'config',
-        'userConfig',
         'applyPlugins',
+        'args',
+        'config',
+        'cwd',
+        'name',
+        'paths',
+        'userConfig',
       ],
       staticProps: {
         ApplyPluginsType,
