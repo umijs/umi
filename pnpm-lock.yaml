@@ -362,6 +362,9 @@ importers:
   packages/core/compiled/just-diff:
     specifiers: {}
 
+  packages/core/compiled/tapable:
+    specifiers: {}
+
   packages/mfsu:
     specifiers:
       '@types/express': 4.17.13
@@ -390,8 +393,20 @@ importers:
   packages/mfsu/fixtures/getFilePath/package-json-second/foo:
     specifiers: {}
 
-  packages/umi:
+  packages/preset-built-in:
     specifiers: {}
+
+  packages/umi:
+    specifiers:
+      '@umijs/core': 4.0.0-alpha.1
+      '@umijs/preset-built-in': 4.0.0-alpha.1
+      '@umijs/utils': 4.0.0-alpha.1
+      v8-compile-cache: 2.3.0
+    dependencies:
+      '@umijs/core': link:../core
+      '@umijs/preset-built-in': link:../preset-built-in
+      '@umijs/utils': link:../utils
+      v8-compile-cache: 2.3.0
 
   packages/utils:
     specifiers:
@@ -8524,6 +8539,10 @@ packages:
     resolution: {integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=}
     engines: {node: '>= 0.4.0'}
     dev: true
+
+  /v8-compile-cache/2.3.0:
+    resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
+    dev: false
 
   /v8-to-istanbul/8.0.0:
     resolution: {integrity: sha512-LkmXi8UUNxnCC+JlH7/fsfsKr5AU110l+SYGJimWNkWhxbN5EyeOtm1MJ0hhvqMMOhGwBj1Fp70Yv9i+hX0QAg==}

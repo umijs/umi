@@ -1,9 +1,4 @@
-export const DEFAULT_CONFIG_FILES = [
-  '.umirc.ts',
-  '.umirc.js',
-  'config/config.ts',
-  'config/config.js',
-];
+export const DEFAULT_CONFIG_FILES = ['config.ts', 'config.js'];
 
 export const SHORT_ENV = {
   development: 'dev',
@@ -13,3 +8,4 @@ export const SHORT_ENV = {
 
 export const LOCAL_EXT = '.local';
 export const WATCH_DEBOUNCE_STEP = 300;
+export const DEFAULT_FRAMEWORK_NAME = 'umi';
