@@ -402,9 +402,9 @@ importers:
 
   packages/preset-built-in:
     specifiers:
-      umi: 4.0.0-alpha.1
+      '@umijs/core': 4.0.0-alpha.1
     devDependencies:
-      umi: link:../umi
+      '@umijs/core': link:../core
 
   packages/umi:
     specifiers:

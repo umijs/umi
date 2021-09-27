@@ -1,4 +1,4 @@
-import { IApi } from 'umi';
+import { IApi } from '../types';
 
 export default (api: IApi) => {
   api.registerCommand({
