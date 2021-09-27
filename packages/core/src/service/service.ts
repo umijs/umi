@@ -1,0 +1,323 @@
+import { lodash } from '@umijs/utils';
+import assert from 'assert';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { AsyncSeriesWaterfallHook } from '../../compiled/tapable';
+import { Config } from '../config/config';
+import {
+  ApplyPluginsType,
+  ConfigChangeType,
+  EnableBy,
+  Env,
+  ServiceStage,
+} from '../types';
+import { Command } from './command';
+import { loadEnv } from './env';
+import { Hook } from './hook';
+import { Plugin } from './plugin';
+import { PluginAPI } from './pluginAPI';
+import { isPromise } from './utils';
+
+interface IOpts {
+  cwd: string;
+  env: Env;
+  plugins?: string[];
+  presets?: string[];
+}
+
+export class Service {
+  private opts: IOpts;
+  appData: Record<string, any> = {};
+  args: { _: string[]; [key: string]: any } = { _: [] };
+  commands: Record<string, Command> = {};
+  config: Record<string, any> = {};
+  configSchemas: Record<string, any> = {};
+  configDefaults: Record<string, any> = {};
+  cwd: string;
+  env: Env;
+  hooks: Record<string, Hook[]> = {};
+  // preset is plugin with different type
+  name: string = '';
+  plugins: Record<string, Plugin> = {};
+  pluginMethods: Record<string, { plugin: Plugin; fn: Function }> = {};
+  skipPluginIds: Set<string> = new Set<string>();
+  stage: ServiceStage = ServiceStage.uninitialized;
+  userConfig: Record<string, any> = {};
+
+  constructor(opts: IOpts) {
+    this.cwd = opts.cwd;
+    this.env = opts.env;
+    this.opts = opts;
+    assert(existsSync(this.cwd), `Invalid cwd ${this.cwd}, it's not found.`);
+  }
+
+  async applyPlugins<T>(opts: {
+    key: string;
+    type?: ApplyPluginsType;
+    initialValue?: any;
+    args?: any;
+  }): Promise<T> {
+    const hooks = this.hooks[opts.key] || [];
+    let type = opts.type;
+    // guess type from key
+    if (!type) {
+      if (opts.key.startsWith('on')) {
+        type = ApplyPluginsType.event;
+      } else if (opts.key.startsWith('modify')) {
+        type = ApplyPluginsType.modify;
+      } else if (opts.key.startsWith('add')) {
+        type = ApplyPluginsType.add;
+      } else {
+        throw new Error(
+          `Invalid applyPlugins arguments, type must be supplied for key ${opts.key}.`,
+        );
+      }
+    }
+    switch (type) {
+      case ApplyPluginsType.add:
+        assert(
+          !('initialValue' in opts) || Array.isArray(opts.initialValue),
+          `applyPlugins failed, opts.initialValue must be Array if opts.type is add.`,
+        );
+        const tAdd = new AsyncSeriesWaterfallHook(['memo']);
+        for (const hook of hooks) {
+          if (!this.isPluginEnable(hook)) continue;
+          tAdd.tapPromise(
+            {
+              name: hook.plugin.id,
+              stage: hook.stage,
+              before: hook.before,
+            },
+            async (memo: any) => {
+              const items = await hook.fn(opts.args);
+              return memo.concat(items);
+            },
+          );
+        }
+        return (await tAdd.promise(opts.initialValue || [])) as T;
+      case ApplyPluginsType.modify:
+        const tModify = new AsyncSeriesWaterfallHook(['memo']);
+        for (const hook of hooks) {
+          if (!this.isPluginEnable(hook)) continue;
+          tModify.tapPromise(
+            {
+              name: hook.plugin.id,
+              stage: hook.stage,
+              before: hook.before,
+            },
+            async (memo: any) => {
+              return await hook.fn(memo, opts.args);
+            },
+          );
+        }
+        return (await tModify.promise(opts.initialValue)) as T;
+      case ApplyPluginsType.event:
+        const tEvent = new AsyncSeriesWaterfallHook(['_']);
+        for (const hook of hooks) {
+          if (!this.isPluginEnable(hook)) continue;
+          tEvent.tapPromise(
+            {
+              name: hook.plugin.id,
+              stage: hook.stage || 0,
+              before: hook.before,
+            },
+            async () => {
+              await hook.fn(opts.args);
+            },
+          );
+        }
+        return (await tEvent.promise(1)) as T;
+      default:
+        throw new Error(
+          `applyPlugins failed, type is not defined or is not matched, got ${opts.type}.`,
+        );
+    }
+  }
+
+  async run(opts: { name: string; args?: any }) {
+    const { name, args = {} } = opts;
+    args._ = args._ || [];
+    // shift the command itself
+    if (args._[0] === name) args._.shift();
+    this.args = args;
+    this.name = name;
+
+    // loadEnv
+    this.stage = ServiceStage.init;
+    loadEnv({ cwd: this.cwd, envFile: '.env' });
+    // get pkg from package.json
+    let pkg: Record<string, string | Record<string, any>> = {};
+    try {
+      pkg = require(join(this.cwd, 'package.json'));
+    } catch (_e) {}
+    // get user config
+    const configManager = new Config({ cwd: '', env: this.env });
+    this.userConfig = configManager.getUserConfig().config;
+    // get paths (move after?)
+    // resolve initial presets and plugins
+    const { plugins, presets } = Plugin.getPluginsAndPresets({
+      cwd: this.cwd,
+      pkg,
+      plugins: [require.resolve('./servicePlugin')].concat(
+        this.opts.plugins || [],
+      ),
+      presets: this.opts.presets,
+      userConfig: this.userConfig,
+    });
+    // register presets and plugins
+    this.stage = ServiceStage.initPresets;
+    while (presets.length) {
+      await this.initPreset({ preset: presets.shift()!, presets, plugins });
+    }
+    this.stage = ServiceStage.initPlugins;
+    while (plugins.length) {
+      await this.initPlugin({ plugin: plugins.shift()!, plugins });
+    }
+    // Removed: init hooks which is used by applyPlugins
+    // applyPlugin onPluginReady
+    // 这个时机有点问题，config 没有好之前，isPluginReady 判断可能失效
+    // TODO: 合并到 onStart
+    // await this.applyPlugins({
+    //   key: 'onPluginReady',
+    // });
+    // setup api.config from modifyConfig and modifyDefaultConfig
+    this.stage = ServiceStage.resolveConfig;
+    const config = await this.applyPlugins({
+      key: 'modifyConfig',
+      initialValue: configManager.getConfig({
+        schemas: this.configSchemas,
+      }),
+    });
+    const defaultConfig = await this.applyPlugins({
+      key: 'modifyDefaultConfig',
+      initialValue: this.configDefaults,
+    });
+    this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
+    // applyPlugin collect app data
+    // TODO: some data is mutable
+    this.stage = ServiceStage.collectAppData;
+    this.appData = await this.applyPlugins({
+      key: 'modifyAppData',
+      initialValue: {
+        // base
+        cwd: this.cwd,
+        pkg,
+        plugins,
+        presets,
+        name,
+        args,
+        // config
+        userConfig: this.userConfig,
+        mainConfigFile: configManager.mainConfigFile,
+        config,
+        defaultConfig: defaultConfig,
+        // TODO
+        // moduleGraph,
+        // routes,
+        // npmClient,
+        // nodeVersion,
+        // gitInfo,
+        // gitBranch,
+        // debugger info,
+        // devPort,
+        // devHost,
+        // env
+      },
+    });
+    // applyPlugin onCheck
+    this.stage = ServiceStage.onCheck;
+    await this.applyPlugins({
+      key: 'onCheck',
+      args: {
+        appData: this.appData,
+      },
+    });
+    // applyPlugin onStart
+    this.stage = ServiceStage.onStart;
+    await this.applyPlugins({
+      key: 'onStart',
+    });
+    // run command
+    this.stage = ServiceStage.runCommand;
+    const command = this.commands[name];
+    assert(command, `Invalid command ${name}, it's not registered.`);
+    return command.fn({ args });
+  }
+
+  async initPreset(opts: {
+    preset: Plugin;
+    presets: Plugin[];
+    plugins: Plugin[];
+  }) {
+    const { presets, plugins } = await this.initPlugin({
+      plugin: opts.preset,
+      presets: opts.presets,
+      plugins: opts.plugins,
+    });
+    opts.presets.unshift(...(presets || []));
+    opts.plugins.unshift(...(plugins || []));
+  }
+
+  async initPlugin(opts: {
+    plugin: Plugin;
+    presets?: Plugin[];
+    plugins: Plugin[];
+  }) {
+    // register to this.plugins
+    assert(
+      !this.plugins[opts.plugin.id],
+      `${opts.plugin.type} ${opts.plugin.id} is already registered by ${
+        this.plugins[opts.plugin.id].path
+      }, ${opts.plugin.type} from ${opts.plugin.path} register failed.`,
+    );
+    this.plugins[opts.plugin.id] = opts.plugin;
+
+    // apply with PluginAPI
+    const pluginAPI = new PluginAPI({
+      plugin: opts.plugin,
+      service: this,
+    });
+    pluginAPI.registerPresets = pluginAPI.registerPresets.bind(
+      pluginAPI,
+      opts.presets || [],
+    );
+    pluginAPI.registerPlugins = pluginAPI.registerPlugins.bind(
+      pluginAPI,
+      opts.plugins,
+    );
+    const proxyPluginAPI = PluginAPI.proxyPluginAPI({
+      service: this,
+      pluginAPI,
+      serviceProps: [
+        'name',
+        'args',
+        'cwd',
+        'appData',
+        'config',
+        'userConfig',
+        'applyPlugins',
+      ],
+      staticProps: {
+        ApplyPluginsType,
+        ConfigChangeType,
+        EnableBy,
+        ServiceStage,
+      },
+    });
+    let ret = opts.plugin.apply()(proxyPluginAPI);
+    if (isPromise(ret)) {
+      ret = await ret;
+    }
+    return ret;
+  }
+
+  isPluginEnable(hook: Hook) {
+    const { id, key, enableBy } = hook.plugin;
+    if (this.skipPluginIds.has(id)) return false;
+    if (this.userConfig[key] === false) return false;
+    if (enableBy === EnableBy.config && !(key in this.config)) return false;
+    if (typeof enableBy === 'function') return enableBy();
+    // EnableBy.register
+    return true;
+  }
+}

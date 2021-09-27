@@ -35,6 +35,9 @@ export declare class Node {
      */
     cloneNode<T extends Node>(this: T, recursive?: boolean): T;
 }
+/**
+ * A node that contains some data.
+ */
 export declare class DataNode extends Node {
     data: string;
     /**
@@ -45,12 +48,21 @@ export declare class DataNode extends Node {
     get nodeValue(): string;
     set nodeValue(data: string);
 }
+/**
+ * Text within the document.
+ */
 export declare class Text extends DataNode {
     constructor(data: string);
 }
+/**
+ * Comments within the document.
+ */
 export declare class Comment extends DataNode {
     constructor(data: string);
 }
+/**
+ * Processing instructions, including doc types.
+ */
 export declare class ProcessingInstruction extends DataNode {
     name: string;
     constructor(name: string, data: string);
@@ -73,16 +85,25 @@ export declare class NodeWithChildren extends Node {
     get childNodes(): Node[];
     set childNodes(children: Node[]);
 }
+/**
+ * The root node of the document.
+ */
 export declare class Document extends NodeWithChildren {
     constructor(children: Node[]);
     "x-mode"?: "no-quirks" | "quirks" | "limited-quirks";
 }
+/**
+ * The description of an individual attribute.
+ */
 interface Attribute {
     name: string;
     value: string;
     namespace?: string;
     prefix?: string;
 }
+/**
+ * An element within the DOM.
+ */
 export declare class Element extends NodeWithChildren {
     name: string;
     attribs: {
@@ -116,7 +137,7 @@ export declare function isCDATA(node: Node): node is NodeWithChildren;
  * @param node Node to check.
  * @returns `true` if the node has the type `Text`, `false` otherwise.
  */
-export declare function isText(node: Node): node is DataNode;
+export declare function isText(node: Node): node is Text;
 /**
  * @param node Node to check.
  * @returns `true` if the node has the type `Comment`, `false` otherwise.

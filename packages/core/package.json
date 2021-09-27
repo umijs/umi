@@ -31,16 +31,22 @@
   "devDependencies": {
     "@types/hapi__joi": "17.1.7",
     "@hapi/joi": "17.1.1",
-    "just-diff": "3.1.1"
+    "dotenv": "10.0.0",
+    "just-diff": "3.1.1",
+    "tapable": "2.2.1"
   },
   "compiledConfig": {
     "deps": [
       "@hapi/joi",
-      "just-diff"
+      "dotenv",
+      "just-diff",
+      "tapable"
     ],
     "externals": {
       "@hapi/joi": "$$LOCAL",
-      "just-diff": "$$LOCAL"
+      "dotenv": "$$LOCAL",
+      "just-diff": "$$LOCAL",
+      "tapable": "$$LOCAL"
     }
   }
 }

@@ -34,19 +34,22 @@ export class Config {
     this.prevConfig = null;
   }
 
-  getConfig(opts: { defaultConfig: any; schema: ISchema }) {
+  getUserConfig() {
     const configFiles = Config.getConfigFiles({
       mainConfigFile: this.mainConfigFile,
       env: this.opts.env,
       specifiedEnv: this.opts.specifiedEnv,
     });
-    const { config, files } = Config.getUserConfig({
+    return Config.getUserConfig({
       configFiles,
     });
-    Config.validateConfig({ config, schemas: opts.schema });
+  }
+
+  getConfig(opts: { schemas: ISchema }) {
+    const { config, files } = this.getUserConfig();
+    Config.validateConfig({ config, schemas: opts.schemas });
     return (this.prevConfig = {
-      config: lodash.merge(opts.defaultConfig, config),
-      userConfig: config,
+      config: config,
       files,
     });
   }
@@ -54,7 +57,7 @@ export class Config {
   watch(opts: {
     files: string[];
     defaultConfig: Record<string, any>;
-    schema: ISchema;
+    schemas: ISchema;
     onChangeTypes: IOnChangeTypes;
     onChange: (opts: {
       data: ReturnType<typeof Config.diffConfigs>;

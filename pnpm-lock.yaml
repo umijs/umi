@@ -340,16 +340,26 @@ importers:
       '@types/hapi__joi': 17.1.7
       '@umijs/bundler-utils': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
+      dotenv: 10.0.0
       just-diff: 3.1.1
+      tapable: 2.2.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
     devDependencies:
       '@hapi/joi': 17.1.1
       '@types/hapi__joi': 17.1.7
+      dotenv: 10.0.0
       just-diff: 3.1.1
+      tapable: 2.2.1
 
   packages/core/compiled/@hapi/joi:
+    specifiers: {}
+
+  packages/core/compiled/dotenv:
+    specifiers: {}
+
+  packages/core/compiled/just-diff:
     specifiers: {}
 
   packages/mfsu:
@@ -403,6 +413,7 @@ importers:
       lodash: 4.17.21
       pkg-up: 3.1.0
       portfinder: 1.0.28
+      resolve: 1.20.0
       rimraf: 3.0.2
       semver: 7.3.5
       strip-ansi: 6.0.0
@@ -427,6 +438,7 @@ importers:
       lodash: 4.17.21
       pkg-up: 3.1.0
       portfinder: 1.0.28
+      resolve: 1.20.0
       rimraf: 3.0.2
       semver: 7.3.5
       strip-ansi: 6.0.0
@@ -463,6 +475,9 @@ importers:
     specifiers: {}
 
   packages/utils/compiled/portfinder:
+    specifiers: {}
+
+  packages/utils/compiled/resolve:
     specifiers: {}
 
   packages/utils/compiled/rimraf:
@@ -4179,6 +4194,11 @@ packages:
       dom-serializer: 1.3.2
       domelementtype: 2.2.0
       domhandler: 4.2.2
+    dev: true
+
+  /dotenv/10.0.0:
+    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
+    engines: {node: '>=10'}
     dev: true
 
   /dts-packer/0.0.2:
@@ -8158,6 +8178,11 @@ packages:
 
   /tapable/2.2.0:
     resolution: {integrity: sha512-FBk4IesMV1rBxX2tfiK8RAmogtWn53puLOQlvO8XuwlgxcYbP4mVPS9Ph4aeamSyyVjOl24aYWAuc8U5kCVwMw==}
+    engines: {node: '>=6'}
+    dev: true
+
+  /tapable/2.2.1:
+    resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
     dev: true
 

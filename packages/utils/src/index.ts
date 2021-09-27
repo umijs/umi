@@ -11,6 +11,7 @@ import fsExtra from '../compiled/fs-extra';
 import lodash from '../compiled/lodash';
 import pkgUp from '../compiled/pkg-up';
 import portfinder from '../compiled/portfinder';
+import resolve from '../compiled/resolve';
 import rimraf from '../compiled/rimraf';
 import semver from '../compiled/semver';
 import stripAnsi from '../compiled/strip-ansi';
@@ -33,6 +34,7 @@ export {
   logger,
   pkgUp,
   portfinder,
+  resolve,
   rimraf,
   semver,
   stripAnsi,
