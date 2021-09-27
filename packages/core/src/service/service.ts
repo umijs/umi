@@ -11,6 +11,7 @@ import {
   ConfigChangeType,
   EnableBy,
   Env,
+  PluginType,
   ServiceStage,
 } from '../types';
 import { Command } from './command';
@@ -290,7 +291,7 @@ export class Service {
     assert(
       !this.plugins[opts.plugin.id],
       `${opts.plugin.type} ${opts.plugin.id} is already registered by ${
-        this.plugins[opts.plugin.id].path
+        this.plugins[opts.plugin.id]?.path
       }, ${opts.plugin.type} from ${opts.plugin.path} register failed.`,
     );
     this.plugins[opts.plugin.id] = opts.plugin;
@@ -331,6 +332,26 @@ export class Service {
     let ret = opts.plugin.apply()(proxyPluginAPI);
     if (isPromise(ret)) {
       ret = await ret;
+    }
+    if (ret?.presets) {
+      ret.presets = ret.presets.map(
+        (preset: string) =>
+          new Plugin({
+            path: preset,
+            type: PluginType.preset,
+            cwd: this.cwd,
+          }),
+      );
+    }
+    if (ret?.plugins) {
+      ret.plugins = ret.plugins.map(
+        (plugin: string) =>
+          new Plugin({
+            path: plugin,
+            type: PluginType.plugin,
+            cwd: this.cwd,
+          }),
+      );
     }
     return ret;
   }

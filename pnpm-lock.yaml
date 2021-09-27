@@ -401,7 +401,10 @@ importers:
     specifiers: {}
 
   packages/preset-built-in:
-    specifiers: {}
+    specifiers:
+      umi: 4.0.0-alpha.1
+    devDependencies:
+      umi: link:../umi
 
   packages/umi:
     specifiers:

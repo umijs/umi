@@ -24,9 +24,9 @@ export class Service extends CoreService {
     }
 
     let name = opts.name;
-    if (name === 'v') {
+    if (opts?.args.version || name === 'v') {
       name = 'version';
-    } else if (!name || name === 'h') {
+    } else if (opts?.args.help || !name || name === 'h') {
       name = 'help';
     }
 

@@ -31,7 +31,7 @@ export class PluginAPI {
     const registerCommand = (commandOpts: Omit<typeof opts, 'alias'>) => {
       assert(
         !this.service.commands[name],
-        `api.registerCommand() failed, the command ${name} is exists from ${this.service.commands[name].plugin.id}.`,
+        `api.registerCommand() failed, the command ${name} is exists from ${this.service.commands[name]?.plugin.id}.`,
       );
       this.service.commands[name] = new Command({
         ...commandOpts,
