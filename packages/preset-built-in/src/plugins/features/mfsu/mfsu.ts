@@ -295,21 +295,24 @@ export default function (api: IApi) {
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const path = req.path;
-      const { isMfAssets, fileRelativePath } = normalizeReqPath(api, path);
-      if (!isMfAssets) {
-        return next();
+      const { isMfAssets, fileRelativePath } = normalizeReqPath(api, req.path);
+      if (isMfAssets) {
+        depBuilder.onBuildComplete(() => {
+          const mfsuPath = getMfsuPath(api, { mode: 'development' });
+          const content = readFileSync(
+            join(mfsuPath, fileRelativePath),
+            'utf-8',
+          );
+          res.setHeader('content-type', mime.lookup(parse(path || '').ext));
+          // 排除入口文件，因为 hash 是入口文件控制的
+          if (!/remoteEntry.js/.test(req.url)) {
+            res.setHeader('cache-control', 'max-age=31536000,immutable');
+          }
+          res.send(content);
+        });
+      } else {
+        next();
       }
-      const mfsuPath = getMfsuPath(api, { mode: 'development' });
-      const finalFilePath = join(mfsuPath, fileRelativePath);
-      depBuilder.onBuildComplete(() => {
-        const content = readFileSync(finalFilePath, 'utf-8');
-        res.setHeader('content-type', mime.lookup(parse(path || '').ext));
-        // 排除入口文件，因为 hash 是入口文件控制的
-        if (!/remoteEntry.js/.test(req.url)) {
-          res.setHeader('cache-control', 'max-age=31536000,immutable');
-        }
-        res.send(content);
-      });
     };
   });
 
