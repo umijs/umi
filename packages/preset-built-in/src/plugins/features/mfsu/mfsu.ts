@@ -51,8 +51,20 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   }
 };
 
-export const isMonacoWorker = (reqPath: string) =>
-  /[a-zA-Z0-9]+\.worker\.js$/.test(reqPath);
+export const isMonacoWorker = (
+  api: IApi,
+  reqPath: string,
+  fileRelativePath: string,
+) =>
+  /[a-zA-Z0-9]+\.worker\.js$/.test(reqPath) &&
+  existsSync(
+    join(
+      getMfsuPath(api, {
+        mode: 'development',
+      }),
+      fileRelativePath,
+    ),
+  );
 
 export const normalizeReqPath = (api: IApi, reqPath: string) => {
   let normalPublicPath = api.config.publicPath as string;
@@ -61,14 +73,15 @@ export const normalizeReqPath = (api: IApi, reqPath: string) => {
   } else {
     normalPublicPath = normalPublicPath.replace(/^(?:\.+\/?)+/, '/'); // normalPublicPath should start with '/'
   }
+
+  const fileRelativePath = reqPath
+    .replace(new RegExp(`^${normalPublicPath}`), '/')
+    .slice(1);
   const isMfAssets =
     reqPath.startsWith(`${normalPublicPath}mf-va_`) ||
     reqPath.startsWith(`${normalPublicPath}mf-dep_`) ||
     reqPath.startsWith(`${normalPublicPath}mf-static/`) ||
-    isMonacoWorker(reqPath);
-  const fileRelativePath = reqPath
-    .replace(new RegExp(`^${normalPublicPath}`), '/')
-    .slice(1);
+    isMonacoWorker(api, reqPath, fileRelativePath);
   return {
     isMfAssets,
     normalPublicPath,
@@ -283,19 +296,11 @@ export default function (api: IApi) {
     return (req, res, next) => {
       const path = req.path;
       const { isMfAssets, fileRelativePath } = normalizeReqPath(api, path);
-      const mfsuPath = getMfsuPath(api, { mode: 'development' });
-      const finalFilePath = join(mfsuPath, fileRelativePath);
       if (!isMfAssets) {
         return next();
       }
-      if (isMonacoWorker(path) && !existsSync(finalFilePath)) {
-        console.log(
-          '[MFSU]',
-          chalk.yellow(`${path.slice(1)}`),
-          'is not a monaco worker.',
-        );
-        return next();
-      }
+      const mfsuPath = getMfsuPath(api, { mode: 'development' });
+      const finalFilePath = join(mfsuPath, fileRelativePath);
       depBuilder.onBuildComplete(() => {
         const content = readFileSync(finalFilePath, 'utf-8');
         res.setHeader('content-type', mime.lookup(parse(path || '').ext));
