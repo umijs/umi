@@ -1,4 +1,5 @@
 import { winPath } from '@umijs/utils';
+import { resolve } from 'path';
 import { IApi } from 'umi';
 import { getMfsuPath, normalizeReqPath } from './mfsu';
 
@@ -158,27 +159,74 @@ test('normalizeReqPath', () => {
     normalPublicPath: '/',
     fileRelativePath: 'a/b/c/mf-static/cfile.html',
   });
+});
 
-  // monaco editor worker
-  expect(
-    normalizeReqPath(
-      { config: { publicPath: '/' } } as IApi,
-      '/json.worker.js',
-    ),
-  ).toStrictEqual({
-    isMfAssets: true,
-    normalPublicPath: '/',
-    fileRelativePath: 'json.worker.js',
+describe('get worker path', () => {
+  test('Monaco worker should get successfully.', () => {
+    // monaco editor worker
+    expect(
+      normalizeReqPath(
+        {
+          config: { publicPath: '/' },
+          userConfig: {
+            mfsu: {
+              development: {
+                output: './fixtures/worker',
+              },
+            },
+          } as any,
+          cwd: resolve(__dirname),
+        } as IApi,
+        '/json.worker.js',
+      ),
+    ).toStrictEqual({
+      isMfAssets: true,
+      normalPublicPath: '/',
+      fileRelativePath: 'json.worker.js',
+    });
+
+    expect(
+      normalizeReqPath(
+        {
+          config: { publicPath: '/a' },
+          userConfig: {
+            mfsu: {
+              development: {
+                output: './fixtures/worker',
+              },
+            },
+          } as any,
+          cwd: resolve(__dirname),
+        } as IApi,
+        '/a/json.worker.js',
+      ),
+    ).toStrictEqual({
+      isMfAssets: true,
+      normalPublicPath: '/a',
+      fileRelativePath: '/json.worker.js',
+    });
   });
 
-  expect(
-    normalizeReqPath(
-      { config: { publicPath: '/a' } } as IApi,
-      '/a/json.worker.js',
-    ),
-  ).toStrictEqual({
-    isMfAssets: true,
-    normalPublicPath: '/a',
-    fileRelativePath: '/json.worker.js',
+  test('Custom workers should not be blocked.', () => {
+    expect(
+      normalizeReqPath(
+        {
+          config: { publicPath: '/' },
+          userConfig: {
+            mfsu: {
+              development: {
+                output: './fixtures/worker',
+              },
+            },
+          } as any,
+          cwd: resolve(__dirname),
+        } as IApi,
+        '/others.worker.js',
+      ),
+    ).toStrictEqual({
+      isMfAssets: false,
+      normalPublicPath: '/',
+      fileRelativePath: 'others.worker.js',
+    });
   });
 });
