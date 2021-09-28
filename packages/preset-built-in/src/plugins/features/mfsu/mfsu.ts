@@ -51,12 +51,8 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   }
 };
 
-export const isMonacoWorker = (reqPath: string) => {
-  if (/[a-zA-Z0-9]+\.worker\.js$/.test(reqPath)) {
-    return true;
-  }
-  return false;
-};
+export const isMonacoWorker = (reqPath: string) =>
+  /[a-zA-Z0-9]+\.worker\.js$/.test(reqPath);
 
 export const normalizeReqPath = (api: IApi, reqPath: string) => {
   let normalPublicPath = api.config.publicPath as string;
@@ -286,24 +282,29 @@ export default function (api: IApi) {
   api.addBeforeMiddlewares(() => {
     return (req, res, next) => {
       const path = req.path;
-      const { isMfAssets, fileRelativePath } = normalizeReqPath(api, req.path);
-      if (isMfAssets) {
-        depBuilder.onBuildComplete(() => {
-          const mfsuPath = getMfsuPath(api, { mode: 'development' });
-          const content = readFileSync(
-            join(mfsuPath, fileRelativePath),
-            'utf-8',
-          );
-          res.setHeader('content-type', mime.lookup(parse(path || '').ext));
-          // 排除入口文件，因为 hash 是入口文件控制的
-          if (!/remoteEntry.js/.test(req.url)) {
-            res.setHeader('cache-control', 'max-age=31536000,immutable');
-          }
-          res.send(content);
-        });
-      } else {
-        next();
+      const { isMfAssets, fileRelativePath } = normalizeReqPath(api, path);
+      const mfsuPath = getMfsuPath(api, { mode: 'development' });
+      const finalFilePath = join(mfsuPath, fileRelativePath);
+      if (!isMfAssets) {
+        return next();
       }
+      if (isMonacoWorker(path) && !existsSync(finalFilePath)) {
+        console.log(
+          '[MFSU]',
+          chalk.yellow(`${path.slice(1)}`),
+          'is not a monaco worker.',
+        );
+        return next();
+      }
+      depBuilder.onBuildComplete(() => {
+        const content = readFileSync(finalFilePath, 'utf-8');
+        res.setHeader('content-type', mime.lookup(parse(path || '').ext));
+        // 排除入口文件，因为 hash 是入口文件控制的
+        if (!/remoteEntry.js/.test(req.url)) {
+          res.setHeader('cache-control', 'max-age=31536000,immutable');
+        }
+        res.send(content);
+      });
     };
   });
 
