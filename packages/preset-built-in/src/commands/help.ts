@@ -25,16 +25,17 @@ umi help dev
 
   function showHelp(command: any) {
     console.log(`
-Usage umi ${command.name}
+Usage: umi ${command.name} [options]
 ${command.description ? `${chalk.gray(command.description)}.\n` : ''}
-${command.options ? `Options:\n\n${padLeft(command.options)}\n` : ''}
-${command.details ? `Details:\n\n${padLeft(command.details)}` : ''}
+${command.options ? `Options:\n${padLeft(command.options)}\n` : ''}
+${command.details ? `Details:\n${padLeft(command.details)}` : ''}
 `);
   }
 
   function showHelps(commands: typeof api.service.commands) {
     console.log(`
 Usage: umi <command> [options]
+
 Commands:
 
 ${getDeps(commands)}
