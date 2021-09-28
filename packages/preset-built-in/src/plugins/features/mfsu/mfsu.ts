@@ -51,6 +51,21 @@ export const getMfsuPath = (api: IApi, { mode }: { mode: TMode }) => {
   }
 };
 
+export const isMonacoWorker = (
+  api: IApi,
+  reqPath: string,
+  fileRelativePath: string,
+) =>
+  /[a-zA-Z0-9]+\.worker\.js$/.test(reqPath) &&
+  existsSync(
+    join(
+      getMfsuPath(api, {
+        mode: 'development',
+      }),
+      fileRelativePath,
+    ),
+  );
+
 export const normalizeReqPath = (api: IApi, reqPath: string) => {
   let normalPublicPath = api.config.publicPath as string;
   if (/^https?\:\/\//.test(normalPublicPath)) {
@@ -58,13 +73,15 @@ export const normalizeReqPath = (api: IApi, reqPath: string) => {
   } else {
     normalPublicPath = normalPublicPath.replace(/^(?:\.+\/?)+/, '/'); // normalPublicPath should start with '/'
   }
-  const isMfAssets =
-    reqPath.startsWith(`${normalPublicPath}mf-va_`) ||
-    reqPath.startsWith(`${normalPublicPath}mf-dep_`) ||
-    reqPath.startsWith(`${normalPublicPath}mf-static/`);
+
   const fileRelativePath = reqPath
     .replace(new RegExp(`^${normalPublicPath}`), '/')
     .slice(1);
+  const isMfAssets =
+    reqPath.startsWith(`${normalPublicPath}mf-va_`) ||
+    reqPath.startsWith(`${normalPublicPath}mf-dep_`) ||
+    reqPath.startsWith(`${normalPublicPath}mf-static/`) ||
+    isMonacoWorker(api, reqPath, fileRelativePath);
   return {
     isMfAssets,
     normalPublicPath,
