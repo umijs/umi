@@ -597,7 +597,7 @@ import React from 'react';
 
 export default () => {
 - window.alert(1);
-+ if (!isBrowser()) {
++ if (isBrowser()) {
     window.alert(1);
 + }
 
