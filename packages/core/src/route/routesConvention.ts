@@ -33,7 +33,7 @@ function visitFiles(opts: {
   visitor: (file: string) => void;
   baseDir?: string;
 }): void {
-  opts.baseDir ||= opts.dir;
+  opts.baseDir = opts.baseDir || opts.dir;
   for (let filename of readdirSync(opts.dir)) {
     let file = resolve(opts.dir, filename);
     let stat = lstatSync(file);
