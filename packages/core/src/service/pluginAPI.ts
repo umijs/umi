@@ -13,6 +13,8 @@ export class PluginAPI {
   constructor(opts: { service: Service; plugin: Plugin }) {
     this.service = opts.service;
     this.plugin = opts.plugin;
+    // TODO
+    // logger
   }
 
   describe(opts: {
