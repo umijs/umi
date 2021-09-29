@@ -45,3 +45,10 @@ export enum EnableBy {
   register = 'register',
   config = 'config',
 }
+
+export interface IRoute {
+  path: string;
+  file: string;
+  id: string;
+  parentId?: string;
+}
