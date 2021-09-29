@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { lstatSync, readdirSync } from 'fs';
 import { join, relative, resolve } from 'path';
 import { defineRoutes } from './defineRoutes';
@@ -15,7 +16,7 @@ export function getConventionRoutes(opts: { base: string }) {
     visitor: (file) => {
       const routeId = createRouteId(file);
       if (isRouteModuleFile({ file })) {
-        files[routeId] = file;
+        files[routeId] = winPath(file);
       } else {
         throw new Error(`Invalid route module file: ${join(opts.base, file)}`);
       }
