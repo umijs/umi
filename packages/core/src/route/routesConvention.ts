@@ -1,5 +1,6 @@
 import { lstatSync, readdirSync } from 'fs';
 import { join, relative, resolve } from 'path';
+import { defineRoutes } from './defineRoutes';
 import {
   byLongestFirst,
   createRouteId,
@@ -7,14 +8,14 @@ import {
   isRouteModuleFile,
 } from './utils';
 
-export function getRoutes(opts: { base: string }) {
+export function getConventionRoutes(opts: { base: string }) {
   const files: { [routeId: string]: string } = {};
   visitFiles({
     dir: opts.base,
     visitor: (file) => {
-      const routeId = createRouteId(join('routes', file));
+      const routeId = createRouteId(file);
       if (isRouteModuleFile({ file })) {
-        files[routeId] = join('routes', file);
+        files[routeId] = file;
       } else {
         throw new Error(`Invalid route module file: ${join(opts.base, file)}`);
       }
@@ -22,10 +23,26 @@ export function getRoutes(opts: { base: string }) {
   });
 
   const routeIds = Object.keys(files).sort(byLongestFirst);
-  const childRouteIds = routeIds.filter(
-    (id) => findParentRouteId(routeIds, id) === undefined,
-  );
-  console.log('test', childRouteIds);
+
+  function defineNestedRoutes(defineRoute: any, parentId?: string) {
+    const childRouteIds = routeIds.filter(
+      (id) => findParentRouteId(routeIds, id) === parentId,
+    );
+    for (let routeId of childRouteIds) {
+      let routePath = createRoutePath(
+        parentId ? routeId.slice(parentId.length + 1) : routeId,
+      );
+      defineRoute({
+        path: routePath,
+        file: files[routeId],
+        children() {
+          defineNestedRoutes(defineRoute, routeId);
+        },
+      });
+    }
+  }
+
+  return defineRoutes(defineNestedRoutes);
 }
 
 function visitFiles(opts: {
@@ -43,4 +60,19 @@ function visitFiles(opts: {
       opts.visitor(relative(opts.baseDir, file));
     }
   }
+}
+
+function createRoutePath(routeId: string): string {
+  const path = routeId
+    // routes/$ -> routes/*
+    // routes/nested/$.tsx (with a "routes/nested.tsx" layout)
+    .replace(/^\$$/, '*')
+    // routes/docs.$ -> routes/docs/*
+    // routes/docs/$ -> routes/docs/*
+    .replace(/(\/|\.)\$$/, '/*')
+    // routes/$user -> routes/:user
+    .replace(/\$/g, ':')
+    // routes/not.nested -> routes/not/nested
+    .replace(/\./g, '/');
+  return /\b\/?index$/.test(path) ? path.replace(/\/?index$/, '') : path;
 }
