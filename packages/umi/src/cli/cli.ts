@@ -5,12 +5,14 @@ import { dev } from './dev';
 import {
   checkLocal,
   checkVersion as checkNodeVersion,
+  setNoDeprecation,
   setNodeTitle,
 } from './node';
 
 checkNodeVersion();
 checkLocal();
 setNodeTitle();
+setNoDeprecation();
 
 (async () => {
   const args = yParser(process.argv.slice(2), {
