@@ -2,69 +2,69 @@
 translateHelp: true
 ---
 
-# 如何做编译提速
+# How to speed up compilation
 
-如果遇到编译慢，增量编译慢，内存爆掉，OOM 等问题，可尝试以下方法。
+If you encounter problems such as slow compilation, slow incremental compilation, memory burst, OOM, etc., you can try the following methods.
 
-## 配置 `nodeModulesTransform` 为  `{ type: 'none' }`
+## Configure `nodeModulesTransform` as `{ type:'none' }`
 
-> 需要 Umi 3.1 。
+> Demand Umi 3.1.
 
-Umi 默认编译 node\_modules 下的文件，带来一些收益的同时，也增加了额外的编译时间。如果不希望 node\_modules 下的文件走 babel 编译，可通过以下配置减少 40% 到 60% 的编译时间。
+Umi compiles files under node\_modules by default, which not only brings some benefits, but also adds extra compilation time. If you don't want the files under node\_modules to be compiled with babel, you can reduce the compilation time by 40 % to 60% through the following configuration.
 
 ```js
 export default {
   nodeModulesTransform: {
-    type: 'none',
+    type:'none',
     exclude: [],
   },
 }
 ```
 
-## 查看包结构
+## View package structure
 
-执行 `umi dev` 或 `umi build` 时，增加环境变量 `ANALYZE=1` 可查看产物的依赖占比。
+When executing `umi dev` or `umi build`, increase the environment variable `ANALYZE=1` to view the product's dependency ratio.
 
 <img src="https://img.alicdn.com/tfs/TB1P_iYDQL0gK0jSZFAXXcA9pXa-2432-1276.png" width="600" />
 
-注意：
+Notice:
 
-* `umi dev` 可以实时修改和查看，但会引入一些开发依赖，注意忽略
+* `umi dev` can be modified and viewed in real time, but some development dependencies will be introduced, please ignore
 
-## 配置 externals
+## Configuration externals
 
-对于一些大尺寸依赖，比如图表库、antd 等，可尝试通过 externals 的配置引入相关 umd 文件，减少编译消耗。
+For some large-scale dependencies, such as chart libraries, antd, etc., you can try to import related umd files through the configuration of externals to reduce compilation consumption.
 
-比如 react 和 react-dom：
+For example, react and react-dom:
 
 ```js
 export default {
-  // 配置 external
+  // Configure external
   externals: {
-    'react': 'window.React',
-    'react-dom': 'window.ReactDOM',
+    'react':'window.React',
+    'react-dom':'window.ReactDOM',
   },
 
-  // 引入被 external 库的 scripts
-  // 区分 development 和 production，使用不同的产物
-  scripts: process.env.NODE_ENV === 'development' ? [
+  // Import the scripts of the external library
+  // distinguish development and production, use different products
+  scripts: process.env.NODE_ENV ==='development'? [
     'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.development.js',
     'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.development.js',
-  ] : [
+  ]: [
     'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.production.min.js',
     'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.production.min.js',
   ],
 }
 ```
 
-注意：
+Notice:
 
-1. 如果要支持 IE10 或以下，external react 还需要额外引入补丁，比如 `https://gw.alipayobjects.com/os/lib/alipay/react16-map-set-polyfill/1.0.2/dist/react16-map-set-polyfill.min.js`
-2. 如果 external antd，需同时 external 额外的 moment、react 和 react-dom，并在 antd 前引入
+1. If you want to support IE10 or below, external react also needs to introduce additional patches, such as `https://gw.alipayobjects.com/os/lib/alipay/react16-map-set-polyfill/1.0.2/dist/react16 -map-set-polyfill.min.js`
+2. If antd is external, additional moment, react and react-dom need to be external at the same time, and introduced before antd
 
-## 减少补丁尺寸
+## Reduce patch size
 
-Umi 默认会包含以下浏览器及其版本的补丁，
+Umi will include patches for the following browsers and their versions by default,
 
 ```
 chrome: 49,
@@ -74,7 +74,7 @@ edge: 13,
 ios: 10,
 ```
 
-选择合适的浏览器版本，可减少不少尺寸，比如配成以下这样，预计可减少 90K （压缩后未 gzip）的尺寸。
+Choosing a suitable browser version can reduce a lot of size. For example, if it is configured as follows, it is expected to reduce the size of 90K (without gzip after compression).
 
 ```js
 export default {
@@ -88,31 +88,31 @@ export default {
 }
 ```
 
-注意：
+Notice:
 
-* 把浏览器设为 false 则不会包含他的补丁
+* Set the browser to false to not include his patch
 
-## 调整 splitChunks 策略，减少整体尺寸
+## Adjust the splitChunks strategy to reduce the overall size
 
-如果开了 dynamicImport，然后产物特别大，每个出口文件都包含了相同的依赖，比如 antd，可尝试通过 splitChunks 配置调整公共依赖的提取策略。
+If dynamicImport is turned on, and the product is very large, and each export file contains the same dependencies, such as antd, you can try to adjust the extraction strategy of common dependencies through the splitChunks configuration.
 
-比如：
+for example:
 
 ```js
 export default {
   dynamicImport: {},
-  chunks: ['vendors', 'umi'],
-  chainWebpack: function (config, { webpack }) {
+  chunks: ['vendors','umi'],
+  chainWebpack: function (config, {webpack }) {
     config.merge({
       optimization: {
         splitChunks: {
-          chunks: 'all',
+          chunks:'all',
           minSize: 30000,
           minChunks: 3,
-          automaticNameDelimiter: '.',
+          automaticNameDelimiter:'.',
           cacheGroups: {
             vendor: {
-              name: 'vendors',
+              name:'vendors',
               test({ resource }) {
                 return /[\\/]node_modules[\\/]/.test(resource);
               },
@@ -126,64 +126,64 @@ export default {
 }
 ```
 
-## 通过 NODE\_OPTIONS 设置内存上限
+## Set the upper limit of memory through NODE\_OPTIONS
 
-如果出现 OOM，也可以通过增加内存上限尝试解决。比如 `NODE_OPTIONS=--max_old_space_size=4096` 设置为 4G。
+If OOM occurs, you can also try to solve it by increasing the upper memory limit. For example, `NODE_OPTIONS=--max_old_space_size=4096` is set to 4G.
 
-## 调整 SourceMap 生成方式
+## Adjust SourceMap generation method
 
-如果 dev 时慢或者修改代码后增量编译慢，可尝试禁用 SourceMap 生成或者调整为更低成本的生成方式，
+If dev time is slow or incremental compilation is slow after modifying the code, you can try to disable SourceMap generation or adjust to a lower-cost generation method.
 
 ```js
-// 禁用 sourcemap
+// disable sourcemap
 export default {
   devtool: false,
 };
 ```
 
-或者，
+or,
 
 ```js
-// 使用最低成本的 sourcemap 生成方式，默认是 cheap-module-source-map
+// Use the lowest cost sourcemap generation method, the default is cheap-module-source-map
 export default {
-  devtool: 'eval',
+  devtool:'eval',
 };
 ```
 
-## monaco-editor 编辑器打包
+## monaco-editor editor package
 
-编辑器打包，建议使用如下配置，避免构建报错：
+The editor is packaged, it is recommended to use the following configuration to avoid build errors:
 
 ```js
-import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+import MonacoWebpackPlugin from'monaco-editor-webpack-plugin';
 
 export default {
   chainWebpack: (memo) => {
-    // 更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+    // More configuration https://github.com/Microsoft/monaco-editor-webpack-plugin#options
     memo.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [
-      // 按需配置
-      { languages: ['javascript'] }
+      // Configure on demand
+      {languages: ['javascript']}
     ]);
     return memo;
   }
 }
 ```
 
-## 替换压缩器为 esbuild
+## Replace compressor with esbuild
 
-> 试验性功能，可能有坑，但效果拔群。
+> Experimental function, there may be pits, but the effect is outstanding.
 
-以依赖了全量 antd 和 bizcharts 的项目为例，在禁用 Babel 缓存和 Terser 缓存的基础上进行了测试，效果如图：
+Taking a project that relies on full antd and bizcharts as an example, the test was performed on the basis of disabling the Babel cache and Terser cache, and the effect is shown in the figure:
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/NRwBU0Kgui/7f24657c-ec26-420b-b956-14ae4e3de0a3.png)
 
-先安装依赖，
+Install dependencies first,
 
 ```bash
 $ yarn add @umijs/plugin-esbuild
 ```
 
-然后在配置里开启，
+Then turn it on in the configuration,
 
 ```js
 export default {
@@ -191,11 +191,11 @@ export default {
 }
 ```
 
-## 不压缩
+## No compression
 
-> 不推荐，紧急情况下使用。
+> Not recommended, use in emergency situations.
 
-编译慢中压缩时间占了大部分，所以如果编译时不压缩可节约大量的时间和内存消耗，但尺寸会增加不少。通过环境变量 `COMPRESS=none` 可跳过压缩。
+Compression time accounts for most of the slow compilation, so if you do not compress during compilation, you can save a lot of time and memory consumption, but the size will increase a lot. Compression can be skipped through the environment variable `COMPRESS=none`.
 
 ```bash
 $ COMPRESS=none umi build
