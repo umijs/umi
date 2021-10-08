@@ -26,7 +26,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.3",
+    "typescript": "^4.5.0-beta",
     "yorkie": "^2.0.0",
     "zx": "^4.2.0"
   },
