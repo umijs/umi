@@ -37,6 +37,9 @@ function getPathWithPkgJSON(path: string) {
         (pkg.main &&
           (getPathWithExt(join(path, pkg.main)) ||
             getPathWithIndexFile(join(path, pkg.main)))) ||
+        (pkg.exports &&
+          (getPathWithExt(join(path, pkg.exports)) ||
+            getPathWithIndexFile(join(path, pkg.exports)))) ||
         getPathWithExt(indexTarget) ||
         getPathWithIndexFile(indexTarget)
       );
