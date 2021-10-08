@@ -22,7 +22,7 @@ importers:
       rimraf: ^3.0.2
       ts-jest: ^27.0.5
       ts-node: ^10.2.1
-      typescript: ^4.4.3
+      typescript: ^4.5.0-beta
       uglify-js: ^3.14.1
       yorkie: ^2.0.0
       zx: ^4.2.0
@@ -42,12 +42,12 @@ importers:
       jest: 27.1.0_ts-node@10.2.1
       lint-staged: 11.1.2
       prettier: 2.3.2
-      prettier-plugin-organize-imports: 2.3.3_prettier@2.3.2+typescript@4.4.3
+      prettier-plugin-organize-imports: 2.3.3_f387ce2900614924be18ec7d70d384eb
       resolve: 1.20.0
       rimraf: 3.0.2
-      ts-jest: 27.0.5_ccfd8a00addbb292b4ad392363cfcc08
-      ts-node: 10.2.1_5362fcd7a88db4a5ad86a6222973d3a2
-      typescript: 4.4.3
+      ts-jest: 27.0.5_1b3fb125863e5ea6139066b3632a4e8d
+      ts-node: 10.2.1_e9e457e77226a1e218df754b6ba768c5
+      typescript: 4.5.0-dev.20211001
       yorkie: 2.0.0
       zx: 4.2.0
 
@@ -5348,7 +5348,7 @@ packages:
       jest-validate: 27.1.0
       micromatch: 4.0.4
       pretty-format: 27.1.0
-      ts-node: 10.2.1_5362fcd7a88db4a5ad86a6222973d3a2
+      ts-node: 10.2.1_e9e457e77226a1e218df754b6ba768c5
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -7369,14 +7369,14 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-organize-imports/2.3.3_prettier@2.3.2+typescript@4.4.3:
+  /prettier-plugin-organize-imports/2.3.3_f387ce2900614924be18ec7d70d384eb:
     resolution: {integrity: sha512-PBOwQ8vEIB2b7B3gCuBG7D+dqsr1fsTR4TSAjNacRVdHJrD0yzgz9grOLPSyfwJm+NUTZLyWeHoZ+1mHaUrk+g==}
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
     dependencies:
       prettier: 2.3.2
-      typescript: 4.4.3
+      typescript: 4.5.0-dev.20211001
     dev: true
 
   /prettier/2.3.2:
@@ -8343,7 +8343,7 @@ packages:
       punycode: 2.1.1
     dev: true
 
-  /ts-jest/27.0.5_ccfd8a00addbb292b4ad392363cfcc08:
+  /ts-jest/27.0.5_1b3fb125863e5ea6139066b3632a4e8d:
     resolution: {integrity: sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -8370,11 +8370,11 @@ packages:
       lodash: 4.17.21
       make-error: 1.3.6
       semver: 7.3.5
-      typescript: 4.4.3
+      typescript: 4.5.0-dev.20211001
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-node/10.2.1_5362fcd7a88db4a5ad86a6222973d3a2:
+  /ts-node/10.2.1_e9e457e77226a1e218df754b6ba768c5:
     resolution: {integrity: sha512-hCnyOyuGmD5wHleOQX6NIjJtYVIO8bPP8F2acWkB4W06wdlkgyvJtubO/I9NkI88hCFECbsEgoLc0VNkYmcSfw==}
     engines: {node: '>=12.0.0'}
     hasBin: true
@@ -8402,7 +8402,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.4.3
+      typescript: 4.5.0-dev.20211001
       yn: 3.1.1
     dev: true
 
@@ -8449,8 +8449,8 @@ packages:
       is-typedarray: 1.0.0
     dev: true
 
-  /typescript/4.4.3:
-    resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
+  /typescript/4.5.0-dev.20211001:
+    resolution: {integrity: sha512-VemSb7/9v1oNCen6l5wiU3O88kjkiQXLVFYsmFRoUvyIAk5F/eNn8n3k4gCgldDO3SpjMpkngWnAagAYQ/MkoA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
