@@ -196,6 +196,10 @@ Object.keys(exported).forEach(function (key) {
             'utf-8',
           );
         }
+        if (opts.pkgName === 'lodash') {
+          // TODO
+          // fs.copySync()
+        }
       }
     }
   }

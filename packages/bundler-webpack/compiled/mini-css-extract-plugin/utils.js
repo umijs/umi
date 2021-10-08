@@ -8,7 +8,7 @@ exports.findModuleById = findModuleById;
 exports.evalModuleCode = evalModuleCode;
 exports.compareModulesByIdentifier = compareModulesByIdentifier;
 exports.stringifyRequest = stringifyRequest;
-exports.DOUBLE_DOT_PATH_SEGMENT = exports.SINGLE_DOT_PATH_SEGMENT = exports.ABSOLUTE_PUBLIC_PATH = exports.AUTO_PUBLIC_PATH = exports.MODULE_TYPE = void 0;
+exports.SINGLE_DOT_PATH_SEGMENT = exports.ABSOLUTE_PUBLIC_PATH = exports.AUTO_PUBLIC_PATH = exports.MODULE_TYPE = void 0;
 
 var _module = _interopRequireDefault(require("module"));
 
@@ -77,8 +77,6 @@ const ABSOLUTE_PUBLIC_PATH = "webpack:///mini-css-extract-plugin/";
 exports.ABSOLUTE_PUBLIC_PATH = ABSOLUTE_PUBLIC_PATH;
 const SINGLE_DOT_PATH_SEGMENT = "__mini_css_extract_plugin_single_dot_path_segment__";
 exports.SINGLE_DOT_PATH_SEGMENT = SINGLE_DOT_PATH_SEGMENT;
-const DOUBLE_DOT_PATH_SEGMENT = "__mini_css_extract_plugin_double_dot_path_segment__";
-exports.DOUBLE_DOT_PATH_SEGMENT = DOUBLE_DOT_PATH_SEGMENT;
 
 function isAbsolutePath(str) {
   return _path.default.posix.isAbsolute(str) || _path.default.win32.isAbsolute(str);

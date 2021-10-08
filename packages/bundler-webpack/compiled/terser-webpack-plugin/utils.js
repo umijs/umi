@@ -14,13 +14,7 @@ exports.esbuildMinify = esbuildMinify;
 
 /** @typedef {import("terser").MinifyOptions} TerserOptions */
 
-/** @typedef {import("uglify-js").OutputOptions} UglifyJSOutputOptions */
-
-/** @typedef {import("uglify-js").MinifyOptions} UglifyJSOptions */
-
-/** @typedef {import("@swc/core").JsMinifyOptions} SwcOptions */
-
-/** @typedef {import("esbuild").TransformOptions} EsbuildOptions */
+/** @typedef {import("terser").ECMA} TerserECMA */
 
 /** @typedef {import("./index.js").ExtractCommentsOptions} ExtractCommentsOptions */
 
@@ -35,15 +29,7 @@ exports.esbuildMinify = esbuildMinify;
 /** @typedef {import("./index.js").PredefinedOptions} PredefinedOptions */
 
 /**
- * @typedef {TerserOptions & { sourceMap: undefined } & ({ output: TerserFormatOptions & { beautify: boolean } } | { format: TerserFormatOptions & { beautify: boolean } })} NormalizedTerserOptions
- */
-
-/**
- * @typedef {UglifyJSOptions & { sourceMap: undefined } & { output: UglifyJSOutputOptions & { beautify: boolean } }} NormalizedUglifyJSOptions
- */
-
-/**
- * @typedef {SwcOptions & { sourceMap: undefined }} NormalizedSwcOptions
+ * @typedef {{ [key: string]: any }} CustomOptions
  */
 
 /**
@@ -55,7 +41,7 @@ exports.esbuildMinify = esbuildMinify;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & TerserOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
  */
@@ -69,7 +55,7 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
     return value != null && (type === "object" || type === "function");
   };
   /**
-   * @param {NormalizedTerserOptions} terserOptions
+   * @param {TerserOptions & { sourceMap: undefined } & ({ output: TerserFormatOptions & { beautify: boolean } } | { format: TerserFormatOptions & { beautify: boolean } })} terserOptions
    * @param {ExtractedComments} extractedComments
    * @returns {ExtractCommentsFunction}
    */
@@ -171,8 +157,8 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
     };
   };
   /**
-   * @param {TerserOptions} [terserOptions={}]
-   * @returns {NormalizedTerserOptions}
+   * @param {PredefinedOptions & TerserOptions} [terserOptions={}]
+   * @returns {TerserOptions & { sourceMap: undefined } & ({ output: TerserFormatOptions & { beautify: boolean } } | { format: TerserFormatOptions & { beautify: boolean } })}
    */
 
 
@@ -269,7 +255,7 @@ terserMinify.getMinimizerVersion = () => {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & UglifyJSOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
  */
@@ -285,7 +271,7 @@ async function uglifyJsMinify(input, sourceMap, minimizerOptions, extractComment
     return value != null && (type === "object" || type === "function");
   };
   /**
-   * @param {NormalizedUglifyJSOptions} uglifyJsOptions
+   * @param {import("uglify-js").MinifyOptions & { sourceMap: undefined } & { output: import("uglify-js").OutputOptions & { beautify: boolean }}} uglifyJsOptions
    * @param {ExtractedComments} extractedComments
    * @returns {ExtractCommentsFunction}
    */
@@ -378,13 +364,17 @@ async function uglifyJsMinify(input, sourceMap, minimizerOptions, extractComment
     };
   };
   /**
-   * @param {UglifyJSOptions} [uglifyJsOptions={}]
-   * @returns {NormalizedUglifyJSOptions}
+   * @param {PredefinedOptions & import("uglify-js").MinifyOptions} [uglifyJsOptions={}]
+   * @returns {import("uglify-js").MinifyOptions & { sourceMap: undefined } & { output: import("uglify-js").OutputOptions & { beautify: boolean }}}
    */
 
 
   const buildUglifyJsOptions = (uglifyJsOptions = {}) => {
-    // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+    // eslint-disable-next-line no-param-reassign
+    delete minimizerOptions.ecma; // eslint-disable-next-line no-param-reassign
+
+    delete minimizerOptions.module; // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+
     return { ...uglifyJsOptions,
       // warnings: uglifyJsOptions.warnings,
       parse: { ...uglifyJsOptions.parse
@@ -410,12 +400,8 @@ async function uglifyJsMinify(input, sourceMap, minimizerOptions, extractComment
 
   const {
     minify
-  } = require('uglify-js'); // eslint-disable-next-line no-param-reassign
+  } = require('uglify-js'); // Copy `uglify-js` options
 
-
-  delete minimizerOptions.ecma; // eslint-disable-next-line no-param-reassign
-
-  delete minimizerOptions.module; // Copy `uglify-js` options
 
   const uglifyJsOptions = buildUglifyJsOptions(minimizerOptions); // Let terser generate a SourceMap
 
@@ -463,15 +449,15 @@ uglifyJsMinify.getMinimizerVersion = () => {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & SwcOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
 
 
 async function swcMinify(input, sourceMap, minimizerOptions) {
   /**
-   * @param {SwcOptions} [swcOptions={}]
-   * @returns {NormalizedSwcOptions}
+   * @param {PredefinedOptions & import("@swc/core").JsMinifyOptions} [swcOptions={}]
+   * @returns {import("@swc/core").JsMinifyOptions & { sourceMap: undefined }}
    */
   const buildSwcOptions = (swcOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
@@ -539,18 +525,28 @@ swcMinify.getMinimizerVersion = () => {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & EsbuildOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
 
 
 async function esbuildMinify(input, sourceMap, minimizerOptions) {
   /**
-   * @param {EsbuildOptions} [esbuildOptions={}]
-   * @returns {EsbuildOptions}
+   * @param {PredefinedOptions & import("esbuild").TransformOptions} [esbuildOptions={}]
+   * @returns {import("esbuild").TransformOptions}
    */
   const buildEsbuildOptions = (esbuildOptions = {}) => {
-    // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+    // eslint-disable-next-line no-param-reassign
+    delete esbuildOptions.ecma;
+
+    if (esbuildOptions.module) {
+      // eslint-disable-next-line no-param-reassign
+      esbuildOptions.format = "esm";
+    } // eslint-disable-next-line no-param-reassign
+
+
+    delete esbuildOptions.module; // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+
     return {
       minify: true,
       legalComments: "inline",
@@ -560,18 +556,8 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   }; // eslint-disable-next-line import/no-extraneous-dependencies, global-require
 
 
-  const esbuild = require('@umijs/bundler-utils/compiled/esbuild'); // eslint-disable-next-line no-param-reassign
+  const esbuild = require('@umijs/bundler-utils/compiled/esbuild'); // Copy `swc` options
 
-
-  delete minimizerOptions.ecma;
-
-  if (minimizerOptions.module) {
-    // eslint-disable-next-line no-param-reassign
-    minimizerOptions.format = "esm";
-  } // eslint-disable-next-line no-param-reassign
-
-
-  delete minimizerOptions.module; // Copy `swc` options
 
   const esbuildOptions = buildEsbuildOptions(minimizerOptions); // Let `swc` generate a SourceMap
 

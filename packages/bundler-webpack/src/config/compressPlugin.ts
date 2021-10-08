@@ -46,7 +46,7 @@ export async function addCompressPlugin(opts: IOpts) {
         minify,
         terserOptions: userConfig.jsMinifierOptions,
       },
-    ]);
+    ] as any);
   }
 
   if (cssMinifier === CSSMinifier.esbuild) {

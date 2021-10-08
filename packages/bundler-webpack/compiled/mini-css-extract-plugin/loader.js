@@ -171,7 +171,7 @@ function pitch(request) {
     }
 
     const isAbsolutePublicPath = /^[a-zA-Z][a-zA-Z\d+\-.]*?:/.test(publicPath);
-    const publicPathForExtract = isAbsolutePublicPath ? publicPath : `${_utils.ABSOLUTE_PUBLIC_PATH}${publicPath.replace(/\./g, _utils.SINGLE_DOT_PATH_SEGMENT).replace(/\.\./g, _utils.DOUBLE_DOT_PATH_SEGMENT)}`;
+    const publicPathForExtract = isAbsolutePublicPath ? publicPath : `${_utils.ABSOLUTE_PUBLIC_PATH}${publicPath.replace(/\./g, _utils.SINGLE_DOT_PATH_SEGMENT)}`;
     this.importModule(`${this.resourcePath}.webpack[javascript/auto]!=!${request}`, {
       layer: options.layer,
       publicPath: publicPathForExtract

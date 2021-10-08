@@ -58,12 +58,13 @@ type ArgumentNames<T extends any[]> = FixedSizeArray<T["length"], string>;
 declare class Hook<T, R, AdditionalOptions = UnsetAdditionalOptions> {
 	constructor(args?: ArgumentNames<AsArray<T>>, name?: string);
 	name: string | undefined;
+	taps: FullTap[];
 	intercept(interceptor: HookInterceptor<T, R, AdditionalOptions>): void;
 	isUsed(): boolean;
 	callAsync(...args: Append<AsArray<T>, Callback<Error, R>>): void;
 	promise(...args: AsArray<T>): Promise<R>;
 	tap(options: string | Tap & IfSet<AdditionalOptions>, fn: (...args: AsArray<T>) => R): void;
-	withOptions(options: TapOptions & IfSet<AdditionalOptions>): Hook<T, R>;
+	withOptions(options: TapOptions & IfSet<AdditionalOptions>): Omit<this, "call" | "callAsync" | "promise">;
 }
 
 export class SyncHook<T, R = void, AdditionalOptions = UnsetAdditionalOptions> extends Hook<T, R, AdditionalOptions> {

@@ -4,12 +4,9 @@ export type Compiler = import('../../webpack').Compiler;
 export type Compilation = import('../../webpack').Compilation;
 export type WebpackError = import('../../webpack').WebpackError;
 export type Asset = import('../../webpack').Asset;
-export type TerserECMA = import('../../terser').ECMA;
-export type TerserOptions = import('../../terser').MinifyOptions;
-export type UglifyJSOptions = import('../../uglify-js').MinifyOptions;
-export type SwcOptions = import('../../../@swc/core').JsMinifyOptions;
-export type EsbuildOptions = import('../../esbuild').TransformOptions;
-export type CustomOptions = any;
+export type TerserECMA = import('./utils').TerserECMA;
+export type TerserOptions = import('./utils').TerserOptions;
+export type CustomOptions = import('./utils').CustomOptions;
 export type JestWorker = import('../jest-worker').Worker;
 export type RawSourceMap = import('../source-map').RawSourceMap;
 export type Rule = RegExp | string;
@@ -36,9 +33,9 @@ export type ExtractCommentsBanner =
   | boolean
   | ((commentsFile: string) => string);
 export type ExtractCommentsObject = {
-  condition: ExtractCommentsCondition;
-  filename: ExtractCommentsFilename;
-  banner: ExtractCommentsBanner;
+  condition?: ExtractCommentsCondition | undefined;
+  filename?: ExtractCommentsFilename | undefined;
+  banner?: ExtractCommentsBanner | undefined;
 };
 export type ExtractCommentsOptions =
   | ExtractCommentsCondition
@@ -55,11 +52,11 @@ export type MinimizedResult = {
 };
 export type PredefinedOptions = {
   module?: boolean | undefined;
-  ecma?: string | number | undefined;
+  ecma?: any;
 };
 export type MinimizerImplementationAndOptions<T> = {
-  implementation: MinimizerImplementation<ThirdArgument<T>>;
-  options: PredefinedOptions & ThirdArgument<T>;
+  implementation: MinimizerImplementation<T>;
+  options: PredefinedOptions & T;
 };
 export type InternalOptions<T> = {
   name: string;
@@ -83,48 +80,35 @@ export type MinimizeFunctionHelpers = {
 };
 export type MinimizerImplementation<T> = BasicMinimizerImplementation<T> &
   MinimizeFunctionHelpers;
-export type TerserMinimizer = MinimizerImplementation<TerserOptions>;
-export type UglifyJSMinimizer = MinimizerImplementation<UglifyJSOptions>;
-export type SwcMinimizer = MinimizerImplementation<SwcOptions>;
-export type EsbuildMinimizer = MinimizerImplementation<EsbuildOptions>;
-export type CustomMinimizer = MinimizerImplementation<CustomOptions>;
+export type Parallel = undefined | boolean | number;
 export type BasePluginOptions = {
   test?: Rules | undefined;
   include?: Rules | undefined;
   exclude?: Rules | undefined;
   extractComments?: ExtractCommentsOptions | undefined;
-  parallel?: boolean | undefined;
+  parallel?: Parallel;
 };
-export type ThirdArgument<T> = T extends (
-  arg1: any,
-  arg2: any,
-  arg3: infer U,
-  ...args: any[]
-) => any
+export type InferDefaultType<T> = T extends infer U
   ? U
-  : never;
-export type DefaultMinimizerImplementationAndOptions<T> = {
-  minify?: undefined | MinimizerImplementation<ThirdArgument<T>>;
-  terserOptions?: ThirdArgument<T> | undefined;
-};
-export type PickMinimizerImplementationAndOptions<T> =
-  T extends MinimizerImplementation<TerserOptions>
-    ? DefaultMinimizerImplementationAndOptions<T>
+  : import('./utils').CustomOptions;
+export type DefinedDefaultMinimizerAndOptions<T> =
+  InferDefaultType<T> extends TerserOptions
+    ? {
+        minify?: MinimizerImplementation<InferDefaultType<T>> | undefined;
+        terserOptions?: InferDefaultType<T> | undefined;
+      }
     : {
-        minify: MinimizerImplementation<ThirdArgument<T>>;
-        terserOptions?: ThirdArgument<T> | undefined;
+        minify: MinimizerImplementation<InferDefaultType<T>>;
+        terserOptions?: InferDefaultType<T> | undefined;
       };
 /** @typedef {import('../schema-utils/declarations/validate').Schema} Schema */
 /** @typedef {import('../../webpack').Compiler} Compiler */
 /** @typedef {import('../../webpack').Compilation} Compilation */
 /** @typedef {import('../../webpack').WebpackError} WebpackError */
 /** @typedef {import('../../webpack').Asset} Asset */
-/** @typedef {import('../../terser').ECMA} TerserECMA */
-/** @typedef {import('../../terser').MinifyOptions} TerserOptions */
-/** @typedef {import('../../uglify-js').MinifyOptions} UglifyJSOptions */
-/** @typedef {import('../../../@swc/core').JsMinifyOptions} SwcOptions */
-/** @typedef {import('../../esbuild').TransformOptions} EsbuildOptions */
-/** @typedef {Object.<any, any>} CustomOptions */
+/** @typedef {import('./utils').TerserECMA} TerserECMA */
+/** @typedef {import('./utils').TerserOptions} TerserOptions */
+/** @typedef {import('./utils').CustomOptions} CustomOptions */
 /** @typedef {import('../jest-worker').Worker} JestWorker */
 /** @typedef {import('../source-map').RawSourceMap} RawSourceMap */
 /** @typedef {RegExp | string} Rule */
@@ -146,9 +130,9 @@ export type PickMinimizerImplementationAndOptions<T> =
  */
 /**
  * @typedef {Object} ExtractCommentsObject
- * @property {ExtractCommentsCondition} condition
- * @property {ExtractCommentsFilename} filename
- * @property {ExtractCommentsBanner} banner
+ * @property {ExtractCommentsCondition} [condition]
+ * @property {ExtractCommentsFilename} [filename]
+ * @property {ExtractCommentsBanner} [banner]
  */
 /**
  * @typedef {ExtractCommentsCondition | ExtractCommentsObject} ExtractCommentsOptions
@@ -167,13 +151,13 @@ export type PickMinimizerImplementationAndOptions<T> =
 /**
  * @typedef {Object} PredefinedOptions
  * @property {boolean} [module]
- * @property {5 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | number | string} [ecma]
+ * @property {any} [ecma]
  */
 /**
  * @template T
  * @typedef {Object} MinimizerImplementationAndOptions
- * @property {MinimizerImplementation<ThirdArgument<T>>} implementation
- * @property {PredefinedOptions & ThirdArgument<T>} options
+ * @property {MinimizerImplementation<T>} implementation
+ * @property {PredefinedOptions & T} options
  */
 /**
  * @template T
@@ -206,19 +190,7 @@ export type PickMinimizerImplementationAndOptions<T> =
  * @typedef {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers } MinimizerImplementation
  */
 /**
- * @typedef {MinimizerImplementation<TerserOptions>} TerserMinimizer
- */
-/**
- * @typedef {MinimizerImplementation<UglifyJSOptions>} UglifyJSMinimizer
- */
-/**
- * @typedef {MinimizerImplementation<SwcOptions>} SwcMinimizer
- */
-/**
- * @typedef {MinimizerImplementation<EsbuildOptions>} EsbuildMinimizer
- */
-/**
- * @typedef {MinimizerImplementation<CustomOptions>} CustomMinimizer
+ * @typedef {undefined | boolean | number} Parallel
  */
 /**
  * @typedef {Object} BasePluginOptions
@@ -226,33 +198,20 @@ export type PickMinimizerImplementationAndOptions<T> =
  * @property {Rules} [include]
  * @property {Rules} [exclude]
  * @property {ExtractCommentsOptions} [extractComments]
- * @property {boolean} [parallel]
+ * @property {Parallel} [parallel]
  */
 /**
  * @template T
- * @typedef {T extends (arg1: any, arg2: any, arg3: infer U, ...args: any[]) => any ? U: never} ThirdArgument
+ * @typedef {T extends infer U ? U : CustomOptions} InferDefaultType
  */
 /**
  * @template T
- * @typedef {Object} DefaultMinimizerImplementationAndOptions
- * @property {undefined | MinimizerImplementation<ThirdArgument<T>>} [minify]
- * @property {ThirdArgument<T> | undefined} [terserOptions]
+ * @typedef {InferDefaultType<T> extends TerserOptions ? { minify?: MinimizerImplementation<InferDefaultType<T>> | undefined, terserOptions?: InferDefaultType<T> | undefined } : { minify: MinimizerImplementation<InferDefaultType<T>>, terserOptions?: InferDefaultType<T> | undefined }} DefinedDefaultMinimizerAndOptions
  */
 /**
  * @template T
- * @typedef {T extends MinimizerImplementation<TerserOptions> ? DefaultMinimizerImplementationAndOptions<T> : { minify: MinimizerImplementation<ThirdArgument<T>>, terserOptions?: ThirdArgument<T> | undefined}} PickMinimizerImplementationAndOptions
  */
-/**
- * @template {TerserMinimizer | UglifyJSMinimizer | SwcMinimizer | EsbuildMinimizer | CustomMinimizer} T=TerserMinimizer
- */
-declare class TerserPlugin<
-  T extends
-    | TerserMinimizer
-    | UglifyJSMinimizer
-    | SwcMinimizer
-    | EsbuildMinimizer
-    | CustomMinimizer
-> {
+declare class TerserPlugin<T = TerserOptions> {
   /**
    * @private
    * @param {any} input
@@ -277,7 +236,7 @@ declare class TerserPlugin<
   private static buildError;
   /**
    * @private
-   * @param {boolean | undefined} parallel
+   * @param {Parallel} parallel
    * @returns {number}
    */
   private static getAvailableNumberOfCores;
@@ -288,19 +247,25 @@ declare class TerserPlugin<
    */
   private static getEcmaVersion;
   /**
-   * @param {BasePluginOptions & PickMinimizerImplementationAndOptions<T>} [options]
+   * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>} [options]
    */
   constructor(
     options?:
-      | (BasePluginOptions & PickMinimizerImplementationAndOptions<T>)
+      | (BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>)
       | undefined
   );
-  /**
-   * @type {BasePluginOptions & { minify: MinimizerImplementation<ThirdArgument<T>>, terserOptions: ThirdArgument<T>}}
-   */
-  options: BasePluginOptions & {
-    minify: MinimizerImplementation<ThirdArgument<T>>;
-    terserOptions: ThirdArgument<T>;
+  options: {
+    test: Rules;
+    extractComments: ExtractCommentsOptions;
+    parallel: number | boolean;
+    include: Rules | undefined;
+    exclude: Rules | undefined;
+    minimizer: {
+      implementation: MinimizerImplementation<
+        import('../../terser').MinifyOptions & InferDefaultType<T>
+      >;
+      options: InferDefaultType<T>;
+    };
   };
   /**
    * @private

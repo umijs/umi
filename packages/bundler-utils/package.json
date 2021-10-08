@@ -27,15 +27,14 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-alpha.1",
-    "esbuild": "0.12.22"
+    "esbuild": "0.13.4"
   },
   "devDependencies": {
-    "@babel/code-frame": "7.14.5",
-    "@babel/core": "7.15.0",
-    "@babel/generator": "7.15.0",
-    "@babel/parser": "7.15.3",
-    "@babel/plugin-transform-runtime": "7.15.0",
-    "@babel/plugin-proposal-decorators": "7.14.5",
+    "@babel/code-frame": "7.15.8",
+    "@babel/core": "7.15.8",
+    "@babel/generator": "7.15.8",
+    "@babel/parser": "7.15.8",
+    "@babel/plugin-proposal-decorators": "7.15.8",
     "@babel/plugin-proposal-do-expressions": "7.14.5",
     "@babel/plugin-proposal-export-default-from": "7.14.5",
     "@babel/plugin-proposal-export-namespace-from": "7.14.5",
@@ -43,20 +42,21 @@
     "@babel/plugin-proposal-partial-application": "7.14.5",
     "@babel/plugin-proposal-pipeline-operator": "7.15.0",
     "@babel/plugin-proposal-record-and-tuple": "7.14.5",
-    "@babel/preset-env": "7.15.0",
+    "@babel/plugin-transform-runtime": "7.15.8",
+    "@babel/preset-env": "7.15.8",
     "@babel/preset-react": "7.14.5",
     "@babel/preset-typescript": "7.15.0",
     "@babel/register": "7.15.3",
-    "@babel/template": "7.14.5",
-    "@babel/traverse": "7.15.0",
-    "@babel/types": "7.15.0",
+    "@babel/template": "7.15.4",
+    "@babel/traverse": "7.15.4",
+    "@babel/types": "7.15.6",
     "@types/babel__code-frame": "7.0.3",
     "@types/babel__generator": "7.6.3",
     "@types/babel__parser": "7.1.1",
     "@types/babel__template": "7.4.1",
     "@types/babel__traverse": "7.14.2",
     "cjs-module-lexer": "1.2.2",
-    "es-module-lexer": "0.7.1"
+    "es-module-lexer": "0.9.3"
   },
   "compiledConfig": {
     "deps": [

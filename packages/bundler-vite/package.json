@@ -28,6 +28,6 @@
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-alpha.1",
     "@umijs/utils": "4.0.0-alpha.1",
-    "vite": "2.5.10"
+    "vite": "2.6.5"
   }
 }

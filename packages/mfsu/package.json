@@ -31,6 +31,6 @@
   },
   "devDependencies": {
     "@types/express": "4.17.13",
-    "webpack": "5.51.1"
+    "webpack": "5.58.0"
   }
 }

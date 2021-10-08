@@ -80,16 +80,52 @@ export interface MangleOptions {
     keep_classnames?: boolean | RegExp;
     keep_fnames?: boolean | RegExp;
     module?: boolean;
+    nth_identifier?: SimpleIdentifierMangler | WeightedIdentifierMangler;
     properties?: boolean | ManglePropertiesOptions;
     reserved?: string[];
     safari10?: boolean;
     toplevel?: boolean;
 }
 
+/**
+ * An identifier mangler for which the output is invariant with respect to the source code.
+ */
+export interface SimpleIdentifierMangler {
+    /**
+     * Obtains the nth most favored (usually shortest) identifier to rename a variable to.
+     * The mangler will increment n and retry until the return value is not in use in scope, and is not a reserved word.
+     * This function is expected to be stable; Evaluating get(n) === get(n) should always return true.
+     * @param n The ordinal of the identifier.
+     */
+    get(n: number): string;
+}
+
+/**
+ * An identifier mangler that leverages character frequency analysis to determine identifier precedence.
+ */
+export interface WeightedIdentifierMangler extends SimpleIdentifierMangler {
+    /**
+     * Modifies the internal weighting of the input characters by the specified delta.
+     * Will be invoked on the entire printed AST, and then deduct mangleable identifiers.
+     * @param chars The characters to modify the weighting of.
+     * @param delta The numeric weight to add to the characters.
+     */
+    consider(chars: string, delta: number): number;
+    /**
+     * Resets character weights.
+     */
+    reset(): void;
+    /**
+     * Sorts identifiers by character frequency, in preparation for calls to get(n).
+     */
+    sort(): void;
+}
+
 export interface ManglePropertiesOptions {
     builtins?: boolean;
     debug?: boolean;
     keep_quoted?: boolean | 'strict';
+    nth_identifier?: SimpleIdentifierMangler | WeightedIdentifierMangler;
     regex?: RegExp | string;
     reserved?: string[];
 }
