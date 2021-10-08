@@ -4,37 +4,55 @@
   MIT License http://www.opensource.org/licenses/mit-license.php
   Author Tobias Koppers @sokra
 */
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
 module.exports = function (cssWithMappingToString) {
   var list = []; // return the list of modules as css string
 
   list.toString = function toString() {
     return this.map(function (item) {
-      var content = cssWithMappingToString(item);
+      var content = "";
+      var needLayer = typeof item[5] !== "undefined";
+
+      if (item[4]) {
+        content += "@supports (".concat(item[4], ") {");
+      }
 
       if (item[2]) {
-        return "@media ".concat(item[2], " {").concat(content, "}");
+        content += "@media ".concat(item[2], " {");
+      }
+
+      if (needLayer) {
+        content += "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {");
+      }
+
+      content += cssWithMappingToString(item);
+
+      if (needLayer) {
+        content += "}";
+      }
+
+      if (item[2]) {
+        content += "}";
+      }
+
+      if (item[4]) {
+        content += "}";
       }
 
       return content;
     }).join("");
   }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
 
 
-  list.i = function (modules, mediaQuery, dedupe) {
+  list.i = function i(modules, media, dedupe, supports, layer) {
     if (typeof modules === "string") {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, ""]];
+      modules = [[null, modules, undefined]];
     }
 
     var alreadyImportedModules = {};
 
     if (dedupe) {
-      for (var i = 0; i < this.length; i++) {
-        // eslint-disable-next-line prefer-destructuring
-        var id = this[i][0];
+      for (var _i = 0; _i < this.length; _i++) {
+        var id = this[_i][0];
 
         if (id != null) {
           alreadyImportedModules[id] = true;
@@ -42,19 +60,37 @@ module.exports = function (cssWithMappingToString) {
       }
     }
 
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = [].concat(modules[_i]);
+    for (var _i2 = 0; _i2 < modules.length; _i2++) {
+      var item = [].concat(modules[_i2]);
 
       if (dedupe && alreadyImportedModules[item[0]]) {
-        // eslint-disable-next-line no-continue
         continue;
       }
 
-      if (mediaQuery) {
-        if (!item[2]) {
-          item[2] = mediaQuery;
+      if (typeof layer !== "undefined") {
+        if (typeof item[5] === "undefined") {
+          item[5] = layer;
         } else {
-          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+          item[1] = "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {").concat(item[1], "}");
+          item[5] = layer;
+        }
+      }
+
+      if (media) {
+        if (!item[2]) {
+          item[2] = media;
+        } else {
+          item[1] = "@media ".concat(item[2], " {").concat(item[1], "}");
+          item[2] = media;
+        }
+      }
+
+      if (supports) {
+        if (!item[4]) {
+          item[4] = "".concat(supports);
+        } else {
+          item[1] = "@supports (".concat(item[4], ") {").concat(item[1], "}");
+          item[4] = supports;
         }
       }
 

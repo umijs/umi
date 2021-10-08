@@ -1,10 +1,7 @@
 export type RawSourceMap = import('../source-map').RawSourceMap;
 export type TerserFormatOptions = import('../../terser').FormatOptions;
 export type TerserOptions = import('../../terser').MinifyOptions;
-export type UglifyJSOutputOptions = import('../../uglify-js').OutputOptions;
-export type UglifyJSOptions = import('../../uglify-js').MinifyOptions;
-export type SwcOptions = import('../../../@swc/core').JsMinifyOptions;
-export type EsbuildOptions = import('../../esbuild').TransformOptions;
+export type TerserECMA = import('../../terser').ECMA;
 export type ExtractCommentsOptions =
   import('./index').ExtractCommentsOptions;
 export type ExtractCommentsFunction =
@@ -14,38 +11,14 @@ export type ExtractCommentsCondition =
 export type Input = import('./index').Input;
 export type MinimizedResult = import('./index').MinimizedResult;
 export type PredefinedOptions = import('./index').PredefinedOptions;
-export type NormalizedTerserOptions = TerserOptions & {
-  sourceMap: undefined;
-} & (
-    | {
-        output: TerserFormatOptions & {
-          beautify: boolean;
-        };
-      }
-    | {
-        format: TerserFormatOptions & {
-          beautify: boolean;
-        };
-      }
-  );
-export type NormalizedUglifyJSOptions = UglifyJSOptions & {
-  sourceMap: undefined;
-} & {
-  output: UglifyJSOutputOptions & {
-    beautify: boolean;
-  };
-};
-export type NormalizedSwcOptions = SwcOptions & {
-  sourceMap: undefined;
+export type CustomOptions = {
+  [key: string]: any;
 };
 export type ExtractedComments = Array<string>;
 /** @typedef {import('../source-map').RawSourceMap} RawSourceMap */
 /** @typedef {import('../../terser').FormatOptions} TerserFormatOptions */
 /** @typedef {import('../../terser').MinifyOptions} TerserOptions */
-/** @typedef {import('../../uglify-js').OutputOptions} UglifyJSOutputOptions */
-/** @typedef {import('../../uglify-js').MinifyOptions} UglifyJSOptions */
-/** @typedef {import('../../../@swc/core').JsMinifyOptions} SwcOptions */
-/** @typedef {import('../../esbuild').TransformOptions} EsbuildOptions */
+/** @typedef {import('../../terser').ECMA} TerserECMA */
 /** @typedef {import('./index').ExtractCommentsOptions} ExtractCommentsOptions */
 /** @typedef {import('./index').ExtractCommentsFunction} ExtractCommentsFunction */
 /** @typedef {import('./index').ExtractCommentsCondition} ExtractCommentsCondition */
@@ -53,13 +26,7 @@ export type ExtractedComments = Array<string>;
 /** @typedef {import('./index').MinimizedResult} MinimizedResult */
 /** @typedef {import('./index').PredefinedOptions} PredefinedOptions */
 /**
- * @typedef {TerserOptions & { sourceMap: undefined } & ({ output: TerserFormatOptions & { beautify: boolean } } | { format: TerserFormatOptions & { beautify: boolean } })} NormalizedTerserOptions
- */
-/**
- * @typedef {UglifyJSOptions & { sourceMap: undefined } & { output: UglifyJSOutputOptions & { beautify: boolean } }} NormalizedUglifyJSOptions
- */
-/**
- * @typedef {SwcOptions & { sourceMap: undefined }} NormalizedSwcOptions
+ * @typedef {{ [key: string]: any }} CustomOptions
  */
 /**
  * @typedef {Array<string>} ExtractedComments
@@ -67,14 +34,14 @@ export type ExtractedComments = Array<string>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & TerserOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
  */
 export function terserMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: PredefinedOptions & TerserOptions,
+  minimizerOptions: PredefinedOptions & CustomOptions,
   extractComments: ExtractCommentsOptions | undefined
 ): Promise<MinimizedResult>;
 export namespace terserMinify {
@@ -86,14 +53,14 @@ export namespace terserMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & UglifyJSOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
  */
 export function uglifyJsMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: PredefinedOptions & UglifyJSOptions,
+  minimizerOptions: PredefinedOptions & CustomOptions,
   extractComments: ExtractCommentsOptions | undefined
 ): Promise<MinimizedResult>;
 export namespace uglifyJsMinify {
@@ -105,13 +72,13 @@ export namespace uglifyJsMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & SwcOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
 export function swcMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: PredefinedOptions & SwcOptions
+  minimizerOptions: PredefinedOptions & CustomOptions
 ): Promise<MinimizedResult>;
 export namespace swcMinify {
   /**
@@ -122,13 +89,13 @@ export namespace swcMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {PredefinedOptions & EsbuildOptions} minimizerOptions
+ * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
 export function esbuildMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: PredefinedOptions & EsbuildOptions
+  minimizerOptions: PredefinedOptions & CustomOptions
 ): Promise<MinimizedResult>;
 export namespace esbuildMinify {
   /**

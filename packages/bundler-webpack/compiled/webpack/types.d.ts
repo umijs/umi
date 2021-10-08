@@ -80,7 +80,7 @@ import {
 	WithStatement,
 	YieldExpression
 } from "estree";
-import { validate as validateFunction } from '../schema-utils';
+import { validate as validateFunction } from './schema-utils';
 import { default as ValidationError } from './schema-utils/declarations/ValidationError';
 import { ValidationErrorConfiguration } from './schema-utils/declarations/validate';
 import {
@@ -335,7 +335,6 @@ declare class AsyncDependenciesBlock extends DependenciesBlock {
 	};
 	loc?: SyntheticDependencyLocation | RealDependencyLocation;
 	request?: string;
-	parent: DependenciesBlock;
 	chunkName: string;
 	module: any;
 }
@@ -758,8 +757,19 @@ declare class Chunk {
 		filterFn?: (c: Chunk, chunkGraph: ChunkGraph) => boolean
 	): Record<string | number, Record<string, (string | number)[]>>;
 }
+declare abstract class ChunkCombination {
+	debugId: number;
+	size: number;
+	readonly chunksIterable: Iterable<Chunk>;
+	with(chunk: Chunk): ChunkCombination;
+	without(chunk: Chunk): ChunkCombination;
+	withAll(other?: any): any;
+	hasSharedChunks(other?: any): boolean;
+	isSubset(other: ChunkCombination): boolean;
+	getChunks(): Chunk[];
+}
 declare class ChunkGraph {
-	constructor(moduleGraph: ModuleGraph);
+	constructor(moduleGraph: ModuleGraph, hashFunction?: string | typeof Hash);
 	moduleGraph: ModuleGraph;
 	connectChunkAndModule(chunk: Chunk, module: Module): void;
 	disconnectChunkAndModule(chunk: Chunk, module: Module): void;
@@ -767,10 +777,15 @@ declare class ChunkGraph {
 	attachModules(chunk: Chunk, modules: Iterable<Module>): void;
 	attachRuntimeModules(chunk: Chunk, modules: Iterable<RuntimeModule>): void;
 	attachFullHashModules(chunk: Chunk, modules: Iterable<RuntimeModule>): void;
+	attachDependentHashModules(
+		chunk: Chunk,
+		modules: Iterable<RuntimeModule>
+	): void;
 	replaceModule(oldModule: Module, newModule: Module): void;
 	isModuleInChunk(module: Module, chunk: Chunk): boolean;
 	isModuleInChunkGroup(module: Module, chunkGroup: ChunkGroup): boolean;
 	isEntryModule(module: Module): boolean;
+	getModuleChunkCombination(module: Module): ChunkCombination;
 	getModuleChunksIterable(module: Module): Iterable<Chunk>;
 	getOrderedModuleChunksIterable(
 		module: Module,
@@ -780,6 +795,7 @@ declare class ChunkGraph {
 	getNumberOfModuleChunks(module: Module): number;
 	getModuleRuntimes(module: Module): RuntimeSpecSet;
 	getNumberOfChunkModules(chunk: Chunk): number;
+	getNumberOfChunkFullHashModules(chunk: Chunk): number;
 	getChunkModulesIterable(chunk: Chunk): Iterable<Module>;
 	getChunkModulesIterableBySourceType(
 		chunk: Chunk,
@@ -831,6 +847,7 @@ declare class ChunkGraph {
 	): number;
 	canChunksBeIntegrated(chunkA: Chunk, chunkB: Chunk): boolean;
 	integrateChunks(chunkA: Chunk, chunkB: Chunk): void;
+	upgradeDependentToFullHashModules(chunk: Chunk): void;
 	isEntryModuleInChunk(module: Module, chunk: Chunk): boolean;
 	connectChunkAndEntryModule(
 		chunk: Chunk,
@@ -839,6 +856,7 @@ declare class ChunkGraph {
 	): void;
 	connectChunkAndRuntimeModule(chunk: Chunk, module: RuntimeModule): void;
 	addFullHashModuleToChunk(chunk: Chunk, module: RuntimeModule): void;
+	addDependentHashModuleToChunk(chunk: Chunk, module: RuntimeModule): void;
 	disconnectChunkAndEntryModule(chunk: Chunk, module: Module): void;
 	disconnectChunkAndRuntimeModule(chunk: Chunk, module: RuntimeModule): void;
 	disconnectEntryModule(module: Module): void;
@@ -856,6 +874,9 @@ declare class ChunkGraph {
 	getChunkFullHashModulesSet(
 		chunk: Chunk
 	): undefined | ReadonlySet<RuntimeModule>;
+	getChunkDependentHashModulesIterable(
+		chunk: Chunk
+	): undefined | Iterable<RuntimeModule>;
 	getChunkEntryModulesWithChunkGroupIterable(
 		chunk: Chunk
 	): Iterable<[Module, undefined | Entrypoint]>;
@@ -881,7 +902,8 @@ declare class ChunkGraph {
 	addModuleRuntimeRequirements(
 		module: Module,
 		runtime: RuntimeSpec,
-		items: Set<string>
+		items: Set<string>,
+		transferOwnership?: boolean
 	): void;
 	addChunkRuntimeRequirements(chunk: Chunk, items: Set<string>): void;
 	addTreeRuntimeRequirements(chunk: Chunk, items: Iterable<string>): void;
@@ -1288,7 +1310,7 @@ declare class Compilation {
 	/**
 	 * Creates an instance of Compilation.
 	 */
-	constructor(compiler: Compiler);
+	constructor(compiler: Compiler, params: CompilationParams);
 	hooks: Readonly<{
 		buildModule: SyncHook<[Module]>;
 		rebuildModule: SyncHook<[Module]>;
@@ -1444,16 +1466,23 @@ declare class Compilation {
 	outputOptions: OutputNormalized;
 	bail: boolean;
 	profile: boolean;
+	params: CompilationParams;
 	mainTemplate: MainTemplate;
 	chunkTemplate: ChunkTemplate;
 	runtimeTemplate: RuntimeTemplate;
 	moduleTemplates: { javascript: ModuleTemplate };
+	moduleMemCaches?: Map<Module, WeakTupleMap<any, any>>;
+	moduleMemCaches2?: Map<Module, WeakTupleMap<any, any>>;
 	moduleGraph: ModuleGraph;
 	chunkGraph: ChunkGraph;
 	codeGenerationResults: CodeGenerationResults;
 	processDependenciesQueue: AsyncQueue<Module, Module, Module>;
 	addModuleQueue: AsyncQueue<Module, string, Module>;
-	factorizeQueue: AsyncQueue<FactorizeModuleOptions, string, Module>;
+	factorizeQueue: AsyncQueue<
+		FactorizeModuleOptions,
+		string,
+		Module | ModuleFactoryResult
+	>;
 	buildQueue: AsyncQueue<Module, Module, Module>;
 	rebuildQueue: AsyncQueue<Module, Module, Module>;
 
@@ -1536,10 +1565,6 @@ declare class Compilation {
 		__0: HandleModuleCreationOptions,
 		callback: (err?: WebpackError, result?: Module) => void
 	): void;
-	factorizeModule(
-		options: FactorizeModuleOptions,
-		callback: (err?: WebpackError, result?: Module) => void
-	): void;
 	addModuleChain(
 		context: string,
 		dependency: Dependency,
@@ -1584,7 +1609,7 @@ declare class Compilation {
 	reportDependencyErrorsAndWarnings(
 		module: Module,
 		blocks: DependenciesBlock[]
-	): void;
+	): boolean;
 	codeGeneration(callback?: any): void;
 	processRuntimeRequirements(__0?: {
 		/**
@@ -1632,6 +1657,7 @@ declare class Compilation {
 	 */
 	addChunk(name?: string): Chunk;
 	assignDepth(module: Module): void;
+	assignDepths(modules: Set<Module>): void;
 	getDependencyReferencedExports(
 		dependency: Dependency,
 		runtime: RuntimeSpec
@@ -1706,6 +1732,16 @@ declare class Compilation {
 		callback: (err?: WebpackError, result?: ExecuteModuleResult) => void
 	): void;
 	checkConstraints(): void;
+	factorizeModule: {
+		(
+			options: FactorizeModuleOptions & { factoryResult?: false },
+			callback: (err?: WebpackError, result?: Module) => void
+		): void;
+		(
+			options: FactorizeModuleOptions & { factoryResult: true },
+			callback: (err?: WebpackError, result?: ModuleFactoryResult) => void
+		): void;
+	};
 
 	/**
 	 * Add additional assets to the compilation.
@@ -1884,6 +1920,14 @@ declare class Compiler {
 	context: string;
 	requestShortener: RequestShortener;
 	cache: Cache;
+	moduleMemCaches?: Map<
+		Module,
+		{
+			buildInfo: object;
+			references: WeakMap<Dependency, Module>;
+			memCache: WeakTupleMap<any, any>;
+		}
+	>;
 	compilerPath: string;
 	running: boolean;
 	idle: boolean;
@@ -1907,7 +1951,7 @@ declare class Compiler {
 		plugins?: WebpackPluginInstance[]
 	): Compiler;
 	isChild(): boolean;
-	createCompilation(): Compilation;
+	createCompilation(params?: any): Compilation;
 	newCompilation(params: CompilationParams): Compilation;
 	createNormalModuleFactory(): NormalModuleFactory;
 	createContextModuleFactory(): ContextModuleFactory;
@@ -2227,6 +2271,7 @@ declare class ConstDependency extends NullDependency {
 	static Template: typeof ConstDependencyTemplate;
 	static NO_EXPORTS_REFERENCED: string[][];
 	static EXPORTS_OBJECT_REFERENCED: string[][];
+	static TRANSITIVE: typeof TRANSITIVE;
 }
 declare class ConstDependencyTemplate extends NullDependencyTemplate {
 	constructor();
@@ -2511,6 +2556,8 @@ declare interface DepConstructor {
 declare abstract class DependenciesBlock {
 	dependencies: Dependency[];
 	blocks: AsyncDependenciesBlock[];
+	parent: DependenciesBlock;
+	getRootBlock(): DependenciesBlock;
 
 	/**
 	 * Adds a DependencyBlock to DependencyBlock relationship.
@@ -2540,6 +2587,7 @@ declare class Dependency {
 	readonly category: string;
 	loc: DependencyLocation;
 	getResourceIdentifier(): null | string;
+	couldAffectReferencingModule(): boolean | typeof TRANSITIVE;
 
 	/**
 	 * Returns the referenced module and export
@@ -2594,6 +2642,7 @@ declare class Dependency {
 	readonly disconnect: any;
 	static NO_EXPORTS_REFERENCED: string[][];
 	static EXPORTS_OBJECT_REFERENCED: string[][];
+	static TRANSITIVE: typeof TRANSITIVE;
 }
 declare interface DependencyConstructor {
 	new (...args: any[]): Dependency;
@@ -3273,9 +3322,14 @@ declare interface Experiments {
 	buildHttp?: boolean | HttpUriOptions;
 
 	/**
-	 * Enable build-time execution of modules from the module graph for plugins and loaders.
+	 * Enable additional in memory caching of modules that are unchanged and reference only unchanged modules.
 	 */
-	executeModule?: boolean;
+	cacheUnaffected?: boolean;
+
+	/**
+	 * Apply defaults of next major version.
+	 */
+	futureDefaults?: boolean;
 
 	/**
 	 * Enable module and chunk layers.
@@ -3702,6 +3756,10 @@ declare class ExternalModule extends Module {
 	request: string | string[] | Record<string, string | string[]>;
 	externalType: string;
 	userRequest: string;
+	restoreFromUnsafeCache(
+		unsafeCacheData?: any,
+		normalModuleFactory?: any
+	): void;
 }
 declare interface ExternalModuleInfo {
 	index: number;
@@ -3800,6 +3858,11 @@ declare interface FactorizeModuleOptions {
 	currentProfile: ModuleProfile;
 	factory: ModuleFactory;
 	dependencies: Dependency[];
+
+	/**
+	 * return full ModuleFactoryResult instead of only module
+	 */
+	factoryResult?: boolean;
 	originModule: null | Module;
 	contextInfo?: Partial<ModuleFactoryCreateDataContextInfo>;
 	context?: string;
@@ -3898,6 +3961,11 @@ declare interface FileCacheOptions {
 	 * Number of generations unused cache entries stay in memory cache at minimum (0 = no memory cache used, 1 = may be removed after unused for a single compilation, ..., Infinity: kept forever). Cache entries will be deserialized from disk when removed from memory cache.
 	 */
 	maxMemoryGenerations?: number;
+
+	/**
+	 * Additionally cache computation of modules that are unchanged and reference only unchanged modules in memory.
+	 */
+	memoryCacheUnaffected?: boolean;
 
 	/**
 	 * Name for the cache. Different names will lead to different coexisting caches.
@@ -4296,7 +4364,7 @@ declare interface HashedModuleIdsPluginOptions {
 	/**
 	 * The hashing algorithm to use, defaults to 'md4'. All functions from Node.JS' crypto.createHash are supported.
 	 */
-	hashFunction?: string;
+	hashFunction?: string | typeof Hash;
 }
 declare abstract class HelperRuntimeModule extends RuntimeModule {}
 declare class HotModuleReplacementPlugin {
@@ -4433,13 +4501,13 @@ type IgnorePluginOptions =
 			/**
 			 * A RegExp to test the request against.
 			 */
-			resourceRegExp?: RegExp;
+			resourceRegExp: RegExp;
 	  }
 	| {
 			/**
 			 * A filter function for resource and context.
 			 */
-			checkResource?: (resource: string, context: string) => boolean;
+			checkResource: (resource: string, context: string) => boolean;
 	  };
 declare interface ImportModuleOptions {
 	/**
@@ -4507,6 +4575,8 @@ declare abstract class InitFragment<Context> {
 	endContent?: string | Source;
 	getContent(context: Context): string | Source;
 	getEndContent(context: Context): undefined | string | Source;
+	serialize(context?: any): void;
+	deserialize(context?: any): void;
 	merge: any;
 }
 declare interface InputFileSystem {
@@ -6293,6 +6363,11 @@ declare interface MapOptions {
  */
 declare interface MemoryCacheOptions {
 	/**
+	 * Additionally cache computation of modules that are unchanged and reference only unchanged modules.
+	 */
+	cacheUnaffected?: boolean;
+
+	/**
 	 * Number of generations unused cache entries stay in memory cache at minimum (1 = may be removed after unused for a single compilation, ..., Infinity: kept forever).
 	 */
 	maxGenerations?: number;
@@ -6439,6 +6514,7 @@ declare class Module extends DependenciesBlock {
 	getSideEffectsConnectionState(moduleGraph: ModuleGraph): ConnectionState;
 	codeGeneration(context: CodeGenerationContext): CodeGenerationResult;
 	chunkCondition(chunk: Chunk, compilation: Compilation): boolean;
+	hasChunkCondition(): boolean;
 
 	/**
 	 * Assuming this module is in the cache. Update the (cached) module with
@@ -6488,6 +6564,7 @@ declare class ModuleDependency extends Dependency {
 	static Template: typeof DependencyTemplate;
 	static NO_EXPORTS_REFERENCED: string[][];
 	static EXPORTS_OBJECT_REFERENCED: string[][];
+	static TRANSITIVE: typeof TRANSITIVE;
 }
 declare abstract class ModuleFactory {
 	create(
@@ -6514,6 +6591,11 @@ declare interface ModuleFactoryResult {
 	fileDependencies?: Set<string>;
 	contextDependencies?: Set<string>;
 	missingDependencies?: Set<string>;
+
+	/**
+	 * allow to use the unsafe cache
+	 */
+	cacheable?: boolean;
 }
 declare class ModuleFederationPlugin {
 	constructor(options: ModuleFederationPluginOptions);
@@ -6602,10 +6684,12 @@ declare class ModuleGraph {
 	setParents(
 		dependency: Dependency,
 		block: DependenciesBlock,
-		module: Module
+		module: Module,
+		indexInBlock?: number
 	): void;
 	getParentModule(dependency: Dependency): Module;
 	getParentBlock(dependency: Dependency): DependenciesBlock;
+	getParentBlockIndex(dependency: Dependency): number;
 	setResolvedModule(
 		originModule: Module,
 		dependency: Dependency,
@@ -6637,7 +6721,10 @@ declare class ModuleGraph {
 	getOutgoingConnections(module: Module): Iterable<ModuleGraphConnection>;
 	getIncomingConnectionsByOriginModule(
 		module: Module
-	): Map<Module, ReadonlyArray<ModuleGraphConnection>>;
+	): Map<undefined | Module, ReadonlyArray<ModuleGraphConnection>>;
+	getOutgoingConnectionsByModule(
+		module: Module
+	): undefined | Map<undefined | Module, ReadonlyArray<ModuleGraphConnection>>;
 	getProfile(module: Module): null | ModuleProfile;
 	setProfile(module: Module, profile: null | ModuleProfile): void;
 	getIssuer(module: Module): null | Module;
@@ -6671,12 +6758,16 @@ declare class ModuleGraph {
 	setAsync(module: Module): void;
 	getMeta(thing?: any): Object;
 	getMetaIfExisting(thing?: any): Object;
-	freeze(): void;
+	freeze(cacheStage?: string): void;
 	unfreeze(): void;
 	cached<T extends any[], V>(
 		fn: (moduleGraph: ModuleGraph, ...args: T) => V,
 		...args: T
 	): V;
+	setModuleMemCaches(
+		moduleMemCaches: Map<Module, WeakTupleMap<any, any>>
+	): void;
+	dependencyCacheProvide(dependency: Dependency, ...args: any[]): any;
 	static getModuleGraphForModule(
 		module: Module,
 		deprecateMessage: string,
@@ -7149,17 +7240,17 @@ declare interface NodeOptions {
 	/**
 	 * Include a polyfill for the '__dirname' variable.
 	 */
-	__dirname?: boolean | "mock" | "eval-only";
+	__dirname?: boolean | "warn-mock" | "mock" | "eval-only";
 
 	/**
 	 * Include a polyfill for the '__filename' variable.
 	 */
-	__filename?: boolean | "mock" | "eval-only";
+	__filename?: boolean | "warn-mock" | "mock" | "eval-only";
 
 	/**
 	 * Include a polyfill for the 'global' variable.
 	 */
-	global?: boolean;
+	global?: boolean | "warn";
 }
 declare class NodeSourcePlugin {
 	constructor();
@@ -7307,6 +7398,7 @@ declare interface NormalModuleCompilationHooks {
 	readResourceForScheme: HookMap<
 		AsyncSeriesBailHook<[string, NormalModule], string | Buffer>
 	>;
+	readResource: HookMap<AsyncSeriesBailHook<[object], string | Buffer>>;
 	needBuild: AsyncSeriesBailHook<[NormalModule, NeedBuildContext], boolean>;
 }
 declare abstract class NormalModuleFactory extends ModuleFactory {
@@ -7330,8 +7422,6 @@ declare abstract class NormalModuleFactory extends ModuleFactory {
 	}>;
 	resolverFactory: ResolverFactory;
 	ruleSet: RuleSet;
-	unsafeCache: boolean;
-	cachePredicate: Function;
 	context: string;
 	fs: InputFileSystem;
 	parserCache: Map<string, WeakMap<Object, any>>;
@@ -7475,6 +7565,7 @@ declare class NullDependency extends Dependency {
 	static Template: typeof NullDependencyTemplate;
 	static NO_EXPORTS_REFERENCED: string[][];
 	static EXPORTS_OBJECT_REFERENCED: string[][];
+	static TRANSITIVE: typeof TRANSITIVE;
 }
 declare class NullDependencyTemplate extends DependencyTemplate {
 	constructor();
@@ -9771,6 +9862,7 @@ declare class RuntimeChunkPlugin {
 	 */
 	apply(compiler: Compiler): void;
 }
+type RuntimeCondition = undefined | string | boolean | SortableSet<string>;
 declare class RuntimeModule extends Module {
 	constructor(name: string, stage?: number);
 	name: string;
@@ -9779,6 +9871,7 @@ declare class RuntimeModule extends Module {
 	chunk: Chunk;
 	chunkGraph: ChunkGraph;
 	fullHash: boolean;
+	dependentHash: boolean;
 	attach(compilation: Compilation, chunk: Chunk, chunkGraph?: ChunkGraph): void;
 	generate(): string;
 	getGeneratedCode(): string;
@@ -9816,7 +9909,8 @@ declare interface RuntimeRequirementsContext {
 	codeGenerationResults: CodeGenerationResults;
 }
 type RuntimeSpec = undefined | string | SortableSet<string>;
-declare abstract class RuntimeSpecMap<T> {
+declare class RuntimeSpecMap<T> {
+	constructor(clone?: RuntimeSpecMap<T>);
 	get(runtime: RuntimeSpec): T;
 	has(runtime: RuntimeSpec): boolean;
 	set(runtime?: any, value?: any): void;
@@ -9827,7 +9921,8 @@ declare abstract class RuntimeSpecMap<T> {
 	values(): IterableIterator<T>;
 	readonly size?: number;
 }
-declare abstract class RuntimeSpecSet {
+declare class RuntimeSpecSet {
+	constructor(iterable?: any);
 	add(runtime?: any): void;
 	has(runtime?: any): boolean;
 	[Symbol.iterator](): IterableIterator<RuntimeSpec>;
@@ -11243,6 +11338,7 @@ declare interface SyntheticDependencyLocation {
 	index?: number;
 }
 declare const TOMBSTONE: unique symbol;
+declare const TRANSITIVE: unique symbol;
 declare const TRANSITIVE_ONLY: unique symbol;
 declare interface TagInfo {
 	tag: any;
@@ -11285,6 +11381,10 @@ declare interface TimestampAndHash {
 	safeTime: number;
 	timestamp?: number;
 	hash: string;
+}
+declare class TopLevelSymbol {
+	constructor(name: string);
+	name: string;
 }
 
 /**
@@ -11602,6 +11702,14 @@ declare abstract class Watching {
 	suspend(): void;
 	resume(): void;
 	close(callback: CallbackFunction<void>): void;
+}
+declare abstract class WeakTupleMap<T extends any[], V> {
+	set(...args: [T, ...V[]]): void;
+	has(...args: T): boolean;
+	get(...args: T): V;
+	provide(...args: [T, ...(() => V)[]]): V;
+	delete(...args: T): void;
+	clear(): void;
 }
 declare interface WebAssemblyRenderContext {
 	/**
@@ -12009,10 +12117,23 @@ declare namespace exports {
 		export let NAMESPACE: string;
 		export let REGEXP_NAMESPACE: RegExp;
 		export let createFilename: (
-			module: any,
+			module: string | Module,
 			options: any,
-			__2: { requestShortener: any; chunkGraph: any }
-		) => any;
+			__2: {
+				/**
+				 * requestShortener
+				 */
+				requestShortener: RequestShortener;
+				/**
+				 * chunk graph
+				 */
+				chunkGraph: ChunkGraph;
+				/**
+				 * the hash function to use
+				 */
+				hashFunction: string | typeof Hash;
+			}
+		) => string;
 		export let replaceDuplicates: (
 			array?: any,
 			fn?: any,
@@ -12129,6 +12250,52 @@ declare namespace exports {
 		};
 	}
 	export namespace optimize {
+		export namespace InnerGraph {
+			export let bailout: (parserState: ParserState) => void;
+			export let enable: (parserState: ParserState) => void;
+			export let isEnabled: (parserState: ParserState) => boolean;
+			export let addUsage: (
+				state: ParserState,
+				symbol: null | TopLevelSymbol,
+				usage: string | true | TopLevelSymbol
+			) => void;
+			export let addVariableUsage: (
+				parser: JavascriptParser,
+				name: string,
+				usage: string | true | TopLevelSymbol
+			) => void;
+			export let inferDependencyUsage: (state: ParserState) => void;
+			export let onUsage: (
+				state: ParserState,
+				onUsageCallback: (arg0?: boolean | Set<string>) => void
+			) => void;
+			export let setTopLevelSymbol: (
+				state: ParserState,
+				symbol: TopLevelSymbol
+			) => void;
+			export let getTopLevelSymbol: (
+				state: ParserState
+			) => void | TopLevelSymbol;
+			export let tagTopLevelSymbol: (
+				parser: JavascriptParser,
+				name: string
+			) => TopLevelSymbol;
+			export let isDependencyUsedByExports: (
+				dependency: Dependency,
+				usedByExports: boolean | Set<string>,
+				moduleGraph: ModuleGraph,
+				runtime: RuntimeSpec
+			) => boolean;
+			export let getDependencyUsedByExportsCondition: (
+				dependency: Dependency,
+				usedByExports: boolean | Set<string>,
+				moduleGraph: ModuleGraph
+			) =>
+				| null
+				| false
+				| ((arg0: ModuleGraphConnection, arg1: RuntimeSpec) => ConnectionState);
+			export { TopLevelSymbol, topLevelSymbolTag };
+		}
 		export {
 			AggressiveMergingPlugin,
 			AggressiveSplittingPlugin,
@@ -12254,6 +12421,59 @@ declare namespace exports {
 				b: DependencyLocation
 			) => 0 | 1 | -1;
 		}
+		export namespace runtime {
+			export let getEntryRuntime: (
+				compilation: Compilation,
+				name: string,
+				options?: EntryOptions
+			) => RuntimeSpec;
+			export let forEachRuntime: (
+				runtime: RuntimeSpec,
+				fn: (arg0: string) => void,
+				deterministicOrder?: boolean
+			) => void;
+			export let getRuntimeKey: (runtime: RuntimeSpec) => string;
+			export let keyToRuntime: (key: string) => RuntimeSpec;
+			export let runtimeToString: (runtime: RuntimeSpec) => string;
+			export let runtimeConditionToString: (
+				runtimeCondition: RuntimeCondition
+			) => string;
+			export let runtimeEqual: (a: RuntimeSpec, b: RuntimeSpec) => boolean;
+			export let compareRuntime: (a: RuntimeSpec, b: RuntimeSpec) => 0 | 1 | -1;
+			export let mergeRuntime: (a: RuntimeSpec, b: RuntimeSpec) => RuntimeSpec;
+			export let mergeRuntimeCondition: (
+				a: RuntimeCondition,
+				b: RuntimeCondition,
+				runtime: RuntimeSpec
+			) => RuntimeCondition;
+			export let mergeRuntimeConditionNonFalse: (
+				a: undefined | string | true | SortableSet<string>,
+				b: undefined | string | true | SortableSet<string>,
+				runtime: RuntimeSpec
+			) => undefined | string | true | SortableSet<string>;
+			export let mergeRuntimeOwned: (
+				a: RuntimeSpec,
+				b: RuntimeSpec
+			) => RuntimeSpec;
+			export let intersectRuntime: (
+				a: RuntimeSpec,
+				b: RuntimeSpec
+			) => RuntimeSpec;
+			export let subtractRuntime: (
+				a: RuntimeSpec,
+				b: RuntimeSpec
+			) => RuntimeSpec;
+			export let subtractRuntimeCondition: (
+				a: RuntimeCondition,
+				b: RuntimeCondition,
+				runtime: RuntimeSpec
+			) => RuntimeCondition;
+			export let filterRuntime: (
+				runtime: RuntimeSpec,
+				filter: (arg0: RuntimeSpec) => boolean
+			) => undefined | string | boolean | SortableSet<string>;
+			export { RuntimeSpecMap, RuntimeSpecSet };
+		}
 		export namespace serialization {
 			export const register: (
 				Constructor: Constructor,
@@ -12268,7 +12488,10 @@ declare namespace exports {
 			export const registerNotSerializable: (Constructor: Constructor) => void;
 			export const NOT_SERIALIZABLE: object;
 			export const buffersSerializer: Serializer;
-			export let createFileSerializer: (fs?: any) => Serializer;
+			export let createFileSerializer: (
+				fs?: any,
+				hashFunction?: any
+			) => Serializer;
 			export { MEASURE_START_OPERATION, MEASURE_END_OPERATION };
 		}
 		export const cleverMerge: <T, O>(first: T, second: O) => T | O | (T & O);
@@ -12396,5 +12619,6 @@ declare namespace exports {
 		LoaderContext
 	};
 }
+declare const topLevelSymbolTag: unique symbol;
 
 export = exports;

@@ -81,5 +81,6 @@ export function parse(
   name?: string
 ): readonly [
   imports: ReadonlyArray<ImportSpecifier>,
-  exports: ReadonlyArray<string>
+  exports: ReadonlyArray<string>,
+  facade: boolean
 ];
