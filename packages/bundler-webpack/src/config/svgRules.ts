@@ -30,7 +30,8 @@ export async function addSVGRules(opts: IOpts) {
         svgoConfig: {
           plugins: [{ removeViewBox: false }],
         },
-        ...svgr, svgo
+        ...svgr,
+        svgo,
       })
       .end()
       .use('url-loader')
@@ -42,17 +43,14 @@ export async function addSVGRules(opts: IOpts) {
     svgRule
       .test(/\.svg$/)
       .use('url-loader')
-      .loader(
-        require.resolve('@umijs/bundler-webpack/compiled/url-loader'),
-      )
+      .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'));
     return;
   }
   const svgRule = config.module.rule('svg');
   svgRule
     .test(/\.svg$/)
     .use('svgo-loader')
-    .loader(
-      require.resolve('@umijs/bundler-webpack/compiled/svgo-loader'),
-    )
-    .options({ configFile: false, ...svgo }).end();
+    .loader(require.resolve('@umijs/bundler-webpack/compiled/svgo-loader'))
+    .options({ configFile: false, ...svgo })
+    .end();
 }
