@@ -1,14 +1,12 @@
-import { importLazy, portfinder } from '@umijs/utils';
+import { importLazy, logger, portfinder } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, extname, join } from 'path';
-import * as process from 'process';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../constants';
 import { IApi } from '../types';
 
 const { dev }: typeof import('@umijs/bundler-webpack') = importLazy(
   '@umijs/bundler-webpack',
-  require,
 );
 
 export default (api: IApi) => {
@@ -55,6 +53,19 @@ PORT=8888 umi dev
     });
     memo.host = process.env.HOST || DEFAULT_HOST;
     return memo;
+  });
+
+  api.registerMethod({
+    name: 'restartServer',
+    fn() {
+      logger.info(`Restart dev server with port ${api.appData.port}...`);
+      process.send?.({
+        type: 'RESTART',
+        payload: {
+          port: api.appData.port,
+        },
+      });
+    },
   });
 };
 
