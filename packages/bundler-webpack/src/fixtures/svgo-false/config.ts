@@ -1,3 +1,3 @@
 export default {
-  svgo:false,
+  svgo: false,
 };
