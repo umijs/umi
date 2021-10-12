@@ -11,6 +11,8 @@ import {
   ConfigChangeType,
   EnableBy,
   Env,
+  IEvent,
+  IModify,
   PluginType,
   ServiceStage,
 } from '../types';
@@ -176,10 +178,10 @@ export class Service {
     const { plugins, presets } = Plugin.getPluginsAndPresets({
       cwd: this.cwd,
       pkg,
-      plugins: [require.resolve('./servicePlugin')].concat(
-        this.opts.plugins || [],
+      plugins: this.opts.plugins || [],
+      presets: [require.resolve('./servicePlugin')].concat(
+        this.opts.presets || [],
       ),
-      presets: this.opts.presets,
       userConfig: this.userConfig,
       prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
     });
@@ -252,9 +254,6 @@ export class Service {
     this.stage = ServiceStage.onCheck;
     await this.applyPlugins({
       key: 'onCheck',
-      args: {
-        appData: this.appData,
-      },
     });
     // applyPlugin onStart
     this.stage = ServiceStage.onStart;
@@ -354,7 +353,7 @@ export class Service {
           }),
       );
     }
-    return ret;
+    return ret || {};
   }
 
   isPluginEnable(hook: Hook) {
@@ -370,5 +369,24 @@ export class Service {
 
 // TODO: more props
 export interface IServicePluginAPI {
-  args: yParser.Arguments;
+  appData: typeof Service.prototype.appData;
+  applyPlugins: typeof Service.prototype.applyPlugins;
+  args: typeof Service.prototype.args;
+  config: typeof Service.prototype.config;
+  cwd: typeof Service.prototype.cwd;
+  name: typeof Service.prototype.name;
+  paths: typeof Service.prototype.paths;
+  userConfig: typeof Service.prototype.userConfig;
+
+  onCheck: IEvent<null>;
+  onStart: IEvent<null>;
+  modifyAppData: IModify<typeof Service.prototype.appData, null>;
+  modifyConfig: IModify<typeof Service.prototype.config, null>;
+  modifyDefaultConfig: IModify<typeof Service.prototype.config, null>;
+  modifyPaths: IModify<typeof Service.prototype.paths, null>;
+
+  ApplyPluginsType: ApplyPluginsType;
+  ConfigChangeType: ConfigChangeType;
+  EnableBy: EnableBy;
+  ServiceStage: ServiceStage;
 }

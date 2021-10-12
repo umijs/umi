@@ -63,9 +63,9 @@ export class Plugin {
   }
 
   merge(opts: {
-    key: string;
-    config: IPluginConfig;
-    enableBy: EnableBy | (() => boolean);
+    key?: string;
+    config?: IPluginConfig;
+    enableBy?: EnableBy | (() => boolean);
   }) {
     if (opts.key) this.key = opts.key;
     if (opts.config) this.config = opts.config;

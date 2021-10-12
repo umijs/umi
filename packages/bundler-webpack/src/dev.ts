@@ -5,6 +5,10 @@ import { createServer } from './server/server';
 import { Env, IConfig } from './types';
 
 interface IOpts {
+  afterMiddlewares?: any[];
+  beforeMiddlewares?: any[];
+  port?: number;
+  host?: string;
   cwd: string;
   config: IConfig;
   entry: Record<string, string>;
@@ -38,6 +42,12 @@ export async function dev(opts: IOpts) {
     webpackConfig,
     userConfig: opts.config,
     cwd: opts.cwd,
-    beforeMiddlewares: [...mfsu.getMiddlewares()],
+    beforeMiddlewares: [
+      ...mfsu.getMiddlewares(),
+      ...(opts.beforeMiddlewares || []),
+    ],
+    port: opts.port,
+    host: opts.host,
+    afterMiddlewares: [...(opts.afterMiddlewares || [])],
   });
 }
