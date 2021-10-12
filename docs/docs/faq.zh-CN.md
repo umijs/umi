@@ -290,7 +290,8 @@ umi 默认是开启 css modules 的，请按照 css modules 的方式进行书�
 先安装额外的依赖，
 
 ```bash
-$ npm i node-sass sass-loader --save
+$ npm i --save-dev @umijs/plugin-sass
+
 ```
 
 然后修改 `.umirc.js`:
