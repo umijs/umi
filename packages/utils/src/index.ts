@@ -17,6 +17,7 @@ import semver from '../compiled/semver';
 import stripAnsi from '../compiled/strip-ansi';
 import yParser from '../compiled/yargs-parser';
 import * as logger from './logger';
+export * from './importLazy';
 export * as register from './register';
 export * from './winPath';
 export {

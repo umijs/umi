@@ -195,9 +195,6 @@ importers:
     devDependencies:
       express: 4.17.1
 
-  packages/bundler-vite/compiled/@vitejs/plugin-react:
-    specifiers: {}
-
   packages/bundler-vite/compiled/express:
     specifiers: {}
 
@@ -477,6 +474,7 @@ importers:
       debug: 4.3.2
       fs-extra: 10.0.0
       globby: 11.0.4
+      import-lazy: 4.0.0
       lodash: 4.17.21
       pkg-up: 3.1.0
       portfinder: 1.0.28
@@ -502,6 +500,7 @@ importers:
       debug: 4.3.2
       fs-extra: 10.0.0
       globby: 11.0.4
+      import-lazy: 4.0.0
       lodash: 4.17.21
       pkg-up: 3.1.0
       portfinder: 1.0.28
@@ -4991,6 +4990,7 @@ packages:
 
   /estree-walker/2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
+    dev: false
 
   /esutils/2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
@@ -5607,6 +5607,11 @@ packages:
     dependencies:
       parent-module: 1.0.1
       resolve-from: 4.0.0
+    dev: true
+
+  /import-lazy/4.0.0:
+    resolution: {integrity: sha512-rKtvo6a868b5Hu3heneU+L4yEQ4jYKLtjpnPeUdK7h0yzXGmyBTypknlkCvHFBqfX9YlorEiMM6Dnq/5atfHkw==}
+    engines: {node: '>=8'}
     dev: true
 
   /import-local/3.0.3:
