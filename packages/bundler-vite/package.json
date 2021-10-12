@@ -25,9 +25,24 @@
   "publishConfig": {
     "access": "public"
   },
+  "bin": {
+    "bundler-vite": "bin/bundler-vite.js"
+  },
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-alpha.1",
     "@umijs/utils": "4.0.0-alpha.1",
+    "@vitejs/plugin-react": "1.0.4",
     "vite": "2.6.5"
+  },
+  "devDependencies": {
+    "express": "4.17.1"
+  },
+  "compiledConfig": {
+    "deps": [
+      "express"
+    ],
+    "externals": {
+      "express": "$$LOCAL"
+    }
   }
 }

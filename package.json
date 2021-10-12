@@ -14,6 +14,7 @@
     "@types/node": "^16.10.3",
     "@types/resolve": "^1.20.1",
     "@umijs/bundler-utils": "link:packages/bundler-utils",
+    "@umijs/bundler-vite": "link:packages/bundler-vite",
     "@umijs/bundler-webpack": "link:packages/bundler-webpack",
     "@umijs/utils": "link:packages/utils",
     "@vercel/ncc": "^0.31.1",

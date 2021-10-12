@@ -1,5 +1,7 @@
-import { logger } from '@umijs/utils';
-import { IConfig } from './types';
+import { getConfig } from './config/config';
+import { createServer } from './server/server';
+
+import { Env, IConfig } from './types';
 
 interface IOpts {
   cwd: string;
@@ -8,5 +10,16 @@ interface IOpts {
 }
 
 export async function dev(opts: IOpts) {
-  logger.info(`dev`, JSON.stringify(opts));
+  const viteConfig = await getConfig({
+    cwd: opts.cwd,
+    env: Env.development,
+    entry: opts.entry,
+    userConfig: opts.config,
+  });
+
+  await createServer({
+    viteConfig,
+    userConfig: opts.config,
+    cwd: opts.cwd,
+  });
 }
