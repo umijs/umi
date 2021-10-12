@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { isAbsolute, join } from 'path';
 
 export function addExt(opts: { file: string; ext: string }) {
   const index = opts.file.lastIndexOf('.');
@@ -6,5 +6,7 @@ export function addExt(opts: { file: string; ext: string }) {
 }
 
 export function getAbsFiles(opts: { files: string[]; cwd: string }) {
-  return opts.files.map((file) => join(opts.cwd, file));
+  return opts.files.map((file) => {
+    return isAbsolute(file) ? file : join(opts.cwd, file);
+  });
 }

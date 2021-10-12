@@ -45,13 +45,21 @@ export class Service {
   env: Env;
   hooks: Record<string, Hook[]> = {};
   name: string = '';
-  paths: Record<string, string> = {};
+  paths: {
+    cwd?: string;
+    absSrcPath?: string;
+    absPagesPath?: string;
+    absTmpPath?: string;
+    absNodeModulesPath?: string;
+    absOutputPath?: string;
+  } = {};
   // preset is plugin with different type
   plugins: Record<string, Plugin> = {};
   pluginMethods: Record<string, { plugin: Plugin; fn: Function }> = {};
   skipPluginIds: Set<string> = new Set<string>();
   stage: ServiceStage = ServiceStage.uninitialized;
   userConfig: Record<string, any> = {};
+  configManager: Config | null = null;
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd;
@@ -168,10 +176,11 @@ export class Service {
     }
     // get user config
     const configManager = new Config({
-      cwd: '',
+      cwd: this.cwd,
       env: this.env,
       defaultConfigFiles: this.opts.defaultConfigFiles,
     });
+    this.configManager = configManager;
     this.userConfig = configManager.getUserConfig().config;
     // get paths (move after?)
     // resolve initial presets and plugins
@@ -375,7 +384,7 @@ export interface IServicePluginAPI {
   config: typeof Service.prototype.config;
   cwd: typeof Service.prototype.cwd;
   name: typeof Service.prototype.name;
-  paths: typeof Service.prototype.paths;
+  paths: Required<typeof Service.prototype.paths>;
   userConfig: typeof Service.prototype.userConfig;
 
   onCheck: IEvent<null>;
@@ -385,8 +394,8 @@ export interface IServicePluginAPI {
   modifyDefaultConfig: IModify<typeof Service.prototype.config, null>;
   modifyPaths: IModify<typeof Service.prototype.paths, null>;
 
-  ApplyPluginsType: ApplyPluginsType;
-  ConfigChangeType: ConfigChangeType;
-  EnableBy: EnableBy;
-  ServiceStage: ServiceStage;
+  ApplyPluginsType: typeof ApplyPluginsType;
+  ConfigChangeType: typeof ConfigChangeType;
+  EnableBy: typeof EnableBy;
+  ServiceStage: typeof ServiceStage;
 }
