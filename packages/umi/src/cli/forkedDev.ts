@@ -9,7 +9,9 @@ setNoDeprecation();
 (async () => {
   try {
     const args = yParser(process.argv.slice(2));
-    const service = new Service();
+    const service = new Service({
+      env: 'development',
+    });
     await service.run2({
       name: DEV_COMMAND,
       args,

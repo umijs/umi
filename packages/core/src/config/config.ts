@@ -29,6 +29,7 @@ export class Config {
   public opts: IOpts;
   public mainConfigFile: string | null;
   public prevConfig: any;
+  public files: string[] = [];
   constructor(opts: IOpts) {
     this.opts = opts;
     this.mainConfigFile = Config.getMainConfigFile(this.opts);
@@ -42,13 +43,17 @@ export class Config {
       specifiedEnv: this.opts.specifiedEnv,
     });
     return Config.getUserConfig({
-      configFiles,
+      configFiles: getAbsFiles({
+        files: configFiles,
+        cwd: this.opts.cwd,
+      }),
     });
   }
 
   getConfig(opts: { schemas: ISchema }) {
     const { config, files } = this.getUserConfig();
     Config.validateConfig({ config, schemas: opts.schemas });
+    this.files = files;
     return (this.prevConfig = {
       config: config,
       files,
@@ -56,8 +61,6 @@ export class Config {
   }
 
   watch(opts: {
-    files: string[];
-    defaultConfig: Record<string, any>;
     schemas: ISchema;
     onChangeTypes: IOnChangeTypes;
     onChange: (opts: {
@@ -68,7 +71,7 @@ export class Config {
   }) {
     const watcher = chokidar.watch(
       [
-        ...opts.files,
+        ...this.files,
         ...(this.mainConfigFile
           ? []
           : getAbsFiles({
@@ -85,7 +88,9 @@ export class Config {
       'all',
       lodash.debounce((event, path) => {
         const { config: origin } = this.prevConfig;
-        const { config: updated, files } = this.getConfig(opts);
+        const { config: updated, files } = this.getConfig({
+          schemas: opts.schemas,
+        });
         watcher.add(files);
         const data = Config.diffConfigs({
           origin,
