@@ -18,9 +18,9 @@ export class PluginAPI {
   }
 
   describe(opts: {
-    key: string;
-    config: IPluginConfig;
-    enableBy: EnableBy | (() => boolean);
+    key?: string;
+    config?: IPluginConfig;
+    enableBy?: EnableBy | (() => boolean);
   }) {
     this.plugin.merge(opts);
   }
@@ -126,8 +126,9 @@ export class PluginAPI {
   }) {
     return new Proxy(opts.pluginAPI, {
       get: (target, prop: string) => {
-        if (opts.service.pluginMethods[prop])
-          return opts.service.pluginMethods[prop];
+        if (opts.service.pluginMethods[prop]) {
+          return opts.service.pluginMethods[prop].fn;
+        }
         if (opts.serviceProps.includes(prop)) {
           // @ts-ignore
           const serviceProp = opts.service[prop];

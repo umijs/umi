@@ -441,9 +441,13 @@ importers:
 
   packages/preset-built-in:
     specifiers:
+      '@umijs/bundler-webpack': 4.0.0-alpha.1
       '@umijs/core': 4.0.0-alpha.1
-    devDependencies:
+      '@umijs/utils': 4.0.0-alpha.1
+    dependencies:
+      '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
+      '@umijs/utils': link:../utils
 
   packages/umi:
     specifiers:
@@ -529,6 +533,9 @@ importers:
     specifiers: {}
 
   packages/utils/compiled/fs-extra:
+    specifiers: {}
+
+  packages/utils/compiled/import-lazy:
     specifiers: {}
 
   packages/utils/compiled/lodash:

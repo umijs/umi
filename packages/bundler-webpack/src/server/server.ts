@@ -12,6 +12,8 @@ import { createWebSocketServer } from './ws';
 
 interface IOpts {
   cwd: string;
+  port?: number;
+  host?: string;
   webpackConfig: Configuration;
   userConfig: IConfig;
   beforeMiddlewares?: any[];
@@ -116,13 +118,10 @@ export async function createServer(opts: IOpts) {
   const server = http.createServer(app);
   const ws = createWebSocketServer(server);
 
-  const port = process.env.PORT || 8000;
+  const port = opts.port || 8000;
   server.listen(port, () => {
-    logger.ready(
-      `Example app listening at http://${
-        process.env.HOST || '127.0.0.1'
-      }:${port}`,
-    );
+    const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : '127.0.0.1';
+    logger.ready(`Example app listening at http://${host}:${port}`);
   });
 
   return server;
