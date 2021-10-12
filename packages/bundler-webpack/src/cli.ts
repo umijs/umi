@@ -25,6 +25,7 @@ register.register({
 });
 register.clearFiles();
 if (existsSync(configFile)) {
+  require('./requireHook');
   config = require(configFile).default;
 }
 Object.assign(config, args);

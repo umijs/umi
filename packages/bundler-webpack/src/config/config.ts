@@ -30,10 +30,6 @@ interface IOpts {
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
-  // TODO: 放到 packages/umi/src/service/service.ts#L34 initWebpack 后面？ 
-  // hook the Node.js require so that webpack requires are
-  // routed to the bundled and now initialized webpack version
-  require('./require-hook');
   const { userConfig } = opts;
   const isDev = opts.env === Env.development;
   const config = new Config();
