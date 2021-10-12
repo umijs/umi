@@ -1,7 +1,6 @@
 import { fork } from 'child_process';
 
 const usedPorts: number[] = [];
-let CURRENT_PORT: number | undefined;
 
 interface IOpts {
   scriptPath: string;
@@ -34,22 +33,16 @@ export default function start({ scriptPath }: IOpts) {
     );
   }
 
-  // set port to env when current port has value
-  if (CURRENT_PORT) {
-    // @ts-ignore
-    process.env.PORT = CURRENT_PORT;
-  }
-
   const child = fork(scriptPath, process.argv.slice(2), { execArgv });
 
   child.on('message', (data: any) => {
-    const type = (data && data.type) || null;
+    const { type, payload } = data || {};
     if (type === 'RESTART') {
       child.kill();
+      if (payload?.port) {
+        process.env.PORT = payload.port;
+      }
       start({ scriptPath });
-    } else if (type === 'UPDATE_PORT') {
-      // set current used port
-      CURRENT_PORT = data.port as number;
     }
     process.send?.(data);
   });
