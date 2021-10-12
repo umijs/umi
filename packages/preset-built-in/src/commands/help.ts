@@ -40,6 +40,15 @@ Commands:
 
 ${getDeps(commands)}
 `);
+    console.log(
+      `Run \`${chalk.bold(
+        'umi help <command>',
+      )}\` for more information of specific commands.`,
+    );
+    console.log(
+      `Visit ${chalk.bold('https://umijs.org/')} to learn more about Umi.`,
+    );
+    console.log();
   }
 
   function getDeps(commands: typeof api.service.commands) {
