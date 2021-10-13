@@ -102,7 +102,7 @@ for example:
 export default {
   dynamicImport: {},
   chunks: ['vendors', 'umi'],
-  chainWebpack: function (config, {webpack }) {
+  chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
         splitChunks: {
