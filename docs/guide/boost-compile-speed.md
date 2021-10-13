@@ -112,7 +112,7 @@ export default {
           automaticNameDelimiter: '.',
           cacheGroups: {
             vendor: {
-              name:'vendors',
+              name: 'vendors',
               test({ resource }) {
                 return /[\\/]node_modules[\\/]/.test(resource);
               },
