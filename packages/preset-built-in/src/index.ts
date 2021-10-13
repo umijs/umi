@@ -5,7 +5,7 @@ export default () => {
       require.resolve('./registerMethods'),
 
       // tmp files
-      require.resolve('./tmpFiles/umi'),
+      require.resolve('./tmpFiles/tmpFiles'),
 
       // commands
       require.resolve('./commands/build'),
