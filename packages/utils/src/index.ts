@@ -9,6 +9,7 @@ import debug from '../compiled/debug';
 import fsExtra from '../compiled/fs-extra';
 // import globby from '../compiled/globby';
 import lodash from '../compiled/lodash';
+import Mustache from '../compiled/mustache';
 import pkgUp from '../compiled/pkg-up';
 import portfinder from '../compiled/portfinder';
 import resolve from '../compiled/resolve';
@@ -33,6 +34,7 @@ export {
   // globby,
   lodash,
   logger,
+  Mustache,
   pkgUp,
   portfinder,
   resolve,

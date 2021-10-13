@@ -1,7 +1,6 @@
 import { importLazy, lodash, logger, portfinder, winPath } from '@umijs/utils';
-import assert from 'assert';
-import { existsSync, readFileSync } from 'fs';
-import { basename, extname, join } from 'path';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { IApi } from '../../types';
 import { clearTmp } from '../../utils/clearTmp';
@@ -42,7 +41,7 @@ PORT=8888 umi dev
         api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
-            files,
+            files: files || null,
           },
         });
       }
@@ -103,13 +102,11 @@ PORT=8888 umi dev
       );
 
       // start dev server
-      const entry = getEntry(api.cwd);
-      assert(entry, `Build failed: entry not found.`);
       await dev({
         config: api.config,
         cwd: api.cwd,
         entry: {
-          [getEntryKey(entry)]: entry,
+          umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
         port: api.appData.port,
         host: api.appData.host,
@@ -141,22 +138,3 @@ PORT=8888 umi dev
     },
   });
 };
-
-function getEntry(cwd: string) {
-  return tryPaths([
-    join(cwd, 'src/index.tsx'),
-    join(cwd, 'src/index.ts'),
-    join(cwd, 'index.tsx'),
-    join(cwd, 'index.ts'),
-  ]);
-}
-
-function tryPaths(paths: string[]) {
-  for (const path of paths) {
-    if (existsSync(path)) return path;
-  }
-}
-
-function getEntryKey(path: string) {
-  return basename(path, extname(path));
-}
