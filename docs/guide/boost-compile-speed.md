@@ -109,7 +109,7 @@ export default {
           chunks: 'all',
           minSize: 30000,
           minChunks: 3,
-          automaticNameDelimiter:'.',
+          automaticNameDelimiter: '.',
           cacheGroups: {
             vendor: {
               name:'vendors',
