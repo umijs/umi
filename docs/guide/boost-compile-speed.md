@@ -50,7 +50,7 @@ export default {
   scripts: process.env.NODE_ENV ==='development'? [
     'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.development.js',
     'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.development.js',
-  ]: [
+  ] : [
     'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.production.min.js',
     'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.production.min.js',
   ],
