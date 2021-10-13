@@ -146,7 +146,7 @@ or,
 ```js
 // Use the lowest cost sourcemap generation method, the default is cheap-module-source-map
 export default {
-  devtool:'eval',
+  devtool: 'eval',
 };
 ```
 
