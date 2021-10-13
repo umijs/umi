@@ -41,7 +41,7 @@ For example, react and react-dom:
 export default {
   // Configure external
   externals: {
-    'react':'window.React',
+    'react': 'window.React',
     'react-dom':'window.ReactDOM',
   },
 
