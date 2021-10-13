@@ -106,7 +106,7 @@ export default {
     config.merge({
       optimization: {
         splitChunks: {
-          chunks:'all',
+          chunks: 'all',
           minSize: 30000,
           minChunks: 3,
           automaticNameDelimiter:'.',
