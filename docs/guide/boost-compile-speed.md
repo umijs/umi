@@ -42,7 +42,7 @@ export default {
   // Configure external
   externals: {
     'react': 'window.React',
-    'react-dom':'window.ReactDOM',
+    'react-dom': 'window.ReactDOM',
   },
 
   // Import the scripts of the external library
