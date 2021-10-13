@@ -1,16 +1,13 @@
----
-translateHelp: true
----
 
-# 迁移 create-react-app 到 umi
+# Migrate create-react-app to umi
 
-> 本文档仅作为如何将 create-react-app 迁移到 umi 的基础指引。真实项目的迁移，你可能还需要阅读我们的文档，了解更多关于[插件](/zh-CN/plugins/preset-react)和[配置](/zh-CN/config)的相关信息。
+> This document is only used as a basic guide on how to migrate create-react-app to umi. For the migration of real projects, you may also need to read our documentation to learn more about [plugins](/zh-CN/plugins/preset-react) and [configuration](/zh-CN/config).
 
-其实将一个 create-react-app 项目迁移到 umi 是一件比较容易的事情。主要需要注意几个默认行为的差异。接下来，我们通过以下步骤，将 create-react-app 的初始项目迁移到 umi。
+In fact, it is relatively easy to migrate a create-react-app project to umi. Mainly need to pay attention to the differences of several default behaviors. Next, we use the following steps to migrate the initial project of create-react-app to umi. 
 
-## 依赖处理
+## Dependency processing
 
-在 `package.json` 中修改依赖并修改项目启动命令，更多 umi cli 的信息，可以查看[我们的文档](/zh-CN/docs/cl)。
+Modify the dependencies and modify the project startup command in `package.json`. For more information on umi cli, you can check [our documentation](/zh-CN/docs/cl). 
 
 ```diff
 {
@@ -33,11 +30,11 @@ translateHelp: true
 }
 ```
 
-## 修改根组件
+## Modify the root component
 
-create-react-app 的入口是 `src/index`，在 umi 中并没有真实的暴露程序的主入口，但是我们可以在 [layouts](/zh-CN/docs/convention-routing#全局-layout) 中执行同样的操作。
+The entrance of create-react-app is `src/index`, there is no real main entrance of the exposed program in umi, but we can find it in [layouts](/zh-CN/docs/convention-routing#global-layout) Perform the same operation in.
 
-将 `src/index` 中的逻辑转移到 `src/layouts/index` 中，操作完成你的代码应该看起来像：
+Transfer the logic in `src/index` to `src/layouts/index`, and your code should look like:
 
 ```js
 import React from 'react';
@@ -50,28 +47,28 @@ export default ({ children }) => (
 );
 ```
 
-## 转移页面文件
+## Transfer page file 
 
-将页面组件转移到 [`src/pages`](/zh-CN/docs/convention-routing) 目录下面。
+Move the page components to the [`src/pages`](/zh-CN/docs/convention-routing) directory.
 
-> 这里我们期望通过路由 `/` 访问 App 文件，因此我们如下修改文件名，并修改内部引用。
+> Here we expect to access the App file through the route `/`, so we modify the file name as follows and modify the internal reference.
 
 ![image](https://user-images.githubusercontent.com/11746742/89971217-3d969680-dc8d-11ea-8d4e-c60b1e9431ba.png)
 
-## [HTML 模版](/zh-CN/docs/html-template)
+## [HTML template](/zh-CN/docs/html-template)
 
-将 `public/index.html` 中的内容，转移到 `src/pages/document.ejs`。
+Transfer the content in `public/index.html` to `src/pages/document.ejs`.
 
-create-react-app 中通过 `%PUBLIC_URL%` 取得部署路径，而 umi 中需要通过 [`context`](/zh-CN/docs/html-template#配置模板) 取值。
+In create-react-app, the deployment path is obtained through `%PUBLIC_URL%`, while in umi, the value needs to be obtained through [`context`](/zh-CN/docs/html-template#配置模板). 
 
 ```diff
 - <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 + <link rel="icon" href="<%= context.config.publicPath +'favicon.ico'%>" />
 ```
 
-## 修改 eslint 配置
+## Modify eslint configuration
 
-将 package.json 中的 eslint 配置，转移到 `.eslintrc.js`。在 umi 项目中我们推荐你使用 `@umijs/fabric`。当然，你可以使用你熟悉的任意配置。
+Transfer the eslint configuration in package.json to `.eslintrc.js`. In the umi project, we recommend you to use `@umijs/fabric`. Of course, you can use any configuration you are familiar with. 
 
 ```diff
 {
@@ -90,11 +87,11 @@ module.exports = {
 };
 ```
 
-## 测试相关
+## Test related
 
-### 增加测试配置引用
+### Add test configuration reference
 
-新建配置文件 `jest.config.js`，编写如下配置：
+Create a new configuration file `jest.config.js` and write the following configuration:
 
 ```js
 module.exports = {
@@ -104,11 +101,11 @@ module.exports = {
 }
 ```
 
-### 使用 `umi-test` 替代 `react-scripts test`
+### Use `umi-test` instead of `react-scripts test`
 
-相关修改可以查看上文中提到的**依赖处理**，如果你刚才没有留意，你可以返回去查看。
+For related modifications, you can check the **dependency handling** mentioned above. If you didn't pay attention just now, you can go back and check.
 
-执行 `umi-test`：
+Execute `umi-test`:
 
 ```bash
 $ umi-test
@@ -123,8 +120,8 @@ Ran all test suites.
 ✨  Done in 13.83s.
 ```
 
-## 启动项目
+## Startup project
 
-执行 `umi dev`，项目将会在 `http://localhost:8000/` 上启动，如果你习惯使用 `3000` 端口，你可以通过[环境变量](/zh-CN/docs/env-variables)来设置。现在项目看起来应该与迁移之前的效果一致。
+Execute `umi dev`, the project will be launched on `http://localhost:8000/`, if you are used to using port `3000`, you can pass [environment variables](/zh-CN/docs/env-variables ) To set. The project should now look the same as before the migration.
 
-> 完整的迁移操作，可以查看这一次[提交](https://github.com/xiaohuoni/cra-2-umi/commit/66c87974f36cdb7d40629c056b1b1cdc4ebc8950)。
+> For the complete migration operation, you can view this [submit](https://github.com/xiaohuoni/cra-2-umi/commit/66c87974f36cdb7d40629c056b1b1cdc4ebc8950).
