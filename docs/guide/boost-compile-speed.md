@@ -162,7 +162,7 @@ export default {
     // More configuration https://github.com/Microsoft/monaco-editor-webpack-plugin#options
     memo.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [
       // Configure on demand
-      {languages: ['javascript']}
+      { languages: ['javascript'] }
     ]);
     return memo;
   }
