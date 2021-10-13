@@ -1,12 +1,11 @@
 {
-  "name": "@umijs/preset-built-in",
+  "name": "@umijs/renderer-react",
   "version": "4.0.0-alpha.1",
-  "description": "@umijs/preset-built-in",
+  "description": "@umijs/renderer-react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "templates"
+    "dist"
   ],
   "scripts": {
     "build": "pnpm tsc",
@@ -22,14 +21,21 @@
   ],
   "license": "MIT",
   "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/preset-built-in#readme",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/renderer-react#readme",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-webpack": "4.0.0-alpha.1",
-    "@umijs/core": "4.0.0-alpha.1",
-    "@umijs/renderer-react": "4.0.0-alpha.1",
-    "@umijs/utils": "4.0.0-alpha.1"
-  }
+    "history": "5.0.1",
+    "react-router-dom": "6.0.0-beta.6"
+  },
+  "devDependencies": {
+    "react": "18.0.0-alpha-f2c381131-20211004",
+    "react-dom": "18.0.0-alpha-f2c381131-20211004"
+  },
+  "peerDependencies": {
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
+  },
+  "sideEffects": false
 }

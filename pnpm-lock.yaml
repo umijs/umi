@@ -455,11 +455,26 @@ importers:
     specifiers:
       '@umijs/bundler-webpack': 4.0.0-alpha.1
       '@umijs/core': 4.0.0-alpha.1
+      '@umijs/renderer-react': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
     dependencies:
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
+      '@umijs/renderer-react': link:../renderer-react
       '@umijs/utils': link:../utils
+
+  packages/renderer-react:
+    specifiers:
+      history: 5.0.1
+      react: 18.0.0-alpha-f2c381131-20211004
+      react-dom: 18.0.0-alpha-f2c381131-20211004
+      react-router-dom: 6.0.0-beta.6
+    dependencies:
+      history: 5.0.1
+      react-router-dom: 6.0.0-beta.6_291a957f278f7aa26ef530933d3fb2a8
+    devDependencies:
+      react: 18.0.0-alpha-f2c381131-20211004
+      react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
 
   packages/umi:
     specifiers:
@@ -478,6 +493,7 @@ importers:
       '@types/cross-spawn': 6.0.2
       '@types/debug': 4.1.7
       '@types/lodash': 4.14.175
+      '@types/mustache': 4.1.2
       '@types/rimraf': 3.0.2
       '@types/semver': 7.3.8
       address: 1.1.2
@@ -492,6 +508,7 @@ importers:
       globby: 11.0.4
       import-lazy: 4.0.0
       lodash: 4.17.21
+      mustache: 4.2.0
       pkg-up: 3.1.0
       portfinder: 1.0.28
       resolve: 1.20.0
@@ -506,6 +523,7 @@ importers:
       '@types/cross-spawn': 6.0.2
       '@types/debug': 4.1.7
       '@types/lodash': 4.14.175
+      '@types/mustache': 4.1.2
       '@types/rimraf': 3.0.2
       '@types/semver': 7.3.8
       address: 1.1.2
@@ -518,6 +536,7 @@ importers:
       globby: 11.0.4
       import-lazy: 4.0.0
       lodash: 4.17.21
+      mustache: 4.2.0
       pkg-up: 3.1.0
       portfinder: 1.0.28
       resolve: 1.20.0
@@ -551,6 +570,9 @@ importers:
     specifiers: {}
 
   packages/utils/compiled/lodash:
+    specifiers: {}
+
+  packages/utils/compiled/mustache:
     specifiers: {}
 
   packages/utils/compiled/pkg-up:
@@ -2930,6 +2952,10 @@ packages:
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
+    dev: true
+
+  /@types/mustache/4.1.2:
+    resolution: {integrity: sha512-c4OVMMcyodKQ9dpwBwh3ofK9P6U9ZktKU9S+p33UqwMNN1vlv2P0zJZUScTshnx7OEoIIRcCFNQ904sYxZz8kg==}
     dev: true
 
   /@types/node-fetch/2.5.12:
@@ -5495,6 +5521,12 @@ packages:
       minimalistic-assert: 1.0.1
     dev: false
 
+  /history/5.0.1:
+    resolution: {integrity: sha512-5qC/tFUKfVci5kzgRxZxN5Mf1CV8NmJx9ByaPX0YTLx5Vz3Svh7NYp6eA4CpDq4iA9D0C1t8BNIfvQIrUI3mVw==}
+    dependencies:
+      '@babel/runtime': 7.15.4
+    dev: false
+
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=}
     dependencies:
@@ -6936,6 +6968,11 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: true
 
+  /mustache/4.2.0:
+    resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
+    hasBin: true
+    dev: true
+
   /nanoid/3.1.25:
     resolution: {integrity: sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -8229,6 +8266,17 @@ packages:
       unpipe: 1.0.0
     dev: true
 
+  /react-dom/18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635:
+    resolution: {integrity: sha512-5iYL8W9ySJmn+MtXKOgxD4LoxHaZ0tSM+cjc5966SHFhJxEjKgXPr6X6NuSEbK5OQ8GSVtEJlDE9BmZ1monBWA==}
+    peerDependencies:
+      react: 18.0.0-alpha-f2c381131-20211004
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react: 18.0.0-alpha-f2c381131-20211004
+      scheduler: 0.21.0-alpha-f2c381131-20211004
+    dev: true
+
   /react-dom/18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387:
     resolution: {integrity: sha512-TC5tvZF9sspBjxETtTD7bKkc72drM9BIQvDI0GnSxIj4VKzq1i1aAJPZSdSKPOZ1kgqRrXWRFF5YTcgzOIC/Vw==}
     peerDependencies:
@@ -8252,6 +8300,37 @@ packages:
     resolution: {integrity: sha512-PgidR3wST3dDYKr6b4pJoqQFpPGNKDSCDx4cZoshjXipw3LzO7mG1My2pwEzz2JVkF+inx3xRpDeQLFQGH/hsQ==}
     engines: {node: '>=0.10.0'}
     dev: false
+
+  /react-router-dom/6.0.0-beta.6_291a957f278f7aa26ef530933d3fb2a8:
+    resolution: {integrity: sha512-8pca4/YgQi+azEoY4KtfQMuhkIgRurmqa+mBXIICZRp71nPQX/x1lAnTw6Q2/J5dFu2rIRx1V+HA4hZ1AV0x2Q==}
+    peerDependencies:
+      history: '>=5'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      history: 5.0.1
+      react: 18.0.0-alpha-f2c381131-20211004
+      react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
+      react-router: 6.0.0-beta.6_a226d4b6d4a1b54dc3fde166c351e89c
+    dev: false
+
+  /react-router/6.0.0-beta.6_a226d4b6d4a1b54dc3fde166c351e89c:
+    resolution: {integrity: sha512-wuwkFWb464LwWcGuO75kYfzWPE9f5Wgj9/cRVVh8kh/IjOIDpM+8nYCs11ukMJwnwT+3pIps9t/lB9Hnk67zpw==}
+    peerDependencies:
+      history: '>=5'
+      react: '>=16.8'
+    dependencies:
+      history: 5.0.1
+      react: 18.0.0-alpha-f2c381131-20211004
+    dev: false
+
+  /react/18.0.0-alpha-f2c381131-20211004:
+    resolution: {integrity: sha512-d0t/breMQrKn968PeVs2RwNiPmQdZkJhK1OFBkZ5Veka4vfLtu0Vl+kfliaAq/a98k2ksUoF8ECDrV3fXeXIQQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: true
 
   /react/18.0.0-alpha-fd5e01c2e-20210913:
     resolution: {integrity: sha512-SWeUmHARw0qSM8LcpGzpw3UbyCTVNcJTuCHmPIvgHMvZrs8R8wwk2nil5BQ+LZ8q0iNwwU0ilkLTWIqCQ5d44w==}
@@ -8457,6 +8536,13 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       xmlchars: 2.2.0
+    dev: true
+
+  /scheduler/0.21.0-alpha-f2c381131-20211004:
+    resolution: {integrity: sha512-9IFi0sFfOCld+bgWuMjWuiIr8qmOYZx1HIUVwHZwphnnq9anXY9D2HatjT2ITZifjO1vsSy93isp3f4+vdgreA==}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
     dev: true
 
   /scheduler/0.21.0-alpha-fd5e01c2e-20210913:
