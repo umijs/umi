@@ -5,8 +5,8 @@
     "bootstrap": "esno scripts/bootstrap.ts",
     "build": "pnpm -r --filter ./packages run build && pnpm -r --filter ./packages run build",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
-    "test": "jest",
-    "up": "pnpm up --interactive --latest --recursive"
+    "dep:update": "pnpm up --interactive --latest --recursive",
+    "test": "jest"
   },
   "devDependencies": {
     "@swc/core": "^1.2.93",

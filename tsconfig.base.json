@@ -10,6 +10,7 @@
     "strict": true,
     "skipLibCheck": true,
     "target": "esnext",
+    "jsx": "react",
     "paths": {
       "@umijs/utils": ["./packages/utils"]
     },
