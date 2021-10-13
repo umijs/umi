@@ -15,7 +15,7 @@ Umi compiles files under node\_modules by default, which not only brings some be
 ```js
 export default {
   nodeModulesTransform: {
-    type:'none',
+    type: 'none',
     exclude: [],
   },
 }
