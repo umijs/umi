@@ -1,8 +1,10 @@
 import { renderClient } from '{{{ rendererPath }}}';
+import { getRoutes } from './core/routes';
 
-function render() {
+async function render() {
+  const routes = await getRoutes();
   const context = {
-    routes: [],
+    routes,
   };
   return renderClient(context);
 }
