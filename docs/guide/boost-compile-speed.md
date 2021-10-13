@@ -1,5 +1,4 @@
 ---
-translateHelp: true
 ---
 
 # How to speed up compilation
