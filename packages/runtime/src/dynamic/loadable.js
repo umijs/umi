@@ -264,6 +264,7 @@ class LoadableSubscription {
       .catch((err) => {
         this._update();
         this._clearTimeouts();
+        throw err;
       });
     this._update({});
   }
