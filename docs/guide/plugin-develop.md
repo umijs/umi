@@ -1,10 +1,7 @@
----
-translateHelp: true
----
 
-# 插件开发
+# Plug-in development
 
-在 Umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：
+In Umi, a plug-in is actually a JS module. You need to define a plug-in initialization method and export it by default. See the following example: 
 
 ```js
 export default (api) => {
@@ -12,21 +9,21 @@ export default (api) => {
 };
 ```
 
-需要注意的是，如果你的插件需要发布为 npm 包，那么你需要发布之前做编译，确保发布的代码里面是 ES5 的代码。
+It should be noted that if your plugin needs to be published as an npm package, then you need to compile it before publishing to ensure that the published code contains ES5 code.
 
-该初始化方法会收到 `api` 参数，Umi 提供给插件的接口都是通过它暴露出来的。
+The initialization method will receive the `api` parameter, through which the interface provided by Umi to the plug-in is exposed.
 
-## 插件示例
+## Plugin example
 
-以下我们通过完成一个简单的需求，来进一步了解 Umi 的插件开发
+Below we complete a simple requirement to further understand Umi's plug-in development
 
-### 需求
+### Requirement
 
-Umi 约定式路由中的表现是主路由，对应到 `index` 路由，即访问 `http://localhost:8000` 实际上访问到的页面是 `src/pages/index`，有时候我们在开发过程中会遇到，希望修改主路由的情况，比如希望路由 `/` 访问的是 `src/pages/home`。
+The performance in Umi's conventional routing is the main route, which corresponds to the `index` route, that is, accessing `http://localhost:8000`. The actually visited page during the development process is `src/pages/index`. You will encounter situations in which you want to modify the main route. For example, you want the route `/` to visit `src/pages/home`.
 
-### 初始化插件
+### Initialize the plugin
 
-你可以通过 [create-umi](https://github.com/umijs/create-umi) 直接创建一个 Umi 插件的脚手架：
+You can directly create a scaffolding of Umi plugin via [create-umi](https://github.com/umijs/create-umi):
 
 ```shell
 yarn create umi --plugin
@@ -62,17 +59,17 @@ yarn create umi --plugin
 ✨ File Generate Done
 ```
 
-### 安装 node 模块
+### Install node module
 
 ```shell
 $ yarn
 ```
 
-> 你也可以使用 npm install ，因为有编写测试，所以安装了 puppeteer，如果你安装失败，可能需要科学上网，或者使用淘宝源。
+> You can also use npm install. Because we have written tests, you have installed puppeteer. If it fail to install, you may need to go search online or use Taobao source.
 
-### Umi@3 插件命名特性
+### Umi@3 plug-in naming features
 
-在 Umi@3 中，当插件使用 `@umijs` 或者 `umi-plugin` 开头，只要安装就会被默认使用，所以如果你的插件名以上述规则命名，你就不需要在 config 文件中显式使用你的插件，如果你的插件命名不满足上述规则，那你只需要在 config 中显示使用即可。
+In Umi@3, when the plugin starts with `@umijs` or `umi-plugin`, it will be used by default as long as it is installed, so if your plugin name is named according to the above rules, you do not need to explicitly specify it in the config file to use it, if your plug-in naming does not meet the above rules, then you only need to specify the use in the config.
 
 ```ts
 import { defineConfig } from 'umi';
@@ -82,11 +79,11 @@ export default defineConfig({
 });
 ```
 
-> 此次示例中我们的插件名是 umi-plugin-main-path 。
+> In this example, our plugin name is umi-plugin-main-path.
 
-### 实战演练
+### Hands-on
 
-首先我们先看一下，初始化脚手架中的代码，如果使用这个插件，那么就会打印日志 `use plugin`，然后使用 `modifyHTML` api 在 `body` 上添加了 `h1` 的内容。更多插件 api ，请查阅[Plugins Api](/plugins/api)。
+First, let's take a look at the code in the initial scaffolding. If you use this plugin, it will print the log `use plugin`, and then use the `modifyHTML` api to add the content of `h1` to the `body`. For more plug-in api, please refer to [Plugins Api](/plugins/api).
 
 ```ts
 export default function (api: IApi) {
@@ -100,7 +97,7 @@ export default function (api: IApi) {
 }
 ```
 
-为我们的插件增加一个配置，使用 [describe](/plugins/api#describe-id-string-key-string-config--default-schema-onchange--) 注册配置。
+To add a configuration to our plugin, use [describe](/plugins/api#describe-id-string-key-string-config--default-schema-onchange--) to register the configuration.
 
 ```ts
   api.describe({
@@ -113,7 +110,7 @@ export default function (api: IApi) {
   });
 ```
 
-增加我们插件的主逻辑
+Increase the main logic of our plugin
 
 ```ts
   if (api.userConfig.mainPath) {
@@ -123,11 +120,11 @@ export default function (api: IApi) {
   }
 ```
 
-> 这里需要注意的是，我们在判断时取的是 api.userConfig，而在 api 的回调中使用的是 api.config，你可以理解为 api.userConfig 是配置中的值， api.config 是插件修改后的值，这里可以是任意插件修改。
+> It should be noted here that we use api.userConfig, and that api.config is used in the api callback. You can understand that api.userConfig is the value in the configuration, and api.config is the modified plug-in. The value of here can be any plug-in modification.
 
-在演示中使用我们的插件：
+Using our plugin demo:
 
-在 `example/.umirc.ts` 中增加配置
+Add configuration in `example/.umirc.ts` 
 
 ```ts
 import { defineConfig } from 'umi';
@@ -138,7 +135,7 @@ export default defineConfig({
 });
 ```
 
-新建 page 页面，新建 `example/pages/home.tsx`
+Create a new page in `example/pages/home.tsx`
 
 ```tsx
 import React from 'react';
@@ -151,7 +148,7 @@ export default () => (
 );
 ```
 
-查看效果
+See the result
 
 ```shell
 yarn start
@@ -165,13 +162,13 @@ Starting the development server...
   - Network: http://192.168.50.236:8000
 ```
 
-浏览器访问 `http://localhost:8000` 就可以访问到 `home` ，要访问之前的 `index` 页面，要通过 `http://localhost:8000/index`。
+In the browser visits `http://localhost:8000` and see `home`. To visit the previous `index` page, you must pass `http://localhost:8000/index`.
 
-### 为插件编写测试
+### Write tests for plugins
 
-一般 Umi 插件的测试，我们都是采用结果测试的方案，只看最终运行效果。这里我们使用的是 [`test-umi-plugin`](https://github.com/umijs/test-umi-plugin)，它也有一定的约定，指定 `fixtures` 之后，他会自动执行文件夹下的 test 文件。
+In Umi plug-in testing, we use the result test scheme and only look at the final running effect. Here we use [`test-umi-plugin`](https://github.com/umijs/test-umi-plugin), it also has certain conventions, after specifying folder `fixtures`, it will automatically execute the tests files under the folder.
 
-在 `test/fixtures/normal/.umirc.ts` 中增加配置
+Add configuration in `test/fixtures/normal/.umirc.ts`
 
 ```ts
 export default {
@@ -180,7 +177,7 @@ export default {
 }
 ```
 
-新建 page 页面，新建 `test/fixtures/normal/pages/home.tsx`
+Create a new page, in `test/fixtures/normal/pages/home.tsx`
 
 ```tsx
 import React from 'react';
@@ -193,7 +190,7 @@ export default () => (
 );
 ```
 
-修改测试用例 `test/fixtures/normal/test.ts`
+Modify test case `test/fixtures/normal/test.ts` 
 
 ```diff
 export default async function ({ page, host }) {
@@ -207,7 +204,7 @@ export default async function ({ page, host }) {
 };
 ```
 
-执行测试
+Execute test
 
 ```
 $ yarn test
@@ -226,4 +223,4 @@ Ran all test suites.
 ✨  Done in 14.01s.
 ```
 
-本次示例的完整代码在 [umi-plugin-main-path](https://github.com/alitajs/umi-plugin-main-path)。
+The complete code of this example is in [umi-plugin-main-path](https://github.com/alitajs/umi-plugin-main-path).
