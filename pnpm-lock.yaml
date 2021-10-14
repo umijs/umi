@@ -222,6 +222,7 @@ importers:
       autoprefixer: 10.3.7
       babel-loader: 8.2.2
       compression: 1.7.4
+      connect-history-api-fallback: 1.6.0
       copy-webpack-plugin: 9.0.1
       css-loader: 6.3.0
       css-minimizer-webpack-plugin: 3.1.1
@@ -273,6 +274,7 @@ importers:
       autoprefixer: 10.3.7_postcss@8.3.9
       babel-loader: 8.2.2_webpack@5.58.0
       compression: 1.7.4
+      connect-history-api-fallback: 1.6.0
       copy-webpack-plugin: 9.0.1_webpack@5.58.0
       css-loader: 6.3.0_webpack@5.58.0
       css-minimizer-webpack-plugin: 3.1.1_webpack@5.58.0
@@ -4082,6 +4084,11 @@ packages:
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    dev: true
+
+  /connect-history-api-fallback/1.6.0:
+    resolution: {integrity: sha512-e54B99q/OUoH64zYYRf3HBP5z24G38h5D3qXu23JGRoigpX5Ss4r9ZnDk3g0Z8uQC2x2lPaJ+UlWBc1ZWBWdLg==}
+    engines: {node: '>=0.8'}
     dev: true
 
   /console-browserify/1.2.0:
