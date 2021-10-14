@@ -1,0 +1,6 @@
+{
+  "name": "http-proxy-middleware",
+  "author": "Steven Chim",
+  "license": "MIT",
+  "types": "dist/index.d.ts"
+}
