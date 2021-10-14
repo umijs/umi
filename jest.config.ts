@@ -5,4 +5,5 @@ export default {
   transform: {
     '^.+\\.(ts)$': 'ts-jest',
   },
+  testTimeout: 30000,
 } as Config.InitialOptions;
