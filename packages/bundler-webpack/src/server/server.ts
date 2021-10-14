@@ -113,6 +113,14 @@ export async function createServer(opts: IOpts) {
       index: '/',
     }),
   );
+  // TODO: remove me
+  app.use((req, res, next) => {
+    if (req.path === '/umi.js' && existsSync(join(opts.cwd, 'umi.js'))) {
+      res.send(readFileSync(join(opts.cwd, 'umi.js'), 'utf-8'));
+    } else {
+      next();
+    }
+  });
 
   // index.html
   // TODO: remove me
