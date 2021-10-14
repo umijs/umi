@@ -70,7 +70,10 @@ export class MFSU {
         new this.opts.implementor.container.ModuleFederationPlugin({
           name: '__',
           remotes: {
-            [mfName!]: `${mfName}@${REMOTE_FILE_FULL}`,
+            // TODO: support runtime public path
+            [mfName!]: `${mfName}@${
+              opts.config.output!.publicPath
+            }${REMOTE_FILE_FULL}`,
           },
         }),
         new BuildDepPlugin({
