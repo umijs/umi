@@ -1,3 +1,4 @@
+import type { Options as ProxyOptions } from '../compiled/http-proxy-middleware';
 import { Configuration } from '../compiled/webpack';
 
 export enum Env {
@@ -56,6 +57,7 @@ export interface IConfig {
   lessLoader?: { [key: string]: any };
   outputPath?: string;
   postcssLoader?: { [key: string]: any };
+  proxy?: { [key: string]: ProxyOptions };
   publicPath?: string;
   purgeCSS?: { [key: string]: any };
   sassLoader?: { [key: string]: any };

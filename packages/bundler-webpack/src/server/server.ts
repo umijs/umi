@@ -1,4 +1,5 @@
 import express from '@umijs/bundler-webpack/compiled/express';
+import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
@@ -22,6 +23,7 @@ interface IOpts {
 
 export async function createServer(opts: IOpts) {
   const { webpackConfig, userConfig } = opts;
+  const { proxy } = userConfig;
   const app = express();
 
   // compression
@@ -98,7 +100,11 @@ export async function createServer(opts: IOpts) {
 
   // mock
   // proxy
-
+  if (proxy) {
+    Object.keys(proxy).forEach((key) => {
+      app.use(key, createProxyMiddleware(proxy[key]));
+    });
+  }
   // after middlewares
   (opts.afterMiddlewares || []).forEach((m) => app.use(m));
 
