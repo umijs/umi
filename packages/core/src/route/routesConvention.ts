@@ -9,6 +9,7 @@ import {
   isRouteModuleFile,
 } from './utils';
 
+// opts.base: path of pages
 export function getConventionRoutes(opts: { base: string }) {
   const files: { [routeId: string]: string } = {};
   visitFiles({

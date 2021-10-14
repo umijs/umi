@@ -54,6 +54,7 @@ if (command === 'build') {
       await dev({
         config,
         cwd,
+        port: process.env.PORT as number | undefined,
         entry: {
           [getEntryKey(entry)]: entry,
         },

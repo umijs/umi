@@ -1,4 +1,7 @@
 
 export async function getRoutes() {
-  return [];
+  return {
+    routes: {{{ routes }}},
+    routeComponents: {{{ routeComponents }}},
+  };
 }
