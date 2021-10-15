@@ -1,5 +1,6 @@
+import { mergeConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { logger } from '@umijs/utils';
+import configTransformer from './transformer';
 
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 import type { Env, IConfig } from '../types';
@@ -12,15 +13,16 @@ interface IOpts {
 }
 
 export async function getConfig(opts: IOpts): Promise<ViteInlineConfig> {
-  logger.info(opts.env);
+  const viteConfigFromUserConfig = configTransformer(opts.userConfig);
 
   // TODO:
-  // umi config transform
-  // css pre-processor config
   // babel config
   // code minify config
 
-  return {
-    plugins: [react()],
-  };
+  return mergeConfig(
+    viteConfigFromUserConfig,
+    {
+      plugins: [react()],
+    },
+  );
 }
