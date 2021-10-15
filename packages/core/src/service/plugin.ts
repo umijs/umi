@@ -17,6 +17,14 @@ interface IOpts {
   type: PluginType;
 }
 
+export interface IPluginObject {
+  id: string;
+  key: string;
+  apply?: Function;
+  config?: IPluginConfig;
+  enableBy?: EnableBy | (() => boolean);
+}
+
 export class Plugin {
   private cwd: string;
   type: PluginType;

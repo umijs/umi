@@ -99,11 +99,23 @@ export class PluginAPI {
       `api.registerPlugins() failed, it should only be used in registering stage.`,
     );
     const mappedPlugins = plugins.map((plugin) => {
-      return new Plugin({
-        path: plugin,
-        cwd: this.service.cwd,
-        type: PluginType.plugin,
-      });
+      if (lodash.isPlainObject(plugin)) {
+        assert(
+          plugin.id && plugin.key,
+          `Invalid plugin object, id and key must supplied.`,
+        );
+        plugin.type = PluginType.plugin;
+        plugin.enableBy = plugin.enableBy || EnableBy.register;
+        plugin.apply = plugin.apply || (() => () => {});
+        plugin.config = plugin.config || {};
+        return plugin;
+      } else {
+        return new Plugin({
+          path: plugin,
+          cwd: this.service.cwd,
+          type: PluginType.plugin,
+        });
+      }
     });
     if (this.service.stage === ServiceStage.initPresets) {
       source.push(...mappedPlugins);

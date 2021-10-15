@@ -1,5 +1,11 @@
+// import { Outlet } from '@umijs/renderer-react';
 import React from 'react';
 
 export default () => {
-  return <h2>users layout</h2>;
+  return (
+    <div>
+      <h2>users layout</h2>
+      {/*<Outlet />*/}
+    </div>
+  );
 };
