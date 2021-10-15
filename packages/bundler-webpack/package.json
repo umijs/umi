@@ -45,6 +45,7 @@
   "devDependencies": {
     "@svgr/webpack": "5.5.0",
     "@types/express": "4.17.13",
+    "@types/hapi__joi": "17.1.7",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.2.0",
     "autoprefixer": "10.3.7",
