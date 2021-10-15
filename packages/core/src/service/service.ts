@@ -203,6 +203,14 @@ export class Service {
     while (plugins.length) {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
     }
+    // collect configSchemas and configDefaults
+    for (const id of Object.keys(this.plugins)) {
+      const { config, key } = this.plugins[id];
+      if (config.schema) this.configSchemas[key] = config.schema;
+      if (config.default !== undefined) {
+        this.configDefaults[key] = config.default;
+      }
+    }
     // setup api.config from modifyConfig and modifyDefaultConfig
     this.stage = ServiceStage.resolveConfig;
     const config = await this.applyPlugins({
@@ -398,4 +406,6 @@ export interface IServicePluginAPI {
   ConfigChangeType: typeof ConfigChangeType;
   EnableBy: typeof EnableBy;
   ServiceStage: typeof ServiceStage;
+
+  registerPlugins: (plugins: (Plugin | {})[]) => void;
 }

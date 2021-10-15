@@ -1,11 +1,12 @@
 export default () => {
   return {
     plugins: [
-      //
+      // registerMethods
       require.resolve('./registerMethods'),
 
-      // tmp files
-      require.resolve('./tmpFiles/tmpFiles'),
+      // features
+      require.resolve('./features/tmpFiles/tmpFiles'),
+      require.resolve('./features/configPlugins/configPlugins'),
 
       // commands
       require.resolve('./commands/build'),

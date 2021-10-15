@@ -1,9 +1,18 @@
 import { join } from 'path';
-import { TEMPLATES_DIR } from '../constants';
-import { IApi } from '../types';
+import { TEMPLATES_DIR } from '../../constants';
+import { IApi } from '../../types';
 import { getRouteComponents, getRoutes } from './routes';
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'tmpFiles',
+    config: {
+      schema(joi) {
+        return joi.boolean();
+      },
+    },
+  });
+
   api.onGenerateFiles(async () => {
     // umi.ts
     api.writeTmpFile({
