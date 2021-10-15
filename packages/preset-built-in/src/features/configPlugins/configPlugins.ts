@@ -1,3 +1,4 @@
+import { getSchemas } from '@umijs/bundler-webpack';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -8,6 +9,7 @@ export default (api: IApi) => {
     },
   };
 
+  const schemas = getSchemas();
   for (const key of Object.keys(configDefaults)) {
     api.registerPlugins([
       {
@@ -15,7 +17,7 @@ export default (api: IApi) => {
         key: key,
         config: {
           default: configDefaults[key],
-          schema: (joi) => joi.any(),
+          schema: schemas[key] || ((joi) => joi.any()),
         },
       },
     ]);
