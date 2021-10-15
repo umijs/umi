@@ -1,7 +1,5 @@
 import { Location } from 'history';
 import React from 'react';
-// @ts-ignore
-import dynamic from 'react-loadable';
 import { Navigator, Router, useRoutes } from 'react-router-dom';
 import { IRoute, IRoutesById } from './types';
 
@@ -47,7 +45,6 @@ export function App(props: {
   routes: IRoutesById;
   routeComponents: Record<string, any>;
 }) {
-  console.log('app props', props);
   const clientRoutes = React.useMemo(() => {
     return createClientRoutes({
       routesById: props.routes,
@@ -91,12 +88,14 @@ function Loading() {
 
 export function RouteComponent(props: { id: string }) {
   const loader = useAppContext().routeComponents[props.id];
-  const RouteComponent = dynamic({ loader, loading: Loading });
+  const RouteComponent = React.lazy(loader);
 
+  // ref: https://reactjs.org/docs/code-splitting.html
+  // TODO: replace with https://github.com/gregberge/loadable-components when we support ssr
   return (
-    <div>
+    <React.Suspense fallback={<Loading />}>
       <h2>route: {props.id}</h2>
       <RouteComponent />
-    </div>
+    </React.Suspense>
   );
 }

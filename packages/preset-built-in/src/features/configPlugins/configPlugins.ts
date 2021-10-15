@@ -1,13 +1,10 @@
-import { dirname } from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
   const configDefaults: Record<string, any> = {
     alias: {
       umi: process.env.UMI_DIR,
-      '@umijs/renderer-react': dirname(
-        require.resolve('@umijs/renderer-react/package'),
-      ),
+      '@umijs/renderer-react': require.resolve('@umijs/renderer-react'),
     },
   };
 
