@@ -7,7 +7,6 @@ import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 console.log('[webpack] connecting...');
 
 let pingTimer: NodeJS.Timer | null = null;
-let reConnectTimer: NodeJS.Timer | null = null;
 const host = location.host;
 const wsUrl = `ws://${host}`;
 let isFirstCompilation = true;
@@ -15,7 +14,38 @@ let mostRecentCompilationHash: string | null = null;
 let hasCompileErrors = false;
 let hadRuntimeError = false;
 
-initWebSocket(wsUrl);
+const socket = new WebSocket(wsUrl, 'webpack-hmr');
+
+socket.addEventListener('message', async ({ data }) => {
+  data = JSON.parse(data);
+  if (data.type === 'connected') {
+    console.log(`[webpack] connected.`);
+    // proxy(nginx, docker) hmr ws maybe caused timeout,
+    // so send ping package let ws keep alive.
+    pingTimer = setInterval(() => socket.send('ping'), 30000);
+  } else {
+    handleMessage(data).catch(console.error);
+  }
+});
+
+async function waitForSuccessfulPing(ms = 1000) {
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      await fetch(`/__umi_ping`);
+      break;
+    } catch (e) {
+      await new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  }
+}
+
+socket.addEventListener('close', async () => {
+  if (pingTimer) clearInterval(pingTimer);
+  console.info('[webpack] Dev server disconnected. Polling for restart...');
+  await waitForSuccessfulPing();
+  location.reload();
+});
 
 ErrorOverlay.startReportingRuntimeErrors({
   onError: function () {
@@ -30,46 +60,6 @@ if (module.hot && typeof module.hot.dispose === 'function') {
   module.hot.dispose(function () {
     // TODO: why do we need this?
     ErrorOverlay.stopReportingRuntimeErrors();
-  });
-}
-
-// auto reconnect
-function autoReconnect() {
-  if (reConnectTimer) {
-    clearTimeout(reConnectTimer);
-    reConnectTimer = null;
-  }
-  console.info("[webpack] Reconnection will be attempted in 3 seconds.");
-  reConnectTimer = setTimeout(() => {
-    console.info("[webpack] Auto reconnecting...");
-    initWebSocket(wsUrl);
-  }, 3000);
-}
-
-// initWebSocket
-function initWebSocket(url: string) {
-  const socket = new WebSocket(url, 'webpack-hmr');
-
-  socket.addEventListener('message', async ({ data }) => {
-    data = JSON.parse(data);
-    if (data.type === 'connected') {
-      console.log(`[webpack] connected.`);
-      // proxy(nginx, docker) hmr ws maybe caused timeout,
-      // so send ping package let ws keep alive.
-      pingTimer = setInterval(() => socket.send('ping'), 30000);
-    } else {
-      handleMessage(data).catch(console.error);
-    }
-  });
-
-  socket.addEventListener('close', () => {
-    if (pingTimer) clearInterval(pingTimer);
-    if (typeof console !== 'undefined' && typeof console.info === 'function') {
-      console.info(
-        'The development server has disconnected.',
-      );
-    }
-    autoReconnect();
   });
 }
 
@@ -110,7 +100,7 @@ function handleWarnings(warnings: string[]) {
       if (i === 5) {
         console.warn(
           'There were more warnings in other files.\n' +
-          'You can find a complete log in the terminal.',
+            'You can find a complete log in the terminal.',
         );
         break;
       }
