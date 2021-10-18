@@ -9,7 +9,8 @@ const MAPPING = {
   outputPath: 'build.outputDir',
   publicPath: 'base',
   targets: 'target',
-  terserOptions: 'build.terserOptions',
+  jsMinifier: 'build.minify',
+  jsMinifierOptions: 'build.terserOptions',
 };
 
 /**
