@@ -68,7 +68,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       ? userConfig.devtool === false
         ? false
         : userConfig.devtool || DEFAULT_DEVTOOL
-      : userConfig.devtool,
+      : userConfig.devtool!,
   );
 
   // output
