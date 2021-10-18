@@ -1,5 +1,6 @@
 import type { Options as ProxyOptions } from '../compiled/http-proxy-middleware';
 import { Configuration } from '../compiled/webpack';
+import Config from '../compiled/webpack-5-chain';
 
 export enum Env {
   development = 'development',
@@ -33,8 +34,7 @@ export interface ICopy {
 }
 
 type WebpackConfig = Required<Configuration>;
-type IBabelPlugin = string | [string, { [key: string]: any }];
-
+type IBabelPlugin = Function | string | [string, { [key: string]: any }];
 export interface IConfig {
   alias?: Record<string, string>;
   chainWebpack?: Function;
@@ -45,12 +45,12 @@ export interface IConfig {
   cssMinifierOptions?: { [key: string]: any };
   define?: { [key: string]: any };
   depTranspiler?: Transpiler;
-  devtool?: any;
+  devtool?: Config.DevTool;
   externals?: WebpackConfig['externals'];
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   extraPostCSSPlugins?: any[];
-  hash?: any;
+  hash?: boolean;
   ignoreMomentLocale?: boolean;
   jsMinifier?: JSMinifier;
   jsMinifierOptions?: { [key: string]: any };
