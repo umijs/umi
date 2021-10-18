@@ -3,6 +3,7 @@ import rename from './rename';
 import devServer from './devServer';
 import css from './css';
 import rollup from './rollup';
+import babel from './babel';
 
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
@@ -21,7 +22,7 @@ export type IConfigProcessor = (
  * config transformer
  */
 export default (userConfig: ITmpUserConfig): ViteInlineConfig => {
-  const transformers = [rename, devServer, css, rollup];
+  const transformers = [rename, devServer, css, rollup, babel];
 
   return transformers.reduce<ViteInlineConfig>(
     (memo, transformer) =>
