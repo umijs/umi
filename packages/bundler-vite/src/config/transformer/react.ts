@@ -3,7 +3,7 @@ import reactPlugin from '@vitejs/plugin-react';
 import type { IConfigProcessor } from '.';
 
 /**
- * transform umi babel to vite babel
+ * enable react plugin & transform umi babel to vite babel
  */
 export default (function react(userConfig) {
   const config: ReturnType<IConfigProcessor> = { plugins: [] };
