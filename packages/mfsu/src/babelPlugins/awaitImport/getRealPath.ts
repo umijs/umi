@@ -1,10 +1,12 @@
 import { existsSync } from 'fs';
-import { dirname, extname, join } from 'path';
+import { dirname, extname, isAbsolute, join } from 'path';
 
 const FILE_EXT_NAMES = ['.tsx', '.ts', '.jsx', '.mjs', '.js'];
 
 export function getRealPath(opts: { file: string; dep: string }) {
-  const target = join(dirname(opts.file), opts.dep);
+  const target = isAbsolute(opts.dep)
+    ? opts.dep
+    : join(dirname(opts.file), opts.dep);
   if (FILE_EXT_NAMES.includes(extname(target))) {
     return target;
   } else {
