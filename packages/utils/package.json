@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "chokidar": "3.5.2",
-    "clipboardy": "3.0.0"
+    "clipboardy": "2.3.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "6.0.2",
