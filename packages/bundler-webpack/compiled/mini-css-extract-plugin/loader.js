@@ -87,7 +87,7 @@ function pitch(request) {
       // eslint-disable-next-line no-underscore-dangle
       const exports = originalExports.__esModule ? originalExports.default : originalExports;
       namedExport = // eslint-disable-next-line no-underscore-dangle
-      originalExports.__esModule && !("locals" in originalExports.default);
+      originalExports.__esModule && (!originalExports.default || !("locals" in originalExports.default));
 
       if (namedExport) {
         Object.keys(originalExports).forEach(key => {
@@ -108,7 +108,7 @@ function pitch(request) {
       if (!Array.isArray(exports)) {
         dependencies = [[null, exports]];
       } else {
-        dependencies = exports.map(([id, content, media, sourceMap]) => {
+        dependencies = exports.map(([id, content, media, sourceMap, supports, layer]) => {
           let identifier = id;
           let context;
 
@@ -128,6 +128,8 @@ function pitch(request) {
             context,
             content: Buffer.from(content),
             media,
+            supports,
+            layer,
             sourceMap: sourceMap ? Buffer.from(JSON.stringify(sourceMap)) : // eslint-disable-next-line no-undefined
             undefined
           };
@@ -164,15 +166,15 @@ function pitch(request) {
     publicPath = _utils.AUTO_PUBLIC_PATH;
   }
 
-  if (optionsFromPlugin.experimentalUseImportModule) {
+  if (typeof optionsFromPlugin.experimentalUseImportModule === "undefined" && typeof this.importModule === "function" || optionsFromPlugin.experimentalUseImportModule) {
     if (!this.importModule) {
-      callback(new Error("You are using experimentalUseImportModule but 'this.importModule' is not available in loader context. You need to have at least webpack 5.33.2."));
+      callback(new Error("You are using 'experimentalUseImportModule' but 'this.importModule' is not available in loader context. You need to have at least webpack 5.33.2."));
       return;
     }
 
     const isAbsolutePublicPath = /^[a-zA-Z][a-zA-Z\d+\-.]*?:/.test(publicPath);
     const publicPathForExtract = isAbsolutePublicPath ? publicPath : `${_utils.ABSOLUTE_PUBLIC_PATH}${publicPath.replace(/\./g, _utils.SINGLE_DOT_PATH_SEGMENT)}`;
-    this.importModule(`${this.resourcePath}.webpack[javascript/auto]!=!${request}`, {
+    this.importModule(`${this.resourcePath}.webpack[javascript/auto]!=!!!${request}`, {
       layer: options.layer,
       publicPath: publicPathForExtract
     }, (error, exports) => {
@@ -308,4 +310,6 @@ function pitch(request) {
 } // eslint-disable-next-line func-names
 
 
-function _default() {}
+function _default(content) {
+  console.log(content);
+}

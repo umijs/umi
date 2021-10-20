@@ -631,6 +631,7 @@ declare interface CacheGroupSource {
 	chunksFilter?: (chunk: Chunk) => boolean;
 	enforce?: boolean;
 	minSize: SplitChunksSizes;
+	minSizeReduction: SplitChunksSizes;
 	minRemainingSize: SplitChunksSizes;
 	enforceSizeThreshold: SplitChunksSizes;
 	maxAsyncSize: SplitChunksSizes;
@@ -757,17 +758,6 @@ declare class Chunk {
 		filterFn?: (c: Chunk, chunkGraph: ChunkGraph) => boolean
 	): Record<string | number, Record<string, (string | number)[]>>;
 }
-declare abstract class ChunkCombination {
-	debugId: number;
-	size: number;
-	readonly chunksIterable: Iterable<Chunk>;
-	with(chunk: Chunk): ChunkCombination;
-	without(chunk: Chunk): ChunkCombination;
-	withAll(other?: any): any;
-	hasSharedChunks(other?: any): boolean;
-	isSubset(other: ChunkCombination): boolean;
-	getChunks(): Chunk[];
-}
 declare class ChunkGraph {
 	constructor(moduleGraph: ModuleGraph, hashFunction?: string | typeof Hash);
 	moduleGraph: ModuleGraph;
@@ -785,7 +775,6 @@ declare class ChunkGraph {
 	isModuleInChunk(module: Module, chunk: Chunk): boolean;
 	isModuleInChunkGroup(module: Module, chunkGroup: ChunkGroup): boolean;
 	isEntryModule(module: Module): boolean;
-	getModuleChunkCombination(module: Module): ChunkCombination;
 	getModuleChunksIterable(module: Module): Iterable<Chunk>;
 	getOrderedModuleChunksIterable(
 		module: Module,
@@ -1907,8 +1896,8 @@ declare class Compiler {
 	recordsInputPath: null | string;
 	recordsOutputPath: null | string;
 	records: object;
-	managedPaths: Set<string>;
-	immutablePaths: Set<string>;
+	managedPaths: Set<string | RegExp>;
+	immutablePaths: Set<string | RegExp>;
 	modifiedFiles: ReadonlySet<string>;
 	removedFiles: ReadonlySet<string>;
 	fileTimestamps: ReadonlyMap<string, null | FileSystemInfoEntry | "ignore">;
@@ -3301,11 +3290,12 @@ declare interface ExecuteModuleResult {
 	missingDependencies: LazySet<string>;
 	buildDependencies: LazySet<string>;
 }
+type Experiments = ExperimentsCommon & ExperimentsExtra;
 
 /**
  * Enables/Disables experiments (experimental features with relax SemVer compatibility).
  */
-declare interface Experiments {
+declare interface ExperimentsCommon {
 	/**
 	 * Allow module type 'asset' to generate assets.
 	 */
@@ -3315,11 +3305,6 @@ declare interface Experiments {
 	 * Support WebAssembly as asynchronous EcmaScript Module.
 	 */
 	asyncWebAssembly?: boolean;
-
-	/**
-	 * Build http(s): urls using a lockfile and resource content cache.
-	 */
-	buildHttp?: boolean | HttpUriOptions;
 
 	/**
 	 * Enable additional in memory caching of modules that are unchanged and reference only unchanged modules.
@@ -3337,40 +3322,6 @@ declare interface Experiments {
 	layers?: boolean;
 
 	/**
-	 * Compile entrypoints and import()s only when they are accessed.
-	 */
-	lazyCompilation?:
-		| boolean
-		| {
-				/**
-				 * A custom backend.
-				 */
-				backend?:
-					| ((
-							compiler: Compiler,
-							client: string,
-							callback: (err?: Error, api?: any) => void
-					  ) => void)
-					| ((compiler: Compiler, client: string) => Promise<any>);
-				/**
-				 * A custom client.
-				 */
-				client?: string;
-				/**
-				 * Enable/disable lazy compilation for entries.
-				 */
-				entries?: boolean;
-				/**
-				 * Enable/disable lazy compilation for import() modules.
-				 */
-				imports?: boolean;
-				/**
-				 * Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
-				 */
-				test?: string | RegExp | ((module: Module) => boolean);
-		  };
-
-	/**
 	 * Allow output javascript files as module source type.
 	 */
 	outputModule?: boolean;
@@ -3384,6 +3335,37 @@ declare interface Experiments {
 	 * Allow using top-level-await in EcmaScript Modules.
 	 */
 	topLevelAwait?: boolean;
+}
+
+/**
+ * Enables/Disables experiments (experimental features with relax SemVer compatibility).
+ */
+declare interface ExperimentsExtra {
+	/**
+	 * Build http(s): urls using a lockfile and resource content cache.
+	 */
+	buildHttp?: HttpUriOptions | (string | RegExp | ((uri: string) => boolean))[];
+
+	/**
+	 * Compile entrypoints and import()s only when they are accessed.
+	 */
+	lazyCompilation?: boolean | LazyCompilationOptions;
+}
+type ExperimentsNormalized = ExperimentsCommon & ExperimentsNormalizedExtra;
+
+/**
+ * Enables/Disables experiments (experimental features with relax SemVer compatibility).
+ */
+declare interface ExperimentsNormalizedExtra {
+	/**
+	 * Build http(s): urls using a lockfile and resource content cache.
+	 */
+	buildHttp?: HttpUriOptions;
+
+	/**
+	 * Compile entrypoints and import()s only when they are accessed.
+	 */
+	lazyCompilation?: LazyCompilationOptions;
 }
 declare abstract class ExportInfo {
 	name: string;
@@ -3945,12 +3927,12 @@ declare interface FileCacheOptions {
 	/**
 	 * List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
 	 */
-	immutablePaths?: string[];
+	immutablePaths?: (string | RegExp)[];
 
 	/**
 	 * List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
 	 */
-	managedPaths?: string[];
+	managedPaths?: (string | RegExp)[];
 
 	/**
 	 * Time for which unused cache entries stay in the filesystem cache at minimum (in milliseconds).
@@ -4063,10 +4045,12 @@ declare abstract class FileSystemInfo {
 	contextTshQueue: AsyncQueue<string, string, null | ContextTimestampAndHash>;
 	managedItemQueue: AsyncQueue<string, string, null | string>;
 	managedItemDirectoryQueue: AsyncQueue<string, string, Set<string>>;
-	managedPaths: string[];
+	managedPaths: (string | RegExp)[];
 	managedPathsWithSlash: string[];
-	immutablePaths: string[];
+	managedPathsRegExps: RegExp[];
+	immutablePaths: (string | RegExp)[];
 	immutablePathsWithSlash: string[];
+	immutablePathsRegExps: RegExp[];
 	logStatistics(): void;
 	clear(): void;
 	addFileTimestamps(
@@ -4393,6 +4377,11 @@ declare class HotUpdateChunk extends Chunk {
  */
 declare interface HttpUriOptions {
 	/**
+	 * List of allowed URIs (resp. the beginning of them).
+	 */
+	allowedUris: (string | RegExp | ((uri: string) => boolean))[];
+
+	/**
 	 * Location where resource content is stored for lockfile entries. It's also possible to disable storing by passing false.
 	 */
 	cacheLocation?: string | false;
@@ -4413,27 +4402,7 @@ declare interface HttpUriOptions {
 	upgrade?: boolean;
 }
 declare class HttpUriPlugin {
-	constructor(options?: {
-		/**
-		 * Location where resource content is stored for lockfile entries. It's also possible to disable storing by passing false.
-		 */
-		cacheLocation?: string | false;
-		/**
-		 * When set, anything that would lead to a modification of the lockfile or any resource content, will result in an error.
-		 */
-		frozen?: boolean;
-		/**
-		 * Location of the lockfile.
-		 */
-		lockfileLocation?: string;
-		/**
-		 * When set, resources of existing lockfile entries will be fetched and entries will be upgraded when resource content has changed.
-		 */
-		upgrade?: boolean;
-		hashFunction?: string | typeof Hash;
-		hashDigest?: string;
-		hashDigestLength?: number;
-	});
+	constructor(options: HttpUriOptions);
 
 	/**
 	 * Apply the plugin
@@ -5823,6 +5792,42 @@ declare interface KnownStatsProfile {
 	additionalIntegration: number;
 	factory: number;
 	dependencies: number;
+}
+
+/**
+ * Options for compiling entrypoints and import()s only when they are accessed.
+ */
+declare interface LazyCompilationOptions {
+	/**
+	 * A custom backend.
+	 */
+	backend?:
+		| ((
+				compiler: Compiler,
+				client: string,
+				callback: (err?: Error, api?: any) => void
+		  ) => void)
+		| ((compiler: Compiler, client: string) => Promise<any>);
+
+	/**
+	 * A custom client.
+	 */
+	client?: string;
+
+	/**
+	 * Enable/disable lazy compilation for entries.
+	 */
+	entries?: boolean;
+
+	/**
+	 * Enable/disable lazy compilation for import() modules.
+	 */
+	imports?: boolean;
+
+	/**
+	 * Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
+	 */
+	test?: string | RegExp | ((module: Module) => boolean);
 }
 declare class LazySet<T> {
 	constructor(iterable?: Iterable<T>);
@@ -7364,12 +7369,6 @@ declare class NormalModule extends Module {
 		sourceMap?: any,
 		associatedObjectForCache?: Object
 	): Source;
-	createLoaderContext(
-		resolver: ResolverWithOptions,
-		options: WebpackOptionsNormalized,
-		compilation: Compilation,
-		fs: InputFileSystem
-	): NormalModuleLoaderContext<any>;
 	getCurrentLoader(loaderContext?: any, index?: any): null | LoaderItem;
 	createSource(
 		context: string,
@@ -7377,13 +7376,6 @@ declare class NormalModule extends Module {
 		sourceMap?: any,
 		associatedObjectForCache?: Object
 	): Source;
-	doBuild(
-		options: WebpackOptionsNormalized,
-		compilation: Compilation,
-		resolver: ResolverWithOptions,
-		fs: InputFileSystem,
-		callback: (arg0?: WebpackError) => void
-	): void;
 	markModuleAsErrored(error: WebpackError): void;
 	applyNoParseRule(rule?: any, content?: any): any;
 	shouldPreventParsing(noParseRule?: any, request?: any): any;
@@ -7395,6 +7387,8 @@ declare class NormalModule extends Module {
 declare interface NormalModuleCompilationHooks {
 	loader: SyncHook<[object, NormalModule]>;
 	beforeLoaders: SyncHook<[LoaderItem[], NormalModule, object]>;
+	beforeParse: SyncHook<[NormalModule]>;
+	beforeSnapshot: SyncHook<[NormalModule]>;
 	readResourceForScheme: HookMap<
 		AsyncSeriesBailHook<[string, NormalModule], string | Buffer>
 	>;
@@ -7830,6 +7824,11 @@ declare interface OptimizationSplitChunksCacheGroup {
 	minSize?: number | { [index: string]: number };
 
 	/**
+	 * Minimum size reduction due to the created chunk.
+	 */
+	minSizeReduction?: number | { [index: string]: number };
+
+	/**
 	 * Give chunks for this cache group a name (chunks with equal name are merged).
 	 */
 	name?: string | false | Function;
@@ -7920,6 +7919,10 @@ declare interface OptimizationSplitChunksOptions {
 		 * Minimal size for the created chunk.
 		 */
 		minSize?: number | { [index: string]: number };
+		/**
+		 * Minimum size reduction due to the created chunk.
+		 */
+		minSizeReduction?: number | { [index: string]: number };
 	};
 
 	/**
@@ -7971,6 +7974,11 @@ declare interface OptimizationSplitChunksOptions {
 	 * Minimal size for the created chunks.
 	 */
 	minSize?: number | { [index: string]: number };
+
+	/**
+	 * Minimum size reduction due to the created chunk.
+	 */
+	minSizeReduction?: number | { [index: string]: number };
 
 	/**
 	 * Give chunks created a name (chunks with equal name are merged).
@@ -10460,12 +10468,12 @@ declare class SizeOnlySource extends Source {
 }
 declare abstract class Snapshot {
 	startTime?: number;
-	fileTimestamps?: Map<string, FileSystemInfoEntry>;
-	fileHashes?: Map<string, string>;
-	fileTshs?: Map<string, string | TimestampAndHash>;
-	contextTimestamps?: Map<string, ResolvedContextFileSystemInfoEntry>;
-	contextHashes?: Map<string, string>;
-	contextTshs?: Map<string, ResolvedContextTimestampAndHash>;
+	fileTimestamps?: Map<string, null | FileSystemInfoEntry>;
+	fileHashes?: Map<string, null | string>;
+	fileTshs?: Map<string, null | string | TimestampAndHash>;
+	contextTimestamps?: Map<string, null | ResolvedContextFileSystemInfoEntry>;
+	contextHashes?: Map<string, null | string>;
+	contextTshs?: Map<string, null | ResolvedContextTimestampAndHash>;
 	missingExistence?: Map<string, boolean>;
 	managedItemInfo?: Map<string, string>;
 	managedFiles?: Set<string>;
@@ -10528,12 +10536,12 @@ declare interface SnapshotOptions {
 	/**
 	 * List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
 	 */
-	immutablePaths?: string[];
+	immutablePaths?: (string | RegExp)[];
 
 	/**
 	 * List of paths that are managed by a package manager and can be trusted to not be modified otherwise.
 	 */
-	managedPaths?: string[];
+	managedPaths?: (string | RegExp)[];
 
 	/**
 	 * Options for snapshotting dependencies of modules to determine if they need to be built again.
@@ -10733,6 +10741,7 @@ declare interface SplitChunksOptions {
 	chunksFilter: (chunk: Chunk) => boolean;
 	defaultSizeTypes: string[];
 	minSize: SplitChunksSizes;
+	minSizeReduction: SplitChunksSizes;
 	minRemainingSize: SplitChunksSizes;
 	enforceSizeThreshold: SplitChunksSizes;
 	maxInitialSize: SplitChunksSizes;
@@ -11858,7 +11867,7 @@ declare interface WebpackOptionsNormalized {
 	/**
 	 * Enables/Disables experiments (experimental features with relax SemVer compatibility).
 	 */
-	experiments: Experiments;
+	experiments: ExperimentsNormalized;
 
 	/**
 	 * Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
