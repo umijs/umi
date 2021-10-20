@@ -13,10 +13,15 @@ export function Browser(props: {
     historyRef.current = createBrowserHistory({ window });
   }
   const history = historyRef.current;
+  const [state, dispatch] = React.useReducer((_: any, update: any) => update, {
+    action: history.action,
+    location: history.location,
+  });
+  React.useLayoutEffect(() => history.listen(dispatch), [history]);
   return (
     <App
       navigator={history!}
-      location={history!.location}
+      location={state!.location}
       routes={props.routes}
       routeComponents={props.routeComponents}
     />
