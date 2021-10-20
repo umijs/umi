@@ -27,6 +27,7 @@ interface IOpts {
   hmr?: boolean;
   staticPathPrefix?: string;
   userConfig: IConfig;
+  analyze?: any;
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -149,7 +150,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // purgecss
   // await applyPurgeCSSWebpackPlugin(applyOpts);
   // analyzer
-  await addBundleAnalyzerPlugin(applyOpts);
+  if (opts.analyze) {
+    await addBundleAnalyzerPlugin(applyOpts);
+  }
 
   // chain webpack
   if (userConfig.chainWebpack) {

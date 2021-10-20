@@ -17,6 +17,7 @@ export async function build(opts: IOpts): Promise<void> {
     env: Env.production,
     entry: opts.entry,
     userConfig: opts.config,
+    analyze: process.env.ANALYZE,
   });
   return new Promise((resolve, reject) => {
     rimraf.sync(webpackConfig.output!.path!);

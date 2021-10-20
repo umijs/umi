@@ -8,7 +8,7 @@ import { isExternals } from './isExternals';
 
 // const UNMATCH_LIBS = ['umi', 'dumi', '@alipay/bigfish'];
 const RE_NODE_MODULES = /node_modules/;
-const RE_UMI_LOCAL_DEV = /umi(-next)?\/packages\//;
+// const RE_UMI_LOCAL_DEV = /umi(-next)?\/packages\//;
 
 export function checkMatch({
   value,
@@ -54,7 +54,7 @@ export function checkMatch({
   ) {
     isMatch = false;
   } else if (isAbsolute(value)) {
-    isMatch = RE_NODE_MODULES.test(value) || RE_UMI_LOCAL_DEV.test(value);
+    isMatch = RE_NODE_MODULES.test(value) /* || RE_UMI_LOCAL_DEV.test(value)*/;
   } else {
     const aliasedPath = getAliasedPath({
       value,

@@ -1,5 +1,5 @@
-import { Link, Outlet } from '@umijs/renderer-react';
 import React from 'react';
+import { Link, Outlet } from 'umi';
 
 export default () => {
   return (
