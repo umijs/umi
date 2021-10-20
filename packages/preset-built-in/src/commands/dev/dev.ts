@@ -37,15 +37,18 @@ PORT=8888 umi dev
       clearTmp(api.paths.absTmpPath);
 
       // generate files
-      async function generate(files?: any) {
+      async function generate(opts: { isFirstTime?: boolean; files?: any }) {
         api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
-            files: files || null,
+            files: opts.files || null,
+            isFirstTime: opts.isFirstTime,
           },
         });
       }
-      await generate();
+      await generate({
+        isFirstTime: true,
+      });
       const { absPagesPath, absSrcPath } = api.paths;
       const watcherPaths: string[] = await api.applyPlugins({
         key: 'addTmpGenerateWatcherPaths',
@@ -62,7 +65,7 @@ PORT=8888 umi dev
           onChange: createDebouncedHandler({
             timeout: 2000,
             async onChange(opts) {
-              await generate(opts.files);
+              await generate({ files: opts.files, isFirstTime: false });
             },
           }),
         });

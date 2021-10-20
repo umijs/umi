@@ -1,5 +1,6 @@
 import { winPath } from '@umijs/utils';
-import { lstatSync, readdirSync } from 'fs';
+import assert from 'assert';
+import { existsSync, lstatSync, readdirSync, statSync } from 'fs';
 import { join, relative, resolve } from 'path';
 import { defineRoutes } from './defineRoutes';
 import {
@@ -12,6 +13,10 @@ import {
 // opts.base: path of pages
 export function getConventionRoutes(opts: { base: string }) {
   const files: { [routeId: string]: string } = {};
+  assert(
+    existsSync(opts.base) && statSync(opts.base).isDirectory(),
+    `Convention routes base not found.`,
+  );
   visitFiles({
     dir: opts.base,
     visitor: (file) => {
