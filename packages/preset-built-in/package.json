@@ -30,6 +30,10 @@
     "@umijs/bundler-webpack": "4.0.0-alpha.1",
     "@umijs/core": "4.0.0-alpha.1",
     "@umijs/renderer-react": "4.0.0-alpha.1",
-    "@umijs/utils": "4.0.0-alpha.1"
+    "@umijs/utils": "4.0.0-alpha.1",
+    "react": "18.0.0-alpha-f2c381131-20211004",
+    "react-dom": "18.0.0-alpha-f2c381131-20211004",
+    "react-router": "6.0.0-beta.7",
+    "react-router-dom": "6.0.0-beta.7"
   }
 }
