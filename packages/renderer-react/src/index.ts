@@ -1,2 +1,2 @@
-export { Outlet } from 'react-router-dom';
+export { Link, Outlet } from 'react-router-dom';
 export * from './browser';

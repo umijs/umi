@@ -49,7 +49,6 @@ export function RouteComponent(props: { id: string }) {
   // TODO: replace with https://github.com/gregberge/loadable-components when we support ssr
   return (
     <React.Suspense fallback={<Loading />}>
-      <h2>route: {props.id}</h2>
       <RouteComponent />
     </React.Suspense>
   );
