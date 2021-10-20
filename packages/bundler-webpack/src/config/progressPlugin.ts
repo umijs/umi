@@ -3,6 +3,7 @@ import ProgressPlugin from '../plugins/ProgressPlugin';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
+  name?: string;
   config: Config;
   userConfig: IConfig;
   cwd: string;
@@ -10,6 +11,10 @@ interface IOpts {
 }
 
 export async function addProgressPlugin(opts: IOpts) {
-  const { config } = opts;
-  config.plugin('progress-plugin').use(ProgressPlugin, [{}]);
+  const { config, name } = opts;
+  config.plugin('progress-plugin').use(ProgressPlugin, [
+    {
+      name,
+    },
+  ]);
 }

@@ -6,7 +6,9 @@ import {
 import { logger } from '@umijs/utils';
 
 const PLUGIN_NAME = 'ProgressPlugin';
-interface IOpts {}
+interface IOpts {
+  name?: string;
+}
 
 class UmiProgressPlugin extends ProgressPlugin {
   public options: IOpts;
@@ -42,7 +44,8 @@ class UmiProgressPlugin extends ProgressPlugin {
           console.log(error.message);
         });
       } else {
-        logger.event('compiled successfully');
+        const prefix = this.options.name ? `${this.options.name} ` : '';
+        logger.event(`${prefix}compiled successfully`);
       }
     });
   }

@@ -34,6 +34,7 @@ export async function dev(opts: IOpts) {
     userConfig: opts.config,
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,
+    name: 'MFSU',
   });
   mfsu.setWebpackConfig({
     config: webpackConfig as any,
