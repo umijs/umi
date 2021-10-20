@@ -13,7 +13,7 @@ export default (api: IApi) => {
     },
   });
 
-  api.onGenerateFiles(async () => {
+  api.onGenerateFiles(async (opts) => {
     // umi.ts
     api.writeTmpFile({
       path: 'umi.ts',
@@ -24,12 +24,17 @@ export default (api: IApi) => {
     });
 
     // routes.ts
-    const routes = await getRoutes({
-      config: api.config,
-      absSrcPage: api.paths.absSrcPath,
-      absPagesPath: api.paths.absPagesPath,
-    });
-    const hasSrc = api.paths.absSrcPath.endsWith('/src');
+    let routes;
+    if (opts.isFirstTime) {
+      routes = api.appData.routes;
+    } else {
+      routes = await getRoutes({
+        config: api.config,
+        absSrcPage: api.paths.absSrcPath,
+        absPagesPath: api.paths.absPagesPath,
+      });
+    }
+    const hasSrc = api.appData.hasSrcDir;
     // @/pages/
     const prefix = hasSrc ? '../../src/pages/' : '../../pages/';
     api.writeTmpFile({

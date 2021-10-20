@@ -12,7 +12,8 @@ export type IApi = PluginAPI &
     }) => void;
     addTmpGenerateWatcherPaths: IAdd<null, string[]>;
     onGenerateFiles: IEvent<{
-      files: { event: string; path: string } | null;
+      isFirstTime?: boolean;
+      files?: { event: string; path: string } | null;
     }>;
     onPkgJSONChanged: IEvent<{
       origin: Record<string, any>;
