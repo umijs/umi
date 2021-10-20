@@ -4,3 +4,4 @@
 // programming route
 
 export * from './routesConvention';
+export * from './routeUtils';

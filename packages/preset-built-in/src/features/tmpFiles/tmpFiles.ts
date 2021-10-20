@@ -25,7 +25,9 @@ export default (api: IApi) => {
 
     // routes.ts
     const routes = await getRoutes({
-      base: api.paths.absPagesPath,
+      config: api.config,
+      absSrcPage: api.paths.absSrcPath,
+      absPagesPath: api.paths.absPagesPath,
     });
     const hasSrc = api.paths.absSrcPath.endsWith('/src');
     // @/pages/
