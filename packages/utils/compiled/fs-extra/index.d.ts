@@ -1,4 +1,4 @@
-// Type definitions for fs-extra 9.0
+// Type definitions for fs-extra 8.1
 // Project: https://github.com/jprichardson/node-fs-extra
 // Definitions by: Alan Agius <https://github.com/alan-agius4>,
 //                 midknight41 <https://github.com/midknight41>,
@@ -8,15 +8,13 @@
 //                 Sang Dang <https://github.com/sangdth>,
 //                 Florian Keller <https://github.com/ffflorian>
 //                 Piotr Błażejewicz <https://github.com/peterblazejewicz>
-//                 Tiger Oakes <https://github.com/NotWoods>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// Minimum TypeScript Version: 3.9
+// TypeScript Version: 2.2
 
 /// <reference types="node" />
 
 import * as fs from 'fs';
 import Stats = fs.Stats;
-import PathLike = fs.PathLike;
 
 export * from "fs";
 
@@ -43,7 +41,6 @@ export function createSymlink(src: string, dest: string, type: SymlinkType, call
 export function createSymlinkSync(src: string, dest: string, type: SymlinkType): void;
 
 export function ensureDir(path: string, options?: EnsureOptions | number): Promise<void>;
-export function ensureDir(path: string, callback?: (err: Error) => void): void;
 export function ensureDir(path: string, options?: EnsureOptions | number, callback?: (err: Error) => void): void;
 export function ensureDirSync(path: string, options?: EnsureOptions | number): void;
 
@@ -69,8 +66,8 @@ export function readJSON(file: string, options: ReadOptions, callback: (err: Err
 export function readJsonSync(file: string, options?: ReadOptions): any;
 export function readJSONSync(file: string, options?: ReadOptions): any;
 
+export function remove(dir: string): Promise<void>;
 export function remove(dir: string, callback: (err: Error) => void): void;
-export function remove(dir: string, callback?: (err: Error) => void): Promise<void>;
 export function removeSync(dir: string): void;
 
 export function outputJSON(file: string, data: any, options?: WriteOptions): Promise<void>;
@@ -98,11 +95,7 @@ export function ensureFileSync(path: string): void;
 
 export function ensureLink(src: string, dest: string): Promise<void>;
 export function ensureLink(src: string, dest: string, callback: (err: Error) => void): void;
-// alias for ensureLink
-export const createLink: typeof ensureLink;
 export function ensureLinkSync(src: string, dest: string): void;
-// aliased as
-export const createLinkSync: typeof ensureLinkSync;
 
 export function ensureSymlink(src: string, dest: string, type?: SymlinkType): Promise<void>;
 export function ensureSymlink(src: string, dest: string, type: SymlinkType, callback: (err: Error) => void): void;
@@ -111,10 +104,7 @@ export function ensureSymlinkSync(src: string, dest: string, type?: SymlinkType)
 
 export function emptyDir(path: string): Promise<void>;
 export function emptyDir(path: string, callback: (err: Error) => void): void;
-export const emptydir: typeof emptyDir;
-
 export function emptyDirSync(path: string): void;
-export const emptydirSync: typeof emptyDirSync;
 
 export function pathExists(path: string): Promise<boolean>;
 export function pathExists(path: string, callback: (err: Error, exists: boolean) => void): void;
@@ -123,26 +113,26 @@ export function pathExistsSync(path: string): boolean;
 // fs async methods
 // copied from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/node/v6/index.d.ts
 
-export function access(path: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function access(path: PathLike, mode: number, callback: (err: NodeJS.ErrnoException) => void): void;
-export function access(path: PathLike, mode?: number): Promise<void>;
+export function access(path: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
+export function access(path: string | Buffer, mode: number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function access(path: string | Buffer, mode?: number): Promise<void>;
 
-export function appendFile(file: PathLike | number, data: any, options: { encoding?: string | undefined; mode?: number | string | undefined; flag?: string | undefined; },
+export function appendFile(file: string | Buffer | number, data: any, options: { encoding?: string | undefined; mode?: number | string | undefined; flag?: string | undefined; },
     callback: (err: NodeJS.ErrnoException) => void): void;
-export function appendFile(file: PathLike | number, data: any, callback: (err: NodeJS.ErrnoException) => void): void;
-export function appendFile(file: PathLike | number, data: any, options?: { encoding?: string | undefined; mode?: number | string | undefined; flag?: string | undefined; }): Promise<void>;
+export function appendFile(file: string | Buffer | number, data: any, callback: (err: NodeJS.ErrnoException) => void): void;
+export function appendFile(file: string | Buffer | number, data: any, options?: { encoding?: string | undefined; mode?: number | string | undefined; flag?: string | undefined; }): Promise<void>;
 
-export function chmod(path: PathLike, mode: Mode, callback: (err: NodeJS.ErrnoException) => void): void;
-export function chmod(path: PathLike, mode: Mode): Promise<void>;
+export function chmod(path: string | Buffer, mode: string | number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function chmod(path: string | Buffer, mode: string | number): Promise<void>;
 
-export function chown(path: PathLike, uid: number, gid: number): Promise<void>;
-export function chown(path: PathLike, uid: number, gid: number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function chown(path: string | Buffer, uid: number, gid: number): Promise<void>;
+export function chown(path: string | Buffer, uid: number, gid: number, callback: (err: NodeJS.ErrnoException) => void): void;
 
 export function close(fd: number, callback: (err: NodeJS.ErrnoException) => void): void;
 export function close(fd: number): Promise<void>;
 
-export function fchmod(fd: number, mode: Mode, callback: (err: NodeJS.ErrnoException) => void): void;
-export function fchmod(fd: number, mode: Mode): Promise<void>;
+export function fchmod(fd: number, mode: string | number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function fchmod(fd: number, mode: string | number): Promise<void>;
 
 export function fchown(fd: number, uid: number, gid: number, callback: (err: NodeJS.ErrnoException) => void): void;
 export function fchown(fd: number, uid: number, gid: number): Promise<void>;
@@ -165,146 +155,105 @@ export function futimes(fd: number, atime: Date, mtime: Date, callback: (err: No
 export function futimes(fd: number, atime: number, mtime: number): Promise<void>;
 export function futimes(fd: number, atime: Date, mtime: Date): Promise<void>;
 
-export function lchown(path: PathLike, uid: number, gid: number, callback: (err: NodeJS.ErrnoException) => void): void;
-export function lchown(path: PathLike, uid: number, gid: number): Promise<void>;
+export function lchown(path: string | Buffer, uid: number, gid: number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function lchown(path: string | Buffer, uid: number, gid: number): Promise<void>;
 
-export function link(existingPath: PathLike, newPath: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function link(existingPath: PathLike, newPath: PathLike): Promise<void>;
+export function link(srcpath: string | Buffer, dstpath: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
+export function link(srcpath: string | Buffer, dstpath: string | Buffer): Promise<void>;
 
-export function lstat(path: PathLike, callback: (err: NodeJS.ErrnoException, stats: Stats) => any): void;
-export function lstat(path: PathLike): Promise<Stats>;
+export function lstat(path: string | Buffer, callback: (err: NodeJS.ErrnoException, stats: Stats) => any): void;
+export function lstat(path: string | Buffer): Promise<Stats>;
 
 /**
  * Asynchronous mkdir - creates the directory specified in {path}.  Parameter {mode} defaults to 0777.
  *
  * @param callback No arguments other than a possible exception are given to the completion callback.
  */
-export function mkdir(path: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
+export function mkdir(path: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
 /**
  * Asynchronous mkdir - creates the directory specified in {path}.  Parameter {mode} defaults to 0777.
  *
  * @param callback No arguments other than a possible exception are given to the completion callback.
  */
-export function mkdir(path: PathLike, options: Mode | fs.MakeDirectoryOptions | null, callback: (err: NodeJS.ErrnoException) => void): void;
-export function mkdir(path: PathLike, options?: Mode | fs.MakeDirectoryOptions | null): Promise<void>;
-export function mkdirSync(path: PathLike, options?: Mode | fs.MakeDirectoryOptions | null): void;
+export function mkdir(path: string | Buffer, mode: number | string, callback: (err: NodeJS.ErrnoException) => void): void;
+export function mkdir(path: string | Buffer): Promise<void>;
 
-export function open(path: PathLike, flags: string | number, callback: (err: NodeJS.ErrnoException, fd: number) => void): void;
-export function open(path: PathLike, flags: string | number, mode: Mode, callback: (err: NodeJS.ErrnoException, fd: number) => void): void;
-export function open(path: PathLike, flags: string | number, mode?: Mode | null): Promise<number>;
+export function open(path: string | Buffer, flags: string | number, callback: (err: NodeJS.ErrnoException, fd: number) => void): void;
+export function open(path: string | Buffer, flags: string | number, mode: number, callback: (err: NodeJS.ErrnoException, fd: number) => void): void;
+export function open(path: string | Buffer, flags: string | number, mode?: number): Promise<number>;
 
-export function opendir(path: string, cb: (err: NodeJS.ErrnoException | null, dir: fs.Dir) => void): void;
-export function opendir(
-    path: string,
-    options: fs.OpenDirOptions,
-    cb: (err: NodeJS.ErrnoException | null, dir: fs.Dir) => void,
-): void;
-export function opendir(path: string, options?: fs.OpenDirOptions): Promise<fs.Dir>;
+export function read(fd: number, buffer: Buffer, offset: number, length: number, position: number | null,
+    callback: (err: NodeJS.ErrnoException, bytesRead: number, buffer: Buffer) => void): void;
+export function read(fd: number, buffer: Buffer, offset: number, length: number, position: number | null): Promise<ReadResult>;
 
-export function read<TBuffer extends ArrayBufferView>(fd: number, buffer: TBuffer, offset: number, length: number, position: number | null,
-    callback: (err: NodeJS.ErrnoException, bytesRead: number, buffer: TBuffer) => void): void;
-export function read<TBuffer extends ArrayBufferView>(fd: number, buffer: TBuffer, offset: number, length: number, position: number | null): Promise<{ bytesRead: number, buffer: TBuffer }>;
-
-export function readFile(file: PathLike | number, callback: (err: NodeJS.ErrnoException, data: Buffer) => void): void;
-export function readFile(file: PathLike | number, encoding: string, callback: (err: NodeJS.ErrnoException, data: string) => void): void;
+export function readFile(file: string | Buffer | number, callback: (err: NodeJS.ErrnoException, data: Buffer) => void): void;
+export function readFile(file: string | Buffer | number, encoding: string, callback: (err: NodeJS.ErrnoException, data: string) => void): void;
 export function readFile(
-    file: PathLike | number,
+    file: string | Buffer | number,
     options: { flag?: string | undefined; } | { encoding: string; flag?: string | undefined; },
     callback: (err: NodeJS.ErrnoException, data: Buffer) => void
 ): void;
-export function readFile(file: PathLike | number, options: { flag?: string | undefined; } | { encoding: string; flag?: string | undefined; }): Promise<string>;
+export function readFile(file: string | Buffer | number, options: { flag?: string | undefined; } | { encoding: string; flag?: string | undefined; }): Promise<string>;
 // tslint:disable-next-line:unified-signatures
-export function readFile(file: PathLike | number, encoding: string): Promise<string>;
-export function readFile(file: PathLike | number): Promise<Buffer>;
+export function readFile(file: string | Buffer | number, encoding: string): Promise<string>;
+export function readFile(file: string | Buffer | number): Promise<Buffer>;
 
-export function readdir(path: PathLike, callback: (err: NodeJS.ErrnoException, files: string[]) => void): void;
-export function readdir(path: PathLike, options?: { encoding: BufferEncoding | null; withFileTypes?: false | undefined } | BufferEncoding | null): Promise<string[]>;
-export function readdir(path: PathLike, options: "buffer" | { encoding: "buffer"; withFileTypes?: false | undefined }): Promise<Buffer[]>;
-export function readdir(path: PathLike, options?: { encoding?: string | null | undefined; withFileTypes?: false | undefined }): Promise<string[] | Buffer[]>;
-export function readdir(path: PathLike, options: { encoding?: string | null | undefined; withFileTypes: true }): Promise<fs.Dirent[]>;
+export function readdir(path: string | Buffer, callback: (err: NodeJS.ErrnoException, files: string[]) => void): void;
+export function readdir(path: string | Buffer): Promise<string[]>;
 
-export function readlink(path: PathLike, callback: (err: NodeJS.ErrnoException, linkString: string) => any): void;
-export function readlink(path: PathLike): Promise<string>;
+export function readlink(path: string | Buffer, callback: (err: NodeJS.ErrnoException, linkString: string) => any): void;
+export function readlink(path: string | Buffer): Promise<string>;
 
-export function realpath(path: PathLike, callback: (err: NodeJS.ErrnoException, resolvedPath: string) => any): void;
-export function realpath(path: PathLike, cache: { [path: string]: string }, callback: (err: NodeJS.ErrnoException, resolvedPath: string) => any): void;
-export function realpath(path: PathLike, cache?: { [path: string]: string }): Promise<string>;
+export function realpath(path: string | Buffer, callback: (err: NodeJS.ErrnoException, resolvedPath: string) => any): void;
+export function realpath(path: string | Buffer, cache: { [path: string]: string }, callback: (err: NodeJS.ErrnoException, resolvedPath: string) => any): void;
+export function realpath(path: string | Buffer, cache?: { [path: string]: string }): Promise<string>;
 
-/* tslint:disable:unified-signatures */
-export namespace realpath {
-    const native: {
-        (path: PathLike, options: { encoding: BufferEncoding | null } | BufferEncoding | undefined | null): Promise<string>;
-        (path: PathLike, options: { encoding: "buffer" } | "buffer"): Promise<Buffer>;
-        (path: PathLike, options: { encoding: BufferEncoding | null } | string | undefined | null): Promise<string | Buffer>;
-        (path: PathLike): Promise<string>;
-    } & typeof fs.realpath.native;
-}
-/* tslint:enable:unified-signatures */
-
-export function rename(oldPath: PathLike, newPath: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function rename(oldPath: PathLike, newPath: PathLike): Promise<void>;
-
-/**
- * Asynchronously removes files and directories (modeled on the standard POSIX
- * `rm` utility).
- *
- * Only available in node >= v14.14.0
- */
-export function rm(path: PathLike, options?: { force?: boolean | undefined, maxRetries?: number | undefined, recursive?: boolean | undefined, retryDelay?: number | undefined }): Promise<void>;
+export function rename(oldPath: string, newPath: string, callback: (err: NodeJS.ErrnoException) => void): void;
+export function rename(oldPath: string, newPath: string): Promise<void>;
 
 /**
  * Asynchronous rmdir - removes the directory specified in {path}
  *
  * @param callback No arguments other than a possible exception are given to the completion callback.
  */
-export function rmdir(path: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function rmdir(path: PathLike, options?: fs.RmDirOptions): Promise<void>;
+export function rmdir(path: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
+export function rmdir(path: string | Buffer): Promise<void>;
 
-export function stat(path: PathLike, callback: (err: NodeJS.ErrnoException, stats: Stats) => any): void;
-export function stat(path: PathLike): Promise<Stats>;
+export function stat(path: string | Buffer, callback: (err: NodeJS.ErrnoException, stats: Stats) => any): void;
+export function stat(path: string | Buffer): Promise<Stats>;
 
-export function symlink(target: PathLike, path: PathLike, type: SymlinkType | undefined, callback: (err: NodeJS.ErrnoException) => void): void;
-export function symlink(target: PathLike, path: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function symlink(target: PathLike, path: PathLike, type?: SymlinkType): Promise<void>;
+export function symlink(srcpath: string | Buffer, dstpath: string | Buffer, type: FsSymlinkType | undefined, callback: (err: NodeJS.ErrnoException) => void): void;
+export function symlink(srcpath: string | Buffer, dstpath: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
+export function symlink(srcpath: string | Buffer, dstpath: string | Buffer, type?: FsSymlinkType): Promise<void>;
 
-export function truncate(path: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function truncate(path: PathLike, len: number, callback: (err: NodeJS.ErrnoException) => void): void;
-export function truncate(path: PathLike, len?: number): Promise<void>;
+export function truncate(path: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
+export function truncate(path: string | Buffer, len: number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function truncate(path: string | Buffer, len?: number): Promise<void>;
 
 /**
  * Asynchronous unlink - deletes the file specified in {path}
  *
  * @param callback No arguments other than a possible exception are given to the completion callback.
  */
-export function unlink(path: PathLike, callback: (err: NodeJS.ErrnoException) => void): void;
-export function unlink(path: PathLike): Promise<void>;
+export function unlink(path: string | Buffer, callback: (err: NodeJS.ErrnoException) => void): void;
+export function unlink(path: string | Buffer): Promise<void>;
 
-export function utimes(path: PathLike, atime: number, mtime: number, callback: (err: NodeJS.ErrnoException) => void): void;
-export function utimes(path: PathLike, atime: Date, mtime: Date, callback: (err: NodeJS.ErrnoException) => void): void;
-export function utimes(path: PathLike, atime: number, mtime: number): Promise<void>;
-export function utimes(path: PathLike, atime: Date, mtime: Date): Promise<void>;
+export function utimes(path: string | Buffer, atime: number, mtime: number, callback: (err: NodeJS.ErrnoException) => void): void;
+export function utimes(path: string | Buffer, atime: Date, mtime: Date, callback: (err: NodeJS.ErrnoException) => void): void;
+export function utimes(path: string | Buffer, atime: number, mtime: number): Promise<void>;
+export function utimes(path: string | Buffer, atime: Date, mtime: Date): Promise<void>;
 
-export function write<TBuffer extends ArrayBufferView>(
-    fd: number, buffer: TBuffer, offset: number, length: number, position: number | null,
-    callback: (err: NodeJS.ErrnoException, written: number, buffer: TBuffer) => void
-): void;
-export function write<TBuffer extends ArrayBufferView>(
-    fd: number, buffer: TBuffer, offset: number, length: number,
-    callback: (err: NodeJS.ErrnoException, written: number, buffer: TBuffer) => void
-): void;
+export function write(fd: number, buffer: Buffer, offset: number, length: number, position: number | null, callback: (err: NodeJS.ErrnoException, written: number, buffer: Buffer) => void): void;
+export function write(fd: number, buffer: Buffer, offset: number, length: number, callback: (err: NodeJS.ErrnoException, written: number, buffer: Buffer) => void): void;
 export function write(fd: number, data: any, callback: (err: NodeJS.ErrnoException, written: number, str: string) => void): void;
 export function write(fd: number, data: any, offset: number, callback: (err: NodeJS.ErrnoException, written: number, str: string) => void): void;
 export function write(fd: number, data: any, offset: number, encoding: string, callback: (err: NodeJS.ErrnoException, written: number, str: string) => void): void;
-export function write<TBuffer extends ArrayBufferView>(fd: number, buffer: TBuffer, offset?: number, length?: number, position?: number | null): Promise<{ bytesWritten: number, buffer: TBuffer }>;
-export function write(fd: number, data: any, offset?: number, encoding?: string): Promise<{ bytesWritten: number, buffer: string }>;
+export function write(fd: number, buffer: Buffer, offset?: number, length?: number, position?: number | null): Promise<WriteResult>;
+export function write(fd: number, data: any, offset?: number, encoding?: string): Promise<WriteResult>;
 
-export function writeFile(file: PathLike | number, data: any, callback: (err: NodeJS.ErrnoException) => void): void;
-export function writeFile(file: PathLike | number, data: any, options?: WriteFileOptions | string): Promise<void>;
-export function writeFile(file: PathLike | number, data: any, options: WriteFileOptions | string, callback: (err: NodeJS.ErrnoException) => void): void;
-
-export function writev(fd: number, buffers: NodeJS.ArrayBufferView[], position: number, cb: (err: NodeJS.ErrnoException | null, bytesWritten: number, buffers: NodeJS.ArrayBufferView[]) => void): void;
-export function writev(fd: number, buffers: NodeJS.ArrayBufferView[], cb: (err: NodeJS.ErrnoException | null, bytesWritten: number, buffers: NodeJS.ArrayBufferView[]) => void): void;
-export function writev(fd: number, buffers: NodeJS.ArrayBufferView[], position?: number): Promise<WritevResult>;
+export function writeFile(file: string | Buffer | number, data: any, callback: (err: NodeJS.ErrnoException) => void): void;
+export function writeFile(file: string | Buffer | number, data: any, options?: WriteFileOptions | string): Promise<void>;
+export function writeFile(file: string | Buffer | number, data: any, options: WriteFileOptions | string, callback: (err: NodeJS.ErrnoException) => void): void;
 
 /**
  * Asynchronous mkdtemp - Creates a unique temporary directory. Generates six random characters to be appended behind a required prefix to create a unique temporary directory.
@@ -326,11 +275,8 @@ export interface PathEntryStream {
 export type CopyFilterSync = (src: string, dest: string) => boolean;
 export type CopyFilterAsync = (src: string, dest: string) => Promise<boolean>;
 
-export type SymlinkType = "dir" | "file" | "junction";
-
-export type Mode = string | number;
-
-export type ArrayBufferView = NodeJS.TypedArray | DataView;
+export type SymlinkType = "dir" | "file";
+export type FsSymlinkType = "dir" | "file" | "junction";
 
 export interface CopyOptions {
     dereference?: boolean | undefined;
@@ -363,7 +309,7 @@ export interface ReadOptions {
 }
 
 export interface WriteFileOptions {
-    encoding?: string | null | undefined;
+    encoding?: string | undefined;
     flag?: string | undefined;
     mode?: number | undefined;
 }
@@ -375,7 +321,12 @@ export interface WriteOptions extends WriteFileOptions {
     EOL?: string | undefined;
 }
 
-export interface WritevResult {
+export interface ReadResult {
+    bytesRead: number;
+    buffer: Buffer;
+}
+
+export interface WriteResult {
     bytesWritten: number;
-    buffers: ArrayBufferView[];
+    buffer: Buffer;
 }

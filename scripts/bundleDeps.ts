@@ -52,6 +52,9 @@ Object.keys(exported).forEach(function (key) {
       );
     } else {
       const filesToCopy: string[] = [];
+      if (opts.file === './bundles/webpack/bundle') {
+        delete opts.webpackExternals['webpack'];
+      }
       const { code, assets } = await ncc(entry, {
         externals: opts.webpackExternals,
         minify: !!opts.minify,
