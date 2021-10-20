@@ -6,7 +6,9 @@
   "module": "index.esm.js",
   "types": "index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts",
+    "index.esm.js"
   ],
   "scripts": {
     "build": "pnpm tsc",

@@ -1,3 +1,3 @@
 import React from 'react';
 
-export default () => <h2>Foo</h2>;
+export default () => <h2>user: Foo</h2>;

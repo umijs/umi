@@ -12,16 +12,14 @@ interface IOpts {
 
 export async function addBundleAnalyzerPlugin(opts: IOpts) {
   const { config } = opts;
-  if (process.env.ANALYZE) {
-    config.plugin('webpack-bundle-analyzer').use(BundleAnalyzerPlugin, [
-      // https://github.com/webpack-contrib/webpack-bundle-analyzer
-      {
-        analyzerMode: 'server',
-        analyzerPort: process.env.ANALYZE_PORT || 8888,
-        openAnalyzer: false,
-        logLevel: 'info',
-        defaultSizes: 'parsed',
-      },
-    ]);
-  }
+  config.plugin('webpack-bundle-analyzer').use(BundleAnalyzerPlugin, [
+    // https://github.com/webpack-contrib/webpack-bundle-analyzer
+    {
+      analyzerMode: 'server',
+      analyzerPort: process.env.ANALYZE_PORT || 8888,
+      openAnalyzer: false,
+      logLevel: 'info',
+      defaultSizes: 'parsed',
+    },
+  ]);
 }

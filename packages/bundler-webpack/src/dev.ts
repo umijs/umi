@@ -25,6 +25,7 @@ export async function dev(opts: IOpts) {
     userConfig: opts.config,
     extraBabelPlugins: mfsu.getBabelPlugins(),
     hmr: true,
+    analyze: process.env.ANALYZE,
   });
   const depConfig = await getConfig({
     cwd: opts.cwd,
