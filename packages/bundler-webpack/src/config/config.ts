@@ -28,6 +28,7 @@ interface IOpts {
   staticPathPrefix?: string;
   userConfig: IConfig;
   analyze?: any;
+  name?: string;
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -38,6 +39,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     chrome: 80,
   };
   const applyOpts = {
+    name: opts.name,
     config,
     userConfig,
     cwd: opts.cwd,
@@ -52,6 +54,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
 
   // mode
   config.mode(opts.env);
+  config.stats('none');
 
   // entry
   Object.keys(opts.entry).forEach((key) => {
