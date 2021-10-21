@@ -28,14 +28,15 @@ export function createWebSocketServer(server: Server) {
   });
 
   return {
-    send(payload: Object) {
-      const stringified = JSON.stringify(payload);
+    send(message: string) {
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
-          client.send(stringified);
+          client.send(message);
         }
       });
     },
+
+    wss,
 
     close() {
       wss.close();
