@@ -35,6 +35,7 @@ export async function addJavaScriptRules(opts: IOpts) {
       .test(/\.(js|mjs)$/)
       .include.add((path: string) => {
         try {
+          if (path.includes('client/client')) return true;
           return isMatch({ path, pkgs: depPkgs });
         } catch (e) {
           console.error(chalk.red(e));

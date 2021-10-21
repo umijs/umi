@@ -6,11 +6,13 @@
   "types": "dist/index.d.ts",
   "files": [
     "bin",
+    "client",
     "compiled",
     "dist"
   ],
   "scripts": {
     "build": "pnpm tsc",
+    "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs"

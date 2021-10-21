@@ -33,6 +33,7 @@ interface IOpts {
   mode?: Mode;
   tmpBase?: string;
   unMatchLibs?: string[];
+  resolvers?: Function[];
   implementor: typeof webpack;
 }
 

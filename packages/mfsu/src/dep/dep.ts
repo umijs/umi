@@ -62,10 +62,15 @@ export * from '${this.file}';
   }
 
   getRealFile() {
+    // Support config dep module resolver
+    for (const resolver of this.mfsu.opts.resolvers || []) {
+      const ret = resolver(this.file);
+      if (ret) return ret;
+    }
+
     const absFiles = isAbsolute(this.file)
       ? [this.file]
-      : // TODO: support config dep module resolver
-        [this.cwd, this.cwd !== process.cwd() && process.cwd()]
+      : [this.cwd, this.cwd !== process.cwd() && process.cwd()]
           .filter(Boolean)
           .map((base: any) => join(base, 'node_modules', this.file));
     for (const path of absFiles) {

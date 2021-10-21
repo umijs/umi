@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
+    "module": "esnext",
+    "outDir": "./client",
+    "rootDir": "./src"
+  },
+  "include": ["src/client","src/constants.ts", "src/utils/formatWebpackMessages.ts"]
+}
