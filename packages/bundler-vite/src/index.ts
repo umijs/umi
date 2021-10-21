@@ -1,3 +1,2 @@
-export default () => {
-  return '@umijs/bundler-vite';
-};
+export * from './build';
+export * from './dev';

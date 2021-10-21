@@ -13,8 +13,11 @@ import {
   watch,
 } from './watch';
 
-const { dev }: typeof import('@umijs/bundler-webpack') = importLazy(
+const bundlerWebpack: typeof import('@umijs/bundler-webpack') = importLazy(
   '@umijs/bundler-webpack',
+);
+const bundlerVite: typeof import('@umijs/bundler-vite') = importLazy(
+  '@umijs/bundler-vite',
 );
 
 export default (api: IApi) => {
@@ -122,7 +125,7 @@ PORT=8888 umi dev
       );
 
       // start dev server
-      await dev({
+      const opts = {
         config: api.config,
         cwd: api.cwd,
         entry: {
@@ -132,7 +135,12 @@ PORT=8888 umi dev
         host: api.appData.host,
         beforeMiddlewares: [faviconMiddleware],
         afterMiddlewares: [],
-      });
+      };
+      if (api.args.vite) {
+        await bundlerVite.dev(opts);
+      } else {
+        await bundlerWebpack.dev(opts);
+      }
     },
   });
 

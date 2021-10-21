@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@umijs/bundler-webpack": "4.0.0-alpha.1",
+    "@umijs/bundler-vite": "4.0.0-alpha.1",
     "@umijs/core": "4.0.0-alpha.1",
     "@umijs/renderer-react": "4.0.0-alpha.1",
     "@umijs/utils": "4.0.0-alpha.1",
