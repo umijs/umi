@@ -93,13 +93,29 @@ PORT=8888 umi dev
       addUnWatch(
         api.service.configManager!.watch({
           schemas: api.service.configSchemas,
-          // @ts-ignore
-          onChangeTypes: [
-            api.ConfigChangeType.reload,
-            api.ConfigChangeType.regenerateTmpFiles,
-          ],
+          onChangeTypes: api.service.configOnChanges,
           onChange(opts) {
-            console.log(opts);
+            const { data } = opts;
+            if (data.changes[api.ConfigChangeType.reload]) {
+              logger.event(
+                `config ${data.changes[api.ConfigChangeType.reload].join(
+                  ', ',
+                )} changed, restart server...`,
+              );
+              api.restartServer();
+              return;
+            }
+            if (data.changes[api.ConfigChangeType.regenerateTmpFiles]) {
+              logger.event(
+                `config ${data.changes[api.ConfigChangeType.reload].join(
+                  ', ',
+                )} changed, regenerate tmp files...`,
+              );
+              generate({ isFirstTime: false });
+            }
+            for (const fn of data.fns) {
+              fn();
+            }
           },
         }),
       );

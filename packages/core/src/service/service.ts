@@ -41,6 +41,7 @@ export class Service {
   config: Record<string, any> = {};
   configSchemas: Record<string, any> = {};
   configDefaults: Record<string, any> = {};
+  configOnChanges: Record<string, any> = {};
   cwd: string;
   env: Env;
   hooks: Record<string, Hook[]> = {};
@@ -212,6 +213,7 @@ export class Service {
       if (config.default !== undefined) {
         this.configDefaults[key] = config.default;
       }
+      this.configOnChanges[key] = config.onChange || ConfigChangeType.reload;
     }
     // setup api.config from modifyConfig and modifyDefaultConfig
     this.stage = ServiceStage.resolveConfig;
