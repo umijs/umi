@@ -162,6 +162,9 @@ export class Config {
         });
         register.clearFiles();
         config = lodash.merge(config, require(configFile).default);
+        for (const file of register.getFiles()) {
+          delete require.cache[file];
+        }
         files.push(...register.getFiles());
       }
     }

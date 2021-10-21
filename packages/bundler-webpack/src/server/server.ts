@@ -42,6 +42,7 @@ export async function createServer(opts: IOpts) {
   const compilerMiddleware = webpackDevMiddleware(compiler, {
     publicPath: '/',
     writeToDisk: userConfig.writeToDisk,
+    stats: 'none',
     // watchOptions: { ignored }
   });
   app.use(compilerMiddleware);
