@@ -8,6 +8,7 @@ export class Service extends CoreService {
     process.env.UMI_DIR = dirname(require.resolve('../../package'));
     super({
       ...opts,
+      env: process.env.NODE_ENV,
       cwd: getCwd(),
       defaultConfigFiles: DEFAULT_CONFIG_FILES,
       frameworkName: FRAMEWORK_NAME,
@@ -19,12 +20,6 @@ export class Service extends CoreService {
   }
 
   run2(opts: { name: string; args?: any }) {
-    if (opts.name === 'dev') {
-      process.env.NODE_ENV = 'development';
-    } else if (opts.name === 'build') {
-      process.env.NODE_ENV = 'production';
-    }
-
     let name = opts.name;
     if (opts?.args.version || name === 'v') {
       name = 'version';

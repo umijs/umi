@@ -22,7 +22,13 @@ setNoDeprecation();
     },
     boolean: ['version'],
   });
-  if (args._[0] === DEV_COMMAND) {
+  const command = args._[0];
+  if ([DEV_COMMAND, 'setup'].includes(command)) {
+    process.env.NODE_ENV = 'development';
+  } else if (command === 'build') {
+    process.env.NODE_ENV = 'production';
+  }
+  if (command === DEV_COMMAND) {
     dev();
   } else {
     try {
