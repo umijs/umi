@@ -41,15 +41,18 @@ export default (api: IApi) => {
   };
 
   const bundleSchemas = getSchemas();
-  for (const key of Object.keys(configDefaults)) {
+  for (const key of Object.keys(bundleSchemas)) {
+    const config: Record<string, any> = {
+      schema: bundleSchemas[key] || ((joi: any) => joi.any()),
+    };
+    if (key in configDefaults) {
+      config.default = configDefaults[key];
+    }
     api.registerPlugins([
       {
         id: `virtual: config-${key}`,
         key: key,
-        config: {
-          default: configDefaults[key],
-          schema: bundleSchemas[key] || ((joi) => joi.any()),
-        },
+        config,
       },
     ]);
   }
