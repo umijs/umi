@@ -37,10 +37,11 @@ export async function dev(opts: IOpts) {
     staticPathPrefix: MF_DEP_PREFIX,
     name: MFSU_NAME,
   });
+  webpackConfig.resolve!.alias ||= {};
   // TODO: REMOVE ME
   ['@umijs/utils/compiled/strip-ansi', 'react-error-overlay'].forEach((dep) => {
     // @ts-ignore
-    webpackConfig.resolve.alias[dep] = require.resolve(dep);
+    webpackConfig.resolve!.alias[dep] = require.resolve(dep);
   });
   mfsu.setWebpackConfig({
     config: webpackConfig as any,
