@@ -4,6 +4,7 @@ import { join } from 'path';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { IApi } from '../../types';
 import { clearTmp } from '../../utils/clearTmp';
+import { faviconMiddleware } from './faviconMiddleware';
 import {
   addUnWatch,
   createDebouncedHandler,
@@ -129,7 +130,7 @@ PORT=8888 umi dev
         },
         port: api.appData.port,
         host: api.appData.host,
-        beforeMiddlewares: [],
+        beforeMiddlewares: [faviconMiddleware],
         afterMiddlewares: [],
       });
     },
