@@ -182,7 +182,7 @@ export class Config {
       // invalid schema
       assert(joi.isSchema(schema), `schema for config ${key} is not valid.`);
       const { error } = schema.validate(opts.config[key]);
-      errors.set(key, error);
+      if (error) errors.set(key, error);
     }
     // invalid config values
     assert(
