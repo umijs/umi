@@ -468,6 +468,7 @@ importers:
 
   packages/preset-built-in:
     specifiers:
+      '@umijs/bundler-vite': 4.0.0-alpha.1
       '@umijs/bundler-webpack': 4.0.0-alpha.1
       '@umijs/core': 4.0.0-alpha.1
       '@umijs/renderer-react': 4.0.0-alpha.1
@@ -477,6 +478,7 @@ importers:
       react-router: 6.0.0-beta.7
       react-router-dom: 6.0.0-beta.7
     dependencies:
+      '@umijs/bundler-vite': link:../bundler-vite
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
       '@umijs/renderer-react': link:../renderer-react
