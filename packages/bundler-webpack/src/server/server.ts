@@ -48,17 +48,23 @@ export async function createServer(opts: IOpts) {
   app.use(compilerMiddleware);
 
   // hmr hooks
+  let stats: any;
   compiler.compilers.forEach(addHooks);
   function addHooks(compiler: webpack.Compiler) {
     compiler.hooks.invalid.tap('server', () => {
       sendMessage(MESSAGE_TYPE.invalid);
     });
-    compiler.hooks.done.tap('server', (stats) => {
+    compiler.hooks.done.tap('server', (_stats) => {
+      stats = _stats;
       sendStats(getStats(stats));
       // this.stats = stats;
     });
   }
-  function sendStats(stats: webpack.StatsCompilation, force?: boolean) {
+  function sendStats(
+    stats: webpack.StatsCompilation,
+    force?: boolean,
+    sender?: any,
+  ) {
     const shouldEmit =
       !force &&
       stats &&
@@ -67,22 +73,22 @@ export async function createServer(opts: IOpts) {
       stats.assets &&
       stats.assets.every((asset) => !asset.emitted);
     if (shouldEmit) {
-      sendMessage(MESSAGE_TYPE.stillOk);
+      sendMessage(MESSAGE_TYPE.stillOk, null, sender);
       return;
     }
-    sendMessage(MESSAGE_TYPE.hash, stats.hash);
+    sendMessage(MESSAGE_TYPE.hash, stats.hash, sender);
     if (
       (stats.errors && stats.errors.length > 0) ||
       (stats.warnings && stats.warnings.length > 0)
     ) {
       if (stats.warnings && stats.warnings.length > 0) {
-        sendMessage(MESSAGE_TYPE.warnings, stats.warnings);
+        sendMessage(MESSAGE_TYPE.warnings, stats.warnings, sender);
       }
       if (stats.errors && stats.errors.length > 0) {
-        sendMessage(MESSAGE_TYPE.errors, stats.errors);
+        sendMessage(MESSAGE_TYPE.errors, stats.errors, sender);
       }
     } else {
-      sendMessage(MESSAGE_TYPE.ok);
+      sendMessage(MESSAGE_TYPE.ok, null, sender);
     }
   }
   function getStats(stats: webpack.Stats) {
@@ -95,8 +101,8 @@ export async function createServer(opts: IOpts) {
       errorDetails: false,
     });
   }
-  function sendMessage(type: string, data?: any) {
-    ws.send({ type, data });
+  function sendMessage(type: string, data?: any, sender?: any) {
+    (sender || ws).send(JSON.stringify({ type, data }));
   }
 
   // mock
@@ -144,6 +150,12 @@ export async function createServer(opts: IOpts) {
 
   const server = http.createServer(app);
   const ws = createWebSocketServer(server);
+
+  ws.wss.on('connection', (socket) => {
+    if (stats) {
+      sendStats(getStats(stats), false, socket);
+    }
+  });
 
   const port = opts.port || 8000;
   server.listen(port, () => {
