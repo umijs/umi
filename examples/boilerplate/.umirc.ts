@@ -3,4 +3,7 @@ export default {
   //   react: 'React',
   //   'react-dom': 'ReactDOM',
   // },
+  chainWebpack(memo: any) {
+    memo;
+  },
 };
