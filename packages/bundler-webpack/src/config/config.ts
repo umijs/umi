@@ -10,6 +10,7 @@ import { addCompressPlugin } from './compressPlugin';
 import { addCopyPlugin } from './copyPlugin';
 import { addCSSRules } from './cssRules';
 import { addDefinePlugin } from './definePlugin';
+import { addFastRefreshPlugin } from './fastRefreshPlugin';
 import { addIgnorePlugin } from './ignorePlugin';
 import { addJavaScriptRules } from './javaScriptRules';
 import { addMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
@@ -138,6 +139,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addIgnorePlugin(applyOpts);
   // define
   await addDefinePlugin(applyOpts);
+  // fast refresh
+  await addFastRefreshPlugin(applyOpts);
   // progress
   await addProgressPlugin(applyOpts);
   // copy
