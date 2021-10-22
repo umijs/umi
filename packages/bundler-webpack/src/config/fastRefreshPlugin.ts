@@ -15,12 +15,11 @@ interface IOpts {
 
 export async function addFastRefreshPlugin(opts: IOpts) {
   const { config, userConfig, name } = opts;
-  const { fastRefresh } = userConfig;
   const isDev = opts.env === Env.development;
-  const isMfsu = name === MFSU_NAME;
-  if (fastRefresh === false) return;
+  const useFastRefresh =
+    isDev && userConfig.fastRefresh !== false && name !== MFSU_NAME;
   // TODO: Should only run in react csr
-  if (isDev && !isMfsu) {
+  if (useFastRefresh) {
     config
       .plugin('fastRefresh')
       .after('hmr')
