@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'umi';
 
-export default () => {
+export default function Layout() {
   return (
     <div>
       <h2>global layout</h2>
@@ -19,4 +19,4 @@ export default () => {
       <Outlet />
     </div>
   );
-};
+}
