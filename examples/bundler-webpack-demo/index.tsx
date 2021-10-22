@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 function App() {
-  return <div>App</div>;
+  const [count, setCount] = useState(0);
+
+  return <div onClick={() => setCount(count + 1)}>App{count}</div>;
 }
 
 // @ts-ignore

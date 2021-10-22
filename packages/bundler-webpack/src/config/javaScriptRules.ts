@@ -13,6 +13,8 @@ interface IOpts {
 
 export async function addJavaScriptRules(opts: IOpts) {
   const { config, userConfig, cwd, env } = opts;
+  const isDev = opts.env === Env.development;
+  const isFastRefresh = userConfig?.fastRefresh !== false;
 
   const depPkgs = Object.assign({}, es5ImcompatibleVersionsToPkg());
   const srcRules = [
@@ -95,6 +97,7 @@ export async function addJavaScriptRules(opts: IOpts) {
             ...(userConfig.extraBabelPresets || []).filter(Boolean),
           ],
           plugins: [
+            isDev && isFastRefresh && require.resolve('react-refresh/babel'),
             ...opts.extraBabelPlugins,
             ...(userConfig.extraBabelPlugins || []),
           ].filter(Boolean),
