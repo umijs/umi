@@ -1,5 +1,6 @@
 import { chalk } from '@umijs/utils';
 import Config from '../../compiled/webpack-5-chain';
+import { MFSU_NAME } from '../constants';
 import { Env, IConfig, Transpiler } from '../types';
 import { es5ImcompatibleVersionsToPkg, isMatch } from '../utils/depMatch';
 
@@ -9,12 +10,14 @@ interface IOpts {
   cwd: string;
   env: Env;
   extraBabelPlugins: any[];
+  name?: string;
 }
 
 export async function addJavaScriptRules(opts: IOpts) {
-  const { config, userConfig, cwd, env } = opts;
+  const { config, userConfig, cwd, env, name } = opts;
   const isDev = opts.env === Env.development;
-  const useFastRefresh = isDev && userConfig.fastRefresh !== false;
+  const useFastRefresh =
+    isDev && userConfig.fastRefresh !== false && name === MFSU_NAME;
 
   const depPkgs = Object.assign({}, es5ImcompatibleVersionsToPkg());
   const srcRules = [
