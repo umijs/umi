@@ -34,6 +34,7 @@
     "bundler-webpack": "bin/bundler-webpack.js"
   },
   "dependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.1",
     "@umijs/babel-preset-umi": "4.0.0-alpha.1",
     "@umijs/mfsu": "4.0.0-alpha.1",
     "@umijs/utils": "4.0.0-alpha.1",
@@ -45,7 +46,6 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "0.5.1",
     "@svgr/webpack": "5.5.0",
     "@types/express": "4.17.13",
     "@types/hapi__joi": "17.1.7",
@@ -117,7 +117,8 @@
       "webpack-dev-middleware",
       "webpack-sources",
       "ws",
-      "./bundles/webpack/bundle"
+      "./bundles/webpack/bundle",
+      "./bundles/react-refresh/babel"
     ],
     "externals": {
       "@swc/core": "@swc/core",
