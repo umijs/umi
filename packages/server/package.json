@@ -1,0 +1,31 @@
+{
+  "name": "@umijs/server",
+  "version": "4.0.0-alpha.1",
+  "description": "@umijs/server",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm tsc",
+    "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "dev": "pnpm build -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/server#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.13"
+  }
+}
