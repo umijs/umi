@@ -19,7 +19,7 @@ export class Service extends CoreService {
     });
   }
 
-  run2(opts: { name: string; args?: any }) {
+  async run2(opts: { name: string; args?: any }) {
     let name = opts.name;
     if (opts?.args.version || name === 'v') {
       name = 'version';
@@ -30,6 +30,6 @@ export class Service extends CoreService {
     // TODO
     // initWebpack
 
-    this.run({ ...opts, name });
+    return await this.run({ ...opts, name });
   }
 }
