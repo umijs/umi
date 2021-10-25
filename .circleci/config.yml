@@ -27,7 +27,7 @@ jobs:
           command: yarn run tsc --noEmit
       - run:
           name: Run Tests
-          command: yarn test:coverage --forceExit --detectOpenHandles --runInBand
+          command: NODE_OPTIONS='--max-old-space-size=4096' yarn test:coverage --forceExit --detectOpenHandles --runInBand
           no_output_timeout: 300m
       - run:
           name: Generate coverage
