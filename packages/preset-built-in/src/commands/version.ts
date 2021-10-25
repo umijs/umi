@@ -3,6 +3,7 @@ import { IApi } from '../types';
 export default (api: IApi) => {
   api.registerCommand({
     name: 'version',
+    alias: 'v',
     description: 'show umi version',
     fn({ args }) {
       const version = require('../../package.json').version;

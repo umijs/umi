@@ -28,9 +28,10 @@ export class PluginAPI {
   registerCommand(
     opts: Omit<ICommandOpts, 'plugin'> & { alias?: string | string[] },
   ) {
-    const { name, alias } = opts;
+    const { alias } = opts;
     delete opts.alias;
     const registerCommand = (commandOpts: Omit<typeof opts, 'alias'>) => {
+      const { name } = commandOpts;
       assert(
         !this.service.commands[name],
         `api.registerCommand() failed, the command ${name} is exists from ${this.service.commands[name]?.plugin.id}.`,
