@@ -527,10 +527,12 @@ importers:
 
   packages/utils:
     specifiers:
+      '@types/color': 3.0.2
       '@types/cross-spawn': 6.0.2
       '@types/debug': 4.1.7
       '@types/lodash': 4.14.175
       '@types/mustache': 4.1.2
+      '@types/prompts': ^2.0.14
       '@types/rimraf': 3.0.2
       '@types/semver': 7.3.9
       address: 1.1.2
@@ -539,15 +541,18 @@ importers:
       cheerio: 1.0.0-rc.10
       chokidar: 3.5.2
       clipboardy: 2.3.0
+      color: 4.0.1
       cross-spawn: 7.0.3
       debug: 4.3.2
       fs-extra: 10.0.0
+      glob: 7.2.0
       globby: 11.0.4
       import-lazy: 4.0.0
       lodash: 4.17.21
       mustache: 4.2.0
       pkg-up: 3.1.0
       portfinder: 1.0.28
+      prompts: 2.4.2
       resolve: 1.20.0
       rimraf: 3.0.2
       semver: 7.3.5
@@ -557,25 +562,30 @@ importers:
       chokidar: 3.5.2
       clipboardy: 2.3.0
     devDependencies:
+      '@types/color': 3.0.2
       '@types/cross-spawn': 6.0.2
       '@types/debug': 4.1.7
       '@types/lodash': 4.14.175
       '@types/mustache': 4.1.2
+      '@types/prompts': 2.0.14
       '@types/rimraf': 3.0.2
       '@types/semver': 7.3.9
       address: 1.1.2
       axios: 0.23.0_debug@4.3.2
       chalk: 4.1.2
       cheerio: 1.0.0-rc.10
+      color: 4.0.1
       cross-spawn: 7.0.3
       debug: 4.3.2
       fs-extra: 10.0.0
+      glob: 7.2.0
       globby: 11.0.4
       import-lazy: 4.0.0
       lodash: 4.17.21
       mustache: 4.2.0
       pkg-up: 3.1.0
       portfinder: 1.0.28
+      prompts: 2.4.2
       resolve: 1.20.0
       rimraf: 3.0.2
       semver: 7.3.5
@@ -594,6 +604,9 @@ importers:
   packages/utils/compiled/cheerio:
     specifiers: {}
 
+  packages/utils/compiled/color:
+    specifiers: {}
+
   packages/utils/compiled/cross-spawn:
     specifiers: {}
 
@@ -601,6 +614,9 @@ importers:
     specifiers: {}
 
   packages/utils/compiled/fs-extra:
+    specifiers: {}
+
+  packages/utils/compiled/glob:
     specifiers: {}
 
   packages/utils/compiled/import-lazy:
@@ -616,6 +632,9 @@ importers:
     specifiers: {}
 
   packages/utils/compiled/portfinder:
+    specifiers: {}
+
+  packages/utils/compiled/prompts:
     specifiers: {}
 
   packages/utils/compiled/resolve:
@@ -2888,6 +2907,22 @@ packages:
       '@types/responselike': 1.0.0
     dev: true
 
+  /@types/color-convert/2.0.0:
+    resolution: {integrity: sha512-m7GG7IKKGuJUXvkZ1qqG3ChccdIM/qBBo913z+Xft0nKCX4hAU/IxKwZBU4cpRZ7GS5kV4vOblUkILtSShCPXQ==}
+    dependencies:
+      '@types/color-name': 1.1.1
+    dev: true
+
+  /@types/color-name/1.1.1:
+    resolution: {integrity: sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==}
+    dev: true
+
+  /@types/color/3.0.2:
+    resolution: {integrity: sha512-INiJl6sfNn8iyC5paxVzqiVUEj2boIlFki02uRTAkKwAj++7aAF+ZfEv/XrIeBa0XI/fTZuDHW8rEEcEVnON+Q==}
+    dependencies:
+      '@types/color-convert': 2.0.0
+    dev: true
+
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
@@ -3057,6 +3092,12 @@ packages:
 
   /@types/prettier/2.4.1:
     resolution: {integrity: sha512-Fo79ojj3vdEZOHg3wR9ksAMRz4P3S5fDB5e/YWZiFnyFQI1WY2Vftu9XoXVVtJfxB7Bpce/QTqWSSntkz2Znrw==}
+    dev: true
+
+  /@types/prompts/2.0.14:
+    resolution: {integrity: sha512-HZBd99fKxRWpYCErtm2/yxUZv6/PBI9J7N4TNFffl5JbrYMHBwF25DjQGTW3b3jmXq+9P6/8fCIb2ee57BFfYA==}
+    dependencies:
+      '@types/node': 16.11.1
     dev: true
 
   /@types/prop-types/15.7.4:
@@ -4070,6 +4111,20 @@ packages:
 
   /color-name/1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  /color-string/1.6.0:
+    resolution: {integrity: sha512-c/hGS+kRWJutUBEngKKmk4iH3sD59MBkoxVapS/0wgpCz2u7XsNloxknyvBhzwEs1IbV36D9PwqLPJ2DTu3vMA==}
+    dependencies:
+      color-name: 1.1.4
+      simple-swizzle: 0.2.2
+    dev: true
+
+  /color/4.0.1:
+    resolution: {integrity: sha512-rpZjOKN5O7naJxkH2Rx1sZzzBgaiWECc6BYXjeCE6kF0kcASJYbUq02u7JqIHwCb/j3NhV+QhRL2683aICeGZA==}
+    dependencies:
+      color-convert: 2.0.1
+      color-string: 1.6.0
+    dev: true
 
   /colord/2.7.0:
     resolution: {integrity: sha512-pZJBqsHz+pYyw3zpX6ZRXWoCHM1/cvFikY9TV8G3zcejCaKE0lhankoj8iScyrrePA8C7yJ5FStfA9zbcOnw7Q==}
@@ -6033,6 +6088,10 @@ packages:
     resolution: {integrity: sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=}
     dev: true
 
+  /is-arrayish/0.3.2:
+    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+    dev: true
+
   /is-bigint/1.0.4:
     resolution: {integrity: sha512-zB9CruMamjym81i2JZ3UMn54PKGsQzsJeo6xvN3HJJ4CAsQNB6iRutp2To77OfCNuoxspsIhzaPoO1zyCEhFOg==}
     dependencies:
@@ -7042,6 +7101,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
+    dev: false
 
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=}
@@ -7576,6 +7636,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-limit: 3.1.0
+    dev: false
 
   /p-map/4.0.0:
     resolution: {integrity: sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==}
@@ -9092,6 +9153,12 @@ packages:
   /signal-exit/3.0.5:
     resolution: {integrity: sha512-KWcOiKeQj6ZyXx7zq4YxSMgHRlod4czeBQZrPb8OKcohcqAXShm7E20kEMle9WBt26hFcAf0qLOcp5zmY7kOqQ==}
 
+  /simple-swizzle/0.2.2:
+    resolution: {integrity: sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=}
+    dependencies:
+      is-arrayish: 0.3.2
+    dev: true
+
   /sirv/1.0.18:
     resolution: {integrity: sha512-f2AOPogZmXgJ9Ma2M22ZEhc1dNtRIzcEkiflMFeVTRq+OViOZMvH1IPMVOwrKaxpSaHioBJiDR0SluRqGa7atA==}
     engines: {node: '>= 10'}
@@ -9203,6 +9270,7 @@ packages:
 
   /stackframe/1.2.0:
     resolution: {integrity: sha512-GrdeshiRmS1YLMYgzF16olf2jJ/IzxXY9lhKOskuVziubpTYcYqyOwYeJKzQkwy7uN0fYSsbsC4RQaXf9LCrYA==}
+    dev: false
 
   /statuses/1.5.0:
     resolution: {integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=}
