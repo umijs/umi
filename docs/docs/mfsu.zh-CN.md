@@ -70,6 +70,8 @@ mfsu 是一种基于 webpack5 新特性 Module Federation 的打包提速方案�
 - 检查 webpack-analyze 是否存在从 `./node_modules` 加载的依赖。如果没有，说明项目依赖已经都被 mfsu 覆盖。
 - 如果还存在，请通过 issue 反馈给我们，我们期待和您一起把 mfsu 变得更好。
 
+> 注：如果你之前使用非`mfsu`模式运行过应用，请一定要把 src 目录下的 .umi 目录删除，否则可能报错。
+
 ## 在 antd-pro 中使用
 
 mfsu 已经完美支持 antd-pro 和 dumi，在默认的 antd-pro 中启用 mfsu，和在其他项目中使用一样简单：
