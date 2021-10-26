@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "../../packages/bundler-webpack/bin/bundler-webpack.js dev"
+  },
   "devDependencies": {
     "@types/react": "^17.0.30",
     "@types/react-dom": "^17.0.9",

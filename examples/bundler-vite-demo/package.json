@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "../../packages/bundler-vite/bin/bundler-vite.js dev"
+  },
   "devDependencies": {
     "@types/react": "^17.0.30",
     "@types/react-dom": "^17.0.9",
