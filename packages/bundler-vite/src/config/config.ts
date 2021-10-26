@@ -1,3 +1,5 @@
+import { mergeConfig } from 'vite';
+import configPlugins from '../plugins';
 import configTransformer from './transformer';
 
 import type { InlineConfig as ViteInlineConfig } from 'vite';
@@ -11,7 +13,8 @@ interface IOpts {
 }
 
 export async function getConfig(opts: IOpts): Promise<ViteInlineConfig> {
+  const vitePluginsConfig = configPlugins(opts.userConfig);
   const viteConfigFromUserConfig = configTransformer(opts.userConfig);
 
-  return viteConfigFromUserConfig;
+  return mergeConfig(vitePluginsConfig, viteConfigFromUserConfig);
 }
