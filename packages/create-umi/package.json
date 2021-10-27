@@ -2,10 +2,14 @@
   "name": "@umijs/create-umi",
   "version": "4.0.0-alpha.1",
   "description": "@umijs/create-umi",
+  "bin": {
+    "create-umi": "bin/create-umi.js"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "templates"
   ],
   "scripts": {
     "build": "pnpm tsc",
@@ -24,5 +28,8 @@
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/create-umi#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@umijs/bundler-utils": "4.0.0-alpha.1"
   }
 }
