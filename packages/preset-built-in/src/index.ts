@@ -12,6 +12,7 @@ export default () => {
 
       // commands
       require.resolve('./commands/build'),
+      require.resolve('./commands/config/config'),
       require.resolve('./commands/dev/dev'),
       require.resolve('./commands/help'),
       require.resolve('./commands/setup'),

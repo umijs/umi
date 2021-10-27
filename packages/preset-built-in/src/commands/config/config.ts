@@ -1,7 +1,7 @@
 import { IApi } from '../../types';
-import list from './list';
-import remove from './remove';
-import set from './set';
+import { list } from './list';
+import { remove } from './remove';
+import { set } from './set';
 
 export default (api: IApi) => {
   api.registerCommand({
@@ -25,7 +25,7 @@ $ umi config set history "{type:'hash'}"
 $ umi config remove history
 $ umi config r history
     `.trim(),
-    fn({ args }) {
+    async fn({ args }) {
       const { _ } = args;
       const [command, name, value] = _;
       switch (command) {
