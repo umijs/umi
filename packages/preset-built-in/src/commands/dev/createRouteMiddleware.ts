@@ -3,12 +3,13 @@ import { createRequestHandler } from '@umijs/server';
 import { IApi } from '../../types';
 
 export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const { vite } = opts.api.args;
-    return createRequestHandler({
+    const requestHandler = await createRequestHandler({
       routes: opts.api.appData.routes,
       scripts: vite ? ['/.umi/umi.ts'] : ['/umi.js'],
       esmScript: vite,
-    })(req, res, next);
+    });
+    requestHandler(req, res, next);
   };
 }
