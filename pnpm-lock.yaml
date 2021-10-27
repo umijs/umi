@@ -454,7 +454,10 @@ importers:
     specifiers: {}
 
   packages/create-umi:
-    specifiers: {}
+    specifiers:
+      '@umijs/bundler-utils': 4.0.0-alpha.1
+    dependencies:
+      '@umijs/bundler-utils': link:../bundler-utils
 
   packages/mfsu:
     specifiers:
