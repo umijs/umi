@@ -2,6 +2,7 @@ import { getSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi } from '../../types';
+import { getSchemas as getExtraSchemas } from './schema';
 
 function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
   if (
@@ -41,9 +42,14 @@ export default (api: IApi) => {
   };
 
   const bundleSchemas = getSchemas();
-  for (const key of Object.keys(bundleSchemas)) {
+  const extraSchemas = getExtraSchemas();
+  const schemas = {
+    ...bundleSchemas,
+    ...extraSchemas,
+  };
+  for (const key of Object.keys(schemas)) {
     const config: Record<string, any> = {
-      schema: bundleSchemas[key] || ((joi: any) => joi.any()),
+      schema: schemas[key] || ((joi: any) => joi.any()),
     };
     if (key in configDefaults) {
       config.default = configDefaults[key];

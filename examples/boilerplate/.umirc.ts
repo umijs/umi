@@ -6,4 +6,5 @@ export default {
   chainWebpack(memo: any) {
     memo;
   },
+  plugins: [require.resolve('./plugin.ts')],
 };

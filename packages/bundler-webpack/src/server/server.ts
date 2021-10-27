@@ -19,6 +19,7 @@ interface IOpts {
   userConfig: IConfig;
   beforeMiddlewares?: any[];
   afterMiddlewares?: any[];
+  onDevCompileDone?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -49,6 +50,7 @@ export async function createServer(opts: IOpts) {
 
   // hmr hooks
   let stats: any;
+  let isFirstCompile = true;
   compiler.compilers.forEach(addHooks);
   function addHooks(compiler: webpack.Compiler) {
     compiler.hooks.invalid.tap('server', () => {
@@ -57,7 +59,12 @@ export async function createServer(opts: IOpts) {
     compiler.hooks.done.tap('server', (_stats) => {
       stats = _stats;
       sendStats(getStats(stats));
-      // this.stats = stats;
+      opts.onDevCompileDone?.({
+        stats,
+        isFirstCompile,
+        time: stats.endTime - stats.startTime,
+      });
+      isFirstCompile = false;
     });
   }
   function sendStats(

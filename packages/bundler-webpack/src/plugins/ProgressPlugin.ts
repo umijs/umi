@@ -45,7 +45,11 @@ class UmiProgressPlugin extends ProgressPlugin {
         });
       } else {
         const prefix = this.options.name ? `${this.options.name} ` : '';
-        logger.event(`${prefix}compiled successfully`);
+        logger.event(
+          `${prefix}compiled successfully in ${
+            stats.endTime - stats.startTime
+          } ms (${stats.compilation.modules.size} modules)`,
+        );
       }
     });
   }
