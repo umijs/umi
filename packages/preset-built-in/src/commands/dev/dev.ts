@@ -136,6 +136,12 @@ PORT=8888 umi dev
         host: api.appData.host,
         beforeMiddlewares: [faviconMiddleware],
         afterMiddlewares: [createRouteMiddleware({ api })],
+        onDevCompileDone(opts: any) {
+          api.applyPlugins({
+            key: 'onDevCompileDone',
+            args: opts,
+          });
+        },
       };
       if (api.args.vite) {
         await bundlerVite.dev(opts);

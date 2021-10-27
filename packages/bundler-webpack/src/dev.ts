@@ -8,6 +8,7 @@ import { Env, IConfig } from './types';
 interface IOpts {
   afterMiddlewares?: any[];
   beforeMiddlewares?: any[];
+  onDevCompileDone?: Function;
   port?: number;
   host?: string;
   cwd: string;
@@ -58,5 +59,6 @@ export async function dev(opts: IOpts) {
     port: opts.port,
     host: opts.host,
     afterMiddlewares: [...(opts.afterMiddlewares || [])],
+    onDevCompileDone: opts.onDevCompileDone,
   });
 }

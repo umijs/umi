@@ -1,7 +1,7 @@
 import { winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, lstatSync, readdirSync, statSync } from 'fs';
-import { join, relative, resolve } from 'path';
+import { extname, join, relative, resolve } from 'path';
 import { defineRoutes } from './defineRoutes';
 import {
   byLongestFirst,
@@ -63,7 +63,10 @@ function visitFiles(opts: {
     let stat = lstatSync(file);
     if (stat.isDirectory()) {
       visitFiles({ ...opts, dir: file });
-    } else if (stat.isFile()) {
+    } else if (
+      stat.isFile() &&
+      ['.tsx', '.ts', '.js', '.jsx'].includes(extname(file))
+    ) {
       opts.visitor(relative(opts.baseDir, file));
     }
   }
