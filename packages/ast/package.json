@@ -1,0 +1,31 @@
+{
+  "name": "@umijs/ast",
+  "version": "4.0.0-alpha.1",
+  "description": "@umijs/ast",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm tsc",
+    "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "dev": "pnpm build -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/ast#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@umijs/bundler-utils": "4.0.0-alpha.1"
+  }
+}
