@@ -51,8 +51,11 @@ umi build --clean
         entry: {
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
-        onBuildComplete(opts: { stats: any }) {
-          opts;
+        onBuildComplete(opts: any) {
+          api.applyPlugins({
+            key: 'onBuildComplete',
+            args: opts,
+          });
         },
         clean: api.args.clean,
       };

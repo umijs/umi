@@ -8,7 +8,7 @@ import { isTypeScriptFile } from './utils/isTypeScriptFile';
 export default (api: IApi) => {
   [
     'onGenerateFiles',
-    // 'onBuildComplete',
+    'onBuildComplete',
     // 'onExit',
     // 'onPatchRoute',
     // 'onPatchRouteBefore',

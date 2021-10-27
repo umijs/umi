@@ -25,6 +25,12 @@ export type IApi = PluginAPI &
       origin: Record<string, any>;
       current: Record<string, any>;
     }>;
+    onBuildComplete: IEvent<{
+      isFirstCompile: boolean;
+      stats: any;
+      time: number;
+      err?: Error;
+    }>;
     onDevCompileDone: IEvent<{
       isFirstCompile: boolean;
       stats: any;
