@@ -275,6 +275,7 @@ importers:
       ws: 8.2.3
     dependencies:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.1_5ac37ed20a84769dcb451289db4f7be1
+      '@types/hapi__joi': 17.1.7
       '@umijs/babel-preset-umi': link:../babel-preset-umi
       '@umijs/mfsu': link:../mfsu
       '@umijs/utils': link:../utils
@@ -287,7 +288,6 @@ importers:
     devDependencies:
       '@svgr/webpack': 5.5.0
       '@types/express': 4.17.13
-      '@types/hapi__joi': 17.1.7
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.2.0
       autoprefixer: 10.3.7_postcss@8.3.9
@@ -3014,7 +3014,6 @@ packages:
 
   /@types/hapi__joi/17.1.7:
     resolution: {integrity: sha512-byC9slpuqyDeEKegl/ViT8PCQRSp0CYkhLzz0cPxqxV6QC53Ht1cr2jG5iwOvtt/RxylUbTpXNqpgbf9Qu8QFw==}
-    dev: true
 
   /@types/http-cache-semantics/4.0.1:
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
