@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "history": "5.0.1",
-    "react-router-dom": "6.0.0-beta.7"
+    "react-router-dom": "6.0.0-beta.8"
   },
   "devDependencies": {
     "react": "18.0.0-alpha-f2c381131-20211004",
