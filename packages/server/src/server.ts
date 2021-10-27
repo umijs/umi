@@ -55,7 +55,7 @@ ${scripts}
 }
 
 export function createRequestHandler(opts: IOpts): RequestHandler {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     // 匹配路由，不匹配走 next()
     // TODO: cache
     const routes = createServerRoutes({
@@ -64,7 +64,7 @@ export function createRequestHandler(opts: IOpts): RequestHandler {
     const matches = matchRoutes(routes, req.path);
     if (matches) {
       res.set('Content-Type', 'text/html');
-      const markup = getMarkup({ ...opts, path: req.path });
+      const markup = await getMarkup({ ...opts, path: req.path });
       res.end(markup);
     } else {
       next();
