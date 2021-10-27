@@ -487,6 +487,12 @@ importers:
   packages/mfsu/fixtures/getFilePath/package-json-second/foo:
     specifiers: {}
 
+  packages/plugins:
+    specifiers:
+      umi: 4.0.0-alpha.1
+    devDependencies:
+      umi: link:../umi
+
   packages/preset-built-in:
     specifiers:
       '@umijs/ast': 4.0.0-alpha.1
