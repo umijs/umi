@@ -28,6 +28,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@umijs/ast": "4.0.0-alpha.1",
     "@umijs/bundler-webpack": "4.0.0-alpha.1",
     "@umijs/bundler-vite": "4.0.0-alpha.1",
     "@umijs/core": "4.0.0-alpha.1",

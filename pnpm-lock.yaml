@@ -83,6 +83,12 @@ importers:
       react: 18.0.0-alpha-fd5e01c2e-20210913
       react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
 
+  packages/ast:
+    specifiers:
+      '@umijs/bundler-utils': 4.0.0-alpha.1
+    dependencies:
+      '@umijs/bundler-utils': link:../bundler-utils
+
   packages/babel-preset-umi:
     specifiers:
       '@babel/runtime': 7.15.4
@@ -480,6 +486,7 @@ importers:
 
   packages/preset-built-in:
     specifiers:
+      '@umijs/ast': 4.0.0-alpha.1
       '@umijs/bundler-vite': 4.0.0-alpha.1
       '@umijs/bundler-webpack': 4.0.0-alpha.1
       '@umijs/core': 4.0.0-alpha.1
@@ -491,6 +498,7 @@ importers:
       react-router: 6.0.0-beta.7
       react-router-dom: 6.0.0-beta.7
     dependencies:
+      '@umijs/ast': link:../ast
       '@umijs/bundler-vite': link:../bundler-vite
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
