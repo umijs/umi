@@ -1,13 +1,10 @@
-import { getASTByFilePath, removeConfigByName } from '@umijs/ast';
-import { generate } from '@umijs/ast/dist/utils/generate';
+import { generate, getASTByFilePath, removeConfigByName } from '@umijs/ast';
 import { writeFileSync } from 'fs';
 
-const remove = async (mainConfigFile: string, name: string) => {
+export function remove(mainConfigFile: string, name: string) {
   const ast = getASTByFilePath(mainConfigFile);
   if (!ast) return;
   const generateCode = generate(removeConfigByName(ast, name));
-  await writeFileSync(mainConfigFile, generateCode, 'utf-8');
+  writeFileSync(mainConfigFile, generateCode, 'utf-8');
   console.log(`remove config:${name} on ${mainConfigFile}`);
-};
-
-export default remove;
+}

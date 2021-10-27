@@ -2,7 +2,7 @@
 import { IConfig } from '@umijs/bundler-webpack/dist/types';
 import { chalk } from '@umijs/utils';
 
-const list = (config: IConfig, name?: string) => {
+export function list(config: IConfig, name?: string) {
   const getValue = (value: any) => {
     if (typeof value !== 'function') {
       return value;
@@ -30,6 +30,4 @@ const list = (config: IConfig, name?: string) => {
   }
 
   console.log();
-};
-
-export default list;
+}
