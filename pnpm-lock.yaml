@@ -484,6 +484,7 @@ importers:
       '@umijs/bundler-webpack': 4.0.0-alpha.1
       '@umijs/core': 4.0.0-alpha.1
       '@umijs/renderer-react': 4.0.0-alpha.1
+      '@umijs/server': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004
@@ -494,6 +495,7 @@ importers:
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
       '@umijs/renderer-react': link:../renderer-react
+      '@umijs/server': link:../server
       '@umijs/utils': link:../utils
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
@@ -505,10 +507,10 @@ importers:
       history: 5.0.1
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004
-      react-router-dom: 6.0.0-beta.7
+      react-router-dom: 6.0.0-beta.8
     dependencies:
       history: 5.0.1
-      react-router-dom: 6.0.0-beta.7_291a957f278f7aa26ef530933d3fb2a8
+      react-router-dom: 6.0.0-beta.8_291a957f278f7aa26ef530933d3fb2a8
     devDependencies:
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
@@ -516,6 +518,13 @@ importers:
   packages/server:
     specifiers:
       '@types/express': 4.17.13
+      react: 18.0.0-alpha-4298ddbc5-20211023
+      react-dom: 18.0.0-alpha-4298ddbc5-20211023
+      react-router-dom: 6.0.0-beta.8
+    dependencies:
+      react: 18.0.0-alpha-4298ddbc5-20211023
+      react-dom: 18.0.0-alpha-4298ddbc5-20211023_2ced398083923aa365dca9fe160f2852
+      react-router-dom: 6.0.0-beta.8_ceea2d44aceb2ba32350f50f2a522992
     devDependencies:
       '@types/express': 4.17.13
 
@@ -8661,6 +8670,17 @@ packages:
       unpipe: 1.0.0
     dev: true
 
+  /react-dom/18.0.0-alpha-4298ddbc5-20211023_2ced398083923aa365dca9fe160f2852:
+    resolution: {integrity: sha512-3coe1i4Q3xj9uqFX+3+3JLkHZZ/+dPsI7k3cM5w2vR0hybffH81d+A4Pybp5L4vVmKIOkCm8iWZvtGQZOaz95A==}
+    peerDependencies:
+      react: 18.0.0-alpha-4298ddbc5-20211023
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react: 18.0.0-alpha-4298ddbc5-20211023
+      scheduler: 0.21.0-alpha-4298ddbc5-20211023
+    dev: false
+
   /react-dom/18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635:
     resolution: {integrity: sha512-5iYL8W9ySJmn+MtXKOgxD4LoxHaZ0tSM+cjc5966SHFhJxEjKgXPr6X6NuSEbK5OQ8GSVtEJlDE9BmZ1monBWA==}
     peerDependencies:
@@ -8694,19 +8714,6 @@ packages:
     resolution: {integrity: sha512-PgidR3wST3dDYKr6b4pJoqQFpPGNKDSCDx4cZoshjXipw3LzO7mG1My2pwEzz2JVkF+inx3xRpDeQLFQGH/hsQ==}
     engines: {node: '>=0.10.0'}
 
-  /react-router-dom/6.0.0-beta.7_291a957f278f7aa26ef530933d3fb2a8:
-    resolution: {integrity: sha512-XW50WW6YBYbRJwQPIt8SAcXf8Jo47sY5QuEI8Y/TkckekoMVOHcax4CAArrbONV8MTNyZ4jUfDU776G8ToNDgw==}
-    peerDependencies:
-      history: '>=5'
-      react: '>=16.8'
-      react-dom: '>=16.8'
-    dependencies:
-      history: 5.0.1
-      react: 18.0.0-alpha-f2c381131-20211004
-      react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
-      react-router: 6.0.0-beta.7_a226d4b6d4a1b54dc3fde166c351e89c
-    dev: false
-
   /react-router-dom/6.0.0-beta.7_98b0e95f68ac622f80ef243148f20a59:
     resolution: {integrity: sha512-XW50WW6YBYbRJwQPIt8SAcXf8Jo47sY5QuEI8Y/TkckekoMVOHcax4CAArrbONV8MTNyZ4jUfDU776G8ToNDgw==}
     peerDependencies:
@@ -8719,6 +8726,31 @@ packages:
       react-router: 6.0.0-beta.7_4dd5d306b9d43f72893e315a470a8635
     dev: false
 
+  /react-router-dom/6.0.0-beta.8_291a957f278f7aa26ef530933d3fb2a8:
+    resolution: {integrity: sha512-WyiIc6EakJDCo6rUmb7VjCtOpEvm8+4V8CiJdmFPud0lppeNf37TNhTnDQszDbP2y29wBUGb94BOFU2X93uILA==}
+    peerDependencies:
+      history: '>=5'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      history: 5.0.1
+      react: 18.0.0-alpha-f2c381131-20211004
+      react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
+      react-router: 6.0.0-beta.8_a226d4b6d4a1b54dc3fde166c351e89c
+    dev: false
+
+  /react-router-dom/6.0.0-beta.8_ceea2d44aceb2ba32350f50f2a522992:
+    resolution: {integrity: sha512-WyiIc6EakJDCo6rUmb7VjCtOpEvm8+4V8CiJdmFPud0lppeNf37TNhTnDQszDbP2y29wBUGb94BOFU2X93uILA==}
+    peerDependencies:
+      history: '>=5'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      react: 18.0.0-alpha-4298ddbc5-20211023
+      react-dom: 18.0.0-alpha-4298ddbc5-20211023_2ced398083923aa365dca9fe160f2852
+      react-router: 6.0.0-beta.8_2ced398083923aa365dca9fe160f2852
+    dev: false
+
   /react-router/6.0.0-beta.7_4dd5d306b9d43f72893e315a470a8635:
     resolution: {integrity: sha512-n5eIqqY724yW6v2G2DXwcTNwz+NlowV1bOg/OKLz6EtJWD8/lez/5whyfyp9dPkA3ICqYuDZhZxnhk7A/u0aFQ==}
     peerDependencies:
@@ -8728,14 +8760,31 @@ packages:
       react: 18.0.0-alpha-f2c381131-20211004
     dev: false
 
-  /react-router/6.0.0-beta.7_a226d4b6d4a1b54dc3fde166c351e89c:
-    resolution: {integrity: sha512-n5eIqqY724yW6v2G2DXwcTNwz+NlowV1bOg/OKLz6EtJWD8/lez/5whyfyp9dPkA3ICqYuDZhZxnhk7A/u0aFQ==}
+  /react-router/6.0.0-beta.8_2ced398083923aa365dca9fe160f2852:
+    resolution: {integrity: sha512-pn3j01FA44yWP5gaHvz3CMVjFnmg5NS/BQ5IIalY7jw2yEKgr+OHB1gxTorakpiMaPOXXbfyUt3t4yZ4UBwE5Q==}
+    peerDependencies:
+      history: '>=5'
+      react: '>=16.8'
+    dependencies:
+      react: 18.0.0-alpha-4298ddbc5-20211023
+    dev: false
+
+  /react-router/6.0.0-beta.8_a226d4b6d4a1b54dc3fde166c351e89c:
+    resolution: {integrity: sha512-pn3j01FA44yWP5gaHvz3CMVjFnmg5NS/BQ5IIalY7jw2yEKgr+OHB1gxTorakpiMaPOXXbfyUt3t4yZ4UBwE5Q==}
     peerDependencies:
       history: '>=5'
       react: '>=16.8'
     dependencies:
       history: 5.0.1
       react: 18.0.0-alpha-f2c381131-20211004
+    dev: false
+
+  /react/18.0.0-alpha-4298ddbc5-20211023:
+    resolution: {integrity: sha512-RmJoUjvn4Ol3kzAgqyAWXpa+7Apj8KlN1/3QvGEDDpVvc7njrrQR49PKkYeFphejUle6GBQhaN74iQdQ9JqRiw==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
     dev: false
 
   /react/18.0.0-alpha-f2c381131-20211004:
@@ -8985,6 +9034,13 @@ packages:
     dependencies:
       xmlchars: 2.2.0
     dev: true
+
+  /scheduler/0.21.0-alpha-4298ddbc5-20211023:
+    resolution: {integrity: sha512-mu+N6DfS+o7rZZWfuim7uayO/eCy+nkbLLOgRw70Lo+TRb8aWO6h5fRgN2cMMFUVRRyH+QFHsBZPhOY6M+Em7A==}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: false
 
   /scheduler/0.21.0-alpha-f2c381131-20211004:
     resolution: {integrity: sha512-9IFi0sFfOCld+bgWuMjWuiIr8qmOYZx1HIUVwHZwphnnq9anXY9D2HatjT2ITZifjO1vsSy93isp3f4+vdgreA==}

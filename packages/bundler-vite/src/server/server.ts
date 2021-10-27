@@ -1,15 +1,14 @@
-import http from 'http';
-import { createServer as createViteServer } from 'vite';
 import { logger } from '@umijs/utils';
-import express from '../../compiled/express';
-import pluginOnHotUpdate from './plugins/onHotUpdate';
-
+import http from 'http';
 import type {
-  InlineConfig as ViteInlineConfig,
-  HmrContext,
   DepOptimizationMetadata,
+  HmrContext,
+  InlineConfig as ViteInlineConfig,
 } from 'vite';
+import { createServer as createViteServer } from 'vite';
+import express from '../../compiled/express';
 import type { IConfig } from '../types';
+import pluginOnHotUpdate from './plugins/onHotUpdate';
 
 interface IOpts {
   cwd: string;
@@ -63,6 +62,7 @@ export async function createServer(opts: IOpts) {
   // bundless
 
   // after middlewares
+  console.log('test', opts.afterMiddlewares);
   (opts.afterMiddlewares || []).forEach((m) => app.use(m));
 
   const server = http.createServer(app);
