@@ -28,15 +28,17 @@ export default (api: IApi) => {
           pkg: api.pkg,
           cwd: api.cwd,
           dep: 'react',
-        }) || dirname(require.resolve('react/package')),
+        }) || dirname(require.resolve('react/package.json')),
       'react-dom':
         resolveProjectDep({
           pkg: api.pkg,
           cwd: api.cwd,
           dep: 'react-dom',
-        }) || dirname(require.resolve('react-dom/package')),
-      'react-router': dirname(require.resolve('react-router/package')),
-      'react-router-dom': dirname(require.resolve('react-router-dom/package')),
+        }) || dirname(require.resolve('react-dom/package.json')),
+      'react-router': dirname(require.resolve('react-router/package.json')),
+      'react-router-dom': dirname(
+        require.resolve('react-router-dom/package.json'),
+      ),
     },
     externals: {},
   };
