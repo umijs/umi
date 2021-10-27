@@ -27,12 +27,14 @@ interface IOpts {
    *                  it would be the modules of HMR Context before each HMR is sent
    */
   onDevCompileDone?: (args: {
+    time: number;
     isFirstCompile: boolean;
     stats: HmrContext['modules'] | DepOptimizationMetadata;
   }) => Promise<void> | void;
 }
 
 export async function createServer(opts: IOpts) {
+  const startTms = +new Date();
   const { viteConfig, onDevCompileDone } = opts;
   const app = express();
   const vite = await createViteServer({
@@ -42,7 +44,11 @@ export async function createServer(opts: IOpts) {
       ? {
           plugins: viteConfig.plugins!.concat([
             pluginOnHotUpdate(async (modules) => {
-              await onDevCompileDone({ isFirstCompile: false, stats: modules });
+              await onDevCompileDone({
+                time: 0,
+                isFirstCompile: false,
+                stats: modules,
+              });
             }),
           ]),
         }
@@ -87,6 +93,7 @@ export async function createServer(opts: IOpts) {
   server.listen(port, async () => {
     if (typeof onDevCompileDone === 'function') {
       await onDevCompileDone({
+        time: +new Date() - startTms,
         isFirstCompile: true,
         // @ts-ignore
         stats: vite._optimizeDepsMetadata,
