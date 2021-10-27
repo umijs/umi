@@ -16,30 +16,24 @@ interface IOpts {
   >;
   scripts: string[];
   esmScript?: boolean;
-  modifyHTML?: (opts: { html: string; path: string }) => string;
+  modifyHTML?: (opts: { html: string; path?: string }) => Promise<string>;
 }
 
-export function createRequestHandler(opts: IOpts): RequestHandler {
-  return (req, res, next) => {
-    // 匹配路由，不匹配走 next()
-    // TODO: cache
-    const routes = createServerRoutes({
-      routesById: opts.routes,
-    });
-    const matches = matchRoutes(routes, req.path);
-    if (matches) {
-      // TODO: use real component
-      let markup = ReactDOMServer.renderToString(
-        React.createElement('div', { id: 'root' }),
-      );
-      const scripts = opts.scripts.map(
-        (script) =>
-          `<script${
-            opts.esmScript ? ' type="module"' : ''
-          } src="${script}"></script>`,
-      );
-      // TODO: support config
-      markup = `<!DOCTYPE html>
+export async function getMarkup(
+  opts: Pick<IOpts, 'scripts' | 'esmScript' | 'modifyHTML'> & { path?: string },
+) {
+  // TODO: use real component
+  let markup = ReactDOMServer.renderToString(
+    React.createElement('div', { id: 'root' }),
+  );
+  const scripts = opts.scripts.map(
+    (script) =>
+      `<script${
+        opts.esmScript ? ' type="module"' : ''
+      } src="${script}"></script>`,
+  );
+  // TODO: support config
+  markup = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8" />
@@ -54,10 +48,23 @@ ${markup}
 ${scripts}
 </body>
 </html>`;
-      if (opts.modifyHTML) {
-        markup = opts.modifyHTML({ html: markup, path: req.path });
-      }
+  if (opts.modifyHTML) {
+    markup = await opts.modifyHTML({ html: markup, path: opts.path });
+  }
+  return markup;
+}
+
+export function createRequestHandler(opts: IOpts): RequestHandler {
+  return (req, res, next) => {
+    // 匹配路由，不匹配走 next()
+    // TODO: cache
+    const routes = createServerRoutes({
+      routesById: opts.routes,
+    });
+    const matches = matchRoutes(routes, req.path);
+    if (matches) {
       res.set('Content-Type', 'text/html');
+      const markup = getMarkup({ ...opts, path: req.path });
       res.end(markup);
     } else {
       next();

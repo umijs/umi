@@ -1,4 +1,6 @@
-import { importLazy } from '@umijs/utils';
+import { getMarkup } from '@umijs/server';
+import { importLazy, logger } from '@umijs/utils';
+import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../types';
 import { clearTmp } from '../utils/clearTmp';
@@ -23,7 +25,7 @@ COMPRESS=none umi build
 # clean and build
 umi build --clean
 `,
-    async fn() {
+    fn: async function () {
       // clear tmp except cache
       clearTmp(api.paths.absTmpPath);
 
@@ -61,6 +63,19 @@ umi build --clean
       }
 
       // generate html
+      const { vite } = api.args;
+      const markup = await getMarkup({
+        scripts: ['/umi.js'],
+        esmScript: vite,
+        // modifyHTML: () => {},
+        path: '/',
+      });
+      writeFileSync(
+        join(api.paths.absOutputPath, 'index.html'),
+        markup,
+        'utf-8',
+      );
+      logger.event('build index.html');
 
       // print size
     },
