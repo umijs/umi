@@ -1,7 +1,10 @@
 import type { Root } from '@umijs/core/compiled/@hapi/joi';
 
-export function getSchemas(): Record<string, (joi: Root) => any> {
+export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
-    plugins: (joi) => joi.array().items(joi.string()),
+    plugins: (Joi) => Joi.array().items(Joi.string()),
+    favicon: (Joi) => Joi.string(),
+    headScripts: (Joi) => Joi.array().items(Joi.alternatives(Joi.string())),
+    scripts: (Joi) => Joi.array().items(Joi.alternatives(Joi.string())),
   };
 }

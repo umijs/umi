@@ -72,6 +72,7 @@ umi build --clean
         esmScript: vite,
         // modifyHTML: () => {},
         path: '/',
+        config: api.config,
       });
       writeFileSync(
         join(api.paths.absOutputPath, 'index.html'),
