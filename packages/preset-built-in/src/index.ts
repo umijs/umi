@@ -1,3 +1,4 @@
+export type { IApi } from './types';
 export default () => {
   return {
     plugins: [

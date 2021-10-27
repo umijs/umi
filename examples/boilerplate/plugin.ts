@@ -1,4 +1,4 @@
-import { IApi } from '../../packages/preset-built-in/src/types';
+import { IApi } from 'umi';
 
 export default (api: IApi) => {
   api.onDevCompileDone((opts) => {
