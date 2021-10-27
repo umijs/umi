@@ -1,6 +1,7 @@
 /node_modules
 /examples/*/.mfsu
 /examples/*/.umi
+/examples/*/.umi-production
 /examples/*/dist
 /examples/*/node_modules
 /packages/*/node_modules
@@ -8,3 +9,4 @@
 /packages/*/tsconfig.tsbuildinfo
 /packages/*/src/**/fixtures/*/dist
 /packages/*/src/**/fixtures/*/.umi
+/packages/*/src/**/fixtures/*/.umi-production
