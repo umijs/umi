@@ -8,7 +8,7 @@ async function runGenerator(args: any) {
   const service = new Service({
     cwd,
     env: Env.test,
-    plugins: [require.resolve(join(cwd, 'p1')), require.resolve('./index')],
+    plugins: [require.resolve(join(cwd, 'p1')), require.resolve('./config')],
   });
   await service.run({
     name: 'config',
