@@ -1,6 +1,6 @@
+import { viteBuild } from './build/build';
 import { getConfig } from './config/config';
 import { Env, IConfig } from './types';
-import { viteBuild } from './build/build';
 
 interface IOpts {
   cwd: string;
@@ -18,8 +18,7 @@ export async function build(opts: IOpts): Promise<void> {
     entry: opts.entry,
     userConfig,
   });
-  
-  viteBuild({
+  await viteBuild({
     viteConfig,
     userConfig,
     cwd: opts.cwd,
