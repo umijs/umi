@@ -49,14 +49,13 @@ export default function (cwd: string, args: IUmiTestArgs) {
     ],
     testPathIgnorePatterns: ['/node_modules/', '/fixtures/'],
     transform: {
-      '^.+\\.(js|jsx|ts|tsx)$': require.resolve(
-        '../../helpers/transformers/javascript',
-      ),
+      '^.+\\.(js|jsx|ts|tsx)$': ['@swc-node/jest'],
       '^.+\\.(css|less|sass|scss|stylus)$': require.resolve(
         '../../helpers/transformers/css',
       ),
-      '^(?!.*\\.(js|jsx|ts|tsx|css|less|sass|scss|stylus|json)$)':
-        require.resolve('../../helpers/transformers/file'),
+      '^(?!.*\\.(js|jsx|ts|tsx|css|less|sass|scss|stylus|json)$)': require.resolve(
+        '../../helpers/transformers/file',
+      ),
     },
     verbose: true,
     transformIgnorePatterns: [
