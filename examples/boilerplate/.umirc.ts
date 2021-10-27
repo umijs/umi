@@ -7,4 +7,7 @@ export default {
     memo;
   },
   plugins: [require.resolve('./plugin.ts')],
+  favicon: 'https://sivers.com/favicon.ico',
+  headScripts: [`console.log('head script')`],
+  scripts: [`console.log('script')`],
 };

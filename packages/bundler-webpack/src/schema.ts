@@ -23,102 +23,90 @@ const DEVTOOL_REGEX = new RegExp(
     `(${options.join('$|')})`, // one of the options
 );
 
-export function getSchemas(): Record<string, (joi: Root) => any> {
+export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
-    alias: (joi) => joi.object(),
-    chainWebpack: (joi) => joi.function(),
-    copy: (joi) =>
-      joi.array().items(
-        joi.alternatives().try(
-          joi.object({
-            from: joi.string(),
-            to: joi.string(),
+    alias: (Joi) => Joi.object(),
+    chainWebpack: (Joi) => Joi.function(),
+    copy: (Joi) =>
+      Joi.array().items(
+        Joi.alternatives().try(
+          Joi.object({
+            from: Joi.string(),
+            to: Joi.string(),
           }),
-          joi.string(),
+          Joi.string(),
         ),
       ),
-    cssLoader: (joi) => joi.object(),
-    cssLoaderModules: (joi) => joi.object(),
-    cssMinifier: (joi) =>
-      joi
-        .string()
-        .valid(CSSMinifier.cssnano, CSSMinifier.esbuild, CSSMinifier.none),
-    cssMinifierOptions: (joi) => joi.object(),
-    define: (joi) => joi.object(),
-    depTranspiler: (joi) =>
-      joi
-        .string()
-        .valid(
-          Transpiler.babel,
-          Transpiler.esbuild,
-          Transpiler.swc,
-          Transpiler.none,
-        ),
-    devtool: (joi) =>
-      joi.alternatives().try(joi.string().regex(DEVTOOL_REGEX), joi.boolean()),
-    externals: (joi) =>
-      joi
-        .alternatives()
-        .try(
-          joi
-            .object()
-            .pattern(/.+/, [
-              joi.string(),
-              joi.boolean(),
-              joi.object().pattern(/.+/, [joi.string(), joi.boolean()]),
-            ]),
-          joi.string(),
-          joi.func().arity(3),
-          joi.object().regex(),
-        ),
-    extraBabelPlugins: (joi) =>
-      joi
-        .alternatives()
-        .try(
-          joi.string(),
-          joi.array().items(joi.alternatives().try(joi.string(), joi.object())),
-        ),
-    extraBabelPresets: (joi) =>
-      joi
-        .alternatives()
-        .try(
-          joi.string(),
-          joi.array().items(joi.alternatives().try(joi.string(), joi.object())),
-        ),
-    extraPostCSSPlugins: (joi) => joi.array(),
-    hash: (joi) => joi.boolean(),
-    ignoreMomentLocale: (joi) => joi.boolean(),
-    jsMinifier: (joi) =>
-      joi
-        .string()
-        .valid(
-          JSMinifier.esbuild,
-          JSMinifier.swc,
-          JSMinifier.terser,
-          JSMinifier.uglifyJs,
-          JSMinifier.none,
-        ),
-    jsMinifierOptions: (joi) => joi.object(),
-    lessLoader: (joi) => joi.object(),
-    outputPath: (joi) => joi.string(),
-    postcssLoader: (joi) => joi.object(),
-    proxy: (joi) => joi.object(),
-    publicPath: (joi) => joi.string(),
-    purgeCSS: (joi) => joi.object(),
-    sassLoader: (joi) => joi.object(),
-    srcTranspiler: (joi) =>
-      joi
-        .string()
-        .valid(
-          Transpiler.babel,
-          Transpiler.esbuild,
-          Transpiler.swc,
-          Transpiler.none,
-        ),
-    styleLoader: (joi) => joi.object(),
-    svgr: (joi) => joi.object(),
-    svgo: (joi) => joi.alternatives().try(joi.object(), joi.boolean()),
-    targets: (joi) => joi.object(),
-    writeToDisk: (joi) => joi.boolean(),
+    cssLoader: (Joi) => Joi.object(),
+    cssLoaderModules: (Joi) => Joi.object(),
+    cssMinifier: (Joi) =>
+      Joi.string().valid(
+        CSSMinifier.cssnano,
+        CSSMinifier.esbuild,
+        CSSMinifier.none,
+      ),
+    cssMinifierOptions: (Joi) => Joi.object(),
+    define: (Joi) => Joi.object(),
+    depTranspiler: (Joi) =>
+      Joi.string().valid(
+        Transpiler.babel,
+        Transpiler.esbuild,
+        Transpiler.swc,
+        Transpiler.none,
+      ),
+    devtool: (Joi) =>
+      Joi.alternatives().try(Joi.string().regex(DEVTOOL_REGEX), Joi.boolean()),
+    externals: (Joi) =>
+      Joi.alternatives().try(
+        Joi.object().pattern(/.+/, [
+          Joi.string(),
+          Joi.boolean(),
+          Joi.object().pattern(/.+/, [Joi.string(), Joi.boolean()]),
+        ]),
+        Joi.string(),
+        Joi.func().arity(3),
+        Joi.object().regex(),
+      ),
+    extraBabelPlugins: (Joi) =>
+      Joi.alternatives().try(
+        Joi.string(),
+        Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.object())),
+      ),
+    extraBabelPresets: (Joi) =>
+      Joi.alternatives().try(
+        Joi.string(),
+        Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.object())),
+      ),
+    extraPostCSSPlugins: (Joi) => Joi.array(),
+    hash: (Joi) => Joi.boolean(),
+    ignoreMomentLocale: (Joi) => Joi.boolean(),
+    jsMinifier: (Joi) =>
+      Joi.string().valid(
+        JSMinifier.esbuild,
+        JSMinifier.swc,
+        JSMinifier.terser,
+        JSMinifier.uglifyJs,
+        JSMinifier.none,
+      ),
+    jsMinifierOptions: (Joi) => Joi.object(),
+    lessLoader: (Joi) => Joi.object(),
+    outputPath: (Joi) => Joi.string(),
+    postcssLoader: (Joi) => Joi.object(),
+    proxy: (Joi) => Joi.object(),
+    publicPath: (Joi) => Joi.string(),
+    purgeCSS: (Joi) => Joi.object(),
+    sassLoader: (Joi) => Joi.object(),
+    srcTranspiler: (Joi) =>
+      Joi.string().valid(
+        Transpiler.babel,
+        Transpiler.esbuild,
+        Transpiler.swc,
+        Transpiler.none,
+      ),
+    styleLoader: (Joi) => Joi.object(),
+    svgr: (Joi) => Joi.object(),
+    svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
+    targets: (Joi) => Joi.object(),
+    writeToDisk: (Joi) => Joi.boolean(),
   };
 }

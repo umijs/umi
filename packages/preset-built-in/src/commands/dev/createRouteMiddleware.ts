@@ -9,6 +9,7 @@ export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
       routes: opts.api.appData.routes,
       scripts: vite ? ['/.umi/umi.ts'] : ['/umi.js'],
       esmScript: vite,
+      config: opts.api.config,
     });
     requestHandler(req, res, next);
   };
