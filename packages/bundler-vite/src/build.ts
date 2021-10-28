@@ -1,4 +1,8 @@
-import { viteBuild } from './build/build';
+import fs from 'fs';
+import path from 'path';
+import { build as viteBuilder } from 'vite';
+import { mergeConfig } from 'vite';
+import deleteOuputFiles from './plugins/deleteOuputFiles';
 import { getConfig } from './config/config';
 import { Env, IConfig } from './types';
 
@@ -10,19 +14,89 @@ interface IOpts {
   clean?: boolean;
 }
 
+interface IBuildResult {
+  isFirstCompile: boolean;
+  stats?: any;
+  time: number;
+  err?: Error;
+}
+
+/**
+ * get umi template directory from entry
+ */
+function getUmiTmpDir(entry: IOpts['entry']) {
+  const mainEntry = Object.values(entry).find((p) => p.includes('/umi.ts'))!;
+
+  return path.dirname(mainEntry);
+}
+
+/**
+ * generate temp html entry for vite builder
+ * @param cwd   project root
+ * @param entry umi entry config
+ */
+function generateTempEntry(cwd: string, entry: IOpts['entry']) {
+  const entryTmpDir = path.join(getUmiTmpDir(entry), '.bundler-vite-entry');
+
+  fs.mkdirSync(entryTmpDir);
+
+  return Object.keys(entry).reduce<IOpts['entry']>((r, name) => {
+    const entryFilePath = path.join(entryTmpDir, `${name}.html`);
+
+    fs.writeFileSync(
+      entryFilePath,
+      `<html><body><script type="module" src="${entry[name]}"></script></body></html>`,
+      'utf8',
+    );
+
+    return {
+      ...r,
+      [name]: path.relative(cwd, entryFilePath),
+    };
+  }, {});
+}
+
 export async function build(opts: IOpts): Promise<void> {
-  const userConfig = opts.config;
-  const viteConfig = await getConfig({
+  const startTms = +new Date();
+  const result: IBuildResult = {
+    isFirstCompile: true,
+    time: 0,
+  };
+  const tmpHtmlEntry = generateTempEntry(opts.cwd, opts.entry);
+  const viteUserConfig = await getConfig({
     cwd: opts.cwd,
     env: Env.production,
     entry: opts.entry,
-    userConfig,
+    userConfig: opts.config,
   });
-  await viteBuild({
-    viteConfig,
-    userConfig,
-    cwd: opts.cwd,
-    clean: opts.clean,
-    onBuildComplete: opts.onBuildComplete,
-  });
+  const viteBuildConfig = mergeConfig(
+    {
+      root: opts.cwd,
+      mode: Env.production,
+      build: {
+        // generate assets into top dir
+        assetsDir: '',
+        // same as umi default
+        cssCodeSplit: false,
+        rollupOptions: {
+          // use temp html entry for vite build
+          input: tmpHtmlEntry,
+          // remove temp html entry after build
+          plugins: [deleteOuputFiles(Object.values(tmpHtmlEntry))],
+        },
+      },
+    },
+    viteUserConfig,
+  );
+
+  try {
+    result.stats = await viteBuilder(
+      mergeConfig(viteBuildConfig, viteUserConfig),
+    );
+    result.time = +new Date() - startTms;
+  } catch (err: any) {
+    result.err = err;
+  }
+
+  opts.onBuildComplete && opts.onBuildComplete(result);
 }
