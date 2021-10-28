@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@swc/core": "^1.2.101",
+    "esbuild-jest": "^0.5.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.1",
     "@types/react": "^17.0.30",
@@ -28,7 +28,6 @@
     "prettier-plugin-organize-imports": "^2.3.4",
     "resolve": "^1.20.0",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.7",
     "ts-node": "^10.3.0",
     "typescript": "^4.5.0-beta",
     "uglify-js": "^3.14.2",
