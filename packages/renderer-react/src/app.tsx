@@ -10,6 +10,7 @@ export function App(props: {
   location: Location;
   routes: IRoutesById;
   routeComponents: Record<string, any>;
+  pluginManager: any;
 }) {
   const clientRoutes = React.useMemo(() => {
     return createClientRoutes({
@@ -22,6 +23,7 @@ export function App(props: {
       value={{
         routes: props.routes,
         routeComponents: props.routeComponents,
+        pluginManager: props.pluginManager,
         clientRoutes,
       }}
     >

@@ -13,7 +13,7 @@ export type IApi = PluginAPI &
       content?: string;
       tpl?: string;
       tplPath?: string;
-      context?: Record<string, string>;
+      context?: Record<string, any>;
     }) => void;
     addTmpGenerateWatcherPaths: IAdd<null, string[]>;
     registerGenerator: (command: IRegisterGenerator) => void;
@@ -36,4 +36,6 @@ export type IApi = PluginAPI &
       stats: any;
       time: number;
     }>;
+    addRuntimePlugin: IAdd<null, string[]>;
+    addRuntimePluginKey: IAdd<null, string[]>;
   };
