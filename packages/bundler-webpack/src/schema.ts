@@ -26,6 +26,7 @@ const DEVTOOL_REGEX = new RegExp(
 export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
     alias: (Joi) => Joi.object(),
+    autoCSSModules: (Joi) => Joi.boolean(),
     chainWebpack: (Joi) => Joi.function(),
     copy: (Joi) =>
       Joi.array().items(
@@ -78,6 +79,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.object())),
       ),
     extraPostCSSPlugins: (Joi) => Joi.array(),
+    fastRefresh: (Joi) => Joi.boolean(),
     hash: (Joi) => Joi.boolean(),
     ignoreMomentLocale: (Joi) => Joi.boolean(),
     jsMinifier: (Joi) =>
@@ -90,6 +92,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       ),
     jsMinifierOptions: (Joi) => Joi.object(),
     lessLoader: (Joi) => Joi.object(),
+    mfsu: (Joi) => Joi.alternatives(Joi.object(), Joi.boolean()),
     outputPath: (Joi) => Joi.string(),
     postcssLoader: (Joi) => Joi.object(),
     proxy: (Joi) => Joi.object(),

@@ -79,7 +79,7 @@ export async function addJavaScriptRules(opts: IOpts) {
           babelrc: false,
           cacheDirectory: false,
           // process.env.BABEL_CACHE !== 'none'
-          //   ? winPath(`${prefix}/.umi/.cache/babel-loader`)
+          //   ? join(cwd, `.umi/.cache/babel-loader`)
           //   : false,
           targets: userConfig.targets,
           presets: [
