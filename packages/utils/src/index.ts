@@ -13,6 +13,7 @@ import lodash from '../compiled/lodash';
 import Mustache from '../compiled/mustache';
 import pkgUp from '../compiled/pkg-up';
 import portfinder from '../compiled/portfinder';
+import prettier from '../compiled/prettier';
 import prompts from '../compiled/prompts';
 import resolve from '../compiled/resolve';
 import rimraf from '../compiled/rimraf';
@@ -45,6 +46,7 @@ export {
   Mustache,
   pkgUp,
   portfinder,
+  prettier,
   prompts,
   resolve,
   rimraf,

@@ -26,11 +26,11 @@ $ umi config remove history
 $ umi config r history
     `.trim(),
     async fn({ args }) {
-      const { _ } = args;
+      const { _, all = false } = args;
       const [command, name, value] = _;
       switch (command) {
         case 'list':
-          list(api.config, args.name || '');
+          list(all ? api.config : api.userConfig, args.name || '');
           break;
         case 'get':
           list(api.config, name);

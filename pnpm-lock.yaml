@@ -589,6 +589,7 @@ importers:
       mustache: 4.2.0
       pkg-up: 3.1.0
       portfinder: 1.0.28
+      prettier: 2.4.1
       prompts: 2.4.2
       resolve: 1.20.0
       rimraf: 3.0.2
@@ -622,6 +623,7 @@ importers:
       mustache: 4.2.0
       pkg-up: 3.1.0
       portfinder: 1.0.28
+      prettier: 2.4.1
       prompts: 2.4.2
       resolve: 1.20.0
       rimraf: 3.0.2
@@ -669,6 +671,9 @@ importers:
     specifiers: {}
 
   packages/utils/compiled/portfinder:
+    specifiers: {}
+
+  packages/utils/compiled/prettier:
     specifiers: {}
 
   packages/utils/compiled/prompts:
