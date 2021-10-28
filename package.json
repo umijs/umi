@@ -19,6 +19,7 @@
     "@umijs/bundler-vite": "link:packages/bundler-vite",
     "@umijs/bundler-webpack": "link:packages/bundler-webpack",
     "@umijs/utils": "link:packages/utils",
+    "@umijs/server": "link:packages/server",
     "@vercel/ncc": "^0.31.1",
     "dts-packer": "^0.0.2",
     "esno": "^0.10.1",

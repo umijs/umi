@@ -12,6 +12,7 @@ importers:
       '@umijs/bundler-utils': link:packages/bundler-utils
       '@umijs/bundler-vite': link:packages/bundler-vite
       '@umijs/bundler-webpack': link:packages/bundler-webpack
+      '@umijs/server': link:packages/server
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': ^0.31.1
       dts-packer: ^0.0.2
@@ -37,6 +38,7 @@ importers:
       '@umijs/bundler-utils': link:packages/bundler-utils
       '@umijs/bundler-vite': link:packages/bundler-vite
       '@umijs/bundler-webpack': link:packages/bundler-webpack
+      '@umijs/server': link:packages/server
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.31.1
       dts-packer: 0.0.2
@@ -199,6 +201,7 @@ importers:
       '@svgr/core': 5.5.0
       '@umijs/bundler-utils': 4.0.0-alpha.1
       '@umijs/utils': 4.0.0-alpha.1
+      '@vitejs/plugin-legacy': 1.6.2
       '@vitejs/plugin-react': 1.0.5
       express: 4.17.1
       postcss-preset-env: 6.7.0
@@ -210,6 +213,7 @@ importers:
       '@svgr/core': 5.5.0
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
+      '@vitejs/plugin-legacy': 1.6.2_vite@2.6.10
       '@vitejs/plugin-react': 1.0.5
       postcss-preset-env: 6.7.0
       rollup-plugin-copy: 3.4.0
@@ -2192,6 +2196,11 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  /@babel/standalone/7.15.8:
+    resolution: {integrity: sha512-EF2uQLeuwflnPRGetWH2Z400ITOSK7YbkXIKxY91EWSiOJ8xsbupT3sx3sFRwVyQgjsHSILFDzLcSo/rGspLhQ==}
+    engines: {node: '>=6.9.0'}
+    dev: false
+
   /@babel/template/7.14.5:
     resolution: {integrity: sha512-6Z3Po85sfxRGachLULUhOmvAaOo7xCvqGQtxINai2mEGPFm6pQ4z5QInFnUrRpfoSV60BnjyF5F3c+15fxFV1g==}
     engines: {node: '>=6.9.0'}
@@ -3276,6 +3285,20 @@ packages:
     resolution: {integrity: sha512-g0FAxwdViI6UzsiVz5HssIHqjcPa1EHL6h+2dcJD893SoCJaGdqqgUF09xnMW6goWnnhbLvgiKlgJWrJa+7qYA==}
     hasBin: true
     dev: true
+
+  /@vitejs/plugin-legacy/1.6.2_vite@2.6.10:
+    resolution: {integrity: sha512-p5Bv/827WUpVN2m95ZYXzmjE3AblFE4CHasVoZ7dIwOPlyNcpg70SehEi5AWqyC0E7C1rHD8Nju9rWoV9uBLiw==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      vite: ^2.0.0
+    dependencies:
+      '@babel/standalone': 7.15.8
+      core-js: 3.18.3
+      magic-string: 0.25.7
+      regenerator-runtime: 0.13.9
+      systemjs: 6.11.0
+      vite: 2.6.10
+    dev: false
 
   /@vitejs/plugin-react/1.0.5:
     resolution: {integrity: sha512-n92p2fMlo0FZED+y5WYt+tM1mnQsVxcjZ8HuTJhv9gU/nW2zHwEoCemU78Az0KvF+bgafv2AdU4VEnP24bppvw==}
@@ -10286,6 +10309,10 @@ packages:
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
     dev: true
+
+  /systemjs/6.11.0:
+    resolution: {integrity: sha512-7YPIY44j+BoY+E6cGBSw0oCU8SNTTIHKZgftcBdwWkDzs/M86Fdlr21FrzAyph7Zo8r3CFGscyFe4rrBtixrBg==}
+    dev: false
 
   /tapable/2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
