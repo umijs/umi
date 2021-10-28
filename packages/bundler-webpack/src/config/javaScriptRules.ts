@@ -33,7 +33,6 @@ export async function addJavaScriptRules(opts: IOpts) {
       .end()
       .exclude.add(/node_modules/)
       .end(),
-
     config.module.rule('jsx-ts-tsx').test(/\.(jsx|ts|tsx)$/),
     config.module
       .rule('extra-src')
@@ -48,7 +47,7 @@ export async function addJavaScriptRules(opts: IOpts) {
         }
       })
       .end(),
-  ];
+  ] as Config.Rule<Config.Module>[];
   const depRules = [
     config.module
       .rule('dep')
@@ -104,6 +103,31 @@ export async function addJavaScriptRules(opts: IOpts) {
             ...opts.extraBabelPlugins,
             ...(userConfig.extraBabelPlugins || []),
           ].filter(Boolean),
+        });
+    } else if (srcTranspiler === Transpiler.swc) {
+      // TODO: support javascript
+      rule
+        .use('swc-loader')
+        .loader(require.resolve('../../compiled/swc-loader'))
+        .options({
+          jsc: {
+            parser: {
+              syntax: 'typescript',
+              dynamicImport: true,
+              tsx: true,
+            },
+
+            transform: {
+              react: {
+                runtime: 'automatic',
+                pragma: 'React.createElement',
+                pragmaFrag: 'React.Fragment',
+                throwIfNamespace: true,
+                development: env === Env.development,
+                useBuiltins: true,
+              },
+            },
+          },
         });
     } else {
       throw new Error(`Unsupported srcTranspiler ${srcTranspiler}.`);
