@@ -8,7 +8,6 @@ const MAPPING = {
   manifest: 'build.manifest',
   outputPath: 'build.outputDir',
   publicPath: 'base',
-  targets: 'target',
   jsMinifier: 'build.minify',
   jsMinifierOptions: 'build.terserOptions',
 };
