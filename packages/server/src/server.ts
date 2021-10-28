@@ -36,7 +36,7 @@ export async function getMarkup(
       ? `<script${opts.esmScript ? ' type="module"' : ''} src='${
           script.src
         }'></script>`
-      : `<script>${script.content}</script>`;
+      : `<script${opts.esmScript ? ' type="module"' : ''}>${script.content}</script>`;
   }
 
   const favicon = opts.config.favicon

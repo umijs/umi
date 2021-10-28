@@ -4,6 +4,7 @@ import devServer from './devServer';
 import css from './css';
 import rollup from './rollup';
 import react from './react';
+import optimizeDeps from './optimizeDeps';
 
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
@@ -22,7 +23,7 @@ export type IConfigProcessor = (
  * config transformer
  */
 export default (userConfig: ITmpUserConfig): ViteInlineConfig => {
-  const transformers = [rename, devServer, css, rollup, react];
+  const transformers = [rename, devServer, css, rollup, react, optimizeDeps];
 
   return transformers.reduce<ViteInlineConfig>(
     (memo, transformer) =>
