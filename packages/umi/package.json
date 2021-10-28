@@ -8,10 +8,12 @@
   "files": [
     "dist",
     "index.d.ts",
-    "index.esm.js"
+    "index.esm.js",
+    "client"
   ],
   "scripts": {
     "build": "pnpm tsc",
+    "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch"
   },
