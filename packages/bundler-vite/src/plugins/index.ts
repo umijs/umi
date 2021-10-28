@@ -11,7 +11,8 @@ export default (userConfig: IConfig): ViteInlineConfig => {
   return {
     plugins: [
       svgrPlugin({
-        sourcemap: !!userConfig.devtool
+        sourcemap: !!userConfig.devtool,
+        ...userConfig.svgr
       }),
       autoCSSModulePlugin()
     ],

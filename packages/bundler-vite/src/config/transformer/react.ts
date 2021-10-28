@@ -1,4 +1,5 @@
 import reactPlugin from '@vitejs/plugin-react';
+import legacyPlugin from '@vitejs/plugin-legacy';
 
 import type { IConfigProcessor } from '.';
 
@@ -16,6 +17,12 @@ export default (function react(userConfig) {
       presets: userConfig.extraBabelPresets,
     }
   }));
+
+  if (userConfig.legacy) {
+    config.plugins?.push(
+      legacyPlugin(userConfig.legacy === true ? {} : userConfig.legacy)
+    );
+  }
 
   return config;
 }) as IConfigProcessor;

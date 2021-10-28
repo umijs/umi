@@ -1,3 +1,6 @@
+import { Options as LegacyOptions } from '@vitejs/plugin-legacy';
+import { TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
+
 export enum Env {
   development = 'development',
   production = 'production',
@@ -5,10 +8,7 @@ export enum Env {
 
 export enum JSMinifier {
   terser = 'terser',
-  swc = 'swc',
   esbuild = 'esbuild',
-  uglifyJs = 'uglifyJs',
-  none = 'none',
 }
 
 type IBabelPlugin = string | [string, { [key: string]: any }];
@@ -22,9 +22,12 @@ export interface IConfig {
   extraBabelPresets?: IBabelPlugin[];
   extraPostCSSPlugins?: any[];
   hash?: any;
-  jsMinifier?: JSMinifier;
+  jsMinifier?: JSMinifier | boolean;
   jsMinifierOptions?: { [key: string]: any };
+  legacy?: LegacyOptions | boolean;
   outputPath?: string;
   publicPath?: string;
+  svgr?: TransformOptions;
+  targets?: { [key: string]: any };
   [key: string]: any;
 }
