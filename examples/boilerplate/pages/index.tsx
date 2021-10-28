@@ -1,5 +1,5 @@
 import React from 'react';
-// import './global.less';
+import './global.less';
 // @ts-ignore
 import styles from './index.less';
 

@@ -37,6 +37,7 @@ type WebpackConfig = Required<Configuration>;
 type IBabelPlugin = Function | string | [string, { [key: string]: any }];
 export interface IConfig {
   alias?: Record<string, string>;
+  autoCSSModules?: boolean;
   chainWebpack?: Function;
   copy?: ICopy[] | string[];
   cssLoader?: { [key: string]: any };
