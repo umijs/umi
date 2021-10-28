@@ -10,7 +10,6 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
   } catch (error) {
     _value = value;
   }
-  console.log(_value);
   const valueType = typeof _value;
   switch (valueType) {
     case 'string':
@@ -33,10 +32,7 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
         const valueObjs = [] as t.ObjectProperty[];
         Object.keys(_value).forEach((key) => {
           valueObjs.push(
-            t.objectProperty(
-              t.identifier(key),
-              t.stringLiteral(_value[key]),
-            ),
+            t.objectProperty(t.identifier(key), t.stringLiteral(_value[key])),
           );
         });
         valueObject = t.objectExpression(valueObjs);
@@ -60,10 +56,9 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
   if (!isChanged) {
     // 这里是插入逻辑
     //@ts-ignore
-    ast.program.body[0].declaration.properties.push(t.objectProperty(
-      t.identifier(name),
-      valueObject,
-    ))
+    ast.program.body[0].declaration.properties.push(
+      t.objectProperty(t.identifier(name), valueObject),
+    );
   }
   return ast;
 }
