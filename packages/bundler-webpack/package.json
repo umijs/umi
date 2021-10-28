@@ -34,6 +34,7 @@
     "bundler-webpack": "bin/bundler-webpack.js"
   },
   "dependencies": {
+    "@swc/core": "1.2.105",
     "@types/hapi__joi": "17.1.7",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.1",
     "@umijs/babel-preset-umi": "4.0.0-alpha.1",
