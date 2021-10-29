@@ -46,7 +46,7 @@ export default (function css(userConfig) {
   config.css!.preprocessorOptions!.less = {
     javascriptEnabled: true,
     // handle lessLoader
-    ...(userConfig.lessLoader || {}),
+    ...(userConfig.lessLoader?.lessOptions || {}),
     // handle theme
     modifyVars: userConfig.theme || {},
   }
