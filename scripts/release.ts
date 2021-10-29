@@ -36,19 +36,19 @@ import { assert, eachPkg, getPkgs } from './utils';
   assert(changed, `no package is changed`);
 
   // check npm ownership
-  // logger.event('check npm ownership');
-  // const whoami = (await $`npm whoami`).stdout.trim();
-  // await Promise.all(
-  //   ['umi', 'bigfish', '@umijs/core'].map(async (pkg) => {
-  //     const owners = (await $`npm owner ls umi`).stdout
-  //       .trim()
-  //       .split('\n')
-  //       .map((line) => {
-  //         return line.split(' ')[0];
-  //       });
-  //     assert(owners.includes(whoami), `${pkg} is not owned by ${whoami}`);
-  //   }),
-  // );
+  logger.event('check npm ownership');
+  const whoami = (await $`npm whoami`).stdout.trim();
+  await Promise.all(
+    ['umi', 'bigfish', '@umijs/core'].map(async (pkg) => {
+      const owners = (await $`npm owner ls ${pkg}`).stdout
+        .trim()
+        .split('\n')
+        .map((line) => {
+          return line.split(' ')[0];
+        });
+      assert(owners.includes(whoami), `${pkg} is not owned by ${whoami}`);
+    }),
+  );
 
   // clean
   logger.event('clean');
