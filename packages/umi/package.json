@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-beta.1",
   "description": "umi",
   "main": "dist/index.js",
   "module": "index.esm.js",
@@ -31,10 +31,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-alpha.1",
-    "@umijs/preset-built-in": "4.0.0-alpha.1",
-    "@umijs/renderer-react": "4.0.0-alpha.1",
-    "@umijs/utils": "4.0.0-alpha.1",
+    "@umijs/core": "4.0.0-beta.1",
+    "@umijs/preset-built-in": "4.0.0-beta.1",
+    "@umijs/renderer-react": "4.0.0-beta.1",
+    "@umijs/utils": "4.0.0-beta.1",
     "v8-compile-cache": "2.3.0"
   }
 }

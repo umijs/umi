@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-beta.1",
   "description": "Official babel preset for umi.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,8 +28,8 @@
   "dependencies": {
     "@babel/runtime": "7.15.4",
     "@bloomberg/record-tuple-polyfill": "0.0.3",
-    "@umijs/bundler-utils": "4.0.0-alpha.1",
-    "@umijs/utils": "4.0.0-alpha.1",
+    "@umijs/bundler-utils": "4.0.0-beta.1",
+    "@umijs/utils": "4.0.0-beta.1",
     "core-js": "3.18.3"
   }
 }
