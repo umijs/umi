@@ -21,8 +21,8 @@ test('generate page', async () => {
   await runGenerator({
     _: ['generate', 'page', 'index'],
   });
-  expect(existsSync(join(cwd, 'pages', 'index', 'index.tsx'))).toEqual(true);
-  expect(existsSync(join(cwd, 'pages', 'index', 'index.css'))).toEqual(true);
+  expect(existsSync(join(cwd, 'pages', 'index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'pages', 'index.less'))).toEqual(true);
   rimraf.sync(join(cwd, 'pages'));
 });
 
