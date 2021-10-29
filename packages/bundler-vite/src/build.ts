@@ -25,9 +25,9 @@ interface IBuildResult {
  * get umi template directory from entry
  */
 function getUmiTmpDir(entry: IOpts['entry']) {
-  const mainEntry = Object.values(entry).find((p) => p.includes('/umi.ts'))!;
+  const mainEntry = Object.values(entry).find((p) => p.includes('/umi.ts'));
 
-  return path.dirname(mainEntry);
+  return mainEntry && path.dirname(mainEntry);
 }
 
 /**
@@ -36,24 +36,28 @@ function getUmiTmpDir(entry: IOpts['entry']) {
  * @param entry umi entry config
  */
 function generateTempEntry(cwd: string, entry: IOpts['entry']) {
-  const entryTmpDir = path.join(getUmiTmpDir(entry), '.bundler-vite-entry');
+  const umiTmpDir = entry && getUmiTmpDir(entry);
 
-  fs.mkdirSync(entryTmpDir);
+  if (umiTmpDir) {
+    const entryTmpDir = path.join(umiTmpDir, '.bundler-vite-entry');
 
-  return Object.keys(entry).reduce<IOpts['entry']>((r, name) => {
-    const entryFilePath = path.join(entryTmpDir, `${name}.html`);
+    fs.mkdirSync(entryTmpDir);
 
-    fs.writeFileSync(
-      entryFilePath,
-      `<html><body><script type="module" src="${entry[name]}"></script></body></html>`,
-      'utf8',
-    );
+    return Object.keys(entry).reduce<IOpts['entry']>((r, name) => {
+      const entryFilePath = path.join(entryTmpDir, `${name}.html`);
 
-    return {
-      ...r,
-      [name]: path.relative(cwd, entryFilePath),
-    };
-  }, {});
+      fs.writeFileSync(
+        entryFilePath,
+        `<html><body><script type="module" src="${entry[name]}"></script></body></html>`,
+        'utf8',
+      );
+
+      return {
+        ...r,
+        [name]: path.relative(cwd, entryFilePath),
+      };
+    }, {});
+  }
 }
 
 export async function build(opts: IOpts): Promise<void> {
@@ -76,14 +80,16 @@ export async function build(opts: IOpts): Promise<void> {
       build: {
         // generate assets into top dir
         assetsDir: '',
-        // same as umi default
-        cssCodeSplit: false,
-        rollupOptions: {
-          // use temp html entry for vite build
-          input: tmpHtmlEntry,
-          // remove temp html entry after build
-          plugins: [deleteOuputFiles(Object.values(tmpHtmlEntry))],
-        },
+        rollupOptions: tmpHtmlEntry
+          ? // first use entry from options
+            {
+              // use temp html entry for vite build
+              input: tmpHtmlEntry,
+              // remove temp html entry after build
+              plugins: [deleteOuputFiles(Object.values(tmpHtmlEntry))],
+            }
+          : // fallback to vite default entry
+            {},
       },
     },
     viteUserConfig,

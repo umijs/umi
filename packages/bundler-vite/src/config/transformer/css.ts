@@ -30,7 +30,7 @@ export default (function css(userConfig) {
       ...(userConfig.postcssLoader?.postcssOptions?.plugins || []),
       require('postcss-preset-env')({
         // handle targets for css
-        browsers: getBrowserlist(userConfig.targets),
+        browsers: getBrowserlist(userConfig.targets || {}),
         // handle autoprefixer
         autoprefixer: {
           flexbox: 'no-2009',
