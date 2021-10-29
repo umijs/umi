@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-beta.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -25,12 +25,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-alpha.1",
-    "@umijs/utils": "4.0.0-alpha.1"
+    "@umijs/bundler-utils": "4.0.0-beta.1",
+    "@umijs/utils": "4.0.0-beta.1"
   },
   "devDependencies": {
-    "@types/hapi__joi": "17.1.7",
     "@hapi/joi": "17.1.1",
+    "@types/hapi__joi": "17.1.7",
     "dotenv": "10.0.0",
     "just-diff": "3.1.1",
     "tapable": "2.2.1"
