@@ -20,7 +20,7 @@ function eachPkg(
 function assert(v: unknown, message: string) {
   if (!v) {
     logger.error(message);
-    // process.exit(1);
+    process.exit(1);
   }
 }
 
