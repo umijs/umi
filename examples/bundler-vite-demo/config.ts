@@ -1,9 +1,8 @@
 import { IConfig } from '@umijs/bundler-vite/src/types';
 
 export default {
-
   legacy: {
-    targets: ['defaults', 'not IE 11']
+    targets: ['defaults', 'not IE 11'],
   },
   jsMinifier: false,
   // extraBabelPlugins: ['transform-remove-console']
@@ -17,5 +16,4 @@ export default {
     react: 'React',
     'react-dom': 'ReactDOM',
   },
-
 } as IConfig;

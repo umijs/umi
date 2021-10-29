@@ -7,7 +7,7 @@ export default (function devServer(userConfig) {
   const config: ReturnType<IConfigProcessor> = { server: {} };
 
   // transform devServer umi config
-  ['port', 'host', 'https'].forEach(field => {
+  ['port', 'host', 'https'].forEach((field) => {
     if (userConfig.devServer?.[field]) {
       // @ts-ignore
       config.server![field] = userConfig.devServer[field];
@@ -20,4 +20,4 @@ export default (function devServer(userConfig) {
   }
 
   return config;
-}) as IConfigProcessor;
+} as IConfigProcessor);

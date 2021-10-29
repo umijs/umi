@@ -47,4 +47,4 @@ export default (function rename(userConfig) {
   });
 
   return config;
-}) as IConfigProcessor;
+} as IConfigProcessor);

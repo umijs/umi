@@ -1,9 +1,8 @@
 import path from 'path';
+import copy from 'rollup-plugin-copy';
 // @ts-ignore
 import polyfill from 'rollup-plugin-polyfill';
 import { visualizer } from 'rollup-plugin-visualizer';
-import copy from 'rollup-plugin-copy';
-
 import type { IConfigProcessor } from '.';
 
 /**

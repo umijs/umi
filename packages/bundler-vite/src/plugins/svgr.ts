@@ -1,8 +1,10 @@
-import fs from 'fs';
 // @ts-ignore
 import svgr from '@svgr/core';
-import { transform, TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
-
+import {
+  transform,
+  TransformOptions,
+} from '@umijs/bundler-utils/compiled/esbuild';
+import fs from 'fs';
 import type { Plugin } from 'vite';
 
 export default function svgrPlugin(svgOptions: TransformOptions): Plugin {
@@ -14,11 +16,11 @@ export default function svgrPlugin(svgOptions: TransformOptions): Plugin {
         const svgrCode = await svgr(
           svgFile,
           {},
-          { componentName: 'ReactComponent' }
+          { componentName: 'ReactComponent' },
         );
         const componentCode = svgrCode.replace(
           'export default ReactComponent',
-          'export { ReactComponent }'
+          'export { ReactComponent }',
         );
 
         const result = await transform(componentCode + '\n' + code, {
@@ -32,5 +34,5 @@ export default function svgrPlugin(svgOptions: TransformOptions): Plugin {
         };
       }
     },
-  }
+  };
 }

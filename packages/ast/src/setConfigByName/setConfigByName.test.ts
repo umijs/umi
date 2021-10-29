@@ -17,7 +17,7 @@ test('set object', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
   const generateCode = generate(
-    setConfigByName(ast, 'p2', JSON.stringify({ react: 'aaa' }))!
+    setConfigByName(ast, 'p2', JSON.stringify({ react: 'aaa' }))!,
   );
   expect(generateCode).toContain('react');
 });
@@ -33,7 +33,7 @@ test('set array', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
   const generateCode = generate(
-    setConfigByName(ast, 'plugins', JSON.stringify(['./eee', './fff']))!
+    setConfigByName(ast, 'plugins', JSON.stringify(['./eee', './fff']))!,
   );
   expect(generateCode).toContain('eee');
 });
@@ -41,8 +41,6 @@ test('set array', () => {
 test('set new config', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
-  const generateCode = generate(
-    setConfigByName(ast, 'aaa', true)!
-  );
+  const generateCode = generate(setConfigByName(ast, 'aaa', true)!);
   expect(generateCode).toContain('aaa');
 });

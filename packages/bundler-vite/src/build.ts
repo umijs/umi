@@ -1,9 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { build as viteBuilder } from 'vite';
-import { mergeConfig } from 'vite';
-import deleteOuputFiles from './plugins/deleteOuputFiles';
+import { build as viteBuilder, mergeConfig } from 'vite';
 import { getConfig } from './config/config';
+import deleteOuputFiles from './plugins/deleteOuputFiles';
 import { Env, IConfig } from './types';
 
 interface IOpts {
