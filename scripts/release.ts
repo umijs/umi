@@ -3,26 +3,7 @@ import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
-import { getPkgs } from './utils';
-
-function eachPkg(
-  pkgs: string[],
-  fn: (opts: { pkg: string; pkgPath: string }) => void,
-) {
-  pkgs.forEach((pkg) => {
-    fn({
-      pkg,
-      pkgPath: join(__dirname, '../packages', pkg),
-    });
-  });
-}
-
-function assert(v: unknown, message: string) {
-  if (!v) {
-    logger.error(message);
-    process.exit(1);
-  }
-}
+import { assert, eachPkg, getPkgs } from './utils';
 
 (async () => {
   const { branch } = getGitRepoInfo();
