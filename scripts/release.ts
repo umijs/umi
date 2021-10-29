@@ -70,6 +70,10 @@ import { assert, eachPkg, getPkgs } from './utils';
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
   const version = require('../lerna.json').version;
 
+  // update pnpm lockfile
+  logger.event('update pnpm lockfile');
+  await $`pnpm i`;
+
   // commit
   logger.event('commit');
   await $`git commit --all --message "release: ${version}"`;
