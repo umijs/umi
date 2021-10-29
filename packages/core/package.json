@@ -25,8 +25,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.1",
-    "@umijs/utils": "4.0.0-beta.1"
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/utils": "workspace:*"
   },
   "devDependencies": {
     "@hapi/joi": "17.1.1",
