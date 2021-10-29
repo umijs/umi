@@ -14,7 +14,7 @@ export default (userConfig: IConfig): ViteInlineConfig => {
         sourcemap: !!userConfig.devtool,
         ...userConfig.svgr
       }),
-      autoCSSModulePlugin()
+      ...(userConfig.autoCSSModules ? [autoCSSModulePlugin()] : []),
     ],
   };
 };
