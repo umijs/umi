@@ -19,16 +19,8 @@ export default (function rollup(userConfig) {
     build: { rollupOptions: { plugins: [], output: {} } },
   };
 
-  // handle externals
-  if (typeof userConfig.externals === 'object') {
-    // transform to globals
-    Object.assign(config.build!.rollupOptions!.output, {
-      globals: userConfig.externals,
-    });
-
-    // transform to external
-    config.build!.rollupOptions!.external = Object.keys(userConfig.externals);
-  }
+  // TODO: handle externals
+  // refer: https://github.com/vitejs/vite/issues/3001#issuecomment-836352935
 
   // handle polyfill
   if (Array.isArray(userConfig.polyfill?.imports)) {
