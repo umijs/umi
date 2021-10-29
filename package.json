@@ -3,7 +3,9 @@
   "version": "4.0.0-alpha.1",
   "scripts": {
     "bootstrap": "esno scripts/bootstrap.ts",
-    "build": "pnpm -r --filter ./packages run build && pnpm -r --filter ./packages run build",
+    "release": "esno scripts/release.ts",
+    "build": "pnpm -r --filter ./packages run build",
+    "build:release": "pnpm -r --filter ./packages run build -- --declarationMap false",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
     "dep:update": "pnpm up --interactive --latest --recursive",
     "test": "jest"
@@ -23,7 +25,9 @@
     "@vercel/ncc": "^0.31.1",
     "dts-packer": "^0.0.2",
     "esno": "^0.10.1",
+    "git-repo-info": "^2.1.1",
     "jest": "^27.3.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^11.2.3",
     "prettier": "^2.4.1",
     "prettier-plugin-organize-imports": "^2.3.4",

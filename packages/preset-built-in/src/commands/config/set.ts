@@ -1,5 +1,5 @@
 import { generate, getASTByFilePath, setConfigByName } from '@umijs/ast';
-import { prettier } from '@umijs/utils';
+import prettier from '@umijs/utils/compiled/prettier';
 import { writeFileSync } from 'fs';
 
 export function set(mainConfigFile: string, name: string, value: any) {
