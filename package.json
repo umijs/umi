@@ -2,6 +2,7 @@
   "private": true,
   "version": "4.0.0-alpha.1",
   "scripts": {
+    "preinstall": "esno scripts/preinstall.ts",
     "bootstrap": "esno scripts/bootstrap.ts",
     "release": "esno scripts/release.ts",
     "build": "pnpm -r --filter ./packages run build",
