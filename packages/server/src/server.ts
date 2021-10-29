@@ -36,7 +36,9 @@ export async function getMarkup(
       ? `<script${opts.esmScript ? ' type="module"' : ''} src='${
           script.src
         }'></script>`
-      : `<script${opts.esmScript ? ' type="module"' : ''}>${script.content}</script>`;
+      : `<script${opts.esmScript ? ' type="module"' : ''}>${
+          script.content
+        }</script>`;
   }
 
   const favicon = opts.config.favicon
@@ -46,7 +48,7 @@ export async function getMarkup(
     getScriptContent,
   );
   const scripts = normalizeScripts(
-    opts.scripts.concat(opts.config.scripts),
+    opts.scripts.concat(opts.config.scripts || []),
   ).map(getScriptContent);
   markup = [
     `<!DOCTYPE html>

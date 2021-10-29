@@ -36,16 +36,15 @@ umi g page pageName
     fn: async (options) => {
       const { args, paths } = options;
       const [_, name] = args._;
-      const generator = new BaseGenerator({
-        path: join(__dirname, './templates/page'),
-        target: join(paths.absPagesPath, name),
+      await new BaseGenerator({
+        path: join(__dirname, '../../../templates/generate/page'),
+        target: paths.absPagesPath,
         data: {
           color: randomColor(),
-          name: 'index',
-          cssExt: '.css',
+          name,
+          cssExt: '.less',
         },
-      });
-      await generator.run();
+      }).run();
     },
   });
 };

@@ -4,7 +4,7 @@ import styles from './{{{ name }}}{{{ cssExt }}}';
 export default function Page() {
   return (
     <div>
-      <h1 className={styles.title}>Page {{{ path }}}</h1>
+      <h1 className={styles.title}>Page {{{ name }}}</h1>
     </div>
   );
 }
