@@ -2,11 +2,10 @@ import type { IConfigProcessor } from '.';
 
 const MAPPING = {
   alias: 'resolve.alias',
-  define: 'define',
   extraVitePlugins: 'plugins',
   inlineLimit: 'build.assetsInlineLimit',
   manifest: 'build.manifest',
-  outputPath: 'build.outputDir',
+  outputPath: 'build.outDir',
   publicPath: 'base',
   jsMinifier: 'build.minify',
   jsMinifierOptions: 'build.terserOptions',

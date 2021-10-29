@@ -78,8 +78,11 @@ export async function build(opts: IOpts): Promise<void> {
       root: opts.cwd,
       mode: Env.production,
       build: {
-        // generate assets into top dir
-        assetsDir: '',
+        // generate assets to publicPath dir
+        assetsDir: path.relative(
+          '/',
+          path.join('/', opts.config.publicPath || ''),
+        ),
         rollupOptions: tmpHtmlEntry
           ? // first use entry from options
             {
@@ -96,9 +99,7 @@ export async function build(opts: IOpts): Promise<void> {
   );
 
   try {
-    result.stats = await viteBuilder(
-      mergeConfig(viteBuildConfig, viteUserConfig),
-    );
+    result.stats = await viteBuilder(viteBuildConfig);
     result.time = +new Date() - startTms;
   } catch (err: any) {
     result.err = err;

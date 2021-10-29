@@ -6,6 +6,7 @@ import rollup from './rollup';
 import react from './react';
 import optimizeDeps from './optimizeDeps';
 import target from './target';
+import define from './define';
 
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
@@ -32,6 +33,7 @@ export default (userConfig: ITmpUserConfig): ViteInlineConfig => {
     react,
     optimizeDeps,
     target,
+    define,
   ];
 
   return transformers.reduce<ViteInlineConfig>(

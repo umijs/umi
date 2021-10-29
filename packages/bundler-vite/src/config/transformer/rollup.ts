@@ -3,7 +3,6 @@ import path from 'path';
 import polyfill from 'rollup-plugin-polyfill';
 import { visualizer } from 'rollup-plugin-visualizer';
 import copy from 'rollup-plugin-copy';
-import { winPath } from '@umijs/utils';
 
 import type { IConfigProcessor } from '.';
 
@@ -16,7 +15,9 @@ import type { IConfigProcessor } from '.';
  *        - copy
  */
 export default (function rollup(userConfig) {
-  const config: ReturnType<IConfigProcessor> = { build: { rollupOptions: { plugins: [], output: {} } } };
+  const config: ReturnType<IConfigProcessor> = {
+    build: { rollupOptions: { plugins: [], output: {} } },
+  };
 
   // handle externals
   if (typeof userConfig.externals === 'object') {
@@ -51,21 +52,23 @@ export default (function rollup(userConfig) {
   if (Array.isArray(userConfig.copy)) {
     config.build!.rollupOptions!.plugins!.push(
       copy({
-        targets: userConfig.copy.map(item => {
+        targets: userConfig.copy.map((item) => {
           if (typeof item === 'string') {
             // umi copy support ['a.txt', 'b.txt'], need to transform
             return {
               src: item,
-              dest: winPath(path.join(userConfig.outputPath, item)),
+              dest: userConfig.outputPath || 'dist',
             };
           } else {
             // transform fields
             return {
               src: item.from,
-              dest: item.to,
+              dest: path.dirname(item.to),
+              rename: path.basename(item.to),
             };
           }
         }),
+        hook: 'writeBundle',
       }),
     );
   }
@@ -82,4 +85,4 @@ export default (function rollup(userConfig) {
   }
 
   return config;
-}) as IConfigProcessor;
+} as IConfigProcessor);

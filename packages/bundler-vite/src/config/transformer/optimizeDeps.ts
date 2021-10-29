@@ -8,8 +8,11 @@ export default (function optimizeDeps(userConfig) {
 
   // include alias which within node_modules for optimize dependencies
   if (typeof userConfig.alias === 'object') {
-    config.optimizeDeps!.include = Object.keys(userConfig.alias).filter((name) =>
-      userConfig.alias[name].includes('node_modules'),
+    config.optimizeDeps!.include = Object.keys(userConfig.alias).filter(
+      (name) =>
+        userConfig.alias[name].includes('node_modules') &&
+        // skip external deps
+        !userConfig.externals?.[name],
     );
   }
 
