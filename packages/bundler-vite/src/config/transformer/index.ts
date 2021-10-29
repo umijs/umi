@@ -1,14 +1,13 @@
-import { mergeConfig } from 'vite';
-import rename from './rename';
-import devServer from './devServer';
-import css from './css';
-import rollup from './rollup';
-import react from './react';
-import optimizeDeps from './optimizeDeps';
-import target from './target';
-import define from './define';
-
 import type { InlineConfig as ViteInlineConfig } from 'vite';
+import { mergeConfig } from 'vite';
+import css from './css';
+import define from './define';
+import devServer from './devServer';
+import optimizeDeps from './optimizeDeps';
+import react from './react';
+import rename from './rename';
+import rollup from './rollup';
+import target from './target';
 
 // FIXME: replace with real user config types
 type ITmpUserConfig = Record<string, any>;

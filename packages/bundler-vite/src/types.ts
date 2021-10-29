@@ -1,7 +1,7 @@
-import { Options as LegacyOptions } from '@vitejs/plugin-legacy';
 import { TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
-import type { ProxyOptions, Plugin } from 'vite';
+import { Options as LegacyOptions } from '@vitejs/plugin-legacy';
 import type { PluginVisualizerOptions } from 'rollup-plugin-visualizer';
+import type { Plugin, ProxyOptions } from 'vite';
 
 export enum Env {
   development = 'development',

@@ -21,7 +21,9 @@ function getBrowserlist(targets: Record<string, string | boolean>) {
  *        - theme
  */
 export default (function css(userConfig) {
-  const config: ReturnType<IConfigProcessor> = { css: { postcss: {}, preprocessorOptions: {} } };
+  const config: ReturnType<IConfigProcessor> = {
+    css: { postcss: {}, preprocessorOptions: {} },
+  };
 
   config.css!.postcss = {
     // handle postcssLoader
@@ -40,7 +42,7 @@ export default (function css(userConfig) {
       }),
       // handle extraPostCSSPlugins
       ...(userConfig.extraPostCSSPlugins || []),
-    ]
+    ],
   };
 
   config.css!.preprocessorOptions!.less = {
@@ -49,7 +51,7 @@ export default (function css(userConfig) {
     ...(userConfig.lessLoader?.lessOptions || {}),
     // handle theme
     modifyVars: userConfig.theme || {},
-  }
+  };
 
   return config;
-}) as IConfigProcessor;
+} as IConfigProcessor);

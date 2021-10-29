@@ -2,6 +2,5 @@
   "scripts": {
     "dev": "../../packages/umi/bin/umi.js dev"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

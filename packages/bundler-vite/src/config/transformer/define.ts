@@ -8,7 +8,7 @@ export default (function define(userConfig) {
 
   if (typeof userConfig.define === 'object') {
     // JSON.stringify for define value by default
-    Object.keys(userConfig.define).forEach(name => {
+    Object.keys(userConfig.define).forEach((name) => {
       config.define![name] = JSON.stringify(userConfig.define[name]);
     });
   }
