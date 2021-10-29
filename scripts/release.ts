@@ -87,7 +87,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   await $`git push origin ${branch} --tags`;
 
   // npm publish
-  logger.event('npm publish');
+  logger.event('pnpm publish');
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'bigfish'].includes(pkg));
   const tag =
     version.includes('-alpha.') ||

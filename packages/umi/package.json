@@ -31,10 +31,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-beta.1",
-    "@umijs/preset-built-in": "4.0.0-beta.1",
-    "@umijs/renderer-react": "4.0.0-beta.1",
-    "@umijs/utils": "4.0.0-beta.1",
+    "@umijs/core": "workspace:*",
+    "@umijs/preset-built-in": "workspace:*",
+    "@umijs/renderer-react": "workspace:*",
+    "@umijs/utils": "workspace:*",
     "v8-compile-cache": "2.3.0"
   }
 }
