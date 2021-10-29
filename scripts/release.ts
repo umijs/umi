@@ -100,6 +100,12 @@ import { assert, eachPkg, getPkgs } from './utils';
   await $`cd packages/bigfish && npm publish --tag ${tag}`;
 
   // sync tnpm
-  // TODO
   logger.event('sync tnpm');
+  $.verbose = false;
+  await Promise.all(
+    pkgs.map(async (pkg) => {
+      await $`tnpm sync ${pkg}`;
+    }),
+  );
+  $.verbose = true;
 })();
