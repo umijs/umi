@@ -41,6 +41,7 @@
     "yorkie": "^2.0.0",
     "zx": "^4.2.0"
   },
+  "packageManager": "pnpm",
   "gitHooks": {
     "pre-commit": "lint-staged",
     "commit-msg": "esno scripts/verifyCommit.ts"
