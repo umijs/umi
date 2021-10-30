@@ -2,14 +2,14 @@
   "private": true,
   "version": "4.0.0-alpha.1",
   "scripts": {
-    "preinstall": "esno scripts/preinstall.ts",
+    "preinstall": "esno scripts/checkNpmClient.ts",
     "format": "prettier --write .",
     "bootstrap": "esno scripts/bootstrap.ts",
     "release": "esno scripts/release.ts",
     "build": "pnpm -r --filter ./packages run build",
     "build:release": "pnpm -r --filter ./packages run build -- --declarationMap false",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
-    "dep:update": "esno scripts/preinstall.ts && pnpm up --interactive --latest --recursive",
+    "dep:update": "esno scripts/checkNpmClient.ts && pnpm up --interactive --latest --recursive",
     "test": "jest"
   },
   "devDependencies": {
