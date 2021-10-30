@@ -13,10 +13,10 @@ export async function addCSSRules(opts: IOpts) {
   const { config, userConfig } = opts;
 
   const rulesConfig = [
-    { name: 'css', test: /\.css(\?.*)?/ },
+    { name: 'css', test: /\.css(\?.*)?$/ },
     {
       name: 'less',
-      test: /\.less(\?.*)?/,
+      test: /\.less(\?.*)?$/,
       loader: require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
       loaderOptions: {
         implementation: require.resolve('@umijs/bundler-webpack/compiled/less'),
@@ -29,7 +29,7 @@ export async function addCSSRules(opts: IOpts) {
     },
     {
       name: 'sass',
-      test: /\.(sass|scss)(\?.*)?/,
+      test: /\.(sass|scss)(\?.*)?$/,
       loader: require.resolve('@umijs/bundler-webpack/compiled/sass-loader'),
       loaderOptions: userConfig.sassLoader || {},
     },
