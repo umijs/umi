@@ -87,6 +87,12 @@ importers:
       react: 18.0.0-alpha-fd5e01c2e-20210913
       react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
 
+  examples/libs:
+    specifiers:
+      framer-motion: 5.0.0
+    devDependencies:
+      framer-motion: 5.0.0
+
   packages/ast:
     specifiers:
       '@umijs/bundler-utils': workspace:*
@@ -173,33 +179,6 @@ importers:
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.9.3
 
-  packages/bundler-utils/compiled/@babel/code-frame:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/@babel/core:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/@babel/generator:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/@babel/parser:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/@babel/template:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/@babel/traverse:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/@babel/types:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/cjs-module-lexer:
-    specifiers: {}
-
-  packages/bundler-utils/compiled/es-module-lexer:
-    specifiers: {}
-
   packages/bundler-vite:
     specifiers:
       '@svgr/core': 5.5.0
@@ -226,9 +205,6 @@ importers:
       vite: 2.6.10
     devDependencies:
       express: 4.17.1
-
-  packages/bundler-vite/compiled/express:
-    specifiers: {}
 
   packages/bundler-webpack:
     specifiers:
@@ -333,108 +309,6 @@ importers:
       webpack-sources: 3.2.1
       ws: 8.2.3
 
-  packages/bundler-webpack/bundles/webpack/packages:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/@svgr/webpack:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/autoprefixer:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/babel-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/compression:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/connect-history-api-fallback:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/copy-webpack-plugin:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/css-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/css-minimizer-webpack-plugin:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/cssnano:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/express:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/http-proxy-middleware:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/less:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/less-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/mini-css-extract-plugin:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/postcss-flexbugs-fixes:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/postcss-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/purgecss-webpack-plugin:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/sass-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/schema-utils:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/speed-measure-webpack-plugin:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/style-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/svgo-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/swc-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/tapable:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/terser:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/terser-webpack-plugin:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/url-loader:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/webpack:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/webpack-5-chain:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/webpack-bundle-analyzer:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/webpack-dev-middleware:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/webpack-sources:
-    specifiers: {}
-
-  packages/bundler-webpack/compiled/ws:
-    specifiers: {}
-
   packages/core:
     specifiers:
       '@hapi/joi': 17.1.1
@@ -454,18 +328,6 @@ importers:
       just-diff: 3.1.1
       tapable: 2.2.1
 
-  packages/core/compiled/@hapi/joi:
-    specifiers: {}
-
-  packages/core/compiled/dotenv:
-    specifiers: {}
-
-  packages/core/compiled/just-diff:
-    specifiers: {}
-
-  packages/core/compiled/tapable:
-    specifiers: {}
-
   packages/create-umi:
     specifiers:
       '@umijs/bundler-utils': workspace:*
@@ -484,21 +346,6 @@ importers:
     devDependencies:
       '@types/express': 4.17.13
       webpack: 5.59.0_uglify-js@3.14.2
-
-  packages/mfsu/fixtures/getFilePath/js-file-first/foo:
-    specifiers: {}
-
-  packages/mfsu/fixtures/getFilePath/package-json-directory/foo:
-    specifiers: {}
-
-  packages/mfsu/fixtures/getFilePath/package-json-in-approot/app:
-    specifiers: {}
-
-  packages/mfsu/fixtures/getFilePath/package-json-not-found-module/foo:
-    specifiers: {}
-
-  packages/mfsu/fixtures/getFilePath/package-json-second/foo:
-    specifiers: {}
 
   packages/plugins:
     specifiers:
@@ -640,69 +487,6 @@ importers:
       semver: 7.3.5
       strip-ansi: 6.0.1
       yargs-parser: 20.2.9
-
-  packages/utils/compiled/address:
-    specifiers: {}
-
-  packages/utils/compiled/axios:
-    specifiers: {}
-
-  packages/utils/compiled/chalk:
-    specifiers: {}
-
-  packages/utils/compiled/cheerio:
-    specifiers: {}
-
-  packages/utils/compiled/color:
-    specifiers: {}
-
-  packages/utils/compiled/cross-spawn:
-    specifiers: {}
-
-  packages/utils/compiled/debug:
-    specifiers: {}
-
-  packages/utils/compiled/fs-extra:
-    specifiers: {}
-
-  packages/utils/compiled/glob:
-    specifiers: {}
-
-  packages/utils/compiled/import-lazy:
-    specifiers: {}
-
-  packages/utils/compiled/lodash:
-    specifiers: {}
-
-  packages/utils/compiled/mustache:
-    specifiers: {}
-
-  packages/utils/compiled/pkg-up:
-    specifiers: {}
-
-  packages/utils/compiled/portfinder:
-    specifiers: {}
-
-  packages/utils/compiled/prettier:
-    specifiers: {}
-
-  packages/utils/compiled/prompts:
-    specifiers: {}
-
-  packages/utils/compiled/resolve:
-    specifiers: {}
-
-  packages/utils/compiled/rimraf:
-    specifiers: {}
-
-  packages/utils/compiled/semver:
-    specifiers: {}
-
-  packages/utils/compiled/strip-ansi:
-    specifiers: {}
-
-  packages/utils/compiled/yargs-parser:
-    specifiers: {}
 
 packages:
 
@@ -3334,6 +3118,19 @@ packages:
     engines: {node: '>=4.0.0'}
     dev: false
 
+  /@emotion/is-prop-valid/0.8.8:
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+    requiresBuild: true
+    dependencies:
+      '@emotion/memoize': 0.7.4
+    dev: true
+    optional: true
+
+  /@emotion/memoize/0.7.4:
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    dev: true
+    optional: true
+
   /@gar/promisify/1.1.2:
     resolution: {integrity: sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==}
     dev: true
@@ -5683,7 +5480,7 @@ packages:
   /axios/0.23.0_debug@4.3.2:
     resolution: {integrity: sha512-NmvAE4i0YAv5cKq8zlDoPd1VLKAqX5oLuZKs8xkJa4qi6RGn0uhCYFjWtHHC9EM/MwOwYWOs53W+V0aqEXq1sg==}
     dependencies:
-      follow-redirects: 1.14.4_debug@4.3.2
+      follow-redirects: 1.14.4
     transitivePeerDependencies:
       - debug
     dev: true
@@ -8339,18 +8136,6 @@ packages:
         optional: true
     dev: true
 
-  /follow-redirects/1.14.4_debug@4.3.2:
-    resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.2
-    dev: true
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -8392,6 +8177,27 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       map-cache: 0.2.2
+    dev: true
+
+  /framer-motion/5.0.0:
+    resolution: {integrity: sha512-5X2ng9Cil9srkS9+ynxYmQf02yDnEUueGiGq20+sRdh7OiwLb7QWnw4Jysj/MiL3VYSMtGLd+zKFlH/HQB285A==}
+    peerDependencies:
+      react: '>=16.8 || ^17.0.0'
+      react-dom: '>=16.8 || ^17.0.0'
+    dependencies:
+      framesync: 6.0.1
+      hey-listen: 1.0.8
+      popmotion: 10.0.2
+      style-value-types: 5.0.0
+      tslib: 2.3.1
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: true
+
+  /framesync/6.0.1:
+    resolution: {integrity: sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==}
+    dependencies:
+      tslib: 2.3.1
     dev: true
 
   /fresh/0.5.2:
@@ -8829,6 +8635,10 @@ packages:
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
     dev: false
+
+  /hey-listen/1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
+    dev: true
 
   /history/5.0.1:
     resolution: {integrity: sha512-5qC/tFUKfVci5kzgRxZxN5Mf1CV8NmJx9ByaPX0YTLx5Vz3Svh7NYp6eA4CpDq4iA9D0C1t8BNIfvQIrUI3mVw==}
@@ -11807,6 +11617,15 @@ packages:
       semver-compare: 1.0.0
     dev: true
 
+  /popmotion/10.0.2:
+    resolution: {integrity: sha512-8vgx02LL7Odk/kwSGigAnlPRLJK+Dfked571ZAHGzkxPNWThkU5mQX0xPmibIMAULZehWBV7hGN7LSCpaV3cfw==}
+    dependencies:
+      framesync: 6.0.1
+      hey-listen: 1.0.8
+      style-value-types: 5.0.0
+      tslib: 2.3.1
+    dev: true
+
   /portfinder/1.0.28:
     resolution: {integrity: sha512-Se+2isanIcEqf2XMHjyUKskczxbPH7dQnlMjXX6+dybayyHvAf/TCgyMRlzf/B6QDhAEFOGes0pzRo3by4AbMA==}
     engines: {node: '>= 0.12.0'}
@@ -13926,6 +13745,13 @@ packages:
       webpack: ^5.0.0
     dependencies:
       webpack: 5.59.0_ef0cf2dec4b04d7b741273c5e71d7776
+    dev: true
+
+  /style-value-types/5.0.0:
+    resolution: {integrity: sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==}
+    dependencies:
+      hey-listen: 1.0.8
+      tslib: 2.3.1
     dev: true
 
   /stylehacks/5.0.1_postcss@8.3.11:
