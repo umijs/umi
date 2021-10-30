@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "../../packages/umi/bin/umi.js dev"
+  },
+  "devDependencies": {
+    "framer-motion": "5.0.0"
+  }
+}
