@@ -1,7 +1,7 @@
 import { lodash } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
-import { REMOTE_FILE_FULL } from '../constants';
+import { MF_DEP_PREFIX, REMOTE_FILE_FULL } from '../constants';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu';
 import { DepChunkIdPrefixPlugin } from '../webpackPlugins/depChunkIdPrefixPlugin';
@@ -82,6 +82,22 @@ export class DepBuilder {
     // ref: https://github.com/umijs/plugins/blob/6d3fc2d/packages/plugin-qiankun/src/slave/index.ts#L83
     if (depConfig.output?.library) delete depConfig.output.library;
     if (depConfig.output?.libraryTarget) delete depConfig.output.libraryTarget;
+
+    // merge all deps to vendor
+    depConfig.optimization ||= {};
+    depConfig.optimization.splitChunks = {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /.+/,
+          name(_module: any, _chunks: any, cacheGroupKey: string) {
+            return `${MF_DEP_PREFIX}___${cacheGroupKey}`;
+          },
+        },
+      },
+    };
 
     depConfig.plugins = depConfig.plugins || [];
     depConfig.plugins.push(new DepChunkIdPrefixPlugin());
