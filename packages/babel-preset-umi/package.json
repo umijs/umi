@@ -30,6 +30,6 @@
     "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
-    "core-js": "3.18.3"
+    "core-js": "3.19.0"
   }
 }
