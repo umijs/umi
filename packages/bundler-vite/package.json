@@ -33,7 +33,7 @@
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vitejs/plugin-legacy": "1.6.2",
-    "@vitejs/plugin-react": "1.0.5",
+    "@vitejs/plugin-react": "1.0.7",
     "postcss-preset-env": "6.7.0",
     "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-polyfill": "3.0.0",

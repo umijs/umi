@@ -59,6 +59,26 @@ function hasGlobalProcessEventEmitter() {
   return ((typeof process === 'object') && (process !== null) && (typeof process.on === 'function'));
 }
 
+function globalProcessVersion() {
+  if ((typeof process === 'object') && (process !== null)) {
+    return process.version;
+  } else {
+    return '';
+  }
+}
+
+function globalProcessStderr() {
+  if ((typeof process === 'object') && (process !== null)) {
+    return process.stderr;
+  }
+}
+
+function globalProcessExit(code) {
+  if ((typeof process === 'object') && (process !== null) && (typeof process.exit === 'function')) {
+    return process.exit(code);
+  }
+}
+
 function handlerExec(list) {
   return function(arg) {
     for (var i = 0; i < list.length; i++) {
@@ -369,7 +389,7 @@ function wrapCallSite(frame, state) {
     // v11 is not an LTS candidate, we can just test the one version with it.
     // Test node versions for: 10.16-19, 10.20+, 12-19, 20-99, 100+, or 11.11
     var noHeader = /^v(10\.1[6-9]|10\.[2-9][0-9]|10\.[0-9]{3,}|1[2-9]\d*|[2-9]\d|\d{3,}|11\.11)/;
-    var headerLength = noHeader.test(process.version) ? 0 : 62;
+    var headerLength = noHeader.test(globalProcessVersion()) ? 0 : 62;
     if (line === 1 && column > headerLength && !isInBrowser() && !frame.isEval()) {
       column -= headerLength;
     }
@@ -466,8 +486,9 @@ function printErrorAndExit (error) {
   var source = getErrorSource(error);
 
   // Ensure error is printed synchronously and not truncated
-  if (process.stderr._handle && process.stderr._handle.setBlocking) {
-    process.stderr._handle.setBlocking(true);
+  var stderr = globalProcessStderr();
+  if (stderr && stderr._handle && stderr._handle.setBlocking) {
+    stderr._handle.setBlocking(true);
   }
 
   if (source) {
@@ -476,7 +497,7 @@ function printErrorAndExit (error) {
   }
 
   console.error(error.stack);
-  process.exit(1);
+  globalProcessExit(1);
 }
 
 function shimEmitUncaughtException () {

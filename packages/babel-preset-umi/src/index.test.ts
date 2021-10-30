@@ -101,6 +101,13 @@ test('tc39 export namespace from', () => {
   expect(code).toContain(`import * as _ns from "mod";\nexport { _ns as ns };`);
 });
 
+test('tc39 static class block', () => {
+  const code = doTransform({
+    code: `class foo { static { bar();} }`,
+  });
+  expect(code).toContain(`bar();`);
+});
+
 test('tc39 record', () => {
   const code = doTransform({
     code: `#{ x: 1, y: 2 }`,
