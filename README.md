@@ -1,6 +1,16 @@
 # umi (v4 develop version)
 
-[![GitHub Actions status](https://github.com/umijs/umi-next/workflows/Node%20CI/badge.svg)](https://github.com/umijs/umi-next)
+<p>
+  <a href="https://www.npmjs.com/package/umi" target="_blank">
+    <img src="https://img.shields.io/npm/v/umi.svg?style=flat-square" />
+  </a>
+  <a href="https://www.npmjs.com/package/umi" target="_blank">
+    <img src="https://img.shields.io/npm/dm/umi.svg?style=flat-square" />
+  </a>
+  <a href="https://github.com/umijs/umi-next" target="_blank">
+    <img src="https://github.com/umijs/umi-next/workflows/Node%20CI/badge.svg"  />
+  </a>
+</p>
 
 A framework in react community.
 
