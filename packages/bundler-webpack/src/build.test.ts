@@ -16,6 +16,9 @@ const expects: Record<string, Function> = {
   'asset-avif'({ files }: IOpts) {
     expect(files['index.js']).toContain(`.avif"`);
   },
+  'asset-base64'({ files }: IOpts) {
+    expect(files['index.css']).toContain(`data:image/svg+xml;base64,P`);
+  },
   'asset-fallback'({ files }: IOpts) {
     expect(files['index.js']).toContain(`.mp3"`);
   },
