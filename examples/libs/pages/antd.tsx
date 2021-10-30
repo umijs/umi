@@ -1,5 +1,6 @@
-import { Button } from 'antd';
 import 'antd/dist/antd.less';
+import Button from 'antd/es/button';
+import Input from 'antd/es/input';
 import React from 'react';
 
 export default () => {
@@ -7,6 +8,7 @@ export default () => {
     <div>
       <h1>Ant Design</h1>
       <Button type="primary">Button</Button>
+      <Input />
     </div>
   );
 };
