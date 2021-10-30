@@ -341,12 +341,14 @@ importers:
       '@types/express': 4.17.13
       '@umijs/bundler-utils': workspace:*
       '@umijs/utils': workspace:*
+      mrmime: 1.0.0
       webpack: 5.61.0
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
     devDependencies:
       '@types/express': 4.17.13
+      mrmime: 1.0.0
       webpack: 5.61.0_uglify-js@3.14.2
 
   packages/plugins:
@@ -10899,6 +10901,11 @@ packages:
 
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
+    dev: true
+
+  /mrmime/1.0.0:
+    resolution: {integrity: sha512-a70zx7zFfVO7XpnQ2IX1Myh9yY4UYvfld/dikWRnsXxbyvMcfz+u6UfgNAtH+k2QqtJuzVpv6eLTx1G2+WKZbQ==}
+    engines: {node: '>=10'}
     dev: true
 
   /ms/2.0.0:

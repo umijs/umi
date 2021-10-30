@@ -1,9 +1,10 @@
 import { logger } from '@umijs/utils';
 import type { NextFunction, Request, Response } from 'express';
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { extname, join } from 'path';
 import * as process from 'process';
 import webpack, { Configuration } from 'webpack';
+import { lookup } from '../compiled/mrmime';
 import autoExport from './babelPlugins/autoExport';
 import awaitImport from './babelPlugins/awaitImport/awaitImport';
 import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
@@ -124,6 +125,10 @@ export class MFSU {
             if (!req.path.includes(REMOTE_FILE)) {
               res.setHeader('cache-control', 'max-age=31536000,immutable');
             }
+            res.setHeader(
+              'content-type',
+              lookup(extname(req.path)) || 'text/plain',
+            );
             const relativePath = req.path.replace(
               new RegExp(`^${publicPath}`),
               '/',
