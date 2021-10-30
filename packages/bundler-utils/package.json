@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@umijs/utils": "workspace:*",
-    "esbuild": "0.13.8"
+    "esbuild": "0.13.11"
   },
   "devDependencies": {
     "@babel/code-frame": "7.16.0",
