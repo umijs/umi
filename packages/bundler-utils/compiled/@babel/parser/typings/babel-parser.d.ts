@@ -125,7 +125,7 @@ export type ParserPlugin =
   | "classPrivateMethods"
   | "classPrivateProperties"
   | "classProperties"
-  | "classStaticBlock"
+  | "classStaticBlock" // Enabled by default
   | "decimal"
   | "decorators"
   | "decorators-legacy"
@@ -185,6 +185,7 @@ export interface FlowPluginOptions {
 
 export interface TypeScriptPluginOptions {
   dts?: boolean;
+  disallowAmbiguousJSXLike?: boolean;
 }
 
 export const tokTypes: {

@@ -26,8 +26,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/runtime": "7.15.4",
-    "@bloomberg/record-tuple-polyfill": "0.0.3",
+    "@babel/runtime": "7.16.0",
+    "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
     "core-js": "3.18.3"
