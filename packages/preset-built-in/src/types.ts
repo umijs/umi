@@ -5,6 +5,19 @@ export interface IRegisterGenerator {
   fn: (opts: { args: any; paths: IServicePluginAPI['paths'] }) => void;
 }
 
+export type IScript =
+  | Partial<{
+      async: boolean;
+      charset: string;
+      crossOrigin: string | null;
+      defer: boolean;
+      src: string;
+      type: string;
+      // inline script content
+      content: string;
+    }>
+  | string;
+
 export type IApi = PluginAPI &
   IServicePluginAPI & {
     restartServer: () => void;
@@ -36,6 +49,8 @@ export type IApi = PluginAPI &
       stats: any;
       time: number;
     }>;
+    addHTMLHeadScripts: IAdd<null, IScript[]>;
+    addHTMLScripts: IAdd<null, IScript[]>;
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
   };
