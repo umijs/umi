@@ -1,4 +1,5 @@
-import { IAdd, IEvent, IServicePluginAPI, PluginAPI } from '@umijs/core';
+import type { RequestHandler } from '@umijs/bundler-webpack';
+import type { IAdd, IEvent, IServicePluginAPI, PluginAPI } from '@umijs/core';
 
 export interface IRegisterGenerator {
   key: string;
@@ -76,6 +77,8 @@ export type IApi = PluginAPI &
       stats: any;
       time: number;
     }>;
+    addBeforeMiddlewares: IAdd<null, RequestHandler[]>;
+    addMiddlewares: IAdd<null, RequestHandler[]>;
     addHTMLHeadScripts: IAdd<null, IScript[]>;
     addHTMLScripts: IAdd<null, IScript[]>;
     addHTMLStyles: IAdd<null, IStyle[]>;
