@@ -4,6 +4,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../types';
 import { clearTmp } from '../utils/clearTmp';
+import { getMarkupArgs } from './dev/getMarkupArgs';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') = importLazy(
   '@umijs/bundler-webpack',
@@ -67,12 +68,12 @@ umi build --clean
 
       // generate html
       const { vite } = api.args;
+      const markupArgs = await getMarkupArgs({ api });
       const markup = await getMarkup({
-        scripts: ['/umi.js'],
+        ...markupArgs,
+        scripts: ['/umi.js'].concat(markupArgs.scripts),
         esmScript: vite,
-        // modifyHTML: () => {},
         path: '/',
-        config: api.config,
       });
       writeFileSync(
         join(api.paths.absOutputPath, 'index.html'),

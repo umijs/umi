@@ -12,7 +12,7 @@ export default (api: IApi) => {
     // 'onExit',
     // 'onPatchRoute',
     // 'onPatchRouteBefore',
-    // 'onPatchRoutes',d
+    // 'onPatchRoutes',
     // 'onPatchRoutesBefore',
     'onPkgJSONChanged', // new
     'onDevCompileDone',
@@ -34,8 +34,8 @@ export default (api: IApi) => {
     // 'addHTMLMetas',
     // 'addHTMLLinks',
     // 'addHTMLStyles',
-    // 'addHTMLHeadScripts',
-    // 'addHTMLScripts',
+    'addHTMLHeadScripts',
+    'addHTMLScripts',
     'addTmpGenerateWatcherPaths',
     // 'chainWebpack',
     // 'modifyHTML',

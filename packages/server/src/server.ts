@@ -15,14 +15,15 @@ interface IOpts {
       parentId?: string;
     }
   >;
-  config: Record<string, any>;
-  scripts: string[];
+  favicon: string;
+  headScripts: any[];
+  scripts: any[];
   esmScript?: boolean;
   modifyHTML?: (opts: { html: string; path?: string }) => Promise<string>;
 }
 
 export async function getMarkup(
-  opts: Pick<IOpts, 'scripts' | 'esmScript' | 'modifyHTML' | 'config'> & {
+  opts: Omit<IOpts, 'routes'> & {
     path?: string;
   },
 ) {
@@ -31,6 +32,7 @@ export async function getMarkup(
     React.createElement('div', { id: 'root' }),
   );
 
+  // TODO: support more script attributes
   function getScriptContent(script: { src?: string; content?: string }) {
     return script.src
       ? `<script${opts.esmScript ? ' type="module"' : ''} src='${
@@ -41,15 +43,13 @@ export async function getMarkup(
         }</script>`;
   }
 
-  const favicon = opts.config.favicon
-    ? `<link rel="shortcut icon" href="${opts.config.favicon}">`
+  const favicon = opts.favicon
+    ? `<link rel="shortcut icon" href="${opts.favicon}">`
     : '';
-  const headScripts = normalizeScripts(opts.config.headScripts || []).map(
+  const headScripts = normalizeScripts(opts.headScripts || []).map(
     getScriptContent,
   );
-  const scripts = normalizeScripts(
-    opts.scripts.concat(opts.config.scripts || []),
-  ).map(getScriptContent);
+  const scripts = normalizeScripts(opts.scripts || []).map(getScriptContent);
   markup = [
     `<!DOCTYPE html>
 <html>
