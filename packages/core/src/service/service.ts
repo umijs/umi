@@ -75,7 +75,7 @@ export class Service {
     type?: ApplyPluginsType;
     initialValue?: any;
     args?: any;
-  }): Promise<T> {
+  }): Promise<typeof opts.initialValue | T> {
     const hooks = this.hooks[opts.key] || [];
     let type = opts.type;
     // guess type from key

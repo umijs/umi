@@ -6,6 +6,8 @@ export default (api: IApi) => {
   api.addHTMLStyles(() => [`body { color: red; }`]);
   api.addHTMLHeadScripts(() => [`console.log('hello world from head')`]);
   api.addHTMLScripts(() => [`console.log('hello world')`]);
+  api.addEntryCodeAhead(() => [`console.log('entry code ahead')`]);
+  api.addEntryCode(() => [`console.log('entry code')`]);
   api.onDevCompileDone((opts) => {
     opts;
     // console.log('> onDevCompileDone', opts.isFirstCompile);

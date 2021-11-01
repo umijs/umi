@@ -1,7 +1,9 @@
+{{{ importsAhead }}}
 import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/route';
 import { getPlugins, getValidKeys } from './core/plugin';
 import { PluginManager } from 'umi';
+{{{ imports }}}
 
 async function render() {
   const context = {
@@ -14,4 +16,6 @@ async function render() {
   return renderClient(context);
 }
 
+{{{ entryCodeAhead }}}
 render();
+{{{ entryCode }}}
