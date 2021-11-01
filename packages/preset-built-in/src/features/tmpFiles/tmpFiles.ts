@@ -50,7 +50,6 @@ export default (api: IApi) => {
     // plugin.ts
     const plugins: string[] = await api.applyPlugins({
       key: 'addRuntimePlugin',
-      type: api.ApplyPluginsType.add,
       initialValue: [
         // TODO: add tryFiles in @umijs/utils
         existsSync(join(api.paths.absSrcPath, 'app.ts')) &&
@@ -67,7 +66,6 @@ export default (api: IApi) => {
     });
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
-      type: api.ApplyPluginsType.add,
       initialValue: [
         // TODO: support these methods
         // 'modifyClientRenderOpts',
