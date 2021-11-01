@@ -45,6 +45,10 @@ export type IMeta = Partial<{
   name: string;
   scheme: string;
 }>;
+export type IEntryImport = {
+  source: string;
+  specifier?: string;
+};
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -77,6 +81,10 @@ export type IApi = PluginAPI &
       stats: any;
       time: number;
     }>;
+    addEntryImports: IAdd<null, IEntryImport[]>;
+    addEntryImportsAhead: IAdd<null, IEntryImport[]>;
+    addEntryCodeAhead: IAdd<null, string[]>;
+    addEntryCode: IAdd<null, string[]>;
     addBeforeMiddlewares: IAdd<null, RequestHandler[]>;
     addMiddlewares: IAdd<null, RequestHandler[]>;
     addHTMLHeadScripts: IAdd<null, IScript[]>;

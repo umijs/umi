@@ -2,6 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
+import { importsToStr } from './importsToStr';
 import { getRouteComponents, getRoutes } from './routes';
 
 export default (api: IApi) => {
@@ -21,6 +22,30 @@ export default (api: IApi) => {
       tplPath: join(TEMPLATES_DIR, 'umi.tpl'),
       context: {
         rendererPath: require.resolve('@umijs/renderer-react'),
+        entryCode: (
+          await api.applyPlugins({
+            key: 'addEntryCode',
+            initialValue: [],
+          })
+        ).join('\n'),
+        entryCodeAhead: (
+          await api.applyPlugins({
+            key: 'addEntryCodeAhead',
+            initialValue: [],
+          })
+        ).join('\n'),
+        importsAhead: importsToStr(
+          await api.applyPlugins({
+            key: 'addEntryImportsAhead',
+            initialValue: [],
+          }),
+        ).join('\n'),
+        imports: importsToStr(
+          await api.applyPlugins({
+            key: 'addEntryImports',
+            initialValue: [],
+          }),
+        ).join('\n'),
       },
     });
 

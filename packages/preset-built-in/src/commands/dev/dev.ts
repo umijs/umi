@@ -1,4 +1,3 @@
-import type { RequestHandler } from '@umijs/bundler-webpack';
 import { importLazy, lodash, logger, portfinder, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -127,11 +126,11 @@ PORT=8888 umi dev
       );
 
       // start dev server
-      const beforeMiddlewares = await api.applyPlugins<RequestHandler[]>({
+      const beforeMiddlewares = await api.applyPlugins({
         key: 'addBeforeMiddlewares',
         initialValue: [],
       });
-      const middlewares = await api.applyPlugins<RequestHandler[]>({
+      const middlewares = await api.applyPlugins({
         key: 'addMiddlewares',
         initialValue: [],
       });
