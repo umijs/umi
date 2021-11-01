@@ -69,6 +69,7 @@ umi build --clean
       // generate html
       const { vite } = api.args;
       const markupArgs = await getMarkupArgs({ api });
+      // @ts-ignore
       const markup = await getMarkup({
         ...markupArgs,
         scripts: ['/umi.js'].concat(markupArgs.scripts),

@@ -17,6 +17,7 @@ export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
   return async (req, res, next) => {
     const { vite } = opts.api.args;
     const markupArgs = await getMarkupArgs(opts);
+    // @ts-ignore
     const requestHandler = await createRequestHandler({
       ...markupArgs,
       scripts: (vite

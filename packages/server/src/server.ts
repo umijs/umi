@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { createServerRoutes } from './routes';
 import { normalizeScripts } from './scripts';
+import { normalizeStyles } from './styles';
 
 interface IOpts {
   routes: Record<
@@ -15,9 +16,12 @@ interface IOpts {
       parentId?: string;
     }
   >;
-  favicon: string;
-  headScripts: any[];
-  scripts: any[];
+  links?: Record<string, string>[];
+  metas?: Record<string, string>[];
+  styles?: (Record<string, string> | string)[];
+  favicon?: string;
+  headScripts?: (Record<string, string> | string)[];
+  scripts?: (Record<string, string> | string)[];
   esmScript?: boolean;
   modifyHTML?: (opts: { html: string; path?: string }) => Promise<string>;
 }
@@ -32,20 +36,60 @@ export async function getMarkup(
     React.createElement('div', { id: 'root' }),
   );
 
-  // TODO: support more script attributes
+  function propsToString(opts: {
+    props: Record<string, any>;
+    filters?: string[];
+  }) {
+    return Object.keys(opts.props)
+      .filter((key) => !(opts.filters || []).includes(key))
+      .map((key) => `${key}=${JSON.stringify(opts.props[key])}`)
+      .join(' ');
+  }
+
   function getScriptContent(script: { src?: string; content?: string }) {
+    const attrs = propsToString({
+      props: script,
+      filters: ['src', 'content'],
+    });
     return script.src
-      ? `<script${opts.esmScript ? ' type="module"' : ''} src='${
+      ? `<script${opts.esmScript ? ' type="module"' : ''} ${attrs} src="${
           script.src
-        }'></script>`
-      : `<script${opts.esmScript ? ' type="module"' : ''}>${
+        }"></script>`
+      : `<script${opts.esmScript ? ' type="module"' : ''} ${attrs}>${
           script.content
         }</script>`;
+  }
+
+  function getStyleContent(style: { src?: string; content?: string }) {
+    const attrs = propsToString({
+      props: style,
+      filters: ['src', 'content'],
+    });
+    return style.src
+      ? `<link rel="stylesheet" ${attrs} src="${style.src}" />`
+      : `<style ${attrs}>${style.content}</style>`;
+  }
+
+  function getTagContent(opts: {
+    attrs: Record<string, string>;
+    tagName: string;
+  }) {
+    const attrs = propsToString({
+      props: opts.attrs,
+    });
+    return `<${opts.tagName} ${attrs} />`;
   }
 
   const favicon = opts.favicon
     ? `<link rel="shortcut icon" href="${opts.favicon}">`
     : '';
+  const metas = (opts.metas || []).map((meta) =>
+    getTagContent({ attrs: meta, tagName: 'meta' }),
+  );
+  const links = (opts.links || []).map((link) =>
+    getTagContent({ attrs: link, tagName: 'link' }),
+  );
+  const styles = normalizeStyles(opts.styles || []).map(getStyleContent);
   const headScripts = normalizeScripts(opts.headScripts || []).map(
     getScriptContent,
   );
@@ -60,7 +104,10 @@ export async function getMarkup(
   content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
 />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />`,
+    metas.join('\n'),
     favicon,
+    links.join('\n'),
+    styles.join('\n'),
     headScripts.join('\n'),
     `</head>
 <body>`,
