@@ -13,10 +13,37 @@ export type IScript =
       defer: boolean;
       src: string;
       type: string;
-      // inline script content
       content: string;
     }>
   | string;
+export type IStyle =
+  | Partial<{
+      type: string;
+      content: string;
+    }>
+  | string;
+export type ILink = Partial<{
+  as: string;
+  crossOrigin: string | null;
+  disabled: boolean;
+  href: string;
+  hreflang: string;
+  imageSizes: string;
+  imageSrcset: string;
+  integrity: string;
+  media: string;
+  referrerPolicy: string;
+  rel: string;
+  rev: string;
+  target: string;
+  type: string;
+}>;
+export type IMeta = Partial<{
+  content: string;
+  httpEquiv: string;
+  name: string;
+  scheme: string;
+}>;
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -51,6 +78,9 @@ export type IApi = PluginAPI &
     }>;
     addHTMLHeadScripts: IAdd<null, IScript[]>;
     addHTMLScripts: IAdd<null, IScript[]>;
+    addHTMLStyles: IAdd<null, IStyle[]>;
+    addHTMLLinks: IAdd<null, ILink[]>;
+    addHTMLMetas: IAdd<null, IMeta[]>;
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
   };
