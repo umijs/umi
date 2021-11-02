@@ -23,7 +23,9 @@ interface IOpts {
   cwd: string;
   env: Env;
   entry: Record<string, string>;
+  extraBabelPresets?: any[];
   extraBabelPlugins?: any[];
+  babelPreset?: any;
   hash?: boolean;
   hmr?: boolean;
   staticPathPrefix?: string;
@@ -45,7 +47,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     userConfig,
     cwd: opts.cwd,
     env: opts.env,
+    babelPreset: opts.babelPreset,
     extraBabelPlugins: opts.extraBabelPlugins || [],
+    extraBabelPresets: opts.extraBabelPresets || [],
     browsers: getBrowsersList({
       targets: userConfig.targets,
     }),

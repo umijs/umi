@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@umijs/ast": "workspace:*",
+    "@umijs/babel-preset-umi": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",

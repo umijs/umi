@@ -27,6 +27,8 @@ export default (api: IApi) => {
     'addEntryImports',
     'addEntryCodeAhead',
     'addEntryCode',
+    'addExtraBabelPresets',
+    'addExtraBabelPlugins',
     'addHTMLMetas',
     'addHTMLLinks',
     'addHTMLStyles',
