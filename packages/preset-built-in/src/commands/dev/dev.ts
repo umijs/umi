@@ -135,8 +135,12 @@ PORT=8888 umi dev
         key: 'addMiddlewares',
         initialValue: [],
       });
-      const { babelPreset, extraBabelPlugins, extraBabelPresets } =
-        await getBabelOpts({ api });
+      const {
+        babelPreset,
+        extraBabelPlugins,
+        extraBabelPresets,
+        chainWebpack,
+      } = await getBabelOpts({ api });
       const opts = {
         config: api.config,
         cwd: api.cwd,
@@ -145,7 +149,7 @@ PORT=8888 umi dev
         },
         port: api.appData.port,
         host: api.appData.host,
-        babelPreset,
+        ...(api.args.vite ? {} : { babelPreset, chainWebpack }),
         extraBabelPlugins,
         extraBabelPresets,
         beforeMiddlewares: [faviconMiddleware].concat(beforeMiddlewares),

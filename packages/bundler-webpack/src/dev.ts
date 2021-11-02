@@ -11,6 +11,9 @@ interface IOpts {
   onDevCompileDone?: Function;
   port?: number;
   host?: string;
+  chainWebpack?: Function;
+  extraBabelPlugins?: any[];
+  extraBabelPresets?: any[];
   cwd: string;
   config: IConfig;
   entry: Record<string, string>;
@@ -25,7 +28,12 @@ export async function dev(opts: IOpts) {
     env: Env.development,
     entry: opts.entry,
     userConfig: opts.config,
-    extraBabelPlugins: mfsu.getBabelPlugins(),
+    extraBabelPlugins: [
+      ...mfsu.getBabelPlugins(),
+      ...(opts.extraBabelPlugins || []),
+    ],
+    extraBabelPresets: opts.extraBabelPresets,
+    chainWebpack: opts.chainWebpack,
     hmr: true,
     analyze: process.env.ANALYZE,
   });

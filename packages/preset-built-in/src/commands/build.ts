@@ -47,15 +47,19 @@ umi build --clean
 
       // build
       // TODO: support watch mode
-      const { babelPreset, extraBabelPlugins, extraBabelPresets } =
-        await getBabelOpts({ api });
+      const {
+        babelPreset,
+        extraBabelPlugins,
+        extraBabelPresets,
+        chainWebpack,
+      } = await getBabelOpts({ api });
       const opts = {
         config: api.config,
         cwd: api.cwd,
         entry: {
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
-        babelPreset,
+        ...(api.args.vite ? {} : { babelPreset, chainWebpack }),
         extraBabelPlugins,
         extraBabelPresets,
         onBuildComplete(opts: any) {

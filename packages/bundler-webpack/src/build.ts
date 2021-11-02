@@ -9,6 +9,7 @@ interface IOpts {
   config: IConfig;
   onBuildComplete?: Function;
   babelPreset?: any;
+  chainWebpack?: Function;
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   clean?: boolean;
@@ -24,6 +25,7 @@ export async function build(opts: IOpts): Promise<void> {
     babelPreset: opts.babelPreset,
     extraBabelPlugins: opts.extraBabelPlugins,
     extraBabelPresets: opts.extraBabelPresets,
+    chainWebpack: opts.chainWebpack,
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {

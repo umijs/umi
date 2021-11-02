@@ -16,4 +16,7 @@ export default (api: IApi) => {
     opts;
     // console.log('> onBuildComplete', opts.isFirstCompile);
   });
+  api.chainWebpack((memo) => {
+    memo;
+  });
 };
