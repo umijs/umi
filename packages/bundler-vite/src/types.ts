@@ -18,7 +18,7 @@ export interface ICopy {
   to: string;
 }
 
-type IBabelPlugin = string | [string, { [key: string]: any }];
+export type IBabelPlugin = string | [string, { [key: string]: any }];
 
 export interface IConfig {
   alias?: Record<string, string>;

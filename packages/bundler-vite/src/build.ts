@@ -3,7 +3,7 @@ import path from 'path';
 import { build as viteBuilder, mergeConfig } from 'vite';
 import { getConfig } from './config/config';
 import deleteOuputFiles from './plugins/deleteOuputFiles';
-import { Env, IConfig } from './types';
+import { Env, IConfig, IBabelPlugin } from './types';
 
 interface IOpts {
   cwd: string;
@@ -11,6 +11,8 @@ interface IOpts {
   config: IConfig;
   onBuildComplete?: Function;
   clean?: boolean;
+  extraBabelPlugins?: IBabelPlugin[];
+  extraBabelPresets?: IBabelPlugin[];
 }
 
 interface IBuildResult {
@@ -71,6 +73,8 @@ export async function build(opts: IOpts): Promise<void> {
     env: Env.production,
     entry: opts.entry,
     userConfig: opts.config,
+    extraBabelPlugins: opts.extraBabelPlugins,
+    extraBabelPresets: opts.extraBabelPresets,
   });
   const viteBuildConfig = mergeConfig(
     {
