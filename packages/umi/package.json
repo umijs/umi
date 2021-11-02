@@ -9,8 +9,12 @@
     "dist",
     "index.d.ts",
     "index.esm.js",
-    "client"
+    "client",
+    "bin"
   ],
+  "bin": {
+    "umi": "bin/umi.js"
+  },
   "scripts": {
     "build": "pnpm tsc",
     "build:client": "pnpm tsc --project ./tsconfig.client.json",
