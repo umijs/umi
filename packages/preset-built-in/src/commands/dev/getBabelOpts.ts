@@ -22,9 +22,18 @@ export async function getBabelOpts(opts: { api: IApi }) {
     key: 'addExtraBabelPlugins',
     initialValue: [],
   });
+  const chainWebpack = async (memo: any, args: Object) => {
+    await opts.api.applyPlugins({
+      key: 'chainWebpack',
+      type: opts.api.ApplyPluginsType.modify,
+      initialValue: memo,
+      args,
+    });
+  };
   return {
     babelPreset,
     extraBabelPlugins,
     extraBabelPresets,
+    chainWebpack,
   };
 }

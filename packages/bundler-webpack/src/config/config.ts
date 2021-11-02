@@ -26,6 +26,7 @@ interface IOpts {
   extraBabelPresets?: any[];
   extraBabelPlugins?: any[];
   babelPreset?: any;
+  chainWebpack?: Function;
   hash?: boolean;
   hmr?: boolean;
   staticPathPrefix?: string;
@@ -165,10 +166,16 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   }
 
   // chain webpack
+  if (opts.chainWebpack) {
+    await opts.chainWebpack(config, {
+      env: opts.env,
+      webpack,
+    });
+  }
   if (userConfig.chainWebpack) {
     await userConfig.chainWebpack(config, {
       env: opts.env,
-      webpack: webpack,
+      webpack,
     });
   }
 

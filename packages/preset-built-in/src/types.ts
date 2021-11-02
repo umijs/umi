@@ -1,5 +1,8 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
+import type webpack from '@umijs/bundler-webpack/compiled/webpack';
+import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type { IAdd, IEvent, IServicePluginAPI, PluginAPI } from '@umijs/core';
+import { Env } from '@umijs/core';
 
 export interface IRegisterGenerator {
   key: string;
@@ -96,4 +99,15 @@ export type IApi = PluginAPI &
     addHTMLMetas: IAdd<null, IMeta[]>;
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
+    chainWebpack: {
+      (fn: {
+        (
+          memo: WebpackChain,
+          args: {
+            webpack: typeof webpack;
+            env: Env;
+          },
+        ): void;
+      }): void;
+    };
   };

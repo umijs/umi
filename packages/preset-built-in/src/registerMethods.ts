@@ -35,7 +35,7 @@ export default (api: IApi) => {
     'addHTMLHeadScripts',
     'addHTMLScripts',
     'addTmpGenerateWatcherPaths',
-    // 'chainWebpack',
+    'chainWebpack',
     // 'modifyHTML',
     // 'modifyBundler',
     // 'modifyBundleConfigOpts',
