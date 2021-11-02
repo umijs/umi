@@ -85,6 +85,8 @@ export type IApi = PluginAPI &
     addEntryImportsAhead: IAdd<null, IEntryImport[]>;
     addEntryCodeAhead: IAdd<null, string[]>;
     addEntryCode: IAdd<null, string[]>;
+    addExtraBabelPresets: IAdd<null, any[]>;
+    addExtraBabelPlugins: IAdd<null, any[]>;
     addBeforeMiddlewares: IAdd<null, RequestHandler[]>;
     addMiddlewares: IAdd<null, RequestHandler[]>;
     addHTMLHeadScripts: IAdd<null, IScript[]>;

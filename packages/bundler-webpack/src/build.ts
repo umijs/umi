@@ -8,6 +8,9 @@ interface IOpts {
   entry: Record<string, string>;
   config: IConfig;
   onBuildComplete?: Function;
+  babelPreset?: any;
+  extraBabelPlugins?: any[];
+  extraBabelPresets?: any[];
   clean?: boolean;
 }
 
@@ -18,6 +21,9 @@ export async function build(opts: IOpts): Promise<void> {
     entry: opts.entry,
     userConfig: opts.config,
     analyze: process.env.ANALYZE,
+    babelPreset: opts.babelPreset,
+    extraBabelPlugins: opts.extraBabelPlugins,
+    extraBabelPresets: opts.extraBabelPresets,
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {

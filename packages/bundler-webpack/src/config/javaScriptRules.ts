@@ -10,6 +10,8 @@ interface IOpts {
   cwd: string;
   env: Env;
   extraBabelPlugins: any[];
+  extraBabelPresets: any[];
+  babelPreset: any;
   name?: string;
 }
 
@@ -83,10 +85,9 @@ export async function addJavaScriptRules(opts: IOpts) {
           //   : false,
           targets: userConfig.targets,
           presets: [
-            [
+            opts.babelPreset || [
               require.resolve('@umijs/babel-preset-umi'),
               {
-                env,
                 presetEnv: {},
                 presetReact: {},
                 presetTypeScript: {},
@@ -96,6 +97,7 @@ export async function addJavaScriptRules(opts: IOpts) {
                 pluginAutoCSSModules: userConfig.autoCSSModules,
               },
             ],
+            ...opts.extraBabelPresets,
             ...(userConfig.extraBabelPresets || []).filter(Boolean),
           ],
           plugins: [

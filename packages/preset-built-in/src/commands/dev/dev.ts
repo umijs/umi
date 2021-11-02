@@ -6,6 +6,7 @@ import { IApi } from '../../types';
 import { clearTmp } from '../../utils/clearTmp';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
+import { getBabelOpts } from './getBabelOpts';
 import {
   addUnWatch,
   createDebouncedHandler,
@@ -134,6 +135,8 @@ PORT=8888 umi dev
         key: 'addMiddlewares',
         initialValue: [],
       });
+      const { babelPreset, extraBabelPlugins, extraBabelPresets } =
+        await getBabelOpts({ api });
       const opts = {
         config: api.config,
         cwd: api.cwd,
@@ -142,6 +145,9 @@ PORT=8888 umi dev
         },
         port: api.appData.port,
         host: api.appData.host,
+        babelPreset,
+        extraBabelPlugins,
+        extraBabelPresets,
         beforeMiddlewares: [faviconMiddleware].concat(beforeMiddlewares),
         afterMiddlewares: [createRouteMiddleware({ api })].concat(middlewares),
         onDevCompileDone(opts: any) {

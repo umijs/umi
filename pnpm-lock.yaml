@@ -360,6 +360,7 @@ importers:
   packages/preset-built-in:
     specifiers:
       '@umijs/ast': workspace:*
+      '@umijs/babel-preset-umi': workspace:*
       '@umijs/bundler-vite': workspace:*
       '@umijs/bundler-webpack': workspace:*
       '@umijs/core': workspace:*
@@ -372,6 +373,7 @@ importers:
       react-router-dom: 6.0.0-beta.7
     dependencies:
       '@umijs/ast': link:../ast
+      '@umijs/babel-preset-umi': link:../babel-preset-umi
       '@umijs/bundler-vite': link:../bundler-vite
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core

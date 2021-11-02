@@ -4,6 +4,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../types';
 import { clearTmp } from '../utils/clearTmp';
+import { getBabelOpts } from './dev/getBabelOpts';
 import { getMarkupArgs } from './dev/getMarkupArgs';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') = importLazy(
@@ -46,12 +47,17 @@ umi build --clean
 
       // build
       // TODO: support watch mode
+      const { babelPreset, extraBabelPlugins, extraBabelPresets } =
+        await getBabelOpts({ api });
       const opts = {
         config: api.config,
         cwd: api.cwd,
         entry: {
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
+        babelPreset,
+        extraBabelPlugins,
+        extraBabelPresets,
         onBuildComplete(opts: any) {
           api.applyPlugins({
             key: 'onBuildComplete',
