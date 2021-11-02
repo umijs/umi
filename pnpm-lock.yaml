@@ -116,7 +116,12 @@ importers:
       core-js: 3.19.0
 
   packages/bigfish:
-    specifiers: {}
+    specifiers:
+      '@umijs/plugins': workspace:*
+      umi: workspace:*
+    dependencies:
+      '@umijs/plugins': link:../plugins
+      umi: link:../umi
 
   packages/bundler-utils:
     specifiers:

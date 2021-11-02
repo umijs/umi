@@ -1,12 +1,16 @@
 {
-  "name": "@umijs/bigfish",
+  "name": "bigfish",
   "version": "4.0.0-beta.1",
   "description": "@umijs/bigfish",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
+  "bin": {
+    "bigfish": "bin/bigfish.js"
+  },
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
@@ -24,5 +28,9 @@
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bigfish#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "umi": "workspace:*",
+    "@umijs/plugins": "workspace:*"
   }
 }

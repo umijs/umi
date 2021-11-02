@@ -2,7 +2,6 @@ import { lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import * as process from 'process';
 import { AsyncSeriesWaterfallHook } from '../../compiled/tapable';
 import { Config } from '../config/config';
 import { DEFAULT_FRAMEWORK_NAME } from '../constants';
