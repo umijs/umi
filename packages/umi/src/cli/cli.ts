@@ -32,7 +32,9 @@ export async function run(opts?: IOpts) {
   } else if (command === 'build') {
     process.env.NODE_ENV = 'production';
   }
-  process.env.UMI_PRESETS = opts?.presets?.join(',');
+  if (opts?.presets) {
+    process.env.UMI_PRESETS = opts.presets.join(',');
+  }
   if (command === DEV_COMMAND) {
     dev();
   } else {
