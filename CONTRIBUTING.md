@@ -25,4 +25,16 @@ $ pnpm test
 
 ## Release
 
-TODO
+```bash
+$ npm run release
+```
+
+## Examples
+
+```bash
+$ cd examples/boilerplate
+# Must start with pnpm
+$ pnpm dev
+# Switch to the vite mode
+$ pnpm dev -- --vite
+```
