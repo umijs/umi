@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "../../packages/umi/bin/umi.js dev"
+    "dev": "umi dev"
   },
   "devDependencies": {
     "antd": "4.16.13",
