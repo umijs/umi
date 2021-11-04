@@ -2,6 +2,7 @@ import { lodash } from '@umijs/utils';
 import assert from 'assert';
 import { EnableBy, IPluginConfig, PluginType, ServiceStage } from '../types';
 import { Command, IOpts as ICommandOpts } from './command';
+import { Generator, IGeneratorOpts } from './generator';
 import { Hook, IOpts as IHookOpts } from './hook';
 import { Plugin } from './plugin';
 import { Service } from './service';
@@ -48,6 +49,18 @@ export class PluginAPI {
         registerCommand({ ...opts, name: alias });
       });
     }
+  }
+
+  registerGenerator(opts: Omit<IGeneratorOpts, 'plugin'>) {
+    const { key } = opts;
+    assert(
+      !this.service.generators[key],
+      `api.registerGenerator() failed, the generator ${key} is exists from ${this.service.generators[key]?.plugin.id}.`,
+    );
+    this.service.generators[key] = new Generator({
+      ...opts,
+      plugin: this.plugin,
+    });
   }
 
   register(opts: Omit<IHookOpts, 'plugin'>) {

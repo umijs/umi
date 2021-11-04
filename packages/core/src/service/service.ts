@@ -17,6 +17,7 @@ import {
 } from '../types';
 import { Command } from './command';
 import { loadEnv } from './env';
+import { Generator } from './generator';
 import { Hook } from './hook';
 import { getPaths } from './path';
 import { Plugin } from './plugin';
@@ -37,6 +38,7 @@ export class Service {
   appData: Record<string, any> = {};
   args: yParser.Arguments = { _: [], $0: '' };
   commands: Record<string, Command> = {};
+  generators: Record<string, Generator> = {};
   config: Record<string, any> = {};
   configSchemas: Record<string, any> = {};
   configDefaults: Record<string, any> = {};
@@ -189,7 +191,9 @@ export class Service {
     const { plugins, presets } = Plugin.getPluginsAndPresets({
       cwd: this.cwd,
       pkg,
-      plugins: this.opts.plugins || [],
+      plugins: [require.resolve('./generatePlugin')].concat(
+        this.opts.plugins || [],
+      ),
       presets: [require.resolve('./servicePlugin')].concat(
         this.opts.presets || [],
       ),
@@ -395,6 +399,7 @@ export interface IServicePluginAPI {
   args: typeof Service.prototype.args;
   config: typeof Service.prototype.config;
   cwd: typeof Service.prototype.cwd;
+  generators: typeof Service.prototype.generators;
   pkg: typeof Service.prototype.pkg;
   name: typeof Service.prototype.name;
   paths: Required<typeof Service.prototype.paths>;
