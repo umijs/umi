@@ -1,10 +1,5 @@
 {
   "scripts": {
-    "start": "pnpm run dev",
-    "dev": "umi dev",
-    "plugin": "umi plugin"
-  },
-  "devDependencies": {
-    "umi": "workspace:*"
+    "dev": "umi dev"
   }
 }
