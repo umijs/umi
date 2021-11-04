@@ -27,6 +27,7 @@ import installDeps from './installDeps';
 import * as logger from './logger';
 import updatePackageJSON from './updatePackageJSON';
 export * from './importLazy';
+export * from './npmClient';
 export * from './randomColor/randomColor';
 export * as register from './register';
 export * from './winPath';
