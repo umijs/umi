@@ -1,4 +1,9 @@
-import { BaseGenerator, prompts, yParser } from '@umijs/utils';
+import {
+  BaseGenerator,
+  installWithNpmClient,
+  prompts,
+  yParser,
+} from '@umijs/utils';
 import { join } from 'path';
 
 const testData = {
@@ -8,6 +13,8 @@ const testData = {
   author: 'xiaohuoni',
   org: 'umijs',
   version: '4.0.0-alpha.1',
+  npmClient: 'pnpm',
+  registry: 'https://registry.npmjs.org/',
 };
 
 export default async ({
@@ -18,6 +25,40 @@ export default async ({
   args: yParser.Arguments;
 }) => {
   const [_, name] = args._;
+  let npmClient = 'pnpm' as any;
+  let registry = 'https://registry.npmjs.org/';
+  // test ignore prompts
+  if (!args.default) {
+    const response = await prompts([
+      {
+        type: 'select',
+        name: 'npmClient',
+        message: 'Pick Npm Client',
+        choices: [
+          { title: 'npm', value: 'npm' },
+          { title: 'cnpm', value: 'cnpm' },
+          { title: 'tnpm', value: 'tnpm' },
+          { title: 'yarn', value: 'yarn' },
+          { title: 'pnpm', value: 'pnpm', selected: true },
+        ],
+      },
+      {
+        type: 'select',
+        name: 'registry',
+        message: 'Pick Bpm Registry',
+        choices: [
+          {
+            title: 'npm',
+            value: 'https://registry.npmjs.org/',
+            selected: true,
+          },
+          { title: 'taobao', value: 'https://registry.npm.taobao.org' },
+        ],
+      },
+    ]);
+    npmClient = response.npmClient;
+    registry = response.registry;
+  }
 
   const pluginPrompts = [
     {
@@ -55,8 +96,15 @@ export default async ({
       ? testData
       : {
           version: require('../package').version,
+          npmClient,
+          registry,
         },
     questions: args.default ? [] : args.plugin ? pluginPrompts : [],
   });
   await generator.run();
+
+  if (!args.default) {
+    // install
+    installWithNpmClient({ npmClient });
+  }
 };

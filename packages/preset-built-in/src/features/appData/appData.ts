@@ -1,3 +1,4 @@
+import { getNpmClient } from '@umijs/utils';
 import { IApi } from '../../types';
 import { getRoutes } from '../tmpFiles/routes';
 
@@ -11,6 +12,9 @@ export default (api: IApi) => {
     });
     // hasSrcDir
     memo.hasSrcDir = api.paths.absSrcPath.endsWith('/src');
+    // npmClient
+    memo.npmClient = api.userConfig.npmClient || getNpmClient();
+
     return memo;
   });
 };
