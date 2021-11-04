@@ -1,8 +1,8 @@
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 import { mergeConfig } from 'vite';
 import configPlugins from '../plugins';
+import { Env, IBabelPlugin, IConfig } from '../types';
 import configTransformer from './transformer';
-import { Env, IConfig, IBabelPlugin } from '../types';
 
 interface IOpts {
   cwd: string;
