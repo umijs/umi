@@ -9,7 +9,7 @@ async function runGenerator(args: any) {
   const service = new Service({
     cwd,
     env: Env.test,
-    plugins: [require.resolve('./generate')],
+    plugins: [require.resolve('./page')],
   });
   await service.run({
     name: 'generate',
@@ -21,8 +21,8 @@ test('generate page', async () => {
   await runGenerator({
     _: ['generate', 'page', 'index'],
   });
-  expect(existsSync(join(cwd, 'pages', 'index.tsx'))).toEqual(true);
-  expect(existsSync(join(cwd, 'pages', 'index.less'))).toEqual(true);
+  expect(existsSync(join(cwd, 'pages', 'index', 'index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'pages', 'index', 'index.less'))).toEqual(true);
   rimraf.sync(join(cwd, 'pages'));
 });
 

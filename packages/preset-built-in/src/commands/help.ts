@@ -51,7 +51,7 @@ ${getDeps(commands)}
     console.log();
   }
 
-  function getDeps(commands: typeof api.service.commands) {
+  function getDeps(commands: any) {
     return Object.keys(commands)
       .map((key) => {
         return `    ${chalk.green(lodash.padEnd(key, 10))}${
