@@ -29,6 +29,7 @@ importers:
       ts-node: ^10.4.0
       typescript: ^4.5.0-beta
       uglify-js: ^3.14.2
+      umi: workspace:*
       yorkie: ^2.0.0
       zx: ^4.2.0
     devDependencies:
@@ -57,14 +58,12 @@ importers:
       ts-node: 10.4.0_5470da6bae608e68cf8d018f76ffd8e5
       typescript: 4.5.0-dev.20211001
       uglify-js: 3.14.2
+      umi: link:packages/umi
       yorkie: 2.0.0
       zx: 4.2.0
 
   examples/boilerplate:
-    specifiers:
-      umi: workspace:*
-    devDependencies:
-      umi: link:../../packages/umi
+    specifiers: {}
 
   examples/bundler-vite-demo:
     specifiers:
