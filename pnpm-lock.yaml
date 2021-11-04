@@ -61,7 +61,10 @@ importers:
       zx: 4.2.0
 
   examples/boilerplate:
-    specifiers: {}
+    specifiers:
+      umi: workspace:*
+    devDependencies:
+      umi: link:../../packages/umi
 
   examples/bundler-vite-demo:
     specifiers:
