@@ -7,7 +7,7 @@ export default {
     memo;
   },
   // fastRefresh: false,
-  favicon: 'https://sivers.com/favicon.ico',
+  // favicon: 'https://sivers.com/favicon.ico',
   headScripts: [`console.log('head script')`],
   scripts: [`console.log('script')`],
   npmClient: 'pnpm',

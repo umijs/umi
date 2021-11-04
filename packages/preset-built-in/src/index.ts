@@ -10,6 +10,7 @@ export default () => {
       require.resolve('./features/check/check'),
       require.resolve('./features/configPlugins/configPlugins'),
       require.resolve('./features/tmpFiles/tmpFiles'),
+      require.resolve('./features/favicon/favicon'),
 
       // commands
       require.resolve('./commands/build'),
