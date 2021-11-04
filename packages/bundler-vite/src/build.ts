@@ -3,7 +3,7 @@ import path from 'path';
 import { build as viteBuilder, mergeConfig } from 'vite';
 import { getConfig } from './config/config';
 import deleteOuputFiles from './plugins/deleteOuputFiles';
-import { Env, IConfig, IBabelPlugin } from './types';
+import { Env, IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
   cwd: string;

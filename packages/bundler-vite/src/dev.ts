@@ -1,6 +1,6 @@
 import { getConfig } from './config/config';
 import { createServer } from './server/server';
-import { Env, IConfig, IBabelPlugin } from './types';
+import { Env, IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
   afterMiddlewares?: any[];
