@@ -10,8 +10,7 @@
     "build:release": "pnpm -r --filter ./packages run build -- --declarationMap false",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
     "dep:update": "esno scripts/checkNpmClient.ts && pnpm up --interactive --latest --recursive",
-    "test": "jest",
-    "lint-staged": "lint-staged"
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",

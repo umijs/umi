@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "../../packages/bundler-webpack/bin/bundler-webpack.js dev"
+    "dev": "bundler-webpack dev"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",

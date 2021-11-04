@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "../../packages/bundler-vite/bin/bundler-vite.js dev"
+    "dev": "bundler-vite dev"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",
