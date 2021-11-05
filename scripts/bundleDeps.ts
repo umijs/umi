@@ -231,7 +231,7 @@ Object.keys(exported).forEach(function (key) {
   const pkgDeps = pkg.dependencies || {};
   const {
     deps,
-    externals,
+    externals = {},
     noMinify = [],
     extraDtsDeps = [],
     extraDtsExternals = [],
