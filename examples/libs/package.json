@@ -3,6 +3,7 @@
     "dev": "umi dev"
   },
   "devDependencies": {
+    "@alita/inspx": "0.0.2",
     "antd": "4.16.13",
     "framer-motion": "5.0.0"
   }
