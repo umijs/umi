@@ -1,4 +1,6 @@
 {
-  "version": "4.0.0-beta.1",
-  "workspaces": ["packages/*"]
+  "version": "4.0.0-beta.2",
+  "workspaces": [
+    "packages/*"
+  ]
 }
