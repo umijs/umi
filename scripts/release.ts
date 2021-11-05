@@ -72,7 +72,9 @@ import { assert, eachPkg, getPkgs } from './utils';
 
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
+  $.verbose = false;
   await $`pnpm i`;
+  $.verbose = true;
 
   // commit
   logger.event('commit');
@@ -88,6 +90,7 @@ import { assert, eachPkg, getPkgs } from './utils';
 
   // npm publish
   logger.event('pnpm publish');
+  $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'bigfish'].includes(pkg));
   const tag =
     version.includes('-alpha.') ||
@@ -98,10 +101,14 @@ import { assert, eachPkg, getPkgs } from './utils';
   await Promise.all(
     innerPkgs.map(async (pkg) => {
       await $`cd packages/${pkg} && npm publish --tag ${tag}`;
+      logger.info(`+ ${pkg}`);
     }),
   );
   await $`cd packages/umi && npm publish --tag ${tag}`;
+  logger.info(`+ umi`);
   await $`cd packages/bigfish && npm publish --tag ${tag}`;
+  logger.info(`+ bigfish`);
+  $.verbose = true;
 
   // sync tnpm
   logger.event('sync tnpm');
