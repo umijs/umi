@@ -1,4 +1,4 @@
-import { Cache, Compiler } from 'webpack';
+import type { Compiler } from 'webpack';
 
 interface IOpts {
   onWriteCache: Function;
@@ -13,7 +13,7 @@ export class WriteCachePlugin {
   }
   apply(compiler: Compiler): void {
     compiler.cache.hooks.store.tap(
-      { name: PLUGIN_NAME, stage: Cache.STAGE_DISK },
+      { name: PLUGIN_NAME, stage: /*Cache.STAGE_DISK*/ 10 },
       () => {
         this.opts.onWriteCache();
       },
