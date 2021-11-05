@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugins",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "@umijs/plugins",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,6 +26,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "umi": "4.0.0-beta.1"
+    "umi": "4.0.0-beta.2"
   }
 }

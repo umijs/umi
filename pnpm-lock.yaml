@@ -99,7 +99,7 @@ importers:
 
   packages/ast:
     specifiers:
-      '@umijs/bundler-utils': workspace:*
+      '@umijs/bundler-utils': 4.0.0-beta.2
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
@@ -107,8 +107,8 @@ importers:
     specifiers:
       '@babel/runtime': 7.16.0
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/bundler-utils': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       core-js: 3.19.0
     dependencies:
       '@babel/runtime': 7.16.0
@@ -119,8 +119,8 @@ importers:
 
   packages/bigfish:
     specifiers:
-      '@umijs/plugins': workspace:*
-      umi: workspace:*
+      '@umijs/plugins': 4.0.0-beta.2
+      umi: 4.0.0-beta.2
     dependencies:
       '@umijs/plugins': link:../plugins
       umi: link:../umi
@@ -152,7 +152,7 @@ importers:
       '@types/babel__parser': 7.1.1
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.14.2
-      '@umijs/utils': workspace:*
+      '@umijs/utils': 4.0.0-beta.2
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.9.3
       esbuild: 0.13.11
@@ -191,8 +191,8 @@ importers:
   packages/bundler-vite:
     specifiers:
       '@svgr/core': 5.5.0
-      '@umijs/bundler-utils': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/bundler-utils': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       '@vitejs/plugin-legacy': 1.6.2
       '@vitejs/plugin-react': 1.0.7
       express: 4.17.1
@@ -224,9 +224,9 @@ importers:
       '@types/hapi__joi': 17.1.7
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.2.0
-      '@umijs/babel-preset-umi': workspace:*
-      '@umijs/mfsu': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/babel-preset-umi': 4.0.0-beta.2
+      '@umijs/mfsu': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       autoprefixer: 10.3.7
       babel-loader: 8.2.2
       compression: 1.7.4
@@ -322,8 +322,8 @@ importers:
     specifiers:
       '@hapi/joi': 17.1.1
       '@types/hapi__joi': 17.1.7
-      '@umijs/bundler-utils': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/bundler-utils': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       dotenv: 10.0.0
       just-diff: 3.1.1
       tapable: 2.2.1
@@ -339,15 +339,15 @@ importers:
 
   packages/create-umi:
     specifiers:
-      '@umijs/bundler-utils': workspace:*
+      '@umijs/bundler-utils': 4.0.0-beta.2
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
   packages/mfsu:
     specifiers:
       '@types/express': 4.17.13
-      '@umijs/bundler-utils': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/bundler-utils': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       mrmime: 1.0.0
       webpack: 5.61.0
     dependencies:
@@ -360,21 +360,21 @@ importers:
 
   packages/plugins:
     specifiers:
-      umi: workspace:*
+      umi: 4.0.0-beta.2
     devDependencies:
       umi: link:../umi
 
   packages/preset-built-in:
     specifiers:
-      '@umijs/ast': workspace:*
-      '@umijs/babel-preset-umi': workspace:*
-      '@umijs/bundler-utils': workspace:*
-      '@umijs/bundler-vite': workspace:*
-      '@umijs/bundler-webpack': workspace:*
-      '@umijs/core': workspace:*
-      '@umijs/renderer-react': workspace:*
-      '@umijs/server': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/ast': 4.0.0-beta.2
+      '@umijs/babel-preset-umi': 4.0.0-beta.2
+      '@umijs/bundler-utils': 4.0.0-beta.2
+      '@umijs/bundler-vite': 4.0.0-beta.2
+      '@umijs/bundler-webpack': 4.0.0-beta.2
+      '@umijs/core': 4.0.0-beta.2
+      '@umijs/renderer-react': 4.0.0-beta.2
+      '@umijs/server': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004
       react-router: 6.0.0-beta.7
@@ -422,10 +422,10 @@ importers:
 
   packages/umi:
     specifiers:
-      '@umijs/core': workspace:*
-      '@umijs/preset-built-in': workspace:*
-      '@umijs/renderer-react': workspace:*
-      '@umijs/utils': workspace:*
+      '@umijs/core': 4.0.0-beta.2
+      '@umijs/preset-built-in': 4.0.0-beta.2
+      '@umijs/renderer-react': 4.0.0-beta.2
+      '@umijs/utils': 4.0.0-beta.2
       v8-compile-cache: 2.3.0
     dependencies:
       '@umijs/core': link:../core
