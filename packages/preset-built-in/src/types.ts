@@ -89,7 +89,14 @@ export type IApi = PluginAPI &
     onCheckCode: IEvent<{
       file: string;
       code: string;
-      imports: any[];
+      isFromTmp: boolean;
+      imports: {
+        source: string;
+        loc: any;
+        default: string;
+        namespace: string;
+        specifiers: Record<string, string>;
+      }[];
       exports: any[];
     }>;
     onDevCompileDone: IEvent<{
