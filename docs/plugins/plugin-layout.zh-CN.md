@@ -8,7 +8,7 @@
 
 为了进一步降低研发成本，我们尝试将布局通过 umi 插件的方式内置，只需通过简单的配置即可拥有 Ant Design 的 Layout，包括导航以及侧边栏。从而做到用户无需关心布局。
 
-- 默认为 Ant Design 的 Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout)，支持它全部配置项。
+- 默认为 Ant Design 的 Layout [@ant-design/pro-layout](https://procomponents.ant.design/components/layout/#prolayout)，支持它全部配置项。
 - 侧边栏菜单数据根据路由中的配置自动生成。
 - 默认支持对路由的 403/404 处理和 Error Boundary。
 - 搭配 @umijs/plugin-access 插件一起使用，可以完成对路由权限的控制。
