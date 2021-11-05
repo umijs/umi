@@ -12,6 +12,8 @@ interface IOpts {
   port?: number;
   host?: string;
   chainWebpack?: Function;
+  beforeBabelPlugins?: any[];
+  beforeBabelPresets?: any[];
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   cwd: string;
@@ -29,10 +31,14 @@ export async function dev(opts: IOpts) {
     entry: opts.entry,
     userConfig: opts.config,
     extraBabelPlugins: [
+      ...(opts.beforeBabelPlugins || []),
       ...mfsu.getBabelPlugins(),
       ...(opts.extraBabelPlugins || []),
     ],
-    extraBabelPresets: opts.extraBabelPresets,
+    extraBabelPresets: [
+      ...(opts.beforeBabelPresets || []),
+      ...(opts.extraBabelPresets || []),
+    ],
     chainWebpack: opts.chainWebpack,
     hmr: true,
     analyze: process.env.ANALYZE,

@@ -79,6 +79,19 @@ export type IApi = PluginAPI &
       time: number;
       err?: Error;
     }>;
+    onCheckPkgJSON: IEvent<{
+      origin?: Record<string, any>;
+      current: Record<string, any>;
+    }>;
+    onCheckConfig: IEvent<{
+      config: Record<string, any>;
+    }>;
+    onCheckCode: IEvent<{
+      file: string;
+      code: string;
+      imports: any[];
+      exports: any[];
+    }>;
     onDevCompileDone: IEvent<{
       isFirstCompile: boolean;
       stats: any;
@@ -90,6 +103,8 @@ export type IApi = PluginAPI &
     addEntryCode: IAdd<null, string[]>;
     addExtraBabelPresets: IAdd<null, any[]>;
     addExtraBabelPlugins: IAdd<null, any[]>;
+    addBeforeBabelPresets: IAdd<null, any[]>;
+    addBeforeBabelPlugins: IAdd<null, any[]>;
     addBeforeMiddlewares: IAdd<null, RequestHandler[]>;
     addMiddlewares: IAdd<null, RequestHandler[]>;
     addHTMLHeadScripts: IAdd<null, IScript[]>;

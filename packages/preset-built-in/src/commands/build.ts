@@ -49,6 +49,8 @@ umi build --clean
       // TODO: support watch mode
       const {
         babelPreset,
+        beforeBabelPlugins,
+        beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
         chainWebpack,
@@ -60,6 +62,8 @@ umi build --clean
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
         ...(api.args.vite ? {} : { babelPreset, chainWebpack }),
+        beforeBabelPlugins,
+        beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
         onBuildComplete(opts: any) {

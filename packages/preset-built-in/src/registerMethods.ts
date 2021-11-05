@@ -16,6 +16,9 @@ export default (api: IApi) => {
     // 'onPatchRoutesBefore',
     'onPkgJSONChanged', // new
     'onDevCompileDone',
+    'onChangePkgJSON',
+    'onCheckCode',
+    'onCheckConfig',
     'addBeforeMiddlewares',
     'addMiddlewares',
     'addRuntimePlugin',
@@ -29,6 +32,8 @@ export default (api: IApi) => {
     'addEntryCode',
     'addExtraBabelPresets',
     'addExtraBabelPlugins',
+    'addBeforeBabelPresets',
+    'addBeforeBabelPlugins',
     'addHTMLMetas',
     'addHTMLLinks',
     'addHTMLStyles',

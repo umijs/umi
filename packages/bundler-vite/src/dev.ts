@@ -3,6 +3,8 @@ import { createServer } from './server/server';
 import { Env, IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
+  beforeBabelPlugins?: any[];
+  beforeBabelPresets?: any[];
   afterMiddlewares?: any[];
   beforeMiddlewares?: any[];
   onDevCompileDone?: any;
@@ -21,8 +23,14 @@ export async function dev(opts: IOpts) {
     env: Env.development,
     entry: opts.entry,
     userConfig: opts.config,
-    extraBabelPlugins: opts.extraBabelPlugins,
-    extraBabelPresets: opts.extraBabelPresets,
+    extraBabelPlugins: [
+      ...(opts.beforeBabelPlugins || []),
+      ...(opts.extraBabelPlugins || []),
+    ],
+    extraBabelPresets: [
+      ...(opts.beforeBabelPresets || []),
+      ...(opts.extraBabelPresets || []),
+    ],
   });
 
   await createServer({

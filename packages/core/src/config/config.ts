@@ -67,7 +67,7 @@ export class Config {
       data: ReturnType<typeof Config.diffConfigs>;
       event: string;
       path: string;
-    }) => void;
+    }) => Promise<void>;
   }) {
     const watcher = chokidar.watch(
       [
@@ -97,11 +97,15 @@ export class Config {
           updated,
           onChangeTypes: opts.onChangeTypes,
         });
-        opts.onChange({
-          data,
-          event,
-          path,
-        });
+        opts
+          .onChange({
+            data,
+            event,
+            path,
+          })
+          .catch((e) => {
+            throw new Error(e);
+          });
       }, WATCH_DEBOUNCE_STEP),
     );
     return () => watcher.close();

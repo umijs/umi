@@ -86,6 +86,13 @@ PORT=8888 umi dev
           const origin = api.appData.pkg;
           api.appData.pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
           api.applyPlugins({
+            key: 'onCheckPkgJSON',
+            args: {
+              origin,
+              current: api.appData.pkg,
+            },
+          });
+          api.applyPlugins({
             key: 'onPkgJSONChanged',
             args: {
               origin,
@@ -100,7 +107,13 @@ PORT=8888 umi dev
         api.service.configManager!.watch({
           schemas: api.service.configSchemas,
           onChangeTypes: api.service.configOnChanges,
-          onChange(opts) {
+          async onChange(opts) {
+            await api.applyPlugins({
+              key: 'onCheckConfig',
+              args: {
+                config: api.config,
+              },
+            });
             const { data } = opts;
             if (data.changes[api.ConfigChangeType.reload]) {
               logger.event(
@@ -137,6 +150,8 @@ PORT=8888 umi dev
       });
       const {
         babelPreset,
+        beforeBabelPlugins,
+        beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
         chainWebpack,
@@ -150,6 +165,8 @@ PORT=8888 umi dev
         port: api.appData.port,
         host: api.appData.host,
         ...(api.args.vite ? {} : { babelPreset, chainWebpack }),
+        beforeBabelPlugins,
+        beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
         beforeMiddlewares: [faviconMiddleware].concat(beforeMiddlewares),

@@ -9,6 +9,7 @@ export default () => {
       require.resolve('./features/appData/appData'),
       require.resolve('./features/check/check'),
       require.resolve('./features/configPlugins/configPlugins'),
+      require.resolve('./features/transform/transform'),
       require.resolve('./features/tmpFiles/tmpFiles'),
       require.resolve('./features/favicon/favicon'),
 
