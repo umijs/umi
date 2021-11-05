@@ -30,8 +30,8 @@
   },
   "dependencies": {
     "@svgr/core": "5.5.0",
-    "@umijs/bundler-utils": "workspace:*",
-    "@umijs/utils": "workspace:*",
+    "@umijs/bundler-utils": "4.0.0-beta.1",
+    "@umijs/utils": "4.0.0-beta.1",
     "@vitejs/plugin-legacy": "1.6.2",
     "@vitejs/plugin-react": "1.0.7",
     "postcss-preset-env": "6.7.0",
