@@ -1,4 +1,3 @@
-import type { RequestHandler } from '@umijs/bundler-webpack';
 import { copyFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -29,20 +28,21 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.addMiddlewares({
-    fn: () => {
-      if (api.appData.faviconFile) {
-        const faviconMiddleware: RequestHandler = (req, res, next) => {
-          if (req.path === `/${api.appData.faviconFile}`) {
-            res.sendFile(join(api.paths.absSrcPath, api.appData.faviconFile));
-          } else {
-            next();
-          }
-        };
-        return faviconMiddleware as any;
-      }
-    },
-  });
+  // TODO: add this back
+  // api.addMiddlewares({
+  //   fn: () => {
+  //     if (api.appData.faviconFile) {
+  //       const faviconMiddleware: RequestHandler = (req, res, next) => {
+  //         if (req.path === `/${api.appData.faviconFile}`) {
+  //           res.sendFile(join(api.paths.absSrcPath, api.appData.faviconFile));
+  //         } else {
+  //           next();
+  //         }
+  //       };
+  //       return faviconMiddleware as any;
+  //     }
+  //   },
+  // });
 
   api.onBuildComplete(({ err }) => {
     if (!err) {

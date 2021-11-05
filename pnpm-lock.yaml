@@ -91,9 +91,11 @@ importers:
 
   examples/libs:
     specifiers:
+      '@alita/inspx': 0.0.2
       antd: 4.16.13
       framer-motion: 5.0.0
     devDependencies:
+      '@alita/inspx': 0.0.2
       antd: 4.16.13
       framer-motion: 5.0.0
 
@@ -508,6 +510,15 @@ importers:
       yargs-parser: 20.2.9
 
 packages:
+
+  /@alita/inspx/0.0.2:
+    resolution: {integrity: sha512-NylAZjHY1jIyO5a58WaPSzZbR39idg8tGyUl4YLBiSmU0lvkl/K9C77TexPQMUHhzauelmmhBht2FRoA77U0tQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      '@radix-ui/popper': 0.0.10
+    dev: true
 
   /@ant-design/colors/6.0.0:
     resolution: {integrity: sha512-qAZRvPzfdWHtfameEGP2Qvuf838NhergR35o+EuVyB5XvSA98xod5r4utvi4TJ3ywmevm290g9nsCG5MryrdWQ==}
@@ -4403,6 +4414,13 @@ packages:
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+    dev: true
+
+  /@radix-ui/popper/0.0.10:
+    resolution: {integrity: sha512-YFKuPqQPKscreQid7NuB4it3PMzSwGg03vgrud6sVliHkI43QNAOHyrHyMNo015jg6QK5GVDn+7J2W5uygqSGA==}
+    dependencies:
+      '@babel/runtime': 7.16.0
+      csstype: 3.0.9
     dev: true
 
   /@rollup/pluginutils/4.1.1:
