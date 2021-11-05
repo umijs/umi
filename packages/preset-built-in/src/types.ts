@@ -85,6 +85,7 @@ export type IApi = PluginAPI &
     }>;
     onCheckConfig: IEvent<{
       config: Record<string, any>;
+      userConfig: Record<string, any>;
     }>;
     onCheckCode: IEvent<{
       file: string;
