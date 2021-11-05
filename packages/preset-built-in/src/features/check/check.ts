@@ -19,6 +19,7 @@ export default (api: IApi) => {
       key: 'onCheckConfig',
       args: {
         config: api.config,
+        userConfig: api.userConfig,
       },
     });
   });

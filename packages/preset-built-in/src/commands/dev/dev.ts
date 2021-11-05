@@ -112,6 +112,7 @@ PORT=8888 umi dev
               key: 'onCheckConfig',
               args: {
                 config: api.config,
+                userConfig: api.userConfig,
               },
             });
             const { data } = opts;
