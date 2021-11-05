@@ -11,6 +11,8 @@ interface IOpts {
   config: IConfig;
   onBuildComplete?: Function;
   clean?: boolean;
+  beforeBabelPlugins?: any[];
+  beforeBabelPresets?: any[];
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
 }
@@ -73,8 +75,14 @@ export async function build(opts: IOpts): Promise<void> {
     env: Env.production,
     entry: opts.entry,
     userConfig: opts.config,
-    extraBabelPlugins: opts.extraBabelPlugins,
-    extraBabelPresets: opts.extraBabelPresets,
+    extraBabelPlugins: [
+      ...(opts.beforeBabelPlugins || []),
+      ...(opts.extraBabelPlugins || []),
+    ],
+    extraBabelPresets: [
+      ...(opts.beforeBabelPresets || []),
+      ...(opts.extraBabelPresets || []),
+    ],
   });
   const viteBuildConfig = mergeConfig(
     {
