@@ -202,9 +202,15 @@ export class Service {
     });
     // register presets and plugins
     this.stage = ServiceStage.initPresets;
+    const presetPlugins: Plugin[] = [];
     while (presets.length) {
-      await this.initPreset({ preset: presets.shift()!, presets, plugins });
+      await this.initPreset({
+        preset: presets.shift()!,
+        presets,
+        plugins: presetPlugins,
+      });
     }
+    plugins.unshift(...presetPlugins);
     this.stage = ServiceStage.initPlugins;
     while (plugins.length) {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
@@ -302,7 +308,7 @@ export class Service {
       plugins: opts.plugins,
     });
     opts.presets.unshift(...(presets || []));
-    opts.plugins.unshift(...(plugins || []));
+    opts.plugins.push(...(plugins || []));
   }
 
   async initPlugin(opts: {
