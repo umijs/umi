@@ -368,6 +368,7 @@ importers:
     specifiers:
       '@umijs/ast': workspace:*
       '@umijs/babel-preset-umi': workspace:*
+      '@umijs/bundler-utils': workspace:*
       '@umijs/bundler-vite': workspace:*
       '@umijs/bundler-webpack': workspace:*
       '@umijs/core': workspace:*
@@ -381,6 +382,7 @@ importers:
     dependencies:
       '@umijs/ast': link:../ast
       '@umijs/babel-preset-umi': link:../babel-preset-umi
+      '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/bundler-vite': link:../bundler-vite
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
