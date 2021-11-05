@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0-beta.4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -26,8 +26,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.3",
-    "@umijs/utils": "4.0.0-beta.3"
+    "@umijs/bundler-utils": "4.0.0-beta.4",
+    "@umijs/utils": "4.0.0-beta.4"
   },
   "devDependencies": {
     "@hapi/joi": "17.1.1",
