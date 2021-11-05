@@ -22,6 +22,7 @@ export default (api: IApi) => {
                     args: {
                       ...cache.get(state.opts.filename),
                       file: state.opts.filename,
+                      code: state.opts.code,
                       isFromTmp: state.opts.filename.startsWith(
                         api.paths.absTmpPath,
                       ),
@@ -45,7 +46,8 @@ export default (api: IApi) => {
                       // import { x4, a as b } from 'x'; { specifiers: { x4: 'x4', a: 'b' } }
                       if (t.isImportDeclaration(node)) {
                         const ret: Record<string, any> = {
-                          value: node.source.value,
+                          source: node.source.value,
+                          loc: node.loc,
                         };
                         node.specifiers.forEach((specifier) => {
                           if (t.isImportDefaultSpecifier(specifier)) {
