@@ -32,6 +32,7 @@
     "@umijs/babel-preset-umi": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
+    "@umijs/bundler-utils": "workspace:*",
     "@umijs/core": "workspace:*",
     "@umijs/renderer-react": "workspace:*",
     "@umijs/server": "workspace:*",
