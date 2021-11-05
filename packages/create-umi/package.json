@@ -1,6 +1,6 @@
 {
   "name": "@umijs/create-umi",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "description": "@umijs/create-umi",
   "bin": {
     "create-umi": "bin/create-umi.js"
@@ -30,6 +30,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.2"
+    "@umijs/bundler-utils": "4.0.0-beta.3"
   }
 }
