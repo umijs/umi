@@ -26,6 +26,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "umi": "workspace:*"
+    "umi": "4.0.0-beta.1"
   }
 }
