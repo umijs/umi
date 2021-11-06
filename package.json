@@ -10,7 +10,8 @@
     "build:release": "pnpm -r --filter ./packages run build -- --declarationMap false",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
     "dep:update": "esno scripts/checkNpmClient.ts && pnpm up --interactive --latest --recursive",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",
@@ -28,6 +29,7 @@
     "esbuild-jest": "^0.5.0",
     "esno": "^0.10.1",
     "git-repo-info": "^2.1.1",
+    "husky": "^7.0.4",
     "jest": "^27.3.1",
     "lerna": "^4.0.0",
     "lint-staged": "^11.2.3",
@@ -39,14 +41,9 @@
     "typescript": "^4.5.0-beta",
     "uglify-js": "^3.14.2",
     "umi": "workspace:*",
-    "yorkie": "^2.0.0",
     "zx": "^4.2.0"
   },
   "packageManager": "pnpm",
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "esno scripts/verifyCommit.ts"
-  },
   "lint-staged": {
     "*.{jsx,less,md,json}": [
       "prettier --write"
