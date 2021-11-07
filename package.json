@@ -11,6 +11,7 @@
     "dev": "pnpm -r --filter ./packages --parallel run dev",
     "dep:update": "esno scripts/checkNpmClient.ts && pnpm up --interactive --latest --recursive",
     "test": "jest",
+    "test:clean": "jest --clearCache",
     "prepare": "husky install"
   },
   "devDependencies": {
