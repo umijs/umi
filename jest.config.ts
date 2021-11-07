@@ -9,4 +9,8 @@ export default {
     '^.+\\.(ts)$': 'esbuild-jest',
   },
   testTimeout: 30000,
+  modulePathIgnorePatterns: [
+    '<rootDir>/packages/.+/compiled',
+    '<rootDir>/packages/.+/fixtures',
+  ],
 } as Config.InitialOptions;
