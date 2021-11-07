@@ -18,18 +18,12 @@ export class DepBuilder {
     this.opts = opts;
   }
 
-  async build(opts: { deps: Dep[] }) {
-    this.isBuilding = true;
-    await this.writeMFFiles({ deps: opts.deps });
-
+  async buildWithWebpack(opts: { onBuildComplete: Function; deps: Dep[] }) {
     const config = this.getWebpackConfig({ deps: opts.deps });
     return new Promise((resolve, reject) => {
       const compiler = this.opts.mfsu.opts.implementor(config);
       compiler.run((err, stats) => {
-        this.isBuilding = false;
-        this.completeFns.forEach((fn) => fn());
-        this.completeFns = [];
-
+        opts.onBuildComplete();
         if (err || stats?.hasErrors()) {
           if (err) {
             reject(err);
@@ -45,6 +39,21 @@ export class DepBuilder {
         compiler.close(() => {});
       });
     });
+  }
+
+  async build(opts: { deps: Dep[] }) {
+    this.isBuilding = true;
+    await this.writeMFFiles({ deps: opts.deps });
+
+    const newOpts = {
+      ...opts,
+      onBuildComplete: () => {
+        this.isBuilding = false;
+        this.completeFns.forEach((fn) => fn());
+        this.completeFns = [];
+      },
+    };
+    await this.buildWithWebpack(newOpts);
   }
 
   onBuildComplete(fn: Function) {
