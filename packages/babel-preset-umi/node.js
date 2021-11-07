@@ -1,14 +1,14 @@
 const { semver } = require('@umijs/utils')
 
 const isReact17 = () => {
-  let react;
+  let _react;
   try {
-    react = require(require.resolve('react', {paths: [api.cwd]}));
+    _react = require(require.resolve('react', {paths: [api.cwd]}));
   } catch (e) {
   }
   return (
-    semver.valid(react.version) &&
-    semver.gte(react.version, '17.0.0-alpha.0')
+    semver.valid(_react && _react.version) &&
+    semver.gte(_react.version, '17.0.0-alpha.0')
   );
 };
 
