@@ -93,7 +93,7 @@ export class Plugin {
     } else {
       id = winPath(this.path);
     }
-    id = id.replace('@umijs/preset-built-in/lib/plugins', '@@');
+    id = id.replace('@umijs/preset-umi/lib/plugins', '@@');
     id = id.replace(/\.js$/, '');
     return id;
   }

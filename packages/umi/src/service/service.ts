@@ -14,10 +14,7 @@ export class Service extends CoreService {
       cwd,
       defaultConfigFiles: DEFAULT_CONFIG_FILES,
       frameworkName: FRAMEWORK_NAME,
-      presets: [
-        require.resolve('@umijs/preset-built-in'),
-        ...(opts?.presets || []),
-      ],
+      presets: [require.resolve('@umijs/preset-umi'), ...(opts?.presets || [])],
       plugins: [
         existsSync(join(cwd, 'plugin.ts')) && join(cwd, 'plugin.ts'),
         existsSync(join(cwd, 'plugin.js')) && join(cwd, 'plugin.js'),
