@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@umijs/core": "4.0.0-beta.5",
-    "@umijs/preset-built-in": "4.0.0-beta.5",
+    "@umijs/preset-umi": "4.0.0-beta.5",
     "@umijs/renderer-react": "4.0.0-beta.5",
     "@umijs/utils": "4.0.0-beta.5",
     "v8-compile-cache": "2.3.0"

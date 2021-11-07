@@ -366,7 +366,7 @@ importers:
     devDependencies:
       umi: link:../umi
 
-  packages/preset-built-in:
+  packages/preset-umi:
     specifiers:
       '@umijs/ast': 4.0.0-beta.5
       '@umijs/babel-preset-umi': 4.0.0-beta.5
@@ -425,13 +425,13 @@ importers:
   packages/umi:
     specifiers:
       '@umijs/core': 4.0.0-beta.5
-      '@umijs/preset-built-in': 4.0.0-beta.5
+      '@umijs/preset-umi': 4.0.0-beta.5
       '@umijs/renderer-react': 4.0.0-beta.5
       '@umijs/utils': 4.0.0-beta.5
       v8-compile-cache: 2.3.0
     dependencies:
       '@umijs/core': link:../core
-      '@umijs/preset-built-in': link:../preset-built-in
+      '@umijs/preset-umi': link:../preset-umi
       '@umijs/renderer-react': link:../renderer-react
       '@umijs/utils': link:../utils
       v8-compile-cache: 2.3.0

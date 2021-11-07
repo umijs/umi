@@ -1,7 +1,7 @@
 {
-  "name": "@umijs/preset-built-in",
+  "name": "@umijs/preset-umi",
   "version": "4.0.0-beta.5",
-  "description": "@umijs/preset-built-in",
+  "description": "@umijs/preset-umi",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/preset-built-in#readme",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/preset-umi#readme",
   "publishConfig": {
     "access": "public"
   },
