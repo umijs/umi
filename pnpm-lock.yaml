@@ -91,13 +91,13 @@ importers:
 
   examples/libs:
     specifiers:
-      '@alita/inspx': 0.0.2
       antd: 4.16.13
       framer-motion: 5.0.0
+      swr: 1.1.0-beta.8
     devDependencies:
-      '@alita/inspx': 0.0.2
       antd: 4.16.13
       framer-motion: 5.0.0
+      swr: 1.1.0-beta.8
 
   packages/ast:
     specifiers:
@@ -361,6 +361,7 @@ importers:
       '@umijs/bundler-esbuild': 4.0.0-beta.5
       '@umijs/bundler-utils': 4.0.0-beta.5
       '@umijs/utils': 4.0.0-beta.5
+      enhanced-resolve: 5.8.3
       mrmime: 1.0.0
       webpack: 5.61.0
     dependencies:
@@ -369,6 +370,7 @@ importers:
       '@umijs/utils': link:../utils
     devDependencies:
       '@types/express': 4.17.13
+      enhanced-resolve: 5.8.3
       mrmime: 1.0.0
       webpack: 5.61.0_uglify-js@3.14.2
 
@@ -522,15 +524,6 @@ importers:
       yargs-parser: 20.2.9
 
 packages:
-
-  /@alita/inspx/0.0.2:
-    resolution: {integrity: sha512-NylAZjHY1jIyO5a58WaPSzZbR39idg8tGyUl4YLBiSmU0lvkl/K9C77TexPQMUHhzauelmmhBht2FRoA77U0tQ==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16'
-    dependencies:
-      '@radix-ui/popper': 0.0.10
-    dev: true
 
   /@ant-design/colors/6.0.0:
     resolution: {integrity: sha512-qAZRvPzfdWHtfameEGP2Qvuf838NhergR35o+EuVyB5XvSA98xod5r4utvi4TJ3ywmevm290g9nsCG5MryrdWQ==}
@@ -4426,13 +4419,6 @@ packages:
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
-    dev: true
-
-  /@radix-ui/popper/0.0.10:
-    resolution: {integrity: sha512-YFKuPqQPKscreQid7NuB4it3PMzSwGg03vgrud6sVliHkI43QNAOHyrHyMNo015jg6QK5GVDn+7J2W5uygqSGA==}
-    dependencies:
-      '@babel/runtime': 7.16.0
-      csstype: 3.0.9
     dev: true
 
   /@rollup/pluginutils/4.1.1:
@@ -14431,6 +14417,12 @@ packages:
       '@swc/core': 1.2.105
       loader-utils: 2.0.0
       webpack: 5.61.0_ef0cf2dec4b04d7b741273c5e71d7776
+    dev: true
+
+  /swr/1.1.0-beta.8:
+    resolution: {integrity: sha512-utikj9U3ndFJPY1h2wqcgwaW8MumctlTTTHnasWdO8IoMBs9X7p+h6yRqj0Z4VcBSdw9csvFPTXFaWQIKsPoWA==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dev: true
 
   /symbol-tree/3.2.4:

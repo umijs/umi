@@ -34,7 +34,8 @@
   "devDependencies": {
     "@types/express": "4.17.13",
     "mrmime": "1.0.0",
-    "webpack": "5.61.0"
+    "webpack": "5.61.0",
+    "enhanced-resolve": "5.8.3"
   },
   "compiledConfig": {
     "deps": [

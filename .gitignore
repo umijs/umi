@@ -2,6 +2,8 @@
 /examples/*/.mfsu
 /examples/*/.umi
 /examples/*/.umi-production
+/examples/libs/monorepo/foo/.mfsu
+/examples/libs/monorepo/foo/.umi
 /examples/*/dist
 /examples/*/node_modules
 /packages/*/node_modules
