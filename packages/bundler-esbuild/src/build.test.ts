@@ -12,8 +12,12 @@ const expects: Record<string, Function> = {
   normal({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("foooooo");`);
   },
+  node_globals_polyfill({ files }: IOpts) {
+    expect(files['index.js']).toContain(`console.log("__dirname", "foooooo");`);
+  },
   alias({ files }: IOpts) {
-    expect(files['index.js']).toContain(`var a = 'react';`);
+    expect(files['index.js']).toContain(`var a = "react";`);
+    expect(files['index.js']).toContain(`var something = "happy";`);
   },
 };
 
