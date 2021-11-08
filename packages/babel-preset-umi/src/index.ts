@@ -1,5 +1,4 @@
 import { dirname } from 'path';
-import * as process from 'process';
 import autoCSSModules from './plugins/autoCSSModules';
 import dynamicImportNode from './plugins/dynamicImportNode';
 import lockCoreJS from './plugins/lockCoreJS';

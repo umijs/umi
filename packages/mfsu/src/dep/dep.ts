@@ -1,12 +1,26 @@
 import assert from 'assert';
+import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
-import * as process from 'process';
 import { MF_VA_PREFIX } from '../constants';
 import { MFSU } from '../mfsu';
 import { trimFileContent } from '../utils/trimFileContent';
 import { getExposeFromContent } from './getExposeFromContent';
-import { getFilePath } from './getFilePath';
+
+const resolver = enhancedResolve.create({
+  mainFields: ['module', 'browser', 'main'], // es module first
+  extensions: ['.js', '.json', '.mjs'],
+  // TODO: support exports
+  // tried to add exports, but it don't work with swr
+  exportsFields: [],
+});
+
+async function resolve(context: string, path: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    resolver(context, path, (err: Error, result: string) =>
+      err ? reject(err) : resolve(result),
+    );
+  });
+}
 
 export class Dep {
   public file: string;
@@ -51,7 +65,7 @@ export * from '${this.file}';
     }
 
     // none node natives
-    const realFile = this.getRealFile();
+    const realFile = await this.getRealFile();
     assert(realFile, `filePath not found of ${this.file}`);
     const content = readFileSync(realFile, 'utf-8');
     return await getExposeFromContent({
@@ -61,23 +75,14 @@ export * from '${this.file}';
     });
   }
 
-  getRealFile() {
-    // Support config dep module resolver
-    for (const resolver of this.mfsu.opts.resolvers || []) {
-      const ret = resolver(this.file);
-      if (ret) return ret;
+  async getRealFile() {
+    try {
+      // don't need to handle alias here
+      // it's already handled by babel plugin
+      return await resolve(this.cwd, this.file);
+    } catch (e) {
+      return null;
     }
-
-    const absFiles = isAbsolute(this.file)
-      ? [this.file]
-      : [this.cwd, this.cwd !== process.cwd() && process.cwd()]
-          .filter(Boolean)
-          .map((base: any) => join(base, 'node_modules', this.file));
-    for (const path of absFiles) {
-      const realFile = getFilePath({ path });
-      if (realFile) return realFile;
-    }
-    return null;
   }
 
   static buildDeps(opts: {

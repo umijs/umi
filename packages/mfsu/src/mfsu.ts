@@ -2,7 +2,6 @@ import { logger } from '@umijs/utils';
 import type { NextFunction, Request, Response } from 'express';
 import { readFileSync } from 'fs';
 import { extname, join } from 'path';
-import * as process from 'process';
 import webpack, { Configuration } from 'webpack';
 import { lookup } from '../compiled/mrmime';
 import autoExport from './babelPlugins/autoExport';
@@ -34,7 +33,6 @@ interface IOpts {
   mode?: Mode;
   tmpBase?: string;
   unMatchLibs?: string[];
-  resolvers?: Function[];
   implementor: typeof webpack;
   buildDepWithESBuild?: boolean;
 }

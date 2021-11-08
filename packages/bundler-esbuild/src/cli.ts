@@ -3,7 +3,6 @@ import { chalk, register, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, extname, join } from 'path';
-import * as process from 'process';
 import { build } from './build';
 
 const args = yParser(process.argv.slice(2), {});
