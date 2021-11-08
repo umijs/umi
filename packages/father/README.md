@@ -1,3 +1,3 @@
-# @umijs/father
+# father
 
 See our website [umijs](https://umijs.org) for more information.
