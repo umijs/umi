@@ -24,6 +24,7 @@ interface IOpts {
 export async function dev(opts: IOpts) {
   const mfsu = new MFSU({
     implementor: webpack as any,
+    buildDepWithESBuild: opts.config.mfsu?.esbuild,
   });
   const webpackConfig = await getConfig({
     cwd: opts.cwd,

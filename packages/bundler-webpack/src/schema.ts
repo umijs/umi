@@ -92,7 +92,13 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       ),
     jsMinifierOptions: (Joi) => Joi.object(),
     lessLoader: (Joi) => Joi.object(),
-    mfsu: (Joi) => Joi.alternatives(Joi.object(), Joi.boolean()),
+    mfsu: (Joi) =>
+      Joi.alternatives(
+        Joi.object({
+          esbuild: Joi.boolean(),
+        }),
+        Joi.boolean(),
+      ),
     outputPath: (Joi) => Joi.string(),
     postcssLoader: (Joi) => Joi.object(),
     proxy: (Joi) => Joi.object(),

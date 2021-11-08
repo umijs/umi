@@ -1,14 +1,11 @@
-import 'antd/dist/antd.less';
-import Button from 'antd/es/button';
-import Input from 'antd/es/input';
+import * as x from '@alita/inspx';
 import React from 'react';
 
 export default () => {
+  console.log(x);
   return (
     <div>
-      <h1>Ant Design</h1>
-      <Button type="primary">Button</Button>
-      <Input />
+      <h2>test</h2>
     </div>
   );
 };

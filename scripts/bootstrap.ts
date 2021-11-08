@@ -24,7 +24,7 @@ import 'zx/globals';
   }
 
   function getVersion() {
-    return require('../package.json').version;
+    return require('../lerna.json').version;
   }
 
   function setExcludeFolder(opts: any) {
