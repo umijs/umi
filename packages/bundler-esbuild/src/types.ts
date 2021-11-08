@@ -1,7 +1,4 @@
 import { TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
-import { Options as LegacyOptions } from '@vitejs/plugin-legacy';
-import type { PluginVisualizerOptions } from 'rollup-plugin-visualizer';
-import type { Plugin, ProxyOptions } from 'vite';
 
 export enum Env {
   development = 'development',
@@ -22,7 +19,6 @@ export type IBabelPlugin = string | [string, { [key: string]: any }];
 
 export interface IConfig {
   alias?: Record<string, string>;
-  analyze?: PluginVisualizerOptions;
   autoCSSModules?: boolean;
   autoprefixer?: any;
   copy?: ICopy[] | string[];
@@ -37,11 +33,9 @@ export interface IConfig {
   jsMinifier?: JSMinifier | boolean;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { lessOptions: any };
-  legacy?: LegacyOptions | boolean;
   outputPath?: string;
   polyfill?: { imports: string[] };
   postcssLoader?: { postcssOptions: any };
-  proxy?: { [key: string]: ProxyOptions };
   publicPath?: string;
   svgr?: TransformOptions;
   targets?: { [key: string]: any };
