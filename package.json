@@ -1,6 +1,5 @@
 {
   "private": true,
-  "version": "4.0.0-alpha.1",
   "scripts": {
     "preinstall": "esno scripts/checkNpmClient.ts",
     "format": "prettier --write .",

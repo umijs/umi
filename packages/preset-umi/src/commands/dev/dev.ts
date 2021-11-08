@@ -178,6 +178,7 @@ PORT=8888 umi dev
             args: opts,
           });
         },
+        mfsuWithESBuild: api.config.mfsu?.esbuild,
       };
       if (api.args.vite) {
         await bundlerVite.dev(opts);
