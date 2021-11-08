@@ -91,7 +91,10 @@ import { assert, eachPkg, getPkgs } from './utils';
   // npm publish
   logger.event('pnpm publish');
   $.verbose = false;
-  const innerPkgs = pkgs.filter((pkg) => !['umi', 'bigfish'].includes(pkg));
+  const innerPkgs = pkgs.filter(
+    // do not publish father
+    (pkg) => !['umi', 'bigfish', 'father'].includes(pkg),
+  );
   const tag =
     version.includes('-alpha.') ||
     version.includes('-beta.') ||
