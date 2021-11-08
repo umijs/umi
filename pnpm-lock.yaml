@@ -355,6 +355,18 @@ importers:
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
+  packages/father:
+    specifiers:
+      '@umijs/core': 4.0.0-beta.5
+      '@umijs/utils': 4.0.0-beta.5
+      umi: 4.0.0-beta.5
+      v8-compile-cache: 2.3.0
+    dependencies:
+      '@umijs/core': link:../core
+      '@umijs/utils': link:../utils
+      umi: link:../umi
+      v8-compile-cache: 2.3.0
+
   packages/mfsu:
     specifiers:
       '@types/express': 4.17.13
