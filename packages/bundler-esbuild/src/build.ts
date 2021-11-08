@@ -38,6 +38,8 @@ export async function build(opts: IOpts) {
     metafile: true,
     plugins: [lessLoader() /*alias(this.opts.mfsu.depConfig!.resolve!.alias)*/],
     define: {
+      // __dirname sham
+      __dirname: JSON.stringify('__dirname'),
       'process.env.NODE_ENV': JSON.stringify(opts.mode || 'development'),
     },
   });
