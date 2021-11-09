@@ -52,3 +52,14 @@ exports.foo = 'foo';
     `.trim(),
   );
 });
+
+test("module.exports after variable", ()=>{
+  expect(transformWithPlugin(`var a = b = module.exports = {};`,{})).toEqual(
+    `var a = b = module.exports = {};`.trim()
+  )
+});
+test("exports after variable", ()=>{
+  expect(transformWithPlugin(`var a = b = exports.a = 1;`,{})).toEqual(
+    `var a = b = exports.a = 1;`.trim()
+  )
+})

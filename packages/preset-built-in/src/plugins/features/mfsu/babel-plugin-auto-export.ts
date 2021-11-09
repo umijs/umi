@@ -1,5 +1,34 @@
 import { t, traverse } from '@umijs/utils';
 
+
+function expressionHasCjsExports(node:t.Expression){
+  if(t.isAssignmentExpression(node)){
+    if(t.isMemberExpression(node.left) && (t.isIdentifier(node.left.object, {
+      name: 'exports',
+    }) ||
+      // module.exports =
+      (t.isIdentifier(node.left.object, {
+        name: 'module',
+      }) &&
+        t.isIdentifier(node.left.property, {
+          name: 'exports',
+        })))){
+          return true;
+        }
+        else if(t.isIdentifier(node.left)){
+          return expressionHasCjsExports(node.right);
+        }
+    }
+    return false;
+}
+
+
+function variableHasCJSExports(node:t.Statement){
+  if(t.isVariableDeclaration(node)){
+    return node.declarations.some(declarator => expressionHasCjsExports(declarator.init))
+  }
+}
+
 export default function () {
   return {
     visitor: {
@@ -12,20 +41,7 @@ export default function () {
             t.isExportDefaultDeclaration(node) ||
             t.isExportAllDeclaration(node) ||
             // cjs
-            (t.isExpressionStatement(node) &&
-              t.isAssignmentExpression(node.expression) &&
-              t.isMemberExpression(node.expression.left) &&
-              // exports.xxx =
-              (t.isIdentifier(node.expression.left.object, {
-                name: 'exports',
-              }) ||
-                // module.exports =
-                (t.isIdentifier(node.expression.left.object, {
-                  name: 'module',
-                }) &&
-                  t.isIdentifier(node.expression.left.property, {
-                    name: 'exports',
-                  }))))
+            (t.isExpressionStatement(node) && expressionHasCjsExports(node.expression)) || variableHasCJSExports(node)
           ) {
             hasExport = true;
           }
