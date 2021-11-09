@@ -6,6 +6,7 @@ import { rimraf } from '@umijs/utils';
 import { lessLoader } from 'esbuild-plugin-less';
 import { join } from 'path';
 import alias from './plugins/alias';
+import externals from './plugins/externals';
 import { IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
@@ -39,9 +40,8 @@ export async function build(opts: IOpts) {
     metafile: true,
     plugins: [
       lessLoader(),
-      alias(
-        opts.config.alias,
-      ) /*alias(this.opts.mfsu.depConfig!.resolve!.alias)*/,
+      alias(opts.config.alias),
+      externals(opts.config.externals),
     ],
     define: {
       // __dirname sham
