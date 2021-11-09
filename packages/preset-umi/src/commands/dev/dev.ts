@@ -1,6 +1,6 @@
 import { importLazy, lodash, logger, portfinder, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { basename, join } from 'path';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { IApi } from '../../types';
 import { clearTmp } from '../../utils/clearTmp';
@@ -139,6 +139,22 @@ PORT=8888 umi dev
           },
         }),
       );
+
+      // watch plugin change
+      const pluginFiles: string[] = [
+        join(api.cwd, 'plugin.ts'),
+        join(api.cwd, 'plugin.js'),
+      ];
+      pluginFiles.forEach((filePath: string) => {
+        watch({
+          path: filePath,
+          addToUnWatches: true,
+          onChange() {
+            logger.event(`${basename(filePath)} changed, restart server...`);
+            api.restartServer();
+          },
+        });
+      });
 
       // start dev server
       const beforeMiddlewares = await api.applyPlugins({
