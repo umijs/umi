@@ -62,13 +62,13 @@ export const config = defineConfig({
 - Type: `boolean`
 - Default: `false`
 
-是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 `@umijs/plugin-locale` 使用。
+是否开启国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 `@umijs/plugin-locale` 使用。
 
 config 支持所有的非 dom 配置并透传给 [`@ant-design/pro-layout`](https://procomponents.ant.design/components/layout#prolayout)。
 
 ### 运行时配置
 
-在构建时是无法使用 dom 的，所以有些配置可能需要运行时来配置，我们可以在 [`src/app.tsx`](export const layout = ({) 中做如下配置:
+在构建时是无法使用 dom 的，所以有些配置可能需要运行时来配置，我们可以在 [`src/app.tsx`](export const layout = ({})) 中做如下配置:
 
 ```tsx
 import React from 'react';
@@ -169,7 +169,7 @@ export const routes: IBestAFSRoute[] = [
     hideInMenu: true,
     // 在面包屑中隐藏
     hideInBreadcrumb: true,
-    // 子项往上提，仍旧展示,
+    // 子项往上提，仍旧展示
     flatMenu: true,
   },
 ];
