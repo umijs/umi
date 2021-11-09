@@ -1,32 +1,35 @@
 import { t, traverse } from '@umijs/utils';
 
-
-function expressionHasCjsExports(node:t.Expression){
-  if(t.isAssignmentExpression(node)){
-    if(t.isMemberExpression(node.left) && (t.isIdentifier(node.left.object, {
-      name: 'exports',
-    }) ||
-      // module.exports =
+function expressionHasCjsExports(node: t.Expression | null): boolean {
+  if (node && t.isAssignmentExpression(node)) {
+    if (
+      t.isMemberExpression(node.left) &&
       (t.isIdentifier(node.left.object, {
-        name: 'module',
-      }) &&
-        t.isIdentifier(node.left.property, {
-          name: 'exports',
-        })))){
-          return true;
-        }
-        else if(t.isIdentifier(node.left)){
-          return expressionHasCjsExports(node.right);
-        }
+        name: 'exports',
+      }) ||
+        // module.exports =
+        (t.isIdentifier(node.left.object, {
+          name: 'module',
+        }) &&
+          t.isIdentifier(node.left.property, {
+            name: 'exports',
+          })))
+    ) {
+      return true;
+    } else if (t.isIdentifier(node.left)) {
+      return expressionHasCjsExports(node.right);
     }
-    return false;
+  }
+  return false;
 }
 
-
-function variableHasCJSExports(node:t.Statement){
-  if(t.isVariableDeclaration(node)){
-    return node.declarations.some(declarator => expressionHasCjsExports(declarator.init))
-  }
+function variableHasCJSExports(node: t.Statement) {
+  return (
+    t.isVariableDeclaration(node) &&
+    node.declarations.some((declarator) =>
+      expressionHasCjsExports(declarator.init),
+    )
+  );
 }
 
 export default function () {
@@ -41,7 +44,9 @@ export default function () {
             t.isExportDefaultDeclaration(node) ||
             t.isExportAllDeclaration(node) ||
             // cjs
-            (t.isExpressionStatement(node) && expressionHasCjsExports(node.expression)) || variableHasCJSExports(node)
+            (t.isExpressionStatement(node) &&
+              expressionHasCjsExports(node.expression)) ||
+            variableHasCJSExports(node)
           ) {
             hasExport = true;
           }
