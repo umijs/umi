@@ -9,15 +9,18 @@ interface IOpts {
 const EXISTS = '1';
 
 const expects: Record<string, Function> = {
+  alias({ files }: IOpts) {
+    expect(files['index.js']).toContain(`var a = "react";`);
+    expect(files['index.js']).toContain(`var something = "happy";`);
+  },
+  externals({ files }: IOpts) {
+    expect(files['index.js']).toContain(`module.export = React;`);
+  },
   normal({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("foooooo");`);
   },
   node_globals_polyfill({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("__dirname", "foooooo");`);
-  },
-  alias({ files }: IOpts) {
-    expect(files['index.js']).toContain(`var a = "react";`);
-    expect(files['index.js']).toContain(`var something = "happy";`);
   },
 };
 
