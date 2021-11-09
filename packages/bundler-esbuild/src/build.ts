@@ -39,7 +39,14 @@ export async function build(opts: IOpts) {
     outdir: outputPath,
     metafile: true,
     plugins: [
-      lessLoader(),
+      lessLoader(
+        {
+          modifyVars: opts.config.theme,
+          javascriptEnabled: true,
+          ...opts.config.lessLoader,
+        },
+        { filter: /\.less$/ },
+      ),
       alias(opts.config.alias),
       externals(opts.config.externals),
     ],
