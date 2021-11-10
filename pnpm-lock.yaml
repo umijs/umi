@@ -92,6 +92,18 @@ importers:
       react: 18.0.0-alpha-fd5e01c2e-20210913
       react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
 
+  examples/bundler-webpack-esm-demo:
+    specifiers:
+      '@types/react': ^17.0.33
+      '@types/react-dom': ^17.0.10
+      react: ^18.0.0-alpha-fd5e01c2e-20210913
+      react-dom: ^18.0.0-alpha-fd5e01c2e-20210913
+    devDependencies:
+      '@types/react': 17.0.33
+      '@types/react-dom': 17.0.10
+      react: 18.0.0-alpha-fd5e01c2e-20210913
+      react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
+
   examples/libs:
     specifiers:
       antd: 4.16.13

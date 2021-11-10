@@ -48,6 +48,7 @@ export interface IConfig {
   depTranspiler?: Transpiler;
   devtool?: Config.DevTool;
   externals?: WebpackConfig['externals'];
+  esm?: { [key: string]: any };
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   extraPostCSSPlugins?: any[];
