@@ -1,4 +1,5 @@
 import { join } from 'path';
+
 export default {
   alias: {
     foo: './path/foo',
