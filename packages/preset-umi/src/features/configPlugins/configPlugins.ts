@@ -1,6 +1,6 @@
 import { getSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 import { IApi } from '../../types';
 import { getSchemas as getExtraSchemas } from './schema';
 
@@ -20,9 +20,10 @@ function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
 export default (api: IApi) => {
   const configDefaults: Record<string, any> = {
     alias: {
-      // TODO: mfsu support dir alias
-      umi: join(process.env.UMI_DIR!, 'index.esm.js'),
-      '@umijs/renderer-react': require.resolve('@umijs/renderer-react'),
+      umi: process.env.UMI_DIR!,
+      '@umijs/renderer-react': dirname(
+        require.resolve('@umijs/renderer-react/package.json'),
+      ),
       react:
         resolveProjectDep({
           pkg: api.pkg,

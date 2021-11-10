@@ -124,6 +124,7 @@ export type IApi = PluginAPI &
     addRuntimePluginKey: IAdd<null, string[]>;
     modifyHTMLFavicon: IModify<string, {}>;
     modifyHTML: IModify<string, { path: string }>;
+    modifyRendererPath: IModify<string, {}>;
     modifyWebpackConfig: IModify<
       webpack.Configuration,
       {
