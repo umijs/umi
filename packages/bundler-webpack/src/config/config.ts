@@ -127,6 +127,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // experiments
   config.experiments({
     topLevelAwait: true,
+    outputModule: !!userConfig.esm,
   });
 
   // node polyfill

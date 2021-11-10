@@ -14,4 +14,5 @@ export default {
   headScripts: [`console.log('head script')`],
   scripts: [`console.log('script')`],
   npmClient: 'pnpm',
+  esm: {},
 };

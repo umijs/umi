@@ -117,5 +117,6 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
     targets: (Joi) => Joi.object(),
     writeToDisk: (Joi) => Joi.boolean(),
+    esm: (Joi) => Joi.object(),
   };
 }
