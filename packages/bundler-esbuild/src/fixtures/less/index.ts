@@ -1,4 +1,5 @@
 //@ts-ignore
-import styles from './less/index.less'
+import styles from './index.less';
+import './index.less';
 console.log('foooooo');
 console.log(styles);

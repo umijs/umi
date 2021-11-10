@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "bundler-esbuild": "bin/bundler-esbuild.js"
+  },
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
@@ -28,6 +31,9 @@
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-beta.5",
     "@umijs/utils": "4.0.0-beta.5",
-    "esbuild-plugin-less": "1.1.5"
+    "less": "4.1.2"
+  },
+  "devDependencies": {
+    "@types/less": "^3.0.3"
   }
 }

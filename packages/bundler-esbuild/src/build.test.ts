@@ -16,8 +16,9 @@ const expects: Record<string, Function> = {
   externals({ files }: IOpts) {
     expect(files['index.js']).toContain(`module.export = React;`);
   },
-  normal({ files }: IOpts) {
+  less({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("foooooo");`);
+    expect(files['index.css']).toContain(`color: red;`);
   },
   node_globals_polyfill({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("__dirname", "foooooo");`);
