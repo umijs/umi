@@ -9,6 +9,7 @@ interface IOpts {
   env: Env;
   entry: Record<string, string>;
   userConfig: IConfig;
+  modifyViteConfig?: Function;
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
 }
@@ -29,5 +30,11 @@ export async function getConfig(opts: IOpts): Promise<ViteInlineConfig> {
   const vitePluginsConfig = configPlugins(applyOpts);
   const viteConfigFromUserConfig = configTransformer(applyOpts);
 
-  return mergeConfig(vitePluginsConfig, viteConfigFromUserConfig);
+  let viteConfig = mergeConfig(vitePluginsConfig, viteConfigFromUserConfig);
+  if (opts.modifyViteConfig) {
+    viteConfig = await opts.modifyViteConfig(viteConfig, {
+      env: opts.env,
+    });
+  }
+  return viteConfig;
 }
