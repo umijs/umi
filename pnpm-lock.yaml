@@ -129,13 +129,16 @@ importers:
 
   packages/bundler-esbuild:
     specifiers:
+      '@types/less': ^3.0.3
       '@umijs/bundler-utils': 4.0.0-beta.5
       '@umijs/utils': 4.0.0-beta.5
-      esbuild-plugin-less: 1.1.5
+      less: 4.1.2
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
-      esbuild-plugin-less: 1.1.5
+      less: 4.1.2
+    devDependencies:
+      '@types/less': 3.0.3
 
   packages/bundler-utils:
     specifiers:
@@ -4902,7 +4905,7 @@ packages:
 
   /@types/less/3.0.3:
     resolution: {integrity: sha512-1YXyYH83h6We1djyoUEqTlVyQtCfJAFXELSKW2ZRtjHD4hQ82CC4lvrv5D0l0FLcKBaiPbXyi3MpMsI9ZRgKsw==}
-    dev: false
+    dev: true
 
   /@types/lodash/4.14.176:
     resolution: {integrity: sha512-xZmuPTa3rlZoIbtDUyJKZQimJV3bxCmzMIO2c9Pz9afyDro6kr7R79GwcB6mRhuoPmV2p1Vb66WOJH7F886WKQ==}
@@ -7777,15 +7780,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /esbuild-plugin-less/1.1.5:
-    resolution: {integrity: sha512-Dj8zYnnZwH+NoQ/RlvWyos7AA9MpTpUFriorAeEUy5sw4jZvPQn9y+SlBFnP1BFOLuS+xdVPUdOwQiS4MW6uQw==}
-    peerDependencies:
-      esbuild: ^0.13.x
-    dependencies:
-      '@types/less': 3.0.3
-      less: 4.1.2
-    dev: false
 
   /esbuild-register/3.0.0_esbuild@0.13.4:
     resolution: {integrity: sha512-No7U3ZUd6gPrrC6gqdb3XFcf2lNqzn8nvQXcgcyOl8szMVuN6YUvOplnmakxWyogI9d8SiJMl0uzBzJck+Aoxw==}

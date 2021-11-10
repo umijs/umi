@@ -3,10 +3,10 @@ import {
   Format,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { rimraf } from '@umijs/utils';
-import { lessLoader } from 'esbuild-plugin-less';
 import { join } from 'path';
 import alias from './plugins/alias';
 import externals from './plugins/externals';
+import less from './plugins/less';
 import { IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
@@ -39,14 +39,11 @@ export async function build(opts: IOpts) {
     outdir: outputPath,
     metafile: true,
     plugins: [
-      lessLoader(
-        {
-          modifyVars: opts.config.theme,
-          javascriptEnabled: true,
-          ...opts.config.lessLoader,
-        },
-        { filter: /\.less$/ },
-      ),
+      less({
+        modifyVars: opts.config.theme,
+        javascriptEnabled: true,
+        ...opts.config.lessLoader,
+      }),
       alias(opts.config.alias),
       externals(opts.config.externals),
     ],
