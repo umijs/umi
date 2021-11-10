@@ -6,6 +6,7 @@ import { MF_DEP_PREFIX, MF_VA_PREFIX, REMOTE_FILE_FULL } from '../constants';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu';
 import { DepChunkIdPrefixPlugin } from '../webpackPlugins/depChunkIdPrefixPlugin';
+import { StripSourceMapUrlPlugin } from '../webpackPlugins/stripSourceMapUrlPlugin';
 import { getESBuildEntry } from './getESBuildEntry';
 
 interface IOpts {
@@ -138,6 +139,11 @@ export class DepBuilder {
 
     depConfig.plugins = depConfig.plugins || [];
     depConfig.plugins.push(new DepChunkIdPrefixPlugin());
+    depConfig.plugins.push(
+      new StripSourceMapUrlPlugin({
+        webpack: this.opts.mfsu.opts.implementor,
+      }),
+    );
     const exposes = opts.deps.reduce<Record<string, string>>((memo, dep) => {
       memo[`./${dep.shortFile}`] = join(
         this.opts.mfsu.opts.tmpBase!,
