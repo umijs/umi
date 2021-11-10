@@ -12,6 +12,7 @@ interface IOpts {
   port?: number;
   host?: string;
   chainWebpack?: Function;
+  modifyWebpackConfig?: Function;
   beforeBabelPlugins?: any[];
   beforeBabelPresets?: any[];
   extraBabelPlugins?: any[];
@@ -41,6 +42,7 @@ export async function dev(opts: IOpts) {
       ...(opts.extraBabelPresets || []),
     ],
     chainWebpack: opts.chainWebpack,
+    modifyWebpackConfig: opts.modifyWebpackConfig,
     hmr: true,
     analyze: process.env.ANALYZE,
   });

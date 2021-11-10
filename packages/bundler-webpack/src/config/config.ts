@@ -27,6 +27,7 @@ interface IOpts {
   extraBabelPlugins?: any[];
   babelPreset?: any;
   chainWebpack?: Function;
+  modifyWebpackConfig?: Function;
   hash?: boolean;
   hmr?: boolean;
   staticPathPrefix?: string;
@@ -186,6 +187,13 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   webpackConfig = await addSpeedMeasureWebpackPlugin({
     webpackConfig,
   });
+
+  if (opts.modifyWebpackConfig) {
+    webpackConfig = await opts.modifyWebpackConfig(webpackConfig, {
+      env: opts.env,
+      webpack,
+    });
+  }
 
   return webpackConfig;
 }

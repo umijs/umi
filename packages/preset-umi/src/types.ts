@@ -123,6 +123,19 @@ export type IApi = PluginAPI &
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
     modifyHTMLFavicon: IModify<string, {}>;
+    modifyWebpackConfig: IModify<
+      webpack.Configuration,
+      {
+        webpack: typeof webpack;
+        env: Env;
+      }
+    >;
+    modifyViteConfig: IModify<
+      webpack.Configuration,
+      {
+        env: Env;
+      }
+    >;
     chainWebpack: {
       (fn: {
         (

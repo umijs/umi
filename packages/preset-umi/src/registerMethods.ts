@@ -43,6 +43,8 @@ export default (api: IApi) => {
     'chainWebpack',
     'modifyHTMLFavicon',
     // 'modifyHTML',
+    'modifyWebpackConfig',
+    'modifyViteConfig',
     // 'modifyBundler',
     // 'modifyBundleConfigOpts',
     // 'modifyBundleConfig',

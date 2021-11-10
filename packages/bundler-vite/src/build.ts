@@ -15,6 +15,7 @@ interface IOpts {
   beforeBabelPresets?: any[];
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
+  modifyViteConfig?: Function;
 }
 
 interface IBuildResult {
@@ -83,6 +84,7 @@ export async function build(opts: IOpts): Promise<void> {
       ...(opts.beforeBabelPresets || []),
       ...(opts.extraBabelPresets || []),
     ],
+    modifyViteConfig: opts.modifyViteConfig,
   });
   const viteBuildConfig = mergeConfig(
     {

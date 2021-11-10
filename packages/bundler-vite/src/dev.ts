@@ -15,6 +15,7 @@ interface IOpts {
   entry: Record<string, string>;
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
+  modifyViteConfig?: Function;
 }
 
 export async function dev(opts: IOpts) {
@@ -31,6 +32,7 @@ export async function dev(opts: IOpts) {
       ...(opts.beforeBabelPresets || []),
       ...(opts.extraBabelPresets || []),
     ],
+    modifyViteConfig: opts.modifyViteConfig,
   });
 
   await createServer({
