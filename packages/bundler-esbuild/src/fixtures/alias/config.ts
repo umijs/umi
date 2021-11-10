@@ -1,7 +1,8 @@
 import { join } from 'path';
 export default {
   alias: {
-    react: require.resolve('./react.ts'),
-    some: join(__dirname,'some'),
+    foo: './path/foo',
+    dir: join(__dirname, 'path', 'dir'),
+    less$: join(__dirname, 'path', 'less'),
   },
 };

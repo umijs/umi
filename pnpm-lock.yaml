@@ -62,6 +62,9 @@ importers:
       umi: link:packages/umi
       zx: 4.2.0
 
+  examples/ant-design-pro:
+    specifiers: {}
+
   examples/boilerplate:
     specifiers: {}
 
@@ -132,10 +135,12 @@ importers:
       '@types/less': ^3.0.3
       '@umijs/bundler-utils': 4.0.0-beta.5
       '@umijs/utils': 4.0.0-beta.5
+      enhanced-resolve: 5.8.3
       less: 4.1.2
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
+      enhanced-resolve: 5.8.3
       less: 4.1.2
     devDependencies:
       '@types/less': 3.0.3
@@ -7473,7 +7478,6 @@ packages:
     dependencies:
       graceful-fs: 4.2.8
       tapable: 2.2.1
-    dev: true
 
   /enquirer/2.3.6:
     resolution: {integrity: sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==}
@@ -14442,7 +14446,6 @@ packages:
   /tapable/2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
-    dev: true
 
   /tar/4.4.19:
     resolution: {integrity: sha512-a20gEsvHnWe0ygBY8JbxoM4w3SJdhc7ZAuxkLqh+nvNQN2IOt0B5lLgM490X5Hl8FF0dl0tOf2ewFYAlIFgzVA==}
