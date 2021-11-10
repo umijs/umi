@@ -42,7 +42,7 @@ export default (api: IApi) => {
     'addTmpGenerateWatcherPaths',
     'chainWebpack',
     'modifyHTMLFavicon',
-    // 'modifyHTML',
+    'modifyHTML',
     'modifyWebpackConfig',
     'modifyViteConfig',
     // 'modifyBundler',

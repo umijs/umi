@@ -1,3 +1,4 @@
+import cheerio from '@umijs/utils/compiled/cheerio';
 import { IApi } from '../../types';
 
 export async function getMarkupArgs(opts: { api: IApi }) {
@@ -33,6 +34,22 @@ export async function getMarkupArgs(opts: { api: IApi }) {
     metas,
     links,
     styles,
-    // modifyHTML: () => {},
+    async modifyHTML(memo: string, args: object) {
+      let $ = cheerio.load(memo, {
+        // @ts-ignore
+        decodeEntities: false,
+      });
+      $ = await opts.api.applyPlugins({
+        key: 'modifyHTML',
+        initialValue: $,
+        args,
+      });
+      let html = $.html();
+      // TODO: prettier html
+      // html = prettier.format(html, {
+      //   parser: 'html',
+      // });
+      return html;
+    },
   };
 }
