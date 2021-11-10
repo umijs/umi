@@ -23,7 +23,7 @@ interface IOpts {
   headScripts?: (Record<string, string> | string)[];
   scripts?: (Record<string, string> | string)[];
   esmScript?: boolean;
-  modifyHTML?: (opts: { html: string; path?: string }) => Promise<string>;
+  modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
 }
 
 export async function getMarkup(
@@ -119,7 +119,7 @@ export async function getMarkup(
     .filter(Boolean)
     .join('\n');
   if (opts.modifyHTML) {
-    markup = await opts.modifyHTML({ html: markup, path: opts.path });
+    markup = await opts.modifyHTML(markup, { path: opts.path });
   }
   return markup;
 }
