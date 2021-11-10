@@ -62,7 +62,7 @@ export default (api: IApi) => {
     }
     const hasSrc = api.appData.hasSrcDir;
     // @/pages/
-    const prefix = hasSrc ? '../../src/pages/' : '../../pages/';
+    const prefix = hasSrc ? '../../../src/pages/' : '../../pages/';
     api.writeTmpFile({
       path: 'core/route.ts',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
