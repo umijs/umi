@@ -1,12 +1,16 @@
+import { semver } from '@umijs/utils';
 import { IApi } from '../../types';
 
 export async function getBabelOpts(opts: { api: IApi }) {
   // TODO: 支持用户自定义
+  const isGTEReact17 = semver.gte(opts.api.appData.react.version, '17.0.0');
   const babelPreset = [
     require.resolve('@umijs/babel-preset-umi'),
     {
       presetEnv: {},
-      presetReact: {},
+      presetReact: {
+        runtime: isGTEReact17 ? 'automatic' : 'classic',
+      },
       presetTypeScript: {},
       pluginTransformRuntime: {},
       pluginLockCoreJS: {},
