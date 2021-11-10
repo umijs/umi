@@ -44,7 +44,7 @@ export async function build(opts: IOpts) {
         javascriptEnabled: true,
         ...opts.config.lessLoader,
       }),
-      alias(opts.config.alias),
+      alias({ cwd: opts.cwd, ...opts.config.alias }),
       externals(opts.config.externals),
     ],
     define: {

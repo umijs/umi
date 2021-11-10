@@ -10,8 +10,16 @@ const EXISTS = '1';
 
 const expects: Record<string, Function> = {
   alias({ files }: IOpts) {
-    expect(files['index.js']).toContain(`var a = "react";`);
-    expect(files['index.js']).toContain(`var something = "happy";`);
+    // import('foo') > import ('/path/foo.js')
+    expect(files['index.js']).toContain(`console.log("foo");`);
+    // import('dir') > import ('/path/dir/index.js')
+    expect(files['index.js']).toContain(`console.log("dir");`);
+    // import('dir/bar') > import ('/path/dir/bar.js')
+    expect(files['index.js']).toContain(`console.log("bar");`);
+    // import('less') > import ('/path/less.ts')
+    expect(files['index.js']).toContain(`console.log("less");`);
+    // import('less/bower') > import ('less/bower.json') 没匹配上走默认
+    expect(files['index.js']).toContain(`"dist/less.js"`);
   },
   externals({ files }: IOpts) {
     expect(files['index.js']).toContain(`module.export = React;`);

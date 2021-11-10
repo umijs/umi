@@ -31,6 +31,7 @@
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-beta.5",
     "@umijs/utils": "4.0.0-beta.5",
+    "enhanced-resolve": "5.8.3",
     "less": "4.1.2"
   },
   "devDependencies": {
