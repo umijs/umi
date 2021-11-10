@@ -53,15 +53,38 @@ umi build --clean
         beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
-        chainWebpack,
       } = await getBabelOpts({ api });
+      const chainWebpack = async (memo: any, args: Object) => {
+        await api.applyPlugins({
+          key: 'chainWebpack',
+          type: api.ApplyPluginsType.modify,
+          initialValue: memo,
+          args,
+        });
+      };
+      const modifyWebpackConfig = async (memo: any, args: Object) => {
+        return await api.applyPlugins({
+          key: 'modifyWebpackConfig',
+          initialValue: memo,
+          args,
+        });
+      };
+      const modifyViteConfig = async (memo: any, args: Object) => {
+        return await api.applyPlugins({
+          key: 'modifyViteConfig',
+          initialValue: memo,
+          args,
+        });
+      };
       const opts = {
         config: api.config,
         cwd: api.cwd,
         entry: {
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
-        ...(api.args.vite ? {} : { babelPreset, chainWebpack }),
+        ...(api.args.vite
+          ? { modifyViteConfig }
+          : { babelPreset, chainWebpack, modifyWebpackConfig }),
         beforeBabelPlugins,
         beforeBabelPresets,
         extraBabelPlugins,
