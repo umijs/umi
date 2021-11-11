@@ -29,7 +29,6 @@ export default (api: IApi) => {
                     args: {
                       ...cache.get(state.opts.filename),
                       file: state.opts.filename,
-                      code: state.opts.code,
                       isFromTmp: state.opts.filename.startsWith(
                         api.paths.absTmpPath,
                       ),
