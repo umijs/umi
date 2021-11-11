@@ -33,13 +33,13 @@ Core Maintainres are community members who have contributed a significant amount
 
 ### Maintainers
 
-Maintainers are community members who have 10+ PRs merged in umi, or have spend lot's of time on umi community or issues.
+Maintainers are community members who have 10 or more PRs merged in umi, or have spend lot's of time on umi community or issues.
 
 * [PeachScript](https://github.com/PeachScript)
 
 ### Contributors
 
-Contributors are community members who have 1 PR merged in umi. Contributors can contact me[[sorrycc](https://github.com/sorrycc)] to join the Contributor Group.
+Contributors are community members who have 1 or more PR merged in umi. Contributors can contact me[[sorrycc](https://github.com/sorrycc)] to join the Contributor Group.
 
 <a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
 
