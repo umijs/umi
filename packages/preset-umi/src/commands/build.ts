@@ -32,7 +32,7 @@ umi build --clean
       clearTmp(api.paths.absTmpPath);
 
       // check package.json
-      api.applyPlugins({
+      await api.applyPlugins({
         key: 'onCheckPkgJSON',
         args: {
           origin: null,
