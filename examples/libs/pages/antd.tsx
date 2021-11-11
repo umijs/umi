@@ -1,4 +1,4 @@
-import 'antd/dist/antd.less';
+import 'antd/dist/antd.css';
 import Button from 'antd/es/button';
 import Input from 'antd/es/input';
 import React from 'react';

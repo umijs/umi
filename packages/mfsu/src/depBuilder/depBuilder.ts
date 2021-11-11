@@ -59,6 +59,8 @@ export class DepBuilder {
       },
       config: {
         outputPath: tmpDir,
+        alias: this.opts.mfsu.alias,
+        externals: this.opts.mfsu.externals,
       },
     });
     logger.event(

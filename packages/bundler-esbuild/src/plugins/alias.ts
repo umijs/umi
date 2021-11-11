@@ -1,6 +1,6 @@
 import { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
-import { winPath } from '@umijs/utils';
 import enhancedResolve from 'enhanced-resolve';
+import { existsSync, statSync } from 'fs';
 import { sortByAffix } from '../utils/sortByAffix';
 
 const resolver = enhancedResolve.create({
@@ -25,16 +25,47 @@ export default (options: Record<string, string> = {}): Plugin => {
     setup({ onResolve }) {
       const keys = sortByAffix({ arr: Object.keys(options), affix: '$' });
       keys.forEach((key) => {
-        onResolve({ filter: new RegExp(`^${key}`) }, async (args) => {
+        let value = options[key];
+        let filter: RegExp;
+        if (key.endsWith('$')) {
+          filter = new RegExp(`^${key}`);
+        } else {
+          filter = new RegExp(`^${key}$`);
+        }
+        onResolve({ filter: filter }, async (args) => {
           const path = await resolve(
             args.importer,
-            winPath(args.path).replace(new RegExp(`^${key}`), options[key]),
+            args.path.replace(filter, value),
           );
           return {
             path,
           };
         });
+
+        if (
+          !key.endsWith('/') &&
+          existsSync(value) &&
+          statSync(value).isDirectory()
+        ) {
+          const filter = new RegExp(`^${addSlashAffix(key)}`);
+          onResolve({ filter }, async (args) => {
+            const path = await resolve(
+              args.importer,
+              args.path.replace(filter, addSlashAffix(value)),
+            );
+            return {
+              path,
+            };
+          });
+        }
       });
     },
   };
 };
+
+function addSlashAffix(key: string) {
+  if (key.endsWith('/')) {
+    return key;
+  }
+  return `${key}/`;
+}
