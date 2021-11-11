@@ -35,6 +35,16 @@ export async function createServer(opts: IOpts) {
   // before middlewares
   (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
 
+  // TODO: add to before middleware
+  app.use((req, res, next) => {
+    if (req.path === '/umi.js' && existsSync(join(opts.cwd, 'umi.js'))) {
+      res.setHeader('Content-Type', 'application/javascript');
+      res.send(readFileSync(join(opts.cwd, 'umi.js'), 'utf-8'));
+    } else {
+      next();
+    }
+  });
+
   // webpack dev middleware
   const compiler = webpack(
     Array.isArray(webpackConfig) ? webpackConfig : [webpackConfig],
@@ -131,15 +141,6 @@ export async function createServer(opts: IOpts) {
   // hmr reconnect ping
   app.use('/__umi_ping', (_, res) => {
     res.end('pong');
-  });
-
-  // TODO: remove me
-  app.use((req, res, next) => {
-    if (req.path === '/umi.js' && existsSync(join(opts.cwd, 'umi.js'))) {
-      res.send(readFileSync(join(opts.cwd, 'umi.js'), 'utf-8'));
-    } else {
-      next();
-    }
   });
 
   // index.html
