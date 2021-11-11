@@ -43,7 +43,7 @@ PORT=8888 umi dev
       clearTmp(api.paths.absTmpPath);
 
       // check package.json
-      api.applyPlugins({
+      await api.applyPlugins({
         key: 'onCheckPkgJSON',
         args: {
           origin: null,
