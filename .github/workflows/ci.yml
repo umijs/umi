@@ -34,7 +34,7 @@ jobs:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Install pnpm
-        run: curl -f https://get.pnpm.io/v6.7.js | node - add --global pnpm@6
+        run: npm i pnpm -g
       - name: install
         run: pnpm install
       - run: pnpm build

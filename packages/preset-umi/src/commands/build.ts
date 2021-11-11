@@ -31,6 +31,15 @@ umi build --clean
       // clear tmp except cache
       clearTmp(api.paths.absTmpPath);
 
+      // check package.json
+      api.applyPlugins({
+        key: 'onCheckPkgJSON',
+        args: {
+          origin: null,
+          current: api.appData.pkg,
+        },
+      });
+
       // generate files
       async function generate(opts: { isFirstTime?: boolean; files?: any }) {
         api.applyPlugins({
