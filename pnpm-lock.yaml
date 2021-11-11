@@ -25,6 +25,7 @@ importers:
       lint-staged: ^11.2.3
       prettier: ^2.4.1
       prettier-plugin-organize-imports: ^2.3.4
+      regenerator-runtime: ^0.13.9
       resolve: ^1.20.0
       rimraf: ^3.0.2
       ts-node: ^10.4.0
@@ -54,6 +55,7 @@ importers:
       lint-staged: 11.2.3
       prettier: 2.4.1
       prettier-plugin-organize-imports: 2.3.4_9de296d7023c6fda1517d7cee664da3c
+      regenerator-runtime: 0.13.9
       resolve: 1.20.0
       rimraf: 3.0.2
       ts-node: 10.4.0_5470da6bae608e68cf8d018f76ffd8e5
@@ -66,6 +68,9 @@ importers:
     specifiers: {}
 
   examples/boilerplate:
+    specifiers: {}
+
+  examples/bug-mfsu-fast-refresh:
     specifiers: {}
 
   examples/bundler-vite-demo:
@@ -92,18 +97,6 @@ importers:
       react: 18.0.0-alpha-fd5e01c2e-20210913
       react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
 
-  examples/bundler-webpack-esm-demo:
-    specifiers:
-      '@types/react': ^17.0.33
-      '@types/react-dom': ^17.0.10
-      react: ^18.0.0-alpha-fd5e01c2e-20210913
-      react-dom: ^18.0.0-alpha-fd5e01c2e-20210913
-    devDependencies:
-      '@types/react': 17.0.33
-      '@types/react-dom': 17.0.10
-      react: 18.0.0-alpha-fd5e01c2e-20210913
-      react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
-
   examples/libs:
     specifiers:
       antd: 4.16.13
@@ -113,6 +106,9 @@ importers:
       antd: 4.16.13
       framer-motion: 5.0.0
       swr: 1.1.0-beta.8
+
+  examples/tmp-swcTranspiler-swc:
+    specifiers: {}
 
   packages/ast:
     specifiers:
@@ -458,13 +454,15 @@ importers:
   packages/server:
     specifiers:
       '@types/express': 4.17.13
+      history: 5.0.1
       react: 18.0.0-alpha-4298ddbc5-20211023
       react-dom: 18.0.0-alpha-4298ddbc5-20211023
       react-router-dom: 6.0.0-beta.8
     dependencies:
+      history: 5.0.1
       react: 18.0.0-alpha-4298ddbc5-20211023
       react-dom: 18.0.0-alpha-4298ddbc5-20211023_2ced398083923aa365dca9fe160f2852
-      react-router-dom: 6.0.0-beta.8_ceea2d44aceb2ba32350f50f2a522992
+      react-router-dom: 6.0.0-beta.8_e3f272f235a074fa69ef35bcdb19aac5
     devDependencies:
       '@types/express': 4.17.13
 
@@ -3098,13 +3096,6 @@ packages:
       pirates: 4.0.1
       source-map-support: 0.5.20
     dev: true
-
-  /@babel/runtime/7.15.4:
-    resolution: {integrity: sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      regenerator-runtime: 0.13.9
-    dev: false
 
   /@babel/runtime/7.16.0:
     resolution: {integrity: sha512-Nht8L0O8YCktmsDV6FqFue7vQLRx3Hb0B37lS5y0jDRqRxlBG4wIJHnf9/bgSE2UyipKFA01YtS+npRdTWBUyw==}
@@ -8815,7 +8806,7 @@ packages:
   /history/5.0.1:
     resolution: {integrity: sha512-5qC/tFUKfVci5kzgRxZxN5Mf1CV8NmJx9ByaPX0YTLx5Vz3Svh7NYp6eA4CpDq4iA9D0C1t8BNIfvQIrUI3mVw==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.0
     dev: false
 
   /hmac-drbg/1.0.1:
@@ -13203,16 +13194,17 @@ packages:
       react-router: 6.0.0-beta.8_a226d4b6d4a1b54dc3fde166c351e89c
     dev: false
 
-  /react-router-dom/6.0.0-beta.8_ceea2d44aceb2ba32350f50f2a522992:
+  /react-router-dom/6.0.0-beta.8_e3f272f235a074fa69ef35bcdb19aac5:
     resolution: {integrity: sha512-WyiIc6EakJDCo6rUmb7VjCtOpEvm8+4V8CiJdmFPud0lppeNf37TNhTnDQszDbP2y29wBUGb94BOFU2X93uILA==}
     peerDependencies:
       history: '>=5'
       react: '>=16.8'
       react-dom: '>=16.8'
     dependencies:
+      history: 5.0.1
       react: 18.0.0-alpha-4298ddbc5-20211023
       react-dom: 18.0.0-alpha-4298ddbc5-20211023_2ced398083923aa365dca9fe160f2852
-      react-router: 6.0.0-beta.8_2ced398083923aa365dca9fe160f2852
+      react-router: 6.0.0-beta.8_7eba86cced4a1e5d06d71547bd6ddc52
     dev: false
 
   /react-router/6.0.0-beta.7_4dd5d306b9d43f72893e315a470a8635:
@@ -13224,12 +13216,13 @@ packages:
       react: 18.0.0-alpha-f2c381131-20211004
     dev: false
 
-  /react-router/6.0.0-beta.8_2ced398083923aa365dca9fe160f2852:
+  /react-router/6.0.0-beta.8_7eba86cced4a1e5d06d71547bd6ddc52:
     resolution: {integrity: sha512-pn3j01FA44yWP5gaHvz3CMVjFnmg5NS/BQ5IIalY7jw2yEKgr+OHB1gxTorakpiMaPOXXbfyUt3t4yZ4UBwE5Q==}
     peerDependencies:
       history: '>=5'
       react: '>=16.8'
     dependencies:
+      history: 5.0.1
       react: 18.0.0-alpha-4298ddbc5-20211023
     dev: false
 
