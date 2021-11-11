@@ -45,7 +45,10 @@ export default (api: IApi) => {
                     // @ts-ignore
                     const cache = this.cache;
                     // reset cache
-                    cache.set(file, {});
+                    cache.set(file, {
+                      code: path.hub.getCode(),
+                      imports: [],
+                    });
                     path.node.body.forEach((node) => {
                       // import x from 'x'; { default: 'x' }
                       // import * as x2 from 'x'; { namespace: 'x2' }
@@ -70,7 +73,6 @@ export default (api: IApi) => {
                             ] = specifier.local.name;
                           }
                         });
-                        cache.get(file).imports ||= [];
                         cache.get(file).imports.push(ret);
                       }
 
