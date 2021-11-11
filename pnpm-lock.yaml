@@ -404,7 +404,16 @@ importers:
 
   packages/plugins:
     specifiers:
+      antd: ^4.16.13
+      antd-dayjs-webpack-plugin: ^1.0.6
+      babel-plugin-import: ^1.13.3
+      dayjs: ^1.10.7
       umi: 4.0.0-beta.5
+    dependencies:
+      antd: 4.16.13
+      antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.10.7
+      babel-plugin-import: 1.13.3
+      dayjs: 1.10.7
     devDependencies:
       umi: link:../umi
 
@@ -559,11 +568,9 @@ packages:
     resolution: {integrity: sha512-qAZRvPzfdWHtfameEGP2Qvuf838NhergR35o+EuVyB5XvSA98xod5r4utvi4TJ3ywmevm290g9nsCG5MryrdWQ==}
     dependencies:
       '@ctrl/tinycolor': 3.4.0
-    dev: true
 
   /@ant-design/icons-svg/4.2.1:
     resolution: {integrity: sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==}
-    dev: true
 
   /@ant-design/icons/4.7.0:
     resolution: {integrity: sha512-aoB4Z7JA431rt6d4u+8xcNPPCrdufSRMUOpxa1ab6mz1JCQZOEVolj2WVs/tDFmN62zzK30mNelEsprLYsSF3g==}
@@ -577,7 +584,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /@ant-design/react-slick/0.28.4:
     resolution: {integrity: sha512-j9eAHTn7GxbXUFNknJoHS2ceAsqrQi2j8XykjZE1IXCD8kJF+t28EvhBLniDpbOsBk/3kjalnhriTfZcjBHNqg==}
@@ -589,7 +595,6 @@ packages:
       json2mq: 0.2.0
       lodash: 4.17.21
       resize-observer-polyfill: 1.5.1
-    dev: true
 
   /@babel/code-frame/7.15.8:
     resolution: {integrity: sha512-2IAnmn8zbvC/jKYhq5Ki9I+DwjlrtMPUCH/CpHvqI4dNnlwHwsxoIhlc8WcYY5LSYknXQtAlFYuHfqAFCvQ4Wg==}
@@ -3215,7 +3220,6 @@ packages:
   /@ctrl/tinycolor/3.4.0:
     resolution: {integrity: sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==}
     engines: {node: '>=10'}
-    dev: true
 
   /@emotion/is-prop-valid/0.8.8:
     resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
@@ -4858,7 +4862,7 @@ packages:
     resolution: {integrity: sha512-w+LsMxKyYQm347Otw+IfBXOv9UWVjpHpCDdbBMt8Kz/xbvCYNjP+0qPh91Km3iKfSRLBB0P7fAMf0KHrPu+MyA==}
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 16.11.6
+      '@types/node': 16.10.3
 
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
@@ -5386,6 +5390,14 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /antd-dayjs-webpack-plugin/1.0.6_dayjs@1.10.7:
+    resolution: {integrity: sha512-UlK3BfA0iE2c5+Zz/Bd2iPAkT6cICtrKG4/swSik5MZweBHtgmu1aUQCHvICdiv39EAShdZy/edfP6mlkS/xXg==}
+    peerDependencies:
+      dayjs: '*'
+    dependencies:
+      dayjs: 1.10.7
+    dev: false
+
   /antd/4.16.13:
     resolution: {integrity: sha512-EMPD3fzKe7oayx9keD/GA1oKatcx7j5CGlkJj5eLS0/eEDDEkxVj3DFmKOPuHYt4BK7ltTzMFS+quSTmqUXPiw==}
     peerDependencies:
@@ -5433,7 +5445,6 @@ packages:
       rc-upload: 4.3.2
       rc-util: 5.14.0
       scroll-into-view-if-needed: 2.2.28
-    dev: true
 
   /anymatch/2.0.0:
     resolution: {integrity: sha512-5teOsQWABXHHBFP9y3skS5P3d/WfWXpv3FUpy+LorMrNYaT9pI4oLMQX7jzQ2KklNpGpWHzdCXTDT2Y3XGlZBw==}
@@ -5508,7 +5519,6 @@ packages:
 
   /array-tree-filter/2.1.0:
     resolution: {integrity: sha512-4ROwICNlNw/Hqa9v+rk5h22KjmzB1JGTMVKP2AKJBOCgb0yL0ASf0+YvCcLNNwquOHNX48jkeZIJ3a+oOQqKcw==}
-    dev: true
 
   /array-union/2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
@@ -5577,7 +5587,6 @@ packages:
 
   /async-validator/3.5.2:
     resolution: {integrity: sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==}
-    dev: true
 
   /async/2.6.3:
     resolution: {integrity: sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==}
@@ -5702,6 +5711,13 @@ packages:
     dependencies:
       object.assign: 4.1.2
     dev: true
+
+  /babel-plugin-import/1.13.3:
+    resolution: {integrity: sha512-1qCWdljJOrDRH/ybaCZuDgySii4yYrtQ8OJQwrcDqdt0y67N30ng3X3nABg6j7gR7qUJgcMa9OMhc4AGViDwWw==}
+    dependencies:
+      '@babel/helper-module-imports': 7.16.0
+      '@babel/runtime': 7.16.0
+    dev: false
 
   /babel-plugin-istanbul/6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
@@ -6329,7 +6345,6 @@ packages:
 
   /classnames/2.3.1:
     resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
-    dev: true
 
   /clean-stack/2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -6550,7 +6565,6 @@ packages:
 
   /compute-scroll-into-view/1.0.17:
     resolution: {integrity: sha512-j4dx+Fb0URmzbwwMUrhqWM2BEWHdFGx+qZ9qqASHRPqvTYdqvWnHg0H1hIbcyLnvgnoNAVMlwkepyqM3DaIFUg==}
-    dev: true
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
@@ -6714,7 +6728,6 @@ packages:
     resolution: {integrity: sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==}
     dependencies:
       toggle-selection: 1.0.6
-    dev: true
 
   /copy-webpack-plugin/9.0.1_webpack@5.61.0:
     resolution: {integrity: sha512-14gHKKdYIxF84jCEgPgYXCPpldbwpxxLbCmA7LReY7gvbaT555DgeBWBgBZM116tv/fO6RRJrsivBqRyRlukhw==}
@@ -7101,7 +7114,6 @@ packages:
   /date-fns/2.25.0:
     resolution: {integrity: sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==}
     engines: {node: '>=0.11'}
-    dev: true
 
   /dateformat/3.0.3:
     resolution: {integrity: sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==}
@@ -7109,7 +7121,6 @@ packages:
 
   /dayjs/1.10.7:
     resolution: {integrity: sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==}
-    dev: true
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -7314,7 +7325,6 @@ packages:
 
   /dom-align/1.12.2:
     resolution: {integrity: sha512-pHuazgqrsTFrGU2WLDdXxCFabkdQDx72ddkraZNih1KsMcN5qsRSTR9O4VJRlwTPCPb5COYg3LOfiMHHcPInHg==}
-    dev: true
 
   /dom-serializer/0.2.2:
     resolution: {integrity: sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==}
@@ -10145,7 +10155,6 @@ packages:
     resolution: {integrity: sha1-tje9O6nqvhIsg+lyBIOusQ0skEo=}
     dependencies:
       string-convert: 0.2.1
-    dev: true
 
   /json5/1.0.1:
     resolution: {integrity: sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==}
@@ -10483,7 +10492,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-update/4.0.0:
     resolution: {integrity: sha512-9fkkDevMefjg0mmzWFBW8YkFP91OrizzkW3diF7CpG+S2EYdy4+TVfGwz1zeF8x7hCx1ovSPTOE9Ngib74qqUg==}
@@ -10911,7 +10919,6 @@ packages:
 
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
-    dev: true
 
   /mrmime/1.0.0:
     resolution: {integrity: sha512-a70zx7zFfVO7XpnQ2IX1Myh9yY4UYvfld/dikWRnsXxbyvMcfz+u6UfgNAtH+k2QqtJuzVpv6eLTx1G2+WKZbQ==}
@@ -12709,7 +12716,6 @@ packages:
       lodash: 4.17.21
       rc-util: 5.14.0
       resize-observer-polyfill: 1.5.1
-    dev: true
 
   /rc-cascader/1.4.3:
     resolution: {integrity: sha512-Q4l9Mv8aaISJ+giVnM9IaXxDeMqHUGLvi4F+LksS6pHlaKlN4awop/L+IMjIXpL+ug/ojaCyv/ixcVopJYYCVA==}
@@ -12722,7 +12728,6 @@ packages:
       rc-trigger: 5.2.10
       rc-util: 5.14.0
       warning: 4.0.3
-    dev: true
 
   /rc-checkbox/2.3.2:
     resolution: {integrity: sha512-afVi1FYiGv1U0JlpNH/UaEXdh6WUJjcWokj/nUN2TgG80bfG+MDdbfHKlLcNNba94mbjy2/SXJ1HDgrOkXGAjg==}
@@ -12732,7 +12737,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
-    dev: true
 
   /rc-collapse/3.1.2:
     resolution: {integrity: sha512-HujcKq7mghk/gVKeI6EjzTbb8e19XUZpakrYazu1MblEZ3Hu3WBMSN4A3QmvbF6n1g7x6lUlZvsHZ5shABWYOQ==}
@@ -12745,7 +12749,6 @@ packages:
       rc-motion: 2.4.4
       rc-util: 5.14.0
       shallowequal: 1.1.0
-    dev: true
 
   /rc-dialog/8.6.0:
     resolution: {integrity: sha512-GSbkfqjqxpZC5/zc+8H332+q5l/DKUhpQr0vdX2uDsxo5K0PhvaMEVjyoJUTkZ3+JstEADQji1PVLVb/2bJeOQ==}
@@ -12757,7 +12760,6 @@ packages:
       classnames: 2.3.1
       rc-motion: 2.4.4
       rc-util: 5.14.0
-    dev: true
 
   /rc-drawer/4.3.1:
     resolution: {integrity: sha512-GMfFy4maqxS9faYXEhQ+0cA1xtkddEQzraf6SAdzWbn444DrrLogwYPk1NXSpdXjLCLxgxOj9MYtyYG42JsfXg==}
@@ -12768,7 +12770,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-dropdown/3.2.0:
     resolution: {integrity: sha512-j1HSw+/QqlhxyTEF6BArVZnTmezw2LnSmRk6I9W7BCqNCKaRwleRmMMs1PHbuaG8dKHVqP6e21RQ7vPBLVnnNw==}
@@ -12779,7 +12780,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-trigger: 5.2.10
-    dev: true
 
   /rc-field-form/1.20.1:
     resolution: {integrity: sha512-f64KEZop7zSlrG4ef/PLlH12SLn6iHDQ3sTG+RfKBM45hikwV1i8qMf53xoX12NvXXWg1VwchggX/FSso4bWaA==}
@@ -12791,7 +12791,6 @@ packages:
       '@babel/runtime': 7.16.0
       async-validator: 3.5.2
       rc-util: 5.14.0
-    dev: true
 
   /rc-image/5.2.5:
     resolution: {integrity: sha512-qUfZjYIODxO0c8a8P5GeuclYXZjzW4hV/5hyo27XqSFo1DmTCs2HkVeQObkcIk5kNsJtgsj1KoPThVsSc/PXOw==}
@@ -12803,7 +12802,6 @@ packages:
       classnames: 2.3.1
       rc-dialog: 8.6.0
       rc-util: 5.14.0
-    dev: true
 
   /rc-input-number/7.1.4:
     resolution: {integrity: sha512-EG4iqkqyqzLRu/Dq+fw2od7nlgvXLEatE+J6uhi3HXE1qlM3C7L6a7o/hL9Ly9nimkES2IeQoj3Qda3I0izj3Q==}
@@ -12814,7 +12812,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-mentions/1.6.1:
     resolution: {integrity: sha512-LDzGI8jJVGnkhpTZxZuYBhMz3avcZZqPGejikchh97xPni/g4ht714Flh7DVvuzHQ+BoKHhIjobHnw1rcP8erg==}
@@ -12828,7 +12825,6 @@ packages:
       rc-textarea: 0.3.5
       rc-trigger: 5.2.10
       rc-util: 5.14.0
-    dev: true
 
   /rc-menu/9.0.14:
     resolution: {integrity: sha512-CIox5mZeLDAi32SlHrV7UeSjv7tmJJhwRyxQtZCKt351w3q59XlL4WMFOmtT9gwIfP9h0XoxdBZUMe/xzkp78A==}
@@ -12843,7 +12839,6 @@ packages:
       rc-trigger: 5.2.10
       rc-util: 5.14.0
       shallowequal: 1.1.0
-    dev: true
 
   /rc-motion/2.4.4:
     resolution: {integrity: sha512-ms7n1+/TZQBS0Ydd2Q5P4+wJTSOrhIrwNxLXCZpR7Fa3/oac7Yi803HDALc2hLAKaCTQtw9LmQeB58zcwOsqlQ==}
@@ -12854,7 +12849,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-notification/4.5.7:
     resolution: {integrity: sha512-zhTGUjBIItbx96SiRu3KVURcLOydLUHZCPpYEn1zvh+re//Tnq/wSxN4FKgp38n4HOgHSVxcLEeSxBMTeBBDdw==}
@@ -12867,7 +12861,6 @@ packages:
       classnames: 2.3.1
       rc-motion: 2.4.4
       rc-util: 5.14.0
-    dev: true
 
   /rc-overflow/1.2.2:
     resolution: {integrity: sha512-X5kj9LDU1ue5wHkqvCprJWLKC+ZLs3p4He/oxjZ1Q4NKaqKBaYf5OdSzRSgh3WH8kSdrfU8LjvlbWnHgJOEkNQ==}
@@ -12879,7 +12872,6 @@ packages:
       classnames: 2.3.1
       rc-resize-observer: 1.0.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-pagination/3.1.9:
     resolution: {integrity: sha512-IKBKaJ4icVPeEk9qRHrFBJmHxBUrCp3+nENBYob4Ofqsu3RXjBOy4N36zONO7oubgLyiG3PxVmyAuVlTkoc7Jg==}
@@ -12889,7 +12881,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
-    dev: true
 
   /rc-picker/2.5.19:
     resolution: {integrity: sha512-u6myoCu/qiQ0vLbNzSzNrzTQhs7mldArCpPHrEI6OUiifs+IPXmbesqSm0zilJjfzrZJLgYeyyOMSznSlh0GKA==}
@@ -12906,7 +12897,6 @@ packages:
       rc-trigger: 5.2.10
       rc-util: 5.14.0
       shallowequal: 1.1.0
-    dev: true
 
   /rc-progress/3.1.4:
     resolution: {integrity: sha512-XBAif08eunHssGeIdxMXOmRQRULdHaDdIFENQ578CMb4dyewahmmfJRyab+hw4KH4XssEzzYOkAInTLS7JJG+Q==}
@@ -12916,7 +12906,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
-    dev: true
 
   /rc-rate/2.9.1:
     resolution: {integrity: sha512-MmIU7FT8W4LYRRHJD1sgG366qKtSaKb67D0/vVvJYR0lrCuRrCiVQ5qhfT5ghVO4wuVIORGpZs7ZKaYu+KMUzA==}
@@ -12928,7 +12917,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-resize-observer/1.0.1:
     resolution: {integrity: sha512-OxO2mJI9e8610CAWBFfm52SPvWib0eNKjaSsRbbKHmLaJIxw944P+D61DlLJ/w2vuOjGNcalJu8VdqyNm/XCRg==}
@@ -12940,7 +12928,6 @@ packages:
       classnames: 2.3.1
       rc-util: 5.14.0
       resize-observer-polyfill: 1.5.1
-    dev: true
 
   /rc-select/12.1.13:
     resolution: {integrity: sha512-cPI+aesP6dgCAaey4t4upDbEukJe+XN0DK6oO/6flcCX5o28o7KNZD7JAiVtC/6fCwqwI/kSs7S/43dvHmBl+A==}
@@ -12956,7 +12943,6 @@ packages:
       rc-trigger: 5.2.10
       rc-util: 5.14.0
       rc-virtual-list: 3.4.2
-    dev: true
 
   /rc-slider/9.7.4:
     resolution: {integrity: sha512-pjLKLiDKiaL7/pNywfIBD+lDo5TtVo05KuIBSWEIoqu6FHh6IMWvthCiaODuYaVs3RLeF2nXOP5AjkD2Lt2Rwg==}
@@ -12970,7 +12956,6 @@ packages:
       rc-tooltip: 5.1.1
       rc-util: 5.14.0
       shallowequal: 1.1.0
-    dev: true
 
   /rc-steps/4.1.4:
     resolution: {integrity: sha512-qoCqKZWSpkh/b03ASGx1WhpKnuZcRWmvuW+ZUu4mvMdfvFzVxblTwUM+9aBd0mlEUFmt6GW8FXhMpHkK3Uzp3w==}
@@ -12982,7 +12967,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-switch/3.2.2:
     resolution: {integrity: sha512-+gUJClsZZzvAHGy1vZfnwySxj+MjLlGRyXKXScrtCTcmiYNPzxDFOxdQ/3pK1Kt/0POvwJ/6ALOR8gwdXGhs+A==}
@@ -12993,7 +12977,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-table/7.15.2:
     resolution: {integrity: sha512-TAs7kCpIZwc2mtvD8CMrXSM6TqJDUsy0rUEV1YgRru33T8bjtAtc+9xW/KC1VWROJlHSpU0R0kXjFs9h/6+IzQ==}
@@ -13007,7 +12990,6 @@ packages:
       rc-resize-observer: 1.0.1
       rc-util: 5.14.0
       shallowequal: 1.1.0
-    dev: true
 
   /rc-tabs/11.10.2:
     resolution: {integrity: sha512-qJCDXvDarn0MxeY14/tAeTRTdjlSDD4ZwraCa9gbSrnalTIxJiJ3NOFUGICvYT4t7lnhL2dmryAG3H6RdaD00Q==}
@@ -13022,7 +13004,6 @@ packages:
       rc-menu: 9.0.14
       rc-resize-observer: 1.0.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-textarea/0.3.5:
     resolution: {integrity: sha512-qa+k5vDn9ct65qr+SgD2KwJ9Xz6P84lG2z+TDht/RBr71WnM/K61PqHUAcUyU6YqTJD26IXgjPuuhZR7HMw7eA==}
@@ -13034,7 +13015,6 @@ packages:
       classnames: 2.3.1
       rc-resize-observer: 1.0.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-tooltip/5.1.1:
     resolution: {integrity: sha512-alt8eGMJulio6+4/uDm7nvV+rJq9bsfxFDCI0ljPdbuoygUscbsMYb6EQgwib/uqsXQUvzk+S7A59uYHmEgmDA==}
@@ -13044,7 +13024,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.16.0
       rc-trigger: 5.2.10
-    dev: true
 
   /rc-tree-select/4.3.3:
     resolution: {integrity: sha512-0tilOHLJA6p+TNg4kD559XnDX3PTEYuoSF7m7ryzFLAYvdEEPtjn0QZc5z6L0sMKBiBlj8a2kf0auw8XyHU3lA==}
@@ -13057,7 +13036,6 @@ packages:
       rc-select: 12.1.13
       rc-tree: 4.2.2
       rc-util: 5.14.0
-    dev: true
 
   /rc-tree/4.2.2:
     resolution: {integrity: sha512-V1hkJt092VrOVjNyfj5IYbZKRMHxWihZarvA5hPL/eqm7o2+0SNkeidFYm7LVVBrAKBpOpa0l8xt04uiqOd+6w==}
@@ -13071,7 +13049,6 @@ packages:
       rc-motion: 2.4.4
       rc-util: 5.14.0
       rc-virtual-list: 3.4.2
-    dev: true
 
   /rc-trigger/5.2.10:
     resolution: {integrity: sha512-FkUf4H9BOFDaIwu42fvRycXMAvkttph9AlbCZXssZDVzz2L+QZ0ERvfB/4nX3ZFPh1Zd+uVGr1DEDeXxq4J1TA==}
@@ -13085,7 +13062,6 @@ packages:
       rc-align: 4.0.11
       rc-motion: 2.4.4
       rc-util: 5.14.0
-    dev: true
 
   /rc-upload/4.3.2:
     resolution: {integrity: sha512-v0HdwC/19xKAn1OYZ4hTMUSqSs/IA0n1v4p/cioSSnKubHrdpcCXC45N+TFMSOZtBlf4+xMNCFo3KDih31lAMg==}
@@ -13096,7 +13072,6 @@ packages:
       '@babel/runtime': 7.16.0
       classnames: 2.3.1
       rc-util: 5.14.0
-    dev: true
 
   /rc-util/5.14.0:
     resolution: {integrity: sha512-2vy6/Z1BJUcwLjm/UEJb/htjUTQPigITUIemCcFEo1fQevAumc9sA32x2z5qyWoa9uhrXbiAjSDpPIUqyg65sA==}
@@ -13107,7 +13082,6 @@ packages:
       '@babel/runtime': 7.16.0
       react-is: 16.13.1
       shallowequal: 1.1.0
-    dev: true
 
   /rc-virtual-list/3.4.2:
     resolution: {integrity: sha512-OyVrrPvvFcHvV0ssz5EDZ+7Rf5qLat/+mmujjchNw5FfbJWNDwkpQ99EcVE6+FtNRmX9wFa1LGNpZLUTvp/4GQ==}
@@ -13119,7 +13093,6 @@ packages:
       classnames: 2.3.1
       rc-resize-observer: 1.0.1
       rc-util: 5.14.0
-    dev: true
 
   /react-dom/18.0.0-alpha-4298ddbc5-20211023_2ced398083923aa365dca9fe160f2852:
     resolution: {integrity: sha512-3coe1i4Q3xj9uqFX+3+3JLkHZZ/+dPsI7k3cM5w2vR0hybffH81d+A4Pybp5L4vVmKIOkCm8iWZvtGQZOaz95A==}
@@ -13159,7 +13132,6 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: true
 
   /react-is/17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -13496,7 +13468,6 @@ packages:
 
   /resize-observer-polyfill/1.5.1:
     resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
-    dev: true
 
   /resolve-alpn/1.2.1:
     resolution: {integrity: sha512-0a1F4l73/ZFZOakJnQ3FvkJ2+gSTQWz/r2KE5OdDY0TxPm5h4GkqkWWfM47T7HsbnOtcJVEF4epCVy6u7Q3K+g==}
@@ -13747,7 +13718,6 @@ packages:
     resolution: {integrity: sha512-8LuxJSuFVc92+0AdNv4QOxRL4Abeo1DgLnGNkn1XlaujPH/3cCFz3QI60r2VNu4obJJROzgnIUw5TKQkZvZI1w==}
     dependencies:
       compute-scroll-into-view: 1.0.17
-    dev: true
 
   /semver-compare/1.0.0:
     resolution: {integrity: sha1-De4hahyUGrN+nvsXiPavxf9VN/w=}
@@ -13847,7 +13817,6 @@ packages:
 
   /shallowequal/1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
-    dev: true
 
   /shebang-command/1.2.0:
     resolution: {integrity: sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=}
@@ -14208,7 +14177,6 @@ packages:
 
   /string-convert/0.2.1:
     resolution: {integrity: sha1-aYLMMEn7tM2F+LJFaLnZvznu/5c=}
-    dev: true
 
   /string-length/4.0.2:
     resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}
@@ -14662,7 +14630,6 @@ packages:
 
   /toggle-selection/1.0.6:
     resolution: {integrity: sha1-bkWxJj8gF/oKzH2J14sVuL932jI=}
-    dev: true
 
   /toidentifier/1.0.0:
     resolution: {integrity: sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==}
@@ -15100,7 +15067,6 @@ packages:
     resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
     dependencies:
       loose-envify: 1.4.0
-    dev: true
 
   /watchpack/2.2.0:
     resolution: {integrity: sha512-up4YAn/XHgZHIxFBVCdlMiWDj6WaLKpwVeGQk2I5thdYxF/KmF0aaz6TfJZ/hfl1h/XlcDr7k1KH7ThDagpFaA==}
