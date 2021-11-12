@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { winPath } from '@umijs/utils';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { importsToStr } from './importsToStr';
@@ -107,7 +108,7 @@ export default (api: IApi) => {
       path: 'core/plugin.ts',
       tplPath: join(TEMPLATES_DIR, 'plugin.tpl'),
       context: {
-        plugins: plugins.map((plugin, index) => ({ index, path: plugin })),
+        plugins: plugins.map((plugin, index) => ({ index, path: winPath(plugin) })),
         validKeys: validKeys,
       },
     });
