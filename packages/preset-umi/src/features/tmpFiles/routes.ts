@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { addParentRoute, getConventionRoutes } from '@umijs/core';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
@@ -42,7 +43,7 @@ export async function getRouteComponents(opts: {
       const path = isAbsolute(route.file)
         ? route.file
         : `${opts.prefix}${route.file}`;
-      return `'${key}': () => import('${path}'),`;
+      return `'${key}': () => import('${winPath(path)}'),`;
     })
     .join('\n');
   return `{\n${imports}\n}`;
