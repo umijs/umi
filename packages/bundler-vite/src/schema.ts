@@ -72,5 +72,6 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     publicPath: (Joi) => Joi.string(),
     svgr: (Joi) => Joi.object(),
     targets: (Joi) => Joi.object(),
+    theme: (Joi) => Joi.object(),
   };
 }
