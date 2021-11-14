@@ -118,5 +118,6 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     targets: (Joi) => Joi.object(),
     writeToDisk: (Joi) => Joi.boolean(),
     esm: (Joi) => Joi.object(),
+    theme: (Joi) => Joi.object(),
   };
 }
