@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ast",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0-beta.6",
   "description": "@umijs/ast",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,6 +26,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.5"
+    "@umijs/bundler-utils": "4.0.0-beta.6"
   }
 }
