@@ -99,6 +99,7 @@ export type IApi = PluginAPI &
         specifiers: Record<string, string>;
       }[];
       exports: any[];
+      cjsExports: string[];
     }>;
     onDevCompileDone: IEvent<{
       isFirstCompile: boolean;
