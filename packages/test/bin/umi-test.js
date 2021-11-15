@@ -10,6 +10,7 @@ const args = yParser(process.argv.slice(2), {
   boolean: ['coverage', 'watch', 'version', 'debug', 'e2e'],
   default: {
     e2e: true,
+    transfromer: 'babel'
   },
 });
 

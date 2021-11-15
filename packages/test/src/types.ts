@@ -8,6 +8,7 @@ export interface IUmiTestArgs extends Partial<ArgsType<typeof runCLI>['0']> {
   debug?: boolean;
   e2e?: boolean;
   package?: string;
+  transfromer?: string;
 }
 
 export type PickedJestCliOptions = {

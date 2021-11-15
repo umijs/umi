@@ -17,7 +17,7 @@
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
     "release": "node ./scripts/release.js",
-    "test": "umi-test",
+    "test": "umi-test --transfromer=swc",
     "test:coverage": "umi-test --coverage",
     "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
     "now-build": "echo \"Hello\"",
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.14.0",
+    "@swc-node/jest": "^1.4.1",
     "@testing-library/react": "^10.4.6",
     "@types/babel__core": "7.1.14",
     "@types/babel__traverse": "7.11.1",

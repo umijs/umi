@@ -23,6 +23,13 @@ export default function (cwd: string, args: IUmiTestArgs) {
     );
   }
 
+  // support switch test transfromer
+  const transfromerMap = {
+    babel: require.resolve('../../helpers/transformers/javascript'),
+    swc: '@swc-node/jest',
+    esbuild: 'esbuild-jest',
+  };
+
   return {
     collectCoverageFrom: [
       'index.{js,jsx,ts,tsx}',
@@ -49,13 +56,12 @@ export default function (cwd: string, args: IUmiTestArgs) {
     ],
     testPathIgnorePatterns: ['/node_modules/', '/fixtures/'],
     transform: {
-      '^.+\\.(js|jsx|ts|tsx)$': ['@swc-node/jest'],
+      '^.+\\.(js|jsx|ts|tsx)$': transfromerMap[args.transfromer || 'babel'],
       '^.+\\.(css|less|sass|scss|stylus)$': require.resolve(
         '../../helpers/transformers/css',
       ),
-      '^(?!.*\\.(js|jsx|ts|tsx|css|less|sass|scss|stylus|json)$)': require.resolve(
-        '../../helpers/transformers/file',
-      ),
+      '^(?!.*\\.(js|jsx|ts|tsx|css|less|sass|scss|stylus|json)$)':
+        require.resolve('../../helpers/transformers/file'),
     },
     verbose: true,
     transformIgnorePatterns: [
