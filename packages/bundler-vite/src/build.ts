@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuilder, mergeConfig } from 'vite';
 import { getConfig } from './config/config';
-import deleteOuputFiles from './plugins/deleteOuputFiles';
+import { deleteOutputFiles } from './plugins/deleteOutputFiles';
 import { Env, IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
@@ -102,7 +102,7 @@ export async function build(opts: IOpts): Promise<void> {
               // use temp html entry for vite build
               input: tmpHtmlEntry,
               // remove temp html entry after build
-              plugins: [deleteOuputFiles(Object.values(tmpHtmlEntry))],
+              plugins: [deleteOutputFiles(Object.values(tmpHtmlEntry))],
             }
           : // fallback to vite default entry
             {},
