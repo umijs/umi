@@ -11,6 +11,7 @@ export enum Env {
 export enum JSMinifier {
   terser = 'terser',
   esbuild = 'esbuild',
+  none = 'none',
 }
 
 export interface ICopy {
