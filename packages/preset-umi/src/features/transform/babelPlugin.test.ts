@@ -36,7 +36,7 @@ function formatImport(item: any) {
   return ret;
 }
 
-test('import default', () => {
+xtest('import default', () => {
   const { imports } = doTransform({ code: `import a from 'a';` });
   expect(imports.map(formatImport)).toEqual([
     {
@@ -46,7 +46,7 @@ test('import default', () => {
   ]);
 });
 
-test('import namespace', () => {
+xtest('import namespace', () => {
   const { imports } = doTransform({ code: `import * as a from 'a';` });
   expect(imports.map(formatImport)).toEqual([
     {
@@ -56,7 +56,7 @@ test('import namespace', () => {
   ]);
 });
 
-test('import specifiers', () => {
+xtest('import specifiers', () => {
   const { imports } = doTransform({ code: `import { a, b } from 'a';` });
   expect(imports.map(formatImport)).toEqual([
     {
@@ -69,7 +69,7 @@ test('import specifiers', () => {
   ]);
 });
 
-test('cjs exports', () => {
+xtest('cjs exports', () => {
   const { cjsExports } = doTransform({
     code: `module.exports = 'a';exports.b = 'b';`,
   });
