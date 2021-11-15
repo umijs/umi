@@ -1,3 +1,3 @@
+export type { IApi } from '@umijs/preset-umi';
 export * from '@umijs/renderer-react';
-export type { IApi } from '../preset-umi';
 export * from './dist/index';
