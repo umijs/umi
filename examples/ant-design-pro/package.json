@@ -1,5 +1,10 @@
 {
   "scripts": {
     "dev": "umi dev"
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "6.28.1",
+    "@ant-design/icons": "4.7.0",
+    "antd": "4.16.13"
   }
 }
