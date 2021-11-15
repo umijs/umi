@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-esbuild",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0-beta.7",
   "description": "@umijs/bundler-esbuild",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,8 +29,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.6",
-    "@umijs/utils": "4.0.0-beta.6",
+    "@umijs/bundler-utils": "4.0.0-beta.7",
+    "@umijs/utils": "4.0.0-beta.7",
     "enhanced-resolve": "5.8.3",
     "less": "4.1.2"
   },
