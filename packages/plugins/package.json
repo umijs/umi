@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugins",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0-beta.6",
   "description": "@umijs/plugins",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +32,6 @@
     "dayjs": "^1.10.7"
   },
   "devDependencies": {
-    "umi": "4.0.0-beta.5"
+    "umi": "4.0.0-beta.6"
   }
 }
