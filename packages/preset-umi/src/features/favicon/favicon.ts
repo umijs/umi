@@ -51,6 +51,6 @@ export default (api: IApi) => {
   });
 
   api.modifyHTMLFavicon((memo) => {
-    return api.appData.faviconFile || memo;
+    return `${api.config.publicPath}${api.appData.faviconFile}` || memo;
   });
 };

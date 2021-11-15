@@ -43,6 +43,7 @@ export default (api: IApi) => {
     },
     externals: {},
     autoCSSModules: true,
+    publicPath: '/',
   };
 
   const bundleSchemas = getSchemas();
