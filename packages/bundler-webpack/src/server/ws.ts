@@ -1,6 +1,6 @@
 import { chalk } from '@umijs/utils';
 import { Server } from 'http';
-import WebSocket from 'ws';
+import WebSocket from '../../compiled/ws';
 
 export function createWebSocketServer(server: Server) {
   const wss = new WebSocket.Server({
