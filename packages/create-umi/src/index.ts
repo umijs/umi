@@ -52,7 +52,7 @@ export default async ({
             value: 'https://registry.npmjs.org/',
             selected: true,
           },
-          { title: 'taobao', value: 'https://registry.npm.taobao.org' },
+          { title: 'taobao', value: 'https://registry.npmmirror.com' },
         ],
       },
     ]);
