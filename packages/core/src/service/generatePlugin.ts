@@ -18,8 +18,8 @@ umi generate
     description: 'generate code snippets quickly',
     async fn({ args }) {
       const [type] = args._;
-      const runGenerator = (generator: IGeneratorOpts) => {
-        generator?.fn({
+      const runGenerator = async (generator: IGeneratorOpts) => {
+        await generator?.fn({
           api,
           args,
           generateFile,
@@ -44,7 +44,7 @@ umi generate
             );
           }
         }
-        runGenerator(generator);
+        await runGenerator(generator);
       } else {
         const getEnableGenerators = async (
           generators: typeof api.service.generators,
@@ -82,7 +82,7 @@ umi generate
           message: 'Pick generator type',
           choices: questions,
         });
-        runGenerator(api.service.generators[gType]);
+        await runGenerator(api.service.generators[gType]);
       }
     },
   });
