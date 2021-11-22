@@ -182,10 +182,15 @@ export class MFSU {
           }) => {
             this.depInfo.moduleGraph.onFileChange({
               file,
+              // @ts-ignore
               deps: [
                 ...Array.from(data.matched).map((item: any) => ({
                   file: item.sourceValue,
                   isDependency: true,
+                  version: Dep.getDepVersion({
+                    dep: item.sourceValue,
+                    cwd: this.opts.cwd!,
+                  }),
                 })),
                 ...Array.from(data.unMatched).map((item: any) => ({
                   file: getRealPath({
