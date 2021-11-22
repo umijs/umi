@@ -23,10 +23,14 @@ interface IOpts {
 }
 
 export async function dev(opts: IOpts) {
-  const mfsu = new MFSU({
-    implementor: webpack as any,
-    buildDepWithESBuild: opts.config.mfsu?.esbuild,
-  });
+  const enableMFSU = opts.config.mfsu !== false;
+  let mfsu: MFSU | null = null;
+  if (enableMFSU) {
+    mfsu = new MFSU({
+      implementor: webpack as any,
+      buildDepWithESBuild: opts.config.mfsu?.esbuild,
+    });
+  }
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
     env: Env.development,
@@ -34,7 +38,7 @@ export async function dev(opts: IOpts) {
     userConfig: opts.config,
     extraBabelPlugins: [
       ...(opts.beforeBabelPlugins || []),
-      ...mfsu.getBabelPlugins(),
+      ...(mfsu?.getBabelPlugins() || []),
       ...(opts.extraBabelPlugins || []),
     ],
     extraBabelPresets: [
@@ -61,7 +65,7 @@ export async function dev(opts: IOpts) {
     // @ts-ignore
     webpackConfig.resolve!.alias[dep] = require.resolve(dep);
   });
-  mfsu.setWebpackConfig({
+  mfsu?.setWebpackConfig({
     config: webpackConfig as any,
     depConfig: depConfig as any,
   });
@@ -70,7 +74,7 @@ export async function dev(opts: IOpts) {
     userConfig: opts.config,
     cwd: opts.cwd,
     beforeMiddlewares: [
-      ...mfsu.getMiddlewares(),
+      ...(mfsu?.getMiddlewares() || []),
       ...(opts.beforeMiddlewares || []),
     ],
     port: opts.port,
