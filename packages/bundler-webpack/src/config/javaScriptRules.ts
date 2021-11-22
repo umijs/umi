@@ -21,7 +21,7 @@ export async function addJavaScriptRules(opts: IOpts) {
   const { config, userConfig, cwd, env, name } = opts;
   const isDev = opts.env === Env.development;
   const useFastRefresh =
-    isDev && userConfig.fastRefresh !== false && name === MFSU_NAME;
+    isDev && userConfig.fastRefresh !== false && name !== MFSU_NAME;
 
   const depPkgs = Object.assign({}, es5ImcompatibleVersionsToPkg());
   const srcRules = [
