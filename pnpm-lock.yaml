@@ -402,6 +402,7 @@ importers:
       enhanced-resolve: 5.8.3
       mrmime: 1.0.0
       webpack: 5.61.0
+      webpack-virtual-modules: 0.4.3
     dependencies:
       '@umijs/bundler-esbuild': link:../bundler-esbuild
       '@umijs/bundler-utils': link:../bundler-utils
@@ -411,6 +412,7 @@ importers:
       enhanced-resolve: 5.8.3
       mrmime: 1.0.0
       webpack: 5.61.0_uglify-js@3.14.2
+      webpack-virtual-modules: 0.4.3
 
   packages/plugins:
     specifiers:
@@ -15308,6 +15310,10 @@ packages:
   /webpack-sources/3.2.1:
     resolution: {integrity: sha512-t6BMVLQ0AkjBOoRTZgqrWm7xbXMBzD+XDq2EZ96+vMfn3qKgsvdXZhbPZ4ElUOpdv4u+iiGe+w3+J75iy/bYGA==}
     engines: {node: '>=10.13.0'}
+    dev: true
+
+  /webpack-virtual-modules/0.4.3:
+    resolution: {integrity: sha512-5NUqC2JquIL2pBAAo/VfBP6KuGkHIZQXW/lNKupLPfhViwh8wNsu0BObtl09yuKZszeEUfbXz8xhrHvSG16Nqw==}
     dev: true
 
   /webpack/5.61.0_ef0cf2dec4b04d7b741273c5e71d7776:

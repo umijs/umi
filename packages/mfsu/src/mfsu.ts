@@ -4,6 +4,8 @@ import { readFileSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import { lookup } from '../compiled/mrmime';
+// @ts-ignore
+import WebpackVirtualModules from '../compiled/webpack-virtual-modules';
 import autoExport from './babelPlugins/autoExport';
 import awaitImport from './babelPlugins/awaitImport/awaitImport';
 import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
@@ -65,9 +67,24 @@ export class MFSU {
     // set alias and externals with reference for babel plugin
     Object.assign(this.alias, opts.config.resolve?.alias || {});
     this.externals.push(...makeArray(opts.config.externals || []));
+    // entry
+    const entry: Record<string, string> = {};
+    const virtualModules: Record<string, string> = {};
+    Object.keys(opts.config.entry!).forEach((key) => {
+      const virtualPath = `./mfsu-virtual-entry/${key}.js`;
+      virtualModules[virtualPath] =
+        // @ts-ignore
+        opts.config
+          .entry![key].map((entry: string) => `await import('${entry}')`)
+          .join('\n') + `\nexport default 1;`;
+      entry[key] = virtualPath;
+    });
+    opts.config.entry = entry;
+    // plugins
     opts.config.plugins = opts.config.plugins || [];
     opts.config.plugins!.push(
       ...[
+        new WebpackVirtualModules(virtualModules),
         new this.opts.implementor.container.ModuleFederationPlugin({
           name: '__',
           remotes: {
