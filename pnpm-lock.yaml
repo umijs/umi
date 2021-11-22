@@ -71,19 +71,24 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-layout': 6.28.1
       antd: 4.16.13
+      umi: 4.0.0-beta.8
     dependencies:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-layout': 6.28.1_antd@4.16.13
       antd: 4.16.13
+      umi: link:../../packages/umi
 
   examples/boilerplate:
     specifiers:
-      umi: 4.0.0-beta.7
+      umi: 4.0.0-beta.8
     dependencies:
       umi: link:../../packages/umi
 
   examples/bug-mfsu-fast-refresh:
-    specifiers: {}
+    specifiers:
+      umi: 4.0.0-beta.8
+    dependencies:
+      umi: link:../../packages/umi
 
   examples/bundler-vite-demo:
     specifiers:
@@ -91,6 +96,9 @@ importers:
       '@types/react-dom': ^17.0.10
       react: ^18.0.0-alpha-fd5e01c2e-20210913
       react-dom: ^18.0.0-alpha-fd5e01c2e-20210913
+      umi: 4.0.0-beta.8
+    dependencies:
+      umi: link:../../packages/umi
     devDependencies:
       '@types/react': 17.0.33
       '@types/react-dom': 17.0.10
@@ -103,6 +111,9 @@ importers:
       '@types/react-dom': ^17.0.10
       react: ^18.0.0-alpha-fd5e01c2e-20210913
       react-dom: ^18.0.0-alpha-fd5e01c2e-20210913
+      umi: 4.0.0-beta.8
+    dependencies:
+      umi: link:../../packages/umi
     devDependencies:
       '@types/react': 17.0.33
       '@types/react-dom': 17.0.10
@@ -114,20 +125,29 @@ importers:
       antd: 4.16.13
       framer-motion: 5.0.0
       swr: 1.1.0-beta.8
+      umi: 4.0.0-beta.8
+    dependencies:
+      umi: link:../../packages/umi
     devDependencies:
       antd: 4.16.13
       framer-motion: 5.0.0
       swr: 1.1.0-beta.8
 
   examples/plugins-demo:
-    specifiers: {}
+    specifiers:
+      umi: 4.0.0-beta.8
+    dependencies:
+      umi: link:../../packages/umi
 
   examples/tmp-swcTranspiler-swc:
-    specifiers: {}
+    specifiers:
+      umi: 4.0.0-beta.8
+    dependencies:
+      umi: link:../../packages/umi
 
   packages/ast:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-beta.7
+      '@umijs/bundler-utils': 4.0.0-beta.8
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
@@ -135,8 +155,8 @@ importers:
     specifiers:
       '@babel/runtime': 7.16.0
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/bundler-utils': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       core-js: 3.19.0
     dependencies:
       '@babel/runtime': 7.16.0
@@ -147,8 +167,8 @@ importers:
 
   packages/bigfish:
     specifiers:
-      '@umijs/plugins': 4.0.0-beta.7
-      umi: 4.0.0-beta.7
+      '@umijs/plugins': 4.0.0-beta.8
+      umi: 4.0.0-beta.8
     dependencies:
       '@umijs/plugins': link:../plugins
       umi: link:../umi
@@ -156,8 +176,8 @@ importers:
   packages/bundler-esbuild:
     specifiers:
       '@types/less': ^3.0.3
-      '@umijs/bundler-utils': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/bundler-utils': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       enhanced-resolve: 5.8.3
       less: 4.1.2
     dependencies:
@@ -195,7 +215,7 @@ importers:
       '@types/babel__parser': 7.1.1
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.14.2
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/utils': 4.0.0-beta.8
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.9.3
       esbuild: 0.13.11
@@ -234,8 +254,8 @@ importers:
   packages/bundler-vite:
     specifiers:
       '@svgr/core': 5.5.0
-      '@umijs/bundler-utils': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/bundler-utils': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       '@vitejs/plugin-legacy': 1.6.2
       '@vitejs/plugin-react': 1.0.7
       express: 4.17.1
@@ -267,9 +287,9 @@ importers:
       '@types/hapi__joi': 17.1.7
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.2.0
-      '@umijs/babel-preset-umi': 4.0.0-beta.7
-      '@umijs/mfsu': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/babel-preset-umi': 4.0.0-beta.8
+      '@umijs/mfsu': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       autoprefixer: 10.3.7
       babel-loader: 8.2.2
       compression: 1.7.4
@@ -365,8 +385,8 @@ importers:
     specifiers:
       '@hapi/joi': 17.1.1
       '@types/hapi__joi': 17.1.7
-      '@umijs/bundler-utils': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/bundler-utils': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       dotenv: 10.0.0
       just-diff: 3.1.1
       tapable: 2.2.1
@@ -382,14 +402,14 @@ importers:
 
   packages/create-umi:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-beta.7
+      '@umijs/bundler-utils': 4.0.0-beta.8
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
   packages/father:
     specifiers:
-      '@umijs/core': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/core': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       v8-compile-cache: 2.3.0
     dependencies:
       '@umijs/core': link:../core
@@ -399,9 +419,9 @@ importers:
   packages/mfsu:
     specifiers:
       '@types/express': 4.17.13
-      '@umijs/bundler-esbuild': 4.0.0-beta.7
-      '@umijs/bundler-utils': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/bundler-esbuild': 4.0.0-beta.8
+      '@umijs/bundler-utils': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       enhanced-resolve: 5.8.3
       mrmime: 1.0.0
       webpack: 5.61.0
@@ -423,7 +443,7 @@ importers:
       antd-dayjs-webpack-plugin: ^1.0.6
       babel-plugin-import: ^1.13.3
       dayjs: ^1.10.7
-      umi: 4.0.0-beta.7
+      umi: 4.0.0-beta.8
     dependencies:
       antd: 4.16.13
       antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.10.7
@@ -434,15 +454,15 @@ importers:
 
   packages/preset-umi:
     specifiers:
-      '@umijs/ast': 4.0.0-beta.7
-      '@umijs/babel-preset-umi': 4.0.0-beta.7
-      '@umijs/bundler-utils': 4.0.0-beta.7
-      '@umijs/bundler-vite': 4.0.0-beta.7
-      '@umijs/bundler-webpack': 4.0.0-beta.7
-      '@umijs/core': 4.0.0-beta.7
-      '@umijs/renderer-react': 4.0.0-beta.7
-      '@umijs/server': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/ast': 4.0.0-beta.8
+      '@umijs/babel-preset-umi': 4.0.0-beta.8
+      '@umijs/bundler-utils': 4.0.0-beta.8
+      '@umijs/bundler-vite': 4.0.0-beta.8
+      '@umijs/bundler-webpack': 4.0.0-beta.8
+      '@umijs/core': 4.0.0-beta.8
+      '@umijs/renderer-react': 4.0.0-beta.8
+      '@umijs/server': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004
       react-router: 6.0.0-beta.7
@@ -492,10 +512,10 @@ importers:
 
   packages/umi:
     specifiers:
-      '@umijs/core': 4.0.0-beta.7
-      '@umijs/preset-umi': 4.0.0-beta.7
-      '@umijs/renderer-react': 4.0.0-beta.7
-      '@umijs/utils': 4.0.0-beta.7
+      '@umijs/core': 4.0.0-beta.8
+      '@umijs/preset-umi': 4.0.0-beta.8
+      '@umijs/renderer-react': 4.0.0-beta.8
+      '@umijs/utils': 4.0.0-beta.8
       v8-compile-cache: 2.3.0
     dependencies:
       '@umijs/core': link:../core

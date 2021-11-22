@@ -1,6 +1,6 @@
 {
   "name": "father",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "father",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,8 +31,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-beta.7",
-    "@umijs/utils": "4.0.0-beta.7",
+    "@umijs/core": "4.0.0-beta.8",
+    "@umijs/utils": "4.0.0-beta.8",
     "v8-compile-cache": "2.3.0"
   }
 }
