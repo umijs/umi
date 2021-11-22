@@ -1,10 +1,14 @@
 {
   "scripts": {
-    "dev": "umi dev"
+    "dev": "umi dev",
+    "start": "npm run dev"
   },
   "devDependencies": {
     "antd": "4.16.13",
     "framer-motion": "5.0.0",
     "swr": "1.1.0-beta.8"
+  },
+  "dependencies": {
+    "umi": "4.0.0-beta.7"
   }
 }

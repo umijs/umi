@@ -1,11 +1,15 @@
 {
   "scripts": {
-    "dev": "bundler-webpack dev"
+    "dev": "bundler-webpack dev",
+    "start": "npm run dev"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "react": "^18.0.0-alpha-fd5e01c2e-20210913",
     "react-dom": "^18.0.0-alpha-fd5e01c2e-20210913"
+  },
+  "dependencies": {
+    "umi": "4.0.0-beta.7"
   }
 }
