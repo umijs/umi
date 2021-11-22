@@ -77,7 +77,10 @@ importers:
       antd: 4.16.13
 
   examples/boilerplate:
-    specifiers: {}
+    specifiers:
+      umi: 4.0.0-beta.7
+    dependencies:
+      umi: link:../../packages/umi
 
   examples/bug-mfsu-fast-refresh:
     specifiers: {}
