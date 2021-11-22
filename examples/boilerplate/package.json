@@ -4,6 +4,6 @@
     "dev": "umi dev"
   },
   "dependencies": {
-    "umi": "4.0.0-beta.7"
+    "umi": "4.0.0-beta.8"
   }
 }

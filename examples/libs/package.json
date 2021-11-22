@@ -9,6 +9,6 @@
     "swr": "1.1.0-beta.8"
   },
   "dependencies": {
-    "umi": "4.0.0-beta.7"
+    "umi": "4.0.0-beta.8"
   }
 }

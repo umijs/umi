@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "@umijs/bundler-vite",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@svgr/core": "5.5.0",
-    "@umijs/bundler-utils": "4.0.0-beta.7",
-    "@umijs/utils": "4.0.0-beta.7",
+    "@umijs/bundler-utils": "4.0.0-beta.8",
+    "@umijs/utils": "4.0.0-beta.8",
     "@vitejs/plugin-legacy": "1.6.2",
     "@vitejs/plugin-react": "1.0.7",
     "postcss-preset-env": "6.7.0",

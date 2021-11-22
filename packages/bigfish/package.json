@@ -1,6 +1,6 @@
 {
   "name": "bigfish",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "bigfish",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-beta.7",
-    "umi": "4.0.0-beta.7"
+    "@umijs/plugins": "4.0.0-beta.8",
+    "umi": "4.0.0-beta.8"
   }
 }
