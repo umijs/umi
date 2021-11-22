@@ -70,6 +70,30 @@ import { assert, eachPkg, getPkgs } from './utils';
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
   const version = require('../lerna.json').version;
 
+  // update example versions
+  logger.event('update example versions');
+  const examples = fs
+    .readdirSync(join(__dirname, '../examples'))
+    .filter((dir) => {
+      return !dir.startsWith('.');
+    });
+  examples.forEach((example) => {
+    const pkg = require(join(
+      __dirname,
+      '../examples',
+      example,
+      'package.json',
+    ));
+    pkg.scripts['start'] = 'npm run dev';
+    pkg.dependencies ||= {};
+    pkg.dependencies['umi'] = version;
+    delete pkg.version;
+    fs.writeFileSync(
+      join(__dirname, '../examples', example, 'package.json'),
+      JSON.stringify(pkg, null, 2),
+    );
+  });
+
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
   $.verbose = false;
