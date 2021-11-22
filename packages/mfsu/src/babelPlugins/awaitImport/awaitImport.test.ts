@@ -15,32 +15,25 @@ function doTransform(opts: IOpts): string {
 
 test('import default', () => {
   expect(doTransform({ code: `import a from 'a';`, opts: {} })).toEqual(
-    `const {
-  default: a
-} = await import("mf/a");`,
+    `import a from "mf/a";`,
   );
 });
 
 test('import member', () => {
   expect(doTransform({ code: `import { a } from 'a';`, opts: {} })).toEqual(
-    `const {
-  a: a
-} = await import("mf/a");`,
+    `import { a } from "mf/a";`,
   );
 });
 
 test('import as', () => {
   expect(doTransform({ code: `import * as a from 'a';`, opts: {} })).toEqual(
-    `const a = await import("mf/a");`,
+    `import * as a from "mf/a";`,
   );
 });
 
 test('import as + default', () => {
   expect(doTransform({ code: `import a, * as b from 'a';`, opts: {} })).toEqual(
-    `const b = await import("mf/a"),
-      {
-  default: a
-} = b;`,
+    `import a, * as b from "mf/a";`,
   );
 });
 
@@ -52,48 +45,20 @@ test('dynamic import', () => {
 
 test('export member', () => {
   expect(doTransform({ code: `export { a } from 'a';`, opts: {} })).toEqual(
-    `const {
-  a: a
-} = await import("mf/a");
-export { a };`,
+    `export { a } from "mf/a";`,
   );
 });
 
 // depends on exportDefaultFrom syntax
 xtest('export default', () => {
   expect(doTransform({ code: `export a from 'a';`, opts: {} })).toEqual(
-    `const {
-  default: a
-} = await import("mf/a");
-export { a };`,
+    `export a from "mf/a";`,
   );
 });
 
 test('export *', () => {
   expect(doTransform({ code: `export * from 'a';`, opts: {} })).toEqual(
-    `export * from 'a';`,
-  );
-  expect(
-    doTransform({
-      code: `export * from 'a';`,
-      opts: {
-        exportAllMembers: { a: [] },
-      },
-    }),
-  ).toEqual(`1;`);
-  expect(
-    doTransform({
-      code: `export * from 'a';`,
-      opts: {
-        exportAllMembers: { a: ['x'] },
-      },
-    }),
-  ).toEqual(
-    `const __all_exports_a = await import("mf/a");
-
-export const {
-  x: x
-} = __all_exports_a;`,
+    `export * from "mf/a";`,
   );
 });
 
@@ -109,9 +74,7 @@ test('onCollectData', () => {
       },
     }),
   ).toEqual(
-    `const {
-  default: a
-} = await import("mf/a");
+    `import a from "mf/a";
 import b from './b';
 import("mf/c");`,
   );
