@@ -56,6 +56,7 @@ export class MFSU {
     this.opts.cwd = this.opts.cwd || process.cwd();
     this.depInfo = new DepInfo({ mfsu: this });
     this.depBuilder = new DepBuilder({ mfsu: this });
+    this.depInfo.loadCache();
   }
 
   setWebpackConfig(opts: { config: Configuration; depConfig: Configuration }) {

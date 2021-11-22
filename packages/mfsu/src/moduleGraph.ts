@@ -65,7 +65,7 @@ export class ModuleGraph {
 
   toJSON() {
     const roots: string[] = [];
-    const fileModules: Record<string, { importModules: string[] }> = {};
+    const fileModules: Record<string, { importedModules: string[] }> = {};
     const depModules: Record<string, { version: string | null }> = {};
     this.depToModules.forEach((value, key) => {
       depModules[key] = {
@@ -74,7 +74,7 @@ export class ModuleGraph {
     });
     this.fileToModules.forEach((value, key) => {
       fileModules[key] = {
-        importModules: Array.from(value.importedModules).map(
+        importedModules: Array.from(value.importedModules).map(
           (item) => item.file,
         ),
       };

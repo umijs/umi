@@ -92,7 +92,10 @@ test('updateModules + toJSON', () => {
   });
   expect(mg.toJSON()).toEqual({
     roots: ['a'],
-    fileModules: { a: { importModules: ['b', 'c'] }, b: { importModules: [] } },
+    fileModules: {
+      a: { importedModules: ['b', 'c'] },
+      b: { importedModules: [] },
+    },
     depModules: { c: { version: '0.1.0' } },
     depSnapshotModules: {},
   });
@@ -107,8 +110,8 @@ test('updateModules + toJSON', () => {
   expect(mg.toJSON()).toEqual({
     roots: ['a'],
     fileModules: {
-      a: { importModules: ['c', 'd', 'e'] },
-      d: { importModules: [] },
+      a: { importedModules: ['c', 'd', 'e'] },
+      d: { importedModules: [] },
     },
     depModules: { c: { version: '0.2.0' }, e: { version: '0.1.0' } },
     depSnapshotModules: {},
