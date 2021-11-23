@@ -67,7 +67,6 @@
     "deps": [
       "address",
       "axios",
-      "body-parser",
       "chalk",
       "cheerio",
       "color",
