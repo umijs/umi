@@ -11,7 +11,7 @@ import {
 } from './utils';
 
 // opts.base: path of pages
-export function getConventionRoutes(opts: { base: string }) {
+export function getConventionRoutes(opts: { base: string; prefix?: string }) {
   const files: { [routeId: string]: string } = {};
   assert(
     existsSync(opts.base) && statSync(opts.base).isDirectory(),
@@ -41,7 +41,7 @@ export function getConventionRoutes(opts: { base: string }) {
       );
       defineRoute({
         path: routePath,
-        file: files[routeId],
+        file: `${opts.prefix || ''}${files[routeId]}`,
         children() {
           defineNestedRoutes(defineRoute, routeId);
         },

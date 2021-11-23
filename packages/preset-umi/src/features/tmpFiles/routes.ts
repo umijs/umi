@@ -1,4 +1,8 @@
-import { addParentRoute, getConventionRoutes } from '@umijs/core';
+import {
+  addParentRoute,
+  getConfigRoutes,
+  getConventionRoutes,
+} from '@umijs/core';
 import { winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
@@ -8,9 +12,14 @@ import { IApi } from '../../types';
 export async function getRoutes(opts: { api: IApi }) {
   let routes = null;
   if (opts.api.config.routes) {
-    // TODO: support config routes
+    routes = getConfigRoutes({
+      routes: opts.api.config.routes,
+    });
   } else {
-    routes = getConventionRoutes({ base: opts.api.paths.absPagesPath });
+    routes = getConventionRoutes({
+      base: opts.api.paths.absPagesPath,
+      prefix: '',
+    });
   }
 
   const absLayoutPath = join(opts.api.paths.absSrcPath, 'layouts/index.tsx');
@@ -46,9 +55,10 @@ export async function getRouteComponents(opts: {
     .map((key) => {
       const route = opts.routes[key];
       // TODO: support alias
-      const path = isAbsolute(route.file)
-        ? route.file
-        : `${opts.prefix}${route.file}`;
+      const path =
+        isAbsolute(route.file) || route.file.startsWith('@/')
+          ? route.file
+          : `${opts.prefix}${route.file}`;
       return `'${key}': () => import('${winPath(path)}'),`;
     })
     .join('\n');
