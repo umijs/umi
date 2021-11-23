@@ -170,6 +170,7 @@ export class Config {
           delete require.cache[file];
         }
         files.push(...register.getFiles());
+        register.restore();
       }
     }
 
