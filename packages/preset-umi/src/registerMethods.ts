@@ -23,7 +23,7 @@ export default (api: IApi) => {
     'addRuntimePlugin',
     'addRuntimePluginKey',
     // 'addUmiExports',
-    // 'addPolyfillImports',
+    'addPolyfillImports',
     'addEntryImportsAhead',
     'addEntryImports',
     'addEntryCodeAhead',
