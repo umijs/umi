@@ -1,29 +1,35 @@
-import { winPath } from '@umijs/utils';
 import { addParentRoute, getConventionRoutes } from '@umijs/core';
+import { winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
+import { IApi } from '../../types';
 
 // get route config
-export async function getRoutes(opts: {
-  config: Record<string, any>;
-  absSrcPage: string;
-  absPagesPath: string;
-}) {
+export async function getRoutes(opts: { api: IApi }) {
   let routes = null;
-  if (opts.config.routes) {
+  if (opts.api.config.routes) {
     // TODO: support config routes
   } else {
-    routes = getConventionRoutes({ base: opts.absPagesPath });
+    routes = getConventionRoutes({ base: opts.api.paths.absPagesPath });
   }
 
-  const absLayoutPath = join(opts.absSrcPage, 'layouts/index.tsx');
-  if (existsSync(absLayoutPath)) {
+  const absLayoutPath = join(opts.api.paths.absSrcPath, 'layouts/index.tsx');
+  const layouts = await opts.api.applyPlugins({
+    key: 'addLayouts',
+    initialValue: [
+      existsSync(absLayoutPath) && {
+        id: '@@/global-layout',
+        file: absLayoutPath,
+      },
+    ].filter(Boolean),
+  });
+  for (const layout of layouts) {
     addParentRoute({
       addToAll: true,
       target: {
-        id: '@@/global-layout',
+        id: layout.id,
         path: '/',
-        file: absLayoutPath,
+        file: layout.file,
         parentId: undefined,
       },
       routes,

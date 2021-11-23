@@ -19,6 +19,7 @@ export default (api: IApi) => {
     'onCheckCode',
     'onCheckConfig',
     'addBeforeMiddlewares',
+    'addLayouts',
     'addMiddlewares',
     'addRuntimePlugin',
     'addRuntimePluginKey',
