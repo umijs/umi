@@ -55,7 +55,6 @@ export async function getRouteComponents(opts: {
     .map((key) => {
       const route = opts.routes[key];
       if (!route.file) return `// ${key}: no file to import`;
-      // TODO: support alias
       const path =
         isAbsolute(route.file) || route.file.startsWith('@/')
           ? route.file
