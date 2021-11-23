@@ -1,4 +1,5 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 import { IRoute, IRoutesById } from './types';
 
 export function createClientRoutes(opts: {
@@ -33,6 +34,10 @@ export function createClientRoute(opts: { route: IRoute; Component: any }) {
     id: route.id,
     path: route.path,
     index: route.index,
-    element: <Component id={route.id} />,
+    element: route.redirect ? (
+      <Navigate to={route.redirect} />
+    ) : (
+      <Component id={route.id} />
+    ),
   };
 }
