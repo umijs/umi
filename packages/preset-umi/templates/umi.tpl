@@ -1,3 +1,4 @@
+{{{ polyfillImports }}}
 {{{ importsAhead }}}
 import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/route';
