@@ -121,6 +121,7 @@ export type IApi = PluginAPI &
     addHTMLStyles: IAdd<null, IStyle[]>;
     addHTMLLinks: IAdd<null, ILink[]>;
     addHTMLMetas: IAdd<null, IMeta[]>;
+    addLayouts: IAdd<null, { id: string; file: string }[]>;
     addPolyfillImports: IAdd<null, string[]>;
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
