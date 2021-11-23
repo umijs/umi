@@ -33,7 +33,7 @@ function transformRoute(opts: {
   opts.memo.ret[id] = {
     ...routeProps,
     path: opts.route.path,
-    file: component,
+    ...(component ? { file: component } : {}),
     parentId: opts.parentId,
     id,
   };

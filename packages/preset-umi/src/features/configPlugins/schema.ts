@@ -17,5 +17,6 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         NpmClientEnum.yarn,
         NpmClientEnum.npm,
       ),
+    routes: (Joi) => Joi.array().items(Joi.object()),
   };
 }
