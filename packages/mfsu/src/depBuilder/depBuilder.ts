@@ -62,6 +62,7 @@ export class DepBuilder {
         alias: this.opts.mfsu.alias,
         externals: this.opts.mfsu.externals,
       },
+      inlineStyle: true,
     });
     logger.event(
       `[mfsu] compiled with esbuild successfully in ${+new Date() - date} ms`,

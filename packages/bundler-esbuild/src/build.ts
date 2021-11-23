@@ -8,6 +8,7 @@ import { join } from 'path';
 import alias from './plugins/alias';
 import externals from './plugins/externals';
 import less from './plugins/less';
+import { inlineStyle } from './plugins/style';
 import { IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
@@ -23,6 +24,7 @@ interface IOpts {
   beforeBabelPresets?: any[];
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
+  inlineStyle?: boolean;
 }
 
 export async function build(opts: IOpts) {
@@ -47,6 +49,7 @@ export async function build(opts: IOpts) {
       }),
       opts.config.alias && alias(addCwdPrefix(opts.config.alias, opts.cwd)),
       opts.config.externals && externals(opts.config.externals),
+      opts.inlineStyle && inlineStyle(),
     ].filter(Boolean) as Plugin[],
     define: {
       // __dirname sham
