@@ -5,6 +5,7 @@ import type {
   IAdd,
   IEvent,
   IModify,
+  IRoute as ICoreRoute,
   IServicePluginAPI,
   PluginAPI,
 } from '@umijs/core';
@@ -53,7 +54,7 @@ export type IEntryImport = {
   source: string;
   specifier?: string;
 };
-
+export type IRoute = ICoreRoute;
 export type IApi = PluginAPI &
   IServicePluginAPI & {
     restartServer: () => void;

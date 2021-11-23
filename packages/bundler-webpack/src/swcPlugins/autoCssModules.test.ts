@@ -28,8 +28,8 @@ function doTransform(opts: IOpts): string {
     },
     minify: false,
     isModule: true,
-    plugin: (m) => new AutoCSSModule().visitProgram(m),
-  })!.code.trim() as string;
+    plugin: (m: any) => new AutoCSSModule().visitProgram(m),
+  } as any)!.code.trim() as string;
 }
 
 test('css modules', () => {

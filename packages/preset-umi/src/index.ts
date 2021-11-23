@@ -12,6 +12,7 @@ export default () => {
       require.resolve('./features/transform/transform'),
       require.resolve('./features/tmpFiles/tmpFiles'),
       require.resolve('./features/favicon/favicon'),
+      require.resolve('./features/mock/mock'),
 
       // commands
       require.resolve('./commands/build'),

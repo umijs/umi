@@ -6,7 +6,7 @@ export default {
     // alternatives:
     // 1. @swc-node/jest
     // 2. ts-jest
-    '^.+\\.(ts)$': 'esbuild-jest',
+    '^.+\\.ts$': 'esbuild-jest',
   },
   testTimeout: 30000,
   modulePathIgnorePatterns: [
