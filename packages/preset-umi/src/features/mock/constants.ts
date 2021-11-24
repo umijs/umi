@@ -7,4 +7,5 @@ export const VALID_METHODS = [
   'HEAD',
   'OPTIONS',
 ];
+export const DEFAULT_METHOD = 'GET';
 export const MOCK_FILE_GLOB = 'mock/**/*.[jt]s';
