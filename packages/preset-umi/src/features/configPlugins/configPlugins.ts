@@ -20,6 +20,8 @@ function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
 export default (api: IApi) => {
   const configDefaults: Record<string, any> = {
     alias: {
+      '@': api.paths.absSrcPath,
+      '@@': api.paths.absTmpPath,
       umi: process.env.UMI_DIR!,
       '@umijs/renderer-react': dirname(
         require.resolve('@umijs/renderer-react/package.json'),
