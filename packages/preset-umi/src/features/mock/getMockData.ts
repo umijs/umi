@@ -1,32 +1,39 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { glob, register } from '@umijs/utils';
+import { glob, lodash, register } from '@umijs/utils';
 import assert from 'assert';
-import { VALID_METHODS } from './constants';
+import { MOCK_FILE_GLOB, VALID_METHODS } from './constants';
 
-interface IMock {
+export interface IMock {
   method: string;
   path: string;
   handler: Function;
   file?: string;
 }
 
-export function getMockData(opts: { cwd: string }): Record<string, Function> {
+export function getMockData(opts: { cwd: string }): Record<string, IMock> {
   register.register({
     implementor: esbuild,
   });
   register.clearFiles();
   const ret = glob
-    .sync(`mock/**/*.[jt]s`, { cwd: opts.cwd })
+    .sync(MOCK_FILE_GLOB, { cwd: opts.cwd })
     .reduce<Record<string, any>>((memo, file) => {
       const mockFile = `${opts.cwd}/${file}`;
       const m = require(mockFile);
-      const obj = { ...m, ...m.default };
-      if (obj['default']) delete obj['default'];
+      const obj = m.default;
       for (const key of Object.keys(obj)) {
         const mock = getMock({ key, obj });
         mock.file = mockFile;
         // check conflict
         const id = `${mock.method} ${mock.path}`;
+        assert(
+          lodash.isArray(mock.handler) ||
+            lodash.isPlainObject(mock.handler) ||
+            typeof mock.handler === 'function',
+          `Mock handler must be function or array or object, but got ${typeof mock.handler} for ${
+            mock.method
+          } in ${mock.file}`,
+        );
         if (memo[id]) {
           throw new Error(
             `${id} is duplicated in ${mockFile} and ${memo[id].file}`,
@@ -50,12 +57,12 @@ function getMock(opts: { key: string; obj: any }): IMock {
 }
 
 function parseKey(key: string) {
-  const splited = key.split(' ');
-  const len = splited.length;
+  const spliced = key.split(' ');
+  const len = spliced.length;
   if (len === 1) {
     return { method: 'GET', path: key };
   } else {
-    const [method, path] = splited;
+    const [method, path] = spliced;
     const upperCaseMethod = method.toUpperCase();
     assert(
       VALID_METHODS.includes(upperCaseMethod),

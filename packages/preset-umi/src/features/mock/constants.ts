@@ -7,3 +7,4 @@ export const VALID_METHODS = [
   'HEAD',
   'OPTIONS',
 ];
+export const MOCK_FILE_GLOB = 'mock/**/*.[jt]s';

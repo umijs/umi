@@ -6,7 +6,7 @@ import { portfinder, rimraf, winPath } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import got from 'got';
 import { join } from 'path';
-import createMiddleware from './createMiddleware';
+import createMiddlewareX from './createMiddleware';
 import { getMockData } from './utils';
 
 describe('createMiddleware', () => {
@@ -28,7 +28,7 @@ describe('createMiddleware', () => {
       cwd,
       ignore: [],
     });
-    const { middleware, watcher: middlewareWatcher } = createMiddleware({
+    const { middleware, watcher: middlewareWatcher } = createMiddlewareX({
       ...mockOpts,
       updateMockData: async () =>
         getMockData({
