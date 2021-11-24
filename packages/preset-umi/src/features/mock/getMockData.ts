@@ -1,7 +1,7 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { glob, lodash, register } from '@umijs/utils';
 import assert from 'assert';
-import { MOCK_FILE_GLOB, VALID_METHODS } from './constants';
+import { DEFAULT_METHOD, MOCK_FILE_GLOB, VALID_METHODS } from './constants';
 
 export interface IMock {
   method: string;
@@ -60,7 +60,7 @@ function parseKey(key: string) {
   const spliced = key.split(' ');
   const len = spliced.length;
   if (len === 1) {
-    return { method: 'GET', path: key };
+    return { method: DEFAULT_METHOD, path: key };
   } else {
     const [method, path] = spliced;
     const upperCaseMethod = method.toUpperCase();
