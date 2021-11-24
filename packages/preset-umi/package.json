@@ -39,6 +39,7 @@
     "@umijs/renderer-react": "4.0.0-beta.8",
     "@umijs/server": "4.0.0-beta.8",
     "@umijs/utils": "4.0.0-beta.8",
+    "current-script-polyfill": "1.0.0",
     "react": "18.0.0-alpha-f2c381131-20211004",
     "react-dom": "18.0.0-alpha-f2c381131-20211004",
     "react-router": "6.0.0-beta.7",

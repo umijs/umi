@@ -15,4 +15,7 @@ export default {
   scripts: [`console.log('script')`],
   npmClient: 'pnpm',
   esm: {},
+  targets: {
+    ie: 10,
+  },
 };

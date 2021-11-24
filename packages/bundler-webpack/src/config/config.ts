@@ -93,7 +93,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(userConfig.publicPath || '/')
+    .publicPath(userConfig.publicPath || 'auto')
     .pathinfo(isDev || disableCompress);
 
   // resolve

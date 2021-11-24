@@ -123,7 +123,7 @@ export type IApi = PluginAPI &
     addHTMLLinks: IAdd<null, ILink[]>;
     addHTMLMetas: IAdd<null, IMeta[]>;
     addLayouts: IAdd<null, { id: string; file: string }[]>;
-    addPolyfillImports: IAdd<null, string[]>;
+    addPolyfillImports: IAdd<null, { source: string; specifier?: string }[]>;
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
     modifyHTMLFavicon: IModify<string, {}>;
