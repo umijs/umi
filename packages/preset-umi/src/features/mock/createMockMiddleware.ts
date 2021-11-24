@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@umijs/bundler-webpack/compiled/express';
-import bodyParser from 'body-parser';
-import multer from 'multer';
 import pathToRegexp from 'path-to-regexp';
+import bodyParser from '../../../compiled/body-parser';
+import multer from '../../../compiled/multer';
 import type { IMock } from './getMockData';
 
 export function createMockMiddleware(opts: {
