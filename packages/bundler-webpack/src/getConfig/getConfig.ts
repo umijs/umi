@@ -119,7 +119,7 @@ export default async function getConfig(
     .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(config.publicPath! as unknown as string)
+    .publicPath((config.publicPath! as unknown) as string)
     .pathinfo(isDev || disableCompress);
 
   if (!isWebpack5) {
@@ -606,6 +606,7 @@ export default async function getConfig(
       mfsu,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
+      config,
     });
   }
   // 用户配置的 chainWebpack 优先级最高
@@ -617,6 +618,7 @@ export default async function getConfig(
       // @ts-ignore
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
+      config,
     });
   }
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
