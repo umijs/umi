@@ -1,4 +1,5 @@
-import { lodash, pkgUp, resolve, winPath } from '@umijs/utils';
+import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import { lodash, pkgUp, register, resolve, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, dirname, extname, join, relative } from 'path';
@@ -58,15 +59,24 @@ export class Plugin {
     this.id = this.getId({ pkg, isPkgEntry, pkgJSONPath });
     this.key = this.getKey({ pkg, isPkgEntry });
     this.apply = () => {
+      register.register({
+        implementor: esbuild,
+      });
+      register.clearFiles();
+      let ret;
       try {
-        const ret = require(this.path);
-        // use the default member for es modules
-        return ret.__esModule ? ret.default : ret;
+        ret = require(this.path);
       } catch (e: any) {
         throw new Error(
           `Register ${this.type} ${this.path} failed, since ${e.message}`,
         );
       }
+      for (const file of register.getFiles()) {
+        delete require.cache[file];
+      }
+      register.restore();
+      // use the default member for es modules
+      return ret.__esModule ? ret.default : ret;
     };
   }
 

@@ -43,4 +43,5 @@ export function restore() {
   for (const type of Object.keys(Extensions)) {
     require.extensions[type] = Extensions[type];
   }
+  registered = false;
 }
