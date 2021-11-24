@@ -18,7 +18,7 @@ export function App(props: {
       Component: RouteComponent,
     });
   }, [props.routes]);
-  return (
+  let ret = (
     <AppContext.Provider
       value={{
         routes: props.routes,
@@ -32,6 +32,19 @@ export function App(props: {
       </Router>
     </AppContext.Provider>
   );
+  for (const key of [
+    'innerProvider',
+    'i18nProvider',
+    'dataflowProvider',
+    'outerProvider',
+  ]) {
+    ret = props.pluginManager.applyPlugins({
+      type: 'modify',
+      key: key,
+      initialValue: ret,
+    });
+  }
+  return ret;
 }
 
 function Routes() {
