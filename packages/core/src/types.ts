@@ -26,6 +26,7 @@ export enum ServiceStage {
   initPlugins,
   resolveConfig,
   collectAppData,
+  onScan,
   onCheck,
   onStart,
   runCommand,
