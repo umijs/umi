@@ -86,6 +86,8 @@ PORT=8888 umi dev
         });
       });
 
+      // scan and module graph
+
       // watch package.json change
       const pkgPath = join(api.cwd, 'package.json');
       watch({
