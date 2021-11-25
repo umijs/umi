@@ -280,11 +280,6 @@ export class Service {
         // env
       },
     });
-    // applyPlugin onScan
-    this.stage = ServiceStage.onScan;
-    await this.applyPlugins({
-      key: 'onScan',
-    });
     // applyPlugin onCheck
     this.stage = ServiceStage.onCheck;
     await this.applyPlugins({
@@ -416,7 +411,6 @@ export interface IServicePluginAPI {
   paths: Required<typeof Service.prototype.paths>;
   userConfig: typeof Service.prototype.userConfig;
 
-  onScan: IEvent<null>;
   onCheck: IEvent<null>;
   onStart: IEvent<null>;
   modifyAppData: IModify<typeof Service.prototype.appData, null>;
