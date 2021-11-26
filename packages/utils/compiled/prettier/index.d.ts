@@ -18,9 +18,7 @@
 //
 // It comes from this issue: microsoft/TypeScript#29729:
 //   https://github.com/microsoft/TypeScript/issues/29729#issuecomment-700527227
-export type LiteralUnion<T extends U, U = string> =
-  | T
-  | (Pick<U, never> & { _?: never | undefined });
+export type LiteralUnion<T extends U, U = string> = T | (Pick<U, never> & { _?: never | undefined });
 
 export type AST = any;
 export type Doc = doc.builders.Doc;
@@ -28,27 +26,17 @@ export type Doc = doc.builders.Doc;
 // https://github.com/prettier/prettier/blob/main/src/common/ast-path.js
 
 export class AstPath<T = any> {
-  constructor(value: T);
-  stack: T[];
-  getName(): PropertyKey | null;
-  getValue(): T;
-  getNode(count?: number): T | null;
-  getParentNode(count?: number): T | null;
-  call<U>(callback: (path: this) => U, ...names: PropertyKey[]): U;
-  callParent<U>(callback: (path: this) => U, count?: number): U;
-  each(
-    callback: (path: this, index: number, value: any) => void,
-    ...names: PropertyKey[]
-  ): void;
-  map<U>(
-    callback: (path: this, index: number, value: any) => U,
-    ...names: PropertyKey[]
-  ): U[];
-  match(
-    ...predicates: Array<
-      (node: any, name: string | null, number: number | null) => boolean
-    >
-  ): boolean;
+    constructor(value: T);
+    stack: T[];
+    getName(): PropertyKey | null;
+    getValue(): T;
+    getNode(count?: number): T | null;
+    getParentNode(count?: number): T | null;
+    call<U>(callback: (path: this) => U, ...names: PropertyKey[]): U;
+    callParent<U>(callback: (path: this) => U, count?: number): U;
+    each(callback: (path: this, index: number, value: any) => void, ...names: PropertyKey[]): void;
+    map<U>(callback: (path: this, index: number, value: any) => U, ...names: PropertyKey[]): U[];
+    match(...predicates: Array<(node: any, name: string | null, number: number | null) => boolean>): boolean;
 }
 
 /** @deprecated `FastPath` was renamed to `AstPath` */
@@ -56,254 +44,238 @@ export type FastPath<T = any> = AstPath<T>;
 
 export type BuiltInParser = (text: string, options?: any) => AST;
 export type BuiltInParserName =
-  | 'angular'
-  | 'babel-flow'
-  | 'babel-ts'
-  | 'babel'
-  | 'css'
-  | 'espree'
-  | 'flow'
-  | 'glimmer'
-  | 'graphql'
-  | 'html'
-  | 'json-stringify'
-  | 'json'
-  | 'json5'
-  | 'less'
-  | 'lwc'
-  | 'markdown'
-  | 'mdx'
-  | 'meriyah'
-  | 'scss'
-  | 'typescript'
-  | 'vue'
-  | 'yaml';
+    | 'angular'
+    | 'babel-flow'
+    | 'babel-ts'
+    | 'babel'
+    | 'css'
+    | 'espree'
+    | 'flow'
+    | 'glimmer'
+    | 'graphql'
+    | 'html'
+    | 'json-stringify'
+    | 'json'
+    | 'json5'
+    | 'less'
+    | 'lwc'
+    | 'markdown'
+    | 'mdx'
+    | 'meriyah'
+    | 'scss'
+    | 'typescript'
+    | 'vue'
+    | 'yaml';
 export type BuiltInParsers = Record<BuiltInParserName, BuiltInParser>;
 
-export type CustomParser = (
-  text: string,
-  parsers: BuiltInParsers,
-  options: Options,
-) => AST;
+export type CustomParser = (text: string, parsers: BuiltInParsers, options: Options) => AST;
 
 export interface Options extends Partial<RequiredOptions> {}
 export interface RequiredOptions extends doc.printer.Options {
-  /**
-   * Print semicolons at the ends of statements.
-   * @default true
-   */
-  semi: boolean;
-  /**
-   * Use single quotes instead of double quotes.
-   * @default false
-   */
-  singleQuote: boolean;
-  /**
-   * Use single quotes in JSX.
-   * @default false
-   */
-  jsxSingleQuote: boolean;
-  /**
-   * Print trailing commas wherever possible.
-   * @default 'es5'
-   */
-  trailingComma: 'none' | 'es5' | 'all';
-  /**
-   * Print spaces between brackets in object literals.
-   * @default true
-   */
-  bracketSpacing: boolean;
-  /**
-   * Put the `>` of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being
-   * alone on the next line (does not apply to self closing elements).
-   * @default false
-   */
-  bracketSameLine: boolean;
-  /**
-   * Put the `>` of a multi-line JSX element at the end of the last line instead of being alone on the next line.
-   * @default false
-   * @deprecated use bracketSameLine instead
-   */
-  jsxBracketSameLine: boolean;
-  /**
-   * Format only a segment of a file.
-   * @default 0
-   */
-  rangeStart: number;
-  /**
-   * Format only a segment of a file.
-   * @default Infinity
-   */
-  rangeEnd: number;
-  /**
-   * Specify which parser to use.
-   */
-  parser: LiteralUnion<BuiltInParserName> | CustomParser;
-  /**
-   * Specify the input filepath. This will be used to do parser inference.
-   */
-  filepath: string;
-  /**
-   * Prettier can restrict itself to only format files that contain a special comment, called a pragma, at the top of the file.
-   * This is very useful when gradually transitioning large, unformatted codebases to prettier.
-   * @default false
-   */
-  requirePragma: boolean;
-  /**
-   * Prettier can insert a special @format marker at the top of files specifying that
-   * the file has been formatted with prettier. This works well when used in tandem with
-   * the --require-pragma option. If there is already a docblock at the top of
-   * the file then this option will add a newline to it with the @format marker.
-   * @default false
-   */
-  insertPragma: boolean;
-  /**
-   * By default, Prettier will wrap markdown text as-is since some services use a linebreak-sensitive renderer.
-   * In some cases you may want to rely on editor/viewer soft wrapping instead, so this option allows you to opt out.
-   * @default 'preserve'
-   */
-  proseWrap: 'always' | 'never' | 'preserve';
-  /**
-   * Include parentheses around a sole arrow function parameter.
-   * @default 'always'
-   */
-  arrowParens: 'avoid' | 'always';
-  /**
-   * Provide ability to support new languages to prettier.
-   */
-  plugins: Array<string | Plugin>;
-  /**
-   * Specify plugin directory paths to search for plugins if not installed in the same `node_modules` where prettier is located.
-   */
-  pluginSearchDirs: string[];
-  /**
-   * How to handle whitespaces in HTML.
-   * @default 'css'
-   */
-  htmlWhitespaceSensitivity: 'css' | 'strict' | 'ignore';
-  /**
-   * Which end of line characters to apply.
-   * @default 'lf'
-   */
-  endOfLine: 'auto' | 'lf' | 'crlf' | 'cr';
-  /**
-   * Change when properties in objects are quoted.
-   * @default 'as-needed'
-   */
-  quoteProps: 'as-needed' | 'consistent' | 'preserve';
-  /**
-   * Whether or not to indent the code inside <script> and <style> tags in Vue files.
-   * @default false
-   */
-  vueIndentScriptAndStyle: boolean;
-  /**
-   * Control whether Prettier formats quoted code embedded in the file.
-   * @default 'auto'
-   */
-  embeddedLanguageFormatting: 'auto' | 'off';
+    /**
+     * Print semicolons at the ends of statements.
+     * @default true
+     */
+    semi: boolean;
+    /**
+     * Use single quotes instead of double quotes.
+     * @default false
+     */
+    singleQuote: boolean;
+    /**
+     * Use single quotes in JSX.
+     * @default false
+     */
+    jsxSingleQuote: boolean;
+    /**
+     * Print trailing commas wherever possible.
+     * @default 'es5'
+     */
+    trailingComma: 'none' | 'es5' | 'all';
+    /**
+     * Print spaces between brackets in object literals.
+     * @default true
+     */
+    bracketSpacing: boolean;
+    /**
+     * Put the `>` of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being
+     * alone on the next line (does not apply to self closing elements).
+     * @default false
+     */
+    bracketSameLine: boolean;
+    /**
+     * Put the `>` of a multi-line JSX element at the end of the last line instead of being alone on the next line.
+     * @default false
+     * @deprecated use bracketSameLine instead
+     */
+    jsxBracketSameLine: boolean;
+    /**
+     * Format only a segment of a file.
+     * @default 0
+     */
+    rangeStart: number;
+    /**
+     * Format only a segment of a file.
+     * @default Infinity
+     */
+    rangeEnd: number;
+    /**
+     * Specify which parser to use.
+     */
+    parser: LiteralUnion<BuiltInParserName> | CustomParser;
+    /**
+     * Specify the input filepath. This will be used to do parser inference.
+     */
+    filepath: string;
+    /**
+     * Prettier can restrict itself to only format files that contain a special comment, called a pragma, at the top of the file.
+     * This is very useful when gradually transitioning large, unformatted codebases to prettier.
+     * @default false
+     */
+    requirePragma: boolean;
+    /**
+     * Prettier can insert a special @format marker at the top of files specifying that
+     * the file has been formatted with prettier. This works well when used in tandem with
+     * the --require-pragma option. If there is already a docblock at the top of
+     * the file then this option will add a newline to it with the @format marker.
+     * @default false
+     */
+    insertPragma: boolean;
+    /**
+     * By default, Prettier will wrap markdown text as-is since some services use a linebreak-sensitive renderer.
+     * In some cases you may want to rely on editor/viewer soft wrapping instead, so this option allows you to opt out.
+     * @default 'preserve'
+     */
+    proseWrap: 'always' | 'never' | 'preserve';
+    /**
+     * Include parentheses around a sole arrow function parameter.
+     * @default 'always'
+     */
+    arrowParens: 'avoid' | 'always';
+    /**
+     * Provide ability to support new languages to prettier.
+     */
+    plugins: Array<string | Plugin>;
+    /**
+     * Specify plugin directory paths to search for plugins if not installed in the same `node_modules` where prettier is located.
+     */
+    pluginSearchDirs: string[];
+    /**
+     * How to handle whitespaces in HTML.
+     * @default 'css'
+     */
+    htmlWhitespaceSensitivity: 'css' | 'strict' | 'ignore';
+    /**
+     * Which end of line characters to apply.
+     * @default 'lf'
+     */
+    endOfLine: 'auto' | 'lf' | 'crlf' | 'cr';
+    /**
+     * Change when properties in objects are quoted.
+     * @default 'as-needed'
+     */
+    quoteProps: 'as-needed' | 'consistent' | 'preserve';
+    /**
+     * Whether or not to indent the code inside <script> and <style> tags in Vue files.
+     * @default false
+     */
+    vueIndentScriptAndStyle: boolean;
+    /**
+     * Control whether Prettier formats quoted code embedded in the file.
+     * @default 'auto'
+     */
+    embeddedLanguageFormatting: 'auto' | 'off';
 }
 
 export interface ParserOptions<T = any> extends RequiredOptions {
-  locStart: (node: T) => number;
-  locEnd: (node: T) => number;
-  originalText: string;
+    locStart: (node: T) => number;
+    locEnd: (node: T) => number;
+    originalText: string;
 }
 
 export interface Plugin<T = any> {
-  languages?: SupportLanguage[] | undefined;
-  parsers?: { [parserName: string]: Parser<T> } | undefined;
-  printers?: { [astFormat: string]: Printer<T> } | undefined;
-  options?: SupportOptions | undefined;
-  defaultOptions?: Partial<RequiredOptions> | undefined;
+    languages?: SupportLanguage[] | undefined;
+    parsers?: { [parserName: string]: Parser<T> } | undefined;
+    printers?: { [astFormat: string]: Printer<T> } | undefined;
+    options?: SupportOptions | undefined;
+    defaultOptions?: Partial<RequiredOptions> | undefined;
 }
 
 export interface Parser<T = any> {
-  parse: (
-    text: string,
-    parsers: { [parserName: string]: Parser },
-    options: ParserOptions<T>,
-  ) => T;
-  astFormat: string;
-  hasPragma?: ((text: string) => boolean) | undefined;
-  locStart: (node: T) => number;
-  locEnd: (node: T) => number;
-  preprocess?:
-    | ((text: string, options: ParserOptions<T>) => string)
-    | undefined;
+    parse: (text: string, parsers: { [parserName: string]: Parser }, options: ParserOptions<T>) => T;
+    astFormat: string;
+    hasPragma?: ((text: string) => boolean) | undefined;
+    locStart: (node: T) => number;
+    locEnd: (node: T) => number;
+    preprocess?: ((text: string, options: ParserOptions<T>) => string) | undefined;
 }
 
 export interface Printer<T = any> {
-  print(
-    path: AstPath<T>,
-    options: ParserOptions<T>,
-    print: (path: AstPath<T>) => Doc,
-  ): Doc;
-  embed?:
-    | ((
-        path: AstPath<T>,
-        print: (path: AstPath<T>) => Doc,
-        textToDoc: (text: string, options: Options) => Doc,
-        options: ParserOptions<T>,
-      ) => Doc | null)
-    | undefined;
-  insertPragma?: ((text: string) => string) | undefined;
-  /**
-   * @returns `null` if you want to remove this node
-   * @returns `void` if you want to use modified newNode
-   * @returns anything if you want to replace the node with it
-   */
-  massageAstNode?: ((node: any, newNode: any, parent: any) => any) | undefined;
-  hasPrettierIgnore?: ((path: AstPath<T>) => boolean) | undefined;
-  canAttachComment?: ((node: T) => boolean) | undefined;
-  willPrintOwnComments?: ((path: AstPath<T>) => boolean) | undefined;
-  printComment?:
-    | ((commentPath: AstPath<T>, options: ParserOptions<T>) => Doc)
-    | undefined;
-  handleComments?:
-    | {
-        ownLine?:
-          | ((
-              commentNode: any,
-              text: string,
+    print(path: AstPath<T>, options: ParserOptions<T>, print: (path: AstPath<T>) => Doc): Doc;
+    embed?:
+        | ((
+              path: AstPath<T>,
+              print: (path: AstPath<T>) => Doc,
+              textToDoc: (text: string, options: Options) => Doc,
               options: ParserOptions<T>,
-              ast: T,
-              isLastComment: boolean,
-            ) => boolean)
-          | undefined;
-        endOfLine?:
-          | ((
-              commentNode: any,
-              text: string,
-              options: ParserOptions<T>,
-              ast: T,
-              isLastComment: boolean,
-            ) => boolean)
-          | undefined;
-        remaining?:
-          | ((
-              commentNode: any,
-              text: string,
-              options: ParserOptions<T>,
-              ast: T,
-              isLastComment: boolean,
-            ) => boolean)
-          | undefined;
-      }
-    | undefined;
+          ) => Doc | null)
+        | undefined;
+    insertPragma?: ((text: string) => string) | undefined;
+    /**
+     * @returns `null` if you want to remove this node
+     * @returns `void` if you want to use modified newNode
+     * @returns anything if you want to replace the node with it
+     */
+    massageAstNode?: ((node: any, newNode: any, parent: any) => any) | undefined;
+    hasPrettierIgnore?: ((path: AstPath<T>) => boolean) | undefined;
+    canAttachComment?: ((node: T) => boolean) | undefined;
+    willPrintOwnComments?: ((path: AstPath<T>) => boolean) | undefined;
+    printComment?: ((commentPath: AstPath<T>, options: ParserOptions<T>) => Doc) | undefined;
+    handleComments?:
+        | {
+              ownLine?:
+                  | ((
+                        commentNode: any,
+                        text: string,
+                        options: ParserOptions<T>,
+                        ast: T,
+                        isLastComment: boolean,
+                    ) => boolean)
+                  | undefined;
+              endOfLine?:
+                  | ((
+                        commentNode: any,
+                        text: string,
+                        options: ParserOptions<T>,
+                        ast: T,
+                        isLastComment: boolean,
+                    ) => boolean)
+                  | undefined;
+              remaining?:
+                  | ((
+                        commentNode: any,
+                        text: string,
+                        options: ParserOptions<T>,
+                        ast: T,
+                        isLastComment: boolean,
+                    ) => boolean)
+                  | undefined;
+          }
+        | undefined;
 }
 
 export interface CursorOptions extends Options {
-  /**
-   * Specify where the cursor is.
-   */
-  cursorOffset: number;
-  rangeStart?: never;
-  rangeEnd?: never;
+    /**
+     * Specify where the cursor is.
+     */
+    cursorOffset: number;
+    rangeStart?: never;
+    rangeEnd?: never;
 }
 
 export interface CursorResult {
-  formatted: string;
-  cursorOffset: number;
+    formatted: string;
+    cursorOffset: number;
 }
 
 /**
@@ -323,30 +295,27 @@ export function check(source: string, options?: Options): boolean;
  *
  * The `cursorOffset` option should be provided, to specify where the cursor is. This option cannot be used with `rangeStart` and `rangeEnd`.
  */
-export function formatWithCursor(
-  source: string,
-  options: CursorOptions,
-): CursorResult;
+export function formatWithCursor(source: string, options: CursorOptions): CursorResult;
 
 export interface ResolveConfigOptions {
-  /**
-   * If set to `false`, all caching will be bypassed.
-   */
-  useCache?: boolean | undefined;
-  /**
-   * Pass directly the path of the config file if you don't wish to search for it.
-   */
-  config?: string | undefined;
-  /**
-   * If set to `true` and an `.editorconfig` file is in your project,
-   * Prettier will parse it and convert its properties to the corresponding prettier configuration.
-   * This configuration will be overridden by `.prettierrc`, etc. Currently,
-   * the following EditorConfig properties are supported:
-   * - indent_style
-   * - indent_size/tab_width
-   * - max_line_length
-   */
-  editorconfig?: boolean | undefined;
+    /**
+     * If set to `false`, all caching will be bypassed.
+     */
+    useCache?: boolean | undefined;
+    /**
+     * Pass directly the path of the config file if you don't wish to search for it.
+     */
+    config?: string | undefined;
+    /**
+     * If set to `true` and an `.editorconfig` file is in your project,
+     * Prettier will parse it and convert its properties to the corresponding prettier configuration.
+     * This configuration will be overridden by `.prettierrc`, etc. Currently,
+     * the following EditorConfig properties are supported:
+     * - indent_style
+     * - indent_size/tab_width
+     * - max_line_length
+     */
+    editorconfig?: boolean | undefined;
 }
 
 /**
@@ -362,15 +331,9 @@ export interface ResolveConfigOptions {
  *
  * The promise will be rejected if there was an error parsing the configuration file.
  */
-export function resolveConfig(
-  filePath: string,
-  options?: ResolveConfigOptions,
-): Promise<Options | null>;
+export function resolveConfig(filePath: string, options?: ResolveConfigOptions): Promise<Options | null>;
 export namespace resolveConfig {
-  function sync(
-    filePath: string,
-    options?: ResolveConfigOptions,
-  ): Options | null;
+    function sync(filePath: string, options?: ResolveConfigOptions): Options | null;
 }
 
 /**
@@ -386,7 +349,7 @@ export namespace resolveConfig {
  */
 export function resolveConfigFile(filePath?: string): Promise<string | null>;
 export namespace resolveConfigFile {
-  function sync(filePath?: string): string | null;
+    function sync(filePath?: string): string | null;
 }
 
 /**
@@ -396,147 +359,135 @@ export namespace resolveConfigFile {
 export function clearConfigCache(): void;
 
 export interface SupportLanguage {
-  name: string;
-  since?: string | undefined;
-  parsers: BuiltInParserName[] | string[];
-  group?: string | undefined;
-  tmScope?: string | undefined;
-  aceMode?: string | undefined;
-  codemirrorMode?: string | undefined;
-  codemirrorMimeType?: string | undefined;
-  aliases?: string[] | undefined;
-  extensions?: string[] | undefined;
-  filenames?: string[] | undefined;
-  linguistLanguageId?: number | undefined;
-  vscodeLanguageIds?: string[] | undefined;
+    name: string;
+    since?: string | undefined;
+    parsers: BuiltInParserName[] | string[];
+    group?: string | undefined;
+    tmScope?: string | undefined;
+    aceMode?: string | undefined;
+    codemirrorMode?: string | undefined;
+    codemirrorMimeType?: string | undefined;
+    aliases?: string[] | undefined;
+    extensions?: string[] | undefined;
+    filenames?: string[] | undefined;
+    linguistLanguageId?: number | undefined;
+    vscodeLanguageIds?: string[] | undefined;
 }
 
 export interface SupportOptionRange {
-  start: number;
-  end: number;
-  step: number;
+    start: number;
+    end: number;
+    step: number;
 }
 
 export type SupportOptionType = 'int' | 'boolean' | 'choice' | 'path';
 
-export type CoreCategoryType =
-  | 'Config'
-  | 'Editor'
-  | 'Format'
-  | 'Other'
-  | 'Output'
-  | 'Global'
-  | 'Special';
+export type CoreCategoryType = 'Config' | 'Editor' | 'Format' | 'Other' | 'Output' | 'Global' | 'Special';
 
 export interface BaseSupportOption<Type extends SupportOptionType> {
-  readonly name?: string | undefined;
-  since: string;
-  /**
-   * Usually you can use {@link CoreCategoryType}
-   */
-  category: string;
-  /**
-   * The type of the option.
-   *
-   * When passing a type other than the ones listed below, the option is
-   * treated as taking any string as argument, and `--option <${type}>` will
-   * be displayed in --help.
-   */
-  type: Type;
-  /**
-   * Indicate that the option is deprecated.
-   *
-   * Use a string to add an extra message to --help for the option,
-   * for example to suggest a replacement option.
-   */
-  deprecated?: true | string | undefined;
-  /**
-   * Description to be displayed in --help. If omitted, the option won't be
-   * shown at all in --help.
-   */
-  description?: string | undefined;
+    readonly name?: string | undefined;
+    since: string;
+    /**
+     * Usually you can use {@link CoreCategoryType}
+     */
+    category: string;
+    /**
+     * The type of the option.
+     *
+     * When passing a type other than the ones listed below, the option is
+     * treated as taking any string as argument, and `--option <${type}>` will
+     * be displayed in --help.
+     */
+    type: Type;
+    /**
+     * Indicate that the option is deprecated.
+     *
+     * Use a string to add an extra message to --help for the option,
+     * for example to suggest a replacement option.
+     */
+    deprecated?: true | string | undefined;
+    /**
+     * Description to be displayed in --help. If omitted, the option won't be
+     * shown at all in --help.
+     */
+    description?: string | undefined;
 }
 
 export interface IntSupportOption extends BaseSupportOption<'int'> {
-  default?: number | undefined;
-  array?: false | undefined;
-  range?: SupportOptionRange | undefined;
+    default?: number | undefined;
+    array?: false | undefined;
+    range?: SupportOptionRange | undefined;
 }
 
 export interface IntArraySupportOption extends BaseSupportOption<'int'> {
-  default?: Array<{ value: number[] }> | undefined;
-  array: true;
+    default?: Array<{ value: number[] }> | undefined;
+    array: true;
 }
 
 export interface BooleanSupportOption extends BaseSupportOption<'boolean'> {
-  default?: boolean | undefined;
-  array?: false | undefined;
-  description: string;
-  oppositeDescription?: string | undefined;
-}
-
-export interface BooleanArraySupportOption
-  extends BaseSupportOption<'boolean'> {
-  default?: Array<{ value: boolean[] }> | undefined;
-  array: true;
-}
-
-export interface ChoiceSupportOption<Value = any>
-  extends BaseSupportOption<'choice'> {
-  default?: Value | Array<{ since: string; value: Value }> | undefined;
-  description: string;
-  choices: Array<{
-    since?: string | undefined;
-    value: Value;
+    default?: boolean | undefined;
+    array?: false | undefined;
     description: string;
-  }>;
+    oppositeDescription?: string | undefined;
+}
+
+export interface BooleanArraySupportOption extends BaseSupportOption<'boolean'> {
+    default?: Array<{ value: boolean[] }> | undefined;
+    array: true;
+}
+
+export interface ChoiceSupportOption<Value = any> extends BaseSupportOption<'choice'> {
+    default?: Value | Array<{ since: string; value: Value }> | undefined;
+    description: string;
+    choices: Array<{
+        since?: string | undefined;
+        value: Value;
+        description: string;
+    }>;
 }
 
 export interface PathSupportOption extends BaseSupportOption<'path'> {
-  default?: string | undefined;
-  array?: false | undefined;
+    default?: string | undefined;
+    array?: false | undefined;
 }
 
 export interface PathArraySupportOption extends BaseSupportOption<'path'> {
-  default?: Array<{ value: string[] }> | undefined;
-  array: true;
+    default?: Array<{ value: string[] }> | undefined;
+    array: true;
 }
 
 export type SupportOption =
-  | IntSupportOption
-  | IntArraySupportOption
-  | BooleanSupportOption
-  | BooleanArraySupportOption
-  | ChoiceSupportOption
-  | PathSupportOption
-  | PathArraySupportOption;
+    | IntSupportOption
+    | IntArraySupportOption
+    | BooleanSupportOption
+    | BooleanArraySupportOption
+    | ChoiceSupportOption
+    | PathSupportOption
+    | PathArraySupportOption;
 
 export interface SupportOptions extends Record<string, SupportOption> {}
 
 export interface SupportInfo {
-  languages: SupportLanguage[];
-  options: SupportOption[];
+    languages: SupportLanguage[];
+    options: SupportOption[];
 }
 
 export interface FileInfoOptions {
-  ignorePath?: string | undefined;
-  withNodeModules?: boolean | undefined;
-  plugins?: string[] | undefined;
-  resolveConfig?: boolean | undefined;
+    ignorePath?: string | undefined;
+    withNodeModules?: boolean | undefined;
+    plugins?: string[] | undefined;
+    resolveConfig?: boolean | undefined;
 }
 
 export interface FileInfoResult {
-  ignored: boolean;
-  inferredParser: string | null;
+    ignored: boolean;
+    inferredParser: string | null;
 }
 
-export function getFileInfo(
-  filePath: string,
-  options?: FileInfoOptions,
-): Promise<FileInfoResult>;
+export function getFileInfo(filePath: string, options?: FileInfoOptions): Promise<FileInfoResult>;
 
 export namespace getFileInfo {
-  function sync(filePath: string, options?: FileInfoOptions): FileInfoResult;
+    function sync(filePath: string, options?: FileInfoOptions): FileInfoResult;
 }
 
 /**
@@ -551,317 +502,255 @@ export const version: string;
 
 // https://github.com/prettier/prettier/blob/main/src/common/util-shared.js
 export namespace util {
-  interface SkipOptions {
-    backwards?: boolean | undefined;
-  }
+    interface SkipOptions {
+        backwards?: boolean | undefined;
+    }
 
-  type Quote = "'" | '"';
+    type Quote = "'" | '"';
 
-  function addDanglingComment(node: any, comment: any, marker: any): void;
-  function addLeadingComment(node: any, comment: any): void;
-  function addTrailingComment(node: any, comment: any): void;
-  function getAlignmentSize(
-    value: string,
-    tabWidth: number,
-    startIndex?: number,
-  ): number;
-  function getIndentSize(value: string, tabWidth: number): number;
-  function getMaxContinuousCount(str: string, target: string): number;
-  function getNextNonSpaceNonCommentCharacterIndex<N>(
-    text: string,
-    node: N,
-    locEnd: (node: N) => number,
-  ): number | false;
-  function getStringWidth(text: string): number;
-  function hasNewline(text: string, index: number, opts?: SkipOptions): boolean;
-  function hasNewlineInRange(text: string, start: number, end: number): boolean;
-  function hasSpaces(text: string, index: number, opts?: SkipOptions): boolean;
-  function isNextLineEmpty<N>(
-    text: string,
-    node: N,
-    locEnd: (node: N) => number,
-  ): boolean;
-  function isNextLineEmptyAfterIndex(text: string, index: number): boolean;
-  function isPreviousLineEmpty<N>(
-    text: string,
-    node: N,
-    locStart: (node: N) => number,
-  ): boolean;
-  function makeString(
-    rawContent: string,
-    enclosingQuote: Quote,
-    unescapeUnnecessaryEscapes?: boolean,
-  ): string;
-  function skip(
-    chars: string | RegExp,
-  ): (
-    text: string,
-    index: number | false,
-    opts?: SkipOptions,
-  ) => number | false;
-  function skipEverythingButNewLine(
-    text: string,
-    index: number | false,
-    opts?: SkipOptions,
-  ): number | false;
-  function skipInlineComment(
-    text: string,
-    index: number | false,
-  ): number | false;
-  function skipNewline(
-    text: string,
-    index: number | false,
-    opts?: SkipOptions,
-  ): number | false;
-  function skipSpaces(
-    text: string,
-    index: number | false,
-    opts?: SkipOptions,
-  ): number | false;
-  function skipToLineEnd(
-    text: string,
-    index: number | false,
-    opts?: SkipOptions,
-  ): number | false;
-  function skipTrailingComment(
-    text: string,
-    index: number | false,
-  ): number | false;
-  function skipWhitespace(
-    text: string,
-    index: number | false,
-    opts?: SkipOptions,
-  ): number | false;
+    function addDanglingComment(node: any, comment: any, marker: any): void;
+    function addLeadingComment(node: any, comment: any): void;
+    function addTrailingComment(node: any, comment: any): void;
+    function getAlignmentSize(value: string, tabWidth: number, startIndex?: number): number;
+    function getIndentSize(value: string, tabWidth: number): number;
+    function getMaxContinuousCount(str: string, target: string): number;
+    function getNextNonSpaceNonCommentCharacterIndex<N>(
+        text: string,
+        node: N,
+        locEnd: (node: N) => number,
+    ): number | false;
+    function getStringWidth(text: string): number;
+    function hasNewline(text: string, index: number, opts?: SkipOptions): boolean;
+    function hasNewlineInRange(text: string, start: number, end: number): boolean;
+    function hasSpaces(text: string, index: number, opts?: SkipOptions): boolean;
+    function isNextLineEmpty<N>(text: string, node: N, locEnd: (node: N) => number): boolean;
+    function isNextLineEmptyAfterIndex(text: string, index: number): boolean;
+    function isPreviousLineEmpty<N>(text: string, node: N, locStart: (node: N) => number): boolean;
+    function makeString(rawContent: string, enclosingQuote: Quote, unescapeUnnecessaryEscapes?: boolean): string;
+    function skip(chars: string | RegExp): (text: string, index: number | false, opts?: SkipOptions) => number | false;
+    function skipEverythingButNewLine(text: string, index: number | false, opts?: SkipOptions): number | false;
+    function skipInlineComment(text: string, index: number | false): number | false;
+    function skipNewline(text: string, index: number | false, opts?: SkipOptions): number | false;
+    function skipSpaces(text: string, index: number | false, opts?: SkipOptions): number | false;
+    function skipToLineEnd(text: string, index: number | false, opts?: SkipOptions): number | false;
+    function skipTrailingComment(text: string, index: number | false): number | false;
+    function skipWhitespace(text: string, index: number | false, opts?: SkipOptions): number | false;
 }
 
 // https://github.com/prettier/prettier/blob/main/src/document/index.js
 export namespace doc {
-  namespace builders {
-    type DocCommand =
-      | Align
-      | BreakParent
-      | Concat
-      | Cursor
-      | Fill
-      | Group
-      | IfBreak
-      | Indent
-      | IndentIfBreak
-      | Label
-      | Line
-      | LineSuffix
-      | LineSuffixBoundary
-      | Trim;
-    type Doc = string | Doc[] | DocCommand;
+    namespace builders {
+        type DocCommand =
+            | Align
+            | BreakParent
+            | Concat
+            | Cursor
+            | Fill
+            | Group
+            | IfBreak
+            | Indent
+            | IndentIfBreak
+            | Label
+            | Line
+            | LineSuffix
+            | LineSuffixBoundary
+            | Trim;
+        type Doc = string | Doc[] | DocCommand;
 
-    interface Align {
-      type: 'align';
-      contents: Doc;
-      n: number | string | { type: 'root' };
-    }
+        interface Align {
+            type: 'align';
+            contents: Doc;
+            n: number | string | { type: 'root' };
+        }
 
-    interface BreakParent {
-      type: 'break-parent';
-    }
+        interface BreakParent {
+            type: 'break-parent';
+        }
 
-    interface Concat {
-      type: 'concat';
-      parts: Doc[];
-    }
+        interface Concat {
+            type: 'concat';
+            parts: Doc[];
+        }
 
-    interface Cursor {
-      type: 'cursor';
-      placeholder: symbol;
-    }
+        interface Cursor {
+            type: 'cursor';
+            placeholder: symbol;
+        }
 
-    interface Fill {
-      type: 'fill';
-      parts: Doc[];
-    }
+        interface Fill {
+            type: 'fill';
+            parts: Doc[];
+        }
 
-    interface Group {
-      type: 'group';
-      contents: Doc;
-      break: boolean;
-      expandedStates: Doc[];
-    }
+        interface Group {
+            type: 'group';
+            contents: Doc;
+            break: boolean;
+            expandedStates: Doc[];
+        }
 
-    interface HardlineWithoutBreakParent extends Line {
-      hard: true;
-    }
+        interface HardlineWithoutBreakParent extends Line {
+            hard: true;
+        }
 
-    interface IfBreak {
-      type: 'if-break';
-      breakContents: Doc;
-      flatContents: Doc;
-    }
+        interface IfBreak {
+            type: 'if-break';
+            breakContents: Doc;
+            flatContents: Doc;
+        }
 
-    interface Indent {
-      type: 'indent';
-      contents: Doc;
-    }
+        interface Indent {
+            type: 'indent';
+            contents: Doc;
+        }
 
-    interface IndentIfBreak {
-      type: 'indent-if-break';
-    }
+        interface IndentIfBreak {
+            type: 'indent-if-break';
+        }
 
-    interface Label {
-      type: 'label';
-    }
+        interface Label {
+            type: 'label';
+        }
 
-    interface Line {
-      type: 'line';
-      soft?: boolean | undefined;
-      hard?: boolean | undefined;
-      literal?: boolean | undefined;
-    }
+        interface Line {
+            type: 'line';
+            soft?: boolean | undefined;
+            hard?: boolean | undefined;
+            literal?: boolean | undefined;
+        }
 
-    interface LineSuffix {
-      type: 'line-suffix';
-      contents: Doc;
-    }
+        interface LineSuffix {
+            type: 'line-suffix';
+            contents: Doc;
+        }
 
-    interface LineSuffixBoundary {
-      type: 'line-suffix-boundary';
-    }
+        interface LineSuffixBoundary {
+            type: 'line-suffix-boundary';
+        }
 
-    interface LiterallineWithoutBreakParent extends Line {
-      hard: true;
-      literal: true;
-    }
+        interface LiterallineWithoutBreakParent extends Line {
+            hard: true;
+            literal: true;
+        }
 
-    interface Softline extends Line {
-      soft: true;
-    }
+        interface Softline extends Line {
+            soft: true;
+        }
 
-    interface Trim {
-      type: 'trim';
-    }
+        interface Trim {
+            type: 'trim';
+        }
 
-    interface GroupOptions {
-      shouldBreak?: boolean | undefined;
-      id?: symbol | undefined;
-    }
+        interface GroupOptions {
+            shouldBreak?: boolean | undefined;
+            id?: symbol | undefined;
+        }
 
-    function addAlignmentToDoc(doc: Doc, size: number, tabWidth: number): Doc;
-    /** @see [align](https://github.com/prettier/prettier/blob/main/commands.md#align) */
-    function align(widthOrString: Align['n'], doc: Doc): Align;
-    /** @see [breakParent](https://github.com/prettier/prettier/blob/main/commands.md#breakparent) */
-    const breakParent: BreakParent;
-    /**
-     * @see [concat](https://github.com/prettier/prettier/blob/main/commands.md#deprecated-concat)
-     * @deprecated use `Doc[]` instead
-     */
-    function concat(docs: Doc[]): Concat;
-    /** @see [conditionalGroup](https://github.com/prettier/prettier/blob/main/commands.md#conditionalgroup) */
-    function conditionalGroup(
-      alternatives: Doc[],
-      options?: GroupOptions,
-    ): Group;
-    /** @see [dedent](https://github.com/prettier/prettier/blob/main/commands.md#dedent) */
-    function dedent(doc: Doc): Align;
-    /** @see [dedentToRoot](https://github.com/prettier/prettier/blob/main/commands.md#dedenttoroot) */
-    function dedentToRoot(doc: Doc): Align;
-    /** @see [fill](https://github.com/prettier/prettier/blob/main/commands.md#fill) */
-    function fill(docs: Doc[]): Fill;
-    /** @see [group](https://github.com/prettier/prettier/blob/main/commands.md#group) */
-    function group(doc: Doc, opts?: GroupOptions): Group;
-    /** @see [hardline](https://github.com/prettier/prettier/blob/main/commands.md#hardline) */
-    const hardline: Concat;
-    /** @see [hardlineWithoutBreakParent](https://github.com/prettier/prettier/blob/main/commands.md#hardlinewithoutbreakparent-and-literallinewithoutbreakparent) */
-    const hardlineWithoutBreakParent: HardlineWithoutBreakParent;
-    /** @see [ifBreak](https://github.com/prettier/prettier/blob/main/commands.md#ifbreak) */
-    function ifBreak(
-      ifBreak: Doc,
-      noBreak?: Doc,
-      options?: { groupId?: symbol | undefined },
-    ): IfBreak;
-    /** @see [indent](https://github.com/prettier/prettier/blob/main/commands.md#indent) */
-    function indent(doc: Doc): Indent;
-    /** @see [indentIfBreak](https://github.com/prettier/prettier/blob/main/commands.md#indentifbreak) */
-    function indentIfBreak(
-      doc: Doc,
-      opts: { groupId: symbol; negate?: boolean | undefined },
-    ): IndentIfBreak;
-    /** @see [join](https://github.com/prettier/prettier/blob/main/commands.md#join) */
-    function join(sep: Doc, docs: Doc[]): Concat;
-    /** @see [label](https://github.com/prettier/prettier/blob/main/commands.md#label) */
-    function label(label: string, doc: Doc): Label;
-    /** @see [line](https://github.com/prettier/prettier/blob/main/commands.md#line) */
-    const line: Line;
-    /** @see [lineSuffix](https://github.com/prettier/prettier/blob/main/commands.md#linesuffix) */
-    function lineSuffix(suffix: Doc): LineSuffix;
-    /** @see [lineSuffixBoundary](https://github.com/prettier/prettier/blob/main/commands.md#linesuffixboundary) */
-    const lineSuffixBoundary: LineSuffixBoundary;
-    /** @see [literalline](https://github.com/prettier/prettier/blob/main/commands.md#literalline) */
-    const literalline: Concat;
-    /** @see [literallineWithoutBreakParent](https://github.com/prettier/prettier/blob/main/commands.md#hardlinewithoutbreakparent-and-literallinewithoutbreakparent) */
-    const literallineWithoutBreakParent: LiterallineWithoutBreakParent;
-    /** @see [markAsRoot](https://github.com/prettier/prettier/blob/main/commands.md#markasroot) */
-    function markAsRoot(doc: Doc): Align;
-    /** @see [softline](https://github.com/prettier/prettier/blob/main/commands.md#softline) */
-    const softline: Softline;
-    /** @see [trim](https://github.com/prettier/prettier/blob/main/commands.md#trim) */
-    const trim: Trim;
-    /** @see [cursor](https://github.com/prettier/prettier/blob/main/commands.md#cursor) */
-    const cursor: Cursor;
-  }
-  namespace debug {
-    function printDocToDebug(doc: Doc): string;
-  }
-  namespace printer {
-    function printDocToString(
-      doc: Doc,
-      options: Options,
-    ): {
-      formatted: string;
-      cursorNodeStart?: number | undefined;
-      cursorNodeText?: string | undefined;
-    };
-    interface Options {
-      /**
-       * Specify the line length that the printer will wrap on.
-       * @default 80
-       */
-      printWidth: number;
-      /**
-       * Specify the number of spaces per indentation-level.
-       * @default 2
-       */
-      tabWidth: number;
-      /**
-       * Indent lines with tabs instead of spaces
-       * @default false
-       */
-      useTabs: boolean;
-      parentParser?: string | undefined;
-      __embeddedInHtml?: boolean | undefined;
+        function addAlignmentToDoc(doc: Doc, size: number, tabWidth: number): Doc;
+        /** @see [align](https://github.com/prettier/prettier/blob/main/commands.md#align) */
+        function align(widthOrString: Align['n'], doc: Doc): Align;
+        /** @see [breakParent](https://github.com/prettier/prettier/blob/main/commands.md#breakparent) */
+        const breakParent: BreakParent;
+        /**
+         * @see [concat](https://github.com/prettier/prettier/blob/main/commands.md#deprecated-concat)
+         * @deprecated use `Doc[]` instead
+         */
+        function concat(docs: Doc[]): Concat;
+        /** @see [conditionalGroup](https://github.com/prettier/prettier/blob/main/commands.md#conditionalgroup) */
+        function conditionalGroup(alternatives: Doc[], options?: GroupOptions): Group;
+        /** @see [dedent](https://github.com/prettier/prettier/blob/main/commands.md#dedent) */
+        function dedent(doc: Doc): Align;
+        /** @see [dedentToRoot](https://github.com/prettier/prettier/blob/main/commands.md#dedenttoroot) */
+        function dedentToRoot(doc: Doc): Align;
+        /** @see [fill](https://github.com/prettier/prettier/blob/main/commands.md#fill) */
+        function fill(docs: Doc[]): Fill;
+        /** @see [group](https://github.com/prettier/prettier/blob/main/commands.md#group) */
+        function group(doc: Doc, opts?: GroupOptions): Group;
+        /** @see [hardline](https://github.com/prettier/prettier/blob/main/commands.md#hardline) */
+        const hardline: Concat;
+        /** @see [hardlineWithoutBreakParent](https://github.com/prettier/prettier/blob/main/commands.md#hardlinewithoutbreakparent-and-literallinewithoutbreakparent) */
+        const hardlineWithoutBreakParent: HardlineWithoutBreakParent;
+        /** @see [ifBreak](https://github.com/prettier/prettier/blob/main/commands.md#ifbreak) */
+        function ifBreak(ifBreak: Doc, noBreak?: Doc, options?: { groupId?: symbol | undefined }): IfBreak;
+        /** @see [indent](https://github.com/prettier/prettier/blob/main/commands.md#indent) */
+        function indent(doc: Doc): Indent;
+        /** @see [indentIfBreak](https://github.com/prettier/prettier/blob/main/commands.md#indentifbreak) */
+        function indentIfBreak(doc: Doc, opts: { groupId: symbol; negate?: boolean | undefined }): IndentIfBreak;
+        /** @see [join](https://github.com/prettier/prettier/blob/main/commands.md#join) */
+        function join(sep: Doc, docs: Doc[]): Concat;
+        /** @see [label](https://github.com/prettier/prettier/blob/main/commands.md#label) */
+        function label(label: string, doc: Doc): Label;
+        /** @see [line](https://github.com/prettier/prettier/blob/main/commands.md#line) */
+        const line: Line;
+        /** @see [lineSuffix](https://github.com/prettier/prettier/blob/main/commands.md#linesuffix) */
+        function lineSuffix(suffix: Doc): LineSuffix;
+        /** @see [lineSuffixBoundary](https://github.com/prettier/prettier/blob/main/commands.md#linesuffixboundary) */
+        const lineSuffixBoundary: LineSuffixBoundary;
+        /** @see [literalline](https://github.com/prettier/prettier/blob/main/commands.md#literalline) */
+        const literalline: Concat;
+        /** @see [literallineWithoutBreakParent](https://github.com/prettier/prettier/blob/main/commands.md#hardlinewithoutbreakparent-and-literallinewithoutbreakparent) */
+        const literallineWithoutBreakParent: LiterallineWithoutBreakParent;
+        /** @see [markAsRoot](https://github.com/prettier/prettier/blob/main/commands.md#markasroot) */
+        function markAsRoot(doc: Doc): Align;
+        /** @see [softline](https://github.com/prettier/prettier/blob/main/commands.md#softline) */
+        const softline: Softline;
+        /** @see [trim](https://github.com/prettier/prettier/blob/main/commands.md#trim) */
+        const trim: Trim;
+        /** @see [cursor](https://github.com/prettier/prettier/blob/main/commands.md#cursor) */
+        const cursor: Cursor;
     }
-  }
-  namespace utils {
-    function cleanDoc(doc: Doc): Doc;
-    function findInDoc<T = Doc>(
-      doc: Doc,
-      callback: (doc: Doc) => T,
-      defaultValue: T,
-    ): T;
-    function getDocParts(doc: Doc): Doc;
-    function isConcat(doc: Doc): boolean;
-    function isEmpty(doc: Doc): boolean;
-    function isLineNext(doc: Doc): boolean;
-    function mapDoc<T = Doc>(doc: Doc, callback: (doc: Doc) => T): T;
-    function normalizeDoc(doc: Doc): Doc;
-    function normalizeParts(parts: Doc[]): Doc[];
-    function propagateBreaks(doc: Doc): void;
-    function removeLines(doc: Doc): Doc;
-    function replaceNewlinesWithLiterallines(doc: Doc): Doc;
-    function stripTrailingHardline(doc: Doc): Doc;
-    function traverseDoc(
-      doc: Doc,
-      onEnter?: (doc: Doc) => void | boolean,
-      onExit?: (doc: Doc) => void,
-      shouldTraverseConditionalGroups?: boolean,
-    ): void;
-    function willBreak(doc: Doc): boolean;
-  }
+    namespace debug {
+        function printDocToDebug(doc: Doc): string;
+    }
+    namespace printer {
+        function printDocToString(
+            doc: Doc,
+            options: Options,
+        ): {
+            formatted: string;
+            cursorNodeStart?: number | undefined;
+            cursorNodeText?: string | undefined;
+        };
+        interface Options {
+            /**
+             * Specify the line length that the printer will wrap on.
+             * @default 80
+             */
+            printWidth: number;
+            /**
+             * Specify the number of spaces per indentation-level.
+             * @default 2
+             */
+            tabWidth: number;
+            /**
+             * Indent lines with tabs instead of spaces
+             * @default false
+             */
+            useTabs: boolean;
+            parentParser?: string | undefined;
+            __embeddedInHtml?: boolean | undefined;
+        }
+    }
+    namespace utils {
+        function cleanDoc(doc: Doc): Doc;
+        function findInDoc<T = Doc>(doc: Doc, callback: (doc: Doc) => T, defaultValue: T): T;
+        function getDocParts(doc: Doc): Doc;
+        function isConcat(doc: Doc): boolean;
+        function isEmpty(doc: Doc): boolean;
+        function isLineNext(doc: Doc): boolean;
+        function mapDoc<T = Doc>(doc: Doc, callback: (doc: Doc) => T): T;
+        function normalizeDoc(doc: Doc): Doc;
+        function normalizeParts(parts: Doc[]): Doc[];
+        function propagateBreaks(doc: Doc): void;
+        function removeLines(doc: Doc): Doc;
+        function replaceNewlinesWithLiterallines(doc: Doc): Doc;
+        function stripTrailingHardline(doc: Doc): Doc;
+        function traverseDoc(
+            doc: Doc,
+            onEnter?: (doc: Doc) => void | boolean,
+            onExit?: (doc: Doc) => void,
+            shouldTraverseConditionalGroups?: boolean,
+        ): void;
+        function willBreak(doc: Doc): boolean;
+    }
 }

@@ -34,7 +34,7 @@
     "jest": "^27.3.1",
     "lerna": "^4.0.0",
     "lint-staged": "^11.2.3",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.0",
     "prettier-plugin-organize-imports": "^2.3.4",
     "regenerator-runtime": "^0.13.9",
     "resolve": "^1.20.0",
