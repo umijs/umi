@@ -2,6 +2,13 @@
   "name": "@umijs/plugins",
   "version": "4.0.0-beta.8",
   "description": "@umijs/plugins",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugins#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -12,19 +19,6 @@
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi-next"
-  },
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugins#readme",
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "antd": "^4.16.13",
     "antd-dayjs-webpack-plugin": "^1.0.6",
@@ -33,5 +27,11 @@
   },
   "devDependencies": {
     "umi": "4.0.0-beta.8"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
 }

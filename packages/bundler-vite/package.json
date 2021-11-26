@@ -2,8 +2,18 @@
   "name": "@umijs/bundler-vite",
   "version": "4.0.0-beta.8",
   "description": "@umijs/bundler-vite",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-vite#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "bundler-vite": "bin/bundler-vite.js"
+  },
   "files": [
     "compiled",
     "dist"
@@ -12,22 +22,6 @@
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi-next"
-  },
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-vite#readme",
-  "publishConfig": {
-    "access": "public"
-  },
-  "bin": {
-    "bundler-vite": "bin/bundler-vite.js"
   },
   "dependencies": {
     "@svgr/core": "5.5.0",
@@ -44,6 +38,12 @@
   "devDependencies": {
     "express": "4.17.1"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
   "compiledConfig": {
     "deps": [
       "express"

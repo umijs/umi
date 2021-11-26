@@ -2,6 +2,14 @@
   "name": "@umijs/renderer-react",
   "version": "4.0.0-beta.8",
   "description": "@umijs/renderer-react",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/renderer-react#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
+  "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,19 +19,6 @@
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi-next"
-  },
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/renderer-react#readme",
-  "publishConfig": {
-    "access": "public"
   },
   "dependencies": {
     "history": "5.0.1",
@@ -37,5 +32,10 @@
     "react": ">=16.8",
     "react-dom": ">=16.8"
   },
-  "sideEffects": false
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
 }

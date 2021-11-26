@@ -2,35 +2,35 @@
   "name": "bigfish",
   "version": "4.0.0-beta.8",
   "description": "bigfish",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bigfish#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "bigfish": "bin/bigfish.js"
+  },
   "files": [
     "dist",
     "bin"
   ],
-  "bin": {
-    "bigfish": "bin/bigfish.js"
-  },
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi-next"
-  },
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bigfish#readme",
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@umijs/plugins": "4.0.0-beta.8",
     "umi": "4.0.0-beta.8"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
 }

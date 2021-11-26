@@ -2,8 +2,18 @@
   "name": "@umijs/bundler-webpack",
   "version": "4.0.0-beta.8",
   "description": "@umijs/bundler-webpack",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-webpack#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "bundler-webpack": "bin/bundler-webpack.js"
+  },
   "files": [
     "bin",
     "client",
@@ -16,22 +26,6 @@
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi-next"
-  },
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-webpack#readme",
-  "publishConfig": {
-    "access": "public"
-  },
-  "bin": {
-    "bundler-webpack": "bin/bundler-webpack.js"
   },
   "dependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.1",
@@ -86,6 +80,12 @@
     "webpack-sources": "3.2.1",
     "ws": "8.2.3"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
   "compiledConfig": {
     "deps": [
       "@svgr/webpack",

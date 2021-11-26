@@ -2,6 +2,13 @@
   "name": "@umijs/ast",
   "version": "4.0.0-beta.8",
   "description": "@umijs/ast",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/ast#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -12,20 +19,13 @@
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+  "dependencies": {
+    "@umijs/bundler-utils": "4.0.0-beta.8"
   },
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/umijs/umi-next/issues",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/ast#readme",
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.8"
-  }
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
 }
