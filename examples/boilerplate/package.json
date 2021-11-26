@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "npm run dev",
-    "dev": "umi dev"
+    "dev": "umi dev",
+    "start": "npm run dev"
   },
   "dependencies": {
     "umi": "4.0.0-beta.8"
