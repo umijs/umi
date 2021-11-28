@@ -2,6 +2,7 @@ module.exports = {
   codeFrame: () => require('@babel/code-frame'),
   core: () => require('@babel/core'),
   generator: () => require('@babel/generator'),
+  helperModuleImports: () => require('@babel/helper-module-imports'),
   parser: () => require('@babel/parser'),
 
   // tc39
