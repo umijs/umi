@@ -101458,6 +101458,7 @@ module.exports = {
   codeFrame: () => __nccwpck_require__(57713),
   core: () => __nccwpck_require__(47761),
   generator: () => __nccwpck_require__(66006),
+  helperModuleImports: () => __nccwpck_require__(11474),
   parser: () => __nccwpck_require__(725),
 
   // tc39
