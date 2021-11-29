@@ -473,6 +473,7 @@ importers:
       '@umijs/utils': 4.0.0-beta.8
       body-parser: 1.19.0
       current-script-polyfill: 1.0.0
+      enhanced-resolve: 5.8.3
       multer: 1.4.3
       path-to-regexp: 1.7.0
       react: 18.0.0-alpha-f2c381131-20211004
@@ -491,6 +492,7 @@ importers:
       '@umijs/server': link:../server
       '@umijs/utils': link:../utils
       current-script-polyfill: 1.0.0
+      enhanced-resolve: 5.8.3
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
       react-router: 6.0.0-beta.7_4dd5d306b9d43f72893e315a470a8635

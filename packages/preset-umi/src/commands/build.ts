@@ -42,7 +42,7 @@ umi build --clean
 
       // generate files
       async function generate(opts: { isFirstTime?: boolean; files?: any }) {
-        api.applyPlugins({
+        await api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
             files: opts.files || null,
