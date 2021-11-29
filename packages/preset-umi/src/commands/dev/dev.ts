@@ -1,6 +1,7 @@
 import { importLazy, lodash, logger, portfinder, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { basename, join } from 'path';
+import * as process from 'process';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { scan } from '../../libs/scan';
 import { IApi } from '../../types';
@@ -53,6 +54,20 @@ PORT=8888 umi dev
           current: api.appData.pkg,
         },
       });
+
+      // clean cache if umi version not matched
+      // const umiJSONPath = join(api.paths.absTmpPath, 'umi.json');
+      // if (existsSync(umiJSONPath)) {
+      //   const originVersion = require(umiJSONPath).version;
+      //   if (originVersion !== api.appData.umi.version) {
+      //     logger.info(`Delete cache folder since umi version updated.`);
+      //     rimraf.sync(api.paths.absTmpPath);
+      //   }
+      // }
+      // fsExtra.outputFileSync(
+      //   umiJSONPath,
+      //   JSON.stringify({ version: api.appData.umi.version }),
+      // );
 
       // generate files
       async function generate(opts: { isFirstTime?: boolean; files?: any }) {
