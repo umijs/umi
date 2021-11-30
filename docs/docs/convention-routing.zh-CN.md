@@ -134,7 +134,7 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
 
 ## 全局 layout
 
-约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `props.children` 渲染子组件。
+约定 `src/layouts/index.tsx` 为全局 layout。返回一个 React 组件，并通过 `props.children` 渲染子组件。
 
 比如以下目录结构，
 
