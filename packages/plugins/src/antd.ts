@@ -96,6 +96,7 @@ export default (api: IApi) => {
     },
   });
   // antd import
+  // TODO: use api.modifyConfig for support with vite
   api.chainWebpack((memo) => {
     function getUserLibDir({ library }: { library: string }) {
       if (
