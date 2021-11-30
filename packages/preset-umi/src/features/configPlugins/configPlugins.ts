@@ -69,8 +69,12 @@ export default (api: IApi) => {
   }
 
   // api.paths is ready after register
-  api.chainWebpack((memo) => {
-    memo.resolve.alias.set('@', api.paths.absSrcPath);
-    memo.resolve.alias.set('@@', api.paths.absTmpPath);
+  api.modifyConfig((memo) => {
+    memo.alias = {
+      ...memo.alias,
+      '@': api.paths.absSrcPath,
+      '@@': api.paths.absTmpPath,
+    };
+    return memo;
   });
 };

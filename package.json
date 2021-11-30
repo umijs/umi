@@ -11,7 +11,8 @@
     "prepare": "husky install",
     "release": "esno scripts/release.ts",
     "test": "jest",
-    "test:clean": "jest --clearCache"
+    "test:clean": "jest --clearCache",
+    "tsc:check": "tsc --noEmit"
   },
   "lint-staged": {
     "*.{jsx,less,md,json}": [

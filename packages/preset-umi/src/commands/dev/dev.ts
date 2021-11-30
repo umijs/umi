@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import * as process from 'process';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import { scan } from '../../libs/scan';
+import { createResolver, scan } from '../../libs/scan';
 import { IApi } from '../../types';
 import { clearTmp } from '../../utils/clearTmp';
 import { createRouteMiddleware } from './createRouteMiddleware';
@@ -107,10 +107,13 @@ PORT=8888 umi dev
       // scan and module graph
       // TODO: module graph
       if (enableVite) {
+        const resolver = createResolver({
+          alias: api.config.alias,
+        });
         const deps = await scan({
           entry: join(api.paths.absTmpPath, 'umi.ts'),
-          alias: {},
-          externals: {},
+          externals: api.config.externals,
+          resolver,
         });
         api.appData.deps = deps.reduce<Record<string, string>>((memo, dep) => {
           // TODO: version from package.json

@@ -17,22 +17,6 @@ interface Dep {
   specifiers?: 'namespace' | string[]; // default 用特殊字符串 __default__
 }
 
-const resolver = enhancedResolve.create({
-  mainFields: ['module', 'browser', 'main'], // es module first
-  extensions: ['.js', '.json', '.mjs', '.ts', '.tsx'],
-  // TODO: support exports
-  // tried to add exports, but it don't work with swr
-  exportsFields: [],
-});
-
-async function resolve(context: string, path: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    resolver(context, path, (err: Error, result: string) =>
-      err ? reject(err) : resolve(result),
-    );
-  });
-}
-
 // 项目文件都是 esm，无需考虑 cjs
 export async function scanContent(opts: {
   content: string;
@@ -66,10 +50,27 @@ export async function getContent(path: string) {
   return content;
 }
 
+export function createResolver(opts: { alias: any }) {
+  const resolver = enhancedResolve.create({
+    mainFields: ['module', 'browser', 'main'], // es module first
+    extensions: ['.js', '.json', '.mjs', '.ts', '.tsx'],
+    exportsFields: [],
+    alias: opts.alias,
+  });
+  async function resolve(context: string, path: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      resolver(context, path, (err: Error, result: string) =>
+        err ? reject(err) : resolve(result),
+      );
+    });
+  }
+  return { resolve };
+}
+
 export async function scan(opts: {
   entry: string;
-  alias: any;
   externals: any;
+  resolver: any;
 }) {
   const cache = new Map<string, any>();
   const queueDeps: string[] = [opts.entry];
@@ -88,7 +89,10 @@ export async function scan(opts: {
           ext === '' ||
           ['.ts', '.tsx', '.js', '.jsx', '.mjs'].includes(ext)
         ) {
-          const resolved = await resolve(dirname(depPath!), dep.url);
+          const resolved = await opts.resolver.resolve(
+            dirname(depPath!),
+            dep.url,
+          );
           queueDeps.push(resolved);
         }
       } else if (dep.url.startsWith('/')) {
