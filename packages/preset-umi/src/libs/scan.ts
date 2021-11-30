@@ -1,5 +1,7 @@
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
+import { pkgUp } from '@umijs/utils';
+import assert from 'assert';
 import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
 import { dirname, extname } from 'path';
@@ -71,10 +73,10 @@ export async function scan(opts: {
   entry: string;
   externals: any;
   resolver: any;
-}) {
+}): Promise<Record<string, string>> {
   const cache = new Map<string, any>();
   const queueDeps: string[] = [opts.entry];
-  const ret = new Set<string>();
+  const ret: Record<string, string> = {};
   while (queueDeps.length) {
     const depPath = queueDeps.shift();
     if (cache.has(depPath!)) continue;
@@ -83,23 +85,21 @@ export async function scan(opts: {
     cache.set(depPath!, deps);
 
     for (const dep of deps) {
-      const ext = extname(dep.url);
-      if (dep.url.startsWith('.')) {
-        if (
-          ext === '' ||
-          ['.ts', '.tsx', '.js', '.jsx', '.mjs'].includes(ext)
-        ) {
-          const resolved = await opts.resolver.resolve(
-            dirname(depPath!),
-            dep.url,
-          );
-          queueDeps.push(resolved);
-        }
-      } else if (dep.url.startsWith('/')) {
-      } else {
-        ret.add(dep.url);
+      const resolved = await opts.resolver.resolve(dirname(depPath!), dep.url);
+      if (
+        resolved.includes('node_modules') ||
+        resolved.includes('umi-next/packages')
+      ) {
+        const pkgPath = pkgUp.sync({ cwd: resolved });
+        assert(pkgPath, `package.json for found for ${resolved}`);
+        const pkg = require(pkgPath);
+        ret[pkg.name] = pkg.version;
+      } else if (
+        ['.ts', '.tsx', '.js', '.jsx', '.mjs'].includes(extname(resolved))
+      ) {
+        queueDeps.push(resolved);
       }
     }
   }
-  return Array.from(ret);
+  return ret;
 }

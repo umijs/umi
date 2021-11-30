@@ -110,16 +110,11 @@ PORT=8888 umi dev
         const resolver = createResolver({
           alias: api.config.alias,
         });
-        const deps = await scan({
+        api.appData.deps = await scan({
           entry: join(api.paths.absTmpPath, 'umi.ts'),
           externals: api.config.externals,
           resolver,
         });
-        api.appData.deps = deps.reduce<Record<string, string>>((memo, dep) => {
-          // TODO: version from package.json
-          memo[dep] = '*';
-          return memo;
-        }, {});
       }
 
       // watch package.json change
