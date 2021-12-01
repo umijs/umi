@@ -512,7 +512,7 @@ PORT=8081
 
    function MyPage() {
      const masterProps = useModel('@@qiankunStateFromMaster');
-     return <div>{JSON.strigify(masterProps)}</div>;
+     return <div>{JSON.stringify(masterProps)}</div>;
    }
    ```
 
