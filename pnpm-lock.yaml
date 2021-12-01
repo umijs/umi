@@ -143,6 +143,12 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+  examples/remix:
+    specifiers:
+      umi: 4.0.0-beta.10
+    dependencies:
+      umi: link:../../packages/umi
+
   examples/tmp-swcTranspiler-swc:
     specifiers:
       umi: 4.0.0-beta.10
