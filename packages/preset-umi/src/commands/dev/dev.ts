@@ -1,3 +1,4 @@
+import type { RequestHandler } from '@umijs/bundler-webpack';
 import { importLazy, lodash, logger, portfinder, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { basename, join } from 'path';
@@ -239,7 +240,10 @@ PORT=8888 umi dev
         beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
-        beforeMiddlewares: [faviconMiddleware].concat(beforeMiddlewares),
+        beforeMiddlewares: ([] as RequestHandler[]).concat([
+          ...beforeMiddlewares,
+          faviconMiddleware,
+        ]),
         afterMiddlewares: [createRouteMiddleware({ api })].concat(middlewares),
         onDevCompileDone(opts: any) {
           api.applyPlugins({

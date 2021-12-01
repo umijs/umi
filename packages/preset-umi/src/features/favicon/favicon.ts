@@ -27,7 +27,7 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.addMiddlewares(() => [
+  api.addBeforeMiddlewares(() => [
     (req, res, next) => {
       if (
         api.appData.faviconFile &&
