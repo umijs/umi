@@ -74,6 +74,7 @@ export type IApi = PluginAPI &
       origin: Record<string, any>;
       current: Record<string, any>;
     }>;
+    onBeforeCompiler: IEvent<{}>;
     onBuildComplete: IEvent<{
       isFirstCompile: boolean;
       stats: any;
