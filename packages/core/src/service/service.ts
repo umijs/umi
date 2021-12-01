@@ -225,18 +225,6 @@ export class Service {
       this.configOnChanges[key] = config.onChange || ConfigChangeType.reload;
     }
     // setup api.config from modifyConfig and modifyDefaultConfig
-    this.stage = ServiceStage.resolveConfig;
-    const config = await this.applyPlugins({
-      key: 'modifyConfig',
-      initialValue: configManager.getConfig({
-        schemas: this.configSchemas,
-      }).config,
-    });
-    const defaultConfig = await this.applyPlugins({
-      key: 'modifyDefaultConfig',
-      initialValue: this.configDefaults,
-    });
-    this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
     const paths = getPaths({
       cwd: this.cwd,
       env: this.env,
@@ -245,6 +233,19 @@ export class Service {
     if (this.config.outputPath) {
       paths.absOutputPath = join(this.cwd, this.config.outputPath);
     }
+    this.stage = ServiceStage.resolveConfig;
+    const config = await this.applyPlugins({
+      key: 'modifyConfig',
+      initialValue: configManager.getConfig({
+        schemas: this.configSchemas,
+      }).config,
+      args: { paths },
+    });
+    const defaultConfig = await this.applyPlugins({
+      key: 'modifyDefaultConfig',
+      initialValue: this.configDefaults,
+    });
+    this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
     this.paths = await this.applyPlugins({
       key: 'modifyPaths',
       initialValue: paths,
@@ -414,7 +415,10 @@ export interface IServicePluginAPI {
   onCheck: IEvent<null>;
   onStart: IEvent<null>;
   modifyAppData: IModify<typeof Service.prototype.appData, null>;
-  modifyConfig: IModify<typeof Service.prototype.config, null>;
+  modifyConfig: IModify<
+    typeof Service.prototype.config,
+    { paths: Record<string, string> }
+  >;
   modifyDefaultConfig: IModify<typeof Service.prototype.config, null>;
   modifyPaths: IModify<typeof Service.prototype.paths, null>;
 

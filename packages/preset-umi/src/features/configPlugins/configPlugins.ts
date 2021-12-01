@@ -69,11 +69,11 @@ export default (api: IApi) => {
   }
 
   // api.paths is ready after register
-  api.modifyConfig((memo) => {
+  api.modifyConfig((memo, args) => {
     memo.alias = {
       ...memo.alias,
-      '@': api.paths.absSrcPath,
-      '@@': api.paths.absTmpPath,
+      '@': args.paths.absSrcPath,
+      '@@': args.paths.absTmpPath,
     };
     return memo;
   });
