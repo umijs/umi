@@ -1,6 +1,6 @@
 {
   "name": "bigfish",
-  "version": "4.0.0-beta.8",
+  "version": "4.0.0-beta.9",
   "description": "bigfish",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bigfish#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -24,8 +24,8 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-beta.8",
-    "umi": "4.0.0-beta.8"
+    "@umijs/plugins": "4.0.0-beta.9",
+    "umi": "4.0.0-beta.9"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.0-beta.8",
+  "version": "4.0.0-beta.9",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -29,10 +29,10 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-beta.8",
-    "@umijs/preset-umi": "4.0.0-beta.8",
-    "@umijs/renderer-react": "4.0.0-beta.8",
-    "@umijs/utils": "4.0.0-beta.8",
+    "@umijs/core": "4.0.0-beta.9",
+    "@umijs/preset-umi": "4.0.0-beta.9",
+    "@umijs/renderer-react": "4.0.0-beta.9",
+    "@umijs/utils": "4.0.0-beta.9",
     "v8-compile-cache": "2.3.0"
   },
   "publishConfig": {

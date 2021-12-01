@@ -1,6 +1,6 @@
 {
   "name": "@umijs/create-umi",
-  "version": "4.0.0-beta.8",
+  "version": "4.0.0-beta.9",
   "description": "@umijs/create-umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/create-umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -24,7 +24,7 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.8"
+    "@umijs/bundler-utils": "4.0.0-beta.9"
   },
   "publishConfig": {
     "access": "public"
