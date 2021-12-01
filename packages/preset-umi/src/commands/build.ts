@@ -54,6 +54,10 @@ umi build --clean
         isFirstTime: true,
       });
 
+      await api.applyPlugins({
+        key: 'onBeforeCompiler',
+      });
+
       // build
       // TODO: support watch mode
       const {
