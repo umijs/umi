@@ -10,6 +10,7 @@ import type {
   PluginAPI,
 } from '@umijs/core';
 import { Env } from '@umijs/core';
+import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 
 export type IScript =
   | Partial<{
@@ -128,7 +129,7 @@ export type IApi = PluginAPI &
     addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
     modifyHTMLFavicon: IModify<string, {}>;
-    modifyHTML: IModify<string, { path: string }>;
+    modifyHTML: IModify<CheerioAPI, { path: string }>;
     modifyRendererPath: IModify<string, {}>;
     modifyWebpackConfig: IModify<
       webpack.Configuration,
