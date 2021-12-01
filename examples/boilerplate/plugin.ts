@@ -1,6 +1,9 @@
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
+  api.modifyHTML(($) => {
+    return $;
+  });
   api.addHTMLMetas(() => [{ name: 'foo', content: 'bar' }]);
   api.addHTMLLinks(() => [{ rel: 'foo', content: 'bar' }]);
   api.addHTMLStyles(() => [`body { color: red; }`]);
