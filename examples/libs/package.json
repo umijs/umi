@@ -4,7 +4,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-beta.8"
+    "umi": "4.0.0-beta.9"
   },
   "devDependencies": {
     "antd": "4.16.13",

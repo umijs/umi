@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "4.0.0-beta.8",
+  "version": "4.0.0-beta.9",
   "description": "Official babel preset for umi.",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/babel-preset-umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -22,8 +22,8 @@
   "dependencies": {
     "@babel/runtime": "7.16.0",
     "@bloomberg/record-tuple-polyfill": "0.0.4",
-    "@umijs/bundler-utils": "4.0.0-beta.8",
-    "@umijs/utils": "4.0.0-beta.8",
+    "@umijs/bundler-utils": "4.0.0-beta.9",
+    "@umijs/utils": "4.0.0-beta.9",
     "core-js": "3.19.0"
   },
   "publishConfig": {
