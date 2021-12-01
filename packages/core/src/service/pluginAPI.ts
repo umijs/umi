@@ -79,12 +79,15 @@ export class PluginAPI {
       plugin: this.plugin,
       fn:
         opts.fn ||
-        ((fn: Function | Object) => {
+        // 这里不能用 arrow function，this 需指向执行此方法的 PluginAPI
+        // 否则 pluginId 会不会，导致不能正确 skip plugin
+        function (fn: Function | Object) {
+          // @ts-ignore
           this.register({
             key: opts.name,
             ...(lodash.isPlainObject(fn) ? (fn as any) : { fn }),
           });
-        }),
+        },
     };
   }
 
