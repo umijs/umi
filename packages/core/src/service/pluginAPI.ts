@@ -1,6 +1,12 @@
 import { chalk, lodash, logger } from '@umijs/utils';
 import assert from 'assert';
-import { EnableBy, IPluginConfig, PluginType, ServiceStage } from '../types';
+import {
+  EnableBy,
+  Env,
+  IPluginConfig,
+  PluginType,
+  ServiceStage,
+} from '../types';
 import { Command, IOpts as ICommandOpts } from './command';
 import { Generator, IGeneratorOpts } from './generator';
 import { Hook, IOpts as IHookOpts } from './hook';
@@ -40,7 +46,9 @@ export class PluginAPI {
   describe(opts: {
     key?: string;
     config?: IPluginConfig;
-    enableBy?: EnableBy | (() => boolean);
+    enableBy?:
+      | EnableBy
+      | ((enableByOpts: { config: any; env: Env }) => boolean);
   }) {
     this.plugin.merge(opts);
   }

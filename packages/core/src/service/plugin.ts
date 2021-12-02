@@ -3,7 +3,7 @@ import { lodash, pkgUp, register, resolve, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, dirname, extname, join, relative } from 'path';
-import { EnableBy, IPluginConfig } from '../types';
+import { EnableBy, Env, IPluginConfig } from '../types';
 
 const RE = {
   plugin: /^(@umijs\/|umi-)plugin-/,
@@ -34,7 +34,8 @@ export class Plugin {
   key: string;
   apply: Function;
   config: IPluginConfig = {};
-  enableBy: EnableBy | ((opts: { config: any }) => boolean) = EnableBy.register;
+  enableBy: EnableBy | ((opts: { config: any; env: Env }) => boolean) =
+    EnableBy.register;
 
   constructor(opts: IOpts) {
     this.type = opts.type;
@@ -80,11 +81,7 @@ export class Plugin {
     };
   }
 
-  merge(opts: {
-    key?: string;
-    config?: IPluginConfig;
-    enableBy?: EnableBy | (() => boolean);
-  }) {
+  merge(opts: { key?: string; config?: IPluginConfig; enableBy?: any }) {
     if (opts.key) this.key = opts.key;
     if (opts.config) this.config = opts.config;
     if (opts.enableBy) this.enableBy = opts.enableBy;

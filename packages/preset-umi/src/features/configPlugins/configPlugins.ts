@@ -10,7 +10,7 @@ function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
     opts.pkg.devDependencies?.[opts.dep]
   ) {
     return dirname(
-      resolve.sync(`${opts.dep}/package`, {
+      resolve.sync(`${opts.dep}/package.json`, {
         basedir: opts.cwd,
       }),
     );
