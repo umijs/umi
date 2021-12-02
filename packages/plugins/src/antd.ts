@@ -5,6 +5,13 @@ import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
+  const pkgPath =
+    resolveProjectDep({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      dep: 'antd',
+    }) || dirname(require.resolve('antd/package.json'));
+
   api.describe({
     config: {
       schema(Joi) {
@@ -23,14 +30,18 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  api.modifyAppData((memo) => {
+    const version = require(`${pkgPath}/package.json`).version;
+    memo.antd = {
+      pkgPath,
+      version,
+    };
+    return memo;
+  });
+
   api.modifyConfig((memo) => {
     // antd import
-    memo.alias.antd =
-      resolveProjectDep({
-        pkg: api.pkg,
-        cwd: api.cwd,
-        dep: 'antd',
-      }) || dirname(require.resolve('antd/package.json'));
+    memo.alias.antd = pkgPath;
 
     // moment > dayjs
     if (memo.antd.dayjs) {
