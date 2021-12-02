@@ -127,7 +127,7 @@ export type IApi = PluginAPI &
     addHTMLMetas: IAdd<null, IMeta[]>;
     addLayouts: IAdd<null, { id: string; file: string }[]>;
     addPolyfillImports: IAdd<null, { source: string; specifier?: string }[]>;
-    addRuntimePlugin: IAdd<{ withTmpPath: Function }, string[]>;
+    addRuntimePlugin: IAdd<null, string[]>;
     addRuntimePluginKey: IAdd<null, string[]>;
     modifyHTMLFavicon: IModify<string, {}>;
     modifyHTML: IModify<CheerioAPI, { path: string }>;
