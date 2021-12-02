@@ -2,6 +2,7 @@ import { Mustache } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
 import { resolveProjectDep } from './utils/resolveProjectDep';
+import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   api.describe({
@@ -122,9 +123,9 @@ export function rootContainer(container) {
       ),
     });
   });
-  api.addRuntimePlugin((args) => {
+  api.addRuntimePlugin(() => {
     return api.config.antd.config
-      ? [args.withTmpPath({ api, path: 'runtime.tsx' })]
+      ? [withTmpPath({ api, path: 'runtime.tsx' })]
       : [];
   });
 

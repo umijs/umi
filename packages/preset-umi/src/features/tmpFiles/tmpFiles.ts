@@ -98,19 +98,6 @@ export default (api: IApi) => {
       ]
         .filter(Boolean)
         .slice(0, 1),
-      args: {
-        withTmpPath(opts: { api: IApi; noPluginDir: boolean; path: string }) {
-          return winPath(
-            join(
-              opts.api.paths.absTmpPath,
-              opts.api.plugin.key && !opts.noPluginDir
-                ? `plugin-${opts.api.plugin.key}`
-                : '',
-              opts.path,
-            ),
-          );
-        },
-      },
     });
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
