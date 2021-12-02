@@ -127,4 +127,17 @@ export function rootContainer(container) {
       ? [args.withTmpPath({ api, path: 'runtime.tsx' })]
       : [];
   });
+
+  // import antd style if antd.import is not configured
+  api.addEntryImportsAhead(() => {
+    const style = api.config.antd.style || 'less';
+    return api.config.antd.import
+      ? []
+      : [
+          {
+            source:
+              style === 'less' ? 'antd/dist/antd.less' : 'antd/dist/antd.css',
+          },
+        ];
+  });
 };
