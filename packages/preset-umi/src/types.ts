@@ -61,6 +61,7 @@ export type IApi = PluginAPI &
     restartServer: () => void;
     writeTmpFile: (opts: {
       path: string;
+      noPluginDir?: boolean;
       content?: string;
       tpl?: string;
       tplPath?: string;

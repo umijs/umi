@@ -19,6 +19,7 @@ export default (api: IApi) => {
   api.onGenerateFiles(async (opts) => {
     // umi.ts
     api.writeTmpFile({
+      noPluginDir: true,
       path: 'umi.ts',
       tplPath: join(TEMPLATES_DIR, 'umi.tpl'),
       context: {
@@ -72,6 +73,7 @@ export default (api: IApi) => {
     // @/pages/
     const prefix = hasSrc ? '../../../src/pages/' : '../../pages/';
     api.writeTmpFile({
+      noPluginDir: true,
       path: 'core/route.ts',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
@@ -113,6 +115,7 @@ export default (api: IApi) => {
       ],
     });
     api.writeTmpFile({
+      noPluginDir: true,
       path: 'core/plugin.ts',
       tplPath: join(TEMPLATES_DIR, 'plugin.tpl'),
       context: {

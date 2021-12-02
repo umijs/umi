@@ -62,12 +62,18 @@ export default (api: IApi) => {
       tpl?: string;
       tplPath?: string;
       context?: Record<string, string>;
+      noPluginDir?: boolean;
     }) {
       assert(
         api.service.stage >= api.ServiceStage.runCommand,
         `api.writeTmpFile() should not execute in register stage.`,
       );
-      const absPath = join(api.paths.absTmpPath, opts.path);
+      const absPath = join(
+        api.paths.absTmpPath,
+        // @ts-ignore
+        this.plugin.key && !opts.noPluginDir ? `plugin-${this.plugin.key}` : '',
+        opts.path,
+      );
       fsExtra.mkdirpSync(dirname(absPath));
       let content = opts.content;
       if (!content) {
