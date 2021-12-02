@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.pitch = pitch;
 exports.default = _default;
+exports.pitch = pitch;
 
 var _path = _interopRequireDefault(require("path"));
 
