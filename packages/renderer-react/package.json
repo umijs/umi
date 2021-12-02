@@ -21,8 +21,8 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "history": "5.0.1",
-    "react-router-dom": "6.0.0-beta.8"
+    "history": "5.1.0",
+    "react-router-dom": "6.0.2"
   },
   "devDependencies": {
     "react": "18.0.0-alpha-f2c381131-20211004",

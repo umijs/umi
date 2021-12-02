@@ -3,10 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.terserMinify = terserMinify;
-exports.uglifyJsMinify = uglifyJsMinify;
-exports.swcMinify = swcMinify;
 exports.esbuildMinify = esbuildMinify;
+exports.swcMinify = swcMinify;
+exports.terserMinify = terserMinify;
+exports.throttleAll = throttleAll;
+exports.uglifyJsMinify = uglifyJsMinify;
 
 /** @typedef {import("source-map").RawSourceMap} RawSourceMap */
 
@@ -35,7 +36,63 @@ exports.esbuildMinify = esbuildMinify;
 /**
  * @typedef {Array<string>} ExtractedComments
  */
+const notSettled = Symbol(`not-settled`);
+/**
+ * @template T
+ * @typedef {() => Promise<T>} Task
+ */
 
+/**
+ * Run tasks with limited concurency.
+ * @template T
+ * @param {number} limit - Limit of tasks that run at once.
+ * @param {Task<T>[]} tasks - List of tasks to run.
+ * @returns {Promise<T[]>} A promise that fulfills to an array of the results
+ */
+
+function throttleAll(limit, tasks) {
+  if (!Number.isInteger(limit) || limit < 1) {
+    throw new TypeError(`Expected \`limit\` to be a finite number > 0, got \`${limit}\` (${typeof limit})`);
+  }
+
+  if (!Array.isArray(tasks) || !tasks.every(task => typeof task === `function`)) {
+    throw new TypeError(`Expected \`tasks\` to be a list of functions returning a promise`);
+  }
+
+  return new Promise((resolve, reject) => {
+    const result = Array(tasks.length).fill(notSettled);
+    const entries = tasks.entries();
+
+    const next = () => {
+      const {
+        done,
+        value
+      } = entries.next();
+
+      if (done) {
+        const isLast = !result.includes(notSettled);
+        if (isLast) resolve(
+        /** @type{T[]} **/
+        result);
+        return;
+      }
+
+      const [index, task] = value;
+      /**
+       * @param {T} x
+       */
+
+      const onFulfilled = x => {
+        result[index] = x;
+        next();
+      };
+
+      task().then(onFulfilled, reject);
+    };
+
+    Array(limit).fill(0).forEach(next);
+  });
+}
 /* istanbul ignore next */
 
 /**
@@ -45,6 +102,8 @@ exports.esbuildMinify = esbuildMinify;
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
  */
+
+
 async function terserMinify(input, sourceMap, minimizerOptions, extractComments) {
   /**
    * @param {any} value
@@ -117,21 +176,33 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
           }
 
           if (condition[key] === "some") {
-            condition[key] = (astNode, comment) => (comment.type === "comment2" || comment.type === "comment1") && /@preserve|@lic|@cc_on|^\**!/i.test(comment.value);
+            condition[key] =
+            /** @type {ExtractCommentsFunction} */
+            (astNode, comment) => (comment.type === "comment2" || comment.type === "comment1") && /@preserve|@lic|@cc_on|^\**!/i.test(comment.value);
 
             break;
           }
 
-          regexStr = condition[key];
+          regexStr =
+          /** @type {string} */
+          condition[key];
 
-          condition[key] = (astNode, comment) => new RegExp(regexStr).test(comment.value);
+          condition[key] =
+          /** @type {ExtractCommentsFunction} */
+          (astNode, comment) => new RegExp(
+          /** @type {string} */
+          regexStr).test(comment.value);
 
           break;
 
         default:
-          regex = condition[key];
+          regex =
+          /** @type {RegExp} */
+          condition[key];
 
-          condition[key] = (astNode, comment) =>
+          condition[key] =
+          /** @type {ExtractCommentsFunction} */
+          (astNode, comment) =>
           /** @type {RegExp} */
           regex.test(comment.value);
 
@@ -227,10 +298,14 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
     [filename]: code
   }, terserOptions);
   return {
-    code: result.code,
+    code:
+    /** @type {string} **/
+    result.code,
     // @ts-ignore
     // eslint-disable-next-line no-undefined
-    map: result.map ? result.map : undefined,
+    map: result.map ?
+    /** @type {RawSourceMap} **/
+    result.map : undefined,
     extractedComments
   };
 }
@@ -324,21 +399,33 @@ async function uglifyJsMinify(input, sourceMap, minimizerOptions, extractComment
           }
 
           if (condition[key] === "some") {
-            condition[key] = (astNode, comment) => (comment.type === "comment2" || comment.type === "comment1") && /@preserve|@lic|@cc_on|^\**!/i.test(comment.value);
+            condition[key] =
+            /** @type {ExtractCommentsFunction} */
+            (astNode, comment) => (comment.type === "comment2" || comment.type === "comment1") && /@preserve|@lic|@cc_on|^\**!/i.test(comment.value);
 
             break;
           }
 
-          regexStr = condition[key];
+          regexStr =
+          /** @type {string} */
+          condition[key];
 
-          condition[key] = (astNode, comment) => new RegExp(regexStr).test(comment.value);
+          condition[key] =
+          /** @type {ExtractCommentsFunction} */
+          (astNode, comment) => new RegExp(
+          /** @type {string} */
+          regexStr).test(comment.value);
 
           break;
 
         default:
-          regex = condition[key];
+          regex =
+          /** @type {RegExp} */
+          condition[key];
 
-          condition[key] = (astNode, comment) =>
+          condition[key] =
+          /** @type {ExtractCommentsFunction} */
+          (astNode, comment) =>
           /** @type {RegExp} */
           regex.test(comment.value);
 
@@ -556,10 +643,10 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   }; // eslint-disable-next-line import/no-extraneous-dependencies, global-require
 
 
-  const esbuild = require('@umijs/bundler-utils/compiled/esbuild'); // Copy `swc` options
+  const esbuild = require('@umijs/bundler-utils/compiled/esbuild'); // Copy `esbuild` options
 
 
-  const esbuildOptions = buildEsbuildOptions(minimizerOptions); // Let `swc` generate a SourceMap
+  const esbuildOptions = buildEsbuildOptions(minimizerOptions); // Let `esbuild` generate a SourceMap
 
   if (sourceMap) {
     esbuildOptions.sourcemap = true;
@@ -573,7 +660,16 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
     code: result.code,
     // eslint-disable-next-line no-undefined
     map: result.map ? JSON.parse(result.map) : undefined,
-    warnings: result.warnings ? result.warnings.map(item => item.toString()) : []
+    warnings: result.warnings.length > 0 ? result.warnings.map(item => {
+      return {
+        name: "Warning",
+        source: item.location && item.location.file,
+        line: item.location && item.location.line,
+        column: item.location && item.location.column,
+        plugin: item.pluginName,
+        message: `${item.text}${item.detail ? `\nDetails:\n${item.detail}` : ""}${item.notes.length > 0 ? `\n\nNotes:\n${item.notes.map(note => `${note.location ? `[${note.location.file}:${note.location.line}:${note.location.column}] ` : ""}${note.text}${note.location ? `\nSuggestion: ${note.location.suggestion}` : ""}${note.location ? `\nLine text:\n${note.location.lineText}\n` : ""}`).join("\n")}` : ""}`
+      };
+    }) : []
   };
 }
 /**

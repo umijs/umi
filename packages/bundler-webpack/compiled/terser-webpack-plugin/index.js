@@ -1,13 +1,13 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 44:
+/***/ 1902:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var KEYWORDS = __nccwpck_require__(1322);
+var KEYWORDS = __nccwpck_require__(3409);
 
 module.exports = defineKeywords;
 
@@ -44,7 +44,7 @@ function get(keyword) {
 
 /***/ }),
 
-/***/ 6631:
+/***/ 3666:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
@@ -79,7 +79,7 @@ module.exports = function (minMax) {
   return function defFunc(ajv) {
     defFunc.definition = {
       type: 'string',
-      inline: __nccwpck_require__(3213),
+      inline: __nccwpck_require__(6790),
       statements: true,
       errors: 'full',
       dependencies: ['format'],
@@ -153,7 +153,7 @@ function compareDateTime(dt1, dt2) {
 
 /***/ }),
 
-/***/ 5458:
+/***/ 8535:
 /***/ (function(module) {
 
 "use strict";
@@ -176,7 +176,7 @@ function metaSchemaRef(ajv) {
 
 /***/ }),
 
-/***/ 2996:
+/***/ 5613:
 /***/ (function(module) {
 
 "use strict";
@@ -202,7 +202,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 9016:
+/***/ 7933:
 /***/ (function(module) {
 
 "use strict";
@@ -234,13 +234,13 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 9776:
+/***/ 8491:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var util = __nccwpck_require__(5458);
+var util = __nccwpck_require__(8535);
 
 module.exports = function defFunc(ajv) {
   defFunc.definition = {
@@ -296,7 +296,7 @@ function unescapeJsonPointer(str) {
 
 /***/ }),
 
-/***/ 5608:
+/***/ 6057:
 /***/ (function(module) {
 
 "use strict";
@@ -361,7 +361,7 @@ function unescapeJsonPointer(str) {
 
 /***/ }),
 
-/***/ 3213:
+/***/ 6790:
 /***/ (function(module) {
 
 "use strict";
@@ -547,7 +547,7 @@ module.exports = function generate__formatLimit(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 4467:
+/***/ 2828:
 /***/ (function(module) {
 
 "use strict";
@@ -613,7 +613,7 @@ module.exports = function generate_patternRequired(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 2114:
+/***/ 6707:
 /***/ (function(module) {
 
 "use strict";
@@ -750,7 +750,7 @@ module.exports = function generate_switch(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 1515:
+/***/ 10:
 /***/ (function(module) {
 
 "use strict";
@@ -830,59 +830,59 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 8197:
+/***/ 9612:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-module.exports = __nccwpck_require__(6631)('Maximum');
+module.exports = __nccwpck_require__(3666)('Maximum');
 
 
 /***/ }),
 
-/***/ 7158:
+/***/ 7405:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-module.exports = __nccwpck_require__(6631)('Minimum');
+module.exports = __nccwpck_require__(3666)('Minimum');
 
 
 /***/ }),
 
-/***/ 1322:
+/***/ 3409:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
 module.exports = {
-  'instanceof': __nccwpck_require__(899),
-  range: __nccwpck_require__(6938),
-  regexp: __nccwpck_require__(4562),
-  'typeof': __nccwpck_require__(2642),
-  dynamicDefaults: __nccwpck_require__(1515),
-  allRequired: __nccwpck_require__(2996),
-  anyRequired: __nccwpck_require__(9016),
-  oneRequired: __nccwpck_require__(7916),
-  prohibited: __nccwpck_require__(7819),
-  uniqueItemProperties: __nccwpck_require__(9165),
-  deepProperties: __nccwpck_require__(9776),
-  deepRequired: __nccwpck_require__(5608),
-  formatMinimum: __nccwpck_require__(7158),
-  formatMaximum: __nccwpck_require__(8197),
-  patternRequired: __nccwpck_require__(1725),
-  'switch': __nccwpck_require__(1429),
-  select: __nccwpck_require__(7427),
-  transform: __nccwpck_require__(4468)
+  'instanceof': __nccwpck_require__(509),
+  range: __nccwpck_require__(9268),
+  regexp: __nccwpck_require__(577),
+  'typeof': __nccwpck_require__(5208),
+  dynamicDefaults: __nccwpck_require__(10),
+  allRequired: __nccwpck_require__(5613),
+  anyRequired: __nccwpck_require__(7933),
+  oneRequired: __nccwpck_require__(5497),
+  prohibited: __nccwpck_require__(436),
+  uniqueItemProperties: __nccwpck_require__(2394),
+  deepProperties: __nccwpck_require__(8491),
+  deepRequired: __nccwpck_require__(6057),
+  formatMinimum: __nccwpck_require__(7405),
+  formatMaximum: __nccwpck_require__(9612),
+  patternRequired: __nccwpck_require__(7074),
+  'switch': __nccwpck_require__(3261),
+  select: __nccwpck_require__(4995),
+  transform: __nccwpck_require__(2402)
 };
 
 
 /***/ }),
 
-/***/ 899:
+/***/ 509:
 /***/ (function(module) {
 
 "use strict";
@@ -948,7 +948,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 7916:
+/***/ 5497:
 /***/ (function(module) {
 
 "use strict";
@@ -980,7 +980,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 1725:
+/***/ 7074:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
@@ -989,7 +989,7 @@ module.exports = function defFunc(ajv) {
 module.exports = function defFunc(ajv) {
   defFunc.definition = {
     type: 'object',
-    inline: __nccwpck_require__(4467),
+    inline: __nccwpck_require__(2828),
     statements: true,
     errors: 'full',
     metaSchema: {
@@ -1009,7 +1009,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 7819:
+/***/ 436:
 /***/ (function(module) {
 
 "use strict";
@@ -1041,7 +1041,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 6938:
+/***/ 9268:
 /***/ (function(module) {
 
 "use strict";
@@ -1085,7 +1085,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 4562:
+/***/ 577:
 /***/ (function(module) {
 
 "use strict";
@@ -1129,13 +1129,13 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 7427:
+/***/ 4995:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var util = __nccwpck_require__(5458);
+var util = __nccwpck_require__(8535);
 
 module.exports = function defFunc(ajv) {
   if (!ajv._opts.$data) {
@@ -1216,13 +1216,13 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 1429:
+/***/ 3261:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var util = __nccwpck_require__(5458);
+var util = __nccwpck_require__(8535);
 
 module.exports = function defFunc(ajv) {
   if (ajv.RULES.keywords.switch && ajv.RULES.keywords.if) return;
@@ -1230,7 +1230,7 @@ module.exports = function defFunc(ajv) {
   var metaSchemaRef = util.metaSchemaRef(ajv);
 
   defFunc.definition = {
-    inline: __nccwpck_require__(2114),
+    inline: __nccwpck_require__(6707),
     statements: true,
     errors: 'full',
     metaSchema: {
@@ -1262,7 +1262,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 4468:
+/***/ 2402:
 /***/ (function(module) {
 
 "use strict";
@@ -1350,7 +1350,7 @@ module.exports = function defFunc (ajv) {
 
 /***/ }),
 
-/***/ 2642:
+/***/ 5208:
 /***/ (function(module) {
 
 "use strict";
@@ -1390,7 +1390,7 @@ module.exports = function defFunc(ajv) {
 
 /***/ }),
 
-/***/ 9165:
+/***/ 2394:
 /***/ (function(module) {
 
 "use strict";
@@ -1457,21 +1457,21 @@ function getScalarKeys(keys, schema) {
 
 /***/ }),
 
-/***/ 9525:
+/***/ 284:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var compileSchema = __nccwpck_require__(2939)
-  , resolve = __nccwpck_require__(755)
-  , Cache = __nccwpck_require__(6113)
-  , SchemaObject = __nccwpck_require__(9420)
-  , stableStringify = __nccwpck_require__(6932)
-  , formats = __nccwpck_require__(1190)
-  , rules = __nccwpck_require__(1226)
-  , $dataMetaSchema = __nccwpck_require__(156)
-  , util = __nccwpck_require__(2334);
+var compileSchema = __nccwpck_require__(9962)
+  , resolve = __nccwpck_require__(5405)
+  , Cache = __nccwpck_require__(6140)
+  , SchemaObject = __nccwpck_require__(8952)
+  , stableStringify = __nccwpck_require__(2048)
+  , formats = __nccwpck_require__(9274)
+  , rules = __nccwpck_require__(5706)
+  , $dataMetaSchema = __nccwpck_require__(6194)
+  , util = __nccwpck_require__(5073);
 
 module.exports = Ajv;
 
@@ -1488,14 +1488,14 @@ Ajv.prototype.errorsText = errorsText;
 Ajv.prototype._addSchema = _addSchema;
 Ajv.prototype._compile = _compile;
 
-Ajv.prototype.compileAsync = __nccwpck_require__(1443);
-var customKeyword = __nccwpck_require__(8758);
+Ajv.prototype.compileAsync = __nccwpck_require__(2066);
+var customKeyword = __nccwpck_require__(2003);
 Ajv.prototype.addKeyword = customKeyword.add;
 Ajv.prototype.getKeyword = customKeyword.get;
 Ajv.prototype.removeKeyword = customKeyword.remove;
 Ajv.prototype.validateKeyword = customKeyword.validate;
 
-var errorClasses = __nccwpck_require__(5996);
+var errorClasses = __nccwpck_require__(9823);
 Ajv.ValidationError = errorClasses.Validation;
 Ajv.MissingRefError = errorClasses.MissingRef;
 Ajv.$dataMetaSchema = $dataMetaSchema;
@@ -1904,11 +1904,11 @@ function addFormat(name, format) {
 function addDefaultMetaSchema(self) {
   var $dataSchema;
   if (self._opts.$data) {
-    $dataSchema = __nccwpck_require__(1398);
+    $dataSchema = __nccwpck_require__(7664);
     self.addMetaSchema($dataSchema, $dataSchema.$id, true);
   }
   if (self._opts.meta === false) return;
-  var metaSchema = __nccwpck_require__(2352);
+  var metaSchema = __nccwpck_require__(7136);
   if (self._opts.$data) metaSchema = $dataMetaSchema(metaSchema, META_SUPPORT_DATA);
   self.addMetaSchema(metaSchema, META_SCHEMA_ID, true);
   self._refs['http://json-schema.org/schema'] = META_SCHEMA_ID;
@@ -1971,7 +1971,7 @@ function noop() {}
 
 /***/ }),
 
-/***/ 6113:
+/***/ 6140:
 /***/ (function(module) {
 
 "use strict";
@@ -2005,13 +2005,13 @@ Cache.prototype.clear = function Cache_clear() {
 
 /***/ }),
 
-/***/ 1443:
+/***/ 2066:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var MissingRefError = __nccwpck_require__(5996).MissingRef;
+var MissingRefError = (__nccwpck_require__(9823).MissingRef);
 
 module.exports = compileAsync;
 
@@ -2103,13 +2103,13 @@ function compileAsync(schema, meta, callback) {
 
 /***/ }),
 
-/***/ 5996:
+/***/ 9823:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var resolve = __nccwpck_require__(755);
+var resolve = __nccwpck_require__(5405);
 
 module.exports = {
   Validation: errorSubclass(ValidationError),
@@ -2145,13 +2145,13 @@ function errorSubclass(Subclass) {
 
 /***/ }),
 
-/***/ 1190:
+/***/ 9274:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var util = __nccwpck_require__(2334);
+var util = __nccwpck_require__(5073);
 
 var DATE = /^(\d\d\d\d)-(\d\d)-(\d\d)$/;
 var DAYS = [0,31,28,31,30,31,30,31,31,30,31,30,31];
@@ -2295,25 +2295,25 @@ function regex(str) {
 
 /***/ }),
 
-/***/ 2939:
+/***/ 9962:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var resolve = __nccwpck_require__(755)
-  , util = __nccwpck_require__(2334)
-  , errorClasses = __nccwpck_require__(5996)
-  , stableStringify = __nccwpck_require__(6932);
+var resolve = __nccwpck_require__(5405)
+  , util = __nccwpck_require__(5073)
+  , errorClasses = __nccwpck_require__(9823)
+  , stableStringify = __nccwpck_require__(2048);
 
-var validateGenerator = __nccwpck_require__(241);
+var validateGenerator = __nccwpck_require__(3455);
 
 /**
  * Functions below are used inside compiled validations function
  */
 
 var ucs2length = util.ucs2length;
-var equal = __nccwpck_require__(4097);
+var equal = __nccwpck_require__(9365);
 
 // this error is thrown by async schemas to return validation errors via exception
 var ValidationError = errorClasses.Validation;
@@ -2690,17 +2690,17 @@ function vars(arr, statement) {
 
 /***/ }),
 
-/***/ 755:
+/***/ 5405:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var URI = __nccwpck_require__(6658)
-  , equal = __nccwpck_require__(4097)
-  , util = __nccwpck_require__(2334)
-  , SchemaObject = __nccwpck_require__(9420)
-  , traverse = __nccwpck_require__(2271);
+var URI = __nccwpck_require__(7024)
+  , equal = __nccwpck_require__(9365)
+  , util = __nccwpck_require__(5073)
+  , SchemaObject = __nccwpck_require__(8952)
+  , traverse = __nccwpck_require__(7389);
 
 module.exports = resolve;
 
@@ -2968,14 +2968,14 @@ function resolveIds(schema) {
 
 /***/ }),
 
-/***/ 1226:
+/***/ 5706:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var ruleModules = __nccwpck_require__(3309)
-  , toHash = __nccwpck_require__(2334).toHash;
+var ruleModules = __nccwpck_require__(5786)
+  , toHash = (__nccwpck_require__(5073).toHash);
 
 module.exports = function rules() {
   var RULES = [
@@ -3042,13 +3042,13 @@ module.exports = function rules() {
 
 /***/ }),
 
-/***/ 9420:
+/***/ 8952:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var util = __nccwpck_require__(2334);
+var util = __nccwpck_require__(5073);
 
 module.exports = SchemaObject;
 
@@ -3059,7 +3059,7 @@ function SchemaObject(obj) {
 
 /***/ }),
 
-/***/ 5350:
+/***/ 2134:
 /***/ (function(module) {
 
 "use strict";
@@ -3087,7 +3087,7 @@ module.exports = function ucs2length(str) {
 
 /***/ }),
 
-/***/ 2334:
+/***/ 5073:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
@@ -3102,8 +3102,8 @@ module.exports = {
   toHash: toHash,
   getProperty: getProperty,
   escapeQuotes: escapeQuotes,
-  equal: __nccwpck_require__(4097),
-  ucs2length: __nccwpck_require__(5350),
+  equal: __nccwpck_require__(9365),
+  ucs2length: __nccwpck_require__(2134),
   varOccurences: varOccurences,
   varReplace: varReplace,
   schemaHasRules: schemaHasRules,
@@ -3334,7 +3334,7 @@ function unescapeJsonPointer(str) {
 
 /***/ }),
 
-/***/ 156:
+/***/ 6194:
 /***/ (function(module) {
 
 "use strict";
@@ -3391,13 +3391,13 @@ module.exports = function (metaSchema, keywordsJsonPointers) {
 
 /***/ }),
 
-/***/ 6277:
+/***/ 1297:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var metaSchema = __nccwpck_require__(2352);
+var metaSchema = __nccwpck_require__(7136);
 
 module.exports = {
   $id: 'https://github.com/ajv-validator/ajv/blob/master/lib/definition_schema.js',
@@ -3436,7 +3436,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 9499:
+/***/ 982:
 /***/ (function(module) {
 
 "use strict";
@@ -3607,7 +3607,7 @@ module.exports = function generate__limit(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 8858:
+/***/ 8497:
 /***/ (function(module) {
 
 "use strict";
@@ -3695,7 +3695,7 @@ module.exports = function generate__limitItems(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 6399:
+/***/ 7400:
 /***/ (function(module) {
 
 "use strict";
@@ -3788,7 +3788,7 @@ module.exports = function generate__limitLength(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 4461:
+/***/ 3931:
 /***/ (function(module) {
 
 "use strict";
@@ -3876,7 +3876,7 @@ module.exports = function generate__limitProperties(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 9294:
+/***/ 6135:
 /***/ (function(module) {
 
 "use strict";
@@ -3926,7 +3926,7 @@ module.exports = function generate_allOf(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 4098:
+/***/ 4850:
 /***/ (function(module) {
 
 "use strict";
@@ -4007,7 +4007,7 @@ module.exports = function generate_anyOf(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 695:
+/***/ 9298:
 /***/ (function(module) {
 
 "use strict";
@@ -4029,7 +4029,7 @@ module.exports = function generate_comment(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 1682:
+/***/ 3688:
 /***/ (function(module) {
 
 "use strict";
@@ -4093,7 +4093,7 @@ module.exports = function generate_const(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 4832:
+/***/ 3496:
 /***/ (function(module) {
 
 "use strict";
@@ -4182,7 +4182,7 @@ module.exports = function generate_contains(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 3291:
+/***/ 396:
 /***/ (function(module) {
 
 "use strict";
@@ -4418,7 +4418,7 @@ module.exports = function generate_custom(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 5548:
+/***/ 8226:
 /***/ (function(module) {
 
 "use strict";
@@ -4594,7 +4594,7 @@ module.exports = function generate_dependencies(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 9342:
+/***/ 4382:
 /***/ (function(module) {
 
 "use strict";
@@ -4668,7 +4668,7 @@ module.exports = function generate_enum(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 3942:
+/***/ 5974:
 /***/ (function(module) {
 
 "use strict";
@@ -4826,7 +4826,7 @@ module.exports = function generate_format(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 826:
+/***/ 6639:
 /***/ (function(module) {
 
 "use strict";
@@ -4937,7 +4937,7 @@ module.exports = function generate_if(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 3309:
+/***/ 5786:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
@@ -4945,40 +4945,40 @@ module.exports = function generate_if(it, $keyword, $ruleType) {
 
 //all requires must be explicit because browserify won't work with dynamic requires
 module.exports = {
-  '$ref': __nccwpck_require__(8991),
-  allOf: __nccwpck_require__(9294),
-  anyOf: __nccwpck_require__(4098),
-  '$comment': __nccwpck_require__(695),
-  const: __nccwpck_require__(1682),
-  contains: __nccwpck_require__(4832),
-  dependencies: __nccwpck_require__(5548),
-  'enum': __nccwpck_require__(9342),
-  format: __nccwpck_require__(3942),
-  'if': __nccwpck_require__(826),
-  items: __nccwpck_require__(3801),
-  maximum: __nccwpck_require__(9499),
-  minimum: __nccwpck_require__(9499),
-  maxItems: __nccwpck_require__(8858),
-  minItems: __nccwpck_require__(8858),
-  maxLength: __nccwpck_require__(6399),
-  minLength: __nccwpck_require__(6399),
-  maxProperties: __nccwpck_require__(4461),
-  minProperties: __nccwpck_require__(4461),
-  multipleOf: __nccwpck_require__(9475),
-  not: __nccwpck_require__(6812),
-  oneOf: __nccwpck_require__(213),
-  pattern: __nccwpck_require__(6949),
-  properties: __nccwpck_require__(6326),
-  propertyNames: __nccwpck_require__(4628),
-  required: __nccwpck_require__(3063),
-  uniqueItems: __nccwpck_require__(7264),
-  validate: __nccwpck_require__(241)
+  '$ref': __nccwpck_require__(7295),
+  allOf: __nccwpck_require__(6135),
+  anyOf: __nccwpck_require__(4850),
+  '$comment': __nccwpck_require__(9298),
+  const: __nccwpck_require__(3688),
+  contains: __nccwpck_require__(3496),
+  dependencies: __nccwpck_require__(8226),
+  'enum': __nccwpck_require__(4382),
+  format: __nccwpck_require__(5974),
+  'if': __nccwpck_require__(6639),
+  items: __nccwpck_require__(2438),
+  maximum: __nccwpck_require__(982),
+  minimum: __nccwpck_require__(982),
+  maxItems: __nccwpck_require__(8497),
+  minItems: __nccwpck_require__(8497),
+  maxLength: __nccwpck_require__(7400),
+  minLength: __nccwpck_require__(7400),
+  maxProperties: __nccwpck_require__(3931),
+  minProperties: __nccwpck_require__(3931),
+  multipleOf: __nccwpck_require__(2210),
+  not: __nccwpck_require__(225),
+  oneOf: __nccwpck_require__(261),
+  pattern: __nccwpck_require__(9254),
+  properties: __nccwpck_require__(5946),
+  propertyNames: __nccwpck_require__(6217),
+  required: __nccwpck_require__(5991),
+  uniqueItems: __nccwpck_require__(2089),
+  validate: __nccwpck_require__(3455)
 };
 
 
 /***/ }),
 
-/***/ 3801:
+/***/ 2438:
 /***/ (function(module) {
 
 "use strict";
@@ -5126,7 +5126,7 @@ module.exports = function generate_items(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 9475:
+/***/ 2210:
 /***/ (function(module) {
 
 "use strict";
@@ -5214,7 +5214,7 @@ module.exports = function generate_multipleOf(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 6812:
+/***/ 225:
 /***/ (function(module) {
 
 "use strict";
@@ -5306,7 +5306,7 @@ module.exports = function generate_not(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 213:
+/***/ 261:
 /***/ (function(module) {
 
 "use strict";
@@ -5387,7 +5387,7 @@ module.exports = function generate_oneOf(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 6949:
+/***/ 9254:
 /***/ (function(module) {
 
 "use strict";
@@ -5470,7 +5470,7 @@ module.exports = function generate_pattern(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 6326:
+/***/ 5946:
 /***/ (function(module) {
 
 "use strict";
@@ -5813,7 +5813,7 @@ module.exports = function generate_properties(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 4628:
+/***/ 6217:
 /***/ (function(module) {
 
 "use strict";
@@ -5902,7 +5902,7 @@ module.exports = function generate_propertyNames(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 8991:
+/***/ 7295:
 /***/ (function(module) {
 
 "use strict";
@@ -6034,7 +6034,7 @@ module.exports = function generate_ref(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 3063:
+/***/ 5991:
 /***/ (function(module) {
 
 "use strict";
@@ -6312,7 +6312,7 @@ module.exports = function generate_required(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 7264:
+/***/ 2089:
 /***/ (function(module) {
 
 "use strict";
@@ -6406,7 +6406,7 @@ module.exports = function generate_uniqueItems(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 241:
+/***/ 3455:
 /***/ (function(module) {
 
 "use strict";
@@ -6896,15 +6896,15 @@ module.exports = function generate_validate(it, $keyword, $ruleType) {
 
 /***/ }),
 
-/***/ 8758:
+/***/ 2003:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
 var IDENTIFIER = /^[a-z_$][a-z0-9_$-]*$/i;
-var customRuleCode = __nccwpck_require__(3291);
-var definitionSchema = __nccwpck_require__(6277);
+var customRuleCode = __nccwpck_require__(396);
+var definitionSchema = __nccwpck_require__(1297);
 
 module.exports = {
   add: addKeyword,
@@ -7050,7 +7050,7 @@ function validateKeyword(definition, throwError) {
 
 /***/ }),
 
-/***/ 4097:
+/***/ 9365:
 /***/ (function(module) {
 
 "use strict";
@@ -7104,7 +7104,7 @@ module.exports = function equal(a, b) {
 
 /***/ }),
 
-/***/ 6932:
+/***/ 2048:
 /***/ (function(module) {
 
 "use strict";
@@ -7171,7 +7171,7 @@ module.exports = function (data, opts) {
 
 /***/ }),
 
-/***/ 2271:
+/***/ 7389:
 /***/ (function(module) {
 
 "use strict";
@@ -7268,94 +7268,15 @@ function escapeJsonPtr(str) {
 
 /***/ }),
 
-/***/ 5146:
+/***/ 6353:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-"use strict";
-
-const Queue = __nccwpck_require__(4718);
-
-const pLimit = concurrency => {
-	if (!((Number.isInteger(concurrency) || concurrency === Infinity) && concurrency > 0)) {
-		throw new TypeError('Expected `concurrency` to be a number from 1 and up');
-	}
-
-	const queue = new Queue();
-	let activeCount = 0;
-
-	const next = () => {
-		activeCount--;
-
-		if (queue.size > 0) {
-			queue.dequeue()();
-		}
-	};
-
-	const run = async (fn, resolve, ...args) => {
-		activeCount++;
-
-		const result = (async () => fn(...args))();
-
-		resolve(result);
-
-		try {
-			await result;
-		} catch {}
-
-		next();
-	};
-
-	const enqueue = (fn, resolve, ...args) => {
-		queue.enqueue(run.bind(null, fn, resolve, ...args));
-
-		(async () => {
-			// This function needs to wait until the next microtask before comparing
-			// `activeCount` to `concurrency`, because `activeCount` is updated asynchronously
-			// when the run function is dequeued and called. The comparison in the if-statement
-			// needs to happen asynchronously as well to get an up-to-date value for `activeCount`.
-			await Promise.resolve();
-
-			if (activeCount < concurrency && queue.size > 0) {
-				queue.dequeue()();
-			}
-		})();
-	};
-
-	const generator = (fn, ...args) => new Promise(resolve => {
-		enqueue(fn, resolve, ...args);
-	});
-
-	Object.defineProperties(generator, {
-		activeCount: {
-			get: () => activeCount
-		},
-		pendingCount: {
-			get: () => queue.size
-		},
-		clearQueue: {
-			value: () => {
-				queue.clear();
-			}
-		}
-	});
-
-	return generator;
-};
-
-module.exports = pLimit;
+module.exports = __nccwpck_require__(6113).randomBytes
 
 
 /***/ }),
 
-/***/ 98:
-/***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
-
-module.exports = __nccwpck_require__(6417).randomBytes
-
-
-/***/ }),
-
-/***/ 3104:
+/***/ 9545:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -7364,12 +7285,12 @@ module.exports = __nccwpck_require__(6417).randomBytes
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 const {
   stringHints,
   numberHints
-} = __nccwpck_require__(373);
+} = __nccwpck_require__(6586);
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
 
 /** @typedef {import("json-schema").JSONSchema7} JSONSchema7 */
@@ -8629,11 +8550,11 @@ class ValidationError extends Error {
 }
 
 var _default = ValidationError;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
-/***/ 8399:
+/***/ 4800:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
@@ -8642,7 +8563,7 @@ exports.default = _default;
 const {
   validate,
   ValidationError
-} = __nccwpck_require__(8412);
+} = __nccwpck_require__(3008);
 
 module.exports = {
   validate,
@@ -8651,7 +8572,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 192:
+/***/ 9116:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -8660,7 +8581,7 @@ module.exports = {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 /** @typedef {import("ajv").Ajv} Ajv */
 
@@ -8747,11 +8668,11 @@ function addAbsolutePathKeyword(ajv) {
 }
 
 var _default = addAbsolutePathKeyword;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
-/***/ 1857:
+/***/ 1833:
 /***/ (function(module) {
 
 "use strict";
@@ -8921,13 +8842,13 @@ module.exports = Range;
 
 /***/ }),
 
-/***/ 373:
+/***/ 6586:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-const Range = __nccwpck_require__(1857);
+const Range = __nccwpck_require__(1833);
 /** @typedef {import("../validate").Schema} Schema */
 
 /**
@@ -9033,7 +8954,7 @@ module.exports.numberHints = function numberHints(schema, logic) {
 
 /***/ }),
 
-/***/ 8412:
+/***/ 3008:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -9050,16 +8971,16 @@ Object.defineProperty(exports, "ValidationError", ({
   }
 }));
 
-var _absolutePath = _interopRequireDefault(__nccwpck_require__(192));
+var _absolutePath = _interopRequireDefault(__nccwpck_require__(9116));
 
-var _ValidationError = _interopRequireDefault(__nccwpck_require__(3104));
+var _ValidationError = _interopRequireDefault(__nccwpck_require__(9545));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
-const Ajv = __nccwpck_require__(9525);
+const Ajv = __nccwpck_require__(284);
 
-const ajvKeywords = __nccwpck_require__(44);
+const ajvKeywords = __nccwpck_require__(1902);
 /** @typedef {import("json-schema").JSONSchema4} JSONSchema4 */
 
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
@@ -9203,7 +9124,7 @@ function filterErrors(errors) {
 
 /***/ }),
 
-/***/ 6665:
+/***/ 7512:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
@@ -9215,7 +9136,7 @@ See the accompanying LICENSE file for terms.
 
 
 
-var randomBytes = __nccwpck_require__(98);
+var randomBytes = __nccwpck_require__(6353);
 
 // Generate an internal UID to make the regexp pattern harder to guess.
 var UID_LENGTH          = 16;
@@ -9479,7 +9400,7 @@ module.exports = function serialize(obj, options) {
 
 /***/ }),
 
-/***/ 5540:
+/***/ 9443:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -9489,7 +9410,7 @@ module.exports = function serialize(obj, options) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var util = __nccwpck_require__(9026);
+var util = __nccwpck_require__(9524);
 var has = Object.prototype.hasOwnProperty;
 var hasNativeMap = typeof Map !== "undefined";
 
@@ -9607,7 +9528,7 @@ exports.I = ArraySet;
 
 /***/ }),
 
-/***/ 6000:
+/***/ 3829:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -9647,7 +9568,7 @@ exports.I = ArraySet;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var base64 = __nccwpck_require__(4043);
+var base64 = __nccwpck_require__(3663);
 
 // A single base 64 digit can contain 6 bits of data. For the base 64 variable
 // length quantities we use in the source map spec, the first bit is the sign,
@@ -9754,7 +9675,7 @@ exports.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
 
 /***/ }),
 
-/***/ 4043:
+/***/ 3663:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -9828,7 +9749,7 @@ exports.decode = function (charCode) {
 
 /***/ }),
 
-/***/ 4779:
+/***/ 7849:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -9946,7 +9867,7 @@ exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
 
 /***/ }),
 
-/***/ 1040:
+/***/ 162:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -9956,7 +9877,7 @@ exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var util = __nccwpck_require__(9026);
+var util = __nccwpck_require__(9524);
 
 /**
  * Determine whether mappingB is after mappingA with respect to generated
@@ -10032,7 +9953,7 @@ exports.H = MappingList;
 
 /***/ }),
 
-/***/ 2853:
+/***/ 3509:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -10153,7 +10074,7 @@ exports.U = function (ary, comparator) {
 
 /***/ }),
 
-/***/ 139:
+/***/ 7454:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 var __webpack_unused_export__;
@@ -10164,11 +10085,11 @@ var __webpack_unused_export__;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var util = __nccwpck_require__(9026);
-var binarySearch = __nccwpck_require__(4779);
-var ArraySet = __nccwpck_require__(5540)/* .ArraySet */ .I;
-var base64VLQ = __nccwpck_require__(6000);
-var quickSort = __nccwpck_require__(2853)/* .quickSort */ .U;
+var util = __nccwpck_require__(9524);
+var binarySearch = __nccwpck_require__(7849);
+var ArraySet = (__nccwpck_require__(9443)/* .ArraySet */ .I);
+var base64VLQ = __nccwpck_require__(3829);
+var quickSort = (__nccwpck_require__(3509)/* .quickSort */ .U);
 
 function SourceMapConsumer(aSourceMap, aSourceMapURL) {
   var sourceMap = aSourceMap;
@@ -11306,7 +11227,7 @@ __webpack_unused_export__ = IndexedSourceMapConsumer;
 
 /***/ }),
 
-/***/ 869:
+/***/ 345:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -11316,10 +11237,10 @@ __webpack_unused_export__ = IndexedSourceMapConsumer;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var base64VLQ = __nccwpck_require__(6000);
-var util = __nccwpck_require__(9026);
-var ArraySet = __nccwpck_require__(5540)/* .ArraySet */ .I;
-var MappingList = __nccwpck_require__(1040)/* .MappingList */ .H;
+var base64VLQ = __nccwpck_require__(3829);
+var util = __nccwpck_require__(9524);
+var ArraySet = (__nccwpck_require__(9443)/* .ArraySet */ .I);
+var MappingList = (__nccwpck_require__(162)/* .MappingList */ .H);
 
 /**
  * An instance of the SourceMapGenerator represents a source map which is
@@ -11738,7 +11659,7 @@ exports.SourceMapGenerator = SourceMapGenerator;
 
 /***/ }),
 
-/***/ 9610:
+/***/ 8243:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -11748,8 +11669,8 @@ exports.SourceMapGenerator = SourceMapGenerator;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 
-var SourceMapGenerator = __nccwpck_require__(869).SourceMapGenerator;
-var util = __nccwpck_require__(9026);
+var SourceMapGenerator = (__nccwpck_require__(345).SourceMapGenerator);
+var util = __nccwpck_require__(9524);
 
 // Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
 // operating systems these days (capturing the result).
@@ -12158,7 +12079,7 @@ exports.SourceNode = SourceNode;
 
 /***/ }),
 
-/***/ 9026:
+/***/ 9524:
 /***/ (function(__unused_webpack_module, exports) {
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -12653,7 +12574,7 @@ exports.computeSourceURL = computeSourceURL;
 
 /***/ }),
 
-/***/ 4033:
+/***/ 9333:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 /*
@@ -12661,26 +12582,26 @@ exports.computeSourceURL = computeSourceURL;
  * Licensed under the New BSD license. See LICENSE.txt or:
  * http://opensource.org/licenses/BSD-3-Clause
  */
-exports.SourceMapGenerator = __nccwpck_require__(869).SourceMapGenerator;
-exports.SourceMapConsumer = __nccwpck_require__(139).SourceMapConsumer;
-exports.SourceNode = __nccwpck_require__(9610).SourceNode;
+exports.SourceMapGenerator = __nccwpck_require__(345).SourceMapGenerator;
+exports.SourceMapConsumer = __nccwpck_require__(7454).SourceMapConsumer;
+exports.SourceNode = __nccwpck_require__(8243).SourceNode;
 
 
 /***/ }),
 
-/***/ 9998:
+/***/ 5466:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-const plugin = __nccwpck_require__(6997);
+const plugin = __nccwpck_require__(2348);
 
 module.exports = plugin.default;
 
 /***/ }),
 
-/***/ 6997:
+/***/ 2348:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -12689,27 +12610,25 @@ module.exports = plugin.default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
-var path = _interopRequireWildcard(__nccwpck_require__(5622));
+var path = _interopRequireWildcard(__nccwpck_require__(1017));
 
-var os = _interopRequireWildcard(__nccwpck_require__(2087));
+var os = _interopRequireWildcard(__nccwpck_require__(2037));
 
-var _sourceMap = __nccwpck_require__(4033);
+var _sourceMap = __nccwpck_require__(9333);
 
-var _schemaUtils = __nccwpck_require__(8399);
+var _schemaUtils = __nccwpck_require__(4800);
 
-var _serializeJavascript = _interopRequireDefault(__nccwpck_require__(6665));
+var _serializeJavascript = _interopRequireDefault(__nccwpck_require__(7512));
 
-var _pLimit = _interopRequireDefault(__nccwpck_require__(5146));
-
-var _jestWorker = __nccwpck_require__(9733);
+var _jestWorker = __nccwpck_require__(6063);
 
 var _utils = require('./utils');
 
-var schema = _interopRequireWildcard(__nccwpck_require__(5916));
+var schema = _interopRequireWildcard(__nccwpck_require__(7848));
 
-var _minify = __nccwpck_require__(3744);
+var _minify = __nccwpck_require__(8054);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12863,14 +12782,20 @@ class TerserPlugin {
    * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>} [options]
    */
   constructor(options) {
-    (0, _schemaUtils.validate)(schema, options || {}, {
+    (0, _schemaUtils.validate)(
+    /** @type {Schema} */
+    schema, options || {}, {
       name: "Terser Plugin",
       baseDataPath: "options"
     }); // TODO make `minimizer` option instead `minify` and `terserOptions` in the next major release, also rename `terserMinify` to `terserMinimize`
 
     const {
-      minify = _utils.terserMinify,
-      terserOptions = {},
+      minify =
+      /** @type {MinimizerImplementation<InferDefaultType<T>>} */
+      _utils.terserMinify,
+      terserOptions =
+      /** @type {InferDefaultType<T>} */
+      {},
       test = /\.[cm]?js(\?.*)?$/i,
       extractComments = true,
       parallel = true,
@@ -12905,7 +12830,7 @@ class TerserPlugin {
    * @private
    * @param {Error | string} warning
    * @param {string} file
-   * @returns {WebpackError}
+   * @returns {Error}
    */
 
 
@@ -12917,32 +12842,29 @@ class TerserPlugin {
     const builtWarning = new Error(warning.toString());
     builtWarning.name = "Warning";
     builtWarning.hideStack = true;
-    builtWarning.file = file; // @ts-ignore
-
+    builtWarning.file = file;
     return builtWarning;
   }
   /**
    * @private
    * @param {any} error
    * @param {string} file
-   * @param {Compilation["requestShortener"]} [requestShortener]
    * @param {SourceMapConsumer} [sourceMap]
-   * @returns {WebpackError}
+   * @param {Compilation["requestShortener"]} [requestShortener]
+   * @returns {Error}
    */
 
 
-  static buildError(error, file, requestShortener, sourceMap) {
+  static buildError(error, file, sourceMap, requestShortener) {
     /**
      * @type {Error & { file: string }}
      */
-    // @ts-ignore
     let builtError;
 
     if (typeof error === "string") {
       // @ts-ignore
       builtError = new Error(`${file} from Terser plugin\n${error}`);
-      builtError.file = file; // @ts-ignore
-
+      builtError.file = file;
       return builtError;
     }
 
@@ -12955,30 +12877,26 @@ class TerserPlugin {
       if (original && original.source && requestShortener) {
         // @ts-ignore
         builtError = new Error(`${file} from Terser plugin\n${error.message} [${requestShortener.shorten(original.source)}:${original.line},${original.column}][${file}:${error.line},${error.col}]${error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""}`);
-        builtError.file = file; // @ts-ignore
-
+        builtError.file = file;
         return builtError;
       } // @ts-ignore
 
 
       builtError = new Error(`${file} from Terser plugin\n${error.message} [${file}:${error.line},${error.col}]${error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""}`);
-      builtError.file = file; // @ts-ignore
-
+      builtError.file = file;
       return builtError;
     }
 
     if (error.stack) {
       // @ts-ignore
       builtError = new Error(`${file} from Terser plugin\n${typeof error.message !== "undefined" ? error.message : ""}\n${error.stack}`);
-      builtError.file = file; // @ts-ignore
-
+      builtError.file = file;
       return builtError;
     } // @ts-ignore
 
 
     builtError = new Error(`${file} from Terser plugin\n${error.message}`);
-    builtError.file = file; // @ts-ignore
-
+    builtError.file = file;
     return builtError;
   }
   /**
@@ -13009,10 +12927,12 @@ class TerserPlugin {
   async optimize(compiler, compilation, assets, optimizeOptions) {
     const cache = compilation.getCache("TerserWebpackPlugin");
     let numberOfAssets = 0;
-    const assetsForJob = await Promise.all(Object.keys(assets).filter(name => {
+    const assetsForMinify = await Promise.all(Object.keys(assets).filter(name => {
       const {
         info
-      } = compilation.getAsset(name);
+      } =
+      /** @type {Asset} */
+      compilation.getAsset(name);
 
       if ( // Skip double minimize assets from child compilation
       info.minimized || // Skip minimizing for extracted comments assets
@@ -13030,7 +12950,9 @@ class TerserPlugin {
       const {
         info,
         source
-      } = compilation.getAsset(name);
+      } =
+      /** @type {Asset} */
+      compilation.getAsset(name);
       const eTag = cache.getLazyHashedEtag(source);
       const cacheItem = cache.getItemCache(name, eTag);
       const output = await cacheItem.getPromise();
@@ -13047,7 +12969,12 @@ class TerserPlugin {
         cacheItem
       };
     }));
+
+    if (assetsForMinify.length === 0) {
+      return;
+    }
     /** @type {undefined | (() => MinimizerWorker<T>)} */
+
 
     let getWorker;
     /** @type {undefined | MinimizerWorker<T>} */
@@ -13066,7 +12993,9 @@ class TerserPlugin {
           return initializedWorker;
         }
 
-        initializedWorker = new _jestWorker.Worker(__nccwpck_require__.ab + "minify.js", {
+        initializedWorker =
+        /** @type {MinimizerWorker<T>} */
+        new _jestWorker.Worker(__nccwpck_require__.ab + "minify.js", {
           numWorkers: numberOfWorkers,
           enableWorkerThreads: true
         }); // https://github.com/facebook/jest/issues/8872#issuecomment-524822081
@@ -13087,7 +13016,6 @@ class TerserPlugin {
       };
     }
 
-    const limit = (0, _pLimit.default)(getWorker && numberOfAssets > 0 ? numberOfWorkers : Infinity);
     const {
       SourceMapSource,
       ConcatSource,
@@ -13100,8 +13028,8 @@ class TerserPlugin {
     const allExtractedComments = new Map();
     const scheduledTasks = [];
 
-    for (const asset of assetsForJob) {
-      scheduledTasks.push(limit(async () => {
+    for (const asset of assetsForMinify) {
+      scheduledTasks.push(async () => {
         const {
           name,
           inputSource,
@@ -13125,10 +13053,16 @@ class TerserPlugin {
 
           if (map) {
             if (TerserPlugin.isSourceMap(map)) {
-              inputSourceMap = map;
+              inputSourceMap =
+              /** @type {RawSourceMap} */
+              map;
             } else {
-              inputSourceMap = map;
-              compilation.warnings.push(new Error(`${name} contains invalid source map`));
+              inputSourceMap =
+              /** @type {RawSourceMap} */
+              map;
+              compilation.warnings.push(
+              /** @type {WebpackError} */
+              new Error(`${name} contains invalid source map`));
             }
           }
 
@@ -13167,14 +13101,20 @@ class TerserPlugin {
             output = await (getWorker ? getWorker().transform((0, _serializeJavascript.default)(options)) : (0, _minify.minify)(options));
           } catch (error) {
             const hasSourceMap = inputSourceMap && TerserPlugin.isSourceMap(inputSourceMap);
-            compilation.errors.push(TerserPlugin.buildError(error, name, // eslint-disable-next-line no-undefined
-            hasSourceMap ? compilation.requestShortener : undefined, hasSourceMap ? new _sourceMap.SourceMapConsumer(inputSourceMap) : // eslint-disable-next-line no-undefined
-            undefined));
+            compilation.errors.push(
+            /** @type {WebpackError} */
+            TerserPlugin.buildError(error, name, hasSourceMap ? new _sourceMap.SourceMapConsumer(
+            /** @type {RawSourceMap} */
+            inputSourceMap) : // eslint-disable-next-line no-undefined
+            undefined, // eslint-disable-next-line no-undefined
+            hasSourceMap ? compilation.requestShortener : undefined));
             return;
           }
 
           if (typeof output.code === "undefined") {
-            compilation.errors.push(new Error(`${name} from Terser plugin\nMinimizer doesn't return result`));
+            compilation.errors.push(
+            /** @type {WebpackError} */
+            new Error(`${name} from Terser plugin\nMinimizer doesn't return result`));
             return;
           }
 
@@ -13192,9 +13132,11 @@ class TerserPlugin {
             /**
              * @param {Error | string} item
              */
-            item => TerserPlugin.buildError(item, name, // eslint-disable-next-line no-undefined
-            hasSourceMap ? compilation.requestShortener : undefined, hasSourceMap ? new _sourceMap.SourceMapConsumer(inputSourceMap) : // eslint-disable-next-line no-undefined
-            undefined));
+            item => TerserPlugin.buildError(item, name, hasSourceMap ? new _sourceMap.SourceMapConsumer(
+            /** @type {RawSourceMap} */
+            inputSourceMap) : // eslint-disable-next-line no-undefined
+            undefined, // eslint-disable-next-line no-undefined
+            hasSourceMap ? compilation.requestShortener : undefined));
           }
 
           let shebang;
@@ -13208,7 +13150,9 @@ class TerserPlugin {
           }
 
           if (output.map) {
-            output.source = new SourceMapSource(output.code, name, output.map, input, inputSourceMap, true);
+            output.source = new SourceMapSource(output.code, name, output.map, input,
+            /** @type {RawSourceMap} */
+            inputSourceMap, true);
           } else {
             output.source = new RawSource(output.code);
           }
@@ -13266,23 +13210,19 @@ class TerserPlugin {
         }
 
         if (output.warnings && output.warnings.length > 0) {
-          output.warnings.forEach(
-          /**
-           * @param {Error} warning
-           */
-          warning => {
-            compilation.warnings.push(warning);
-          });
+          for (const warning of output.warnings) {
+            compilation.warnings.push(
+            /** @type {WebpackError} */
+            warning);
+          }
         }
 
         if (output.errors && output.errors.length > 0) {
-          output.errors.forEach(
-          /**
-           * @param {Error & { filename?: string }} error
-           */
-          error => {
-            compilation.errors.push(error);
-          });
+          for (const error of output.errors) {
+            compilation.errors.push(
+            /** @type {WebpackError} */
+            error);
+          }
         }
         /** @type {Record<string, any>} */
 
@@ -13309,10 +13249,13 @@ class TerserPlugin {
         }
 
         compilation.updateAsset(name, source, newInfo);
-      }));
+      });
     }
 
-    await Promise.all(scheduledTasks);
+    const limit = getWorker && numberOfAssets > 0 ?
+    /** @type {number} */
+    numberOfWorkers : scheduledTasks.length;
+    await (0, _utils.throttleAll)(limit, scheduledTasks);
 
     if (initializedWorker) {
       await initializedWorker.end();
@@ -13327,7 +13270,9 @@ class TerserPlugin {
      * @returns {Promise<ExtractedCommentsInfoWIthFrom>}
      */
     async (previousPromise, [from, value]) => {
-      const previous = await previousPromise;
+      const previous =
+      /** @type {ExtractedCommentsInfoWIthFrom | undefined} **/
+      await previousPromise;
       const {
         commentsFilename,
         extractedCommentsSource
@@ -13378,7 +13323,9 @@ class TerserPlugin {
         commentsFilename,
         from
       };
-    }, Promise.resolve());
+    },
+    /** @type {Promise<unknown>} */
+    Promise.resolve());
   }
   /**
    * @private
@@ -13446,11 +13393,11 @@ TerserPlugin.uglifyJsMinify = _utils.uglifyJsMinify;
 TerserPlugin.swcMinify = _utils.swcMinify;
 TerserPlugin.esbuildMinify = _utils.esbuildMinify;
 var _default = TerserPlugin;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
-/***/ 3744:
+/***/ 8054:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -13491,7 +13438,12 @@ async function transform(options) {
   // 'use strict' => this === undefined (Clean Scope)
   // Safer for possible security issues, albeit not critical at all here
   // eslint-disable-next-line no-param-reassign
-  const evaluatedOptions = // eslint-disable-next-line no-new-func
+  const evaluatedOptions =
+  /**
+   * @template T
+   * @type {import("./index.js").InternalOptions<T>}
+   * */
+  // eslint-disable-next-line no-new-func
   new Function("exports", "require", "module", "__filename", "__dirname", `'use strict'\nreturn ${options}`)(exports, require, module, __filename, __dirname);
   return minify(evaluatedOptions);
 }
@@ -13501,7 +13453,7 @@ module.exports.transform = transform;
 
 /***/ }),
 
-/***/ 6658:
+/***/ 7024:
 /***/ (function(__unused_webpack_module, exports) {
 
 /** @license URI.js v4.4.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
@@ -14950,106 +14902,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 /***/ }),
 
-/***/ 4718:
-/***/ (function(module) {
-
-class Node {
-	/// value;
-	/// next;
-
-	constructor(value) {
-		this.value = value;
-
-		// TODO: Remove this when targeting Node.js 12.
-		this.next = undefined;
-	}
-}
-
-class Queue {
-	// TODO: Use private class fields when targeting Node.js 12.
-	// #_head;
-	// #_tail;
-	// #_size;
-
-	constructor() {
-		this.clear();
-	}
-
-	enqueue(value) {
-		const node = new Node(value);
-
-		if (this._head) {
-			this._tail.next = node;
-			this._tail = node;
-		} else {
-			this._head = node;
-			this._tail = node;
-		}
-
-		this._size++;
-	}
-
-	dequeue() {
-		const current = this._head;
-		if (!current) {
-			return;
-		}
-
-		this._head = this._head.next;
-		this._size--;
-		return current.value;
-	}
-
-	clear() {
-		this._head = undefined;
-		this._tail = undefined;
-		this._size = 0;
-	}
-
-	get size() {
-		return this._size;
-	}
-
-	* [Symbol.iterator]() {
-		let current = this._head;
-
-		while (current) {
-			yield current.value;
-			current = current.next;
-		}
-	}
-}
-
-module.exports = Queue;
-
-
-/***/ }),
-
-/***/ 1398:
-/***/ (function(module) {
-
-"use strict";
-module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","$id":"https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#","description":"Meta-schema for $data reference (JSON Schema extension proposal)","type":"object","required":["$data"],"properties":{"$data":{"type":"string","anyOf":[{"format":"relative-json-pointer"},{"format":"json-pointer"}]}},"additionalProperties":false}');
-
-/***/ }),
-
-/***/ 2352:
-/***/ (function(module) {
-
-"use strict";
-module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","$id":"http://json-schema.org/draft-07/schema#","title":"Core schema meta-schema","definitions":{"schemaArray":{"type":"array","minItems":1,"items":{"$ref":"#"}},"nonNegativeInteger":{"type":"integer","minimum":0},"nonNegativeIntegerDefault0":{"allOf":[{"$ref":"#/definitions/nonNegativeInteger"},{"default":0}]},"simpleTypes":{"enum":["array","boolean","integer","null","number","object","string"]},"stringArray":{"type":"array","items":{"type":"string"},"uniqueItems":true,"default":[]}},"type":["object","boolean"],"properties":{"$id":{"type":"string","format":"uri-reference"},"$schema":{"type":"string","format":"uri"},"$ref":{"type":"string","format":"uri-reference"},"$comment":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"default":true,"readOnly":{"type":"boolean","default":false},"examples":{"type":"array","items":true},"multipleOf":{"type":"number","exclusiveMinimum":0},"maximum":{"type":"number"},"exclusiveMaximum":{"type":"number"},"minimum":{"type":"number"},"exclusiveMinimum":{"type":"number"},"maxLength":{"$ref":"#/definitions/nonNegativeInteger"},"minLength":{"$ref":"#/definitions/nonNegativeIntegerDefault0"},"pattern":{"type":"string","format":"regex"},"additionalItems":{"$ref":"#"},"items":{"anyOf":[{"$ref":"#"},{"$ref":"#/definitions/schemaArray"}],"default":true},"maxItems":{"$ref":"#/definitions/nonNegativeInteger"},"minItems":{"$ref":"#/definitions/nonNegativeIntegerDefault0"},"uniqueItems":{"type":"boolean","default":false},"contains":{"$ref":"#"},"maxProperties":{"$ref":"#/definitions/nonNegativeInteger"},"minProperties":{"$ref":"#/definitions/nonNegativeIntegerDefault0"},"required":{"$ref":"#/definitions/stringArray"},"additionalProperties":{"$ref":"#"},"definitions":{"type":"object","additionalProperties":{"$ref":"#"},"default":{}},"properties":{"type":"object","additionalProperties":{"$ref":"#"},"default":{}},"patternProperties":{"type":"object","additionalProperties":{"$ref":"#"},"propertyNames":{"format":"regex"},"default":{}},"dependencies":{"type":"object","additionalProperties":{"anyOf":[{"$ref":"#"},{"$ref":"#/definitions/stringArray"}]}},"propertyNames":{"$ref":"#"},"const":true,"enum":{"type":"array","items":true,"minItems":1,"uniqueItems":true},"type":{"anyOf":[{"$ref":"#/definitions/simpleTypes"},{"type":"array","items":{"$ref":"#/definitions/simpleTypes"},"minItems":1,"uniqueItems":true}]},"format":{"type":"string"},"contentMediaType":{"type":"string"},"contentEncoding":{"type":"string"},"if":{"$ref":"#"},"then":{"$ref":"#"},"else":{"$ref":"#"},"allOf":{"$ref":"#/definitions/schemaArray"},"anyOf":{"$ref":"#/definitions/schemaArray"},"oneOf":{"$ref":"#/definitions/schemaArray"},"not":{"$ref":"#"}},"default":true}');
-
-/***/ }),
-
-/***/ 5916:
-/***/ (function(module) {
-
-"use strict";
-module.exports = JSON.parse('{"definitions":{"Rule":{"description":"Filtering rule as regex or string.","anyOf":[{"instanceof":"RegExp","tsType":"RegExp"},{"type":"string","minLength":1}]},"Rules":{"description":"Filtering rules.","anyOf":[{"type":"array","items":{"description":"A rule condition.","oneOf":[{"$ref":"#/definitions/Rule"}]}},{"$ref":"#/definitions/Rule"}]}},"title":"TerserPluginOptions","type":"object","additionalProperties":false,"properties":{"test":{"description":"Include all modules that pass test assertion.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#test","oneOf":[{"$ref":"#/definitions/Rules"}]},"include":{"description":"Include all modules matching any of these conditions.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#include","oneOf":[{"$ref":"#/definitions/Rules"}]},"exclude":{"description":"Exclude all modules matching any of these conditions.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#exclude","oneOf":[{"$ref":"#/definitions/Rules"}]},"terserOptions":{"description":"Options for `terser` (by default) or custom `minify` function.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions","additionalProperties":true,"type":"object"},"extractComments":{"description":"Whether comments shall be extracted to a separate file.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#extractcomments","anyOf":[{"type":"boolean"},{"type":"string","minLength":1},{"instanceof":"RegExp"},{"instanceof":"Function"},{"additionalProperties":false,"properties":{"condition":{"anyOf":[{"type":"boolean"},{"type":"string","minLength":1},{"instanceof":"RegExp"},{"instanceof":"Function"}],"description":"Condition what comments you need extract.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#condition"},"filename":{"anyOf":[{"type":"string","minLength":1},{"instanceof":"Function"}],"description":"The file where the extracted comments will be stored. Default is to append the suffix .LICENSE.txt to the original filename.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#filename"},"banner":{"anyOf":[{"type":"boolean"},{"type":"string","minLength":1},{"instanceof":"Function"}],"description":"The banner text that points to the extracted file and will be added on top of the original file","link":"https://github.com/webpack-contrib/terser-webpack-plugin#banner"}},"type":"object"}]},"parallel":{"description":"Use multi-process parallel running to improve the build speed.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#parallel","anyOf":[{"type":"boolean"},{"type":"integer"}]},"minify":{"description":"Allows you to override default minify function.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#number","instanceof":"Function"}}}');
-
-/***/ }),
-
-/***/ 6417:
+/***/ 6113:
 /***/ (function(module) {
 
 "use strict";
@@ -15057,7 +14910,7 @@ module.exports = require("crypto");
 
 /***/ }),
 
-/***/ 9733:
+/***/ 6063:
 /***/ (function(module) {
 
 "use strict";
@@ -15065,7 +14918,7 @@ module.exports = require("jest-worker");
 
 /***/ }),
 
-/***/ 2087:
+/***/ 2037:
 /***/ (function(module) {
 
 "use strict";
@@ -15073,11 +14926,35 @@ module.exports = require("os");
 
 /***/ }),
 
-/***/ 5622:
+/***/ 1017:
 /***/ (function(module) {
 
 "use strict";
 module.exports = require("path");
+
+/***/ }),
+
+/***/ 7664:
+/***/ (function(module) {
+
+"use strict";
+module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","$id":"https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#","description":"Meta-schema for $data reference (JSON Schema extension proposal)","type":"object","required":["$data"],"properties":{"$data":{"type":"string","anyOf":[{"format":"relative-json-pointer"},{"format":"json-pointer"}]}},"additionalProperties":false}');
+
+/***/ }),
+
+/***/ 7136:
+/***/ (function(module) {
+
+"use strict";
+module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","$id":"http://json-schema.org/draft-07/schema#","title":"Core schema meta-schema","definitions":{"schemaArray":{"type":"array","minItems":1,"items":{"$ref":"#"}},"nonNegativeInteger":{"type":"integer","minimum":0},"nonNegativeIntegerDefault0":{"allOf":[{"$ref":"#/definitions/nonNegativeInteger"},{"default":0}]},"simpleTypes":{"enum":["array","boolean","integer","null","number","object","string"]},"stringArray":{"type":"array","items":{"type":"string"},"uniqueItems":true,"default":[]}},"type":["object","boolean"],"properties":{"$id":{"type":"string","format":"uri-reference"},"$schema":{"type":"string","format":"uri"},"$ref":{"type":"string","format":"uri-reference"},"$comment":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"default":true,"readOnly":{"type":"boolean","default":false},"examples":{"type":"array","items":true},"multipleOf":{"type":"number","exclusiveMinimum":0},"maximum":{"type":"number"},"exclusiveMaximum":{"type":"number"},"minimum":{"type":"number"},"exclusiveMinimum":{"type":"number"},"maxLength":{"$ref":"#/definitions/nonNegativeInteger"},"minLength":{"$ref":"#/definitions/nonNegativeIntegerDefault0"},"pattern":{"type":"string","format":"regex"},"additionalItems":{"$ref":"#"},"items":{"anyOf":[{"$ref":"#"},{"$ref":"#/definitions/schemaArray"}],"default":true},"maxItems":{"$ref":"#/definitions/nonNegativeInteger"},"minItems":{"$ref":"#/definitions/nonNegativeIntegerDefault0"},"uniqueItems":{"type":"boolean","default":false},"contains":{"$ref":"#"},"maxProperties":{"$ref":"#/definitions/nonNegativeInteger"},"minProperties":{"$ref":"#/definitions/nonNegativeIntegerDefault0"},"required":{"$ref":"#/definitions/stringArray"},"additionalProperties":{"$ref":"#"},"definitions":{"type":"object","additionalProperties":{"$ref":"#"},"default":{}},"properties":{"type":"object","additionalProperties":{"$ref":"#"},"default":{}},"patternProperties":{"type":"object","additionalProperties":{"$ref":"#"},"propertyNames":{"format":"regex"},"default":{}},"dependencies":{"type":"object","additionalProperties":{"anyOf":[{"$ref":"#"},{"$ref":"#/definitions/stringArray"}]}},"propertyNames":{"$ref":"#"},"const":true,"enum":{"type":"array","items":true,"minItems":1,"uniqueItems":true},"type":{"anyOf":[{"$ref":"#/definitions/simpleTypes"},{"type":"array","items":{"$ref":"#/definitions/simpleTypes"},"minItems":1,"uniqueItems":true}]},"format":{"type":"string"},"contentMediaType":{"type":"string"},"contentEncoding":{"type":"string"},"if":{"$ref":"#"},"then":{"$ref":"#"},"else":{"$ref":"#"},"allOf":{"$ref":"#/definitions/schemaArray"},"anyOf":{"$ref":"#/definitions/schemaArray"},"oneOf":{"$ref":"#/definitions/schemaArray"},"not":{"$ref":"#"}},"default":true}');
+
+/***/ }),
+
+/***/ 7848:
+/***/ (function(module) {
+
+"use strict";
+module.exports = JSON.parse('{"definitions":{"Rule":{"description":"Filtering rule as regex or string.","anyOf":[{"instanceof":"RegExp","tsType":"RegExp"},{"type":"string","minLength":1}]},"Rules":{"description":"Filtering rules.","anyOf":[{"type":"array","items":{"description":"A rule condition.","oneOf":[{"$ref":"#/definitions/Rule"}]}},{"$ref":"#/definitions/Rule"}]}},"title":"TerserPluginOptions","type":"object","additionalProperties":false,"properties":{"test":{"description":"Include all modules that pass test assertion.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#test","oneOf":[{"$ref":"#/definitions/Rules"}]},"include":{"description":"Include all modules matching any of these conditions.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#include","oneOf":[{"$ref":"#/definitions/Rules"}]},"exclude":{"description":"Exclude all modules matching any of these conditions.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#exclude","oneOf":[{"$ref":"#/definitions/Rules"}]},"terserOptions":{"description":"Options for `terser` (by default) or custom `minify` function.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions","additionalProperties":true,"type":"object"},"extractComments":{"description":"Whether comments shall be extracted to a separate file.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#extractcomments","anyOf":[{"type":"boolean"},{"type":"string","minLength":1},{"instanceof":"RegExp"},{"instanceof":"Function"},{"additionalProperties":false,"properties":{"condition":{"anyOf":[{"type":"boolean"},{"type":"string","minLength":1},{"instanceof":"RegExp"},{"instanceof":"Function"}],"description":"Condition what comments you need extract.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#condition"},"filename":{"anyOf":[{"type":"string","minLength":1},{"instanceof":"Function"}],"description":"The file where the extracted comments will be stored. Default is to append the suffix .LICENSE.txt to the original filename.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#filename"},"banner":{"anyOf":[{"type":"boolean"},{"type":"string","minLength":1},{"instanceof":"Function"}],"description":"The banner text that points to the extracted file and will be added on top of the original file","link":"https://github.com/webpack-contrib/terser-webpack-plugin#banner"}},"type":"object"}]},"parallel":{"description":"Use multi-process parallel running to improve the build speed.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#parallel","anyOf":[{"type":"boolean"},{"type":"integer"}]},"minify":{"description":"Allows you to override default minify function.","link":"https://github.com/webpack-contrib/terser-webpack-plugin#number","instanceof":"Function"}}}');
 
 /***/ })
 
@@ -15135,7 +15012,7 @@ module.exports = require("path");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(9998);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(5466);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

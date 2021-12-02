@@ -1,3 +1,4 @@
+export type Task<T> = () => Promise<T>;
 export type RawSourceMap = import('../source-map').RawSourceMap;
 export type TerserFormatOptions = import('../../terser').FormatOptions;
 export type TerserOptions = import('../../terser').MinifyOptions;
@@ -15,22 +16,18 @@ export type CustomOptions = {
   [key: string]: any;
 };
 export type ExtractedComments = Array<string>;
-/** @typedef {import('../source-map').RawSourceMap} RawSourceMap */
-/** @typedef {import('../../terser').FormatOptions} TerserFormatOptions */
-/** @typedef {import('../../terser').MinifyOptions} TerserOptions */
-/** @typedef {import('../../terser').ECMA} TerserECMA */
-/** @typedef {import('./index').ExtractCommentsOptions} ExtractCommentsOptions */
-/** @typedef {import('./index').ExtractCommentsFunction} ExtractCommentsFunction */
-/** @typedef {import('./index').ExtractCommentsCondition} ExtractCommentsCondition */
-/** @typedef {import('./index').Input} Input */
-/** @typedef {import('./index').MinimizedResult} MinimizedResult */
-/** @typedef {import('./index').PredefinedOptions} PredefinedOptions */
 /**
- * @typedef {{ [key: string]: any }} CustomOptions
+ * @template T
+ * @typedef {() => Promise<T>} Task
  */
 /**
- * @typedef {Array<string>} ExtractedComments
+ * Run tasks with limited concurency.
+ * @template T
+ * @param {number} limit - Limit of tasks that run at once.
+ * @param {Task<T>[]} tasks - List of tasks to run.
+ * @returns {Promise<T[]>} A promise that fulfills to an array of the results
  */
+export function throttleAll<T>(limit: number, tasks: Task<T>[]): Promise<T[]>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap

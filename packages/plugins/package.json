@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-beta.11",
-    "antd": "^4.16.13",
+    "antd": "^4.17.2",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "babel-plugin-import": "^1.13.3",
     "dayjs": "^1.10.7"

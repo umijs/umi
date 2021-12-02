@@ -34,7 +34,12 @@ async function transform(options) {
   // 'use strict' => this === undefined (Clean Scope)
   // Safer for possible security issues, albeit not critical at all here
   // eslint-disable-next-line no-param-reassign
-  const evaluatedOptions = // eslint-disable-next-line no-new-func
+  const evaluatedOptions =
+  /**
+   * @template T
+   * @type {import("./index.js").InternalOptions<T>}
+   * */
+  // eslint-disable-next-line no-new-func
   new Function("exports", "require", "module", "__filename", "__dirname", `'use strict'\nreturn ${options}`)(exports, require, module, __filename, __dirname);
   return minify(evaluatedOptions);
 }

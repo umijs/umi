@@ -8,7 +8,7 @@
  * @param queries Browser queries.
  * @returns Array with browser names in Can I Use.
  */
-declare function browserslist (
+declare function browserslist(
   queries?: string | readonly string[] | null,
   opts?: browserslist.Options
 ): string[]
@@ -136,15 +136,15 @@ declare namespace browserslist {
    * @param stats Which statistics should be used.
    * @returns Total market coverage for all selected browsers.
    */
-  function coverage (browsers: readonly string[], stats?: StatsOptions): number
+  function coverage(browsers: readonly string[], stats?: StatsOptions): number
 
-  function clearCaches (): void
+  function clearCaches(): void
 
-  function parseConfig (string: string): Config
+  function parseConfig(string: string): Config
 
-  function readConfig (file: string): Config
+  function readConfig(file: string): Config
 
-  function findConfig (...pathSegments: string[]): Config | undefined
+  function findConfig(...pathSegments: string[]): Config | undefined
 
   interface LoadConfigOptions {
     config?: string
@@ -152,7 +152,7 @@ declare namespace browserslist {
     env?: string
   }
 
-  function loadConfig (options: LoadConfigOptions): string[] | undefined
+  function loadConfig(options: LoadConfigOptions): string[] | undefined
 }
 
 declare global {
