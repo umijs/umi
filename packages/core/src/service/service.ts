@@ -394,7 +394,7 @@ export class Service {
     if (this.userConfig[key] === false) return false;
     if (enableBy === EnableBy.config && !(key in this.config)) return false;
     if (typeof enableBy === 'function')
-      return enableBy({ config: this.config });
+      return enableBy({ config: this.config, env: this.env });
     // EnableBy.register
     return true;
   }

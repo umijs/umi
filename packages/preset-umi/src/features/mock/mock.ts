@@ -15,6 +15,9 @@ export default function (api: IApi) {
         });
       },
     },
+    enableBy({ env }) {
+      return env === 'development';
+    },
   });
 
   // context for update mockData
