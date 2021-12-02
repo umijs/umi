@@ -414,9 +414,9 @@ importers:
 
   packages/create-umi:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-beta.10
+      '@umijs/utils': 4.0.0-beta.10
     dependencies:
-      '@umijs/bundler-utils': link:../bundler-utils
+      '@umijs/utils': link:../utils
 
   packages/father:
     specifiers:

@@ -1,4 +1,4 @@
-node_modules
+/node_modules
 /.env.local
 /.umirc.local.ts
 /.umirc.local.js

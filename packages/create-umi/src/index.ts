@@ -12,7 +12,7 @@ const testData = {
   mail: 'xiaohuoni@gmail.com',
   author: 'xiaohuoni',
   org: 'umijs',
-  version: '4.0.0-alpha.1',
+  version: require('../package').version,
   npmClient: 'pnpm',
   registry: 'https://registry.npmjs.org/',
 };
