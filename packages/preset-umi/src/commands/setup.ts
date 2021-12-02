@@ -5,10 +5,10 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'setup',
     description: 'setup project',
-    fn() {
+    async fn() {
       // generate tmp files
       logger.info('generate files');
-      api.applyPlugins({
+      await api.applyPlugins({
         key: 'onGenerateFiles',
         args: {
           files: null,
