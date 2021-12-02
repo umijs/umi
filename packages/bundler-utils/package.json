@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-beta.11",
-    "esbuild": "0.13.11"
+    "esbuild": "0.14.1"
   },
   "devDependencies": {
     "@babel/code-frame": "7.16.0",

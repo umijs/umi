@@ -86,6 +86,7 @@ export declare type WorkerOptions = {
     setupArgs: Array<unknown>;
     maxRetries: number;
     workerId: number;
+    workerData?: unknown;
     workerPath: string;
 };
 export declare type MessagePort = typeof EventEmitter & {

@@ -20,10 +20,10 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "history": "5.0.1",
+    "history": "5.1.0",
     "react": "18.0.0-alpha-4298ddbc5-20211023",
     "react-dom": "18.0.0-alpha-4298ddbc5-20211023",
-    "react-router-dom": "6.0.0-beta.8"
+    "react-router-dom": "6.0.2"
   },
   "devDependencies": {
     "@types/express": "4.17.13"

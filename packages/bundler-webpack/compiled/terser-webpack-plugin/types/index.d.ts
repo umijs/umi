@@ -222,16 +222,16 @@ declare class TerserPlugin<T = TerserOptions> {
    * @private
    * @param {Error | string} warning
    * @param {string} file
-   * @returns {WebpackError}
+   * @returns {Error}
    */
   private static buildWarning;
   /**
    * @private
    * @param {any} error
    * @param {string} file
-   * @param {Compilation["requestShortener"]} [requestShortener]
    * @param {SourceMapConsumer} [sourceMap]
-   * @returns {WebpackError}
+   * @param {Compilation["requestShortener"]} [requestShortener]
+   * @returns {Error}
    */
   private static buildError;
   /**
