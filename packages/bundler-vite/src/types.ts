@@ -1,4 +1,3 @@
-import { TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import { Options as LegacyOptions } from '@vitejs/plugin-legacy';
 import type { PluginVisualizerOptions } from 'rollup-plugin-visualizer';
 import type { Plugin, ProxyOptions } from 'vite';
@@ -44,7 +43,8 @@ export interface IConfig {
   postcssLoader?: { postcssOptions: any };
   proxy?: { [key: string]: ProxyOptions };
   publicPath?: string;
-  svgr?: TransformOptions;
+  svgr?: { [key: string]: any };
+  svgo?: { [key: string]: any } | false;
   targets?: { [key: string]: any };
   [key: string]: any;
 }
