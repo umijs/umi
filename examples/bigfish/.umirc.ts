@@ -1,5 +1,7 @@
 export default {
   antd: {
-    import: true,
+    // import: true,
+    style: 'less',
+    // dark: true,
   },
 };
