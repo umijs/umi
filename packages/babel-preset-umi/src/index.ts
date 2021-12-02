@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import autoCSSModules from './plugins/autoCSSModules';
 import dynamicImportNode from './plugins/dynamicImportNode';
@@ -130,8 +131,8 @@ export default (_context: any, opts: IOpts) => {
           useESModules: false,
           // lock the version of @babel/runtime
           // make sure we are using the correct version
-          absoluteRuntime: dirname(
-            require.resolve('@babel/runtime/package.json'),
+          absoluteRuntime: winPath(
+            dirname(require.resolve('@babel/runtime/package.json')),
           ),
           version: `^${require('@babel/runtime/package.json').version}`,
           ...opts.pluginTransformRuntime,
