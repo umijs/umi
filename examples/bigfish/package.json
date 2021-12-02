@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "dev": "umi dev",
+    "dev": "bigfish dev",
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-beta.11"
+    "bigfish": "4.0.0-beta.11"
   }
 }

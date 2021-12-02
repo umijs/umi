@@ -1,5 +1,8 @@
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
-  api.onStart(() => {});
+  api;
+  return {
+    plugins: [require.resolve('@umijs/plugins/dist/antd')],
+  };
 };
