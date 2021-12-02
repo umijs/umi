@@ -15,8 +15,8 @@ export default function (api: IApi) {
         });
       },
     },
-    enableBy({ env }) {
-      return env === 'development';
+    enableBy() {
+      return api.name === 'dev';
     },
   });
 
