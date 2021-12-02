@@ -3,10 +3,10 @@ export type JSONSchema6 = import('../json-schema').JSONSchema6;
 export type JSONSchema7 = import('../json-schema').JSONSchema7;
 export type ErrorObject = import('../ajv').ErrorObject;
 export type Extend = {
-  formatMinimum?: number | undefined;
-  formatMaximum?: number | undefined;
-  formatExclusiveMinimum?: boolean | undefined;
-  formatExclusiveMaximum?: boolean | undefined;
+  formatMinimum?: string | undefined;
+  formatMaximum?: string | undefined;
+  formatExclusiveMinimum?: string | undefined;
+  formatExclusiveMaximum?: string | undefined;
   link?: string | undefined;
 };
 export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend;

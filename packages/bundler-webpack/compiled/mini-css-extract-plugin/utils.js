@@ -3,13 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.trueFn = trueFn;
-exports.findModuleById = findModuleById;
-exports.evalModuleCode = evalModuleCode;
+exports.SINGLE_DOT_PATH_SEGMENT = exports.MODULE_TYPE = exports.AUTO_PUBLIC_PATH = exports.ABSOLUTE_PUBLIC_PATH = void 0;
 exports.compareModulesByIdentifier = compareModulesByIdentifier;
-exports.stringifyRequest = stringifyRequest;
+exports.evalModuleCode = evalModuleCode;
+exports.findModuleById = findModuleById;
 exports.getUndoPath = getUndoPath;
-exports.SINGLE_DOT_PATH_SEGMENT = exports.ABSOLUTE_PUBLIC_PATH = exports.AUTO_PUBLIC_PATH = exports.MODULE_TYPE = void 0;
+exports.stringifyRequest = stringifyRequest;
+exports.trueFn = trueFn;
 
 var _module = _interopRequireDefault(require("module"));
 
@@ -87,9 +87,14 @@ const RELATIVE_PATH_REGEXP = /^\.\.?[/\\]/;
 
 function isRelativePath(str) {
   return RELATIVE_PATH_REGEXP.test(str);
-}
+} // TODO simplify for the next major release
+
 
 function stringifyRequest(loaderContext, request) {
+  if (typeof loaderContext.utils !== "undefined" && typeof loaderContext.utils.contextify === "function") {
+    return JSON.stringify(loaderContext.utils.contextify(loaderContext.context || loaderContext.rootContext, request));
+  }
+
   const splitted = request.split("!");
   const {
     context
