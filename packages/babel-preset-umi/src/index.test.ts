@@ -120,7 +120,8 @@ test('plugin-transform-runtime', () => {
     code: `class A {}`,
     opts: { pluginTransformRuntime: {} },
   });
-  expect(code).toContain(`@babel/runtime/helpers/classCallCheck`);
+  expect(code).toContain(`@babel`);
+  expect(code).toContain(`classCallCheck`);
 });
 
 test('typescript with namespace', () => {
