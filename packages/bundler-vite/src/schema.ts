@@ -71,6 +71,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     proxy: (Joi) => Joi.object(),
     publicPath: (Joi) => Joi.string(),
     svgr: (Joi) => Joi.object(),
+    svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
     targets: (Joi) => Joi.object(),
     theme: (Joi) => Joi.object(),
   };
