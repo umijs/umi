@@ -545,7 +545,9 @@ export default async function getConfig(
     },
     (webpackConfig) => {
       // don't emit files if have error
-      webpackConfig.optimization.noEmitOnErrors(true);
+      // noEmitOnErrors is deprecated in favor of emitOnErrors
+      // which is false by default
+      // webpackConfig.optimization.noEmitOnErrors(true);
 
       // don't show hints when size is too large
       webpackConfig.performance.hints(false);
