@@ -7,6 +7,7 @@ interface IOpts {
   cwd: string;
   env: Env;
   browsers: any;
+  staticPathPrefix: string;
 }
 
 export async function addSVGRules(opts: IOpts) {
@@ -15,17 +16,32 @@ export async function addSVGRules(opts: IOpts) {
   if (svgr) {
     const svgrRule = config.module.rule('svgr');
     svgrRule
-      .test(/\.svg$/i)
+      .test(/\.svg$/)
       .issuer(/\.[jt]sx?$/)
+      .type('javascript/auto')
       .use('svgr-loader')
-      .loader(require.resolve('@umijs/bundler-webpack/compiled/@svgr/webpack'))
+      .loader(require.resolve('../loader/svgr'))
       .options({
         svgoConfig: {
-          ...(svgo || {}),
+          plugins: [
+            {
+              name: 'preset-default',
+              params: {
+                overrides: {
+                  removeTitle: false,
+                },
+              },
+            },
+          ],
+          ...svgo,
         },
         ...svgr,
         svgo: !!svgo,
-      });
+      })
+      .end()
+      .use('url-loader')
+      .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'))
+      .end();
   }
   if (svgo === false) {
     const svgRule = config.module.rule('svg');
