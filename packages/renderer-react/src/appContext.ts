@@ -5,6 +5,7 @@ export interface IAppContextType {
   routeComponents: any;
   clientRoutes: any;
   pluginManager: any;
+  navigator: any;
 }
 export const AppContext = React.createContext<IAppContextType | undefined>(
   undefined,
