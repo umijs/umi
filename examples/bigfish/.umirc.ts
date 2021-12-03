@@ -4,4 +4,5 @@ export default {
     style: 'less',
     // dark: true,
   },
+  dva: {},
 };

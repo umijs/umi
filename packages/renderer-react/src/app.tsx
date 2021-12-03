@@ -21,18 +21,9 @@ export function App(props: {
     });
   }, [props.routes]);
   let ret = (
-    <AppContext.Provider
-      value={{
-        routes: props.routes,
-        routeComponents: props.routeComponents,
-        pluginManager: props.pluginManager,
-        clientRoutes,
-      }}
-    >
-      <Router navigator={props.navigator} location={props.location}>
-        <Routes />
-      </Router>
-    </AppContext.Provider>
+    <Router navigator={props.navigator} location={props.location}>
+      <Routes />
+    </Router>
   );
   for (const key of [
     'innerProvider',
@@ -46,7 +37,19 @@ export function App(props: {
       initialValue: ret,
     });
   }
-  return ret;
+  return (
+    <AppContext.Provider
+      value={{
+        routes: props.routes,
+        routeComponents: props.routeComponents,
+        pluginManager: props.pluginManager,
+        navigator: props.navigator,
+        clientRoutes,
+      }}
+    >
+      {ret}
+    </AppContext.Provider>
+  );
 }
 
 function Routes() {
