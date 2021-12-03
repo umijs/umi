@@ -3,7 +3,7 @@ import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-prox
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
-import { logger } from '@umijs/utils';
+import { chalk, logger } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import http from 'http';
 import { join } from 'path';
@@ -168,7 +168,9 @@ export async function createServer(opts: IOpts) {
   const port = opts.port || 8000;
   server.listen(port, () => {
     const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : '127.0.0.1';
-    logger.ready(`App listening at http://${host}:${port}`);
+    logger.ready(
+      `App listening at ${chalk.green.bold(`http://${host}:${port}`)}`,
+    );
   });
 
   return server;
