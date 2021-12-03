@@ -1,6 +1,6 @@
-import { Mustache } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
+import { Mustache } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
