@@ -1,4 +1,5 @@
 import 'zx/globals';
+import { setExcludeFolder } from './utils';
 
 (async () => {
   const root = path.join(__dirname, '..');
@@ -25,25 +26,6 @@ import 'zx/globals';
 
   function getVersion() {
     return require('../lerna.json').version;
-  }
-
-  function setExcludeFolder(opts: any) {
-    if (!fs.existsSync(path.join(root, '.idea'))) return;
-    const configPath = path.join(root, '.idea', 'umi-next.iml');
-    let content = fs.readFileSync(configPath, 'utf-8');
-    const folders = ['dist', 'compiled'];
-    for (const folder of folders) {
-      console.log('test', folder);
-      const excludeContent = `<excludeFolder url='file://$MODULE_DIR$/packages/${opts.pkg}/${folder}' />`;
-      const replaceMatcher = `<content url="file://$MODULE_DIR$">`;
-      if (!content.includes(excludeContent)) {
-        content = content.replace(
-          replaceMatcher,
-          `${replaceMatcher}\n      ${excludeContent}`,
-        );
-      }
-    }
-    fs.writeFileSync(configPath, content, 'utf-8');
   }
 
   async function bootstrapPkg(opts: any) {
@@ -152,7 +134,7 @@ test('normal', () => {
       }
 
       // set excludeFolder for webstorm
-      setExcludeFolder({ pkg: opts.pkg });
+      setExcludeFolder({ pkg: opts.pkg, cwd: root });
 
       console.log(chalk.green(`${opts.pkg} bootstrapped`));
     }
