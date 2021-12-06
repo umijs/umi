@@ -31,6 +31,18 @@ You can use `initialState` data provided by `@umijs/plugin-initial-state` plugin
 
 ## Configuration
 
+### strictMode
+
+The default logic is that if you do not specify permission, you have access permission. If you want to modify it to not specify permission, you have no access permission, please open it.
+
+```js
+export default {
+  access: {
+    strictMode: true,
+  },
+}
+```
+
 ### Extended routing configuration
 
 With the `@umijs/plugin-layout` plug-in, you can easily implement permission control for certain pages. As shown below, users can access this page only if they have the `canReadPageA` permission (defined in `src/access.ts`). Otherwise, the error page which is built in the `@umijs/plugin-layout` plugin will be rendered by default.

@@ -28,6 +28,18 @@ export default function(initialState) {
 
 ## 配置
 
+### strictMode
+
+默认逻辑是没有写明权限表示有访问权限，如果要修改为没有写明权限表示没有访问权限，请开启它
+
+```js
+export default {
+  access: {
+    strictMode: true,
+  },
+}
+```
+
 ### 扩展的路由配置
 
 配合 Layout 插件你可以很简单的实现针对某些页面的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
