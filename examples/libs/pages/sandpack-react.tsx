@@ -14,6 +14,7 @@ export default function App() {
 
 export default function App() {
   return (
+    // @ts-ignore
     <Sandpack
       customSetup={{
         dependencies: {
