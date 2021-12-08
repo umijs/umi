@@ -1,6 +1,7 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import type webpack from '@umijs/bundler-webpack/compiled/webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import type { InlineConfig as ViteInlineConfig } from 'vite';
 import type {
   IAdd,
   IEvent,
@@ -140,7 +141,7 @@ export type IApi = PluginAPI &
       }
     >;
     modifyViteConfig: IModify<
-      webpack.Configuration,
+      ViteInlineConfig,
       {
         env: Env;
       }
