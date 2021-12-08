@@ -7,6 +7,7 @@ import { readFileSync } from 'fs';
 import { dirname, extname, join } from 'path';
 import { IApi } from 'umi';
 import { chalk, glob, winPath } from 'umi/plugin-utils';
+import { getIdentifierDeclaration } from './utils/getIdentifierDeclaration';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -44,7 +45,7 @@ export default (api: IApi) => {
 
   api.modifyAppData((memo) => {
     const models = getAllModels(api);
-    memo.dva = {
+    memo.pluginDva = {
       pkgPath,
       models,
     };
@@ -53,9 +54,8 @@ export default (api: IApi) => {
 
   api.onGenerateFiles((args) => {
     const models = args.isFirstTime
-      ? api.appData.dva.models
+      ? api.appData.pluginDva.models
       : getAllModels(api);
-
     models;
 
     // dva.tsx
@@ -120,7 +120,7 @@ export { connect, useDispatch, useStore, useSelector } from 'dva';`,
     name: 'dva',
     fn() {
       api.logger.info(chalk.green.bold('dva models'));
-      api.appData.dva.models.forEach((model: string) => {
+      api.appData.pluginDva.models.forEach((model: string) => {
         api.logger.info(`  - ${model}`);
       });
     },
@@ -213,15 +213,4 @@ function isModelObject(node: t.Node) {
       ].includes((property as any).key.name);
     })
   );
-}
-
-function getIdentifierDeclaration(node: t.Node, path: Babel.NodePath) {
-  if (t.isIdentifier(node) && path.scope.hasBinding(node.name)) {
-    let bindingNode = path.scope.getBinding(node.name)!.path.node;
-    if (t.isVariableDeclarator(bindingNode)) {
-      bindingNode = bindingNode.init!;
-    }
-    return bindingNode;
-  }
-  return node;
 }
