@@ -5,13 +5,13 @@ const SCAN_PATH = path.join(__dirname, '../compiled/babel/bundle.js');
 
 try {
   let fileString = fs.readFileSync(SCAN_PATH, 'utf8');
-  const regexp = new RegExp(/(\r|\n)*?.*?__nccwpck_require__\(7905\) = utils;(.|\r|\n)*?__nccwpck_require__\(7905\) = fn;/);
+  const regexp = new RegExp(/(\r|\n)*?.*?__nccwpck_require__\(64809\) = utils;(.|\r|\n)*?__nccwpck_require__\(64809\) = fn;/);
   const targetStr = `
 // change by scripts/fixBabelBundle.js
 utils('is-plain-object', 'isObject');
 utils('shallow-clone', 'clone');
 utils('kind-of', 'typeOf');
-__nccwpck_require__(27281);
+__nccwpck_require__(68389);
   `;
   if (regexp.test(fileString) === true) {
     fileString = fileString.replace(regexp, targetStr);

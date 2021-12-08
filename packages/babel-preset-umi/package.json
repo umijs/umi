@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/runtime": "7.12.5",
+    "@babel/runtime": "7.16.3",
     "@umijs/babel-plugin-auto-css-modules": "3.5.20",
     "@umijs/babel-plugin-import-to-await-require": "3.5.20",
     "@umijs/babel-plugin-lock-core-js-3": "3.5.20",

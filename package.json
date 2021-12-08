@@ -37,9 +37,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.14.0",
+    "@babel/core": "7.16.0",
     "@testing-library/react": "^10.4.6",
-    "@types/babel__core": "7.1.14",
+    "@types/babel__core": "7.1.17",
     "@types/babel__traverse": "7.11.1",
     "@types/dedent": "^0.7.0",
     "@types/jest": "^26.0.4",
@@ -54,7 +54,7 @@
     "dedent": "^0.7.0",
     "esbuild": "^0.12.5",
     "escape-goat": "^3.0.0",
-    "father-build": "1.19.2",
+    "father-build": "1.20.4",
     "git-repo-info": "^2.1.1",
     "inquirer": "^7.3.3",
     "lerna": "^3.22.1",

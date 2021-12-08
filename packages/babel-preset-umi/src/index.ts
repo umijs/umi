@@ -67,6 +67,16 @@ export default (context: any, opts: IOpts = {}) => {
       ],
     ].filter(Boolean),
     plugins: [
+      [
+        require('@umijs/deps/compiled/babel/plugin-proposal-private-methods')
+          .default,
+        { loose: true },
+      ],
+      [
+        require('@umijs/deps/compiled/babel/plugin-proposal-private-property-in-object')
+          .default,
+        { loose: true },
+      ],
       // https://github.com/webpack/webpack/issues/10227
       [
         require('@umijs/deps/compiled/babel/plugin-proposal-optional-chaining')

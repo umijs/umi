@@ -66,6 +66,14 @@ function pluginProposalPipelineOperator() {
   return require('@babel/plugin-proposal-pipeline-operator');
 }
 
+function pluginProposalPrivateMethods() {
+  return require('@babel/plugin-proposal-private-methods');
+}
+
+function pluginProposalPrivatePropertyInObject() {
+  return require('@babel/plugin-proposal-private-property-in-object');
+}
+
 function pluginSyntaxTopLevelAwait() {
   return require('@babel/plugin-syntax-top-level-await');
 }
@@ -149,6 +157,8 @@ module.exports = {
   pluginProposalNullishCoalescingOperator,
   pluginProposalOptionalChaining,
   pluginProposalPipelineOperator,
+  pluginProposalPrivatePropertyInObject,
+  pluginProposalPrivateMethods,
   pluginSyntaxTopLevelAwait,
   pluginTransformReactRemovePropTypes,
   pluginTransformDestructuring,
