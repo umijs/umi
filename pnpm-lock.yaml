@@ -490,12 +490,14 @@ importers:
       body-parser: 1.19.0
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.8.3
+      magic-string: 0.25.7
       multer: 1.4.3
       path-to-regexp: 1.7.0
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004
       react-router: 6.0.2
       react-router-dom: 6.0.2
+      vite: 2.6.13
     dependencies:
       '@types/multer': 1.4.7
       '@umijs/ast': link:../ast
@@ -509,6 +511,7 @@ importers:
       '@umijs/utils': link:../utils
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.8.3
+      magic-string: 0.25.7
       path-to-regexp: 1.7.0
       react: 18.0.0-alpha-f2c381131-20211004
       react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
@@ -518,6 +521,7 @@ importers:
       '@types/body-parser': 1.19.2
       body-parser: 1.19.0
       multer: 1.4.3
+      vite: 2.6.13
 
   packages/renderer-react:
     specifiers:
@@ -13501,7 +13505,6 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
-    dev: false
 
   /rsvp/4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}
@@ -15047,6 +15050,30 @@ packages:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
       extsprintf: 1.3.0
+    dev: true
+
+  /vite/2.6.13:
+    resolution: {integrity: sha512-+tGZ1OxozRirTudl4M3N3UTNJOlxdVo/qBl2IlDEy/ZpTFcskp+k5ncNjayR3bRYTCbqSOFz2JWGN1UmuDMScA==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.13.15
+      postcss: 8.4.4
+      resolve: 1.20.0
+      rollup: 2.60.2
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /vite/2.6.14:
