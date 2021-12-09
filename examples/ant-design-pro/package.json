@@ -8,6 +8,6 @@
     "@ant-design/pro-layout": "6.28.1",
     "antd": "4.17.2",
     "dayjs": "^1.10.7",
-    "umi": "4.0.0-beta.11"
+    "umi": "4.0.0-beta.12"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "create-umi",
-  "version": "4.0.0-beta.11",
+  "version": "4.0.0-beta.12",
   "description": "create-umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/create-umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -24,7 +24,7 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.0-beta.11"
+    "@umijs/utils": "4.0.0-beta.12"
   },
   "publishConfig": {
     "access": "public"
