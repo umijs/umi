@@ -4,7 +4,6 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "bigfish": "4.0.0-beta.11",
-    "umi": "4.0.0-beta.12"
+    "bigfish": "4.0.0-beta.12"
   }
 }
