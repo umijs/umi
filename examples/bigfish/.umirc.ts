@@ -5,4 +5,5 @@ export default {
     // dark: true,
   },
   dva: {},
+  model: {},
 };

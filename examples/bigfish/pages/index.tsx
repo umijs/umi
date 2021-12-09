@@ -1,6 +1,8 @@
 // @ts-ignore
 import { connect } from '@@/plugin-dva';
 // @ts-ignore
+import { useModel } from '@@/plugin-model';
+// @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
 import React from 'react';
 
@@ -9,6 +11,7 @@ function mapStateToProps(state: any) {
 }
 
 export default connect(mapStateToProps)(function HomePage(props: any) {
+  const { todos } = useModel('todo');
   return (
     <div>
       <h2>antd</h2>
@@ -16,6 +19,12 @@ export default connect(mapStateToProps)(function HomePage(props: any) {
       <Input />
       <DatePicker />
       <h2>count: {props.count}</h2>
+      <h2>todos</h2>
+      <ul>
+        {todos.map((todo: string) => (
+          <li key={todo}>{todo}</li>
+        ))}
+      </ul>
     </div>
   );
 });
