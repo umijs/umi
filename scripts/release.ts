@@ -86,7 +86,8 @@ import { assert, eachPkg, getPkgs } from './utils';
     ));
     pkg.scripts['start'] = 'npm run dev';
     pkg.dependencies ||= {};
-    pkg.dependencies['umi'] = version;
+    if (pkg.dependencies['umi']) pkg.dependencies['umi'] = version;
+    if (pkg.dependencies['bigfish']) pkg.dependencies['bigfish'] = version;
     delete pkg.version;
     fs.writeFileSync(
       join(__dirname, '../examples', example, 'package.json'),
