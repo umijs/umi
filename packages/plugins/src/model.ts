@@ -1,4 +1,5 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
+import { join } from 'path';
 import { IApi } from 'umi';
 import { ModelUtils } from './utils/modelUtils';
 
@@ -30,6 +31,10 @@ export default (api: IApi) => {
       path: 'model.ts',
       content: ModelUtils.getModelsContent(models),
     });
+  });
+
+  api.addTmpGenerateWatcherPaths(() => {
+    return [join(api.paths.absSrcPath, 'models')];
   });
 };
 
