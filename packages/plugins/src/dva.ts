@@ -1,8 +1,8 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
-import { dirname, join } from 'path';
+import { dirname, join, relative } from 'path';
 import { IApi } from 'umi';
 import { chalk } from 'umi/plugin-utils';
-import { ModelUtils } from './utils/modelUtils';
+import { Model, ModelUtils } from './utils/modelUtils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -120,8 +120,8 @@ export { connect, useDispatch, useStore, useSelector } from 'dva';`,
     name: 'dva',
     fn() {
       api.logger.info(chalk.green.bold('dva models'));
-      api.appData.pluginDva.models.forEach((model: string) => {
-        api.logger.info(`  - ${model}`);
+      api.appData.pluginDva.models.forEach((model: Model) => {
+        api.logger.info(`  - ${relative(api.cwd, model.file)}`);
       });
     },
   });
