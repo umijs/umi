@@ -86,13 +86,13 @@ function Provider(props: {
   );
 }
 
-function useModel(namespace: string, updater?: any) {
+function useModel(namespace: string, selector?: any) {
   const { dispatcher } = useContext<{ dispatcher: Dispatcher }>(Context);
-  const updaterRef = useRef(updater);
-  updaterRef.current = updater;
+  const selectorRef = useRef(selector);
+  selectorRef.current = selector;
   const [state, setState] = useState(() =>
-    updaterRef.current
-      ? updaterRef.current(dispatcher.data[namespace])
+    selectorRef.current
+      ? selectorRef.current(dispatcher.data[namespace])
       : dispatcher.data[namespace],
   );
   const stateRef = useRef<any>(state);
@@ -107,22 +107,21 @@ function useModel(namespace: string, updater?: any) {
   }, []);
 
   useEffect(() => {
-    const handler = (e: any) => {
+    const handler = (data: any) => {
       if (!isMount.current) {
         // 如果 handler 执行过程中，组件被卸载了，则强制更新全局 data
+        // TODO: 需要加个 example 测试
         setTimeout(() => {
-          dispatcher.data[namespace] = e;
+          dispatcher.data[namespace] = data;
           dispatcher.update(namespace);
         });
       } else {
-        if (updater && updaterRef.current) {
-          const currentState = updaterRef.current(e);
-          const previousState = stateRef.current;
-          if (!isEqual(currentState, previousState)) {
-            setState(currentState);
-          }
-        } else {
-          setState(e);
+        const currentState = selectorRef.current
+          ? selectorRef.current(data)
+          : data;
+        const previousState = stateRef.current;
+        if (!isEqual(currentState, previousState)) {
+          setState(currentState);
         }
       }
     };
