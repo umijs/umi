@@ -76,7 +76,7 @@ export function RootContainer(props: any) {
       initialState: props.initialState,
     });
     for (const id of Object.keys(models)) {
-      app.current.model(models[id]);
+      app.current.model(models[id].model);
     }
     app.current.router(() => props.children);
   }

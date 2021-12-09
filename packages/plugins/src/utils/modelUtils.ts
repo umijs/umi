@@ -14,28 +14,29 @@ interface IOpts {
   astTest?: (opts: { node: t.Node; content: string }) => Boolean;
 }
 
-let count = 1;
-
 export class Model {
   file: string;
   namespace: string;
   id: string;
-  constructor(file: string) {
+  constructor(file: string, id: number) {
     this.file = file;
     this.namespace = basename(file, extname(file));
-    this.id = `model_${count++}`;
+    this.id = `model_${id}`;
   }
 }
 
 export class ModelUtils {
   api: IApi;
   opts: IOpts = {};
+  count: number = 1;
   constructor(api: IApi, opts: IOpts) {
     this.api = api;
     this.opts = opts;
   }
 
   getAllModels() {
+    // reset count
+    this.count = 1;
     return [
       ...this.getModels({
         base: join(this.api.paths.absSrcPath, 'models'),
@@ -66,7 +67,7 @@ export class ModelUtils {
         return this.isModelValid({ content, file });
       })
       .map((file: string) => {
-        return new Model(file);
+        return new Model(file, this.count++);
       });
   }
 
@@ -109,12 +110,13 @@ export class ModelUtils {
   }
 
   static getModelsContent(models: Model[]) {
-    console.log('models', models);
     const imports: string[] = [];
     const modelProps: string[] = [];
     models.forEach((model) => {
       imports.push(`import ${model.id} from '${model.file}';`);
-      modelProps.push(`${model.id},`);
+      modelProps.push(
+        `${model.id}: { namespace: '${model.namespace}', model: ${model.id} },`,
+      );
     });
     return `
 ${imports.join('\n')}
