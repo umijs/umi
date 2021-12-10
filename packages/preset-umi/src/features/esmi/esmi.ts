@@ -115,6 +115,10 @@ export default (api: IApi) => {
     // skip umi by default
     delete api.appData.deps['umi'];
 
+    // FIXME: force include react & react-dom
+    api.appData.deps['react'] = api.appData.react.version;
+    api.appData.deps['react-dom'] = api.appData.react.version;
+
     const data = generatePkgData(api);
     const deps = data.pkgInfo.exports.reduce(
       (r, exp) => r.concat(exp.deps.map((dep) => dep.name)),
@@ -147,7 +151,10 @@ export default (api: IApi) => {
     key: 'esmi',
     config: {
       schema(Joi) {
-        return Joi.object();
+        return Joi.object({
+          cdnOrigin: Joi.string(),
+          shimUrl: Joi.string(),
+        });
       },
     },
     enableBy: api.EnableBy.config,
@@ -164,7 +171,10 @@ export default (api: IApi) => {
   api.onBeforeCompiler(async () => {
     if (api.args.vite) {
       // init esmi service
-      service = new Service({ cdnOrigin: api.config.esmi.cdnOrigin });
+      service = new Service({
+        cdnOrigin: api.config.esmi.cdnOrigin,
+        cacheDir: join(api.cwd, '.esmi'),
+      });
 
       // init project resolver
       resolver = createResolver({
@@ -178,12 +188,22 @@ export default (api: IApi) => {
 
   // append ipmortmap script for HTML
   api.modifyHTML(($) => {
-    const scp = $('<script type="importmap"></script>');
+    const scp = $('<script type="importmap"></script>\n');
 
     scp.html(JSON.stringify(importmap, null, 2));
     $('head > script:eq(0)').before(scp);
 
-    // TODO: polyfill for legacy browser
+    // append importmap shim script
+    if (api.config.esmi.shimUrl) {
+      $('body > script:eq(0)').before(
+        $(`<script src="${api.config.esmi.shimUrl}"></script>\n`),
+      );
+    }
+
+    // preload for importmap modules
+    Object.values(importmap.imports).forEach((url) => {
+      scp.before($(`<link rel="modulepreload" href="${url}" />\n`));
+    });
 
     return $;
   });
