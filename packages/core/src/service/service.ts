@@ -352,6 +352,7 @@ export class Service {
         'name',
         'paths',
         'userConfig',
+        'env',
       ],
       staticProps: {
         ApplyPluginsType,
@@ -423,6 +424,7 @@ export interface IServicePluginAPI {
   name: typeof Service.prototype.name;
   paths: Required<typeof Service.prototype.paths>;
   userConfig: typeof Service.prototype.userConfig;
+  env: typeof Service.prototype.env;
 
   onCheck: IEvent<null>;
   onStart: IEvent<null>;

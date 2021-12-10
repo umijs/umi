@@ -6,4 +6,7 @@ export default {
   },
   dva: {},
   model: {},
+  analytics: {
+    baidu: 'test',
+  },
 };
