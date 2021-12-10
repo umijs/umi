@@ -41,15 +41,19 @@ export function renderClient(opts: {
   routeComponents: Record<string, any>;
   pluginManager: any;
 }) {
-  // @ts-ignore
-  const root = ReactDOM.createRoot(
-    opts.rootElement || document.getElementById('root'),
-  );
-  root.render(
+  const rootElement = opts.rootElement || document.getElementById('root');
+  const browser = (
     <Browser
       routes={opts.routes}
       routeComponents={opts.routeComponents}
       pluginManager={opts.pluginManager}
-    />,
+    />
   );
+  // @ts-ignore
+  if (ReactDOM.createRoot) {
+    // @ts-ignore
+    ReactDOM.createRoot(rootElement).render(browser);
+  } else {
+    ReactDOM.render(browser, rootElement);
+  }
 }
