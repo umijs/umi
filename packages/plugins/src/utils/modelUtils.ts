@@ -26,11 +26,11 @@ export class Model {
 }
 
 export class ModelUtils {
-  api: IApi | null;
+  api: IApi;
   opts: IOpts = {};
   count: number = 1;
   constructor(api: IApi | null, opts: IOpts) {
-    this.api = api;
+    this.api = api as IApi;
     this.opts = opts;
   }
 
