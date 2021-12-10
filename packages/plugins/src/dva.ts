@@ -127,7 +127,7 @@ export { connect, useDispatch, useStore, useSelector } from 'dva';`,
   });
 };
 
-export function getAllModels(api: IApi) {
+export function getModelUtil(api: IApi | null) {
   return new ModelUtils(api, {
     contentTest(content) {
       return content.startsWith('// @dva-model');
@@ -145,7 +145,11 @@ export function getAllModels(api: IApi) {
       }
       return false;
     },
-  }).getAllModels();
+  });
+}
+
+export function getAllModels(api: IApi) {
+  return getModelUtil(api).getAllModels();
 }
 
 function isModelObject(node: t.Node) {

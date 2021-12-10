@@ -1,26 +1,26 @@
-import { ModelUtils } from './utils/modelUtils';
+import { getModelUtil } from './dva';
 
-// TODO: add test for dva and model
-ModelUtils;
-const isModelValid: any = function () {};
+function isModelValid(opts: { content: string; file: string }) {
+  return getModelUtil(null).isModelValid(opts);
+}
 
-xtest('isModelValid empty', () => {
+test('isModelValid empty', () => {
   expect(isModelValid({ content: '', file: 'a.ts' })).toEqual(false);
 });
 
-xtest('isModelValid comment', () => {
+test('isModelValid comment', () => {
   expect(isModelValid({ content: '// @dva-model', file: 'a.ts' })).toEqual(
     true,
   );
 });
 
-xtest('isModelValid export default', () => {
+test('isModelValid export default', () => {
   expect(
     isModelValid({ content: `export default { namespace: '' }`, file: 'a.ts' }),
   ).toEqual(true);
 });
 
-xtest('isModelValid export default + declaration', () => {
+test('isModelValid export default + declaration', () => {
   expect(
     isModelValid({
       content: `const foo = { namespace: '' };export default foo;`,
@@ -29,7 +29,7 @@ xtest('isModelValid export default + declaration', () => {
   ).toEqual(true);
 });
 
-xtest('isModelValid with typescript', () => {
+test('isModelValid with typescript', () => {
   expect(
     isModelValid({
       content: `export default <Model>{ namespace: '' }`,
@@ -56,7 +56,7 @@ xtest('isModelValid with typescript', () => {
   ).toEqual(true);
 });
 
-xtest('isModelValid dva-model-extend', () => {
+test('isModelValid dva-model-extend', () => {
   expect(
     isModelValid({
       content: `import foo from 'dva-model-extend';
