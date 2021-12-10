@@ -9,4 +9,5 @@ export default {
   analytics: {
     baidu: 'test',
   },
+  moment2dayjs: {},
 };
