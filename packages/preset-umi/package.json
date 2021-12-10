@@ -37,8 +37,8 @@
     "enhanced-resolve": "5.8.3",
     "magic-string": "0.25.7",
     "path-to-regexp": "1.7.0",
-    "react": "18.0.0-alpha-f2c381131-20211004",
-    "react-dom": "18.0.0-alpha-f2c381131-20211004",
+    "react": "18.0.0-rc.0",
+    "react-dom": "18.0.0-rc.0",
     "react-router": "6.0.2",
     "react-router-dom": "6.0.2"
   },
