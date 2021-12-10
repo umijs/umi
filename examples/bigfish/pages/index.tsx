@@ -4,6 +4,8 @@ import { connect } from '@@/plugin-dva';
 import { useModel } from '@@/plugin-model';
 // @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
+// @ts-ignore
+import dayjs from 'moment';
 import React from 'react';
 
 function mapStateToProps(state: any) {
@@ -12,6 +14,8 @@ function mapStateToProps(state: any) {
 
 export default connect(mapStateToProps)(function HomePage(props: any) {
   const { todos } = useModel('todo');
+  console.log(dayjs().format);
+
   return (
     <div>
       <h2>antd</h2>

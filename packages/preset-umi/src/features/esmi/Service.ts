@@ -1,7 +1,7 @@
+import { axios, chalk, logger } from '@umijs/utils';
+import { createHash } from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { createHash } from 'crypto';
-import { axios, logger, chalk } from '@umijs/utils';
 import type { IApi } from '../../types';
 
 export interface IImportmapData {
