@@ -7,6 +7,7 @@ export default (api: IApi) => {
       require.resolve('@umijs/plugins/dist/antd'),
       require.resolve('@umijs/plugins/dist/dva'),
       require.resolve('@umijs/plugins/dist/model'),
+      require.resolve('@umijs/plugins/dist/analytics'),
     ],
   };
 };
