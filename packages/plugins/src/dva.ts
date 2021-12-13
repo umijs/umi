@@ -25,9 +25,11 @@ export default (api: IApi) => {
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
-    memo.dva = {
+    const models = getAllModels(api);
+    memo.pluginDva = {
       pkgPath,
       version,
+      models,
     };
     return memo;
   });
@@ -35,15 +37,6 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // import from dva
     memo.alias.dva = pkgPath;
-    return memo;
-  });
-
-  api.modifyAppData((memo) => {
-    const models = getAllModels(api);
-    memo.pluginDva = {
-      pkgPath,
-      models,
-    };
     return memo;
   });
 

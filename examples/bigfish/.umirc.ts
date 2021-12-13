@@ -10,4 +10,5 @@ export default {
     baidu: 'test',
   },
   moment2dayjs: {},
+  layout: {},
 };
