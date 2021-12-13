@@ -152,7 +152,6 @@ export class MFSU {
             );
             const content = readFileSync(
               join(this.opts.tmpBase!, relativePath),
-              'utf-8',
             );
             res.send(content);
           });
