@@ -279,7 +279,7 @@ api.addEntryCodeAhead(() => {
 e.g.
 
 ```ts
-api.addEntryImport(() => {
+api.addEntryImports(() => {
   return [
     {
       source: '/modulePath/xxx.js',
