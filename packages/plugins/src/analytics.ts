@@ -13,6 +13,7 @@ export default (api: IApi) => {
       schema(joi) {
         return joi.object();
       },
+      onChange: api.ConfigChangeType.reload,
     },
     enableBy,
   });
