@@ -54,22 +54,18 @@ export default (api: IApi) => {
   api.addHTMLHeadScripts(() => {
     const { analytics = {} } = api.config;
     const { ga = GA_KEY, baidu } = analytics;
-    const rt = [];
-    baidu &&
-      rt.push({
+    return [
+      baidu && {
         content: 'var _hmt = _hmt || [];',
-      });
-    if (api.env !== 'development') {
-      baidu &&
-        rt.push({
+      },
+      api.env !== 'development' &&
+        baidu && {
           content: baiduTpl(baidu),
-        });
-
-      ga &&
-        rt.push({
+        },
+      api.env !== 'development' &&
+        ga && {
           content: gaTpl(ga),
-        });
-    }
-    return rt;
+        },
+    ].filter(Boolean);
   });
 };
