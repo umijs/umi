@@ -144,7 +144,7 @@ export class MFSU {
             }
             res.setHeader(
               'content-type',
-              lookup(extname(req.path)) || 'text/plain',
+              `${lookup(extname(req.path)) || 'text/plain'}; charset=UTF-8`,
             );
             const relativePath = req.path.replace(
               new RegExp(`^${publicPath}`),
