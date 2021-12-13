@@ -15,6 +15,8 @@ export {
   useOutlet,
   useParams,
   useResolvedPath,
+  // renderer-react
+  useRouteContext,
   useRoutes,
   useSearchParams,
 } from '@umijs/renderer-react';

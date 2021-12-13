@@ -16,3 +16,4 @@ export {
 } from 'react-router-dom';
 export { useAppContext } from './appContext';
 export { renderClient } from './browser';
+export { useRouteContext } from './routeContext';
