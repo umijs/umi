@@ -366,6 +366,9 @@ export class Service {
     if (isPromise(ret)) {
       ret = await ret;
     }
+    if (opts.plugin.type === 'plugin') {
+      assert(!ret, `plugin should return nothing`);
+    }
     if (ret?.presets) {
       ret.presets = ret.presets.map(
         (preset: string) =>
