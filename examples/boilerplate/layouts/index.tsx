@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link, Outlet } from 'umi';
+import { Link, Outlet, useLocation } from 'umi';
 
 export default function Layout() {
+  const location = useLocation();
+  console.log('location', location);
   return (
     <div>
       <h2>global layout</h2>

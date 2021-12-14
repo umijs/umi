@@ -42,7 +42,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
-import { Link, useLocation, useNavigate, Outlet, useRouteContext } from 'umi';
+import { Link, useLocation, useNavigate, Outlet, useAppContext, useRouteContext } from 'umi';
 // import { useModel } from '@@/plugin-model';
 import ProLayout, {
   PageLoading,
@@ -53,11 +53,12 @@ export default () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { route } = useRouteContext();
+  const { routes, clientRoutes } = useAppContext();
   return (
     <ProLayout
-      route={route}
+      route={clientRoutes[0]}
       location={location}
-      title={'test'/*TODO*/}
+      title={'Ant Design Pro'/*TODO*/}
       navTheme="dark"
       siderWidth={256}
       onMenuHeaderClick={(e) => {
@@ -97,9 +98,7 @@ export default () => {
       path: 'Layout.less',
       content: `
 @import '~antd/es/style/themes/default.less';
-
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
-
 @media screen and (max-width: @screen-xs) {
   // 在小屏幕的时候可以有更好的体验
   .umi-plugin-layout-container {
@@ -111,10 +110,10 @@ export default () => {
 }
 
 .umi-plugin-layout-menu {
-  :global(.anticon) {
+  .anticon {
     margin-right: 8px;
   }
-  :global(.ant-dropdown-menu-item) {
+  .ant-dropdown-menu-item {
     min-width: 160px;
   }
 }
