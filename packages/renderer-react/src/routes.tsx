@@ -24,6 +24,10 @@ export function createClientRoutes(opts: {
       if (children.length > 0) {
         // @ts-ignore
         route.children = children;
+        // TODO: remove me
+        // compatible with @ant-design/pro-layout
+        // @ts-ignore
+        route.routes = children;
       }
       return route;
     });
@@ -31,20 +35,22 @@ export function createClientRoutes(opts: {
 
 export function createClientRoute(opts: { route: IRoute; Component: any }) {
   const { route, Component } = opts;
+  const { id, path, index, redirect, ...props } = route;
   return {
-    id: route.id,
-    path: route.path,
-    index: route.index,
-    element: route.redirect ? (
-      <Navigate to={route.redirect} />
+    id: id,
+    path: path,
+    index: index,
+    element: redirect ? (
+      <Navigate to={redirect} />
     ) : (
       <RouteContext.Provider
         value={{
           route: opts.route,
         }}
       >
-        <Component id={route.id} />
+        <Component id={id} />
       </RouteContext.Provider>
     ),
+    ...props,
   };
 }
