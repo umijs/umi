@@ -1,18 +1,12 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
-import { dirname, join, relative } from 'path';
+import { join, relative } from 'path';
 import { IApi } from 'umi';
 import { chalk } from 'umi/plugin-utils';
 import { Model, ModelUtils } from './utils/modelUtils';
-import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
-  const pkgPath =
-    resolveProjectDep({
-      pkg: api.pkg,
-      cwd: api.cwd,
-      dep: 'dva',
-    }) || dirname(require.resolve('dva/package.json'));
+  const pkgPath = join(__dirname, '../templates/dva.ts');
 
   api.describe({
     config: {
@@ -24,11 +18,9 @@ export default (api: IApi) => {
   });
 
   api.modifyAppData((memo) => {
-    const version = require(`${pkgPath}/package.json`).version;
     const models = getAllModels(api);
     memo.pluginDva = {
       pkgPath,
-      version,
       models,
     };
     return memo;
@@ -55,25 +47,35 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'dva.tsx',
       tpl: `
-import dva from 'dva';
-import { useRef } from 'react';
+import { create, Provider } from 'dva';
+import React, { useRef } from 'react';
 import { useAppContext } from 'umi';
 import { models } from './models';
 
 export function RootContainer(props: any) {
   const { navigator } = useAppContext();
-  const app = useRef();
+  const app = useRef<any>();
   if (!app.current) {
-    app.current = dva({
-      history: navigator,
-      initialState: props.initialState,
-    });
+    app.current = create(
+      {
+        history: navigator,
+      },
+      {
+        initialReducer: {},
+        setupMiddlewares(middlewares: Function[]) {
+          return [...middlewares];
+        },
+        setupApp(app: IDvaApp) {
+          app._history = navigator;
+        },
+      },
+    );
     for (const id of Object.keys(models)) {
       app.current.model(models[id].model);
     }
-    app.current.router(() => props.children);
+    app.current!.start();
   }
-  return app.current.start()();
+  return <Provider store={app.current!._store}>{props.children}</Provider>;
 }
       `,
       context: {},

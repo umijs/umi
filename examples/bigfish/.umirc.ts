@@ -12,6 +12,11 @@ export default {
           component: 'use-model',
           name: 'use-model',
         },
+        {
+          path: '/data-flow/dva',
+          component: 'dva',
+          name: 'dva',
+        },
       ],
     },
   ],
@@ -20,7 +25,7 @@ export default {
     style: 'less',
     // dark: true,
   },
-  // dva: {},
+  dva: {},
   model: {},
   analytics: {
     baidu: 'test',
