@@ -158,7 +158,7 @@ export default class Config {
           process.env.UMI_ENV,
         );
         const fileNameWithoutExt = envConfigFileName.replace(
-          extname(envConfigFileName),
+          new RegExp(`\\${extname(envConfigFileName)}$`),
           '',
         );
         envConfigFile = getFile({
