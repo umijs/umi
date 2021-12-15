@@ -83,6 +83,13 @@ export class MFSU {
     opts.config.entry = entry;
     // plugins
     opts.config.plugins = opts.config.plugins || [];
+
+    // support publicPath auto
+    let publicPath = opts.config.output!.publicPath;
+    if (publicPath === 'auto') {
+      publicPath = '/';
+    }
+
     opts.config.plugins!.push(
       ...[
         new WebpackVirtualModules(virtualModules),
@@ -90,9 +97,7 @@ export class MFSU {
           name: '__',
           remotes: {
             // TODO: support runtime public path
-            [mfName!]: `${mfName}@${
-              opts.config.output!.publicPath
-            }${REMOTE_FILE_FULL}`,
+            [mfName!]: `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
           },
         }),
         new BuildDepPlugin({
