@@ -21,7 +21,6 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@loadable/component": "5.15.0",
     "history": "5.1.0",
     "react-router-dom": "6.0.2"
   },
