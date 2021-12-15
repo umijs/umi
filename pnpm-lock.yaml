@@ -531,13 +531,11 @@ importers:
 
   packages/renderer-react:
     specifiers:
-      '@loadable/component': 5.15.0
       history: 5.1.0
       react: 18.0.0-rc.0
       react-dom: 18.0.0-rc.0
       react-router-dom: 6.0.2
     dependencies:
-      '@loadable/component': 5.15.0_react@18.0.0-rc.0
       history: 5.1.0
       react-router-dom: 6.0.2_757a802188413a36d4f24237d13b8e90
     devDependencies:
@@ -3697,18 +3695,6 @@ packages:
     dependencies:
       '@lezer/common': 0.15.10
     dev: true
-
-  /@loadable/component/5.15.0_react@18.0.0-rc.0:
-    resolution: {integrity: sha512-g63rQzypPOZi0BeGsK4ST2MYhsFR+i7bhL8k/McUoWDNMDuTTdUlQ2GACKxqh5sI/dNC/6nVoPrycMnSylnAgQ==}
-    engines: {node: '>=8'}
-    peerDependencies:
-      react: '>=16.3.0'
-    dependencies:
-      '@babel/runtime': 7.16.3
-      hoist-non-react-statics: 3.3.2
-      react: 18.0.0-rc.0
-      react-is: 16.13.1
-    dev: false
 
   /@napi-rs/triples/1.1.0:
     resolution: {integrity: sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==}

@@ -1,5 +1,3 @@
-// @ts-ignore
-import loadable from '@loadable/component';
 import { Location } from 'history';
 import React from 'react';
 import { Navigator, Router, useRoutes } from 'react-router-dom';
@@ -63,10 +61,12 @@ function Loading() {
 
 export function RouteComponent(props: { id: string }) {
   const loader = useAppContext().routeComponents[props.id];
-  const RouteComponent = loadable(loader, {
-    fallback: <Loading />,
-  });
+  const RouteComponent = React.lazy(loader);
 
   // ref: https://reactjs.org/docs/code-splitting.html
-  return <RouteComponent />;
+  return (
+    <React.Suspense fallback={<Loading />}>
+      <RouteComponent />
+    </React.Suspense>
+  );
 }
