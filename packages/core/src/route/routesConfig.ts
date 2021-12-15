@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 interface IOpts {
   routes: any[];
 }
@@ -28,6 +30,10 @@ function transformRoute(opts: {
   parentId: undefined | string;
   memo: IMemo;
 }) {
+  assert(
+    !opts.route.children,
+    'children is not allowed in route props, use routes instead.',
+  );
   const id = String(opts.memo.id++);
   const { routes, component, ...routeProps } = opts.route;
   opts.memo.ret[id] = {
