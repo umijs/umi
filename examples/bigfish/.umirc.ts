@@ -4,9 +4,9 @@ export default {
     { path: '/users', component: 'users', name: 'users' },
     {
       path: '/data-flow',
-      component: 'users',
+      component: 'data-flow',
       name: 'data-flow',
-      children: [
+      routes: [
         {
           path: '/data-flow/use-model',
           component: 'use-model',
