@@ -6,7 +6,7 @@ import { createServerRoutes } from './routes';
 import { normalizeScripts } from './scripts';
 import { normalizeStyles } from './styles';
 
-interface IOpts {
+export interface IOpts {
   routes: Record<
     string,
     {
