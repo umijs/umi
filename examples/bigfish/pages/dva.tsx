@@ -9,12 +9,12 @@ function mapStateToProps(state: any) {
 }
 
 export default connect(mapStateToProps)(function HomePage(props: any) {
-  console.log(dayjs().format);
-
   return (
     <div>
-      <h2>antd</h2>
-      <h2>count: {props.count}</h2>
+      <h2>dva</h2>
+      <p>dayjs: {dayjs().format()}</p>
+      <p>count: {props.count}</p>
+      <button onClick={() => props.dispatch({ type: 'count/add' })}>+</button>
     </div>
   );
 });
