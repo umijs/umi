@@ -67,11 +67,8 @@ export default (api: IApi) => {
   };
 
   // replace moment
-  api.chainWebpack((memo) => {
-    memo.resolve.alias.set(
-      'moment',
-      dirname(require.resolve('dayjs/package.json')),
-    );
+  api.modifyConfig((memo) => {
+    memo.alias.moment = dirname(require.resolve('dayjs/package.json'));
     return memo;
   });
 
