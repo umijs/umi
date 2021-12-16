@@ -48,12 +48,12 @@ import ProLayout, {
   PageLoading,
 } from '@ant-design/pro-layout';
 import './Layout.less';
+import { getRightRenderContent } from './rightRender';
 
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { route } = useRouteContext();
-  const { routes, clientRoutes } = useAppContext();
+  const { clientRoutes } = useAppContext();
   return (
     <ProLayout
       route={clientRoutes[0]}
@@ -85,10 +85,89 @@ export default () => {
       disableContentMargin
       fixSiderbar
       fixedHeader
+      rightContentRender={
+        (layoutProps) => {
+          // TODO: support runtime rightRender
+          return getRightRenderContent({
+            runtimeLayout: {
+              logout() {},
+            },
+            loading: false,
+            initialState: {},
+            setInitialState: () => {},
+          });
+        }
+      }
     >
       <Outlet />
     </ProLayout>
   );
+}
+      `,
+    });
+
+    api.writeTmpFile({
+      path: 'rightRender.tsx',
+      content: `
+import React from 'react';
+import { Avatar, Dropdown, Menu, Spin } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
+
+export function getRightRenderContent (opts: {
+   runtimeLayout: any,
+   loading: boolean,
+   initialState: any,
+   setInitialState: any,
+ }) {
+  const menu = (
+    <Menu className="umi-plugin-layout-menu">
+      <Menu.Item
+        key="logout"
+        onClick={() =>
+          opts.runtimeLayout.logout && opts.runtimeLayout?.logout(opts.initialState)
+        }
+      >
+        <LogoutOutlined />
+        退出登录
+      </Menu.Item>
+    </Menu>
+  );
+
+  const avatar = (
+    <span className="umi-plugin-layout-action">
+        <Avatar
+          size="small"
+          className="umi-plugin-layout-avatar"
+          src={
+            opts.initialState?.avatar ||
+            'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+          }
+          alt="avatar"
+        />
+        <span className="umi-plugin-layout-name">{opts.initialState?.name}</span>
+      </span>
+  );
+
+  if (opts.loading) {
+    return (
+      <div className="umi-plugin-layout-right">
+        <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="umi-plugin-layout-right anticon">
+      {opts.runtimeLayout.logout ? (
+        <Dropdown overlay={menu} overlayClassName="umi-plugin-layout-container">
+          {avatar}
+        </Dropdown>
+      ) : (
+        avatar
+      )}
+    </div>
+  );
+  // TODO: <SelectLang />
 }
       `,
     });
@@ -108,7 +187,6 @@ export default () => {
     border-radius: 0 !important;
   }
 }
-
 .umi-plugin-layout-menu {
   .anticon {
     margin-right: 8px;
@@ -117,7 +195,6 @@ export default () => {
     min-width: 160px;
   }
 }
-
 .umi-plugin-layout-right {
   display: flex;
   float: right;
@@ -142,7 +219,6 @@ export default () => {
       background: @pro-header-hover-bg;
     }
   }
-
   .umi-plugin-layout-search {
     padding: 0 12px;
     &:hover {
@@ -150,7 +226,6 @@ export default () => {
     }
   }
 }
-
 .umi-plugin-layout-name {
   margin-left: 8px;
 }
