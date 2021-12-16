@@ -45,6 +45,7 @@ export async function build(opts: IOpts) {
       less({
         modifyVars: opts.config.theme,
         javascriptEnabled: true,
+        alias: opts.config.alias,
         ...opts.config.lessLoader,
       }),
       opts.config.alias && alias(addCwdPrefix(opts.config.alias, opts.cwd)),
