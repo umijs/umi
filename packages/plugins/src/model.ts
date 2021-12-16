@@ -49,18 +49,22 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
-import React, { useMemo } from 'react';
+import React  from 'react';
 import { Provider } from './';
 import { models as rawModels } from './model';
 
-export function dataflowProvider(container, opts) {
-  const models = useMemo(() => {
+function ProviderWrapper(props: any) {
+  const models = React.useMemo(() => {
     return Object.keys(rawModels).reduce((memo, key) => {
       memo[rawModels[key].namespace] = rawModels[key].model;
       return memo;
     }, {});
   }, []);
-  return React.createElement(Provider, { ...opts, models }, container);
+  return <Provider models={models} {...props}>{ props.children }</Provider>
+}
+
+export function dataflowProvider(container, opts) {
+  return <ProviderWrapper {...opts}>{ container }</ProviderWrapper>;
 }
       `,
     });
