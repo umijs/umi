@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@umijs/preset-react": "1.x",
+    "@umijs/preset-react": "2.x",
     "@umijs/test": "^{{{ version }}}",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
