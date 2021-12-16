@@ -42,7 +42,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
-import { Link, useLocation, useNavigate, Outlet, useAppContext, useRouteContext } from 'umi';
+import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteContext } from 'umi';
 // import { useModel } from '@@/plugin-model';
 import ProLayout, {
   PageLoading,
@@ -53,7 +53,7 @@ import { getRightRenderContent } from './rightRender';
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { clientRoutes } = useAppContext();
+  const { clientRoutes } = useAppData();
   return (
     <ProLayout
       route={clientRoutes[0]}
