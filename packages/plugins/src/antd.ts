@@ -77,32 +77,6 @@ export default (api: IApi) => {
       : [];
   });
 
-  // if (dayjs !== false) {
-  //   api.onGenerateFiles({
-  //     fn: () => {
-  //       const { plugins } = getConfig(api);
-  //
-  //       const runtimeTpl = readFileSync(
-  //         join(__dirname, '../templates/antd/dayjs.tpl'),
-  //         'utf-8',
-  //       );
-  //       api.writeTmpFile({
-  //         path: 'plugin-antd/dayjs.tsx',
-  //         content: Mustache.render(runtimeTpl, {
-  //           plugins,
-  //           dayjsPath: dirname(require.resolve('dayjs/package.json')),
-  //           dayjsPluginPath: dirname(
-  //             require.resolve('antd-dayjs-webpack-plugin/package.json'),
-  //           ),
-  //         }),
-  //       });
-  //     },
-  //   });
-  //   api.addEntryCodeAhead(() => {
-  //     return [`import './${DIR_NAME}/dayjs.tsx'`];
-  //   });
-  // }
-
   // antd config provider
   api.onGenerateFiles(() => {
     if (!api.config.antd.config) return;
