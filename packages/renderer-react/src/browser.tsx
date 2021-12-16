@@ -1,54 +1,80 @@
+// @ts-ignore
 import { BrowserHistory, createBrowserHistory } from 'history';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './app';
-import { IRoutesById } from './types';
+import { Router, useRoutes } from 'react-router-dom';
+import { AppContext, useAppContext } from './appContext';
+import { createClientRoutes } from './routes';
+import { IRouteComponents, IRoutesById } from './types';
 
-export function Browser(props: {
-  routes: IRoutesById;
-  routeComponents: Record<string, any>;
-  pluginManager: any;
-}) {
+function BrowserRoutes(props: any) {
   const historyRef = React.useRef<BrowserHistory>();
-  if (historyRef.current === undefined) {
+  if (historyRef.current == null) {
     historyRef.current = createBrowserHistory({ window });
   }
   const history = historyRef.current;
-  const [state, dispatch] = React.useReducer((_: any, update: any) => update, {
+  const [state, setState] = React.useState({
     action: history.action,
     location: history.location,
   });
-  React.useLayoutEffect(() => history.listen(dispatch), [history]);
-  return props.pluginManager.applyPlugins({
-    type: 'modify',
-    key: 'rootContainer',
-    initialValue: (
-      <App
-        navigator={history!}
-        location={state!.location}
-        routes={props.routes}
-        routeComponents={props.routeComponents}
-        pluginManager={props.pluginManager}
-      />
-    ),
-    args: {},
-  });
+  React.useLayoutEffect(() => history.listen(setState), [history]);
+  return (
+    <Router navigator={history} location={state.location}>
+      {props.children}
+    </Router>
+  );
+}
+
+function Routes() {
+  const { clientRoutes } = useAppContext();
+  return useRoutes(clientRoutes);
 }
 
 export function renderClient(opts: {
   rootElement?: HTMLElement;
   routes: IRoutesById;
-  routeComponents: Record<string, any>;
+  routeComponents: IRouteComponents;
   pluginManager: any;
 }) {
   const rootElement = opts.rootElement || document.getElementById('root');
-  const browser = (
-    <Browser
-      routes={opts.routes}
-      routeComponents={opts.routeComponents}
-      pluginManager={opts.pluginManager}
-    />
+  const clientRoutes = createClientRoutes({
+    routesById: opts.routes,
+    routeComponents: opts.routeComponents,
+  });
+  let rootContainer = (
+    <BrowserRoutes>
+      <Routes />
+    </BrowserRoutes>
   );
+  for (const key of [
+    'innerProvider',
+    'i18nProvider',
+    'dataflowProvider',
+    'outerProvider',
+    // Highest priority
+    'rootContainer',
+  ]) {
+    rootContainer = opts.pluginManager.applyPlugins({
+      type: 'modify',
+      key: key,
+      initialValue: rootContainer,
+      args: {},
+    });
+  }
+  const browser = (
+    <AppContext.Provider
+      value={{
+        routes: opts.routes,
+        routeComponents: opts.routeComponents,
+        clientRoutes,
+        pluginManager: opts.pluginManager,
+        rootElement: opts.rootElement,
+      }}
+    >
+      {rootContainer}
+    </AppContext.Provider>
+  );
+
   // @ts-ignore
   if (ReactDOM.createRoot) {
     // @ts-ignore

@@ -119,16 +119,20 @@ importers:
     specifiers:
       '@types/react': ^17.0.37
       '@types/react-dom': ^17.0.11
-      react: ^18.0.0-alpha-fd5e01c2e-20210913
-      react-dom: ^18.0.0-alpha-fd5e01c2e-20210913
+      history: ^5.1.0
+      react: ^18.0.0-rc.0
+      react-dom: ^18.0.0-rc.0
+      react-router-dom: ^6.1.1
       umi: 4.0.0-beta.12
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
-      react: 18.0.0-alpha-fd5e01c2e-20210913
-      react-dom: 18.0.0-alpha-fd5e01c2e-20210913_27cbfb1ba22cf08042f03db86a23d387
+      history: 5.1.0
+      react: 18.0.0-rc.0
+      react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
+      react-router-dom: 6.1.1_757a802188413a36d4f24237d13b8e90
 
   examples/libs:
     specifiers:
@@ -541,11 +545,13 @@ importers:
 
   packages/renderer-react:
     specifiers:
+      '@loadable/component': 5.15.2
       history: 5.1.0
       react: 18.0.0-rc.0
       react-dom: 18.0.0-rc.0
       react-router-dom: 6.0.2
     dependencies:
+      '@loadable/component': 5.15.2_react@18.0.0-rc.0
       history: 5.1.0
       react-router-dom: 6.0.2_757a802188413a36d4f24237d13b8e90
     devDependencies:
@@ -3704,6 +3710,18 @@ packages:
     dependencies:
       '@lezer/common': 0.15.10
     dev: true
+
+  /@loadable/component/5.15.2_react@18.0.0-rc.0:
+    resolution: {integrity: sha512-ryFAZOX5P2vFkUdzaAtTG88IGnr9qxSdvLRvJySXcUA4B4xVWurUNADu3AnKPksxOZajljqTrDEDcYjeL4lvLw==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      react: '>=16.3.0'
+    dependencies:
+      '@babel/runtime': 7.16.3
+      hoist-non-react-statics: 3.3.2
+      react: 18.0.0-rc.0
+      react-is: 16.13.1
+    dev: false
 
   /@napi-rs/triples/1.1.0:
     resolution: {integrity: sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==}
@@ -8509,7 +8527,6 @@ packages:
     resolution: {integrity: sha512-zPuQgPacm2vH2xdORvGGz1wQMuHSIB56yNAy5FnLuwOwgSYyPKptJtcMm6Ev+hRGeS+GzhbmRacHzvlESbFwDg==}
     dependencies:
       '@babel/runtime': 7.16.3
-    dev: false
 
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=}
@@ -12998,6 +13015,18 @@ packages:
       react-router: 6.0.2_react@18.0.0-rc.0
     dev: false
 
+  /react-router-dom/6.1.1_757a802188413a36d4f24237d13b8e90:
+    resolution: {integrity: sha512-O3UH89DI4o+swd2q6lF4dSmpuNCxwkUXcj0zAFcVc1H+YoPE6T7uwoFMX0ws1pUvCY8lYDucFpOqCCdal6VFzg==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      history: 5.1.0
+      react: 18.0.0-rc.0
+      react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
+      react-router: 6.1.1_react@18.0.0-rc.0
+    dev: true
+
   /react-router/6.0.2_react@18.0.0-rc.0:
     resolution: {integrity: sha512-8/Wm3Ed8t7TuedXjAvV39+c8j0vwrI5qVsYqjFr5WkJjsJpEvNSoLRUbtqSEYzqaTUj1IV+sbPJxvO+accvU0Q==}
     peerDependencies:
@@ -13006,6 +13035,15 @@ packages:
       history: 5.1.0
       react: 18.0.0-rc.0
     dev: false
+
+  /react-router/6.1.1_react@18.0.0-rc.0:
+    resolution: {integrity: sha512-55o96RiDZmC0uD17DPqVmzzfdNd2Dc+EjkYvMAmHl43du/GItaTdFr5WwjTryNWPXZ+OOVQxQhwAX25UwxpHtw==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      history: 5.1.0
+      react: 18.0.0-rc.0
+    dev: true
 
   /react-shallow-renderer/16.14.1:
     resolution: {integrity: sha512-rkIMcQi01/+kxiTE9D3fdS959U1g7gs+/rborw++42m1O9FAQiNI/UNRZExVUoAOprn4umcXf+pFRou8i4zuBg==}

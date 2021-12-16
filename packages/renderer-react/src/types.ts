@@ -9,3 +9,7 @@ export interface IRoute {
 export interface IRoutesById {
   [id: string]: IRoute;
 }
+
+export interface IRouteComponents {
+  [id: string]: any;
+}
