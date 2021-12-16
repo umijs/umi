@@ -7,6 +7,6 @@ export const RouteContext = React.createContext<IRouteContextType | undefined>(
   undefined,
 );
 
-export function useRouteContext(): IRouteContextType {
+export function useRouteData(): IRouteContextType {
   return React.useContext(RouteContext)!;
 }

@@ -51,11 +51,11 @@ export default (api: IApi) => {
 // aliased to @umijs/plugins/templates/dva
 import { create, Provider } from 'dva';
 import React, { useRef } from 'react';
-import { useAppContext } from 'umi';
+import { useAppData } from 'umi';
 import { models } from './models';
 
 export function RootContainer(props: any) {
-  const { navigator } = useAppContext();
+  const { navigator } = useAppData();
   const app = useRef<any>();
   if (!app.current) {
     app.current = create(

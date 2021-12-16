@@ -3,7 +3,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRoutes } from 'react-router-dom';
-import { AppContext, useAppContext } from './appContext';
+import { AppContext, useAppData } from './appContext';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
 
@@ -26,7 +26,7 @@ function BrowserRoutes(props: any) {
 }
 
 function Routes() {
-  const { clientRoutes } = useAppContext();
+  const { clientRoutes } = useAppData();
   return useRoutes(clientRoutes);
 }
 
