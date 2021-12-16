@@ -47,6 +47,8 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'dva.tsx',
       tpl: `
+// It's faked dva
+// aliased to @umijs/plugins/templates/dva
 import { create, Provider } from 'dva';
 import React, { useRef } from 'react';
 import { useAppContext } from 'umi';
