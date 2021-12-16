@@ -4,7 +4,6 @@ translateHelp: true
 
 # @umijs/plugin-antd
 
-
 整合 antd 组件库。
 
 ## 启用方式
@@ -16,7 +15,6 @@ translateHelp: true
 包含以下功能，
 
 1. 内置 [antd](https://ant.design/)，目前内置版本是 `^4.0.0`
-2. 内置 [antd-mobile](https://mobile.ant.design/)，目前内置版本是 `^2.3.1`
 2. 基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
 3. 使用 antd@4 时，可一键切换为暗色主题，见下图
 
@@ -28,15 +26,15 @@ translateHelp: true
 
 开启暗色主题。
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `false`
 
 ### compact
 
 开启紧凑主题。
 
-* Type: `boolean`
-* Default: `false`
+- Type: `boolean`
+- Default: `false`
 
 比如：
 
@@ -46,7 +44,7 @@ export default {
     dark: true,
     compact: true,
   },
-}
+};
 ```
 
 启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
@@ -55,8 +53,8 @@ export default {
 
 使用 antd 的全局化配置。
 
-* Type: `object`
-* Default: `{}`
+- Type: `object`
+- Default: `{}`
 
 支持 [ConfigProvider](https://ant.design/components/config-provider-cn/) 的配置。
 
@@ -65,23 +63,24 @@ export default {
 ```js
 export default {
   antd: {
-    config:{
-        componentSize:'small'
-    }
+    config: {
+      componentSize: 'small',
+    },
   },
-}
+};
 ```
+
 #### 运行时配置
 
 ##### antd
 
-* Type: `object`
+- Type: `object`
 
 ```typescript
 // src/app.ts
 export const antd = {
-  componentSize:'small'
-}
+  componentSize: 'small',
+};
 ```
 
 ## FAQ
