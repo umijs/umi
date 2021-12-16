@@ -1,7 +1,6 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import type webpack from '@umijs/bundler-webpack/compiled/webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
-import type { InlineConfig as ViteInlineConfig } from 'vite';
 import type {
   IAdd,
   IEvent,
@@ -12,6 +11,7 @@ import type {
 } from '@umijs/core';
 import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
+import type { InlineConfig as ViteInlineConfig } from 'vite';
 
 export type IScript =
   | Partial<{
