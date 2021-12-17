@@ -77,7 +77,7 @@ export function RootContainer(props: any) {
     for (const id of Object.keys(models)) {
       app.current.model(models[id].model);
     }
-    app.current!.start();
+    app.current.start();
   }
   return <Provider store={app.current!._store}>{props.children}</Provider>;
 }

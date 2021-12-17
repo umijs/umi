@@ -7,6 +7,7 @@ export default (api: IApi) => {
       require.resolve('@umijs/plugins/dist/analytics'),
       require.resolve('@umijs/plugins/dist/antd'),
       require.resolve('@umijs/plugins/dist/dva'),
+      require.resolve('@umijs/plugins/dist/initial-state'),
       require.resolve('@umijs/plugins/dist/layout'),
       require.resolve('@umijs/plugins/dist/model'),
       require.resolve('@umijs/plugins/dist/moment2dayjs'),
