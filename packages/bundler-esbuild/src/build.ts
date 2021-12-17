@@ -46,6 +46,7 @@ export async function build(opts: IOpts) {
         modifyVars: opts.config.theme,
         javascriptEnabled: true,
         alias: opts.config.alias,
+        // ref: https://github.com/umijs/umi-next/pull/214
         inlineStyle: opts.inlineStyle,
         ...opts.config.lessLoader,
       }),
