@@ -34,7 +34,7 @@ export class ModelUtils {
     this.opts = opts;
   }
 
-  getAllModels() {
+  getAllModels(opts: { extraModels: string[] }) {
     // reset count
     this.count = 1;
     return [
@@ -50,7 +50,10 @@ export class ModelUtils {
         base: join(this.api.paths.absPagesPath),
         pattern: '**/model.{ts,tsx,js,jsx}',
       }),
-    ];
+      ...opts.extraModels,
+    ].map((file: string) => {
+      return new Model(file, this.count++);
+    });
   }
 
   getModels(opts: { base: string; pattern?: string }) {
@@ -65,9 +68,6 @@ export class ModelUtils {
         if (/\.(test|e2e|spec).([jt])sx?$/.test(file)) return false;
         const content = readFileSync(file, 'utf-8');
         return this.isModelValid({ content, file });
-      })
-      .map((file: string) => {
-        return new Model(file, this.count++);
       });
   }
 

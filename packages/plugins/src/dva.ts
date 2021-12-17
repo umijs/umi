@@ -11,7 +11,9 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema(Joi) {
-        return Joi.object();
+        return Joi.object({
+          extraModels: Joi.array().items(Joi.string()),
+        });
       },
     },
     enableBy: api.EnableBy.config,
@@ -146,7 +148,9 @@ export function getModelUtil(api: IApi | null) {
 }
 
 export function getAllModels(api: IApi) {
-  return getModelUtil(api).getAllModels();
+  return getModelUtil(api).getAllModels({
+    extraModels: [...(api.config.dva.extraModels || [])],
+  });
 }
 
 function isModelObject(node: t.Node) {
