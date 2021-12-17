@@ -39,7 +39,7 @@ export default (api: IApi) => {
 
     // index.tsx
     const indexContent = readFileSync(
-      join(__dirname, '../templates/model.tsx'),
+      join(__dirname, '../libs/model.tsx'),
       'utf-8',
     ).replace('fast-deep-equal', winPath(require.resolve('fast-deep-equal')));
     api.writeTmpFile({

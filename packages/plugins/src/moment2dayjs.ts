@@ -1,6 +1,5 @@
 import { Mustache } from '@umijs/utils';
-import { readFileSync } from 'fs';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 import { IApi } from 'umi';
 
 /*
@@ -8,7 +7,6 @@ import { IApi } from 'umi';
    The presets that can adapt to antd is registered by default.
    When the user configures preset and plugins at the same time, we will merge them.
 */
-
 export default (api: IApi) => {
   api.describe({
     key: 'moment2dayjs',
@@ -75,10 +73,20 @@ export default (api: IApi) => {
   api.onGenerateFiles(() => {
     const plugins = getDayjsPlugins(api);
 
-    const runtimeTpl = readFileSync(
-      join(__dirname, '../templates/moment2dayjs/runtime.tpl'),
-      'utf-8',
-    );
+    const runtimeTpl = `
+import dayjs from '{{{dayjsPath}}}';
+import antdPlugin from '{{{dayjsAntdPluginPath}}}';
+
+{{#plugins}}
+import {{.}} from '{{{dayjsPath}}}/plugin/{{.}}';
+{{/plugins}}
+
+{{#plugins}}
+dayjs.extend({{.}});
+{{/plugins}}
+
+dayjs.extend(antdPlugin);
+    `;
     const dayjsAntdPluginPath = require.resolve(
       'antd-dayjs-webpack-plugin/src/antd-plugin',
     );
