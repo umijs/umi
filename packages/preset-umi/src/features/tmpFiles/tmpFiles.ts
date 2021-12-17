@@ -108,6 +108,7 @@ export default (api: IApi) => {
         'rootContainer',
         'innerProvider',
         'i18nProvider',
+        'accessProvider',
         'dataflowProvider',
         'outerProvider',
         // 'render',
