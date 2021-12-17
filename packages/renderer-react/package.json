@@ -23,7 +23,7 @@
   "dependencies": {
     "@loadable/component": "5.15.2",
     "history": "5.1.0",
-    "react-router-dom": "6.0.2"
+    "react-router-dom": "6.1.1"
   },
   "devDependencies": {
     "react": "18.0.0-rc.0",
