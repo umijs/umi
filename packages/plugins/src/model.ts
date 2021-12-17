@@ -1,24 +1,25 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
-import assert from 'assert';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
-import { lodash, winPath } from 'umi/plugin-utils';
-import { Model, ModelUtils } from './utils/modelUtils';
+import { winPath } from 'umi/plugin-utils';
+import { ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   api.describe({
     config: {
       schema(Joi) {
-        return Joi.object();
+        return Joi.object({
+          extraModels: Joi.array().items(Joi.string()),
+        });
       },
     },
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyAppData((memo) => {
-    const models = getAllModels(api);
+  api.modifyAppData(async (memo) => {
+    const models = await getAllModels(api);
     memo.pluginModel = {
       models,
     };
@@ -28,26 +29,12 @@ export default (api: IApi) => {
   api.onGenerateFiles(async (args) => {
     const models = args.isFirstTime
       ? api.appData.pluginModel.models
-      : getAllModels(api);
-
-    const extraModels = (
-      await api.applyPlugins({
-        key: 'addExtraModels',
-        type: api.ApplyPluginsType.add,
-        initialValue: [],
-      })
-    ).map((opts: any) => {
-      assert(
-        lodash.isPlainObject(opts) && opts.file && opts.id,
-        `extra model should be plain object with file and id property, but got ${opts}`,
-      );
-      return new Model(opts.file, opts.id);
-    });
+      : await getAllModels(api);
 
     // model.ts
     api.writeTmpFile({
       path: 'model.ts',
-      content: ModelUtils.getModelsContent([...models, ...extraModels]),
+      content: ModelUtils.getModelsContent(models),
     });
 
     // index.tsx
@@ -94,10 +81,17 @@ export function dataflowProvider(container, opts) {
   });
 };
 
-function getAllModels(api: IApi) {
+async function getAllModels(api: IApi) {
+  const extraModels = await api.applyPlugins({
+    key: 'addExtraModels',
+    type: api.ApplyPluginsType.add,
+    initialValue: [],
+  });
   return new ModelUtils(api, {
     astTest({ node }) {
       return t.isArrowFunctionExpression(node) || t.isFunctionDeclaration(node);
     },
-  }).getAllModels();
+  }).getAllModels({
+    extraModels: [...extraModels, ...(api.config.model.extraModels || [])],
+  });
 }
