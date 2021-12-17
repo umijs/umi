@@ -64,7 +64,7 @@ export default {
 
 功能变化，
 
-- 删除了 routes、library、dll、hardSource、pwa、hd、fastClick、chunks，不可继续使用
+- 删除了 routes、library、dll、hardSource、pwa、hd、fastClick，不可继续使用
 - 内置 dynamicImport、title、scripts、headScripts、metas 和 links 到 Umi 中，可继续使用
 - 其他功能不变
 
