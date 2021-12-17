@@ -49,6 +49,7 @@ export function renderClient(opts: {
   for (const key of [
     'innerProvider',
     'i18nProvider',
+    'accessProvider',
     'dataflowProvider',
     'outerProvider',
     // Highest priority
