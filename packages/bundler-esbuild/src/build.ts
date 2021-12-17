@@ -46,6 +46,7 @@ export async function build(opts: IOpts) {
         modifyVars: opts.config.theme,
         javascriptEnabled: true,
         alias: opts.config.alias,
+        inlineStyle: opts.inlineStyle,
         ...opts.config.lessLoader,
       }),
       opts.config.alias && alias(addCwdPrefix(opts.config.alias, opts.cwd)),
