@@ -80,6 +80,7 @@ export async function scan(opts: {
   while (queueDeps.length) {
     const depPath = queueDeps.shift();
     if (cache.has(depPath!)) continue;
+    // TODO: use parseModule in bundler-utils
     const content = await getContent(depPath!);
     const { deps } = await scanContent({ content });
     cache.set(depPath!, deps);
