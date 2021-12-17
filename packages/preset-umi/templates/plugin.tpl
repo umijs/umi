@@ -1,6 +1,7 @@
 {{#plugins}}
 import * as Plugin_{{{ index }}} from '{{{ path }}}';
 {{/plugins}}
+import { PluginManager } from 'umi';
 
 export function getPlugins() {
   return [
@@ -15,4 +16,17 @@ export function getPlugins() {
 
 export function getValidKeys() {
   return [{{#validKeys}}'{{{ . }}}',{{/validKeys}}];
+}
+
+let pluginManager = null;
+export function createPluginManager() {
+  pluginManager = PluginManager.create({
+    plugins: getPlugins(),
+    validKeys: getValidKeys(),
+  });
+  return pluginManager;
+}
+
+export function getPluginManager() {
+  return pluginManager;
 }
