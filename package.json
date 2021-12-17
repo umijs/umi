@@ -4,6 +4,7 @@
     "bootstrap": "esno scripts/bootstrap.ts",
     "build": "pnpm -r --filter ./packages run build",
     "build:release": "pnpm -r --filter ./packages run build -- --declarationMap false",
+    "check:packageFiles": "esno scripts/checkPackageFiles.ts",
     "dep:update": "esno scripts/checkNpmClient.ts && pnpm up --interactive --latest --recursive",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
     "format": "prettier --write .",

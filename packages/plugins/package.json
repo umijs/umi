@@ -12,7 +12,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "libs"
   ],
   "scripts": {
     "build": "pnpm tsc",
