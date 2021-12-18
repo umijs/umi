@@ -2,6 +2,7 @@ import { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import enhancedResolve from 'enhanced-resolve';
 import { promises as fs } from 'fs';
 import less from 'less';
+import LessPluginAliases from 'less-plugin-aliases';
 import path from 'path';
 import { sortByAffix } from '../utils/sortByAffix';
 
@@ -103,7 +104,7 @@ export default (
           namespace: inlineStyle ? 'less-file' : 'file',
         };
       });
-      if (!inlineStyle) {
+      if (inlineStyle) {
         onResolve({ filter: /\.less$/, namespace: 'less-file' }, (args) => {
           return { path: args.path, namespace: 'less-content' };
         });
@@ -137,6 +138,12 @@ export default (
           const filename = path.basename(args.path);
           try {
             const result = await less.render(content, {
+              plugins: [
+                new LessPluginAliases({
+                  prefix: '~',
+                  aliases: alias || {},
+                }),
+              ],
               filename,
               rootpath: dir,
               ...lessOptions,

@@ -28,6 +28,7 @@ const expects: Record<string, Function> = {
     expect(files['index.js']).toContain(`console.log("foooooo");`);
     expect(files['index.css']).toContain(`color: red;`);
     expect(files['index.css']).toContain(`color: blue;`);
+    expect(files['index.css']).toContain(`color: black;`);
   },
   node_globals_polyfill({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("__dirname", "foooooo");`);
