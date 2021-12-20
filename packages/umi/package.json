@@ -20,7 +20,10 @@
     "index.d.ts",
     "index.esm.js",
     "client",
-    "bin"
+    "bin",
+    "plugin.js",
+    "plugin-utils.d.ts",
+    "plugin-utils.js"
   ],
   "scripts": {
     "build": "pnpm tsc",
