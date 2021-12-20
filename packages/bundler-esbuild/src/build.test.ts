@@ -33,6 +33,11 @@ const expects: Record<string, Function> = {
   node_globals_polyfill({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("__dirname", "foooooo");`);
   },
+  svg({ files }: IOpts) {
+    expect(files['index.js']).toContain(`console.log("foo");`);
+    expect(files['index.js']).toContain(`var smile_default =`);
+    expect(files['index.css']).toContain(`data:image/svg+xml;`);
+  },
 };
 
 const fixtures = join(__dirname, 'fixtures');

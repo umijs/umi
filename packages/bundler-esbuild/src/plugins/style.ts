@@ -4,6 +4,7 @@ import esbuild, {
   Charset,
   Plugin,
 } from '@umijs/bundler-utils/compiled/esbuild';
+import { resolve } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 
@@ -36,12 +37,20 @@ export function inlineStyle({
         write: false,
         charset,
         minify,
+        loader: {
+          '.svg': 'dataurl',
+        },
       };
 
       onResolve({ filter: /\.css$/, namespace: 'file' }, (args) => {
         const absPath = path.join(args.resolveDir, args.path);
         const relPath = path.relative(cwd, absPath);
-        const resolved = fs.existsSync(absPath) ? relPath : args.path;
+        // 通过 resolve 往上找，依赖不一定在 node_modules，可能被提到根目录，并且没有 link
+        const resolved = fs.existsSync(absPath)
+          ? relPath
+          : resolve.sync(`${args.path}`, {
+              basedir: args.resolveDir,
+            });
         return { path: resolved, namespace: 'style-stub' };
       });
 
