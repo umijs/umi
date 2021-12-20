@@ -38,23 +38,34 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
+    const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
 import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteContext } from 'umi';
-// import { useModel } from '@@/plugin-model';
 import ProLayout, {
   PageLoading,
 } from '@ant-design/pro-layout';
 import './Layout.less';
 import Logo from './Logo';
 import { getRightRenderContent } from './rightRender';
+${
+  hasInitialStatePlugin
+    ? `import { useModel } from '@@/plugin-model';`
+    : 'const useModel = null;'
+}
 
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { clientRoutes, pluginManager } = useAppData();
+  const initialInfo = (useModel && useModel('@@initialState')) || {
+    initialState: undefined,
+    loading: false,
+    setInitialState: null,
+  };
+  const { initialState, loading, setInitialState } = initialInfo;
   const userConfig = ${JSON.stringify(api.config.layout, null, 2)};
   const runtimeConfig = pluginManager.applyPlugins({
     key: 'layout',
@@ -97,18 +108,18 @@ export default () => {
         ((layoutProps) => {
           const dom = getRightRenderContent({
             runtimeConfig,
-            loading: false,
-            initialState: {},
-            setInitialState: () => {},
+            loading,
+            initialState,
+            setInitialState,
           });
           if (runtimeConfig.rightContentRender) {
             return runtimeConfig.rightContentRender(layoutProps, dom, {
               // BREAK CHANGE userConfig > runtimeConfig
               userConfig,
               runtimeConfig,
-              loading: false,
-              initialState: {},
-              setInitialState: () => {},
+              loading,
+              initialState,
+              setInitialState,
             });
           }
           return dom;
