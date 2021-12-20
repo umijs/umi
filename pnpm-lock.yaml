@@ -477,6 +477,7 @@ importers:
 
   packages/plugins:
     specifiers:
+      '@ant-design/icons': ^4.7.0
       '@ant-design/pro-layout': ^6.31.7
       '@umijs/bundler-utils': 4.0.0-beta.12
       antd: ^4.17.3
@@ -489,6 +490,7 @@ importers:
       redux: ^4.1.2
       umi: 4.0.0-beta.12
     dependencies:
+      '@ant-design/icons': 4.7.0
       '@ant-design/pro-layout': 6.31.7_antd@4.17.3
       '@umijs/bundler-utils': link:../bundler-utils
       antd: 4.17.3

@@ -104,7 +104,7 @@ export default (api: IApi) => {
       initialValue: [
         // TODO: support these methods
         // 'modifyClientRenderOpts',
-        // 'patchRoutes',
+        'patchRoutes',
         'rootContainer',
         'innerProvider',
         'i18nProvider',

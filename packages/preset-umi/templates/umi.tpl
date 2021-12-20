@@ -7,9 +7,22 @@ import { PluginManager } from 'umi';
 {{{ imports }}}
 
 async function render() {
+  const pluginManager = createPluginManager();
+  const { routes, routeComponents } = await getRoutes(pluginManager);
+
+  // allow user to extend routes
+  pluginManager.applyPlugins({
+    key: 'patchRoutes',
+    type: 'event',
+    args: {
+      routes,
+      routeComponents,
+    },
+  });
   const context = {
-    ...await getRoutes(),
-    pluginManager: createPluginManager(),
+    routes,
+    routeComponents,
+    pluginManager,
   };
   return renderClient(context);
 }

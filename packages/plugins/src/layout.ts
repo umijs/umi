@@ -1,5 +1,8 @@
+import * as allIcons from '@ant-design/icons';
+import assert from 'assert';
 import { dirname } from 'path';
 import { IApi } from 'umi';
+import { lodash } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -133,6 +136,62 @@ export default () => {
       `,
     });
 
+    const iconsMap = Object.keys(api.appData.routes).reduce<
+      Record<string, boolean>
+    >((memo, id) => {
+      const { icon } = api.appData.routes[id];
+      if (icon) {
+        const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
+        // @ts-ignore
+        assert(allIcons[upperIcon], `Icon ${upperIcon} is not found`);
+        memo[upperIcon] = true;
+        // memo[`${upperIcon}Outlined`] = true;
+      }
+      return memo;
+    }, {});
+    const icons = Object.keys(iconsMap);
+    console.log(`icons`, icons);
+    const antIconsPath = dirname(require.resolve('@ant-design/icons/package'));
+    api.writeTmpFile({
+      path: 'icons.tsx',
+      content: `
+${icons
+  .map((icon) => {
+    return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
+  })
+  .join('\n')}
+export default { ${icons.join(', ')} };
+      `,
+    });
+
+    // runtime.tsx
+    api.writeTmpFile({
+      path: 'runtime.tsx',
+      content: `
+import React from 'react';
+import icons from './icons';
+
+function formatIcon(name: string) {
+  return name
+    .replace(name[0], name[0].toUpperCase())
+    .replace(/-(\w)/g, function(all, letter) {
+      return letter.toUpperCase();
+    });
+}
+
+export function patchRoutes({ routes }) {
+  Object.keys(routes).forEach(key => {
+    const { icon } = routes[key];
+    if (icon && typeof icon === 'string') {
+      const upperIcon = formatIcon(icon);
+      routes[key].icon = React.createElement(icons[upperIcon]);
+    }
+  });
+}
+      `,
+    });
+
+    // rightRender.tsx
     api.writeTmpFile({
       path: 'rightRender.tsx',
       content: `
@@ -148,8 +207,8 @@ export function getRightRenderContent (opts: {
  }) {
   if (opts.runtimeConfig.rightRender) {
     return opts.runtimeConfig.rightRender(
-      initialState,
-      setInitialState,
+      opts.initialState,
+      opts.setInitialState,
       opts.runtimeConfig,
     );
   }
@@ -267,6 +326,7 @@ export function getRightRenderContent (opts: {
       `,
     });
 
+    // Logo.tsx
     api.writeTmpFile({
       path: 'Logo.tsx',
       content: `
@@ -375,4 +435,8 @@ export default LogoIcon;
   });
 
   api.addRuntimePluginKey(() => ['layout']);
+
+  api.addRuntimePlugin(() => {
+    return [withTmpPath({ api, path: 'runtime.tsx' })];
+  });
 };
