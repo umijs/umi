@@ -33,6 +33,8 @@ export default {
     baidu: 'test',
   },
   moment2dayjs: {},
-  layout: {},
-  // mfsu: { esbuild: true },
+  layout: {
+    name: 'Ant Design Pro',
+  },
+  mfsu: { esbuild: true },
 };
