@@ -57,10 +57,10 @@ export default (api: IApi) => {
     });
 
     /**
-     * 会导致bug，开发环境再打开把
+     * 不知道为啥有这个，会导致这个问题
      * https://github.com/ant-design/ant-design-pro/issues/9441
      */
-    if (rootIndex !== null && process.env.NODE_ENV === 'production') {
+    if (rootIndex !== null) {
       routes.splice(rootIndex, 0, {
         ...routes[rootIndex],
         path: '/index.html',
