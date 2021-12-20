@@ -14,3 +14,9 @@ export async function getInitialState() {
     location: 'sea',
   };
 }
+
+export const layout = {
+  logout() {
+    alert('logout');
+  },
+};
