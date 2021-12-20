@@ -145,12 +145,14 @@ export default () => {
         // @ts-ignore
         assert(allIcons[upperIcon], `Icon ${upperIcon} is not found`);
         memo[upperIcon] = true;
-        // memo[`${upperIcon}Outlined`] = true;
+        // @ts-ignore
+        if (allIcons[`${upperIcon}Outlined`]) {
+          memo[`${upperIcon}Outlined`] = true;
+        }
       }
       return memo;
     }, {});
     const icons = Object.keys(iconsMap);
-    console.log(`icons`, icons);
     const antIconsPath = dirname(require.resolve('@ant-design/icons/package'));
     api.writeTmpFile({
       path: 'icons.tsx',
@@ -184,7 +186,7 @@ export function patchRoutes({ routes }) {
     const { icon } = routes[key];
     if (icon && typeof icon === 'string') {
       const upperIcon = formatIcon(icon);
-      routes[key].icon = React.createElement(icons[upperIcon]);
+      routes[key].icon = React.createElement(icons[upperIcon] || icons[upperIcon + 'Outlined']);
     }
   });
 }
