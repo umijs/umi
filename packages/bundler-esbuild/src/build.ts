@@ -59,6 +59,9 @@ export async function build(opts: IOpts) {
       __dirname: JSON.stringify('__dirname'),
       'process.env.NODE_ENV': JSON.stringify(opts.mode || 'development'),
     },
+    loader: {
+      '.svg': 'dataurl',
+    },
   });
 }
 
