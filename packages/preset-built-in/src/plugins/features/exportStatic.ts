@@ -15,6 +15,10 @@ export default (api: IApi) => {
         return joi.object({
           htmlSuffix: joi.boolean(),
           dynamicRoot: joi.boolean(),
+          /**
+           * 在 windows 下面不要生成 .uuid.html
+           */
+          supportWin: joi.boolean(),
           // 不能通过直接 patch 路由的方式，拿不到 match.[id]，是一个 render paths 的概念
           extraRoutePaths: joi
             .function()
@@ -52,7 +56,11 @@ export default (api: IApi) => {
       }
     });
 
-    if (rootIndex !== null) {
+    /**
+     * 会导致bug，开发环境再打开把
+     * https://github.com/ant-design/ant-design-pro/issues/9441
+     */
+    if (rootIndex !== null && process.env.NODE_ENV === 'production') {
       routes.splice(rootIndex, 0, {
         ...routes[rootIndex],
         path: '/index.html',
@@ -78,6 +86,18 @@ export default (api: IApi) => {
             },
             file: html.getHtmlPath(path),
           });
+          /**
+           * supportWin 打开之后下面不要生成 .uuid.html
+           * 为什么不单独设置windows？
+           * 因为 mac 下面生成了 .uuid.html，在 windows 下面 clone 不下来。
+           */
+          if (
+            api.config.exportStatic &&
+            api.config.exportStatic?.supportWin &&
+            path.includes(':')
+          ) {
+            return;
+          }
           routeMap.push(newPath);
         }
       });
