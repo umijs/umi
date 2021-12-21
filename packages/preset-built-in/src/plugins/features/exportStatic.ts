@@ -93,6 +93,7 @@ export default (api: IApi) => {
            */
           if (
             api.config.exportStatic &&
+            //@ts-ignore
             api.config.exportStatic?.supportWin &&
             path.includes(':')
           ) {
