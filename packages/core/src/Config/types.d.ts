@@ -15,6 +15,7 @@ export interface BaseIConfig {
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
+    supportWin?: boolean;
   };
 }
 
