@@ -2,7 +2,7 @@ import * as allIcons from '@ant-design/icons';
 import assert from 'assert';
 import { dirname } from 'path';
 import { IApi } from 'umi';
-import { lodash } from 'umi/plugin-utils';
+import { lodash, Mustache } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -193,13 +193,13 @@ export function patchRoutes({ routes }) {
       `,
     });
 
-    // rightRender.tsx
-    api.writeTmpFile({
-      path: 'rightRender.tsx',
-      content: `
+    const rightRenderContent = `
 import React from 'react';
 import { Avatar, Dropdown, Menu, Spin } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
+{{#Locale}}
+import { SelectLang } from '@@/plugin-locale';
+{{/Locale}}
 
 export function getRightRenderContent (opts: {
    runtimeConfig: any,
@@ -247,7 +247,7 @@ export function getRightRenderContent (opts: {
   if (opts.loading) {
     return (
       <div className="umi-plugin-layout-right">
-        <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+        <Spin size="small" style={ { marginLeft: 8, marginRight: 8 } } />
       </div>
     );
   }
@@ -261,11 +261,22 @@ export function getRightRenderContent (opts: {
       ) : (
         avatar
       )}
+{{#Locale}}
+      <SelectLang />
+{{/Locale}}
     </div>
   );
-  // TODO: <SelectLang />
 }
-      `,
+      `;
+
+    const Locale = !!api.config.locale;
+
+    // rightRender.tsx
+    api.writeTmpFile({
+      path: 'rightRender.tsx',
+      content: Mustache.render(rightRenderContent, {
+        Locale,
+      }),
     });
 
     // Layout.less
@@ -292,7 +303,7 @@ export function getRightRenderContent (opts: {
   }
 }
 .umi-plugin-layout-right {
-  display: flex;
+  display: flex !important;
   float: right;
   height: 100%;
   margin-left: auto;

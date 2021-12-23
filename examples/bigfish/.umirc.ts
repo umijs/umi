@@ -1,6 +1,12 @@
 export default {
   routes: [
-    { path: '/', icon: 'PlaySquareFilled', component: 'index', name: 'index' },
+    {
+      title: 'site.title',
+      path: '/',
+      icon: 'PlaySquareFilled',
+      component: 'index',
+      name: 'index',
+    },
     { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
     {
       path: '/data-flow',
@@ -41,4 +47,7 @@ export default {
   },
   mfsu: { esbuild: true },
   request: {},
+  locale: {
+    title: true,
+  },
 };
