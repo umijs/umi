@@ -8,6 +8,7 @@ interface IOpts {
   config: Config;
 }
 
+// ref: https://github.com/webpack/webpack/blob/ccecc17c01af96edddb931a76e7a3b21ef2969d8/lib/dependencies/HarmonyImportDependency.js#L164
 const LINKING_ERROR_TAG = 'was not found in';
 
 class HarmonyLinkingErrorPlugin {
