@@ -25,7 +25,14 @@ export default (function css(userConfig) {
     css: { postcss: {}, preprocessorOptions: {} },
     resolve: {
       alias: [
-        // to fix less import issue https://github.com/vitejs/vite/issues/2185
+        // to support less-loader ~ for alias deps
+        ...Object.entries<string>(userConfig.alias)
+          .filter(([_, target]) => target.includes('node_modules'))
+          .map(([dep, target]) => ({
+            find: `~${dep}`,
+            replacement: target,
+          })),
+        // to support less-loader ~ for local deps, refer: https://github.com/vitejs/vite/issues/2185
         { find: /^~/, replacement: '' },
       ],
     },
