@@ -21,7 +21,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from '{{{axiosPath}}}';
-import useUmiRequest, { UseRequestProvider } from '{{{ahooksPkg}}}';
+import useUmiRequest, { UseRequestProvider } from '{{{umiRequestPath}}}';
 import { message, notification } from '{{{antdPkg}}}';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
@@ -41,7 +41,7 @@ import {
   PaginatedOptionsWithFormat,
   PaginatedParams,
   PaginatedResult,
-} from '{{{ahooksPkg}}}/lib/types';
+} from '{{{umiRequestPath}}}/lib/types';
 
 type ResultWithData< T = any > = { data?: T; [key: string]: any };
 
@@ -275,15 +275,18 @@ export {
 `;
 
   api.onGenerateFiles(() => {
-    const ahooksPkg = dirname(
+    const umiRequestPath = dirname(
       require.resolve('@ahooksjs/use-request/package.json'),
     );
     const axiosPath = dirname(require.resolve('axios/package.json'));
-    const antdPkg = dirname(require.resolve('antd/package.json'));
+    const antdPkg =
+      // use path from antd plugin first
+      api.appData.antd?.pkgPath ||
+      dirname(require.resolve('antd/package.json'));
     api.writeTmpFile({
       path: 'request.ts',
       content: Mustache.render(requestTpl, {
-        ahooksPkg,
+        umiRequestPath,
         axiosPath,
         antdPkg,
       }),
