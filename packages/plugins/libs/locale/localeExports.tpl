@@ -5,7 +5,7 @@ import {
 } from '{{{ reactIntlPkgPath }}}';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
-import EventEmitter from 'events';
+import EventEmitter from '{{{EventEmitterPkg}}}';
 // @ts-ignore
 import warning from '{{{ warningPkgPath }}}';
 
@@ -40,7 +40,7 @@ const useLocalStorage = {{{UseLocalStorage}}};
 
 // @ts-ignore
 export const event = new EventEmitter();
-event.setMaxListeners(5);
+
 export const LANG_CHANGE_EVENT = Symbol('LANG_CHANGE');
 
 {{#LocaleList}}

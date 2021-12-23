@@ -15,7 +15,7 @@ import { RawIntlProvider, getLocale, getDirection , setIntl, getIntl, localeInfo
 import {{NormalizeAntdLocalesName}} from '{{{.}}}';
 {{/DefaultAntdLocales}}
 
-event.setMaxListeners(5);
+
 
 export function _onCreate() {
   const locale = getLocale();

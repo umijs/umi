@@ -107,6 +107,7 @@ export default (api: IApi) => {
     const momentPkgPath = dirname(
       require.resolve(`${resolveKey}/package.json`),
     );
+    const EventEmitterPkg = dirname(require.resolve('event-emitter/package'));
 
     const { baseSeparator, baseNavigator, antd, title, useLocalStorage } = api
       .config.locale as ILocaleConfig;
@@ -172,6 +173,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'localeExports.ts',
       content: Mustache.render(localeExportsTpl, {
+        EventEmitterPkg,
         BaseSeparator: baseSeparator,
         BaseNavigator: baseNavigator,
         UseLocalStorage: !!useLocalStorage,
