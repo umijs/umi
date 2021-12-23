@@ -4,6 +4,8 @@ import {
   addDefault,
   // @ts-ignore
   addNamed,
+  // @ts-ignore
+  addNamespace,
 } from '@umijs/bundler-utils/compiled/babel/helper-module-imports';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { IOpts } from './lowImport';
@@ -41,8 +43,11 @@ export default function () {
               nameHint: name,
             }),
           );
+        } else if (state.opts.opts.namespaceToLib?.[name]) {
+          path.replaceWith(
+            addNamespace(path, state.opts.opts.namespaceToLib[name]),
+          );
         }
-        // TODO: state.opts.opts.namespaceToLib
       },
       MemberExpression(
         path: Babel.NodePath<t.MemberExpression>,
