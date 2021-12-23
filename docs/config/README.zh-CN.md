@@ -194,7 +194,7 @@ export default {
 ```js
 {
   cssLoader: {
-    localsConvention: 'camelCase';
+    localsConvention: 'camelCase',
   }
 }
 ```
