@@ -40,4 +40,5 @@ export default {
     name: 'Ant Design Pro',
   },
   mfsu: { esbuild: true },
+  request: {},
 };

@@ -21,11 +21,13 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
+    "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-layout": "^6.31.7",
     "@umijs/bundler-utils": "4.0.0-beta.13",
     "antd": "^4.17.3",
     "antd-dayjs-webpack-plugin": "^1.0.6",
+    "axios": "^0.24.0",
     "babel-plugin-import": "^1.13.3",
     "dayjs": "^1.10.7",
     "dva-core": "^2.0.4",
