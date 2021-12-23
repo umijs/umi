@@ -396,6 +396,7 @@ export class Service {
     const { id, key, enableBy } = hook.plugin;
     if (this.skipPluginIds.has(id)) return false;
     if (this.userConfig[key] === false) return false;
+    if (this.config[key] === false) return false;
     if (
       enableBy === EnableBy.config &&
       // this.config is not ready when modifyConfig or modifyDefaultConfig is called
