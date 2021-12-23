@@ -18,10 +18,20 @@ export class Model {
   file: string;
   namespace: string;
   id: string;
+  exportName: string;
   constructor(file: string, id: number) {
-    this.file = file;
-    this.namespace = basename(file, extname(file));
+    let namespace;
+    let exportName;
+    const [_file, meta] = file.split('#');
+    if (meta) {
+      const metaObj: Record<string, string> = JSON.parse(meta);
+      namespace = metaObj.namespace;
+      exportName = metaObj.exportName;
+    }
+    this.file = _file;
     this.id = `model_${id}`;
+    this.namespace = namespace || basename(file, extname(file));
+    this.exportName = exportName || 'default';
   }
 }
 
@@ -113,7 +123,13 @@ export class ModelUtils {
     const imports: string[] = [];
     const modelProps: string[] = [];
     models.forEach((model) => {
-      imports.push(`import ${model.id} from '${model.file}';`);
+      if (model.exportName !== 'default') {
+        imports.push(
+          `import { ${model.exportName} as ${model.id} } from '${model.file}';`,
+        );
+      } else {
+        imports.push(`import ${model.id} from '${model.file}';`);
+      }
       modelProps.push(
         `${model.id}: { namespace: '${model.namespace}', model: ${model.id} },`,
       );
