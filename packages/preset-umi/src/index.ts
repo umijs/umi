@@ -15,6 +15,7 @@ export default () => {
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/tmpFiles/tmpFiles'),
       require.resolve('./features/transform/transform'),
+      require.resolve('./features/lowImport/lowImport'),
 
       // commands
       require.resolve('./commands/build'),
