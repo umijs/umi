@@ -163,6 +163,21 @@ importers:
       redux: 4.1.2
       swr: 1.1.0
 
+  examples/mfsu-circular-dependency:
+    specifiers:
+      '@types/react': ^17.0.37
+      '@types/react-dom': ^17.0.11
+      react: ^18.0.0-rc.0
+      react-dom: ^18.0.0-rc.0
+      umi: 4.0.0-beta.13
+    dependencies:
+      umi: link:../../packages/umi
+    devDependencies:
+      '@types/react': 17.0.37
+      '@types/react-dom': 17.0.11
+      react: 18.0.0-rc.0
+      react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
+
   examples/remix:
     specifiers:
       umi: 4.0.0-beta.13

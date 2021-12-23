@@ -31,7 +31,12 @@ export class ModuleGraph {
     depModules: any;
     depSnapshotModules: any;
   }) {
+    let fileMap = new Map<string, boolean>();
     const addNode = ({ file, importer }: any) => {
+      // fix circular dependency
+      if (fileMap.has(file)) return;
+      fileMap.set(file, true);
+
       const mod = new ModuleNode(file);
       let isDependency = false;
       let info;
