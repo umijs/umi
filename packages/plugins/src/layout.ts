@@ -269,7 +269,7 @@ export function getRightRenderContent (opts: {
 }
       `;
 
-    const Locale = !!api.config.locale;
+    const Locale = api.isPluginEnable('locale');
 
     // rightRender.tsx
     api.writeTmpFile({

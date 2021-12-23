@@ -24,16 +24,18 @@ interface ILocaleConfig {
 }
 
 export const packageNormalize = (packageName: string) =>
-  packageName.replace(/[\@\/\-\.]/g, '_');
+  packageName.replace(/[@\/\-.]/g, '_');
 
 // TODO: runtime plugin
 export default (api: IApi) => {
+  // TODO: antd 的校验考虑 antd 插件
   let hasAntd = false;
   try {
     hasAntd = !!require.resolve('antd');
   } catch (e) {
     api.logger.warn('antd is not installed. <SelecLang /> unavailable');
   }
+
   api.describe({
     key: 'locale',
     config: {
