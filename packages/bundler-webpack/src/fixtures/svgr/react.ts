@@ -1,2 +1,4 @@
-const a = 'react';
-export default a;
+export function createElement() {}
+export default {
+  createElement,
+};
