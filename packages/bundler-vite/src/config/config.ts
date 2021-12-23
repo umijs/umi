@@ -17,6 +17,7 @@ interface IOpts {
 export async function getConfig(opts: IOpts): Promise<ViteInlineConfig> {
   const applyOpts = {
     ...opts.userConfig,
+    entry: opts.entry,
     extraBabelPlugins: [
       ...(opts.extraBabelPlugins || []),
       ...(opts.userConfig.extraBabelPlugins || []),
