@@ -17,4 +17,4 @@ export {
   useRoutes,
   useSearchParams,
 } from '@umijs/renderer-react';
-export { PluginManager } from './client/client/plugin';
+export { ApplyPluginsType, PluginManager } from './client/client/plugin';
