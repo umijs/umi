@@ -57,6 +57,7 @@ export class Service {
   } = {};
   // preset is plugin with different type
   plugins: Record<string, Plugin> = {};
+  keyToPluginMap: Record<string, Plugin> = {};
   pluginMethods: Record<string, { plugin: Plugin; fn: Function }> = {};
   skipPluginIds: Set<string> = new Set<string>();
   stage: ServiceStage = ServiceStage.uninitialized;
@@ -215,6 +216,10 @@ export class Service {
     while (plugins.length) {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
     }
+    // keyToPluginMap
+    for (const id of Object.keys(this.plugins)) {
+      this.keyToPluginMap[this.plugins[id].key] = this.plugins[id];
+    }
     // collect configSchemas and configDefaults
     for (const id of Object.keys(this.plugins)) {
       const { config, key } = this.plugins[id];
@@ -353,6 +358,7 @@ export class Service {
         'paths',
         'userConfig',
         'env',
+        'isPluginEnable',
       ],
       staticProps: {
         ApplyPluginsType,
@@ -392,23 +398,21 @@ export class Service {
     return ret || {};
   }
 
-  isPluginEnable(hook: Hook) {
-    const { id, key, enableBy } = hook.plugin;
+  isPluginEnable(hook: Hook | string) {
+    let plugin: Plugin;
+    if ((hook as Hook).plugin) {
+      plugin = (hook as Hook).plugin;
+    } else {
+      plugin = this.keyToPluginMap[hook as string];
+    }
+    const { id, key, enableBy } = plugin;
     if (this.skipPluginIds.has(id)) return false;
     if (this.userConfig[key] === false) return false;
     if (this.config[key] === false) return false;
-    if (
-      enableBy === EnableBy.config &&
-      // this.config is not ready when modifyConfig or modifyDefaultConfig is called
-      // fallback to this.userConfig
-      !(
-        key in
-        (['modifyConfig', 'modifyDefaultConfig'].includes(hook.key)
-          ? this.userConfig
-          : this.config)
-      )
-    )
-      return false;
+    if (enableBy === EnableBy.config) {
+      // TODO: 提供单独的命令用于启用插件
+      return key in this.userConfig;
+    }
     if (typeof enableBy === 'function')
       return enableBy({ config: this.config, env: this.env });
     // EnableBy.register
@@ -429,6 +433,7 @@ export interface IServicePluginAPI {
   paths: Required<typeof Service.prototype.paths>;
   userConfig: typeof Service.prototype.userConfig;
   env: typeof Service.prototype.env;
+  isPluginEnable: typeof Service.prototype.isPluginEnable;
 
   onCheck: IEvent<null>;
   onStart: IEvent<null>;
