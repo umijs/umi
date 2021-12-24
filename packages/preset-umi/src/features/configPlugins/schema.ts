@@ -9,6 +9,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     favicon: (Joi) => Joi.string(),
     headScripts: (Joi) => Joi.array().items(Joi.alternatives(Joi.string())),
     scripts: (Joi) => Joi.array().items(Joi.alternatives(Joi.string())),
+    mountElementId: (Joi) => Joi.string(),
     npmClient: (Joi) =>
       Joi.string().valid(
         NpmClientEnum.pnpm,
