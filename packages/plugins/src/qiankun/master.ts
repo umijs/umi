@@ -56,7 +56,10 @@ export default (api: IApi) => {
   });
 
   function getFileContent(file: string) {
-    return readFileSync(join(__dirname, '../../libs/qiankun', file), 'utf-8');
+    return readFileSync(
+      join(__dirname, '../../libs/qiankun/master', file),
+      'utf-8',
+    );
   }
 
   api.onGenerateFiles(() => {
