@@ -27,9 +27,13 @@
     "@umijs/utils": "4.0.0-beta.13",
     "enhanced-resolve": "5.8.3",
     "less": "4.1.2",
-    "less-plugin-aliases": "^1.0.3"
+    "less-plugin-aliases": "^1.0.3",
+    "postcss": "^8.4.4",
+    "postcss-flexbugs-fixes": "5.0.2",
+    "postcss-preset-env": "7.0.1"
   },
   "devDependencies": {
+    "@alitajs/postcss-plugin-px2rem": "^0.0.1",
     "@types/less": "^3.0.3"
   },
   "publishConfig": {

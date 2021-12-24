@@ -58,6 +58,7 @@ export class DepBuilder {
         [`${MF_VA_PREFIX}remoteEntry`]: entryPath,
       },
       config: {
+        ...this.opts.mfsu.opts.depBuildConfig,
         outputPath: tmpDir,
         alias: this.opts.mfsu.alias,
         externals: this.opts.mfsu.externals,
