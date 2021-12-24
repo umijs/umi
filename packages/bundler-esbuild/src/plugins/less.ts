@@ -4,6 +4,8 @@ import { promises as fs } from 'fs';
 import less from 'less';
 import LessPluginAliases from 'less-plugin-aliases';
 import path from 'path';
+import { IConfig } from '../types';
+import { postcssProcess } from '../utils/postcssProcess';
 import { sortByAffix } from '../utils/sortByAffix';
 
 const resolver = enhancedResolve.create({
@@ -75,9 +77,10 @@ export default (
   options: Less.Options & {
     alias?: Record<string, string>;
     inlineStyle?: boolean;
+    config?: IConfig;
   } = {},
 ): Plugin => {
-  const { alias, inlineStyle, ...lessOptions } = options;
+  const { alias, inlineStyle, config, ...lessOptions } = options;
   return {
     name: 'less',
     setup({ onResolve, onLoad }) {
@@ -123,6 +126,7 @@ export default (
             import { injectStyle } from "__style_helper__"
             import css from ${JSON.stringify(args.path)}
             injectStyle(css)
+            export default{}
           `,
         }));
       }
@@ -149,9 +153,13 @@ export default (
               ...lessOptions,
               paths: [...(lessOptions.paths || []), dir],
             });
-
+            const postcssrResult = await postcssProcess(
+              config!,
+              result.css,
+              args.path,
+            );
             return {
-              contents: result.css,
+              contents: postcssrResult.css,
               loader: inlineStyle ? 'text' : 'css',
               resolveDir: dir,
             };

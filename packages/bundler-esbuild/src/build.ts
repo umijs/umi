@@ -8,7 +8,7 @@ import { join } from 'path';
 import alias from './plugins/alias';
 import externals from './plugins/externals';
 import less from './plugins/less';
-import { inlineStyle } from './plugins/style';
+import { style } from './plugins/style';
 import { IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
@@ -48,11 +48,15 @@ export async function build(opts: IOpts) {
         alias: opts.config.alias,
         // ref: https://github.com/umijs/umi-next/pull/214
         inlineStyle: opts.inlineStyle,
+        config: opts.config,
         ...opts.config.lessLoader,
       }),
       opts.config.alias && alias(addCwdPrefix(opts.config.alias, opts.cwd)),
       opts.config.externals && externals(opts.config.externals),
-      opts.inlineStyle && inlineStyle(),
+      style({
+        inlineStyle: opts.inlineStyle,
+        config: opts.config,
+      }),
     ].filter(Boolean) as Plugin[],
     define: {
       // __dirname sham
