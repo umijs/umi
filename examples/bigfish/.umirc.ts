@@ -50,4 +50,7 @@ export default {
   locale: {
     title: true,
   },
+  qiankun: {
+    master: {},
+  },
 };
