@@ -1,14 +1,16 @@
-import { createJestConfig } from '@umijs/test';
+import type { Config } from '@jest/types';
 
-const config = createJestConfig(
-  {
-    testMatch: ['**/packages/*/src/**/*.test.ts'],
-    testTimeout: 30000,
-    modulePathIgnorePatterns: [
-      '<rootDir>/packages/.+/compiled',
-      '<rootDir>/packages/.+/fixtures',
-    ],
+export default {
+  testMatch: ['**/packages/*/src/**/*.test.ts'],
+  transform: {
+    // alternatives:
+    // 1. @swc-node/jest
+    // 2. ts-jest
+    '^.+\\.ts$': 'esbuild-jest',
   },
-  { useEsbuild: true, hasE2e: false },
-);
-export default config;
+  testTimeout: 30000,
+  modulePathIgnorePatterns: [
+    '<rootDir>/packages/.+/compiled',
+    '<rootDir>/packages/.+/fixtures',
+  ],
+} as Config.InitialOptions;
