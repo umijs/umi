@@ -3,7 +3,7 @@
 import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/route';
 import { createPluginManager } from './core/plugin';
-import { PluginManager } from 'umi';
+import { ApplyPluginsType, PluginManager } from 'umi';
 {{{ imports }}}
 
 async function render() {
@@ -24,7 +24,14 @@ async function render() {
     routeComponents,
     pluginManager,
   };
-  return renderClient(context);
+
+  return (pluginManager.applyPlugins({
+    key: 'render',
+    type: ApplyPluginsType.compose,
+    initialValue() {
+      return renderClient(context);
+    },
+  }))();
 }
 
 {{{ entryCodeAhead }}}

@@ -111,7 +111,7 @@ export default (api: IApi) => {
         'accessProvider',
         'dataflowProvider',
         'outerProvider',
-        // 'render',
+        'render',
         // 'onRouteChange',
       ],
     });
