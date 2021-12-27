@@ -8,6 +8,7 @@ export default {
       name: 'index',
     },
     { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
+    { path: '/app1', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
     {
       path: '/data-flow',
       component: 'data-flow',
@@ -51,6 +52,13 @@ export default {
     title: true,
   },
   qiankun: {
-    master: {},
+    master: {
+      apps: [
+        {
+          name: 'app1',
+          entry: '//localhost:8001',
+        },
+      ],
+    },
   },
 };

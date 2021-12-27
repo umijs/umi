@@ -30,7 +30,7 @@ export default (api: IApi) => {
 
   api.modifyConfig((memo) => {
     // import from dva
-    memo.alias.dva = pkgPath;
+    memo.alias['dva$'] = pkgPath;
     return memo;
   });
 

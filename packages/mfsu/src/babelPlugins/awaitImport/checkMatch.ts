@@ -10,6 +10,10 @@ import { isExternals } from './isExternals';
 const RE_NODE_MODULES = /node_modules/;
 const RE_UMI_LOCAL_DEV = /umi(-next)?\/packages\//;
 
+function isUmiLocalDev(path: string) {
+  return RE_UMI_LOCAL_DEV.test(path);
+}
+
 export function checkMatch({
   value,
   path,
@@ -54,7 +58,7 @@ export function checkMatch({
   ) {
     isMatch = false;
   } else if (isAbsolute(value)) {
-    isMatch = RE_NODE_MODULES.test(value) || RE_UMI_LOCAL_DEV.test(value);
+    isMatch = RE_NODE_MODULES.test(value) || isUmiLocalDev(value);
   } else {
     const aliasedPath = getAliasedPath({
       value,
