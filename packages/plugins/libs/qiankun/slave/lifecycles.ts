@@ -1,16 +1,8 @@
 // @ts-nocheck
 /* eslint-disable */
-// @ts-ignore
-import { createHistory } from '@@/core/history';
+import { getPluginManager } from '@@/core/plugin';
 import ReactDOM from 'react-dom';
-// @ts-ignore
-import {
-  ApplyPluginsType,
-  history,
-  plugin,
-  setCreateHistoryOptions,
-} from 'umi';
-// @ts-ignore
+import { ApplyPluginsType } from 'umi';
 import { setModelState } from './qiankunModel';
 
 const noop = () => {};
@@ -32,25 +24,25 @@ let hasMountedAtLeastOnce = false;
 export default () => defer.promise;
 export const clientRenderOptsStack: any[] = [];
 
-function normalizeHistory(
-  history?: 'string' | Record<string, any>,
-  base?: string,
-) {
-  let normalizedHistory: Record<string, any> = {};
-  if (base) normalizedHistory.basename = base;
-  if (history) {
-    if (typeof history === 'string') {
-      normalizedHistory.type = history;
-    } else {
-      normalizedHistory = history;
-    }
-  }
-
-  return normalizedHistory;
-}
+// function normalizeHistory(
+//   history?: 'string' | Record<string, any>,
+//   base?: string,
+// ) {
+//   let normalizedHistory: Record<string, any> = {};
+//   if (base) normalizedHistory.basename = base;
+//   if (history) {
+//     if (typeof history === 'string') {
+//       normalizedHistory.type = history;
+//     } else {
+//       normalizedHistory = history;
+//     }
+//   }
+//
+//   return normalizedHistory;
+// }
 
 async function getSlaveRuntime() {
-  const config = await plugin.applyPlugins({
+  const config = await getPluginManager().applyPlugins({
     key: 'qiankun',
     type: ApplyPluginsType.modify,
     initialValue: {},
@@ -94,10 +86,10 @@ export function genMount(mountElementId: string) {
             props.setLoading(false);
           }
 
-          // 支持将子应用的 history 回传给父应用
-          if (typeof props?.onHistoryInit === 'function') {
-            props.onHistoryInit(history);
-          }
+          // // 支持将子应用的 history 回传给父应用
+          // if (typeof props?.onHistoryInit === 'function') {
+          //   props.onHistoryInit(history);
+          // }
         },
         // 支持通过 props 注入 container 来限定子应用 mountElementId 的查找范围
         // 避免多个子应用出现在同一主应用时出现 mount 冲突
@@ -109,14 +101,14 @@ export function genMount(mountElementId: string) {
         // mount 钩子会被调用多次，但是具体什么时候对应的实例开始 render 则是不定的，即它调用 applyPlugins('modifyClientRenderOpts') 的时机是不确定的
         // 为了保证每次 applyPlugins('modifyClientRenderOpts') 调用是生成正确的 history，我们需要这里通过闭包上下文维持 mount 调用时的一些配置信息
         // FIXME 由于 umi history 是全局的，通过 import { history } from 'umi' 调用的永远都是最后一个调用 createHistory 产生的对象，所以这种场景下会存在子应用内部获取 history 时，获取到的是同一个 history 的问题。这种场景下就不能直接从 umi import history，而应该从组件的 props 中取
-        getHistory() {
-          // 动态改变 history
-          const historyOptions = normalizeHistory(props.history, props.base);
-          setCreateHistoryOptions(historyOptions);
-
-          // FIXME 子应用嵌入模式下不支持热更
-          return createHistory();
-        },
+        // getHistory() {
+        //   // 动态改变 history
+        //   const historyOptions = normalizeHistory(props.history, props.base);
+        //   setCreateHistoryOptions(historyOptions);
+        //
+        //   // FIXME 子应用嵌入模式下不支持热更
+        //   return createHistory();
+        // },
       };
 
       clientRenderOptsStack.push(clientRenderOpts);
@@ -136,7 +128,6 @@ export function genMount(mountElementId: string) {
 export function genUpdate() {
   return async (props: any) => {
     setModelState(props);
-
     const slaveRuntime = await getSlaveRuntime();
     if (slaveRuntime.update) {
       await slaveRuntime.update(props);
@@ -152,7 +143,6 @@ export function genUnmount(mountElementId: string) {
     if (container) {
       ReactDOM.unmountComponentAtNode(container);
     }
-
     const slaveRuntime = await getSlaveRuntime();
     if (slaveRuntime.unmount) await slaveRuntime.unmount(props);
   };

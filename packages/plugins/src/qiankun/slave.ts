@@ -23,7 +23,7 @@ export default (api: IApi) => {
   });
 
   api.addRuntimePlugin(() => {
-    return [withTmpPath({ api, path: 'slaveRuntimePlugin.tsx' })];
+    return [withTmpPath({ api, path: 'slaveRuntimePlugin.ts' })];
   });
 
   api.register({
@@ -125,7 +125,7 @@ export default (api: IApi) => {
 
   api.addEntryCode(() => [
     `
-export const bootstrap = qiankun_genBootstrap(clientRender);
+export const bootstrap = qiankun_genBootstrap(render);
 export const mount = qiankun_genMount('${api.config.mountElementId}');
 export const unmount = qiankun_genUnmount('${api.config.mountElementId}');
 export const update = qiankun_genUpdate();
@@ -143,14 +143,14 @@ if (!window.__POWERED_BY_QIANKUN__) {
   }
 
   api.onGenerateFiles(() => {
-    api.writeTmpFile({
-      path: 'slaveOptions.js',
-      content: `
-let options = ${JSON.stringify((api.config.qiankun || {}).slave || {})};
-export const getSlaveOptions = () => options;
-export const setSlaveOptions = (newOpts) => options = ({ ...options, ...newOpts });
-      `,
-    });
+    //     api.writeTmpFile({
+    //       path: 'slaveOptions.ts',
+    //       content: `
+    // let options = ${JSON.stringify((api.config.qiankun || {}).slave || {})};
+    // export const getSlaveOptions = () => options;
+    // export const setSlaveOptions = (newOpts) => options = ({ ...options, ...newOpts });
+    //       `,
+    //     });
 
     [
       'qiankunModel.ts',
