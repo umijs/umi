@@ -112,7 +112,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
             .replace(
               '__USE_MODEL__',
               api.isPluginEnable('model')
-                ? `import { useModel } from '@@/plugin/model'`
+                ? `import { useModel } from '@@/plugin-model'`
                 : `const useModel = null;`,
             )
             .replace(

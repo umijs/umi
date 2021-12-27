@@ -3,9 +3,9 @@
 
 import { getPluginManager } from '@@/core/plugin';
 import { prefetchApps } from 'qiankun';
-// @ts-ignore
-import { ApplyPluginsType, getMicroAppRouteComponent } from 'umi';
+import { ApplyPluginsType } from 'umi';
 import { insertRoute, noop, patchMicroAppRoute } from './common';
+import { getMicroAppRouteComponent } from './getMicroAppRouteComponent';
 import { getMasterOptions, setMasterOptions } from './masterOptions';
 import { MasterOptions, MicroAppRoute } from './types';
 
