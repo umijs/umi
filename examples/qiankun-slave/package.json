@@ -1,0 +1,12 @@
+{
+  "name": "qiankun-slave",
+  "scripts": {
+    "dev": "bigfish dev",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "bigfish": "4.0.0-beta.13",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  }
+}
