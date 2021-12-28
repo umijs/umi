@@ -104,6 +104,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     proxy: (Joi) => Joi.object(),
     publicPath: (Joi) => Joi.string(),
     purgeCSS: (Joi) => Joi.object(),
+    runtimePublicPath: (Joi) => Joi.object(),
     sassLoader: (Joi) => Joi.object(),
     srcTranspiler: (Joi) =>
       Joi.string().valid(

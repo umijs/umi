@@ -67,7 +67,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // entry
   Object.keys(opts.entry).forEach((key) => {
     const entry = config.entry(key);
-    // TODO: runtimePublicPath
+    if (userConfig.runtimePublicPath) {
+      entry.add(require.resolve('./runtimePublicPath'));
+    }
     if (isDev && opts.hmr) {
       entry.add(require.resolve('../../client/client/client'));
     }
