@@ -48,7 +48,7 @@ export class PluginAPI {
     config?: IPluginConfig;
     enableBy?:
       | EnableBy
-      | ((enableByOpts: { config: any; env: Env }) => boolean);
+      | ((enableByOpts: { userConfig: any; env: Env }) => boolean);
   }) {
     this.plugin.merge(opts);
   }

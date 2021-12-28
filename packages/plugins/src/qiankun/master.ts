@@ -4,12 +4,13 @@ import { IApi } from 'umi';
 import { withTmpPath } from '../utils/withTmpPath';
 import {
   defaultHistoryType,
+  defaultMasterRootId,
   MODEL_EXPORT_NAME,
   qiankunStateForSlaveModelNamespace,
 } from './constants';
 
-export function isMasterEnable(opts: { config: any }) {
-  const masterCfg = opts.config.qiankun?.master;
+export function isMasterEnable(opts: { userConfig: any }) {
+  const masterCfg = opts.userConfig.qiankun?.master;
   if (masterCfg) {
     return masterCfg.enable !== false;
   }
@@ -29,7 +30,7 @@ export default (api: IApi) => {
   api.modifyDefaultConfig((config) => ({
     ...config,
     // TODO: support mountElementId
-    // mountElementId: defaultMasterRootId,
+    mountElementId: defaultMasterRootId,
     qiankun: {
       ...config.qiankun,
       master: {

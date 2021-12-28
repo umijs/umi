@@ -8,8 +8,8 @@ import { qiankunStateFromMasterModelNamespace } from './constants';
 type SlaveOptions = any;
 
 // BREAK CHANGE: 需要手动配置 slave: {}，不能留空
-function isSlaveEnable(opts: { config: any }) {
-  const slaveCfg = opts.config?.qiankun?.slave;
+function isSlaveEnable(opts: { userConfig: any }) {
+  const slaveCfg = opts.userConfig?.qiankun?.slave;
   if (slaveCfg) {
     return slaveCfg.enable !== false;
   }
@@ -67,11 +67,16 @@ export default (api: IApi) => {
 
   api.modifyConfig((config) => {
     // mfsu 场景默认给子应用增加 mfName 配置，从而避免冲突
-    if (config.mfsu && !config.mfsu.mfName) {
-      // 替换掉包名里的特殊字符
-      config.mfsu.mfName = `mf_${api.pkg.name
-        ?.replace(/^@/, '')
-        .replace(/\W/g, '_')}`;
+    if (config.mfsu !== false) {
+      config.mfsu = {
+        ...config.mfsu,
+        mfName:
+          config.mfsu?.mfName ||
+          `mf_${api.pkg.name
+            // 替换掉包名里的特殊字符
+            ?.replace(/^@/, '')
+            .replace(/\W/g, '_')}`,
+      };
     }
     return config;
   });

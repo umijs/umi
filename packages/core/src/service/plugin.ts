@@ -34,7 +34,9 @@ export class Plugin {
   key: string;
   apply: Function;
   config: IPluginConfig = {};
-  enableBy: EnableBy | ((opts: { config: any; env: Env }) => boolean) =
+  enableBy:
+    | EnableBy
+    | ((opts: { userConfig: any; config: any; env: Env }) => boolean) =
     EnableBy.register;
 
   constructor(opts: IOpts) {
