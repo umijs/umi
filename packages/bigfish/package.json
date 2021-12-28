@@ -10,13 +10,16 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
   "bin": {
     "bigfish": "bin/bigfish.js"
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "index.esm.js",
+    "index.d.ts"
   ],
   "scripts": {
     "build": "pnpm tsc",
