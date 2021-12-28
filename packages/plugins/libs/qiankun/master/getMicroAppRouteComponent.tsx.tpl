@@ -3,6 +3,7 @@ import { MicroApp } from './MicroApp';
 {{#runtimeHistory}}
 import { getCreateHistoryOptions } from 'umi';
 {{/runtimeHistory}}
+import { useLocation } from 'umi';
 
 export function getMicroAppRouteComponent(opts: {
   appName: string;
@@ -12,7 +13,7 @@ export function getMicroAppRouteComponent(opts: {
 }) {
   const { base, masterHistoryType, appName, routeProps } = opts;
   const RouteComponent = ({ match }: any) => {
-    const { url, path } = match;
+    const url = useLocation().pathname;
 
     // 默认取静态配置的 base
     let umiConfigBase = base === '/' ? '' : base;
