@@ -40,6 +40,28 @@ export default (api: IApi) => {
   }));
 
   // TODO: modify routes
+  api.modifyRoutes((memo) => {
+    Object.keys(memo).forEach((id) => {
+      const route = memo[id];
+      if (route.microApp) {
+        const appName = route.microApp;
+        // TODO: config base
+        const base = '/';
+        // TODO: config masterHistoryType
+        const masterHistoryType = 'browser';
+        const routeProps = route.microAppProps || {};
+        const normalizedRouteProps = JSON.stringify(routeProps).replace(
+          /"/g,
+          "'",
+        );
+        route.file = `(async () => {
+          const { getMicroAppRouteComponent } = await import('@@/plugin-qiankun-master/getMicroAppRouteComponent');
+          return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps} })
+        })()`;
+      }
+    });
+    return memo;
+  });
 
   // state model for slave app
   api.addRuntimePluginKey(() => [MODEL_EXPORT_NAME]);
