@@ -22,6 +22,7 @@ export interface IOpts {
   favicon?: string;
   headScripts?: (Record<string, string> | string)[];
   scripts?: (Record<string, string> | string)[];
+  mountElementId?: string;
   esmScript?: boolean;
   modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
 }
@@ -33,7 +34,7 @@ export async function getMarkup(
 ) {
   // TODO: use real component
   let markup = ReactDOMServer.renderToString(
-    React.createElement('div', { id: 'root' }),
+    React.createElement('div', { id: opts.mountElementId || 'root' }),
   );
 
   function propsToString(opts: {

@@ -23,6 +23,7 @@ export default (api: IApi) => {
       path: 'umi.ts',
       tplPath: join(TEMPLATES_DIR, 'umi.tpl'),
       context: {
+        mountElementId: api.config.mountElementId,
         rendererPath: await api.applyPlugins({
           key: 'modifyRendererPath',
           initialValue: '@umijs/renderer-react',

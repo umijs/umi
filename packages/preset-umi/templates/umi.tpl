@@ -23,6 +23,7 @@ async function render() {
     routes,
     routeComponents,
     pluginManager,
+    rootElement: document.getElementById('{{{ mountElementId }}}'),
   };
 
   return (pluginManager.applyPlugins({
