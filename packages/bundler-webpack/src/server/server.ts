@@ -36,7 +36,7 @@ export async function createServer(opts: IOpts) {
     );
     res.header(
       'Access-Control-Allow-Methods',
-      'PUT, POST, GET, DELETE, OPTIONS',
+      'GET, HEAD, PUT, POST, PATCH, DELETE, OPTIONS',
     );
     next();
   });
