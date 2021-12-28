@@ -74,7 +74,7 @@ export default (api: IApi) => {
     const prefix = hasSrc ? '../../../src/pages/' : '../../pages/';
     api.writeTmpFile({
       noPluginDir: true,
-      path: 'core/route.ts',
+      path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
         routes: JSON.stringify(routes),

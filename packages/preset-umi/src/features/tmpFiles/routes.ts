@@ -55,6 +55,12 @@ export async function getRouteComponents(opts: {
     .map((key) => {
       const route = opts.routes[key];
       if (!route.file) return `// ${key}: no file to import`;
+      // e.g.
+      // component: () => <h1>foo</h1>
+      // component: (() => () => <h1>foo</h1>)()
+      if (route.file.startsWith('(')) {
+        return `'${key}': () => Promise.resolve(${route.file}),`;
+      }
       const path =
         isAbsolute(route.file) || route.file.startsWith('@/')
           ? route.file
