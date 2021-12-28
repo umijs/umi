@@ -44,6 +44,12 @@ export async function getRoutes(opts: { api: IApi }) {
       routes,
     });
   }
+
+  routes = await opts.api.applyPlugins({
+    key: 'modifyRoutes',
+    initialValue: routes,
+  });
+
   return routes;
 }
 
