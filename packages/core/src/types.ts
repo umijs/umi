@@ -52,6 +52,7 @@ export interface IRoute {
   file: string;
   id: string;
   parentId?: string;
+  [key: string]: any;
 }
 
 export interface IEvent<T> {

@@ -133,6 +133,7 @@ export type IApi = PluginAPI &
     modifyHTMLFavicon: IModify<string, {}>;
     modifyHTML: IModify<CheerioAPI, { path: string }>;
     modifyRendererPath: IModify<string, {}>;
+    modifyRoutes: IModify<Record<string, IRoute>, {}>;
     modifyWebpackConfig: IModify<
       webpack.Configuration,
       {
