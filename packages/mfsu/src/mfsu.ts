@@ -77,7 +77,11 @@ export class MFSU {
       virtualModules[virtualPath] =
         // @ts-ignore
         opts.config
-          .entry![key].map((entry: string) => `await import('${entry}')`)
+          .entry![key].map((entry: string) => {
+            return entry.includes('runtimePublicPath')
+              ? `require('${entry}');`
+              : `await import('${entry}')`;
+          })
           .join('\n') + `\nexport default 1;`;
       entry[key] = virtualPath;
     });
