@@ -96,6 +96,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       Joi.alternatives(
         Joi.object({
           esbuild: Joi.boolean(),
+          mfName: Joi.string(),
         }),
         Joi.boolean(),
       ),

@@ -32,6 +32,7 @@ export async function dev(opts: IOpts) {
       depBuildConfig: {
         extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
       },
+      mfName: opts.config.mfsu?.mfName,
     });
   }
   const webpackConfig = await getConfig({
