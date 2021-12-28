@@ -414,7 +414,11 @@ export class Service {
       return key in this.userConfig;
     }
     if (typeof enableBy === 'function')
-      return enableBy({ config: this.config, env: this.env });
+      return enableBy({
+        userConfig: this.userConfig,
+        config: this.config,
+        env: this.env,
+      });
     // EnableBy.register
     return true;
   }
