@@ -20,7 +20,7 @@ export default function HomePage() {
       <Button type="primary">Button</Button>
       <Input />
       <DatePicker />
-      <div className={styles.myText}>{intl.formatMessage({ id: 'HELLO' })}</div>
+      <div>{intl.formatMessage({ id: 'HELLO' })}</div>
     </div>
   );
 }
