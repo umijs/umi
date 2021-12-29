@@ -8,10 +8,12 @@ import {
   addNamespace,
 } from '@umijs/bundler-utils/compiled/babel/helper-module-imports';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
+import { basename, extname } from 'path';
 import { IOpts } from './lowImport';
 
 interface IPluginOpts {
   opts: IOpts;
+  css: string;
 }
 
 export default function () {
@@ -19,7 +21,7 @@ export default function () {
     visitor: {
       Identifier(
         path: Babel.NodePath<t.Identifier>,
-        state: { opts: IPluginOpts },
+        state: { opts: IPluginOpts; file: any },
       ) {
         const { name } = path.node;
         if (path.scope.hasBinding(path.node.name)) {
@@ -46,6 +48,15 @@ export default function () {
         } else if (state.opts.opts.namespaceToLib?.[name]) {
           path.replaceWith(
             addNamespace(path, state.opts.opts.namespaceToLib[name]),
+          );
+        }
+        // import css
+        if (name === 'styles' && state.opts.css) {
+          const { filename } = state.file.opts;
+          const cssFilename =
+            basename(filename, extname(filename)) + '.' + state.opts.css;
+          path.replaceWith(
+            addDefault(path, './' + cssFilename, { nameHint: name }),
           );
         }
       },
