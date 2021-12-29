@@ -33,6 +33,7 @@ export async function dev(opts: IOpts) {
         extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
       },
       mfName: opts.config.mfsu?.mfName,
+      runtimePublicPath: opts.config.runtimePublicPath,
     });
   }
   const webpackConfig = await getConfig({
@@ -69,7 +70,7 @@ export async function dev(opts: IOpts) {
     // @ts-ignore
     webpackConfig.resolve!.alias[dep] = require.resolve(dep);
   });
-  mfsu?.setWebpackConfig({
+  await mfsu?.setWebpackConfig({
     config: webpackConfig as any,
     depConfig: depConfig as any,
   });

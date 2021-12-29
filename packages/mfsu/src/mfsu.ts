@@ -1,3 +1,4 @@
+import { parseModule } from '@umijs/bundler-utils';
 import { logger } from '@umijs/utils';
 import type { NextFunction, Request, Response } from 'express';
 import { readFileSync } from 'fs';
@@ -35,6 +36,7 @@ interface IOpts {
   mode?: Mode;
   tmpBase?: string;
   unMatchLibs?: string[];
+  runtimePublicPath?: boolean | string;
   implementor: typeof webpack;
   buildDepWithESBuild?: boolean;
   depBuildConfig: any;
@@ -60,7 +62,10 @@ export class MFSU {
     this.depInfo.loadCache();
   }
 
-  setWebpackConfig(opts: { config: Configuration; depConfig: Configuration }) {
+  async setWebpackConfig(opts: {
+    config: Configuration;
+    depConfig: Configuration;
+  }) {
     const { mfName } = this.opts;
 
     /**
@@ -72,19 +77,30 @@ export class MFSU {
     // entry
     const entry: Record<string, string> = {};
     const virtualModules: Record<string, string> = {};
-    Object.keys(opts.config.entry!).forEach((key) => {
+    for (const key of Object.keys(opts.config.entry!)) {
       const virtualPath = `./mfsu-virtual-entry/${key}.js`;
-      virtualModules[virtualPath] =
-        // @ts-ignore
-        opts.config
-          .entry![key].map((entry: string) => {
-            return entry.includes('runtimePublicPath')
-              ? `require('${entry}');`
-              : `await import('${entry}')`;
-          })
-          .join('\n') + `\nexport default 1;`;
+      const virtualContent: string[] = [];
+      let index = 1;
+      // @ts-ignore
+      for (const entry of opts.config.entry![key]) {
+        const content = readFileSync(entry, 'utf-8');
+        const [_imports, exports] = await parseModule({ content, path: entry });
+        if (exports.length) {
+          virtualContent.push(`const k${index} = await import('${entry}');`);
+          for (const exportName of exports) {
+            virtualContent.push(
+              `export const ${exportName} = k${index}.${exportName}`,
+            );
+          }
+        } else {
+          virtualContent.push(`await import('${entry}')`);
+        }
+        index += 1;
+      }
+      virtualContent.push(`export default 1;`);
+      virtualModules[virtualPath] = virtualContent.join('\n');
       entry[key] = virtualPath;
-    });
+    }
     opts.config.entry = entry;
     // plugins
     opts.config.plugins = opts.config.plugins || [];
@@ -101,8 +117,32 @@ export class MFSU {
         new this.opts.implementor.container.ModuleFederationPlugin({
           name: '__',
           remotes: {
-            // TODO: support runtime public path
-            [mfName!]: `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
+            [mfName!]: this.opts.runtimePublicPath
+              ? `
+promise new Promise(resolve => {
+  const remoteUrlWithVersion = window.publicPath + '${REMOTE_FILE_FULL}';
+  const script = document.createElement('script');
+  script.src = remoteUrlWithVersion;
+  script.onload = () => {
+    // the injected script has loaded and is available on window
+    // we can now resolve this Promise
+    const proxy = {
+      get: (request) => window['${mfName}'].get(request),
+      init: (arg) => {
+        try {
+          return window['${mfName}'].init(arg);
+        } catch(e) {
+          console.log('remote container already initialized');
+        }
+      }
+    }
+    resolve(proxy);
+  }
+  // inject this script with the src set to the versioned remoteEntry.js
+  document.head.appendChild(script);
+})
+                `.trimLeft()
+              : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
           },
         }),
         new BuildDepPlugin({
