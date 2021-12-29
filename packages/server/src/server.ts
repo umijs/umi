@@ -7,6 +7,7 @@ import { normalizeScripts } from './scripts';
 import { normalizeStyles } from './styles';
 
 export interface IOpts {
+  base: string;
   routes: Record<
     string,
     {
@@ -132,7 +133,7 @@ export function createRequestHandler(opts: IOpts): RequestHandler {
     const routes = createServerRoutes({
       routesById: opts.routes,
     });
-    const matches = matchRoutes(routes, req.path);
+    const matches = matchRoutes(routes, req.path, opts.base);
     if (matches) {
       res.set('Content-Type', 'text/html');
       const markup = await getMarkup({ ...opts, path: req.path });

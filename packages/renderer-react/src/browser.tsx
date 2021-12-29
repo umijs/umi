@@ -19,7 +19,11 @@ function BrowserRoutes(props: any) {
   });
   React.useLayoutEffect(() => history.listen(setState), [history]);
   return (
-    <Router navigator={history} location={state.location}>
+    <Router
+      navigator={history}
+      location={state.location}
+      basename={props.basename}
+    >
       {props.children}
     </Router>
   );
@@ -35,14 +39,16 @@ export function renderClient(opts: {
   routes: IRoutesById;
   routeComponents: IRouteComponents;
   pluginManager: any;
+  basename?: string;
 }) {
+  const basename = opts.basename || '/';
   const rootElement = opts.rootElement || document.getElementById('root');
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: opts.routeComponents,
   });
   let rootContainer = (
-    <BrowserRoutes>
+    <BrowserRoutes basename={basename}>
       <Routes />
     </BrowserRoutes>
   );
@@ -70,6 +76,7 @@ export function renderClient(opts: {
         clientRoutes,
         pluginManager: opts.pluginManager,
         rootElement: opts.rootElement,
+        basename,
       }}
     >
       {rootContainer}

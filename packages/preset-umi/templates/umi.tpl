@@ -24,6 +24,9 @@ async function render() {
     routeComponents,
     pluginManager,
     rootElement: document.getElementById('{{{ mountElementId }}}'),
+{{#basename}}
+    basename: '{{{ basename }}}',
+{{/basename}}
   };
 
   return (pluginManager.applyPlugins({

@@ -45,6 +45,7 @@ export default (api: IApi) => {
     autoCSSModules: true,
     publicPath: '/',
     mountElementId: 'root',
+    base: '/',
   };
 
   const bundleSchemas = getSchemas();

@@ -58,6 +58,7 @@ export default (api: IApi) => {
             initialValue: [],
           }),
         ).join('\n'),
+        basename: api.config.base,
       },
     });
 
