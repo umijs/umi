@@ -118,7 +118,9 @@ export class MFSU {
           name: '__',
           remotes: {
             [mfName!]: this.opts.runtimePublicPath
-              ? `
+              ? // ref:
+                // https://webpack.js.org/concepts/module-federation/#promise-based-dynamic-remotes
+                `
 promise new Promise(resolve => {
   const remoteUrlWithVersion = window.publicPath + '${REMOTE_FILE_FULL}';
   const script = document.createElement('script');
