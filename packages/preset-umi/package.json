@@ -47,7 +47,7 @@
     "@types/multer": "1.4.7",
     "body-parser": "1.19.0",
     "multer": "1.4.3",
-    "vite": "2.6.13"
+    "vite": "2.7.6"
   },
   "publishConfig": {
     "access": "public"

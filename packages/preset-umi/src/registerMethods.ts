@@ -2,6 +2,7 @@ import { fsExtra, lodash, Mustache } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
+import transformIEAR from './utils/transformIEAR';
 import { IApi } from './types';
 import { isTypeScriptFile } from './utils/isTypeScriptFile';
 
@@ -101,6 +102,12 @@ export default (api: IApi) => {
       ]
         .filter((text) => text !== false)
         .join('\n');
+
+      // transform imports for all javascript-like files
+      if (/\.(t|j)sx?$/.test(absPath)) {
+        content = transformIEAR({ content, path: absPath }, api);
+      }
+
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
         writeFileSync(absPath, content, 'utf-8');
       }
