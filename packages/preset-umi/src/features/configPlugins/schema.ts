@@ -3,6 +3,7 @@ import { NpmClientEnum } from '@umijs/utils';
 
 export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
+    base: (Joi) => Joi.string(),
     plugins: (Joi) => Joi.array().items(Joi.string()),
     publicPath: (Joi) =>
       Joi.string().regex(/\/$/).error(new Error('publicPath must end with /')),

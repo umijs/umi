@@ -27,6 +27,8 @@ export async function getMarkupArgs(opts: { api: IApi }) {
     initialValue: opts.api.config.favicon,
   });
   return {
+    mountElementId: opts.api.config.mountElementId,
+    base: opts.api.config.base,
     routes: opts.api.appData.routes,
     favicon,
     headScripts,

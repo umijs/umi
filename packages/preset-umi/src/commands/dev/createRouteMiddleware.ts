@@ -28,7 +28,6 @@ export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
       ...markupArgs,
       scripts: (vite ? viteScripts : ['/umi.js']).concat(markupArgs.scripts!),
       esmScript: vite,
-      mountElementId: opts.api.config.mountElementId,
     });
     requestHandler(req, res, next);
   };

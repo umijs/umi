@@ -1,5 +1,5 @@
 {
-  "name": "qiankun-slave",
+  "name": "app1",
   "scripts": {
     "dev": "bigfish dev",
     "start": "npm run dev"

@@ -27,6 +27,17 @@ export async function createServer(opts: IOpts) {
   const { proxy } = userConfig;
   const app = express();
 
+  // basename middleware
+  app.use((req, _res, next) => {
+    const { url, path } = req;
+    const { basename } = userConfig;
+    if (basename !== '/' && url.startsWith(basename)) {
+      req.url = url.slice(basename.length);
+      req.path = path.slice(basename.length);
+    }
+    next();
+  });
+
   // cros
   app.use((_req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
