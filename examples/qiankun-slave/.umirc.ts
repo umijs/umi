@@ -12,6 +12,5 @@ export default {
       component: '(() => () => { return <h1>users 2</h1> })()',
     },
   ],
-  mfsu: false,
-  // runtimePublicPath: {},
+  runtimePublicPath: {},
 };
