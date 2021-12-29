@@ -2,6 +2,7 @@ import type { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
 
 const PLUGIN_NAME = 'RuntimePublicPath';
 
+// ref: https://gist.github.com/ScriptedAlchemy/60d0c49ce049184f6ce3e86ca351fdca
 export class RuntimePublicPathPlugin {
   apply(compiler: Compiler): void {
     compiler.hooks.make.tap(PLUGIN_NAME, (compilation) => {
