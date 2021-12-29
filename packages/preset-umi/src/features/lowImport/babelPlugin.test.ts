@@ -4,12 +4,18 @@ interface IOpts {
   code: string;
   filename?: string;
   opts?: any;
+  css?: string;
 }
 
 function doTransform(opts: IOpts): string {
   return transform(opts.code, {
     filename: opts.filename || 'foo.js',
-    plugins: [[require.resolve('./babelPlugin.ts'), opts.opts || {}]],
+    plugins: [
+      [
+        require.resolve('./babelPlugin.ts'),
+        { opts: opts.opts.opts, css: opts.css || 'less' },
+      ],
+    ],
   })!.code as string;
 }
 
@@ -50,4 +56,29 @@ test('import with objs', () => {
       },
     }),
   ).toEqual(`import { QrCode as _QrCode } from "techui";\n_QrCode;`);
+});
+
+test('import styles', () => {
+  expect(
+    doTransform({
+      code: `styles.btn`,
+      opts: {
+        opts: { withObjs: {} },
+      },
+      filename: 'index.tsx',
+    }),
+  ).toEqual(`import _styles from "./index.less";\n_styles.btn;`);
+});
+
+test('import styles css', () => {
+  expect(
+    doTransform({
+      code: `styles.btn`,
+      opts: {
+        opts: { withObjs: {} },
+      },
+      filename: 'index.tsx',
+      css: 'css',
+    }),
+  ).toEqual(`import _styles from "./index.css";\n_styles.btn;`);
 });
