@@ -2,6 +2,7 @@ import { join } from 'path';
 import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
+import { RuntimePublicPathPlugin } from '../plugins/RuntimePublicPathPlugin';
 import { Env, IConfig } from '../types';
 import { getBrowsersList } from '../utils/browsersList';
 import { addAssetRules } from './assetRules';
@@ -67,9 +68,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // entry
   Object.keys(opts.entry).forEach((key) => {
     const entry = config.entry(key);
-    if (userConfig.runtimePublicPath) {
-      entry.add(require.resolve('./runtimePublicPath'));
-    }
     if (isDev && opts.hmr) {
       entry.add(require.resolve('../../client/client/client'));
     }
@@ -165,9 +163,12 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addCompressPlugin(applyOpts);
   // purgecss
   // await applyPurgeCSSWebpackPlugin(applyOpts);
-
   // handle HarmonyLinkingError
   await addHarmonyLinkingErrorPlugin(applyOpts);
+  // runtimePublicPath
+  if (userConfig.runtimePublicPath) {
+    config.plugin('runtimePublicPath').use(RuntimePublicPathPlugin);
+  }
 
   // analyzer
   if (opts.analyze) {
