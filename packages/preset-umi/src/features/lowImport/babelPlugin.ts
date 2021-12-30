@@ -36,7 +36,7 @@ export default function () {
           return;
         }
         // don't support member expression
-        // e.g. { styles: 1 }
+        // e.g. foo.styles
         if (
           t.isMemberExpression(parentNode) &&
           path?.node === parentNode.property
@@ -44,7 +44,7 @@ export default function () {
           return;
         }
         // don't support object property
-        // e.g. foo.styles
+        // e.g. { styles: 1 }
         if (t.isObjectProperty(parentNode) && path?.node === parentNode.key) {
           return;
         }
