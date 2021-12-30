@@ -159,7 +159,6 @@ export class Config {
     let files: string[] = [];
 
     for (const configFile of opts.configFiles) {
-      files.push(configFile);
       if (existsSync(configFile)) {
         register.register({
           implementor: esbuild,
@@ -169,8 +168,11 @@ export class Config {
         for (const file of register.getFiles()) {
           delete require.cache[file];
         }
+        // includes the config File
         files.push(...register.getFiles());
         register.restore();
+      } else {
+        files.push(configFile);
       }
     }
 
