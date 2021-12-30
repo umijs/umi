@@ -39,13 +39,13 @@ export default function () {
         // e.g. foo.styles
         if (
           t.isMemberExpression(parentNode) &&
-          path?.node === parentNode.property
+          path.node === parentNode.property
         ) {
           return;
         }
         // don't support object property
         // e.g. { styles: 1 }
-        if (t.isObjectProperty(parentNode) && path?.node === parentNode.key) {
+        if (t.isObjectProperty(parentNode) && path.node === parentNode.key) {
           return;
         }
         // TODO: 替换方式需要缓存，避免过多临时变量
