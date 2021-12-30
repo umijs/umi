@@ -142,9 +142,15 @@ export default () => {
       const { icon } = api.appData.routes[id];
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
+        assert(
+          // @ts-ignore
+          allIcons[upperIcon] || allIcons[`${upperIcon}Outlined`],
+          `Icon ${upperIcon} is not found`,
+        );
         // @ts-ignore
-        assert(allIcons[upperIcon], `Icon ${upperIcon} is not found`);
-        memo[upperIcon] = true;
+        if (allIcons[upperIcon]) {
+          memo[upperIcon] = true;
+        }
         // @ts-ignore
         if (allIcons[`${upperIcon}Outlined`]) {
           memo[`${upperIcon}Outlined`] = true;
