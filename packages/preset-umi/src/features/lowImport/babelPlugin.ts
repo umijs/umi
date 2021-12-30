@@ -35,18 +35,20 @@ export default function () {
         ) {
           return;
         }
-        // 对象的调用
+        // don't support member expression
+        // e.g. { styles: 1 }
         if (
           t.isMemberExpression(parentNode) &&
           path?.node === parentNode.property
         ) {
           return;
         }
-        // 对象声明
+        // don't support object property
+        // e.g. foo.styles
         if (t.isObjectProperty(parentNode) && path?.node === parentNode.key) {
           return;
         }
-        // TODO: 替换方式需要缓存，避免过多临时变量。
+        // TODO: 替换方式需要缓存，避免过多临时变量
         if (state.opts.opts.identifierToLib?.hasOwnProperty(name)) {
           path.replaceWith(
             addNamed(path, name, state.opts.opts.identifierToLib[name]),
@@ -92,8 +94,8 @@ export default function () {
           return;
         }
         if (
-          state.opts.opts.withObjs[object.name] &&
-          (state.opts.opts.withObjs[object.name].members || []).includes(
+          state.opts.opts.withObjs?.[object.name] &&
+          (state.opts.opts.withObjs?.[object.name].members || []).includes(
             property.name,
           )
         ) {
