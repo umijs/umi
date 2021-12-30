@@ -61,13 +61,18 @@ test('import with objs', () => {
 test('import styles', () => {
   expect(
     doTransform({
-      code: `styles.btn`,
+      code: `styles.btn
+const a = { styles: 1 };
+a.styles;
+`,
       opts: {
         opts: { withObjs: {} },
       },
       filename: 'index.tsx',
     }),
-  ).toEqual(`import _styles from "./index.less";\n_styles.btn;`);
+  ).toEqual(
+    `import _styles from "./index.less";\n_styles.btn;\nconst a = {\n  styles: 1\n};\na.styles;`,
+  );
 });
 
 test('import styles css', () => {
