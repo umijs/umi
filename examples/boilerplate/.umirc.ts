@@ -15,6 +15,7 @@ export default {
   scripts: [`console.log('script')`],
   npmClient: 'pnpm',
   svgr: {},
+  // srcTranspiler: 'swc',
   // esmi: {},
   // esm: {},
 };
