@@ -1,3 +1,4 @@
+import type { Config as SwcConfig } from '@swc/core';
 import type { Options as ProxyOptions } from '../compiled/http-proxy-middleware';
 import { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
@@ -71,4 +72,9 @@ export interface IConfig {
   targets?: { [key: string]: any };
   writeToDisk?: boolean;
   [key: string]: any;
+}
+
+export interface SwcOptions extends SwcConfig {
+  sync?: boolean;
+  parseMap?: boolean;
 }

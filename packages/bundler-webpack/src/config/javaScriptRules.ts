@@ -18,7 +18,7 @@ interface IOpts {
 }
 
 export async function addJavaScriptRules(opts: IOpts) {
-  const { config, userConfig, cwd, env, name } = opts;
+  const { config, userConfig, cwd, name } = opts;
   const isDev = opts.env === Env.development;
   const useFastRefresh =
     isDev && userConfig.fastRefresh !== false && name !== MFSU_NAME;
@@ -112,26 +112,8 @@ export async function addJavaScriptRules(opts: IOpts) {
       // TODO: support javascript
       rule
         .use('swc-loader')
-        .loader(require.resolve('../../compiled/swc-loader'))
+        .loader(require.resolve('../loader/swc'))
         .options({
-          jsc: {
-            parser: {
-              syntax: 'typescript',
-              dynamicImport: true,
-              tsx: true,
-            },
-
-            transform: {
-              react: {
-                runtime: 'automatic',
-                pragma: 'React.createElement',
-                pragmaFrag: 'React.Fragment',
-                throwIfNamespace: true,
-                development: env === Env.development,
-                useBuiltins: true,
-              },
-            },
-          },
           plugin: (m: Program) => new AutoCSSModule().visitProgram(m),
         });
     } else {
