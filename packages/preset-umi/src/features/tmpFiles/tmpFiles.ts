@@ -114,7 +114,7 @@ export default (api: IApi) => {
         'dataflowProvider',
         'outerProvider',
         'render',
-        // 'onRouteChange',
+        'onRouteChange',
       ],
     });
     api.writeTmpFile({

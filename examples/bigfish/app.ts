@@ -20,3 +20,7 @@ export const layout = {
     alert('logout');
   },
 };
+
+export function onRouteChange(opts: any) {
+  console.log('route changed', opts.location.pathname);
+}

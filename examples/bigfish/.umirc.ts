@@ -46,7 +46,7 @@ export default {
   layout: {
     name: 'Ant Design Pro',
   },
-  mfsu: false,
+  mfsu: {},
   request: {},
   locale: {
     title: true,

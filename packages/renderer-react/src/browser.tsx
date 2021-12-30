@@ -18,6 +18,22 @@ function BrowserRoutes(props: any) {
     location: history.location,
   });
   React.useLayoutEffect(() => history.listen(setState), [history]);
+  React.useLayoutEffect(
+    () =>
+      history.listen((location: any, action?: string) => {
+        props.pluginManager.applyPlugins({
+          key: 'onRouteChange',
+          type: 'event',
+          args: {
+            routes: props.routes,
+            clientRoutes: props.clientRoutes,
+            location,
+            action,
+          },
+        });
+      }),
+    [history, props.routes, props.clientRoutes],
+  );
   return (
     <Router
       navigator={history}
@@ -48,17 +64,22 @@ export function renderClient(opts: {
     routeComponents: opts.routeComponents,
   });
   let rootContainer = (
-    <BrowserRoutes basename={basename}>
+    <BrowserRoutes
+      basename={basename}
+      pluginManager={opts.pluginManager}
+      routes={opts.routes}
+      clientRoutes={clientRoutes}
+    >
       <Routes />
     </BrowserRoutes>
   );
   for (const key of [
+    // Lowest to the highest priority
     'innerProvider',
     'i18nProvider',
     'accessProvider',
     'dataflowProvider',
     'outerProvider',
-    // Highest priority
     'rootContainer',
   ]) {
     rootContainer = opts.pluginManager.applyPlugins({
