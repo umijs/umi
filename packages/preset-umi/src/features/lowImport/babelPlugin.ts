@@ -35,17 +35,29 @@ export default function () {
         ) {
           return;
         }
-        if (state.opts.opts.identifierToLib?.[name]) {
+        // 对象的调用
+        if (
+          t.isMemberExpression(parentNode) &&
+          path?.node === parentNode.property
+        ) {
+          return;
+        }
+        // 对象声明
+        if (t.isObjectProperty(parentNode) && path?.node === parentNode.key) {
+          return;
+        }
+        // TODO: 替换方式需要缓存，避免过多临时变量。
+        if (state.opts.opts.identifierToLib?.hasOwnProperty(name)) {
           path.replaceWith(
             addNamed(path, name, state.opts.opts.identifierToLib[name]),
           );
-        } else if (state.opts.opts.defaultToLib?.[name]) {
+        } else if (state.opts.opts.defaultToLib?.hasOwnProperty(name)) {
           path.replaceWith(
             addDefault(path, state.opts.opts.defaultToLib[name], {
               nameHint: name,
             }),
           );
-        } else if (state.opts.opts.namespaceToLib?.[name]) {
+        } else if (state.opts.opts.namespaceToLib?.hasOwnProperty(name)) {
           path.replaceWith(
             addNamespace(path, state.opts.opts.namespaceToLib[name]),
           );
