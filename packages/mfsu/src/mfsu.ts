@@ -62,6 +62,10 @@ export class MFSU {
     this.depInfo.loadCache();
   }
 
+  asyncImport(content: string) {
+    return `(async () => await import('${content}'))();`;
+  }
+
   async setWebpackConfig(opts: {
     config: Configuration;
     depConfig: Configuration;
@@ -86,14 +90,14 @@ export class MFSU {
         const content = readFileSync(entry, 'utf-8');
         const [_imports, exports] = await parseModule({ content, path: entry });
         if (exports.length) {
-          virtualContent.push(`const k${index} = await import('${entry}');`);
+          virtualContent.push(`const k${index} = ${this.asyncImport(entry)}`);
           for (const exportName of exports) {
             virtualContent.push(
               `export const ${exportName} = k${index}.${exportName}`,
             );
           }
         } else {
-          virtualContent.push(`await import('${entry}')`);
+          virtualContent.push(this.asyncImport(entry));
         }
         index += 1;
       }
