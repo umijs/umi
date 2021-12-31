@@ -65,7 +65,8 @@ export class MFSU {
   // swc don't support top-level await
   // ref: https://github.com/vercel/next.js/issues/31054
   asyncImport(content: string) {
-    return `(async () => await import('${content}'))();`;
+    return `await import('${content}');`;
+    // return `(async () => await import('${content}'))();`;
   }
 
   async setWebpackConfig(opts: {
