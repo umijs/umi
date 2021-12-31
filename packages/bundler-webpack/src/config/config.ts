@@ -21,7 +21,7 @@ import { addProgressPlugin } from './progressPlugin';
 import { addSpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
 import { addSVGRules } from './svgRules';
 
-interface IOpts {
+export interface IOpts {
   cwd: string;
   env: Env;
   entry: Record<string, string>;
@@ -36,6 +36,11 @@ interface IOpts {
   userConfig: IConfig;
   analyze?: any;
   name?: string;
+  cache?: {
+    absNodeModulesPath?: string;
+    buildDependencies?: string[];
+    cacheDirectory?: string;
+  };
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -168,6 +173,32 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // runtimePublicPath
   if (userConfig.runtimePublicPath) {
     config.plugin('runtimePublicPath').use(RuntimePublicPathPlugin);
+  }
+
+  // cache
+  if (opts.cache) {
+    config.cache({
+      type: 'filesystem',
+      version: require('../../package.json').version,
+      buildDependencies: {
+        config: opts.cache.buildDependencies || [],
+      },
+      cacheDirectory:
+        opts.cache.cacheDirectory ||
+        join(opts.cwd, 'node_modules', '.cache', 'bundler-webpack'),
+    });
+
+    // tnpm 安装依赖的情况 webpack 默认的 managedPaths 不生效
+    // 使用 immutablePaths 避免 node_modules 的内容被写入缓存
+    // tnpm 安装的依赖路径中同时包含包名和版本号，满足 immutablePaths 使用的条件
+    // ref: smallfish
+    if (/*isTnpm*/ require('@umijs/utils/package').__npminstall_done) {
+      config.snapshot({
+        immutablePaths: [
+          opts.cache.absNodeModulesPath || join(opts.cwd, 'node_modules'),
+        ],
+      });
+    }
   }
 
   // analyzer

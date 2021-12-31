@@ -1,9 +1,9 @@
 import { rimraf } from '@umijs/utils';
 import webpack from '../compiled/webpack';
-import { getConfig } from './config/config';
+import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { Env, IConfig } from './types';
 
-interface IOpts {
+type IOpts = {
   cwd: string;
   entry: Record<string, string>;
   config: IConfig;
@@ -16,7 +16,7 @@ interface IOpts {
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   clean?: boolean;
-}
+} & Pick<IConfigOpts, 'cache'>;
 
 export async function build(opts: IOpts): Promise<void> {
   const webpackConfig = await getConfig({
@@ -36,6 +36,7 @@ export async function build(opts: IOpts): Promise<void> {
     ],
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
+    cache: opts.cache,
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {

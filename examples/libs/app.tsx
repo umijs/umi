@@ -2,7 +2,7 @@
 import { create } from 'dva-core';
 import React, { useRef } from 'react';
 import { Provider } from 'react-redux';
-import { useAppContext } from 'umi';
+import { useAppData } from 'umi';
 
 interface IDvaApp {
   start: Function;
@@ -12,7 +12,7 @@ interface IDvaApp {
 }
 
 function DvaRoot(props: any) {
-  const { navigator } = useAppContext();
+  const { navigator } = useAppData();
   const app = useRef<IDvaApp>();
   if (!app.current) {
     app.current = create(
