@@ -1,8 +1,8 @@
 {
-  "name": "bigfish",
+  "name": "@umijs/pro",
   "version": "4.0.0-beta.15",
-  "description": "bigfish",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bigfish#readme",
+  "description": "@umijs/pro",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/pro#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "module": "index.esm.js",
   "types": "index.d.ts",
   "bin": {
-    "bigfish": "bin/bigfish.js"
+    "umipro": "bin/pro.js"
   },
   "files": [
     "dist",

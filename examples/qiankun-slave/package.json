@@ -1,11 +1,11 @@
 {
   "name": "app1",
   "scripts": {
-    "dev": "bigfish dev",
+    "dev": "umipro dev",
     "start": "npm run dev"
   },
   "dependencies": {
-    "bigfish": "4.0.0-beta.15",
+    "@umijs/pro": "4.0.0-beta.15",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   }

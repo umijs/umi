@@ -87,12 +87,12 @@ importers:
   examples/bigfish:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      bigfish: 4.0.0-beta.15
+      '@umijs/pro': 4.0.0-beta.15
       react: 17.0.2
       react-dom: 17.0.2
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
-      bigfish: link:../../packages/bigfish
+      '@umijs/pro': link:../../packages/pro
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
 
@@ -182,11 +182,11 @@ importers:
 
   examples/qiankun-slave:
     specifiers:
-      bigfish: 4.0.0-beta.15
+      '@umijs/pro': 4.0.0-beta.15
       react: 17.0.2
       react-dom: 17.0.2
     dependencies:
-      bigfish: link:../../packages/bigfish
+      '@umijs/pro': link:../../packages/pro
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
 
@@ -221,14 +221,6 @@ importers:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
       core-js: 3.19.2
-
-  packages/bigfish:
-    specifiers:
-      '@umijs/plugins': 4.0.0-beta.15
-      umi: 4.0.0-beta.15
-    dependencies:
-      '@umijs/plugins': link:../plugins
-      umi: link:../umi
 
   packages/bundler-esbuild:
     specifiers:
@@ -601,6 +593,14 @@ importers:
       body-parser: 1.19.0
       multer: 1.4.3
       vite: 2.7.6
+
+  packages/pro:
+    specifiers:
+      '@umijs/plugins': 4.0.0-beta.15
+      umi: 4.0.0-beta.15
+    dependencies:
+      '@umijs/plugins': link:../plugins
+      umi: link:../umi
 
   packages/renderer-react:
     specifiers:

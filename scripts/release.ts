@@ -39,7 +39,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   logger.event('check npm ownership');
   const whoami = (await $`npm whoami`).stdout.trim();
   await Promise.all(
-    ['umi', 'bigfish', '@umijs/core'].map(async (pkg) => {
+    ['umi', '@umijs/pro', '@umijs/core'].map(async (pkg) => {
       const owners = (await $`npm owner ls ${pkg}`).stdout
         .trim()
         .split('\n')
@@ -87,7 +87,8 @@ import { assert, eachPkg, getPkgs } from './utils';
     pkg.scripts['start'] = 'npm run dev';
     pkg.dependencies ||= {};
     if (pkg.dependencies['umi']) pkg.dependencies['umi'] = version;
-    if (pkg.dependencies['bigfish']) pkg.dependencies['bigfish'] = version;
+    if (pkg.dependencies['@umijs/pro'])
+      pkg.dependencies['@umijs/pro'] = version;
     delete pkg.version;
     fs.writeFileSync(
       join(__dirname, '../examples', example, 'package.json'),
@@ -118,7 +119,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   $.verbose = false;
   const innerPkgs = pkgs.filter(
     // do not publish father
-    (pkg) => !['umi', 'bigfish', 'father'].includes(pkg),
+    (pkg) => !['umi', 'pro', 'father'].includes(pkg),
   );
   const tag =
     version.includes('-alpha.') ||
@@ -134,8 +135,8 @@ import { assert, eachPkg, getPkgs } from './utils';
   );
   await $`cd packages/umi && npm publish --tag ${tag}`;
   logger.info(`+ umi`);
-  await $`cd packages/bigfish && npm publish --tag ${tag}`;
-  logger.info(`+ bigfish`);
+  await $`cd packages/pro && npm publish --tag ${tag}`;
+  logger.info(`+ @umijs/pro`);
   $.verbose = true;
 
   // sync tnpm
