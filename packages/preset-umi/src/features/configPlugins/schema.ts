@@ -20,5 +20,9 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         NpmClientEnum.npm,
       ),
     routes: (Joi) => Joi.array().items(Joi.object()),
+    history: (Joi) =>
+      Joi.object({
+        type: Joi.string().valid('browser', 'hash', 'memory'),
+      }),
   };
 }
