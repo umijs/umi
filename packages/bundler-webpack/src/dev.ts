@@ -1,11 +1,12 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
+import { join } from 'path';
 import webpack from '../compiled/webpack';
-import { getConfig } from './config/config';
+import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
 import { createServer } from './server/server';
 import { Env, IConfig } from './types';
 
-interface IOpts {
+type IOpts = {
   afterMiddlewares?: any[];
   beforeMiddlewares?: any[];
   onDevCompileDone?: Function;
@@ -20,7 +21,7 @@ interface IOpts {
   cwd: string;
   config: IConfig;
   entry: Record<string, string>;
-}
+} & Pick<IConfigOpts, 'cache'>;
 
 export async function dev(opts: IOpts) {
   const enableMFSU = opts.config.mfsu !== false;
@@ -54,6 +55,7 @@ export async function dev(opts: IOpts) {
     modifyWebpackConfig: opts.modifyWebpackConfig,
     hmr: true,
     analyze: process.env.ANALYZE,
+    cache: opts.cache,
   });
   const depConfig = await getConfig({
     cwd: opts.cwd,
@@ -63,6 +65,10 @@ export async function dev(opts: IOpts) {
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,
     name: MFSU_NAME,
+    cache: {
+      buildDependencies: opts.cache?.buildDependencies,
+      cacheDirectory: join(opts.cwd, 'node_modules', '.cache', 'mfsu-deps'),
+    },
   });
   webpackConfig.resolve!.alias ||= {};
   // TODO: REMOVE ME

@@ -252,6 +252,12 @@ PORT=8888 umi dev
           });
         },
         mfsuWithESBuild: api.config.mfsu?.esbuild,
+        cache: {
+          buildDependencies: [
+            api.pkgPath,
+            api.service.configManager!.mainConfigFile || '',
+          ].filter(Boolean),
+        },
       };
       if (enableVite) {
         await bundlerVite.dev(opts);

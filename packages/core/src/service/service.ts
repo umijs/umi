@@ -64,6 +64,7 @@ export class Service {
   userConfig: Record<string, any> = {};
   configManager: Config | null = null;
   pkg: Record<string, string | Record<string, any>> = {};
+  pkgPath: string = '';
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd;
@@ -168,17 +169,21 @@ export class Service {
     loadEnv({ cwd: this.cwd, envFile: '.env' });
     // get pkg from package.json
     let pkg: Record<string, string | Record<string, any>> = {};
+    let pkgPath: string = '';
     try {
       pkg = require(join(this.cwd, 'package.json'));
+      pkgPath = join(this.cwd, 'package.json');
     } catch (_e) {
       // APP_ROOT
       if (this.cwd !== process.cwd()) {
         try {
           pkg = require(join(process.cwd(), 'package.json'));
+          pkgPath = join(process.cwd(), 'package.json');
         } catch (_e) {}
       }
     }
     this.pkg = pkg;
+    this.pkgPath = pkgPath;
     // get user config
     const configManager = new Config({
       cwd: this.cwd,
@@ -264,6 +269,7 @@ export class Service {
         // base
         cwd: this.cwd,
         pkg,
+        pkgPath,
         plugins,
         presets,
         name,
@@ -433,6 +439,7 @@ export interface IServicePluginAPI {
   cwd: typeof Service.prototype.cwd;
   generators: typeof Service.prototype.generators;
   pkg: typeof Service.prototype.pkg;
+  pkgPath: typeof Service.prototype.pkgPath;
   name: typeof Service.prototype.name;
   paths: Required<typeof Service.prototype.paths>;
   userConfig: typeof Service.prototype.userConfig;
