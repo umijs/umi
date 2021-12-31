@@ -28,7 +28,8 @@ export async function getMarkupArgs(opts: { api: IApi }) {
   });
   return {
     mountElementId: opts.api.config.mountElementId,
-    base: opts.api.config.base,
+    base:
+      opts.api.config.history?.type === 'browser' ? opts.api.config.base : '/',
     routes: opts.api.appData.routes,
     favicon,
     headScripts,
