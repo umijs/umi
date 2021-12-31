@@ -59,6 +59,7 @@ export default (api: IApi) => {
           }),
         ).join('\n'),
         basename: api.config.base,
+        historyType: api.config.history.type,
       },
     });
 

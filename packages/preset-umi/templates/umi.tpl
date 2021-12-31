@@ -24,6 +24,7 @@ async function render() {
     routeComponents,
     pluginManager,
     rootElement: document.getElementById('{{{ mountElementId }}}'),
+    historyType: '{{{ historyType }}}',
 {{#basename}}
     basename: '{{{ basename }}}',
 {{/basename}}

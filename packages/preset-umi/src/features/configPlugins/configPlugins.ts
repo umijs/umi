@@ -46,6 +46,7 @@ export default (api: IApi) => {
     publicPath: '/',
     mountElementId: 'root',
     base: '/',
+    history: { type: 'browser' },
   };
 
   const bundleSchemas = getSchemas();
