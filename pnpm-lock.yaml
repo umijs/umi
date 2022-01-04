@@ -565,6 +565,7 @@ importers:
       '@umijs/server': 4.0.0-beta.15
       '@umijs/utils': 4.0.0-beta.15
       body-parser: 1.19.0
+      core-js: 3.19.2
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.8.3
       magic-string: 0.25.7
@@ -586,6 +587,7 @@ importers:
       '@umijs/renderer-react': link:../renderer-react
       '@umijs/server': link:../server
       '@umijs/utils': link:../utils
+      core-js: 3.19.2
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.8.3
       magic-string: 0.25.7
