@@ -16,6 +16,7 @@ import { addForkTSCheckerPlugin } from './forkTSCheckerPlugin';
 import { addHarmonyLinkingErrorPlugin } from './harmonyLinkingErrorPlugin';
 import { addIgnorePlugin } from './ignorePlugin';
 import { addJavaScriptRules } from './javaScriptRules';
+import { addManifestPlugin } from './manifestPlugin';
 import { addMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
 import { addNodePolyfill } from './nodePolyfill';
 import { addProgressPlugin } from './progressPlugin';
@@ -162,7 +163,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // copy
   await addCopyPlugin(applyOpts);
   // TODO: friendly-error
-  // TODO: manifest
+  // manifest
+  await addManifestPlugin(applyOpts);
   // hmr
   if (isDev && opts.hmr) {
     config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);

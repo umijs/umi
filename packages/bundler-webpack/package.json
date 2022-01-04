@@ -79,6 +79,7 @@
     "webpack-5-chain": "8.0.0",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-dev-middleware": "5.2.2",
+    "webpack-manifest-plugin": "4.0.2",
     "webpack-sources": "3.2.2",
     "ws": "8.2.3"
   },
@@ -119,6 +120,7 @@
       "webpack-5-chain",
       "webpack-bundle-analyzer",
       "webpack-dev-middleware",
+      "webpack-manifest-plugin",
       "webpack-sources",
       "ws",
       "./bundles/webpack/bundle",
@@ -141,6 +143,7 @@
       "uglify-js": "uglify-js",
       "url-loader": "$$LOCAL",
       "webpack": "$$LOCAL",
+      "webpack/lib/NormalModule": "../webpack/NormalModule",
       "webpack-5-chain": "$$LOCAL",
       "webpack-sources": "$$LOCAL",
       "ws": "$$LOCAL"
@@ -168,6 +171,7 @@
       "cssnano",
       "compression",
       "connect-history-api-fallback",
+      "fork-ts-checker-webpack-plugin",
       "less",
       "less-loader",
       "mini-css-extract-plugin",
@@ -180,7 +184,8 @@
       "svgo-loader",
       "url-loader",
       "webpack-bundle-analyzer",
-      "webpack-dev-middleware"
+      "webpack-dev-middleware",
+      "webpack-manifest-plugin"
     ]
   }
 }
