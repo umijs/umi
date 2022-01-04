@@ -81,6 +81,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       ),
     extraPostCSSPlugins: (Joi) => Joi.array(),
     fastRefresh: (Joi) => Joi.boolean(),
+    forkTSChecker: (Joi) => Joi.object(),
     hash: (Joi) => Joi.boolean(),
     ignoreMomentLocale: (Joi) => Joi.boolean(),
     jsMinifier: (Joi) =>

@@ -135,6 +135,9 @@ Object.keys(exported).forEach(function (key) {
           path.join(target, 'loader-options.json'),
         );
       }
+      if (opts.pkgName === 'fork-ts-checker-webpack-plugin') {
+        fs.removeSync(path.join(target, 'typescript.js'));
+      }
     }
   }
 
