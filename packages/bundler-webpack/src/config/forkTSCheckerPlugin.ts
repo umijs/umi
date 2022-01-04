@@ -1,3 +1,4 @@
+// @ts-ignore
 import ForkTSCheckerPlugin from '@umijs/bundler-webpack/compiled/fork-ts-checker-webpack-plugin';
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { Env, IConfig } from '../types';
