@@ -12,6 +12,7 @@ import { addCopyPlugin } from './copyPlugin';
 import { addCSSRules } from './cssRules';
 import { addDefinePlugin } from './definePlugin';
 import { addFastRefreshPlugin } from './fastRefreshPlugin';
+import { addForkTSCheckerPlugin } from './forkTSCheckerPlugin';
 import { addHarmonyLinkingErrorPlugin } from './harmonyLinkingErrorPlugin';
 import { addIgnorePlugin } from './ignorePlugin';
 import { addJavaScriptRules } from './javaScriptRules';
@@ -156,6 +157,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addFastRefreshPlugin(applyOpts);
   // progress
   await addProgressPlugin(applyOpts);
+  // fork-ts-checker
+  await addForkTSCheckerPlugin(applyOpts);
   // copy
   await addCopyPlugin(applyOpts);
   // TODO: friendly-error
