@@ -84,6 +84,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     forkTSChecker: (Joi) => Joi.object(),
     hash: (Joi) => Joi.boolean(),
     ignoreMomentLocale: (Joi) => Joi.boolean(),
+    inlineLimit: (Joi) => Joi.number(),
     jsMinifier: (Joi) =>
       Joi.string().valid(
         JSMinifier.esbuild,
