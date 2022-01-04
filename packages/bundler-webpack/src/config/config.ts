@@ -204,6 +204,15 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
         ],
       });
     }
+
+    config.infrastructureLogging({
+      level: 'error',
+      ...(process.env.WEBPACK_FS_CACHE_DEBUG
+        ? {
+            debug: /webpack\.cache/,
+          }
+        : {}),
+    });
   }
 
   // analyzer
