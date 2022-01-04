@@ -151,6 +151,7 @@ importers:
       framer-motion: 5.3.3
       react-redux: ^8.0.0-beta.1
       redux: ^4.1.2
+      swiper: ^7.4.1
       swr: 1.1.0
       umi: 4.0.0-beta.15
     dependencies:
@@ -163,6 +164,7 @@ importers:
       framer-motion: 5.3.3
       react-redux: 8.0.0-beta.2
       redux: 4.1.2
+      swiper: 7.4.1
       swr: 1.1.0
 
   examples/mfsu-circular-dependency:
@@ -7224,6 +7226,12 @@ packages:
 
   /dom-walk/0.1.2:
     resolution: {integrity: sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==}
+
+  /dom7/4.0.2:
+    resolution: {integrity: sha512-Ji4t3Y/vNQg6Q9bR+Syx6Td8qiq8116LE9h4OzbPuxdxK7DyyX7i8EXkYgBX6+EiX6+oYXDTH5BSN29G/n4jug==}
+    dependencies:
+      ssr-window: 4.0.2
+    dev: true
 
   /domain-browser/1.2.0:
     resolution: {integrity: sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==}
@@ -14531,6 +14539,10 @@ packages:
       tweetnacl: 0.14.5
     dev: true
 
+  /ssr-window/4.0.2:
+    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
+    dev: true
+
   /ssri/8.0.1:
     resolution: {integrity: sha512-97qShzy1AiyxvPNIkLWoGua7xoQzzPjQ0HAH4B0rWKo7SZ6USuPcrUiAFrws0UH8RrbWmgq3LMTObhPIHbbBeQ==}
     engines: {node: '>= 8'}
@@ -14822,6 +14834,15 @@ packages:
       css-tree: 1.1.3
       csso: 4.2.0
       stable: 0.1.8
+
+  /swiper/7.4.1:
+    resolution: {integrity: sha512-dhbL4tpYFvHug1J7GnKElfTi6EYhlZy/vNZRhHkWFyUsWZ1Vovipxj3la5gqllMogygXJMe3zvVv+f6eppvWiA==}
+    engines: {node: '>= 4.7.0'}
+    requiresBuild: true
+    dependencies:
+      dom7: 4.0.2
+      ssr-window: 4.0.2
+    dev: true
 
   /swr/1.1.0:
     resolution: {integrity: sha512-MFL3mkl752Uap81nLA1tEu7vQmikPamSziW+6dBidYKAo4oLOlUx/x5GZy4ZCkCwfZe2uedylkz1UMGnatUX4g==}
