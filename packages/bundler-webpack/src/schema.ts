@@ -27,6 +27,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
     alias: (Joi) => Joi.object(),
     autoCSSModules: (Joi) => Joi.boolean(),
+    autoprefixer: (Joi) => Joi.object(),
     chainWebpack: (Joi) => Joi.function(),
     copy: (Joi) =>
       Joi.array().items(
