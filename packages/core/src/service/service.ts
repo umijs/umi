@@ -430,7 +430,6 @@ export class Service {
   }
 }
 
-// TODO: more props
 export interface IServicePluginAPI {
   appData: typeof Service.prototype.appData;
   applyPlugins: typeof Service.prototype.applyPlugins;

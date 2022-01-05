@@ -162,7 +162,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addForkTSCheckerPlugin(applyOpts);
   // copy
   await addCopyPlugin(applyOpts);
-  // TODO: friendly-error
   // manifest
   await addManifestPlugin(applyOpts);
   // hmr
