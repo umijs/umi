@@ -44,7 +44,6 @@ export default (api: IApi) => {
     const modifiedDefaultConfig = {
       ...memo,
       // 默认开启 runtimePublicPath，避免出现 dynamic import 场景子应用资源地址出问题
-      // TODO: runtimePublicPath
       runtimePublicPath: true,
       // TODO: runtimeHistory
       runtimeHistory: {},
@@ -110,8 +109,8 @@ export default (api: IApi) => {
   api.modifyHTML(($) => {
     $('script').each((_: any, el: any) => {
       const scriptEl = $(el);
-      const umiEntryJs = /\/?umi(\.\w+)?\.js$/g;
-      if (umiEntryJs.test(scriptEl.attr('src') ?? '')) {
+      const umiEntry = /\/?umi(\.\w+)?\.js$/g;
+      if (umiEntry.test(scriptEl.attr('src') ?? '')) {
         scriptEl.attr('entry', '');
       }
     });

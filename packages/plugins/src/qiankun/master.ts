@@ -29,7 +29,6 @@ export default (api: IApi) => {
 
   api.modifyDefaultConfig((config) => ({
     ...config,
-    // TODO: support mountElementId
     mountElementId: defaultMasterRootId,
     qiankun: {
       ...config.qiankun,
