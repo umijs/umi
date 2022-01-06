@@ -294,7 +294,14 @@ export {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export * from './request';
+export {
+  useRequest,
+  UseRequestProvider,
+  AxiosRequestConfig,
+  request,
+  AxiosInstance,
+  AxiosResponse,
+} from './request';
 `,
     });
   });
