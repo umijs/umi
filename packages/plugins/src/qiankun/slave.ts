@@ -73,6 +73,7 @@ export default (api: IApi) => {
           config.mfsu?.mfName ||
           `mf_${api.pkg.name
             // 替换掉包名里的特殊字符
+            // e.g. @umi/ui -> umi_ui
             ?.replace(/^@/, '')
             .replace(/\W/g, '_')}`,
       };

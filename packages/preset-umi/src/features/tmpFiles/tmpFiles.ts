@@ -1,6 +1,7 @@
+import { parseModule } from '@umijs/bundler-utils';
 import { winPath } from '@umijs/utils';
-import { existsSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
+import { dirname, join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { importsToStr } from './importsToStr';
@@ -26,7 +27,9 @@ export default (api: IApi) => {
         mountElementId: api.config.mountElementId,
         rendererPath: await api.applyPlugins({
           key: 'modifyRendererPath',
-          initialValue: '@umijs/renderer-react',
+          initialValue: dirname(
+            require.resolve('@umijs/renderer-react/package.json'),
+          ),
         }),
         entryCode: (
           await api.applyPlugins({
@@ -130,5 +133,43 @@ export default (api: IApi) => {
         validKeys: validKeys,
       },
     });
+  });
+
+  async function getExports(opts: { path: string }) {
+    const content = readFileSync(opts.path, 'utf-8');
+    const [_, exports] = await parseModule({ content, path: opts.path });
+    return exports || [];
+  }
+
+  api.register({
+    key: 'onGenerateFiles',
+    fn: async () => {
+      const exports = [];
+      const rendererReactPath = dirname(
+        require.resolve('@umijs/renderer-react/package.json'),
+      );
+      exports.push(
+        `export { ${(
+          await getExports({
+            path: join(rendererReactPath, 'dist/index.js'),
+          })
+        ).join(', ')} } from '${rendererReactPath}';`,
+      );
+      const umiDir = process.env.UMI_DIR!;
+      const umiPluginPath = join(umiDir, 'client/client/plugin.js');
+      exports.push(
+        `export { ${(
+          await getExports({
+            path: umiPluginPath,
+          })
+        ).join(', ')} } from '${umiPluginPath}';`,
+      );
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'exports.ts',
+        content: exports.join('\n'),
+      });
+    },
+    stage: Infinity,
   });
 };
