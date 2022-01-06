@@ -52,7 +52,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   userConfig.targets = userConfig.targets || {
     chrome: 80,
   };
-  const useHash = opts.hash || (userConfig.hash && !isDev);
+  const useHash = !!(opts.hash || (userConfig.hash && !isDev));
   const applyOpts = {
     name: opts.name,
     config,
