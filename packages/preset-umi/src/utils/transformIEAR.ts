@@ -89,7 +89,11 @@ export default function transformIEAR(
   return content.replace(IEAR_REG_EXP, (_, prefix, quote, absPath) => {
     if (absPath.startsWith(api.paths.absTmpPath)) {
       // transform .umi absolute imports
-      absPath = winPath(relative(dirname(path), absPath));
+      absPath = winPath(relative(dirname(path), absPath)).replace(
+        // prepend ./ for same or sub level imports
+        /^(?!\.\.\/)/,
+        './',
+      );
     } else if (absPath.includes('node_modules')) {
       // transform node_modules absolute imports
       absPath = `@fs${absPath}`;

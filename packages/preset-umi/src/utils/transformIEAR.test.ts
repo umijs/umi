@@ -66,6 +66,7 @@ describe('transform path for import/export/await-import/require', () => {
     const cases = [
       "import module from '/path/to/.umi/plugin-tmp';",
       "import pkg from '/path/to/node_modules/pkg';",
+      "import sibling from '/path/to/.umi/plugin-self/sibling.ts';",
     ];
 
     expect(
@@ -80,6 +81,7 @@ describe('transform path for import/export/await-import/require', () => {
       cases
         .join('\n')
         .replace('/path/to/.umi', '..')
+        .replace('/path/to/.umi/plugin-self', '.')
         .replace('/path/to/node_modules', '@fs/path/to/node_modules'),
     );
   });
