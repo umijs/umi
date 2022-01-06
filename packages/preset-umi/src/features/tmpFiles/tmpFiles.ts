@@ -1,6 +1,6 @@
 import { parseModule } from '@umijs/bundler-utils';
 import { winPath } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
@@ -141,10 +141,13 @@ export default (api: IApi) => {
     return exports || [];
   }
 
+  // Generate @@/exports.ts
   api.register({
     key: 'onGenerateFiles',
     fn: async () => {
       const exports = [];
+      // @umijs/renderer-react
+      exports.push('// @umijs/renderer-react');
       const rendererReactPath = dirname(
         require.resolve('@umijs/renderer-react/package.json'),
       );
@@ -155,6 +158,8 @@ export default (api: IApi) => {
           })
         ).join(', ')} } from '${rendererReactPath}';`,
       );
+      // umi/client/client/plugin
+      exports.push('// umi/client/client/plugin');
       const umiDir = process.env.UMI_DIR!;
       const umiPluginPath = join(umiDir, 'client/client/plugin.js');
       exports.push(
@@ -164,6 +169,37 @@ export default (api: IApi) => {
           })
         ).join(', ')} } from '${umiPluginPath}';`,
       );
+      // plugins
+      exports.push('// plugins');
+      const plugins = readdirSync(api.paths.absTmpPath).filter((file) => {
+        if (
+          file.startsWith('plugin-') &&
+          (existsSync(join(api.paths.absTmpPath, file, 'index.ts')) ||
+            existsSync(join(api.paths.absTmpPath, file, 'index.tsx')))
+        ) {
+          return true;
+        }
+      });
+      for (const plugin of plugins) {
+        let file: string;
+        if (existsSync(join(api.paths.absTmpPath, plugin, 'index.ts'))) {
+          file = join(api.paths.absTmpPath, plugin, 'index.ts');
+        }
+        if (existsSync(join(api.paths.absTmpPath, plugin, 'index.tsx'))) {
+          file = join(api.paths.absTmpPath, plugin, 'index.tsx');
+        }
+        const pluginExports = await getExports({
+          path: file!,
+        });
+        if (pluginExports.length) {
+          exports.push(
+            `export { ${pluginExports.join(', ')} } from '${join(
+              api.paths.absTmpPath,
+              plugin,
+            )}';`,
+          );
+        }
+      }
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',
