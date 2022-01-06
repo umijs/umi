@@ -52,6 +52,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   userConfig.targets = userConfig.targets || {
     chrome: 80,
   };
+  const useHash = opts.hash || (userConfig.hash && !isDev);
   const applyOpts = {
     name: opts.name,
     config,
@@ -64,6 +65,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     browsers: getBrowsersList({
       targets: userConfig.targets,
     }),
+    useHash,
     staticPathPrefix:
       opts.staticPathPrefix !== undefined ? opts.staticPathPrefix : 'static/',
   };
@@ -95,7 +97,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     opts.cwd,
     userConfig.outputPath || DEFAULT_OUTPUT_PATH,
   );
-  const useHash = opts.hash || (userConfig.hash && !isDev);
   const disableCompress = process.env.COMPRESS === 'none';
   config.output
     .path(absOutputPath)
