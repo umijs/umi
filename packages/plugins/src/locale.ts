@@ -228,7 +228,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { useIntl, formatMessage } from './localeExports.ts';
+export { useIntl, formatMessage, FormattedMessage } from './localeExports.ts';
 export { SelectLang } from './SelectLang.tsx';
 `,
     });
