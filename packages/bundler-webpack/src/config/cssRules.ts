@@ -61,7 +61,7 @@ export async function addCSSRules(opts: IOpts) {
           .options({ base: 0, esModule: true, ...userConfig.styleLoader });
       } else {
         rule
-          .use('mini-css-extract-plugin-loader')
+          .use('mini-css-extract-plugin')
           .loader(
             require.resolve(
               '@umijs/bundler-webpack/compiled/mini-css-extract-plugin/loader',

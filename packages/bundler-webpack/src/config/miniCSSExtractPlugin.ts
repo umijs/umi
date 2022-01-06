@@ -8,13 +8,12 @@ interface IOpts {
   userConfig: IConfig;
   cwd: string;
   env: Env;
+  useHash: boolean;
 }
 
 export async function addMiniCSSExtractPlugin(opts: IOpts) {
-  const { config, userConfig, env } = opts;
-
-  const hash =
-    env !== Env.development && userConfig.hash ? '.[contenthash:8]' : '';
+  const { config, userConfig, useHash } = opts;
+  const hash = useHash ? '.[contenthash:8]' : '';
   if (!userConfig.styleLoader) {
     config.plugin('mini-css-extract-plugin').use(MiniCSSExtractPlugin, [
       {
