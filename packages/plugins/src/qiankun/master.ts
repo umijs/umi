@@ -68,7 +68,7 @@ export default (api: IApi) => {
   api.register({
     key: 'addExtraModels',
     fn() {
-      const [path, exports] = api.appData.appJS || [];
+      const { path, exports } = api.appData.appJS || {};
       return path && exports.includes(MODEL_EXPORT_NAME)
         ? [
             `${path}#{"namespace":"${qiankunStateForSlaveModelNamespace}","exportName":"${MODEL_EXPORT_NAME}"}`,

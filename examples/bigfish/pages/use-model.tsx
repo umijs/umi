@@ -1,5 +1,6 @@
 // @ts-ignore
 import React from 'react';
+// @ts-ignore
 import { useModel } from 'umi';
 
 export default function HomePage() {
