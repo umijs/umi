@@ -55,7 +55,8 @@ export async function dev(opts: IOpts) {
     modifyWebpackConfig: opts.modifyWebpackConfig,
     hmr: true,
     analyze: process.env.ANALYZE,
-    cache: opts.cache,
+    // disable cache since it's conflict with mfsu
+    // cache: opts.cache,
   });
   const depConfig = await getConfig({
     cwd: opts.cwd,
