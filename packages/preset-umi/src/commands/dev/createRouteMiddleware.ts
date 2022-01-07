@@ -20,7 +20,7 @@ export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
       // add noshim attr for skip importmap shim logic for this modules
       { content: viteRefreshScript, noshim: '' },
       { src: '/@vite/client', noshim: '' },
-      '/.umi/umi.ts',
+      opts.api.appData.hasSrcDir ? '/src/.umi/umi.ts' : '/.umi/umi.ts',
     ];
     const markupArgs = await getMarkupArgs(opts);
     // @ts-ignore
