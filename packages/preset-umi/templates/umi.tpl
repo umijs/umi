@@ -3,6 +3,7 @@
 import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/route';
 import { createPluginManager } from './core/plugin';
+import { createHistory } from './core/history';
 import { ApplyPluginsType, PluginManager } from 'umi';
 {{{ imports }}}
 
@@ -24,7 +25,9 @@ async function render() {
     routeComponents,
     pluginManager,
     rootElement: document.getElementById('{{{ mountElementId }}}'),
-    historyType: '{{{ historyType }}}',
+    history: createHistory({
+      type: '{{{ historyType }}}',
+    }),
 {{#basename}}
     basename: '{{{ basename }}}',
 {{/basename}}
