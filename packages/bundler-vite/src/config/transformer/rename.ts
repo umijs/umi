@@ -1,7 +1,6 @@
 import type { IConfigProcessor } from '.';
 
 const MAPPING = {
-  alias: 'resolve.alias',
   extraVitePlugins: 'plugins',
   inlineLimit: 'build.assetsInlineLimit',
   manifest: 'build.manifest',

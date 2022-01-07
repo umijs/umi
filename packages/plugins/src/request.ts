@@ -17,9 +17,9 @@ export default (api: IApi) => {
 
   const requestTpl = `
 import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  type AxiosResponse,
 } from '{{{axiosPath}}}';
 import useUmiRequest, { UseRequestProvider } from '{{{umiRequestPath}}}';
 import { message, notification } from '{{{antdPkg}}}';

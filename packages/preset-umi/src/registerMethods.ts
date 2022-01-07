@@ -2,9 +2,9 @@ import { fsExtra, lodash, Mustache } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import transformIEAR from './utils/transformIEAR';
 import { IApi } from './types';
 import { isTypeScriptFile } from './utils/isTypeScriptFile';
+import transformIEAR from './utils/transformIEAR';
 
 export default (api: IApi) => {
   [
