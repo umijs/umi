@@ -16,6 +16,7 @@ import {
   ProFormText,
 } from '@ant-design/pro-form';
 import { Alert, message, Tabs } from 'antd';
+import { parse } from 'querystring';
 import React, { useState } from 'react';
 import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
 import styles from './index.less';
@@ -63,7 +64,7 @@ const Login: React.FC = () => {
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
-        const { query } = history.location;
+        const query = parse(history.location.search);
         const { redirect } = query as { redirect: string };
         history.push(redirect || '/');
         return;
