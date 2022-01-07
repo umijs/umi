@@ -1,12 +1,8 @@
 // @ts-ignore
-import { useAccess } from '@@/plugin-access';
-// @ts-ignore
-import { useIntl } from '@@/plugin-locale';
-// @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
 import React from 'react';
 // @ts-ignore
-import { useModel } from 'umi';
+import { history, useAccess, useIntl, useModel } from 'umi';
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
@@ -21,6 +17,14 @@ export default function HomePage() {
       <Input />
       <DatePicker />
       <div>{intl.formatMessage({ id: 'HELLO' })}</div>
+      <Button
+        type="primary"
+        onClick={() => {
+          history.push('/users');
+        }}
+      >
+        Go to /users
+      </Button>
     </div>
   );
 }

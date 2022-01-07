@@ -18,6 +18,12 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(async (opts) => {
+    const rendererPath = await api.applyPlugins({
+      key: 'modifyRendererPath',
+      initialValue: dirname(
+        require.resolve('@umijs/renderer-react/package.json'),
+      ),
+    });
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -25,12 +31,7 @@ export default (api: IApi) => {
       tplPath: join(TEMPLATES_DIR, 'umi.tpl'),
       context: {
         mountElementId: api.config.mountElementId,
-        rendererPath: await api.applyPlugins({
-          key: 'modifyRendererPath',
-          initialValue: dirname(
-            require.resolve('@umijs/renderer-react/package.json'),
-          ),
-        }),
+        rendererPath,
         entryCode: (
           await api.applyPlugins({
             key: 'addEntryCode',
@@ -133,6 +134,16 @@ export default (api: IApi) => {
         validKeys: validKeys,
       },
     });
+
+    // history.ts
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/history.ts',
+      tplPath: join(TEMPLATES_DIR, 'history.tpl'),
+      context: {
+        rendererPath,
+      },
+    });
   });
 
   async function getExports(opts: { path: string }) {
@@ -169,6 +180,8 @@ export default (api: IApi) => {
           })
         ).join(', ')} } from '${umiPluginPath}';`,
       );
+      // @@/core/history.ts
+      exports.push(`export { history, createHistory } from './core/history';`);
       // plugins
       exports.push('// plugins');
       const plugins = readdirSync(api.paths.absTmpPath).filter((file) => {

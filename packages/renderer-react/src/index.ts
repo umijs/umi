@@ -1,4 +1,10 @@
 export {
+  createBrowserHistory,
+  createHashHistory,
+  createMemoryHistory,
+  History,
+} from 'history';
+export {
   createSearchParams,
   Link,
   matchPath,

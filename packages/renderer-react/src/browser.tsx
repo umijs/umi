@@ -1,10 +1,4 @@
-import {
-  BrowserHistory,
-  createBrowserHistory,
-  createHashHistory,
-  createMemoryHistory,
-  History,
-} from 'history';
+import { History } from 'history';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRoutes } from 'react-router-dom';
@@ -12,27 +6,15 @@ import { AppContext, useAppData } from './appContext';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
 
-const historyCreators = {
-  browser: createBrowserHistory,
-  hash: createHashHistory,
-  memory: createMemoryHistory,
-};
-
 function BrowserRoutes(props: {
   routes: any;
   clientRoutes: any;
   pluginManager: any;
-  historyType: 'browser' | 'hash' | 'memory';
+  history: History;
   basename: string;
   children: any;
 }) {
-  const historyRef = React.useRef<BrowserHistory>();
-  if (historyRef.current == null) {
-    historyRef.current = historyCreators[props.historyType || 'browser']({
-      window,
-    }) as History;
-  }
-  const history = historyRef.current;
+  const { history } = props;
   const [state, setState] = React.useState({
     action: history.action,
     location: history.location,
@@ -76,7 +58,7 @@ export function renderClient(opts: {
   routeComponents: IRouteComponents;
   pluginManager: any;
   basename?: string;
-  historyType: 'browser' | 'hash' | 'memory';
+  history: History;
 }) {
   const basename = opts.basename || '/';
   const rootElement = opts.rootElement || document.getElementById('root');
@@ -90,7 +72,7 @@ export function renderClient(opts: {
       pluginManager={opts.pluginManager}
       routes={opts.routes}
       clientRoutes={clientRoutes}
-      historyType={opts.historyType}
+      history={opts.history}
     >
       <Routes />
     </BrowserRoutes>
