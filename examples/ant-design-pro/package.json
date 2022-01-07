@@ -20,6 +20,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
+    "querystring": "^0.2.1",
     "rc-util": "^5.16.1"
   }
 }
