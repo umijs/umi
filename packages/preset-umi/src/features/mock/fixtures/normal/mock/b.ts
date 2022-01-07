@@ -1,4 +1,5 @@
 
 export default {
-  '/api/b': { b: 1 },
+  'Get  /api/b': { b: 1 },
+  'Get /api/c': { b: 1 },
 }

@@ -57,7 +57,7 @@ function getMock(opts: { key: string; obj: any }): IMock {
 }
 
 function parseKey(key: string) {
-  const spliced = key.split(' ');
+  const spliced = key.split(/\s+/);
   const len = spliced.length;
   if (len === 1) {
     return { method: DEFAULT_METHOD, path: key };
@@ -68,6 +68,8 @@ function parseKey(key: string) {
       VALID_METHODS.includes(upperCaseMethod),
       `method ${method} is not supported`,
     );
+    assert(path, `${key}, path is undefined`);
+
     return { method: upperCaseMethod, path };
   }
 }

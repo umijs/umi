@@ -7,5 +7,5 @@ test('normal', () => {
   const ret = getMockData({
     cwd: join(fixtures, 'normal'),
   });
-  expect(Object.keys(ret)).toEqual(['GET /api/a', 'GET /api/b']);
+  expect(Object.keys(ret)).toEqual(['GET /api/a', 'GET /api/b', 'GET /api/c']);
 });
