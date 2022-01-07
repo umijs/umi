@@ -30,7 +30,8 @@ export default defineConfig({
   //   loading: '@ant-design/pro-layout/es/PageLoading',
   // },
   targets: {
-    ie: 11,
+    // TODO: vite mode don't support ie 11
+    // ie: 11,
   },
   // umi routes: https://umijs.org/docs/routing
   routes: [
