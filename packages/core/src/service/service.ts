@@ -35,7 +35,13 @@ interface IOpts {
 
 export class Service {
   private opts: IOpts;
-  appData: { deps?: Record<string, string>; [key: string]: any } = {};
+  appData: {
+    deps?: Record<
+      string,
+      { version: string; matches: string[]; subpaths: string[] }
+    >;
+    [key: string]: any;
+  } = {};
   args: yParser.Arguments = { _: [], $0: '' };
   commands: Record<string, Command> = {};
   generators: Record<string, Generator> = {};
