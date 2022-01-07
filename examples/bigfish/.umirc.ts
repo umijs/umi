@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from 'umi';
+
+export default defineConfig({
   routes: [
     {
       title: 'site.title',
@@ -62,4 +64,4 @@ export default {
     },
   },
   // lowImport: {},
-};
+});
