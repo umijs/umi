@@ -726,7 +726,7 @@ export default {
 - type，可选 `browser`、`hash` 和 `memory`
 - options，传给 create{{{ type }}}History 的配置项，每个类型器的配置项不同
 
-注意，
+注意：
 
 - options 中，`getUserConfirmation` 由于是函数的格式，暂不支持配置
 - options 中，`basename` 无需配置，通过 umi 的 `base` 配置指定
