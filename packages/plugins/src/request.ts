@@ -297,10 +297,7 @@ export {
 export {
   useRequest,
   UseRequestProvider,
-  AxiosRequestConfig,
   request,
-  AxiosInstance,
-  AxiosResponse,
 } from './request';
 `,
     });

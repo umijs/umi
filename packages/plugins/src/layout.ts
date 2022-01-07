@@ -449,6 +449,9 @@ export default LogoIcon;
       {
         id: 'ant-design-pro-layout',
         file: withTmpPath({ api, path: 'Layout.tsx' }),
+        test: (route: any) => {
+          return route.layout !== false;
+        },
       },
     ];
   });

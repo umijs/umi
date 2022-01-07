@@ -67,6 +67,18 @@ export default (api: IApi) => {
       },
     });
 
+    // EmptyRoutes.tsx
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/EmptyRoute.tsx',
+      content: `
+import { Outlet } from 'umi';
+export default function EmptyRoute() {
+  return <Outlet />;
+}
+      `,
+    });
+
     // route.ts
     let routes;
     if (opts.isFirstTime) {

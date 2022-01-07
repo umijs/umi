@@ -201,5 +201,5 @@ export default {
     });
   },
 
-  'GET  /api/login/captcha': getFakeCaptcha,
+  'GET /api/login/captcha': getFakeCaptcha,
 };
