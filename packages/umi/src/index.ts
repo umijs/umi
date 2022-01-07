@@ -1,4 +1,5 @@
 import { IServicePluginAPI, PluginAPI } from '@umijs/core';
 
-export type IApi = PluginAPI & IServicePluginAPI;
+export { defineConfig } from './defineConfig';
 export * from './service/service';
+export type IApi = PluginAPI & IServicePluginAPI;
