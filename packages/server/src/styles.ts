@@ -17,7 +17,7 @@ export function normalizeStyle(style: IStyle) {
   if (typeof style === 'string') {
     const isUrl =
       RE_URL.test(style) ||
-      style.startsWith('/') ||
+      (style.startsWith('/') && !style.startsWith('/*')) ||
       style.startsWith('./') ||
       style.startsWith('../');
     return isUrl

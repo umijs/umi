@@ -17,7 +17,7 @@ export function normalizeScript(script: IScript) {
   if (typeof script === 'string') {
     const isUrl =
       RE_URL.test(script) ||
-      script.startsWith('/') ||
+      (script.startsWith('/') && !script.startsWith('/*')) ||
       script.startsWith('./') ||
       script.startsWith('../');
     return isUrl
