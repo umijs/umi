@@ -1,5 +1,6 @@
-import { Outlet } from '@umijs/renderer-react';
 import React from 'react';
+// @ts-ignore
+import { Outlet } from 'umi';
 
 export default () => {
   return (
