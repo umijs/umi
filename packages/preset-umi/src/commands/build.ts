@@ -122,6 +122,7 @@ umi build --clean
       // @ts-ignore
       const markup = await getMarkup({
         ...markupArgs,
+        styles: ['/umi.css'].concat(markupArgs.styles),
         scripts: ['/umi.js'].concat(markupArgs.scripts),
         esmScript: !!opts.config.esm || vite,
         path: '/',
