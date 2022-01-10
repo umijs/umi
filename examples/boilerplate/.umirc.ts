@@ -1,3 +1,5 @@
+import extraConfig from './extraConfig';
+
 export default {
   // externals: {
   //   react: 'React',
@@ -12,10 +14,11 @@ export default {
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
   headScripts: [`console.log('head script')`],
-  scripts: [`console.log('script')`],
+  // scripts: [`console.log('script')`],
   npmClient: 'pnpm',
   svgr: {},
   // srcTranspiler: 'swc',
   // esmi: {},
   // esm: {},
+  ...extraConfig,
 };

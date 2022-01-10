@@ -252,9 +252,14 @@ export class Service {
     this.stage = ServiceStage.resolveConfig;
     const config = await this.applyPlugins({
       key: 'modifyConfig',
-      initialValue: configManager.getConfig({
-        schemas: this.configSchemas,
-      }).config,
+      // why clone deep?
+      // user may change the config in modifyConfig
+      // e.g. memo.alias = xxx
+      initialValue: lodash.cloneDeep(
+        configManager.getConfig({
+          schemas: this.configSchemas,
+        }).config,
+      ),
       args: { paths },
     });
     const defaultConfig = await this.applyPlugins({
