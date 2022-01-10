@@ -68,7 +68,7 @@ export async function getMarkup(
       filters: ['src', 'content'],
     });
     return style.src
-      ? `<link rel="stylesheet" ${attrs} src="${style.src}" />`
+      ? `<link rel="stylesheet" ${attrs} href="${style.src}" />`
       : `<style ${attrs}>${style.content}</style>`;
   }
 
