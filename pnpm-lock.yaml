@@ -92,6 +92,7 @@ importers:
       dayjs: ^1.10.7
       gg-editor: 2.0.2
       lodash: ^4.17.21
+      mockjs: ^1.1.0
       moment: ^2.29.1
       numeral: ^2.0.6
       querystring: ^0.2.1
@@ -111,6 +112,7 @@ importers:
       dayjs: 1.10.7
       gg-editor: 2.0.2_react@17.0.2
       lodash: 4.17.21
+      mockjs: 1.1.0
       moment: 2.29.1
       numeral: 2.0.6
       querystring: 0.2.1
@@ -7720,7 +7722,6 @@ packages:
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
-    dev: true
 
   /common-path-prefix/3.0.0:
     resolution: {integrity: sha512-QE33hToZseCH3jS0qN96O/bSh3kaw/h+Tq7ngyY9eWDUnTlTNUyqfqvCXioLe5Na5jFsL78ra/wuBU4iuEgd4w==}
@@ -13253,6 +13254,13 @@ packages:
     resolution: {integrity: sha512-5o2gVLFyieDSgsStEU5mqty4MZqfeytYA/gJqBSw5/Xuob0X2UrFX/k7FDh+YAwjzG/1l8nYa0oDaJ0sGs/RlA==}
     dependencies:
       ml-array-rescale: 1.3.6
+    dev: false
+
+  /mockjs/1.1.0:
+    resolution: {integrity: sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==}
+    hasBin: true
+    dependencies:
+      commander: 8.3.0
     dev: false
 
   /modify-values/1.0.1:

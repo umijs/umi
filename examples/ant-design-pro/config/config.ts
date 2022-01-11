@@ -9,6 +9,9 @@ export default defineConfig({
   antd: {},
   request: {},
   initialState: {},
+  mock: {
+    include: ['src/pages/**/_mock.ts'],
+  },
   dva: {
     // hmr: true,
   },

@@ -3,7 +3,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Table, Tooltip } from 'antd';
 import numeral from 'numeral';
 import React from 'react';
-import type { DataItem } from '../data.d';
+import type { Datum } from '../data.d';
 import styles from '../style.less';
 import NumberInfo from './NumberInfo';
 import Trend from './Trend';
@@ -47,8 +47,8 @@ const TopSearch = ({
   dropdownGroup,
 }: {
   loading: boolean;
-  visitData2?: DataItem[];
-  searchData?: DataItem[];
+  visitData2?: Datum[];
+  searchData?: Datum[];
   dropdownGroup: React.ReactNode;
 }) => (
   <Card

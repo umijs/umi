@@ -3,7 +3,7 @@ import { Card, Col, DatePicker, Row, Tabs } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
 import type moment from 'moment';
 import numeral from 'numeral';
-import type { DataItem } from '../data.d';
+import type { Datum } from '../data.d';
 import styles from '../style.less';
 
 type RangePickerValue = RangePickerProps<moment.Moment>['value'];
@@ -30,7 +30,7 @@ const SalesCard = ({
 }: {
   rangePickerValue: RangePickerValue;
   isActive: (key: TimeType) => string;
-  salesData: DataItem[];
+  salesData: Datum[];
   loading: boolean;
   handleRangePickerChange: (
     dates: RangePickerValue,

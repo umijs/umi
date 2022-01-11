@@ -2,7 +2,7 @@ import { Progress, TinyArea, TinyColumn } from '@ant-design/charts';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Row, Tooltip } from 'antd';
 import numeral from 'numeral';
-import type { DataItem } from '../data.d';
+import type { Datum } from '../data.d';
 import styles from '../style.less';
 import Yuan from '../utils/Yuan';
 import { ChartCard, Field } from './Charts';
@@ -22,7 +22,7 @@ const IntroduceRow = ({
   visitData = [],
 }: {
   loading: boolean;
-  visitData: DataItem[];
+  visitData: Datum[];
 }) => (
   <Row gutter={24}>
     <Col {...topColResponsiveProps}>
