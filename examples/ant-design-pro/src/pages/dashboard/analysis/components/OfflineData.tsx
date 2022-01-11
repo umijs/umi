@@ -1,6 +1,6 @@
 import { Line, RingProgress } from '@ant-design/charts';
 import { Card, Col, Row, Tabs } from 'antd';
-import type { DataItem, OfflineDataType } from '../data.d';
+import type { Datum, OfflineDataType } from '../data.d';
 import styles from '../style.less';
 import NumberInfo from './NumberInfo';
 
@@ -49,7 +49,7 @@ const OfflineData = ({
   activeKey: string;
   loading: boolean;
   offlineData: OfflineDataType[];
-  offlineChartData: DataItem[];
+  offlineChartData: Datum[];
   handleTabChange: (activeKey: string) => void;
 }) => (
   <Card

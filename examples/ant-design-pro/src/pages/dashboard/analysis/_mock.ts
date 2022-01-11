@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 import moment from 'moment';
-import type { AnalysisData, DataItem, RadarData } from './data.d';
+import type { AnalysisData, Datum, RadarData } from './data.d';
 
 // mock data
-const visitData: DataItem[] = [];
+const visitData: Datum[] = [];
 const beginDay = new Date().getTime();
 
 const fakeY = [7, 5, 4, 2, 4, 7, 5, 6, 5, 9, 6, 3, 1, 5, 3, 6, 5];

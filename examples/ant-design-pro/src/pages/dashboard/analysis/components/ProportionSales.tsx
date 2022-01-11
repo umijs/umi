@@ -4,7 +4,7 @@ import { Card, Radio, Typography } from 'antd';
 import type { RadioChangeEvent } from 'antd/es/radio';
 import numeral from 'numeral';
 import React from 'react';
-import type { DataItem } from '../data.d';
+import type { Datum } from '../data.d';
 import styles from '../style.less';
 
 const { Text } = Typography;
@@ -19,7 +19,7 @@ const ProportionSales = ({
   loading: boolean;
   dropdownGroup: React.ReactNode;
   salesType: 'all' | 'online' | 'stores';
-  salesPieData: DataItem[];
+  salesPieData: Datum[];
   handleChangeSalesType?: (e: RadioChangeEvent) => void;
 }) => {
   const pieConfig: PieConfig = {
