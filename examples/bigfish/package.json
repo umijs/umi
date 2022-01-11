@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "umipro build",
     "dev": "umipro dev",
     "start": "npm run dev"
   },
