@@ -96,6 +96,8 @@ export default function transformIEAR(
       );
     } else if (absPath.includes('node_modules')) {
       // transform node_modules absolute imports
+      // why @fs
+      // 由于我们临时文件下大量绝对路径的引用，而绝对路径的引用不会被 Vite 预编译
       absPath = `@fs${absPath}`;
     }
 

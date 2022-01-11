@@ -41,7 +41,7 @@ import {
   PaginatedOptionsWithFormat,
   PaginatedParams,
   PaginatedResult,
-} from '{{{umiRequestPath}}}/lib/types';
+} from '{{{umiRequestPath}}}/es/types';
 
 type ResultWithData< T = any > = { data?: T; [key: string]: any };
 
