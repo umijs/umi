@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { glob, lodash, register } from '@umijs/utils';
+import { glob, lodash, logger, register } from '@umijs/utils';
 import assert from 'assert';
 import { DEFAULT_METHOD, MOCK_FILE_GLOB, VALID_METHODS } from './constants';
 
@@ -20,13 +20,16 @@ export function getMockData(opts: {
   register.clearFiles();
   const ret = [MOCK_FILE_GLOB, ...(opts.mockConfig.include || [])]
     .reduce<string[]>((memo, pattern) => {
-      memo.push(...glob.sync(pattern, { cwd: opts.cwd }));
+      memo.push(
+        ...glob.sync(pattern, { cwd: opts.cwd, ignore: ['**/*.d.ts'] }),
+      );
       return memo;
     }, [])
     .reduce<Record<string, any>>((memo, file) => {
       const mockFile = `${opts.cwd}/${file}`;
       const m = require(mockFile);
-      const obj = m.default;
+      // Cannot convert undefined or null to object
+      const obj = m?.default || {};
       for (const key of Object.keys(obj)) {
         const mock = getMock({ key, obj });
         mock.file = mockFile;
@@ -41,7 +44,7 @@ export function getMockData(opts: {
           } in ${mock.file}`,
         );
         if (memo[id]) {
-          throw new Error(
+          logger.warn(
             `${id} is duplicated in ${mockFile} and ${memo[id].file}`,
           );
         }
