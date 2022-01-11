@@ -10,13 +10,19 @@ export interface IMock {
   file?: string;
 }
 
-export function getMockData(opts: { cwd: string }): Record<string, IMock> {
+export function getMockData(opts: {
+  cwd: string;
+  mockConfig: { exclude?: string[]; include?: string[] };
+}): Record<string, IMock> {
   register.register({
     implementor: esbuild,
   });
   register.clearFiles();
-  const ret = glob
-    .sync(MOCK_FILE_GLOB, { cwd: opts.cwd })
+  const ret = [MOCK_FILE_GLOB, ...(opts.mockConfig.include || [])]
+    .reduce<string[]>((memo, pattern) => {
+      memo.push(...glob.sync(pattern, { cwd: opts.cwd }));
+      return memo;
+    }, [])
     .reduce<Record<string, any>>((memo, file) => {
       const mockFile = `${opts.cwd}/${file}`;
       const m = require(mockFile);

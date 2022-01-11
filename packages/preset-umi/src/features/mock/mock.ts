@@ -12,6 +12,7 @@ export default function (api: IApi) {
           exclude: Joi.array()
             .items(Joi.string())
             .description('exclude files not parse mock'),
+          include: Joi.array().items(Joi.string()),
         });
       },
     },
@@ -30,13 +31,19 @@ export default function (api: IApi) {
       path: `${api.cwd}/mock`,
       addToUnWatches: true,
       onChange: () => {
-        context.mockData = getMockData({ cwd: api.cwd });
+        context.mockData = getMockData({
+          cwd: api.cwd,
+          mockConfig: api.config.mock || {},
+        });
       },
     });
   });
 
   api.addBeforeMiddlewares(async () => {
-    context.mockData = getMockData({ cwd: api.cwd });
+    context.mockData = getMockData({
+      cwd: api.cwd,
+      mockConfig: api.config.mock || {},
+    });
     return [
       createMockMiddleware({
         context,
