@@ -73,7 +73,9 @@ export default () => {
   const runtimeConfig = pluginManager.applyPlugins({
     key: 'layout',
     type: 'modify',
-    initialValue: {},
+    initialValue: {
+      ...initialInfo
+    },
   });
   return (
     <ProLayout
