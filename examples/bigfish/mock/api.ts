@@ -5,7 +5,7 @@ export default {
       users: [{ name: 'admin' }, { name: 'test' }],
     },
   },
-  'GET /api/error': (req, res) => {
+  'GET /api/error': (_req: any, res: any) => {
     res.json({
       success: false,
       data: {},

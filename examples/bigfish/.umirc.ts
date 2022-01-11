@@ -45,6 +45,9 @@ export default defineConfig({
     baidu: 'test',
   },
   moment2dayjs: {},
+  mock: {
+    include: ['pages/**/_mock.ts'],
+  },
   layout: {
     name: 'Ant Design Pro',
   },
