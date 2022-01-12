@@ -122,13 +122,13 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@umijs/pro': 4.0.0-beta.15
-      react: 17.0.2
-      react-dom: 17.0.2
+      react: 16.14.0
+      react-dom: 16.14.0
     dependencies:
-      '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
+      '@ant-design/icons': 4.7.0_react-dom@16.14.0+react@16.14.0
       '@umijs/pro': link:../../packages/pro
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
 
   examples/boilerplate:
     specifiers:
@@ -858,6 +858,22 @@ packages:
 
   /@ant-design/icons-svg/4.2.1:
     resolution: {integrity: sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==}
+
+  /@ant-design/icons/4.7.0_react-dom@16.14.0+react@16.14.0:
+    resolution: {integrity: sha512-aoB4Z7JA431rt6d4u+8xcNPPCrdufSRMUOpxa1ab6mz1JCQZOEVolj2WVs/tDFmN62zzK30mNelEsprLYsSF3g==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons-svg': 4.2.1
+      '@babel/runtime': 7.16.0
+      classnames: 2.3.1
+      rc-util: 5.16.1_react-dom@16.14.0+react@16.14.0
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+    dev: false
 
   /@ant-design/icons/4.7.0_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-aoB4Z7JA431rt6d4u+8xcNPPCrdufSRMUOpxa1ab6mz1JCQZOEVolj2WVs/tDFmN62zzK30mNelEsprLYsSF3g==}
@@ -15759,6 +15775,19 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
+  /rc-util/5.16.1_react-dom@16.14.0+react@16.14.0:
+    resolution: {integrity: sha512-kSCyytvdb3aRxQacS/71ta6c+kBWvM1v8/2h9d/HaNWauc3qB8pLnF20PJ8NajkNN8gb+rR1l0eWO+D4Pz+LLQ==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    dependencies:
+      '@babel/runtime': 7.16.3
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+      react-is: 16.13.1
+      shallowequal: 1.1.0
+    dev: false
+
   /rc-util/5.16.1_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-kSCyytvdb3aRxQacS/71ta6c+kBWvM1v8/2h9d/HaNWauc3qB8pLnF20PJ8NajkNN8gb+rR1l0eWO+D4Pz+LLQ==}
     peerDependencies:
@@ -15832,6 +15861,18 @@ packages:
       react: '>=16.0.0'
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /react-dom/16.14.0_react@16.14.0:
+    resolution: {integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==}
+    peerDependencies:
+      react: ^16.14.0
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.7.2
+      react: 16.14.0
+      scheduler: 0.19.1
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:
@@ -16072,6 +16113,15 @@ packages:
       throttle-debounce: 3.0.1
       ts-easing: 0.2.0
       tslib: 2.3.1
+    dev: false
+
+  /react/16.14.0:
+    resolution: {integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.7.2
     dev: false
 
   /react/17.0.2:
@@ -16636,6 +16686,13 @@ packages:
     dependencies:
       xmlchars: 2.2.0
     dev: true
+
+  /scheduler/0.19.1:
+    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: false
 
   /scheduler/0.20.2:
     resolution: {integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==}

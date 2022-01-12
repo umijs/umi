@@ -145,6 +145,7 @@ export default class ESMIService {
 
     // get the build ticket id
     const ticketId = await this.build(data);
+    logger.info(`ticketId: ${ticketId}`);
     // continue to the next request after 2s
     const next = () =>
       new Promise<IImportmapData | undefined>((resolve) =>
