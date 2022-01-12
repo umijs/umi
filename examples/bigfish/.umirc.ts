@@ -68,5 +68,6 @@ export default defineConfig({
       ],
     },
   },
+  // esmi: { cdnOrigin: 'https://npmcore-pre.alipay.com' },
   // lowImport: {},
 });

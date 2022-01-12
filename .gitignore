@@ -1,4 +1,5 @@
 /node_modules
+/examples/*/.esmi
 /examples/*/.mfsu
 /examples/*/.umi
 /examples/*/.umi-production
