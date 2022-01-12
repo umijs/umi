@@ -59,16 +59,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     devtool: (Joi) =>
       Joi.alternatives().try(Joi.string().regex(DEVTOOL_REGEX), Joi.boolean()),
     externals: (Joi) =>
-      Joi.alternatives().try(
-        Joi.object().pattern(/.+/, [
-          Joi.string(),
-          Joi.boolean(),
-          Joi.object().pattern(/.+/, [Joi.string(), Joi.boolean()]),
-        ]),
-        Joi.string(),
-        Joi.func().arity(3),
-        Joi.object().regex(),
-      ),
+      Joi.alternatives().try(Joi.object(), Joi.string(), Joi.func()),
     extraBabelPlugins: (Joi) =>
       Joi.alternatives().try(
         Joi.string(),
