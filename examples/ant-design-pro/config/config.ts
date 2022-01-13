@@ -329,6 +329,7 @@ export default defineConfig({
   // esbuild: {},
   // title: false,
   ignoreMomentLocale: true,
+  // @ts-ignore
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
