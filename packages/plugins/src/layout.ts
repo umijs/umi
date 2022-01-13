@@ -6,6 +6,8 @@ import { lodash, Mustache } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
+const LAYOUT_ID = 'ant-design-pro-layout';
+
 export default (api: IApi) => {
   api.describe({
     key: 'layout',
@@ -77,9 +79,12 @@ export default () => {
       ...initialInfo
     },
   });
+  const route = clientRoutes.filter(r => {
+    return r.id === LAYOUT_ID;
+  })[0];
   return (
     <ProLayout
-      route={clientRoutes[0]}
+      route={route}
       location={location}
       title={userConfig.name || 'plugin-layout'}
       navTheme="dark"
@@ -449,7 +454,7 @@ export default LogoIcon;
   api.addLayouts(() => {
     return [
       {
-        id: 'ant-design-pro-layout',
+        id: LAYOUT_ID,
         file: withTmpPath({ api, path: 'Layout.tsx' }),
         test: (route: any) => {
           return route.layout !== false;
