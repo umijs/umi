@@ -6,8 +6,6 @@ import { lodash, Mustache } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
-const LAYOUT_ID = 'ant-design-pro-layout';
-
 export default (api: IApi) => {
   api.describe({
     key: 'layout',
@@ -61,6 +59,15 @@ ${
     : 'const useModel = null;'
 }
 
+${
+  api.config.locale
+    ? `
+import { useIntl } from '@@/plugin-locale';
+    `.trim()
+    : ''
+}
+
+
 export default () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -72,6 +79,13 @@ export default () => {
   };
   const { initialState, loading, setInitialState } = initialInfo;
   const userConfig = ${JSON.stringify(api.config.layout, null, 2)};
+${
+  api.config.locale
+    ? `
+const { formatMessage } = useIntl();
+`.trim()
+    : 'const formatMessage = undefined;'
+}
   const runtimeConfig = pluginManager.applyPlugins({
     key: 'layout',
     type: 'modify',
@@ -80,7 +94,7 @@ export default () => {
     },
   });
   const route = clientRoutes.filter(r => {
-    return r.id === LAYOUT_ID;
+    return r.id === 'ant-design-pro-layout';
   })[0];
   return (
     <ProLayout
@@ -94,6 +108,7 @@ export default () => {
         e.preventDefault();
         navigate('/');
       }}
+      formatMessage={userConfig.formatMessage || formatMessage}
       menu={{ locale: userConfig.locale }}
       logo={Logo}
       menuItemRender={(menuItemProps, defaultDom) => {
@@ -454,7 +469,7 @@ export default LogoIcon;
   api.addLayouts(() => {
     return [
       {
-        id: LAYOUT_ID,
+        id: 'ant-design-pro-layout',
         file: withTmpPath({ api, path: 'Layout.tsx' }),
         test: (route: any) => {
           return route.layout !== false;
