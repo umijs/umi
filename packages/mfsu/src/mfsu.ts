@@ -88,6 +88,7 @@ export class MFSU {
       const virtualPath = `./mfsu-virtual-entry/${key}.js`;
       const virtualContent: string[] = [];
       let index = 1;
+      let hasDefaultExport = false;
       // @ts-ignore
       for (const entry of opts.config.entry![key]) {
         const content = readFileSync(entry, 'utf-8');
@@ -95,16 +96,23 @@ export class MFSU {
         if (exports.length) {
           virtualContent.push(`const k${index} = ${this.asyncImport(entry)}`);
           for (const exportName of exports) {
-            virtualContent.push(
-              `export const ${exportName} = k${index}.${exportName}`,
-            );
+            if (exportName === 'default') {
+              hasDefaultExport = true;
+              virtualContent.push(`export default k${index}.${exportName}`);
+            } else {
+              virtualContent.push(
+                `export const ${exportName} = k${index}.${exportName}`,
+              );
+            }
           }
         } else {
           virtualContent.push(this.asyncImport(entry));
         }
         index += 1;
       }
-      virtualContent.push(`export default 1;`);
+      if (!hasDefaultExport) {
+        virtualContent.push(`export default 1;`);
+      }
       virtualModules[virtualPath] = virtualContent.join('\n');
       entry[key] = virtualPath;
     }
