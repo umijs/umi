@@ -70,13 +70,18 @@ test('restore', () => {
     },
     depSnapshotModules,
     fileModules: {
-      a: { importedModules: ['b', 'c'] },
+      a: { importedModules: ['b', 'c'], isRoot: true },
       b: { importedModules: [] },
     },
   });
-  expect(simplify(mg.toJSON())).toEqual({
-    fileModules: ['b', 'a'],
-    depModules: ['c'],
+  expect(mg.toJSON()).toEqual({
+    roots: ['a'],
+    fileModules: {
+      b: { importedModules: [] },
+      a: { importedModules: ['b', 'c'], isRoot: true },
+    },
+    depModules: { c: { version: '0.1.0' } },
+    depSnapshotModules: { c: { version: '0.2.0' } },
   });
   expect(mg.depSnapshotModules).toEqual(depSnapshotModules);
 });
@@ -93,7 +98,7 @@ test('updateModules + toJSON', () => {
   expect(mg.toJSON()).toEqual({
     roots: ['a'],
     fileModules: {
-      a: { importedModules: ['b', 'c'] },
+      a: { importedModules: ['b', 'c'], isRoot: true },
       b: { importedModules: [] },
     },
     depModules: { c: { version: '0.1.0' } },
@@ -110,7 +115,7 @@ test('updateModules + toJSON', () => {
   expect(mg.toJSON()).toEqual({
     roots: ['a'],
     fileModules: {
-      a: { importedModules: ['c', 'd', 'e'] },
+      a: { importedModules: ['c', 'd', 'e'], isRoot: true },
       d: { importedModules: [] },
     },
     depModules: { c: { version: '0.2.0' }, e: { version: '0.1.0' } },

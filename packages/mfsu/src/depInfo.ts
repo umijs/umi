@@ -1,4 +1,4 @@
-import { fsExtra, lodash } from '@umijs/utils';
+import { fsExtra, lodash, logger } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { MFSU } from './mfsu';
@@ -42,6 +42,7 @@ export class DepInfo {
 
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
+      logger.info('MFSU restore cache');
       const { cacheDependency, moduleGraph } = JSON.parse(
         readFileSync(this.cacheFilePath, 'utf-8'),
       );
@@ -52,6 +53,7 @@ export class DepInfo {
 
   writeCache() {
     fsExtra.mkdirpSync(dirname(this.cacheFilePath));
+    logger.info('MFSU write cache');
     writeFileSync(
       this.cacheFilePath,
       JSON.stringify(

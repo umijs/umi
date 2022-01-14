@@ -47,7 +47,10 @@ export class ModuleGraph {
         isDependency = true;
       }
       if (info.isRoot) mod.isRoot = true;
-      if (importer) mod.importers.add(importer);
+      if (importer) {
+        mod.importers.add(importer);
+        importer.importedModules.add(mod);
+      }
       mod.isDependency = isDependency;
       if (info.version !== undefined) {
         mod.version = info.version;
