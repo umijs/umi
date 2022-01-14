@@ -1,5 +1,5 @@
 import { build } from '@umijs/bundler-esbuild';
-import { lodash, logger } from '@umijs/utils';
+import { fsExtra, lodash, logger } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { MF_DEP_PREFIX, MF_VA_PREFIX, REMOTE_FILE_FULL } from '../constants';
@@ -99,6 +99,7 @@ export class DepBuilder {
 
   async writeMFFiles(opts: { deps: Dep[] }) {
     const tmpBase = this.opts.mfsu.opts.tmpBase!;
+    fsExtra.mkdirpSync(tmpBase);
 
     // expose files
     for (const dep of opts.deps) {

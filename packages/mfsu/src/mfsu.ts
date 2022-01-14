@@ -1,5 +1,5 @@
 import { parseModule } from '@umijs/bundler-utils';
-import { logger } from '@umijs/utils';
+import { lodash, logger } from '@umijs/utils';
 import type { NextFunction, Request, Response } from 'express';
 import { readFileSync } from 'fs';
 import { extname, join } from 'path';
@@ -170,9 +170,9 @@ promise new Promise(resolve => {
           },
         }),
         new WriteCachePlugin({
-          onWriteCache: () => {
+          onWriteCache: lodash.debounce(() => {
             this.depInfo.writeCache();
-          },
+          }, 300),
         }),
       ],
     );
@@ -184,13 +184,20 @@ promise new Promise(resolve => {
   }
 
   async buildDeps() {
-    if (!this.depInfo.shouldBuild()) return;
+    if (!this.depInfo.shouldBuild()) {
+      logger.info('MFSU skip buildDeps');
+      return;
+    }
     this.depInfo.snapshot();
     const deps = Dep.buildDeps({
       deps: this.depInfo.moduleGraph.depSnapshotModules,
       cwd: this.opts.cwd!,
       mfsu: this,
     });
+    logger.info(
+      'MFSU buildDeps',
+      deps.map((dep) => dep.file),
+    );
     await this.depBuilder.build({
       deps,
     });
