@@ -1,6 +1,6 @@
 {
   "name": "@umijs/pro",
-  "version": "4.0.0-beta.15",
+  "version": "4.0.0-beta.16",
   "description": "@umijs/pro",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/pro#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -27,8 +27,8 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-beta.15",
-    "umi": "4.0.0-beta.15"
+    "@umijs/plugins": "4.0.0-beta.16",
+    "umi": "4.0.0-beta.16"
   },
   "publishConfig": {
     "access": "public"
