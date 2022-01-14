@@ -70,7 +70,10 @@ export class ModuleGraph {
 
   toJSON() {
     const roots: string[] = [];
-    const fileModules: Record<string, { importedModules: string[] }> = {};
+    const fileModules: Record<
+      string,
+      { importedModules: string[]; isRoot?: boolean }
+    > = {};
     const depModules: Record<string, { version: string | null }> = {};
     this.depToModules.forEach((value, key) => {
       depModules[key] = {
@@ -84,6 +87,7 @@ export class ModuleGraph {
         ),
       };
       if (value.isRoot) {
+        fileModules[key].isRoot = true;
         roots.push(key);
       }
     });
