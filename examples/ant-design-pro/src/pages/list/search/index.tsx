@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { Input } from 'antd';
 import type { FC } from 'react';
-import { history } from 'umi';
+import { history, Outlet, useMatch } from 'umi';
 
 type SearchProps = {
   match: {
@@ -29,9 +29,9 @@ const tabList = [
 ];
 
 const Search: FC<SearchProps> = (props) => {
+  const { params, pathname } = useMatch({ path: 'list/search/:type' });
   const handleTabChange = (key: string) => {
-    const { match } = props;
-    const url = match.url === '/' ? '' : match.url;
+    const url = pathname.replace(`/${params?.type}`, '');
     switch (key) {
       case 'articles':
         history.push(`${url}/articles`);
@@ -53,11 +53,8 @@ const Search: FC<SearchProps> = (props) => {
   };
 
   const getTabKey = () => {
-    const { match, location } = props;
-    const url = match.path === '/' ? '' : match.path;
-    const tabKey = location.pathname.replace(`${url}/`, '');
-    if (tabKey && tabKey !== '/') {
-      return tabKey;
+    if (params?.type) {
+      return params?.type;
     }
     return 'articles';
   };
@@ -79,7 +76,7 @@ const Search: FC<SearchProps> = (props) => {
       tabActiveKey={getTabKey()}
       onTabChange={handleTabChange}
     >
-      {props.children}
+      <Outlet />
     </PageContainer>
   );
 };
