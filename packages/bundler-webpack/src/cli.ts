@@ -57,6 +57,9 @@ if (command === 'build') {
         entry: {
           [getEntryKey(entry)]: entry,
         },
+        cache: {
+          buildDependencies: [].filter(Boolean),
+        },
       });
     } catch (e) {
       console.error(e);
