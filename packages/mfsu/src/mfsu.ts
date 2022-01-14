@@ -194,10 +194,8 @@ promise new Promise(resolve => {
       cwd: this.opts.cwd!,
       mfsu: this,
     });
-    logger.info(
-      'MFSU buildDeps',
-      deps.map((dep) => dep.file),
-    );
+    logger.info('MFSU buildDeps');
+    logger.debug(deps.map((dep) => dep.file).join(', '));
     await this.depBuilder.build({
       deps,
     });
