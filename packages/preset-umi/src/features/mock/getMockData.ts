@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { glob, lodash, logger, register } from '@umijs/utils';
+import { chalk, glob, lodash, logger, register } from '@umijs/utils';
 import assert from 'assert';
 import { DEFAULT_METHOD, MOCK_FILE_GLOB, VALID_METHODS } from './constants';
 
@@ -18,6 +18,12 @@ export function getMockData(opts: {
     implementor: esbuild,
   });
   register.clearFiles();
+
+  function normalizeMockFile(file: string) {
+    const cwd = opts.cwd.endsWith('/') ? opts.cwd : `${opts.cwd}/`;
+    return chalk.yellow(file.replace(cwd, ''));
+  }
+
   const ret = [MOCK_FILE_GLOB, ...(opts.mockConfig.include || [])]
     .reduce<string[]>((memo, pattern) => {
       memo.push(
@@ -45,7 +51,9 @@ export function getMockData(opts: {
         );
         if (memo[id]) {
           logger.warn(
-            `${id} is duplicated in ${mockFile} and ${memo[id].file}`,
+            `${id} is duplicated in ${normalizeMockFile(
+              mockFile,
+            )} and ${normalizeMockFile(memo[id].file)}`,
           );
         }
         memo[id] = mock;
