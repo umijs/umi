@@ -100,7 +100,7 @@ const { formatMessage } = useIntl();
     <ProLayout
       route={route}
       location={location}
-      title={userConfig.name || 'plugin-layout'}
+      title={userConfig.title || 'plugin-layout'}
       navTheme="dark"
       siderWidth={256}
       onMenuHeaderClick={(e) => {
