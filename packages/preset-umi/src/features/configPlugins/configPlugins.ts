@@ -44,6 +44,9 @@ export default (api: IApi) => {
     mountElementId: 'root',
     base: '/',
     history: { type: 'browser' },
+    targets: {
+      chrome: 87,
+    },
   };
 
   const bundleSchemas = getSchemas();
