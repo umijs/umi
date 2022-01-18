@@ -47,6 +47,8 @@ export function style({
         minify,
         loader: {
           '.svg': 'dataurl',
+          // file ?
+          '.ttf': 'dataurl',
         },
       };
 
