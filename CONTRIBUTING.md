@@ -8,10 +8,13 @@ Loving Umi and want to get involved? Thanks!
 # Clone this repo
 $ git clone git@github.com:umijs/umi-next.git
 $ cd umi-next
+
 # Install Dependencies
 $ pnpm i
+
 # Compile Src
 $ pnpm build
+
 # Start dev server for boilerplate example
 $ cd examples/boilerplate
 $ pnpm dev
@@ -34,7 +37,9 @@ $ npm run release
 ```bash
 $ cd examples/boilerplate
 # Must start with pnpm
+
 $ pnpm dev
 # Switch to the vite mode
+
 $ pnpm dev -- --vite
 ```
