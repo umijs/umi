@@ -38,10 +38,8 @@ $ npm run release
 $ cd examples/boilerplate
 
 # Must start with pnpm
-
 $ pnpm dev
 
 # Switch to the vite mode
-
 $ pnpm dev -- --vite
 ```
