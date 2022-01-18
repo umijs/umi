@@ -15,3 +15,12 @@ export async function parseModule(opts: { content: string; path: string }) {
   await init;
   return parse(content);
 }
+
+export function isDepPath(path: string) {
+  const umiMonorepoPaths = ['umi/packages/', 'umi-next/packages/'];
+
+  return (
+    path.includes('node_modules') ||
+    umiMonorepoPaths.some((p) => path.includes(p))
+  );
+}

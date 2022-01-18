@@ -63,7 +63,7 @@ export default (api: IApi) => {
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
     const style = api.config.antd.style || 'less';
-    return api.config.antd.import
+    return api.config.antd.import && !api.appData.vite
       ? [
           [
             require.resolve('babel-plugin-import'),
@@ -117,7 +117,7 @@ export function rootContainer(container) {
   // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {
     const style = api.config.antd.style || 'less';
-    return api.config.antd.import
+    return api.config.antd.import && !api.appData.vite
       ? []
       : [
           {

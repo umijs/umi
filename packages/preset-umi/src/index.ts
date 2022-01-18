@@ -17,6 +17,7 @@ export default () => {
       require.resolve('./features/tmpFiles/tmpFiles'),
       require.resolve('./features/transform/transform'),
       require.resolve('./features/lowImport/lowImport'),
+      require.resolve('./features/vite/vite'),
 
       // commands
       require.resolve('./commands/build'),
