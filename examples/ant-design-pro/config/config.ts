@@ -1,4 +1,5 @@
 // https://umijs.org/config/
+import MonacoEditorWebpackPlugin from 'monaco-editor-webpack-plugin';
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
@@ -310,6 +311,12 @@ export default defineConfig({
           path: '/editor/koni',
           component: './editor/koni',
         },
+        {
+          name: 'monaco-editor',
+          icon: 'smile',
+          path: '/editor/monaco-editor',
+          component: './editor/monaco-editor',
+        },
       ],
     },
     {
@@ -336,6 +343,11 @@ export default defineConfig({
   },
   // Fast Refresh 热更新
   fastRefresh: true,
+  mfsu: {},
+  chainWebpack(memo: any) {
+    memo.plugin('monaco-editor').use(MonacoEditorWebpackPlugin, []);
+    return memo;
+  },
   // openAPI: [
   //   {
   //     requestLibPath: "import { request } from 'umi'",

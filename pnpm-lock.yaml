@@ -94,6 +94,8 @@ importers:
       lodash: ^4.17.21
       mockjs: ^1.1.0
       moment: ^2.29.1
+      monaco-editor: ^0.31.1
+      monaco-editor-webpack-plugin: ^7.0.1
       numeral: ^2.0.6
       querystring: ^0.2.1
       rc-util: ^5.16.1
@@ -114,6 +116,8 @@ importers:
       lodash: 4.17.21
       mockjs: 1.1.0
       moment: 2.29.1
+      monaco-editor: 0.31.1
+      monaco-editor-webpack-plugin: 7.0.1_monaco-editor@0.31.1
       numeral: 2.0.6
       querystring: 0.2.1
       rc-util: 5.16.1_react-dom@17.0.2+react@17.0.2
@@ -13286,6 +13290,20 @@ packages:
 
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
+
+  /monaco-editor-webpack-plugin/7.0.1_monaco-editor@0.31.1:
+    resolution: {integrity: sha512-M8qIqizltrPlIbrb73cZdTWfU9sIsUVFvAZkL3KGjAHmVWEJ0hZKa/uad14JuOckc0GwnCaoGHvMoYtJjVyCzw==}
+    peerDependencies:
+      monaco-editor: '>= 0.31.0'
+      webpack: ^4.5.0 || 5.x
+    dependencies:
+      loader-utils: 2.0.2
+      monaco-editor: 0.31.1
+    dev: false
+
+  /monaco-editor/0.31.1:
+    resolution: {integrity: sha512-FYPwxGZAeP6mRRyrr5XTGHD9gRXVjy7GUzF4IPChnyt3fS5WrNxIkS8DNujWf6EQy0Zlzpxw8oTVE+mWI2/D1Q==}
+    dev: false
 
   /mousetrap/1.6.5:
     resolution: {integrity: sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==}
