@@ -65,6 +65,7 @@ export async function build(opts: IOpts) {
     },
     loader: {
       '.svg': 'dataurl',
+      '.ttf': 'dataurl',
     },
   });
 }
