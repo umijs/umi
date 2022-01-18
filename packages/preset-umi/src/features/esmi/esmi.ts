@@ -2,7 +2,7 @@ import { parse as parseImports } from '@umijs/bundler-utils/compiled/es-module-l
 import MagicString from 'magic-string';
 import { join } from 'path';
 import type { Plugin, ResolvedConfig } from 'vite';
-import { createResolver, scan } from '../../libs/scan';
+import { createResolver } from '../../libs/scan';
 import type { IApi } from '../../types';
 import requireToImport from './esbuildPlugins/requireToImport';
 import topLevelExternal from './esbuildPlugins/topLevelExternal';
@@ -144,22 +144,13 @@ export default (api: IApi) => {
   async function refreshImportMap() {
     // scan and module graph
     // TODO: module graph
-    api.appData.deps = await scan({
-      entry: join(api.paths.absTmpPath, 'umi.ts'),
-      externals: api.config.externals,
-      resolver,
+    await api.applyPlugins({
+      key: 'updateAppDataDeps',
+      type: api.ApplyPluginsType.event,
     });
 
     // skip umi by default
-    delete api.appData.deps['umi'];
-
-    // FIXME: force include react & react-dom
-    api.appData.deps['react'].version = api.appData.react.version;
-    api.appData.deps['react-dom'] = {
-      version: api.appData.react.version,
-      matches: ['react-dom'],
-      subpaths: [],
-    };
+    delete api.appData.deps!['umi'];
 
     const data = generatePkgData(api);
     const deps = data.pkgInfo.exports.reduce(
@@ -173,7 +164,7 @@ export default (api: IApi) => {
       importmap = (await service.getImportmap(data))?.importMap!;
 
       // update matches map to dep name
-      importmatches = Object.keys(api.appData.deps).reduce<
+      importmatches = Object.keys(api.appData.deps!).reduce<
         Record<string, string>
       >((r, dep) => {
         // filter subpath imports

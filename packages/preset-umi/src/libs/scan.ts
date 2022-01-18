@@ -1,3 +1,4 @@
+import { isDepPath } from '@umijs/bundler-utils';
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
 import type { Service } from '@umijs/core';
@@ -27,17 +28,37 @@ export async function scanContent(opts: {
 }): Promise<{ deps: Dep[] }> {
   await init;
   const [imports] = parse(opts.content);
-  const deps = imports.map((imp) => {
-    let importType = ImportType.import;
-    if (imp.d > -1) importType = ImportType.dynamicImport;
-    if (opts.content.slice(imp.ss, imp.se).startsWith('export ')) {
-      importType = ImportType.export;
-    }
-    return {
-      url: imp.n as string,
-      importType,
-    };
-  });
+  const deps = imports
+    .filter(
+      // exclude all type-only deps
+      (imp) => {
+        const stmt = opts.content.slice(imp.ss, imp.se);
+
+        return (
+          // skip dynamicImport
+          imp.d > -1 ||
+          // import a from or import a,
+          /^import\s+[a-zA-Z_$][\w_$]*(\s+from|\s*,)/.test(stmt) ||
+          // export a from or export *
+          /^export\s+([a-zA-Z_$][\w_$]*\s+from|\*)/.test(stmt) ||
+          // { a, type b } or { type a, b }
+          /(?<!type\s+){(\s*(?!type)[a-zA-Z_$]|.*,\s*(?!type)[a-zA-Z_$])/.test(
+            stmt,
+          )
+        );
+      },
+    )
+    .map((imp) => {
+      let importType = ImportType.import;
+      if (imp.d > -1) importType = ImportType.dynamicImport;
+      if (opts.content.slice(imp.ss, imp.se).startsWith('export ')) {
+        importType = ImportType.export;
+      }
+      return {
+        url: imp.n as string,
+        importType,
+      };
+    });
   return { deps };
 }
 
@@ -89,15 +110,12 @@ export async function scan(opts: {
 
     for (const dep of deps) {
       const resolved = await opts.resolver.resolve(dirname(depPath!), dep.url);
-      if (
-        resolved.includes('node_modules') ||
-        resolved.includes('umi-next/packages')
-      ) {
+      if (isDepPath(resolved)) {
         const pkgPath = pkgUp.sync({ cwd: resolved });
         assert(pkgPath, `package.json for found for ${resolved}`);
         const pkg = require(pkgPath);
         const entryResolved = await opts.resolver
-          .resolve(dirname(pkgPath), pkg.name)
+          .resolve(dirname(pkgPath), '.')
           // alias may resolve error (eg: dva from @umijs/plugins)
           // fallback to null for mark it as subpath usage
           .catch(() => null);
