@@ -1,6 +1,6 @@
 export default {
   mfsu: {
-    // esbuild: true,
+    esbuild: true,
   },
   manifest: {},
 };
