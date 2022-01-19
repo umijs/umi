@@ -1,5 +1,4 @@
 import React from 'react';
-import '../tailwind.css';
 
 export default function HomePage() {
   return (
