@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@react-three/drei": "^8.6.0",
+    "@react-three/fiber": "^7.0.24",
+    "three": "^0.136.0",
+    "troika-three-text": "^0.45.0",
+    "umi": "4.0.0-beta.16"
+  },
+  "devDependencies": {
+    "@types/three": "^0.136.1"
+  }
+}
