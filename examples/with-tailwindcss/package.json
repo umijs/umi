@@ -5,6 +5,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@umijs/plugins": "4.0.0-beta.16",
     "tailwindcss": "^3.0.15",
     "umi": "4.0.0-beta.16"
   }
