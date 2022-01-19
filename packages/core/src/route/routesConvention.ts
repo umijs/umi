@@ -1,7 +1,7 @@
 import { winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, lstatSync, readdirSync, statSync } from 'fs';
-import { extname, join, relative, resolve } from 'path';
+import { extname, relative, resolve } from 'path';
 import { defineRoutes } from './defineRoutes';
 import {
   byLongestFirst,
@@ -11,7 +11,11 @@ import {
 } from './utils';
 
 // opts.base: path of pages
-export function getConventionRoutes(opts: { base: string; prefix?: string }) {
+export function getConventionRoutes(opts: {
+  base: string;
+  prefix?: string;
+  exclude?: RegExp[];
+}) {
   const files: { [routeId: string]: string } = {};
   assert(
     existsSync(opts.base) && statSync(opts.base).isDirectory(),
@@ -21,10 +25,8 @@ export function getConventionRoutes(opts: { base: string; prefix?: string }) {
     dir: opts.base,
     visitor: (file) => {
       const routeId = createRouteId(file);
-      if (isRouteModuleFile({ file })) {
+      if (isRouteModuleFile({ file: winPath(file), exclude: opts.exclude })) {
         files[routeId] = winPath(file);
-      } else {
-        throw new Error(`Invalid route module file: ${join(opts.base, file)}`);
       }
     },
   });
