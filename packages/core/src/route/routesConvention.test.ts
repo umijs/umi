@@ -35,3 +35,25 @@ test('normal', () => {
     },
   });
 });
+
+test('exclude', () => {
+  expect(
+    getConventionRoutes({
+      base: join(fixtures, 'convention-a/pages'),
+      exclude: [/b\.(j|t)sx?$/, /b\//],
+    }),
+  ).toEqual({
+    a: {
+      path: 'a',
+      id: 'a',
+      parentId: undefined,
+      file: 'a.ts',
+    },
+    d: {
+      path: 'd',
+      id: 'd',
+      parentId: undefined,
+      file: 'd.ts',
+    },
+  });
+});

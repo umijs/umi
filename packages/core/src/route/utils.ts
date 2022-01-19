@@ -21,6 +21,16 @@ export function findParentRouteId(
 }
 
 const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx'];
-export function isRouteModuleFile(opts: { file: string }) {
+export function isRouteModuleFile(opts: { file: string; exclude?: RegExp[] }) {
+  // TODO: add cache strategy
+  for (const excludeRegExp of opts.exclude || []) {
+    if (
+      opts.file &&
+      excludeRegExp instanceof RegExp &&
+      excludeRegExp.test(opts.file)
+    ) {
+      return false;
+    }
+  }
   return routeModuleExts.includes(extname(opts.file));
 }

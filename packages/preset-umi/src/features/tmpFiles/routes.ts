@@ -18,6 +18,7 @@ export async function getRoutes(opts: { api: IApi }) {
   } else {
     routes = getConventionRoutes({
       base: opts.api.paths.absPagesPath,
+      exclude: opts.api.config.conventionRoutes?.exclude,
       prefix: '',
     });
   }
