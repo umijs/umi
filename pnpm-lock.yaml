@@ -244,13 +244,9 @@ importers:
 
   examples/with-tailwindcss:
     specifiers:
-      postcss-loader: 6.2.1
-      style-loader: ^3.3.1
       tailwindcss: ^3.0.15
       umi: 4.0.0-beta.16
     dependencies:
-      postcss-loader: 6.2.1
-      style-loader: 3.3.1
       tailwindcss: 3.0.15_ts-node@10.4.0
       umi: link:../../packages/umi
 
@@ -12423,6 +12419,7 @@ packages:
   /klona/2.0.5:
     resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
     engines: {node: '>= 8'}
+    dev: true
 
   /l7-tiny-sdf/0.0.2:
     resolution: {integrity: sha512-Fde4Pq9jycqi3d11I1MfbTISimfCzmEyhq5FhrnbNu9y1BFyCJFxSHbzehmRaYgQPbL4kpI3ldkHGrrFHs10cA==}
@@ -14570,18 +14567,6 @@ packages:
       lilconfig: 2.0.4
       ts-node: 10.4.0_68212d3c5f342a0c59715bbaaf1875e7
       yaml: 1.10.2
-    dev: false
-
-  /postcss-loader/6.2.1:
-    resolution: {integrity: sha512-WbbYpmAaKcux/P66bZ40bpWsBucjx/TTgVVzRZ9yUO8yQfVBlameJ0ZGVaPfH64hNSBh63a+ICP5nqOpBA0w+Q==}
-    engines: {node: '>= 12.13.0'}
-    peerDependencies:
-      postcss: ^7.0.0 || ^8.0.1
-      webpack: ^5.0.0
-    dependencies:
-      cosmiconfig: 7.0.1
-      klona: 2.0.5
-      semver: 7.3.5
     dev: false
 
   /postcss-loader/6.2.1_postcss@8.4.4+webpack@5.64.4:
@@ -17576,13 +17561,6 @@ packages:
       minimist: 1.2.5
       through: 2.3.8
     dev: true
-
-  /style-loader/3.3.1:
-    resolution: {integrity: sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==}
-    engines: {node: '>= 12.13.0'}
-    peerDependencies:
-      webpack: ^5.0.0
-    dev: false
 
   /style-loader/3.3.1_webpack@5.64.4:
     resolution: {integrity: sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==}
