@@ -180,7 +180,7 @@ export default {
 
 默认语言，当检测不到具体语言时，展示 `default` 中指定的语言。
 
-> 若 `baseNavigator` 指定为 `_`，`default` 默认为 `zh_CN`。
+> 若 `baseSeparator` 指定为 `_`，`default` 默认为 `zh_CN`。
 
 #### antd
 
