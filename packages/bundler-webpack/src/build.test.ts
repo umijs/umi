@@ -62,6 +62,9 @@ const expects: Record<string, Function> = {
       `var react_namespaceObject = {"foo":"react"};`,
     );
   },
+  mdx({ files }: IOpts) {
+    expect(files['index.js']).toContain(`# foo`);
+  },
   'node-polyfill'({ files }: IOpts) {
     expect(files['index.js']).toContain(`exports.join = function() {`);
     expect(files['index.js']).toContain(`__webpack_require__.g.foo`);

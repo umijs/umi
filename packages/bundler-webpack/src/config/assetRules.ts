@@ -42,13 +42,17 @@ export async function addAssetRules(opts: IOpts) {
       filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
-  rule
+  const fallback = rule
     .oneOf('fallback')
     .exclude.add(/^$/) /* handle data: resources */
     .add(/\.(js|mjs|jsx|ts|tsx)$/)
     .add(/\.(css|less|sass|scss|stylus)$/)
     .add(/\.html$/)
-    .add(/\.json$/)
+    .add(/\.json$/);
+  if (userConfig.mdx) {
+    fallback.add(/\.mdx?$/);
+  }
+  fallback
     .end()
     .type('asset/resource')
     .generator({

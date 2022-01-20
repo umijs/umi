@@ -87,6 +87,11 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     jsMinifierOptions: (Joi) => Joi.object(),
     lessLoader: (Joi) => Joi.object(),
     manifest: (Joi) => Joi.object(),
+    mdx: (Joi) =>
+      Joi.object({
+        loader: Joi.string(),
+        loaderOptions: Joi.object(),
+      }),
     mfsu: (Joi) =>
       Joi.alternatives(
         Joi.object({
