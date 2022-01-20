@@ -111,6 +111,9 @@ export type IApi = PluginAPI &
       stats: any;
       time: number;
     }>;
+    onPatchRoute: IEvent<{
+      route: IRoute;
+    }>;
     addEntryImports: IAdd<null, IEntryImport[]>;
     addEntryImportsAhead: IAdd<null, IEntryImport[]>;
     addEntryCodeAhead: IAdd<null, string[]>;
