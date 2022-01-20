@@ -7,7 +7,7 @@ export default (api: IApi) => {
 
   api.onStart(() => {
     const inputPath = path.resolve(api.cwd, 'tailwind.css');
-    const generatedPath = path.resolve(api.cwd, '.tailwind/output.css');
+    const generatedPath = path.resolve(api.paths.absTmpPath, 'tailwind.css');
     const binPath = path.resolve(api.cwd, 'node_modules/.bin/tailwind');
 
     /** 透过子进程建立 tailwindcss 服务，将生成的 css 写入 generatedPath */
