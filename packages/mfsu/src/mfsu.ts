@@ -1,7 +1,8 @@
 import { parseModule } from '@umijs/bundler-utils';
-import { lodash, logger } from '@umijs/utils';
+import { lodash, logger, tryPaths } from '@umijs/utils';
+import assert from 'assert';
 import type { NextFunction, Request, Response } from 'express';
-import { readFileSync } from 'fs';
+import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import { lookup } from '../compiled/mrmime';
@@ -84,13 +85,35 @@ export class MFSU {
     // entry
     const entry: Record<string, string> = {};
     const virtualModules: Record<string, string> = {};
-    for (const key of Object.keys(opts.config.entry!)) {
+    // ensure entry object type
+    const entryObject = lodash.isString(opts.config.entry)
+      ? { default: [opts.config.entry] }
+      : (opts.config.entry as Record<string, string[]>);
+    assert(
+      lodash.isPlainObject(entryObject),
+      `webpack config 'entry' value must be a string or an object.`,
+    );
+    for (const key of Object.keys(entryObject)) {
       const virtualPath = `./mfsu-virtual-entry/${key}.js`;
       const virtualContent: string[] = [];
       let index = 1;
       let hasDefaultExport = false;
-      // @ts-ignore
-      for (const entry of opts.config.entry![key]) {
+      const entryFiles = lodash.isArray(entryObject[key])
+        ? entryObject[key]
+        : ([entryObject[key]] as unknown as string[]);
+      for (let entry of entryFiles) {
+        // ensure entry is a file
+        if (statSync(entry).isDirectory()) {
+          const realEntry = tryPaths([
+            join(entry, 'index.tsx'),
+            join(entry, 'index.ts'),
+          ]);
+          assert(
+            realEntry,
+            `entry file not found, please configure the specific entry path. (e.g. 'src/index.tsx')`,
+          );
+          entry = realEntry;
+        }
         const content = readFileSync(entry, 'utf-8');
         const [_imports, exports] = await parseModule({ content, path: entry });
         if (exports.length) {
@@ -176,6 +199,9 @@ promise new Promise(resolve => {
         }),
       ],
     );
+
+    // ensure topLevelAwait enabled
+    lodash.set(opts.config, 'experiments.topLevelAwait', true);
 
     /**
      * depConfig

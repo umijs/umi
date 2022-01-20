@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { chalk, register, yParser } from '@umijs/utils';
+import { chalk, register, tryPaths, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -49,12 +49,6 @@ if (command === 'build') {
 
 function error(msg: string) {
   console.error(chalk.red(msg));
-}
-
-function tryPaths(paths: string[]) {
-  for (const path of paths) {
-    if (existsSync(path)) return path;
-  }
 }
 
 function getEntryKey(path: string) {
