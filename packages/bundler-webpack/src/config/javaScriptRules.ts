@@ -52,6 +52,9 @@ export async function addJavaScriptRules(opts: IOpts) {
       })
       .end(),
   ] as Config.Rule<Config.Module>[];
+  if (userConfig.mdx) {
+    srcRules.push(config.module.rule('markdown').test(/\.mdx?$/));
+  }
   const depRules = [
     config.module
       .rule('dep')
@@ -120,6 +123,15 @@ export async function addJavaScriptRules(opts: IOpts) {
       throw new Error(`Unsupported srcTranspiler ${srcTranspiler}.`);
     }
   });
+
+  if (userConfig.mdx) {
+    config.module
+      .rule('mdx')
+      .test(/\.mdx?$/)
+      .use('mdx-loader')
+      .loader(userConfig.mdx?.loader)
+      .options(userConfig.mdx?.loaderOptions);
+  }
 
   const depTranspiler = userConfig.depTranspiler || Transpiler.none;
   depRules.forEach((_rule) => {
