@@ -52,7 +52,9 @@ export default (api: IApi) => {
       });
 
       // FIXME: force include react & react-dom
-      api.appData.deps['react'].version = api.appData.react.version;
+      if (api.appData.deps['react']) {
+        api.appData.deps['react'].version = api.appData.react.version;
+      }
       api.appData.deps['react-dom'] = {
         version: api.appData.react.version,
         matches: ['react-dom'],
