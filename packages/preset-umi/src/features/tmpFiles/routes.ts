@@ -4,7 +4,7 @@ import {
   getConventionRoutes,
 } from '@umijs/core';
 import { winPath } from '@umijs/utils';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
 
@@ -17,12 +17,25 @@ export async function getRoutes(opts: { api: IApi }) {
     });
   } else {
     routes = getConventionRoutes({
-      base: opts.api.paths.absPagesPath,
+      base:
+        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath,
       exclude: opts.api.config.conventionRoutes?.exclude,
       prefix: '',
     });
   }
 
+  for (const id of Object.keys(routes)) {
+    // TODO: cache for performance
+    const file = isAbsolute(routes[id].file)
+      ? routes[id].file
+      : join(
+          opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath,
+          routes[id].file,
+        );
+    routes[id].__content = readFileSync(file, 'utf-8');
+  }
+
+  // layout routes
   const absLayoutPath = join(opts.api.paths.absSrcPath, 'layouts/index.tsx');
   const layouts = await opts.api.applyPlugins({
     key: 'addLayouts',
@@ -44,6 +57,16 @@ export async function getRoutes(opts: { api: IApi }) {
       },
       routes,
       test: layout.test,
+    });
+  }
+
+  // patch routes
+  for (const id of Object.keys(routes)) {
+    await opts.api.applyPlugins({
+      key: 'onPatchRoute',
+      args: {
+        route: routes[id],
+      },
     });
   }
 
