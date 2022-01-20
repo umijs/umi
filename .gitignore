@@ -1,7 +1,6 @@
 /node_modules
 /examples/*/.esmi
 /examples/*/.mfsu
-/examples/*/.tailwind
 /examples/*/.umi
 /examples/*/.umi-production
 /examples/*/src/.umi
