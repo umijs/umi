@@ -67,7 +67,7 @@ function visitFiles(opts: {
       visitFiles({ ...opts, dir: file });
     } else if (
       stat.isFile() &&
-      ['.tsx', '.ts', '.js', '.jsx'].includes(extname(file))
+      ['.tsx', '.ts', '.js', '.jsx', '.md', '.mdx'].includes(extname(file))
     ) {
       opts.visitor(relative(opts.baseDir, file));
     }
@@ -75,7 +75,7 @@ function visitFiles(opts: {
 }
 
 function createRoutePath(routeId: string): string {
-  const path = routeId
+  let path = routeId
     // routes/$ -> routes/*
     // routes/nested/$.tsx (with a "routes/nested.tsx" layout)
     .replace(/^\$$/, '*')
@@ -86,5 +86,7 @@ function createRoutePath(routeId: string): string {
     .replace(/\$/g, ':')
     // routes/not.nested -> routes/not/nested
     .replace(/\./g, '/');
-  return /\b\/?index$/.test(path) ? path.replace(/\/?index$/, '') : path;
+  path = /\b\/?index$/.test(path) ? path.replace(/\/?index$/, '') : path;
+  path = /\b\/?README$/.test(path) ? path.replace(/\/?README$/, '') : path;
+  return path;
 }
