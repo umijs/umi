@@ -16,4 +16,6 @@
 /packages/*/src/**/fixtures/*/dist
 /packages/*/src/**/fixtures/*/.umi
 /packages/*/src/**/fixtures/*/.umi-production
+/.umi
+/.mfsu
 .DS_Store
