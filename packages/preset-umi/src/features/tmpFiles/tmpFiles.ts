@@ -1,7 +1,7 @@
 import { parseModule } from '@umijs/bundler-utils';
-import { winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync, readFileSync } from 'fs';
-import { dirname, join } from 'path';
+import { basename, dirname, join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { importsToStr } from './importsToStr';
@@ -90,13 +90,24 @@ export default function EmptyRoute() {
     }
     const hasSrc = api.appData.hasSrcDir;
     // @/pages/
-    const prefix = hasSrc ? '../../../src/pages/' : '../../pages/';
+    const pages = basename(
+      api.config.conventionRoutes?.base || api.paths.absPagesPath,
+    );
+    const prefix = hasSrc ? `../../../src/${pages}/` : `../../${pages}/`;
+    const clonedRoutes = lodash.cloneDeep(routes);
+    for (const id of Object.keys(clonedRoutes)) {
+      for (const key of Object.keys(clonedRoutes[id])) {
+        if (key.startsWith('__')) {
+          delete clonedRoutes[id][key];
+        }
+      }
+    }
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
-        routes: JSON.stringify(routes),
+        routes: JSON.stringify(clonedRoutes),
         routeComponents: await getRouteComponents({ routes, prefix }),
       },
     });
