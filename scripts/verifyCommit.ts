@@ -1,6 +1,6 @@
 import 'zx/globals';
 
-const msgPath = process.env.GIT_PARAMS as string;
+const msgPath = process.argv[2];
 if (!msgPath) process.exit();
 
 const msg = fs.readFileSync(msgPath, 'utf-8').trim();
