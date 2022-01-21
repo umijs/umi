@@ -65,6 +65,6 @@ export default {
         },
       ],
     },
-    { path: 'blog', title: 'Blog', type: 'nav' },
+    { path: '/blog', title: 'Blog', type: 'nav' },
   ],
 };
