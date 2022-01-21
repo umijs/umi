@@ -15,6 +15,7 @@
 /packages/*/src/**/fixtures/*/dist
 /packages/*/src/**/fixtures/*/.umi
 /packages/*/src/**/fixtures/*/.umi-production
+/packages/plugin-docs/client/theme-doc/tailwind.out.css
 /.umi
 /.mfsu
 .DS_Store
