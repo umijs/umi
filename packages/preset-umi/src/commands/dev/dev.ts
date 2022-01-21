@@ -87,9 +87,10 @@ PORT=8888 umi dev
         key: 'addTmpGenerateWatcherPaths',
         initialValue: [
           absPagesPath,
+          !api.config.routes && api.config.conventionRoutes?.base,
           join(absSrcPath, 'layouts'),
           ...expandJSPaths(join(absSrcPath, 'app')),
-        ],
+        ].filter(Boolean),
       });
       lodash.uniq<string>(watcherPaths.map(winPath)).forEach((p: string) => {
         watch({
