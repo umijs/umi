@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import MoonIcon from './icons/moon.png';
+import SunIcon from './icons/sun.png';
 
 export default () => {
   const [toggle, setToggle] = useState(true);
@@ -16,11 +18,16 @@ export default () => {
     >
       <div
         className={
-          'bg-white md:w-4 md:h-4 h-3 w-3 rounded-full shadow-md transition ' +
-          'transform' +
+          'md:w-4 md:h-4 h-3 w-3 rounded-full shadow-md transition transform' +
           (toggle ? null : toggleClass)
         }
-      ></div>
+      >
+        <img
+          src={toggle ? SunIcon : MoonIcon}
+          alt="toggle"
+          className="w-full h-full"
+        />
+      </div>
     </div>
   );
 };
