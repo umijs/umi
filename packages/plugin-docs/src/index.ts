@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 
@@ -35,18 +36,25 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
+    const themeConfigPath = join(api.cwd, 'theme.config.ts');
+    const themeExists = existsSync(themeConfigPath);
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
 import React from 'react';
 import { useOutlet, useAppData, Link } from 'umi';
 import { Layout } from '${require.resolve('../client/theme-doc')}';
+${
+  themeExists
+    ? `import themeConfig from '${themeConfigPath}'`
+    : `const themeConfig = {}`
+}
 
 export default () => {
   const outlet = useOutlet();
   const appData = useAppData();
   return (
-    <Layout appData={appData} components={{Link}}>
+    <Layout appData={appData} components={{Link}} themeConfig={themeConfig}>
       <div>{ outlet }</div>
     </Layout>
   );

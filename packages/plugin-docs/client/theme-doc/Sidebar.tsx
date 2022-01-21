@@ -2,8 +2,8 @@ import React from 'react';
 import { useThemeContext } from './context';
 
 export default () => {
-  const { appData, components } = useThemeContext();
-  console.log(appData);
+  const { appData, components, themeConfig } = useThemeContext();
+  console.log(appData, themeConfig);
 
   let routes = Object.keys(appData.routes).map((id) => {
     return appData.routes[id];

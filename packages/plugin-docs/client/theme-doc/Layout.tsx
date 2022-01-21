@@ -9,6 +9,7 @@ export default (props: any) => {
       value={{
         appData: props.appData,
         components: props.components,
+        themeConfig: props.themeConfig,
       }}
     >
       <div className="flex flex-col">
