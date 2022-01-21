@@ -15,21 +15,43 @@ export default (props: any) => {
       }}
     >
       <div className="flex flex-col">
-        <div className="z-20 sticky top-0 before:bg-white before:bg-opacity-[.85] before:backdrop-blur-md before:absolute before:block before:w-full before:h-full before:z-[-1]">
+        <div
+          className="z-30 sticky top-0 before:bg-white before:bg-opacity-[.85]
+           before:backdrop-blur-md before:absolute before:block
+           before:w-full before:h-full before:z-[-1]"
+        >
           <Head />
         </div>
-        <div className="max-w-[90rem] w-full mx-auto">
-          <div className="flex flex-1 h-full">
-            <div className="fixed flex-shrink-0 w-full md:w-64 md:sticky z-[15] top-[4rem] self-start overflow-y-auto h-full md:h-auto bg-white dark:bg-dark md:bg-transparent">
+
+        <div className="w-full flex flex-row justify-center overflow-x-hidden">
+          <div className="container flex flex-row justify-center">
+            <div className="w-full lg:w-1/2 px-4 lg:px-0 m-8 z-20 lg:py-12">
+              <div className="lg:hidden">
+                <Toc />
+              </div>
+              <article className="flex-1">{props.children}</article>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="fixed left-0 top-0 w-1/4 flex flex-row
+          justify-center h-screen z-10 pt-20"
+        >
+          <div className="container flex flex-row justify-end">
+            <div className="hidden lg:block">
               <Sidebar />
             </div>
-            <div className="relative flex">
-              <article className="flex-1">{props.children}</article>
-              <div className="w-64 hidden xl:block text-sm px-4">
-                <div className="overflow-y-auto sticky top-16 pt-8 pb-10">
-                  <Toc />
-                </div>
-              </div>
+          </div>
+        </div>
+
+        <div
+          className="fixed right-0 top-0 w-1/4 flex flex-row
+           justify-center h-screen z-10 pt-20 hidden lg:block"
+        >
+          <div className="container flex flex-row justify-start">
+            <div className="w-2/3 top-32">
+              <Toc />
             </div>
           </div>
         </div>

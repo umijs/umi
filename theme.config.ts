@@ -1,5 +1,10 @@
+// @ts-ignore
+import UmiLogo from './packages/plugin-docs/client/theme-doc/icons/umi.png';
+
 export default {
   title: 'UmiJS',
+  logo: UmiLogo,
+  github: 'https://github.com/umijs/umi',
   navs: [
     {
       path: '/docs',
