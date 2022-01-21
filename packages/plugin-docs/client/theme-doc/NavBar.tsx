@@ -2,7 +2,7 @@ import React from 'react';
 import { useThemeContext } from './context';
 
 export default () => {
-  const { components, themeConfig } = useThemeContext();
+  const { components, themeConfig } = useThemeContext()!;
   return (
     <ul className="flex">
       {themeConfig.navs.map((nav: any) => {
