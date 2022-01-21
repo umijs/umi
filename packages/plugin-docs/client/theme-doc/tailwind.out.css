@@ -477,20 +477,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: sticky;
 }
 
-.top-\[4rem\] {
-  top: 4rem;
-}
-
 .top-0 {
   top: 0px;
 }
 
-.z-\[15\] {
-  z-index: 15;
+.top-\[4rem\] {
+  top: 4rem;
 }
 
 .z-20 {
   z-index: 20;
+}
+
+.z-\[15\] {
+  z-index: 15;
 }
 
 .mx-auto {
@@ -498,16 +498,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: auto;
 }
 
-.mr-1 {
-  margin-right: 0.25rem;
-}
-
-.mr-10 {
-  margin-right: 2.5rem;
-}
-
 .mr-4 {
   margin-right: 1rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .flex {
@@ -520,24 +516,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-full {
   width: 100%;
-}
-
-.min-w-fit {
-  min-width: -webkit-fit-content;
-  min-width: -moz-fit-content;
-  min-width: fit-content;
-}
-
-.min-w-min {
-  min-width: -webkit-min-content;
-  min-width: -moz-min-content;
-  min-width: min-content;
-}
-
-.min-w-max {
-  min-width: -webkit-max-content;
-  min-width: -moz-max-content;
-  min-width: max-content;
 }
 
 .max-w-\[90rem\] {
@@ -566,10 +544,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .border-b-2 {
   border-bottom-width: 2px;
-}
-
-.border-b-0 {
-  border-bottom-width: 0px;
 }
 
 .border-b-gray-100 {
@@ -635,29 +609,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-blur: blur(12px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-@media (prefers-color-scheme: dark) {
-  .dark\:before\:border-b::before {
-    content: var(--tw-content);
-    border-bottom-width: 1px;
-  }
-
-  .dark\:before\:border-white::before {
-    content: var(--tw-content);
-    --tw-border-opacity: 1;
-    border-color: rgb(255 255 255 / var(--tw-border-opacity));
-  }
-
-  .dark\:before\:border-opacity-10::before {
-    content: var(--tw-content);
-    --tw-border-opacity: 0.1;
-  }
-
-  .dark\:before\:bg-opacity-80::before {
-    content: var(--tw-content);
-    --tw-bg-opacity: 0.8;
-  }
 }
 
 @media (min-width: 768px) {
