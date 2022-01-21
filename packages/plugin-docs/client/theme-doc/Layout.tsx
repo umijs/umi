@@ -24,7 +24,7 @@ export default (props: any) => {
               <Sidebar />
             </div>
             <div className="relative flex">
-              <div className="flex-1">{props.children}</div>
+              <article className="flex-1">{props.children}</article>
               <div className="w-64 hidden xl:block text-sm px-4">
                 <div className="overflow-y-auto sticky top-16 pt-8 pb-10">
                   <Toc />

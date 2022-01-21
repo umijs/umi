@@ -40,3 +40,44 @@
 ## base
 ## chainWebpack
 ## conventionRoutes
+## copy
+## define
+## devtool
+## externals
+## extraBabelPlugins
+## extraBabelPresets
+## extraPostCSSPlugins
+## favicon
+## forkTSChecker
+## hash
+## headScript
+## history
+## ignoreMomentLocale
+
+默认开。
+
+## inlineLimit
+## lessLoader
+## links
+## manifest
+## metas
+## mfsu
+
+默认开。
+
+## mock
+## mountElementId
+## outputPath
+## plugins
+## polyfill
+## postcssLoader
+## presets
+## proxy
+## publicPath
+## routes
+## runtimePublicPath
+## scripts
+## styleLoader
+## styles
+## targets
+## theme

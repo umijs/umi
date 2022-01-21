@@ -1,3 +1,87 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+article h1 {
+  @apply text-4xl font-bold tracking-tight mt-2;
+}
+
+article h2 {
+  @apply text-3xl font-semibold tracking-tight mt-10;
+  @apply pb-1 border-b;
+}
+
+article h3 {
+  @apply text-2xl font-semibold tracking-tight mt-8;
+}
+
+article h4 {
+  @apply text-xl font-semibold tracking-tight mt-8;
+}
+
+article h5 {
+  @apply text-lg font-semibold tracking-tight mt-8;
+}
+
+article h6 {
+  @apply text-base font-semibold tracking-tight mt-8;
+}
+
+article p {
+  @apply text-base leading-4 mt-4;
+}
+
+article ul {
+  @apply list-disc ml-6 mt-6;
+}
+
+article li {
+  @apply mt-2;
+}
+
+article ol {
+  @apply list-decimal ml-6 mt-6;
+}
+
+article blockquote {
+  @apply italic pl-6 border-l-2 border-gray-300 text-gray-700;
+}
+
+article h2 a {
+  @apply no-underline;
+}
+
+article code {
+  @apply bg-black bg-opacity-5 border border-black border-opacity-5 rounded-md;
+  font-size: 0.9em;
+  padding: 2px 0.25em;
+  box-decoration-break: clone;
+  font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
+}
+
+article pre {
+  /* content-visibility: auto; */
+  contain: paint;
+  @apply p-4 bg-slate-100 rounded-xl mt-6 mb-4 overflow-x-auto font-medium subpixel-antialiased;
+}
+
+article pre code {
+  line-height: 1.25rem;
+  @apply relative p-0 text-sm text-current bg-transparent rounded-none border-none inline-block min-w-full;
+}
+
+article pre code .line.highlighted {
+  @apply before:block before:absolute before:h-5 before:bg-gray-500 before:bg-opacity-10 before:-inset-x-4 before:pointer-events-none before:select-none;
+}
+
+article a code {
+  @apply text-current no-underline;
+}
+
+/*article pre {*/
+/*  @apply pt-12;*/
+/*}*/
+
+article hr {
+  @apply my-8;
+}
