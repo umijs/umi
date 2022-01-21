@@ -5,6 +5,8 @@ interface IContext {
   components: any;
   themeConfig: {
     title: string;
+    github: string;
+    logo: string;
     navs: {
       path: string;
       title: string;

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 article h1 {
-  @apply text-4xl font-bold tracking-tight mt-2;
+  @apply text-4xl font-bold tracking-tight mt-2 my-4;
 }
 
 article h2 {
@@ -28,7 +28,7 @@ article h6 {
 }
 
 article p {
-  @apply text-base leading-4 mt-4;
+  @apply text-base font-light leading-8 mt-4 text-gray-700;
 }
 
 article ul {
@@ -59,10 +59,14 @@ article code {
   font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
 }
 
+article inlinecode {
+  @apply bg-black bg-opacity-5 border border-black border-opacity-5 rounded-md px-1.5 py-0.5 text-xs;
+}
+
 article pre {
   /* content-visibility: auto; */
   contain: paint;
-  @apply p-4 bg-slate-100 rounded-xl mt-6 mb-4 overflow-x-auto font-medium subpixel-antialiased;
+  @apply p-4 bg-slate-100 rounded-xl my-8 overflow-x-auto font-medium subpixel-antialiased;
 }
 
 article pre code {
@@ -78,10 +82,19 @@ article a code {
   @apply text-current no-underline;
 }
 
+article a {
+  @apply text-blue-600 mx-1 hover:text-blue-300 transition;
+  background-image: linear-gradient(#fff 60%, rgba(130, 199, 255, 0.28) 55%);
+}
+
 /*article pre {*/
 /*  @apply pt-12;*/
 /*}*/
 
 article hr {
   @apply my-8;
+}
+
+.fadeout {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 80%, transparent 100%);
 }
