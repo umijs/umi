@@ -10,6 +10,7 @@ export default (props: any) => {
         appData: props.appData,
         components: props.components,
         themeConfig: props.themeConfig,
+        location: props.location,
       }}
     >
       <div className="flex flex-col">

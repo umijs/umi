@@ -1,7 +1,26 @@
 import React from 'react';
 
-export const ThemeContext = React.createContext<any>(null);
+interface IContext {
+  appData: any;
+  components: any;
+  themeConfig: {
+    title: string;
+    navs: {
+      path: string;
+      title: string;
+      children: any[];
+    }[];
+  };
+  location: {
+    pathname: string;
+    search: string;
+    hash: string;
+    key: string;
+  };
+}
 
-export function useThemeContext(): any {
+export const ThemeContext = React.createContext<IContext | null>(null);
+
+export function useThemeContext(): IContext | null {
   return React.useContext(ThemeContext);
 }

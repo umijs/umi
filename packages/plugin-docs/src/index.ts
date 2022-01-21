@@ -42,7 +42,7 @@ export default (api: IApi) => {
       path: 'Layout.tsx',
       content: `
 import React from 'react';
-import { useOutlet, useAppData, Link } from 'umi';
+import { useOutlet, useAppData, useLocation, Link } from 'umi';
 import { Layout } from '${require.resolve('../client/theme-doc')}';
 ${
   themeExists
@@ -53,8 +53,9 @@ ${
 export default () => {
   const outlet = useOutlet();
   const appData = useAppData();
+  const location = useLocation();
   return (
-    <Layout appData={appData} components={{Link}} themeConfig={themeConfig}>
+    <Layout appData={appData} components={{Link}} themeConfig={themeConfig} location={location}>
       <div>{ outlet }</div>
     </Layout>
   );

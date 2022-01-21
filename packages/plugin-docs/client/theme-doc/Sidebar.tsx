@@ -2,8 +2,14 @@ import React from 'react';
 import { useThemeContext } from './context';
 
 export default () => {
-  const { appData, components, themeConfig } = useThemeContext();
-  console.log(appData, themeConfig);
+  const { appData, components, themeConfig, location } = useThemeContext()!;
+  const matchedNav = themeConfig.navs.filter((nav) =>
+    location.pathname.startsWith(nav.path),
+  )[0];
+
+  if (!matchedNav) {
+    return null;
+  }
 
   let routes = Object.keys(appData.routes).map((id) => {
     return appData.routes[id];
@@ -21,10 +27,26 @@ export default () => {
   return (
     <div>
       <ul>
-        {routes.map((route) => {
+        {(matchedNav.children || []).map((item) => {
           return (
-            <li key={route.id}>
-              <components.Link to={route.path}>{route.title}</components.Link>
+            <li key={item.title}>
+              <div>
+                <h3>{item.title}</h3>
+                <div className="pl-4">
+                  {item.children.map((child: any) => {
+                    const to = `${matchedNav.path}/${child}`;
+                    const id = to.slice(1);
+                    const { title } = appData.routes[id];
+                    return (
+                      <div key={child}>
+                        <components.Link to={`${matchedNav.path}/${child}`}>
+                          {title}
+                        </components.Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </li>
           );
         })}
