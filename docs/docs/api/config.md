@@ -35,3 +35,8 @@
 // import 'foo/bar' 还是 import 'foo/bar'，不会被修改
 { alias: { foo$: '/tmp/to/foo' } }
 ```
+
+## autoprefixer
+## base
+## chainWebpack
+## conventionRoutes

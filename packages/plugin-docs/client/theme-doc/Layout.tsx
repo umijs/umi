@@ -2,6 +2,7 @@ import React from 'react';
 import { ThemeContext } from './context';
 import Head from './Head';
 import Sidebar from './Sidebar';
+import Toc from './Toc';
 
 export default (props: any) => {
   return (
@@ -22,7 +23,14 @@ export default (props: any) => {
             <div className="fixed flex-shrink-0 w-full md:w-64 md:sticky z-[15] top-[4rem] self-start overflow-y-auto h-full md:h-auto bg-white dark:bg-dark md:bg-transparent">
               <Sidebar />
             </div>
-            <div>{props.children}</div>
+            <div className="relative flex">
+              <div className="flex-1">{props.children}</div>
+              <div className="w-64 hidden xl:block text-sm px-4">
+                <div className="overflow-y-auto sticky top-16 pt-8 pb-10">
+                  <Toc />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
