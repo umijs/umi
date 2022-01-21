@@ -153,9 +153,9 @@ export class Plugin {
           .split(',')
           .filter(Boolean),
         // dependencies
-        ...Object.keys(opts.pkg.devDependencies || {})
-          .concat(Object.keys(opts.pkg.dependencies || {}))
-          .filter(Plugin.isPluginOrPreset.bind(null, type)),
+        // ...Object.keys(opts.pkg.devDependencies || {})
+        //   .concat(Object.keys(opts.pkg.dependencies || {}))
+        //   .filter(Plugin.isPluginOrPreset.bind(null, type)),
         // user config
         ...(opts.userConfig[types] || []),
       ].map((path) => {
