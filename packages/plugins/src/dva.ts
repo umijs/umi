@@ -53,16 +53,15 @@ export default (api: IApi) => {
 // aliased to @umijs/plugins/templates/dva
 import { create, Provider } from 'dva';
 import React, { useRef } from 'react';
-import { useAppData } from 'umi';
+import { history } from 'umi';
 import { models } from './models';
 
 export function RootContainer(props: any) {
-  const { navigator } = useAppData();
   const app = useRef<any>();
   if (!app.current) {
     app.current = create(
       {
-        history: navigator,
+        history,
       },
       {
         initialReducer: {},
@@ -70,7 +69,7 @@ export function RootContainer(props: any) {
           return [...middlewares];
         },
         setupApp(app: IDvaApp) {
-          app._history = navigator;
+          app._history = history;
         },
       },
     );
