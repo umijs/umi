@@ -36,7 +36,7 @@ export default () => {
                   {item.children.map((child: any) => {
                     const to = `${matchedNav.path}/${child}`;
                     const id = to.slice(1);
-                    const { title } = appData.routes[id];
+                    const title = appData.routes[id].titles?.[0]?.title || null;
                     return (
                       <div key={child}>
                         <components.Link to={`${matchedNav.path}/${child}`}>

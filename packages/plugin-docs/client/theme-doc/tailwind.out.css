@@ -472,6 +472,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: fixed;
 }
 
+.relative {
+  position: relative;
+}
+
 .sticky {
   position: -webkit-sticky;
   position: sticky;
@@ -482,6 +486,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 .top-\[4rem\] {
+  top: 4rem;
+}
+
+.top-40 {
+  top: 10rem;
+}
+
+.top-16 {
   top: 4rem;
 }
 
@@ -510,8 +522,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.25rem;
 }
 
+.block {
+  display: block;
+}
+
 .flex {
   display: flex;
+}
+
+.hidden {
+  display: none;
 }
 
 .h-full {
@@ -520,6 +540,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-full {
   width: 100%;
+}
+
+.w-64 {
+  width: 16rem;
+}
+
+.w-40 {
+  width: 10rem;
 }
 
 .max-w-\[90rem\] {
@@ -560,6 +588,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .pt-4 {
   padding-top: 1rem;
 }
@@ -570,6 +603,19 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pl-4 {
   padding-left: 1rem;
+}
+
+.pt-8 {
+  padding-top: 2rem;
+}
+
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .filter {
@@ -635,5 +681,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .md\:bg-transparent {
     background-color: transparent;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:block {
+    display: block;
   }
 }

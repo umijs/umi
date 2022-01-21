@@ -1,6 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
+import { parseTitle } from './markdown';
 
 export default (api: IApi) => {
   api.modifyDefaultConfig((memo) => {
@@ -26,12 +27,9 @@ export default (api: IApi) => {
 
   api.onPatchRoute(({ route }) => {
     if (route.__content) {
-      const firstLine = route.__content.trim().split('\n')[0];
-      let title = '';
-      if (firstLine.startsWith('# ')) {
-        title = firstLine.slice(2);
-      }
-      route.title = title;
+      route.titles = parseTitle({
+        content: route.__content,
+      });
     }
   });
 
