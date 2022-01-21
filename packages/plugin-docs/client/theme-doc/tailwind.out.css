@@ -489,10 +489,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   top: 4rem;
 }
 
-.top-40 {
-  top: 10rem;
-}
-
 .top-16 {
   top: 4rem;
 }
@@ -510,20 +506,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: auto;
 }
 
-.mr-4 {
-  margin-right: 1rem;
-}
-
 .ml-4 {
   margin-left: 1rem;
 }
 
 .mr-1 {
   margin-right: 0.25rem;
-}
-
-.block {
-  display: block;
 }
 
 .flex {
@@ -544,10 +532,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-64 {
   width: 16rem;
-}
-
-.w-40 {
-  width: 10rem;
 }
 
 .max-w-\[90rem\] {
@@ -601,16 +585,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-bottom: 1rem;
 }
 
-.pl-4 {
-  padding-left: 1rem;
-}
-
 .pt-8 {
   padding-top: 2rem;
 }
 
 .pb-10 {
   padding-bottom: 2.5rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
 }
 
 .text-sm {
@@ -620,6 +604,168 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+article h1 {
+  margin-top: 0.5rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+article h2 {
+  margin-top: 2.5rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  border-bottom-width: 1px;
+  padding-bottom: 0.25rem;
+}
+
+article h3 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+article h4 {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+article h5 {
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+article h6 {
+  margin-top: 2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+article p {
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+article ul {
+  margin-left: 1.5rem;
+  margin-top: 1.5rem;
+  list-style-type: disc;
+}
+
+article li {
+  margin-top: 0.5rem;
+}
+
+article ol {
+  margin-left: 1.5rem;
+  margin-top: 1.5rem;
+  list-style-type: decimal;
+}
+
+article blockquote {
+  border-left-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  padding-left: 1.5rem;
+  font-style: italic;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+article h2 a {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+
+article code {
+  border-radius: 0.375rem;
+  border-width: 1px;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+  --tw-border-opacity: 0.05;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.05;
+  font-size: 0.9em;
+  padding: 2px 0.25em;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+  font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
+}
+
+article pre {
+  /* content-visibility: auto; */
+  contain: paint;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+  padding: 1rem;
+  font-weight: 500;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+article pre code {
+  position: relative;
+  display: inline-block;
+  min-width: 100%;
+  border-radius: 0px;
+  border-style: none;
+  background-color: transparent;
+  padding: 0px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: currentColor;
+}
+
+article pre code .line.highlighted::before {
+  pointer-events: none;
+  position: absolute;
+  left: -1rem;
+  right: -1rem;
+  display: block;
+  height: 1.25rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+  content: var(--tw-content);
+  --tw-bg-opacity: 0.1;
+}
+
+article a code {
+  color: currentColor;
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+
+/*article pre {*/
+
+/*  @apply pt-12;*/
+
+/*}*/
+
+article hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .before\:absolute::before {
