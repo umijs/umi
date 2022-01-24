@@ -10,3 +10,4 @@ fixtures
 *.md
 *.yaml
 *.less
+/packages/plugin-docs/client/theme-doc/tailwind.out.css

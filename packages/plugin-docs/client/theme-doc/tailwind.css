@@ -96,5 +96,11 @@ article hr {
 }
 
 .fadeout {
-  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 80%, transparent 100%);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 80%,
+    transparent 100%
+  );
 }

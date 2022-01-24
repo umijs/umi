@@ -1,5 +1,5 @@
-import {proxy} from 'valtio'
+import { proxy } from 'valtio';
 
-const state = proxy({number: 0})
+const state = proxy({ number: 0 });
 
 export default state;
