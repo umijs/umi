@@ -29,7 +29,7 @@ export default () => {
   return (
     <Fragment>
       <div
-        className="rounded-lg w-64 flex items-center pr-2 flex-row hover:bg-gray-50
+        className="rounded-lg w-40 lg:w-64 flex items-center pr-2 flex-row hover:bg-gray-50
      transition duration-300 bg-gray-100 border border-white focus-within:border-gray-100
      focus-within:bg-white"
       >

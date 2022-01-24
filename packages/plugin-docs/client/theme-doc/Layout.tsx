@@ -1,10 +1,13 @@
-import React from 'react';
+import cx from 'classnames';
+import React, { useState } from 'react';
 import { ThemeContext } from './context';
 import Head from './Head';
 import Sidebar from './Sidebar';
 import Toc from './Toc';
 
 export default (props: any) => {
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
+
   return (
     <ThemeContext.Provider
       value={{
@@ -20,7 +23,7 @@ export default (props: any) => {
            before:backdrop-blur-md before:absolute before:block
            before:w-full before:h-full before:z-[-1]"
         >
-          <Head />
+          <Head setMenuOpened={setIsMenuOpened} isMenuOpened={isMenuOpened} />
         </div>
 
         <div className="w-full flex flex-row justify-center overflow-x-hidden">
@@ -52,6 +55,16 @@ export default (props: any) => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div
+        className={cx(
+          'fixed top-12 w-screen bg-white z-20',
+          'overflow-hidden transition-all duration-500',
+          isMenuOpened ? 'max-h-screen' : 'max-h-0',
+        )}
+      >
+        <Sidebar setMenuOpened={setIsMenuOpened} />
       </div>
     </ThemeContext.Provider>
   );
