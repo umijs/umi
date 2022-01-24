@@ -16,7 +16,7 @@ export default () => {
       border-gray-100 p-8 rounded-xl z-20"
     >
       <p className="text-lg font-extrabold">{route.titles[0].title}</p>
-      <ul>
+      <ul className="max-h-[calc(100vh-360px)] overflow-y-scroll fadeout py-2">
         {titles.map((item: any) => {
           return (
             <li
