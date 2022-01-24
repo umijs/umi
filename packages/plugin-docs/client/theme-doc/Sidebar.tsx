@@ -1,7 +1,12 @@
+import cx from 'classnames';
 import React from 'react';
 import { useThemeContext } from './context';
 
-export default () => {
+interface SidebarProps {
+  setMenuOpened?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default (props: SidebarProps) => {
   const { appData, components, themeConfig, location } = useThemeContext()!;
   const matchedNav = themeConfig.navs.filter((nav) =>
     location.pathname.startsWith(nav.path),
@@ -25,7 +30,12 @@ export default () => {
   });
 
   return (
-    <ul className="h-[calc(100vh-8rem)] overflow-y-scroll w-64 p-8 pb-12 fadeout">
+    <ul
+      className={cx(
+        'h-screen lg:h-[calc(100vh-8rem)] overflow-y-scroll',
+        'lg:w-64 p-8 pb-12 fadeout w-full',
+      )}
+    >
       {(matchedNav.children || []).map((item) => {
         return (
           <li key={item.title}>
@@ -50,7 +60,12 @@ export default () => {
                 }
 
                 return (
-                  <components.Link to={`${matchedNav.path}/${child}`}>
+                  <components.Link
+                    to={`${matchedNav.path}/${child}`}
+                    onClick={() =>
+                      props.setMenuOpened && props.setMenuOpened((o) => !o)
+                    }
+                  >
                     <div
                       key={child}
                       className="text-gray-700 my-2 hover:text-blue-400 transition-all px-4 py-1"
