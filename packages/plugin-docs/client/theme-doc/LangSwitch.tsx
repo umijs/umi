@@ -19,17 +19,17 @@ export default () => {
     <div>
       <div
         className="w-24 rounded-lg overflow-hidden cursor-pointer border
-       border-white hover:border-gray-100"
+       border-white hover:border-gray-100 dark:border-gray-800"
         onClick={() => setExpanded((e) => !e)}
       >
-        <p className="px-2 py-1">
+        <p className="px-2 py-1 dark:text-white">
           {languages.find((l) => l.value === currentLang)?.name || 'English'}
         </p>
       </div>
       <div
         className={
           'absolute transition-all duration-300 bottom-[-12] w-24 rounded-lg' +
-          ' cursor-pointer shadow overflow-hidden' +
+          ' cursor-pointer shadow overflow-hidden ' +
           (isExpanded ? ` max-h-${(languages.length - 1) * 12}` : ' max-h-0 ')
         }
       >
@@ -38,7 +38,7 @@ export default () => {
           .map((lang) => (
             <p
               key={lang.value}
-              className="p-2 bg-white hover:bg-gray-50 transition duration-300"
+              className="p-2 bg-white dark:bg-gray-700 dark:text-white hover:bg-gray-50 transition duration-300"
             >
               {lang.name}
             </p>

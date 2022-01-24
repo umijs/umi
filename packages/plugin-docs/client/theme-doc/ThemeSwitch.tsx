@@ -1,10 +1,37 @@
 import cx from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MoonIcon from './icons/moon.png';
 import SunIcon from './icons/sun.png';
 
 export default () => {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState<Boolean>();
+
+  useEffect(() => {
+    // 初始化，获取过去曾经设定过的主题，或是系统当前的主题
+    if (toggle === undefined) {
+      if (localStorage.getItem('theme') === 'dark') {
+        setToggle(false);
+        return;
+      }
+      if (localStorage.getItem('theme') === 'light') {
+        setToggle(true);
+        return;
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setToggle(false);
+        return;
+      }
+      setToggle(true);
+    }
+
+    if (toggle) {
+      document.body.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  }, [toggle]);
 
   return (
     <div

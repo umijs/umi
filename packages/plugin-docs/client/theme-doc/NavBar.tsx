@@ -7,7 +7,7 @@ export default () => {
     <ul className="flex">
       {themeConfig.navs.map((nav: any) => {
         return (
-          <li key={nav.path} className="ml-4">
+          <li key={nav.path} className="ml-4 dark:text-white">
             <components.Link to={nav.path}>{nav.title}</components.Link>
           </li>
         );
