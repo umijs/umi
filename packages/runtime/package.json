@@ -25,8 +25,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/react-router": "5.1.12",
-    "@types/react-router-dom": "5.1.7",
+    "@types/react-router": "5.1.18",
+    "@types/react-router-dom": "5.3.3",
     "history-with-query": "4.10.4",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",

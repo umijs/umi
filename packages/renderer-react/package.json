@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
-    "@types/react-router-config": "^5.0.2",
+    "@types/react-router-config": "^5.0.6",
     "@umijs/runtime": "3.5.20",
     "react-router-config": "5.1.1"
   },
