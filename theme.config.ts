@@ -5,6 +5,10 @@ export default {
   title: 'UmiJS',
   logo: UmiLogo,
   github: 'https://github.com/umijs/umi',
+  i18n: [
+    { locale: 'en-US', text: 'English' },
+    { locale: 'zh-CN', text: '简体中文' },
+  ],
   navs: [
     {
       path: '/docs',
