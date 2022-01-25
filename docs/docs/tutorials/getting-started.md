@@ -79,6 +79,19 @@ event - MFSU compiled successfully in 1308 ms (875 modules)
 
 ![](https://img.alicdn.com/imgextra/i3/O1CN01Kri1JF1d1CHKBH3gh_!!6000000003675-2-tps-1372-1298.png)
 
+## 启用 Prettier（可选）
+
+如果需要用 prettier 做项目代码的自动格式化，执行 `pnpm g`，
+
+```bash
+$ pnpm g
+✔ Pick generator type › Enable Prettier -- Enable Prettier
+info  - Write package.json
+info  - Write .prettierrc
+info  - Write .prettierignore
+info  - Install dependencies with pnpm
+```
+
 ## 部署发布
 
 执行 `pnpm build` 命令，

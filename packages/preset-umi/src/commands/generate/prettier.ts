@@ -56,7 +56,7 @@ node_modules
       installWithNpmClient({
         npmClient,
       });
-      logger.info(`npm install with ${npmClient}`);
+      logger.info(`Install dependencies with ${npmClient}`);
     },
   });
 };
