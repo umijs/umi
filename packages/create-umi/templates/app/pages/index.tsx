@@ -1,5 +1,9 @@
 import React from 'react';
 
 export default function HomePage() {
-  return <div>HomePage</div>;
+  return (
+    <div>
+      <p>To get started, edit `pages/index.tsx` and save to reload.</p>
+    </div>
+  );
 }
