@@ -3,7 +3,13 @@ import React from 'react';
 export default function HomePage() {
   return (
     <div>
-      <p>To get started, edit `pages/index.tsx` and save to reload.</p>
+      <h2>Yay! Welcome to dva!</h2>
+      <p>
+        <img src={require('../assets/yay.jpg')} width="388" />
+      </p>
+      <p>
+        To get started, edit <code>pages/index.tsx</code> and save to reload.
+      </p>
     </div>
   );
 }

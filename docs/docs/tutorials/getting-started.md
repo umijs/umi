@@ -77,7 +77,7 @@ event - MFSU compiled successfully in 1308 ms (875 modules)
 
 在浏览器里打开 http://localhost:8000/，能看到以下界面，
 
-![](https://img.alicdn.com/imgextra/i1/O1CN01kxjvsg23JDsUgTtwO_!!6000000007234-2-tps-1372-698.png)
+![](https://img.alicdn.com/imgextra/i3/O1CN01Kri1JF1d1CHKBH3gh_!!6000000003675-2-tps-1372-1298.png)
 
 ## 部署发布
 
