@@ -69,7 +69,13 @@ export class Service {
   stage: ServiceStage = ServiceStage.uninitialized;
   userConfig: Record<string, any> = {};
   configManager: Config | null = null;
-  pkg: Record<string, string | Record<string, any>> = {};
+  pkg: {
+    name?: string;
+    version?: string;
+    dependencies?: Record<string, string>;
+    devDependencies?: Record<string, string>;
+    [key: string]: any;
+  } = {};
   pkgPath: string = '';
 
   constructor(opts: IOpts) {
@@ -371,6 +377,7 @@ export class Service {
         'config',
         'cwd',
         'pkg',
+        'pkgPath',
         'name',
         'paths',
         'userConfig',
