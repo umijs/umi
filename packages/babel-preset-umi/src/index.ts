@@ -130,9 +130,9 @@ export default (_context: any, opts: IOpts) => {
           useESModules: false,
           // lock the version of @babel/runtime
           // make sure we are using the correct version
-          absoluteRuntime: dirname(
-            require.resolve('@babel/runtime/package.json'),
-          ),
+          // ref: https://github.com/babel/babel/blob/v7.16.12/packages/babel-plugin-transform-runtime/src/get-runtime-path/index.ts#L19
+          // ref: https://github.com/umijs/umi/pull/7816
+          absoluteRuntime: dirname(require.resolve('../package.json')),
           version: `^${require('@babel/runtime/package.json').version}`,
           ...opts.pluginTransformRuntime,
         },
