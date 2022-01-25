@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@mdx-js/mdx": "1.6.22",
-    "classnames": "^2.3.1"
+    "remark-slug": "6.1.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.0.15",

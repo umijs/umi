@@ -643,12 +643,12 @@ importers:
   packages/plugin-docs:
     specifiers:
       '@mdx-js/mdx': 1.6.22
-      classnames: ^2.3.1
+      remark-slug: 6.1.0
       tailwindcss: ^3.0.15
       umi: 4.0.0-beta.17
     dependencies:
       '@mdx-js/mdx': 1.6.22
-      classnames: 2.3.1
+      remark-slug: 6.1.0
     devDependencies:
       tailwindcss: 3.0.15_ts-node@10.4.0
       umi: link:../umi
@@ -11430,6 +11430,10 @@ packages:
       ini: 1.3.8
     dev: true
 
+  /github-slugger/1.4.0:
+    resolution: {integrity: sha512-w0dzqw/nt51xMVmlaV1+JRzN+oCa1KfcgGEWhxUG16wbdA+Xnt/yoFO8Z8x/V82ZcZ0wy6ln9QDup5avbhiDhQ==}
+    dev: false
+
   /gl-matrix/3.4.3:
     resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
     dev: false
@@ -14078,6 +14082,10 @@ packages:
       unist-util-generated: 1.1.6
       unist-util-position: 3.1.0
       unist-util-visit: 2.0.3
+    dev: false
+
+  /mdast-util-to-string/1.1.0:
+    resolution: {integrity: sha512-jVU0Nr2B9X3MU4tSK7JP1CMkSvOj7X5l/GboG1tKRw52lLF1x2Ju92Ms9tNetCcbfX3hzlM73zYo2NKkWSfF/A==}
     dev: false
 
   /mdn-data/2.0.14:
@@ -17770,6 +17778,14 @@ packages:
       unist-util-remove-position: 2.0.1
       vfile-location: 3.2.0
       xtend: 4.0.2
+    dev: false
+
+  /remark-slug/6.1.0:
+    resolution: {integrity: sha512-oGCxDF9deA8phWvxFuyr3oSJsdyUAxMFbA0mZ7Y1Sas+emILtO+e5WutF9564gDsEN4IXaQXm5pFo6MLH+YmwQ==}
+    dependencies:
+      github-slugger: 1.4.0
+      mdast-util-to-string: 1.1.0
+      unist-util-visit: 2.0.3
     dev: false
 
   /remark-squeeze-paragraphs/4.0.0:
