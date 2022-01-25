@@ -1,4 +1,6 @@
-# 快速上手
+# Getting Started
+
+This is english version of getting started.
 
 ## 环境准备
 

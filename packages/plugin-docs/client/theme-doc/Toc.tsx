@@ -1,9 +1,18 @@
 import React from 'react';
 import { useThemeContext } from './context';
+import useLanguage from './useLanguage';
 
 export default () => {
   const { location, appData } = useThemeContext()!;
-  const route = appData.routes[location.pathname.slice(1)];
+  const lang = useLanguage();
+  const route =
+    appData.routes[
+      lang.isFromPath
+        ? location.pathname.split('/').slice(2).join('/') +
+          '.' +
+          lang.currentLanguage?.locale
+        : location.pathname.slice(1)
+    ];
 
   if (!route) {
     return null;

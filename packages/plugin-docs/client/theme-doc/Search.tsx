@@ -1,8 +1,10 @@
 import cx from 'classnames';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useThemeContext } from './context';
+import useLanguage from './useLanguage';
 
 export default () => {
+  const { render } = useLanguage();
   const [isFocused, setIsFocused] = useState(false);
   const [keyword, setKeyword] = useState('');
 
@@ -41,7 +43,7 @@ export default () => {
           onChange={(e) => setKeyword(e.target.value)}
           id="search-input"
           className="w-full bg-transparent outline-0 text-sm px-4 py-2 "
-          placeholder="Search anything ..."
+          placeholder={render('Search anything ...')}
         />
         <div
           className="bg-gray-200 rounded w-6 h-6 flex flex-row text-gray-400

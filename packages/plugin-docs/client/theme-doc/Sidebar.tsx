@@ -1,15 +1,20 @@
 import cx from 'classnames';
 import React from 'react';
 import { useThemeContext } from './context';
+import useLanguage from './useLanguage';
 
 interface SidebarProps {
   setMenuOpened?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default (props: SidebarProps) => {
+  const { currentLanguage, isFromPath } = useLanguage();
   const { appData, components, themeConfig, location } = useThemeContext()!;
   const matchedNav = themeConfig.navs.filter((nav) =>
-    location.pathname.startsWith(nav.path),
+    location.pathname.startsWith(
+      (isFromPath && currentLanguage ? '/' + currentLanguage.locale : '') +
+        nav.path,
+    ),
   )[0];
 
   if (!matchedNav) {
@@ -29,6 +34,9 @@ export default (props: SidebarProps) => {
     };
   });
 
+  let locale = currentLanguage?.locale;
+  if (!isFromPath) locale = '';
+
   return (
     <ul
       className={cx(
@@ -44,9 +52,12 @@ export default (props: SidebarProps) => {
                 {item.title}
               </p>
               {item.children.map((child: any) => {
-                const to = `${matchedNav.path}/${child}`;
-                const id = to.slice(1);
-                const title = appData.routes[id].titles?.[0]?.title || null;
+                const to =
+                  (locale ? `/${locale}` : '') + `${matchedNav.path}/${child}`;
+                const id = `${matchedNav.path}/${child}`.slice(1);
+                const route =
+                  appData.routes[id + '.' + locale] || appData.routes[id];
+                const title = route.titles[0]?.title || null;
 
                 if (to === window.location.pathname) {
                   return (
@@ -63,7 +74,7 @@ export default (props: SidebarProps) => {
 
                 return (
                   <components.Link
-                    to={`${matchedNav.path}/${child}`}
+                    to={route.path}
                     onClick={() =>
                       props.setMenuOpened && props.setMenuOpened((o) => !o)
                     }
