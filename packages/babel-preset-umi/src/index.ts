@@ -128,9 +128,10 @@ export default (context: any, opts: IOpts = {}) => {
           // https://babeljs.io/docs/en/babel-plugin-transform-runtime#absoluteruntime
           // lock the version of @babel/runtime
           // make sure we are using the correct version
-          absoluteRuntime: dirname(
-            require.resolve('@babel/runtime/package.json'),
-          ),
+          // this path will be used by babel like `require.resolve(path, { paths: [absoluteRuntime] })`
+          // so we need to place the absolute path of this package
+          // refer: https://github.com/babel/babel/blob/v7.16.12/packages/babel-plugin-transform-runtime/src/get-runtime-path/index.ts#L19
+          absoluteRuntime: dirname(require.resolve('../package.json')),
           // https://babeljs.io/docs/en/babel-plugin-transform-runtime#useesmodules
           useESModules: true,
           ...toObject(opts.transformRuntime),
