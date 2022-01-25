@@ -26,6 +26,15 @@ export default {
           ],
         },
         {
+          title: 'Introduce',
+          children: [
+            'introduce/introduce',
+            'introduce/philosophy',
+            'introduce/contributing',
+            'introduce/upgrade-to-umi-4',
+          ],
+        },
+        {
           title: 'Guides',
           children: [
             'guides/prepare',
