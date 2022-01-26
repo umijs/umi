@@ -97,7 +97,7 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 
 ### 发布
 
-只有 core maintainer 才能执行发布。
+只有 Core Maintainer 才能执行发布。
 
 ```bash
 $ pnpm release
