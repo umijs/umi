@@ -25,6 +25,7 @@
     "remark-slug": "6.1.0"
   },
   "devDependencies": {
+    "classnames": "^2.3.1",
     "tailwindcss": "^3.0.15",
     "umi": "4.0.0-beta.17"
   },

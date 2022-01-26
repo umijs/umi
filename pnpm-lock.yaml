@@ -643,6 +643,7 @@ importers:
   packages/plugin-docs:
     specifiers:
       '@mdx-js/mdx': 1.6.22
+      classnames: ^2.3.1
       remark-slug: 6.1.0
       tailwindcss: ^3.0.15
       umi: 4.0.0-beta.17
@@ -650,6 +651,7 @@ importers:
       '@mdx-js/mdx': 1.6.22
       remark-slug: 6.1.0
     devDependencies:
+      classnames: 2.3.1
       tailwindcss: 3.0.15_ts-node@10.4.0
       umi: link:../umi
 
