@@ -6,6 +6,8 @@ interface IContext {
   themeConfig: {
     title: string;
     github: string;
+    // 键盘搜索的快捷键，参考 https://github.com/madrobby/keymaster
+    searchHotKey?: string | { macos: string; windows: string };
     logo: string;
     // 在设置文件中声明该项目的国际化功能支持的语言
     i18n: { locale: string; text: string }[];

@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import key from 'keymaster';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useThemeContext } from './context';
 import useLanguage from './useLanguage';
@@ -8,22 +9,48 @@ export default () => {
   const [isFocused, setIsFocused] = useState(false);
   const [keyword, setKeyword] = useState('');
 
-  const { appData } = useThemeContext()!;
+  const { appData, themeConfig } = useThemeContext()!;
+
+  const isMac = /(Mac|iPad)/i.test(navigator.userAgent);
+
+  let searchHotKey = '⌘+k, ctrl+k';
+  let macSearchKey = '⌘+k';
+  let windowsSearchKey = 'ctrl+k';
+
+  if (themeConfig.searchHotKey) {
+    if (typeof themeConfig.searchHotKey === 'string') {
+      searchHotKey = themeConfig.searchHotKey;
+      macSearchKey = themeConfig.searchHotKey;
+      windowsSearchKey = themeConfig.searchHotKey;
+    }
+    if (typeof themeConfig.searchHotKey === 'object') {
+      searchHotKey =
+        themeConfig.searchHotKey.macos +
+        ', ' +
+        themeConfig.searchHotKey.windows;
+      macSearchKey = themeConfig.searchHotKey.macos;
+      windowsSearchKey = themeConfig.searchHotKey.windows;
+    }
+  }
 
   useEffect(() => {
-    document.addEventListener('keydown', function (event) {
-      // 在页面中按下 '/' 键可以打开搜索框
-      if (event.key === '/') {
-        event.preventDefault();
-        document.getElementById('search-input')?.focus();
-      }
+    key.filter = () => true;
 
-      // 在搜索框中按下 'Escape' 键可以关闭搜索框
-      if (event.key === 'Escape') {
-        document.getElementById('search-input')?.blur();
-        (document.activeElement as HTMLElement).blur();
-      }
+    // 在页面中按下 ⌘+k 可以打开搜索框
+    key(searchHotKey, (e) => {
+      e.preventDefault();
+      document.getElementById('search-input')?.focus();
     });
+
+    // 在搜索框中按下 'Escape' 键可以关闭搜索框
+    key('escape', () => {
+      (document.activeElement as HTMLElement).blur();
+    });
+
+    return () => {
+      key.unbind(searchHotKey);
+      key.unbind('escape');
+    };
   }, []);
 
   const result = search(appData.routes, keyword);
@@ -46,15 +73,10 @@ export default () => {
           placeholder={render('Search anything ...')}
         />
         <div
-          className="bg-gray-200 rounded w-6 h-6 flex flex-row text-gray-400
-       focus-within:bg-white"
+          className="bg-gray-200 rounded px-2 h-6 flex flex-row text-gray-400
+         items-center justify-center border border-gray-300 text-xs"
         >
-          <div
-            className="bg-gray-200 rounded w-6 h-6 flex flex-row text-gray-400
-         items-center justify-center border border-gray-300"
-          >
-            /
-          </div>
+          {isMac ? macSearchKey : windowsSearchKey}
         </div>
         <div
           className={cx(

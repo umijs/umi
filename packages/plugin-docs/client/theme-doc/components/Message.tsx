@@ -1,15 +1,15 @@
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren } from 'react';
 
 enum MessageType {
-  Info = "info",
-  Success = "success",
-  Warning = "warning",
-  Error = "error",
+  Info = 'info',
+  Success = 'success',
+  Warning = 'warning',
+  Error = 'error',
 }
 
 interface MessageProps {
-  type?: MessageType
-  emoji?: string
+  type?: MessageType;
+  emoji?: string;
 }
 
 function Message(props: PropsWithChildren<MessageProps>) {
@@ -31,15 +31,20 @@ function Message(props: PropsWithChildren<MessageProps>) {
       break;
   }
 
-  return <>
-    <div
-      className={`w-full py-3 px-4 ${bgColor} ${textColor} rounded-lg my-2`}>
-      {props.emoji && <span role="img" className="mr-3">
-        {props.emoji}
-      </span>}
-      {props.children}
-    </div>
-  </>
+  return (
+    <>
+      <div
+        className={`w-full py-3 px-4 ${bgColor} ${textColor} rounded-lg my-2`}
+      >
+        {props.emoji && (
+          <span role="img" className="mr-3">
+            {props.emoji}
+          </span>
+        )}
+        {props.children}
+      </div>
+    </>
+  );
 }
 
-export default Message
+export default Message;
