@@ -1,4 +1,4 @@
 module.exports = {
-  content: ['./client/theme-doc/*.tsx'],
+  content: ['./client/theme-doc/**/*.tsx'],
   darkMode: 'class'
 };
