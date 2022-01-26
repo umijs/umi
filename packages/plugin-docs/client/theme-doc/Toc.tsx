@@ -2,6 +2,13 @@ import React from 'react';
 import { useThemeContext } from './context';
 import useLanguage from './useLanguage';
 
+function getLinkFromTitle(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/\s/g, '-')
+    .replace(/[（）]/g, '');
+}
+
 export default () => {
   const { location, appData } = useThemeContext()!;
   const lang = useLanguage();
@@ -31,10 +38,16 @@ export default () => {
         {titles.map((item: any) => {
           return (
             <li
+              style={{ paddingLeft: `${item.level - 2}rem` }}
               className="mt-3 text-gray-600 cursor-pointer dark:text-gray-400
               hover:text-blue-500 transition duration-300 dark:hover:text-blue-500"
             >
-              <a href={'#' + item.title}>{item.title}</a>
+              <a
+                className={item.level > 2 ? 'text-sm' : ''}
+                href={'#' + getLinkFromTitle(item.title)}
+              >
+                {item.title}
+              </a>
             </li>
           );
         })}
