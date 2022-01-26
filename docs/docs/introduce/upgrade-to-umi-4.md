@@ -1,5 +1,7 @@
 # 升级到 Umi 4
 
+## 升级步骤
+
 升级到 Umi 4 只需要简单的几步操作就能完成，简单的描述整个过程就是 - “重装依赖，修改配置”：
 
 1. **依赖处理**
@@ -108,9 +110,8 @@ export default defineConfig({
 
 Umi 4 中将 react-router@5 升级到 react-router@6，所以路由相关的一些 api 存在着使用上的差异。
 
-
 props 默认为空对象，以下属性都不能直接从 props 中取出
-![image](https://user-images.githubusercontent.com/11746742/149440985-738d95b7-98ac-44a3-ad2a-7937191a89b5.png)
+![image](https://img.alicdn.com/imgextra/i4/O1CN01H9ScQv21ymaLkwZ8p_!!6000000007054-2-tps-1210-374.png)
 
 #### children
 
@@ -220,9 +221,13 @@ pattern: {path: 'list/search/:type'}
 
 如果你的项目无法正常启动，你可能还需要做如下操作：
 
-### FAQ
+## 配置变更
 
-#### location 中的 query 找不到？
+TODO
+
+## FAQ
+
+### location 中的 query 找不到？
 
 location 中的 query 不再支持了，后续推荐用 [search](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
@@ -232,7 +237,7 @@ location 中的 query 不再支持了，后续推荐用 [search](https://develop
 + const query = parse(history.location.search);
 ```
 
-#### *.d 文件找不到，或者它的引用找不到
+### *.d 文件找不到，或者它的引用找不到
 
 在 umi@3 中通过 `import` 会自动找到同名的 `.d.ts` 文件，如：
 
