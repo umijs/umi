@@ -643,14 +643,18 @@ importers:
   packages/plugin-docs:
     specifiers:
       '@mdx-js/mdx': 1.6.22
+      '@types/keymaster': ^1.6.30
       classnames: ^2.3.1
+      keymaster: ^1.6.2
       remark-slug: 6.1.0
       tailwindcss: ^3.0.15
       umi: 4.0.0-beta.17
     dependencies:
       '@mdx-js/mdx': 1.6.22
+      keymaster: 1.6.2
       remark-slug: 6.1.0
     devDependencies:
+      '@types/keymaster': 1.6.30
       classnames: 2.3.1
       tailwindcss: 3.0.15_ts-node@10.4.0
       umi: link:../umi
@@ -6203,6 +6207,10 @@ packages:
 
   /@types/json-schema/7.0.9:
     resolution: {integrity: sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==}
+
+  /@types/keymaster/1.6.30:
+    resolution: {integrity: sha512-mtL/NuDBX72zmyIa3cYHA1bQj1WAYlSC4eZcIQj+DHJkcRyTRF2XJXo7DBmkkY8TEq7XaAf7B8TGxs5PHhjRtw==}
+    dev: true
 
   /@types/keyv/3.1.2:
     resolution: {integrity: sha512-/FvAK2p4jQOaJ6CGDHJTqZcUtbZe820qIeTg7o0Shg7drB4JHeL+V/dhSaly7NXx6u8eSee+r7coT+yuJEvDLg==}
@@ -13420,6 +13428,10 @@ packages:
 
   /kdbush/3.0.0:
     resolution: {integrity: sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==}
+    dev: false
+
+  /keymaster/1.6.2:
+    resolution: {integrity: sha1-4a5U0OqUiPn2C2a2aPAumhlGxus=}
     dev: false
 
   /keyv/4.0.3:
