@@ -188,6 +188,27 @@ function App() {
 ```
 
 ### useMatch
+
+`useMatch` 返回传入 path 的匹配信息。
+
+类型定义如下。
+
+```ts
+declare function useMatch(pattern: {
+  path: string;
+  caseSensitive?: boolean;
+  end?: boolean;
+} | string): {
+  params: Record<string, string>;
+  pathname: string;
+  pattern: {
+    path: string;
+    caseSensitive?: boolean;
+    end?: boolean;
+  };
+};
+```
+
 ### useNavigate
 ### useOutlet
 
@@ -196,5 +217,54 @@ function App() {
 ### useParams
 ### useResolvedPath
 ### useRouteData
+
+`useRouteData` 返回当前路由的数据。
+
+类型定义如下。
+
+```ts
+declare function useRouteData(): {
+  route: Route;
+};
+```
+
+注意：此处 API 可能还会调整。
+
 ### useRoutes
 ### useSearchParams
+
+`useSearchParams` 用于读取和修改当前 URL 的 query string。类似 React 的 `useState`，其返回包含两个值的数组，当前 URL 的 search 参数和用于更新 search 参数的函数。
+
+类型定义如下。
+
+```ts
+declare function useSearchParams(defaultInit?: URLSearchParamsInit): [
+  URLSearchParams,
+  (
+    nextInit?: URLSearchParamsInit,
+    navigateOpts?: : { replace?: boolean; state?: any }
+  ) => void
+];
+
+type URLSearchParamsInit = 
+  | string
+  | ParamKeyValuePair[]
+  | Record<string, string | string[]>
+  | URLSearchParams;
+```
+
+示例。
+
+```js
+import React from 'react';
+import { useSearchParams } from 'umi';
+
+function App() {
+  let [searchParams, setSearchParams] = useSearchParams();
+  function handleSubmit(event) {
+    event.preventDefault();
+    setSearchParams(serializeFormQuery(event.target));
+  }
+  return <form onSubmit={handleSubmit}>{/* ... */}</form>;
+}
+```
