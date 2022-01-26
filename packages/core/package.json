@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "4.0.0-beta.17",
+  "version": "4.0.0-beta.18",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/core#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
   "repository": {
@@ -20,8 +20,8 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-beta.17",
-    "@umijs/utils": "4.0.0-beta.17"
+    "@umijs/bundler-utils": "4.0.0-beta.18",
+    "@umijs/utils": "4.0.0-beta.18"
   },
   "devDependencies": {
     "@hapi/joi": "17.1.1",
