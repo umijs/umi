@@ -5,7 +5,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-beta.17",
+    "umi": "4.0.0-beta.18",
     "valtio": "^1.2.9"
   },
   "devDependencies": {
