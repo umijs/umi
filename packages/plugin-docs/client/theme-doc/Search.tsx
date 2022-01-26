@@ -47,9 +47,14 @@ export default () => {
       (document.activeElement as HTMLElement).blur();
     });
 
+    key('up', handleKeyUp);
+    key('down', handleKeyDown);
+
     return () => {
       key.unbind(searchHotKey);
       key.unbind('escape');
+      key.unbind('up');
+      key.unbind('down');
     };
   }, []);
 
@@ -89,7 +94,7 @@ export default () => {
             <a
               href={r.href}
               key={i}
-              className="group outline-none"
+              className="group outline-none search-result"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
             >
@@ -142,4 +147,32 @@ function search(routes: any, keyword: string): SearchResultItem[] {
   if (result.length > 8) return result.slice(0, 8);
 
   return result;
+}
+
+function handleKeyDown(e: KeyboardEvent) {
+  if (!document.activeElement) return;
+
+  if (document.activeElement.id === 'search-input') {
+    e.preventDefault();
+    (
+      document.getElementsByClassName('search-result')[0] as
+        | HTMLDivElement
+        | undefined
+    )?.focus();
+    return;
+  }
+
+  if (document.activeElement.className.indexOf('search-result') === -1) return;
+
+  e.preventDefault();
+  (document.activeElement?.nextSibling as HTMLDivElement | undefined)?.focus();
+}
+
+function handleKeyUp(e: KeyboardEvent) {
+  if (!document.activeElement) return;
+  if (document.activeElement.className.indexOf('search-result') === -1) return;
+  e.preventDefault();
+  (
+    document.activeElement?.previousSibling as HTMLDivElement | undefined
+  )?.focus();
 }
