@@ -21,10 +21,10 @@ function useLanguage(): useLanguageResult {
   isFromPath = !!(s && s.match(/^[a-z]{2}-[A-Z]{2}$/));
 
   if (isFromPath)
-    currentLanguage = languages.find(
+    currentLanguage = languages?.find(
       (item) => item.locale === location.pathname.split('/')[1],
     );
-  else currentLanguage = languages[0];
+  else currentLanguage = languages && languages[0] ? languages[0] : undefined;
 
   function switchLanguage(locale: string) {
     if (!languages || languages.length === 0) return;
@@ -60,7 +60,7 @@ function useLanguage(): useLanguageResult {
   return {
     isFromPath,
     currentLanguage,
-    languages,
+    languages: languages || [],
     switchLanguage,
     render,
   };
