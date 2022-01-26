@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <a href={ctx.themeConfig.github}>
-      <img src={GithubIcon} alt="Github" />
+      <img className="dark:invert" src={GithubIcon} alt="Github" />
     </a>
   );
 };
