@@ -64,6 +64,13 @@ export default (api: IApi) => {
       });
     }
 
+    // @TODO: 需要能够动态解析 theme 中导出的组件，现在是硬编码
+    api.writeTmpFile({
+      path: 'index.ts', content: `
+export { Message } from '${require.resolve('../client/theme-doc')}';
+    `
+    });
+
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
