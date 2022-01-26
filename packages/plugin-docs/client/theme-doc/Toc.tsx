@@ -34,7 +34,7 @@ export default () => {
       <p className="text-lg font-extrabold dark:text-white">
         {route.titles[0].title}
       </p>
-      <ul className="max-h-[calc(100vh-360px)] overflow-y-scroll fadeout py-2">
+      <ul className="max-h-[calc(100vh-360px)] overflow-y-scroll py-2">
         {titles.map((item: any) => {
           return (
             <li
