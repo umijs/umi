@@ -3,7 +3,7 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { winPath } from '@umijs/utils';
+import { resolve, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
@@ -24,15 +24,28 @@ export async function getRoutes(opts: { api: IApi }) {
     });
   }
 
+  function localPath(path: string) {
+    if (path.charAt(0) !== '.') {
+      return `./${path}`;
+    }
+    {
+      return path;
+    }
+  }
+
   for (const id of Object.keys(routes)) {
-    // TODO: cache for performance
-    const file = isAbsolute(routes[id].file)
-      ? routes[id].file
-      : join(
-          opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath,
-          routes[id].file,
-        );
-    routes[id].__content = readFileSync(file, 'utf-8');
+    if (routes[id].file) {
+      // TODO: cache for performance
+      const file = isAbsolute(routes[id].file)
+        ? routes[id].file
+        : resolve.sync(localPath(routes[id].file), {
+            basedir:
+              opts.api.config.conventionRoutes?.base ||
+              opts.api.paths.absPagesPath,
+            extensions: ['.js', '.jsx', '.tsx', '.ts'],
+          });
+      routes[id].__content = readFileSync(file, 'utf-8');
+    }
   }
 
   // layout routes
