@@ -7,7 +7,6 @@ export default (api: IApi) => {
     description: 'inspect umi plugins',
     fn({ args }) {
       const command = args._[0];
-      console.log('command', command);
 
       if (!command) {
         throw new Error(`
