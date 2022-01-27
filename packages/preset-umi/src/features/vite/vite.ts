@@ -1,6 +1,12 @@
 import type { IApi } from '../../types';
 
 export default (api: IApi) => {
+  api.describe({
+    enableBy() {
+      return !!api.args.vite;
+    },
+  });
+
   // scan deps into api.appData by default for vite mode
   api.register({
     key: 'onBeforeCompiler',
