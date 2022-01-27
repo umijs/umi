@@ -21,19 +21,6 @@ export default (props: SidebarProps) => {
     return null;
   }
 
-  let routes = Object.keys(appData.routes).map((id) => {
-    return appData.routes[id];
-  });
-  routes = routes.filter((route: any) => {
-    return route.path.startsWith('docs/');
-  });
-  routes = routes.map((route: any) => {
-    return {
-      ...route,
-      component: appData.routeComponents[route.id],
-    };
-  });
-
   let locale = currentLanguage?.locale;
   if (!isFromPath) locale = '';
 
