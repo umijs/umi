@@ -51,6 +51,7 @@ export async function dev(opts: IOpts) {
       ...(opts.beforeBabelPresets || []),
       ...(opts.extraBabelPresets || []),
     ],
+    extraEsbuildLoaderHandler: mfsu?.getEsbuildLoaderHandler() || [],
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
     hmr: true,

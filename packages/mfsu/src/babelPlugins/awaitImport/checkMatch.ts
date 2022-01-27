@@ -21,6 +21,7 @@ export function checkMatch({
   isExportAll,
   depth,
   cache,
+  filename,
 }: {
   value: string;
   path?: Babel.NodePath;
@@ -28,6 +29,7 @@ export function checkMatch({
   isExportAll?: boolean;
   depth?: number;
   cache?: Map<string, any>;
+  filename?: string;
 }): { isMatch: boolean; replaceValue: string } {
   let isMatch;
   let replaceValue = '';
@@ -74,6 +76,7 @@ export function checkMatch({
         isExportAll,
         depth: depth + 1,
         cache,
+        filename,
       });
     } else {
       isMatch = true;
@@ -89,7 +92,7 @@ export function checkMatch({
   }
 
   // @ts-ignore
-  const file = path?.hub.file.opts.filename;
+  const file = path?.hub.file.opts.filename || filename;
   opts.onTransformDeps?.({
     sourceValue: value,
     replaceValue,

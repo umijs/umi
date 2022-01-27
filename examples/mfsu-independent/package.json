@@ -1,8 +1,8 @@
 {
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server",
-    "start": "npm run dev"
+    "dev": "webpack serve --config webpack.config.js",
+    "dev:esbuild": "webpack serve --config webpack.config.esbuild.js"
   },
   "dependencies": {},
   "devDependencies": {
@@ -12,7 +12,8 @@
     "@babel/preset-typescript": "^7.16.0",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
-    "@umijs/mfsu": "4.0.0-beta.16",
+    "@umijs/bundler-webpack": "4.0.0-beta.18",
+    "@umijs/mfsu": "4.0.0-beta.18",
     "antd": "^4.17.2",
     "babel-loader": "^8.2.3",
     "framer-motion": "^5.3.3",
