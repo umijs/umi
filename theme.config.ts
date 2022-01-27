@@ -87,6 +87,16 @@ export default {
         },
       ],
     },
-    { path: '/blog', title: 'Blog', type: 'nav' },
+    {
+      path: '/blog',
+      title: 'Blog',
+      type: 'nav',
+      children: [
+        {
+          title: 'Blog',
+          children: ['mfsu-faster-then-vite'],
+        },
+      ],
+    },
   ],
 };
