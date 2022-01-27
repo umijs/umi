@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import React, { Fragment, useState } from 'react';
+import Announcement from './components/Announcement';
 import { ThemeContext } from './context';
 import Head from './Head';
 import Sidebar from './Sidebar';
@@ -23,6 +24,7 @@ export default (props: any) => {
            before:backdrop-blur-md before:absolute before:block dark:before:bg-opacity-[.85]
            before:w-full before:h-full before:z-[-1]"
         >
+          <Announcement />
           <Head setMenuOpened={setIsMenuOpened} isMenuOpened={isMenuOpened} />
         </div>
 

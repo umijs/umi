@@ -19,6 +19,10 @@ interface IContext {
       title: string;
       children: any[];
     }[];
+    announcement?: {
+      title: string;
+      link?: string;
+    };
   };
   location: {
     pathname: string;
