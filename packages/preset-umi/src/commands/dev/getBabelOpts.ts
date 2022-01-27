@@ -15,7 +15,7 @@ export async function getBabelOpts(opts: { api: IApi }) {
       pluginTransformRuntime: {},
       pluginLockCoreJS: {},
       pluginDynamicImportNode: false,
-      pluginAutoCSSModules: opts.api.userConfig.autoCSSModules,
+      pluginAutoCSSModules: opts.api.config.autoCSSModules,
     },
   ];
   const extraBabelPresets = await opts.api.applyPlugins({
