@@ -9,12 +9,25 @@ export default () => {
     return null;
   }
 
+  function handleClick() {
+    if (!currentLanguage) return;
+    if (languages.length === 2) {
+      switchLanguage(
+        languages[0].locale === currentLanguage.locale
+          ? languages[1].locale
+          : languages[0].locale,
+      );
+      return;
+    }
+    setExpanded((e) => !e);
+  }
+
   return (
     <div>
       <div
         className="w-24 rounded-lg overflow-hidden cursor-pointer border
        border-white hover:border-gray-100 dark:border-gray-800"
-        onClick={() => setExpanded((e) => !e)}
+        onClick={handleClick}
       >
         <p className="px-2 py-1 dark:text-white">{currentLanguage.text}</p>
       </div>

@@ -47,7 +47,7 @@ function useLanguage(): useLanguageResult {
     }
 
     let p = location.pathname.split('/');
-    p[0] = locale;
+    p[1] = locale;
     window.location.pathname = p.join('/');
   }
 
