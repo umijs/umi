@@ -29,6 +29,7 @@ export interface IOpts {
   entry: Record<string, string>;
   extraBabelPresets?: any[];
   extraBabelPlugins?: any[];
+  extraEsbuildLoaderHandler?: any[];
   babelPreset?: any;
   chainWebpack?: Function;
   modifyWebpackConfig?: Function;
@@ -62,6 +63,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     babelPreset: opts.babelPreset,
     extraBabelPlugins: opts.extraBabelPlugins || [],
     extraBabelPresets: opts.extraBabelPresets || [],
+    extraEsbuildLoaderHandler: opts.extraEsbuildLoaderHandler || [],
     browsers: getBrowsersList({
       targets: userConfig.targets,
     }),

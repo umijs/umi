@@ -23,6 +23,8 @@ import {
 import { Dep } from './dep/dep';
 import { DepBuilder } from './depBuilder/depBuilder';
 import { DepInfo } from './depInfo';
+import autoExportHandler from './esbuildHandlers/autoExport';
+import getAwaitImportHandler from './esbuildHandlers/awaitImport';
 import { Mode } from './types';
 import { makeArray } from './utils/makeArray';
 import { BuildDepPlugin } from './webpackPlugins/buildDepPlugin';
@@ -260,52 +262,63 @@ promise new Promise(resolve => {
     ];
   }
 
+  private getAwaitImportCollectOpts() {
+    return {
+      onTransformDeps: () => {},
+      onCollect: ({
+        file,
+        data,
+      }: {
+        file: string;
+        data: {
+          unMatched: Set<{ sourceValue: string }>;
+          matched: Set<{ sourceValue: string }>;
+        };
+      }) => {
+        this.depInfo.moduleGraph.onFileChange({
+          file,
+          // @ts-ignore
+          deps: [
+            ...Array.from(data.matched).map((item: any) => ({
+              file: item.sourceValue,
+              isDependency: true,
+              version: Dep.getDepVersion({
+                dep: item.sourceValue,
+                cwd: this.opts.cwd!,
+              }),
+            })),
+            ...Array.from(data.unMatched).map((item: any) => ({
+              file: getRealPath({
+                file,
+                dep: item.sourceValue,
+              }),
+              isDependency: false,
+            })),
+          ],
+        });
+      },
+      exportAllMembers: this.opts.exportAllMembers,
+      unMatchLibs: this.opts.unMatchLibs,
+      remoteName: this.opts.mfName,
+      alias: this.alias,
+      externals: this.externals,
+    };
+  }
+
   getBabelPlugins() {
+    return [autoExport, [awaitImport, this.getAwaitImportCollectOpts()]];
+  }
+
+  getEsbuildLoaderHandler() {
+    const cache = new Map<string, any>();
+    const checkOpts = this.getAwaitImportCollectOpts();
+
     return [
-      autoExport,
-      [
-        awaitImport,
-        {
-          onTransformDeps: () => {},
-          onCollect: ({
-            file,
-            data,
-          }: {
-            file: string;
-            data: {
-              unMatched: Set<{ sourceValue: string }>;
-              matched: Set<{ sourceValue: string }>;
-            };
-          }) => {
-            this.depInfo.moduleGraph.onFileChange({
-              file,
-              // @ts-ignore
-              deps: [
-                ...Array.from(data.matched).map((item: any) => ({
-                  file: item.sourceValue,
-                  isDependency: true,
-                  version: Dep.getDepVersion({
-                    dep: item.sourceValue,
-                    cwd: this.opts.cwd!,
-                  }),
-                })),
-                ...Array.from(data.unMatched).map((item: any) => ({
-                  file: getRealPath({
-                    file,
-                    dep: item.sourceValue,
-                  }),
-                  isDependency: false,
-                })),
-              ],
-            });
-          },
-          exportAllMembers: this.opts.exportAllMembers,
-          unMatchLibs: this.opts.unMatchLibs,
-          remoteName: this.opts.mfName,
-          alias: this.alias,
-          externals: this.externals,
-        },
-      ],
-    ];
+      autoExportHandler,
+      getAwaitImportHandler({
+        cache,
+        opts: checkOpts,
+      }),
+    ] as any[];
   }
 }

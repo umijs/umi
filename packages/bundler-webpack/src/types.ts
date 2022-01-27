@@ -1,4 +1,6 @@
 import type { Config as SwcConfig } from '@swc/core';
+import type { ImportSpecifier } from '@umijs/bundler-utils/compiled/es-module-lexer';
+import type { TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
 import type { Options as ProxyOptions } from '../compiled/http-proxy-middleware';
 import { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
@@ -77,4 +79,14 @@ export interface IConfig {
 export interface SwcOptions extends SwcConfig {
   sync?: boolean;
   parseMap?: boolean;
+}
+
+export interface IEsbuildLoaderHandlerParams {
+  code: string;
+  filePath: string;
+  imports: readonly ImportSpecifier[];
+  exports: readonly string[];
+}
+export interface IEsbuildLoaderOpts extends Partial<TransformOptions> {
+  handler?: Array<(opts: IEsbuildLoaderHandlerParams) => string>;
 }
