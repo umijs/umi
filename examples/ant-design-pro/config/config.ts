@@ -16,6 +16,7 @@ export default defineConfig({
   dva: {
     // hmr: true,
   },
+  srcTranspiler: 'esbuild',
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
