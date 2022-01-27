@@ -39,6 +39,7 @@ export async function dev(opts: IOpts) {
       getCacheDependency() {
         return {
           version: require('../package.json').version,
+          esbuildMode: !!opts.config.mfsu?.esbuild,
         };
       },
     });
