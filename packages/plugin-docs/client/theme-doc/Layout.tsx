@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { ThemeContext } from './context';
 import Head from './Head';
 import Sidebar from './Sidebar';
@@ -26,35 +26,41 @@ export default (props: any) => {
           <Head setMenuOpened={setIsMenuOpened} isMenuOpened={isMenuOpened} />
         </div>
 
-        <div className="w-full flex flex-row justify-center overflow-x-hidden">
-          <div className="container flex flex-row justify-center">
-            <div className="w-full lg:w-1/2 px-4 lg:px-0 m-8 z-20 lg:py-12">
-              <article className="flex-1">{props.children}</article>
+        {window.location.pathname === '/' ? (
+          <div>{props.children}</div>
+        ) : (
+          <Fragment>
+            <div className="w-full flex flex-row justify-center overflow-x-hidden">
+              <div className="container flex flex-row justify-center">
+                <div className="w-full lg:w-1/2 px-4 lg:px-0 m-8 z-20 lg:py-12">
+                  <article className="flex-1">{props.children}</article>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div
-          className="fixed left-0 top-0 w-1/4 flex flex-row
+            <div
+              className="fixed left-0 top-0 w-1/4 flex flex-row
           justify-center h-screen z-10 pt-20"
-        >
-          <div className="container flex flex-row justify-end">
-            <div className="hidden lg:block">
-              <Sidebar />
+            >
+              <div className="container flex flex-row justify-end">
+                <div className="hidden lg:block">
+                  <Sidebar />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div
-          className="fixed right-0 top-0 w-1/4 flex flex-row
+            <div
+              className="fixed right-0 top-0 w-1/4 flex flex-row
            justify-center h-screen z-10 pt-20 hidden lg:block"
-        >
-          <div className="container flex flex-row justify-start">
-            <div className="w-2/3 top-32">
-              <Toc />
+            >
+              <div className="container flex flex-row justify-start">
+                <div className="w-2/3 top-32">
+                  <Toc />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </Fragment>
+        )}
       </div>
 
       <div
