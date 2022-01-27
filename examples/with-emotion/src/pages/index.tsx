@@ -10,7 +10,6 @@ const BondiBlueCSS = css`
   color: rgb(0, 149, 182);
 `;
 
-console.log('BondiBlueCSS', BondiBlueCSS);
 const IndexPage: FC = () => {
   return (
     <div>
