@@ -15,6 +15,7 @@ export default (api: IApi) => {
       require.resolve('@umijs/plugins/dist/request'),
       require.resolve('@umijs/plugins/dist/locale'),
       require.resolve('@umijs/plugins/dist/qiankun'),
+      require.resolve('./plugins/alias'),
     ],
   };
 };
