@@ -14,6 +14,7 @@ export default () => {
       require.resolve('./features/mock/mock'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
+      require.resolve('./features/polyfill/swcPolyfill'),
       require.resolve('./features/tmpFiles/tmpFiles'),
       require.resolve('./features/transform/transform'),
       require.resolve('./features/lowImport/lowImport'),
