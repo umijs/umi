@@ -1,8 +1,8 @@
 // @ts-ignore
+import { history, useAccess, useIntl, useModel } from '@umijs/pro';
+// @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
 import React from 'react';
-// @ts-ignore
-import { history, useAccess, useIntl, useModel } from 'umi';
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
