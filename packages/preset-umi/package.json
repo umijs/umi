@@ -41,7 +41,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-router": "6.1.1",
-    "react-router-dom": "6.1.1"
+    "react-router-dom": "6.1.1",
+    "regenerator-runtime": "0.13.9"
   },
   "devDependencies": {
     "@types/body-parser": "1.19.2",
