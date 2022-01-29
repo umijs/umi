@@ -11,7 +11,7 @@
     "@ant-design/pro-layout": "6.28.1",
     "@ant-design/pro-table": "^2.61.9",
     "@antv/l7-react": "^2.3.9",
-    "@umijs/pro": "4.0.0-beta.18",
+    "@umijs/pro": "4.0.0-rc.1",
     "ahooks": "^3.1.4",
     "antd": "4.17.2",
     "classnames": "^2.3.1",

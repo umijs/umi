@@ -4,7 +4,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-beta.18"
+    "umi": "4.0.0-rc.1"
   },
   "devDependencies": {
     "@codesandbox/sandpack-react": "0.9.10",
