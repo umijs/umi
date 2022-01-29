@@ -266,9 +266,12 @@ const request: IRequest = (url, opts) => {
 export {
   useRequest,
   UseRequestProvider,
-  AxiosRequestConfig,
   request,
+};
+
+export type {
   AxiosInstance,
+  AxiosRequestConfig,
   AxiosResponse,
 };
 
