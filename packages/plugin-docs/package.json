@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.0.0-beta.18",
+  "version": "4.0.0-rc.1",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -31,7 +31,7 @@
     "@types/keymaster": "^1.6.30",
     "classnames": "^2.3.1",
     "tailwindcss": "^3.0.15",
-    "umi": "4.0.0-beta.18"
+    "umi": "4.0.0-rc.1"
   },
   "publishConfig": {
     "access": "public"
