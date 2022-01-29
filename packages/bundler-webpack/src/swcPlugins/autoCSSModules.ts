@@ -32,6 +32,7 @@ class AutoCSSModule extends Visitor {
       declarations[0].init &&
       declarations[0].init.type === 'AwaitExpression' &&
       declarations[0].init.argument.type === 'CallExpression' &&
+      declarations[0].init.argument.arguments.length &&
       declarations[0].init.argument.arguments[0].expression.type ===
         'StringLiteral' &&
       isStyleFile({
