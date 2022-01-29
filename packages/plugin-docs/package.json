@@ -12,12 +12,14 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "client"
   ],
   "scripts": {
     "build": "pnpm tsc",
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "build:extra": "pnpm build:css",
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {

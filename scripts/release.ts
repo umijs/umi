@@ -60,6 +60,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   // build packages
   logger.event('build packages');
   await $`npm run build:release`;
+  await $`npm run build:extra`;
 
   // generate changelog
   // TODO

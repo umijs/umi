@@ -3,6 +3,7 @@
   "scripts": {
     "bootstrap": "esno scripts/bootstrap.ts",
     "build": "pnpm -r --filter ./packages run build",
+    "build:extra": "pnpm -r --filter ./packages run build:extra",
     "build:release": "pnpm -r --filter ./packages run build -- --declarationMap false",
     "check:packageFiles": "esno scripts/checkPackageFiles.ts",
     "dep:update": "npx only-allow pnpm && pnpm up --interactive --latest --recursive",
