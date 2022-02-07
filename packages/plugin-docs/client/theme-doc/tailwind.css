@@ -87,6 +87,11 @@ article a {
   background-image: linear-gradient(transparent 60%, rgba(130, 199, 255, 0.28) 55%);
 }
 
+.link-with-underline {
+  @apply text-blue-600 mx-1 hover:text-blue-300 transition dark:text-blue-400;
+  background-image: linear-gradient(transparent 60%, rgba(130, 199, 255, 0.28) 55%);
+}
+
 /*article pre {*/
 /*  @apply pt-12;*/
 /*}*/
@@ -112,4 +117,29 @@ html {
 /** Anchor with offset for headings */
 h1, h2, h3, h4, h5, h6 {
   scroll-margin-top: 3em;
+}
+
+@layer components {
+
+  .features-dark {
+    @apply bg-gray-900;
+    background-image: radial-gradient(#2a2a2a 20%, transparent 20%);
+    background-size: 6px 6px;
+    width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .features {
+    background-image: radial-gradient(#f8f8f5 20%, transparent 20%);
+    background-color: white;
+    background-size: 6px 6px;
+    width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .features::-webkit-scrollbar {
+    display: none;
+  }
 }
