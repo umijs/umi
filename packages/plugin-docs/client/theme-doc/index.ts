@@ -1,3 +1,4 @@
+import './firefox-polyfill.css';
 import './tailwind.out.css';
 // Components
 export { default as Hero } from './components/Hero';
