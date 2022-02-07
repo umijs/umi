@@ -1,4 +1,5 @@
-import { dirname } from 'path';
+import { getCorejsVersion } from '@umijs/utils';
+import { dirname, join } from 'path';
 import autoCSSModules from './plugins/autoCSSModules';
 import dynamicImportNode from './plugins/dynamicImportNode';
 import lockCoreJS from './plugins/lockCoreJS';
@@ -28,7 +29,7 @@ export default (_context: any, opts: IOpts) => {
           modules: false,
           debug: false,
           useBuiltIns: 'entry',
-          corejs: '3',
+          corejs: getCorejsVersion(join(__dirname, '../package.json')),
           // 没必要，遇到了应该改 targets 配置
           forceAllTransforms: false,
           ignoreBrowserslistConfig: true,
