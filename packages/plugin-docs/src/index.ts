@@ -68,7 +68,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { Message, Hero } from '${require.resolve('../client/theme-doc')}';
+export { Message, Hero, Features, FeatureItem } from '${require.resolve('../client/theme-doc')}';
     `,
     });
 
