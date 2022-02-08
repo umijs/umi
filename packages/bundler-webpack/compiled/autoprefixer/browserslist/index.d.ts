@@ -37,6 +37,10 @@ declare namespace browserslist {
      */
     ignoreUnknownVersions?: boolean
     /**
+     * Throw a error if env is not found.
+     */
+    throwOnMissing?: boolean
+    /**
      * Disable security checks for extend query.
      */
     dangerousExtend?: boolean

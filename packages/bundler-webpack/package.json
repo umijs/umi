@@ -29,10 +29,10 @@
   },
   "dependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.4",
-    "@svgr/core": "6.0.0",
-    "@svgr/plugin-jsx": "^6.1.0",
-    "@svgr/plugin-svgo": "^6.1.0",
-    "@swc/core": "1.2.117",
+    "@svgr/core": "6.2.1",
+    "@svgr/plugin-jsx": "^6.2.1",
+    "@svgr/plugin-svgo": "^6.2.0",
+    "@swc/core": "1.2.137",
     "@types/hapi__joi": "17.1.8",
     "@umijs/babel-preset-umi": "4.0.0-rc.1",
     "@umijs/mfsu": "4.0.0-rc.1",
@@ -48,16 +48,16 @@
   "devDependencies": {
     "@types/express": "4.17.13",
     "@types/webpack-sources": "3.2.0",
-    "@types/ws": "8.2.1",
-    "autoprefixer": "10.4.0",
+    "@types/ws": "8.2.2",
+    "autoprefixer": "10.4.2",
     "babel-loader": "8.2.3",
     "compression": "1.7.4",
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "9.0.1",
     "css-minimizer-webpack-plugin": "3.1.1",
     "cssnano": "5.0.8",
-    "express": "4.17.1",
-    "fork-ts-checker-webpack-plugin": "7.0.0",
+    "express": "4.17.2",
+    "fork-ts-checker-webpack-plugin": "7.1.1",
     "http-proxy-middleware": "2.0.1",
     "less": "4.1.2",
     "less-loader": "10.2.0",
@@ -81,7 +81,7 @@
     "webpack-dev-middleware": "5.2.2",
     "webpack-manifest-plugin": "4.0.2",
     "webpack-sources": "3.2.2",
-    "ws": "8.2.3"
+    "ws": "8.5.0"
   },
   "publishConfig": {
     "access": "public"
