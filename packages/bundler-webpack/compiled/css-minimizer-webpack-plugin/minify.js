@@ -1,7 +1,20 @@
 "use strict";
 
+/** @typedef {import("./index.js").MinimizedResult} MinimizedResult */
+
+/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
+
+/** @typedef {import("./index.js").InternalResult} InternalResult */
+
+/**
+ * @template T
+ * @param {import("./index.js").InternalOptions<T>} options
+ * @returns {Promise<InternalResult>}
+ */
 const minify = async options => {
-  const minifyFns = typeof options.minify === "function" ? [options.minify] : options.minify;
+  const minifyFns = Array.isArray(options.minimizer.implementation) ? options.minimizer.implementation : [options.minimizer.implementation];
+  /** @type {InternalResult} */
+
   const result = {
     outputs: [],
     warnings: [],
@@ -11,7 +24,7 @@ const minify = async options => {
 
   for (let i = 0; i <= minifyFns.length - 1; i++) {
     const minifyFn = minifyFns[i];
-    const minifyOptions = Array.isArray(options.minifyOptions) ? options.minifyOptions[i] : options.minifyOptions;
+    const minifyOptions = Array.isArray(options.minimizer.options) ? options.minimizer.options[i] : options.minimizer.options;
     const prevResult = result.outputs.length > 0 ? result.outputs[result.outputs.length - 1] : {
       code: options.input,
       map: options.inputSourceMap
@@ -53,20 +66,21 @@ const minify = async options => {
 
   return result;
 };
+/**
+ * @param {string} options
+ * @returns {Promise<InternalResult>}
+ */
+
 
 async function transform(options) {
   // 'use strict' => this === undefined (Clean Scope)
   // Safer for possible security issues, albeit not critical at all here
   // eslint-disable-next-line no-new-func, no-param-reassign
   const evaluatedOptions = new Function("exports", "require", "module", "__filename", "__dirname", `'use strict'\nreturn ${options}`)(exports, require, module, __filename, __dirname);
-  const result = await minify(evaluatedOptions);
-
-  if (result.error) {
-    throw result.error;
-  } else {
-    return result;
-  }
+  return minify(evaluatedOptions);
 }
 
-module.exports.minify = minify;
-module.exports.transform = transform;
+module.exports = {
+  minify,
+  transform
+};

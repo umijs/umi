@@ -7,7 +7,7 @@
   "dependencies": {
     "@react-three/drei": "^8.8.3",
     "@react-three/fiber": "^7.0.26",
-    "three": "^0.136.0",
+    "three": "^0.137.5",
     "troika-three-text": "^0.45.0",
     "umi": "4.0.0-rc.1"
   },

@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "umi": "4.0.0-rc.1",
-    "valtio": "^1.2.9"
+    "valtio": "^1.2.11"
   },
   "devDependencies": {
     "@types/three": "^0.137.0"
