@@ -47,6 +47,7 @@ function esmi(opts: {
 
       // apply esbuild plugins
       config.optimizeDeps.esbuildOptions ??= {};
+      // @ts-ignore
       config.optimizeDeps.esbuildOptions!.plugins = [
         // transform require call to import
         requireToImport({ exclude: config.optimizeDeps.exclude }),
@@ -55,6 +56,7 @@ function esmi(opts: {
           exclude: config.optimizeDeps.exclude,
           resolver: opts.resolver,
         }),
+        // @ts-ignore
       ].concat(config.optimizeDeps.esbuildOptions!.plugins || []);
     },
 
