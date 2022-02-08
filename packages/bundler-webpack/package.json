@@ -43,7 +43,7 @@
     "node-libs-browser": "2.2.1",
     "postcss": "^8.4.6",
     "postcss-preset-env": "7.3.1",
-    "react-error-overlay": "6.0.10"
+    "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
     "@types/express": "4.17.13",
