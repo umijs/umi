@@ -11,6 +11,7 @@ const content = readFileSync(path, 'utf-8');
 const TO_REPLACE = `if(j.uid<0)j.uid+=4294967296;if(j.gid<0)j.gid+=4294967296;`;
 const REPLACED = `/*${TO_REPLACE}*/`;
 
+// ref: https://github.com/isaacs/node-graceful-fs/commit/e61a20a052b838f420b98195c232a824a6ac04ee
 console.log('patch ncc');
 if (content.includes(REPLACED)) {
   console.log('already patched');
