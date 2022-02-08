@@ -12,6 +12,6 @@
     "umi": "4.0.0-rc.1"
   },
   "devDependencies": {
-    "@types/three": "^0.136.1"
+    "@types/three": "^0.137.0"
   }
 }
