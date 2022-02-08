@@ -44,5 +44,7 @@ async function transform(options) {
   return minify(evaluatedOptions);
 }
 
-module.exports.minify = minify;
-module.exports.transform = transform;
+module.exports = {
+  minify,
+  transform
+};

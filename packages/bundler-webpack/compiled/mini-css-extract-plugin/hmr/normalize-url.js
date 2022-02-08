@@ -1,6 +1,11 @@
 "use strict";
 
 /* eslint-disable */
+
+/**
+ * @param {string[]} pathComponents
+ * @returns {string}
+ */
 function normalizeUrl(pathComponents) {
   return pathComponents.reduce(function (accumulator, item) {
     switch (item) {
@@ -16,8 +21,15 @@ function normalizeUrl(pathComponents) {
     }
 
     return accumulator;
-  }, []).join("/");
+  },
+  /** @type {string[]} */
+  []).join("/");
 }
+/**
+ * @param {string} urlString
+ * @returns {string}
+ */
+
 
 module.exports = function (urlString) {
   urlString = urlString.trim();
