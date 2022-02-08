@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@hapi/joi": "17.1.1",
-    "@types/hapi__joi": "17.1.7",
+    "@types/hapi__joi": "17.1.8",
     "dotenv": "10.0.0",
     "just-diff": "3.1.1",
     "tapable": "2.2.1"

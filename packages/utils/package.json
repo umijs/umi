@@ -24,7 +24,7 @@
     "clipboardy": "2.3.0"
   },
   "devDependencies": {
-    "@types/color": "3.0.2",
+    "@types/color": "3.0.3",
     "@types/cross-spawn": "6.0.2",
     "@types/debug": "4.1.7",
     "@types/lodash": "4.14.177",
@@ -49,7 +49,7 @@
     "mustache": "4.2.0",
     "pkg-up": "3.1.0",
     "portfinder": "1.0.28",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "prompts": "2.4.2",
     "resolve": "1.20.0",
     "rimraf": "3.0.2",

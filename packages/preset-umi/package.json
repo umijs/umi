@@ -33,7 +33,7 @@
     "@umijs/renderer-react": "4.0.0-rc.1",
     "@umijs/server": "4.0.0-rc.1",
     "@umijs/utils": "4.0.0-rc.1",
-    "core-js": "3.19.2",
+    "core-js": "3.20.3",
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.8.3",
     "magic-string": "0.25.7",

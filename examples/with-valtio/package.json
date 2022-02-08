@@ -9,6 +9,6 @@
     "valtio": "^1.2.9"
   },
   "devDependencies": {
-    "@types/three": "^0.136.1"
+    "@types/three": "^0.137.0"
   }
 }
