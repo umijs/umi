@@ -116,7 +116,6 @@ export async function addJavaScriptRules(opts: IOpts) {
           ].filter(Boolean),
         });
     } else if (srcTranspiler === Transpiler.swc) {
-      // TODO: support javascript
       rule
         .use('swc-loader')
         .loader(require.resolve('../loader/swc'))

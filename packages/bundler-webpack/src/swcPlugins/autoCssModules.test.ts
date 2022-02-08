@@ -53,24 +53,6 @@ test('css modules', () => {
   );
 });
 
-// test('css with top level await', () => {
-//   expect(
-//     doTransform({ code: `const styles = await import('a.css');` }),
-//   ).toEqual(`const styles = await import('a.css?modules');`);
-//   expect(doTransform({ code: `await import('a.css');` })).toEqual(
-//     `await import('a.css');`,
-//   );
-// });
-
-// test('none css with top level await', () => {
-//   expect(doTransform({ code: `const styles = await import('a');` })).toEqual(
-//     `const styles = await import('a');`,
-//   );
-//   expect(doTransform({ code: `await import('a');` })).toEqual(
-//     `await import('a');`,
-//   );
-// });
-
 test('no css modules', () => {
   expect(doTransform({ code: `import 'a.css';` })).toEqual(`import 'a.css';`);
 });
