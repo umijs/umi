@@ -24,7 +24,7 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@svgr/core": "6.0.0",
+    "@svgr/core": "6.2.1",
     "@umijs/bundler-utils": "4.0.0-rc.1",
     "@umijs/utils": "4.0.0-rc.1",
     "@vitejs/plugin-legacy": "1.6.4",
@@ -36,7 +36,7 @@
     "vite": "2.7.6"
   },
   "devDependencies": {
-    "express": "4.17.1"
+    "express": "4.17.2"
   },
   "publishConfig": {
     "access": "public"

@@ -1,7 +1,7 @@
 import Container from './container'
 import Node, { NodeProps } from './node'
 
-interface CommentRaws {
+interface CommentRaws extends Record<string, unknown> {
   /**
    * The space symbols before the node.
    */
