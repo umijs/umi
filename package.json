@@ -58,8 +58,8 @@
     "regenerator-runtime": "^0.13.9",
     "resolve": "^1.20.0",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.2",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5",
     "uglify-js": "^3.14.4",
     "umi": "workspace:*",
     "zx": "^4.3.0"
