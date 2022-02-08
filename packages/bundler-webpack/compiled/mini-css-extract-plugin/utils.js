@@ -1,25 +1,28 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SINGLE_DOT_PATH_SEGMENT = exports.MODULE_TYPE = exports.AUTO_PUBLIC_PATH = exports.ABSOLUTE_PUBLIC_PATH = void 0;
-exports.compareModulesByIdentifier = compareModulesByIdentifier;
-exports.evalModuleCode = evalModuleCode;
-exports.findModuleById = findModuleById;
-exports.getUndoPath = getUndoPath;
-exports.stringifyRequest = stringifyRequest;
-exports.trueFn = trueFn;
+const NativeModule = require("module");
 
-var _module = _interopRequireDefault(require("module"));
+const path = require("path");
+/** @typedef {import("webpack").Compilation} Compilation */
 
-var _path = _interopRequireDefault(require("path"));
+/** @typedef {import("webpack").Module} Module */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/** @typedef {import("webpack").LoaderContext<any>} LoaderContext */
+
+/**
+ * @returns {boolean}
+ */
+
 
 function trueFn() {
   return true;
 }
+/**
+ * @param {Compilation} compilation
+ * @param {string | number} id
+ * @returns {null | Module}
+ */
+
 
 function findModuleById(compilation, id) {
   const {
@@ -37,18 +40,33 @@ function findModuleById(compilation, id) {
 
   return null;
 }
+/**
+ * @param {LoaderContext} loaderContext
+ * @param {string | Buffer} code
+ * @param {string} filename
+ * @returns {object}
+ */
+
 
 function evalModuleCode(loaderContext, code, filename) {
-  const module = new _module.default(filename, loaderContext);
-  module.paths = _module.default._nodeModulePaths(loaderContext.context); // eslint-disable-line no-underscore-dangle
+  // @ts-ignore
+  const module = new NativeModule(filename, loaderContext); // @ts-ignore
 
-  module.filename = filename;
+  module.paths = NativeModule._nodeModulePaths(loaderContext.context); // eslint-disable-line no-underscore-dangle
+
+  module.filename = filename; // @ts-ignore
 
   module._compile(code, filename); // eslint-disable-line no-underscore-dangle
 
 
   return module.exports;
 }
+/**
+ * @param {string} a
+ * @param {string} b
+ * @returns {0 | 1 | -1}
+ */
+
 
 function compareIds(a, b) {
   if (typeof a !== typeof b) {
@@ -65,29 +83,45 @@ function compareIds(a, b) {
 
   return 0;
 }
+/**
+ * @param {Module} a
+ * @param {Module} b
+ * @returns {0 | 1 | -1}
+ */
+
 
 function compareModulesByIdentifier(a, b) {
   return compareIds(a.identifier(), b.identifier());
 }
 
 const MODULE_TYPE = "css/mini-extract";
-exports.MODULE_TYPE = MODULE_TYPE;
 const AUTO_PUBLIC_PATH = "__mini_css_extract_plugin_public_path_auto__";
-exports.AUTO_PUBLIC_PATH = AUTO_PUBLIC_PATH;
 const ABSOLUTE_PUBLIC_PATH = "webpack:///mini-css-extract-plugin/";
-exports.ABSOLUTE_PUBLIC_PATH = ABSOLUTE_PUBLIC_PATH;
 const SINGLE_DOT_PATH_SEGMENT = "__mini_css_extract_plugin_single_dot_path_segment__";
-exports.SINGLE_DOT_PATH_SEGMENT = SINGLE_DOT_PATH_SEGMENT;
+/**
+ * @param {string} str
+ * @returns {boolean}
+ */
 
 function isAbsolutePath(str) {
-  return _path.default.posix.isAbsolute(str) || _path.default.win32.isAbsolute(str);
+  return path.posix.isAbsolute(str) || path.win32.isAbsolute(str);
 }
 
 const RELATIVE_PATH_REGEXP = /^\.\.?[/\\]/;
+/**
+ * @param {string} str
+ * @returns {boolean}
+ */
 
 function isRelativePath(str) {
   return RELATIVE_PATH_REGEXP.test(str);
 } // TODO simplify for the next major release
+
+/**
+ * @param {LoaderContext} loaderContext
+ * @param {string} request
+ * @returns {string}
+ */
 
 
 function stringifyRequest(loaderContext, request) {
@@ -106,7 +140,7 @@ function stringifyRequest(loaderContext, request) {
     let singlePath = splittedPart ? splittedPart[1] : part;
 
     if (isAbsolutePath(singlePath) && context) {
-      singlePath = _path.default.relative(context, singlePath);
+      singlePath = path.relative(context, singlePath);
 
       if (isAbsolutePath(singlePath)) {
         // If singlePath still matches an absolute path, singlePath was on a different drive than context.
@@ -124,6 +158,13 @@ function stringifyRequest(loaderContext, request) {
     return singlePath.replace(/\\/g, "/") + query;
   }).join("!"));
 }
+/**
+ * @param {string} filename
+ * @param {string} outputPath
+ * @param {boolean} enforceRelative
+ * @returns {string}
+ */
+
 
 function getUndoPath(filename, outputPath, enforceRelative) {
   let depth = -1;
@@ -157,3 +198,16 @@ function getUndoPath(filename, outputPath, enforceRelative) {
 
   return depth > 0 ? `${"../".repeat(depth)}${append}` : enforceRelative ? `./${append}` : append;
 }
+
+module.exports = {
+  trueFn,
+  findModuleById,
+  evalModuleCode,
+  compareModulesByIdentifier,
+  MODULE_TYPE,
+  AUTO_PUBLIC_PATH,
+  ABSOLUTE_PUBLIC_PATH,
+  SINGLE_DOT_PATH_SEGMENT,
+  stringifyRequest,
+  getUndoPath
+};

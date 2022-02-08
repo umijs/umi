@@ -45,10 +45,10 @@ export declare type LogProviderCallback = (provider: LogProvider) => LogProvider
  * Use types based on the events listeners from http-proxy
  * https://github.com/DefinitelyTyped/DefinitelyTyped/blob/51504fd999031b7f025220fab279f1b2155cbaff/types/http-proxy/index.d.ts
  */
-export declare type OnErrorCallback = (err: Error, req: http.IncomingMessage, res: http.ServerResponse, target?: string | Partial<url.Url>) => void;
-export declare type OnProxyResCallback = (proxyRes: http.IncomingMessage, req: http.IncomingMessage, res: http.ServerResponse) => void;
-export declare type OnProxyReqCallback = (proxyReq: http.ClientRequest, req: http.IncomingMessage, res: http.ServerResponse, options: httpProxy.ServerOptions) => void;
-export declare type OnProxyReqWsCallback = (proxyReq: http.ClientRequest, req: http.IncomingMessage, socket: net.Socket, options: httpProxy.ServerOptions, head: any) => void;
-export declare type OnCloseCallback = (proxyRes: http.IncomingMessage, proxySocket: net.Socket, proxyHead: any) => void;
+export declare type OnErrorCallback = (err: Error, req: Request, res: Response, target?: string | Partial<url.Url>) => void;
+export declare type OnProxyResCallback = (proxyRes: http.IncomingMessage, req: Request, res: Response) => void;
+export declare type OnProxyReqCallback = (proxyReq: http.ClientRequest, req: Request, res: Response, options: httpProxy.ServerOptions) => void;
+export declare type OnProxyReqWsCallback = (proxyReq: http.ClientRequest, req: Request, socket: net.Socket, options: httpProxy.ServerOptions, head: any) => void;
+export declare type OnCloseCallback = (proxyRes: Response, proxySocket: net.Socket, proxyHead: any) => void;
 export declare type OnOpenCallback = (proxySocket: net.Socket) => void;
 export {};

@@ -1,14 +1,5 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.esbuildMinify = esbuildMinify;
-exports.swcMinify = swcMinify;
-exports.terserMinify = terserMinify;
-exports.throttleAll = throttleAll;
-exports.uglifyJsMinify = uglifyJsMinify;
-
 /** @typedef {import("source-map").RawSourceMap} RawSourceMap */
 
 /** @typedef {import("terser").FormatOptions} TerserFormatOptions */
@@ -29,9 +20,7 @@ exports.uglifyJsMinify = uglifyJsMinify;
 
 /** @typedef {import("./index.js").PredefinedOptions} PredefinedOptions */
 
-/**
- * @typedef {{ [key: string]: any }} CustomOptions
- */
+/** @typedef {import("./index.js").CustomOptions} CustomOptions */
 
 /**
  * @typedef {Array<string>} ExtractedComments
@@ -687,4 +676,12 @@ esbuildMinify.getMinimizerVersion = () => {
   }
 
   return packageJson && packageJson.version;
+};
+
+module.exports = {
+  throttleAll,
+  terserMinify,
+  uglifyJsMinify,
+  swcMinify,
+  esbuildMinify
 };

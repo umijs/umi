@@ -7,15 +7,23 @@
   no-console,
   func-names
 */
+
+/** @typedef {any} TODO */
 var normalizeUrl = require("./normalize-url");
 
 var srcByModuleId = Object.create(null);
 var noDocument = typeof document === "undefined";
 var forEach = Array.prototype.forEach;
+/**
+ * @param {function} fn
+ * @param {number} time
+ * @returns {(function(): void)|*}
+ */
 
 function debounce(fn, time) {
   var timeout = 0;
   return function () {
+    // @ts-ignore
     var self = this; // eslint-disable-next-line prefer-rest-params
 
     var args = arguments;
@@ -24,19 +32,27 @@ function debounce(fn, time) {
       return fn.apply(self, args);
     };
 
-    clearTimeout(timeout);
+    clearTimeout(timeout); // @ts-ignore
+
     timeout = setTimeout(functionCall, time);
   };
 }
 
 function noop() {}
+/**
+ * @param {TODO} moduleId
+ * @returns {TODO}
+ */
+
 
 function getCurrentScriptUrl(moduleId) {
   var src = srcByModuleId[moduleId];
 
   if (!src) {
     if (document.currentScript) {
-      src = document.currentScript.src;
+      src =
+      /** @type {HTMLScriptElement} */
+      document.currentScript.src;
     } else {
       var scripts = document.getElementsByTagName("script");
       var lastScriptTag = scripts[scripts.length - 1];
@@ -48,6 +64,11 @@ function getCurrentScriptUrl(moduleId) {
 
     srcByModuleId[moduleId] = src;
   }
+  /**
+   * @param {string} fileMap
+   * @returns {null | string[]}
+   */
+
 
   return function (fileMap) {
     if (!src) {
@@ -71,6 +92,11 @@ function getCurrentScriptUrl(moduleId) {
     });
   };
 }
+/**
+ * @param {TODO} el
+ * @param {string} [url]
+ */
+
 
 function updateCss(el, url) {
   if (!url) {
@@ -82,7 +108,9 @@ function updateCss(el, url) {
     url = el.href.split("?")[0];
   }
 
-  if (!isUrlRequest(url)) {
+  if (!isUrlRequest(
+  /** @type {string} */
+  url)) {
     return;
   }
 
@@ -124,21 +152,34 @@ function updateCss(el, url) {
     el.parentNode.appendChild(newEl);
   }
 }
+/**
+ * @param {string} href
+ * @param {TODO} src
+ * @returns {TODO}
+ */
+
 
 function getReloadUrl(href, src) {
   var ret; // eslint-disable-next-line no-param-reassign
 
-  href = normalizeUrl(href, {
-    stripWWW: false
-  }); // eslint-disable-next-line array-callback-return
-
-  src.some(function (url) {
+  href = normalizeUrl(href);
+  src.some(
+  /**
+   * @param {string} url
+   */
+  // eslint-disable-next-line array-callback-return
+  function (url) {
     if (href.indexOf(src) > -1) {
       ret = url;
     }
   });
   return ret;
 }
+/**
+ * @param {string} [src]
+ * @returns {boolean}
+ */
+
 
 function reloadStyle(src) {
   if (!src) {
@@ -180,6 +221,11 @@ function reloadAll() {
     updateCss(el);
   });
 }
+/**
+ * @param {string} url
+ * @returns {boolean}
+ */
+
 
 function isUrlRequest(url) {
   // An URL is not an request if
@@ -190,6 +236,12 @@ function isUrlRequest(url) {
 
   return true;
 }
+/**
+ * @param {TODO} moduleId
+ * @param {TODO} options
+ * @returns {TODO}
+ */
+
 
 module.exports = function (moduleId, options) {
   if (noDocument) {

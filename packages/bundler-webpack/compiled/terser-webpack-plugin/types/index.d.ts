@@ -1,106 +1,4 @@
-export default TerserPlugin;
-export type Schema = import('../schema-utils/declarations/validate').Schema;
-export type Compiler = import('../../webpack').Compiler;
-export type Compilation = import('../../webpack').Compilation;
-export type WebpackError = import('../../webpack').WebpackError;
-export type Asset = import('../../webpack').Asset;
-export type TerserECMA = import('./utils').TerserECMA;
-export type TerserOptions = import('./utils').TerserOptions;
-export type CustomOptions = import('./utils').CustomOptions;
-export type JestWorker = import('../jest-worker').Worker;
-export type RawSourceMap = import('../source-map').RawSourceMap;
-export type Rule = RegExp | string;
-export type Rules = Rule[] | Rule;
-export type ExtractCommentsFunction = (
-  astNode: any,
-  comment: {
-    value: string;
-    type: "comment1" | "comment2" | "comment3" | "comment4";
-    pos: number;
-    line: number;
-    col: number;
-  }
-) => boolean;
-export type ExtractCommentsCondition =
-  | boolean
-  | "all"
-  | "some"
-  | RegExp
-  | ExtractCommentsFunction;
-export type ExtractCommentsFilename = string | ((fileData: any) => string);
-export type ExtractCommentsBanner =
-  | string
-  | boolean
-  | ((commentsFile: string) => string);
-export type ExtractCommentsObject = {
-  condition?: ExtractCommentsCondition | undefined;
-  filename?: ExtractCommentsFilename | undefined;
-  banner?: ExtractCommentsBanner | undefined;
-};
-export type ExtractCommentsOptions =
-  | ExtractCommentsCondition
-  | ExtractCommentsObject;
-export type Input = {
-  [file: string]: string;
-};
-export type MinimizedResult = {
-  code: string;
-  map?: import('../source-map').RawSourceMap | undefined;
-  errors?: (string | Error)[] | undefined;
-  warnings?: (string | Error)[] | undefined;
-  extractedComments?: string[] | undefined;
-};
-export type PredefinedOptions = {
-  module?: boolean | undefined;
-  ecma?: any;
-};
-export type MinimizerImplementationAndOptions<T> = {
-  implementation: MinimizerImplementation<T>;
-  options: PredefinedOptions & T;
-};
-export type InternalOptions<T> = {
-  name: string;
-  input: string;
-  inputSourceMap: RawSourceMap | undefined;
-  extractComments: ExtractCommentsOptions | undefined;
-  minimizer: MinimizerImplementationAndOptions<T>;
-};
-export type MinimizerWorker<T> = Worker & {
-  transform: (options: string) => MinimizedResult;
-  minify: (options: InternalOptions<T>) => MinimizedResult;
-};
-export type BasicMinimizerImplementation<T> = (
-  input: Input,
-  sourceMap: RawSourceMap | undefined,
-  minifyOptions: T,
-  extractComments: ExtractCommentsOptions | undefined
-) => Promise<MinimizedResult>;
-export type MinimizeFunctionHelpers = {
-  getMinimizerVersion?: (() => string | undefined) | undefined;
-};
-export type MinimizerImplementation<T> = BasicMinimizerImplementation<T> &
-  MinimizeFunctionHelpers;
-export type Parallel = undefined | boolean | number;
-export type BasePluginOptions = {
-  test?: Rules | undefined;
-  include?: Rules | undefined;
-  exclude?: Rules | undefined;
-  extractComments?: ExtractCommentsOptions | undefined;
-  parallel?: Parallel;
-};
-export type InferDefaultType<T> = T extends infer U
-  ? U
-  : import('./utils').CustomOptions;
-export type DefinedDefaultMinimizerAndOptions<T> =
-  InferDefaultType<T> extends TerserOptions
-    ? {
-        minify?: MinimizerImplementation<InferDefaultType<T>> | undefined;
-        terserOptions?: InferDefaultType<T> | undefined;
-      }
-    : {
-        minify: MinimizerImplementation<InferDefaultType<T>>;
-        terserOptions?: InferDefaultType<T> | undefined;
-      };
+export = TerserPlugin;
 /** @typedef {import('../schema-utils/declarations/validate').Schema} Schema */
 /** @typedef {import('../../webpack').Compiler} Compiler */
 /** @typedef {import('../../webpack').Compilation} Compilation */
@@ -108,7 +6,6 @@ export type DefinedDefaultMinimizerAndOptions<T> =
 /** @typedef {import('../../webpack').Asset} Asset */
 /** @typedef {import('./utils').TerserECMA} TerserECMA */
 /** @typedef {import('./utils').TerserOptions} TerserOptions */
-/** @typedef {import('./utils').CustomOptions} CustomOptions */
 /** @typedef {import('../jest-worker').Worker} JestWorker */
 /** @typedef {import('../source-map').RawSourceMap} RawSourceMap */
 /** @typedef {RegExp | string} Rule */
@@ -138,9 +35,6 @@ export type DefinedDefaultMinimizerAndOptions<T> =
  * @typedef {ExtractCommentsCondition | ExtractCommentsObject} ExtractCommentsOptions
  */
 /**
- * @typedef {{ [file: string]: string }} Input
- */
-/**
  * @typedef {Object} MinimizedResult
  * @property {string} code
  * @property {RawSourceMap} [map]
@@ -149,35 +43,30 @@ export type DefinedDefaultMinimizerAndOptions<T> =
  * @property {Array<string>} [extractedComments]
  */
 /**
+ * @typedef {{ [file: string]: string }} Input
+ */
+/**
+ * @typedef {{ [key: string]: any }} CustomOptions
+ */
+/**
+ * @template T
+ * @typedef {T extends infer U ? U : CustomOptions} InferDefaultType
+ */
+/**
  * @typedef {Object} PredefinedOptions
  * @property {boolean} [module]
- * @property {any} [ecma]
+ * @property {TerserECMA} [ecma]
  */
 /**
  * @template T
- * @typedef {Object} MinimizerImplementationAndOptions
- * @property {MinimizerImplementation<T>} implementation
- * @property {PredefinedOptions & T} options
- */
-/**
- * @template T
- * @typedef {Object} InternalOptions
- * @property {string} name
- * @property {string} input
- * @property {RawSourceMap | undefined} inputSourceMap
- * @property {ExtractCommentsOptions | undefined} extractComments
- * @property {MinimizerImplementationAndOptions<T>} minimizer
- */
-/**
- * @template T
- * @typedef {JestWorker & { transform: (options: string) => MinimizedResult, minify: (options: InternalOptions<T>) => MinimizedResult }} MinimizerWorker
+ * @typedef {PredefinedOptions & InferDefaultType<T>} MinimizerOptions
  */
 /**
  * @template T
  * @callback BasicMinimizerImplementation
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {T} minifyOptions
+ * @param {MinimizerOptions<T>} minifyOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @returns {Promise<MinimizedResult>}
  */
@@ -187,7 +76,20 @@ export type DefinedDefaultMinimizerAndOptions<T> =
  */
 /**
  * @template T
- * @typedef {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers } MinimizerImplementation
+ * @typedef {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} MinimizerImplementation
+ */
+/**
+ * @template T
+ * @typedef {Object} InternalOptions
+ * @property {string} name
+ * @property {string} input
+ * @property {RawSourceMap | undefined} inputSourceMap
+ * @property {ExtractCommentsOptions | undefined} extractComments
+ * @property {{ implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> }} minimizer
+ */
+/**
+ * @template T
+ * @typedef {JestWorker & { transform: (options: string) => MinimizedResult, minify: (options: InternalOptions<T>) => MinimizedResult }} MinimizerWorker
  */
 /**
  * @typedef {undefined | boolean | number} Parallel
@@ -202,16 +104,16 @@ export type DefinedDefaultMinimizerAndOptions<T> =
  */
 /**
  * @template T
- * @typedef {T extends infer U ? U : CustomOptions} InferDefaultType
+ * @typedef {T extends TerserOptions ? { minify?: MinimizerImplementation<T> | undefined, terserOptions?: MinimizerOptions<T> | undefined } : { minify: MinimizerImplementation<T>, terserOptions?: MinimizerOptions<T> | undefined }} DefinedDefaultMinimizerAndOptions
  */
 /**
  * @template T
- * @typedef {InferDefaultType<T> extends TerserOptions ? { minify?: MinimizerImplementation<InferDefaultType<T>> | undefined, terserOptions?: InferDefaultType<T> | undefined } : { minify: MinimizerImplementation<InferDefaultType<T>>, terserOptions?: InferDefaultType<T> | undefined }} DefinedDefaultMinimizerAndOptions
+ * @typedef {BasePluginOptions & { minimizer: { implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> } }} InternalPluginOptions
  */
 /**
- * @template T
+ * @template [T=TerserOptions]
  */
-declare class TerserPlugin<T = TerserOptions> {
+declare class TerserPlugin<T = import('../../terser').MinifyOptions> {
   /**
    * @private
    * @param {any} input
@@ -220,7 +122,7 @@ declare class TerserPlugin<T = TerserOptions> {
   private static isSourceMap;
   /**
    * @private
-   * @param {Error | string} warning
+   * @param {unknown} warning
    * @param {string} file
    * @returns {Error}
    */
@@ -254,19 +156,11 @@ declare class TerserPlugin<T = TerserOptions> {
       | (BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>)
       | undefined
   );
-  options: {
-    test: Rules;
-    extractComments: ExtractCommentsOptions;
-    parallel: number | boolean;
-    include: Rules | undefined;
-    exclude: Rules | undefined;
-    minimizer: {
-      implementation: MinimizerImplementation<
-        import('../../terser').MinifyOptions & InferDefaultType<T>
-      >;
-      options: InferDefaultType<T>;
-    };
-  };
+  /**
+   * @private
+   * @type {InternalPluginOptions<T>}
+   */
+  private options;
   /**
    * @private
    * @param {Compiler} compiler
@@ -283,13 +177,153 @@ declare class TerserPlugin<T = TerserOptions> {
   apply(compiler: Compiler): void;
 }
 declare namespace TerserPlugin {
-  export { terserMinify };
-  export { uglifyJsMinify };
-  export { swcMinify };
-  export { esbuildMinify };
+  export {
+    terserMinify,
+    uglifyJsMinify,
+    swcMinify,
+    esbuildMinify,
+    Schema,
+    Compiler,
+    Compilation,
+    WebpackError,
+    Asset,
+    TerserECMA,
+    TerserOptions,
+    JestWorker,
+    RawSourceMap,
+    Rule,
+    Rules,
+    ExtractCommentsFunction,
+    ExtractCommentsCondition,
+    ExtractCommentsFilename,
+    ExtractCommentsBanner,
+    ExtractCommentsObject,
+    ExtractCommentsOptions,
+    MinimizedResult,
+    Input,
+    CustomOptions,
+    InferDefaultType,
+    PredefinedOptions,
+    MinimizerOptions,
+    BasicMinimizerImplementation,
+    MinimizeFunctionHelpers,
+    MinimizerImplementation,
+    InternalOptions,
+    MinimizerWorker,
+    Parallel,
+    BasePluginOptions,
+    DefinedDefaultMinimizerAndOptions,
+    InternalPluginOptions,
+  };
 }
-import { Worker } from '../jest-worker';
+type Compiler = import('../../webpack').Compiler;
+type BasePluginOptions = {
+  test?: Rules | undefined;
+  include?: Rules | undefined;
+  exclude?: Rules | undefined;
+  extractComments?: ExtractCommentsOptions | undefined;
+  parallel?: Parallel;
+};
+type DefinedDefaultMinimizerAndOptions<T> = T extends TerserOptions
+  ? {
+      minify?: MinimizerImplementation<T> | undefined;
+      terserOptions?: MinimizerOptions<T> | undefined;
+    }
+  : {
+      minify: MinimizerImplementation<T>;
+      terserOptions?: MinimizerOptions<T> | undefined;
+    };
 import { terserMinify } from './utils';
 import { uglifyJsMinify } from './utils';
 import { swcMinify } from './utils';
 import { esbuildMinify } from './utils';
+type Schema = import('../schema-utils/declarations/validate').Schema;
+type Compilation = import('../../webpack').Compilation;
+type WebpackError = import('../../webpack').WebpackError;
+type Asset = import('../../webpack').Asset;
+type TerserECMA = import('./utils').TerserECMA;
+type TerserOptions = import('./utils').TerserOptions;
+type JestWorker = import('../jest-worker').Worker;
+type RawSourceMap = import('../source-map').RawSourceMap;
+type Rule = RegExp | string;
+type Rules = Rule[] | Rule;
+type ExtractCommentsFunction = (
+  astNode: any,
+  comment: {
+    value: string;
+    type: "comment1" | "comment2" | "comment3" | "comment4";
+    pos: number;
+    line: number;
+    col: number;
+  }
+) => boolean;
+type ExtractCommentsCondition =
+  | boolean
+  | "all"
+  | "some"
+  | RegExp
+  | ExtractCommentsFunction;
+type ExtractCommentsFilename = string | ((fileData: any) => string);
+type ExtractCommentsBanner =
+  | string
+  | boolean
+  | ((commentsFile: string) => string);
+type ExtractCommentsObject = {
+  condition?: ExtractCommentsCondition | undefined;
+  filename?: ExtractCommentsFilename | undefined;
+  banner?: ExtractCommentsBanner | undefined;
+};
+type ExtractCommentsOptions = ExtractCommentsCondition | ExtractCommentsObject;
+type MinimizedResult = {
+  code: string;
+  map?: import('../source-map').RawSourceMap | undefined;
+  errors?: (string | Error)[] | undefined;
+  warnings?: (string | Error)[] | undefined;
+  extractedComments?: string[] | undefined;
+};
+type Input = {
+  [file: string]: string;
+};
+type CustomOptions = {
+  [key: string]: any;
+};
+type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
+type PredefinedOptions = {
+  module?: boolean | undefined;
+  ecma?: import('../../terser').ECMA | undefined;
+};
+type MinimizerOptions<T> = PredefinedOptions & InferDefaultType<T>;
+type BasicMinimizerImplementation<T> = (
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minifyOptions: MinimizerOptions<T>,
+  extractComments: ExtractCommentsOptions | undefined
+) => Promise<MinimizedResult>;
+type MinimizeFunctionHelpers = {
+  getMinimizerVersion?: (() => string | undefined) | undefined;
+};
+type MinimizerImplementation<T> = BasicMinimizerImplementation<T> &
+  MinimizeFunctionHelpers;
+type InternalOptions<T> = {
+  name: string;
+  input: string;
+  inputSourceMap: RawSourceMap | undefined;
+  extractComments: ExtractCommentsOptions | undefined;
+  minimizer: {
+    implementation: MinimizerImplementation<T>;
+    options: MinimizerOptions<T>;
+  };
+};
+type MinimizerWorker<T> = Worker & {
+  transform: (options: string) => MinimizedResult;
+  minify: (options: InternalOptions<T>) => MinimizedResult;
+};
+type Parallel = undefined | boolean | number;
+type InternalPluginOptions<T> = BasePluginOptions & {
+  minimizer: {
+    implementation: MinimizerImplementation<T>;
+    options: MinimizerOptions<T>;
+  };
+};
+import { minify } from './minify';
+import { Worker } from '../jest-worker';
