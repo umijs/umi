@@ -62,7 +62,9 @@ test('top level await', () => {
 
 test('tc39 decorators', () => {
   const code = doTransform({ code: `@foo class Foo {}` });
-  expect(code).toContain(`foo(_class = function Foo() {`);
+  expect(code).toContain(
+    `foo(_class = /*#__PURE__*/_createClass(function Foo() {`,
+  );
 });
 
 test('tc39 pipeline operator', () => {
