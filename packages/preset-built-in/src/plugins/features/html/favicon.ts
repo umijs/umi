@@ -1,4 +1,5 @@
 import { IApi } from '@umijs/types';
+import { join } from 'path';
 
 export default function (api: IApi) {
   api.describe({
@@ -12,14 +13,20 @@ export default function (api: IApi) {
   });
 
   api.addHTMLLinks(() => {
-    return api.config.favicon!
+    return api.config.favicon
       ? [
           {
             rel: 'shortcut icon',
             type: 'image/x-icon',
-            href: api.config.favicon!,
+            href: getFaviconPath(api.config.favicon, api.config.publicPath),
           },
         ]
       : [];
   });
+}
+
+export function getFaviconPath(favicon: string, publicPath?: string | false) {
+  return favicon.match(/^https?:\/\//)
+    ? favicon
+    : join(publicPath || '/', favicon);
 }
