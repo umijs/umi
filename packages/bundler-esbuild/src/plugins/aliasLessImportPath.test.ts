@@ -8,8 +8,8 @@ const alias = {
   prefix: './prefix',
 };
 
-const match = (filePath: string) => {
-  return aliasLessImportPath(filePath, alias, importer);
+const match = (filePath: string, aliasMap = true) => {
+  return aliasLessImportPath(filePath, aliasMap ? alias : {}, importer);
 };
 
 test('match alias: symbol', async () => {
@@ -56,4 +56,8 @@ test('match alias: path', async () => {
   expect(await match('@prefix/style.less')).toEqual(null);
   // with scope package case
   expect(await match('@prefix/pkg/style.less')).toEqual(null);
+});
+
+test('no alias', async () => {
+  expect(await match('@/style.less', false)).toEqual(null);
 });
