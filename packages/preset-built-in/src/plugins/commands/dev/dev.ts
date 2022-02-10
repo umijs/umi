@@ -218,6 +218,7 @@ export default (api: IApi) => {
         https: !!isHTTPS,
         headers: {
           'access-control-allow-origin': '*',
+          'access-control-allow-private-network': 'true',
         },
         proxy: api.config.proxy,
         beforeMiddlewares,
