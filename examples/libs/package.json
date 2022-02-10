@@ -7,7 +7,7 @@
     "umi": "4.0.0-rc.1"
   },
   "devDependencies": {
-    "@codesandbox/sandpack-react": "0.13.11",
+    "@codesandbox/sandpack-react": "0.13.14",
     "antd": "4.18.6",
     "dva-core": "^2.0.4",
     "fast-deep-equal": "3.1.3",

@@ -27,13 +27,13 @@
     "@svgr/core": "6.2.1",
     "@umijs/bundler-utils": "4.0.0-rc.1",
     "@umijs/utils": "4.0.0-rc.1",
-    "@vitejs/plugin-legacy": "1.6.4",
-    "@vitejs/plugin-react": "1.1.4",
+    "@vitejs/plugin-legacy": "1.7.0",
+    "@vitejs/plugin-react": "1.2.0",
     "postcss-preset-env": "7.3.1",
     "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-polyfill": "3.0.0",
     "rollup-plugin-visualizer": "5.5.4",
-    "vite": "2.7.13"
+    "vite": "2.8.0"
   },
   "devDependencies": {
     "express": "4.17.2"
