@@ -35,7 +35,6 @@ export default (context: any, opts: IOpts = {}) => {
   const defaultEnvConfig = {
     exclude: [
       'transform-typeof-symbol',
-      'transform-unicode-regex',
       'transform-sticky-regex',
       'transform-new-target',
       'transform-modules-umd',
