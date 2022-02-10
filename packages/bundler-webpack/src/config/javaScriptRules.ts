@@ -121,7 +121,6 @@ export async function addJavaScriptRules(opts: IOpts) {
         .loader(require.resolve('../loader/swc'))
         .options({
           plugin: (m: Program) => new AutoCSSModule().visitProgram(m),
-          targets: userConfig.targets,
         });
     } else if (srcTranspiler === Transpiler.esbuild) {
       rule

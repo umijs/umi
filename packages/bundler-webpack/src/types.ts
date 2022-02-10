@@ -79,7 +79,6 @@ export interface IConfig {
 export interface SwcOptions extends SwcConfig {
   sync?: boolean;
   parseMap?: boolean;
-  targets?: Record<string, any>;
 }
 
 export interface IEsbuildLoaderHandlerParams {
