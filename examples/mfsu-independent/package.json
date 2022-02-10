@@ -5,7 +5,7 @@
     "dev:esbuild": "webpack serve --config webpack.config.esbuild.js",
     "start": "npm run dev"
   },
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.17.2",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",

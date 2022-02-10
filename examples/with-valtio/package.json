@@ -5,10 +5,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@types/three": "^0.137.0",
     "umi": "4.0.0-rc.1",
     "valtio": "^1.2.12"
-  },
-  "devDependencies": {
-    "@types/three": "^0.137.0"
   }
 }
