@@ -20,7 +20,7 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.0",
+    "@babel/runtime": "7.17.2",
     "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "4.0.0-rc.1",
     "@umijs/utils": "4.0.0-rc.1",

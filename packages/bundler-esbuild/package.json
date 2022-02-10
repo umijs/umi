@@ -25,7 +25,7 @@
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-rc.1",
     "@umijs/utils": "4.0.0-rc.1",
-    "enhanced-resolve": "5.8.3",
+    "enhanced-resolve": "5.9.0",
     "less": "4.1.2",
     "less-plugin-aliases": "^1.0.3",
     "postcss": "^8.4.6",
