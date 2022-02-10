@@ -22,6 +22,28 @@ export default (api: IApi) => {
     };
     memo.appJS = await getAppJsInfo();
     memo.vite = api.args.vite ? {} : undefined;
+    memo.globalCSS = [
+      'global.css',
+      'global.less',
+      'global.scss',
+      'global.sass',
+    ].reduce<string[]>((memo, key) => {
+      if (existsSync(join(api.paths.absSrcPath, key))) {
+        memo.push(join(api.paths.absSrcPath, key));
+      }
+      return memo;
+    }, []);
+    memo.globalJS = [
+      'global.ts',
+      'global.tsx',
+      'global.jsx',
+      'global.js',
+    ].reduce<string[]>((memo, key) => {
+      if (existsSync(join(api.paths.absSrcPath, key))) {
+        memo.push(join(api.paths.absSrcPath, key));
+      }
+      return memo;
+    }, []);
 
     return memo;
   });
