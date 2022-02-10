@@ -2,37 +2,23 @@ import { Config, transform, transformSync } from '@swc/core';
 import type { LoaderContext } from '../../compiled/webpack';
 import { Env, SwcOptions } from '../types';
 
-function getBaseOpts({
-  filename,
-  targets = { chrome: '61' },
-}: {
-  filename: string;
-  targets?: Record<string, any>;
-}) {
+function getBaseOpts({ filename }: { filename: string }) {
   const isTSFile = filename.endsWith('.ts');
   const isTypeScript = isTSFile || filename.endsWith('.tsx');
   const isDev = process.env.NODE_ENV === Env.development;
 
-  const polyfillOpts = isDev
-    ? {}
-    : {
-        env: {
-          /**
-           * need `@umijs/preset-umi/src/features/polyfill/swcPolyfill` config alias and provide polyfill
-           */
-          mode: 'usage',
-          coreJs: 3,
-          targets,
-        },
-      };
-
+  /**
+   * Not use swc auto polyfill , depend on `preset-umi/features/polyfill/polyfill` imported polyfill file
+   *
+   * @issue https://github.com/swc-project/swc/issues/2607
+   *        https://github.com/swc-project/swc/issues/1604
+   */
   const swcOpts: Config = {
     module: {
       // @ts-ignore
       type: 'es6',
       ignoreDynamic: true,
     },
-    ...polyfillOpts,
     jsc: {
       parser: {
         syntax: isTypeScript ? 'typescript' : 'ecmascript',
@@ -60,13 +46,12 @@ function swcLoader(this: LoaderContext<SwcOptions>, contents: string) {
   const callback = this.async();
   const loaderOpts = this.getOptions();
 
-  const { sync = false, parseMap = false, targets, ...otherOpts } = loaderOpts;
+  const { sync = false, parseMap = false, ...otherOpts } = loaderOpts;
   const filename = this.resourcePath;
 
   const swcOpts = {
     ...getBaseOpts({
       filename,
-      targets,
     }),
     filename,
     sourceMaps: this.sourceMap,
