@@ -51,7 +51,7 @@ const aliasLessImports = async (
   return ctx;
 };
 
-const aliasLessImportPath = async (
+export const aliasLessImportPath = async (
   filePath: string,
   alias: Record<string, string>,
   importer: string,
@@ -62,10 +62,10 @@ const aliasLessImportPath = async (
     : filePath;
   const keys = sortByAffix({ arr: Object.keys(alias), affix: '$' });
   for (const key of keys) {
-    const value = alias[key];
-    const filter = new RegExp(`^${key}`);
-    if (filter.test(aliaPath)) {
-      aliaPath = aliaPath.replace(filter, value);
+    const pathSegments = aliaPath.split(path.sep);
+    if (pathSegments[0] === key) {
+      pathSegments[0] = alias[key];
+      aliaPath = pathSegments.join(path.sep);
       aliaPath = path.extname(aliaPath) ? aliaPath : `${aliaPath}.less`;
       return await resolve(importer, aliaPath);
     }
@@ -86,16 +86,28 @@ export default (
     setup({ onResolve, onLoad }) {
       onResolve({ filter: /\.less$/, namespace: 'file' }, async (args) => {
         let filePath = args.path;
+        let isImportFromDeps = false;
         if (!!alias) {
-          filePath =
-            (await aliasLessImportPath(filePath, alias, args.path)) ||
-            path.resolve(
-              process.cwd(),
-              path.relative(process.cwd(), args.resolveDir),
-              args.path,
-            );
+          const aliasMatchPath = await aliasLessImportPath(
+            filePath,
+            alias,
+            args.path,
+          );
+          if (aliasMatchPath) {
+            filePath = aliasMatchPath;
+          } else {
+            // if alias not matched, identify whether import from deps (node_modules)
+            if (!path.isAbsolute(filePath) && !filePath.startsWith('.')) {
+              isImportFromDeps = true;
+            }
+          }
         } else {
           //没有别名也要对路径进行处理
+          isImportFromDeps = false;
+        }
+        if (isImportFromDeps) {
+          filePath = await resolve(process.cwd(), filePath);
+        } else {
           filePath = path.resolve(
             process.cwd(),
             path.relative(process.cwd(), args.resolveDir),
