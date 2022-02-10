@@ -53,7 +53,14 @@ export default (api: IApi) => {
         importsAhead: importsToStr(
           await api.applyPlugins({
             key: 'addEntryImportsAhead',
-            initialValue: [],
+            initialValue: [
+              api.appData.globalCSS.length && {
+                source: api.appData.globalCSS[0],
+              },
+              api.appData.globalJS.length && {
+                source: api.appData.globalJS[0],
+              },
+            ].filter(Boolean),
           }),
         ).join('\n'),
         imports: importsToStr(
