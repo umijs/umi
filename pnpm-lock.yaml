@@ -152,10 +152,12 @@ importers:
     specifiers:
       '@types/react': ^17.0.39
       '@types/react-dom': ^17.0.11
+      '@umijs/bundler-vite': 4.0.0-rc.1
       react: ^17.0.2
       react-dom: ^17.0.2
       umi: 4.0.0-rc.1
     dependencies:
+      '@umijs/bundler-vite': link:../../packages/bundler-vite
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       react: 17.0.2
