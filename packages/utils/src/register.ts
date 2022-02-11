@@ -8,7 +8,7 @@ function transform(opts: { extname: string; implementor: any }) {
   return (mod: any, filename: string) => {
     files.push(filename);
     let code = readFileSync(filename, 'utf-8');
-    if (['.ts', '.tsx'].includes(opts.extname)) {
+    if (['.js', '.jsx', '.ts', '.tsx'].includes(opts.extname)) {
       code = opts.implementor.transformSync(code, {
         loader: opts.extname.slice(1),
         target: 'es2017',
