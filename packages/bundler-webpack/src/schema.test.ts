@@ -19,6 +19,7 @@ const config = {
   cssMinifier: 'esbuild',
   cssMinifierOptions: {},
   define: {},
+  deadCode: {},
   depTranspiler: 'esbuild',
   devtool: 'cheap-module-source-map',
   externals: {

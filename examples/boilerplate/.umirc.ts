@@ -21,6 +21,7 @@ export default {
   mfsu: {
     esbuild: true,
   },
+  deadCode: {},
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
   headScripts: [`console.log('head script')`],
