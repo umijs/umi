@@ -10,7 +10,6 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "index.esm.js",
   "types": "index.d.ts",
   "bin": {
     "umi": "bin/umi.js"
