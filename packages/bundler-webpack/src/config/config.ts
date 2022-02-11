@@ -11,6 +11,7 @@ import { addCompressPlugin } from './compressPlugin';
 import { addCopyPlugin } from './copyPlugin';
 import { addCSSRules } from './cssRules';
 import { addDefinePlugin } from './definePlugin';
+import { addDetectDeadCodePlugin } from './detectDeadCodePlugin';
 import { addFastRefreshPlugin } from './fastRefreshPlugin';
 import { addForkTSCheckerPlugin } from './forkTSCheckerPlugin';
 import { addHarmonyLinkingErrorPlugin } from './harmonyLinkingErrorPlugin';
@@ -161,6 +162,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   await addFastRefreshPlugin(applyOpts);
   // progress
   await addProgressPlugin(applyOpts);
+  // detect-dead-code-plugin
+  await addDetectDeadCodePlugin(applyOpts);
   // fork-ts-checker
   await addForkTSCheckerPlugin(applyOpts);
   // copy

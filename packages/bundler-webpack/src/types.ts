@@ -38,6 +38,16 @@ export interface ICopy {
 
 type WebpackConfig = Required<Configuration>;
 type IBabelPlugin = Function | string | [string, { [key: string]: any }];
+
+export interface DeadCodeParams {
+  patterns?: string[];
+  exclude?: string[];
+  failOnHint?: boolean;
+  detectUnusedFiles?: boolean;
+  detectUnusedExport?: boolean;
+  context?: string;
+}
+
 export interface IConfig {
   alias?: Record<string, string>;
   autoCSSModules?: boolean;
@@ -51,6 +61,7 @@ export interface IConfig {
   define?: { [key: string]: any };
   depTranspiler?: Transpiler;
   devtool?: Config.DevTool;
+  deadCode?: DeadCodeParams;
   externals?: WebpackConfig['externals'];
   esm?: { [key: string]: any };
   extraBabelPlugins?: IBabelPlugin[];

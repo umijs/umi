@@ -49,6 +49,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       ),
     cssMinifierOptions: (Joi) => Joi.object(),
     define: (Joi) => Joi.object(),
+    deadCode: (Joi) => Joi.object(),
     depTranspiler: (Joi) =>
       Joi.string().valid(
         Transpiler.babel,
