@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
-import execa from '../compiled/execa';
+import * as execa from '../compiled/execa';
 
 interface IInstallDeps {
   devDependencies?: string[];
@@ -31,7 +31,7 @@ function installDeps({
     devStr?: string,
   ) => {
     console.log(`${npmStr} install dependencies packages:${deps.join(' ')}`);
-    execa.commandSync(
+    execa.execaCommandSync(
       [npmStr, insStr, devStr]
         .concat(deps)
         .filter((n) => n)
