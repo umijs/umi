@@ -52,7 +52,7 @@ export class Plugin {
     let pkg = null;
     // path is the package entry
     let isPkgEntry = false;
-    const pkgJSONPath = pkgUp.pkgUpSync({ cwd: this.path });
+    const pkgJSONPath = pkgUp.pkgUpSync({ cwd: this.path })!;
     if (pkgJSONPath) {
       pkg = require(pkgJSONPath);
       isPkgEntry =
