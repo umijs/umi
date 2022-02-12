@@ -20,8 +20,7 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "chokidar": "3.5.3",
-    "clipboardy": "2.3.0"
+    "chokidar": "3.5.3"
   },
   "devDependencies": {
     "@types/color": "3.0.3",
