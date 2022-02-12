@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-beta.16",
-    "tailwindcss": "^3.0.21",
+    "tailwindcss": "^3.0.22",
     "umi": "4.0.0-rc.1"
   }
 }

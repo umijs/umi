@@ -40,7 +40,7 @@
     "@umijs/plugins": "workspace:*",
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
-    "@vercel/ncc": "0.33.1",
+    "@vercel/ncc": "0.33.2",
     "dts-packer": "^0.0.2",
     "esbuild": "^0.14.21",
     "esbuild-jest": "^0.5.0",
