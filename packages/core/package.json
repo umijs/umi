@@ -26,8 +26,8 @@
   "devDependencies": {
     "@hapi/joi": "17.1.1",
     "@types/hapi__joi": "17.1.8",
-    "dotenv": "10.0.0",
-    "just-diff": "3.1.1",
+    "dotenv": "16.0.0",
+    "just-diff": "5.0.1",
     "tapable": "2.2.1"
   },
   "publishConfig": {

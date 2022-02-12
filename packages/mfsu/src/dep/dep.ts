@@ -109,7 +109,7 @@ export * from '${this.file}';
     const dep = isAbsolute(opts.dep)
       ? opts.dep
       : join(opts.cwd, 'node_modules', opts.dep);
-    const pkg = pkgUp.sync({
+    const pkg = pkgUp.pkgUpSync({
       cwd: dep,
     });
     assert(pkg, `package.json not found for ${opts.dep}`);

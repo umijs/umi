@@ -16,7 +16,7 @@ export function isMatch(opts: {
   if (cache.has(dir)) {
     return !!cache.get(dir);
   } else {
-    const pkgPath = pkgUp.sync({ cwd: opts.path });
+    const pkgPath = pkgUp.pkgUpSync({ cwd: opts.path });
 
     let ret;
     if (!pkgPath) {

@@ -111,7 +111,7 @@ export async function scan(opts: {
     for (const dep of deps) {
       const resolved = await opts.resolver.resolve(dirname(depPath!), dep.url);
       if (isDepPath(resolved)) {
-        const pkgPath = pkgUp.sync({ cwd: resolved });
+        const pkgPath = pkgUp.pkgUpSync({ cwd: resolved });
         assert(pkgPath, `package.json for found for ${resolved}`);
         const pkg = require(pkgPath);
         const entryResolved = await opts.resolver
