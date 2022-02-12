@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-require('v8-compile-cache');
+// disable since it's conflicted with typescript cjs + dynamic import
+// require('v8-compile-cache');
 require('../dist/cli/cli')
   .run()
   .catch((e) => {

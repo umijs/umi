@@ -23,9 +23,9 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@mdx-js/mdx": "1.6.22",
-    "keymaster": "^1.6.2",
-    "remark-slug": "6.1.0"
+    "@mdx-js/mdx": "2.0.0",
+    "keymaster": "1.6.2",
+    "rehype-slug": "5.0.1"
   },
   "devDependencies": {
     "@types/keymaster": "^1.6.30",
