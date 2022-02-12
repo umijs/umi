@@ -822,7 +822,6 @@ importers:
       chalk: 5.0.0
       cheerio: 1.0.0-rc.10
       chokidar: 3.5.3
-      clipboardy: 2.3.0
       color: 4.2.1
       cross-spawn: 7.0.3
       debug: 4.3.3
@@ -845,7 +844,6 @@ importers:
       yargs-parser: 21.0.0
     dependencies:
       chokidar: 3.5.3
-      clipboardy: 2.3.0
     devDependencies:
       '@types/color': 3.0.3
       '@types/cross-spawn': 6.0.2
