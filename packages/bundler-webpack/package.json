@@ -32,7 +32,7 @@
     "@svgr/core": "6.2.1",
     "@svgr/plugin-jsx": "^6.2.1",
     "@svgr/plugin-svgo": "^6.2.0",
-    "@swc/core": "1.2.138",
+    "@swc/core": "1.2.139",
     "@types/hapi__joi": "17.1.8",
     "@umijs/babel-preset-umi": "4.0.0-rc.1",
     "@umijs/mfsu": "4.0.0-rc.1",
