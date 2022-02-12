@@ -1,1 +1,1 @@
-{"name":"chalk","license":"MIT"}
+{"name":"chalk","license":"MIT","types":"./source/index.d.ts"}
