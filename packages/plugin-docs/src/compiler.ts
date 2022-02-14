@@ -1,11 +1,13 @@
+// @ts-ignore
+import { createProcessor } from '../compiled/@mdx-js/mdx';
+// @ts-ignore
+import rehypeSlug from '../compiled/rehype-slug';
+
 export async function compile(opts: { content: string }) {
-  const mdx = await (eval('import("@mdx-js/mdx")') as Promise<
-    typeof import('@mdx-js/mdx')
-  >);
-  const compiler = mdx.createProcessor({
+  const compiler = createProcessor({
     jsx: true,
     remarkPlugins: [],
-    rehypePlugins: [(await eval('import("rehype-slug")')).default],
+    rehypePlugins: [rehypeSlug],
   });
   let result = String(await compiler.process(opts.content));
   //   result = `
