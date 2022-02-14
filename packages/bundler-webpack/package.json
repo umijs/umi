@@ -42,7 +42,7 @@
     "jest-worker": "27.5.1",
     "node-libs-browser": "2.2.1",
     "postcss": "^8.4.6",
-    "postcss-preset-env": "7.3.1",
+    "postcss-preset-env": "7.3.3",
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
@@ -57,7 +57,7 @@
     "css-minimizer-webpack-plugin": "3.4.1",
     "cssnano": "5.0.17",
     "express": "4.17.2",
-    "fork-ts-checker-webpack-plugin": "7.2.0",
+    "fork-ts-checker-webpack-plugin": "7.2.1",
     "http-proxy-middleware": "2.0.3",
     "less": "4.1.2",
     "less-loader": "10.2.0",
