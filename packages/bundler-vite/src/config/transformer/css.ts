@@ -23,12 +23,6 @@ function getBrowserlist(targets: Record<string, string | boolean>) {
 export default (function css(userConfig) {
   const config: ReturnType<IConfigProcessor> = {
     css: { postcss: {}, preprocessorOptions: {} },
-    resolve: {
-      alias: [
-        // to support less-loader ~ for local deps, refer: https://github.com/vitejs/vite/issues/2185
-        { find: /^~/, replacement: '' },
-      ],
-    },
   };
 
   config.css!.postcss = {
