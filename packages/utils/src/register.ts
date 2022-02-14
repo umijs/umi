@@ -1,32 +1,38 @@
-import { readFileSync } from 'fs';
+import { extname } from 'path';
+import { addHook } from '../compiled/pirates';
+
+const COMPILE_EXTS = ['.ts', '.tsx', '.js', '.jsx'];
+const HOOK_EXTS = [...COMPILE_EXTS, '.mjs'];
 
 let registered = false;
 let files: string[] = [];
-const Extensions: Record<string, any> = {};
+let revert: () => void = () => {};
 
-function transform(opts: { extname: string; implementor: any }) {
-  return (mod: any, filename: string) => {
-    files.push(filename);
-    let code = readFileSync(filename, 'utf-8');
-    if (['.js', '.jsx', '.ts', '.tsx'].includes(opts.extname)) {
-      code = opts.implementor.transformSync(code, {
-        loader: opts.extname.slice(1),
-        target: 'es2017',
-        format: 'cjs',
-      }).code;
-    }
-    mod._compile(code, filename);
-  };
+function transform(opts: { code: string; filename: string; implementor: any }) {
+  const { code, filename, implementor } = opts;
+  files.push(filename);
+  const ext = extname(filename);
+  if (COMPILE_EXTS.includes(ext)) {
+    return implementor.transformSync(code, {
+      loader: ext.slice(1),
+      target: 'es2017',
+      format: 'cjs',
+    }).code;
+  }
+  return code;
 }
 
 export function register(opts: { implementor: any }) {
   files = [];
-  const types = ['.ts', '.tsx', '.js', '.jsx', '.mjs'];
   if (!registered) {
-    for (const type of types) {
-      Extensions[type] = require.extensions[type];
-      require.extensions[type] = transform({ ...opts, extname: type });
-    }
+    revert = addHook(
+      (code, filename) =>
+        transform({ code, filename, implementor: opts.implementor }),
+      {
+        ext: HOOK_EXTS,
+        ignoreNodeModules: true,
+      },
+    );
     registered = true;
   }
 }
@@ -40,8 +46,6 @@ export function clearFiles() {
 }
 
 export function restore() {
-  for (const type of Object.keys(Extensions)) {
-    require.extensions[type] = Extensions[type];
-  }
+  revert();
   registered = false;
 }

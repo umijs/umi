@@ -45,6 +45,7 @@
     "import-lazy": "4.0.0",
     "lodash": "4.17.21",
     "mustache": "4.2.0",
+    "pirates": "4.0.5",
     "pkg-up": "4.0.0",
     "portfinder": "1.0.28",
     "prettier": "2.5.1",
@@ -85,7 +86,8 @@
       "resolve",
       "semver",
       "strip-ansi",
-      "yargs-parser"
+      "yargs-parser",
+      "pirates"
     ],
     "externals": {
       "address": "$$LOCAL",
@@ -105,7 +107,8 @@
       "resolve": "$$LOCAL",
       "semver": "$$LOCAL",
       "strip-ansi": "$$LOCAL",
-      "yargs-parser": "$$LOCAL"
+      "yargs-parser": "$$LOCAL",
+      "pirates": "$$LOCAL"
     }
   }
 }
