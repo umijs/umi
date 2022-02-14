@@ -33,9 +33,11 @@ export interface CommonOptions<EncodingType> {
 	/**
 	Preferred path to find locally installed binaries in (use with `preferLocal`).
 
+	Using a `URL` is only supported in Node.js `14.18.0`, `16.14.0` or above.
+
 	@default process.cwd()
 	*/
-	readonly localDir?: string;
+	readonly localDir?: string | URL;
 
 	/**
 	Path to the Node.js executable to use in child processes.
@@ -111,9 +113,11 @@ export interface CommonOptions<EncodingType> {
 	/**
 	Current working directory of the child process.
 
+	Using a `URL` is only supported in Node.js `14.18.0`, `16.14.0` or above.
+
 	@default process.cwd()
 	*/
-	readonly cwd?: string;
+	readonly cwd?: string | URL;
 
 	/**
 	Environment key-value pairs. Extends automatically from `process.env`. Set `extendEnv` to `false` if you don't want this.
@@ -203,6 +207,34 @@ export interface CommonOptions<EncodingType> {
 	@default 'SIGTERM'
 	*/
 	readonly killSignal?: string | number;
+
+	/**
+	You can abort the spawned process using [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+
+	When `AbortController.abort()` is called, [`.isCanceled`](https://github.com/sindresorhus/execa#iscanceled) becomes `false`.
+
+	*Requires Node.js 16 or later.*
+
+	@example
+	```js
+	import {execa} from './execa';
+
+	const abortController = new AbortController();
+	const subprocess = execa('node', [], {signal: abortController.signal});
+
+	setTimeout(() => {
+		abortController.abort();
+	}, 1000);
+
+	try {
+		await subprocess;
+	} catch (error) {
+		console.log(subprocess.killed); // true
+		console.log(error.isCanceled); // true
+	}
+	```
+	*/
+	readonly signal?: AbortSignal;
 
 	/**
 	If `true`, no quoting or escaping of arguments is done on Windows. Ignored on other platforms. This is set to `true` automatically when the `shell` option is `true`.
@@ -337,6 +369,8 @@ export interface ExecaReturnValue<StdoutErrorType = string>
 
 	/**
 	Whether the process was canceled.
+
+	You can cancel the spawned process using the [`signal`](https://github.com/sindresorhus/execa#signal-1) option.
 	*/
 	isCanceled: boolean;
 }
