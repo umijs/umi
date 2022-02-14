@@ -114,9 +114,13 @@ html {
   scroll-behavior: smooth
 }
 
+:root {
+  --anchor-offset: 28px;
+}
+
 /** Anchor with offset for headings */
 h1, h2, h3, h4, h5, h6 {
-  scroll-margin-top: 3em;
+  scroll-margin-top: calc(var(--anchor-offset) + 88px);
 }
 
 @layer components {
