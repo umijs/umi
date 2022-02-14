@@ -10,25 +10,22 @@ export async function compile(opts: { content: string }) {
     rehypePlugins: [rehypeSlug],
   });
   let result = String(await compiler.process(opts.content));
-  //   result = `
-  // import React, { useEffect } from 'react';
-  // ${result}`;
-  //   result = result.replace('/* @jsxRuntime classic */', '');
-  //   result = result.replace('/* @jsx mdx */', '');
-  //
-  //   result = result.replace(
-  //     'return <MDXLayout',
-  //     `
-  //
-  //   useEffect(() => {
-  //     if (window.location.hash.length !== 0) {
-  //       const hash = window.location.hash;
-  //       window.location.hash = '';
-  //       window.location.hash = hash;
-  //     }
-  //   }, []);
-  //
-  // return <MDXLayout`,
-  //   );
+  result = result.replace(
+    'function MDXContent(props = {}) {',
+    `
+import { useEffect } from 'react';
+
+function MDXContent(props = {}) {
+
+  useEffect(() => {
+    if (window.location.hash.length !== 0) {
+      const hash = window.location.hash;
+      window.location.hash = '';
+      window.location.hash = hash;
+    }
+  }, []);
+
+`,
+  );
   return { result };
 }

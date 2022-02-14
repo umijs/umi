@@ -20,6 +20,13 @@ function Announcement() {
     }
   }, []);
 
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      '--anchor-offset',
+      (closed ? 0 : 28) + 'px',
+    );
+  }, [closed]);
+
   function close(e: React.MouseEvent) {
     e.preventDefault();
     if (!themeConfig.announcement) return;

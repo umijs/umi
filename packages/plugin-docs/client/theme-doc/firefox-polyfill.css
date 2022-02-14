@@ -11,8 +11,9 @@
   .g-glossy-firefox-cover {
     display: block;
     position: fixed;
+    top: var(--anchor-offset);
     width: 100%;
-    height: 100px;
+    height: 72px;
     z-index: 22;
     background-color: white;
   }
@@ -21,7 +22,8 @@
     display: block;
     position: fixed;
     width: 100%;
-    height: 100px;
+    top: var(--anchor-offset);
+    height: 72px;
     z-index: 24;
     background: -moz-element(#article-body) no-repeat top;
     filter: blur(10px);
