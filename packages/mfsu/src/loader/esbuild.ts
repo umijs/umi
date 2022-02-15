@@ -1,19 +1,20 @@
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import {
   Loader as EsbuildLoader,
-  transform,
+  transform as transformInternal,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { extname } from 'path';
-import type { LoaderContext } from '../../compiled/webpack';
+import type { LoaderContext } from 'webpack';
 import type { IEsbuildLoaderOpts } from '../types';
 
-async function esbuildLoader(
+async function esbuildTranspiler(
   this: LoaderContext<IEsbuildLoaderOpts>,
   source: string,
 ): Promise<void> {
   const done = this.async();
   const options: IEsbuildLoaderOpts = this.getOptions();
-  const { handler = [], ...otherOptions } = options;
+  const { handler = [], implementation, ...otherOptions } = options;
+  const transform = implementation?.transform || transformInternal;
 
   const filePath = this.resourcePath;
   const ext = extname(filePath).slice(1) as EsbuildLoader;
@@ -43,5 +44,5 @@ async function esbuildLoader(
   }
 }
 
-export default esbuildLoader;
-export const esbuildLoaderPath = __filename;
+export default esbuildTranspiler;
+export const esbuildLoader = __filename;

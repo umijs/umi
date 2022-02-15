@@ -1,10 +1,9 @@
 import type { Program } from '@swc/core';
+import { autoCssModulesHandler, esbuildLoader } from '@umijs/mfsu';
 import { chalk } from '@umijs/utils';
 import { ProvidePlugin } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import { MFSU_NAME } from '../constants';
-import autoCssModulesHandler from '../esbuildHandler/autoCssModules';
-import { esbuildLoaderPath } from '../loader/esbuild';
 import AutoCSSModule from '../swcPlugins/autoCSSModules';
 import { Env, IConfig, Transpiler } from '../types';
 import { es5ImcompatibleVersionsToPkg, isMatch } from '../utils/depMatch';
@@ -125,7 +124,7 @@ export async function addJavaScriptRules(opts: IOpts) {
     } else if (srcTranspiler === Transpiler.esbuild) {
       rule
         .use('esbuild-loader')
-        .loader(esbuildLoaderPath)
+        .loader(esbuildLoader)
         .options({
           target: isDev ? 'esnext' : 'es2015',
           handler: [autoCssModulesHandler, ...opts.extraEsbuildLoaderHandler],

@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack');
-const { MFSU } = require('@umijs/mfsu');
-const { esbuildLoaderPath } = require('@umijs/bundler-webpack/dist/loader/esbuild')
+const { MFSU, esbuildLoader } = require('@umijs/mfsu');
+const esbuild = require('esbuild')
 
 // [mfsu] 1. init instance
 const mfsu = new MFSU({
@@ -35,13 +35,14 @@ const config = {
         test: /\.[jt]sx?$/,
         exclude: /node_modules/,
         use: {
-          loader: esbuildLoaderPath,
+          loader: esbuildLoader,
           options: {
             handler: [
               // [mfsu] 3. add mfsu esbuild loader handlers
               ...mfsu.getEsbuildLoaderHandler()
             ],
-            target: 'esnext'
+            target: 'esnext',
+            implementation: esbuild
           }
         }
       }

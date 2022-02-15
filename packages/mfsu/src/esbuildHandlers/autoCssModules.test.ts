@@ -1,5 +1,5 @@
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import autoCssModulesHandler from './autoCssModules';
+import { autoCssModulesHandler } from './autoCssModules';
 
 interface IOpts {
   code: string;

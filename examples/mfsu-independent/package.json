@@ -6,20 +6,22 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "antd": "^4.18.7",
+    "framer-motion": "^6.2.6",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
     "@babel/core": "^7.17.2",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
-    "@umijs/bundler-webpack": "4.0.0-beta.18",
-    "@umijs/mfsu": "4.0.0-beta.18",
-    "antd": "^4.18.7",
+    "@umijs/mfsu": "4.0.0-rc.1",
     "babel-loader": "^8.2.3",
-    "framer-motion": "^6.2.6",
+    "esbuild": "0.14.21",
     "html-webpack-plugin": "^5.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "webpack": "^5.68.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
