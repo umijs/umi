@@ -2,6 +2,7 @@ import {
   Chunk,
   Compilation,
   Module,
+  NormalModule,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, glob } from '@umijs/utils';
 import path from 'path';
@@ -87,8 +88,11 @@ const outputUnusedExportMap = (
   includedFileMap: FileDictionary,
   unusedExportMap: ExportDictionary,
 ) => {
-  if (!(module as any).resource) return;
-  const path = convertToUnixPath((module as any).resource);
+  if (!(module instanceof NormalModule) || !module.resource) {
+    return;
+  }
+
+  const path = convertToUnixPath(module.resource);
   if (!/^((?!(node_modules)).)*$/.test(path)) return;
 
   const providedExports =
