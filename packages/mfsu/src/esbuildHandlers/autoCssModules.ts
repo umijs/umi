@@ -4,9 +4,7 @@ import { IEsbuildLoaderHandlerParams } from '../types';
 const CSS_MODULES_QUERY = '?modules';
 const QUERY_LENGTH = CSS_MODULES_QUERY.length;
 
-export default function autoCssModulesHandler(
-  opts: IEsbuildLoaderHandlerParams,
-) {
+export function autoCssModulesHandler(opts: IEsbuildLoaderHandlerParams) {
   let { code } = opts;
 
   let offset = 0;

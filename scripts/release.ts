@@ -90,6 +90,10 @@ import { assert, eachPkg, getPkgs } from './utils';
     if (pkg.dependencies['umi']) pkg.dependencies['umi'] = version;
     if (pkg.dependencies['@umijs/pro'])
       pkg.dependencies['@umijs/pro'] = version;
+    // for mfsu-independent example update dep version
+    if (pkg?.devDependencies?.['@umijs/mfsu']) {
+      pkg.devDependencies['@umijs/mfsu'] = version;
+    }
     delete pkg.version;
     fs.writeFileSync(
       join(__dirname, '../examples', example, 'package.json'),
