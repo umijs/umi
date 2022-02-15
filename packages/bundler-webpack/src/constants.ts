@@ -10,3 +10,7 @@ export enum MESSAGE_TYPE {
   stillOk = 'still-ok',
   invalid = 'invalid',
 }
+
+export const DEFAULT_BROWSER_TARGETS = {
+  chrome: 80,
+};
