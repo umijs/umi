@@ -252,9 +252,6 @@ export class Service {
       env: this.env,
       prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
     });
-    if (this.config.outputPath) {
-      paths.absOutputPath = join(this.cwd, this.config.outputPath);
-    }
     this.stage = ServiceStage.resolveConfig;
     const config = await this.applyPlugins({
       key: 'modifyConfig',
@@ -273,6 +270,9 @@ export class Service {
       initialValue: this.configDefaults,
     });
     this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
+    if (this.config.outputPath) {
+      paths.absOutputPath = join(this.cwd, this.config.outputPath);
+    }
     this.paths = await this.applyPlugins({
       key: 'modifyPaths',
       initialValue: paths,
