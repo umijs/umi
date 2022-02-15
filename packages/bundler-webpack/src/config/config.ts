@@ -1,11 +1,7 @@
 import { join } from 'path';
 import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
-import {
-  DEFAULT_BROWSER_TARGETS,
-  DEFAULT_DEVTOOL,
-  DEFAULT_OUTPUT_PATH,
-} from '../constants';
+import { DEFAULT_DEVTOOL, DEFAULT_OUTPUT_PATH } from '../constants';
 import { RuntimePublicPathPlugin } from '../plugins/RuntimePublicPathPlugin';
 import { Env, IConfig } from '../types';
 import { getBrowsersList } from '../utils/browsersList';
@@ -55,7 +51,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   const { userConfig } = opts;
   const isDev = opts.env === Env.development;
   const config = new Config();
-  userConfig.targets ||= DEFAULT_BROWSER_TARGETS;
+  userConfig.targets = userConfig.targets || {
+    chrome: 80,
+  };
   const useHash = !!(opts.hash || (userConfig.hash && !isDev));
   const applyOpts = {
     name: opts.name,
