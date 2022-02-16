@@ -1,6 +1,6 @@
-import { Mustache } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
+import { Mustache, winPath } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -278,14 +278,15 @@ export type {
 `;
 
   api.onGenerateFiles(() => {
-    const umiRequestPath = dirname(
-      require.resolve('@ahooksjs/use-request/package.json'),
+    const umiRequestPath = winPath(
+      dirname(require.resolve('@ahooksjs/use-request/package.json')),
     );
-    const axiosPath = dirname(require.resolve('axios/package.json'));
-    const antdPkg =
+    const axiosPath = winPath(dirname(require.resolve('axios/package.json')));
+    const antdPkg = winPath(
       // use path from antd plugin first
       api.appData.antd?.pkgPath ||
-      dirname(require.resolve('antd/package.json'));
+        dirname(require.resolve('antd/package.json')),
+    );
     api.writeTmpFile({
       path: 'request.ts',
       content: Mustache.render(requestTpl, {
