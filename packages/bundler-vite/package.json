@@ -33,7 +33,7 @@
     "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-polyfill": "3.0.0",
     "rollup-plugin-visualizer": "5.5.4",
-    "vite": "2.8.2"
+    "vite": "2.8.3"
   },
   "devDependencies": {
     "express": "4.17.2"
