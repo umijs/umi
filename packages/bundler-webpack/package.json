@@ -42,7 +42,7 @@
     "jest-worker": "27.5.1",
     "node-libs-browser": "2.2.1",
     "postcss": "^8.4.6",
-    "postcss-preset-env": "7.3.3",
+    "postcss-preset-env": "7.4.0",
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
