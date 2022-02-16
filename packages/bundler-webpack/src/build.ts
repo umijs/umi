@@ -18,7 +18,7 @@ type IOpts = {
   clean?: boolean;
 } & Pick<IConfigOpts, 'cache'>;
 
-export async function build(opts: IOpts): Promise<void> {
+export async function build(opts: IOpts): Promise<webpack.Stats> {
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
     env: Env.production,
@@ -61,7 +61,7 @@ export async function build(opts: IOpts): Promise<void> {
           reject(new Error(errorMsg));
         }
       } else {
-        resolve();
+        resolve(stats!);
       }
       compiler.close(() => {});
     });
