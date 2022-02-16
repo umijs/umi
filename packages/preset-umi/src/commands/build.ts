@@ -136,6 +136,10 @@ umi build --clean
         return ret;
       }
 
+      function getAsset(name: string) {
+        return assetsMap[name] ? [`/${assetsMap[name]}`] : [];
+      }
+
       // generate html
       const assetsMap = getAssetsMap(stats);
       const { vite } = api.args;
@@ -143,14 +147,8 @@ umi build --clean
       // @ts-ignore
       const markup = await getMarkup({
         ...markupArgs,
-        styles: (assetsMap['umi.css']
-          ? [`/${assetsMap['umi.css']}`]
-          : []
-        ).concat(markupArgs.styles),
-        scripts: (assetsMap['umi.js']
-          ? [`/${assetsMap['umi.js']}`]
-          : []
-        ).concat(markupArgs.scripts),
+        styles: getAsset('umi.css').concat(markupArgs.styles),
+        scripts: getAsset('umi.js').concat(markupArgs.scripts),
         esmScript: !!opts.config.esm || vite,
         path: '/',
       });
