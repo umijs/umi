@@ -1,4 +1,6 @@
-import fs, { existsSync } from 'fs';
+import { parseModuleSync } from '@umijs/bundler-utils';
+import { winPath } from '@umijs/utils';
+import fs, { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 import { parseTitle } from './markdown';
@@ -43,6 +45,14 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
+    // theme path
+    let theme =
+      api.config.docs?.theme || require.resolve('../client/theme-doc/index.ts');
+    if (theme === 'blog') {
+      theme = require.resolve('../client/theme-blog/index.ts');
+    }
+    theme = winPath(theme);
+
     const themeConfigPath = join(api.cwd, 'theme.config.ts');
     const themeExists = existsSync(themeConfigPath);
 
@@ -64,11 +74,17 @@ export default (api: IApi) => {
       });
     }
 
-    // @TODO: 需要能够动态解析 theme 中导出的组件，现在是硬编码
+    // exports don't start with $ will be MDX Component
+    const [_, exports] = parseModuleSync({
+      content: readFileSync(theme, 'utf-8'),
+      path: theme,
+    });
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { Message, Hero, Features, FeatureItem } from '${require.resolve(
+export { ${exports
+        .filter((item) => !item.startsWith('$'))
+        .join(', ')} } from '${require.resolve(
         '../client/theme-doc/index.ts',
       )}';
     `,
