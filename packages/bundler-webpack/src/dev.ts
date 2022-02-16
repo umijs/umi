@@ -13,6 +13,7 @@ type IOpts = {
   onDevCompileDone?: Function;
   port?: number;
   host?: string;
+  babelPreset?: any;
   chainWebpack?: Function;
   modifyWebpackConfig?: Function;
   beforeBabelPlugins?: any[];
@@ -57,6 +58,7 @@ export async function dev(opts: IOpts) {
     env: Env.development,
     entry: opts.entry,
     userConfig: opts.config,
+    babelPreset: opts.babelPreset,
     extraBabelPlugins: [
       ...(opts.beforeBabelPlugins || []),
       ...(mfsu?.getBabelPlugins() || []),

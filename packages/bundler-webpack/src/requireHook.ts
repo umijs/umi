@@ -15,7 +15,7 @@ const hookPropertyMap = new Map([
 ]);
 
 deepImports.forEach((item: string) => {
-  const name = item.split('/').unshift();
+  const name = item.split('/').pop();
   hookPropertyMap.set(item, `@umijs/bundler-webpack/compiled/webpack/${name}`);
   hookPropertyMap.set(
     `${item}.js`,
