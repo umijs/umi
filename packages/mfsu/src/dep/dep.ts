@@ -1,4 +1,4 @@
-import { pkgUp } from '@umijs/utils';
+import { pkgUp, winPath } from '@umijs/utils';
 import assert from 'assert';
 import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
@@ -38,7 +38,7 @@ export class Dep {
     cwd: string;
     mfsu: MFSU;
   }) {
-    this.file = opts.file;
+    this.file = winPath(opts.file);
     this.version = opts.version;
     this.cwd = opts.cwd;
     this.shortFile = this.file;

@@ -1,3 +1,4 @@
+import { init } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { fsExtra, lodash, Mustache } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, statSync, writeFileSync } from 'fs';
@@ -53,6 +54,10 @@ export default (api: IApi) => {
     'modifyRoutes',
   ].forEach((name) => {
     api.registerMethod({ name });
+  });
+
+  api.onStart(async () => {
+    await init;
   });
 
   api.registerMethod({
