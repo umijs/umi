@@ -96,6 +96,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     mfsu: (Joi) =>
       Joi.alternatives(
         Joi.object({
+          cacheDirectory: Joi.string(),
           esbuild: Joi.boolean(),
           mfName: Joi.string(),
         }),

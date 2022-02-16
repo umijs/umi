@@ -41,7 +41,9 @@ export async function dev(opts: IOpts) {
       },
       mfName: opts.config.mfsu?.mfName,
       runtimePublicPath: opts.config.runtimePublicPath,
-      tmpBase: join(opts.cwd, 'node_modules/.cache/mfsu'),
+      tmpBase:
+        opts.config.mfsu?.cacheDirectory ||
+        join(opts.cwd, 'node_modules/.cache/mfsu'),
       getCacheDependency() {
         return {
           version: require('../package.json').version,
