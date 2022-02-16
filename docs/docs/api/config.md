@@ -134,6 +134,29 @@ copy: ['foo.js', 'bar']
     - foo.js
 ```
 
+## deadCode
+
+* 类型：`{}`
+* 默认值：`false`
+
+检测未使用的文件和导出，仅在 build 阶段开启。
+
+比如：
+
+```
+deadCode: {}
+```
+
+然后执行 build，如有发现，会有类似信息抛出。
+
+```
+Warning: There are 3 unused files:
+ 1. /mock/a.ts
+ 2. /mock/b.ts
+ 3. /pages/index.module.less
+ Please be careful if you want to remove them (¬º-°)¬.
+```
+
 ## define
 
 * 类型：`Record<string, string>`
