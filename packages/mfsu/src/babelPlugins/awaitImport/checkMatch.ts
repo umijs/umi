@@ -88,7 +88,7 @@ export function checkMatch({
   }
 
   if (isMatch) {
-    replaceValue = `${remoteName}/${value}`;
+    replaceValue = `${remoteName}/${winPath(value)}`;
   }
 
   // @ts-ignore

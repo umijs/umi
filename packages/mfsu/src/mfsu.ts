@@ -1,5 +1,5 @@
 import { parseModule } from '@umijs/bundler-utils';
-import { lodash, logger, tryPaths } from '@umijs/utils';
+import { lodash, logger, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import type { NextFunction, Request, Response } from 'express';
 import { readFileSync, statSync } from 'fs';
@@ -68,7 +68,7 @@ export class MFSU {
   // swc don't support top-level await
   // ref: https://github.com/vercel/next.js/issues/31054
   asyncImport(content: string) {
-    return `await import('${content}');`;
+    return `await import('${winPath(content)}');`;
     // return `(async () => await import('${content}'))();`;
   }
 

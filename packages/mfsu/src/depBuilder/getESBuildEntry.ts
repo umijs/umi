@@ -306,7 +306,7 @@ function getDepModuleStr(dep: Dep) {
   return `
 "./${dep.file}": function() {
   return new Promise(resolve => {
-    import('./${MF_VA_PREFIX}${normalizeFile(dep.file)}.js').then(module => {
+    import('./${MF_VA_PREFIX}${dep.normalizedFile}.js').then(module => {
       resolve(() => module.default || module);
     });
   })

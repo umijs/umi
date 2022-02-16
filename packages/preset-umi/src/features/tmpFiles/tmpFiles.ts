@@ -18,12 +18,14 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(async (opts) => {
-    const rendererPath = await api.applyPlugins({
-      key: 'modifyRendererPath',
-      initialValue: dirname(
-        require.resolve('@umijs/renderer-react/package.json'),
-      ),
-    });
+    const rendererPath = winPath(
+      await api.applyPlugins({
+        key: 'modifyRendererPath',
+        initialValue: dirname(
+          require.resolve('@umijs/renderer-react/package.json'),
+        ),
+      }),
+    );
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
@@ -189,8 +191,8 @@ export default function EmptyRoute() {
       const exports = [];
       // @umijs/renderer-react
       exports.push('// @umijs/renderer-react');
-      const rendererReactPath = dirname(
-        require.resolve('@umijs/renderer-react/package.json'),
+      const rendererReactPath = winPath(
+        dirname(require.resolve('@umijs/renderer-react/package.json')),
       );
       exports.push(
         `export { ${(
@@ -202,7 +204,7 @@ export default function EmptyRoute() {
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiDir = process.env.UMI_DIR!;
-      const umiPluginPath = join(umiDir, 'client/client/plugin.js');
+      const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       exports.push(
         `export { ${(
           await getExports({
@@ -236,9 +238,8 @@ export default function EmptyRoute() {
         });
         if (pluginExports.length) {
           exports.push(
-            `export { ${pluginExports.join(', ')} } from '${join(
-              api.paths.absTmpPath,
-              plugin,
+            `export { ${pluginExports.join(', ')} } from '${winPath(
+              join(api.paths.absTmpPath, plugin),
             )}';`,
           );
         }
