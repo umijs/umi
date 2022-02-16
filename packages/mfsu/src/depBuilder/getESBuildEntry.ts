@@ -298,10 +298,6 @@ ${opts.deps.map(getDepModuleStr).join(',\n')}
   `;
 }
 
-function normalizeFile(file: string) {
-  return file.replace(/\//g, '_');
-}
-
 function getDepModuleStr(dep: Dep) {
   return `
 "./${dep.file}": function() {
