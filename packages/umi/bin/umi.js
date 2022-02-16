@@ -4,31 +4,18 @@
 // require('v8-compile-cache');
 
 // patch console for debug
+// ref: https://remysharp.com/2014/05/23/where-is-that-console-log
 if (process.env.DEBUG_CONSOLE) {
-  ['log', 'warn', 'error'].forEach((methodName) => {
-    const originalMethod = console[methodName];
-    console[methodName] = (...args) => {
-      let initiator = 'unknown place';
-      try {
-        throw new Error();
-      } catch (e) {
-        if (typeof e.stack === 'string') {
-          let isFirst = true;
-          for (const line of e.stack.split('\n')) {
-            const matches = line.match(/^\s+at\s+(.*)/);
-            if (matches) {
-              if (!isFirst) {
-                // first line - current function
-                // second line - caller (what we are looking for)
-                initiator = matches[1];
-                break;
-              }
-              isFirst = false;
-            }
-          }
-        }
+  ['log', 'warn', 'error'].forEach((method) => {
+    const old = console[method];
+    console[method] = function () {
+      let stack = new Error().stack.split(/\n/);
+      // Chrome includes a single "Error" line, FF doesn't.
+      if (stack[0].indexOf('Error') === 0) {
+        stack = stack.slice(1);
       }
-      originalMethod.apply(console, [...args, '\n', `  at ${initiator}`]);
+      const args = [].slice.apply(arguments).concat([stack[1].trim()]);
+      return old.apply(console, args);
     };
   });
 }
