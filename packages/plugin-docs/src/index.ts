@@ -69,7 +69,7 @@ export default (api: IApi) => {
       path: 'index.ts',
       content: `
 export { Message, Hero, Features, FeatureItem } from '${require.resolve(
-        '../client/theme-doc',
+        '../client/theme-doc/index.ts',
       )}';
     `,
     });
@@ -79,7 +79,9 @@ export { Message, Hero, Features, FeatureItem } from '${require.resolve(
       content: `
 import React from 'react';
 import { useOutlet, useAppData, useLocation, Link } from 'umi';
-import { Layout } from '${require.resolve('../client/theme-doc')}';
+import { $Layout as Layout } from '${require.resolve(
+        '../client/theme-doc/index.ts',
+      )}';
 ${
   themeExists
     ? `import themeConfig from '${themeConfigPath}'`
