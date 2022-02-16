@@ -11,7 +11,7 @@ const RE_NODE_MODULES = /node_modules/;
 const RE_UMI_LOCAL_DEV = /umi(-next)?\/packages\//;
 
 function isUmiLocalDev(path: string) {
-  return RE_UMI_LOCAL_DEV.test(path);
+  return RE_UMI_LOCAL_DEV.test(winPath(path));
 }
 
 export function checkMatch({

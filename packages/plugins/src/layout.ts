@@ -2,7 +2,7 @@ import * as allIcons from '@ant-design/icons';
 import assert from 'assert';
 import { dirname } from 'path';
 import { IApi } from 'umi';
-import { lodash, Mustache } from 'umi/plugin-utils';
+import { lodash, Mustache, winPath } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -181,7 +181,9 @@ const { formatMessage } = useIntl();
       return memo;
     }, {});
     const icons = Object.keys(iconsMap);
-    const antIconsPath = dirname(require.resolve('@ant-design/icons/package'));
+    const antIconsPath = winPath(
+      dirname(require.resolve('@ant-design/icons/package')),
+    );
     api.writeTmpFile({
       path: 'icons.tsx',
       content: `

@@ -1,5 +1,6 @@
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
+import { winPath } from '@umijs/utils';
 import { extname } from 'path';
 
 export async function parseModule(opts: { content: string; path: string }) {
@@ -25,6 +26,6 @@ export function isDepPath(path: string) {
 
   return (
     path.includes('node_modules') ||
-    umiMonorepoPaths.some((p) => path.includes(p))
+    umiMonorepoPaths.some((p) => winPath(path).includes(p))
   );
 }
