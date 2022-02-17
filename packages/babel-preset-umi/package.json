@@ -24,7 +24,7 @@
     "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "4.0.0-rc.1",
     "@umijs/utils": "4.0.0-rc.1",
-    "core-js": "3.21.0"
+    "core-js": "3.21.1"
   },
   "publishConfig": {
     "access": "public"
