@@ -1,3 +1,4 @@
+import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { getSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
 import { dirname } from 'path';
@@ -44,9 +45,7 @@ export default (api: IApi) => {
     mountElementId: 'root',
     base: '/',
     history: { type: 'browser' },
-    targets: {
-      chrome: 87,
-    },
+    targets: DEFAULT_BROWSER_TARGETS,
   };
 
   const bundleSchemas = getSchemas();
