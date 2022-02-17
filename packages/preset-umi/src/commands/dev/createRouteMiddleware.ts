@@ -1,4 +1,4 @@
-import { RequestHandler } from '@umijs/bundler-webpack';
+import type { RequestHandler } from '@umijs/bundler-webpack';
 import { createRequestHandler, IOpts } from '@umijs/server';
 import { IApi } from '../../types';
 import { getMarkupArgs } from './getMarkupArgs';
