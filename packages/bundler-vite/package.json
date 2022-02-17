@@ -29,14 +29,14 @@
     "@umijs/utils": "4.0.0-rc.1",
     "@vitejs/plugin-legacy": "1.7.1",
     "@vitejs/plugin-react": "1.2.0",
-    "postcss-preset-env": "7.4.0",
+    "postcss-preset-env": "7.4.1",
     "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-polyfill": "3.0.0",
     "rollup-plugin-visualizer": "5.5.4",
     "vite": "2.8.3"
   },
   "devDependencies": {
-    "express": "4.17.2"
+    "express": "4.17.3"
   },
   "publishConfig": {
     "access": "public"
