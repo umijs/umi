@@ -89,6 +89,7 @@ PORT=8888 umi dev
           absPagesPath,
           !api.config.routes && api.config.conventionRoutes?.base,
           join(absSrcPath, 'layouts'),
+          ...expandJSPaths(join(absSrcPath, 'loading')),
           ...expandJSPaths(join(absSrcPath, 'app')),
         ].filter(Boolean),
       });

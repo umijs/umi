@@ -58,6 +58,7 @@ export function renderClient(opts: {
   routeComponents: IRouteComponents;
   pluginManager: any;
   basename?: string;
+  loadingComponent?: React.ReactNode;
   history: History;
 }) {
   const basename = opts.basename || '/';
@@ -65,6 +66,7 @@ export function renderClient(opts: {
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: opts.routeComponents,
+    loadingComponent: opts.loadingComponent,
   });
   let rootContainer = (
     <BrowserRoutes

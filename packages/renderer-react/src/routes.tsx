@@ -9,6 +9,7 @@ export function createClientRoutes(opts: {
   routesById: IRoutesById;
   routeComponents: Record<string, any>;
   parentId?: string;
+  loadingComponent?: React.ReactNode;
 }) {
   const { routesById, parentId, routeComponents } = opts;
   return Object.keys(routesById)
@@ -17,11 +18,13 @@ export function createClientRoutes(opts: {
       const route = createClientRoute({
         route: routesById[id],
         routeComponent: routeComponents[id],
+        loadingComponent: opts.loadingComponent,
       });
       const children = createClientRoutes({
         routesById,
         routeComponents,
         parentId: route.id,
+        loadingComponent: opts.loadingComponent,
       });
       if (children.length > 0) {
         // @ts-ignore
@@ -38,6 +41,7 @@ export function createClientRoutes(opts: {
 export function createClientRoute(opts: {
   route: IRoute;
   routeComponent: any;
+  loadingComponent?: React.ReactNode;
 }) {
   const { route } = opts;
   const { id, path, index, redirect, ...props } = route;
@@ -53,7 +57,10 @@ export function createClientRoute(opts: {
           route: opts.route,
         }}
       >
-        <RemoteComponent loader={opts.routeComponent} />
+        <RemoteComponent
+          loader={opts.routeComponent}
+          loadingComponent={opts.loadingComponent || DefaultLoading}
+        />
       </RouteContext.Provider>
     ),
     ...props,
@@ -66,7 +73,7 @@ function DefaultLoading() {
 
 function RemoteComponent(props: any) {
   const Component = loadable(props.loader, {
-    fallback: <DefaultLoading />,
+    fallback: <props.loadingComponent />,
   });
   return <Component />;
 }

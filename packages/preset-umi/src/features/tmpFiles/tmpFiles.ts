@@ -73,6 +73,10 @@ export default (api: IApi) => {
         ).join('\n'),
         basename: api.config.base,
         historyType: api.config.history.type,
+        loadingComponent:
+          existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||
+          existsSync(join(api.paths.absSrcPath, 'loading.jsx')) ||
+          existsSync(join(api.paths.absSrcPath, 'loading.js')),
       },
     });
 
