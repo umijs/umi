@@ -109,6 +109,17 @@ export async function scan(opts: {
     cache.set(depPath!, deps);
 
     for (const dep of deps) {
+      // skip resolve external deps
+      if (opts.externals?.[dep.url]) {
+        ret[dep.url] = {
+          version: '',
+          matches: [],
+          subpaths: [],
+          external: true,
+        };
+        continue;
+      }
+
       const resolved = await opts.resolver.resolve(dirname(depPath!), dep.url);
       if (isDepPath(resolved)) {
         const pkgPath = pkgUp.pkgUpSync({ cwd: resolved });

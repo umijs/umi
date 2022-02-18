@@ -27,6 +27,7 @@ export interface IConfig {
   autoprefixer?: any;
   copy?: ICopy[] | string[];
   define?: { [key: string]: any };
+  externals?: Record<string, string>;
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   extraPostCSSPlugins?: any[];

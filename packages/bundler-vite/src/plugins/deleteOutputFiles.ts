@@ -4,7 +4,7 @@ import type { Plugin } from 'vite';
  * delete specific files from output map
  * @param files file list which will be removed
  */
-export function deleteOutputFiles(files: string[]): Plugin {
+export default function deleteOutputFiles(files: string[]): Plugin {
   return {
     name: 'bundler-vite:delete-output-files',
     generateBundle(_, output) {

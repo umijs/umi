@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { build as viteBuilder, mergeConfig } from 'vite';
 import { getConfig } from './config/config';
-import { deleteOutputFiles } from './plugins/deleteOutputFiles';
+import deleteOutputFiles from './plugins/deleteOutputFiles';
 import { Env, IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
