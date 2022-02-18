@@ -5,6 +5,7 @@ interface IContext {
   components: any;
   themeConfig: {
     title: string;
+    description?: string;
     github: string;
     // 键盘搜索的快捷键，参考 https://github.com/madrobby/keymaster
     searchHotKey?: string | { macos: string; windows: string };
