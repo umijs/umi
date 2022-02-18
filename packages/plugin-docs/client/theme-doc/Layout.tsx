@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import React, { Fragment, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Announcement from './components/Announcement';
 import { ThemeContext } from './context';
 import Head from './Head';
@@ -28,6 +29,8 @@ export default (props: any) => {
     };
   }, []);
 
+  const { title, description } = props.themeConfig;
+
   return (
     <ThemeContext.Provider
       value={{
@@ -52,7 +55,15 @@ export default (props: any) => {
         <div className="g-glossy-firefox" id="firefox-head-bg" />
 
         {window.location.pathname === '/' ? (
-          <div id="article-body">{props.children}</div>
+          <div id="article-body">
+            <Helmet>
+              <title>
+                {title}
+                {description ? ` - ${description}` : ''}
+              </title>
+            </Helmet>
+            {props.children}
+          </div>
         ) : (
           <Fragment>
             <div
