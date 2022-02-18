@@ -6,7 +6,7 @@
 
 ### node 和 pnpm
 
-开发 Umi 需要 node 14+ 和 pnpm。node 推荐用 nvm 安装，避免权限问题的同时还随时切换 node 版本；pnpm 去[他的官网](https://pnpm.io/installation)选择一种方式安装即可。
+开发 Umi 需要 node 16+ 和 pnpm。node 推荐用 nvm 安装，避免权限问题的同时还随时切换 node 版本；pnpm 去[他的官网](https://pnpm.io/installation)选择一种方式安装即可。
 
 ### Clone 项目
 
