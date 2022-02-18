@@ -65,5 +65,9 @@
     "umi": "workspace:*",
     "zx": "^4.3.0"
   },
-  "packageManager": "pnpm"
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=6.20.0"
+  },
+  "packageManager": "pnpm@6.20.0"
 }
