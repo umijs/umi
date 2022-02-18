@@ -126,10 +126,10 @@ umi build --clean
 
         let ret: Record<string, string> = {};
         for (const asset of stats.toJson().entrypoints['umi'].assets) {
-          if (/^umi\..+?\.js$/.test(asset.name)) {
+          if (/^umi(\..+)?\.js$/.test(asset.name)) {
             ret['umi.js'] = asset.name;
           }
-          if (/^umi\..+?\.css$/.test(asset.name)) {
+          if (/^umi(\..+)?\.css$/.test(asset.name)) {
             ret['umi.css'] = asset.name;
           }
         }
