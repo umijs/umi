@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { useThemeContext } from '../context';
 import Github from '../icons/github.svg';
 import HeroBackground from '../icons/hero-bg.svg';
 import Star from '../icons/star.png';
@@ -15,6 +16,7 @@ interface HeroProps {
 }
 
 function Hero(props: HeroProps) {
+  const { components } = useThemeContext()!;
   return (
     <div
       className="w-full h-[calc(100vh-60px)] bg-[rgb(16,37,62)] flex
@@ -57,14 +59,15 @@ function Hero(props: HeroProps) {
 
           <div className="flex flex-row items-center">
             {props.buttons?.map((button, i) => (
-              <button
-                onClick={() => (window.location.href = button.href)}
-                key={i}
-                className="text-white text-lg bg-blue-600 py-2 min-w-36 mx-4 px-4 rounded-xl shadow-xl
+              <components.Link to={button.href}>
+                <button
+                  key={i}
+                  className="text-white text-lg bg-blue-600 py-2 min-w-36 mx-4 px-4 rounded-xl shadow-xl
                   shadow-blue-900 hover:shadow-blue-700 transition-all"
-              >
-                {button.label}
-              </button>
+                >
+                  {button.label}
+                </button>
+              </components.Link>
             ))}
 
             {props.githubRepo && <GithubStars repo={props.githubRepo} />}
