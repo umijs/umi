@@ -18,21 +18,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         ),
       ),
     define: (Joi) => Joi.object(),
-    /*externals: (Joi) =>
-      Joi
-        .alternatives()
-        .try(
-          Joi
-            .object()
-            .pattern(/.+/, [
-              Joi.string(),
-              Joi.boolean(),
-              Joi.object().pattern(/.+/, [Joi.string(), Joi.boolean()]),
-            ]),
-          Joi.string(),
-          Joi.func().arity(3),
-          Joi.object().regex(),
-        ),*/
+    externals: (Joi) => Joi.object().pattern(/^/, Joi.string()),
     extraBabelPlugins: (Joi) =>
       Joi.alternatives().try(
         Joi.string(),
