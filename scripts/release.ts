@@ -23,12 +23,12 @@ import { assert, eachPkg, getPkgs } from './utils';
   assert(!gitStatus.includes('behind'), `git status is behind remote`);
 
   // check npm registry
-  logger.event('check npm registry');
-  const registry = (await $`npm config get registry`).stdout.trim();
-  assert(
-    registry === 'https://registry.npmjs.org/',
-    'npm registry is not https://registry.npmjs.org/',
-  );
+  // logger.event('check npm registry');
+  // const registry = (await $`npm config get registry`).stdout.trim();
+  // assert(
+  //   registry === 'https://registry.npmjs.org/',
+  //   'npm registry is not https://registry.npmjs.org/',
+  // );
 
   // check package changed
   logger.event('check package changed');
