@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@types/three": "^0.137.0",
-    "umi": "4.0.0-rc.1",
+    "umi": "4.0.0-rc.2",
     "valtio": "^1.3.0"
   }
 }
