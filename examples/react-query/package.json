@@ -5,7 +5,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "react-query": "^3.34.15",
+    "react-query": "^3.34.16",
     "umi": "4.0.0-rc.2"
   }
 }

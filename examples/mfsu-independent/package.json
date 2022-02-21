@@ -20,7 +20,7 @@
     "@types/react-dom": "^17.0.11",
     "@umijs/mfsu": "4.0.0-rc.2",
     "babel-loader": "^8.2.3",
-    "esbuild": "0.14.22",
+    "esbuild": "0.14.23",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.69.1",
     "webpack-cli": "^4.9.2",
