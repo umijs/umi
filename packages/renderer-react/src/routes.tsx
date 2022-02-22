@@ -68,7 +68,7 @@ export function createClientRoute(opts: {
 }
 
 function DefaultLoading() {
-  return <div>Loading...</div>;
+  return <div />;
 }
 
 function RemoteComponent(props: any) {
