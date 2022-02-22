@@ -35,7 +35,7 @@
     "@babel/plugin-proposal-export-namespace-from": "7.16.7",
     "@babel/plugin-proposal-function-bind": "7.16.7",
     "@babel/plugin-proposal-partial-application": "7.16.7",
-    "@babel/plugin-proposal-pipeline-operator": "7.16.7",
+    "@babel/plugin-proposal-pipeline-operator": "7.17.6",
     "@babel/plugin-proposal-record-and-tuple": "7.16.7",
     "@babel/plugin-transform-runtime": "7.17.0",
     "@babel/preset-env": "7.16.11",
@@ -51,7 +51,7 @@
     "@types/babel__template": "7.4.1",
     "@types/babel__traverse": "7.14.2",
     "cjs-module-lexer": "1.2.2",
-    "es-module-lexer": "0.9.3"
+    "es-module-lexer": "0.10.0"
   },
   "publishConfig": {
     "access": "public"

@@ -72,7 +72,7 @@
     "style-loader": "3.3.1",
     "svgo-loader": "3.0.0",
     "tapable": "2.2.1",
-    "terser": "5.10.0",
+    "terser": "5.11.0",
     "terser-webpack-plugin": "5.3.1",
     "url-loader": "4.1.1",
     "webpack": "5.69.1",
