@@ -26,6 +26,7 @@ export enum JSMinifier {
 export enum CSSMinifier {
   esbuild = 'esbuild',
   cssnano = 'cssnano',
+  parcelCSS = 'parcelCSS',
   none = 'none',
 }
 

@@ -45,6 +45,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       Joi.string().valid(
         CSSMinifier.cssnano,
         CSSMinifier.esbuild,
+        CSSMinifier.parcelCSS,
         CSSMinifier.none,
       ),
     cssMinifierOptions: (Joi) => Joi.object(),

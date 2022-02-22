@@ -28,6 +28,7 @@
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs"
   },
   "dependencies": {
+    "@parcel/css": "1.3.2",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.4",
     "@svgr/core": "6.2.1",
     "@svgr/plugin-jsx": "^6.2.1",
