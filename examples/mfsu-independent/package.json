@@ -6,8 +6,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "antd": "^4.18.7",
-    "framer-motion": "^6.2.6",
+    "antd": "^4.18.8",
+    "framer-motion": "^6.2.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

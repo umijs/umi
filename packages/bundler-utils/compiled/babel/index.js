@@ -47932,7 +47932,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 54061:
+/***/ 54734:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -48003,7 +48003,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 56447:
+/***/ 75345:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -48016,7 +48016,7 @@ exports["default"] = void 0;
 
 var _core = __nccwpck_require__(21840);
 
-var _buildOptimizedSequenceExpression = __nccwpck_require__(54061);
+var _buildOptimizedSequenceExpression = __nccwpck_require__(54734);
 
 const fsharpVisitor = {
   BinaryExpression(path) {
@@ -48046,7 +48046,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 26602:
+/***/ 22841:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -48059,9 +48059,21 @@ exports["default"] = void 0;
 
 var _core = __nccwpck_require__(21840);
 
-const topicReferenceReplacementVisitor = {
-  TopicReference(path) {
-    path.replaceWith(_core.types.cloneNode(this.topicVariable));
+const topicReferenceVisitor = {
+  exit(path, state) {
+    if (path.isTopicReference()) {
+      state.topicReferences.push(path);
+    } else {
+      if (state.topicReferences.length === 0 && !state.sideEffectsBeforeFirstTopicReference && !path.isPure()) {
+        state.sideEffectsBeforeFirstTopicReference = true;
+      }
+    }
+  },
+
+  "ClassBody|Function"(_, state) {
+    if (state.topicReferences.length === 0) {
+      state.sideEffectsBeforeFirstTopicReference = true;
+    }
   }
 
 };
@@ -48077,20 +48089,30 @@ var _default = {
         return;
       }
 
-      const topicVariable = scope.generateUidIdentifierBasedOnNode(node);
       const pipeBodyPath = path.get("right");
+
+      if (pipeBodyPath.node.type === "TopicReference") {
+        path.replaceWith(node.left);
+        return;
+      }
+
+      const visitorState = {
+        topicReferences: [],
+        sideEffectsBeforeFirstTopicReference: pipeBodyPath.isFunction()
+      };
+      pipeBodyPath.traverse(topicReferenceVisitor, visitorState);
+
+      if (visitorState.topicReferences.length === 1 && (!visitorState.sideEffectsBeforeFirstTopicReference || path.scope.isPure(node.left, true))) {
+        visitorState.topicReferences[0].replaceWith(node.left);
+        path.replaceWith(node.right);
+        return;
+      }
+
+      const topicVariable = scope.generateUidIdentifierBasedOnNode(node);
       scope.push({
         id: topicVariable
       });
-
-      if (pipeBodyPath.node.type === "TopicReference") {
-        pipeBodyPath.replaceWith(_core.types.cloneNode(topicVariable));
-      } else {
-        pipeBodyPath.traverse(topicReferenceReplacementVisitor, {
-          topicVariable
-        });
-      }
-
+      visitorState.topicReferences.forEach(path => path.replaceWith(_core.types.cloneNode(topicVariable)));
       path.replaceWith(_core.types.sequenceExpression([_core.types.assignmentExpression("=", _core.types.cloneNode(topicVariable), node.left), node.right]));
     }
 
@@ -48100,7 +48122,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 76595:
+/***/ 81081:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -48113,15 +48135,15 @@ exports["default"] = void 0;
 
 var _helperPluginUtils = __nccwpck_require__(41611);
 
-var _pluginSyntaxPipelineOperator = __nccwpck_require__(35779);
+var _pluginSyntaxPipelineOperator = __nccwpck_require__(34827);
 
-var _minimalVisitor = __nccwpck_require__(21742);
+var _minimalVisitor = __nccwpck_require__(67218);
 
-var _hackVisitor = __nccwpck_require__(26602);
+var _hackVisitor = __nccwpck_require__(22841);
 
-var _fsharpVisitor = __nccwpck_require__(56447);
+var _fsharpVisitor = __nccwpck_require__(75345);
 
-var _smartVisitor = __nccwpck_require__(41745);
+var _smartVisitor = __nccwpck_require__(25083);
 
 const visitorsPerProposal = {
   minimal: _minimalVisitor.default,
@@ -48151,7 +48173,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 21742:
+/***/ 67218:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -48164,7 +48186,7 @@ exports["default"] = void 0;
 
 var _core = __nccwpck_require__(21840);
 
-var _buildOptimizedSequenceExpression = __nccwpck_require__(54061);
+var _buildOptimizedSequenceExpression = __nccwpck_require__(54734);
 
 const minimalVisitor = {
   BinaryExpression(path) {
@@ -48195,7 +48217,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 41745:
+/***/ 25083:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -49147,7 +49169,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 35779:
+/***/ 34827:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -49161,7 +49183,7 @@ exports["default"] = void 0;
 var _helperPluginUtils = __nccwpck_require__(41611);
 
 const PIPELINE_PROPOSALS = ["minimal", "fsharp", "hack", "smart"];
-const TOPIC_TOKENS = ["^", "%", "#"];
+const TOPIC_TOKENS = ["^^", "@@", "^", "%", "#"];
 const documentationURL = "https://babeljs.io/docs/en/babel-plugin-proposal-pipeline-operator";
 
 var _default = (0, _helperPluginUtils.declare)((api, {
@@ -111892,7 +111914,7 @@ module.exports = {
   pluginProposalPartialApplication: () =>
     __nccwpck_require__(85537),
   pluginProposalPipelineOperator: () =>
-    __nccwpck_require__(76595),
+    __nccwpck_require__(81081),
   pluginProposalRecordAndTuple: () =>
     __nccwpck_require__(6277),
 
