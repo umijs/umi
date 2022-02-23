@@ -1,0 +1,42 @@
+{
+  "name": "@umijs/test",
+  "version": "4.0.0-rc.2",
+  "description": "@umijs/test",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/test#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm tsc",
+    "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "dev": "pnpm build -- --watch"
+  },
+  "dependencies": {
+    "@jest/types": "27.5.1",
+    "esbuild": "0.14.23",
+    "esbuild-jest": "0.5.0",
+    "identity-obj-proxy": "3.0.0"
+  },
+  "devDependencies": {
+    "jest": "27.5.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "compiledConfig": {
+    "deps": [
+      "identity-obj-proxy"
+    ]
+  }
+}

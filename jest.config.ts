@@ -1,14 +1,10 @@
-import type { Config } from '@jest/types';
+import { Config, createConfig, JSTransformer } from 'umi/test';
 
 export default {
+  ...createConfig({
+    jsTransformer: JSTransformer.esbuild,
+  }),
   testMatch: ['**/packages/*/src/**/*.test.ts'],
-  transform: {
-    // alternatives:
-    // 1. @swc-node/jest
-    // 2. ts-jest
-    '^.+\\.ts$': 'esbuild-jest',
-  },
-  testTimeout: 30000,
   modulePathIgnorePatterns: [
     '<rootDir>/packages/.+/compiled',
     '<rootDir>/packages/.+/fixtures',
