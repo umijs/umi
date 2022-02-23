@@ -295,6 +295,12 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+  examples/test-test:
+    specifiers:
+      umi: 4.0.0-rc.2
+    dependencies:
+      umi: link:../../packages/umi
+
   examples/tmp-swcTranspiler-swc:
     specifiers:
       umi: 4.0.0-rc.2
@@ -802,12 +808,14 @@ importers:
       esbuild: 0.14.23
       esbuild-jest: 0.5.0
       identity-obj-proxy: 3.0.0
+      isomorphic-unfetch: 3.1.0
       jest: 27.5.1
     dependencies:
       '@jest/types': 27.5.1
       esbuild: 0.14.23
       esbuild-jest: 0.5.0_esbuild@0.14.23
       identity-obj-proxy: 3.0.0
+      isomorphic-unfetch: 3.1.0
     devDependencies:
       jest: 27.5.1_ts-node@10.5.0
 
@@ -12756,6 +12764,13 @@ packages:
     resolution: {integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=}
     engines: {node: '>=0.10.0'}
 
+  /isomorphic-unfetch/3.1.0:
+    resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
+    dependencies:
+      node-fetch: 2.6.1
+      unfetch: 4.2.0
+    dev: false
+
   /isstream/0.1.2:
     resolution: {integrity: sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=}
     dev: true
@@ -15132,7 +15147,6 @@ packages:
   /node-fetch/2.6.1:
     resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
     engines: {node: 4.x || >=6.0.0}
-    dev: true
 
   /node-forge/1.2.1:
     resolution: {integrity: sha512-Fcvtbb+zBcZXbTTVwqGA5W+MKBj56UjVRevvchv5XrcyXbmNdesfZL37nlcWOfpgHhgmxApw3tQbTr4CqNmX4w==}
@@ -20820,6 +20834,10 @@ packages:
       - less
       - sass
       - stylus
+    dev: false
+
+  /unfetch/4.2.0:
+    resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
     dev: false
 
   /unicode-canonical-property-names-ecmascript/2.0.0:

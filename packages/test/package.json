@@ -12,7 +12,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "setupFiles"
   ],
   "scripts": {
     "build": "pnpm tsc",
@@ -23,7 +24,8 @@
     "@jest/types": "27.5.1",
     "esbuild": "0.14.23",
     "esbuild-jest": "0.5.0",
-    "identity-obj-proxy": "3.0.0"
+    "identity-obj-proxy": "3.0.0",
+    "isomorphic-unfetch": "3.1.0"
   },
   "devDependencies": {
     "jest": "27.5.1"
