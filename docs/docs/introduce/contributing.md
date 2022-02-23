@@ -31,6 +31,13 @@ $ pnpm i
 $ pnpm dev
 ```
 
+如果觉得比较慢，也可以只跑特定 pacakge 的 dev 命令，比如。
+
+```bash
+$ cd packages/umi
+$ pnpm dev
+```
+
 ### 跑 example
 
 examples 目录下保存了各种用于测试的例子，跑 example 是开发 Umi 时确认功能正常的常用方式。每个 example 都配了 dev script，所以进入 example 然后执行 `pnpm dev` 即可。
