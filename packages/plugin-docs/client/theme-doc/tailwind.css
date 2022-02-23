@@ -28,7 +28,7 @@ article h6 {
 }
 
 article p {
-  @apply text-base font-light leading-8 mt-4 text-gray-700 dark:text-white;
+  @apply text-base leading-8 mt-4 text-gray-700 dark:text-white;
 }
 
 article ul {
@@ -145,5 +145,9 @@ h1, h2, h3, h4, h5, h6 {
 
   .features::-webkit-scrollbar {
     display: none;
+  }
+
+  .mdx-message > p {
+    @apply mt-0;
   }
 }
