@@ -31,17 +31,24 @@ function Message(props: PropsWithChildren<MessageProps>) {
       break;
   }
 
+  const messageText =
+    typeof props.children === 'string'
+      ? props.children
+      : (props.children as React.ReactElement).props.children;
+
   return (
     <>
       <div
-        className={`w-full py-3 px-4 ${bgColor} ${textColor} rounded-lg my-2`}
+        className={`w-full py-3 px-4 ${bgColor} ${textColor} rounded-lg my-4 mdx-message`}
       >
-        {props.emoji && (
-          <span role="img" className="mr-3">
-            {props.emoji}
-          </span>
-        )}
-        {props.children}
+        <p>
+          {props.emoji && (
+            <span role="img" className="mr-3 inline">
+              {props.emoji}
+            </span>
+          )}
+          {messageText}
+        </p>
       </div>
     </>
   );
