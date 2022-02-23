@@ -1,7 +1,5 @@
 import type { Config } from '@jest/types';
 
-export function configUmiAlias() {}
-
 export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
 
 export type { Config };
