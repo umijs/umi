@@ -15,5 +15,5 @@ export interface IEsbuildLoaderHandlerParams {
 
 export interface IEsbuildLoaderOpts extends Partial<TransformOptions> {
   handler?: Array<(opts: IEsbuildLoaderHandlerParams) => string>;
-  implementation?: typeof import('esbuild');
+  implementation?: typeof import('@umijs/bundler-utils/compiled/esbuild');
 }

@@ -1,3 +1,4 @@
+// @ts-ignore
 import styles from './foo.css';
 
 test('fetch polyfill', () => {
