@@ -1,9 +1,7 @@
-import { Config, createConfig, JSTransformer } from 'umi/test';
+import { Config, createConfig } from 'umi/test';
 
 export default {
-  ...createConfig({
-    jsTransformer: JSTransformer.esbuild,
-  }),
+  ...createConfig(),
   testMatch: ['**/packages/*/src/**/*.test.ts'],
   modulePathIgnorePatterns: [
     '<rootDir>/packages/.+/compiled',

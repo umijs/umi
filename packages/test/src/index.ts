@@ -2,42 +2,44 @@ import type { Config } from '@jest/types';
 
 export function configUmiAlias() {}
 
-export enum JSTransformer {
-  esbuild = 'esbuild',
-  swc = 'swc',
-  tsJest = 'ts-jest',
-}
+export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
 
 export type { Config };
 
 function getJSTransformer(jsTransformer: JSTransformer) {
-  switch (jsTransformer || JSTransformer.esbuild) {
-    case JSTransformer.esbuild:
+  switch (jsTransformer) {
+    case 'esbuild':
       return require.resolve('esbuild-jest');
-    case JSTransformer.swc:
+    case 'swc':
       return require.resolve('@swc-node/jest');
-    case JSTransformer.tsJest:
+    case 'ts-jest':
       return require.resolve('ts-jest');
     default:
       throw new Error(`Unknown jsTransformer: ${jsTransformer}`);
   }
 }
-
-export function createConfig(opts: {
-  jsTransformer: JSTransformer;
+export function createConfig(opts?: {
+  jsTransformer?: JSTransformer;
+  target?: 'node' | 'browser';
 }): Config.InitialOptions {
-  return {
-    testMatch: ['**/*.test.(j|t)sx?'],
+  const config: Config.InitialOptions = {
+    testMatch: ['**/*.test.(t|j)s(x)?'],
     transform: {
-      // alternatives:
-      // 1. @swc-node/jest
-      // 2. ts-jest
-      '^.+\\.tsx?$': getJSTransformer(opts.jsTransformer),
+      '^.+\\.tsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
+    },
+    moduleNameMapper: {
+      '^.+\\.(css|less|sass|scss|stylus)$':
+        require.resolve('identity-obj-proxy'),
     },
     testTimeout: 30000,
     modulePathIgnorePatterns: [
       '<rootDir>/packages/.+/compiled',
       '<rootDir>/packages/.+/fixtures',
     ],
+    setupFiles: [require.resolve('../setupFiles/shim')],
   };
+  if (opts?.target === 'browser') {
+    config.testEnvironment = 'jsdom';
+  }
+  return config;
 }
