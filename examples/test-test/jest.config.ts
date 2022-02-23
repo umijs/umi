@@ -1,7 +1,9 @@
-import { Config, createConfig } from 'umi/test';
+import { Config, configUmiAlias, createConfig } from 'umi/test';
 
-export default {
-  ...createConfig({
-    target: 'browser',
-  }),
-} as Config.InitialOptions;
+export default async () => {
+  return (await configUmiAlias({
+    ...createConfig({
+      target: 'browser',
+    }),
+  })) as Config.InitialOptions;
+};

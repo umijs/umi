@@ -14,3 +14,13 @@ test('jsdom', () => {
 test('css modules', () => {
   expect(styles.foo).toEqual('foo');
 });
+
+test('class', () => {
+  class A {
+    public foo() {
+      return 'foo';
+    }
+  }
+  const a = new A();
+  expect(a.foo()).toEqual('foo');
+});

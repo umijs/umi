@@ -1,1 +1,1 @@
-export * from '@umijs/test';
+export * from './dist/test';

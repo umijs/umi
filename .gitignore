@@ -3,6 +3,7 @@
 /examples/*/.mfsu
 /examples/*/.umi
 /examples/*/.umi-production
+/examples/*/.umi-test
 /examples/*/src/.umi
 /examples/*/src/.umi-production
 /examples/libs/monorepo/foo/.mfsu
