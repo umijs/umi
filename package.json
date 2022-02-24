@@ -65,7 +65,7 @@
     "zx": "^4.3.0"
   },
   "engines": {
-    "node": ">=16",
+    "node": ">=14",
     "pnpm": ">=6.20.0"
   },
   "packageManager": "pnpm@6.20.0"
