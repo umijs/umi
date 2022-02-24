@@ -19,4 +19,6 @@
 /packages/plugin-docs/client/theme-doc/tailwind.out.css
 /.umi
 /.mfsu
+/.umi-production
+/dist
 .DS_Store
