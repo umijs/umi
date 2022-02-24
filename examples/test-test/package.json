@@ -1,8 +1,9 @@
 {
   "scripts": {
+    "start": "npm run dev",
     "test": "jest"
   },
   "dependencies": {
-    "umi": "4.0.0-rc.2"
+    "umi": "4.0.0-rc.3"
   }
 }
