@@ -1,6 +1,6 @@
 {
   "name": "@umijs/mfsu",
-  "version": "4.0.0-rc.2",
+  "version": "4.0.0-rc.3",
   "description": "@umijs/mfsu",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/mfsu#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -21,9 +21,9 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/bundler-esbuild": "4.0.0-rc.2",
-    "@umijs/bundler-utils": "4.0.0-rc.2",
-    "@umijs/utils": "4.0.0-rc.2",
+    "@umijs/bundler-esbuild": "4.0.0-rc.3",
+    "@umijs/bundler-utils": "4.0.0-rc.3",
+    "@umijs/utils": "4.0.0-rc.3",
     "enhanced-resolve": "5.9.0"
   },
   "devDependencies": {

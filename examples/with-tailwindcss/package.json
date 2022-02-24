@@ -5,8 +5,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-rc.2",
+    "@umijs/plugins": "4.0.0-rc.3",
     "tailwindcss": "^3.0.23",
-    "umi": "4.0.0-rc.2"
+    "umi": "4.0.0-rc.3"
   }
 }
