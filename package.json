@@ -8,7 +8,7 @@
     "check:packageFiles": "esno scripts/checkPackageFiles.ts",
     "dep:update": "npx only-allow pnpm && pnpm up --interactive --latest --recursive",
     "dev": "pnpm -r --filter ./packages --parallel run dev",
-    "doc:build": "umi build",
+    "doc:build": "pnpm --filter ./packages/plugin-docs build:extra && umi build",
     "doc:dev": "esno scripts/startDocsSite.ts",
     "format": "prettier --write .",
     "preinstall": "npx only-allow pnpm",
