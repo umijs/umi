@@ -248,6 +248,8 @@ PORT=8888 umi dev
         ]),
         afterMiddlewares: [createRouteMiddleware({ api })].concat(middlewares),
         onDevCompileDone(opts: any) {
+          const used = process.memoryUsage().heapUsed / 1024 / 1024;
+          logger.info(`Memory Usage: ${Math.round(used * 100) / 100} MB`);
           api.applyPlugins({
             key: 'onDevCompileDone',
             args: opts,
