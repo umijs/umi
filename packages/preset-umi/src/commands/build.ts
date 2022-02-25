@@ -159,7 +159,7 @@ umi build --clean
         markup,
         'utf-8',
       );
-      logger.event('build index.html');
+      logger.event('Build index.html');
 
       // print size
     },
