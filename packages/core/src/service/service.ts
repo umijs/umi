@@ -483,5 +483,6 @@ export interface IServicePluginAPI {
   EnableBy: typeof EnableBy;
   ServiceStage: typeof ServiceStage;
 
+  registerPresets: (presets: any[]) => void;
   registerPlugins: (plugins: (Plugin | {})[]) => void;
 }
