@@ -193,11 +193,11 @@ const logUnusedFiles = (unusedFiles: string[]): void => {
 
   console.log(
     chalk.yellow.bold('\nWarning:'),
-    chalk.yellow(`There are ${unusedFiles.length} unused files:\n`),
+    chalk.yellow(`There are ${unusedFiles.length} unused files:`),
     ...unusedFiles.map(
-      (file, index) => `${index + 1}. ${chalk.yellow(file)}\n`,
+      (file, index) => `\n${index + 1}. ${chalk.yellow(file)}`,
     ),
-    chalk.red.bold('Please be careful if you want to remove them (¬º-°)¬.\n'),
+    chalk.red.bold('\nPlease be careful if you want to remove them (¬º-°)¬.\n'),
   );
 };
 
