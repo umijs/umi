@@ -31,6 +31,10 @@ export default (props: any) => {
 
   const { title, description } = props.themeConfig;
 
+  const isHomePage =
+    window.location.pathname === '/' ||
+    window.location.pathname.replace(/[a-z]{2}-[A-Z]{2}\/?/, '') === '/';
+
   return (
     <ThemeContext.Provider
       value={{
@@ -54,7 +58,7 @@ export default (props: any) => {
         <div className="g-glossy-firefox-cover" />
         <div className="g-glossy-firefox" id="firefox-head-bg" />
 
-        {window.location.pathname === '/' ? (
+        {isHomePage ? (
           <div id="article-body">
             <Helmet>
               <title>
