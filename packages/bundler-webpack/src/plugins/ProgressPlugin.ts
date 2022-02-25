@@ -24,7 +24,7 @@ class UmiProgressPlugin extends ProgressPlugin {
 
   apply(compiler: Compiler): void {
     compiler.hooks.invalid.tap(PLUGIN_NAME, () => {
-      logger.wait('compiling...');
+      logger.wait('Compiling...');
     });
     compiler.hooks.done.tap(PLUGIN_NAME, (stats: Stats) => {
       const { errors, warnings } = stats.toJson({
@@ -46,7 +46,7 @@ class UmiProgressPlugin extends ProgressPlugin {
       } else {
         const prefix = this.options.name ? `${this.options.name} ` : '';
         logger.event(
-          `${prefix}compiled successfully in ${
+          `${prefix}Compiled successfully in ${
             stats.endTime - stats.startTime
           } ms (${stats.compilation.modules.size} modules)`,
         );
