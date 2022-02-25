@@ -2,6 +2,7 @@ import { getMarkup } from '@umijs/server';
 import { importLazy, logger } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
+import process from 'process';
 import { IApi } from '../types';
 import { clearTmp } from '../utils/clearTmp';
 import { getBabelOpts } from './dev/getBabelOpts';
@@ -103,6 +104,8 @@ umi build --clean
         extraBabelPlugins,
         extraBabelPresets,
         onBuildComplete(opts: any) {
+          const used = process.memoryUsage().heapUsed / 1024 / 1024;
+          logger.info(`Memory Usage: ${Math.round(used * 100) / 100} MB`);
           api.applyPlugins({
             key: 'onBuildComplete',
             args: opts,
