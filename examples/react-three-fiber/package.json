@@ -5,10 +5,10 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@react-three/drei": "^8.10.6",
+    "@react-three/drei": "^8.10.7",
     "@react-three/fiber": "^7.0.26",
     "@types/three": "^0.137.0",
-    "three": "^0.137.5",
+    "three": "^0.138.0",
     "troika-three-text": "^0.45.0",
     "umi": "4.0.0-rc.3"
   }
