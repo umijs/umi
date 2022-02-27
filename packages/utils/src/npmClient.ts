@@ -30,8 +30,8 @@ export const installWithNpmClient = ({
   npmClient: NpmClient;
   cwd?: string;
 }): void => {
-  const { spawnSync } = require('child_process');
-  const npm = spawnSync(npmClient, [npmClient === 'yarn' ? '' : 'install'], {
+  const { sync } = require('../compiled/cross-spawn');
+  const npm = sync(npmClient, [npmClient === 'yarn' ? '' : 'install'], {
     stdio: 'inherit',
     cwd,
   });
