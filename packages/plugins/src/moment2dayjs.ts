@@ -1,4 +1,4 @@
-import { Mustache } from '@umijs/utils';
+import { Mustache, winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
 
@@ -87,10 +87,10 @@ dayjs.extend({{.}});
 
 dayjs.extend(antdPlugin);
     `;
-    const dayjsAntdPluginPath = require.resolve(
-      'antd-dayjs-webpack-plugin/src/antd-plugin',
+    const dayjsAntdPluginPath = winPath(
+      require.resolve('antd-dayjs-webpack-plugin/src/antd-plugin'),
     );
-    const dayjsPath = dirname(require.resolve('dayjs/package.json'));
+    const dayjsPath = winPath(dirname(require.resolve('dayjs/package.json')));
 
     api.writeTmpFile({
       path: 'runtime.tsx',
