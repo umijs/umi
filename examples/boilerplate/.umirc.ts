@@ -21,6 +21,7 @@ export default {
   mfsu: {
     esbuild: true,
   },
+  vite: {},
   deadCode: {},
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',

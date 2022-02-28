@@ -21,7 +21,7 @@ export default (api: IApi) => {
       version: require(join(api.config.alias.react, 'package.json')).version,
     };
     memo.appJS = await getAppJsInfo();
-    memo.vite = api.args.vite ? {} : undefined;
+    memo.vite = api.config.vite ? {} : undefined;
     memo.globalCSS = [
       'global.css',
       'global.less',
