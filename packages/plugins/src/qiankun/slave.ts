@@ -2,6 +2,7 @@ import assert from 'assert';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi } from 'umi';
+import { winPath } from 'umi/plugin-utils';
 import { withTmpPath } from '../utils/withTmpPath';
 import { qiankunStateFromMasterModelNamespace } from './constants';
 
@@ -174,11 +175,11 @@ if (!window.__POWERED_BY_QIANKUN__) {
           )
           .replace(
             /from 'qiankun'/g,
-            `from '${dirname(require.resolve('qiankun/package'))}'`,
+            `from '${winPath(dirname(require.resolve('qiankun/package')))}'`,
           )
           .replace(
             /from 'lodash\//g,
-            `from '${dirname(require.resolve('lodash/package'))}/`,
+            `from '${winPath(dirname(require.resolve('lodash/package')))}/`,
           ),
       });
     });
