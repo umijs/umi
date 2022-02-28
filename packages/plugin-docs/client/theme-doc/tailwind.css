@@ -84,12 +84,18 @@ article a code {
 
 article a {
   @apply text-blue-600 mx-1 hover:text-blue-300 transition dark:text-blue-400;
-  background-image: linear-gradient(transparent 60%, rgba(130, 199, 255, 0.28) 55%);
+  background-image: linear-gradient(
+    transparent 60%,
+    rgba(130, 199, 255, 0.28) 55%
+  );
 }
 
 .link-with-underline {
   @apply text-blue-600 mx-1 hover:text-blue-300 transition dark:text-blue-400;
-  background-image: linear-gradient(transparent 60%, rgba(130, 199, 255, 0.28) 55%);
+  background-image: linear-gradient(
+    transparent 60%,
+    rgba(130, 199, 255, 0.28) 55%
+  );
 }
 
 /*article pre {*/
@@ -111,7 +117,7 @@ article hr {
 }
 
 html {
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
 }
 
 :root {
@@ -119,12 +125,16 @@ html {
 }
 
 /** Anchor with offset for headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   scroll-margin-top: calc(var(--anchor-offset) + 88px);
 }
 
 @layer components {
-
   .features-dark {
     @apply bg-gray-900;
     background-image: radial-gradient(#2a2a2a 20%, transparent 20%);
@@ -147,7 +157,43 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
   }
 
+  .mdx-message {
+    @apply border-l-8;
+  }
+
   .mdx-message > p {
     @apply mt-0;
+  }
+
+  .mdx-message-info {
+    @apply bg-blue-50 border-blue-300 dark:bg-blue-100 dark:border-blue-500;
+  }
+
+  .mdx-message-info > p {
+    @apply text-blue-900 dark:text-blue-900;
+  }
+
+  .mdx-message-success {
+    @apply bg-green-50 border-green-300 dark:bg-green-100 dark:border-green-500;
+  }
+
+  .mdx-message-success > p {
+    @apply text-green-900 dark:text-green-900;
+  }
+
+  .mdx-message-warning {
+    @apply bg-orange-50 border-orange-300 dark:bg-orange-100 dark:border-orange-500;
+  }
+
+  .mdx-message-warning > p {
+    @apply text-orange-900 dark:text-orange-900;
+  }
+
+  .mdx-message-error {
+    @apply bg-red-50 border-red-300 dark:bg-red-100 dark:border-red-500;
+  }
+
+  .mdx-message-error > p {
+    @apply text-red-900 dark:text-red-900;
   }
 }

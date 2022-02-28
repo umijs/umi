@@ -75,7 +75,7 @@ export default (props: any) => {
               className="w-full flex flex-row justify-center overflow-x-hidden"
             >
               <div className="container flex flex-row justify-center">
-                <div className="w-full lg:w-1/2 px-4 lg:px-0 m-8 z-20 lg:py-12">
+                <div className="w-full lg:w-1/2 px-4 lg:px-2 m-8 z-20 lg:py-12">
                   <article className="flex-1">{props.children}</article>
                 </div>
               </div>
