@@ -40,7 +40,7 @@
     "debug": "4.3.3",
     "deepmerge": "4.2.2",
     "execa": "6.1.0",
-    "fs-extra": "10.0.0",
+    "fs-extra": "10.0.1",
     "glob": "7.2.0",
     "import-lazy": "4.0.0",
     "lodash": "4.17.21",
@@ -54,7 +54,7 @@
     "rimraf": "3.0.2",
     "semver": "7.3.5",
     "strip-ansi": "7.0.1",
-    "yargs-parser": "21.0.0"
+    "yargs-parser": "21.0.1"
   },
   "publishConfig": {
     "access": "public"
