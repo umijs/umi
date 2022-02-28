@@ -134,6 +134,30 @@ copy: ['foo.js', 'bar']
     - foo.js
 ```
 
+## crossorigin
+
+* 类型：`{ includes?: string[] }`
+* 默认值：`false`
+
+配置 script 标签的 crossorigin。如果有声明，会为本地 script 加上 crossorigin="anonymous" 的属性。
+
+关于参数。`includes` 参数可以为额外的非本地 script 标签加上此属性。
+
+比如：
+
+```
+crossorigin: {}
+```
+
+然后输出的 HTML 中会有这些变化，
+
+```diff
+- 
+<script src="/umi.js"></script>
++ 
+<script src="/umi.js" crossorigin="anonymous"></script>
+```
+
 ## deadCode
 
 * 类型：`{}`
