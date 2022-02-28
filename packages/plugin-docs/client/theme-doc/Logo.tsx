@@ -3,13 +3,12 @@ import { useThemeContext } from './context';
 import useLanguage from './useLanguage';
 
 export default () => {
-  
   const { themeConfig, components } = useThemeContext()!;
   const { isFromPath, currentLanguage } = useLanguage();
-  
+
   // @ts-ignore
   const { logo } = themeConfig;
-  
+
   return (
     <components.Link to={isFromPath ? '/' + currentLanguage?.locale : '/'}>
       <div className="flex flex-row items-center">

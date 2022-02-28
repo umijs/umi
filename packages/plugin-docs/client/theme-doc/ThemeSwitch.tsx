@@ -36,9 +36,9 @@ export default () => {
   return (
     <div
       className={cx(
-        'md:w-12 md:h-6 w-12 h-4 flex items-center bg-gray-300 rounded-full ',
+        'md:w-12 md:h-6 w-12 h-4 flex items-center rounded-full ',
         'py-1 px-1.5  cursor-pointer',
-        toggle ? 'bg-blue-300' : 'bg-gray-700',
+        toggle ? 'bg-gray-100' : 'bg-gray-700',
       )}
       onClick={() => setToggle(!toggle)}
     >

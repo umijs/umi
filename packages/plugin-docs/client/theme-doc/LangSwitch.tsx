@@ -25,7 +25,7 @@ export default () => {
   return (
     <div>
       <div
-        className="w-24 rounded-lg overflow-hidden cursor-pointer border
+        className="w-24 rounded-lg overflow-hidden cursor-pointer border text-center
        border-white hover:border-gray-100 dark:border-gray-800"
         onClick={handleClick}
       >

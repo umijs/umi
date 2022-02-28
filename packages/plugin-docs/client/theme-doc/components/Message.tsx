@@ -13,22 +13,21 @@ interface MessageProps {
 }
 
 function Message(props: PropsWithChildren<MessageProps>) {
-  let bgColor = 'bg-blue-50';
-  let textColor = 'text-blue-900';
+  const messageType = props.type || 'info';
 
-  switch (props.type) {
+  let messageClass: string;
+  switch (messageType) {
     case MessageType.Success:
-      bgColor = 'bg-green-50';
-      textColor = 'text-green-900';
+      messageClass = 'mdx-message-success';
       break;
     case MessageType.Warning:
-      bgColor = 'bg-orange-50';
-      textColor = 'text-orange-900';
+      messageClass = 'mdx-message-warning';
       break;
     case MessageType.Error:
-      bgColor = 'bg-red-50';
-      textColor = 'text-red-900';
+      messageClass = 'mdx-message-error';
       break;
+    default:
+      messageClass = 'mdx-message-info';
   }
 
   const messageText =
@@ -39,7 +38,7 @@ function Message(props: PropsWithChildren<MessageProps>) {
   return (
     <>
       <div
-        className={`w-full py-3 px-4 ${bgColor} ${textColor} rounded-lg my-4 mdx-message`}
+        className={`w-full py-3 px-4 rounded-lg my-4 mdx-message ${messageClass}`}
       >
         <p>
           {props.emoji && (
