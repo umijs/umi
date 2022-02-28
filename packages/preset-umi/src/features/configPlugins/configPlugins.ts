@@ -1,5 +1,6 @@
+import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
 import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
-import { getSchemas } from '@umijs/bundler-webpack/dist/schema';
+import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from '../../types';
@@ -48,7 +49,9 @@ export default (api: IApi) => {
     targets: DEFAULT_BROWSER_TARGETS,
   };
 
-  const bundleSchemas = getSchemas();
+  const bundleSchemas = api.config.vite
+    ? getViteSchemas()
+    : getWebpackSchemas();
   const extraSchemas = getExtraSchemas();
   const schemas = {
     ...bundleSchemas,
