@@ -95,7 +95,11 @@ export default {
       children: [
         {
           title: 'Blog',
-          children: ['umi-4-rc', 'mfsu-faster-then-vite'],
+          children: [
+            'umi-4-rc',
+            'mfsu-faster-then-vite',
+            'mfsu-independent-usage',
+          ],
         },
       ],
     },
