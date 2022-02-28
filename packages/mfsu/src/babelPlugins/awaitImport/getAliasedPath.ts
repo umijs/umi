@@ -1,5 +1,3 @@
-import { extname } from 'path';
-
 export function getAliasedPath({
   value,
   alias,
@@ -8,6 +6,10 @@ export function getAliasedPath({
   alias: Record<string, string>;
 }) {
   const importValue = value;
+  // equal alias
+  if (alias[value]) {
+    return alias[value];
+  }
   for (const key of Object.keys(alias)) {
     const aliasValue = alias[key];
 
@@ -19,21 +21,11 @@ export function getAliasedPath({
       else continue;
     }
 
-    // e.g. foo: path/to/foo
-    if (importValue === key) {
-      return aliasValue;
-    }
-
     // e.g. foo: path/to/foo.js
-    const slashedKey = isJSFile(aliasValue) ? key : addLastSlash(key);
-    if (importValue.startsWith(slashedKey)) {
+    if (importValue.startsWith(addLastSlash(key))) {
       return importValue.replace(key, aliasValue);
     }
   }
-}
-
-function isJSFile(path: string) {
-  return ['.js', '.jsx', '.ts', '.tsx'].includes(extname(path));
 }
 
 function addLastSlash(path: string) {
