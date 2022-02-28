@@ -41,7 +41,7 @@ umi dev
 PORT=8888 umi dev
 `,
     async fn() {
-      const enableVite = api.args.vite;
+      const enableVite = !!api.config.vite;
 
       // clear tmp except cache
       clearTmp(api.paths.absTmpPath);

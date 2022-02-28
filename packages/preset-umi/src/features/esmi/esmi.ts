@@ -211,14 +211,14 @@ export default (api: IApi) => {
 
   // check bundler type
   api.onStart(() => {
-    if (!api.args.vite) {
+    if (!api.config.vite) {
       throw new Error(`esmi can only be used in vite mode.`);
     }
   });
 
   // collect all imports after tmp files generated
   api.onBeforeCompiler(async () => {
-    if (api.args.vite) {
+    if (api.config.vite) {
       // init esmi service
       service = new Service({
         cdnOrigin: api.config.esmi.cdnOrigin,
@@ -257,7 +257,7 @@ export default (api: IApi) => {
     return $;
   });
 
-  if (api.args.vite) {
+  if (api.config.vite) {
     // apply esmi vite plugin
     api.modifyViteConfig((memo) => {
       memo.plugins = (memo.plugins || []).concat(

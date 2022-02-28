@@ -96,7 +96,7 @@ umi build --clean
         entry: {
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
-        ...(api.args.vite
+        ...(api.config.vite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),
         beforeBabelPlugins,
@@ -114,14 +114,14 @@ umi build --clean
       };
 
       let stats: any;
-      if (api.args.vite) {
+      if (api.config.vite) {
         stats = await bundlerVite.build(opts);
       } else {
         stats = await bundlerWebpack.build(opts);
       }
 
       function getAssetsMap(stats: any) {
-        if (api.args.vite) {
+        if (api.config.vite) {
           // TODO: FIXME: vite
           return { 'umi.js': 'umi.js', 'umi.css': 'umi.css' };
         }

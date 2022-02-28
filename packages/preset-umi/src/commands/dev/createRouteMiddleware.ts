@@ -15,7 +15,7 @@ window.__vite_plugin_react_preamble_installed__ = true
 
 export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
   return async (req, res, next) => {
-    const { vite } = opts.api.args;
+    const { vite } = opts.api.config;
     const viteScripts: IOpts['scripts'] = [
       // add noshim attr for skip importmap shim logic for this modules
       { content: viteRefreshScript, noshim: '' },
