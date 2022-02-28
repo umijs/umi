@@ -21,7 +21,7 @@ export default {
   mfsu: {
     esbuild: true,
   },
-  vite: {},
+  // vite: {},
   deadCode: {},
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
@@ -29,6 +29,7 @@ export default {
   // scripts: [`console.log('script')`],
   npmClient: 'pnpm',
   svgr: {},
+  crossorigin: {},
   // srcTranspiler: 'swc',
   // esmi: {},
   // esm: {},
