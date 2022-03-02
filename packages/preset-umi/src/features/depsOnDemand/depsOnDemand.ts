@@ -5,6 +5,7 @@ import { IApi } from '../../types';
 
 export default (api: IApi) => {
   api.onStart(() => {
+    // TODO: 支持在上层框架锁定，比如通过 api.appData.depsOnDemand 添加可选依赖
     const hasSwcConfig =
       api.config.srcTranspiler === 'swc' || api.config.depTranspiler === 'swc';
     const swcInstalled =
