@@ -35,6 +35,5 @@ function addDeps(opts: { pkgPath: string; name: string; version: string }) {
     : {};
   pkg.devDependencies = pkg.devDependencies || {};
   pkg.devDependencies[opts.name] = opts.version;
-  console.log('test', opts.pkgPath, pkg);
   fsExtra.writeJSONSync(opts.pkgPath, pkg, { spaces: 2 });
 }
