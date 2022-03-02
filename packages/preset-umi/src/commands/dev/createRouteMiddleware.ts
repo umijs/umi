@@ -26,7 +26,8 @@ export function createRouteMiddleware(opts: { api: IApi }): RequestHandler {
     // @ts-ignore
     const requestHandler = await createRequestHandler({
       ...markupArgs,
-      styles: ['/umi.css'].concat(markupArgs.styles),
+      // css will be injected with style tag in vite mode
+      styles: (vite ? [] : ['/umi.css']).concat(markupArgs.styles),
       scripts: (vite ? viteScripts : ['/umi.js']).concat(markupArgs.scripts!),
       esmScript: vite,
     });
