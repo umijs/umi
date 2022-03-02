@@ -1,1 +1,1 @@
-export * from 'umi/plugin-utils';
+module.exports = require('umi/plugin-utils');

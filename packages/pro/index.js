@@ -1,1 +1,1 @@
-export * from 'umi';
+module.exports = require('umi');
