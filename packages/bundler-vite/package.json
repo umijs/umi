@@ -29,6 +29,7 @@
     "@umijs/utils": "4.0.0-rc.3",
     "@vitejs/plugin-legacy": "1.7.1",
     "@vitejs/plugin-react": "1.2.0",
+    "caniuse-lite": "1.0.30001309",
     "postcss-preset-env": "7.4.1",
     "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-polyfill": "3.0.0",
@@ -36,6 +37,7 @@
     "vite": "2.8.4"
   },
   "devDependencies": {
+    "@types/caniuse-lite": "1.0.1",
     "express": "4.17.3"
   },
   "publishConfig": {

@@ -1,4 +1,3 @@
-import legacyPlugin from '@vitejs/plugin-legacy';
 import reactPlugin from '@vitejs/plugin-react';
 import type { IConfigProcessor } from '.';
 
@@ -18,12 +17,6 @@ export default (function react(userConfig) {
       },
     }),
   );
-
-  if (userConfig.legacy) {
-    config.plugins?.push(
-      legacyPlugin(userConfig.legacy === true ? {} : userConfig.legacy),
-    );
-  }
 
   return config;
 } as IConfigProcessor);
