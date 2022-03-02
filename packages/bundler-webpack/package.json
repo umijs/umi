@@ -33,7 +33,6 @@
     "@svgr/core": "6.2.1",
     "@svgr/plugin-jsx": "^6.2.1",
     "@svgr/plugin-svgo": "^6.2.0",
-    "@swc/core": "1.2.146",
     "@types/hapi__joi": "17.1.8",
     "@umijs/babel-preset-umi": "4.0.0-rc.3",
     "@umijs/mfsu": "4.0.0-rc.3",
@@ -47,6 +46,7 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
+    "@swc/core": "1.2.146",
     "@types/express": "4.17.13",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.1",
