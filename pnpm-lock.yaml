@@ -452,10 +452,12 @@ importers:
   packages/bundler-vite:
     specifiers:
       '@svgr/core': 6.2.1
+      '@types/caniuse-lite': 1.0.1
       '@umijs/bundler-utils': 4.0.0-rc.3
       '@umijs/utils': 4.0.0-rc.3
       '@vitejs/plugin-legacy': 1.7.1
       '@vitejs/plugin-react': 1.2.0
+      caniuse-lite: 1.0.30001309
       express: 4.17.3
       postcss-preset-env: 7.4.1
       rollup-plugin-copy: 3.4.0
@@ -468,12 +470,14 @@ importers:
       '@umijs/utils': link:../utils
       '@vitejs/plugin-legacy': 1.7.1_vite@2.8.4
       '@vitejs/plugin-react': 1.2.0
+      caniuse-lite: 1.0.30001309
       postcss-preset-env: 7.4.1
       rollup-plugin-copy: 3.4.0
       rollup-plugin-polyfill: 3.0.0
       rollup-plugin-visualizer: 5.6.0
       vite: 2.8.4
     devDependencies:
+      '@types/caniuse-lite': 1.0.1
       express: 4.17.3
 
   packages/bundler-webpack:
@@ -5890,6 +5894,10 @@ packages:
       '@types/responselike': 1.0.0
     dev: true
 
+  /@types/caniuse-lite/1.0.1:
+    resolution: {integrity: sha512-enW8d/vdojHAhr1C/0BqsNkhz/0ik2WCuAJIp9EClP+mHkR8xXBJ2OGeXHZ6cPqDjVKvWBRe9tY/Nr9r4yQSuA==}
+    dev: true
+
   /@types/chai-subset/1.3.3:
     resolution: {integrity: sha512-frBecisrNGz+F4T6bcc+NLeolfiojh5FxW2klu669+8BARtyQv2C/GkNW6FUodVe4BroGMP/wER/YDGc7rEllw==}
     dependencies:
@@ -7865,6 +7873,10 @@ packages:
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
+
+  /caniuse-lite/1.0.30001309:
+    resolution: {integrity: sha512-Pl8vfigmBXXq+/yUz1jUwULeq9xhMJznzdc/xwl4WclDAuebcTHVefpz8lE/bMI+UN7TOkSSe7B7RnZd6+dzjA==}
+    dev: false
 
   /caniuse-lite/1.0.30001312:
     resolution: {integrity: sha512-Wiz1Psk2MEK0pX3rUzWaunLTZzqS2JYZFzNKqAiJGiuxIjRPLgV6+VDPOg6lQOUxmDwhTlh198JsTTi8Hzw6aQ==}

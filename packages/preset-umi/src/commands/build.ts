@@ -123,7 +123,8 @@ umi build --clean
       function getAssetsMap(stats: any) {
         if (api.config.vite) {
           // TODO: FIXME: vite
-          return { 'umi.js': 'umi.js', 'umi.css': 'umi.css' };
+          // vite features provides required css and js documents
+          return {};
         }
 
         let ret: Record<string, string> = {};

@@ -1,3 +1,4 @@
+import { cheerio } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 import { build as viteBuilder, mergeConfig } from 'vite';
@@ -52,7 +53,7 @@ function generateTempEntry(cwd: string, entry: IOpts['entry']) {
 
       fs.writeFileSync(
         entryFilePath,
-        `<html><body><script type="module" src="${entry[name]}"></script></body></html>`,
+        `<html><head></head><body><script type="module" src="${entry[name]}"></script></body></html>`,
         'utf8',
       );
 
@@ -65,6 +66,7 @@ function generateTempEntry(cwd: string, entry: IOpts['entry']) {
 }
 
 export async function build(opts: IOpts): Promise<void> {
+  let extraHtmlPart;
   const startTms = +new Date();
   const result: IBuildResult = {
     isFirstCompile: true,
@@ -102,7 +104,17 @@ export async function build(opts: IOpts): Promise<void> {
               // use temp html entry for vite build
               input: tmpHtmlEntry,
               // remove temp html entry after build
-              plugins: [deleteOutputFiles(Object.values(tmpHtmlEntry))],
+              plugins: [
+                deleteOutputFiles(Object.values(tmpHtmlEntry), (file) => {
+                  if (file.type === 'asset') {
+                    const $ = cheerio.load(file.source);
+                    extraHtmlPart = {
+                      head: $('head').html(),
+                      body: $('body').html(),
+                    };
+                  }
+                }),
+              ],
             }
           : // fallback to vite default entry
             {},
@@ -113,10 +125,10 @@ export async function build(opts: IOpts): Promise<void> {
 
   try {
     result.stats = await viteBuilder(viteBuildConfig);
+    result.stats.extraHtml = extraHtmlPart;
     result.time = +new Date() - startTms;
   } catch (err: any) {
     result.err = err;
   }
-
   opts.onBuildComplete && opts.onBuildComplete(result);
 }
