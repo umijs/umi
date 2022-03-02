@@ -1,5 +1,5 @@
 # 插件
-umi 的核心就在于它的插件机制。基于 umi 的插件机制，你可以获得扩展项目的编译时和运行时的能力。你可以利用我们提供的 [插件API](./api/plugin-api) 来自由编写插件，进而实现修改代码打包配置，修改启动代码，约定目录结构，修改 HTML 等丰富的功能。
+umi 的核心就在于它的插件机制。基于 umi 的插件机制，你可以获得扩展项目的编译时和运行时的能力。你可以利用我们提供的 [插件API](../api/plugin-api) 来自由编写插件，进而实现修改代码打包配置，修改启动代码，约定目录结构，修改 HTML 等丰富的功能。
 
 ## 核心概念
 插件的本质就是一个方法，该方法接收了一个参数：api。在插件中，你可以调用 api 提供的方法进行一些 hook 的注册，随后 umi 会在特定的时机执行这些 hook。
@@ -93,7 +93,7 @@ export default{
 会禁用 umi 内置的 mock 插件。
 
 ### 在插件中禁用其他插件
-可通过 `api.skipPlugins(plyginId[])` 的方式禁用，详见[插件 API](./api/plugin-api)。
+可通过 `api.skipPlugins(plyginId[])` 的方式禁用，详见[插件 API](../api/plugin-api)。
 
 ## 查看插件注册情况
 ### 命令行
@@ -103,7 +103,7 @@ $ umi plugin list
 
 ### 在插件中感知其他插件
 
-可通过 `api.hasPlugins(pluginId[])` 和 `api.hasPresets(pluginId[])` 的方式感知其他插件，详见[插件 API](./api/plugin-api)。
+可通过 `api.hasPlugins(pluginId[])` 和 `api.hasPresets(pluginId[])` 的方式感知其他插件，详见[插件 API](../api/plugin-api)。
 
 ## 配置插件
 通过配置插件的 key 来配置插件，比如：
@@ -153,7 +153,7 @@ export default{
 
 `registerMethod()` 接收一个 key 和 一个 fn，它会在 api 上注册一个方法。如果你没有向 `registerMethod()` 中传入 fn，那么 `registerMethod()` 会在 api 上注册一个"注册器"： 它会将 `register()` 传入 key 并柯里化后的结果作为 fn 注册到 api 上。这样就可以通过调用这个"注册器"，快捷地为 key 注册 hook 了。
 
-关于上述 api 的更具体的使用，请参照[插件 API](./api/plugin-api)
+关于上述 api 的更具体的使用，请参照[插件 API](../api/plugin-api)
 
 ### PluginAPI 的原理
 umi 会为每个插件赋予一个 PluginAPI 对象，这个对象引用了插件本身和 umi 的 service。
