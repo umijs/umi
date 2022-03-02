@@ -1,6 +1,6 @@
-import { glob, lodash, winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { basename, join } from 'path';
+import { glob, lodash, winPath } from 'umi/plugin-utils';
 
 export type IAddAntdLocales = (args: {
   lang: string;

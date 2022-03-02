@@ -1,8 +1,8 @@
-import { logger } from '@umijs/utils';
 import { exec } from 'child_process';
 import * as fs from 'fs';
 import path from 'path';
 import { IApi } from 'umi';
+import { logger } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
   api.describe({

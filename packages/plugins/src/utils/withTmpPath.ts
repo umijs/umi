@@ -1,6 +1,6 @@
-import { winPath } from '@umijs/utils';
 import { join } from 'path';
 import { IApi } from 'umi';
+import { winPath } from 'umi/plugin-utils';
 
 export function withTmpPath(opts: {
   api: IApi;

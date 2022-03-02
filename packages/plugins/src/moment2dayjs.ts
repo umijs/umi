@@ -1,6 +1,6 @@
-import { Mustache, winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
+import { Mustache, winPath } from 'umi/plugin-utils';
 
 /*
    As long as moment2dayjs is registered, moment will be replaced by dayjs.

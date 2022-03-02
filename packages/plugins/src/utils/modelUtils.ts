@@ -3,10 +3,10 @@ import * as parser from '@umijs/bundler-utils/compiled/babel/parser';
 import traverse from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
-import { glob, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { basename, extname, join } from 'path';
 import { IApi } from 'umi';
+import { glob, winPath } from 'umi/plugin-utils';
 import { getIdentifierDeclaration } from './astUtils';
 
 interface IOpts {
