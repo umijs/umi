@@ -1,6 +1,21 @@
 import { MF_VA_PREFIX } from '../constants';
 import { Dep } from '../dep/dep';
 
+// from typescript `esModuleInterop`
+const ES_INTEROP_FUNC = `__exportStar`;
+const ES_INTEROP_HELPER = `
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+}));
+var ${ES_INTEROP_FUNC} = (this && this.__exportStar) || function(m, exports) {
+  for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+`;
+
 export function getESBuildEntry(opts: { deps: Dep[] }) {
   return `
 (function() {
@@ -265,6 +280,7 @@ export function getESBuildEntry(opts: { deps: Dep[] }) {
 var __webpack_exports__ = {};
 (function() {
   var exports = __webpack_exports__;
+${ES_INTEROP_HELPER}
   var moduleMap = {
 ${opts.deps.map(getDepModuleStr).join(',\n')}
   };
@@ -303,6 +319,7 @@ function getDepModuleStr(dep: Dep) {
 "./${dep.file}": function() {
   return new Promise(resolve => {
     import('./${MF_VA_PREFIX}${dep.normalizedFile}.js').then(module => {
+      module.default && ${ES_INTEROP_FUNC}(module, module.default);
       resolve(() => module.default || module);
     });
   })
