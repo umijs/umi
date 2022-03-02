@@ -1,4 +1,4 @@
-import { run } from 'umi/dist/cli/cli';
+import { run } from 'umi';
 
 run({
   presets: [require.resolve('./preset')],
