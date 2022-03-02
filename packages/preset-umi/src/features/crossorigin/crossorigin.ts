@@ -17,6 +17,7 @@ export default (api: IApi) => {
         );
       },
     },
+    enableBy: api.EnableBy.config,
   });
 
   api.chainWebpack((webpackConfig) => {
