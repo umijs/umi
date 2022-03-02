@@ -1,4 +1,4 @@
-import { init as initRequreHook } from '@umijs/bundler-webpack/lib/requireHook';
+import { init as initRequireHook } from '@umijs/bundler-webpack/lib/requireHook';
 import { init } from '@umijs/deps/compiled/webpack';
 import { createDebug } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
@@ -51,5 +51,5 @@ export default () => {
     init();
   }
 
-  initRequreHook();
+  initRequireHook();
 };
