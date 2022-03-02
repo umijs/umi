@@ -440,7 +440,15 @@ export class Service {
     if (this.config[key] === false) return false;
     if (enableBy === EnableBy.config) {
       // TODO: 提供单独的命令用于启用插件
-      return key in this.userConfig;
+      // this.userConfig 中如果存在，启用
+      // this.config 好了之后如果存在，启用
+      // this.config 在 modifyConfig 和 modifyDefaultConfig 之后才会 ready
+      // 这意味着 modifyConfig 和 modifyDefaultConfig 只能判断 api.userConfig
+      // 举个具体场景:
+      //   - p1 enableBy config, p2 modifyDefaultConfig p1 = {}
+      //   - p1 里 modifyConfig 和 modifyDefaultConfig 仅 userConfig 里有 p1 有效，其他 p2 开启时即有效
+      //   - p2 里因为用了 modifyDefaultConfig，如果 p2 是 enableBy config，需要 userConfig 里配 p2，p2 和 p1 才有效
+      return key in this.userConfig || (this.config && key in this.config);
     }
     if (typeof enableBy === 'function')
       return enableBy({
