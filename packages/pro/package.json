@@ -9,16 +9,20 @@
     "url": "https://github.com/umijs/umi-next"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "bin": {
     "umipro": "bin/pro.js"
   },
   "files": [
     "dist",
     "bin",
-    "index.esm.js",
-    "index.d.ts"
+    "index.js",
+    "index.d.ts",
+    "plugin-utils.d.ts",
+    "plugin-utils.js",
+    "test.d.ts",
+    "test.js"
   ],
   "scripts": {
     "build": "pnpm tsc",

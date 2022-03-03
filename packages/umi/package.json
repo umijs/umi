@@ -22,7 +22,9 @@
     "bin",
     "plugin.js",
     "plugin-utils.d.ts",
-    "plugin-utils.js"
+    "plugin-utils.js",
+    "test.d.ts",
+    "test.js"
   ],
   "scripts": {
     "build": "pnpm tsc",
