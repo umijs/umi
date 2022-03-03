@@ -4,7 +4,6 @@ import { chalk } from '@umijs/utils';
 import { ProvidePlugin } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import { MFSU_NAME } from '../constants';
-import AutoCSSModule from '../swcPlugins/autoCSSModules';
 import { Env, IConfig, Transpiler } from '../types';
 import { es5ImcompatibleVersionsToPkg, isMatch } from '../utils/depMatch';
 
@@ -115,6 +114,7 @@ export async function addJavaScriptRules(opts: IOpts) {
           ].filter(Boolean),
         });
     } else if (srcTranspiler === Transpiler.swc) {
+      const AutoCSSModule = require('../swcPlugins/autoCSSModules').default;
       rule
         .use('swc-loader')
         .loader(require.resolve('../loader/swc'))
