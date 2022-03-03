@@ -19,11 +19,8 @@ const NoFoundPage: FC = () => {
       </p>
       <p>
         If you want to customize the 404 page and display it for users in
-        production, you can refer{' '}
-        <a href="https://umijs.org/docs/convention-routing#404-routing">
-          {' '}
-          here{' '}
-        </a>
+        production, you can refer
+        <a href="https://umijs.org/docs/convention-routing#404-routing">here</a>
       </p>
       <br />
       <br />
