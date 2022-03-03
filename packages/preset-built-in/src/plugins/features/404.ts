@@ -1,4 +1,5 @@
 import { IApi, IConfig, IRoute } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 
 export function patchRoutes(routes: IRoute[], config: IConfig): IRoute[] {
   let notFoundIndex = null;
@@ -19,6 +20,13 @@ export function patchRoutes(routes: IRoute[], config: IConfig): IRoute[] {
     } else {
       throw new Error('Invalid route config for /404');
     }
+  }
+  if (
+    notFoundIndex === null &&
+    !config.exportStatic &&
+    process.env.NODE_ENV === 'development'
+  ) {
+    routes.push({ component: winPath(require.resolve('./NotFound')) });
   }
   return routes;
 }

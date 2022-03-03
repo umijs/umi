@@ -14,7 +14,17 @@ const NoFoundPage: FC = () => {
       <p>
         If you don't need this feature, you can turn it off by configuring it.
       </p>
-      <p>This page will only work in the development environment. </p>
+      <p>
+        Don't worry, this page will only appear in the development environment.
+      </p>
+      <p>
+        If you want to customize the 404 page and display it for users in
+        production, you can refer{' '}
+        <a href="https://umijs.org/docs/convention-routing#404-routing">
+          {' '}
+          here{' '}
+        </a>
+      </p>
       <br />
       <br />
       <Link to="/">Go Back!</Link>
