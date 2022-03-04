@@ -46,7 +46,7 @@ export default async ({
       {
         type: 'select',
         name: 'registry',
-        message: 'Pick Bpm Registry',
+        message: 'Pick Npm Registry',
         choices: [
           {
             title: 'npm',
