@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useLanguage from './useLanguage';
 
 export default () => {
-  const { currentLanguage, languages, switchLanguage } = useLanguage();
+  const { currentLanguage, languages, switchLanguage, isFromPath } =
+    useLanguage();
   const [isExpanded, setExpanded] = useState(false);
+
+  // 首次加载时，根据 localstorage 记录的上次语言自动切换
+  useEffect(() => {
+    const locale = window.localStorage.getItem('umi_locale');
+    if (locale && !isFromPath) switchLanguage(locale);
+  }, []);
 
   if (!currentLanguage) {
     return null;

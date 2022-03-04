@@ -35,12 +35,15 @@ function useLanguage(): useLanguageResult {
 
     // 切换到默认语言
     if (locale === languages[0].locale && isFromPath) {
+      window.localStorage.removeItem('umi_locale');
       let p = location.pathname.split('/');
       p.shift();
       p.shift();
       history.push('/' + p.join('/'));
       return;
     }
+
+    window.localStorage.setItem('umi_locale', locale);
 
     // 当前在默认语言，切换到其他语言
     if (!isFromPath) {
