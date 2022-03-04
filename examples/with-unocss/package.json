@@ -5,9 +5,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-rc.4",
+    "@umijs/plugins": "4.0.0-rc.5",
     "@unocss/cli": "^0.27.1",
-    "umi": "4.0.0-rc.4",
+    "umi": "4.0.0-rc.5",
     "unocss": "^0.27.1"
   }
 }
