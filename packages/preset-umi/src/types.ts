@@ -13,6 +13,7 @@ import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
+export * from './features/apiRoute/vercel';
 export type IScript =
   | Partial<{
       async: boolean;
@@ -52,6 +53,10 @@ export type IMeta = Partial<{
   name: string;
   scheme: string;
 }>;
+export type IApiMiddleware = {
+  name: string;
+  path: string;
+};
 export type IEntryImport = {
   source: string;
   specifier?: string;
@@ -123,6 +128,7 @@ export type IApi = PluginAPI &
     addBeforeBabelPresets: IAdd<null, any>;
     addBeforeBabelPlugins: IAdd<null, any>;
     addBeforeMiddlewares: IAdd<null, RequestHandler>;
+    addApiMiddlewares: IAdd<null, IApiMiddleware>;
     addMiddlewares: IAdd<null, RequestHandler>;
     addHTMLHeadScripts: IAdd<null, IScript>;
     addHTMLScripts: IAdd<null, IScript>;

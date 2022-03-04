@@ -8,6 +8,38 @@ import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
 
+// get api routs
+export async function getApiRoutes(opts: { api: IApi }) {
+  const routes = getConventionRoutes({
+    base: opts.api.paths.absApiRoutesPath,
+    prefix: '',
+  });
+
+  function localPath(path: string) {
+    if (path.charAt(0) !== '.') {
+      return `./${path}`;
+    }
+    {
+      return path;
+    }
+  }
+
+  for (const id of Object.keys(routes)) {
+    if (routes[id].file) {
+      // TODO: cache for performance
+      const file = isAbsolute(routes[id].file)
+        ? routes[id].file
+        : resolve.sync(localPath(routes[id].file), {
+            basedir: opts.api.paths.absApiRoutesPath,
+            extensions: ['.js', '.jsx', '.tsx', '.ts'],
+          });
+      routes[id].__content = readFileSync(file, 'utf-8');
+    }
+  }
+
+  return routes;
+}
+
 // get route config
 export async function getRoutes(opts: { api: IApi }) {
   let routes = null;

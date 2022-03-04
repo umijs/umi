@@ -12,6 +12,7 @@ export function getPaths(opts: { cwd: string; prefix: string; env: Env }) {
   const src = winJoin(cwd, 'src');
   const absSrcPath = existsSync(src) && statSync(src).isDirectory() ? src : cwd;
   const absPagesPath = winJoin(absSrcPath, 'pages');
+  const absApiRoutesPath = winJoin(absSrcPath, 'api');
   const tmp =
     opts.env === Env.development
       ? `.${opts.prefix}`
@@ -23,6 +24,7 @@ export function getPaths(opts: { cwd: string; prefix: string; env: Env }) {
     cwd,
     absSrcPath,
     absPagesPath,
+    absApiRoutesPath,
     absTmpPath,
     absNodeModulesPath,
     absOutputPath,
