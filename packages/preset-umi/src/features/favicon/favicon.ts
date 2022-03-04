@@ -18,6 +18,12 @@ function getFaviconFile(p: string): string | undefined {
 }
 
 export default (api: IApi) => {
+  api.describe({
+    config: {
+      schema: (Joi) => Joi.string(),
+    },
+  });
+
   api.modifyAppData(async (memo) => {
     if (api.config.favicon) return memo;
     const faviconFile = getFaviconFile(api.paths.absSrcPath);

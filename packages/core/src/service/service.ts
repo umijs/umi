@@ -123,7 +123,7 @@ export class Service {
           if (!this.isPluginEnable(hook)) continue;
           tAdd.tapPromise(
             {
-              name: hook.plugin.id,
+              name: hook.plugin.key,
               stage: hook.stage,
               before: hook.before,
             },
@@ -140,7 +140,7 @@ export class Service {
           if (!this.isPluginEnable(hook)) continue;
           tModify.tapPromise(
             {
-              name: hook.plugin.id,
+              name: hook.plugin.key,
               stage: hook.stage,
               before: hook.before,
             },
@@ -156,7 +156,7 @@ export class Service {
           if (!this.isPluginEnable(hook)) continue;
           tEvent.tapPromise(
             {
-              name: hook.plugin.id,
+              name: hook.plugin.key,
               stage: hook.stage || 0,
               before: hook.before,
             },
@@ -237,10 +237,6 @@ export class Service {
     this.stage = ServiceStage.initPlugins;
     while (plugins.length) {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
-    }
-    // keyToPluginMap
-    for (const id of Object.keys(this.plugins)) {
-      this.keyToPluginMap[this.plugins[id].key] = this.plugins[id];
     }
     // collect configSchemas and configDefaults
     for (const id of Object.keys(this.plugins)) {
@@ -404,6 +400,14 @@ export class Service {
     if (opts.plugin.type === 'plugin') {
       assert(!ret, `plugin should return nothing`);
     }
+    // key should be unique
+    assert(
+      !this.keyToPluginMap[opts.plugin.key],
+      `key ${opts.plugin.key} is already registered by ${
+        this.keyToPluginMap[opts.plugin.key]?.path
+      }, ${opts.plugin.type} from ${opts.plugin.path} register failed.`,
+    );
+    this.keyToPluginMap[opts.plugin.key] = opts.plugin;
     if (ret?.presets) {
       ret.presets = ret.presets.map(
         (preset: string) =>
