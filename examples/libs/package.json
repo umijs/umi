@@ -1,4 +1,6 @@
 {
+  "name": "@example/libs",
+  "private": true,
   "scripts": {
     "dev": "umi dev",
     "start": "npm run dev"

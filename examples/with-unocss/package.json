@@ -1,4 +1,6 @@
 {
+  "name": "@example/with-unocss",
+  "private": true,
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",

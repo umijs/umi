@@ -23,4 +23,5 @@
 /.umi-production
 /dist
 .DS_Store
+.turbo
 *.tsbuildinfo

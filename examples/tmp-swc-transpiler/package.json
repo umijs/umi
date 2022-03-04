@@ -1,4 +1,6 @@
 {
+  "name": "@example/tmp-swc-transpiler",
+  "private": true,
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",

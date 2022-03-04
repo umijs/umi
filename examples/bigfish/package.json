@@ -1,4 +1,6 @@
 {
+  "name": "@example/bigfish",
+  "private": true,
   "scripts": {
     "build": "umipro build",
     "dev": "umipro dev",

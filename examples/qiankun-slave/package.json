@@ -1,5 +1,6 @@
 {
-  "name": "app1",
+  "name": "@example/qiankun-slave",
+  "private": true,
   "scripts": {
     "dev": "umipro dev",
     "start": "npm run dev"

@@ -1,4 +1,6 @@
 {
+  "name": "@example/api-route-demo",
+  "private": true,
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",

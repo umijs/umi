@@ -1,4 +1,6 @@
 {
+  "name": "@example/with-valtio",
+  "private": true,
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",

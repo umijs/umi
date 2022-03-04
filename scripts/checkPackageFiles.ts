@@ -1,29 +1,38 @@
 import * as logger from '@umijs/utils/src/logger';
-import { readdirSync } from 'fs';
 import { isMatch } from 'matcher';
-import path from 'path';
+import 'zx/globals';
 import { eachPkg, getPkgs } from './utils';
 
 const COMMON_IGNORES = [
-  'src',
-  '*.md',
-  'tsconfig*.json',
-  'fixtures',
+  // default included
+  'bin',
+  // deps
   'node_modules',
+  // for test
+  'fixtures',
+  'examples',
+  'scripts',
+  // source
+  'src',
+  'bundles',
+  // doc
+  '*.md',
+  // config files
+  'tsconfig*.json',
+  '*.config.js',
   'package.json',
 ];
 
-const cwd = process.cwd();
+// check packages/*
 let missingDetected = false;
-eachPkg(getPkgs(), (opts) => {
-  const pkg = require(path.join(cwd, 'packages', opts.pkg, 'package.json'));
-  const base = path.join(cwd, 'packages', opts.pkg);
-
-  const files = readdirSync(base).filter((f) => !isMatch(f, COMMON_IGNORES));
-  const missingAddFiles = files.filter((f) => !isMatch(f, pkg.files));
+eachPkg(getPkgs(), ({ pkgJson, dir, name }) => {
+  const files = fs.readdirSync(dir).filter((f) => {
+    return !isMatch(f, COMMON_IGNORES) && !f.startsWith('.');
+  });
+  const missingAddFiles = files.filter((f) => !isMatch(f, pkgJson.files));
 
   if (missingAddFiles.length > 0) {
-    logger.error('Checking package:', opts.pkg);
+    logger.error('Checking package:', name);
     logger.error(
       `  "${missingAddFiles.join(
         ', ',
@@ -32,7 +41,33 @@ eachPkg(getPkgs(), (opts) => {
     missingDetected = true;
   }
 });
-
 if (missingDetected) {
   process.exit(1);
+} else {
+  logger.ready(`Check packages files success`);
 }
+
+// check examples/*
+const EXAMPLE_DIR = path.join(__dirname, '../examples');
+eachPkg(
+  getPkgs({ base: EXAMPLE_DIR }),
+  ({ name, pkgJson, pkgPath }) => {
+    logger.info(`Checking ${chalk.blue('example')}:`, name);
+    const expectName = `@example/${name}`;
+    if (pkgJson.name !== expectName) {
+      pkgJson.name = expectName;
+      logger.warn(
+        chalk.yellow(`Change '${name}' example name to '${expectName}'`),
+      );
+    }
+    if (pkgJson.private !== true) {
+      pkgJson.private = true;
+      logger.warn(chalk.yellow(`Set '${name}' example as private pacakge`));
+    }
+    fs.writeFileSync(pkgPath, `${JSON.stringify(pkgJson, null, 2)}\n`, 'utf-8');
+  },
+  {
+    base: EXAMPLE_DIR,
+  },
+);
+logger.ready(`Check examples success`);

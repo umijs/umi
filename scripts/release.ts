@@ -52,9 +52,9 @@ import { assert, eachPkg, getPkgs } from './utils';
 
   // clean
   logger.event('clean');
-  eachPkg(pkgs, ({ pkgPath, pkg }) => {
-    logger.info(`clean dist of ${pkg}`);
-    rimraf.sync(join(pkgPath, 'dist'));
+  eachPkg(pkgs, ({ dir, name }) => {
+    logger.info(`clean dist of ${name}`);
+    rimraf.sync(join(dir, 'dist'));
   });
 
   // build packages
