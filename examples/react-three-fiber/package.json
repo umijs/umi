@@ -10,6 +10,6 @@
     "@types/three": "^0.138.0",
     "three": "^0.138.2",
     "troika-three-text": "^0.45.0",
-    "umi": "4.0.0-rc.4"
+    "umi": "4.0.0-rc.5"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.0.0-rc.4",
+  "version": "4.0.0-rc.5",
   "description": "@umijs/bundler-vite",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-vite#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@svgr/core": "6.2.1",
-    "@umijs/bundler-utils": "4.0.0-rc.4",
-    "@umijs/utils": "4.0.0-rc.4",
+    "@umijs/bundler-utils": "4.0.0-rc.5",
+    "@umijs/utils": "4.0.0-rc.5",
     "@vitejs/plugin-legacy": "1.7.1",
     "@vitejs/plugin-react": "1.2.0",
     "caniuse-lite": "1.0.30001312",

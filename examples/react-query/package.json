@@ -6,6 +6,6 @@
   },
   "dependencies": {
     "react-query": "^3.34.16",
-    "umi": "4.0.0-rc.4"
+    "umi": "4.0.0-rc.5"
   }
 }
