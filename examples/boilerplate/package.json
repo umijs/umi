@@ -1,4 +1,6 @@
 {
+  "name": "@example/boilerplate",
+  "private": true,
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",

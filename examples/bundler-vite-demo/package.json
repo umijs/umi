@@ -1,4 +1,6 @@
 {
+  "name": "@example/bundler-vite-demo",
+  "private": true,
   "scripts": {
     "dev": "bundler-vite dev",
     "start": "npm run dev"

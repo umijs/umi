@@ -2,15 +2,15 @@ import { join } from 'path';
 import { eachPkg, getPkgs, setExcludeFolder } from './utils';
 
 const cwd = process.cwd();
-eachPkg(getPkgs(), ({ pkg }) => {
-  setExcludeFolder({ pkg, cwd });
+eachPkg(getPkgs(), ({ name }) => {
+  setExcludeFolder({ pkg: name, cwd });
 });
 
 eachPkg(
   getPkgs({ base: join(__dirname, '../examples') }),
-  ({ pkg }) => {
+  ({ name }) => {
     setExcludeFolder({
-      pkg,
+      pkg: name,
       cwd,
       dirName: 'examples',
       folders: ['.mfsu', '.umi'],

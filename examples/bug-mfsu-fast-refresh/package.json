@@ -1,4 +1,6 @@
 {
+  "name": "@example/bug-mfsu-fast-refresh",
+  "private": true,
   "scripts": {
     "dev": "umi dev",
     "start": "npm run dev"

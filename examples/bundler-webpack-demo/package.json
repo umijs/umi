@@ -1,4 +1,6 @@
 {
+  "name": "@example/bundler-webpack-demo",
+  "private": true,
   "scripts": {
     "dev": "bundler-webpack dev",
     "start": "npm run dev"

@@ -1,4 +1,6 @@
 {
+  "name": "@example/mfsu-circular-dependency",
+  "private": true,
   "scripts": {
     "dev": "bundler-webpack dev",
     "start": "npm run dev"

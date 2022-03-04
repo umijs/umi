@@ -11,14 +11,21 @@ export function getPkgs(opts?: { base?: string }): string[] {
 
 export function eachPkg(
   pkgs: string[],
-  fn: (opts: { pkg: string; pkgPath: string }) => void,
+  fn: (opts: {
+    name: string;
+    dir: string;
+    pkgPath: string;
+    pkgJson: Record<string, any>;
+  }) => void,
   opts?: { base?: string },
 ) {
   const base = opts?.base || join(__dirname, '../packages');
   pkgs.forEach((pkg) => {
     fn({
-      pkg,
-      pkgPath: join(base, pkg),
+      name: pkg,
+      dir: join(base, pkg),
+      pkgPath: join(base, pkg, 'package.json'),
+      pkgJson: require(join(base, pkg, 'package.json')),
     });
   });
 }

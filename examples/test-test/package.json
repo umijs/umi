@@ -1,4 +1,6 @@
 {
+  "name": "@example/test-test",
+  "private": true,
   "scripts": {
     "start": "npm run dev",
     "test": "jest"

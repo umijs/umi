@@ -13,7 +13,8 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "client"
+    "client",
+    "compiled"
   ],
   "scripts": {
     "build": "pnpm tsc",
