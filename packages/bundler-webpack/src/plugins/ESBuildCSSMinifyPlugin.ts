@@ -48,9 +48,7 @@ class ESBuildCSSMinifyPlugin {
       options: { devtool },
     } = compilation.compiler;
     const sourcemap =
-      this.options.sourcemap === undefined
-        ? devtool && (devtool as string)
-        : this.options.sourcemap;
+      this.options.sourcemap === undefined ? !!devtool : this.options.sourcemap;
     const assets = compilation.getAssets().filter((asset) => {
       return !asset.info.minimized && RE_CSS_FILE.test(asset.name);
     });
