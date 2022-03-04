@@ -9,6 +9,7 @@ importers:
       '@types/react': ^17.0.39
       '@types/react-dom': ^17.0.13
       '@types/resolve': ^1.20.1
+      '@umijs/bundler-esbuild': workspace:*
       '@umijs/bundler-utils': workspace:*
       '@umijs/bundler-vite': workspace:*
       '@umijs/bundler-webpack': workspace:*
@@ -44,6 +45,7 @@ importers:
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.13
       '@types/resolve': 1.20.1
+      '@umijs/bundler-esbuild': link:packages/bundler-esbuild
       '@umijs/bundler-utils': link:packages/bundler-utils
       '@umijs/bundler-vite': link:packages/bundler-vite
       '@umijs/bundler-webpack': link:packages/bundler-webpack
@@ -119,6 +121,12 @@ importers:
       numeral: 2.0.6
       querystring: 0.2.1
       rc-util: 5.18.1_react-dom@17.0.2+react@17.0.2
+
+  examples/api-route-demo:
+    specifiers:
+      umi: 4.0.0-rc.4
+    dependencies:
+      umi: link:../../packages/umi
 
   examples/bigfish:
     specifiers:

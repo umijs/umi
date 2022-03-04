@@ -20,6 +20,7 @@ export default () => {
       require.resolve('./features/transform/transform'),
       require.resolve('./features/lowImport/lowImport'),
       require.resolve('./features/vite/vite'),
+      require.resolve('./features/apiRoute/apiRoute'),
 
       // commands
       require.resolve('./commands/build'),

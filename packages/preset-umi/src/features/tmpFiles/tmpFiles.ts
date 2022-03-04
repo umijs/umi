@@ -26,6 +26,7 @@ export default (api: IApi) => {
         ),
       }),
     );
+
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,

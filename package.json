@@ -34,6 +34,7 @@
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.13",
     "@types/resolve": "^1.20.1",
+    "@umijs/bundler-esbuild": "workspace:*",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",

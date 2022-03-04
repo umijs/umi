@@ -62,6 +62,7 @@ export class Service {
     cwd?: string;
     absSrcPath?: string;
     absPagesPath?: string;
+    absApiRoutesPath?: string;
     absTmpPath?: string;
     absNodeModulesPath?: string;
     absOutputPath?: string;

@@ -5,11 +5,14 @@ import { join } from 'path';
 import { expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
 import { IApi } from '../../types';
-import { getRoutes } from '../tmpFiles/routes';
+import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
 export default (api: IApi) => {
   api.modifyAppData(async (memo) => {
     memo.routes = await getRoutes({
+      api,
+    });
+    memo.apiRoutes = await getApiRoutes({
       api,
     });
     memo.hasSrcDir = api.paths.absSrcPath.endsWith('/src');
