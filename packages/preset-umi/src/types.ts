@@ -14,6 +14,7 @@ import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
+export * from './features/apiRoute/vercel';
 export type IScript =
   | Partial<{
       async: boolean;
@@ -53,6 +54,10 @@ export type IMeta = Partial<{
   name: string;
   scheme: string;
 }>;
+export type IApiMiddleware = {
+  name: string;
+  path: string;
+};
 export type IEntryImport = {
   source: string;
   specifier?: string;
@@ -60,26 +65,27 @@ export type IEntryImport = {
 export type IRoute = ICoreRoute;
 export type IApi = PluginAPI &
   IServicePluginAPI & {
-    addBeforeBabelPlugins: IAdd<null, any[]>;
-    addBeforeBabelPresets: IAdd<null, any[]>;
-    addBeforeMiddlewares: IAdd<null, RequestHandler[]>;
-    addEntryCode: IAdd<null, string[]>;
-    addEntryCodeAhead: IAdd<null, string[]>;
-    addEntryImports: IAdd<null, IEntryImport[]>;
-    addEntryImportsAhead: IAdd<null, IEntryImport[]>;
-    addExtraBabelPlugins: IAdd<null, any[]>;
-    addExtraBabelPresets: IAdd<null, any[]>;
-    addHTMLHeadScripts: IAdd<null, IScript[]>;
-    addHTMLLinks: IAdd<null, ILink[]>;
-    addHTMLMetas: IAdd<null, IMeta[]>;
-    addHTMLScripts: IAdd<null, IScript[]>;
-    addHTMLStyles: IAdd<null, IStyle[]>;
-    addLayouts: IAdd<null, { file: string; id: string }[]>;
-    addMiddlewares: IAdd<null, RequestHandler[]>;
-    addPolyfillImports: IAdd<null, { source: string; specifier?: string }[]>;
-    addRuntimePlugin: IAdd<null, string[]>;
-    addRuntimePluginKey: IAdd<null, string[]>;
-    addTmpGenerateWatcherPaths: IAdd<null, string[]>;
+    addApiMiddlewares: IAdd<null, IApiMiddleware>;
+    addBeforeBabelPlugins: IAdd<null, any>;
+    addBeforeBabelPresets: IAdd<null, any>;
+    addBeforeMiddlewares: IAdd<null, RequestHandler>;
+    addEntryCode: IAdd<null, string>;
+    addEntryCodeAhead: IAdd<null, string>;
+    addEntryImports: IAdd<null, IEntryImport>;
+    addEntryImportsAhead: IAdd<null, IEntryImport>;
+    addExtraBabelPlugins: IAdd<null, any>;
+    addExtraBabelPresets: IAdd<null, any>;
+    addHTMLHeadScripts: IAdd<null, IScript>;
+    addHTMLLinks: IAdd<null, ILink>;
+    addHTMLMetas: IAdd<null, IMeta>;
+    addHTMLScripts: IAdd<null, IScript>;
+    addHTMLStyles: IAdd<null, IStyle>;
+    addLayouts: IAdd<null, { file: string; id: string }>;
+    addMiddlewares: IAdd<null, RequestHandler>;
+    addPolyfillImports: IAdd<null, { source: string; specifier?: string }>;
+    addRuntimePlugin: IAdd<null, string>;
+    addRuntimePluginKey: IAdd<null, string>;
+    addTmpGenerateWatcherPaths: IAdd<null, string>;
     chainWebpack: {
       (fn: {
         (
