@@ -1,3 +1,4 @@
+// sort-object-keys
 import type { Root } from '@hapi/joi';
 import { CSSMinifier, JSMinifier, Transpiler } from './types';
 
@@ -49,8 +50,8 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         CSSMinifier.none,
       ),
     cssMinifierOptions: (Joi) => Joi.object(),
-    define: (Joi) => Joi.object(),
     deadCode: (Joi) => Joi.object(),
+    define: (Joi) => Joi.object(),
     depTranspiler: (Joi) =>
       Joi.string().valid(
         Transpiler.babel,
@@ -60,6 +61,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       ),
     devtool: (Joi) =>
       Joi.alternatives().try(Joi.string().regex(DEVTOOL_REGEX), Joi.boolean()),
+    esm: (Joi) => Joi.object(),
     externals: (Joi) =>
       Joi.alternatives().try(Joi.object(), Joi.string(), Joi.func()),
     extraBabelPlugins: (Joi) =>
@@ -118,11 +120,10 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         Transpiler.none,
       ),
     styleLoader: (Joi) => Joi.object(),
-    svgr: (Joi) => Joi.object(),
     svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
+    svgr: (Joi) => Joi.object(),
     targets: (Joi) => Joi.object(),
-    writeToDisk: (Joi) => Joi.boolean(),
-    esm: (Joi) => Joi.object(),
     theme: (Joi) => Joi.object(),
+    writeToDisk: (Joi) => Joi.boolean(),
   };
 }

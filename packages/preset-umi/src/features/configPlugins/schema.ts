@@ -1,3 +1,4 @@
+// sort-object-keys
 import type { Root } from '@umijs/core/compiled/@hapi/joi';
 import { NpmClientEnum } from '@umijs/utils';
 
@@ -6,8 +7,8 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     base: (Joi) => Joi.string(),
     conventionRoutes: (Joi) =>
       Joi.object({
-        exclude: Joi.array().items(Joi.any()),
         base: Joi.string(),
+        exclude: Joi.array().items(Joi.any()),
       }),
     headScripts: (Joi) => Joi.array(),
     history: (Joi) =>

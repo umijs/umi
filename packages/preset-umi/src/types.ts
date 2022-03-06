@@ -1,3 +1,4 @@
+// sort-object-keys
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import type webpack from '@umijs/bundler-webpack/compiled/webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
@@ -13,22 +14,21 @@ import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
-export * from './features/apiRoute/vercel';
 export type IScript =
   | Partial<{
       async: boolean;
       charset: string;
+      content: string;
       crossOrigin: string | null;
       defer: boolean;
       src: string;
       type: string;
-      content: string;
     }>
   | string;
 export type IStyle =
   | Partial<{
-      type: string;
       content: string;
+      type: string;
     }>
   | string;
 export type ILink = Partial<{
@@ -53,10 +53,6 @@ export type IMeta = Partial<{
   name: string;
   scheme: string;
 }>;
-export type IApiMiddleware = {
-  name: string;
-  path: string;
-};
 export type IEntryImport = {
   source: string;
   specifier?: string;
@@ -64,107 +60,106 @@ export type IEntryImport = {
 export type IRoute = ICoreRoute;
 export type IApi = PluginAPI &
   IServicePluginAPI & {
-    restartServer: () => void;
-    writeTmpFile: (opts: {
-      path: string;
-      noPluginDir?: boolean;
-      content?: string;
-      tpl?: string;
-      tplPath?: string;
-      context?: Record<string, any>;
-    }) => void;
-    addTmpGenerateWatcherPaths: IAdd<null, string>;
-    onGenerateFiles: IEvent<{
-      isFirstTime?: boolean;
-      files?: { event: string; path: string } | null;
-    }>;
-    onPkgJSONChanged: IEvent<{
-      origin: Record<string, any>;
-      current: Record<string, any>;
-    }>;
-    onBeforeCompiler: IEvent<{}>;
-    onBuildComplete: IEvent<{
-      isFirstCompile: boolean;
-      stats: any;
-      time: number;
-      err?: Error;
-    }>;
-    onCheckPkgJSON: IEvent<{
-      origin?: Record<string, any>;
-      current: Record<string, any>;
-    }>;
-    onCheckConfig: IEvent<{
-      config: Record<string, any>;
-      userConfig: Record<string, any>;
-    }>;
-    onCheckCode: IEvent<{
-      file: string;
-      code: string;
-      isFromTmp: boolean;
-      imports: {
-        source: string;
-        loc: any;
-        default: string;
-        namespace: string;
-        specifiers: Record<string, string>;
-      }[];
-      exports: any[];
-      cjsExports: string[];
-    }>;
-    onDevCompileDone: IEvent<{
-      isFirstCompile: boolean;
-      stats: any;
-      time: number;
-    }>;
-    onPatchRoute: IEvent<{
-      route: IRoute;
-    }>;
-    addEntryImports: IAdd<null, IEntryImport>;
-    addEntryImportsAhead: IAdd<null, IEntryImport>;
-    addEntryCodeAhead: IAdd<null, string>;
-    addEntryCode: IAdd<null, string>;
-    addExtraBabelPresets: IAdd<null, any>;
-    addExtraBabelPlugins: IAdd<null, any>;
-    addBeforeBabelPresets: IAdd<null, any>;
-    addBeforeBabelPlugins: IAdd<null, any>;
-    addBeforeMiddlewares: IAdd<null, RequestHandler>;
-    addApiMiddlewares: IAdd<null, IApiMiddleware>;
-    addMiddlewares: IAdd<null, RequestHandler>;
-    addHTMLHeadScripts: IAdd<null, IScript>;
-    addHTMLScripts: IAdd<null, IScript>;
-    addHTMLStyles: IAdd<null, IStyle>;
-    addHTMLLinks: IAdd<null, ILink>;
-    addHTMLMetas: IAdd<null, IMeta>;
-    addLayouts: IAdd<null, { id: string; file: string }>;
-    addPolyfillImports: IAdd<null, { source: string; specifier?: string }>;
-    addRuntimePlugin: IAdd<null, string>;
-    addRuntimePluginKey: IAdd<null, string>;
-    modifyHTMLFavicon: IModify<string, {}>;
+    addBeforeBabelPlugins: IAdd<null, any[]>;
+    addBeforeBabelPresets: IAdd<null, any[]>;
+    addBeforeMiddlewares: IAdd<null, RequestHandler[]>;
+    addEntryCode: IAdd<null, string[]>;
+    addEntryCodeAhead: IAdd<null, string[]>;
+    addEntryImports: IAdd<null, IEntryImport[]>;
+    addEntryImportsAhead: IAdd<null, IEntryImport[]>;
+    addExtraBabelPlugins: IAdd<null, any[]>;
+    addExtraBabelPresets: IAdd<null, any[]>;
+    addHTMLHeadScripts: IAdd<null, IScript[]>;
+    addHTMLLinks: IAdd<null, ILink[]>;
+    addHTMLMetas: IAdd<null, IMeta[]>;
+    addHTMLScripts: IAdd<null, IScript[]>;
+    addHTMLStyles: IAdd<null, IStyle[]>;
+    addLayouts: IAdd<null, { file: string; id: string }[]>;
+    addMiddlewares: IAdd<null, RequestHandler[]>;
+    addPolyfillImports: IAdd<null, { source: string; specifier?: string }[]>;
+    addRuntimePlugin: IAdd<null, string[]>;
+    addRuntimePluginKey: IAdd<null, string[]>;
+    addTmpGenerateWatcherPaths: IAdd<null, string[]>;
+    chainWebpack: {
+      (fn: {
+        (
+          memo: WebpackChain,
+          args: {
+            env: Env;
+            webpack: typeof webpack;
+          },
+        ): void;
+      }): void;
+    };
     modifyHTML: IModify<CheerioAPI, { path: string }>;
+    modifyHTMLFavicon: IModify<string, {}>;
     modifyRendererPath: IModify<string, {}>;
     modifyRoutes: IModify<Record<string, IRoute>, {}>;
-    modifyWebpackConfig: IModify<
-      webpack.Configuration,
-      {
-        webpack: typeof webpack;
-        env: Env;
-      }
-    >;
     modifyViteConfig: IModify<
       ViteInlineConfig,
       {
         env: Env;
       }
     >;
-    chainWebpack: {
-      (fn: {
-        (
-          memo: WebpackChain,
-          args: {
-            webpack: typeof webpack;
-            env: Env;
-          },
-        ): void;
-      }): void;
-    };
+    modifyWebpackConfig: IModify<
+      webpack.Configuration,
+      {
+        env: Env;
+        webpack: typeof webpack;
+      }
+    >;
+    onBeforeCompiler: IEvent<{}>;
+    onBuildComplete: IEvent<{
+      err?: Error;
+      isFirstCompile: boolean;
+      stats: any;
+      time: number;
+    }>;
+    onCheckCode: IEvent<{
+      cjsExports: string[];
+      code: string;
+      exports: any[];
+      file: string;
+      imports: {
+        default: string;
+        loc: any;
+        namespace: string;
+        source: string;
+        specifiers: Record<string, string>;
+      }[];
+      isFromTmp: boolean;
+    }>;
+    onCheckConfig: IEvent<{
+      config: Record<string, any>;
+      userConfig: Record<string, any>;
+    }>;
+    onCheckPkgJSON: IEvent<{
+      current: Record<string, any>;
+      origin?: Record<string, any>;
+    }>;
+    onDevCompileDone: IEvent<{
+      isFirstCompile: boolean;
+      stats: any;
+      time: number;
+    }>;
+    onGenerateFiles: IEvent<{
+      files?: { event: string; path: string } | null;
+      isFirstTime?: boolean;
+    }>;
+    onPatchRoute: IEvent<{
+      route: IRoute;
+    }>;
+    onPkgJSONChanged: IEvent<{
+      current: Record<string, any>;
+      origin: Record<string, any>;
+    }>;
+    restartServer: () => void;
+    writeTmpFile: (opts: {
+      content?: string;
+      context?: Record<string, any>;
+      noPluginDir?: boolean;
+      path: string;
+      tpl?: string;
+      tplPath?: string;
+    }) => void;
   };
