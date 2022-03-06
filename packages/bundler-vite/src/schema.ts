@@ -1,6 +1,7 @@
 import type { Root } from '@hapi/joi';
 import { JSMinifier } from './types';
 
+// sort-object-keys
 export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
     alias: (Joi) => Joi.object(),
@@ -33,18 +34,18 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     extraVitePlugins: (Joi) => Joi.array(),
     hash: (Joi) => Joi.boolean(),
     inlineLimit: (Joi) => Joi.number(),
-    manifest: (Joi) => Joi.boolean(),
     jsMinifier: (Joi) =>
       Joi.alternatives().try(
         Joi.string().valid(JSMinifier.esbuild, JSMinifier.terser),
         Joi.boolean(),
       ),
     jsMinifierOptions: (Joi) => Joi.object(),
+    legacy: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
     lessLoader: (Joi) =>
       Joi.object().keys({
         lessOptions: Joi.object(),
       }),
-    legacy: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
+    manifest: (Joi) => Joi.boolean(),
     outputPath: (Joi) => Joi.string(),
     polyfill: (Joi) =>
       Joi.object().keys({
@@ -56,8 +57,8 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       }),
     proxy: (Joi) => Joi.object(),
     publicPath: (Joi) => Joi.string(),
-    svgr: (Joi) => Joi.object(),
     svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
+    svgr: (Joi) => Joi.object(),
     targets: (Joi) => Joi.object(),
     theme: (Joi) => Joi.object(),
   };
