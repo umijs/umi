@@ -4,6 +4,7 @@
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",
+    "setup": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {
