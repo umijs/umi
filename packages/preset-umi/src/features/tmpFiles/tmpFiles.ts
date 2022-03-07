@@ -189,11 +189,39 @@ export default function EmptyRoute() {
     return exports || [];
   }
 
+  function checkMembers(opts: {
+    path: string;
+    members: string[];
+    exportMembers: string[];
+  }) {
+    const conflicts = lodash.intersection(opts.exportMembers, opts.members);
+    if (conflicts.length) {
+      throw new Error(
+        `Conflict members: ${conflicts.join(', ')} in ${opts.path}`,
+      );
+    }
+  }
+
+  async function getExportsAndCheck(opts: {
+    path: string;
+    exportMembers: string[];
+  }) {
+    const members = (await getExports(opts)) as string[];
+    checkMembers({
+      members,
+      exportMembers: opts.exportMembers,
+      path: opts.path,
+    });
+    opts.exportMembers.push(...members);
+    return members;
+  }
+
   // Generate @@/exports.ts
   api.register({
     key: 'onGenerateFiles',
     fn: async () => {
       const exports = [];
+      const exportMembers = ['default'];
       // @umijs/renderer-react
       exports.push('// @umijs/renderer-react');
       const rendererReactPath = winPath(
@@ -201,8 +229,9 @@ export default function EmptyRoute() {
       );
       exports.push(
         `export { ${(
-          await getExports({
+          await getExportsAndCheck({
             path: join(rendererReactPath, 'dist/index.js'),
+            exportMembers,
           })
         ).join(', ')} } from '${rendererReactPath}';`,
       );
@@ -212,13 +241,19 @@ export default function EmptyRoute() {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       exports.push(
         `export { ${(
-          await getExports({
+          await getExportsAndCheck({
             path: umiPluginPath,
+            exportMembers,
           })
         ).join(', ')} } from '${umiPluginPath}';`,
       );
       // @@/core/history.ts
       exports.push(`export { history, createHistory } from './core/history';`);
+      checkMembers({
+        members: ['history', 'createHistory'],
+        exportMembers,
+        path: '@@/core/history.ts',
+      });
       // plugins
       exports.push('// plugins');
       const plugins = readdirSync(api.paths.absTmpPath).filter((file) => {
@@ -238,8 +273,9 @@ export default function EmptyRoute() {
         if (existsSync(join(api.paths.absTmpPath, plugin, 'index.tsx'))) {
           file = join(api.paths.absTmpPath, plugin, 'index.tsx');
         }
-        const pluginExports = await getExports({
+        const pluginExports = await getExportsAndCheck({
           path: file!,
+          exportMembers,
         });
         if (pluginExports.length) {
           exports.push(
