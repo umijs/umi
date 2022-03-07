@@ -2,6 +2,10 @@ import { chalk } from '@umijs/utils';
 import { IApi } from '../types';
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'command:plugin',
+  });
+
   api.registerCommand({
     name: 'plugin',
     description: 'inspect umi plugins',
