@@ -97,6 +97,7 @@ function compareModulesByIdentifier(a, b) {
 const MODULE_TYPE = "css/mini-extract";
 const AUTO_PUBLIC_PATH = "__mini_css_extract_plugin_public_path_auto__";
 const ABSOLUTE_PUBLIC_PATH = "webpack:///mini-css-extract-plugin/";
+const BASE_URI = "webpack://";
 const SINGLE_DOT_PATH_SEGMENT = "__mini_css_extract_plugin_single_dot_path_segment__";
 /**
  * @param {string} str
@@ -207,6 +208,7 @@ module.exports = {
   MODULE_TYPE,
   AUTO_PUBLIC_PATH,
   ABSOLUTE_PUBLIC_PATH,
+  BASE_URI,
   SINGLE_DOT_PATH_SEGMENT,
   stringifyRequest,
   getUndoPath

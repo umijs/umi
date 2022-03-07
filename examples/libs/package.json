@@ -13,7 +13,7 @@
     "framer-motion": "6.2.8",
     "react-redux": "^8.0.0-beta.1",
     "redux": "^4.1.2",
-    "swiper": "^8.0.6",
+    "swiper": "^8.0.7",
     "swr": "1.2.2",
     "umi": "4.0.0-rc.5"
   }

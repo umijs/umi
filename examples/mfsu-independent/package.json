@@ -22,9 +22,9 @@
     "@types/react-dom": "^17.0.13",
     "@umijs/mfsu": "4.0.0-rc.5",
     "babel-loader": "^8.2.3",
-    "esbuild": "0.14.24",
+    "esbuild": "0.14.25",
     "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.69.1",
+    "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
   }

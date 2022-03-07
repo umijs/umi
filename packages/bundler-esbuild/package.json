@@ -25,10 +25,10 @@
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-rc.5",
     "@umijs/utils": "4.0.0-rc.5",
-    "enhanced-resolve": "5.9.1",
+    "enhanced-resolve": "5.9.2",
     "less": "4.1.2",
     "less-plugin-aliases": "^1.0.3",
-    "postcss": "^8.4.7",
+    "postcss": "^8.4.8",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-preset-env": "7.4.2"
   },

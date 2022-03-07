@@ -7,6 +7,7 @@ const {
   evalModuleCode,
   AUTO_PUBLIC_PATH,
   ABSOLUTE_PUBLIC_PATH,
+  BASE_URI,
   SINGLE_DOT_PATH_SEGMENT,
   stringifyRequest
 } = require("./utils");
@@ -261,7 +262,8 @@ function pitch(request) {
       layer: options.layer,
       publicPath:
       /** @type {string} */
-      publicPathForExtract
+      publicPathForExtract,
+      baseUri: `${BASE_URI}/`
     },
     /**
      * @param {Error | null | undefined} error
