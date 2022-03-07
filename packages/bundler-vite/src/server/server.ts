@@ -12,6 +12,7 @@ import pluginOnHotUpdate from './plugins/onHotUpdate';
 
 interface IOpts {
   cwd: string;
+  port?: number;
   viteConfig: ViteInlineConfig;
   userConfig: IConfig;
   beforeMiddlewares?: any[];
@@ -88,7 +89,7 @@ export async function createServer(opts: IOpts) {
   // bundless
 
   const server = http.createServer(app);
-  const port = process.env.PORT || 8000;
+  const port = opts.port || 8000;
 
   server.listen(port, async () => {
     if (typeof onDevCompileDone === 'function') {
