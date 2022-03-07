@@ -2,7 +2,6 @@
 import { history, useAccess, useIntl, useModel } from '@umijs/pro';
 // @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
-import React from 'react';
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
