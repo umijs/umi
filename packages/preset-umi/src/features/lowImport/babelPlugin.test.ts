@@ -5,6 +5,8 @@ interface IOpts {
   filename?: string;
   opts?: any;
   css?: string;
+  umiImportItems?: string[];
+  reactImportItems?: string[];
 }
 
 function doTransform(opts: IOpts): string {
@@ -13,7 +15,12 @@ function doTransform(opts: IOpts): string {
     plugins: [
       [
         require.resolve('./babelPlugin.ts'),
-        { opts: opts.opts.opts, css: opts.css || 'less' },
+        {
+          opts: opts.opts?.opts,
+          css: opts.css || 'less',
+          umiImportItems: opts.umiImportItems,
+          reactImportItems: opts.reactImportItems,
+        },
       ],
     ],
   })!.code as string;
@@ -43,9 +50,7 @@ test('multiple imports', () => {
         },
       },
     }),
-  ).toEqual(
-    `import { Button as _Button2 } from "antd";\nimport { Button as _Button } from "antd";\n_Button;\n_Button2;`,
-  );
+  ).toEqual(`import { Button as _Button } from "antd";\n_Button;\n_Button;`);
 });
 
 test('import default', () => {
@@ -61,6 +66,45 @@ test('import default', () => {
   ).toEqual(`import _Foo from "@/components/Foo";\n_Foo;`);
 });
 
+test('multiple import default', () => {
+  expect(
+    doTransform({
+      code: `Foo;Foo;`,
+      opts: {
+        opts: {
+          defaultToLib: { Foo: '@/components/Foo' },
+        },
+      },
+    }),
+  ).toEqual(`import _Foo from "@/components/Foo";\n_Foo;\n_Foo;`);
+});
+
+test('import namespace', () => {
+  expect(
+    doTransform({
+      code: `antd;`,
+      opts: {
+        opts: {
+          namespaceToLib: { antd: 'antd' },
+        },
+      },
+    }),
+  ).toEqual(`import * as _antd from "antd";\n_antd;`);
+});
+
+test('multiple import namespace', () => {
+  expect(
+    doTransform({
+      code: `antd;antd;`,
+      opts: {
+        opts: {
+          namespaceToLib: { antd: 'antd' },
+        },
+      },
+    }),
+  ).toEqual(`import * as _antd from "antd";\n_antd;\n_antd;`);
+});
+
 test('import with objs', () => {
   expect(
     doTransform({
@@ -72,6 +116,19 @@ test('import with objs', () => {
       },
     }),
   ).toEqual(`import { QrCode as _QrCode } from "techui";\n_QrCode;`);
+});
+
+test('multiple import with objs', () => {
+  expect(
+    doTransform({
+      code: `techui.QrCode;techui.QrCode;`,
+      opts: {
+        opts: {
+          withObjs: { techui: { importFrom: 'techui', members: ['QrCode'] } },
+        },
+      },
+    }),
+  ).toEqual(`import { QrCode as _QrCode } from "techui";\n_QrCode;\n_QrCode;`);
 });
 
 test('import do not support member expression', () => {
@@ -112,6 +169,18 @@ test('import styles', () => {
   ).toEqual(`import _styles from "./index.less";\n_styles.btn;`);
 });
 
+test('multiple import styles', () => {
+  expect(
+    doTransform({
+      code: `styles.btn;styles.btn;`,
+      opts: {
+        opts: { withObjs: {} },
+      },
+      filename: 'index.tsx',
+    }),
+  ).toEqual(`import _styles from "./index.less";\n_styles.btn;\n_styles.btn;`);
+});
+
 test('import styles css', () => {
   expect(
     doTransform({
@@ -123,4 +192,52 @@ test('import styles css', () => {
       css: 'css',
     }),
   ).toEqual(`import _styles from "./index.css";\n_styles.btn;`);
+});
+
+test('import umi', () => {
+  expect(
+    doTransform({
+      code: `Link`,
+      opts: {
+        opts: {},
+      },
+      umiImportItems: ['Link'],
+    }),
+  ).toEqual(`import { Link as _Link } from "umi";\n_Link;`);
+});
+
+test('multiple import umi', () => {
+  expect(
+    doTransform({
+      code: `Link;Link;`,
+      opts: {
+        opts: {},
+      },
+      umiImportItems: ['Link'],
+    }),
+  ).toEqual(`import { Link as _Link } from "umi";\n_Link;\n_Link;`);
+});
+
+test('import React', () => {
+  expect(
+    doTransform({
+      code: `React;useState();`,
+      opts: { opts: {} },
+      reactImportItems: ['useState'],
+    }),
+  ).toEqual(
+    `import { useState as _useState } from "react";\nimport _React from "react";\n_React;\n\n_useState();`,
+  );
+});
+
+test('multiple import React', () => {
+  expect(
+    doTransform({
+      code: `React;useState();React;useState();`,
+      opts: { opts: {} },
+      reactImportItems: ['useState'],
+    }),
+  ).toEqual(
+    `import { useState as _useState } from "react";\nimport _React from "react";\n_React;\n\n_useState();\n\n_React;\n\n_useState();`,
+  );
 });
