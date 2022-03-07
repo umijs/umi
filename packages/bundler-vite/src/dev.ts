@@ -39,6 +39,7 @@ export async function dev(opts: IOpts) {
     viteConfig,
     userConfig: opts.config,
     cwd: opts.cwd,
+    port: opts.port,
     beforeMiddlewares: opts.beforeMiddlewares,
     afterMiddlewares: opts.afterMiddlewares,
     onDevCompileDone: opts.onDevCompileDone,
