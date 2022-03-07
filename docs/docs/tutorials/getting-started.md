@@ -48,7 +48,7 @@ $ mkdir myapp && cd myapp
 $ pnpx create-umi@next
 ✔ Install the following package: create-umi@next? (Y/n) · true
 ✔ Pick Npm Client › pnpm
-✔ Pick Bpm Registry › taobao
+✔ Pick Npm Registry › taobao
 Write: .gitignore
 Write: .npmrc
 Write: .umirc.ts
