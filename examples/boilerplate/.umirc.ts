@@ -33,5 +33,6 @@ export default {
   // srcTranspiler: 'swc',
   // esmi: {},
   // esm: {},
+  lowImport: false,
   ...extraConfig,
 };
