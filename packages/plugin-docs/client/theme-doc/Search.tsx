@@ -65,7 +65,7 @@ export default () => {
       <div
         className="rounded-lg w-40 lg:w-64 flex items-center pr-2 flex-row hover:bg-gray-50
      transition duration-300 bg-gray-100 border border-white focus-within:border-gray-100
-     focus-within:bg-white dark:bg-gray-700 dark:border-gray-700
+     focus-within:bg-white dark:bg-gray-700 dark:border-gray-700 relative
      dark:focus-within:border-gray-700 dark:focus-within:bg-gray-800 dark:text-gray-100"
       >
         <input
@@ -74,7 +74,7 @@ export default () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           id="search-input"
-          className="w-full bg-transparent outline-0 text-sm px-4 py-2 "
+          className="w-full bg-transparent outline-none text-sm px-4 py-2 "
           placeholder={render('Search anything ...')}
         />
         <div
@@ -85,7 +85,7 @@ export default () => {
         </div>
         <div
           className={cx(
-            'absolute transition-all duration-500 top-16 w-96 rounded-lg',
+            'absolute transition-all duration-500 top-12 w-96 rounded-lg',
             'cursor-pointer shadow overflow-hidden',
             result.length > 0 && isFocused ? 'max-h-80' : 'max-h-0',
           )}
