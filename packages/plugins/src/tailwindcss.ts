@@ -3,7 +3,15 @@ import { join } from 'path';
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
-  api.describe({ key: 'tailwindcss' });
+  api.describe({
+    key: 'tailwindcss',
+    config: {
+      schema(Joi) {
+        return Joi.object();
+      },
+    },
+    enableBy: api.EnableBy.config,
+  });
 
   let tailwind: any = null;
   const outputPath = 'plugin-tailwindcss/tailwind.css';
