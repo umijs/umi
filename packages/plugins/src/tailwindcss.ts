@@ -1,31 +1,40 @@
-import { exec } from 'child_process';
-import * as path from 'path';
+import { crossSpawn, winPath } from 'umi/plugin-utils';
+import { join } from 'path';
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
   api.describe({ key: 'tailwindcss' });
 
+  let tailwind: any = null;
+  const outputPath = 'plugin-tailwindcss/tailwind.css';
+
   api.onStart(() => {
-    const inputPath = path.resolve(api.cwd, 'tailwind.css');
-    const generatedPath = path.resolve(api.paths.absTmpPath, 'tailwind.css');
-    const binPath = path.resolve(api.cwd, 'node_modules/.bin/tailwind');
+    const inputPath = join(api.cwd, 'tailwind.css');
+    const generatedPath = join(api.paths.absTmpPath, outputPath);
+    const binPath = join(api.cwd, 'node_modules/.bin/tailwind');
 
     /** 透过子进程建立 tailwindcss 服务，将生成的 css 写入 generatedPath */
-    const tailwind = exec(
-      `${binPath} -i ${inputPath} -o ${generatedPath} --watch`,
-      { cwd: api.cwd },
+    tailwind = crossSpawn(
+      `${binPath}`,
+      [
+        '-i',
+        inputPath,
+        '-o',
+        generatedPath,
+        api.env === 'development' ? '--watch' : '',
+      ],
+      {
+        stdio: 'inherit',
+      },
     );
-
     tailwind.on('error', (m: any) => {
       api.logger.error('tailwindcss service encounter an error: ' + m);
     });
+  });
 
-    /** 将生成的 css 文件加入到 import 中 */
-    api.addEntryImports(() => [{ source: generatedPath }]);
-
-    /** 构建完成需要退出子进程，否则会一直等待 */
-    api.onBuildComplete(() => {
-      tailwind.kill('SIGTERM');
-    });
+  /** 将生成的 css 文件加入到 import 中 */
+  api.addEntryImports(() => {
+    const generatedPath = winPath(join(api.paths.absTmpPath, outputPath));
+    return [{ source: generatedPath }];
   });
 };
