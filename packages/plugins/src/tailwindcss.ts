@@ -22,5 +22,10 @@ export default (api: IApi) => {
 
     /** 将生成的 css 文件加入到 import 中 */
     api.addEntryImports(() => [{ source: generatedPath }]);
+
+    /** 构建完成需要退出子进程，否则会一直等待 */
+    api.onBuildComplete(() => {
+      tailwind.kill('SIGTERM');
+    });
   });
 };
