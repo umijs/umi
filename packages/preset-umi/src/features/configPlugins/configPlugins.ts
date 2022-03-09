@@ -59,7 +59,7 @@ export default (api: IApi) => {
   };
   for (const key of Object.keys(schemas)) {
     const config: Record<string, any> = {
-      schema: schemas[key] || ((joi: any) => joi.any()),
+      schema: schemas[key] || ((Joi: any) => Joi.any()),
     };
     if (key in configDefaults) {
       config.default = configDefaults[key];

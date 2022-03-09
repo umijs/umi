@@ -8,11 +8,11 @@ export default (api: IApi) => {
   api.describe({
     key: 'crossorigin',
     config: {
-      schema(joi) {
-        return joi.alternatives(
-          joi.boolean(),
-          joi.object({
-            include: joi.array().items(joi.object().instance(RegExp)),
+      schema(Joi) {
+        return Joi.alternatives(
+          Joi.boolean(),
+          Joi.object({
+            include: Joi.array().items(Joi.object().instance(RegExp)),
           }),
         );
       },

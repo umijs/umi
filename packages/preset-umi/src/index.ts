@@ -21,6 +21,7 @@ export default () => {
       require.resolve('./features/lowImport/lowImport'),
       require.resolve('./features/vite/vite'),
       require.resolve('./features/apiRoute/apiRoute'),
+      require.resolve('./features/monorepo/redirect'),
 
       // commands
       require.resolve('./commands/build'),
