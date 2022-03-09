@@ -76,6 +76,22 @@ export default (api: IApi) => {
         return false;
       }
 
+      // 如果是 Vercel 平台，则需要检查是否有配置了 Vercel 配置
+      if (!fs.existsSync(join(api.paths.cwd, 'vercel.json'))) {
+        logger.warn(
+          'You have enabled the API route feature, but there is no vercel.json file in your work directory! ' +
+            'Automatically creating a vercel.json file ...',
+        );
+        fs.writeFileSync(
+          join(api.paths.cwd, 'vercel.json'),
+          JSON.stringify(
+            { build: { env: { ENABLE_FILE_SYSTEM_API: '1' } } },
+            null,
+            2,
+          ),
+        );
+      }
+
       return true;
     },
   });
