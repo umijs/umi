@@ -14,7 +14,7 @@ import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
-export * from './features/apiRoute/vercel';
+export { UmiApiResponse, UmiApiRequest } from './features/apiRoute';
 export type IScript =
   | Partial<{
       async: boolean;
