@@ -329,6 +329,15 @@ importers:
       troika-three-text: 0.45.1_three@0.138.3
       umi: link:../../packages/umi
 
+  examples/with-redux:
+    specifiers:
+      react-redux: ^7.2.6
+      redux: ^4.1.2
+      umi: 4.0.0-rc.5
+    dependencies:
+      react-redux: 7.2.6_react-dom@17.0.2+react@17.0.2
+      redux: 4.1.2
+
   examples/with-redux-toolkit:
     specifiers:
       '@reduxjs/toolkit': ^1.8.0
