@@ -2,6 +2,7 @@ import { parseModule } from '@umijs/bundler-utils';
 import { getNpmClient } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+import { parse } from '../../../compiled/ini';
 import { expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
 import { IApi } from '../../types';
@@ -48,8 +49,30 @@ export default (api: IApi) => {
       return memo;
     }, []);
 
+    const gitDir = findGitDir(api.paths.cwd);
+    if (gitDir) {
+      const git: Record<string, string> = {};
+      const configPath = join(gitDir, 'config');
+      if (existsSync(configPath)) {
+        const config = readFileSync(configPath, 'utf-8');
+        git.originUrl = parse(config)['remote "origin"'].url;
+      }
+      memo.git = git;
+    }
+
     return memo;
   });
+
+  function findGitDir(dir: string): string | null {
+    if (existsSync(join(dir, '.git'))) {
+      return join(dir, '.git');
+    }
+    const parent: string | null = findGitDir(join(dir, '..'));
+    if (parent) {
+      return parent;
+    }
+    return null;
+  }
 
   // Execute earliest, so that other onGenerateFiles can get it
   api.register({

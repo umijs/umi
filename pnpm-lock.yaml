@@ -768,6 +768,7 @@ importers:
   packages/preset-umi:
     specifiers:
       '@types/body-parser': 1.19.2
+      '@types/ini': 1.3.31
       '@types/multer': 1.4.7
       '@umijs/ast': 4.0.0-rc.5
       '@umijs/babel-preset-umi': 4.0.0-rc.5
@@ -782,6 +783,7 @@ importers:
       core-js: 3.21.1
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.9.2
+      ini: 2.0.0
       magic-string: 0.26.1
       multer: 1.4.4
       path-to-regexp: 1.7.0
@@ -814,7 +816,9 @@ importers:
       regenerator-runtime: 0.13.9
     devDependencies:
       '@types/body-parser': 1.19.2
+      '@types/ini': 1.3.31
       body-parser: 1.19.2
+      ini: 2.0.0
       multer: 1.4.4
       vite: 2.8.6
 
@@ -6293,6 +6297,10 @@ packages:
     resolution: {integrity: sha512-5kPLG5BKpWYkw/LVOGWpiq3nEVqxiN32rTgI53Sk12/xHFQ2rG3ehI9IO+O3W2QoKeyB92dJkoka8SUm6BX1pA==}
     dependencies:
       '@types/node': 17.0.21
+    dev: true
+
+  /@types/ini/1.3.31:
+    resolution: {integrity: sha512-8ecxxaG4AlVEM1k9+BsziMw8UsX0qy3jYI1ad/71RrDZ+rdL6aZB0wLfAuflQiDhkD5o4yJ0uPK3OSUic3fG0w==}
     dev: true
 
   /@types/invariant/2.2.35:
@@ -12090,6 +12098,11 @@ packages:
 
   /ini/1.3.8:
     resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
+    dev: true
+
+  /ini/2.0.0:
+    resolution: {integrity: sha512-7PnF4oN3CvZF23ADhA5wRaYEQpJ8qygSkbtTXWBeXWXmEVRXK+1ITciHWwHhsjv1TmW0MgacIv6hEi5pX5NQdA==}
+    engines: {node: '>=10'}
     dev: true
 
   /init-package-json/2.0.5:
