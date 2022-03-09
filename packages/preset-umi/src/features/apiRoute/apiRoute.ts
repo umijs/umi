@@ -1,12 +1,13 @@
 import { IRoute } from '@umijs/core';
 import { logger } from '@umijs/utils';
 import fs from 'fs';
-import { join, resolve } from 'path';
+import { basename, join, resolve } from 'path';
 import { matchRoutes } from 'react-router';
 import { TEMPLATES_DIR } from '../../constants';
 import type { IApi, IApiMiddleware } from '../../types';
 import DevServerAdapterBuild from './dev-server/esbuild';
 import VercelAdapterBuild from './vercel/esbuild';
+import { watch } from '../../commands/dev/watch';
 
 enum ServerlessPlatform {
   Vercel = 'vercel',
@@ -164,6 +165,26 @@ export default (api: IApi) => {
 
   // 编译时，将打包好的临时文件根据用户指定的目标平台进行打包
   api.onBeforeCompiler(async () => {
+    // 当有新的 API 路由或是原有的路由被删除时，必须重启服务，因为 appData 内的 apiRoutes 没有更新
+    watch({
+      path: join(api.paths.absApiRoutesPath),
+      addToUnWatches: true,
+      onChange(e, p) {
+        if (e === 'add') {
+          logger.event(`New API route ${basename(p)} detected, compiling ...`);
+          api.restartServer();
+          return;
+        }
+        if (e === 'unlink') {
+          logger.event(
+            `API route ${basename(p)} has been removed, compiling ...`,
+          );
+          api.restartServer();
+          return;
+        }
+      },
+    });
+
     const apiRoutePaths = Object.keys(api.appData.apiRoutes).map((key) =>
       join(api.paths.absTmpPath, 'api', api.appData.apiRoutes[key].file),
     );
