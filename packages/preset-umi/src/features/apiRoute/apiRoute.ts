@@ -94,7 +94,7 @@ export default (api: IApi) => {
         path: join('api', apiRoute.file),
         tplPath: join(TEMPLATES_DIR, 'apiRoute.tpl'),
         context: {
-          adapterPath: resolve(__dirname, '../apiRoute/vercel/index.js'),
+          adapterPath: resolve(__dirname, '../apiRoute/index.js'),
           apiRootDirPath: join(api.paths.absTmpPath, 'api'),
           handlerPath: join(api.paths.absSrcPath, 'api', apiRoute.file),
         },
