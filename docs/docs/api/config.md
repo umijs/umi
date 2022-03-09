@@ -463,6 +463,26 @@ mock: {
 mountElementId: 'container'
 ```
 
+## monorepoRedirect
+
+* 类型：`{ srcDir?: string[], exclude?: RegExp[] }`
+* 默认值：`false`
+
+在 monorepo 中使用 umi 时，你可能需要引入其他子包的组件、工具等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
+
+通过配置 `srcDir` 来调整识别源码文件夹的优先位置，通过 `exclude` 来设定不需要重定向的依赖范围。
+
+示例：
+
+```js
+// 默认重定向到子包的 src 文件夹
+monorepoRedirect: {}
+// 优先定向到 libs 文件夹
+monorepoRedirect: { srcDir: ['libs', 'src'] }
+// 不重定向 @scope/* 的子包
+monorepoRedirect: { exclude: [/^@scope\/.+/] }
+```
+
 ## outputPath
 
 * 类型：`string`
