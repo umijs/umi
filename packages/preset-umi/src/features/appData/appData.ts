@@ -1,7 +1,7 @@
 import { parseModule } from '@umijs/bundler-utils';
 import { getNpmClient } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
 import { expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
@@ -67,6 +67,9 @@ export default (api: IApi) => {
   });
 
   function findGitDir(dir: string): string | null {
+    if (dir === resolve('/')) {
+      return null;
+    }
     if (existsSync(join(dir, '.git'))) {
       return join(dir, '.git');
     }
