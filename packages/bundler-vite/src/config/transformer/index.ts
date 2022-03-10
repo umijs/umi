@@ -1,5 +1,5 @@
-import type { InlineConfig as ViteInlineConfig } from 'vite';
-import { mergeConfig } from 'vite';
+import type { InlineConfig as ViteInlineConfig } from '../../../compiled/vite';
+import { mergeConfig } from '../../../compiled/vite';
 import alias from './alias';
 import css from './css';
 import define from './define';

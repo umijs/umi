@@ -1,6 +1,6 @@
-import { Options as LegacyOptions } from '@vitejs/plugin-legacy';
-import type { PluginVisualizerOptions } from 'rollup-plugin-visualizer';
-import type { Plugin, ProxyOptions } from 'vite';
+import { Options as LegacyOptions } from '../compiled/@vitejs/plugin-legacy';
+import type { PluginVisualizerOptions } from '../compiled/rollup-plugin-visualizer';
+import type { Plugin, ProxyOptions } from '../compiled/vite';
 
 export enum Env {
   development = 'development',

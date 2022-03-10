@@ -1,5 +1,5 @@
-import type { InlineConfig as ViteInlineConfig } from 'vite';
-import { mergeConfig } from 'vite';
+import type { InlineConfig as ViteInlineConfig } from '../../compiled/vite';
+import { mergeConfig } from '../../compiled/vite';
 import configPlugins from '../plugins';
 import { Env, IBabelPlugin, IConfig } from '../types';
 import configTransformer from './transformer';

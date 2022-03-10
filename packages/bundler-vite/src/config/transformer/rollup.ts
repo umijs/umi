@@ -1,9 +1,7 @@
 import path from 'path';
-import copy from 'rollup-plugin-copy';
-// @ts-ignore
-import polyfill from 'rollup-plugin-polyfill';
-import { visualizer } from 'rollup-plugin-visualizer';
 import type { IConfigProcessor } from '.';
+import copy from '../../../compiled/rollup-plugin-copy';
+import visualizer from '../../../compiled/rollup-plugin-visualizer';
 
 /**
  * transform umi configs to vite rollup options
@@ -17,16 +15,6 @@ export default (function rollup(userConfig) {
   const config: ReturnType<IConfigProcessor> = {
     build: { rollupOptions: { plugins: [], output: {} } },
   };
-
-  // TODO: handle externals
-  // refer: https://github.com/vitejs/vite/issues/3001#issuecomment-836352935
-
-  // handle polyfill
-  if (Array.isArray(userConfig.polyfill?.imports)) {
-    config.build!.rollupOptions!.plugins!.push(
-      polyfill(userConfig.polyfill.imports),
-    );
-  }
 
   // handle analyze
   if (typeof userConfig.analyze === 'object' || process.env.ANALYZE) {
