@@ -4,6 +4,7 @@ import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
 import { assert, eachPkg, getPkgs } from './utils';
+import { existsSync } from 'fs';
 
 (async () => {
   const { branch } = getGitRepoInfo();
@@ -73,11 +74,12 @@ import { assert, eachPkg, getPkgs } from './utils';
 
   // update example versions
   logger.event('update example versions');
-  const examples = fs
-    .readdirSync(join(__dirname, '../examples'))
-    .filter((dir) => {
-      return !dir.startsWith('.');
-    });
+  const examplesDir = join(__dirname, '../examples');
+  const examples = fs.readdirSync(examplesDir).filter((dir) => {
+    return (
+      !dir.startsWith('.') && existsSync(join(examplesDir, dir, 'package.json'))
+    );
+  });
   examples.forEach((example) => {
     const pkg = require(join(
       __dirname,
