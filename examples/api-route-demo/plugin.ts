@@ -4,8 +4,8 @@ import { IApi } from 'umi';
 export default (api: IApi) => {
   api.addApiMiddlewares(() => [
     {
-      name: 'authMiddleware',
-      path: path.resolve(__dirname, './authMiddleware.ts'),
+      name: 'loggerMiddleware',
+      path: path.resolve(__dirname, './loggerMiddleware.ts'),
     },
   ]);
 };

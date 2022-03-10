@@ -2,7 +2,7 @@ import { IRoute } from '@umijs/core';
 import { logger } from '@umijs/utils';
 import fs from 'fs';
 import { basename, join, resolve } from 'path';
-import { matchRoutes } from 'react-router';
+import { matchApiRoute } from './utils';
 import { TEMPLATES_DIR } from '../../constants';
 import type { IApi, IApiMiddleware } from '../../types';
 import DevServerAdapterBuild from './dev-server/esbuild';
@@ -113,6 +113,7 @@ export default (api: IApi) => {
           adapterPath: resolve(__dirname, '../apiRoute/index.js'),
           apiRootDirPath: join(api.paths.absTmpPath, 'api'),
           handlerPath: join(api.paths.absSrcPath, 'api', apiRoute.file),
+          apiRoutes: JSON.stringify(apiRoutes),
         },
       });
     });
@@ -139,24 +140,7 @@ export default (api: IApi) => {
           (k) => api.appData.apiRoutes[k],
         );
 
-        const matches = matchRoutes(
-          apiRoutes.map((r) => ({ path: r.path })),
-          path,
-        );
-
-        if (!matches || matches?.length === 0) {
-          logger.warn(`404 - ${req.path}`);
-          next();
-          return;
-        }
-
-        const matchedApiRoute = apiRoutes.find(
-          (r) =>
-            r.path === matches[0].pathname ||
-            r.path + '/' === matches[0].pathname ||
-            '/' + r.path === matches[0].pathname ||
-            '/' + r.path + '/' === matches[0].pathname,
-        );
+        const matchedApiRoute = matchApiRoute(apiRoutes, path);
 
         if (!matchedApiRoute) {
           logger.warn(`404 - ${req.path}`);
@@ -167,7 +151,7 @@ export default (api: IApi) => {
         await require(join(
           api.paths.cwd,
           '.output/server/pages/api',
-          matchedApiRoute.file,
+          matchedApiRoute.route.file,
         ).replace('.ts', '.js')).default(req, res);
 
         return;
@@ -205,12 +189,12 @@ export default (api: IApi) => {
       });
     }
 
-    const apiRoutePaths = Object.keys(api.appData.apiRoutes).map((key) =>
-      join(api.paths.absTmpPath, 'api', api.appData.apiRoutes[key].file),
+    const apiRoutes: IRoute[] = Object.keys(api.appData.apiRoutes).map(
+      (k) => api.appData.apiRoutes[k],
     );
 
     if (api.env === 'development') {
-      await DevServerAdapterBuild(api, apiRoutePaths);
+      await DevServerAdapterBuild(api, apiRoutes);
       return;
     }
 
@@ -222,7 +206,7 @@ export default (api: IApi) => {
 
     switch (platform) {
       case ServerlessPlatform.Vercel:
-        await VercelAdapterBuild(api, apiRoutePaths);
+        await VercelAdapterBuild(api, apiRoutes);
         return;
       case ServerlessPlatform.Netlify:
         logger.error('API routes bundle failed: Netlify is not supported yet!');

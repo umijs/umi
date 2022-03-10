@@ -1,11 +1,25 @@
 import type { IncomingMessage } from 'http';
+import type { IRoute } from '../../types';
+import { matchApiRoute } from './utils';
 
 class UmiApiRequest {
   private _req: IncomingMessage;
+  private readonly _params: { [key: string]: string } = {};
+
+  constructor(req: IncomingMessage, apiRoutes: IRoute[]) {
+    this._req = req;
+    const m = matchApiRoute(apiRoutes, this.pathName || '');
+    if (m) this._params = m.params;
+  }
+
+  get params() {
+    return this._params;
+  }
+
   private _body: any = null;
 
-  constructor(req: IncomingMessage) {
-    this._req = req;
+  get body() {
+    return this._body;
   }
 
   get headers() {
@@ -38,6 +52,24 @@ class UmiApiRequest {
     );
   }
 
+  get cookies() {
+    return this._req.headers.cookie
+      ?.split(';')
+      .reduce((acc: { [key: string]: string }, cur) => {
+        const [key, value] = cur.split('=');
+        acc[key.trim()] = value;
+        return acc;
+      }, {});
+  }
+
+  get url() {
+    return this._req.url;
+  }
+
+  get pathName() {
+    return this._req.url?.split('?')[0];
+  }
+
   public readBody() {
     if (this._req.headers['content-length'] === '0') {
       return Promise.resolve();
@@ -65,28 +97,6 @@ class UmiApiRequest {
       });
       this._req.on('error', reject);
     });
-  }
-
-  get body() {
-    return this._body;
-  }
-
-  get cookies() {
-    return this._req.headers.cookie
-      ?.split(';')
-      .reduce((acc: { [key: string]: string }, cur) => {
-        const [key, value] = cur.split('=');
-        acc[key.trim()] = value;
-        return acc;
-      }, {});
-  }
-
-  get url() {
-    return this._req.url;
-  }
-
-  get pathName() {
-    return this._req.url?.split('?')[0];
   }
 }
 
