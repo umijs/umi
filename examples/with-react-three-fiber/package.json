@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@react-three/drei": "^8.16.0",
+    "@react-three/drei": "^8.16.4",
     "@react-three/fiber": "^7.0.26",
     "@types/three": "^0.138.0",
     "three": "^0.138.3",

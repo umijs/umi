@@ -6,7 +6,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@types/react": "^17.0.39",
+    "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
     "history": "^5.3.0",
     "react": "^17.0.2",

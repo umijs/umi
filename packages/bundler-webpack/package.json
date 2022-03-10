@@ -37,7 +37,7 @@
     "@umijs/babel-preset-umi": "4.0.0-rc.5",
     "@umijs/mfsu": "4.0.0-rc.5",
     "@umijs/utils": "4.0.0-rc.5",
-    "css-loader": "6.7.0",
+    "css-loader": "6.7.1",
     "es5-imcompatible-versions": "^0.1.73",
     "jest-worker": "27.5.1",
     "node-libs-browser": "2.2.1",
@@ -46,7 +46,7 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
-    "@swc/core": "1.2.150",
+    "@swc/core": "1.2.151",
     "@types/express": "4.17.13",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.2",
@@ -56,7 +56,7 @@
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "10.2.4",
     "css-minimizer-webpack-plugin": "3.4.1",
-    "cssnano": "5.1.0",
+    "cssnano": "5.1.1",
     "express": "4.17.3",
     "fork-ts-checker-webpack-plugin": "7.2.1",
     "http-proxy-middleware": "2.0.3",
@@ -80,7 +80,7 @@
     "webpack-5-chain": "8.0.0",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-dev-middleware": "5.3.1",
-    "webpack-manifest-plugin": "4.1.1",
+    "webpack-manifest-plugin": "5.0.0",
     "webpack-sources": "3.2.3",
     "ws": "8.5.0"
   },
