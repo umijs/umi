@@ -1,0 +1,1 @@
+export * from '@umijs/utils/compiled/fs-extra';

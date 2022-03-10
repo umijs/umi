@@ -1,7 +1,7 @@
-import type { Options } from '@vitejs/plugin-legacy';
-import legacyPlugin from '@vitejs/plugin-legacy';
-import * as lite from 'caniuse-lite';
 import type { IConfigProcessor } from '.';
+import type { Options } from '../../../compiled/@vitejs/plugin-legacy';
+import legacyPlugin from '../../../compiled/@vitejs/plugin-legacy';
+import * as lite from '../../../compiled/caniuse-lite';
 import { getBrowserlist } from './css';
 
 /**

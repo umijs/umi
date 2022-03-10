@@ -142,6 +142,41 @@ Object.keys(exported).forEach(function (key) {
       if (opts.pkgName === 'fork-ts-checker-webpack-plugin') {
         fs.removeSync(path.join(target, 'typescript.js'));
       }
+
+      // for bundler-vite
+      if (opts.pkgName === 'vite') {
+        const COMPILED_DIR = path.join(opts.base, 'compiled');
+        const { compiledConfig } = require(`${opts.base}/package.json`);
+
+        // generate externalized type from sibling packages (such as @umijs/bundler-utils)
+        Object.entries<string>(compiledConfig.externals)
+          .filter(
+            ([name, target]) =>
+              target.startsWith('@umijs/') &&
+              compiledConfig.extraDtsExternals.includes(name),
+          )
+          .forEach(([name, target]) => {
+            fs.writeFileSync(
+              path.join(COMPILED_DIR, `${name}.d.ts`),
+              `export * from '${target}';`,
+              'utf-8',
+            );
+          });
+
+        // copy sourcemap for vite client scripts
+        fs.copyFileSync(
+          require.resolve('vite/dist/client/client.mjs.map', {
+            paths: [opts.base],
+          }),
+          path.join(COMPILED_DIR, 'vite', 'client.mjs.map'),
+        );
+        fs.copyFileSync(
+          require.resolve('vite/dist/client/env.mjs.map', {
+            paths: [opts.base],
+          }),
+          path.join(COMPILED_DIR, 'vite', 'env.mjs.map'),
+        );
+      }
     }
   }
 

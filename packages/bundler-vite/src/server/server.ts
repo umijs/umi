@@ -1,12 +1,12 @@
 import { logger } from '@umijs/utils';
 import http from 'http';
+import express from '../../compiled/express';
 import type {
   DepOptimizationMetadata,
   HmrContext,
   InlineConfig as ViteInlineConfig,
-} from 'vite';
-import { createServer as createViteServer } from 'vite';
-import express from '../../compiled/express';
+} from '../../compiled/vite';
+import { createServer as createViteServer } from '../../compiled/vite';
 import type { IConfig } from '../types';
 import pluginOnHotUpdate from './plugins/onHotUpdate';
 

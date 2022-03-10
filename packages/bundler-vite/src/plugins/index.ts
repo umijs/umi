@@ -1,4 +1,4 @@
-import type { InlineConfig as ViteInlineConfig } from 'vite';
+import type { InlineConfig as ViteInlineConfig } from '../../compiled/vite';
 import type { IConfig } from '../types';
 import autoCSSModulePlugin from './autoCSSModule';
 import externals from './externals';

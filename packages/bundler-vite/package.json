@@ -27,18 +27,21 @@
     "@svgr/core": "6.2.1",
     "@umijs/bundler-utils": "4.0.0-rc.5",
     "@umijs/utils": "4.0.0-rc.5",
-    "@vitejs/plugin-legacy": "1.7.1",
     "@vitejs/plugin-react": "1.2.0",
-    "caniuse-lite": "1.0.30001313",
-    "postcss-preset-env": "7.4.2",
-    "rollup-plugin-copy": "3.4.0",
-    "rollup-plugin-polyfill": "3.0.0",
-    "rollup-plugin-visualizer": "5.6.0",
-    "vite": "2.8.6"
+    "postcss-preset-env": "7.4.2"
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",
-    "express": "4.17.3"
+    "@types/rollup-plugin-visualizer": "4.2.1",
+    "@types/svgo": "2.6.2",
+    "@vitejs/plugin-legacy": "1.7.1",
+    "caniuse-lite": "1.0.30001313",
+    "express": "4.17.3",
+    "less": "4.1.2",
+    "rollup": "2.70.0",
+    "rollup-plugin-copy": "3.4.0",
+    "rollup-plugin-visualizer": "5.6.0",
+    "vite": "2.8.6"
   },
   "publishConfig": {
     "access": "public"
@@ -48,10 +51,30 @@
   ],
   "compiledConfig": {
     "deps": [
-      "express"
+      "@vitejs/plugin-legacy",
+      "caniuse-lite",
+      "express",
+      "less",
+      "rollup-plugin-copy",
+      "rollup-plugin-visualizer",
+      "vite"
     ],
     "externals": {
-      "express": "$$LOCAL"
-    }
+      "esbuild": "@umijs/bundler-utils/compiled/esbuild",
+      "express": "$$LOCAL",
+      "fs-extra": "@umijs/utils/compiled/fs-extra",
+      "glob": "@umijs/utils/compiled/glob",
+      "less": "$$LOCAL",
+      "resolve": "@umijs/utils/compiled/resolve",
+      "vite": "$$LOCAL"
+    },
+    "extraDtsDeps": [
+      "rollup"
+    ],
+    "extraDtsExternals": [
+      "esbuild",
+      "foo",
+      "fs-extra"
+    ]
   }
 }
