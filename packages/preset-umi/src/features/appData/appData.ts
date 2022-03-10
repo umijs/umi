@@ -55,7 +55,10 @@ export default (api: IApi) => {
       const configPath = join(gitDir, 'config');
       if (existsSync(configPath)) {
         const config = readFileSync(configPath, 'utf-8');
-        git.originUrl = parse(config)['remote "origin"'].url;
+        const url = parse(config)['remote "origin"']?.url;
+        if (url) {
+          git.originUrl = url;
+        }
       }
       memo.git = git;
     }
