@@ -329,6 +329,14 @@ importers:
       troika-three-text: 0.45.1_three@0.138.3
       umi: link:../../packages/umi
 
+  examples/with-recoil:
+    specifiers:
+      recoil: ^0.6.1
+      umi: 4.0.0-rc.5
+    dependencies:
+      recoil: 0.6.1_react-dom@17.0.2+react@17.0.2
+      umi: link:../../packages/umi
+
   examples/with-redux:
     specifiers:
       react-redux: ^7.2.6
@@ -11198,6 +11206,10 @@ packages:
     engines: {node: '>=0.8.0'}
     dev: false
 
+  /hamt_plus/1.0.2:
+    resolution: {integrity: sha1-4hwlKWjH4zsg9qGwlM2FeHomVgE=}
+    dev: false
+
   /handle-thing/2.0.1:
     resolution: {integrity: sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==}
     dev: true
@@ -17771,6 +17783,23 @@ packages:
     dependencies:
       resolve: 1.22.0
     dev: true
+
+  /recoil/0.6.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-J7oT3LZl2vpyFClgSUpOQjpykz84VSX/NJE/PavAtR8n7Z+whEdVBPUtwc2TEWjONeL/lJmiac2XQ+qEOQA52Q==}
+    peerDependencies:
+      react: '>=16.13.1'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      hamt_plus: 1.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /redent/3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
