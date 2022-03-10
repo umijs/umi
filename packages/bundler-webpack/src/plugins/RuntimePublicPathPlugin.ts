@@ -11,7 +11,7 @@ export class RuntimePublicPathPlugin {
         // https://github.com/webpack/webpack/blob/master/lib/runtime/PublicPathRuntimeModule.js
         if (module.constructor.name === 'PublicPathRuntimeModule') {
           // @ts-ignore
-          module._cachedGeneratedCode = `__webpack_require__.p = window.publicPath;`;
+          module._cachedGeneratedCode = `__webpack_require__.p = (globalThis || window).publicPath;`;
         }
       });
     });
