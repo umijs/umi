@@ -705,3 +705,19 @@ targets: { ie: 11 }
 ```js
 theme: { '@primary-color': '#1DA57A' }
 ```
+
+## vite
+
+* 类型：`object`
+* 默认值：`{}`
+
+开发者的配置会 merge 到 vite 的 [默认配置](https://vitejs.dev/config/)。
+
+示例，
+
+```js
+// 更改临时文件路径到 node_modules/.bin/.vite 文件夹
+vite: {
+    cacheDir:'node_modules/.bin/.vite'
+  }
+```
