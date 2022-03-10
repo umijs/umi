@@ -389,6 +389,14 @@ importers:
       umi: link:../../packages/umi
       unocss: 0.27.2
 
+  examples/with-unstated:
+    specifiers:
+      umi: 4.0.0-rc.5
+      unstated-next: ^1.1.0
+    dependencies:
+      umi: link:../../packages/umi
+      unstated-next: 1.1.0
+
   examples/with-valtio:
     specifiers:
       '@types/three': ^0.138.0
