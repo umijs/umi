@@ -8,7 +8,7 @@ import { clearTmp } from '../../utils/clearTmp';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
 import { getBabelOpts } from './getBabelOpts';
-import { printMemoryUsage } from './utils';
+import { printMemoryUsage } from './printMemoryUsage';
 import {
   addUnWatch,
   createDebouncedHandler,

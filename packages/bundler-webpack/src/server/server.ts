@@ -159,7 +159,10 @@ export async function createServer(opts: IOpts) {
     });
   }
   // after middlewares
-  (opts.afterMiddlewares || []).forEach((m) => app.use(m));
+  (opts.afterMiddlewares || []).forEach((m) => {
+    // TODO: FIXME
+    app.use(m.toString().includes(`{ compiler }`) ? m({ compiler }) : m);
+  });
   // history fallback
   app.use(
     require('@umijs/bundler-webpack/compiled/connect-history-api-fallback')({
