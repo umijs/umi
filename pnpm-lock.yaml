@@ -89,7 +89,7 @@ importers:
       '@ant-design/pro-layout': 7.0.1-beta.3
       '@ant-design/pro-table': ^2.66.4
       '@antv/l7-react': ^2.3.9
-      '@umijs/pro': 4.0.0-rc.5
+      '@umijs/pro': 4.0.0-rc.6
       ahooks: ^3.1.13
       antd: 4.19.1
       classnames: ^2.3.1
@@ -128,14 +128,14 @@ importers:
 
   examples/api-route-demo:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       umi: link:../../packages/umi
 
   examples/bigfish:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      '@umijs/pro': 4.0.0-rc.5
+      '@umijs/pro': 4.0.0-rc.6
       react: 17.0.2
       react-dom: 17.0.2
     dependencies:
@@ -146,13 +146,13 @@ importers:
 
   examples/boilerplate:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       umi: link:../../packages/umi
 
   examples/bug-mfsu-fast-refresh:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       umi: link:../../packages/umi
 
@@ -160,10 +160,10 @@ importers:
     specifiers:
       '@types/react': ^17.0.40
       '@types/react-dom': ^17.0.13
-      '@umijs/bundler-vite': 4.0.0-rc.5
+      '@umijs/bundler-vite': 4.0.0-rc.6
       react: ^17.0.2
       react-dom: ^17.0.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@types/react': 17.0.40
       '@types/react-dom': 17.0.13
@@ -180,7 +180,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       react-router-dom: ^6.2.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@types/react': 17.0.40
       '@types/react-dom': 17.0.13
@@ -201,7 +201,7 @@ importers:
       redux: ^4.1.2
       swiper: ^8.0.7
       swr: 1.2.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@codesandbox/sandpack-react': 0.14.5_react-dom@17.0.2+react@17.0.2
       antd: 4.19.1_react-dom@17.0.2+react@17.0.2
@@ -220,7 +220,7 @@ importers:
       '@types/react-dom': ^17.0.13
       react: ^17.0.2
       react-dom: ^17.0.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@types/react': 17.0.40
       '@types/react-dom': 17.0.13
@@ -236,7 +236,7 @@ importers:
       '@babel/preset-typescript': ^7.16.7
       '@types/react': ^17.0.40
       '@types/react-dom': ^17.0.13
-      '@umijs/mfsu': 4.0.0-rc.5
+      '@umijs/mfsu': 4.0.0-rc.6
       antd: ^4.19.1
       babel-loader: ^8.2.3
       esbuild: 0.14.25
@@ -263,13 +263,13 @@ importers:
       babel-loader: 8.2.3_ed870ac3ba52c4ec230ba2bc3dbb311c
       esbuild: 0.14.25
       html-webpack-plugin: 5.5.0_webpack@5.70.0
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
       webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
       webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.70.0
 
   examples/qiankun-slave:
     specifiers:
-      '@umijs/pro': 4.0.0-rc.5
+      '@umijs/pro': 4.0.0-rc.6
       react: 17.0.2
       react-dom: 17.0.2
     dependencies:
@@ -279,19 +279,19 @@ importers:
 
   examples/remix:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       umi: link:../../packages/umi
 
   examples/test-test:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       umi: link:../../packages/umi
 
   examples/tmp-swc-transpiler:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       umi: link:../../packages/umi
 
@@ -299,7 +299,7 @@ importers:
     specifiers:
       mobx: ^6.4.2
       mobx-react: ^7.3.0
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       mobx: 6.4.2
       mobx-react: 7.3.0_4e589064ce40a783661f96d46f38f574
@@ -308,7 +308,7 @@ importers:
   examples/with-react-query:
     specifiers:
       react-query: ^3.34.16
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       react-query: 3.34.16_react-dom@17.0.2+react@17.0.2
       umi: link:../../packages/umi
@@ -320,7 +320,7 @@ importers:
       '@types/three': ^0.138.0
       three: ^0.138.3
       troika-three-text: ^0.45.1
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@react-three/drei': 8.16.4_4ff37aac017f2ab44732083fae83210a
       '@react-three/fiber': 7.0.26_6a2478a5b9a0dfe3cc9e1f0de361d624
@@ -332,7 +332,7 @@ importers:
   examples/with-recoil:
     specifiers:
       recoil: ^0.6.1
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       recoil: 0.6.1_react-dom@17.0.2+react@17.0.2
       umi: link:../../packages/umi
@@ -341,7 +341,7 @@ importers:
     specifiers:
       react-redux: ^7.2.6
       redux: ^4.1.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       react-redux: 7.2.6_react-dom@17.0.2+react@17.0.2
       redux: 4.1.2
@@ -351,7 +351,7 @@ importers:
     specifiers:
       '@reduxjs/toolkit': ^1.8.0
       react-redux: ^7.2.6
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@reduxjs/toolkit': 1.8.0_react-redux@7.2.6+react@17.0.2
       react-redux: 7.2.6_react-dom@17.0.2+react@17.0.2
@@ -361,7 +361,7 @@ importers:
     specifiers:
       '@rematch/core': ^2.2.0
       react-redux: ^7.2.6
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@rematch/core': 2.2.0
       react-redux: 7.2.6_react-dom@17.0.2+react@17.0.2
@@ -369,9 +369,9 @@ importers:
 
   examples/with-tailwindcss:
     specifiers:
-      '@umijs/plugins': 4.0.0-rc.5
+      '@umijs/plugins': 4.0.0-rc.6
       tailwindcss: ^3.0.23
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       tailwindcss: 3.0.23_ts-node@10.7.0
@@ -379,9 +379,9 @@ importers:
 
   examples/with-unocss:
     specifiers:
-      '@umijs/plugins': 4.0.0-rc.5
+      '@umijs/plugins': 4.0.0-rc.6
       '@unocss/cli': ^0.27.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
       unocss: ^0.27.2
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
@@ -391,7 +391,7 @@ importers:
 
   examples/with-unstated:
     specifiers:
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
       unstated-next: ^1.1.0
     dependencies:
       umi: link:../../packages/umi
@@ -400,7 +400,7 @@ importers:
   examples/with-valtio:
     specifiers:
       '@types/three': ^0.138.0
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
       valtio: ^1.3.1
     dependencies:
       '@types/three': 0.138.0
@@ -409,7 +409,7 @@ importers:
 
   packages/ast:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-rc.5
+      '@umijs/bundler-utils': 4.0.0-rc.6
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
@@ -417,8 +417,8 @@ importers:
     specifiers:
       '@babel/runtime': 7.17.2
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/bundler-utils': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       core-js: 3.21.1
     dependencies:
       '@babel/runtime': 7.17.2
@@ -431,8 +431,8 @@ importers:
     specifiers:
       '@alitajs/postcss-plugin-px2rem': ^0.0.1
       '@types/less': ^3.0.3
-      '@umijs/bundler-utils': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/bundler-utils': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       enhanced-resolve: 5.9.2
       less: 4.1.2
       less-plugin-aliases: ^1.0.3
@@ -480,7 +480,7 @@ importers:
       '@types/babel__parser': 7.1.1
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.14.2
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/utils': 4.0.0-rc.6
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.10.0
       esbuild: 0.14.25
@@ -523,8 +523,8 @@ importers:
       '@types/caniuse-lite': 1.0.1
       '@types/rollup-plugin-visualizer': 4.2.1
       '@types/svgo': 2.6.2
-      '@umijs/bundler-utils': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/bundler-utils': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       '@vitejs/plugin-legacy': 1.7.1
       '@vitejs/plugin-react': 1.2.0
       caniuse-lite: 1.0.30001314
@@ -566,9 +566,9 @@ importers:
       '@types/hapi__joi': 17.1.8
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.5.2
-      '@umijs/babel-preset-umi': 4.0.0-rc.5
-      '@umijs/mfsu': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/babel-preset-umi': 4.0.0-rc.6
+      '@umijs/mfsu': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       autoprefixer: 10.4.2
       babel-loader: 8.2.3
       compression: 1.7.4
@@ -669,8 +669,8 @@ importers:
     specifiers:
       '@hapi/joi': 17.1.1
       '@types/hapi__joi': 17.1.8
-      '@umijs/bundler-utils': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/bundler-utils': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       dotenv: 16.0.0
       just-diff: 5.0.1
       tapable: 2.2.1
@@ -686,14 +686,14 @@ importers:
 
   packages/create-umi:
     specifiers:
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/utils': 4.0.0-rc.6
     dependencies:
       '@umijs/utils': link:../utils
 
   packages/father:
     specifiers:
-      '@umijs/core': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/core': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       v8-compile-cache: 2.3.0
     dependencies:
       '@umijs/core': link:../core
@@ -703,9 +703,9 @@ importers:
   packages/mfsu:
     specifiers:
       '@types/express': 4.17.13
-      '@umijs/bundler-esbuild': 4.0.0-rc.5
-      '@umijs/bundler-utils': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/bundler-esbuild': 4.0.0-rc.6
+      '@umijs/bundler-utils': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       enhanced-resolve: 5.9.2
       mrmime: 1.0.0
       webpack: 5.70.0
@@ -718,7 +718,7 @@ importers:
     devDependencies:
       '@types/express': 4.17.13
       mrmime: 1.0.0
-      webpack: 5.70.0_uglify-js@3.15.2
+      webpack: 5.70.0_uglify-js@3.15.3
       webpack-virtual-modules: 0.4.3
 
   packages/plugin-docs:
@@ -731,7 +731,7 @@ importers:
       react-helmet: ^6.1.0
       rehype-slug: 5.0.1
       tailwindcss: ^3.0.23
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
     dependencies:
       keymaster: 1.6.2
       react-helmet: 6.1.0_react@17.0.2
@@ -749,7 +749,7 @@ importers:
       '@ahooksjs/use-request': ^2.0.0
       '@ant-design/icons': ^4.7.0
       '@ant-design/pro-layout': ^7.0.1-beta.3
-      '@umijs/bundler-utils': 4.0.0-rc.5
+      '@umijs/bundler-utils': 4.0.0-rc.6
       antd-dayjs-webpack-plugin: ^1.0.6
       axios: ^0.26.1
       babel-plugin-import: ^1.13.3
@@ -763,7 +763,7 @@ importers:
       react-intl: 3.12.1
       react-redux: ^7.2.6
       redux: ^4.1.2
-      umi: 4.0.0-rc.5
+      umi: 4.0.0-rc.6
       warning: ^4.0.3
     dependencies:
       '@ahooksjs/use-request': 2.8.15_react@17.0.2
@@ -793,15 +793,15 @@ importers:
       '@types/body-parser': 1.19.2
       '@types/ini': 1.3.31
       '@types/multer': 1.4.7
-      '@umijs/ast': 4.0.0-rc.5
-      '@umijs/babel-preset-umi': 4.0.0-rc.5
-      '@umijs/bundler-utils': 4.0.0-rc.5
-      '@umijs/bundler-vite': 4.0.0-rc.5
-      '@umijs/bundler-webpack': 4.0.0-rc.5
-      '@umijs/core': 4.0.0-rc.5
-      '@umijs/renderer-react': 4.0.0-rc.5
-      '@umijs/server': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/ast': 4.0.0-rc.6
+      '@umijs/babel-preset-umi': 4.0.0-rc.6
+      '@umijs/bundler-utils': 4.0.0-rc.6
+      '@umijs/bundler-vite': 4.0.0-rc.6
+      '@umijs/bundler-webpack': 4.0.0-rc.6
+      '@umijs/core': 4.0.0-rc.6
+      '@umijs/renderer-react': 4.0.0-rc.6
+      '@umijs/server': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
       body-parser: 1.19.2
       core-js: 3.21.1
       current-script-polyfill: 1.0.0
@@ -848,8 +848,8 @@ importers:
 
   packages/pro:
     specifiers:
-      '@umijs/plugins': 4.0.0-rc.5
-      umi: 4.0.0-rc.5
+      '@umijs/plugins': 4.0.0-rc.6
+      umi: 4.0.0-rc.6
     dependencies:
       '@umijs/plugins': link:../plugins
       umi: link:../umi
@@ -903,11 +903,11 @@ importers:
 
   packages/umi:
     specifiers:
-      '@umijs/core': 4.0.0-rc.5
-      '@umijs/preset-umi': 4.0.0-rc.5
-      '@umijs/renderer-react': 4.0.0-rc.5
-      '@umijs/test': 4.0.0-rc.5
-      '@umijs/utils': 4.0.0-rc.5
+      '@umijs/core': 4.0.0-rc.6
+      '@umijs/preset-umi': 4.0.0-rc.6
+      '@umijs/renderer-react': 4.0.0-rc.6
+      '@umijs/test': 4.0.0-rc.6
+      '@umijs/utils': 4.0.0-rc.6
     dependencies:
       '@umijs/core': link:../core
       '@umijs/preset-umi': link:../preset-umi
@@ -6993,7 +6993,7 @@ packages:
       webpack: 4.x.x || 5.x.x
       webpack-cli: 4.x.x
     dependencies:
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
       webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
     dev: true
 
@@ -7668,7 +7668,7 @@ packages:
       loader-utils: 1.4.0
       make-dir: 3.1.0
       schema-utils: 2.7.1
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
     dev: true
 
   /babel-loader/8.2.3_webpack@5.70.0:
@@ -11544,7 +11544,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
     dev: true
 
   /htmlparser2/6.1.0:
@@ -19498,7 +19498,7 @@ packages:
       webpack: 5.70.0_77a70c12ba3d5d1b11016305995dc316
     dev: true
 
-  /terser-webpack-plugin/5.3.1_f509bd445100bd2d317ef87d693b6e4f:
+  /terser-webpack-plugin/5.3.1_b6ea5619e9eed30cbd0b8e1277ee7eea:
     resolution: {integrity: sha512-GvlZdT6wPQKbDNW/GDQzZFg/j4vKU96yl2q6mcUkzKOgW4gwf1Z8cZToUCrz31XHlPWH8MVb1r2tFtdDtTGJ7g==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -19520,11 +19520,11 @@ packages:
       serialize-javascript: 6.0.0
       source-map: 0.6.1
       terser: 5.12.0
-      uglify-js: 3.15.2
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      uglify-js: 3.15.3
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
     dev: true
 
-  /terser-webpack-plugin/5.3.1_uglify-js@3.15.2+webpack@5.70.0:
+  /terser-webpack-plugin/5.3.1_uglify-js@3.15.3+webpack@5.70.0:
     resolution: {integrity: sha512-GvlZdT6wPQKbDNW/GDQzZFg/j4vKU96yl2q6mcUkzKOgW4gwf1Z8cZToUCrz31XHlPWH8MVb1r2tFtdDtTGJ7g==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -19545,8 +19545,8 @@ packages:
       serialize-javascript: 6.0.0
       source-map: 0.6.1
       terser: 5.12.0
-      uglify-js: 3.15.2
-      webpack: 5.70.0_uglify-js@3.15.2
+      uglify-js: 3.15.3
+      webpack: 5.70.0_uglify-js@3.15.3
     dev: true
 
   /terser/5.12.0:
@@ -20770,7 +20770,7 @@ packages:
       import-local: 3.1.0
       interpret: 2.2.0
       rechoir: 0.7.1
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
       webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.70.0
       webpack-merge: 5.8.0
     dev: true
@@ -20828,7 +20828,7 @@ packages:
       sockjs: 0.3.24
       spdy: 4.0.2
       strip-ansi: 7.0.1
-      webpack: 5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d
+      webpack: 5.70.0_1e653d272447ae4575aa623a8f9940d9
       webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
       webpack-dev-middleware: 5.3.1_webpack@5.70.0
       ws: 8.5.0
@@ -20875,6 +20875,47 @@ packages:
     resolution: {integrity: sha512-5NUqC2JquIL2pBAAo/VfBP6KuGkHIZQXW/lNKupLPfhViwh8wNsu0BObtl09yuKZszeEUfbXz8xhrHvSG16Nqw==}
     dev: true
 
+  /webpack/5.70.0_1e653d272447ae4575aa623a8f9940d9:
+    resolution: {integrity: sha512-ZMWWy8CeuTTjCxbeaQI21xSswseF2oNOwc70QSKNePvmxE7XW36i7vpBMYZFAUHPwQiEbNGCEYIOOlyRbdGmxw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    peerDependencies:
+      webpack-cli: '*'
+    peerDependenciesMeta:
+      webpack-cli:
+        optional: true
+    dependencies:
+      '@types/eslint-scope': 3.7.3
+      '@types/estree': 0.0.51
+      '@webassemblyjs/ast': 1.11.1
+      '@webassemblyjs/wasm-edit': 1.11.1
+      '@webassemblyjs/wasm-parser': 1.11.1
+      acorn: 8.7.0
+      acorn-import-assertions: 1.8.0_acorn@8.7.0
+      browserslist: 4.20.0
+      chrome-trace-event: 1.0.3
+      enhanced-resolve: 5.9.2
+      es-module-lexer: 0.9.3
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.9
+      json-parse-better-errors: 1.0.2
+      loader-runner: 4.2.0
+      mime-types: 2.1.34
+      neo-async: 2.6.2
+      schema-utils: 3.1.1
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.1_b6ea5619e9eed30cbd0b8e1277ee7eea
+      watchpack: 2.3.1
+      webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+    dev: true
+
   /webpack/5.70.0_77a70c12ba3d5d1b11016305995dc316:
     resolution: {integrity: sha512-ZMWWy8CeuTTjCxbeaQI21xSswseF2oNOwc70QSKNePvmxE7XW36i7vpBMYZFAUHPwQiEbNGCEYIOOlyRbdGmxw==}
     engines: {node: '>=10.13.0'}
@@ -20915,7 +20956,7 @@ packages:
       - uglify-js
     dev: true
 
-  /webpack/5.70.0_e5d78944d00abfa3fa51bcdc7b7eb77d:
+  /webpack/5.70.0_uglify-js@3.15.3:
     resolution: {integrity: sha512-ZMWWy8CeuTTjCxbeaQI21xSswseF2oNOwc70QSKNePvmxE7XW36i7vpBMYZFAUHPwQiEbNGCEYIOOlyRbdGmxw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -20946,48 +20987,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.1.1
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.1_f509bd445100bd2d317ef87d693b6e4f
-      watchpack: 2.3.1
-      webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-    dev: true
-
-  /webpack/5.70.0_uglify-js@3.15.2:
-    resolution: {integrity: sha512-ZMWWy8CeuTTjCxbeaQI21xSswseF2oNOwc70QSKNePvmxE7XW36i7vpBMYZFAUHPwQiEbNGCEYIOOlyRbdGmxw==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-    peerDependencies:
-      webpack-cli: '*'
-    peerDependenciesMeta:
-      webpack-cli:
-        optional: true
-    dependencies:
-      '@types/eslint-scope': 3.7.3
-      '@types/estree': 0.0.51
-      '@webassemblyjs/ast': 1.11.1
-      '@webassemblyjs/wasm-edit': 1.11.1
-      '@webassemblyjs/wasm-parser': 1.11.1
-      acorn: 8.7.0
-      acorn-import-assertions: 1.8.0_acorn@8.7.0
-      browserslist: 4.20.0
-      chrome-trace-event: 1.0.3
-      enhanced-resolve: 5.9.2
-      es-module-lexer: 0.9.3
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.9
-      json-parse-better-errors: 1.0.2
-      loader-runner: 4.2.0
-      mime-types: 2.1.34
-      neo-async: 2.6.2
-      schema-utils: 3.1.1
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.1_uglify-js@3.15.2+webpack@5.70.0
+      terser-webpack-plugin: 5.3.1_uglify-js@3.15.3+webpack@5.70.0
       watchpack: 2.3.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
