@@ -21,7 +21,8 @@
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "build:extra": "pnpm build:css",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build -- --watch",
+    "test": "jest -c ../../jest.config.ts"
   },
   "dependencies": {
     "keymaster": "1.6.2",

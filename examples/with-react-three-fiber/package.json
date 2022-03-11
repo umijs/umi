@@ -1,5 +1,5 @@
 {
-  "name": "@example/react-three-fiber",
+  "name": "@example/with-react-three-fiber",
   "private": true,
   "scripts": {
     "build": "umi build",

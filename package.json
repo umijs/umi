@@ -18,9 +18,10 @@
     "prepare": "husky install",
     "release": "esno scripts/release.ts",
     "setup:webstorm": "esno scripts/setupWebStorm.ts",
-    "test": "jest",
-    "test:clean": "jest --clearCache",
-    "tsc:check": "tsc --noEmit"
+    "test": "esno scripts/turbo.ts --cmd test --parallel",
+    "test:clean": "esno scripts/turbo.ts --cmd test --no-cache --parallel -- --clearCache",
+    "tsc:check": "tsc --noEmit",
+    "turbo:clean": "rimraf .turbo"
   },
   "lint-staged": {
     "*.{jsx,less,md,json}": [

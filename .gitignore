@@ -25,3 +25,5 @@
 .DS_Store
 .turbo
 *.tsbuildinfo
+.jest-cache
+.swc

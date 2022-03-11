@@ -21,7 +21,8 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build -- --watch",
+    "test": "jest -c ../../jest.config.ts"
   },
   "dependencies": {
     "@svgr/core": "6.2.1",

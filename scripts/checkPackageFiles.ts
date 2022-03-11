@@ -1,4 +1,4 @@
-import * as logger from '@umijs/utils/src/logger';
+import { logger, glob } from '@umijs/utils';
 import { isMatch } from 'matcher';
 import 'zx/globals';
 import { eachPkg, getPkgs } from './utils';
@@ -25,7 +25,7 @@ const COMMON_IGNORES = [
 
 // check packages/*
 let missingDetected = false;
-eachPkg(getPkgs(), ({ pkgJson, dir, name }) => {
+eachPkg(getPkgs(), ({ pkgJson, dir, name, pkgPath }) => {
   const files = fs.readdirSync(dir).filter((f) => {
     return !isMatch(f, COMMON_IGNORES) && !f.startsWith('.');
   });
@@ -40,6 +40,15 @@ eachPkg(getPkgs(), ({ pkgJson, dir, name }) => {
     );
     missingDetected = true;
   }
+
+  // check jest `test` script
+  const testFiles = glob.sync(`${path.join(dir)}/src/**/*.test.ts`);
+  if (testFiles.length) {
+    pkgJson.scripts.test = 'jest -c ../../jest.config.ts';
+  } else {
+    delete pkgJson.scripts.test;
+  }
+  fs.writeFileSync(pkgPath, `${JSON.stringify(pkgJson, null, 2)}\n`, 'utf-8');
 });
 if (missingDetected) {
   process.exit(1);
