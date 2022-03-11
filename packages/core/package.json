@@ -17,7 +17,8 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build -- --watch",
+    "test": "jest -c ../../jest.config.ts"
   },
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-rc.6",

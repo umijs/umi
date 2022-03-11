@@ -25,7 +25,8 @@
     "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch",
-    "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs"
+    "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs",
+    "test": "jest -c ../../jest.config.ts"
   },
   "dependencies": {
     "@parcel/css": "1.5.0",

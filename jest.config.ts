@@ -1,10 +1,15 @@
 import { Config, createConfig } from 'umi/test';
 
+const cwd = process.cwd();
+
 export default {
   ...createConfig(),
-  testMatch: ['**/packages/*/src/**/*.test.ts'],
+  rootDir: cwd,
+  testMatch: ['<rootDir>/src/**/*.test.ts'],
   modulePathIgnorePatterns: [
-    '<rootDir>/packages/.+/compiled',
-    '<rootDir>/packages/.+/fixtures',
+    '<rootDir>/compiled',
+    '<rootDir>/fixtures',
+    '<rootDir>/bundles',
   ],
+  cacheDirectory: `${cwd}/.jest-cache`,
 } as Config.InitialOptions;

@@ -1,5 +1,5 @@
 {
-  "name": "@example/react-query",
+  "name": "@example/with-react-query",
   "private": true,
   "scripts": {
     "build": "umi build",
