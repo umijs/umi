@@ -288,7 +288,7 @@ export default function EmptyRoute() {
       // plugins types.ts
       exports.push('// plugins types.d.ts');
       for (const plugin of plugins) {
-        const file = join(api.paths.absTmpPath, plugin, 'types.d.ts');
+        const file = winPath(join(api.paths.absTmpPath, plugin, 'types.d.ts'));
         if (existsSync(file)) {
           exports.push(`export * from '${file}';`);
         }
