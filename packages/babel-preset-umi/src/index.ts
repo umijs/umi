@@ -62,6 +62,7 @@ export default (context: any, opts: IOpts = {}) => {
         {
           // https://babeljs.io/docs/en/babel-plugin-transform-typescript#impartial-namespace-support
           allowNamespaces: true,
+          allowDeclareFields: true,
         },
       ],
     ].filter(Boolean),
