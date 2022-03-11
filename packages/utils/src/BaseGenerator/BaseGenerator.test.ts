@@ -6,31 +6,38 @@ import generateFile from './generateFile';
 const fixtures = join(__dirname, './fixtures');
 const cwd = join(fixtures, 'generate');
 
+const globKeepDotFile = join(cwd, '*');
+
+beforeEach(() => {
+  rimraf.sync(globKeepDotFile, { glob: { ignore: ['**/.gitkeep'] } });
+});
+
+afterAll(() => {
+  rimraf.sync(globKeepDotFile, { glob: { ignore: ['**/.gitkeep'] } });
+});
+
 test('generate tpl', async () => {
   await generateFile({
     path: join(fixtures, 'tpl'),
     target: join(cwd, 'hello/', ''),
   });
   expect(existsSync(join(cwd, 'hello', 'index.tsx'))).toEqual(true);
-  rimraf.sync(join(cwd, 'hello'));
 });
 
 test('generate tpl file', async () => {
   await generateFile({
     path: join(fixtures, 'tpl', 'index.tsx.tpl'),
-    target: join(cwd, 'file-tpl'),
+    target: join(cwd, 'file-tpl', 'index.tsx'),
   });
   expect(existsSync(join(cwd, 'file-tpl', 'index.tsx'))).toEqual(true);
-  rimraf.sync(join(cwd, 'file-tpl'));
 });
 
 test('generate by file', async () => {
   await generateFile({
     path: join(fixtures, 'tpl', 'a.tsx'),
-    target: join(cwd, 'file'),
+    target: join(cwd, 'file', 'a.tsx'),
   });
   expect(existsSync(join(cwd, 'file', 'a.tsx'))).toEqual(true);
-  rimraf.sync(join(cwd, 'file'));
 });
 
 test('generate tpl by data', async () => {
@@ -45,5 +52,4 @@ test('generate tpl by data', async () => {
   expect(readFileSync(join(cwd, 'data', 'index.tsx'), 'utf-8')).toContain(
     'HomePage',
   );
-  rimraf.sync(join(cwd, 'data'));
 });

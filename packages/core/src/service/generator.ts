@@ -26,7 +26,7 @@ export interface IGeneratorOpts {
           target: string;
           data?: any;
           questions?: prompts.PromptObject[];
-        }): void;
+        }): Promise<void>;
       };
       updatePackageJSON: {
         (opts: { opts: object; cwd?: string }): void;

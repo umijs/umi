@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './index{{{ cssExt }}}';
+import styles from './{{{name}}}{{{ cssExt }}}';
 
 export default function Page() {
   return (
