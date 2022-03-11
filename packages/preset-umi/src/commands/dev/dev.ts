@@ -246,7 +246,7 @@ PORT=8888 umi dev
           ...beforeMiddlewares,
           faviconMiddleware,
         ]),
-        afterMiddlewares: [createRouteMiddleware({ api })].concat(middlewares),
+        afterMiddlewares: middlewares.concat(createRouteMiddleware({ api })),
         onDevCompileDone(opts: any) {
           printMemoryUsage();
           api.applyPlugins({
