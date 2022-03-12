@@ -18,8 +18,8 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
   );
 
   await esbuild.build({
-    format: 'esm',
-    outExtension: { '.js': '.mjs' },
+    format: 'cjs',
+    platform: 'node',
     bundle: true,
     entryPoints: [
       ...apiRoutePaths,
