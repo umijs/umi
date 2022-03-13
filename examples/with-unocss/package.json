@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-rc.6",
-    "@unocss/cli": "^0.27.2",
+    "@unocss/cli": "^0.28.0",
     "umi": "4.0.0-rc.6",
-    "unocss": "^0.27.2"
+    "unocss": "^0.28.0"
   }
 }
