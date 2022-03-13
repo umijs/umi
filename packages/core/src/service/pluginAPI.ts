@@ -130,7 +130,7 @@ export class PluginAPI {
         return new Plugin({
           path: preset,
           cwd: this.service.cwd,
-          type: PluginType.plugin,
+          type: PluginType.preset,
         });
       }),
     );
