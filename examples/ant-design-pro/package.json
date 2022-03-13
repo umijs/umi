@@ -22,10 +22,10 @@
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "moment": "^2.29.1",
-    "monaco-editor": "^0.32.1",
+    "monaco-editor": "^0.33.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "numeral": "^2.0.6",
     "querystring": "^0.2.1",
-    "rc-util": "^5.19.2"
+    "rc-util": "^5.19.3"
   }
 }

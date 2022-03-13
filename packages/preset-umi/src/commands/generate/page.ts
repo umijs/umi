@@ -11,6 +11,8 @@ export default (api: IApi) => {
     type: GeneratorType.generate,
     fn: async (options) => {
       return new PageGenerator({
+        // FIXME: tsc
+        // @ts-ignore
         generateFile: options.generateFile,
         args: options.args,
         absPagesPath: options.api.paths.absPagesPath,
