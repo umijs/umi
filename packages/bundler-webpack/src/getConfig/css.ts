@@ -106,25 +106,31 @@ export function createCSSRule({
           {
             // Necessary for external CSS imports to work
             // https://github.com/facebookincubator/create-react-app/issues/2677
-            ident: 'postcss',
-            plugins: () => [
-              // https://github.com/luisrudge/postcss-flexbugs-fixes
-              require('postcss-flexbugs-fixes'),
-              // https://github.com/csstools/postcss-preset-env
-              require('postcss-preset-env')({
-                // TODO: set browsers
-                autoprefixer:
-                  type === BundlerConfigType.ssr
-                    ? false
-                    : {
-                        ...config.autoprefixer,
-                        overrideBrowserslist: browserslist,
-                      },
-                // https://cssdb.org/
-                stage: 3,
-              }),
-              ...(config.extraPostCSSPlugins ? config.extraPostCSSPlugins : []),
-            ],
+            //support postcss8
+            postcssOptions: () => {
+              return {
+                plugins: [
+                  // https://github.com/luisrudge/postcss-flexbugs-fixes
+                  require('postcss-flexbugs-fixes'),
+                  // https://github.com/csstools/postcss-preset-env
+                  require('postcss-preset-env')({
+                    // TODO: set browsers
+                    autoprefixer:
+                      type === BundlerConfigType.ssr
+                        ? false
+                        : {
+                            ...config.autoprefixer,
+                            overrideBrowserslist: browserslist,
+                          },
+                    // https://cssdb.org/
+                    stage: 3,
+                  }),
+                  ...(config.extraPostCSSPlugins
+                    ? config.extraPostCSSPlugins
+                    : []),
+                ],
+              };
+            },
           },
           config.postcssLoader || {},
         ),
