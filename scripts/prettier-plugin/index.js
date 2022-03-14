@@ -1,4 +1,4 @@
-const { parsers: typescriptParsers } = require('prettier/parser-typescript');
+const { parsers } = require('prettier-plugin-organize-imports');
 
 function createParser(original, transform) {
   return {
@@ -70,5 +70,6 @@ function transformJavaScript(ast, options) {
 }
 
 exports.parsers = {
-  typescript: createParser(typescriptParsers.typescript, transformJavaScript),
+  ...parsers,
+  typescript: createParser(parsers.typescript, transformJavaScript),
 };

@@ -1,9 +1,9 @@
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 import { IApi } from '../../types';
 import { list } from './list';
 import { remove } from './remove';
 import { set } from './set';
-import { writeFileSync } from 'fs';
-import { join } from 'path';
 
 export default (api: IApi) => {
   api.registerCommand({
