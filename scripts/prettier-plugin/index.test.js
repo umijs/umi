@@ -1,5 +1,7 @@
 const prettier = require('prettier');
 const code = `
+import 'b';
+import 'a';
 // sort-object-keys
 const foo = { b, a};
 `;
