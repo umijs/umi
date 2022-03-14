@@ -152,6 +152,7 @@ export class PluginAPI {
         plugin.enableBy = plugin.enableBy || EnableBy.register;
         plugin.apply = plugin.apply || (() => () => {});
         plugin.config = plugin.config || {};
+        plugin.time = { hooks: {} };
         return plugin;
       } else {
         return new Plugin({

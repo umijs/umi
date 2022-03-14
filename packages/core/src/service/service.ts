@@ -1,4 +1,4 @@
-import { lodash, yParser } from '@umijs/utils';
+import { chalk, lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -129,7 +129,12 @@ export class Service {
               before: hook.before,
             },
             async (memo: any) => {
+              const dateStart = new Date();
               const items = await hook.fn(opts.args);
+              hook.plugin.time.hooks[opts.key] ||= [];
+              hook.plugin.time.hooks[opts.key].push(
+                new Date().getTime() - dateStart.getTime(),
+              );
               return memo.concat(items);
             },
           );
@@ -146,7 +151,13 @@ export class Service {
               before: hook.before,
             },
             async (memo: any) => {
-              return await hook.fn(memo, opts.args);
+              const dateStart = new Date();
+              const ret = await hook.fn(memo, opts.args);
+              hook.plugin.time.hooks[opts.key] ||= [];
+              hook.plugin.time.hooks[opts.key].push(
+                new Date().getTime() - dateStart.getTime(),
+              );
+              return ret;
             },
           );
         }
@@ -162,7 +173,12 @@ export class Service {
               before: hook.before,
             },
             async () => {
+              const dateStart = new Date();
               await hook.fn(opts.args);
+              hook.plugin.time.hooks[opts.key] ||= [];
+              hook.plugin.time.hooks[opts.key].push(
+                new Date().getTime() - dateStart.getTime(),
+              );
             },
           );
         }
@@ -325,7 +341,23 @@ export class Service {
     this.stage = ServiceStage.runCommand;
     const command = this.commands[name];
     assert(command, `Invalid command ${name}, it's not registered.`);
-    return command.fn({ args });
+    let ret = command.fn({ args });
+    if (isPromise(ret)) {
+      ret = await ret;
+    }
+    this._baconPlugins();
+    return ret;
+  }
+
+  _baconPlugins() {
+    // TODO: prettier
+    if (this.args.baconPlugins) {
+      console.log();
+      for (const id of Object.keys(this.plugins)) {
+        const plugin = this.plugins[id];
+        console.log(chalk.green('plugin'), plugin.id, plugin.time);
+      }
+    }
   }
 
   async initPreset(opts: {
@@ -394,10 +426,12 @@ export class Service {
         service: this,
       },
     });
+    let dateStart = new Date();
     let ret = opts.plugin.apply()(proxyPluginAPI);
     if (isPromise(ret)) {
       ret = await ret;
     }
+    opts.plugin.time.register = new Date().getTime() - dateStart.getTime();
     if (opts.plugin.type === 'plugin') {
       assert(!ret, `plugin should return nothing`);
     }

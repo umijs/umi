@@ -34,6 +34,10 @@ export class Plugin {
   key: string;
   apply: Function;
   config: IPluginConfig = {};
+  time: {
+    register?: number;
+    hooks: Record<string, number[]>;
+  } = { hooks: {} };
   enableBy:
     | EnableBy
     | ((opts: { userConfig: any; config: any; env: Env }) => boolean) =
