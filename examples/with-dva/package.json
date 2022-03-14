@@ -1,5 +1,5 @@
 {
-  "name": "@example/with-unstated",
+  "name": "@example/with-dva",
   "private": true,
   "scripts": {
     "build": "umi build",

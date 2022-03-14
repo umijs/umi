@@ -1,7 +1,7 @@
 import { Env, Service } from '@umijs/core';
 import { rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { join, normalize } from 'path';
 import { PageGenerator } from './page';
 
 const fixtures = join(__dirname, '../../../fixtures');
@@ -121,8 +121,8 @@ describe('page generator', function () {
     for (const [i, f] of fileGenerations.entries()) {
       expect(generateFile).toHaveBeenNthCalledWith(i + 1, {
         data: { name: f.name, color: expect.anything(), cssExt: '.less' },
-        target: f.target,
-        path: expect.stringMatching(f.path),
+        target: normalize(f.target),
+        path: expect.stringContaining(normalize(f.path)),
       });
     }
   }
