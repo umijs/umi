@@ -4,6 +4,7 @@ import { IApi } from 'umi';
 import { chalk } from 'umi/plugin-utils';
 import { Model, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
+import { winPath } from '@umijs/utils';
 
 export default (api: IApi) => {
   const pkgPath = join(__dirname, '../libs/dva.ts');
@@ -13,6 +14,7 @@ export default (api: IApi) => {
       schema(Joi) {
         return Joi.object({
           extraModels: Joi.array().items(Joi.string()),
+          immer: Joi.object(),
         });
       },
     },
@@ -52,6 +54,16 @@ export default (api: IApi) => {
 // It's faked dva
 // aliased to @umijs/plugins/templates/dva
 import { create, Provider } from 'dva';
+import createLoading from '${winPath(require.resolve('dva-loading'))}';
+${
+  api.config.dva?.immer
+    ? `
+import dvaImmer, { enableES5, enableAllPlugins } from '${winPath(
+        require.resolve('dva-immer'),
+      )}';
+`
+    : ''
+}
 import React, { useRef } from 'react';
 import { history } from 'umi';
 import { models } from './models';
@@ -73,6 +85,10 @@ export function RootContainer(props: any) {
         },
       },
     );
+    app.current.use(createLoading());
+    ${api.config.dva?.immer ? `app.current.use(dvaImmer());` : ''}
+    ${api.config.dva?.immer?.enableES5 ? `enableES5();` : ''}
+    ${api.config.dva?.immer?.enableAllPlugins ? `enableAllPlugins();` : ''}
     for (const id of Object.keys(models)) {
       app.current.model(models[id].model);
     }

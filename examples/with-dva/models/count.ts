@@ -1,9 +1,19 @@
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 export default {
   namespace: 'count',
-  state: 0,
+  state: {
+    num: 0,
+  },
   reducers: {
-    add(state: number) {
-      return state + 1;
+    add(state: any) {
+      state.num += 1;
+    },
+  },
+  effects: {
+    *addAsync(_action: any, { put }: any) {
+      yield delay(1000);
+      yield put({ type: 'add' });
     },
   },
 };
