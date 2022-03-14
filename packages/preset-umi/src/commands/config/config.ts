@@ -1,5 +1,3 @@
-import { writeFileSync } from 'fs';
-import { join } from 'path';
 import { IApi } from '../../types';
 import { list } from './list';
 import { remove } from './remove';
@@ -38,14 +36,7 @@ $ umi config r history
           list(api.config, name);
           break;
         case 'set':
-          if (!api.appData.mainConfigFile) {
-            const absPath = join(api.cwd, '.umirc.ts');
-            const content = `export default {};`;
-            writeFileSync(absPath, content, 'utf-8');
-
-            api.appData.mainConfigFile = absPath;
-          }
-          set(api.appData.mainConfigFile, name, value);
+          set(api, name, value);
           break;
         case 'remove':
         case 'r':
