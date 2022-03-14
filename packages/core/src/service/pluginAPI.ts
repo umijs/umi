@@ -91,6 +91,10 @@ export class PluginAPI {
   }
 
   register(opts: Omit<IHookOpts, 'plugin'>) {
+    assert(
+      this.service.stage <= ServiceStage.initPlugins,
+      'api.register() should not be called after plugin register stage.',
+    );
     this.service.hooks[opts.key] ||= [];
     this.service.hooks[opts.key].push(
       new Hook({ ...opts, plugin: this.plugin }),
