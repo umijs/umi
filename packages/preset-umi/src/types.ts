@@ -14,7 +14,7 @@ import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
-export { UmiApiResponse, UmiApiRequest } from './features/apiRoute';
+export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
 export type IScript =
   | Partial<{
       async: boolean;
@@ -118,7 +118,7 @@ export type IApi = PluginAPI &
     onBuildComplete: IEvent<{
       err?: Error;
       isFirstCompile: boolean;
-      stats: any;
+      stats: webpack.Stats;
       time: number;
     }>;
     onCheckCode: IEvent<{
@@ -145,7 +145,7 @@ export type IApi = PluginAPI &
     }>;
     onDevCompileDone: IEvent<{
       isFirstCompile: boolean;
-      stats: any;
+      stats: webpack.Stats;
       time: number;
     }>;
     onGenerateFiles: IEvent<{
