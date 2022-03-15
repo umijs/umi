@@ -111,7 +111,7 @@ export default function EmptyRoute() {
     const clonedRoutes = lodash.cloneDeep(routes);
     for (const id of Object.keys(clonedRoutes)) {
       for (const key of Object.keys(clonedRoutes[id])) {
-        if (key.startsWith('__')) {
+        if (key.startsWith('__') || key.startsWith('absPath')) {
           delete clonedRoutes[id][key];
         }
       }
