@@ -81,10 +81,10 @@ event - MFSU compiled successfully in 1308 ms (875 modules)
 
 ## 启用 Prettier（可选）
 
-如果需要用 prettier 做项目代码的自动格式化，执行 `pnpm g`，
+如果需要用 prettier 做项目代码的自动格式化，执行 `pnpm umi g`，
 
 ```bash
-$ pnpm g
+$ pnpm umi g
 ✔ Pick generator type › Enable Prettier -- Enable Prettier
 info  - Write package.json
 info  - Write .prettierrc
