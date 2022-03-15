@@ -55,9 +55,9 @@ async function turbo(opts: {
     `--scope="${opts.scope}"`,
     `--no-deps`,
     `--include-dependencies`,
-    extraCmd,
     cacheCmd,
     parallelCmd,
+    extraCmd,
   ]
     .filter(Boolean)
     .join(' ');
