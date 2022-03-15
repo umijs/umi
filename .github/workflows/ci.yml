@@ -5,6 +5,8 @@ env:
 
 on:
   push:
+    branches:
+      - master
     paths-ignore:
       - 'examples/**'
       - 'docs/**'
