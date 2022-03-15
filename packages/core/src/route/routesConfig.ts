@@ -36,13 +36,13 @@ function transformRoute(opts: {
   );
   const id = String(opts.memo.id++);
   const { routes, component, ...routeProps } = opts.route;
-  const parentAbsPath = opts.parentId
-    ? opts.memo.ret[opts.parentId].absPath.replace(/\/*$/, '/') // to remove '/'s on the tail
-    : '/';
-  const absPath =
-    opts.route.path[0] === '/'
-      ? opts.route.path
-      : parentAbsPath.concat(opts.route.path);
+  let absPath = opts.route.path;
+  if (absPath.charAt(0) !== '/') {
+    const parentAbsPath = opts.parentId
+      ? opts.memo.ret[opts.parentId].absPath.replace(/\/*$/, '/') // to remove '/'s on the tail
+      : '/';
+    absPath = parentAbsPath + absPath;
+  }
   opts.memo.ret[id] = {
     ...routeProps,
     path: opts.route.path,
