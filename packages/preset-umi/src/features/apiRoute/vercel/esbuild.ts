@@ -3,6 +3,7 @@ import { join, resolve } from 'path';
 import type { IApi, IRoute } from '../../../types';
 import { esbuildIgnorePathPrefixPlugin } from '../utils';
 import fs from 'fs';
+import { OUTPUT_PATH } from '../constants';
 
 interface VercelDynamicRouteConfig {
   page: string;
@@ -25,7 +26,7 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
       ...apiRoutePaths,
       resolve(api.paths.absTmpPath, 'api/_middlewares.ts'),
     ],
-    outdir: resolve(api.paths.cwd, '.output/server/pages/api'),
+    outdir: resolve(api.paths.cwd, OUTPUT_PATH),
     plugins: [esbuildIgnorePathPrefixPlugin()],
   });
 
