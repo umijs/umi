@@ -1,6 +1,5 @@
 // sort-object-keys
-import type { RequestHandler } from '@umijs/bundler-webpack';
-import type webpack from '@umijs/bundler-webpack/compiled/webpack';
+import type { RequestHandler, webpack } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type {
   IAdd,
@@ -15,6 +14,7 @@ import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 
 export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
+export { webpack };
 export type IScript =
   | Partial<{
       async: boolean;
