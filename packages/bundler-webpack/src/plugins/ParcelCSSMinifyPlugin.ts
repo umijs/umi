@@ -1,4 +1,5 @@
-import { transform, type TransformOptions } from '@parcel/css';
+import type { TransformOptions } from '@parcel/css';
+import { importLazy } from '@umijs/utils';
 import { Buffer } from 'buffer';
 import { join } from 'path';
 import { RawSource, SourceMapSource } from '../../compiled/webpack-sources';
@@ -73,6 +74,8 @@ export class ParcelCSSMinifyPlugin {
         const sourceAsString = source.toString();
         const code = typeof source === 'string' ? Buffer.from(source) : source;
 
+        const { transform }: typeof import('@parcel/css') =
+          importLazy('@parcel/css');
         const result = await transform({
           filename: asset.name,
           code,
