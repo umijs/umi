@@ -11,14 +11,20 @@ export function defineRoutes(callback: (defineRoute: Function) => void) {
     children: Function;
   }) => {
     opts.options = opts.options || {};
+    const parentId =
+      parentRoutes.length > 0
+        ? parentRoutes[parentRoutes.length - 1].id
+        : undefined;
+    const parentAbsPath = parentId
+      ? parentRoutes[parentRoutes.length - 1].absPath.concat('/')
+      : '/';
+    const absPath = parentAbsPath.concat(opts.path);
     const route = {
       path: opts.path || '/',
       id: createRouteId(opts.file),
-      parentId:
-        parentRoutes.length > 0
-          ? parentRoutes[parentRoutes.length - 1].id
-          : undefined,
+      parentId,
       file: opts.file,
+      absPath,
     };
     routes[route.id] = route;
     if (opts.children) {

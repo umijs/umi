@@ -99,6 +99,7 @@ export async function getRoutes(opts: { api: IApi }) {
         path: '/',
         file: layout.file,
         parentId: undefined,
+        absPath: '/',
       },
       routes,
       test: layout.test,
