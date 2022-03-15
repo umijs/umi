@@ -1,9 +1,10 @@
 import { IRoute } from '@umijs/core';
-import { logger } from '@umijs/utils';
+import { logger, winPath } from '@umijs/utils';
 import fs from 'fs';
 import { basename, join, resolve } from 'path';
 import { matchApiRoute } from './utils';
 import { TEMPLATES_DIR } from '../../constants';
+import { OUTPUT_PATH } from './constants';
 import type { IApi, IApiMiddleware } from '../../types';
 import DevServerAdapterBuild from './dev-server/esbuild';
 import VercelAdapterBuild from './vercel/esbuild';
@@ -110,9 +111,11 @@ export default (api: IApi) => {
         path: join('api', apiRoute.file),
         tplPath: join(TEMPLATES_DIR, 'apiRoute.tpl'),
         context: {
-          adapterPath: resolve(__dirname, '../apiRoute/index.js'),
-          apiRootDirPath: join(api.paths.absTmpPath, 'api'),
-          handlerPath: join(api.paths.absSrcPath, 'api', apiRoute.file),
+          adapterPath: winPath(resolve(__dirname, '../apiRoute/index.js')),
+          apiRootDirPath: winPath(join(api.paths.absTmpPath, 'api')),
+          handlerPath: winPath(
+            join(api.paths.absSrcPath, 'api', apiRoute.file),
+          ),
           apiRoutes: JSON.stringify(apiRoutes),
         },
       });
@@ -150,7 +153,7 @@ export default (api: IApi) => {
 
         await require(join(
           api.paths.cwd,
-          '.output/server/pages/api',
+          OUTPUT_PATH,
           matchedApiRoute.route.file,
         ).replace('.ts', '.js')).default(req, res);
 
@@ -198,8 +201,8 @@ export default (api: IApi) => {
       return;
     }
 
-    if (fs.existsSync(join(api.paths.cwd, '.output/server/pages/api'))) {
-      await fs.rmdirSync(join(api.paths.cwd, '.output/server/pages/api'), {
+    if (fs.existsSync(join(api.paths.cwd, OUTPUT_PATH))) {
+      await fs.rmdirSync(join(api.paths.cwd, OUTPUT_PATH), {
         recursive: true,
       });
     }
