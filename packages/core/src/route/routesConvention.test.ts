@@ -14,24 +14,28 @@ test('normal', () => {
       id: 'a',
       parentId: undefined,
       file: 'a.ts',
+      absPath: '/a',
     },
     b: {
       path: 'b',
       id: 'b',
       parentId: undefined,
       file: 'b.ts',
+      absPath: '/b',
     },
     'b/c': {
       path: 'c',
       id: 'b/c',
       parentId: 'b',
       file: 'b/c.ts',
+      absPath: '/b/c',
     },
     d: {
       path: 'd',
       id: 'd',
       parentId: undefined,
       file: 'd.ts',
+      absPath: '/d',
     },
   });
 });
@@ -48,12 +52,14 @@ test('exclude', () => {
       id: 'a',
       parentId: undefined,
       file: 'a.ts',
+      absPath: '/a',
     },
     d: {
       path: 'd',
       id: 'd',
       parentId: undefined,
       file: 'd.ts',
+      absPath: '/d',
     },
   });
 });

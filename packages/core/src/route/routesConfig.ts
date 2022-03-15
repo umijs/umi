@@ -36,9 +36,17 @@ function transformRoute(opts: {
   );
   const id = String(opts.memo.id++);
   const { routes, component, ...routeProps } = opts.route;
+  const parentAbsPath = opts.parentId
+    ? opts.memo.ret[opts.parentId].absPath.replace(/\/*$/, '/') // to remove '/'s on the tail
+    : '/';
+  const absPath =
+    opts.route.path[0] === '/'
+      ? opts.route.path
+      : parentAbsPath.concat(opts.route.path);
   opts.memo.ret[id] = {
     ...routeProps,
     path: opts.route.path,
+    absPath,
     ...(component ? { file: component } : {}),
     parentId: opts.parentId,
     id,

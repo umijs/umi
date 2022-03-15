@@ -18,6 +18,7 @@ test('normal', () => {
     1: {
       file: 'index',
       path: '/',
+      absPath: '/',
       id: '1',
       parentId: undefined,
     },
@@ -25,6 +26,7 @@ test('normal', () => {
       file: 'foo',
       path: '/foo',
       id: '2',
+      absPath: '/foo',
       parentId: undefined,
     },
   });
@@ -50,18 +52,21 @@ test('child routes', () => {
       path: '/',
       id: '1',
       parentId: undefined,
+      absPath: '/',
     },
     2: {
       file: 'bar',
       id: '2',
       parentId: '1',
       path: 'bar',
+      absPath: '/bar',
     },
     3: {
       file: 'foo',
       id: '3',
       parentId: '1',
       path: 'foo',
+      absPath: '/foo',
     },
   });
 });
