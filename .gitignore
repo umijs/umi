@@ -4,6 +4,7 @@
 /examples/*/.umi
 /examples/*/.umi-production
 /examples/*/.output
+/examples/*/api
 /examples/*/.umi-test
 /examples/*/src/.umi
 /examples/*/src/.umi-production
