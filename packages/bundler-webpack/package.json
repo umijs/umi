@@ -26,7 +26,7 @@
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "dev": "pnpm build -- --watch",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs",
-    "test": "jest -c ../../jest.config.ts"
+    "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
     "@parcel/css": "1.6.0",
