@@ -1,1 +1,1 @@
-export const OUTPUT_PATH = '.output/server/pages/api';
+export const OUTPUT_PATH = 'api';
