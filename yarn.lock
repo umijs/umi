@@ -17334,11 +17334,6 @@ umask@^1.1.0:
   resolved "https://registry.yarnpkg.com/umask/-/umask-1.1.0.tgz#f29cebf01df517912bb58ff9c4e50fde8e33320d"
   integrity sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=
 
-umi-plugin-hire@^1.0.3:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/umi-plugin-hire/-/umi-plugin-hire-1.0.6.tgz#267f6755a40bd5bc8442cfcc53ca072defe60f07"
-  integrity sha512-POna9n6paM4uHglvLKGxV3kw203gpZ1nlL58M31DBLzp1anyaLpQy51HBG0sC6GAy0DS2FLJZhVS5zcBPJLM2g==
-
 umi-webpack-bundle-analyzer@3.6.2:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.6.2.tgz#cf2a4be5b6a62ab0e4046f00193d17395851d3d3"

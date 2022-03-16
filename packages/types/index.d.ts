@@ -349,6 +349,7 @@ export interface BaseIConfig extends IConfigCore {
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
+    supportWin?: boolean;
     extraRoutePaths?: () => Promise<string[]>;
   };
   externals?: any;
