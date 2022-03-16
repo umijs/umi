@@ -90,8 +90,8 @@ import { assert, eachPkg, getPkgs } from './utils';
     pkg.scripts['start'] = 'npm run dev';
     pkg.dependencies ||= {};
     if (pkg.dependencies['umi']) pkg.dependencies['umi'] = version;
-    if (pkg.dependencies['@umijs/pro'])
-      pkg.dependencies['@umijs/pro'] = version;
+    if (pkg.dependencies['@umijs/max'])
+      pkg.dependencies['@umijs/max'] = version;
     if (pkg.dependencies['@umijs/plugins'])
       pkg.dependencies['@umijs/plugins'] = version;
     if (pkg.dependencies['@umijs/bundler-vite'])
@@ -130,7 +130,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   $.verbose = false;
   const innerPkgs = pkgs.filter(
     // do not publish father
-    (pkg) => !['umi', 'pro', 'father'].includes(pkg),
+    (pkg) => !['umi', 'max', 'father'].includes(pkg),
   );
   let tag = 'latest';
   if (
@@ -149,8 +149,8 @@ import { assert, eachPkg, getPkgs } from './utils';
   );
   await $`cd packages/umi && npm publish --tag ${tag}`;
   logger.info(`+ umi`);
-  await $`cd packages/pro && npm publish --tag ${tag}`;
-  logger.info(`+ @umijs/pro`);
+  await $`cd packages/max && npm publish --tag ${tag}`;
+  logger.info(`+ @umijs/max`);
   $.verbose = true;
 
   // sync tnpm
