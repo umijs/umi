@@ -1,10 +1,10 @@
 import * as logger from '@umijs/utils/src/logger';
+import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
 import { assert, eachPkg, getPkgs } from './utils';
-import { existsSync } from 'fs';
 
 (async () => {
   const { branch } = getGitRepoInfo();
@@ -132,12 +132,15 @@ import { existsSync } from 'fs';
     // do not publish father
     (pkg) => !['umi', 'pro', 'father'].includes(pkg),
   );
-  const tag =
+  let tag = 'latest';
+  if (
     version.includes('-alpha.') ||
     version.includes('-beta.') ||
     version.includes('-rc.')
-      ? 'next'
-      : 'latest';
+  ) {
+    tag = 'next';
+  }
+  if (version.includes('-canary.')) tag = 'canary';
   await Promise.all(
     innerPkgs.map(async (pkg) => {
       await $`cd packages/${pkg} && npm publish --tag ${tag}`;
