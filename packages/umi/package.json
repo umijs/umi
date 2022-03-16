@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.0-rc.6",
+  "version": "4.0.0-canary.20220316.1",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -33,11 +33,11 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-rc.6",
-    "@umijs/preset-umi": "4.0.0-rc.6",
-    "@umijs/renderer-react": "4.0.0-rc.6",
-    "@umijs/test": "4.0.0-rc.6",
-    "@umijs/utils": "4.0.0-rc.6"
+    "@umijs/core": "4.0.0-canary.20220316.1",
+    "@umijs/preset-umi": "4.0.0-canary.20220316.1",
+    "@umijs/renderer-react": "4.0.0-canary.20220316.1",
+    "@umijs/test": "4.0.0-canary.20220316.1",
+    "@umijs/utils": "4.0.0-canary.20220316.1"
   },
   "publishConfig": {
     "access": "public"
