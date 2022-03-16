@@ -1,5 +1,5 @@
 // @ts-ignore
-import { history, useAccess, useIntl, useModel } from '@umijs/pro';
+import { history, useAccess, useIntl, useModel } from '@umijs/max';
 // @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
 

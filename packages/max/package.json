@@ -12,7 +12,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "bin": {
-    "umipro": "bin/pro.js"
+    "umimax": "bin/max.js"
   },
   "files": [
     "dist",
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-rc.6",
+    "antd": "^4.19.2",
     "umi": "4.0.0-rc.6"
   },
   "publishConfig": {
