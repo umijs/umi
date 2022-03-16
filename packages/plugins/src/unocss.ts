@@ -19,7 +19,7 @@ export default (api: IApi) => {
 
   const outputPath = 'uno.css';
 
-  api.onStart(() => {
+  api.onBeforeCompiler(() => {
     /** 由于 @unocss/cli 对设置文件进行了检查，因此加入需要 unocss.config.ts 设置的提示
      * https://github.com/antfu/unocss/blob/main/packages/cli/src/index.ts#L93 */
     if (!existsSync(join(api.paths.cwd, 'unocss.config.ts')))
@@ -43,6 +43,7 @@ export default (api: IApi) => {
       api.logger.error('unocss service encounter an error: ' + m);
     });
   });
+
   /** 将生成的 css 文件加入到 import 中 */
   api.addEntryImports(() => {
     const generatedPath = winPath(join(api.paths.absTmpPath, outputPath));
