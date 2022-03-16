@@ -156,9 +156,9 @@ PORT=8888 umi dev
             }
             if (data.changes[api.ConfigChangeType.regenerateTmpFiles]) {
               logger.event(
-                `config ${data.changes[api.ConfigChangeType.reload].join(
-                  ', ',
-                )} changed, regenerate tmp files...`,
+                `config ${data.changes[
+                  api.ConfigChangeType.regenerateTmpFiles
+                ].join(', ')} changed, regenerate tmp files...`,
               );
               await generate({ isFirstTime: false });
             }
