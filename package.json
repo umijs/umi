@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "esno scripts/postinstall.ts",
+    "jest": "jest",
     "prepare": "husky install",
     "release": "esno scripts/release.ts",
     "setup:webstorm": "esno scripts/setupWebStorm.ts",

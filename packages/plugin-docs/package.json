@@ -22,7 +22,7 @@
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
     "build:extra": "pnpm build:css",
     "dev": "pnpm build -- --watch",
-    "test": "jest -c ../../jest.config.ts"
+    "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
     "keymaster": "1.6.2",
