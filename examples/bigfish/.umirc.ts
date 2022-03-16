@@ -1,4 +1,4 @@
-import { defineConfig } from '@umijs/pro';
+import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
   routes: [

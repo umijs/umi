@@ -2,13 +2,13 @@
   "name": "@example/bigfish",
   "private": true,
   "scripts": {
-    "build": "umipro build",
-    "dev": "umipro dev",
+    "build": "umimax build",
+    "dev": "umimax dev",
     "start": "npm run dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@umijs/pro": "4.0.0-rc.6",
+    "@umijs/max": "4.0.0-rc.6",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   }
