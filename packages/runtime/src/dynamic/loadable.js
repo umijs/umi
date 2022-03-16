@@ -29,6 +29,7 @@ import {
   useContext,
   useImperativeHandle,
   forwardRef,
+  useRef,
 } from 'react';
 import { useSubscription } from 'use-subscription';
 import { LoadableContext } from './loadable-context';
@@ -171,10 +172,11 @@ function createLoadableComponent(loadFn, options) {
 
     const context = useContext(LoadableContext);
     const state = useSubscription(subscription);
-
-    useImperativeHandle(ref, () => ({
+    const refObj = useRef({
       retry: subscription.retry,
-    }));
+    })
+
+    useImperativeHandle(ref, () => refObj.current);
 
     if (context && Array.isArray(opts.modules)) {
       opts.modules.forEach((moduleName) => {
@@ -186,6 +188,7 @@ function createLoadableComponent(loadFn, options) {
       if (process.env.NODE_ENV === 'development' && state.error) {
         console.error(`[@umijs/runtime] load component failed`, state.error);
       }
+
       return createElement(opts.loading, {
         isLoading: state.loading,
         pastDelay: state.pastDelay,
@@ -194,7 +197,7 @@ function createLoadableComponent(loadFn, options) {
         retry: subscription.retry,
       });
     } else if (state.loaded) {
-      return opts.render(state.loaded, props);
+      return opts.render(state.loaded, {...props, ref: refObj});
     } else {
       return null;
     }
