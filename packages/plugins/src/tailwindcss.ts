@@ -1,6 +1,6 @@
-import { crossSpawn, winPath } from 'umi/plugin-utils';
 import { join } from 'path';
 import { IApi } from 'umi';
+import { crossSpawn, winPath } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -16,7 +16,7 @@ export default (api: IApi) => {
   let tailwind: any = null;
   const outputPath = 'plugin-tailwindcss/tailwind.css';
 
-  api.onStart(() => {
+  api.onBeforeCompiler(() => {
     const inputPath = join(api.cwd, 'tailwind.css');
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = join(api.cwd, 'node_modules/.bin/tailwind');
