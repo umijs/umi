@@ -20,6 +20,10 @@ export function outerProvider(container: any) {
   return React.createElement(Foo, { title: 'outerProvider' }, container);
 }
 
+export function onRouteChange({ location, action }: any) {
+  console.log('onRouteChange', location, action);
+}
+
 function Foo(props: any) {
   return (
     <div>
