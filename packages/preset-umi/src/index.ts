@@ -1,4 +1,4 @@
-export type { IApi } from './types';
+export type { IApi, IConfig, webpack } from './types';
 export default () => {
   return {
     plugins: [
@@ -17,6 +17,7 @@ export default () => {
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
       require.resolve('./features/tmpFiles/tmpFiles'),
+      require.resolve('./features/tmpFiles/configTypes'),
       require.resolve('./features/transform/transform'),
       require.resolve('./features/lowImport/lowImport'),
       require.resolve('./features/vite/vite'),

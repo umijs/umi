@@ -1,3 +1,4 @@
+// @ts-ignore
 export * from '@@/exports';
 export type { IApi, webpack } from '@umijs/preset-umi';
 export type {
