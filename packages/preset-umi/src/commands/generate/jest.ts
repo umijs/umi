@@ -11,9 +11,7 @@ export default (api: IApi) => {
     name: 'Enable Jest',
     description: 'Setup Jest Configuration',
     type: GeneratorType.enable,
-    checkEnable: (opts) => {
-      const { api } = opts;
-
+    checkEnable: () => {
       return (
         !existsSync(join(api.paths.cwd, 'jest.config.ts')) &&
         !existsSync(join(api.paths.cwd, 'jest.config.js'))

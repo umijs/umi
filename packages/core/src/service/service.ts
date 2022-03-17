@@ -217,7 +217,7 @@ export class Service {
       }
     }
     this.pkg = pkg;
-    this.pkgPath = pkgPath;
+    this.pkgPath = pkgPath || join(this.cwd, 'package.json');
     // get user config
     const configManager = new Config({
       cwd: this.cwd,

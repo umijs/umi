@@ -20,7 +20,6 @@ umi generate
       const [type] = args._;
       const runGenerator = async (generator: IGeneratorOpts) => {
         await generator?.fn({
-          api,
           args,
           generateFile,
           installDeps,
@@ -35,7 +34,6 @@ umi generate
         }
         if (generator.type === GeneratorType.enable) {
           const enable = await generator.checkEnable?.({
-            api,
             args,
           });
           if (!enable) {
@@ -60,7 +58,6 @@ umi generate
               });
             } else {
               const enable = await generators[key]?.checkEnable?.({
-                api,
                 args,
               });
               if (enable) {

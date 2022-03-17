@@ -11,10 +11,9 @@ export default (api: IApi) => {
     name: 'Enable Prettier',
     description: 'Setup Prettier Configurations',
     type: GeneratorType.enable,
-    checkEnable: (opts) => {
-      const { api } = opts;
+    checkEnable: () => {
       // 存在 .prettierrc，不开启
-      return !existsSync(join(api.paths.cwd, '.prettierrc'));
+      return !existsSync(join(api.cwd, '.prettierrc'));
     },
     fn: async () => {
       // 1、修改 package.json，加上 prettier 和插件

@@ -11,8 +11,7 @@ export default (api: IApi) => {
     name: 'Enable Typescript',
     description: 'Setup tsconfig.json',
     type: GeneratorType.enable,
-    checkEnable: (opts) => {
-      const { api } = opts;
+    checkEnable: () => {
       return !existsSync(join(api.paths.cwd, 'tsconfig.json'));
     },
     fn: async () => {
