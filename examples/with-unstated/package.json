@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-rc.7",
+    "umi": "4.0.0-rc.8",
     "unstated-next": "^1.1.0"
   }
 }

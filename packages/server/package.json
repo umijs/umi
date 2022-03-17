@@ -1,6 +1,6 @@
 {
   "name": "@umijs/server",
-  "version": "4.0.0-rc.7",
+  "version": "4.0.0-rc.8",
   "description": "@umijs/server",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/server#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
