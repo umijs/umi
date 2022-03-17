@@ -22,7 +22,7 @@
     "@types/react-dom": "^17.0.13",
     "@umijs/mfsu": "4.0.0-canary.20220317.1",
     "babel-loader": "^8.2.3",
-    "esbuild": "0.14.25",
+    "esbuild": "0.14.27",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",

@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-canary.20220317.1",
-    "esbuild": "0.14.25"
+    "esbuild": "0.14.27"
   },
   "devDependencies": {
     "@babel/code-frame": "7.16.7",

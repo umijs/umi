@@ -29,7 +29,7 @@
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.26.1",
     "babel-plugin-import": "^1.13.3",
-    "dayjs": "^1.10.8",
+    "dayjs": "^1.11.0",
     "dva-core": "^2.0.4",
     "dva-immer": "^1.0.0",
     "dva-loading": "^3.0.22",

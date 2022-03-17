@@ -28,7 +28,7 @@
     "@umijs/utils": "4.0.0-canary.20220317.1",
     "enhanced-resolve": "5.9.2",
     "less-plugin-aliases": "^1.0.3",
-    "postcss": "^8.4.8",
+    "postcss": "^8.4.12",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-preset-env": "7.4.2"
   },
