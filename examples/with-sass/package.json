@@ -3,7 +3,6 @@
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",
-    "postinstall": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {
