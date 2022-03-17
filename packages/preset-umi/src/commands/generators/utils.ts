@@ -1,3 +1,9 @@
+import { installWithNpmClient, lodash, logger, semver } from '@umijs/utils';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+import { IApi } from '../../types';
+import { set as setUmirc } from '../config/set';
+
 function hasDeps({ name, pkg }: { name: string; pkg: any }) {
   return pkg.dependencies?.[name] || pkg.devDependencies?.[name];
 }
@@ -26,4 +32,73 @@ export function checkStatus({ pkg }: { pkg: any }) {
     needInstall,
     needConfigPlugins,
   };
+}
+
+export class GeneratorHelper {
+  private readonly needConfigUmiPlugin: boolean;
+  private readonly needInstallUmiPlugin: boolean;
+
+  constructor(readonly api: IApi) {
+    const { needInstall, needConfigPlugins } = checkStatus({
+      pkg: api.pkg,
+    });
+    this.needInstallUmiPlugin = needInstall;
+    this.needConfigUmiPlugin = needConfigPlugins;
+  }
+
+  setUmirc(key: string, val: any) {
+    setUmirc(this.api, key, val);
+  }
+
+  appendInternalPlugin(pluginPath: string) {
+    if (
+      this.needConfigUmiPlugin &&
+      !(this.api.userConfig.plugins || []).includes(pluginPath)
+    ) {
+      this.setUmirc(
+        'plugins',
+        (this.api.userConfig.plugins || []).concat(pluginPath),
+      );
+    }
+  }
+
+  addDevDeps(deps: Record<string, string>) {
+    const { api } = this;
+
+    const externalDeps = lodash.omit(deps, ['@umijs/plugins']);
+
+    if (this.needInstallUmiPlugin) {
+      api.pkg.devDependencies = {
+        ...api.pkg.devDependencies,
+        ...deps,
+      };
+      writeFileSync(api.pkgPath, JSON.stringify(api.pkg, null, 2));
+      logger.info('Write package.json');
+    } else if (!lodash.isEmpty(externalDeps)) {
+      api.pkg.devDependencies = {
+        ...api.pkg.devDependencies,
+        ...externalDeps,
+      };
+      writeFileSync(api.pkgPath, JSON.stringify(api.pkg, null, 2));
+      logger.info('Write package.json');
+    }
+  }
+
+  installDeps() {
+    const { npmClient } = this.api.appData;
+    installWithNpmClient({
+      npmClient,
+    });
+    logger.info(`Install dependencies with ${npmClient}`);
+  }
+}
+
+export function getUmiJsPlugin() {
+  const pkg = require(join(__dirname, '../../../', 'package.json'));
+  const pkgVer = semver.parse(pkg.version);
+
+  const umijsPluginVersion = pkgVer?.prerelease?.length
+    ? pkg.version
+    : `^${pkg.version}`;
+  return umijsPluginVersion;
 }
