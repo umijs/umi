@@ -50,6 +50,12 @@ export class PluginAPI {
       | EnableBy
       | ((enableByOpts: { userConfig: any; env: Env }) => boolean);
   }) {
+    // default 值 + 配置开启冲突，会导致就算用户没有配 key，插件也会生效
+    if (opts.enableBy === EnableBy.config && opts.config?.default) {
+      throw new Error(
+        `[plugin: ${this.plugin.id}] The config.default is not allowed when enableBy is EnableBy.config.`,
+      );
+    }
     this.plugin.merge(opts);
   }
 
