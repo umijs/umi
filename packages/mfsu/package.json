@@ -28,7 +28,6 @@
     "enhanced-resolve": "5.9.2"
   },
   "devDependencies": {
-    "@types/express": "4.17.13",
     "mrmime": "1.0.0",
     "webpack": "5.70.0",
     "webpack-virtual-modules": "0.4.3"

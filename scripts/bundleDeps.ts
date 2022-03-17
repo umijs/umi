@@ -177,6 +177,15 @@ Object.keys(exported).forEach(function (key) {
           path.join(COMPILED_DIR, 'vite', 'env.mjs.map'),
         );
       }
+
+      // for bundler-webpack
+      if (opts.pkgName === 'webpack') {
+        fs.writeFileSync(
+          path.join(opts.base, 'compiled/express.d.ts'),
+          `import e = require('@umijs/bundler-utils/compiled/express');\nexport = e;`,
+          'utf-8',
+        );
+      }
     }
   }
 
@@ -244,6 +253,22 @@ Object.keys(exported).forEach(function (key) {
         if (opts.pkgName === 'lodash') {
           // TODO
           // fs.copySync()
+        }
+
+        // for bundler-utils
+        if (opts.pkgName === 'less') {
+          const dtsPath = path.join(opts.base, 'compiled/less/index.d.ts');
+
+          fs.writeFileSync(
+            dtsPath,
+            fs
+              .readFileSync(dtsPath, 'utf-8')
+              .replace(
+                'declare module "less"',
+                'declare module "@umijs/bundler-utils/compiled/less"',
+              ),
+            'utf-8',
+          );
         }
       }
     }

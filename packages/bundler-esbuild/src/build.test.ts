@@ -16,10 +16,10 @@ const expects: Record<string, Function> = {
     expect(files['index.js']).toContain(`console.log("dir");`);
     // import('dir/bar') > import ('/path/dir/bar.js')
     expect(files['index.js']).toContain(`console.log("bar");`);
-    // import('less') > import ('/path/less.ts')
-    expect(files['index.js']).toContain(`console.log("less");`);
-    // import('less/bower') > import ('less/bower.json') 没匹配上走默认
-    expect(files['index.js']).toContain(`"dist/less.js"`);
+    // import('postcss') > import ('/path/postcss.ts')
+    expect(files['index.js']).toContain(`console.log("postcss");`);
+    // import('postcss/lib/symbols') > import ('postcss/lib/symbols.js') 没匹配上走默认
+    expect(files['index.js']).toContain(`"isClean"`);
   },
   externals({ files }: IOpts) {
     expect(files['index.js']).toContain(`module.export = React;`);
