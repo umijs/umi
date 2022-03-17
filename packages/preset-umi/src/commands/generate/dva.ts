@@ -36,6 +36,10 @@ function checkStatus({ pkg }: { pkg: any }) {
 }
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'generator:dva',
+  });
+
   api.registerGenerator({
     key: 'dva',
     name: 'Enable Dva',
@@ -49,7 +53,6 @@ export default (api: IApi) => {
         pkg: api.pkg,
       });
 
-      console.log('1', api.pkg, api.pkgPath, needInstall, needConfigPlugins);
       // write package.json
       if (needInstall) {
         api.pkg.devDependencies = {

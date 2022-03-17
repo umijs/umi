@@ -7,6 +7,10 @@ import { IApi } from '../../types';
 import { set as setUmirc } from '../config/set';
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'generator:tailwindcss',
+  });
+
   api.registerGenerator({
     key: 'tailwindcss',
     name: 'Enable Tailwind CSS',
