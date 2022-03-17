@@ -290,7 +290,9 @@ export default function EmptyRoute() {
       for (const plugin of plugins) {
         const file = winPath(join(api.paths.absTmpPath, plugin, 'types.d.ts'));
         if (existsSync(file)) {
-          exports.push(`export * from '${file}';`);
+          // 带 .ts 后缀的声明文件 会导致声明失效
+          const noSuffixFile = file.replace(/\.ts$/, '');
+          exports.push(`export * from '${noSuffixFile}';`);
         }
       }
       api.writeTmpFile({
