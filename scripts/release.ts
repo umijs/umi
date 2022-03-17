@@ -71,6 +71,15 @@ import { assert, eachPkg, getPkgs } from './utils';
   logger.event('bump version');
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
   const version = require('../lerna.json').version;
+  let tag = 'latest';
+  if (
+    version.includes('-alpha.') ||
+    version.includes('-beta.') ||
+    version.includes('-rc.')
+  ) {
+    tag = 'next';
+  }
+  if (version.includes('-canary.')) tag = 'canary';
 
   // update example versions
   logger.event('update example versions');
@@ -118,8 +127,10 @@ import { assert, eachPkg, getPkgs } from './utils';
   await $`git commit --all --message "release: ${version}"`;
 
   // git tag
-  logger.event('git tag');
-  await $`git tag v${version}`;
+  if (tag !== 'canary') {
+    logger.event('git tag');
+    await $`git tag v${version}`;
+  }
 
   // git push
   logger.event('git push');
@@ -132,15 +143,6 @@ import { assert, eachPkg, getPkgs } from './utils';
     // do not publish father
     (pkg) => !['umi', 'max', 'father'].includes(pkg),
   );
-  let tag = 'latest';
-  if (
-    version.includes('-alpha.') ||
-    version.includes('-beta.') ||
-    version.includes('-rc.')
-  ) {
-    tag = 'next';
-  }
-  if (version.includes('-canary.')) tag = 'canary';
   await Promise.all(
     innerPkgs.map(async (pkg) => {
       await $`cd packages/${pkg} && npm publish --tag ${tag}`;
