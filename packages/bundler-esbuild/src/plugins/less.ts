@@ -1,7 +1,7 @@
 import { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import enhancedResolve from 'enhanced-resolve';
 import { promises as fs } from 'fs';
-import less from 'less';
+import less from '@umijs/bundler-utils/compiled/less';
 import LessPluginAliases from 'less-plugin-aliases';
 import path from 'path';
 import { IConfig } from '../types';

@@ -1,4 +1,4 @@
-import type { RequestHandler } from 'express';
+import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';

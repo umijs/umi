@@ -1,6 +1,6 @@
+import express from '@umijs/bundler-utils/compiled/express';
 import { logger } from '@umijs/utils';
 import http from 'http';
-import express from '../../compiled/express';
 import type {
   DepOptimizationMetadata,
   HmrContext,
@@ -66,9 +66,11 @@ export async function createServer(opts: IOpts) {
     vite.middlewares.stack.some((s, i) => {
       if ((s.handle as Function).name === 'viteSpaFallbackMiddleware') {
         const afterStacks: typeof vite.middlewares.stack =
-          opts.afterMiddlewares!.map((handle) => ({
+          opts.afterMiddlewares!.map((m) => ({
             route: '',
-            handle,
+            // TODO: FIXME
+            // see: https://github.com/umijs/umi-next/commit/34d4e4e26a20ff5c7393eab5d3db363cca541379#diff-3a996a9e7a2f94fc8f23c6efed1447eed9567e36ed622bd8547a58e5415087f7R164
+            handle: app.use(m.toString().includes(`{ compiler }`) ? m({}) : m),
           }));
 
         vite.middlewares.stack.splice(i, 0, ...afterStacks);

@@ -1,4 +1,4 @@
-import express from '@umijs/bundler-webpack/compiled/express';
+import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
 import webpack, {
   Configuration,

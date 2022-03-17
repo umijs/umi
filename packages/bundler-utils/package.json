@@ -50,8 +50,11 @@
     "@types/babel__parser": "7.1.1",
     "@types/babel__template": "7.4.1",
     "@types/babel__traverse": "7.14.2",
+    "@types/less": "3.0.3",
     "cjs-module-lexer": "1.2.2",
-    "es-module-lexer": "0.10.0"
+    "es-module-lexer": "0.10.0",
+    "express": "4.17.3",
+    "less": "4.1.2"
   },
   "publishConfig": {
     "access": "public"
@@ -64,13 +67,17 @@
       "cjs-module-lexer",
       "es-module-lexer",
       "esbuild",
+      "express",
+      "less",
       "./bundles/babel/bundle"
     ],
     "externals": {
       "cjs-module-lexer": "$$LOCAL",
       "debug": "@umijs/utils/compiled/debug",
       "esbuild": "$$LOCAL",
-      "es-module-lexer": "$$LOCAL"
+      "es-module-lexer": "$$LOCAL",
+      "express": "$$LOCAL",
+      "less": "$$LOCAL"
     },
     "noMinify": [
       "./bundles/babel/bundle"

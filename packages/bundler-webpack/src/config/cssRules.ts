@@ -19,7 +19,7 @@ export async function addCSSRules(opts: IOpts) {
       test: /\.less(\?.*)?$/,
       loader: require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
       loaderOptions: {
-        implementation: require.resolve('@umijs/bundler-webpack/compiled/less'),
+        implementation: require.resolve('@umijs/bundler-utils/compiled/less'),
         lessOptions: {
           modifyVars: userConfig.theme,
           javascriptEnabled: true,

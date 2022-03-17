@@ -27,15 +27,13 @@
     "@umijs/bundler-utils": "4.0.0-canary.20220316.1",
     "@umijs/utils": "4.0.0-canary.20220316.1",
     "enhanced-resolve": "5.9.2",
-    "less": "4.1.2",
     "less-plugin-aliases": "^1.0.3",
     "postcss": "^8.4.8",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-preset-env": "7.4.2"
   },
   "devDependencies": {
-    "@alitajs/postcss-plugin-px2rem": "^0.0.1",
-    "@types/less": "^3.0.3"
+    "@alitajs/postcss-plugin-px2rem": "^0.0.1"
   },
   "publishConfig": {
     "access": "public"

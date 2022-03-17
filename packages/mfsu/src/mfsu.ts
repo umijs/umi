@@ -1,7 +1,11 @@
 import { parseModule } from '@umijs/bundler-utils';
 import { lodash, logger, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
-import type { NextFunction, Request, Response } from 'express';
+import type {
+  NextFunction,
+  Request,
+  Response,
+} from '@umijs/bundler-utils/compiled/express';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
