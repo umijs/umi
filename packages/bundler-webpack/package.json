@@ -42,12 +42,12 @@
     "es5-imcompatible-versions": "^0.1.73",
     "jest-worker": "27.5.1",
     "node-libs-browser": "2.2.1",
-    "postcss": "^8.4.8",
+    "postcss": "^8.4.12",
     "postcss-preset-env": "7.4.2",
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
-    "@swc/core": "1.2.154",
+    "@swc/core": "1.2.156",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.3",
     "autoprefixer": "10.4.2",
