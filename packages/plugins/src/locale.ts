@@ -36,15 +36,16 @@ export default (api: IApi) => {
     api.logger.warn('antd is not installed. <SelecLang /> unavailable');
   }
 
+  const defaultConfig = {
+    baseNavigator: true,
+    useLocalStorage: true,
+    baseSeparator: '-',
+    antd: hasAntd,
+  };
+
   api.describe({
     key: 'locale',
     config: {
-      default: {
-        baseNavigator: true,
-        useLocalStorage: true,
-        baseSeparator: '-',
-        antd: hasAntd,
-      },
       schema(joi) {
         return joi.object({
           default: joi.string(),
@@ -113,8 +114,10 @@ export default (api: IApi) => {
       dirname(require.resolve('event-emitter/package')),
     );
 
-    const { baseSeparator, baseNavigator, antd, title, useLocalStorage } = api
-      .config.locale as ILocaleConfig;
+    const { baseSeparator, baseNavigator, antd, title, useLocalStorage } = {
+      ...defaultConfig,
+      ...(api.config.locale as ILocaleConfig),
+    };
     const defaultLocale = api.config.locale?.default || `zh${baseSeparator}CN`;
     const localeList = await getList(resolveKey);
     const momentLocales = localeList
