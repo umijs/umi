@@ -102,6 +102,8 @@ declare namespace browserslist {
       | undefined
   }
 
+  let nodeVersions: string[]
+
   interface Usage {
     [version: string]: number
   }
