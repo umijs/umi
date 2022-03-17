@@ -6,6 +6,10 @@ import { join } from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'generator:tsconfig',
+  });
+
   api.registerGenerator({
     key: 'tsconfig',
     name: 'Enable Typescript',

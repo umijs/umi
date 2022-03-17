@@ -6,6 +6,10 @@ import { join } from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'generator:prettier',
+  });
+
   api.registerGenerator({
     key: 'prettier',
     name: 'Enable Prettier',

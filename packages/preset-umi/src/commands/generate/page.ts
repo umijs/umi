@@ -4,6 +4,10 @@ import { join, parse } from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
+  api.describe({
+    key: 'generator:page',
+  });
+
   api.registerGenerator({
     key: 'page',
     name: 'Create Pages',
@@ -13,7 +17,7 @@ export default (api: IApi) => {
       return new PageGenerator({
         generateFile: options.generateFile,
         args: options.args,
-        absPagesPath: options.api.paths.absPagesPath,
+        absPagesPath: api.paths.absPagesPath,
       }).run();
     },
   });
