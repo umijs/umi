@@ -21,7 +21,7 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.2",
+    "@babel/runtime": "7.17.7",
     "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "4.0.0-canary.20220317.1",
     "@umijs/utils": "4.0.0-canary.20220317.1",
