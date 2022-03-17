@@ -16,7 +16,8 @@
   },
   "files": [
     "compiled",
-    "dist"
+    "dist",
+    "scripts"
   ],
   "scripts": {
     "build": "pnpm tsc",
