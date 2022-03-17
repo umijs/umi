@@ -9,7 +9,7 @@ export default (api: IApi) => {
   api.registerGenerator({
     key: 'prettier',
     name: 'Enable Prettier',
-    description: 'Enable Prettier',
+    description: 'Setup Prettier Configurations',
     type: GeneratorType.enable,
     checkEnable: (opts) => {
       const { api } = opts;
