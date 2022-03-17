@@ -1,4 +1,4 @@
-import { prompts } from '@umijs/utils';
+import { generateFile } from '@umijs/utils';
 import { Plugin } from './plugin';
 
 export enum GeneratorType {
@@ -17,14 +17,7 @@ export interface IGeneratorOpts {
   fn: {
     (opts: {
       args: any;
-      generateFile: {
-        (opts: {
-          path: string;
-          target: string;
-          data?: any;
-          questions?: prompts.PromptObject[];
-        }): Promise<void>;
-      };
+      generateFile: typeof generateFile;
       updatePackageJSON: {
         (opts: { opts: object; cwd?: string }): void;
       };
@@ -50,6 +43,7 @@ export class Generator {
   checkEnable?: IGeneratorOpts['checkEnable'];
   fn: IGeneratorOpts['fn'];
   plugin: IGeneratorOpts['plugin'];
+
   constructor(opts: IGeneratorOpts) {
     this.key = opts.key;
     this.name = opts.name;
