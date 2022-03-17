@@ -6,6 +6,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "umi": "4.0.0-rc.7"
+    "umi": "4.0.0-rc.8"
   }
 }
