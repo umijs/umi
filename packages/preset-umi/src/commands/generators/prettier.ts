@@ -1,9 +1,9 @@
 import { GeneratorType } from '@umijs/core';
-import { installWithNpmClient, logger } from '@umijs/utils';
-import assert from 'assert';
+import { logger } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
+import { GeneratorHelper } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -20,15 +20,14 @@ export default (api: IApi) => {
       return !existsSync(join(api.cwd, '.prettierrc'));
     },
     fn: async () => {
-      // 1、修改 package.json，加上 prettier 和插件
-      api.pkg.devDependencies = {
-        ...api.pkg.devDependencies,
+      const h = new GeneratorHelper(api);
+
+      h.addDevDeps({
         prettier: '^2',
         'prettier-plugin-organize-imports': '^2',
         'prettier-plugin-packagejson': '^2',
-      };
-      writeFileSync(api.pkgPath, JSON.stringify(api.pkg, null, 2));
-      logger.info('Write package.json');
+      });
+
       // 2、添加 .prettierrc 和 .prettierignore
       writeFileSync(
         join(api.cwd, '.prettierrc'),
@@ -53,13 +52,8 @@ node_modules
 `.trimLeft(),
       );
       logger.info('Write .prettierignore');
-      // 3、执行 npm install
-      const npmClient = api.userConfig.npmClient;
-      assert(npmClient, `npmClient is required in your config.`);
-      installWithNpmClient({
-        npmClient,
-      });
-      logger.info(`Install dependencies with ${npmClient}`);
+
+      h.installDeps();
     },
   });
 };

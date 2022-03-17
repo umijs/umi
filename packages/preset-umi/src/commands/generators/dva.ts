@@ -1,10 +1,8 @@
 import { GeneratorType } from '@umijs/core';
-import { fsExtra, installWithNpmClient, logger } from '@umijs/utils';
-import { writeFileSync } from 'fs';
+import { fsExtra, logger } from '@umijs/utils';
 import { join } from 'path';
 import { IApi } from '../../types';
-import { set as setUmirc } from '../config/set';
-import { checkStatus } from './utils';
+import { GeneratorHelper, getUmiJsPlugin } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -20,33 +18,14 @@ export default (api: IApi) => {
       return !api.config.dva;
     },
     fn: async () => {
-      const { needInstall, needConfigPlugins } = checkStatus({
-        pkg: api.pkg,
+      const h = new GeneratorHelper(api);
+
+      h.addDevDeps({
+        '@umijs/plugins': getUmiJsPlugin(),
       });
 
-      // write package.json
-      if (needInstall) {
-        api.pkg.devDependencies = {
-          ...api.pkg.devDependencies,
-          '@umijs/plugins': 'next',
-        };
-        writeFileSync(api.pkgPath, JSON.stringify(api.pkg, null, 2));
-        logger.info('Write package.json');
-      }
-
-      // set config
-      setUmirc(api, 'dva', {});
-      const dvaPluginPath = '@umijs/plugins/dist/dva';
-      if (
-        needConfigPlugins &&
-        !(api.userConfig.plugins || []).includes(dvaPluginPath)
-      ) {
-        setUmirc(
-          api,
-          'plugins',
-          (api.userConfig.plugins || []).concat(dvaPluginPath),
-        );
-      }
+      h.setUmirc('dva', {});
+      h.appendInternalPlugin('@umijs/plugins/dist/dva');
       logger.info('Update config file');
 
       // example model
@@ -77,12 +56,7 @@ export default {
       );
       logger.info('Write example model');
 
-      // install deps
-      const { npmClient } = api.appData;
-      installWithNpmClient({
-        npmClient,
-      });
-      logger.info(`Install dependencies with ${npmClient}`);
+      h.installDeps();
     },
   });
 };

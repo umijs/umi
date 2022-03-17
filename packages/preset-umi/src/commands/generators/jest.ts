@@ -1,9 +1,9 @@
 import { GeneratorType } from '@umijs/core';
-import { installWithNpmClient, logger, prompts } from '@umijs/utils';
-import assert from 'assert';
+import { logger, prompts } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
+import { GeneratorHelper } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -22,6 +22,8 @@ export default (api: IApi) => {
       );
     },
     fn: async () => {
+      const h = new GeneratorHelper(api);
+
       const res = await prompts({
         type: 'confirm',
         name: 'willUseTLR',
@@ -29,25 +31,21 @@ export default (api: IApi) => {
         initial: true,
       });
 
+      const basicDeps = {
+        jest: '^27',
+        '@types/jest': '^27',
+        // we use `jest.config.ts` so jest needs ts and ts-node
+        typescript: '^4',
+        'ts-node': '^10',
+      };
       const packageToInstall: Record<string, string> = res.willUseTLR
         ? {
-            jest: 'latest',
-            '@types/jest': 'latest',
-            'ts-node': '*',
-            '@testing-library/react': 'latest',
+            ...basicDeps,
+            '@testing-library/react': '^12',
           }
-        : {
-            jest: 'latest',
-            '@types/jest': 'latest',
-            'ts-node': '*',
-          };
+        : basicDeps;
 
-      api.pkg.devDependencies = {
-        ...api.pkg.devDependencies,
-        ...packageToInstall,
-      };
-      writeFileSync(api.pkgPath, JSON.stringify(api.pkg, null, 2));
-      logger.info('Update package.json');
+      h.addDevDeps(packageToInstall);
 
       writeFileSync(
         join(api.cwd, 'jest.config.ts'),
@@ -65,12 +63,7 @@ export default async () => {
       );
       logger.info('Write jest.config.ts');
 
-      const npmClient = api.userConfig.npmClient;
-      assert(npmClient, `npmClient is required in your config.`);
-      installWithNpmClient({
-        npmClient,
-      });
-      logger.info(`Install dependencies with ${npmClient}`);
+      h.installDeps();
     },
   });
 };
