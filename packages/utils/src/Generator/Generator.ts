@@ -8,17 +8,17 @@ import prompts from '../../compiled/prompts';
 import yParser from '../../compiled/yargs-parser';
 
 interface IOpts {
-  cwd: string;
+  baseDir: string;
   args: yParser.Arguments;
 }
 
 class Generator {
-  cwd: string;
+  baseDir: string;
   args: yParser.Arguments;
   prompts: any;
 
-  constructor({ cwd, args }: IOpts) {
-    this.cwd = cwd;
+  constructor({ baseDir, args }: IOpts) {
+    this.baseDir = baseDir;
     this.args = args;
     this.prompts = {};
   }
@@ -39,7 +39,9 @@ class Generator {
     const tpl = readFileSync(opts.templatePath, 'utf-8');
     const content = Mustache.render(tpl, opts.context);
     fsExtra.mkdirpSync(dirname(opts.target));
-    console.log(`${chalk.green('Write:')} ${relative(this.cwd, opts.target)}`);
+    console.log(
+      `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
+    );
     writeFileSync(opts.target, content, 'utf-8');
   }
 

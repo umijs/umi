@@ -7,6 +7,7 @@ import Generator from '../Generator/Generator';
 interface IOpts {
   path: string;
   target: string;
+  baseDir?: string;
   data?: any;
   questions?: prompts.PromptObject[];
 }
@@ -17,8 +18,8 @@ export default class BaseGenerator extends Generator {
   data: any;
   questions: prompts.PromptObject[];
 
-  constructor({ path, target, data, questions }: IOpts) {
-    super({ cwd: process.cwd(), args: data });
+  constructor({ path, target, data, questions, baseDir }: IOpts) {
+    super({ baseDir: baseDir || target, args: data });
     this.path = path;
     this.target = target;
     this.data = data;

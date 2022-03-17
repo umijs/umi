@@ -1,5 +1,5 @@
 import { GeneratorType } from '@umijs/core';
-import { prompts, randomColor } from '@umijs/utils';
+import { generateFile, prompts, randomColor } from '@umijs/utils';
 import { join, parse } from 'path';
 import { IApi } from '../../types';
 
@@ -40,14 +40,7 @@ export class PageGenerator {
   constructor(
     readonly options: {
       args: any;
-      generateFile: {
-        (opts: {
-          path: string;
-          target: string;
-          data?: any;
-          questions?: prompts.PromptObject[];
-        }): Promise<void>;
-      };
+      generateFile: typeof generateFile;
       absPagesPath: string;
     },
   ) {
@@ -102,12 +95,14 @@ export class PageGenerator {
     await generateFile({
       path: INDEX_TPL_PATH,
       target: join(absPagesPath, this.dir, `${this.name}.tsx`),
+      baseDir: absPagesPath,
       data,
     });
 
     await generateFile({
       path: LEES_TPL_PATH,
       target: join(absPagesPath, this.dir, `${this.name}.less`),
+      baseDir: absPagesPath,
       data,
     });
   }
