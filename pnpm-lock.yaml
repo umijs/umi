@@ -86,7 +86,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-descriptions': ^1.10.56
       '@ant-design/pro-form': ^1.59.1
-      '@ant-design/pro-layout': 7.0.1-beta.3
+      '@ant-design/pro-layout': ^6.34.4
       '@ant-design/pro-table': ^2.68.1
       '@antv/l7-react': ^2.3.9
       '@umijs/max': 4.0.0-canary.20220317.2
@@ -108,7 +108,7 @@ importers:
       '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
       '@ant-design/pro-descriptions': 1.10.56_2dd11bed1126907401ba80d9d1323e39
       '@ant-design/pro-form': 1.59.1_2dd11bed1126907401ba80d9d1323e39
-      '@ant-design/pro-layout': 7.0.1-beta.3_2dd11bed1126907401ba80d9d1323e39
+      '@ant-design/pro-layout': 6.34.4_2dd11bed1126907401ba80d9d1323e39
       '@ant-design/pro-table': 2.68.1_2dd11bed1126907401ba80d9d1323e39
       '@antv/l7-react': 2.3.9_react-dom@17.0.2+react@17.0.2
       '@umijs/max': link:../../packages/max
@@ -806,7 +806,7 @@ importers:
     specifiers:
       '@ahooksjs/use-request': ^2.0.0
       '@ant-design/icons': ^4.7.0
-      '@ant-design/pro-layout': ^7.0.1-beta.3
+      '@ant-design/pro-layout': ^6.34.4
       '@umijs/bundler-utils': 4.0.0-canary.20220317.2
       antd-dayjs-webpack-plugin: ^1.0.6
       axios: ^0.26.1
@@ -828,7 +828,7 @@ importers:
     dependencies:
       '@ahooksjs/use-request': 2.8.15_react@17.0.2
       '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
-      '@ant-design/pro-layout': 7.0.1-beta.8_react-dom@17.0.2+react@17.0.2
+      '@ant-design/pro-layout': 6.34.4_react-dom@17.0.2+react@17.0.2
       '@umijs/bundler-utils': link:../bundler-utils
       antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.11.0
       axios: 0.26.1
@@ -1255,17 +1255,16 @@ packages:
       use-media-antd-query: 1.1.0_react@17.0.2
     dev: false
 
-  /@ant-design/pro-layout/7.0.1-beta.3_2dd11bed1126907401ba80d9d1323e39:
-    resolution: {integrity: sha512-UZ2I+b6KyN7iZ2Wt1mVqupLek72xdIQ9k0sIsYyjJ2mVGmhX4OCCBzABcXk+xNYMijtb4MO5OQEzo1Edl5FGrw==}
+  /@ant-design/pro-layout/6.34.4_2dd11bed1126907401ba80d9d1323e39:
+    resolution: {integrity: sha512-paBP2tFUbGdjon+BFH7eJP+J/5/6KA5VLs1wUFZdj5U9tMrUkMhWEBZMARu274SnHEa00sK39ZAmZo+Dj18pNg==}
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
-      '@ant-design/pro-provider': 1.6.0_2dd11bed1126907401ba80d9d1323e39
-      '@ant-design/pro-utils': 1.35.1_2dd11bed1126907401ba80d9d1323e39
+      '@ant-design/pro-provider': 1.6.1_2dd11bed1126907401ba80d9d1323e39
+      '@ant-design/pro-utils': 1.37.0_2dd11bed1126907401ba80d9d1323e39
       '@babel/runtime': 7.17.7
-      '@emotion/css': 11.7.1
       '@umijs/route-utils': 2.0.5
       '@umijs/ssr-darkreader': 4.9.45
       '@umijs/use-params': 1.0.9_react@17.0.2
@@ -1283,21 +1282,19 @@ packages:
       use-media-antd-query: 1.1.0_react@17.0.2
       warning: 4.0.3
     transitivePeerDependencies:
-      - '@babel/core'
       - react-dom
     dev: false
 
-  /@ant-design/pro-layout/7.0.1-beta.8_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-zqwxNuOPdz7fa+GqBhueqj2hW6iQQsTGDdtvZm123z6TprDzEnSfkaHlkUEUiQqbWzylvIMpjmXAJPrsaD4NvA==}
+  /@ant-design/pro-layout/6.34.4_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-paBP2tFUbGdjon+BFH7eJP+J/5/6KA5VLs1wUFZdj5U9tMrUkMhWEBZMARu274SnHEa00sK39ZAmZo+Dj18pNg==}
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
-      '@ant-design/pro-provider': 1.6.0_react-dom@17.0.2+react@17.0.2
-      '@ant-design/pro-utils': 1.35.3_react-dom@17.0.2+react@17.0.2
+      '@ant-design/pro-provider': 1.6.1_react-dom@17.0.2+react@17.0.2
+      '@ant-design/pro-utils': 1.37.0_react-dom@17.0.2+react@17.0.2
       '@babel/runtime': 7.17.7
-      '@emotion/css': 11.7.1
       '@umijs/route-utils': 2.0.5
       '@umijs/ssr-darkreader': 4.9.45
       '@umijs/use-params': 1.0.9_react@17.0.2
@@ -1313,36 +1310,6 @@ packages:
       use-json-comparison: 1.0.6_react@17.0.2
       use-media-antd-query: 1.1.0_react@17.0.2
       warning: 4.0.3
-    transitivePeerDependencies:
-      - '@babel/core'
-      - react-dom
-    dev: false
-
-  /@ant-design/pro-provider/1.6.0_2dd11bed1126907401ba80d9d1323e39:
-    resolution: {integrity: sha512-xq5GRfoYvwimSCWYZ6NyBaSfVz3ajEDIhMrTHpmzWmDGxRaPPFMS3Fio0cuAdU/KbDlZ1d0M8LuAvyEPvhYDFQ==}
-    peerDependencies:
-      antd: '>=4.18.0'
-      react: '>=16.9.0'
-    dependencies:
-      '@babel/runtime': 7.17.7
-      antd: 4.19.2_react-dom@17.0.2+react@17.0.2
-      rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
-      react: 17.0.2
-      swr: 1.2.2_react@17.0.2
-    transitivePeerDependencies:
-      - react-dom
-    dev: false
-
-  /@ant-design/pro-provider/1.6.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-xq5GRfoYvwimSCWYZ6NyBaSfVz3ajEDIhMrTHpmzWmDGxRaPPFMS3Fio0cuAdU/KbDlZ1d0M8LuAvyEPvhYDFQ==}
-    peerDependencies:
-      antd: '>=4.18.0'
-      react: '>=16.9.0'
-    dependencies:
-      '@babel/runtime': 7.17.7
-      rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
-      react: 17.0.2
-      swr: 1.2.2_react@17.0.2
     transitivePeerDependencies:
       - react-dom
     dev: false
@@ -1355,6 +1322,20 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.7
       antd: 4.19.2_react-dom@17.0.2+react@17.0.2
+      rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
+      react: 17.0.2
+      swr: 1.2.2_react@17.0.2
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@ant-design/pro-provider/1.6.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-kB9qx8YPfkbs0v+4XFmyRLJh8wfHsB9t0olDzsFViIKH795gkVA5617zxCarAAvqTfQX6Uj0qL12JOnsJDb7WQ==}
+    peerDependencies:
+      antd: '>=4.18.0'
+      react: '>=16.9.0'
+    dependencies:
+      '@babel/runtime': 7.17.7
       rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
       swr: 1.2.2_react@17.0.2
@@ -1401,45 +1382,6 @@ packages:
       use-media-antd-query: 1.1.0_react@17.0.2
     dev: false
 
-  /@ant-design/pro-utils/1.35.1_2dd11bed1126907401ba80d9d1323e39:
-    resolution: {integrity: sha512-XvxSnekFkYnu0Bh/crc3YJrB+TLzJjI5p60WvpdIh5OrYYVsJICP+U46cPHKIOaVfFviEVOEGRARPxCiNaLvAw==}
-    peerDependencies:
-      antd: '>=4.18.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
-      '@ant-design/pro-provider': 1.6.0_2dd11bed1126907401ba80d9d1323e39
-      '@babel/runtime': 7.17.7
-      antd: 4.19.2_react-dom@17.0.2+react@17.0.2
-      classnames: 2.3.1
-      moment: 2.29.1
-      rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-sortable-hoc: 2.0.0_react-dom@17.0.2+react@17.0.2
-      swr: 1.2.2_react@17.0.2
-    dev: false
-
-  /@ant-design/pro-utils/1.35.3_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-o67F2G01VL6nmDH6VhS/umSlvwo+2g9dotqhWJyvj64JLUuYLdiiXNYsCnvRUqvJrmgmSOXaq8jtTnU1QXso/g==}
-    peerDependencies:
-      antd: '>=4.18.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
-      '@ant-design/pro-provider': 1.6.0_react-dom@17.0.2+react@17.0.2
-      '@babel/runtime': 7.17.7
-      classnames: 2.3.1
-      moment: 2.29.1
-      rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-sortable-hoc: 2.0.0_react-dom@17.0.2+react@17.0.2
-      swr: 1.2.2_react@17.0.2
-    dev: false
-
   /@ant-design/pro-utils/1.37.0_2dd11bed1126907401ba80d9d1323e39:
     resolution: {integrity: sha512-YbCEjcIb2FIAGKazPEa6WWlxYj6jfVDB13hrEm+/opCFqwk4eSlNYzkDOYcCbPCP+zPO4XPzD9jUECRodkKpag==}
     peerDependencies:
@@ -1451,6 +1393,25 @@ packages:
       '@ant-design/pro-provider': 1.6.1_2dd11bed1126907401ba80d9d1323e39
       '@babel/runtime': 7.17.7
       antd: 4.19.2_react-dom@17.0.2+react@17.0.2
+      classnames: 2.3.1
+      moment: 2.29.1
+      rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-sortable-hoc: 2.0.0_react-dom@17.0.2+react@17.0.2
+      swr: 1.2.2_react@17.0.2
+    dev: false
+
+  /@ant-design/pro-utils/1.37.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-YbCEjcIb2FIAGKazPEa6WWlxYj6jfVDB13hrEm+/opCFqwk4eSlNYzkDOYcCbPCP+zPO4XPzD9jUECRodkKpag==}
+    peerDependencies:
+      antd: '>=4.18.0'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    dependencies:
+      '@ant-design/icons': 4.7.0_react-dom@17.0.2+react@17.0.2
+      '@ant-design/pro-provider': 1.6.1_react-dom@17.0.2+react@17.0.2
+      '@babel/runtime': 7.17.7
       classnames: 2.3.1
       moment: 2.29.1
       rc-util: 5.19.3_react-dom@17.0.2+react@17.0.2
@@ -4146,21 +4107,6 @@ packages:
       '@emotion/utils': 1.1.0
       '@emotion/weak-memoize': 0.2.5
       stylis: 4.0.13
-    dev: false
-
-  /@emotion/css/11.7.1:
-    resolution: {integrity: sha512-RUUgPlMZunlc7SE5A6Hg+VWRzb2cU6O9xlV78KCFgcnl25s7Qz/20oQg71iKudpLqk7xj0vhbJlwcJJMT0BOZg==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-    dependencies:
-      '@emotion/babel-plugin': 11.7.2
-      '@emotion/cache': 11.7.1
-      '@emotion/serialize': 1.0.2
-      '@emotion/sheet': 1.1.0
-      '@emotion/utils': 1.1.0
     dev: false
 
   /@emotion/hash/0.8.0:
