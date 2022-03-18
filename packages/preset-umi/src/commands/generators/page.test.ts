@@ -137,3 +137,74 @@ describe('page generator', function () {
     }
   }
 });
+
+describe('page generate in interactive way', function () {
+  it('generate index page when no answer', async () => {
+    const generateFile = jest.fn().mockResolvedValue(null);
+    const prompts = jest.fn();
+
+    const g = new PageGenerator({
+      absPagesPath: '/pages/',
+      args: { _: [] },
+      generateFile,
+    });
+
+    g.setPrompter(prompts as any);
+    prompts.mockResolvedValueOnce({ name: '' });
+    prompts.mockResolvedValueOnce({ mode: 'file' });
+
+    await g.run();
+
+    expect(g.getDirMode()).toEqual(false);
+    expect(prompts).toBeCalledTimes(2);
+    expect(prompts).toHaveBeenNthCalledWith(1, {
+      type: 'text',
+      name: 'name',
+      message: 'What is the name of page?',
+    });
+    expect(prompts).toHaveBeenNthCalledWith(2, {
+      type: 'select',
+      name: 'mode',
+      message: 'How dou you want page files to be created?',
+      choices: [
+        { title: normalize('index/index.{tsx,less}'), value: 'dir' },
+        { title: normalize('index.{tsx,less}'), value: 'file' },
+      ],
+      initial: 0,
+    });
+  });
+
+  it('generate index page when answer file name', async () => {
+    const generateFile = jest.fn().mockResolvedValue(null);
+    const prompts = jest.fn();
+    const g = new PageGenerator({
+      absPagesPath: '/pages/',
+      args: { _: [] },
+      generateFile,
+    });
+
+    g.setPrompter(prompts as any);
+    prompts.mockResolvedValueOnce({ name: 'aaa/bbb' });
+    prompts.mockResolvedValueOnce({ mode: 'dir' });
+
+    await g.run();
+
+    expect(g.getDirMode()).toEqual(true);
+    expect(prompts).toBeCalledTimes(2);
+    expect(prompts).toHaveBeenNthCalledWith(1, {
+      type: 'text',
+      name: 'name',
+      message: 'What is the name of page?',
+    });
+    expect(prompts).toHaveBeenNthCalledWith(2, {
+      type: 'select',
+      name: 'mode',
+      message: 'How dou you want page files to be created?',
+      choices: [
+        { title: normalize('aaa/bbb/index.{tsx,less}'), value: 'dir' },
+        { title: normalize('aaa/bbb.{tsx,less}'), value: 'file' },
+      ],
+      initial: 0,
+    });
+  });
+});
