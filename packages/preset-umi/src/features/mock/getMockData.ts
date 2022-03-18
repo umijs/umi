@@ -35,7 +35,8 @@ export function getMockData(opts: {
       const mockFile = `${opts.cwd}/${file}`;
       const m = require(mockFile);
       // Cannot convert undefined or null to object
-      const obj = m?.default || {};
+      // Support esm and cjs
+      const obj = m?.default || m || {};
       for (const key of Object.keys(obj)) {
         const mock = getMock({ key, obj });
         mock.file = mockFile;
