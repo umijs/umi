@@ -47,6 +47,8 @@ export function checkMatch({
   if (
     // unMatch specified libs
     opts.unMatchLibs?.includes(value) ||
+    // do not match bundler-webpack/client/client/client.js
+    value.includes('client/client/client.js') ||
     // already handled
     value.startsWith(`${remoteName}/`) ||
     // don't match dynamic path
