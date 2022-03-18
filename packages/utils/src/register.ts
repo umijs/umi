@@ -12,24 +12,21 @@ function transform(opts: { code: string; filename: string; implementor: any }) {
   const { code, filename, implementor } = opts;
   files.push(filename);
   const ext = extname(filename);
-  if (COMPILE_EXTS.includes(ext)) {
-    return implementor.transformSync(code, {
-      loader: ext.slice(1),
-      target: 'es2017',
-      format: 'cjs',
-    }).code;
-  }
-  return code;
+  return implementor.transformSync(code, {
+    loader: ext.slice(1),
+    target: 'es2017',
+    format: 'cjs',
+  }).code;
 }
 
-export function register(opts: { implementor: any }) {
+export function register(opts: { implementor: any; exts?: string[] }) {
   files = [];
   if (!registered) {
     revert = addHook(
       (code, filename) =>
         transform({ code, filename, implementor: opts.implementor }),
       {
-        ext: HOOK_EXTS,
+        ext: opts.exts || HOOK_EXTS,
         ignoreNodeModules: true,
       },
     );
