@@ -267,6 +267,7 @@ export {
   useRequest,
   UseRequestProvider,
   request,
+  getRequestInstance,
 };
 
 export type {
