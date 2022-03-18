@@ -39,6 +39,9 @@
     "@umijs/test": "4.0.0-canary.20220318.1",
     "@umijs/utils": "4.0.0-canary.20220318.1"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "publishConfig": {
     "access": "public"
   },
