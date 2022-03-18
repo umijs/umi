@@ -36,6 +36,8 @@ export class PageGenerator {
   private isDirMode = false;
   private dir = '';
   private name = '';
+  private needEnsureDirMode = false;
+  private prompts = prompts;
 
   constructor(
     readonly options: {
@@ -48,17 +50,28 @@ export class PageGenerator {
     const [_, nameOrPath = ''] = options.args._;
     if (nameOrPath) {
       this.setPath(nameOrPath);
+    } else {
+      this.needEnsureDirMode = true;
     }
   }
 
   async run() {
     await this.ensureName();
+    await this.ensureDirMode();
 
     if (this.isDirMode) {
       await this.dirModeRun();
     } else {
       await this.fileModeRun();
     }
+  }
+
+  setPrompter(p: typeof prompts) {
+    this.prompts = p;
+  }
+
+  getDirMode() {
+    return this.isDirMode;
   }
 
   private setPath(np: string) {
@@ -72,15 +85,44 @@ export class PageGenerator {
       return;
     }
 
-    const response = await prompts({
+    const response = await this.prompts({
       type: 'text',
       name: 'name',
       message: 'What is the name of page?',
     });
-    if (!response.name) {
-      this.name = response.name || 'index';
-      this.isDirMode = false;
+    if (response.name) {
+      this.setPath(response.name);
+    } else {
+      this.setPath('index');
     }
+    this.isDirMode = false;
+  }
+
+  private async ensureDirMode() {
+    if (!this.needEnsureDirMode) return;
+
+    const response = await this.prompts({
+      type: 'select',
+      name: 'mode',
+      message: 'How dou you want page files to be created?',
+      choices: [
+        { title: this.dirModeFileExample(), value: 'dir' },
+        { title: this.fileModeFileExample(), value: 'file' },
+      ],
+      initial: 0,
+    });
+
+    this.isDirMode = response.mode === 'dir';
+  }
+
+  private fileModeFileExample() {
+    const base = join(this.dir, this.name);
+    return `${base}.{tsx,less}`;
+  }
+
+  private dirModeFileExample() {
+    const base = join(this.dir, this.name, 'index');
+    return `${base}.{tsx,less}`;
   }
 
   private async fileModeRun() {
