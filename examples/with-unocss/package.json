@@ -10,6 +10,6 @@
     "@umijs/plugins": "4.0.0-canary.20220317.2",
     "@unocss/cli": "^0.29.0",
     "umi": "4.0.0-canary.20220317.2",
-    "unocss": "^0.29.0"
+    "unocss": "^0.29.3"
   }
 }
