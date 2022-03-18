@@ -10,7 +10,7 @@
     "@ant-design/icons": "4.7.0",
     "@ant-design/pro-descriptions": "^1.10.56",
     "@ant-design/pro-form": "^1.59.1",
-    "@ant-design/pro-layout": "7.0.1-beta.3",
+    "@ant-design/pro-layout": "^6.34.4",
     "@ant-design/pro-table": "^2.68.1",
     "@antv/l7-react": "^2.3.9",
     "@umijs/max": "4.0.0-canary.20220317.2",
