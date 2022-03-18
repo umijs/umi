@@ -97,7 +97,7 @@ export default {
           title: 'Blog',
           children: [
             'umi-4-rc',
-            'mfsu-faster-then-vite',
+            'mfsu-faster-than-vite',
             'mfsu-independent-usage',
           ],
         },
