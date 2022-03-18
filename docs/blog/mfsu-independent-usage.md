@@ -4,7 +4,13 @@ import { Message } from 'umi';
 
 `MFSU` 支持独立在非 umijs 项目中使用，本文将会介绍如何将 `MFSU` 接入你的 webpack 项目。
 
-在这里有一个示例项目：<a href="https://github.com/umijs/umi-next/tree/master/examples/mfsu-independent" target="_blank">examples/mfsu-independent</a>
+## 示例项目
+
+如何接入 MFSU ？提供以下几个 示例项目 配置供参考：
+
+Webpack 配置示例：<a href="https://github.com/umijs/umi-next/tree/master/examples/mfsu-independent" target="_blank">examples/mfsu-independent</a>
+
+CRA v5 配置示例：<a href="https://github.com/umijs/cra-v5-with-mfsu-example" target="_blank">cra-v5-with-mfsu-example</a>
 
 ## 安装
 
@@ -189,10 +195,6 @@ module.exports = getConfig()
 
 符合预期时，你已经可以享受 `MFSU` 带来的好处，包括 `esbuild` 快速的打包和二次热启动的提速。
 
-<div hidden>
-
-// TODO: table render and comment
-
 ## 其他配置
 
 以下是其他你可能会用到的 `MFSU` 实例配置：
@@ -203,17 +205,16 @@ module.exports = getConfig()
   })
 ```
 
-|name|default|description|
-|:-:|:-:|:-|
-|`cwd`|`process.cwd()`|项目根目录|
-|`getCacheDependency`|`() => {}`|用来对比使 MFSU cache 无效的函数|
-|`tmpBase`|`${process.cwd()}/.mfsu`|MFSU 缓存存放目录|
-|`unMatchLibs`|`[]`|手动排除某些不需要被 MFSU 处理的依赖|
-|`runtimePublicPath`|`undefined`|同 umijs > [`runtimePublicPath`](https://umijs.org/config#runtimepublicpath)|
-|`implementor`|`undefined`|webpack 实例，需要和项目内使用的唯一实例一致|
-|`buildDepWithESBuild`|`false`|是否使用 `esbuild` 打包依赖|
+Options:
 
-</div>
+ - `cwd` (Default: `process.cwd()`): 项目根目录
+ - `getCacheDependency` (Default: `() => {}`): 用返回值来对比，使 MFSU cache 无效的函数
+ - `tmpBase` (Default: `${process.cwd()}/.mfsu`): MFSU 缓存存放目录
+ - `unMatchLibs` (Default: `[]`): 手动排除某些不需要被 MFSU 处理的依赖
+ - `runtimePublicPath` (Default: `undefined`): 同 umijs > [`runtimePublicPath`](https://umijs.org/config#runtimepublicpath)
+ - `implementor` (Default: `undefined`): webpack 实例，需要和项目内使用的唯一实例一致
+ - `buildDepWithESBuild` (Default: `false`): 是否使用 `esbuild` 打包依赖
+
 
 ## 常见问题
 
