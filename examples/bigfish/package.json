@@ -2,8 +2,8 @@
   "name": "@example/bigfish",
   "private": true,
   "scripts": {
-    "build": "umimax build",
-    "dev": "umimax dev",
+    "build": "max build",
+    "dev": "max dev",
     "start": "npm run dev"
   },
   "dependencies": {

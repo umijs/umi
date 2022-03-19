@@ -12,7 +12,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "bin": {
-    "umimax": "bin/max.js"
+    "max": "bin/max.js"
   },
   "files": [
     "dist",
