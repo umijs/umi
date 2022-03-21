@@ -14,18 +14,10 @@ async function render() {
   const pluginManager = createPluginManager();
   const { routes, routeComponents } = await getRoutes(pluginManager);
 
-  // async, normally for loading data from remote
-  await pluginManager.applyPlugins({
-    key: 'beforePatchRoutes',
-    type: 'event',
-    async: true,
-    args: {},
-  });
-
   // allow user to extend routes
-  pluginManager.applyPlugins({
+  await pluginManager.applyPlugins({
     key: 'patchRoutes',
-    type: 'event',
+    type: ApplyPluginsType.event,
     args: {
       routes,
       routeComponents,
