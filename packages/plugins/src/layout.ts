@@ -46,19 +46,27 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
-import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteContext } from 'umi';
+import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
+import { useMemo } from 'react';
 import ProLayout, {
   PageLoading,
 } from '@ant-design/pro-layout';
 import './Layout.less';
 import Logo from './Logo';
+import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
 ${
   hasInitialStatePlugin
     ? `import { useModel } from '@@/plugin-model';`
     : 'const useModel = null;'
 }
-
+${
+  api.config.access
+    ? `
+import { useAccessMarkedRoutes } from '@@/plugin-access';
+   `.trim()
+    : 'const useAccessMarkedRoutes = (r) => r;'
+}
 ${
   api.config.locale
     ? `
@@ -68,7 +76,7 @@ import { useIntl } from '@@/plugin-locale';
 }
 
 
-export default () => {
+export default (props: any) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { clientRoutes, pluginManager } = useAppData();
@@ -93,9 +101,8 @@ const { formatMessage } = useIntl();
       ...initialInfo
     },
   });
-  const route = clientRoutes.filter(r => {
-    return r.id === 'ant-design-pro-layout';
-  })[0];
+  const matchedRoute = useMemo(() => matchRoutes(clientRoutes, location.pathname).pop()?.route, [location.pathname]);
+  const [route] = useAccessMarkedRoutes(clientRoutes.filter(({ id }) => id === 'ant-design-pro-layout'));
   return (
     <ProLayout
       route={route}
@@ -151,7 +158,16 @@ const { formatMessage } = useIntl();
         })
       }
     >
-      <Outlet />
+      <Exception
+        route={matchedRoute}
+        notFound={runtimeConfig.notFound}
+        noAccessible={runtimeConfig.noAccessible}
+      >
+        {runtimeConfig.childrenRender
+          ? runtimeConfig.childrenRender(<Outlet />, props)
+          : <Outlet />
+        }
+      </Exception>
     </ProLayout>
   );
 }
@@ -465,6 +481,44 @@ const LogoIcon: React.FC = () => {
 
 export default LogoIcon;
       `,
+    });
+
+    api.writeTmpFile({
+      path: 'Exception.tsx',
+      content: `
+import React from 'react';
+import { history, type IRoute } from 'umi';
+import { Result, Button } from 'antd';
+
+const Exception: React.FC<{
+  children: React.ReactNode;
+  route?: IRoute;
+  notFound?: React.ReactNode;
+  noAccessible?: React.ReactNode;
+}> = (props) => (
+  // render custom 404
+  (!props.route && props.notFound) ||
+  // render custom 403
+  (props.route.unaccessible && props.noAccessible) ||
+  // render default exception
+  ((!props.route || props.route.unaccessible) && (
+    <Result
+      status={props.route ? '403' : '404'}
+      title={props.route ? '403' : '404'}
+      subTitle={props.route ? '抱歉，你无权访问该页面' : '抱歉，你访问的页面不存在'}
+      extra={
+        <Button type="primary" onClick={() => history.push('/')}>
+          返回首页
+        </Button>
+      }
+    />
+  )) ||
+  // normal render
+  props.children
+);
+
+export default Exception;
+`,
     });
   });
 
