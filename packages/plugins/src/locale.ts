@@ -65,13 +65,15 @@ export default (api: IApi) => {
   );
 
   // polyfill
-  if (isNeedPolyfill(api.userConfig?.targets || {})) {
-    api.addEntryImportsAhead(() => [
-      {
-        source: require.resolve('intl'),
-      },
-    ]);
-  }
+  api.addEntryImportsAhead(() =>
+    isNeedPolyfill(api.config.targets || {})
+      ? [
+          {
+            source: require.resolve('intl'),
+          },
+        ]
+      : [],
+  );
 
   const addAntdLocales: IAddAntdLocales = async (args) =>
     await api.applyPlugins({
@@ -91,7 +93,7 @@ export default (api: IApi) => {
   ): Promise<IGetLocaleFileListResult[]> => {
     const { paths } = api;
     return getLocaleList({
-      localeFolder: api.config?.singular ? 'locale' : 'locales',
+      localeFolder: 'locales',
       separator: api.config.locale?.baseSeparator,
       absSrcPath: paths.absSrcPath,
       absPagesPath: paths.absPagesPath,
@@ -175,7 +177,7 @@ export default (api: IApi) => {
       join(__dirname, '../libs/locale/localeExports.tpl'),
       'utf-8',
     );
-    const localeDirName = api.config.singular ? 'locale' : 'locales';
+    const localeDirName = 'locales';
     const localeDirPath = join(api.paths!.absSrcPath!, localeDirName);
     api.writeTmpFile({
       path: 'localeExports.ts',
@@ -235,7 +237,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { useIntl, formatMessage, FormattedMessage } from './localeExports.ts';
+export { setLocale, getLocale, useIntl, formatMessage, FormattedMessage } from './localeExports.ts';
 export { SelectLang } from './SelectLang.tsx';
 `,
     });
