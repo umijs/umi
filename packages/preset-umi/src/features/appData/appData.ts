@@ -3,6 +3,7 @@ import { getNpmClient } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
+import { osLocale } from '../../../compiled/os-locale';
 import { expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
 import { IApi } from '../../types';
@@ -25,6 +26,7 @@ export default (api: IApi) => {
       version: require(join(api.config.alias.react, 'package.json')).version,
     };
     memo.appJS = await getAppJsInfo();
+    memo.locale = await osLocale();
     memo.vite = api.config.vite ? {} : undefined;
     memo.globalCSS = [
       'global.css',

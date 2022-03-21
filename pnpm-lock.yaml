@@ -872,6 +872,7 @@ importers:
       joi2types: 1.1.0
       magic-string: 0.26.1
       multer: 1.4.4
+      os-locale: ^6.0.2
       path-to-regexp: 1.7.0
       react: 17.0.2
       react-dom: 17.0.2
@@ -908,6 +909,7 @@ importers:
       ini: 2.0.0
       joi2types: 1.1.0
       multer: 1.4.4
+      os-locale: 6.0.2
       vite: 2.8.6
 
   packages/renderer-react:
@@ -12314,6 +12316,11 @@ packages:
     resolution: {integrity: sha512-j8grHGDzv1v+8T1sAQ+3boTCntFPfvxLCkNcxB1J8qA0lUN+fAlSyYd+RXKvaPRL4AGyPxViutBEJHNXOyUdFQ==}
     dev: false
 
+  /invert-kv/3.0.1:
+    resolution: {integrity: sha512-CYdFeFexxhv/Bcny+Q0BfOV+ltRlJcd4BBZBYFX/O0u4npJrgZtIcjokegtiSMAvlMTJ+Koq0GBCc//3bueQxw==}
+    engines: {node: '>=8'}
+    dev: true
+
   /ip/1.1.5:
     resolution: {integrity: sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=}
     dev: true
@@ -13603,6 +13610,13 @@ packages:
     resolution: {integrity: sha1-odePw6UEdMuAhF07O24dpJpEbo4=}
     engines: {node: '>=0.10.0'}
     dev: false
+
+  /lcid/3.1.1:
+    resolution: {integrity: sha512-M6T051+5QCGLBQb8id3hdvIW8+zeFV2FyBGFS9IEK5H9Wt4MueD4bW1eWikpHgZp+5xR3l5c8pZUkQsIA0BFZg==}
+    engines: {node: '>=8'}
+    dependencies:
+      invert-kv: 3.0.1
+    dev: true
 
   /lerna/4.0.0:
     resolution: {integrity: sha512-DD/i1znurfOmNJb0OBw66NmNqiM8kF6uIrzrJ0wGE3VNdzeOhz9ziWLYiRaZDGGwgbcjOo6eIfcx9O5Qynz+kg==}
@@ -15573,6 +15587,13 @@ packages:
   /os-homedir/1.0.2:
     resolution: {integrity: sha1-/7xJiDNuDoM94MFox+8VISGqf7M=}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /os-locale/6.0.2:
+    resolution: {integrity: sha512-qIb8bzRqaN/vVqEYZ7lTAg6PonskO7xOmM7OClD28F6eFa4s5XGe4bGpHUHMoCHbNNuR0pDYFeSLiW5bnjWXIA==}
+    engines: {node: '>=12.20'}
+    dependencies:
+      lcid: 3.1.1
     dev: true
 
   /os-tmpdir/1.0.2:
