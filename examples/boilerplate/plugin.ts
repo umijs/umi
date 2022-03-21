@@ -22,6 +22,7 @@ export default (api: IApi) => {
   api.chainWebpack((memo) => {
     memo;
   });
+  api.onStart(() => {});
   api.onCheckCode((args) => {
     args;
     // console.log('> onCheckCode', args);
