@@ -138,6 +138,19 @@ $ umi plugin list
 }
 ```
 
+## verifyCommit
+
+验证 commit message 信息，通常和 [husky](https://github.com/typicode/husky) 搭配使用。
+
+比如在 `.husky/commit-msg` 做如下配置，
+
+```bash
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx --no-install umi verify-ommit $1
+```
+
 ## version
 
 查看 umi 版本，等同于 `umi -v`。

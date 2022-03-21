@@ -706,6 +706,23 @@ targets: { ie: 11 }
 theme: { '@primary-color': '#1DA57A' }
 ```
 
+## verifyCommit
+
+* 类型：`{ scope: string[]; allowEmoji: boolean }`
+* 默认值：`{}`
+
+针对 verify-commit 命令的配置项。
+
+关于参数。`scope` 用于配置允许的 scope，配置后会覆盖默认的；`allowEmoji` 开启后会允许加 EMOJI 前缀，比如 `💥 feat(模块): 添加了个很棒的功能`。
+
+```
+verifyCommit: {
+  scope: ['feat', 'fix'],
+  allowEmoji: true,
+}
+```
+
+
 ## vite
 
 * 类型：`object`
