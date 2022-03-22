@@ -1,4 +1,10 @@
-import { installWithNpmClient, lodash, logger, semver } from '@umijs/utils';
+import {
+  installWithNpmClient,
+  lodash,
+  logger,
+  prompts,
+  semver,
+} from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -101,4 +107,17 @@ export function getUmiJsPlugin() {
     ? pkg.version
     : `^${pkg.version}`;
   return umijsPluginVersion;
+}
+
+// the definition is copied from prompts.d.ts; if there is a better way to do this, tell me.
+export function promptsExitWhenCancel<T extends string = string>(
+  questions: prompts.PromptObject<T> | Array<prompts.PromptObject<T>>,
+  options?: Pick<prompts.Options, 'onSubmit'>,
+): Promise<prompts.Answers<T>> {
+  return prompts(questions, {
+    ...options,
+    onCancel: () => {
+      process.exit(1);
+    },
+  });
 }

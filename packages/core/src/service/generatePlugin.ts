@@ -48,7 +48,7 @@ umi generate
           generators: typeof api.service.generators,
         ) => {
           const questions = [] as { title: string; value: string }[];
-          Object.keys(generators).forEach(async (key) => {
+          for (const key of Object.keys(generators)) {
             if (generators[key].type === GeneratorType.generate) {
               questions.push({
                 title:
@@ -69,7 +69,7 @@ umi generate
                 });
               }
             }
-          });
+          }
           return questions;
         };
         const questions = await getEnableGenerators(api.service.generators);
