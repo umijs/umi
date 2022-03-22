@@ -56,7 +56,6 @@ export class MFSU {
   public depBuilder: DepBuilder;
   public depConfig: Configuration | null = null;
   public buildDepsAgain: boolean = false;
-  public depsBuilding: boolean = false;
   constructor(opts: IOpts) {
     this.opts = opts;
     this.opts.mfName = this.opts.mfName || DEFAULT_MF_NAME;
@@ -194,7 +193,7 @@ promise new Promise(resolve => {
         }),
         new BuildDepPlugin({
           onCompileDone: () => {
-            if (this.depsBuilding) {
+            if (this.depBuilder.isBuilding) {
               this.buildDepsAgain = true;
             } else {
               this.buildDeps().catch((e: Error) => {
@@ -226,7 +225,6 @@ promise new Promise(resolve => {
       logger.info('MFSU skip buildDeps');
       return;
     }
-    this.depsBuilding = true;
     this.depInfo.snapshot();
     const deps = Dep.buildDeps({
       deps: this.depInfo.moduleGraph.depSnapshotModules,
@@ -241,8 +239,6 @@ promise new Promise(resolve => {
 
     // Write cache
     this.depInfo.writeCache();
-
-    this.depsBuilding = false;
 
     if (this.buildDepsAgain) {
       logger.info('MFSU buildDepsAgain');
