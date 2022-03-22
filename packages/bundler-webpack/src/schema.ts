@@ -65,15 +65,9 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     externals: (Joi) =>
       Joi.alternatives().try(Joi.object(), Joi.string(), Joi.func()),
     extraBabelPlugins: (Joi) =>
-      Joi.alternatives().try(
-        Joi.string(),
-        Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.object())),
-      ),
+      Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.array())),
     extraBabelPresets: (Joi) =>
-      Joi.alternatives().try(
-        Joi.string(),
-        Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.object())),
-      ),
+      Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.array())),
     extraPostCSSPlugins: (Joi) => Joi.array(),
     fastRefresh: (Joi) => Joi.boolean(),
     forkTSChecker: (Joi) => Joi.object(),
