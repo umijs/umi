@@ -2,6 +2,7 @@ import { GeneratorType } from '@umijs/core';
 import { generateFile, prompts, randomColor } from '@umijs/utils';
 import { join, parse } from 'path';
 import { IApi } from '../../types';
+import { promptsExitWhenCancel } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -31,13 +32,15 @@ const LEES_TPL_PATH = join(
   __dirname,
   '../../../templates/generate/page/index.less.tpl',
 );
+const DEFAULT_PAGE_NAME = 'unTitledPage';
 
 export class PageGenerator {
   private isDirMode = false;
   private dir = '';
   private name = '';
   private needEnsureDirMode = false;
-  private prompts = prompts;
+  private prompts = promptsExitWhenCancel;
+  private paths: string[] = [];
 
   constructor(
     readonly options: {
@@ -47,15 +50,31 @@ export class PageGenerator {
     },
   ) {
     this.isDirMode = options.args.dir;
-    const [_, nameOrPath = ''] = options.args._;
-    if (nameOrPath) {
-      this.setPath(nameOrPath);
+    const [_, ...inputPaths] = options.args._ as string[];
+
+    if (inputPaths.length > 0) {
+      this.paths = inputPaths;
     } else {
       this.needEnsureDirMode = true;
     }
   }
 
   async run() {
+    if (this.paths.length === 0) {
+      await this.runInteractiveMode();
+    } else {
+      for (const p of this.paths) {
+        this.setPath(p);
+        if (this.isDirMode) {
+          await this.dirModeRun();
+        } else {
+          await this.fileModeRun();
+        }
+      }
+    }
+  }
+
+  async runInteractiveMode() {
     await this.ensureName();
     await this.ensureDirMode();
 
@@ -89,11 +108,17 @@ export class PageGenerator {
       type: 'text',
       name: 'name',
       message: 'What is the name of page?',
+      initial: DEFAULT_PAGE_NAME,
     });
-    if (response.name) {
-      this.setPath(response.name);
+
+    const { name: rawInput = '' } = response;
+
+    const pageName = rawInput.trim();
+
+    if (pageName) {
+      this.setPath(pageName);
     } else {
-      this.setPath('index');
+      this.setPath(DEFAULT_PAGE_NAME);
     }
     this.isDirMode = false;
   }

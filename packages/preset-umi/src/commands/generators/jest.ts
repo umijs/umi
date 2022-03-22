@@ -1,9 +1,9 @@
 import { GeneratorType } from '@umijs/core';
-import { logger, prompts } from '@umijs/utils';
+import { logger } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
-import { GeneratorHelper } from './utils';
+import { GeneratorHelper, promptsExitWhenCancel } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -24,7 +24,7 @@ export default (api: IApi) => {
     fn: async () => {
       const h = new GeneratorHelper(api);
 
-      const res = await prompts({
+      const res = await promptsExitWhenCancel({
         type: 'confirm',
         name: 'willUseTLR',
         message: 'Will you use @testing-library/react for UI testing?!',
