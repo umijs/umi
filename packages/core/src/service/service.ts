@@ -218,12 +218,16 @@ export class Service {
     }
     this.pkg = pkg;
     this.pkgPath = pkgPath || join(this.cwd, 'package.json');
+
+    const prefix = this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
     // get user config
     const configManager = new Config({
       cwd: this.cwd,
       env: this.env,
       defaultConfigFiles: this.opts.defaultConfigFiles,
+      specifiedEnv: process.env[`${prefix}_ENV`.toUpperCase()],
     });
+
     this.configManager = configManager;
     this.userConfig = configManager.getUserConfig().config;
     // get paths (move after?)
@@ -238,7 +242,7 @@ export class Service {
         this.opts.presets || [],
       ),
       userConfig: this.userConfig,
-      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
+      prefix,
     });
     // register presets and plugins
     this.stage = ServiceStage.initPresets;
