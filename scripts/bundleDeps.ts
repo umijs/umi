@@ -114,7 +114,11 @@ Object.keys(exported).forEach(function (key) {
       // entry code
       fs.ensureDirSync(target);
       // node 14 support for chalk
-      if (['chalk', 'pkg-up', 'execa', 'globby'].includes(opts.pkgName)) {
+      if (
+        ['chalk', 'pkg-up', 'execa', 'globby', 'os-locale'].includes(
+          opts.pkgName,
+        )
+      ) {
         code = code.replace(/require\("node:/g, 'require("');
       }
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');
