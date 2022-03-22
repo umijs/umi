@@ -72,6 +72,14 @@ export default (api: IApi) => {
     return memo;
   });
 
+  api.modifyConfig((memo) => {
+    memo.theme = {
+      'root-entry-name': 'default',
+      ...memo.theme,
+    };
+    return memo;
+  });
+
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
     const style = api.config.antd.style || 'less';
