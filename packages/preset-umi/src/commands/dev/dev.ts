@@ -227,6 +227,7 @@ PORT=8888 umi dev
           args,
         });
       };
+      const debouncedPrintMemoryUsage = lodash.debounce(printMemoryUsage, 5000);
       const opts = {
         config: api.config,
         cwd: api.cwd,
@@ -248,7 +249,7 @@ PORT=8888 umi dev
         ]),
         afterMiddlewares: middlewares.concat(createRouteMiddleware({ api })),
         onDevCompileDone(opts: any) {
-          printMemoryUsage();
+          debouncedPrintMemoryUsage();
           api.applyPlugins({
             key: 'onDevCompileDone',
             args: opts,

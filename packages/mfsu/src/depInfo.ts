@@ -25,11 +25,11 @@ export class DepInfo {
         this.opts.mfsu.opts.getCacheDependency!(),
       )
     ) {
-      return true;
+      return 'cacheDependency has changed';
     }
 
     if (this.moduleGraph.hasDepChanged()) {
-      return true;
+      return 'moduleGraph has changed';
     }
 
     return false;
@@ -53,18 +53,22 @@ export class DepInfo {
 
   writeCache() {
     fsExtra.mkdirpSync(dirname(this.cacheFilePath));
-    logger.info('MFSU write cache');
-    writeFileSync(
-      this.cacheFilePath,
-      JSON.stringify(
-        {
-          cacheDependency: this.cacheDependency,
-          moduleGraph: this.moduleGraph.toJSON(),
-        },
-        null,
-        2,
-      ),
-      'utf-8',
+    const newContent = JSON.stringify(
+      {
+        cacheDependency: this.cacheDependency,
+        moduleGraph: this.moduleGraph.toJSON(),
+      },
+      null,
+      2,
     );
+    if (
+      existsSync(this.cacheFilePath) &&
+      readFileSync(this.cacheFilePath, 'utf-8') === newContent
+    ) {
+      return;
+    }
+
+    logger.info('MFSU write cache');
+    writeFileSync(this.cacheFilePath, newContent, 'utf-8');
   }
 }
