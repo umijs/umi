@@ -47,7 +47,7 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
-    "@swc/core": "1.2.160",
+    "@swc/core": "1.2.157",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.3",
     "autoprefixer": "10.4.4",
