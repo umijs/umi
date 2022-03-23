@@ -38,7 +38,7 @@
     "cheerio": "1.0.0-rc.10",
     "color": "4.2.1",
     "cross-spawn": "7.0.3",
-    "debug": "4.3.3",
+    "debug": "4.3.4",
     "deepmerge": "4.2.2",
     "execa": "6.1.0",
     "fs-extra": "10.0.1",

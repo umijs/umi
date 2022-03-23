@@ -30,7 +30,7 @@
     "less-plugin-aliases": "^1.0.3",
     "postcss": "^8.4.12",
     "postcss-flexbugs-fixes": "5.0.2",
-    "postcss-preset-env": "7.4.2"
+    "postcss-preset-env": "7.4.3"
   },
   "devDependencies": {
     "@alitajs/postcss-plugin-px2rem": "^0.0.1"

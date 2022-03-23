@@ -8,20 +8,20 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "antd": "^4.19.2",
+    "antd": "^4.19.3",
     "framer-motion": "^6.2.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.7",
+    "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
-    "@types/react": "^17.0.40",
-    "@types/react-dom": "^17.0.13",
+    "@types/react": "^17.0.41",
+    "@types/react-dom": "^17.0.14",
     "@umijs/mfsu": "4.0.0-canary.20220318.1",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.4",
     "esbuild": "0.14.27",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.70.0",
