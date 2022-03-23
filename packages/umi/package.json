@@ -30,7 +30,8 @@
     "build": "pnpm tsc",
     "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build -- --watch",
+    "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
     "@umijs/core": "4.0.0-canary.20220318.1",
