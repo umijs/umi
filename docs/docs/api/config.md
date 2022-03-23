@@ -299,7 +299,7 @@ HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/f
 
 注意：HTML 文件始终没有 hash 后缀。
 
-## headScript
+## headScripts
 
 * 类型：`string[] | Script[]`
 * 默认值：`[]`
