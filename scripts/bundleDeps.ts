@@ -115,11 +115,19 @@ Object.keys(exported).forEach(function (key) {
       fs.ensureDirSync(target);
       // node 14 support for chalk
       if (
-        ['chalk', 'pkg-up', 'execa', 'globby', 'os-locale'].includes(
-          opts.pkgName,
-        )
+        [
+          'chalk',
+          'pkg-up',
+          'execa',
+          'globby',
+          'os-locale',
+          'copy-webpack-plugin',
+        ].includes(opts.pkgName)
       ) {
         code = code.replace(/require\("node:/g, 'require("');
+      }
+      if (code.includes('"node:')) {
+        throw new Error(`${opts.pkgName} has "node:"`);
       }
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');
 
