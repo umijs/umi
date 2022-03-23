@@ -1,6 +1,7 @@
 import type { ImportDeclaration, ModuleItem, TsType } from '@swc/core';
 import Visitor from '@swc/core/Visitor';
 import { isStyleFile } from '@umijs/utils';
+import { changeImportFromString } from './changeImportFromString';
 
 class AutoCSSModule extends Visitor {
   visitTsType(expression: TsType) {
@@ -24,13 +25,8 @@ class AutoCSSModule extends Visitor {
     const { value } = source;
 
     if (specifiers.length && isStyleFile({ filename: value })) {
-      return {
-        ...expression,
-        source: {
-          ...source,
-          value: `${value}?modules`,
-        },
-      };
+      const newImportFrom = `${value}?modules`;
+      changeImportFromString(expression, newImportFrom);
     }
     return expression;
   }
