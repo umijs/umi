@@ -2,6 +2,7 @@ import type { ImportDeclaration } from '@swc/core';
 import Visitor from '@swc/core/Visitor';
 import { winPath } from '@umijs/utils';
 import { dirname } from 'path';
+import { changeImportFromString } from './changeImportFromString';
 
 function addLastSlash(path: string) {
   return path.endsWith('/') ? path : `${path}/`;
@@ -13,18 +14,11 @@ class LockCoreJS extends Visitor {
     let { value, type } = source;
 
     if (type === 'StringLiteral' && value.startsWith('core-js/')) {
-      value = value.replace(
+      const newValue = value.replace(
         /^core-js\//,
         addLastSlash(winPath(dirname(require.resolve('core-js/package.json')))),
       );
-
-      return {
-        ...expression,
-        source: {
-          ...source,
-          value,
-        },
-      };
+      changeImportFromString(expression, newValue);
     }
 
     return expression;
