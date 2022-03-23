@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-canary.20220318.1",
-    "antd": "^4.19.2",
+    "antd": "^4.19.3",
     "umi": "4.0.0-canary.20220318.1"
   },
   "publishConfig": {
