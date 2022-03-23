@@ -12,7 +12,6 @@ import webpack, { Configuration } from 'webpack';
 import { lookup } from '../compiled/mrmime';
 // @ts-ignore
 import WebpackVirtualModules from '../compiled/webpack-virtual-modules';
-import autoExport from './babelPlugins/autoExport';
 import awaitImport from './babelPlugins/awaitImport/awaitImport';
 import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
 import {
@@ -27,7 +26,6 @@ import {
 import { Dep } from './dep/dep';
 import { DepBuilder } from './depBuilder/depBuilder';
 import { DepInfo } from './depInfo';
-import autoExportHandler from './esbuildHandlers/autoExport';
 import getAwaitImportHandler from './esbuildHandlers/awaitImport';
 import { Mode } from './types';
 import { makeArray } from './utils/makeArray';
@@ -326,7 +324,7 @@ promise new Promise(resolve => {
   }
 
   getBabelPlugins() {
-    return [autoExport, [awaitImport, this.getAwaitImportCollectOpts()]];
+    return [[awaitImport, this.getAwaitImportCollectOpts()]];
   }
 
   getEsbuildLoaderHandler() {
@@ -334,7 +332,6 @@ promise new Promise(resolve => {
     const checkOpts = this.getAwaitImportCollectOpts();
 
     return [
-      autoExportHandler,
       getAwaitImportHandler({
         cache,
         opts: checkOpts,
