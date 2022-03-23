@@ -94,6 +94,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       Joi.alternatives(
         Joi.object({
           cacheDirectory: Joi.string(),
+          chainWebpack: Joi.function(),
           esbuild: Joi.boolean(),
           mfName: Joi.string(),
         }),
