@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugins",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "@umijs/plugins",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugins#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -25,7 +25,7 @@
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-layout": "^6.34.6",
-    "@umijs/bundler-utils": "4.0.0-canary.20220323.1",
+    "@umijs/bundler-utils": "4.0.0-rc.9",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.26.1",
     "babel-plugin-import": "^1.13.3",
@@ -44,7 +44,7 @@
     "warning": "^4.0.3"
   },
   "devDependencies": {
-    "umi": "4.0.0-canary.20220323.1"
+    "umi": "4.0.0-rc.9"
   },
   "publishConfig": {
     "access": "public"

@@ -13,7 +13,7 @@
     "@ant-design/pro-layout": "^6.34.6",
     "@ant-design/pro-table": "^2.68.3",
     "@antv/l7-react": "^2.3.9",
-    "@umijs/max": "4.0.0-canary.20220323.1",
+    "@umijs/max": "4.0.0-rc.9",
     "ahooks": "^3.1.14",
     "antd": "4.19.3",
     "classnames": "^2.3.1",

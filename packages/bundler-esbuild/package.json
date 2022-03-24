@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-esbuild",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "@umijs/bundler-esbuild",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-esbuild#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -24,8 +24,8 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20220323.1",
-    "@umijs/utils": "4.0.0-canary.20220323.1",
+    "@umijs/bundler-utils": "4.0.0-rc.9",
+    "@umijs/utils": "4.0.0-rc.9",
     "enhanced-resolve": "5.9.2",
     "less-plugin-aliases": "^1.0.3",
     "postcss": "^8.4.12",

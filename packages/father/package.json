@@ -1,6 +1,6 @@
 {
   "name": "father",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "father",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/father#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -24,8 +24,8 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-canary.20220323.1",
-    "@umijs/utils": "4.0.0-canary.20220323.1",
+    "@umijs/core": "4.0.0-rc.9",
+    "@umijs/utils": "4.0.0-rc.9",
     "v8-compile-cache": "2.3.0"
   },
   "publishConfig": {

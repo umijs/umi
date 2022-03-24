@@ -20,7 +20,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@types/react": "^17.0.41",
     "@types/react-dom": "^17.0.14",
-    "@umijs/mfsu": "4.0.0-canary.20220323.1",
+    "@umijs/mfsu": "4.0.0-rc.9",
     "babel-loader": "^8.2.4",
     "esbuild": "0.14.27",
     "html-webpack-plugin": "^5.5.0",

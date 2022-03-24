@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -35,7 +35,7 @@
     "classnames": "^2.3.1",
     "rehype-slug": "5.0.1",
     "tailwindcss": "^3.0.23",
-    "umi": "4.0.0-canary.20220323.1"
+    "umi": "4.0.0-rc.9"
   },
   "publishConfig": {
     "access": "public"
