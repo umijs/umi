@@ -1,6 +1,6 @@
 {
   "name": "@umijs/max",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "@umijs/max",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/pro#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -30,9 +30,9 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20220323.1",
+    "@umijs/plugins": "4.0.0-rc.9",
     "antd": "^4.19.3",
-    "umi": "4.0.0-canary.20220323.1"
+    "umi": "4.0.0-rc.9"
   },
   "publishConfig": {
     "access": "public"

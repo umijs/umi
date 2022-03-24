@@ -1,6 +1,6 @@
 {
   "name": "create-umi",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "create-umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/create-umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -25,7 +25,7 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.0-canary.20220323.1"
+    "@umijs/utils": "4.0.0-rc.9"
   },
   "publishConfig": {
     "access": "public"

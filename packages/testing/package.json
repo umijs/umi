@@ -1,6 +1,6 @@
 {
   "name": "@umijs/test",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "@umijs/test",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/testing#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ast",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "@umijs/ast",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/ast#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -21,7 +21,7 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20220323.1"
+    "@umijs/bundler-utils": "4.0.0-rc.9"
   },
   "publishConfig": {
     "access": "public"

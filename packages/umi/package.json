@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.0-canary.20220323.1",
+  "version": "4.0.0-rc.9",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -34,11 +34,11 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-canary.20220323.1",
-    "@umijs/preset-umi": "4.0.0-canary.20220323.1",
-    "@umijs/renderer-react": "4.0.0-canary.20220323.1",
-    "@umijs/test": "4.0.0-canary.20220323.1",
-    "@umijs/utils": "4.0.0-canary.20220323.1"
+    "@umijs/core": "4.0.0-rc.9",
+    "@umijs/preset-umi": "4.0.0-rc.9",
+    "@umijs/renderer-react": "4.0.0-rc.9",
+    "@umijs/test": "4.0.0-rc.9",
+    "@umijs/utils": "4.0.0-rc.9"
   },
   "engines": {
     "node": ">=14"
