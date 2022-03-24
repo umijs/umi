@@ -4,7 +4,7 @@ import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, logger } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
+import { createReadStream, existsSync } from 'fs';
 import http from 'http';
 import { join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
@@ -47,7 +47,7 @@ export async function createServer(opts: IOpts) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
       'Access-Control-Allow-Headers',
-      'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild',
+      'Content-Type, Content-Length, Authorization, Accept, X-Requested-With',
     );
     res.header(
       'Access-Control-Allow-Methods',
@@ -68,7 +68,7 @@ export async function createServer(opts: IOpts) {
   app.use((req, res, next) => {
     if (req.path === '/umi.js' && existsSync(join(opts.cwd, 'umi.js'))) {
       res.setHeader('Content-Type', 'application/javascript');
-      res.send(readFileSync(join(opts.cwd, 'umi.js'), 'utf-8'));
+      createReadStream(join(opts.cwd, 'umi.js')).on('error', next).pipe(res);
     } else {
       next();
     }
@@ -91,6 +91,7 @@ export async function createServer(opts: IOpts) {
   let stats: any;
   let isFirstCompile = true;
   compiler.compilers.forEach(addHooks);
+
   function addHooks(compiler: webpack.Compiler) {
     compiler.hooks.invalid.tap('server', () => {
       sendMessage(MESSAGE_TYPE.invalid);
@@ -106,6 +107,7 @@ export async function createServer(opts: IOpts) {
       isFirstCompile = false;
     });
   }
+
   function sendStats(
     stats: webpack.StatsCompilation,
     force?: boolean,
@@ -137,6 +139,7 @@ export async function createServer(opts: IOpts) {
       sendMessage(MESSAGE_TYPE.ok, null, sender);
     }
   }
+
   function getStats(stats: webpack.Stats) {
     return stats.toJson({
       all: false,
@@ -147,6 +150,7 @@ export async function createServer(opts: IOpts) {
       errorDetails: false,
     });
   }
+
   function sendMessage(type: string, data?: any, sender?: any) {
     (sender || ws).send(JSON.stringify({ type, data }));
   }
@@ -195,8 +199,7 @@ export async function createServer(opts: IOpts) {
     res.set('Content-Type', 'text/html');
     const htmlPath = join(opts.cwd, 'index.html');
     if (existsSync(htmlPath)) {
-      const html = readFileSync(htmlPath, 'utf-8');
-      res.send(html);
+      createReadStream(htmlPath).on('error', next).pipe(res);
     } else {
       next();
     }
