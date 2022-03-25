@@ -225,9 +225,7 @@ export default {
 我们可以使用 Umi 的微生成器来自动生成这些页面：`login.tsx`, `posts/post.tsx`, `posts/create.tsx`:
 
 ```shell
-umi g page login
-umi g page posts/post 
-umi g page posts/create
+umi g page login posts/post posts/create
 ```
 
 新增后的目录结构是这样的：
@@ -240,10 +238,14 @@ src
 │     ├── index.less
 │     └── index.tsx
 └── pages
+    ├── index.less
     ├── index.tsx
+    ├── login.less
     ├── login.tsx
     └── posts
+        ├── create.less
         ├── create.tsx
+        ├── post.less
         └── post.tsx
 ```
 
@@ -405,7 +407,7 @@ npx prisma generate
 
 至此，我们已经顺利处理完数据库的部分，接下来只要专注于如何在 API 路由中使用 Prisma 客户端包来获取与更新数据即可。
 
-## 实作 API 路由
+## 实现 API 路由
 
 我们现在要回头来实作刚刚建立的那些 `api` 目录下的 `.ts` 文件了，只要我们自己清楚：
 

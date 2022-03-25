@@ -7,7 +7,7 @@ import { createHistory } from './core/history';
 {{#loadingComponent}}
 import Loading from '@/loading';
 {{/loadingComponent}}
-import { ApplyPluginsType, PluginManager } from 'umi';
+import { ApplyPluginsType } from 'umi';
 {{{ imports }}}
 
 async function render() {
