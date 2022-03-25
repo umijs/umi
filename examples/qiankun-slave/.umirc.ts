@@ -13,5 +13,5 @@ export default {
     // },
   ],
   runtimePublicPath: {},
-  history: { type: 'hash' },
+  // history: { type: 'hash' },
 };

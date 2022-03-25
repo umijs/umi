@@ -10,7 +10,7 @@ export default defineConfig({
       name: 'index',
     },
     { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
-    { path: '/app1', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
+    { path: '/app1/*', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
     {
       path: '/data-flow',
       component: 'data-flow',
