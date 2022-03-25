@@ -1,8 +1,5 @@
 import React from 'react';
 import { MicroApp } from './MicroApp';
-{{#runtimeHistory}}
-import { getCreateHistoryOptions } from 'umi';
-{{/runtimeHistory}}
 import { useLocation } from 'umi';
 
 export function getMicroAppRouteComponent(opts: {
@@ -17,12 +14,6 @@ export function getMicroAppRouteComponent(opts: {
 
     // 默认取静态配置的 base
     let umiConfigBase = base === '/' ? '' : base;
-
-    {{#runtimeHistory}}
-    // 存在 getCreateHistoryOptions 说明当前应用开启了 runtimeHistory，此时取运行时的 history 配置的 basename
-    const { basename = '/' } = getCreateHistoryOptions();
-    umiConfigBase = basename === '/' ? '' : basename;
-    {{/runtimeHistory}}
 
     let runtimeMatchedBase =
       umiConfigBase + (url.endsWith('/') ? url.substr(0, url.length - 1) : url);
