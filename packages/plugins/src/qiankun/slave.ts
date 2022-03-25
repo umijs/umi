@@ -56,7 +56,6 @@ export default (api: IApi) => {
       api.userConfig.qiankun?.slave?.shouldNotModifyDefaultBase ??
       initialSlaveOptions.shouldNotModifyDefaultBase;
     const historyType = api.userConfig.history?.type || 'browser';
-    console.log('test', historyType);
     if (!shouldNotModifyDefaultBase && historyType !== 'hash') {
       // @ts-ignore
       modifiedDefaultConfig.base = `/${api.pkg.name}`;
