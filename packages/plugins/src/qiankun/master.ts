@@ -121,7 +121,6 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
           path: file.replace(/\.tpl$/, ''),
           tpl: getFileContent(file),
           context: {
-            runtimeHistory: api.config.runtimeHistory,
             dynamicRoot: false,
             hasModelPlugin: api.isPluginEnable('model'),
             // dynamicRoot:

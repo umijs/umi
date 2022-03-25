@@ -1,5 +1,5 @@
 {
-  "name": "@example/qiankun-slave",
+  "name": "app1",
   "private": true,
   "scripts": {
     "dev": "max dev",
