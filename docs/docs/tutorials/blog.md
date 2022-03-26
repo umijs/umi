@@ -409,7 +409,7 @@ npx prisma generate
 
 ## 实现 API 路由
 
-我们现在要回头来实作刚刚建立的那些 `api` 目录下的 `.ts` 文件了，只要我们自己清楚：
+我们现在要回头来实现刚刚建立的那些 `api` 目录下的 `.ts` 文件了，只要我们自己清楚：
 
 1. API 会如何被调用 (path, request header, request body)
 2. 我们应该在 API 内做什么事
