@@ -68,7 +68,7 @@ config 支持所有的非 dom 配置并透传给 [`@ant-design/pro-layout`](http
 
 ### 运行时配置
 
-在构建时是无法使用 dom 的，所以有些配置可能需要运行时来配置，我们可以在 [`src/app.tsx`](export const layout = ({) 中做如下配置:
+在构建时是无法使用 dom 的，所以有些配置可能需要运行时来配置，我们可以在 [`src/app.tsx`](export const layout = ({}) 中做如下配置:
 
 ```tsx
 import React from 'react';
