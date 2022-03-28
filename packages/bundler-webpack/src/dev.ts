@@ -49,6 +49,11 @@ export async function dev(opts: IOpts) {
         return {
           version: require('../package.json').version,
           esbuildMode: !!opts.config.mfsu?.esbuild,
+          alias: opts.config.alias,
+          externals: opts.config.externals,
+          theme: opts.config.theme,
+          runtimePublicPath: opts.config.runtimePublicPath,
+          publicPath: opts.config.publicPath,
         };
       },
     });
