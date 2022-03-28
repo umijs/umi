@@ -80,7 +80,7 @@ export async function createServer(opts: IOpts) {
   );
   const webpackDevMiddleware = require('@umijs/bundler-webpack/compiled/webpack-dev-middleware');
   const compilerMiddleware = webpackDevMiddleware(compiler, {
-    publicPath: '/',
+    publicPath: userConfig.publicPath || '/',
     writeToDisk: userConfig.writeToDisk,
     stats: 'none',
     // watchOptions: { ignored }
