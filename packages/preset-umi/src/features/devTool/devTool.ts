@@ -23,7 +23,7 @@ export default (api: IApi) => {
         }
 
         // static
-        if (path.startsWith('/__umi/')) {
+        if (!process.env.DEVTOOL_LOCAL && path.startsWith('/__umi/')) {
           const shortPath = path.replace('/__umi/', '');
           if (shortPath !== '' && existsSync(join(devToolAppDist, shortPath))) {
             return res.sendFile(join(devToolAppDist, shortPath));
