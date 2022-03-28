@@ -1,20 +1,19 @@
 import { getMarkup } from '@umijs/server';
-import { importLazy, logger } from '@umijs/utils';
+import { logger } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../types';
 import { clearTmp } from '../utils/clearTmp';
+import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
+import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
 import { getMarkupArgs } from './dev/getMarkupArgs';
 import { printMemoryUsage } from './dev/printMemoryUsage';
-import { getAssetsMap } from './dev/getAssetsMap';
 
-const bundlerWebpack: typeof import('@umijs/bundler-webpack') = importLazy(
-  '@umijs/bundler-webpack',
-);
-const bundlerVite: typeof import('@umijs/bundler-vite') = importLazy(
-  '@umijs/bundler-vite',
-);
+const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
+  lazyImportFromCurrentPkg('@umijs/bundler-webpack');
+const bundlerVite: typeof import('@umijs/bundler-vite') =
+  lazyImportFromCurrentPkg('@umijs/bundler-vite');
 
 export default (api: IApi) => {
   api.registerCommand({
