@@ -12,6 +12,7 @@ export default () => {
       require.resolve('./features/configPlugins/configPlugins'),
       require.resolve('./features/crossorigin/crossorigin'),
       require.resolve('./features/depsOnDemand/depsOnDemand'),
+      require.resolve('./features/devTool/devTool'),
       require.resolve('./features/esmi/esmi'),
       require.resolve('./features/favicon/favicon'),
       require.resolve('./features/mock/mock'),

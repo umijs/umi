@@ -15,7 +15,8 @@
     "assets",
     "dist",
     "templates",
-    "compiled"
+    "compiled",
+    "devToolAppDist"
   ],
   "scripts": {
     "build": "pnpm tsc",
