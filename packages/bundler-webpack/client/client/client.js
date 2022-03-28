@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import stripAnsi from '@umijs/utils/compiled/strip-ansi';
 // @ts-ignore
 import * as ErrorOverlay from 'react-error-overlay';
@@ -12,7 +21,7 @@ let mostRecentCompilationHash = null;
 let hasCompileErrors = false;
 let hadRuntimeError = false;
 const socket = new WebSocket(wsUrl, 'webpack-hmr');
-socket.addEventListener('message', async ({ data }) => {
+socket.addEventListener('message', ({ data }) => __awaiter(void 0, void 0, void 0, function* () {
     data = JSON.parse(data);
     if (data.type === 'connected') {
         console.log(`[webpack] connected.`);
@@ -23,26 +32,28 @@ socket.addEventListener('message', async ({ data }) => {
     else {
         handleMessage(data).catch(console.error);
     }
-});
-async function waitForSuccessfulPing(ms = 1000) {
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-        try {
-            await fetch(`/__umi_ping`);
-            break;
+}));
+function waitForSuccessfulPing(ms = 1000) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            try {
+                yield fetch(`/__umi_ping`);
+                break;
+            }
+            catch (e) {
+                yield new Promise((resolve) => setTimeout(resolve, ms));
+            }
         }
-        catch (e) {
-            await new Promise((resolve) => setTimeout(resolve, ms));
-        }
-    }
+    });
 }
-socket.addEventListener('close', async () => {
+socket.addEventListener('close', () => __awaiter(void 0, void 0, void 0, function* () {
     if (pingTimer)
         clearInterval(pingTimer);
     console.info('[webpack] Dev server disconnected. Polling for restart...');
-    await waitForSuccessfulPing();
+    yield waitForSuccessfulPing();
     location.reload();
-});
+}));
 ErrorOverlay.startReportingRuntimeErrors({
     onError: function () {
         hadRuntimeError = true;
@@ -180,23 +191,25 @@ function tryApplyUpdates(onHotUpdateSuccess) {
         handleApplyUpdates(err, null);
     });
 }
-async function handleMessage(payload) {
-    // console.log('[payload]', payload);
-    switch (payload.type) {
-        case MESSAGE_TYPE.hash:
-            handleAvailableHash(payload.data);
-            break;
-        case MESSAGE_TYPE.stillOk:
-        case MESSAGE_TYPE.ok:
-            handleSuccess();
-            break;
-        case MESSAGE_TYPE.errors:
-            handleErrors(payload.data);
-            break;
-        case MESSAGE_TYPE.warnings:
-            handleWarnings(payload.data);
-            break;
-        default:
-        // Do nothing
-    }
+function handleMessage(payload) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // console.log('[payload]', payload);
+        switch (payload.type) {
+            case MESSAGE_TYPE.hash:
+                handleAvailableHash(payload.data);
+                break;
+            case MESSAGE_TYPE.stillOk:
+            case MESSAGE_TYPE.ok:
+                handleSuccess();
+                break;
+            case MESSAGE_TYPE.errors:
+                handleErrors(payload.data);
+                break;
+            case MESSAGE_TYPE.warnings:
+                handleWarnings(payload.data);
+                break;
+            default:
+            // Do nothing
+        }
+    });
 }

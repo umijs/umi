@@ -10,3 +10,6 @@ export var MESSAGE_TYPE;
     MESSAGE_TYPE["stillOk"] = "still-ok";
     MESSAGE_TYPE["invalid"] = "invalid";
 })(MESSAGE_TYPE || (MESSAGE_TYPE = {}));
+export const DEFAULT_BROWSER_TARGETS = {
+    chrome: 80,
+};

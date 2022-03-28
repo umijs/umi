@@ -52,6 +52,9 @@ export class PluginManager {
         if (args) {
             assert(typeof args === 'object', `applyPlugins failed, args must be plain object.`);
         }
+        if (async) {
+            assert(type === ApplyPluginsType.modify || type === ApplyPluginsType.event, `async only works with modify and event type.`);
+        }
         switch (type) {
             case ApplyPluginsType.modify:
                 if (async) {
@@ -94,10 +97,15 @@ export class PluginManager {
                     }, initialValue);
                 }
             case ApplyPluginsType.event:
-                return hooks.forEach((hook) => {
-                    assert(typeof hook === 'function', `applyPlugins failed, all hooks for key ${key} must be function.`);
-                    hook(args);
-                });
+                return (() => __awaiter(this, void 0, void 0, function* () {
+                    for (const hook of hooks) {
+                        assert(typeof hook === 'function', `applyPlugins failed, all hooks for key ${key} must be function.`);
+                        const ret = hook(args);
+                        if (async && isPromiseLike(ret)) {
+                            yield ret;
+                        }
+                    }
+                }))();
             case ApplyPluginsType.compose:
                 return () => {
                     return compose({

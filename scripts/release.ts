@@ -66,6 +66,13 @@ import { assert, eachPkg, getPkgs } from './utils';
   logger.event('build packages');
   await $`npm run build:release`;
   await $`npm run build:extra`;
+  await $`npm run build:client`;
+
+  logger.event('check client code change');
+  const isGitCleanAfterClientBuild = (
+    await $`git status --porcelain`
+  ).stdout.trim().length;
+  assert(!isGitCleanAfterClientBuild, 'client code is updated');
 
   // generate changelog
   // TODO

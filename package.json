@@ -3,6 +3,7 @@
   "scripts": {
     "bootstrap": "esno scripts/bootstrap.ts",
     "build": "esno scripts/turbo.ts --cmd build",
+    "build:client": "esno scripts/turbo.ts --cmd build:client",
     "build:extra": "esno scripts/turbo.ts --cmd build:extra",
     "build:force": "esno scripts/turbo.ts --cmd build --no-cache",
     "build:release": "esno scripts/turbo.ts --cmd build --no-cache -- --declarationMap false",
