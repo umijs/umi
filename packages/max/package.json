@@ -21,6 +21,7 @@
     "index.d.ts",
     "plugin-utils.d.ts",
     "plugin-utils.js",
+    "prettier.js",
     "test.d.ts",
     "test.js"
   ],
