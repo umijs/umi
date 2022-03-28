@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
 
-const devToolAppDist = join(__dirname, '../../../devToolApp/dist');
+const devToolAppDist = join(__dirname, '../../../devToolAppDist');
 
 export default (api: IApi) => {
   api.addBeforeMiddlewares(() => {
@@ -25,7 +25,7 @@ export default (api: IApi) => {
         // static
         if (path.startsWith('/__umi/')) {
           const shortPath = path.replace('/__umi/', '');
-          if (existsSync(join(devToolAppDist, shortPath))) {
+          if (shortPath !== '' && existsSync(join(devToolAppDist, shortPath))) {
             return res.sendFile(join(devToolAppDist, shortPath));
           } else {
             return res.sendFile(join(devToolAppDist, 'index.html'));
