@@ -81,17 +81,16 @@ export default (api: IApi) => {
     return config;
   });
 
-  // api.modifyPublicPathStr((publicPathStr) => {
-  //   const { runtimePublicPath } = api.config;
-  //   const { shouldNotModifyRuntimePublicPath } = (api.config.qiankun || {})
-  //     .slave!;
-  //   if (runtimePublicPath === true && !shouldNotModifyRuntimePublicPath) {
-  //     return `window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__ || "${
-  //       api.config.publicPath || '/'
-  //     }"`;
-  //   }
-  //   return publicPathStr;
-  // });
+  api.addHTMLHeadScripts(() => {
+    const dontModify = api.config.qiankun?.shouldNotModifyRuntimePublicPath;
+    return dontModify
+      ? []
+      : [
+          `window.publicPath = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__ || "${
+            api.config.publicPath || '/'
+          }";`,
+        ];
+  });
 
   api.chainWebpack((config) => {
     assert(api.pkg.name, 'You should have name in package.json.');
