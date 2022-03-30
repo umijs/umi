@@ -1,31 +1,36 @@
-import { matchApiRoute } from './utils';
 import { IRoute } from '../../types';
+import { matchApiRoute } from './utils';
 
 const apiRoutes: IRoute[] = [
   {
     path: 'users/[userId]/repos/[repoId]',
     id: 'users/[userId]/repos/[repoId]',
     file: 'users/[userId]/repos/[repoId].ts',
+    absPath: '',
   },
   {
     path: 'users/[userId]/repos',
     id: 'users/[userId]/repos/index',
     file: 'users/[userId]/repos/index.ts',
+    absPath: '',
   },
   {
     path: 'users/[userId]',
     id: 'users/[userId]/index',
     file: 'users/[userId]/index.ts',
+    absPath: '',
   },
   {
     path: 'users',
     id: 'users/index',
     file: 'users/index.ts',
+    absPath: '',
   },
   {
     path: '/',
     id: 'index',
     file: 'index.ts',
+    absPath: '',
   },
 ];
 
