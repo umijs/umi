@@ -4,6 +4,5 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "devToolApp"]
+  "include": ["src"]
 }
