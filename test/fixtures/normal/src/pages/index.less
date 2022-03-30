@@ -1,0 +1,30 @@
+.container {
+  --gutter: 16px;
+  display: grid;
+  padding-top: 4rem;
+  width: 1024px;
+  max-width: calc(100% - var(--gutter) * 2);
+  margin-left: auto;
+  margin-right: auto;
+  gap: 2rem;
+}
+@media screen and (min-width: 640px) {
+  .container {
+    gap: 4rem;
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+.p {
+  display: block;
+}
+
+.leftContainer {
+
+}
+
+.rightContainer {
+  border: solid 1px;
+  border-radius: 0.5rem;
+  padding: 1.5ch 2ch;
+}

@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["*"],
-      "@@/*": [".umi/*"]
+      "@@/*": [".umi/*"],
+      "test-utils": ["test/lib/testUtils"]
     }
   }
 }

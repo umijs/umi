@@ -22,6 +22,7 @@
     "**/examples",
     "**/dist",
     "**/fixtures",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/*.e2e.ts"
   ]
 }
