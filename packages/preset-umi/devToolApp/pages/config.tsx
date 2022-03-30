@@ -8,7 +8,7 @@ export default function Page() {
         .then((res) => res.json())
         .then(setData);
     })();
-  });
+  }, []);
   if (!data) {
     return null;
   }

@@ -1,0 +1,8 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[458],{3838:function(p,u,t){var d;/** @license React v17.0.2
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */t(1625);var s=t(2406),l=60103;if(d=60107,typeof Symbol=="function"&&Symbol.for){var e=Symbol.for;l=e("react.element"),d=e("react.fragment")}var v=s.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,h=Object.prototype.hasOwnProperty,i={key:!0,ref:!0,__self:!0,__source:!0};function a(n,r,f){var o,c={},m=null,y=null;f!==void 0&&(m=""+f),r.key!==void 0&&(m=""+r.key),r.ref!==void 0&&(y=r.ref);for(o in r)h.call(r,o)&&!i.hasOwnProperty(o)&&(c[o]=r[o]);if(n&&n.defaultProps)for(o in r=n.defaultProps,r)c[o]===void 0&&(c[o]=r[o]);return{$$typeof:l,type:n,key:m,ref:y,props:c,_owner:v.current}}u.jsx=a,u.jsxs=a},567:function(p,u,t){p.exports=t(3838)},5458:function(p,u,t){t.r(u),t.d(u,{default:function(){return h}});var d=t(2406),s=t(578),l={nav:"nav___BBTh0"},e=t(567);function v(i){return i.charAt(0).toUpperCase()+i.slice(1)}var h=function(){var i=(0,s.Ov)(),a=i.clientRoutes;return(0,e.jsxs)("div",{children:[(0,e.jsxs)("div",{className:l.nav,children:[(0,e.jsx)("div",{children:(0,e.jsx)(s.rU,{to:"/",children:"Home"})},"/"),a[0].routes.sort(function(n,r){return n.path>r.path?1:-1}).filter(function(n){var r=n.path;return r!=="/"}).map(function(n){var r=n.path,f=r==="mfsu"?"MFSU":v(r);return(0,e.jsx)("div",{children:(0,e.jsx)(s.rU,{to:r,children:f})},r)})]}),(0,e.jsx)("hr",{}),(0,e.jsx)(s.j3,{})]})}}}]);
