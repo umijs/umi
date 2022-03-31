@@ -37,7 +37,9 @@ export default defineConfig({
     style: 'less',
     // dark: true,
   },
-  initialState: {},
+  initialState: {
+    loading: '@/components/Loading',
+  },
   access: {},
   dva: {},
   model: {},
