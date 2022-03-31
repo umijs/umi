@@ -21,6 +21,8 @@ const COMMON_IGNORES = [
   'tsconfig*.json',
   '*.config.js',
   'package.json',
+  // extra
+  'devToolApp',
 ];
 
 // check packages/*
