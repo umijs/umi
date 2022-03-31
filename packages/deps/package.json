@@ -41,7 +41,8 @@
     "clipboardy": "2.3.0",
     "esbuild": "0.12.15",
     "jest-worker": "24.9.0",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "regenerate-unicode-properties": "9.0.0"
   },
   "devDependencies": {
     "@babel/code-frame": "7.12.13",
