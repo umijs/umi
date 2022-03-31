@@ -26,6 +26,7 @@ export interface IOpts {
   mountElementId?: string;
   esmScript?: boolean;
   modifyHTML?: (html: string, args: { path?: string }) => Promise<string>;
+  historyType?: 'hash' | 'browser';
 }
 
 export async function getMarkup(
@@ -128,18 +129,34 @@ export async function getMarkup(
 
 export function createRequestHandler(opts: IOpts): RequestHandler {
   return async (req, res, next) => {
-    // 匹配路由，不匹配走 next()
     // TODO: cache
-    const routes = createServerRoutes({
-      routesById: opts.routes,
-    });
-    const matches = matchRoutes(routes, req.path, opts.base);
-    if (matches) {
+    let isMatch;
+    if (opts.historyType === 'hash') {
+      // 如果是 hash 路由时，不做路由匹配，只要是 / 就匹配返回 html
+      isMatch = req.path === '/';
+    } else {
+      // 匹配路由，不匹配走 next()
+      const routes = createServerRoutes({
+        routesById: opts.routes,
+      });
+      const matches = matchRoutes(routes, req.path, opts.base);
+      isMatch = !!matches;
+    }
+    if (isMatch) {
       res.set('Content-Type', 'text/html');
       const markup = await getMarkup({ ...opts, path: req.path });
       res.end(markup);
     } else {
-      next();
+      // 如果是 browser，并且配置了非 / base，访问 / 时 redirect 到 base 路径
+      if (
+        opts.historyType === 'browser' &&
+        opts.base !== '/' &&
+        req.path === '/'
+      ) {
+        res.redirect(opts.base);
+      } else {
+        next();
+      }
     }
   };
 }

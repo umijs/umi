@@ -1,8 +1,8 @@
-import type { RequestHandler, Compiler, Stats } from '@umijs/bundler-webpack';
+import type { Compiler, RequestHandler, Stats } from '@umijs/bundler-webpack';
 import { createRequestHandler, IOpts } from '@umijs/server';
 import { IApi } from '../../types';
-import { getMarkupArgs } from './getMarkupArgs';
 import { getAssetsMap } from './getAssetsMap';
+import { getMarkupArgs } from './getMarkupArgs';
 
 // TODO: extract to bundler-vite
 // refer: https://vitejs.dev/guide/backend-integration.html#backend-integration
@@ -62,6 +62,7 @@ function createRouteMiddleware(opts: { api: IApi }) {
           markupArgs.scripts!,
         ),
         esmScript: vite,
+        historyType: opts.api.config.history?.type || 'browser',
       });
       requestHandler(req, res, next);
     };
