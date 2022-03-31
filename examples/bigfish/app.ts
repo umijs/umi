@@ -4,7 +4,7 @@ async function delay(ms: number) {
 }
 
 export async function getInitialState() {
-  // await delay(1000);
+  await delay(500);
   return {
     name: 'Big Fish',
     size: 'big',
