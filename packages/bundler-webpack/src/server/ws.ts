@@ -1,8 +1,9 @@
 import { chalk } from '@umijs/utils';
-import { Server } from 'http';
+import { Server as HttpServer } from 'http';
+import { Server as HttpsServer } from 'https';
 import WebSocket from '../../compiled/ws';
 
-export function createWebSocketServer(server: Server) {
+export function createWebSocketServer(server: HttpServer | HttpsServer) {
   const wss = new WebSocket.Server({
     noServer: true,
   });

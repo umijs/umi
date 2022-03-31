@@ -47,6 +47,12 @@ export interface DeadCodeParams {
   context?: string;
 }
 
+export interface HttpsParams {
+  key?: string;
+  cert?: string;
+  hosts?: string[]; // 默认值 ['localhost', '127.0.0.1']
+}
+
 export interface IConfig {
   alias?: Record<string, string>;
   autoCSSModules?: boolean;
@@ -61,6 +67,7 @@ export interface IConfig {
   depTranspiler?: Transpiler;
   devtool?: Config.DevTool;
   deadCode?: DeadCodeParams;
+  https?: HttpsParams;
   externals?: WebpackConfig['externals'];
   esm?: { [key: string]: any };
   extraBabelPlugins?: IBabelPlugin[];

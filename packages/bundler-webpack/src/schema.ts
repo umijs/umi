@@ -72,6 +72,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     fastRefresh: (Joi) => Joi.boolean(),
     forkTSChecker: (Joi) => Joi.object(),
     hash: (Joi) => Joi.boolean(),
+    https: (Joi) => Joi.object(),
     ignoreMomentLocale: (Joi) => Joi.boolean(),
     inlineLimit: (Joi) => Joi.number(),
     jsMinifier: (Joi) =>

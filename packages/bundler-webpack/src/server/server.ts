@@ -5,10 +5,10 @@ import webpack, {
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, logger } from '@umijs/utils';
 import { createReadStream, existsSync } from 'fs';
-import http from 'http';
 import { join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
 import { IConfig } from '../types';
+import { getServer } from '../utils/server';
 import { createWebSocketServer } from './ws';
 
 interface IOpts {
@@ -205,7 +205,11 @@ export async function createServer(opts: IOpts) {
     }
   });
 
-  const server = http.createServer(app);
+  const server = await getServer(app, userConfig.https);
+  if (!server) {
+    return null;
+  }
+
   const ws = createWebSocketServer(server);
 
   ws.wss.on('connection', (socket) => {
@@ -214,10 +218,14 @@ export async function createServer(opts: IOpts) {
     }
   });
 
+  const protocol = userConfig.https ? 'https:' : 'http:';
   const port = opts.port || 8000;
+
   server.listen(port, () => {
     const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : '127.0.0.1';
-    logger.ready(`App listening at ${chalk.green(`http://${host}:${port}`)}`);
+    logger.ready(
+      `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,
+    );
   });
 
   return server;
