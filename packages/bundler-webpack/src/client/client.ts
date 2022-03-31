@@ -8,7 +8,8 @@ console.log('[webpack] connecting...');
 
 let pingTimer: NodeJS.Timer | null = null;
 const host = location.host;
-const wsUrl = `ws://${host}`;
+const isHttps = location.protocol === 'https:';
+const wsUrl = `${isHttps ? 'wss' : 'ws'}://${host}`;
 let isFirstCompilation = true;
 let mostRecentCompilationHash: string | null = null;
 let hasCompileErrors = false;
