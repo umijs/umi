@@ -25,7 +25,9 @@
     "plugin-utils.js",
     "prettier.js",
     "test.d.ts",
-    "test.js"
+    "test.js",
+    "eslint.js",
+    "stylelint.js"
   ],
   "scripts": {
     "build": "pnpm tsc",
@@ -36,6 +38,7 @@
   },
   "dependencies": {
     "@umijs/core": "4.0.0-rc.10",
+    "@umijs/lint": "4.0.0-rc.10",
     "@umijs/preset-umi": "4.0.0-rc.10",
     "@umijs/renderer-react": "4.0.0-rc.10",
     "@umijs/test": "4.0.0-rc.10",
