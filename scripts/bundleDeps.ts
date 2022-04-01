@@ -126,7 +126,10 @@ Object.keys(exported).forEach(function (key) {
       ) {
         code = code.replace(/require\("node:/g, 'require("');
       }
-      if (code.includes('"node:')) {
+      if (
+        code.includes('"node:') &&
+        opts.pkgName !== 'stylelint-declaration-block-no-ignored-properties'
+      ) {
         throw new Error(`${opts.pkgName} has "node:"`);
       }
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');

@@ -1,0 +1,16 @@
+{
+  "name": "@example/lint",
+  "scripts": {
+    "lint": "umi lint",
+    "lint:cssinjs": "umi lint --stylelint-only --cssinjs",
+    "lint:es": "umi lint --eslint-only",
+    "lint:es-fix": "umi lint --eslint-only --fix",
+    "lint:style": "umi lint --stylelint-only",
+    "lint:style-fix": "umi lint --stylelint-only --fix"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "stylelint": "^14.6.0",
+    "umi": "4.0.0-rc.10"
+  }
+}

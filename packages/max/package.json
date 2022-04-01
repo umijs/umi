@@ -23,7 +23,9 @@
     "plugin-utils.js",
     "prettier.js",
     "test.d.ts",
-    "test.js"
+    "test.js",
+    "eslint.js",
+    "stylelint.js"
   ],
   "scripts": {
     "build": "pnpm tsc",
@@ -31,6 +33,7 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
+    "@umijs/lint": "4.0.0-rc.10",
     "@umijs/plugins": "4.0.0-rc.10",
     "antd": "^4.19.3",
     "umi": "4.0.0-rc.10"

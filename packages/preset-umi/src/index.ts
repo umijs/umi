@@ -31,6 +31,7 @@ export default () => {
       require.resolve('./commands/config/config'),
       require.resolve('./commands/dev/dev'),
       require.resolve('./commands/help'),
+      require.resolve('./commands/lint'),
       require.resolve('./commands/setup'),
       require.resolve('./commands/version'),
       require.resolve('./commands/generators/page'),
