@@ -207,7 +207,7 @@ export async function createServer(opts: IOpts) {
   });
 
   const server = userConfig.https
-    ? await createHttpsServer(app, userConfig.https || {})
+    ? await createHttpsServer(app, userConfig.https)
     : http.createServer(app);
   if (!server) {
     return null;

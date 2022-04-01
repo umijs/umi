@@ -13,7 +13,7 @@ export async function createHttpsServer(
 ) {
   logger.wait('[HTTPS] Starting service in https mode...');
 
-  // check if mkcert is installed
+  // Check if mkcert is installed
   try {
     await execa.execa('mkcert', ['--version']);
   } catch (e) {
