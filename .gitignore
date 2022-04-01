@@ -8,6 +8,7 @@
 /.changelog
 /dist
 .DS_Store
+.idea
 .umi
 .umi-production
 .umi-test
