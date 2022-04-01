@@ -5,10 +5,11 @@ import webpack, {
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, logger } from '@umijs/utils';
 import { createReadStream, existsSync } from 'fs';
+import http from 'http';
 import { join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
 import { IConfig } from '../types';
-import { getServer } from '../utils/server';
+import { createHttpsServer } from './https';
 import { createWebSocketServer } from './ws';
 
 interface IOpts {
@@ -205,7 +206,9 @@ export async function createServer(opts: IOpts) {
     }
   });
 
-  const server = await getServer(app, userConfig.https);
+  const server = userConfig.https
+    ? await createHttpsServer(app, userConfig.https || {})
+    : http.createServer(app);
   if (!server) {
     return null;
   }
