@@ -15,9 +15,7 @@ export default (function target(userConfig) {
     config.build!.target = Object.entries(userConfig.targets)
       .filter(([name]) => {
         // refer: https://esbuild.github.io/api/#target
-        return ['chrome', 'edge', 'firefox', 'ios', 'node', 'safari'].includes(
-          name,
-        );
+        return ['chrome', 'edge', 'firefox', 'node', 'safari'].includes(name);
       })
       .map(([name, ver]) => `${name}${ver}`);
   }
