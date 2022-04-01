@@ -337,6 +337,21 @@ headScripts: [
 
 设置路由 history 类型。
 
+## https
+
+* 类型：`{ cert: string; key: string; hosts: string[] }`
+* 默认值：`{ hosts: ['127.0.0.1', 'localhost'] }`
+
+开启 dev 的 https 模式。
+
+关于参数。`cert` 和 `key` 分别用于指定 cert 和 key 文件；`hosts` 用于指定要支持 https 访问的 host，默认是 `['127.0.0.1', 'localhost']`。
+
+示例，
+
+```js
+https: {}
+```
+
 ## ignoreMomentLocale
 
 * 类型：`boolean`

@@ -6,6 +6,7 @@ import cheerio from '../compiled/cheerio';
 import crossSpawn from '../compiled/cross-spawn';
 import debug from '../compiled/debug';
 import deepmerge from '../compiled/deepmerge';
+import * as execa from '../compiled/execa';
 import fsExtra from '../compiled/fs-extra';
 import glob from '../compiled/glob';
 // import globby from '../compiled/globby';
@@ -42,6 +43,7 @@ export {
   crossSpawn,
   debug,
   deepmerge,
+  execa,
   fsExtra,
   glob,
   Generator,
