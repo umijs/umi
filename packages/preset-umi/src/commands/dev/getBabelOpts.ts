@@ -10,6 +10,8 @@ export async function getBabelOpts(opts: { api: IApi }) {
       presetEnv: {},
       presetReact: {
         runtime: isGTEReact17 ? 'automatic' : 'classic',
+        // importSource cannot be set when runtime is classic
+        ...(isGTEReact17 ? {} : { importSource: undefined }),
       },
       presetTypeScript: {},
       pluginTransformRuntime: {},
