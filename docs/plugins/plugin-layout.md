@@ -8,7 +8,7 @@ The configuration is turned on.
 
 In order to further reduce the cost of research and development, we tried to build the layout through the umi plug-in. You can have Ant Design's Layout through simple configuration, including navigation and sidebar. So that users do not need to care about the layout.
 
-- The default is Ant Design's Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout), which supports all its configuration items.
+- The default is Ant Design's Layout [@ant-design/pro-layout](https://procomponents.ant.design/en-US/components/layout), which supports all its configuration items.
 - The sidebar menu data is automatically generated according to the configuration in the route.
 - By default, it supports 403/404 processing and Error Boundary for routing.
 - Used together with @umijs/plugin-access plug-in, you can control routing permissions.
