@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-plugin-no-anonymous-default-export",
-  "version": "3.5.21",
+  "version": "3.5.22",
   "description": "@umijs/babel-plugin-no-anonymous-default-export",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,6 +25,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.5.21"
+    "@umijs/utils": "3.5.22"
   }
 }
