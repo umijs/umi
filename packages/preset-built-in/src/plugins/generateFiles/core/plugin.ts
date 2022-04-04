@@ -23,17 +23,18 @@ export default function (api: IApi) {
         '__mfsu',
       ],
     });
+
+    const appRuntimeFileName = getFile({
+      base: paths.absSrcPath!,
+      fileNameWithoutExt: 'app',
+      type: 'javascript',
+    })?.filename;
     const plugins = await api.applyPlugins({
       key: 'addRuntimePlugin',
       type: api.ApplyPluginsType.add,
-      initialValue: [
-        getFile({
-          base: paths.absSrcPath!,
-          fileNameWithoutExt: 'app',
-          type: 'javascript',
-        })?.path,
-      ].filter(Boolean),
+      initialValue: appRuntimeFileName ? [`../../${appRuntimeFileName}`] : [],
     });
+
     api.writeTmpFile({
       path: 'core/plugin.ts',
       content: Mustache.render(
