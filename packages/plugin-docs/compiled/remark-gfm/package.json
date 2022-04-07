@@ -1,0 +1,18 @@
+{
+  "name": "remark-gfm",
+  "version": "3.0.1",
+  "description": "remark plugin to support GFM (autolink literals, footnotes, strikethrough, tables, tasklists)",
+  "license": "MIT",
+  "repository": "remarkjs/remark-gfm",
+  "bugs": "https://github.com/remarkjs/remark-gfm/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
+  "type": "module",
+  "main": "index.cjs"
+}

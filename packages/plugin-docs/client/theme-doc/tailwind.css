@@ -90,6 +90,26 @@ article a {
   );
 }
 
+article table {
+  @apply table-auto w-full shadow rounded-xl text-left overflow-hidden dark:shadow-gray-800 my-8
+}
+
+article table thead {
+  @apply bg-blue-100 dark:bg-gray-800
+}
+
+article table thead th {
+  @apply py-3 px-4 text-gray-700 dark:text-white
+}
+
+article table tbody tr {
+  @apply border-b border-b-zinc-100 dark:border-b-gray-600
+}
+
+article table tbody td {
+  @apply py-2 px-4 text-gray-700 dark:text-white
+}
+
 .link-with-underline {
   @apply text-blue-600 mx-1 hover:text-blue-300 transition dark:text-blue-400;
   background-image: linear-gradient(
