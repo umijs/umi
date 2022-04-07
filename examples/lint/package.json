@@ -1,5 +1,6 @@
 {
   "name": "@example/lint",
+  "private": true,
   "scripts": {
     "lint": "umi lint",
     "lint:cssinjs": "umi lint --stylelint-only --cssinjs",
