@@ -9,6 +9,15 @@ interface IImportPluginOpts {
   camel2DashComponentName?: boolean;
 }
 
+interface SvgrOpts {
+  svgo?: boolean;
+  ref?: boolean;
+  titleProp?: boolean;
+  replaceAttrValues?: { [key: string]: string };
+  memo?: boolean;
+  prettier?: boolean;
+}
+
 export interface IOpts {
   typescript?: boolean;
   react?: object;
@@ -20,7 +29,7 @@ export interface IOpts {
   dynamicImportNode?: boolean;
   importToAwaitRequire?: object;
   autoCSSModules?: boolean;
-  svgr?: object;
+  svgr?: SvgrOpts | boolean;
   import?: IImportPluginOpts[];
   lockCoreJS3?: object;
   modify?: Function;
@@ -139,7 +148,12 @@ export default (context: any, opts: IOpts = {}) => {
             svg: {
               ReactComponent: `${require.resolve(
                 '@svgr/webpack',
-              )}?-svgo,+titleProp,+ref![path]`,
+              )}?${JSON.stringify({
+                svgo: false,
+                titleProp: true,
+                ref: true,
+                ...(opts.svgr === true ? {} : opts.svgr),
+              })}![path]`,
             },
           },
         },
