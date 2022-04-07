@@ -6,22 +6,14 @@ import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 
 console.log('[webpack] connecting...');
 
-function stripLastSlash(url: string) {
-  if (url.slice(-1) === '/') {
-    return url.slice(0, -1);
-  } else {
-    return url;
-  }
-}
-
 function getSocketHost() {
+  let l: any = location;
   if (process.env.SOCKET_SERVER) {
-    return stripLastSlash(process.env.SOCKET_SERVER);
+    l = new URL(process.env.SOCKET_SERVER);
   }
-  const host = location.host;
-  const isHttps = location.protocol === 'https:';
-  const wsUrl = `${isHttps ? 'wss' : 'ws'}://${host}`;
-  return wsUrl;
+  const host = l.host;
+  const isHttps = l.protocol === 'https:';
+  return `${isHttps ? 'wss' : 'ws'}://${host}`;
 }
 
 let pingTimer: NodeJS.Timer | null = null;
