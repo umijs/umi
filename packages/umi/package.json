@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.0-rc.10",
+  "version": "4.0.0-rc.11",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -37,12 +37,12 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
-    "@umijs/core": "4.0.0-rc.10",
-    "@umijs/lint": "4.0.0-rc.10",
-    "@umijs/preset-umi": "4.0.0-rc.10",
-    "@umijs/renderer-react": "4.0.0-rc.10",
-    "@umijs/test": "4.0.0-rc.10",
-    "@umijs/utils": "4.0.0-rc.10",
+    "@umijs/core": "4.0.0-rc.11",
+    "@umijs/lint": "4.0.0-rc.11",
+    "@umijs/preset-umi": "4.0.0-rc.11",
+    "@umijs/renderer-react": "4.0.0-rc.11",
+    "@umijs/test": "4.0.0-rc.11",
+    "@umijs/utils": "4.0.0-rc.11",
     "prettier-plugin-organize-imports": "^2.3.4",
     "prettier-plugin-packagejson": "^2.2.16"
   },
