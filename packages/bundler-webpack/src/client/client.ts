@@ -6,16 +6,32 @@ import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 
 console.log('[webpack] connecting...');
 
+function stripLastSlash(url: string) {
+  if (url.slice(-1) === '/') {
+    return url.slice(0, -1);
+  } else {
+    return url;
+  }
+}
+
+function getSocketHost() {
+  if (process.env.SOCKET_SERVER) {
+    return stripLastSlash(process.env.SOCKET_SERVER);
+  }
+  const host = location.host;
+  const isHttps = location.protocol === 'https:';
+  const wsUrl = `${isHttps ? 'wss' : 'ws'}://${host}`;
+  return wsUrl;
+}
+
 let pingTimer: NodeJS.Timer | null = null;
-const host = location.host;
-const isHttps = location.protocol === 'https:';
-const wsUrl = `${isHttps ? 'wss' : 'ws'}://${host}`;
+
 let isFirstCompilation = true;
 let mostRecentCompilationHash: string | null = null;
 let hasCompileErrors = false;
 let hadRuntimeError = false;
 
-const socket = new WebSocket(wsUrl, 'webpack-hmr');
+const socket = new WebSocket(getSocketHost(), 'webpack-hmr');
 
 socket.addEventListener('message', async ({ data }) => {
   data = JSON.parse(data);
