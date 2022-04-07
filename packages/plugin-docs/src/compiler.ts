@@ -2,11 +2,13 @@
 import { createProcessor } from '../compiled/@mdx-js/mdx';
 // @ts-ignore
 import rehypeSlug from '../compiled/rehype-slug';
+// @ts-ignore
+import remarkGfm from '../compiled/remark-gfm';
 
 export async function compile(opts: { content: string }) {
   const compiler = createProcessor({
     jsx: true,
-    remarkPlugins: [],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeSlug],
   });
   let result = String(await compiler.process(opts.content));
