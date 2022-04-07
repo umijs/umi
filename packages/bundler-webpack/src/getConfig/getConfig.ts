@@ -600,6 +600,16 @@ export default async function getConfig(
     });
   }
 
+  // node: prefix import
+  webpackConfig
+    .plugin('node-prefix-plugin')
+    .use(defaultWebpack.NormalModuleReplacementPlugin, [
+      /^node:/,
+      (resource: any) => {
+        resource.request = resource.request.replace(/^node:/, '');
+      },
+    ]);
+
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
       type,
