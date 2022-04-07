@@ -12,13 +12,13 @@ interface IOpts {
 export async function addNodePolyfill(opts: IOpts) {
   const { config } = opts;
 
-  const nodeLibs = require('node-libs-browser');
   config.plugin('node-polyfill-provider').use(ProvidePlugin, [
     {
       Buffer: ['buffer', 'Buffer'],
     },
   ]);
 
+  const nodeLibs = require('node-libs-browser');
   config.resolve.fallback.merge({
     ...Object.keys(nodeLibs).reduce<Record<string, boolean>>((memo, key) => {
       if (nodeLibs[key]) {
