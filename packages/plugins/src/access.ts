@@ -38,9 +38,9 @@ export function accessProvider(container) {
       `,
     });
 
-    // index.ts
+    // index.tsx
     api.writeTmpFile({
-      path: 'index.ts',
+      path: 'index.tsx',
       content: `
 import React from 'react';
 import { AccessContext } from './context';
@@ -59,7 +59,7 @@ export const Access: React.FC<AccessProps> = (props) => {
     throw new Error('[access] the \`accessible\` property on <Access /> should be a boolean');
   }
 
-  return props.accessible ? props.children : props.fallback;
+  return <>{ props.accessible ? props.children : props.fallback }</>;
 };
 
 export const useAccessMarkedRoutes = (routes: IRoute[]) => {
