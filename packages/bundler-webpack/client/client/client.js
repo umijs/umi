@@ -13,15 +13,21 @@ import * as ErrorOverlay from 'react-error-overlay';
 import { MESSAGE_TYPE } from '../constants';
 import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 console.log('[webpack] connecting...');
+function getSocketHost() {
+    let l = location;
+    if (process.env.SOCKET_SERVER) {
+        l = new URL(process.env.SOCKET_SERVER);
+    }
+    const host = l.host;
+    const isHttps = l.protocol === 'https:';
+    return `${isHttps ? 'wss' : 'ws'}://${host}`;
+}
 let pingTimer = null;
-const host = location.host;
-const isHttps = location.protocol === 'https:';
-const wsUrl = `${isHttps ? 'wss' : 'ws'}://${host}`;
 let isFirstCompilation = true;
 let mostRecentCompilationHash = null;
 let hasCompileErrors = false;
 let hadRuntimeError = false;
-const socket = new WebSocket(wsUrl, 'webpack-hmr');
+const socket = new WebSocket(getSocketHost(), 'webpack-hmr');
 socket.addEventListener('message', ({ data }) => __awaiter(void 0, void 0, void 0, function* () {
     data = JSON.parse(data);
     if (data.type === 'connected') {
