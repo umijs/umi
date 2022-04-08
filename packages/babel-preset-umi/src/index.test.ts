@@ -318,7 +318,24 @@ test('svgr', () => {
       svgr: {},
     },
   );
-  expect(winPath(code!)).toContain(`index.js?-svgo,+titleProp,+ref!./a.svg");`);
+  expect(winPath(code!)).toContain(
+    `index.js?{/\"svgo/\":false,/\"titleProp/\":true,/\"ref/\":true}!./a.svg");`,
+  );
+
+  const code2 = transformWithPreset(
+    `import { ReactComponent } from './a.svg';`,
+    {
+      env: {
+        targets: { ie: 10 },
+      },
+      svgr: {
+        replaceAttrValues: { '#000': '{props.color}' },
+      },
+    },
+  );
+  expect(winPath(code2!)).toContain(
+    `index.js?{/\"svgo/\":false,/\"titleProp/\":true,/\"ref/\":true,/\"replaceAttrValues/\":{/\"#000/\":/\"{props.color}/\"}}!./a.svg");`,
+  );
 });
 
 test('logical assignment operators', () => {
