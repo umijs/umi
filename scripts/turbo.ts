@@ -1,16 +1,16 @@
-import * as logger from '@umijs/utils/src/logger';
 import spawn from '@umijs/utils/compiled/cross-spawn';
 import yArgs from '@umijs/utils/compiled/yargs-parser';
+import * as logger from '@umijs/utils/src/logger';
 import { join } from 'path';
 
 (async () => {
   const args = yArgs(process.argv.slice(2));
-  const scope = args.scope || '!@example/*';
+  const filter = args.filter || './packages/*';
   const extra = (args._ || []).join(' ');
 
   await turbo({
     cmd: args.cmd,
-    scope,
+    filter,
     extra,
     cache: args.cache,
     parallel: args.parallel,
@@ -39,7 +39,7 @@ async function cmd(command: string) {
 }
 
 async function turbo(opts: {
-  scope: string;
+  filter: string;
   cmd: string;
   extra?: string;
   cache?: boolean;
@@ -52,9 +52,7 @@ async function turbo(opts: {
   const options = [
     opts.cmd,
     `--cache-dir=".turbo"`,
-    `--scope="${opts.scope}"`,
-    `--no-deps`,
-    `--include-dependencies`,
+    `--filter="${opts.filter}"`,
     cacheCmd,
     parallelCmd,
     extraCmd,
