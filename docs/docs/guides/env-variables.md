@@ -6,7 +6,7 @@ umi 可以通过环境变量来完成一些特殊的配置和功能.
 
 ### 执行命令时设置
 
-例如需要改变 `umi dev` 开发服务器的端口,进可以通过如下命令实现.
+例如需要改变 `umi dev` 开发服务器的端口，进可以通过如下命令实现.
 
 ```bash
 # OS X, Linux
@@ -16,7 +16,7 @@ $ PORT=3000 umi dev
 $ set PORT=3000&&umi dev
 ```
 
-如果需要同时在不同的操作系统中使用环境变量,推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)
+如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)
 
 ```bash
 $ pnpm install cross-env -D
@@ -25,7 +25,7 @@ $ cross-env PORT=3000 umi dev
 
 ### 设置在 .env 文件中
 
-如果你的环境变量需要在开发者之间共享, 推荐你设置在项目根目录的 `.env` 文件中,例如:
+如果你的环境变量需要在开发者之间共享，推荐你设置在项目根目录的 `.env` 文件中，例如:
 
 ```text
 # file .env
@@ -33,7 +33,7 @@ PORT=3000
 BABEL_CACHE=none
 ```
 
-然后执行
+然后执行，
 
 ```bash
 $ umi dev
@@ -41,14 +41,14 @@ $ umi dev
 
 umi 会以 3000 端口启动 dev server，并且禁用 babel 的缓存。
 
-如果你有部分环境变量的配置在本地要做特殊配置,可以配置在 `.env.local` 文件中去覆盖 `.env`的配置。比如在之前的 `.env`的基础上, 你想本地开发覆盖之前3000 端口, 而使用 4000 端口，可以做如下定义。
+如果你有部分环境变量的配置在本地要做特殊配置，可以配置在 `.env.local` 文件中去覆盖 `.env`的配置。比如在之前的 `.env`的基础上, 你想本地开发覆盖之前3000 端口, 而使用 4000 端口，可以做如下定义。
 
 ```text
 # file .env.local
 PORT=4000
 ```
 
-umi 会以 4000 端口启动 dev server，同时保持禁用 babel 的缓存.
+umi 会以 4000 端口启动 dev server，同时保持禁用 babel 的缓存。
 
 注意：
 
