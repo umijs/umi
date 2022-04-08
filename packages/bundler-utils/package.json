@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-rc.11",
-    "esbuild": "0.14.27"
+    "esbuild": "0.14.27",
+    "regenerate-unicode-properties": "10.0.1"
   },
   "devDependencies": {
     "@babel/code-frame": "7.16.7",
