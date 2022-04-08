@@ -27,17 +27,17 @@ pnpx create-umi@next
 
 ```text
 .
-├── assets
-│    └── yay.jpg
-├── layouts
-│    ├── index.less
-│    └── index.tsx
-├── node_modules
 ├── package.json
-├── pages
-│    ├── docs.tsx
-│    └── index.tsx
 ├── pnpm-lock.yaml
+├── src
+│   ├── assets
+│   │   └── yay.jpg
+│   ├── layouts
+│   │   ├── index.less
+│   │   └── index.tsx
+│   └── pages
+│       ├── docs.tsx
+│       └── index.tsx
 ├── tsconfig.json
 └── typings.d.ts
 ```
