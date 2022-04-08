@@ -97,6 +97,22 @@ export class GeneratorHelper {
     });
     logger.info(`Install dependencies with ${npmClient}`);
   }
+
+  async ensureVariableWithQuestion<V>(
+    v: V,
+    question: Omit<prompts.PromptObject<'variable'>, 'name'>,
+  ) {
+    if (!v) {
+      const res = await promptsExitWhenCancel({
+        ...question,
+        name: 'variable',
+      });
+
+      return res.variable ? res.variable : question.initial;
+    }
+
+    return v;
+  }
 }
 
 export function getUmiJsPlugin() {
@@ -120,4 +136,8 @@ export function promptsExitWhenCancel<T extends string = string>(
       process.exit(1);
     },
   });
+}
+
+export function trim(s?: string) {
+  return s?.trim() || '';
 }

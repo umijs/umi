@@ -1,6 +1,7 @@
 import { GeneratorType } from '@umijs/core';
 import { generateFile, prompts, randomColor } from '@umijs/utils';
 import { join, parse } from 'path';
+import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { promptsExitWhenCancel } from './utils';
 
@@ -24,14 +25,8 @@ export default (api: IApi) => {
   });
 };
 
-const INDEX_TPL_PATH = join(
-  __dirname,
-  '../../../templates/generate/page/index.tsx.tpl',
-);
-const LEES_TPL_PATH = join(
-  __dirname,
-  '../../../templates/generate/page/index.less.tpl',
-);
+const INDEX_TPL_PATH = join(TEMPLATES_DIR, 'generate/page/index.tsx.tpl');
+const LEES_TPL_PATH = join(TEMPLATES_DIR, 'generate/page/index.less.tpl');
 const DEFAULT_PAGE_NAME = 'unTitledPage';
 
 export class PageGenerator {
