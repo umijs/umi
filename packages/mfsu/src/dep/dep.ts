@@ -11,9 +11,8 @@ import { getExposeFromContent } from './getExposeFromContent';
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'], // es module first
   extensions: ['.js', '.json', '.mjs'],
-  // TODO: support exports
-  // tried to add exports, but it don't work with swr
-  exportsFields: [],
+  exportsFields: ['exports'],
+  conditionNames: ['import', 'module', 'require', 'node'],
 });
 
 async function resolve(context: string, path: string): Promise<string> {
@@ -32,6 +31,7 @@ export class Dep {
   public normalizedFile: string;
   public filePath: string;
   public mfsu: MFSU;
+
   constructor(opts: {
     file: string;
     version: string;
