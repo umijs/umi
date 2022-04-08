@@ -35,6 +35,8 @@
     ]
   },
   "devDependencies": {
+    "@pnpm/lockfile-file": "^5.0.0",
+    "@pnpm/logger": "^4.0.0",
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.22",
     "@types/react": "^17.0.41",
