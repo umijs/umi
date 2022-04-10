@@ -11,6 +11,8 @@ type IOpts = {
   afterMiddlewares?: any[];
   beforeMiddlewares?: any[];
   onDevCompileDone?: Function;
+  onProgress?: Function;
+  onMFSUProgress?: Function;
   port?: number;
   host?: string;
   babelPreset?: any;
@@ -45,6 +47,7 @@ export async function dev(opts: IOpts) {
       tmpBase:
         opts.config.mfsu?.cacheDirectory ||
         join(opts.cwd, 'node_modules/.cache/mfsu'),
+      onMFSUProgress: opts.onMFSUProgress,
       getCacheDependency() {
         return {
           version: require('../package.json').version,
@@ -52,7 +55,7 @@ export async function dev(opts: IOpts) {
           alias: opts.config.alias,
           externals: opts.config.externals,
           theme: opts.config.theme,
-          runtimePublicPath: opts.config.runtimePublicPath,
+          runtimePublicPath: !!opts.config.runtimePublicPath,
           publicPath: opts.config.publicPath,
         };
       },
@@ -118,5 +121,6 @@ export async function dev(opts: IOpts) {
     host: opts.host,
     afterMiddlewares: [...(opts.afterMiddlewares || [])],
     onDevCompileDone: opts.onDevCompileDone,
+    onProgress: opts.onProgress,
   });
 }

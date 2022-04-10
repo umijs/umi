@@ -22,6 +22,14 @@ export default (api: IApi) => {
     memo.umi = {
       version: require('../../../package.json').version,
     };
+    memo.bundleStatus = {
+      done: false,
+    };
+    if (api.config.mfsu !== false) {
+      memo.mfsuBundleStatus = {
+        done: false,
+      };
+    }
     memo.react = {
       version: require(join(api.config.alias.react, 'package.json')).version,
     };

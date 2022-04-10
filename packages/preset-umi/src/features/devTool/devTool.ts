@@ -19,6 +19,17 @@ export default (api: IApi) => {
           if (shortPath === 'app-data') {
             return res.json(api.appData);
           }
+          if (shortPath === 'bundle-status') {
+            const isMFSUEnable = api.config.mfsu !== false;
+            return res.json({
+              bundleStatus: api.appData.bundleStatus,
+              ...(isMFSUEnable
+                ? {
+                    mfsuBundleStatus: api.appData.mfsuBundleStatus,
+                  }
+                : {}),
+            });
+          }
           return next();
         }
 
