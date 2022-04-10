@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Umi Loading...</title>
+</head>
+<body>
+
+  <div id="umi"></div>
+  <div id="mfsu"></div>
+
+  <script>
+    function check(data) {
+      renderBundleStatus(data.bundleStatus);
+      renderMFSUBundleStatus(data.mfsuBundleStatus);
+      if (data.bundleStatus.done && (!data.mfsuBundleStatus || data.mfsuBundleStatus.done)) {
+        location.reload();
+      } else {
+        setTimeout(loadData, 300);
+      }
+    }
+
+    function setUmi(html) {
+      document.getElementById('umi').innerHTML = html;
+    }
+
+    function setMFSU(html) {
+      document.getElementById('mfsu').innerHTML = html;
+    }
+
+    function renderBundleStatus(data) {
+      if (data.done) {
+        setUmi('umi bundle done');
+      } else {
+        setUmi(`umi bundle loading... ${Math.floor((data.progresses[0].percent || 0) * 100)}%`);
+      }
+    }
+
+    function renderMFSUBundleStatus(data) {
+      if (!data) {
+        // document.getElementById('mfsu').style.display = 'none';
+        return;
+      }
+      if (data.done) {
+        setMFSU('mfsu bundle done');
+      } else {
+        setMFSU(`mfsu bundle loading... ${Math.floor((data.percent || 0) * 100)}%`);
+      }
+    }
+
+    function loadData() {
+      fetch('/__umi/api/bundle-status')
+        .then(res => res.json())
+        .then(check);
+    }
+
+    loadData();
+
+  </script>
+
+</body>
+</html>
