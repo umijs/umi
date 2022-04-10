@@ -256,7 +256,7 @@ PORT=8888 umi dev
           });
         },
         onProgress(opts: any) {
-          api.appData.bundleStatus.progress = opts.progress;
+          api.appData.bundleStatus.progresses = opts.progresses;
         },
         onMFSUProgress(opts: any) {
           api.appData.mfsuBundleStatus = {
