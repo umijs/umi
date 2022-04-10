@@ -249,10 +249,20 @@ PORT=8888 umi dev
         afterMiddlewares: middlewares.concat(createRouteMiddleware({ api })),
         onDevCompileDone(opts: any) {
           debouncedPrintMemoryUsage();
+          api.appData.bundleStatus.done = true;
           api.applyPlugins({
             key: 'onDevCompileDone',
             args: opts,
           });
+        },
+        onProgress(opts: any) {
+          api.appData.bundleStatus.progress = opts.progress;
+        },
+        onMFSUProgress(opts: any) {
+          api.appData.mfsuBundleStatus = {
+            ...api.appData.mfsuBundleStatus,
+            ...opts,
+          };
         },
         mfsuWithESBuild: api.config.mfsu?.esbuild,
         cache: {

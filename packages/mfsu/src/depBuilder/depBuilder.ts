@@ -157,6 +157,11 @@ export class DepBuilder {
         webpack: this.opts.mfsu.opts.implementor,
       }),
     );
+    depConfig.plugins.push(
+      new this.opts.mfsu.opts.implementor.ProgressPlugin((percent, msg) => {
+        this.opts.mfsu.onProgress({ percent, status: msg });
+      }),
+    );
     const exposes = opts.deps.reduce<Record<string, string>>((memo, dep) => {
       memo[`./${dep.file}`] = join(this.opts.mfsu.opts.tmpBase!, dep.filePath);
       return memo;

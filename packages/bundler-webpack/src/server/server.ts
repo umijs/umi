@@ -21,6 +21,7 @@ interface IOpts {
   beforeMiddlewares?: any[];
   afterMiddlewares?: any[];
   onDevCompileDone?: Function;
+  onProgress?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -76,9 +77,28 @@ export async function createServer(opts: IOpts) {
   });
 
   // webpack dev middleware
-  const compiler = webpack(
-    Array.isArray(webpackConfig) ? webpackConfig : [webpackConfig],
-  );
+  const configs = Array.isArray(webpackConfig)
+    ? webpackConfig
+    : [webpackConfig];
+  const progresses = [];
+  if (opts.onProgress) {
+    configs.forEach((config) => {
+      const progress = {
+        percent: 0,
+        status: 'waiting',
+      };
+      progresses.push(progress);
+      config.plugins.push(
+        new webpack.ProgressPlugin((percent, msg) => {
+          progress.percent = percent;
+          progress.status = msg;
+          opts.onProgress!({ progress });
+        }),
+      );
+    });
+  }
+  const compiler = webpack(configs);
+
   const webpackDevMiddleware = require('@umijs/bundler-webpack/compiled/webpack-dev-middleware');
   const compilerMiddleware = webpackDevMiddleware(compiler, {
     publicPath: userConfig.publicPath || '/',
