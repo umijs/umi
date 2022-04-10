@@ -80,7 +80,7 @@ export async function createServer(opts: IOpts) {
   const configs = Array.isArray(webpackConfig)
     ? webpackConfig
     : [webpackConfig];
-  const progresses = [];
+  const progresses: any[] = [];
   if (opts.onProgress) {
     configs.forEach((config) => {
       const progress = {
@@ -92,7 +92,7 @@ export async function createServer(opts: IOpts) {
         new webpack.ProgressPlugin((percent, msg) => {
           progress.percent = percent;
           progress.status = msg;
-          opts.onProgress!({ progress });
+          opts.onProgress!({ progresses });
         }),
       );
     });
