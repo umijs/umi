@@ -24,6 +24,9 @@ function send(type: string, message?: string) {
   const encodedMessage = message ? \`&m=\${encodeURI(message)}\` : '';
   fetch(\`/__umi/api/terminal?type=\${type}&t=\${Date.now()}&c=\${count++}&g=\${groupLevel}\${encodedMessage}\`, { mode: 'no-cors' })
 }
+function prettyPrint(obj: any) {
+  return JSON.stringify(obj, null, 2);
+}
 function stringifyObjs(objs: any[]) {
   const obj = objs.length > 1 ? objs.map(stringify).join(' ') : objs[0];
   return typeof obj === 'object' ? \`\${prettyPrint(obj)}\` : obj.toString();

@@ -13,6 +13,9 @@ export default function HomePage() {
   console.log('marked', marked);
   const [count] = React.useState(0);
   terminal.log(`Some info from the app`);
+  terminal.log({
+    json: { foo: 'bar' },
+  });
   terminal.info(`Hey terminal, A message from the browser`);
   terminal.warn(`Watch out, warning from the browser`);
   terminal.error(`Ups, testing an error message from the browser`);
