@@ -1,6 +1,6 @@
 {
   "name": "@umijs/test-utils",
-  "version": "3.5.21",
+  "version": "3.5.22",
   "description": "@umijs/test-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

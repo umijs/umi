@@ -1,6 +1,6 @@
 {
   "name": "@umijs/renderer-react",
-  "version": "3.5.21",
+  "version": "3.5.22",
   "description": "@umijs/renderer-react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-config": "^5.0.2",
-    "@umijs/runtime": "3.5.21",
+    "@umijs/runtime": "3.5.22",
     "react-router-config": "5.1.1"
   },
   "peerDependencies": {
