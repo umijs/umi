@@ -63,7 +63,7 @@ export { terminal };
         c;
         g;
         // @ts-ignore
-        console.log(colors[type](m));
+        console[type](colors[type](`» ${m}`));
         res.end();
       } else {
         return next();
