@@ -9,6 +9,6 @@
   "dependencies": {
     "@types/three": "^0.139.0",
     "umi": "4.0.0-rc.11",
-    "valtio": "^1.4.0"
+    "valtio": "^1.5.2"
   }
 }

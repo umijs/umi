@@ -75,7 +75,7 @@
     "terser": "5.12.1",
     "terser-webpack-plugin": "5.3.1",
     "url-loader": "4.1.1",
-    "webpack": "5.70.0",
+    "webpack": "5.72.0",
     "webpack-5-chain": "8.0.0",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-dev-middleware": "5.3.1",

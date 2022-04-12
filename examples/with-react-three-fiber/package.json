@@ -10,8 +10,8 @@
     "@react-three/drei": "^9.4.2",
     "@react-three/fiber": "^8.0.10",
     "@types/three": "^0.139.0",
-    "three": "^0.138.3",
-    "troika-three-text": "^0.46.3",
+    "three": "^0.139.2",
+    "troika-three-text": "^0.46.4",
     "umi": "4.0.0-rc.11"
   }
 }

@@ -10,7 +10,9 @@ import type { DuplexOptions } from 'stream';
 import { TransformOptions as EsbuildTransformOptions } from '../../../esbuild';
 import { EventEmitter } from 'events';
 import * as events from 'events';
+import type { ExistingRawSourceMap } from '../../../rollup';
 import type * as fs from 'fs';
+import type { GetManualChunk } from '../../../rollup';
 import * as http from 'http';
 import type { IncomingMessage } from 'http';
 import type { InputOptions } from '../../../rollup';
@@ -33,8 +35,8 @@ import type { RollupOutput } from '../../../rollup';
 import type { RollupWatcher } from '../../../rollup';
 import type { SecureContextOptions } from 'tls';
 import type { Server } from 'http';
-import type { Server as Server_2 } from 'https';
-import type { Server as Server_3 } from 'net';
+import type { Server as Server_2 } from 'net';
+import type { Server as Server_3 } from 'https';
 import type { ServerOptions as ServerOptions_2 } from 'https';
 import type { ServerResponse } from 'http';
 import type { SourceDescription } from '../../../rollup';
@@ -46,6 +48,8 @@ import type { TransformResult as TransformResult_3 } from '../../../rollup';
 import type * as url from 'url';
 import type { URL as URL_2 } from 'url';
 import type { WatcherOptions } from '../../../rollup';
+import type { WebSocket as WebSocket_2 } from '../../ws';
+import { WebSocketServer as WebSocketServer_2 } from '../../ws';
 import type { ZlibOptions } from 'zlib';
 
 export declare interface Alias {
@@ -267,6 +271,11 @@ export declare interface BuildOptions {
     watch?: WatcherOptions | null;
 }
 
+export declare interface ChunkMetadata {
+    importedAssets: Set<string>;
+    importedCss: Set<string>;
+}
+
 export declare interface CommonServerOptions {
     /**
      * Specify server port. Note if the port is already being used, Vite will
@@ -478,6 +487,19 @@ export declare interface CSSOptions {
     postcss?: string | (Postcss.ProcessOptions & {
         plugins?: Postcss.Plugin[];
     });
+    /**
+     * Enables css sourcemaps during dev
+     * @default false
+     * @experimental
+     */
+    devSourcemap?: boolean;
+}
+
+export declare interface CustomEventMap {
+    'vite:beforeUpdate': UpdatePayload
+    'vite:beforePrune': PrunePayload
+    'vite:beforeFullReload': FullReloadPayload
+    'vite:error': ErrorPayload
 }
 
 export declare interface CustomPayload {
@@ -506,11 +528,22 @@ export declare interface DepOptimizationMetadata {
      * optimized deps.
      */
     browserHash: string;
-    optimized: Record<string, {
-        file: string;
-        src: string;
-        needsInterop: boolean;
-    }>;
+    /**
+     * Metadata for each already optimized dependency
+     */
+    optimized: Record<string, OptimizedDepInfo>;
+    /**
+     * Metadata for non-entry optimized chunks and dynamic imports
+     */
+    chunks: Record<string, OptimizedDepInfo>;
+    /**
+     * Metadata for each newly discovered dependency after processing
+     */
+    discovered: Record<string, OptimizedDepInfo>;
+    /**
+     * OptimizedDepInfo list
+     */
+    depInfoList: OptimizedDepInfo[];
 }
 
 export declare interface DepOptimizationOptions {
@@ -552,6 +585,32 @@ export declare interface DepOptimizationOptions {
      * @deprecated use `esbuildOptions.keepNames`
      */
     keepNames?: boolean;
+    /**
+     * List of file extensions that can be optimized. A corresponding esbuild
+     * plugin must exist to handle the specific extension.
+     *
+     * By default, Vite can optimize `.mjs`, `.js`, and `.ts` files. This option
+     * allows specifying additional extensions.
+     *
+     * @experimental
+     */
+    extensions?: string[];
+}
+
+export declare interface DepOptimizationProcessing {
+    promise: Promise<void>;
+    resolve: () => void;
+}
+
+export declare interface DepOptimizationResult {
+    metadata: DepOptimizationMetadata;
+    /**
+     * When doing a re-run, if there are newly discovered dependendencies
+     * the page reload will be delayed until the next rerun so we need
+     * to be able to discard the result
+     */
+    commit: () => void;
+    cancel: () => void;
 }
 
 export declare interface ErrorPayload {
@@ -612,6 +671,8 @@ export declare interface FileSystemServeOptions {
      */
     deny?: string[];
 }
+
+export declare function formatPostcssSourceMap(rawMap: ExistingRawSourceMap, file: string): ExistingRawSourceMap;
 
 export declare class FSWatcher extends EventEmitter implements fs.FSWatcher {
     options: WatchOptions
@@ -976,6 +1037,9 @@ export declare type IndexHtmlTransformResult = string | HtmlTagDescriptor[] | {
     tags: HtmlTagDescriptor[];
 };
 
+export declare type InferCustomEventPayload<T extends string> =
+T extends keyof CustomEventMap ? CustomEventMap[T] : any
+
 export declare interface InlineConfig extends UserConfig {
     configFile?: string | false;
     envFile?: false;
@@ -1001,6 +1065,7 @@ export declare interface InternalResolveOptions extends ResolveOptions {
     isRequire?: boolean;
     isFromTsImporter?: boolean;
     tryEsmOnly?: boolean;
+    scan?: boolean;
 }
 
 export declare interface JsonOptions {
@@ -1091,7 +1156,7 @@ export declare class ModuleGraph {
     getModuleById(id: string): ModuleNode | undefined;
     getModulesByFile(file: string): Set<ModuleNode> | undefined;
     onFileChange(file: string): void;
-    invalidateModule(mod: ModuleNode, seen?: Set<ModuleNode>): void;
+    invalidateModule(mod: ModuleNode, seen?: Set<ModuleNode>, timestamp?: number): void;
     invalidateAll(): void;
     /**
      * Update the module graph based on a module's updated imports information
@@ -1125,13 +1190,36 @@ export declare class ModuleNode {
     ssrTransformResult: TransformResult | null;
     ssrModule: Record<string, any> | null;
     lastHMRTimestamp: number;
+    lastInvalidationTimestamp: number;
     constructor(url: string);
 }
 
 export declare function normalizePath(id: string): string;
 
-export declare function optimizeDeps(config: ResolvedConfig, force?: boolean | undefined, asCommand?: boolean, newDeps?: Record<string, string>, // missing imports encountered after server has started
-ssr?: boolean): Promise<DepOptimizationMetadata | null>;
+export declare interface OptimizedDepInfo {
+    id: string;
+    file: string;
+    src?: string;
+    needsInterop?: boolean;
+    browserHash?: string;
+    fileHash?: string;
+    /**
+     * During optimization, ids can still be resolved to their final location
+     * but the bundles may not yet be saved to disk
+     */
+    processing?: Promise<void>;
+}
+
+export declare interface OptimizedDeps {
+    metadata: DepOptimizationMetadata;
+    scanProcessing?: Promise<void>;
+    registerMissingImport: (id: string, resolved: string) => OptimizedDepInfo;
+}
+
+/**
+ * Used by Vite CLI when running `vite optimize`
+ */
+export declare function optimizeDeps(config: ResolvedConfig, force?: boolean | undefined, asCommand?: boolean): Promise<DepOptimizationMetadata>;
 
 /** Cache for package.json resolution and package.json contents */
 export declare type PackageCache = Map<string, PackageData>;
@@ -1254,6 +1342,7 @@ export declare interface Plugin extends Plugin_2 {
     resolveId?(this: PluginContext, source: string, importer: string | undefined, options: {
         custom?: CustomPluginOptions;
         ssr?: boolean;
+        /* Excluded from this release type: scan */
     }): Promise<ResolveIdResult> | ResolveIdResult;
     load?(this: PluginContext, id: string, options?: {
         ssr?: boolean;
@@ -1270,6 +1359,7 @@ export declare interface PluginContainer {
     resolveId(id: string, importer?: string, options?: {
         skip?: Set<Plugin>;
         ssr?: boolean;
+        /* Excluded from this release type: scan */
     }): Promise<PartialResolvedId | null>;
     transform(code: string, id: string, options?: {
         inMap?: SourceDescription['map'];
@@ -1312,7 +1402,7 @@ export declare interface PreviewServer {
 /**
  * @deprecated Use `server.printUrls()` instead
  */
-export declare function printHttpServerUrls(server: Server_3, config: ResolvedConfig): void;
+export declare function printHttpServerUrls(server: Server_2, config: ResolvedConfig): void;
 
 export declare interface ProxyOptions extends HttpProxy.ServerOptions {
     /**
@@ -1348,6 +1438,7 @@ export declare type ResolvedConfig = Readonly<Omit<UserConfig, 'plugins' | 'alia
     cacheDir: string;
     command: 'build' | 'serve';
     mode: string;
+    isWorker: boolean;
     isProduction: boolean;
     env: Record<string, any>;
     resolve: ResolveOptions & {
@@ -1665,6 +1756,18 @@ export declare interface ServerOptions extends CommonServerOptions {
 }
 
 export declare function sortUserPlugins(plugins: (Plugin | Plugin[])[] | undefined): [Plugin[], Plugin[], Plugin[]];
+
+export declare function splitVendorChunk(options?: {
+    cache?: SplitVendorChunkCache;
+}): GetManualChunk;
+
+export declare class SplitVendorChunkCache {
+    cache: Map<string, boolean>;
+    constructor();
+    reset(): void;
+}
+
+export declare function splitVendorChunkPlugin(): Plugin;
 
 export declare interface SSROptions {
     external?: string[];
@@ -2093,7 +2196,11 @@ export declare interface ViteDevServer {
         fixStacktrace?: boolean;
     }): Promise<Record<string, any>>;
     /**
-     * Fix ssr error stacktrace
+     * Returns a fixed version of the given stack
+     */
+    ssrRewriteStacktrace(stack: string): string;
+    /**
+     * Mutates the given SSR error by rewriting the stacktrace
      */
     ssrFixStacktrace(e: Error): void;
     /**
@@ -2114,14 +2221,11 @@ export declare interface ViteDevServer {
      * @param forceOptimize - force the optimizer to re-bundle, same as --force cli flag
      */
     restart(forceOptimize?: boolean): Promise<void>;
-    /* Excluded from this release type: _optimizeDepsMetadata */
+    /* Excluded from this release type: _optimizedDeps */
     /* Excluded from this release type: _ssrExternals */
     /* Excluded from this release type: _globImporters */
     /* Excluded from this release type: _restartPromise */
     /* Excluded from this release type: _forceOptimizeOnRestart */
-    /* Excluded from this release type: _isRunningOptimizer */
-    /* Excluded from this release type: _registerMissingImport */
-    /* Excluded from this release type: _pendingReload */
     /* Excluded from this release type: _pendingRequests */
 }
 
@@ -2240,6 +2344,8 @@ export declare class WebSocket extends EventEmitter {
     binaryType: 'nodebuffer' | 'arraybuffer' | 'fragments'
     readonly bufferedAmount: number
     readonly extensions: string
+    /** Indicates whether the websocket is paused */
+    readonly isPaused: boolean
     readonly protocol: string
     /** The current state of the connection */
     readonly readyState:
@@ -2258,11 +2364,12 @@ export declare class WebSocket extends EventEmitter {
     /** The connection is closed. */
     readonly CLOSED: 3
 
-    onopen: (event: WebSocket.Event) => void
-    onerror: (event: WebSocket.ErrorEvent) => void
-    onclose: (event: WebSocket.CloseEvent) => void
-    onmessage: (event: WebSocket.MessageEvent) => void
+    onopen: ((event: WebSocket.Event) => void) | null
+    onerror: ((event: WebSocket.ErrorEvent) => void) | null
+    onclose: ((event: WebSocket.CloseEvent) => void) | null
+    onmessage: ((event: WebSocket.MessageEvent) => void) | null
 
+    constructor(address: null)
     constructor(
     address: string | URL_2,
     options?: WebSocket.ClientOptions | ClientRequestArgs
@@ -2288,6 +2395,18 @@ export declare class WebSocket extends EventEmitter {
     cb?: (err?: Error) => void
     ): void
     terminate(): void
+
+    /**
+     * Pause the websocket causing it to stop emitting events. Some events can still be
+     * emitted after this is called, until all buffered data is consumed. This method
+     * is a noop if the ready state is `CONNECTING` or `CLOSED`.
+     */
+    pause(): void
+    /**
+     * Make a paused socket resume emitting events. This method is a noop if the ready
+     * state is `CONNECTING` or `CLOSED`.
+     */
+    resume(): void
 
     // HTML5 WebSocket events
     addEventListener(
@@ -2525,6 +2644,7 @@ export declare namespace WebSocket {
     export interface ClientOptions extends SecureContextOptions {
         protocol?: string | undefined
         followRedirects?: boolean | undefined
+        generateMask?(mask: Buffer): void
         handshakeTimeout?: number | undefined
         maxRedirects?: number | undefined
         perMessageDeflate?: boolean | PerMessageDeflateOptions | undefined
@@ -2538,6 +2658,7 @@ export declare namespace WebSocket {
         checkServerIdentity?(servername: string, cert: CertMeta): boolean
         rejectUnauthorized?: boolean | undefined
         maxPayload?: number | undefined
+        skipUTF8Validation?: boolean | undefined
     }
 
     export interface PerMessageDeflateOptions {
@@ -2597,7 +2718,7 @@ export declare namespace WebSocket {
         host?: string | undefined
         port?: number | undefined
         backlog?: number | undefined
-        server?: Server | Server_2 | undefined
+        server?: Server | Server_3 | undefined
         verifyClient?:
         | VerifyClientCallbackAsync
         | VerifyClientCallbackSync
@@ -2612,6 +2733,7 @@ export declare namespace WebSocket {
         perMessageDeflate?: boolean | PerMessageDeflateOptions | undefined
         maxPayload?: number | undefined
         skipUTF8Validation?: boolean | undefined
+        WebSocket?: typeof WebSocket.WebSocket | undefined
     }
 
     export interface AddressInfo {
@@ -2621,10 +2743,10 @@ export declare namespace WebSocket {
     }
 
     // WebSocket Server
-    export class Server extends EventEmitter {
+    export class Server<T extends WebSocket = WebSocket> extends EventEmitter {
         options: ServerOptions
         path: string
-        clients: Set<WebSocket>
+        clients: Set<T>
 
         constructor(options?: ServerOptions, callback?: () => void)
 
@@ -2634,56 +2756,59 @@ export declare namespace WebSocket {
         request: IncomingMessage,
         socket: Duplex,
         upgradeHead: Buffer,
-        callback: (client: WebSocket, request: IncomingMessage) => void
+        callback: (client: T, request: IncomingMessage) => void
         ): void
         shouldHandle(request: IncomingMessage): boolean | Promise<boolean>
 
         // Events
         on(
         event: 'connection',
-        cb: (this: Server, socket: WebSocket, request: IncomingMessage) => void
+        cb: (this: Server<T>, socket: T, request: IncomingMessage) => void
         ): this
-        on(event: 'error', cb: (this: Server, error: Error) => void): this
+        on(event: 'error', cb: (this: Server<T>, error: Error) => void): this
         on(
         event: 'headers',
-        cb: (this: Server, headers: string[], request: IncomingMessage) => void
+        cb: (this: Server<T>, headers: string[], request: IncomingMessage) => void
         ): this
-        on(event: 'close' | 'listening', cb: (this: Server) => void): this
+        on(event: 'close' | 'listening', cb: (this: Server<T>) => void): this
         on(
         event: string | symbol,
-        listener: (this: Server, ...args: any[]) => void
+        listener: (this: Server<T>, ...args: any[]) => void
         ): this
 
         once(
         event: 'connection',
-        cb: (this: Server, socket: WebSocket, request: IncomingMessage) => void
+        cb: (this: Server<T>, socket: T, request: IncomingMessage) => void
         ): this
-        once(event: 'error', cb: (this: Server, error: Error) => void): this
+        once(event: 'error', cb: (this: Server<T>, error: Error) => void): this
         once(
         event: 'headers',
-        cb: (this: Server, headers: string[], request: IncomingMessage) => void
+        cb: (this: Server<T>, headers: string[], request: IncomingMessage) => void
         ): this
-        once(event: 'close' | 'listening', cb: (this: Server) => void): this
-        once(event: string | symbol, listener: (...args: any[]) => void): this
+        once(event: 'close' | 'listening', cb: (this: Server<T>) => void): this
+        once(
+        event: string | symbol,
+        listener: (this: Server<T>, ...args: any[]) => void
+        ): this
 
         off(
         event: 'connection',
-        cb: (this: Server, socket: WebSocket, request: IncomingMessage) => void
+        cb: (this: Server<T>, socket: T, request: IncomingMessage) => void
         ): this
-        off(event: 'error', cb: (this: Server, error: Error) => void): this
+        off(event: 'error', cb: (this: Server<T>, error: Error) => void): this
         off(
         event: 'headers',
-        cb: (this: Server, headers: string[], request: IncomingMessage) => void
+        cb: (this: Server<T>, headers: string[], request: IncomingMessage) => void
         ): this
-        off(event: 'close' | 'listening', cb: (this: Server) => void): this
+        off(event: 'close' | 'listening', cb: (this: Server<T>) => void): this
         off(
         event: string | symbol,
-        listener: (this: Server, ...args: any[]) => void
+        listener: (this: Server<T>, ...args: any[]) => void
         ): this
 
         addListener(
         event: 'connection',
-        cb: (client: WebSocket, request: IncomingMessage) => void
+        cb: (client: T, request: IncomingMessage) => void
         ): this
         addListener(event: 'error', cb: (err: Error) => void): this
         addListener(
@@ -2696,7 +2821,7 @@ export declare namespace WebSocket {
         listener: (...args: any[]) => void
         ): this
 
-        removeListener(event: 'connection', cb: (client: WebSocket) => void): this
+        removeListener(event: 'connection', cb: (client: T) => void): this
         removeListener(event: 'error', cb: (err: Error) => void): this
         removeListener(
         event: 'headers',
@@ -2710,9 +2835,9 @@ export declare namespace WebSocket {
     }
 
     const WebSocketServer: typeof Server
-    export type WebSocketServer = Server
+    export interface WebSocketServer extends Server {} // tslint:disable-line no-empty-interface
     const WebSocket: typeof WebSocketAlias
-    export type WebSocket = WebSocketAlias
+    export interface WebSocket extends WebSocketAlias {} // tslint:disable-line no-empty-interface
 
     // WebSocket stream
     export function createWebSocketStream(
@@ -2723,13 +2848,55 @@ export declare namespace WebSocket {
 
 export declare const WebSocketAlias: typeof WebSocket;
 
-export declare type WebSocketAlias = WebSocket
+export declare interface WebSocketAlias extends WebSocket {}
+
+export declare interface WebSocketClient {
+    /**
+     * Send event to the client
+     */
+    send(payload: HMRPayload): void;
+    /**
+     * Send custom event
+     */
+    send(event: string, payload?: CustomPayload['data']): void;
+    /**
+     * The raw WebSocket instance
+     * @advanced
+     */
+    socket: WebSocket_2;
+}
+
+export declare type WebSocketCustomListener<T> = (data: T, client: WebSocketClient) => void;
 
 export declare interface WebSocketServer {
-    on: WebSocket.Server['on'];
-    off: WebSocket.Server['off'];
+    /**
+     * Get all connected clients.
+     */
+    clients: Set<WebSocketClient>;
+    /**
+     * Boardcast events to all clients
+     */
     send(payload: HMRPayload): void;
+    /**
+     * Send custom event
+     */
+    send<T extends string>(event: T, payload?: InferCustomEventPayload<T>): void;
+    /**
+     * Disconnect all clients and terminate the server.
+     */
     close(): Promise<void>;
+    /**
+     * Handle custom event emitted by `import.meta.hot.send`
+     */
+    on: WebSocketServer_2['on'] & {
+        <T extends string>(event: T, listener: WebSocketCustomListener<InferCustomEventPayload<T>>): void;
+    };
+    /**
+     * Unregister event listener.
+     */
+    off: WebSocketServer_2['off'] & {
+        (event: string, listener: Function): void;
+    };
 }
 
 export { }

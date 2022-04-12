@@ -10,6 +10,6 @@
     "@umijs/plugins": "4.0.0-rc.11",
     "@unocss/cli": "^0.31.0",
     "umi": "4.0.0-rc.11",
-    "unocss": "^0.29.5"
+    "unocss": "^0.31.0"
   }
 }
