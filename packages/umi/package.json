@@ -37,6 +37,8 @@
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
+    "@umijs/bundler-utils": "4.0.0-canary.20220412.1",
+    "@umijs/bundler-webpack": "4.0.0-canary.20220412.1",
     "@umijs/core": "4.0.0-canary.20220412.1",
     "@umijs/lint": "4.0.0-canary.20220412.1",
     "@umijs/preset-umi": "4.0.0-canary.20220412.1",
