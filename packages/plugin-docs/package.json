@@ -29,7 +29,7 @@
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
-    "@mdx-js/mdx": "2.1.0",
+    "@mdx-js/mdx": "2.1.1",
     "@types/keymaster": "^1.6.30",
     "@types/react-helmet": "^6.1.5",
     "classnames": "^2.3.1",

@@ -27,7 +27,7 @@
     "@types/color": "3.0.3",
     "@types/cross-spawn": "6.0.2",
     "@types/debug": "4.1.7",
-    "@types/lodash": "4.14.180",
+    "@types/lodash": "4.14.181",
     "@types/mustache": "4.1.2",
     "@types/prompts": "^2.0.14",
     "@types/rimraf": "3.0.2",

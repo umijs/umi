@@ -24,7 +24,7 @@
   "dependencies": {
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-layout": "^6.34.6",
+    "@ant-design/pro-layout": "^6.34.9",
     "@umijs/bundler-utils": "4.0.0-rc.11",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.26.1",
