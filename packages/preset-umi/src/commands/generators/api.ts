@@ -12,6 +12,7 @@ export default (api: IApi) => {
   api.registerGenerator({
     key: 'api',
     name: 'Generator api',
+    description: 'Generate api route boilerplate code',
     async fn(opts) {
       const h = new GeneratorHelper(api);
 

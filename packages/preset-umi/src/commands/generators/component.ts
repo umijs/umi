@@ -13,6 +13,7 @@ export default (api: IApi) => {
   api.registerGenerator({
     key: 'component',
     name: 'Generate Component',
+    description: 'Generate component boilerplate code',
     type: GeneratorType.generate,
 
     fn: async (options) => {
