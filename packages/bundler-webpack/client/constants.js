@@ -13,3 +13,9 @@ export var MESSAGE_TYPE;
 export const DEFAULT_BROWSER_TARGETS = {
     chrome: 80,
 };
+export const DEFAULT_ESBUILD_TARGET_KEYS = [
+    'chrome',
+    'firefox',
+    'edge',
+    'safari',
+];
