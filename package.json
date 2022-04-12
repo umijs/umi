@@ -20,6 +20,7 @@
     "prepare": "husky install",
     "release": "esno scripts/release.ts",
     "setup:webstorm": "esno scripts/setupWebStorm.ts",
+    "sync:tnpm": "esno scripts/syncTnpm.ts",
     "test": "esno scripts/turbo.ts --cmd test --parallel",
     "test:clean": "esno scripts/turbo.ts --cmd test --no-cache --parallel -- --clearCache",
     "test:e2e": "jest --config jest.e2e.config.ts",
