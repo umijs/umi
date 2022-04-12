@@ -89,7 +89,7 @@ export default (api: IApi) => {
     }
     theme = winPath(theme);
 
-    const themeConfigPath = join(api.cwd, 'theme.config.ts');
+    const themeConfigPath = winPath(join(api.cwd, 'theme.config.ts'));
     const themeExists = existsSync(themeConfigPath);
 
     // 将 docs/locales 目录下的 json 文件注入到 themeConfig.locales 中
@@ -105,8 +105,8 @@ export default (api: IApi) => {
       content: `
 export { ${exports
         .filter((item) => !item.startsWith('$'))
-        .join(', ')} } from '${require.resolve(
-        '../client/theme-doc/index.ts',
+        .join(', ')} } from '${winPath(
+        require.resolve('../client/theme-doc/index.ts'),
       )}';
     `,
     });
@@ -116,8 +116,8 @@ export { ${exports
       content: `
 import React from 'react';
 import { useOutlet, useAppData, useLocation, Link } from 'umi';
-import { $Layout as Layout } from '${require.resolve(
-        '../client/theme-doc/index.ts',
+import { $Layout as Layout } from '${winPath(
+        require.resolve('../client/theme-doc/index.ts'),
       )}';
 ${
   themeExists
