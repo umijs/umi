@@ -187,6 +187,7 @@ const socketProtocol = __HMR_PROTOCOL__ || (location.protocol === 'https:' ? 'ws
 const socketHost = `${__HMR_HOSTNAME__ || location.hostname}:${__HMR_PORT__}`;
 const socket = new WebSocket(`${socketProtocol}://${socketHost}`, 'vite-hmr');
 const base = __BASE__ || '/';
+const messageBuffer = [];
 function warnFailedFetch(err, path) {
     if (!err.message.match('fetch')) {
         console.error(err);
@@ -209,9 +210,10 @@ async function handleMessage(payload) {
     switch (payload.type) {
         case 'connected':
             console.log(`[vite] connected.`);
+            sendMessageBuffer();
             // proxy(nginx, docker) hmr ws maybe caused timeout,
             // so send ping package let ws keep alive.
-            setInterval(() => socket.send('ping'), __HMR_TIMEOUT__);
+            setInterval(() => socket.send('{"type":"ping"}'), __HMR_TIMEOUT__);
             break;
         case 'update':
             notifyListeners('vite:beforeUpdate', payload);
@@ -342,10 +344,16 @@ async function waitForSuccessfulPing(ms = 1000) {
     // eslint-disable-next-line no-constant-condition
     while (true) {
         try {
-            await fetch(`${base}__vite_ping`);
-            break;
+            const pingResponse = await fetch(`${base}__vite_ping`);
+            // success - 2xx status code
+            if (pingResponse.ok)
+                break;
+            // failure - non-2xx status code
+            else
+                throw new Error();
         }
         catch (e) {
+            // wait ms before attempting to ping again
             await new Promise((resolve) => setTimeout(resolve, ms));
         }
     }
@@ -446,15 +454,19 @@ async function fetchUpdate({ path, acceptedPath, timestamp }) {
         console.log(`[vite] hot updated: ${loggedPath}`);
     };
 }
+function sendMessageBuffer() {
+    if (socket.readyState === 1) {
+        messageBuffer.forEach((msg) => socket.send(msg));
+        messageBuffer.length = 0;
+    }
+}
 const hotModulesMap = new Map();
 const disposeMap = new Map();
 const pruneMap = new Map();
 const dataMap = new Map();
 const customListenersMap = new Map();
 const ctxToListenersMap = new Map();
-// Just infer the return type for now
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const createHotContext = (ownerPath) => {
+function createHotContext(ownerPath) {
     if (!dataMap.has(ownerPath)) {
         dataMap.set(ownerPath, {});
     }
@@ -514,6 +526,7 @@ const createHotContext = (ownerPath) => {
         dispose(cb) {
             disposeMap.set(ownerPath, cb);
         },
+        // @ts-expect-error untyped
         prune(cb) {
             pruneMap.set(ownerPath, cb);
         },
@@ -526,7 +539,7 @@ const createHotContext = (ownerPath) => {
             location.reload();
         },
         // custom events
-        on: (event, cb) => {
+        on(event, cb) {
             const addToMap = (map) => {
                 const existing = map.get(event) || [];
                 existing.push(cb);
@@ -534,10 +547,14 @@ const createHotContext = (ownerPath) => {
             };
             addToMap(customListenersMap);
             addToMap(newListeners);
+        },
+        send(event, data) {
+            messageBuffer.push(JSON.stringify({ type: 'custom', event, data }));
+            sendMessageBuffer();
         }
     };
     return hot;
-};
+}
 /**
  * urls here are dynamic import() urls that couldn't be statically analyzed
  */

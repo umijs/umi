@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "react-redux": "^7.2.6",
+    "react-redux": "^7.2.8",
     "redux": "^4.1.2",
     "umi": "4.0.0-rc.11"
   }
