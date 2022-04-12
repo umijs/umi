@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",
     "@types/rollup-plugin-visualizer": "4.2.1",
-    "@types/svgo": "2.6.2",
+    "@types/svgo": "2.6.3",
     "@vitejs/plugin-legacy": "1.7.1",
     "caniuse-lite": "1.0.30001319",
     "rollup": "2.70.1",

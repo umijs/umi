@@ -60,6 +60,7 @@ export default (props: any) => {
 
         {isHomePage ? (
           <div id="article-body">
+            {/* @ts-ignore */}
             <Helmet>
               <title>
                 {title}

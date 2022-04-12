@@ -21,16 +21,16 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@babel/core": "7.17.7",
+    "@babel/core": "7.17.9",
     "@babel/eslint-parser": "7.17.0",
-    "@rushstack/eslint-patch": "1.1.1",
+    "@rushstack/eslint-patch": "1.1.2",
     "@stylelint/postcss-css-in-js": "^0.37.2",
-    "@typescript-eslint/eslint-plugin": "5.16.0",
-    "@typescript-eslint/parser": "5.16.0",
+    "@typescript-eslint/eslint-plugin": "5.19.0",
+    "@typescript-eslint/parser": "5.19.0",
     "@umijs/babel-preset-umi": "4.0.0-rc.11",
-    "eslint-plugin-jest": "26.1.2",
+    "eslint-plugin-jest": "26.1.4",
     "eslint-plugin-react": "7.29.4",
-    "eslint-plugin-react-hooks": "4.3.0",
+    "eslint-plugin-react-hooks": "4.4.0",
     "postcss": "^8.4.12",
     "postcss-syntax": "0.36.2",
     "stylelint-config-standard": "25.0.0"

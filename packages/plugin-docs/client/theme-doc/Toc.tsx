@@ -32,6 +32,7 @@ export default () => {
       className="w-full lg:m-12 mb-12 border
       border-gray-100 p-8 rounded-xl z-20"
     >
+      {/* @ts-ignore */}
       <Helmet>
         <title>
           {route.titles[0].title} | {themeConfig.title}

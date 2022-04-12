@@ -35,7 +35,7 @@
   "dependencies": {
     "@umijs/lint": "4.0.0-rc.11",
     "@umijs/plugins": "4.0.0-rc.11",
-    "antd": "^4.19.3",
+    "antd": "^4.19.5",
     "umi": "4.0.0-rc.11"
   },
   "publishConfig": {

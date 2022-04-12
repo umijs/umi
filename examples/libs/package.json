@@ -6,11 +6,11 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@codesandbox/sandpack-react": "0.15.2",
-    "antd": "4.19.3",
+    "@codesandbox/sandpack-react": "0.18.0",
+    "antd": "4.19.5",
     "dva-core": "^2.0.4",
     "fast-deep-equal": "3.1.3",
-    "framer-motion": "6.2.8",
+    "framer-motion": "6.2.9",
     "react-redux": "^8.0.0-beta.1",
     "redux": "^4.1.2",
     "swiper": "^8.0.7",

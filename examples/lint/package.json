@@ -10,9 +10,8 @@
     "lint:style-fix": "umi lint --stylelint-only --fix",
     "start": "npm run dev"
   },
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "^8.11.0",
+    "eslint": "^8.13.0",
     "stylelint": "^14.6.0",
     "umi": "4.0.0-rc.10"
   }

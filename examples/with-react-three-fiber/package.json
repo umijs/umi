@@ -7,9 +7,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@react-three/drei": "^8.18.10",
-    "@react-three/fiber": "^7.0.26",
-    "@types/three": "^0.138.0",
+    "@react-three/drei": "^9.4.2",
+    "@react-three/fiber": "^8.0.10",
+    "@types/three": "^0.139.0",
     "three": "^0.138.3",
     "troika-three-text": "^0.46.3",
     "umi": "4.0.0-rc.11"
