@@ -36,6 +36,7 @@ export default (api: IApi) => {
       for (const cn of componentNames) {
         await new ComponentGenerator({
           srcPath: api.paths.absSrcPath,
+          appRoot: api.paths.cwd,
           generateFile,
           componentName: cn,
         }).run();
@@ -52,6 +53,7 @@ export class ComponentGenerator {
     readonly opts: {
       componentName: string;
       srcPath: string;
+      appRoot: string;
       generateFile: typeof generateFile;
     },
   ) {
@@ -61,7 +63,7 @@ export class ComponentGenerator {
   }
 
   async run() {
-    const { srcPath, generateFile } = this.opts;
+    const { generateFile, appRoot } = this.opts;
     const capitalizeName = lodash.capitalize(this.name);
     const base = join(
       this.opts.srcPath,
@@ -76,14 +78,14 @@ export class ComponentGenerator {
     await generateFile({
       target: indexFile,
       path: INDEX_TPL,
-      baseDir: srcPath,
+      baseDir: appRoot,
       data: { compName: capitalizeName },
     });
 
     await generateFile({
       target: compFile,
       path: COMP_TPL,
-      baseDir: srcPath,
+      baseDir: appRoot,
       data: { compName: capitalizeName },
     });
   }

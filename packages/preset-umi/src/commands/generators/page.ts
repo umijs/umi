@@ -20,6 +20,7 @@ export default (api: IApi) => {
         generateFile: options.generateFile,
         args: options.args,
         absPagesPath: api.paths.absPagesPath,
+        appCwd: api.paths.cwd,
       }).run();
     },
   });
@@ -42,6 +43,7 @@ export class PageGenerator {
       args: any;
       generateFile: typeof generateFile;
       absPagesPath: string;
+      appCwd: string;
     },
   ) {
     this.isDirMode = options.args.dir;
@@ -157,14 +159,14 @@ export class PageGenerator {
     await generateFile({
       path: INDEX_TPL_PATH,
       target: join(absPagesPath, this.dir, `${this.name}.tsx`),
-      baseDir: absPagesPath,
+      baseDir: this.options.appCwd,
       data,
     });
 
     await generateFile({
       path: LEES_TPL_PATH,
       target: join(absPagesPath, this.dir, `${this.name}.less`),
-      baseDir: absPagesPath,
+      baseDir: this.options.appCwd,
       data,
     });
   }
@@ -179,6 +181,7 @@ export class PageGenerator {
         name: 'index',
         cssExt: '.less',
       },
+      baseDir: this.options.appCwd,
     });
   }
 }

@@ -9,7 +9,7 @@ test('generate component with single name', async () => {
     1,
     expect.objectContaining({
       target: normalize('/my/src/path/components/Foo/index.ts'),
-      baseDir: normalize('/my/src/path'),
+      baseDir: normalize('/my'),
       data: { compName: 'Foo' },
     }),
   );
@@ -17,7 +17,7 @@ test('generate component with single name', async () => {
     2,
     expect.objectContaining({
       target: normalize('/my/src/path/components/Foo/Foo.tsx'),
-      baseDir: normalize('/my/src/path'),
+      baseDir: normalize('/my'),
       data: { compName: 'Foo' },
     }),
   );
@@ -50,6 +50,7 @@ async function runGeneratorWith(name: string) {
     componentName: name,
     srcPath: normalize('/my/src/path'),
     generateFile,
+    appRoot: normalize('/my'),
   });
 
   await cg.run();

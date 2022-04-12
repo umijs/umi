@@ -47,13 +47,13 @@ describe('page generator', function () {
             target: '/pages/foo.tsx',
             path: 'templates/generate/page/index.tsx.tpl',
             name: 'foo',
-            baseDir: '/pages/',
+            baseDir: '/',
           },
           {
             target: '/pages/foo.less',
             path: 'templates/generate/page/index.less.tpl',
             name: 'foo',
-            baseDir: '/pages/',
+            baseDir: '/',
           },
         ],
       );
@@ -67,13 +67,13 @@ describe('page generator', function () {
             target: '/pages/foo/bar.tsx',
             path: 'templates/generate/page/index.tsx.tpl',
             name: 'bar',
-            baseDir: '/pages/',
+            baseDir: '/',
           },
           {
             target: '/pages/foo/bar.less',
             path: 'templates/generate/page/index.less.tpl',
             name: 'bar',
-            baseDir: '/pages/',
+            baseDir: '/',
           },
         ],
       );
@@ -89,6 +89,7 @@ describe('page generator', function () {
             target: '/pages/foo',
             path: 'templates/generate/page',
             name: 'index',
+            baseDir: '/',
           },
         ],
       );
@@ -102,6 +103,7 @@ describe('page generator', function () {
             target: '/pages/foo/bar',
             path: 'templates/generate/page',
             name: 'index',
+            baseDir: '/',
           },
         ],
       );
@@ -122,6 +124,7 @@ describe('page generator', function () {
       absPagesPath: normalize('/pages/'),
       args,
       generateFile,
+      appCwd: normalize('/'),
     });
 
     await g.run();
@@ -147,6 +150,7 @@ describe('page generate in interactive way', function () {
       absPagesPath: '/pages/',
       args: { _: [] },
       generateFile,
+      appCwd: '/',
     });
 
     g.setPrompter(prompts as any);
@@ -182,6 +186,7 @@ describe('page generate in interactive way', function () {
       absPagesPath: '/pages/',
       args: { _: [] },
       generateFile,
+      appCwd: '/',
     });
 
     g.setPrompter(prompts as any);
@@ -217,6 +222,7 @@ describe('page generate in interactive way', function () {
       absPagesPath: '/pages/',
       args: { _: [] },
       generateFile,
+      appCwd: '/',
     });
 
     g.setPrompter(prompts as any);
@@ -235,6 +241,7 @@ describe('page generate in interactive way', function () {
       absPagesPath: '/pages/',
       args: { _: [] },
       generateFile,
+      appCwd: '/',
     });
 
     g.setPrompter(prompts as any);
@@ -254,6 +261,7 @@ describe('page generate multi pages in a run', function () {
       absPagesPath: normalize('/pages/'),
       args: { dir: true, _: ['page', 'login', 'post'] },
       generateFile,
+      appCwd: '/',
     });
 
     await g.run();
@@ -269,6 +277,7 @@ describe('page generate multi pages in a run', function () {
       absPagesPath: normalize('/pages/'),
       args: { dir: false, _: ['page', 'login', 'post'] },
       generateFile,
+      appCwd: '/',
     });
 
     await g.run();
