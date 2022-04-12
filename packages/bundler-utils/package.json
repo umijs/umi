@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-rc.11",
-    "esbuild": "0.14.34",
+    "esbuild": "0.14.35",
     "regenerate-unicode-properties": "10.0.1"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "@types/babel__traverse": "7.14.2",
     "@types/less": "3.0.3",
     "cjs-module-lexer": "1.2.2",
-    "es-module-lexer": "0.10.4",
+    "es-module-lexer": "0.10.5",
     "express": "4.17.3",
     "less": "4.1.2"
   },
