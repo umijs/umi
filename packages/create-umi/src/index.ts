@@ -24,7 +24,7 @@ export default async ({
   cwd: string;
   args: yParser.Arguments;
 }) => {
-  const [_, name] = args._;
+  const [name] = args._;
   let npmClient = 'pnpm' as any;
   let registry = 'https://registry.npmjs.org/';
   // test ignore prompts
@@ -90,9 +90,10 @@ export default async ({
     },
   ] as prompts.PromptObject[];
 
+  const target = name ? join(cwd, name) : cwd;
   const generator = new BaseGenerator({
     path: join(__dirname, '..', 'templates', args.plugin ? 'plugin' : 'app'),
-    target: name ? join(cwd, name) : cwd,
+    target,
     data: args.default
       ? testData
       : {
@@ -106,6 +107,6 @@ export default async ({
 
   if (!args.default) {
     // install
-    installWithNpmClient({ npmClient });
+    installWithNpmClient({ npmClient, cwd: target });
   }
 };

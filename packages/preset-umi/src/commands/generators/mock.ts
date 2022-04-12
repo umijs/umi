@@ -12,7 +12,8 @@ export default (api: IApi) => {
   api.registerGenerator({
     key: 'mock',
     type: GeneratorType.generate,
-    name: 'Generate mock code snippet',
+    name: 'Generate mock',
+    description: 'Generate mock boilerplate code',
 
     fn: async (opts) => {
       let [_, mockName] = opts.args._;

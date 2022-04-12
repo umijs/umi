@@ -35,7 +35,9 @@ export default (api: IApi) => {
         `
 module.exports = {
   content: [
-    './pages/**/*.tsx',
+    './src/pages/**/*.tsx',
+    './src/components/**.tsx',
+    './src/layouts/**.tsx',
   ],
 }
 `.trimLeft(),

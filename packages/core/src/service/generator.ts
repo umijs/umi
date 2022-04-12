@@ -8,8 +8,8 @@ export enum GeneratorType {
 
 export interface IGeneratorOpts {
   key: string;
-  name?: string;
-  description?: string;
+  name: string;
+  description: string;
   type?: GeneratorType;
   checkEnable?: {
     (opts: { args: any }): boolean;
@@ -37,8 +37,8 @@ export interface IGeneratorOpts {
 
 export class Generator {
   key: IGeneratorOpts['key'];
-  name?: IGeneratorOpts['name'];
-  description?: IGeneratorOpts['description'];
+  name: IGeneratorOpts['name'];
+  description: IGeneratorOpts['description'];
   type?: IGeneratorOpts['type'];
   checkEnable?: IGeneratorOpts['checkEnable'];
   fn: IGeneratorOpts['fn'];
