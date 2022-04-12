@@ -1025,6 +1025,8 @@ importers:
 
   packages/umi:
     specifiers:
+      '@umijs/bundler-utils': 4.0.0-canary.20220412.1
+      '@umijs/bundler-webpack': 4.0.0-canary.20220412.1
       '@umijs/core': 4.0.0-canary.20220412.1
       '@umijs/lint': 4.0.0-canary.20220412.1
       '@umijs/preset-umi': 4.0.0-canary.20220412.1
@@ -1034,6 +1036,8 @@ importers:
       prettier-plugin-organize-imports: ^2.3.4
       prettier-plugin-packagejson: ^2.2.17
     dependencies:
+      '@umijs/bundler-utils': link:../bundler-utils
+      '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
       '@umijs/lint': link:../lint
       '@umijs/preset-umi': link:../preset-umi

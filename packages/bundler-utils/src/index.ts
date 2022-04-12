@@ -2,9 +2,6 @@ import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
 import { winPath } from '@umijs/utils';
 import { extname } from 'path';
-import express from '../compiled/express';
-
-export { express };
 
 export async function parseModule(opts: { content: string; path: string }) {
   await init;
