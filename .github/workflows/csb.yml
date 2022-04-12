@@ -1,0 +1,8 @@
+on: pull_request
+
+jobs:
+  open_in_codesandbox:
+    name: Open in CodeSandbox
+    runs-on: ubuntu-latest
+    steps:
+    - uses: codesandbox/open-in-codesandbox@v1
