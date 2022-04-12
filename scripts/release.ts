@@ -167,7 +167,14 @@ import { assert, eachPkg, getPkgs } from './utils';
   $.verbose = false;
   await Promise.all(
     pkgs.map(async (pkg) => {
-      await $`tnpm sync ${pkg}`;
+      const { name } = require(path.join(
+        __dirname,
+        '../packages',
+        pkg,
+        'package.json',
+      ));
+      logger.info(`sync ${name}`);
+      await $`tnpm sync ${name}`;
     }),
   );
   $.verbose = true;
