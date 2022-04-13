@@ -29,10 +29,14 @@ export default (api: IApi) => {
     // e.g. import { X } from '_@ant-design_icons@4.7.0@ant-design/icons'
     if (['cnpm', 'tnpm'].includes(api.appData.npmClient)) {
       args.imports.forEach(({ source }) => {
-        if (/@\d/.test(source)) {
+        if (!isAbsolutePath(source) && /@\d/.test(source)) {
           throw new Error(`${source} is not allowed to import.`);
         }
       });
     }
   });
+
+  function isAbsolutePath(path: string) {
+    return path.startsWith('/') || path.startsWith('@fs/');
+  }
 };
