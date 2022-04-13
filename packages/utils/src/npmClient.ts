@@ -18,11 +18,6 @@ export const getNpmClient = (): NpmClient => {
   return 'npm';
 };
 
-export const checkNpmClient = (npmClient: NpmClient): boolean => {
-  const userAgent = process.env.npm_config_user_agent;
-  return !!(userAgent && userAgent.includes(npmClient));
-};
-
 export const installWithNpmClient = ({
   npmClient,
   cwd,
