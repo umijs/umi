@@ -14,19 +14,25 @@ export type { ILintArgs, ILinterOpts };
 export default (opts: ILinterOpts, args: ILintArgs) => {
   if (!args.eslintOnly) {
     const stylelint = new StyleLinter(opts);
-    if (!args.cssinjs) {
+    const styleArgs = { ...args, _: [...args._] };
+
+    if (!styleArgs.cssinjs) {
       for (const suffix of ES_EXTS) {
-        args._.unshift('--ignore-pattern', suffix);
+        styleArgs._.unshift('--ignore-pattern', suffix);
       }
     }
-    stylelint.run(args);
+
+    stylelint.run(styleArgs);
   }
 
   if (!args.stylelintOnly) {
     const eslint = new EsLinter(opts);
+    const esArgs = { ...args, _: [...args._] };
+
     for (const suffix of STYLE_EXTS) {
-      args._.unshift('--ignore-pattern', suffix);
+      esArgs._.unshift('--ignore-pattern', suffix);
     }
-    eslint.run(args);
+
+    eslint.run(esArgs);
   }
 };
