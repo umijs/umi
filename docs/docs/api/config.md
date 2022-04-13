@@ -439,7 +439,7 @@ metas: [
 // 用 esbuild 做依赖预编译
 mfsu: { esbuild: true }
 
-// 关于 mfsu 功能
+// 关闭 mfsu 功能
 mfsu: false
 ```
 
