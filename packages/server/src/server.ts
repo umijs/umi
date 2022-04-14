@@ -1,8 +1,8 @@
 import type { RequestHandler } from '@umijs/bundler-utils/compiled/express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { matchRoutes } from 'react-router-dom';
-import { createServerRoutes } from './routes';
+// import { matchRoutes } from 'react-router-dom';
+// import { createServerRoutes } from './routes';
 import { normalizeScripts } from './scripts';
 import { normalizeStyles } from './styles';
 
@@ -129,34 +129,26 @@ export async function getMarkup(
 
 export function createRequestHandler(opts: IOpts): RequestHandler {
   return async (req, res, next) => {
-    // TODO: cache
-    let isMatch;
-    if (opts.historyType === 'hash') {
-      // 如果是 hash 路由时，不做路由匹配，只要是 / 就匹配返回 html
-      isMatch = req.path === '/';
-    } else {
+    if (
+      opts.historyType === 'browser' &&
+      opts.base !== '/' &&
+      req.path === '/'
+    ) {
+      // 如果是 browser，并且配置了非 / base，访问 / 时 redirect 到 base 路径
+      res.redirect(opts.base);
+    } else if (req.headers.accept?.includes('text/html')) {
       // 匹配路由，不匹配走 next()
-      const routes = createServerRoutes({
-        routesById: opts.routes,
-      });
-      const matches = matchRoutes(routes, req.path, opts.base);
-      isMatch = !!matches;
-    }
-    if (isMatch) {
+      // const routes = createServerRoutes({
+      //   routesById: opts.routes,
+      // });
+      // const matches = matchRoutes(routes, req.path, opts.base);
+
+      // 其他接受 HTML 的请求都兜底返回 HTML
       res.set('Content-Type', 'text/html');
       const markup = await getMarkup({ ...opts, path: req.path });
       res.end(markup);
     } else {
-      // 如果是 browser，并且配置了非 / base，访问 / 时 redirect 到 base 路径
-      if (
-        opts.historyType === 'browser' &&
-        opts.base !== '/' &&
-        req.path === '/'
-      ) {
-        res.redirect(opts.base);
-      } else {
-        next();
-      }
+      next();
     }
   };
 }
