@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "react-query": "^3.34.19",
-    "umi": "4.0.0-canary.20220412.3"
+    "umi": "4.0.0-rc.12"
   }
 }
