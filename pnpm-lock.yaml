@@ -796,7 +796,6 @@ importers:
     dependencies:
       '@babel/core': 7.17.9
       '@babel/eslint-parser': 7.17.0_@babel+core@7.17.9
-      '@rushstack/eslint-patch': 1.1.2
       '@stylelint/postcss-css-in-js': 0.37.2_3c2bfa735c5d8a8695ad877879a67022
       '@typescript-eslint/eslint-plugin': 5.19.0_50220b0dbff47a6ddc17f4766348ae8f
       '@typescript-eslint/parser': 5.19.0_typescript@4.6.3
@@ -808,6 +807,7 @@ importers:
       postcss-syntax: 0.36.2_postcss@8.4.12
       stylelint-config-standard: 25.0.0
     devDependencies:
+      '@rushstack/eslint-patch': 1.1.2
       postcss-less: 6.0.0_postcss@8.4.12
       stylelint-config-css-modules: 4.1.0
       stylelint-config-prettier: 9.0.3
@@ -6585,7 +6585,7 @@ packages:
 
   /@rushstack/eslint-patch/1.1.2:
     resolution: {integrity: sha512-oe5WJEDaVsW8fBlGT7udrSCgOwWfoYHQOmSpnh8X+0GXpqqcRCP8k4y+Dxb0taWJDPpB+rdDUtumIiBwkY9qGA==}
-    dev: false
+    dev: true
 
   /@sideway/address/4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}

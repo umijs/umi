@@ -23,7 +23,6 @@
   "dependencies": {
     "@babel/core": "7.17.9",
     "@babel/eslint-parser": "7.17.0",
-    "@rushstack/eslint-patch": "1.1.2",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@typescript-eslint/eslint-plugin": "5.19.0",
     "@typescript-eslint/parser": "5.19.0",
@@ -36,6 +35,7 @@
     "stylelint-config-standard": "25.0.0"
   },
   "devDependencies": {
+    "@rushstack/eslint-patch": "1.1.2",
     "postcss-less": "6.0.0",
     "stylelint-config-css-modules": "4.1.0",
     "stylelint-config-prettier": "9.0.3",
