@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@umijs/utils": "4.0.0-canary.20220412.3",
-    "esbuild": "0.14.35",
+    "esbuild": "0.14.34",
     "regenerate-unicode-properties": "10.0.1"
   },
   "devDependencies": {
