@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@jest/types": "27.5.1",
-    "esbuild": "0.14.34",
+    "esbuild": "0.14.36",
     "esbuild-jest": "0.5.0",
     "identity-obj-proxy": "3.0.0",
     "isomorphic-unfetch": "3.1.0"
