@@ -1,6 +1,6 @@
 {
   "name": "@umijs/lint",
-  "version": "4.0.0-canary.20220412.3",
+  "version": "4.0.0-rc.12",
   "description": "@umijs/lint",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/lint#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -26,7 +26,7 @@
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@typescript-eslint/eslint-plugin": "5.19.0",
     "@typescript-eslint/parser": "5.19.0",
-    "@umijs/babel-preset-umi": "4.0.0-canary.20220412.3",
+    "@umijs/babel-preset-umi": "4.0.0-rc.12",
     "eslint-plugin-jest": "26.1.4",
     "eslint-plugin-react": "7.29.4",
     "eslint-plugin-react-hooks": "4.4.0",
