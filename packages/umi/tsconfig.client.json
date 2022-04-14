@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declarationMap": false,
+    "target": "ES5",
     "module": "esnext",
     "outDir": "./client",
     "rootDir": "./src"
