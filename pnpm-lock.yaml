@@ -948,6 +948,7 @@ importers:
       react-router: 6.3.0
       react-router-dom: 6.3.0
       regenerator-runtime: 0.13.9
+      sirv: 2.0.2
       vite: 2.9.1
     dependencies:
       '@types/multer': 1.4.7
@@ -979,6 +980,7 @@ importers:
       joi2types: 1.1.0
       multer: 1.4.4
       os-locale: 6.0.2
+      sirv: 2.0.2
       vite: 2.9.1
 
   packages/renderer-react:
@@ -21061,7 +21063,6 @@ packages:
       '@polka/url': 1.0.0-next.21
       mrmime: 1.0.0
       totalist: 3.0.0
-    dev: false
 
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -22357,7 +22358,6 @@ packages:
   /totalist/3.0.0:
     resolution: {integrity: sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==}
     engines: {node: '>=6'}
-    dev: false
 
   /tough-cookie/2.5.0:
     resolution: {integrity: sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==}

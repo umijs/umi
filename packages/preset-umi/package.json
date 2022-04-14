@@ -56,6 +56,7 @@
     "joi2types": "1.1.0",
     "multer": "1.4.4",
     "os-locale": "^6.0.2",
+    "sirv": "2.0.2",
     "vite": "2.9.1"
   },
   "publishConfig": {
@@ -71,7 +72,8 @@
       "@manypkg/get-packages",
       "ini",
       "joi2types",
-      "os-locale"
+      "os-locale",
+      "sirv"
     ],
     "externals": {
       "prettier": "@umijs/utils/compiled/prettier",
@@ -80,7 +82,8 @@
     },
     "excludeDtsDeps": [
       "@manypkg/get-packages",
-      "joi2types"
+      "joi2types",
+      "sirv"
     ]
   }
 }
