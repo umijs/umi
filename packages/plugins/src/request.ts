@@ -7,7 +7,12 @@ export default (api: IApi) => {
     key: 'request',
     config: {
       schema: (joi) => {
-        return joi.object();
+        return joi.object({
+          dataField: joi
+            .string()
+            .pattern(/^[a-zA-Z]*$/)
+            .allow(''),
+        });
       },
     },
     enableBy: api.EnableBy.config,
@@ -22,7 +27,6 @@ import axios, {
   type AxiosResponse,
 } from '{{{axiosPath}}}';
 import useUmiRequest, { UseRequestProvider } from '{{{umiRequestPath}}}';
-import { message, notification } from '{{{antdPkg}}}';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
 
@@ -83,7 +87,7 @@ function useRequest<Item = any, U extends Item = any>(
 ): PaginatedResult<Item>;
 function useRequest(service: any, options: any = {}) {
   return useUmiRequest(service, {
-    formatResult: result => result?.data,
+    formatResult: {{{formatResult}}},
     requestMethod: (requestOptions: any) => {
       if (typeof requestOptions === 'string') {
         return request(requestOptions);
@@ -98,113 +102,36 @@ function useRequest(service: any, options: any = {}) {
   });
 }
 
-export interface RequestConfig extends AxiosRequestConfig {
-  errorConfig?: {
-    errorPage?: string;
-    adaptor?: IAdaptor; // adaptor 用以用户将不满足接口的后端数据修改成 errorInfo
-    errorHandler?: IErrorHandler;
-    defaultNoneResponseErrorMessage?: string;
-    defaultRequestErrorMessage?: string;
-  };
-  formatResultAdaptor?: IFormatResultAdaptor;
+// request 方法 opts 参数的接口
+interface IRequestOptions extends AxiosRequestConfig {
+  skipErrorHandler?: boolean
 }
 
-export enum ErrorShowType {
-  SILENT = 0,
-  WARN_MESSAGE = 1,
-  ERROR_MESSAGE = 2,
-  NOTIFICATION = 3,
-  REDIRECT = 9,
+interface IRequestOptionsWithResponse extends IRequestOptions {
+  getResponse: true;
 }
 
-export interface IErrorInfo {
-  success: boolean;
-  data?: any;
-  errorCode?: string;
-  errorMessage?: string;
-  showType?: ErrorShowType;
-  traceId?: string;
-  host?: string;
-  [key: string]: any;
-}
-// resData 其实就是 response.data, response 则是 axios 的响应对象
-interface IAdaptor {
-  (resData: any, response: AxiosResponse): IErrorInfo;
+interface IRequestOptionsWithoutResponse extends IRequestOptions{
+  getResponse: false;
 }
 
-export interface RequestError extends Error {
-  data?: any;
-  info?: IErrorInfo;
-}
-
-interface IRequest {
-  (
-    url: string,
-    opts: AxiosRequestConfig & { skipErrorHandler?: boolean },
-  ): Promise<AxiosResponse<any, any>>;
+interface IRequest{
+   <T = any>(url: string, opts: IRequestOptionsWithResponse): Promise<AxiosResponse<T>>;
+   <T = any>(url: string, opts: IRequestOptionsWithoutResponse): Promise<T>;
+   <T = any>(url: string, opts: IRequestOptions): Promise<T>; // getResponse 默认是 false， 因此不提供该参数时，只返回 data
+   <T = any>(url: string): Promise<T>;  // 不提供 opts 时，默认使用 'GET' method，并且默认返回 data
 }
 
 interface IErrorHandler {
-  (error: RequestError, opts: AxiosRequestConfig & { skipErrorHandler?: boolean }, config: RequestConfig): void;
+  (error: RequestError, opts: IRequestOptions): void;
 }
 
-interface IFormatResultAdaptor {
-  (res: AxiosResponse): any;
+export interface RequestConfig extends AxiosRequestConfig {
+  errorConfig?: {
+    errorHandler?: IErrorHandler;
+    errorThrower?: <T = any>( res: T ) => void
+  };
 }
-
-const defaultErrorHandler: IErrorHandler = (error, opts, config) => {
-  if (opts?.skipErrorHandler) throw error;
-  const { errorConfig } = config;
-  if (error.response) {
-    // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围 或者 成功响应，success字段为false 由我们抛出的错误
-    let errorInfo: IErrorInfo | undefined;
-    // 不是我们的错误
-    if(error.name === 'ResponseError'){
-      const adaptor: IAdaptor =
-      errorConfig?.adaptor || ((errorData) => errorData);
-      errorInfo = adaptor(error.response.data, error.response);
-      error.info = errorInfo;
-      error.data = error.response.data;
-    }
-    errorInfo = error.info;
-    if (errorInfo) {
-      const { errorMessage, errorCode } = errorInfo;
-      switch (errorInfo.showType) {
-        case ErrorShowType.SILENT:
-          // do nothong
-          break;
-        case ErrorShowType.WARN_MESSAGE:
-          message.warn(errorMessage);
-          break;
-        case ErrorShowType.ERROR_MESSAGE:
-          message.error(errorMessage);
-          break;
-        case ErrorShowType.NOTIFICATION:
-          notification.open({ description: errorMessage, message: errorCode });
-          break;
-        case ErrorShowType.REDIRECT:
-          // TODO: redirect
-          break;
-        default:
-          message.error(errorMessage);
-      }
-    }
-  } else if (error.request) {
-    // 请求已经成功发起，但没有收到响应
-    // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
-    // 而在node.js中是 http.ClientRequest 的实例
-    message.error(
-      errorConfig?.defaultNoneResponseErrorMessage ||
-        'None response! Please retry.',
-    );
-  } else {
-    // 发送请求时出了点问题
-    message.error(
-      errorConfig?.defaultRequestErrorMessage || 'Request error, please retry.',
-    );
-  }
-  throw error;
-};
 
 let requestInstance: AxiosInstance;
 let config: RequestConfig;
@@ -224,44 +151,38 @@ const getRequestInstance = (): AxiosInstance => {
 
   // 当响应的数据 success 是 false 的时候，抛出 error 以供 errorHandler 处理。
   requestInstance.interceptors.response.use((response)=>{
-    const {data} = response;
-    const adaptor = config?.errorConfig?.adaptor || ((resData) => resData);
-    const errorInfo = adaptor(data,response);
-    if(errorInfo.success === false){
-      const error: RequestError = new Error(errorInfo.errorMessage);
-      error.name = 'BizError';
-      error.data = data;
-      error.info = errorInfo;
-      error.response = response;
-      throw error;
+    const { data } = response;
+    if(config?.errorConfig?.errorThrower){
+      config.errorConfig.errorThrower(data);
     }
     return response;
   })
   return requestInstance;
 };
 
-const request: IRequest = (url, opts) => {
+const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {   
   const requestInstance = getRequestInstance();
   const config = getConfig();
-  return new Promise((resolve, reject) => {
+  const { getResponse = false } = opts;
+  return new Promise((resolve, reject)=>{
     requestInstance
-      .request({ ...opts, url })
-      .then((res) => {
-        const formatResultAdaptor =
-          config?.formatResultAdaptor || ((res) => res.data);
-        resolve(formatResultAdaptor(res));
+      .request({...opts, url})
+      .then((res)=>{
+        resolve(getResponse ? res : res.data);
       })
-      .catch((error) => {
+      .catch((error)=>{
         try {
           const handler =
-            config.errorConfig?.errorHandler || defaultErrorHandler;
-          handler(error, opts, config);
+            config.errorConfig?.errorHandler;
+          if(handler)
+            handler(error, opts, config);
         } catch (e) {
           reject(e);
         }
-      });
-  });
-};
+        reject(error);
+      })
+  })
+}
 
 export {
   useRequest,
@@ -283,17 +204,16 @@ export type {
       dirname(require.resolve('@ahooksjs/use-request/package.json')),
     );
     const axiosPath = winPath(dirname(require.resolve('axios/package.json')));
-    const antdPkg = winPath(
-      // use path from antd plugin first
-      api.appData.antd?.pkgPath ||
-        dirname(require.resolve('antd/package.json')),
-    );
+    let dataField = api.config.request?.dataField;
+    if (dataField === undefined) dataField = 'data';
+    const formatResult =
+      dataField === '' ? `result => result` : `result => result?.${dataField}`;
     api.writeTmpFile({
       path: 'request.ts',
       content: Mustache.render(requestTpl, {
         umiRequestPath,
         axiosPath,
-        antdPkg,
+        formatResult,
       }),
     });
     api.writeTmpFile({
@@ -303,6 +223,10 @@ export {
   useRequest,
   UseRequestProvider,
   request,
+} from './request';
+
+export type {
+  RequestConfig
 } from './request';
 `,
     });
