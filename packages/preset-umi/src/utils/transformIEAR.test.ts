@@ -75,14 +75,14 @@ describe('transform path for import/export/await-import/require', () => {
           content: cases.join('\n'),
           path: '/path/to/.umi/plugin-self/index.ts',
         },
-        { paths: { absTmpPath: '/path/to/.umi' } } as any,
+        { paths: { absTmpPath: '/path/to/.umi' }, cwd: '/path/to' } as any,
       ),
     ).toEqual(
       cases
         .join('\n')
         .replace('/path/to/.umi', '..')
         .replace('/path/to/.umi/plugin-self', '.')
-        .replace('/path/to/node_modules', '@fs/path/to/node_modules'),
+        .replace('/path/to/node_modules', '@fs./node_modules'),
     );
   });
 });
