@@ -11,6 +11,8 @@ export default (api: IApi) => {
       (req, res, next) => {
         const { path } = req;
 
+        const enableVite = api.appData.vite;
+
         // api
         if (path.startsWith('/__umi/api/')) {
           const shortPath = path.replace('/__umi/api/', '');
@@ -22,9 +24,10 @@ export default (api: IApi) => {
           }
           if (shortPath === 'bundle-status') {
             const isMFSUEnable = api.config.mfsu !== false;
+
             return res.json({
               bundleStatus: api.appData.bundleStatus,
-              ...(isMFSUEnable
+              ...(isMFSUEnable && !enableVite
                 ? {
                     mfsuBundleStatus: api.appData.mfsuBundleStatus,
                   }
@@ -47,7 +50,10 @@ export default (api: IApi) => {
         // bundle status
         const isDone =
           api.appData.bundleStatus.done &&
-          (api.config.mfsu === false || api.appData.mfsuBundleStatus.done);
+          (enableVite ||
+            api.config.mfsu === false ||
+            api.appData.mfsuBundleStatus.done);
+
         if (!isDone) {
           res.setHeader('Content-Type', 'text/html');
           res.sendFile(join(assetsDir, 'bundle-status.html'));
