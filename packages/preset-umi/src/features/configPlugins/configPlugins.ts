@@ -79,8 +79,6 @@ export default (api: IApi) => {
       ...memo.alias,
       '@': args.paths.absSrcPath,
       '@@': args.paths.absTmpPath,
-      // like vite, use to pre-bundling dependencies in vite mode
-      '@fs': '/',
     };
     return memo;
   });
