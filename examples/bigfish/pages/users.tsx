@@ -6,9 +6,6 @@ import React from 'react';
 
 export default () => {
   const { data, error, loading } = useRequest('/api/users');
-
-  console.log(data, loading, error);
-
   return (
     <div>
       <h1>users</h1>
