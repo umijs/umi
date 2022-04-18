@@ -5,6 +5,7 @@ import { Env, IConfig } from './types';
 
 type IOpts = {
   cwd: string;
+  rootDir?: string;
   entry: Record<string, string>;
   config: IConfig;
   onBuildComplete?: Function;
@@ -21,6 +22,7 @@ type IOpts = {
 export async function build(opts: IOpts): Promise<webpack.Stats> {
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
+    rootDir: opts.rootDir,
     env: Env.production,
     entry: opts.entry,
     userConfig: opts.config,
