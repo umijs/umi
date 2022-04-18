@@ -123,6 +123,7 @@ export type IApi = PluginAPI &
       stats: webpack.Stats;
       time: number;
     }>;
+    onBuildHtmlComplete: IEvent<{}>;
     onCheckCode: IEvent<{
       cjsExports: string[];
       code: string;

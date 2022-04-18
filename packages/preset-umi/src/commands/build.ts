@@ -149,6 +149,12 @@ umi build --clean
       );
       logger.event('Build index.html');
 
+      // event when html is completed
+      await api.applyPlugins({
+        key: 'onBuildHtmlComplete',
+        args: opts,
+      });
+
       // print size
     },
   });

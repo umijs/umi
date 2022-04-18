@@ -12,6 +12,7 @@ export default (api: IApi) => {
     'onGenerateFiles',
     'onBeforeCompiler',
     'onBuildComplete',
+    'onBuildHtmlComplete',
     'onPatchRoute',
     // 'onPatchRouteBefore',
     // 'onPatchRoutes',
