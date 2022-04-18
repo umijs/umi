@@ -90,6 +90,22 @@ export class GeneratorHelper {
     }
   }
 
+  addScript(name: string, cmd: string) {
+    const { api } = this;
+
+    if (api.pkg.scripts[name]) {
+      logger.warn(`scripts.${name} already exists, skip update`);
+      return;
+    }
+
+    api.pkg.scripts = {
+      ...api.pkg.scripts,
+      [name]: cmd,
+    };
+    writeFileSync(api.pkgPath, JSON.stringify(api.pkg, null, 2));
+    logger.info('Write package.json');
+  }
+
   installDeps() {
     const { npmClient } = this.api.appData;
     installWithNpmClient({

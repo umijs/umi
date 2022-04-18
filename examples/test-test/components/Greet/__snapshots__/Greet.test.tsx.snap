@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders Greet without name by snapshot 1`] = `
+<div>
+  <div>
+    Hello 
+    <span>
+      Anonymous
+    </span>
+  </div>
+</div>
+`;
