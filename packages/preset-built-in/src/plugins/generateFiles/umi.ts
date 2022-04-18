@@ -29,13 +29,16 @@ export default function (api: IApi) {
       type: api.ApplyPluginsType.modify,
       initialValue: renderReactPath,
     });
+    let isReact18 = !!(api.pkg.dependencies || {})['react']?.match(/^\^?18/);
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
         // @ts-ignore
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
-        rendererPath: winPath(rendererPath),
+        rendererPath: winPath(
+          join(rendererPath, `/dist/index${isReact18 ? '18' : ''}.js`),
+        ),
         runtimePath,
         rootElement: api.config.mountElementId,
         enableSSR: !!api.config.ssr,

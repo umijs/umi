@@ -135,6 +135,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     path: route.path,
   };
   if (route.redirect) {
+    // @ts-ignore because type check will fail due to React 18 types
     return <Redirect {...routeProps} from={route.path} to={route.redirect} />;
   } else {
     // avoid mount and unmount with url hash change
