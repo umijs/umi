@@ -46,6 +46,5 @@ export default function RouterComponent(props: IRouterComponentProps) {
     return history.listen(routeChangeHandler);
   }, [history]);
 
-  // @ts-ignore because type check will fail due to React 18 types
   return <Router history={history}>{renderRoutes(renderRoutesProps)}</Router>;
 }

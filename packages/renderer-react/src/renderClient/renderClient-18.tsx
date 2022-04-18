@@ -1,3 +1,4 @@
+// @ts-ignore
 import ReactDOM from 'react-dom-18/client';
 import getRootContainer from './getRootContainer';
 import type { IOpts } from './types';

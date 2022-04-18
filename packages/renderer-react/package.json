@@ -26,9 +26,7 @@
   },
   "dependencies": {
     "@types/react": "^16.9.43",
-    "@types/react-18": "npm:@types/react@^18.0.0",
     "@types/react-dom": "^16.9.8",
-    "@types/react-dom-18": "npm:@types/react-dom@^18.0.0",
     "@types/react-router-config": "^5.0.2",
     "@umijs/runtime": "3.5.23",
     "react-18": "npm:react@^18.0.0",
