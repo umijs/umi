@@ -31,6 +31,7 @@ import { addSVGRules } from './svgRules';
 
 export interface IOpts {
   cwd: string;
+  rootDir?: string;
   env: Env;
   entry: Record<string, string>;
   extraBabelPresets?: any[];
@@ -200,7 +201,13 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       },
       cacheDirectory:
         opts.cache.cacheDirectory ||
-        join(opts.cwd, 'node_modules', '.cache', 'bundler-webpack'),
+        // 使用 rootDir 是在有 APP_ROOT 时，把 cache 目录放在根目录下
+        join(
+          opts.rootDir || opts.cwd,
+          'node_modules',
+          '.cache',
+          'bundler-webpack',
+        ),
     });
 
     // tnpm 安装依赖的情况 webpack 默认的 managedPaths 不生效
@@ -210,7 +217,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     if (/*isTnpm*/ require('@umijs/utils/package').__npminstall_done) {
       config.snapshot({
         immutablePaths: [
-          opts.cache.absNodeModulesPath || join(opts.cwd, 'node_modules'),
+          opts.cache.absNodeModulesPath ||
+            join(opts.rootDir || opts.cwd, 'node_modules'),
         ],
       });
     }

@@ -230,6 +230,7 @@ PORT=8888 umi dev
       const opts = {
         config: api.config,
         cwd: api.cwd,
+        rootDir: process.cwd(),
         entry: {
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
