@@ -1,7 +1,7 @@
 import { chalk, lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { isAbsolute, join } from 'path';
 import { AsyncSeriesWaterfallHook } from '../../compiled/tapable';
 import { Config } from '../config/config';
 import { DEFAULT_FRAMEWORK_NAME } from '../constants';
@@ -292,7 +292,9 @@ export class Service {
     });
     this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
     if (this.config.outputPath) {
-      paths.absOutputPath = join(this.cwd, this.config.outputPath);
+      paths.absOutputPath = isAbsolute(this.config.outputPath)
+        ? this.config.outputPath
+        : join(this.cwd, this.config.outputPath);
     }
     this.paths = await this.applyPlugins({
       key: 'modifyPaths',
