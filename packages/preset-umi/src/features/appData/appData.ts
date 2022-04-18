@@ -18,7 +18,7 @@ export default (api: IApi) => {
       api,
     });
     memo.hasSrcDir = api.paths.absSrcPath.endsWith('/src');
-    memo.npmClient = api.userConfig.npmClient || getNpmClient();
+    memo.npmClient = api.userConfig.npmClient || getNpmClient({ cwd: api.cwd });
     memo.umi = {
       version: require('../../../package.json').version,
     };
