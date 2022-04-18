@@ -107,7 +107,12 @@ export async function dev(opts: IOpts) {
     chainWebpack: opts.config.mfsu?.chainWebpack,
     cache: {
       buildDependencies: opts.cache?.buildDependencies,
-      cacheDirectory: join(opts.cwd, 'node_modules', '.cache', 'mfsu-deps'),
+      cacheDirectory: join(
+        opts.rootDir || opts.cwd,
+        'node_modules',
+        '.cache',
+        'mfsu-deps',
+      ),
     },
   });
 
