@@ -2,11 +2,13 @@ import { Message } from 'umi';
 
 # 数据流
 
-`@umi/max` 内置了**数据流管理**插件 [`@umijs/plugin-model`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/model.ts)，它是一种基于 `hooks` 范式的轻量级数据管理方案，可以在 Umi 项目中管理全局的共享数据。
+`@umi/max` 内置了**数据流管理**插件 [`@umijs/plugin-model`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/model.ts)，它是一种基于 `hook` 范式的轻量级数据管理方案，可以在 Umi 项目中管理全局的共享数据。
 
 ## 开始使用
 
 ### 创建 Model
+
+所谓 Model，就是一个[自定义的 `hook`](https://zh-hans.reactjs.org/docs/hooks-custom.html)，没有任何使用者需要关注的“黑魔法”。在命名 Model 文件时，建议遵循 React 官方的 `hook` 命名规范，以 `use` 开头。
 
 数据流管理插件采用约定式目录结构，我们约定在 `src/models` 目录下引入 Model 文件。
 
@@ -14,16 +16,14 @@ import { Message } from 'umi';
 如果 Umi 项目配置了 `singular: true`，则应当使用 `src/model` 作为存放 Model 文件的目录。
 </Message>
 
-所谓的 Model，就是一个自定义的 `hooks`，没有任何使用者需要关注的“黑魔法”。
+Model 文件允许使用 `.js`，`.jsx`，`.ts` 和 `.tsx` 四种后缀格式，其文件名将成为它的**命名空间（namespace）**。当我们需要获取某个 Model 中的全局数据时，调用它的命名空间即可。
 
-Model 文件允许使用 `.js`，`.jsx`，`.ts` 和 `tsx` 四种后缀格式，其文件名将成为它的**命名空间（namespace）**。
+对于 Model 文件 `useUser.ts`，它的命名空间为 `useUser`。
 
-当我们需要获取 Model 中的全局数据时，调用该命名空间即可。例如，对于 Model 文件 `useUserModel.ts`，它的命名空间为 `useUserModel`。
-
-编写一个默认导出的函数：
+编写一个**默认导出**的函数：
 
 ```ts
-// src/models/useUserModel.ts
+// src/models/useUser.ts
 export default () => {
   const user = {
     username: 'umi',
@@ -33,16 +33,16 @@ export default () => {
 };
 ```
 
-这就是一个 Model。`@umijs/plugin-model` 插件所做的工作就是将其中的状态或数据变成了**全局数据**，不同的组件在使用该 Model 时，拿到的是同一份状态或数据。
+这就是一个 Model，而 `@umijs/plugin-model` 插件所做的工作就是将其中的状态或数据变成了**全局数据**。不同的组件在使用该 Model 时，拿到的是同一份状态或数据。
 
 <Message emoji="💡">
-Model 文件需要默认导出一个函数，此函数定义了一个 `hook`。对于不符合此规范的文件，将会被过滤掉，并无法通过命名空间调用。
+Model 文件需要默认导出一个函数，此函数为一个 React 的自定义 `hook`。对于不符合此规范的文件，将会被过滤掉，并无法通过命名空间调用。
 </Message>
 
-Model 中允许使用其它 `hooks`，以计数器为例：
+Model 中允许使用其它 `hook`，以计数器为例：
 
 ```ts
-// src/models/useCounterModel.ts
+// src/models/useCounter.ts
 import { useState, useCallback } from 'react';
 
 export default () => {
@@ -58,18 +58,20 @@ export default () => {
 在项目实践中，我们通常需要请求后端接口，来获取所需的数据。现在让我们来扩展前面获取用户信息的例子：
 
 ```ts
-// src/models/useUserModel.ts
-import { useState } from 'react';
+// src/models/useUser.ts
+import { useState, useEffect } from 'react';
 import { getUser } from '@/services/user';
 
 export default () => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
 
-  getUser().then((res) => {
-    setUser(res);
-    setLoading(false);
-  });
+  useEffect(() => {
+    getUser().then((res) => {
+      setUser(res);
+      setLoading(false);
+    });
+  }, []);
 
   return {
     user,
@@ -81,7 +83,7 @@ export default () => {
 如果您在项目中使用了 [ahooks](https://ahooks.js.org)，可以像这样组织您的代码：
 
 ```ts
-// src/models/useUserModel.ts
+// src/models/useUser.ts
 import { useRequest } from 'ahooks';
 import { getUser } from '@/services/user';
 
@@ -103,14 +105,14 @@ export default () => {
 
 ### 使用 Model
 
-现在，您想要在某个组件中使用全局的 Model。以用户信息为例，只需要调用 `useModel` 这一钩子函数：
+现在，您想要在某个组件中使用 Model 中存储的全局状态或数据。只需要调用 `useModel()` 这一钩子函数，以用户信息为例：
 
 ```tsx
 // src/components/Username/index.tsx
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, loading } = useModel('useUserModel');
+  const { user, loading } = useModel('useUser');
 
   return (
     {loading ? <></>: <div>{user.username}</div>}
@@ -121,9 +123,9 @@ export default () => {
 其中，`useModel()` 方法传入的参数为 Model 的**命名空间**。
 
 <Message emoji="💡">
-如果您使用 VSCode 作为 Umi 项目开发的 IDE，推荐搭配 [@umijs/plugin-model](https://marketplace.visualstudio.com/items?itemName=litiany4.umijs-plugin-model) 插件使用。它允许您快速跳转到定义 Model 的文件：
-![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif) 
-</Message>
+如果您使用 VSCode 作为 Umi 项目开发的 IDE，推荐搭配 [@umijs/plugin-model 插件](https://marketplace.visualstudio.com/items?itemName=litiany4.umijs-plugin-model)使用。它允许您快速跳转到定义 Model 的文件：
+
+![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif) </Message>
 
 ## 性能优化
 
@@ -134,7 +136,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { add, minus } = useModel('useCounterModel', (model) => ({
+  const { add, minus } = useModel('useCounter', (model) => ({
     add: model.increment,
     minus: model.decrement,
   }));
@@ -170,7 +172,9 @@ export async function getInitialState() {
 }
 ```
 
-现在，各种插件和您定义的组件都可以通过 `useModel('@@initialState')` 直接获取到这份全局的初始状态，如下所示：
+需注意的是，在第一次拿到全局初始状态之前，Umi **不会渲染**页面的其它部分。直到 `getInitialState()` 方法执行完毕返回一个值后，其它组件才会开始渲染。这确保了所有插件或组件都能拿到全局初始状态，并根据初始状态履行自己应尽的职责。
+
+任何插件和您定义的组件都可以通过 `useModel('@@initialState')` 直接获取到这份全局的初始状态，如下所示：
 
 ```tsx
 import { useModel } from 'umi';
@@ -182,19 +186,21 @@ export default () => {
 };
 ```
 
+下表介绍了这些属性的具体作用：
+
 | 对象属性 | 类型 | 介绍 |
 | --- | --- | --- |
-| `initialState` | `any` | 导出的 `getInitialState()` 方法的返回值 |
+| `initialState` | `any` | `getInitialState()` 方法的返回值 |
 | `loading` | `boolean` | `getInitialState()` 或 `refresh()` 方法是否正在进行中。在首次获取到初始状态前，页面其他部分的渲染都会**被阻止** |
-| `error` | `Error` | 如果导出的 `getInitialState()` 方法运行时报错，报错的错误信息 |
-| `refresh` | `() => void` | 重新执行 `getInitialState` 方法，并获取新的全局初始状态 |
+| `error` | `Error` | 如果 `getInitialState()` 方法运行时报错，报错的错误信息 |
+| `refresh` | `() => void` | 重新执行 `getInitialState()` 方法，并获取新的全局初始状态 |
 | `setInitialState` | `(state: any) => void` | 手动设置 `initialState` 的值，手动设置完毕会将 `loading` 置为 `false` |
 
 ## Qiankun 父子应用间通信
 
 `@umi/max` 内置了 **Qiankun 微前端**插件 [`@umijs/plugin-qiankun`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts)，当使用 `@umijs/plugin-model` 时，它允许微应用通过 `useModel('@@qiankunStateFromMaster')` 方法获取父应用传递给子应用的数据 Model，进而实现父子应用间的通信。
 
-具体的使用方法请查阅[微前端的父子应用通信章节](./micro-frontend.md#父子应用通信)。
+具体的使用方法请查阅[微前端的父子应用通信章节](./micro-frontend#父子应用通信)。
 
 ## API
 
@@ -212,11 +218,11 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, fetchUser } = useModel('useAdminModel', (model) => ({
+  const { user, fetchUser } = useModel('useAdmin', (model) => ({
     user: model.admin,
     fetchUser: model.fetchAdmin,
   }));
 
-  return <>hello</>;
+  return <>Hello, {user.username}!</>;
 };
 ```
