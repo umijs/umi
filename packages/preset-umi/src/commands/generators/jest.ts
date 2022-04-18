@@ -44,8 +44,8 @@ export default (api: IApi) => {
             '@testing-library/react': '^12',
           }
         : basicDeps;
-
       h.addDevDeps(packageToInstall);
+      h.addScript('test', 'jest');
 
       writeFileSync(
         join(api.cwd, 'jest.config.ts'),
