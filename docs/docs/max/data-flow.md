@@ -125,7 +125,8 @@ export default () => {
 <Message emoji="💡">
 如果您使用 VSCode 作为 Umi 项目开发的 IDE，推荐搭配 [@umijs/plugin-model 插件](https://marketplace.visualstudio.com/items?itemName=litiany4.umijs-plugin-model)使用。它允许您快速跳转到定义 Model 的文件：
 
-![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif) </Message>
+![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif)
+</Message>
 
 ## 性能优化
 
