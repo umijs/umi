@@ -1,6 +1,7 @@
 # Umi 介绍
 
-![](https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png)
+<br />
+<img src="https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png" width="120" />
 
 ##  Umi 是什么？
 
@@ -10,15 +11,15 @@ Umi 是蚂蚁集团的底层前端框架，已直接或间接地服务了 10000+
 
 Umi 有很多非常有意思的特性，比如。
 
-1、企业级，在安全性、稳定性、最佳实践、约束能力方面会考虑更多
-2、插件化，啥都能改，Umi 本身也是由插件构成
-3、MFSU，比 Vite 还快的 Webpack 打包方案
-4、基于 React Router 6 的完备路由
-5、默认最快的请求
-6、SSR & SSG
-7、稳定白盒性能好的 ESLint 和 Jest
-8、React 18 的框架级接入
-9、Monorepo 最佳实践
+1、**企业级**，在安全性、稳定性、最佳实践、约束能力方面会考虑更多<br />
+2、**插件化**，啥都能改，Umi 本身也是由插件构成<br />
+3、**MFSU**，比 Vite 还快的 Webpack 打包方案<br />
+4、基于 React Router 6 的完备路由<br />
+5、默认最快的请求<br />
+6、SSR & SSG<br />
+7、稳定白盒性能好的 ESLint 和 Jest<br />
+8、React 18 的框架级接入<br />
+9、Monorepo 最佳实践<br />
 ...
 
 
@@ -26,11 +27,11 @@ Umi 有很多非常有意思的特性，比如。
 
 如果你的项目，
 
-1、需要支持 IE 8 或更低版本的浏览器
-2、需要支持 React 16.8.0 以下的 React
-3、需要跑在 Node 14 以下的环境中
-4、有很强的 webpack 自定义需求和主观意愿
-5、需要选择不同的路由方案
+1、需要支持 IE 8 或更低版本的浏览器<br />
+2、需要支持 React 16.8.0 以下的 React<br />
+3、需要跑在 Node 14 以下的环境中<br />
+4、有很强的 webpack 自定义需求和主观意愿<br />
+5、需要选择不同的路由方案<br />
 ...
 
 Umi 可能不适合你。
