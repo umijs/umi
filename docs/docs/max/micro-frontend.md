@@ -270,8 +270,7 @@ export default () => {
   return <MicroApp name="app1" ref={microAppRef} />;
 };
 ```
-
-<Message />
+</Message>
 
 当您需要在子应用的生命周期里添加一些自定义的逻辑时，既可以在父应用中进行全局配置，也可以在子应用中进行单独配置。
 
@@ -479,7 +478,7 @@ export default () => {
 
 如果通过路由的模式引入子应用，可以配置如下：
 
-```ts
+```tsx
 // .umirc.ts
 import CustomLoader from '../src/components/CustomLoader';
 
@@ -490,9 +489,9 @@ export default {
       microApp: 'app1',
       microAppProps: {
         loader: (loading) => <CustomLoader loading={loading} />,
-      },
-    },
-  ],
+      }
+    }
+  ]
 };
 ```
 
@@ -555,7 +554,7 @@ export default () => {
 
 如果通过路由的模式引入子应用，可以配置如下：
 
-```ts
+```tsx
 // .umirc.ts
 import CustomErrorBoundary from '../src/components/CustomErrorBoundary';
 
@@ -566,9 +565,9 @@ export default {
       microApp: 'app1',
       microAppProps: {
         errorBoundary: (error) => <CustomErrorBoundary error={error} />,
-      },
-    },
-  ],
+      }
+    }
+  ]
 };
 ```
 
@@ -666,7 +665,7 @@ export default {
 | 属性 | 必填 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- | --- |
 | `name` | 是 | 微应用的名称 | `string` |
-| `entry` | 是 | 微应用的 HTML 地址 | `string | { script: string[], styles: [] }` |
+| `entry` | 是 | 微应用的 HTML 地址 | `string` | `{ script: string[], styles: [] }` |
 | `credentials` | 否 | 拉取微应用时同时拉取 Cookies，详见[此介绍](https://qiankun.umijs.org/zh/faq#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%8B%89%E5%8F%96%E5%BE%AE%E5%BA%94%E7%94%A8-entry-%E6%97%B6-cookie-%E6%9C%AA%E6%90%BA%E5%B8%A6%E7%9A%84%E9%97%AE%E9%A2%98) | `boolean` | `false` |
 | `props` | 否 | 父应用传递给微应用的数据，详见[父子应用通信章节](#父子应用通信) | `object` | `{}` |
 
