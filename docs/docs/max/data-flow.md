@@ -12,7 +12,7 @@ import { Message } from 'umi';
 
 数据流管理插件采用约定式目录结构，我们约定在 `src/models` 目录下引入 Model 文件。
 
-<Message emoji="💡">
+<Message>
 如果 Umi 项目配置了 `singular: true`，则应当使用 `src/model` 作为存放 Model 文件的目录。
 </Message>
 
@@ -35,7 +35,7 @@ export default () => {
 
 这就是一个 Model，而 `@umijs/plugin-model` 插件所做的工作就是将其中的状态或数据变成了**全局数据**。不同的组件在使用该 Model 时，拿到的是同一份状态或数据。
 
-<Message emoji="💡">
+<Message type="warning">
 Model 文件需要默认导出一个函数，此函数为一个 React 的自定义 `hook`。对于不符合此规范的文件，将会被过滤掉，并无法通过命名空间调用。
 </Message>
 
@@ -122,10 +122,11 @@ export default () => {
 
 其中，`useModel()` 方法传入的参数为 Model 的**命名空间**。
 
-<Message emoji="💡">
+<Message>
 如果您使用 VSCode 作为 Umi 项目开发的 IDE，推荐搭配 [@umijs/plugin-model 插件](https://marketplace.visualstudio.com/items?itemName=litiany4.umijs-plugin-model)使用。它允许您快速跳转到定义 Model 的文件：
 
 ![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif)
+
 </Message>
 
 ## 性能优化

@@ -18,7 +18,7 @@ export default {
     // babel-plugin-import
     import: true,
     // less or css, default less
-    style: "less",
+    style: 'less',
   },
 };
 ```
