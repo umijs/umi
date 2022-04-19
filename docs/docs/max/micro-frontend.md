@@ -18,7 +18,7 @@ import { Message } from 'umi';
 
 ## 开始使用
 
-<Message emoji="💡">
+<Message type="success">
 本教程假设您对什么是微前端，什么是 Qiankun 微应用，以及如何使用 Qiankun 微应用已经有了基本的了解。
 </Message>
 
@@ -55,7 +55,7 @@ export default {
 };
 ```
 
-其中，`name` 为子应用的名称，在引入子应用时需要使用到它；`entry` 为子应用运行的 HTTP 地址；`master` 对象的完整 API 可[见此](#MasterOptions)。
+其中，`name` 为子应用的名称，在引入子应用时需要使用到它；`entry` 为子应用运行的 HTTP 地址；`master` 对象的完整 API 可[见此](#masteroptions)。
 
 #### 运行时注册子应用
 
@@ -155,7 +155,7 @@ export default {
 };
 ```
 
-我们拓展了 Umi 原有的路由对象，来实现引入子应用。其中，`microApp` 的值为子应用的名称，切换到该路由后，Umi 将会获取并渲染此子应用，并替换原来 Umi 路由对象的 `component` 属性。拓展后的 Umi 路由对象 API 可[见此](#Route)。
+我们拓展了 Umi 原有的路由对象，来实现引入子应用。其中，`microApp` 的值为子应用的名称，切换到该路由后，Umi 将会获取并渲染此子应用，并替换原来 Umi 路由对象的 `component` 属性。拓展后的 Umi 路由对象 API 可[见此](#route)。
 
 配置好后，子应用的路由将基于当前的路由 `path`。例如，当父应用路由切换为 `/app1/project/info`，子应用 `app1` 的路由变为 `/info`。
 
@@ -252,7 +252,6 @@ Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照
 
 此外，还存在一个特殊的生命钩子 `update`，仅在使用 `<MicroApp />` 或 `<MicroAppWithMemoHistory />` 组件引入微应用时生效：状态为 `MOUNTED` 的微应用**手动更新时**调用。开始更新时，微应用变成 `UPDATING` 状态；更新完成时，微应用变成 `MOUNTED` 状态。
 
-<Message emoji="💡">
 您可以像这样更新子应用：
 
 ```tsx
@@ -270,7 +269,6 @@ export default () => {
   return <MicroApp name="app1" ref={microAppRef} />;
 };
 ```
-</Message>
 
 当您需要在子应用的生命周期里添加一些自定义的逻辑时，既可以在父应用中进行全局配置，也可以在子应用中进行单独配置。
 
@@ -480,7 +478,7 @@ export default () => {
 
 ```tsx
 // .umirc.ts
-import CustomLoader from '../src/components/CustomLoader';
+import CustomLoader from 'src/components/CustomLoader';
 
 export default {
   routes: [
@@ -489,9 +487,9 @@ export default {
       microApp: 'app1',
       microAppProps: {
         loader: (loading) => <CustomLoader loading={loading} />,
-      }
-    }
-  ]
+      },
+    },
+  ],
 };
 ```
 
@@ -565,9 +563,9 @@ export default {
       microApp: 'app1',
       microAppProps: {
         errorBoundary: (error) => <CustomErrorBoundary error={error} />,
-      }
-    }
-  ]
+      },
+    },
+  ],
 };
 ```
 
@@ -645,12 +643,12 @@ export default {
 ### MasterOptions
 
 | 属性 | 必填 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | `enable` | 否 | 启用 Qiankun 微应用插件，设置为 `false` 时为不启用 | `boolean` | `undefined` |
-| `apps` | 是 | 微应用配置 | [`App[]`](#App) |
-| `routes` | 否 | 微应用运行时的路由 | [`Route[]`](#Route) | `undefined` |
-| `sandbox` | 否 | 是否开启沙箱模式 | `boolean | { strictStyleIsolation?: boolean, experimentalStyleIsolation?: boolean }` | `true` |
-| `prefetch` | 否 | 是否启用微应用预加载 | `boolean | 'all' | string[] | (( apps: RegistrableApp[] ) => { criticalAppNames: string[]; minorAppsName: string[] })` | `true` |
+| `apps` | 是 | 微应用配置 | [`App[]`](#app) | `undefined` |
+| `routes` | 否 | 微应用运行时的路由 | [`Route[]`](#route) | `undefined` |
+| `sandbox` | 否 | 是否开启沙箱模式 | `boolean \| { strictStyleIsolation: boolean, experimentalStyleIsolation: boolean }` | `true` |
+| `prefetch` | 否 | 是否启用微应用预加载 | `boolean \| 'all' \| string[] \| (( apps: RegistrableApp[] ) => { criticalAppNames: string[]; minorAppsName: string[] })` | `true` |
 
 关于沙箱和预加载的介绍可见[此页面](https://qiankun.umijs.org/zh/api/#startopts)。
 
@@ -675,7 +673,7 @@ export default {
 | --- | --- | --- | --- | --- |
 | `path` | 是 | 路由 PATH | `string` |
 | `microApp` | 是 | 关联的微应用名称 | `string` |
-| `microAppProps` | 否 | 微应用的配置 | [`MicroAppProps`](#MicroAppProps) | `{}` |
+| `microAppProps` | 否 | 微应用的配置 | [`MicroAppProps`](#microappprops) | `{}` |
 
 ### MicroAppProps
 

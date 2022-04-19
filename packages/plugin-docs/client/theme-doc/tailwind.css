@@ -91,23 +91,23 @@ article a {
 }
 
 article table {
-  @apply table-auto w-full shadow rounded-xl text-left overflow-hidden dark:shadow-gray-800 my-8
+  @apply table-auto w-full shadow rounded-xl text-left overflow-hidden dark:shadow-gray-800 my-8;
 }
 
 article table thead {
-  @apply bg-blue-100 dark:bg-gray-800
+  @apply bg-blue-100 dark:bg-gray-800;
 }
 
 article table thead th {
-  @apply py-3 px-4 text-gray-700 dark:text-white
+  @apply py-3 px-4 text-gray-700 dark:text-white;
 }
 
 article table tbody tr {
-  @apply border-b border-b-zinc-100 dark:border-b-gray-600
+  @apply border-b border-b-zinc-100 dark:border-b-gray-600;
 }
 
 article table tbody td {
-  @apply py-2 px-4 text-gray-700 dark:text-white
+  @apply py-2 px-4 text-gray-700 dark:text-white;
 }
 
 .link-with-underline {
@@ -181,39 +181,31 @@ h6 {
     @apply border-l-8;
   }
 
-  .mdx-message > p {
+  .mdx-message-text :first-child {
     @apply mt-0;
   }
 
-  .mdx-message-info {
-    @apply bg-blue-50 border-blue-300 dark:bg-blue-100 dark:border-blue-500;
+  .mdx-message-text img {
+    @apply rounded-md;
   }
 
-  .mdx-message-info > p {
-    @apply text-blue-900 dark:text-blue-900;
+  .mdx-message-text pre {
+    @apply my-2;
+  }
+
+  .mdx-message-info {
+    @apply bg-blue-50 border-blue-300 dark:bg-blue-900 dark:border-blue-400;
   }
 
   .mdx-message-success {
-    @apply bg-green-50 border-green-300 dark:bg-green-100 dark:border-green-500;
-  }
-
-  .mdx-message-success > p {
-    @apply text-green-900 dark:text-green-900;
+    @apply bg-green-50 border-green-300 dark:bg-green-700 dark:border-green-400;
   }
 
   .mdx-message-warning {
-    @apply bg-orange-50 border-orange-300 dark:bg-orange-100 dark:border-orange-500;
-  }
-
-  .mdx-message-warning > p {
-    @apply text-orange-900 dark:text-orange-900;
+    @apply bg-orange-50 border-orange-300 dark:bg-orange-700 dark:border-orange-400;
   }
 
   .mdx-message-error {
-    @apply bg-red-50 border-red-300 dark:bg-red-100 dark:border-red-500;
-  }
-
-  .mdx-message-error > p {
-    @apply text-red-900 dark:text-red-900;
+    @apply bg-red-50 border-red-300 dark:bg-red-700 dark:border-red-400;
   }
 }

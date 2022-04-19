@@ -110,7 +110,7 @@ export default (props: any) => {
       <div
         className={cx(
           'fixed top-12 w-screen bg-white z-20 dark:bg-gray-800',
-          'overflow-hidden transition-all duration-500',
+          'overflow-hidden transition-all duration-500 lg:hidden',
           isMenuOpened ? 'max-h-screen' : 'max-h-0',
         )}
       >

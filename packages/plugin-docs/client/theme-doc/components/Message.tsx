@@ -9,11 +9,14 @@ enum MessageType {
 
 interface MessageProps {
   type?: MessageType;
-  emoji?: string;
+  emoji?: string | boolean;
+  title?: string;
 }
 
 function Message(props: PropsWithChildren<MessageProps>) {
-  const messageType = props.type || 'info';
+  const messageType = props.type || MessageType.Info;
+  const messageTitle = props.title;
+  const propsChildren = props.children;
 
   let messageClass: string;
   switch (messageType) {
@@ -30,26 +33,35 @@ function Message(props: PropsWithChildren<MessageProps>) {
       messageClass = 'mdx-message-info';
   }
 
-  const messageText =
-    typeof props.children === 'string'
-      ? props.children
-      : (props.children as React.ReactElement).props.children;
+  let messageEmoji = props.emoji;
+  if (!messageEmoji && messageEmoji !== false) {
+    switch (messageType) {
+      case MessageType.Success:
+        messageEmoji = '🏆︎';
+        break;
+      case MessageType.Warning:
+        messageEmoji = '🛎️';
+        break;
+      case MessageType.Error:
+        messageEmoji = '⚠️';
+        break;
+      default:
+        messageEmoji = '💡';
+    }
+  }
 
   return (
-    <>
-      <div
-        className={`w-full py-3 px-4 rounded-lg my-4 mdx-message ${messageClass}`}
-      >
-        <p>
-          {props.emoji && (
-            <span role="img" className="mr-3 inline">
-              {props.emoji}
-            </span>
-          )}
-          {messageText}
-        </p>
+    <div
+      className={`flex w-full py-5 px-4 rounded-lg my-4 mdx-message ${messageClass}`}
+    >
+      <span role="img" className="mr-3 dark:text-white">
+        {messageEmoji}
+      </span>
+      <div className="flex-grow">
+        {messageTitle && <h5 className="mt-0 mb-3">{messageTitle}</h5>}
+        <div className="mdx-message-text">{propsChildren}</div>
       </div>
-    </>
+    </div>
   );
 }
 

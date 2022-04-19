@@ -28,7 +28,7 @@ export default (props: SidebarProps) => {
     <ul
       className={cx(
         'h-screen lg:h-[calc(100vh-8rem)] overflow-y-scroll',
-        'lg:w-64 p-8 pb-12 fadeout w-full',
+        'lg:w-64 px-8 pt-12 lg:pt-8 pb-36 fadeout w-full',
       )}
     >
       {(matchedNav.children || []).map((item) => {
