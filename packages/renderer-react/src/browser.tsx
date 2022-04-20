@@ -68,6 +68,13 @@ export function renderClient(opts: {
     routeComponents: opts.routeComponents,
     loadingComponent: opts.loadingComponent,
   });
+  opts.pluginManager.applyPlugins({
+    key: 'patchClientRoutes',
+    type: 'event',
+    args: {
+      routes: clientRoutes,
+    },
+  });
   let rootContainer = (
     <BrowserRoutes
       basename={basename}

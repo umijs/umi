@@ -149,6 +149,7 @@ export default function EmptyRoute() {
         // TODO: support these methods
         // 'modifyClientRenderOpts',
         'patchRoutes',
+        'patchClientRoutes',
         'rootContainer',
         'innerProvider',
         'i18nProvider',
