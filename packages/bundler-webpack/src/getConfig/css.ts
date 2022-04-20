@@ -82,6 +82,7 @@ export function createCSSRule({
       .loader(require.resolve('@umijs/deps/compiled/css-loader'))
       .options(
         deepmerge(
+          // @ts-ignore
           {
             importLoaders: 1,
             // https://webpack.js.org/loaders/css-loader/#onlylocals
@@ -92,7 +93,7 @@ export function createCSSRule({
                     localIdentName: '[local]___[hash:base64:5]',
                   },
                 }
-              : {}),
+              : { modules: 'global' }),
           },
           config.cssLoader || {},
         ),
