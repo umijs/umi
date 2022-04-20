@@ -61,7 +61,7 @@ export async function dev(opts: IOpts) {
       getCacheDependency() {
         return stripUndefined({
           version: require('../package.json').version,
-          esbuildMode: !!opts.config.mfsu?.esbuild,
+          mfsu: opts.config.mfsu,
           alias: opts.config.alias,
           externals: opts.config.externals,
           theme: opts.config.theme,
