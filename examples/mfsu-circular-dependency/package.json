@@ -6,8 +6,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@types/react": "^18.0.1",
-    "@types/react-dom": "^18.0.0",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "umi": "4.0.0-canary.20220418.2"

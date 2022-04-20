@@ -37,7 +37,7 @@
     "@umijs/plugins": "4.0.0-canary.20220418.2",
     "antd": "^4.19.5",
     "eslint": "8.13.0",
-    "stylelint": "14.6.1",
+    "stylelint": "14.7.1",
     "umi": "4.0.0-canary.20220418.2"
   },
   "publishConfig": {

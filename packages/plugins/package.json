@@ -24,7 +24,7 @@
   "dependencies": {
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-layout": "^6.34.9",
+    "@ant-design/pro-layout": "^6.35.1",
     "@umijs/bundler-utils": "4.0.0-canary.20220418.2",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.26.1",
@@ -36,11 +36,11 @@
     "event-emitter": "~0.3.5",
     "fast-deep-equal": "3.1.3",
     "lodash": "^4.17.21",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "qiankun": "^2.7.0",
     "react-intl": "3.12.1",
-    "react-redux": "^7.2.8",
-    "redux": "^4.1.2",
+    "react-redux": "^8.0.0",
+    "redux": "^4.2.0",
     "warning": "^4.0.3"
   },
   "devDependencies": {
