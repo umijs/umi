@@ -16,6 +16,10 @@ A framework in react community.
 
 > Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
+### [🚀 Read the launch post →](https://next.umijs.org/blog/umi-4-rc)
+
+### [📚 Learn Umi →](https://next.umijs.org/)
+
 ## Migrating from 3.x
 
 TODO
