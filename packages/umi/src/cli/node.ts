@@ -1,15 +1,11 @@
 import { logger } from '@umijs/utils';
-import {
-  EXCLUDE_NODE_VERSION,
-  FRAMEWORK_NAME,
-  MIN_NODE_VERSION,
-} from '../constants';
+import { FRAMEWORK_NAME, MIN_NODE_VERSION } from '../constants';
 
 export function checkVersion() {
   const v = parseInt(process.version.slice(1));
-  if (v < MIN_NODE_VERSION || v === EXCLUDE_NODE_VERSION) {
+  if (v < MIN_NODE_VERSION || v === 15 || v === 17) {
     logger.error(
-      `Your node version ${v} is not supported, please upgrade to ${MIN_NODE_VERSION} or above except ${EXCLUDE_NODE_VERSION}.`,
+      `Your node version ${v} is not supported, please upgrade to ${MIN_NODE_VERSION} or above except 15 or 17.`,
     );
     process.exit(1);
   }
