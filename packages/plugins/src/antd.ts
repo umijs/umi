@@ -104,6 +104,7 @@ export default (api: IApi) => {
       path: `runtime.tsx`,
       content: Mustache.render(
         `
+import React from 'react';
 import { ConfigProvider, Modal, message, notification } from 'antd';
 
 export function rootContainer(container) {
