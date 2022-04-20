@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-canary.20220418.2",
-    "@unocss/cli": "^0.31.0",
+    "@unocss/cli": "^0.31.6",
     "umi": "4.0.0-canary.20220418.2",
     "unocss": "^0.31.0"
   }

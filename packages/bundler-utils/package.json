@@ -50,7 +50,7 @@
     "@types/babel__generator": "7.6.4",
     "@types/babel__parser": "7.1.1",
     "@types/babel__template": "7.4.1",
-    "@types/babel__traverse": "7.14.2",
+    "@types/babel__traverse": "7.17.0",
     "@types/less": "3.0.3",
     "cjs-module-lexer": "1.2.2",
     "es-module-lexer": "0.10.5",

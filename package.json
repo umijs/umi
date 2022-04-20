@@ -42,9 +42,9 @@
     "@pnpm/lockfile-file": "^5.0.0",
     "@pnpm/logger": "^4.0.0",
     "@types/jest": "^27.4.0",
-    "@types/node": "^17.0.23",
-    "@types/react": "^18.0.1",
-    "@types/react-dom": "^18.0.0",
+    "@types/node": "^17.0.25",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
     "@types/resolve": "^1.20.1",
     "@umijs/bundler-esbuild": "workspace:*",
     "@umijs/bundler-utils": "workspace:*",
@@ -86,5 +86,20 @@
   "engines": {
     "node": ">=14",
     "pnpm": ">=6.20.0"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "react",
+        "react-dom",
+        "antd",
+        "dva",
+        "postcss",
+        "webpack",
+        "eslint",
+        "stylelint",
+        "redux"
+      ]
+    }
   }
 }
