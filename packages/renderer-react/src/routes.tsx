@@ -1,7 +1,7 @@
 // @ts-ignore
 import loadable from '@loadable/component';
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { RouteContext } from './routeContext';
 import { IRoute, IRoutesById } from './types';
 
@@ -60,6 +60,7 @@ export function createClientRoute(opts: {
         <RemoteComponent
           loader={opts.routeComponent}
           loadingComponent={opts.loadingComponent || DefaultLoading}
+          route={route}
         />
       </RouteContext.Provider>
     ),
@@ -72,8 +73,10 @@ function DefaultLoading() {
 }
 
 function RemoteComponent(props: any) {
+  const location = useLocation();
+  const params = useParams();
   const Component = loadable(props.loader, {
     fallback: <props.loadingComponent />,
   });
-  return <Component />;
+  return <Component location={location} params={params} route={props.route} />;
 }
