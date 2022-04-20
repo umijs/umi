@@ -334,6 +334,9 @@ Object.keys(exported).forEach(function (key) {
   }
 }
 
+/**
+ * 编译打包 package.json 文件中 compiledConfig 配置的依赖库
+ */
 (async () => {
   const base = process.cwd();
   const pkg = fs.readJSONSync(path.join(base, 'package.json'));

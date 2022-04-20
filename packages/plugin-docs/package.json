@@ -20,13 +20,16 @@
     "build": "pnpm tsc",
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
-    "build:extra": "pnpm build:css",
+    "build:extra": "pnpm build:css && pnpm build:deps",
     "dev": "pnpm build -- --watch",
+    "dev:css": "pnpm build:css -- --watch",
     "test": "jest -c ../../jest.turbo.config.ts"
   },
   "dependencies": {
     "keymaster": "1.6.2",
-    "react-helmet": "^6.1.0"
+    "react-helmet": "^6.1.0",
+    "rehype-pretty-code": "^0.3.0",
+    "shiki": "^0.10.1"
   },
   "devDependencies": {
     "@mdx-js/mdx": "2.1.1",
@@ -34,6 +37,7 @@
     "@types/react-helmet": "^6.1.5",
     "classnames": "^2.3.1",
     "rehype-slug": "5.0.1",
+    "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.0.23",
     "umi": "4.0.0-canary.20220418.2"
   },
@@ -46,12 +50,14 @@
   "compiledConfig": {
     "deps": [
       "@mdx-js/mdx",
-      "rehype-slug"
+      "rehype-slug",
+      "remark-gfm"
     ],
     "externals": {},
     "excludeDtsDeps": [
       "@mdx-js/mdx",
-      "rehype-slug"
+      "rehype-slug",
+      "remark-gfm"
     ]
   }
 }

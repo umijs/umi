@@ -74,7 +74,7 @@ export default () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           id="search-input"
-          className="w-full bg-transparent outline-none text-sm px-4 py-2 "
+          className="w-full bg-transparent outline-none text-sm px-4 py-2"
           placeholder={render('Search anything ...')}
         />
         <div
