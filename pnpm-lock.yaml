@@ -575,6 +575,7 @@ importers:
       express: 4.17.3
       less: 4.1.2
       regenerate-unicode-properties: 10.0.1
+      tapable: 2.2.1
     dependencies:
       '@umijs/utils': link:../utils
       esbuild: 0.14.36
@@ -611,6 +612,7 @@ importers:
       es-module-lexer: 0.10.5
       express: 4.17.3
       less: 4.1.2
+      tapable: 2.2.1
 
   packages/bundler-vite:
     specifiers:
@@ -687,7 +689,6 @@ importers:
       speed-measure-webpack-plugin: 1.5.0
       style-loader: 3.3.1
       svgo-loader: 3.0.0
-      tapable: 2.2.1
       terser: 5.12.1
       terser-webpack-plugin: 5.3.1
       url-loader: 4.1.1
@@ -740,7 +741,6 @@ importers:
       speed-measure-webpack-plugin: 1.5.0_webpack@5.72.0
       style-loader: 3.3.1_webpack@5.72.0
       svgo-loader: 3.0.0
-      tapable: 2.2.1
       terser: 5.12.1
       terser-webpack-plugin: 5.3.1_5b2286a7ba6bd02133e19769bee28e96
       url-loader: 4.1.1_webpack@5.72.0
@@ -760,7 +760,6 @@ importers:
       '@umijs/utils': 4.0.0-canary.20220418.2
       dotenv: 16.0.0
       just-diff: 5.0.1
-      tapable: 2.2.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
@@ -769,7 +768,6 @@ importers:
       '@types/hapi__joi': 17.1.8
       dotenv: 16.0.0
       just-diff: 5.0.1
-      tapable: 2.2.1
 
   packages/create-umi:
     specifiers:

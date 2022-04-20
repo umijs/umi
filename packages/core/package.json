@@ -28,8 +28,7 @@
     "@hapi/joi": "17.1.1",
     "@types/hapi__joi": "17.1.8",
     "dotenv": "16.0.0",
-    "just-diff": "5.0.1",
-    "tapable": "2.2.1"
+    "just-diff": "5.0.1"
   },
   "publishConfig": {
     "access": "public"
@@ -41,14 +40,13 @@
     "deps": [
       "@hapi/joi",
       "dotenv",
-      "just-diff",
-      "tapable"
+      "just-diff"
     ],
     "externals": {
       "@hapi/joi": "$$LOCAL",
       "dotenv": "$$LOCAL",
       "just-diff": "$$LOCAL",
-      "tapable": "$$LOCAL"
+      "tapable": "@umijs/bundler-utils/compiled/tapable"
     }
   }
 }
