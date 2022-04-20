@@ -96,7 +96,7 @@ import {
 	SyncBailHook,
 	SyncHook,
 	SyncWaterfallHook
-} from "tapable";
+} from "@umijs/bundler-utils/compiled/tapable";
 import { SecureContextOptions, TlsOptions } from 'tls';
 
 declare class AbstractLibraryPlugin<T> {

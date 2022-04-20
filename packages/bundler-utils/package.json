@@ -55,7 +55,8 @@
     "cjs-module-lexer": "1.2.2",
     "es-module-lexer": "0.10.5",
     "express": "4.17.3",
-    "less": "4.1.2"
+    "less": "4.1.2",
+    "tapable": "2.2.1"
   },
   "publishConfig": {
     "access": "public"
@@ -70,6 +71,7 @@
       "esbuild",
       "express",
       "less",
+      "tapable",
       "./bundles/babel/bundle"
     ],
     "externals": {
@@ -78,7 +80,8 @@
       "esbuild": "$$LOCAL",
       "es-module-lexer": "$$LOCAL",
       "express": "$$LOCAL",
-      "less": "$$LOCAL"
+      "less": "$$LOCAL",
+      "tapable": "$$LOCAL"
     },
     "noMinify": [
       "./bundles/babel/bundle"

@@ -1,6 +1,6 @@
+import { InnerCallback } from '@umijs/bundler-utils/compiled/tapable';
 import { Compilation, Compiler } from '@umijs/bundler-webpack/compiled/webpack';
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
-import { InnerCallback } from 'tapable';
 import { DeadCodeParams, Env, IConfig } from '../types';
 import detectDeadcode, { disabledFolders, Options } from './detectDeadCode';
 
