@@ -24,6 +24,14 @@ export function onRouteChange({ location, action }: any) {
   console.log('onRouteChange', location, action);
 }
 
+export function patchRoutes({ routes, routeComponents }: any) {
+  console.log('patchRoutes', routes, routeComponents);
+}
+
+export function patchClientRoutes({ routes }: any) {
+  console.log('patchClientRoutes', routes, Array.isArray(routes));
+}
+
 function Foo(props: any) {
   return (
     <div>
