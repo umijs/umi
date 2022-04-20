@@ -16,7 +16,7 @@ export default (props: HeadProps) => {
   return (
     <div
       className="w-full flex flex-row items-center justify-between
-      border-b-gray-100 border-b-2 pt-4 pb-4 px-4 lg:px-8 dark:border-b-gray-800"
+      border-b-gray-100 border-b-2 pt-4 pb-4 px-4 lg:px-12 dark:border-b-gray-800"
     >
       <Logo />
       <div className="flex flex-row items-center">
@@ -53,7 +53,7 @@ interface HamburgerButtonProps {
 function HamburgerButton(props: HamburgerButtonProps) {
   const { isMenuOpened } = props;
   const barClass =
-    'absolute h-0.5 w-5 -translate-x-2.5 bg-current transform dark:bg-white' +
+    'absolute h-0.5 w-5 -translate-x-2.5 bg-current transform dark:bg-white ' +
     'transition duration-500 ease-in-out';
 
   return (

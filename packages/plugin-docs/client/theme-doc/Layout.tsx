@@ -75,31 +75,32 @@ export default (props: any) => {
               id="article-body"
               className="w-full flex flex-row justify-center overflow-x-hidden"
             >
+              {/* 左侧菜单 */}
+              <div
+                className="fixed left-0 top-0 w-1/4 flex flex-row
+          justify-center h-screen z-10 pt-20"
+              >
+                <div className="container flex flex-row justify-end">
+                  <div className="hidden lg:block">
+                    <Sidebar />
+                  </div>
+                </div>
+              </div>
+              {/* 文章内容 */}
               <div className="container flex flex-row justify-center">
-                <div className="w-full lg:w-1/2 px-4 lg:px-2 m-8 z-20 lg:py-12">
+                <div className="w-full lg:w-1/2 px-4 lg:px-2 m-8 z-20 lg:pb-12 lg:pt-6">
                   <article className="flex-1">{props.children}</article>
                 </div>
               </div>
-            </div>
-
-            <div
-              className="fixed left-0 top-0 w-1/4 flex flex-row
-          justify-center h-screen z-10 pt-20"
-            >
-              <div className="container flex flex-row justify-end">
-                <div className="hidden lg:block">
-                  <Sidebar />
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="fixed right-0 top-0 w-1/4 flex flex-row
-           justify-center h-screen z-10 pt-20 hidden lg:block"
-            >
-              <div className="container flex flex-row justify-start">
-                <div className="w-2/3 top-32">
-                  <Toc />
+              {/* 右侧 Toc */}
+              <div
+                className="fixed right-0 top-0 w-1/4 hidden lg:block flex-row
+justify-center h-screen z-10 pt-20"
+              >
+                <div className="container flex flex-row justify-start">
+                  <div className="w-2/3 top-32">
+                    <Toc />
+                  </div>
                 </div>
               </div>
             </div>

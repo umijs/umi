@@ -36,7 +36,7 @@ article ul {
 }
 
 article li {
-  @apply mt-2 dark:text-white;
+  @apply text-base mt-2 leading-7 text-gray-700 dark:text-white;
 }
 
 article ol {
@@ -52,7 +52,7 @@ article h2 a {
 }
 
 article code {
-  @apply bg-black bg-opacity-5 border border-black border-opacity-5 rounded-md dark:text-white;
+  @apply text-sky-800 dark:text-sky-300 bg-slate-800 bg-opacity-5 dark:bg-opacity-100 border border-black border-opacity-5 rounded-md;
   font-size: 0.9em;
   padding: 2px 0.25em;
   box-decoration-break: clone;
@@ -66,28 +66,28 @@ article inlinecode {
 article pre {
   /* content-visibility: auto; */
   contain: paint;
-  @apply p-4 bg-slate-100 dark:bg-slate-800 rounded-xl my-8 overflow-x-auto font-medium subpixel-antialiased dark:text-white;
+  @apply p-4 bg-zinc-900 dark:bg-zinc-900 rounded-xl my-4 overflow-x-auto font-medium subpixel-antialiased dark:text-white transition;
 }
 
 article pre code {
   line-height: 1.25rem;
-  @apply relative p-0 text-sm text-current bg-transparent rounded-none border-none inline-block min-w-full dark:text-white;
+  @apply relative p-0 text-sm text-neutral-300 dark:text-neutral-300 bg-transparent dark:bg-transparent rounded-none border-none inline-block min-w-full transition;
 }
 
 article pre code .line.highlighted {
-  @apply before:block before:absolute before:h-5 before:bg-gray-500 before:bg-opacity-10 before:-inset-x-4 before:pointer-events-none before:select-none dark:text-white;
-}
-
-article a code {
-  @apply text-current no-underline dark:text-white;
+  @apply before:block before:absolute before:h-5 before:bg-gray-500 before:bg-opacity-10 before:-inset-x-4 before:pointer-events-none before:select-none dark:text-white transition;
 }
 
 article a {
-  @apply text-blue-600 mx-1 hover:text-blue-300 transition dark:text-blue-400;
+  @apply mx-1 text-cyan-600 dark:text-fuchsia-200 hover:text-cyan-900 dark:hover:text-fuchsia-400 transition;
   background-image: linear-gradient(
     transparent 60%,
     rgba(130, 199, 255, 0.28) 55%
   );
+}
+
+article a code {
+  @apply text-cyan-600 dark:text-fuchsia-200 hover:text-cyan-900 dark:hover:text-fuchsia-400 transition;
 }
 
 article table {
@@ -181,6 +181,10 @@ h6 {
     @apply border-l-8;
   }
 
+  .mdx-message code {
+    @apply dark:bg-opacity-50;
+  }
+
   .mdx-message-text :first-child {
     @apply mt-0;
   }
@@ -194,18 +198,34 @@ h6 {
   }
 
   .mdx-message-info {
-    @apply bg-blue-50 border-blue-300 dark:bg-blue-900 dark:border-blue-400;
+    @apply bg-blue-50 border-blue-300 dark:bg-blue-900 dark:border-blue-500;
+  }
+
+  .mdx-message-info code {
+    @apply text-blue-800 dark:text-blue-200;
   }
 
   .mdx-message-success {
-    @apply bg-green-50 border-green-300 dark:bg-green-700 dark:border-green-400;
+    @apply bg-green-50 border-green-300 dark:bg-green-700 dark:border-green-500;
+  }
+
+  .mdx-message-success code {
+    @apply text-green-800 dark:text-green-200;
   }
 
   .mdx-message-warning {
-    @apply bg-orange-50 border-orange-300 dark:bg-orange-700 dark:border-orange-400;
+    @apply bg-orange-50 border-orange-300 dark:bg-orange-700 dark:border-orange-500;
+  }
+
+  .mdx-message-warning code {
+    @apply text-orange-700 dark:text-orange-100;
   }
 
   .mdx-message-error {
-    @apply bg-red-50 border-red-300 dark:bg-red-700 dark:border-red-400;
+    @apply bg-red-50 border-red-300 dark:bg-rose-700 dark:border-rose-500;
+  }
+
+  .mdx-message-error code {
+    @apply text-red-700 dark:text-rose-100;
   }
 }
