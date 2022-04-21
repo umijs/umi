@@ -27,6 +27,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         NpmClientEnum.npm,
       ),
     plugins: (Joi) => Joi.array().items(Joi.string()),
+    presets: (Joi) => Joi.array().items(Joi.string()),
     publicPath: (Joi) =>
       Joi.string().regex(/\/$/).error(new Error('publicPath must end with /')),
     routes: (Joi) => Joi.array().items(Joi.object()),

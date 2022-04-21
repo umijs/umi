@@ -1,0 +1,39 @@
+{
+  "name": "@umijs/preset-vue",
+  "version": "4.0.0-canary.20220418.2",
+  "description": "@umijs/preset-vue",
+  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/preset-vue#readme",
+  "bugs": "https://github.com/umijs/umi-next/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi-next"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "templates",
+    "compiled"
+  ],
+  "scripts": {
+    "build": "pnpm tsc",
+    "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "dev": "pnpm build -- --watch"
+  },
+  "dependencies": {
+    "@umijs/renderer-vue": "4.0.0-canary.20220418.2",
+    "vue": "3.2.31",
+    "vue-loader": "17.0.0",
+    "vue-router": "4.0.12"
+  },
+  "devDependencies": {
+    "umi": "4.0.0-canary.20220418.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
+}

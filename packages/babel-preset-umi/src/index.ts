@@ -50,6 +50,10 @@ export default (_context: any, opts: IOpts) => {
           '@umijs/bundler-utils/compiled/babel/preset-typescript',
         ),
         {
+          // 支持vue 后缀
+          allExtensions: true,
+          // 支持tsx
+          isTSX: true,
           allowNamespaces: true,
           allowDeclareFields: true,
           onlyRemoveTypeImports: true,
