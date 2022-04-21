@@ -1,12 +1,20 @@
 import cx from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { useThemeContext } from './context';
 import MoonIcon from './icons/moon.png';
 import SunIcon from './icons/sun.png';
 
 export default () => {
   const [toggle, setToggle] = useState<Boolean>();
+  const { themeConfig } = useThemeContext()!;
 
   useEffect(() => {
+    // If themeConfig disabled the themeSwitch, just set to light theme
+    if (!themeConfig.themeSwitch) {
+      document.body.classList.remove('dark');
+      return;
+    }
+
     // 初始化，获取过去曾经设定过的主题，或是系统当前的主题
     if (toggle === undefined) {
       if (localStorage.getItem('theme') === 'dark') {
