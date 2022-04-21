@@ -65,7 +65,9 @@ function visitFiles(opts: {
       visitFiles({ ...opts, dir: file });
     } else if (
       stat.isFile() &&
-      ['.tsx', '.ts', '.js', '.jsx', '.md', '.mdx'].includes(extname(file))
+      ['.tsx', '.ts', '.js', '.jsx', '.md', '.mdx', '.vue'].includes(
+        extname(file),
+      )
     ) {
       opts.visitor(relative(opts.baseDir, file));
     }

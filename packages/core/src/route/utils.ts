@@ -20,7 +20,7 @@ export function findParentRouteId(
   return routeIds.find((id) => childRouteId.startsWith(`${id}/`));
 }
 
-const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx'];
+const routeModuleExts = ['.js', '.jsx', '.ts', '.tsx', '.md', '.mdx', '.vue'];
 export function isRouteModuleFile(opts: { file: string; exclude?: RegExp[] }) {
   // TODO: add cache strategy
   for (const excludeRegExp of opts.exclude || []) {

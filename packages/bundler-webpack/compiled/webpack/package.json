@@ -1,5 +1,1 @@
-{
-  "name": "webpack",
-  "author": "Tobias Koppers @sokra",
-  "types": "types.d.ts"
-}
+{"name":"webpack","author":"Tobias Koppers @sokra","license":"MIT","types":"types.d.ts"}

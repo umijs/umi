@@ -44,6 +44,7 @@ export function checkMatch({
   const remoteName = opts.remoteName || 'mf';
   // FIXME: hard code for vite mode
   value = value.replace(/^@fs\//, '/');
+
   if (
     // unMatch specified libs
     opts.unMatchLibs?.includes(value) ||

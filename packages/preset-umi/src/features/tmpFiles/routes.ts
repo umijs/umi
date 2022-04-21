@@ -74,7 +74,7 @@ export async function getRoutes(opts: { api: IApi }) {
             basedir:
               opts.api.config.conventionRoutes?.base ||
               opts.api.paths.absPagesPath,
-            extensions: ['.js', '.jsx', '.tsx', '.ts'],
+            extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
           });
       routes[id].__content = readFileSync(file, 'utf-8');
     }
