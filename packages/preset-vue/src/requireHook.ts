@@ -13,7 +13,7 @@ const hookPropertyMap = new Map([
   ['webpack/package.json', '@umijs/bundler-webpack/compiled/webpack/package'],
   ['webpack/lib/webpack', '@umijs/bundler-webpack/compiled/webpack'],
   ['webpack/lib/webpack.js', '@umijs/bundler-webpack/compiled/webpack'],
-  ['tapable', '@umijs/bundler-webpack/compiled/tapable'],
+  ['tapable', '@umijs/bundler-utils/compiled/tapable'],
   ['vite', '@umijs/bundler-vite/compiled/vite'],
 ]);
 
