@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
-import { lodash, logger, portfinder, winPath } from '@umijs/utils';
+import { chalk, lodash, logger, portfinder, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
@@ -40,6 +40,7 @@ umi dev
 PORT=8888 umi dev
 `,
     async fn() {
+      logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
       const enableVite = !!api.config.vite;
 
       // clear tmp except cache

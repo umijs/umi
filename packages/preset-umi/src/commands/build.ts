@@ -1,5 +1,5 @@
 import { getMarkup } from '@umijs/server';
-import { logger } from '@umijs/utils';
+import { chalk, logger } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../types';
@@ -29,6 +29,8 @@ COMPRESS=none umi build
 umi build --clean
 `,
     fn: async function () {
+      logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
+
       // clear tmp except cache
       clearTmp(api.paths.absTmpPath);
 
