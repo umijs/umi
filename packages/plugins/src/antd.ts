@@ -92,6 +92,7 @@ export default (api: IApi) => {
               libraryDirectory: 'es',
               style: style === 'less' ? true : 'css',
             },
+            'antd',
           ],
         ]
       : [];
