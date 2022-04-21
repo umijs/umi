@@ -1,7 +1,12 @@
 // @ts-ignore
 import loadable from '@loadable/component';
 import React from 'react';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import {
+  Navigate,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { RouteContext } from './routeContext';
 import { IRoute, IRoutesById } from './types';
 
@@ -75,8 +80,16 @@ function DefaultLoading() {
 function RemoteComponent(props: any) {
   const location = useLocation();
   const params = useParams();
+  const [searchParams] = useSearchParams();
   const Component = loadable(props.loader, {
     fallback: <props.loadingComponent />,
   });
-  return <Component location={location} params={params} route={props.route} />;
+  return (
+    <Component
+      location={location}
+      params={params}
+      searchParams={searchParams}
+      route={props.route}
+    />
+  );
 }
