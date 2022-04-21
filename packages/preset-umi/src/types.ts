@@ -13,6 +13,7 @@ import type {
 import { Env } from '@umijs/core';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
+import type CodeFrameError from './features/transform/CodeFrameError';
 
 export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
 export { webpack, IConfig };
@@ -127,6 +128,7 @@ export type IApi = PluginAPI &
     onCheckCode: IEvent<{
       cjsExports: string[];
       code: string;
+      CodeFrameError: typeof CodeFrameError;
       exports: any[];
       file: string;
       imports: {
