@@ -40,9 +40,11 @@ export default (props: HeadProps) => {
         <div className="ml-4 hidden lg:block">
           <LangSwitch />
         </div>
-        <div className="ml-4 hidden lg:block">
-          <ThemeSwitch />
-        </div>
+        {themeConfig.themeSwitch && (
+          <div className="ml-4 hidden lg:block">
+            <ThemeSwitch />
+          </div>
+        )}
         <div className="ml-4 hidden lg:block">
           <Github />
         </div>
