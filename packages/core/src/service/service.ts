@@ -1,4 +1,4 @@
-import { AsyncSeriesWaterfallHook } from '@umijs/bundler-utils/compiled/tapable';
+import { AsyncSeriesWaterfallHook, SyncWaterfallHook } from '@umijs/bundler-utils/compiled/tapable';
 import { chalk, lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
@@ -90,12 +90,27 @@ export class Service {
     assert(existsSync(this.cwd), `Invalid cwd ${this.cwd}, it's not found.`);
   }
 
-  async applyPlugins<T>(opts: {
+  // overload, for apply event synchronously
+  applyPlugins<T>(opts: {
+    key: string;
+    type?: ApplyPluginsType.event;
+    initialValue?: any;
+    args?: any;
+    sync: true;
+  }): typeof opts.initialValue | T;
+  applyPlugins<T>(opts: {
     key: string;
     type?: ApplyPluginsType;
     initialValue?: any;
     args?: any;
-  }): Promise<typeof opts.initialValue | T> {
+  }): Promise<typeof opts.initialValue | T>;
+  applyPlugins<T>(opts: {
+    key: string;
+    type?: ApplyPluginsType;
+    initialValue?: any;
+    args?: any;
+    sync?: boolean;
+  }): Promise<typeof opts.initialValue | T> | (typeof opts.initialValue | T) {
     const hooks = this.hooks[opts.key] || [];
     let type = opts.type;
     // guess type from key
@@ -138,7 +153,7 @@ export class Service {
             },
           );
         }
-        return (await tAdd.promise(opts.initialValue || [])) as T;
+        return tAdd.promise(opts.initialValue || []) as Promise<T>;
       case ApplyPluginsType.modify:
         const tModify = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
@@ -160,8 +175,33 @@ export class Service {
             },
           );
         }
-        return (await tModify.promise(opts.initialValue)) as T;
+        return tModify.promise(opts.initialValue) as Promise<T>;
       case ApplyPluginsType.event:
+        if (opts.sync) {
+          const tEvent = new SyncWaterfallHook(['_']);
+          hooks.forEach((hook) => {
+            if (this.isPluginEnable(hook)) {
+              tEvent.tap(
+                {
+                  name: hook.plugin.key,
+                  stage: hook.stage || 0,
+                  before: hook.before,
+                },
+                () => {
+                  const dateStart = new Date();
+                  hook.fn(opts.args);
+                  hook.plugin.time.hooks[opts.key] ||= [];
+                  hook.plugin.time.hooks[opts.key].push(
+                    new Date().getTime() - dateStart.getTime(),
+                  );
+                },
+              );
+            }
+          });
+
+          return tEvent.call(1) as T;
+        }
+
         const tEvent = new AsyncSeriesWaterfallHook(['_']);
         for (const hook of hooks) {
           if (!this.isPluginEnable(hook)) continue;
@@ -181,7 +221,7 @@ export class Service {
             },
           );
         }
-        return (await tEvent.promise(1)) as T;
+        return tEvent.promise(1) as Promise<T>;
       default:
         throw new Error(
           `applyPlugins failed, type is not defined or is not matched, got ${opts.type}.`,
