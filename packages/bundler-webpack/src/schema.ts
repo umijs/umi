@@ -98,6 +98,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
           chainWebpack: Joi.function(),
           esbuild: Joi.boolean(),
           mfName: Joi.string(),
+          runtimePublicPath: Joi.boolean(),
         }),
         Joi.boolean(),
       ),
