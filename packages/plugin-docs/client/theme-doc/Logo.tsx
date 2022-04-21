@@ -5,14 +5,15 @@ import useLanguage from './useLanguage';
 export default () => {
   const { themeConfig, components } = useThemeContext()!;
   const { isFromPath, currentLanguage } = useLanguage();
-
-  // @ts-ignore
-  const { logo } = themeConfig;
+  const Logo = themeConfig.logo;
 
   return (
     <components.Link to={isFromPath ? '/' + currentLanguage?.locale : '/'}>
       <div className="flex flex-row items-center">
-        <img src={logo} className="w-8 h-8" alt="logo" />
+        {typeof Logo === 'string' && (
+          <img src={Logo} className="w-8 h-8" alt="logo" />
+        )}
+        {typeof Logo === 'function' && <Logo />}
         <div className="text-xl font-extrabold ml-2 dark:text-white">
           {themeConfig.title}
         </div>

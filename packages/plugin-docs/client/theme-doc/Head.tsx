@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import React from 'react';
+import { useThemeContext } from './context';
 import Github from './Github';
 import LangSwitch from './LangSwitch';
 import Logo from './Logo';
@@ -13,12 +14,16 @@ interface HeadProps {
 }
 
 export default (props: HeadProps) => {
+  const { themeConfig } = useThemeContext()!;
   return (
     <div
       className="w-full flex flex-row items-center justify-between
       border-b-gray-100 border-b-2 pt-4 pb-4 px-4 lg:px-12 dark:border-b-gray-800"
     >
-      <Logo />
+      <div className="flex flex-row items-center">
+        <Logo />
+        {themeConfig.extraNavLeft && <themeConfig.extraNavLeft />}
+      </div>
       <div className="flex flex-row items-center">
         <Search />
         {/* 小屏幕显示打开菜单的按钮 */}
@@ -41,6 +46,7 @@ export default (props: HeadProps) => {
         <div className="ml-4 hidden lg:block">
           <Github />
         </div>
+        {themeConfig.extraNavRight && <themeConfig.extraNavRight />}
       </div>
     </div>
   );
