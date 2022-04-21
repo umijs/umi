@@ -426,12 +426,12 @@ metas: [
 
 ## mfsu
 
-* 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; chainWebpack: (memo, args) => void }`
+* 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; chainWebpack: (memo, args) => void; runtimePublicPath: boolean; }`
 * 默认值：`{ mfName: 'mf' }`
 
 配置基于 Module Federation 的提速功能。
 
-关于参数。`esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些；`mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置；`cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`; `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
+关于参数。`esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些；`mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置；`cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`; `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)；`runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`。
 
 示例，
 
