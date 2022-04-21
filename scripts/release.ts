@@ -112,7 +112,13 @@ import { assert, eachPkg, getPkgs } from './utils';
     setDepsVersion({
       pkg,
       version,
-      deps: ['umi', '@umijs/max', '@umijs/plugins', '@umijs/bundler-vite'],
+      deps: [
+        'umi',
+        '@umijs/max',
+        '@umijs/plugins',
+        '@umijs/bundler-vite',
+        '@umijs/preset-vue',
+      ],
       // for mfsu-independent example update dep version
       devDeps: ['@umijs/mfsu'],
     });
