@@ -31,7 +31,7 @@ import { Hero, Features, FeatureItem } from 'umi';
     title="完备路由" 
     description="同时支持配置式路由和约定式路由，同时保持功能的完备性，比如动态路由、嵌套路由、权限路由等等。"
     icon="https://gw.alipayobjects.com/zos/basement_prod/67b771c5-4bdd-4384-80a4-978b85f91282/k7788ov2_w126_h126.png"
-    link="https://umijs.org/zh-CN/docs/routing"
+    link="/docs/guides/routes"
   />
   <FeatureItem 
     title="面向未来" 
