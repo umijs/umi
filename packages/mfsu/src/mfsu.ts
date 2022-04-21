@@ -57,6 +57,8 @@ export class MFSU {
   public buildDepsAgain: boolean = false;
   public progress: any = { done: false };
   public onProgress: Function;
+  public publicPath: string = '/';
+
   constructor(opts: IOpts) {
     this.opts = opts;
     this.opts.mfName = this.opts.mfName || DEFAULT_MF_NAME;
@@ -162,6 +164,7 @@ export class MFSU {
     if (publicPath === 'auto') {
       publicPath = '/';
     }
+    this.publicPath = publicPath as string;
 
     opts.config.plugins!.push(
       ...[
@@ -269,7 +272,7 @@ promise new Promise(resolve => {
   getMiddlewares() {
     return [
       (req: Request, res: Response, next: NextFunction) => {
-        const publicPath = '/';
+        const publicPath = this.publicPath;
         const isMF =
           req.path.startsWith(`${publicPath}${MF_VA_PREFIX}`) ||
           req.path.startsWith(`${publicPath}${MF_DEP_PREFIX}`) ||
