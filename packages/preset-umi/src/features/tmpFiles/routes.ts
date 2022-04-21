@@ -59,8 +59,7 @@ export async function getRoutes(opts: { api: IApi }) {
   function localPath(path: string) {
     if (path.charAt(0) !== '.') {
       return `./${path}`;
-    }
-    {
+    } else {
       return path;
     }
   }
@@ -68,14 +67,18 @@ export async function getRoutes(opts: { api: IApi }) {
   for (const id of Object.keys(routes)) {
     if (routes[id].file) {
       // TODO: cache for performance
-      const file = isAbsolute(routes[id].file)
-        ? routes[id].file
-        : resolve.sync(localPath(routes[id].file), {
-            basedir:
-              opts.api.config.conventionRoutes?.base ||
-              opts.api.paths.absPagesPath,
-            extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
-          });
+      let file = routes[id].file;
+      if (!isAbsolute(file)) {
+        if (file.startsWith('@/')) {
+          file = file.replace('@/', '../');
+        }
+        file = resolve.sync(localPath(file), {
+          basedir:
+            opts.api.config.conventionRoutes?.base ||
+            opts.api.paths.absPagesPath,
+          extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
+        });
+      }
       routes[id].__content = readFileSync(file, 'utf-8');
     }
   }
