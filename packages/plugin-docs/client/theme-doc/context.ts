@@ -28,7 +28,7 @@ interface IContext {
       title: string;
       link?: string;
     };
-    themeSwitch?: boolean;
+    themeSwitch?: {};
   };
   location: {
     pathname: string;

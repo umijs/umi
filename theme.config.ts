@@ -104,7 +104,7 @@ export default {
       ],
     },
   ],
-  themeSwitch: true,
+  themeSwitch: {},
   announcement: {
     title: 'Umi4 即将推出!!!',
     link: 'https://github.com/umijs/umi-next',
