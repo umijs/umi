@@ -57,12 +57,12 @@ xtest('import namespace', () => {
 });
 
 xtest('import specifiers', () => {
-  const { imports } = doTransform({ code: `import { a, b } from 'a';` });
+  const { imports } = doTransform({ code: `import { a, type b } from 'a';` });
   expect(imports.map(formatImport)).toEqual([
     {
       specifiers: {
-        a: 'a',
-        b: 'b',
+        a: { name: 'a', kind: 'value' },
+        b: { name: 'b', kind: 'type' },
       },
       source: 'a',
     },

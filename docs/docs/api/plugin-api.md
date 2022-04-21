@@ -497,7 +497,7 @@ args: {
     loc: any;
     default: string;
     namespace: string;
-    specifiers: Record<string, string>;
+    specifiers: Record<string, { name: string; kind: babelImportKind }>;
   }[];
   exports: any[];
   cjsExports: string[]; 

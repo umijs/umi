@@ -78,7 +78,10 @@ export default function () {
                     t.isIdentifier(specifier.imported)
                       ? specifier.imported.name
                       : specifier.imported.value
-                  ] = specifier.local.name;
+                  ] = {
+                    name: specifier.local.name,
+                    kind: specifier.importKind,
+                  };
                 }
               });
               cache.get(file).imports.push(ret);

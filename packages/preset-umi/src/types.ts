@@ -1,4 +1,5 @@
 // sort-object-keys
+import type { ImportDeclaration } from '@umijs/bundler-utils/compiled/@babel/types';
 import type { RequestHandler, webpack } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type { IConfig } from '@umijs/bundler-webpack/dist/types';
@@ -136,7 +137,7 @@ export type IApi = PluginAPI &
         loc: any;
         namespace: string;
         source: string;
-        specifiers: Record<string, string>;
+        specifiers: Record<string, { kind: ImportDeclaration; name: string }>;
       }[];
       isFromTmp: boolean;
     }>;
