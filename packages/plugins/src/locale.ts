@@ -201,7 +201,7 @@ export default (api: IApi) => {
         })),
         Antd: !!antd,
         DefaultLocale: JSON.stringify(defaultLocale),
-        warningPkgPath: winPath(require.resolve('warning/package')),
+        warningPkgPath: winPath(dirname(require.resolve('warning/package'))),
         reactIntlPkgPath,
       }),
     });
