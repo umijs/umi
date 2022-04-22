@@ -22,6 +22,7 @@ interface IContext {
     navs: {
       path: string;
       title: string;
+      dropdown?: { title: string; path: string }[];
       children: any[];
     }[];
     announcement?: {
