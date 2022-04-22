@@ -38,8 +38,7 @@ function MDXContent(props = {}) {
   useEffect(() => {
     if (window.location.hash.length !== 0) {
       const hash = window.location.hash;
-      window.location.hash = '';
-      window.location.hash = hash;
+      document.getElementById(hash.slice(1))?.scrollIntoView();
     }
   }, []);
 
