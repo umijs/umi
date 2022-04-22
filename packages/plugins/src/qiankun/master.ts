@@ -148,5 +148,12 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
         });
       }
     });
+
+    api.writeTmpFile({
+      path: 'index.ts',
+      content: `
+export { MicroApp } from './MicroApp';
+      `,
+    });
   });
 };

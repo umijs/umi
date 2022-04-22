@@ -181,5 +181,12 @@ if (!window.__POWERED_BY_QIANKUN__) {
           ),
       });
     });
+
+    api.writeTmpFile({
+      path: 'index.ts',
+      content: `
+export { connectMaster } from './connectMaster';
+      `,
+    });
   });
 };
