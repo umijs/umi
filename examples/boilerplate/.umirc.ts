@@ -1,6 +1,17 @@
 import extraConfig from './extraConfig';
 
 export default {
+  // routes: [
+  //   {
+  //     path: '/',
+  //     component: '@/layouts',
+  //     routes: [
+  //       { path: '', component: 'index' },
+  //       { path: 'users', component: 'users' },
+  //       { path: 'users/$id', component: 'users/$id' },
+  //     ],
+  //   },
+  // ],
   externals: {
     marked: [
       'script https://gw.alipayobjects.com/os/lib/marked/2.0.0/marked.min.js',
