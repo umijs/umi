@@ -7,7 +7,7 @@ function getLinkFromTitle(title: string) {
   return title
     .toLowerCase()
     .replace(/\s/g, '-')
-    .replace(/[（）]/g, '');
+    .replace(/[（）()\\{},]/g, '');
 }
 
 export default () => {
@@ -53,7 +53,7 @@ export default () => {
                 className={item.level > 2 ? 'text-sm' : ''}
                 href={'#' + getLinkFromTitle(item.title)}
               >
-                {item.title}
+                {item.title.replace(/\\{/g, '{').replace(/\\}/g, '}')}
               </a>
             </li>
           );
