@@ -168,7 +168,7 @@ if (!window.__POWERED_BY_QIANKUN__) {
           .replace(
             '__USE_MODEL__',
             api.isPluginEnable('model')
-              ? `import { useModel } from '@@/plugin/model'`
+              ? `import { useModel } from '@@/plugin-model'`
               : `const useModel = null;`,
           )
           .replace(
