@@ -158,31 +158,29 @@ import { assert, eachPkg, getPkgs } from './utils';
   );
 
   // check 2fa config
-  let otp = '';
+  let otpArg: string[] = [];
   if (
     (await $`npm profile get "two-factor auth"`).toString().includes('writes')
   ) {
+    let code = '';
     do {
       // get otp from user
-      otp = await question('This operation requires a one-time password: ');
-    } while (otp.length !== 6);
+      code = await question('This operation requires a one-time password: ');
+      // generate arg for zx command
+      // why use array? https://github.com/google/zx/blob/main/docs/quotes.md
+      otpArg = ['--otp', code];
+    } while (code.length !== 6);
   }
 
   await Promise.all(
     innerPkgs.map(async (pkg) => {
-      await $`cd packages/${pkg} && npm publish --tag ${tag}${
-        otp ? ` --otp ${otp}` : ''
-      }`;
+      await $`cd packages/${pkg} && npm publish --tag ${tag} ${otpArg}`;
       logger.info(`+ ${pkg}`);
     }),
   );
-  await $`cd packages/umi && npm publish --tag ${tag}${
-    otp ? ` --otp ${otp}` : ''
-  }`;
+  await $`cd packages/umi && npm publish --tag ${tag} ${otpArg}`;
   logger.info(`+ umi`);
-  await $`cd packages/max && npm publish --tag ${tag}${
-    otp ? ` --otp ${otp}` : ''
-  }`;
+  await $`cd packages/max && npm publish --tag ${tag} ${otpArg}`;
   logger.info(`+ @umijs/max`);
   $.verbose = true;
 
