@@ -47,15 +47,20 @@ export const request: RequestConfig = {
       
     }
   },
+  requestInterceptors: [],
+  responseInterceptors: []
 };
 ```
-除了 `errorConfig` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest`  **方法.** 
+除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest`  **方法.** 
 
 #### errorConfig
 如果你想要为自己的请求设定统一的错误处理方案，可以在这里进行配置。其中 `errorThrower` 接收你后端返回的数据并且抛出一个自己的 error， 你可以在这里根据后端的数据进行一定的处理。我们的 `request` 会 catch `errorThrower` 抛出的错误，并且执行你的 `errorHandler` 方法，该方法接收两个参数，第一个参数是 catch 到的 error，第二个参数则是 request 的 opts。
 
 我们提供了一套 errorConfig 的例子。这套例子就是 umi3 的内置错误处理机制，对于那些使用了 umi3 错误处理的用户，可以直接把这份运行时配置拷贝到你的项目中。
+
 ```ts
+import { RequestConfig } from './request';
+
 enum ErrorShowType {
   SILENT = 0,
   WARN_MESSAGE = 1,
@@ -72,7 +77,7 @@ interface ResponseStructure {
   showType?: number;
 }
 
-export const request = {
+export const request: RequestConfig = {
   errorConfig: {
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
@@ -132,6 +137,52 @@ export const request = {
 
 ```
 
+#### requestInterceptors
+为 request 方法添加 request 阶段的拦截器。传入一个数组，每个元素都是一个拦截器，它们会被按顺序依次注册到 axios 实例上。拦截器的写法同 axios。我们建议你使用 `RequestConfig`，它能帮助你规范地书写你的拦截器。
+
+e.g.
+```ts
+const request: RequestConfig = {
+  requestInterceptors: [
+    // 直接写一个 function，作为拦截器
+    (config) => 
+      {
+        // do something
+        return config 
+      },
+    // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
+    [(config) => {return config}, (error) => {return Promise.reject(error)}]
+    // 数组，省略错误处理
+    [(config) => {return config}]
+  ]
+  
+}
+```
+
+#### responseInterceptors
+为 request 方法添加 response 阶段的拦截器。传入一个数组，每个元素都是一个拦截器，它们会被按顺序依次注册到 axios 实例上。拦截器的写法同 axios。我们建议你使用 `RequestConfig`，它能帮助你规范地书写你的拦截器。
+
+e.g.
+```ts
+const request: RequestConfig = {
+  responseInterceptors: [
+    // 直接写一个 function，作为拦截器
+    (response) => 
+      {
+        // do something
+        return response 
+      },
+    // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
+    [(response) => {return response}, (error) => {return Promise.reject(error)}]
+    // 数组，省略错误处理
+    [(response) => {return response}]
+  ]
+  
+}
+```
+
+**注意： 我们会按照你的数组顺序依次注册拦截器，但是其执行顺序参考 axios，request 是后添加的在前，response 是后添加的在后**
+
 ## API
 ### `useRequest`
 插件内置了 [@ahooksjs/useRequest](https://ahooks-v2.surge.sh/hooks/async) ，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
@@ -158,7 +209,7 @@ export default () => {
 
 ### `request`
 通过 `import { request } from '@@/plugin-request` 你可以使用内置的请求方法。 
-`request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了两个属性 `skipErrorHandler` 和 `getResponse`，当你的某个请求想要跳过错误处理时，可以通过将该值设为 `true` 来实现。<br />示例如下：
+`request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了几个属性 `skipErrorHandler`，`getResponse`，`requestIntercetors` 和 `responseInterceptors` ，当你的某个请求想要跳过错误处理时，可以通过将该值设为 `true` 来实现。<br />示例如下：
 ```typescript
 request('/api/user', {
   params: { name : 1 },
@@ -170,14 +221,18 @@ request('/api/user', {
 
 request 默认返回的是你后端的数据，如果你想要拿到 axios 完整的 response 结构，可以通过传入 `{ getResponse: true }` 来实现。
 
+`requestInterceptors` 和 `reponseInterceptors` 的用法同运行时配置相同，为 request 注册拦截器。一个区别在于这里注册的拦截器是"一次性"的。它们会在运行时配置中的拦截器之后被注册。
+
+**注意： 当你使用了 errorHandler 时，在这里注册的 response 拦截器会失效，因为在 errorHandler 就会 throw error**
+
 ### `RequestConfig`
 这是一个接口的定义，可以帮助你更好地配置运行时配置。
 ```typescript
-import { RequestConfig } from '@@/plugin-request';
+import type { RequestConfig } from '@@/plugin-request';
 
 export const request:RequestConfig = {};
 ```
-
+注意，在导入时要加 type
 ### `IErrorHandler`
 这是对于运行时配置中 `errorConfig.errorHandler` 的接口定义。
 ```typescript
@@ -200,6 +255,8 @@ interface IErrorHandler {
 --      adaptor: ()=>{},   
       };
 --    middlewares: [],
+++    requestInterceptors: [],
+++    responseInterceptors: [],
       ... // umi-request 和 axios 的区别。
     };
 ```

@@ -1,5 +1,5 @@
 // @ts-ignore
-// import { RequestConfig } from '@@/plugin-request';
+import type { RequestConfig } from '@@/plugin-request';
 import { message } from 'antd';
 import { notification } from 'antd/es';
 
@@ -45,7 +45,19 @@ interface ResponseStructure {
   showType?: number;
 }
 
-export const request = {
+export const request: RequestConfig = {
+  requestInterceptors: [
+    (config) => {
+      console.log('requestInterceptor', config);
+      return config;
+    },
+  ],
+  responseInterceptors: [
+    (res) => {
+      console.log('responseInterceptor', res);
+      return res;
+    },
+  ],
   errorConfig: {
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
