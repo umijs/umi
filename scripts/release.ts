@@ -156,15 +156,33 @@ import { assert, eachPkg, getPkgs } from './utils';
     // do not publish father
     (pkg) => !['umi', 'max', 'father'].includes(pkg),
   );
+
+  // check 2fa config
+  let otp = '';
+  if (
+    (await $`npm profile get "two-factor auth"`).toString().includes('writes')
+  ) {
+    do {
+      // get otp from user
+      otp = await question('This operation requires a one-time password: ');
+    } while (otp.length !== 6);
+  }
+
   await Promise.all(
     innerPkgs.map(async (pkg) => {
-      await $`cd packages/${pkg} && npm publish --tag ${tag}`;
+      await $`cd packages/${pkg} && npm publish --tag ${tag}${
+        otp ? ` --otp ${otp}` : ''
+      }`;
       logger.info(`+ ${pkg}`);
     }),
   );
-  await $`cd packages/umi && npm publish --tag ${tag}`;
+  await $`cd packages/umi && npm publish --tag ${tag}${
+    otp ? ` --otp ${otp}` : ''
+  }`;
   logger.info(`+ umi`);
-  await $`cd packages/max && npm publish --tag ${tag}`;
+  await $`cd packages/max && npm publish --tag ${tag}${
+    otp ? ` --otp ${otp}` : ''
+  }`;
   logger.info(`+ @umijs/max`);
   $.verbose = true;
 
