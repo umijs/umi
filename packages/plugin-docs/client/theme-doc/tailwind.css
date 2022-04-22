@@ -51,33 +51,81 @@ article h2 a {
   @apply no-underline dark:text-white;
 }
 
+/* 行内代码 */
 article code {
-  @apply text-sky-800 dark:text-sky-300 bg-slate-800 bg-opacity-5 dark:bg-opacity-100 border border-black border-opacity-5 rounded-md;
+  @apply text-sky-600 dark:text-sky-300 bg-slate-800 bg-opacity-5 dark:bg-opacity-100 border border-black border-opacity-5 rounded-md;
   font-size: 0.9em;
   padding: 2px 0.25em;
   box-decoration-break: clone;
   font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
 }
 
-article inlinecode {
-  @apply bg-black bg-opacity-5 border border-black border-opacity-5 rounded-md px-1.5 py-0.5 text-xs dark:text-white dark:bg-gray-700;
+/* 行内高亮代码 */
+article span[data-rehype-pretty-code-fragment] code {
+  @apply bg-zinc-900 dark:bg-zinc-900;
 }
 
+/* 代码块 */
 article pre {
-  /* content-visibility: auto; */
+  content-visibility: auto;
   contain: paint;
-  @apply p-4 bg-zinc-900 dark:bg-zinc-900 rounded-xl my-4 overflow-x-auto font-medium subpixel-antialiased dark:text-white transition;
+  @apply my-4 bg-zinc-900 dark:bg-zinc-900 text-neutral-300 dark:text-neutral-300 rounded-md overflow-x-auto font-medium subpixel-antialiased transition;
+}
+article pre > code {
+  @apply grid leading-relaxed p-4 text-sm text-neutral-300 dark:text-neutral-300 bg-transparent dark:bg-transparent rounded-none border-none min-w-full transition;
+}
+article div[data-rehype-pretty-code-fragment] {
+  @apply my-4;
 }
 
-article pre code {
-  line-height: 1.25rem;
-  @apply relative p-0 text-sm text-neutral-300 dark:text-neutral-300 bg-transparent dark:bg-transparent rounded-none border-none inline-block min-w-full transition;
+/* 代码块的标题部分 */
+article div[data-rehype-pretty-code-fragment] > div[data-rehype-pretty-code-title] {
+  @apply pb-1 text-sm text-zinc-400 dark:text-neutral-400 text-center;
 }
 
-article pre code .line.highlighted {
-  @apply before:block before:absolute before:h-5 before:bg-gray-500 before:bg-opacity-10 before:-inset-x-4 before:pointer-events-none before:select-none dark:text-white transition;
+/* 代码块的代码部分 */
+article div[data-rehype-pretty-code-fragment] > pre {
+  @apply pb-4 pt-6 my-0;
+}
+article div[data-rehype-pretty-code-fragment] > pre > code {
+  @apply p-0;
 }
 
+/* 代码块的使用语言 */
+article div[data-rehype-pretty-code-fragment] > pre::before {
+  @apply fixed top-0 right-0 px-2 text-sm uppercase bg-neutral-300 text-zinc-900 bg-opacity-80 dark:bg-opacity-60 rounded-sm;
+  content: attr(data-language);
+}
+
+/* 代码块的代码行 */
+article div[data-rehype-pretty-code-fragment] > pre > code .line {
+  @apply pl-3 pr-4;
+}
+
+/* 代码块的行内高亮文字 */
+article div[data-rehype-pretty-code-fragment] > pre > code .line .word {
+  @apply px-1.5 inline-block bg-neutral-300 bg-opacity-20 rounded-sm;
+}
+
+/* 代码块的行号 */
+article div[data-rehype-pretty-code-fragment] > pre > code {
+  counter-reset: line;
+}
+article div[data-rehype-pretty-code-fragment] > pre > code > .line::before {
+  @apply text-neutral-600 w-4 mr-4 inline-block text-right;
+  counter-increment: line;
+  content: counter(line);
+}
+
+/* 代码块的高亮行 */
+article div[data-rehype-pretty-code-fragment] pre > code > .line {
+  @apply border-l-2 border-transparent;
+}
+article div[data-rehype-pretty-code-fragment] pre > code > .line.highlighted {
+  @apply bg-neutral-100 dark:bg-neutral-300 bg-opacity-10 dark:bg-opacity-10 border-l-blue-400 dark:border-l-sky-600;
+}
+
+/* 链接 */
 article a {
   @apply mx-1 text-cyan-600 dark:text-fuchsia-200 hover:text-cyan-900 dark:hover:text-fuchsia-400 transition;
   background-image: linear-gradient(
@@ -85,9 +133,26 @@ article a {
     rgba(130, 199, 255, 0.28) 55%
   );
 }
+.dark article a {
+  background-image: linear-gradient(
+    transparent 60%,
+    rgba(238, 157, 234, 0.28) 55%
+  );
+}
 
-article a code {
+/* 行内代码块链接 */
+article a > code {
   @apply text-cyan-600 dark:text-fuchsia-200 hover:text-cyan-900 dark:hover:text-fuchsia-400 transition;
+  background-image: linear-gradient(
+    transparent 60%,
+    rgba(130, 199, 255, 0.28) 55%
+  );
+}
+.dark article a > code {
+  background-image: linear-gradient(
+    transparent 60%,
+    rgba(238, 157, 234, 0.28) 55%
+  );
 }
 
 article table {
