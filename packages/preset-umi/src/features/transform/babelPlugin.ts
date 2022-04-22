@@ -66,6 +66,7 @@ export default function () {
               const ret: Record<string, any> = {
                 source: node.source.value,
                 loc: node.loc,
+                kind: node.importKind,
               };
               node.specifiers.forEach((specifier) => {
                 if (t.isImportDefaultSpecifier(specifier)) {

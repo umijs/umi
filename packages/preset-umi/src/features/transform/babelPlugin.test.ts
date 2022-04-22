@@ -28,6 +28,7 @@ function doTransform(opts: IOpts): any {
 
 function formatImport(item: any) {
   const ret: any = {
+    kind: item.kind,
     source: item.source,
   };
   if (item.default) ret.default = item.default;
@@ -40,6 +41,7 @@ xtest('import default', () => {
   const { imports } = doTransform({ code: `import a from 'a';` });
   expect(imports.map(formatImport)).toEqual([
     {
+      kind: 'value',
       default: 'a',
       source: 'a',
     },
@@ -50,6 +52,7 @@ xtest('import namespace', () => {
   const { imports } = doTransform({ code: `import * as a from 'a';` });
   expect(imports.map(formatImport)).toEqual([
     {
+      kind: 'value',
       namespace: 'a',
       source: 'a',
     },
@@ -57,14 +60,33 @@ xtest('import namespace', () => {
 });
 
 xtest('import specifiers', () => {
-  const { imports } = doTransform({ code: `import { a, type b } from 'a';` });
+  const { imports } = doTransform({
+    filename: 'foo.ts',
+    code: `
+import { a, type b } from 'a';
+import type c from 'c';
+import type { d } from 'd';`,
+  });
   expect(imports.map(formatImport)).toEqual([
     {
+      kind: 'value',
       specifiers: {
         a: { name: 'a', kind: 'value' },
         b: { name: 'b', kind: 'type' },
       },
       source: 'a',
+    },
+    {
+      kind: 'type',
+      default: 'c',
+      source: 'c',
+    },
+    {
+      kind: 'type',
+      source: 'd',
+      specifiers: {
+        d: { name: 'd', kind: 'value' },
+      },
     },
   ]);
 });
