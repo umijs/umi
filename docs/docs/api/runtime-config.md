@@ -7,12 +7,12 @@
 
 ## 配置项
 
-### patchRoutes({ routes })
+### patchRoutes(\{ routes \})
 
 修改路由。
 
 ```ts
-export function patchRoutes({ routes }) {
+export function patchRoutes(\{ routes \}) {
   for (let key of routes){
     // do something
   }
@@ -43,7 +43,7 @@ export function render(oldRender){
 ```
 该例子的目的是在渲染之前做权限校验。
 
-### onRouteChange({ routes, clientRoutes, location, action })
+### onRouteChange(\{ routes, clientRoutes, location, action \})
 
 在初始加载和路由切换时做一些事情。
 
