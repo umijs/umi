@@ -16,8 +16,15 @@ const rehypePrettyCodeOptions = {
       node.children = [{ type: 'text', value: ' ' }];
     }
   },
+  // 允许高亮代码行
+  // 对于高亮的代码行，设置为 highlighted 样式表类
   onVisitHighlightedLine(node: any) {
     node.properties.className.push('highlighted');
+  },
+  // 允许高亮代码文字
+  // 对于高亮的代码文字，设置为 word 样式表类
+  onVisitHighlightedWord(node: any) {
+    node.properties.className = ['word'];
   },
 };
 
