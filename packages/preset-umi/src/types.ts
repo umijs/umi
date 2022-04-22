@@ -134,10 +134,14 @@ export type IApi = PluginAPI &
       file: string;
       imports: {
         default: string;
+        kind: ImportDeclaration['importKind'];
         loc: any;
         namespace: string;
         source: string;
-        specifiers: Record<string, { kind: ImportDeclaration; name: string }>;
+        specifiers: Record<
+          string,
+          { kind: ImportDeclaration['importKind']; name: string }
+        >;
       }[];
       isFromTmp: boolean;
     }>;
