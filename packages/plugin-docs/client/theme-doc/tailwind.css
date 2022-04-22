@@ -67,12 +67,11 @@ article span[data-rehype-pretty-code-fragment] code {
 
 /* 代码块 */
 article pre {
-  content-visibility: auto;
   contain: paint;
-  @apply my-4 bg-zinc-900 dark:bg-zinc-900 text-neutral-300 dark:text-neutral-300 rounded-md overflow-x-auto font-medium subpixel-antialiased transition;
+  @apply my-4 bg-zinc-900 dark:bg-zinc-900 text-neutral-300 dark:text-neutral-300 rounded-md font-medium subpixel-antialiased transition;
 }
 article pre > code {
-  @apply grid leading-relaxed p-4 text-sm text-neutral-300 dark:text-neutral-300 bg-transparent dark:bg-transparent rounded-none border-none min-w-full transition;
+  @apply grid leading-relaxed p-4 text-sm text-neutral-300 dark:text-neutral-300 bg-transparent dark:bg-transparent rounded-none border-none min-w-full overflow-x-auto;
 }
 article div[data-rehype-pretty-code-fragment] {
   @apply my-4;
@@ -85,10 +84,10 @@ article div[data-rehype-pretty-code-fragment] > div[data-rehype-pretty-code-titl
 
 /* 代码块的代码部分 */
 article div[data-rehype-pretty-code-fragment] > pre {
-  @apply pb-4 pt-6 my-0;
+  @apply pt-6 my-0;
 }
 article div[data-rehype-pretty-code-fragment] > pre > code {
-  @apply p-0;
+  @apply my-0 pt-0 px-0;
 }
 
 /* 代码块的使用语言 */
