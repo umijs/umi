@@ -1,5 +1,6 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger } from '@umijs/utils';
+import { logger, rimraf } from '@umijs/utils';
+import { existsSync } from 'fs';
 import { join } from 'path';
 import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
@@ -126,6 +127,28 @@ export async function dev(opts: IOpts) {
     config: webpackConfig as any,
     depConfig: depConfig as any,
   });
+
+  if (
+    mfsu &&
+    webpackConfig.cache &&
+    typeof webpackConfig.cache === 'object' &&
+    webpackConfig.cache.type === 'filesystem'
+  ) {
+    const webpackCachePath = join(
+      webpackConfig.cache.cacheDirectory!,
+      `${webpackConfig.cache.name!}`,
+      'index.pack',
+    );
+
+    const mfsuCacheExists = existsSync(mfsu.depInfo.cacheFilePath);
+    const webpackCacheExists = existsSync(webpackCachePath);
+
+    if (webpackCacheExists && !mfsuCacheExists) {
+      logger.warn(`webpack cache invalidated`);
+      rimraf.sync(webpackConfig.cache.cacheDirectory!);
+    }
+  }
+
   await createServer({
     webpackConfig,
     userConfig: opts.config,
