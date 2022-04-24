@@ -182,7 +182,7 @@ history.goBack();
 组件内还可以使用 `useNavigate` hook
 
 ```tsx
-import { history } from 'umi';
+import { useNavigate } from 'umi';
 
 export default ()=>{
   const navigate = useNavigate()
