@@ -1,9 +1,12 @@
+import spawn from '@umijs/utils/compiled/cross-spawn';
 import * as logger from '@umijs/utils/src/logger';
+import type { SpawnSyncOptions } from 'child_process';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
+import { PATHS } from './constants';
 
 export function getPkgs(opts?: { base?: string }): string[] {
-  const base = opts?.base || join(__dirname, '../packages');
+  const base = opts?.base || PATHS.PACKAGES;
   return readdirSync(base).filter((dir) => {
     return !dir.startsWith('.') && existsSync(join(base, dir, 'package.json'));
   });
@@ -19,7 +22,7 @@ export function eachPkg(
   }) => void,
   opts?: { base?: string },
 ) {
-  const base = opts?.base || join(__dirname, '../packages');
+  const base = opts?.base || PATHS.PACKAGES;
   pkgs.forEach((pkg) => {
     fn({
       name: pkg,
@@ -59,4 +62,12 @@ export function setExcludeFolder(opts: {
     }
   }
   writeFileSync(configPath, content, 'utf-8');
+}
+
+export function spawnSync(cmd: string, opts: SpawnSyncOptions) {
+  return spawn.sync(cmd, {
+    shell: true,
+    stdio: 'inherit',
+    ...opts,
+  });
 }

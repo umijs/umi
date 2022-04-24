@@ -4,6 +4,7 @@ import ncc from '@vercel/ncc';
 import { Package } from 'dts-packer';
 import resolve from 'resolve';
 import 'zx/globals';
+import { PATHS } from './.internal/constants';
 // @ts-ignore
 // import { Package } from '/Users/chencheng/code/github.com/sorrycc/dts-packer/dist/Package.js';
 
@@ -209,7 +210,7 @@ Object.keys(exported).forEach(function (key) {
       if (opts.file === './bundles/babel/bundle') {
         const pkg = require(path.join(opts.base, 'package.json'));
 
-        readWantedLockfile(path.join(__dirname, '..'), {
+        readWantedLockfile(PATHS.ROOT, {
           ignoreIncompatible: true,
         }).then((lockfile) => {
           const unicodePkgName = 'regenerate-unicode-properties';

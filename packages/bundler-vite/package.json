@@ -21,10 +21,10 @@
   ],
   "scripts": {
     "build": "pnpm tsc",
-    "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "build:deps": "umi-scripts bundleDeps",
     "dev": "pnpm build -- --watch",
     "postinstall": "node scripts/linkDeps.js",
-    "test": "jest -c ../../jest.turbo.config.ts"
+    "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "@svgr/core": "6.2.1",
