@@ -6,7 +6,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20220422.3"
+    "umi": "4.0.0-canary.20220424.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
