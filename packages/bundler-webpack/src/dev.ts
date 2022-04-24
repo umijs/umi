@@ -136,15 +136,13 @@ export async function dev(opts: IOpts) {
   ) {
     const webpackCachePath = join(
       webpackConfig.cache.cacheDirectory!,
-      `${webpackConfig.cache.name!}`,
+      `default-development`,
       'index.pack',
     );
-
     const mfsuCacheExists = existsSync(mfsu.depInfo.cacheFilePath);
     const webpackCacheExists = existsSync(webpackCachePath);
-
     if (webpackCacheExists && !mfsuCacheExists) {
-      logger.warn(`webpack cache invalidated`);
+      logger.warn(`Invalidate webpack cache since mfsu cache is missing`);
       rimraf.sync(webpackConfig.cache.cacheDirectory!);
     }
   }
