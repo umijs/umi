@@ -199,6 +199,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       buildDependencies: {
         config: opts.cache.buildDependencies || [],
       },
+      name: 'umi',
       cacheDirectory:
         opts.cache.cacheDirectory ||
         // 使用 rootDir 是在有 APP_ROOT 时，把 cache 目录放在根目录下
