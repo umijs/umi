@@ -192,7 +192,7 @@ export default function Page(props) {
   return (
     <div>
 -     { props.match }
-+     { location }
++     { match }
     </div>
   );
 }
