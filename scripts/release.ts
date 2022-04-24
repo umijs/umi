@@ -4,7 +4,8 @@ import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
-import { assert, eachPkg, getPkgs } from './utils';
+import { PATHS } from './.internal/constants';
+import { assert, eachPkg, getPkgs } from './.internal/utils';
 
 (async () => {
   const { branch } = getGitRepoInfo();
@@ -81,7 +82,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   // bump version
   logger.event('bump version');
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
-  const version = require('../lerna.json').version;
+  const version = require(PATHS.LERNA_CONFIG).version;
   let tag = 'latest';
   if (
     version.includes('-alpha.') ||
@@ -94,19 +95,14 @@ import { assert, eachPkg, getPkgs } from './utils';
 
   // update example versions
   logger.event('update example versions');
-  const examplesDir = join(__dirname, '../examples');
+  const examplesDir = PATHS.EXAMPLES;
   const examples = fs.readdirSync(examplesDir).filter((dir) => {
     return (
       !dir.startsWith('.') && existsSync(join(examplesDir, dir, 'package.json'))
     );
   });
   examples.forEach((example) => {
-    const pkg = require(join(
-      __dirname,
-      '../examples',
-      example,
-      'package.json',
-    ));
+    const pkg = require(join(examplesDir, example, 'package.json'));
     pkg.scripts['start'] = 'npm run dev';
     // change deps version
     setDepsVersion({
@@ -124,7 +120,7 @@ import { assert, eachPkg, getPkgs } from './utils';
     });
     delete pkg.version;
     fs.writeFileSync(
-      join(__dirname, '../examples', example, 'package.json'),
+      join(examplesDir, example, 'package.json'),
       `${JSON.stringify(pkg, null, 2)}\n`,
     );
   });
@@ -189,12 +185,7 @@ import { assert, eachPkg, getPkgs } from './utils';
   $.verbose = false;
   await Promise.all(
     pkgs.map(async (pkg) => {
-      const { name } = require(path.join(
-        __dirname,
-        '../packages',
-        pkg,
-        'package.json',
-      ));
+      const { name } = require(path.join(PATHS.PACKAGES, pkg, 'package.json'));
       logger.info(`sync ${name}`);
       await $`tnpm sync ${name}`;
     }),

@@ -1,8 +1,9 @@
 import 'zx/globals';
-import { setExcludeFolder } from './utils';
+import { PATHS } from './.internal/constants';
+import { setExcludeFolder } from './.internal/utils';
 
 (async () => {
-  const root = path.join(__dirname, '..');
+  const root = PATHS.ROOT;
   const pkgDir = path.join(root, 'packages');
   const pkgs = await fs.readdir(pkgDir);
 
@@ -25,7 +26,7 @@ import { setExcludeFolder } from './utils';
   }
 
   function getVersion() {
-    return require('../lerna.json').version;
+    return require(PATHS.LERNA_CONFIG).version;
   }
 
   async function bootstrapPkg(opts: any) {
@@ -51,7 +52,7 @@ import { setExcludeFolder } from './utils';
             files: ['dist'],
             scripts: {
               build: 'pnpm tsc',
-              'build:deps': 'pnpm esno ../../scripts/bundleDeps.ts',
+              'build:deps': 'umi-scripts bundleDeps',
               dev: 'pnpm build -- --watch',
             },
             repository: {

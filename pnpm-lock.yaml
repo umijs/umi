@@ -45,6 +45,7 @@ importers:
       typescript: ^4.6.3
       uglify-js: ^3.15.4
       umi: workspace:*
+      umi-scripts: workspace:*
       zx: ^4.3.0
     devDependencies:
       '@pnpm/lockfile-file': 5.0.0_@pnpm+logger@4.0.0
@@ -88,6 +89,7 @@ importers:
       typescript: 4.6.3
       uglify-js: 3.15.4
       umi: link:packages/umi
+      umi-scripts: link:scripts
       zx: 4.3.0
 
   examples/ant-design-pro:
@@ -1170,6 +1172,9 @@ importers:
       semver: 7.3.6
       strip-ansi: 7.0.1
       yargs-parser: 21.0.1
+
+  scripts:
+    specifiers: {}
 
 packages:
 

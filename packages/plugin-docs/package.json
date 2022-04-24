@@ -19,11 +19,11 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
-    "build:deps": "pnpm esno ../../scripts/bundleDeps.ts",
+    "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css && pnpm build:deps",
     "dev": "pnpm build -- --watch",
     "dev:css": "pnpm build:css -- --watch",
-    "test": "jest -c ../../jest.turbo.config.ts"
+    "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "keymaster": "1.6.2",

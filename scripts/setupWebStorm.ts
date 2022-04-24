@@ -1,5 +1,5 @@
-import { join } from 'path';
-import { eachPkg, getPkgs, setExcludeFolder } from './utils';
+import { PATHS } from './.internal/constants';
+import { eachPkg, getPkgs, setExcludeFolder } from './.internal/utils';
 
 const cwd = process.cwd();
 eachPkg(getPkgs(), ({ name }) => {
@@ -7,7 +7,7 @@ eachPkg(getPkgs(), ({ name }) => {
 });
 
 eachPkg(
-  getPkgs({ base: join(__dirname, '../examples') }),
+  getPkgs({ base: PATHS.EXAMPLES }),
   ({ name }) => {
     setExcludeFolder({
       pkg: name,
@@ -17,6 +17,6 @@ eachPkg(
     });
   },
   {
-    base: join(__dirname, '../examples'),
+    base: PATHS.EXAMPLES,
   },
 );

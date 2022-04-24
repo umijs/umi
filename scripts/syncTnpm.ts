@@ -1,6 +1,7 @@
 import * as logger from '@umijs/utils/src/logger';
 import 'zx/globals';
-import { getPkgs } from './utils';
+import { PATHS } from './.internal/constants';
+import { getPkgs } from './.internal/utils';
 
 (async () => {
   const pkgs = getPkgs();
@@ -11,12 +12,7 @@ import { getPkgs } from './utils';
   $.verbose = false;
   await Promise.all(
     pkgs.map(async (pkg) => {
-      const { name } = require(path.join(
-        __dirname,
-        '../packages',
-        pkg,
-        'package.json',
-      ));
+      const { name } = require(path.join(PATHS.PACKAGES, pkg, 'package.json'));
       logger.info(`sync ${name}`);
       await $`tnpm sync ${name}`;
     }),

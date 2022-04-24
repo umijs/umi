@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
+import { PATHS } from './.internal/constants';
 
 // ref: https://github.com/isaacs/node-graceful-fs/commit/e61a20a052b838f420b98195c232a824a6ac04ee
 const GRACEFUL_FS_TO_REPLACE = `if(j.uid<0)j.uid+=4294967296;if(j.gid<0)j.gid+=4294967296;`;
@@ -21,8 +22,8 @@ const replaces = [
 
 console.log('patch ncc');
 const path = join(
-  __dirname,
-  '../node_modules/@vercel/ncc/dist/ncc/index.js.cache.js',
+  PATHS.ROOT,
+  './node_modules/@vercel/ncc/dist/ncc/index.js.cache.js',
 );
 const content = readFileSync(path, 'utf-8');
 let ret = content;
