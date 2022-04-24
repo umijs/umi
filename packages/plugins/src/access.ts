@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
@@ -13,18 +14,35 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(async () => {
+    // allow enable access without access file
+    const hasAccessFile = ['js', 'jsx', 'ts', 'tsx'].some((ext) =>
+      fs.existsSync(join(api.paths.absSrcPath, `access.${ext}`)),
+    );
+
     // runtime.tsx
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: `
-import React from 'react';
-import accessFactory from '@/access';
+import React from 'react';${
+        hasAccessFile
+          ? `
+import accessFactory from '@/access'
 import { useModel } from '@@/plugin-model';
+`
+          : ''
+      }
 import { AccessContext } from './context';
 
-function Provider(props) {
+function Provider(props) {${
+        hasAccessFile
+          ? `
   const { initialState } = useModel('@@initialState');
   const access = React.useMemo(() => accessFactory(initialState), [initialState]);
+`
+          : `
+  const access = {};
+`
+      }
   return (
     <AccessContext.Provider value={access}>
       { props.children }
