@@ -49,7 +49,7 @@ export default (props: SidebarProps) => {
                 if (to === window.location.pathname) {
                   return (
                     <div
-                      key={child}
+                      key={route.path}
                       className="my-2 hover:text-blue-400 transition-all
                        bg-blue-50 text-blue-400 px-4 py-1
                        rounded-lg cursor-default dark:bg-blue-900 dark:text-blue-200"
@@ -61,6 +61,7 @@ export default (props: SidebarProps) => {
 
                 return (
                   <components.Link
+                    key={route.path}
                     to={route.path}
                     onClick={() =>
                       props.setMenuOpened && props.setMenuOpened((o) => !o)
