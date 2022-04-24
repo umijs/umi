@@ -1,6 +1,4 @@
-[umi@4 plugin-request 文档.md](https://github.com/umijs/umi-next/files/7749383/umi%404.plugin-request.md)
-
----
+# 请求
 
 `umi@4 plugin-request` 基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 useRequest 提供了一套统一的网络请求和错误处理方案。<br />​<br />
 ## 启用方式
