@@ -171,7 +171,7 @@ npx --no-install umi verify-ommit $1
 
 ## version
 
-查看 umi 版本，等同于 `umi -v`。
+查看 `umi` 版本，等同于 `umi -v`。
 
 ```bash
 $ umi version

@@ -5,7 +5,7 @@
 配置启用
 
 ## 介绍
-`plugin-request` 提供了一套统一的网络请求和错误处理方案。可以通过 `import { useRequest, request } from '@@/plugin-request'` 来直接引入，其中 [useRequest](https://ahooks-v2.surge.sh/hooks/async) 是由 ahooks 提供的 hook（这里为了同 umi3 适配，沿用了2.0版本），需要在 React 的 Functional Component 中使用；request 方法是对 axios 的 axios.request 方法的一层封装，其接收两个参数，第一个参数为 url, 第二个参数是 axios 的配置对象。<br />​
+`plugin-request` 提供了一套统一的网络请求和错误处理方案。可以通过 `import { useRequest, request } from '@@/plugin-request'` 来直接引入，其中 [useRequest](https://ahooks-v2.surge.sh/hooks/async) 是由 ahooks 提供的 hook（这里为了同 `umi@3` 适配，沿用了2.0版本），需要在 React 的 Functional Component 中使用；request 方法是对 axios 的 axios.request 方法的一层封装，其接收两个参数，第一个参数为 url, 第二个参数是 axios 的配置对象。<br />​
 
 ## 配置
 ### 构建时配置
@@ -54,7 +54,7 @@ export const request: RequestConfig = {
 #### errorConfig
 如果你想要为自己的请求设定统一的错误处理方案，可以在这里进行配置。其中 `errorThrower` 接收你后端返回的数据并且抛出一个自己的 error， 你可以在这里根据后端的数据进行一定的处理。我们的 `request` 会 catch `errorThrower` 抛出的错误，并且执行你的 `errorHandler` 方法，该方法接收两个参数，第一个参数是 catch 到的 error，第二个参数则是 request 的 opts。
 
-我们提供了一套 errorConfig 的例子。这套例子就是 umi3 的内置错误处理机制，对于那些使用了 umi3 错误处理的用户，可以直接把这份运行时配置拷贝到你的项目中。
+我们提供了一套 errorConfig 的例子。这套例子就是 `umi@3` 的内置错误处理机制，对于那些使用了 `umi@3` 错误处理的用户，可以直接把这份运行时配置拷贝到你的项目中。
 
 ```ts
 import { RequestConfig } from './request';
@@ -202,7 +202,7 @@ export default () => {
 ```
 上面代码中 data 并不是你后端返回的数据，而是其内部的 data，（因为构建时配置默认是 'data') 
 
-需要注意的是，ahooks 已经更新到3.0，而我们为了让 umi3 的项目升级起来不那么困难，继续沿用了 ahooks2.0
+需要注意的是，ahooks 已经更新到3.0，而我们为了让 `umi@3` 的项目升级起来不那么困难，继续沿用了 ahooks2.0
 
 
 ### `request`
@@ -239,11 +239,11 @@ interface IErrorHandler {
 }
 ```
 
-## Umi@3 到 Umi@4
-在 Umi@3 到 Umi@4 的升级中，我们弃用了 umi-request ，选用了 axios 作为默认的请求方案。在这个更换中，我们的功能也发生了一些变化。
+## umi@3 到 umi@4
+在 `umi@3` 到 `umi@4` 的升级中，我们弃用了 `umi-request` ，选用了 `axios` 作为默认的请求方案。在这个更换中，我们的功能也发生了一些变化。
 
 ### 运行时配置的变动
-相比于 Umi@3， Umi@4 的运行时配置发生了较大的变化。
+相比于 `umi@3`， `umi@4` 的运行时配置发生了较大的变化。
 ```git
     export const request: RequestConfig = {
       errorConfig: {
@@ -259,7 +259,7 @@ interface IErrorHandler {
     };
 ```
 
-- umi-request 的配置项变成了 axios 的配置项
+- `umi-request` 的配置项变成了 `axios` 的配置项
 - 去除了 middlewares 中间件。你可以使用 axios 的 [拦截器](https://axios-http.com/docs/interceptors) 来实现相同的功能。
 - errorConfig 删除了原来的所有配置，新增了 errorHandler 和 errorThrower 来进行统一错误处理的设定。
 
