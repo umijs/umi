@@ -37,6 +37,7 @@ export async function getMarkupArgs(opts: { api: IApi }) {
     metas,
     links,
     styles,
+    title: opts.api.config.title,
     async modifyHTML(memo: string, args: object) {
       let $ = cheerio.load(memo, {
         // @ts-ignore

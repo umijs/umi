@@ -46,5 +46,6 @@ export default {
   // esmi: {},
   // esm: {},
   lowImport: false,
+  title: 'boilerplate - umi 4',
   ...extraConfig,
 };

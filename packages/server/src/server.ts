@@ -21,6 +21,7 @@ export interface IOpts {
   metas?: Record<string, string>[];
   styles?: (Record<string, string> | string)[];
   favicon?: string;
+  title?: string;
   headScripts?: (Record<string, string> | string)[];
   scripts?: (Record<string, string> | string)[];
   mountElementId?: string;
@@ -86,6 +87,7 @@ export async function getMarkup(
   const favicon = opts.favicon
     ? `<link rel="shortcut icon" href="${opts.favicon}">`
     : '';
+  const title = opts.title ? `<title>${opts.title}</title>` : '';
   const metas = (opts.metas || []).map((meta) =>
     getTagContent({ attrs: meta, tagName: 'meta' }),
   );
@@ -109,6 +111,7 @@ export async function getMarkup(
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />`,
     metas.join('\n'),
     favicon,
+    title,
     links.join('\n'),
     styles.join('\n'),
     headScripts.join('\n'),
