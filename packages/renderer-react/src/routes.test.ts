@@ -12,5 +12,5 @@ test('createClientRoutes', () => {
     },
   });
   // @ts-ignore
-  expect(clientRoutes[0].routes[0].id).toEqual('b');
+  expect(clientRoutes[0].children[0].id).toEqual('b');
 });
