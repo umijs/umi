@@ -1,6 +1,6 @@
 # 环境变量
 
-umi 可以通过环境变量来完成一些特殊的配置和功能。
+Umi 可以通过环境变量来完成一些特殊的配置和功能。
 
 ## 如何设置环境变量
 
@@ -39,7 +39,7 @@ BABEL_CACHE=none
 $ umi dev
 ```
 
-umi 会以 3000 端口启动 dev server，并且禁用 babel 的缓存。
+`umi` 会以 3000 端口启动 dev server，并且禁用 babel 的缓存。
 
 如果你有部分环境变量的配置在本地要做特殊配置，可以配置在 `.env.local` 文件中去覆盖 `.env` 的配置。比如在之前的 `.env` 的基础上, 你想本地开发覆盖之前 3000 端口, 而使用 4000 端口，可以做如下定义。
 
@@ -48,7 +48,7 @@ umi 会以 3000 端口启动 dev server，并且禁用 babel 的缓存。
 PORT=4000
 ```
 
-umi 会以 4000 端口启动 dev server，同时保持禁用 babel 的缓存。
+`umi` 会以 4000 端口启动 dev server，同时保持禁用 babel 的缓存。
 
 注意：
 
@@ -121,7 +121,7 @@ $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev
 
 ### UMI_PRESETS
 
-指定 umi 命令执行时额外加载插件集的路径，使用 `,` 隔开。
+指定 `umi` 命令执行时额外加载插件集的路径，使用 `,` 隔开。
 
 ```bash
 $ UMI_PRESETS=./path/to/preset1,./path/to/preset2  umi dev

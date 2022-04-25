@@ -6,7 +6,7 @@ import { Message } from 'umi';
 
 ## 配置
 
-使用 umi4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
+使用 Umi 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
 
 ```ts
 // jest.config.ts

@@ -21,7 +21,7 @@ export function patchRoutes(\{ routes \}) {
 
 注意：
 - 在 function 中直接修改 routes 即可，不需要返回
-- umi4 相较于 umi3， routes 结构发生了变化
+- `umi@4` 相较于 `umi@3`， routes 结构发生了变化
 
 
 ### render(oldRender)
@@ -66,7 +66,7 @@ export function rootContainer(container) {
 
 ### provider
 
-umi4 提供了5个 provider 供用户使用，按照优先级从低到高的顺序排列分别是
+`umi@4` 提供了5个 provider 供用户使用，按照优先级从低到高的顺序排列分别是
 - innerProvider 暂无明确含义
 - i18nProvider 用于国际化的 provider
 - accessProvider 用于权限的 provider

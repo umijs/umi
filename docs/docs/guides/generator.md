@@ -1,6 +1,6 @@
 # 微生成器
 
-umi 中内置了众多微生成器，协助你在开发中快速的完成一些繁琐的工作。
+Umi 中内置了众多微生成器，协助你在开发中快速的完成一些繁琐的工作。
 
 ## 如何使用
 
@@ -172,7 +172,7 @@ Write: mock/users/profile.ts
 
 ### Prettier 配置生成器
 
-为项目生成 [prettier](https://prettier.io/) 配置，命令执行后，umi 会生成推荐的 prettier 配置和安装相应的依赖。
+为项目生成 [prettier](https://prettier.io/) 配置，命令执行后，`umi` 会生成推荐的 prettier 配置和安装相应的依赖。
 
 ```bash
 $umi g prettier
@@ -184,7 +184,7 @@ info  - Write .prettierignore
 
 ### Jest 配置生成器
 
-为项目生成 [jest](https://jestjs.io/) 配置，命令执行后，umi 会生成 jest 配置和安装相应的依赖。根据需要选择是否要使用 [@testing-library/react](https://www.npmjs.com/package/@testing-library/react) 做 UI 测试。
+为项目生成 [jest](https://jestjs.io/) 配置，命令执行后，`umi` 会生成 jest 配置和安装相应的依赖。根据需要选择是否要使用 [@testing-library/react](https://www.npmjs.com/package/@testing-library/react) 做 UI 测试。
 
 ```bash
 $umi g jest
@@ -196,7 +196,7 @@ info  - Write jest.config.ts
 
 ### Tailwind CSS 配置生成器
 
-为项目开启 [Tailwind CSS](https://tailwindcss.com/) 配置，命令执行后，umi 会生成 Tailwind CSS 和安装相应的的依赖。
+为项目开启 [Tailwind CSS](https://tailwindcss.com/) 配置，命令执行后，`umi` 会生成 Tailwind CSS 和安装相应的的依赖。
 
 ```bash
 $umi g tailwindcss
@@ -211,7 +211,7 @@ info  - Write tailwind.css
 
 ### DvaJS 配置生成器
 
-为项目开启 [Dva](https://dvajs.com/) 配置，命令执行后，umi 会生成 Dva 
+为项目开启 [Dva](https://dvajs.com/) 配置，命令执行后，`umi` 会生成 Dva 
 
 ```bash
 $umi g dva

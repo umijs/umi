@@ -32,7 +32,7 @@ Umi 从 1 做到 4，试错了很多东西，也试对了不少。这些试对�
 <img src="https://img.alicdn.com/tfs/TB1mrhuwqL7gK0jSZFBXXXZZpXa-956-728.png" width="400" />
 <br />
 
-Umi 通过提供插件和插件集的机制来满足不同场景和业务的需求。插件是为了扩展一个功能，而插件集是为了扩展一类业务。比如要支持 vue，我们可以有 @umijs/preset-vue，包含 vue 相关的构建和运行时；比如要支持 h5 的应用类型，可以有 @umijs/preset-h5，把 h5 相关的功能集合到一起。
+Umi 通过提供插件和插件集的机制来满足不同场景和业务的需求。插件是为了扩展一个功能，而插件集是为了扩展一类业务。比如要支持 vue，我们可以有 `@umijs/preset-vue`，包含 vue 相关的构建和运行时；比如要支持 h5 的应用类型，可以有 `@umijs/preset-h5`，把 h5 相关的功能集合到一起。
 
 如果要类比，插件集和 babel 的 preset，以及 eslint 的 config 都类似。
 
@@ -50,7 +50,7 @@ Umi 通过写死版本、依赖预打包、通过 eslint hack 锁定 eslint 依�
 
 ## import all from umi
 
-很多人可能都第一次听到。import all from umi 意思是所有 import 都来自 umi。比如 dva 不是 `import { connect } from 'dva'`，而是 `import { connect } from 'umi'`，从 umi 中导出。导出的方法不仅来自 umi 自身，还来自 umi 插件。
+很多人可能都第一次听到。import all from umi 意思是所有 import 都来自 `umi`。比如 dva 不是 `import { connect } from 'dva'`，而是 `import { connect } from 'umi'`，从 umi 中导出。导出的方法不仅来自 umi 自身，还来自 umi 插件。
 
 这是两年前 Umi 3 加的功能，最近发现 Remix、prisma、vitekit 等框架和工具都有类似实现。
 
@@ -59,4 +59,4 @@ Umi 通过写死版本、依赖预打包、通过 eslint hack 锁定 eslint 依�
 import { connect, useModel, useIntl, useRequest, MicroApp, ... } from 'umi';
 ```
 
-这带来的好处是。通过 umi 将大量依赖管理起来，用户无需手动安装；同时开发者在代码中也会少很多 import 语句。
+这带来的好处是。通过 Umi 将大量依赖管理起来，用户无需手动安装；同时开发者在代码中也会少很多 import 语句。

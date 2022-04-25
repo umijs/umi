@@ -78,7 +78,7 @@ export default {
   	// 添加额外插件
   	memo.plugin('hello').use(Plugin, [...args]);
   	
-  	// 删除 umi 内置插件
+  	// 删除 Umi 内置插件
   	memo.plugins.delete('hmr');
   }
 }
@@ -494,7 +494,7 @@ mountElementId: 'container'
 * 类型：`{ srcDir?: string[], exclude?: RegExp[] }`
 * 默认值：`false`
 
-在 monorepo 中使用 umi 时，你可能需要引入其他子包的组件、工具等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
+在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
 
 通过配置 `srcDir` 来调整识别源码文件夹的优先位置，通过 `exclude` 来设定不需要重定向的依赖范围。
 
@@ -523,7 +523,7 @@ monorepoRedirect: { exclude: [/^@scope\/.+/] }
 * 类型：`string[]`
 * 默认值：`[]`
 
-配置额外的 umi 插件。
+配置额外的 Umi 插件。
 
 数组项为指向插件的路径，可以是 npm 依赖、相对路径或绝对路径。如果是相对路径，则会从项目根目录开始找。
 
@@ -580,7 +580,7 @@ polyfill: {
 * 类型：`string[]`
 * 默认值：`[]`
 
-配置额外的 umi 插件集。
+配置额外的 Umi 插件集。
 
 数组项为指向插件集的路径，可以是 npm 依赖、相对路径或绝对路径。如果是相对路径，则会从项目根目录开始找。
 
