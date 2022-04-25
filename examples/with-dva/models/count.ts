@@ -15,5 +15,8 @@ export default {
       yield delay(1000);
       yield put({ type: 'add' });
     },
+    *throwError(_action: any) {
+      throw new Error('effect error');
+    },
   },
 };

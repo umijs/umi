@@ -1,10 +1,10 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
+import { winPath } from '@umijs/utils';
 import { join, relative } from 'path';
 import { IApi } from 'umi';
 import { chalk } from 'umi/plugin-utils';
 import { Model, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
-import { winPath } from '@umijs/utils';
 
 export default (api: IApi) => {
   const pkgPath = join(__dirname, '../libs/dva.ts');
@@ -65,15 +65,22 @@ import dvaImmer, { enableES5, enableAllPlugins } from '${winPath(
     : ''
 }
 import React, { useRef } from 'react';
-import { history } from 'umi';
+import { history, ApplyPluginsType, useAppData } from 'umi';
 import { models } from './models';
 
 export function RootContainer(props: any) {
+  const { pluginManager } = useAppData();
   const app = useRef<any>();
+  const runtimeDva = pluginManager.applyPlugins({
+    key: 'dva',
+    type: ApplyPluginsType.modify,
+    initialValue: {},
+  });
   if (!app.current) {
     app.current = create(
       {
         history,
+        ...(runtimeDva.config || {}),
       },
       {
         initialReducer: {},
@@ -128,6 +135,8 @@ export { connect, useDispatch, useStore, useSelector } from 'dva';`,
   api.addRuntimePlugin(() => {
     return [withTmpPath({ api, path: 'runtime.tsx' })];
   });
+
+  api.addRuntimePluginKey(() => ['dva']);
 
   // dva list model
   api.registerCommand({

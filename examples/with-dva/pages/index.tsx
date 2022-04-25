@@ -1,8 +1,8 @@
 import React from 'react';
 // @ts-ignore
-import styles from './index.less';
-// @ts-ignore
 import { connect } from 'umi';
+// @ts-ignore
+import styles from './index.less';
 
 function mapStateToProps(state: any) {
   return {
@@ -33,6 +33,15 @@ export default connect(mapStateToProps)(function Page(props: any) {
           }}
         >
           Add Async
+        </button>
+        <button
+          onClick={() => {
+            props.dispatch({
+              type: 'count/throwError',
+            });
+          }}
+        >
+          Throw Effect Error
         </button>
       </div>
       <div>{props.loading.global ? 'loading... ' : ''}</div>
