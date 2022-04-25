@@ -14,7 +14,10 @@ export default () => {
           <img src={Logo} className="w-8 h-8" alt="logo" />
         )}
         {typeof Logo === 'function' && <Logo />}
-        <div className="text-xl font-extrabold ml-2 dark:text-white">
+        <div
+          id="header-title"
+          className="text-xl font-extrabold ml-2 dark:text-white"
+        >
           {themeConfig.title}
         </div>
       </div>

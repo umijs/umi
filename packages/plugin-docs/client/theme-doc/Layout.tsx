@@ -44,7 +44,10 @@ export default (props: any) => {
         location: props.location,
       }}
     >
-      <div className="flex flex-col dark:bg-gray-900 min-h-screen transition-all">
+      <div
+        className="flex flex-col dark:bg-gray-900 min-h-screen transition-all"
+        id={isHomePage ? 'home-page' : 'doc-page'}
+      >
         <div
           id="head-container"
           className="z-30 sticky top-0 dark:before:bg-gray-800 before:bg-white before:bg-opacity-[.85]
