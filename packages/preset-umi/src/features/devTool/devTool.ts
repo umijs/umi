@@ -1,4 +1,5 @@
-import { existsSync } from 'fs';
+import { cheerio } from '@umijs/utils';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
 
@@ -6,7 +7,17 @@ const devToolAppDist = join(__dirname, '../../../devToolAppDist');
 const assetsDir = join(__dirname, '../../../assets');
 
 export default (api: IApi) => {
-  api.addBeforeMiddlewares(() => {
+  api.addBeforeMiddlewares(async () => {
+    // get loading html
+    const $ = await api.applyPlugins<typeof cheerio>({
+      key: 'modifyDevToolLoadingHTML',
+      type: api.ApplyPluginsType.modify,
+      initialValue: cheerio.load(
+        readFileSync(join(assetsDir, 'bundle-status.html'), 'utf-8'),
+      ),
+    });
+    const loadingHtml = $.html();
+
     return [
       (req, res, next) => {
         const { path } = req;
@@ -56,7 +67,7 @@ export default (api: IApi) => {
 
         if (!isDone) {
           res.setHeader('Content-Type', 'text/html');
-          res.sendFile(join(assetsDir, 'bundle-status.html'));
+          res.send(loadingHtml);
           return;
         }
 
