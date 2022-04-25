@@ -53,7 +53,8 @@ export default (api: IApi) => {
     checkPkgPath();
 
     // antd import
-    memo.alias.antd = pkgPath;
+    // alias 会导致 antd 不能多实例，故删除
+    // memo.alias.antd = pkgPath;
 
     // moment > dayjs
     if (memo.antd.dayjs) {
