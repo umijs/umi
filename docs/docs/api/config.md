@@ -732,6 +732,13 @@ targets: { ie: 11 }
 theme: { '@primary-color': '#1DA57A' }
 ```
 
+## title
+
+* 类型：`string`
+* 默认值：`null`
+
+配置全局页面 title，暂时只支持静态的 Title。
+
 ## verifyCommit
 
 * 类型：`{ scope: string[]; allowEmoji: boolean }`

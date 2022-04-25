@@ -33,5 +33,6 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     routes: (Joi) => Joi.array().items(Joi.object()),
     scripts: (Joi) => Joi.array(),
     styles: (Joi) => Joi.array(),
+    title: (Joi) => Joi.string(),
   };
 }
