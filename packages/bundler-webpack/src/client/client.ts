@@ -6,14 +6,23 @@ import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 
 console.log('[webpack] connecting...');
 
-function getSocketHost() {
-  let l: any = location;
+function getHost(): { protocol: string; host: string; port: string } {
   if (process.env.SOCKET_SERVER) {
-    l = new URL(process.env.SOCKET_SERVER);
+    return new URL(process.env.SOCKET_SERVER);
   }
-  const host = l.host;
-  const isHttps = l.protocol === 'https:';
+  return location;
+}
+
+function getSocketUrl() {
+  let h = getHost();
+  const host = h.host;
+  const isHttps = h.protocol === 'https:';
   return `${isHttps ? 'wss' : 'ws'}://${host}`;
+}
+
+function getPingUrl() {
+  const h = getHost();
+  return `${h.protocol}//${h.host}/__umi_ping`;
 }
 
 let pingTimer: NodeJS.Timer | null = null;
@@ -22,8 +31,9 @@ let isFirstCompilation = true;
 let mostRecentCompilationHash: string | null = null;
 let hasCompileErrors = false;
 let hadRuntimeError = false;
+const pingUrl = getPingUrl();
 
-const socket = new WebSocket(getSocketHost(), 'webpack-hmr');
+const socket = new WebSocket(getSocketUrl(), 'webpack-hmr');
 
 socket.addEventListener('message', async ({ data }) => {
   data = JSON.parse(data);
@@ -41,7 +51,7 @@ async function waitForSuccessfulPing(ms = 1000) {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
-      await fetch(`/__umi_ping`);
+      await fetch(pingUrl);
       break;
     } catch (e) {
       await new Promise((resolve) => setTimeout(resolve, ms));
@@ -203,6 +213,7 @@ function tryApplyUpdates(onHotUpdateSuccess?: Function) {
       tryApplyUpdates();
     }
   }
+
   // @ts-ignore
   module.hot
     .check(/* autoApply */ true)
