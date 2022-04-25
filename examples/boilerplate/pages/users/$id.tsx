@@ -1,6 +1,9 @@
 import React from 'react';
+import { useParams, useSearchParams } from 'umi';
 
 export default (props: any) => {
-  console.log(props, props.searchParams.get('foo'), props.searchParams);
-  return <h2>user: {props.params.id}</h2>;
+  const params = useParams();
+  const [searchParams] = useSearchParams();
+  console.log(props, searchParams.get('foo'));
+  return <h2>user: {params.id}</h2>;
 };

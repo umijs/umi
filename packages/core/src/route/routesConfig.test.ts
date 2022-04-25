@@ -70,3 +70,60 @@ test('child routes', () => {
     },
   });
 });
+
+test('wrappers', () => {
+  expect(
+    getConfigRoutes({
+      routes: [
+        {
+          path: '/',
+          component: 'index',
+          routes: [
+            {
+              path: 'bar',
+              component: 'bar',
+              wrappers: ['wrapperA', 'wrapperB'],
+            },
+            { path: 'foo', component: 'foo' },
+          ],
+        },
+      ],
+    }),
+  ).toEqual({
+    1: {
+      file: 'index',
+      path: '/',
+      id: '1',
+      parentId: undefined,
+      absPath: '/',
+    },
+    2: {
+      file: 'bar',
+      id: '2',
+      parentId: '4',
+      path: '',
+      absPath: '/bar',
+    },
+    3: {
+      file: 'wrapperA',
+      id: '3',
+      parentId: '1',
+      path: 'bar',
+      absPath: '/bar',
+    },
+    4: {
+      file: 'wrapperB',
+      id: '4',
+      parentId: '3',
+      path: '',
+      absPath: '/bar',
+    },
+    5: {
+      file: 'foo',
+      id: '5',
+      parentId: '1',
+      path: 'foo',
+      absPath: '/foo',
+    },
+  });
+});

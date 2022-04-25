@@ -35,11 +35,11 @@ function transformRoute(opts: {
     'children is not allowed in route props, use routes instead.',
   );
   const id = String(opts.memo.id++);
-  const { routes, component, ...routeProps } = opts.route;
+  const { routes, component, wrappers, ...routeProps } = opts.route;
   let absPath = opts.route.path;
   if (absPath?.charAt(0) !== '/') {
     const parentAbsPath = opts.parentId
-      ? opts.memo.ret[opts.parentId].absPath.replace(/\/*$/, '/') // to remove '/'s on the tail
+      ? opts.memo.ret[opts.parentId].absPath.replace(/\/+$/, '/') // to remove '/'s on the tail
       : '/';
     absPath = parentAbsPath + absPath;
   }
@@ -53,6 +53,21 @@ function transformRoute(opts: {
   if (absPath) {
     opts.memo.ret[id].absPath = absPath;
   }
+  if (wrappers?.length) {
+    let parentId = opts.parentId;
+    let path = opts.route.path;
+    wrappers.forEach((wrapper: any) => {
+      const { id } = transformRoute({
+        route: { path, component: wrapper },
+        parentId,
+        memo: opts.memo,
+      });
+      parentId = id;
+      path = '';
+    });
+    opts.memo.ret[id].parentId = parentId;
+    opts.memo.ret[id].path = path;
+  }
   if (opts.route.routes) {
     transformRoutes({
       routes: opts.route.routes,
@@ -60,4 +75,5 @@ function transformRoute(opts: {
       memo: opts.memo,
     });
   }
+  return { id };
 }
