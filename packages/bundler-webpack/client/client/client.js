@@ -13,21 +13,29 @@ import * as ErrorOverlay from 'react-error-overlay';
 import { MESSAGE_TYPE } from '../constants';
 import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 console.log('[webpack] connecting...');
-function getSocketHost() {
-    let l = location;
+function getHost() {
     if (process.env.SOCKET_SERVER) {
-        l = new URL(process.env.SOCKET_SERVER);
+        return new URL(process.env.SOCKET_SERVER);
     }
-    const host = l.host;
-    const isHttps = l.protocol === 'https:';
+    return location;
+}
+function getSocketUrl() {
+    let h = getHost();
+    const host = h.host;
+    const isHttps = h.protocol === 'https:';
     return `${isHttps ? 'wss' : 'ws'}://${host}`;
+}
+function getPingUrl() {
+    const h = getHost();
+    return `${h.protocol}//${h.host}/__umi_ping`;
 }
 let pingTimer = null;
 let isFirstCompilation = true;
 let mostRecentCompilationHash = null;
 let hasCompileErrors = false;
 let hadRuntimeError = false;
-const socket = new WebSocket(getSocketHost(), 'webpack-hmr');
+const pingUrl = getPingUrl();
+const socket = new WebSocket(getSocketUrl(), 'webpack-hmr');
 socket.addEventListener('message', ({ data }) => __awaiter(void 0, void 0, void 0, function* () {
     data = JSON.parse(data);
     if (data.type === 'connected') {
@@ -45,7 +53,7 @@ function waitForSuccessfulPing(ms = 1000) {
         // eslint-disable-next-line no-constant-condition
         while (true) {
             try {
-                yield fetch(`/__umi_ping`);
+                yield fetch(pingUrl);
                 break;
             }
             catch (e) {
