@@ -95,15 +95,6 @@ export default (api: IApi) => {
             },
             'antd',
           ],
-          [
-            require.resolve('babel-plugin-import'),
-            {
-              libraryName: 'antd-4',
-              libraryDirectory: 'es',
-              style: style === 'less' ? true : 'css',
-            },
-            'antd-4',
-          ],
         ]
       : [];
   });
@@ -140,7 +131,6 @@ export function rootContainer(container) {
       ),
     });
   });
-
   api.addRuntimePlugin(() => {
     return api.config.antd.configProvider
       ? [withTmpPath({ api, path: 'runtime.tsx' })]

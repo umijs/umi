@@ -24,7 +24,6 @@ export default (api: IApi) => {
       cwd: api.cwd,
       dep: '@ant-design/pro-layout',
     }) || dirname(require.resolve('@ant-design/pro-layout/package.json'));
-  const antdPkgPath = dirname(require.resolve('antd/package.json'));
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
@@ -38,7 +37,6 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // import from @ant-design/pro-layout
     memo.alias['@ant-design/pro-layout'] = pkgPath;
-    memo.alias['antd-4'] = antdPkgPath;
     return memo;
   });
 
@@ -243,7 +241,7 @@ export function patchRoutes({ routes }) {
 
     const rightRenderContent = `
 import React from 'react';
-import { Avatar, Dropdown, Menu, Spin } from 'antd-4';
+import { Avatar, Dropdown, Menu, Spin } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 {{#Locale}}
 import { SelectLang } from '@@/plugin-locale';
@@ -490,7 +488,7 @@ export default LogoIcon;
       content: `
 import React from 'react';
 import { history, type IRoute } from 'umi';
-import { Result, Button } from 'antd-4';
+import { Result, Button } from 'antd';
 
 const Exception: React.FC<{
   children: React.ReactNode;
