@@ -13,7 +13,6 @@ export default (function react(userConfig) {
     // @ts-expect-error
     reactPlugin({
       // jsxRuntime: 'automatic',
-      include: userConfig.extraBabelIncludes,
       babel: {
         plugins: userConfig.extraBabelPlugins,
         presets: userConfig.extraBabelPresets,

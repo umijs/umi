@@ -57,6 +57,18 @@ const expects: Record<string, Function> = {
       `var external_React_namespaceObject = React;`,
     );
   },
+  'extra-babel-includes'({ files }: IOpts) {
+    const dist = files['index.js'];
+
+    // jsx
+    expect(dist).toContain('children: "JSX"');
+
+    // unicode regex
+    expect(dist).not.toContain('p{Punctuation}/ug');
+
+    // class decorator
+    expect(dist).toContain('_createClass(Person');
+  },
   json({ files }: IOpts) {
     expect(files['index.js']).toContain(
       `var react_namespaceObject = {"foo":"react"};`,

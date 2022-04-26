@@ -237,6 +237,25 @@ scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 
 注意：不要轻易设置 antd 的 externals，由于依赖教多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
 
+## extraBabelIncludes
+
+* 类型：`string[]`
+* 默认值：`[]`
+
+配置额外需要做 Babel 编译的 NPM 包或目录。比如：
+
+```js
+export default {
+  extraBabelIncludes: [
+    // 支持绝对路径
+    join(__dirname, '../../common'),
+
+    // 支持 npm 包
+    'react-monaco-editor',
+  ],
+};
+```
+
 ## extraBabelPlugins
 
 * 类型：`string[] | Function`
