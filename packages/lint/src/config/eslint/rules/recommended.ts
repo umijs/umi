@@ -63,7 +63,14 @@ export default {
   'react/no-unknown-property': 2,
   'react/require-render-return': 2,
 
-  // config-plugin-jest rules
+  // config-plugin-react-hooks rules
+  'react-hooks/rules-of-hooks': 2,
+};
+
+/**
+ * config-plugin-jest rules
+ */
+export const jest = {
   'jest/no-conditional-expect': 2,
   'jest/no-deprecated-functions': 2,
   'jest/no-export': 2,
@@ -78,9 +85,6 @@ export default {
   'jest/valid-expect-in-promise': 2,
   'jest/valid-expect': 2,
   'jest/valid-title': 2,
-
-  // config-plugin-react-hooks rules
-  'react-hooks/rules-of-hooks': 2,
 };
 
 /**

@@ -1,9 +1,12 @@
-import rules, { typescript as tsRules } from './rules/recommended';
+import rules, {
+  jest as jestRules,
+  typescript as tsRules,
+} from './rules/recommended';
 import './setup';
 
 module.exports = {
   parser: '@babel/eslint-parser',
-  plugins: ['react', 'react-hooks', 'jest'],
+  plugins: ['react', 'react-hooks'],
   settings: {
     react: {
       version: 'detect',
@@ -22,6 +25,16 @@ module.exports = {
       plugins: ['@typescript-eslint/eslint-plugin'],
       files: ['**/*.{ts,tsx}'],
       rules: tsRules,
+    },
+    {
+      settings: {
+        jest: {
+          version: 26,
+        },
+      },
+      files: ['**/*.{test,spec,unit,e2e}.{ts,tsx,js,jsx}'],
+      plugins: ['jest'],
+      rules: jestRules,
     },
   ],
   parserOptions: {
