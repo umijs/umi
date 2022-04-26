@@ -14,12 +14,12 @@
 
 项目的 `package.json` 需要升级 Umi，并替换掉对应的 Umi 插件。
 
-如果 `umi@3` 中是使用 `umi` + `@umijs/preset-react` 的组合进行开发的，那可以直接使用新版的 `umipro` 直接升级。
+如果 `umi@3` 中是使用 `umi` + `@umijs/preset-react` 的组合进行开发的，那可以直接使用新版的 `max` 直接升级。
 
 ```diff
 {
   "devDependencies": {
-+   "@umijs/pro": "^4.0.0",  
++   "@umijs/max": "^4.0.0",  
 -   "umi": "^3.0.0",
 -   "@umijs/preset-react": "^1.2.2"
   }
@@ -30,7 +30,7 @@
 
 ### 启动命令
 
-如果使用了 `@umijs/pro` 可以使用 `umipro` 命令来替换 `umi`，`umipro dev`，`umipro build` 等
+如果使用了 `@umijs/max` 可以使用 `max` 命令来替换 `umi`，`max dev`，`max build` 等
 
 `umi@4` 将一些项目前置操作放到了 `setup` 命令中，如 umi@3 中的 `umi g tmp` 等命令，需要使用 `umi setup` 替换
 
@@ -39,11 +39,11 @@
 {
   "scripts": {
 -    "build": "umi build",
-+    "build": "umipro build",
++    "build": "max build",
 -    "postinstall": "umi g tmp",
-+    "postinstall": "umipro setup",
++    "postinstall": "max setup",
 -    "start": "umi dev",
-+    "start": "umipro dev",
++    "start": "max dev",
   }
 }
 ```
@@ -56,7 +56,7 @@
 
 ### 配置层迁移
 
-**umipro 提供的的配置项**如下 `config/config.ts` ：
+**max 提供的的配置项**如下 `config/config.ts` ：
 
 > 需要注意的是，之前的一些插件约定开启的规则，在 `umi@4` 中几乎都要通过显示的配置开启，因为希望在 `umi@4` 中有更少的“黑盒”。
 
@@ -217,7 +217,7 @@ pattern: {path: 'list/search/:type'}
 更多改动和 api 变更，请查阅 [react-router@6](https://reactrouter.com/docs/en/v6/api#uselocation)
 
 
-完成以上操作后，执行下 `umipro dev`，访问 [http://localhost:8000](http://localhost:8000)，请验证所有功能都符合预期。
+完成以上操作后，执行下 `max dev`，访问 [http://localhost:8000](http://localhost:8000)，请验证所有功能都符合预期。
 
 如果你的项目无法正常启动，你可能还需要做如下操作：
 
