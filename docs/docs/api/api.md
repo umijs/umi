@@ -5,12 +5,78 @@
 ## umi
 
 ### createBrowserHistory
+
+创建使用浏览器内置 `history` 来跟踪应用的 `BrowserHistory`。推荐在支持 HTML5 `history` 接口的 现代 Web 浏览器中使用。
+
+类型定义如下：
+```typescript
+function createBrowserHistory(options?: { window?: Window }) => BrowserHistory;
+```
+
+使用范例：
+```ts
+// create a BrowserHistory
+import { createBrowserHistory } from 'umi';
+const history = createBrowserHistory();
+// or a iframe BrowserHistory
+import { createBrowserHistory } from 'umi';
+const history = createBrowserHistory({
+  window: iframe.contentWindow,
+});
+```
 ### createHashHistory
+
+`createHashHistory` 返回一个 `HashHistory` 实例。`window` 默认为当前 `document` 的 `defaultView`。
+
+`HashHistory` 与 `BrowserHistory` 的主要区别在于，`HashHistory` 将当前位置存储在 URL 的哈希部分中，这意味着它在路由切换时不会发送请求到服务器。如果您将站点托管在您无法完全控制服务器误上，或者在只提供同单页面的 Electron 应用程序中，推荐使用 `HashHistory`。
+
+使用范例：
+```ts
+// create a HashHistory
+import { createHashHistory } from 'umi';
+const history = createHashHistory();
+```
+
 ### createMemoryHistory
+
+`MemoryHistory` 不会在地址栏被操作或读取。它也非常适合测试和其他的渲染环境。
+
+```ts
+const history = createMemoryHistory(location)
+```
+
 ### createSearchParams
+
+包装 `new URLSearchParams(init)` 的工具函数，支持使用数组和对象创建
+
+```ts
+import { createSearchParams } from 'umi';
+
+
+// 假设路径 http://a.com?foo=1&bar=2
+createSearchParams(location.search);
+createSearchParams("foo=1&bar=2");
+createSearchParams("?foo=1&bar=2");
+
+// 键值对对象
+createSearchParams({ foo: 'bar', qux: 'qoo'}).toString()
+// foo=bar&qux=qoo
+
+// 键值元组数组
+createSearchParams([["foo", "1"], ["bar", "2"]]).toString()
+// foo=1&bar=2
+```
+
+[URLSearchParams 文档](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams)
+
+{
+/*
+
 ### dynamic
 
 TODO: SUPPORT
+*/
+}
 
 ### history
 
@@ -18,7 +84,7 @@ TODO: SUPPORT
 
 获取当前路由信息。
 
-```js
+```ts
 import { history } from 'umi';
 
 // // history 栈里的实体个数
@@ -35,7 +101,7 @@ history.location.hash;
 
 命令式路由跳转。
 
-```js
+```ts
 import { history } from 'umi';
 
 // 跳转到指定路由
@@ -56,7 +122,7 @@ history.goBack();
 
 路由监听。
 
-```js
+```ts
 import { history } from 'umi';
 
 const unlisten = history.listen((location, action) => {
@@ -69,7 +135,7 @@ unlisten();
 
 `<Link>` 是 React 组件，是带路由跳转功能的 `<a>` 元素。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function Link(props: {
@@ -80,9 +146,8 @@ declare function Link(props: {
 }): React.ReactElement;
 ```
 
-比如：
-
-```js
+示例：
+```ts
 import { Link } from 'umi';
 
 function IndexPage({ user }) {
@@ -93,7 +158,91 @@ function IndexPage({ user }) {
 `<Link to>` 支持相对路径跳转；`<Link reloadDocument>` 不做路由跳转，等同于 `<a href>` 的跳转行为。
 
 ### matchPath
+
+`matchPath` 可以将给定的路径以及一个已知的路由格式进行匹配，并且返回匹配结果。
+
+类型定义如下:
+
+```ts
+declare function matchPath<ParamKey extends string = string>(
+  pattern: PathPattern | string,
+  pathname: string
+): PathMatch<ParamKey> | null;
+interface PathMatch<ParamKey extends string = string> {
+  params: Params<ParamKey>;
+  pathname: string;
+  pattern: PathPattern;
+}
+interface PathPattern {
+  path: string;
+  caseSensitive?: boolean;
+  end?: boolean;
+}
+```
+
+示例：
+```ts
+import { matchPath } from 'umi';
+const match = matchPath(
+  { path: "/users/:id" },
+  "/users/123",
+);
+// {
+//   "params": { "id": "123" },
+//   "pathname": "/users/123",
+//   "pathnameBase": "/users/123",
+//   "pattern": { "path": "/users/:id" }
+// }
+```
 ### matchRoutes
+
+`matchRoutes` 可以将给定的路径以及多个可能的路由选择进行匹配，并且返回匹配结果。
+
+类型定义如下。
+
+```ts
+declare function matchRoutes(
+  routes: RouteObject[],
+  location: Partial<Location> | string,
+  basename?: string
+): RouteMatch[] | null;
+interface RouteMatch<ParamKey extends string = string> {
+  params: Params<ParamKey>;
+  pathname: string;
+  route: RouteObject;
+}
+```
+
+示例：
+
+```ts
+import { matchRoutes } from 'umi';
+const match = matchRoutes(
+  [
+    {
+      path: "/users/:id",
+    },
+    {
+      path: "/users/:id/posts/:postId",
+    },
+  ],
+  "/users/123/posts/456",
+);
+// [
+//  {
+//    "params": {
+//      "id": "123",
+//       "postId": "456"
+//     },
+//     "pathname": "/users/123/posts/456",
+//     "pathnameBase": "/users/123/posts/456",
+//     "route": {
+//       "path": "/users/:id/posts/:postId"
+//     }
+//   }
+// ]
+```
+
 ### NavLink
 
 `<NavLink>` 是 `<Link>` 的特殊形态，他知道当前是否为路由激活状态。通常在导航菜单、面包屑、Tabs 中会使用，用于显示当前的选中状态。
@@ -112,7 +261,7 @@ declare function NavLink(props: LinkProps & {
 
 下方示例分别用了 style、className 和 children 来渲染 active 状态。
 
-```js
+```ts
 import { NavLink } from 'umi';
 
 function Navs() {
@@ -128,9 +277,9 @@ function Navs() {
 
 `<Outlet>` 用于渲染父路由中渲染子路由。如果父路由被严格匹配，会渲染子路由中的 index 路由（如有）。
 
-示例，
+示例：
 
-```js
+```ts
 import { Outlet } from 'umi';
 
 function Dashboard() {
@@ -138,7 +287,6 @@ function Dashboard() {
 }
 ```
 
-### renderClient
 ### useAppData
 
 `useAppData` 返回全局的应用数据。
@@ -155,7 +303,6 @@ declare function useAppData(): {
   basename: string;
 };
 ```
-
 注意：此处 API 可能还会调整。
 
 ### useLocation
@@ -175,7 +322,7 @@ declare function useLocation(): {
 
 一个场景是在 location change 时做一些 side effect 操作，比如 page view 统计。
 
-```js
+```ts
 import { useLocation } from 'umi';
 
 function App() {
@@ -189,7 +336,7 @@ function App() {
 
 ### useMatch
 
-`useMatch` 返回传入 path 的匹配信息。
+`useMatch` 返回传入 path 的匹配信息；如果匹配失败将返回 `null`
 
 类型定义如下。
 
@@ -209,16 +356,120 @@ declare function useMatch(pattern: {
 };
 ```
 
+示例：
+```tsx
+import { useMatch } from 'umi';
+
+// when url = '/events/12'
+const match = useMatch('/events/:eventId');
+console.log(match?.pathname, match?.params.eventId); 
+// '/events/12 12'
+```
+
 ### useNavigate
+
+`useNavigate` 钩子函数返回一个可以控制跳转的函数；比如可以用在提交完表单后跳转到其他页面。
+
+```ts
+declare function useNavigate(): NavigateFunction;
+
+interface NavigateFunction {
+  (
+    to: To,
+    options?: { replace?: boolean; state?: any }
+  ): void;
+  (delta: number): void;
+}
+```
+
+示例：
+
+* 跳转路径
+```ts
+import { useNavigate } from 'umi';
+
+let navigate = useNavigate();
+navigate("../success", { replace: true });
+```
+
+* 返回上一页
+```ts
+import { useNavigate } from 'umi';
+
+let navigate = useNavigate();
+navigate(-1);
+```
+
 ### useOutlet
 
 `useOutlet` 返回当前匹配的子路由元素，`<Outlet>` 内部使用的就是此 hook 。
 
+类型定义如下：
+```ts 
+declare function useOutlet(): React.ReactElement | null;
+```
+
+示例：
+```ts
+import { useOutlet } from 'umi';
+
+const Layout = ()=>{
+  const outlet = useOutlet()
+
+  return <div className="fancyLayout">
+    {outlet}
+  </div>
+}
+
+```
+
 ### useParams
+
+`useParams` 钩子函数返回动态路由的匹配参数键值对对象；子路由中会集成父路由的动态参数。
+
+类型定义如下：
+```ts
+declare function useParams<
+  K extends string = string
+>(): Readonly<Params<K>>;
+```
+
+示例：
+
+```ts
+import { useParams } from 'umi';
+
+// 假设有路由配置  user/:uId/repo/:rId
+// 当前路径       user/abc/repo/def
+const params = useParams()
+/* params 
+{ uId: 'abc', rId: 'def'}
+*/
+```
+
 ### useResolvedPath
+
+`useResolvedPath` 根据当前路径将目标地址解析出完整的理由信息。
+
+类型定义如下：
+```
+declare function useResolvedPath(to: To): Path;
+```
+
+示例：
+
+```ts
+import { useResolvedPath } from 'umi';
+
+const path = useResolvedPath('docs')
+/* path 
+{ pathname: '/a/new/page/docs', search: '', hash: '' }
+*/
+```
+
 ### useRouteData
 
-`useRouteData` 返回当前路由的数据。
+`useRouteData` 返回当前匹配路由的数据的钩子函数。
 
 类型定义如下。
 
@@ -227,15 +478,68 @@ declare function useRouteData(): {
   route: Route;
 };
 ```
-
 注意：此处 API 可能还会调整。
 
+示例：
+```ts
+import { useRouteData } from 'umi';
+
+const route = useRouteData();
+/* route
+{
+  route: {
+    path: 'a/page',
+    id: 'a/page/index',
+    parentId: '@@/global-layout',
+    file: 'a/page/index.tsx'
+  }
+}
+*/
+```
+
 ### useRoutes
+
+`useRoutes` 渲染路由的钩子函数，传入路由配置和可选参数 `location`, 即可得到渲染结果；如果没有匹配的路由，结果为 `null`。
+
+类型定义如下：
+```ts
+declare function useRoutes(
+  routes: RouteObject[],
+  location?: Partial<Location> | string;
+): React.ReactElement | null;
+```
+
+示例：
+
+```ts
+import * as React from "react";
+import { useRoutes } from "umi";
+
+function App() {
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <Dashboard />,
+      children: [
+        {
+          path: "messages",
+          element: <DashboardMessages />,
+        },
+        { path: "tasks", element: <DashboardTasks /> },
+      ],
+    },
+    { path: "team", element: <AboutPage /> },
+  ]);
+
+  return element;
+}
+```
+
 ### useSearchParams
 
 `useSearchParams` 用于读取和修改当前 URL 的 query string。类似 React 的 `useState`，其返回包含两个值的数组，当前 URL 的 search 参数和用于更新 search 参数的函数。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function useSearchParams(defaultInit?: URLSearchParamsInit): [
@@ -253,9 +557,8 @@ type URLSearchParamsInit =
   | URLSearchParams;
 ```
 
-示例。
-
-```js
+示例：
+```ts
 import React from 'react';
 import { useSearchParams } from 'umi';
 
