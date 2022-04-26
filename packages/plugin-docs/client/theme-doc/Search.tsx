@@ -34,6 +34,7 @@ export default () => {
   }
 
   useEffect(() => {
+    if (!themeConfig.searchHotKey) return;
     key.filter = () => true;
 
     // 在页面中按下 ⌘+k 可以打开搜索框
@@ -78,12 +79,14 @@ export default () => {
           className="w-full bg-transparent outline-none text-sm px-4 py-2"
           placeholder={render('Search anything ...')}
         />
-        <div
-          className="bg-gray-200 rounded px-2 h-6 flex flex-row text-gray-400
+        {themeConfig.searchHotKey && (
+          <div
+            className="bg-gray-200 rounded px-2 h-6 flex flex-row text-gray-400
          items-center justify-center border border-gray-300 text-xs"
-        >
-          {isMac ? macSearchKey : windowsSearchKey}
-        </div>
+          >
+            {isMac ? macSearchKey : windowsSearchKey}
+          </div>
+        )}
         <div
           id="search-results-wrapper"
           className={cx(
