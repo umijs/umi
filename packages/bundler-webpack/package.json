@@ -45,10 +45,12 @@
     "node-libs-browser": "2.2.1",
     "postcss": "^8.4.12",
     "postcss-preset-env": "7.4.3",
-    "react-error-overlay": "6.0.9"
+    "react-error-overlay": "6.0.9",
+    "spdy": "^4.0.2"
   },
   "devDependencies": {
     "@swc/core": "1.2.165",
+    "@types/spdy": "^3.4.5",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.3",
     "autoprefixer": "10.4.4",

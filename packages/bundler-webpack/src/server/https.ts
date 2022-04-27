@@ -1,8 +1,8 @@
 import { chalk, execa, logger } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { RequestListener } from 'http';
-import https from 'https';
 import { join } from 'path';
+import spdy from 'spdy';
 import { HttpsParams } from '../types';
 
 const defaultHttpsHosts: HttpsParams['hosts'] = ['localhost', '127.0.0.1'];
@@ -62,11 +62,13 @@ export async function createHttpsServer(
   }
 
   // Create server
-  return https.createServer(
+  const http2Service = spdy.createServer(
     {
       key: readFileSync(key, 'utf-8'),
       cert: readFileSync(cert, 'utf-8'),
     },
     app,
   );
+
+  return http2Service;
 }
