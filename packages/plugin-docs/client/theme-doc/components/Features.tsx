@@ -8,7 +8,7 @@ function Features(
   props: PropsWithChildren<{ title?: string; subtitle?: string }>,
 ) {
   return (
-    <div className="w-screen py-36 features dark:features-dark min-h-screen">
+    <div className="w-full py-36 features dark:features-dark min-h-screen">
       {(props.title || props.subtitle) && (
         <div className="mb-24 px-4">
           {props.title && (
