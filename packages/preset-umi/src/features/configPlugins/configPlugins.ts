@@ -2,7 +2,7 @@ import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
 import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi } from '../../types';
 import { getSchemas as getExtraSchemas } from './schema';
 
@@ -20,6 +20,14 @@ function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
 }
 
 export default (api: IApi) => {
+  const reactDOMPath =
+    resolveProjectDep({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      dep: 'react-dom',
+    }) || dirname(require.resolve('react-dom/package.json'));
+  const reactDOMVersion = require(join(reactDOMPath, 'package.json')).version;
+  const isLT18 = !reactDOMVersion.startsWith('18.');
   const configDefaults: Record<string, any> = {
     alias: {
       umi: '@@/exports',
@@ -29,12 +37,12 @@ export default (api: IApi) => {
           cwd: api.cwd,
           dep: 'react',
         }) || dirname(require.resolve('react/package.json')),
-      'react-dom':
-        resolveProjectDep({
-          pkg: api.pkg,
-          cwd: api.cwd,
-          dep: 'react-dom',
-        }) || dirname(require.resolve('react-dom/package.json')),
+      ...(isLT18
+        ? {
+            'react-dom/client': reactDOMPath,
+          }
+        : {}),
+      'react-dom': reactDOMPath,
       'react-router': dirname(require.resolve('react-router/package.json')),
       'react-router-dom': dirname(
         require.resolve('react-router-dom/package.json'),
