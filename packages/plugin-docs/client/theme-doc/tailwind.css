@@ -78,7 +78,9 @@ article div[data-rehype-pretty-code-fragment] {
 }
 
 /* 代码块的标题部分 */
-article div[data-rehype-pretty-code-fragment] > div[data-rehype-pretty-code-title] {
+article
+  div[data-rehype-pretty-code-fragment]
+  > div[data-rehype-pretty-code-title] {
   @apply pb-1 text-sm text-zinc-400 dark:text-neutral-400 text-center;
 }
 

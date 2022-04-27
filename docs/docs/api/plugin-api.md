@@ -47,7 +47,7 @@ api.isPluginEnable( key：string)
 ```
 判断插件是否启用，传入的参数是插件的 key
 
-### register <span id = 'register'/>
+### register
 ```ts
 api.register({ key: string, fn, before?: string, stage?: number})
 ```
@@ -297,7 +297,7 @@ api.addEntryImportsAhead(() => ({
 ### addExtraBabelPresets
 添加额外的 Babel 插件集。传入的 fn 不需要参数，且需要返回一个 Babel 插件集或其数组。
 
-### addHTMLHeadScripts  <span id = 'addHTMLHeadScripts'/>
+### addHTMLHeadScripts
 往 HTML 的 `<head>` 元素里添加 Script。传入的 fn 不需要参数，且需要返回一个 string（想要加入的代码） 或者 `{ async?: boolean, charset?: string, crossOrigin?: string | null, defer?: boolean, src?: string, type?: string, content?: string }` 或者它们的数组。
 ```ts
 api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
