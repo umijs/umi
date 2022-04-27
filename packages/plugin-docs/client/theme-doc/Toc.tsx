@@ -2,13 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useThemeContext } from './context';
 import useLanguage from './useLanguage';
-
-function getLinkFromTitle(title: string) {
-  return title
-    .toLowerCase()
-    .replace(/\s/g, '-')
-    .replace(/[（）()\\{},]/g, '');
-}
+import getLinkFromTitle from './utils/getLinkFromTitle';
 
 export default () => {
   const { location, appData, themeConfig } = useThemeContext()!;
