@@ -13,7 +13,7 @@ export default (api: IApi) => {
       schema(joi) {
         return joi.object();
       },
-      onChange: api.ConfigChangeType.regenerateTmpFiles,
+      // onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
     enableBy: api.EnableBy.config,
   });
