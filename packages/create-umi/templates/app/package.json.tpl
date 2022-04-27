@@ -10,8 +10,8 @@
     "umi": "^{{{ version }}}"
   },
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "typescript": "^4.1.2"
   }
 }

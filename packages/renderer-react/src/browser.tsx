@@ -1,6 +1,7 @@
 import { History } from 'history';
 import React from 'react';
-import ReactDOM from 'react-dom';
+// compatible with < react@18 in @umijs/preset-umi/src/features/react
+import ReactDOM from 'react-dom/client';
 import { Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
 import { createClientRoutes } from './routes';
@@ -62,7 +63,7 @@ export function renderClient(opts: {
   history: History;
 }) {
   const basename = opts.basename || '/';
-  const rootElement = opts.rootElement || document.getElementById('root');
+  const rootElement = opts.rootElement || document.getElementById('root')!;
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: opts.routeComponents,
@@ -117,11 +118,10 @@ export function renderClient(opts: {
     </AppContext.Provider>
   );
 
-  // @ts-ignore
   if (ReactDOM.createRoot) {
-    // @ts-ignore
     ReactDOM.createRoot(rootElement).render(browser);
   } else {
+    // @ts-ignore
     ReactDOM.render(browser, rootElement);
   }
 }
