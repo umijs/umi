@@ -1,5 +1,5 @@
 {
-  "name": "@example/boilerplate",
+  "name": "@example/with-react-17",
   "private": true,
   "scripts": {
     "build": "umi build",
