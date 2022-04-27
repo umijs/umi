@@ -17,7 +17,12 @@ export default function (api: IApi) {
       },
     },
     enableBy() {
-      return api.name === 'dev';
+      // 只有 dev 才默认开启
+      if (api.name !== 'dev') {
+        return false;
+      }
+      // 环境变量关闭 mock
+      return process.env.MOCK !== 'none';
     },
   });
 
