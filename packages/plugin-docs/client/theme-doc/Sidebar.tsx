@@ -49,6 +49,7 @@ export default (props: SidebarProps) => {
                 if (to === window.location.pathname) {
                   return (
                     <div
+                      id="active-nav-item"
                       key={route.path}
                       className="my-2 hover:text-blue-400 transition-all
                        bg-blue-50 text-blue-400 px-4 py-1
