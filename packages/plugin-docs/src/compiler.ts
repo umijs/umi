@@ -49,6 +49,10 @@ function MDXContent(props = {}) {
     } else {
       window.scrollTo(0, 0);
     }
+    document.getElementById('active-nav-item')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
   }, []);
 
 `,
