@@ -1,4 +1,5 @@
 import type { Config as SwcConfig } from '@swc/core';
+import type { HttpsServerOptions } from '@umijs/bundler-utils';
 import type { Options as ProxyOptions } from '../compiled/http-proxy-middleware';
 import { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
@@ -47,12 +48,6 @@ export interface DeadCodeParams {
   context?: string;
 }
 
-export interface HttpsParams {
-  key?: string;
-  cert?: string;
-  hosts?: string[]; // 默认值 ['localhost', '127.0.0.1']
-}
-
 export interface IConfig {
   alias?: Record<string, string>;
   autoCSSModules?: boolean;
@@ -67,7 +62,7 @@ export interface IConfig {
   depTranspiler?: Transpiler;
   devtool?: Config.DevTool;
   deadCode?: DeadCodeParams;
-  https?: HttpsParams;
+  https?: HttpsServerOptions;
   externals?: WebpackConfig['externals'];
   esm?: { [key: string]: any };
   extraBabelPlugins?: IBabelPlugin[];

@@ -29,3 +29,6 @@ export function isDepPath(path: string) {
     umiMonorepoPaths.some((p) => winPath(path).includes(p))
   );
 }
+
+export * from './https';
+export * from './types';

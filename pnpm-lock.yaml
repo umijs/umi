@@ -592,6 +592,7 @@ importers:
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.17.0
       '@types/less': 3.0.3
+      '@types/spdy': ^3.4.5
       '@umijs/utils': 4.0.0-rc.14
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.10.5
@@ -599,11 +600,13 @@ importers:
       express: 4.17.3
       less: 4.1.2
       regenerate-unicode-properties: 10.0.1
+      spdy: ^4.0.2
       tapable: 2.2.1
     dependencies:
       '@umijs/utils': link:../utils
       esbuild: 0.14.36
       regenerate-unicode-properties: 10.0.1
+      spdy: 4.0.2
     devDependencies:
       '@babel/code-frame': 7.16.7
       '@babel/core': 7.17.9
@@ -632,6 +635,7 @@ importers:
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.17.0
       '@types/less': 3.0.3
+      '@types/spdy': 3.4.5
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.10.5
       express: 4.17.3
@@ -680,7 +684,6 @@ importers:
       '@svgr/plugin-svgo': ^6.2.0
       '@swc/core': 1.2.165
       '@types/hapi__joi': 17.1.8
-      '@types/spdy': ^3.4.5
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.5.3
       '@umijs/babel-preset-umi': 4.0.0-rc.14
@@ -711,7 +714,6 @@ importers:
       react-refresh: 0.12.0
       sass-loader: 12.6.0
       schema-utils: 4.0.0
-      spdy: ^4.0.2
       speed-measure-webpack-plugin: 1.5.0
       style-loader: 3.3.1
       svgo-loader: 3.0.0
@@ -743,10 +745,8 @@ importers:
       postcss: 8.4.12
       postcss-preset-env: 7.4.3_postcss@8.4.12
       react-error-overlay: 6.0.9
-      spdy: 4.0.2
     devDependencies:
       '@swc/core': 1.2.165
-      '@types/spdy': 3.4.5
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.5.3
       autoprefixer: 10.4.4_postcss@8.4.12

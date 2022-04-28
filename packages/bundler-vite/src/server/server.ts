@@ -1,3 +1,4 @@
+import { createHttpsServer, resolveHttpsConfig } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { logger } from '@umijs/utils';
 import http from 'http';
@@ -36,8 +37,22 @@ interface IOpts {
 
 export async function createServer(opts: IOpts) {
   const startTms = +new Date();
-  const { viteConfig, onDevCompileDone } = opts;
+  const { viteConfig, userConfig, onDevCompileDone } = opts;
   const app = express();
+
+  const viteConfigServer = { ...viteConfig.server };
+
+  // 如果启用https 先获取key 和 cert 给vite ws 服务使用
+  if (userConfig.https) {
+    const httpsConfig = await resolveHttpsConfig(userConfig.https);
+    if (httpsConfig) {
+      userConfig.https = viteConfigServer.https = {
+        key: httpsConfig.key,
+        cert: httpsConfig.cert,
+      };
+    }
+  }
+
   const vite = await createViteServer({
     ...viteConfig,
     // use `handleHotUpdate` vite hook to workaround `onDevCompileDone` umi hook
@@ -54,7 +69,7 @@ export async function createServer(opts: IOpts) {
           ]),
         }
       : {}),
-    server: { ...viteConfig.server, middlewareMode: 'html' },
+    server: { ...viteConfigServer, middlewareMode: 'html' },
   });
 
   // before middlewares
@@ -90,7 +105,15 @@ export async function createServer(opts: IOpts) {
   // prerender
   // bundless
 
-  const server = http.createServer(app);
+  const server = userConfig.https
+    ? await createHttpsServer(app, userConfig.https)
+    : http.createServer(app);
+
+  if (!server) {
+    return null;
+  }
+
+  const protocol = userConfig.https ? 'https:' : 'http:';
   const port = opts.port || 8000;
 
   server.listen(port, async () => {
@@ -103,11 +126,9 @@ export async function createServer(opts: IOpts) {
       });
     }
 
-    logger.ready(
-      `Example app listening at http://${
-        process.env.HOST || '127.0.0.1'
-      }:${port}`,
-    );
+    const host = process.env.HOST || '127.0.0.1';
+
+    logger.ready(`Example app listening at ${protocol}//${host}:${port}`);
   });
 
   return server;

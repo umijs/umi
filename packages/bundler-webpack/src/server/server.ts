@@ -1,3 +1,4 @@
+import { createHttpsServer } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
 import webpack, {
@@ -9,7 +10,6 @@ import http from 'http';
 import { join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
 import { IConfig } from '../types';
-import { createHttpsServer } from './https';
 import { createWebSocketServer } from './ws';
 
 interface IOpts {

@@ -1,6 +1,6 @@
+import { createHttpsServer } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
-import { createHttpsServer } from '@umijs/bundler-webpack/dist/server/https';
 import { chalk, logger, portfinder } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
