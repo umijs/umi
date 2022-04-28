@@ -1100,6 +1100,7 @@ importers:
       '@umijs/lint': 4.0.0-canary.20220428.1
       '@umijs/preset-umi': 4.0.0-canary.20220428.1
       '@umijs/renderer-react': 4.0.0-canary.20220428.1
+      '@umijs/server': 4.0.0-canary.20220428.1
       '@umijs/test': 4.0.0-canary.20220428.1
       '@umijs/utils': 4.0.0-canary.20220428.1
       prettier-plugin-organize-imports: ^2.3.4
@@ -1111,6 +1112,7 @@ importers:
       '@umijs/lint': link:../lint
       '@umijs/preset-umi': link:../preset-umi
       '@umijs/renderer-react': link:../renderer-react
+      '@umijs/server': link:../server
       '@umijs/test': link:../testing
       '@umijs/utils': link:../utils
       prettier-plugin-organize-imports: 2.3.4_prettier@2.6.2+typescript@4.6.3
