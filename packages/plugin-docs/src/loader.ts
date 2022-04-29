@@ -8,6 +8,7 @@ export default async function (content: string) {
   try {
     const { result } = await compile({
       content,
+      fileName: filename,
     });
     return callback(null, result);
   } catch (e: any) {
