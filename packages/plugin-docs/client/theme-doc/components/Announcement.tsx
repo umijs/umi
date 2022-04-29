@@ -6,6 +6,7 @@ function Announcement() {
   const { themeConfig } = useThemeContext()!;
 
   if (!themeConfig.announcement) {
+    document.documentElement.style.setProperty('--anchor-offset', '0px');
     return null;
   }
 
