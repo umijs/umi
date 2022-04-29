@@ -1,5 +1,5 @@
 {
-  "name": "@example/bigfish",
+  "name": "@example/max",
   "private": true,
   "scripts": {
     "build": "max build",
