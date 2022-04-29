@@ -7,8 +7,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20220429.3",
+    "@umijs/plugins": "4.0.0-canary.20220429.4",
     "tailwindcss": "^3.0.23",
-    "umi": "4.0.0-canary.20220429.3"
+    "umi": "4.0.0-canary.20220429.4"
   }
 }
