@@ -12,6 +12,6 @@
     "@types/three": "^0.139.0",
     "three": "^0.139.2",
     "troika-three-text": "^0.46.4",
-    "umi": "4.0.0-rc.14"
+    "umi": "4.0.0-canary.20220429.1"
   }
 }
