@@ -44,10 +44,11 @@ export class ModelUtils {
     this.opts = opts;
   }
 
-  getAllModels(opts: { extraModels: string[] }) {
+  getAllModels(opts: { extraModelsPre: string[]; extraModels: string[] }) {
     // reset count
     this.count = 1;
     return [
+      ...opts.extraModelsPre,
       ...this.getModels({
         base: join(this.api.paths.absSrcPath, 'models'),
         pattern: '**/*.{ts,tsx,js,jsx}',

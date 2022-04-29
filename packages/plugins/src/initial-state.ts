@@ -14,7 +14,7 @@ export default (api: IApi) => {
   });
 
   api.register({
-    key: 'addExtraModels',
+    key: 'addExtraModelsPre',
     fn: () => [withTmpPath({ api, path: '@@initialState.ts' })],
   });
 
