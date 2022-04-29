@@ -144,6 +144,7 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+<<<<<<< HEAD
   examples/bigfish:
     specifiers:
       '@ant-design/icons': ^4.7.0
@@ -156,6 +157,8 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
 
+=======
+>>>>>>> da2c0198 (fix(plugin-model): fix use @@initialState model since the order problem)
   examples/boilerplate:
     specifiers:
       umi: 4.0.0-canary.20220429.1
@@ -235,6 +238,18 @@ importers:
       eslint: 8.13.0
       stylelint: 14.7.1
       umi: 4.0.0-canary.20220427.1_314a2da9970c2d37f03f310d1b7c4e71
+
+  examples/max:
+    specifiers:
+      '@ant-design/icons': ^4.7.0
+      '@umijs/max': 4.0.0-rc.14
+      react: 18.1.0
+      react-dom: 18.1.0
+    dependencies:
+      '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
+      '@umijs/max': link:../../packages/max
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
 
   examples/mfsu-circular-dependency:
     specifiers:

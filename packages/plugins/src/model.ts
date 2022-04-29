@@ -82,6 +82,11 @@ export function dataflowProvider(container, opts) {
 };
 
 async function getAllModels(api: IApi) {
+  const extraModelsPre = await api.applyPlugins({
+    key: 'addExtraModelsPre',
+    type: api.ApplyPluginsType.add,
+    initialValue: [],
+  });
   const extraModels = await api.applyPlugins({
     key: 'addExtraModels',
     type: api.ApplyPluginsType.add,
@@ -92,6 +97,10 @@ async function getAllModels(api: IApi) {
       return t.isArrowFunctionExpression(node) || t.isFunctionDeclaration(node);
     },
   }).getAllModels({
+    extraModelsPre: [
+      ...extraModelsPre,
+      ...(api.config.model.extraModelsPre || []),
+    ],
     extraModels: [...extraModels, ...(api.config.model.extraModels || [])],
   });
 }
