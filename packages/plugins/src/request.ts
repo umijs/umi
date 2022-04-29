@@ -296,16 +296,18 @@ export type {
       }),
     });
     api.writeTmpFile({
+      path: 'types.d.ts',
+      content: `
+export type { RequestConfig } from './request';
+`,
+    });
+    api.writeTmpFile({
       path: 'index.ts',
       content: `
 export {
   useRequest,
   UseRequestProvider,
   request,
-} from './request';
-
-export type {
-  RequestConfig
 } from './request';
 `,
     });
