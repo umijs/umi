@@ -154,6 +154,7 @@ PORT=8888 umi dev
               api.restartServer();
               return;
             }
+            await api.service.generateFinalConfig();
             if (data.changes[api.ConfigChangeType.regenerateTmpFiles]) {
               logger.event(
                 `config ${data.changes[

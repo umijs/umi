@@ -1,4 +1,7 @@
-import { AsyncSeriesWaterfallHook, SyncWaterfallHook } from '@umijs/bundler-utils/compiled/tapable';
+import {
+  AsyncSeriesWaterfallHook,
+  SyncWaterfallHook,
+} from '@umijs/bundler-utils/compiled/tapable';
 import { chalk, lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
@@ -269,7 +272,16 @@ export class Service {
 
     this.configManager = configManager;
     this.userConfig = configManager.getUserConfig().config;
-    // get paths (move after?)
+    // get paths
+    const paths = getPaths({
+      cwd: this.cwd,
+      env: this.env,
+      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
+    });
+    // temporary paths for use by function generateFinalConfig.
+    // the value of paths may be updated by plugins later
+    this.paths = paths;
+
     // resolve initial presets and plugins
     const { plugins, presets } = Plugin.getPluginsAndPresets({
       cwd: this.cwd,
@@ -308,29 +320,8 @@ export class Service {
       this.configOnChanges[key] = config.onChange || ConfigChangeType.reload;
     }
     // setup api.config from modifyConfig and modifyDefaultConfig
-    const paths = getPaths({
-      cwd: this.cwd,
-      env: this.env,
-      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
-    });
     this.stage = ServiceStage.resolveConfig;
-    const config = await this.applyPlugins({
-      key: 'modifyConfig',
-      // why clone deep?
-      // user may change the config in modifyConfig
-      // e.g. memo.alias = xxx
-      initialValue: lodash.cloneDeep(
-        configManager.getConfig({
-          schemas: this.configSchemas,
-        }).config,
-      ),
-      args: { paths },
-    });
-    const defaultConfig = await this.applyPlugins({
-      key: 'modifyDefaultConfig',
-      initialValue: this.configDefaults,
-    });
-    this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
+    const { config, defaultConfig } = await this.generateFinalConfig();
     if (this.config.outputPath) {
       paths.absOutputPath = isAbsolute(this.config.outputPath)
         ? this.config.outputPath
@@ -389,6 +380,37 @@ export class Service {
     let ret = await command.fn({ args });
     this._baconPlugins();
     return ret;
+  }
+
+  // generate config and defaultConfig, and assign values to this.config
+  async generateFinalConfig() {
+    // configManager and paths are not available until the init stage
+    assert(
+      this.stage > ServiceStage.init,
+      `Can't generate final config before init stage`,
+    );
+    const config = await this.applyPlugins({
+      key: 'modifyConfig',
+      // why clone deep?
+      // user may change the config in modifyConfig
+      // e.g. memo.alias = xxx
+      initialValue: lodash.cloneDeep(
+        this.configManager?.getConfig({
+          schemas: this.configSchemas,
+        }).config,
+      ),
+      args: { paths: this.paths },
+    });
+    const defaultConfig = await this.applyPlugins({
+      key: 'modifyDefaultConfig',
+      initialValue: this.configDefaults,
+    });
+    const finalConfig = lodash.merge(defaultConfig, config) as Record<
+      string,
+      any
+    >;
+    this.config = finalConfig;
+    return { config, defaultConfig, finalConfig };
   }
 
   _baconPlugins() {

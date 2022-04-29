@@ -51,7 +51,7 @@ export default defineConfig({
     include: ['pages/**/_mock.ts'],
   },
   layout: {
-    name: 'Ant Design Pro',
+    title: 'Ant Design Pro',
   },
   mfsu: {
     esbuild: true,
