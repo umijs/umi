@@ -17,7 +17,7 @@ export default () => {
   }
 
   function handleClick() {
-    if (!currentLanguage) return;
+    if (!currentLanguage || languages.length === 1) return;
     if (languages.length === 2) {
       switchLanguage(
         languages[0].locale === currentLanguage.locale
@@ -28,6 +28,8 @@ export default () => {
     }
     setExpanded((e) => !e);
   }
+
+  if (!currentLanguage || languages.length === 1) return null;
 
   return (
     <div>

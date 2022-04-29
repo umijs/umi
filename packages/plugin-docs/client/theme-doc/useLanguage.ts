@@ -57,7 +57,13 @@ function useLanguage(): useLanguageResult {
   }
 
   function render(key: string) {
-    if (!currentLanguage || !themeConfig.locales) return key;
+    if (!themeConfig.locales || Object.keys(themeConfig.locales).length === 0)
+      return key;
+    if (!currentLanguage) {
+      return (
+        themeConfig.locales[Object.keys(themeConfig.locales)[0]].key || key
+      );
+    }
     if (!themeConfig.locales[currentLanguage.locale]) return key;
     return themeConfig.locales[currentLanguage.locale][key] || key;
   }

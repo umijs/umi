@@ -102,6 +102,7 @@ export default () => {
             <components.Link
               to={(isFromPath ? currentLanguage?.locale : '') + r.href}
               key={i}
+              onClick={() => (document.activeElement as HTMLElement)?.blur()}
               className="group outline-none search-result"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
