@@ -10,7 +10,6 @@ export default (function react(userConfig) {
   config.plugins?.push(
     // pre-compiled rollup type is different with installed rollup type
     // so this plugin type is not compatible with config.plugins
-    // @ts-expect-error
     reactPlugin({
       // jsxRuntime: 'automatic',
       babel: {
