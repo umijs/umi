@@ -9,6 +9,6 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20220429.3"
+    "umi": "4.0.0-canary.20220429.4"
   }
 }
