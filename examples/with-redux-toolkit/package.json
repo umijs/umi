@@ -9,6 +9,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "react-redux": "^8.0.0",
-    "umi": "4.0.0-canary.20220429.2"
+    "umi": "4.0.0-canary.20220429.3"
   }
 }
