@@ -1,5 +1,4 @@
 import yArgs from '@umijs/utils/compiled/yargs-parser';
-import * as logger from '@umijs/utils/src/logger';
 import { PATHS } from './.internal/constants';
 import { spawnSync } from './.internal/utils';
 
@@ -8,7 +7,7 @@ import { spawnSync } from './.internal/utils';
   const filter = args.filter || './packages/*';
   const extra = (args._ || []).join(' ');
 
-  await turbo({
+  turbo({
     cmd: args.cmd,
     filter,
     extra,
@@ -17,26 +16,7 @@ import { spawnSync } from './.internal/utils';
   });
 })();
 
-/**
- * Why not use zx ?
- *  - `zx` not support color stdin on subprocess
- *  - see https://github.com/google/zx/blob/main/docs/known-issues.md#colors-in-subprocess
- *        https://github.com/google/zx/issues/212
- */
-async function cmd(command: string) {
-  const result = spawnSync(command, {
-    cwd: PATHS.ROOT,
-  });
-  if (result.status !== 0) {
-    // sub package command don't stop when execute fail.
-    // display exit
-    logger.error(`Execute command error (${command})`);
-    process.exit(1);
-  }
-  return result;
-}
-
-async function turbo(opts: {
+function turbo(opts: {
   filter: string;
   cmd: string;
   extra?: string;
@@ -58,5 +38,8 @@ async function turbo(opts: {
     .filter(Boolean)
     .join(' ');
 
-  return cmd(`turbo run ${options}`);
+  const command = `turbo run ${options}`;
+  spawnSync(command, {
+    cwd: PATHS.ROOT,
+  });
 }
