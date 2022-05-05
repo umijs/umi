@@ -9,6 +9,7 @@ export {
   Link,
   matchPath,
   matchRoutes,
+  Navigate,
   NavLink,
   Outlet,
   useLocation,
