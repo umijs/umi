@@ -184,7 +184,7 @@ info  - Write .prettierignore
 
 ### Jest 配置生成器
 
-为项目生成 [jest](https://jestjs.io/) 配置，命令执行后，`umi` 会生成 jest 配置和安装相应的依赖。根据需要选择是否要使用 [@testing-library/react](https://www.npmjs.com/package/@testing-library/react) 做 UI 测试。
+为项目生成 [jest](https://jestjs.io/) 配置，命令执行后，`umi` 会生成 Jest 配置和安装相应的依赖。根据需要选择是否要使用 [@testing-library/react](https://www.npmjs.com/package/@testing-library/react) 做 UI 测试。
 
 ```bash
 $umi g jest
@@ -202,8 +202,8 @@ info  - Write jest.config.ts
 $umi g tailwindcss
 info  - @local
 info  - Write package.json
-set config:tailwindcss on /Users/umi/umi-playground/.umirc.ts
-set config:plugins on /Users/umi/umi-playground/.umirc.ts
+set config:tailwindcss on /Users/umi/playground/.umirc.ts
+set config:plugins on /Users/umi/playground/.umirc.ts
 info  - Update .umirc.ts
 info  - Write tailwind.config.js
 info  - Write tailwind.css

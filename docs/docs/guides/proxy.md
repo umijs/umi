@@ -1,6 +1,6 @@
 # 代理
 
-代理也称网络代理，是一种特殊的网络服务，允许一个终端（一般为客户端）通过这个服务与另一个终端（一般为服务器）进行非直接的连接。- [维基百科](https://zh.wikipedia.org/wiki/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8)
+> 代理也称网络代理，是一种特殊的网络服务，允许一个终端（一般为客户端）通过这个服务与另一个终端（一般为服务器）进行非直接的连接。- [维基百科](https://zh.wikipedia.org/wiki/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8)
 
 在项目开发（dev）中，所有的网络请求（包括资源请求）都会通过本地的 server 做响应分发，我们通过使用 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware) 中间件，来代理指定的请求到另一个目标服务器上。如请求 `featch('/api')` 来取到远程 `http://jsonplaceholder.typicode.com/` 的数据。
 

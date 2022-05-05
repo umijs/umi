@@ -3,12 +3,11 @@
 ## 启用方式
 
 配置开启。
-
 ```ts
 // config/config.ts
 export default {
   layout: {
-    title: 'your app title',
+    title: "your app title",
   },
 };
 ```
@@ -61,11 +60,11 @@ export default defineConfig({
 运行时配置写在 `src/app.tsx` 中，key 为 `layout`。
 
 ```tsx
+import React from 'react';
 import {
   BasicLayoutProps,
   Settings as LayoutSettings,
 } from '@ant-design/pro-layout';
-import React from 'react';
 
 export const layout = ({
   initialState,

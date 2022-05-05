@@ -38,7 +38,7 @@ pnpm install @ant-design/plots
 编写代码获取数据（后略）：
 
 ```tsx
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const DemoLine = () => {
   const [data, setData] = useState([]);
@@ -48,9 +48,7 @@ const DemoLine = () => {
   }, []);
 
   const asyncFetch = () => {
-    fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
-    )
+    fetch('https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json')
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {
@@ -65,15 +63,15 @@ const DemoLine = () => {
 ```json
 {
   "Date": "2010-01",
-  "scales": 1998
+  "scales": 1998,
 }
 ```
 
 将数据展示到曲线图上：
 
 ```tsx
-import { Line } from '@ant-design/plots';
 import React from 'react';
+import { Line } from '@ant-design/plots';
 
 const DemoLine: React.FC = () => {
   // fetch data
@@ -134,8 +132,8 @@ const data = [
 特别的，对于 `5+ 秒` 的情况，我们想要用鲜明的颜色标注出来。那么可以编写柱状图代码如下：
 
 ```tsx
-import { Column } from '@ant-design/plots';
 import React from 'react';
+import { Column } from '@ant-design/plots';
 
 const DemoColumn: React.FC = () => {
   // fetch data
@@ -185,15 +183,15 @@ pnpm install @ant-design/plots
 {
   "country": "China",
   "value": 1383220000,
-  "category": "asia"
+  "category": "asia",
 }
 ```
 
 渲染数据，获得词云图：
 
 ```tsx
-import { WordCloud } from '@ant-design/plots';
 import React from 'react';
+import { WordCloud } from '@ant-design/plots';
 
 const DemoWordCloud: React.FC = () => {
   // fetch data
@@ -239,10 +237,13 @@ pnpm install @ant-design/maps
 {
   "list": [
     {
-      "lnglat": [116.258446, 37.686622],
+      "lnglat": [
+        116.258446,
+        37.686622
+      ],
       "name": "景县",
       "style": 2
-    }
+    },
     // ...
   ]
 }
@@ -253,8 +254,8 @@ pnpm install @ant-design/maps
 渲染数据，获得散点地图：
 
 ```tsx
-import { DotMap } from '@ant-design/maps';
 import React from 'react';
+import { DotMap } from '@ant-design/maps';
 
 const DemoDotMap: React.FC = () => {
   // fetch data
@@ -340,12 +341,7 @@ pnpm install @ant-design/pro-list
 ```ts
 const realNames = ['马巴巴', '张三丰', '飞蓬', '徐长卿'];
 const nickNames = ['巴巴', '君宝', '景天', '姓徐的'];
-const emails = [
-  'baba@antfin.com',
-  'junbao@antfin.com',
-  'jingtian@antfin.com',
-  'xvzhangmen@antfin.com',
-];
+const emails = ['baba@antfin.com', 'junbao@antfin.com', 'jingtian@antfin.com', 'xvzhangmen@antfin.com'];
 const phones = ['18800001234', '13900002345', '17200003456', '17800004567'];
 ```
 
@@ -380,9 +376,9 @@ for (let i = 0; i < realNames.length; i++) {
 将数组传递给 Pro Table，快速构建表格：
 
 ```tsx
+import React from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import React from 'react';
 
 // resolve member info list
 
@@ -432,7 +428,7 @@ const MemberList: React.FC = () => {
       search={false}
     />
   );
-};
+}
 ```
 
 完整的表格代码和效果可查看[此页面](https://procomponents.ant.design/components/table)。
@@ -486,9 +482,9 @@ const testList: Test[] = [
 将测试信息传递给 Pro List，快速构建列表：
 
 ```tsx
-import ProList from '@ant-design/pro-list';
-import { Button } from 'antd';
 import React from 'react';
+import { Button } from 'antd';
+import ProList from '@ant-design/pro-list';
 
 // resolve test info list
 
@@ -527,7 +523,7 @@ const MemberList: React.FC = () => {
       }}
     />
   );
-};
+}
 ```
 
 完整的列表代码和效果可查看[此页面](https://procomponents.ant.design/components/list)。

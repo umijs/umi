@@ -102,7 +102,7 @@ Umi 提供了内置的 [Tailwindcss](https://tailwindcss.com/)
 pnpm i unocss
 ```
 
-3. 在 umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
+3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
 
 ```js
 // .umirc.ts 或 config/config.ts
@@ -134,4 +134,4 @@ export function createConfig({strict = true, dev = true} = {}) {
 export default createConfig(); 
 ```
 
-5. 启动项目进行开发，插件会监听设置文件中的 `unocss.watch` 栏位，动态生成样式文件并自动套用
+5. 启动项目进行开发，插件会监听设置文件中的 `unocss.watch` 字段，动态生成样式文件并自动套用
