@@ -139,6 +139,13 @@ export const MicroApp = forwardRef(
       setComponentError(null);
       setLoading(true);
       const configuration = {
+        fetch(url) {
+          return window.fetch(url, {
+            headers: {
+              accept: 'text/html',
+            },
+          });
+        },
         globalContext: window,
         ...globalSettings,
         ...settingsFromProps,

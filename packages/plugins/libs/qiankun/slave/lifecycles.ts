@@ -1,5 +1,4 @@
 // @ts-nocheck
-/* eslint-disable */
 import { getPluginManager } from '@@/core/plugin';
 import ReactDOM from 'react-dom';
 import { ApplyPluginsType } from 'umi';
@@ -22,7 +21,7 @@ let render = noop;
 let hasMountedAtLeastOnce = false;
 
 export default () => defer.promise;
-export const clientRenderOptsStack: any[] = [];
+export const contextOptsStack: any[] = [];
 
 // function normalizeHistory(
 //   history?: 'string' | Record<string, any>,
@@ -79,10 +78,7 @@ export function genMount(mountElementId: string) {
         // 默认开启
         // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
         callback: () => {
-          if (
-            props?.autoSetLoading &&
-            typeof props?.setLoading === 'function'
-          ) {
+          if (props.autoSetLoading && typeof props.setLoading === 'function') {
             props.setLoading(false);
           }
 
@@ -94,8 +90,10 @@ export function genMount(mountElementId: string) {
         // 支持通过 props 注入 container 来限定子应用 mountElementId 的查找范围
         // 避免多个子应用出现在同一主应用时出现 mount 冲突
         rootElement:
-          props?.container?.querySelector(`#${mountElementId}`) ||
+          props.container?.querySelector(`#${mountElementId}`) ||
           mountElementId,
+
+        basename: props.base,
 
         // 当存在同一个 umi 子应用在同一个页面被多实例渲染的场景时（比如一个页面里，同时展示了这个子应用的多个路由页面）
         // mount 钩子会被调用多次，但是具体什么时候对应的实例开始 render 则是不定的，即它调用 applyPlugins('modifyClientRenderOpts') 的时机是不确定的
@@ -111,7 +109,7 @@ export function genMount(mountElementId: string) {
         // },
       };
 
-      clientRenderOptsStack.push(clientRenderOpts);
+      contextOptsStack.push(clientRenderOpts);
     }
 
     // 第一次 mount defer 被 resolve 后umi 会自动触发 render，非第一次 mount 则需手动触发

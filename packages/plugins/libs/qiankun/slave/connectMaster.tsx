@@ -1,5 +1,4 @@
 // @ts-nocheck
-/* eslint-disable */
 __USE_MODEL__;
 import React from 'react';
 
