@@ -284,7 +284,7 @@ const parmas  = useParams();
 
 ### query 信息
 
-[usesearchparams](https://reactrouter.com/docs/en/v6/api#usesearchparams)
+[useSearchParams](https://reactrouter.com/docs/en/v6/api#usesearchparams)
 
 ```jsx
 // 当前 location /comp?a=b;

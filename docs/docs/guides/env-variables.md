@@ -113,7 +113,7 @@ $ SPEED_MEASURE=JSON umi dev
 
 ### UMI_PLUGINS
 
-指定 umi 命令执行时额外加载的插件的路径，使用 `,` 隔开。
+指定 `umi` 命令执行时额外加载的插件的路径，使用 `,` 隔开。
 
 ```bash
 $ UMI_PLUGINS=./path/to/plugin1,./path/to/plugin2  umi dev

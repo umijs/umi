@@ -2,11 +2,11 @@ import { Message } from 'umi';
 
 # 测试
 
-自动化测试是保障质量的有效手段，Umi4 提供单元测试的脚手架。Umi4 推荐使用 [Jest](https://jestjs.io/) 和 [@testing-library/react](https://github.com/testing-library/react-testing-library) 来完成项目中的单元测试。
+自动化测试是保障质量的有效手段，Umi 4 提供单元测试的脚手架。Umi 4 推荐使用 [Jest](https://jestjs.io/) 和 [@testing-library/react](https://github.com/testing-library/react-testing-library) 来完成项目中的单元测试。
 
 ## 配置
 
-使用 Umi 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
+使用 Umi 4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
 
 ```ts
 // jest.config.ts
