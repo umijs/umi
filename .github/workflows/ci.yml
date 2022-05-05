@@ -49,9 +49,8 @@ jobs:
             ${{ runner.os }}-node${{ matrix.node-version }}-
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.1.0
+        uses: pnpm/action-setup@v2.2.1
         with:
-          version: latest
           run_install: true
 
       # We use week in the turbo cache key to keep the cache from infinitely growing
