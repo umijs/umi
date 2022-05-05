@@ -4,6 +4,7 @@
     "declaration": false,
     "declarationMap": false,
     "module": "esnext",
+    "target": "es2015",
     "outDir": "./client",
     "rootDir": "./src"
   },
