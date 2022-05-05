@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "recoil": "^0.7.2",
-    "umi": "4.0.0-canary.20220429.4"
+    "umi": "4.0.0-rc.15"
   }
 }

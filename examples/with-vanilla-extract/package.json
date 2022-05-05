@@ -10,6 +10,6 @@
     "@vanilla-extract/babel-plugin": "^1.1.5",
     "@vanilla-extract/css": "^1.7.0",
     "@vanilla-extract/webpack-plugin": "^2.1.8",
-    "umi": "4.0.0-canary.20220429.4"
+    "umi": "4.0.0-rc.15"
   }
 }
