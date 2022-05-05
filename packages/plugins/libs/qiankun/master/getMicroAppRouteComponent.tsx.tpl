@@ -9,7 +9,7 @@ export function getMicroAppRouteComponent(opts: {
   routeProps?: any;
 }) {
   const { base, masterHistoryType, appName, routeProps } = opts;
-  const RouteComponent = ({ match }: any) => {
+  const RouteComponent = () => {
     const url = useLocation().pathname;
 
     // 默认取静态配置的 base
