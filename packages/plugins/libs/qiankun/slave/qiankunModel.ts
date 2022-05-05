@@ -1,5 +1,4 @@
 // @ts-nocheck
-/* eslint-disable */
 import { useState } from 'react';
 
 let initState: any;

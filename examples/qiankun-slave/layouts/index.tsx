@@ -11,12 +11,12 @@ export default function Layouts() {
         <li>
           <Link to="/app1">app1</Link>
         </li>
-        <li>
-          <Link to="/users">users</Link>
-        </li>
-        <li>
-          <Link to="/users2">users2</Link>
-        </li>
+        {/*<li>*/}
+        {/*  <Link to="/users">users</Link>*/}
+        {/*</li>*/}
+        {/*<li>*/}
+        {/*  <Link to="/users2">users2</Link>*/}
+        {/*</li>*/}
       </ul>
       <Outlet />
     </div>

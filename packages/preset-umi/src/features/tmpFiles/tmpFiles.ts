@@ -147,10 +147,9 @@ export default function EmptyRoute() {
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       initialValue: [
-        // TODO: support these methods
-        // 'modifyClientRenderOpts',
         'patchRoutes',
         'patchClientRoutes',
+        'modifyContextOpts',
         'rootContainer',
         'innerProvider',
         'i18nProvider',

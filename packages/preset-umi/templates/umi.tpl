@@ -23,26 +23,29 @@ async function render() {
       routeComponents,
     },
   });
-  const context = {
-    routes,
-    routeComponents,
-    pluginManager,
-    rootElement: document.getElementById('{{{ mountElementId }}}'),
-{{#loadingComponent}}
-    loadingComponent: Loading,
-{{/loadingComponent}}
-    history: createHistory({
-      type: '{{{ historyType }}}',
-    }),
-{{#basename}}
-    basename: '{{{ basename }}}',
-{{/basename}}
-  };
 
   return (pluginManager.applyPlugins({
     key: 'render',
     type: ApplyPluginsType.compose,
     initialValue() {
+      const contextOpts = pluginManager.applyPlugins({
+        key: 'modifyContextOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: {},
+      });
+      const context = {
+        routes,
+        routeComponents,
+        pluginManager,
+        rootElement: document.getElementById('{{{ mountElementId }}}'),
+{{#loadingComponent}}
+        loadingComponent: Loading,
+{{/loadingComponent}}
+        history: createHistory({
+          type: '{{{ historyType }}}',
+        }),
+        basename: contextOpts.basename || '{{{ basename }}}',
+      };
       return renderClient(context);
     },
   }))();
