@@ -5,7 +5,7 @@
  * @since 2019-06-20
  */
 
-import { ReactComponentElement } from 'react';
+import React, { ReactComponentElement } from 'react';
 import type { IRouteProps } from 'umi';
 
 export const defaultMountContainerId = 'root-subapp';
@@ -63,8 +63,8 @@ export function patchMicroAppRoute(
   const microAppProps =
     route[`${routeBindingAlias}Props`] || route.microAppProps || {};
   if (microAppName) {
-    if (route.routes?.length) {
-      const childrenRouteHasComponent = route.routes.some(
+    if (route.children?.length) {
+      const childrenRouteHasComponent = route.children.some(
         (r: any) => r.component,
       );
       if (childrenRouteHasComponent) {
@@ -88,7 +88,7 @@ export function patchMicroAppRoute(
       masterHistoryType,
       routeProps,
     };
-    route.component = getMicroAppRouteComponent(opts);
+    route.element = React.createElement(getMicroAppRouteComponent(opts), null);
   }
 }
 
@@ -100,8 +100,8 @@ const recursiveSearch = (
     if (routes[i].path === path) {
       return routes[i];
     }
-    if (routes[i].routes && routes[i].routes?.length) {
-      const found = recursiveSearch(routes[i].routes || [], path);
+    if (routes[i].chidlren && routes[i].chidlren?.length) {
+      const found = recursiveSearch(routes[i].chidlren || [], path);
       if (found) {
         return found;
       }
@@ -123,8 +123,8 @@ export function insertRoute(routes: IRouteProps[], microAppRoute: IRouteProps) {
       );
     }
     found.exact = false;
-    found.routes = found.routes || [];
-    found.routes.push(microAppRoute);
+    found.chidlren = found.chidlren || [];
+    found.chidlren.push(microAppRoute);
   } else {
     throw new Error(
       `[plugin-qiankun]: path "${microAppRoute.insert}" not found`,
