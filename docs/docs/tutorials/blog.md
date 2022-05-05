@@ -103,7 +103,7 @@ import { Message } from 'umi';
 你会在弹窗里面看到一个 **Connect With** 的下拉选单，选择 `Prisma`，然后就能获得一串这个格式的字符串：
 
 ```dotenv
-DATABASE_URL='mysql://************:************@************.ap-southeast-2.psdb.cloud/umi-blog-exmple?sslaccept=strict'
+DATABASE_URL='mysql://************:************@************.ap-southeast-2.psdb.cloud/umi-blog-example?sslaccept=strict'
 ```
 
 这个字符串就是我们要用来让 Prisma 连接数据库的连线信息，暂时先把他记录起来就可以了 👍
@@ -345,7 +345,7 @@ export default async function (req: UmiApiRequest, res: UmiApiResponse) {
 ```dotenv
 # .env
 
-DATABASE_URL='mysql://************:************@************.ap-southeast-2.psdb.cloud/umi-blog-exmple?sslaccept=strict'
+DATABASE_URL='mysql://************:************@************.ap-southeast-2.psdb.cloud/umi-blog-example?sslaccept=strict'
 ```
 
 #### 编写 Prisma 配置

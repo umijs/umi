@@ -93,7 +93,7 @@ export default{
 会禁用 Umi 内置的 mock 插件。
 
 ### 在插件中禁用其他插件
-可通过 `api.skipPlugins(plyginId[])` 的方式禁用，详见[插件 API](../api/plugin-api)。
+可通过 `api.skipPlugins(pluginId[])` 的方式禁用，详见[插件 API](../api/plugin-api)。
 
 ## 查看插件注册情况
 ### 命令行

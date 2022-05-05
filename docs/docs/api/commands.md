@@ -188,7 +188,7 @@ $ umi preview --port 9527
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx --no-install umi verify-ommit $1
+npx --no-install umi verify-commit $1
 ```
 
 ## version
