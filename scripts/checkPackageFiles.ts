@@ -87,7 +87,7 @@ eachPkg(
     }
     if (pkgJson.private !== true) {
       pkgJson.private = true;
-      logger.warn(chalk.yellow(`Set '${name}' example as private pacakge`));
+      logger.warn(chalk.yellow(`Set '${name}' example as private package`));
     }
     if (!lodash.isEqual(pkgJson, oldPkgJson)) {
       fs.writeFileSync(

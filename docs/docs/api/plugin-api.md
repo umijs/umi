@@ -67,13 +67,13 @@ fn 的写法需要结合即将使用的 applyPlugins 的 type 参数来确定：
 
 e.g.1 add 型
 ```ts
-api.regiser({
+api.register({
   key: 'addFoo',
   // 同步
   fn: (args) => args
 });
 
-api.regiser({
+api.register({
   key: 'addFoo',
   // 异步
   fn: async (args) => args * 2

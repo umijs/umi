@@ -275,7 +275,7 @@ const location  = useLocation();
 // 路由配置 /comp/:id
 // 当前 location /comp/paramId
 
-const parmas  = useParams();
+const params  = useParams();
 // params
 {
   "id": "paramId"

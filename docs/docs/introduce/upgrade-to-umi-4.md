@@ -34,7 +34,7 @@
 
 `umi@4` 将一些项目前置操作放到了 `setup` 命令中，如 umi@3 中的 `umi g tmp` 等命令，需要使用 `umi setup` 替换
 
-`pageage.json`
+`package.json`
 ```diff
 {
   "scripts": {

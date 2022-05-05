@@ -143,7 +143,7 @@ export default () => {
 ### request
 通过 `import { request } from '@@/plugin-request` 你可以使用内置的请求方法。 
 
-`request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了几个属性 `skipErrorHandler`，`getResponse`，`requestIntercetors` 和 `responseInterceptors` 。
+`request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了几个属性 `skipErrorHandler`，`getResponse`，`requestInterceptors` 和 `responseInterceptors` 。
 
 示例如下：
 ```typescript
@@ -162,7 +162,7 @@ request('/api/user', {
 
 request 默认返回的是你后端的数据，如果你想要拿到 axios 完整的 response 结构，可以通过传入 `{ getResponse: true }` 来实现。
 
-`requestInterceptors` 和 `reponseInterceptors` 的写法同运行时配置中的拦截器写法相同，它们为 request 注册拦截器。区别在于这里注册的拦截器是 "一次性" 的。另外，这里写的拦截器会在运行时配置中的拦截器之后被注册。
+`requestInterceptors` 和 `responseInterceptors` 的写法同运行时配置中的拦截器写法相同，它们为 request 注册拦截器。区别在于这里注册的拦截器是 "一次性" 的。另外，这里写的拦截器会在运行时配置中的拦截器之后被注册。
 
 **注意： 当你使用了 errorHandler 时，在这里注册的 response 拦截器会失效，因为在 errorHandler 就会 throw error**
 
@@ -265,7 +265,7 @@ interface ResponseStructure {
 export const request: RequestConfig = {
   // 统一的请求设定
   timeout: 1000,
-  headers: {'X-Reqeusted-With': 'XMLHttpRequest'},
+  headers: {'X-Requested-With': 'XMLHttpRequest'},
   
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
@@ -289,7 +289,7 @@ export const request: RequestConfig = {
           const { errorMessage, errorCode } = errorInfo;
           switch (errorInfo.showType) {
             case ErrorShowType.SILENT:
-              // do nothong
+              // do nothing
               break;
             case ErrorShowType.WARN_MESSAGE:
               message.warn(errorMessage);

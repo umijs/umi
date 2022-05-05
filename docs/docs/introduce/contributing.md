@@ -37,7 +37,7 @@ $ pnpm i
 $ pnpm dev
 ```
 
-如果觉得比较慢，也可以只跑特定 pacakge 的 `pnpm dev` 命令，比如。
+如果觉得比较慢，也可以只跑特定 package 的 `pnpm dev` 命令，比如。
 
 ```bash
 $ cd packages/umi
@@ -49,7 +49,7 @@ $ pnpm dev
 `examples` 目录下保存了各种用于测试的例子，跑 example 是开发 Umi 时确认功能正常的常用方式。每个 example 都配了 dev 脚本，所以进入 example 然后执行 `pnpm dev` 即可。
 
 ```bash
-$ cd examples/boilerplates
+$ cd examples/boilerplate
 $ pnpm dev
 ```
 
