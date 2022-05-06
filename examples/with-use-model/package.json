@@ -1,5 +1,5 @@
 {
-  "name": "@example/with-model",
+  "name": "@example/with-use-model",
   "private": true,
   "scripts": {
     "build": "umi build",
