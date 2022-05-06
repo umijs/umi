@@ -1,3 +1,4 @@
+import type { NodePath } from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as traverse from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 
@@ -54,11 +55,42 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
     },
   });
   if (!isChanged) {
-    // 这里是插入逻辑
-    //@ts-ignore
-    ast.program.body[0].declaration.properties.push(
-      t.objectProperty(t.identifier(name), valueObject),
-    );
+    let modified = false;
+    traverse.default(ast, {
+      CallExpression(path: NodePath<t.CallExpression>) {
+        if (
+          t.isExportDefaultDeclaration(path.parent) &&
+          t.isIdentifier(path.node.callee, { name: 'defineConfig' }) &&
+          t.isObjectExpression(path.node.arguments[0])
+        ) {
+          path.node.arguments[0].properties.push(
+            t.objectProperty(t.identifier(name), valueObject),
+          );
+          modified = true;
+          path.stop();
+        }
+      },
+
+      ObjectExpression(path: NodePath<t.ObjectExpression>) {
+        if (t.isExportDefaultDeclaration(path.parent)) {
+          path.node.properties.push(
+            t.objectProperty(t.identifier(name), valueObject),
+          );
+          modified = true;
+          path.stop();
+        }
+      },
+    });
+
+    if (!modified) {
+      console.error(
+        `export config format can not be analysis, please reference to \nhttps://next.umijs.org/zh-CN/docs/guides/config-convention`,
+      );
+      throw Error(`Can't modify config file, due to file format`);
+    }
   }
   return ast;
 }
+
+const config = { dva: {} };
+export default config;

@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { getASTByFilePath } from '../getASTByFilePath/getASTByFilePath';
 import { generate } from '../utils/generate';
+import { parse } from '../utils/parse';
 import { setConfigByName } from './setConfigByName';
 
 const fixtures = join(__dirname, '../../fixtures');
@@ -44,3 +45,27 @@ test('set new config', () => {
   const generateCode = generate(setConfigByName(ast, 'aaa', true)!);
   expect(generateCode).toContain('aaa');
 });
+
+test('set config in export default defineConfig', () => {
+  const ast = parse(`const c= {dav:{}}; export default defineConfig({...c})`);
+  const generateCode = generate(setConfigByName(ast, 'tailwindcss', {})!);
+
+  expect(generateCode).toEqual(
+    code(
+      `const c= {dav:{}}; export default defineConfig({...c,tailwindcss:{}})`,
+    ),
+  );
+});
+
+test('set config in export default object', () => {
+  const ast = parse(`const c = {dva:{}}; export default {...c}`);
+  const generateCode = generate(setConfigByName(ast, 'tailwindcss', {})!);
+
+  expect(generateCode).toEqual(
+    code(`const c = {dva:{}};export default {...c, tailwindcss:{}}`),
+  );
+});
+
+function code(c: string) {
+  return generate(parse(c));
+}
