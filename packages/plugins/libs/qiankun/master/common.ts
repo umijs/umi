@@ -65,7 +65,7 @@ export function patchMicroAppRoute(
   if (microAppName) {
     if (route.children?.length) {
       const childrenRouteHasComponent = route.children.some(
-        (r: any) => r.component,
+        (r: any) => r.element,
       );
       if (childrenRouteHasComponent) {
         throw new Error(
@@ -74,7 +74,10 @@ export function patchMicroAppRoute(
       }
     }
 
-    route.exact = false;
+    // 自动追加通配符，匹配子应用的路由
+    if (!route.path.endsWith('/*')) {
+      route.path = route.path.replace(/\/?$/, '/*');
+    }
 
     const { settings = {}, ...componentProps } = microAppProps;
     const routeProps = {
