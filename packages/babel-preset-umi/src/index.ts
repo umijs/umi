@@ -20,7 +20,7 @@ interface SvgrOpts {
 
 export interface IOpts {
   typescript?: boolean;
-  emitDecoratorMetadata?: boolean;
+  typescriptEmitDecoratorMetadata?: boolean;
   react?: object;
   debug?: boolean;
   env?: object;
@@ -96,7 +96,7 @@ export default (context: any, opts: IOpts = {}) => {
       ],
       // https://www.npmjs.com/package/babel-plugin-transform-typescript-metadata#usage
       // should be placed before @babel/plugin-proposal-decorators.
-      opts.typescript && opts.emitDecoratorMetadata !== false && [
+      opts.typescript && opts.typescriptEmitDecoratorMetadata !== false && [
         require.resolve('babel-plugin-transform-typescript-metadata'),
       ],
       [require('@babel/plugin-proposal-decorators').default, { legacy: true }],

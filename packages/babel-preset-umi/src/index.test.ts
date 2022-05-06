@@ -97,7 +97,7 @@ test('typescript without metadata', () => {
     }`,
     {
       typescript: true,
-      emitDecoratorMetadata: false,
+      typescriptEmitDecoratorMetadata: false,
     },
   );
   expect(code).not.toContain('Reflect.metadata');
