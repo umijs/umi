@@ -48,6 +48,7 @@ export function patchMicroAppRoute(
   getMicroAppRouteComponent: (opts: {
     appName: string;
     base: string;
+    routePath: string;
     masterHistoryType: string;
     routeProps?: any;
   }) => string | ReactComponentElement<any>,
@@ -88,6 +89,7 @@ export function patchMicroAppRoute(
     const opts = {
       appName: microAppName,
       base,
+      routePath: route.path,
       masterHistoryType,
       routeProps,
     };

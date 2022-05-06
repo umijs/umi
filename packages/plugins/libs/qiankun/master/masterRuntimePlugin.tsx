@@ -50,6 +50,7 @@ function patchMicroAppRouteComponent(routes: any[]) {
       const patchRoute = (route: any) => {
         patchMicroAppRoute(route, getMicroAppRouteComponent, {
           base,
+          routePath: route.path,
           masterHistoryType,
           routeBindingAlias,
         });
