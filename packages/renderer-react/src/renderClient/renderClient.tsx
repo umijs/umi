@@ -1,6 +1,7 @@
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import React, { useEffect } from 'react';
-import { hydrate, render } from 'react-dom';
+// @ts-ignore
+import ReactDOM from 'react-dom/client';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
@@ -123,13 +124,24 @@ export default function renderClient(opts: IOpts) {
         // dynamicImport should preload current route component
         // first loades);
         preloadComponent(opts.routes).then(function () {
-          hydrate(rootContainer, rootElement, callback);
+          if (ReactDOM.hydrateRoot)
+            ReactDOM.hydrateRoot(rootContainer, rootElement, callback);
+          else if (ReactDOM.hydrate)
+            ReactDOM.hydrate(rootContainer, rootElement, callback);
         });
       } else {
-        hydrate(rootContainer, rootElement, callback);
+        if (ReactDOM.hydrateRoot)
+          ReactDOM.hydrateRoot(rootContainer, rootElement, callback);
+        else if (ReactDOM.hydrate)
+          ReactDOM.hydrate(rootContainer, rootElement, callback);
       }
     } else {
-      render(rootContainer, rootElement, callback);
+      if (ReactDOM.createRoot) {
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(rootContainer);
+      } else if (ReactDOM.render) {
+        ReactDOM.render(rootContainer, rootElement, callback);
+      }
     }
   } else {
     return rootContainer;

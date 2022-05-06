@@ -59,6 +59,7 @@ export default function () {
       require.resolve('./plugins/features/presets'),
       require.resolve('./plugins/features/proxy'),
       require.resolve('./plugins/features/publicPath'),
+      require.resolve('./plugins/features/react-18-support'),
       require.resolve('./plugins/features/runtimePublicPath'),
       require.resolve('./plugins/features/ssr/ssr'),
       require.resolve('./plugins/features/singular'),

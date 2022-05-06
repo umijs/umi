@@ -32,8 +32,8 @@
     "react-router-config": "5.1.1"
   },
   "peerDependencies": {
-    "react": "16.x || 17.x",
-    "react-dom": "16.x || 17.x"
+    "react": "16.x || 17.x || 18.x",
+    "react-dom": "16.x || 17.x || 18.x"
   },
   "module": "dist/index.esm.js"
 }
