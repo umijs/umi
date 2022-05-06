@@ -30,3 +30,5 @@ export function getPaths(opts: { cwd: string; prefix: string; env: Env }) {
     absOutputPath,
   };
 }
+
+export type Paths = ReturnType<typeof getPaths>;

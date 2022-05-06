@@ -310,6 +310,8 @@ export class Service {
     while (plugins.length) {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
     }
+    const command = this.commands[name];
+    assert(command, `Invalid command ${name}, it's not registered.`);
     // collect configSchemas and configDefaults
     for (const id of Object.keys(this.plugins)) {
       const { config, key } = this.plugins[id];
@@ -321,7 +323,7 @@ export class Service {
     }
     // setup api.config from modifyConfig and modifyDefaultConfig
     this.stage = ServiceStage.resolveConfig;
-    const { config, defaultConfig } = await this.generateFinalConfig();
+    const { config, defaultConfig } = await this.resolveConfig();
     if (this.config.outputPath) {
       paths.absOutputPath = isAbsolute(this.config.outputPath)
         ? this.config.outputPath
@@ -375,29 +377,30 @@ export class Service {
     });
     // run command
     this.stage = ServiceStage.runCommand;
-    const command = this.commands[name];
-    assert(command, `Invalid command ${name}, it's not registered.`);
     let ret = await command.fn({ args });
     this._baconPlugins();
     return ret;
   }
 
-  // generate config and defaultConfig, and assign values to this.config
-  async generateFinalConfig() {
+  async resolveConfig() {
     // configManager and paths are not available until the init stage
     assert(
       this.stage > ServiceStage.init,
       `Can't generate final config before init stage`,
     );
+
+    const resolveMode = this.commands[this.name].configResolveMode;
     const config = await this.applyPlugins({
       key: 'modifyConfig',
       // why clone deep?
       // user may change the config in modifyConfig
       // e.g. memo.alias = xxx
       initialValue: lodash.cloneDeep(
-        this.configManager?.getConfig({
-          schemas: this.configSchemas,
-        }).config,
+        resolveMode === 'strict'
+          ? this.configManager!.getConfig({
+              schemas: this.configSchemas,
+            }).config
+          : this.configManager!.getUserConfig().config,
       ),
       args: { paths: this.paths },
     });
@@ -405,12 +408,9 @@ export class Service {
       key: 'modifyDefaultConfig',
       initialValue: this.configDefaults,
     });
-    const finalConfig = lodash.merge(defaultConfig, config) as Record<
-      string,
-      any
-    >;
-    this.config = finalConfig;
-    return { config, defaultConfig, finalConfig };
+    this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
+
+    return { config, defaultConfig };
   }
 
   _baconPlugins() {

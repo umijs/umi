@@ -1,5 +1,5 @@
-import { logger } from 'umi/plugin-utils';
 import rehypePrettyCode from 'rehype-pretty-code';
+import { logger } from 'umi/plugin-utils';
 // @ts-ignore
 import { createProcessor } from '../compiled/@mdx-js/mdx';
 // @ts-ignore
