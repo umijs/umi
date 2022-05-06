@@ -18,18 +18,8 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyAppData(async (memo) => {
+  api.onGenerateFiles(async () => {
     const models = await getAllModels(api);
-    memo.pluginModel = {
-      models,
-    };
-    return memo;
-  });
-
-  api.onGenerateFiles(async (args) => {
-    const models = args.isFirstTime
-      ? api.appData.pluginModel.models
-      : await getAllModels(api);
 
     // model.ts
     api.writeTmpFile({
@@ -82,11 +72,6 @@ export function dataflowProvider(container, opts) {
 };
 
 async function getAllModels(api: IApi) {
-  const extraModelsPre = await api.applyPlugins({
-    key: 'addExtraModelsPre',
-    type: api.ApplyPluginsType.add,
-    initialValue: [],
-  });
   const extraModels = await api.applyPlugins({
     key: 'addExtraModels',
     type: api.ApplyPluginsType.add,
@@ -97,10 +82,7 @@ async function getAllModels(api: IApi) {
       return t.isArrowFunctionExpression(node) || t.isFunctionDeclaration(node);
     },
   }).getAllModels({
-    extraModelsPre: [
-      ...extraModelsPre,
-      ...(api.config.model.extraModelsPre || []),
-    ],
+    sort: {},
     extraModels: [...extraModels, ...(api.config.model.extraModels || [])],
   });
 }

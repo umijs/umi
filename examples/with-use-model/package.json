@@ -1,0 +1,14 @@
+{
+  "name": "@example/with-model",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/plugins": "4.0.0-rc.15",
+    "umi": "4.0.0-rc.15"
+  }
+}

@@ -500,6 +500,14 @@ importers:
       umi: link:../../packages/umi
       unstated-next: 1.1.0
 
+  examples/with-use-model:
+    specifiers:
+      '@umijs/plugins': 4.0.0-rc.15
+      umi: 4.0.0-rc.15
+    dependencies:
+      '@umijs/plugins': link:../../packages/plugins
+      umi: link:../../packages/umi
+
   examples/with-valtio:
     specifiers:
       '@types/three': ^0.139.0
