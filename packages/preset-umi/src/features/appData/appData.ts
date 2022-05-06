@@ -21,6 +21,8 @@ export default (api: IApi) => {
     memo.npmClient = api.userConfig.npmClient || getNpmClient({ cwd: api.cwd });
     memo.umi = {
       version: require('../../../package.json').version,
+      name: 'Umi',
+      importSource: 'umi',
     };
     memo.bundleStatus = {
       done: false,
