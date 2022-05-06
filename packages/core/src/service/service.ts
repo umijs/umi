@@ -142,7 +142,7 @@ export class Service {
           tAdd.tapPromise(
             {
               name: hook.plugin.key,
-              stage: hook.stage,
+              stage: hook.stage || 0,
               before: hook.before,
             },
             async (memo: any) => {
@@ -164,7 +164,7 @@ export class Service {
           tModify.tapPromise(
             {
               name: hook.plugin.key,
-              stage: hook.stage,
+              stage: hook.stage || 0,
               before: hook.before,
             },
             async (memo: any) => {

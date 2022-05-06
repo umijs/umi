@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "max dev",
+    "setup": "max setup",
     "start": "npm run dev"
   },
   "dependencies": {
