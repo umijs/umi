@@ -173,7 +173,6 @@ export function getModelUtil(api: IApi | null) {
 
 export function getAllModels(api: IApi) {
   return getModelUtil(api).getAllModels({
-    extraModelsPre: [],
     extraModels: [...(api.config.dva.extraModels || [])],
   });
 }
