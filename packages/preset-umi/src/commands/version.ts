@@ -5,6 +5,7 @@ export default (api: IApi) => {
     name: 'version',
     alias: 'v',
     description: 'show umi version',
+    configResolveMode: 'loose',
     fn({ args }) {
       const version = require('../../package.json').version;
       if (!args.quiet) {

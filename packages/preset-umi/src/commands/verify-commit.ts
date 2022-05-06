@@ -18,6 +18,7 @@ export default (api: IApi) => {
 
   api.registerCommand({
     name: 'verify-commit',
+    configResolveMode: 'loose',
     fn({ args }) {
       api.logger.info('verify-commit');
 

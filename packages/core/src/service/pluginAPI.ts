@@ -16,6 +16,10 @@ import { makeArray } from './utils';
 
 type Logger = typeof logger;
 
+const resolveConfigModes = ['strict', 'loose'] as const;
+
+export type ResolveConfigMode = typeof resolveConfigModes[number];
+
 export class PluginAPI {
   service: Service;
   plugin: Plugin;
@@ -65,7 +69,15 @@ export class PluginAPI {
     const { alias } = opts;
     delete opts.alias;
     const registerCommand = (commandOpts: Omit<typeof opts, 'alias'>) => {
-      const { name } = commandOpts;
+      const { name, configResolveMode } = commandOpts;
+
+      assert(
+        !configResolveMode ||
+          resolveConfigModes.indexOf(configResolveMode) >= 0,
+        `configResolveMode must be one of ${resolveConfigModes.join(
+          ',',
+        )}, but got ${configResolveMode}`,
+      );
       assert(
         !this.service.commands[name],
         `api.registerCommand() failed, the command ${name} is exists from ${this.service.commands[name]?.plugin.id}.`,

@@ -113,11 +113,20 @@ api.applyPlugins({
 
 ### registerCommand
 ```ts
-api.registerCommand({ name: string, description?: string, options?: string, details?: string, fn, alias?: string | string[] })
+api.registerCommand({
+  name: string,
+  description? : string,
+  options? : string,
+  details? : string,
+  fn,
+  alias? : string | string[]
+  resolveConfigMode? : 'strict' | 'loose'
+})
 ```
 注册命令。
 - `alias` 为别名，比如 generate 的别名 g
 - `fn` 的参数为 `{ args }`， args 的格式同 [yargs](https://github.com/yargs/yargs) 的解析结果，需要注意的是 `_` 里的 command 本身被去掉了，比如执行`umi generate page foo`，`args._` 为 `['page','foo']`
+- `resolveConfigMode` 参数控制执行命令时配置解析的方式，`strict` 模式下强校验 Umi 项目的配置文件内容，如果有非法内容中断命令执行；`loose` 模式下不执行配置文件的校验检查。
 
 ### registerMethod
 ```ts
