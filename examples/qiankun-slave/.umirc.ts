@@ -2,6 +2,7 @@ export default {
   qiankun: {
     slave: {},
   },
+  model: {},
   headScripts: [`window.publicPath = '//localhost:8001/';`],
   routes: [
     { path: '/', component: 'index' },
