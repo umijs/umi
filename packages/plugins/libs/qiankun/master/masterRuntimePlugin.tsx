@@ -34,10 +34,10 @@ function patchMicroAppRouteComponent(routes: any[]) {
     const rootRoute = routes.find((route) => route.path === '/');
     if (rootRoute) {
       // 如果根路由是叶子节点，则直接返回其父节点
-      if (!rootRoute.chidlren) {
+      if (!rootRoute.children) {
         return routes;
       }
-      return getRootRoutes(rootRoute.chidlren);
+      return getRootRoutes(rootRoute.children);
     }
     return routes;
   };
@@ -54,8 +54,8 @@ function patchMicroAppRouteComponent(routes: any[]) {
           masterHistoryType,
           routeBindingAlias,
         });
-        if (route.chidlren?.length) {
-          route.chidlren.forEach(patchRoute);
+        if (route.children?.length) {
+          route.children.forEach(patchRoute);
         }
       };
 

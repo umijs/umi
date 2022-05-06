@@ -105,8 +105,8 @@ const recursiveSearch = (
     if (routes[i].path === path) {
       return routes[i];
     }
-    if (routes[i].chidlren && routes[i].chidlren?.length) {
-      const found = recursiveSearch(routes[i].chidlren || [], path);
+    if (routes[i].children && routes[i].children?.length) {
+      const found = recursiveSearch(routes[i].children || [], path);
       if (found) {
         return found;
       }
@@ -128,8 +128,8 @@ export function insertRoute(routes: IRouteProps[], microAppRoute: IRouteProps) {
       );
     }
     found.exact = false;
-    found.chidlren = found.chidlren || [];
-    found.chidlren.push(microAppRoute);
+    found.children = found.children || [];
+    found.children.push(microAppRoute);
   } else {
     throw new Error(
       `[plugin-qiankun]: path "${microAppRoute.insert}" not found`,
