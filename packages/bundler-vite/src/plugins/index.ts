@@ -10,7 +10,9 @@ import svgrPlugin from './svgr';
 export default (userConfig: IConfig): ViteInlineConfig => {
   return {
     plugins: [
-      svgrPlugin(userConfig.svgr, userConfig.svgo),
+      ...(!userConfig.vue
+        ? [svgrPlugin(userConfig.svgr, userConfig.svgo)]
+        : []),
       externals(userConfig.externals || {}),
       ...(userConfig.autoCSSModules ? [autoCSSModulePlugin()] : []),
     ],

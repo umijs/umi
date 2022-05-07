@@ -81,6 +81,8 @@ export default (api: IApi) => {
       memo.git = git;
     }
 
+    memo.framework = 'react';
+
     return memo;
   });
 

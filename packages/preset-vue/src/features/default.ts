@@ -24,7 +24,7 @@ export default (api: IApi) => {
   api.modifyDefaultConfig((config) => {
     config.alias = {
       ...config.alias,
-      vue$: api.userConfig.vue?.runtimeCompiler ? vuePath : vueRuntimePath,
+      vue: api.userConfig.vue?.runtimeCompiler ? vuePath : vueRuntimePath,
       'vue-router':
         resolveProjectDep({
           pkg: api.pkg,
@@ -46,6 +46,11 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // react 独有配置需要禁用
     memo.fastRefresh = false;
+    return memo;
+  });
+
+  api.modifyAppData((memo) => {
+    memo.framework = 'vue';
     return memo;
   });
 

@@ -77,7 +77,7 @@ export async function getContent(path: string) {
 export function createResolver(opts: { alias: any }) {
   const resolver = enhancedResolve.create({
     mainFields: ['module', 'browser', 'main'], // es module first
-    extensions: ['.js', '.json', '.mjs', '.ts', '.tsx'],
+    extensions: ['.js', '.jsx', '.json', '.mjs', '.ts', '.tsx'],
     exportsFields: [],
     alias: opts.alias,
   });
