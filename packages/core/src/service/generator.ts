@@ -6,14 +6,11 @@ export enum GeneratorType {
   enable = 'enable',
 }
 
-export interface IGeneratorOpts {
+type IGeneratorOptsWithoutEnableCheck = {
   key: string;
   name: string;
   description: string;
-  type?: GeneratorType;
-  checkEnable?: {
-    (opts: { args: any }): boolean;
-  };
+  type: GeneratorType.generate;
   fn: {
     (opts: {
       args: any;
@@ -33,24 +30,44 @@ export interface IGeneratorOpts {
     }): void;
   };
   plugin: Plugin;
-}
+};
 
-export class Generator {
-  key: IGeneratorOpts['key'];
-  name: IGeneratorOpts['name'];
-  description: IGeneratorOpts['description'];
-  type?: IGeneratorOpts['type'];
-  checkEnable?: IGeneratorOpts['checkEnable'];
-  fn: IGeneratorOpts['fn'];
-  plugin: IGeneratorOpts['plugin'];
+type IGeneratorOptsWithEnableCheck = {
+  key: string;
+  name: string;
+  description: string;
+  type: GeneratorType.enable;
+  checkEnable: {
+    (opts: { args: any }): boolean;
+  };
+  disabledDescription: string;
+  fn: {
+    (opts: {
+      args: any;
+      generateFile: typeof generateFile;
+      updatePackageJSON: {
+        (opts: { opts: object; cwd?: string }): void;
+      };
+      installDeps: {
+        (opts: {
+          opts: {
+            devDependencies?: string[];
+            dependencies?: string[];
+          };
+          cwd?: string;
+        }): void;
+      };
+    }): void;
+  };
+  plugin: Plugin;
+};
 
-  constructor(opts: IGeneratorOpts) {
-    this.key = opts.key;
-    this.name = opts.name;
-    this.type = opts.type;
-    this.description = opts.description;
-    this.checkEnable = opts.checkEnable;
-    this.fn = opts.fn;
-    this.plugin = opts.plugin;
-  }
+export type Generator =
+  | IGeneratorOptsWithEnableCheck
+  | IGeneratorOptsWithoutEnableCheck;
+
+export function makeGenerator<T>(opts: T): T {
+  return {
+    ...opts,
+  };
 }

@@ -21,6 +21,8 @@ export default (api: IApi) => {
         !existsSync(join(api.paths.cwd, 'jest.config.js'))
       );
     },
+    disabledDescription:
+      'jest has already enabled. You can remove jest.config.{ts,js}, then run this again to re-setup.',
     fn: async () => {
       const h = new GeneratorHelper(api);
 

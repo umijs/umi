@@ -1,3 +1,4 @@
+import { GeneratorType } from '@umijs/core';
 import { lodash } from '@umijs/utils';
 import { join, parse } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
@@ -13,6 +14,7 @@ export default (api: IApi) => {
     key: 'api',
     name: 'Generator api',
     description: 'Generate api route boilerplate code',
+    type: GeneratorType.generate,
     async fn(opts) {
       const h = new GeneratorHelper(api);
 
