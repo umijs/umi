@@ -39,7 +39,11 @@ umi generate
             args,
           });
           if (!enable) {
-            logger.warn(generator.disabledDescription);
+            if (typeof generator.disabledDescription === 'function') {
+              logger.warn(generator.disabledDescription());
+            } else {
+              logger.warn(generator.disabledDescription);
+            }
             return;
           }
         }
