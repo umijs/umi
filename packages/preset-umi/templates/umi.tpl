@@ -37,7 +37,7 @@ async function render() {
         routes,
         routeComponents,
         pluginManager,
-        rootElement: document.getElementById('{{{ mountElementId }}}'),
+        rootElement: contextOpts.rootElement || document.getElementById('{{{ mountElementId }}}'),
 {{#loadingComponent}}
         loadingComponent: Loading,
 {{/loadingComponent}}
