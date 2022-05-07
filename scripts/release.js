@@ -145,7 +145,7 @@ async function release() {
             isNext ? 'with next tag' : ''
           }`,
         );
-        let cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
+        let cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish', '--tag', '3.3.x'];
         // one-time password from your authenticator
         if (args.otp) {
           cliArgs = cliArgs.concat(['--otp', args.otp]);
