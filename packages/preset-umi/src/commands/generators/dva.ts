@@ -17,7 +17,8 @@ export default (api: IApi) => {
     checkEnable: () => {
       return !api.config.dva;
     },
-    disabledDescription: `dva has been enabled; you can remove \`dva\` field in ${api.appData.mainConfigFile} then run this again to re-setup.`,
+    disabledDescription: () =>
+      `dva has been enabled; you can remove \`dva\` field in ${api.appData.mainConfigFile} then run this again to re-setup.`,
     fn: async () => {
       const h = new GeneratorHelper(api);
 

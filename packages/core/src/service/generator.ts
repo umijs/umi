@@ -40,7 +40,7 @@ type IGeneratorOptsWithEnableCheck = {
   checkEnable: {
     (opts: { args: any }): boolean;
   };
-  disabledDescription: string;
+  disabledDescription: string | (() => string);
   fn: {
     (opts: {
       args: any;
