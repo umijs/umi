@@ -47,16 +47,19 @@ export default (api: IApi) => {
       h.addDevDeps(packageToInstall);
       h.addScript('test', 'jest');
 
+      const importSource = api.appData.umi.importSource;
       writeFileSync(
         join(api.cwd, 'jest.config.ts'),
         `
-import { Config, configUmiAlias, createConfig } from 'umi/test';
+import { Config, configUmiAlias, createConfig } from '${importSource}/test';
 
 export default async () => {
   return (await configUmiAlias({
     ...createConfig({
       target: 'browser',
     }),
+    // if you require some es-module npm package, please uncomment below line and insert your package name
+    // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
   })) as Config.InitialOptions;
 };
 `.trimLeft(),
