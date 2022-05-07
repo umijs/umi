@@ -93,9 +93,10 @@ export class GeneratorHelper {
   addScript(name: string, cmd: string) {
     const { api } = this;
 
-    if (api.pkg.scripts[name]) {
-      logger.warn(`scripts.${name} already exists, skip update`);
-      return;
+    if (api.pkg.scripts?.[name] && api.pkg.scripts?.[name] !== cmd) {
+      logger.warn(
+        `scripts.${name} = "${api.pkg.scripts?.[name]}" already exists, will be overwritten with "${cmd}"!`,
+      );
     }
 
     api.pkg.scripts = {

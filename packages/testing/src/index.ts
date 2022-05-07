@@ -28,6 +28,7 @@ export function createConfig(opts?: {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     transform: {
       '^.+\\.tsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
+      '^.+\\.jsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
     },
     moduleNameMapper: {
       '^.+\\.(css|less|sass|scss|stylus)$':
