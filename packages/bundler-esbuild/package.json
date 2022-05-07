@@ -26,11 +26,11 @@
   "dependencies": {
     "@umijs/bundler-utils": "4.0.0-canary.20220506.4",
     "@umijs/utils": "4.0.0-canary.20220506.4",
-    "enhanced-resolve": "5.9.2",
+    "enhanced-resolve": "5.9.3",
     "less-plugin-aliases": "^1.0.3",
-    "postcss": "^8.4.12",
+    "postcss": "^8.4.13",
     "postcss-flexbugs-fixes": "5.0.2",
-    "postcss-preset-env": "7.4.3"
+    "postcss-preset-env": "7.5.0"
   },
   "devDependencies": {
     "@alitajs/postcss-plugin-px2rem": "^0.0.1"

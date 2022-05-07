@@ -25,7 +25,7 @@
     "@bloomberg/record-tuple-polyfill": "0.0.4",
     "@umijs/bundler-utils": "4.0.0-canary.20220506.4",
     "@umijs/utils": "4.0.0-canary.20220506.4",
-    "core-js": "3.21.1"
+    "core-js": "3.22.4"
   },
   "publishConfig": {
     "access": "public"

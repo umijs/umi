@@ -31,7 +31,7 @@
     "@umijs/bundler-utils": "4.0.0-canary.20220506.4",
     "@umijs/utils": "4.0.0-canary.20220506.4",
     "@vitejs/plugin-react": "1.2.0",
-    "postcss-preset-env": "7.4.3"
+    "postcss-preset-env": "7.5.0"
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",

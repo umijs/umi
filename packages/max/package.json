@@ -35,9 +35,9 @@
   "dependencies": {
     "@umijs/lint": "4.0.0-canary.20220506.4",
     "@umijs/plugins": "4.0.0-canary.20220506.4",
-    "antd": "^4.19.5",
-    "eslint": "8.13.0",
-    "stylelint": "14.7.1",
+    "antd": "^4.20.2",
+    "eslint": "8.15.0",
+    "stylelint": "14.8.2",
     "umi": "4.0.0-canary.20220506.4"
   },
   "publishConfig": {
