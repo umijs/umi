@@ -33,7 +33,7 @@
     "@types/rimraf": "3.0.2",
     "@types/semver": "7.3.9",
     "address": "1.1.2",
-    "axios": "0.26.1",
+    "axios": "0.27.2",
     "chalk": "5.0.1",
     "cheerio": "1.0.0-rc.10",
     "color": "4.2.3",

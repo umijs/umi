@@ -51,7 +51,7 @@
     "@types/babel__generator": "7.6.4",
     "@types/babel__parser": "7.1.1",
     "@types/babel__template": "7.4.1",
-    "@types/babel__traverse": "7.17.0",
+    "@types/babel__traverse": "7.17.1",
     "@types/less": "3.0.3",
     "@types/spdy": "^3.4.5",
     "cjs-module-lexer": "1.2.2",

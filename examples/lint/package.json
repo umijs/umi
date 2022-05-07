@@ -10,10 +10,9 @@
     "lint:style-fix": "umi lint --stylelint-only --fix",
     "start": "npm run dev"
   },
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "^8.13.0",
-    "stylelint": "^14.7.1",
+    "eslint": "^8.15.0",
+    "stylelint": "^14.8.2",
     "umi": "4.0.0-canary.20220427.1"
   }
 }

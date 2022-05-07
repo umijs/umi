@@ -10,9 +10,9 @@
     "umi": "4.0.0-canary.20220506.4"
   },
   "devDependencies": {
-    "@types/react": "^18.0.5",
-    "@types/react-dom": "^18.0.1",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.3",
     "sass": "^1.50.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.4"
   }
 }

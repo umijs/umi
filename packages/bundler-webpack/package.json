@@ -29,7 +29,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@parcel/css": "1.8.1",
+    "@parcel/css": "1.8.2",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.5",
     "@svgr/core": "6.2.1",
     "@svgr/plugin-jsx": "^6.2.1",
@@ -43,8 +43,8 @@
     "es5-imcompatible-versions": "^0.1.73",
     "jest-worker": "27.5.1",
     "node-libs-browser": "2.2.1",
-    "postcss": "^8.4.12",
-    "postcss-preset-env": "7.4.3",
+    "postcss": "^8.4.13",
+    "postcss-preset-env": "7.5.0",
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
