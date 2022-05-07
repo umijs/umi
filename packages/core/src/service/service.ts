@@ -14,6 +14,7 @@ import {
   EnableBy,
   Env,
   IEvent,
+  IFrameworkType,
   IModify,
   PluginType,
   ServiceStage,
@@ -47,6 +48,7 @@ export class Service {
         external?: boolean;
       }
     >;
+    framework?: IFrameworkType;
     [key: string]: any;
   } = {};
   args: yParser.Arguments = { _: [], $0: '' };

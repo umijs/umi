@@ -101,3 +101,5 @@ export interface IAdd<T, U> {
     };
   }): void;
 }
+
+export type IFrameworkType = 'vue' | 'react';

@@ -5,7 +5,7 @@ import {
 } from '@umijs/core';
 import { resolve, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
+import { extname, isAbsolute, join } from 'path';
 import { IApi } from '../../types';
 
 // get api routs
@@ -79,6 +79,14 @@ export async function getRoutes(opts: { api: IApi }) {
           extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
         });
       }
+
+      // vite vue require a suffix
+      const originalFile = routes[id].file;
+      const ext = extname(file);
+      if (ext && !originalFile.endsWith(ext)) {
+        routes[id].file = `${originalFile}${ext}`;
+      }
+
       routes[id].__content = readFileSync(file, 'utf-8');
     }
   }
@@ -143,10 +151,12 @@ export async function getRouteComponents(opts: {
       if (route.file.startsWith('(')) {
         return `'${key}': () => Promise.resolve(${route.file}),`;
       }
+
       const path =
         isAbsolute(route.file) || route.file.startsWith('@/')
           ? route.file
           : `${opts.prefix}${route.file}`;
+
       return `'${key}': () => import('${winPath(path)}'),`;
     })
     .join('\n');

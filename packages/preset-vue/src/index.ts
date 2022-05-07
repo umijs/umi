@@ -8,8 +8,8 @@ export default (api: IApi) => {
       schema(joi) {
         return joi.object();
       },
+      default: {},
     },
-    enableBy: api.EnableBy.config,
   });
 
   return {
@@ -17,6 +17,7 @@ export default (api: IApi) => {
       require.resolve('./features/default'),
       require.resolve('./features/webpack'),
       require.resolve('./features/tmpFiles/tmpFiles'),
+      require.resolve('./features/vite/vite'),
     ],
   };
 };

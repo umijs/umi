@@ -1,4 +1,5 @@
 import { IApi } from 'umi';
+import { createStyleImportPlugin, VantResolve } from 'vite-plugin-style-import';
 
 export default (api: IApi) => {
   api.modifyHTML(($) => {
@@ -11,20 +12,32 @@ export default (api: IApi) => {
   api.addHTMLScripts(() => [`console.log('hello world')`]);
   api.addEntryCodeAhead(() => [`console.log('entry code ahead')`]);
   api.addEntryCode(() => [`console.log('entry code')`]);
-  api.onDevCompileDone((opts) => {
-    opts;
-    // console.log('> onDevCompileDone', opts.isFirstCompile);
-  });
-  api.onBuildComplete((opts) => {
-    opts;
-    // console.log('> onBuildComplete', opts.isFirstCompile);
-  });
   api.chainWebpack((memo) => {
     memo;
   });
-  api.onStart(() => {});
-  api.onCheckCode((args) => {
-    args;
-    // console.log('> onCheckCode', args);
+
+  api.modifyViteConfig((config) => {
+    config.plugins?.push(
+      createStyleImportPlugin({
+        resolves: [VantResolve()],
+      }),
+    );
+    return config;
+  });
+
+  // babel-plugin-import
+  api.addExtraBabelPlugins(() => {
+    return !api.appData.vite
+      ? [
+          [
+            require.resolve('babel-plugin-import'),
+            {
+              libraryName: 'vant',
+              libraryDirectory: 'es',
+              style: true,
+            },
+          ],
+        ]
+      : [];
   });
 };

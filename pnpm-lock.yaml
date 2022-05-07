@@ -333,14 +333,19 @@ importers:
   examples/vue-demo:
     specifiers:
       '@umijs/preset-vue': 4.0.0-canary.20220506.4
+      babel-plugin-import: ^1.13.3
       umi: 4.0.0-canary.20220506.4
       vant: 3.4.8
+      vite-plugin-style-import: 2.0.0
       vue: 3.2.31
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
       umi: link:../../packages/umi
       vant: 3.4.8_vue@3.2.31
       vue: 3.2.31
+    devDependencies:
+      babel-plugin-import: 1.13.3
+      vite-plugin-style-import: 2.0.0
 
   examples/with-dva:
     specifiers:
@@ -1039,6 +1044,7 @@ importers:
   packages/preset-vue:
     specifiers:
       '@umijs/renderer-vue': 4.0.0-canary.20220506.4
+      '@vitejs/plugin-vue': 2.3.1
       umi: 4.0.0-canary.20220506.4
       vue: 3.2.31
       vue-loader: 17.0.0
@@ -1049,6 +1055,7 @@ importers:
       vue-loader: 17.0.0
       vue-router: 4.0.12_vue@3.2.31
     devDependencies:
+      '@vitejs/plugin-vue': 2.3.1_vue@3.2.31
       umi: link:../umi
 
   packages/renderer-react:
@@ -1206,9 +1213,6 @@ packages:
     resolution: {integrity: sha512-xhVaM4fyIiAMdVFuuU5i3CFUdFa/IblF+fvITVMFaUEO3w/V5tVCAF6WIA3T03n1/RPuzRkA7Ao1PFtSGtGelw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       lodash.debounce: 4.0.8
       lodash.throttle: 4.1.1
@@ -1239,13 +1243,6 @@ packages:
       lodash: ^4.17.20
       react: '>=16.8.4'
       react-dom: '>=16.8.4'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/flowchart': 1.1.0_04d9f11080c9fc6ce6fced5915070c56
       '@ant-design/graphs': 1.1.0_react-dom@18.1.0+react@18.1.0
@@ -1280,13 +1277,6 @@ packages:
       lodash: ^4.17.20
       react: '>=16.8.4'
       react-dom: '>=16.8.4'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@antv/layout': 0.1.31
@@ -1309,11 +1299,6 @@ packages:
     peerDependencies:
       react: '>=16.8.4'
       react-dom: '>=16.8.4'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@antv/g6': 4.6.4
       '@antv/util': 2.0.17
@@ -1332,11 +1317,6 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/colors': 6.0.0
       '@ant-design/icons-svg': 4.2.1
@@ -1352,11 +1332,6 @@ packages:
     peerDependencies:
       react: '>=16.8.4'
       react-dom: '>=16.8.4'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@antv/l7plot': 0.0.3
       '@antv/util': 2.0.17
@@ -1370,11 +1345,6 @@ packages:
     peerDependencies:
       react: '>=16.8.4'
       react-dom: '>=16.8.4'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@antv/g2plot': 2.4.11
       react: 18.1.0
@@ -1387,11 +1357,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-utils': 1.39.2_6d5112648b2c2834ac6c1f269d6a540e
@@ -1410,11 +1375,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@ant-design/pro-field': 1.34.5_6d5112648b2c2834ac6c1f269d6a540e
       '@ant-design/pro-form': 1.64.1_6d5112648b2c2834ac6c1f269d6a540e
@@ -1435,11 +1395,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-provider': 1.6.3_6d5112648b2c2834ac6c1f269d6a540e
@@ -1465,13 +1420,6 @@ packages:
       rc-field-form: ^1.22.0
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-field': 1.34.5_6d5112648b2c2834ac6c1f269d6a540e
@@ -1496,11 +1444,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-provider': 1.6.3_6d5112648b2c2834ac6c1f269d6a540e
@@ -1531,11 +1474,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-provider': 1.6.3_react-dom@18.1.0+react@18.1.0
@@ -1565,11 +1503,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       antd: 4.19.5_react-dom@18.1.0+react@18.1.0
@@ -1585,11 +1518,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       rc-util: 5.21.0_react-dom@18.1.0+react@18.1.0
@@ -1604,11 +1532,6 @@ packages:
     peerDependencies:
       antd: '>=4.18.0'
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       antd: 4.19.5_react-dom@18.1.0+react@18.1.0
@@ -1623,13 +1546,6 @@ packages:
       rc-field-form: ^1.22.0
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-card': 1.19.5_6d5112648b2c2834ac6c1f269d6a540e
@@ -1657,13 +1573,6 @@ packages:
       antd: '>=4.18.0'
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-provider': 1.6.3_6d5112648b2c2834ac6c1f269d6a540e
@@ -1684,13 +1593,6 @@ packages:
       antd: '>=4.18.0'
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-provider': 1.6.3_react-dom@18.1.0+react@18.1.0
@@ -1708,9 +1610,6 @@ packages:
     resolution: {integrity: sha512-j9eAHTn7GxbXUFNknJoHS2ceAsqrQi2j8XykjZE1IXCD8kJF+t28EvhBLniDpbOsBk/3kjalnhriTfZcjBHNqg==}
     peerDependencies:
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -2149,11 +2048,6 @@ packages:
       '@antv/l7': ^2.2.37
       react: ^16.8.6
       react-dom: ^16.8.6
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       '@types/mapbox-gl': 1.13.3
@@ -2323,13 +2217,6 @@ packages:
       antd: '>=4.4.2'
       react: '>=16.8.6 || >=17.0.0'
       react-dom: '>=16.8.6 || >=17.0.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       antd: 4.19.5_react-dom@18.1.0+react@18.1.0
       clamp: 1.0.1
@@ -2349,11 +2236,6 @@ packages:
       '@antv/x6': '>=1.0.0'
       react: '>=16.8.6 || >=17.0.0'
       react-dom: '>=16.8.6 || >=17.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@antv/x6': 1.31.0
       react: 18.1.0
@@ -2382,13 +2264,6 @@ packages:
       lodash: ^4.17.20
       react: ^16.8.0  || ^17.0.0
       react-dom: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@antv/x6': 1.31.0
@@ -2418,13 +2293,6 @@ packages:
       classnames: ^2.2.6
       react: ^16.8.0  || ^17.0.0
       react-dom: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@antv/x6': 1.31.0
@@ -2459,13 +2327,6 @@ packages:
       lodash: ^4.17.20
       react: ^16.8.0  || ^17.0.0
       react-dom: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@antv/layout': 0.1.31
@@ -2575,9 +2436,6 @@ packages:
     peerDependencies:
       '@babel/core': '>=7.11.0'
       eslint: ^7.5.0 || ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       '@babel/core': 7.17.9
       eslint-scope: 5.1.1
@@ -2591,9 +2449,6 @@ packages:
     peerDependencies:
       '@babel/core': '>=7.11.0'
       eslint: ^7.5.0 || ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       '@babel/core': 7.17.9
       eslint: 8.13.0
@@ -4300,9 +4155,6 @@ packages:
     resolution: {integrity: sha512-dPAzzWc+w7zyTAi71WXYZpiTYyIS80MxYyy2E/7jufhnJI1Z29wCPL35VvuJ/gs5zYpF2+w/B7BizWa2zKXpGw==}
     peerDependencies:
       react: '>=16.12.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
       reactcss: 1.2.3
@@ -4344,9 +4196,6 @@ packages:
     resolution: {integrity: sha512-CyPYvfl4K5Hp9uyhLhUemul56eiGOF0FNXh5ALzzK9VNhRmRmj1O0mKtLDpoccI8W90r9kQES/nW2FC8jVVieg==}
     peerDependencies:
       react: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -4535,11 +4384,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17
       react-dom: ^16.8.0 || ^17
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@code-hike/classer': 0.0.0-e48fa74_react@18.1.0
       '@codemirror/closebrackets': 0.19.2
@@ -4583,9 +4427,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0
       postcss-value-parser: 4.2.0
@@ -4595,9 +4436,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0_postcss@8.4.12
       postcss: 8.4.12
@@ -4608,9 +4446,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -4619,9 +4454,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -4631,9 +4463,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -4642,9 +4471,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -4654,9 +4480,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0
       postcss-value-parser: 4.2.0
@@ -4666,9 +4489,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0_postcss@8.4.12
       postcss: 8.4.12
@@ -4679,9 +4499,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.9
 
@@ -4690,9 +4507,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.9
@@ -4702,9 +4516,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -4713,9 +4524,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -4725,9 +4533,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0
       postcss-value-parser: 4.2.0
@@ -4737,9 +4542,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0_postcss@8.4.12
       postcss: 8.4.12
@@ -4750,9 +4552,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -4761,9 +4560,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -4875,8 +4671,6 @@ packages:
         optional: true
       '@types/react':
         optional: true
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       '@emotion/babel-plugin': 11.9.2
@@ -4924,8 +4718,6 @@ packages:
       '@babel/core':
         optional: true
       '@types/react':
-        optional: true
-      react:
         optional: true
     dependencies:
       '@babel/runtime': 7.17.7
@@ -5081,9 +4873,6 @@ packages:
     resolution: {integrity: sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==}
     peerDependencies:
       react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -6066,9 +5855,6 @@ packages:
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.3.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       hoist-non-react-statics: 3.3.2
@@ -6081,9 +5867,6 @@ packages:
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.3.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       hoist-non-react-statics: 3.3.2
@@ -6489,8 +6272,6 @@ packages:
         optional: true
       type-fest:
         optional: true
-      webpack:
-        optional: true
       webpack-dev-server:
         optional: true
       webpack-hot-middleware:
@@ -6527,8 +6308,6 @@ packages:
       sockjs-client:
         optional: true
       type-fest:
-        optional: true
-      webpack:
         optional: true
       webpack-dev-server:
         optional: true
@@ -6649,9 +6428,6 @@ packages:
     resolution: {integrity: sha512-OTDx8/wFaRvzFtKl1dEUEXSOqK2zVJHporiTTdC2xO++0e9FEx9wIrPis5q3lqtXeZH9zYGLbk+aB75qNFbbuw==}
     peerDependencies:
       react: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@react-hook/passive-layout-effect': 1.2.1_react@18.1.0
       intersection-observer: 0.10.0
@@ -6662,9 +6438,6 @@ packages:
     resolution: {integrity: sha512-IwEphTD75liO8g+6taS+4oqz+nnroocNfWVHWz7j+N+ZO2vYrc6PV1q7GQhuahL0IOR7JccFTsFKQ/mb6iZWAg==}
     peerDependencies:
       react: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -6673,9 +6446,6 @@ packages:
     resolution: {integrity: sha512-e9xnuBaUTD+NolKikUmrGWjX8AVCPyj1GcEgjgq9E+0sXKv46UY7cm2EmB6mUDTxWIDVKebARY++xT4nGDraBQ==}
     peerDependencies:
       react: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@react-spring/shared': 9.4.4_react@18.1.0
       '@react-spring/types': 9.4.4
@@ -6686,9 +6456,6 @@ packages:
     resolution: {integrity: sha512-llgb0ljFyjMB0JhWsaFHOi9XFT8n1jBMVs1IFY2ipIBerWIRWrgUmIpakLPHTa4c4jwqTaDSwX90s2a0iN7dxQ==}
     peerDependencies:
       react: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@react-spring/animated': 9.4.4_react@18.1.0
       '@react-spring/rafz': 9.4.4
@@ -6705,9 +6472,6 @@ packages:
     resolution: {integrity: sha512-ySVgScDZlhm/+Iy2smY9i/DDrShArY0j6zjTS/Re1lasKnhq8qigoGiAxe8xMPJNlCaj3uczCqHy3TY9bKRtfQ==}
     peerDependencies:
       react: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@react-spring/rafz': 9.4.4
       '@react-spring/types': 9.4.4
@@ -6720,9 +6484,6 @@ packages:
       '@react-three/fiber': '>=6.0'
       react: '>=16.11'
       three: '>=0.126'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@react-spring/animated': 9.4.4_react@18.1.0
       '@react-spring/core': 9.4.4_react@18.1.0
@@ -6745,8 +6506,6 @@ packages:
       react-dom: '>=18.0'
       three: '>=0.137'
     peerDependenciesMeta:
-      react:
-        optional: true
       react-dom:
         optional: true
     dependencies:
@@ -6792,8 +6551,6 @@ packages:
         optional: true
       expo-gl:
         optional: true
-      react:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -6836,9 +6593,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       redux: '>=4'
-    peerDependenciesMeta:
-      redux:
-        optional: true
     dev: false
 
   /@rollup/pluginutils/4.2.0:
@@ -6888,9 +6642,6 @@ packages:
     peerDependencies:
       postcss: '>=7.0.0'
       postcss-syntax: '>=0.36.2'
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@babel/core': 7.17.9
       postcss: 8.4.12
@@ -7199,11 +6950,6 @@ packages:
     peerDependencies:
       react: <18.0.0
       react-dom: <18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       '@testing-library/dom': 8.13.0
@@ -7849,8 +7595,6 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
       typescript: '*'
     peerDependenciesMeta:
-      eslint:
-        optional: true
       typescript:
         optional: true
     dependencies:
@@ -7877,8 +7621,6 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
       typescript: '*'
     peerDependenciesMeta:
-      eslint:
-        optional: true
       typescript:
         optional: true
     dependencies:
@@ -7905,8 +7647,6 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
       typescript: '*'
     peerDependenciesMeta:
-      eslint:
-        optional: true
       typescript:
         optional: true
     dependencies:
@@ -7927,8 +7667,6 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
       typescript: '*'
     peerDependenciesMeta:
-      eslint:
-        optional: true
       typescript:
         optional: true
     dependencies:
@@ -7962,8 +7700,6 @@ packages:
       eslint: '*'
       typescript: '*'
     peerDependenciesMeta:
-      eslint:
-        optional: true
       typescript:
         optional: true
     dependencies:
@@ -7983,8 +7719,6 @@ packages:
       eslint: '*'
       typescript: '*'
     peerDependenciesMeta:
-      eslint:
-        optional: true
       typescript:
         optional: true
     dependencies:
@@ -8049,9 +7783,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       '@types/json-schema': 7.0.11
       '@typescript-eslint/scope-manager': 5.19.0
@@ -8070,9 +7801,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       '@types/json-schema': 7.0.11
       '@typescript-eslint/scope-manager': 5.19.0
@@ -8090,9 +7818,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       '@types/json-schema': 7.0.11
       '@typescript-eslint/scope-manager': 5.20.0
@@ -8111,9 +7836,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       '@types/json-schema': 7.0.11
       '@typescript-eslint/scope-manager': 5.20.0
@@ -8305,11 +8027,6 @@ packages:
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@loadable/component': 5.15.2_react@17.0.2
       history: 5.3.0
@@ -8323,11 +8040,6 @@ packages:
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@loadable/component': 5.15.2_react@18.1.0
       history: 5.3.0
@@ -8376,9 +8088,6 @@ packages:
     resolution: {integrity: sha512-QlN0RJSBVQBwLRNxbxjQ5qzqYIGn+K7USppMoIOVlf7fxXHsnQZ2bEsa6Pm74bt6DVQxpUE8HqvdStn6Y9FV1w==}
     peerDependencies:
       react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -8567,9 +8276,6 @@ packages:
     resolution: {integrity: sha512-yATjHv6ZNe9Jar1YtJvcb6KxwpcGGW/X8FEUY6xo2mDxHkP7dCsnhZZm7I+giGlrJKBMvpVBARsbUhwQP6v6nA==}
     peerDependencies:
       react: '>= 16.8.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@use-gesture/core': 10.2.11
       react: 18.1.0
@@ -8633,9 +8339,6 @@ packages:
     resolution: {integrity: sha512-iz4UkLlco+QpguV76VIT9PiwEUTTpFrxwffik41dY8tWrBZgg8riCi/GnkJgjpv04sLrWFmeuTEeJ7npAW0ELw==}
     peerDependencies:
       webpack: ^4.30.0 || ^5.20.2
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       '@vanilla-extract/integration': 3.0.1
       chalk: 4.1.2
@@ -8692,6 +8395,16 @@ packages:
       resolve: 1.22.0
     transitivePeerDependencies:
       - supports-color
+
+  /@vitejs/plugin-vue/2.3.1_vue@3.2.31:
+    resolution: {integrity: sha512-YNzBt8+jt6bSwpt7LP890U1UcTOIZZxfpE5WOJ638PNxSEKOqAi0+FSKS0nVeukfdZ0Ai/H7AFd6k3hayfGZqQ==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      vite: ^2.5.10
+      vue: ^3.2.25
+    dependencies:
+      vue: 3.2.31
+    dev: true
 
   /@vue/compiler-core/3.2.31:
     resolution: {integrity: sha512-aKno00qoA4o+V/kR6i/pE+aP+esng5siNAVQ422TkBNM6qA4veXiZbSe8OTXHXquEi/f6Akc+nLfB4JGfe4/WQ==}
@@ -8899,9 +8612,6 @@ packages:
     peerDependencies:
       webpack: 4.x.x || 5.x.x
       webpack-cli: 4.x.x
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       webpack: 5.72.0_0bf63bd14f0ed3ad9a5d95abaa0ccb87
       webpack-cli: 4.9.2_0d7fbf49284cee8179ee97aed7cf05b4
@@ -9079,9 +8789,6 @@ packages:
     engines: {node: '>=8.0.0'}
     peerDependencies:
       react: ^16.8.6 || ^17.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@ahooksjs/use-request': 2.8.15_react@18.1.0
       '@types/js-cookie': 2.2.7
@@ -9101,9 +8808,6 @@ packages:
     engines: {node: '>=8.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@types/js-cookie': 2.2.7
       ahooks-v3-count: 1.0.0
@@ -9254,11 +8958,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@ant-design/colors': 6.0.0
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
@@ -9527,9 +9226,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       caniuse-lite: 1.0.30001317
@@ -9544,9 +9240,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       caniuse-lite: 1.0.30001317
@@ -9631,9 +9324,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
       webpack: '>=2'
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       '@babel/core': 7.17.9
       find-cache-dir: 3.3.2
@@ -9649,9 +9339,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
       webpack: '>=2'
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       find-cache-dir: 3.3.2
       loader-utils: 2.0.2
@@ -9669,8 +9356,7 @@ packages:
     resolution: {integrity: sha512-1qCWdljJOrDRH/ybaCZuDgySii4yYrtQ8OJQwrcDqdt0y67N30ng3X3nABg6j7gR7qUJgcMa9OMhc4AGViDwWw==}
     dependencies:
       '@babel/helper-module-imports': 7.16.7
-      '@babel/runtime': 7.17.7
-    dev: false
+      '@babel/runtime': 7.17.9
 
   /babel-plugin-istanbul/6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
@@ -10251,6 +9937,14 @@ packages:
   /caniuse-lite/1.0.30001327:
     resolution: {integrity: sha512-1/Cg4jlD9qjZzhbzkzEaAC2JHsP0WrOc8Rd/3a3LuajGzGWR/hD7TVyvq99VqmTy99eVh8Zkmdq213OgvgXx7w==}
 
+  /capital-case/1.0.4:
+    resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
+    dependencies:
+      no-case: 3.0.4
+      tslib: 2.3.1
+      upper-case-first: 2.0.2
+    dev: true
+
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -10317,6 +10011,23 @@ packages:
   /chalk/5.0.1:
     resolution: {integrity: sha512-Fo07WOYGqMfCWHOzSXOt2CxDbC6skS/jO9ynEcmpANMoPrD+W1r1K6Vx7iNm+AQmETU1Xr2t+n8nzkV9t6xh3w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+    dev: true
+
+  /change-case/4.1.2:
+    resolution: {integrity: sha512-bSxY2ws9OtviILG1EiY5K7NNxkqg/JnRnFxLtKQ96JaviiIxi7djMrSd0ECT9AC+lttClmYwKw53BWpOMblo7A==}
+    dependencies:
+      camel-case: 4.1.2
+      capital-case: 1.0.4
+      constant-case: 3.0.4
+      dot-case: 3.0.4
+      header-case: 2.0.4
+      no-case: 3.0.4
+      param-case: 3.0.4
+      pascal-case: 3.1.2
+      path-case: 3.0.4
+      sentence-case: 3.0.4
+      snake-case: 3.0.4
+      tslib: 2.3.1
     dev: true
 
   /char-regex/1.0.2:
@@ -10783,6 +10494,18 @@ packages:
     resolution: {integrity: sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=}
     dev: true
 
+  /console/0.7.2:
+    resolution: {integrity: sha1-+aQzEkkpFZG3v5v/qOIFNW8gqfA=}
+    dev: true
+
+  /constant-case/3.0.4:
+    resolution: {integrity: sha512-I2hSBi7Vvs7BEuJDr5dDHfzb/Ruj3FyvFyh7KLilAjNQw3Be+xgqUBA2W6scVEcL0hL1dwPRtIqEPVUCKkSsyQ==}
+    dependencies:
+      no-case: 3.0.4
+      tslib: 2.3.1
+      upper-case: 2.0.2
+    dev: true
+
   /constants-browserify/1.0.0:
     resolution: {integrity: sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=}
 
@@ -10921,9 +10644,6 @@ packages:
     engines: {node: '>= 12.20.0'}
     peerDependencies:
       webpack: ^5.1.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       fast-glob: 3.2.11
       glob-parent: 6.0.2
@@ -11049,9 +10769,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.9
 
@@ -11061,9 +10778,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.9
@@ -11078,9 +10792,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14}
     peerDependencies:
       postcss: ^8.0.9
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -11095,9 +10806,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.9
 
@@ -11107,9 +10815,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.9
@@ -11126,9 +10831,6 @@ packages:
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       icss-utils: 5.1.0_postcss@8.4.12
       postcss: 8.4.12
@@ -11145,9 +10847,6 @@ packages:
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       icss-utils: 5.1.0_postcss@8.4.12
       postcss: 8.4.12
@@ -11182,8 +10881,6 @@ packages:
         optional: true
       esbuild:
         optional: true
-      webpack:
-        optional: true
     dependencies:
       '@parcel/css': 1.8.1
       cssnano: 5.1.7_postcss@8.4.12
@@ -11201,9 +10898,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /css-prefers-color-scheme/6.0.3_postcss@8.4.12:
     resolution: {integrity: sha512-4BqMbZksRkJQx2zAjrokiGMd07RqOa2IxIrrN10lyBe9xhn9DEvjUK79J6jkeiv9D9hQFXKb6g1jwU62jziJZA==}
@@ -11211,9 +10905,6 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -11282,9 +10973,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       css-declaration-sorter: 6.2.2_postcss@8.4.12
       cssnano-utils: 3.1.0_postcss@8.4.12
@@ -11323,9 +11011,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -11335,9 +11020,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       cssnano-preset-default: 5.2.7_postcss@8.4.12
       lilconfig: 2.0.5
@@ -12007,9 +11689,6 @@ packages:
     resolution: {integrity: sha512-Zh39llFyItu9HKXKfCZVf9UFtDTcypdAjGBew1S+wK8BGVzFpm1GPTdd6uIMeg7O6STtCvt2Qv+RwUut1GFynA==}
     peerDependencies:
       redux: 4.x
-    peerDependenciesMeta:
-      redux:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       flatten: 1.0.3
@@ -12025,9 +11704,6 @@ packages:
     resolution: {integrity: sha512-HKCEXr1Yj4pIPYoWxr0MhDscYQ/FSkIdA6Kgtb7ImhIoIvMrtxaI1KDWxutvOZ28UwfqYYKMjSsx4+xEs+IRSg==}
     peerDependencies:
       dva: ^2.5.0-0
-    peerDependenciesMeta:
-      dva:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       immer: 8.0.4
@@ -12937,8 +12613,6 @@ packages:
     peerDependenciesMeta:
       '@typescript-eslint/eslint-plugin':
         optional: true
-      eslint:
-        optional: true
       jest:
         optional: true
     dependencies:
@@ -12960,8 +12634,6 @@ packages:
     peerDependenciesMeta:
       '@typescript-eslint/eslint-plugin':
         optional: true
-      eslint:
-        optional: true
       jest:
         optional: true
     dependencies:
@@ -12979,9 +12651,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dev: false
 
   /eslint-plugin-react-hooks/4.4.0_eslint@8.13.0:
@@ -12989,9 +12658,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       eslint: 8.13.0
     dev: true
@@ -13001,9 +12667,6 @@ packages:
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       array-includes: 3.1.4
       array.prototype.flatmap: 1.2.5
@@ -13026,9 +12689,6 @@ packages:
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       array-includes: 3.1.4
       array.prototype.flatmap: 1.2.5
@@ -13066,9 +12726,6 @@ packages:
     engines: {node: ^10.0.0 || ^12.0.0 || >= 14.0.0}
     peerDependencies:
       eslint: '>=5'
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       eslint-visitor-keys: 2.1.0
     dev: false
@@ -13078,9 +12735,6 @@ packages:
     engines: {node: ^10.0.0 || ^12.0.0 || >= 14.0.0}
     peerDependencies:
       eslint: '>=5'
-    peerDependenciesMeta:
-      eslint:
-        optional: true
     dependencies:
       eslint: 8.13.0
       eslint-visitor-keys: 2.1.0
@@ -13739,8 +13393,6 @@ packages:
     peerDependenciesMeta:
       vue-template-compiler:
         optional: true
-      webpack:
-        optional: true
     dependencies:
       '@babel/code-frame': 7.16.7
       chalk: 4.1.2
@@ -13794,11 +13446,6 @@ packages:
     peerDependencies:
       react: '>=16.8 || ^17.0.0 || ^18.0.0'
       react-dom: '>=16.8 || ^17.0.0 || ^18.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       framesync: 6.0.1
       hey-listen: 1.0.8
@@ -13992,11 +13639,6 @@ packages:
     peerDependencies:
       react: ^16.8.0
       react-dom: ^16.8.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@antv/g6': 3.5.2
       '@babel/runtime': 7.17.7
@@ -14453,6 +14095,13 @@ packages:
     hasBin: true
     dev: true
 
+  /header-case/2.0.4:
+    resolution: {integrity: sha512-H/vuk5TEEVZwrR0lp2zed9OCo1uAILMlx0JEMgC26rzyJJ3N1v6XkwHHXJQdR2doSjcGPM6OKPYoJgf0plJ11Q==}
+    dependencies:
+      capital-case: 1.0.4
+      tslib: 2.3.1
+    dev: true
+
   /hey-listen/1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
     dev: false
@@ -14535,9 +14184,6 @@ packages:
     engines: {node: '>=10.13.0'}
     peerDependencies:
       webpack: ^5.20.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
@@ -14732,9 +14378,6 @@ packages:
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -16357,9 +16000,6 @@ packages:
     peerDependencies:
       less: ^3.5.0 || ^4.0.0
       webpack: ^5.0.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       klona: 2.0.5
       webpack: 5.72.0_500f840d667fb94beb8bf3d4ee61670e
@@ -17625,9 +17265,6 @@ packages:
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       schema-utils: 4.0.0
       webpack: 5.72.0_500f840d667fb94beb8bf3d4ee61670e
@@ -17811,8 +17448,6 @@ packages:
       react-dom: '*'
       react-native: '*'
     peerDependenciesMeta:
-      react:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -17831,8 +17466,6 @@ packages:
       react-dom: '*'
       react-native: '*'
     peerDependenciesMeta:
-      react:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -17873,9 +17506,6 @@ packages:
     peerDependencies:
       monaco-editor: '>= 0.31.0'
       webpack: ^4.5.0 || 5.x
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       loader-utils: 2.0.2
       monaco-editor: 0.33.0
@@ -17967,11 +17597,6 @@ packages:
     peerDependencies:
       react: '*'
       react-dom: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       css-tree: 1.1.3
       csstype: 3.0.11
@@ -18907,6 +18532,13 @@ packages:
   /path-browserify/0.0.1:
     resolution: {integrity: sha512-BapA40NHICOS+USX9SN4tyhq+A2RrN/Ws5F0Z5aMHDp98Fl86lX8Oti8B7uN93L4Ifv4fHOEA+pQw87gmMO/lQ==}
 
+  /path-case/3.0.4:
+    resolution: {integrity: sha512-qO4qCFjXqVTrcbPt/hQfhTQ+VhFsqNKOPtytgNKkKxSoEp3XPUQ8ObFuePylOIok5gjn69ry8XiULxCwot3Wfg==}
+    dependencies:
+      dot-case: 3.0.4
+      tslib: 2.3.1
+    dev: true
+
   /path-exists/3.0.0:
     resolution: {integrity: sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=}
     engines: {node: '>=4'}
@@ -18967,7 +18599,6 @@ packages:
 
   /pathe/0.2.0:
     resolution: {integrity: sha512-sTitTPYnn23esFR3RlqYBWn4c45WGeLcsKzQiUpXJAyfcWkolvlYpV8FLo7JishK946oQwMFUCHXQ9AjGPKExw==}
-    dev: false
 
   /pause-stream/0.0.11:
     resolution: {integrity: sha1-/lo0sMvOErWqaitAPuLnO2AvFEU=}
@@ -19195,9 +18826,6 @@ packages:
     resolution: {integrity: sha512-b4g9eagFGq9T5SWX4+USfVyjIb3liPnjhHHRMP7FMB2kFVpYyfEscV0wP3eaXhKlcHKUut8lt5BGoeylWA/dBQ==}
     peerDependencies:
       postcss: ^8.0.2
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.10
 
@@ -19205,9 +18833,6 @@ packages:
     resolution: {integrity: sha512-b4g9eagFGq9T5SWX4+USfVyjIb3liPnjhHHRMP7FMB2kFVpYyfEscV0wP3eaXhKlcHKUut8lt5BGoeylWA/dBQ==}
     peerDependencies:
       postcss: ^8.0.2
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19216,9 +18841,6 @@ packages:
     resolution: {integrity: sha512-SmWMSJmB8MRnnULldx0lQIyhSNvuDl9HfrZkaqqE/WHAhToYsAvDq+yAsA/kIyINDszOp3Rh0GFoNuH5Ypsm3Q==}
     peerDependencies:
       postcss: ^8.2.2
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19230,9 +18852,6 @@ packages:
     engines: {node: '>=7.6.0'}
     peerDependencies:
       postcss: ^8.4.6
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19241,9 +18860,6 @@ packages:
     engines: {node: '>=7.6.0'}
     peerDependencies:
       postcss: ^8.4.6
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19253,9 +18869,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19264,9 +18877,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19276,9 +18886,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19287,9 +18894,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19299,9 +18903,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19310,9 +18911,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19322,9 +18920,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       caniuse-api: 3.0.0
@@ -19338,9 +18933,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19351,18 +18943,12 @@ packages:
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-custom-media/8.0.0_postcss@8.4.12:
     resolution: {integrity: sha512-FvO2GzMUaTN0t1fBULDeIvxr5IvbDXcIatt6pnJghc736nqNgsGao5NT+5+WVLAQiTt6Cb3YUms0jiPaXhL//g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19371,9 +18957,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19382,9 +18965,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19394,9 +18974,6 @@ packages:
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.1.2
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.10
 
@@ -19405,9 +18982,6 @@ packages:
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.1.2
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19417,9 +18991,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.10
 
@@ -19428,9 +18999,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19440,9 +19008,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -19452,9 +19017,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -19464,9 +19026,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -19476,9 +19035,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -19488,9 +19044,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0
       postcss-value-parser: 4.2.0
@@ -19500,9 +19053,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0_postcss@8.4.12
       postcss: 8.4.12
@@ -19513,9 +19063,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19524,9 +19071,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19535,9 +19079,6 @@ packages:
     resolution: {integrity: sha512-18f9voByak7bTktR2QgDveglpn9DTbBWPUzSOe9g0N4WR/2eSt6Vrcbf0hmspvMI6YWGywz6B9f7jzpFNJJgnQ==}
     peerDependencies:
       postcss: ^8.1.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19546,9 +19087,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.10
 
@@ -19557,9 +19095,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19569,9 +19104,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.10
 
@@ -19580,9 +19112,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19591,17 +19120,11 @@ packages:
     resolution: {integrity: sha512-1fmkBaCALD72CK2a9i468mA/+tr9/1cBxRRMXOUaZqO43oWPR5imcyPjXwuv7PXbCid4ndlP5zWhidQVVa3hmA==}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-font-variant/5.0.0_postcss@8.4.12:
     resolution: {integrity: sha512-1fmkBaCALD72CK2a9i468mA/+tr9/1cBxRRMXOUaZqO43oWPR5imcyPjXwuv7PXbCid4ndlP5zWhidQVVa3hmA==}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19610,18 +19133,12 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-gap-properties/3.0.3_postcss@8.4.12:
     resolution: {integrity: sha512-rPPZRLPmEKgLk/KlXMqRaNkYTUpE7YC+bOIQFN5xcu1Vp11Y4faIXv6/Jpft6FMnl6YRxZqDZG0qQOW80stzxQ==}
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19630,9 +19147,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -19641,9 +19155,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19652,17 +19163,11 @@ packages:
     resolution: {integrity: sha512-0ueD7rPqX8Pn1xJIjay0AZeIuDoF+V+VvMt/uOnn+4ezUKhZM/NokDeP6DwMNyIoYByuN/94IQnt5FEkaN59xQ==}
     peerDependencies:
       postcss: ^8.0.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-initial/4.0.1_postcss@8.4.12:
     resolution: {integrity: sha512-0ueD7rPqX8Pn1xJIjay0AZeIuDoF+V+VvMt/uOnn+4ezUKhZM/NokDeP6DwMNyIoYByuN/94IQnt5FEkaN59xQ==}
     peerDependencies:
       postcss: ^8.0.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19671,9 +19176,6 @@ packages:
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.3.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       camelcase-css: 2.0.1
       postcss: 8.4.12
@@ -19683,9 +19185,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0
       postcss-value-parser: 4.2.0
@@ -19695,9 +19194,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-progressive-custom-properties': 1.3.0_postcss@8.4.12
       postcss: 8.4.12
@@ -19708,9 +19204,6 @@ packages:
     engines: {node: '>=12'}
     peerDependencies:
       postcss: ^8.3.5
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -19734,11 +19227,6 @@ packages:
     peerDependencies:
       postcss: ^7.0.0 || ^8.0.1
       webpack: ^5.0.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
-      webpack:
-        optional: true
     dependencies:
       cosmiconfig: 7.0.1
       klona: 2.0.5
@@ -19752,18 +19240,12 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-logical/5.0.4_postcss@8.4.12:
     resolution: {integrity: sha512-RHXxplCeLh9VjinvMrZONq7im4wjWGlRJAqmAVLXyZaXwfDWP73/oq4NdIp+OZwhQUMj0zjqDfM5Fj7qby+B4g==}
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19772,18 +19254,12 @@ packages:
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-media-minmax/5.0.0_postcss@8.4.12:
     resolution: {integrity: sha512-yDUvFf9QdFZTuCUg0g0uNSHVlJ5X1lSzDZjPSFaiCWvjgsvu8vEVxtahPrLMinIDEEGnx6cBe6iqdx5YWz08wQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19795,9 +19271,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19809,9 +19282,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       caniuse-api: 3.0.0
@@ -19825,9 +19295,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19838,9 +19305,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       colord: 2.9.2
       cssnano-utils: 3.1.0_postcss@8.4.12
@@ -19853,9 +19317,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       cssnano-utils: 3.1.0_postcss@8.4.12
@@ -19868,9 +19329,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19881,9 +19339,6 @@ packages:
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -19892,9 +19347,6 @@ packages:
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       icss-utils: 5.1.0_postcss@8.4.12
       postcss: 8.4.12
@@ -19906,9 +19358,6 @@ packages:
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.9
@@ -19918,9 +19367,6 @@ packages:
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       icss-utils: 5.1.0_postcss@8.4.12
       postcss: 8.4.12
@@ -19930,9 +19376,6 @@ packages:
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.9
@@ -19942,9 +19385,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.10
 
@@ -19953,9 +19393,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -19965,9 +19402,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
     dev: true
@@ -19977,9 +19411,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -19990,9 +19421,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20003,9 +19431,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20016,9 +19441,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20029,9 +19451,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20042,9 +19461,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       postcss: 8.4.12
@@ -20056,9 +19472,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       normalize-url: 6.1.0
       postcss: 8.4.12
@@ -20070,9 +19483,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20087,9 +19497,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       cssnano-utils: 3.1.0_postcss@8.4.12
       postcss: 8.4.12
@@ -20101,18 +19508,12 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-overflow-shorthand/3.0.3_postcss@8.4.12:
     resolution: {integrity: sha512-CxZwoWup9KXzQeeIxtgOciQ00tDtnylYIlJBBODqkgS/PU2jISuWOL/mYLHmZb9ZhZiCaNKsCRiLp22dZUtNsg==}
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -20120,17 +19521,11 @@ packages:
     resolution: {integrity: sha512-1JGu8oCjVXLa9q9rFTo4MbeeA5FMe00/9C7lN4va606Rdb+HkxXtXsmEDrIraQ11fGz/WvKWa8gMuCKkrXpTsQ==}
     peerDependencies:
       postcss: ^8
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-page-break/3.0.4_postcss@8.4.12:
     resolution: {integrity: sha512-1JGu8oCjVXLa9q9rFTo4MbeeA5FMe00/9C7lN4va606Rdb+HkxXtXsmEDrIraQ11fGz/WvKWa8gMuCKkrXpTsQ==}
     peerDependencies:
       postcss: ^8
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -20139,9 +19534,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-value-parser: 4.2.0
 
@@ -20150,9 +19542,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20162,9 +19551,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-color-function': 1.0.3
       '@csstools/postcss-font-format-keywords': 1.0.0
@@ -20215,9 +19601,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       '@csstools/postcss-color-function': 1.0.3_postcss@8.4.12
       '@csstools/postcss-font-format-keywords': 1.0.0_postcss@8.4.12
@@ -20269,9 +19652,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss-selector-parser: 6.0.9
 
@@ -20280,9 +19660,6 @@ packages:
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
       postcss: ^8.4
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.9
@@ -20292,9 +19669,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       caniuse-api: 3.0.0
@@ -20306,9 +19680,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20318,17 +19689,11 @@ packages:
     resolution: {integrity: sha512-KmF7SBPphT4gPPcKZc7aDkweHiKEEO8cla/GjcBK+ckKxiZslIu3C4GCRW3DNfL0o7yW7kMQu9xlZ1kXRXLXtw==}
     peerDependencies:
       postcss: ^8.0.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
 
   /postcss-replace-overflow-wrap/4.0.0_postcss@8.4.12:
     resolution: {integrity: sha512-KmF7SBPphT4gPPcKZc7aDkweHiKEEO8cla/GjcBK+ckKxiZslIu3C4GCRW3DNfL0o7yW7kMQu9xlZ1kXRXLXtw==}
     peerDependencies:
       postcss: ^8.0.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -20340,9 +19705,6 @@ packages:
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.3.3
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -20350,9 +19712,6 @@ packages:
     resolution: {integrity: sha512-/2K3A4TCP9orP4TNS7u3tGdRFVKqz/E6pX3aGnriPG0jU78of8wsUcqE4QAhWEU0d+WnMSF93Ah3F//vUtK+iQ==}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       balanced-match: 1.0.2
 
@@ -20360,9 +19719,6 @@ packages:
     resolution: {integrity: sha512-/2K3A4TCP9orP4TNS7u3tGdRFVKqz/E6pX3aGnriPG0jU78of8wsUcqE4QAhWEU0d+WnMSF93Ah3F//vUtK+iQ==}
     peerDependencies:
       postcss: ^8.1.0
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       balanced-match: 1.0.2
       postcss: 8.4.12
@@ -20386,9 +19742,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-value-parser: 4.2.0
@@ -20399,9 +19752,6 @@ packages:
     resolution: {integrity: sha512-nBRg/i7E3SOHWxF3PpF5WnJM/jQ1YpY9000OaVXlAQj6Zp/kIqJxEDWIZ67tAd7NLuk7zqN4yqe9nc0oNAOs1w==}
     peerDependencies:
       postcss: '>=5.0.0'
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
 
@@ -20410,9 +19760,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       postcss: 8.4.12
       postcss-selector-parser: 6.0.10
@@ -20783,11 +20130,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       classnames: 2.3.1
@@ -20804,11 +20146,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       array-tree-filter: 2.1.0
@@ -20825,11 +20162,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -20842,11 +20174,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -20862,11 +20189,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -20881,11 +20203,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -20899,11 +20216,6 @@ packages:
     peerDependencies:
       react: '>=16.11.0'
       react-dom: '>=16.11.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       classnames: 2.3.1
@@ -20919,11 +20231,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       async-validator: 4.0.7
@@ -20938,11 +20245,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       async-validator: 4.0.7
@@ -20956,11 +20258,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -20975,11 +20272,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -20993,11 +20285,6 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21011,11 +20298,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21032,11 +20314,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21054,11 +20331,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       classnames: 2.3.1
@@ -21072,11 +20344,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21091,11 +20358,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21110,11 +20372,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21129,11 +20386,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21147,11 +20399,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21170,11 +20417,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21189,11 +20431,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21207,11 +20444,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21227,11 +20459,6 @@ packages:
     peerDependencies:
       react: '*'
       react-dom: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21250,11 +20477,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21271,11 +20493,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21289,11 +20506,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21308,11 +20520,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21329,11 +20536,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21350,11 +20552,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21370,11 +20567,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       rc-trigger: 5.2.12_react-dom@18.1.0+react@18.1.0
@@ -21387,11 +20579,6 @@ packages:
     peerDependencies:
       react: '*'
       react-dom: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21408,11 +20595,6 @@ packages:
     peerDependencies:
       react: '*'
       react-dom: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21429,11 +20611,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       classnames: 2.3.1
@@ -21450,11 +20627,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21470,11 +20642,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       classnames: 2.3.1
@@ -21498,11 +20665,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.7
       react: 18.1.0
@@ -21516,11 +20678,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       react: 18.1.0
@@ -21534,11 +20691,6 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       react: 18.1.0
@@ -21553,11 +20705,6 @@ packages:
     peerDependencies:
       react: '*'
       react-dom: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       classnames: 2.3.1
       rc-resize-observer: 1.2.0_react-dom@18.1.0+react@18.1.0
@@ -21596,9 +20743,6 @@ packages:
     resolution: {integrity: sha512-6E2UNjUF0e7KRY+/faU2Hv7D9zagXnYdTfSSCGdYfuds6mRnVpN19vrbHXShaQzJNVXL4VOUb8qq6DvClDIG1g==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       prop-types: 15.8.1
       react: 18.1.0
@@ -21609,9 +20753,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -21626,9 +20767,6 @@ packages:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
     peerDependencies:
       react: 17.0.2
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -21639,9 +20777,6 @@ packages:
     resolution: {integrity: sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==}
     peerDependencies:
       react: ^18.1.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       loose-envify: 1.4.0
       react: 18.1.0
@@ -21658,9 +20793,6 @@ packages:
     resolution: {integrity: sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==}
     peerDependencies:
       react: '>=16.3.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       object-assign: 4.1.1
       prop-types: 15.8.1
@@ -21673,9 +20805,6 @@ packages:
     resolution: {integrity: sha512-cgumW29mwROIqyp8NXStYsoIm27+8FqnxykiLSawWjOxGIBeLuN/+p2srei5SRIumcJefOkOIHP+NDck05RgHg==}
     peerDependencies:
       react: ^16.3.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       '@formatjs/intl-displaynames': 1.2.10
       '@formatjs/intl-listformat': 1.4.8
@@ -21717,8 +20846,6 @@ packages:
       react-dom: '*'
       react-native: '*'
     peerDependenciesMeta:
-      react:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -21736,9 +20863,6 @@ packages:
     engines: {node: '>=0.10.0'}
     peerDependencies:
       react: ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       loose-envify: 1.4.0
       react: 18.1.0
@@ -21755,8 +20879,6 @@ packages:
       redux: ^4
     peerDependenciesMeta:
       '@types/react':
-        optional: true
-      react:
         optional: true
       react-dom:
         optional: true
@@ -21786,8 +20908,6 @@ packages:
       redux: ^4
     peerDependenciesMeta:
       '@types/react':
-        optional: true
-      react:
         optional: true
       react-dom:
         optional: true
@@ -21822,11 +20942,6 @@ packages:
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
       react-dom: ^16.0.0 || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@types/resize-observer-browser': 0.1.7
       lodash: 4.17.21
@@ -21840,11 +20955,6 @@ packages:
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       history: 5.3.0
       react: 17.0.2
@@ -21857,11 +20967,6 @@ packages:
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       history: 5.3.0
       react: 18.1.0
@@ -21872,9 +20977,6 @@ packages:
     resolution: {integrity: sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ==}
     peerDependencies:
       react: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       history: 5.3.0
       react: 17.0.2
@@ -21884,9 +20986,6 @@ packages:
     resolution: {integrity: sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ==}
     peerDependencies:
       react: '>=16.8'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       history: 5.3.0
       react: 18.1.0
@@ -21895,9 +20994,6 @@ packages:
     resolution: {integrity: sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==}
     peerDependencies:
       react: ^16.3.0 || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -21907,11 +21003,6 @@ packages:
     peerDependencies:
       react: ^16.3.0 || ^17.0.0
       react-dom: ^16.3.0 || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/runtime': 7.17.9
       invariant: 2.2.4
@@ -21925,9 +21016,6 @@ packages:
     peerDependencies:
       react: '*'
       tslib: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
       tslib: 2.3.1
@@ -21938,11 +21026,6 @@ packages:
     peerDependencies:
       react: '>=16.13'
       react-dom: '>=16.13'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       debounce: 1.2.1
       react: 18.1.0
@@ -21954,11 +21037,6 @@ packages:
     peerDependencies:
       react: ^16.8.0  || ^17.0.0
       react-dom: ^16.8.0  || ^17.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@types/js-cookie': 2.2.7
       '@xobotyi/scrollbar-width': 1.9.5
@@ -22155,8 +21233,6 @@ packages:
       react-dom: '*'
       react-native: '*'
     peerDependenciesMeta:
-      react:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -22188,9 +21264,6 @@ packages:
     resolution: {integrity: sha512-OOYGNY5Jy2TWvTL1KgAlVy6dcx3siPJ1wTq741EPyUKfn6W6nChdICjZwCd0p8AZBs5kWpZlbkXW2nE/zjUa+Q==}
     peerDependencies:
       redux: ^4
-    peerDependenciesMeta:
-      redux:
-        optional: true
     dependencies:
       redux: 4.1.2
     dev: false
@@ -22689,8 +21762,6 @@ packages:
         optional: true
       sass-embedded:
         optional: true
-      webpack:
-        optional: true
     dependencies:
       klona: 2.0.5
       neo-async: 2.6.2
@@ -22835,6 +21906,14 @@ packages:
       on-finished: 2.3.0
       range-parser: 1.2.1
       statuses: 1.5.0
+    dev: true
+
+  /sentence-case/3.0.4:
+    resolution: {integrity: sha512-8LS0JInaQMCRoQ7YUytAo/xUu5W2XnQxV2HI/6uM6U7CITS1RqPElr30V6uIqyMKM9lJGRVFy5/4CuzcixNYSg==}
+    dependencies:
+      no-case: 3.0.4
+      tslib: 2.3.1
+      upper-case-first: 2.0.2
     dev: true
 
   /serialize-javascript/6.0.0:
@@ -23039,6 +22118,13 @@ packages:
   /smart-buffer/4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+    dev: true
+
+  /snake-case/3.0.4:
+    resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}
+    dependencies:
+      dot-case: 3.0.4
+      tslib: 2.3.1
     dev: true
 
   /snapdragon-node/2.1.1:
@@ -23282,9 +22368,6 @@ packages:
     engines: {node: '>=6.0.0'}
     peerDependencies:
       webpack: ^1 || ^2 || ^3 || ^4 || ^5
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       chalk: 4.1.2
       webpack: 5.72.0_500f840d667fb94beb8bf3d4ee61670e
@@ -23609,9 +22692,6 @@ packages:
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       webpack: 5.72.0_500f840d667fb94beb8bf3d4ee61670e
     dev: true
@@ -23644,11 +22724,6 @@ packages:
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
       react-is: '>= 16.8.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@babel/helper-module-imports': 7.16.7
       '@babel/traverse': 7.17.9_supports-color@5.5.0
@@ -23669,9 +22744,6 @@ packages:
     engines: {node: ^10 || ^12 || >=14.0}
     peerDependencies:
       postcss: ^8.2.15
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       browserslist: 4.20.2
       postcss: 8.4.12
@@ -23682,9 +22754,6 @@ packages:
     resolution: {integrity: sha512-w6d552NscwvpUEaUcmq8GgWXKRv6lVHLbDj6QIHSM2vCWr83qRqRvXBJCfXDyaG/J3Zojw2inU9VvU99ZlXuUw==}
     peerDependencies:
       stylelint: ^14.5.1
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     optionalDependencies:
       stylelint-scss: 4.2.0
     dev: true
@@ -23695,27 +22764,18 @@ packages:
     hasBin: true
     peerDependencies:
       stylelint: '>=11.0.0'
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dev: true
 
   /stylelint-config-recommended/7.0.0:
     resolution: {integrity: sha512-yGn84Bf/q41J4luis1AZ95gj0EQwRX8lWmGmBwkwBNSkpGSpl66XcPTulxGa/Z91aPoNGuIGBmFkcM1MejMo9Q==}
     peerDependencies:
       stylelint: ^14.4.0
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dev: false
 
   /stylelint-config-recommended/7.0.0_stylelint@14.7.1:
     resolution: {integrity: sha512-yGn84Bf/q41J4luis1AZ95gj0EQwRX8lWmGmBwkwBNSkpGSpl66XcPTulxGa/Z91aPoNGuIGBmFkcM1MejMo9Q==}
     peerDependencies:
       stylelint: ^14.4.0
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dependencies:
       stylelint: 14.7.1
     dev: true
@@ -23724,9 +22784,6 @@ packages:
     resolution: {integrity: sha512-21HnP3VSpaT1wFjFvv9VjvOGDtAviv47uTp3uFmzcN+3Lt+RYRv6oAplLaV51Kf792JSxJ6svCJh/G18E9VnCA==}
     peerDependencies:
       stylelint: ^14.4.0
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dependencies:
       stylelint-config-recommended: 7.0.0
     dev: false
@@ -23735,9 +22792,6 @@ packages:
     resolution: {integrity: sha512-21HnP3VSpaT1wFjFvv9VjvOGDtAviv47uTp3uFmzcN+3Lt+RYRv6oAplLaV51Kf792JSxJ6svCJh/G18E9VnCA==}
     peerDependencies:
       stylelint: ^14.4.0
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dependencies:
       stylelint: 14.7.1
       stylelint-config-recommended: 7.0.0_stylelint@14.7.1
@@ -23748,9 +22802,6 @@ packages:
     engines: {node: '>=6'}
     peerDependencies:
       stylelint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dev: true
 
   /stylelint-scss/4.2.0:
@@ -23758,9 +22809,6 @@ packages:
     requiresBuild: true
     peerDependencies:
       stylelint: ^14.5.1
-    peerDependenciesMeta:
-      stylelint:
-        optional: true
     dependencies:
       lodash: 4.17.21
       postcss-media-query-parser: 0.2.3
@@ -23878,9 +22926,6 @@ packages:
     resolution: {integrity: sha512-ZC3r8Hu1y0dIThzsGw0RLZplnX9yXwfItcvaIzJc2VQVi8TGyGDlu92syMB5ulybfvGLHAI5Ghzlk23UBPF8xg==}
     peerDependencies:
       react: '>=17.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -23924,9 +22969,6 @@ packages:
     resolution: {integrity: sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -23955,9 +22997,6 @@ packages:
     hasBin: true
     peerDependencies:
       autoprefixer: ^10.0.2
-    peerDependenciesMeta:
-      postcss:
-        optional: true
     dependencies:
       arg: 5.0.1
       chalk: 4.1.2
@@ -24077,8 +23116,6 @@ packages:
         optional: true
       uglify-js:
         optional: true
-      webpack:
-        optional: true
     dependencies:
       '@swc/core': 1.2.165
       jest-worker: 27.5.1
@@ -24105,8 +23142,6 @@ packages:
         optional: true
       uglify-js:
         optional: true
-      webpack:
-        optional: true
     dependencies:
       esbuild: 0.14.35
       jest-worker: 27.5.1
@@ -24132,8 +23167,6 @@ packages:
       esbuild:
         optional: true
       uglify-js:
-        optional: true
-      webpack:
         optional: true
     dependencies:
       jest-worker: 27.5.1
@@ -24951,6 +23984,18 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /upper-case-first/2.0.2:
+    resolution: {integrity: sha512-514ppYHBaKwfJRK/pNC6c/OxfGa0obSnAl106u97Ed0I625Nin96KAjttZF6ZL3e1XLtphxnqrOi9iWgm+u+bg==}
+    dependencies:
+      tslib: 2.3.1
+    dev: true
+
+  /upper-case/2.0.2:
+    resolution: {integrity: sha512-KgdgDGJt2TpuwBUIjgG6lzw2GWFRCW9Qkfkiv0DxqHHLYJHmtmdUIKcZd8rHgFSjopVTlw6ggzCm1b8MFQwikg==}
+    dependencies:
+      tslib: 2.3.1
+    dev: true
+
   /uri-js/4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
@@ -24969,8 +24014,6 @@ packages:
     peerDependenciesMeta:
       file-loader:
         optional: true
-      webpack:
-        optional: true
     dependencies:
       loader-utils: 2.0.2
       mime-types: 2.1.35
@@ -24988,9 +24031,6 @@ packages:
     resolution: {integrity: sha512-xPadt5yMRbEmVfOSGFSMqjjICrq7nLbfSH3rYIXsrtcuFX7PmbYDN/ku8ObBn3v8o/yZelO1OxUS5+5TI3+fUw==}
     peerDependencies:
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -24999,9 +24039,6 @@ packages:
     resolution: {integrity: sha512-B6kKZwNV4R+l4Rl11sWO7HqOay9alzs1Vp1b4YJqjz33YxbltBCZtt/yxXxkXN9rc1S7OeEL/GbwC30Wmqhw6Q==}
     peerDependencies:
       react: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -25010,9 +24047,6 @@ packages:
     resolution: {integrity: sha512-AFVsxg5GkFg8GDcxnl+Z0lMAz9rE8DGJCc28qnBuQF7lac57B5smLcT37aXpXIIPz75rW4g3eXHPjhHwdGskOw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0-rc
-    peerDependenciesMeta:
-      react:
-        optional: true
     dependencies:
       react: 18.1.0
     dev: false
@@ -25181,6 +24215,20 @@ packages:
       gl-matrix: 3.4.3
     dev: false
 
+  /vite-plugin-style-import/2.0.0:
+    resolution: {integrity: sha512-qtoHQae5dSUQPo/rYz/8p190VU5y19rtBaeV7ryLa/AYAU/e9CG89NrN/3+k7MR8mJy/GPIu91iJ3zk9foUOSA==}
+    peerDependencies:
+      vite: '>=2.0.0'
+    dependencies:
+      '@rollup/pluginutils': 4.2.0
+      change-case: 4.1.2
+      console: 0.7.2
+      es-module-lexer: 0.9.3
+      fs-extra: 10.0.1
+      magic-string: 0.25.9
+      pathe: 0.2.0
+    dev: true
+
   /vite/2.9.1:
     resolution: {integrity: sha512-vSlsSdOYGcYEJfkQ/NeLXgnRv5zZfpAsdztkIrs7AZHV8RCMZQkwjo4DS5BnrYTqoWqLoUe1Cah4aVO4oNNqCQ==}
     engines: {node: '>=12.2.0'}
@@ -25228,9 +24276,6 @@ packages:
     resolution: {integrity: sha512-OWSXjrzIvbF2LtOUmxT3HYgwwubbfFelN8PAP9R9dwpIkj48TVioHhWWSx7W7fk+iF5cgg3CBJRxwTdtLU4Ecg==}
     peerDependencies:
       webpack: ^4.1.0 || ^5.0.0-0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       chalk: 4.1.2
       hash-sum: 2.0.0
@@ -25398,8 +24443,6 @@ packages:
         optional: true
       '@webpack-cli/migrate':
         optional: true
-      webpack:
-        optional: true
       webpack-bundle-analyzer:
         optional: true
       webpack-dev-server:
@@ -25426,9 +24469,6 @@ packages:
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^4.0.0 || ^5.0.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       colorette: 2.0.16
       memfs: 3.4.1
@@ -25446,8 +24486,6 @@ packages:
       webpack: ^4.37.0 || ^5.0.0
       webpack-cli: '*'
     peerDependenciesMeta:
-      webpack:
-        optional: true
       webpack-cli:
         optional: true
     dependencies:
@@ -25494,9 +24532,6 @@ packages:
     engines: {node: '>=12.22.0'}
     peerDependencies:
       webpack: ^5.47.0
-    peerDependenciesMeta:
-      webpack:
-        optional: true
     dependencies:
       tapable: 2.2.1
       webpack: 5.72.0_500f840d667fb94beb8bf3d4ee61670e
