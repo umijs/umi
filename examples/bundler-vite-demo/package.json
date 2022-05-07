@@ -8,9 +8,9 @@
   "dependencies": {
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
-    "@umijs/bundler-vite": "4.0.0-canary.20220506.4",
+    "@umijs/bundler-vite": "4.0.0-canary.20220507.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "umi": "4.0.0-canary.20220506.4"
+    "umi": "4.0.0-canary.20220507.1"
   }
 }
