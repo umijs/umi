@@ -7,6 +7,7 @@ export default (api: IApi) => {
         return joi.object().keys({
           slave: joi.object(),
           master: joi.object(),
+          externalQiankun: joi.boolean(),
         });
       },
     },
