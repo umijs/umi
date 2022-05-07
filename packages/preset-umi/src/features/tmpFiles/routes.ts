@@ -5,7 +5,7 @@ import {
 } from '@umijs/core';
 import { resolve, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
-import { extname, isAbsolute, join } from 'path';
+import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
 
 // get api routs
@@ -80,12 +80,14 @@ export async function getRoutes(opts: { api: IApi }) {
         });
       }
 
-      // vite vue require a suffix
-      const originalFile = routes[id].file;
-      const ext = extname(file);
-      if (ext && !originalFile.endsWith(ext)) {
-        routes[id].file = `${originalFile}${ext}`;
-      }
+      // why comment out
+      // file 可能是目录，直接加 ext 会导致 not found
+      // // vite vue require a suffix
+      // const originalFile = routes[id].file;
+      // const ext = extname(file);
+      // if (ext && !originalFile.endsWith(ext)) {
+      //   routes[id].file = `${originalFile}${ext}`;
+      // }
 
       routes[id].__content = readFileSync(file, 'utf-8');
     }
