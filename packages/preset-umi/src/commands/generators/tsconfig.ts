@@ -18,6 +18,8 @@ export default (api: IApi) => {
     checkEnable: () => {
       return !existsSync(join(api.paths.cwd, 'tsconfig.json'));
     },
+    disabledDescription:
+      'tsconfig has been enabled; you can remove tsconfig.json then run this again to re-setup',
     fn: async () => {
       const h = new GeneratorHelper(api);
 

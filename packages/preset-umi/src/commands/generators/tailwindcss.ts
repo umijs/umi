@@ -18,6 +18,7 @@ export default (api: IApi) => {
     checkEnable: () => {
       return !api.config.tailwindcss;
     },
+    disabledDescription: `tailwindcss has been enabled; you can remove \`tailwindcss\` fields in ${api.appData.mainConfigFile} then run this to re-setup`,
     fn: async () => {
       const h = new GeneratorHelper(api);
 

@@ -8,7 +8,7 @@ import {
   ServiceStage,
 } from '../types';
 import { Command, IOpts as ICommandOpts } from './command';
-import { Generator, IGeneratorOpts } from './generator';
+import { Generator, makeGenerator } from './generator';
 import { Hook, IOpts as IHookOpts } from './hook';
 import { Plugin } from './plugin';
 import { Service } from './service';
@@ -20,10 +20,16 @@ const resolveConfigModes = ['strict', 'loose'] as const;
 
 export type ResolveConfigMode = typeof resolveConfigModes[number];
 
+// https://stackoverflow.com/a/57103940/1247899
+type DistributiveOmit<T, K extends keyof any> = T extends any
+  ? Omit<T, K>
+  : never;
+
 export class PluginAPI {
   service: Service;
   plugin: Plugin;
   logger: Logger;
+
   constructor(opts: { service: Service; plugin: Plugin }) {
     this.service = opts.service;
     this.plugin = opts.plugin;
@@ -96,13 +102,13 @@ export class PluginAPI {
     }
   }
 
-  registerGenerator(opts: Omit<IGeneratorOpts, 'plugin'>) {
+  registerGenerator(opts: DistributiveOmit<Generator, 'plugin'>) {
     const { key } = opts;
     assert(
       !this.service.generators[key],
       `api.registerGenerator() failed, the generator ${key} is exists from ${this.service.generators[key]?.plugin.id}.`,
     );
-    this.service.generators[key] = new Generator({
+    this.service.generators[key] = makeGenerator({
       ...opts,
       plugin: this.plugin,
     });

@@ -19,6 +19,8 @@ export default (api: IApi) => {
       // 存在 .prettierrc，不开启
       return !existsSync(join(api.cwd, '.prettierrc'));
     },
+    disabledDescription:
+      'prettier has been enabled; You can remove `.prettierrc` to run this again to re-setup.',
     fn: async () => {
       const h = new GeneratorHelper(api);
 
