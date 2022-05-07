@@ -128,18 +128,23 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
           },
         });
       } else {
+        let content = getFileContent(file);
+
+        if (!api.config.qiankun.externalQiankun) {
+          content = content.replace(
+            /from 'qiankun'/g,
+            `from '${winPath(dirname(require.resolve('qiankun/package')))}'`,
+          );
+        }
+
         api.writeTmpFile({
           path: file.replace(/\.tpl$/, ''),
-          content: getFileContent(file)
+          content: content
             .replace(
               '__USE_MODEL__',
               api.isPluginEnable('model')
                 ? `import { useModel } from '@@/plugin-model'`
                 : `const useModel = null;`,
-            )
-            .replace(
-              /from 'qiankun'/g,
-              `from '${winPath(dirname(require.resolve('qiankun/package')))}'`,
             )
             .replace(
               /from 'lodash\//g,
