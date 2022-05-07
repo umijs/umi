@@ -80,6 +80,29 @@ test('typescript with metadata', () => {
   expect(code).toContain('Reflect.metadata');
 });
 
+test('typescript without metadata', () => {
+  const code = transformWithPreset(
+    `@Decorate
+    class MyClass {
+      constructor(
+        private generic: Generic<A>,
+        generic2: Generic<A, B>
+      ) {}
+
+      @Run
+      method(
+        generic: Inter<A>,
+        @Arg() generic2: InterGen<A, B>
+      ) {}
+    }`,
+    {
+      typescript: true,
+      typescriptEmitDecoratorMetadata: false,
+    },
+  );
+  expect(code).not.toContain('Reflect.metadata');
+});
+
 test('typescript with nest-injection', () => {
   const code = transformWithPreset(
     `import { AppService } from './app.service';
