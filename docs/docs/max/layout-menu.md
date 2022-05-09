@@ -19,8 +19,8 @@ export default {
 - 默认为 Ant Design 的 Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout)，支持它全部配置项。
 - 顶部导航/侧边栏菜单根据路由中的配置自动生成。
 - 默认支持对路由的 403/404 处理和 Error Boundary。
-- 搭配 `@umijs/plugin-access` 插件一起使用，可以完成对路由权限的控制。
-- 搭配 `@umijs/plugin-initial-state` 插件和 `@umijs/plugin-model` 插件一起使用，可以拥有默认用户登陆信息的展示。
+- 搭配 `access` [插件](./access)一起使用，可以完成对路由权限的控制。
+- 搭配 `initial-state` [插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/initial-state.ts) 和 [数据流](./data-flow) 插件一起使用，可以拥有默认用户登陆信息的展示。
 
 > 想要动态菜单？查看这里 [菜单的高级用法](https://beta-pro.ant.design/docs/advanced-menu-cn)
 
@@ -53,7 +53,7 @@ export default defineConfig({
 - Type: `boolean`
 - Default: `false`
 
-是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 `@umijs/plugin-locale` 使用。如无需菜单国际化可配置`false`关闭。
+是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为该 key，路由配置的 name 字段的值就是对应的 key 值。如果菜单是多级路由假设是二级路由菜单，那么插件就会去 locales 文件中查找 `menu.[key].[key]`对应的文案，该功能需要配置 [`i18`](./i18n) 使用。如无需菜单国际化可配置 `false` 关闭。
 
 ### 运行时配置
 

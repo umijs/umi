@@ -2,7 +2,7 @@ import { Message } from 'umi';
 
 # 数据流
 
-`@umi/max` 内置了**数据流管理**插件 [`@umijs/plugin-model`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/model.ts)，它是一种基于 `hooks` 范式的轻量级数据管理方案，可以在 Umi 项目中管理全局的共享数据。
+`@umi/max` 内置了**数据流管理**[插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/model.ts)，它是一种基于 `hooks` 范式的轻量级数据管理方案，可以在 Umi 项目中管理全局的共享数据。
 
 ## 开始使用
 
@@ -33,7 +33,7 @@ export default () => {
 };
 ```
 
-这就是一个 Model。`@umijs/plugin-model` 插件所做的工作就是将其中的状态或数据变成了**全局数据**，不同的组件在使用该 Model 时，拿到的是同一份状态或数据。
+这就是一个 Model。插件所做的工作就是将其中的状态或数据变成了**全局数据**，不同的组件在使用该 Model 时，拿到的是同一份状态或数据。
 
 <Message emoji="💡">
 Model 文件需要默认导出一个函数，此函数定义了一个 `hook`。对于不符合此规范的文件，将会被过滤掉，并无法通过命名空间调用。
@@ -156,7 +156,7 @@ export default () => {
 
 ## 全局初始状态
 
-`@umi/max` 内置了**全局初始状态管理**插件 [`@umijs/plugin-initial-state`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/initial-state.ts)，它依赖于 `@umijs/plugin-model`，允许您快速构建并在组件内获取 Umi 项目全局的初始状态。
+`@umi/max` 内置了**全局初始状态管理**[插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/initial-state.ts)，允许您快速构建并在组件内获取 Umi 项目全局的初始状态。
 
 全局初始状态是一种特殊的 Model。
 
@@ -194,7 +194,7 @@ export default () => {
 
 ## Qiankun 父子应用间通信
 
-`@umi/max` 内置了 **Qiankun 微前端**插件 [`@umijs/plugin-qiankun`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts)，当使用 `@umijs/plugin-model` 时，它允许微应用通过 `useModel('@@qiankunStateFromMaster')` 方法获取父应用传递给子应用的数据 Model，进而实现父子应用间的通信。
+`@umi/max` 内置了 **Qiankun 微前端**[插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts)，当使用数据流插件时，它允许微应用通过 `useModel('@@qiankunStateFromMaster')` 方法获取父应用传递给子应用的数据 Model，进而实现父子应用间的通信。
 
 具体的使用方法请查阅[微前端的父子应用通信章节](./micro-frontend#父子应用通信)。
 

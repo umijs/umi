@@ -2,7 +2,7 @@ import { Message } from 'umi';
 
 # 微前端
 
-`@umi/max` 内置了 **Qiankun 微前端**插件 [`@umijs/plugin-qiankun`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts)，它可以一键启用 Qiankun 微前端开发模式，帮助您轻松地在 Umi 项目中集成 Qiankun 微应用，构建出一个生产可用的微前端架构系统。
+`@umi/max` 内置了 **Qiankun 微前端**[插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts)，它可以一键启用 Qiankun 微前端开发模式，帮助您轻松地在 Umi 项目中集成 Qiankun 微应用，构建出一个生产可用的微前端架构系统。
 
 关于 Qiankun 微前端的更多介绍请参阅[此页面](https://qiankun.umijs.org/zh/guide)。
 
@@ -92,7 +92,7 @@ export const qiankun = {
 
 子应用需要导出必要的生命周期钩子，供父应用在适当的时机调用。
 
-假设您的子应用项目**基于 Umi** 开发且**引入了 `@umijs/plugin-qiankun`**。假如没有，可以按照[此教程](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8)进行配置。
+假设您的子应用项目**基于 Umi** 开发且**引入了 `qiankun` [插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts) **。假如没有，可以按照[此教程](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8)进行配置。
 
 修改子应用的 Umi 的配置文件，添加如下内容：
 
@@ -187,7 +187,7 @@ export default () => {
 
 例如，当您的子应用也基于 Umi 开发时，可以在子应用的 `src/app.ts` 文件中导出 `qiankun` 对象，获取父应用传入的 `basename` 属性，最后通过 Umi 提供的 `setCreateHistoryOptions()` 方法在运行时修改子应用的路由前缀。
 
-基于 `@umijs/plugin-qiankun` 插件时，代码实现如下：
+基于 `qiankun` [插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/qiankun.ts)时，代码实现如下：
 
 ```ts
 // src/app.ts
@@ -311,9 +311,9 @@ export const qiankun = {
 
 ### 基于 `useModel()` 的通信
 
-该通信方式基于 [`@umijs/plugin-model`](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/model.ts) 插件，此插件已经内置于 `@umi/max` 解决方案当中。
+该通信方式基于 [数据流](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/model.ts) 插件，此插件已经内置于 `@umi/max` 解决方案当中。
 
-该通信方式需要子应用**基于 Umi** 开发且**引入了 `@umijs/plugin-model`**。
+该通信方式需要子应用**基于 Umi** 开发且**引入了该数据流插件**。
 
 关于此插件的详细介绍可见[数据流指南](./data-flow)。
 
