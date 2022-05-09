@@ -5,7 +5,7 @@ import {
 } from '@umijs/core';
 import { resolve, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
+import { extname, isAbsolute, join, relative } from 'path';
 import { IApi } from '../../types';
 
 // get api routs
@@ -68,26 +68,25 @@ export async function getRoutes(opts: { api: IApi }) {
     if (routes[id].file) {
       // TODO: cache for performance
       let file = routes[id].file;
+      const basedir =
+        opts.api.config.conventionRoutes?.base || opts.api.paths.absPagesPath;
+
       if (!isAbsolute(file)) {
         if (file.startsWith('@/')) {
           file = file.replace('@/', '../');
         }
         file = resolve.sync(localPath(file), {
-          basedir:
-            opts.api.config.conventionRoutes?.base ||
-            opts.api.paths.absPagesPath,
+          basedir,
           extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
         });
       }
 
-      // why comment out
-      // file 可能是目录，直接加 ext 会导致 not found
-      // // vite vue require a suffix
-      // const originalFile = routes[id].file;
-      // const ext = extname(file);
-      // if (ext && !originalFile.endsWith(ext)) {
-      //   routes[id].file = `${originalFile}${ext}`;
-      // }
+      // vite vue require a suffix
+      const originalFile = routes[id].file;
+      const ext = extname(file);
+      if (ext && !originalFile.endsWith(ext)) {
+        routes[id].file = `./${winPath(relative(basedir, file))}`;
+      }
 
       routes[id].__content = readFileSync(file, 'utf-8');
     }
