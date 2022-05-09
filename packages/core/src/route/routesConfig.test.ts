@@ -127,3 +127,27 @@ test('wrappers', () => {
     },
   });
 });
+
+test('opts.onResolveComponent', () => {
+  expect(
+    getConfigRoutes({
+      routes: [
+        {
+          path: '/',
+          component: 'index',
+        },
+      ],
+      onResolveComponent(component) {
+        return `${component}-resolved`;
+      },
+    }),
+  ).toEqual({
+    1: {
+      file: 'index-resolved',
+      path: '/',
+      id: '1',
+      parentId: undefined,
+      absPath: '/',
+    },
+  });
+});

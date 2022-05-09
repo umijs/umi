@@ -2,6 +2,7 @@ import assert from 'assert';
 
 interface IOpts {
   routes: any[];
+  onResolveComponent?: (component: string) => string;
 }
 
 interface IMemo {
@@ -11,7 +12,12 @@ interface IMemo {
 
 export function getConfigRoutes(opts: IOpts): any[] {
   const memo: IMemo = { ret: {}, id: 1 };
-  transformRoutes({ routes: opts.routes, parentId: undefined, memo });
+  transformRoutes({
+    routes: opts.routes,
+    parentId: undefined,
+    memo,
+    onResolveComponent: opts.onResolveComponent,
+  });
   return memo.ret;
 }
 
@@ -19,9 +25,15 @@ function transformRoutes(opts: {
   routes: any[];
   parentId: undefined | string;
   memo: IMemo;
+  onResolveComponent?: Function;
 }) {
   opts.routes.forEach((route) => {
-    transformRoute({ route, parentId: opts.parentId, memo: opts.memo });
+    transformRoute({
+      route,
+      parentId: opts.parentId,
+      memo: opts.memo,
+      onResolveComponent: opts.onResolveComponent,
+    });
   });
 }
 
@@ -29,6 +41,7 @@ function transformRoute(opts: {
   route: any;
   parentId: undefined | string;
   memo: IMemo;
+  onResolveComponent?: Function;
 }) {
   assert(
     !opts.route.children,
@@ -46,7 +59,13 @@ function transformRoute(opts: {
   opts.memo.ret[id] = {
     ...routeProps,
     path: opts.route.path,
-    ...(component ? { file: component } : {}),
+    ...(component
+      ? {
+          file: opts.onResolveComponent
+            ? opts.onResolveComponent(component)
+            : component,
+        }
+      : {}),
     parentId: opts.parentId,
     id,
   };
@@ -61,6 +80,7 @@ function transformRoute(opts: {
         route: { path, component: wrapper },
         parentId,
         memo: opts.memo,
+        onResolveComponent: opts.onResolveComponent,
       });
       parentId = id;
       path = '';

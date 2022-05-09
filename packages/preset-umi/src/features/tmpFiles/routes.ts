@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
 
-// get api routs
+// get api routes
 export async function getApiRoutes(opts: { api: IApi }) {
   const routes = getConventionRoutes({
     base: opts.api.paths.absApiRoutesPath,
@@ -46,6 +46,19 @@ export async function getRoutes(opts: { api: IApi }) {
   if (opts.api.config.routes) {
     routes = getConfigRoutes({
       routes: opts.api.config.routes,
+      onResolveComponent(component) {
+        if (component.startsWith('@/')) {
+          component = component.replace('@/', '../');
+        }
+        component = winPath(
+          resolve.sync(localPath(component), {
+            basedir: opts.api.paths.absPagesPath,
+            extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
+          }),
+        );
+        component = component.replace(`${opts.api.paths.absSrcPath}/`, '@/');
+        return component;
+      },
     });
   } else {
     routes = getConventionRoutes({
@@ -81,13 +94,7 @@ export async function getRoutes(opts: { api: IApi }) {
         });
       }
 
-      // vite vue require a suffix
-      // const originalFile = routes[id].file;
-      // const ext = extname(file);
-      // if (ext && !originalFile.endsWith(ext)) {
-      //   routes[id].file = `./${winPath(relative(basedir, file))}`;
-      // }
-
+      // TODO: REMOVE ME
       routes[id].__content = readFileSync(file, 'utf-8');
     }
   }
