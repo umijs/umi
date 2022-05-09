@@ -1,5 +1,7 @@
 export function parseTitle(opts: { content: string }) {
-  const lines = opts.content.split('\n');
+  const lines = opts.content
+    .replace(/{[\n\s\t]*\/\*[\s\S]*?\*\/[\n\s\t]*}/g, '')
+    .split('\n');
   let i = 0;
   const ret = [];
   while (i < lines.length) {
