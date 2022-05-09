@@ -157,6 +157,44 @@ crossorigin: {}
 + 
 <script src="/umi.js" crossorigin="anonymous"></script>
 ```
+## cssMinifier
+
+* 类型：`string` 可选的值：`esbuild`, `cssnano`, `parcelCSS`, `none`
+* 默认值：`esbuild`
+
+配置构建时使用的 CSS 压缩工具; `none` 表示不压缩。
+
+示例：
+```js
+{
+  cssMinifier: 'esbuild'
+}
+```
+
+## cssMinifierOptions
+
+* 类型：`Object`
+* 默认值：`{}`
+
+`cssMinifier` CSS 压缩工具配置选项。
+
+示例：
+
+```js
+{
+  cssMinifier: 'esbuild',
+  cssMinifierOptions: {
+    minifyWhitespace: true,
+    minifySyntax: true,
+  },
+}
+```
+
+对应 CSS 压缩的配置请查看对应的文档。
+
+* [esbuild 参考](https://esbuild.github.io/api/#minify)
+* [cssnano 参考](https://cssnano.co/docs/config-file/)
+* [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
 
 ## deadCode
 
@@ -386,6 +424,57 @@ https: {}
 * 默认值：`10000` (10k)
 
 配置图片文件是否走 base64 编译的阈值。默认是 10000 字节，少于他会被编译为 base64 编码，否则会生成单独的文件。
+
+## jsMinifier (webpack)
+
+* 类型：`string`，可选值 `esbuild`, `terser`, `swc`, `esbuild`, `uglifyJs`, `none`
+* 默认值：`esbuild`
+
+配置构建时压缩 JavaScript 的工具；`none`表示不压缩。
+
+示例：
+
+```ts
+{
+  jsMinifier: 'esbuild'
+}
+```
+
+## jsMinifierOptions
+
+* 类型：`object`
+* 默认值：`{}`
+
+`jsminifier` 的配置项。
+
+示例：
+```js
+{
+  jsminifier: 'esbuild',
+  jsMinifierOptions: {
+    minifyWhitespace: true,
+    minifyIdentifiers: true,
+    minifySyntax: true,
+  }
+}
+```
+
+配置项需要和所使用的工具对应，具体参考对应文档：
+
+* [esbuild 参考](https://esbuild.github.io/api/#minify)
+* [terser 参考](https://terser.org/docs/api-reference#minify-options)
+* [swc 参考](https://swc.rs/docs/configuration/minification#configuration)
+* [uglifyJs 参考](https://lisperator.net/uglifyjs/compress)
+
+{
+/*
+## jsminifier (vite 构建)
+
+* 类型：`string`
+* 默认值：
+
+*/
+}
 
 ## lessLoader
 
