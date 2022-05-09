@@ -43,7 +43,7 @@ export default function (cwd: string, args: IUmiTestArgs) {
     },
     setupFiles: [require.resolve('../../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../../helpers/setupFiles/jasmine')],
-    testEnvironment: require.resolve('jest-environment-jsdom-fourteen'),
+    testEnvironment: 'jsdom',
     testMatch: [
       `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
     ],
