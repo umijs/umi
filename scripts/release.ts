@@ -114,9 +114,8 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
         '@umijs/plugins',
         '@umijs/bundler-vite',
         '@umijs/preset-vue',
+        '@umijs/mfsu',
       ],
-      // for mfsu-independent example update dep version
-      devDeps: ['@umijs/mfsu'],
     });
     delete pkg.version;
     fs.writeFileSync(
@@ -195,18 +194,15 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
 function setDepsVersion(opts: {
   deps: string[];
-  devDeps: string[];
   pkg: Record<string, any>;
   version: string;
 }) {
-  const { deps, devDeps, pkg, version } = opts;
+  const { deps, pkg, version } = opts;
   pkg.dependencies ||= {};
   deps.forEach((dep) => {
-    if (pkg.dependencies[dep]) {
+    if (pkg?.dependencies?.[dep]) {
       pkg.dependencies[dep] = version;
     }
-  });
-  devDeps.forEach((dep) => {
     if (pkg?.devDependencies?.[dep]) {
       pkg.devDependencies[dep] = version;
     }
