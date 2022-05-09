@@ -263,6 +263,15 @@ export default function EmptyRoute() {
         exportMembers,
         path: '@@/core/history.ts',
       });
+      // @@/core/terminal.ts
+      if (api.service.config.terminal !== false) {
+        exports.push(`export { terminal } from './core/terminal';`);
+        checkMembers({
+          members: ['terminal'],
+          exportMembers,
+          path: '@@/core/terminal.ts',
+        });
+      }
       // plugins
       exports.push('// plugins');
       const plugins = readdirSync(api.paths.absTmpPath).filter((file) => {

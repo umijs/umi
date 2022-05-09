@@ -15,14 +15,19 @@ export default (api: IApi) => {
     // ref:
     // https://github.com/patak-dev/vite-plugin-terminal/blob/main/src/index.ts
     api.writeTmpFile({
-      path: 'index.ts',
+      path: 'core/terminal.ts',
+      noPluginDir: true,
       content: `
 const console = globalThis.console;
 let count = 0;
 let groupLevel = 0;
 function send(type: string, message?: string) {
-  const encodedMessage = message ? \`&m=\${encodeURI(message)}\` : '';
-  fetch(\`/__umi/api/terminal?type=\${type}&t=\${Date.now()}&c=\${count++}&g=\${groupLevel}\${encodedMessage}\`, { mode: 'no-cors' })
+  if(process.env.NODE_ENV==='production'){
+    return;
+  }else{
+    const encodedMessage = message ? \`&m=\${encodeURI(message)}\` : '';
+    fetch(\`/__umi/api/terminal?type=\${type}&t=\${Date.now()}&c=\${count++}&g=\${groupLevel}\${encodedMessage}\`, { mode: 'no-cors' })
+  }
 }
 function prettyPrint(obj: any) {
   return JSON.stringify(obj, null, 2);
