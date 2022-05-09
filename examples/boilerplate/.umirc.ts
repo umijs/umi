@@ -10,6 +10,10 @@ export default {
       wrappers: ['@/wrappers/foo', '@/wrappers/bar'],
     },
     {
+      path: '/about',
+      component: 'about',
+    },
+    {
       path: '*',
       component: '@/components/404',
     },
