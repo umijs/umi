@@ -6,5 +6,6 @@
 /src/.umi-production
 /.umi
 /.umi-production
+/.umi-test
 /dist
 /.mfsu
