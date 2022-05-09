@@ -119,6 +119,12 @@ export function genMount(mountElementId: string) {
       defer.resolve();
     }
 
+    // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
+    // 考虑到 react 18 之后 callback 不再准
+    // 所以在这里直接返回，而不使用 ReactDOM.render 的第三个参数
+    if (props.autoSetLoading && typeof props.setLoading === 'function') {
+      props.setLoading(false);
+    }
     hasMountedAtLeastOnce = true;
   };
 }
