@@ -5,7 +5,7 @@ import {
 } from '@umijs/core';
 import { resolve, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
-import { extname, isAbsolute, join, relative } from 'path';
+import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
 
 // get api routs
@@ -82,11 +82,11 @@ export async function getRoutes(opts: { api: IApi }) {
       }
 
       // vite vue require a suffix
-      const originalFile = routes[id].file;
-      const ext = extname(file);
-      if (ext && !originalFile.endsWith(ext)) {
-        routes[id].file = `./${winPath(relative(basedir, file))}`;
-      }
+      // const originalFile = routes[id].file;
+      // const ext = extname(file);
+      // if (ext && !originalFile.endsWith(ext)) {
+      //   routes[id].file = `./${winPath(relative(basedir, file))}`;
+      // }
 
       routes[id].__content = readFileSync(file, 'utf-8');
     }

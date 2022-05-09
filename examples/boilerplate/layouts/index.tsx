@@ -16,6 +16,9 @@ export default function Layout() {
         <li>
           <Link to="/users/foo">/users/foo</Link>
         </li>
+        <li>
+          <Link to="/about">/about</Link>
+        </li>
       </ul>
       <Outlet />
     </div>
