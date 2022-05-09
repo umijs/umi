@@ -9,6 +9,10 @@ export default {
       component: 'users/$id',
       wrappers: ['@/wrappers/foo', '@/wrappers/bar'],
     },
+    {
+      path: '*',
+      component: '@/components/404',
+    },
   ],
   externals: {
     marked: [

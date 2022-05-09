@@ -58,7 +58,7 @@ export default defineConfig({
           name: 'register-result',
           icon: 'smile',
           path: '/user/register-result',
-          component: './user/register-result',
+          component: '@/pages/user/register-result',
         },
         {
           name: 'register',
@@ -275,7 +275,7 @@ export default defineConfig({
           name: 'center',
           icon: 'smile',
           path: '/account/center',
-          component: './account/center',
+          component: '@/pages/account/center',
         },
         {
           name: 'settings',
