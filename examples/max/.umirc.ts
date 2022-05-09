@@ -66,6 +66,9 @@ export default defineConfig({
         {
           name: 'app1',
           entry: '//localhost:8001/app1',
+          props: {
+            autoSetLoading: true,
+          },
         },
       ],
     },
