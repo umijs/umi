@@ -43,6 +43,7 @@ export default (props: any) => {
         components: props.components,
         themeConfig: props.themeConfig,
         location: props.location,
+        history: props.history,
       }}
     >
       <div

@@ -37,6 +37,9 @@ interface IContext {
     hash: string;
     key: string;
   };
+  history: {
+    push(to: string, state?: any): void;
+  };
 }
 
 export const ThemeContext = React.createContext<IContext | null>(null);
