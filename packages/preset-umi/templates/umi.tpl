@@ -33,6 +33,7 @@ async function render() {
         type: ApplyPluginsType.modify,
         initialValue: {},
       });
+      const basename = contextOpts.basename || '{{{ basename }}}';
       const context = {
         routes,
         routeComponents,
@@ -43,8 +44,9 @@ async function render() {
 {{/loadingComponent}}
         history: createHistory({
           type: '{{{ historyType }}}',
+          basename,
         }),
-        basename: contextOpts.basename || '{{{ basename }}}',
+        basename,
       };
       return renderClient(context);
     },
