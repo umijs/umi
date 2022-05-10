@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet } from 'umi';
+import { history, Link, Outlet } from 'umi';
 
 export default function Layout() {
   console.log('rerender layout');
@@ -20,6 +20,20 @@ export default function Layout() {
           <Link to="/about">/about</Link>
         </li>
       </ul>
+      <button
+        onClick={() => {
+          history.push('/about');
+        }}
+      >
+        go to /about
+      </button>
+      <button
+        onClick={() => {
+          history.replace('/about');
+        }}
+      >
+        replace to /about
+      </button>
       <Outlet />
     </div>
   );
