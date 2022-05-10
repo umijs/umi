@@ -115,8 +115,16 @@ export default (api: IApi) => {
         content = transformIEAR({ content, path: absPath }, api);
       }
 
-      if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
+      if (!existsSync(absPath)) {
         writeFileSync(absPath, content, 'utf-8');
+      } else {
+        const fileContent = readFileSync(absPath, 'utf-8');
+
+        if (fileContent.startsWith('// debug') || fileContent === content) {
+          return;
+        } else {
+          writeFileSync(absPath, content, 'utf-8');
+        }
       }
     },
   });

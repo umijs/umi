@@ -115,7 +115,7 @@ export { ${exports
       path: 'Layout.tsx',
       content: `
 import React from 'react';
-import { useOutlet, useAppData, useLocation, Link } from 'umi';
+import { useOutlet, useAppData, useLocation, Link, history } from 'umi';
 import { $Layout as Layout } from '${winPath(
         require.resolve('../client/theme-doc/index.ts'),
       )}';
@@ -132,7 +132,7 @@ export default () => {
   const appData = useAppData();
   const location = useLocation();
   return (
-    <Layout appData={appData} components={{Link}} themeConfig={themeConfig} location={location}>
+    <Layout appData={appData} components={{Link}} themeConfig={themeConfig} location={location} history={history}>
       <div>{ outlet }</div>
     </Layout>
   );
