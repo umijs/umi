@@ -12,7 +12,7 @@
 修改路由。
 
 ```ts
-export function patchRoutes(\{ routes \}) {
+export function patchRoutes({ routes }) {
   for (let key of routes){
     // do something
   }
