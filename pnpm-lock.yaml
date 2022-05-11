@@ -349,6 +349,16 @@ importers:
       babel-plugin-import: 1.13.3
       vite-plugin-style-import: 2.0.0
 
+  examples/with-antd:
+    specifiers:
+      '@umijs/plugins': 4.0.0-canary.20220507.2
+      antd: ^4.20.3
+      umi: 4.0.0-canary.20220507.2
+    dependencies:
+      '@umijs/plugins': link:../../packages/plugins
+      antd: 4.20.3_react-dom@18.1.0+react@18.1.0
+      umi: link:../../packages/umi
+
   examples/with-dva:
     specifiers:
       '@umijs/plugins': 4.0.0-canary.20220507.2
@@ -9018,6 +9028,65 @@ packages:
 
   /antd/4.20.2_react-dom@18.1.0+react@18.1.0:
     resolution: {integrity: sha512-b+Gq1EY8LmcS/ARei/dGI0bWQlJ/j3f3oJ6XjM+ryyT5YWxvf7X3mGc++bTGuLmjn6+/icRL1zItIgcvplcomg==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
+      '@ant-design/react-slick': 0.28.4_react@18.1.0
+      '@babel/runtime': 7.17.9
+      '@ctrl/tinycolor': 3.4.1
+      classnames: 2.3.1
+      copy-to-clipboard: 3.3.1
+      lodash: 4.17.21
+      memoize-one: 6.0.0
+      moment: 2.29.3
+      rc-cascader: 3.5.0_react-dom@18.1.0+react@18.1.0
+      rc-checkbox: 2.3.2_react-dom@18.1.0+react@18.1.0
+      rc-collapse: 3.1.4_react-dom@18.1.0+react@18.1.0
+      rc-dialog: 8.8.1_react-dom@18.1.0+react@18.1.0
+      rc-drawer: 4.4.3_react-dom@18.1.0+react@18.1.0
+      rc-dropdown: 3.5.2_react-dom@18.1.0+react@18.1.0
+      rc-field-form: 1.26.4_react-dom@18.1.0+react@18.1.0
+      rc-image: 5.6.2_react-dom@18.1.0+react@18.1.0
+      rc-input: 0.0.1-alpha.7_react-dom@18.1.0+react@18.1.0
+      rc-input-number: 7.3.4_react-dom@18.1.0+react@18.1.0
+      rc-mentions: 1.7.1_react-dom@18.1.0+react@18.1.0
+      rc-menu: 9.5.5_react-dom@18.1.0+react@18.1.0
+      rc-motion: 2.6.0_react-dom@18.1.0+react@18.1.0
+      rc-notification: 4.6.0_react-dom@18.1.0+react@18.1.0
+      rc-pagination: 3.1.16_react-dom@18.1.0+react@18.1.0
+      rc-picker: 2.6.8_react-dom@18.1.0+react@18.1.0
+      rc-progress: 3.2.4_react-dom@18.1.0+react@18.1.0
+      rc-rate: 2.9.1_react-dom@18.1.0+react@18.1.0
+      rc-resize-observer: 1.2.0_react-dom@18.1.0+react@18.1.0
+      rc-segmented: 2.1.0_react-dom@18.1.0+react@18.1.0
+      rc-select: 14.1.2_react-dom@18.1.0+react@18.1.0
+      rc-slider: 10.0.0_react-dom@18.1.0+react@18.1.0
+      rc-steps: 4.1.4_react-dom@18.1.0+react@18.1.0
+      rc-switch: 3.2.2_react-dom@18.1.0+react@18.1.0
+      rc-table: 7.24.1_react-dom@18.1.0+react@18.1.0
+      rc-tabs: 11.13.0_react-dom@18.1.0+react@18.1.0
+      rc-textarea: 0.3.7_react-dom@18.1.0+react@18.1.0
+      rc-tooltip: 5.1.1_react-dom@18.1.0+react@18.1.0
+      rc-tree: 5.5.0_react-dom@18.1.0+react@18.1.0
+      rc-tree-select: 5.3.0_react-dom@18.1.0+react@18.1.0
+      rc-trigger: 5.2.18_react-dom@18.1.0+react@18.1.0
+      rc-upload: 4.3.3_react-dom@18.1.0+react@18.1.0
+      rc-util: 5.21.2_react-dom@18.1.0+react@18.1.0
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      scroll-into-view-if-needed: 2.2.29
+    dev: false
+
+  /antd/4.20.3_react-dom@18.1.0+react@18.1.0:
+    resolution: {integrity: sha512-liZB/OguxPPNnssiR8UH5gjAV3LetsnA8K0G+VBVJkCZsU5QmCDL05d059Nu6iRD7FVg0drSONZQwvWD4pO4nw==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
