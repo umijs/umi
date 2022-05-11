@@ -1,5 +1,5 @@
 // @ts-ignore
-import ReactDOM from 'react-dom-18/client';
+import ReactDOM from 'react-dom/client';
 import getRootContainer from './getRootContainer';
 import type { IOpts } from './types';
 

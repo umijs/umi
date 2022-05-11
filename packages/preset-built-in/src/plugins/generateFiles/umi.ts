@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { winPath } from '@umijs/utils';
+import { semver, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { renderReactPath, runtimePath } from './constants';
@@ -29,7 +29,11 @@ export default function (api: IApi) {
       type: api.ApplyPluginsType.modify,
       initialValue: renderReactPath,
     });
-    let isReact18 = !!(api.pkg.dependencies || {})['react']?.match(/^\^?18/);
+    const installedReactPath = require.resolve('react-dom/package.json', {
+      paths: [api.cwd],
+    });
+    const installedReact = require(installedReactPath);
+    let isReact18 = semver.satisfies(installedReact.version, '^18');
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
