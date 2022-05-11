@@ -32,11 +32,11 @@ export function createHistory(opts: any) {
 // https://github.com/remix-run/history/blob/dev/docs/api-reference.md#to
 function patchTo(to: any) {
   if (typeof to === 'string') {
-    return `${basename}${to}`;
+    return `${basename}${stripFirstSlash(to)}`;
   } else if (typeof to === 'object' && to.pathname) {
     return {
       ...to,
-      pathname: `${basename}${to.pathname}`,
+      pathname: `${basename}${stripFirstSlash(to.pathname)}`,
     };
   } else {
     throw new Error(`Unexpected to: ${to}`);
@@ -44,7 +44,7 @@ function patchTo(to: any) {
 }
 
 function stripFirstSlash(path) {
-  return path.chatAt(0) === '/' ? path.slice(1) : path;
+  return path.charAt(0) === '/' ? path.slice(1) : path;
 }
 
 export { history };
