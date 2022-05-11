@@ -19,6 +19,9 @@ export default function Layout() {
         <li>
           <Link to="/about">/about</Link>
         </li>
+        <li>
+          <Link to="/class-component">/class-component</Link>
+        </li>
       </ul>
       <button
         onClick={() => {

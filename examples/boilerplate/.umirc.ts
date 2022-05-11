@@ -16,6 +16,10 @@ export default {
       component: 'about',
     },
     {
+      path: '/class-component',
+      component: 'class-component',
+    },
+    {
       path: '*',
       component: '@/components/404',
     },
