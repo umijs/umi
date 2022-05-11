@@ -1,0 +1,15 @@
+{
+  "name": "@example/with-antd",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/plugins": "4.0.0-canary.20220507.2",
+    "antd": "^4.20.3",
+    "umi": "4.0.0-canary.20220507.2"
+  }
+}

@@ -30,7 +30,12 @@ export default (api: IApi) => {
         });
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy({ userConfig }) {
+      // 由于本插件有 api.modifyConfig 的调用，以及 Umi 框架的限制
+      // 在其他插件中通过 api.modifyDefaultConfig 设置 antd 并不能让 api.modifyConfig 生效
+      // 所以这里通过环境变量来判断是否启用
+      return process.env.UMI_PLUGIN_ANTD_ENABLE || userConfig.antd;
+    },
   });
 
   function checkPkgPath() {
@@ -52,6 +57,13 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     checkPkgPath();
 
+    const antd = memo.antd || {};
+    // defaultConfig 的取值在 config 之后，所以改用环境变量传默认值
+    if (process.env.UMI_PLUGIN_ANTD_ENABLE) {
+      const { defaultConfig } = JSON.parse(process.env.UMI_PLUGIN_ANTD_ENABLE);
+      Object.assign(antd, defaultConfig);
+    }
+
     // antd import
     memo.alias.antd = pkgPath;
 
@@ -69,14 +81,12 @@ export default (api: IApi) => {
       };
     }
 
-    return memo;
-  });
-
-  api.modifyConfig((memo) => {
+    // antd theme
     memo.theme = {
       'root-entry-name': 'default',
       ...memo.theme,
     };
+
     return memo;
   });
 
