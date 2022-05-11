@@ -146,8 +146,10 @@ importers:
 
   examples/boilerplate:
     specifiers:
+      hoist-non-react-statics: ^3.3.2
       umi: 4.0.0-canary.20220507.2
     dependencies:
+      hoist-non-react-statics: 3.3.2
       umi: link:../../packages/umi
 
   examples/bug-mfsu-fast-refresh:
