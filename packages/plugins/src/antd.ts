@@ -68,15 +68,15 @@ export default (api: IApi) => {
     memo.alias.antd = pkgPath;
 
     // moment > dayjs
-    if (memo.antd.dayjs) {
+    if (antd.dayjs) {
       memo.alias.moment = dirname(require.resolve('dayjs/package.json'));
     }
 
     // dark mode & compact mode
-    if (memo.antd.dark || memo.antd.compact) {
+    if (antd.dark || antd.compact) {
       const { getThemeVariables } = require('antd/dist/theme');
       memo.theme = {
-        ...getThemeVariables(memo.antd),
+        ...getThemeVariables(antd),
         ...memo.theme,
       };
     }
