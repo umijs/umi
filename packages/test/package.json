@@ -35,7 +35,6 @@
     "identity-obj-proxy": "3.0.0",
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
-    "jest-environment-jsdom-fourteen": "1.0.1",
     "regenerator-runtime": "^0.13.7",
     "whatwg-fetch": "^3.5.0"
   },
