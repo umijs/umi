@@ -1,6 +1,6 @@
 {
   "name": "@umijs/lint",
-  "version": "4.0.0-rc.16",
+  "version": "4.0.0-rc.17",
   "description": "@umijs/lint",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/lint#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -26,7 +26,7 @@
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@typescript-eslint/eslint-plugin": "5.22.0",
     "@typescript-eslint/parser": "5.22.0",
-    "@umijs/babel-preset-umi": "4.0.0-rc.16",
+    "@umijs/babel-preset-umi": "4.0.0-rc.17",
     "eslint-plugin-jest": "26.1.5",
     "eslint-plugin-react": "7.29.4",
     "eslint-plugin-react-hooks": "4.5.0",
