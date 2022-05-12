@@ -32,6 +32,7 @@ export async function addSVGRules(opts: IOpts) {
                 },
               },
             },
+            'prefixIds',
           ],
           ...svgo,
         },
