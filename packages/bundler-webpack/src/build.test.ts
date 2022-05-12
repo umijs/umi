@@ -107,6 +107,7 @@ const expects: Record<string, Function> = {
   svgr({ files }: IOpts) {
     expect(files['static']).toContain(EXISTS);
     expect(files['index.js']).toContain(`.svg`);
+    expect(files['index.js']).toContain(`antd_svg`);
   },
   targets({ files }: IOpts) {
     expect(files['index.js']).toContain(`var foo = 'foo';`);
