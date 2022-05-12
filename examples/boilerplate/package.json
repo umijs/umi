@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "^3.3.2",
-    "umi": "4.0.0-rc.17"
+    "umi": "4.0.0-canary.20220512.1"
   }
 }
