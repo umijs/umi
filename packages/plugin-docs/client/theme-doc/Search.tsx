@@ -95,9 +95,19 @@ export default () => {
           className={cx(
             'absolute transition-all duration-500 top-12 w-96 rounded-lg',
             'cursor-pointer shadow overflow-hidden',
-            result.length > 0 && isFocused ? 'max-h-80' : 'max-h-0',
+            keyword && isFocused ? 'max-h-80' : 'max-h-0',
           )}
         >
+          {keyword && result.length === 0 && (
+            <div>
+              <p
+                className="p-2 bg-white hover:bg-gray-50 transition
+                 duration-300 group-focus:bg-blue-200 dark:bg-gray-700"
+              >
+                {render('No result for')} "{keyword}"
+              </p>
+            </div>
+          )}
           {result.map((r, i) => (
             <components.Link
               to={(isFromPath ? currentLanguage?.locale : '') + r.href}
