@@ -103,6 +103,9 @@ export async function addJavaScriptRules(opts: IOpts) {
       })
       .end(),
   ];
+  srcRules
+    .concat(depRules)
+    .forEach((rule) => rule.resolve.set('fullySpecified', false));
 
   // const prefix = existsSync(join(cwd, 'src')) ? join(cwd, 'src') : cwd;
   const srcTranspiler = userConfig.srcTranspiler || Transpiler.babel;
