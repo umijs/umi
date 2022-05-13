@@ -46,7 +46,7 @@ api.describe({
 注：
 
 - `config.default` 为配置的默认值，用户没有配置时取这个
-- `config.schema` 用于声明配置的类型，基于 [joi](https://hapi.dev/family/joi/)，**如果你希望用户进行配置，这个是必须的**，否则用户的配置无效
+- `config.schema` 用于声明配置的类型，基于 [joi](https://joi.dev/)，**如果你希望用户进行配置，这个是必须的**，否则用户的配置无效
 - `config.onChange` 是 dev 阶段配置被修改后的处理机制，默认会重启 dev 进程，也可以修改为 `api.ConfigChangeType.regenerateTmpFiles` 只重新生成临时文件，还可以通过函数的格式自定义
 - `enableBy` 为启用方式，默认是注册启用，可更改为 `api.EnableBy.config`，还可以用自定义函数的方式决定其启用时机（动态生效）
 
