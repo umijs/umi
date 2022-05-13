@@ -22,16 +22,16 @@ export async function getMarkupArgs(opts: { api: IApi }) {
     key: 'addHTMLStyles',
     initialValue: opts.api.config.styles || [],
   });
-  const favicon = await opts.api.applyPlugins({
+  const favicons = await opts.api.applyPlugins({
     key: 'modifyHTMLFavicon',
-    initialValue: opts.api.config.favicon,
+    initialValue: [].concat(opts.api.config.favicons || []),
   });
   return {
     mountElementId: opts.api.config.mountElementId,
     base:
       opts.api.config.history?.type === 'browser' ? opts.api.config.base : '/',
     routes: opts.api.appData.routes,
-    favicon,
+    favicons,
     headScripts,
     scripts,
     metas,

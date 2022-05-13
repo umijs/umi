@@ -315,17 +315,17 @@ export default {
 
 配置额外的 postcss 插件。
 
-## favicon
+## favicons
 
-* 类型：`string`
+* 类型：`string[]`
 * 默认值：`null`
 
-配置 favicon 路径。可以是绝对路径，也可以是基于项目根目录的相对路径。
+支持配置多个 favicon 文件。配置 favicons 路径，可以是绝对路径，也可以是基于项目根目录的相对路径。
 
 比如：
 
 ```js
-favicon: '/assets/favicon.ico'
+favicons: ['/assets/favicon.ico']
 ```
 
 HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />`。

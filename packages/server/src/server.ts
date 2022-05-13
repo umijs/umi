@@ -20,7 +20,7 @@ export interface IOpts {
   links?: Record<string, string>[];
   metas?: Record<string, string>[];
   styles?: (Record<string, string> | string)[];
-  favicon?: string;
+  favicons?: string[];
   title?: string;
   headScripts?: (Record<string, string> | string)[];
   scripts?: (Record<string, string> | string)[];
@@ -84,9 +84,12 @@ export async function getMarkup(
     return `<${opts.tagName} ${attrs} />`;
   }
 
-  const favicon = opts.favicon
-    ? `<link rel="shortcut icon" href="${opts.favicon}">`
-    : '';
+  const favicons: string[] = [];
+  if (Array.isArray(opts.favicons)) {
+    opts.favicons.forEach((e) => {
+      favicons.push(`<link rel="shortcut icon" href="${e}">`);
+    });
+  }
   const title = opts.title ? `<title>${opts.title}</title>` : '';
   const metas = (opts.metas || []).map((meta) =>
     getTagContent({ attrs: meta, tagName: 'meta' }),
@@ -110,7 +113,7 @@ export async function getMarkup(
 />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />`,
     metas.join('\n'),
-    favicon,
+    favicons.join('\n'),
     title,
     links.join('\n'),
     styles.join('\n'),
