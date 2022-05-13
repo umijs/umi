@@ -46,6 +46,9 @@ const expects: Record<string, Function> = {
   'css-side-effects'({ files }: IOpts) {
     expect(files['index.css']).toContain(`color: red;`);
   },
+  'fully-specified'({ files }: IOpts) {
+    expect(files['index.js']).toContain(`console.log("a")`);
+  },
   define({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("1");`);
     expect(files['index.js']).toContain(`console.log("2");`);
