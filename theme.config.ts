@@ -83,6 +83,7 @@ export default {
             'max/access',
             'max/i18n',
             'max/micro-frontend',
+            'max/dva',
             'max/bacon',
           ],
         },
