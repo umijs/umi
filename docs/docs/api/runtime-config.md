@@ -1,83 +1,170 @@
 # 运行时配置
 
-运行时配置和配置的区别在于它跑在浏览器端，而配置则是在构建时完成。因此你可以在运行时配置里写函数、jsx、import 浏览器端的依赖等等，注意不要引入 node 端的依赖。
+运行时配置和配置的区别是他跑在浏览器端，基于此，我们可以在这里写函数、tsx、import 浏览器端依赖等等，注意不要引入 node 依赖。
 
 ## 配置方式
-约定 `src/app.tsx` 为运行时配置，通过 export 来进行配置。
+
+约定 `src/app.tsx` 为运行时配置。
 
 ## 配置项
 
-### patchRoutes(\{ routes \})
+> 以下配置项按字母排序。
 
-修改路由。
+### dva
+
+如果你使用的 dva，那么支持配置 dva 插件的运行时配置，具体参考[插件配置](../max/dva)。
+
+### getInitialState
+
+定义初始化数据。通常为了提供给内置布局功能和权限相关用户信息，我们需要在应用启动的最初阶段请求一些初始化数据，在 Bigfish 中，我们内置了插件 `initial-state`，该插件暴露一个运行时配置 `getInitialState`，该配置接收一个方法，你需要通过该方法返回相关数据，例如：
 
 ```ts
-export function patchRoutes({ routes }) {
-  for (let key of routes){
-    // do something
+// src/app.ts(x)
+export async function getInitialState() {
+  return {
+    userName: '用户名',
+    userId: '用户 ID',
+  };
+}
+```
+
+### layout
+
+修改[内置布局](../guides/layout-menu)的配置，比如配置退出登陆、自定义导航暴露的渲染区域等。
+
+> 注意：需要开启 [layout](../api/config#layout) 插件，才能使用它的运行时配置。
+
+```js
+export const layout = {
+  logout: () => {}, // do something
+};
+```
+
+更多具体配置参考[插件文档](../max/layout-menu#运行时配置)。
+
+### modifyClientRenderOpts(fn)
+
+修改 clientRender 参数。
+
+比如在微前端里动态修改渲染根节点：
+
+```js
+let isSubApp = false;
+export function modifyClientRenderOpts(memo) {
+  return {
+    ...memo,
+    rootElement: isSubApp ? 'sub-root' : memo.rootElement,
+  };
+}
+```
+
+### onRouteChange(\{ routes, matchedRoutes, location, action \})
+
+在初始加载和路由切换时做一些事情。
+
+比如用于做埋点统计，
+
+```bash
+export function onRouteChange({ location, routes, action }) {
+  bacon(location.pathname);
+}
+```
+
+比如用于设置标题，
+
+```bash
+export function onRouteChange({ matchedRoutes }) {
+  if (matchedRoutes.length) {
+    document.title = matchedRoutes[matchedRoutes.length - 1].route.title || '';
   }
 }
 ```
 
+### patchRoutes(\{ routes \})
+
+### patchClientRoutes(\{ routes \})
+
+修改路由。
+
+比如在最前面添加一个 `/foo` 路由，
+
+```bash
+export function patchRoutes({ routes }) {
+  routes.unshift({
+    path: '/foo',
+    exact: true,
+    component: require('@/extraRoutes/foo').default,
+  });
+}
+```
+
+比如和 `render` 配置配合使用，请求服务端根据响应动态更新路由，
+
+```bash
+let extraRoutes;
+
+export function patchRoutes({ routes }) {
+  merge(routes, extraRoutes);
+}
+
+export function render(oldRender) {
+  fetch('/api/routes').then(res=>res.json()).then((res) => {
+    extraRoutes = res.routes;
+    oldRender();
+  })
+}
+```
+
 注意：
-- 在 function 中直接修改 routes 即可，不需要返回
-- `umi@4` 相较于 `umi@3`， routes 结构发生了变化
 
+- 直接修改 routes，不需要返回
 
-### render(oldRender)
+### qiankun
+
+Bigfish 内置了 `qiankun` 插件来提供微前端的能力，具体参考[插件配置](../max/micro-frontend)。
+
+### render(oldRender: `Function`)
+
 覆写 render。
 
-e.g.
-```ts
-export function render(oldRender){
-  fetch('/api/auth').then(
-    auth => {
-      if(auth.isLogin) oldRender()
-      else{
-        history.push('./login');
-        oldRender();
-      }
+比如用于渲染之前做权限校验，
+
+```bash
+import { history } from 'umi';
+
+export function render(oldRender) {
+  fetch('/api/auth').then(auth => {
+    if (auth.isLogin) { oldRender() }
+    else {
+      history.push('/login');
+      oldRender()
     }
-  )
-}
-```
-该例子的目的是在渲染之前做权限校验。
-
-### onRouteChange(\{ routes, clientRoutes, location, action \})
-
-在初始加载和路由切换时做一些事情。
-
-比如用于埋点统计
-```ts
-export function onRouteChange({location}){
-  bacon(location.name)
+  });
 }
 ```
 
-### rootContainer(container)
+### request
+
+如果你使用了 `import { request } from 'umi';` 来请求数据，那么你可以通过该配置来自定义中间件、拦截器、错误处理适配等。具体参考 [request](../max/request) 插件配置。
+
+### rootContainer(lastRootContainer, args)
+
 修改交给 react-dom 渲染时的根组件。
 
-比如用于在外面包一个 Provider
-```ts
+比如用于在外面包一个 Provider，
+
+```js
 export function rootContainer(container) {
   return React.createElement(ThemeProvider, null, container);
 }
 ```
 
-### provider
+args 包含：
 
-`umi@4` 提供了5个 provider 供用户使用，按照优先级从低到高的顺序排列分别是
-- innerProvider 暂无明确含义
-- i18nProvider 用于国际化的 provider
-- accessProvider 用于权限的 provider
-- dataflowProvider 用于数据流的 provider
-- outerProvider 暂无明确含义
+- routes，全量路由配置
+- plugin，运行时插件机制
+- history，history 实例
 
-另外 rootContainer 的优先级最高。
+## 更多配置
 
-它们的使用方法同 rootContainer 相同，都用来修改根组件。提供这些不同的接口主要是让开发者能够更加有序且方便的管理自己的 provider ，避免使用 rootContainer 来添加所有的 provider。在使用过程中注意它们的顺序，优先级低的 provider 先执行，同时也会被包裹在最外层。
-
-## 插件提供的运行时配置
-
-Umi 允许插件注册运行时配置，如果你使用的插件有提供运行时配置，可以在该插件的文档中进行查看。
-
+Umi 允许插件注册运行时配置，如果你使用插件，肯定会在插件里找到更多运行时的配置项。

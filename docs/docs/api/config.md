@@ -4,15 +4,19 @@
 
 ## alias
 
-* 类型：`Record<string, string>`
-* 默认值：`{}`
+- 类型：`Record<string, string>`
+- 默认值：`{}`
 
 配置别名，对 import 语句的 source 做隐射。
 
 比如：
 
 ```js
-{ alias: { foo: '/tmp/to/foo' } }
+{
+  alias: {
+    foo: '/tmp/to/foo';
+  }
+}
 ```
 
 然后代码里 `import 'foo'` 实际上会 `import '/tmp/to/foo'`。
@@ -23,33 +27,49 @@
 
 ```js
 // ⛔
-{ alias: { foo: 'foo' } }
+{
+  alias: {
+    foo: 'foo';
+  }
+}
 
 // ✅
-{ alias: { foo: require.resolve('foo') } }
+{
+  alias: {
+    foo: require.resolve('foo');
+  }
+}
 ```
 
 2、如果不需要子路径也被隐射，记得加 `$` 后缀，比如
 
 ```js
 // import 'foo/bar' 会被隐射到 import '/tmp/to/foo/bar'
-{ alias: { foo: '/tmp/to/foo' } }
+{
+  alias: {
+    foo: '/tmp/to/foo';
+  }
+}
 
 // import 'foo/bar' 还是 import 'foo/bar'，不会被修改
-{ alias: { foo$: '/tmp/to/foo' } }
+{
+  alias: {
+    foo$: '/tmp/to/foo';
+  }
+}
 ```
 
 ## autoprefixer
 
-* 类型：`object`
-* 默认值：`{ flexbox: 'no-2009' }`
+- 类型：`object`
+- 默认值：`{ flexbox: 'no-2009' }`
 
 设置 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
 
 ## base
 
-* 类型：`string`
-* 默认值：`/`
+- 类型：`string`
+- 默认值：`/`
 
 设置路由 base，部署项目到非根目录下时使用。
 
@@ -57,37 +77,37 @@
 
 ## chainWebpack
 
-* 类型：`(memo, args) => void`
-* 默认值：`null`
+- 类型：`(memo, args) => void`
+- 默认值：`null`
 
 用链式编程的方式修改 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
 
 参数中，
 
-* `memo` 是现有 webpack 配置
-* `args` 包含一些额外信息和辅助对象，目前有 `env` 和 `webpack`。`env` 为当前环境，值为 `development` 或 `production`；`webpack` 为 webpack 对象，可从中获取 webpack 内置插件等
+- `memo` 是现有 webpack 配置
+- `args` 包含一些额外信息和辅助对象，目前有 `env` 和 `webpack`。`env` 为当前环境，值为 `development` 或 `production`；`webpack` 为 webpack 对象，可从中获取 webpack 内置插件等
 
 示例，
 
 ```js
 export default {
   chainWebpack(memo, { env, webpack }) {
-  	// 设置 alias
-  	memo.resolve.alias.set('foo', '/tmp/to/foo');
-  	
-  	// 添加额外插件
-  	memo.plugin('hello').use(Plugin, [...args]);
-  	
-  	// 删除 Umi 内置插件
-  	memo.plugins.delete('hmr');
-  }
-}
+    // 设置 alias
+    memo.resolve.alias.set('foo', '/tmp/to/foo');
+
+    // 添加额外插件
+    memo.plugin('hello').use(Plugin, [...args]);
+
+    // 删除 Umi 内置插件
+    memo.plugins.delete('hmr');
+  },
+};
 ```
 
 ## conventionRoutes
 
-* 类型：`{ base: string; exclude: RegExp[] }`
-* 默认值：`null`
+- 类型：`{ base: string; exclude: RegExp[] }`
+- 默认值：`null`
 
 约定式路由相关配置。
 
@@ -98,14 +118,14 @@ export default {
 ```js
 // 不识别 components 和 models 目录下的文件为路由
 conventionRoutes: {
-  exclude: [/\/components\//, /\/models\//]
+  exclude: [/\/components\//, /\/models\//];
 }
 ```
 
 ## copy
 
-* 类型：`string[]`
-* 默认值：`[]`
+- 类型：`string[]`
+- 默认值：`[]`
 
 配置要复制到输出目录的文件或文件夹。
 
@@ -122,7 +142,7 @@ conventionRoutes: {
 然后设置，
 
 ```js
-copy: ['foo.js', 'bar']
+copy: ['foo.js', 'bar'];
 ```
 
 编译完成后，会额外输出以下文件，
@@ -136,8 +156,8 @@ copy: ['foo.js', 'bar']
 
 ## crossorigin
 
-* 类型：`{ includes?: string[] }`
-* 默认值：`false`
+- 类型：`{ includes?: string[] }`
+- 默认值：`false`
 
 配置 script 标签的 crossorigin。如果有声明，会为本地 script 加上 crossorigin="anonymous" 的属性。
 
@@ -152,15 +172,15 @@ crossorigin: {}
 然后输出的 HTML 中会有这些变化，
 
 ```diff
-- 
+-
 <script src="/umi.js"></script>
-+ 
++
 <script src="/umi.js" crossorigin="anonymous"></script>
 ```
 ## cssMinifier
 
-* 类型：`string` 可选的值：`esbuild`, `cssnano`, `parcelCSS`, `none`
-* 默认值：`esbuild`
+- 类型：`string` 可选的值：`esbuild`, `cssnano`, `parcelCSS`, `none`
+- 默认值：`esbuild`
 
 配置构建时使用的 CSS 压缩工具; `none` 表示不压缩。
 
@@ -192,14 +212,14 @@ crossorigin: {}
 
 对应 CSS 压缩的配置请查看对应的文档。
 
-* [esbuild 参考](https://esbuild.github.io/api/#minify)
-* [cssnano 参考](https://cssnano.co/docs/config-file/)
-* [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
+- [esbuild 参考](https://esbuild.github.io/api/#minify)
+- [cssnano 参考](https://cssnano.co/docs/config-file/)
+- [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
 
 ## deadCode
 
-* 类型：`{}`
-* 默认值：`false`
+- 类型：`{}`
+- 默认值：`false`
 
 检测未使用的文件和导出，仅在 build 阶段开启。
 
@@ -221,8 +241,8 @@ Warning: There are 3 unused files:
 
 ## define
 
-* 类型：`Record<string, string>`
-* 默认值：`{ process.env.NODE_ENV: 'development' | 'production' }`
+- 类型：`Record<string, string>`
+- 默认值：`{ process.env.NODE_ENV: 'development' | 'production' }`
 
 设置代码中的可用变量。
 
@@ -238,30 +258,30 @@ define: { FOO: 'bar' }
 
 ## devtool
 
-* 类型：`string`
-* 默认值：dev 时默认 `cheap-module-source-map`，build 时候默认无 sourcemap
+- 类型：`string`
+- 默认值：dev 时默认 `cheap-module-source-map`，build 时候默认无 sourcemap
 
 设置 sourcemap 生成方式。
 
 常见可选值有：
 
-* `eval`，最快的类型，缺点是不支持低版本浏览器
-* `source-map`，最慢但最全的类型
+- `eval`，最快的类型，缺点是不支持低版本浏览器
+- `source-map`，最慢但最全的类型
 
 示例，
 
 ```js
 // 关闭 dev 阶段的 sourcemap 生成
-devtool: false
+devtool: false;
 
 // 只设置 dev 阶段的 sourcemap
-devtool: process.env.NODE_ENV === 'development' ? 'eval' : false
+devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 ```
 
 ## externals
 
-* 类型：`Record<string, string> | Function`
-* 默认值：`{}`
+- 类型：`Record<string, string> | Function`
+- 默认值：`{}`
 
 设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 scripts 或 headScripts 配置使用。
 
@@ -287,7 +307,6 @@ export default {
   extraBabelIncludes: [
     // 支持绝对路径
     join(__dirname, '../../common'),
-
     // 支持 npm 包
     'react-monaco-editor',
   ],
@@ -296,22 +315,22 @@ export default {
 
 ## extraBabelPlugins
 
-* 类型：`string[] | Function`
-* 默认值：`[]`
+- 类型：`string[] | Function`
+- 默认值：`[]`
 
 配置额外的 babel 插件。可传入插件地址或插件函数。
 
 ## extraBabelPresets
 
-* 类型：`string[] | Function`
-* 默认值：`[]`
+- 类型：`string[] | Function`
+- 默认值：`[]`
 
 配置额外的 babel 插件集。可传入插件集地址或插件集函数。
 
 ## extraPostCSSPlugins
 
-* 类型：`PostCSSPlugin[]`
-* 默认值：`[]`
+- 类型：`PostCSSPlugin[]`
+- 默认值：`[]`
 
 配置额外的 postcss 插件。
 
@@ -332,15 +351,15 @@ HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/f
 
 ## forkTSChecker
 
-* 类型：`object`
-* 默认值：`null`
+- 类型：`object`
+- 默认值：`null`
 
 开启 TypeScript 的类型检查。基于 fork-ts-checker-webpack-plugin，配置项可参考 [fork-ts-checker-webpack-plugin 的 Options](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options)。
 
 ## hash
 
-* 类型：`boolean`
-* 默认值：`false`
+- 类型：`boolean`
+- 默认值：`false`
 
 开启 hash 模式，让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
 
@@ -358,22 +377,22 @@ HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/f
 
 ## headScripts
 
-* 类型：`string[] | Script[]`
-* 默认值：`[]`
+- 类型：`string[] | Script[]`
+- 默认值：`[]`
 
 配置 `<head>` 中的额外 script。
 
 比如，
 
 ```js
-headScripts: [`alert(1);`, `https://a.com/b.js`]
+headScripts: [`alert(1);`, `https://a.com/b.js`];
 ```
 
 会生成 HTML，
 
 ```html
 <script>
-    alert(1);
+  alert(1);
 </script>
 <script src="https://a.com/b.js"></script>
 ```
@@ -382,22 +401,22 @@ headScripts: [`alert(1);`, `https://a.com/b.js`]
 
 ```js
 headScripts: [
-    { src: '/foo.js', defer: true },
-    { content: `alert('你好');`, charset: 'utf-8' },
-]
+  { src: '/foo.js', defer: true },
+  { content: `alert('你好');`, charset: 'utf-8' },
+];
 ```
 
 ## history
 
-* 类型：`{ type: 'browser' | 'hash' | 'memory' }`
-* 默认值：`{ type: 'browser' }`
+- 类型：`{ type: 'browser' | 'hash' | 'memory' }`
+- 默认值：`{ type: 'browser' }`
 
 设置路由 history 类型。
 
 ## https
 
-* 类型：`{ cert: string; key: string; hosts: string[] }`
-* 默认值：`{ hosts: ['127.0.0.1', 'localhost'] }`
+- 类型：`{ cert: string; key: string; hosts: string[] }`
+- 默认值：`{ hosts: ['127.0.0.1', 'localhost'] }`
 
 开启 dev 的 https 模式。
 
@@ -406,13 +425,14 @@ headScripts: [
 示例，
 
 ```js
-https: {}
+https: {
+}
 ```
 
 ## ignoreMomentLocale
 
-* 类型：`boolean`
-* 默认值：`true`
+- 类型：`boolean`
+- 默认值：`true`
 
 忽略 moment 的 locale 文件，用于减少产物尺寸。
 
@@ -420,15 +440,15 @@ https: {}
 
 ## inlineLimit
 
-* 类型：`number`
-* 默认值：`10000` (10k)
+- 类型：`number`
+- 默认值：`10000` (10k)
 
 配置图片文件是否走 base64 编译的阈值。默认是 10000 字节，少于他会被编译为 base64 编码，否则会生成单独的文件。
 
 ## jsMinifier (webpack)
 
-* 类型：`string`，可选值 `esbuild`, `terser`, `swc`, `esbuild`, `uglifyJs`, `none`
-* 默认值：`esbuild`
+- 类型：`string`，可选值 `esbuild`, `terser`, `swc`, `esbuild`, `uglifyJs`, `none`
+- 默认值：`esbuild`
 
 配置构建时压缩 JavaScript 的工具；`none`表示不压缩。
 
@@ -442,8 +462,8 @@ https: {}
 
 ## jsMinifierOptions
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 `jsminifier` 的配置项。
 
@@ -461,10 +481,10 @@ https: {}
 
 配置项需要和所使用的工具对应，具体参考对应文档：
 
-* [esbuild 参考](https://esbuild.github.io/api/#minify)
-* [terser 参考](https://terser.org/docs/api-reference#minify-options)
-* [swc 参考](https://swc.rs/docs/configuration/minification#configuration)
-* [uglifyJs 参考](https://lisperator.net/uglifyjs/compress)
+- [esbuild 参考](https://esbuild.github.io/api/#minify)
+- [terser 参考](https://terser.org/docs/api-reference#minify-options)
+- [swc 参考](https://swc.rs/docs/configuration/minification#configuration)
+- [uglifyJs 参考](https://lisperator.net/uglifyjs/compress)
 
 {
 /*
@@ -478,30 +498,28 @@ https: {}
 
 ## lessLoader
 
-* 类型：`Object`
-* 默认值：`{ modifyVars: userConfig.theme, javascriptEnabled: true }`
+- 类型：`Object`
+- 默认值：`{ modifyVars: userConfig.theme, javascriptEnabled: true }`
 
 设置 less-loader 的 Options。具体参考参考 [less-loader 的 Options](https://github.com/webpack-contrib/less-loader#lessoptions)。
 
 ## links
 
-* 类型：`Link[]`
-* 默认值：`[]`
+- 类型：`Link[]`
+- 默认值：`[]`
 
 配置额外的 link 标签。
 
 示例，
 
 ```js
-links: [
-  { href: '/foo.css', rel: 'preload' },
-]
+links: [{ href: '/foo.css', rel: 'preload' }];
 ```
 
 ## manifest
 
-* 类型：`{ fileName: string; basePath: string }`
-* 默认值：`null`
+- 类型：`{ fileName: string; basePath: string }`
+- 默认值：`null`
 
 开启 build 时生成额外的 manifest 文件，用于描述产物。
 
@@ -511,8 +529,8 @@ links: [
 
 ## metas
 
-* 类型：`Meta[]`
-* 默认值：`[]`
+- 类型：`Meta[]`
+- 默认值：`[]`
 
 配置额外的 meta 标签。
 
@@ -522,7 +540,7 @@ links: [
 metas: [
   { name: 'keywords', content: 'umi, umijs' },
   { name: 'description', content: 'React framework.' },
-]
+];
 ```
 
 会生成以下 HTML，
@@ -534,8 +552,8 @@ metas: [
 
 ## mfsu
 
-* 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; chainWebpack: (memo, args) => void; runtimePublicPath: boolean; }`
-* 默认值：`{ mfName: 'mf' }`
+- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; chainWebpack: (memo, args) => void }`
+- 默认值：`{ mfName: 'mf' }`
 
 配置基于 Module Federation 的提速功能。
 
@@ -545,10 +563,12 @@ metas: [
 
 ```js
 // 用 esbuild 做依赖预编译
-mfsu: { esbuild: true }
+mfsu: {
+  esbuild: true;
+}
 
 // 关闭 mfsu 功能
-mfsu: false
+mfsu: false;
 ```
 
 ```js
@@ -556,7 +576,7 @@ mfsu: false
 mfsu: {
   chainWebpack(memo, args) {
     // 添加额外插件
-  	memo.plugin('hello').use(Plugin, [...args]);
+    memo.plugin('hello').use(Plugin, [...args]);
     return memo;
   }
 }
@@ -566,8 +586,8 @@ mfsu: {
 
 ## mock
 
-* 类型：`{ exclude: string[], include: string[] }`
-* 默认值：`{}`
+- 类型：`{ exclude: string[], include: string[] }`
+- 默认值：`{}`
 
 配置 mock 功能。
 
@@ -578,7 +598,7 @@ mfsu: {
 ```js
 // 让所有 pages 下的 _mock.ts 文件成为 mock 文件
 mock: {
-  include: ['src/pages/**/_mock.ts']
+  include: ['src/pages/**/_mock.ts'];
 }
 ```
 
@@ -586,21 +606,21 @@ mock: {
 
 ## mountElementId
 
-* 类型：`string`
-* 默认值：`'root'`
+- 类型：`string`
+- 默认值：`'root'`
 
 配置 react 组件树渲染到 HTML 中的元素 id。
 
 示例，
 
 ```js
-mountElementId: 'container'
+mountElementId: 'container';
 ```
 
 ## monorepoRedirect
 
-* 类型：`{ srcDir?: string[], exclude?: RegExp[] }`
-* 默认值：`false`
+- 类型：`{ srcDir?: string[], exclude?: RegExp[] }`
+- 默认值：`false`
 
 在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
 
@@ -610,17 +630,22 @@ mountElementId: 'container'
 
 ```js
 // 默认重定向到子包的 src 文件夹
-monorepoRedirect: {}
+monorepoRedirect: {
+}
 // 优先定向到 libs 文件夹
-monorepoRedirect: { srcDir: ['libs', 'src'] }
+monorepoRedirect: {
+  srcDir: ['libs', 'src'];
+}
 // 不重定向 @scope/* 的子包
-monorepoRedirect: { exclude: [/^@scope\/.+/] }
+monorepoRedirect: {
+  exclude: [/^@scope\/.+/];
+}
 ```
 
 ## outputPath
 
-* 类型：`string`
-* 默认值：`dist`
+- 类型：`string`
+- 默认值：`dist`
 
 配置输出路径。
 
@@ -628,8 +653,8 @@ monorepoRedirect: { exclude: [/^@scope\/.+/] }
 
 ## plugins
 
-* 类型：`string[]`
-* 默认值：`[]`
+- 类型：`string[]`
+- 默认值：`[]`
 
 配置额外的 Umi 插件。
 
@@ -650,8 +675,8 @@ plugins: [
 
 ## polyfill
 
-* 类型：`{ imports: string[] }`
-* 默认值：`{}`
+- 类型：`{ imports: string[] }`
+- 默认值：`{}`
 
 设置按需引入的 polyfill。默认全量引入。
 
@@ -659,7 +684,7 @@ plugins: [
 
 ```js
 polyfill: {
-  imports: ['core-js/stable']
+  imports: ['core-js/stable'];
 }
 ```
 
@@ -667,10 +692,7 @@ polyfill: {
 
 ```js
 polyfill: {
-  imports: [
-    'core-js/features/promise/try',
-    'core-js/proposals/math-extensions',
-  ]
+  imports: ['core-js/features/promise/try', 'core-js/proposals/math-extensions'];
 }
 ```
 
@@ -678,15 +700,15 @@ polyfill: {
 
 ## postcssLoader
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 设置 [postcss-loader 的配置项](https://github.com/webpack-contrib/postcss-loader#options)。
 
 ## presets
 
-* 类型：`string[]`
-* 默认值：`[]`
+- 类型：`string[]`
+- 默认值：`[]`
 
 配置额外的 Umi 插件集。
 
@@ -707,8 +729,8 @@ plugins: [
 
 ## proxy
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 配置代理功能。
 
@@ -730,43 +752,43 @@ proxy: {
 
 ## publicPath
 
-* 类型：`string`
-* 默认值：`/`
+- 类型：`string`
+- 默认值：`/`
 
 配置 webpack 的 publicPath。
 
 ## routes
 
-* 类型：`Route[]`
-* 默认值：`[]`
+- 类型：`Route[]`
+- 默认值：`[]`
 
 配置路由。
 
 ## runtimePublicPath
 
-* 类型：`boolean`
-* 默认值：`false`
+- 类型：`boolean`
+- 默认值：`false`
 
 启用运行时 publicPath。
 
 ## scripts
 
-* 类型：`string[] | Script[]`
-* 默认值：`[]`
+- 类型：`string[] | Script[]`
+- 默认值：`[]`
 
 配置 `<body>` 中额外的 script 标签。
 
 比如，
 
 ```js
-scripts: [`alert(1);`, `https://a.com/b.js`]
+scripts: [`alert(1);`, `https://a.com/b.js`];
 ```
 
 会生成 HTML，
 
 ```html
 <script>
-    alert(1);
+  alert(1);
 </script>
 <script src="https://a.com/b.js"></script>
 ```
@@ -775,22 +797,22 @@ scripts: [`alert(1);`, `https://a.com/b.js`]
 
 ```js
 scripts: [
-    { src: '/foo.js', defer: true },
-    { content: `alert('你好');`, charset: 'utf-8' },
-]
+  { src: '/foo.js', defer: true },
+  { content: `alert('你好');`, charset: 'utf-8' },
+];
 ```
 
 ## styleLoader
 
-* 类型：`object`
-* 默认值：`false`
+- 类型：`object`
+- 默认值：`false`
 
 启用 style loader 功能，让 CSS 内联在 JS 中，不输出额外的 CSS 文件。
 
 ## styles
 
-* 类型：`string[]`
-* 默认值：`[]`
+- 类型：`string[]`
+- 默认值：`[]`
 
 配置额外的 CSS。
 
@@ -799,7 +821,7 @@ scripts: [
 比如：
 
 ```js
-styles: [`body { color: red; }`, `https://a.com/b.css`]
+styles: [`body { color: red; }`, `https://a.com/b.css`];
 ```
 
 会生成以下 HTML，
@@ -815,8 +837,8 @@ styles: [`body { color: red; }`, `https://a.com/b.css`]
 
 ## targets
 
-* 类型：`object`
-* 默认值：`{ chrome: 87 }`
+- 类型：`object`
+- 默认值：`{ chrome: 87 }`
 
 配置需要兼容的浏览器最低版本。Umi 会根据这个自定引入 polyfill、配置 autoprefixer 和做语法转换等。
 
@@ -824,13 +846,15 @@ styles: [`body { color: red; }`, `https://a.com/b.css`]
 
 ```js
 // 兼容 ie11
-targets: { ie: 11 }
+targets: {
+  ie: 11;
+}
 ```
 
 ## theme
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 配置 less 变量主题。
 
@@ -842,15 +866,15 @@ theme: { '@primary-color': '#1DA57A' }
 
 ## title
 
-* 类型：`string`
-* 默认值：`null`
+- 类型：`string`
+- 默认值：`null`
 
 配置全局页面 title，暂时只支持静态的 Title。
 
 ## verifyCommit
 
-* 类型：`{ scope: string[]; allowEmoji: boolean }`
-* 默认值：`{}`
+- 类型：`{ scope: string[]; allowEmoji: boolean }`
+- 默认值：`{}`
 
 针对 verify-commit 命令的配置项。
 
@@ -863,11 +887,10 @@ verifyCommit: {
 }
 ```
 
-
 ## vite
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 开发者的配置会 merge 到 vite 的 [默认配置](https://vitejs.dev/config/)。
 
@@ -876,6 +899,6 @@ verifyCommit: {
 ```js
 // 更改临时文件路径到 node_modules/.bin/.vite 文件夹
 vite: {
-    cacheDir:'node_modules/.bin/.vite'
-  }
+  cacheDir: 'node_modules/.bin/.vite';
+}
 ```

@@ -287,7 +287,7 @@ function Dashboard() {
 }
 ```
 
-### terminal 
+### terminal
 
 `terminal` 用于在开发阶段在浏览器向 node 终端输出日志的工具。
 
@@ -299,7 +299,7 @@ terminal.log('i am log level');
 terminal.warn('i am warn level');
 terminal.error('i am error level');
 ```
-注意 `terminal` 只在环境变量 `NODE_ENV` 非 `production` 时生效；在 Umi 的构建产物中对应的日志调用函数不会有任何作用，所以可以不必删除对 `terminal` 的代码。
+注意 `terminal` 只在环境变量 `NODE_ENV` 非 `production` 时生效；在 Umi 的构建产物中对应的日志调用函数不会有任何作用，所以可以不必删除调用 `terminal` 的代码。
 
 ### useAppData
 

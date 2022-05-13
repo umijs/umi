@@ -1,36 +1,44 @@
 # 请求
 
-`@umijs/max` 内置了插件 `plugin-request`。 它基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
+`@umijs/max` 内置了插件方案。它基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
-可以通过 `import { request, useRequest } from '@umijs/max'` 来直接使用。
+```js
+import { request, useRequest } from '@alipay/bigfish';
+
+request;
+useRequest;
+```
 
 ## 配置
 ### 构建时配置
-```typescript
+```js
 export default {
   request: {
     dataField: 'data'
   },
 };
 ```
-构建时配置可以为 useRequest 配置 `dataField` ，该配置的默认值是 `data`。该配置的主要目的是方便 useRequest 直接消费数据。如果你想要在消费数据时拿到后端的原始数据，需要在这里配置 `dataField` 为 `''` 
+
+构建时配置可以为 useRequest 配置 `dataField` ，该配置的默认值是 `data`。该配置的主要目的是方便 useRequest 直接消费数据。如果你想要在消费数据时拿到后端的原始数据，需要在这里配置 `dataField` 为 `''` 。
 
 比如你的后端返回的数据格式如下。
-```ts
+
+```js
 {
   success: true,
   data: 123,
   code: 1,
 }
 ```
-那么 useRequest 就可以直接消费 `data`。其值为 123，而不是 `{ success, data, code }` 
 
+那么 useRequest 就可以直接消费 `data`。其值为 123，而不是 `{ success, data, code }` 。
 
 ### 运行时配置
+
 在 `src/app.ts` 中你可以通过配置 request 项，来为你的项目进行统一的个性化的请求设定。
 
-```typescript
-import type { RequestConfig } from '@@/plugin-request';
+```ts
+import type { RequestConfig } from 'umi';
 
 export const request: RequestConfig = {
   timeout: 1000,
@@ -45,7 +53,8 @@ export const request: RequestConfig = {
   responseInterceptors: []
 };
 ```
-除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest`  **方法.** 
+
+除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest`  **方法.**。
 
 下面分别介绍 `plugin-request` 的运行时配置项。本节的末尾，我们会给出一个完整的运行时配置示例，并且对它的功能进行一个详细的描述。
 
@@ -120,7 +129,7 @@ const request: RequestConfig = {
 ### useRequest
 插件内置了 [@ahooksjs/useRequest](https://ahooks-v2.surge.sh/hooks/async) ，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
 ```typescript
-import { useRequest } from '@umijs/max';
+import { useRequest } from 'umi';
 
 export default () => {
   const { data, error, loading } = useRequest(() => {
@@ -169,7 +178,7 @@ request 默认返回的是你后端的数据，如果你想要拿到 axios 完�
 ### RequestConfig
 这是一个接口的定义，可以帮助你更好地配置运行时配置。
 ```typescript
-import type { RequestConfig } from '@umijs/max';
+import type { RequestConfig } from 'umi';
 
 export const request:RequestConfig = {};
 ```
@@ -352,4 +361,4 @@ export const request: RequestConfig = {
 
 上面的例子中的错误处理方案来自于 `umi@3` 的内置错误处理。在这个版本中，我们把它删除了，以方便用户更加自由地定制错误处理方案。如果你仍然想要使用它，可以将这段运行时配置粘贴到你的项目中。
 
-你也可以通过写响应拦截器的方式来进行自己的错误处理，**不一定局限于 errorConfig**
+你也可以通过写响应拦截器的方式来进行自己的错误处理，**不一定局限于 errorConfig**。
