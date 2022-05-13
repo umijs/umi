@@ -103,7 +103,7 @@ export type IApi = PluginAPI &
       }): void;
     };
     modifyHTML: IModify<CheerioAPI, { path: string }>;
-    modifyHTMLFavicon: IModify<string, {}>;
+    modifyHTMLFavicon: IModify<string[], {}>;
     modifyRendererPath: IModify<string, {}>;
     modifyRoutes: IModify<Record<string, IRoute>, {}>;
     modifyViteConfig: IModify<

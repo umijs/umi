@@ -13,8 +13,8 @@ const FAVICON_FILES = [
   'favicon.webp',
 ];
 
-function getFaviconFile(p: string): string | undefined {
-  return FAVICON_FILES.find((f) => existsSync(join(p, f)));
+function getFaviconFiles(p: string): string[] | undefined {
+  return FAVICON_FILES.filter((f) => existsSync(join(p, f)));
 }
 
 export default (api: IApi) => {
@@ -26,39 +26,45 @@ export default (api: IApi) => {
 
   api.modifyAppData(async (memo) => {
     if (api.config.favicon) return memo;
-    const faviconFile = getFaviconFile(api.paths.absSrcPath);
-    if (faviconFile) {
-      memo.faviconFile = faviconFile;
+    const faviconFiles = getFaviconFiles(api.paths.absSrcPath);
+    if (faviconFiles) {
+      memo.faviconFiles = faviconFiles;
     }
     return memo;
   });
 
   api.addBeforeMiddlewares(() => [
     (req, res, next) => {
-      if (
-        api.appData.faviconFile &&
-        req.path === `/${api.appData.faviconFile}`
-      ) {
-        res.sendFile(join(api.paths.absSrcPath, api.appData.faviconFile));
-      } else {
+      const iconFile = (api.appData.faviconFiles || []).find(
+        (file: any) => req.path === `/${file}`,
+      );
+      if (!iconFile) {
         next();
+      } else {
+        res.sendFile(join(api.paths.absSrcPath, iconFile));
       }
     },
   ]);
 
   api.onBuildComplete(({ err }) => {
     if (err) return;
-    if (api.appData.faviconFile) {
-      copyFileSync(
-        join(api.paths.absSrcPath, api.appData.faviconFile),
-        join(api.paths.absOutputPath, api.appData.faviconFile),
-      );
+    if (api.appData.faviconFiles) {
+      api.appData.faviconFiles.forEach((e: any) => {
+        copyFileSync(
+          join(api.paths.absSrcPath, e),
+          join(api.paths.absOutputPath, e),
+        );
+      });
     }
   });
 
   api.modifyHTMLFavicon((memo) => {
-    return api.appData.faviconFile
-      ? `${api.config.publicPath}${api.appData.faviconFile}`
-      : memo;
+    // respect favicon config from user, and fallback to auto-detecting files
+    if (!memo.length && api.appData.faviconFiles) {
+      api.appData.faviconFiles.forEach((e: any) => {
+        memo.push(`${api.config.publicPath}${e}`);
+      });
+    }
+    return memo;
   });
 };
