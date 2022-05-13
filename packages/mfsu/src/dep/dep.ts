@@ -10,7 +10,7 @@ import { getExposeFromContent } from './getExposeFromContent';
 
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'], // es module first
-  extensions: ['.js', '.json', '.mjs'],
+  extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   exportsFields: ['exports'],
   conditionNames: ['import', 'module', 'require', 'node'],
 });
