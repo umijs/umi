@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-vue",
-  "version": "4.0.0-canary.20220516.1",
+  "version": "4.0.0-canary.20220516.2",
   "description": "@umijs/preset-vue",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/preset-vue#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -22,14 +22,14 @@
     "dev": "pnpm build -- --watch"
   },
   "dependencies": {
-    "@umijs/renderer-vue": "4.0.0-canary.20220516.1",
+    "@umijs/renderer-vue": "4.0.0-canary.20220516.2",
     "vue": "3.2.33",
     "vue-loader": "17.0.0",
     "vue-router": "4.0.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "2.3.1",
-    "umi": "4.0.0-canary.20220516.1"
+    "umi": "4.0.0-canary.20220516.2"
   },
   "publishConfig": {
     "access": "public"
