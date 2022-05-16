@@ -1,4 +1,4 @@
-# 插件
+# 开发插件
 Umi 的核心就在于它的插件机制。基于 Umi 的插件机制，你可以获得扩展项目的编译时和运行时的能力。你可以利用我们提供的 [插件API](../api/plugin-api) 来自由编写插件，进而实现修改代码打包配置，修改启动代码，约定目录结构，修改 HTML 等丰富的功能。
 
 ## 核心概念
@@ -160,7 +160,7 @@ Umi 会为每个插件赋予一个 PluginAPI 对象，这个对象引用了插�
 
 Umi 为 PluginAPI 对象的 get() 方法进行了 proxy， 具体规则如下：
 - pluginMethod:  如果 prop 是 Umi 所维护的 `pluginMethods[]` ( `通过 registerMethod()` 注册的方法 ）中的方法，则返回这个方法。
-- service props: 如果 prop 是 serviceProps 数组中的属性（这些属性是 umi 允许插件直接访问的属性），则返回 service 对应的属性。
+- service props: 如果 prop 是 serviceProps 数组中的属性（这些属性是 Umi 允许插件直接访问的属性），则返回 service 对应的属性。
 - static props: 如果 prop 是参数 staticProps 数组中的属性（这些属性是静态变量，诸如一些类型定义和常量），则将其返回。
 - 否则返回 api 的属性
 
