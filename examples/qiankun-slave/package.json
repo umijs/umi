@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/max": "4.0.0-canary.20220512.1",
+    "@umijs/max": "4.0.0-canary.20220516.1",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   }
