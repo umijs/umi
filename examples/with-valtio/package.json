@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@types/three": "^0.140.0",
-    "umi": "4.0.0-canary.20220516.1",
+    "umi": "4.0.0-canary.20220516.2",
     "valtio": "^1.6.0"
   }
 }
