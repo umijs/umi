@@ -336,8 +336,8 @@ export default {
 
 ## favicons
 
-* 类型：`string[]`
-* 默认值：`null`
+- 类型：`string[]`
+- 默认值：`null`
 
 支持配置多个 favicon 文件。配置 favicons 路径，可以是绝对路径，也可以是基于项目根目录的相对路径。
 
