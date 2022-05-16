@@ -36,7 +36,7 @@ function patchTo(to: any) {
   } else if (typeof to === 'object' && to.pathname) {
     return {
       ...to,
-      pathname: `${stripFirstSlash(basename)}${to.pathname}`,
+      pathname: `${stripLastSlash(basename)}${to.pathname}`,
     };
   } else {
     throw new Error(`Unexpected to: ${to}`);
