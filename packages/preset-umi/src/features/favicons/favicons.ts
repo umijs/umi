@@ -20,7 +20,7 @@ function getFaviconFiles(p: string): string[] | undefined {
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema: (Joi) => Joi.string(),
+      schema: (Joi) => Joi.array().items(Joi.string()),
     },
   });
 

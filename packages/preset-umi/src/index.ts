@@ -14,7 +14,7 @@ export default () => {
       require.resolve('./features/depsOnDemand/depsOnDemand'),
       require.resolve('./features/devTool/devTool'),
       require.resolve('./features/esmi/esmi'),
-      require.resolve('./features/favicon/favicon'),
+      require.resolve('./features/favicons/favicons'),
       require.resolve('./features/mock/mock'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
