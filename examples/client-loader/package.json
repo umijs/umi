@@ -1,0 +1,14 @@
+{
+  "name": "@example/client-loader",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "node demo-server/index.js"
+  },
+  "dependencies": {
+    "express": "4.17.3",
+    "umi": "4.0.0-rc.17"
+  }
+}
