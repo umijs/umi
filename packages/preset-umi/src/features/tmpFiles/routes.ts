@@ -7,6 +7,7 @@ import { resolve, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
+import { getModuleExports } from './getModuleExports';
 
 // get api routes
 export async function getApiRoutes(opts: { api: IApi }) {
@@ -94,8 +95,21 @@ export async function getRoutes(opts: { api: IApi }) {
         });
       }
 
-      // TODO: REMOVE ME
+      const isJSFile = /.[jt]sx?/.test(file);
       routes[id].__content = readFileSync(file, 'utf-8');
+      routes[id].__absFile = file;
+      routes[id].__isJSFile = isJSFile;
+      if (opts.api.config.clientLoader) {
+        routes[id].__exports =
+          isJSFile && existsSync(file)
+            ? await getModuleExports({
+                file,
+              })
+            : [];
+        routes[id].__hasClientLoader =
+          routes[id].__exports.includes('clientLoader');
+        routes[id].clientLoader = `clientLoaders['${id}']`;
+      }
     }
   }
 
@@ -146,12 +160,20 @@ export async function getRoutes(opts: { api: IApi }) {
 export async function getRouteComponents(opts: {
   routes: Record<string, any>;
   prefix: string;
+  api: IApi;
 }) {
   const imports = Object.keys(opts.routes)
     .map((key) => {
       const route = opts.routes[key];
       if (!route.file) {
-        return `'${key}': () => import('./EmptyRoute'),`;
+        return `'${key}': () => import( './EmptyRoute'),`;
+      }
+      if (route.hasClientLoader) {
+        route.file = join(
+          opts.api.paths.absTmpPath,
+          'pages',
+          route.id.replace(/[\/\-]/g, '_') + '.js',
+        );
       }
       // e.g.
       // component: () => <h1>foo</h1>
@@ -165,7 +187,10 @@ export async function getRouteComponents(opts: {
           ? route.file
           : `${opts.prefix}${route.file}`;
 
-      return `'${key}': () => import('${winPath(path)}'),`;
+      return `'${key}': () => import(/* webpackChunkName: "${key.replace(
+        /[\/-]/g,
+        '_',
+      )}" */'${winPath(path)}'),`;
     })
     .join('\n');
   return `{\n${imports}\n}`;

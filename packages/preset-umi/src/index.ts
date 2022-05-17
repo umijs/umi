@@ -9,6 +9,7 @@ export default () => {
       // features
       require.resolve('./features/appData/appData'),
       require.resolve('./features/check/check'),
+      require.resolve('./features/clientLoader/clientLoader'),
       require.resolve('./features/configPlugins/configPlugins'),
       require.resolve('./features/crossorigin/crossorigin'),
       require.resolve('./features/depsOnDemand/depsOnDemand'),
@@ -18,6 +19,7 @@ export default () => {
       require.resolve('./features/mock/mock'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
+      require.resolve('./features/routePrefetch/routePrefetch'),
       require.resolve('./features/terminal/terminal'),
       require.resolve('./features/tmpFiles/tmpFiles'),
       require.resolve('./features/tmpFiles/configTypes'),

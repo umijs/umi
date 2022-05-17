@@ -4,6 +4,7 @@ export interface IRoute {
   index?: boolean;
   parentId?: string;
   redirect?: string;
+  clientLoader?: () => Promise<any>;
 }
 
 export interface IRoutesById {
@@ -12,4 +13,8 @@ export interface IRoutesById {
 
 export interface IRouteComponents {
   [id: string]: any;
+}
+
+export interface ILoaderData {
+  [routeKey: string]: any;
 }

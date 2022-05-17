@@ -1,9 +1,9 @@
-import { parseModule } from '@umijs/bundler-utils';
 import { lodash, winPath } from '@umijs/utils';
-import { existsSync, readdirSync, readFileSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
+import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
 import { getRouteComponents, getRoutes } from './routes';
 
@@ -81,7 +81,7 @@ export default (api: IApi) => {
       },
     });
 
-    // EmptyRoutes.tsx
+    // EmptyRoute.tsx
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/EmptyRoute.tsx',
@@ -112,8 +112,10 @@ export default function EmptyRoute() {
     const clonedRoutes = lodash.cloneDeep(routes);
     for (const id of Object.keys(clonedRoutes)) {
       for (const key of Object.keys(clonedRoutes[id])) {
+        const route = clonedRoutes[id];
+        // Remove __ prefix props and absPath props
         if (key.startsWith('__') || key.startsWith('absPath')) {
-          delete clonedRoutes[id][key];
+          delete route[key];
         }
       }
     }
@@ -122,8 +124,11 @@ export default function EmptyRoute() {
       path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
-        routes: JSON.stringify(clonedRoutes),
-        routeComponents: await getRouteComponents({ routes, prefix }),
+        isClientLoaderEnabled: !!api.config.clientLoader,
+        routes: JSON.stringify(clonedRoutes)
+          // "clientLoaders['foo']" > clientLoaders['foo']
+          .replace(/"(clientLoaders\[.*?)"/g, '$1'),
+        routeComponents: await getRouteComponents({ routes, prefix, api }),
       },
     });
 
@@ -169,7 +174,7 @@ export default function EmptyRoute() {
           index,
           path: winPath(plugin),
         })),
-        validKeys: validKeys,
+        validKeys,
       },
     });
 
@@ -183,12 +188,6 @@ export default function EmptyRoute() {
       },
     });
   });
-
-  async function getExports(opts: { path: string }) {
-    const content = readFileSync(opts.path, 'utf-8');
-    const [_, exports] = await parseModule({ content, path: opts.path });
-    return exports || [];
-  }
 
   function checkMembers(opts: {
     path: string;
@@ -207,7 +206,7 @@ export default function EmptyRoute() {
     path: string;
     exportMembers: string[];
   }) {
-    const members = (await getExports(opts)) as string[];
+    const members = (await getModuleExports({ file: opts.path })) as string[];
     checkMembers({
       members,
       exportMembers: opts.exportMembers,

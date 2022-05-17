@@ -1,0 +1,13 @@
+{
+  "name": "@example/diff-client-loader",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup"
+  },
+  "dependencies": {
+    "umi": "4.0.0-rc.17"
+  }
+}

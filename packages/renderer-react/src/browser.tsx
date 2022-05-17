@@ -1,11 +1,11 @@
 import { History } from 'history';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
 import ReactDOM from 'react-dom/client';
-import { Router, useRoutes } from 'react-router-dom';
+import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
 import { createClientRoutes } from './routes';
-import { IRouteComponents, IRoutesById } from './types';
+import { ILoaderData, IRouteComponents, IRoutesById } from './types';
 
 function BrowserRoutes(props: {
   routes: any;
@@ -103,23 +103,78 @@ export function renderClient(opts: {
       args: {},
     });
   }
-  const browser = (
-    <AppContext.Provider
-      value={{
-        routes: opts.routes,
-        routeComponents: opts.routeComponents,
-        clientRoutes,
-        pluginManager: opts.pluginManager,
-        rootElement: opts.rootElement,
-        basename,
-      }}
-    >
-      {rootContainer}
-    </AppContext.Provider>
-  );
+
+  const Browser = () => {
+    const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
+
+    const handleRouteChange = useCallback(
+      (p: string) => {
+        const matchedRouteIds =
+          matchRoutes(clientRoutes, p)?.map(
+            // @ts-ignore
+            (route) => route.route.id,
+          ) || [];
+        matchedRouteIds.forEach((id) => {
+          // preload
+          // @ts-ignore
+          const manifest = window.__umi_manifest__;
+          if (manifest) {
+            const routeIdReplaced = id.replace(/[\/\-]/g, '_');
+            const preloadId = 'preload-' + routeIdReplaced;
+            if (!document.getElementById(preloadId)) {
+              const key = Object.keys(manifest).find((k) =>
+                k.startsWith(routeIdReplaced + '.'),
+              );
+              if (!key) return;
+              const file = manifest[key];
+              const link = document.createElement('link');
+              link.id = preloadId;
+              link.rel = 'preload';
+              link.as = 'script';
+              // TODO: public path may not be root
+              link.href = file;
+              document.head.appendChild(link);
+            }
+          }
+          // client loader
+          const clientLoader = opts.routes[id].clientLoader;
+          if (clientLoader && !clientLoaderData[id]) {
+            clientLoader().then((data: any) => {
+              setClientLoaderData((d: any) => ({ ...d, [id]: data }));
+            });
+          }
+        });
+      },
+      [clientLoaderData],
+    );
+
+    useEffect(() => {
+      handleRouteChange(window.location.pathname);
+      return opts.history.listen((e) => {
+        handleRouteChange(e.location.pathname);
+      });
+    }, []);
+
+    return (
+      <AppContext.Provider
+        value={{
+          routes: opts.routes,
+          routeComponents: opts.routeComponents,
+          clientRoutes,
+          pluginManager: opts.pluginManager,
+          rootElement: opts.rootElement,
+          basename,
+          clientLoaderData,
+          preloadRoute: handleRouteChange,
+        }}
+      >
+        {rootContainer}
+      </AppContext.Provider>
+    );
+  };
 
   if (ReactDOM.createRoot) {
-    ReactDOM.createRoot(rootElement).render(browser);
+    ReactDOM.createRoot(rootElement).render(<Browser />);
   } else {
     // @ts-ignore
     ReactDOM.render(browser, rootElement);
