@@ -1,0 +1,21 @@
+{
+  "name": "react-18",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "private": true,
+  "peerDependencies": {
+    "umi": "latest"
+  },
+  "license": "ISC"
+}

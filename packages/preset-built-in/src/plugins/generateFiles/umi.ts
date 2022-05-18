@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { winPath } from '@umijs/utils';
+import { resolve, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { renderReactPath, runtimePath } from './constants';
@@ -17,6 +17,33 @@ export function importsToStr(
   });
 }
 
+function isReact18(opts: { pkg: any; cwd: string }) {
+  const { pkg } = opts;
+  if (!pkg) return false;
+  const useCustomReact =
+    (pkg.dependencies?.['react-dom'] || pkg.devDependencies?.['react-dom']) &&
+    (pkg.dependencies?.['react'] || pkg.devDependencies?.['react']);
+
+  function getVersion(name: string) {
+    try {
+      const pkgJSONPath = resolve.sync(`${name}/package.json`, {
+        basedir: opts.cwd,
+      });
+      return JSON.parse(readFileSync(pkgJSONPath, 'utf-8')).version;
+    } catch (e) {
+      return '0.0.0';
+    }
+  }
+
+  if (useCustomReact) {
+    const reactDOMVersion = getVersion('react-dom');
+    const reactVersion = getVersion('react');
+    return reactVersion >= 18 && reactDOMVersion >= 18;
+  }
+
+  return false;
+}
+
 export default function (api: IApi) {
   const {
     utils: { Mustache },
@@ -24,10 +51,21 @@ export default function (api: IApi) {
 
   api.onGenerateFiles(async (args) => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
+    const patchedRenderReactPath = join(
+      renderReactPath,
+      `/dist/index${
+        isReact18({
+          pkg: api.pkg,
+          cwd: api.cwd,
+        })
+          ? '18'
+          : ''
+      }.js`,
+    );
     const rendererPath = await api.applyPlugins({
       key: 'modifyRendererPath',
       type: api.ApplyPluginsType.modify,
-      initialValue: renderReactPath,
+      initialValue: patchedRenderReactPath,
     });
     api.writeTmpFile({
       path: 'umi.ts',
