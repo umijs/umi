@@ -10,6 +10,9 @@ import Loading from '@/loading';
 import { ApplyPluginsType } from 'umi';
 {{{ imports }}}
 
+const publicPath = "{{{ publicPath }}}";
+const runtimePublicPath = {{{ runtimePublicPath }}};
+
 async function render() {
   const pluginManager = createPluginManager();
   const { routes, routeComponents } = await getRoutes(pluginManager);
@@ -42,6 +45,8 @@ async function render() {
 {{#loadingComponent}}
         loadingComponent: Loading,
 {{/loadingComponent}}
+        publicPath,
+        runtimePublicPath,
         history: createHistory({
           type: '{{{ historyType }}}',
           basename,

@@ -28,13 +28,17 @@ export default (api: IApi) => {
     );
     const manifestObj = JSON.parse(manifest);
     const umiJsFileKey = Object.keys(manifestObj).find((key) =>
-      key.startsWith('umi.'),
+      key.match(/^umi(.*)\.js$/),
     );
     if (!umiJsFileKey) {
       throw new Error('Cannot find umi.js in manifest.json');
     }
 
-    const umiJsFileName = manifestObj[umiJsFileKey];
+    // manifest has publicPath, but we don't need it in the absOutputPath
+    const umiJsFileName = manifestObj[umiJsFileKey].replace(
+      new RegExp('^' + api.config.publicPath),
+      '',
+    );
     const umiJsFile = readFileSync(
       join(api.paths.absOutputPath, umiJsFileName),
       'utf-8',

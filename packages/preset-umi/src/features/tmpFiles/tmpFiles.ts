@@ -35,6 +35,8 @@ export default (api: IApi) => {
       context: {
         mountElementId: api.config.mountElementId,
         rendererPath,
+        publicPath: api.config.publicPath,
+        runtimePublicPath: api.config.runtimePublicPath ? 'true' : 'false',
         entryCode: (
           await api.applyPlugins({
             key: 'addEntryCode',
