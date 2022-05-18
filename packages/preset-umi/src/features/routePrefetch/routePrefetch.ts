@@ -20,7 +20,10 @@ export default (api: IApi) => {
 
   api.onBuildComplete(() => {
     const manifest = readFileSync(
-      join(api.paths.absOutputPath, 'asset-manifest.json'),
+      join(
+        api.paths.absOutputPath,
+        api.config.manifest.fileName || 'asset-manifest.json',
+      ),
       'utf-8',
     );
     const manifestObj = JSON.parse(manifest);
@@ -38,10 +41,10 @@ export default (api: IApi) => {
     );
 
     // TODO: source map will break if we append to the beginning of the file, use https://github.com/Rich-Harris/magic-string to fix this
-    const appendJs = `window.__umi_manifest__ = ` + manifest + ';';
+    const prependJS = `window.__umi_manifest__ = ` + manifest + ';';
     writeFileSync(
       join(api.paths.absOutputPath, umiJsFileName),
-      appendJs + umiJsFile,
+      prependJS + umiJsFile,
     );
   });
 };
