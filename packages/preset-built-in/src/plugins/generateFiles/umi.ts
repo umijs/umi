@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { winPath } from '@umijs/utils';
+import { resolve, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { renderReactPath, runtimePath } from './constants';
@@ -26,12 +26,10 @@ function isReact18(opts: { pkg: any; cwd: string }) {
 
   function getVersion(name: string) {
     try {
-      return JSON.parse(
-        readFileSync(
-          join(opts.cwd, 'node_modules', name, 'package.json'),
-          'utf-8',
-        ),
-      ).version;
+      const pkgJSONPath = resolve.sync(`${name}/package.json`, {
+        basedir: opts.cwd,
+      });
+      return JSON.parse(readFileSync(pkgJSONPath, 'utf-8')).version;
     } catch (e) {
       return '0.0.0';
     }
