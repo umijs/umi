@@ -39,7 +39,7 @@ export default function renderClient(opts: IOpts) {
         : opts.rootElement;
     const callback = opts.callback || (() => {});
 
-    // flag showing SSR successed
+    // flag showing SSR succeed
     if (window.g_useSSR) {
       if (opts.dynamicImport) {
         // dynamicImport should preload current route component

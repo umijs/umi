@@ -13,20 +13,12 @@ export default function renderClient(opts: IOpts) {
         : opts.rootElement;
     const callback = opts.callback || (() => {});
 
-    const finalRootElement: HTMLElement =
-      rootElement || document.createElement('div');
-
-    if (!finalRootElement.id) {
-      finalRootElement.id =
-        typeof opts.rootElement === 'string' ? opts.rootElement : 'root';
-    }
-
-    // flag showing SSR successed
+    // flag showing SSR succeed
     if (window.g_useSSR) {
-      ReactDOM.hydrateRoot(finalRootElement, rootContainer);
+      ReactDOM.hydrateRoot(rootElement, rootContainer);
       callback();
     } else {
-      const root = ReactDOM.createRoot(finalRootElement);
+      const root = ReactDOM.createRoot(rootElement);
       root.render(rootContainer);
       callback();
     }
