@@ -1,7 +1,7 @@
 import { IApi } from '@umijs/types';
 import { getFile, winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, relative } from 'path';
 import { runtimePath } from '../constants';
 
 export default function (api: IApi) {
@@ -24,15 +24,21 @@ export default function (api: IApi) {
       ],
     });
 
-    const appRuntimeFileName = getFile({
+    const appRuntimeFilePath = getFile({
       base: paths.absSrcPath!,
       fileNameWithoutExt: 'app',
       type: 'javascript',
-    })?.filename;
+    })?.path;
     const plugins = await api.applyPlugins({
       key: 'addRuntimePlugin',
       type: api.ApplyPluginsType.add,
-      initialValue: appRuntimeFileName ? [`../../${appRuntimeFileName}`] : [],
+      initialValue: appRuntimeFilePath
+        ? [
+            api.utils.winPath(
+              relative(join(api.paths.absTmpPath!, 'core'), appRuntimeFilePath),
+            ),
+          ]
+        : [],
     });
 
     api.writeTmpFile({
