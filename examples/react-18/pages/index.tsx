@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { startTransition, useEffect, version } from 'react';
 
 const Home = () => {
