@@ -1,5 +1,4 @@
 import * as allIcons from '@ant-design/icons';
-import assert from 'assert';
 import { dirname } from 'path';
 import { IApi } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
@@ -181,11 +180,6 @@ const { formatMessage } = useIntl();
       const { icon } = api.appData.routes[id];
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
-        assert(
-          // @ts-ignore
-          allIcons[upperIcon] || allIcons[`${upperIcon}Outlined`],
-          `Icon ${upperIcon} is not found`,
-        );
         // @ts-ignore
         if (allIcons[upperIcon]) {
           memo[upperIcon] = true;
@@ -233,7 +227,9 @@ export function patchRoutes({ routes }) {
     const { icon } = routes[key];
     if (icon && typeof icon === 'string') {
       const upperIcon = formatIcon(icon);
-      routes[key].icon = React.createElement(icons[upperIcon] || icons[upperIcon + 'Outlined']);
+      if (icons[upperIcon] || icons[upperIcon + 'Outlined']) {
+        routes[key].icon = React.createElement(icons[upperIcon] || icons[upperIcon + 'Outlined']);
+      }
     }
   });
 }

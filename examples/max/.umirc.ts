@@ -15,7 +15,7 @@ export default defineConfig({
       path: '/data-flow',
       component: 'data-flow',
       name: 'data-flow',
-      icon: 'StarFilled',
+      icon: 'https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*CUIoT4xopNYAAAAAAAAAAABkARQnAQ',
       routes: [
         {
           path: '/data-flow/use-model',
