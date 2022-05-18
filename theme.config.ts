@@ -53,6 +53,7 @@ export default {
             'guides/mock',
             'guides/proxy',
             'guides/styling',
+            'guides/client-loader',
             'guides/typescript',
             'guides/deployment',
             'guides/env-variables',
