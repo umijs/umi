@@ -104,6 +104,41 @@ export default {
 };
 ```
 
+## clientLoader
+
+- 类型: `{}`
+- 默认值: `false`
+
+开启后，可以为每个路由声明一个数据加载函数 `clientLoader`，将页面需要的加载数据程序提取到 `clientLoader` 可以让 Umi
+提前在页面组件尚未加载好的时候提前进行数据的加载，避免瀑布流请求的问题，详细介绍请看 [路由数据预加载](../guides/client-loader)。
+
+示例：
+
+```ts
+// .umirc.ts
+export default {
+  clientLoader: {}
+}
+```
+
+配置开启后，在路由组件中使用：
+
+```jsx
+// pages/.../some_page.tsx
+
+import {useClientLoaderData} from 'umi';
+
+export default function SomePage() {
+  const data = useClientLoader();
+  return <div>{data}</div>;
+}
+
+export async function clientLoader() {
+  const data = await fetch('/api/data');
+  return data;
+}
+```
+
 ## conventionRoutes
 
 - 类型：`{ base: string; exclude: RegExp[] }`
