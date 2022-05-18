@@ -63,7 +63,8 @@ export default (props: SidebarProps) => {
                 return (
                   <components.Link
                     key={route.path}
-                    to={route.path}
+                    to={to.startsWith('/') ? to : `/${to}`}
+                    prefetch
                     onClick={() =>
                       props.setMenuOpened && props.setMenuOpened((o) => !o)
                     }

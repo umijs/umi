@@ -54,6 +54,8 @@ function Routes() {
 }
 
 export function renderClient(opts: {
+  publicPath?: string;
+  runtimePublicPath?: boolean;
   rootElement?: HTMLElement;
   routes: IRoutesById;
   routeComponents: IRouteComponents;
@@ -126,12 +128,20 @@ export function renderClient(opts: {
                 k.startsWith(routeIdReplaced + '.'),
               );
               if (!key) return;
-              const file = manifest[key];
+              let file = manifest[key];
               const link = document.createElement('link');
               link.id = preloadId;
               link.rel = 'preload';
               link.as = 'script';
-              // TODO: public path may not be root
+              // publicPath already in the manifest,
+              // but if runtimePublicPath is true, we need to replace it
+              if (opts.runtimePublicPath) {
+                file = file.replace(
+                  new RegExp(`^${opts.publicPath}`),
+                  // @ts-ignore
+                  window.publicPath,
+                );
+              }
               link.href = file;
               document.head.appendChild(link);
             }
