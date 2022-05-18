@@ -93,6 +93,7 @@ function transformRoute(opts: {
       routes: opts.route.routes,
       parentId: id,
       memo: opts.memo,
+      onResolveComponent: opts.onResolveComponent,
     });
   }
   return { id };

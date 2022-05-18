@@ -5,7 +5,20 @@ export default {
   // history: { type: 'hash' },
   routes: [
     { path: '/', component: 'index' },
-    { path: '/users', component: 'users' },
+    {
+      path: '/users',
+      component: 'users',
+      routes: [
+        {
+          path: '/users/foo',
+          component: 'users/foo',
+        },
+        {
+          path: '/users/login',
+          component: 'users/login',
+        },
+      ],
+    },
     {
       path: '/users/:id',
       component: 'users/$id',
