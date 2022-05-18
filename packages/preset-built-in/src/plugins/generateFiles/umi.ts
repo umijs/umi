@@ -19,6 +19,7 @@ export function importsToStr(
 
 function isReact18(opts: { pkg: any; cwd: string }) {
   const { pkg } = opts;
+  if (!pkg) return false;
   const useCustomReact =
     (pkg.dependencies?.['react-dom'] || pkg.devDependencies?.['react-dom']) &&
     (pkg.dependencies?.['react'] || pkg.devDependencies?.['react']);
@@ -52,18 +53,16 @@ export default function (api: IApi) {
 
   api.onGenerateFiles(async (args) => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
-    const patchedRenderReactPath = winPath(
-      join(
-        renderReactPath,
-        `/dist/index${
-          isReact18({
-            pkg: api.pkg,
-            cwd: api.cwd,
-          })
-            ? '18'
-            : ''
-        }.js`,
-      ),
+    const patchedRenderReactPath = join(
+      renderReactPath,
+      `/dist/index${
+        isReact18({
+          pkg: api.pkg,
+          cwd: api.cwd,
+        })
+          ? '18'
+          : ''
+      }.js`,
     );
     const rendererPath = await api.applyPlugins({
       key: 'modifyRendererPath',
@@ -76,7 +75,7 @@ export default function (api: IApi) {
         // @ts-ignore
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
-        rendererPath,
+        rendererPath: winPath(rendererPath),
         runtimePath,
         rootElement: api.config.mountElementId,
         enableSSR: !!api.config.ssr,
