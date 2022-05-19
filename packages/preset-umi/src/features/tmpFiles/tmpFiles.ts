@@ -1,4 +1,4 @@
-import { lodash, winPath } from '@umijs/utils';
+import { lodash, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
@@ -138,18 +138,13 @@ export default function EmptyRoute() {
     const plugins: string[] = await api.applyPlugins({
       key: 'addRuntimePlugin',
       initialValue: [
-        // TODO: add tryFiles in @umijs/utils
-        existsSync(join(api.paths.absSrcPath, 'app.ts')) &&
+        tryPaths([
           join(api.paths.absSrcPath, 'app.ts'),
-        existsSync(join(api.paths.absSrcPath, 'app.tsx')) &&
           join(api.paths.absSrcPath, 'app.tsx'),
-        existsSync(join(api.paths.absSrcPath, 'app.jsx')) &&
           join(api.paths.absSrcPath, 'app.jsx'),
-        existsSync(join(api.paths.absSrcPath, 'app.js')) &&
           join(api.paths.absSrcPath, 'app.js'),
-      ]
-        .filter(Boolean)
-        .slice(0, 1),
+        ]),
+      ].filter(Boolean),
     });
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',

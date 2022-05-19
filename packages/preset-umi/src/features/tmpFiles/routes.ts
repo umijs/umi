@@ -114,15 +114,22 @@ export async function getRoutes(opts: { api: IApi }) {
   }
 
   // layout routes
-  const absLayoutPath = join(opts.api.paths.absSrcPath, 'layouts/index.tsx');
-  const layouts = await opts.api.applyPlugins({
-    key: 'addLayouts',
-    initialValue: [
-      existsSync(absLayoutPath) && {
-        id: '@@/global-layout',
-        file: absLayoutPath,
-      },
-    ].filter(Boolean),
+  const absSrcPath = opts.api.paths.absSrcPath;
+  const absLayoutPath = join(absSrcPath, 'layouts/index.tsx');
+  const layouts = (
+    await opts.api.applyPlugins({
+      key: 'addLayouts',
+      initialValue: [
+        existsSync(absLayoutPath) && {
+          id: '@@/global-layout',
+          file: winPath(absLayoutPath),
+        },
+      ].filter(Boolean),
+    })
+  ).map((layout: { file: string }) => {
+    // prune local path prefix, avoid mix in outputs
+    layout.file = layout.file.replace(new RegExp(`^${absSrcPath}`), '@');
+    return layout;
   });
   for (const layout of layouts) {
     addParentRoute({
