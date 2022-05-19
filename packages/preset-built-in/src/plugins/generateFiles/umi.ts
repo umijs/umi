@@ -29,9 +29,12 @@ function isReact18(opts: { pkg: any; cwd: string }) {
       const pkgJSONPath = resolve.sync(`${name}/package.json`, {
         basedir: opts.cwd,
       });
-      return JSON.parse(readFileSync(pkgJSONPath, 'utf-8')).version;
+      return parseInt(
+        JSON.parse(readFileSync(pkgJSONPath, 'utf-8')).version.split('.')[0],
+        10,
+      );
     } catch (e) {
-      return '0.0.0';
+      return 0;
     }
   }
 
