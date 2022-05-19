@@ -67,6 +67,7 @@ export default {
             'guides/boilerplate',
             'guides/generator',
             'guides/lint',
+            'guides/debug',
             'guides/test',
             'guides/plugins',
           ],
