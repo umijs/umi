@@ -187,6 +187,6 @@ export function renderClient(opts: {
     ReactDOM.createRoot(rootElement).render(<Browser />);
   } else {
     // @ts-ignore
-    ReactDOM.render(browser, rootElement);
+    ReactDOM.render(<Browser />, rootElement);
   }
 }
