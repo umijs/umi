@@ -5,10 +5,10 @@
     "build": "umi build",
     "dev": "umi dev",
     "setup": "umi setup",
-    "start": "node demo-server/index.js"
+    "start": "npm run dev"
   },
   "dependencies": {
     "express": "4.17.3",
-    "umi": "4.0.0-rc.17"
+    "umi": "4.0.0-rc.18"
   }
 }

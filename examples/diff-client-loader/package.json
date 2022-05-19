@@ -5,9 +5,10 @@
     "build": "umi build",
     "dev": "umi dev",
     "preview": "umi preview",
-    "setup": "umi setup"
+    "setup": "umi setup",
+    "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-rc.17"
+    "umi": "4.0.0-rc.18"
   }
 }
