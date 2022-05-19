@@ -21,7 +21,8 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "chokidar": "3.5.3"
+    "chokidar": "3.5.3",
+    "pino": "7.10.0"
   },
   "devDependencies": {
     "@types/color": "3.0.3",
