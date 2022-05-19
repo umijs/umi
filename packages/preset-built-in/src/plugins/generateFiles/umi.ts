@@ -30,7 +30,7 @@ function isReact18(opts: { pkg: any; cwd: string }) {
         basedir: opts.cwd,
       });
       return parseInt(
-        JSON.parse(readFileSync(pkgJSONPath, 'utf-8')).version.split('.0.')[0],
+        JSON.parse(readFileSync(pkgJSONPath, 'utf-8')).version.split('.')[0],
         10,
       );
     } catch (e) {
