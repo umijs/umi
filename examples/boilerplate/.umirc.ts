@@ -72,5 +72,11 @@ export default {
   // esm: {},
   lowImport: false,
   title: 'boilerplate - umi 4',
+  cssMinifier: 'parcelCSS',
+  cssMinifierOptions: {
+    targets: {
+      chrome: 60,
+    },
+  },
   ...extraConfig,
 };
