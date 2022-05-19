@@ -403,6 +403,21 @@ importers:
       mobx-react: 7.4.0_bdf1a6292e332f993648c63c29f77c32
       umi: link:../../packages/umi
 
+  examples/with-monaco-editor-react:
+    specifiers:
+      '@monaco-editor/react': ^4.4.5
+      '@types/react': ^18.0.9
+      '@types/react-dom': ^18.0.3
+      typescript: ^4.6.4
+      umi: 4.0.0-canary.20220517.1
+    dependencies:
+      '@monaco-editor/react': 4.4.5_react-dom@18.1.0+react@18.1.0
+      umi: link:../../packages/umi
+    devDependencies:
+      '@types/react': 18.0.9
+      '@types/react-dom': 18.0.3
+      typescript: 4.6.4
+
   examples/with-react-17:
     specifiers:
       react: ^17.0.0
@@ -6417,6 +6432,32 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@monaco-editor/loader/1.3.2:
+    resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
+    peerDependencies:
+      monaco-editor: '>= 0.21.0 < 1'
+    dependencies:
+      state-local: 1.0.7
+    dev: false
+
+  /@monaco-editor/react/4.4.5_react-dom@18.1.0+react@18.1.0:
+    resolution: {integrity: sha512-IImtzU7sRc66OOaQVCG+5PFHkSWnnhrUWGBuH6zNmH2h0YgmAhcjHZQc/6MY9JWEbUtVF1WPBMJ9u1XuFbRrVA==}
+    peerDependencies:
+      monaco-editor: '>= 0.25.0 < 1'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@monaco-editor/loader': 1.3.2
+      prop-types: 15.8.1
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -24134,6 +24175,10 @@ packages:
       error-stack-parser: 2.0.7
       stack-generator: 2.0.5
       stacktrace-gps: 3.0.4
+    dev: false
+
+  /state-local/1.0.7:
+    resolution: {integrity: sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==}
     dev: false
 
   /static-extend/0.1.2:
