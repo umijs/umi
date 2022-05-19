@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "recoil": "^0.7.3-alpha.1",
-    "umi": "4.0.0-rc.18"
+    "umi": "4.0.0-rc.19"
   }
 }

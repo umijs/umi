@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.0-rc.18",
+  "version": "4.0.0-rc.19",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -38,15 +38,15 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-rc.18",
-    "@umijs/bundler-webpack": "4.0.0-rc.18",
-    "@umijs/core": "4.0.0-rc.18",
-    "@umijs/lint": "4.0.0-rc.18",
-    "@umijs/preset-umi": "4.0.0-rc.18",
-    "@umijs/renderer-react": "4.0.0-rc.18",
-    "@umijs/server": "4.0.0-rc.18",
-    "@umijs/test": "4.0.0-rc.18",
-    "@umijs/utils": "4.0.0-rc.18",
+    "@umijs/bundler-utils": "4.0.0-rc.19",
+    "@umijs/bundler-webpack": "4.0.0-rc.19",
+    "@umijs/core": "4.0.0-rc.19",
+    "@umijs/lint": "4.0.0-rc.19",
+    "@umijs/preset-umi": "4.0.0-rc.19",
+    "@umijs/renderer-react": "4.0.0-rc.19",
+    "@umijs/server": "4.0.0-rc.19",
+    "@umijs/test": "4.0.0-rc.19",
+    "@umijs/utils": "4.0.0-rc.19",
     "prettier-plugin-organize-imports": "^2.3.4",
     "prettier-plugin-packagejson": "^2.2.17"
   },

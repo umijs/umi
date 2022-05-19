@@ -9,8 +9,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/preset-vue": "4.0.0-rc.18",
-    "umi": "4.0.0-rc.18",
+    "@umijs/preset-vue": "4.0.0-rc.19",
+    "umi": "4.0.0-rc.19",
     "vant": "3.4.9",
     "vue": "3.2.33"
   },
