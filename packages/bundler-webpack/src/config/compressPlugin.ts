@@ -1,9 +1,10 @@
+import type { TransformOptions as EsbuildOpts } from '@umijs/bundler-utils/compiled/esbuild';
 // @ts-ignore
 import CSSMinimizerWebpackPlugin from '@umijs/bundler-webpack/compiled/css-minimizer-webpack-plugin';
-import TerserPlugin from '../../compiled/terser-webpack-plugin';
+import TerserPlugin, {
+  type TerserOptions,
+} from '../../compiled/terser-webpack-plugin';
 import Config from '../../compiled/webpack-5-chain';
-import ESBuildCSSMinifyPlugin from '../plugins/ESBuildCSSMinifyPlugin';
-import { ParcelCSSMinifyPlugin } from '../plugins/ParcelCSSMinifyPlugin';
 import { CSSMinifier, Env, IConfig, JSMinifier } from '../types';
 import { getEsBuildTarget } from '../utils/getEsBuildTarget';
 
@@ -29,21 +30,36 @@ export async function addCompressPlugin(opts: IOpts) {
   }
   config.optimization.minimize(true);
 
+  // esbuild transform only allow `string[]` as target
+  const esbuildTarget = getEsBuildTarget({
+    targets: userConfig.targets || {},
+  });
+
   let minify: any;
   let terserOptions: IConfig['jsMinifierOptions'];
   if (jsMinifier === JSMinifier.esbuild) {
     minify = TerserPlugin.esbuildMinify;
     terserOptions = {
-      target: getEsBuildTarget({
-        targets: userConfig.targets || {},
-      }),
-    };
+      target: esbuildTarget,
+      // remove all comments
+      legalComments: 'none',
+    } as EsbuildOpts;
   } else if (jsMinifier === JSMinifier.terser) {
     minify = TerserPlugin.terserMinify;
+    terserOptions = {
+      format: {
+        comments: false,
+      },
+    } as TerserOptions;
   } else if (jsMinifier === JSMinifier.swc) {
     minify = TerserPlugin.swcMinify;
   } else if (jsMinifier === JSMinifier.uglifyJs) {
     minify = TerserPlugin.uglifyJsMinify;
+    terserOptions = {
+      output: {
+        comments: false,
+      },
+    };
   } else if (jsMinifier !== JSMinifier.none) {
     throw new Error(`Unsupported jsMinifier ${userConfig.jsMinifier}.`);
   }
@@ -54,30 +70,37 @@ export async function addCompressPlugin(opts: IOpts) {
   if (jsMinifier !== JSMinifier.none) {
     config.optimization.minimizer(`js-${jsMinifier}`).use(TerserPlugin, [
       {
+        extractComments: false,
         minify,
         terserOptions,
       },
     ] as any);
   }
 
+  let cssMinify: any;
+  let minimizerOptions: IConfig['cssMinifierOptions'];
   if (cssMinifier === CSSMinifier.esbuild) {
-    config.optimization
-      .minimizer(`css-${cssMinifier}`)
-      .use(ESBuildCSSMinifyPlugin, [userConfig.cssMinifierOptions]);
+    cssMinify = CSSMinimizerWebpackPlugin.esbuildMinify;
+    minimizerOptions = {
+      target: esbuildTarget,
+    } as EsbuildOpts;
   } else if (cssMinifier === CSSMinifier.cssnano) {
-    config.optimization
-      .minimizer(`css-${cssMinifier}`)
-      .use(CSSMinimizerWebpackPlugin, [
-        {
-          minimizerOptions: userConfig.cssMinifierOptions,
-          parallel: true,
-        },
-      ]);
+    cssMinify = CSSMinimizerWebpackPlugin.cssnanoMinify;
   } else if (cssMinifier === CSSMinifier.parcelCSS) {
-    config.optimization
-      .minimizer(`css-${cssMinifier}`)
-      .use(ParcelCSSMinifyPlugin);
+    cssMinify = CSSMinimizerWebpackPlugin.parcelCssMinify;
   } else if (cssMinifier !== CSSMinifier.none) {
     throw new Error(`Unsupported cssMinifier ${userConfig.cssMinifier}.`);
   }
+  minimizerOptions = {
+    ...minimizerOptions,
+    ...userConfig.cssMinifierOptions,
+  };
+  config.optimization
+    .minimizer(`css-${cssMinifier}`)
+    .use(CSSMinimizerWebpackPlugin, [
+      {
+        minify: cssMinify,
+        minimizerOptions,
+      },
+    ]);
 }
