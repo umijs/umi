@@ -8,6 +8,7 @@ import {
   setNoDeprecation,
   setNodeTitle,
 } from './node';
+import { printHelp } from './printHelp';
 
 interface IOpts {
   presets?: string[];
@@ -44,7 +45,8 @@ export async function run(opts?: IOpts) {
         args,
       });
     } catch (e: any) {
-      logger.error(e);
+      logger.fatal(e);
+      printHelp();
       process.exit(1);
     }
   }
