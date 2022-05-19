@@ -21,14 +21,13 @@ export class PluginManager {
   }
 
   register(plugin: IPlugin) {
-    assert(
-      plugin.apply && plugin.path,
-      `plugin register failed, apply and path must supplied`,
-    );
+    assert(plugin.apply, `plugin register failed, apply must supplied`);
     Object.keys(plugin.apply).forEach((key) => {
       assert(
         this.opts.validKeys.indexOf(key) > -1,
-        `register failed, invalid key ${key} from plugin ${plugin.path}.`,
+        `register failed, invalid key ${key} ${
+          plugin.path ? `from plugin ${plugin.path}` : ''
+        }.`,
       );
       this.hooks[key] = (this.hooks[key] || []).concat(plugin.apply[key]);
     });

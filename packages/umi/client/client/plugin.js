@@ -59,9 +59,9 @@ var PluginManager = /** @class */ (function () {
     }
     PluginManager.prototype.register = function (plugin) {
         var _this = this;
-        assert(plugin.apply && plugin.path, "plugin register failed, apply and path must supplied");
+        assert(plugin.apply, "plugin register failed, apply must supplied");
         Object.keys(plugin.apply).forEach(function (key) {
-            assert(_this.opts.validKeys.indexOf(key) > -1, "register failed, invalid key ".concat(key, " from plugin ").concat(plugin.path, "."));
+            assert(_this.opts.validKeys.indexOf(key) > -1, "register failed, invalid key ".concat(key, " ").concat(plugin.path ? "from plugin ".concat(plugin.path) : '', "."));
             _this.hooks[key] = (_this.hooks[key] || []).concat(plugin.apply[key]);
         });
     };

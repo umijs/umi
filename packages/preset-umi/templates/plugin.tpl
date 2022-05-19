@@ -8,7 +8,7 @@ export function getPlugins() {
 {{#plugins}}
     {
       apply: Plugin_{{{ index }}},
-      path: '{{{ path }}}',
+      path: process.env.NODE_ENV === 'production' ? void 0 : '{{{ path }}}',
     },
 {{/plugins}}
   ];
