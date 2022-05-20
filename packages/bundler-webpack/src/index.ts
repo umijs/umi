@@ -200,9 +200,10 @@ class Bundler {
 
     if (cwd !== unescaped) {
       console.error(
-        'Project directory path contains escaped characters, please remove that.\n ref: https://github.com/umijs/umi/issues/8084',
+        `Project directory path "${cwd}" contains escaped characters, please remove that.
+ ref: https://github.com/umijs/umi/issues/8084`,
       );
-      throw Error('path contains escaped char');
+      throw Error('path contains escaped characters');
     }
   }
 }
