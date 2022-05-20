@@ -4,6 +4,7 @@ import { IServerOpts, Server } from '@umijs/server';
 import { BundlerConfigType, IConfig } from '@umijs/types';
 import { lodash as _, winPath } from '@umijs/utils';
 import { join } from 'path';
+import { unescape } from 'querystring';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 
 interface IOpts {
@@ -105,6 +106,8 @@ class Bundler {
   }): IServerOpts {
     const compiler = bundleImplementor.webpack(bundleConfigs);
     const { ssr, devServer } = this.config;
+
+    this.cwdPathCheck();
     // 这里不做 winPath 处理，是为了和下方的 path.sep 匹配上
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       // must be /, otherwise it will exec next()
@@ -172,6 +175,7 @@ class Bundler {
             _stats = stats;
           });
         }
+
         if (compiler.compilers) {
           compiler.compilers.forEach(addHooks);
         } else {
@@ -188,6 +192,18 @@ class Bundler {
         }
       },
     };
+  }
+
+  private cwdPathCheck() {
+    const cwd = process.cwd();
+    const unescaped = unescape(cwd);
+
+    if (cwd !== unescaped) {
+      console.error(
+        'Project directory path contains escaped characters, please remove that.\n ref: https://github.com/umijs/umi/issues/8084',
+      );
+      throw Error('path contains escaped char');
+    }
   }
 }
 
