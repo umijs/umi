@@ -3,11 +3,12 @@
 ## 启用方式
 
 配置开启。
+
 ```ts
 // config/config.ts
 export default {
   layout: {
-    title: "your app title",
+    title: 'your app title',
   },
 };
 ```
@@ -173,15 +174,6 @@ export const routes: IBestAFSRoute[] = [
     hideInBreadcrumb: true,
     // 子项往上提，仍旧展示,
     flatMenu: true,
-    // 沉浸式配置
-    layout: {
-      // 当前页面展示时隐藏菜单栏
-      hideMenu: false,
-      // 当前页面展示时隐藏导航栏
-      hideNav: false,
-      // 当前页面展示时隐藏 footer
-      hideFooter: false,
-    },
   },
 ];
 ```
@@ -248,13 +240,3 @@ hideInXXX 可以管理 menu 的渲染。
 - `hideChildrenInMenu=true` 隐藏子菜单
 - `hideInMenu=true` 隐藏自己和子菜单
 - `hideInBreadcrumb=true` 在面包屑中隐藏
-
-#### layout
-
-- Type: `object`
-
-沉浸式配置。
-
-- `hideMenu=true` 当前页面展示时隐藏菜单栏
-- `hideNav=true` 当前页面展示时隐藏导航栏
-- `hideFooter=true` 当前页面展示时隐藏 footer
