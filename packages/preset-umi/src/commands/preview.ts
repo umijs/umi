@@ -88,15 +88,6 @@ umi preview --port [port]
         }),
       );
 
-      // history fallback
-      app.use(
-        require('@umijs/bundler-webpack/compiled/connect-history-api-fallback')(
-          {
-            index: '/',
-          },
-        ),
-      );
-
       app.use(
         api.config.base,
         sirv(distDir, {
@@ -104,6 +95,11 @@ umi preview --port [port]
           dev: true,
           single: true,
         }),
+      );
+
+      // history fallback
+      app.use(
+        require('@umijs/bundler-webpack/compiled/connect-history-api-fallback')(),
       );
 
       // https 复用用户配置
