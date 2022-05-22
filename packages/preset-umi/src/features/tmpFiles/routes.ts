@@ -3,7 +3,7 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { resolve, winPath } from '@umijs/utils';
+import { resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
@@ -115,12 +115,17 @@ export async function getRoutes(opts: { api: IApi }) {
 
   // layout routes
   const absSrcPath = opts.api.paths.absSrcPath;
-  const absLayoutPath = join(absSrcPath, 'layouts/index.tsx');
+
+  const absLayoutPath = tryPaths([
+    join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
+    join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
+  ]);
+
   const layouts = (
     await opts.api.applyPlugins({
       key: 'addLayouts',
       initialValue: [
-        existsSync(absLayoutPath) && {
+        absLayoutPath && {
           id: '@@/global-layout',
           file: winPath(absLayoutPath),
         },

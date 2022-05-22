@@ -1,0 +1,16 @@
+{
+  "name": "@example/boilerplate-vue",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/preset-vue": "4.0.0-rc.19",
+    "umi": "4.0.0-rc.19",
+    "vue": "3.2.33"
+  }
+}
