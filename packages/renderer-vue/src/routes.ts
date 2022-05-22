@@ -38,10 +38,11 @@ export function createClientRoute(opts: {
   parentId?: string;
 }) {
   const { route } = opts;
-  const { id, path, redirect } = route;
+  const { id, path, redirect, ...other } = route;
 
   if (redirect) {
     return {
+      ...other,
       id,
       path,
       redirect,
@@ -49,6 +50,7 @@ export function createClientRoute(opts: {
   }
 
   const item: Record<string, any> = {
+    ...other,
     id,
     component: opts.routeComponent,
     path,
