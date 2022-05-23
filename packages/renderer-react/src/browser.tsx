@@ -111,11 +111,13 @@ export function renderClient(opts: {
 
     const handleRouteChange = useCallback(
       (p: string) => {
-        const matchedRouteIds =
+        // Patched routes has to id
+        const matchedRouteIds = (
           matchRoutes(clientRoutes, p)?.map(
             // @ts-ignore
             (route) => route.route.id,
-          ) || [];
+          ) || []
+        ).filter(Boolean);
         matchedRouteIds.forEach((id) => {
           // preload
           // @ts-ignore
