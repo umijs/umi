@@ -13,6 +13,7 @@ import { printMemoryUsage } from './printMemoryUsage';
 import {
   addUnWatch,
   createDebouncedHandler,
+  expandCSSPaths,
   expandJSPaths,
   unwatch,
   watch,
@@ -91,6 +92,8 @@ PORT=8888 umi dev
           join(absSrcPath, 'layouts'),
           ...expandJSPaths(join(absSrcPath, 'loading')),
           ...expandJSPaths(join(absSrcPath, 'app')),
+          ...expandJSPaths(join(absSrcPath, 'global')),
+          ...expandCSSPaths(join(absSrcPath, 'global')),
         ].filter(Boolean),
       });
       lodash.uniq<string>(watcherPaths.map(winPath)).forEach((p: string) => {

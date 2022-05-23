@@ -55,3 +55,9 @@ export function expandJSPaths(path: string) {
     return `${path}${ext}`;
   });
 }
+
+export function expandCSSPaths(path: string) {
+  return ['.css', '.less', '.scss', '.sass'].map((ext) => {
+    return `${path}${ext}`;
+  });
+}
