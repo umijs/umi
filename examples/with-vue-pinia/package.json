@@ -1,5 +1,5 @@
 {
-  "name": "@example/with-pinia",
+  "name": "@example/with-vue-pinia",
   "private": true,
   "scripts": {
     "build": "umi build",
