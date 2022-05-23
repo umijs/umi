@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "express": "4.17.3",
-    "umi": "4.0.0-rc.19"
+    "umi": "4.0.0-canary.20220523.1"
   }
 }
