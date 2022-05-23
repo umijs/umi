@@ -53,7 +53,7 @@ const Articles: React.FC = () => {
               <span>
                 <Tag>Ant Design</Tag>
                 <Tag>设计语言</Tag>
-                <Tag>蚂蚁金服</Tag>
+                <Tag>蚂蚁集团</Tag>
               </span>
             }
           />

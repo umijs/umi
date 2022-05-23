@@ -464,7 +464,7 @@ const testList: Test[] = [
   },
   {
     id: 9905,
-    name: '蚂蚁金服体验科技',
+    name: '蚂蚁集团体验科技',
     image:
       'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
     desc: '覆盖了所有测试需求，所有的案例均已在 Ubuntu 14.04 测试环境验证完成',
