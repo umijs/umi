@@ -54,9 +54,11 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
-    // import from @ant-design/pro-layout | @alipay/tech-ui
-    // 如果没找到就用 @ant-design/pro-layout
-    memo.alias[pkgHasDep || '@ant-design/pro-layout'] = pkgPath;
+    // 只在没有自行依赖 @ant-design/pro-layout 或 @alipay/tech-ui 时
+    // 才使用插件中提供的 @ant-design/pro-layout
+    if (!pkgHasDep) {
+      memo.alias['@ant-design/pro-layout'] = pkgPath;
+    }
     return memo;
   });
 
@@ -70,7 +72,6 @@ import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, match
 import { useMemo } from 'react';
 import  {
   ProLayout,
-  PageLoading,
 } from "${pkgHasDep}";
 import './Layout.less';
 import Logo from './Logo';
