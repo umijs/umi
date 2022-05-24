@@ -98,7 +98,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-descriptions': ^1.10.70
       '@ant-design/pro-form': ^1.67.0
-      '@ant-design/pro-layout': ^6.38.0
+      '@ant-design/pro-layout': next
       '@ant-design/pro-table': ^2.74.0
       '@antv/l7-react': ^2.3.9
       '@umijs/max': 4.0.0-canary.20220523.1
@@ -120,7 +120,7 @@ importers:
       '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
       '@ant-design/pro-descriptions': 1.10.70_e02fb82764744a0894e4f82d87654741
       '@ant-design/pro-form': 1.67.0_e02fb82764744a0894e4f82d87654741
-      '@ant-design/pro-layout': 6.38.0_e02fb82764744a0894e4f82d87654741
+      '@ant-design/pro-layout': 7.0.1-beta.14_e02fb82764744a0894e4f82d87654741
       '@ant-design/pro-table': 2.74.0_e02fb82764744a0894e4f82d87654741
       '@antv/l7-react': 2.3.9_react-dom@18.1.0+react@18.1.0
       '@umijs/max': link:../../packages/max
@@ -1583,41 +1583,6 @@ packages:
       use-media-antd-query: 1.1.0_react@18.1.0
     dev: false
 
-  /@ant-design/pro-layout/6.38.0_e02fb82764744a0894e4f82d87654741:
-    resolution: {integrity: sha512-hRHmAfQQU06ioHlvpc/6KCp4X3CmpX/vd41aY498YX5AOLL+wBpjRV5pAZVCtE2ZKxHaMMQwDYkQN9ZaBtlqIA==}
-    peerDependencies:
-      antd: '>=4.18.0'
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
-      '@ant-design/pro-provider': 1.6.4_e02fb82764744a0894e4f82d87654741
-      '@ant-design/pro-utils': 1.41.0_e02fb82764744a0894e4f82d87654741
-      '@babel/runtime': 7.17.9
-      '@umijs/route-utils': 2.1.1
-      '@umijs/ssr-darkreader': 4.9.45
-      '@umijs/use-params': 1.0.9_react@18.1.0
-      antd: 4.20.2_react-dom@18.1.0+react@18.1.0
-      classnames: 2.3.1
-      lodash.merge: 4.6.2
-      omit.js: 2.0.2
-      path-to-regexp: 2.4.0
-      rc-resize-observer: 1.2.0_react-dom@18.1.0+react@18.1.0
-      rc-util: 5.21.2_react-dom@18.1.0+react@18.1.0
-      react: 18.1.0
-      swr: 1.3.0_react@18.1.0
-      unstated-next: 1.1.0
-      use-json-comparison: 1.0.6_react@18.1.0
-      use-media-antd-query: 1.1.0_react@18.1.0
-      warning: 4.0.3
-    transitivePeerDependencies:
-      - react-dom
-    dev: false
-
   /@ant-design/pro-layout/6.38.0_react-dom@18.1.0+react@18.1.0:
     resolution: {integrity: sha512-hRHmAfQQU06ioHlvpc/6KCp4X3CmpX/vd41aY498YX5AOLL+wBpjRV5pAZVCtE2ZKxHaMMQwDYkQN9ZaBtlqIA==}
     peerDependencies:
@@ -1649,6 +1614,43 @@ packages:
       use-media-antd-query: 1.1.0_react@18.1.0
       warning: 4.0.3
     transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@ant-design/pro-layout/7.0.1-beta.14_e02fb82764744a0894e4f82d87654741:
+    resolution: {integrity: sha512-R42O540nChEnc8Gvt0V9KyrkxW8YauQtCyJGUChIDyPP7B2zsW/UPd80sQoXT7UljmdZmlXCMRmPTtPpBElk1g==}
+    peerDependencies:
+      antd: '>=4.18.0'
+      react: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@ant-design/icons': 4.7.0_react-dom@18.1.0+react@18.1.0
+      '@ant-design/pro-provider': 1.6.4_e02fb82764744a0894e4f82d87654741
+      '@ant-design/pro-utils': 1.41.0_e02fb82764744a0894e4f82d87654741
+      '@babel/runtime': 7.17.9
+      '@emotion/css': 11.9.0
+      '@umijs/route-utils': 2.1.1
+      '@umijs/ssr-darkreader': 4.9.45
+      '@umijs/use-params': 1.0.9_react@18.1.0
+      antd: 4.20.2_react-dom@18.1.0+react@18.1.0
+      classnames: 2.3.1
+      lodash.merge: 4.6.2
+      omit.js: 2.0.2
+      path-to-regexp: 2.4.0
+      rc-resize-observer: 1.2.0_react-dom@18.1.0+react@18.1.0
+      rc-util: 5.21.2_react-dom@18.1.0+react@18.1.0
+      react: 18.1.0
+      swr: 1.3.0_react@18.1.0
+      unstated-next: 1.1.0
+      use-json-comparison: 1.0.6_react@18.1.0
+      use-media-antd-query: 1.1.0_react@18.1.0
+      warning: 4.0.3
+    transitivePeerDependencies:
+      - '@babel/core'
       - react-dom
     dev: false
 
@@ -2163,7 +2165,7 @@ packages:
     dependencies:
       '@antv/l7-core': 2.8.9
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       eventemitter3: 4.0.7
       inversify: 5.1.1
       reflect-metadata: 0.1.13
@@ -2175,7 +2177,7 @@ packages:
     dependencies:
       '@antv/async-hook': 2.1.0
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       ajv: 6.12.6
       element-resize-event: 3.0.6
       eventemitter3: 4.0.7
@@ -2196,7 +2198,7 @@ packages:
       '@antv/l7-core': 2.8.9
       '@antv/l7-source': 2.8.9
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@mapbox/martini': 0.2.0
       '@turf/meta': 6.5.0
       d3-array: 1.2.4
@@ -2218,7 +2220,7 @@ packages:
     resolution: {integrity: sha512-AaEeVXEMQCwmU8uVH7wNhwhpsIb3TXKeoF47/A4Dl+kfgXKhYhstdX8MQi2o97D6w3ULWT6MfsmA3tqrXQT0nA==}
     dependencies:
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@mapbox/point-geometry': 0.1.0
       '@mapbox/unitbezier': 0.0.0
       eventemitter3: 4.0.7
@@ -2232,7 +2234,7 @@ packages:
       '@antv/l7-core': 2.8.9
       '@antv/l7-map': 2.8.9
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@types/amap-js-api': 1.4.10
       '@types/mapbox-gl': 1.13.3
       gl-matrix: 3.4.3
@@ -2267,7 +2269,7 @@ packages:
     resolution: {integrity: sha512-l1dk+ewngF4hCcIwzevEDw7YzF0h/QbREE3S7Af8pYgy2i713I/zIMdRJGvVJ4ffCWmV+IDWk5HTYQ6f35Socw==}
     dependencies:
       '@antv/l7-core': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       inversify: 5.1.1
       l7regl: 0.0.20
       lodash: 4.17.21
@@ -2283,7 +2285,7 @@ packages:
       '@antv/l7-maps': 2.8.9
       '@antv/l7-renderer': 2.8.9
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       inversify: 5.1.1
       mapbox-gl: 1.13.2
       reflect-metadata: 0.1.13
@@ -2295,7 +2297,7 @@ packages:
       '@antv/async-hook': 2.1.0
       '@antv/l7-core': 2.8.9
       '@antv/l7-utils': 2.8.9
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@mapbox/geojson-rewind': 0.4.1
       '@turf/helpers': 6.5.0
       '@turf/invariant': 6.5.0
@@ -2312,7 +2314,7 @@ packages:
   /@antv/l7-utils/2.8.9:
     resolution: {integrity: sha512-xuVVApGMdBAr7dDJwHvbgQsBn357gjixE7+bYzL/cHfvfstC04ZwdSkDfMM4GuQ6dmUdboOdcy7bNlQ1V21UEA==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@turf/helpers': 6.5.0
       d3-color: 1.4.1
     dev: false
@@ -5102,6 +5104,21 @@ packages:
       stylis: 4.0.13
     dev: false
 
+  /@emotion/css/11.9.0:
+    resolution: {integrity: sha512-S9UjCxSrxEHawOLnWw4upTwfYKb0gVQdatHejn3W9kPyXxmKv3HmjVfJ84kDLmdX8jR20OuDQwaJ4Um24qD9vA==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+    dependencies:
+      '@emotion/babel-plugin': 11.9.2
+      '@emotion/cache': 11.7.1
+      '@emotion/serialize': 1.0.3
+      '@emotion/sheet': 1.1.0
+      '@emotion/utils': 1.1.0
+    dev: false
+
   /@emotion/hash/0.8.0:
     resolution: {integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==}
     dev: false
@@ -6952,20 +6969,20 @@ packages:
   /@probe.gl/env/3.5.0:
     resolution: {integrity: sha512-YdlpZZshhyYxvWDBmZ5RIW2pTR14Pw4p9czMlt/v7F6HbFzWfAdmH7q6xVwFRYxUpQLwhWensWyv4aFysiWl4g==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
     dev: false
 
   /@probe.gl/log/3.5.0:
     resolution: {integrity: sha512-nW/qz2X1xY08WU/TsmJP6/6IPNcaY5fS/vLjpC4ahJuE2Mezga4hGM/R2X5JWE/nkPc+BsC5GnAnD13rwAxS7g==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@probe.gl/env': 3.5.0
     dev: false
 
   /@probe.gl/stats/3.5.0:
     resolution: {integrity: sha512-IH2M+F3c8HR1DTroBARePUFG7wIewumtKA0UFqx51Z7S4hKrD60wFbpMmg0AcF4FvHAXMBoC+kYi1UKW9XbAOw==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
     dev: false
 
   /@qixian.cs/path-to-regexp/6.1.0:
@@ -17101,7 +17118,7 @@ packages:
   /l7eval5/0.0.3:
     resolution: {integrity: sha512-xnn9x/T0zawTM1L9DASmRXVMb5fTCib83FtGZQcn5ToM1lAo4dutNOK2JAC+jd3mEMWa9MMq188dyoQcqG2WOg==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@types/acorn': 4.0.6
       '@types/estree': 0.0.41
       acorn: 7.4.1
@@ -21511,7 +21528,7 @@ packages:
   /probe.gl/3.5.0:
     resolution: {integrity: sha512-KWj8u0PNytr/rVwcQFcN7O8SK7n/ITOsUZ91l4fSX95oHhKvVCI7eadrzFUzFRlXkFfBWpMWZXFHITsHHHUctw==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@probe.gl/env': 3.5.0
       '@probe.gl/log': 3.5.0
       '@probe.gl/stats': 3.5.0
@@ -21989,7 +22006,7 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@babel/runtime': 7.17.7
+      '@babel/runtime': 7.17.9
       async-validator: 4.0.7
       rc-util: 5.21.2_react-dom@18.1.0+react@18.1.0
       react: 18.1.0
@@ -23670,7 +23687,7 @@ packages:
   /rtl-css-js/1.15.0:
     resolution: {integrity: sha512-99Cu4wNNIhrI10xxUaABHsdDqzalrSRTie4GeCmbGVuehm4oj+fIy8fTzB+16pmKe8Bv9rl+hxIBez6KxExTew==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
     dev: false
 
   /run-async/2.4.1:
@@ -26327,7 +26344,7 @@ packages:
   /viewport-mercator-project/6.2.3:
     resolution: {integrity: sha512-QQb0/qCLlP4DdfbHHSWVYXpghB2wkLIiiZQnoelOB59mXKQSyZVxjreq1S+gaBJFpcGkWEcyVtre0+2y2DTl/Q==}
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       gl-matrix: 3.4.3
     dev: false
 

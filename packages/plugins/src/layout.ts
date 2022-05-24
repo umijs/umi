@@ -1,8 +1,8 @@
 import * as allIcons from '@ant-design/icons';
-import { dirname } from 'path';
+import { existsSync } from 'fs';
+import { dirname, join } from 'path';
 import { IApi } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
-import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
@@ -17,12 +17,32 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  const pkgPath =
-    resolveProjectDep({
-      pkg: api.pkg,
-      cwd: api.cwd,
-      dep: '@ant-design/pro-layout',
-    }) || dirname(require.resolve('@ant-design/pro-layout/package.json'));
+  /**
+   * 优先去找 '@alipay/tech-ui'，保证稳定性
+   */
+  const depList = ['@alipay/tech-ui', '@ant-design/pro-layout'];
+
+  const pkgHasDep = depList.find((dep) => {
+    const { pkg } = api;
+    if (pkg.dependencies?.[dep] || pkg.devDependencies?.[dep]) {
+      return true;
+    }
+    return false;
+  });
+
+  const getPkgPath = () => {
+    // 如果  layout 和 techui至少有一个在，找到他们的地址
+    if (
+      pkgHasDep &&
+      existsSync(join(api.cwd, 'node_modules', pkgHasDep, 'package.json'))
+    ) {
+      return join(api.cwd, 'node_modules', pkgHasDep);
+    }
+    // 如果项目中没有去找插件以来的
+    return dirname(require.resolve('@ant-design/pro-layout/package.json'));
+  };
+
+  const pkgPath = getPkgPath();
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
@@ -34,8 +54,9 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
-    // import from @ant-design/pro-layout
-    memo.alias['@ant-design/pro-layout'] = pkgPath;
+    // import from @ant-design/pro-layout | @alipay/tech-ui
+    // 如果没找到就用 @ant-design/pro-layout
+    memo.alias[pkgHasDep || '@ant-design/pro-layout'] = pkgPath;
     return memo;
   });
 
@@ -47,9 +68,10 @@ export default (api: IApi) => {
       content: `
 import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
 import { useMemo } from 'react';
-import ProLayout, {
+import  {
+  ProLayout,
   PageLoading,
-} from '@ant-design/pro-layout';
+} from "${pkgHasDep}";
 import './Layout.less';
 import Logo from './Logo';
 import Exception from './Exception';
