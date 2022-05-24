@@ -11,6 +11,7 @@ export {
   Navigate,
   NavLink,
   Outlet,
+  resolvePath,
   useLocation,
   useMatch,
   useNavigate,

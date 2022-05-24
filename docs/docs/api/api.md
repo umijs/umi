@@ -291,6 +291,44 @@ function Dashboard() {
 }
 ```
 
+### resolvePath
+
+用于在客户端解析前端路由跳转路径。
+
+类型定义如下：
+
+```ts
+declare function resolvePath(
+  to: Partial<Location> | string,
+  fromPathname?: string
+): {
+  pathname: string;
+  search: string;
+  hash: string;
+};
+```
+
+示例：
+
+```ts
+// 同级相对跳转，返回 { pathname: '/parent/child', search: '', hash: '' }
+resolvePath('child', '/parent');
+resolvePath('./child', '/parent');
+resolvePath('', '/parent/child');
+resolvePath('.', '/parent/child');
+
+// 祖先层级相对跳转，返回 { pathname: '/parent/sibling', search: '', hash: '' }
+resolvePath('../sibling', '/parent/child');
+resolvePath('../../parent/sibling', '/other/child');
+
+// 绝对跳转，返回 { pathname: '/target', search: '', hash: '' }
+resolvePath('/target', '/parent');
+resolvePath('/target', '/parent/child');
+
+// 携带 search 和 hash 跳转，返回 { pathname: '/params', search: '?a=b', hash: '#c' }
+resolvePath('/params?a=b#c', '/prev');
+```
+
 ### terminal
 
 `terminal` 用于在开发阶段在浏览器向 node 终端输出日志的工具。
