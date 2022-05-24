@@ -1,0 +1,17 @@
+{
+  "name": "@example/with-vue-element-plus",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/preset-vue": "4.0.0-rc.19",
+    "element-plus": "^2.2.1",
+    "umi": "4.0.0-rc.19",
+    "vue": "3.2.33"
+  }
+}
