@@ -14,7 +14,9 @@ function transform(opts: { code: string; filename: string; implementor: any }) {
   const ext = extname(filename);
   return implementor.transformSync(code, {
     loader: ext.slice(1),
-    target: 'es2017',
+    // consistent with `tsconfig.base.json`
+    // https://github.com/umijs/umi-next/pull/729
+    target: 'es2019',
     format: 'cjs',
   }).code;
 }
