@@ -40,12 +40,12 @@ export async function getInitialState(): Promise<{
     return {
       fetchUserInfo,
       currentUser,
-      settings: {},
+      settings: { layout: 'mix' },
     };
   }
   return {
     fetchUserInfo,
-    settings: {},
+    settings: { layout: 'mix' },
   };
 }
 
