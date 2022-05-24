@@ -72,7 +72,7 @@ import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, match
 import { useMemo } from 'react';
 import  {
   ProLayout,
-} from "${pkgHasDep}";
+} from "${pkgHasDep || '@ant-design/pro-layout'}";
 import './Layout.less';
 import Logo from './Logo';
 import Exception from './Exception';
