@@ -85,9 +85,4 @@ export default {
 
 ### 如何使用 antd 的其他版本？
 
-在项目中安装你需要的 antd 版本，然后将 `@alipay/bigfish/antd` 替换成 `antd`：
-
-```diff
-- import { Button } from '@alipay/bigfish/antd';
-+ import { Button } from 'antd';
-```
+在项目中安装你需要的 antd 版本。
