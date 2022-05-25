@@ -3,7 +3,7 @@
 `@umijs/max` 内置了插件方案。它基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
 ```js
-import { request, useRequest } from '@alipay/bigfish';
+import { request, useRequest } from 'umi';
 
 request;
 useRequest;
