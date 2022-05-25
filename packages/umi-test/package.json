@@ -1,6 +1,6 @@
 {
   "name": "umi-test",
-  "version": "1.9.6",
+  "version": "1.9.7",
   "bin": {
     "umi-test": "./bin/umi-test.js"
   },
@@ -42,7 +42,7 @@
     "react-dom": "^16.8.6",
     "regenerator-runtime": "0.13.2",
     "typescript": "^3.7.2",
-    "umi-utils": "1.7.2",
+    "umi-utils": "1.7.3",
     "yargs-parser": "13.1.1"
   }
 }

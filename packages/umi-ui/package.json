@@ -1,6 +1,6 @@
 {
   "name": "umi-ui",
-  "version": "1.5.10",
+  "version": "1.5.11",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
@@ -47,7 +47,7 @@
     "rimraf": "3.0.0",
     "semver": "6.3.0",
     "sockjs": "0.3.19",
-    "umi-build-dev": "1.18.8",
+    "umi-build-dev": "1.18.9",
     "umi-ui-theme": "1.2.4",
     "user-home": "2.0.0"
   }

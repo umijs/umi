@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-locale",
-  "version": "2.11.6",
+  "version": "2.11.7",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
   "browser": {
@@ -36,6 +36,6 @@
     "mustache": "3.0.1",
     "prop-types": "15.6.2",
     "react-intl": "2.7.2",
-    "umi-utils": "1.7.2"
+    "umi-utils": "1.7.3"
   }
 }
