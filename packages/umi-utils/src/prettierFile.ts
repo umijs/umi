@@ -28,6 +28,7 @@ export default function(fileContent: string, parser: PrettierFormatParser = 'typ
       parser,
       trailingComma: 'all',
       singleQuote: true,
+      pluginSearchDirs: [__dirname],
     });
   } catch (e) {
     console.error(`prettier error！${e.toString()}\n code：${fileContent}`);
