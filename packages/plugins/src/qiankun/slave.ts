@@ -85,7 +85,8 @@ export default (api: IApi) => {
   });
 
   api.addHTMLHeadScripts(() => {
-    const dontModify = api.config.qiankun?.shouldNotModifyRuntimePublicPath;
+    const dontModify =
+      api.config.qiankun?.slave?.shouldNotModifyRuntimePublicPath;
     return dontModify
       ? []
       : [

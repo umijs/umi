@@ -5,6 +5,7 @@ import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, logger } from '@umijs/utils';
+import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
 import http from 'http';
 import { join } from 'path';
@@ -30,18 +31,13 @@ export async function createServer(opts: IOpts) {
   const app = express();
 
   // cros
-  app.use((_req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Content-Type, Content-Length, Authorization, Accept, X-Requested-With',
-    );
-    res.header(
-      'Access-Control-Allow-Methods',
-      'GET, HEAD, PUT, POST, PATCH, DELETE, OPTIONS',
-    );
-    next();
-  });
+  app.use(
+    cors({
+      origin: true,
+      methods: ['GET', 'HEAD', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+      credentials: true,
+    }),
+  );
 
   // compression
   app.use(require('@umijs/bundler-webpack/compiled/compression')());
