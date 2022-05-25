@@ -39,6 +39,7 @@
     "@umijs/bundler-utils": "4.0.0-canary.20220523.1",
     "@umijs/mfsu": "4.0.0-canary.20220523.1",
     "@umijs/utils": "4.0.0-canary.20220523.1",
+    "cors": "^2.8.5",
     "css-loader": "6.7.1",
     "es5-imcompatible-versions": "^0.1.73",
     "jest-worker": "27.5.1",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@swc/core": "1.2.165",
+    "@types/cors": "^2.8.12",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.3",
     "autoprefixer": "10.4.4",
