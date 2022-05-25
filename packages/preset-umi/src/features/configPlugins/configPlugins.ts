@@ -55,6 +55,7 @@ export default (api: IApi) => {
     base: '/',
     history: { type: 'browser' },
     targets: DEFAULT_BROWSER_TARGETS,
+    svgr: {},
   };
 
   const bundleSchemas = api.config.vite
