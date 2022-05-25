@@ -40,16 +40,13 @@ export default (api: IApi) => {
     },
   }));
 
-  // TODO: modify routes
   api.modifyRoutes((memo) => {
     Object.keys(memo).forEach((id) => {
       const route = memo[id];
       if (route.microApp) {
         const appName = route.microApp;
-        // TODO: config base
-        const base = '/';
-        // TODO: config masterHistoryType
-        const masterHistoryType = 'browser';
+        const base = api.config.base || '/';
+        const masterHistoryType = api.config.history?.type || 'browser';
         const routeProps = route.microAppProps || {};
         const normalizedRouteProps = JSON.stringify(routeProps).replace(
           /"/g,
