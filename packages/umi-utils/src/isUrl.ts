@@ -1,3 +1,4 @@
+// @ts-ignore
 import isUrl from 'is-url';
 
 /**

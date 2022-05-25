@@ -1,4 +1,5 @@
 import { readFileSync, existsSync } from 'fs';
+// @ts-ignore
 import { parse } from 'dotenv';
 
 /**
