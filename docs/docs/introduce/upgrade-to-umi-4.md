@@ -138,6 +138,34 @@ export default function Layout(props) {
 }
 ```
 
+使用了 `React.cloneElement` 方式渲染的路由组件改造，示例
+
+```diff
+import React from 'react';
++ import { Outlet } from 'umi';
+
+export default function RouteComponent(props) {
+  return (
+    <div>
+-      { React.cloneElement(props.children, { someProp: 'p1' }) }
++      <Outlet context={{ someProp: 'p1' }} />
+    </div>
+  );
+}
+```
+组件改成从 `useOutletContext` 取值
+```diff
+import React from 'react';
++ import { useOutletContext } from 'umi';
+
+- export function Comp(props){
++ export function Comp() {
++   const props = useOutletContext();
+
+  return props.someProp;
+}
+```
+
 #### history
 
 ```diff

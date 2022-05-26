@@ -165,7 +165,7 @@ function IndexPage({ user }) {
 
 `matchPath` 可以将给定的路径以及一个已知的路由格式进行匹配，并且返回匹配结果。
 
-类型定义如下:
+类型定义如下：
 
 ```ts
 declare function matchPath<ParamKey extends string = string>(
@@ -202,7 +202,7 @@ const match = matchPath(
 
 `matchRoutes` 可以将给定的路径以及多个可能的路由选择进行匹配，并且返回匹配结果。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function matchRoutes(
@@ -251,7 +251,7 @@ const match = matchRoutes(
 
 `<NavLink>` 是 `<Link>` 的特殊形态，他知道当前是否为路由激活状态。通常在导航菜单、面包屑、Tabs 中会使用，用于显示当前的选中状态。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function NavLink(props: LinkProps & {
@@ -281,15 +281,42 @@ function Navs() {
 
 `<Outlet>` 用于渲染父路由中渲染子路由。如果父路由被严格匹配，会渲染子路由中的 index 路由（如有）。
 
+类型定义如下：
+
+```ts
+interface OutletProps {
+  context?: unknown;
+}
+declare function Outlet(
+  props: OutletProps
+): React.ReactElement | null;
+```
+
 示例：
 
 ```ts
 import { Outlet } from 'umi';
 
 function Dashboard() {
-  return <div><h1>Dashboard</h1><Outlet /></div>;
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <Outlet />
+    </div>
+  );
+}
+
+function DashboardWithContext() {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <Outlet context={{ prop: 'a' }}/>
+    </div>
+  );
 }
 ```
+
+`Outlet` 组件的 `context` 可以使用 API `useOutletContext` 在子组件中获取。
 
 ### resolvePath
 
@@ -347,7 +374,7 @@ terminal.error('i am error level');
 
 `useAppData` 返回全局的应用数据。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function useAppData(): {
@@ -365,7 +392,7 @@ declare function useAppData(): {
 
 `useLocation` 返回当前 location 对象。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function useLocation(): {
@@ -394,7 +421,7 @@ function App() {
 
 `useMatch` 返回传入 path 的匹配信息；如果匹配失败将返回 `null`
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function useMatch(pattern: {
@@ -476,7 +503,32 @@ const Layout = ()=>{
     {outlet}
   </div>
 }
+```
 
+### useOutletContext
+
+`useOutletContext` 用于返回 `Outlet` 组件上挂载的 `context` 。
+
+类型定义如下：
+```ts 
+declare function useOutlet(): React.ReactElement | null;
+```
+
+示例：
+```ts
+import { useOutletContext, Outlet } from 'umi';
+
+const Layout = () => {
+  return <div className="fancyLayout">
+    <Outlet context={{ prop: 'from Layout'}} />
+  </div>
+}
+
+const SomeRouteComponentUnderLayout = () => {
+  const layoutContext = useOutletContext();
+
+  return JSON.stringify(layoutContext)   // {"prop":"from Layout"} 
+}
 ```
 
 ### useParams
@@ -527,7 +579,7 @@ const path = useResolvedPath('docs')
 
 `useRouteData` 返回当前匹配路由的数据的钩子函数。
 
-类型定义如下。
+类型定义如下：
 
 ```ts
 declare function useRouteData(): {
