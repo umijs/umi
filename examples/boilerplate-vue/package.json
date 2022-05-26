@@ -11,6 +11,6 @@
   "dependencies": {
     "@umijs/preset-vue": "4.0.0-rc.20",
     "umi": "4.0.0-rc.20",
-    "vue": "3.2.33"
+    "vue": "3.2.36"
   }
 }

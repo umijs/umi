@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "chokidar": "3.5.3",
-    "pino": "7.10.0"
+    "pino": "7.11.0"
   },
   "devDependencies": {
     "@types/color": "3.0.3",

@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@umijs/renderer-vue": "4.0.0-rc.20",
-    "vue": "3.2.33",
+    "vue": "3.2.36",
     "vue-loader": "17.0.0",
     "vue-router": "4.0.15"
   },

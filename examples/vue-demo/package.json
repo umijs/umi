@@ -12,10 +12,10 @@
     "@umijs/preset-vue": "4.0.0-rc.20",
     "umi": "4.0.0-rc.20",
     "vant": "3.4.9",
-    "vue": "3.2.33"
+    "vue": "3.2.36"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.13.3",
+    "babel-plugin-import": "^1.13.5",
     "vite-plugin-style-import": "2.0.0"
   }
 }

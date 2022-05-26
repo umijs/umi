@@ -38,7 +38,7 @@
     "core-js": "3.22.4",
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.9.3",
-    "magic-string": "0.26.1",
+    "magic-string": "0.26.2",
     "path-to-regexp": "1.7.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",

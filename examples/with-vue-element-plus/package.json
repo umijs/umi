@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@umijs/preset-vue": "4.0.0-rc.20",
-    "element-plus": "^2.2.1",
+    "element-plus": "^2.2.2",
     "umi": "4.0.0-rc.20",
-    "vue": "3.2.33"
+    "vue": "3.2.36"
   }
 }

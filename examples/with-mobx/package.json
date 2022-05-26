@@ -7,8 +7,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "mobx": "^6.5.0",
-    "mobx-react": "^7.4.0",
+    "mobx": "^6.6.0",
+    "mobx-react": "^7.5.0",
     "umi": "4.0.0-rc.20"
   }
 }

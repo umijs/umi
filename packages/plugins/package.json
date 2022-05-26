@@ -24,11 +24,11 @@
   "dependencies": {
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-layout": "^6.38.0",
+    "@ant-design/pro-layout": "^7.0.1-beta.17",
     "@umijs/bundler-utils": "4.0.0-rc.20",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",
-    "babel-plugin-import": "^1.13.3",
+    "babel-plugin-import": "^1.13.5",
     "dayjs": "^1.11.2",
     "dva-core": "^2.0.4",
     "dva-immer": "^1.0.0",
@@ -39,7 +39,7 @@
     "moment": "^2.29.3",
     "qiankun": "^2.7.0",
     "react-intl": "3.12.1",
-    "react-redux": "^8.0.1",
+    "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "warning": "^4.0.3"
   },

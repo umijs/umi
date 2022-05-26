@@ -8,8 +8,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "antd": "^4.20.2",
-    "framer-motion": "^6.3.3",
+    "antd": "^4.20.6",
+    "framer-motion": "^6.3.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
@@ -19,7 +19,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.3",
+    "@types/react-dom": "^18.0.5",
     "@umijs/mfsu": "4.0.0-rc.20",
     "babel-loader": "^8.2.4",
     "esbuild": "0.14.35",

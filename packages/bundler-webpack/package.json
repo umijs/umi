@@ -29,8 +29,8 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@parcel/css": "1.8.2",
-    "@pmmmwh/react-refresh-webpack-plugin": "0.5.5",
+    "@parcel/css": "1.9.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.7",
     "@svgr/core": "6.2.1",
     "@svgr/plugin-jsx": "^6.2.1",
     "@svgr/plugin-svgo": "^6.2.0",
