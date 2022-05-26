@@ -7,10 +7,10 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@react-three/drei": "^9.7.1",
-    "@react-three/fiber": "^8.0.13",
+    "@react-three/drei": "^9.11.3",
+    "@react-three/fiber": "^8.0.19",
     "@types/three": "^0.140.0",
-    "three": "^0.140.0",
+    "three": "^0.141.0",
     "troika-three-text": "^0.46.4",
     "umi": "4.0.0-rc.20"
   }

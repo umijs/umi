@@ -35,7 +35,7 @@
   "dependencies": {
     "@umijs/lint": "4.0.0-rc.20",
     "@umijs/plugins": "4.0.0-rc.20",
-    "antd": "^4.20.2",
+    "antd": "^4.20.6",
     "eslint": "8.15.0",
     "stylelint": "14.8.2",
     "umi": "4.0.0-rc.20"

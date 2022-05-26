@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-rc.20",
-    "antd": "^4.20.3",
+    "antd": "^4.20.6",
     "umi": "4.0.0-rc.20"
   }
 }
