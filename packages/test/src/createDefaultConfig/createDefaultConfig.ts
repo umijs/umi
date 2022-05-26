@@ -59,11 +59,6 @@ export default function (cwd: string, args: IUmiTestArgs) {
         require.resolve('../../helpers/transformers/file'),
     },
     verbose: true,
-    transformIgnorePatterns: [
-      // 加 [^/]*? 是为了兼容 tnpm 的目录结构
-      // 比如：_umi-test@1.5.5@umi-test
-      // `node_modules/(?!([^/]*?umi|[^/]*?umi-test)/)`,
-    ],
     // 用于设置 jest worker 启动的个数
     ...(process.env.MAX_WORKERS
       ? { maxWorkers: Number(process.env.MAX_WORKERS) }
