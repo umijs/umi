@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "mrmime": "1.0.0",
-    "webpack": "5.72.0",
+    "webpack": "5.72.1",
     "webpack-virtual-modules": "0.4.3"
   },
   "publishConfig": {
