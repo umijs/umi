@@ -1,5 +1,4 @@
 import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
-import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
 import { dirname, join } from 'path';
@@ -54,7 +53,6 @@ export default (api: IApi) => {
     mountElementId: 'root',
     base: '/',
     history: { type: 'browser' },
-    targets: DEFAULT_BROWSER_TARGETS,
     svgr: {},
   };
 
