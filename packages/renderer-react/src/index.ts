@@ -16,6 +16,7 @@ export {
   useMatch,
   useNavigate,
   useOutlet,
+  useOutletContext,
   useParams,
   useResolvedPath,
   useRoutes,
