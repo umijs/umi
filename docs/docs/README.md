@@ -12,7 +12,7 @@ toc: content
 
 Umi, from the Chinese word **乌米** , is a scalable enterprise-class front-end application framework. Umi is based on routing, and supports both configuration routing and convention routing to ensure complete routing function experience. It is also complemented with a complete life cycle plug-in system, covering every use case from source code to build products, and supports many function extensions and business requirements.
 
-Umi is the underlying front-end framework of Ant Financial, and has directly or indirectly served 3000+ applications, including java, node, H5 wireless, offline (hybrid) applications, pure front-end assets applications, CMS applications, etc. It has served our internal users well, and we hope that it can also serve external users.
+Umi is the underlying front-end framework of Ant Group, and has directly or indirectly served 3000+ applications, including java, node, H5 wireless, offline (hybrid) applications, pure front-end assets applications, CMS applications, etc. It has served our internal users well, and we hope that it can also serve external users.
 
 Umi mainly serves the following functions:
 
