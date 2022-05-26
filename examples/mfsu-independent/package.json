@@ -24,7 +24,7 @@
     "babel-loader": "^8.2.4",
     "esbuild": "0.14.35",
     "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.72.0",
+    "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
   }
