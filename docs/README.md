@@ -15,7 +15,7 @@ features:
     desc: Umi has built-in routing, building, deployment, testing, and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionaries.
   - icon: https://gw.alipayobjects.com/zos/basement_prod/464cb990-6db8-4611-89af-7766e208b365/k77899wk_w108_h132.png
     title: Enterprise
-    desc: It has been verified by 3000+ projects in Ant Financial and projects of Alibaba, Youku, Netease, 飞猪, KouBei and other companies.
+    desc: It has been verified by 3000+ projects in Ant Group and projects of Alibaba, Youku, Netease, 飞猪, KouBei and other companies.
   - icon: https://gw.alipayobjects.com/zos/basement_prod/201bea40-cf9d-4be2-a1d8-55bec136faf2/k7788a8s_w102_h120.png
     title: Self Development
     desc: Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
