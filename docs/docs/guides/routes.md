@@ -185,51 +185,9 @@ export default (props) => {
 
 ## 页面跳转
 
-```js
-import { history } from 'umi';
+命令式跳转请使用 [`history`](../api/api#history) API
 
-// 跳转到指定路由
-history.push('/list');
-
-// 带参数跳转到指定路由
-history.push('/list?a=b');
-history.push({
-  pathname: '/list',
-  query: {
-    a: 'b',
-  },
-});
-
-// 跳转到上一个路由
-history.goBack();
-```
-
-组件内还可以使用 `useNavigate` hook
-
-```tsx
-import { useNavigate } from 'umi';
-
-export default ()=>{
-  const navigate = useNavigate()
-
-  return <button onClick={
-    () => {
-    //跳转到指定路由
-    navigate('/list');
-
-    // 带参数跳转到指定路由
-    navigate('/list?a=b')
-
-    // 替换为指定路由
-    navigate('/list', {replace: true})
-
-    // 跳转到上一个路由
-    navigate(-1);
-    // 跳转到上 n 个路由
-    navigate(-n);
-  }> navigate </button>
-}
-```
+组件内还可以使用 [`useNavigate`](../api/api#usenavigate) hook
 
 ## Link 组件
 

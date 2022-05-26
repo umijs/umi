@@ -108,16 +108,16 @@ import { history } from 'umi';
 history.push('/list');
 
 // 带参数跳转到指定路由
-history.push('/list?a=b');
+history.push('/list?a=b&c=d#anchor');
 history.push({
   pathname: '/list',
-  query: {
-    a: 'b',
-  },
+  search: '?a=b&c=d',
+  hash: 'anchor',
 });
 
 // 跳转到上一个路由
-history.goBack();
+history.back();
+history.go(-1);
 ```
 
 路由监听。
