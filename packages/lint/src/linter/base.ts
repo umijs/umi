@@ -47,6 +47,11 @@ export default class BaseLinter {
    * execute linter
    */
   run(args: ILintArgs) {
-    fork(this.getBinPath(), this.getRunArgs(args));
+    fork(this.getBinPath(), this.getRunArgs(args)).on('exit', (code) => {
+      // override exit code when > 0
+      if (!!code) {
+        process.exitCode = code;
+      }
+    });
   }
 }
