@@ -16,7 +16,7 @@
 
 ### getInitialState
 
-定义初始化数据。通常为了提供给内置布局功能和权限相关用户信息，我们需要在应用启动的最初阶段请求一些初始化数据，在 Bigfish 中，我们内置了插件 `initial-state`，该插件暴露一个运行时配置 `getInitialState`，该配置接收一个方法，你需要通过该方法返回相关数据，例如：
+定义初始化数据。通常为了提供给内置布局功能和权限相关用户信息，我们需要在应用启动的最初阶段请求一些初始化数据，在 Umi 中，我们内置了插件 `initial-state`，该插件暴露一个运行时配置 `getInitialState`，该配置接收一个方法，你需要通过该方法返回相关数据，例如：
 
 ```ts
 // src/app.ts(x)
@@ -121,7 +121,7 @@ export function render(oldRender) {
 
 ### qiankun
 
-Bigfish 内置了 `qiankun` 插件来提供微前端的能力，具体参考[插件配置](../max/micro-frontend)。
+Umi 内置了 `qiankun` 插件来提供微前端的能力，具体参考[插件配置](../max/micro-frontend)。
 
 ### render(oldRender: `Function`)
 
