@@ -56,7 +56,7 @@ export default (function rollup(userConfig) {
   if (userConfig.hash !== true) {
     // disable vite default hash filename
     // refer: https://github.com/vitejs/vite/blob/deb84c0b053b5c1e6a4162a224108d1d853dbb04/packages/vite/src/node/build.ts#L452
-    Object.assign(config.build!.rollupOptions!.output, {
+    Object.assign(config.build!.rollupOptions!.output!, {
       entryFileNames: '[name].js',
       chunkFileNames: '[name].js',
       assetFileNames: '[name].[ext]',
