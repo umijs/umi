@@ -8,7 +8,7 @@ import { chalk, logger } from '@umijs/utils';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
 import http from 'http';
-import { join } from 'path';
+import { extname, join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
 import { IConfig } from '../types';
 import { createWebSocketServer } from './ws';
@@ -49,9 +49,12 @@ export async function createServer(opts: IOpts) {
 
   // TODO: add to before middleware
   app.use((req, res, next) => {
-    if (req.path === '/umi.js' && existsSync(join(opts.cwd, 'umi.js'))) {
-      res.setHeader('Content-Type', 'application/javascript');
-      createReadStream(join(opts.cwd, 'umi.js')).on('error', next).pipe(res);
+    const file = req.path;
+    const filePath = join(opts.cwd, file);
+    const ext = extname(filePath);
+
+    if (ext === '.js' && existsSync(filePath)) {
+      res.sendFile(filePath);
     } else {
       next();
     }
