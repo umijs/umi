@@ -384,6 +384,8 @@ declare function useAppData(): {
   pluginManager: any;
   rootElement: string;
   basename: string;
+  clientLoaderData: { [routeKey: string]: any };
+  preloadRoute: (to: string) => void;
 };
 ```
 注意：此处 API 可能还会调整。

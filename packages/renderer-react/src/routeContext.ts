@@ -1,7 +1,8 @@
 import React from 'react';
+import { IRoute } from './types';
 
 export interface IRouteContextType {
-  route: any;
+  route: IRoute;
 }
 export const RouteContext = React.createContext<IRouteContextType | undefined>(
   undefined,

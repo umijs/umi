@@ -1,9 +1,28 @@
 import React from 'react';
 import { useRouteData } from './routeContext';
+import {
+  IClientRoute,
+  ILoaderData,
+  IRouteComponents,
+  IRoutesById,
+} from './types';
 
-export const AppContext = React.createContext<any>(null);
+interface IAppCentextType {
+  routes: IRoutesById;
+  routeComponents: IRouteComponents;
+  clientRoutes: IClientRoute[];
+  pluginManager: any;
+  rootElement?: HTMLElement;
+  basename?: string;
+  clientLoaderData: ILoaderData;
+  preloadRoute: (to: string) => void;
+}
 
-export function useAppData(): any {
+export const AppContext = React.createContext<IAppCentextType>(
+  {} as IAppCentextType,
+);
+
+export function useAppData() {
   return React.useContext(AppContext);
 }
 
