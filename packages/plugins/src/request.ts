@@ -252,7 +252,7 @@ const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
         });
         try {
           const handler =
-            config.errorConfig?.errorHandler;
+            config?.errorConfig?.errorHandler;
           if(handler)
             handler(error, opts, config);
         } catch (e) {
