@@ -1,0 +1,17 @@
+{
+  "name": "@example/mfsu-esbuild-less-demo",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev"
+  },
+  "dependencies": {
+    "@example/x-design": "workspace:*",
+    "antd": "4.20.2",
+    "umi": "4.0.0-rc.18"
+  }
+}

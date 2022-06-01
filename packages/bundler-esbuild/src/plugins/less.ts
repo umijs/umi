@@ -2,11 +2,11 @@ import { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import less from '@umijs/bundler-utils/compiled/less';
 import enhancedResolve from 'enhanced-resolve';
 import { promises as fs } from 'fs';
-import LessPluginAliases from 'less-plugin-aliases';
 import path from 'path';
 import { IConfig } from '../types';
 import { postcssProcess } from '../utils/postcssProcess';
 import { sortByAffix } from '../utils/sortByAffix';
+import LessPluginAliases from './less-plugin-alias';
 
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'],
@@ -155,8 +155,7 @@ export default (
             const result = await less.render(content, {
               plugins: [
                 new LessPluginAliases({
-                  prefix: '~',
-                  aliases: alias || {},
+                  alias: alias || {},
                 }),
               ],
               filename,
