@@ -125,7 +125,7 @@ history.go(-1);
 ```ts
 import { history } from 'umi';
 
-const unlisten = history.listen((location, action) => {
+const unlisten = history.listen(({ location, action }) => {
   console.log(location.pathname);
 });
 unlisten();
