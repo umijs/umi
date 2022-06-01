@@ -1,14 +1,25 @@
 // @ts-ignore
+import type { models as rawModels } from '@@/plugin-model/model';
 import isEqual from 'fast-deep-equal';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+type Models = typeof rawModels;
+
+type GetNamespaces<M> = {
+  [K in keyof M]: M[K] extends { namespace: string }
+    ? M[K]['namespace']
+    : never;
+}[keyof M];
+
+type Namespaces = GetNamespaces<Models>;
 
 // @ts-ignore
 const Context = React.createContext<{ dispatcher: Dispatcher }>(null);
 
 class Dispatcher {
-  callbacks: Record<string, Set<Function>> = {};
-  data: Record<string, unknown> = {};
-  update = (namespace: string) => {
+  callbacks: Record<Namespaces, Set<Function>> = {};
+  data: Record<Namespaces, unknown> = {};
+  update = (namespace: Namespaces) => {
     if (this.callbacks[namespace]) {
       this.callbacks[namespace].forEach((cb) => {
         try {
@@ -87,7 +98,34 @@ export function Provider(props: {
   );
 }
 
-export function useModel(namespace: string, selector?: any) {
+type GetModelByNamespace<M, N> = {
+  [K in keyof M]: M[K] extends { namespace: string; model: unknown }
+    ? M[K]['namespace'] extends N
+      ? M[K]['model'] extends (...args: any) => any
+        ? ReturnType<M[K]['model']>
+        : never
+      : never
+    : never;
+}[keyof M];
+
+type Model<N> = GetModelByNamespace<Models, N>;
+type Selector<N, S> = (model: Model<N>) => S;
+
+type SelectedModel<N, T> = T extends (...args: any) => any
+  ? ReturnType<NonNullable<T>>
+  : Model<N>;
+
+export function useModel<N extends Namespaces>(namespace: N): Model<N>;
+
+export function useModel<N extends Namespaces, S>(
+  namespace: N,
+  selector: Selector<N, S>,
+): SelectedModel<N, typeof selector>;
+
+export function useModel<N extends Namespaces, S>(
+  namespace: N,
+  selector?: Selector<N, S>,
+): SelectedModel<N, typeof selector> {
   const { dispatcher } = useContext<{ dispatcher: Dispatcher }>(Context);
   const selectorRef = useRef(selector);
   selectorRef.current = selector;
@@ -127,7 +165,7 @@ export function useModel(namespace: string, selector?: any) {
       }
     };
 
-    dispatcher.callbacks[namespace] ||= new Set();
+    dispatcher.callbacks[namespace] ||= new Set() as any; // rawModels 是 umi 动态生成的文件，导致前面 callback[namespace] 的类型无法推导出来，所以用 as any 来忽略掉
     dispatcher.callbacks[namespace].add(handler);
     dispatcher.update(namespace);
 
