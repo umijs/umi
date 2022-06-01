@@ -73,9 +73,9 @@ export function onRouteChange({ location, routes, action }) {
 比如用于设置标题，
 
 ```bash
-export function onRouteChange({ matchedRoutes }) {
-  if (matchedRoutes.length) {
-    document.title = matchedRoutes[matchedRoutes.length - 1].route.title || '';
+export function onRouteChange({ clientRoutes }) {
+  if (clientRoutes.length) {
+    document.title = clientRoutes[clientRoutes.length - 1].route.title || '';
   }
 }
 ```
