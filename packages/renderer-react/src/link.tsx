@@ -14,7 +14,7 @@ export function LinkWithPrefetch(
   const to = typeof props.to === 'string' ? props.to : props.to.pathname;
   return (
     <Link
-      onMouseEnter={() => props.prefetch && appData.preloadRoute(to)}
+      onMouseEnter={() => props.prefetch && to && appData.preloadRoute(to)}
       {...props}
     >
       {props.children}
