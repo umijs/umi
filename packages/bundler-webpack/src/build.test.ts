@@ -99,6 +99,9 @@ const expects: Record<string, Function> = {
   'postcss-flexbugs-fixes'({ files }: IOpts) {
     expect(files['index.css']).toContain(`.foo { flex: 1 1; }`);
   },
+  'runtime-public-path'({ files }: IOpts) {
+    expect(files['index.css']).toContain(`background: url(./static/`);
+  },
   svgo({ files }: IOpts) {
     expect(files['static']).toContain(EXISTS);
     expect(files['index.js']).toContain(`.svg`);
