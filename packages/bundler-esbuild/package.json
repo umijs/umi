@@ -27,7 +27,6 @@
     "@umijs/bundler-utils": "4.0.0-rc.20",
     "@umijs/utils": "4.0.0-rc.20",
     "enhanced-resolve": "5.9.3",
-    "less-plugin-aliases": "^1.0.3",
     "postcss": "^8.4.13",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-preset-env": "7.5.0"
