@@ -1,7 +1,7 @@
 import path from 'path';
+import visualizer from 'rollup-plugin-visualizer';
 import type { IConfigProcessor } from '.';
 import copy from '../../../compiled/rollup-plugin-copy';
-import visualizer from '../../../compiled/rollup-plugin-visualizer';
 
 /**
  * transform umi configs to vite rollup options
@@ -21,7 +21,7 @@ export default (function rollup(userConfig) {
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
         open: true,
-        json: userConfig.analyze.generateStatsFile,
+        json: userConfig.analyze?.generateStatsFile,
         // TODO: other options transform, refer: https://umijs.org/config#analyze
       }),
     );
