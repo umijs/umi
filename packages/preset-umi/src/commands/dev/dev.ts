@@ -8,6 +8,7 @@ import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
 import { getBabelOpts } from './getBabelOpts';
+import ViteHtmlPlugin from './plugins/ViteHtmlPlugin';
 import { printMemoryUsage } from './printMemoryUsage';
 import {
   addUnWatch,
@@ -248,7 +249,10 @@ PORT=8888 umi dev
           ...beforeMiddlewares,
           faviconMiddleware,
         ]),
-        afterMiddlewares: middlewares.concat(createRouteMiddleware({ api })),
+        // vite 模式使用 ./plugins/ViteHtmlPlugin.ts 处理
+        afterMiddlewares: enableVite
+          ? []
+          : [createRouteMiddleware({ api })].concat(middlewares),
         onDevCompileDone(opts: any) {
           debouncedPrintMemoryUsage();
           api.appData.bundleStatus.done = true;
@@ -302,5 +306,10 @@ PORT=8888 umi dev
         },
       });
     },
+  });
+
+  api.modifyViteConfig((viteConfig) => {
+    viteConfig.plugins?.push(ViteHtmlPlugin(api));
+    return viteConfig;
   });
 };
