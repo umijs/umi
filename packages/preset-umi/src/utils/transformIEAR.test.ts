@@ -82,7 +82,7 @@ describe('transform path for import/export/await-import/require', () => {
         .join('\n')
         .replace('/path/to/.umi', '..')
         .replace('/path/to/.umi/plugin-self', '.')
-        .replace('/path/to/node_modules', '@fs./node_modules'),
+        .replace('/path/to/node_modules', '@fs/node_modules'),
     );
   });
 });
