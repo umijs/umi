@@ -15,6 +15,7 @@
       <h4>useAppData</h4>
       <pre>{{ app }}</pre>
     </div>
+    <img src="{{ error }}" alt="测试vite模式错误图片加载" />
   </div>
 </template>
 <script lang="ts" setup>
