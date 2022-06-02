@@ -1,6 +1,5 @@
 {
   "name": "@example/mfsu-esbuild-less-demo",
-  "version": "1.0.0",
   "private": true,
   "description": "",
   "license": "ISC",
@@ -8,11 +7,12 @@
   "main": "index.js",
   "scripts": {
     "build": "umi build",
-    "dev": "umi dev"
+    "dev": "umi dev",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@example/x-design": "workspace:*",
     "antd": "4.20.2",
-    "umi": "4.0.0-rc.18"
+    "umi": "4.0.0-rc.21"
   }
 }
