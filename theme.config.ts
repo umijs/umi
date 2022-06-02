@@ -75,8 +75,7 @@ export default {
         {
           title: 'Umi Max',
           children: [
-            'max/api',
-            'max/config',
+            'max/introduce',
             'max/layout-menu',
             'max/antd',
             'max/charts',
@@ -86,7 +85,8 @@ export default {
             'max/i18n',
             'max/micro-frontend',
             'max/dva',
-            'max/bacon',
+            // 暂不支持
+            // 'max/bacon',
           ],
         },
       ],

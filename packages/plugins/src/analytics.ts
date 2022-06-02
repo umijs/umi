@@ -23,7 +23,7 @@ export default (api: IApi) => {
     return `
     (function() {
       var hm = document.createElement('script');
-      hm.src = 'https://hm.baidu.com/hm.js?${code}';
+      hm.src = '//hm.baidu.com/hm.js?${code}';
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(hm, s);
     })();
