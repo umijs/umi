@@ -27,6 +27,180 @@ export default (api: IApi) => {
       }),
     );
 
+    // tsconfig.json
+    const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
+    const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'tsconfig.json',
+      // x 1、basic config
+      // x 2、alias
+      // 3、language service platform
+      // 4、typing
+      content: JSON.stringify(
+        {
+          compilerOptions: {
+            target: 'esnext',
+            module: 'esnext',
+            moduleResolution: 'node',
+            importHelpers: true,
+            jsx: 'react',
+            esModuleInterop: true,
+            sourceMap: true,
+            baseUrl,
+            strict: true,
+            paths: {
+              '@/*': [`${srcPrefix}*`],
+              '@@/*': [`${srcPrefix}.umi/*`],
+              umi: [`${srcPrefix}.umi/exports`],
+              'umi/typings': [`${srcPrefix}.umi/typings`],
+            },
+            allowSyntheticDefaultImports: true,
+          },
+        },
+        null,
+        2,
+      ),
+    });
+
+    // typings.d.ts
+    // ref: https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'typings.d.ts',
+      content: `
+type CSSModuleClasses = { readonly [key: string]: string }
+declare module '*.css' {
+  const classes: CSSModuleClasses
+  export default classes
+}
+declare module '*.scss' {
+  const classes: CSSModuleClasses
+  export default classes
+}
+declare module '*.sass' {
+  const classes: CSSModuleClasses
+  export default classes
+}
+declare module '*.less' {
+  const classes: CSSModuleClasses
+  export default classes
+}
+declare module '*.styl' {
+  const classes: CSSModuleClasses
+  export default classes
+}
+declare module '*.stylus' {
+  const classes: CSSModuleClasses
+  export default classes
+}
+
+// images
+declare module '*.jpg' {
+  const src: string
+  export default src
+}
+declare module '*.jpeg' {
+  const src: string
+  export default src
+}
+declare module '*.png' {
+  const src: string
+  export default src
+}
+declare module '*.gif' {
+  const src: string
+  export default src
+}
+declare module '*.svg' {
+  const src: string
+  export default src
+}
+declare module '*.ico' {
+  const src: string
+  export default src
+}
+declare module '*.webp' {
+  const src: string
+  export default src
+}
+declare module '*.avif' {
+  const src: string
+  export default src
+}
+
+// media
+declare module '*.mp4' {
+  const src: string
+  export default src
+}
+declare module '*.webm' {
+  const src: string
+  export default src
+}
+declare module '*.ogg' {
+  const src: string
+  export default src
+}
+declare module '*.mp3' {
+  const src: string
+  export default src
+}
+declare module '*.wav' {
+  const src: string
+  export default src
+}
+declare module '*.flac' {
+  const src: string
+  export default src
+}
+declare module '*.aac' {
+  const src: string
+  export default src
+}
+
+// fonts
+declare module '*.woff' {
+  const src: string
+  export default src
+}
+declare module '*.woff2' {
+  const src: string
+  export default src
+}
+declare module '*.eot' {
+  const src: string
+  export default src
+}
+declare module '*.ttf' {
+  const src: string
+  export default src
+}
+declare module '*.otf' {
+  const src: string
+  export default src
+}
+
+// other
+declare module '*.wasm' {
+  const initWasm: (options: WebAssembly.Imports) => Promise<WebAssembly.Exports>
+  export default initWasm
+}
+declare module '*.webmanifest' {
+  const src: string
+  export default src
+}
+declare module '*.pdf' {
+  const src: string
+  export default src
+}
+declare module '*.txt' {
+  const src: string
+  export default src
+}
+`.trimEnd(),
+    });
+
     // umi.ts
     api.writeTmpFile({
       noPluginDir: true,
