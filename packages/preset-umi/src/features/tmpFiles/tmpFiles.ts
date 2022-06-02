@@ -54,6 +54,11 @@ export default (api: IApi) => {
               '@@/*': [`${srcPrefix}.umi/*`],
               umi: [`${srcPrefix}.umi/exports`],
               'umi/typings': [`${srcPrefix}.umi/typings`],
+              ...(api.config.vite
+                ? {
+                    '@fs/*': ['*'],
+                  }
+                : {}),
             },
             allowSyntheticDefaultImports: true,
           },
