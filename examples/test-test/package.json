@@ -6,7 +6,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "umi": "4.0.0-rc.20"
+    "umi": "4.0.0-rc.21"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.5",
-    "umi": "4.0.0-rc.20"
+    "umi": "4.0.0-rc.21"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",
