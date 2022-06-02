@@ -2,6 +2,7 @@
   "name": "@example/vue-demo",
   "private": true,
   "scripts": {
+    "analyze": "ANALYZE=1 umi build",
     "build": "umi build",
     "dev": "umi dev",
     "preview": "umi preview",
