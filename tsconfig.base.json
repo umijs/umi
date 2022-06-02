@@ -23,6 +23,7 @@
     "**/dist",
     "**/fixtures",
     "**/*.test.ts",
-    "**/*.e2e.ts"
+    "**/*.e2e.ts",
+    "**/templates"
   ]
 }
