@@ -103,6 +103,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   });
   examples.forEach((example) => {
     const pkg = require(join(examplesDir, example, 'package.json'));
+    pkg.scripts ||= {};
     pkg.scripts['start'] = 'npm run dev';
     // change deps version
     setDepsVersion({
