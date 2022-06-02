@@ -252,7 +252,7 @@ PORT=8888 umi dev
         // vite 模式使用 ./plugins/ViteHtmlPlugin.ts 处理
         afterMiddlewares: enableVite
           ? []
-          : [createRouteMiddleware({ api })].concat(middlewares),
+          : middlewares.concat(createRouteMiddleware({ api })),
         onDevCompileDone(opts: any) {
           debouncedPrintMemoryUsage();
           api.appData.bundleStatus.done = true;
