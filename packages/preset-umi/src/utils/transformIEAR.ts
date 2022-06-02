@@ -100,7 +100,7 @@ export default function transformIEAR(
       // why @fs
       // 由于我们临时文件下大量绝对路径的引用，而绝对路径的引用不会被 Vite 预编译
       // 增加@fs后绝对路径会导致ts 提示失效, 这里转为相对路径解决
-      absPath = `@fs./${winPath(relative(api.cwd, absPath))}`;
+      absPath = `@fs/${winPath(relative(api.cwd, absPath))}`;
     }
 
     return `${prefix}${quote}${absPath}${quote}`;
