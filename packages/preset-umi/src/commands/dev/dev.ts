@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { IApi } from '../../types';
+import { clearTmp } from '../../utils/clearTmp';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -43,6 +44,9 @@ PORT=8888 umi dev
     async fn() {
       logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
       const enableVite = !!api.config.vite;
+
+      // clear tmp except cache
+      clearTmp(api.paths.absTmpPath);
 
       // check package.json
       await api.applyPlugins({
