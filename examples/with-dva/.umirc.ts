@@ -1,4 +1,5 @@
 export default {
+  routes: [{ path: '/', component: 'index' }],
   plugins: ['@umijs/plugins/dist/dva'],
   dva: {
     immer: {
