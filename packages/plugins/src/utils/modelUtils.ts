@@ -220,10 +220,12 @@ export class ModelUtils {
     const imports: string[] = [];
     const modelProps: string[] = [];
     models.forEach((model) => {
-      const fileWithoutExt = format({
-        dir: dirname(model.file),
-        base: basename(model.file, extname(model.file)),
-      });
+      const fileWithoutExt = winPath(
+        format({
+          dir: dirname(model.file),
+          base: basename(model.file, extname(model.file)),
+        }),
+      );
       if (model.exportName !== 'default') {
         imports.push(
           `import { ${model.exportName} as ${model.id} } from '${fileWithoutExt}';`,
