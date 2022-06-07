@@ -33,7 +33,14 @@ export function getMockData(opts: {
     }, [])
     .reduce<Record<string, any>>((memo, file) => {
       const mockFile = `${opts.cwd}/${file}`;
-      const m = require(mockFile);
+      let m;
+      try {
+        m = require(mockFile);
+      } catch (e) {
+        throw new Error(
+          `Mock file ${mockFile} parse failed.\n${(e as Error).message}`,
+        );
+      }
       // Cannot convert undefined or null to object
       // Support esm and cjs
       const obj = m?.default || m || {};
