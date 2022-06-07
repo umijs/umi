@@ -170,6 +170,10 @@ function getSocketHost() {
   } else {
     // 某些场景可能没有 umi.js，比如微前端的场景
     host = location.host;
+    // 支持自定义端口
+    if (process.env.SOCKET_PORT) {
+      host = `${location.hostname}:${process.env.SOCKET_PORT}`
+    }
     protocol = location.protocol;
   }
 
