@@ -8,6 +8,8 @@ import { importsToStr } from './importsToStr';
 import { getRouteComponents, getRoutes } from './routes';
 
 export default (api: IApi) => {
+  const umiDir = process.env.UMI_DIR!;
+
   api.describe({
     key: 'tmpFiles',
     config: {
@@ -52,8 +54,10 @@ export default (api: IApi) => {
             paths: {
               '@/*': [`${srcPrefix}*`],
               '@@/*': [`${srcPrefix}.umi/*`],
-              umi: [`${srcPrefix}.umi/exports`],
-              'umi/typings': [`${srcPrefix}.umi/typings`],
+              [`${api.appData.umi.importSource}`]: [umiDir],
+              [`${api.appData.umi.importSource}/typings`]: [
+                `${umiDir}/typings`,
+              ],
               ...(api.config.vite
                 ? {
                     '@fs/*': ['*'],
@@ -420,7 +424,6 @@ export default function EmptyRoute() {
       );
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
-      const umiDir = process.env.UMI_DIR!;
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       exports.push(
         `export { ${(
@@ -446,10 +449,6 @@ export default function EmptyRoute() {
           path: '@@/core/terminal.ts',
         });
       }
-      // umi/dist/mock/helper.js
-      exports.push('// mock');
-      const umiPath = winPath(join(umiDir, 'dist/mock/helper.js'));
-      exports.push(`export { defineMock } from '${umiPath}'`);
       // plugins
       exports.push('// plugins');
       const plugins = readdirSync(api.paths.absTmpPath).filter((file) => {
