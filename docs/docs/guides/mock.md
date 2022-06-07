@@ -100,6 +100,24 @@ export default {
 
 关于 `req` 和 `res` 的 API 可参考 [Express@4 官方文档](https://expressjs.com/en/api.html) 来进一步了解。
 
+### defineMock
+
+另外，也可以使用 `defineMock` 类型帮助函数来提供编写 mock 对象的代码提示，如：
+```ts
+import { defineMock } from "umi";
+
+export default defineMock({
+  "/api/users": [
+    { id: 1, name: "foo" },
+    { id: 2, name: "bar" },
+  ],
+  "/api/users/1": { id: 1, name: "foo" },
+  "GET /api/users/2": (req, res) => {
+    res.status(200).json({ id: 2, name: "bar" });
+  },
+});
+```
+`defineMock` 仅仅提供类型提示，入参与出参完全一致。
 ## 关闭 Mock
 
 Umi 默认开启 Mock 功能，如果不需要的话可以从配置文件关闭：
