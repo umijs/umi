@@ -74,11 +74,11 @@ export const MicroApp = forwardRef(
       apps = [],
       lifeCycles: globalLifeCycles,
       prefetch = true,
+      appNameKeyAlias = 'name',
       ...globalSettings
     } = getMasterOptions() as MasterOptions;
 
     const {
-      name,
       settings: settingsFromProps = {},
       loader,
       errorBoundary,
@@ -87,6 +87,10 @@ export const MicroApp = forwardRef(
       className,
       ...propsFromParams
     } = componentProps;
+
+    // 优先使用 alias 名匹配，fallback 到 name 匹配
+    const name = componentProps[appNameKeyAlias] || componentProps.name;
+    const isCurrentApp = (app: any) => app[appNameKeyAlias] === name || app.name === name;
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
@@ -117,7 +121,7 @@ export const MicroApp = forwardRef(
 
     useImperativeHandle(componentRef, () => microAppRef.current);
 
-    const appConfig = apps.find((app: any) => app.name === name);
+    const appConfig = apps.find((app: any) => isCurrentApp(app));
     useEffect(() => {
       if (!appConfig) {
         setComponentError(
@@ -174,13 +178,11 @@ export const MicroApp = forwardRef(
           if (noneMounted) {
             if (Array.isArray(prefetch)) {
               const specialPrefetchApps = apps.filter(
-                (app) => app.name !== name && prefetch.indexOf(app.name) !== -1,
+                (app) => !isCurrentApp(app) && (prefetch.indexOf(app[appNameKeyAlias]) !== -1 || prefetch.indexOf(app.name) !== -1)
               );
               prefetchApps(specialPrefetchApps, configuration);
             } else {
-              const otherNotMountedApps = apps.filter(
-                (app) => app.name !== name,
-              );
+              const otherNotMountedApps = apps.filter((app) => !isCurrentApp(app));
               prefetchApps(otherNotMountedApps, configuration);
             }
             noneMounted = false;
