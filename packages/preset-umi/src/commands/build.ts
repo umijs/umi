@@ -1,9 +1,8 @@
 import { getMarkup } from '@umijs/server';
-import { chalk, logger } from '@umijs/utils';
+import { chalk, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../types';
-import { clearTmp } from '../utils/clearTmp';
 import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
 import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
@@ -31,8 +30,8 @@ umi build --clean
     fn: async function () {
       logger.info(chalk.cyan.bold(`Umi v${api.appData.umi.version}`));
 
-      // clear tmp except cache
-      clearTmp(api.paths.absTmpPath);
+      // clear tmp
+      rimraf.sync(api.paths.absTmpPath);
 
       // check package.json
       await api.applyPlugins({
