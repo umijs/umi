@@ -31,6 +31,8 @@ export type MasterOptions = {
   routeBindingAlias?: string;
   // 导出的组件别名，默认 MicroApp
   exportComponentAlias?: string;
+  // MicroApp 寻址时使用的应用名唯一键，默认是 name
+  appNameKeyAlias?: string;
 } & FrameworkConfiguration;
 
 export type SlaveOptions = {
