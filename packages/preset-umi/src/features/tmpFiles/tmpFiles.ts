@@ -44,7 +44,7 @@ export default (api: IApi) => {
             module: 'esnext',
             moduleResolution: 'node',
             importHelpers: true,
-            jsx: 'react',
+            jsx: 'react-jsx',
             esModuleInterop: true,
             sourceMap: true,
             baseUrl,
