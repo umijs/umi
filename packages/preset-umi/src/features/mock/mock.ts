@@ -1,4 +1,5 @@
 import { logger } from '@umijs/utils';
+import path from 'path';
 import { watch } from '../../commands/dev/watch';
 import { IApi } from '../../types';
 import { createMockMiddleware } from './createMockMiddleware';
@@ -45,8 +46,17 @@ export default function (api: IApi) {
   }
 
   api.onStart(() => {
+    const mockConfig = api.config.mock || {};
+    const { include = [], exclude = [] } = mockConfig;
     watch({
-      path: `${api.cwd}/mock`,
+      path: ['mock', ...include].map((pattern) =>
+        path.resolve(api.cwd, pattern),
+      ),
+      watchOpts: {
+        ignored: exclude.map((pattern: string) =>
+          path.resolve(api.cwd, pattern),
+        ),
+      },
       addToUnWatches: true,
       onChange: () => {
         updateMockData(() => {

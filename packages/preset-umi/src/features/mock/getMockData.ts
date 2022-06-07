@@ -27,7 +27,10 @@ export function getMockData(opts: {
   const ret = [MOCK_FILE_GLOB, ...(opts.mockConfig.include || [])]
     .reduce<string[]>((memo, pattern) => {
       memo.push(
-        ...glob.sync(pattern, { cwd: opts.cwd, ignore: ['**/*.d.ts'] }),
+        ...glob.sync(pattern, {
+          cwd: opts.cwd,
+          ignore: ['**/*.d.ts', ...(opts.mockConfig.exclude || [])],
+        }),
       );
       return memo;
     }, [])
