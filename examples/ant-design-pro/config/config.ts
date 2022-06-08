@@ -345,7 +345,7 @@ export default defineConfig({
   // Fast Refresh 热更新
   fastRefresh: true,
   mfsu: {
-    esbuild: true,
+    // esbuild: true,
   },
   chainWebpack(memo: any) {
     memo.plugin('monaco-editor').use(MonacoEditorWebpackPlugin, []);

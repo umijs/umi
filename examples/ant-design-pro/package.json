@@ -2,7 +2,9 @@
   "name": "@example/ant-design-pro",
   "private": true,
   "scripts": {
+    "build": "max build",
     "dev": "max dev",
+    "setup": "max setup",
     "start": "npm run dev"
   },
   "dependencies": {

@@ -15,7 +15,12 @@ export default (api: IApi) => {
 
   api.register({
     key: 'addExtraModels',
-    fn: () => [withTmpPath({ api, path: '@@initialState.ts' })],
+    fn: () => [
+      withTmpPath({
+        api,
+        path: '@@initialState.ts#{"namespace":"@@initialState"}',
+      }),
+    ],
   });
 
   api.addRuntimePluginKey(() => ['getInitialState']);
