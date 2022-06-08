@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.0.0-canary.20220608.1",
+  "version": "4.0.0-canary.20220608.2",
   "description": "@umijs/bundler-vite",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-vite#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@svgr/core": "6.2.1",
-    "@umijs/bundler-utils": "4.0.0-canary.20220608.1",
-    "@umijs/utils": "4.0.0-canary.20220608.1",
+    "@umijs/bundler-utils": "4.0.0-canary.20220608.2",
+    "@umijs/utils": "4.0.0-canary.20220608.2",
     "@vitejs/plugin-react": "1.2.0",
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.6.0"
