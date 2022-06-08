@@ -42,23 +42,7 @@ export const layout = {
 
 更多具体配置参考[插件文档](../max/layout-menu#运行时配置)。
 
-### modifyClientRenderOpts(fn)
-
-修改 clientRender 参数。
-
-比如在微前端里动态修改渲染根节点：
-
-```js
-let isSubApp = false;
-export function modifyClientRenderOpts(memo) {
-  return {
-    ...memo,
-    rootElement: isSubApp ? 'sub-root' : memo.rootElement,
-  };
-}
-```
-
-### onRouteChange(\{ routes, matchedRoutes, location, action \})
+### onRouteChange(\{ routes, clientRoutes, location, action \})
 
 在初始加载和路由切换时做一些事情。
 
