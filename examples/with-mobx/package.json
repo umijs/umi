@@ -9,6 +9,6 @@
   "dependencies": {
     "mobx": "^6.6.0",
     "mobx-react": "^7.5.0",
-    "umi": "4.0.0-rc.22"
+    "umi": "4.0.0-canary.20220609.1"
   }
 }
