@@ -34,7 +34,7 @@ function patchMicroAppRouteComponent(routes: any[]) {
     const rootRoute = routes.find((route) => route.path === '/');
     if (rootRoute) {
       // 如果根路由是叶子节点，则直接返回其父节点
-      if (!rootRoute.children) {
+      if (!rootRoute.children?.length) {
         return routes;
       }
       return getRootRoutes(rootRoute.children);
