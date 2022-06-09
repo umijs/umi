@@ -10,9 +10,9 @@ export interface IRoute {
 export interface IClientRoute {
   id: string;
   element: React.ReactNode;
-  children: IClientRoute[];
+  children?: IClientRoute[];
   // compatible with @ant-design/pro-layout
-  routes: IClientRoute[];
+  routes?: IClientRoute[];
   path?: string;
   index?: boolean;
   parentId?: string;
