@@ -110,7 +110,7 @@
     "@umijs/babel-plugin-auto-css-modules": "3.5.26",
     "@umijs/babel-plugin-import-to-await-require": "3.5.26",
     "@vercel/ncc": "0.28.5",
-    "address": "1.1.2",
+    "address": "1.2.0",
     "ansi-html": "0.0.7",
     "babel-loader": "^8.2.2",
     "babel-plugin-dynamic-import-node": "2.3.3",
