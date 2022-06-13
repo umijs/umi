@@ -5,7 +5,7 @@ import rules, {
 import './setup';
 
 module.exports = {
-  parser: '@babel/eslint-parser',
+  parser: require.resolve('@babel/eslint-parser'),
   plugins: ['react', 'react-hooks'],
   settings: {
     react: {
@@ -21,7 +21,7 @@ module.exports = {
   rules,
   overrides: [
     {
-      parser: '@typescript-eslint/parser',
+      parser: require.resolve('@typescript-eslint/parser'),
       plugins: ['@typescript-eslint/eslint-plugin'],
       files: ['**/*.{ts,tsx}'],
       rules: tsRules,
