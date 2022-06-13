@@ -3,7 +3,7 @@ import './setup';
 
 module.exports = {
   extends: ['prettier', 'plugin:react/recommended'],
-  parser: '@babel/eslint-parser',
+  parser: require.resolve('@babel/eslint-parser'),
   plugins: ['react', 'react-hooks'],
   env: {
     browser: true,
@@ -17,7 +17,7 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.{ts,tsx}'],
-      parser: '@typescript-eslint/parser',
+      parser: require.resolve('@typescript-eslint/parser'),
       rules: tsRules,
       extends: ['prettier', 'plugin:@typescript-eslint/recommended'],
     },
