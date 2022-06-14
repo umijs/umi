@@ -73,6 +73,7 @@
     "prettier-plugin-packagejson": "^2.2.17",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-text-loop-next": "0.0.3",
     "regenerator-runtime": "^0.13.9",
     "resolve": "^1.22.0",
     "rimraf": "^3.0.2",
