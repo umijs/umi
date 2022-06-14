@@ -51,6 +51,8 @@ export default (api: IApi) => {
             sourceMap: true,
             baseUrl,
             strict: true,
+            resolveJsonModule: true,
+            allowSyntheticDefaultImports: true,
             paths: {
               '@/*': [`${srcPrefix}*`],
               '@@/*': [`${srcPrefix}.umi/*`],
@@ -64,7 +66,6 @@ export default (api: IApi) => {
                   }
                 : {}),
             },
-            allowSyntheticDefaultImports: true,
           },
         },
         null,
