@@ -123,6 +123,8 @@ export class MFSU {
           const realEntry = tryPaths([
             join(entry, 'index.tsx'),
             join(entry, 'index.ts'),
+            join(entry, 'index.jsx'),
+            join(entry, 'index.js'),
           ]);
           assert(
             realEntry,

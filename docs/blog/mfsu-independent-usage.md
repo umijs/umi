@@ -170,10 +170,15 @@ const config = {
   // origin webpack config
 }
 
+const depConfig = {
+  // webpack config for dependencies
+}
+
+
 // [mfsu] 4. inject mfsu webpack config
 const getConfig = async () => {
   await mfsu.setWebpackConfig({
-    config,
+    config, depConfig
   });
   return config
 }

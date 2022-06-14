@@ -1,7 +1,7 @@
-const path = require('path')
+const path = require('path');
 const webpack = require('webpack');
 const { MFSU, esbuildLoader } = require('@umijs/mfsu');
-const esbuild = require('esbuild')
+const esbuild = require('esbuild');
 
 // [mfsu] 1. init instance
 const mfsu = new MFSU({
@@ -15,19 +15,17 @@ const config = {
   output: {
     path: path.join(__dirname, './dist'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   devServer: {
     // [mfsu] 2. add mfsu middleware
     setupMiddlewares(middlewares, devServer) {
-      middlewares.unshift(
-        ...mfsu.getMiddlewares()
-      )
-      return middlewares
+      middlewares.unshift(...mfsu.getMiddlewares());
+      return middlewares;
     },
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -39,19 +37,19 @@ const config = {
           options: {
             handler: [
               // [mfsu] 3. add mfsu esbuild loader handlers
-              ...mfsu.getEsbuildLoaderHandler()
+              ...mfsu.getEsbuildLoaderHandler(),
             ],
             target: 'esnext',
-            implementation: esbuild
-          }
-        }
-      }
-    ]
+            implementation: esbuild,
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new (require('html-webpack-plugin'))({
-      template: path.resolve(__dirname, './index.html')
-    })
+      template: path.resolve(__dirname, './index.html'),
+    }),
   ],
   stats: {
     assets: false,
@@ -63,12 +61,35 @@ const config = {
   },
 };
 
+const depConfig = {
+  output: {},
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.[jt]sx?$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript',
+            ],
+          },
+        },
+      },
+    ],
+  },
+  plugins: [],
+};
+
 // [mfsu] 4. inject mfsu webpack config
 const getConfig = async () => {
-  await mfsu.setWebpackConfig({
-    config,
-  });
-  return config
-}
+  await mfsu.setWebpackConfig({ config, depConfig });
+  return config;
+};
 
 module.exports = getConfig();

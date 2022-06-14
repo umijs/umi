@@ -133,7 +133,6 @@ function GithubStars(props: { repo: string }) {
     try {
       const res = await fetch('https://api.github.com/repos/' + props.repo);
       setStars((await res.json()).stargazers_count);
-      ``;
     } catch (err) {
       console.error(err);
     }
