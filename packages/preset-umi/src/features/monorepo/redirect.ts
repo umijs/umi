@@ -1,10 +1,10 @@
-// @ts-ignore
-import { getPackages } from '../../../compiled/@manypkg/get-packages';
-import { logger } from '@umijs/utils';
+import { isLocalDev, logger } from '@umijs/utils';
 import { pkgUp } from '@umijs/utils/compiled/pkg-up';
 import assert from 'assert';
 import { existsSync, statSync } from 'fs';
 import { dirname, join } from 'path';
+// @ts-ignore
+import { getPackages } from '../../../compiled/@manypkg/get-packages';
 import type { IApi } from '../../types';
 
 interface IConfigs {
@@ -41,7 +41,7 @@ export default (api: IApi) => {
     const config: IConfigs = memo.monorepoRedirect || {};
     const { exclude = [], srcDir = ['src'] } = config;
     // Note: not match `umi` package in local dev
-    if (__filename.includes(`packages/preset-umi`)) {
+    if (isLocalDev()) {
       logger.info(
         `[monorepoRedirect]: Auto excluded 'umi' package in local dev scene`,
       );

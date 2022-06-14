@@ -1,6 +1,4 @@
-import { chalk, yParser } from '@umijs/utils';
-import { existsSync } from 'fs';
-import { join } from 'path';
+import { chalk, isLocalDev, yParser } from '@umijs/utils';
 
 const args = yParser(process.argv.slice(2), {
   alias: {
@@ -12,9 +10,7 @@ const args = yParser(process.argv.slice(2), {
 
 if (args.version && !args._[0]) {
   args._[0] = 'version';
-  const local = existsSync(join(__dirname, '../.local'))
-    ? chalk.cyan('@local')
-    : '';
+  const local = isLocalDev() ? chalk.cyan('@local') : '';
   const { name, version } = require('../package.json');
   console.log(`${name}@${version}${local}`);
 } else {

@@ -1,4 +1,4 @@
-import { logger } from '@umijs/utils';
+import { isLocalDev, logger } from '@umijs/utils';
 import { FRAMEWORK_NAME, MIN_NODE_VERSION } from '../constants';
 
 export function checkVersion() {
@@ -12,7 +12,7 @@ export function checkVersion() {
 }
 
 export function checkLocal() {
-  if (__filename.includes(`packages/${FRAMEWORK_NAME}`)) {
+  if (isLocalDev()) {
     logger.info('@local');
   }
 }
