@@ -35,9 +35,17 @@ export default () => {
     if (toggle) {
       document.body.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      window.document.documentElement.style.setProperty(
+        '--color-scheme',
+        'light',
+      );
     } else {
       document.body.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      window.document.documentElement.style.setProperty(
+        '--color-scheme',
+        'dark',
+      );
     }
   }, [toggle]);
 
