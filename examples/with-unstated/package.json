@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20220609.1",
+    "umi": "4.0.0-canary.20220614.1",
     "unstated-next": "^1.1.0"
   }
 }
