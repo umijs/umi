@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "build": "../../bin/father.js build",
-    "version": "../../bin/father.js version"
-  }
-}

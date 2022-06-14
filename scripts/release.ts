@@ -148,10 +148,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // npm publish
   logger.event('pnpm publish');
   $.verbose = false;
-  const innerPkgs = pkgs.filter(
-    // do not publish father
-    (pkg) => !['umi', 'max', 'father'].includes(pkg),
-  );
+  const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
 
   // check 2fa config
   let otpArg: string[] = [];
