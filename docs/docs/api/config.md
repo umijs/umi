@@ -153,7 +153,7 @@ export async function clientLoader() {
 ```js
 // 不识别 components 和 models 目录下的文件为路由
 conventionRoutes: {
-  exclude: [/\/components\//, /\/models\//];
+  exclude: [/\/components\//, /\/models\//],
 }
 ```
 

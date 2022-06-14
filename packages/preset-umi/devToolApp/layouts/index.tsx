@@ -15,9 +15,9 @@ export default () => {
         <div key="/">
           <Link to="/">Home</Link>
         </div>
-        {clientRoutes[0].routes
-          // sort by alphabet
-          .sort((a: any, b: any) => {
+        {clientRoutes[0]
+          .routes!.sort((a: any, b: any) => {
+            // sort by alphabet
             return a.path > b.path ? 1 : -1;
           })
           .filter(({ path }: any) => {

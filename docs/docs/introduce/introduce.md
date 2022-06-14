@@ -1,7 +1,7 @@
 # Umi 介绍
 
 <br />
-<img src="https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png" width="120" />
+<img src="https://img.alicdn.com/imgextra/i3/O1CN01eBiy611b67KLFOxi3_!!6000000003415-2-tps-200-200.png" width="120" />
 
 ##  Umi 是什么？
 
