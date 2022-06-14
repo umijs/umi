@@ -7,7 +7,7 @@ export default () => {
     <div className={styles.normal}>
       <h2>订阅 Umi 的最新动态</h2>
       <form
-        action="http://newsletter.sorrycc.com//add_subscriber"
+        action="https://www.getrevue.co/profile/chencheng/add_subscriber"
         method="post"
         target="_blank"
       >
