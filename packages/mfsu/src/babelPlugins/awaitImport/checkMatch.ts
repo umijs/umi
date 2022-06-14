@@ -1,17 +1,19 @@
 import * as Babel from '@umijs/bundler-utils/compiled/babel/core';
-import { winPath } from '@umijs/utils';
+import { isLocalDev, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { isAbsolute } from 'path';
+import { isAbsolute, join } from 'path';
 import type { IOpts } from './awaitImport';
 import { getAliasedPath } from './getAliasedPath';
 import { isExternals } from './isExternals';
 
 // const UNMATCH_LIBS = ['umi', 'dumi', '@alipay/bigfish'];
 const RE_NODE_MODULES = /node_modules/;
-const RE_UMI_LOCAL_DEV = /umi(-next)?\/packages\//;
 
 function isUmiLocalDev(path: string) {
-  return RE_UMI_LOCAL_DEV.test(winPath(path));
+  const rootPath = isLocalDev();
+  return rootPath
+    ? winPath(path).startsWith(winPath(join(rootPath, './packages')))
+    : false;
 }
 
 export function checkMatch({

@@ -104,5 +104,6 @@
         "redux"
       ]
     }
-  }
+  },
+  "_local": "This flag is used to check if the development in local, Please do not delete."
 }
