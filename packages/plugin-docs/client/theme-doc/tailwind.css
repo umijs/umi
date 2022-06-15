@@ -209,7 +209,7 @@ html {
 :root {
   --anchor-offset: 28px;
 
-  color-scheme: var(--color-scheme, light dark);
+  color-scheme: var(--color-scheme, light);
 }
 
 /** Anchor with offset for headings */
