@@ -38,6 +38,7 @@ export default async ({
           message: 'Pick Umi App Template',
           choices: [
             { title: 'Simple App', value: 'app' },
+            { title: 'Vue Simple App', value: 'vue-app' },
             { title: 'Enterprise App', value: 'max' },
           ],
           initial: 0,
