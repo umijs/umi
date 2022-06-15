@@ -8,8 +8,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20220614.2",
+    "@umijs/plugins": "4.0.0-canary.20220615.1",
     "antd": "^4.20.6",
-    "umi": "4.0.0-canary.20220614.2"
+    "umi": "4.0.0-canary.20220615.1"
   }
 }
