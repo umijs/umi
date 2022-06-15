@@ -8,22 +8,24 @@ import { Message } from 'umi';
 
 ### 创建 Model
 
-数据流管理插件采用约定式目录结构，我们约定在 `src/models` 目录下引入 Model 文件。
+数据流管理插件采用约定式目录结构，我们约定可以在 `src/models`, `src/pages/xxxx/models/`目录中，和 `src/pages/xxxx/model.{js,jsx,ts,tsx}` 文件引入 Model 文件。
+Model 文件允许使用 `.js`，`.jsx`，`.ts` 和 `.tsx` 四种后缀格式，**命名空间（namespace）** 生成规则如下。
 
-<Message emoji="💡">
-如果 Umi 项目配置了 `singular: true`，则应当使用 `src/model` 作为存放 Model 文件的目录。
-</Message>
+| 路径 | 命名空间 | 说明 |
+| :--- |:--- | :--- |
+| `src/models/count.ts` | `count` | `src/models` 目录下不支持目录嵌套定义 model |
+| `src/pages/pageA/model.ts` | `pageA.model` |  |
+| `src/pages/pageB/models/product.ts` | `pageB.product` |  |
+| `src/pages/pageB/models/fruit/apple.ts` | `pageB.fruit.apple` |  `pages/xxx/models` 下 model 定义支持嵌套定义 |
 
 所谓的 Model，就是一个自定义的 `hooks`，没有任何使用者需要关注的“黑魔法”。
 
-Model 文件允许使用 `.js`，`.jsx`，`.ts` 和 `.tsx` 四种后缀格式，其文件名将成为它的**命名空间（namespace）**。
-
-当我们需要获取 Model 中的全局数据时，调用该命名空间即可。例如，对于 Model 文件 `useUserModel.ts`，它的命名空间为 `useUserModel`。
+当我们需要获取 Model 中的全局数据时，调用该命名空间即可。例如，对于 Model 文件 `userModel.ts`，它的命名空间为 `userModel`。
 
 编写一个默认导出的函数：
 
 ```ts
-// src/models/useUserModel.ts
+// src/models/userModel.ts
 export default () => {
   const user = {
     username: 'umi',
@@ -42,7 +44,7 @@ Model 文件需要默认导出一个函数，此函数定义了一个 `hook`。�
 Model 中允许使用其它 `hooks`，以计数器为例：
 
 ```ts
-// src/models/useCounterModel.ts
+// src/models/counterModel.ts
 import { useState, useCallback } from 'react';
 
 export default () => {
@@ -58,7 +60,7 @@ export default () => {
 在项目实践中，我们通常需要请求后端接口，来获取所需的数据。现在让我们来扩展前面获取用户信息的例子：
 
 ```ts
-// src/models/useUserModel.ts
+// src/models/userModel.ts
 import { useState } from 'react';
 import { getUser } from '@/services/user';
 
@@ -83,7 +85,7 @@ export default () => {
 如果您在项目中使用了 [ahooks](https://ahooks.js.org)，可以像这样组织您的代码：
 
 ```ts
-// src/models/useUserModel.ts
+// src/models/userModel.ts
 import { useRequest } from 'ahooks';
 import { getUser } from '@/services/user';
 
@@ -112,7 +114,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, loading } = useModel('useUserModel');
+  const { user, loading } = useModel('userModel');
 
   return (
     {loading ? <></>: <div>{user.username}</div>}
@@ -136,7 +138,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { add, minus } = useModel('useCounterModel', (model) => ({
+  const { add, minus } = useModel('counterModel', (model) => ({
     add: model.increment,
     minus: model.decrement,
   }));
@@ -214,7 +216,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, fetchUser } = useModel('useAdminModel', (model) => ({
+  const { user, fetchUser } = useModel('adminModel', (model) => ({
     user: model.admin,
     fetchUser: model.fetchAdmin,
   }));
