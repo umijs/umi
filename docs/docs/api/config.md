@@ -328,7 +328,7 @@ externals: { react: 'React' },
 scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 ```
 
-注意：不要轻易设置 antd 的 externals，由于依赖教多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
+注意：不要轻易设置 antd 的 externals，由于依赖较多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
 
 ## extraBabelIncludes
 
