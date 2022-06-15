@@ -31,7 +31,7 @@ export default (api: IApi) => {
   });
 
   const getPkgPath = () => {
-    // 如果  layout 和 techui至少有一个在，找到他们的地址
+    // 如果 layout 和 techui 至少有一个在，找到他们的地址
     if (
       pkgHasDep &&
       existsSync(join(api.cwd, 'node_modules', pkgHasDep, 'package.json'))
@@ -72,7 +72,7 @@ import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, match
 import { useMemo } from 'react';
 import  {
   ProLayout,
-} from "${pkgHasDep || '@ant-design/pro-layout'}";
+} from "${pkgPath || '@ant-design/pro-layout'}";
 import './Layout.less';
 import Logo from './Logo';
 import Exception from './Exception';
@@ -195,6 +195,31 @@ const { formatMessage } = useIntl();
   );
 }
       `,
+    });
+
+    // 写入类型, RunTimeLayoutConfig 是 app.tsx 中 layout 配置的类型
+    // 对于动态 layout 配置很有用
+    api.writeTmpFile({
+      path: 'index.ts',
+      content: `
+    import type { ProLayoutProps } from "${
+      pkgPath || '@ant-design/pro-layout'
+    }";
+    ${
+      hasInitialStatePlugin
+        ? `import { Models } from '@@/plugin-model/useModel';
+           type InitDataType = Models<'@@initialState'>;
+        `
+        : 'type InitDataType = any;'
+    }
+    
+    export type RunTimeLayoutConfig = (
+      initData: InitDataType,
+    ) => BasicLayoutProps & {
+      childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
+      unAccessible?: JSX.Element,
+      noFound?: JSX.Element,
+    };`,
     });
 
     const iconsMap = Object.keys(api.appData.routes).reduce<
