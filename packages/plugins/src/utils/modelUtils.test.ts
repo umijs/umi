@@ -15,6 +15,16 @@ test('getNamespace filter pages', () => {
   );
 });
 
+test('getNamespace filter models', () => {
+  expect(getNamespace('/a/b/src/pages/foo/models/bar.ts', '/a/b/src')).toEqual(
+    'foo.bar',
+  );
+
+  expect(
+    getNamespace('/a/b/src/pages/foo/models/bar/qux.ts', '/a/b/src'),
+  ).toEqual('foo.bar.qux');
+});
+
 test('getNamespace strip .model affix', () => {
   expect(getNamespace('/a/b/src/foo/bar.model.ts', '/a/b/src')).toEqual(
     'foo.bar',
