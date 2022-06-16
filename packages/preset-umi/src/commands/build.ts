@@ -111,7 +111,7 @@ umi build --clean
             args: opts,
           });
         },
-        clean: api.args.clean,
+        clean: true,
       };
 
       let stats: any;
