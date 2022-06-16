@@ -43,7 +43,10 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {
-    rimraf.sync(webpackConfig.output!.path!);
+    if (opts.clean) {
+      rimraf.sync(webpackConfig.output!.path!);
+    }
+
     const compiler = webpack(webpackConfig);
     compiler.run((err, stats) => {
       opts.onBuildComplete?.({
