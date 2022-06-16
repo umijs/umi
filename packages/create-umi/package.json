@@ -1,6 +1,6 @@
 {
   "name": "create-umi",
-  "version": "4.0.0-rc.23",
+  "version": "4.0.0-rc.24",
   "description": "create-umi",
   "homepage": "https://github.com/umijs/umi-next/tree/master/packages/create-umi#readme",
   "bugs": "https://github.com/umijs/umi-next/issues",
@@ -25,7 +25,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.0-rc.23"
+    "@umijs/utils": "4.0.0-rc.24"
   },
   "publishConfig": {
     "access": "public"
