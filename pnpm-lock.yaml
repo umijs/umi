@@ -427,6 +427,25 @@ importers:
       mobx-react: 7.5.0_ca72120f84c69ebf01bb6728cc9f860c
       umi: link:../../packages/umi
 
+  examples/with-monaco-editor:
+    specifiers:
+      '@types/node': ^17.0.42
+      '@types/react': ^18.0.9
+      '@types/react-dom': ^18.0.5
+      monaco-editor: ^0.33.0
+      monaco-editor-webpack-plugin: ^7.0.1
+      typescript: ^4.7.2
+      umi: 4.0.0-canary.20220609.1
+    dependencies:
+      monaco-editor: 0.33.0
+      monaco-editor-webpack-plugin: 7.0.1_monaco-editor@0.33.0
+      umi: link:../../packages/umi
+    devDependencies:
+      '@types/node': 17.0.45
+      '@types/react': 18.0.9
+      '@types/react-dom': 18.0.5
+      typescript: 4.7.2
+
   examples/with-monaco-editor-react:
     specifiers:
       '@monaco-editor/react': ^4.4.5
