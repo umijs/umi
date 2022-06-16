@@ -69,7 +69,7 @@ import { getInitialState } from '@/app';
 export type InitialStateType = Awaited<ReturnType<typeof getInitialState>> | undefined;
 
 const initState = {
-  initialState: InitialStateType,
+  initialState: undefined as InitialStateType,
   loading: true,
   error: undefined,
 };
