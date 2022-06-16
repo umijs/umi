@@ -143,8 +143,7 @@ export default {
 
 * Type: `string[]`
 
-配置路由的高阶组件封装。
-
+配置路由组件的包装组件，通过包装组件可以为当前的路由组件组合进更多的功能。
 比如，可以用于路由级别的权限校验：
 
 ```js
@@ -163,19 +162,50 @@ export default {
 然后在 `src/wrappers/auth` 中，
 
 ```jsx
-import { Navigate } from 'umi'
+import { Navigate, Outlet } from 'umi'
 
 export default (props) => {
   const { isLogin } = useAuth();
   if (isLogin) {
-    return <div>{ props.children }</div>;
-  } else {
+    return <Outlet />;
+  } else{
     return <Navigate to="/login" />;
   }
 }
 ```
 
-这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
+这样，访问 `/user`，就通过 `auth` 组件做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`。
+
+
+<Message emoji="🚨">
+`wrappers` 中的每个组件会给当前的路由组件增加一层嵌套路由，如果你希望路由结构不发生变化，推荐使用高阶组件。先在高阶组件中实现 wrapper 中的逻辑，然后使用该高阶组件装饰对应的路由组件。
+</Message>
+
+举例：
+
+```jsx
+// src/hocs/withAuth.jsx
+import { Navigate } from 'umi'
+
+const withAuth = (Component) => ()=>{
+  const { isLogin } = useAuth();
+  if (isLogin) {
+    return <Component />;
+  } else{
+    return <Navigate to="/login" />;
+  }
+}
+```
+
+```jsx
+// src/pages/user.jsx
+
+const TheOldPage = ()=>{
+  ...
+}
+
+export default withAuth(TheOldPage)
+```
 
 ### title
 
