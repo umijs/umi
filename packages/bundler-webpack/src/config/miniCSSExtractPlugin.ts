@@ -18,7 +18,10 @@ export async function addMiniCSSExtractPlugin(opts: IOpts) {
     config.plugin('mini-css-extract-plugin').use(MiniCSSExtractPlugin, [
       {
         filename: `[name]${hash}.css`,
-        chunkFilename: `[name]${hash}.chunk.css`,
+        chunkFilename: opts.userConfig.ssr
+          ? // TODO: FIXME
+            `umi${hash}.css`
+          : `[name]${hash}.chunk.css`,
         ignoreOrder: true,
       },
     ]);

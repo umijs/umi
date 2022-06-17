@@ -264,7 +264,8 @@ PORT=8888 umi dev
           ? []
           : middlewares.concat(createRouteMiddleware({ api })),
         onDevCompileDone(opts: any) {
-          debouncedPrintMemoryUsage();
+          debouncedPrintMemoryUsage;
+          // debouncedPrintMemoryUsage();
           api.appData.bundleStatus.done = true;
           api.applyPlugins({
             key: 'onDevCompileDone',

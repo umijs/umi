@@ -5,12 +5,14 @@
 /examples/*/.umi-production
 /examples/*/.output
 /examples/*/api
+/examples/*/server
 /examples/*/.umi-test
 /examples/*/src/.umi
 /examples/*/src/.umi-production
 /examples/libs/monorepo/foo/.mfsu
 /examples/libs/monorepo/foo/.umi
 /examples/*/dist
+/examples/*/.env.local
 /examples/*/node_modules
 /packages/*/node_modules
 /packages/*/dist
@@ -19,6 +21,7 @@
 /packages/*/src/**/fixtures/*/.umi
 /packages/*/src/**/fixtures/*/.umi-production
 /packages/plugin-docs/client/theme-doc/tailwind.out.css
+/packages/preset-umi/fixtures/**/dist
 /packages/preset-umi/devToolApp/.umi
 /packages/preset-umi/devToolApp/.umi-production
 /packages/preset-umi/devToolApp/node_modules

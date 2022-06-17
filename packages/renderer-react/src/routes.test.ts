@@ -11,6 +11,5 @@ test('createClientRoutes', () => {
       b: 'component-b',
     },
   });
-  // @ts-ignore
-  expect(clientRoutes[0].children[0].id).toEqual('b');
+  expect(clientRoutes[0].children![0].id).toEqual('b');
 });

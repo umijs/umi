@@ -1,0 +1,8 @@
+
+.foo {
+  color: red;
+}
+
+:global(.bar) .hoo {
+  color: green;
+}

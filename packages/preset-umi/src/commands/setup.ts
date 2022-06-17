@@ -1,4 +1,4 @@
-import { logger } from '@umijs/utils';
+import { logger, rimraf } from '@umijs/utils';
 import { IApi } from '../types';
 
 export default (api: IApi) => {
@@ -6,6 +6,9 @@ export default (api: IApi) => {
     name: 'setup',
     description: 'setup project',
     async fn() {
+      // clear tmp
+      rimraf.sync(api.paths.absTmpPath);
+
       // generate tmp files
       logger.info('generate files');
       await api.applyPlugins({

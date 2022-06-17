@@ -1,0 +1,16 @@
+{
+  "name": "@example/ssr-demo-2",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev",
+    "start:prod": "node ./production-server.js"
+  },
+  "dependencies": {
+    "express": "4.17.3",
+    "isomorphic-unfetch": "^3.1.0",
+    "umi": "workspace:^"
+  }
+}

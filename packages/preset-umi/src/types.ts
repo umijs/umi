@@ -106,6 +106,7 @@ export type IApi = PluginAPI &
     modifyHTMLFavicon: IModify<string[], {}>;
     modifyRendererPath: IModify<string, {}>;
     modifyRoutes: IModify<Record<string, IRoute>, {}>;
+    modifyServerRendererPath: IModify<string, {}>;
     modifyViteConfig: IModify<
       ViteInlineConfig,
       {

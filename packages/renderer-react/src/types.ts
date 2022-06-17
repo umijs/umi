@@ -5,6 +5,7 @@ export interface IRoute {
   parentId?: string;
   redirect?: string;
   clientLoader?: () => Promise<any>;
+  hasServerLoader?: boolean;
 }
 
 export interface IClientRoute {

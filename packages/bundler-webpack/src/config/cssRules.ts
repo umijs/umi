@@ -1,4 +1,6 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import { winPath } from '@umijs/utils';
+import type { LoaderContext } from 'mini-css-extract-plugin/types/utils';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -87,6 +89,34 @@ export async function addCSSRules(opts: IOpts) {
                 modules: {
                   localIdentName: '[local]___[hash:base64:5]',
                   ...userConfig.cssLoaderModules,
+                  // If SSR is enabled, we need to handling the css modules name hashing
+                  // and save the class names mapping into opts.cssModulesMapping
+                  // so the esbuild can use it to generate the correct name for the server side
+                  getLocalIdent:
+                    userConfig.ssr &&
+                    ((
+                      context: LoaderContext,
+                      localIdentName: string,
+                      localName: string,
+                      opt: any,
+                    ) => {
+                      const classIdent = (
+                        winPath(context.resourcePath).replace(
+                          winPath(ensureLastSlash(opt.context)),
+                          '',
+                        ) +
+                        '@' +
+                        localName
+                      ).trim();
+                      let hash = Buffer.from(classIdent)
+                        .toString('base64')
+                        .replace(/=/g, '');
+                      hash = hash.substring(hash.length - 5);
+                      const result = localIdentName
+                        .replace(/\[local]/g, localName)
+                        .replace(/\[hash[^\[]*?]/g, hash);
+                      return result;
+                    }),
                 },
               }
             : {}),
@@ -124,4 +154,8 @@ export async function addCSSRules(opts: IOpts) {
       }
     }
   }
+}
+
+function ensureLastSlash(path: string) {
+  return path.endsWith('/') ? path : path + '/';
 }

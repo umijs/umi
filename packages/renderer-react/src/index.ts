@@ -22,7 +22,12 @@ export {
   useRoutes,
   useSearchParams,
 } from 'react-router-dom';
-export { useAppData, useClientLoaderData } from './appContext';
+export {
+  useAppData,
+  useClientLoaderData,
+  useServerLoaderData,
+} from './appContext';
 export { renderClient } from './browser';
 export { LinkWithPrefetch as Link } from './link';
 export { useRouteData } from './routeContext';
+export { __useFetcher } from './useFetcher';

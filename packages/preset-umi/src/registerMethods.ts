@@ -53,6 +53,7 @@ export default (api: IApi) => {
     // 'modifyExportRouteMap',
     // 'modifyPublicPathStr',
     'modifyRendererPath',
+    'modifyServerRendererPath',
     'modifyRoutes',
   ].forEach((name) => {
     api.registerMethod({ name });
