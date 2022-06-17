@@ -384,7 +384,7 @@ export default function EmptyRoute() {
       },
     });
 
-    // server.ts
+    // umi.server.ts
     if (api.config.ssr) {
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
       const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));

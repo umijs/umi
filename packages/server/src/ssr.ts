@@ -51,14 +51,11 @@ export default function createRequestHandler(
     const loaderData: { [key: string]: any } = {};
     await Promise.all(
       matches
-        .filter((m: string) => routes[m].hasServerLoader)
+        .filter((id: string) => routes[id].hasServerLoader)
         .map(
-          (match: string) =>
+          (id: string) =>
             new Promise<void>(async (resolve) => {
-              loaderData[match] = await executeLoader(
-                match,
-                routesWithServerLoader,
-              );
+              loaderData[id] = await executeLoader(id, routesWithServerLoader);
               resolve();
             }),
         ),
