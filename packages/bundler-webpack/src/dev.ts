@@ -72,6 +72,7 @@ export async function dev(opts: IOpts) {
       },
     });
   }
+
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,

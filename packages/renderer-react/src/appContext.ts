@@ -15,7 +15,8 @@ interface IAppCentextType {
   rootElement?: HTMLElement;
   basename?: string;
   clientLoaderData: ILoaderData;
-  preloadRoute: (to: string) => void;
+  preloadRoute?: (to: string) => void;
+  serverLoaderData: ILoaderData;
 }
 
 export const AppContext = React.createContext<IAppCentextType>(
@@ -24,6 +25,12 @@ export const AppContext = React.createContext<IAppCentextType>(
 
 export function useAppData() {
   return React.useContext(AppContext);
+}
+
+export function useServerLoaderData() {
+  const route = useRouteData();
+  const appData = useAppData();
+  return appData.serverLoaderData[route.route.id];
 }
 
 export function useClientLoaderData() {

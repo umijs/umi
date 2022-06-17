@@ -438,6 +438,9 @@ paths:{
 ### modifyRendererPath
 修改 renderer path。传入的 fn 接收原本的 path （string 类型）并且返回它。
 
+### modifyServerRendererPath
+修改 server renderer path。传入的 fn 接收原本的 path （string 类型）并且返回它。
+
 ### modifyRoutes
 修改路由。 传入的 fn 接收 id-route 的 map 并且返回它。其中 route 的接口如下：
 ```ts

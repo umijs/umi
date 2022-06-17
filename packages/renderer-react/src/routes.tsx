@@ -1,6 +1,5 @@
 // @ts-ignore
-import loadable from '@loadable/component';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import { RouteContext } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
@@ -67,8 +66,16 @@ function DefaultLoading() {
 }
 
 function RemoteComponent(props: any) {
-  const Component = loadable(props.loader, {
-    fallback: <props.loadingComponent />,
-  });
-  return <Component />;
+  const Component = props.loader;
+  // TODO: 兼容 react 18 以下的场景
+  // import loadable from '@loadable/component';
+  // const Component = loadable(props.loader, {
+  //   fallback: <props.loadingComponent />,
+  // });
+  // return <Component />;
+  return (
+    <Suspense fallback={<props.loadingComponent />}>
+      <Component />
+    </Suspense>
+  );
 }

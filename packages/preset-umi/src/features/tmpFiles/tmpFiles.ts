@@ -28,6 +28,12 @@ export default (api: IApi) => {
         ),
       }),
     );
+    const serverRendererPath = winPath(
+      await api.applyPlugins({
+        key: 'modifyServerRendererPath',
+        initialValue: join(rendererPath, 'dist/server.js'),
+      }),
+    );
 
     // tsconfig.json
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
@@ -278,6 +284,7 @@ declare module '*.txt' {
         ).join('\n'),
         basename: api.config.base,
         historyType: api.config.history.type,
+        hydrate: !!api.config.ssr,
         loadingComponent:
           existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||
           existsSync(join(api.paths.absSrcPath, 'loading.jsx')) ||
@@ -298,7 +305,7 @@ export default function EmptyRoute() {
     });
 
     // route.ts
-    let routes;
+    let routes: any;
     if (opts.isFirstTime) {
       routes = api.appData.routes;
     } else {
@@ -376,6 +383,41 @@ export default function EmptyRoute() {
         validKeys,
       },
     });
+
+    // server.ts
+    if (api.config.ssr) {
+      const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));
+      const umiServerPath = winPath(require.resolve('@umijs/server/dist/ssr'));
+      const routesWithServerLoader = Object.keys(routes).reduce<
+        { id: string; path: string }[]
+      >((memo, id) => {
+        if (routes[id].hasServerLoader) {
+          memo.push({
+            id,
+            path: routes[id].__absFile,
+          });
+        }
+        return memo;
+      }, []);
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'umi.server.ts',
+        tplPath: join(TEMPLATES_DIR, 'server.tpl'),
+        context: {
+          routes: JSON.stringify(clonedRoutes, null, 2).replace(
+            /"component": "await import\((.*)\)"/g,
+            '"component": await import("$1")',
+          ),
+          routesWithServerLoader,
+          umiPluginPath,
+          serverRendererPath,
+          umiServerPath,
+          validKeys,
+          assetsPath: join(api.paths.absOutputPath, 'build-manifest.json'),
+          env: JSON.stringify(api.env),
+        },
+      });
+    }
 
     // history.ts
     api.writeTmpFile({

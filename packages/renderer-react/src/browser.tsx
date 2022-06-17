@@ -48,7 +48,7 @@ function BrowserRoutes(props: {
   );
 }
 
-function Routes() {
+export function Routes() {
   const { clientRoutes } = useAppData();
   return useRoutes(clientRoutes);
 }
@@ -63,6 +63,7 @@ export function renderClient(opts: {
   basename?: string;
   loadingComponent?: React.ReactNode;
   history: History;
+  hydrate?: boolean;
 }) {
   const basename = opts.basename || '/';
   const rootElement = opts.rootElement || document.getElementById('root')!;
@@ -108,12 +109,16 @@ export function renderClient(opts: {
 
   const Browser = () => {
     const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
+    const [serverLoaderData, setServerLoaderData] = useState<ILoaderData>(
+      // @ts-ignore
+      window.__UMI_LOADER_DATA__ || {},
+    );
 
     const handleRouteChange = useCallback(
-      (p: string) => {
+      (id: string, isFirst?: boolean) => {
         // Patched routes has to id
         const matchedRouteIds = (
-          matchRoutes(clientRoutes, p)?.map(
+          matchRoutes(clientRoutes, id)?.map(
             // @ts-ignore
             (route) => route.route.id,
           ) || []
@@ -148,6 +153,19 @@ export function renderClient(opts: {
               document.head.appendChild(link);
             }
           }
+          // server loader
+          if (!isFirst && opts.routes[id].hasServerLoader) {
+            fetch('/__serverLoader?route=' + id)
+              .then((d) => d.json())
+              .then((data) => {
+                // setServerLoaderData when startTransition because if ssr is enabled,
+                // the component may being hydrated and setLoaderData will break the hydration
+                React.startTransition(() => {
+                  setServerLoaderData((d) => ({ ...d, [id]: data }));
+                });
+              })
+              .catch(console.error);
+          }
           // client loader
           // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
           const clientLoader = opts.routes[id]?.clientLoader;
@@ -162,7 +180,7 @@ export function renderClient(opts: {
     );
 
     useEffect(() => {
-      handleRouteChange(window.location.pathname);
+      handleRouteChange(window.location.pathname, true);
       return opts.history.listen((e) => {
         handleRouteChange(e.location.pathname);
       });
@@ -175,9 +193,10 @@ export function renderClient(opts: {
           routeComponents: opts.routeComponents,
           clientRoutes,
           pluginManager: opts.pluginManager,
-          rootElement: opts.rootElement,
+          rootElement: opts.rootElement!,
           basename,
           clientLoaderData,
+          serverLoaderData,
           preloadRoute: handleRouteChange,
         }}
       >
@@ -186,10 +205,14 @@ export function renderClient(opts: {
     );
   };
 
-  if (ReactDOM.createRoot) {
-    ReactDOM.createRoot(rootElement).render(<Browser />);
+  if (opts.hydrate) {
+    ReactDOM.hydrateRoot(rootElement, <Browser />);
   } else {
-    // @ts-ignore
-    ReactDOM.render(<Browser />, rootElement);
+    if (ReactDOM.createRoot) {
+      ReactDOM.createRoot(rootElement).render(<Browser />);
+    } else {
+      // @ts-ignore
+      ReactDOM.render(<Browser />, rootElement);
+    }
   }
 }

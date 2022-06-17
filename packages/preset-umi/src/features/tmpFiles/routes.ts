@@ -95,17 +95,23 @@ export async function getRoutes(opts: { api: IApi }) {
         });
       }
 
-      const isJSFile = /.[jt]sx?/.test(file);
+      const isJSFile = /.[jt]sx?$/.test(file);
       routes[id].__content = readFileSync(file, 'utf-8');
       routes[id].__absFile = file;
       routes[id].__isJSFile = isJSFile;
-      if (opts.api.config.clientLoader) {
+      if (opts.api.config.ssr || opts.api.config.clientLoader) {
         routes[id].__exports =
           isJSFile && existsSync(file)
             ? await getModuleExports({
                 file,
               })
             : [];
+      }
+      if (opts.api.config.ssr) {
+        routes[id].hasServerLoader =
+          routes[id].__exports.includes('serverLoader');
+      }
+      if (opts.api.config.clientLoader) {
         routes[id].__hasClientLoader =
           routes[id].__exports.includes('clientLoader');
         routes[id].clientLoader = `clientLoaders['${id}']`;
@@ -191,7 +197,7 @@ export async function getRouteComponents(opts: {
       // component: () => <h1>foo</h1>
       // component: (() => () => <h1>foo</h1>)()
       if (route.file.startsWith('(')) {
-        return `'${key}': () => Promise.resolve(${route.file}),`;
+        return `'${key}': React.lazy(() => Promise.resolve(${route.file})),`;
       }
 
       const path =
@@ -199,10 +205,10 @@ export async function getRouteComponents(opts: {
           ? route.file
           : `${opts.prefix}${route.file}`;
 
-      return `'${key}': () => import(/* webpackChunkName: "${key.replace(
+      return `'${key}': React.lazy(() => import(/* webpackChunkName: "${key.replace(
         /[\/-]/g,
         '_',
-      )}" */'${winPath(path)}'),`;
+      )}" */'${winPath(path)}')),`;
     })
     .join('\n');
   return `{\n${imports}\n}`;

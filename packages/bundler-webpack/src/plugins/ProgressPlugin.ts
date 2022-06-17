@@ -23,8 +23,9 @@ class UmiProgressPlugin extends ProgressPlugin {
   }
 
   apply(compiler: Compiler): void {
+    const prefix = this.options.name ? `[${this.options.name}]` : '[Webpack]';
     compiler.hooks.invalid.tap(PLUGIN_NAME, () => {
-      logger.wait('Compiling...');
+      logger.wait(`${prefix} Compiling...`);
     });
     compiler.hooks.done.tap(PLUGIN_NAME, (stats: Stats) => {
       const { errors, warnings } = stats.toJson({
@@ -44,11 +45,10 @@ class UmiProgressPlugin extends ProgressPlugin {
           console.log(error.message);
         });
       } else {
-        const prefix = this.options.name ? `${this.options.name} ` : '';
         logger.event(
-          `${prefix}Compiled successfully in ${
-            stats.endTime - stats.startTime
-          } ms (${stats.compilation.modules.size} modules)`,
+          `${prefix} Compiled in ${stats.endTime - stats.startTime} ms (${
+            stats.compilation.modules.size
+          } modules)`,
         );
       }
     });

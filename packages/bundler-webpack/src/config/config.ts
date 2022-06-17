@@ -26,6 +26,7 @@ import { addMiniCSSExtractPlugin } from './miniCSSExtractPlugin';
 import { addNodePolyfill } from './nodePolyfill';
 import { addProgressPlugin } from './progressPlugin';
 import { addSpeedMeasureWebpackPlugin } from './speedMeasureWebpackPlugin';
+import addSSRPlugin from './ssrPlugin';
 import { addSVGRules } from './svgRules';
 
 export interface IOpts {
@@ -181,6 +182,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   if (isDev && opts.hmr) {
     config.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
   }
+  // ssr
+  await addSSRPlugin(applyOpts);
   // compress
   await addCompressPlugin(applyOpts);
   // purgecss
