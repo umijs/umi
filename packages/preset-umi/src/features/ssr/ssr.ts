@@ -59,7 +59,7 @@ export { React };
     });
   });
 
-  api.onStart(async () => {
+  api.onBeforeCompiler(async () => {
     await build({
       api,
       watch: api.env === 'development',
