@@ -39,3 +39,4 @@
 /test/**/fixtures/*/.umi-production
 /test/**/fixtures/*/src/.umi
 /test/**/fixtures/*/src/.umi-production
+/coverage
