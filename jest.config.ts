@@ -8,4 +8,11 @@ export default {
     '<rootDir>/packages/.+/fixtures',
   ],
   transformIgnorePatterns: ['/node_modules/', '/compiled/'],
+  collectCoverageFrom: [
+    '**/src/**/*.{ts,tsx}',
+    '!**/examples/**/*.{js,jsx,ts,tsx}',
+    '!**/compiled/**/*.{js,jsx}',
+    '!**/fixtures/**/*.*',
+    '!packages/create-umi/templates/**/*.*',
+  ],
 } as Config.InitialOptions;
