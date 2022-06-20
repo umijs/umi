@@ -2,19 +2,19 @@ import { Message } from 'umi';
 
 # 使用Vue
 
-本文介绍如何在 Umi 使用 Vue , Umi Vue 大部分配置, 同 React 这里只列出一些 Vue 独有的配置
+本文介绍如何在 Umi 使用 Vue , Umi Vue 大部分配置和 React 相同，这里只列出一些 Vue 独有的配置
 
 ## 启动方式
 
 ### 安装
 
-```sh
+```bash
 pnpm add  @umijs/preset-vue -D
 ```
 
 ### 配置预设
 
-```sh
+```ts
 # .umirc.ts or config/config.ts 中
 export default {
   presets: [require.resolve('@umijs/preset-vue')],
@@ -34,7 +34,7 @@ export default {
 
 命名路由
 
-除了 path 之外，你还可以为任何路由提供 name
+除了 `path` 之外，你还可以为任何路由提供 `name`
 
 ```ts
 export default {
@@ -48,7 +48,7 @@ export default {
 }
 ```
 
-要链接到一个命名的路由，可以向 router-link 组件的 to 属性传递一个对象：
+要链接到一个命名的路由，可以向 `router-link` 组件的 to 属性传递一个对象：
 
 ```html
 <router-link :to="{ name: 'user', params: { username: 'erina' }}">
@@ -56,18 +56,17 @@ export default {
 </router-link>
 ```
 
-这跟代码调用 router.push() 是一回事：
+效果和命令式地调用 `router.push` 一致：
 
 ```ts
 router.push({ name: 'user', params: { username: 'erina' } })
 ```
 
-在这两种情况下，路由将导航到路径 /user/erina。
-
+在这方法都能导航到路径 `/user/erina`。
 
 #### redirect
 
-重定向也是通过 routes 配置来完成，下面例子是从 /home 重定向到 /：
+重定向也是通过 `routes` 配置来完成，下面例子是从 `/home` 重定向到 `/`：
 
 ```ts
 export default {
@@ -168,7 +167,6 @@ const onHello = () => {
 
 可以通过在约定的 `src/app.tsx` 通过 export 配置来控制 vue vue-router 相关的配置
 
-
 ### router
 
 配置路由配置
@@ -185,7 +183,7 @@ export const router: RouterConfig = {
 
 ### onMounted(\{app, router\})
 
-vue app mount 成功, 这里可以拿到app 的实例及 router 的实例, 可以进行 全局组件注册, 路由拦截器等
+Vue app mount 成功回调, 这里可以拿到 app 的实例及 router 的实例, 可以进行全局组件注册, 路由拦截器等。
 
 ```ts
 export function onMounted({ app, router }: any) {
@@ -201,7 +199,7 @@ export function onMounted({ app, router }: any) {
 
 修改交给 vue-router 渲染时的根组件。
 
-比如用于在外面包一个 父组件
+比如用于在外面包一个父组件
 
 ```ts
 import { h } from 'vue'
