@@ -76,3 +76,10 @@ export function spawnSync(cmd: string, opts: SpawnSyncOptions) {
   }
   return result;
 }
+
+export function toArray(v: unknown) {
+  if (Array.isArray(v)) {
+    return v;
+  }
+  return [v];
+}
