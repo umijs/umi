@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "^{{{ version }}}"
+    "umi": "{{{ version }}}"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
