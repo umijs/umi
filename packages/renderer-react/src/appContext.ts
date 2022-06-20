@@ -7,7 +7,7 @@ import {
   IRoutesById,
 } from './types';
 
-interface IAppCentextType {
+interface IAppContextType {
   routes: IRoutesById;
   routeComponents: IRouteComponents;
   clientRoutes: IClientRoute[];
@@ -19,8 +19,8 @@ interface IAppCentextType {
   serverLoaderData: ILoaderData;
 }
 
-export const AppContext = React.createContext<IAppCentextType>(
-  {} as IAppCentextType,
+export const AppContext = React.createContext<IAppContextType>(
+  {} as IAppContextType,
 );
 
 export function useAppData() {
@@ -30,11 +30,11 @@ export function useAppData() {
 export function useServerLoaderData() {
   const route = useRouteData();
   const appData = useAppData();
-  return appData.serverLoaderData[route.route.id];
+  return { data: appData.serverLoaderData[route.route.id] };
 }
 
 export function useClientLoaderData() {
   const route = useRouteData();
   const appData = useAppData();
-  return appData.clientLoaderData[route.route.id];
+  return { data: appData.clientLoaderData[route.route.id] };
 }

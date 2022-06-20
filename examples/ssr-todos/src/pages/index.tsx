@@ -60,10 +60,10 @@ function Todo(props: { todo: Todo }) {
 }
 
 function Todos() {
-  const { data }: { data: Todo[] } = useServerLoaderData();
+  const { data }: { data: { data: Todo[] } } = useServerLoaderData();
   return (
     <ul className={styles.todos}>
-      {data.map((todo) => {
+      {data.data.map((todo) => {
         return (
           <li key={todo.id}>
             <Todo todo={todo} />
