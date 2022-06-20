@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "vue": "^3.2.36",
-    "umi": "^{{{ version }}}"
+    "umi": "{{{ version }}}"
   },
   "devDependencies": {
     "typescript": "^4.1.2",
-    "@umijs/preset-vue": "^{{{ version }}}"
+    "@umijs/preset-vue": "{{{ version }}}"
   }
 }

@@ -113,13 +113,14 @@ export default async ({
   const target = name ? join(cwd, name) : cwd;
   const templateName = args.plugin ? 'plugin' : appTemplate;
 
+  const version = require('../package').version;
   const generator = new BaseGenerator({
     path: join(__dirname, '..', 'templates', templateName),
     target,
     data: args.default
       ? testData
       : {
-          version: require('../package').version,
+          version: version.includes('-canary.') ? version : `^${version}`,
           npmClient,
           registry,
         },
