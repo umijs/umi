@@ -1,5 +1,5 @@
 {
-  "name": "@example/ssr-demo-2",
+  "name": "@example/ssr-todos",
   "private": true,
   "scripts": {
     "build": "umi build",
