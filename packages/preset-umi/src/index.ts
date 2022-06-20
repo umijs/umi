@@ -46,6 +46,7 @@ export default () => {
       require.resolve('./commands/generators/dva'),
       require.resolve('./commands/generators/component'),
       require.resolve('./commands/generators/mock'),
+      require.resolve('./commands/generators/cypress'),
       require.resolve('./commands/generators/api'),
       require.resolve('./commands/plugin'),
       require.resolve('./commands/verify-commit'),
