@@ -1,0 +1,67 @@
+name: e2e-cypress
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [16.x]
+        os: [ubuntu-latest, windows-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Setup Global Cypress-cache-folder in Windows
+        if: matrix.os == 'windows-latest'
+        run: echo "CYPRESS_CACHE_FOLDER=${HOME}\.cache\Cypress"  >> $env:GITHUB_ENV
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build example-max
+        run: pnpx umi-scripts turbo  --cmd build --filter ./examples/max...
+
+      - uses: cypress-io/github-action@v4
+        with:
+          start: pnpm run preview
+          wait-on: 'http://127.0.0.1:9527'
+          command: pnpm run e2e
+          browser: chrome
+          working-directory: ./examples/max
+          install: false
+          install-command: pnpm i cypress
+        env:
+          PORT: 9527

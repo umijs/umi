@@ -10,12 +10,27 @@ export default defineConfig({
       name: 'index',
     },
     { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
+    {
+      path: '/accessAllow',
+      icon: 'SmileFilled',
+      component: 'users',
+      name: 'Allow',
+      access: 'canReadFoo',
+    },
+    {
+      path: '/accessDeny',
+      icon: 'SmileFilled',
+      component: 'users',
+      name: 'Deny',
+      access: 'canReadBar',
+    },
+    { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
     { path: '/app1/*', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
     {
       path: '/data-flow',
       component: 'data-flow',
       name: 'data-flow',
-      icon: 'https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*CUIoT4xopNYAAAAAAAAAAABkARQnAQ',
+      icon: 'SmileFilled',
       routes: [
         {
           path: '/data-flow/use-model',
