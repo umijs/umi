@@ -3,6 +3,7 @@ import { dirname, join } from 'path';
 import autoCSSModules from './plugins/autoCSSModules';
 import dynamicImportNode from './plugins/dynamicImportNode';
 import lockCoreJS from './plugins/lockCoreJS';
+import stripExports from './plugins/stripExports';
 
 interface IOpts {
   presetEnv: any;
@@ -12,6 +13,7 @@ interface IOpts {
   pluginLockCoreJS: any;
   pluginDynamicImportNode: any;
   pluginAutoCSSModules: any;
+  stripExports: { exports: string[] };
 }
 
 export default (_context: any, opts: IOpts) => {
@@ -146,6 +148,7 @@ export default (_context: any, opts: IOpts) => {
       opts.pluginLockCoreJS && [lockCoreJS],
       opts.pluginDynamicImportNode && [dynamicImportNode],
       opts.pluginAutoCSSModules && [autoCSSModules],
+      opts.stripExports && [stripExports],
     ].filter(Boolean),
   };
 };
