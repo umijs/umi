@@ -1,6 +1,6 @@
 import yArgs from '@umijs/utils/compiled/yargs-parser';
 import { PATHS } from './.internal/constants';
-import { spawnSync } from './.internal/utils';
+import { spawnSync, toArray } from './.internal/utils';
 
 (async () => {
   const args = yArgs(process.argv.slice(2));
@@ -26,11 +26,12 @@ function turbo(opts: {
   const extraCmd = opts.extra ? `-- -- ${opts.extra}` : '';
   const cacheCmd = opts.cache === false ? '--no-cache --force' : '';
   const parallelCmd = opts.parallel ? '--parallel' : '';
+  const filters: string[] = toArray(opts.filter);
 
   const options = [
     opts.cmd,
     `--cache-dir=".turbo"`,
-    `--filter="${opts.filter}"`,
+    filters.map((f) => `--filter="${f}"`).join(' '),
     cacheCmd,
     parallelCmd,
     extraCmd,
