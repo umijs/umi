@@ -42,7 +42,7 @@ export default (api: IApi) => {
     return dirname(require.resolve('@ant-design/pro-layout/package.json'));
   };
 
-  const pkgPath = getPkgPath();
+  const pkgPath = winPath(getPkgPath());
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;

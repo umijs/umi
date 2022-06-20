@@ -3,7 +3,10 @@
   "private": true,
   "scripts": {
     "build": "max build",
+    "ci": "cypress run",
     "dev": "max dev",
+    "e2e": "cypress run",
+    "e2e:ci": "start-server-and-test preview http://127.0.0.1:9527  e2e",
     "preview": "max preview --port 9527",
     "start": "npm run dev"
   },
@@ -12,5 +15,9 @@
     "@umijs/max": "4.0.0-rc.24",
     "react": "18.1.0",
     "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "cypress": "^10.0.0",
+    "start-server-and-test": "^1.0.0"
   }
 }
