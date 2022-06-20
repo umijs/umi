@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "express": "4.17.3",
-    "umi": "workspace:^"
+    "umi": "4.0.0-canary.20220620.1"
   }
 }
