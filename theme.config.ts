@@ -70,6 +70,7 @@ export default {
             'guides/debug',
             'guides/test',
             'guides/plugins',
+            'guides/use-vue',
           ],
         },
         {
