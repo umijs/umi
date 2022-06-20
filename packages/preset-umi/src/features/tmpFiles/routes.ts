@@ -182,9 +182,12 @@ export async function getRouteComponents(opts: {
 }) {
   const imports = Object.keys(opts.routes)
     .map((key) => {
+      const useSuspense = true; // opts.api.appData.react.version.startsWith('18.');
       const route = opts.routes[key];
       if (!route.file) {
-        return `'${key}': () => import( './EmptyRoute'),`;
+        return useSuspense
+          ? `'${key}': React.lazy(() => import( './EmptyRoute')),`
+          : `'${key}': () => import( './EmptyRoute'),`;
       }
       if (route.hasClientLoader) {
         route.file = join(
@@ -197,7 +200,9 @@ export async function getRouteComponents(opts: {
       // component: () => <h1>foo</h1>
       // component: (() => () => <h1>foo</h1>)()
       if (route.file.startsWith('(')) {
-        return `'${key}': React.lazy(() => Promise.resolve(${route.file})),`;
+        return useSuspense
+          ? `'${key}': React.lazy(() => Promise.resolve(${route.file})),`
+          : `'${key}': () => Promise.resolve(${route.file}),`;
       }
 
       const path =
@@ -205,10 +210,15 @@ export async function getRouteComponents(opts: {
           ? route.file
           : `${opts.prefix}${route.file}`;
 
-      return `'${key}': React.lazy(() => import(/* webpackChunkName: "${key.replace(
-        /[\/-]/g,
-        '_',
-      )}" */'${winPath(path)}')),`;
+      return useSuspense
+        ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${key.replace(
+            /[\/-]/g,
+            '_',
+          )}" */'${winPath(path)}')),`
+        : `'${key}': () => import(/* webpackChunkName: "${key.replace(
+            /[\/-]/g,
+            '_',
+          )}" */'${winPath(path)}'),`;
     })
     .join('\n');
   return `{\n${imports}\n}`;
