@@ -13,7 +13,10 @@ export default () => {
           <div className={styles.line}>
             <h3>文档和帮助</h3>
             <div>
-              <Link to="/docs/tutorials/getting-started">快速上手</Link> ·{' '}
+              <a target="_blank" href="https://feedback.umijs.org">
+                反馈和交流群
+              </a>{' '}
+              ·{' '}
               <a
                 target="_blank"
                 href="https://github.com/umijs/umi-next/issues"
