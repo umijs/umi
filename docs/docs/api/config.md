@@ -482,7 +482,7 @@ https: {
 
 ## jsMinifier (webpack)
 
-- 类型：`string`，可选值 `esbuild`, `terser`, `swc`, `esbuild`, `uglifyJs`, `none`
+- 类型：`string`，可选值 `esbuild`, `terser`, `swc`, `uglifyJs`, `none`
 - 默认值：`esbuild`
 
 配置构建时压缩 JavaScript 的工具；`none`表示不压缩。
