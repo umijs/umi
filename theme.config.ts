@@ -107,6 +107,11 @@ export default {
         },
       ],
     },
+    {
+      path: 'https://v3.umijs.org',
+      title: 'v3.x',
+      type: 'link',
+    },
   ],
   themeSwitch: {},
 };
