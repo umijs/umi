@@ -1,6 +1,6 @@
 import { Message } from 'umi';
 
-# 使用Vue
+# 使用 Vue
 
 本文介绍如何在 Umi 使用 Vue , Umi Vue 大部分配置和 React 相同，这里只列出一些 Vue 独有的配置
 
