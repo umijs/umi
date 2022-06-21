@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, resolve } from 'path';
 import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
 import {
@@ -102,7 +102,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   );
 
   // output
-  const absOutputPath = join(
+  const absOutputPath = resolve(
     opts.cwd,
     userConfig.outputPath || DEFAULT_OUTPUT_PATH,
   );
