@@ -69,8 +69,8 @@ export default (api: IApi) => {
       path: 'Layout.tsx',
       content: `
 import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
-import { useMemo } from 'react';
-import  {
+import React, { useMemo } from 'react';
+import {
   ProLayout,
 } from "${pkgPath || '@ant-design/pro-layout'}";
 import './Layout.less';
