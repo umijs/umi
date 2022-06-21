@@ -97,7 +97,7 @@ export async function getRoutes(opts: { api: IApi }) {
 
       const isJSFile = /.[jt]sx?$/.test(file);
       routes[id].__content = readFileSync(file, 'utf-8');
-      routes[id].__absFile = file;
+      routes[id].__absFile = winPath(file);
       routes[id].__isJSFile = isJSFile;
       if (opts.api.config.ssr || opts.api.config.clientLoader) {
         routes[id].__exports =
