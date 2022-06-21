@@ -559,7 +559,7 @@ const params = useParams()
 
 ### useResolvedPath
 
-`useResolvedPath` 根据当前路径将目标地址解析出完整的理由信息。
+`useResolvedPath` 根据当前路径将目标地址解析出完整的路由信息。
 
 类型定义如下：
 ```
