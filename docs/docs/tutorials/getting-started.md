@@ -29,9 +29,9 @@ v16.10.0
 安装 pnpm。
 
 ```bash
-$ curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+curl -fsSL https://get.pnpm.io/install.sh | sh -
 $ pnpm -v
-6.27.1
+7.3.0
 ```
 
 ## 创建项目
@@ -45,7 +45,7 @@ $ mkdir myapp && cd myapp
 通过官方工具创建项目，
 
 ```bash
-$ pnpx create-umi@next
+$ pnpm dlx create-umi@next
 ✔ Install the following package: create-umi@next? (Y/n) · true
 ✔ Pick Npm Client › pnpm
 ✔ Pick Npm Registry › taobao

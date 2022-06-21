@@ -42,7 +42,7 @@ v16.14.0
 Node 安装完成后会自带 [npm](https://www.npmjs.com/) 依赖管理工具，但 Umi.js 推荐使用 [pnpm](https://pnpm.io/) 来管理依赖：
 
 ```bash
-curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+curl -fsSL https://get.pnpm.io/install.sh | sh -
 ```
 
 安装完成后，可以用以下命令检查是否安装成功：
@@ -50,7 +50,7 @@ curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 ```bash
 pnpm -v
 
-6.27.1
+7.3.0
 ```
 
 ## IDE
