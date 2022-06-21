@@ -24,10 +24,7 @@ export default () => {
                 给 Umi 提 Bug
               </a>{' '}
               · <Link to="/docs/introduce/contributing">向 Umi 贡献代码</Link> ·{' '}
-              <Link to="/docs/introduce/upgrade-to-umi-4">升级到 Umi 4</Link> ·{' '}
-              <a target="_blank" href="https://v3.umijs.org">
-                V3 文档
-              </a>
+              <Link to="/docs/introduce/upgrade-to-umi-4">升级到 Umi 4</Link>
             </div>
           </div>
           <div className={styles.line}>
