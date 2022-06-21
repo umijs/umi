@@ -13,6 +13,6 @@
   "dependencies": {
     "@example/x-design": "workspace:*",
     "antd": "4.20.2",
-    "umi": "4.0.0-canary.20220620.1"
+    "umi": "4.0.0"
   }
 }
