@@ -3,7 +3,7 @@
 Umi 官方提供了一个脚手架 ，可以轻松快速创建一个项目：
 
 ```bash
-pnpm dlx create-umi@next
+pnpm dlx create-umi
 ```
 
 这个命令会安装 `create-umi` 脚手架并自动运行，运行后提供了两个可选项可以选择：

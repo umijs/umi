@@ -45,8 +45,8 @@ $ mkdir myapp && cd myapp
 通过官方工具创建项目，
 
 ```bash
-$ pnpm dlx create-umi@next
-✔ Install the following package: create-umi@next? (Y/n) · true
+$ pnpm dlx create-umi
+✔ Install the following package: create-umi? (Y/n) · true
 ✔ Pick Npm Client › pnpm
 ✔ Pick Npm Registry › taobao
 Write: .gitignore
