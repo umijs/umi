@@ -96,6 +96,9 @@ export function RootContainer(props: any) {
     ${api.config.dva?.immer ? `app.current.use(dvaImmer());` : ''}
     ${api.config.dva?.immer?.enableES5 ? `enableES5();` : ''}
     ${api.config.dva?.immer?.enableAllPlugins ? `enableAllPlugins();` : ''}
+    (runtimeDva.plugins || []).forEach((p) => {
+      app.current.use(p);
+    });
     for (const id of Object.keys(models)) {
       app.current.model({
         namespace: models[id].namespace,
