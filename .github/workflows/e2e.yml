@@ -58,7 +58,7 @@ jobs:
         with:
           start: pnpm run preview
           wait-on: 'http://127.0.0.1:9527'
-          command: pnpm run e2e
+          command: pnpm run e2e  -- --record --key 0483223d-3e79-4284-b87a-d49dcfe9faab
           browser: chrome
           working-directory: ./examples/max
           install: false
