@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "@umijs/utils": "3.5.26",
-    "core-js": "3.6.5"
+    "core-js": "^3.6.5"
   }
 }
