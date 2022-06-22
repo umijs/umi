@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import { connect } from 'umi';
+import { connect, getDvaApp } from 'umi';
 // @ts-ignore
 import styles from './index.less';
 
@@ -44,6 +44,13 @@ export default connect(mapStateToProps)(function Page(props: any) {
           }}
         >
           Throw Effect Error
+        </button>
+        <button
+          onClick={() => {
+            alert(`count: ${getDvaApp()._store.getState().count.num}`);
+          }}
+        >
+          test getDvaApp
         </button>
       </div>
       <div>{props.loading.global ? 'loading... ' : ''}</div>

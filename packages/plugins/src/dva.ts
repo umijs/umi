@@ -68,6 +68,8 @@ import React, { useRef } from 'react';
 import { history, ApplyPluginsType, useAppData } from 'umi';
 import { models } from './models';
 
+let dvaApp: any;
+
 export function RootContainer(props: any) {
   const { pluginManager } = useAppData();
   const app = useRef<any>();
@@ -92,6 +94,7 @@ export function RootContainer(props: any) {
         },
       },
     );
+    dvaApp = app.current;
     app.current.use(createLoading());
     ${api.config.dva?.immer ? `app.current.use(dvaImmer());` : ''}
     ${api.config.dva?.immer?.enableES5 ? `enableES5();` : ''}
@@ -108,6 +111,10 @@ export function RootContainer(props: any) {
     app.current.start();
   }
   return <Provider store={app.current!._store}>{props.children}</Provider>;
+}
+
+export function getDvaApp() {
+  return dvaApp;
 }
       `,
       context: {},
@@ -130,7 +137,9 @@ export function dataflowProvider(container, opts) {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { connect, useDispatch, useStore, useSelector } from 'dva';`,
+export { connect, useDispatch, useStore, useSelector } from 'dva';
+export { getDvaApp } from './dva';
+`,
     });
   });
 
