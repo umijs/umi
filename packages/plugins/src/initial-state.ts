@@ -86,14 +86,19 @@ export default () => {
     }
   }, []);
 
-  const setInitialState = useCallback(async (initialState) => {
-    setState((s) => {
-      if (typeof initialState === 'function') {
-        return { ...s, initialState: initialState(s.initialState), loading: false };
-      }
-      return { ...s, initialState, loading: false };
-    });
-  }, []);
+  const setInitialState = useCallback(
+    async (
+      initialState: InitialStateType | ((initialState: InitialStateType) => InitialStateType),
+    ) => {
+      setState((s) => {
+        if (typeof initialState === 'function') {
+          return { ...s, initialState: initialState(s.initialState), loading: false };
+        }
+        return { ...s, initialState, loading: false };
+      });
+    },
+    [],
+  );
 
   useEffect(() => {
     refresh();

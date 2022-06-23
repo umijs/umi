@@ -12,7 +12,7 @@
     "@ant-design/icons": "4.7.0",
     "@ant-design/pro-descriptions": "^1.11.2",
     "@ant-design/pro-form": "^1.69.0",
-    "@ant-design/pro-layout": "^7.0.1-beta.17",
+    "@ant-design/pro-layout": "latest",
     "@ant-design/pro-table": "^2.76.0",
     "@antv/l7-react": "^2.3.9",
     "@umijs/max": "4.0.0",

@@ -274,6 +274,7 @@ export type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  IResponseInterceptor as ResponseInterceptor,
   IRequestOptions as RequestOptions,
   IRequest as Request,
 };
@@ -300,7 +301,12 @@ export type {
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
-export type { RequestConfig } from './request';
+export type { 
+  RequestConfig,  
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse, 
+  ResponseInterceptor } from './request';
 `,
     });
     api.writeTmpFile({

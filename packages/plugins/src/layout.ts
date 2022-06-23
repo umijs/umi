@@ -196,30 +196,34 @@ const { formatMessage } = useIntl();
 }
       `,
     });
-
+    api.writeTmpFile({
+      path: 'index.ts',
+      content: `export type TempType = string`,
+    });
     // 写入类型, RunTimeLayoutConfig 是 app.tsx 中 layout 配置的类型
     // 对于动态 layout 配置很有用
     api.writeTmpFile({
-      path: 'index.ts',
+      path: 'types.d.ts',
       content: `
     import type { ProLayoutProps } from "${
       pkgPath || '@ant-design/pro-layout'
     }";
     ${
       hasInitialStatePlugin
-        ? `import { Models } from '@@/plugin-model/useModel';
-           type InitDataType = Models<'@@initialState'>;
+        ? `import type InitialStateType from '@@/plugin-initialState/@@initialState';
+           type InitDataType = ReturnType<typeof InitialStateType>;
         `
         : 'type InitDataType = any;'
     }
     
     export type RunTimeLayoutConfig = (
       initData: InitDataType,
-    ) => BasicLayoutProps & {
+    ) => ProLayoutProps & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
       unAccessible?: JSX.Element,
       noFound?: JSX.Element,
-    };`,
+    };
+    `,
     });
 
     const iconsMap = Object.keys(api.appData.routes).reduce<
