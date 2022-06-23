@@ -38,6 +38,15 @@ export default (api: IApi) => {
     ) {
       return join(api.cwd, 'node_modules', pkgHasDep);
     }
+    const cwd = process.cwd();
+    // support APP_ROOT
+    if (
+      pkgHasDep &&
+      api.cwd !== cwd &&
+      existsSync(join(cwd, 'node_modules', pkgHasDep, 'package.json'))
+    ) {
+      return join(cwd, 'node_modules', pkgHasDep);
+    }
     // 如果项目中没有去找插件以来的
     return dirname(require.resolve('@ant-design/pro-layout/package.json'));
   };
@@ -215,7 +224,7 @@ const { formatMessage } = useIntl();
         `
         : 'type InitDataType = any;'
     }
-    
+
     export type RunTimeLayoutConfig = (
       initData: InitDataType,
     ) => ProLayoutProps & {
