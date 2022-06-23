@@ -1,4 +1,4 @@
-import joi from '@umijs/core/compiled/@hapi/joi';
+import joi from '@umijs/utils/compiled/@hapi/joi';
 // @ts-ignore
 import joi2Types from '../../../compiled/joi2types';
 import { IApi } from '../../types';

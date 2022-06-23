@@ -1,9 +1,9 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { chokidar, lodash, register } from '@umijs/utils';
+import joi from '@umijs/utils/compiled/@hapi/joi';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import joi from '../../compiled/@hapi/joi';
 import { diff } from '../../compiled/just-diff';
 import {
   DEFAULT_CONFIG_FILES,

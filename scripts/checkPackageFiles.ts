@@ -1,7 +1,7 @@
 import { glob, lodash, logger } from '@umijs/utils';
 import { isMatch } from 'matcher';
 import 'zx/globals';
-import { PATHS } from './.internal/constants';
+import { PATHS, SCRIPTS } from './.internal/constants';
 import { eachPkg, getPkgs } from './.internal/utils';
 
 const COMMON_IGNORES = [
@@ -54,11 +54,11 @@ eachPkg(getPkgs(), ({ pkgJson, dir, name, pkgPath }) => {
   const testFiles = glob.sync(`${path.join(dir)}/src/**/*.test.ts`);
   const oldPkgJson = lodash.cloneDeep(pkgJson);
   if (testFiles.length) {
-    pkgJson.scripts.test = 'umi-scripts jest-turbo';
+    pkgJson.scripts.test = SCRIPTS.TEST_TURBO;
   } else {
     delete pkgJson.scripts.test;
   }
-  pkgJson.scripts['build:deps'] = 'umi-scripts bundleDeps';
+  pkgJson.scripts['build:deps'] = SCRIPTS.BUNDLE_DEPS;
   if (!lodash.isEqual(oldPkgJson, pkgJson)) {
     fs.writeFileSync(pkgPath, `${JSON.stringify(pkgJson, null, 2)}\n`, 'utf-8');
   }

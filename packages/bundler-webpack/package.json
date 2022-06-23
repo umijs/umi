@@ -24,7 +24,7 @@
     "build": "pnpm tsc",
     "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs",
     "test": "umi-scripts jest-turbo"
   },

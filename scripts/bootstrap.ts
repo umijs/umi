@@ -1,5 +1,5 @@
 import 'zx/globals';
-import { PATHS } from './.internal/constants';
+import { PATHS, SCRIPTS } from './.internal/constants';
 import { setExcludeFolder } from './.internal/utils';
 
 (async () => {
@@ -51,9 +51,9 @@ import { setExcludeFolder } from './.internal/utils';
             types: 'dist/index.d.ts',
             files: ['dist'],
             scripts: {
-              build: 'pnpm tsc',
-              'build:deps': 'umi-scripts bundleDeps',
-              dev: 'pnpm build -- --watch',
+              build: SCRIPTS.BUILD,
+              'build:deps': SCRIPTS.BUNDLE_DEPS,
+              dev: SCRIPTS.DEV,
             },
             repository: {
               type: 'git',

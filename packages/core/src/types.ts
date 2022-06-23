@@ -1,4 +1,4 @@
-import joi from '../compiled/@hapi/joi';
+import joi from '@umijs/utils/compiled/@hapi/joi';
 
 export enum Env {
   development = 'development',

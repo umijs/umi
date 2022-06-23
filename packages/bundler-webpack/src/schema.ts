@@ -1,5 +1,5 @@
 // sort-object-keys
-import type { Root } from '@hapi/joi';
+import type { Root } from '@umijs/utils/compiled/@hapi/joi';
 import { CSSMinifier, JSMinifier, Transpiler } from './types';
 
 const options = [

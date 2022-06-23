@@ -21,7 +21,7 @@
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "dev:css": "pnpm build:css -- --watch",
     "test": "umi-scripts jest-turbo"
   },
