@@ -77,6 +77,14 @@ article div[data-rehype-pretty-code-fragment] {
   @apply my-4;
 }
 
+article .tabbed-code div[data-rehype-pretty-code-fragment] {
+  @apply my-0;
+}
+
+article .tabbed-code pre {
+  @apply rounded-none rounded-b-md rounded-tr-md;
+}
+
 /* 代码块的标题部分 */
 article
   div[data-rehype-pretty-code-fragment]
