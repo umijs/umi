@@ -42,7 +42,9 @@ export async function getApiRoutes(opts: { api: IApi }) {
 }
 
 // get route config
-export async function getRoutes(opts: { api: IApi }) {
+export async function getRoutes(opts: {
+  api: IApi;
+}): Promise<Record<string, any>> {
   let routes = null;
   if (opts.api.config.routes) {
     routes = getConfigRoutes({
@@ -57,7 +59,10 @@ export async function getRoutes(opts: { api: IApi }) {
             extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
           }),
         );
-        component = component.replace(`${opts.api.paths.absSrcPath}/`, '@/');
+        component = component.replace(
+          winPath(`${opts.api.paths.absSrcPath}/`),
+          '@/',
+        );
         return component;
       },
     });
@@ -134,12 +139,18 @@ export async function getRoutes(opts: { api: IApi }) {
         absLayoutPath && {
           id: '@@/global-layout',
           file: winPath(absLayoutPath),
+          test(route: any) {
+            return route.layout !== false;
+          },
         },
       ].filter(Boolean),
     })
   ).map((layout: { file: string }) => {
     // prune local path prefix, avoid mix in outputs
-    layout.file = layout.file.replace(new RegExp(`^${absSrcPath}`), '@');
+    layout.file = layout.file.replace(
+      new RegExp(`^${winPath(absSrcPath)}`),
+      '@',
+    );
     return layout;
   });
   for (const layout of layouts) {
@@ -151,6 +162,7 @@ export async function getRoutes(opts: { api: IApi }) {
         file: layout.file,
         parentId: undefined,
         absPath: '/',
+        isLayout: true,
       },
       routes,
       test: layout.test,
