@@ -22,7 +22,7 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "postinstall": "node scripts/linkDeps.js",
     "test": "umi-scripts jest-turbo"
   },

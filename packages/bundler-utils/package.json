@@ -17,7 +17,7 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build --watch"
   },
   "dependencies": {
     "@umijs/utils": "4.0.1",

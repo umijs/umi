@@ -30,7 +30,7 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build --watch"
   },
   "dependencies": {
     "@umijs/lint": "4.0.1",

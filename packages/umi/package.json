@@ -33,7 +33,7 @@
     "build": "pnpm tsc",
     "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "dev:client": "pnpm build:client -- --watch",
     "test": "umi-scripts jest-turbo"
   },

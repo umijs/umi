@@ -18,7 +18,7 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build --watch"
   },
   "dependencies": {
     "@jest/types": "27.5.1",
