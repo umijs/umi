@@ -1,4 +1,0 @@
-fixtures/* linguist-vendored
-examples/* linguist-vendored
-node_modules linguist-vendored
-*.js linguist-vendored

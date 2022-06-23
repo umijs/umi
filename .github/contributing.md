@@ -1,1 +1,0 @@
-# UmiJS Contributing Guide

@@ -1,73 +1,7 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "bootstrap": "node ./scripts/bootstrap.js",
-    "bootstrap:examples": "node ./scripts/bootstrap-examples.js",
-    "build": "father-build",
-    "start": "npm run build && npm run docs:dev",
-    "debug": "node --inspect-brk packages/umi/bin/umi.js",
-    "docs": "node ./scripts/docs.js",
-    "docs:build": "node ./packages/umi/bin/umi.js build",
-    "docs:dev": "node ./packages/umi/bin/umi.js dev",
-    "docs:sync": "node ./scripts/docs.js syncDocs",
-    "example": "node ./scripts/example",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "link:umi": "cd packages/umi && yarn link && cd -",
-    "release": "node ./scripts/release.js",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage",
-    "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
-    "now-build": "echo \"Hello\"",
-    "benchmark": "node scripts/benchmarks.js",
-    "update:deps": "yarn upgrade-interactive --latest"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node scripts/verifyCommit.js"
-  },
-  "lint-staged": {
-    "*.{jsx,less,md,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ]
-  },
   "devDependencies": {
-    "@babel/core": "7.14.0",
-    "@testing-library/react": "^10.4.6",
-    "@types/babel__core": "7.1.14",
-    "@types/babel__traverse": "7.11.1",
-    "@types/dedent": "^0.7.0",
-    "@types/jest": "^26.0.4",
-    "@types/node": "^14.0.23",
-    "@umijs/core": "3.5.26",
-    "@umijs/plugin-analytics": "^0.2.2",
-    "@umijs/preset-dumi": "^1.1.20",
-    "@umijs/test": "3.5.26",
-    "@umijs/test-utils": "3.5.26",
-    "@umijs/utils": "3.5.26",
-    "benchmark": "^2.1.4",
-    "dedent": "^0.7.0",
-    "esbuild": "^0.12.5",
-    "escape-goat": "^3.0.0",
-    "father-build": "1.19.2",
-    "git-repo-info": "^2.1.1",
-    "inquirer": "^7.3.3",
-    "lerna": "^3.22.1",
-    "lint-staged": "^10.2.11",
-    "new-github-release-url": "^1.0.0",
-    "npm-run-all": "^4.1.5",
-    "open": "^8.0.2",
     "prettier": "^2.3.0",
-    "prettier-plugin-organize-imports": "^2.1.0",
-    "yorkie": "^2.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/umijs/umi.git"
+    "prettier-plugin-organize-imports": "^2.1.0"
   }
 }
