@@ -25,8 +25,6 @@
     "@umijs/utils": "4.0.1"
   },
   "devDependencies": {
-    "@hapi/joi": "17.1.1",
-    "@types/hapi__joi": "17.1.8",
     "dotenv": "16.0.0",
     "just-diff": "5.0.1"
   },
@@ -38,12 +36,10 @@
   ],
   "compiledConfig": {
     "deps": [
-      "@hapi/joi",
       "dotenv",
       "just-diff"
     ],
     "externals": {
-      "@hapi/joi": "$$LOCAL",
       "dotenv": "$$LOCAL",
       "just-diff": "$$LOCAL",
       "tapable": "@umijs/bundler-utils/compiled/tapable"
