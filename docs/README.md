@@ -62,4 +62,3 @@ This project exists thanks to all the people who contribute. [Join us!](/docs/co
 | --- | --- |
 | [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/imgextra/i1/O1CN01jmrjUx1yw5LcPFMx0_!!6000000006642-0-tps-430-430.jpg" width="60" /> 关注后回复「umi」 |
 
-
