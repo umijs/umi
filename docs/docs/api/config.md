@@ -212,6 +212,7 @@ crossorigin: {}
 +
 <script src="/umi.js" crossorigin="anonymous"></script>
 ```
+
 ## cssMinifier
 
 - 类型：`string` 可选的值：`esbuild`, `cssnano`, `parcelCSS`, `none`
@@ -250,6 +251,29 @@ crossorigin: {}
 - [esbuild 参考](https://esbuild.github.io/api/#minify)
 - [cssnano 参考](https://cssnano.co/docs/config-file/)
 - [parcelCSS 参考](https://github.com/parcel-bundler/parcel-css/blob/master/node/index.d.ts)
+
+## cssLoader
+
+* 类型：`object`
+* 默认值：`{}`
+
+配置 css-loader ，详见 [css-loader > options](https://github.com/webpack-contrib/css-loader#options)
+
+## cssLoaderModules
+
+* 类型：`object`
+* 默认值：`{}`
+
+配置 css modules 的行为，详见 [css-loader > modules](https://github.com/webpack-contrib/css-loader#modules)。
+
+如：
+
+```ts
+cssLoaderModules: {
+  // 配置驼峰式使用
+  exportLocalsConvention: "camelCase"
+}
+```
 
 ## deadCode
 
@@ -839,6 +863,13 @@ scripts: [
 ];
 ```
 
+## sassLoader
+
+- 类型：`object`
+- 默认值：`{}`
+
+配置 sass-loader ，详见 [sass-loader > options](https://github.com/webpack-contrib/sass-loader#options)
+
 ## styleLoader
 
 - 类型：`object`
@@ -871,6 +902,13 @@ styles: [`body { color: red; }`, `https://a.com/b.css`];
 </style>
 <link rel="stylesheet" href="https://a.com/b.css" />
 ```
+
+## srcTranspiler
+
+- 类型：`string` 可选的值：`babel`, `swc`, `esbuild`, `none`
+- 默认值：`babel`
+
+配置构建时转译 js/ts 的工具。
 
 ## targets
 
