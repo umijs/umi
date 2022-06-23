@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "react-query": "^3.38.1",
-    "umi": "4.0.0"
+    "umi": "4.0.1"
   }
 }
