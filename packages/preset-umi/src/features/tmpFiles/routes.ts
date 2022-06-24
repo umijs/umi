@@ -182,7 +182,7 @@ export async function getRouteComponents(opts: {
 }) {
   const imports = Object.keys(opts.routes)
     .map((key) => {
-      const useSuspense = true; // opts.api.appData.react.version.startsWith('18.');
+      const useSuspense = opts.api.appData.framework === 'react' ? true : false; // opts.api.appData.react.version.startsWith('18.');
       const route = opts.routes[key];
       if (!route.file) {
         return useSuspense

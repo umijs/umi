@@ -335,6 +335,7 @@ export default function EmptyRoute() {
       path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
+        isReact: api.appData.framework === 'react',
         isClientLoaderEnabled: !!api.config.clientLoader,
         routes: JSON.stringify(clonedRoutes)
           // "clientLoaders['foo']" > clientLoaders['foo']
