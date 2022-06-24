@@ -17,7 +17,7 @@
 ## 使用方式
 ### 安装
 
-为了节省安装体积，目前仅在 Umi Max 中内置了 Lint 模块，**如果你使用的是 Umi，需要先安装 `@umijs/lint`**：
+为了节省安装体积，目前仅在 Umi Max 中内置了 Lint 模块，使用 `max lint` 来执行 lint 过程。**如果你使用的是 Umi，需要先安装 `@umijs/lint`**：
 
 ```bash
 $ npm i @umijs/lint -D

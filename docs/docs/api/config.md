@@ -827,10 +827,10 @@ proxy: {
 
 ## runtimePublicPath
 
-- 类型：`boolean`
-- 默认值：`false`
+- 类型：`object`
+- 默认值：`null`
 
-启用运行时 publicPath。
+启用运行时 publicPath，开启后会使用 `window.publicPath` 作为资源动态加载的起始路径。
 
 ## scripts
 
@@ -909,6 +909,26 @@ styles: [`body { color: red; }`, `https://a.com/b.css`];
 - 默认值：`babel`
 
 配置构建时转译 js/ts 的工具。
+
+## svgr
+
+- 类型：`object`
+- 默认值：`{}`
+
+svgr 默认开启，支持如下方式使用 React svg 组件：
+
+```ts
+import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
+```
+
+可配置 svgr 的行为，配置项详见 [@svgr/core > Config](https://github.com/gregberge/svgr/blob/main/packages/core/src/config.ts#L9)。
+
+## svgo
+
+- 类型：`object`
+- 默认值：`{}`
+
+默认使用 svgo 来优化 svg 资源，配置项详见 [svgo](https://github.com/svg/svgo#configuration) 。
 
 ## targets
 

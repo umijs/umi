@@ -21,22 +21,33 @@ export default (api: IApi) => {
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = join(api.cwd, 'node_modules/.bin/tailwind');
 
-    /** 透过子进程建立 tailwindcss 服务，将生成的 css 写入 generatedPath */
-    tailwind = crossSpawn(
-      `${binPath}`,
-      [
-        '-i',
-        inputPath,
-        '-o',
-        generatedPath,
-        api.env === 'development' ? '--watch' : '',
-      ],
-      {
-        stdio: 'inherit',
-      },
-    );
-    tailwind.on('error', (m: any) => {
-      api.logger.error('tailwindcss service encounter an error: ' + m);
+    return new Promise<void>((resolve) => {
+      /** 透过子进程建立 tailwindcss 服务，将生成的 css 写入 generatedPath */
+      tailwind = crossSpawn(
+        `${binPath}`,
+        [
+          '-i',
+          inputPath,
+          '-o',
+          generatedPath,
+          api.env === 'development' ? '--watch' : '',
+        ],
+        {
+          stdio: 'inherit',
+        },
+      );
+      tailwind.on('error', (m: any) => {
+        api.logger.error('tailwindcss service encounter an error: ' + m);
+      });
+      if (api.env === 'production') {
+        tailwind.on('exit', () => {
+          api.logger.info('tailwindcss service exited');
+          resolve();
+        });
+      } else {
+        api.logger.info('tailwindcss service started');
+        resolve();
+      }
     });
   });
 
