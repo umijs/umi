@@ -45,7 +45,7 @@ $ mkdir myapp && cd myapp
 通过官方工具创建项目，
 
 ```bash
-$ pnpm dlx create-umi
+$ pnpm dlx create-umi@latest
 ✔ Install the following package: create-umi? (Y/n) · true
 ✔ Pick Npm Client › pnpm
 ✔ Pick Npm Registry › taobao
