@@ -910,6 +910,26 @@ styles: [`body { color: red; }`, `https://a.com/b.css`];
 
 配置构建时转译 js/ts 的工具。
 
+## svgr
+
+- 类型：`object`
+- 默认值：`{}`
+
+svgr 默认开启，支持如下方式使用 React svg 组件：
+
+```ts
+import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
+```
+
+可配置 svgr 的行为，配置项详见 [@svgr/core > Config](https://github.com/gregberge/svgr/blob/main/packages/core/src/config.ts#L9)。
+
+## svgo
+
+- 类型：`object`
+- 默认值：`{}`
+
+默认使用 svgo 来优化 svg 资源，配置项详见 [svgo](https://github.com/svg/svgo#configuration) 。
+
 ## targets
 
 - 类型：`object`

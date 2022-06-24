@@ -225,7 +225,7 @@ export default {
 我们可以使用 Umi 的微生成器来自动生成这些页面：`login.tsx`, `posts/post.tsx`, `posts/create.tsx`:
 
 ```shell
-umi g page login posts/post posts/create
+npx umi g page login posts/post posts/create
 ```
 
 新增后的目录结构是这样的：
