@@ -421,14 +421,17 @@ export default function EmptyRoute() {
     }
 
     // history.ts
-    api.writeTmpFile({
-      noPluginDir: true,
-      path: 'core/history.ts',
-      tplPath: join(TEMPLATES_DIR, 'history.tpl'),
-      context: {
-        rendererPath,
-      },
-    });
+    // only react generates because the preset-vue override causes vite hot updates to fail
+    if (api.appData.framework === 'react') {
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/history.ts',
+        tplPath: join(TEMPLATES_DIR, 'history.tpl'),
+        context: {
+          rendererPath,
+        },
+      });
+    }
   });
 
   function checkMembers(opts: {
