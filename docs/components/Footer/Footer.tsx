@@ -19,7 +19,7 @@ export default () => {
               ·{' '}
               <a
                 target="_blank"
-                href="https://github.com/umijs/umi-next/issues"
+                href="https://github.com/umijs/umi/issues"
               >
                 给 Umi 提 Bug
               </a>{' '}
@@ -42,7 +42,7 @@ export default () => {
               <Link to="/docs/introduce/introduce">文档</Link> · 示例 · 插件 ·{' '}
               <a
                 target="_blank"
-                href="https://github.com/umijs/umi-next/releases"
+                href="https://github.com/umijs/umi/releases"
               >
                 发布日志
               </a>

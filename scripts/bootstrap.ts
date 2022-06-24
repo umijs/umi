@@ -57,14 +57,14 @@ import { setExcludeFolder } from './.internal/utils';
             },
             repository: {
               type: 'git',
-              url: 'https://github.com/umijs/umi-next',
+              url: 'https://github.com/umijs/umi',
             },
             authors: [
               'chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)',
             ],
             license: 'MIT',
-            bugs: 'https://github.com/umijs/umi-next/issues',
-            homepage: `https://github.com/umijs/umi-next/tree/master/packages/${opts.pkg}#readme`,
+            bugs: 'https://github.com/umijs/umi/issues',
+            homepage: `https://github.com/umijs/umi/tree/master/packages/${opts.pkg}#readme`,
             publishConfig: {
               access: 'public',
             },
