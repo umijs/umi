@@ -27,8 +27,7 @@ interface NavItemProps {
 }
 
 function NavItem(props: NavItemProps) {
-  const { components, ...rest } = useThemeContext()!;
-  console.log(rest);
+  const { components } = useThemeContext()!;
   const { nav } = props;
   const lang = useLanguage();
   const [isExpanded, setExpanded] = useState(false);

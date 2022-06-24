@@ -51,11 +51,9 @@ export default () => {
         'dark',
       );
       // @ts-ignore
-      document
-        .querySelectorAll('.link-icon')
-        ?.forEach((el: HTMLImageElement) => {
-          el.style.setProperty('filter', 'invert(1)');
-        });
+      document.querySelectorAll('.link-icon')?.forEach((el: HTMLElement) => {
+        el.style.setProperty('filter', 'invert(1)');
+      });
     }
   }, [toggle]);
 
