@@ -1,4 +1,5 @@
-import { createWebHashHistory, createMemoryHistory, createWebHistory, RouterHistory } from '{{{ rendererPath }}}';
+import { createWebHashHistory, createMemoryHistory, createWebHistory } from '{{{ rendererPath }}}';
+import type { RouterHistory } from '{{{ rendererPath }}}';
 
 let history: RouterHistory;
 export function createHistory(opts: any) {
