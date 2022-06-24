@@ -13,7 +13,8 @@
   "types": "dist/index.d.ts",
   "files": [
     "compiled",
-    "dist"
+    "dist",
+    "vendors"
   ],
   "scripts": {
     "build": "pnpm tsc",
@@ -25,7 +26,8 @@
     "@umijs/bundler-esbuild": "4.0.2",
     "@umijs/bundler-utils": "4.0.2",
     "@umijs/utils": "4.0.2",
-    "enhanced-resolve": "5.9.3"
+    "enhanced-resolve": "5.9.3",
+    "is-equal": "^1.6.4"
   },
   "devDependencies": {
     "mrmime": "1.0.0",

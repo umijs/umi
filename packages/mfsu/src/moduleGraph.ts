@@ -1,4 +1,5 @@
 import { lodash } from '@umijs/utils';
+import type { DepModule } from './depInfo';
 
 class ModuleNode {
   file: string;
@@ -7,6 +8,7 @@ class ModuleNode {
   isDependency: boolean = false;
   isRoot: boolean = false;
   version: string | null = null;
+
   constructor(file: string) {
     this.file = file;
   }
@@ -21,8 +23,9 @@ interface IDep {
 export class ModuleGraph {
   fileToModules = new Map<string, ModuleNode>();
   depToModules = new Map<string, ModuleNode>();
-  depSnapshotModules: Record<string, { file: string; version: string }> = {};
+  depSnapshotModules: Record<string, DepModule> = {};
   rootModules = new Set<ModuleNode>();
+
   constructor() {}
 
   restore(data: {

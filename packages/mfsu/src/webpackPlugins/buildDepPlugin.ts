@@ -1,21 +1,31 @@
-import type { Compiler, Stats } from 'webpack';
+import type { Compiler } from 'webpack';
 
-interface IOpts {
+export interface IBuildDepPluginOpts {
   onCompileDone: Function;
+  onFileChange?: (c: Compiler) => Promise<any>;
+  beforeCompile?: () => Promise<any>;
 }
 
 const PLUGIN_NAME = 'MFSUBuildDeps';
 
 export class BuildDepPlugin {
-  private opts: IOpts;
-  constructor(opts: IOpts) {
+  private opts: IBuildDepPluginOpts;
+
+  constructor(opts: IBuildDepPluginOpts) {
     this.opts = opts;
   }
+
   apply(compiler: Compiler): void {
-    compiler.hooks.done.tap(PLUGIN_NAME, (stats: Stats) => {
-      if (!stats.hasErrors()) {
-        this.opts.onCompileDone();
-      }
+    compiler.hooks.watchRun.tapPromise(PLUGIN_NAME, (c) => {
+      return this.opts.onFileChange?.(c) || Promise.resolve();
+    });
+
+    compiler.hooks.beforeCompile.tap(PLUGIN_NAME, () => {
+      this.opts.beforeCompile?.();
+    });
+
+    compiler.hooks.compile.tap(PLUGIN_NAME, () => {
+      this.opts.onCompileDone();
     });
   }
 }

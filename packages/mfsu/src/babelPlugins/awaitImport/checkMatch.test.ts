@@ -5,7 +5,7 @@ test('normal', () => {
     checkMatch({
       value: 'foo',
     }),
-  ).toEqual({ isMatch: true, replaceValue: 'mf/foo' });
+  ).toEqual({ isMatch: true, replaceValue: 'mf/foo', value: 'foo' });
 });
 
 test('unMatch libs', () => {
@@ -69,7 +69,11 @@ test('absolute path within node_modules', () => {
     checkMatch({
       value: '/foo/node_modules/bar',
     }),
-  ).toEqual({ isMatch: true, replaceValue: 'mf//foo/node_modules/bar' });
+  ).toEqual({
+    isMatch: true,
+    replaceValue: 'mf//foo/node_modules/bar',
+    value: '/foo/node_modules/bar',
+  });
 });
 
 xtest('absolute path within umi/packages', () => {
@@ -90,7 +94,7 @@ test('alias', () => {
         },
       },
     }),
-  ).toEqual({ isMatch: true, replaceValue: 'mf/bar/bar' });
+  ).toEqual({ isMatch: true, replaceValue: 'mf/bar/bar', value: 'bar/bar' });
 });
 
 test('alias with node_modules', () => {
@@ -103,7 +107,11 @@ test('alias with node_modules', () => {
         },
       },
     }),
-  ).toEqual({ isMatch: true, replaceValue: 'mf/bar/node_modules/haha/bar' });
+  ).toEqual({
+    isMatch: true,
+    replaceValue: 'mf/bar/node_modules/haha/bar',
+    value: 'bar/node_modules/haha/bar',
+  });
 });
 
 test('alias with absolute path without node_modules', () => {
@@ -116,7 +124,7 @@ test('alias with absolute path without node_modules', () => {
         },
       },
     }),
-  ).toEqual({ isMatch: false, replaceValue: '' });
+  ).toEqual({ isMatch: false, replaceValue: '', value: '/foo/bar' });
 });
 
 test('exportAll', () => {
@@ -126,7 +134,7 @@ test('exportAll', () => {
       opts: {},
       isExportAll: true,
     }),
-  ).toEqual({ isMatch: false, replaceValue: '' });
+  ).toEqual({ isMatch: false, replaceValue: '', value: 'foo' });
 });
 
 test('exportAll + exportAllMembers', () => {
@@ -140,7 +148,7 @@ test('exportAll + exportAllMembers', () => {
       },
       isExportAll: true,
     }),
-  ).toEqual({ isMatch: true, replaceValue: 'mf/foo' });
+  ).toEqual({ isMatch: true, replaceValue: 'mf/foo', value: 'foo' });
 });
 
 test('alias with endless loop', () => {
