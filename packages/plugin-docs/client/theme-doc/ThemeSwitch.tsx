@@ -39,6 +39,10 @@ export default () => {
         '--color-scheme',
         'light',
       );
+      // @ts-ignore
+      document.querySelectorAll('.link-icon')?.forEach((el: HTMLElement) => {
+        el.style.setProperty('filter', 'invert(0)');
+      });
     } else {
       document.body.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -46,6 +50,12 @@ export default () => {
         '--color-scheme',
         'dark',
       );
+      // @ts-ignore
+      document
+        .querySelectorAll('.link-icon')
+        ?.forEach((el: HTMLImageElement) => {
+          el.style.setProperty('filter', 'invert(1)');
+        });
     }
   }, [toggle]);
 

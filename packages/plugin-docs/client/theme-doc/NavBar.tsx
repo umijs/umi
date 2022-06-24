@@ -27,7 +27,8 @@ interface NavItemProps {
 }
 
 function NavItem(props: NavItemProps) {
-  const { components } = useThemeContext()!;
+  const { components, ...rest } = useThemeContext()!;
+  console.log(rest);
   const { nav } = props;
   const lang = useLanguage();
   const [isExpanded, setExpanded] = useState(false);
@@ -48,7 +49,7 @@ function NavItem(props: NavItemProps) {
         <a href={nav.path} target="_blank">
           <span className="flex">
             {nav.title}
-            <img src={ExternalLink} alt="ExternalLink" />
+            <img className="link-icon" src={ExternalLink} alt="ExternalLink" />
           </span>
         </a>
       ) : (
@@ -77,7 +78,11 @@ function NavItem(props: NavItemProps) {
                     >
                       {nav.title}
                     </span>
-                    <img src={ExternalLink} alt="ExternalLink" />
+                    <img
+                      className="link-icon"
+                      src={ExternalLink}
+                      alt="ExternalLink"
+                    />
                   </span>
                 </a>
               ) : (
