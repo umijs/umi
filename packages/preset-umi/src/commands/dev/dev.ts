@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import {
+  AutoUpdateSrcCodeCache,
   chalk,
   lodash,
   logger,
@@ -30,6 +31,13 @@ const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
 const bundlerVite: typeof import('@umijs/bundler-vite') =
   lazyImportFromCurrentPkg('@umijs/bundler-vite');
+
+const MFSU_EAGER_DEFAULT_INCLUDE = [
+  'react',
+  'react-error-overlay',
+  'react/jsx-dev-runtime',
+  '@umijs/utils/compiled/strip-ansi',
+];
 
 export default (api: IApi) => {
   api.describe({
@@ -87,6 +95,7 @@ PORT=8888 umi dev
           },
         });
       }
+
       await generate({
         isFirstTime: true,
       });
@@ -239,6 +248,20 @@ PORT=8888 umi dev
         });
       };
       const debouncedPrintMemoryUsage = lodash.debounce(printMemoryUsage, 5000);
+
+      let srcCodeCache: AutoUpdateSrcCodeCache | undefined;
+
+      if (api.config.mfsu?.strategy === 'eager') {
+        srcCodeCache = new AutoUpdateSrcCodeCache({
+          cwd: api.paths.absSrcPath,
+          cachePath: join(api.paths.absNodeModulesPath, '.cache', 'mfsu', 'v4'),
+        });
+        await srcCodeCache.init();
+        addUnWatch(() => {
+          srcCodeCache!.unwatch();
+        });
+      }
+
       const opts = {
         config: api.config,
         cwd: api.cwd,
@@ -282,12 +305,18 @@ PORT=8888 umi dev
           };
         },
         mfsuWithESBuild: api.config.mfsu?.esbuild,
+        mfsuStrategy: api.config.mfsu?.strategy,
         cache: {
           buildDependencies: [
             api.pkgPath,
             api.service.configManager!.mainConfigFile || '',
           ].filter(Boolean),
         },
+        srcCodeCache,
+        mfsuInclude: lodash.union([
+          ...MFSU_EAGER_DEFAULT_INCLUDE,
+          ...(api.config.mfsu?.include || []),
+        ]),
       };
       if (enableVite) {
         await bundlerVite.dev(opts);
@@ -310,6 +339,7 @@ PORT=8888 umi dev
     fn() {
       logger.info(`Restart dev server with port ${api.appData.port}...`);
       unwatch();
+
       process.send?.({
         type: 'RESTART',
         payload: {
