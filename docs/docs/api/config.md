@@ -827,10 +827,10 @@ proxy: {
 
 ## runtimePublicPath
 
-- 类型：`boolean`
-- 默认值：`false`
+- 类型：`‌{}`
+- 默认值：`null`
 
-启用运行时 publicPath。
+启用运行时 publicPath，开启后会使用 `window.publicPath` 作为资源动态加载的起始路径。
 
 ## scripts
 
