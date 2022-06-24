@@ -163,6 +163,40 @@ npx umi g tailwindcss
 
 他会帮我们安装 Tailwindcss 所需要的依赖，然后生成需要的文件。
 
+### 初始化页面组件
+
+接下来，当你使用 `pnpm dev`
+启动项目后，可能会看到错误讯息并且启动失败了。这是因为我们在配置中声明了一些页面，但并没有帮他建立对应的页面组件！
+
+我们可以使用 Umi 的微生成器来自动生成这些页面：`login.tsx`, `posts/post.tsx`, `posts/create.tsx`:
+
+```shell
+npx umi g page login posts/post posts/create
+```
+
+新增后的目录结构是这样的：
+
+```text
+src
+├── assets
+│     └── yay.jpg
+├── layouts
+│     ├── index.less
+│     └── index.tsx
+└── pages
+    ├── index.less
+    ├── index.tsx
+    ├── login.less
+    ├── login.tsx
+    └── posts
+        ├── create.less
+        ├── create.tsx
+        ├── post.less
+        └── post.tsx
+```
+
+现在再输入一次 `pnpm dev` 就可以看到我们的网站正常启动了。
+
 ### 配置 umi 项目
 
 最后一步，就是要来对 Umi 项目进行配置，完整的配置可以参考 [配置](../api/config) 这篇教学文档，在本次的教学中，只要按照以下配置即可：
@@ -216,40 +250,6 @@ export default {
 
 `plugins` 配置项代表我们启用了哪些 Umi 插件，其中 `@umijs/plugins/dist/tailwindcss` 是在 Umi 中使用 Tailwindcss
 的插件。下面一项 `tailwindcss: {}` 则是从配置来启用该插件的意思。
-
-### 初始化页面组件
-
-接下来，当你使用 `pnpm dev`
-启动项目后，可能会看到错误讯息并且启动失败了。这是因为我们在配置中声明了一些页面，但并没有帮他建立对应的页面组件！
-
-我们可以使用 Umi 的微生成器来自动生成这些页面：`login.tsx`, `posts/post.tsx`, `posts/create.tsx`:
-
-```shell
-npx umi g page login posts/post posts/create
-```
-
-新增后的目录结构是这样的：
-
-```text
-src
-├── assets
-│     └── yay.jpg
-├── layouts
-│     ├── index.less
-│     └── index.tsx
-└── pages
-    ├── index.less
-    ├── index.tsx
-    ├── login.less
-    ├── login.tsx
-    └── posts
-        ├── create.less
-        ├── create.tsx
-        ├── post.less
-        └── post.tsx
-```
-
-现在再输入一次 `pnpm dev` 就可以看到我们的网站正常启动了。
 
 ## API 路由设计
 
