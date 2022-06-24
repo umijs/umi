@@ -827,7 +827,7 @@ proxy: {
 
 ## runtimePublicPath
 
-- 类型：`‌{}`
+- 类型：`object`
 - 默认值：`null`
 
 启用运行时 publicPath，开启后会使用 `window.publicPath` 作为资源动态加载的起始路径。
