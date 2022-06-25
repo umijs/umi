@@ -201,7 +201,9 @@ export async function getRouteComponents(opts: {
       // component: (() => () => <h1>foo</h1>)()
       if (route.file.startsWith('(')) {
         return useSuspense
-          ? `'${key}': React.lazy(() => Promise.resolve(${route.file})),`
+          ? `'${key}': React.lazy(
+              () => Promise.resolve(${route.file}).then(e => e?.default ? e : ({ default: e }))
+            ),`
           : `'${key}': () => Promise.resolve(${route.file}),`;
       }
 
