@@ -18,7 +18,7 @@ export {
 } from 'vue-router';
 
 // @ts-ignore
-export type { RouterHistory } from 'vue-router'
+export type { RouterHistory } from 'vue-router';
 
 export { AppContextKey, renderClient } from './browser';
 
