@@ -19,7 +19,7 @@ export async function addCopyPlugin(opts: IOpts) {
     ...(userConfig.copy
       ? userConfig.copy?.map((pattern) => {
           if (typeof pattern === 'string') {
-            return pattern;
+            return resolve(cwd, pattern);
           }
           return {
             from: resolve(cwd, pattern.from),
