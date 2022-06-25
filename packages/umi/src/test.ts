@@ -17,7 +17,7 @@ function getAliasPathWithKey(
 
 let service: Service;
 
-export async function configUmiAlias(config: Config.InitialOptions) {
+export async function getUmiAlias() {
   if (!service) {
     service = new Service();
     await service.run2({
@@ -25,8 +25,12 @@ export async function configUmiAlias(config: Config.InitialOptions) {
       args: { quiet: true },
     });
   }
+  return service.config.alias;
+}
+
+export async function configUmiAlias(config: Config.InitialOptions) {
   config.moduleNameMapper ||= {};
-  const { alias } = service.config;
+  const alias = await getUmiAlias();
   for (const key of Object.keys(alias)) {
     const aliasPath = getAliasPathWithKey(alias, key);
     if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
