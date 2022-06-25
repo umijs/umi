@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-
 import react from '@vitejs/plugin-react';
 import { getUmiAlias } from 'umi/test';
 import { defineConfig } from 'vitest/config';
