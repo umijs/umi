@@ -8,7 +8,7 @@ Umi 4 中同时支持 webpack 和 vite 两种构建方式，跑通了后，迫�
 
 多说几点和统计相关的。上述 webpack 相关模式全部开启物理缓存；Vite 是 Umi 中集成后的 Vite，也有担心是不是 Umi 对于 Vite 的误用，经开发者确认，基本排除误用的可能性，大段时间消耗在预编译依赖上；Ant Design Pro 中包含 less 的使用，这是使用 esbuild 无法加速的部分，这有影响，但对于不同模式应该是公平的；下图数据是本地用 13-inch M1 2022 重启电脑后跑 5 次后平均取值的结果；Vite 的热更速度没统计是因为由于 esm 的特性，改完后要等请求过来后处理完才算结束，无法统计，但肯定是很快的。
 
-直接上结果。有兴趣手动验证的同学可到 umijs/umi-next 仓库的不同 example 目录下执行 npm run dev 验证。
+直接上结果。有兴趣手动验证的同学可到 umijs/umi 仓库的不同 example 目录下执行 npm run dev 验证。
 
 ![](https://img.alicdn.com/imgextra/i4/O1CN01Gz9AA81szqy3BbRfK_!!6000000005838-2-tps-2150-1084.png)
 

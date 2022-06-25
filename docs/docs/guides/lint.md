@@ -133,5 +133,5 @@ Husky 用来绑定 Git Hooks、在指定时机（例如 `pre-commit`）执行我
 
 ## 附录
 
-1. Umi 内置的 ESLint 规则列表：https://github.com/umijs/umi-next/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
-2. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi-next/blob/master/packages/lint/src/config/stylelint/index.ts
+1. Umi 内置的 ESLint 规则列表：https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
+2. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts

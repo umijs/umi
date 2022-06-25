@@ -17,8 +17,8 @@ import { Message } from 'umi';
 ### Clone 项目
 
 ```bash
-$ git clone git@github.com:umijs/umi-next.git
-$ cd umi-next
+$ git clone git@github.com:umijs/umi.git
+$ cd umi
 ```
 
 ### 安装依赖并构建

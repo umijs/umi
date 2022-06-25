@@ -3,7 +3,7 @@
 <p>
   <a href="https://www.npmjs.com/package/umi"><img src="https://badgen.net/npm/v/umi" alt="Version" /></a>
   <a href="https://www.npmjs.com/package/umi"><img src="https://badgen.net/npm/dm/umi" alt="Downloads" /></a>
-  <a href="https://github.com/umijs/umi-next"><img src="https://github.com/umijs/umi-next/workflows/CI/badge.svg?branch=master&event=push" alt="build status" /></a>
+  <a href="https://github.com/umijs/umi"><img src="https://github.com/umijs/umi/workflows/CI/badge.svg?branch=master&event=push" alt="build status" /></a>
   <a href="https://www.npmjs.com/package/umi"><img src="https://badgen.net/npm/license/umi" alt="License" /></a>
 </p>
 
