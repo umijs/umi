@@ -293,7 +293,7 @@ src
 这里的每个 `.ts` 文件就是一个 **API Handler**，他们默认导出一个函数用来处理发送到该路径的请求，我们可以暂时先这样写：
 
 ```ts
-import { UmiApiRequest, UmiApiResponse } from "umi";
+import type { UmiApiRequest, UmiApiResponse } from "umi";
 
 export default async function (req: UmiApiRequest, res: UmiApiResponse) {
   res.status(400).json({ error: "This API is not implemented yet." })
@@ -428,7 +428,7 @@ npx prisma generate
 ```ts
 // src/api/register.ts
 
-import { UmiApiRequest, UmiApiResponse } from "umi";
+import type { UmiApiRequest, UmiApiResponse } from "umi";
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { signToken } from "@/utils/jwt";
