@@ -105,7 +105,7 @@ test('reverseApiData reverse simple object', async () => {
 })
 ```
 
-让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，改动破坏了什么功能。更多的用例请 [参考](https://github.com/umijs/umi-next/tree/master/examples/test-test/utils/reverseApiData.test.ts) 
+让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，改动破坏了什么功能。更多的用例请 [参考](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts) 
 
 ## UI 测试
 
@@ -139,7 +139,7 @@ test('renders Greet without name by inline snapshot', () => {
 });
 ```
 执行 `npx jest` 后会在 `toMatchInlineSnapshot` 函数的参数中填入 snapshot 字符串；这种方式适合渲染结果比较短的内容。
-如果需要使用 `toMatchInlineSnapshot` api 需要开启 jest transform 的 sourcemap 功能，[参考](https://github.com/umijs/umi-next/blob/master/examples/test-test/jest.config.ts)
+如果需要使用 `toMatchInlineSnapshot` api 需要开启 jest transform 的 sourcemap 功能，[参考](https://github.com/umijs/umi/blob/master/examples/test-test/jest.config.ts)
 
 * 使用 @testing-library/jest-dom 断言
 

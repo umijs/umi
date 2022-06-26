@@ -2,11 +2,11 @@
   "name": "@umijs/bundler-webpack",
   "version": "4.0.2",
   "description": "@umijs/bundler-webpack",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/bundler-webpack#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",
