@@ -11,13 +11,13 @@ A framework in react community ✨
 
 > Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
-### [🚀 Read the launch post →](https://next.umijs.org/blog/umi-4-rc)
+### [🚀 Read the launch post →](https://umijs.org/blog/umi-4-rc)
 
-### [📚 Learn Umi →](https://next.umijs.org/)
+### [📚 Learn Umi →](https://umijs.org/)
 
 ## Contribution
 
-See [Contributing Guide](https://next.umijs.org/docs/introduce/contributing).
+See [Contributing Guide](https://umijs.org/docs/introduce/contributing).
 
 ### Core Maintainers
 
