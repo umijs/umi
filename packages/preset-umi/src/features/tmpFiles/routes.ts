@@ -201,6 +201,8 @@ export async function getRouteComponents(opts: {
       // component: (() => () => <h1>foo</h1>)()
       if (route.file.startsWith('(')) {
         return useSuspense
+          // Compatible with none default route exports
+          // e.g. https://github.com/umijs/umi/blob/0d40a07bf28b0760096cbe2f22da4d639645b937/packages/plugins/src/qiankun/master.ts#L55
           ? `'${key}': React.lazy(
               () => Promise.resolve(${route.file}).then(e => e?.default ? e : ({ default: e }))
             ),`
