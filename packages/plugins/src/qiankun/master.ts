@@ -112,6 +112,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
       'getMicroAppRouteComponent.tsx.tpl',
       'ErrorBoundary.tsx',
       'MicroApp.tsx',
+      'MicroAppWithMemoHistory.tsx',
     ].forEach((file) => {
       if (file.endsWith('.tpl')) {
         api.writeTmpFile({
@@ -155,6 +156,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
       path: 'index.ts',
       content: `
 export { MicroApp } from './MicroApp';
+export { MicroAppWithMemoHistory } from './MicroAppWithMemoHistory';
       `,
     });
   });
