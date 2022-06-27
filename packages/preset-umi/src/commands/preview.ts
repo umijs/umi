@@ -69,6 +69,7 @@ umi preview --port [port]
                 onProxyRes(proxyRes, req: any) {
                   proxyRes.headers['x-real-url'] =
                     new URL(req.url || '', target as string)?.href || '';
+                  proxyConfig.onProxyRes?.(proxyRes, req);
                 },
               }),
             );
