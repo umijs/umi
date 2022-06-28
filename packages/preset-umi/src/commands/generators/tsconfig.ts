@@ -1,7 +1,7 @@
 import { GeneratorType } from '@umijs/core';
 import { logger } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, relative } from 'path';
 import { IApi } from '../../types';
 import { GeneratorHelper } from './utils';
 
@@ -26,6 +26,9 @@ export default (api: IApi) => {
       h.addDevDeps({
         typescript: '^4',
       });
+      // '' => '/' 'src' => '/src/'
+      let relativePath = relative(api.cwd, api.paths?.absSrcPath);
+      relativePath = relativePath ? `/${relativePath}/` : '/';
 
       writeFileSync(
         join(api.cwd, 'tsconfig.json'),
@@ -42,8 +45,8 @@ export default (api: IApi) => {
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@/*": ["*"],
-      "@@/*": [".umi/*"]
+      "@/*": [".${relativePath}*"],
+      "@@/*": [".${relativePath}.umi/*"]
     },
     "allowSyntheticDefaultImports": true
   }
