@@ -17,6 +17,7 @@ importers:
       '@umijs/bundler-utils': workspace:*
       '@umijs/bundler-vite': workspace:*
       '@umijs/bundler-webpack': workspace:*
+      '@umijs/lint': workspace:*
       '@umijs/plugin-docs': workspace:*
       '@umijs/plugins': workspace:*
       '@umijs/server': workspace:*
@@ -64,6 +65,7 @@ importers:
       '@umijs/bundler-utils': link:packages/bundler-utils
       '@umijs/bundler-vite': link:packages/bundler-vite
       '@umijs/bundler-webpack': link:packages/bundler-webpack
+      '@umijs/lint': link:packages/lint
       '@umijs/plugin-docs': link:packages/plugin-docs
       '@umijs/plugins': link:packages/plugins
       '@umijs/server': link:packages/server
