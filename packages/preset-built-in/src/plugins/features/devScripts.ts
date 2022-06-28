@@ -34,6 +34,7 @@ export default (api: IApi) => {
                 : [],
           })
           .then((scripts) => {
+            res.set('content-type', 'application/javascript');
             res.end(
               scripts
                 .join('\r\n\r\n')
