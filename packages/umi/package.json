@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.2",
+  "version": "4.0.0-canary.20220628.1",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -38,15 +38,15 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.2",
-    "@umijs/bundler-webpack": "4.0.2",
-    "@umijs/core": "4.0.2",
-    "@umijs/lint": "4.0.2",
-    "@umijs/preset-umi": "4.0.2",
-    "@umijs/renderer-react": "4.0.2",
-    "@umijs/server": "4.0.2",
-    "@umijs/test": "4.0.2",
-    "@umijs/utils": "4.0.2",
+    "@umijs/bundler-utils": "4.0.0-canary.20220628.1",
+    "@umijs/bundler-webpack": "4.0.0-canary.20220628.1",
+    "@umijs/core": "4.0.0-canary.20220628.1",
+    "@umijs/lint": "4.0.0-canary.20220628.1",
+    "@umijs/preset-umi": "4.0.0-canary.20220628.1",
+    "@umijs/renderer-react": "4.0.0-canary.20220628.1",
+    "@umijs/server": "4.0.0-canary.20220628.1",
+    "@umijs/test": "4.0.0-canary.20220628.1",
+    "@umijs/utils": "4.0.0-canary.20220628.1",
     "prettier-plugin-organize-imports": "^2.3.4",
     "prettier-plugin-packagejson": "^2.2.17"
   },
