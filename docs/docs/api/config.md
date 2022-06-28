@@ -159,34 +159,47 @@ conventionRoutes: {
 
 ## copy
 
-- 类型：`string[]`
+- 类型：`Array<string | { from: string; to: string; }>`
 - 默认值：`[]`
 
 配置要复制到输出目录的文件或文件夹。
 
-比如你的目录结构如下，
+当配置字符串时，默认拷贝到产物目录，如：
 
-```
-+ src
-    - index.ts
-    + bar
-        - bar.js
-    - foo.js
+```ts
+copy: ['foo.json', 'src/bar.json']
 ```
 
-然后设置，
-
-```js
-copy: ['foo.js', 'bar'];
-```
-
-编译完成后，会额外输出以下文件，
+会产生如下产物的结构：
 
 ```
 + dist
-    + bar
-        - bar.js
-    - foo.js
+  - bar.json
+  - foo.json
++ src
+  - bar.json
+- foo.json
+```
+
+你也可以通过对象配置具体的拷贝位置，其中相对路径的起点为项目根目录：
+
+```ts
+copy: [
+  { from: 'from', to: 'dist/output' },
+  { from: 'file.json', to: 'dist' }
+]
+```
+
+此时将产生如下产物结构：
+
+```
++ dist
+  + output
+    - foo.json
+  - file.json
++ from
+  - foo.json
+- file.json
 ```
 
 ## crossorigin

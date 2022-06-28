@@ -1,4 +1,4 @@
-import { UmiApiRequest, UmiApiResponse } from 'umi';
+import type { UmiApiRequest, UmiApiResponse } from 'umi';
 import { updateTodo } from '../../services/todos';
 
 export default async function (req: UmiApiRequest, res: UmiApiResponse) {

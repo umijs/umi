@@ -66,9 +66,10 @@ umi preview --port [port]
               createProxyMiddleware(key, {
                 ...proxy[key],
                 // Add x-real-url in response header
-                onProxyRes(proxyRes, req: any) {
+                onProxyRes(proxyRes, req: any, res) {
                   proxyRes.headers['x-real-url'] =
                     new URL(req.url || '', target as string)?.href || '';
+                  proxyConfig.onProxyRes?.(proxyRes, req, res);
                 },
               }),
             );
