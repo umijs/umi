@@ -54,6 +54,7 @@
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",
     "@umijs/bundler-webpack": "workspace:*",
+    "@umijs/lint": "workspace:*",
     "@umijs/plugin-docs": "workspace:*",
     "@umijs/plugins": "workspace:*",
     "@umijs/server": "workspace:*",
