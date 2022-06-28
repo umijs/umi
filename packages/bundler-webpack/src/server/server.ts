@@ -30,6 +30,21 @@ export async function createServer(opts: IOpts) {
   const { proxy } = userConfig;
   const app = express();
 
+  const server = userConfig.https
+    ? await createHttpsServer(app, userConfig.https)
+    : http.createServer(app);
+  if (!server) {
+    return null;
+  }
+
+  const ws = createWebSocketServer(server);
+
+  ws.wss.on('connection', (socket) => {
+    if (stats) {
+      sendStats(getStats(stats), false, socket);
+    }
+  });
+
   // cros
   app.use(
     cors({
@@ -207,21 +222,6 @@ export async function createServer(opts: IOpts) {
       createReadStream(htmlPath).on('error', next).pipe(res);
     } else {
       next();
-    }
-  });
-
-  const server = userConfig.https
-    ? await createHttpsServer(app, userConfig.https)
-    : http.createServer(app);
-  if (!server) {
-    return null;
-  }
-
-  const ws = createWebSocketServer(server);
-
-  ws.wss.on('connection', (socket) => {
-    if (stats) {
-      sendStats(getStats(stats), false, socket);
     }
   });
 
