@@ -4,15 +4,28 @@ import { Service } from './service/service';
 
 export * from '@umijs/test';
 
-function getAliasPathWithKey(
+export function getAliasPathWithKey(
   alias: Record<string, string>,
   key: string,
 ): string {
-  const thePath = alias[key];
-  if (alias[thePath]) {
-    return getAliasPathWithKey(alias, thePath);
+  const aliasKeys = Object.keys(alias);
+
+  const unaliased = aliasKeys
+    .filter((k) => key.startsWith(k))
+    .sort((k1, k2) => {
+      return k2.length - k1.length;
+    });
+
+  if (unaliased.length) {
+    const bestKey = unaliased[0];
+    const realPath = alias[bestKey];
+
+    const newKey = key.replace(new RegExp(`^${bestKey}`), realPath);
+
+    return getAliasPathWithKey(alias, newKey);
+  } else {
+    return key;
   }
-  return thePath;
 }
 
 let service: Service;
