@@ -297,6 +297,7 @@ declare module '*.txt' {
       noPluginDir: true,
       path: 'core/EmptyRoute.tsx',
       content: `
+import React from 'react';
 import { Outlet } from 'umi';
 export default function EmptyRoute() {
   return <Outlet />;
