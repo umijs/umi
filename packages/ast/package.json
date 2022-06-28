@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ast",
-  "version": "4.0.0-canary.20220628.1",
+  "version": "4.0.0-canary.20220628.2",
   "description": "@umijs/ast",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/ast#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -21,7 +21,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20220628.1"
+    "@umijs/bundler-utils": "4.0.0-canary.20220628.2"
   },
   "publishConfig": {
     "access": "public"
