@@ -93,7 +93,7 @@ export async function dev(opts: IOpts) {
     extraEsbuildLoaderHandler: mfsu?.getEsbuildLoaderHandler() || [],
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
-    hmr: true,
+    hmr: process.env.HMR !== 'none',
     analyze: process.env.ANALYZE,
     cache: opts.cache,
   });
