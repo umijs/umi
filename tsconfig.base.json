@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationMap": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -10,12 +9,7 @@
     "strict": true,
     "skipLibCheck": true,
     "target": "es2019",
-    "jsx": "react",
-    "paths": {
-      "umi": ["./packages/umi"],
-      "@umijs/utils": ["./packages/utils"],
-      "@umijs/renderer-react": ["./packages/renderer-react"]
-    }
+    "jsx": "react"
   },
   "exclude": [
     "**/node_modules",

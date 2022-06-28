@@ -20,9 +20,9 @@
     "scripts"
   ],
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
+    "dev": "pnpm father dev",
     "postinstall": "node scripts/linkDeps.js",
     "test": "umi-scripts jest-turbo"
   },

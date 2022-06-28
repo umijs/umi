@@ -30,11 +30,9 @@
     "stylelint.js"
   ],
   "scripts": {
-    "build": "pnpm tsc",
-    "build:client": "pnpm tsc --project ./tsconfig.client.json",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
-    "dev:client": "pnpm build:client -- --watch",
+    "dev": "pnpm father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
