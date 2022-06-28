@@ -4,16 +4,15 @@ import type {
   Request,
   Response,
 } from '@umijs/bundler-utils/compiled/express';
+import type { AutoUpdateSrcCodeCache } from '@umijs/utils';
 import { lodash, logger, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
-import { lookup } from '../compiled/mrmime';
+import { lookup } from '../../compiled/mrmime';
 // @ts-ignore
-import WebpackVirtualModules from '../compiled/webpack-virtual-modules';
-import awaitImport from './babelPlugins/awaitImport/awaitImport';
-import { getRealPath } from './babelPlugins/awaitImport/getRealPath';
+import WebpackVirtualModules from '../../compiled/webpack-virtual-modules';
 import {
   DEFAULT_MF_NAME,
   DEFAULT_TMP_DIR_NAME,
@@ -22,14 +21,21 @@ import {
   MF_VA_PREFIX,
   REMOTE_FILE,
   REMOTE_FILE_FULL,
-} from './constants';
-import { Dep } from './dep/dep';
-import { DepBuilder } from './depBuilder/depBuilder';
-import { DepInfo } from './depInfo';
-import getAwaitImportHandler from './esbuildHandlers/awaitImport';
-import { Mode } from './types';
-import { makeArray } from './utils/makeArray';
-import { BuildDepPlugin } from './webpackPlugins/buildDepPlugin';
+} from '../constants';
+import { Dep } from '../dep/dep';
+import { DepBuilder } from '../depBuilder/depBuilder';
+import { DepModule } from '../depInfo';
+import getAwaitImportHandler, {
+  getImportHandlerV4,
+} from '../esbuildHandlers/awaitImport';
+import { Mode } from '../types';
+import { makeArray } from '../utils/makeArray';
+import {
+  BuildDepPlugin,
+  IBuildDepPluginOpts,
+} from '../webpackPlugins/buildDepPlugin';
+import { StrategyCompileTime } from './strategyCompileTime';
+import { StaticAnalyzeStrategy } from './strategyStaticAnalyze';
 
 interface IOpts {
   cwd?: string;
@@ -45,19 +51,22 @@ interface IOpts {
   implementor: typeof webpack;
   buildDepWithESBuild?: boolean;
   depBuildConfig: any;
+  strategy?: 'eager' | 'normal';
+  include?: string[];
+  srcCodeCache?: AutoUpdateSrcCodeCache;
 }
 
 export class MFSU {
   public opts: IOpts;
   public alias: Record<string, string> = {};
   public externals: (Record<string, string> | Function)[] = [];
-  public depInfo: DepInfo;
   public depBuilder: DepBuilder;
   public depConfig: Configuration | null = null;
   public buildDepsAgain: boolean = false;
   public progress: any = { done: false };
   public onProgress: Function;
   public publicPath: string = '/';
+  private strategy: IMFSUStrategy;
 
   constructor(opts: IOpts) {
     this.opts = opts;
@@ -74,9 +83,27 @@ export class MFSU {
       this.opts.onMFSUProgress?.(this.progress);
     };
     this.opts.cwd = this.opts.cwd || process.cwd();
-    this.depInfo = new DepInfo({ mfsu: this });
+
+    if (this.opts.strategy === 'eager') {
+      if (opts.srcCodeCache) {
+        logger.info('MFSU eager strategy enabled');
+        this.strategy = new StaticAnalyzeStrategy({
+          mfsu: this,
+          srcCodeCache: opts.srcCodeCache,
+        });
+      } else {
+        logger.warn(
+          'fallback to MFSU normal strategy, due to srcCache is not provided',
+        );
+        this.strategy = new StrategyCompileTime({ mfsu: this });
+      }
+    } else {
+      this.strategy = new StrategyCompileTime({ mfsu: this });
+    }
+
+    this.strategy.loadCache();
+
     this.depBuilder = new DepBuilder({ mfsu: this });
-    this.depInfo.loadCache();
   }
 
   // swc don't support top-level await
@@ -204,26 +231,7 @@ promise new Promise(resolve => {
               : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
           },
         }),
-        new BuildDepPlugin({
-          onCompileDone: () => {
-            if (this.depBuilder.isBuilding) {
-              this.buildDepsAgain = true;
-            } else {
-              this.buildDeps()
-                .then(() => {
-                  this.onProgress({
-                    done: true,
-                  });
-                })
-                .catch((e: Error) => {
-                  logger.error(e);
-                  this.onProgress({
-                    done: true,
-                  });
-                });
-            }
-          },
-        }),
+        new BuildDepPlugin(this.strategy.getBuildDepPlugConfig()),
         // new WriteCachePlugin({
         //   onWriteCache: lodash.debounce(() => {
         //     this.depInfo.writeCache();
@@ -239,28 +247,36 @@ promise new Promise(resolve => {
      * depConfig
      */
     this.depConfig = opts.depConfig;
+
+    this.strategy.init();
   }
 
   async buildDeps() {
-    const shouldBuild = this.depInfo.shouldBuild();
+    const shouldBuild = this.strategy.shouldBuild();
     if (!shouldBuild) {
       logger.info('[MFSU] skip buildDeps');
       return;
     }
-    this.depInfo.snapshot();
+
+    // Snapshot after compiled success
+    this.strategy.refresh();
+
+    const staticDeps = this.strategy.getDepModules();
+
     const deps = Dep.buildDeps({
-      deps: this.depInfo.moduleGraph.depSnapshotModules,
+      deps: staticDeps,
       cwd: this.opts.cwd!,
       mfsu: this,
     });
     logger.info(`[MFSU] buildDeps since ${shouldBuild}`);
     logger.debug(deps.map((dep) => dep.file).join(', '));
+
     await this.depBuilder.build({
       deps,
     });
 
     // Write cache
-    this.depInfo.writeCache();
+    this.strategy.writeCache();
 
     if (this.buildDepsAgain) {
       logger.info('[MFSU] buildDepsAgain');
@@ -304,56 +320,19 @@ promise new Promise(resolve => {
     ];
   }
 
-  private getAwaitImportCollectOpts() {
-    return {
-      onTransformDeps: () => {},
-      onCollect: ({
-        file,
-        data,
-      }: {
-        file: string;
-        data: {
-          unMatched: Set<{ sourceValue: string }>;
-          matched: Set<{ sourceValue: string }>;
-        };
-      }) => {
-        this.depInfo.moduleGraph.onFileChange({
-          file,
-          // @ts-ignore
-          deps: [
-            ...Array.from(data.matched).map((item: any) => ({
-              file: item.sourceValue,
-              isDependency: true,
-              version: Dep.getDepVersion({
-                dep: item.sourceValue,
-                cwd: this.opts.cwd!,
-              }),
-            })),
-            ...Array.from(data.unMatched).map((item: any) => ({
-              file: getRealPath({
-                file,
-                dep: item.sourceValue,
-              }),
-              isDependency: false,
-            })),
-          ],
-        });
-      },
-      exportAllMembers: this.opts.exportAllMembers,
-      unMatchLibs: this.opts.unMatchLibs,
-      remoteName: this.opts.mfName,
-      alias: this.alias,
-      externals: this.externals,
-    };
-  }
-
   getBabelPlugins() {
-    return [[awaitImport, this.getAwaitImportCollectOpts()]];
+    return [this.strategy.getBabelPlugin()];
   }
 
   getEsbuildLoaderHandler() {
+    if (this.opts.strategy === 'eager') {
+      const opts = this.strategy.getBabelPlugin()[1] as any;
+
+      return [getImportHandlerV4(opts)];
+    }
+
     const cache = new Map<string, any>();
-    const checkOpts = this.getAwaitImportCollectOpts();
+    const checkOpts = this.strategy.getBabelPlugin()[1];
 
     return [
       getAwaitImportHandler({
@@ -362,4 +341,28 @@ promise new Promise(resolve => {
       }),
     ] as any[];
   }
+
+  public getCacheFilePath() {
+    return this.strategy.getCacheFilePath();
+  }
+}
+
+export interface IMFSUStrategy {
+  init(): void;
+
+  shouldBuild(): string | boolean;
+
+  getBabelPlugin(): any[];
+
+  getBuildDepPlugConfig(): IBuildDepPluginOpts;
+
+  loadCache(): void;
+
+  getCacheFilePath(): string;
+
+  getDepModules(): Record<string, DepModule>;
+
+  refresh(): void;
+
+  writeCache(): void;
 }

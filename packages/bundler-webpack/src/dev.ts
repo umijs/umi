@@ -1,4 +1,5 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
+import type { AutoUpdateSrcCodeCache } from '@umijs/utils';
 import { logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -27,6 +28,9 @@ type IOpts = {
   rootDir?: string;
   config: IConfig;
   entry: Record<string, string>;
+  mfsuStrategy?: 'eager' | 'normal';
+  mfsuInclude?: string[];
+  srcCodeCache?: AutoUpdateSrcCodeCache;
 } & Pick<IConfigOpts, 'cache'>;
 
 export function stripUndefined(obj: any) {
@@ -47,7 +51,11 @@ export async function dev(opts: IOpts) {
         `Swc currently not supported for use with mfsu, recommended you use srcTranspiler: 'esbuild' in dev.`,
       );
     }
+
     mfsu = new MFSU({
+      strategy: opts.mfsuStrategy,
+      include: opts.mfsuInclude || [],
+      srcCodeCache: opts.srcCodeCache,
       implementor: webpack as any,
       buildDepWithESBuild: opts.config.mfsu?.esbuild,
       depBuildConfig: {
@@ -141,7 +149,7 @@ export async function dev(opts: IOpts) {
       `default-development`,
       'index.pack',
     );
-    const mfsuCacheExists = existsSync(mfsu.depInfo.cacheFilePath);
+    const mfsuCacheExists = existsSync(mfsu.getCacheFilePath());
     const webpackCacheExists = existsSync(webpackCachePath);
     if (webpackCacheExists && !mfsuCacheExists) {
       logger.warn(`Invalidate webpack cache since mfsu cache is missing`);
