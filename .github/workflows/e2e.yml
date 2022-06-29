@@ -52,7 +52,7 @@ jobs:
         run: pnpm i
 
       - name: Build example-max
-        run: pnpm umi-scripts turbo --cmd build --filter ./examples/max...
+        run: pnpm umi-scripts turbo --cmd build --filter ./examples/max... --filter ./examples/test-test/...
 
       - uses: cypress-io/github-action@v4
         if: matrix.os == 'ubuntu-latest'
@@ -81,3 +81,7 @@ jobs:
         env:
           cypress_key: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
+
+      - name: Run test-test
+        working-directory: ./examples/test-test
+        run: pnpm test
