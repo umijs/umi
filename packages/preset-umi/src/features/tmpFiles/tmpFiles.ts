@@ -62,9 +62,6 @@ export default (api: IApi) => {
             resolveJsonModule: true,
             allowSyntheticDefaultImports: true,
 
-            // Enforce using `import type` instead of `import` for types
-            importsNotUsedAsValues: 'error',
-
             // Supported by vue only
             ...(api.appData.framework === 'vue'
               ? {
