@@ -7,7 +7,7 @@ import { Model, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
-  const pkgPath = join(__dirname, '../libs/dva.ts');
+  const pkgPath = join(__dirname, '../libs/dva');
 
   api.describe({
     config: {
@@ -53,7 +53,7 @@ export default (api: IApi) => {
       tpl: `
 // It's faked dva
 // aliased to @umijs/plugins/templates/dva
-import { create, Provider } from 'dva';
+import { create, Provider } from '${pkgPath}';
 import createLoading from '${winPath(require.resolve('dva-loading'))}';
 ${
   api.config.dva?.immer
@@ -137,7 +137,7 @@ export function dataflowProvider(container, opts) {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { connect, useDispatch, useStore, useSelector } from 'dva';
+export { connect, useDispatch, useStore, useSelector } from '${pkgPath}';
 export { getDvaApp } from './dva';
 `,
     });
