@@ -1,6 +1,4 @@
-import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import Greet from './Greet';
 
 test('renders Greet without name by inline snapshot', () => {
@@ -24,7 +22,7 @@ test('renders Greet without name by snapshot', () => {
 });
 
 test('renders Greet without name assert by testing-library', () => {
-  const { container } = render(<Greet />);
+  render(<Greet />);
 
   const greetDom = screen.getByText('Anonymous');
   expect(greetDom).toBeInTheDocument();
@@ -32,9 +30,9 @@ test('renders Greet without name assert by testing-library', () => {
 
 test('Greet click', async () => {
   const onClick = jest.fn();
-  const { container } = render(<Greet onClick={onClick} />);
+  render(<Greet onClick={onClick} />);
 
-  const greetDom = screen.getByText('Anonymous');
+  screen.getByText('Anonymous');
   await fireEvent.click(screen.getByText(/hello/i));
 
   expect(onClick).toBeCalledTimes(1);
