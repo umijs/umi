@@ -28,7 +28,7 @@ const history = createBrowserHistory({
 
 `createHashHistory` 返回一个 `HashHistory` 实例。`window` 默认为当前 `document` 的 `defaultView`。
 
-`HashHistory` 与 `BrowserHistory` 的主要区别在于，`HashHistory` 将当前位置存储在 URL 的哈希部分中，这意味着它在路由切换时不会发送请求到服务器。如果您将站点托管在您无法完全控制服务器误上，或者在只提供同单页面的 Electron 应用程序中，推荐使用 `HashHistory`。
+`HashHistory` 与 `BrowserHistory` 的主要区别在于，`HashHistory` 将当前位置存储在 URL 的哈希部分中，这意味着它在路由切换时不会发送请求到服务器。如果您将站点托管在您无法完全控制服务器上，或者在只提供同单页面的 Electron 应用程序中，推荐使用 `HashHistory`。
 
 使用范例：
 ```ts
