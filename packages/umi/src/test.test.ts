@@ -1,31 +1,43 @@
 import { getAliasPathWithKey } from './test';
 
-const alias = {
-  'react-dom': '/project/node_modules/react-dom',
-  umi: '@@/exports',
-  react: '/project/node_modules/react',
-  dva$: '@@/dva-plugin/dva/index.js',
-  'dva/lib': '@@/dva-plugin/dva/lib',
-  '@': '/project/src',
-  '@@': '/project/src/.umi-test',
-};
-
 test('simple alias to jest moduleNameMapper', () => {
-  const p = getAliasPathWithKey(alias, 'react-dom');
-  expect(p).toBe('/project/node_modules/react-dom');
+  const p = getAliasPathWithKey(
+    {
+      'react-dom': '/path/to/react-dom',
+    },
+    'react-dom',
+  );
+  expect(p).toBe('/path/to/react-dom');
 });
 
 test('double alias path', () => {
-  const p = getAliasPathWithKey(alias, 'umi');
-  expect(p).toBe('/project/src/.umi-test/exports');
+  const p = getAliasPathWithKey(
+    {
+      alias1: 'alias2/lib',
+      alias2: '/path/to/module',
+    },
+    'alias1',
+  );
+  expect(p).toBe('/path/to/module/lib');
 });
 
 test('double alias path suffixed $', () => {
-  const p = getAliasPathWithKey(alias, 'dva$');
-  expect(p).toBe('/project/src/.umi-test/dva-plugin/dva/index.js');
+  const p = getAliasPathWithKey(
+    {
+      endWith$: '/path/to/index.js',
+    },
+    'endWith$',
+  );
+  expect(p).toBe('/path/to/index.js');
 });
 
 test('overlapped alias paths', () => {
-  const p = getAliasPathWithKey(alias, 'dva/lib');
-  expect(p).toBe('/project/src/.umi-test/dva-plugin/dva/lib');
+  const p = getAliasPathWithKey(
+    {
+      common$: '/path/to/index.js',
+      'common/lib': '/path/to/lib',
+    },
+    'common/lib',
+  );
+  expect(p).toBe('/path/to/lib');
 });
