@@ -67,7 +67,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('build packages');
   await $`npm run build:release`;
   await $`npm run build:extra`;
-  await $`npm run build:client`;
 
   logger.event('check client code change');
   const isGitCleanAfterClientBuild = (

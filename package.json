@@ -3,7 +3,6 @@
   "scripts": {
     "bootstrap": "umi-scripts bootstrap",
     "build": "umi-scripts turbo --cmd build",
-    "build:client": "umi-scripts turbo --cmd build:client",
     "build:extra": "umi-scripts turbo --cmd build:extra",
     "build:force": "umi-scripts turbo --cmd build --no-cache",
     "build:release": "umi-scripts turbo --cmd build --no-cache -- --declarationMap false",
