@@ -4,8 +4,4 @@
 /config/config.local.ts
 /src/.umi
 /src/.umi-production
-/.umi
-/.umi-production
-/.umi-test
 /dist
-/.mfsu
