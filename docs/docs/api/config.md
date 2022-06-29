@@ -126,7 +126,7 @@ export default {
 ```jsx
 // pages/.../some_page.tsx
 
-import {useClientLoaderData} from 'umi';
+import { useClientLoaderData } from 'umi';
 
 export default function SomePage() {
   const data = useClientLoaderData();
