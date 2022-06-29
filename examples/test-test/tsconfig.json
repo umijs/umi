@@ -1,4 +1,3 @@
 {
-  "extends": "./.umi/tsconfig.json",
-  "include": ["./jest-setup.ts"]
+  "extends": "./.umi/tsconfig.json"
 }
