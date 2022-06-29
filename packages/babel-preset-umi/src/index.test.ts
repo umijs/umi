@@ -144,7 +144,7 @@ test('typescript with allowDeclareFields', () => {
   ).toContain(`_defineProperty(this, "bar", void 0);`);
 });
 
-test('typescript with onlyRemoveTypeImports', () => {
+xtest('typescript with onlyRemoveTypeImports', () => {
   expect(
     doTransform({
       code: `import { c } from 'b'; import type { b } from 'c';`,
