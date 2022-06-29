@@ -388,11 +388,13 @@ importers:
       '@testing-library/react': ^13
       '@types/jest': ^27.5.1
       '@types/testing-library__jest-dom': ^5.14.5
+      '@umijs/plugins': workspace:4.0.0-canary.20220628.2
       jest: ^27
       ts-node: ^10
       typescript: ^4.7.2
       umi: 4.0.0-canary.20220628.2
     dependencies:
+      '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
     devDependencies:
       '@testing-library/jest-dom': 5.16.4
