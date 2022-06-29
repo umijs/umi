@@ -33,7 +33,7 @@ test('Greet click', async () => {
   render(<Greet onClick={onClick} />);
 
   screen.getByText('Anonymous');
-  await fireEvent.click(screen.getByText(/hello/i));
+  fireEvent.click(screen.getByText(/hello/i));
 
   expect(onClick).toBeCalledTimes(1);
 });
