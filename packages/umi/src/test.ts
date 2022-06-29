@@ -8,19 +8,18 @@ export function getAliasPathWithKey(
   alias: Record<string, string>,
   key: string,
 ): string {
+  if (alias[key]) {
+    return getAliasPathWithKey(alias, alias[key]);
+  }
+
   const aliasKeys = Object.keys(alias);
+  const keyStartedWith = aliasKeys.find(
+    (k) => !k.endsWith('$') && key.startsWith(`${k}/`),
+  );
 
-  const unaliased = aliasKeys
-    .filter((k) => key.startsWith(k))
-    .sort((k1, k2) => {
-      return k2.length - k1.length;
-    });
-
-  if (unaliased.length) {
-    const bestKey = unaliased[0];
-    const realPath = alias[bestKey];
-
-    const newKey = key.replace(new RegExp(`^${bestKey}`), realPath);
+  if (keyStartedWith) {
+    const realPath = alias[keyStartedWith];
+    const newKey = realPath + key.slice(keyStartedWith.length);
 
     return getAliasPathWithKey(alias, newKey);
   } else {
@@ -46,7 +45,9 @@ export async function configUmiAlias(config: Config.InitialOptions) {
   const alias = await getUmiAlias();
   for (const key of Object.keys(alias)) {
     const aliasPath = getAliasPathWithKey(alias, key);
-    if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
+    if (key.endsWith('$')) {
+      config.moduleNameMapper[`^${key}`] = aliasPath;
+    } else if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
       config.moduleNameMapper[`^${key}/(.*)$`] = `${aliasPath}/$1`;
       config.moduleNameMapper[`^${key}$`] = aliasPath;
     } else {
