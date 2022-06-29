@@ -52,13 +52,16 @@ export default (_context: any, opts: IOpts) => {
           '@umijs/bundler-utils/compiled/babel/preset-typescript',
         ),
         {
-          // 支持vue 后缀
+          // 支持 vue 后缀
           allExtensions: true,
-          // 支持tsx
+          // 支持 tsx
           isTSX: true,
           allowNamespaces: true,
           allowDeclareFields: true,
-          onlyRemoveTypeImports: true,
+          // Why false?
+          // 如果为 true，babel 只删除 import type 语句，会保留其他通过 import 引入的 type
+          // 这些 type 引用走到 webpack 之后，就会报错
+          onlyRemoveTypeImports: false,
           optimizeConstEnums: true,
           ...opts.presetTypeScript,
         },
