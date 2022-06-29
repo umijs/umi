@@ -84,4 +84,6 @@ jobs:
 
       - name: Run test-test
         working-directory: ./examples/test-test
-        run: pnpm test
+        run: |
+          npx umi setup
+          pnpm test
