@@ -31,24 +31,9 @@ export default (api: IApi) => {
         join(api.cwd, 'tsconfig.json'),
         `
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "jsx": "react",
-    "esModuleInterop": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "strict": true,
-    "paths": {
-      "@/*": ["*"],
-      "@@/*": [".umi/*"]
-    },
-    "allowSyntheticDefaultImports": true
-  }
+  "extends": "./${api.appData.hasSrcDir ? 'src/' : ''}.umi/tsconfig.json"
 }
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write tsconfig.json');
 
