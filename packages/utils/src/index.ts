@@ -26,8 +26,6 @@ import Generator from './Generator/Generator';
 import installDeps from './installDeps';
 import * as logger from './logger';
 import updatePackageJSON from './updatePackageJSON';
-export * from './folderCache/AutoUpdateFolderCache';
-export * from './folderCache/AutoUpdateSourceCodeCache';
 export * from './getCorejsVersion';
 export * from './importLazy';
 export * from './isLocalDev';
