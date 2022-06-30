@@ -55,7 +55,7 @@ const check = async () => {
             console.log(
               `In ${chalk.red(pkgName)} > ${basename(
                 file,
-              )} > has self pkg name string`,
+              )} > import self pkg name`,
             );
             console.log(`> ${file}`);
             console.log();
