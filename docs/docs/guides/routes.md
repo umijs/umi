@@ -17,8 +17,8 @@ import { Message } from 'umi';
 ```js
 export default {
   routes: [
-    { exact: true, path: '/', component: 'index' },
-    { exact: true, path: '/user', component: 'user' },
+    { path: '/', component: 'index' },
+    { path: '/user', component: 'user' },
   ],
 }
 ```
@@ -61,28 +61,6 @@ Umi 4 默认根据路由来进行 JavaScript 模块按需加载。如果需要�
 配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始找起。
 
 如果指向 `src` 目录的文件，可以用 `@`，也可以用 `../`。比如 `component: '@/layouts/basic'`，或者 `component: '../layouts/basic'`，推荐用前者。
-
-### exact
-
-* Type: `boolean`
-* Default: `true`
-
-表示是否严格匹配，即 location 是否和 path 完全对应上。
-
-比如：
-
-```js
-export default {
-  routes: [
-    // url 为 /one/two 时匹配失败
-    { path: '/one', exact: true },
-    
-    // url 为 /one/two 时匹配成功
-    { path: '/one' },
-    { path: '/one', exact: false },
-  ],
-}
-```
 
 ### routes
 
@@ -131,8 +109,8 @@ export default (props) => {
 ```js
 export default {
   routes: [
-    { exact: true, path: '/', redirect: '/list' },
-    { exact: true, path: '/list', component: 'list' },
+    { path: '/', redirect: '/list' },
+    { path: '/list', component: 'list' },
   ],
 }
 ```
