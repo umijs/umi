@@ -7,8 +7,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20220628.2",
-    "umi": "4.0.0-canary.20220628.2"
+    "@umijs/plugins": "4.0.3",
+    "umi": "4.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",

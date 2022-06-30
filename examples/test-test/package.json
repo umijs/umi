@@ -6,8 +6,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@umijs/plugins": "workspace:4.0.0-canary.20220628.2",
-    "umi": "4.0.0-canary.20220628.2"
+    "@umijs/plugins": "4.0.3",
+    "umi": "4.0.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
