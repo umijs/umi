@@ -1,5 +1,4 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import type { AutoUpdateSrcCodeCache } from '@umijs/utils';
 import { logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
@@ -30,7 +29,7 @@ type IOpts = {
   entry: Record<string, string>;
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
-  srcCodeCache?: AutoUpdateSrcCodeCache;
+  srcCodeCache?: any;
 } & Pick<IConfigOpts, 'cache'>;
 
 export function stripUndefined(obj: any) {

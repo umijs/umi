@@ -1,4 +1,3 @@
-import type { AutoUpdateSrcCodeCache } from '@umijs/utils';
 import { logger } from '@umijs/utils';
 import { getAliasedPathWithLoopDetect } from '../babelPlugins/awaitImport/getAliasedPath';
 import mfImport from '../babelPlugins/awaitImport/MFImport';
@@ -10,13 +9,7 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
   private readonly mfsu: MFSU;
   private staticDepInfo: StaticDepInfo;
 
-  constructor({
-    mfsu,
-    srcCodeCache,
-  }: {
-    mfsu: MFSU;
-    srcCodeCache: AutoUpdateSrcCodeCache;
-  }) {
+  constructor({ mfsu, srcCodeCache }: { mfsu: MFSU; srcCodeCache: any }) {
     this.mfsu = mfsu;
 
     this.staticDepInfo = new StaticDepInfo({
