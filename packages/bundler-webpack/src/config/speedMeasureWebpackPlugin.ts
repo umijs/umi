@@ -1,5 +1,5 @@
-// @ts-ignore
 import { join } from 'path';
+// @ts-ignore
 import SpeedMeasurePlugin from '../../compiled/speed-measure-webpack-plugin';
 import { Configuration } from '../../compiled/webpack';
 
