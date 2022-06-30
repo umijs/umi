@@ -1,7 +1,7 @@
-import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
 import { winPath } from '@umijs/utils';
 import { extname } from 'path';
+import { init, parse } from '../compiled/es-module-lexer';
+import { Loader, transformSync } from '../compiled/esbuild';
 
 export async function parseModule(opts: { content: string; path: string }) {
   await init;
