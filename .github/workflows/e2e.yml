@@ -1,4 +1,4 @@
-name: e2e-cypress
+name: e2e-test
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
@@ -51,10 +51,13 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build example-max
-        run: pnpm umi-scripts turbo --cmd build --filter ./examples/max...
+      - name: Build targets
+        run: pnpm umi-scripts turbo --cmd build  
+          --filter ./examples/max... 
+          --filter ./examples/test-test/...
 
-      - uses: cypress-io/github-action@v4
+      - name: example-max-e2e
+        uses: cypress-io/github-action@v4
         if: matrix.os == 'ubuntu-latest'
         with:
           start: pnpm run preview
@@ -67,8 +70,8 @@ jobs:
         env:
           cypress_key: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
-
-      - uses: cypress-io/github-action@v4
+      - name: example-max-e2e-windows
+        uses: cypress-io/github-action@v4
         if: matrix.os == 'windows-latest'
         with:
           start: pnpm run preview
@@ -81,3 +84,9 @@ jobs:
         env:
           cypress_key: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
+
+      - name: Run example test-test
+        working-directory: ./examples/test-test
+        run: |
+          npx umi setup
+          pnpm test
