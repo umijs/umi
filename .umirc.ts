@@ -5,7 +5,7 @@ export default {
   mfsu: false,
   routePrefetch: {},
   manifest: {},
-  plugins: ['@umijs/plugin-docs'],
+  plugins: ['./packages/plugin-docs'],
   conventionRoutes: {
     exclude: [/\/components\//],
   },
