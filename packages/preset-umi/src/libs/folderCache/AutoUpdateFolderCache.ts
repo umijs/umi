@@ -1,8 +1,9 @@
-import { FSWatcher, watch } from 'chokidar';
+import { chokidar, lodash, logger } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { join, relative } from 'path';
-import lodash from '../../compiled/lodash';
-import * as logger from '../logger';
+
+const { watch } = chokidar;
+type FSWatcher = ReturnType<typeof watch>;
 
 type AbsPath = string;
 type FileContent = string;

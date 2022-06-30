@@ -1,6 +1,5 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import {
-  AutoUpdateSrcCodeCache,
   chalk,
   lodash,
   logger,
@@ -11,6 +10,7 @@ import {
 import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
+import { AutoUpdateSrcCodeCache } from '../../libs/folderCache/AutoUpdateSourceCodeCache';
 import { IApi } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';

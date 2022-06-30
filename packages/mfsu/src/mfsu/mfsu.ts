@@ -4,7 +4,6 @@ import type {
   Request,
   Response,
 } from '@umijs/bundler-utils/compiled/express';
-import type { AutoUpdateSrcCodeCache } from '@umijs/utils';
 import { lodash, logger, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
@@ -53,7 +52,7 @@ interface IOpts {
   depBuildConfig: any;
   strategy?: 'eager' | 'normal';
   include?: string[];
-  srcCodeCache?: AutoUpdateSrcCodeCache;
+  srcCodeCache?: any;
 }
 
 export class MFSU {

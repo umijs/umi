@@ -1,5 +1,4 @@
 import { ImportSpecifier } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import type { AutoUpdateSrcCodeCache } from '@umijs/utils';
 import { fsExtra, lodash, logger } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 // @ts-ignore
@@ -9,6 +8,21 @@ import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu/mfsu';
 import createPluginImport from './simulations/babel-plugin-import';
+
+type FileChangeEvent = {
+  event: 'unlink' | 'change' | 'add';
+  path: string;
+};
+type MergedCodeInfo = {
+  imports: readonly ImportSpecifier[];
+
+  code: string;
+  events: FileChangeEvent[];
+};
+type AutoUpdateSrcCodeCache = {
+  register(listener: (info: MergedCodeInfo) => void): void;
+  getMergedCode(): MergedCodeInfo;
+};
 
 interface IOpts {
   mfsu: MFSU;
