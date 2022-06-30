@@ -1203,6 +1203,7 @@ importers:
 
   packages/preset-vue:
     specifiers:
+      '@umijs/bundler-webpack': 4.0.3
       '@umijs/renderer-vue': 4.0.3
       '@vitejs/plugin-vue': 2.3.1
       umi: 4.0.3
@@ -1210,6 +1211,7 @@ importers:
       vue-loader: 17.0.0
       vue-router: 4.0.15
     dependencies:
+      '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/renderer-vue': link:../renderer-vue
       vue: 3.2.36
       vue-loader: 17.0.0
