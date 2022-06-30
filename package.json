@@ -8,6 +8,7 @@
     "build:force": "umi-scripts turbo --cmd build --no-cache",
     "build:release": "umi-scripts turbo --cmd build --no-cache -- --declarationMap false",
     "check:packageFiles": "umi-scripts checkPackageFiles",
+    "check:phantomDepsCheck": "umi-scripts phantomDepsCheck",
     "cov": "jest --coverage",
     "dep:update": "pnpm up --interactive --latest --recursive",
     "dev": "umi-scripts turbo --cmd dev --parallel",

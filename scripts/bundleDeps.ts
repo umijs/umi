@@ -357,6 +357,10 @@ Object.keys(exported).forEach(function (key) {
     const val = externals[name];
     if (val === '$$LOCAL') {
       dtsExternals.push(name);
+      // ensure relative import
+      // ./compiled/execa -> require('../cross-spawn')
+      //           /cross-spawn
+      //           /@vite/plugin -> require('../../cross-spawn')
       webpackExternals[name] = pkg.name.includes('/')
         ? `../../${name}`
         : `../${name}`;

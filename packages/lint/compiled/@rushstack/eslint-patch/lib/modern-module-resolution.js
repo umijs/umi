@@ -11,9 +11,9 @@ const path = require('path');
 const fs = require('fs');
 const isModuleResolutionError = (ex) => typeof ex === 'object' && !!ex && 'code' in ex && ex.code === 'MODULE_NOT_FOUND';
 // ==== @umijs/lint fork start ====
+const lintPkgPath = path.join(__dirname, '../../../../package.json')
 const getBuiltinPluginResolvePath = (pkg) => (
-  require('@umijs/lint/package.json').dependencies[pkg] &&
-  require.resolve('@umijs/lint/package.json')
+  require(lintPkgPath).dependencies[pkg] && lintPkgPath
 );
 // ==== @umijs/lint fork end ====
 // Module path for eslintrc.cjs
