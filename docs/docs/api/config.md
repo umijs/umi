@@ -104,6 +104,26 @@ export default {
 };
 ```
 
+## clickToComponent
+
+- 类型: `{ editor?: string }`
+- 默认值: `false`
+
+开启后，可通过 `Option+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click` 可以打开上下文，查看父组件。
+
+关于参数。`editor` 为编辑器名称，默认为 'vscode'，支持 `vscode` & `vscode-insiders`。
+
+配置 clickToComponent 的行为，详见 [click-to-component](https://github.com/ericclemmons/click-to-component)。
+
+示例：
+
+```ts
+// .umirc.ts
+export default {
+  clickToComponent: {},
+};
+```
+
 ## clientLoader
 
 - 类型: `{}`
