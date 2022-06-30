@@ -101,10 +101,6 @@ export default{
 $ umi plugin list
 ```
 
-### 在插件中感知其他插件
-
-可通过 `api.hasPlugins(pluginId[])` 和 `api.hasPresets(pluginId[])` 的方式感知其他插件，详见[插件 API](../api/plugin-api)。
-
 ## 配置插件
 通过配置插件的 key 来配置插件，比如：
 ```js

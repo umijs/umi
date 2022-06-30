@@ -117,8 +117,8 @@ export default {
 ```ts
 // .umirc.ts
 export default {
-  clientLoader: {}
-}
+  clientLoader: {},
+};
 ```
 
 配置开启后，在路由组件中使用：
@@ -234,6 +234,7 @@ crossorigin: {}
 配置构建时使用的 CSS 压缩工具; `none` 表示不压缩。
 
 示例：
+
 ```js
 {
   cssMinifier: 'esbuild'
@@ -242,8 +243,8 @@ crossorigin: {}
 
 ## cssMinifierOptions
 
-* 类型：`Object`
-* 默认值：`{}`
+- 类型：`Object`
+- 默认值：`{}`
 
 `cssMinifier` CSS 压缩工具配置选项。
 
@@ -267,15 +268,15 @@ crossorigin: {}
 
 ## cssLoader
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 配置 css-loader ，详见 [css-loader > options](https://github.com/webpack-contrib/css-loader#options)
 
 ## cssLoaderModules
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 配置 css modules 的行为，详见 [css-loader > modules](https://github.com/webpack-contrib/css-loader#modules)。
 
@@ -284,7 +285,7 @@ crossorigin: {}
 ```ts
 cssLoaderModules: {
   // 配置驼峰式使用
-  exportLocalsConvention: "camelCase"
+  exportLocalsConvention: 'camelCase'
 }
 ```
 
@@ -369,8 +370,8 @@ scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 
 ## extraBabelIncludes
 
-* 类型：`string[]`
-* 默认值：`[]`
+- 类型：`string[]`
+- 默认值：`[]`
 
 配置额外需要做 Babel 编译的 NPM 包或目录。比如：
 
@@ -626,12 +627,20 @@ metas: [
 
 ## mfsu
 
-- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; chainWebpack: (memo, args) => void }`
-- 默认值：`{ mfName: 'mf' }`
+- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void }`
+- 默认值：`{ mfName: 'mf', strategy: 'normal' }`
 
-配置基于 Module Federation 的提速功能。
+配置基于 [Module Federation](https://module-federation.github.io/) 的提速功能。
 
-关于参数。`esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些；`mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置；`cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`; `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)；`runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`。
+关于参数
+
+- `esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些
+- `mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置
+- `cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`
+- `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/sorrycc/webpack-chain)；
+- `runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`
+- `strategy` 指定 mfsu 编译依赖的时机; `normal` 模式下，采用 babel 编译分析后，构建 Module Federation 远端包；`eager` 模式下采用静态分析的方式，和项目代码同时发起构建。
+- `include` 仅在 `strategy: 'eager' ` 模式下生效， 用于补偿在 eager 模式下，静态分析无法分析到的依赖，例如 `react` 未进入 Module Federation 远端模块可以这样配置 `{ include: [ 'react' ] }`
 
 示例，
 
