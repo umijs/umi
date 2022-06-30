@@ -26,6 +26,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-layout": "^7.0.1-beta.20",
     "@umijs/bundler-utils": "4.0.3",
+    "@umijs/utils": "4.0.3",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",
     "babel-plugin-import": "^1.13.5",
