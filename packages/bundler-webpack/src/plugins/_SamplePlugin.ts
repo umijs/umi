@@ -1,4 +1,4 @@
-import { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import { Compiler } from '../../compiled/webpack';
 
 const PLUGIN_NAME = 'SamplePlugin';
 

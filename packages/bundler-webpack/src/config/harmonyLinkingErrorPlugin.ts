@@ -1,8 +1,5 @@
-import {
-  Compiler,
-  NormalModule,
-} from '@umijs/bundler-webpack/compiled/webpack';
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import { Compiler, NormalModule } from '../../compiled/webpack';
+import Config from '../../compiled/webpack-5-chain';
 
 interface IOpts {
   config: Config;

@@ -1,6 +1,6 @@
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
+import Config from '../../compiled/webpack-5-chain';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -29,12 +29,10 @@ export async function addCopyPlugin(opts: IOpts) {
       : []),
   ].filter(Boolean);
   if (copyPatterns.length) {
-    config
-      .plugin('copy')
-      .use(require('@umijs/bundler-webpack/compiled/copy-webpack-plugin'), [
-        {
-          patterns: copyPatterns,
-        },
-      ]);
+    config.plugin('copy').use(require('../../compiled/copy-webpack-plugin'), [
+      {
+        patterns: copyPatterns,
+      },
+    ]);
   }
 }

@@ -1,7 +1,7 @@
 // @ts-ignore
-import SpeedMeasurePlugin from '@umijs/bundler-webpack/compiled/speed-measure-webpack-plugin';
-import { Configuration } from '@umijs/bundler-webpack/compiled/webpack';
 import { join } from 'path';
+import SpeedMeasurePlugin from '../../compiled/speed-measure-webpack-plugin';
+import { Configuration } from '../../compiled/webpack';
 
 interface IOpts {
   webpackConfig: Configuration;

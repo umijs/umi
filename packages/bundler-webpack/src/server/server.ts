@@ -1,14 +1,12 @@
 import { createHttpsServer } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
-import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
-import webpack, {
-  Configuration,
-} from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, logger } from '@umijs/utils';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
 import http from 'http';
 import { extname, join } from 'path';
+import { createProxyMiddleware } from '../../compiled/http-proxy-middleware';
+import webpack, { Configuration } from '../../compiled/webpack';
 import { MESSAGE_TYPE } from '../constants';
 import { IConfig } from '../types';
 import { createWebSocketServer } from './ws';
@@ -40,7 +38,7 @@ export async function createServer(opts: IOpts) {
   );
 
   // compression
-  app.use(require('@umijs/bundler-webpack/compiled/compression')());
+  app.use(require('../../compiled/compression')());
 
   // TODO: headers
 
@@ -83,7 +81,7 @@ export async function createServer(opts: IOpts) {
   }
   const compiler = webpack(configs);
 
-  const webpackDevMiddleware = require('@umijs/bundler-webpack/compiled/webpack-dev-middleware');
+  const webpackDevMiddleware = require('../../compiled/webpack-dev-middleware');
   const compilerMiddleware = webpackDevMiddleware(compiler, {
     publicPath: userConfig.publicPath || '/',
     writeToDisk: userConfig.writeToDisk,
@@ -189,7 +187,7 @@ export async function createServer(opts: IOpts) {
   });
   // history fallback
   app.use(
-    require('@umijs/bundler-webpack/compiled/connect-history-api-fallback')({
+    require('../../compiled/connect-history-api-fallback')({
       index: '/',
     }),
   );

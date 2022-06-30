@@ -1,4 +1,4 @@
-import type { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import type { Compiler } from '../../compiled/webpack';
 
 const PLUGIN_NAME = 'RuntimePublicPath';
 
@@ -11,7 +11,11 @@ export class RuntimePublicPathPlugin {
         // https://github.com/webpack/webpack/blob/master/lib/runtime/PublicPathRuntimeModule.js
         if (module.constructor.name === 'PublicPathRuntimeModule') {
           // If current public path is handled by mini-css-extract-plugin, skip it
-          if (module.getGeneratedCode().includes('webpack:///mini-css-extract-plugin'))
+          if (
+            module
+              .getGeneratedCode()
+              .includes('webpack:///mini-css-extract-plugin')
+          )
             return;
           // @ts-ignore
           module._cachedGeneratedCode = `__webpack_require__.p = (globalThis || window).publicPath || '/';`;

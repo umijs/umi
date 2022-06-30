@@ -1,6 +1,6 @@
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import Config from '../../compiled/webpack-5-chain';
 // @ts-ignore
-import { WebpackManifestPlugin } from '@umijs/bundler-webpack/compiled/webpack-manifest-plugin';
+import { WebpackManifestPlugin } from '../../compiled/webpack-manifest-plugin';
 import type { Env, IConfig } from '../types';
 
 interface IOpts {

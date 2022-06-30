@@ -1,6 +1,6 @@
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { winPath } from '@umijs/utils';
 import type { LoaderContext } from 'mini-css-extract-plugin/types/utils';
+import Config from '../../compiled/webpack-5-chain';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -19,7 +19,7 @@ export async function addCSSRules(opts: IOpts) {
     {
       name: 'less',
       test: /\.less(\?.*)?$/,
-      loader: require.resolve('@umijs/bundler-webpack/compiled/less-loader'),
+      loader: require.resolve('../../compiled/less-loader'),
       loaderOptions: {
         implementation: require.resolve('@umijs/bundler-utils/compiled/less'),
         lessOptions: {
@@ -32,7 +32,7 @@ export async function addCSSRules(opts: IOpts) {
     {
       name: 'sass',
       test: /\.(sass|scss)(\?.*)?$/,
-      loader: require.resolve('@umijs/bundler-webpack/compiled/sass-loader'),
+      loader: require.resolve('../../compiled/sass-loader'),
       loaderOptions: userConfig.sassLoader || {},
     },
   ];
@@ -57,17 +57,13 @@ export async function addCSSRules(opts: IOpts) {
       if (userConfig.styleLoader) {
         rule
           .use('style-loader')
-          .loader(
-            require.resolve('@umijs/bundler-webpack/compiled/style-loader'),
-          )
+          .loader(require.resolve('../../compiled/style-loader'))
           .options({ base: 0, esModule: true, ...userConfig.styleLoader });
       } else {
         rule
           .use('mini-css-extract-plugin')
           .loader(
-            require.resolve(
-              '@umijs/bundler-webpack/compiled/mini-css-extract-plugin/loader',
-            ),
+            require.resolve('../../compiled/mini-css-extract-plugin/loader'),
           )
           .options({
             publicPath: './',
@@ -132,14 +128,12 @@ export async function addCSSRules(opts: IOpts) {
 
       rule
         .use('postcss-loader')
-        .loader(
-          require.resolve('@umijs/bundler-webpack/compiled/postcss-loader'),
-        )
+        .loader(require.resolve('../../compiled/postcss-loader'))
         .options({
           postcssOptions: {
             ident: 'postcss',
             plugins: [
-              require('@umijs/bundler-webpack/compiled/postcss-flexbugs-fixes'),
+              require('../../compiled/postcss-flexbugs-fixes'),
               require('postcss-preset-env')({
                 browsers: opts.browsers,
                 autoprefixer: {

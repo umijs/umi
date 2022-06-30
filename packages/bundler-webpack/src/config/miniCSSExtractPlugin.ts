@@ -1,6 +1,6 @@
 // @ts-ignore
-import MiniCSSExtractPlugin from '@umijs/bundler-webpack/compiled/mini-css-extract-plugin';
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import MiniCSSExtractPlugin from '../../compiled/mini-css-extract-plugin';
+import Config from '../../compiled/webpack-5-chain';
 import { Env, IConfig } from '../types';
 
 interface IOpts {

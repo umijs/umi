@@ -1,11 +1,11 @@
+import { chalk, glob } from '@umijs/utils';
+import path from 'path';
 import {
   Chunk,
   Compilation,
   Module,
   NormalModule,
-} from '@umijs/bundler-webpack/compiled/webpack';
-import { chalk, glob } from '@umijs/utils';
-import path from 'path';
+} from '../../compiled/webpack';
 import { DeadCodeParams } from '../types';
 
 export interface Options extends DeadCodeParams {

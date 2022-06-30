@@ -1,6 +1,6 @@
 import type { TransformOptions as EsbuildOpts } from '@umijs/bundler-utils/compiled/esbuild';
 // @ts-ignore
-import CSSMinimizerWebpackPlugin from '@umijs/bundler-webpack/compiled/css-minimizer-webpack-plugin';
+import CSSMinimizerWebpackPlugin from '../../compiled/css-minimizer-webpack-plugin';
 import TerserPlugin, {
   type TerserOptions,
 } from '../../compiled/terser-webpack-plugin';

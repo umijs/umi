@@ -1,4 +1,4 @@
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import Config from '../../compiled/webpack-5-chain';
 import ProgressPlugin from '../plugins/ProgressPlugin';
 import { Env, IConfig } from '../types';
 

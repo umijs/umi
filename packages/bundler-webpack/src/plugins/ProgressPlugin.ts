@@ -1,9 +1,5 @@
-import {
-  Compiler,
-  ProgressPlugin,
-  Stats,
-} from '@umijs/bundler-webpack/compiled/webpack';
 import { logger } from '@umijs/utils';
+import { Compiler, ProgressPlugin, Stats } from '../../compiled/webpack';
 
 const PLUGIN_NAME = 'ProgressPlugin';
 interface IOpts {

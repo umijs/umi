@@ -1,4 +1,4 @@
-import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import Config from '../../compiled/webpack-5-chain';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -41,7 +41,7 @@ export async function addSVGRules(opts: IOpts) {
       })
       .end()
       .use('url-loader')
-      .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'))
+      .loader(require.resolve('../../compiled/url-loader'))
       .end();
   }
   if (svgo !== false) {
@@ -49,7 +49,7 @@ export async function addSVGRules(opts: IOpts) {
     svgRule
       .test(/\.svg$/)
       .use('svgo-loader')
-      .loader(require.resolve('@umijs/bundler-webpack/compiled/svgo-loader'))
+      .loader(require.resolve('../../compiled/svgo-loader'))
       .options({ configFile: false, ...svgo })
       .end();
   }
