@@ -41,3 +41,4 @@
 /test/**/fixtures/*/src/.umi-production
 /coverage
 .vscode
+/scripts/node_modules

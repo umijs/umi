@@ -13,15 +13,6 @@ importers:
       '@types/react-dom': ^18.0.5
       '@types/resolve': ^1.20.2
       '@types/rimraf': 3.0.2
-      '@umijs/bundler-esbuild': workspace:*
-      '@umijs/bundler-utils': workspace:*
-      '@umijs/bundler-vite': workspace:*
-      '@umijs/bundler-webpack': workspace:*
-      '@umijs/lint': workspace:*
-      '@umijs/plugin-docs': workspace:*
-      '@umijs/plugins': workspace:*
-      '@umijs/server': workspace:*
-      '@umijs/utils': workspace:*
       '@vercel/ncc': 0.33.3
       dts-packer: ^0.0.3
       esno: ^0.14.1
@@ -61,15 +52,6 @@ importers:
       '@types/react-dom': 18.0.5
       '@types/resolve': 1.20.2
       '@types/rimraf': 3.0.2
-      '@umijs/bundler-esbuild': link:packages/bundler-esbuild
-      '@umijs/bundler-utils': link:packages/bundler-utils
-      '@umijs/bundler-vite': link:packages/bundler-vite
-      '@umijs/bundler-webpack': link:packages/bundler-webpack
-      '@umijs/lint': link:packages/lint
-      '@umijs/plugin-docs': link:packages/plugin-docs
-      '@umijs/plugins': link:packages/plugins
-      '@umijs/server': link:packages/server
-      '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.33.3
       dts-packer: 0.0.3
       esno: 0.14.1
@@ -1387,7 +1369,10 @@ importers:
       yargs-parser: 21.0.1
 
   scripts:
-    specifiers: {}
+    specifiers:
+      '@umijs/utils': workspace:*
+    devDependencies:
+      '@umijs/utils': link:../packages/utils
 
 packages:
 
@@ -10617,7 +10602,7 @@ packages:
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -12864,6 +12849,7 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -15197,7 +15183,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: true
 
   /follow-redirects/1.15.1_debug@4.3.2:
     resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
@@ -15209,6 +15194,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2
+    dev: true
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -22461,6 +22447,7 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
+    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -22478,6 +22465,7 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
+    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}
