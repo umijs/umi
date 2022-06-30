@@ -114,7 +114,8 @@
       "strip-ansi": "$$LOCAL",
       "yargs-parser": "$$LOCAL",
       "pirates": "$$LOCAL",
-      "@hapi/joi": "$$LOCAL"
+      "@hapi/joi": "$$LOCAL",
+      "execa": "$$LOCAL"
     }
   }
 }

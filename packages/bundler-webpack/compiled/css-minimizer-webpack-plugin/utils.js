@@ -165,7 +165,7 @@ async function cssnanoMinify(input, sourceMap, minimizerOptions = {
   // eslint-disable-next-line global-require
 
 
-  const cssnano = require('@umijs/bundler-webpack/compiled/cssnano'); // @ts-ignore
+  const cssnano = require('../cssnano'); // @ts-ignore
   // Types are broken
 
 

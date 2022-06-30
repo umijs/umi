@@ -42,3 +42,4 @@
 /coverage
 .vscode
 /scripts/node_modules
+/test/node_modules

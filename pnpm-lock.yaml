@@ -1207,6 +1207,8 @@ importers:
 
   packages/preset-vue:
     specifiers:
+      '@umijs/bundler-utils': 4.0.3
+      '@umijs/bundler-vite': 4.0.3
       '@umijs/bundler-webpack': 4.0.3
       '@umijs/renderer-vue': 4.0.3
       '@vitejs/plugin-vue': 2.3.1
@@ -1215,6 +1217,8 @@ importers:
       vue-loader: 17.0.0
       vue-router: 4.0.15
     dependencies:
+      '@umijs/bundler-utils': link:../bundler-utils
+      '@umijs/bundler-vite': link:../bundler-vite
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/renderer-vue': link:../renderer-vue
       vue: 3.2.36
@@ -1377,6 +1381,12 @@ importers:
       yargs-parser: 21.0.1
 
   scripts:
+    specifiers:
+      '@umijs/utils': workspace:*
+    devDependencies:
+      '@umijs/utils': link:../packages/utils
+
+  test:
     specifiers:
       '@umijs/utils': workspace:*
     devDependencies:

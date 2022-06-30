@@ -357,7 +357,9 @@ Object.keys(exported).forEach(function (key) {
     const val = externals[name];
     if (val === '$$LOCAL') {
       dtsExternals.push(name);
-      webpackExternals[name] = `${pkg.name}/compiled/${name}`;
+      webpackExternals[name] = pkg.name.includes('/')
+        ? `../../${name}`
+        : `../${name}`;
     } else {
       webpackExternals[name] = val;
     }

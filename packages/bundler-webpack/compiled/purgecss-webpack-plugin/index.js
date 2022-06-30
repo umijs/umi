@@ -4014,8 +4014,8 @@ var Parser = /*#__PURE__*/function () {
     return nodes;
   }
   /**
-   * 
-   * @param {*} nodes 
+   *
+   * @param {*} nodes
    */
   ;
 
@@ -5880,7 +5880,7 @@ var Container = /*#__PURE__*/function (_Node) {
    * Return the most specific node at the line and column number given.
    * The source location is based on the original parsed location, locations aren't
    * updated as selector nodes are mutated.
-   * 
+   *
    * Note that this location is relative to the location of the first character
    * of the selector, and not the location of the selector in the overall document
    * when used in conjunction with postcss.
@@ -7498,8 +7498,8 @@ exports.default = unesc;
 // https://mathiasbynens.be/notes/css-escapes
 
 /**
- * 
- * @param {string} str 
+ *
+ * @param {string} str
  * @returns {[string, number]|undefined}
  */
 function gobbleHex(str) {
@@ -7675,7 +7675,7 @@ module.exports = webpackEmptyContext;
 /***/ (function(module) {
 
 "use strict";
-module.exports = require("@umijs/bundler-webpack/compiled/webpack-sources");
+module.exports = require("../webpack-sources");
 
 /***/ }),
 
@@ -7731,7 +7731,7 @@ module.exports = require("util");
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -7745,7 +7745,7 @@ module.exports = require("util");
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
@@ -7754,28 +7754,28 @@ module.exports = require("util");
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 		}
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	!function() {
 /******/ 		__nccwpck_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/compat */
-/******/ 	
+/******/
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
+/******/
 /************************************************************************/
-/******/ 	
+/******/
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __nccwpck_require__(2997);
 /******/ 	module.exports = __webpack_exports__;
-/******/ 	
+/******/
 /******/ })()
 ;

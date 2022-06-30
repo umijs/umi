@@ -22,6 +22,8 @@
     "dev": "pnpm build --watch"
   },
   "dependencies": {
+    "@umijs/bundler-utils": "4.0.3",
+    "@umijs/bundler-vite": "4.0.3",
     "@umijs/bundler-webpack": "4.0.3",
     "@umijs/renderer-vue": "4.0.3",
     "vue": "3.2.36",

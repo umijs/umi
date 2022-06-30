@@ -3,24 +3,26 @@
 // this is in order for userland plugins to attach to the same webpack instance as umi
 // the individual compiled modules are as defined for the compilation in bundles/webpack/packages/*
 
+import { join } from 'path';
 // @ts-ignore
-import deepImports from '@umijs/bundler-webpack/compiled/webpack/deepImports.json';
+import deepImports from '../compiled/webpack/deepImports.json';
+
+const resolveCompiledDepPath = (subpath: string) => {
+  return join(__dirname, '../compiled', subpath);
+};
 
 const hookPropertyMap = new Map([
-  ['webpack', '@umijs/bundler-webpack/compiled/webpack'],
-  ['webpack/package', '@umijs/bundler-webpack/compiled/webpack/package'],
-  ['webpack/package.json', '@umijs/bundler-webpack/compiled/webpack/package'],
-  ['webpack/lib/webpack', '@umijs/bundler-webpack/compiled/webpack'],
-  ['webpack/lib/webpack.js', '@umijs/bundler-webpack/compiled/webpack'],
+  ['webpack', resolveCompiledDepPath('webpack')],
+  ['webpack/package', resolveCompiledDepPath('webpack/package')],
+  ['webpack/package.json', resolveCompiledDepPath('webpack/package')],
+  ['webpack/lib/webpack', resolveCompiledDepPath('webpack')],
+  ['webpack/lib/webpack.js', resolveCompiledDepPath('webpack')],
 ]);
 
 deepImports.forEach((item: string) => {
   const name = item.split('/').pop();
-  hookPropertyMap.set(item, `@umijs/bundler-webpack/compiled/webpack/${name}`);
-  hookPropertyMap.set(
-    `${item}.js`,
-    `@umijs/bundler-webpack/compiled/webpack/${name}`,
-  );
+  hookPropertyMap.set(item, resolveCompiledDepPath(`webpack/${name}`));
+  hookPropertyMap.set(`${item}.js`, resolveCompiledDepPath(`webpack/${name}`));
 });
 
 const mod = require('module');
