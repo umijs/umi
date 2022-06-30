@@ -1061,6 +1061,7 @@ importers:
       '@mdx-js/mdx': 2.1.1
       '@types/keymaster': ^1.6.30
       '@types/react-helmet': ^6.1.5
+      '@umijs/bundler-utils': 4.0.3
       classnames: ^2.3.1
       keymaster: 1.6.2
       react-helmet: ^6.1.0
@@ -1071,6 +1072,7 @@ importers:
       tailwindcss: ^3.0.24
       umi: 4.0.3
     dependencies:
+      '@umijs/bundler-utils': link:../bundler-utils
       keymaster: 1.6.2
       react-helmet: 6.1.0
       rehype-pretty-code: 0.3.2_shiki@0.10.1
