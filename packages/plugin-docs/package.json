@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -39,7 +39,7 @@
     "rehype-slug": "5.0.1",
     "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.0.24",
-    "umi": "4.0.4"
+    "umi": "4.0.5"
   },
   "publishConfig": {
     "access": "public"
