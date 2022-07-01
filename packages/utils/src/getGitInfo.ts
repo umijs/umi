@@ -1,11 +1,11 @@
 import * as execa from '../compiled/execa';
 
-export interface GitInfo {
+export interface IGitInfo {
   username: string;
   email: string;
 }
 
-const getGitInfo = async (): Promise<GitInfo> => {
+const getGitInfo = async (): Promise<IGitInfo> => {
   try {
     const [{ stdout: username }, { stdout: email }] = await Promise.all([
       execa.execaCommand('git config --global user.name'),
