@@ -1,5 +1,6 @@
 import {
   BaseGenerator,
+  getGitInfo,
   installWithNpmClient,
   prompts,
   yParser,
@@ -28,6 +29,9 @@ export default async ({
   let npmClient = 'pnpm' as any;
   let registry = 'https://registry.npmjs.org/';
   let appTemplate = 'app';
+  const { username, email } = await getGitInfo();
+  let author = email && username ? `${username} <${email}>` : '';
+
   // test ignore prompts
   if (!args.default) {
     const response = await prompts(
@@ -123,6 +127,7 @@ export default async ({
           version: version.includes('-canary.') ? version : `^${version}`,
           npmClient,
           registry,
+          author,
         },
     questions: args.default ? [] : args.plugin ? pluginPrompts : [],
   });

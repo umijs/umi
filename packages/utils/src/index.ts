@@ -23,6 +23,7 @@ import yParser from '../compiled/yargs-parser';
 import BaseGenerator from './BaseGenerator/BaseGenerator';
 import generateFile from './BaseGenerator/generateFile';
 import Generator from './Generator/Generator';
+import getGitInfo from './getGitInfo';
 import installDeps from './installDeps';
 import * as logger from './logger';
 import updatePackageJSON from './updatePackageJSON';
@@ -64,4 +65,5 @@ export {
   stripAnsi,
   updatePackageJSON,
   yParser,
+  getGitInfo,
 };
