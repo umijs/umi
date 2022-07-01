@@ -32,6 +32,7 @@
     "@umijs/babel-plugin-import-to-await-require": "3.5.26",
     "@umijs/babel-plugin-lock-core-js-3": "3.5.26",
     "@umijs/babel-plugin-no-anonymous-default-export": "3.5.26",
-    "@umijs/deps": "3.5.26"
+    "@umijs/deps": "3.5.26",
+    "@umijs/utils": "3.5.26"
   }
 }
