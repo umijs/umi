@@ -26,8 +26,8 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.3",
-    "@umijs/utils": "4.0.3",
+    "@umijs/bundler-utils": "4.0.5",
+    "@umijs/utils": "4.0.5",
     "keymaster": "1.6.2",
     "react-helmet": "^6.1.0",
     "rehype-pretty-code": "^0.3.1",
