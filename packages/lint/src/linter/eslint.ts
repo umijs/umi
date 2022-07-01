@@ -9,7 +9,7 @@ export default class Eslinter extends BaseLinter {
 
   getRunArgs(args: ILintArgs) {
     return [
-      '--quiet', // no warnings
+      ...(args.quiet !== false ? ['--quiet'] : []), // default no warnings
       ...(args.fix ? ['--fix'] : []),
       ...args._,
     ];
