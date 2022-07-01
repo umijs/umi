@@ -6,8 +6,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.3",
-    "umi": "4.0.3"
+    "@umijs/plugins": "4.0.5",
+    "umi": "4.0.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
