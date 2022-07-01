@@ -6,6 +6,6 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.3"
+    "umi": "4.0.4"
   }
 }

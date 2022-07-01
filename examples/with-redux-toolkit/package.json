@@ -9,6 +9,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.2",
     "react-redux": "^8.0.2",
-    "umi": "4.0.3"
+    "umi": "4.0.4"
   }
 }
