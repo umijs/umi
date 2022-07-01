@@ -1,4 +1,4 @@
-import type { Compiler } from 'webpack';
+import type { Compiler, Stats } from 'webpack';
 
 export interface IBuildDepPluginOpts {
   onCompileDone: Function;
@@ -24,8 +24,10 @@ export class BuildDepPlugin {
       this.opts.beforeCompile?.();
     });
 
-    compiler.hooks.compile.tap(PLUGIN_NAME, () => {
-      this.opts.onCompileDone();
+    compiler.hooks.done.tap(PLUGIN_NAME, (stats: Stats) => {
+      if (!stats.hasErrors()) {
+        this.opts.onCompileDone();
+      }
     });
   }
 }
