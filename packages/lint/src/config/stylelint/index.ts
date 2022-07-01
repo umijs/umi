@@ -24,7 +24,7 @@ module.exports = {
     'selector-type-no-unknown': null,
     'value-keyword-case': ['lower', { ignoreProperties: ['composes'] }],
     'selector-class-pattern': [
-      '(^([a-z][a-z0-9]*)(-[a-z0-9]+)*$)|(^[a-z][a-zA-Z0-9]+$)',
+      '^([a-z][a-z0-9]*(-[a-z0-9]+)*|[a-z][a-zA-Z0-9]+)$',
       {
         message: 'Expected class selector to be kebab-case or lowerCamelCase',
       },
