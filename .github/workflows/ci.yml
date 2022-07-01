@@ -78,9 +78,9 @@ jobs:
 
       - run: pnpm build
       - run: pnpm tsc:check
-      - run: |
-          pnpm check:phantomDepsCheck
-          pnpm test
+      - run: pnpm check:phantomDepsCheck
+
+      - run: pnpm test
         env:
           CI: true
           NODE_ENV: test
