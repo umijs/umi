@@ -132,7 +132,7 @@ export function renderClient(opts: {
             const preloadId = 'preload-' + routeIdReplaced;
             if (!document.getElementById(preloadId)) {
               const key = Object.keys(manifest).find((k) =>
-                k.startsWith(routeIdReplaced + '.'),
+                k.startsWith(routeIdReplaced + '.js'),
               );
               if (!key) return;
               let file = manifest[key];
