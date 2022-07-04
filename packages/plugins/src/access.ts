@@ -120,7 +120,7 @@ export const useAccessMarkedRoutes = (routes: IRoute[]) => {
     }
 
     return routes.map(route => process(route));
-  }, [routes.length]);
+  }, [routes.length, access]);
 
   return markdedRoutes;
 }
