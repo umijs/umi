@@ -139,6 +139,16 @@ async function release() {
   const releasePkgs = pkgs.sort((a) => {
     return a === 'umi' ? 1 : -1;
   });
+  // one-time password from your authenticator
+  let otp = '';
+  if (args.otp) {
+    ({ otp } = await inquirer.prompt({
+      name: 'otp',
+      type: 'input',
+      message: 'This operation requires a one-time password:',
+      validate: (msg) => !!msg,
+    }));
+  }
   for (const [index, pkg] of releasePkgs.entries()) {
     const pkgPath = join(cwd, 'packages', pkg);
     const { name, version } = require(join(pkgPath, 'package.json'));
@@ -148,16 +158,9 @@ async function release() {
           isNext ? 'with next tag' : ''
         }`,
       );
-      let cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
-      // one-time password from your authenticator
-      if (args.otp) {
-        const { otp } = await inquirer.prompt({
-          name: 'otp',
-          type: 'input',
-          message: 'This operation requires a one-time password:',
-          validate: (msg) => !!msg,
-        });
-        cliArgs = cliArgs.concat(['--otp', otp]);
+      const cliArgs = ['publish', '--tag', isNext ? 'next-3' : '3.x'];
+      if (otp) {
+        cliArgs.push('--otp', otp);
       }
       const { stdout } = execa.sync('npm', cliArgs, {
         cwd: pkgPath,
