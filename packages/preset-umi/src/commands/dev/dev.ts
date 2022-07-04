@@ -280,12 +280,14 @@ PORT=8888 umi dev
         extraBabelPresets,
         beforeMiddlewares: ([] as RequestHandler[]).concat([
           ...beforeMiddlewares,
-          faviconMiddleware,
         ]),
         // vite 模式使用 ./plugins/ViteHtmlPlugin.ts 处理
         afterMiddlewares: enableVite
           ? []
-          : middlewares.concat(createRouteMiddleware({ api })),
+          : middlewares.concat([
+              createRouteMiddleware({ api }),
+              faviconMiddleware,
+            ]),
         onDevCompileDone(opts: any) {
           debouncedPrintMemoryUsage;
           // debouncedPrintMemoryUsage();
