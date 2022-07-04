@@ -574,7 +574,7 @@ export default async function getConfig(
                 terserOptions,
                 config.terserOptions || {},
               ),
-              sourceMap: config.devtool !== false,
+              sourceMap: Boolean(config.devtool),
               cache: process.env.TERSER_CACHE !== 'none',
               // 兼容内部流程系统，读到的 cpu 数并非真实的
               // 使用 SIGMA_MAX_PROCESSORS_LIMIT 指定真核数
