@@ -529,7 +529,7 @@ https: {
 示例：
 ```js
 {
-  jsminifier: 'esbuild',
+  jsMinifier: 'esbuild',
   jsMinifierOptions: {
     minifyWhitespace: true,
     minifyIdentifiers: true,
