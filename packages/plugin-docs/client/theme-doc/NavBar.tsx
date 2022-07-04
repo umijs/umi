@@ -48,7 +48,7 @@ function NavItem(props: NavItemProps) {
         <a href={nav.path} target="_blank">
           <span className="flex">
             {nav.title}
-            <img src={ExternalLink} alt="ExternalLink" />
+            <img className="link-icon" src={ExternalLink} alt="ExternalLink" />
           </span>
         </a>
       ) : (
@@ -77,7 +77,11 @@ function NavItem(props: NavItemProps) {
                     >
                       {nav.title}
                     </span>
-                    <img src={ExternalLink} alt="ExternalLink" />
+                    <img
+                      className="link-icon"
+                      src={ExternalLink}
+                      alt="ExternalLink"
+                    />
                   </span>
                 </a>
               ) : (

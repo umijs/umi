@@ -1,3 +1,4 @@
+import { yParser } from '@umijs/utils';
 import { IApi } from '../types';
 
 export default (api: IApi) => {
@@ -16,8 +17,16 @@ umi lint --stylelint-only
 
 # automatically fix, where possible
 umi lint --fix
+
+# disable reporting on warnings
+umi lint --quiet
 `,
     fn: async function () {
+      // re-parse cli args to process boolean flags, for get the lint-staged args
+      const args = yParser(process.argv.slice(3), {
+        boolean: ['quiet', 'fix', 'eslint-only', 'stylelint-only'],
+      });
+
       try {
         require.resolve('@umijs/lint/package.json');
       } catch (err) {
@@ -26,12 +35,12 @@ umi lint --fix
         );
       }
 
-      if (api.args._.length === 0) {
-        api.args._.unshift('{src,test}/**/*.{js,jsx,ts,tsx,less,css}');
+      if (args._.length === 0) {
+        args._.unshift('{src,test}/**/*.{js,jsx,ts,tsx,less,css}');
       }
 
       // lazy require for CLI performance
-      require('@umijs/lint').default({ cwd: api.cwd }, api.args);
+      require('@umijs/lint').default({ cwd: api.cwd }, args);
     },
   });
 };

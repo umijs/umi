@@ -40,3 +40,4 @@
 /test/**/fixtures/*/src/.umi
 /test/**/fixtures/*/src/.umi-production
 /coverage
+.vscode

@@ -66,9 +66,10 @@ umi preview --port [port]
               createProxyMiddleware(key, {
                 ...proxy[key],
                 // Add x-real-url in response header
-                onProxyRes(proxyRes, req: any) {
+                onProxyRes(proxyRes, req: any, res) {
                   proxyRes.headers['x-real-url'] =
                     new URL(req.url || '', target as string)?.href || '';
+                  proxyConfig.onProxyRes?.(proxyRes, req, res);
                 },
               }),
             );
@@ -121,7 +122,7 @@ umi preview --port [port]
         const host =
           api.args.host && api.args.host !== '0.0.0.0'
             ? api.args.host
-            : '127.0.0.1';
+            : 'localhost';
 
         logger.ready(
           `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,

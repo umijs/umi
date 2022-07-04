@@ -8,7 +8,7 @@ import { Message } from 'umi';
 
 如何接入 MFSU ？提供以下几个 示例项目 配置供参考：
 
-Webpack 配置示例：<a href="https://github.com/umijs/umi-next/tree/master/examples/mfsu-independent" target="_blank">examples/mfsu-independent</a>
+Webpack 配置示例：<a href="https://github.com/umijs/umi/tree/master/examples/mfsu-independent" target="_blank">examples/mfsu-independent</a>
 
 CRA v5 配置示例：<a href="https://github.com/umijs/cra-v5-with-mfsu-example" target="_blank">cra-v5-with-mfsu-example</a>
 

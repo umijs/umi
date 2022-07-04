@@ -1,12 +1,12 @@
 {
   "name": "@umijs/server",
-  "version": "4.0.1",
+  "version": "4.0.5",
   "description": "@umijs/server",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/server#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/server#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",
@@ -20,7 +20,7 @@
     "dev": "pnpm build --watch"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.1",
+    "@umijs/bundler-utils": "4.0.5",
     "history": "5.3.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",

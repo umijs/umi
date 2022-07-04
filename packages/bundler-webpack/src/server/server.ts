@@ -172,9 +172,10 @@ export async function createServer(opts: IOpts) {
           createProxyMiddleware(key, {
             ...proxy[key],
             // Add x-real-url in response header
-            onProxyRes(proxyRes, req: any) {
+            onProxyRes(proxyRes, req: any, res) {
               proxyRes.headers['x-real-url'] =
                 new URL(req.url || '', target as string)?.href || '';
+              proxyConfig.onProxyRes?.(proxyRes, req, res);
             },
           }),
         );
@@ -229,7 +230,7 @@ export async function createServer(opts: IOpts) {
   const port = opts.port || 8000;
 
   server.listen(port, () => {
-    const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : '127.0.0.1';
+    const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : 'localhost';
     logger.ready(
       `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,
     );

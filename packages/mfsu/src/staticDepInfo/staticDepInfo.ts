@@ -1,0 +1,291 @@
+import { ImportSpecifier } from '@umijs/bundler-utils/compiled/es-module-lexer';
+import { fsExtra, lodash, logger } from '@umijs/utils';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+// @ts-ignore
+import why from 'is-equal/why';
+import { dirname, join } from 'path';
+import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
+import { Dep } from '../dep/dep';
+import { MFSU } from '../mfsu/mfsu';
+import createPluginImport from './simulations/babel-plugin-import';
+
+type FileChangeEvent = {
+  event: 'unlink' | 'change' | 'add';
+  path: string;
+};
+type MergedCodeInfo = {
+  imports: readonly ImportSpecifier[];
+
+  code: string;
+  events: FileChangeEvent[];
+};
+type AutoUpdateSrcCodeCache = {
+  register(listener: (info: MergedCodeInfo) => void): void;
+  getMergedCode(): MergedCodeInfo;
+};
+
+interface IOpts {
+  mfsu: MFSU;
+  srcCodeCache: AutoUpdateSrcCodeCache;
+  safeList?: string[];
+}
+
+export type Match = ReturnType<typeof checkMatch> & { version: string };
+
+type Matched = Record<string, Match>;
+
+export class StaticDepInfo {
+  private opts: IOpts;
+  private readonly cacheFilePath: string;
+
+  private mfsu: MFSU;
+  private readonly include: string[];
+  private currentDep: Record<string, Match> = {};
+  private builtWithDep: Record<string, Match> = {};
+
+  private produced: { changes: unknown[] }[] = [];
+  private readonly cwd: string;
+  private readonly runtimeSimulations: {
+    packageName: string;
+    handleImports: <T>(
+      opts: {
+        imports: ImportSpecifier[];
+        rawCode: string;
+        mfName: string;
+        alias: Record<string, string>;
+        pathToVersion(p: string): string;
+      },
+      handleConfig?: T,
+    ) => Match[];
+  }[];
+
+  constructor(opts: IOpts) {
+    this.mfsu = opts.mfsu;
+
+    this.include = this.mfsu.opts.include || [];
+
+    this.opts = opts;
+    this.cacheFilePath = join(
+      this.opts.mfsu.opts.tmpBase!,
+      'MFSU_CACHE_v4.json',
+    );
+
+    this.cwd = this.mfsu.opts.cwd!;
+
+    opts.srcCodeCache.register((info) => {
+      this.produced.push({ changes: info.events });
+      this.currentDep = this._getDependencies(info.code, info.imports);
+    });
+
+    this.runtimeSimulations = [
+      {
+        packageName: 'antd',
+        handleImports: createPluginImport({
+          libraryName: 'antd',
+          style: true,
+          libraryDirectory: 'es',
+        }),
+      },
+    ];
+  }
+
+  getProducedEvent() {
+    return this.produced;
+  }
+
+  consumeAllProducedEvents() {
+    this.produced = [];
+  }
+
+  shouldBuild() {
+    if (lodash.isEqual(this.builtWithDep, this.currentDep)) {
+      return false;
+    } else {
+      if (process.env.DEBUG_UMI) {
+        const reason = why(this.builtWithDep, this.currentDep);
+        logger.info(
+          '[MFSU][eager]: isEqual(oldDep,newDep) === false, because ',
+          reason,
+        );
+      }
+      return 'dependencies changed';
+    }
+  }
+
+  getDepModules() {
+    const map = this.getDependencies();
+
+    const staticDeps: Record<string, { file: string; version: string }> = {};
+    const keys = Object.keys(map);
+    for (const k of keys) {
+      staticDeps[k] = {
+        file: k,
+        version: map[k].version,
+      };
+    }
+
+    return staticDeps;
+  }
+
+  snapshot() {
+    this.builtWithDep = this.currentDep;
+  }
+
+  loadCache() {
+    if (existsSync(this.cacheFilePath)) {
+      this.builtWithDep = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
+      logger.info('[MFSU][eager] restored cache');
+    }
+  }
+
+  writeCache() {
+    fsExtra.mkdirpSync(dirname(this.cacheFilePath));
+    const newContent = JSON.stringify(this.builtWithDep, null, 2);
+    if (
+      existsSync(this.cacheFilePath) &&
+      readFileSync(this.cacheFilePath, 'utf-8') === newContent
+    ) {
+      return;
+    }
+
+    logger.info('[MFSU][eager] write cache');
+    writeFileSync(this.cacheFilePath, newContent, 'utf-8');
+  }
+
+  public getCacheFilePath() {
+    return this.cacheFilePath;
+  }
+
+  public getDependencies() {
+    return this.currentDep;
+  }
+
+  init() {
+    const merged = this.opts.srcCodeCache.getMergedCode();
+    this.currentDep = this._getDependencies(merged.code, merged.imports);
+  }
+
+  private _getDependencies(
+    bigCodeString: string,
+    imports: readonly ImportSpecifier[],
+  ): Record<string, Match> {
+    const start = Date.now();
+
+    const cwd = this.mfsu.opts.cwd!;
+
+    const opts = {
+      exportAllMembers: this.mfsu.opts.exportAllMembers,
+      unMatchLibs: this.mfsu.opts.unMatchLibs,
+      remoteName: this.mfsu.opts.mfName,
+      alias: this.mfsu.alias,
+      externals: this.mfsu.externals,
+    };
+
+    const matched: Record<string, Match> = {};
+    const unMatched = new Set<string>();
+
+    const pkgNames = this.runtimeSimulations.map(
+      ({ packageName }) => packageName,
+    );
+    const groupedMockImports: Record<string, ImportSpecifier[]> = {};
+
+    for (const imp of imports) {
+      if (pkgNames.indexOf(imp.n!) >= 0) {
+        const name = imp.n!;
+        if (groupedMockImports[name]) {
+          groupedMockImports[name].push(imp);
+        } else {
+          groupedMockImports[name] = [imp];
+        }
+        continue;
+      }
+
+      if (unMatched.has(imp.n!)) {
+        continue;
+      }
+
+      if (matched[imp.n!]) {
+        continue;
+      }
+
+      const match = checkMatch({
+        value: imp.n as string,
+        depth: 1,
+        filename: '_.js',
+        opts,
+      });
+
+      if (match.isMatch) {
+        matched[match.value] = {
+          ...match,
+          version: Dep.getDepVersion({
+            dep: match.value,
+            cwd,
+          }),
+        };
+      } else {
+        unMatched.add(imp.n!);
+      }
+    }
+
+    this.simulateRuntimeTransform(matched, groupedMockImports, bigCodeString);
+
+    this.appendIncludeList(matched, opts);
+
+    logger.debug('[MFSU][eager] _getDependencies costs', Date.now() - start);
+    return matched;
+  }
+
+  private simulateRuntimeTransform(
+    matched: Matched,
+    groupedImports: Record<string, ImportSpecifier[]>,
+    rawCode: string,
+  ) {
+    for (const mock of this.runtimeSimulations) {
+      const name = mock.packageName;
+
+      const pathToVersion = (dep: string) => {
+        return Dep.getDepVersion({
+          dep,
+          cwd: this.cwd,
+        });
+      };
+
+      const ms = mock.handleImports({
+        imports: groupedImports[name],
+        rawCode,
+        alias: this.mfsu.alias,
+        mfName: this.mfsu.opts.mfName!,
+        pathToVersion,
+      });
+
+      for (const m of ms) {
+        matched[m.value] = m;
+      }
+    }
+  }
+
+  private appendIncludeList(matched: Matched, opts: any) {
+    for (const p of this.include) {
+      const match = checkMatch({
+        value: p,
+        depth: 1,
+        filename: '_.js',
+        opts,
+      });
+      if (match.isMatch) {
+        matched[match.value] = {
+          ...match,
+          version: Dep.getDepVersion({
+            dep: match.value,
+            cwd: this.cwd,
+          }),
+        };
+      }
+    }
+  }
+
+  async allRuntimeHelpers() {
+    // todo mfsu4
+  }
+}

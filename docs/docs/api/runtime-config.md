@@ -66,29 +66,43 @@ export function onRouteChange({ clientRoutes }) {
 
 ### patchRoutes(\{ routes \})
 
+```ts
+export function patchRoutes({ routes, routeComponents }) {
+  console.log('patchRoutes', routes, routeComponents);
+}
+```
+
+ - `routes`: 打平的路由列表。
+
+ - `routeComponents`: 路由对应的组件映射。
+
+注：如需动态更新路由，建议使用 `patchClientRoutes()` ，否则你可能需要同时修改 `routes` 和 `routeComponents`。
+
 ### patchClientRoutes(\{ routes \})
 
-修改路由。
+修改被 react-router 渲染前的树状路由表，接收内容同 [useRoutes](https://reactrouter.com/docs/en/v6/hooks/use-routes)。
 
 比如在最前面添加一个 `/foo` 路由，
 
-```bash
-export function patchRoutes({ routes }) {
+```ts
+import Page from '@/extraRoutes/foo';
+
+export function patchClientRoutes({ routes }) {
   routes.unshift({
     path: '/foo',
-    exact: true,
-    component: require('@/extraRoutes/foo').default,
+    component: <Page />
   });
 }
 ```
 
 比如和 `render` 配置配合使用，请求服务端根据响应动态更新路由，
 
-```bash
+```ts
 let extraRoutes;
 
-export function patchRoutes({ routes }) {
-  merge(routes, extraRoutes);
+export function patchClientRoutes({ routes }) {
+  // 根据 extraRoutes 对 routes 做一些修改
+  patch(routes, extraRoutes);
 }
 
 export function render(oldRender) {

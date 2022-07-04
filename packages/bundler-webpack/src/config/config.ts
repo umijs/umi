@@ -114,7 +114,11 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       useHash ? `[name].[contenthash:8].async.js` : `[name].async.js`,
     )
     .publicPath(userConfig.publicPath || 'auto')
-    .pathinfo(isDev || disableCompress);
+    .pathinfo(isDev || disableCompress)
+    .set(
+      'assetModuleFilename',
+      `${applyOpts.staticPathPrefix}[name].[hash:8][ext]`,
+    );
 
   // resolve
   // prettier-ignore

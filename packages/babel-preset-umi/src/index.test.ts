@@ -13,14 +13,6 @@ function doTransform(opts: IOpts): string {
   })!.code as string;
 }
 
-test('keep es modules', () => {
-  expect(
-    doTransform({
-      code: `import { a } from './a';`,
-    }),
-  ).toEqual(`import { a } from './a';`);
-});
-
 test('optional catch binding', () => {
   const code = doTransform({ code: `try { throw e } catch {}` });
   expect(code).toContain(`catch (_unused) {}`);
@@ -144,7 +136,7 @@ test('typescript with allowDeclareFields', () => {
   ).toContain(`_defineProperty(this, "bar", void 0);`);
 });
 
-test('typescript with onlyRemoveTypeImports', () => {
+xtest('typescript with onlyRemoveTypeImports', () => {
   expect(
     doTransform({
       code: `import { c } from 'b'; import type { b } from 'c';`,

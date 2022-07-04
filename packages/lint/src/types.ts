@@ -4,6 +4,7 @@ export interface ILinterOpts {
 
 export interface ILintArgs {
   _: string[];
+  quiet?: boolean;
   fix?: boolean;
   eslintOnly?: boolean;
   stylelintOnly?: boolean;

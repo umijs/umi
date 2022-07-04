@@ -13,7 +13,7 @@ eachPkg(
       pkg: name,
       cwd,
       dirName: 'examples',
-      folders: ['.mfsu', '.umi'],
+      folders: ['.umi', 'src/.umi'],
     });
   },
   {

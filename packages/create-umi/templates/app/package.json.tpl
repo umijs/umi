@@ -1,9 +1,11 @@
 {
   "private": true,
+  "author":"{{{ author }}}",
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
     "postinstall": "umi setup",
+    "setup": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {

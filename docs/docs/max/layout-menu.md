@@ -21,7 +21,7 @@ export default {
 - 顶部导航/侧边栏菜单根据路由中的配置自动生成。
 - 默认支持对路由的 403/404 处理和 Error Boundary。
 - 搭配 `access` [插件](./access)一起使用，可以完成对路由权限的控制。
-- 搭配 `initial-state` [插件](https://github.com/umijs/umi-next/blob/master/packages/plugins/src/initial-state.ts) 和 [数据流](./data-flow) 插件一起使用，可以拥有默认用户登陆信息的展示。
+- 搭配 `initial-state` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/initial-state.ts) 和 [数据流](./data-flow) 插件一起使用，可以拥有默认用户登陆信息的展示。
 
 > 想要动态菜单？查看这里 [菜单的高级用法](https://beta-pro.ant.design/docs/advanced-menu-cn)
 

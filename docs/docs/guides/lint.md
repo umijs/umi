@@ -17,7 +17,7 @@
 ## 使用方式
 ### 安装
 
-为了节省安装体积，目前仅在 Umi Max 中内置了 Lint 模块，**如果你使用的是 Umi，需要先安装 `@umijs/lint`**：
+为了节省安装体积，目前仅在 Umi Max 中内置了 Lint 模块，使用 `max lint` 来执行 lint 过程。**如果你使用的是 Umi，需要先安装 `@umijs/lint`**：
 
 ```bash
 $ npm i @umijs/lint -D
@@ -71,6 +71,7 @@ $ umi lint [glob] [--fix] [--eslint-only] [--stylelint-only] [--cssinjs]
 
 ```bash
   [glob]: 可选，指定要 lint 的文件，默认为 `{src,test}/**/*.{js,jsx,ts,tsx,css,less}`
+  --quiet: 可选，禁用 `warn` 规则的报告，仅输出 `error`
   --fix: 可选，自动修复 lint 错误
   --eslint-only: 可选，仅执行 ESLint
   --stylelint-only: 可选，仅执行 Stylelint
@@ -133,5 +134,5 @@ Husky 用来绑定 Git Hooks、在指定时机（例如 `pre-commit`）执行我
 
 ## 附录
 
-1. Umi 内置的 ESLint 规则列表：https://github.com/umijs/umi-next/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
-2. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi-next/blob/master/packages/lint/src/config/stylelint/index.ts
+1. Umi 内置的 ESLint 规则列表：https://github.com/umijs/umi/blob/master/packages/lint/src/config/eslint/rules/recommended.ts
+2. Umi 内置的 Stylelint 配置：https://github.com/umijs/umi/blob/master/packages/lint/src/config/stylelint/index.ts

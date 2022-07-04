@@ -1,18 +1,38 @@
 import { fsExtra, lodash, logger } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { MFSU } from './mfsu';
+import { MFSU } from './mfsu/mfsu';
 import { ModuleGraph } from './moduleGraph';
 
 interface IOpts {
   mfsu: MFSU;
 }
 
-export class DepInfo {
+export type DepModule = {
+  file: string;
+  version: string;
+};
+
+export interface IDepInfo {
+  shouldBuild(): string | boolean;
+
+  snapshot(): void;
+
+  loadCache(): void;
+
+  writeCache(): void;
+
+  getCacheFilePath(): string;
+
+  getDepModules(): Record<string, DepModule>;
+}
+
+export class DepInfo implements IDepInfo {
   private opts: IOpts;
-  public cacheFilePath: string;
+  private readonly cacheFilePath: string;
   public moduleGraph: ModuleGraph = new ModuleGraph();
-  public cacheDependency: object = {};
+  private cacheDependency: object = {};
+
   constructor(opts: IOpts) {
     this.opts = opts;
     this.cacheFilePath = join(this.opts.mfsu.opts.tmpBase!, 'MFSU_CACHE.json');
@@ -31,7 +51,7 @@ export class DepInfo {
     if (this.moduleGraph.hasDepChanged()) {
       return 'moduleGraph has changed';
     }
-
+    // fixme always rebuild in dev
     return false;
   }
 
@@ -70,5 +90,13 @@ export class DepInfo {
 
     logger.info('[MFSU] write cache');
     writeFileSync(this.cacheFilePath, newContent, 'utf-8');
+  }
+
+  getDepModules() {
+    return this.moduleGraph.depSnapshotModules;
+  }
+
+  getCacheFilePath() {
+    return this.cacheFilePath;
   }
 }

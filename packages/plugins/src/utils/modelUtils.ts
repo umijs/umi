@@ -132,7 +132,7 @@ export class ModelUtils {
     const namespaces = models.map((model) => model.namespace);
     if (new Set(namespaces).size !== namespaces.length) {
       throw new Error(
-        `Duplicate namespace in models: ${namespaces.join(', ')}`,
+        `Duplicate namespace in models: ${namespaces.sort().join(', ')}`,
       );
     }
     // sort models by deps

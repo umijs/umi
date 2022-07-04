@@ -66,6 +66,9 @@ export default {
   // scripts: [`console.log('script')`],
   npmClient: 'pnpm',
   svgr: {},
+  clickToComponent: {
+    editor: 'vscode-insiders',
+  },
   crossorigin: {},
   // srcTranspiler: 'swc',
   // esmi: {},

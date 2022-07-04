@@ -4,7 +4,7 @@ import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { MF_VA_PREFIX } from '../constants';
-import { MFSU } from '../mfsu';
+import { MFSU } from '../mfsu/mfsu';
 import { trimFileContent } from '../utils/trimFileContent';
 import { getExposeFromContent } from './getExposeFromContent';
 
@@ -113,6 +113,6 @@ export * from '${this.file}';
       cwd: dep,
     });
     assert(pkg, `package.json not found for ${opts.dep}`);
-    return require(pkg).version;
+    return require(pkg).version || null;
   }
 }

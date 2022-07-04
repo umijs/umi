@@ -4,7 +4,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { MF_DEP_PREFIX, MF_VA_PREFIX, REMOTE_FILE_FULL } from '../constants';
 import { Dep } from '../dep/dep';
-import { MFSU } from '../mfsu';
+import { MFSU } from '../mfsu/mfsu';
 import { DepChunkIdPrefixPlugin } from '../webpackPlugins/depChunkIdPrefixPlugin';
 import { StripSourceMapUrlPlugin } from '../webpackPlugins/stripSourceMapUrlPlugin';
 import { getESBuildEntry } from './getESBuildEntry';

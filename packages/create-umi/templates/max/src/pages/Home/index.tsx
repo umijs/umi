@@ -4,7 +4,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import styles from './index.less';
 
-export default () => {
+const HomePage: React.FC = () => {
   const { name } = useModel('global');
   return (
     <PageContainer ghost>
@@ -14,3 +14,5 @@ export default () => {
     </PageContainer>
   );
 };
+
+export default HomePage;

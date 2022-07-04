@@ -1,10 +1,9 @@
 import type { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
 import { EnableBy } from '@umijs/core/dist/types';
-import { fsExtra, logger } from '@umijs/utils';
+import { fsExtra, importLazy, logger } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import type { IApi } from '../../types';
-import { build } from './builder/builder';
 import { absServerBuildPath } from './utils';
 
 export default (api: IApi) => {
@@ -60,6 +59,9 @@ export { React };
   });
 
   api.onBeforeCompiler(async () => {
+    const { build }: typeof import('./builder/builder') = importLazy(
+      require.resolve('./builder/builder'),
+    );
     await build({
       api,
       watch: api.env === 'development',
