@@ -448,7 +448,7 @@ export default async function getConfig(
   const copyPatterns = [
     existsSync(join(cwd, 'public')) && {
       from: join(cwd, 'public'),
-      to: absOutputPath,
+      info: { minimized: true },
     },
     ...(config.copy
       ? config.copy.map((item: ICopy | string) => {
@@ -456,11 +456,13 @@ export default async function getConfig(
             return {
               from: join(cwd, item),
               to: absOutputPath,
+              info: { minimized: true },
             };
           }
           return {
             from: join(cwd, item.from),
             to: join(absOutputPath, item.to),
+            info: { minimized: true },
           };
         })
       : []),
