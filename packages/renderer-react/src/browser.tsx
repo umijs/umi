@@ -131,8 +131,9 @@ export function renderClient(opts: {
             const routeIdReplaced = id.replace(/[\/\-]/g, '_');
             const preloadId = 'preload-' + routeIdReplaced;
             if (!document.getElementById(preloadId)) {
+              const reg = new RegExp(`^${routeIdReplaced}.\.*js$`)
               const key = Object.keys(manifest).find((k) =>
-                k.startsWith(routeIdReplaced + '.js'),
+                k.match(reg),
               );
               if (!key) return;
               let file = manifest[key];
