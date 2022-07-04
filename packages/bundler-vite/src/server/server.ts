@@ -126,7 +126,7 @@ export async function createServer(opts: IOpts) {
       });
     }
 
-    const host = process.env.HOST || '127.0.0.1';
+    const host = process.env.HOST || 'localhost';
 
     logger.ready(`Example app listening at ${protocol}//${host}:${port}`);
   });

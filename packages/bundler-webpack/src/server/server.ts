@@ -230,7 +230,7 @@ export async function createServer(opts: IOpts) {
   const port = opts.port || 8000;
 
   server.listen(port, () => {
-    const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : '127.0.0.1';
+    const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : 'localhost';
     logger.ready(
       `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,
     );
