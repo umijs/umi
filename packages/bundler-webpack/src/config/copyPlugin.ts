@@ -15,15 +15,22 @@ export async function addCopyPlugin(opts: IOpts) {
   const copyPatterns = [
     existsSync(join(cwd, 'public')) && {
       from: join(cwd, 'public'),
+      // ref: https://github.com/webpack-contrib/copy-webpack-plugin#info
+      // Set minimized so terser will not do minimize
+      info: { minimized: true },
     },
     ...(userConfig.copy
       ? userConfig.copy?.map((pattern) => {
           if (typeof pattern === 'string') {
-            return resolve(cwd, pattern);
+            return {
+              from: resolve(cwd, pattern),
+              info: { minimized: true },
+            };
           }
           return {
             from: resolve(cwd, pattern.from),
             to: resolve(cwd, pattern.to),
+            info: { minimized: true },
           };
         })
       : []),
