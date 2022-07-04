@@ -1,6 +1,7 @@
 import {
   BaseGenerator,
   installWithNpmClient,
+  NpmClient,
   prompts,
   yParser,
 } from '@umijs/utils';
@@ -25,7 +26,7 @@ export default async ({
   args: yParser.Arguments;
 }) => {
   const [name] = args._;
-  let npmClient = 'pnpm' as any;
+  let npmClient = 'pnpm' as NpmClient;
   let registry = 'https://registry.npmjs.org/';
   let appTemplate = 'app';
   // test ignore prompts
