@@ -2,7 +2,6 @@
 # yarn lockfile v1
 
 
-
 "@apidevtools/json-schema-ref-parser@9.0.9":
   version "9.0.9"
   resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-9.0.9.tgz#d720f9256e3609621280584f2b47ae165359268b"
@@ -6251,10 +6250,10 @@ copy-text-to-clipboard@^2.2.0:
   resolved "https://registry.yarnpkg.com/copy-text-to-clipboard/-/copy-text-to-clipboard-2.2.0.tgz#329dd6daf8c42034c763ace567418401764579ae"
   integrity sha512-WRvoIdnTs1rgPMkgA2pUOa/M4Enh2uzCwdKsOMYNAJiz/4ZvEJgmbF4OmninPmlFdAWisfeh0tH+Cpf7ni3RqQ==
 
-copy-webpack-plugin@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-6.1.0.tgz#5bde7f826d87e716d8d5e761ddd34bb675448458"
-  integrity sha512-aWjIuLt1OVQxaDVffnt3bnGmLA8zGgAJaFwPA+a+QYVPh1vhIKjVfh3SbOFLV0kRPvGBITbw17n5CsmiBS4LQQ==
+copy-webpack-plugin@6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-6.4.1.tgz#138cd9b436dbca0a6d071720d5414848992ec47e"
+  integrity sha512-MXyPCjdPVx5iiWyl40Va3JGh27bKzOTNY3NjUTrosD2q7dR/cLD0013uqJ3BpFbUjyONINjb6qI7nDIJujrMbA==
   dependencies:
     cacache "^15.0.5"
     fast-glob "^3.2.4"
@@ -6264,8 +6263,8 @@ copy-webpack-plugin@6.1.0:
     loader-utils "^2.0.0"
     normalize-path "^3.0.0"
     p-limit "^3.0.2"
-    schema-utils "^2.7.1"
-    serialize-javascript "^4.0.0"
+    schema-utils "^3.0.0"
+    serialize-javascript "^5.0.1"
     webpack-sources "^1.4.3"
 
 core-js-compat@^3.14.0, core-js-compat@^3.15.0, core-js-compat@^3.6.2, core-js-compat@^3.9.0:
@@ -15412,7 +15411,7 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.6.5, schema-utils@^2.7.0, schema-utils@^2.7.1:
+schema-utils@^2.6.5, schema-utils@^2.7.0:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.7.1.tgz#1ca4f32d1b24c590c203b8e7a50bf0ea4cd394d7"
   integrity sha512-SHiNtMOUGWBQJwzISiVYKu82GiV4QYGePp3odlY1tuKO7gPtphAT5R/py0fA6xtbgLL/RvtJZnU9b8s0F1q0Xg==
@@ -15507,7 +15506,7 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
-serialize-javascript@5.0.1:
+serialize-javascript@5.0.1, serialize-javascript@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
   integrity sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
