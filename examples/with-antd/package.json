@@ -8,8 +8,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.3",
+    "@umijs/plugins": "4.0.5",
     "antd": "^4.20.6",
-    "umi": "4.0.3"
+    "umi": "4.0.5"
   }
 }

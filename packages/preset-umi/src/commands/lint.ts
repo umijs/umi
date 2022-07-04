@@ -17,11 +17,14 @@ umi lint --stylelint-only
 
 # automatically fix, where possible
 umi lint --fix
+
+# disable reporting on warnings
+umi lint --quiet
 `,
     fn: async function () {
       // re-parse cli args to process boolean flags, for get the lint-staged args
       const args = yParser(process.argv.slice(3), {
-        boolean: ['fix', 'eslint-only', 'stylelint-only'],
+        boolean: ['quiet', 'fix', 'eslint-only', 'stylelint-only'],
       });
 
       try {

@@ -4,7 +4,7 @@ import {
   parse,
 } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { build as esBuild } from '@umijs/bundler-utils/compiled/esbuild';
-import * as logger from '../logger';
+import { logger } from '@umijs/utils';
 // @ts-ignore
 import fg from 'fast-glob';
 import { readFileSync } from 'fs';
