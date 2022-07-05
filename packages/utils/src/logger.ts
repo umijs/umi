@@ -103,6 +103,5 @@ export function fatal(...message: any[]) {
 }
 
 export function getLatestLogFilePath() {
-  init();
   return loggerPath;
 }
