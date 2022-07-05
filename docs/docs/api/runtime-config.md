@@ -128,13 +128,11 @@ Umi 内置了 `qiankun` 插件来提供微前端的能力，具体参考[插件�
 比如用于渲染之前做权限校验，
 
 ```bash
-import { history } from 'umi';
-
 export function render(oldRender) {
   fetch('/api/auth').then(auth => {
     if (auth.isLogin) { oldRender() }
     else {
-      history.push('/login');
+      location.href = '/login';
       oldRender()
     }
   });
