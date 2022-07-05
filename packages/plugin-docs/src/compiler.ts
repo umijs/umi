@@ -6,6 +6,8 @@ import { createProcessor } from '../compiled/@mdx-js/mdx';
 import rehypeSlug from '../compiled/rehype-slug';
 // @ts-ignore
 import remarkGfm from '../compiled/remark-gfm';
+// @ts-ignore
+import rehypeAutolinkHeadings from '../compiled/rehype-autolink-headings';
 
 // https://rehype-pretty-code.netlify.app
 const rehypePrettyCodeOptions = {
@@ -33,7 +35,11 @@ export async function compile(opts: { content: string; fileName: string }) {
   const compiler = createProcessor({
     jsx: true,
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, [rehypePrettyCode, rehypePrettyCodeOptions]],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypePrettyCode, rehypePrettyCodeOptions],
+      rehypeAutolinkHeadings,
+    ],
   });
   try {
     let result = String(await compiler.process(opts.content));

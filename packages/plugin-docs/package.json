@@ -36,6 +36,7 @@
     "@types/keymaster": "^1.6.30",
     "@types/react-helmet": "^6.1.5",
     "classnames": "^2.3.1",
+    "rehype-autolink-headings": "^6.1.1",
     "rehype-slug": "5.0.1",
     "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.0.24",
@@ -51,13 +52,15 @@
     "deps": [
       "@mdx-js/mdx",
       "rehype-slug",
-      "remark-gfm"
+      "remark-gfm",
+      "rehype-autolink-headings"
     ],
     "externals": {},
     "excludeDtsDeps": [
       "@mdx-js/mdx",
       "rehype-slug",
-      "remark-gfm"
+      "remark-gfm",
+      "rehype-autolink-headings"
     ]
   }
 }
