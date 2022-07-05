@@ -6,12 +6,6 @@ import fsExtra from '../compiled/fs-extra';
 const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
 const loggerPath = join(loggerDir, 'umi.log');
 
-function init() {
-  // 不存在目录就创建它
-  if (!fsExtra.pathExistsSync(loggerDir)) {
-   fsExtra.mkdirpSync(loggerDir);
-  }
-}
 
 const customLevels = {
   ready: 31,
@@ -21,7 +15,13 @@ const customLevels = {
   // 这里不加会不生成到 umi.log，transport 的 level 配置没有生效，原因不明
   debug: 30,
 };
-const logger = pino(
+
+let logger:any;
+function init() {
+  // 不存在目录就创建它
+  if (!logger) {
+   fsExtra.mkdirpSync(loggerDir);
+     logger= pino(
   {
     customLevels,
   },
@@ -37,6 +37,9 @@ const logger = pino(
     ],
   }),
 );
+  }
+
+}
 
 export const prefixes = {
   wait: chalk.cyan('wait') + '  -',
