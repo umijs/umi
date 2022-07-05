@@ -3,7 +3,7 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { resolve, tryPaths, winPath } from '@umijs/utils';
+import { lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
@@ -228,16 +228,52 @@ export async function getRouteComponents(opts: {
           ? route.file
           : `${opts.prefix}${route.file}`;
 
+      const webpackChunkName = componentToChunkName(path, opts.api.cwd);
+
       return useSuspense
-        ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${key.replace(
-            /[\/-]/g,
-            '_',
-          )}" */'${winPath(path)}')),`
-        : `'${key}': () => import(/* webpackChunkName: "${key.replace(
-            /[\/-]/g,
-            '_',
-          )}" */'${winPath(path)}'),`;
+        ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(
+            path,
+          )}')),`
+        : `'${key}': () => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(
+            path,
+          )}'),`;
     })
     .join('\n');
   return `{\n${imports}\n}`;
+}
+
+function lastSlash(str: string) {
+  return str[str.length - 1] === '/' ? str : `${str}/`;
+}
+
+/**
+ *
+ * transform component into webpack chunkName
+ * @export
+ * @param {string} component component path
+ * @param {string} [cwd] current root path
+ * @return {*}  {string}
+ */
+export function componentToChunkName(component: string, cwd?: string): string {
+  return typeof component === 'string'
+    ? component
+        .replace(
+          new RegExp(`^${lodash.escapeRegExp(lastSlash(winPath(cwd || '/')))}`),
+          '',
+        )
+        .replace(/^.(\/|\\)/, '')
+        .replace(/(\/|\\)/g, '__')
+        .replace(/\.jsx?$/, '')
+        .replace(/\.tsx?$/, '')
+        .replace(/\.vue?$/, '')
+        .replace(/^src__/, '')
+        .replace(/\.\.__/g, '')
+        // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
+        // ref: https://github.com/umijs/umi/issues/4155
+        .replace(/[\[\]]/g, '')
+        // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
+        .replace(/^.umi-production__/, 't__')
+        .replace(/^pages__/, 'p__')
+        .replace(/^page__/, 'p__')
+    : '';
 }

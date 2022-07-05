@@ -1,5 +1,5 @@
 // @ts-ignore
-import { RouterConfig } from 'umi';
+import type { RouterConfig } from 'umi';
 
 export function onRouterCreated({ router }: any) {
   console.log('onRouterCreated', router);
