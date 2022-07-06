@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "dotenv": "16.0.0",
+    "dotenv-expand": "8.0.3",
     "just-diff": "5.0.1"
   },
   "publishConfig": {
