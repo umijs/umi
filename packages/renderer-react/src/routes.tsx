@@ -1,6 +1,6 @@
 // @ts-ignore
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { generatePath, Navigate, useParams } from 'react-router-dom';
 import { RouteContext } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
 
@@ -35,6 +35,15 @@ export function createClientRoutes(opts: {
     });
 }
 
+function NavigateWithParams(props: { to: string }) {
+  const params = useParams();
+  const propsWithParams = {
+    ...params,
+    to: generatePath(props.to, params),
+  };
+  return <Navigate {...propsWithParams} />;
+}
+
 function createClientRoute(opts: {
   route: IRoute;
   routeComponent: any;
@@ -44,7 +53,7 @@ function createClientRoute(opts: {
   const { redirect, ...props } = route;
   return {
     element: redirect ? (
-      <Navigate to={redirect} />
+      <NavigateWithParams to={redirect} />
     ) : (
       <RouteContext.Provider
         value={{
