@@ -3,8 +3,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 // import { matchRoutes } from 'react-router-dom';
 // import { createServerRoutes } from './routes';
-import { normalizeScripts } from './scripts';
-import { normalizeStyles } from './styles';
+import { normalizeScripts, normalizeStyles } from '@umijs/utils';
 
 export interface IOpts {
   base: string;

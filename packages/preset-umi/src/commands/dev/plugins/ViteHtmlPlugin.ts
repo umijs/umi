@@ -1,7 +1,36 @@
 import { getMarkup, IOpts } from '@umijs/server';
-import type { Plugin } from 'vite';
+import { normalizeScripts, normalizeStyles } from '@umijs/utils';
+import type { HtmlTagDescriptor, Plugin } from 'vite';
 import { IApi } from '../../../types';
 import { getMarkupArgs } from '../getMarkupArgs';
+
+function parseContent(tags: Record<string, any>[]) {
+  if (!tags.length) return [];
+  return tags.filter((tag) => tag && tag.content);
+}
+
+function insertContent({
+  result,
+  tags,
+  targetTag,
+  injectTo,
+}: {
+  injectTo: 'head' | 'body';
+  result: HtmlTagDescriptor[];
+  tags: Record<string | 'content', any>;
+  targetTag: 'style' | 'script';
+}) {
+  if (!tags.length) return;
+  tags.forEach((tag: { [x: string]: any; content: any }) => {
+    const { content, ...reset } = tag;
+    result.push({
+      tag: targetTag,
+      injectTo,
+      attrs: { ...reset },
+      children: `${content}`,
+    });
+  });
+}
 
 export default function ViteHtmlPlugin(api: IApi): Plugin {
   return {
@@ -34,7 +63,6 @@ export default function ViteHtmlPlugin(api: IApi): Plugin {
               };
 
               const html = await getMarkup({ ...opts });
-
               res.setHeader('Content-Type', 'text/html');
               res.end(await server.transformIndexHtml(req.url, html));
             } catch (e) {
@@ -45,6 +73,40 @@ export default function ViteHtmlPlugin(api: IApi): Plugin {
           next();
         });
       };
+    },
+    // ref: https://github.com/umijs/umi/issues/8438
+    async transformIndexHtml() {
+      let {
+        scripts = [],
+        headScripts = [],
+        styles = [],
+      } = (await getMarkupArgs({ api })) as any;
+
+      const htmlResult = [] as HtmlTagDescriptor[];
+
+      scripts = parseContent(normalizeScripts(scripts));
+      headScripts = parseContent(normalizeScripts(headScripts));
+      styles = parseContent(normalizeStyles(styles));
+
+      insertContent({
+        targetTag: 'style',
+        injectTo: 'head',
+        result: htmlResult,
+        tags: styles,
+      });
+      insertContent({
+        targetTag: 'script',
+        injectTo: 'body',
+        result: htmlResult,
+        tags: scripts,
+      });
+      insertContent({
+        targetTag: 'script',
+        injectTo: 'head',
+        result: htmlResult,
+        tags: headScripts,
+      });
+      return htmlResult;
     },
   };
 }

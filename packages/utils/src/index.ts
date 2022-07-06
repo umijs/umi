@@ -34,6 +34,8 @@ export * from './isStyleFile';
 export * from './npmClient';
 export * from './randomColor/randomColor';
 export * as register from './register';
+export * from './scripts';
+export * from './styles';
 export * from './tryPaths';
 export * from './winPath';
 export {
