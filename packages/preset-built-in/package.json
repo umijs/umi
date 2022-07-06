@@ -28,6 +28,7 @@
     "@types/react-router-config": "5.0.2",
     "@umijs/babel-preset-umi": "3.5.27",
     "@umijs/bundler-webpack": "3.5.27",
+    "@umijs/core": "3.5.27",
     "@umijs/deps": "3.5.27",
     "@umijs/renderer-mpa": "3.5.27",
     "@umijs/renderer-react": "3.5.27",
