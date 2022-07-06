@@ -280,12 +280,16 @@ PORT=8888 umi dev
         extraBabelPresets,
         beforeMiddlewares: ([] as RequestHandler[]).concat([
           ...beforeMiddlewares,
-          faviconMiddleware,
         ]),
         // vite 模式使用 ./plugins/ViteHtmlPlugin.ts 处理
         afterMiddlewares: enableVite
           ? []
-          : middlewares.concat(createRouteMiddleware({ api })),
+          : middlewares.concat([
+              createRouteMiddleware({ api }),
+              // 放置 favicon 在 webpack middleware 之后，兼容 public 目录下有 favicon.ico 的场景
+              // ref: https://github.com/umijs/umi/issues/8024
+              faviconMiddleware,
+            ]),
         onDevCompileDone(opts: any) {
           debouncedPrintMemoryUsage;
           // debouncedPrintMemoryUsage();
