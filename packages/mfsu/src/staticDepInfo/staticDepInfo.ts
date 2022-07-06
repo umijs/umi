@@ -86,6 +86,14 @@ export class StaticDepInfo {
           libraryDirectory: 'es',
         }),
       },
+      {
+        packageName: '@alipay/bigfish/antd',
+        handleImports: createPluginImport({
+          libraryName: '@alipay/bigfish/antd',
+          style: true,
+          libraryDirectory: 'es',
+        }),
+      },
     ];
   }
 
