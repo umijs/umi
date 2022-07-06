@@ -6,7 +6,6 @@ import fsExtra from '../compiled/fs-extra';
 const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
 const loggerPath = join(loggerDir, 'umi.log');
 
-
 const customLevels = {
   ready: 31,
   event: 32,
@@ -20,25 +19,24 @@ let logger: Logger<{ customLevels: typeof customLevels }>;
 function init() {
   // 不存在目录就创建它
   if (!logger) {
-   fsExtra.mkdirpSync(loggerDir);
-     logger= pino(
-  {
-    customLevels,
-  },
-  pino.transport({
-    targets: [
+    fsExtra.mkdirpSync(loggerDir);
+    logger = pino(
       {
-        target: require.resolve('pino/file'),
-        options: {
-          destination: loggerPath,
-        },
-        level: 'trace',
+        customLevels,
       },
-    ],
-  }),
-);
+      pino.transport({
+        targets: [
+          {
+            target: require.resolve('pino/file'),
+            options: {
+              destination: loggerPath,
+            },
+            level: 'trace',
+          },
+        ],
+      }),
+    );
   }
-
 }
 
 const prefixesBase = {
@@ -59,22 +57,22 @@ const prefixes = new Proxy(prefixesBase, {
   },
 });
 
-export function wait(...message: any[]) { 
+export function wait(...message: any[]) {
   console.log(prefixes.wait, ...message);
   logger.wait(message[0]);
 }
 
-export function error(...message: any[]) { 
+export function error(...message: any[]) {
   console.error(prefixes.error, ...message);
   logger.error(message[0]);
 }
 
-export function warn(...message: any[]) { 
+export function warn(...message: any[]) {
   console.warn(prefixes.warn, ...message);
   logger.warn(message[0]);
 }
 
-export function ready(...message: any[]) { 
+export function ready(...message: any[]) {
   console.log(prefixes.ready, ...message);
   logger.ready(message[0]);
 }
