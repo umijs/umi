@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { getRoutes } from './routes';
+import { componentToChunkName, getRoutes } from './routes';
 
 const fixtures = join(__dirname, './fixtures/getRoutes');
 
@@ -67,4 +67,56 @@ test('getRoutes', async () => {
   });
 
   expect(routes).toMatchSnapshot();
+});
+
+test('componentToChunkName normal', () => {
+  expect(componentToChunkName('@/pages/index.ts')).toEqual('p__index');
+
+  expect(componentToChunkName('@/pages/index.tsx')).toEqual('p__index');
+
+  expect(componentToChunkName('@/pages/index.jsx')).toEqual('p__index');
+
+  expect(componentToChunkName('@/pages/index.js')).toEqual('p__index');
+
+  expect(componentToChunkName('@/pages/users/[id].ts')).toEqual('p__users__id');
+
+  expect(componentToChunkName('@/pages/users/[id].tsx')).toEqual(
+    'p__users__id',
+  );
+
+  expect(componentToChunkName('@/pages/users/[id].js')).toEqual('p__users__id');
+
+  expect(componentToChunkName('@/pages/users/[id].jsx')).toEqual(
+    'p__users__id',
+  );
+
+  expect(componentToChunkName('@/pages/users/[id].vue')).toEqual(
+    'p__users__id',
+  );
+
+  expect(componentToChunkName('@/components/404/index.tsx')).toEqual(
+    'components__404__index',
+  );
+
+  expect(componentToChunkName('@/layouts/index.tsx')).toEqual('layouts__index');
+
+  expect(
+    componentToChunkName('@/.umi-production/plugin-layout/Layout.tsx'),
+  ).toEqual('t__plugin-layout__Layout');
+});
+
+test('componentToChunkName cwd', () => {
+  expect(
+    componentToChunkName('/users/test/pages/users/[id].jsx', '/users/test'),
+  ).toEqual('p__users__id');
+
+  expect(
+    componentToChunkName('/users/test/pages/users/[id].vue', '/users/test'),
+  ).toEqual('p__users__id');
+});
+
+test('componentToChunkName cwd escape char', () => {
+  expect(
+    componentToChunkName('/users/c++/pages/users/[id].tsx', '/users/c++'),
+  ).toEqual('p__users__id');
 });
