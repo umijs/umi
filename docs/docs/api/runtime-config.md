@@ -57,9 +57,12 @@ export function onRouteChange({ location, routes, action }) {
 比如用于设置标题，
 
 ```bash
-export function onRouteChange({ clientRoutes }) {
-  if (clientRoutes.length) {
-    document.title = clientRoutes[clientRoutes.length - 1].route.title || '';
+import { matchRoutes } from 'umi'
+
+export function onRouteChange({ clientRoutes, location }) {
+  const route = matchRoutes(clientRoutes, location.pathname)?.pop()?.route
+  if (route) {
+    document.title = route.title || '';
   }
 }
 ```
