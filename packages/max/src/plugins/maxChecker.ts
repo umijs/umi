@@ -6,7 +6,7 @@ export default (api: IApi) => {
       current.dependencies?.['umi'] || current.devDependencies?.['umi'];
     if (hasUmi) {
       throw new Error(
-        `You are using @umijs/max, please remove umi from your dependencies in package.json.`,
+        `You are using ${api.appData.umi.importSource}, please remove umi from your dependencies in package.json.`,
       );
     }
   });
