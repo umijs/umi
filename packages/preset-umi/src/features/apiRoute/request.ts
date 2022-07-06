@@ -80,14 +80,25 @@ class UmiApiRequest {
         body += chunk;
       });
       this._req.on('end', () => {
-        // TODO: handle other content types
-        switch (this._req.headers['content-type']) {
+        switch (this._req.headers['content-type']?.split(';')[0]) {
           case 'application/json':
             try {
               this._body = JSON.parse(body);
             } catch (e) {
               this._body = body;
             }
+            break;
+          case 'multipart/form-data':
+            const boundary =
+              this.headers['content-type']?.split('boundary=')[1];
+            if (!boundary) {
+              this._body = body;
+              break;
+            }
+            this._body = parseMultipart(body, boundary);
+            break;
+          case 'application/x-www-form-urlencoded':
+            this._body = parseUrlEncoded(body);
             break;
           default:
             this._body = body;
@@ -98,6 +109,38 @@ class UmiApiRequest {
       this._req.on('error', reject);
     });
   }
+}
+
+export function parseMultipart(body: string, boundary: string) {
+  return body
+    .split(`--${boundary}`)
+    .reduce((acc: { [key: string]: any }, cur: string) => {
+      const [meta, value] = cur.split('\r\n\r\n');
+      const name = meta?.split('name="')[1]?.split('"')[0];
+      const filename = meta?.split('filename="')[1]?.split('"')[0];
+      if (!name) return acc;
+
+      // if there is filename, this field is file, save as buffer
+      if (filename) {
+        acc[name] = {
+          filename,
+          data: Buffer.from(value, 'binary'),
+        };
+        return acc;
+      }
+
+      // if there is no filename, this field is string, save as string
+      acc[name] = value?.replace(/\r\n$/, '');
+      return acc;
+    }, {});
+}
+
+export function parseUrlEncoded(body: string) {
+  return body.split('&').reduce((acc: { [key: string]: any }, cur: string) => {
+    const [key, value] = cur.split('=');
+    acc[key] = decodeURI(value);
+    return acc;
+  }, {});
 }
 
 export default UmiApiRequest;
