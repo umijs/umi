@@ -8,7 +8,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "^4.0.5",
+    "umi": "4.0.5",
     "vue": "^3.2.36"
   },
   "devDependencies": {
