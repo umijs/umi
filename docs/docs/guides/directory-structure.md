@@ -13,7 +13,7 @@
 │   ├── .umi
 │   ├── .umi-production
 │   ├── app.ts
-│   ├── layout
+│   ├── layouts
 │   │   ├── BasicLayout.tsx
 │   │   ├── index.less
 │   ├── models
