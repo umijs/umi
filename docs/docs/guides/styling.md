@@ -96,10 +96,10 @@ Umi 提供了内置的 [Tailwindcss](https://tailwindcss.com/)
 与 Tailwindcss 相同，Umi 也提供了内置的 [UnoCSS](https://github.com/unocss/unocss) 插件，可以按照相同方式开启。
 
 1. 安装 `plugin-unocss`
-2. 安装 `unocss`
+2. 安装 `unocss`及`@unocss/cli`
 
 ```bash
-pnpm i unocss
+pnpm i unocss @unocss/cli
 ```
 
 3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
