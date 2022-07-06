@@ -18,8 +18,8 @@ umi lint --stylelint-only
 # automatically fix, where possible
 umi lint --fix
 
-# default report errors only, can use --no-quiet to report warnning
-umi lint --no-quiet
+# disable reporting on warnings
+umi lint --quiet
 `,
     fn: async function () {
       // re-parse cli args to process boolean flags, for get the lint-staged args

@@ -35,6 +35,7 @@
     "@umijs/renderer-react": "4.0.5",
     "@umijs/server": "4.0.5",
     "@umijs/utils": "4.0.5",
+    "click-to-react-component": "^1.0.8",
     "core-js": "3.22.4",
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.9.3",

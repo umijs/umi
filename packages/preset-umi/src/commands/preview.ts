@@ -122,7 +122,7 @@ umi preview --port [port]
         const host =
           api.args.host && api.args.host !== '0.0.0.0'
             ? api.args.host
-            : '127.0.0.1';
+            : 'localhost';
 
         logger.ready(
           `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,

@@ -1,5 +1,6 @@
 {
   "private": true,
+  "author":"{{{ author }}}",
   "scripts": {
     "dev": "max dev",
     "build": "max build",

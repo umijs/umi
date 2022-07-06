@@ -112,7 +112,7 @@ export default () => {
             <components.Link
               to={(isFromPath ? currentLanguage?.locale : '') + r.href}
               key={i}
-              onClick={() => (document.activeElement as HTMLElement)?.blur()}
+              onClick={() => scrollToAnchor(r.href)}
               className="group outline-none search-result"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -205,4 +205,19 @@ function handleKeyUp(e: KeyboardEvent) {
   (
     document.activeElement?.previousSibling as HTMLDivElement | undefined
   )?.focus();
+}
+
+function scrollToAnchor(to: string) {
+  const hash = to.match(/(#[^&?]*)/)?.[1] || '';
+
+  (document.activeElement as HTMLElement)?.blur();
+
+  window.requestAnimationFrame(() => {
+    const elm = document.getElementById(hash.substring(1));
+    if (elm) {
+      elm.scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  });
 }

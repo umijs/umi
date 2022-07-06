@@ -164,7 +164,14 @@ export class Config {
           implementor: esbuild,
         });
         register.clearFiles();
-        config = lodash.merge(config, require(configFile).default);
+        try {
+          config = lodash.merge(config, require(configFile).default);
+        } catch (e) {
+          // @ts-ignore
+          throw new Error(`Parse config file failed: [${configFile}]`, {
+            cause: e,
+          });
+        }
         for (const file of register.getFiles()) {
           delete require.cache[file];
         }
