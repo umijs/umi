@@ -39,7 +39,7 @@ function init() {
   }
 }
 
-const prefixesBase = {
+export const prefixes = {
   wait: chalk.cyan('wait') + '  -',
   error: chalk.red('error') + ' -',
   fatal: chalk.red('fatal') + ' -',
@@ -50,7 +50,7 @@ const prefixesBase = {
   debug: chalk.gray('debug') + ' -',
 };
 
-const prefixes = new Proxy(prefixesBase, {
+const prefixesProxy = new Proxy(prefixes, {
   get(target, key, receiver) {
     init();
     return Reflect.get(target, key, receiver);
@@ -58,44 +58,44 @@ const prefixes = new Proxy(prefixesBase, {
 });
 
 export function wait(...message: any[]) {
-  console.log(prefixes.wait, ...message);
+  console.log(prefixesProxy.wait, ...message);
   logger.wait(message[0]);
 }
 
 export function error(...message: any[]) {
-  console.error(prefixes.error, ...message);
+  console.error(prefixesProxy.error, ...message);
   logger.error(message[0]);
 }
 
 export function warn(...message: any[]) {
-  console.warn(prefixes.warn, ...message);
+  console.warn(prefixesProxy.warn, ...message);
   logger.warn(message[0]);
 }
 
 export function ready(...message: any[]) {
-  console.log(prefixes.ready, ...message);
+  console.log(prefixesProxy.ready, ...message);
   logger.ready(message[0]);
 }
 
 export function info(...message: any[]) {
-  console.log(prefixes.info, ...message);
+  console.log(prefixesProxy.info, ...message);
   logger.info(message[0]);
 }
 
 export function event(...message: any[]) {
-  console.log(prefixes.event, ...message);
+  console.log(prefixesProxy.event, ...message);
   logger.event(message[0]);
 }
 
 export function debug(...message: any[]) {
   if (process.env.DEBUG) {
-    console.log(prefixes.debug, ...message);
+    console.log(prefixesProxy.debug, ...message);
   }
   logger.debug(message[0]);
 }
 
 export function fatal(...message: any[]) {
-  console.error(prefixes.fatal, ...message);
+  console.error(prefixesProxy.fatal, ...message);
   logger.fatal(message[0]);
 }
 
