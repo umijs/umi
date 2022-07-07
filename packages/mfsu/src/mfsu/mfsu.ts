@@ -29,6 +29,7 @@ import getAwaitImportHandler, {
 } from '../esbuildHandlers/awaitImport';
 import { Mode } from '../types';
 import { makeArray } from '../utils/makeArray';
+import { printHelp } from '../utils/printHelp';
 import {
   BuildDepPlugin,
   IBuildDepPluginOpts,
@@ -280,8 +281,8 @@ promise new Promise(resolve => {
     if (this.buildDepsAgain) {
       logger.info('[MFSU] buildDepsAgain');
       this.buildDepsAgain = false;
-      this.buildDeps().catch((e) => {
-        logger.error(e);
+      this.buildDeps().catch((e: Error) => {
+        printHelp(e);
       });
     }
   }
