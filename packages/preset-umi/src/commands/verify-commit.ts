@@ -22,7 +22,14 @@ export default (api: IApi) => {
     fn({ args }) {
       api.logger.info('verify-commit');
 
-      const msgPath = args._[0];
+      // support gitHooks
+      // package.json
+      // "gitHooks": {
+      //   "commit-msg": "umi verify-commit"
+      // }
+      const msgPath =
+        args._[0] || process.env.GIT_PARAMS || process.env.HUSKY_GIT_PARAMS;
+
       assert(msgPath, 'msgPath is required');
 
       let msg = readFileSync(msgPath!, 'utf-8').trim();
