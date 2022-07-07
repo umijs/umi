@@ -20,7 +20,8 @@ export function resolveDefine(opts: { define: any; publicPath?: string }) {
     }
   });
 
-  // 有些场景需要在代码中访问到 publicPath
+  // 解决 `public` 中静态资源路径.
+  // For example, <img src={process.env.BASE_URL + 'img/logo.png'} />.
   env.BASE_URL = opts.publicPath || '/';
 
   for (const key in env) {
