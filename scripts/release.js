@@ -14,6 +14,19 @@ const { getChangelog } = require('./utils/changelog');
 const cwd = process.cwd();
 const args = yParser(process.argv.slice(2));
 const lernaCli = require.resolve('lerna/cli');
+const umi3OnlyPkgs = [
+  '@umijs/preset-built-in',
+  '@umijs/types',
+  '@umijs/create-umi-app',
+  '@umijs/babel-plugin-no-anonymous-default-export',
+  '@umijs/babel-plugin-lock-core-js-3',
+  '@umijs/deps',
+  '@umijs/renderer-mpa',
+  '@umijs/babel-plugin-auto-css-modules',
+  '@umijs/babel-plugin-import-to-await-require',
+  '@umijs/test-utils',
+  '@umijs/runtime'
+];
 
 function printErrorAndExit(message) {
   console.error(chalk.red(message));
@@ -158,7 +171,10 @@ async function release() {
           isNext ? 'with next tag' : ''
         }`,
       );
-      const cliArgs = ['publish', '--tag', isNext ? 'next-3' : '3.x'];
+      const cliArgs = ['publish'];
+      if (!umi3OnlyPkgs.includes(name)) {
+        cliArgs.push('--tag', isNext ? 'next-3' : 'latest-3');
+      }
       if (otp) {
         cliArgs.push('--otp', otp);
       }
