@@ -176,3 +176,9 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 ```bash
 $ pnpm release
 ```
+
+## 加入 Contributor 群
+
+提交过 Bugfix 或 Feature 类 PR 的同学，如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id），我会拉到群里。
+
+<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h3yg26xbauj20cu0d8my4.jpg" />
