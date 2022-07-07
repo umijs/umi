@@ -59,7 +59,7 @@ export default {
   },
   // vite: {},
   deadCode: {},
-  https: {},
+  //   https: {},
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
   headScripts: [`console.log('head script')`],
@@ -81,5 +81,6 @@ export default {
       chrome: 60,
     },
   },
+  cacheDirectoryPath: 'node_modules/.cache1',
   ...extraConfig,
 };
