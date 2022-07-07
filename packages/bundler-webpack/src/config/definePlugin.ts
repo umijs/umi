@@ -12,13 +12,16 @@ interface IOpts {
 const prefixRE = /^UMI_APP_/;
 const ENV_SHOULD_PASS = ['NODE_ENV', 'HMR', 'SOCKET_SERVER', 'ERROR_OVERLAY'];
 
-export function resolveDefine(opts: { define: any }) {
+export function resolveDefine(opts: { define: any; publicPath?: string }) {
   const env: Record<string, any> = {};
   Object.keys(process.env).forEach((key) => {
     if (prefixRE.test(key) || ENV_SHOULD_PASS.includes(key)) {
       env[key] = process.env[key];
     }
   });
+
+  // 有些场景需要在代码中访问到 publicPath
+  env.BASE_URL = opts.publicPath || '/';
 
   for (const key in env) {
     env[key] = JSON.stringify(env[key]);
@@ -42,6 +45,7 @@ export async function addDefinePlugin(opts: IOpts) {
   config.plugin('define').use(DefinePlugin, [
     resolveDefine({
       define: userConfig.define || {},
+      publicPath: userConfig.publicPath,
     }),
   ] as any);
 }
