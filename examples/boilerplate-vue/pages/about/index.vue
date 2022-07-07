@@ -1,7 +1,7 @@
 <template>
   <h2>About Page</h2>
   <div>
-    <pre>{{ route }}</pre>
+    <pre>{{ route.path }}{{ route.params }}</pre>
   </div>
 </template>
 <script lang="ts" setup>
