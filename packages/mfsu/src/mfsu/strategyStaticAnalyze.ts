@@ -1,8 +1,7 @@
-import { logger } from '@umijs/utils';
+import { logger, printHelp } from '@umijs/utils';
 import { getAliasedPathWithLoopDetect } from '../babelPlugins/awaitImport/getAliasedPath';
 import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
-import { printHelp } from '../utils/printHelp';
 import { IBuildDepPluginOpts } from '../webpackPlugins/buildDepPlugin';
 import type { IMFSUStrategy, MFSU } from './mfsu';
 
@@ -87,7 +86,7 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
               });
             })
             .catch((e: Error) => {
-              printHelp(e);
+              printHelp.runtime(e);
               mfsu.onProgress({
                 done: true,
               });

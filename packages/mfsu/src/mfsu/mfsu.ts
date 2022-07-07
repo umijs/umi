@@ -4,7 +4,7 @@ import type {
   Request,
   Response,
 } from '@umijs/bundler-utils/compiled/express';
-import { lodash, logger, tryPaths, winPath } from '@umijs/utils';
+import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
@@ -29,7 +29,6 @@ import getAwaitImportHandler, {
 } from '../esbuildHandlers/awaitImport';
 import { Mode } from '../types';
 import { makeArray } from '../utils/makeArray';
-import { printHelp } from '../utils/printHelp';
 import {
   BuildDepPlugin,
   IBuildDepPluginOpts,
@@ -282,7 +281,7 @@ promise new Promise(resolve => {
       logger.info('[MFSU] buildDepsAgain');
       this.buildDepsAgain = false;
       this.buildDeps().catch((e: Error) => {
-        printHelp(e);
+        printHelp.runtime(e);
       });
     }
   }

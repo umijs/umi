@@ -1,8 +1,7 @@
-import { logger, yParser } from '@umijs/utils';
+import { logger, printHelp, yParser } from '@umijs/utils';
 import { DEV_COMMAND, FRAMEWORK_NAME } from '../constants';
 import { Service } from '../service/service';
 import { setNoDeprecation, setNodeTitle } from './node';
-import { printHelp } from './printHelp';
 setNodeTitle(`${FRAMEWORK_NAME}-dev`);
 setNoDeprecation();
 
@@ -36,7 +35,7 @@ setNoDeprecation();
     }
   } catch (e: any) {
     logger.fatal(e);
-    printHelp();
+    printHelp.exit();
     process.exit(1);
   }
 })();
