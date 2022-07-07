@@ -7,7 +7,7 @@
 - 类型：`Record<string, string>`
 - 默认值：`{}`
 
-配置别名，对 import 语句的 source 做隐射。
+配置别名，对 import 语句的 source 做映射。
 
 比如：
 
@@ -41,10 +41,10 @@
 }
 ```
 
-2、如果不需要子路径也被隐射，记得加 `$` 后缀，比如
+2、如果不需要子路径也被映射，记得加 `$` 后缀，比如
 
 ```js
-// import 'foo/bar' 会被隐射到 import '/tmp/to/foo/bar'
+// import 'foo/bar' 会被映射到 import '/tmp/to/foo/bar'
 {
   alias: {
     foo: '/tmp/to/foo';
