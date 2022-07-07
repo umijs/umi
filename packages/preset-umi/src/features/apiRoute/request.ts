@@ -75,15 +75,16 @@ class UmiApiRequest {
       return Promise.resolve();
     }
     return new Promise<void>((resolve, reject) => {
-      let body = '';
+      let body: any[] = [];
       this._req.on('data', (chunk) => {
-        body += chunk;
+        body.push(chunk);
       });
       this._req.on('end', () => {
+        const bodyBuffer = Buffer.concat(body);
         switch (this._req.headers['content-type']?.split(';')[0]) {
           case 'application/json':
             try {
-              this._body = JSON.parse(body);
+              this._body = JSON.parse(bodyBuffer.toString());
             } catch (e) {
               this._body = body;
             }
@@ -95,10 +96,10 @@ class UmiApiRequest {
               this._body = body;
               break;
             }
-            this._body = parseMultipart(body, boundary);
+            this._body = parseMultipart(bodyBuffer, boundary);
             break;
           case 'application/x-www-form-urlencoded':
-            this._body = parseUrlEncoded(body);
+            this._body = parseUrlEncoded(bodyBuffer.toString());
             break;
           default:
             this._body = body;
@@ -111,26 +112,45 @@ class UmiApiRequest {
   }
 }
 
-export function parseMultipart(body: string, boundary: string) {
+export function parseMultipart(body: Buffer, boundary: string) {
+  const hexBoundary = Buffer.from(`--${boundary}`, 'utf-8').toString('hex');
   return body
-    .split(`--${boundary}`)
+    .toString('hex')
+    .split(hexBoundary)
     .reduce((acc: { [key: string]: any }, cur: string) => {
-      const [meta, value] = cur.split('\r\n\r\n');
-      const name = meta?.split('name="')[1]?.split('"')[0];
-      const filename = meta?.split('filename="')[1]?.split('"')[0];
+      const [hexMeta, hexValue] = cur.split(
+        Buffer.from('\r\n\r\n').toString('hex'),
+      );
+      const meta = Buffer.from(hexMeta, 'hex').toString('utf-8');
+      const name = meta.split('name="')[1]?.split('"')[0];
+
+      // if this part doesn't have name, skip it
       if (!name) return acc;
 
       // if there is filename, this field is file, save as buffer
-      if (filename) {
+      const fileName = meta.split('filename="')[1]?.split('"')[0];
+      if (fileName) {
+        const fileBufferBeforeTrim = Buffer.from(hexValue, 'hex');
+        const fileBuffer = fileBufferBeforeTrim.slice(
+          0,
+          fileBufferBeforeTrim.byteLength - 2,
+        );
+        const contentType = meta.split('Content-Type: ')[1];
         acc[name] = {
-          filename,
-          data: Buffer.from(value, 'binary'),
+          fileName,
+          data: fileBuffer,
+          contentType,
         };
         return acc;
       }
 
       // if there is no filename, this field is string, save as string
-      acc[name] = value?.replace(/\r\n$/, '');
+      const valueBufferBeforeTrim = Buffer.from(hexValue, 'hex');
+      const valueBuffer = valueBufferBeforeTrim.slice(
+        0,
+        valueBufferBeforeTrim.byteLength - 2,
+      );
+      acc[name] = valueBuffer.toString('utf-8');
       return acc;
     }, {});
 }
