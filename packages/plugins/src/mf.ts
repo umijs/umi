@@ -1,9 +1,12 @@
+// @ts-ignore
 import { lodash, winPath } from '@umijs/utils';
 import { existsSync, opendirSync } from 'fs';
 import { join } from 'path';
 import type { IApi } from 'umi';
 
 const { isEmpty } = lodash;
+
+const mfSetupModuleVirtualPath = '_mf_setup-public-path.js';
 
 export default function mf(api: IApi) {
   api.describe({
@@ -50,14 +53,18 @@ export default function mf(api: IApi) {
       }
     }
 
+    const name = mfName();
+
     if (!isEmpty(exposes)) {
-      // fixme  to support runtimePublicPath
-      // @ts-ignore
-      config.output.publicPath = 'auto';
+      addMFEntry(
+        config,
+        name,
+        join(api.paths.absTmpPath, 'plugin-mf', mfSetupModuleVirtualPath),
+      );
     }
 
     const mfConfig = {
-      name: mfName(),
+      name,
       remotes,
       filename: 'remote.js',
       exposes,
@@ -78,6 +85,12 @@ export default function mf(api: IApi) {
   });
 
   api.onGenerateFiles(() => {
+    api.writeTmpFile({
+      content: `/* infer remote public */;
+      __webpack_public_path__ = document.currentScript.src + '/../';`,
+      path: mfSetupModuleVirtualPath,
+    });
+
     if (api.env === 'development' && api.config.mfsu) {
       // skip mfsu already dynamic import
       return;
@@ -181,5 +194,9 @@ export default function mf(api: IApi) {
     } else {
       api.logger.warn('umi entry not found');
     }
+  }
+
+  function addMFEntry(config: any, mfName: string, path: string) {
+    config.entry[mfName] = path;
   }
 }
