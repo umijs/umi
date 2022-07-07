@@ -13,6 +13,7 @@ export default () => {
       require.resolve('@umijs/plugins/dist/locale'),
       require.resolve('@umijs/plugins/dist/qiankun'),
       require.resolve('@umijs/plugins/dist/tailwindcss'),
+      require.resolve('@umijs/plugins/dist/mf'),
       require.resolve('./plugins/maxAlias'),
       require.resolve('./plugins/maxAppData'),
       require.resolve('./plugins/maxChecker'),
