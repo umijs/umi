@@ -142,7 +142,10 @@ export function createRequestHandler(opts: IOpts): RequestHandler {
     ) {
       // 如果是 browser，并且配置了非 / base，访问 / 时 redirect 到 base 路径
       res.redirect(opts.base);
-    } else if (req.headers.accept?.includes('text/html')) {
+    } else if (
+      req.headers.accept?.includes('text/html') ||
+      req.path === opts.base
+    ) {
       // 匹配路由，不匹配走 next()
       // const routes = createServerRoutes({
       //   routesById: opts.routes,
