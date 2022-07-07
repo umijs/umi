@@ -59,7 +59,7 @@ export default {
   },
   // vite: {},
   deadCode: {},
-  //   https: {},
+  https: {},
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
   headScripts: [`console.log('head script')`],
