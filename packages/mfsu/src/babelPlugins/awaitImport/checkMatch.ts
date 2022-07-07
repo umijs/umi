@@ -63,7 +63,10 @@ export function checkMatch({
     // don't match externals
     isExternals({ value, externals: opts.externals }) ||
     // relative import
-    value.startsWith('.')
+    value.startsWith('.') ||
+    // put react and react-dom to module federation shared field
+    value.startsWith('react') ||
+    value.startsWith('react-dom')
   ) {
     isMatch = false;
   } else if (isAbsolute(value)) {

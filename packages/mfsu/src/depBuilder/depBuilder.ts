@@ -168,6 +168,16 @@ export class DepBuilder {
     }, {});
     depConfig.plugins.push(
       new this.opts.mfsu.opts.implementor.container.ModuleFederationPlugin({
+        shared: {
+          react: {
+            singleton: true,
+            eager: true,
+          },
+          'react-dom': {
+            singleton: true,
+            eager: true,
+          },
+        },
         library: {
           type: 'global',
           name: mfName,

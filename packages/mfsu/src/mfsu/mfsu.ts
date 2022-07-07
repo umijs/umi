@@ -229,6 +229,16 @@ promise new Promise(resolve => {
                 `.trimLeft()
               : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
           },
+          shared: {
+            react: {
+              singleton: true,
+              eager: true,
+            },
+            'react-dom': {
+              singleton: true,
+              eager: true,
+            },
+          },
         }),
         new BuildDepPlugin(this.strategy.getBuildDepPlugConfig()),
         // new WriteCachePlugin({
