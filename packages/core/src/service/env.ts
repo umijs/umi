@@ -1,7 +1,7 @@
-import { expand } from 'dotenv-expand';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { parse } from '../../compiled/dotenv';
+import { expand } from '../../compiled/dotenv-expand';
 
 export function loadEnv(opts: { cwd: string; envFile: string }) {
   const files = [
