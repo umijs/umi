@@ -1039,3 +1039,17 @@ vite: {
   cacheDir: 'node_modules/.bin/.vite';
 }
 ```
+
+## cacheDirectoryPath
+
+- 类型：`string`
+- 默认值：`node_modules/.cache`
+
+支持配置 cache directory。
+
+示例，
+
+```js
+// 更改缓存文件路径到 node_modules/.cache1 文件夹
+cacheDirectoryPath: 'node_modules/.cache1',
+```
