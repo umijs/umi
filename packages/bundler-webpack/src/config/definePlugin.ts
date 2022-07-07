@@ -20,8 +20,6 @@ export function resolveDefine(opts: { define: any; publicPath?: string }) {
     }
   });
 
-  // 解决 `public` 中静态资源路径.
-  // For example, <img src={process.env.BASE_URL + 'img/logo.png'} />.
   // Useful for resolving the correct path to static assets in `public`.
   // For example, <img src={process.env.BASE_URL + '/img/logo.png'} />.
   env.BASE_URL = opts.publicPath || '/';
