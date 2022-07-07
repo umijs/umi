@@ -42,23 +42,25 @@ export async function createServer(opts: IOpts) {
   // compression
   app.use(require('@umijs/bundler-webpack/compiled/compression')());
 
-  // TODO: headers
-
-  // before middlewares
-  (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
-
-  // TODO: add to before middleware
+  // debug all js file
   app.use((req, res, next) => {
     const file = req.path;
     const filePath = join(opts.cwd, file);
     const ext = extname(filePath);
 
     if (ext === '.js' && existsSync(filePath)) {
+      logger.info(
+        '[dev]',
+        `${file} is responded with ${filePath}, remove it to use original file`,
+      );
       res.sendFile(filePath);
     } else {
       next();
     }
   });
+
+  // before middlewares
+  (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
 
   // webpack dev middleware
   const configs = Array.isArray(webpackConfig)
