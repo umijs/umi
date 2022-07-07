@@ -38,12 +38,10 @@
   "compiledConfig": {
     "deps": [
       "dotenv",
-      "dotenv-expand",
       "just-diff"
     ],
     "externals": {
       "dotenv": "$$LOCAL",
-      "dotenv-expand": "$$LOCAL",
       "just-diff": "$$LOCAL",
       "tapable": "@umijs/bundler-utils/compiled/tapable"
     }
