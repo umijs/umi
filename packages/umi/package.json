@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -38,15 +38,15 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.5",
-    "@umijs/bundler-webpack": "4.0.5",
-    "@umijs/core": "4.0.5",
-    "@umijs/lint": "4.0.5",
-    "@umijs/preset-umi": "4.0.5",
-    "@umijs/renderer-react": "4.0.5",
-    "@umijs/server": "4.0.5",
-    "@umijs/test": "4.0.5",
-    "@umijs/utils": "4.0.5",
+    "@umijs/bundler-utils": "4.0.6",
+    "@umijs/bundler-webpack": "4.0.6",
+    "@umijs/core": "4.0.6",
+    "@umijs/lint": "4.0.6",
+    "@umijs/preset-umi": "4.0.6",
+    "@umijs/renderer-react": "4.0.6",
+    "@umijs/server": "4.0.6",
+    "@umijs/test": "4.0.6",
+    "@umijs/utils": "4.0.6",
     "prettier-plugin-organize-imports": "^2.3.4",
     "prettier-plugin-packagejson": "^2.2.17"
   },

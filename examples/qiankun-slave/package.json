@@ -7,7 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/max": "4.0.5",
+    "@umijs/max": "4.0.6",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   }

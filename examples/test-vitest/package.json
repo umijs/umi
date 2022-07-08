@@ -7,7 +7,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "umi": "4.0.5"
+    "umi": "4.0.6"
   },
   "devDependencies": {
     "@types/react-test-renderer": "^18.0.0",
