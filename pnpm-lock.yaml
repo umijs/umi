@@ -128,7 +128,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-descriptions': 1.11.6_antd@4.20.6
       '@ant-design/pro-form': 1.69.4_antd@4.20.6
-      '@ant-design/pro-layout': 6.38.10_antd@4.20.6
+      '@ant-design/pro-layout': 7.0.1-beta.27_antd@4.20.6
       '@ant-design/pro-table': 2.76.4_antd@4.20.6
       '@antv/l7-react': 2.3.9
       '@umijs/max': link:../../packages/max
@@ -1111,6 +1111,7 @@ importers:
       '@ant-design/icons': ^4.7.0
       '@ant-design/pro-layout': ^7.0.1-beta.20
       '@umijs/bundler-utils': 4.0.5
+      '@umijs/mfsu': 4.0.5
       antd-dayjs-webpack-plugin: ^1.0.6
       axios: ^0.27.2
       babel-plugin-import: ^1.13.5
@@ -1133,6 +1134,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-layout': 7.0.1-beta.20
       '@umijs/bundler-utils': link:../bundler-utils
+      '@umijs/mfsu': link:../mfsu
       antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.11.3
       axios: 0.27.2
       babel-plugin-import: 1.13.5
@@ -1709,40 +1711,6 @@ packages:
       use-media-antd-query: 1.1.0
     dev: false
 
-  /@ant-design/pro-layout/6.38.10_antd@4.20.6:
-    resolution: {integrity: sha512-YT5IQH/UxAsQ6HWdtEjHeYvM8zivE1MCRG/ZAbabSV0SjDez2SD42WI9uBggM0DSrmXi/n7mzbBVCS4ES87MPg==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 1.8.0_antd@4.20.6
-      '@ant-design/pro-utils': 1.42.3_antd@4.20.6
-      '@babel/runtime': 7.18.3
-      '@umijs/route-utils': 2.1.1
-      '@umijs/ssr-darkreader': 4.9.45
-      '@umijs/use-params': 1.0.9
-      antd: 4.20.6
-      classnames: 2.3.1
-      lodash.merge: 4.6.2
-      omit.js: 2.0.2
-      path-to-regexp: 2.4.0
-      rc-resize-observer: 1.2.0
-      rc-util: 5.21.5
-      swr: 1.3.0
-      unstated-next: 1.1.0
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-      warning: 4.0.3
-    transitivePeerDependencies:
-      - react-dom
-    dev: false
-
   /@ant-design/pro-layout/7.0.1-beta.20:
     resolution: {integrity: sha512-VWibSyGn4GKThKd08DSWmBHf+JQZWVzEWD3SVYImM+57UDvEr5GH1sMZXIQUnfCrQFjTRYatWDeWaKLOaeuG1w==}
     peerDependencies:
@@ -1762,6 +1730,42 @@ packages:
       '@umijs/route-utils': 2.1.1
       '@umijs/ssr-darkreader': 4.9.45
       '@umijs/use-params': 1.0.9
+      classnames: 2.3.1
+      lodash.merge: 4.6.2
+      omit.js: 2.0.2
+      path-to-regexp: 2.4.0
+      rc-resize-observer: 1.2.0
+      rc-util: 5.21.5
+      swr: 1.3.0
+      unstated-next: 1.1.0
+      use-json-comparison: 1.0.6
+      use-media-antd-query: 1.1.0
+      warning: 4.0.3
+    transitivePeerDependencies:
+      - '@babel/core'
+      - react-dom
+    dev: false
+
+  /@ant-design/pro-layout/7.0.1-beta.27_antd@4.20.6:
+    resolution: {integrity: sha512-61TFfRBiEvZ/uCiZNdE2Pvltx3tXy63c0Ennre0NhjGV9iJS/6fwWmH3x0L+VpGdP2MdVoI8hEKXUFvwYvqQSw==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-provider': 1.8.0_antd@4.20.6
+      '@ant-design/pro-utils': 1.42.3_antd@4.20.6
+      '@babel/runtime': 7.18.3
+      '@emotion/css': 11.9.0
+      '@umijs/route-utils': 2.1.1
+      '@umijs/ssr-darkreader': 4.9.45
+      '@umijs/use-params': 1.0.9
+      antd: 4.20.6
       classnames: 2.3.1
       lodash.merge: 4.6.2
       omit.js: 2.0.2
