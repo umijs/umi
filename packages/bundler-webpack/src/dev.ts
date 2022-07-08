@@ -105,10 +105,12 @@ export async function dev(opts: IOpts) {
     modifyWebpackConfig: opts.modifyWebpackConfig,
     hmr: process.env.HMR !== 'none',
     analyze: process.env.ANALYZE,
-    cache: {
-      ...opts.cache,
-      cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
-    },
+    cache: opts.cache
+      ? {
+          ...opts.cache,
+          cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
+        }
+      : undefined,
   });
 
   const depConfig = await getConfig({
