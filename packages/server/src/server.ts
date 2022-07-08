@@ -144,6 +144,7 @@ export function createRequestHandler(opts: IOpts): RequestHandler {
       res.redirect(opts.base);
     } else if (
       req.headers.accept?.includes('text/html') ||
+      req.headers.accept === '*/*' ||
       req.path === opts.base
     ) {
       // 匹配路由，不匹配走 next()
