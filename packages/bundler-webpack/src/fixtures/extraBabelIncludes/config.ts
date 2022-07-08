@@ -4,5 +4,5 @@ export default {
   nodeModulesTransform: {
     type: 'none',
   },
-  extraBabelIncludes: [join(__dirname, '../.extraBabelIncludes'), 'foo', 'bar'],
+  extraBabelIncludes: [join(__dirname, '../.extraBabelIncludes'), 'foo', 'bar', 'pkg-up-name'],
 };
