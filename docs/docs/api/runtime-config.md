@@ -49,7 +49,7 @@ export const layout = {
 比如用于做埋点统计，
 
 ```bash
-export function onRouteChange({ location, routes, action }) {
+export function onRouteChange({ location, clientRoutes, routes, action }) {
   bacon(location.pathname);
 }
 ```
