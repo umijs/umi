@@ -39,7 +39,7 @@ const getPackages = require('./utils/getPackages');
           umi: "latest"
         },
         bugs: 'http://github.com/umijs/umi/issues',
-        homepage: `https://github.com/umijs/umi/tree/master/examples/${shortName}#readme`,
+        homepage: `https://github.com/umijs/umi/tree/3.x/examples/${shortName}#readme`,
       };
       if (pkgJSONExists) {
         const pkg = require(pkgJSONPath);
@@ -69,7 +69,7 @@ const getPackages = require('./utils/getPackages');
       'README.md',
     );
     if (args.force || !existsSync(readmePath)) {
-      writeFileSync(readmePath, `# ${shortName}\n\nTODO\n\n## How to use\n\nExecute [\`@umijs/create-umi-app\`](https://github.com/umijs/umi/tree/master/packages/create-umi-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:\n\n\`\`\`bash\nnpx @umijs/create-umi-app --example ${shortName} ${shortName}-app\n# or\nyarn create @umijs/umi-app --example ${shortName} ${shortName}-app\n\`\`\`\n`);
+      writeFileSync(readmePath, `# ${shortName}\n\nTODO\n\n## How to use\n\nExecute [\`@umijs/create-umi-app\`](https://github.com/umijs/umi/tree/3.x/packages/create-umi-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:\n\n\`\`\`bash\nnpx @umijs/create-umi-app --example ${shortName} ${shortName}-app\n# or\nyarn create @umijs/umi-app --example ${shortName} ${shortName}-app\n\`\`\`\n`);
     } else {
       return;
     }

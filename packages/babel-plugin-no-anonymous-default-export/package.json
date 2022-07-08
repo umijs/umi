@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-no-anonymous-default-export#readme",
+  "homepage": "https://github.com/umijs/umi/tree/3.x/packages/babel-plugin-no-anonymous-default-export#readme",
   "publishConfig": {
     "access": "public"
   },

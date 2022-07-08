@@ -36,7 +36,7 @@ const getPackages = require('./utils/getPackages');
         authors: ['chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)'],
         license: 'MIT',
         bugs: 'http://github.com/umijs/umi/issues',
-        homepage: `https://github.com/umijs/umi/tree/master/packages/${shortName}#readme`,
+        homepage: `https://github.com/umijs/umi/tree/3.x/packages/${shortName}#readme`,
         publishConfig: {
           access: 'public',
         },

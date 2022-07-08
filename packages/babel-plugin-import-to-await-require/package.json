@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-import-to-await-require#readme",
+  "homepage": "https://github.com/umijs/umi/tree/3.x/packages/babel-plugin-import-to-await-require#readme",
   "publishConfig": {
     "access": "public"
   },
