@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/test-utils#readme",
+  "homepage": "https://github.com/umijs/umi/tree/3.x/packages/test-utils#readme",
   "publishConfig": {
     "access": "public"
   },
