@@ -23,6 +23,7 @@ export default function mf(api: IApi) {
               entry: Joi.string().required(),
             }),
           ),
+          library: Joi.object(),
         });
       },
     },
@@ -69,7 +70,7 @@ export default function mf(api: IApi) {
       filename: 'remote.js',
       exposes,
       shared,
-      // todo 加入lib
+      library: api.config.mf.library,
     };
 
     const { ModuleFederationPlugin } = webpack.container;

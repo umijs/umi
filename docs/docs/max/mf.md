@@ -21,12 +21,15 @@ defineConfig({
                 entry: 'https://to.the.remote.com/remote.js',
             },
         ],
+        // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
+        // 注意这里的 name 必须和最终 MF 模块的 name 一致
+        library: { type: "window", name: "exportMFName" },
     },
     mfsu: false, // 目前和 mfsu 不兼容 开发阶段需要关闭
     // 配置 MF 共享的模块
     shared：{
         lodash: {eager: true}, 
-    }
+    },
 })
 ```
 
@@ -48,6 +51,9 @@ defineConfig({
                 entry: 'https://to.the.remote.com/remote.js',
             },
         ],
+        // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
+        // 注意这里的 name 必须和最终 MF 模块的 name 一致
+        library: { type: "window", name: "exportMFName" },
     },
     mfsu: false, // 目前和 mfsu 不兼容 开发阶段需要关闭  
     // 配置 MF 共享的模块
