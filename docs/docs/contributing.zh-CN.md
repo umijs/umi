@@ -29,6 +29,6 @@ $ yarn debug examples/normal build
 Umi 使用 Umi 本身 + dumi 插件作为文档工具，
 
 1. 每篇文档左下方有 “在 GitHub 上编辑这篇文档”，你可以通过这里进行文档修改
-2. 打开 [Github 上的 docs](https://github.com/umijs/umi/tree/master/docs) 目录，用文件编辑器新建、修改、预览文件，然后提 PR
+2. 打开 [Github 上的 docs](https://github.com/umijs/umi/tree/3.x/docs) 目录，用文件编辑器新建、修改、预览文件，然后提 PR
 3. 你还可以 clone [Umi 仓库](https://github.com/umijs/umi)，修改 docs 目录下的文件，本地文档调试完成后统一提 PR
 
