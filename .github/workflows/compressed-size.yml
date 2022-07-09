@@ -4,17 +4,14 @@ env:
   NODE_OPTIONS: --max-old-space-size=6144
 
 on:
-  push:
-    branches:
-      - ci/compress-size
-    paths-ignore:
-      - 'examples/**'
-      - 'docs/**'
-      - '**/*.md'
   pull_request:
     types:
       - 'opened'
       - 'synchronize'
+    paths-ignore:
+      - 'examples/**'
+      - 'docs/**'
+      - '**/*.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -32,7 +29,7 @@ jobs:
         uses: pnpm/action-setup@v2.2.2
         with:
           run_install: false
-          
+
       - uses: preactjs/compressed-size-action@v2
         with:
           build-script: "build"
