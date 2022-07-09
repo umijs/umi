@@ -6,7 +6,7 @@ env:
 on:
   push:
     branches:
-      - master
+      - ci/compress-size
     paths-ignore:
       - 'examples/**'
       - 'docs/**'
@@ -15,7 +15,6 @@ on:
     types:
       - 'opened'
       - 'synchronize'
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -34,4 +33,3 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           pattern: "./packages/*/{dist,compiled}/**/*.js"
           compression: "none"
-          
