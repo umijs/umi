@@ -1,0 +1,19 @@
+{
+  "name": "@example/test-vitest",
+  "private": true,
+  "scripts": {
+    "dev": "umi dev",
+    "start": "npm run dev",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "umi": "4.0.6"
+  },
+  "devDependencies": {
+    "@types/react-test-renderer": "^18.0.0",
+    "@vitejs/plugin-react": "1.2.0",
+    "react-test-renderer": "^18.2.0",
+    "typescript": "^4.7.2",
+    "vitest": "^0.16.0"
+  }
+}

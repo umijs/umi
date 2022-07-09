@@ -84,7 +84,7 @@ export async function createServer(opts: IOpts) {
           opts.afterMiddlewares!.map((m) => ({
             route: '',
             // TODO: FIXME
-            // see: https://github.com/umijs/umi-next/commit/34d4e4e26a20ff5c7393eab5d3db363cca541379#diff-3a996a9e7a2f94fc8f23c6efed1447eed9567e36ed622bd8547a58e5415087f7R164
+            // see: https://github.com/umijs/umi/commit/34d4e4e26a20ff5c7393eab5d3db363cca541379#diff-3a996a9e7a2f94fc8f23c6efed1447eed9567e36ed622bd8547a58e5415087f7R164
             handle: app.use(m.toString().includes(`{ compiler }`) ? m({}) : m),
           }));
 
@@ -126,7 +126,7 @@ export async function createServer(opts: IOpts) {
       });
     }
 
-    const host = process.env.HOST || '127.0.0.1';
+    const host = process.env.HOST || 'localhost';
 
     logger.ready(`Example app listening at ${protocol}//${host}:${port}`);
   });

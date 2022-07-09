@@ -4,20 +4,32 @@ import { Service } from './service/service';
 
 export * from '@umijs/test';
 
-function getAliasPathWithKey(
+export function getAliasPathWithKey(
   alias: Record<string, string>,
   key: string,
 ): string {
-  const thePath = alias[key];
-  if (alias[thePath]) {
-    return getAliasPathWithKey(alias, thePath);
+  if (alias[key]) {
+    return getAliasPathWithKey(alias, alias[key]);
   }
-  return thePath;
+
+  const aliasKeys = Object.keys(alias);
+  const keyStartedWith = aliasKeys.find(
+    (k) => !k.endsWith('$') && key.startsWith(`${k}/`),
+  );
+
+  if (keyStartedWith) {
+    const realPath = alias[keyStartedWith];
+    const newKey = realPath + key.slice(keyStartedWith.length);
+
+    return getAliasPathWithKey(alias, newKey);
+  } else {
+    return key;
+  }
 }
 
 let service: Service;
 
-export async function configUmiAlias(config: Config.InitialOptions) {
+export async function getUmiAlias() {
   if (!service) {
     service = new Service();
     await service.run2({
@@ -25,11 +37,17 @@ export async function configUmiAlias(config: Config.InitialOptions) {
       args: { quiet: true },
     });
   }
+  return service.config.alias;
+}
+
+export async function configUmiAlias(config: Config.InitialOptions) {
   config.moduleNameMapper ||= {};
-  const { alias } = service.config;
+  const alias = await getUmiAlias();
   for (const key of Object.keys(alias)) {
     const aliasPath = getAliasPathWithKey(alias, key);
-    if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
+    if (key.endsWith('$')) {
+      config.moduleNameMapper[`^${key}`] = aliasPath;
+    } else if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
       config.moduleNameMapper[`^${key}/(.*)$`] = `${aliasPath}/$1`;
       config.moduleNameMapper[`^${key}$`] = aliasPath;
     } else {

@@ -1,5 +1,5 @@
 // sort-object-keys
-import type { Root } from '@hapi/joi';
+import type { Root } from '@umijs/utils/compiled/@hapi/joi';
 import { CSSMinifier, JSMinifier, Transpiler } from './types';
 
 const options = [
@@ -110,8 +110,10 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
           cacheDirectory: Joi.string(),
           chainWebpack: Joi.function(),
           esbuild: Joi.boolean(),
+          include: Joi.array().items(Joi.string()),
           mfName: Joi.string(),
           runtimePublicPath: Joi.boolean(),
+          strategy: Joi.string().valid('eager', 'normal').default('normal'),
         }),
         Joi.boolean(),
       ),

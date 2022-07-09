@@ -6,12 +6,14 @@
     "test": "jest"
   },
   "dependencies": {
-    "umi": "4.0.1"
+    "@umijs/plugins": "4.0.6",
+    "umi": "4.0.6"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12",
+    "@testing-library/react": "^13",
     "@types/jest": "^27.5.1",
+    "@types/testing-library__jest-dom": "^5.14.5",
     "jest": "^27",
     "ts-node": "^10",
     "typescript": "^4.7.2"

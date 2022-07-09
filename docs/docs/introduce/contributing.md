@@ -8,7 +8,7 @@ import { Message } from 'umi';
 
 ### Node.js 和 pnpm
 
-开发 Umi 需要 Node.js 16+ 和 `pnpm`。
+开发 Umi 需要 Node.js 16+ 和 `pnpm` v7。
 
 推荐使用 [`nvm`](https://github.com/nvm-sh/nvm) 管理 Node.js，避免权限问题的同时，还能够随时切换当前使用的 Node.js 的版本。在 Windows 系统下的开发者可以使用 [`nvm-windows`](https://github.com/coreybutler/nvm-windows)。
 
@@ -17,14 +17,14 @@ import { Message } from 'umi';
 ### Clone 项目
 
 ```bash
-$ git clone git@github.com:umijs/umi-next.git
-$ cd umi-next
+$ git clone git@github.com:umijs/umi.git
+$ cd umi
 ```
 
-### 安装依赖
+### 安装依赖并构建
 
 ```bash
-$ pnpm i
+$ pnpm i && pnpm build
 ```
 
 ## 开发 Umi
@@ -176,3 +176,9 @@ $ pnpm build:deps --dep webpack-manifest-plugin
 ```bash
 $ pnpm release
 ```
+
+## 加入 Contributor 群
+
+提交过 Bugfix 或 Feature 类 PR 的同学，如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id），我会拉到群里。
+
+<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h3yg26xbauj20cu0d8my4.jpg" />

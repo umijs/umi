@@ -1,6 +1,6 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -15,19 +15,22 @@ export async function addCopyPlugin(opts: IOpts) {
   const copyPatterns = [
     existsSync(join(cwd, 'public')) && {
       from: join(cwd, 'public'),
+      // ref: https://github.com/webpack-contrib/copy-webpack-plugin#info
+      // Set minimized so terser will not do minimize
+      info: { minimized: true },
     },
     ...(userConfig.copy
-      ? userConfig.copy.map((item) => {
-          if (typeof item === 'string') {
+      ? userConfig.copy?.map((pattern) => {
+          if (typeof pattern === 'string') {
             return {
-              from: join(cwd, item),
-              to: item,
+              from: resolve(cwd, pattern),
+              info: { minimized: true },
             };
           }
           return {
-            // 相对于 process.cwd，所以这里需要使用绝对路径
-            from: join(cwd, item.from),
-            to: item.to,
+            from: resolve(cwd, pattern.from),
+            to: resolve(cwd, pattern.to),
+            info: { minimized: true },
           };
         })
       : []),

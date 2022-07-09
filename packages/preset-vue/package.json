@@ -1,12 +1,12 @@
 {
   "name": "@umijs/preset-vue",
-  "version": "4.0.1",
+  "version": "4.0.6",
   "description": "@umijs/preset-vue",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/preset-vue#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-vue#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",
@@ -19,17 +19,17 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch"
+    "dev": "pnpm build --watch"
   },
   "dependencies": {
-    "@umijs/renderer-vue": "4.0.1",
+    "@umijs/renderer-vue": "4.0.6",
     "vue": "3.2.36",
     "vue-loader": "17.0.0",
     "vue-router": "4.0.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "2.3.1",
-    "umi": "4.0.1"
+    "umi": "4.0.6"
   },
   "publishConfig": {
     "access": "public"

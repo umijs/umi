@@ -1,12 +1,12 @@
 {
   "name": "umi",
-  "version": "4.0.1",
+  "version": "4.0.6",
   "description": "umi",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/umi#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",
@@ -33,20 +33,20 @@
     "build": "pnpm tsc",
     "build:client": "pnpm tsc --project ./tsconfig.client.json",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "dev:client": "pnpm build:client -- --watch",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.1",
-    "@umijs/bundler-webpack": "4.0.1",
-    "@umijs/core": "4.0.1",
-    "@umijs/lint": "4.0.1",
-    "@umijs/preset-umi": "4.0.1",
-    "@umijs/renderer-react": "4.0.1",
-    "@umijs/server": "4.0.1",
-    "@umijs/test": "4.0.1",
-    "@umijs/utils": "4.0.1",
+    "@umijs/bundler-utils": "4.0.6",
+    "@umijs/bundler-webpack": "4.0.6",
+    "@umijs/core": "4.0.6",
+    "@umijs/lint": "4.0.6",
+    "@umijs/preset-umi": "4.0.6",
+    "@umijs/renderer-react": "4.0.6",
+    "@umijs/server": "4.0.6",
+    "@umijs/test": "4.0.6",
+    "@umijs/utils": "4.0.6",
     "prettier-plugin-organize-imports": "^2.3.4",
     "prettier-plugin-packagejson": "^2.2.17"
   },

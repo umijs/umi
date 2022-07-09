@@ -1,9 +1,9 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { chokidar, lodash, register } from '@umijs/utils';
+import joi from '@umijs/utils/compiled/@hapi/joi';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import joi from '../../compiled/@hapi/joi';
 import { diff } from '../../compiled/just-diff';
 import {
   DEFAULT_CONFIG_FILES,
@@ -164,7 +164,14 @@ export class Config {
           implementor: esbuild,
         });
         register.clearFiles();
-        config = lodash.merge(config, require(configFile).default);
+        try {
+          config = lodash.merge(config, require(configFile).default);
+        } catch (e) {
+          // @ts-ignore
+          throw new Error(`Parse config file failed: [${configFile}]`, {
+            cause: e,
+          });
+        }
         for (const file of register.getFiles()) {
           delete require.cache[file];
         }

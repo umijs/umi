@@ -2,7 +2,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Access, useAccess } from '@umijs/max';
 import { Button } from 'antd';
 
-export default () => {
+const AccessPage: React.FC = () => {
   const access = useAccess();
   return (
     <PageContainer
@@ -17,3 +17,5 @@ export default () => {
     </PageContainer>
   );
 };
+
+export default AccessPage;

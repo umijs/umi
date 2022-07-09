@@ -1,10 +1,9 @@
-export function getAliasedPath({
-  value,
-  alias,
-}: {
+type Opts = {
   value: string;
   alias: Record<string, string>;
-}) {
+};
+
+export function getAliasedPath({ value, alias }: Opts) {
   const importValue = value;
   // equal alias
   if (alias[value]) {
@@ -30,4 +29,20 @@ export function getAliasedPath({
 
 function addLastSlash(path: string) {
   return path.endsWith('/') ? path : `${path}/`;
+}
+
+export function getAliasedPathWithLoopDetect({ value, alias }: Opts): string {
+  let needUnAlias = value;
+  for (let i = 0; i < 10; i++) {
+    let unAliased = getAliasedPath({ value: needUnAlias, alias });
+    if (unAliased) {
+      needUnAlias = unAliased;
+    } else {
+      return needUnAlias;
+    }
+  }
+
+  throw Error(
+    `endless loop detected in resolve alias for '${value}', please check your alias config.`,
+  );
 }

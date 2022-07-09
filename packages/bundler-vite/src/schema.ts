@@ -1,4 +1,4 @@
-import type { Root } from '@hapi/joi';
+import type { Root } from '@umijs/utils/compiled/@hapi/joi';
 import { JSMinifier } from './types';
 
 // sort-object-keys

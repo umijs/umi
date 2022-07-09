@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getRoutes 1`] = `
+Object {
+  "1": Object {
+    "__content": "",
+    "__isJSFile": true,
+    "absPath": "/login",
+    "file": "@/pages/users/Login/index.tsx",
+    "id": "1",
+    "layout": false,
+    "parentId": undefined,
+    "path": "/login",
+  },
+  "2": Object {
+    "__content": "",
+    "__isJSFile": true,
+    "absPath": "/*",
+    "file": "@/pages/404.tsx",
+    "id": "2",
+    "parentId": "@@/global-layout",
+    "path": "*",
+  },
+  "3": Object {
+    "__content": "",
+    "__isJSFile": false,
+    "absPath": "/hello",
+    "file": "@/pages/hello/index.vue",
+    "id": "3",
+    "parentId": "@@/global-layout",
+    "path": "/hello",
+  },
+  "4": Object {
+    "__content": "",
+    "__isJSFile": false,
+    "absPath": "/users",
+    "file": "@/pages/users/index.vue",
+    "id": "4",
+    "parentId": "@@/global-layout",
+    "path": "/users",
+  },
+  "5": Object {
+    "__content": "",
+    "__isJSFile": true,
+    "absPath": "/users/foo",
+    "file": "@/pages/users/Foo.tsx",
+    "id": "5",
+    "parentId": "4",
+    "path": "/users/foo",
+  },
+  "@@/global-layout": Object {
+    "absPath": "/",
+    "file": "@/layouts/index.tsx",
+    "id": "@@/global-layout",
+    "isLayout": true,
+    "parentId": undefined,
+    "path": "/",
+  },
+}
+`;

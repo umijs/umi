@@ -7,7 +7,7 @@
 - 类型：`Record<string, string>`
 - 默认值：`{}`
 
-配置别名，对 import 语句的 source 做隐射。
+配置别名，对 import 语句的 source 做映射。
 
 比如：
 
@@ -41,10 +41,10 @@
 }
 ```
 
-2、如果不需要子路径也被隐射，记得加 `$` 后缀，比如
+2、如果不需要子路径也被映射，记得加 `$` 后缀，比如
 
 ```js
-// import 'foo/bar' 会被隐射到 import '/tmp/to/foo/bar'
+// import 'foo/bar' 会被映射到 import '/tmp/to/foo/bar'
 {
   alias: {
     foo: '/tmp/to/foo';
@@ -104,6 +104,26 @@ export default {
 };
 ```
 
+## clickToComponent
+
+- 类型: `{ editor?: string }`
+- 默认值: `false`
+
+开启后，可通过 `Option+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click` 可以打开上下文，查看父组件。
+
+关于参数。`editor` 为编辑器名称，默认为 'vscode'，支持 `vscode` & `vscode-insiders`。
+
+配置 clickToComponent 的行为，详见 [click-to-component](https://github.com/ericclemmons/click-to-component)。
+
+示例：
+
+```ts
+// .umirc.ts
+export default {
+  clickToComponent: {},
+};
+```
+
 ## clientLoader
 
 - 类型: `{}`
@@ -117,8 +137,8 @@ export default {
 ```ts
 // .umirc.ts
 export default {
-  clientLoader: {}
-}
+  clientLoader: {},
+};
 ```
 
 配置开启后，在路由组件中使用：
@@ -126,10 +146,10 @@ export default {
 ```jsx
 // pages/.../some_page.tsx
 
-import {useClientLoaderData} from 'umi';
+import { useClientLoaderData } from 'umi';
 
 export default function SomePage() {
-  const data = useClientLoader();
+  const data = useClientLoaderData();
   return <div>{data}</div>;
 }
 
@@ -159,34 +179,47 @@ conventionRoutes: {
 
 ## copy
 
-- 类型：`string[]`
+- 类型：`Array<string | { from: string; to: string; }>`
 - 默认值：`[]`
 
 配置要复制到输出目录的文件或文件夹。
 
-比如你的目录结构如下，
+当配置字符串时，默认拷贝到产物目录，如：
 
-```
-+ src
-    - index.ts
-    + bar
-        - bar.js
-    - foo.js
+```ts
+copy: ['foo.json', 'src/bar.json']
 ```
 
-然后设置，
-
-```js
-copy: ['foo.js', 'bar'];
-```
-
-编译完成后，会额外输出以下文件，
+会产生如下产物的结构：
 
 ```
 + dist
-    + bar
-        - bar.js
-    - foo.js
+  - bar.json
+  - foo.json
++ src
+  - bar.json
+- foo.json
+```
+
+你也可以通过对象配置具体的拷贝位置，其中相对路径的起点为项目根目录：
+
+```ts
+copy: [
+  { from: 'from', to: 'dist/output' },
+  { from: 'file.json', to: 'dist' }
+]
+```
+
+此时将产生如下产物结构：
+
+```
++ dist
+  + output
+    - foo.json
+  - file.json
++ from
+  - foo.json
+- file.json
 ```
 
 ## crossorigin
@@ -221,6 +254,7 @@ crossorigin: {}
 配置构建时使用的 CSS 压缩工具; `none` 表示不压缩。
 
 示例：
+
 ```js
 {
   cssMinifier: 'esbuild'
@@ -229,8 +263,8 @@ crossorigin: {}
 
 ## cssMinifierOptions
 
-* 类型：`Object`
-* 默认值：`{}`
+- 类型：`Object`
+- 默认值：`{}`
 
 `cssMinifier` CSS 压缩工具配置选项。
 
@@ -254,15 +288,15 @@ crossorigin: {}
 
 ## cssLoader
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 配置 css-loader ，详见 [css-loader > options](https://github.com/webpack-contrib/css-loader#options)
 
 ## cssLoaderModules
 
-* 类型：`object`
-* 默认值：`{}`
+- 类型：`object`
+- 默认值：`{}`
 
 配置 css modules 的行为，详见 [css-loader > modules](https://github.com/webpack-contrib/css-loader#modules)。
 
@@ -271,7 +305,7 @@ crossorigin: {}
 ```ts
 cssLoaderModules: {
   // 配置驼峰式使用
-  exportLocalsConvention: "camelCase"
+  exportLocalsConvention: 'camelCase'
 }
 ```
 
@@ -356,8 +390,8 @@ scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 
 ## extraBabelIncludes
 
-* 类型：`string[]`
-* 默认值：`[]`
+- 类型：`string[]`
+- 默认值：`[]`
 
 配置额外需要做 Babel 编译的 NPM 包或目录。比如：
 
@@ -613,12 +647,20 @@ metas: [
 
 ## mfsu
 
-- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; chainWebpack: (memo, args) => void }`
-- 默认值：`{ mfName: 'mf' }`
+- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void }`
+- 默认值：`{ mfName: 'mf', strategy: 'normal' }`
 
-配置基于 Module Federation 的提速功能。
+配置基于 [Module Federation](https://module-federation.github.io/) 的提速功能。
 
-关于参数。`esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些；`mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置；`cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`; `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)；`runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`。
+关于参数
+
+- `esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些
+- `mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置
+- `cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`
+- `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/sorrycc/webpack-chain)；
+- `runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`
+- `strategy` 指定 mfsu 编译依赖的时机; `normal` 模式下，采用 babel 编译分析后，构建 Module Federation 远端包；`eager` 模式下采用静态分析的方式，和项目代码同时发起构建。
+- `include` 仅在 `strategy: 'eager' ` 模式下生效， 用于补偿在 eager 模式下，静态分析无法分析到的依赖，例如 `react` 未进入 Module Federation 远端模块可以这样配置 `{ include: [ 'react' ] }`
 
 示例，
 
@@ -827,10 +869,10 @@ proxy: {
 
 ## runtimePublicPath
 
-- 类型：`boolean`
-- 默认值：`false`
+- 类型：`object`
+- 默认值：`null`
 
-启用运行时 publicPath。
+启用运行时 publicPath，开启后会使用 `window.publicPath` 作为资源动态加载的起始路径。
 
 ## scripts
 
@@ -909,6 +951,26 @@ styles: [`body { color: red; }`, `https://a.com/b.css`];
 - 默认值：`babel`
 
 配置构建时转译 js/ts 的工具。
+
+## svgr
+
+- 类型：`object`
+- 默认值：`{}`
+
+svgr 默认开启，支持如下方式使用 React svg 组件：
+
+```ts
+import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
+```
+
+可配置 svgr 的行为，配置项详见 [@svgr/core > Config](https://github.com/gregberge/svgr/blob/main/packages/core/src/config.ts#L9)。
+
+## svgo
+
+- 类型：`object`
+- 默认值：`{}`
+
+默认使用 svgo 来优化 svg 资源，配置项详见 [svgo](https://github.com/svg/svgo#configuration) 。
 
 ## targets
 

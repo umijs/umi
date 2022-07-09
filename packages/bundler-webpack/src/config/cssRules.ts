@@ -82,7 +82,14 @@ export async function addCSSRules(opts: IOpts) {
         .options({
           importLoaders: 1,
           esModule: true,
-          url: true,
+          url: {
+            filter: (url: string) => {
+              // Don't parse absolute URLs
+              // ref: https://github.com/webpack-contrib/css-loader#url
+              if (url.startsWith('/')) return false;
+              return true;
+            },
+          },
           import: true,
           ...(isCSSModules
             ? {

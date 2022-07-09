@@ -24,9 +24,6 @@ export async function addAssetRules(opts: IOpts) {
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
-    })
-    .generator({
-      filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
   rule
@@ -37,9 +34,6 @@ export async function addAssetRules(opts: IOpts) {
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
-    })
-    .generator({
-      filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
   const fallback = rule
@@ -52,10 +46,5 @@ export async function addAssetRules(opts: IOpts) {
   if (userConfig.mdx) {
     fallback.add(/\.mdx?$/);
   }
-  fallback
-    .end()
-    .type('asset/resource')
-    .generator({
-      filename: `${opts.staticPathPrefix}[name].[hash:8].[ext]`,
-    });
+  fallback.end().type('asset/resource');
 }

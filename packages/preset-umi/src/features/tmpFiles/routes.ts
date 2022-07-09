@@ -3,7 +3,7 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { resolve, tryPaths, winPath } from '@umijs/utils';
+import { lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
@@ -42,7 +42,9 @@ export async function getApiRoutes(opts: { api: IApi }) {
 }
 
 // get route config
-export async function getRoutes(opts: { api: IApi }) {
+export async function getRoutes(opts: {
+  api: IApi;
+}): Promise<Record<string, any>> {
   let routes = null;
   if (opts.api.config.routes) {
     routes = getConfigRoutes({
@@ -57,7 +59,10 @@ export async function getRoutes(opts: { api: IApi }) {
             extensions: ['.js', '.jsx', '.tsx', '.ts', '.vue'],
           }),
         );
-        component = component.replace(`${opts.api.paths.absSrcPath}/`, '@/');
+        component = component.replace(
+          winPath(`${opts.api.paths.absSrcPath}/`),
+          '@/',
+        );
         return component;
       },
     });
@@ -125,6 +130,8 @@ export async function getRoutes(opts: { api: IApi }) {
   const absLayoutPath = tryPaths([
     join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
     join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
+    join(opts.api.paths.absSrcPath, 'layouts/index.jsx'),
+    join(opts.api.paths.absSrcPath, 'layouts/index.js'),
   ]);
 
   const layouts = (
@@ -134,12 +141,18 @@ export async function getRoutes(opts: { api: IApi }) {
         absLayoutPath && {
           id: '@@/global-layout',
           file: winPath(absLayoutPath),
+          test(route: any) {
+            return route.layout !== false;
+          },
         },
       ].filter(Boolean),
     })
   ).map((layout: { file: string }) => {
     // prune local path prefix, avoid mix in outputs
-    layout.file = layout.file.replace(new RegExp(`^${absSrcPath}`), '@');
+    layout.file = layout.file.replace(
+      new RegExp(`^${winPath(absSrcPath)}`),
+      '@',
+    );
     return layout;
   });
   for (const layout of layouts) {
@@ -151,6 +164,7 @@ export async function getRoutes(opts: { api: IApi }) {
         file: layout.file,
         parentId: undefined,
         absPath: '/',
+        isLayout: true,
       },
       routes,
       test: layout.test,
@@ -182,7 +196,7 @@ export async function getRouteComponents(opts: {
 }) {
   const imports = Object.keys(opts.routes)
     .map((key) => {
-      const useSuspense = true; // opts.api.appData.react.version.startsWith('18.');
+      const useSuspense = opts.api.appData.framework === 'react' ? true : false; // opts.api.appData.react.version.startsWith('18.');
       const route = opts.routes[key];
       if (!route.file) {
         return useSuspense
@@ -201,7 +215,11 @@ export async function getRouteComponents(opts: {
       // component: (() => () => <h1>foo</h1>)()
       if (route.file.startsWith('(')) {
         return useSuspense
-          ? `'${key}': React.lazy(() => Promise.resolve(${route.file})),`
+          ? // Compatible with none default route exports
+            // e.g. https://github.com/umijs/umi/blob/0d40a07bf28b0760096cbe2f22da4d639645b937/packages/plugins/src/qiankun/master.ts#L55
+            `'${key}': React.lazy(
+              () => Promise.resolve(${route.file}).then(e => e?.default ? e : ({ default: e }))
+            ),`
           : `'${key}': () => Promise.resolve(${route.file}),`;
       }
 
@@ -210,16 +228,51 @@ export async function getRouteComponents(opts: {
           ? route.file
           : `${opts.prefix}${route.file}`;
 
+      const webpackChunkName = componentToChunkName(path, opts.api.cwd);
+
       return useSuspense
-        ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${key.replace(
-            /[\/-]/g,
-            '_',
-          )}" */'${winPath(path)}')),`
-        : `'${key}': () => import(/* webpackChunkName: "${key.replace(
-            /[\/-]/g,
-            '_',
-          )}" */'${winPath(path)}'),`;
+        ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(
+            path,
+          )}')),`
+        : `'${key}': () => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(
+            path,
+          )}'),`;
     })
     .join('\n');
   return `{\n${imports}\n}`;
+}
+
+function lastSlash(str: string) {
+  return str[str.length - 1] === '/' ? str : `${str}/`;
+}
+
+/**
+ *
+ * transform component into webpack chunkName
+ * @export
+ * @param {string} component component path
+ * @param {string} [cwd] current root path
+ * @return {*}  {string}
+ */
+export function componentToChunkName(component: string, cwd?: string): string {
+  return typeof component === 'string'
+    ? component
+        .replace(
+          new RegExp(`^${lodash.escapeRegExp(lastSlash(winPath(cwd || '/')))}`),
+          '',
+        )
+        .replace(/^.(\/|\\)/, '')
+        .replace(/(\/|\\)/g, '__')
+        .replace(/\.jsx?$/, '')
+        .replace(/\.tsx?$/, '')
+        .replace(/\.vue?$/, '')
+        .replace(/^src__/, '')
+        .replace(/\.\.__/g, '')
+        // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
+        // ref: https://github.com/umijs/umi/issues/4155
+        .replace(/[\[\]]/g, '')
+        // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
+        .replace(/^.umi-production__/, 't__')
+        .replace(/^pages__/, 'p__')
+    : '';
 }

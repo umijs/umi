@@ -35,7 +35,10 @@ const expects: Record<string, Function> = {
     expect(files['a.js']).toContain(`console.log('copy');`);
   },
   'copy-from-assets'({ files }: IOpts) {
+    expect(files['foo.json']).toContain(EXISTS);
+    expect(files['bar.json']).toContain(EXISTS);
     expect(files['assets']).toContain(EXISTS);
+    expect(files['foo-copy.json']).toContain(EXISTS);
   },
   'css-modules'({ files }: IOpts) {
     expect(files['index.js']).toContain(`var a_module = ({"a":"`);

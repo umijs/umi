@@ -3,28 +3,28 @@
 @tailwind utilities;
 
 article h1 {
-  @apply text-4xl font-bold tracking-tight mt-2 my-4 dark:text-white;
+  @apply text-4xl font-bold tracking-tight mt-2 my-4 dark:text-white title-link;
 }
 
 article h2 {
-  @apply text-3xl font-semibold tracking-tight mt-10 dark:text-white;
+  @apply text-3xl font-semibold tracking-tight mt-10 dark:text-white title-link;
   @apply pb-1 border-b;
 }
 
 article h3 {
-  @apply text-2xl font-semibold tracking-tight mt-8 dark:text-white;
+  @apply text-2xl font-semibold tracking-tight mt-8 dark:text-white title-link;
 }
 
 article h4 {
-  @apply text-xl font-semibold tracking-tight mt-8 dark:text-white;
+  @apply text-xl font-semibold tracking-tight mt-8 dark:text-white title-link;
 }
 
 article h5 {
-  @apply text-lg font-semibold tracking-tight mt-8 dark:text-white;
+  @apply text-lg font-semibold tracking-tight mt-8 dark:text-white title-link;
 }
 
 article h6 {
-  @apply text-base font-semibold tracking-tight mt-8 dark:text-white;
+  @apply text-base font-semibold tracking-tight mt-8 dark:text-white title-link;
 }
 
 article p {
@@ -231,6 +231,34 @@ h6 {
 }
 
 @layer components {
+
+  .title-link a {
+    float: left;
+    margin-top: 0.1em;
+    margin-left: -24px;
+    width: 20px;
+    padding-right: 4px;
+    line-height: 1;
+    box-sizing: border-box;
+    background: none;
+    opacity: 0
+  }  
+
+  .title-link:hover a{
+    opacity: 1
+  }
+
+  .title-link span{
+    display: none;
+  }
+  
+  .title-link a::after{
+    content: "#";
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+  }
+
   .features-dark {
     @apply bg-gray-900;
     background-image: radial-gradient(#2a2a2a 20%, transparent 20%);

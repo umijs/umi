@@ -1,12 +1,12 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.0.1",
+  "version": "4.0.6",
   "description": "@umijs/plugin-docs",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugin-docs#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-docs#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",
@@ -21,7 +21,7 @@
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "dev:css": "pnpm build:css -- --watch",
     "test": "umi-scripts jest-turbo"
   },
@@ -36,10 +36,11 @@
     "@types/keymaster": "^1.6.30",
     "@types/react-helmet": "^6.1.5",
     "classnames": "^2.3.1",
+    "rehype-autolink-headings": "^6.1.1",
     "rehype-slug": "5.0.1",
     "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.0.24",
-    "umi": "4.0.1"
+    "umi": "4.0.6"
   },
   "publishConfig": {
     "access": "public"
@@ -51,13 +52,15 @@
     "deps": [
       "@mdx-js/mdx",
       "rehype-slug",
-      "remark-gfm"
+      "remark-gfm",
+      "rehype-autolink-headings"
     ],
     "externals": {},
     "excludeDtsDeps": [
       "@mdx-js/mdx",
       "rehype-slug",
-      "remark-gfm"
+      "remark-gfm",
+      "rehype-autolink-headings"
     ]
   }
 }

@@ -62,9 +62,6 @@ export default (api: IApi) => {
             resolveJsonModule: true,
             allowSyntheticDefaultImports: true,
 
-            // Enforce using `import type` instead of `import` for types
-            importsNotUsedAsValues: 'error',
-
             // Supported by vue only
             ...(api.appData.framework === 'vue'
               ? {
@@ -147,6 +144,16 @@ declare module '*.gif' {
   export default src
 }
 declare module '*.svg' {
+  ${
+    api.config.svgr
+      ? `
+  import * as React from 'react';
+  export const ReactComponent: React.FunctionComponent<React.SVGProps<
+  SVGSVGElement
+  > & { title?: string }>;
+`.trimStart()
+      : ''
+  }
   const src: string
   export default src
 }
@@ -297,6 +304,7 @@ declare module '*.txt' {
       noPluginDir: true,
       path: 'core/EmptyRoute.tsx',
       content: `
+import React from 'react';
 import { Outlet } from 'umi';
 export default function EmptyRoute() {
   return <Outlet />;
@@ -335,6 +343,7 @@ export default function EmptyRoute() {
       path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
+        isReact: api.appData.framework === 'react',
         isClientLoaderEnabled: !!api.config.clientLoader,
         routes: JSON.stringify(clonedRoutes)
           // "clientLoaders['foo']" > clientLoaders['foo']
@@ -420,14 +429,17 @@ export default function EmptyRoute() {
     }
 
     // history.ts
-    api.writeTmpFile({
-      noPluginDir: true,
-      path: 'core/history.ts',
-      tplPath: join(TEMPLATES_DIR, 'history.tpl'),
-      context: {
-        rendererPath,
-      },
-    });
+    // only react generates because the preset-vue override causes vite hot updates to fail
+    if (api.appData.framework === 'react') {
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/history.ts',
+        tplPath: join(TEMPLATES_DIR, 'history.tpl'),
+        context: {
+          rendererPath,
+        },
+      });
+    }
   });
 
   function checkMembers(opts: {

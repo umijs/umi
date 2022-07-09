@@ -101,10 +101,6 @@ export default{
 $ umi plugin list
 ```
 
-### 在插件中感知其他插件
-
-可通过 `api.hasPlugins(pluginId[])` 和 `api.hasPresets(pluginId[])` 的方式感知其他插件，详见[插件 API](../api/plugin-api)。
-
 ## 配置插件
 通过配置插件的 key 来配置插件，比如：
 ```js
@@ -167,7 +163,7 @@ Umi 为 PluginAPI 对象的 get() 方法进行了 proxy， 具体规则如下：
 因此，Umi 提供给插件的 api 绝大多数都是依靠 `registerMethod()` 来实现的，你可以直接使用我们的这些 api 快速地在插件中注册 hook。这也是 Umi 将框架和功能进行解耦的体现： Umi 的 service 只提供插件的管理功能，而 api 都依靠插件来提供。
 
 ### preset-umi
-`umi-core` 提供了一套插件的注册及管理机制。而 Umi 的核心功能都靠 [preset-umi](https://github.com/umijs/umi-next/tree/master/packages/preset-umi) 来实现。
+`umi-core` 提供了一套插件的注册及管理机制。而 Umi 的核心功能都靠 [preset-umi](https://github.com/umijs/umi/tree/master/packages/preset-umi) 来实现。
 
 `preset-umi` 其实就是内置的一个插件集，它提供的插件分为三大类：
 - registerMethods 这类插件注册了一些上述提到的"注册器"，以供开发者快速地注册 hook，这类方法也占据了 PluginAPI 中的大多数。

@@ -44,19 +44,13 @@ export async function addSVGRules(opts: IOpts) {
       .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'))
       .end();
   }
-  if (svgo === false) {
+  if (svgo !== false) {
     const svgRule = config.module.rule('svg');
     svgRule
       .test(/\.svg$/)
-      .use('url-loader')
-      .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'));
-    return;
+      .use('svgo-loader')
+      .loader(require.resolve('@umijs/bundler-webpack/compiled/svgo-loader'))
+      .options({ configFile: false, ...svgo })
+      .end();
   }
-  const svgRule = config.module.rule('svg');
-  svgRule
-    .test(/\.svg$/)
-    .use('svgo-loader')
-    .loader(require.resolve('@umijs/bundler-webpack/compiled/svgo-loader'))
-    .options({ configFile: false, ...svgo })
-    .end();
 }

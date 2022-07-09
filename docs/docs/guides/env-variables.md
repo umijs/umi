@@ -87,6 +87,10 @@ $ ANALYZE=1 umi build
 
 默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
 
+### HMR
+
+默认开启 HMR 功能，值为 none 时关闭。
+
 ### HOST
 
 默认是 `0.0.0.0`。

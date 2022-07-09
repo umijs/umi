@@ -48,9 +48,6 @@ export default (api: IApi) => {
 
       const config = api.userConfig.apiRoute;
       if (!config) {
-        logger.warn(
-          'Directory ./src/api exists, but config.apiRoute is not set. API route feature will not be enabled!',
-        );
         return false;
       }
       if (!config.platform) {

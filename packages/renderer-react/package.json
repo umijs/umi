@@ -1,12 +1,12 @@
 {
   "name": "@umijs/renderer-react",
-  "version": "4.0.1",
+  "version": "4.0.6",
   "description": "@umijs/renderer-react",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/renderer-react#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-react#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -18,7 +18,7 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {

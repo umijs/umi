@@ -1,12 +1,12 @@
 {
   "name": "@umijs/plugins",
-  "version": "4.0.1",
+  "version": "4.0.6",
   "description": "@umijs/plugins",
-  "homepage": "https://github.com/umijs/umi-next/tree/master/packages/plugins#readme",
-  "bugs": "https://github.com/umijs/umi-next/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/plugins#readme",
+  "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi-next"
+    "url": "https://github.com/umijs/umi"
   },
   "license": "MIT",
   "main": "dist/index.js",
@@ -18,14 +18,14 @@
   "scripts": {
     "build": "pnpm tsc",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build -- --watch",
+    "dev": "pnpm build --watch",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-layout": "^7.0.1-beta.20",
-    "@umijs/bundler-utils": "4.0.1",
+    "@umijs/bundler-utils": "4.0.6",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",
     "babel-plugin-import": "^1.13.5",
@@ -44,7 +44,7 @@
     "warning": "^4.0.3"
   },
   "devDependencies": {
-    "umi": "4.0.1"
+    "umi": "4.0.6"
   },
   "publishConfig": {
     "access": "public"
