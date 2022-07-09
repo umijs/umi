@@ -27,6 +27,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          run_install: false
+          
       - uses: preactjs/compressed-size-action@v2
         with:
           build-script: "build"
