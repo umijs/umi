@@ -1,0 +1,37 @@
+name: Compressed Size
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'examples/**'
+      - 'docs/**'
+      - '**/*.md'
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: preactjs/compressed-size-action@v2
+        with:
+          build-script: "build"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          pattern: "./packages/*/{dist,compiled}/**/*.js"
+          compression: "none"
+          
