@@ -18,8 +18,6 @@ export default function Tabbed(props: PropsWithChildren<TabbedProps>) {
   let content: ReactNode = null;
 
   if (props.panes && props.panes.length > 0) {
-    console.log('------ props.panes ->', props.panes);
-
     tabs = props.panes.map((pane) => {
       return pane.title;
     });
