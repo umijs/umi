@@ -85,6 +85,15 @@ article .tabbed-code pre {
   @apply rounded-none rounded-b-md rounded-tr-md;
 }
 
+article .tabbed-code .tabbed-tab-button {
+  @apply inline-flex items-center rounded-t-lg px-4;
+}
+
+article .tabbed-code .tabbed-tab-button * {
+  @apply mt-0;
+  color: inherit;
+}
+
 /* 代码块的标题部分 */
 article
   div[data-rehype-pretty-code-fragment]
@@ -231,7 +240,6 @@ h6 {
 }
 
 @layer components {
-
   .title-link a {
     float: left;
     margin-top: 0.1em;
@@ -241,19 +249,19 @@ h6 {
     line-height: 1;
     box-sizing: border-box;
     background: none;
-    opacity: 0
-  }  
-
-  .title-link:hover a{
-    opacity: 1
+    opacity: 0;
   }
 
-  .title-link span{
+  .title-link:hover a {
+    opacity: 1;
+  }
+
+  .title-link span {
     display: none;
   }
-  
-  .title-link a::after{
-    content: "#";
+
+  .title-link a::after {
+    content: '#';
     display: inline-block;
     vertical-align: middle;
     font-size: 20px;
