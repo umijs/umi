@@ -43,6 +43,7 @@ $ pnpm -v
 ```bash
 $ mkdir myapp && cd myapp
 ```
+通过官方工具创建项目，
 
 <Tabbed>
 
