@@ -4,7 +4,7 @@ import type {
   Request,
   Response,
 } from '@umijs/bundler-utils/compiled/express';
-import { lodash, logger, tryPaths, winPath } from '@umijs/utils';
+import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
@@ -280,8 +280,8 @@ promise new Promise(resolve => {
     if (this.buildDepsAgain) {
       logger.info('[MFSU] buildDepsAgain');
       this.buildDepsAgain = false;
-      this.buildDeps().catch((e) => {
-        logger.error(e);
+      this.buildDeps().catch((e: Error) => {
+        printHelp.runtime(e);
       });
     }
   }
