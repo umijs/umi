@@ -716,6 +716,16 @@ export async function ncc_umi_webpack_bundle_analyzer(task, opts) {
     .target('compiled/umi-webpack-bundle-analyzer');
 }
 
+externals['update-notifier'] = '@umijs/deps/compiled/update-notifier';
+export async function ncc_update_notifier(task, opts) {
+  await task
+    .source(
+      opts.src || relative(__dirname, require.resolve('update-notifier'))
+    )
+    .ncc({ packageName: 'update-notifier', externals })
+    .target('compiled/update-notifier');
+}
+
 externals['url-loader'] = '@umijs/deps/compiled/url-loader';
 export async function ncc_url_loader(task, opts) {
   await task
@@ -958,6 +968,7 @@ export async function ncc(task) {
       'ncc_style_loader',
       'ncc_tapable',
       'ncc_umi_webpack_bundle_analyzer',
+      'ncc_update_notifier',
       'ncc_url_loader',
       'ncc_webpack_chain',
       'ncc_webpack_dev_middleware', // webpack-dev-middleware
