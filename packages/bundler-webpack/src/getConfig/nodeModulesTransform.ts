@@ -1,5 +1,6 @@
-import { pkgUp, semver } from '@umijs/utils';
+import { semver } from '@umijs/utils';
 import { dirname } from 'path';
+import { pkgUpContainName } from './pkgUpContainName';
 
 const pkgPathCache = {};
 const pkgCache = {};
@@ -46,7 +47,7 @@ export function isMatch(opts: { path: string; pkgs: IPkgs }) {
 function getPkgPath(opts: { path: string }) {
   const dir = dirname(opts.path);
   if (dir in pkgPathCache) return pkgPathCache[dir];
-  pkgPathCache[dir] = pkgUp.sync({ cwd: opts.path });
+  pkgPathCache[dir] = pkgUpContainName(dir);
   return pkgPathCache[dir];
 }
 
