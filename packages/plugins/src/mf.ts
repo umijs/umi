@@ -30,11 +30,6 @@ export default function mf(api: IApi) {
     enableBy: api.EnableBy.config,
   });
 
-  if (!api.userConfig.mf) {
-    api.logger.debug('mf plugin is disabled');
-    return;
-  }
-
   api.modifyWebpackConfig(async (config, { webpack }) => {
     const exposes = await constructExposes();
     const remotes = formatRemotes();
@@ -54,9 +49,11 @@ export default function mf(api: IApi) {
       }
     }
 
-    const name = mfName();
+    let name = '_';
 
     if (!isEmpty(exposes)) {
+      name = mfName();
+
       addMFEntry(
         config,
         name,
