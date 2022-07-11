@@ -109,7 +109,9 @@ export default {
 - 类型: `{ editor?: string }`
 - 默认值: `false`
 
-开启后，可通过 `Option+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click` 可以打开上下文，查看父组件。
+> 当前仅 React 项目支持。
+
+开启后，可通过 `Option+Click/Alt+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click/Alt+Right-click` 可以打开上下文，查看父组件。
 
 关于参数。`editor` 为编辑器名称，默认为 'vscode'，支持 `vscode` & `vscode-insiders`。
 
