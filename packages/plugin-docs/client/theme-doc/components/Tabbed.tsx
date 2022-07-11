@@ -54,7 +54,7 @@ const Tabs: FC<
   }>
 > = ({ tabs, activeTab, setActiveTab }) => {
   return (
-    <ul className="cursor-pointer m-0 px-0 list-none inline-flex flex-wrap rounded-t-lg text-sm font-small text-center text-gray-500 dark:text-gray-400">
+    <ul className="cursor-pointer m-0 mt-4 px-0 list-none inline-flex flex-wrap rounded-t-lg text-sm font-small text-center text-gray-500 dark:text-gray-400">
       {tabs.map((tab, index) => {
         return (
           <li key={index} className="mr-0 mt-0">
