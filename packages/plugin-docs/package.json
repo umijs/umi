@@ -22,7 +22,7 @@
     "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css",
     "dev": "pnpm build --watch",
-    "dev:css": "pnpm build:css -- --watch",
+    "dev:css": "pnpm build:css --watch",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
