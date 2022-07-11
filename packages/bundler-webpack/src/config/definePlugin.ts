@@ -21,8 +21,8 @@ export function resolveDefine(opts: { define: any; publicPath?: string }) {
   });
 
   // Useful for resolving the correct path to static assets in `public`.
-  // For example, <img src={process.env.BASE_URL + '/img/logo.png'} />.
-  env.BASE_URL = opts.publicPath || '/';
+  // For example, <img src={process.env.PUBLIC_PATH + '/img/logo.png'} />.
+  env.PUBLIC_PATH = opts.publicPath || '/';
 
   for (const key in env) {
     env[key] = JSON.stringify(env[key]);

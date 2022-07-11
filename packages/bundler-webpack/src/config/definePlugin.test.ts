@@ -9,7 +9,7 @@ test('normal', () => {
     foo: '"bar"',
     'process.env': {
       NODE_ENV: '"test"',
-      BASE_URL: '"/"',
+      PUBLIC_PATH: '"/"',
     },
   });
 });
@@ -25,7 +25,7 @@ test('env variables', () => {
     'process.env': {
       NODE_ENV: '"test"',
       UMI_APP_FOO: '"BAR"',
-      BASE_URL: '"/"',
+      PUBLIC_PATH: '"/"',
     },
   });
 });
