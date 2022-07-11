@@ -2,6 +2,7 @@ import extraConfig from './extraConfig';
 
 export default {
   base: '/foo',
+  publicPath: '/foo/',
   // history: { type: 'hash' },
   routes: [
     { path: '/', component: 'index' },
