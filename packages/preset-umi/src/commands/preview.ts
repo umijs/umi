@@ -103,6 +103,21 @@ umi preview --port [port]
         require('@umijs/bundler-webpack/compiled/connect-history-api-fallback')(),
       );
 
+      // 如果是 browser，并且配置了非 / base，访问 / 时 /index.html redirect 到 base 路径
+      app.use((_req, res, next) => {
+        const historyType = api.config.history?.type || 'browser';
+
+        if (
+          historyType === 'browser' &&
+          api.config.base !== '/' &&
+          (_req.path === '/' || _req.path === '/index.html')
+        ) {
+          return res.redirect(api.config.base);
+        }
+
+        next();
+      });
+
       // https 复用用户配置
       const server = api.userConfig.https
         ? await createHttpsServer(app, api.userConfig.https)
