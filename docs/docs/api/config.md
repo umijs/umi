@@ -75,6 +75,20 @@
 
 比如有路由 `/` 和 `/users`，设置 base 为 `/foo/` 后就可通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
 
+## cacheDirectoryPath
+
+- 类型：`string`
+- 默认值：`node_modules/.cache`
+
+支持配置 cache directory。
+
+示例，
+
+```js
+// 更改缓存文件路径到 node_modules/.cache1 文件夹
+cacheDirectoryPath: 'node_modules/.cache1',
+```
+
 ## chainWebpack
 
 - 类型：`(memo, args) => void`
@@ -1041,3 +1055,4 @@ vite: {
   cacheDir: 'node_modules/.bin/.vite';
 }
 ```
+

@@ -41,6 +41,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     alias: (Joi) => Joi.object(),
     autoCSSModules: (Joi) => Joi.boolean(),
     autoprefixer: (Joi) => Joi.object(),
+    cacheDirectoryPath: (Joi) => Joi.string(),
     chainWebpack: (Joi) => Joi.function(),
     copy: (Joi) =>
       Joi.array().items(

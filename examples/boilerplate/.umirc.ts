@@ -82,5 +82,6 @@ export default {
       chrome: 60,
     },
   },
+  cacheDirectoryPath: 'node_modules/.cache1',
   ...extraConfig,
 };
