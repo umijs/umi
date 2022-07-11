@@ -34,6 +34,7 @@ export { default as getFile } from './getFile/getFile';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as parseRequireDeps } from './parseRequireDeps/parseRequireDeps';
+export * as printHelp from './printHelp/printHelp';
 export { default as randomColor } from './randomColor/randomColor';
 export * from './routes';
 export * from './ssr';

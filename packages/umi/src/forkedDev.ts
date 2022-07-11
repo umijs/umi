@@ -1,4 +1,4 @@
-import { chalk, yParser } from '@umijs/utils';
+import { chalk, printHelp, yParser } from '@umijs/utils';
 import initWebpack from './initWebpack';
 import { Service } from './ServiceWithBuiltIn';
 import getCwd from './utils/getCwd';
@@ -46,6 +46,7 @@ const args = yParser(process.argv.slice(2));
   } catch (e) {
     console.error(chalk.red(e.message));
     console.error(e.stack);
+    printHelp.feedback();
     process.exit(1);
   }
 })();
