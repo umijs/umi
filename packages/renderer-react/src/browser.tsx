@@ -134,11 +134,15 @@ export function renderClient(opts: {
               const keys = Object.keys(manifest).filter((k) =>
                 k.startsWith(routeIdReplaced + '.'),
               );
-              if (!keys.length) return;
+              const supportFile = ['.css', '.js'];
               keys.forEach((key) => {
+                if (!supportFile.includes(key)) {
+                  throw Error(`preload not support ${key} file`);
+                }
                 let file = manifest[key];
                 const link = document.createElement('link');
                 link.rel = 'preload';
+                link.as = 'style';
                 if (key.endsWith('.js')) {
                   link.as = 'script';
                   link.id = preloadId;
