@@ -1,4 +1,4 @@
-import { chalk, yParser } from '@umijs/utils';
+import { chalk, printHelp, yParser } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import initWebpack from './initWebpack';
@@ -84,6 +84,7 @@ if (process.title === 'node') {
   } catch (e) {
     console.error(chalk.red(e.message));
     console.error(e.stack);
+    printHelp.feedback();
     process.exit(1);
   }
 })();

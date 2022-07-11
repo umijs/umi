@@ -2,7 +2,7 @@ import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import webpackDevMiddleware from '@umijs/deps/compiled/webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import { BundlerConfigType, IConfig } from '@umijs/types';
-import { lodash as _, winPath } from '@umijs/utils';
+import { lodash as _, printHelp, winPath } from '@umijs/utils';
 import { join } from 'path';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 
@@ -56,6 +56,7 @@ class Bundler {
               console.log(stats.toString('errors-only'));
             } catch (e) {}
             console.error(err);
+            printHelp.feedback();
           }
         });
         resolve({ compiler });
@@ -67,6 +68,7 @@ class Bundler {
               console.log(stats.toString('errors-only'));
             } catch (e) {}
             console.error(err);
+            printHelp.feedback();
             return reject(new Error('build failed'));
           }
           // ref: https://github.com/webpack/webpack/issues/12345#issuecomment-755273757
