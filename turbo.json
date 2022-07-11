@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["lib/**"]
     },
     "build:extra": {
       "cache": false
@@ -14,14 +14,7 @@
     },
     "dev": {
       "cache": false
-    },
-    "test": {
-      "outputs": [".jest-cache/**"]
     }
   },
-  "globalDependencies": [
-    "tsconfig.base.json",
-    "tsconfig.json",
-    "jest.config.ts"
-  ]
+  "globalDependencies": ["tsconfig.base.json", "tsconfig.json"]
 }
