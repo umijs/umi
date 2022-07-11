@@ -151,6 +151,10 @@ export default function mf(api: IApi) {
   function mfName() {
     const field = api.config.mf.nameField || 'name';
 
+    if (api.config.mf.name) {
+      return api.config.mf.name;
+    }
+
     if (!api.pkg[field]) {
       api.logger.warn(
         `module federation name is not defined in package.json field: "${field}", "unNamedMF" will be used`,
