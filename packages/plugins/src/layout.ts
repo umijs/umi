@@ -136,7 +136,7 @@ const mapRoutes = (routes: IRoute[]) => {
     return []
   }
   return routes.map(route => {
-    // 需要copy一份, 否则会污染原始数据
+    // 需要 copy 一份, 否则会污染原始数据
     const newRoute = {...route}
     if (route.menuPath) {
       newRoute.path = route.menuPath
