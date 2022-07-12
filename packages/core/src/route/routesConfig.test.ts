@@ -103,7 +103,7 @@ test('wrappers', () => {
       parentId: '4',
       path: '',
       absPath: '/bar',
-      menuPath: '/bar',
+      menuPath: 'bar',
     },
     3: {
       file: 'wrapperA',
