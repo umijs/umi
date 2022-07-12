@@ -5,11 +5,11 @@ let basename: string = '/';
 export function createHistory(opts: any) {
   let h;
   if (opts.type === 'hash') {
-    h = createHashHistory();
+    h = createHashHistory(opts);
   } else if (opts.type === 'memory') {
-    h = createMemoryHistory();
+    h = createMemoryHistory(opts);
   } else {
-    h = createBrowserHistory();
+    h = createBrowserHistory(opts);
   }
   if (opts.basename) {
     basename = opts.basename;

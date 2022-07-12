@@ -17,6 +17,7 @@ export function MicroAppWithMemoHistory(componentProps: Props) {
     initialEntries: [url],
     initialIndex: 1,
   });
+
   const historyInitHandler = useCallback((h) => (history.current = h), []);
 
   useEffect(() => {
