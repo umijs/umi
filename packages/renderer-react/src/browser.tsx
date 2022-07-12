@@ -129,28 +129,35 @@ export function renderClient(opts: {
           const manifest = window.__umi_manifest__;
           if (manifest) {
             const routeIdReplaced = id.replace(/[\/\-]/g, '_');
-            const preloadId = 'preload-' + routeIdReplaced;
+            const preloadId = `preload-${routeIdReplaced}.js`;
             if (!document.getElementById(preloadId)) {
-              const key = Object.keys(manifest).find((k) =>
+              const keys = Object.keys(manifest).filter((k) =>
                 k.startsWith(routeIdReplaced + '.'),
               );
-              if (!key) return;
-              let file = manifest[key];
-              const link = document.createElement('link');
-              link.id = preloadId;
-              link.rel = 'preload';
-              link.as = 'script';
-              // publicPath already in the manifest,
-              // but if runtimePublicPath is true, we need to replace it
-              if (opts.runtimePublicPath) {
-                file = file.replace(
-                  new RegExp(`^${opts.publicPath}`),
-                  // @ts-ignore
-                  window.publicPath,
-                );
-              }
-              link.href = file;
-              document.head.appendChild(link);
+              keys.forEach((key) => {
+                if (!/\.(js|css)$/.test(key)) {
+                  throw Error(`preload not support ${key} file`);
+                }
+                let file = manifest[key];
+                const link = document.createElement('link');
+                link.rel = 'preload';
+                link.as = 'style';
+                if (key.endsWith('.js')) {
+                  link.as = 'script';
+                  link.id = preloadId;
+                }
+                // publicPath already in the manifest,
+                // but if runtimePublicPath is true, we need to replace it
+                if (opts.runtimePublicPath) {
+                  file = file.replace(
+                    new RegExp(`^${opts.publicPath}`),
+                    // @ts-ignore
+                    window.publicPath,
+                  );
+                }
+                link.href = file;
+                document.head.appendChild(link);
+              });
             }
           }
           // server loader
