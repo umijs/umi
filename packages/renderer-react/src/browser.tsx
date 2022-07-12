@@ -135,7 +135,7 @@ export function renderClient(opts: {
                 k.startsWith(routeIdReplaced + '.'),
               );
               keys.forEach((key) => {
-                if (!key.match(/.(js|css)$/)) {
+                if (!/\.(js|css)$/.test(key)) {
                   throw Error(`preload not support ${key} file`);
                 }
                 let file = manifest[key];
