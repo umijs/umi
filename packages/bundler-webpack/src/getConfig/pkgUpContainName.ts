@@ -6,6 +6,9 @@ export const pkgUpContainName = (dir: string): string | null => {
   if (!pkgPath) return pkgPath;
   const { name } = require(pkgPath);
   // invalid package
-  if (!name) return pkgUpContainName(path.dirname(dir));
+  if (!name) {
+    dir = path.dirname(pkgPath);
+    return pkgUpContainName(path.dirname(dir));
+  }
   return pkgPath;
 };
