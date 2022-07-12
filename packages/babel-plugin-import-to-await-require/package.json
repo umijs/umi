@@ -28,6 +28,6 @@
     "@umijs/utils": "3.5.28"
   },
   "devDependencies": {
-    "@babel/traverse": "7.14.0"
+    "@babel/traverse": "7.18.8"
   }
 }
