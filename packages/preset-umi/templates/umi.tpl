@@ -36,9 +36,7 @@ async function render() {
         type: ApplyPluginsType.modify,
         initialValue: {},
       });
-
       const basename = contextOpts.basename || '{{{ basename }}}';
-
       const context = {
 {{#hydrate}}
     hydrate: true,
@@ -55,7 +53,7 @@ async function render() {
         history: createHistory({
           type: contextOpts.historyType || '{{{ historyType }}}',
           basename,
-          ...(contextOpts.historyOpts || {})
+          ...contextOpts.historyOpts
         }),
         basename,
       };
