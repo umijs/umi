@@ -43,7 +43,7 @@ abstract class Shape {
       typescript: true,
     },
   );
-  expect(code).toContain(`var Shape = function Shape() {`);
+  expect(code).toContain(`createClass(function Shape() {`);
   expect(code).toContain(`_classCallCheck(this, Shape);`);
 });
 
@@ -180,7 +180,7 @@ test('decorators', () => {
       targets: { ie: 10 },
     },
   });
-  expect(code).toContain(`foo(_class = function Foo() {`);
+  expect(code).toContain(`var Foo = foo(_class =`);
 });
 
 test('class properties', () => {
@@ -260,7 +260,7 @@ test('transform runtime', () => {
     transformRuntime: {},
   });
   expect(winPath(join(code!))).toContain(
-    `node_modules/@babel/runtime/helpers/esm/classCallCheck"));`,
+    `node_modules/@babel/runtime/helpers/esm/classCallCheck.js"));`,
   );
 });
 
