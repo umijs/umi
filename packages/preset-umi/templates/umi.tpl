@@ -53,7 +53,7 @@ async function render() {
         history: createHistory({
           type: contextOpts.historyType || '{{{ historyType }}}',
           basename,
-          ...contextOpts.historyOpts
+          ...contextOpts.historyOpts,
         }),
         basename,
       };
