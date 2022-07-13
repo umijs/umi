@@ -1,6 +1,6 @@
 {
   "name": "create-umi",
-  "version": "4.0.6",
+  "version": "4.0.0-canary.20220713.1",
   "description": "create-umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/create-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -25,7 +25,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.6"
+    "@umijs/utils": "4.0.0-canary.20220713.1"
   },
   "publishConfig": {
     "access": "public"

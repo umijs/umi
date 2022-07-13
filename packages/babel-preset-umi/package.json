@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "4.0.6",
+  "version": "4.0.0-canary.20220713.1",
   "description": "Official babel preset for umi.",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -23,8 +23,8 @@
   "dependencies": {
     "@babel/runtime": "7.17.9",
     "@bloomberg/record-tuple-polyfill": "0.0.4",
-    "@umijs/bundler-utils": "4.0.6",
-    "@umijs/utils": "4.0.6",
+    "@umijs/bundler-utils": "4.0.0-canary.20220713.1",
+    "@umijs/utils": "4.0.0-canary.20220713.1",
     "core-js": "3.22.4"
   },
   "publishConfig": {
