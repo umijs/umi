@@ -86,9 +86,16 @@ function createRoutePath(routeId: string): string {
     .replace(/\$/g, ':')
     // routes/not.nested -> routes/not/nested
     .replace(/\./g, '/');
-  // /index/index -> /
+
+  // /index/index -> ''
   path = /\b\/?index\/index$/.test(path) ? path.replace(/\/?index$/, '') : path;
-  path = /\b\/?index$/.test(path) ? path.replace(/\/?index$/, '') : path;
+  // /(?<!:)\/?\bindex$/
+  // e/index true
+  // index true
+  // e/:index false
+  // e/index -> e  index -> ''  e/:index -> e/:index
+  path = /(?<!:)\/?\bindex$/.test(path) ? path.replace(/\/?index$/, '') : path;
   path = /\b\/?README$/.test(path) ? path.replace(/\/?README$/, '') : path;
+
   return path;
 }
