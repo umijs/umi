@@ -1,7 +1,16 @@
 export default {
   qiankun: {
+    master: {
+      apps: [
+        {
+          name: 'app2',
+          entry: '//localhost:7002/app2',
+        },
+      ],
+    },
     slave: {},
   },
+  antd: {},
   model: {},
   headScripts: [`window.publicPath = '//localhost:8001/';`],
   routes: [

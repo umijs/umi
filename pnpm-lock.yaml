@@ -350,6 +350,16 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
 
+  examples/qiankun-slave-app2:
+    specifiers:
+      '@umijs/max': 4.0.6
+      react: 18.1.0
+      react-dom: 18.1.0
+    dependencies:
+      '@umijs/max': link:../../packages/max
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+
   examples/remix:
     specifiers:
       umi: 4.0.0-canary.20220713.1

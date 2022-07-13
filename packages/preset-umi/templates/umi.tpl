@@ -51,8 +51,9 @@ async function render() {
         publicPath,
         runtimePublicPath,
         history: createHistory({
-          type: '{{{ historyType }}}',
+          type: contextOpts.historyType || '{{{ historyType }}}',
           basename,
+          ...contextOpts.historyOpts,
         }),
         basename,
       };
