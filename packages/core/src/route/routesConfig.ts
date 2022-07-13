@@ -87,8 +87,8 @@ function transformRoute(opts: {
     });
     opts.memo.ret[id].parentId = parentId;
     opts.memo.ret[id].path = path;
-    // wrapper 处理后 真实 path 为空, 存储原 path 为 menuPath 方便 layout 渲染
-    opts.memo.ret[id].menuPath = opts.route.path;
+    // wrapper 处理后 真实 path 为空, 存储原 path 为 originPath 方便 layout 渲染
+    opts.memo.ret[id].originPath = opts.route.path;
   }
   if (opts.route.routes) {
     transformRoutes({

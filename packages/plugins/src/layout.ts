@@ -138,8 +138,8 @@ const mapRoutes = (routes: IRoute[]) => {
   return routes.map(route => {
     // 需要 copy 一份, 否则会污染原始数据
     const newRoute = {...route}
-    if (route.menuPath) {
-      newRoute.path = route.menuPath
+    if (route.originPath) {
+      newRoute.path = route.originPath
     }
 
     if (Array.isArray(route.routes)) {
