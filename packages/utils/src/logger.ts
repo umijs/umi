@@ -1,35 +1,13 @@
 import { join } from 'path';
-import pino from 'pino';
 import chalk from '../compiled/chalk';
 import fsExtra from '../compiled/fs-extra';
+import { importLazy } from './importLazy';
+
+const enableFSLogger =
+  process.env.FS_LOGGER !== 'none' && !process.versions.webcontainer;
 
 const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
 const loggerPath = join(loggerDir, 'umi.log');
-fsExtra.mkdirpSync(loggerDir);
-const customLevels = {
-  ready: 31,
-  event: 32,
-  wait: 55,
-  // 虽然这里设置了 debug 为 30，但日志中还是 20，符合预期
-  // 这里不加会不生成到 umi.log，transport 的 level 配置没有生效，原因不明
-  debug: 30,
-};
-const logger = pino(
-  {
-    customLevels,
-  },
-  pino.transport({
-    targets: [
-      {
-        target: require.resolve('pino/file'),
-        options: {
-          destination: loggerPath,
-        },
-        level: 'trace',
-      },
-    ],
-  }),
-);
 
 export const prefixes = {
   wait: chalk.cyan('wait') + '  -',
@@ -41,6 +19,43 @@ export const prefixes = {
   event: chalk.magenta('event') + ' -',
   debug: chalk.gray('debug') + ' -',
 };
+
+let logger: any;
+if (enableFSLogger) {
+  const { default: pino }: typeof import('pino') = importLazy(
+    require.resolve('pino'),
+  );
+  fsExtra.mkdirpSync(loggerDir);
+  const customLevels = {
+    ready: 31,
+    event: 32,
+    wait: 55,
+    // 虽然这里设置了 debug 为 30，但日志中还是 20，符合预期
+    // 这里不加会不生成到 umi.log，transport 的 level 配置没有生效，原因不明
+    debug: 30,
+  };
+  logger = pino(
+    {
+      customLevels,
+    },
+    pino.transport({
+      targets: [
+        {
+          target: require.resolve('pino/file'),
+          options: {
+            destination: loggerPath,
+          },
+          level: 'trace',
+        },
+      ],
+    }),
+  );
+} else {
+  logger = {};
+  Object.keys(prefixes).forEach((key) => {
+    logger[key] = () => {};
+  });
+}
 
 export function wait(...message: any[]) {
   console.log(prefixes.wait, ...message);
@@ -85,5 +100,5 @@ export function fatal(...message: any[]) {
 }
 
 export function getLatestLogFilePath() {
-  return loggerPath;
+  return enableFSLogger ? loggerPath : null;
 }
