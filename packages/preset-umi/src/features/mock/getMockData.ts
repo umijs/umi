@@ -38,6 +38,7 @@ export function getMockData(opts: {
       const mockFile = `${opts.cwd}/${file}`;
       let m;
       try {
+        delete require.cache[mockFile];
         m = require(mockFile);
       } catch (e) {
         throw new Error(
@@ -71,9 +72,6 @@ export function getMockData(opts: {
       }
       return memo;
     }, {});
-  for (const file of register.getFiles()) {
-    delete require.cache[file];
-  }
   register.restore();
   return ret;
 }
