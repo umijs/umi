@@ -574,12 +574,12 @@ https: {
 - 类型：`object`
 - 默认值：`{}`
 
-`jsminifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsminifier` 选项来保留注释。
+`jsMinifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsMinifier` 选项来保留注释。
 
 示例：
 ```js
 {
-  jsminifier: 'esbuild',
+  jsMinifier: 'esbuild',
   jsMinifierOptions: {
     minifyWhitespace: true,
     minifyIdentifiers: true,
@@ -597,7 +597,7 @@ https: {
 
 {
 /*
-## jsminifier (vite 构建)
+## jsMinifier (vite 构建)
 
 * 类型：`string`
 * 默认值：
