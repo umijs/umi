@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import ArticleMeta from './ArticleMeta';
 import Announcement from './components/Announcement';
 import { ThemeContext } from './context';
 import Head from './Head';
@@ -8,6 +9,7 @@ import Sidebar from './Sidebar';
 import Toc from './Toc';
 
 export default (props: any) => {
+  const { appData, components, themeConfig, location, history } = props;
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
   /**
@@ -30,7 +32,7 @@ export default (props: any) => {
     };
   }, []);
 
-  const { title, description } = props.themeConfig;
+  const { title, description, git } = themeConfig;
 
   const isHomePage =
     window.location.pathname === '/' ||
@@ -39,11 +41,11 @@ export default (props: any) => {
   return (
     <ThemeContext.Provider
       value={{
-        appData: props.appData,
-        components: props.components,
-        themeConfig: props.themeConfig,
-        location: props.location,
-        history: props.history,
+        appData,
+        components,
+        themeConfig,
+        location,
+        history,
       }}
     >
       <div
@@ -82,28 +84,27 @@ export default (props: any) => {
             >
               {/* 左侧菜单 */}
               <div
-                className="fixed left-0 top-0 w-1/4 flex flex-row
-          justify-center h-screen z-10 pt-20"
+                className=" hidden lg:flex fixed left-0 top-0 w-1/4 flex-row
+          justify-center h-screen z-10 pt-20 bg-neutral-50 dark:bg-gray-900
+          border-r border-gray-200 dark:border-gray-700 transition"
               >
                 <div className="container flex flex-row justify-end">
-                  <div className="hidden lg:block">
-                    <Sidebar />
-                  </div>
+                  <Sidebar />
                 </div>
               </div>
-              {/* 文章内容 */}
-              <div className="container flex flex-row justify-center">
-                <div className="w-full lg:w-1/2 px-4 lg:px-2 m-8 z-20 lg:pb-12 lg:pt-6">
+              {/* 文章主体 */}
+              <div className="container flex flex-row justify-center lg:justify-end xl:justify-center">
+                <div className="w-full lg:w-3/4 xl:w-1/2 px-4 lg:px-8 my-8 z-20 lg:pb-12 lg:pt-6">
+                  {/* 文章内容 */}
                   <article className="flex-1">{props.children}</article>
+                  {/* 文章页脚 */}
+                  <footer>{git && <ArticleMeta />}</footer>
                 </div>
               </div>
               {/* 右侧 Toc */}
-              <div
-                className="fixed right-0 top-0 w-1/4 hidden lg:block flex-row
-justify-center h-screen z-10 pt-20"
-              >
+              <div className="fixed right-0 top-0 w-1/4 hidden xl:block flex-row justify-center h-screen z-10 pt-20">
                 <div className="container flex flex-row justify-start">
-                  <div className="w-2/3 top-32">
+                  <div className="w-2/3 top-32 lg:mt-12 mb-12">
                     <Toc />
                   </div>
                 </div>
