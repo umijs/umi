@@ -20,7 +20,7 @@ export default function Layout() {
           <Link to="/about">/about</Link>
         </li>
         <li>
-          <Link to="/class-component">/class-component</Link>
+          <Link to="/class-component/123">/class-component</Link>
         </li>
       </ul>
       <button
