@@ -144,6 +144,16 @@ declare module '*.gif' {
   export default src
 }
 declare module '*.svg' {
+  ${
+    api.config.svgr
+      ? `
+  import * as React from 'react';
+  export const ReactComponent: React.FunctionComponent<React.SVGProps<
+  SVGSVGElement
+  > & { title?: string }>;
+`.trimStart()
+      : ''
+  }
   const src: string
   export default src
 }

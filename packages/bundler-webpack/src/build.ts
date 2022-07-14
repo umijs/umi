@@ -1,4 +1,5 @@
 import { rimraf } from '@umijs/utils';
+import { join, resolve } from 'path';
 import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { Env, IConfig } from './types';
@@ -20,6 +21,10 @@ type IOpts = {
 } & Pick<IConfigOpts, 'cache'>;
 
 export async function build(opts: IOpts): Promise<webpack.Stats> {
+  const cacheDirectoryPath = resolve(
+    opts.rootDir || opts.cwd,
+    opts.config.cacheDirectoryPath || 'node_modules/.cache',
+  );
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
@@ -39,7 +44,12 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
     extraBabelIncludes: opts.config.extraBabelIncludes,
     chainWebpack: opts.chainWebpack,
     modifyWebpackConfig: opts.modifyWebpackConfig,
-    cache: opts.cache,
+    cache: opts.cache
+      ? {
+          ...opts.cache,
+          cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
+        }
+      : undefined,
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {

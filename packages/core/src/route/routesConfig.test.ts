@@ -103,6 +103,7 @@ test('wrappers', () => {
       parentId: '4',
       path: '',
       absPath: '/bar',
+      originPath: 'bar',
     },
     3: {
       file: 'wrapperA',
@@ -110,6 +111,7 @@ test('wrappers', () => {
       parentId: '1',
       path: 'bar',
       absPath: '/bar',
+      isWrapper: true,
     },
     4: {
       file: 'wrapperB',
@@ -117,6 +119,7 @@ test('wrappers', () => {
       parentId: '3',
       path: '',
       absPath: '/bar',
+      isWrapper: true,
     },
     5: {
       file: 'foo',

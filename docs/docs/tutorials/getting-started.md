@@ -1,3 +1,5 @@
+import { Tabbed } from 'umi';
+
 # 快速上手
 
 ## 环境准备
@@ -41,9 +43,11 @@ $ pnpm -v
 ```bash
 $ mkdir myapp && cd myapp
 ```
-
 通过官方工具创建项目，
 
+<Tabbed>
+
+PNPM
 ```bash
 $ pnpm dlx create-umi@latest
 ✔ Install the following package: create-umi? (Y/n) · true
@@ -61,6 +65,56 @@ Copy:  pages/users/foo.tsx
 > umi setup
 info  - generate files
 ```
+
+NPM
+```bash
+$ npx create-umi@latest
+Need to install the following packages:
+  create-umi@latest
+Ok to proceed? (y) y
+✔ Pick Umi App Template › Simple App
+✔ Pick Npm Client › npm
+✔ Pick Npm Registry › taobao
+Write: .gitignore
+Write: .npmrc
+Write: .umirc.ts
+Write: package.json
+Copy:  src/assets/yay.jpg
+Copy:  src/layouts/index.less
+Write: src/layouts/index.tsx
+Copy:  src/pages/docs.tsx
+Copy:  src/pages/index.tsx
+Write: tsconfig.json
+Copy:  typings.d.ts
+
+> postinstall
+> umi setup
+```
+YARN
+```bash
+$ yarn create umi
+success Installed "create-umi@4.0.6" with binaries:
+      - create-umi
+✔ Pick Umi App Template › Simple App
+✔ Pick Npm Client › yarn
+✔ Pick Npm Registry › taobao
+Write: .gitignore
+Write: .npmrc
+Write: .umirc.ts
+Write: package.json
+Copy:  src/assets/yay.jpg
+Copy:  src/layouts/index.less
+Write: src/layouts/index.tsx
+Copy:  src/pages/docs.tsx
+Copy:  src/pages/index.tsx
+Write: tsconfig.json
+Copy:  typings.d.ts
+yarn install v1.22.18
+success Saved lockfile.
+$ umi setup
+info  - generate files
+```
+</Tabbed>
 
 国内建议选 **pnpm + taobao 源**，速度提升明显。这一步会自动安装依赖，同时安装成功后会自动执行 `umi setup` 做一些文件预处理等工作。
 

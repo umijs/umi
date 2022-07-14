@@ -90,7 +90,8 @@ export const MicroApp = forwardRef(
 
     // 优先使用 alias 名匹配，fallback 到 name 匹配
     const name = componentProps[appNameKeyAlias] || componentProps.name;
-    const isCurrentApp = (app: any) => app[appNameKeyAlias] === name || app.name === name;
+    const isCurrentApp = (app: any) =>
+      app[appNameKeyAlias] === name || app.name === name;
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
@@ -178,11 +179,16 @@ export const MicroApp = forwardRef(
           if (noneMounted) {
             if (Array.isArray(prefetch)) {
               const specialPrefetchApps = apps.filter(
-                (app) => !isCurrentApp(app) && (prefetch.indexOf(app[appNameKeyAlias]) !== -1 || prefetch.indexOf(app.name) !== -1)
+                (app) =>
+                  !isCurrentApp(app) &&
+                  (prefetch.indexOf(app[appNameKeyAlias]) !== -1 ||
+                    prefetch.indexOf(app.name) !== -1),
               );
               prefetchApps(specialPrefetchApps, configuration);
             } else {
-              const otherNotMountedApps = apps.filter((app) => !isCurrentApp(app));
+              const otherNotMountedApps = apps.filter(
+                (app) => !isCurrentApp(app),
+              );
               prefetchApps(otherNotMountedApps, configuration);
             }
             noneMounted = false;

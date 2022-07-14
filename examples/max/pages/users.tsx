@@ -2,7 +2,6 @@
 import { request, useRequest } from '@@/plugin-request';
 // @ts-ignore
 import { Button } from 'antd';
-import React from 'react';
 
 export default () => {
   const { data, error, loading } = useRequest('/api/users');

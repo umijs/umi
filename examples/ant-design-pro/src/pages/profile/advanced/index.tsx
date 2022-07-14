@@ -223,8 +223,9 @@ const Advanced: FC = () => {
     operationKey: 'tab1',
     tabActiveKey: 'detail',
   });
-  const { data = {}, loading } =
-    useRequest<{ data: AdvancedProfileData }>(queryAdvancedProfile);
+  const { data = {}, loading } = useRequest<{ data: AdvancedProfileData }>(
+    queryAdvancedProfile,
+  );
   const { advancedOperation1, advancedOperation2, advancedOperation3 } = data;
   const contentList = {
     tab1: (

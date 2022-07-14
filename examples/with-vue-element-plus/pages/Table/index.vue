@@ -28,5 +28,5 @@ const tableData = [
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
   },
-]
+];
 </script>

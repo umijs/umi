@@ -1,7 +1,7 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
 import { logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
@@ -42,6 +42,10 @@ export function stripUndefined(obj: any) {
 }
 
 export async function dev(opts: IOpts) {
+  const cacheDirectoryPath = resolve(
+    opts.rootDir || opts.cwd,
+    opts.config.cacheDirectoryPath || 'node_modules/.cache',
+  );
   const enableMFSU = opts.config.mfsu !== false;
   let mfsu: MFSU | null = null;
   if (enableMFSU) {
@@ -63,8 +67,7 @@ export async function dev(opts: IOpts) {
       mfName: opts.config.mfsu?.mfName,
       runtimePublicPath: opts.config.runtimePublicPath,
       tmpBase:
-        opts.config.mfsu?.cacheDirectory ||
-        join(opts.rootDir || opts.cwd, 'node_modules/.cache/mfsu'),
+        opts.config.mfsu?.cacheDirectory || join(cacheDirectoryPath, 'mfsu'),
       onMFSUProgress: opts.onMFSUProgress,
       getCacheDependency() {
         return stripUndefined({
@@ -102,7 +105,12 @@ export async function dev(opts: IOpts) {
     modifyWebpackConfig: opts.modifyWebpackConfig,
     hmr: process.env.HMR !== 'none',
     analyze: process.env.ANALYZE,
-    cache: opts.cache,
+    cache: opts.cache
+      ? {
+          ...opts.cache,
+          cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
+        }
+      : undefined,
   });
 
   const depConfig = await getConfig({
@@ -117,12 +125,7 @@ export async function dev(opts: IOpts) {
     chainWebpack: opts.config.mfsu?.chainWebpack,
     cache: {
       buildDependencies: opts.cache?.buildDependencies,
-      cacheDirectory: join(
-        opts.rootDir || opts.cwd,
-        'node_modules',
-        '.cache',
-        'mfsu-deps',
-      ),
+      cacheDirectory: join(cacheDirectoryPath, 'mfsu-deps'),
     },
   });
 

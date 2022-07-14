@@ -73,6 +73,8 @@ export function genMount(mountElementId: string) {
         await slaveRuntime.mount(props);
       }
 
+      const { type, ...historyOpts } = props?.history;
+
       // 更新 clientRender 配置
       const clientRenderOpts = {
         // 默认开启
@@ -94,6 +96,10 @@ export function genMount(mountElementId: string) {
           mountElementId,
 
         basename: props.base,
+
+        // 支持 MicroAppWithMemoHistory 需要
+        historyType: type,
+        historyOpts: historyOpts,
 
         // 当存在同一个 umi 子应用在同一个页面被多实例渲染的场景时（比如一个页面里，同时展示了这个子应用的多个路由页面）
         // mount 钩子会被调用多次，但是具体什么时候对应的实例开始 render 则是不定的，即它调用 applyPlugins('modifyClientRenderOpts') 的时机是不确定的

@@ -2,6 +2,7 @@ import extraConfig from './extraConfig';
 
 export default {
   base: '/foo',
+  publicPath: '/foo/',
   // history: { type: 'hash' },
   routes: [
     { path: '/', component: 'index' },
@@ -81,5 +82,6 @@ export default {
       chrome: 60,
     },
   },
+  cacheDirectoryPath: 'node_modules/.cache1',
   ...extraConfig,
 };

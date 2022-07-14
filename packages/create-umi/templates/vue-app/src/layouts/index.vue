@@ -15,14 +15,14 @@
   </div>
 </template>
 <style lang="less">
-  .navs {
-    ul {
-      padding: 0;
-      list-style: none;
-      display: flex;
-    }
-    li {
-      margin-right: 1em;
-    }
+.navs {
+  ul {
+    padding: 0;
+    list-style: none;
+    display: flex;
   }
+  li {
+    margin-right: 1em;
+  }
+}
 </style>

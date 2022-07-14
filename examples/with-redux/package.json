@@ -9,6 +9,6 @@
   "dependencies": {
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
-    "umi": "4.0.5"
+    "umi": "4.0.7"
   }
 }

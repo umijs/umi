@@ -10,11 +10,10 @@
 }
 
 .normal li {
-
 }
 
 :global(.dark) .normal li {
-  background: rgba(255, 255, 255, .9);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .normal li img {

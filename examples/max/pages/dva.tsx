@@ -2,7 +2,6 @@
 import { connect } from '@@/plugin-dva';
 // @ts-ignore
 import dayjs from 'moment';
-import React from 'react';
 
 function mapStateToProps(state: any) {
   return { count: state.count };

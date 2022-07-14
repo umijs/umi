@@ -1,4 +1,4 @@
-import { logger } from '@umijs/utils';
+import { printHelp } from '@umijs/utils';
 import awaitImport from '../babelPlugins/awaitImport/awaitImport';
 import { getRealPath } from '../babelPlugins/awaitImport/getRealPath';
 import { Dep } from '../dep/dep';
@@ -61,7 +61,7 @@ export class StrategyCompileTime implements IMFSUStrategy {
               });
             })
             .catch((e: Error) => {
-              logger.error(e);
+              printHelp.runtime(e);
               mfsu.onProgress({
                 done: true,
               });

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@types/three": "^0.140.0",
-    "umi": "4.0.5",
+    "umi": "4.0.7",
     "valtio": "^1.6.1"
   }
 }

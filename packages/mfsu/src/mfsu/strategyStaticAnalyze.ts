@@ -1,4 +1,4 @@
-import { logger } from '@umijs/utils';
+import { logger, printHelp } from '@umijs/utils';
 import { getAliasedPathWithLoopDetect } from '../babelPlugins/awaitImport/getAliasedPath';
 import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
@@ -86,7 +86,7 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
               });
             })
             .catch((e: Error) => {
-              logger.error(e);
+              printHelp.runtime(e);
               mfsu.onProgress({
                 done: true,
               });
