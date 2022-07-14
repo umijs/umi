@@ -37,6 +37,7 @@
     "@umijs/utils": "3.5.30",
     "react": "16.x",
     "react-dom": "16.x",
+    "update-notifier": "5.1.0",
     "v8-compile-cache": "2.3.0"
   },
   "bin": {
