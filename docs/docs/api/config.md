@@ -677,6 +677,7 @@ metas: [
 - `runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`
 - `strategy` 指定 mfsu 编译依赖的时机; `normal` 模式下，采用 babel 编译分析后，构建 Module Federation 远端包；`eager` 模式下采用静态分析的方式，和项目代码同时发起构建。
 - `include` 仅在 `strategy: 'eager' ` 模式下生效， 用于补偿在 eager 模式下，静态分析无法分析到的依赖，例如 `react` 未进入 Module Federation 远端模块可以这样配置 `{ include: [ 'react' ] }`
+- `exclude` 手动排除某些不需要被 MFSU 处理的依赖, 比如 `vant` 不希望走 MFSU 处理 可以配置 `{ exclude: [ 'vant' ] }`
 
 示例，
 
