@@ -19,6 +19,32 @@ test('unMatch libs', () => {
   ).toEqual(false);
 });
 
+test('unMatch libs full match', () => {
+  expect(
+    checkMatch({
+      value: 'vant/es/button',
+      opts: {
+        unMatchLibs: ['vant'],
+      },
+    }).isMatch,
+  ).toEqual(true);
+});
+
+test('unMatch libs regExp', () => {
+  expect(
+    checkMatch({
+      value: 'vant/es/button',
+      opts: {
+        unMatchLibs: [/^vant/],
+      },
+    }),
+  ).toEqual({
+    isMatch: true,
+    replaceValue: 'mf/vant/es/button',
+    value: 'vant/es/button',
+  });
+});
+
 test('start with mf/', () => {
   expect(
     checkMatch({

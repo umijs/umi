@@ -6,7 +6,7 @@ export interface IOpts {
   onTransformDeps?: Function;
   onCollect?: Function;
   exportAllMembers?: Record<string, string[]>;
-  unMatchLibs?: string[];
+  unMatchLibs?: Array<string | RegExp>;
   remoteName?: string;
   alias?: Record<string, string>;
   externals?: any;
