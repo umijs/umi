@@ -684,7 +684,7 @@ function App() {
 
 ### withRouter
 
-`withRouter` 参考 [react-router faq](https://reactrouter.com/docs/en/v6/getting-started/faq#what-happened-to-withrouter-i-need-it) 实现的版本, 仅实现了部分, 请参考类型定义根据业务需求使用, 建议更改业务代码 使用 React Hook 的形式操作 进行操作。
+`withRouter` 参考 [react-router faq](https://reactrouter.com/docs/en/v6/getting-started/faq#what-happened-to-withrouter-i-need-it) 实现的版本, 仅实现了部分能力, 请参考类型定义按需使用, 建议迁移到 React Hook API。
 
 类型定义如下:
 
