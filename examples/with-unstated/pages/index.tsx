@@ -1,6 +1,6 @@
 import React from 'react';
-import { StoreContainer } from '../unstated';
 import '../style.less';
+import { StoreContainer } from '../unstated';
 
 export default function HomePage(props) {
   const {

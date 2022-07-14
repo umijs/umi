@@ -1,7 +1,7 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../rematch/hook';
 import { selectCount } from '../rematch/models/counter';
 import '../style.less';
-import { useAppDispatch, useAppSelector } from '../rematch/hook';
 
 export default function HomePage(props) {
   const count = useAppSelector(selectCount);

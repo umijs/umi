@@ -19,7 +19,6 @@ concurrency:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +44,6 @@ jobs:
 
       - uses: preactjs/compressed-size-action@v2
         with:
-          build-script: "build"
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          pattern: "./packages/*/{dist,compiled}/**/*.{js,d.ts}"
+          build-script: 'build'
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pattern: './packages/*/{dist,compiled}/**/*.{js,d.ts}'

@@ -1,6 +1,8 @@
 <template>
   <h2>UmiJS x Vue Element Plus</h2>
-  <el-button class="link" type="primary" @click="onToTable"> go to table</el-button>
+  <el-button class="link" type="primary" @click="onToTable">
+    go to table</el-button
+  >
   <el-form :model="form" label-width="120px">
     <el-form-item label="Activity name">
       <el-input v-model="form.name" />
@@ -59,8 +61,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
-import { useRouter } from 'umi'
+import { reactive } from 'vue';
+import { useRouter } from 'umi';
 
 // do not use same name with ref
 const form = reactive({
@@ -72,17 +74,17 @@ const form = reactive({
   type: [],
   resource: '',
   desc: '',
-})
+});
 
 const onSubmit = () => {
-  console.log('submit!', form)
-}
+  console.log('submit!', form);
+};
 
-const router = useRouter()
+const router = useRouter();
 
 const onToTable = () => {
-  router.push('/table')
-}
+  router.push('/table');
+};
 </script>
 
 <style lang="less" scoped>
