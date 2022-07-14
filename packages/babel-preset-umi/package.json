@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "3.5.29-alpha.0",
+  "version": "3.5.29",
   "description": "@umijs/babel-preset-umi",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -28,11 +28,11 @@
   },
   "dependencies": {
     "@babel/runtime": "7.18.6",
-    "@umijs/babel-plugin-auto-css-modules": "3.5.29-alpha.0",
-    "@umijs/babel-plugin-import-to-await-require": "3.5.29-alpha.0",
-    "@umijs/babel-plugin-lock-core-js-3": "3.5.29-alpha.0",
-    "@umijs/babel-plugin-no-anonymous-default-export": "3.5.29-alpha.0",
-    "@umijs/deps": "3.5.29-alpha.0",
-    "@umijs/utils": "3.5.29-alpha.0"
+    "@umijs/babel-plugin-auto-css-modules": "3.5.29",
+    "@umijs/babel-plugin-import-to-await-require": "3.5.29",
+    "@umijs/babel-plugin-lock-core-js-3": "3.5.29",
+    "@umijs/babel-plugin-no-anonymous-default-export": "3.5.29",
+    "@umijs/deps": "3.5.29",
+    "@umijs/utils": "3.5.29"
   }
 }
