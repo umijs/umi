@@ -128,7 +128,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-descriptions': 1.11.6_antd@4.20.6
       '@ant-design/pro-form': 1.69.4_antd@4.20.6
-      '@ant-design/pro-layout': 6.38.10_antd@4.20.6
+      '@ant-design/pro-layout': 6.38.13_antd@4.20.6
       '@ant-design/pro-table': 2.76.4_antd@4.20.6
       '@antv/l7-react': 2.3.9
       '@umijs/max': link:../../packages/max
@@ -1091,7 +1091,6 @@ importers:
       tailwindcss: ^3.0.24
       umi: 4.0.5
     dependencies:
-      github-slugger: 1.4.0
       keymaster: 1.6.2
       react-helmet: 6.1.0
       rehype-pretty-code: 0.3.2_shiki@0.10.1
@@ -1101,6 +1100,7 @@ importers:
       '@types/keymaster': 1.6.30
       '@types/react-helmet': 6.1.5
       classnames: 2.3.1
+      github-slugger: 1.4.0
       rehype-autolink-headings: 6.1.1
       rehype-slug: 5.0.1
       remark-gfm: 3.0.1
@@ -1711,8 +1711,8 @@ packages:
       use-media-antd-query: 1.1.0
     dev: false
 
-  /@ant-design/pro-layout/6.38.10_antd@4.20.6:
-    resolution: {integrity: sha512-YT5IQH/UxAsQ6HWdtEjHeYvM8zivE1MCRG/ZAbabSV0SjDez2SD42WI9uBggM0DSrmXi/n7mzbBVCS4ES87MPg==}
+  /@ant-design/pro-layout/6.38.13_antd@4.20.6:
+    resolution: {integrity: sha512-ZNUUJow0pLxOqkuPIGDJJw9FqPYX5Pu/iz5kBRz9vxSakJUylrtg4GWVVuMqZlSbEpRdPdr4WCx0Jz78R4IPmQ==}
     peerDependencies:
       antd: '>=4.20.0'
       react: '>=16.9.0'
@@ -1723,8 +1723,8 @@ packages:
         optional: true
     dependencies:
       '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 1.8.0_antd@4.20.6
-      '@ant-design/pro-utils': 1.42.3_antd@4.20.6
+      '@ant-design/pro-provider': 1.9.0_antd@4.20.6
+      '@ant-design/pro-utils': 1.42.5_antd@4.20.6
       '@babel/runtime': 7.18.3
       '@umijs/route-utils': 2.1.1
       '@umijs/ssr-darkreader': 4.9.45
@@ -1800,6 +1800,25 @@ packages:
 
   /@ant-design/pro-provider/1.8.0_antd@4.20.6:
     resolution: {integrity: sha512-RoORxFqmslVo7Hwgy62UgEvXz01n97/HFh9CRcwteqlDrlEFQcviEwufr0Vj8wjkDiQfSmIpMDNWMbCW2UqX1Q==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.18.3
+      antd: 4.20.6
+      rc-util: 5.21.5
+      swr: 1.3.0
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@ant-design/pro-provider/1.9.0_antd@4.20.6:
+    resolution: {integrity: sha512-2coPdBMVBapUkjm5vaRhavo9PnrxaADCHvn6PIbPaL/AUflgGBGNlxny0vIjXav8ZFrFaqP2XLa23tv/MLXcQQ==}
     peerDependencies:
       antd: '>=4.20.0'
       react: '>=16.9.0'
@@ -1915,8 +1934,8 @@ packages:
       swr: 1.3.0
     dev: false
 
-  /@ant-design/pro-utils/1.42.3_antd@4.20.6:
-    resolution: {integrity: sha512-nmcphBaxetz2Ym8bY98fPMX5UYWVAk+yE2DBlxleR+RjGIGI/CyTpYGVwQaa/RS8ia73kdJyZri7pxcn7QHcxg==}
+  /@ant-design/pro-utils/1.42.5_antd@4.20.6:
+    resolution: {integrity: sha512-0srMbvsKOfIGdWbJrSsdECHlu2DvinEl4WwlOe4z6fpQQ0kzXfXhYYwNfPw+q5Wb75Mq1KC7kHrYF6wPZclEdQ==}
     peerDependencies:
       antd: '>=4.20.0'
       react: '>=16.9.0'
@@ -1930,7 +1949,7 @@ packages:
         optional: true
     dependencies:
       '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 1.8.0_antd@4.20.6
+      '@ant-design/pro-provider': 1.9.0_antd@4.20.6
       '@babel/runtime': 7.18.3
       antd: 4.20.6
       classnames: 2.3.1
@@ -15754,6 +15773,7 @@ packages:
 
   /github-slugger/1.4.0:
     resolution: {integrity: sha512-w0dzqw/nt51xMVmlaV1+JRzN+oCa1KfcgGEWhxUG16wbdA+Xnt/yoFO8Z8x/V82ZcZ0wy6ln9QDup5avbhiDhQ==}
+    dev: true
 
   /gl-matrix/3.4.3:
     resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}

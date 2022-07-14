@@ -26,7 +26,6 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "github-slugger": "^1.4.0",
     "keymaster": "1.6.2",
     "react-helmet": "^6.1.0",
     "rehype-pretty-code": "^0.3.1",
@@ -37,6 +36,7 @@
     "@types/keymaster": "^1.6.30",
     "@types/react-helmet": "^6.1.5",
     "classnames": "^2.3.1",
+    "github-slugger": "^1.4.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-slug": "5.0.1",
     "remark-gfm": "^3.0.1",
