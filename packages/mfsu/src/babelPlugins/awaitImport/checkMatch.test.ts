@@ -26,8 +26,12 @@ test('unMatch libs full match', () => {
       opts: {
         unMatchLibs: ['vant'],
       },
-    }).isMatch,
-  ).toEqual(true);
+    }),
+  ).toEqual({
+    isMatch: true,
+    replaceValue: 'mf/vant/es/button',
+    value: 'vant/es/button',
+  });
 });
 
 test('unMatch libs regExp', () => {
@@ -37,12 +41,8 @@ test('unMatch libs regExp', () => {
       opts: {
         unMatchLibs: [/^vant/],
       },
-    }),
-  ).toEqual({
-    isMatch: true,
-    replaceValue: 'mf/vant/es/button',
-    value: 'vant/es/button',
-  });
+    }).isMatch,
+  ).toEqual(false);
 });
 
 test('start with mf/', () => {
