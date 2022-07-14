@@ -1,12 +1,12 @@
+import { pkgUp } from '@umijs/utils';
 import { dirname } from 'path';
-import { pkgUpContainName } from './pkgUpContainName';
 
 const pkgPathCache = {};
 
 export function getPkgPath(filePath: string) {
   const dir = dirname(filePath);
   if (dir in pkgPathCache) return pkgPathCache[dir];
-  pkgPathCache[dir] = pkgUpContainName(dir);
+  pkgPathCache[dir] = pkgUp.sync({ cwd: filePath });
   return pkgPathCache[dir];
 }
 
