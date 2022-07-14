@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "4.0.0-canary.20220713.1",
+  "version": "4.0.7",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -21,8 +21,8 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20220713.1",
-    "@umijs/utils": "4.0.0-canary.20220713.1"
+    "@umijs/bundler-utils": "4.0.7",
+    "@umijs/utils": "4.0.7"
   },
   "devDependencies": {
     "dotenv": "16.0.0",
