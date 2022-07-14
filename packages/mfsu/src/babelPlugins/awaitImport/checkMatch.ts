@@ -16,7 +16,7 @@ function isUmiLocalDev(path: string) {
     : false;
 }
 
-function genTranspileLibsRegex(libs?: Array<string | RegExp>) {
+function genUnMatchLibsRegex(libs?: Array<string | RegExp>) {
   if (!libs) {
     return null;
   }
@@ -62,11 +62,11 @@ export function checkMatch({
   // FIXME: hard code for vite mode
   value = value.replace(/^@fs\//, '/');
 
-  const transpileDepRegex = genTranspileLibsRegex(opts.unMatchLibs);
+  const unMatchLibsRegex = genUnMatchLibsRegex(opts.unMatchLibs);
 
   if (
     // unMatch specified libs
-    transpileDepRegex?.test(value) ||
+    unMatchLibsRegex?.test(value) ||
     // do not match bundler-webpack/client/client/client.js
     value.includes('client/client/client.js') ||
     // already handled
