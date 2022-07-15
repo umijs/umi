@@ -277,6 +277,8 @@ export type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  AxiosError,
+  RequestError,
   IResponseInterceptor as ResponseInterceptor,
   IRequestOptions as RequestOptions,
   IRequest as Request,
