@@ -262,7 +262,7 @@ const { formatMessage } = useIntl();
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
-    import type { ProLayoutProps } from "${
+    import type { ProLayoutProps, HeaderViewProps } from "${
       pkgPath || '@ant-design/pro-layout'
     }";
     ${
@@ -275,11 +275,17 @@ const { formatMessage } = useIntl();
 
     export type RunTimeLayoutConfig = (
       initData: InitDataType,
-    ) => ProLayoutProps & {
+    ) => Omit<ProLayoutProps, 'rightContentRender'> & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
       unAccessible?: JSX.Element,
       noFound?: JSX.Element,
-    };
+      logout?: (initData) => Promise<void> | void,
+      rightContentRender?: (props: HeaderViewProps, dom: JSX.Element, props: {
+        userConfig: RunTimeLayoutConfig,
+        loading: boolean,
+        initialState,
+        setInitialState,
+      };
     `,
     });
 
