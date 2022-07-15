@@ -111,7 +111,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
           cacheDirectory: Joi.string(),
           chainWebpack: Joi.function(),
           esbuild: Joi.boolean(),
-          exclude: Joi.array().items(Joi.any()),
+          exclude: Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.object().regex())),
           include: Joi.array().items(Joi.string()),
           mfName: Joi.string(),
           runtimePublicPath: Joi.boolean(),
