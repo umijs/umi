@@ -35,7 +35,10 @@ export default (api: IApi) => {
                   console.error(chalk.red(e.stack));
                 });
             },
-            onCompileFail() {
+            onCompileFail({ stats }) {
+              if (stats.hasErrors()) {
+                console.error(stats.toString('errors-only'));
+              }
               printHelp.feedback();
             },
           }),

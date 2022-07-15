@@ -4,6 +4,7 @@ import {
   getBabelPresetOpts,
   getTargetsAndBrowsersList,
 } from '@umijs/bundler-utils';
+import CaseSensitivePaths from '@umijs/case-sensitive-paths-webpack-plugin';
 import * as defaultWebpack from '@umijs/deps/compiled/webpack';
 import {
   BundlerConfigType,
@@ -513,6 +514,9 @@ export default async function getConfig(
       }),
     );
   }
+
+  // case-sensitive-paths
+  webpackConfig.plugin('case-sensitive-paths').use(new CaseSensitivePaths());
 
   const enableManifest = () => {
     // manifest
