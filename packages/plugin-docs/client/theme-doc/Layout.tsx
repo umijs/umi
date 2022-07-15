@@ -11,6 +11,7 @@ import Toc from './Toc';
 export default (props: any) => {
   const { appData, components, themeConfig, location, history } = props;
   const [isMenuOpened, setIsMenuOpened] = useState(false);
+  const [articleLoadedFlag, setArticleLoadedFlag] = useState<boolean>(false);
 
   /**
    FireFox CSS backdrop-filter polyfill
@@ -31,6 +32,24 @@ export default (props: any) => {
       document.removeEventListener('scroll', updateBlur, false);
     };
   }, []);
+
+  useEffect(() => {
+    const articleElement = document.getElementById('article');
+    const getArticleLoadedInterval = setInterval(() => {
+      // 监听 Article 解析完成
+      if (articleElement && articleElement.dataset.loaded === 'true') {
+        setArticleLoadedFlag(true);
+        clearInterval(getArticleLoadedInterval);
+      }
+    }, 200);
+
+    return () => {
+      // 卸载页面时设置文章加载标识
+      if (articleElement) {
+        articleElement.dataset.loaded = 'false';
+      }
+    };
+  }, [location.pathname]);
 
   const { title, description, git } = themeConfig;
 
@@ -85,7 +104,7 @@ export default (props: any) => {
               {/* 左侧菜单 */}
               <div
                 className=" hidden lg:flex fixed left-0 top-0 w-1/4 flex-row
-          justify-center h-screen z-10 pt-20 bg-neutral-50 dark:bg-gray-900
+          justify-center h-screen z-10 pt-20 dark:bg-gray-900
           border-r border-gray-200 dark:border-gray-700 transition"
               >
                 <div className="container flex flex-row justify-end">
@@ -96,9 +115,11 @@ export default (props: any) => {
               <div className="container flex flex-row justify-center lg:justify-end xl:justify-center">
                 <div className="w-full lg:w-3/4 xl:w-1/2 px-4 lg:px-8 my-8 z-20 lg:pb-12 lg:pt-6">
                   {/* 文章内容 */}
-                  <article className="flex-1">{props.children}</article>
+                  <article id="article" className="flex-1">
+                    {props.children}
+                  </article>
                   {/* 文章页脚 */}
-                  <footer>{git && <ArticleMeta />}</footer>
+                  <footer>{git && articleLoadedFlag && <ArticleMeta />}</footer>
                 </div>
               </div>
               {/* 右侧 Toc */}
