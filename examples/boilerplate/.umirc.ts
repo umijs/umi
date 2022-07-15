@@ -30,7 +30,7 @@ export default {
       component: 'about',
     },
     {
-      path: '/class-component',
+      path: '/class-component/:id',
       component: 'class-component',
     },
     {
