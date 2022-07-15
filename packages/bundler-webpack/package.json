@@ -37,6 +37,7 @@
     "@types/hapi__joi": "17.1.8",
     "@umijs/babel-preset-umi": "4.0.7",
     "@umijs/bundler-utils": "4.0.7",
+    "@umijs/case-sensitive-paths-webpack-plugin": "^1.0.1",
     "@umijs/mfsu": "4.0.7",
     "@umijs/utils": "4.0.7",
     "cors": "^2.8.5",

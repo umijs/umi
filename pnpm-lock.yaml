@@ -894,6 +894,7 @@ importers:
       '@types/ws': 8.5.3
       '@umijs/babel-preset-umi': 4.0.7
       '@umijs/bundler-utils': 4.0.7
+      '@umijs/case-sensitive-paths-webpack-plugin': ^1.0.1
       '@umijs/mfsu': 4.0.7
       '@umijs/utils': 4.0.7
       autoprefixer: 10.4.4
@@ -943,6 +944,7 @@ importers:
       '@types/hapi__joi': 17.1.8
       '@umijs/babel-preset-umi': link:../babel-preset-umi
       '@umijs/bundler-utils': link:../bundler-utils
+      '@umijs/case-sensitive-paths-webpack-plugin': 1.0.1
       '@umijs/mfsu': link:../mfsu
       '@umijs/utils': link:../utils
       cors: 2.8.5
@@ -9251,6 +9253,10 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.29.0
       eslint-visitor-keys: 3.3.0
+    dev: false
+
+  /@umijs/case-sensitive-paths-webpack-plugin/1.0.1:
+    resolution: {integrity: sha512-kDKJ8yTarxwxGJDInG33hOpaQRZ//XpNuuznQ/1Mscypw6kappzFmrBr2dOYave++K7JHouoANF354UpbEQw0Q==}
     dev: false
 
   /@umijs/route-utils/2.1.1:
@@ -22559,6 +22565,7 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
+    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -22576,6 +22583,7 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
+    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}
