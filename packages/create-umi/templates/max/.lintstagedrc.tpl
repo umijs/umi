@@ -1,17 +1,17 @@
 {
   "*.{md,json}": [
-    "prettier --write"
+    "prettier --cache --write"
   ],
   "*.{js,jsx}": [
     "max lint --fix --eslint-only",
-    "prettier --write"
+    "prettier --cache --write"
   ],
   "*.{css,less}": [
     "max lint --fix --stylelint-only",
-    "prettier --write"
+    "prettier --cache --write"
   ],
   "*.ts?(x)": [
     "max lint --fix --eslint-only",
-    "prettier --parser=typescript --write"
+    "prettier --cache --parser=typescript --write"
   ]
 }

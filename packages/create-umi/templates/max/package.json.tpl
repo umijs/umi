@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "max dev",
     "build": "max build",
+    "format": "prettier --cache --write .",
     "prepare": "husky install",
     "postinstall": "max setup",
     "setup": "max setup",
@@ -20,7 +21,7 @@
     "@types/react-dom": "^18.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "^2",
+    "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^2",
     "prettier-plugin-packagejson": "^2",
     "typescript": "^4.1.2"
