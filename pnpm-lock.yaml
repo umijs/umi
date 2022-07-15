@@ -994,12 +994,14 @@ importers:
       '@umijs/bundler-utils': 4.0.7
       '@umijs/utils': 4.0.7
       dotenv: 16.0.0
+      dotenv-expand: 8.0.3
       just-diff: 5.0.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
     devDependencies:
       dotenv: 16.0.0
+      dotenv-expand: 8.0.3
       just-diff: 5.0.1
 
   packages/create-umi:
@@ -13409,6 +13411,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       is-obj: 2.0.0
+    dev: true
+
+  /dotenv-expand/8.0.3:
+    resolution: {integrity: sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==}
+    engines: {node: '>=12'}
     dev: true
 
   /dotenv/16.0.0:
