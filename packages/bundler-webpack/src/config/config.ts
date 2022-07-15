@@ -1,3 +1,4 @@
+import CaseSensitivePaths from '@umijs/case-sensitive-paths-webpack-plugin';
 import { join, resolve } from 'path';
 import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
@@ -201,6 +202,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   if (userConfig.runtimePublicPath) {
     config.plugin('runtimePublicPath').use(RuntimePublicPathPlugin);
   }
+  // case-sensitive-paths
+  config.plugin('case-sensitive-paths').use(CaseSensitivePaths);
 
   // cache
   if (opts.cache) {
