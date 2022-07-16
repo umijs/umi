@@ -1106,6 +1106,7 @@ importers:
       tailwindcss: ^3.0.24
       umi: 4.0.7
     dependencies:
+      github-slugger: 1.4.0
       keymaster: 1.6.2
       react-helmet: 6.1.0
       rehype-pretty-code: 0.3.2_shiki@0.10.1
@@ -1116,7 +1117,6 @@ importers:
       '@types/keymaster': 1.6.30
       '@types/react-helmet': 6.1.5
       classnames: 2.3.1
-      github-slugger: 1.4.0
       rehype-autolink-headings: 6.1.1
       rehype-slug: 5.0.1
       remark-gfm: 3.0.1
@@ -10782,7 +10782,7 @@ packages:
   /axios/0.21.4_debug@4.3.2:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10799,7 +10799,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -15796,7 +15796,6 @@ packages:
 
   /github-slugger/1.4.0:
     resolution: {integrity: sha512-w0dzqw/nt51xMVmlaV1+JRzN+oCa1KfcgGEWhxUG16wbdA+Xnt/yoFO8Z8x/V82ZcZ0wy6ln9QDup5avbhiDhQ==}
-    dev: true
 
   /gl-matrix/3.4.3:
     resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
