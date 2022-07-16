@@ -681,3 +681,52 @@ function App() {
   return <form onSubmit={handleSubmit}>{/* ... */}</form>;
 }
 ```
+
+### withRouter
+
+`withRouter` 参考 [react-router faq](https://reactrouter.com/docs/en/v6/getting-started/faq#what-happened-to-withrouter-i-need-it) 实现的版本, 仅实现了部分能力, 请参考类型定义按需使用, 建议迁移到 React Hook API。
+
+类型定义如下:
+
+```ts
+export interface RouteComponentProps<T = ReturnType<typeof useParams>> {
+  history: {
+    back: () => void;
+    goBack: () => void;
+    location: ReturnType<typeof useLocation>;
+    push: (url: string, state?: any) => void;
+  };
+  location: ReturnType<typeof useLocation>;
+  match: {
+    params: T;
+  };
+  params: T;
+  navigate: ReturnType<typeof useNavigate>;
+}
+```
+
+示例：
+```tsx
+import React from 'react';
+import { withRouter } from 'umi';
+
+class HelloWorld extends React.Component<any> {
+  render() {
+    return (
+      <div>
+        Hello World {this.props.location.pathname}
+        <h2>params: {JSON.stringify(this.props.match.params)}</h2>
+        <button
+          onClick={() => {
+            this.props.history.push('/users');
+          }}
+        >
+          To Users
+        </button>
+      </div>
+    );
+  }
+}
+
+export default withRouter(HelloWorld);
+```

@@ -18,7 +18,7 @@ assert(
 console.log(chalk.cyan(`umi-scripts: ${name}\n`))
 
 const spawn = sync(
-  'esno',
+  'tsx',
   [scriptsPath, ...argv.slice(1)],
   {
     env: process.env,
