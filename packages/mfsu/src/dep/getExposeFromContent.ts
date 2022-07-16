@@ -56,7 +56,9 @@ export default _;`.trim();
     if (
       hasNonDefaultExports(exports) ||
       // export * from 不会有 exports，只会有 imports
-      /export\s+\*\s+from/.test(opts.content)
+      // case: export*from'.'
+      //       export * from '.'
+      /export\s*\*\s*from/.test(opts.content)
     ) {
       ret.push(`export * from '${opts.dep.file}';`);
       hasExports = true;
