@@ -79,17 +79,7 @@ export function renderClient(opts: {
       routes: clientRoutes,
     },
   });
-  let rootContainer = (
-    <BrowserRoutes
-      basename={basename}
-      pluginManager={opts.pluginManager}
-      routes={opts.routes}
-      clientRoutes={clientRoutes}
-      history={opts.history}
-    >
-      <Routes />
-    </BrowserRoutes>
-  );
+  let routesChildren = <Routes />;
   for (const key of [
     // Lowest to the highest priority
     'innerProvider',
@@ -99,13 +89,24 @@ export function renderClient(opts: {
     'outerProvider',
     'rootContainer',
   ]) {
-    rootContainer = opts.pluginManager.applyPlugins({
+    routesChildren = opts.pluginManager.applyPlugins({
       type: 'modify',
       key: key,
-      initialValue: rootContainer,
+      initialValue: routesChildren,
       args: {},
     });
   }
+  const rootContainer = (
+    <BrowserRoutes
+      basename={basename}
+      pluginManager={opts.pluginManager}
+      routes={opts.routes}
+      clientRoutes={clientRoutes}
+      history={opts.history}
+    >
+      {routesChildren}
+    </BrowserRoutes>
+  );
 
   const Browser = () => {
     const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
