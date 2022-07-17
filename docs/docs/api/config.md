@@ -392,14 +392,14 @@ devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 - 类型：`Record<string, string> | Function`
 - 默认值：`{}`
 
-设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 scripts 或 headScripts 配置使用。
+设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 headScripts 配置使用。
 
 示例，
 
 ```
 // external react
 externals: { react: 'React' },
-scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
+headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 ```
 
 注意：不要轻易设置 antd 的 externals，由于依赖较多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
