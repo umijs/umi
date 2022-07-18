@@ -1,0 +1,34 @@
+{
+  "name": "@umijs/codemod",
+  "version": "0.1.0",
+  "homepage": "https://github.com/umijs/umi/tree/master/codemod",
+  "bugs": "https://github.com/umijs/umi/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "bin": {
+    "umi-codemod": "bin/umi-codemod.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm tsc"
+  },
+  "dependencies": {
+    "@umijs/ast": "4.0.7",
+    "@umijs/babel-preset-umi": "4.0.7",
+    "@umijs/bundler-utils": "4.0.7",
+    "@umijs/utils": "4.0.7",
+    "fast-glob": "3.2.11",
+    "kleur": "4.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
+}

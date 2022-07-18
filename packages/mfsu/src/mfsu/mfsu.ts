@@ -45,7 +45,7 @@ interface IOpts {
   mfName?: string;
   mode?: Mode;
   tmpBase?: string;
-  unMatchLibs?: string[];
+  unMatchLibs?: Array<string | RegExp>;
   runtimePublicPath?: boolean | string;
   implementor: typeof webpack;
   buildDepWithESBuild?: boolean;

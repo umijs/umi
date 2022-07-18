@@ -69,6 +69,7 @@ export async function dev(opts: IOpts) {
       tmpBase:
         opts.config.mfsu?.cacheDirectory || join(cacheDirectoryPath, 'mfsu'),
       onMFSUProgress: opts.onMFSUProgress,
+      unMatchLibs: opts.config.mfsu?.exclude,
       getCacheDependency() {
         return stripUndefined({
           version: require('../package.json').version,
