@@ -2,6 +2,7 @@ import extraConfig from './extraConfig';
 
 export default {
   base: '/foo',
+  publicPath: '/foo/',
   // history: { type: 'hash' },
   routes: [
     { path: '/', component: 'index' },
@@ -29,7 +30,7 @@ export default {
       component: 'about',
     },
     {
-      path: '/class-component',
+      path: '/class-component/:id',
       component: 'class-component',
     },
     {
@@ -81,5 +82,20 @@ export default {
       chrome: 60,
     },
   },
+  cacheDirectoryPath: 'node_modules/.cache1',
+  metas: [
+    {
+      name: 'viewport',
+      content: `width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no`,
+    },
+    {
+      'http-equiv': 'X-UA-Compatible',
+      content: 'IE=edge,chrome=1',
+    },
+    {
+      name: 'description',
+      content: 'umijs',
+    },
+  ],
   ...extraConfig,
 };

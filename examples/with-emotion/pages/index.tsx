@@ -1,6 +1,6 @@
 /* @jsxImportSource @emotion/react */
-import { css, jsx } from '@emotion/react';
-import { Wrapper, Container, Title, bounce, Animation, Padding } from './style';
+import { css } from '@emotion/react';
+import { Animation, bounce, Container, Padding, Title, Wrapper } from './style';
 
 const breakpoints = [576, 768, 992, 1200];
 

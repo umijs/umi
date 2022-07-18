@@ -1,4 +1,4 @@
-import { logger, yParser } from '@umijs/utils';
+import { logger, printHelp, yParser } from '@umijs/utils';
 import { DEV_COMMAND } from '../constants';
 import { Service } from '../service/service';
 import { dev } from './dev';
@@ -8,7 +8,6 @@ import {
   setNoDeprecation,
   setNodeTitle,
 } from './node';
-import { printHelp } from './printHelp';
 
 interface IOpts {
   presets?: string[];
@@ -46,7 +45,7 @@ export async function run(opts?: IOpts) {
       });
     } catch (e: any) {
       logger.fatal(e);
-      printHelp();
+      printHelp.exit();
       process.exit(1);
     }
   }

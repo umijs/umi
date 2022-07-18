@@ -13,7 +13,7 @@
 │   ├── .umi
 │   ├── .umi-production
 │   ├── app.ts
-│   ├── layout
+│   ├── layouts
 │   │   ├── BasicLayout.tsx
 │   │   ├── index.less
 │   ├── models
@@ -178,7 +178,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 
 ### plugin.ts 
 
-存在这个文件，会被当前项目加载为 Umi 插件，你可以在这里写一些需要插件级支撑的问题。
+存在这个文件，会被当前项目加载为 Umi 插件，你可以在这里实现一些插件级的功能。
 
 ```ts
 import type { IApi } from 'umi';

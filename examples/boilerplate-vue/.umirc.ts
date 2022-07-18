@@ -1,5 +1,6 @@
 export default {
   base: '/foo',
+  publicPath: '/foo/',
   deadCode: {},
   https: {},
   headScripts: [`console.log('head script')`],

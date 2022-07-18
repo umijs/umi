@@ -7,7 +7,7 @@ export function createHistory(opts: any) {
   if (opts.type === 'hash') {
     h = createHashHistory();
   } else if (opts.type === 'memory') {
-    h = createMemoryHistory();
+    h = createMemoryHistory(opts);
   } else {
     h = createBrowserHistory();
   }

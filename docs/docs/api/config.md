@@ -7,7 +7,7 @@
 - 类型：`Record<string, string>`
 - 默认值：`{}`
 
-配置别名，对 import 语句的 source 做隐射。
+配置别名，对 import 语句的 source 做映射。
 
 比如：
 
@@ -41,10 +41,10 @@
 }
 ```
 
-2、如果不需要子路径也被隐射，记得加 `$` 后缀，比如
+2、如果不需要子路径也被映射，记得加 `$` 后缀，比如
 
 ```js
-// import 'foo/bar' 会被隐射到 import '/tmp/to/foo/bar'
+// import 'foo/bar' 会被映射到 import '/tmp/to/foo/bar'
 {
   alias: {
     foo: '/tmp/to/foo';
@@ -74,6 +74,20 @@
 设置路由 base，部署项目到非根目录下时使用。
 
 比如有路由 `/` 和 `/users`，设置 base 为 `/foo/` 后就可通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
+
+## cacheDirectoryPath
+
+- 类型：`string`
+- 默认值：`node_modules/.cache`
+
+支持配置 cache directory。
+
+示例，
+
+```js
+// 更改缓存文件路径到 node_modules/.cache1 文件夹
+cacheDirectoryPath: 'node_modules/.cache1',
+```
 
 ## chainWebpack
 
@@ -109,7 +123,9 @@ export default {
 - 类型: `{ editor?: string }`
 - 默认值: `false`
 
-开启后，可通过 `Option+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click` 可以打开上下文，查看父组件。
+> 当前仅 React 项目支持。
+
+开启后，可通过 `Option+Click/Alt+Click` 点击组件跳转至编辑器源码位置，`Option+Right-click/Alt+Right-click` 可以打开上下文，查看父组件。
 
 关于参数。`editor` 为编辑器名称，默认为 'vscode'，支持 `vscode` & `vscode-insiders`。
 
@@ -376,14 +392,14 @@ devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 - 类型：`Record<string, string> | Function`
 - 默认值：`{}`
 
-设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 scripts 或 headScripts 配置使用。
+设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 headScripts 配置使用。
 
 示例，
 
 ```
 // external react
 externals: { react: 'React' },
-scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
+headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 ```
 
 注意：不要轻易设置 antd 的 externals，由于依赖较多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
@@ -558,12 +574,12 @@ https: {
 - 类型：`object`
 - 默认值：`{}`
 
-`jsminifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsminifier` 选项来保留注释。
+`jsMinifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsMinifier` 选项来保留注释。
 
 示例：
 ```js
 {
-  jsminifier: 'esbuild',
+  jsMinifier: 'esbuild',
   jsMinifierOptions: {
     minifyWhitespace: true,
     minifyIdentifiers: true,
@@ -581,7 +597,7 @@ https: {
 
 {
 /*
-## jsminifier (vite 构建)
+## jsMinifier (vite 构建)
 
 * 类型：`string`
 * 默认值：
@@ -1039,3 +1055,4 @@ vite: {
   cacheDir: 'node_modules/.bin/.vite';
 }
 ```
+

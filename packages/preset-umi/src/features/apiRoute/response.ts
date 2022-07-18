@@ -22,6 +22,11 @@ class UmiApiResponse {
     return this;
   }
 
+  public end(data: any) {
+    this._res.end(data);
+    return this;
+  }
+
   public text(data: string) {
     this._res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     this._res.end(data);

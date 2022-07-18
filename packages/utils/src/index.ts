@@ -26,6 +26,7 @@ import Generator from './Generator/Generator';
 import getGitInfo from './getGitInfo';
 import installDeps from './installDeps';
 import * as logger from './logger';
+import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
 export * from './getCorejsVersion';
 export * from './importLazy';
@@ -66,4 +67,5 @@ export {
   updatePackageJSON,
   yParser,
   getGitInfo,
+  printHelp,
 };

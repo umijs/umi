@@ -130,6 +130,26 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
   return newRoutes;
 }
 
+// 格式化路由 处理因 wrapper 导致的 菜单 path 不一致
+const mapRoutes = (routes: IRoute[]) => {
+  if (routes.length === 0) {
+    return []
+  }
+  return routes.map(route => {
+    // 需要 copy 一份, 否则会污染原始数据
+    const newRoute = {...route}
+    if (route.originPath) {
+      newRoute.path = route.originPath
+    }
+
+    if (Array.isArray(route.routes)) {
+      newRoute.routes = mapRoutes(route.routes);
+    }
+
+    return newRoute
+  })
+}
+
 export default (props: any) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -158,9 +178,9 @@ const { formatMessage } = useIntl();
 
   const matchedRoute = useMemo(() => matchRoutes(clientRoutes, location.pathname).pop()?.route, [location.pathname]);
   const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
-    return !!route.isLayout && route.id !== 'ant-design-pro-layout';
+    return (!!route.isLayout && route.id !== 'ant-design-pro-layout') || !!route.isWrapper;
   })
-  const [route] = useAccessMarkedRoutes(newRoutes);
+  const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
 
   return (
     <ProLayout

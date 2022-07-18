@@ -84,6 +84,26 @@ export async function getMarkup(
     return `<${opts.tagName} ${attrs} />`;
   }
 
+  function withDefaultMetas(metas: IOpts['metas'] = []) {
+    const hasAttr = (key: string, value?: string) =>
+      metas.some((m) => {
+        return value ? m[key]?.toLowerCase() === value.toLowerCase() : m[key];
+      });
+    return [
+      !hasAttr('charset') && { charset: 'utf-8' },
+      !hasAttr('name', 'viewport') && {
+        name: 'viewport',
+        content:
+          'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0',
+      },
+      !hasAttr('http-equiv', 'X-UA-Compatible') && {
+        'http-equiv': 'X-UA-Compatible',
+        content: 'ie=edge',
+      },
+      ...metas,
+    ].filter(Boolean) as NonNullable<IOpts['metas']>;
+  }
+
   const favicons: string[] = [];
   if (Array.isArray(opts.favicons)) {
     opts.favicons.forEach((e) => {
@@ -91,7 +111,7 @@ export async function getMarkup(
     });
   }
   const title = opts.title ? `<title>${opts.title}</title>` : '';
-  const metas = (opts.metas || []).map((meta) =>
+  const metas = withDefaultMetas(opts.metas).map((meta) =>
     getTagContent({ attrs: meta, tagName: 'meta' }),
   );
   const links = (opts.links || []).map((link) =>
@@ -105,13 +125,7 @@ export async function getMarkup(
   markup = [
     `<!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<meta
-  name="viewport"
-  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-/>
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />`,
+<head>`,
     metas.join('\n'),
     favicons.join('\n'),
     title,
@@ -142,7 +156,11 @@ export function createRequestHandler(opts: IOpts): RequestHandler {
     ) {
       // 如果是 browser，并且配置了非 / base，访问 / 时 redirect 到 base 路径
       res.redirect(opts.base);
-    } else if (req.headers.accept?.includes('text/html')) {
+    } else if (
+      req.headers.accept?.includes('text/html') ||
+      req.headers.accept === '*/*' ||
+      req.path === opts.base
+    ) {
       // 匹配路由，不匹配走 next()
       // const routes = createServerRoutes({
       //   routesById: opts.routes,

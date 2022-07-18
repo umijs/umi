@@ -25,6 +25,7 @@ import axios, {
   type AxiosInstance,
   type AxiosRequestConfig,
   type AxiosResponse,
+  type AxiosError,
 } from '{{{axiosPath}}}';
 import useUmiRequest, { UseRequestProvider } from '{{{umiRequestPath}}}';
 import { ApplyPluginsType } from 'umi';
@@ -125,6 +126,8 @@ interface IRequest{
    <T = any>(url: string): Promise<T>;  // 不提供 opts 时，默认使用 'GET' method，并且默认返回 data
 }
 
+type RequestError = AxiosError | Error
+
 interface IErrorHandler {
   (error: RequestError, opts: IRequestOptions): void;
 }
@@ -136,10 +139,10 @@ type IResponseInterceptor = <T = any>(response : AxiosResponse<T>) => AxiosRespo
 type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor
 type IResponseInterceptorTuple = [IResponseInterceptor, IErrorInterceptor] | [IResponseInterceptor] | IResponseInterceptor
 
-export interface RequestConfig extends AxiosRequestConfig {
+export interface RequestConfig<T = any> extends AxiosRequestConfig {
   errorConfig?: {
     errorHandler?: IErrorHandler;
-    errorThrower?: <T = any>( res: T ) => void
+    errorThrower?: ( res: T ) => void
   };
   requestInterceptors?: IRequestInterceptorTuple[];
   responseInterceptors?: IResponseInterceptorTuple[];
@@ -274,6 +277,8 @@ export type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  AxiosError,
+  RequestError,
   IResponseInterceptor as ResponseInterceptor,
   IRequestOptions as RequestOptions,
   IRequest as Request,
@@ -306,6 +311,8 @@ export type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse, 
+  AxiosError,
+  RequestError,
   ResponseInterceptor } from './request';
 `,
     });

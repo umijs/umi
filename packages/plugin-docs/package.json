@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.0.5",
+  "version": "4.0.7",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -22,7 +22,7 @@
     "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css",
     "dev": "pnpm build --watch",
-    "dev:css": "pnpm build:css -- --watch",
+    "dev:css": "pnpm build:css --watch",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
@@ -40,7 +40,7 @@
     "rehype-slug": "5.0.1",
     "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.0.24",
-    "umi": "4.0.5"
+    "umi": "4.0.7"
   },
   "publishConfig": {
     "access": "public"
