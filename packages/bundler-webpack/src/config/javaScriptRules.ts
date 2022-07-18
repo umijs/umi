@@ -1,6 +1,6 @@
 import type { Program } from '@swc/core';
 import { autoCssModulesHandler, esbuildLoader } from '@umijs/mfsu';
-import { chalk } from '@umijs/utils';
+import { chalk, resolve } from '@umijs/utils';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
@@ -58,15 +58,13 @@ export async function addJavaScriptRules(opts: IOpts) {
             if (p.startsWith('./')) {
               return require.resolve(p, { paths: [cwd] });
             }
-
-            return dirname(
-              require.resolve(`${p}/package.json`, { paths: [cwd] }),
-            );
+            // use resolve instead of require.resolve
+            // since require.resolve may meet the ERR_PACKAGE_PATH_NOT_EXPORTED error
+            return dirname(resolve.sync(`${p}/package.json`, { basedir: cwd }));
           } catch (e: any) {
             if (e.code === 'MODULE_NOT_FOUND') {
               throw new Error('Cannot resolve extraBabelIncludes: ' + p);
             }
-
             throw e;
           }
         }),
