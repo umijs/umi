@@ -663,7 +663,7 @@ metas: [
 
 ## mfsu
 
-- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void }`
+- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void; exclude?: Array<string | RegExp> }`
 - 默认值：`{ mfName: 'mf', strategy: 'normal' }`
 
 配置基于 [Module Federation](https://module-federation.github.io/) 的提速功能。
