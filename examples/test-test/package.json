@@ -2,6 +2,7 @@
   "name": "@example/test-test",
   "private": true,
   "scripts": {
+    "dev": "umi dev",
     "start": "npm run dev",
     "test": "jest"
   },

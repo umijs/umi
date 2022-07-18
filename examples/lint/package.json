@@ -2,6 +2,7 @@
   "name": "@example/lint",
   "private": true,
   "scripts": {
+    "dev": "umi dev",
     "lint": "umi lint",
     "lint:cssinjs": "umi lint --stylelint-only --cssinjs",
     "lint:es": "umi lint --eslint-only",
