@@ -38,6 +38,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.3",
     "qiankun": "^2.7.0",
+    "react-helmet-async": "^1.3.0",
     "react-intl": "3.12.1",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
