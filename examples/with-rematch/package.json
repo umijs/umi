@@ -9,6 +9,6 @@
   "dependencies": {
     "@rematch/core": "^2.2.0",
     "react-redux": "^8.0.2",
-    "umi": "4.0.0-canary.20220718.1"
+    "umi": "4.0.0-canary.20220718.2"
   }
 }
