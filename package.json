@@ -12,7 +12,7 @@
     "codemod:dev": "pnpm --filter @umijs/codemod build --watch",
     "codemod:release": "umi-scripts releaseCodemod",
     "codemod:run": "BACON=none GIT_CHECK=none ./codemod/bin/umi-codemod.js --cwd codemod/fixtures/tmp",
-    "codemod:test": "BACON=none GIT_CHECK=none umi-scripts testCodemod",
+    "codemod:test": "BACON=none GIT_CHECK=none umi-scripts testCodemod && cd codemod && jest",
     "cov": "jest --coverage",
     "dep:update": "pnpm up --interactive --latest --recursive",
     "dev": "umi-scripts turbo --cmd dev --parallel",
