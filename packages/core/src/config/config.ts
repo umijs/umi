@@ -147,9 +147,12 @@ export class Config {
               file: mainConfigFile,
               ext: `.${env}.${specifiedEnv}`,
             }),
-          addExt({ file: mainConfigFile, ext: LOCAL_EXT }),
         ].filter(Boolean),
       );
+
+      if (opts.env === Env.development) {
+        ret.push(addExt({ file: mainConfigFile, ext: LOCAL_EXT }));
+      }
     }
     return ret;
   }
