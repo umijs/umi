@@ -1,16 +1,9 @@
-import routes from './routes';
 import MonacoEditorWebpackPlugin from 'monaco-editor-webpack-plugin';
+import routes from './routes';
 
 export default {
   nodeModulesTransform: { type: 'all' },
-  // deployMode: 'sofa',
-  // appType: 'h5',
   foo: 'bar',
-  browserUpdate: {},
-  cnzz: {
-    src: 'https://s19.cnzz.com/z_stat.php?id=1274488723&web_id=1274488723',
-  },
-  deer: {},
   devServer: {
     port: '9001',
   },
@@ -18,8 +11,6 @@ export default {
   esbuild: {},
   favicon: 'abc',
   fastRefresh: {},
-  must: {},
-  // onex: {},
   runtimeHistory: {},
   singular: true,
   layout: {
@@ -29,7 +20,6 @@ export default {
   },
   webpack5: {},
   workerLoader: {},
-  bigfly: {},
   devtool: 'eval-cheap-module-source-map',
   proxy: {
     '/empty': {},
@@ -48,9 +38,6 @@ export default {
     defaultSizes: 'parsed', // stat  // gzip
   },
   exportStatic: { htmlSuffix: true },
-  monacoEditor: {
-    languages: ['cpp', 'json', 'mysql', 'python'],
-  },
   // mpa: {},
   // ssr: {
   //   // 更多配置
@@ -61,7 +48,6 @@ export default {
   //   // staticMarkup: false,
   // },
   runtimePublicPath: true,
-  ctoken: true,
   antd: { config: {} },
 
   chainWebpack(memo) {
