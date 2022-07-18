@@ -356,6 +356,28 @@ importers:
       webpack-cli: 4.10.0_hnfkmnck6ti4dm6ulhhz44v2ju
       webpack-dev-server: 4.9.2_77l47gmqkrqiei5z7sbwz5iaj4
 
+  examples/mfsu-un-match-libs:
+    specifiers:
+      '@umijs/plugins': 4.0.7
+      '@umijs/preset-vue': 4.0.7
+      '@vant/icons': ^1.8.0
+      '@vant/popperjs': ^1.1.0
+      '@vant/use': ^1.3.6
+      tailwindcss: ^3.0.24
+      umi: 4.0.7
+      vant: 3.4.9
+      vue: 3.2.36
+    dependencies:
+      '@umijs/plugins': link:../../packages/plugins
+      '@umijs/preset-vue': link:../../packages/preset-vue
+      '@vant/icons': 1.8.0
+      '@vant/popperjs': 1.2.1
+      '@vant/use': 1.4.1
+      tailwindcss: 3.1.3
+      umi: link:../../packages/umi
+      vant: 3.4.9_vue@3.2.36
+      vue: 3.2.36
+
   examples/qiankun-slave:
     specifiers:
       '@umijs/max': 4.0.7
