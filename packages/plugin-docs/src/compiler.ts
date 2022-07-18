@@ -64,12 +64,6 @@ function MDXContent(props = {}) {
       behavior: 'smooth',
       block: 'center'
     });
-
-    // 添加文章加载完成标识
-    const articleElement = document.getElementById('article');
-    if (articleElement) {
-      articleElement.dataset.loaded = 'true';
-    }
   }, []);
 
 `,

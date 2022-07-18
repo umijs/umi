@@ -11,7 +11,6 @@ import Toc from './Toc';
 export default (props: any) => {
   const { appData, components, themeConfig, location, history } = props;
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-  const [articleLoadedFlag, setArticleLoadedFlag] = useState<boolean>(false);
 
   /**
    FireFox CSS backdrop-filter polyfill
@@ -32,24 +31,6 @@ export default (props: any) => {
       document.removeEventListener('scroll', updateBlur, false);
     };
   }, []);
-
-  useEffect(() => {
-    const articleElement = document.getElementById('article');
-    const getArticleLoadedInterval = setInterval(() => {
-      // 监听 Article 解析完成
-      if (articleElement && articleElement.dataset.loaded === 'true') {
-        setArticleLoadedFlag(true);
-        clearInterval(getArticleLoadedInterval);
-      }
-    }, 200);
-
-    return () => {
-      // 卸载页面时设置文章加载标识
-      if (articleElement) {
-        articleElement.dataset.loaded = 'false';
-      }
-    };
-  }, [location.pathname]);
 
   const { title, description, git } = themeConfig;
 
@@ -113,13 +94,13 @@ export default (props: any) => {
               </div>
               {/* 文章主体 */}
               <div className="container flex flex-row justify-center lg:justify-end xl:justify-center">
-                <div className="w-full lg:w-3/4 xl:w-1/2 px-4 lg:px-8 my-8 z-20 lg:pb-12 lg:pt-6">
+                <div className="w-full min-h-screen flex flex-col lg:w-3/4 xl:w-1/2 px-4 lg:px-8 my-8 z-20 lg:pb-12 lg:pt-6">
                   {/* 文章内容 */}
                   <article id="article" className="flex-1">
                     {props.children}
                   </article>
                   {/* 文章页脚 */}
-                  <footer>{git && articleLoadedFlag && <ArticleMeta />}</footer>
+                  <footer>{git && <ArticleMeta />}</footer>
                 </div>
               </div>
               {/* 右侧 Toc */}

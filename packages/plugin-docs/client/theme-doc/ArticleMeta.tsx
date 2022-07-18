@@ -79,7 +79,7 @@ export default () => {
   const contributors = routeGit.contributors;
 
   return (
-    <div className="article-meta text-base leading-8 text-neutral-500 dark:text-neutral-300 mt-20 mb-8 flex flex-wrap flex-col md:flex-row md:justify-between">
+    <div className="article-meta text-base leading-8 text-neutral-500 dark:text-neutral-300 mt-16 flex flex-wrap flex-col md:flex-row md:justify-between">
       {editUrlBase && displayEditLink !== false && (
         <div className="flex md:basis-1/2">
           <a
