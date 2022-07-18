@@ -8,7 +8,7 @@ import { Message } from 'umi';
 
 ### Model 和命名空间
 
-所谓 Model，就是一个[自定义的 `hook`](https://zh-hans.reactjs.org/docs/hooks-custom.html)，没有任何使用者需要关注的“黑魔法”。在命名 Model 文件时，建议遵循 React 官方的 `hook` 命名规范，以 `use` 开头。
+所谓 Model，就是一个[自定义的 `hook`](https://zh-hans.reactjs.org/docs/hooks-custom.html)，没有任何使用者需要关注的“黑魔法”。
 
 数据流管理插件采用约定式目录结构，我们约定在 `src/models`, `src/pages/xxx/models`目录，和 `src/pages/xxx/model.{js,jsx,ts,tsx}` 文件中引入 Model 文件。
 
@@ -28,7 +28,7 @@ Model 文件允许使用 `.js`，`.jsx`，`.ts` 和 `.tsx` 四种后缀格式，
 编写一个**默认导出**的函数：
 
 ```ts
-// src/models/useUser.ts
+// src/models/userModel.ts
 export default () => {
   const user = {
     username: 'umi',
@@ -44,10 +44,10 @@ export default () => {
 Model 文件需要默认导出一个函数，此函数为一个 React 的自定义 `hook`。对于不符合此规范的文件，将会被过滤掉，并无法通过命名空间调用。
 </Message>
 
-Model 中允许使用其它 `hook`，以计数器为例：
+Model 中允许使用其它 `hook`，以<span id="counterModel">计数器</span>为例：
 
 ```ts
-// src/models/useCounter.ts
+// src/models/counterModel.ts
 import { useState, useCallback } from 'react';
 
 export default () => {
@@ -63,7 +63,7 @@ export default () => {
 在项目实践中，我们通常需要请求后端接口，来获取所需的数据。现在让我们来扩展前面获取用户信息的例子：
 
 ```ts
-// src/models/useUser.ts
+// src/models/userModel.ts
 import { useState, useEffect } from 'react';
 import { getUser } from '@/services/user';
 
@@ -88,7 +88,7 @@ export default () => {
 如果您在项目中使用了 [ahooks](https://ahooks.js.org)，则可以像这样组织您的代码：
 
 ```ts
-// src/models/useUser.ts
+// src/models/userModel.ts
 import { useRequest } from 'ahooks';
 import { getUser } from '@/services/user';
 
@@ -117,7 +117,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, loading } = useModel('useUser');
+  const { user, loading } = useModel('userModel');
 
   return (
     {loading ? <></>: <div>{user.username}</div>}
@@ -143,7 +143,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { add, minus } = useModel('useCounter', (model) => ({
+  const { add, minus } = useModel('counterModel', (model) => ({
     add: model.increment,
     minus: model.decrement,
   }));
@@ -157,7 +157,7 @@ export default () => {
 };
 ```
 
-上面的组件并不关心计数器 Model 中的 `counter` 值，只需要使用 Model 提供的 `increment()` 和 `decrement()` 方法。于是我们传入了一个函数作为 `useModel()` 方法的第二个参数，该函数的返回值将作为 `useModel()` 方法的返回值。
+上面的组件并不关心 [`counterModel`](#counterModel) 中的 `counter` 值，只需要使用 Model 提供的 `increment()` 和 `decrement()` 方法。于是我们传入了一个函数作为 `useModel()` 方法的第二个参数，该函数的返回值将作为 `useModel()` 方法的返回值。
 
 这样，我们过滤掉了 `counter` 这一频繁变化的值，避免了组件重复渲染带来的性能损失。
 
@@ -225,7 +225,7 @@ export default () => {
 import { useModel } from 'umi';
 
 export default () => {
-  const { user, fetchUser } = useModel('useAdmin', (model) => ({
+  const { user, fetchUser } = useModel('adminModel', (model) => ({
     user: model.admin,
     fetchUser: model.fetchAdmin,
   }));
