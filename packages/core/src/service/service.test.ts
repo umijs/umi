@@ -53,6 +53,17 @@ test('config umi-env', async () => {
   process.env.UMI_ENV = '';
 });
 
+test('config umi-env local', async () => {
+  const service = buildService({ name: 'umi-env-local' });
+  const userConfig = await service.run({ name: 'userConfig' });
+  expect(userConfig).toEqual({
+    bar: 88,
+    foo: 1,
+    nest: 4,
+    local: 4,
+  });
+});
+
 test('config umi-env-dot-env', async () => {
   const service = buildService({ name: 'umi-env-dot-env' });
   const userConfig = await service.run({ name: 'userConfig' });
