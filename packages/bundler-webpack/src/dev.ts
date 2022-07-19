@@ -30,7 +30,7 @@ type IOpts = {
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
   srcCodeCache?: any;
-} & Pick<IConfigOpts, 'cache'>;
+} & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
   Object.keys(obj).forEach((key) => {
@@ -112,6 +112,7 @@ export async function dev(opts: IOpts) {
           cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
         }
       : undefined,
+    pkg: opts.pkg,
   });
 
   const depConfig = await getConfig({
@@ -128,6 +129,7 @@ export async function dev(opts: IOpts) {
       buildDependencies: opts.cache?.buildDependencies,
       cacheDirectory: join(cacheDirectoryPath, 'mfsu-deps'),
     },
+    pkg: opts.pkg,
   });
 
   webpackConfig.resolve!.alias ||= {};
