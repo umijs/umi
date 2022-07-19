@@ -15,6 +15,10 @@ export function watch(opts: {
   const watcher = chokidar.watch(opts.path, {
     ...opts.watchOpts,
     ignoreInitial: true,
+    awaitWriteFinish: {
+      stabilityThreshold: 100,
+      pollInterval: 100,
+    },
   });
   watcher.on('all', opts.onChange);
   if (opts.addToUnWatches) {
