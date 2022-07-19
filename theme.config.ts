@@ -114,4 +114,11 @@ export default {
     },
   ],
   themeSwitch: {},
+  git: {
+    branch: 'master',
+    displayEditLink: true,
+    displayUpdatedTime: false,
+    displayCreatedTime: false,
+    displayContributors: false,
+  },
 };
