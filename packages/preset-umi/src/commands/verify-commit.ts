@@ -27,8 +27,7 @@ export default (api: IApi) => {
       // "gitHooks": {
       //   "commit-msg": "umi verify-commit"
       // }
-      const msgPath =
-        args._[0] || process.env.GIT_PARAMS;
+      const msgPath = args._[0] || process.env.GIT_PARAMS;
 
       assert(msgPath, 'msgPath is required');
 
