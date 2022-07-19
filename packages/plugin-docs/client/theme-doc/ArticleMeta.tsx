@@ -81,15 +81,15 @@ export default () => {
   const contributors = routeGit.contributors;
 
   return (
-    <div className="article-meta text-base leading-8 text-neutral-500 dark:text-neutral-300 mt-16 flex flex-wrap flex-col md:flex-row md:justify-between">
+    <div className="article-meta border-neutral-200 pt-2 text-base leading-8 text-neutral-500 dark:text-neutral-300 mt-16 flex flex-wrap flex-col md:flex-row md:justify-between">
       {editUrlBase && displayEditLink !== false && (
         <div className="flex md:basis-1/2">
           <a
-            className="font-medium hover:underline underline-offset-1 flex"
+            className="font-medium hover:underline"
             href={editUrl}
             target="_blank"
           >
-            <img src={EditIcon} className="dark:invert mr-1"></img>
+            <img src={EditIcon} className="dark:invert -mt-1 mr-1 inline"></img>
             <span>{lang.render('Edit this page')}</span>
           </a>
         </div>

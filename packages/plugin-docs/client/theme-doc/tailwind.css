@@ -341,6 +341,10 @@ h6 {
     @apply text-red-700 dark:text-rose-100;
   }
 
+  .article-meta {
+    border-top-width: 1px;
+  }
+
   .article-meta > div:nth-child(even) {
     @apply justify-start md:justify-end;
   }
