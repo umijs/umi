@@ -244,15 +244,20 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
           opts.pkg?.devDependencies,
         ),
       )
-        .map((pkg: string) =>
-          resolve(
-            resolveModule.sync(`${pkg}/package.json`, {
-              basedir: opts.rootDir || opts.cwd,
-              preserveSymlinks: false,
-            }),
-            '../node_modules',
-          ),
-        )
+        .map((pkg: string) => {
+          try {
+            return resolve(
+              resolveModule.sync(`${pkg}/package.json`, {
+                basedir: opts.rootDir || opts.cwd,
+                preserveSymlinks: false,
+              }),
+              '../node_modules',
+            );
+          } catch {
+            // will be filtered below
+            return opts.rootDir || opts.cwd;
+          }
+        })
         .filter((pkg: string) => !pkg.startsWith(opts.rootDir || opts.cwd));
 
       if (localLinkedNodeModules.length) {
