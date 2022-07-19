@@ -1,13 +1,38 @@
+import assert from 'assert';
 import fg from 'fast-glob';
 import { existsSync, promises as fs } from 'fs';
 import { join } from 'path';
 import { build } from './configBuilder';
 
-export async function prepare(opts: { cwd: string; pattern: any; args: any }) {
+export const DEFAULT_CONFIG_FILES = [
+  '.umirc.ts',
+  '.umirc.js',
+  'config/config.ts',
+  'config/config.js',
+];
+
+function getMainConfigFile(opts: {
+  cwd: string;
+  defaultConfigFiles?: string[];
+}) {
+  let mainConfigFile = '';
+  for (const configFile of opts.defaultConfigFiles || DEFAULT_CONFIG_FILES) {
+    const absConfigFile = join(opts.cwd, configFile);
+    if (existsSync(absConfigFile)) {
+      mainConfigFile = absConfigFile;
+      break;
+    }
+  }
+  return mainConfigFile;
+}
+
+export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
   // config
   const outputFile = join(opts.cwd, 'node_modules', 'config.tmp.js');
+  const mainConfigFile = getMainConfigFile({ cwd: opts.cwd });
+  assert(mainConfigFile, 'umi config must exist');
   await build({
-    configFile: join(opts.cwd, 'config/config.ts'),
+    configFile: mainConfigFile,
     outputFile,
   });
   const config = require(outputFile).default;

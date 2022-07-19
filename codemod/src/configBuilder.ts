@@ -61,7 +61,7 @@ export async function build(opts: { configFile: string; outputFile?: string }) {
   const content = readFileSync(outfile, 'utf-8');
   writeFileSync(
     outfile,
-    content.replace('require("@alipay/bigfish")', '{defineConfig: (c) => c}'),
+    content.replace('require("umi")', '{defineConfig: (c) => c}'),
     'utf-8',
   );
 }

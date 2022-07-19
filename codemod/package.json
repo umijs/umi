@@ -15,7 +15,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc"
+    "build": "pnpm tsc",
+    "test": "jest"
   },
   "dependencies": {
     "@umijs/ast": "4.0.7",

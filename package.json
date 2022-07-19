@@ -10,6 +10,7 @@
     "check:packageFiles": "umi-scripts checkPackageFiles",
     "codemod:build": "pnpm --filter @umijs/codemod build",
     "codemod:dev": "pnpm --filter @umijs/codemod build --watch",
+    "codemod:jest": "cd codemod && jest",
     "codemod:release": "umi-scripts releaseCodemod",
     "codemod:run": "BACON=none GIT_CHECK=none ./codemod/bin/umi-codemod.js --cwd codemod/fixtures/tmp",
     "codemod:test": "BACON=none GIT_CHECK=none umi-scripts testCodemod",
