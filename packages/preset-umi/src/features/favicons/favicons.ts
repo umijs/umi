@@ -25,7 +25,7 @@ export default (api: IApi) => {
   });
 
   api.modifyAppData(async (memo) => {
-    if (api.config.favicon) return memo;
+    if (api.config.favicons) return memo;
     const faviconFiles = getFaviconFiles(api.paths.absSrcPath);
     if (faviconFiles) {
       memo.faviconFiles = faviconFiles;
