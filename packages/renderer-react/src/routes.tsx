@@ -38,7 +38,7 @@ export function createClientRoutes(opts: {
 function NavigateWithParams(props: { to: string }) {
   const params = useParams();
   const propsWithParams = {
-    ...params,
+    ...props,
     to: generatePath(props.to, params),
   };
   return <Navigate {...propsWithParams} />;

@@ -58,6 +58,16 @@ export default (api: IApi) => {
     dirname(require.resolve('@umijs/renderer-vue/package.json')),
   );
 
+  api.modifyBabelPresetOpts((memo) => {
+    memo.presetTypeScript = {
+      // 支持 vue 后缀
+      allExtensions: true,
+      // 支持 tsx
+      isTSX: true,
+    };
+    return memo;
+  });
+
   // 增加运行时key
   api.addRuntimePluginKey(() => [
     'router',

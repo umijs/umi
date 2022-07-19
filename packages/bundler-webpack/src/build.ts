@@ -18,7 +18,7 @@ type IOpts = {
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   clean?: boolean;
-} & Pick<IConfigOpts, 'cache'>;
+} & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export async function build(opts: IOpts): Promise<webpack.Stats> {
   const cacheDirectoryPath = resolve(
@@ -50,6 +50,7 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
           cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
         }
       : undefined,
+    pkg: opts.pkg,
   });
   let isFirstCompile = true;
   return new Promise((resolve, reject) => {
