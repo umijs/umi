@@ -321,6 +321,9 @@ PORT=8888 umi dev
           ...MFSU_EAGER_DEFAULT_INCLUDE,
           ...(api.config.mfsu?.include || []),
         ]),
+        MFRemoteName: api.config.mfsu?.remoteName,
+        MFRemoteAliases: api.config.mfsu?.remoteAliases,
+        MFShared: api.config.mfsu?.shared,
       };
       if (enableVite) {
         await bundlerVite.dev(opts);

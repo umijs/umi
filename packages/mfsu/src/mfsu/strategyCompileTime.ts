@@ -71,9 +71,24 @@ export class StrategyCompileTime implements IMFSUStrategy {
     };
   }
 
+  private toStartWithReg(str: string) {
+    return new RegExp(`^${str}`);
+  }
+
   private getAwaitImportCollectOpts() {
     const mfsuOpts = this.mfsu.opts;
     const mfsu = this.mfsu;
+    const userUnMatches = mfsuOpts.unMatchLibs || [];
+    const sharedUnMatches = Object.keys(mfsuOpts.shared || {});
+    const remoteAliasUnMatches = (mfsuOpts.remoteAliases || []).map(
+      this.toStartWithReg,
+    );
+
+    const unMatches = [
+      ...userUnMatches,
+      ...sharedUnMatches,
+      ...remoteAliasUnMatches,
+    ];
 
     return {
       onTransformDeps: () => {},
@@ -110,7 +125,7 @@ export class StrategyCompileTime implements IMFSUStrategy {
         });
       },
       exportAllMembers: mfsuOpts.exportAllMembers,
-      unMatchLibs: mfsuOpts.unMatchLibs,
+      unMatchLibs: unMatches,
       remoteName: mfsuOpts.mfName,
       alias: mfsu.alias,
       externals: mfsu.externals,

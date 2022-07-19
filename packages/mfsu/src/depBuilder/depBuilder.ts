@@ -137,7 +137,16 @@ export class DepBuilder {
     // merge all deps to vendor
     depConfig.optimization ||= {};
     depConfig.optimization.splitChunks = {
-      chunks: 'all',
+      chunks: (chunk) => {
+        const hasShared = chunk.getModules().some((m) => {
+          return (
+            m.type === 'consume-shared-module' ||
+            m.type === 'provide-module' ||
+            m.type === 'provide-shared-module'
+          );
+        });
+        return !hasShared;
+      },
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
@@ -175,6 +184,7 @@ export class DepBuilder {
         name: mfName,
         filename: REMOTE_FILE_FULL,
         exposes,
+        shared: this.opts.mfsu.opts.shared || {},
       }),
     );
     return depConfig;
