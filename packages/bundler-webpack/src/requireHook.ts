@@ -5,22 +5,23 @@
 
 // @ts-ignore
 import deepImports from '@umijs/bundler-webpack/compiled/webpack/deepImports.json';
+import { join } from 'path';
+
+const PKG_ROOT = join(__dirname, '../');
+const resolve = (p: string) => join(PKG_ROOT, p);
 
 const hookPropertyMap = new Map([
-  ['webpack', '@umijs/bundler-webpack/compiled/webpack'],
-  ['webpack/package', '@umijs/bundler-webpack/compiled/webpack/package'],
-  ['webpack/package.json', '@umijs/bundler-webpack/compiled/webpack/package'],
-  ['webpack/lib/webpack', '@umijs/bundler-webpack/compiled/webpack'],
-  ['webpack/lib/webpack.js', '@umijs/bundler-webpack/compiled/webpack'],
+  ['webpack', resolve('compiled/webpack')],
+  ['webpack/package', resolve('compiled/webpack/package')],
+  ['webpack/package.json', resolve('compiled/webpack/package')],
+  ['webpack/lib/webpack', resolve('compiled/webpack')],
+  ['webpack/lib/webpack.js', resolve('compiled/webpack')],
 ]);
 
 deepImports.forEach((item: string) => {
   const name = item.split('/').pop();
-  hookPropertyMap.set(item, `@umijs/bundler-webpack/compiled/webpack/${name}`);
-  hookPropertyMap.set(
-    `${item}.js`,
-    `@umijs/bundler-webpack/compiled/webpack/${name}`,
-  );
+  hookPropertyMap.set(item, resolve(`compiled/webpack/${name}`));
+  hookPropertyMap.set(`${item}.js`, resolve(`compiled/webpack/${name}`));
 });
 
 const mod = require('module');
