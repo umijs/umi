@@ -4,6 +4,8 @@ import useLanguage from './useLanguage';
 import getCurrentRoute from './utils/getCurrentRoute';
 import getRepoType from './utils/getRepoType';
 
+import EditIcon from './icons/edit.svg';
+
 export interface ArticleContributor {
   username: string;
   email: string;
@@ -83,11 +85,12 @@ export default () => {
       {editUrlBase && displayEditLink !== false && (
         <div className="flex md:basis-1/2">
           <a
-            className="text-sky-600 dark:text-fuchsia-300 font-medium"
+            className="font-medium hover:underline underline-offset-1 flex"
             href={editUrl}
             target="_blank"
           >
-            {lang.render('Edit this page')}
+            <img src={EditIcon} className="dark:invert mr-1"></img>
+            <span>{lang.render('Edit this page')}</span>
           </a>
         </div>
       )}
@@ -100,7 +103,7 @@ export default () => {
               : ''
           }
         >
-          <span className="text-sky-600 dark:text-fuchsia-300 font-medium mr-1">
+          <span className="font-medium mr-1">
             {lang.render('Last Updated')}:
           </span>
           <span>{getDate(updatedTime)}</span>
@@ -111,7 +114,7 @@ export default () => {
           className="flex md:basis-1/2 cursor-default"
           title={getContributorsTitle(contributors)}
         >
-          <span className="text-sky-600 dark:text-fuchsia-300 font-medium mr-1">
+          <span className="font-medium mr-1">
             {lang.render('Contributors')}:
           </span>
           <span>
