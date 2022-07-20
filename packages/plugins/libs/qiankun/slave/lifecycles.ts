@@ -73,7 +73,7 @@ export function genMount(mountElementId: string) {
         await slaveRuntime.mount(props);
       }
 
-      const { type, ...historyOpts } = props?.history;
+      const { type, ...historyOpts } = props?.history || {};
 
       // 更新 clientRender 配置
       const clientRenderOpts = {
