@@ -19,7 +19,7 @@
 ```diff
 {
   "devDependencies": {
-+   "@umijs/max": "^4.0.0",  
++   "@umijs/max": "^4.0.0",
 -   "umi": "^3.0.0",
 -   "@umijs/preset-react": "^1.2.2"
   }
@@ -173,8 +173,8 @@ import React from 'react';
 export default function Page(props) {
   return (
     <div onClick={()=>{
--          props.history.push('list'); 
-+          history.push('list'); 
+-          props.history.push('list');
++          history.push('list');
     }}>
     </div>
   );
@@ -183,13 +183,15 @@ export default function Page(props) {
 
 #### location
 
+> 建议组件或 hooks 里用 useLocation 取，其他地方就用 window.location 获取。
+
 ```diff
-+ import { history } from 'umi';
 export default function Page(props) {
++  const { location } = window;
   return (
     <div>
 -     { props.location }
-+     { history.location }
++     { location }
     </div>
   );
 }
