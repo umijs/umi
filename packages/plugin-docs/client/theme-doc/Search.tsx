@@ -1,9 +1,9 @@
 import cx from 'classnames';
+import slugger from 'github-slugger';
 import key from 'keymaster';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useThemeContext } from './context';
 import useLanguage from './useLanguage';
-import getLinkFromTitle from './utils/getLinkFromTitle';
 
 export default () => {
   const { components } = useThemeContext()!;
@@ -168,7 +168,7 @@ function search(routes: any, keyword: string): SearchResultItem[] {
               .join(' > ') +
             ' > ' +
             title.title,
-          href: '/' + path + '#' + getLinkFromTitle(title.title),
+          href: '/' + path + '#' + slugger.slug(title.title),
         });
       }
     });
