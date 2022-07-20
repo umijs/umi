@@ -1,230 +1,329 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import stripAnsi from '@umijs/utils/compiled/strip-ansi';
-// @ts-ignore
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import stripAnsi from '@umijs/utils/compiled/strip-ansi'; // @ts-ignore
+
 import * as ErrorOverlay from 'react-error-overlay';
-import { MESSAGE_TYPE } from '../constants';
-import { formatWebpackMessages } from '../utils/formatWebpackMessages';
+import { MESSAGE_TYPE } from "../constants";
+import { formatWebpackMessages } from "../utils/formatWebpackMessages";
 console.log('[webpack] connecting...');
+
 function getHost() {
-    if (process.env.SOCKET_SERVER) {
-        return new URL(process.env.SOCKET_SERVER);
-    }
-    return location;
+  if (process.env.SOCKET_SERVER) {
+    return new URL(process.env.SOCKET_SERVER);
+  }
+
+  return location;
 }
+
 function getSocketUrl() {
-    let h = getHost();
-    const host = h.host;
-    const isHttps = h.protocol === 'https:';
-    return `${isHttps ? 'wss' : 'ws'}://${host}`;
+  var h = getHost();
+  var host = h.host;
+  var isHttps = h.protocol === 'https:';
+  return "".concat(isHttps ? 'wss' : 'ws', "://").concat(host);
 }
+
 function getPingUrl() {
-    const h = getHost();
-    return `${h.protocol}//${h.host}/__umi_ping`;
+  var h = getHost();
+  return "".concat(h.protocol, "//").concat(h.host, "/__umi_ping");
 }
-let pingTimer = null;
-let isFirstCompilation = true;
-let mostRecentCompilationHash = null;
-let hasCompileErrors = false;
-let hadRuntimeError = false;
-const pingUrl = getPingUrl();
-const socket = new WebSocket(getSocketUrl(), 'webpack-hmr');
-socket.addEventListener('message', ({ data }) => __awaiter(void 0, void 0, void 0, function* () {
-    data = JSON.parse(data);
-    if (data.type === 'connected') {
-        console.log(`[webpack] connected.`);
-        // proxy(nginx, docker) hmr ws maybe caused timeout,
-        // so send ping package let ws keep alive.
-        pingTimer = setInterval(() => socket.send('ping'), 30000);
-    }
-    else {
-        handleMessage(data).catch(console.error);
-    }
-}));
-function waitForSuccessfulPing(ms = 1000) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-            try {
-                yield fetch(pingUrl);
-                break;
+
+var pingTimer = null;
+var isFirstCompilation = true;
+var mostRecentCompilationHash = null;
+var hasCompileErrors = false;
+var hadRuntimeError = false;
+var pingUrl = getPingUrl();
+var socket = new WebSocket(getSocketUrl(), 'webpack-hmr');
+socket.addEventListener('message', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(_ref) {
+    var data;
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            data = _ref.data;
+            data = JSON.parse(data);
+
+            if (data.type === 'connected') {
+              console.log("[webpack] connected."); // proxy(nginx, docker) hmr ws maybe caused timeout,
+              // so send ping package let ws keep alive.
+
+              pingTimer = setInterval(function () {
+                return socket.send('ping');
+              }, 30000);
+            } else {
+              handleMessage(data).catch(console.error);
             }
-            catch (e) {
-                yield new Promise((resolve) => setTimeout(resolve, ms));
-            }
+
+          case 3:
+          case "end":
+            return _context.stop();
         }
-    });
+      }
+    }, _callee);
+  }));
+
+  return function (_x) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+
+function waitForSuccessfulPing() {
+  return _waitForSuccessfulPing.apply(this, arguments);
 }
-socket.addEventListener('close', () => __awaiter(void 0, void 0, void 0, function* () {
-    if (pingTimer)
-        clearInterval(pingTimer);
-    console.info('[webpack] Dev server disconnected. Polling for restart...');
-    yield waitForSuccessfulPing();
-    location.reload();
-}));
+
+function _waitForSuccessfulPing() {
+  _waitForSuccessfulPing = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3() {
+    var ms,
+        _args3 = arguments;
+    return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            ms = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : 1000;
+
+          case 1:
+            if (!true) {
+              _context3.next = 14;
+              break;
+            }
+
+            _context3.prev = 2;
+            _context3.next = 5;
+            return fetch(pingUrl);
+
+          case 5:
+            return _context3.abrupt("break", 14);
+
+          case 8:
+            _context3.prev = 8;
+            _context3.t0 = _context3["catch"](2);
+            _context3.next = 12;
+            return new Promise(function (resolve) {
+              return setTimeout(resolve, ms);
+            });
+
+          case 12:
+            _context3.next = 1;
+            break;
+
+          case 14:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[2, 8]]);
+  }));
+  return _waitForSuccessfulPing.apply(this, arguments);
+}
+
+socket.addEventListener('close', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+  return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          if (pingTimer) clearInterval(pingTimer);
+          console.info('[webpack] Dev server disconnected. Polling for restart...');
+          _context2.next = 4;
+          return waitForSuccessfulPing();
+
+        case 4:
+          location.reload();
+
+        case 5:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _callee2);
+})));
 ErrorOverlay.startReportingRuntimeErrors({
-    onError: function () {
-        hadRuntimeError = true;
-    },
-    filename: '/static/js/bundle.js',
-});
-// @ts-ignore
+  onError: function onError() {
+    hadRuntimeError = true;
+  },
+  filename: '/static/js/bundle.js'
+}); // @ts-ignore
+
 if (module.hot && typeof module.hot.dispose === 'function') {
-    // @ts-ignore
-    module.hot.dispose(function () {
-        // TODO: why do we need this?
-        ErrorOverlay.stopReportingRuntimeErrors();
-    });
-}
-// There is a newer version of the code available.
+  // @ts-ignore
+  module.hot.dispose(function () {
+    // TODO: why do we need this?
+    ErrorOverlay.stopReportingRuntimeErrors();
+  });
+} // There is a newer version of the code available.
+
+
 function handleAvailableHash(hash) {
-    // Update last known compilation hash.
-    mostRecentCompilationHash = hash;
+  // Update last known compilation hash.
+  mostRecentCompilationHash = hash;
 }
+
 function handleSuccess() {
-    const isHotUpdate = !isFirstCompilation;
-    isFirstCompilation = false;
-    hasCompileErrors = false;
-    // Attempt to apply hot updates or reload.
-    if (isHotUpdate) {
-        tryApplyUpdates(function onHotUpdateSuccess() {
-            // Only dismiss it when we're sure it's a hot update.
-            // Otherwise it would flicker right before the reload.
-            tryDismissErrorOverlay();
-        });
-    }
+  var isHotUpdate = !isFirstCompilation;
+  isFirstCompilation = false;
+  hasCompileErrors = false; // Attempt to apply hot updates or reload.
+
+  if (isHotUpdate) {
+    tryApplyUpdates(function onHotUpdateSuccess() {
+      // Only dismiss it when we're sure it's a hot update.
+      // Otherwise it would flicker right before the reload.
+      tryDismissErrorOverlay();
+    });
+  }
 }
+
 function handleWarnings(warnings) {
-    const isHotUpdate = !isFirstCompilation;
-    isFirstCompilation = false;
-    hasCompileErrors = false;
-    const formatted = formatWebpackMessages({
-        warnings,
-        errors: [],
+  var isHotUpdate = !isFirstCompilation;
+  isFirstCompilation = false;
+  hasCompileErrors = false;
+  var formatted = formatWebpackMessages({
+    warnings: warnings,
+    errors: []
+  }); // print warnings
+
+  if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+    for (var i = 0; i < formatted.warnings.length; i++) {
+      if (i === 5) {
+        console.warn('There were more warnings in other files.\n' + 'You can find a complete log in the terminal.');
+        break;
+      }
+
+      console.warn(stripAnsi(formatted.warnings[i]));
+    }
+  } // Attempt to apply hot updates or reload.
+
+
+  if (isHotUpdate) {
+    tryApplyUpdates(function onSuccessfulHotUpdate() {
+      // Only dismiss it when we're sure it's a hot update.
+      // Otherwise it would flicker right before the reload.
+      tryDismissErrorOverlay();
     });
-    // print warnings
-    if (typeof console !== 'undefined' && typeof console.warn === 'function') {
-        for (let i = 0; i < formatted.warnings.length; i++) {
-            if (i === 5) {
-                console.warn('There were more warnings in other files.\n' +
-                    'You can find a complete log in the terminal.');
-                break;
-            }
-            console.warn(stripAnsi(formatted.warnings[i]));
-        }
-    }
-    // Attempt to apply hot updates or reload.
-    if (isHotUpdate) {
-        tryApplyUpdates(function onSuccessfulHotUpdate() {
-            // Only dismiss it when we're sure it's a hot update.
-            // Otherwise it would flicker right before the reload.
-            tryDismissErrorOverlay();
-        });
-    }
+  }
 }
+
 function handleErrors(errors) {
-    isFirstCompilation = false;
-    hasCompileErrors = true;
-    const formatted = formatWebpackMessages({
-        warnings: [],
-        errors,
-    });
-    // Only show the first error.
-    ErrorOverlay.reportBuildError(formatted.errors[0]);
-    // Also log them to the console.
-    if (typeof console !== 'undefined' && typeof console.error === 'function') {
-        for (let i = 0; i < formatted.errors.length; i++) {
-            console.error(stripAnsi(formatted.errors[i]));
-        }
+  isFirstCompilation = false;
+  hasCompileErrors = true;
+  var formatted = formatWebpackMessages({
+    warnings: [],
+    errors: errors
+  }); // Only show the first error.
+
+  ErrorOverlay.reportBuildError(formatted.errors[0]); // Also log them to the console.
+
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+    for (var i = 0; i < formatted.errors.length; i++) {
+      console.error(stripAnsi(formatted.errors[i]));
     }
+  }
 }
+
 function tryDismissErrorOverlay() {
-    if (!hasCompileErrors) {
-        ErrorOverlay.dismissBuildError();
-    }
-}
-// Is there a newer version of this code available?
+  if (!hasCompileErrors) {
+    ErrorOverlay.dismissBuildError();
+  }
+} // Is there a newer version of this code available?
+
+
 function isUpdateAvailable() {
-    // @ts-ignore
-    return mostRecentCompilationHash !== __webpack_hash__;
+  // @ts-ignore
+  return mostRecentCompilationHash !== __webpack_hash__;
 }
+
 function canApplyUpdates() {
-    // @ts-ignore
-    return module.hot.status() === 'idle';
+  // @ts-ignore
+  return module.hot.status() === 'idle';
 }
+
 function canAcceptErrors() {
-    // NOTE: This var is injected by Webpack's DefinePlugin, and is a boolean instead of string.
-    const hasReactRefresh = process.env.FAST_REFRESH;
-    // @ts-ignore
-    const status = module.hot.status();
-    // React refresh can handle hot-reloading over errors.
-    // However, when hot-reload status is abort or fail,
-    // it indicates the current update cannot be applied safely,
-    // and thus we should bail out to a forced reload for consistency.
-    return hasReactRefresh && ['abort', 'fail'].indexOf(status) === -1;
+  // NOTE: This var is injected by Webpack's DefinePlugin, and is a boolean instead of string.
+  var hasReactRefresh = process.env.FAST_REFRESH; // @ts-ignore
+
+  var status = module.hot.status(); // React refresh can handle hot-reloading over errors.
+  // However, when hot-reload status is abort or fail,
+  // it indicates the current update cannot be applied safely,
+  // and thus we should bail out to a forced reload for consistency.
+
+  return hasReactRefresh && ['abort', 'fail'].indexOf(status) === -1;
 }
+
 function tryApplyUpdates(onHotUpdateSuccess) {
-    // @ts-ignore
-    if (!module.hot) {
-        window.location.reload();
-        return;
+  // @ts-ignore
+  if (!module.hot) {
+    window.location.reload();
+    return;
+  }
+
+  if (!isUpdateAvailable() || !canApplyUpdates()) {
+    return;
+  }
+
+  function handleApplyUpdates(err, updatedModules) {
+    var haveErrors = err || hadRuntimeError; // When there is no error but updatedModules is unavailable,
+    // it indicates a critical failure in hot-reloading,
+    // e.g. server is not ready to serve new bundle,
+    // and hence we need to do a forced reload.
+
+    var needsForcedReload = !err && !updatedModules;
+
+    if (haveErrors && !canAcceptErrors() || needsForcedReload) {
+      window.location.reload();
     }
-    if (!isUpdateAvailable() || !canApplyUpdates()) {
-        return;
+
+    if (onHotUpdateSuccess) onHotUpdateSuccess(); // While we were updating, there was a new update! Do it again.
+
+    if (isUpdateAvailable()) {
+      tryApplyUpdates();
     }
-    function handleApplyUpdates(err, updatedModules) {
-        const haveErrors = err || hadRuntimeError;
-        // When there is no error but updatedModules is unavailable,
-        // it indicates a critical failure in hot-reloading,
-        // e.g. server is not ready to serve new bundle,
-        // and hence we need to do a forced reload.
-        const needsForcedReload = !err && !updatedModules;
-        if ((haveErrors && !canAcceptErrors()) || needsForcedReload) {
-            window.location.reload();
-        }
-        if (onHotUpdateSuccess)
-            onHotUpdateSuccess();
-        // While we were updating, there was a new update! Do it again.
-        if (isUpdateAvailable()) {
-            tryApplyUpdates();
-        }
-    }
-    // @ts-ignore
-    module.hot
-        .check(/* autoApply */ true)
-        .then((updatedModules) => {
-        handleApplyUpdates(null, updatedModules);
-    })
-        .catch((err) => {
-        handleApplyUpdates(err, null);
-    });
+  } // @ts-ignore
+
+
+  module.hot.check(
+  /* autoApply */
+  true).then(function (updatedModules) {
+    handleApplyUpdates(null, updatedModules);
+  }).catch(function (err) {
+    handleApplyUpdates(err, null);
+  });
 }
-function handleMessage(payload) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // console.log('[payload]', payload);
-        switch (payload.type) {
-            case MESSAGE_TYPE.hash:
-                handleAvailableHash(payload.data);
-                break;
-            case MESSAGE_TYPE.stillOk:
-            case MESSAGE_TYPE.ok:
-                handleSuccess();
-                break;
-            case MESSAGE_TYPE.errors:
-                handleErrors(payload.data);
-                break;
-            case MESSAGE_TYPE.warnings:
-                handleWarnings(payload.data);
-                break;
-            default:
-            // Do nothing
+
+function handleMessage(_x2) {
+  return _handleMessage.apply(this, arguments);
+}
+
+function _handleMessage() {
+  _handleMessage = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee4(payload) {
+    return _regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.t0 = payload.type;
+            _context4.next = _context4.t0 === MESSAGE_TYPE.hash ? 3 : _context4.t0 === MESSAGE_TYPE.stillOk ? 5 : _context4.t0 === MESSAGE_TYPE.ok ? 5 : _context4.t0 === MESSAGE_TYPE.errors ? 7 : _context4.t0 === MESSAGE_TYPE.warnings ? 9 : 11;
+            break;
+
+          case 3:
+            handleAvailableHash(payload.data);
+            return _context4.abrupt("break", 11);
+
+          case 5:
+            handleSuccess();
+            return _context4.abrupt("break", 11);
+
+          case 7:
+            handleErrors(payload.data);
+            return _context4.abrupt("break", 11);
+
+          case 9:
+            handleWarnings(payload.data);
+            return _context4.abrupt("break", 11);
+
+          case 11:
+          case "end":
+            return _context4.stop();
         }
-    });
+      }
+    }, _callee4);
+  }));
+  return _handleMessage.apply(this, arguments);
 }
