@@ -236,6 +236,12 @@ importers:
       express: 4.18.1
       umi: link:../../packages/umi
 
+  examples/config-proxy:
+    specifiers:
+      umi: 4.0.0-canary.20220718.1
+    dependencies:
+      umi: link:../../packages/umi
+
   examples/diff-client-loader:
     specifiers:
       umi: 4.0.0-canary.20220718.2
