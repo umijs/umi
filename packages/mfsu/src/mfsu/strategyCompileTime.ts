@@ -71,17 +71,14 @@ export class StrategyCompileTime implements IMFSUStrategy {
     };
   }
 
-  private toStartWithReg(str: string) {
-    return new RegExp(`^${str}`);
-  }
-
   private getAwaitImportCollectOpts() {
     const mfsuOpts = this.mfsu.opts;
     const mfsu = this.mfsu;
+
     const userUnMatches = mfsuOpts.unMatchLibs || [];
     const sharedUnMatches = Object.keys(mfsuOpts.shared || {});
     const remoteAliasUnMatches = (mfsuOpts.remoteAliases || []).map(
-      this.toStartWithReg,
+      (str) => new RegExp(`^${str}`),
     );
 
     const unMatches = [
