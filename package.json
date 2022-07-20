@@ -67,7 +67,7 @@
     "@vercel/ncc": "0.33.3",
     "dts-packer": "^0.0.3",
     "expect-playwright": "^0.8.0",
-    "father": "next",
+    "father": "^4.0.0-rc.3",
     "git-repo-info": "^2.1.1",
     "husky": "^7.0.4",
     "jest": "^27.5.1",

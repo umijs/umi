@@ -25,7 +25,7 @@ importers:
       '@vercel/ncc': 0.33.3
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
-      father: next
+      father: ^4.0.0-rc.3
       git-repo-info: ^2.1.1
       husky: ^7.0.4
       jest: ^27.5.1
@@ -922,6 +922,7 @@ importers:
 
   packages/bundler-webpack:
     specifiers:
+      '@babel/runtime': 7.17.9
       '@parcel/css': 1.9.0
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.7
       '@svgr/core': 6.2.1
@@ -976,6 +977,7 @@ importers:
       webpack-sources: 3.2.3
       ws: 8.5.0
     dependencies:
+      '@babel/runtime': 7.17.9
       '@parcel/css': 1.9.0
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.7_nhf3glxppvteiwiuwkkatlp4gu
       '@svgr/core': 6.2.1
@@ -1294,12 +1296,14 @@ importers:
 
   packages/renderer-react:
     specifiers:
+      '@babel/runtime': 7.17.9
       '@loadable/component': 5.15.2
       history: 5.3.0
       react: 18.1.0
       react-dom: 18.1.0
       react-router-dom: 6.3.0
     dependencies:
+      '@babel/runtime': 7.17.9
       '@loadable/component': 5.15.2_react@18.1.0
       history: 5.3.0
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
@@ -1308,7 +1312,10 @@ importers:
       react-dom: 18.1.0_react@18.1.0
 
   packages/renderer-vue:
-    specifiers: {}
+    specifiers:
+      '@babel/runtime': 7.17.9
+    dependencies:
+      '@babel/runtime': 7.17.9
 
   packages/server:
     specifiers:
@@ -1343,6 +1350,7 @@ importers:
 
   packages/umi:
     specifiers:
+      '@babel/runtime': 7.17.9
       '@umijs/bundler-utils': 4.0.0-canary.20220718.2
       '@umijs/bundler-webpack': 4.0.0-canary.20220718.2
       '@umijs/core': 4.0.0-canary.20220718.2
@@ -1355,6 +1363,7 @@ importers:
       prettier-plugin-organize-imports: ^2.3.4
       prettier-plugin-packagejson: ^2.2.17
     dependencies:
+      '@babel/runtime': 7.17.9
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core

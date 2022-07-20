@@ -20,6 +20,9 @@
     "build:deps": "umi-scripts bundleDeps",
     "dev": "pnpm father dev"
   },
+  "dependencies": {
+    "@babel/runtime": "7.17.9"
+  },
   "peerDependencies": {
     "vue": ">=3.2.31",
     "vue-router": ">=4.0.12"
