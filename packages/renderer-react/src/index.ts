@@ -2,7 +2,7 @@ export {
   createBrowserHistory,
   createHashHistory,
   createMemoryHistory,
-  History,
+  type History,
 } from 'history';
 export {
   createSearchParams,

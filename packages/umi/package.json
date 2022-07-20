@@ -30,14 +30,13 @@
     "stylelint.js"
   ],
   "scripts": {
-    "build": "pnpm tsc",
-    "build:client": "pnpm tsc --project ./tsconfig.client.json",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
-    "dev:client": "pnpm build:client -- --watch",
+    "dev": "pnpm father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
+    "@babel/runtime": "7.17.9",
     "@umijs/bundler-utils": "4.0.0-canary.20220718.2",
     "@umijs/bundler-webpack": "4.0.0-canary.20220718.2",
     "@umijs/core": "4.0.0-canary.20220718.2",

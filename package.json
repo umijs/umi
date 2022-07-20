@@ -3,7 +3,6 @@
   "scripts": {
     "bootstrap": "umi-scripts bootstrap",
     "build": "umi-scripts turbo --cmd build",
-    "build:client": "umi-scripts turbo --cmd build:client",
     "build:extra": "umi-scripts turbo --cmd build:extra",
     "build:force": "umi-scripts turbo --cmd build --no-cache",
     "build:release": "umi-scripts turbo --cmd build --no-cache -- --declarationMap false",
@@ -68,6 +67,7 @@
     "@vercel/ncc": "0.33.3",
     "dts-packer": "^0.0.3",
     "expect-playwright": "^0.8.0",
+    "father": "^4.0.0-rc.4",
     "git-repo-info": "^2.1.1",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
