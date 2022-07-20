@@ -12,9 +12,6 @@ export async function addAssetRules({ config, api }: IOpts) {
 
   const { userConfig } = api;
 
-  // vue not need svgr
-  userConfig.svgr = false;
-
   const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);
 
   config.module
