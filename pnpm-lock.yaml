@@ -25,7 +25,7 @@ importers:
       '@vercel/ncc': 0.33.3
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
-      father: ^4.0.0-rc.3
+      father: ^4.0.0-rc.4
       git-repo-info: ^2.1.1
       husky: ^7.0.4
       jest: ^27.5.1
@@ -74,7 +74,7 @@ importers:
       '@vercel/ncc': 0.33.3
       dts-packer: 0.0.3
       expect-playwright: 0.8.0
-      father: 4.0.0-rc.3
+      father: 4.0.0-rc.4
       git-repo-info: 2.1.1
       husky: 7.0.4
       jest: 27.5.1_ts-node@10.8.1
@@ -15320,8 +15320,8 @@ packages:
     dependencies:
       reusify: 1.0.4
 
-  /father/4.0.0-rc.3:
-    resolution: {integrity: sha512-MBzFRYIzVZa19qp3/kSm6Mq+MkCgKe3HOQVwLIxuAabPOzwNhGLUyUWqAynAVvszVtVc8nxCCH6ariZ1XGeZCA==}
+  /father/4.0.0-rc.4:
+    resolution: {integrity: sha512-ocHlgj4UV37C8+6hNUBVhQswwuVHJgA0WasfP80GSFiAOGYaTFtcJIgKkhyWxsvmg0TAeu8xQ3tryax/aGSt5g==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor': 7.25.1
