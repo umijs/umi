@@ -2,7 +2,7 @@
   <div>
     <div class="logo">
       <img src="@/assets/vue.png" style="padding-right: 10px" />
-      ❤️
+      <img src="@/assets/heart.svg" style="padding-right: 10px; width: 30px;" />
       <img src="@/assets/umi.png" style="padding-left: 10px" />
     </div>
     <HelloWorld msg="Hello Vue + UmiJs" />

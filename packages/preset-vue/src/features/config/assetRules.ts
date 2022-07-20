@@ -12,12 +12,10 @@ export async function addAssetRules({ config, api }: IOpts) {
 
   const { userConfig } = api;
 
-  const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);
+  // vue not need svgr
+  userConfig.svgr = false;
 
-  const staticPathPrefix =
-    api.config.staticPathPrefix !== undefined
-      ? api.config.staticPathPrefix
-      : 'static/';
+  const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);
 
   config.module
     .rule('avif')
@@ -28,21 +26,15 @@ export async function addAssetRules({ config, api }: IOpts) {
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
-    })
-    .generator({
-      filename: `${staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
   config.module
     .rule('image')
-    .test(/\.(bmp|gif|jpg|jpeg|png)$/)
+    .test(/\.(bmp|gif|jpg|jpeg|png|svg)$/)
     .type('asset')
     .parser({
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
-    })
-    .generator({
-      filename: `${staticPathPrefix}[name].[hash:8].[ext]`,
     });
 }
