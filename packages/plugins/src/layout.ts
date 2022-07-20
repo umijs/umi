@@ -278,7 +278,7 @@ const { formatMessage } = useIntl();
     ) => ProLayoutProps & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
       noAccessible?: JSX.Element,
-      noFound?: JSX.Element,
+      notFound?: JSX.Element,
     };
     `,
     });
