@@ -3,7 +3,7 @@ import MonacoEditorWebpackPlugin from 'monaco-editor-webpack-plugin';
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-const { REACT_APP_ENV } = process.env;
+const { REACT_APP_ENV, NODE_ENV } = process.env;
 export default defineConfig({
   hash: true,
   model: {},
@@ -71,35 +71,37 @@ export default defineConfig({
         },
       ],
     },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      icon: 'dashboard',
-      routes: [
-        {
+    NODE_ENV?.toUpperCase() !== 'TEST'
+      ? {
           path: '/dashboard',
-          redirect: '/dashboard/analysis',
-        },
-        {
-          name: 'analysis',
-          icon: 'smile',
-          path: '/dashboard/analysis',
-          component: './dashboard/analysis',
-        },
-        {
-          name: 'monitor',
-          icon: 'smile',
-          path: '/dashboard/monitor',
-          component: './dashboard/monitor',
-        },
-        {
-          name: 'workplace',
-          icon: 'smile',
-          path: '/dashboard/workplace',
-          component: './dashboard/workplace',
-        },
-      ],
-    },
+          name: 'dashboard',
+          icon: 'dashboard',
+          routes: [
+            {
+              path: '/dashboard',
+              redirect: '/dashboard/analysis',
+            },
+            {
+              name: 'analysis',
+              icon: 'smile',
+              path: '/dashboard/analysis',
+              component: './dashboard/analysis',
+            },
+            {
+              name: 'monitor',
+              icon: 'smile',
+              path: '/dashboard/monitor',
+              component: './dashboard/monitor',
+            },
+            {
+              name: 'workplace',
+              icon: 'smile',
+              path: '/dashboard/workplace',
+              component: './dashboard/workplace',
+            },
+          ],
+        }
+      : undefined,
     {
       path: '/form',
       icon: 'form',
@@ -285,41 +287,43 @@ export default defineConfig({
         },
       ],
     },
-    {
-      name: 'editor',
-      icon: 'highlight',
-      path: '/editor',
-      routes: [
-        {
+    NODE_ENV?.toUpperCase() !== 'TEST'
+      ? {
+          name: 'editor',
+          icon: 'highlight',
           path: '/editor',
-          redirect: '/editor/flow',
-        },
-        {
-          name: 'flow',
-          icon: 'smile',
-          path: '/editor/flow',
-          component: './editor/flow',
-        },
-        {
-          name: 'mind',
-          icon: 'smile',
-          path: '/editor/mind',
-          component: './editor/mind',
-        },
-        {
-          name: 'koni',
-          icon: 'smile',
-          path: '/editor/koni',
-          component: './editor/koni',
-        },
-        {
-          name: 'monaco-editor',
-          icon: 'smile',
-          path: '/editor/monaco-editor',
-          component: './editor/monaco-editor',
-        },
-      ],
-    },
+          routes: [
+            {
+              path: '/editor',
+              redirect: '/editor/flow',
+            },
+            {
+              name: 'flow',
+              icon: 'smile',
+              path: '/editor/flow',
+              component: './editor/flow',
+            },
+            {
+              name: 'mind',
+              icon: 'smile',
+              path: '/editor/mind',
+              component: './editor/mind',
+            },
+            {
+              name: 'koni',
+              icon: 'smile',
+              path: '/editor/koni',
+              component: './editor/koni',
+            },
+            {
+              name: 'monaco-editor',
+              icon: 'smile',
+              path: '/editor/monaco-editor',
+              component: './editor/monaco-editor',
+            },
+          ],
+        }
+      : undefined,
     {
       path: '/',
       redirect: '/dashboard/analysis',
@@ -327,7 +331,7 @@ export default defineConfig({
     {
       component: '404',
     },
-  ],
+  ].filter(Boolean),
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'root-entry-name': 'variable',

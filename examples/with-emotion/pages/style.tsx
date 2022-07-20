@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import { Keyframes, keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 export const Wrapper = styled.section`
   text-align: center;

@@ -1,9 +1,7 @@
 <template>
   <div class="layout">
     <header>
-      <div class="title">
-        BoulerplateVue
-      </div>
+      <div class="title">BoulerplateVue</div>
       <nav>
         <router-link to="/">Home</router-link>
         <router-link to="/docs">Docs</router-link>
@@ -17,34 +15,34 @@
   </div>
 </template>
 <style lang="less" scoped>
-  .layout {
-    padding: 0 20px;
-  }
+.layout {
+  padding: 0 20px;
+}
 
-  header {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #d1d1d1;
-    padding: 12px;
-  }
+header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d1d1d1;
+  padding: 12px;
+}
 
-  .title {
-    width: 300px;
-    font-size: 23px;
-    font-weight: bold;
-  }
+.title {
+  width: 300px;
+  font-size: 23px;
+  font-weight: bold;
+}
 
-  nav {
-    flex: 1;
+nav {
+  flex: 1;
 
-    a {
-      font-size: 20px;
-      font-weight: 500;
-      margin-right: 16px;
-    }
+  a {
+    font-size: 20px;
+    font-weight: 500;
+    margin-right: 16px;
   }
+}
 
-  main {
-    padding-top: 10px;
-  }
+main {
+  padding-top: 10px;
+}
 </style>

@@ -41,6 +41,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     alias: (Joi) => Joi.object(),
     autoCSSModules: (Joi) => Joi.boolean(),
     autoprefixer: (Joi) => Joi.object(),
+    cacheDirectoryPath: (Joi) => Joi.string(),
     chainWebpack: (Joi) => Joi.function(),
     copy: (Joi) =>
       Joi.array().items(
@@ -110,6 +111,9 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
           cacheDirectory: Joi.string(),
           chainWebpack: Joi.function(),
           esbuild: Joi.boolean(),
+          exclude: Joi.array().items(
+            Joi.alternatives().try(Joi.string(), Joi.object().regex()),
+          ),
           include: Joi.array().items(Joi.string()),
           mfName: Joi.string(),
           runtimePublicPath: Joi.boolean(),

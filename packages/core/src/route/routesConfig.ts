@@ -77,7 +77,7 @@ function transformRoute(opts: {
     let path = opts.route.path;
     wrappers.forEach((wrapper: any) => {
       const { id } = transformRoute({
-        route: { path, component: wrapper },
+        route: { path, component: wrapper, isWrapper: true },
         parentId,
         memo: opts.memo,
         onResolveComponent: opts.onResolveComponent,
@@ -87,6 +87,8 @@ function transformRoute(opts: {
     });
     opts.memo.ret[id].parentId = parentId;
     opts.memo.ret[id].path = path;
+    // wrapper 处理后 真实 path 为空, 存储原 path 为 originPath 方便 layout 渲染
+    opts.memo.ret[id].originPath = opts.route.path;
   }
   if (opts.route.routes) {
     transformRoutes({

@@ -2,7 +2,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { AutoComplete, Input } from 'antd';
 import type { AutoCompleteProps } from 'antd/es/auto-complete';
 import classNames from 'classnames';
-import useMergedState from 'rc-util/es/hooks/useMergedState';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import React, { useRef } from 'react';
 import styles from './index.less';
 

@@ -1,4 +1,4 @@
-import { style, globalStyle, keyframes } from '@vanilla-extract/css';
+import { globalStyle, keyframes, style } from '@vanilla-extract/css';
 
 globalStyle('body', {
   margin: 0,

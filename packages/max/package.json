@@ -1,6 +1,6 @@
 {
   "name": "@umijs/max",
-  "version": "4.0.6",
+  "version": "4.0.0-canary.20220718.2",
   "description": "@umijs/max",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/pro#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -33,12 +33,12 @@
     "dev": "pnpm build --watch"
   },
   "dependencies": {
-    "@umijs/lint": "4.0.6",
-    "@umijs/plugins": "4.0.6",
+    "@umijs/lint": "4.0.0-canary.20220718.2",
+    "@umijs/plugins": "4.0.0-canary.20220718.2",
     "antd": "^4.20.6",
     "eslint": "8.15.0",
     "stylelint": "14.8.2",
-    "umi": "4.0.6"
+    "umi": "4.0.0-canary.20220718.2"
   },
   "publishConfig": {
     "access": "public"

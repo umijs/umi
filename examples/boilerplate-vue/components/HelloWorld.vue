@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-defineProps<{ msg: string }>()
+defineProps<{ msg: string }>();
 
-const count = ref(0)
+const count = ref(0);
 </script>
 
 <template>
@@ -19,9 +19,7 @@ const count = ref(0)
   <p>See <code>README.md</code> for more information.</p>
 
   <p>
-    <a href="https://next.umijs.org/" target="_blank">
-      Umi Js
-    </a>
+    <a href="https://next.umijs.org/" target="_blank"> Umi Js </a>
     |
     <a href="https://vuejs.org/" target="_blank">Vue Docs</a>
   </p>

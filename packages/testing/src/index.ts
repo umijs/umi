@@ -15,9 +15,9 @@ function getJSTransformer(
   jsTransformer: JSTransformer,
   config?: {
     esBuildConfig?: {
-      jsxFactory: string;
-      jsxFragment: string;
-      jsxInject: string;
+      jsxFactory?: string;
+      jsxFragment?: string;
+      jsxInject?: string;
     };
   },
 ): TransformerConfig | Path {
@@ -48,6 +48,12 @@ export type CreateConfigType = {
    * @type {'esbuild' | 'swc' | 'ts-jest'}
    */
   jsTransformer?: JSTransformer;
+  jsTransformerConfig?: {
+    esBuildConfig?: {
+      jsxFactory?: string;
+      jsxFragment?: string;
+    };
+  };
   /**
    * 运行环境，node 和 浏览器
    * @type {'node' | 'browser'}
@@ -63,8 +69,14 @@ export function createConfig(opts?: CreateConfigType): Config.InitialOptions {
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     transform: {
-      '^.+\\.tsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
-      '^.+\\.jsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
+      '^.+\\.tsx?$': getJSTransformer(
+        opts?.jsTransformer || 'esbuild',
+        opts?.jsTransformerConfig || {},
+      ),
+      '^.+\\.jsx?$': getJSTransformer(
+        opts?.jsTransformer || 'esbuild',
+        opts?.jsTransformerConfig || {},
+      ),
     },
     moduleNameMapper: {
       '^.+\\.(css|less|sass|scss|stylus)$':
@@ -82,14 +94,3 @@ export function createConfig(opts?: CreateConfigType): Config.InitialOptions {
   }
   return config;
 }
-
-/**
- * 等待一段时间
- * @param time 等待时间
- * @returns
- */
-export const waitTime = (time: number) => {
-  return new Promise((res) => {
-    setTimeout(res, time);
-  });
-};

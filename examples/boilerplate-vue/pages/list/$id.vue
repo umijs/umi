@@ -3,7 +3,7 @@
   <div>id: {{ route.params.id }}</div>
 </template>
 <script lang="ts" setup>
-  import { useRoute } from 'umi'
+import { useRoute } from 'umi';
 
-  const route = useRoute()
+const route = useRoute();
 </script>

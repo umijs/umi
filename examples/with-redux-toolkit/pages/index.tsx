@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import {
-  selectCount,
-  incrementAction,
   decrementAction,
+  incrementAction,
+  selectCount,
 } from '../redux/reducer/counterSlice';
 import '../style.less';
 

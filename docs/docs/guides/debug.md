@@ -51,7 +51,7 @@ $ npx umi dev
 # src/.umi 恢复到正常模式
 ```
 
-## XSwtich
+## XSwitch
 
 如果需要在特定的域名环境调试或者验证当前的修改的代码，推荐使用 Chrome 插件 [XSwitch](https://chrome.google.com/webstore/detail/xswitch/idkjhjggpffolpidfkikidcokdkdaogg)。
 

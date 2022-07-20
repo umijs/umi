@@ -1,13 +1,12 @@
-import styled from 'styled-components';
 import {
-  Wrapper,
-  Container,
-  Title,
   BounceText,
-  Padding,
+  Container,
   HoverText,
-  MediaText,
   medias,
+  MediaText,
+  Padding,
+  Title,
+  Wrapper,
 } from './style';
 
 export default function HomePage(props) {

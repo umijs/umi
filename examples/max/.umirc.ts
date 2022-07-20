@@ -9,7 +9,13 @@ export default defineConfig({
       component: 'index',
       name: 'index',
     },
-    { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
+    {
+      path: '/users',
+      icon: 'SmileFilled',
+      component: 'users',
+      name: 'users',
+      wrappers: ['@/wrappers/foo', '@/wrappers/bar'],
+    },
     {
       path: '/accessAllow',
       icon: 'SmileFilled',
@@ -24,7 +30,6 @@ export default defineConfig({
       name: 'Deny',
       access: 'canReadBar',
     },
-    { path: '/users', icon: 'SmileFilled', component: 'users', name: 'users' },
     { path: '/app1/*', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
     {
       path: '/data-flow',

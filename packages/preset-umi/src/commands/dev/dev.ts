@@ -264,6 +264,7 @@ PORT=8888 umi dev
 
       const opts = {
         config: api.config,
+        pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),
         entry: {

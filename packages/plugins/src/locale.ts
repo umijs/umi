@@ -80,10 +80,11 @@ export default (api: IApi) => {
       key: 'addAntdLocales',
       type: api.ApplyPluginsType.add,
       initialValue: [
-        `antd/${api.config?.ssr ? 'lib' : 'es'}/locale/${getAntdLocale(
-          args.lang,
-          args.country,
-        )}`,
+        `antd/${
+          api.config?.ssr || process.env.NODE_ENV?.toUpperCase() === 'TEST'
+            ? 'lib'
+            : 'es'
+        }/locale/${getAntdLocale(args.lang, args.country)}`,
       ],
       args,
     });
@@ -237,7 +238,7 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.ts',
       content: `
-export { setLocale, getLocale, getIntl, useIntl, injectIntl, formatMessage, FormattedMessage, getAllLocales } from './localeExports.ts';
+export { addLocale, setLocale, getLocale, getIntl, useIntl, injectIntl, formatMessage, FormattedMessage, getAllLocales } from './localeExports.ts';
 export { SelectLang } from './SelectLang.tsx';
 `,
     });

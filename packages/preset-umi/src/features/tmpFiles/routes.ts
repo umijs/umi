@@ -199,6 +199,10 @@ export async function getRouteComponents(opts: {
       const useSuspense = opts.api.appData.framework === 'react' ? true : false; // opts.api.appData.react.version.startsWith('18.');
       const route = opts.routes[key];
       if (!route.file) {
+        // 测试环境还不支持 import ，所以用 require
+        if (process.env.NODE_ENV?.toUpperCase() === 'TEST') {
+          return `'${key}': require( './EmptyRoute').default,`;
+        }
         return useSuspense
           ? `'${key}': React.lazy(() => import( './EmptyRoute')),`
           : `'${key}': () => import( './EmptyRoute'),`;
@@ -229,6 +233,11 @@ export async function getRouteComponents(opts: {
           : `${opts.prefix}${route.file}`;
 
       const webpackChunkName = componentToChunkName(path, opts.api.cwd);
+
+      // 测试环境还不支持 import ，所以用 require
+      if (process.env.NODE_ENV?.toUpperCase() === 'TEST') {
+        return `'${key}': require('${winPath(path)}').default,`;
+      }
 
       return useSuspense
         ? `'${key}': React.lazy(() => import(/* webpackChunkName: "${webpackChunkName}" */'${winPath(

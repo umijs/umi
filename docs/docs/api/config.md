@@ -75,6 +75,20 @@
 
 比如有路由 `/` 和 `/users`，设置 base 为 `/foo/` 后就可通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
 
+## cacheDirectoryPath
+
+- 类型：`string`
+- 默认值：`node_modules/.cache`
+
+支持配置 cache directory。
+
+示例，
+
+```js
+// 更改缓存文件路径到 node_modules/.cache1 文件夹
+cacheDirectoryPath: 'node_modules/.cache1',
+```
+
 ## chainWebpack
 
 - 类型：`(memo, args) => void`
@@ -378,14 +392,14 @@ devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 - 类型：`Record<string, string> | Function`
 - 默认值：`{}`
 
-设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 scripts 或 headScripts 配置使用。
+设置哪些模块不打包，转而通过 `<script>` 或其他方式引入，通常需要搭配 headScripts 配置使用。
 
 示例，
 
 ```
 // external react
 externals: { react: 'React' },
-scripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
+headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 ```
 
 注意：不要轻易设置 antd 的 externals，由于依赖较多，使用方式复杂，可能会遇到较多问题，并且一两句话很难解释清楚。
@@ -560,12 +574,12 @@ https: {
 - 类型：`object`
 - 默认值：`{}`
 
-`jsminifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsminifier` 选项来保留注释。
+`jsMinifier` 的配置项；默认情况下压缩代码会移除代码中的注释，可以通过对应的 `jsMinifier` 选项来保留注释。
 
 示例：
 ```js
 {
-  jsminifier: 'esbuild',
+  jsMinifier: 'esbuild',
   jsMinifierOptions: {
     minifyWhitespace: true,
     minifyIdentifiers: true,
@@ -583,7 +597,7 @@ https: {
 
 {
 /*
-## jsminifier (vite 构建)
+## jsMinifier (vite 构建)
 
 * 类型：`string`
 * 默认值：
@@ -649,7 +663,7 @@ metas: [
 
 ## mfsu
 
-- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void }`
+- 类型：`{ esbuild: boolean; mfName: string; cacheDirectory: string; strategy: 'normal' | 'eager'; include?: string[]; chainWebpack: (memo, args) => void; exclude?: Array<string | RegExp> }`
 - 默认值：`{ mfName: 'mf', strategy: 'normal' }`
 
 配置基于 [Module Federation](https://module-federation.github.io/) 的提速功能。
@@ -663,6 +677,7 @@ metas: [
 - `runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`
 - `strategy` 指定 mfsu 编译依赖的时机; `normal` 模式下，采用 babel 编译分析后，构建 Module Federation 远端包；`eager` 模式下采用静态分析的方式，和项目代码同时发起构建。
 - `include` 仅在 `strategy: 'eager' ` 模式下生效， 用于补偿在 eager 模式下，静态分析无法分析到的依赖，例如 `react` 未进入 Module Federation 远端模块可以这样配置 `{ include: [ 'react' ] }`
+- `exclude` 手动排除某些不需要被 MFSU 处理的依赖, 比如 `vant` 不希望走 MFSU 处理 可以配置 `{ exclude: [ 'vant' ] }`
 
 示例，
 
@@ -1041,3 +1056,4 @@ vite: {
   cacheDir: 'node_modules/.bin/.vite';
 }
 ```
+

@@ -5,12 +5,12 @@
     <h3>{{ umiHello }}</h3>
 
     <div>
-       <router-link to="/users">Go to Users</router-link>
+      <router-link to="/users">Go to Users</router-link>
     </div>
     <div>
-       <router-link to="/users/foo">Go to Users Foo</router-link>
+      <router-link to="/users/foo">Go to Users Foo</router-link>
     </div>
-    <VantDemo/>
+    <VantDemo />
     <div>
       <h4>useAppData</h4>
       <pre>{{ app }}</pre>
@@ -21,13 +21,12 @@
 <script lang="ts" setup>
 import { ref, inject } from 'vue';
 import { useAppData } from 'umi';
-import VantDemo from '@/components/VantDemo.vue'
+import VantDemo from '@/components/VantDemo.vue';
 
 const hello = ref<string>('hello vue');
 const app = useAppData();
 
-const umiHello = inject('umi-hello')
-
+const umiHello = inject('umi-hello');
 </script>
 <style lang="less" scoped>
 div {

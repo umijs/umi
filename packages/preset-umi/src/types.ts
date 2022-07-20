@@ -102,6 +102,7 @@ export type IApi = PluginAPI &
         ): void;
       }): void;
     };
+    modifyBabelPresetOpts: IModify<any, null>;
     modifyHTML: IModify<CheerioAPI, { path: string }>;
     modifyHTMLFavicon: IModify<string[], {}>;
     modifyRendererPath: IModify<string, {}>;

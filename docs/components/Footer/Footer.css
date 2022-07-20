@@ -1,8 +1,7 @@
-
 .normal {
-  background: #F1F5F7;
+  background: #f1f5f7;
   padding: 40px 0;
-  color: #4A5E71;
+  color: #4a5e71;
 }
 
 .wrapper {
@@ -22,7 +21,7 @@
 
 .copyright {
   font-size: 14px;
-  color: #8996A1;
+  color: #8996a1;
   line-height: 22px;
   margin-top: 24px;
 }

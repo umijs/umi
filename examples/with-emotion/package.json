@@ -10,6 +10,6 @@
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "umi": "4.0.6"
+    "umi": "4.0.0-canary.20220718.2"
   }
 }

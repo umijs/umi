@@ -19,6 +19,7 @@ function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
 }
 
 export default (api: IApi) => {
+  const { userConfig } = api;
   const reactDOMPath =
     resolveProjectDep({
       pkg: api.pkg,
@@ -47,7 +48,15 @@ export default (api: IApi) => {
         require.resolve('react-router-dom/package.json'),
       ),
     },
-    externals: {},
+    externals: {
+      // Keep the `react-dom/client` external consistent with the `react-dom` external when react < 18.
+      // Otherwise, `react-dom/client` will still bundled in the outputs.
+      ...(isLT18 && userConfig.externals?.['react-dom']
+        ? {
+            'react-dom/client': userConfig.externals['react-dom'],
+          }
+        : {}),
+    },
     autoCSSModules: true,
     publicPath: '/',
     mountElementId: 'root',

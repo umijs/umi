@@ -3,6 +3,7 @@
   "private": true,
   "main": "./src/index.tsx",
   "scripts": {
+    "dev": "umi dev",
     "start": "npm run dev"
   },
   "dependencies": {}

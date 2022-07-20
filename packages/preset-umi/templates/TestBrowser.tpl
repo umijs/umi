@@ -1,0 +1,82 @@
+﻿import { act } from '@testing-library/react';
+import React, { useEffect, useState } from 'react';
+import { ApplyPluginsType } from 'umi';
+import { renderClient, RenderClientOpts } from '{{{ rendererPath }}}';
+import { createHistory } from './core/history';
+import { createPluginManager } from './core/plugin';
+import { getRoutes } from './core/route';
+import type { Location } from 'history';
+{{{ polyfillImports }}}
+{{{ importsAhead }}}
+
+const publicPath = '/';
+const runtimePublicPath = false;
+
+type TestBrowserProps = {
+  location?: Location;
+  historyRef?: any;
+};
+
+export function TestBrowser(props: TestBrowserProps) {
+  const pluginManager = createPluginManager();
+  const [context, setContext] = useState<RenderClientOpts | undefined>(
+    undefined,
+  );
+  useEffect(() => {
+    const genContext = async () => {
+      const { routes, routeComponents } = await getRoutes(pluginManager);
+      // allow user to extend routes
+      await pluginManager.applyPlugins({
+        key: 'patchRoutes',
+        type: ApplyPluginsType.event,
+        args: {
+          routes,
+          routeComponents,
+        },
+      });
+      const contextOpts = pluginManager.applyPlugins({
+        key: 'modifyContextOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: {},
+      });
+      const basename = contextOpts.basename || '/';
+      const history = createHistory({
+        type: 'memory',
+        basename,
+      });
+      return {
+        routes,
+        routeComponents,
+        pluginManager,
+        rootElement: contextOpts.rootElement || document.getElementById('root'),
+        publicPath,
+        runtimePublicPath,
+        history,
+        basename,
+        components: true
+      };
+    };
+    genContext().then((context) => {
+      act(() => {
+        setContext(context);
+        if (props.location) {
+          context?.history?.push(props.location);
+        }
+        if (props.historyRef) {
+          props.historyRef.current = context?.history;
+        }
+      });
+    });
+  }, []);
+
+ if (context === undefined) {
+    return <div id="loading" />;
+  }
+
+  const Children = renderClient(context);
+  return (
+    <React.Fragment>
+      <Children />
+    </React.Fragment>
+  );
+}
