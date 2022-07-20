@@ -1,5 +1,5 @@
 import { logger, printHelp } from '@umijs/utils';
-import { getAliasedPathWithLoopDetect } from '../babelPlugins/awaitImport/getAliasedPath';
+import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
 import { IBuildDepPluginOpts } from '../webpackPlugins/buildDepPlugin';
@@ -45,21 +45,45 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
   private getMfImportOpts() {
     const mfsu = this.mfsu;
     const mfsuOpts = this.mfsu.opts;
+
+    const userUnMatches = mfsuOpts.unMatchLibs || [];
+    const sharedUnMatches = Object.keys(mfsuOpts.shared || {});
+    const remoteAliasUnMatches = (mfsuOpts.remoteAliases || []).map(
+      (str) => new RegExp(`^${str}`),
+    );
+
+    const unMatches = [
+      ...userUnMatches,
+      ...sharedUnMatches,
+      ...remoteAliasUnMatches,
+    ];
+
     return {
       resolveImportSource: (source: string) => {
+        const match = checkMatch({
+          value: source,
+          filename: '_.js',
+          opts: {
+            exportAllMembers: mfsuOpts.exportAllMembers,
+            unMatchLibs: unMatches,
+            remoteName: mfsuOpts.mfName,
+            alias: mfsu.alias,
+            externals: mfsu.externals,
+          },
+        });
+
+        if (!match.isMatch) {
+          return source;
+        }
+
         const depMat = this.staticDepInfo.getDependencies();
 
-        const r = getAliasedPathWithLoopDetect({
-          value: source,
-          alias: mfsu.alias,
-        });
-        const m = depMat[r];
-
+        const m = depMat[match.value];
         if (m) {
           return m.replaceValue;
         }
 
-        return r;
+        return match.value;
       },
       exportAllMembers: mfsuOpts.exportAllMembers,
       unMatchLibs: mfsuOpts.unMatchLibs,

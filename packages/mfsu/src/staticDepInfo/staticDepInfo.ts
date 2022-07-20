@@ -181,9 +181,22 @@ export class StaticDepInfo {
 
     const cwd = this.mfsu.opts.cwd!;
 
+    const mfsuOpts = this.mfsu.opts;
+    const userUnMatches = mfsuOpts.unMatchLibs || [];
+    const sharedUnMatches = Object.keys(mfsuOpts.shared || {});
+    const remoteAliasUnMatches = (mfsuOpts.remoteAliases || []).map(
+      (str) => new RegExp(`^${str}`),
+    );
+
+    const unMatches = [
+      ...userUnMatches,
+      ...sharedUnMatches,
+      ...remoteAliasUnMatches,
+    ];
+
     const opts = {
       exportAllMembers: this.mfsu.opts.exportAllMembers,
-      unMatchLibs: this.mfsu.opts.unMatchLibs,
+      unMatchLibs: unMatches,
       remoteName: this.mfsu.opts.mfName,
       alias: this.mfsu.alias,
       externals: this.mfsu.externals,
