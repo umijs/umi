@@ -28,7 +28,6 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.9",
     "@parcel/css": "1.9.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.7",
     "@svgr/core": "6.2.1",

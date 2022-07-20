@@ -12,5 +12,6 @@ export default defineConfig({
       '!src/constants.ts',
       '!src/utils/formatWebpackMessages.ts',
     ],
+    transformer: 'esbuild',
   },
 });
