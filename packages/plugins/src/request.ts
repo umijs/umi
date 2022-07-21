@@ -136,7 +136,7 @@ type IRequestInterceptorUmiRequest = (url: string, config : RequestOptions) => {
 type IRequestInterceptor = IRequestInterceptorAxios;
 type IErrorInterceptor = (error: Error) => Promise<Error>;
 type IResponseInterceptor = <T = any>(response : AxiosResponse<T>) => AxiosResponse<T> ;
-type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor
+type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor | IRequestInterceptorUmiRequest
 type IResponseInterceptorTuple = [IResponseInterceptor, IErrorInterceptor] | [IResponseInterceptor] | IResponseInterceptor
 
 export interface RequestConfig<T = any> extends AxiosRequestConfig {
