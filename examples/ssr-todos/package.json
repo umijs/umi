@@ -11,6 +11,6 @@
   "dependencies": {
     "express": "4.17.3",
     "isomorphic-unfetch": "^3.1.0",
-    "umi": "4.0.0-canary.20220720.1"
+    "umi": "4.0.8"
   }
 }
