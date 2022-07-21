@@ -1,11 +1,12 @@
+import GithubSlugger from 'github-slugger';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useThemeContext } from './context';
 import useLanguage from './useLanguage';
-import getLinkFromTitle from './utils/getLinkFromTitle';
 import getTocTitle from './utils/getTocTitle';
 
 export default () => {
+  const slugger = new GithubSlugger();
   const { location, appData, themeConfig } = useThemeContext()!;
   const lang = useLanguage();
   const route =
@@ -48,7 +49,7 @@ export default () => {
                 className={`${
                   item.level > 2 ? 'text-sm' : 'text-base'
                 } break-all 2xl:break-words`}
-                href={'#' + getLinkFromTitle(item.title)}
+                href={'#' + slugger.slug(item.title)}
               >
                 {getTocTitle(item.title)}
               </a>

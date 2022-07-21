@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "4.0.0-canary.20220718.2",
+  "version": "4.0.8",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -15,9 +15,9 @@
     "compiled"
   ],
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
+    "dev": "pnpm father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {

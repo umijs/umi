@@ -1,6 +1,6 @@
 {
   "name": "@umijs/server",
-  "version": "4.0.0-canary.20220718.2",
+  "version": "4.0.8",
   "description": "@umijs/server",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/server#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -15,12 +15,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch"
+    "dev": "pnpm father dev"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20220718.2",
+    "@umijs/bundler-utils": "4.0.8",
     "history": "5.3.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",

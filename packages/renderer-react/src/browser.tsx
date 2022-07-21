@@ -161,7 +161,8 @@ export function renderClient(opts: {
             }
           }
           // server loader
-          if (!isFirst && opts.routes[id].hasServerLoader) {
+          // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
+          if (!isFirst && opts.routes[id]?.hasServerLoader) {
             fetch('/__serverLoader?route=' + id)
               .then((d) => d.json())
               .then((data) => {

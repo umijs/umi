@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "4.0.0-canary.20220718.2",
+  "version": "4.0.8",
   "description": "Official babel preset for umi.",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -15,16 +15,16 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
+    "dev": "pnpm father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "@babel/runtime": "7.17.9",
     "@bloomberg/record-tuple-polyfill": "0.0.4",
-    "@umijs/bundler-utils": "4.0.0-canary.20220718.2",
-    "@umijs/utils": "4.0.0-canary.20220718.2",
+    "@umijs/bundler-utils": "4.0.8",
+    "@umijs/utils": "4.0.8",
     "core-js": "3.22.4"
   },
   "publishConfig": {

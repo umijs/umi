@@ -11,6 +11,6 @@
   "dependencies": {
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "umi": "4.0.0-canary.20220718.2"
+    "umi": "4.0.8"
   }
 }

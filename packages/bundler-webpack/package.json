@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
-  "version": "4.0.0-canary.20220718.2",
+  "version": "4.0.8",
   "description": "@umijs/bundler-webpack",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -21,10 +21,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc",
-    "build:client": "pnpm tsc --project ./tsconfig.client.json",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
+    "dev": "pnpm father dev",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs",
     "test": "umi-scripts jest-turbo"
   },
@@ -35,11 +34,11 @@
     "@svgr/plugin-jsx": "^6.2.1",
     "@svgr/plugin-svgo": "^6.2.0",
     "@types/hapi__joi": "17.1.8",
-    "@umijs/babel-preset-umi": "4.0.0-canary.20220718.2",
-    "@umijs/bundler-utils": "4.0.0-canary.20220718.2",
+    "@umijs/babel-preset-umi": "4.0.8",
+    "@umijs/bundler-utils": "4.0.8",
     "@umijs/case-sensitive-paths-webpack-plugin": "^1.0.1",
-    "@umijs/mfsu": "4.0.0-canary.20220718.2",
-    "@umijs/utils": "4.0.0-canary.20220718.2",
+    "@umijs/mfsu": "4.0.8",
+    "@umijs/utils": "4.0.8",
     "cors": "^2.8.5",
     "css-loader": "6.7.1",
     "es5-imcompatible-versions": "^0.1.73",

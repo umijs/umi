@@ -15,6 +15,6 @@
   "devDependencies": {
     "eslint": "^8.15.0",
     "stylelint": "^14.8.2",
-    "umi": "4.0.0-canary.20220718.2"
+    "umi": "4.0.8"
   }
 }

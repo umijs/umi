@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ast",
-  "version": "4.0.0-canary.20220718.2",
+  "version": "4.0.8",
   "description": "@umijs/ast",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/ast#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -15,13 +15,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc",
+    "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm build --watch",
+    "dev": "pnpm father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20220718.2"
+    "@umijs/bundler-utils": "4.0.8"
   },
   "publishConfig": {
     "access": "public"

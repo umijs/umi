@@ -9,9 +9,6 @@
     "build:extra": {
       "cache": false
     },
-    "build:client": {
-      "cache": false
-    },
     "dev": {
       "cache": false
     },
