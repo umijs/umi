@@ -86,6 +86,7 @@ export interface IConfig {
   svgo?: { [key: string]: any } | false;
   targets?: { [key: string]: any };
   writeToDisk?: boolean;
+  babelLoaderCustomize?: string;
   [key: string]: any;
 }
 
