@@ -87,7 +87,7 @@ const request: RequestConfig = {
         return { url, options } 
       },
     // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
-    [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}]
+    [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}],
     // 数组，省略错误处理
     [(url, options) => {return { url, options }}]
   ]
@@ -115,7 +115,7 @@ const request: RequestConfig = {
         return response 
       },
     // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
-    [(response) => {return response}, (error) => {return Promise.reject(error)}]
+    [(response) => {return response}, (error) => {return Promise.reject(error)}],
     // 数组，省略错误处理
     [(response) => {return response}]
   ]

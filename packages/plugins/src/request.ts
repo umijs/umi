@@ -133,10 +133,10 @@ interface IErrorHandler {
 }
 type IRequestInterceptorAxios = (config: RequestOptions) => RequestOptions;
 type IRequestInterceptorUmiRequest = (url: string, config : RequestOptions) => { url: string, options: RequestOptions };
-type IRequestInterceptor = IRequestInterceptorAxios;
+type IRequestInterceptor = IRequestInterceptorAxios | IRequestInterceptorUmiRequest;
 type IErrorInterceptor = (error: Error) => Promise<Error>;
 type IResponseInterceptor = <T = any>(response : AxiosResponse<T>) => AxiosResponse<T> ;
-type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor | IRequestInterceptorUmiRequest
+type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor
 type IResponseInterceptorTuple = [IResponseInterceptor, IErrorInterceptor] | [IResponseInterceptor] | IResponseInterceptor
 
 export interface RequestConfig<T = any> extends AxiosRequestConfig {
@@ -307,10 +307,10 @@ export type {
       path: 'types.d.ts',
       content: `
 export type { 
-  RequestConfig,  
+  RequestConfig,
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse, 
+  AxiosResponse,
   AxiosError,
   RequestError,
   ResponseInterceptor } from './request';
