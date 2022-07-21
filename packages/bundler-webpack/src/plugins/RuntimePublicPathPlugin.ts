@@ -18,7 +18,7 @@ export class RuntimePublicPathPlugin {
           )
             return;
           // @ts-ignore
-          module._cachedGeneratedCode = `__webpack_require__.p = (globalThis || window).publicPath || '/';`;
+          module._cachedGeneratedCode = `__webpack_require__.p = (typeof globalThis !== undefined ? globalThis : window).publicPath || '/';`;
         }
       });
     });
