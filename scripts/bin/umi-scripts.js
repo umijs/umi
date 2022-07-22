@@ -7,7 +7,7 @@ const chalk = require('@umijs/utils/compiled/chalk').default
 const assert = require('assert')
 
 const argv = process.argv.slice(2)
-const name = argv[0]
+const [name, ...throughArgs] = argv
 const scriptsPath = join(__dirname, `../${name}.ts`)
 
 assert(
@@ -17,9 +17,17 @@ assert(
 
 console.log(chalk.cyan(`umi-scripts: ${name}\n`))
 
+// for pass all params
+// e.g. umi-scripts bundleDeps --dep chalk
+//                             ^ pass all => -- --dep chalk
+//      argv.slice(2) <in bundleDeps.ts> : --dep chalk
+if (throughArgs.length) {
+  throughArgs.unshift('--')
+}
+
 const spawn = sync(
   'tsx',
-  [scriptsPath, ...argv.slice(1)],
+  [scriptsPath, ...throughArgs],
   {
     env: process.env,
     cwd: process.cwd(),
