@@ -6,7 +6,10 @@ export default function vueBabelLoaderCustomize() {
       const context = this as any;
       if (/\.vue$/.test(config.options.filename)) {
         const query = parse(context.resourceQuery.slice(1));
-        config.options.filename = `${config.options.filename}?type=${query.type}`;
+        // 仅template 执行区分
+        if (query.type === 'template') {
+          config.options.filename = `${config.options.filename}?type=${query.type}`;
+        }
       }
       return config.options;
     },
