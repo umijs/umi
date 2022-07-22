@@ -1,12 +1,18 @@
 import {
   BaseGenerator,
+  execa,
+  fsExtra,
   getGitInfo,
   installWithNpmClient,
+  logger,
   NpmClient,
+  pkgUp,
   prompts,
+  tryPaths,
   yParser,
 } from '@umijs/utils';
-import { join } from 'path';
+import { existsSync } from 'fs';
+import { dirname, join } from 'path';
 
 const testData = {
   name: 'umi-plugin-demo',
@@ -19,13 +25,28 @@ const testData = {
   registry: 'https://registry.npmjs.org/',
 };
 
-export default async ({
-  cwd,
-  args,
-}: {
-  cwd: string;
-  args: yParser.Arguments;
-}) => {
+interface IArgs extends yParser.Arguments {
+  default?: boolean;
+  plugin?: boolean;
+  git?: boolean;
+}
+
+interface IContext {
+  projectRoot: string;
+  inMonorepo: boolean;
+  target: string;
+}
+
+interface ITemplateParams {
+  version: string;
+  npmClient: NpmClient;
+  registry: string;
+  author: string;
+  withHusky: boolean;
+  extraNpmrc: string;
+}
+
+export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
   const [name] = args._;
   let npmClient = 'pnpm' as NpmClient;
   let registry = 'https://registry.npmjs.org/';
@@ -119,23 +140,109 @@ export default async ({
   const templateName = args.plugin ? 'plugin' : appTemplate;
 
   const version = require('../package').version;
+
+  // detect monorepo
+  const monorepoRoot = await detectMonorepoRoot({ target });
+  const inMonorepo = !!monorepoRoot;
+  const projectRoot = inMonorepo ? monorepoRoot : target;
+
+  // git
+  const shouldInitGit = args.git !== false;
+  // now husky is not supported in monorepo
+  const withHusky = shouldInitGit && !inMonorepo;
+
   const generator = new BaseGenerator({
     path: join(__dirname, '..', 'templates', templateName),
     target,
     data: args.default
       ? testData
-      : {
+      : ({
           version: version.includes('-canary.') ? version : `^${version}`,
           npmClient,
           registry,
           author,
-        },
+          withHusky,
+          // suppress pnpm v7 warning
+          extraNpmrc:
+            npmClient === 'pnpm' ? `strict-peer-dependencies=false` : '',
+        } as ITemplateParams),
     questions: args.default ? [] : args.plugin ? pluginPrompts : [],
   });
   await generator.run();
 
+  const context: IContext = {
+    inMonorepo,
+    target,
+    projectRoot,
+  };
+
+  if (!withHusky) {
+    await removeHusky(context);
+  }
+
+  if (inMonorepo) {
+    // monorepo should move .npmrc to root
+    await moveNpmrc(context);
+  }
+
+  // init git
+  if (shouldInitGit) {
+    await initGit(context);
+  } else {
+    logger.info(`Skip Git init`);
+  }
+
+  // install deps
   if (!args.default) {
-    // install
     installWithNpmClient({ npmClient, cwd: target });
   }
 };
+
+async function detectMonorepoRoot(opts: {
+  target: string;
+}): Promise<string | null> {
+  const { target } = opts;
+  const rootPkg = await pkgUp.pkgUp({ cwd: dirname(target) });
+  if (!rootPkg) {
+    return null;
+  }
+  const rootDir = dirname(rootPkg);
+  if (
+    tryPaths([
+      join(rootDir, 'lerna.json'),
+      join(rootDir, 'pnpm-workspace.yaml'),
+    ])
+  ) {
+    return rootDir;
+  }
+  return null;
+}
+
+async function moveNpmrc(opts: IContext) {
+  const { target, projectRoot } = opts;
+  const sourceNpmrc = join(target, './.npmrc');
+  const targetNpmrc = join(projectRoot, './.npmrc');
+  if (!existsSync(targetNpmrc)) {
+    await fsExtra.copyFile(sourceNpmrc, targetNpmrc);
+  }
+  await fsExtra.remove(sourceNpmrc);
+}
+
+async function initGit(opts: IContext) {
+  const { projectRoot } = opts;
+  const isGit = existsSync(join(projectRoot, '.git'));
+  if (isGit) return;
+  try {
+    await execa.execa('git', ['init'], { cwd: projectRoot });
+    logger.ready(`Git initialized successfully`);
+  } catch {
+    logger.error(`Initial the git repo failed`);
+  }
+}
+
+async function removeHusky(opts: IContext) {
+  const dir = join(opts.target, './.husky');
+  if (existsSync(dir)) {
+    await fsExtra.remove(dir);
+  }
+}
