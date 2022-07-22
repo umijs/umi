@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.targetMapping = exports.create = void 0;
 function create(createOptions) {
-    const { swc, service: { config, projectLocalResolveHelper }, transpilerConfigLocalResolveHelper, } = createOptions;
+    const { swc, service: { config, projectLocalResolveHelper }, transpilerConfigLocalResolveHelper, nodeModuleEmitKind, } = createOptions;
     // Load swc compiler
     let swcInstance;
     if (typeof swc === 'string') {
@@ -49,6 +49,7 @@ function create(createOptions) {
         }
         swcTarget = swcTargets[swcTargetIndex];
         const keepClassNames = target >= /* ts.ScriptTarget.ES2016 */ 3;
+        const isNodeModuleKind = module === ModuleKind.Node12 || module === ModuleKind.NodeNext;
         // swc only supports these 4x module options [MUST_UPDATE_FOR_NEW_MODULEKIND]
         const moduleType = module === ModuleKind.CommonJS
             ? 'commonjs'
@@ -56,7 +57,11 @@ function create(createOptions) {
                 ? 'amd'
                 : module === ModuleKind.UMD
                     ? 'umd'
-                    : 'es6';
+                    : isNodeModuleKind && nodeModuleEmitKind === 'nodecjs'
+                        ? 'commonjs'
+                        : isNodeModuleKind && nodeModuleEmitKind === 'nodeesm'
+                            ? 'es6'
+                            : 'es6';
         // In swc:
         //   strictMode means `"use strict"` is *always* emitted for non-ES module, *never* for ES module where it is assumed it can be omitted.
         //   (this assumption is invalid, but that's the way swc behaves)
@@ -80,6 +85,8 @@ function create(createOptions) {
                     noInterop: !esModuleInterop,
                     type: moduleType,
                     strictMode,
+                    // For NodeNext and Node12, emit as CJS but do not transform dynamic imports
+                    ignoreDynamic: nodeModuleEmitKind === 'nodecjs',
                 }
                 : undefined,
             swcrc: false,
@@ -161,5 +168,7 @@ const ModuleKind = {
     ES2015: 5,
     ES2020: 6,
     ESNext: 99,
+    Node12: 100,
+    NodeNext: 199,
 };
 //# sourceMappingURL=swc.js.map
