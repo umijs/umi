@@ -20,7 +20,9 @@ export default function mf(api: IApi) {
             Joi.object({
               aliasName: Joi.string(),
               name: Joi.string().required(),
-              entry: Joi.string().required(),
+              entry: Joi.string(),
+              entries: Joi.object(),
+              keyResolver: Joi.string(),
             }),
           ),
           library: Joi.object(),
@@ -109,19 +111,60 @@ export default function mf(api: IApi) {
     remotes.forEach((remote: any) => {
       const aliasName = remote.aliasName || remote.name;
 
-      const url = remote.entry;
-
-      const mfUrl = `${remote.name}@${url}`;
+      const r = formatRemote(remote);
 
       if (memo[aliasName]) {
         return api.logger.error(
-          `${aliasName} already set as ${memo[aliasName]}, new value is ${mfUrl} will be ignored`,
+          `${aliasName} already set as ${memo[aliasName]}, new value ${r} will be ignored`,
         );
       }
-      memo[aliasName] = mfUrl;
+      memo[aliasName] = r;
     });
 
     return memo;
+  }
+
+  function formatRemote(remote: any): string {
+    const url = remote.entry;
+
+    const mfUrl = `${remote.name}@${url}`;
+
+    if (remote.entry) {
+      return mfUrl;
+    }
+
+    if (remote.entries && remote.keyResolver) {
+      const dynamicUlr = `promise new Promise(resolve => {
+  const entries = ${JSON.stringify(remote.entries)};
+  const key = ${remote.keyResolver};
+
+  const remoteUrlWithVersion = entries[key];
+  const script = document.createElement('script')
+  script.src = remoteUrlWithVersion
+  script.onload = () => {
+    // the injected script has loaded and is available on window
+    // we can now resolve this Promise
+    const proxy = {
+      get: (request) => window.${remote.name}.get(request),
+      init: (arg) => {
+        try {
+          return window.${remote.name}.init(arg)
+        } catch(e) {
+          console.log('remote container already initialized')
+        }
+      }
+    }
+    resolve(proxy)
+  }
+  // inject this script with the src set to the versioned remoteEntry.js
+  document.head.appendChild(script);
+})
+`;
+      return dynamicUlr;
+    } else {
+      api.logger.error('you should provider entry or entries and keyResolver');
+      throw Error('Wrong MF#remotes config');
+    }
   }
 
   async function constructExposes() {
