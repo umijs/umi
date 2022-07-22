@@ -116,15 +116,22 @@ export class DepBuilder {
     }
 
     // index file
-    writeFileSync(join(tmpBase, 'index.js'), '"😛"', 'utf-8');
+    writeFileSync(
+      join(tmpBase, 'index.js'),
+      // https://webpack.js.org/concepts/module-federation/#infer-publicpath-from-script
+      `__webpack_public_path__ = document.currentScript.src + '/../';`,
+      'utf-8',
+    );
   }
 
   getWebpackConfig(opts: { deps: Dep[] }) {
-    const mfName = this.opts.mfsu.opts.mfName;
+    const mfName = this.opts.mfsu.opts.mfName!;
     const depConfig = lodash.cloneDeep(this.opts.mfsu.depConfig!);
 
     // depConfig.stats = 'none';
-    depConfig.entry = join(this.opts.mfsu.opts.tmpBase!, 'index.js');
+    depConfig.entry = {
+      [mfName]: join(this.opts.mfsu.opts.tmpBase!, 'index.js'),
+    };
     depConfig.output!.path = this.opts.mfsu.opts.tmpBase!;
     // disable devtool
     depConfig.devtool = false;
