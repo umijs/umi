@@ -21,9 +21,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev",
+    "dev": "umi-scripts father dev",
     "generate:webpackPackages": "zx ./scripts/generateWebpackPackages.mjs",
     "test": "umi-scripts jest-turbo"
   },

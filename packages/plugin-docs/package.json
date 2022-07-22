@@ -17,11 +17,11 @@
     "compiled"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css",
-    "dev": "pnpm father dev",
+    "dev": "umi-scripts father dev",
     "dev:css": "pnpm build:css --watch",
     "test": "umi-scripts jest-turbo"
   },

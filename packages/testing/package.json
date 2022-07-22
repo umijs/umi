@@ -16,9 +16,9 @@
     "setupFiles"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev"
+    "dev": "umi-scripts father dev"
   },
   "dependencies": {
     "@jest/types": "27.5.1",
