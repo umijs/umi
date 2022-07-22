@@ -29,6 +29,7 @@ interface IArgs extends yParser.Arguments {
   default?: boolean;
   plugin?: boolean;
   git?: boolean;
+  install?: boolean;
 }
 
 interface IContext {
@@ -193,8 +194,10 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
   }
 
   // install deps
-  if (!args.default) {
+  if (!args.default && args.install !== false) {
     installWithNpmClient({ npmClient, cwd: target });
+  } else {
+    logger.info(`Skip install deps`);
   }
 };
 
