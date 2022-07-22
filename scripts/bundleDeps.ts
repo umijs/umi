@@ -136,6 +136,13 @@ Object.keys(exported).forEach(function (key) {
       ) {
         throw new Error(`${opts.pkgName} has "node:"`);
       }
+      // patch less resolve path to umi compiled path
+      if (opts.pkgName === 'vite') {
+        code = code.replace(
+          'loadPreprocessor("less"',
+          'loadPreprocessor("@umijs/bundler-utils/compiled/less"',
+        );
+      }
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');
 
       // patch
