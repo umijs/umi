@@ -87,6 +87,9 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
+      serverBase: `${opts.config.https ? 'https' : 'http'}://${opts.host}:${
+        opts.port || 8000
+      }`,
     });
   }
 

@@ -56,6 +56,7 @@ interface IOpts {
   shared?: any;
   remoteName?: string;
   remoteAliases?: string[];
+  serverBase: string;
 }
 
 export class MFSU {
@@ -236,7 +237,9 @@ promise new Promise(resolve => {
   document.head.appendChild(script);
 })
                 `.trimLeft()
-              : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
+              : `${mfName}@${
+                  this.opts.serverBase || ''
+                }${publicPath}${REMOTE_FILE_FULL}`,
           },
         }),
         new BuildDepPlugin(this.strategy.getBuildDepPlugConfig()),
