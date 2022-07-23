@@ -170,7 +170,7 @@ export default UserInfo;
 ```jsx
 render () {
   return <div onClick={() => {
-   props.dispacth({
+   this.props.dispacth({
     type: 'modelnamespace/actionname',
     sometestdata: 'xxx',
     othertestata: {},
