@@ -177,6 +177,8 @@ export const routes: IBestAFSRoute[] = [
 
 #### icon
 
+- Type: `string`
+
 菜单上显示的 antd 的 icon，为了按需加载 layout 插件会帮你自动转化为 Antd icon 的 dom。支持类型可以在 [antd icon](https://ant.design/components/icon-cn/) 中找到。示例：
 
 ```ts
