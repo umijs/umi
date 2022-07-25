@@ -134,7 +134,7 @@ export default function mf(api: IApi) {
     }
 
     if (remote.entries && remote.keyResolver) {
-      const dynamicUlr = `promise new Promise(resolve => {
+      const dynamicUrl = `promise new Promise(resolve => {
   const entries = ${JSON.stringify(remote.entries)};
   const key = ${remote.keyResolver};
 
@@ -160,7 +160,7 @@ export default function mf(api: IApi) {
   document.head.appendChild(script);
 })
 `;
-      return dynamicUlr;
+      return dynamicUrl;
     } else {
       api.logger.error('you should provider entry or entries and keyResolver');
       throw Error('Wrong MF#remotes config');

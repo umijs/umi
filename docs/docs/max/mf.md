@@ -14,7 +14,7 @@ import { Tabbed, Message } from 'umi';
 
 ```ts
 // .umirc.ts
-import {defineConfig} from '@umijs/max';
+import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
     // 已经内置 Module Federation 插件, 直接开启配置即可
@@ -30,12 +30,14 @@ export default defineConfig({
         // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
         // 注意这里的 name 必须和最终 MF 模块的 name 一致
         library: { type: "window", name: "exportMFName" },
+
+        // 配置 MF 共享的模块
+        shared: {
+            lodash: { eager: true }, 
+        }
     },
     mfsu: false, // 如何开启 mfsu 见下一节
-    // 配置 MF 共享的模块
-    shared：{
-        lodash: {eager: true}, 
-    },
+
 });
 ```
 
@@ -43,7 +45,7 @@ export default defineConfig({
 
 ```ts
 // .umirc.ts
-import {defineConfig} from 'umi';
+import { defineConfig } from 'umi';
 
 export default defineConfig({
     plugins: [ '@umijs/plugins/dist/mf', ], // 引入插件
@@ -59,12 +61,12 @@ export default defineConfig({
         // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
         // 注意这里的 name 必须和最终 MF 模块的 name 一致
         library: { type: "window", name: "exportMFName" },
+        // 配置 MF 共享的模块
+        shared: {
+            lodash: { eager: true }, 
+        },
     },
     mfsu: false, // 如何开启 mfsu 见下一节
-    // 配置 MF 共享的模块
-    shared：{
-        lodash: {eager: true}, 
-    },
 });
 ```
 </Tabbed>
@@ -222,7 +224,7 @@ export default defineConfig({
         // 需要和 mf 插件的值保证统一
         shared: {
             // mf 插件显示配置的 shared
-            lodash: {eager: true}, 
+            lodash: { eager: true }, 
 
             // mf 插件默认的 shared 配置
             react: {
