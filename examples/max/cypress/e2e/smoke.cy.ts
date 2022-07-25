@@ -40,4 +40,12 @@ describe('Basic Test', () => {
     cy.contains('简体中文').click();
     cy.get('li.ant-pro-menu-item').contains('首页');
   });
+
+  it('tailwind css', () => {
+    cy.get('[data-testid="tailwind-header"]').should(
+      'have.css',
+      'color',
+      'rgb(136, 19, 55)',
+    );
+  });
 });

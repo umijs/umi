@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tailwindCSSHead {
+  @apply text-rose-900;
+}
+
+hr {
+  @apply my-5;
+}
