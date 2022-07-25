@@ -42,7 +42,7 @@ interface BaseNode {
   extra?: Record<string, unknown>;
 }
 
-export type Node = AnyTypeAnnotation | ArgumentPlaceholder | ArrayExpression | ArrayPattern | ArrayTypeAnnotation | ArrowFunctionExpression | AssignmentExpression | AssignmentPattern | AwaitExpression | BigIntLiteral | Binary | BinaryExpression | BindExpression | Block | BlockParent | BlockStatement | BooleanLiteral | BooleanLiteralTypeAnnotation | BooleanTypeAnnotation | BreakStatement | CallExpression | CatchClause | Class | ClassBody | ClassDeclaration | ClassExpression | ClassImplements | ClassMethod | ClassPrivateMethod | ClassPrivateProperty | ClassProperty | CompletionStatement | Conditional | ConditionalExpression | ContinueStatement | DebuggerStatement | DecimalLiteral | Declaration | DeclareClass | DeclareExportAllDeclaration | DeclareExportDeclaration | DeclareFunction | DeclareInterface | DeclareModule | DeclareModuleExports | DeclareOpaqueType | DeclareTypeAlias | DeclareVariable | DeclaredPredicate | Decorator | Directive | DirectiveLiteral | DoExpression | DoWhileStatement | EmptyStatement | EmptyTypeAnnotation | EnumBody | EnumBooleanBody | EnumBooleanMember | EnumDeclaration | EnumDefaultedMember | EnumMember | EnumNumberBody | EnumNumberMember | EnumStringBody | EnumStringMember | EnumSymbolBody | ExistsTypeAnnotation | ExportAllDeclaration | ExportDeclaration | ExportDefaultDeclaration | ExportDefaultSpecifier | ExportNamedDeclaration | ExportNamespaceSpecifier | ExportSpecifier | Expression | ExpressionStatement | ExpressionWrapper | File | Flow | FlowBaseAnnotation | FlowDeclaration | FlowPredicate | FlowType | For | ForInStatement | ForOfStatement | ForStatement | ForXStatement | Function | FunctionDeclaration | FunctionExpression | FunctionParent | FunctionTypeAnnotation | FunctionTypeParam | GenericTypeAnnotation | Identifier | IfStatement | Immutable | Import | ImportAttribute | ImportDeclaration | ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier | IndexedAccessType | InferredPredicate | InterfaceDeclaration | InterfaceExtends | InterfaceTypeAnnotation | InterpreterDirective | IntersectionTypeAnnotation | JSX | JSXAttribute | JSXClosingElement | JSXClosingFragment | JSXElement | JSXEmptyExpression | JSXExpressionContainer | JSXFragment | JSXIdentifier | JSXMemberExpression | JSXNamespacedName | JSXOpeningElement | JSXOpeningFragment | JSXSpreadAttribute | JSXSpreadChild | JSXText | LVal | LabeledStatement | Literal | LogicalExpression | Loop | MemberExpression | MetaProperty | Method | Miscellaneous | MixedTypeAnnotation | ModuleDeclaration | ModuleExpression | ModuleSpecifier | NewExpression | Noop | NullLiteral | NullLiteralTypeAnnotation | NullableTypeAnnotation | NumberLiteral | NumberLiteralTypeAnnotation | NumberTypeAnnotation | NumericLiteral | ObjectExpression | ObjectMember | ObjectMethod | ObjectPattern | ObjectProperty | ObjectTypeAnnotation | ObjectTypeCallProperty | ObjectTypeIndexer | ObjectTypeInternalSlot | ObjectTypeProperty | ObjectTypeSpreadProperty | OpaqueType | OptionalCallExpression | OptionalIndexedAccessType | OptionalMemberExpression | ParenthesizedExpression | Pattern | PatternLike | PipelineBareFunction | PipelinePrimaryTopicReference | PipelineTopicExpression | Placeholder | Private | PrivateName | Program | Property | Pureish | QualifiedTypeIdentifier | RecordExpression | RegExpLiteral | RegexLiteral | RestElement | RestProperty | ReturnStatement | Scopable | SequenceExpression | SpreadElement | SpreadProperty | Standardized | Statement | StaticBlock | StringLiteral | StringLiteralTypeAnnotation | StringTypeAnnotation | Super | SwitchCase | SwitchStatement | SymbolTypeAnnotation | TSAnyKeyword | TSArrayType | TSAsExpression | TSBaseType | TSBigIntKeyword | TSBooleanKeyword | TSCallSignatureDeclaration | TSConditionalType | TSConstructSignatureDeclaration | TSConstructorType | TSDeclareFunction | TSDeclareMethod | TSEntityName | TSEnumDeclaration | TSEnumMember | TSExportAssignment | TSExpressionWithTypeArguments | TSExternalModuleReference | TSFunctionType | TSImportEqualsDeclaration | TSImportType | TSIndexSignature | TSIndexedAccessType | TSInferType | TSInterfaceBody | TSInterfaceDeclaration | TSIntersectionType | TSIntrinsicKeyword | TSLiteralType | TSMappedType | TSMethodSignature | TSModuleBlock | TSModuleDeclaration | TSNamedTupleMember | TSNamespaceExportDeclaration | TSNeverKeyword | TSNonNullExpression | TSNullKeyword | TSNumberKeyword | TSObjectKeyword | TSOptionalType | TSParameterProperty | TSParenthesizedType | TSPropertySignature | TSQualifiedName | TSRestType | TSStringKeyword | TSSymbolKeyword | TSThisType | TSTupleType | TSType | TSTypeAliasDeclaration | TSTypeAnnotation | TSTypeAssertion | TSTypeElement | TSTypeLiteral | TSTypeOperator | TSTypeParameter | TSTypeParameterDeclaration | TSTypeParameterInstantiation | TSTypePredicate | TSTypeQuery | TSTypeReference | TSUndefinedKeyword | TSUnionType | TSUnknownKeyword | TSVoidKeyword | TaggedTemplateExpression | TemplateElement | TemplateLiteral | Terminatorless | ThisExpression | ThisTypeAnnotation | ThrowStatement | TopicReference | TryStatement | TupleExpression | TupleTypeAnnotation | TypeAlias | TypeAnnotation | TypeCastExpression | TypeParameter | TypeParameterDeclaration | TypeParameterInstantiation | TypeScript | TypeofTypeAnnotation | UnaryExpression | UnaryLike | UnionTypeAnnotation | UpdateExpression | UserWhitespacable | V8IntrinsicIdentifier | VariableDeclaration | VariableDeclarator | Variance | VoidTypeAnnotation | While | WhileStatement | WithStatement | YieldExpression;
+export type Node = Accessor | AnyTypeAnnotation | ArgumentPlaceholder | ArrayExpression | ArrayPattern | ArrayTypeAnnotation | ArrowFunctionExpression | AssignmentExpression | AssignmentPattern | AwaitExpression | BigIntLiteral | Binary | BinaryExpression | BindExpression | Block | BlockParent | BlockStatement | BooleanLiteral | BooleanLiteralTypeAnnotation | BooleanTypeAnnotation | BreakStatement | CallExpression | CatchClause | Class | ClassAccessorProperty | ClassBody | ClassDeclaration | ClassExpression | ClassImplements | ClassMethod | ClassPrivateMethod | ClassPrivateProperty | ClassProperty | CompletionStatement | Conditional | ConditionalExpression | ContinueStatement | DebuggerStatement | DecimalLiteral | Declaration | DeclareClass | DeclareExportAllDeclaration | DeclareExportDeclaration | DeclareFunction | DeclareInterface | DeclareModule | DeclareModuleExports | DeclareOpaqueType | DeclareTypeAlias | DeclareVariable | DeclaredPredicate | Decorator | Directive | DirectiveLiteral | DoExpression | DoWhileStatement | EmptyStatement | EmptyTypeAnnotation | EnumBody | EnumBooleanBody | EnumBooleanMember | EnumDeclaration | EnumDefaultedMember | EnumMember | EnumNumberBody | EnumNumberMember | EnumStringBody | EnumStringMember | EnumSymbolBody | ExistsTypeAnnotation | ExportAllDeclaration | ExportDeclaration | ExportDefaultDeclaration | ExportDefaultSpecifier | ExportNamedDeclaration | ExportNamespaceSpecifier | ExportSpecifier | Expression | ExpressionStatement | ExpressionWrapper | File | Flow | FlowBaseAnnotation | FlowDeclaration | FlowPredicate | FlowType | For | ForInStatement | ForOfStatement | ForStatement | ForXStatement | Function | FunctionDeclaration | FunctionExpression | FunctionParent | FunctionTypeAnnotation | FunctionTypeParam | GenericTypeAnnotation | Identifier | IfStatement | Immutable | Import | ImportAttribute | ImportDeclaration | ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier | IndexedAccessType | InferredPredicate | InterfaceDeclaration | InterfaceExtends | InterfaceTypeAnnotation | InterpreterDirective | IntersectionTypeAnnotation | JSX | JSXAttribute | JSXClosingElement | JSXClosingFragment | JSXElement | JSXEmptyExpression | JSXExpressionContainer | JSXFragment | JSXIdentifier | JSXMemberExpression | JSXNamespacedName | JSXOpeningElement | JSXOpeningFragment | JSXSpreadAttribute | JSXSpreadChild | JSXText | LVal | LabeledStatement | Literal | LogicalExpression | Loop | MemberExpression | MetaProperty | Method | Miscellaneous | MixedTypeAnnotation | ModuleDeclaration | ModuleExpression | ModuleSpecifier | NewExpression | Noop | NullLiteral | NullLiteralTypeAnnotation | NullableTypeAnnotation | NumberLiteral | NumberLiteralTypeAnnotation | NumberTypeAnnotation | NumericLiteral | ObjectExpression | ObjectMember | ObjectMethod | ObjectPattern | ObjectProperty | ObjectTypeAnnotation | ObjectTypeCallProperty | ObjectTypeIndexer | ObjectTypeInternalSlot | ObjectTypeProperty | ObjectTypeSpreadProperty | OpaqueType | OptionalCallExpression | OptionalIndexedAccessType | OptionalMemberExpression | ParenthesizedExpression | Pattern | PatternLike | PipelineBareFunction | PipelinePrimaryTopicReference | PipelineTopicExpression | Placeholder | Private | PrivateName | Program | Property | Pureish | QualifiedTypeIdentifier | RecordExpression | RegExpLiteral | RegexLiteral | RestElement | RestProperty | ReturnStatement | Scopable | SequenceExpression | SpreadElement | SpreadProperty | Standardized | Statement | StaticBlock | StringLiteral | StringLiteralTypeAnnotation | StringTypeAnnotation | Super | SwitchCase | SwitchStatement | SymbolTypeAnnotation | TSAnyKeyword | TSArrayType | TSAsExpression | TSBaseType | TSBigIntKeyword | TSBooleanKeyword | TSCallSignatureDeclaration | TSConditionalType | TSConstructSignatureDeclaration | TSConstructorType | TSDeclareFunction | TSDeclareMethod | TSEntityName | TSEnumDeclaration | TSEnumMember | TSExportAssignment | TSExpressionWithTypeArguments | TSExternalModuleReference | TSFunctionType | TSImportEqualsDeclaration | TSImportType | TSIndexSignature | TSIndexedAccessType | TSInferType | TSInstantiationExpression | TSInterfaceBody | TSInterfaceDeclaration | TSIntersectionType | TSIntrinsicKeyword | TSLiteralType | TSMappedType | TSMethodSignature | TSModuleBlock | TSModuleDeclaration | TSNamedTupleMember | TSNamespaceExportDeclaration | TSNeverKeyword | TSNonNullExpression | TSNullKeyword | TSNumberKeyword | TSObjectKeyword | TSOptionalType | TSParameterProperty | TSParenthesizedType | TSPropertySignature | TSQualifiedName | TSRestType | TSStringKeyword | TSSymbolKeyword | TSThisType | TSTupleType | TSType | TSTypeAliasDeclaration | TSTypeAnnotation | TSTypeAssertion | TSTypeElement | TSTypeLiteral | TSTypeOperator | TSTypeParameter | TSTypeParameterDeclaration | TSTypeParameterInstantiation | TSTypePredicate | TSTypeQuery | TSTypeReference | TSUndefinedKeyword | TSUnionType | TSUnknownKeyword | TSVoidKeyword | TaggedTemplateExpression | TemplateElement | TemplateLiteral | Terminatorless | ThisExpression | ThisTypeAnnotation | ThrowStatement | TopicReference | TryStatement | TupleExpression | TupleTypeAnnotation | TypeAlias | TypeAnnotation | TypeCastExpression | TypeParameter | TypeParameterDeclaration | TypeParameterInstantiation | TypeScript | TypeofTypeAnnotation | UnaryExpression | UnaryLike | UnionTypeAnnotation | UpdateExpression | UserWhitespacable | V8IntrinsicIdentifier | VariableDeclaration | VariableDeclarator | Variance | VoidTypeAnnotation | While | WhileStatement | WithStatement | YieldExpression;
 
 export interface ArrayExpression extends BaseNode {
   type: "ArrayExpression";
@@ -58,7 +58,7 @@ export interface AssignmentExpression extends BaseNode {
 
 export interface BinaryExpression extends BaseNode {
   type: "BinaryExpression";
-  operator: "+" | "-" | "/" | "%" | "*" | "**" | "&" | "|" | ">>" | ">>>" | "<<" | "^" | "==" | "===" | "!=" | "!==" | "in" | "instanceof" | ">" | "<" | ">=" | "<=";
+  operator: "+" | "-" | "/" | "%" | "*" | "**" | "&" | "|" | ">>" | ">>>" | "<<" | "^" | "==" | "===" | "!=" | "!==" | "in" | "instanceof" | ">" | "<" | ">=" | "<=" | "|>";
   left: Expression | PrivateName;
   right: Expression;
 }
@@ -91,7 +91,7 @@ export interface BreakStatement extends BaseNode {
 
 export interface CallExpression extends BaseNode {
   type: "CallExpression";
-  callee: Expression | V8IntrinsicIdentifier;
+  callee: Expression | Super | V8IntrinsicIdentifier;
   arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>;
   optional: true | false | null;
   typeArguments: TypeParameterInstantiation | null;
@@ -165,6 +165,7 @@ export interface FunctionDeclaration extends BaseNode {
   generator: boolean;
   async: boolean;
   declare: boolean | null;
+  predicate: DeclaredPredicate | InferredPredicate | null;
   returnType: TypeAnnotation | TSTypeAnnotation | Noop | null;
   typeParameters: TypeParameterDeclaration | TSTypeParameterDeclaration | Noop | null;
 }
@@ -176,6 +177,7 @@ export interface FunctionExpression extends BaseNode {
   body: BlockStatement;
   generator: boolean;
   async: boolean;
+  predicate: DeclaredPredicate | InferredPredicate | null;
   returnType: TypeAnnotation | TSTypeAnnotation | Noop | null;
   typeParameters: TypeParameterDeclaration | TSTypeParameterDeclaration | Noop | null;
 }
@@ -235,7 +237,7 @@ export interface LogicalExpression extends BaseNode {
 
 export interface MemberExpression extends BaseNode {
   type: "MemberExpression";
-  object: Expression;
+  object: Expression | Super;
   property: Expression | Identifier | PrivateName;
   computed: boolean;
   optional: true | false | null;
@@ -243,7 +245,7 @@ export interface MemberExpression extends BaseNode {
 
 export interface NewExpression extends BaseNode {
   type: "NewExpression";
-  callee: Expression | V8IntrinsicIdentifier;
+  callee: Expression | Super | V8IntrinsicIdentifier;
   arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>;
   optional: true | false | null;
   typeArguments: TypeParameterInstantiation | null;
@@ -267,7 +269,7 @@ export interface ObjectExpression extends BaseNode {
 export interface ObjectMethod extends BaseNode {
   type: "ObjectMethod";
   kind: "method" | "get" | "set";
-  key: Expression | Identifier | StringLiteral | NumericLiteral;
+  key: Expression | Identifier | StringLiteral | NumericLiteral | BigIntLiteral;
   params: Array<Identifier | Pattern | RestElement>;
   body: BlockStatement;
   computed: boolean;
@@ -280,7 +282,7 @@ export interface ObjectMethod extends BaseNode {
 
 export interface ObjectProperty extends BaseNode {
   type: "ObjectProperty";
-  key: Expression | Identifier | StringLiteral | NumericLiteral;
+  key: Expression | Identifier | StringLiteral | NumericLiteral | BigIntLiteral | DecimalLiteral | PrivateName;
   value: Expression | PatternLike;
   computed: boolean;
   shorthand: boolean;
@@ -380,7 +382,7 @@ export interface WithStatement extends BaseNode {
 
 export interface AssignmentPattern extends BaseNode {
   type: "AssignmentPattern";
-  left: Identifier | ObjectPattern | ArrayPattern | MemberExpression;
+  left: Identifier | ObjectPattern | ArrayPattern | MemberExpression | TSAsExpression | TSTypeAssertion | TSNonNullExpression;
   right: Expression;
   decorators: Array<Decorator> | null;
   typeAnnotation: TypeAnnotation | TSTypeAnnotation | Noop | null;
@@ -388,7 +390,7 @@ export interface AssignmentPattern extends BaseNode {
 
 export interface ArrayPattern extends BaseNode {
   type: "ArrayPattern";
-  elements: Array<null | PatternLike>;
+  elements: Array<null | PatternLike | LVal>;
   decorators: Array<Decorator> | null;
   optional: boolean | null;
   typeAnnotation: TypeAnnotation | TSTypeAnnotation | Noop | null;
@@ -401,13 +403,14 @@ export interface ArrowFunctionExpression extends BaseNode {
   async: boolean;
   expression: boolean;
   generator: boolean;
+  predicate: DeclaredPredicate | InferredPredicate | null;
   returnType: TypeAnnotation | TSTypeAnnotation | Noop | null;
   typeParameters: TypeParameterDeclaration | TSTypeParameterDeclaration | Noop | null;
 }
 
 export interface ClassBody extends BaseNode {
   type: "ClassBody";
-  body: Array<ClassMethod | ClassPrivateMethod | ClassProperty | ClassPrivateProperty | TSDeclareMethod | TSIndexSignature>;
+  body: Array<ClassMethod | ClassPrivateMethod | ClassProperty | ClassPrivateProperty | ClassAccessorProperty | TSDeclareMethod | TSIndexSignature | StaticBlock>;
 }
 
 export interface ClassExpression extends BaseNode {
@@ -445,7 +448,7 @@ export interface ExportAllDeclaration extends BaseNode {
 
 export interface ExportDefaultDeclaration extends BaseNode {
   type: "ExportDefaultDeclaration";
-  declaration: FunctionDeclaration | TSDeclareFunction | ClassDeclaration | Expression;
+  declaration: TSDeclareFunction | FunctionDeclaration | ClassDeclaration | Expression;
   exportKind: "value" | null;
 }
 
@@ -507,7 +510,7 @@ export interface MetaProperty extends BaseNode {
 export interface ClassMethod extends BaseNode {
   type: "ClassMethod";
   kind: "get" | "set" | "method" | "constructor";
-  key: Identifier | StringLiteral | NumericLiteral | Expression;
+  key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression;
   params: Array<Identifier | Pattern | RestElement | TSParameterProperty>;
   body: BlockStatement;
   computed: boolean;
@@ -603,7 +606,25 @@ export interface OptionalCallExpression extends BaseNode {
 
 export interface ClassProperty extends BaseNode {
   type: "ClassProperty";
-  key: Identifier | StringLiteral | NumericLiteral | Expression;
+  key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression;
+  value: Expression | null;
+  typeAnnotation: TypeAnnotation | TSTypeAnnotation | Noop | null;
+  decorators: Array<Decorator> | null;
+  computed: boolean;
+  static: boolean;
+  abstract: boolean | null;
+  accessibility: "public" | "private" | "protected" | null;
+  declare: boolean | null;
+  definite: boolean | null;
+  optional: boolean | null;
+  override: boolean;
+  readonly: boolean | null;
+  variance: Variance | null;
+}
+
+export interface ClassAccessorProperty extends BaseNode {
+  type: "ClassAccessorProperty";
+  key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression | PrivateName;
   value: Expression | null;
   typeAnnotation: TypeAnnotation | TSTypeAnnotation | Noop | null;
   decorators: Array<Decorator> | null;
@@ -624,7 +645,7 @@ export interface ClassPrivateProperty extends BaseNode {
   key: PrivateName;
   value: Expression | null;
   decorators: Array<Decorator> | null;
-  static: any;
+  static: boolean;
   definite: boolean | null;
   readonly: boolean | null;
   typeAnnotation: TypeAnnotation | TSTypeAnnotation | Noop | null;
@@ -633,7 +654,7 @@ export interface ClassPrivateProperty extends BaseNode {
 
 export interface ClassPrivateMethod extends BaseNode {
   type: "ClassPrivateMethod";
-  kind: "get" | "set" | "method" | "constructor";
+  kind: "get" | "set" | "method";
   key: PrivateName;
   params: Array<Identifier | Pattern | RestElement | TSParameterProperty>;
   body: BlockStatement;
@@ -848,9 +869,9 @@ export interface NumberTypeAnnotation extends BaseNode {
 export interface ObjectTypeAnnotation extends BaseNode {
   type: "ObjectTypeAnnotation";
   properties: Array<ObjectTypeProperty | ObjectTypeSpreadProperty>;
-  indexers: Array<ObjectTypeIndexer> | null;
-  callProperties: Array<ObjectTypeCallProperty> | null;
-  internalSlots: Array<ObjectTypeInternalSlot> | null;
+  indexers: Array<ObjectTypeIndexer>;
+  callProperties: Array<ObjectTypeCallProperty>;
+  internalSlots: Array<ObjectTypeInternalSlot>;
   exact: boolean;
   inexact: boolean | null;
 }
@@ -1247,7 +1268,7 @@ export interface TSDeclareFunction extends BaseNode {
 export interface TSDeclareMethod extends BaseNode {
   type: "TSDeclareMethod";
   decorators: Array<Decorator> | null;
-  key: Identifier | StringLiteral | NumericLiteral | Expression;
+  key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression;
   typeParameters: TSTypeParameterDeclaration | Noop | null;
   params: Array<Identifier | Pattern | RestElement | TSParameterProperty>;
   returnType: TSTypeAnnotation | Noop | null;
@@ -1288,7 +1309,7 @@ export interface TSPropertySignature extends BaseNode {
   key: Expression;
   typeAnnotation: TSTypeAnnotation | null;
   initializer: Expression | null;
-  computed: boolean | null;
+  computed: boolean;
   kind: "get" | "set";
   optional: boolean | null;
   readonly: boolean | null;
@@ -1300,7 +1321,7 @@ export interface TSMethodSignature extends BaseNode {
   typeParameters: TSTypeParameterDeclaration | null;
   parameters: Array<Identifier | RestElement>;
   typeAnnotation: TSTypeAnnotation | null;
-  computed: boolean | null;
+  computed: boolean;
   kind: "method" | "get" | "set";
   optional: boolean | null;
 }
@@ -1400,6 +1421,7 @@ export interface TSTypePredicate extends BaseNode {
 export interface TSTypeQuery extends BaseNode {
   type: "TSTypeQuery";
   exprName: TSEntityName | TSImportType;
+  typeParameters: TSTypeParameterInstantiation | null;
 }
 
 export interface TSTypeLiteral extends BaseNode {
@@ -1479,13 +1501,13 @@ export interface TSMappedType extends BaseNode {
   typeParameter: TSTypeParameter;
   typeAnnotation: TSType | null;
   nameType: TSType | null;
-  optional: boolean | null;
-  readonly: boolean | null;
+  optional: true | false | "+" | "-" | null;
+  readonly: true | false | "+" | "-" | null;
 }
 
 export interface TSLiteralType extends BaseNode {
   type: "TSLiteralType";
-  literal: NumericLiteral | StringLiteral | BooleanLiteral | BigIntLiteral | UnaryExpression;
+  literal: NumericLiteral | StringLiteral | BooleanLiteral | BigIntLiteral | TemplateLiteral | UnaryExpression;
 }
 
 export interface TSExpressionWithTypeArguments extends BaseNode {
@@ -1514,6 +1536,12 @@ export interface TSTypeAliasDeclaration extends BaseNode {
   typeParameters: TSTypeParameterDeclaration | null;
   typeAnnotation: TSType;
   declare: boolean | null;
+}
+
+export interface TSInstantiationExpression extends BaseNode {
+  type: "TSInstantiationExpression";
+  expression: Expression;
+  typeParameters: TSTypeParameterInstantiation | null;
 }
 
 export interface TSAsExpression extends BaseNode {
@@ -1611,6 +1639,8 @@ export interface TSTypeParameter extends BaseNode {
   constraint: TSType | null;
   default: TSType | null;
   name: string;
+  in: boolean | null;
+  out: boolean | null;
 }
 
 /**
@@ -1633,8 +1663,8 @@ export type RestProperty = RestElement;
  */
 export type SpreadProperty = SpreadElement;
 
-export type Standardized = ArrayExpression | AssignmentExpression | BinaryExpression | InterpreterDirective | Directive | DirectiveLiteral | BlockStatement | BreakStatement | CallExpression | CatchClause | ConditionalExpression | ContinueStatement | DebuggerStatement | DoWhileStatement | EmptyStatement | ExpressionStatement | File | ForInStatement | ForStatement | FunctionDeclaration | FunctionExpression | Identifier | IfStatement | LabeledStatement | StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | RegExpLiteral | LogicalExpression | MemberExpression | NewExpression | Program | ObjectExpression | ObjectMethod | ObjectProperty | RestElement | ReturnStatement | SequenceExpression | ParenthesizedExpression | SwitchCase | SwitchStatement | ThisExpression | ThrowStatement | TryStatement | UnaryExpression | UpdateExpression | VariableDeclaration | VariableDeclarator | WhileStatement | WithStatement | AssignmentPattern | ArrayPattern | ArrowFunctionExpression | ClassBody | ClassExpression | ClassDeclaration | ExportAllDeclaration | ExportDefaultDeclaration | ExportNamedDeclaration | ExportSpecifier | ForOfStatement | ImportDeclaration | ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier | MetaProperty | ClassMethod | ObjectPattern | SpreadElement | Super | TaggedTemplateExpression | TemplateElement | TemplateLiteral | YieldExpression | AwaitExpression | Import | BigIntLiteral | ExportNamespaceSpecifier | OptionalMemberExpression | OptionalCallExpression | ClassProperty | ClassPrivateProperty | ClassPrivateMethod | PrivateName | StaticBlock;
-export type Expression = ArrayExpression | AssignmentExpression | BinaryExpression | CallExpression | ConditionalExpression | FunctionExpression | Identifier | StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | RegExpLiteral | LogicalExpression | MemberExpression | NewExpression | ObjectExpression | SequenceExpression | ParenthesizedExpression | ThisExpression | UnaryExpression | UpdateExpression | ArrowFunctionExpression | ClassExpression | MetaProperty | Super | TaggedTemplateExpression | TemplateLiteral | YieldExpression | AwaitExpression | Import | BigIntLiteral | OptionalMemberExpression | OptionalCallExpression | TypeCastExpression | JSXElement | JSXFragment | BindExpression | DoExpression | RecordExpression | TupleExpression | DecimalLiteral | ModuleExpression | TopicReference | PipelineTopicExpression | PipelineBareFunction | PipelinePrimaryTopicReference | TSAsExpression | TSTypeAssertion | TSNonNullExpression;
+export type Standardized = ArrayExpression | AssignmentExpression | BinaryExpression | InterpreterDirective | Directive | DirectiveLiteral | BlockStatement | BreakStatement | CallExpression | CatchClause | ConditionalExpression | ContinueStatement | DebuggerStatement | DoWhileStatement | EmptyStatement | ExpressionStatement | File | ForInStatement | ForStatement | FunctionDeclaration | FunctionExpression | Identifier | IfStatement | LabeledStatement | StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | RegExpLiteral | LogicalExpression | MemberExpression | NewExpression | Program | ObjectExpression | ObjectMethod | ObjectProperty | RestElement | ReturnStatement | SequenceExpression | ParenthesizedExpression | SwitchCase | SwitchStatement | ThisExpression | ThrowStatement | TryStatement | UnaryExpression | UpdateExpression | VariableDeclaration | VariableDeclarator | WhileStatement | WithStatement | AssignmentPattern | ArrayPattern | ArrowFunctionExpression | ClassBody | ClassExpression | ClassDeclaration | ExportAllDeclaration | ExportDefaultDeclaration | ExportNamedDeclaration | ExportSpecifier | ForOfStatement | ImportDeclaration | ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier | MetaProperty | ClassMethod | ObjectPattern | SpreadElement | Super | TaggedTemplateExpression | TemplateElement | TemplateLiteral | YieldExpression | AwaitExpression | Import | BigIntLiteral | ExportNamespaceSpecifier | OptionalMemberExpression | OptionalCallExpression | ClassProperty | ClassAccessorProperty | ClassPrivateProperty | ClassPrivateMethod | PrivateName | StaticBlock;
+export type Expression = ArrayExpression | AssignmentExpression | BinaryExpression | CallExpression | ConditionalExpression | FunctionExpression | Identifier | StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | RegExpLiteral | LogicalExpression | MemberExpression | NewExpression | ObjectExpression | SequenceExpression | ParenthesizedExpression | ThisExpression | UnaryExpression | UpdateExpression | ArrowFunctionExpression | ClassExpression | MetaProperty | Super | TaggedTemplateExpression | TemplateLiteral | YieldExpression | AwaitExpression | Import | BigIntLiteral | OptionalMemberExpression | OptionalCallExpression | TypeCastExpression | JSXElement | JSXFragment | BindExpression | DoExpression | RecordExpression | TupleExpression | DecimalLiteral | ModuleExpression | TopicReference | PipelineTopicExpression | PipelineBareFunction | PipelinePrimaryTopicReference | TSInstantiationExpression | TSAsExpression | TSTypeAssertion | TSNonNullExpression;
 export type Binary = BinaryExpression | LogicalExpression;
 export type Scopable = BlockStatement | CatchClause | DoWhileStatement | ForInStatement | ForStatement | FunctionDeclaration | FunctionExpression | Program | ObjectMethod | SwitchStatement | WhileStatement | ArrowFunctionExpression | ClassExpression | ClassDeclaration | ForOfStatement | ClassMethod | ClassPrivateMethod | StaticBlock | TSModuleBlock;
 export type BlockParent = BlockStatement | CatchClause | DoWhileStatement | ForInStatement | ForStatement | FunctionDeclaration | FunctionExpression | Program | ObjectMethod | SwitchStatement | WhileStatement | ArrowFunctionExpression | ForOfStatement | ClassMethod | ClassPrivateMethod | StaticBlock | TSModuleBlock;
@@ -1652,21 +1682,22 @@ export type Function = FunctionDeclaration | FunctionExpression | ObjectMethod |
 export type FunctionParent = FunctionDeclaration | FunctionExpression | ObjectMethod | ArrowFunctionExpression | ClassMethod | ClassPrivateMethod | StaticBlock;
 export type Pureish = FunctionDeclaration | FunctionExpression | StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | RegExpLiteral | ArrowFunctionExpression | BigIntLiteral | DecimalLiteral;
 export type Declaration = FunctionDeclaration | VariableDeclaration | ClassDeclaration | ExportAllDeclaration | ExportDefaultDeclaration | ExportNamedDeclaration | ImportDeclaration | DeclareClass | DeclareFunction | DeclareInterface | DeclareModule | DeclareModuleExports | DeclareTypeAlias | DeclareOpaqueType | DeclareVariable | DeclareExportDeclaration | DeclareExportAllDeclaration | InterfaceDeclaration | OpaqueType | TypeAlias | EnumDeclaration | TSDeclareFunction | TSInterfaceDeclaration | TSTypeAliasDeclaration | TSEnumDeclaration | TSModuleDeclaration;
-export type PatternLike = Identifier | RestElement | AssignmentPattern | ArrayPattern | ObjectPattern;
-export type LVal = Identifier | MemberExpression | RestElement | AssignmentPattern | ArrayPattern | ObjectPattern | TSParameterProperty;
+export type PatternLike = Identifier | RestElement | AssignmentPattern | ArrayPattern | ObjectPattern | TSAsExpression | TSTypeAssertion | TSNonNullExpression;
+export type LVal = Identifier | MemberExpression | RestElement | AssignmentPattern | ArrayPattern | ObjectPattern | TSParameterProperty | TSAsExpression | TSTypeAssertion | TSNonNullExpression;
 export type TSEntityName = Identifier | TSQualifiedName;
 export type Literal = StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | RegExpLiteral | TemplateLiteral | BigIntLiteral | DecimalLiteral;
 export type Immutable = StringLiteral | NumericLiteral | NullLiteral | BooleanLiteral | BigIntLiteral | JSXAttribute | JSXClosingElement | JSXElement | JSXExpressionContainer | JSXSpreadChild | JSXOpeningElement | JSXText | JSXFragment | JSXOpeningFragment | JSXClosingFragment | DecimalLiteral;
 export type UserWhitespacable = ObjectMethod | ObjectProperty | ObjectTypeInternalSlot | ObjectTypeCallProperty | ObjectTypeIndexer | ObjectTypeProperty | ObjectTypeSpreadProperty;
 export type Method = ObjectMethod | ClassMethod | ClassPrivateMethod;
 export type ObjectMember = ObjectMethod | ObjectProperty;
-export type Property = ObjectProperty | ClassProperty | ClassPrivateProperty;
+export type Property = ObjectProperty | ClassProperty | ClassAccessorProperty | ClassPrivateProperty;
 export type UnaryLike = UnaryExpression | SpreadElement;
 export type Pattern = AssignmentPattern | ArrayPattern | ObjectPattern;
 export type Class = ClassExpression | ClassDeclaration;
 export type ModuleDeclaration = ExportAllDeclaration | ExportDefaultDeclaration | ExportNamedDeclaration | ImportDeclaration;
 export type ExportDeclaration = ExportAllDeclaration | ExportDefaultDeclaration | ExportNamedDeclaration;
 export type ModuleSpecifier = ExportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier | ExportNamespaceSpecifier | ExportDefaultSpecifier;
+export type Accessor = ClassAccessorProperty;
 export type Private = ClassPrivateProperty | ClassPrivateMethod | PrivateName;
 export type Flow = AnyTypeAnnotation | ArrayTypeAnnotation | BooleanTypeAnnotation | BooleanLiteralTypeAnnotation | NullLiteralTypeAnnotation | ClassImplements | DeclareClass | DeclareFunction | DeclareInterface | DeclareModule | DeclareModuleExports | DeclareTypeAlias | DeclareOpaqueType | DeclareVariable | DeclareExportDeclaration | DeclareExportAllDeclaration | DeclaredPredicate | ExistsTypeAnnotation | FunctionTypeAnnotation | FunctionTypeParam | GenericTypeAnnotation | InferredPredicate | InterfaceExtends | InterfaceDeclaration | InterfaceTypeAnnotation | IntersectionTypeAnnotation | MixedTypeAnnotation | EmptyTypeAnnotation | NullableTypeAnnotation | NumberLiteralTypeAnnotation | NumberTypeAnnotation | ObjectTypeAnnotation | ObjectTypeInternalSlot | ObjectTypeCallProperty | ObjectTypeIndexer | ObjectTypeProperty | ObjectTypeSpreadProperty | OpaqueType | QualifiedTypeIdentifier | StringLiteralTypeAnnotation | StringTypeAnnotation | SymbolTypeAnnotation | ThisTypeAnnotation | TupleTypeAnnotation | TypeofTypeAnnotation | TypeAlias | TypeAnnotation | TypeCastExpression | TypeParameter | TypeParameterDeclaration | TypeParameterInstantiation | UnionTypeAnnotation | Variance | VoidTypeAnnotation | EnumDeclaration | EnumBooleanBody | EnumNumberBody | EnumStringBody | EnumSymbolBody | EnumBooleanMember | EnumNumberMember | EnumStringMember | EnumDefaultedMember | IndexedAccessType | OptionalIndexedAccessType;
 export type FlowType = AnyTypeAnnotation | ArrayTypeAnnotation | BooleanTypeAnnotation | BooleanLiteralTypeAnnotation | NullLiteralTypeAnnotation | ExistsTypeAnnotation | FunctionTypeAnnotation | GenericTypeAnnotation | InterfaceTypeAnnotation | IntersectionTypeAnnotation | MixedTypeAnnotation | EmptyTypeAnnotation | NullableTypeAnnotation | NumberLiteralTypeAnnotation | NumberTypeAnnotation | ObjectTypeAnnotation | StringLiteralTypeAnnotation | StringTypeAnnotation | SymbolTypeAnnotation | ThisTypeAnnotation | TupleTypeAnnotation | TypeofTypeAnnotation | UnionTypeAnnotation | VoidTypeAnnotation | IndexedAccessType | OptionalIndexedAccessType;
@@ -1677,7 +1708,7 @@ export type EnumBody = EnumBooleanBody | EnumNumberBody | EnumStringBody | EnumS
 export type EnumMember = EnumBooleanMember | EnumNumberMember | EnumStringMember | EnumDefaultedMember;
 export type JSX = JSXAttribute | JSXClosingElement | JSXElement | JSXEmptyExpression | JSXExpressionContainer | JSXSpreadChild | JSXIdentifier | JSXMemberExpression | JSXNamespacedName | JSXOpeningElement | JSXSpreadAttribute | JSXText | JSXFragment | JSXOpeningFragment | JSXClosingFragment;
 export type Miscellaneous = Noop | Placeholder | V8IntrinsicIdentifier;
-export type TypeScript = TSParameterProperty | TSDeclareFunction | TSDeclareMethod | TSQualifiedName | TSCallSignatureDeclaration | TSConstructSignatureDeclaration | TSPropertySignature | TSMethodSignature | TSIndexSignature | TSAnyKeyword | TSBooleanKeyword | TSBigIntKeyword | TSIntrinsicKeyword | TSNeverKeyword | TSNullKeyword | TSNumberKeyword | TSObjectKeyword | TSStringKeyword | TSSymbolKeyword | TSUndefinedKeyword | TSUnknownKeyword | TSVoidKeyword | TSThisType | TSFunctionType | TSConstructorType | TSTypeReference | TSTypePredicate | TSTypeQuery | TSTypeLiteral | TSArrayType | TSTupleType | TSOptionalType | TSRestType | TSNamedTupleMember | TSUnionType | TSIntersectionType | TSConditionalType | TSInferType | TSParenthesizedType | TSTypeOperator | TSIndexedAccessType | TSMappedType | TSLiteralType | TSExpressionWithTypeArguments | TSInterfaceDeclaration | TSInterfaceBody | TSTypeAliasDeclaration | TSAsExpression | TSTypeAssertion | TSEnumDeclaration | TSEnumMember | TSModuleDeclaration | TSModuleBlock | TSImportType | TSImportEqualsDeclaration | TSExternalModuleReference | TSNonNullExpression | TSExportAssignment | TSNamespaceExportDeclaration | TSTypeAnnotation | TSTypeParameterInstantiation | TSTypeParameterDeclaration | TSTypeParameter;
+export type TypeScript = TSParameterProperty | TSDeclareFunction | TSDeclareMethod | TSQualifiedName | TSCallSignatureDeclaration | TSConstructSignatureDeclaration | TSPropertySignature | TSMethodSignature | TSIndexSignature | TSAnyKeyword | TSBooleanKeyword | TSBigIntKeyword | TSIntrinsicKeyword | TSNeverKeyword | TSNullKeyword | TSNumberKeyword | TSObjectKeyword | TSStringKeyword | TSSymbolKeyword | TSUndefinedKeyword | TSUnknownKeyword | TSVoidKeyword | TSThisType | TSFunctionType | TSConstructorType | TSTypeReference | TSTypePredicate | TSTypeQuery | TSTypeLiteral | TSArrayType | TSTupleType | TSOptionalType | TSRestType | TSNamedTupleMember | TSUnionType | TSIntersectionType | TSConditionalType | TSInferType | TSParenthesizedType | TSTypeOperator | TSIndexedAccessType | TSMappedType | TSLiteralType | TSExpressionWithTypeArguments | TSInterfaceDeclaration | TSInterfaceBody | TSTypeAliasDeclaration | TSInstantiationExpression | TSAsExpression | TSTypeAssertion | TSEnumDeclaration | TSEnumMember | TSModuleDeclaration | TSModuleBlock | TSImportType | TSImportEqualsDeclaration | TSExternalModuleReference | TSNonNullExpression | TSExportAssignment | TSNamespaceExportDeclaration | TSTypeAnnotation | TSTypeParameterInstantiation | TSTypeParameterDeclaration | TSTypeParameter;
 export type TSTypeElement = TSCallSignatureDeclaration | TSConstructSignatureDeclaration | TSPropertySignature | TSMethodSignature | TSIndexSignature;
 export type TSType = TSAnyKeyword | TSBooleanKeyword | TSBigIntKeyword | TSIntrinsicKeyword | TSNeverKeyword | TSNullKeyword | TSNumberKeyword | TSObjectKeyword | TSStringKeyword | TSSymbolKeyword | TSUndefinedKeyword | TSUnknownKeyword | TSVoidKeyword | TSThisType | TSFunctionType | TSConstructorType | TSTypeReference | TSTypePredicate | TSTypeQuery | TSTypeLiteral | TSArrayType | TSTupleType | TSOptionalType | TSRestType | TSUnionType | TSIntersectionType | TSConditionalType | TSInferType | TSParenthesizedType | TSTypeOperator | TSIndexedAccessType | TSMappedType | TSLiteralType | TSExpressionWithTypeArguments | TSImportType;
 export type TSBaseType = TSAnyKeyword | TSBooleanKeyword | TSBigIntKeyword | TSIntrinsicKeyword | TSNeverKeyword | TSNullKeyword | TSNumberKeyword | TSObjectKeyword | TSStringKeyword | TSSymbolKeyword | TSUndefinedKeyword | TSUnknownKeyword | TSVoidKeyword | TSThisType | TSLiteralType;
@@ -1717,6 +1748,7 @@ export interface Aliases {
   ModuleDeclaration: ModuleDeclaration;
   ExportDeclaration: ExportDeclaration;
   ModuleSpecifier: ModuleSpecifier;
+  Accessor: Accessor;
   Private: Private;
   Flow: Flow;
   FlowType: FlowType;
@@ -1735,13 +1767,13 @@ export interface Aliases {
 
 export function arrayExpression(elements?: Array<null | Expression | SpreadElement>): ArrayExpression;
 export function assignmentExpression(operator: string, left: LVal, right: Expression): AssignmentExpression;
-export function binaryExpression(operator: "+" | "-" | "/" | "%" | "*" | "**" | "&" | "|" | ">>" | ">>>" | "<<" | "^" | "==" | "===" | "!=" | "!==" | "in" | "instanceof" | ">" | "<" | ">=" | "<=", left: Expression | PrivateName, right: Expression): BinaryExpression;
+export function binaryExpression(operator: "+" | "-" | "/" | "%" | "*" | "**" | "&" | "|" | ">>" | ">>>" | "<<" | "^" | "==" | "===" | "!=" | "!==" | "in" | "instanceof" | ">" | "<" | ">=" | "<=" | "|>", left: Expression | PrivateName, right: Expression): BinaryExpression;
 export function interpreterDirective(value: string): InterpreterDirective;
 export function directive(value: DirectiveLiteral): Directive;
 export function directiveLiteral(value: string): DirectiveLiteral;
 export function blockStatement(body: Array<Statement>, directives?: Array<Directive>): BlockStatement;
 export function breakStatement(label?: Identifier | null): BreakStatement;
-export function callExpression(callee: Expression | V8IntrinsicIdentifier, _arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>): CallExpression;
+export function callExpression(callee: Expression | Super | V8IntrinsicIdentifier, _arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>): CallExpression;
 export function catchClause(param: Identifier | ArrayPattern | ObjectPattern | null | undefined, body: BlockStatement): CatchClause;
 export function conditionalExpression(test: Expression, consequent: Expression, alternate: Expression): ConditionalExpression;
 export function continueStatement(label?: Identifier | null): ContinueStatement;
@@ -1763,12 +1795,12 @@ export function nullLiteral(): NullLiteral;
 export function booleanLiteral(value: boolean): BooleanLiteral;
 export function regExpLiteral(pattern: string, flags?: string): RegExpLiteral;
 export function logicalExpression(operator: "||" | "&&" | "??", left: Expression, right: Expression): LogicalExpression;
-export function memberExpression(object: Expression, property: Expression | Identifier | PrivateName, computed?: boolean, optional?: true | false | null): MemberExpression;
-export function newExpression(callee: Expression | V8IntrinsicIdentifier, _arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>): NewExpression;
+export function memberExpression(object: Expression | Super, property: Expression | Identifier | PrivateName, computed?: boolean, optional?: true | false | null): MemberExpression;
+export function newExpression(callee: Expression | Super | V8IntrinsicIdentifier, _arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>): NewExpression;
 export function program(body: Array<Statement>, directives?: Array<Directive>, sourceType?: "script" | "module", interpreter?: InterpreterDirective | null): Program;
 export function objectExpression(properties: Array<ObjectMethod | ObjectProperty | SpreadElement>): ObjectExpression;
-export function objectMethod(kind: "method" | "get" | "set" | undefined, key: Expression | Identifier | StringLiteral | NumericLiteral, params: Array<Identifier | Pattern | RestElement>, body: BlockStatement, computed?: boolean, generator?: boolean, async?: boolean): ObjectMethod;
-export function objectProperty(key: Expression | Identifier | StringLiteral | NumericLiteral, value: Expression | PatternLike, computed?: boolean, shorthand?: boolean, decorators?: Array<Decorator> | null): ObjectProperty;
+export function objectMethod(kind: "method" | "get" | "set" | undefined, key: Expression | Identifier | StringLiteral | NumericLiteral | BigIntLiteral, params: Array<Identifier | Pattern | RestElement>, body: BlockStatement, computed?: boolean, generator?: boolean, async?: boolean): ObjectMethod;
+export function objectProperty(key: Expression | Identifier | StringLiteral | NumericLiteral | BigIntLiteral | DecimalLiteral | PrivateName, value: Expression | PatternLike, computed?: boolean, shorthand?: boolean, decorators?: Array<Decorator> | null): ObjectProperty;
 export function restElement(argument: LVal): RestElement;
 export function returnStatement(argument?: Expression | null): ReturnStatement;
 export function sequenceExpression(expressions: Array<Expression>): SequenceExpression;
@@ -1784,14 +1816,14 @@ export function variableDeclaration(kind: "var" | "let" | "const", declarations:
 export function variableDeclarator(id: LVal, init?: Expression | null): VariableDeclarator;
 export function whileStatement(test: Expression, body: Statement): WhileStatement;
 export function withStatement(object: Expression, body: Statement): WithStatement;
-export function assignmentPattern(left: Identifier | ObjectPattern | ArrayPattern | MemberExpression, right: Expression): AssignmentPattern;
-export function arrayPattern(elements: Array<null | PatternLike>): ArrayPattern;
+export function assignmentPattern(left: Identifier | ObjectPattern | ArrayPattern | MemberExpression | TSAsExpression | TSTypeAssertion | TSNonNullExpression, right: Expression): AssignmentPattern;
+export function arrayPattern(elements: Array<null | PatternLike | LVal>): ArrayPattern;
 export function arrowFunctionExpression(params: Array<Identifier | Pattern | RestElement>, body: BlockStatement | Expression, async?: boolean): ArrowFunctionExpression;
-export function classBody(body: Array<ClassMethod | ClassPrivateMethod | ClassProperty | ClassPrivateProperty | TSDeclareMethod | TSIndexSignature>): ClassBody;
+export function classBody(body: Array<ClassMethod | ClassPrivateMethod | ClassProperty | ClassPrivateProperty | ClassAccessorProperty | TSDeclareMethod | TSIndexSignature | StaticBlock>): ClassBody;
 export function classExpression(id: Identifier | null | undefined, superClass: Expression | null | undefined, body: ClassBody, decorators?: Array<Decorator> | null): ClassExpression;
 export function classDeclaration(id: Identifier, superClass: Expression | null | undefined, body: ClassBody, decorators?: Array<Decorator> | null): ClassDeclaration;
 export function exportAllDeclaration(source: StringLiteral): ExportAllDeclaration;
-export function exportDefaultDeclaration(declaration: FunctionDeclaration | TSDeclareFunction | ClassDeclaration | Expression): ExportDefaultDeclaration;
+export function exportDefaultDeclaration(declaration: TSDeclareFunction | FunctionDeclaration | ClassDeclaration | Expression): ExportDefaultDeclaration;
 export function exportNamedDeclaration(declaration?: Declaration | null, specifiers?: Array<ExportSpecifier | ExportDefaultSpecifier | ExportNamespaceSpecifier>, source?: StringLiteral | null): ExportNamedDeclaration;
 export function exportSpecifier(local: Identifier, exported: Identifier | StringLiteral): ExportSpecifier;
 export function forOfStatement(left: VariableDeclaration | LVal, right: Expression, body: Statement, _await?: boolean): ForOfStatement;
@@ -1800,7 +1832,7 @@ export function importDefaultSpecifier(local: Identifier): ImportDefaultSpecifie
 export function importNamespaceSpecifier(local: Identifier): ImportNamespaceSpecifier;
 export function importSpecifier(local: Identifier, imported: Identifier | StringLiteral): ImportSpecifier;
 export function metaProperty(meta: Identifier, property: Identifier): MetaProperty;
-export function classMethod(kind: "get" | "set" | "method" | "constructor" | undefined, key: Identifier | StringLiteral | NumericLiteral | Expression, params: Array<Identifier | Pattern | RestElement | TSParameterProperty>, body: BlockStatement, computed?: boolean, _static?: boolean, generator?: boolean, async?: boolean): ClassMethod;
+export function classMethod(kind: "get" | "set" | "method" | "constructor" | undefined, key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression, params: Array<Identifier | Pattern | RestElement | TSParameterProperty>, body: BlockStatement, computed?: boolean, _static?: boolean, generator?: boolean, async?: boolean): ClassMethod;
 export function objectPattern(properties: Array<RestElement | ObjectProperty>): ObjectPattern;
 export function spreadElement(argument: Expression): SpreadElement;
 declare function _super(): Super;
@@ -1816,9 +1848,10 @@ export function bigIntLiteral(value: string): BigIntLiteral;
 export function exportNamespaceSpecifier(exported: Identifier): ExportNamespaceSpecifier;
 export function optionalMemberExpression(object: Expression, property: Expression | Identifier, computed: boolean | undefined, optional: boolean): OptionalMemberExpression;
 export function optionalCallExpression(callee: Expression, _arguments: Array<Expression | SpreadElement | JSXNamespacedName | ArgumentPlaceholder>, optional: boolean): OptionalCallExpression;
-export function classProperty(key: Identifier | StringLiteral | NumericLiteral | Expression, value?: Expression | null, typeAnnotation?: TypeAnnotation | TSTypeAnnotation | Noop | null, decorators?: Array<Decorator> | null, computed?: boolean, _static?: boolean): ClassProperty;
-export function classPrivateProperty(key: PrivateName, value: Expression | null | undefined, decorators: Array<Decorator> | null | undefined, _static: any): ClassPrivateProperty;
-export function classPrivateMethod(kind: "get" | "set" | "method" | "constructor" | undefined, key: PrivateName, params: Array<Identifier | Pattern | RestElement | TSParameterProperty>, body: BlockStatement, _static?: boolean): ClassPrivateMethod;
+export function classProperty(key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression, value?: Expression | null, typeAnnotation?: TypeAnnotation | TSTypeAnnotation | Noop | null, decorators?: Array<Decorator> | null, computed?: boolean, _static?: boolean): ClassProperty;
+export function classAccessorProperty(key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression | PrivateName, value?: Expression | null, typeAnnotation?: TypeAnnotation | TSTypeAnnotation | Noop | null, decorators?: Array<Decorator> | null, computed?: boolean, _static?: boolean): ClassAccessorProperty;
+export function classPrivateProperty(key: PrivateName, value?: Expression | null, decorators?: Array<Decorator> | null, _static?: boolean): ClassPrivateProperty;
+export function classPrivateMethod(kind: "get" | "set" | "method" | undefined, key: PrivateName, params: Array<Identifier | Pattern | RestElement | TSParameterProperty>, body: BlockStatement, _static?: boolean): ClassPrivateMethod;
 export function privateName(id: Identifier): PrivateName;
 export function staticBlock(body: Array<Statement>): StaticBlock;
 export function anyTypeAnnotation(): AnyTypeAnnotation;
@@ -1852,7 +1885,7 @@ export function emptyTypeAnnotation(): EmptyTypeAnnotation;
 export function nullableTypeAnnotation(typeAnnotation: FlowType): NullableTypeAnnotation;
 export function numberLiteralTypeAnnotation(value: number): NumberLiteralTypeAnnotation;
 export function numberTypeAnnotation(): NumberTypeAnnotation;
-export function objectTypeAnnotation(properties: Array<ObjectTypeProperty | ObjectTypeSpreadProperty>, indexers?: Array<ObjectTypeIndexer> | null, callProperties?: Array<ObjectTypeCallProperty> | null, internalSlots?: Array<ObjectTypeInternalSlot> | null, exact?: boolean): ObjectTypeAnnotation;
+export function objectTypeAnnotation(properties: Array<ObjectTypeProperty | ObjectTypeSpreadProperty>, indexers?: Array<ObjectTypeIndexer>, callProperties?: Array<ObjectTypeCallProperty>, internalSlots?: Array<ObjectTypeInternalSlot>, exact?: boolean): ObjectTypeAnnotation;
 export function objectTypeInternalSlot(id: Identifier, value: FlowType, optional: boolean, _static: boolean, method: boolean): ObjectTypeInternalSlot;
 export function objectTypeCallProperty(value: FlowType): ObjectTypeCallProperty;
 export function objectTypeIndexer(id: Identifier | null | undefined, key: FlowType, value: FlowType, variance?: Variance | null): ObjectTypeIndexer;
@@ -1920,7 +1953,7 @@ export function pipelineBareFunction(callee: Expression): PipelineBareFunction;
 export function pipelinePrimaryTopicReference(): PipelinePrimaryTopicReference;
 export function tsParameterProperty(parameter: Identifier | AssignmentPattern): TSParameterProperty;
 export function tsDeclareFunction(id: Identifier | null | undefined, typeParameters: TSTypeParameterDeclaration | Noop | null | undefined, params: Array<Identifier | Pattern | RestElement>, returnType?: TSTypeAnnotation | Noop | null): TSDeclareFunction;
-export function tsDeclareMethod(decorators: Array<Decorator> | null | undefined, key: Identifier | StringLiteral | NumericLiteral | Expression, typeParameters: TSTypeParameterDeclaration | Noop | null | undefined, params: Array<Identifier | Pattern | RestElement | TSParameterProperty>, returnType?: TSTypeAnnotation | Noop | null): TSDeclareMethod;
+export function tsDeclareMethod(decorators: Array<Decorator> | null | undefined, key: Identifier | StringLiteral | NumericLiteral | BigIntLiteral | Expression, typeParameters: TSTypeParameterDeclaration | Noop | null | undefined, params: Array<Identifier | Pattern | RestElement | TSParameterProperty>, returnType?: TSTypeAnnotation | Noop | null): TSDeclareMethod;
 export function tsQualifiedName(left: TSEntityName, right: Identifier): TSQualifiedName;
 export function tsCallSignatureDeclaration(typeParameters: TSTypeParameterDeclaration | null | undefined, parameters: Array<Identifier | RestElement>, typeAnnotation?: TSTypeAnnotation | null): TSCallSignatureDeclaration;
 export function tsConstructSignatureDeclaration(typeParameters: TSTypeParameterDeclaration | null | undefined, parameters: Array<Identifier | RestElement>, typeAnnotation?: TSTypeAnnotation | null): TSConstructSignatureDeclaration;
@@ -1945,7 +1978,7 @@ export function tsFunctionType(typeParameters: TSTypeParameterDeclaration | null
 export function tsConstructorType(typeParameters: TSTypeParameterDeclaration | null | undefined, parameters: Array<Identifier | RestElement>, typeAnnotation?: TSTypeAnnotation | null): TSConstructorType;
 export function tsTypeReference(typeName: TSEntityName, typeParameters?: TSTypeParameterInstantiation | null): TSTypeReference;
 export function tsTypePredicate(parameterName: Identifier | TSThisType, typeAnnotation?: TSTypeAnnotation | null, asserts?: boolean | null): TSTypePredicate;
-export function tsTypeQuery(exprName: TSEntityName | TSImportType): TSTypeQuery;
+export function tsTypeQuery(exprName: TSEntityName | TSImportType, typeParameters?: TSTypeParameterInstantiation | null): TSTypeQuery;
 export function tsTypeLiteral(members: Array<TSTypeElement>): TSTypeLiteral;
 export function tsArrayType(elementType: TSType): TSArrayType;
 export function tsTupleType(elementTypes: Array<TSType | TSNamedTupleMember>): TSTupleType;
@@ -1960,11 +1993,12 @@ export function tsParenthesizedType(typeAnnotation: TSType): TSParenthesizedType
 export function tsTypeOperator(typeAnnotation: TSType): TSTypeOperator;
 export function tsIndexedAccessType(objectType: TSType, indexType: TSType): TSIndexedAccessType;
 export function tsMappedType(typeParameter: TSTypeParameter, typeAnnotation?: TSType | null, nameType?: TSType | null): TSMappedType;
-export function tsLiteralType(literal: NumericLiteral | StringLiteral | BooleanLiteral | BigIntLiteral | UnaryExpression): TSLiteralType;
+export function tsLiteralType(literal: NumericLiteral | StringLiteral | BooleanLiteral | BigIntLiteral | TemplateLiteral | UnaryExpression): TSLiteralType;
 export function tsExpressionWithTypeArguments(expression: TSEntityName, typeParameters?: TSTypeParameterInstantiation | null): TSExpressionWithTypeArguments;
 export function tsInterfaceDeclaration(id: Identifier, typeParameters: TSTypeParameterDeclaration | null | undefined, _extends: Array<TSExpressionWithTypeArguments> | null | undefined, body: TSInterfaceBody): TSInterfaceDeclaration;
 export function tsInterfaceBody(body: Array<TSTypeElement>): TSInterfaceBody;
 export function tsTypeAliasDeclaration(id: Identifier, typeParameters: TSTypeParameterDeclaration | null | undefined, typeAnnotation: TSType): TSTypeAliasDeclaration;
+export function tsInstantiationExpression(expression: Expression, typeParameters?: TSTypeParameterInstantiation | null): TSInstantiationExpression;
 export function tsAsExpression(expression: Expression, typeAnnotation: TSType): TSAsExpression;
 export function tsTypeAssertion(typeAnnotation: TSType, expression: Expression): TSTypeAssertion;
 export function tsEnumDeclaration(id: Identifier, members: Array<TSEnumMember>): TSEnumDeclaration;
@@ -1981,6 +2015,8 @@ export function tsTypeAnnotation(typeAnnotation: TSType): TSTypeAnnotation;
 export function tsTypeParameterInstantiation(params: Array<TSType>): TSTypeParameterInstantiation;
 export function tsTypeParameterDeclaration(params: Array<TSTypeParameter>): TSTypeParameterDeclaration;
 export function tsTypeParameter(constraint: TSType | null | undefined, _default: TSType | null | undefined, name: string): TSTypeParameter;
+export function isAccessor(node: object | null | undefined, opts?: object | null): node is Accessor;
+export function assertAccessor(node: object | null | undefined, opts?: object | null): void;
 export function isAnyTypeAnnotation(node: object | null | undefined, opts?: object | null): node is AnyTypeAnnotation;
 export function assertAnyTypeAnnotation(node: object | null | undefined, opts?: object | null): void;
 export function isArgumentPlaceholder(node: object | null | undefined, opts?: object | null): node is ArgumentPlaceholder;
@@ -2027,6 +2063,8 @@ export function isCatchClause(node: object | null | undefined, opts?: object | n
 export function assertCatchClause(node: object | null | undefined, opts?: object | null): void;
 export function isClass(node: object | null | undefined, opts?: object | null): node is Class;
 export function assertClass(node: object | null | undefined, opts?: object | null): void;
+export function isClassAccessorProperty(node: object | null | undefined, opts?: object | null): node is ClassAccessorProperty;
+export function assertClassAccessorProperty(node: object | null | undefined, opts?: object | null): void;
 export function isClassBody(node: object | null | undefined, opts?: object | null): node is ClassBody;
 export function assertClassBody(node: object | null | undefined, opts?: object | null): void;
 export function isClassDeclaration(node: object | null | undefined, opts?: object | null): node is ClassDeclaration;
@@ -2433,6 +2471,8 @@ export function isTSIndexedAccessType(node: object | null | undefined, opts?: ob
 export function assertTSIndexedAccessType(node: object | null | undefined, opts?: object | null): void;
 export function isTSInferType(node: object | null | undefined, opts?: object | null): node is TSInferType;
 export function assertTSInferType(node: object | null | undefined, opts?: object | null): void;
+export function isTSInstantiationExpression(node: object | null | undefined, opts?: object | null): node is TSInstantiationExpression;
+export function assertTSInstantiationExpression(node: object | null | undefined, opts?: object | null): void;
 export function isTSInterfaceBody(node: object | null | undefined, opts?: object | null): node is TSInterfaceBody;
 export function assertTSInterfaceBody(node: object | null | undefined, opts?: object | null): void;
 export function isTSInterfaceDeclaration(node: object | null | undefined, opts?: object | null): node is TSInterfaceDeclaration;
