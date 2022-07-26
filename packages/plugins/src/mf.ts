@@ -174,13 +174,16 @@ export default function mf(api: IApi) {
     const dir = opendirSync(exposesPath);
     for await (const dirent of dir) {
       if (dirent.isDirectory()) {
-        exposes['./' + dirent.name] = `./src/exposes/${dirent.name}`;
+        exposes['./' + dirent.name] = winPath(
+          join(api.paths.absSrcPath, 'exposes', dirent.name),
+        );
       } else {
         api.logger.warn(
           `${dirent.name} is not a directory, ignore in ModuleFederation expose`,
         );
       }
     }
+
     return exposes;
   }
 
