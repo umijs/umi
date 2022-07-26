@@ -16,6 +16,18 @@ import { Tabbed, Message } from 'umi';
 // .umirc.ts
 import { defineConfig } from '@umijs/max';
 
+// 
+const = shared: {
+    react: {
+        singleton: true,
+        eager: true,
+    },
+    'react-dom': {
+        singleton: true,
+        eager: true,
+    },
+};
+
 export default defineConfig({
     // 已经内置 Module Federation 插件, 直接开启配置即可
     mf: {
@@ -27,17 +39,11 @@ export default defineConfig({
                 entry: 'https://to.the.remote.com/remote.js',
             },
         ],
-        // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
-        // 注意这里的 name 必须和最终 MF 模块的 name 一致
-        library: { type: "window", name: "exportMFName" },
 
         // 配置 MF 共享的模块
-        shared: {
-            lodash: { eager: true }, 
-        }
+        shared,
     },
     mfsu: false, // 如何开启 mfsu 见下一节
-
 });
 ```
 
@@ -46,6 +52,17 @@ export default defineConfig({
 ```ts
 // .umirc.ts
 import { defineConfig } from 'umi';
+
+const = shared: {
+    react: {
+        singleton: true,
+        eager: true,
+    },
+    'react-dom': {
+        singleton: true,
+        eager: true,
+    },
+};
 
 export default defineConfig({
     plugins: [ '@umijs/plugins/dist/mf', ], // 引入插件
@@ -58,13 +75,9 @@ export default defineConfig({
                 entry: 'https://to.the.remote.com/remote.js',
             },
         ],
-        // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
-        // 注意这里的 name 必须和最终 MF 模块的 name 一致
-        library: { type: "window", name: "exportMFName" },
+
         // 配置 MF 共享的模块
-        shared: {
-            lodash: { eager: true }, 
-        },
+        shared,
     },
     mfsu: false, // 如何开启 mfsu 见下一节
 });
@@ -72,29 +85,6 @@ export default defineConfig({
 </Tabbed>
 
 在项目中就可以使用 `import XXX from 'mfNameAlias/XXXX'` 来使用远端模块的内容了。
-
-
-<Message emoji="🚨">
-注意：mf 插件默认配置了 `react` 和 `react-dom` 为 `shared`, 具体配置如下。
-</Message>
-
-```js
-{
-  shared: {
-    react: {
-      singleton: true,
-      eager: true,
-    },
-    'react-dom': {
-      singleton: true,
-      eager: true,
-    },
-  }
-}
-```
-
-如果你其他配置需要可以通过 `mf#shared` 字段配置。
-
 
 #### 运行时远端模块加载
 
@@ -104,9 +94,7 @@ export default defineConfig({
 // .umirc.ts
 defineConfig({
     mf: {
-        name: 'remoteMFName',
-        fieldName: 'name',
-        remotes:[
+        remotes: [
             {
                 name: 'theMfName',
                 keyResolver: `(function(){ 
@@ -123,7 +111,8 @@ defineConfig({
                 }
             },
 
-        ]
+        ],
+        shared,
     },
 })
 ```
@@ -140,17 +129,15 @@ defineConfig({
 ```ts
 // .umirc.ts
 defineConfig({
-    ...
     mf: {
         name: 'remoteMFName',
-        fieldName: 'name',
+
+        // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
+        // 注意这里的 name 必须和最终 MF 模块的 name 一致
+        // library: { type: "window", name: "exportMFName" },
     },
-    ...
 })
 ```
-
-- 优先使用 `mf#name` 作为 MF 模块的名称
-- `mf#name` 未配置的情况下，则通过 `mf#fieldName` 字段名，取 `package.json` 中的值
 
 <Message emoji="🚨">
 配置的模块名必须为一个合法的 Javascript 变量名！
@@ -185,6 +172,17 @@ src/exposes/
 假设我们采用了如下 mf 插件的配置
 ```ts
 // .umirc.ts
+const = shared: {
+    react: {
+        singleton: true,
+        eager: true,
+    },
+    'react-dom': {
+        singleton: true,
+        eager: true,
+    },
+};
+
 export default defineConfig({
     mf: {
         name: 'myMFName',
@@ -199,9 +197,7 @@ export default defineConfig({
                 entry: 'https://to.the.remote.com/remote2.js',
             },      
         ]
-        shared: {
-            lodash: {eager: true}, 
-        }
+        shared,
     }
 });
 ```
@@ -222,20 +218,7 @@ export default defineConfig({
         remoteAliases: [ 'remote1'，'aliasRemote'],
 
         // 需要和 mf 插件的值保证统一
-        shared: {
-            // mf 插件显示配置的 shared
-            lodash: { eager: true }, 
-
-            // mf 插件默认的 shared 配置
-            react: {
-                singleton: true,
-                eager: true,
-            },
-            'react-dom': {
-                singleton: true,
-                eager: true,
-            }, 
-        },
+        shared, 
     }
 });
 ```
