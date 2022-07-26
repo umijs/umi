@@ -93,7 +93,7 @@ import Page from '@/extraRoutes/foo';
 export function patchClientRoutes({ routes }) {
   routes.unshift({
     path: '/foo',
-    component: <Page />
+    element: <Page />
   });
 }
 ```
@@ -109,7 +109,7 @@ export function patchClientRoutes({ routes }) {
 }
 
 export function render(oldRender) {
-  fetch('/api/routes').then(res=>res.json()).then((res) => {
+  fetch('/api/routes').then(res => res.json()).then((res) => {
     extraRoutes = res.routes;
     oldRender();
   })
