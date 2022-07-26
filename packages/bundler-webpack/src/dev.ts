@@ -30,9 +30,6 @@ type IOpts = {
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
   srcCodeCache?: any;
-  MFShared?: any;
-  MFRemoteAliases?: any;
-  MFRemoteName?: string;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
@@ -73,9 +70,9 @@ export async function dev(opts: IOpts) {
         opts.config.mfsu?.cacheDirectory || join(cacheDirectoryPath, 'mfsu'),
       onMFSUProgress: opts.onMFSUProgress,
       unMatchLibs: opts.config.mfsu?.exclude,
-      shared: opts.MFShared,
-      remoteAliases: opts.MFRemoteAliases,
-      remoteName: opts.MFRemoteName,
+      shared: opts.config.mfsu?.shared,
+      remoteAliases: opts.config.mfsu?.remoteAliases,
+      remoteName: opts.config.mfsu?.remoteName,
       getCacheDependency() {
         return stripUndefined({
           version: require('../package.json').version,
