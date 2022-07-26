@@ -16,6 +16,7 @@ export type { Server as SpdyServer } from 'spdy';
 export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
   // Check if mkcert is installed
   try {
+    // use mkcert -help instead of mkcert --version for checking if mkcert is installed, cause mkcert --version does not exists in Linux
     await execa.execa('mkcert', ['-help']);
   } catch (e) {
     logger.error('[HTTPS] The mkcert has not been installed.');
