@@ -15,7 +15,6 @@ export default function mf(api: IApi) {
       schema(Joi) {
         return Joi.object({
           name: Joi.string(),
-          fieldName: Joi.string().default('name'),
           remotes: Joi.array().items(
             Joi.object({
               aliasName: Joi.string(),
@@ -35,7 +34,7 @@ export default function mf(api: IApi) {
   api.modifyWebpackConfig(async (config, { webpack }) => {
     const exposes = await constructExposes();
     const remotes = formatRemotes();
-    const shared = mergeSharedConfig();
+    const shared = getShared();
 
     // @ts-ignore
     if (isEmpty(remotes) && isEmpty(exposes)) {
@@ -189,34 +188,20 @@ export default function mf(api: IApi) {
   }
 
   function mfName() {
-    const field = api.config.mf.nameField || 'name';
+    const name = api.config.mf.name;
 
-    if (api.config.mf.name) {
-      return api.config.mf.name;
-    }
-
-    if (!api.pkg[field]) {
+    if (!name) {
       api.logger.warn(
-        `module federation name is not defined in package.json field: "${field}", "unNamedMF" will be used`,
+        `module federation name is not defined , "unNamedMF" will be used`,
       );
     }
 
-    return api.pkg[field] || 'unNamedMF';
+    return name || 'unNamedMF';
   }
 
-  function mergeSharedConfig() {
+  function getShared() {
     const { shared = {} } = api.config.mf;
-    return {
-      react: {
-        singleton: true,
-        eager: true,
-      },
-      'react-dom': {
-        singleton: true,
-        eager: true,
-      },
-      ...shared,
-    };
+    return shared;
   }
 
   function changeUmiEntry(config: any) {
