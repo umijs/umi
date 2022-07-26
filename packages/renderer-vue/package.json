@@ -21,7 +21,7 @@
     "dev": "pnpm father dev"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.9"
+    "@babel/runtime": "7.18.9"
   },
   "peerDependencies": {
     "vue": ">=3.2.31",
