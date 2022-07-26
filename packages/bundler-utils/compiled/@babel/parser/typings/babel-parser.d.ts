@@ -89,6 +89,13 @@ export interface ParserOptions {
   startLine?: number;
 
   /**
+   * By default, the parsed code is treated as if it starts from line 1, column 0.
+   * You can provide a column number to alternatively start with.
+   * Useful for integration with other source tools.
+   */
+  startColumn?: number;
+
+  /**
    * Array containing the plugins that you want to enable.
    */
   plugins?: ParserPlugin[];
@@ -129,6 +136,8 @@ export type ParserPlugin =
   | "decimal"
   | "decorators"
   | "decorators-legacy"
+  | "decoratorAutoAccessors"
+  | "destructuringPrivate"
   | "doExpressions"
   | "dynamicImport"
   | "estree"
@@ -153,6 +162,7 @@ export type ParserPlugin =
   | "pipelineOperator"
   | "placeholders"
   | "privateIn" // Enabled by default
+  | "regexpUnicodeSets"
   | "throwExpressions"
   | "topLevelAwait"
   | "typescript"
@@ -172,7 +182,7 @@ export interface DecoratorsPluginOptions {
 
 export interface PipelineOperatorPluginOptions {
   proposal: "minimal" | "fsharp" | "hack" | "smart";
-  topicToken?: "%" | "#";
+  topicToken?: "%" | "#" | "@@" | "^^" | "^";
 }
 
 export interface RecordAndTuplePluginOptions {
@@ -181,6 +191,7 @@ export interface RecordAndTuplePluginOptions {
 
 export interface FlowPluginOptions {
   all?: boolean;
+  enums?: boolean;
 }
 
 export interface TypeScriptPluginOptions {

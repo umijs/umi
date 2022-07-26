@@ -1,6 +1,6 @@
 {
   "name": "@umijs/renderer-react",
-  "version": "4.0.0-canary.20220720.1",
+  "version": "4.0.8",
   "description": "@umijs/renderer-react",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-react#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -16,13 +16,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev",
+    "dev": "umi-scripts father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.9",
+    "@babel/runtime": "7.18.9",
     "@loadable/component": "5.15.2",
     "history": "5.3.0",
     "react-router-dom": "6.3.0"

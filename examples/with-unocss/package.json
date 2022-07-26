@@ -7,9 +7,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20220720.1",
+    "@umijs/plugins": "4.0.8",
     "@unocss/cli": "^0.33.0",
-    "umi": "4.0.0-canary.20220720.1",
+    "umi": "4.0.8",
     "unocss": "^0.34.1"
   }
 }

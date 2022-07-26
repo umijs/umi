@@ -46,15 +46,18 @@ export default (api: IApi) => {
   api.describe({
     key: 'locale',
     config: {
-      schema(joi) {
-        return joi.object({
-          default: joi.string(),
-          useLocalStorage: joi.boolean(),
-          baseNavigator: joi.boolean(),
-          title: joi.boolean(),
-          antd: joi.boolean(),
-          baseSeparator: joi.string(),
-        });
+      schema(Joi) {
+        return Joi.alternatives().try(
+          Joi.object({
+            default: Joi.string(),
+            useLocalStorage: Joi.boolean(),
+            baseNavigator: Joi.boolean(),
+            title: Joi.boolean(),
+            antd: Joi.boolean(),
+            baseSeparator: Joi.string(),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,

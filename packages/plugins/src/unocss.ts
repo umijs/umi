@@ -9,9 +9,12 @@ export default (api: IApi) => {
     key: 'unocss',
     config: {
       schema(Joi) {
-        return Joi.object({
-          watch: Joi.array(),
-        });
+        return Joi.alternatives().try(
+          Joi.object({
+            watch: Joi.array(),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,

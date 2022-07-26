@@ -134,8 +134,8 @@ umi build --clean
       // @ts-ignore
       const markup = await getMarkup({
         ...markupArgs,
-        styles: (api.config.vite ? [] : assetsMap['umi.css'] || []).concat(
-          markupArgs.styles,
+        styles: markupArgs.styles.concat(
+          api.config.vite ? [] : assetsMap['umi.css'] || [],
         ),
         scripts: (api.config.vite ? [] : assetsMap['umi.js'] || []).concat(
           markupArgs.scripts,

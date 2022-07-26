@@ -50,6 +50,8 @@ export default (api: IApi) => {
     // .vue 文件会被解析成 template 和 script 两个产物但是对应的 filename babel 识别成同一个, 导致 MFSU 解析时 如果 template 先解析 script 会被当做缓存不在被解析
     // 解法是 当判断 filename 后缀是 .vue 时 补齐 resourceQuery 这样缓存会是两份
     memo.babelLoaderCustomize = require.resolve('./vueBabelLoaderCustomize');
+    // vue do not need svgr
+    memo.svgr = false;
     return memo;
   });
 
