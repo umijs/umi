@@ -57,11 +57,11 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     checkPkgPath();
 
-    const antd = memo.antd || {};
+    let antd = memo.antd || {};
     // defaultConfig 的取值在 config 之后，所以改用环境变量传默认值
     if (process.env.UMI_PLUGIN_ANTD_ENABLE) {
       const { defaultConfig } = JSON.parse(process.env.UMI_PLUGIN_ANTD_ENABLE);
-      Object.assign(antd, defaultConfig);
+      antd = Object.assign(defaultConfig, antd);
     }
 
     // antd import
