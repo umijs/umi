@@ -5,9 +5,12 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema(Joi) {
-        return Joi.object({
-          loading: Joi.string(),
-        });
+        return Joi.alternatives().try(
+          Joi.object({
+            loading: Joi.string(),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,

@@ -12,10 +12,13 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema(Joi) {
-        return Joi.object({
-          extraModels: Joi.array().items(Joi.string()),
-          immer: Joi.object(),
-        });
+        return Joi.alternatives().try(
+          Joi.object({
+            extraModels: Joi.array().items(Joi.string()),
+            immer: Joi.object(),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,
