@@ -22,7 +22,6 @@
     "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
     "dev": "umi-scripts father dev",
-    "postinstall": "node scripts/linkDeps.js",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
