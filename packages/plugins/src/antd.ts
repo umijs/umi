@@ -18,16 +18,19 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema(Joi) {
-        return Joi.object({
-          configProvider: Joi.object(),
-          // themes
-          dark: Joi.boolean(),
-          compact: Joi.boolean(),
-          // babel-plugin-import
-          import: Joi.boolean(),
-          // less or css, default less
-          style: Joi.string().allow('less', 'css'),
-        });
+        return Joi.alternatives().try(
+          Joi.object({
+            configProvider: Joi.object(),
+            // themes
+            dark: Joi.boolean(),
+            compact: Joi.boolean(),
+            // babel-plugin-import
+            import: Joi.boolean(),
+            // less or css, default less
+            style: Joi.string().allow('less', 'css'),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy({ userConfig }) {
@@ -57,11 +60,11 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     checkPkgPath();
 
-    const antd = memo.antd || {};
+    let antd = memo.antd || {};
     // defaultConfig 的取值在 config 之后，所以改用环境变量传默认值
     if (process.env.UMI_PLUGIN_ANTD_ENABLE) {
       const { defaultConfig } = JSON.parse(process.env.UMI_PLUGIN_ANTD_ENABLE);
-      Object.assign(antd, defaultConfig);
+      antd = Object.assign(defaultConfig, antd);
     }
 
     // antd import

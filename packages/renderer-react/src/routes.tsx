@@ -41,7 +41,7 @@ function NavigateWithParams(props: { to: string }) {
     ...props,
     to: generatePath(props.to, params),
   };
-  return <Navigate {...propsWithParams} />;
+  return <Navigate replace={true} {...propsWithParams} />;
 }
 
 function createClientRoute(opts: {

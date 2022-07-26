@@ -16,8 +16,7 @@
   },
   "files": [
     "compiled",
-    "dist",
-    "scripts"
+    "dist"
   ],
   "scripts": {
     "build": "umi-scripts father build",
