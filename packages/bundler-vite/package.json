@@ -16,14 +16,12 @@
   },
   "files": [
     "compiled",
-    "dist",
-    "scripts"
+    "dist"
   ],
   "scripts": {
     "build": "pnpm father build",
     "build:deps": "umi-scripts bundleDeps",
     "dev": "pnpm father dev",
-    "postinstall": "node scripts/linkDeps.js",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
