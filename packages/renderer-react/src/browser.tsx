@@ -216,7 +216,9 @@ export function renderClient(opts: {
     ReactDOM.hydrateRoot(rootElement, <Browser />);
   } else {
     if (ReactDOM.createRoot) {
-      ReactDOM.createRoot(rootElement).render(<Browser />);
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(<Browser />);
+      return root;
     } else {
       // @ts-ignore
       ReactDOM.render(<Browser />, rootElement);

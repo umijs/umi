@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { getPluginManager } from '@@/core/plugin';
-import ReactDOM from 'react-dom';
+import ReactDOM, { Root } from 'react-dom';
 import { ApplyPluginsType } from 'umi';
 import { setModelState } from './qiankunModel';
 
@@ -147,13 +147,19 @@ export function genUpdate() {
   };
 }
 
-export function genUnmount(mountElementId: string) {
+export function genUnmount(
+  mountElementId: string,
+  config: {
+    client: Root;
+  },
+) {
   return async (props: any) => {
+    const { client } = config;
     const container = props?.container
       ? props.container.querySelector(`#${mountElementId}`)
       : document.getElementById(mountElementId);
     if (container) {
-      ReactDOM.unmountComponentAtNode(container);
+      client ? client.unmount() : ReactDOM.unmountComponentAtNode(container);
     }
     const slaveRuntime = await getSlaveRuntime();
     if (slaveRuntime.unmount) await slaveRuntime.unmount(props);

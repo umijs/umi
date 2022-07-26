@@ -9,9 +9,11 @@ import Loading from '@/loading';
 {{/loadingComponent}}
 import { ApplyPluginsType } from 'umi';
 {{{ imports }}}
-
-const publicPath = "{{{ publicPath }}}";
-const runtimePublicPath = {{{ runtimePublicPath }}};
+const config = {
+  publicPath: "{{{ publicPath }}}",
+  runtimePublicPath: {{{ runtimePublicPath }}},
+  client: null
+}
 
 async function render() {
   const pluginManager = createPluginManager();
@@ -48,8 +50,8 @@ async function render() {
 {{#loadingComponent}}
         loadingComponent: Loading,
 {{/loadingComponent}}
-        publicPath,
-        runtimePublicPath,
+        publicPath: config.publicPath,
+        runtimePublicPath: config.runtimePublicPath,
         history: createHistory({
           type: contextOpts.historyType || '{{{ historyType }}}',
           basename,
@@ -57,7 +59,8 @@ async function render() {
         }),
         basename,
       };
-      return renderClient(context);
+      config.client = renderClient(context);
+      return config.client;
     },
   }))();
 }
