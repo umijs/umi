@@ -16,7 +16,7 @@ import { Tabbed, Message } from 'umi';
 // .umirc.ts
 import { defineConfig } from '@umijs/max';
 
-// 
+// 提取变量是为了和 MFSU 配合使用保持配置一致
 const = shared: {
     react: {
         singleton: true,
@@ -53,6 +53,7 @@ export default defineConfig({
 // .umirc.ts
 import { defineConfig } from 'umi';
 
+// 提取变量是为了和 MFSU 配合使用保持配置一致
 const = shared: {
     react: {
         singleton: true,
@@ -128,9 +129,12 @@ defineConfig({
 
 ```ts
 // .umirc.ts
+// 提取变量是为了和 MFSU 配合使用保持配置一致
+const remoteMFName = 'remoteMFName';
+
 defineConfig({
     mf: {
-        name: 'remoteMFName',
+        name: remoteMFName,
 
         // 可选，远端模块库类型, 如果模块需要在乾坤子应用中使用建议配置示例的值，
         // 注意这里的 name 必须和最终 MF 模块的 name 一致
@@ -182,10 +186,11 @@ const = shared: {
         eager: true,
     },
 };
+const remoteMFName = 'remoteMFName';
 
 export default defineConfig({
     mf: {
-        name: 'myMFName',
+        name: remoteMFName,
         remotes:[
             {
                 name: 'remote1',
@@ -212,7 +217,7 @@ export default defineConfig({
         mfName: 'mfsu_global_uniq_name',
 
         // 本项目导出的 MF 模块的名称
-        remoteName: "myMFName",
+        remoteName: remoteMFName,
 
         // 所有在项目中使用的 MF 模块的名称 
         remoteAliases: [ 'remote1'，'aliasRemote'],
