@@ -98,6 +98,7 @@ async function executePlugin(mfConfig: any) {
     },
     paths: {
       absSrcPath: '/project/src',
+      absTmpPath: '/project/src/.umi',
     },
     config: {
       mf: mfConfig,
