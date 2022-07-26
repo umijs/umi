@@ -1,12 +1,12 @@
-// @ts-ignore
-import { lodash, winPath } from '@umijs/utils';
 import { existsSync, opendirSync } from 'fs';
 import { join } from 'path';
 import type { IApi } from 'umi';
+import { lodash, winPath } from 'umi/plugin-utils';
 
 const { isEmpty } = lodash;
 
 const mfSetupPathFileName = '_mf_setup-public-path.js';
+const mfAsyncEntryFileName = 'asyncEntry.ts';
 
 export default function mf(api: IApi) {
   api.describe({
@@ -24,6 +24,7 @@ export default function mf(api: IApi) {
               keyResolver: Joi.string(),
             }),
           ),
+          shared: Joi.object(),
           library: Joi.object(),
         });
       },
@@ -45,7 +46,7 @@ export default function mf(api: IApi) {
     }
 
     if (!isEmpty(remotes)) {
-      if (!(api.env === 'development' && api.config.mfsu)) {
+      if (!api.config.mfsu) {
         changeUmiEntry(config);
       }
     }
@@ -97,9 +98,8 @@ export default function mf(api: IApi) {
     }
 
     api.writeTmpFile({
-      noPluginDir: true,
       content: `import('${winPath(join(api.paths.absTmpPath, 'umi.ts'))}')`,
-      path: 'asyncEntry.ts',
+      path: mfAsyncEntryFileName,
     });
   });
 
@@ -204,14 +204,18 @@ export default function mf(api: IApi) {
   function changeUmiEntry(config: any) {
     const { entry } = config;
 
+    const asyncEntryPath = winPath(
+      join(api.paths.absTmpPath, 'plugin-mf', mfAsyncEntryFileName),
+    );
+
     if (entry.umi) {
       if (typeof entry.umi === 'string') {
-        entry.umi = winPath(join(api.paths.absTmpPath, 'asyncEntry.ts'));
+        entry.umi = asyncEntryPath;
       } else if (Array.isArray(entry.umi)) {
         const i = entry.umi.findIndex((f: string) => f.endsWith('umi.ts'));
 
         if (i >= 0) {
-          entry.umi[i] = winPath(join(api.paths.absTmpPath, 'asyncEntry.ts'));
+          entry.umi[i] = asyncEntryPath;
         } else {
           api.logger.info(
             `umi.ts not found in entry.umi ${JSON.stringify(entry.umi)}`,
