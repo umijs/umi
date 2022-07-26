@@ -97,5 +97,6 @@ export default {
       content: 'umijs',
     },
   ],
+  styles: ['//cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css'],
   ...extraConfig,
 };
