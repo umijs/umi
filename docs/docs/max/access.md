@@ -49,6 +49,21 @@ export const routes = [
 ];
 ```
 
+### 自定义权限页面配置
+
+上面说到默认渲染 Layout 插件内置的权限错误页面，如果想配置自定义权限页面需要在 `src/app.tsx` 中定义。
+
+```ts
+export const layout: RunTimeLayoutConfig = () => {
+  return {
+    // 自定义 403 页面
+    noAccessible: <div>'noAccessible'</div>,
+    // 自定义 404 页面
+    notFound: <div>'notFound'</div>,
+  };
+};
+```
+
 #### access
 
 - Type: `string`
