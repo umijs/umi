@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { getPluginManager } from '@@/core/plugin';
 import ReactDOM from 'react-dom';
-import { ApplyPluginsType } from 'umi';
+import { ApplyPluginsType, getRoot } from 'umi';
 import { setModelState } from './qiankunModel';
 
 const noop = () => {};
@@ -149,12 +149,20 @@ export function genUpdate() {
 
 export function genUnmount(mountElementId: string) {
   return async (props: any) => {
-    const container = props?.container
-      ? props.container.querySelector(`#${mountElementId}`)
-      : document.getElementById(mountElementId);
-    if (container) {
-      ReactDOM.unmountComponentAtNode(container);
+    const root = getRoot();
+
+    // support react 18 unmount
+    if (typeof root?.unmount === 'function') {
+      root.unmount();
+    } else {
+      const container = props?.container
+        ? props.container.querySelector(`#${mountElementId}`)
+        : document.getElementById(mountElementId);
+      if (container) {
+        ReactDOM.unmountComponentAtNode(container);
+      }
     }
+
     const slaveRuntime = await getSlaveRuntime();
     if (slaveRuntime.unmount) await slaveRuntime.unmount(props);
   };

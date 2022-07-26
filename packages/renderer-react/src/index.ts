@@ -27,7 +27,7 @@ export {
   useClientLoaderData,
   useServerLoaderData,
 } from './appContext';
-export { renderClient } from './browser';
+export { getRoot, renderClient } from './browser';
 export { LinkWithPrefetch as Link } from './link';
 export { useRouteData } from './routeContext';
 export { __useFetcher } from './useFetcher';
