@@ -10,8 +10,11 @@ export default (api: IApi) => {
   api.describe({
     key: 'analytics',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema(Joi) {
+        return Joi.alternatives().try(
+          Joi.object(),
+          Joi.boolean().invalid(true),
+        );
       },
       onChange: api.ConfigChangeType.reload,
     },

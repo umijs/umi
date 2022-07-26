@@ -16,15 +16,15 @@
     "libs"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev",
+    "dev": "umi-scripts father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
     "@ahooksjs/use-request": "^2.0.0",
     "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-layout": "^7.0.1-beta.20",
+    "@ant-design/pro-layout": "^7.0.1-beta.28",
     "@umijs/bundler-utils": "4.0.8",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",

@@ -16,13 +16,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev"
+    "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/core": "7.17.9",
-    "@babel/eslint-parser": "7.17.0",
+    "@babel/core": "7.18.9",
+    "@babel/eslint-parser": "7.18.9",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@typescript-eslint/eslint-plugin": "5.27.1",
     "@typescript-eslint/parser": "5.27.1",

@@ -46,6 +46,8 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // react 独有配置需要禁用
     memo.fastRefresh = false;
+    // vue do not need svgr
+    memo.svgr = false;
     return memo;
   });
 

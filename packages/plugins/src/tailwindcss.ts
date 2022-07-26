@@ -7,7 +7,10 @@ export default (api: IApi) => {
     key: 'tailwindcss',
     config: {
       schema(Joi) {
-        return Joi.object();
+        return Joi.alternatives().try(
+          Joi.object(),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,

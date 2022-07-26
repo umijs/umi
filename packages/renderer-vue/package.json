@@ -16,12 +16,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev"
+    "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.9"
+    "@babel/runtime": "7.18.9"
   },
   "peerDependencies": {
     "vue": ">=3.2.31",

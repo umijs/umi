@@ -9,8 +9,11 @@ export default (api: IApi) => {
   api.describe({
     key: 'layout',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema(Joi) {
+        return Joi.alternatives().try(
+          Joi.object(),
+          Joi.boolean().invalid(true),
+        );
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
@@ -277,8 +280,8 @@ const { formatMessage } = useIntl();
       initData: InitDataType,
     ) => ProLayoutProps & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
-      unAccessible?: JSX.Element,
-      noFound?: JSX.Element,
+      noAccessible?: JSX.Element,
+      notFound?: JSX.Element,
     };
     `,
     });
