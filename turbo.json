@@ -19,6 +19,7 @@
   "globalDependencies": [
     "tsconfig.base.json",
     "tsconfig.json",
-    "jest.config.ts"
+    "jest.config.ts",
+    ".father.base.ts"
   ]
 }

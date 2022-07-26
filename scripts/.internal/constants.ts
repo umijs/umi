@@ -11,7 +11,7 @@ export const PATHS = {
 
 export const SCRIPTS = {
   BUNDLE_DEPS: 'umi-scripts bundleDeps',
-  DEV: 'pnpm build --watch',
-  BUILD: 'pnpm tsc',
+  DEV: 'umi-scripts father dev',
+  BUILD: 'umi-scripts father build',
   TEST_TURBO: 'umi-scripts jest-turbo',
 } as const;
