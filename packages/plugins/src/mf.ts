@@ -6,7 +6,7 @@ import type { IApi } from 'umi';
 
 const { isEmpty } = lodash;
 
-const mfSetupModuleVirtualPath = '_mf_setup-public-path.js';
+const mfSetupPathFileName = '_mf_setup-public-path.js';
 
 export default function mf(api: IApi) {
   api.describe({
@@ -58,7 +58,7 @@ export default function mf(api: IApi) {
       addMFEntry(
         config,
         name,
-        join(api.paths.absTmpPath, 'plugin-mf', mfSetupModuleVirtualPath),
+        join(api.paths.absTmpPath, 'plugin-mf', mfSetupPathFileName),
       );
     }
 
@@ -85,9 +85,10 @@ export default function mf(api: IApi) {
 
   api.onGenerateFiles(() => {
     api.writeTmpFile({
+      // ref https://webpack.js.org/concepts/module-federation/#infer-publicpath-from-script
       content: `/* infer remote public */;
       __webpack_public_path__ = document.currentScript.src + '/../';`,
-      path: mfSetupModuleVirtualPath,
+      path: mfSetupPathFileName,
     });
 
     if (api.env === 'development' && api.config.mfsu) {
@@ -124,12 +125,8 @@ export default function mf(api: IApi) {
   }
 
   function formatRemote(remote: any): string {
-    const url = remote.entry;
-
-    const mfUrl = `${remote.name}@${url}`;
-
     if (remote.entry) {
-      return mfUrl;
+      return `${remote.name}@${remote.entry}`;
     }
 
     if (remote.entries && remote.keyResolver) {
