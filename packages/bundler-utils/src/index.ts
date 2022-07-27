@@ -1,4 +1,4 @@
-import { codeFrameColumns } from '@umijs/bundler-utils/compiled/@babel/code-frame';
+import { codeFrameColumns } from '@umijs/bundler-utils/compiled/babel/code-frame';
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
 import { winPath } from '@umijs/utils';
