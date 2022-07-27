@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { getPluginManager } from '@@/core/plugin';
 import ReactDOM from 'react-dom';
-import { ApplyPluginsType, _getRoot } from 'umi';
+import { ApplyPluginsType, __getRoot } from 'umi';
 import { setModelState } from './qiankunModel';
 
 const noop = () => {};
@@ -149,7 +149,7 @@ export function genUpdate() {
 
 export function genUnmount(mountElementId: string) {
   return async (props: any) => {
-    const root = _getRoot();
+    const root = __getRoot();
 
     // support react 18 unmount
     if (typeof root?.unmount === 'function') {
