@@ -56,7 +56,6 @@ jobs:
 
       - name: example-max-e2e
         uses: cypress-io/github-action@v4
-        if: matrix.os == 'ubuntu-latest'
         with:
           start: pnpm run preview
           wait-on: 'http://127.0.0.1:9527'
@@ -66,21 +65,6 @@ jobs:
           record: true
           install-command: pnpm i cypress
         env:
-          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 9527
-      - name: example-max-e2e-windows
-        uses: cypress-io/github-action@v4
-        if: matrix.os == 'windows-latest'
-        with:
-          start: pnpm run preview
-          wait-on: 'http://127.0.0.1:9527'
-          browser: chrome
-          working-directory: ./examples/max
-          install: false
-          record: true
-          install-command: pnpm i cypress
-        env:
-          cypress_key: ${{secrets.CYPRESS_KEY}}
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
 
