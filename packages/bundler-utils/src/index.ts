@@ -52,7 +52,7 @@ function prettyPrintEsBuildErrors(
   errors: Errors = [],
   opts: { content: string; path: string },
 ) {
-  for (let error of errors) {
+  for (const error of errors) {
     if (error.location?.line && error.location?.column) {
       // @ts-ignore
       const message = codeFrameColumns(
