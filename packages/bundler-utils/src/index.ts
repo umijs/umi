@@ -41,7 +41,7 @@ export * from './https';
 export * from './types';
 
 type Errors = {
-  location: {
+  location?: {
     line: number;
     column: number;
   };
