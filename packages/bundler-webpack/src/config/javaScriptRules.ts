@@ -122,6 +122,8 @@ export async function addJavaScriptRules(opts: IOpts) {
           //   ? join(cwd, `.umi/.cache/babel-loader`)
           //   : false,
           targets: userConfig.targets,
+          // 解决 vue MFSU 解析 需要
+          customize: userConfig.babelLoaderCustomize,
           presets: [
             opts.babelPreset || [
               require.resolve('@umijs/babel-preset-umi'),
