@@ -17,4 +17,9 @@ export function dev() {
     child.kill('SIGTERM');
     process.exit(1);
   });
+  
+  // Synchronize exit code to process
+  child.on('exit', (code) => {
+    process.env.UMI_EXIT_CODE = !code ? undefined : String(code);
+  });
 }
