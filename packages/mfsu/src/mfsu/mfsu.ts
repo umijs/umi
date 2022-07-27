@@ -140,6 +140,7 @@ export class MFSU {
       `webpack config 'entry' value must be a string or an object.`,
     );
     for (const key of Object.keys(entryObject)) {
+      // 如果是项目导出的远端模块 不需要处理成动态加载的模块 以避免加载错误
       if (key === this.opts.remoteName) {
         entry[key] = entryObject[key];
         continue;
@@ -239,7 +240,7 @@ promise new Promise(resolve => {
                 `.trimLeft()
               : `${mfName}@${
                   this.opts.serverBase || ''
-                }${publicPath}${REMOTE_FILE_FULL}`,
+                }${publicPath}${REMOTE_FILE_FULL}`, // mfsu 的入口文件会被在其他的站点上被引用, 所以需要显式的指明 serverBase
           },
         }),
         new BuildDepPlugin(this.strategy.getBuildDepPlugConfig()),

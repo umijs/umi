@@ -145,6 +145,8 @@ export class DepBuilder {
     depConfig.optimization ||= {};
     depConfig.optimization.splitChunks = {
       chunks: (chunk) => {
+        // mf 插件中的 chunk 的加载并不感知到 mfsu 做了 chunk 的合并, 所以还是用原来的 chunk 名去加载
+        // 这样就会造成 chunk 加载不到的问题; 因此将 mf shared 相关的 chunk 不进行合并
         const hasShared = chunk.getModules().some((m) => {
           return (
             m.type === 'consume-shared-module' ||
