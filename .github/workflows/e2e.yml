@@ -60,13 +60,12 @@ jobs:
         with:
           start: pnpm run preview
           wait-on: 'http://127.0.0.1:9527'
-          command: pnpm run e2e --record --key ${cypress_key}
           browser: chrome
           working-directory: ./examples/max
           install: false
           install-command: pnpm i cypress
         env:
-          cypress_key: ${{secrets.CYPRESS_KEY}}
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
       - name: example-max-e2e-windows
         uses: cypress-io/github-action@v4
