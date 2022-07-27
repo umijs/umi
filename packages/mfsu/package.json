@@ -27,6 +27,7 @@
     "@umijs/bundler-utils": "4.0.8",
     "@umijs/utils": "4.0.8",
     "enhanced-resolve": "5.9.3",
+    "is-absolute-url": "^3.0.3",
     "is-equal": "^1.6.4"
   },
   "devDependencies": {
