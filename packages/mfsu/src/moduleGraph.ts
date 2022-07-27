@@ -34,13 +34,20 @@ export class ModuleGraph {
     depModules: any;
     depSnapshotModules: any;
   }) {
-    let fileMap = new Map<string, boolean>();
-    const addNode = ({ file, importer }: any) => {
-      // fix circular dependency
-      if (fileMap.has(file)) return;
-      fileMap.set(file, true);
+    const getModuleNode = (file: string) => {
+      if (this.fileToModules.has(file)) {
+        return this.fileToModules.get(file)!;
+      }
 
       const mod = new ModuleNode(file);
+      this.fileToModules.set(file, mod);
+
+      return mod;
+    };
+
+    const addNode = ({ file, importer }: any) => {
+      const mod = getModuleNode(file);
+
       let isDependency = false;
       let info;
       if (data.fileModules[file]) {
@@ -52,7 +59,12 @@ export class ModuleGraph {
       if (info.isRoot) mod.isRoot = true;
       if (importer) {
         mod.importers.add(importer);
-        importer.importedModules.add(mod);
+
+        if (!importer.importedModules.has(mod)) {
+          importer.importedModules.add(mod);
+        } else {
+          return;
+        }
       }
       mod.isDependency = isDependency;
       if (info.version !== undefined) {
@@ -64,7 +76,6 @@ export class ModuleGraph {
         for (const importedModule of info.importedModules) {
           addNode({ file: importedModule, importer: mod });
         }
-        this.fileToModules.set(file, mod);
       }
     };
     for (const root of data.roots) {
