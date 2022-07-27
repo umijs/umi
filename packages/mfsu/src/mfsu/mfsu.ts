@@ -7,9 +7,9 @@ import type {
 import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
-import isAbsoluteUrl from 'is-absolute-url';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
+import isAbsoluteUrl from '../../compiled/is-absolute-url';
 import { lookup } from '../../compiled/mrmime';
 // @ts-ignore
 import WebpackVirtualModules from '../../compiled/webpack-virtual-modules';

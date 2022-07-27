@@ -27,10 +27,10 @@
     "@umijs/bundler-utils": "4.0.8",
     "@umijs/utils": "4.0.8",
     "enhanced-resolve": "5.9.3",
-    "is-absolute-url": "^3.0.3",
     "is-equal": "^1.6.4"
   },
   "devDependencies": {
+    "is-absolute-url": "^3.0.3",
     "mrmime": "1.0.0",
     "webpack": "5.72.1",
     "webpack-virtual-modules": "0.4.3"
@@ -43,6 +43,7 @@
   ],
   "compiledConfig": {
     "deps": [
+      "is-absolute-url",
       "mrmime",
       "webpack-virtual-modules"
     ],
