@@ -38,9 +38,11 @@ export class ModuleGraph {
       if (this.fileToModules.has(file)) {
         return this.fileToModules.get(file)!;
       }
+      if (this.depToModules.has(file)) {
+        return this.depToModules.get(file)!;
+      }
 
       const mod = new ModuleNode(file);
-      this.fileToModules.set(file, mod);
 
       return mod;
     };
@@ -73,6 +75,7 @@ export class ModuleGraph {
       if (isDependency) {
         this.depToModules.set(file, mod);
       } else {
+        this.fileToModules.set(file, mod);
         for (const importedModule of info.importedModules) {
           addNode({ file: importedModule, importer: mod });
         }
