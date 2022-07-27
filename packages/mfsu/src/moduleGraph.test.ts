@@ -178,7 +178,7 @@ test('different modules have same deps', () => {
   expect(bMod!.importedModules.size).toEqual(1);
 });
 
-test.only('circular deps restore', () => {
+test('circular deps restore', () => {
   const mg = new ModuleGraph();
   mg.onFileChange({
     file: 'a',
