@@ -10,7 +10,7 @@ import { ILoaderData, IRouteComponents, IRoutesById } from './types';
 let root: ReactDOM.Root | null = null;
 
 // react 18 some scenarios need unmount such as micro app
-export function getRoot() {
+export function _getRoot() {
   return root;
 }
 
