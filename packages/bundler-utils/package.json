@@ -53,7 +53,6 @@
     "@types/babel__parser": "7.1.1",
     "@types/babel__template": "7.4.1",
     "@types/babel__traverse": "7.17.1",
-    "@types/express": "^4.17.13",
     "@types/less": "3.0.3",
     "@types/spdy": "^3.4.5",
     "cjs-module-lexer": "1.2.2",
@@ -85,13 +84,13 @@
       "es-module-lexer": "$$LOCAL",
       "express": "$$LOCAL",
       "less": "$$LOCAL",
-      "tapable": "$$LOCAL",
-      "@babel/code-frame": "$$LOCAL"
+      "tapable": "$$LOCAL"
     },
     "noMinify": [
       "./bundles/babel/bundle"
     ],
     "extraDtsDeps": [
+      "@babel/code-frame",
       "@babel/core",
       "@babel/generator",
       "@babel/parser",
