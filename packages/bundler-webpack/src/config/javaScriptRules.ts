@@ -139,7 +139,7 @@ export async function addJavaScriptRules(opts: IOpts) {
             ...(userConfig.extraBabelPresets || []).filter(Boolean),
           ],
           plugins: [
-            useFastRefresh && require.resolve('react-refresh/babel'),
+            useFastRefresh && require.resolve('../../compiled/react-refresh'),
             ...opts.extraBabelPlugins,
             ...(userConfig.extraBabelPlugins || []),
           ].filter(Boolean),
