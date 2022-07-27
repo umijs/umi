@@ -1123,6 +1123,7 @@ importers:
       '@umijs/bundler-utils': 4.0.0-canary.20220727.1
       '@umijs/utils': 4.0.0-canary.20220727.1
       enhanced-resolve: 5.9.3
+      is-absolute-url: ^3.0.3
       is-equal: ^1.6.4
       mrmime: 1.0.0
       webpack: 5.72.1
@@ -1134,6 +1135,7 @@ importers:
       enhanced-resolve: 5.9.3
       is-equal: 1.6.4
     devDependencies:
+      is-absolute-url: 3.0.3
       mrmime: 1.0.0
       webpack: 5.72.1
       webpack-virtual-modules: 0.4.3
@@ -16022,6 +16024,11 @@ packages:
   /ipaddr.js/2.0.1:
     resolution: {integrity: sha512-1qTgH9NG+IIJ4yfKs2e6Pp1bZg8wbDbKHT21HrLIeYBTRLgMYKnMTPAuI3Lcs61nfx5h1xlXnbJtH1kX5/d/ng==}
     engines: {node: '>= 10'}
+    dev: true
+
+  /is-absolute-url/3.0.3:
+    resolution: {integrity: sha512-opmNIX7uFnS96NtPmhWQgQx6/NYFgsUXYMllcfzwWKUMwfo8kku1TvE6hkNcH+Q1ts5cMVrsY7j0bxXQDciu9Q==}
+    engines: {node: '>=8'}
     dev: true
 
   /is-accessor-descriptor/0.1.6:

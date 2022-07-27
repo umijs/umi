@@ -9,6 +9,7 @@ import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
+import isAbsoluteUrl from '../../compiled/is-absolute-url';
 import { lookup } from '../../compiled/mrmime';
 // @ts-ignore
 import WebpackVirtualModules from '../../compiled/webpack-virtual-modules';
@@ -290,10 +291,13 @@ promise new Promise(resolve => {
     return [
       (req: Request, res: Response, next: NextFunction) => {
         const publicPath = this.publicPath;
+        const relativePublicPath = isAbsoluteUrl(publicPath)
+          ? new URL(publicPath).pathname
+          : publicPath;
         const isMF =
-          req.path.startsWith(`${publicPath}${MF_VA_PREFIX}`) ||
-          req.path.startsWith(`${publicPath}${MF_DEP_PREFIX}`) ||
-          req.path.startsWith(`${publicPath}${MF_STATIC_PREFIX}`);
+          req.path.startsWith(`${relativePublicPath}${MF_VA_PREFIX}`) ||
+          req.path.startsWith(`${relativePublicPath}${MF_DEP_PREFIX}`) ||
+          req.path.startsWith(`${relativePublicPath}${MF_STATIC_PREFIX}`);
         if (isMF) {
           this.depBuilder.onBuildComplete(() => {
             if (!req.path.includes(REMOTE_FILE)) {
@@ -304,7 +308,7 @@ promise new Promise(resolve => {
               lookup(extname(req.path)) || 'text/plain',
             );
             const relativePath = req.path.replace(
-              new RegExp(`^${publicPath}`),
+              new RegExp(`^${relativePublicPath}`),
               '/',
             );
             const content = readFileSync(
