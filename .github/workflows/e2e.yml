@@ -62,7 +62,7 @@ jobs:
           browser: chrome
           working-directory: ./examples/max
           install: false
-          record: true
+          record: ${{secrets.CYPRESS_KEY}}
           install-command: pnpm i cypress
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
