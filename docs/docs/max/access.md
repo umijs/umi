@@ -57,9 +57,9 @@ export const routes = [
 export const layout: RunTimeLayoutConfig = () => {
   return {
     // 自定义 403 页面
-    noAccessible: <div>'noAccessible'</div>,
+    unAccessible: <div>'unAccessible'</div>,
     // 自定义 404 页面
-    notFound: <div>'notFound'</div>,
+    noFound: <div>'noFound'</div>,
   };
 };
 ```

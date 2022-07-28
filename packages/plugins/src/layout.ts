@@ -280,8 +280,8 @@ const { formatMessage } = useIntl();
       initData: InitDataType,
     ) => ProLayoutProps & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
-      noAccessible?: JSX.Element,
-      notFound?: JSX.Element,
+      unAccessible?: JSX.Element,
+      noFound?: JSX.Element,
     };
     `,
     });
@@ -604,11 +604,13 @@ const Exception: React.FC<{
   route?: IRoute;
   notFound?: React.ReactNode;
   noAccessible?: React.ReactNode;
+  unAccessible?: React.ReactNode;
+  noFound?: React.ReactNode;
 }> = (props) => (
   // render custom 404
-  (!props.route && props.notFound) ||
+  (!props.route && (props.notFound || props.noFound)) ||
   // render custom 403
-  (props.route.unaccessible && props.noAccessible) ||
+  (props.route.unaccessible && (props.noAccessible || props.unAccessible)) ||
   // render default exception
   ((!props.route || props.route.unaccessible) && (
     <Result
