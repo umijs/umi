@@ -8,7 +8,7 @@ interface IOpts {
 }
 
 export function getEsBuildTarget({ targets, jsMinifier }: IOpts) {
-  if (targets?.['ie'] && jsMinifier === JSMinifier.esbuild) {
+  if (targets['ie'] && jsMinifier === JSMinifier.esbuild) {
     logger.error(
       `${chalk.red(
         `jsMinifier: esbuild`,
