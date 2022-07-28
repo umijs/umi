@@ -608,9 +608,9 @@ const Exception: React.FC<{
   noFound?: React.ReactNode;
 }> = (props) => (
   // render custom 404
-  (!props.route && (props.notFound || props.noFound)) ||
+  (!props.route && (props.noFound || props.notFound)) ||
   // render custom 403
-  (props.route.unaccessible && (props.noAccessible || props.unAccessible)) ||
+  (props.route.unaccessible && (props.unAccessible || props.noAccessible)) ||
   // render default exception
   ((!props.route || props.route.unaccessible) && (
     <Result
