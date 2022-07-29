@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -52,33 +52,34 @@ jobs:
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/...
 
-      - name: example-max-e2e
+      - name: example-max-e2e-without-record
+        if: ${{ !env.CYPRESS_RECORD_KEY }}
         uses: cypress-io/github-action@v4
-        if: matrix.os == 'ubuntu-latest'
         with:
           start: pnpm run preview
           wait-on: 'http://127.0.0.1:9527'
-          command: pnpm run e2e --record --key ${cypress_key}
           browser: chrome
           working-directory: ./examples/max
           install: false
+          record: false
           install-command: pnpm i cypress
         env:
-          cypress_key: ${{secrets.CYPRESS_KEY}}
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
-      - name: example-max-e2e-windows
+
+      - name: example-max-e2e-with-recording
+        if: env.CYPRESS_RECORD_KEY
         uses: cypress-io/github-action@v4
-        if: matrix.os == 'windows-latest'
         with:
           start: pnpm run preview
           wait-on: 'http://127.0.0.1:9527'
-          command: pnpm run e2e --record --key %cypress_key%
           browser: chrome
           working-directory: ./examples/max
           install: false
+          record: true
           install-command: pnpm i cypress
         env:
-          cypress_key: ${{secrets.CYPRESS_KEY}}
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
 
       - name: Run example test-test

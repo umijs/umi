@@ -25,7 +25,7 @@ importers:
       '@vercel/ncc': 0.33.3
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
-      father: ^4.0.0-rc.4
+      father: ^4.0.0-rc.7
       git-repo-info: ^2.1.1
       husky: ^7.0.4
       jest: ^27.5.1
@@ -74,7 +74,7 @@ importers:
       '@vercel/ncc': 0.33.3
       dts-packer: 0.0.3
       expect-playwright: 0.8.0
-      father: 4.0.0-rc.6
+      father: 4.0.0-rc.7
       git-repo-info: 2.1.1
       husky: 7.0.4
       jest: 27.5.1_ts-node@10.9.1
@@ -10158,7 +10158,7 @@ packages:
   /axios/0.21.4_debug@4.3.2:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10175,7 +10175,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -11455,7 +11455,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
 
   /concat-stream/1.6.2:
     resolution: {integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==}
@@ -14624,8 +14624,8 @@ packages:
     dependencies:
       reusify: 1.0.4
 
-  /father/4.0.0-rc.6:
-    resolution: {integrity: sha512-sqOIFJOJt139FPjlpDvFtEHV97zkpNkw4/Ccthg+L+rFzCVIoT2MvPKSJUS3Ks4lH0sRM9v49RnW2HpKg/7nzA==}
+  /father/4.0.0-rc.7:
+    resolution: {integrity: sha512-rOazMg0ADbtq1JWsp/OeLlOP6qeP7WfKscnN2dZ52H4szQQ32dxYqkxSF5ZwgsodRUDfP8MCKgZgVVqrqf/b6w==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor': 7.25.1
@@ -14878,6 +14878,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+
+  /follow-redirects/1.15.1_debug@4.3.2:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.2
+    dev: true
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -15950,7 +15962,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -22147,6 +22159,7 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
+    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -22164,6 +22177,7 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
+    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}
@@ -27048,7 +27062,7 @@ packages:
     dev: true
 
   /traverse/0.6.6:
-    resolution: {integrity: sha512-kdf4JKs8lbARxWdp7RKdNzoJBhGUcIalSYibuGyHJbmk40pOysQ0+QPvlkCOICOivDWU2IJo2rkrxyTK2AH4fw==}
+    resolution: {integrity: sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=}
     dev: true
 
   /tree-kill/1.2.2:
