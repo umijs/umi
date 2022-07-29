@@ -23,10 +23,14 @@ export default (api: IApi) => {
     fn: async () => {
       const h = new GeneratorHelper(api);
 
+      const reactVersion =
+        parseInt(api.appData.react.version.split('.')[0], 10) || 18;
+      const reactDomVersion =
+        parseInt(api.appData['react-dom'].version.split('.')[0], 10) || 18;
       h.addDevDeps({
         typescript: '^4',
-        '@types/react': '^18.0.0',
-        '@types/react-dom': '^18.0.0',
+        '@types/react': `^${reactVersion}.0.0`,
+        '@types/react-dom': `^${reactDomVersion}.0.0`,
       });
 
       writeFileSync(
