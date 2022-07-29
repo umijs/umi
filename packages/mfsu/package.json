@@ -1,6 +1,6 @@
 {
   "name": "@umijs/mfsu",
-  "version": "4.0.0-canary.20220720.1",
+  "version": "4.0.9",
   "description": "@umijs/mfsu",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/mfsu#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -17,19 +17,20 @@
     "vendors"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev",
+    "dev": "umi-scripts father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-esbuild": "4.0.0-canary.20220720.1",
-    "@umijs/bundler-utils": "4.0.0-canary.20220720.1",
-    "@umijs/utils": "4.0.0-canary.20220720.1",
+    "@umijs/bundler-esbuild": "4.0.9",
+    "@umijs/bundler-utils": "4.0.9",
+    "@umijs/utils": "4.0.9",
     "enhanced-resolve": "5.9.3",
     "is-equal": "^1.6.4"
   },
   "devDependencies": {
+    "is-absolute-url": "^3.0.3",
     "mrmime": "1.0.0",
     "webpack": "5.72.1",
     "webpack-virtual-modules": "0.4.3"
@@ -42,6 +43,7 @@
   ],
   "compiledConfig": {
     "deps": [
+      "is-absolute-url",
       "mrmime",
       "webpack-virtual-modules"
     ],

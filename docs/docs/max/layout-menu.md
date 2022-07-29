@@ -61,18 +61,9 @@ export default defineConfig({
 运行时配置写在 `src/app.tsx` 中，key 为 `layout`。
 
 ```tsx
-import React from 'react';
-import {
-  BasicLayoutProps,
-  Settings as LayoutSettings,
-} from '@ant-design/pro-layout';
+import { RunTimeLayoutConfig } from '@umijs/max';
 
-export const layout = ({
-  initialState,
-}: {
-  // 类型自定义，由 `initialState` 插件提供
-  initialState: { settings?: LayoutSettings; currentUser?: API.CurrentUser };
-}): BasicLayoutProps => {
+export const layout: RunTimeLayoutConfig = (initialState) => {
   return {
     // 常用属性
     title: 'Ant Design',
@@ -188,9 +179,19 @@ export const routes: IBestAFSRoute[] = [
 
 - Type: `string`
 
-菜单上显示的 antd 的 icon，为了按需加载 layout 插件会帮你自动转化为 Antd icon 的 dom。支持类型可以在 [antd icon](https://ant.design/components/icon-cn/) 中找到。
+菜单上显示的 antd 的 icon，为了按需加载 layout 插件会帮你自动转化为 Antd icon 的 dom。支持类型可以在 [antd icon](https://ant.design/components/icon-cn/) 中找到。示例：
 
-> icon name 为 组件名小写后去掉 `outlined` 或者 `filled` 或者 `twotone`，所得值。举例：`<UserOutlined />` 的 icon name 即： `user`。
+```ts
+// <HomeOutlined /> 线框风格
+icon: 'home'; // outlined 线框风格可简写
+icon: 'HomeOutlined';
+
+// <HomeFilled /> 实底风格
+icon: 'HomeFilled';
+
+// <HomeTwoTone /> 双色风格
+icon: 'HomeTwoTone';
+```
 
 #### access
 

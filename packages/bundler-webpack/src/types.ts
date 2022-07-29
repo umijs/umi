@@ -71,7 +71,7 @@ export interface IConfig {
   extraPostCSSPlugins?: any[];
   hash?: boolean;
   ignoreMomentLocale?: boolean;
-  jsMinifier?: JSMinifier;
+  jsMinifier?: `${JSMinifier}`;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { [key: string]: any };
   outputPath?: string;
@@ -86,6 +86,7 @@ export interface IConfig {
   svgo?: { [key: string]: any } | false;
   targets?: { [key: string]: any };
   writeToDisk?: boolean;
+  babelLoaderCustomize?: string;
   [key: string]: any;
 }
 

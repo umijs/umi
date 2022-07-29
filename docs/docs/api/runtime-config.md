@@ -14,19 +14,29 @@
 
 如果你使用的 dva，那么支持配置 dva 插件的运行时配置，具体参考[插件配置](../max/dva)。
 
-### getInitialState
+### 数据流
 
-定义初始化数据。通常为了提供给内置布局功能和权限相关用户信息，我们需要在应用启动的最初阶段请求一些初始化数据，在 Umi 中，我们内置了插件 `initial-state`，该插件暴露一个运行时配置 `getInitialState`，该配置接收一个方法，你需要通过该方法返回相关数据，例如：
+若你需要定义初始化数据，使用 `getInitialState` 、`useModel` 等 [数据流](../max/data-flow) 相关功能：
 
-```ts
-// src/app.ts(x)
-export async function getInitialState() {
-  return {
-    userName: '用户名',
-    userId: '用户 ID',
-  };
-}
-```
+1. 你可以创建自带数据流功能的 `@umijs/max` 项目，详见 [Umi max 简介](../max/introduce) 。
+
+2. 或者手动开启数据流功能的插件使用该功能：
+
+    ```bash
+      pnpm add -D @umijs/plugins
+    ```
+
+    ```ts
+    // .umirc.ts
+    export default {
+      plugins: [
+        '@umijs/plugins/dist/initial-state',
+        '@umijs/plugins/dist/model'
+      ],
+      initialState: {},
+      model: {}
+    }
+    ```
 
 ### layout
 
@@ -93,7 +103,7 @@ import Page from '@/extraRoutes/foo';
 export function patchClientRoutes({ routes }) {
   routes.unshift({
     path: '/foo',
-    component: <Page />
+    element: <Page />
   });
 }
 ```
@@ -109,7 +119,7 @@ export function patchClientRoutes({ routes }) {
 }
 
 export function render(oldRender) {
-  fetch('/api/routes').then(res=>res.json()).then((res) => {
+  fetch('/api/routes').then(res => res.json()).then((res) => {
     extraRoutes = res.routes;
     oldRender();
   })

@@ -6,8 +6,11 @@ import { withTmpPath } from './utils/withTmpPath';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(joi) {
-        return joi.object();
+      schema(Joi) {
+        return Joi.alternatives().try(
+          Joi.object(),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,

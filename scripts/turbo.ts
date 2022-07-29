@@ -1,46 +1,26 @@
-import yArgs from '@umijs/utils/compiled/yargs-parser';
 import { PATHS } from './.internal/constants';
-import { spawnSync, toArray } from './.internal/utils';
+import { spawnSync } from './.internal/utils';
 
 (async () => {
-  const args = yArgs(process.argv.slice(2));
-  const filter = args.filter || './packages/*';
-  const extra = (args._ || []).join(' ');
+  const args = process.argv.slice(2);
 
-  turbo({
-    cmd: args.cmd,
-    filter,
-    extra,
-    cache: args.cache,
-    parallel: args.parallel,
-  });
+  // no cache
+  if (args.includes('--no-cache')) {
+    args.unshift('--force');
+  }
+
+  // filter
+  if (!args.includes('--filter')) {
+    // Tips: should use double quotes, single quotes are not valid on windows.
+    args.unshift('--filter', `"./packages/*"`);
+  }
+
+  // turbo cache
+  if (!args.includes('--cache-dir')) {
+    args.unshift('--cache-dir', `".turbo"`);
+  }
+
+  const command = `turbo run ${args.join(' ')}`;
+
+  spawnSync(command, { cwd: PATHS.ROOT });
 })();
-
-function turbo(opts: {
-  filter: string;
-  cmd: string;
-  extra?: string;
-  cache?: boolean;
-  parallel?: boolean;
-}) {
-  const extraCmd = opts.extra ? `-- ${opts.extra}` : '';
-  const cacheCmd = opts.cache === false ? '--no-cache --force' : '';
-  const parallelCmd = opts.parallel ? '--parallel' : '';
-  const filters: string[] = toArray(opts.filter);
-
-  const options = [
-    opts.cmd,
-    `--cache-dir=".turbo"`,
-    filters.map((f) => `--filter="${f}"`).join(' '),
-    cacheCmd,
-    parallelCmd,
-    extraCmd,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  const command = `turbo run ${options}`;
-  spawnSync(command, {
-    cwd: PATHS.ROOT,
-  });
-}

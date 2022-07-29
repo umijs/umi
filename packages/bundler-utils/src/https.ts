@@ -14,9 +14,20 @@ export type { Server as SpdyServer } from 'spdy';
 
 // vite mode requires a key cert
 export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
+  let { key, cert, hosts } = httpsConfig;
+
+  // if the key and cert are provided return directly
+  if (key && cert) {
+    return {
+      key,
+      cert,
+    };
+  }
+
   // Check if mkcert is installed
   try {
-    await execa.execa('mkcert', ['--version']);
+    // use mkcert -help instead of mkcert --version for checking if mkcert is installed, cause mkcert --version does not exists in Linux
+    await execa.execa('mkcert', ['-help']);
   } catch (e) {
     logger.error('[HTTPS] The mkcert has not been installed.');
     logger.info('[HTTPS] Please follow the guide to install manually.');
@@ -43,12 +54,9 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
     throw new Error(`[HTTPS] mkcert not found.`);
   }
 
-  let { key, cert, hosts } = httpsConfig;
   hosts = hosts || defaultHttpsHosts;
-  if (!key || !cert) {
-    key = join(__dirname, 'umi.key.pem');
-    cert = join(__dirname, 'umi.pem');
-  }
+  key = join(__dirname, 'umi.key.pem');
+  cert = join(__dirname, 'umi.pem');
 
   // Generate cert and key files if they are not exist.
   if (!existsSync(key) || !existsSync(cert)) {

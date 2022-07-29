@@ -14,11 +14,6 @@ export async function addAssetRules({ config, api }: IOpts) {
 
   const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);
 
-  const staticPathPrefix =
-    api.config.staticPathPrefix !== undefined
-      ? api.config.staticPathPrefix
-      : 'static/';
-
   config.module
     .rule('avif')
     .test(/\.avif$/)
@@ -28,21 +23,15 @@ export async function addAssetRules({ config, api }: IOpts) {
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
-    })
-    .generator({
-      filename: `${staticPathPrefix}[name].[hash:8].[ext]`,
     });
 
   config.module
     .rule('image')
-    .test(/\.(bmp|gif|jpg|jpeg|png)$/)
+    .test(/\.(bmp|gif|jpg|jpeg|png|svg)$/)
     .type('asset')
     .parser({
       dataUrlCondition: {
         maxSize: inlineLimit,
       },
-    })
-    .generator({
-      filename: `${staticPathPrefix}[name].[hash:8].[ext]`,
     });
 }

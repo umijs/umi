@@ -6,13 +6,15 @@ export default (api: IApi) => {
   api.describe({
     key: 'request',
     config: {
-      schema: (joi) => {
-        return joi.object({
-          dataField: joi
-            .string()
-            .pattern(/^[a-zA-Z]*$/)
-            .allow(''),
-        });
+      schema: (Joi) => {
+        return Joi.alternatives().try(
+          Joi.object({
+            dataField: Joi.string()
+              .pattern(/^[a-zA-Z]*$/)
+              .allow(''),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,
@@ -306,7 +308,7 @@ export type {
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
-export type { 
+export type {
   RequestConfig,
   AxiosInstance,
   AxiosRequestConfig,

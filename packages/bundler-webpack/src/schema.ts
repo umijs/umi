@@ -41,6 +41,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     alias: (Joi) => Joi.object(),
     autoCSSModules: (Joi) => Joi.boolean(),
     autoprefixer: (Joi) => Joi.object(),
+    babelLoaderCustomize: (Joi) => Joi.string(),
     cacheDirectoryPath: (Joi) => Joi.string(),
     chainWebpack: (Joi) => Joi.function(),
     copy: (Joi) =>
@@ -116,7 +117,10 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
           ),
           include: Joi.array().items(Joi.string()),
           mfName: Joi.string(),
+          remoteAliases: Joi.array().items(Joi.string()),
+          remoteName: Joi.string(),
           runtimePublicPath: Joi.boolean(),
+          shared: Joi.object(),
           strategy: Joi.string().valid('eager', 'normal').default('normal'),
         }),
         Joi.boolean(),

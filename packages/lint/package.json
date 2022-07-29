@@ -1,6 +1,6 @@
 {
   "name": "@umijs/lint",
-  "version": "4.0.0-canary.20220720.1",
+  "version": "4.0.9",
   "description": "@umijs/lint",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/lint#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -16,17 +16,17 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev"
+    "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/core": "7.17.9",
-    "@babel/eslint-parser": "7.17.0",
+    "@babel/core": "7.18.9",
+    "@babel/eslint-parser": "7.18.9",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@typescript-eslint/eslint-plugin": "5.27.1",
     "@typescript-eslint/parser": "5.27.1",
-    "@umijs/babel-preset-umi": "4.0.0-canary.20220720.1",
+    "@umijs/babel-preset-umi": "4.0.9",
     "eslint-plugin-jest": "26.1.5",
     "eslint-plugin-react": "7.29.4",
     "eslint-plugin-react-hooks": "4.5.0",

@@ -82,17 +82,6 @@ TODO: SUPPORT
 
 和 history 相关的操作，用于获取当前路由信息、执行路由跳转、监听路由变更。
 
-获取当前路由信息。
-
-```ts
-// location 对象，包含 pathname、search 和 hash
-window.location.pathname;
-window.location.search;
-window.location.hash;
-```
-
-或者
-
 ```ts
 // 建议组件或 hooks 里用 useLocation 取
 import { useLocation } from 'umi';
@@ -108,6 +97,14 @@ export default function Page() {
 }
 ```
 
+如果在 React 组件和 Hooks 之外获取当前路由信息。
+
+```ts
+// location 对象，包含 pathname、search 和 hash
+window.location.pathname;
+window.location.search;
+window.location.hash;
+```
 
 命令式路由跳转。
 

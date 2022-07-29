@@ -1,5 +1,5 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
-import { existsSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
 import { Env, IConfig } from '../types';
 
@@ -12,13 +12,15 @@ interface IOpts {
 
 export async function addCopyPlugin(opts: IOpts) {
   const { config, userConfig, cwd } = opts;
+  const publicDir = join(cwd, 'public');
   const copyPatterns = [
-    existsSync(join(cwd, 'public')) && {
-      from: join(cwd, 'public'),
-      // ref: https://github.com/webpack-contrib/copy-webpack-plugin#info
-      // Set minimized so terser will not do minimize
-      info: { minimized: true },
-    },
+    existsSync(publicDir) &&
+      readdirSync(publicDir).length && {
+        from: publicDir,
+        // ref: https://github.com/webpack-contrib/copy-webpack-plugin#info
+        // Set minimized so terser will not do minimize
+        info: { minimized: true },
+      },
     ...(userConfig.copy
       ? userConfig.copy?.map((pattern) => {
           if (typeof pattern === 'string') {
