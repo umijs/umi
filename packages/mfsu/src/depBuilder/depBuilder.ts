@@ -127,6 +127,9 @@ export class DepBuilder {
     depConfig.entry = join(this.opts.mfsu.opts.tmpBase!, 'index.js');
 
     depConfig.output!.path = this.opts.mfsu.opts.tmpBase!;
+
+    depConfig.output!.publicPath = 'auto';
+
     // disable devtool
     depConfig.devtool = false;
     // disable library
