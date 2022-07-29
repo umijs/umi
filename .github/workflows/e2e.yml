@@ -50,7 +50,7 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/... --filter ./examples/mfsu-e2e/...
+        run: pnpm build
 
       - name: example-max-e2e-without-record
         if: ${{ !env.CYPRESS_RECORD_KEY }}
@@ -113,7 +113,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
           PORT: 8000
           HMR: none
-          
+
       - name: Run example test-test
         working-directory: ./examples/test-test
         run: |
