@@ -23,7 +23,10 @@ export default (api: IApi) => {
     const inputPath = join(api.cwd, 'tailwind.css');
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = join(api.cwd, 'node_modules/.bin/tailwind');
-    const configPath = join(api.cwd, 'tailwind.config.js');
+    const configPath = join(
+      process.env.APP_ROOT || api.cwd,
+      'tailwind.config.js',
+    );
 
     return new Promise<void>((resolve) => {
       /** 透过子进程建立 tailwindcss 服务，将生成的 css 写入 generatedPath */
