@@ -5,8 +5,6 @@ env:
 
 on:
   push:
-    branches:
-      - master
     paths-ignore:
       - 'docs/**'
       - '**/*.md'
