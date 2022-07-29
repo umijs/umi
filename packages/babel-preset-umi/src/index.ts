@@ -52,10 +52,6 @@ export default (_context: any, opts: IOpts) => {
           '@umijs/bundler-utils/compiled/babel/preset-typescript',
         ),
         {
-          // 支持 vue 后缀
-          allExtensions: true,
-          // 支持 tsx
-          isTSX: true,
           allowNamespaces: true,
           allowDeclareFields: true,
           // Why false?

@@ -9,9 +9,6 @@
     "build:extra": {
       "cache": false
     },
-    "build:client": {
-      "cache": false
-    },
     "dev": {
       "cache": false
     },
@@ -22,6 +19,7 @@
   "globalDependencies": [
     "tsconfig.base.json",
     "tsconfig.json",
-    "jest.config.ts"
+    "jest.config.ts",
+    ".father.base.ts"
   ]
 }

@@ -87,7 +87,7 @@ const request: RequestConfig = {
         return { url, options } 
       },
     // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
-    [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}]
+    [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}],
     // 数组，省略错误处理
     [(url, options) => {return { url, options }}]
   ]
@@ -111,11 +111,13 @@ const request: RequestConfig = {
     // 直接写一个 function，作为拦截器
     (response) => 
       {
+        // 不再需要异步处理读取返回体内容，可直接在data中读出，部分字段可在 config 中找到
+        const { data = {} as any, config } = response;
         // do something
         return response 
       },
     // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
-    [(response) => {return response}, (error) => {return Promise.reject(error)}]
+    [(response) => {return response}, (error) => {return Promise.reject(error)}],
     // 数组，省略错误处理
     [(response) => {return response}]
   ]

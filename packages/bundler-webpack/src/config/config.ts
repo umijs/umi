@@ -1,4 +1,5 @@
 import CaseSensitivePaths from '@umijs/case-sensitive-paths-webpack-plugin';
+import { logger, resolve as resolveModule } from '@umijs/utils';
 import { join, resolve } from 'path';
 import webpack, { Configuration } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
@@ -53,6 +54,7 @@ export interface IOpts {
     buildDependencies?: string[];
     cacheDirectory?: string;
   };
+  pkg?: Record<string, any>;
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -233,10 +235,41 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       const nodeModulesPath =
         opts.cache.absNodeModulesPath ||
         join(opts.rootDir || opts.cwd, 'node_modules');
+      // 寻找本地 link 的 node_modules 目录，避免 NPM 包 link 场景下导致缓存生成 OOM
+      const localLinkedNodeModules = Object.keys(
+        Object.assign(
+          {},
+          opts.pkg?.dependencies,
+          opts.pkg?.peerDependencies,
+          opts.pkg?.devDependencies,
+        ),
+      )
+        .map((pkg: string) => {
+          try {
+            return resolve(
+              resolveModule.sync(`${pkg}/package.json`, {
+                basedir: opts.rootDir || opts.cwd,
+                preserveSymlinks: false,
+              }),
+              '../node_modules',
+            );
+          } catch {
+            // will be filtered below
+            return opts.rootDir || opts.cwd;
+          }
+        })
+        .filter((pkg: string) => !pkg.startsWith(opts.rootDir || opts.cwd));
+
+      if (localLinkedNodeModules.length) {
+        logger.info(
+          `Detected local linked tnpm node_modules, to avoid oom, they will be treated as immutablePaths & managedPaths in webpack snapshot:`,
+        );
+        localLinkedNodeModules.forEach((p) => logger.info(`  ${p}`));
+      }
 
       config.snapshot({
-        immutablePaths: [nodeModulesPath],
-        managedPaths: [nodeModulesPath],
+        immutablePaths: [nodeModulesPath, ...localLinkedNodeModules],
+        managedPaths: [nodeModulesPath, ...localLinkedNodeModules],
       });
     }
 

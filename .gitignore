@@ -41,3 +41,9 @@ node_modules
 /test/**/fixtures/*/src/.umi-production
 coverage
 .vscode
+
+# Ignore declaration files, they are generated from local development
+/packages/bundler-webpack/client/**/*.d.ts
+/packages/bundler-webpack/client/**/*.d.ts.map
+/packages/umi/client/**/*.d.ts
+/packages/umi/client/**/*.d.ts.map

@@ -837,7 +837,7 @@ polyfill: {
 示例，
 
 ```js
-plugins: [
+presets: [
   // npm 依赖
   'umi-preset-hello',
   // 相对路径
@@ -944,6 +944,8 @@ scripts: [
 配置额外的 CSS。
 
 配置项支持内联样式和外联样式路径，后者通过是否以 https?:// 开头来判断。
+
+插入的样式会前置，优先级低于项目内用户编写样式。
 
 比如：
 
@@ -1053,7 +1055,7 @@ verifyCommit: {
 ```js
 // 更改临时文件路径到 node_modules/.bin/.vite 文件夹
 vite: {
-  cacheDir: 'node_modules/.bin/.vite';
+  cacheDir: 'node_modules/.bin/.vite',
 }
 ```
 

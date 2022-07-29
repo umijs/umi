@@ -20,7 +20,7 @@ React 的组件只是通过 jsx 以及样式按照 state 构建最终的 UI，�
 
 ### 配置 dva
 
-首先你需要配置 `dva: {}` 打开 Umi 内置的 [dva 插件](dva)。
+首先你需要配置 `dva: {}` 打开 Umi 内置的 dva 插件。
 
 ### 添加 model
 
@@ -170,7 +170,7 @@ export default UserInfo;
 ```jsx
 render () {
   return <div onClick={() => {
-   props.dispacth({
+   this.props.dispacth({
     type: 'modelnamespace/actionname',
     sometestdata: 'xxx',
     othertestata: {},

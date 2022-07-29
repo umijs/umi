@@ -120,11 +120,12 @@ export class DepBuilder {
   }
 
   getWebpackConfig(opts: { deps: Dep[] }) {
-    const mfName = this.opts.mfsu.opts.mfName;
+    const mfName = this.opts.mfsu.opts.mfName!;
     const depConfig = lodash.cloneDeep(this.opts.mfsu.depConfig!);
 
     // depConfig.stats = 'none';
     depConfig.entry = join(this.opts.mfsu.opts.tmpBase!, 'index.js');
+
     depConfig.output!.path = this.opts.mfsu.opts.tmpBase!;
     // disable devtool
     depConfig.devtool = false;
@@ -137,7 +138,18 @@ export class DepBuilder {
     // merge all deps to vendor
     depConfig.optimization ||= {};
     depConfig.optimization.splitChunks = {
-      chunks: 'all',
+      chunks: (chunk) => {
+        // mf 插件中的 chunk 的加载并不感知到 mfsu 做了 chunk 的合并, 所以还是用原来的 chunk 名去加载
+        // 这样就会造成 chunk 加载不到的问题; 因此将 mf shared 相关的 chunk 不进行合并
+        const hasShared = chunk.getModules().some((m) => {
+          return (
+            m.type === 'consume-shared-module' ||
+            m.type === 'provide-module' ||
+            m.type === 'provide-shared-module'
+          );
+        });
+        return !hasShared;
+      },
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
@@ -175,6 +187,7 @@ export class DepBuilder {
         name: mfName,
         filename: REMOTE_FILE_FULL,
         exposes,
+        shared: this.opts.mfsu.opts.shared || {},
       }),
     );
     return depConfig;

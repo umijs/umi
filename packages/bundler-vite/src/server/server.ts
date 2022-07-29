@@ -1,6 +1,6 @@
 import { createHttpsServer, resolveHttpsConfig } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
-import { logger } from '@umijs/utils';
+import { chalk, logger } from '@umijs/utils';
 import http from 'http';
 import type {
   DepOptimizationMetadata,
@@ -128,7 +128,9 @@ export async function createServer(opts: IOpts) {
 
     const host = process.env.HOST || 'localhost';
 
-    logger.ready(`Example app listening at ${protocol}//${host}:${port}`);
+    logger.ready(
+      `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,
+    );
   });
 
   return server;

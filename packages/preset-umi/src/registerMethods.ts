@@ -55,6 +55,7 @@ export default (api: IApi) => {
     'modifyRendererPath',
     'modifyServerRendererPath',
     'modifyRoutes',
+    'modifyBabelPresetOpts',
   ].forEach((name) => {
     api.registerMethod({ name });
   });

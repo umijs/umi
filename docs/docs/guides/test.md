@@ -9,7 +9,7 @@ import { Message } from 'umi';
 使用 Umi 4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
 
 ```ts
-// jest.config.ts
+// jest.config.ts (当使用 max 时，请从 `@umijs/max/test` 导入)
 import { Config, configUmiAlias, createConfig } from 'umi/test';
 
 export default async () => {

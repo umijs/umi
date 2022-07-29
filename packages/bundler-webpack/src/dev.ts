@@ -30,7 +30,7 @@ type IOpts = {
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
   srcCodeCache?: any;
-} & Pick<IConfigOpts, 'cache'>;
+} & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
   Object.keys(obj).forEach((key) => {
@@ -70,6 +70,9 @@ export async function dev(opts: IOpts) {
         opts.config.mfsu?.cacheDirectory || join(cacheDirectoryPath, 'mfsu'),
       onMFSUProgress: opts.onMFSUProgress,
       unMatchLibs: opts.config.mfsu?.exclude,
+      shared: opts.config.mfsu?.shared,
+      remoteAliases: opts.config.mfsu?.remoteAliases,
+      remoteName: opts.config.mfsu?.remoteName,
       getCacheDependency() {
         return stripUndefined({
           version: require('../package.json').version,
@@ -81,6 +84,9 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
+      serverBase: `${opts.config.https ? 'https' : 'http'}://${opts.host}:${
+        opts.port || 8000
+      }`,
     });
   }
 
@@ -112,6 +118,7 @@ export async function dev(opts: IOpts) {
           cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
         }
       : undefined,
+    pkg: opts.pkg,
   });
 
   const depConfig = await getConfig({
@@ -128,6 +135,7 @@ export async function dev(opts: IOpts) {
       buildDependencies: opts.cache?.buildDependencies,
       cacheDirectory: join(cacheDirectoryPath, 'mfsu-deps'),
     },
+    pkg: opts.pkg,
   });
 
   webpackConfig.resolve!.alias ||= {};

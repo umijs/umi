@@ -118,6 +118,15 @@ info  - generate files
 
 国内建议选 **pnpm + taobao 源**，速度提升明显。这一步会自动安装依赖，同时安装成功后会自动执行 `umi setup` 做一些文件预处理等工作。
 
+### 参数选项
+
+使用 `create-umi` 创建项目时，可用的参数如下：
+
+option|description
+:-:|:-
+`--no-git`|创建项目，但不初始化 Git
+`--no-install`|创建项目，但不自动安装依赖
+
 ## 启动项目
 
 执行 `pnpm dev` 命令，
