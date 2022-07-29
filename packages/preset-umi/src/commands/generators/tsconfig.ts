@@ -25,6 +25,8 @@ export default (api: IApi) => {
 
       h.addDevDeps({
         typescript: '^4',
+        '@types/react': '^18.0.0',
+        '@types/react-dom': '^18.0.0',
       });
 
       writeFileSync(
@@ -36,6 +38,13 @@ export default (api: IApi) => {
 `.trimStart(),
       );
       logger.info('Write tsconfig.json');
+
+      const importSource = api.appData.umi.importSource;
+      writeFileSync(
+        join(api.cwd, 'typings.d.ts'),
+        `import '${importSource}/typings';`.trimStart(),
+      );
+      logger.info('Write typings.d.ts');
 
       h.installDeps();
     },
