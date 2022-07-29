@@ -33,6 +33,7 @@ export async function addCompressPlugin(opts: IOpts) {
   // esbuild transform only allow `string[]` as target
   const esbuildTarget = getEsBuildTarget({
     targets: userConfig.targets || {},
+    jsMinifier,
   });
 
   let minify: any;
