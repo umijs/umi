@@ -50,7 +50,7 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/...
+        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/... --filter ./examples/mfsu-e2e/...
 
       - name: example-max-e2e-without-record
         if: ${{ !env.CYPRESS_RECORD_KEY }}
@@ -82,6 +82,38 @@ jobs:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
           PORT: 9527
 
+      - name: example-mfsu-e2e-without-record
+        if: ${{ !env.CYPRESS_RECORD_KEY }}
+        uses: cypress-io/github-action@v4
+        with:
+          start: pnpm run dev
+          wait-on: 'npx wait-on http://localhost:8000/__umi/api/status'
+          browser: chrome
+          working-directory: ./examples/mfsu-e2e
+          install: false
+          record: false
+          install-command: pnpm i cypress
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+          PORT: 8000
+          HMR: none
+
+      - name: example-mfsu-e2e-with-recording
+        if: env.CYPRESS_RECORD_KEY
+        uses: cypress-io/github-action@v4
+        with:
+          start: pnpm run dev
+          wait-on: 'npx wait-on http://localhost:8000/__umi/api/status'
+          browser: chrome
+          working-directory: ./examples/mfsu-e2e
+          install: false
+          record: true
+          install-command: pnpm i cypress
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+          PORT: 8000
+          HMR: none
+          
       - name: Run example test-test
         working-directory: ./examples/test-test
         run: |
