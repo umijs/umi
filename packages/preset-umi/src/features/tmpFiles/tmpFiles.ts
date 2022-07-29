@@ -303,11 +303,14 @@ declare module '*.txt' {
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/EmptyRoute.tsx',
+      // https://github.com/umijs/umi/issues/8782
+      // Empty <Outlet /> needs to pass through outlet context, otherwise nested route will not get context value.
       content: `
 import React from 'react';
-import { Outlet } from 'umi';
+import { Outlet, useOutletContext } from 'umi';
 export default function EmptyRoute() {
-  return <Outlet />;
+  const context = useOutletContext();
+  return <Outlet context={context} />;
 }
       `,
     });
