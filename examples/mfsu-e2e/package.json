@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "author": "pshu <pishu.spf@antfin.com>",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "e2e": "cypress run",
+    "e2e:ci": "start-server-and-test preview http://127.0.0.1:9572  e2e",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "4.0.0-canary.20220729.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "cypress": "^10.0.0",
+    "start-server-and-test": "^1.0.0",
+    "typescript": "^4.1.2",
+    "wait-on": "^6.0.1"
+  }
+}
