@@ -6,7 +6,6 @@
     "dev": "umi dev",
     "e2e": "cypress run",
     "e2e:ci": "start-server-and-test preview http://127.0.0.1:9572  e2e",
-    "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
   },
