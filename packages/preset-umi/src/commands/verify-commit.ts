@@ -53,13 +53,18 @@ export default (api: IApi) => {
         'wip',
         'release',
         'dep',
+        'deps',
         'example',
-        'Merge',
+        'examples',
+        'merge',
+        'revert',
       ];
+
       const commitRE = new RegExp(
-        `^${
-          api.config.verifyCommit?.allowEmoji ? emoji : ''
-        }(revert: )?(${scope.join('|')})(\\(.+\\))?: .{1,50}`,
+        `^((${api.config.verifyCommit?.allowEmoji ? emoji : ''}(${scope.join(
+          '|',
+        )})(\\(.+\\))?:)|(Merge|Revert|Version)) .{1,50}`,
+        'i',
       );
       if (!commitRE.test(msg)) {
         console.log();
