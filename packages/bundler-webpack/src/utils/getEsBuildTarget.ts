@@ -12,7 +12,7 @@ export function getEsBuildTarget({ targets, jsMinifier }: IOpts) {
     logger.error(
       `${chalk.red(
         `jsMinifier: esbuild`,
-      )} does not support ie as targets, You can use ${chalk.green(
+      )} is not supported when there is ie in the targets, you can use ${chalk.green(
         `jsMinifier: 'terser'`,
       )}`,
     );
