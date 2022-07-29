@@ -70,6 +70,9 @@ export async function dev(opts: IOpts) {
         opts.config.mfsu?.cacheDirectory || join(cacheDirectoryPath, 'mfsu'),
       onMFSUProgress: opts.onMFSUProgress,
       unMatchLibs: opts.config.mfsu?.exclude,
+      shared: opts.config.mfsu?.shared,
+      remoteAliases: opts.config.mfsu?.remoteAliases,
+      remoteName: opts.config.mfsu?.remoteName,
       getCacheDependency() {
         return stripUndefined({
           version: require('../package.json').version,
@@ -81,6 +84,9 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
+      serverBase: `${opts.config.https ? 'https' : 'http'}://${opts.host}:${
+        opts.port || 8000
+      }`,
     });
   }
 

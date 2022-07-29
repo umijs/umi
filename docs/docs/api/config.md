@@ -837,7 +837,7 @@ polyfill: {
 示例，
 
 ```js
-plugins: [
+presets: [
   // npm 依赖
   'umi-preset-hello',
   // 相对路径
