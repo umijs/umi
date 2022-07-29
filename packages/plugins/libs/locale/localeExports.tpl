@@ -262,7 +262,7 @@ http://j.mp/37Fkd5Q
     );
     firstWaring = false;
   }
-  if(!g_intl){
+  if (!g_intl) {
     setIntl(getLocale());
   }
   return g_intl.formatMessage(descriptor, values);
