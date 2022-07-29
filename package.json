@@ -9,6 +9,7 @@
     "build:release": "umi-scripts turbo --cmd build --no-cache -- --declarationMap false",
     "check:packageFiles": "umi-scripts checkPackageFiles",
     "codemod:build": "pnpm --filter @umijs/codemod build",
+    "codemod:cov": "cd codemod && jest --coverage",
     "codemod:dev": "pnpm --filter @umijs/codemod build --watch",
     "codemod:jest": "cd codemod && jest",
     "codemod:release": "umi-scripts releaseCodemod",

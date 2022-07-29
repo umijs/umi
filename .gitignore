@@ -1,4 +1,4 @@
-/node_modules
+node_modules
 /examples/*/.esmi
 /examples/*/.mfsu
 /examples/*/.umi
@@ -39,5 +39,5 @@
 /test/**/fixtures/*/.umi-production
 /test/**/fixtures/*/src/.umi
 /test/**/fixtures/*/src/.umi-production
-/coverage
+coverage
 .vscode

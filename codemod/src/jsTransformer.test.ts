@@ -39,7 +39,7 @@ test('dynamic', () => {
       filePath: '',
     }).code,
   ).toEqual(
-    `const AsyncComponent = loadable(() => import('./AsyncComponent'));import loadable from "@loadable/component";`,
+    `import loadable from "@loadable/component";const AsyncComponent = loadable(() => import('./AsyncComponent'));`,
   );
 });
 
@@ -76,9 +76,9 @@ function foo(props) {
     }).code,
   ).toEqual(
     `
-function foo(props) {const { route } = useAppData();const { routes } = useRouteData();const match = useMatch();const location = useLocation();
+import { history, useLocation, useMatch, useRouteData, useAppData } from "umi";function foo(props) {const { route } = useAppData();const { routes } = useRouteData();const match = useMatch();const location = useLocation();
   history, location, match, routes, route, location;
-}import { history, useLocation, useMatch, useRouteData, useAppData } from "umi";
+}
   `.trim(),
   );
 });
@@ -95,9 +95,43 @@ function foo(props) {
     }).code,
   ).toEqual(
     `
-function foo(props) {const match = useMatch();const location = useLocation();const { routes } = useRouteData();const { route } = useAppData();
+import { useAppData, useRouteData, useLocation, useMatch, history } from "umi";function foo(props) {const match = useMatch();const location = useLocation();const { routes } = useRouteData();const { route } = useAppData();
 
-}import { useAppData, useRouteData, useLocation, useMatch, history } from "umi";
+}
+  `.trim(),
+  );
+});
+
+test('route props with assign inline', () => {
+  expect(
+    transform({
+      code: `
+function foo({ children, history, match, location, routes, route }) {
+}
+    `.trim(),
+      filePath: '',
+    }).code,
+  ).toEqual(
+    `
+import { useAppData, useRouteData, useLocation, useMatch, history } from "umi";function foo({ children }) {const match = useMatch();const location = useLocation();const { routes } = useRouteData();const { route } = useAppData();
+}
+  `.trim(),
+  );
+});
+
+test('route props with assign inline arrowFunction', () => {
+  expect(
+    transform({
+      code: `
+const foo = ({ children, history, match, location, routes, route })=> {
+}
+    `.trim(),
+      filePath: '',
+    }).code,
+  ).toEqual(
+    `
+import { useAppData, useRouteData, useLocation, useMatch, history } from "umi";const foo = ({ children }) => {const match = useMatch();const location = useLocation();const { routes } = useRouteData();const { route } = useAppData();
+};
   `.trim(),
   );
 });
@@ -133,7 +167,7 @@ test('history.push query > search', () => {
       } as any,
     }).code,
   ).toEqual(
-    `history.push({ pathname: '/foo', search: qs.stringify({ a: 1 }) });import * as qs from "query-string";`,
+    `import * as qs from "query-string";history.push({ pathname: '/foo', search: qs.stringify({ a: 1 }) });`,
   );
 });
 
@@ -150,7 +184,7 @@ test('location query assign', () => {
       } as any,
     }).code,
   ).toEqual(
-    `const query = qs_l_q.parse(location.search);import * as qs_l_q from "query-string";`,
+    `import * as qs_l_q from "query-string";const query = qs_l_q.parse(location.search);`,
   );
 });
 
@@ -167,7 +201,7 @@ test('location query assign with other properties', () => {
       } as any,
     }).code,
   ).toEqual(
-    `const { foo } = location;const query = qs_l_q.parse(location.search);import * as qs_l_q from "query-string";`,
+    `import * as qs_l_q from "query-string";const { foo } = location;const query = qs_l_q.parse(location.search);`,
   );
 });
 

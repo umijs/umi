@@ -53,7 +53,6 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
       fileCache.set(file, await fs.readFile(join(opts.cwd, file), 'utf8'));
     }),
   );
-
   // pkg
   const pkgPath = join(opts.cwd, 'package.json');
   const pkg = require(pkgPath);
@@ -65,7 +64,8 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
   const absSrcPath = existsSync(join(opts.cwd, 'src'))
     ? join(opts.cwd, 'src')
     : opts.cwd;
-  let absAppJSPath = join(absSrcPath, 'app.ts');
+
+  let absAppJSPath = '';
   for (const file of ['app.tsx', 'app.ts', 'app.jsx', 'app.js']) {
     if (existsSync(join(absSrcPath, file))) {
       absAppJSPath = join(absSrcPath, file);
@@ -73,22 +73,65 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
     }
   }
 
+  let importSource = 'umi';
+  const deps = {
+    includes: {} as Record<string, string>,
+    excludes: [] as string[],
+  };
+  const devDeps = {
+    includes: {} as Record<string, string>,
+    excludes: [] as string[],
+  };
+
+  // use alita
+  if (pkg.dependencies?.['alita'] || pkg.devDependencies?.['alita']) {
+    importSource = 'alita';
+  }
+
+  // default Includes antd
+  deps.includes =
+    importSource === 'alita'
+      ? {
+          'antd-mobile': '2.3.4',
+        }
+      : {
+          antd: '^4.20.6',
+        };
+
+  // use @uminjs/max
+  if (pkg.dependencies?.['@umijs/preset-react']) {
+    importSource = '@umijs/max';
+    deps.excludes.push('@umijs/preset-react');
+    deps.excludes.push('umi');
+  } else if (pkg.devDependencies?.['@umijs/preset-react']) {
+    importSource = '@umijs/max';
+    devDeps.excludes.push('@umijs/preset-react');
+    devDeps.excludes.push('umi');
+  }
+
+  // umi lint
+  const defaultExcludes = ['eslint', '@umijs/fabric', 'stylelint'];
+
+  defaultExcludes.forEach((key) => {
+    if (pkg.dependencies?.[key]) {
+      deps.excludes.push(key);
+    } else if (pkg.devDependencies?.[key]) {
+      devDeps.excludes.push(key);
+    }
+  });
+
   return {
     config,
+    configFile: mainConfigFile,
     absAppJSPath,
     pkg,
     pkgPath,
     files,
     fileCache,
     unexpectedLayoutConfig,
-    deps: {
-      includes: {} as Record<string, string>,
-      excludes: [] as string[],
-    },
-    devDeps: {
-      includes: {} as Record<string, string>,
-      excludes: [] as string[],
-    },
+    deps,
+    devDeps,
     args: opts.args,
+    importSource: process.env.UMI_IMPORT_SOURCE ?? importSource,
   };
 }

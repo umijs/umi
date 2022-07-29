@@ -15,6 +15,7 @@ export class Checker {
   async run() {
     const config = this.context.config;
     const pkg = this.context.pkg;
+    const importSource = this.context.importSource;
     const errors: Error[] = [];
 
     // check git status
@@ -41,20 +42,38 @@ export class Checker {
     }
     if (config.singular) {
       warn(
-        `Umi 4 不再支持 singular 属性，默认复数目录，您仍在使用单数目录，请手动重命为复数形式。
+        `不再支持 singular 属性，默认复数目录，您仍在使用单数目录，请手动重命为复数形式。
       - 必要变更：page => pages、model => models、locale => locales、layout => layouts
       - src 下其他目录也建议使用复数形式，例如：utils、services、components 等`,
       );
     }
 
     // check pkg
-    const umiName = 'umi';
-    const umiVersion: string =
-      pkg.dependencies?.[umiName] || pkg.devDependencies?.[umiName];
-    if (!umiVersion?.match(/^[\^]{0,1}(3|4)/)) {
-      errors.push(
-        new Error(`仅支持从 umi 3 项目升级，但该项目中依赖 umi@${umiVersion}`),
-      );
+    if (importSource === 'alita') {
+      const alitaName = 'alita';
+      const alitaVersion: string =
+        pkg.dependencies?.[alitaName] || pkg.devDependencies?.[alitaName];
+      if (!alitaVersion?.match(/^[\^]{0,1}(2|3)/)) {
+        errors.push(
+          new Error(
+            `仅支持从 alita 2 项目升级，但该项目中依赖 alita@${alitaVersion}`,
+          ),
+        );
+      }
+      if (Object.keys(pkg?.cordova?.plugins || {}).length > 1) {
+        warn(`该项目中可能使用了多个 cordova 插件，请注意原生代码中的迁移差异`);
+      }
+    } else {
+      const umiName = 'umi';
+      const umiVersion: string =
+        pkg.dependencies?.[umiName] || pkg.devDependencies?.[umiName];
+      if (!umiVersion?.match(/^[\^]{0,1}(3|4)/)) {
+        errors.push(
+          new Error(
+            `仅支持从 umi 3 项目升级，但该项目中依赖 umi@${umiVersion}`,
+          ),
+        );
+      }
     }
 
     // print error

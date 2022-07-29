@@ -1,6 +1,6 @@
 {
-  "name": "@umijs/codemod",
-  "version": "0.1.0",
+  "name": "@alita/codemod",
+  "version": "0.0.9",
   "homepage": "https://github.com/umijs/umi/tree/master/codemod",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {

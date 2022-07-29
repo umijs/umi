@@ -9,5 +9,7 @@ export default {
     '!**/examples/**/*.{js,jsx,ts,tsx}',
     '!**/compiled/**/*.{js,jsx}',
     '!**/fixtures/**/*.*',
+    '!**/src/types.ts',
+    '!**/src/logger.ts',
   ],
 } as Config.InitialOptions;

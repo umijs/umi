@@ -50,24 +50,27 @@ export function update(opts: {
         // routes
         if (opts.routesUpdates) {
           const [routes] = findProp(n, 'routes') || [null];
-          assert(routes, `routes is required in config`);
-          let routesNode: any = null;
-          if (t.isIdentifier(routes.value)) {
-            const node = getIdentifierDeclaration(routes.value, path);
-            if (t.isImportDeclaration(node)) {
-              extraRouteFile = node.source.value;
-            } else {
-              routesNode = node;
+          // assert(routes, `routes is required in config`);
+          // config has routes
+          if (routes) {
+            let routesNode: any = null;
+            if (t.isIdentifier(routes.value)) {
+              const node = getIdentifierDeclaration(routes.value, path);
+              if (t.isImportDeclaration(node)) {
+                extraRouteFile = node.source.value;
+              } else {
+                routesNode = node;
+              }
+            } else if (t.isArrayExpression(routes.value)) {
+              routesNode = routes.value;
             }
-          } else if (t.isArrayExpression(routes.value)) {
-            routesNode = routes.value;
-          }
-          if (routesNode) {
-            assert(
-              t.isArrayExpression(routesNode),
-              `routes should be an array`,
-            );
-            transformRoutes(routesNode, opts.routesUpdates);
+            if (routesNode) {
+              assert(
+                t.isArrayExpression(routesNode),
+                `routes should be an array`,
+              );
+              transformRoutes(routesNode, opts.routesUpdates);
+            }
           }
         }
       },

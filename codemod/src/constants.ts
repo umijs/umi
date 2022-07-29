@@ -2,7 +2,6 @@ export const ROUTE_PROPS = new Set([
   'history',
   'location',
   'match',
-  'location',
   'routes',
   'route',
 ]);

@@ -1,10 +1,10 @@
 import assert from 'assert';
-import { writeFileSync } from 'fs';
 import kleur from 'kleur';
 import { join } from 'path';
 import { transform } from '../jsTransformer';
 import { info } from '../logger';
 import { Context } from '../types';
+import { writePrettierFileSync } from '../utils/writePrettierFileSync';
 
 export class Runner {
   cwd: string;
@@ -27,7 +27,7 @@ export class Runner {
         return;
       }
       assert(newCode, `code should not be null from ${absFilePath}`);
-      writeFileSync(absFilePath, newCode, 'utf-8');
+      writePrettierFileSync(absFilePath, newCode);
     });
   }
 

@@ -1,12 +1,16 @@
 import { rimraf } from '@umijs/utils';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { error, info } from '../logger';
+import { Context } from '../types';
+import { writePrettierFileSync } from '../utils/writePrettierFileSync';
 
 export class Runner {
   cwd: string;
-  constructor(opts: { cwd: string }) {
+  context: Context;
+  constructor(opts: { cwd: string; context: Context }) {
     this.cwd = opts.cwd;
+    this.context = opts.context;
   }
 
   run() {
@@ -38,10 +42,9 @@ export class Runner {
       info(`Delete ${eslintrcjsFile}`);
     }
 
-    writeFileSync(
+    writePrettierFileSync(
       eslintrcjsFile,
       this.getRuleCode(rules, plugins, globals),
-      'utf-8',
     );
     info(`Create ${eslintrcjsFile}`);
   }
@@ -49,7 +52,7 @@ export class Runner {
   getRuleCode(rules: Record<string, any>, plugins: any, globals: any) {
     return `
 module.exports = {
-  extends: require.resolve('umi/eslint'),
+  extends: require.resolve('${this.context.importSource || 'umi'}/eslint'),
   rules: ${JSON.stringify(rules, null, 2)},
   ${plugins ? `plugins: ${JSON.stringify(plugins, null, 2)},` : ''}
   ${globals ? `globals: ${JSON.stringify(globals, null, 2)},` : ''}

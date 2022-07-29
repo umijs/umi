@@ -25,3 +25,17 @@ test('set with exists', () => {
     `export const layout = () => {return { logo: '1', icon: "icon.png" };};`,
   );
 });
+
+test('set with cover', () => {
+  expect(
+    update({
+      code: `const layout = () => { return { logo: '1' } };export { layout }`,
+      filePath: ``,
+      updates: {
+        set: { layout: { icon: 'icon.png' } },
+      },
+    }).code,
+  ).toEqual(
+    `const layout = () => {return { logo: '1', icon: "icon.png" };};export { layout };`,
+  );
+});

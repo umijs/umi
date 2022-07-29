@@ -1,7 +1,8 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { resolve } from '@umijs/utils';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join } from 'path';
+import { writePrettierFileSync } from './utils/writePrettierFileSync';
 
 const KEYS_TO_MOCK_IMPORT = ['monaco-editor-webpack-plugin'];
 
@@ -59,9 +60,8 @@ export async function build(opts: { configFile: string; outputFile?: string }) {
     ],
   });
   const content = readFileSync(outfile, 'utf-8');
-  writeFileSync(
+  writePrettierFileSync(
     outfile,
     content.replace('require("umi")', '{defineConfig: (c) => c}'),
-    'utf-8',
   );
 }

@@ -1,0 +1,47 @@
+{
+    "name": "nextAlitaApp",
+    "private": true,
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "alita dev",
+        "start-server": "node server.js",
+        "build": "alita build",
+        "cordova-init": "alita cordova --init",
+        "cordova-add-ios": "alita cordova --ios",
+        "cordova-add-android": "alita cordova --android",
+        "start-ios": "alita dev",
+        "build-ios": "alita build",
+        "start-android": "cross-env CORDOVA=android alita dev",
+        "build-android": "cross-env CORDOVA=android alita build",
+        "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
+        "lint-staged": "lint-staged",
+        "lint-staged:js": "eslint --ext .ts,.tsx ",
+        "lint:fix": "eslint --fix --cache --ext .ts,.tsx --format=pretty ./src && npm run lint:style",
+        "lint:js": "eslint --cache --ext .ts,.tsx --format=pretty ./src",
+        "lint:prettier": "prettier --check \"**/*\" --end-of-line auto",
+        "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
+        "prettier": "prettier -c --write \"**/*\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "alita": "2.8.35"
+    },
+    "create-umi": {
+        "ignore": [
+            "create-umi-ignore.js"
+        ]
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {}
+        },
+        "platforms": [
+            "ios",
+            "android"
+        ]
+    }
+}

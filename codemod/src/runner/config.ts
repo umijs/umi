@@ -1,12 +1,11 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { lodash } from '@umijs/utils';
-import assert from 'assert';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync } from 'fs';
 import { update as appJSUpdate } from '../appJSUpdater';
 import { update } from '../configUpdater';
 import { info } from '../logger';
 import { Context } from '../types';
+import { writePrettierFileSync } from '../utils/writePrettierFileSync';
 
 const { get } = lodash;
 
@@ -45,9 +44,16 @@ export class Runner {
   }
 
   run() {
-    // config/config.ts
-    const { config } = this.context;
+    const { configFile, code, routeCode, routeFilePath } = this.transform(
+      this.context,
+    );
+    writePrettierFileSync(configFile, code);
+    if (routeCode) {
+      writePrettierFileSync(routeFilePath, routeCode);
+    }
+  }
 
+  transform({ config, configFile }: any) {
     // deleteKeys
     const deleteKeys: string[] = [];
     KEYS_TO_DELETE.forEach((key) => {
@@ -100,7 +106,7 @@ export class Runner {
     }
 
     // unexpected layout config > app.ts
-    if (this.context.unexpectedLayoutConfig.length) {
+    if (this.context?.unexpectedLayoutConfig?.length) {
       const appJSSet: Record<string, any> = {};
       this.context.unexpectedLayoutConfig.forEach((key) => {
         deleteKeys.push(`layout.${key}`);
@@ -108,13 +114,11 @@ export class Runner {
       });
       const { absAppJSPath } = this.context;
       const { code } = appJSUpdate({
-        code: existsSync(absAppJSPath)
-          ? readFileSync(absAppJSPath, 'utf-8')
-          : '',
+        code: absAppJSPath ? readFileSync(absAppJSPath, 'utf-8') : '',
         filePath: absAppJSPath,
         updates: { set: { layout: appJSSet } },
       });
-      writeFileSync(absAppJSPath, code, 'utf-8');
+      writePrettierFileSync(absAppJSPath, code);
       info(`Set ${JSON.stringify({ layout: appJSSet })} to ${absAppJSPath}`);
     }
 
@@ -123,11 +127,11 @@ export class Runner {
       setKeys['layout.locale'] = false;
     }
 
-    const configFile = join(this.cwd, 'config/config.ts');
-    assert(
-      existsSync(configFile),
-      `Could not find config file at ${configFile}`,
-    );
+    // const configFile = join(this.cwd, 'config/config.ts');
+    // assert(
+    //   existsSync(configFile),
+    //   `Could not find config file at ${configFile}`,
+    // );
     const {
       config: { code },
       routesConfig: { filePath: routeFilePath, code: routeCode } = {} as any,
@@ -164,9 +168,11 @@ export class Runner {
         },
       },
     });
-    writeFileSync(configFile, code);
-    if (routeCode) {
-      writeFileSync(routeFilePath, routeCode);
-    }
+    return {
+      configFile,
+      code,
+      routeCode,
+      routeFilePath,
+    };
   }
 }

@@ -74,6 +74,7 @@ export function update(opts: {
           return true;
         }
       });
+
       if (funNode) {
         keys.splice(
           keys.findIndex((key) => key === confName),

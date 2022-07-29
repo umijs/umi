@@ -52,6 +52,7 @@ export function transform(opts: {
   filePath: string;
   context?: Context;
 }) {
+  const importSource = opts.context?.importSource || 'umi';
   const importRenames = [
     (source: string) => {
       if (source === '@@/plugin-qiankun/masterOptions') {
@@ -60,7 +61,7 @@ export function transform(opts: {
         );
         return '@@/plugin-qiankun-master/masterOptions';
       } else if (source === '@@/plugin-model/useModel') {
-        return 'umi';
+        return importSource;
       } else {
         return source;
       }
@@ -84,12 +85,12 @@ export function transform(opts: {
   }[] = [];
   const specifierRenames = [
     {
-      source: 'umi',
+      source: importSource,
       specifier: 'useRouteMatch',
       newSpecifier: 'useMatch',
     },
     {
-      source: 'umi',
+      source: importSource,
       specifier: 'Redirect',
       newSpecifier: 'Navigate',
     },
@@ -113,7 +114,7 @@ export function transform(opts: {
         const bindingNode = getIdentifierDeclaration(path.node.callee, path);
         if (
           t.isImportDeclaration(bindingNode) &&
-          bindingNode.source.value === 'umi'
+          bindingNode.source.value === importSource
         ) {
           const args = path.node.arguments;
           if (args[0] && t.isObjectExpression(args[0])) {
@@ -271,6 +272,7 @@ export function transform(opts: {
           index -= 1;
         }
       }
+
       // route props
       if (t.isIdentifier(init, { name: 'props' }) && t.isObjectPattern(id)) {
         let index = id.properties.length - 1;
@@ -311,6 +313,72 @@ export function transform(opts: {
         }
       }
     },
+    FunctionDeclaration(path: Babel.NodePath<t.FunctionDeclaration>) {
+      const { params } = path.node;
+      let index = params.length - 1;
+
+      while (index >= 0) {
+        if (t.isObjectPattern(params[index])) {
+          const param = params[index] as t.ObjectPattern;
+          let subIndex = param.properties.length - 1;
+          while (subIndex >= 0) {
+            const p = param.properties[subIndex];
+            if (
+              t.isObjectProperty(p) &&
+              t.isIdentifier(p.key) &&
+              ROUTE_PROPS.has(p.key.name)
+            ) {
+              const name = p.key.name;
+              const pp = path;
+              if (!routePropsMap.has(pp)) {
+                routePropsMap.set(pp, new Set<string>([]));
+              }
+              if (!routePropsMap.get(pp)!.has(name)) {
+                routePropsMap.get(pp)!.add(name);
+                path.node.body.body.unshift(...buildHooks(name));
+              }
+              routePropsDetected.add(name);
+              param.properties.splice(subIndex, 1);
+            }
+            subIndex -= 1;
+          }
+        }
+        index -= 1;
+      }
+    },
+    ArrowFunctionExpression(path: Babel.NodePath<t.ArrowFunctionExpression>) {
+      const { params } = path.node;
+      let index = params.length - 1;
+      while (index >= 0) {
+        if (t.isObjectPattern(params[index])) {
+          const param = params[index] as t.ObjectPattern;
+          let subIndex = param.properties.length - 1;
+          while (subIndex >= 0) {
+            const p = param.properties[subIndex];
+            if (
+              t.isObjectProperty(p) &&
+              t.isIdentifier(p.key) &&
+              ROUTE_PROPS.has(p.key.name)
+            ) {
+              const name = p.key.name;
+              const pp = path;
+              if (!routePropsMap.has(pp)) {
+                routePropsMap.set(pp, new Set<string>([]));
+              }
+              if (!routePropsMap.get(pp)!.has(name)) {
+                routePropsMap.get(pp)!.add(name);
+                const body = path.node.body as t.BlockStatement;
+                body.body.unshift(...buildHooks(name));
+              }
+              routePropsDetected.add(name);
+              param.properties.splice(subIndex, 1);
+            }
+            subIndex -= 1;
+          }
+        }
+        index -= 1;
+      }
+    },
   });
 
   if (hasDynamic) {
@@ -324,7 +392,7 @@ export function transform(opts: {
       ],
     });
     specifierSourceDeleted.push({
-      source: 'umi',
+      source: importSource,
       specifier: 'dynamic',
     });
   }
@@ -355,7 +423,7 @@ export function transform(opts: {
     //   ).join(', ')}，请参考升级文档进行修改`,
     // );
     importAdds.push({
-      source: 'umi',
+      source: importSource,
       specifiers: Array.from(routePropsDetected).map((name) => ({
         type: 'ImportSpecifier',
         // @ts-ignore
@@ -553,7 +621,7 @@ export function transform(opts: {
             t.stringLiteral(source),
           );
           info(`Import add ${JSON.stringify(specifiers)} from ${source}`);
-          path.node.body.push(importDeclaration);
+          path.node.body.unshift(importDeclaration);
         });
       },
     },
