@@ -97,7 +97,7 @@ export function patchRoutes({ routes, routeComponents }) {
 
 比如在最前面添加一个 `/foo` 路由，
 
-```ts
+```tsx
 import Page from '@/extraRoutes/foo';
 
 export function patchClientRoutes({ routes }) {
