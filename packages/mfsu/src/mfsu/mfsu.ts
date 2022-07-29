@@ -54,6 +54,10 @@ interface IOpts {
   strategy?: 'eager' | 'normal';
   include?: string[];
   srcCodeCache?: any;
+  shared?: any;
+  remoteName?: string;
+  remoteAliases?: string[];
+  serverBase: string;
 }
 
 export class MFSU {
@@ -126,7 +130,7 @@ export class MFSU {
     Object.assign(this.alias, opts.config.resolve?.alias || {});
     this.externals.push(...makeArray(opts.config.externals || []));
     // entry
-    const entry: Record<string, string> = {};
+    const entry: Record<string, string | string[]> = {};
     const virtualModules: Record<string, string> = {};
     // ensure entry object type
     const entryObject = lodash.isString(opts.config.entry)
@@ -137,6 +141,12 @@ export class MFSU {
       `webpack config 'entry' value must be a string or an object.`,
     );
     for (const key of Object.keys(entryObject)) {
+      // 如果是项目导出的远端模块 不需要处理成动态加载的模块 以避免加载错误
+      if (key === this.opts.remoteName) {
+        entry[key] = entryObject[key];
+        continue;
+      }
+
       const virtualPath = `./mfsu-virtual-entry/${key}.js`;
       const virtualContent: string[] = [];
       let index = 1;
@@ -200,6 +210,7 @@ export class MFSU {
         new WebpackVirtualModules(virtualModules),
         new this.opts.implementor.container.ModuleFederationPlugin({
           name: '__',
+          shared: this.opts.shared || {},
           remotes: {
             [mfName!]: this.opts.runtimePublicPath
               ? // ref:
@@ -228,7 +239,9 @@ promise new Promise(resolve => {
   document.head.appendChild(script);
 })
                 `.trimLeft()
-              : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`,
+              : `${mfName}@${
+                  this.opts.serverBase || ''
+                }${publicPath}${REMOTE_FILE_FULL}`, // mfsu 的入口文件会被在其他的站点上被引用, 所以需要显式的指明 serverBase
           },
         }),
         new BuildDepPlugin(this.strategy.getBuildDepPlugConfig()),
