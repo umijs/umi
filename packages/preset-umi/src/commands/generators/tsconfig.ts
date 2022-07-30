@@ -1,5 +1,5 @@
 import { GeneratorType } from '@umijs/core';
-import { logger } from '@umijs/utils';
+import { logger, semver } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -23,14 +23,19 @@ export default (api: IApi) => {
     fn: async () => {
       const h = new GeneratorHelper(api);
 
-      const reactVersion =
-        parseInt(api.appData.react.version.split('.')[0], 10) || 18;
-      const reactDomVersion =
-        parseInt(api.appData['react-dom'].version.split('.')[0], 10) || 18;
+      const reactVersion = api.appData.react.version;
+      const reactDomVersion = api.appData['react-dom'].version;
+      if (semver.neq(reactVersion, reactDomVersion)) {
+        logger.warn(
+          `The React version ${reactVersion} is not equal to the React-Dom version ${reactDomVersion}, please check.`,
+        );
+      }
+
+      const reactMajorVersion = parseInt(reactVersion.split('.')[0], 10) || 18;
       h.addDevDeps({
         typescript: '^4',
-        '@types/react': `^${reactVersion}.0.0`,
-        '@types/react-dom': `^${reactDomVersion}.0.0`,
+        '@types/react': `^${reactMajorVersion}.0.0`,
+        '@types/react-dom': `^${reactMajorVersion}.0.0`,
       });
 
       writeFileSync(
