@@ -27,7 +27,7 @@ export default (api: IApi) => {
       const reactDomVersion = api.appData['react-dom'].version;
       if (semver.neq(reactVersion, reactDomVersion)) {
         logger.warn(
-          `The React version ${reactVersion} is not equal to the React-Dom version ${reactDomVersion}, please check.`,
+          `The react version ${reactVersion} is not equal to the react-dom version ${reactDomVersion}, please check.`,
         );
       }
 
