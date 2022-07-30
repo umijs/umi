@@ -34,8 +34,8 @@ export default (api: IApi) => {
       const reactMajorVersion = parseInt(reactVersion.split('.')[0], 10) || 18;
       h.addDevDeps({
         typescript: '^4',
-        '@types/react': `^${reactMajorVersion}.0.0`,
-        '@types/react-dom': `^${reactMajorVersion}.0.0`,
+        '@types/react': `^${reactMajorVersion}`,
+        '@types/react-dom': `^${reactMajorVersion}`,
       });
 
       writeFileSync(
