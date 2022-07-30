@@ -1,4 +1,6 @@
 export default {
   npmClient: 'pnpm',
-  mfsu: {},
+  mfsu: {
+    mfName: 'config_mf_name',
+  },
 };
