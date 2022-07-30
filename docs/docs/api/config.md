@@ -1030,11 +1030,11 @@ theme: { '@primary-color': '#1DA57A' }
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`
-- 默认值：`{}`
+- 默认值：`{ scope: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'workflow', 'build', 'ci', 'chore', 'types', 'wip', 'release', 'dep', 'deps', 'example', 'examples', 'merge', 'revert'] }`
 
 针对 verify-commit 命令的配置项。
 
-关于参数。`scope` 用于配置允许的 scope，配置后会覆盖默认的；`allowEmoji` 开启后会允许加 EMOJI 前缀，比如 `💥 feat(模块): 添加了个很棒的功能`。
+关于参数。`scope` 用于配置允许的 scope，不区分大小写，配置后会覆盖默认的；`allowEmoji` 开启后会允许加 EMOJI 前缀，比如 `💥 feat(模块): 添加了个很棒的功能`。
 
 ```
 verifyCommit: {
@@ -1042,6 +1042,8 @@ verifyCommit: {
   allowEmoji: true,
 }
 ```
+
+注意：使用 `git revert` 或 `git merge` 命令以及 `changesets` 的发版 merge 格式所产生的 commit message 会默认通过校验。
 
 ## vite
 
