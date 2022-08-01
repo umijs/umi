@@ -169,7 +169,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
 
   // plugins
   // additional entry plugin
-  await addAdditionEntryPlugin(applyOpts);
+  if (isDev && opts.hmr) {
+    await addAdditionEntryPlugin(applyOpts);
+  }
   // mini-css-extract-plugin
   await addMiniCSSExtractPlugin(applyOpts);
   // ignoreMomentLocale
