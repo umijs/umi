@@ -1,7 +1,7 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { winPath } from '@umijs/utils';
 import { join, relative } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { chalk } from 'umi/plugin-utils';
 import { Model, ModelUtils } from './utils/modelUtils';
 import { withTmpPath } from './utils/withTmpPath';
@@ -50,6 +50,28 @@ export default (api: IApi) => {
       content: ModelUtils.getModelsContent(models),
     });
 
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+export interface IRuntimeConfig {
+  dva?: {
+    config?: {
+        initialState?: Record<string, any>;
+        onError?: any;
+        onStateChange?: any;
+        onAction?: any;
+        onHmr?: any;
+        onReducer?: any;
+        onEffect?: any;
+        extraReducers?: any;
+        extraEnhancers?: any;
+        [key: string]: any;
+    },
+    plugins?: string[];
+  }
+}
+      `,
+    });
     // dva.tsx
     api.writeTmpFile({
       path: 'dva.tsx',

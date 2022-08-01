@@ -1,4 +1,4 @@
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
@@ -127,6 +127,15 @@ import React from 'react';
 import Provider from './Provider';
 export function dataflowProvider(container) {
   return <Provider>{ container }</Provider>;
+}
+      `,
+    });
+
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+export interface IRuntimeConfig {
+  getInitialState?: () => Promise<Record<string, any>>
 }
       `,
     });

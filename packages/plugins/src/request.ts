@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { Mustache, winPath } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
@@ -327,6 +327,16 @@ export {
   request,
 } from './request';
 `,
+    });
+
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import type { RequestConfig } from './types.d'
+export type IRuntimeConfig = {
+  request?: RequestConfig
+};
+      `,
     });
   });
 };

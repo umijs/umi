@@ -6,6 +6,28 @@
 
 约定 `src/app.tsx` 为运行时配置。
 
+
+## TypeScript 提示
+如果你想在写配置时也有提示，可以通过 umi 的 defineApp 方法定义配置，
+```js
+import { defineApp } from 'umi'
+export default defineApp({
+  layout: () => {
+    return {
+      title: "umi",
+    }
+  }
+})
+
+// or 
+import {  RuntimeConfig } from 'umi'
+export const layout: RuntimeConfig['layout'] = () => {
+  return {
+    title: 'umi'
+  }
+}
+```
+
 ## 配置项
 
 > 以下配置项按字母排序。

@@ -1,6 +1,7 @@
 import { lodash, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
+import { RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { getModuleExports } from './getModuleExports';
@@ -380,6 +381,7 @@ export default function EmptyRoute() {
         'onRouteChange',
       ],
     });
+    const appPluginRegExp = /(\/|\\)app.(ts|tsx|jsx|js)$/;
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/plugin.ts',
@@ -387,6 +389,7 @@ export default function EmptyRoute() {
       context: {
         plugins: plugins.map((plugin, index) => ({
           index,
+          hasDefaultExport: appPluginRegExp.test(plugin),
           path: winPath(plugin),
         })),
         validKeys,
@@ -524,15 +527,18 @@ export default function EmptyRoute() {
       }
       // plugins
       exports.push('// plugins');
-      const plugins = readdirSync(api.paths.absTmpPath).filter((file) => {
+      const allPlugins = readdirSync(api.paths.absTmpPath).filter((file) =>
+        file.startsWith('plugin-'),
+      );
+      const plugins = allPlugins.filter((file) => {
         if (
-          file.startsWith('plugin-') &&
-          (existsSync(join(api.paths.absTmpPath, file, 'index.ts')) ||
-            existsSync(join(api.paths.absTmpPath, file, 'index.tsx')))
+          existsSync(join(api.paths.absTmpPath, file, 'index.ts')) ||
+          existsSync(join(api.paths.absTmpPath, file, 'index.tsx'))
         ) {
           return true;
         }
       });
+
       for (const plugin of plugins) {
         let file: string;
         if (existsSync(join(api.paths.absTmpPath, plugin, 'index.ts'))) {
@@ -553,6 +559,7 @@ export default function EmptyRoute() {
           );
         }
       }
+
       // plugins types.ts
       exports.push('// plugins types.d.ts');
       for (const plugin of plugins) {
@@ -563,6 +570,39 @@ export default function EmptyRoute() {
           exports.push(`export * from '${noSuffixFile}';`);
         }
       }
+      // plugins runtimeConfig.d.ts
+      let pluginIndex = 0;
+      const beforeImport = [];
+      let runtimeConfigType =
+        'export type RuntimeConfig = IDefaultRuntimeConfig';
+
+      for (const plugin of allPlugins) {
+        const runtimeConfigFile = winPath(
+          join(api.paths.absTmpPath, plugin, RUNTIME_TYPE_FILE_NAME),
+        );
+        if (existsSync(runtimeConfigFile)) {
+          const noSuffixRuntimeConfigFile = runtimeConfigFile.replace(
+            /\.ts$/,
+            '',
+          );
+          beforeImport.push(
+            `import type { IRuntimeConfig as Plugin${pluginIndex} } from '${noSuffixRuntimeConfigFile}'`,
+          );
+          runtimeConfigType += ` & Plugin${pluginIndex}`;
+          pluginIndex++;
+        }
+      }
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/defineApp.ts',
+        tplPath: join(TEMPLATES_DIR, 'defineApp.tpl'),
+        context: {
+          beforeImport: beforeImport.join('\n'),
+          runtimeConfigType,
+        },
+      });
+      exports.push(`export * from './core/defineApp'`);
+
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',
