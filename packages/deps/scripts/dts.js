@@ -92,7 +92,6 @@ function dts({ name }) {
   // 'yargs',
   // 'yargs-parser',
   // 'prompts',
-  // 'update-notifier',
 ].forEach(name => {
   dts({
     name,

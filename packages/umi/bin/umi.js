@@ -2,19 +2,9 @@
 
 require('v8-compile-cache');
 
-const updateNotifier = require('@umijs/deps/compiled/update-notifier');
 const resolveCwd = require('@umijs/deps/compiled/resolve-cwd');
 
-const pkg = require('../package.json');
-const { name, bin } = pkg;
-
-// Notify update to Umi4
-updateNotifier({
-  pkg,
-  shouldNotifyInNpmScript: true,
-  updateCheckInterval: 0
-}).notify();
-
+const { name, bin } = require('../package.json');
 const localCLI = resolveCwd.silent(`${name}/${bin['umi']}`);
 if (!process.env.USE_GLOBAL_UMI && localCLI && localCLI !== __filename) {
   const debug = require('@umijs/utils').createDebug('umi:cli');
