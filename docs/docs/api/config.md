@@ -14,7 +14,7 @@
 ```js
 {
   alias: {
-    foo: '/tmp/to/foo';
+    foo: '/tmp/to/foo',
   }
 }
 ```
@@ -29,14 +29,14 @@
 // ⛔
 {
   alias: {
-    foo: 'foo';
+    foo: 'foo',
   }
 }
 
 // ✅
 {
   alias: {
-    foo: require.resolve('foo');
+    foo: require.resolve('foo'),
   }
 }
 ```
@@ -47,14 +47,14 @@
 // import 'foo/bar' 会被映射到 import '/tmp/to/foo/bar'
 {
   alias: {
-    foo: '/tmp/to/foo';
+    foo: '/tmp/to/foo',
   }
 }
 
 // import 'foo/bar' 还是 import 'foo/bar'，不会被修改
 {
   alias: {
-    foo$: '/tmp/to/foo';
+    foo$: '/tmp/to/foo',
   }
 }
 ```
@@ -494,7 +494,7 @@ HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/f
 比如，
 
 ```js
-headScripts: [`alert(1);`, `https://a.com/b.js`];
+headScripts: [`alert(1);`, `https://a.com/b.js`],
 ```
 
 会生成 HTML，
@@ -512,7 +512,7 @@ headScripts: [`alert(1);`, `https://a.com/b.js`];
 headScripts: [
   { src: '/foo.js', defer: true },
   { content: `alert('你好');`, charset: 'utf-8' },
-];
+],
 ```
 
 ## history
@@ -624,7 +624,7 @@ https: {
 示例，
 
 ```js
-links: [{ href: '/foo.css', rel: 'preload' }];
+links: [{ href: '/foo.css', rel: 'preload' }],
 ```
 
 ## manifest
@@ -651,7 +651,7 @@ links: [{ href: '/foo.css', rel: 'preload' }];
 metas: [
   { name: 'keywords', content: 'umi, umijs' },
   { name: 'description', content: 'React framework.' },
-];
+],
 ```
 
 会生成以下 HTML，
@@ -684,7 +684,7 @@ metas: [
 ```js
 // 用 esbuild 做依赖预编译
 mfsu: {
-  esbuild: true;
+  esbuild: true,
 }
 
 // 关闭 mfsu 功能
@@ -718,7 +718,7 @@ mfsu: {
 ```js
 // 让所有 pages 下的 _mock.ts 文件成为 mock 文件
 mock: {
-  include: ['src/pages/**/_mock.ts'];
+  include: ['src/pages/**/_mock.ts'],
 }
 ```
 
@@ -734,7 +734,7 @@ mock: {
 示例，
 
 ```js
-mountElementId: 'container';
+mountElementId: 'container'
 ```
 
 ## monorepoRedirect
@@ -752,13 +752,13 @@ mountElementId: 'container';
 // 默认重定向到子包的 src 文件夹
 monorepoRedirect: {
 }
-// 优先定向到 libs 文件夹
+// 优先定向到 libs 文件夹 
 monorepoRedirect: {
-  srcDir: ['libs', 'src'];
+  srcDir: ['libs', 'src'],
 }
 // 不重定向 @scope/* 的子包
 monorepoRedirect: {
-  exclude: [/^@scope\/.+/];
+  exclude: [/^@scope\/.+/],
 }
 ```
 
@@ -804,7 +804,7 @@ plugins: [
 
 ```js
 polyfill: {
-  imports: ['core-js/stable'];
+  imports: ['core-js/stable'],
 }
 ```
 
@@ -812,7 +812,7 @@ polyfill: {
 
 ```js
 polyfill: {
-  imports: ['core-js/features/promise/try', 'core-js/proposals/math-extensions'];
+  imports: ['core-js/features/promise/try', 'core-js/proposals/math-extensions'],
 }
 ```
 
@@ -901,7 +901,7 @@ proxy: {
 比如，
 
 ```js
-scripts: [`alert(1);`, `https://a.com/b.js`];
+scripts: [`alert(1);`, `https://a.com/b.js`],
 ```
 
 会生成 HTML，
@@ -919,7 +919,7 @@ scripts: [`alert(1);`, `https://a.com/b.js`];
 scripts: [
   { src: '/foo.js', defer: true },
   { content: `alert('你好');`, charset: 'utf-8' },
-];
+],
 ```
 
 ## sassLoader
@@ -950,7 +950,7 @@ scripts: [
 比如：
 
 ```js
-styles: [`body { color: red; }`, `https://a.com/b.css`];
+styles: [`body { color: red; }`, `https://a.com/b.css`],
 ```
 
 会生成以下 HTML，
