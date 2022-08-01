@@ -1,0 +1,25 @@
+name: Issue Check
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  check-open:
+    runs-on: ubuntu-latest
+    if: github.event.issue.state == 'open' && contains(github.event.issue.body, 'https://github.com') == false && contains(github.event.issue.body, 'https://stackblitz.com') == false
+    steps:
+      - uses: actions-cool/maintain-one-comment@v3
+        with:
+          body: 由于缺乏足够的信息，我们暂时关闭了该 Issue。请修改 Issue 提供[最小重现](https://stackoverflow.com/help/minimal-reproducible-example)以重新开启。谢谢。
+      - uses: actions-cool/issues-helper@v3
+        with:
+          actions: close-issue
+
+  check-close:
+    runs-on: ubuntu-latest
+    if: github.event.issue.state == 'closed' && (contains(github.event.issue.body, 'https://github.com') == true || contains(github.event.issue.body, 'https://stackblitz.com') == true)
+    steps:
+      - uses: actions-cool/issues-helper@v3
+        with:
+          actions: open-issue
