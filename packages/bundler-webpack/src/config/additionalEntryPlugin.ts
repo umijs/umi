@@ -8,31 +8,12 @@ interface IOpts {
   env: Env;
 }
 
-interface AdditionEntryPluginOptions {
-  context?: string;
-}
-
 class AdditionEntryPlugin {
-  options: AdditionEntryPluginOptions = {};
-
-  constructor(options: {}) {
-    if (!options) {
-      return;
-    }
-  }
-
   apply(compiler: Compiler) {
-    if (!this.options.context) {
-      this.options = {
-        ...this.options,
-        context: compiler.context,
-      };
-    }
-
     compiler.hooks.environment.tap('AdditionEntryPlugin', () => {
       const additionalEntries = [];
       additionalEntries.push(
-        `${require.resolve('../../client/client/client')}`,
+       require.resolve('../../client/client/client'),
       );
       if (typeof EntryPlugin !== 'undefined') {
         for (const additionalEntry of additionalEntries) {
