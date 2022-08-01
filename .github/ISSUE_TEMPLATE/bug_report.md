@@ -20,7 +20,7 @@ assignees: ''
 > Please provide a [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) then upload to your GitHub. 请提供 [最小重现](https://stackoverflow.com/help/minimal-reproducible-example)，并上传到你的 GitHub 仓库
 
 <!-- 为节约大家的时间，无复现步骤的 ISSUE 会被关闭，提供之后再 REOPEN -->
-<!-- https://github.com/YOUR_REPOSITORY_URL -->
+<!-- YOUR_REPOSITORY_URL on github or stackbliz -->
 
 ## How To Reproduce
 
