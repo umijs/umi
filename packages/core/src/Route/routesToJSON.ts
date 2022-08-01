@@ -55,6 +55,9 @@ export default function ({ routes, config, cwd, isServer }: IOpts) {
   }
 
   function replacer(key: string, value: any) {
+    // JSON.stringify with take the value of undefined
+    if (value === undefined) return undefined;
+
     switch (key) {
       case 'component':
         if (isFunctionComponent(value)) return value;

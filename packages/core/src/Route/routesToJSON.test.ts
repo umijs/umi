@@ -197,3 +197,28 @@ test('wrappers with dynamicImport', () => {
   `.trim(),
   );
 });
+
+test('wrappers is undefined', () => {
+  const ret = routesToJSON({
+    routes: [
+      {
+        path: '/',
+        component: '@/pages/index.ts',
+        wrappers: undefined,
+      },
+    ],
+    config: {
+      dynamicImport: true,
+    },
+  });
+  expect(ret).toEqual(
+    `
+[
+  {
+    "path": "/",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')})
+  }
+]
+  `.trim(),
+  );
+});
