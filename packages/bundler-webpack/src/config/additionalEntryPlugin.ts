@@ -1,20 +1,15 @@
 import { Compiler, EntryPlugin } from '@umijs/bundler-webpack/compiled/webpack';
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
-import { Env, IConfig } from '../types';
 
 interface IOpts {
-  userConfig: IConfig;
   config: Config;
-  env: Env;
 }
 
 class AdditionEntryPlugin {
   apply(compiler: Compiler) {
     compiler.hooks.environment.tap('AdditionEntryPlugin', () => {
       const additionalEntries = [];
-      additionalEntries.push(
-       require.resolve('../../client/client/client'),
-      );
+      additionalEntries.push(require.resolve('../../client/client/client'));
       if (typeof EntryPlugin !== 'undefined') {
         for (const additionalEntry of additionalEntries) {
           new EntryPlugin(compiler.context, additionalEntry, {
@@ -29,9 +24,5 @@ class AdditionEntryPlugin {
 
 export async function addAdditionEntryPlugin(opts: IOpts) {
   const { config } = opts;
-  const isDev = opts.env === Env.development;
-
-  if (isDev) {
-    config.plugin('add-addtion-entry-plugin').use(AdditionEntryPlugin);
-  }
+  config.plugin('add-addtion-entry-plugin').use(AdditionEntryPlugin);
 }
