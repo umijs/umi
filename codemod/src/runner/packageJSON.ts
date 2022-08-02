@@ -113,7 +113,9 @@ export class Runner {
     }
     if (devDeps?.excludes.length) {
       devDeps.excludes.forEach((dep) => {
-        delete pkg.devDependencies?.[dep];
+        if (pkg.devDependencies?.[dep]) {
+          delete pkg.devDependencies?.[dep];
+        }
       });
       info(`Delete devDependencies ${devDeps.excludes.join(',')}`);
     }
