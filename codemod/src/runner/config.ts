@@ -105,6 +105,11 @@ export class Runner {
       deleteKeys.push('layout.name');
     }
 
+    // delete dva.hmr
+    if (config.dva?.hmr) {
+      deleteKeys.push('dva.hmr');
+    }
+
     // unexpected layout config > app.ts
     if (this.context?.unexpectedLayoutConfig?.length) {
       const appJSSet: Record<string, any> = {};
