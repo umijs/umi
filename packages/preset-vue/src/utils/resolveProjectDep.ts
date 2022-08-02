@@ -1,4 +1,4 @@
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { resolve } from 'umi/plugin-utils';
 
 export function resolveProjectDep(opts: {
@@ -16,4 +16,15 @@ export function resolveProjectDep(opts: {
       }),
     );
   }
+}
+
+export function resolveVuePath(opts: { pkg: any; cwd: string; path: string }) {
+  const vuePkgPath =
+    resolveProjectDep({
+      pkg: opts.pkg,
+      cwd: opts.cwd,
+      dep: 'vue',
+    }) || dirname(require.resolve('vue/package.json'));
+
+  return join(vuePkgPath, opts.path);
 }
