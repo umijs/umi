@@ -45,13 +45,17 @@ export class Runner {
   }
 
   run() {
-    const { configFile, code, routeCode, routeFilePath } = this.transform(
-      this.context,
-    );
-    writePrettierFileSync(configFile, code);
-    if (routeCode) {
-      writePrettierFileSync(routeFilePath, routeCode);
-    }
+    const { config, configFile } = this.context;
+    configFile.forEach((item) => {
+      const { configFile, code, routeCode, routeFilePath } = this.transform({
+        config: config[item],
+        configFile: item,
+      });
+      writePrettierFileSync(configFile, code);
+      if (routeCode) {
+        writePrettierFileSync(routeFilePath, routeCode);
+      }
+    });
   }
 
   transform({ config, configFile }: any) {
