@@ -39,7 +39,6 @@ export class AutoUpdateFolderCache {
     ignored: string[];
     filesLoader?: (files: string[]) => Promise<Record<string, string>>;
   }) {
-    console.log('the path ', `./**/*.{${opts.exts.join(',')}}`);
     this.cwd = opts.cwd;
     this.onCacheUpdated = opts.onCacheUpdate;
     this.filesLoader = opts.filesLoader || this._defaultLoader;
