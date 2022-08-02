@@ -4,7 +4,7 @@
  */
 /// <reference types="node" />
 import type * as express from '../../express';
-import type * as http from 'http';
+export type * as http from 'http';
 import type * as httpProxy from '../http-proxy';
 import type * as net from 'net';
 import type * as url from 'url';
@@ -51,4 +51,5 @@ export declare type OnProxyReqCallback = (proxyReq: http.ClientRequest, req: Req
 export declare type OnProxyReqWsCallback = (proxyReq: http.ClientRequest, req: Request, socket: net.Socket, options: httpProxy.ServerOptions, head: any) => void;
 export declare type OnCloseCallback = (proxyRes: Response, proxySocket: net.Socket, proxyHead: any) => void;
 export declare type OnOpenCallback = (proxySocket: net.Socket) => void;
+export declare type Interceptor = (buffer: Buffer, proxyRes: http.IncomingMessage, req: http.IncomingMessage, res: http.ServerResponse) => Promise<Buffer | string>;
 export {};

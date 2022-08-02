@@ -1,3 +1,13 @@
+import {
+  NextFunction,
+  Request,
+  Response,
+} from '@umijs/bundler-utils/compiled/express';
+import {
+  createProxyMiddleware,
+  responseInterceptor,
+} from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
+import { cheerio } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
@@ -7,6 +17,71 @@ import { withTmpPath } from '../utils/withTmpPath';
 import { qiankunStateFromMasterModelNamespace } from './constants';
 
 type SlaveOptions = any;
+
+function getCurrentLocalDevServerEntry(api: IApi, req: Request): string {
+  const port = api.appData.port;
+  const hostname = req.hostname;
+  const protocol = req.protocol;
+  return `${protocol}://${hostname}${port ? ':' : ''}${port}/local-dev-server`;
+}
+
+function handleOriginalHtml(
+  api: IApi,
+  microAppEntry: string,
+  originalHtml: string,
+) {
+  const appName = api.pkg.name;
+  assert(
+    appName,
+    '[@umijs/plugin-qiankun]: You should have name in package.json',
+  );
+  const $ = cheerio.load(originalHtml);
+
+  // 插入 extra-qiankun-config
+  $('head').prepend(
+    `<script type="extra-qiankun-config">${JSON.stringify({
+      master: {
+        apps: [
+          {
+            name: appName,
+            entry: microAppEntry,
+            extraSource: microAppEntry,
+          },
+        ],
+        routes: [
+          {
+            microApp: appName,
+            name: appName,
+            path: '/' + appName,
+            extraSource: microAppEntry,
+          },
+        ],
+        prefetch: false,
+      },
+    })}</script>`,
+  );
+  // 判断是否为微前端主应用本地研发，如果是则替换本地资源; 此处 config.qiankun 肯定存在
+  if ((api.config.qiankun as any).master?.enable) {
+    $('script[entry]').replaceWith('<script src="/umi.js"></script>');
+    const $links = $('head').find('link');
+    Array($links.length)
+      .fill(0)
+      .forEach((_, index) => {
+        const hrefVal = $links[index]?.attribs?.href || '';
+        if (/umi\S*css/.test(hrefVal)) {
+          $(`link[href=${hrefVal}]`).replaceWith(
+            '<link rel="stylesheet" href="/umi.css"></link>',
+          );
+        }
+      });
+  }
+
+  return api.applyPlugins({
+    key: 'modifyMasterHTML',
+    type: api.ApplyPluginsType.modify,
+    initialValue: $.html(),
+  });
+}
 
 // BREAK CHANGE: 需要手动配置 slave: {}，不能留空
 function isSlaveEnable(opts: { userConfig: any }) {
@@ -195,5 +270,75 @@ export { connectMaster } from './connectMaster';
       });
     },
     before: 'model',
+  });
+
+  api.addMiddlewares(async () => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const masterEntry =
+        api.config.qiankun && api.config.qiankun.slave?.masterEntry;
+
+      const { proxyToMasterEnabled } = ((await api.applyPlugins({
+        key: 'shouldProxyToMaster',
+        type: api.ApplyPluginsType.modify,
+        initialValue: { proxyToMasterEnabled: true, req },
+      })) ?? {}) as {
+        req?: Request;
+        proxyToMasterEnabled?: boolean;
+      };
+
+      if (masterEntry && proxyToMasterEnabled) {
+        return createProxyMiddleware(
+          (pathname) => pathname !== '/local-dev-server',
+          {
+            target: masterEntry,
+            secure: false,
+            ignorePath: false,
+            followRedirects: false,
+            changeOrigin: true,
+            selfHandleResponse: true,
+            onProxyRes: responseInterceptor(
+              async (responseBuffer, proxyRes, req, res) => {
+                if (proxyRes.statusCode === 302) {
+                  const hostname = (req as Request).hostname;
+                  const port = process.env.PORT;
+                  const goto = `${hostname}:${port}`;
+                  const redirectUrl =
+                    proxyRes.headers.location!.replace(
+                      encodeURIComponent(new URL(masterEntry).hostname),
+                      encodeURIComponent(goto),
+                    ) || masterEntry;
+
+                  const redirectMessage = `[@umijs/plugin-qiankun]: redirect to ${redirectUrl}`;
+
+                  api.logger.info(redirectMessage);
+                  res.statusCode = 302;
+                  res.setHeader('location', redirectUrl);
+                  return redirectMessage;
+                }
+
+                const microAppEntry = getCurrentLocalDevServerEntry(api, req);
+                const originalHtml = responseBuffer.toString('utf8');
+                const html = handleOriginalHtml(
+                  api,
+                  microAppEntry,
+                  originalHtml,
+                );
+
+                return html;
+              },
+            ),
+            onError(err, _, res) {
+              api.logger.error(err);
+              res.set('content-type', 'text/plain; charset=UTF-8');
+              res.end(
+                `[@umijs/plugin-qiankun] 代理到 ${masterEntry} 时出错了，请尝试 ${masterEntry} 是否是可以正常访问的，然后重新启动项目试试。(注意如果出现跨域问题，请修改本地 host ，通过一个和主应用相同的一级域名的域名来访问 127.0.0.1)`,
+              );
+            },
+          },
+        )(req, res, next);
+      }
+
+      return next();
+    };
   });
 };
