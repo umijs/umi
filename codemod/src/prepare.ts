@@ -17,7 +17,6 @@ function getMainConfigFile(opts: {
   defaultConfigFiles?: string[];
 }) {
   const mainConfigFile = [];
-  console.log('txp', opts.defaultConfigFiles);
   for (const configFile of opts.defaultConfigFiles || DEFAULT_CONFIG_FILES) {
     const absConfigFile = join(opts.cwd, configFile);
     if (existsSync(absConfigFile)) {
