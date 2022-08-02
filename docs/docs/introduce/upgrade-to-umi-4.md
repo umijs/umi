@@ -72,7 +72,7 @@ export default defineConfig({
     include: ['src/pages/**/_mock.ts'],
   },
   dva: {
-    // hmr: true,
+-    hmr: true, //不允许需要删除
   },
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
