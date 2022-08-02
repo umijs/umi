@@ -39,6 +39,10 @@ export class Runner {
       pkg.scripts['lint'] = `${commandName} lint`;
       info(`Update scripts.lint to \`${commandName} lint\``);
     }
+    if (pkg.scripts['dev'] !== `${commandName} dev`) {
+      pkg.scripts['dev'] = `${commandName} dev`;
+      info(`Update scripts.dev to \`${commandName} dev\``);
+    }
     if (pkg.scripts['lint:fix'] !== `${commandName} lint --fix`) {
       pkg.scripts['lint:fix'] = `${commandName} lint --fix`;
       info(`Update scripts.lint:fix to \`${commandName} lint --fix\``);
