@@ -121,7 +121,7 @@ export class Runner {
     }
 
     // delete inspectorConfig
-    if (config.dva?.inspectorConfig) {
+    if (config.inspectorConfig) {
       deleteKeys.push('inspectorConfig');
     }
 
