@@ -110,6 +110,11 @@ export class Runner {
       deleteKeys.push('dva.hmr');
     }
 
+    // delete inspectorConfig
+    if (config.dva?.inspectorConfig) {
+      deleteKeys.push('inspectorConfig');
+    }
+
     // unexpected layout config > app.ts
     if (this.context?.unexpectedLayoutConfig?.length) {
       const appJSSet: Record<string, any> = {};
