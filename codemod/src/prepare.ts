@@ -99,12 +99,13 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
         };
 
   // use @uminjs/max
-  if (pkg.dependencies?.['@umijs/preset-react']) {
+  if (
+    pkg.dependencies?.['@umijs/preset-react'] ||
+    pkg.devDependencies?.['@umijs/preset-react']
+  ) {
     importSource = '@umijs/max';
     deps.excludes.push('@umijs/preset-react');
     deps.excludes.push('umi');
-  } else if (pkg.devDependencies?.['@umijs/preset-react']) {
-    importSource = '@umijs/max';
     devDeps.excludes.push('@umijs/preset-react');
     devDeps.excludes.push('umi');
   }
