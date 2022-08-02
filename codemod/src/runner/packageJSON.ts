@@ -50,7 +50,7 @@ export class Runner {
     if (pkg.scripts['postinstall']) {
       if (!pkg.scripts['postinstall'].includes(`${commandName} setup`)) {
         pkg.scripts['postinstall'] = pkg.scripts['postinstall'].replace(
-          `${commandName} g tmp`,
+          `umi g tmp`,
           `${commandName} setup`,
         );
         info(`Update scripts.postinstall to use  \`${commandName} setup\``);
