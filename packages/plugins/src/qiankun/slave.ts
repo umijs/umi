@@ -5,6 +5,7 @@ import {
 } from '@umijs/bundler-utils/compiled/express';
 import {
   createProxyMiddleware,
+  // @ts-ignore 现在打包好的 http-proxy-middleware 有导出 responseInterceptor，但没有导出声明
   responseInterceptor,
 } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
 import { cheerio } from '@umijs/utils';
@@ -297,7 +298,12 @@ export { connectMaster } from './connectMaster';
             changeOrigin: true,
             selfHandleResponse: true,
             onProxyRes: responseInterceptor(
-              async (responseBuffer, proxyRes, req, res) => {
+              async (
+                responseBuffer: any,
+                proxyRes: any,
+                req: any,
+                res: any,
+              ) => {
                 if (proxyRes.statusCode === 302) {
                   const hostname = (req as Request).hostname;
                   const port = process.env.PORT;
