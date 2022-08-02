@@ -271,13 +271,18 @@ class Server {
       // It is possible to use the `bypass` method without a `target`.
       // However, the proxy middleware has no use in this case, and will fail to instantiate.
       if (proxyConfig.target) {
+        const target =
+          typeof proxyConfig.target === 'object'
+            ? url.format(proxyConfig.target)
+            : proxyConfig.target;
         return createProxyMiddleware(context!, {
           ...proxyConfig,
+          onProxyReq(proxyReq) {
+            if (proxyReq.getHeader('origin')) {
+              proxyReq.setHeader('origin', target);
+            }
+          },
           onProxyRes(proxyRes, req: any, res) {
-            const target =
-              typeof proxyConfig.target === 'object'
-                ? url.format(proxyConfig.target)
-                : proxyConfig.target;
             const realUrl = new URL(req.url || '', target)?.href || '';
             proxyRes.headers['x-real-url'] = realUrl;
             proxyConfig.onProxyRes?.(proxyRes, req, res);
