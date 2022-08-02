@@ -104,10 +104,18 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
     pkg.devDependencies?.['@umijs/preset-react']
   ) {
     importSource = '@umijs/max';
-    deps.excludes.push('@umijs/preset-react');
-    deps.excludes.push('umi');
-    devDeps.excludes.push('@umijs/preset-react');
-    devDeps.excludes.push('umi');
+    if (pkg.dependencies?.['@umijs/preset-react']) {
+      deps.excludes.push('@umijs/preset-react');
+    }
+    if (pkg.dependencies?.['umi']) {
+      deps.excludes.push('umi');
+    }
+    if (pkg.devDependencies?.['@umijs/preset-react']) {
+      devDeps.excludes.push('@umijs/preset-react');
+    }
+    if (pkg.devDependencies?.['umi']) {
+      devDeps.excludes.push('umi');
+    }
   }
 
   // umi lint

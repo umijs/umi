@@ -107,17 +107,13 @@ export class Runner {
     }
     if (deps?.excludes.length) {
       deps.excludes.forEach((dep) => {
-        if (pkg.dependencies?.[dep]) {
-          delete pkg.dependencies?.[dep];
-        }
+        delete pkg.dependencies?.[dep];
       });
       info(`Delete dependencies ${deps.excludes.join(',')}`);
     }
     if (devDeps?.excludes.length) {
       devDeps.excludes.forEach((dep) => {
-        if (pkg.devDependencies?.[dep]) {
-          delete pkg.devDependencies?.[dep];
-        }
+        delete pkg.devDependencies?.[dep];
       });
       info(`Delete devDependencies ${devDeps.excludes.join(',')}`);
     }
