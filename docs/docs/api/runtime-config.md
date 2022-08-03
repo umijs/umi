@@ -20,7 +20,7 @@ export default defineApp({
 })
 
 // or 
-import {  RuntimeConfig } from 'umi'
+import { RuntimeConfig } from 'umi'
 export const layout: RuntimeConfig['layout'] = () => {
   return {
     title: 'umi'

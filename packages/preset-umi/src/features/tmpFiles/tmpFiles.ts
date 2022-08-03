@@ -389,6 +389,7 @@ export default function EmptyRoute() {
       context: {
         plugins: plugins.map((plugin, index) => ({
           index,
+          // 在 app.ts 中，如果使用了 defineApp 方法，会存在 export default 的情况
           hasDefaultExport: appPluginRegExp.test(plugin),
           path: winPath(plugin),
         })),
@@ -589,7 +590,7 @@ export default function EmptyRoute() {
             `import type { IRuntimeConfig as Plugin${pluginIndex} } from '${noSuffixRuntimeConfigFile}'`,
           );
           runtimeConfigType += ` & Plugin${pluginIndex}`;
-          pluginIndex++;
+          pluginIndex += 1;
         }
       }
       api.writeTmpFile({
@@ -601,8 +602,9 @@ export default function EmptyRoute() {
           runtimeConfigType,
         },
       });
-      exports.push(`export * from './core/defineApp'`);
-
+      exports.push(`export { defineApp } from './core/defineApp'`);
+      // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
+      exports.push(`export type {  RuntimeConfig } from './core/defineApp'`);
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',
