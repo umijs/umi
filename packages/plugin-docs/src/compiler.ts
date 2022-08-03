@@ -79,6 +79,9 @@ function MDXContent(props = {}) {
         .join('\n'),
     );
     logger.error(' '.repeat(e.column - 1) + '^');
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('compile error');
+    }
     return { result: '' };
   }
 }
