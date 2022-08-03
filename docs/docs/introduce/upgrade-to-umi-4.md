@@ -100,7 +100,7 @@ export default defineConfig({
 +  fastRefresh: true,
 
    dva: {
-   // 不在支持hmr这个参数
+   // 不再支持 hmr 这个参数
 -    hmr: true,
    },
 // 默认 webpack5
