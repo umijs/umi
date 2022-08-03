@@ -71,9 +71,7 @@ export default defineConfig({
   mock: {
     include: ['src/pages/**/_mock.ts'],
   },
-  dva: {
-    // hmr: true,
-  },
+  dva: {},
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
@@ -101,6 +99,10 @@ export default defineConfig({
 -  fastRefresh: {},
 +  fastRefresh: true,
 
+   dva: {
+   // 不再支持 hmr 这个参数
+-    hmr: true,
+   },
 // 默认 webpack5
 -   webpack5: {},
 })
