@@ -126,9 +126,9 @@ export class Runner {
     }
 
     // unexpected layout config > app.ts
-    if (this.context?.unexpectedLayoutConfig?.length) {
+    if (this.context?.unexpectedLayoutConfig[configFile]?.length) {
       const appJSSet: Record<string, any> = {};
-      this.context.unexpectedLayoutConfig.forEach((key) => {
+      this.context.unexpectedLayoutConfig[configFile].forEach((key) => {
         deleteKeys.push(`layout.${key}`);
         appJSSet[key] = config.layout[key];
       });

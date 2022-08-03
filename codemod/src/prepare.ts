@@ -67,11 +67,16 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
   // pkg
   const pkgPath = join(opts.cwd, 'package.json');
   const pkg = require(pkgPath);
-
-  const unexpectedLayoutConfig = Object.keys(config.layout || {}).filter(
-    (key) => !['name', 'title', 'locale'].includes(key),
+  const unexpectedLayoutConfig = Object.fromEntries(
+    mainConfigFile.map((item) => {
+      return [
+        item,
+        Object.keys(config[item].layout || {}).filter(
+          (key) => !['name', 'title', 'locale'].includes(key),
+        ),
+      ];
+    }),
   );
-
   const absSrcPath = existsSync(join(opts.cwd, 'src'))
     ? join(opts.cwd, 'src')
     : opts.cwd;
