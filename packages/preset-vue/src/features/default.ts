@@ -1,27 +1,25 @@
 import { dirname } from 'path';
 import type { IApi } from 'umi';
-import { resolveProjectDep } from '../utils/resolveProjectDep';
+import { resolveProjectDep, resolveVuePath } from '../utils/resolveProjectDep';
 
 export default (api: IApi) => {
   api.describe({
     key: 'preset-vue:default',
   });
 
-  const vuePath =
-    resolveProjectDep({
-      pkg: api.pkg,
-      cwd: api.cwd,
-      dep: 'vue/dist/vue.esm-bundler.js',
-    }) || require.resolve('vue/dist/vue.esm-bundler.js');
-
-  const vueRuntimePath =
-    resolveProjectDep({
-      pkg: api.pkg,
-      cwd: api.cwd,
-      dep: 'vue/dist/vue.runtime.esm-bundler.js',
-    }) || require.resolve('vue/dist/vue.runtime.esm-bundler.js');
-
   api.modifyDefaultConfig((config) => {
+    const vuePath = resolveVuePath({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      path: 'dist/vue.esm-bundler.js',
+    });
+
+    const vueRuntimePath = resolveVuePath({
+      pkg: api.pkg,
+      cwd: api.cwd,
+      path: 'dist/vue.runtime.esm-bundler.js',
+    });
+
     config.alias = {
       ...config.alias,
       vue: api.userConfig.vue?.runtimeCompiler ? vuePath : vueRuntimePath,
