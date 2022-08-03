@@ -1,4 +1,4 @@
-name: CI
+name: doc
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
@@ -7,14 +7,14 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - 'examples/**'
+    paths:
       - 'docs/**'
-      - '**/*.md'
   pull_request:
     types:
       - 'opened'
       - 'synchronize'
+    paths:
+      - 'docs/**'
   workflow_dispatch:
 
 concurrency:
@@ -76,9 +76,7 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - run: pnpm build
-      - run: pnpm tsc:check
-      - run: pnpm test
+      - run: pnpm doc:build
         env:
           CI: true
           NODE_ENV: test
