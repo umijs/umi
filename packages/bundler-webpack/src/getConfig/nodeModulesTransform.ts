@@ -47,7 +47,7 @@ export function isMatch(opts: { path: string; pkgs: IPkgs }) {
 function getPkgPath(opts: { path: string }) {
   const dir = dirname(opts.path);
   if (dir in pkgPathCache) return pkgPathCache[dir];
-  pkgPathCache[dir] = pkgUpContainName(dir);
+  pkgPathCache[dir] = pkgUpContainName(opts.path);
   return pkgPathCache[dir];
 }
 

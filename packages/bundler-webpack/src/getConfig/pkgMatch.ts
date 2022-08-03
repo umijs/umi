@@ -6,7 +6,7 @@ const pkgPathCache = {};
 export function getPkgPath(filePath: string) {
   const dir = dirname(filePath);
   if (dir in pkgPathCache) return pkgPathCache[dir];
-  pkgPathCache[dir] = pkgUpContainName(dir);
+  pkgPathCache[dir] = pkgUpContainName(filePath);
   return pkgPathCache[dir];
 }
 
