@@ -278,6 +278,7 @@ class Server {
         return createProxyMiddleware(context!, {
           ...proxyConfig,
           onProxyReq(proxyReq) {
+            // 修改 host 模拟域名，避免 cors 只允许固定域名时报错
             if (proxyReq.getHeader('origin')) {
               proxyReq.setHeader('origin', target);
             }
