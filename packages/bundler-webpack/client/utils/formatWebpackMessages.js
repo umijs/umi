@@ -1,4 +1,4 @@
-// formatWebpackMessages.ts
+// src/utils/formatWebpackMessages.ts
 import stripAnsi from "@umijs/utils/compiled/strip-ansi";
 var friendlySyntaxErrorLabel = "Syntax error:";
 function isLikelyASyntaxError(message) {

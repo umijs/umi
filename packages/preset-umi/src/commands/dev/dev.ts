@@ -131,22 +131,28 @@ PORT=8888 umi dev
         path: pkgPath,
         addToUnWatches: true,
         onChange() {
-          const origin = api.appData.pkg;
-          api.appData.pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
-          api.applyPlugins({
-            key: 'onCheckPkgJSON',
-            args: {
-              origin,
-              current: api.appData.pkg,
-            },
-          });
-          api.applyPlugins({
-            key: 'onPkgJSONChanged',
-            args: {
-              origin,
-              current: api.appData.pkg,
-            },
-          });
+          // Why try catch?
+          // ref: https://github.com/umijs/umi/issues/8608
+          try {
+            const origin = api.appData.pkg;
+            api.appData.pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+            api.applyPlugins({
+              key: 'onCheckPkgJSON',
+              args: {
+                origin,
+                current: api.appData.pkg,
+              },
+            });
+            api.applyPlugins({
+              key: 'onPkgJSONChanged',
+              args: {
+                origin,
+                current: api.appData.pkg,
+              },
+            });
+          } catch (e) {
+            logger.error(e);
+          }
         },
       });
 

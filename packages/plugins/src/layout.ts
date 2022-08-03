@@ -265,7 +265,7 @@ const { formatMessage } = useIntl();
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
-    import type { ProLayoutProps } from "${
+    import type { ProLayoutProps, HeaderProps } from "${
       pkgPath || '@ant-design/pro-layout'
     }";
     ${
@@ -276,12 +276,32 @@ const { formatMessage } = useIntl();
         : 'type InitDataType = any;'
     }
 
-    export type RunTimeLayoutConfig = (
-      initData: InitDataType,
-    ) => ProLayoutProps & {
-      childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
-      unAccessible?: JSX.Element,
-      noFound?: JSX.Element,
+    import { IConfigFromPlugins } from '@@/core/pluginConfig';
+
+    export type RunTimeLayoutConfig = (initData: InitDataType) => Omit<
+      ProLayoutProps,
+      'rightContentRender'
+    > & {
+      childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode;
+      unAccessible?: JSX.Element;
+      noFound?: JSX.Element;
+      logout?: (initialState: InitDataType['initialState']) => Promise<void> | void;
+      rightContentRender?: (
+        headerProps: HeaderProps,
+        dom: JSX.Element,
+        props: {
+          userConfig: IConfigFromPlugins['layout'];
+          runtimeConfig: RunTimeLayoutConfig;
+          loading: InitDataType['loading'];
+          initialState: InitDataType['initialState'];
+          setInitialState: InitDataType['setInitialState'];
+        },
+      ) => JSX.Element;
+      rightRender?: (
+        initialState: InitDataType['initialState'],
+        setInitialState: InitDataType['setInitialState'],
+        runtimeConfig: RunTimeLayoutConfig,
+      ) => JSX.Element;
     };
     `,
     });

@@ -3,15 +3,17 @@ import { getEsBuildTarget } from './getEsBuildTarget';
 test('normal', () => {
   expect(
     getEsBuildTarget({
-      targets: { chrome: 80 },
+      targets: { chrome: 80, firefox: 100 },
+      jsMinifier: 'esbuild',
     }),
-  ).toEqual(['chrome80']);
+  ).toEqual(['chrome80', 'firefox100']);
 });
 
-test('not ie', () => {
-  expect(
+test('ie is not supported esbuild minify', () => {
+  expect(() =>
     getEsBuildTarget({
-      targets: { chrome: 80, ie: 8, edge: 11 },
+      targets: { ie: 11 },
+      jsMinifier: 'esbuild',
     }),
-  ).toEqual(['chrome80', 'edge11']);
+  ).toThrow('IE is not supported');
 });

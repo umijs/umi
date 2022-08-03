@@ -135,7 +135,7 @@ interface IErrorHandler {
 }
 type IRequestInterceptorAxios = (config: RequestOptions) => RequestOptions;
 type IRequestInterceptorUmiRequest = (url: string, config : RequestOptions) => { url: string, options: RequestOptions };
-type IRequestInterceptor = IRequestInterceptorAxios;
+type IRequestInterceptor = IRequestInterceptorAxios | IRequestInterceptorUmiRequest;
 type IErrorInterceptor = (error: Error) => Promise<Error>;
 type IResponseInterceptor = <T = any>(response : AxiosResponse<T>) => AxiosResponse<T> ;
 type IRequestInterceptorTuple = [IRequestInterceptor , IErrorInterceptor] | [ IRequestInterceptor ] | IRequestInterceptor
