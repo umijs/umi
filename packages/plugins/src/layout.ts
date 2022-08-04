@@ -275,6 +275,7 @@ const { formatMessage } = useIntl();
         `
         : 'type InitDataType = any;'
     }
+
     import { IConfigFromPlugins } from '@@/core/pluginConfig';
 
     export type RunTimeLayoutConfig = (initData: InitDataType) => Omit<
@@ -282,8 +283,8 @@ const { formatMessage } = useIntl();
       'rightContentRender'
     > & {
       childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode;
-      noAccessible?: JSX.Element;
-      notFound?: JSX.Element;
+      unAccessible?: JSX.Element;
+      noFound?: JSX.Element;
       logout?: (initialState: InitDataType['initialState']) => Promise<void> | void;
       rightContentRender?: (
         headerProps: HeaderProps,
@@ -631,11 +632,13 @@ const Exception: React.FC<{
   route?: IRoute;
   notFound?: React.ReactNode;
   noAccessible?: React.ReactNode;
+  unAccessible?: React.ReactNode;
+  noFound?: React.ReactNode;
 }> = (props) => (
   // render custom 404
-  (!props.route && props.notFound) ||
+  (!props.route && (props.noFound || props.notFound)) ||
   // render custom 403
-  (props.route.unaccessible && props.noAccessible) ||
+  (props.route.unaccessible && (props.unAccessible || props.noAccessible)) ||
   // render default exception
   ((!props.route || props.route.unaccessible) && (
     <Result
