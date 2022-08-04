@@ -2,6 +2,8 @@ import { Config, configUmiAlias, createConfig } from 'umi/test';
 
 const jestConfig = createConfig({
   target: 'browser',
+  jsTransformer: 'esbuild',
+  jsTransformerOpts: { jsx: 'automatic' },
 });
 
 export default async () => {
