@@ -71,8 +71,8 @@ export default async () => {
     ...createConfig({
       target: 'browser',
       jsTransformer: 'esbuild',
-      // config opts for esbuild eg. { jsx: 'automatic' } or { jsx: 'transform' } for different jsx compile opt
-      jsTransformerOpts: {},
+      // config opts for esbuild , it will pass to esbuild directly
+      jsTransformerOpts: { jsx: 'automatic' },
     }),
     ${res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''}
     // if you require some es-module npm package, please uncomment below line and insert your package name
