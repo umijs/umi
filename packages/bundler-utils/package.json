@@ -85,8 +85,6 @@
       "express": "$$LOCAL",
       "less": "$$LOCAL",
       "tapable": "$$LOCAL",
-      // ref: https://github.com/umijs/umi/pull/8846
-      // 保证 regenerate 的一致性
       "regenerate": "regenerate"
     },
     "noMinify": [
