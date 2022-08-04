@@ -14,6 +14,29 @@
 
 如果你使用的 dva，那么支持配置 dva 插件的运行时配置，具体参考[插件配置](../max/dva)。
 
+比如：
+
+```js
+export default {
+  dva: {
+    immer: true,
+    extraModels: [],
+  },
+};
+```
+
+#### extraModels
+
+- Type: string[]
+- Default: [] 配置额外到 dva model。
+
+#### immer
+
+- Type: boolean | object
+- Default: false 表示是否启用 immer 以方便修改 reducer。
+
+注：如需兼容 IE11，需配置 `{ immer: { enableES5: true }}`。
+
 ### 数据流
 
 若你需要定义初始化数据，使用 `getInitialState` 、`useModel` 等 [数据流](../max/data-flow) 相关功能：
@@ -22,21 +45,21 @@
 
 2. 或者手动开启数据流功能的插件使用该功能：
 
-    ```bash
-      pnpm add -D @umijs/plugins
-    ```
+   ```bash
+     pnpm add -D @umijs/plugins
+   ```
 
-    ```ts
-    // .umirc.ts
-    export default {
-      plugins: [
-        '@umijs/plugins/dist/initial-state',
-        '@umijs/plugins/dist/model'
-      ],
-      initialState: {},
-      model: {}
-    }
-    ```
+   ```ts
+   // .umirc.ts
+   export default {
+     plugins: [
+       '@umijs/plugins/dist/initial-state',
+       '@umijs/plugins/dist/model',
+     ],
+     initialState: {},
+     model: {},
+   };
+   ```
 
 ### layout
 
@@ -85,9 +108,9 @@ export function patchRoutes({ routes, routeComponents }) {
 }
 ```
 
- - `routes`: 打平的路由列表。
+- `routes`: 打平的路由列表。
 
- - `routeComponents`: 路由对应的组件映射。
+- `routeComponents`: 路由对应的组件映射。
 
 注：如需动态更新路由，建议使用 `patchClientRoutes()` ，否则你可能需要同时修改 `routes` 和 `routeComponents`。
 
@@ -97,13 +120,13 @@ export function patchRoutes({ routes, routeComponents }) {
 
 比如在最前面添加一个 `/foo` 路由，
 
-```ts
+```tsx
 import Page from '@/extraRoutes/foo';
 
 export function patchClientRoutes({ routes }) {
   routes.unshift({
     path: '/foo',
-    element: <Page />
+    element: <Page />,
   });
 }
 ```
@@ -119,10 +142,12 @@ export function patchClientRoutes({ routes }) {
 }
 
 export function render(oldRender) {
-  fetch('/api/routes').then(res => res.json()).then((res) => {
-    extraRoutes = res.routes;
-    oldRender();
-  })
+  fetch('/api/routes')
+    .then((res) => res.json())
+    .then((res) => {
+      extraRoutes = res.routes;
+      oldRender();
+    });
 }
 ```
 

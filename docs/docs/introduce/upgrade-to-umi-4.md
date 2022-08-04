@@ -35,6 +35,7 @@
 `umi@4` 将一些项目前置操作放到了 `setup` 命令中，如 umi@3 中的 `umi g tmp` 等命令，需要使用 `umi setup` 替换
 
 `package.json`
+
 ```diff
 {
   "scripts": {
@@ -71,9 +72,7 @@ export default defineConfig({
   mock: {
     include: ['src/pages/**/_mock.ts'],
   },
-  dva: {
-    // hmr: true,
-  },
+  dva: {},
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
@@ -88,11 +87,10 @@ export default defineConfig({
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
-})
+});
 ```
 
 **存在差异的配置项**如下 `config/config.ts` ：
-
 
 ```typescript
 import { defineConfig, utils } from 'umi';
@@ -100,7 +98,10 @@ import { defineConfig, utils } from 'umi';
 export default defineConfig({
 -  fastRefresh: {},
 +  fastRefresh: true,
-
+  dva: {
+   // 不再支持 hmr 这个参数
+-    hmr: true,
+   },
 // 默认 webpack5
 -   webpack5: {},
 })
@@ -110,14 +111,13 @@ export default defineConfig({
 
 Umi 4 中将 `react-router@5` 升级到 `react-router@6`，所以路由相关的一些 api 存在着使用上的差异。
 
-props 默认为空对象，以下属性都不能直接从 props 中取出
-![image](https://img.alicdn.com/imgextra/i4/O1CN01H9ScQv21ymaLkwZ8p_!!6000000007054-2-tps-1210-374.png)
+props 默认为空对象，以下属性都不能直接从 props 中取出 ![image](https://img.alicdn.com/imgextra/i4/O1CN01H9ScQv21ymaLkwZ8p_!!6000000007054-2-tps-1210-374.png)
 
 #### children
 
 ```typescript
 import { Outlet } from 'umi';
-<Outlet/>
+<Outlet />;
 ```
 
 主要在全局 layout 中需要修改
@@ -153,7 +153,9 @@ export default function RouteComponent(props) {
   );
 }
 ```
+
 组件改成从 `useOutletContext` 取值
+
 ```diff
 import React from 'react';
 + import { useOutletContext } from 'umi';
@@ -214,7 +216,6 @@ export default function Page(props) {
 
 #### match
 
-
 ```diff
 + import { useMatch } from 'umi';
 export default function Page(props) {
@@ -246,7 +247,6 @@ pattern: {path: 'list/search/:type'}
 
 更多改动和 api 变更，请查阅 [react-router@6](https://reactrouter.com/docs/en/v6/api#uselocation)
 
-
 完成以上操作后，执行下 `max dev`，访问 [http://localhost:8000](http://localhost:8000)，请验证所有功能都符合预期。
 
 如果你的项目无法正常启动，你可能还需要做如下操作：
@@ -267,7 +267,7 @@ location 中的 query 不再支持了，后续推荐用 [search](https://develop
 + const query = parse(history.location.search);
 ```
 
-### *.d 文件找不到，或者它的引用找不到
+### \*.d 文件找不到，或者它的引用找不到
 
 在 `umi@3` 中通过 `import` 会自动找到同名的 `.d.ts` 文件，如：
 

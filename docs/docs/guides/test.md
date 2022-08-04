@@ -1,4 +1,4 @@
-import { Message } from 'umi';
+import { Message, Tabbed } from 'umi';
 
 # 测试
 
@@ -8,8 +8,11 @@ import { Message } from 'umi';
 
 使用 Umi 4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
 
+<Tabbed>  
+
+umi项目
+
 ```ts
-// jest.config.ts (当使用 max 时，请从 `@umijs/max/test` 导入)
 import { Config, configUmiAlias, createConfig } from 'umi/test';
 
 export default async () => {
@@ -22,6 +25,24 @@ export default async () => {
   })) as Config.InitialOptions;
 };
 ```
+
+@umijs/max项目
+
+```ts
+import { Config, configUmiAlias, createConfig } from '@umijs/max/test';
+
+export default async () => {
+  return (await configUmiAlias({
+    ...createConfig({
+      target: 'browser',
+    }),
+    // 覆盖 umi 的默认 jest 配置, 如
+    // displayName: "Umi jest",
+  })) as Config.InitialOptions;
+};
+```
+</Tabbed>
+
 配置完后，就可以开始编写单元测试了。
 
 ## 与 UI 无关的测试
