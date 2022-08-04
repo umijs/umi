@@ -7,10 +7,11 @@ export type { Config };
 
 function getJSTransformer(
   jsTransformer: JSTransformer,
+  opts?: any,
 ): TransformerConfig | Path {
   switch (jsTransformer) {
     case 'esbuild':
-      return [require.resolve('esbuild-jest'), { sourcemap: true }];
+      return [require.resolve('jest-esbuild'), { ...opts, sourcemap: true }];
     case 'swc':
       return require.resolve('@swc-node/jest');
     case 'ts-jest':
@@ -23,12 +24,19 @@ function getJSTransformer(
 export function createConfig(opts?: {
   jsTransformer?: JSTransformer;
   target?: 'node' | 'browser';
+  jsTransformerOpts?: any;
 }): Config.InitialOptions {
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     transform: {
-      '^.+\\.tsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
-      '^.+\\.jsx?$': getJSTransformer(opts?.jsTransformer || 'esbuild'),
+      '^.+\\.tsx?$': getJSTransformer(
+        opts?.jsTransformer || 'esbuild',
+        opts?.jsTransformerOpts,
+      ),
+      '^.+\\.jsx?$': getJSTransformer(
+        opts?.jsTransformer || 'esbuild',
+        opts?.jsTransformerOpts,
+      ),
     },
     moduleNameMapper: {
       '^.+\\.(css|less|sass|scss|stylus)$':

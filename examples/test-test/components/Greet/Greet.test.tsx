@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import Greet from './Greet';
 
 test('renders Greet without name by inline snapshot', () => {
