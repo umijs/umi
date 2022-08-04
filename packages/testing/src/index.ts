@@ -29,11 +29,7 @@ export function createConfig(opts?: {
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     transform: {
-      '^.+\\.tsx?$': getJSTransformer(
-        opts?.jsTransformer || 'esbuild',
-        opts?.jsTransformerOpts,
-      ),
-      '^.+\\.jsx?$': getJSTransformer(
+      '^.+\\.(t|j)sx?$': getJSTransformer(
         opts?.jsTransformer || 'esbuild',
         opts?.jsTransformerOpts,
       ),
