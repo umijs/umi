@@ -1,7 +1,7 @@
 import * as allIcons from '@ant-design/icons';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -276,7 +276,7 @@ const { formatMessage } = useIntl();
         : 'type InitDataType = any;'
     }
     import { IConfigFromPlugins } from '@@/core/pluginConfig';
-    
+
     export type RunTimeLayoutConfig = (initData: InitDataType) => Omit<
       ProLayoutProps,
       'rightContentRender'
@@ -304,7 +304,15 @@ const { formatMessage } = useIntl();
     };
     `,
     });
-
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import type { RunTimeLayoutConfig } from './types.d';
+export interface IRuntimeConfig {
+  layout?: RunTimeLayoutConfig
+}
+      `,
+    });
     const iconsMap = Object.keys(api.appData.routes).reduce<
       Record<string, boolean>
     >((memo, id) => {
