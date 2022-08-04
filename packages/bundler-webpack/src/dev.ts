@@ -48,6 +48,10 @@ export async function dev(opts: IOpts) {
   );
   const enableMFSU = opts.config.mfsu !== false;
   let mfsu: MFSU | null = null;
+
+  const devHost =
+    opts.host && opts.host !== '0.0.0.0' ? opts.host : 'localhost';
+
   if (enableMFSU) {
     if (opts.config.srcTranspiler === Transpiler.swc) {
       logger.warn(
@@ -84,7 +88,7 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
-      serverBase: `${opts.config.https ? 'https' : 'http'}://${opts.host}:${
+      serverBase: `${opts.config.https ? 'https' : 'http'}://${devHost}:${
         opts.port || 8000
       }`,
     });
@@ -177,7 +181,7 @@ export async function dev(opts: IOpts) {
       ...(opts.beforeMiddlewares || []),
     ],
     port: opts.port,
-    host: opts.host,
+    host: devHost,
     afterMiddlewares: [...(opts.afterMiddlewares || [])],
     onDevCompileDone: opts.onDevCompileDone,
     onProgress: opts.onProgress,
