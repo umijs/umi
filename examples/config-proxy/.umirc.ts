@@ -20,6 +20,9 @@ export default {
       context: ['/api', '/foooo'],
       target: 'https://jsonplaceholder.typicode.com/',
       changeOrigin: true,
+      onProxyReq: (proxyReq) => {
+        console.log(proxyReq);
+      },
       pathRewrite: { '^/api': '', '^/foooo': '' },
     },
   ],
