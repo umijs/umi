@@ -1,4 +1,5 @@
 {
+  "name": "@example/mfsu-e2e",
   "private": true,
   "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
@@ -10,7 +11,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20220729.2"
+    "umi": "4.0.10"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
