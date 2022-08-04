@@ -49,8 +49,10 @@ export async function dev(opts: IOpts) {
   const enableMFSU = opts.config.mfsu !== false;
   let mfsu: MFSU | null = null;
 
-  const devHost =
-    opts.host && opts.host !== '0.0.0.0' ? opts.host : 'localhost';
+  let devHost = 'localhost';
+  if (opts.host && opts.host !== '0.0.0.0') {
+    devHost = opts.host;
+  }
 
   if (enableMFSU) {
     if (opts.config.srcTranspiler === Transpiler.swc) {
