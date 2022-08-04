@@ -417,7 +417,7 @@ class Server {
   }> {
     const foundPort = await portfinder.getPortPromise({ port });
     return new Promise((resolve) => {
-      this.listeningApp.listen(foundPort, hostname, 5, () => {
+      this.listeningApp.listen(foundPort, hostname, () => {
         this.createSocketServer();
         const ret = {
           port: foundPort,
