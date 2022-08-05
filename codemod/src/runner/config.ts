@@ -30,7 +30,7 @@ const KEYS_TO_DELETE = [
 const KEYS_TO_DELETE_IF_VALUE_MATCH: Record<string, string> = {
   devtool: 'eval-cheap-module-source-map',
 };
-const KEYS_DEFAULT = ['initialState', 'model'];
+const KEYS_DEFAULT = ['initialState', 'model', 'request'];
 const KEYS_FROM_BOOLEAN_TO_OBJECT = { runtimePublicPath: {}, ctoken: {} };
 const KEYS_CHANGE_NAME: [string, string][] = [
   ['antd.config', 'antd.configProvider'],
