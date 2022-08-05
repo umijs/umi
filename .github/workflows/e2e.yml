@@ -54,7 +54,7 @@ jobs:
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/... --filter ./packages/umi/...
 
-      - name: example-max-e2e
+      - name: e2e:example-max
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
@@ -65,23 +65,19 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
-      - name: example-mfsu-e2e
+      - name: e2e:example:mfsu-e2e
         if: env.CYPRESS_RECORD_KEY
         uses: cypress-io/github-action@v4
         with:
-          start: pnpm run dev
-          wait-on: 'npx wait-on http://localhost:8000/__umi/api/status'
           browser: chrome
           working-directory: ./examples/mfsu-e2e
           install: false
           install-command: pnpm i cypress
-          command: pnpm umi-scripts cypress
+          command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 8000
-          HMR: none
 
-      - name: Run example test-test
+      - name: e2e:example-test-test
         working-directory: ./examples/test-test
         run: |
           npx umi setup

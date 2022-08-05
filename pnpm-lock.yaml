@@ -323,6 +323,7 @@ importers:
     specifiers:
       '@types/react': ^18.0.0
       '@types/react-dom': ^18.0.0
+      cross-env: ^7.0.3
       cypress: ^10.0.0
       start-server-and-test: ^1.0.0
       typescript: ^4.1.2
@@ -333,6 +334,7 @@ importers:
     devDependencies:
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.6
+      cross-env: 7.0.3
       cypress: 10.3.1
       start-server-and-test: 1.14.0
       typescript: 4.7.4
@@ -21664,6 +21666,7 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
+    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -21681,6 +21684,7 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
+    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}
