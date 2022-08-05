@@ -54,7 +54,7 @@ jobs:
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/... --filter ./packages/umi/...
 
-      - name: e2e:example-max
+      - name: e2e:example:max
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
