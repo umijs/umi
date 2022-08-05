@@ -57,7 +57,6 @@ jobs:
       - name: example-max-e2e
         uses: cypress-io/github-action@v4
         with:
-          start: pnpm run preview
           browser: chrome
           working-directory: ./examples/max
           install: false
@@ -65,7 +64,6 @@ jobs:
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 9527
 
       - name: example-mfsu-e2e
         if: env.CYPRESS_RECORD_KEY

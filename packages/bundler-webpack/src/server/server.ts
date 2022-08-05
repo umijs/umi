@@ -184,8 +184,16 @@ export async function createServer(opts: IOpts) {
       if (proxy.target) {
         assert(typeof proxy.target === 'string', 'proxy.target must be string');
         assert(proxy.context, 'proxy.context must be supplied');
+
         middleware = createProxyMiddleware(proxy.context, {
           ...proxy,
+          onProxyReq(proxyReq, req: any, res) {
+            // add origin in request header
+            if (proxyReq.getHeader('origin')) {
+              proxyReq.setHeader('origin', new URL(proxy.target)?.href || '');
+            }
+            proxy.onProxyReq?.(proxyReq, req, res);
+          },
           // Add x-real-url in response header
           onProxyRes(proxyRes, req: any, res) {
             proxyRes.headers['x-real-url'] =
