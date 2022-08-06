@@ -74,10 +74,9 @@ export default defineConfig({
   },
   dva: {},
   layout: {
-    // https://umijs.org/zh-CN/plugins/plugin-layout
+    // https://umijs.org/docs/max/layout-menu#构建时配置
+    title: 'UmiJS',
     locale: true,
-    siderWidth: 208,
-    ...defaultSettings,
   },
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
