@@ -137,6 +137,7 @@ export async function dev(opts: IOpts) {
     staticPathPrefix: MF_DEP_PREFIX,
     name: MFSU_NAME,
     chainWebpack: opts.config.mfsu?.chainWebpack,
+    extraBabelIncludes: opts.config.extraBabelIncludes,
     cache: {
       buildDependencies: opts.cache?.buildDependencies,
       cacheDirectory: join(cacheDirectoryPath, 'mfsu-deps'),
