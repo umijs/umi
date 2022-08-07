@@ -2,7 +2,7 @@ import { yParser } from '@umijs/utils';
 import kleur from 'kleur';
 import { join } from 'path';
 import { Checker } from './checker';
-import { event, ready } from './logger';
+import { event, getLogStatistics, ready } from './logger';
 import { prepare } from './prepare';
 import { Runner as ConfigRunner } from './runner/config';
 import { Runner as EslintRunner } from './runner/eslintrc';
@@ -41,6 +41,13 @@ export default async () => {
   // After js files modified, we may need to modify package.json
   event(kleur.magenta('Modify package.json...'));
   new PackageJSONRunner({ cwd, context }).run();
+  event(kleur.magenta('logStatistics...'));
+  const warnInfo = kleur.yellow(`warn: ${getLogStatistics().warn}`);
+  const tips = `${
+    getLogStatistics().warn !== 0 ? '\n请处理警告信息在运行' : ''
+  }`;
+  const logStatistics = `${warnInfo + tips}`;
+  console.log(logStatistics);
 
   // TODOS: 清除 .umi-* 缓存文件
   // TODOS: 清除 node_modules
