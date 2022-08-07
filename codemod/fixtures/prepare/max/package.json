@@ -1,0 +1,20 @@
+{
+  "name": "prepare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@umijs/preset-react": "^1.8.17",
+    "umi": "^3.0.1"
+  },
+  "dependencies": {
+    "@umijs/preset-react": "^1.8.17",
+    "umi": "^3.0.1"
+  }
+}
