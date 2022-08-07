@@ -42,9 +42,11 @@ export default async () => {
   event(kleur.magenta('Modify package.json...'));
   new PackageJSONRunner({ cwd, context }).run();
   event(kleur.magenta('logStatistics...'));
-  const warnInfo = kleur.yellow(`warn: ${getLogStatistics().warn}`);
+  const warnInfo = kleur.yellow(`warn: ${getLogStatistics().warn.length}`);
   const tips = `${
-    getLogStatistics().warn !== 0 ? '\n请处理警告信息在运行' : ''
+    getLogStatistics().warn.length !== 0
+      ? `\n${getLogStatistics().warn.join('\n')}\n请处理警告信息在运行`
+      : ''
   }`;
   const logStatistics = `${warnInfo + tips}`;
   console.log(logStatistics);

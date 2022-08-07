@@ -1,7 +1,7 @@
 import kleur from 'kleur';
 
-const logStatistics = {
-  warn: 0,
+const logStatistics: { warn: string[] } = {
+  warn: [],
 };
 
 const prefixes = {
@@ -23,8 +23,11 @@ export function error(...message: any[]) {
 }
 
 export function warn(...message: any[]) {
-  logStatistics.warn = logStatistics.warn + 1;
-  console.warn(prefixes.warn, ...message.map((s) => kleur.yellow(s)));
+  const info = `${prefixes.warn} ${message
+    .map((s) => kleur.yellow(s))
+    .join(' ')}`;
+  logStatistics.warn.push(info);
+  console.warn(info);
 }
 
 export function ready(...message: any[]) {

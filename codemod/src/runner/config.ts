@@ -3,7 +3,7 @@ import { lodash } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { update as appJSUpdate } from '../appJSUpdater';
 import { update } from '../configUpdater';
-import { info } from '../logger';
+import { info, warn } from '../logger';
 import { Context } from '../types';
 import { writePrettierFileSync } from '../utils/writePrettierFileSync';
 
@@ -59,6 +59,12 @@ export class Runner {
   }
 
   transform({ config, configFile }: any) {
+    if (config.openAPI) {
+      warn('你之前配置了openAPI，请按照文档升级');
+    }
+    if (config.plugins) {
+      warn('你之前配置了plugins，请按照文档升级');
+    }
     // deleteKeys
     const deleteKeys: string[] = [];
     KEYS_TO_DELETE.forEach((key) => {
