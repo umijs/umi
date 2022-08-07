@@ -110,6 +110,7 @@ importers:
       '@umijs/utils': 4.0.7
       fast-glob: 3.2.11
       kleur: 4.1.4
+      prettier: 2.6.2
     dependencies:
       '@umijs/ast': 4.0.7
       '@umijs/babel-preset-umi': 4.0.7
@@ -117,6 +118,7 @@ importers:
       '@umijs/utils': 4.0.7
       fast-glob: 3.2.11
       kleur: 4.1.4
+      prettier: 2.6.2
 
   examples/ant-design-pro:
     specifiers:
@@ -22192,7 +22194,6 @@ packages:
     resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
 
   /prettier/2.7.1:
     resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}

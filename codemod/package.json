@@ -24,7 +24,8 @@
     "@umijs/bundler-utils": "4.0.7",
     "@umijs/utils": "4.0.7",
     "fast-glob": "3.2.11",
-    "kleur": "4.1.4"
+    "kleur": "4.1.4",
+    "prettier": "2.6.2"
   },
   "publishConfig": {
     "access": "public"

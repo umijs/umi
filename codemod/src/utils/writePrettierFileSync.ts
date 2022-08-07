@@ -1,8 +1,14 @@
 import { writeFileSync } from 'fs';
+import path from 'path';
+import prettier from 'prettier';
 
 export function writePrettierFileSync(filePath: string, code: string): void {
-  // TODO: prettier
   // for mork test
   if (!filePath || !code) return;
-  writeFileSync(filePath, code, 'utf-8');
+  const options = { parser: 'babel' };
+  if (path.extname(filePath) === '.json') {
+    options.parser = 'json';
+  }
+  const newCode = prettier.format(code, options);
+  writeFileSync(filePath, newCode, 'utf-8');
 }
