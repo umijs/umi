@@ -213,3 +213,12 @@ test('ImportNamespaceSpecifier > ImportDefaultSpecifier for css modules', () => 
     }).code,
   ).toEqual(`import styles from './index.module.less';`);
 });
+
+test('delete src/app.tsx initialStateConfig', () => {
+  expect(
+    transform({
+      code: `export const initialStateConfig = { a: 1 };`,
+      filePath: 'src/app.tsx',
+    }).code,
+  ).toBe('');
+});

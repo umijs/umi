@@ -7,6 +7,10 @@ export default {
   devServer: {
     port: '9001',
   },
+  dva:{
+    hmr:true,
+  },
+  inspectorConfig:{},
   dynamicImportSyntax: {},
   esbuild: {},
   favicon: 'abc',
