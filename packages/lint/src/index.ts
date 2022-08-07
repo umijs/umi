@@ -7,7 +7,7 @@ const STYLE_EXTS = [
   '**/*.css',
   '**/*.sass',
   '**/*.scss',
-  '**/*.styl',
+  '**/*.style',
 ];
 export type { ILintArgs, ILinterOpts };
 
