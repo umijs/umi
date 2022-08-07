@@ -288,6 +288,7 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@umijs/max': 4.0.11
+      cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -299,6 +300,7 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     devDependencies:
+      cross-env: 7.0.3
       cypress: 10.3.1
       start-server-and-test: 1.14.0
       tailwindcss: 3.1.6
@@ -321,6 +323,7 @@ importers:
     specifiers:
       '@types/react': ^18.0.0
       '@types/react-dom': ^18.0.0
+      cross-env: ^7.0.3
       cypress: ^10.0.0
       start-server-and-test: ^1.0.0
       typescript: ^4.1.2
@@ -331,6 +334,7 @@ importers:
     devDependencies:
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.6
+      cross-env: 7.0.3
       cypress: 10.3.1
       start-server-and-test: 1.14.0
       typescript: 4.7.4
@@ -11537,6 +11541,14 @@ packages:
     resolution: {integrity: sha512-+BO9wPPi+DWTDcNYhr/W90myha8ptzftZT+LwcmUbbok0rcP/fequmFYCw8NMoH7pkAZQzU78b3kYrlua5a9eA==}
     dev: false
 
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+    dev: true
+
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -21654,6 +21666,7 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
+    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -21671,6 +21684,7 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
+    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}

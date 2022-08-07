@@ -54,69 +54,30 @@ jobs:
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/... --filter ./packages/umi/...
 
-      - name: example-max-e2e-without-record
-        if: ${{ !env.CYPRESS_RECORD_KEY }}
+      - name: e2e:example:max
         uses: cypress-io/github-action@v4
         with:
-          start: pnpm run preview
-          wait-on: 'http://127.0.0.1:9527'
           browser: chrome
           working-directory: ./examples/max
           install: false
-          record: false
           install-command: pnpm i cypress
+          command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 9527
 
-      - name: example-max-e2e-with-recording
+      - name: e2e:example:mfsu-e2e
         if: env.CYPRESS_RECORD_KEY
         uses: cypress-io/github-action@v4
         with:
-          start: pnpm run preview
-          wait-on: 'http://127.0.0.1:9527'
-          browser: chrome
-          working-directory: ./examples/max
-          install: false
-          record: true
-          install-command: pnpm i cypress
-        env:
-          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 9527
-
-      - name: example-mfsu-e2e-without-record
-        if: ${{ !env.CYPRESS_RECORD_KEY }}
-        uses: cypress-io/github-action@v4
-        with:
-          start: pnpm run dev
-          wait-on: 'npx wait-on http://localhost:8000/__umi/api/status'
           browser: chrome
           working-directory: ./examples/mfsu-e2e
           install: false
-          record: false
           install-command: pnpm i cypress
+          command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 8000
-          HMR: none
 
-      - name: example-mfsu-e2e-with-recording
-        if: env.CYPRESS_RECORD_KEY
-        uses: cypress-io/github-action@v4
-        with:
-          start: pnpm run dev
-          wait-on: 'npx wait-on http://localhost:8000/__umi/api/status'
-          browser: chrome
-          working-directory: ./examples/mfsu-e2e
-          install: false
-          record: true
-          install-command: pnpm i cypress
-        env:
-          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-          PORT: 8000
-          HMR: none
-
-      - name: Run example test-test
+      - name: e2e:example-test-test
         working-directory: ./examples/test-test
         run: |
           npx umi setup
