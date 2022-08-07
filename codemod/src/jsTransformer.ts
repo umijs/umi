@@ -379,6 +379,22 @@ export function transform(opts: {
         index -= 1;
       }
     },
+    ExportNamedDeclaration(path: Babel.NodePath<t.ExportNamedDeclaration>) {
+      const { node } = path;
+
+      if (
+        opts.filePath === 'src/app.tsx' &&
+        t.isVariableDeclaration(node.declaration)
+      ) {
+        node.declaration.declarations.some((dec) => {
+          if (t.isVariableDeclarator(dec) && t.isIdentifier(dec.id)) {
+            if (dec.id.name === 'initialStateConfig') {
+              path.remove();
+            }
+          }
+        });
+      }
+    },
   });
 
   if (hasDynamic) {
