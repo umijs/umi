@@ -11,6 +11,7 @@ test('transform', () => {
   ).toEqual({
     dependencies: { umi: '^4.0.0' },
     scripts: {
+      dev: 'umi dev',
       lint: 'umi lint',
       'lint:fix': 'umi lint --fix',
       postinstall: 'umi setup',
