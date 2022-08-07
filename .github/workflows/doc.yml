@@ -1,4 +1,4 @@
-name: CI
+name: doc
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
@@ -7,14 +7,14 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - 'examples/**'
+    paths:
       - 'docs/**'
-      - '**/*.md'
   pull_request:
     types:
       - 'opened'
       - 'synchronize'
+    paths:
+      - 'docs/**'
   workflow_dispatch:
 
 concurrency:
@@ -23,21 +23,19 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
-        os: [ubuntu-latest, windows-latest]
-      fail-fast: false
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16.x
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Install pnpm
@@ -76,9 +74,4 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - run: pnpm build
-      - run: pnpm tsc:check
-      - run: pnpm test
-        env:
-          CI: true
-          NODE_ENV: test
+      - run: pnpm doc:build
