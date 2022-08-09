@@ -146,8 +146,8 @@ export function insertRoute(routes: IRouteProps[], microAppRoute: IRouteProps) {
           );
         }
         found.exact = false;
-        found.routes = found.routes || [];
-        found.routes.push(microAppRoute);
+        found.children = found.children || [];
+        found.children.push(microAppRoute);
         break;
       case 'insertBefore':
         if (
