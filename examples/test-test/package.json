@@ -6,13 +6,6 @@
     "start": "npm run dev",
     "test": "jest --coverage"
   },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "lines": 1
-      }
-    }
-  },
   "dependencies": {
     "@umijs/plugins": "4.0.11",
     "umi": "4.0.11"

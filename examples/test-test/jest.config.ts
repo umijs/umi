@@ -18,5 +18,10 @@ export default async () => {
       '!.umirc.{js,ts}',
       '!.umirc.*.{js,ts}',
     ],
+    coverageThreshold: {
+      global: {
+        lines: 1,
+      },
+    },
   })) as Config.InitialOptions;
 };
