@@ -49,7 +49,22 @@ const createTransformer = (
           code: source,
         };
 
-      const result = transformSync(source, {
+      let rawCode = source;
+
+      /// this logic or code from
+      /// https://github.com/threepointone/esjest-transform/blob/main/src/index.js
+      /// this will support the jest.mock
+      /// https://github.com/aelbore/esbuild-jest/issues/12
+      /// TODO: transform the jest.mock to a function using babel traverse/parse then hoist it
+      if (rawCode.indexOf('jest.mock(') >= 0) {
+        rawCode = require('./transformer').babelTransform({
+          sourceText: rawCode,
+          sourcePath: path,
+          config: transformOptions,
+        });
+      }
+
+      const result = transformSync(rawCode, {
         ...options,
         ...(config.globals['jest-esbuild'] as UserOptions),
         loader: userOptions.loader || (extname(path).slice(1) as Loader),

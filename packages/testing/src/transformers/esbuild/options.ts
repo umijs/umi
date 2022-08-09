@@ -1,4 +1,4 @@
-import { ResolvedOptions, UserOptions } from './type';
+import type { ResolvedOptions, UserOptions } from './type';
 
 export function resolveOptions(userOptions: UserOptions): ResolvedOptions {
   return {
