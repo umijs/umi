@@ -133,7 +133,13 @@ option|description
 
 ```bash
 $ pnpm dev
-ready - App listening at http://127.0.0.1:8000
+        ╔═════════════════════════════════════════════════════╗
+        ║ App listening at:                                   ║
+        ║  >   Local: https://127.0.0.1:8001                  ║
+ready - ║  > Network: https://192.168.1.1:8001                ║
+        ║                                                     ║
+        ║ Now you can open browser with the above addresses👆 ║
+        ╚═════════════════════════════════════════════════════╝
 event - compiled successfully in 1121 ms (388 modules)
 event - MFSU compiled successfully in 1308 ms (875 modules)
 ```

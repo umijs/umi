@@ -4,7 +4,7 @@ import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-prox
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
-import { chalk, logger } from '@umijs/utils';
+import { getDevBanner, logger } from '@umijs/utils';
 import assert from 'assert';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
@@ -275,10 +275,11 @@ export async function createServer(opts: IOpts) {
   const port = opts.port || 8000;
 
   server.listen(port, () => {
-    const host = opts.host && opts.host !== '0.0.0.0' ? opts.host : 'localhost';
-    logger.ready(
-      `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,
-    );
+    const banner = getDevBanner(protocol, opts.host, port);
+
+    console.log(banner.before);
+    logger.ready(banner.main);
+    console.log(banner.after);
   });
 
   return server;
