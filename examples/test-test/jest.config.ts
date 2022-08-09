@@ -17,6 +17,7 @@ export default async () => {
       '!coverage/**',
       '!.umirc.{js,ts}',
       '!.umirc.*.{js,ts}',
+      '!jest.config.{js,ts}',
     ],
     coverageThreshold: {
       global: {
