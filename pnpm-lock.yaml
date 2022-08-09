@@ -876,12 +876,14 @@ importers:
       esbuild: 0.14.49
       express: 4.18.1
       less: 4.1.2
+      regenerate: ^1.4.2
       regenerate-unicode-properties: 10.0.1
       spdy: ^4.0.2
       tapable: 2.2.1
     dependencies:
       '@umijs/utils': link:../utils
       esbuild: 0.14.49
+      regenerate: 1.4.2
       regenerate-unicode-properties: 10.0.1
       spdy: 4.0.2
     devDependencies:
@@ -21666,7 +21668,6 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
-    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -21684,7 +21685,6 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
-    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}
