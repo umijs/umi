@@ -80,7 +80,7 @@ export default () => {
           onChange={(e) => setKeyword(e.target.value)}
           id="search-input"
           className="w-full bg-transparent outline-none text-sm px-4 py-2"
-          placeholder={render('Search anything ...')}
+          placeholder={render('搜索任何内容 ...')}
         />
         {themeConfig.searchHotKey && (
           <div
@@ -104,7 +104,7 @@ export default () => {
                 className="p-2 bg-white hover:bg-gray-50 transition
                  duration-300 group-focus:bg-blue-200 dark:bg-gray-700"
               >
-                {render('No result for')} "{keyword}"
+                {render('没有结果')} "{keyword}"
               </p>
             </div>
           )}

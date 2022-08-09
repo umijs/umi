@@ -17,7 +17,7 @@ export default {
   navs: [
     {
       path: '/docs',
-      title: 'Docs',
+      title: '文档',
       type: 'nav',
       children: [
         {
@@ -94,7 +94,7 @@ export default {
     },
     {
       path: '/blog',
-      title: 'Blog',
+      title: '博客',
       type: 'nav',
       children: [
         {
