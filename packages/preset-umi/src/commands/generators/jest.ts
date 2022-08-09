@@ -33,6 +33,8 @@ export default (api: IApi) => {
         initial: true,
       });
 
+      const hasSrc = api.paths.absSrcPath.endsWith('src');
+
       const basicDeps = {
         jest: '^27',
         '@types/jest': '^27',
@@ -61,6 +63,26 @@ export default (api: IApi) => {
       }
 
       const importSource = api.appData.umi.importSource;
+
+      const collectCoverageFrom = hasSrc
+        ? [
+            'src/**/*.{ts,js,tsx,jsx}',
+            '!src/.umi/**',
+            '!src/.umi-test/**',
+            '!src/.umi-production/**',
+          ]
+        : [
+            '**/*.{ts,tsx,js,jsx}',
+            '!.umi/**',
+            '!.umi-test/**',
+            '!.umi-production/**',
+            '!.umirc.{js,ts}',
+            '!.umirc.*.{js,ts}',
+            '!jest.config.{js,ts}',
+            '!coverage/**',
+            '!dist/**',
+          ];
+
       writeFileSync(
         join(api.cwd, 'jest.config.ts'),
         `
@@ -75,6 +97,9 @@ export default async () => {
       jsTransformerOpts: { jsx: 'automatic' },
     }),
     ${res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''}
+    collectCoverageFrom: [${collectCoverageFrom
+      .map((v) => `'${v}'`)
+      .join(', ')}],
     // if you require some es-module npm package, please uncomment below line and insert your package name
     // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
   })) as Config.InitialOptions;
