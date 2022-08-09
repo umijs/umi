@@ -1,6 +1,6 @@
 import { createHttpsServer, resolveHttpsConfig } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
-import { chalk, logger } from '@umijs/utils';
+import { getDevBanner, logger } from '@umijs/utils';
 import http from 'http';
 import type {
   DepOptimizationMetadata,
@@ -14,6 +14,7 @@ import pluginOnHotUpdate from './plugins/onHotUpdate';
 interface IOpts {
   cwd: string;
   port?: number;
+  host?: string;
   viteConfig: ViteInlineConfig;
   userConfig: IConfig;
   beforeMiddlewares?: any[];
@@ -126,11 +127,11 @@ export async function createServer(opts: IOpts) {
       });
     }
 
-    const host = process.env.HOST || 'localhost';
+    const banner = getDevBanner(protocol, opts.host, port);
 
-    logger.ready(
-      `App listening at ${chalk.green(`${protocol}//${host}:${port}`)}`,
-    );
+    console.log(banner.before);
+    logger.ready(banner.main);
+    console.log(banner.after);
   });
 
   return server;

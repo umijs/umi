@@ -29,6 +29,7 @@ import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
 export * from './getCorejsVersion';
+export * from './getDevBanner';
 export * from './importLazy';
 export * from './isLocalDev';
 export * from './isStyleFile';

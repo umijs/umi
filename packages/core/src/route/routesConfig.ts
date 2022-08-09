@@ -75,9 +75,15 @@ function transformRoute(opts: {
   if (wrappers?.length) {
     let parentId = opts.parentId;
     let path = opts.route.path;
+    let layout = opts.route.layout;
     wrappers.forEach((wrapper: any) => {
       const { id } = transformRoute({
-        route: { path, component: wrapper, isWrapper: true },
+        route: {
+          path,
+          component: wrapper,
+          isWrapper: true,
+          ...(layout === false ? { layout: false } : {}),
+        },
         parentId,
         memo: opts.memo,
         onResolveComponent: opts.onResolveComponent,
