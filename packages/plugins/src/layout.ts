@@ -276,7 +276,7 @@ const { formatMessage } = useIntl();
         : 'type InitDataType = any;'
     }
 
-    import { IConfigFromPlugins } from '@@/core/pluginConfig';
+    import type { IConfigFromPlugins } from '@@/core/pluginConfig';
 
     export type RunTimeLayoutConfig = (initData: InitDataType) => Omit<
       ProLayoutProps,
