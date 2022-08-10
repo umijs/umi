@@ -36,7 +36,7 @@ export default {
 
 ## 代理静态资源到本地后，一直 restart 刷新页面
 
-<img src={require('./img/rstart.png')}/ >
+<img src={require('./img/rstart.png')} />
 
 解法：配置 `SOCKET_SERVER=127.0.0.1:${port}`
 
@@ -44,7 +44,7 @@ export default {
 
 ## Error evaluating function `round`: argument must be a number
 
-<img src={require('./img/less-error.png')}/ >
+<img src={require('./img/less-error.png')} />
 
 解法：新版 less 中 `/` 默认被识别为属性简写，通过配置 `lessLoader: { math: 'always' },` 恢复旧版行为（默认将 `/` 用作计算符号）。
 
