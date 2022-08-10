@@ -520,7 +520,7 @@ const Layout = ()=>{
 
 类型定义如下：
 ```ts
-declare function useOutlet(): React.ReactElement | null;
+declare function useOutletContext<Context = unknown>(): Context;
 ```
 
 示例：
