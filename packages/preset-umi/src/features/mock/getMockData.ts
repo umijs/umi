@@ -35,9 +35,13 @@ export function getMockData(opts: {
       return memo;
     }, [])
     .reduce<Record<string, any>>((memo, file) => {
-      const mockFile = `${opts.cwd}/${file}`.replace(/\//g, '\\');
+      let mockFile = `${opts.cwd}/${file}`;
       let m;
       try {
+        if(!require.cache[mockFile]){
+          // windows require.cache key 路径处理
+          mockFile = mockFile.replace(/\//g, '\\');
+        }
         delete require.cache[mockFile];
         m = require(mockFile);
       } catch (e) {
