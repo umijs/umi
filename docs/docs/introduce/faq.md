@@ -38,15 +38,17 @@ export default {
 
 <img src={require('./img/rstart.png')} />
 
-解法：配置 `SOCKET_SERVER=127.0.0.1:${port}`
+解法：配置 `SOCKET_SERVER=127.0.0.1:${port}` 启动项目
 
- eg: `SOCKET_SERVER=[http://127.0.0.1:8000](http://127.0.0.1:8000) tnpm run devs`
+```bash
+  SOCKET_SERVER=http://127.0.0.1:8000 pnpm dev
+```
 
 ## Error evaluating function `round`: argument must be a number
 
 <img src={require('./img/less-error.png')} />
 
-解法：新版 less 中 `/` 默认被识别为属性简写，通过配置 `lessLoader: { math: 'always' },` 恢复旧版行为（默认将 `/` 用作计算符号）。
+解法：新版 less 中 `/` 默认被识别为属性简写，通过配置 `lessLoader: { math: 'always' }` 恢复旧版行为（默认将 `/` 用作计算符号）。
 
 ## routes 里的 layout 配置选项不生效
 
@@ -108,7 +110,7 @@ export default {
 
 ## IE 兼容性问题
 
-IE 被淘汰，现代浏览器主流背景下，umi4 默认不兼容 IE ，在 [这里](https://github.com/umijs/umi/issues/8658) 可以参与相关讨论。
+IE 被淘汰，现代浏览器主流背景下，umi4 默认不兼容 IE ，在 [issues/8658](https://github.com/umijs/umi/issues/8658) 可以参与相关讨论。
 
 若你需要兼容 es5 ，目前的缓解方法是： 调整 js 与 css 的压缩器
 
