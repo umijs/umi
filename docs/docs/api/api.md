@@ -569,7 +569,7 @@ const params = useParams()
 `useResolvedPath` 根据当前路径将目标地址解析出完整的路由信息。
 
 类型定义如下：
-```
+```ts
 declare function useResolvedPath(to: To): Path;
 ```
 
