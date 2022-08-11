@@ -18,12 +18,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { qiankunStateForSlaveModelNamespace } from './constants';
 import { ErrorBoundary } from './ErrorBoundary';
 import { getMasterOptions } from './masterOptions';
 import MicroAppLoader from './MicroAppLoader';
 import { MasterOptions } from './types';
-
-const qiankunStateForSlaveModelNamespace = '@@qiankunStateForSlave';
 
 type HashHistory = {
   type?: 'hash';
