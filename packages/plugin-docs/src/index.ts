@@ -143,12 +143,14 @@ export default () => {
 
   // 支持文档热更新
   api.chainWebpack((memo) => {
-    memo.plugin('fastRefresh').tap(([params]) => [
-      {
-        ...params,
-        include: /\.([cm]js|[jt]sx?|flow|md)$/i,
-      },
-    ]);
+    if (api.env === 'development') {
+      memo.plugin('fastRefresh').tap(([params]) => [
+        {
+          ...params,
+          include: /\.([cm]js|[jt]sx?|flow|md)$/i,
+        },
+      ]);
+    }
     return memo;
   });
 };
