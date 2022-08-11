@@ -37,6 +37,7 @@ Maintainers are community members who have 10 or more PRs merged in umi, or have
 * [stormslowly](https://github.com/stormslowly)
 * [xierenyuan](https://github.com/xierenyuan)
 * [siyi98](https://github.com/siyi98)
+* [txp1035](https://github.com/txp1035)
 
 ### Contributors
 
