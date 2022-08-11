@@ -272,6 +272,7 @@ export default function (api: IApi) {
       opts.presets?.forEach((preset) => {
         if (preset instanceof Array && /babel-preset-umi/.test(preset[0])) {
           preset[1].env.useBuiltIns = false;
+          preset[1].env.corejs = false;
         }
       });
       opts.plugins = [
