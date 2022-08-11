@@ -1,7 +1,8 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { chalk, glob, lodash, logger, register, winPath } from '@umijs/utils';
+import { chalk, glob, lodash, logger, register } from '@umijs/utils';
 import assert from 'assert';
 import { DEFAULT_METHOD, MOCK_FILE_GLOB, VALID_METHODS } from './constants';
+import { join } from "path";
 
 export interface IMock {
   method: string;
@@ -35,10 +36,10 @@ export function getMockData(opts: {
       return memo;
     }, [])
     .reduce<Record<string, any>>((memo, file) => {
-      const mockFile = winPath(`${opts.cwd}/${file}`);
+      const mockFile = join(opts.cwd, file);
       let m;
       try {
-        delete require.cache[require.resolve(mockFile)];
+        delete require.cache[mockFile];
         m = require(mockFile);
       } catch (e) {
         throw new Error(
