@@ -534,7 +534,7 @@ const Layout = ()=>{
 
 类型定义如下：
 ```ts
-declare function useOutlet(): React.ReactElement | null;
+declare function useOutletContext<Context = unknown>(): Context;
 ```
 
 示例：
@@ -583,7 +583,7 @@ const params = useParams()
 `useResolvedPath` 根据当前路径将目标地址解析出完整的路由信息。
 
 类型定义如下：
-```
+```ts
 declare function useResolvedPath(to: To): Path;
 ```
 
