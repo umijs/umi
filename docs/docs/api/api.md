@@ -78,6 +78,20 @@ TODO: SUPPORT
 */
 }
 
+### generatePath
+
+使用给定的带参数的 path 和对应的 params 生成实际要访问的路由。
+
+```ts
+import { generatePath } from 'umi';
+
+generatePath("/users/:id", { id: "42" }); // "/users/42"
+generatePath("/files/:type/*", {
+  type: "img",
+  "*": "cat.jpg",
+}); // "/files/img/cat.jpg"
+```
+
 ### history
 
 和 history 相关的操作，用于获取当前路由信息、执行路由跳转、监听路由变更。
