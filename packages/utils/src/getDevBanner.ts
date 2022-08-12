@@ -47,7 +47,10 @@ export function getDevBanner(
   )}${BORDERS.V}`;
   const afterLines = [
     `${BORDERS.V}${''.padStart(maxLen)}${BORDERS.V}`,
-    `${BORDERS.V}${footer}${BORDERS.V}`,
+    `${BORDERS.V}${footer}${''.padStart(
+      // emoji has 2 length of string but has 1 space in typeset, so we need to add 1
+      maxLen - stripAnsi(footer).length + 1,
+    )}${BORDERS.V}`,
     `${BORDERS.BL}${chalk.gray.dim(''.padStart(maxLen, BORDERS.H_PURE))}${
       BORDERS.BR
     }`,

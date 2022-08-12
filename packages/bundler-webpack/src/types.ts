@@ -56,10 +56,10 @@ export interface IConfig {
   copy?: ICopy[] | string[];
   cssLoader?: { [key: string]: any };
   cssLoaderModules?: { [key: string]: any };
-  cssMinifier?: CSSMinifier;
+  cssMinifier?: `${CSSMinifier}`;
   cssMinifierOptions?: { [key: string]: any };
   define?: { [key: string]: any };
-  depTranspiler?: Transpiler;
+  depTranspiler?: `${Transpiler}`;
   devtool?: Config.DevTool;
   deadCode?: DeadCodeParams;
   https?: HttpsServerOptions;
