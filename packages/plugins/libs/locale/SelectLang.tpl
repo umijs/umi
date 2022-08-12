@@ -423,13 +423,20 @@ export const SelectLang: React.FC<SelectLangProps> = (props) => {
   const menuItemStyle = { minWidth: "160px" };
   const menuItemIconStyle = { marginRight: "8px" };
   const langMenu = (
-    <Menu selectedKeys={[selectedLang]} onClick={handleClick} items={
-      allLangUIConfig.map((localeObj) =>({
-        icon:localeObj?.icon || "🌐",
-        label:localeObj?.label || "en-US",
-        key:localeObj.lang || localeObj.key
-        })
-    } />
+    <Menu
+      selectedKeys={[selectedLang]}
+      onClick={handleClick}
+      style={menuItemStyle}
+      items={allLangUIConfig.map((localeObj) => ({
+        icon: (
+          <span role="img" aria-label={localeObj?.label || 'en-US'} style={menuItemIconStyle}>
+            {localeObj?.icon || '🌐'}
+          </span>
+        ),
+        label: localeObj?.label || 'en-US',
+        key: localeObj.lang || localeObj.key,
+      }))}
+    />
   );
 
   const inlineStyle = {
