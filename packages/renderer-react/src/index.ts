@@ -6,6 +6,7 @@ export {
 } from 'history';
 export {
   createSearchParams,
+  generatePath,
   matchPath,
   matchRoutes,
   Navigate,

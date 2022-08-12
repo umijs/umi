@@ -131,6 +131,49 @@ test('wrappers', () => {
   });
 });
 
+test('wrappers should inherit layout: false', () => {
+  expect(
+    getConfigRoutes({
+      routes: [
+        {
+          path: '/home/*',
+          component: 'index',
+          wrappers: ['wrapperA', 'wrapperB'],
+          layout: false,
+        },
+      ],
+    }),
+  ).toEqual({
+    '2': {
+      id: '2',
+      path: '/home/*',
+      absPath: '/home/*',
+      file: 'wrapperA',
+      parentId: undefined,
+      isWrapper: true,
+      layout: false,
+    },
+    '3': {
+      id: '3',
+      path: '*',
+      file: 'wrapperB',
+      absPath: '/home/*',
+      parentId: '2',
+      isWrapper: true,
+      layout: false,
+    },
+    '1': {
+      id: '1',
+      file: 'index',
+      path: '*',
+      absPath: '/home/*',
+      parentId: '3',
+      originPath: '/home/*',
+      layout: false,
+    },
+  });
+});
+
 test('wrappers path ends with `*`, children should inherit `*` as path', () => {
   // multi wrappers
   expect(
