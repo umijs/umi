@@ -1,4 +1,4 @@
-name: Issue Check
+name: Issue Checker
 
 on:
   issues:
@@ -7,7 +7,7 @@ on:
 jobs:
   check-open:
     runs-on: ubuntu-latest
-    if: github.event.issue.state == 'open' && contains(github.event.issue.title, '[Feature Request]') == false && contains(github.event.issue.body, 'https://github.com') == false && contains(github.event.issue.body, 'https://stackblitz.com') == false
+    if: github.event.issue.actor.site_admin == false && github.event.issue.state == 'open' && contains(github.event.issue.title, '[Feature Request]') == false && contains(github.event.issue.body, 'https://github.com') == false && contains(github.event.issue.body, 'https://stackblitz.com') == false
     steps:
       - uses: actions-cool/maintain-one-comment@v3
         with:
