@@ -22,6 +22,7 @@ module.exports = {
   pluginProposalRecordAndTuple: () =>
     require('@babel/plugin-proposal-record-and-tuple'),
 
+  pluginTransformModulesCommonJs: () => require('@babel/plugin-transform-modules-commonjs'),
   pluginTransformRuntime: () => require('@babel/plugin-transform-runtime'),
 
   // preset
