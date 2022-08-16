@@ -67,7 +67,7 @@
     "@vercel/ncc": "0.33.3",
     "dts-packer": "^0.0.3",
     "expect-playwright": "^0.8.0",
-    "father": "^4.0.0-rc.7",
+    "father": "^4.0.0-rc.9",
     "git-repo-info": "^2.1.1",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
@@ -93,12 +93,20 @@
     "uglify-js": "^3.15.4",
     "umi": "workspace:*",
     "umi-scripts": "workspace:*",
-    "zx": "^4.3.0"
+    "zx": "^7.0.8"
   },
   "packageManager": "pnpm@7.3.0",
   "engines": {
     "node": ">=14",
     "pnpm": ">=7"
+  },
+  "compiledConfig": {
+    "deps": [
+      "zx"
+    ],
+    "excludeDtsDeps": [
+      "zx"
+    ]
   },
   "pnpm": {
     "peerDependencyRules": {
