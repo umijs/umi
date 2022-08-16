@@ -21,6 +21,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "7.18.6",
     "@jest/types": "27.5.1",
     "@umijs/bundler-utils": "4.0.12",
     "babel-jest": "^28.1.3",
