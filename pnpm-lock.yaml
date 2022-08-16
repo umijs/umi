@@ -854,7 +854,6 @@ importers:
       '@babel/plugin-proposal-partial-application': 7.18.9
       '@babel/plugin-proposal-pipeline-operator': 7.18.9
       '@babel/plugin-proposal-record-and-tuple': 7.18.6
-      '@babel/plugin-transform-modules-commonjs': 7.18.6
       '@babel/plugin-transform-runtime': 7.18.9
       '@babel/preset-env': 7.18.9
       '@babel/preset-react': 7.18.6
@@ -869,7 +868,6 @@ importers:
       '@types/babel__parser': 7.1.1
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.17.1
-      '@types/express': ^4.17.13
       '@types/less': 3.0.3
       '@types/spdy': ^3.4.5
       '@umijs/utils': 4.0.12
@@ -902,7 +900,6 @@ importers:
       '@babel/plugin-proposal-partial-application': 7.18.9_@babel+core@7.18.9
       '@babel/plugin-proposal-pipeline-operator': 7.18.9_@babel+core@7.18.9
       '@babel/plugin-proposal-record-and-tuple': 7.18.6_@babel+core@7.18.9
-      '@babel/plugin-transform-modules-commonjs': 7.18.6_@babel+core@7.18.9
       '@babel/plugin-transform-runtime': 7.18.9_@babel+core@7.18.9
       '@babel/preset-env': 7.18.9_@babel+core@7.18.9
       '@babel/preset-react': 7.18.6_@babel+core@7.18.9
@@ -917,7 +914,6 @@ importers:
       '@types/babel__parser': 7.1.1
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.17.1
-      '@types/express': 4.17.13
       '@types/less': 3.0.3
       '@types/spdy': 3.4.5
       cjs-module-lexer: 1.2.2
@@ -1377,6 +1373,7 @@ importers:
   packages/testing:
     specifiers:
       '@babel/core': ^7.0.0
+      '@babel/plugin-transform-modules-commonjs': 7.18.6
       '@jest/transform': ^28.1.3
       '@jest/types': 27.5.1
       '@umijs/bundler-utils': 4.0.12
@@ -1386,6 +1383,7 @@ importers:
       isomorphic-unfetch: 3.1.0
       jest: ^27.5.1
     dependencies:
+      '@babel/plugin-transform-modules-commonjs': 7.18.6_@babel+core@7.18.9
       '@jest/types': 27.5.1
       '@umijs/bundler-utils': link:../bundler-utils
       babel-jest: 28.1.3_@babel+core@7.18.9
@@ -3859,7 +3857,6 @@ packages:
       babel-plugin-dynamic-import-node: 2.3.3
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@babel/plugin-transform-modules-systemjs/7.18.9_@babel+core@7.18.9:
     resolution: {integrity: sha512-zY/VSIbbqtoRoJKo2cDTewL364jSlZGvn0LKOf9ntbfxOvjfmyrdtEEOAdswOswhZEb8UH3jDkCKHd1sPgsS0A==}
@@ -10193,7 +10190,7 @@ packages:
   /axios/0.21.4_debug@4.3.2:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10201,7 +10198,7 @@ packages:
   /axios/0.25.0:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10209,7 +10206,7 @@ packages:
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -10218,7 +10215,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -10300,7 +10297,6 @@ packages:
     resolution: {integrity: sha512-jZVI+s9Zg3IqA/kdi0i6UDCybUI3aSBLnglhYbSSjKlV7yF1F/5LWv8MakQmvYpnbJDS6fcBL2KzHSxNCMtWSQ==}
     dependencies:
       object.assign: 4.1.2
-    dev: true
 
   /babel-plugin-import/1.13.5:
     resolution: {integrity: sha512-IkqnoV+ov1hdJVofly9pXRJmeDm9EtROfrc5i6eII0Hix2xMs5FEm8FG3ExMvazbnZBbgHIt6qdO8And6lCloQ==}
@@ -10333,7 +10329,7 @@ packages:
     resolution: {integrity: sha512-Ys3tUKAmfnkRUpPdpa98eYrAR0nV+sSFUZZEGuQ2EbFd1y4SOLtD5QDNHAq+bb9a+bbXvYQC4b+ID/THIMcU6Q==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      '@babel/template': 7.18.6
+      '@babel/template': 7.18.10
       '@babel/types': 7.18.10
       '@types/babel__core': 7.1.19
       '@types/babel__traverse': 7.18.0
@@ -12371,6 +12367,7 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -14733,18 +14730,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: true
-
-  /follow-redirects/1.15.1_debug@4.3.2:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.2
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -15780,7 +15765,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -16542,7 +16527,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@babel/core': 7.18.9
-      '@babel/parser': 7.18.9
+      '@babel/parser': 7.18.11
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
       semver: 6.3.0
