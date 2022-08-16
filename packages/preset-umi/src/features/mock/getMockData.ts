@@ -73,6 +73,9 @@ export function getMockData(opts: {
       }
       return memo;
     }, {});
+  for (const file of register.getFiles()) {
+    delete require.cache[file];
+  }
   register.restore();
   return ret;
 }

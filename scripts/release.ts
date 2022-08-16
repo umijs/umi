@@ -3,9 +3,9 @@ import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
 import rimraf from 'rimraf';
-import 'zx/globals';
 import { PATHS } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
+import './zxGlobals';
 
 (async () => {
   const { branch } = getGitRepoInfo();
