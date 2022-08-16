@@ -29,7 +29,9 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     plugins: (Joi) => Joi.array().items(Joi.string()),
     presets: (Joi) => Joi.array().items(Joi.string()),
     publicPath: (Joi) =>
-      Joi.string().regex(/\/$/).error(new Error('publicPath must end with /')),
+      Joi.string()
+        .regex(/(\/|auto)$/)
+        .error(new Error('publicPath must be "auto" or end with /')),
     routes: (Joi) => Joi.array().items(Joi.object()),
     scripts: (Joi) => Joi.array(),
     styles: (Joi) => Joi.array(),
