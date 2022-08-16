@@ -30,7 +30,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     presets: (Joi) => Joi.array().items(Joi.string()),
     publicPath: (Joi) =>
       Joi.string()
-        .regex(/(\/|auto)$/)
+        .regex(/(\/|^auto)$/)
         .error(new Error('publicPath must be "auto" or end with /')),
     routes: (Joi) => Joi.array().items(Joi.object()),
     scripts: (Joi) => Joi.array(),
