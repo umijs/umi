@@ -914,7 +914,7 @@ export interface Response<
     headersSent: boolean;
 
     /** Get value for header `field`. */
-    get(field: string): string|undefined;
+    get(field: string): string;
 
     /** Clear cookie `name`. */
     clearCookie(name: string, options?: CookieOptions): this;
