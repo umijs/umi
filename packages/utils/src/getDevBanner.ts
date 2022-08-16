@@ -20,7 +20,7 @@ export function getDevBanner(
   // prepare all source lines
   const header = ' App listening at:';
   const footer = chalk.bold(
-    ' Now you can open browser with the above addresses👆 ',
+    ' Now you can open browser with the above addresses↑ ',
   );
   const local = `  ${chalk.gray('>')}   Local: ${chalk.green(
     `${protocol}//${host === '0.0.0.0' ? 'localhost' : host}:${port}`,
@@ -47,10 +47,9 @@ export function getDevBanner(
   )}${BORDERS.V}`;
   const afterLines = [
     `${BORDERS.V}${''.padStart(maxLen)}${BORDERS.V}`,
-    `${BORDERS.V}${footer}${''.padStart(
-      // emoji has 2 length of string but has 1 space in typeset, so we need to add 1
-      maxLen - stripAnsi(footer).length + 1,
-    )}${BORDERS.V}`,
+    `${BORDERS.V}${footer}${''.padStart(maxLen - stripAnsi(footer).length)}${
+      BORDERS.V
+    }`,
     `${BORDERS.BL}${chalk.gray.dim(''.padStart(maxLen, BORDERS.H_PURE))}${
       BORDERS.BR
     }`,
