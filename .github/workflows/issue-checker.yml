@@ -5,9 +5,20 @@ on:
     types: [opened, edited]
 
 jobs:
+  check-permission:
+    runs-on: ubuntu-latest
+    outputs:
+      require-result: ${{ steps.checkUser.outputs.require-result }}
+    steps:
+      - uses: actions-cool/check-user-permission@v2
+        id: checkUser
+        with:
+          require: 'write'
+
   check-open:
     runs-on: ubuntu-latest
-    if: github.event.issue.actor.site_admin == false && github.event.issue.state == 'open' && contains(github.event.issue.title, '[Feature Request]') == false && contains(github.event.issue.body, 'https://github.com') == false && contains(github.event.issue.body, 'https://stackblitz.com') == false
+    needs: check-permission
+    if: needs.check-permission.outputs.require-result == 'false' && github.event.issue.state == 'open' && contains(github.event.issue.title, '[Feature Request]') == false && contains(github.event.issue.body, 'https://github.com') == false && contains(github.event.issue.body, 'https://stackblitz.com') == false
     steps:
       - uses: actions-cool/maintain-one-comment@v3
         with:
@@ -18,7 +29,8 @@ jobs:
 
   check-close:
     runs-on: ubuntu-latest
-    if: github.event.issue.state == 'closed' && (contains(github.event.issue.body, 'https://github.com') == true || contains(github.event.issue.body, 'https://stackblitz.com') == true)
+    needs: check-permission
+    if: needs.check-permission.outputs.require-result == 'false' && github.event.issue.state == 'closed' && (contains(github.event.issue.body, 'https://github.com') == true || contains(github.event.issue.body, 'https://stackblitz.com') == true)
     steps:
       - uses: actions-cool/issues-helper@v3
         with:
