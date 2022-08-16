@@ -81,6 +81,8 @@ export default (api: IApi) => {
             '!jest.config.{js,ts}',
             '!coverage/**',
             '!dist/**',
+            '!config/**',
+            '!mock/**',
           ];
 
       writeFileSync(
