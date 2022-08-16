@@ -35,7 +35,7 @@ function createRouteMiddleware(opts: { api: IApi }) {
       const requestHandler = await createRequestHandler({
         ...markupArgs,
         styles: markupArgs.styles.concat(assetsMap['umi.css'] || []),
-        scripts: markupArgs.scripts.concat(assetsMap['umi.js'] || []),
+        scripts: (assetsMap['umi.js'] || []).concat(markupArgs.scripts!),
         esmScript: false,
         historyType: opts.api.config.history?.type || 'browser',
       });
