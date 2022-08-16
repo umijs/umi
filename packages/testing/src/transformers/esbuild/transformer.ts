@@ -1,8 +1,15 @@
 import type { TransformOptions } from '@jest/transform';
-import babelJest from 'babel-jest';
 
-const { process } = babelJest.createTransformer({
-  plugins: ['@babel/plugin-transform-modules-commonjs'],
+require('./requireHook').hook();
+const { createTransformer } = require('babel-jest');
+require('./requireHook').unhook();
+
+const { process } = createTransformer({
+  plugins: [
+    require.resolve(
+      '@umijs/bundler-utils/compiled/babel/plugin-transform-modules-commonjs',
+    ),
+  ],
   parserOpts: {
     plugins: ['jsx', 'typescript'],
   },
