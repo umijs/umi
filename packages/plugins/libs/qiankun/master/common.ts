@@ -6,7 +6,7 @@
  */
 
 import React, { ReactComponentElement } from 'react';
-import type { IRouteProps } from 'umi';
+import { Navigate, type IRouteProps } from 'umi';
 
 export const defaultMountContainerId = 'root-subapp';
 
@@ -94,6 +94,12 @@ export function patchMicroAppRoute(
       routeProps,
     };
     route.element = React.createElement(getMicroAppRouteComponent(opts), null);
+  } else if (route.redirect) {
+    // patchClientRoutes 插入的 redirect 不会被转换，所以这里需要手动处理成重定向组件
+    route.element = React.createElement(Navigate, {
+      to: route.redirect,
+      replace: true,
+    });
   }
 }
 
