@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "umi dev",
     "start": "npm run dev",
-    "test": "jest"
+    "test": "jest --no-cache --coverage"
   },
   "dependencies": {
     "@umijs/plugins": "4.0.12",
