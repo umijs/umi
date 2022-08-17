@@ -325,6 +325,7 @@ export {
   useRequest,
   UseRequestProvider,
   request,
+  getRequestInstance
 } from './request';
 `,
     });
