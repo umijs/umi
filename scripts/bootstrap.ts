@@ -108,6 +108,17 @@ import { setExcludeFolder } from './.internal/utils';
         'utf-8',
       );
 
+      // .fatherrc.ts
+      await fs.writeFile(
+        path.join(pkgDir, '.fatherrc.ts'),
+        `import { defineConfig } from 'father';
+
+export default defineConfig({
+  extends: '../../.fatherrc.base.ts',
+});\n`,
+        'utf-8',
+      );
+
       // src/index.ts
       const srcDir = path.join(pkgDir, 'src');
       if (!fs.existsSync(srcDir)) {
