@@ -30,13 +30,13 @@ export class Dep {
   public shortFile: string;
   public normalizedFile: string;
   public filePath: string;
-  public mfsu: MFSU;
+  public excludeNodeNatives: boolean;
 
   constructor(opts: {
     file: string;
     version: string;
     cwd: string;
-    mfsu: MFSU;
+    excludeNodeNatives: boolean;
   }) {
     this.file = winPath(opts.file);
     this.version = opts.version;
@@ -44,7 +44,7 @@ export class Dep {
     this.shortFile = this.file;
     this.normalizedFile = this.shortFile.replace(/\//g, '_').replace(/:/g, '_');
     this.filePath = `${MF_VA_PREFIX}${this.normalizedFile}.js`;
-    this.mfsu = opts.mfsu;
+    this.excludeNodeNatives = opts.excludeNodeNatives!;
   }
 
   async buildExposeContent() {
@@ -53,7 +53,7 @@ export class Dep {
     const isNodeNatives = !!process.binding('natives')[this.file];
     if (isNodeNatives) {
       return trimFileContent(
-        this.mfsu.opts.excludeNodeNatives
+        this.excludeNodeNatives
           ? `
 const _ = require('${this.file}');
 module.exports = _;
@@ -96,7 +96,7 @@ export * from '${this.file}';
       return new Dep({
         ...opts.deps[file],
         cwd: opts.cwd,
-        mfsu: opts.mfsu,
+        excludeNodeNatives: opts.mfsu.opts.excludeNodeNatives!,
       });
     });
   }
