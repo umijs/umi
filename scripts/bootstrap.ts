@@ -1,6 +1,6 @@
+import 'zx/globals';
 import { PATHS, SCRIPTS } from './.internal/constants';
 import { setExcludeFolder } from './.internal/utils';
-import './zxGlobals';
 
 (async () => {
   const root = PATHS.ROOT;
