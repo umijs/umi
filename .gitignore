@@ -40,8 +40,8 @@
 /test/**/fixtures/*/src/.umi
 /test/**/fixtures/*/src/.umi-production
 /coverage
-packages/*/coverage
-examples/*/coverage
+/packages/*/coverage
+/examples/*/coverage
 .vscode
 
 # Ignore declaration files, they are generated from local development
