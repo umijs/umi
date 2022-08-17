@@ -3,8 +3,8 @@ import { readWantedLockfile } from '@pnpm/lockfile-file';
 import ncc from '@vercel/ncc';
 import { Package } from 'dts-packer';
 import resolve from 'resolve';
+import 'zx/globals';
 import { PATHS } from './.internal/constants';
-import './zxGlobals';
 // @ts-ignore
 // import { Package } from '/Users/chencheng/code/github.com/sorrycc/dts-packer/dist/Package.js';
 

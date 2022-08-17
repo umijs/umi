@@ -1,8 +1,8 @@
 import { glob, lodash, logger } from '@umijs/utils';
 import { isMatch } from 'matcher';
+import 'zx/globals';
 import { PATHS, SCRIPTS } from './.internal/constants';
 import { eachPkg, getPkgs } from './.internal/utils';
-import './zxGlobals';
 
 const COMMON_IGNORES = [
   // default included

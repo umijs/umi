@@ -100,14 +100,6 @@
     "node": ">=14",
     "pnpm": ">=7"
   },
-  "compiledConfig": {
-    "deps": [
-      "zx"
-    ],
-    "excludeDtsDeps": [
-      "zx"
-    ]
-  },
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [

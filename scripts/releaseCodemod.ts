@@ -1,7 +1,7 @@
 import { logger } from '@umijs/utils';
 import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
-import './zxGlobals';
+import 'zx/globals';
 
 function assert(v: unknown, message: string) {
   if (!v) {
