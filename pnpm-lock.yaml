@@ -512,11 +512,13 @@ importers:
   examples/umi-run:
     specifiers:
       '@umijs/plugin-run': workspace:*
-      umi: ^4.0.12
+      cross-env: ^7.0.3
+      umi: workspace:*
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
       '@umijs/plugin-run': link:../../packages/plugin-run
+      cross-env: 7.0.3
 
   examples/vue-demo:
     specifiers:
