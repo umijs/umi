@@ -30,6 +30,7 @@ export default () => {
       require.resolve('./features/apiRoute/apiRoute'),
       require.resolve('./features/monorepo/redirect'),
       require.resolve('./features/clickToComponent/clickToComponent'),
+      require.resolve('./features/legacy/legacy'),
 
       // commands
       require.resolve('./commands/build'),
