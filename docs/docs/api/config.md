@@ -638,6 +638,13 @@ links: [{ href: '/foo.css', rel: 'preload' }],
 
 注意：只在 build 时生成。
 
+## mdx
+
+- 类型：`{loader:string,loaderOptions:object}`
+- 默认值：`{}`
+
+mdx loader 配置 loader 配置路径，loaderOptions 配置参数
+
 ## metas
 
 - 类型：`Meta[]`
