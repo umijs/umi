@@ -27,7 +27,6 @@
     "test.d.ts",
     "test.js",
     "eslint.js",
-    "run-globals.d.ts",
     "stylelint.js"
   ],
   "scripts": {
@@ -48,8 +47,7 @@
     "@umijs/test": "4.0.12",
     "@umijs/utils": "4.0.12",
     "prettier-plugin-organize-imports": "^2.3.4",
-    "prettier-plugin-packagejson": "^2.2.17",
-    "zx": "^7.0.8"
+    "prettier-plugin-packagejson": "^2.2.17"
   },
   "engines": {
     "node": ">=14"
