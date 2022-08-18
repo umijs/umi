@@ -26,4 +26,5 @@ $ npx create-umi@latest
 - [model](./data-flow)
 - [乾坤微前端](./micro-frontend)
 - [请求库](./request)
-- [tailwindCSS支持](./tailwindcss)
+- [Tailwind CSS支持](./tailwindcss)
+- [Moment2dayjs](./moment2dayjs)
