@@ -4,9 +4,11 @@ import {
   JSMinifier,
   Transpiler,
 } from '@umijs/bundler-webpack/dist/types';
-import { chalk, logger } from '@umijs/utils';
+import { chalk, lodash, logger } from '@umijs/utils';
 import type { IApi } from '../../types';
 
+type WebpackChainFunc = Parameters<IApi['chainWebpack']>[0];
+type WebpackChainConfig = Parameters<WebpackChainFunc>[0];
 interface ILegacyOpts {
   buildOnly?: boolean;
 }
@@ -110,53 +112,61 @@ export default (api: IApi) => {
           .join(', ')} to be compatible with IE 11`,
       );
 
-      // externalsType: script warning
-      // https://github.com/webpack/webpack/issues/12465
-      // https://github.com/webpack/webpack/issues/11874
-      if (userConfig.externals) {
-        const externalsAsString = JSON.stringify(userConfig.externals);
-        if (externalsAsString.includes('http')) {
-          logger.warn(
-            `Legacy browsers do not support ${chalk.yellow(
-              'Top level await',
-            )}, ensure you are not using ${chalk.bold.red(
-              'externalsType: script',
-            )} external http(s) links`,
-          );
+      const originChainWebpack = userConfig.chainWebpack;
+      memo.chainWebpack = ((memo, ...args) => {
+        if (originChainWebpack) {
+          memo = originChainWebpack(memo, ...args);
         }
-      }
+
+        // ensure svgr transform outputs is es5
+        useBabelTransformSvgr(memo, api);
+
+        // externalsType: script warning
+        // https://github.com/webpack/webpack/issues/12465
+        // https://github.com/webpack/webpack/issues/11874
+        if (!lodash.isEmpty(userConfig.externals)) {
+          const externalsAsString = JSON.stringify(userConfig.externals);
+          const externalsType = memo.get('externalsType');
+          if (externalsAsString.includes('script ') || externalsType) {
+            logger.warn(
+              `Legacy browsers do not support ${chalk.yellow(
+                'Top level await',
+              )}, ensure you are not using ${chalk.bold.red(
+                'externalsType: script',
+              )} external http(s) links`,
+            );
+          }
+        }
+
+        return memo;
+      }) as WebpackChainFunc;
 
       return memo;
     },
   });
-
-  api.chainWebpack((memo) => {
-    if (!api.userConfig.svgr) return;
-
-    // ensure svgr transform outputs is es5
-    memo.module
-      .rule('svgr')
-      .use('babel-loader')
-      .loader(require.resolve('@umijs/bundler-webpack/compiled/babel-loader'))
-      .options({
-        sourceType: 'unambiguous',
-        babelrc: false,
-        cacheDirectory: false,
-        targets: api.config.targets,
-        presets: [
-          [
-            require.resolve('@umijs/babel-preset-umi'),
-            {
-              presetEnv: {},
-              presetReact: {},
-              presetTypeScript: {},
-            },
-          ],
-        ],
-      })
-      .before('svgr-loader')
-      .end();
-
-    return memo;
-  });
 };
+
+function useBabelTransformSvgr(memo: WebpackChainConfig, api: IApi) {
+  memo.module
+    .rule('svgr')
+    .use('babel-loader')
+    .loader(require.resolve('@umijs/bundler-webpack/compiled/babel-loader'))
+    .options({
+      sourceType: 'unambiguous',
+      babelrc: false,
+      cacheDirectory: false,
+      targets: api.config.targets,
+      presets: [
+        [
+          require.resolve('@umijs/babel-preset-umi'),
+          {
+            presetEnv: {},
+            presetReact: {},
+            presetTypeScript: {},
+          },
+        ],
+      ],
+    })
+    .before('svgr-loader')
+    .end();
+}
