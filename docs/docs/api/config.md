@@ -616,6 +616,25 @@ https: {
 
 > 默认是用 less@4 版本，如果需要兼容 less@3 请配置使用[less-options-math](https://lesscss.org/usage/#less-options-math)。
 
+## legacy
+
+- 类型：`{ buildOnly?: boolean }`
+- 默认值：`false`
+
+当你需要兼容低版本浏览器时，可能需要该选项，开启后将默认使用 **非现代** 的打包工具做构建，这会显著增加你的构建时间。
+
+```ts
+legacy: {}
+```
+
+默认只在构建时生效，通过设定 `buildOnly: false` 关闭该限制。
+
+开启此选项后：
+
+ - 不支持自定义 `srcTranspiler` 、`jsMinifier` 、 `cssMinifier` 选项。
+ - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 。
+ - 因低版本浏览器不支持 Top level await ，确保你没有使用 [`externalsType: script`](https://webpack.js.org/configuration/externals/#externalstypescript) 的 `externals` 链接。
+
 ## links
 
 - 类型：`Link[]`
