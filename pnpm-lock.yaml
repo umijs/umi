@@ -509,6 +509,15 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+  examples/umi-run:
+    specifiers:
+      '@umijs/plugin-run': workspace:*
+      umi: ^4.0.12
+    dependencies:
+      umi: link:../../packages/umi
+    devDependencies:
+      '@umijs/plugin-run': link:../../packages/plugin-run
+
   examples/vue-demo:
     specifiers:
       '@umijs/preset-vue': 4.0.12
@@ -10237,25 +10246,6 @@ packages:
       - debug
     dev: true
 
-  /babel-jest/27.5.1_@babel+core@7.18.5:
-    resolution: {integrity: sha512-cdQ5dXjGRd0IBRATiQ4mZGlGlRE8kJpjPOixdNRdT+m3UcNqmYWN6rK6nvtXYfY3D76cb8s/O1Ss8ea24PIwcg==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    peerDependencies:
-      '@babel/core': ^7.8.0
-    dependencies:
-      '@babel/core': 7.18.5
-      '@jest/transform': 27.5.1
-      '@jest/types': 27.5.1
-      '@types/babel__core': 7.1.19
-      babel-plugin-istanbul: 6.1.1
-      babel-preset-jest: 27.5.1_@babel+core@7.18.5
-      chalk: 4.1.2
-      graceful-fs: 4.2.10
-      slash: 3.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /babel-jest/27.5.1_@babel+core@7.18.9:
     resolution: {integrity: sha512-cdQ5dXjGRd0IBRATiQ4mZGlGlRE8kJpjPOixdNRdT+m3UcNqmYWN6rK6nvtXYfY3D76cb8s/O1Ss8ea24PIwcg==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -10492,17 +10482,6 @@ packages:
       '@babel/plugin-syntax-optional-catch-binding': 7.8.3_@babel+core@7.18.9
       '@babel/plugin-syntax-optional-chaining': 7.8.3_@babel+core@7.18.9
       '@babel/plugin-syntax-top-level-await': 7.14.5_@babel+core@7.18.9
-
-  /babel-preset-jest/27.5.1_@babel+core@7.18.5:
-    resolution: {integrity: sha512-Nptf2FzlPCWYuJg41HBqXVT8ym6bXOevuCTbhxlUpjwtysGaIWFvDEjp4y+G7fl13FgOdjs7P/DmErqH7da0Ag==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/core': 7.18.5
-      babel-plugin-jest-hoist: 27.5.1
-      babel-preset-current-node-syntax: 1.0.1_@babel+core@7.18.5
-    dev: true
 
   /babel-preset-jest/27.5.1_@babel+core@7.18.9:
     resolution: {integrity: sha512-Nptf2FzlPCWYuJg41HBqXVT8ym6bXOevuCTbhxlUpjwtysGaIWFvDEjp4y+G7fl13FgOdjs7P/DmErqH7da0Ag==}
@@ -16778,10 +16757,10 @@ packages:
       ts-node:
         optional: true
     dependencies:
-      '@babel/core': 7.18.5
+      '@babel/core': 7.18.9
       '@jest/test-sequencer': 27.5.1
       '@jest/types': 27.5.1
-      babel-jest: 27.5.1_@babel+core@7.18.5
+      babel-jest: 27.5.1_@babel+core@7.18.9
       chalk: 4.1.2
       ci-info: 3.3.2
       deepmerge: 4.2.2
