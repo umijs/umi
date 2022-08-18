@@ -262,7 +262,7 @@ location 中的 query 不再支持了，后续推荐用 [search](https://develop
 
 ```diff
 - const { query } = history.location;
-+ import { parse } from 'querystring';
++ import { parse } from 'query-string';
 + const query = parse(history.location.search);
 ```
 
