@@ -1,6 +1,6 @@
 export default {
   run: {
-    globals: ['umi/run-globals'],
+    globals: ['zx/globals'],
   },
   plugins: ['@umijs/plugin-run'],
 };
