@@ -121,19 +121,32 @@ export default (api: IApi) => {
         // ensure svgr transform outputs is es5
         useBabelTransformSvgr(memo, api);
 
-        // externalsType: script warning
+        // Top level sync import cannot be used with async externalType
         // https://github.com/webpack/webpack/issues/12465
         // https://github.com/webpack/webpack/issues/11874
         if (!lodash.isEmpty(userConfig.externals)) {
           const externalsAsString = JSON.stringify(userConfig.externals);
           const externalsType = memo.get('externalsType');
-          if (externalsAsString.includes('script ') || externalsType) {
+          // We should print warning: async externalsType should not be used
+          if (
+            // e.g.
+            //  externals: {
+            //    lodash: ['script http://path', '_']
+            //  }
+            externalsAsString.includes('script ') ||
+            // e.g.
+            // chainWebpack(memo) {
+            //   memo.set('externalsType', 'script');
+            //   return memo
+            // }
+            externalsType
+          ) {
             logger.warn(
               `Legacy browsers do not support ${chalk.yellow(
                 'Top level await',
-              )}, ensure you are not using ${chalk.bold.red(
-                'externalsType: script',
-              )} external http(s) links`,
+              )}, ensure you are not using both ${chalk.bold.red(
+                `Top level sync import`,
+              )} and ${chalk.bold.red('Async externalsType (e.g. script)')}`,
             );
           }
         }
