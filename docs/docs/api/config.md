@@ -633,7 +633,7 @@ legacy: {}
 
  - 不支持自定义 `srcTranspiler` 、`jsMinifier` 、 `cssMinifier` 选项。
  - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 。
- - 因低版本浏览器不支持 Top level await ，确保你没有使用 [`externalsType: script`](https://webpack.js.org/configuration/externals/#externalstypescript) 的 `externals` 链接。
+ - 因低版本浏览器不支持 Top level await ，当你在使用 `externals` 时，确保你没有在使用异步性质的 [`externalsType`](https://webpack.js.org/configuration/externals/#externalstype) 时又使用了同步导入依赖。
 
 ## links
 
