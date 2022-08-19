@@ -57,7 +57,7 @@ interface IOpts {
   shared?: any;
   remoteName?: string;
   remoteAliases?: string[];
-  serverBase: string;
+  serverBase?: string;
 }
 
 export class MFSU {
