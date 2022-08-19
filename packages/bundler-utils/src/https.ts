@@ -64,7 +64,7 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
     !existsSync(key) ||
     !existsSync(cert) ||
     !existsSync(json) ||
-    !validateHttpsHosts(json, hosts!)
+    !hasHostsChanged(json, hosts!)
   ) {
     logger.wait('[HTTPS] Generating cert and key files...');
     await execa.execa('mkcert', [
@@ -82,9 +82,13 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
   };
 }
 
-function validateHttpsHosts(jsonFile: string, hosts: string[]) {
-  const json = JSON.parse(readFileSync(jsonFile, 'utf-8'));
-  return json.hosts.join(',') === hosts.join(',');
+function hasHostsChanged(jsonFile: string, hosts: string[]) {
+  try {
+    const json = JSON.parse(readFileSync(jsonFile, 'utf-8'));
+    return json.hosts.join(',') === hosts.join(',');
+  } catch (e) {
+    return false;
+  }
 }
 
 export async function createHttpsServer(
