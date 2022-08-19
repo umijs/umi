@@ -16,6 +16,7 @@ type IOpts = {
   onMFSUProgress?: Function;
   port?: number;
   host?: string;
+  ip?: string;
   babelPreset?: any;
   chainWebpack?: Function;
   modifyWebpackConfig?: Function;
@@ -29,6 +30,7 @@ type IOpts = {
   entry: Record<string, string>;
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
+  mfsuServerBase?: string;
   srcCodeCache?: any;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
@@ -48,11 +50,6 @@ export async function dev(opts: IOpts) {
   );
   const enableMFSU = opts.config.mfsu !== false;
   let mfsu: MFSU | null = null;
-
-  let devHost = 'localhost';
-  if (opts.host && opts.host !== '0.0.0.0') {
-    devHost = opts.host;
-  }
 
   if (enableMFSU) {
     if (opts.config.srcTranspiler === Transpiler.swc) {
@@ -90,9 +87,7 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
-      serverBase: `${opts.config.https ? 'https' : 'http'}://${devHost}:${
-        opts.port || 8000
-      }`,
+      serverBase: opts.mfsuServerBase,
     });
   }
 
@@ -184,7 +179,8 @@ export async function dev(opts: IOpts) {
       ...(opts.beforeMiddlewares || []),
     ],
     port: opts.port,
-    host: devHost,
+    host: opts.host,
+    ip: opts.ip,
     afterMiddlewares: [...(opts.afterMiddlewares || [])],
     onDevCompileDone: opts.onDevCompileDone,
     onProgress: opts.onProgress,
