@@ -38,7 +38,7 @@ export interface IOpts {
   entry: Record<string, string>;
   extraBabelPresets?: any[];
   extraBabelPlugins?: any[];
-  extraBabelIncludes?: string[];
+  extraBabelIncludes?: Array<string | RegExp>;
   extraEsbuildLoaderHandler?: any[];
   babelPreset?: any;
   chainWebpack?: Function;

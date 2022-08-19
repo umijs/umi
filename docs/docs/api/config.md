@@ -406,7 +406,7 @@ headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 
 ## extraBabelIncludes
 
-- 类型：`string[]`
+- 类型：`Array<string | RegExp>`
 - 默认值：`[]`
 
 配置额外需要做 Babel 编译的 NPM 包或目录。比如：
@@ -418,6 +418,8 @@ export default {
     join(__dirname, '../../common'),
     // 支持 npm 包
     'react-monaco-editor',
+    // 转译全部路径含有 @scope 的包
+    /@scope/
   ],
 };
 ```
@@ -613,6 +615,25 @@ https: {
 设置 less-loader 的 Options。具体参考参考 [less-loader 的 Options](https://github.com/webpack-contrib/less-loader#lessoptions)。
 
 > 默认是用 less@4 版本，如果需要兼容 less@3 请配置使用[less-options-math](https://lesscss.org/usage/#less-options-math)。
+
+## legacy
+
+- 类型：`{ buildOnly?: boolean }`
+- 默认值：`false`
+
+当你需要兼容低版本浏览器时，可能需要该选项，开启后将默认使用 **非现代** 的打包工具做构建，这会显著增加你的构建时间。
+
+```ts
+legacy: {}
+```
+
+默认只在构建时生效，通过设定 `buildOnly: false` 关闭该限制。
+
+开启此选项后：
+
+ - 不支持自定义 `srcTranspiler` 、`jsMinifier` 、 `cssMinifier` 选项。
+ - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 。
+ - 因低版本浏览器不支持 Top level await ，当你在使用 `externals` 时，确保你没有在使用异步性质的 [`externalsType`](https://webpack.js.org/configuration/externals/#externalstype) 时又使用了同步导入依赖。
 
 ## links
 

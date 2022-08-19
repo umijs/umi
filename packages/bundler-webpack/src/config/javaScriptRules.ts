@@ -1,6 +1,6 @@
 import type { Program } from '@swc/core';
 import { autoCssModulesHandler, esbuildLoader } from '@umijs/mfsu';
-import { chalk, resolve } from '@umijs/utils';
+import { chalk, lodash, resolve } from '@umijs/utils';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
@@ -15,7 +15,7 @@ interface IOpts {
   env: Env;
   extraBabelPlugins: any[];
   extraBabelPresets: any[];
-  extraBabelIncludes: string[];
+  extraBabelIncludes: Array<string | RegExp>;
   extraEsbuildLoaderHandler: any[];
   babelPreset: any;
   name?: string;
@@ -48,6 +48,11 @@ export async function addJavaScriptRules(opts: IOpts) {
       .include.add([
         // support extraBabelIncludes
         ...opts.extraBabelIncludes.map((p) => {
+          // regexp
+          if (lodash.isRegExp(p)) {
+            return p;
+          }
+
           // handle absolute path
           if (isAbsolute(p)) {
             return p;

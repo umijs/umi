@@ -1,5 +1,5 @@
 import { chalk, execa, logger } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { RequestListener } from 'http';
 import { join } from 'path';
 import spdy from 'spdy';
@@ -55,11 +55,17 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
   }
 
   hosts = hosts || defaultHttpsHosts;
-  key = join(__dirname, 'umi.key.pem');
-  cert = join(__dirname, 'umi.pem');
+  key = join(__dirname, 'umi.https.key.pem');
+  cert = join(__dirname, 'umi.https.pem');
+  const json = join(__dirname, 'umi.https.json');
 
   // Generate cert and key files if they are not exist.
-  if (!existsSync(key) || !existsSync(cert)) {
+  if (
+    !existsSync(key) ||
+    !existsSync(cert) ||
+    !existsSync(json) ||
+    !hasHostsChanged(json, hosts!)
+  ) {
     logger.wait('[HTTPS] Generating cert and key files...');
     await execa.execa('mkcert', [
       '-cert-file',
@@ -68,12 +74,22 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
       key,
       ...hosts!,
     ]);
+    writeFileSync(json, JSON.stringify({ hosts }), 'utf-8');
   }
 
   return {
     key,
     cert,
   };
+}
+
+function hasHostsChanged(jsonFile: string, hosts: string[]) {
+  try {
+    const json = JSON.parse(readFileSync(jsonFile, 'utf-8'));
+    return json.hosts.join(',') === hosts.join(',');
+  } catch (e) {
+    return true;
+  }
 }
 
 export async function createHttpsServer(
@@ -85,13 +101,11 @@ export async function createHttpsServer(
   const { key, cert } = await resolveHttpsConfig(httpsConfig);
 
   // Create server
-  const http2Service = spdy.createServer(
+  return spdy.createServer(
     {
       key: readFileSync(key, 'utf-8'),
       cert: readFileSync(cert, 'utf-8'),
     },
     app,
   );
-
-  return http2Service;
 }
