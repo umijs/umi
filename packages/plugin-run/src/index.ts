@@ -35,7 +35,7 @@ export default (api: IApi) => {
 
 export function check(name: string) {
   const ext = extname(name);
-  if (ext !== 'ts') {
+  if (ext !== '.ts') {
     throw new Error('Only typescript files can be run');
   }
 }
