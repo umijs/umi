@@ -314,6 +314,40 @@ importers:
       start-server-and-test: 1.14.0
       tailwindcss: 3.1.6
 
+  examples/mf-host:
+    specifiers:
+      '@umijs/max': 4.0.0-canary.20220819.1
+      cross-env: ^7.0.3
+      cypress: ^10.0.0
+      react: 18.1.0
+      react-dom: 18.1.0
+      start-server-and-test: ^1.0.0
+    dependencies:
+      '@umijs/max': link:../../packages/max
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+    devDependencies:
+      cross-env: 7.0.3
+      cypress: 10.3.1
+      start-server-and-test: 1.14.0
+
+  examples/mf-remote:
+    specifiers:
+      '@umijs/max': 4.0.0-canary.20220819.1
+      cross-env: ^7.0.3
+      cypress: ^10.0.0
+      react: 18.1.0
+      react-dom: 18.1.0
+      start-server-and-test: ^1.0.0
+    dependencies:
+      '@umijs/max': link:../../packages/max
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+    devDependencies:
+      cross-env: 7.0.3
+      cypress: 10.3.1
+      start-server-and-test: 1.14.0
+
   examples/mfsu-circular-dependency:
     specifiers:
       '@types/react': ^18.0.9
@@ -8456,7 +8490,7 @@ packages:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 18.0.0
+      '@types/node': 18.7.4
     dev: true
     optional: true
 
@@ -11608,8 +11642,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      JSONStream: 1.3.5
       is-text-path: 1.0.1
+      JSONStream: 1.3.5
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -22064,7 +22098,6 @@ packages:
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
-    dev: false
 
   /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
@@ -22082,7 +22115,6 @@ packages:
       prettier: '>= 1.16.0'
     dependencies:
       sort-package-json: 1.57.0
-    dev: false
 
   /prettier-plugin-packagejson/2.2.18_prettier@2.7.1:
     resolution: {integrity: sha512-iBjQ3IY6IayFrQHhXvg+YvKprPUUiIJ04Vr9+EbeQPfwGajznArIqrN33c5bi4JcIvmLHGROIMOm9aYakJj/CA==}

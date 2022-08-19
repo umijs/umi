@@ -52,7 +52,7 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/test-test/... --filter ./packages/umi/...
+        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/mf-remote... --filter ./examples/test-test/... --filter ./packages/umi/...
 
       - name: e2e:example:max
         uses: cypress-io/github-action@v4
@@ -66,11 +66,32 @@ jobs:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
       - name: e2e:example:mfsu-e2e
-        if: env.CYPRESS_RECORD_KEY
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
           working-directory: ./examples/mfsu-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:plugin-mf+MFSU
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mf-remote
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:plugin-mf-host
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mf-host
           install: false
           install-command: pnpm i cypress
           command: npm run e2e:ci
