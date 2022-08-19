@@ -1,5 +1,5 @@
 import { chalk, execa, logger } from '@umijs/utils';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { RequestListener } from 'http';
 import { join } from 'path';
 import spdy from 'spdy';
@@ -74,6 +74,7 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
       key,
       ...hosts!,
     ]);
+    writeFileSync(json, JSON.stringify({ hosts }), 'utf-8');
   }
 
   return {
@@ -87,7 +88,7 @@ function hasHostsChanged(jsonFile: string, hosts: string[]) {
     const json = JSON.parse(readFileSync(jsonFile, 'utf-8'));
     return json.hosts.join(',') === hosts.join(',');
   } catch (e) {
-    return false;
+    return true;
   }
 }
 
