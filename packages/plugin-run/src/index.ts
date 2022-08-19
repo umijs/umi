@@ -1,6 +1,6 @@
 import { fsExtra } from '@umijs/utils';
 import { fork } from 'child_process';
-import { dirname, join, resolve } from 'path';
+import { dirname, extname, join, resolve } from 'path';
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
@@ -21,10 +21,10 @@ export default (api: IApi) => {
       const sourcePath = join(api.cwd, args._[0]);
       const str = fsExtra.readFileSync(sourcePath);
       const fileName = getFileNameByPath(sourcePath);
+      check(fileName);
       api.writeTmpFile({
         path: fileName,
         content: `${runGlobals.map((item) => `import '${item}'\n`)}${str}`,
-        tplPath: sourcePath,
       });
       const scriptPath = join(api.paths.absTmpPath, `plugin-run/${fileName}`);
       const tsxPath = getBinPath();
@@ -33,13 +33,20 @@ export default (api: IApi) => {
   });
 };
 
-function getBinPath() {
+export function check(name: string) {
+  const ext = extname(name);
+  if (ext !== 'ts') {
+    throw new Error('Only typescript files can be run');
+  }
+}
+
+export function getBinPath() {
   const pkgPath = join(__dirname, '../node_modules/tsx/package.json');
   const pkgContent = require(pkgPath);
   return resolve(dirname(pkgPath), pkgContent.bin);
 }
 
-function getFileNameByPath(params: string) {
+export function getFileNameByPath(params: string) {
   const name = params.split('/').at(-1) || '';
   return name;
 }
