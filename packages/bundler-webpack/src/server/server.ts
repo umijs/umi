@@ -30,6 +30,9 @@ export async function createServer(opts: IOpts) {
   const { webpackConfig, userConfig } = opts;
   const { proxy } = userConfig;
   const app = express();
+  // ws 需要提前初始化
+  // 避免在 https 模式下时「Cannot access 'ws' before initialization」的报错
+  let ws: ReturnType<typeof createWebSocketServer>;
 
   // cros
   app.use(
@@ -160,7 +163,7 @@ export async function createServer(opts: IOpts) {
   }
 
   function sendMessage(type: string, data?: any, sender?: any) {
-    (sender || ws).send(JSON.stringify({ type, data }));
+    (sender || ws)?.send(JSON.stringify({ type, data }));
   }
 
   // proxy
@@ -263,7 +266,7 @@ export async function createServer(opts: IOpts) {
     return null;
   }
 
-  const ws = createWebSocketServer(server);
+  ws = createWebSocketServer(server);
 
   ws.wss.on('connection', (socket) => {
     if (stats) {
