@@ -22,7 +22,7 @@ export default defineConfig({
     remotes: [
       {
         name: 'remoteCounter',
-        entry: 'http://127.0.0.1:8002/remote.js',
+        entry: 'http://127.0.0.1:8001/remote.js',
       },
     ],
     shared,
