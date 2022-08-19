@@ -6,8 +6,9 @@
     "ci": "cypress run",
     "dev": "max dev",
     "e2e": "cypress run",
-    "e2e:ci": "cross-env PORT=8000 start-server-and-test dev http://127.0.0.1:8000/__umi/api/statsu \\\"pnpm run --dir ../mf-remote preview\\\" http://127.0.0.1:8001 \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "npm run e2e:ci:dev&&npm run e2e:ci:prod",
     "e2e:ci:dev": "cross-env PORT=8000 start-server-and-test dev http://127.0.0.1:8000/__umi/api/statsu \\\"pnpm run --dir ../mf-remote dev\\\" http://127.0.0.1:8001/__umi/api/statsu \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci:prod": "cross-env PORT=8000 start-server-and-test dev http://127.0.0.1:8000/__umi/api/statsu \\\"pnpm run --dir ../mf-remote preview\\\" http://127.0.0.1:8001 \\\"pnpm umi-scripts cypress\\\"",
     "preview": "max preview --port 9527",
     "start": "npm run dev"
   },
