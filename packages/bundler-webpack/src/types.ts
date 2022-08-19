@@ -67,7 +67,7 @@ export interface IConfig {
   esm?: { [key: string]: any };
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
-  extraBabelIncludes?: string[];
+  extraBabelIncludes?: Array<string | RegExp>;
   extraPostCSSPlugins?: any[];
   hash?: boolean;
   ignoreMomentLocale?: boolean;
