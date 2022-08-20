@@ -2,7 +2,7 @@ export default {
   base: '/foo',
   publicPath: '/foo/',
   deadCode: {},
-  https: {},
+  // https: {},
   headScripts: [`console.log('head script')`],
   npmClient: 'pnpm',
   crossorigin: {},

@@ -3,8 +3,11 @@
   "private": true,
   "scripts": {
     "build": "umi build",
+    "ci": "cypress run",
     "dev": "umi dev",
-    "preview": "umi preview",
+    "e2e": "cypress run",
+    "e2e:ci": "cross-env PORT=6070 start-server-and-test preview http://127.0.0.1:6070  \\\"pnpm umi-scripts cypress\\\"",
+    "preview": "max preview --port 6070",
     "setup": "umi setup",
     "start": "npm run dev"
   },
@@ -12,5 +15,10 @@
     "@umijs/preset-vue": "4.0.0-canary.20220819.1",
     "umi": "4.0.0-canary.20220819.1",
     "vue": "3.2.36"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "cypress": "^10.0.0",
+    "start-server-and-test": "^1.0.0"
   }
 }
