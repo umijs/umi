@@ -30,7 +30,7 @@ export default (api: IApi) => {
     stage: Number.MAX_SAFE_INTEGER,
     fn: (memo) => {
       const { userConfig } = api;
-      const { buildOnly = true }: ILegacyOpts = userConfig.legacy;
+      const { buildOnly = true }: ILegacyOpts = memo.legacy;
 
       if (api.env === Env.development) {
         if (buildOnly) {
@@ -115,7 +115,7 @@ export default (api: IApi) => {
       const originChainWebpack = userConfig.chainWebpack;
       memo.chainWebpack = ((memo, ...args) => {
         if (originChainWebpack) {
-          memo = originChainWebpack(memo, ...args);
+          originChainWebpack(memo, ...args);
         }
 
         // ensure svgr transform outputs is es5
