@@ -46,12 +46,12 @@ describe('Basic Test', () => {
     // wrapper 是否支持
     cy.get('h2').contains('Wrapper hello');
     cy.get('a').contains('list foo');
-    cy.get('button').contains('go to detail');
   });
 
   it('render detail ', () => {
     cy.get('.nav a').contains('List').click();
-    cy.get('button').contains('go to detail').click();
+    cy.get('button').contains('detail');
+    cy.get('button').contains('detail').click();
     cy.get('h3').contains('List Detail');
     cy.get('div').contains('id: 456');
   });
