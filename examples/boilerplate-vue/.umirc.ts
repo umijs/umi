@@ -47,6 +47,19 @@ export default {
       ],
     },
     {
+      path: '/users',
+      routes: [
+        {
+          path: '',
+          redirect: '/users/login',
+        },
+        {
+          path: 'login',
+          component: 'users/login',
+        },
+      ],
+    },
+    {
       // 404
       path: '/:pathMatch(.*)*',
       component: '@/components/404',
