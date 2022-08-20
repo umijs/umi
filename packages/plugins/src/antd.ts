@@ -6,6 +6,8 @@ import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   let pkgPath: string;
+  let antdVersion = '4.0.0';
+  let techUIVersion = '1.0.0';
   try {
     pkgPath =
       resolveProjectDep({
@@ -13,6 +15,16 @@ export default (api: IApi) => {
         cwd: api.cwd,
         dep: 'antd',
       }) || dirname(require.resolve('antd/package.json'));
+    antdVersion = require(`${pkgPath}/package.json`).version;
+
+    const techUiPkgPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: '@alipay/tech-ui',
+      }) || dirname(require.resolve('@alipay/tech-ui/package.json'));
+
+    techUIVersion = require(`${techUiPkgPath}/package.json`).version;
   } catch (e) {}
 
   api.describe({
@@ -75,6 +87,15 @@ export default (api: IApi) => {
       memo.alias.moment = dirname(require.resolve('dayjs/package.json'));
     }
 
+    // antd 5 里面没有变量了，less 跑不起来。注入一份变量至少能跑起来
+    if (antdVersion.startsWith('5')) {
+      const theme = require('@ant-design/antd-theme-variable');
+      memo.theme = {
+        ...theme,
+        ...memo.theme,
+      };
+    }
+
     // dark mode & compact mode
     if (antd.dark || antd.compact) {
       const { getThemeVariables } = require('antd/dist/theme');
@@ -96,6 +117,11 @@ export default (api: IApi) => {
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
     const style = api.config.antd.style || 'less';
+
+    // antd@5 不需要插件了，会报错
+    if (antdVersion.startsWith('5')) {
+      return [];
+    }
     return api.config.antd.import && !api.appData.vite
       ? [
           [
@@ -152,7 +178,25 @@ export function rootContainer(container) {
   // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {
     const style = api.config.antd.style || 'less';
-    return api.config.antd.import && !api.appData.vite
+
+    // 旧版本的 antd 和 tech-ui 同时使用时，因为 babel-import 没有打开，所以样式会不加载
+    const isNewTechUI =
+      antdVersion.startsWith('4') && techUIVersion.startsWith('3');
+
+    if (isNewTechUI) {
+      return [
+        {
+          source:
+            style === 'less' ? 'antd/dist/antd.less' : 'antd/dist/antd.css',
+        },
+      ];
+    }
+
+    const doNotImportLess =
+      (api.config.antd.import && !api.appData.vite) ||
+      antdVersion.startsWith('5');
+
+    return doNotImportLess
       ? []
       : [
           {
