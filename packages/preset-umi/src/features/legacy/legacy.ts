@@ -30,7 +30,7 @@ export default (api: IApi) => {
     stage: Number.MAX_SAFE_INTEGER,
     fn: (memo) => {
       const { userConfig } = api;
-      const { buildOnly = true }: ILegacyOpts = memo.legacy;
+      const { buildOnly = true }: ILegacyOpts = api.config.legacy || {};
 
       if (api.env === Env.development) {
         if (buildOnly) {
