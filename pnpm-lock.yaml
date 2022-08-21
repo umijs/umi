@@ -146,7 +146,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-descriptions': 1.11.14
       '@ant-design/pro-form': 1.71.2
-      '@ant-design/pro-layout': 6.38.18
+      '@ant-design/pro-layout': 6.38.19
       '@ant-design/pro-table': 2.78.2
       '@antv/l7-react': 2.3.9
       '@umijs/max': link:../../packages/max
@@ -1246,6 +1246,7 @@ importers:
   packages/plugins:
     specifiers:
       '@ahooksjs/use-request': ^2.0.0
+      '@ant-design/antd-theme-variable': ^1.0.0
       '@ant-design/icons': ^4.7.0
       '@ant-design/pro-layout': ^7.0.1-beta.28
       '@umijs/bundler-utils': 4.0.0-canary.20220819.1
@@ -1268,6 +1269,7 @@ importers:
       warning: ^4.0.3
     dependencies:
       '@ahooksjs/use-request': 2.8.15
+      '@ant-design/antd-theme-variable': 1.0.0
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-layout': 7.0.1-beta.28
       '@umijs/bundler-utils': link:../bundler-utils
@@ -1577,6 +1579,10 @@ packages:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.13
 
+  /@ant-design/antd-theme-variable/1.0.0:
+    resolution: {integrity: sha512-0vr5GCwM7xlAl6NxG1lPbABO+SYioNJL3HVy2FA8wTlsIMoZvQwcwsxTw6eLQCiN9V2UQ8kBtfz8DW8utVVE5w==}
+    dev: false
+
   /@ant-design/charts/1.4.2_3mjjsbobxyjsvsmcnr3ujsq2xq:
     resolution: {integrity: sha512-BcVx6AAnwxSdzAVUZReSuvUVtnT5AkJivq3wmcYj17scll26HHficg35yimGskAj3Gu1upYjBQBz6Tk7GEMJsQ==}
     peerDependencies:
@@ -1829,8 +1835,8 @@ packages:
       use-media-antd-query: 1.1.0
     dev: false
 
-  /@ant-design/pro-layout/6.38.18:
-    resolution: {integrity: sha512-ItZBM4T5wp8VoR1xXodyH4EBYiaZFJeJhyfrE7MNJnqL00Yd8AsF+gIgh42aOB2XQZMRAz5P3AOk2HdYjOPVFA==}
+  /@ant-design/pro-layout/6.38.19:
+    resolution: {integrity: sha512-GH88dJWvR2yuZL5K4fbIKm0PW3Y/LUsjC3xHZuazbaQJvHlFjm2L7xvSP3hd5FLkSABcbMVe6Ol6WC1/Br73FA==}
     peerDependencies:
       react: '>=16.9.0'
     peerDependenciesMeta:
@@ -1839,7 +1845,7 @@ packages:
     dependencies:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-provider': 1.10.0
-      '@ant-design/pro-utils': 1.44.0
+      '@ant-design/pro-utils': 1.45.0
       '@babel/runtime': 7.18.9
       '@umijs/route-utils': 2.1.1
       '@umijs/ssr-darkreader': 4.9.45
@@ -2036,8 +2042,8 @@ packages:
       swr: 1.3.0
     dev: false
 
-  /@ant-design/pro-utils/1.44.0:
-    resolution: {integrity: sha512-+r5KwzuCkp34p5Apudbe1wNGuSVNu2yrPX3TVAnFT8p7ZTg5iHLhNXOOcAKmON/Qktil7GUTW+v0t29/0fBy8Q==}
+  /@ant-design/pro-utils/1.45.0:
+    resolution: {integrity: sha512-Tk9uYj1Ep7ISeC4pk701jeQ91fUOG5zQmyNrKqeBo1i402ErcK7Nw9uCCvCUU3KxWmgywhWLy1VaVFl0KDQTgQ==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -10246,7 +10252,7 @@ packages:
   /axios/0.21.4_debug@4.3.2:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10254,7 +10260,7 @@ packages:
   /axios/0.25.0:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10262,7 +10268,7 @@ packages:
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -10271,7 +10277,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -12441,7 +12447,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -15049,6 +15054,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
+
+  /follow-redirects/1.15.1_debug@4.3.2:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.2
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -16084,7 +16101,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
