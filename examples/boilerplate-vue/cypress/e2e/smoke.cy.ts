@@ -47,12 +47,4 @@ describe('Basic Test', () => {
     cy.get('h2').contains('Wrapper hello');
     cy.get('a').contains('list foo');
   });
-
-  it('render detail ', () => {
-    cy.get('.nav a').contains('List').click();
-    cy.get('button').contains('detail');
-    cy.get('button').contains('detail').click();
-    cy.get('h3').contains('List Detail');
-    cy.get('div').contains('id: 456');
-  });
 });
