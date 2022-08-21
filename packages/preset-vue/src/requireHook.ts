@@ -14,7 +14,6 @@ const hookPropertyMap = new Map([
   ['webpack/lib/webpack', '@umijs/bundler-webpack/compiled/webpack'],
   ['webpack/lib/webpack.js', '@umijs/bundler-webpack/compiled/webpack'],
   ['tapable', '@umijs/bundler-utils/compiled/tapable'],
-  ['vite', '@umijs/bundler-vite/compiled/vite'],
 ]);
 
 deepImports.forEach((item: string) => {

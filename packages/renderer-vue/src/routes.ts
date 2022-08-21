@@ -56,7 +56,7 @@ export function createClientRoute(opts: {
     path,
   };
 
-  if (opts.parentId === undefined && path && !path.startsWith('/')) {
+  if (route.parentId === undefined && path && !path.startsWith('/')) {
     // fix Uncaught (in promise) Error: Route paths should start with a "/": "users" should be "/users".
     item.path = `/${path}`;
   }

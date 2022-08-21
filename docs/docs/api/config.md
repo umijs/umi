@@ -14,7 +14,7 @@
 ```js
 {
   alias: {
-    foo: '/tmp/to/foo';
+    foo: '/tmp/to/foo',
   }
 }
 ```
@@ -29,14 +29,14 @@
 // ⛔
 {
   alias: {
-    foo: 'foo';
+    foo: 'foo',
   }
 }
 
 // ✅
 {
   alias: {
-    foo: require.resolve('foo');
+    foo: require.resolve('foo'),
   }
 }
 ```
@@ -47,14 +47,14 @@
 // import 'foo/bar' 会被映射到 import '/tmp/to/foo/bar'
 {
   alias: {
-    foo: '/tmp/to/foo';
+    foo: '/tmp/to/foo',
   }
 }
 
 // import 'foo/bar' 还是 import 'foo/bar'，不会被修改
 {
   alias: {
-    foo$: '/tmp/to/foo';
+    foo$: '/tmp/to/foo',
   }
 }
 ```
@@ -406,7 +406,7 @@ headScripts: ['https://unpkg.com/react@17.0.1/umd/react.production.min.js'],
 
 ## extraBabelIncludes
 
-- 类型：`string[]`
+- 类型：`Array<string | RegExp>`
 - 默认值：`[]`
 
 配置额外需要做 Babel 编译的 NPM 包或目录。比如：
@@ -418,6 +418,8 @@ export default {
     join(__dirname, '../../common'),
     // 支持 npm 包
     'react-monaco-editor',
+    // 转译全部路径含有 @scope 的包
+    /@scope/
   ],
 };
 ```
@@ -494,7 +496,7 @@ HTML 中会生成 `<link rel="shortcut icon" type="image/x-icon" href="/assets/f
 比如，
 
 ```js
-headScripts: [`alert(1);`, `https://a.com/b.js`];
+headScripts: [`alert(1);`, `https://a.com/b.js`],
 ```
 
 会生成 HTML，
@@ -512,7 +514,7 @@ headScripts: [`alert(1);`, `https://a.com/b.js`];
 headScripts: [
   { src: '/foo.js', defer: true },
   { content: `alert('你好');`, charset: 'utf-8' },
-];
+],
 ```
 
 ## history
@@ -614,6 +616,25 @@ https: {
 
 > 默认是用 less@4 版本，如果需要兼容 less@3 请配置使用[less-options-math](https://lesscss.org/usage/#less-options-math)。
 
+## legacy
+
+- 类型：`{ buildOnly?: boolean }`
+- 默认值：`false`
+
+当你需要兼容低版本浏览器时，可能需要该选项，开启后将默认使用 **非现代** 的打包工具做构建，这会显著增加你的构建时间。
+
+```ts
+legacy: {}
+```
+
+默认只在构建时生效，通过设定 `buildOnly: false` 关闭该限制。
+
+开启此选项后：
+
+ - 不支持自定义 `srcTranspiler` 、`jsMinifier` 、 `cssMinifier` 选项。
+ - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 。
+ - 因低版本浏览器不支持 Top level await ，当你在使用 `externals` 时，确保你没有在使用异步性质的 [`externalsType`](https://webpack.js.org/configuration/externals/#externalstype) 时又使用了同步导入依赖。
+
 ## links
 
 - 类型：`Link[]`
@@ -624,7 +645,7 @@ https: {
 示例，
 
 ```js
-links: [{ href: '/foo.css', rel: 'preload' }];
+links: [{ href: '/foo.css', rel: 'preload' }],
 ```
 
 ## manifest
@@ -651,7 +672,7 @@ links: [{ href: '/foo.css', rel: 'preload' }];
 metas: [
   { name: 'keywords', content: 'umi, umijs' },
   { name: 'description', content: 'React framework.' },
-];
+],
 ```
 
 会生成以下 HTML，
@@ -684,7 +705,7 @@ metas: [
 ```js
 // 用 esbuild 做依赖预编译
 mfsu: {
-  esbuild: true;
+  esbuild: true,
 }
 
 // 关闭 mfsu 功能
@@ -718,7 +739,7 @@ mfsu: {
 ```js
 // 让所有 pages 下的 _mock.ts 文件成为 mock 文件
 mock: {
-  include: ['src/pages/**/_mock.ts'];
+  include: ['src/pages/**/_mock.ts'],
 }
 ```
 
@@ -734,7 +755,7 @@ mock: {
 示例，
 
 ```js
-mountElementId: 'container';
+mountElementId: 'container'
 ```
 
 ## monorepoRedirect
@@ -752,13 +773,13 @@ mountElementId: 'container';
 // 默认重定向到子包的 src 文件夹
 monorepoRedirect: {
 }
-// 优先定向到 libs 文件夹
+// 优先定向到 libs 文件夹 
 monorepoRedirect: {
-  srcDir: ['libs', 'src'];
+  srcDir: ['libs', 'src'],
 }
 // 不重定向 @scope/* 的子包
 monorepoRedirect: {
-  exclude: [/^@scope\/.+/];
+  exclude: [/^@scope\/.+/],
 }
 ```
 
@@ -804,7 +825,7 @@ plugins: [
 
 ```js
 polyfill: {
-  imports: ['core-js/stable'];
+  imports: ['core-js/stable'],
 }
 ```
 
@@ -812,7 +833,7 @@ polyfill: {
 
 ```js
 polyfill: {
-  imports: ['core-js/features/promise/try', 'core-js/proposals/math-extensions'];
+  imports: ['core-js/features/promise/try', 'core-js/proposals/math-extensions'],
 }
 ```
 
@@ -837,7 +858,7 @@ polyfill: {
 示例，
 
 ```js
-plugins: [
+presets: [
   // npm 依赖
   'umi-preset-hello',
   // 相对路径
@@ -901,7 +922,7 @@ proxy: {
 比如，
 
 ```js
-scripts: [`alert(1);`, `https://a.com/b.js`];
+scripts: [`alert(1);`, `https://a.com/b.js`],
 ```
 
 会生成 HTML，
@@ -919,7 +940,7 @@ scripts: [`alert(1);`, `https://a.com/b.js`];
 scripts: [
   { src: '/foo.js', defer: true },
   { content: `alert('你好');`, charset: 'utf-8' },
-];
+],
 ```
 
 ## sassLoader
@@ -945,10 +966,12 @@ scripts: [
 
 配置项支持内联样式和外联样式路径，后者通过是否以 https?:// 开头来判断。
 
+插入的样式会前置，优先级低于项目内用户编写样式。
+
 比如：
 
 ```js
-styles: [`body { color: red; }`, `https://a.com/b.css`];
+styles: [`body { color: red; }`, `https://a.com/b.css`],
 ```
 
 会生成以下 HTML，
@@ -1028,11 +1051,11 @@ theme: { '@primary-color': '#1DA57A' }
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`
-- 默认值：`{}`
+- 默认值：`{ scope: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'workflow', 'build', 'ci', 'chore', 'types', 'wip', 'release', 'dep', 'deps', 'example', 'examples', 'merge', 'revert'] }`
 
 针对 verify-commit 命令的配置项。
 
-关于参数。`scope` 用于配置允许的 scope，配置后会覆盖默认的；`allowEmoji` 开启后会允许加 EMOJI 前缀，比如 `💥 feat(模块): 添加了个很棒的功能`。
+关于参数。`scope` 用于配置允许的 scope，不区分大小写，配置后会覆盖默认的；`allowEmoji` 开启后会允许加 EMOJI 前缀，比如 `💥 feat(模块): 添加了个很棒的功能`。
 
 ```
 verifyCommit: {
@@ -1040,6 +1063,8 @@ verifyCommit: {
   allowEmoji: true,
 }
 ```
+
+注意：使用 `git revert` 或 `git merge` 命令以及 `changesets` 的发版 merge 格式所产生的 commit message 会默认通过校验。
 
 ## vite
 
@@ -1053,7 +1078,7 @@ verifyCommit: {
 ```js
 // 更改临时文件路径到 node_modules/.bin/.vite 文件夹
 vite: {
-  cacheDir: 'node_modules/.bin/.vite';
+  cacheDir: 'node_modules/.bin/.vite',
 }
 ```
 

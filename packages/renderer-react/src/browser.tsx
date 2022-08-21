@@ -7,6 +7,13 @@ import { AppContext, useAppData } from './appContext';
 import { createClientRoutes } from './routes';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
 
+let root: ReactDOM.Root | null = null;
+
+// react 18 some scenarios need unmount such as micro app
+export function __getRoot() {
+  return root;
+}
+
 /**
  * 这个组件的功能是 history 发生改变的时候重新触发渲染
  * @param props
@@ -231,7 +238,8 @@ const getBrowser = (
             }
           }
           // server loader
-          if (!isFirst && opts.routes[id].hasServerLoader) {
+          // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
+          if (!isFirst && opts.routes[id]?.hasServerLoader) {
             fetch('/__serverLoader?route=' + id)
               .then((d) => d.json())
               .then((data) => {

@@ -124,6 +124,7 @@ Object.keys(exported).forEach(function (key) {
           'globby',
           'os-locale',
           'copy-webpack-plugin',
+          'zx',
         ].includes(opts.pkgName)
       ) {
         code = code.replace(/require\("node:/g, 'require("');
@@ -135,6 +136,13 @@ Object.keys(exported).forEach(function (key) {
         opts.pkgName !== 'vite'
       ) {
         throw new Error(`${opts.pkgName} has "node:"`);
+      }
+      // patch less resolve path to umi compiled path
+      if (opts.pkgName === 'vite') {
+        code = code.replace(
+          'loadPreprocessor("less"',
+          'loadPreprocessor("@umijs/bundler-utils/compiled/less"',
+        );
       }
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');
 

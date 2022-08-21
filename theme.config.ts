@@ -41,6 +41,7 @@ export default {
             'introduce/philosophy',
             'introduce/contributing',
             'introduce/upgrade-to-umi-4',
+            'introduce/faq',
           ],
         },
         {

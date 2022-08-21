@@ -56,10 +56,10 @@ export interface IConfig {
   copy?: ICopy[] | string[];
   cssLoader?: { [key: string]: any };
   cssLoaderModules?: { [key: string]: any };
-  cssMinifier?: CSSMinifier;
+  cssMinifier?: `${CSSMinifier}`;
   cssMinifierOptions?: { [key: string]: any };
   define?: { [key: string]: any };
-  depTranspiler?: Transpiler;
+  depTranspiler?: `${Transpiler}`;
   devtool?: Config.DevTool;
   deadCode?: DeadCodeParams;
   https?: HttpsServerOptions;
@@ -67,11 +67,11 @@ export interface IConfig {
   esm?: { [key: string]: any };
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
-  extraBabelIncludes?: string[];
+  extraBabelIncludes?: Array<string | RegExp>;
   extraPostCSSPlugins?: any[];
   hash?: boolean;
   ignoreMomentLocale?: boolean;
-  jsMinifier?: JSMinifier;
+  jsMinifier?: `${JSMinifier}`;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { [key: string]: any };
   outputPath?: string;
@@ -86,6 +86,7 @@ export interface IConfig {
   svgo?: { [key: string]: any } | false;
   targets?: { [key: string]: any };
   writeToDisk?: boolean;
+  babelLoaderCustomize?: string;
   [key: string]: any;
 }
 

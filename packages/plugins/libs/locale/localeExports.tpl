@@ -3,7 +3,6 @@ import {
   IntlShape,
   MessageDescriptor,
 } from '{{{ reactIntlPkgPath }}}';
-import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
 import EventEmitter from '{{{EventEmitterPkg}}}';
 // @ts-ignore
@@ -153,7 +152,8 @@ export const setIntl = (locale: string) => {
 export const getLocale = () => {
   const runtimeLocale = getPluginManager().applyPlugins({
     key: 'locale',
-    type: ApplyPluginsType.modify,
+    // workaround: 不使用 ApplyPluginsType.modify 是为了避免循环依赖，与 fast-refresh 一起用时会有问题
+    type: 'modify',
     initialValue: {},
   });
   // runtime getLocale for user define
@@ -201,7 +201,8 @@ export const setLocale = (lang: string, realReload: boolean = true) => {
   //const { pluginManager } = useAppContext();
   //const runtimeLocale = pluginManagerapplyPlugins({
   //  key: 'locale',
-  //  type: ApplyPluginsType.modify,
+  //  workaround: 不使用 ApplyPluginsType.modify 是为了避免循环依赖，与 fast-refresh 一起用时会有问题
+  //  type: 'modify',
   //  initialValue: {},
   //});
 
@@ -260,6 +261,9 @@ http://j.mp/37Fkd5Q
       `,
     );
     firstWaring = false;
+  }
+  if (!g_intl) {
+    setIntl(getLocale());
   }
   return g_intl.formatMessage(descriptor, values);
 };

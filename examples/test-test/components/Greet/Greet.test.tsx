@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import Greet from './Greet';
 
 test('renders Greet without name by inline snapshot', () => {
@@ -37,4 +36,24 @@ test('Greet click', async () => {
   fireEvent.click(screen.getByText(/hello/i));
 
   expect(onClick).toBeCalledTimes(1);
+});
+
+test('Greet with module doMock', async () => {
+  jest.doMock('./Greet', () => {
+    return {
+      default: function () {
+        return 'Mocked';
+      },
+    };
+  });
+
+  const Greet = require('./Greet').default;
+
+  const { container } = render(<Greet />);
+
+  expect(container).toMatchInlineSnapshot(`
+    <div>
+      Mocked
+    </div>
+  `);
 });

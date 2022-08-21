@@ -5,7 +5,10 @@
     "paths": {
       "@/*": ["*"],
       "@@/*": [".umi/*"],
-      "test-utils": ["test/lib/testUtils"]
+      "test-utils": ["test/lib/testUtils"],
+      "umi": ["./packages/umi"],
+      "@umijs/utils": ["./packages/utils"],
+      "@umijs/renderer-react": ["./packages/renderer-react"]
     }
   }
 }

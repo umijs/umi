@@ -41,6 +41,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     alias: (Joi) => Joi.object(),
     autoCSSModules: (Joi) => Joi.boolean(),
     autoprefixer: (Joi) => Joi.object(),
+    babelLoaderCustomize: (Joi) => Joi.string(),
     cacheDirectoryPath: (Joi) => Joi.string(),
     chainWebpack: (Joi) => Joi.function(),
     copy: (Joi) =>
@@ -77,7 +78,10 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     esm: (Joi) => Joi.object(),
     externals: (Joi) =>
       Joi.alternatives().try(Joi.object(), Joi.string(), Joi.func()),
-    extraBabelIncludes: (Joi) => Joi.array().items(Joi.string()),
+    extraBabelIncludes: (Joi) =>
+      Joi.array().items(
+        Joi.alternatives().try(Joi.string(), Joi.object().instance(RegExp)),
+      ),
     extraBabelPlugins: (Joi) =>
       Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.array())),
     extraBabelPresets: (Joi) =>
@@ -116,14 +120,17 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
           ),
           include: Joi.array().items(Joi.string()),
           mfName: Joi.string(),
+          remoteAliases: Joi.array().items(Joi.string()),
+          remoteName: Joi.string(),
           runtimePublicPath: Joi.boolean(),
+          shared: Joi.object(),
           strategy: Joi.string().valid('eager', 'normal').default('normal'),
         }),
         Joi.boolean(),
       ),
     outputPath: (Joi) => Joi.string(),
     postcssLoader: (Joi) => Joi.object(),
-    proxy: (Joi) => Joi.object(),
+    proxy: (Joi) => Joi.alternatives().try(Joi.object(), Joi.array()),
     publicPath: (Joi) => Joi.string(),
     purgeCSS: (Joi) => Joi.object(),
     runtimePublicPath: (Joi) => Joi.object(),

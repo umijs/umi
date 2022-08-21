@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -52,38 +52,53 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo --cmd build --filter ./examples/max... --filter ./examples/test-test/...
+        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/mf-remote... --filter ./examples/test-test/... --filter ./packages/umi/...
 
-      - name: example-max-e2e
+      - name: e2e:example:max
         uses: cypress-io/github-action@v4
-        if: matrix.os == 'ubuntu-latest'
         with:
-          start: pnpm run preview
-          wait-on: 'http://127.0.0.1:9527'
-          command: pnpm run e2e --record --key ${cypress_key}
           browser: chrome
           working-directory: ./examples/max
           install: false
           install-command: pnpm i cypress
+          command: npm run e2e:ci
         env:
-          cypress_key: ${{secrets.CYPRESS_KEY}}
-          PORT: 9527
-      - name: example-max-e2e-windows
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:mfsu-e2e
         uses: cypress-io/github-action@v4
-        if: matrix.os == 'windows-latest'
         with:
-          start: pnpm run preview
-          wait-on: 'http://127.0.0.1:9527'
-          command: pnpm run e2e --record --key %cypress_key%
           browser: chrome
-          working-directory: ./examples/max
+          working-directory: ./examples/mfsu-e2e
           install: false
           install-command: pnpm i cypress
+          command: npm run e2e:ci
         env:
-          cypress_key: ${{secrets.CYPRESS_KEY}}
-          PORT: 9527
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
-      - name: Run example test-test
+      - name: e2e:example:plugin-mf+MFSU
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mf-remote
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:plugin-mf-host
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mf-host
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example-test-test
         working-directory: ./examples/test-test
         run: |
           npx umi setup

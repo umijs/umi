@@ -2,10 +2,11 @@ export {
   createBrowserHistory,
   createHashHistory,
   createMemoryHistory,
-  History,
+  type History,
 } from 'history';
 export {
   createSearchParams,
+  generatePath,
   matchPath,
   matchRoutes,
   Navigate,
@@ -27,7 +28,7 @@ export {
   useClientLoaderData,
   useServerLoaderData,
 } from './appContext';
-export { renderClient } from './browser';
+export { renderClient, __getRoot } from './browser';
 export { LinkWithPrefetch as Link } from './link';
 export { useRouteData } from './routeContext';
 export { __useFetcher } from './useFetcher';

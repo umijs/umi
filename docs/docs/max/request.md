@@ -54,7 +54,7 @@ export const request: RequestConfig = {
 };
 ```
 
-除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest`  **方法.**。
+除了 `errorConfig`, `requestInterceptors`, `responseInterceptors` 以外其它配置都直接透传 [axios](https://axios-http.com/docs/req_config) 的 request 配置。**在这里配置的规则将应用于所有的** `request` 和 `useRequest` **方法**。
 
 下面分别介绍 `plugin-request` 的运行时配置项。本节的末尾，我们会给出一个完整的运行时配置示例，并且对它的功能进行一个详细的描述。
 
@@ -81,17 +81,17 @@ e.g.
 const request: RequestConfig = {
   requestInterceptors: [
     // 直接写一个 function，作为拦截器
-    (url, options) => 
+    (url, options) =>
       {
         // do something
-        return { url, options } 
+        return { url, options }
       },
     // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
-    [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}]
+    [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}],
     // 数组，省略错误处理
     [(url, options) => {return { url, options }}]
   ]
-  
+
 }
 ```
 
@@ -109,17 +109,19 @@ e.g.
 const request: RequestConfig = {
   responseInterceptors: [
     // 直接写一个 function，作为拦截器
-    (response) => 
+    (response) =>
       {
+        // 不再需要异步处理读取返回体内容，可直接在data中读出，部分字段可在 config 中找到
+        const { data = {} as any, config } = response;
         // do something
-        return response 
+        return response
       },
     // 一个二元组，第一个元素是 request 拦截器，第二个元素是错误处理
-    [(response) => {return response}, (error) => {return Promise.reject(error)}]
+    [(response) => {return response}, (error) => {return Promise.reject(error)}],
     // 数组，省略错误处理
     [(response) => {return response}]
   ]
-  
+
 }
 ```
 
@@ -127,7 +129,7 @@ const request: RequestConfig = {
 
 ## API
 ### useRequest
-插件内置了 [@ahooksjs/useRequest](https://ahooks-v2.surge.sh/hooks/async) ，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
+插件内置了 [@ahooksjs/useRequest](https://ahooks-v2.js.org/hooks/async) ，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
 ```typescript
 import { useRequest } from 'umi';
 
@@ -144,13 +146,13 @@ export default () => {
   return <div>{data.name}</div>;
 };
 ```
-上面代码中 data 并不是你后端返回的数据，而是其内部的 data，（因为构建时配置默认是 'data') 
+上面代码中 data 并不是你后端返回的数据，而是其内部的 data，（因为构建时配置默认是 'data')
 
 需要注意的是，ahooks 已经更新到3.0，而我们为了让 `umi@3` 的项目升级起来不那么困难，继续沿用了 ahooks2.0
 
 
 ### request
-通过 `import { request } from '@@/plugin-request` 你可以使用内置的请求方法。 
+通过 `import { request } from '@@/plugin-request` 你可以使用内置的请求方法。
 
 `request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了几个属性 `skipErrorHandler`，`getResponse`，`requestInterceptors` 和 `responseInterceptors` 。
 
@@ -195,7 +197,7 @@ export const request:RequestConfig = {};
 ++      errorHandler: () => {},
 ++      errorThrower: () => {}
 --      errorPage: '',
---      adaptor: ()=>{},   
+--      adaptor: ()=>{},
       };
 --    middlewares: [],
 ++    requestInterceptors: [],
@@ -218,7 +220,7 @@ async function middleware(ctx, next) {
   if (url.indexOf('/api') !== 0) {
     ctx.req.url = `/api/v1/${url}`;
   }
-  await next(); 
+  await next();
   if (!ctx.res.success) {
     // do something
   }
@@ -233,13 +235,13 @@ async function middleware(ctx, next) {
       }
       return config;
     }
-  ], 
+  ],
   responseInterceptors: [
   (response) => {
     if(!response.data.success){
       // do something
     }
-  }    
+  }
   ]
 }
 ```
@@ -275,7 +277,7 @@ export const request: RequestConfig = {
   // 统一的请求设定
   timeout: 1000,
   headers: {'X-Requested-With': 'XMLHttpRequest'},
-  
+
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
@@ -333,9 +335,9 @@ export const request: RequestConfig = {
         message.error('Request error, please retry.');
       }
     },
-    
+
   },
-  
+
   // 请求拦截器
   requestInterceptors: [
     (config) => {
@@ -344,7 +346,7 @@ export const request: RequestConfig = {
       return { ...config, url};
     }
   ],
-  
+
   // 响应拦截器
   responseInterceptors: [
     (response) => {

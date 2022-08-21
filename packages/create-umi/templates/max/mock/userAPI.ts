@@ -1,6 +1,6 @@
 const users = [
-  { name: 'Umi', nickName: 'U', gender: 'MALE' },
-  { name: 'Fish', nickName: 'B', gender: 'FEMALE' },
+  { id: 0, name: 'Umi', nickName: 'U', gender: 'MALE' },
+  { id: 1, name: 'Fish', nickName: 'B', gender: 'FEMALE' },
 ];
 
 export default {

@@ -78,25 +78,46 @@ TODO: SUPPORT
 */
 }
 
+### generatePath
+
+使用给定的带参数的 path 和对应的 params 生成实际要访问的路由。
+
+```ts
+import { generatePath } from 'umi';
+
+generatePath("/users/:id", { id: "42" }); // "/users/42"
+generatePath("/files/:type/*", {
+  type: "img",
+  "*": "cat.jpg",
+}); // "/files/img/cat.jpg"
+```
+
 ### history
 
 和 history 相关的操作，用于获取当前路由信息、执行路由跳转、监听路由变更。
 
-获取当前路由信息。
+```ts
+// 建议组件或 hooks 里用 useLocation 取
+import { useLocation } from 'umi';
+export default function Page() {
+  let location = useLocation();
+  return (
+    <div>
+     { location.pathname }
+     { location.search }
+     { location.hash }
+    </div>
+  );
+}
+```
+
+如果在 React 组件和 Hooks 之外获取当前路由信息。
 
 ```ts
-import { history } from 'umi';
-
-// // history 栈里的实体个数
-history.length;
-
-// 当前 history 跳转的 action，有 PUSH、REPLACE 和 POP 三种类型
-history.action;
-
 // location 对象，包含 pathname、search 和 hash
-history.location.pathname;
-history.location.search;
-history.location.hash;
+window.location.pathname;
+window.location.search;
+window.location.hash;
 ```
 
 命令式路由跳转。
@@ -447,7 +468,7 @@ import { useMatch } from 'umi';
 
 // when url = '/events/12'
 const match = useMatch('/events/:eventId');
-console.log(match?.pathname, match?.params.eventId); 
+console.log(match?.pathname, match?.params.eventId);
 // '/events/12 12'
 ```
 
@@ -490,7 +511,7 @@ navigate(-1);
 `useOutlet` 返回当前匹配的子路由元素，`<Outlet>` 内部使用的就是此 hook 。
 
 类型定义如下：
-```ts 
+```ts
 declare function useOutlet(): React.ReactElement | null;
 ```
 
@@ -512,8 +533,8 @@ const Layout = ()=>{
 `useOutletContext` 用于返回 `Outlet` 组件上挂载的 `context` 。
 
 类型定义如下：
-```ts 
-declare function useOutlet(): React.ReactElement | null;
+```ts
+declare function useOutletContext<Context = unknown>(): Context;
 ```
 
 示例：
@@ -529,7 +550,7 @@ const Layout = () => {
 const SomeRouteComponentUnderLayout = () => {
   const layoutContext = useOutletContext();
 
-  return JSON.stringify(layoutContext)   // {"prop":"from Layout"} 
+  return JSON.stringify(layoutContext)   // {"prop":"from Layout"}
 }
 ```
 
@@ -552,7 +573,7 @@ import { useParams } from 'umi';
 // 假设有路由配置  user/:uId/repo/:rId
 // 当前路径       user/abc/repo/def
 const params = useParams()
-/* params 
+/* params
 { uId: 'abc', rId: 'def'}
 */
 ```
@@ -562,7 +583,7 @@ const params = useParams()
 `useResolvedPath` 根据当前路径将目标地址解析出完整的路由信息。
 
 类型定义如下：
-```
+```ts
 declare function useResolvedPath(to: To): Path;
 ```
 
@@ -572,7 +593,7 @@ declare function useResolvedPath(to: To): Path;
 import { useResolvedPath } from 'umi';
 
 const path = useResolvedPath('docs')
-/* path 
+/* path
 { pathname: '/a/new/page/docs', search: '', hash: '' }
 */
 ```
@@ -660,7 +681,7 @@ declare function useSearchParams(defaultInit?: URLSearchParamsInit): [
   ) => void
 ];
 
-type URLSearchParamsInit = 
+type URLSearchParamsInit =
   | string
   | ParamKeyValuePair[]
   | Record<string, string | string[]>

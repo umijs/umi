@@ -50,6 +50,16 @@ PORT=4000
 
 `umi` 会以 4000 端口启动 dev server，同时保持禁用 babel 的缓存。
 
+此外 `umi` `.env` 文件中还支持变量的方式来配置环境变量。例如：
+
+```
+# file .env.local
+FOO=foo
+BAR=bar
+
+CONCAT=$FOO$BAR # CONCAT=foobar
+```
+
 注意：
 
 * 不建议将 `.env.local` 加入版本管理中。

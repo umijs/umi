@@ -40,6 +40,7 @@ export class AutoUpdateSrcCodeCache {
         '**/*.test.{js,ts,jsx,tsx}',
         // fixme respect to environment
         '**/.umi-production/**',
+        '**/.umi-test/**',
         '**/node_modules/**',
         '**/.git/**',
       ],

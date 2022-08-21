@@ -1,0 +1,23 @@
+{
+  "name": "@example/mf-remote",
+  "private": true,
+  "scripts": {
+    "build": "max build",
+    "ci": "cypress run",
+    "dev": "max dev",
+    "e2e": "cypress run",
+    "e2e:ci": "cross-env PORT=8000 start-server-and-test dev http://127.0.0.1:8000/__umi/api/status  \\\"pnpm umi-scripts cypress\\\"",
+    "preview": "max preview --port 8001",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/max": "4.0.0-canary.20220819.1",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "cypress": "^10.0.0",
+    "start-server-and-test": "^1.0.0"
+  }
+}

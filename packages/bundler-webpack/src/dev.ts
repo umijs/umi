@@ -16,6 +16,7 @@ type IOpts = {
   onMFSUProgress?: Function;
   port?: number;
   host?: string;
+  ip?: string;
   babelPreset?: any;
   chainWebpack?: Function;
   modifyWebpackConfig?: Function;
@@ -29,6 +30,7 @@ type IOpts = {
   entry: Record<string, string>;
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
+  mfsuServerBase?: string;
   srcCodeCache?: any;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
@@ -48,6 +50,7 @@ export async function dev(opts: IOpts) {
   );
   const enableMFSU = opts.config.mfsu !== false;
   let mfsu: MFSU | null = null;
+
   if (enableMFSU) {
     if (opts.config.srcTranspiler === Transpiler.swc) {
       logger.warn(
@@ -70,6 +73,9 @@ export async function dev(opts: IOpts) {
         opts.config.mfsu?.cacheDirectory || join(cacheDirectoryPath, 'mfsu'),
       onMFSUProgress: opts.onMFSUProgress,
       unMatchLibs: opts.config.mfsu?.exclude,
+      shared: opts.config.mfsu?.shared,
+      remoteAliases: opts.config.mfsu?.remoteAliases,
+      remoteName: opts.config.mfsu?.remoteName,
       getCacheDependency() {
         return stripUndefined({
           version: require('../package.json').version,
@@ -81,6 +87,7 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
+      serverBase: opts.mfsuServerBase,
     });
   }
 
@@ -125,6 +132,7 @@ export async function dev(opts: IOpts) {
     staticPathPrefix: MF_DEP_PREFIX,
     name: MFSU_NAME,
     chainWebpack: opts.config.mfsu?.chainWebpack,
+    extraBabelIncludes: opts.config.extraBabelIncludes,
     cache: {
       buildDependencies: opts.cache?.buildDependencies,
       cacheDirectory: join(cacheDirectoryPath, 'mfsu-deps'),
@@ -172,6 +180,7 @@ export async function dev(opts: IOpts) {
     ],
     port: opts.port,
     host: opts.host,
+    ip: opts.ip,
     afterMiddlewares: [...(opts.afterMiddlewares || [])],
     onDevCompileDone: opts.onDevCompileDone,
     onProgress: opts.onProgress,

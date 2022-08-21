@@ -1,0 +1,16 @@
+{
+  "name": "@example/legacy",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "4.0.0-canary.20220819.1"
+  },
+  "devDependencies": {
+    "es-check": "^7.0.0"
+  }
+}

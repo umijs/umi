@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import {
+  address,
   chalk,
   lodash,
   logger,
@@ -131,22 +132,28 @@ PORT=8888 umi dev
         path: pkgPath,
         addToUnWatches: true,
         onChange() {
-          const origin = api.appData.pkg;
-          api.appData.pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
-          api.applyPlugins({
-            key: 'onCheckPkgJSON',
-            args: {
-              origin,
-              current: api.appData.pkg,
-            },
-          });
-          api.applyPlugins({
-            key: 'onPkgJSONChanged',
-            args: {
-              origin,
-              current: api.appData.pkg,
-            },
-          });
+          // Why try catch?
+          // ref: https://github.com/umijs/umi/issues/8608
+          try {
+            const origin = api.appData.pkg;
+            api.appData.pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+            api.applyPlugins({
+              key: 'onCheckPkgJSON',
+              args: {
+                origin,
+                current: api.appData.pkg,
+              },
+            });
+            api.applyPlugins({
+              key: 'onPkgJSONChanged',
+              args: {
+                origin,
+                current: api.appData.pkg,
+              },
+            });
+          } catch (e) {
+            logger.error(e);
+          }
         },
       });
 
@@ -262,7 +269,7 @@ PORT=8888 umi dev
         });
       }
 
-      const opts = {
+      const opts: any = {
         config: api.config,
         pkg: api.pkg,
         cwd: api.cwd,
@@ -272,6 +279,7 @@ PORT=8888 umi dev
         },
         port: api.appData.port,
         host: api.appData.host,
+        ip: api.appData.ip,
         ...(enableVite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),
@@ -323,6 +331,11 @@ PORT=8888 umi dev
           ...(api.config.mfsu?.include || []),
         ]),
       };
+      if (api.config.mf) {
+        opts.mfsuServerBase = `${api.config.https ? 'https' : 'http'}://${
+          api.appData.ip
+        }:${api.appData.port}`;
+      }
       if (enableVite) {
         await bundlerVite.dev(opts);
       } else {
@@ -336,6 +349,7 @@ PORT=8888 umi dev
       port: parseInt(String(process.env.PORT || DEFAULT_PORT), 10),
     });
     memo.host = process.env.HOST || DEFAULT_HOST;
+    memo.ip = address.ip();
     return memo;
   });
 

@@ -1,5 +1,6 @@
 import type { Config } from '@jest/types';
 import { Path, TransformerConfig } from '@jest/types/build/Config';
+import { join } from 'path';
 
 export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
 
@@ -13,22 +14,13 @@ export type { Config };
  */
 function getJSTransformer(
   jsTransformer: JSTransformer,
-  config?: {
-    esBuildConfig?: {
-      jsxFactory?: string;
-      jsxFragment?: string;
-      jsxInject?: string;
-    };
-  },
+  opts?: any,
 ): TransformerConfig | Path {
   switch (jsTransformer) {
     case 'esbuild':
       return [
-        require.resolve('esbuild-jest'),
-        {
-          sourcemap: true,
-          ...config?.esBuildConfig,
-        },
+        require.resolve(join(__dirname, 'transformers/esbuild')),
+        { ...opts, sourcemap: true },
       ];
     case 'swc':
       return require.resolve('@swc-node/jest');
@@ -59,23 +51,14 @@ export type CreateConfigType = {
    * @type {'node' | 'browser'}
    */
   target?: 'node' | 'browser';
-};
-/**
- * 生成 jest.config.js 的配置
- * @param {CreateConfigType} opts
- * @returns
- */
-export function createConfig(opts?: CreateConfigType): Config.InitialOptions {
+  jsTransformerOpts?: any;
+}): Config.InitialOptions {
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     transform: {
-      '^.+\\.tsx?$': getJSTransformer(
+      '^.+\\.(t|j)sx?$': getJSTransformer(
         opts?.jsTransformer || 'esbuild',
-        opts?.jsTransformerConfig || {},
-      ),
-      '^.+\\.jsx?$': getJSTransformer(
-        opts?.jsTransformer || 'esbuild',
-        opts?.jsTransformerConfig || {},
+        opts?.jsTransformerOpts,
       ),
     },
     moduleNameMapper: {
