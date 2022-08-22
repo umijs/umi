@@ -1,7 +1,9 @@
-import { fsExtra } from '@umijs/utils';
+import assert from 'assert';
 import { fork } from 'child_process';
-import { dirname, extname, join, resolve } from 'path';
+import { writeFileSync } from 'fs';
+import { dirname, join, resolve } from 'path';
 import { IApi } from 'umi';
+import { fsExtra } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -14,31 +16,37 @@ export default (api: IApi) => {
       },
     },
   });
+
   api.registerCommand({
     name: 'run',
     fn: ({ args }) => {
-      const runGlobals: string[] = api.config.run?.globals || [];
-      const sourcePath = join(api.cwd, args._[0]);
-      const str = fsExtra.readFileSync(sourcePath);
-      const fileName = getFileNameByPath(sourcePath);
-      check(fileName);
-      api.writeTmpFile({
-        path: fileName,
-        content: `${runGlobals.map((item) => `import '${item}'\n`)}${str}`,
-      });
-      const scriptPath = join(api.paths.absTmpPath, `plugin-run/${fileName}`);
+      const globals: string[] = api.config.run?.globals || [];
+      const absScriptFilePath = join(api.cwd, args._[0]);
+      const fileName = getFileNameByPath(absScriptFilePath);
+      assert(fileName, `${absScriptFilePath} is not a valid file`);
+      assert(
+        /\.([jt])s$/.test(fileName),
+        `${fileName} is not a valid js or ts file`,
+      );
+      const absTmpFilePath = join(
+        api.paths.absNodeModulesPath,
+        '.cache',
+        'umi-plugin-run',
+        fileName,
+      );
+      fsExtra.mkdirpSync(dirname(absTmpFilePath));
+      writeFileSync(
+        absTmpFilePath,
+        `${globals.map(
+          (item) => `import '${item}'\n`,
+        )}import '${absScriptFilePath}';`,
+        'utf-8',
+      );
       const tsxPath = getBinPath();
-      fork(tsxPath, [scriptPath], { stdio: 'inherit' });
+      fork(tsxPath, [absTmpFilePath], { stdio: 'inherit' });
     },
   });
 };
-
-export function check(name: string) {
-  const ext = extname(name);
-  if (ext !== '.ts') {
-    throw new Error('Only typescript files can be run');
-  }
-}
 
 export function getBinPath() {
   const pkgPath = join(__dirname, '../node_modules/tsx/package.json');
@@ -47,6 +55,5 @@ export function getBinPath() {
 }
 
 export function getFileNameByPath(params: string) {
-  const name = params.split('/').at(-1) || '';
-  return name;
+  return params.split('/').at(-1);
 }
