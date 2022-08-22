@@ -13,7 +13,6 @@
     "umi": "workspace:*"
   },
   "devDependencies": {
-    "@umijs/plugin-run": "workspace:*",
     "cross-env": "^7.0.3"
   }
 }
