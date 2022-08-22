@@ -29,6 +29,10 @@ export default (api: IApi) => {
     // TODO: support react 18
     // const isReact18 = api.appData.react.version.startsWith('18.');
     (api.appData.mpa.entry as Entry[]).forEach((entry) => {
+      const layoutImport = entry.layout
+        ? `import Layout from '${entry.layout}';`
+        : '';
+      const layoutJSX = entry.layout ? `<Layout><App /></Layout>` : `<App />`;
       api.writeTmpFile({
         path: entry.tmpFilePath,
         noPluginDir: true,
@@ -36,7 +40,8 @@ export default (api: IApi) => {
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from '${entry.file}';
-ReactDOM.render(<App />, document.getElementById('${entry.mountElementId}'));
+${layoutImport}
+ReactDOM.render(${layoutJSX}, document.getElementById('${entry.mountElementId}'));
         `.trimStart(),
       });
     });
