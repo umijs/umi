@@ -14,7 +14,7 @@ const shared = {
 export default defineConfig({
   mfsu: {
     remoteName: 'hostUser',
-    remoteAliases: ['remoteCounter'],
+    remoteAliases: ['remoteCounter', 'utopia'],
     shared,
   },
   mf: {
@@ -22,7 +22,16 @@ export default defineConfig({
     remotes: [
       {
         name: 'remoteCounter',
-        entry: 'http://127.0.0.1:8001/remote.js',
+        entries: {
+          DEV: 'http://127.0.0.1:8001/remote.js',
+          PROD: 'https://production.com/remote.js',
+        },
+        keyResolver: `(()=> 'DEV')()`,
+      },
+      {
+        aliasName: 'utopia',
+        name: 'notExist',
+        entry: 'http://1.2.3.4:8989/bad_file.js',
       },
     ],
     shared,
