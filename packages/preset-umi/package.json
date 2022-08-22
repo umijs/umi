@@ -41,6 +41,7 @@
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.9.3",
     "fast-glob": "^3.2.11",
+    "html-webpack-plugin": "5.5.0",
     "magic-string": "0.26.2",
     "path-to-regexp": "1.7.0",
     "react": "18.1.0",

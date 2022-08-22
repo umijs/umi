@@ -17,6 +17,7 @@ export default () => {
       require.resolve('./features/esmi/esmi'),
       require.resolve('./features/favicons/favicons'),
       require.resolve('./features/mock/mock'),
+      require.resolve('./features/mpa/mpa'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
       require.resolve('./features/routePrefetch/routePrefetch'),

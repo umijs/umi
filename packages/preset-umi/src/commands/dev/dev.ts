@@ -269,14 +269,18 @@ PORT=8888 umi dev
         });
       }
 
+      const entry = await api.applyPlugins({
+        key: 'modifyEntry',
+        initialValue: {
+          umi: join(api.paths.absTmpPath, 'umi.ts'),
+        },
+      });
       const opts: any = {
         config: api.config,
         pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),
-        entry: {
-          umi: join(api.paths.absTmpPath, 'umi.ts'),
-        },
+        entry,
         port: api.appData.port,
         host: api.appData.host,
         ip: api.appData.ip,
