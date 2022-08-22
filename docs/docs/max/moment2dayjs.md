@@ -2,7 +2,7 @@ import { Message, Tabbed } from 'umi';
 
 # moment2dayjs 插件
 
-因为 moment [进入维护状态](https://momentjs.com/docs/#/-project-status/)，再加上 moment 包的尺寸过大并且不支持 tree-shaking。s 将项目中的 moment 替换为 dayjs (尺寸仅 2k)，是一个推荐的优化选择。但是如果手动修改效率太低。
+因为 moment [进入维护状态](https://momentjs.com/docs/#/-project-status/)，再加上 moment 包的尺寸过大并且不支持 tree-shaking。将项目中的 moment 替换为 dayjs (尺寸仅 2k)，是一个推荐的优化选择。但是如果手动修改效率太低。
 
 Max 内置 `moment2dayjs` 通过 alias 的方式替换项目所有的 `moment` 的引用为 `dayjs`。
 
@@ -64,7 +64,7 @@ preset 为 `antdv3` dayjs 扩展以下插件：
 - localizedFormat
 - badMutable
 
-preset 为 `none` 不扩展如何插件。
+preset 为 `none` 不扩展任何插件。
 
 ## plugins
 

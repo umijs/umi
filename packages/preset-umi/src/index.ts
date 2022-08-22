@@ -53,6 +53,7 @@ export default () => {
       require.resolve('./commands/plugin'),
       require.resolve('./commands/verify-commit'),
       require.resolve('./commands/preview'),
+      require.resolve('@umijs/plugin-run'),
     ],
   };
 };
