@@ -34,4 +34,4 @@ info  - Write tailwind.css
 
 </Tabbed>
 
-至此就可以在项目是使用 Tailwind CSS 的样式；项目根目录的 `tailwind.config.js` 和 `tailwind.css` 根据需要修改配置。
+至此就可以在项目中使用 Tailwind CSS 的样式；项目根目录的 `tailwind.config.js` 和 `tailwind.css` 根据需要修改配置。
