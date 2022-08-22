@@ -545,12 +545,28 @@ args: {
 }
 ```
 
+
+### onPatchRoute
+匹配单个路由，可以修改路由，给路由打补丁
+
+
 ### onPkgJSONChanged
 package.json 变更时。传入的 fn 接收 `{origin?, current}` 作为参数。它们的类型都是 package.json 对象
 
 
 ### onStart
 启动时。传入的 fn 不接收任何参数。
+
+
+### writeTmpFile
+`api.writeTmpFile()`的 type 参数的类型。
+
+- content: 写入的文本内容，有内容就不会使用模板。
+- context: 模板上下文。
+- noPluginDir: 是否使用插件名做为目录。
+- path: 写入文件的路径。
+- tpl: 使用模板字符串，没有模板路径会使用它。
+- tplPath: 使用模板文件的路径。
 
 
 ## 属性
