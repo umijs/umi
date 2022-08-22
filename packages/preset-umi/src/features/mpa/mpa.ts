@@ -1,6 +1,7 @@
+import assert from 'assert';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { extname, join } from 'path';
+import { extname, join, resolve } from 'path';
 import { IApi } from '../../types';
 
 // TODO:
@@ -70,7 +71,7 @@ ReactDOM.render(<App />, document.getElementById('${entry.mountElementId}'));
           filename: `${entry.name}.html`,
           minify: false,
           template: entry.template
-            ? join(api.cwd, entry.template)
+            ? resolve(api.cwd, entry.template)
             : join(api.paths.absTmpPath, 'mpa/template.html'),
           templateParameters: entry,
           chunks: [entry.name],
@@ -115,8 +116,30 @@ function getIndexFile(dir: string) {
 function getConfig(dir: string) {
   if (existsSync(join(dir, 'config.json'))) {
     const config = JSON.parse(readFileSync(join(dir, 'config.json'), 'utf-8'));
-    // TODO: validate config
+    checkConfig(config);
     return config;
   }
   return {};
+}
+
+function checkConfig(config: any) {
+  if (config.layout) {
+    assert(
+      typeof config.layout === 'string' &&
+        (config.layout.startsWith('@/') || config.layout.startsWith('/')),
+      `layout must be an absolute path or start with '@/'`,
+    );
+  }
+  if (config.template) {
+    assert(typeof config.template === 'string', 'template must be string');
+  }
+  if (config.title) {
+    assert(typeof config.title === 'string', 'title must be string');
+  }
+  if (config.head) {
+    assert(Array.isArray(config.head), 'head must be string');
+  }
+  if (config.scripts) {
+    assert(Array.isArray(config.scripts), 'scripts must be string');
+  }
 }
