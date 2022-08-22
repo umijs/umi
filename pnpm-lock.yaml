@@ -561,12 +561,9 @@ importers:
 
   examples/umi-run:
     specifiers:
-      cross-env: ^7.0.3
       umi: workspace:*
     dependencies:
       umi: link:../../packages/umi
-    devDependencies:
-      cross-env: 7.0.3
 
   examples/vue-demo:
     specifiers:
