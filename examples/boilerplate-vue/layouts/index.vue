@@ -6,7 +6,8 @@
         <router-link to="/">Home</router-link>
         <router-link to="/docs">Docs</router-link>
         <router-link to="/about">About</router-link>
-        <router-link to="/List">List</router-link>
+        <router-link to="/list">List</router-link>
+        <router-link to="/users">Users</router-link>
       </nav>
     </header>
     <main>
