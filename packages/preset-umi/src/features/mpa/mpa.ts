@@ -52,7 +52,7 @@ ReactDOM.render(${layoutJSX}, document.getElementById('${entry.mountElementId}')
       content: `
 <!DOCTYPE html>
 <html>
-<head></head>
+<head><title><%= title %></title></head>
 <body>
 <div id="<%= mountElementId %>"></div>
 </body>
@@ -78,7 +78,10 @@ ReactDOM.render(${layoutJSX}, document.getElementById('${entry.mountElementId}')
           template: entry.template
             ? resolve(api.cwd, entry.template)
             : join(api.paths.absTmpPath, 'mpa/template.html'),
-          templateParameters: entry,
+          templateParameters: {
+            ...entry,
+            title: entry.title || entry.name,
+          },
           chunks: [entry.name],
         },
       ]);
