@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('bad remote safe import', () => {
+describe('safeMfImport', () => {
   before(() =>
     Cypress.automation('remote:debugger:protocol', {
       command: 'Network.setCacheDisabled',
@@ -34,5 +34,13 @@ describe('bad remote safe import', () => {
       cy.get('[data-testid="host-button"]').click();
       cy.get('[data-testid="host-counter"]').should('have.text', '43');
     });
+  });
+});
+
+describe('safeMfImport with dynamic registered remote', function () {
+  it('can load registered remote', () => {
+    cy.visit('/register-then-import');
+
+    cy.contains('remote Counter');
   });
 });
