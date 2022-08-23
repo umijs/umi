@@ -31,7 +31,7 @@ export default defineConfig({
       {
         aliasName: 'utopia',
         name: 'notExist',
-        entry: 'http://1.2.3.4:8989/bad_file.js',
+        entry: 'http://1.2.3.4:404/bad_file.js',
       },
     ],
     shared,

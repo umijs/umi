@@ -33,10 +33,6 @@ export default function mf(api: IApi) {
     enableBy: api.EnableBy.config,
   });
 
-  console.log('test!!!');
-
-  api.addRuntimePluginKey(() => ['safeMfImport']);
-
   api.modifyWebpackConfig(async (config, { webpack }) => {
     const exposes = await constructExposes();
     const remotes = formatRemotes();

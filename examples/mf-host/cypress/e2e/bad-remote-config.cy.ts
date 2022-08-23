@@ -9,7 +9,7 @@ describe('safe MF load', () => {
   );
 
   it('can fallback with bad remote', () => {
-    cy.intercept('GET', 'http://1.2.3.4:8989/bad_file.js', {
+    cy.intercept('GET', 'http://1.2.3.4:404/bad_file.js', {
       statusCode: 404,
     }).as('badRequest');
 
