@@ -783,6 +783,13 @@ monorepoRedirect: {
 }
 ```
 
+## mpa
+
+- 类型：`object`
+- 默认值：`false`
+
+启用 [mpa 模式](../guides/mpa)。
+
 ## outputPath
 
 - 类型：`string`
