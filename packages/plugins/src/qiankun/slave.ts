@@ -61,21 +61,6 @@ function handleOriginalHtml(
       },
     })}</script>`,
   );
-  // 判断是否为微前端主应用本地研发，如果是则替换本地资源; 此处 config.qiankun 肯定存在
-  if ((api.config.qiankun as any).master?.enable) {
-    $('script[entry]').replaceWith('<script src="/umi.js"></script>');
-    const $links = $('head').find('link');
-    Array($links.length)
-      .fill(0)
-      .forEach((_, index) => {
-        const hrefVal = $links[index]?.attribs?.href || '';
-        if (/umi\S*css/.test(hrefVal)) {
-          $(`link[href=${hrefVal}]`).replaceWith(
-            '<link rel="stylesheet" href="/umi.css"></link>',
-          );
-        }
-      });
-  }
 
   return api.applyPlugins({
     key: 'modifyMasterHTML',
