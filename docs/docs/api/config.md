@@ -773,7 +773,7 @@ mountElementId: 'container'
 // 默认重定向到子包的 src 文件夹
 monorepoRedirect: {
 }
-// 优先定向到 libs 文件夹 
+// 优先定向到 libs 文件夹
 monorepoRedirect: {
   srcDir: ['libs', 'src'],
 }
@@ -904,6 +904,13 @@ proxy: {
 - 默认值：`[]`
 
 配置路由。
+
+## run
+
+- 类型：`{ globals: string[] }`
+- 默认值：`null`
+
+run 命令的全局注入配置。添加`['zx/globals']`，在使用`umi run ./script.ts`的时候，umi会自动注入`import 'zx/globals';`，从而省略掉每个脚本都要写`import 'zx/globals';`。
 
 ## runtimePublicPath
 
