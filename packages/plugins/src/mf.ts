@@ -96,7 +96,7 @@ export default function mf(api: IApi) {
     const { remotes = [] } = api.config.mf;
 
     api.writeTmpFile({
-      path: 'index.ts',
+      path: 'index.tsx',
       context: {
         remoteCodeString: toRemotesCodeString(remotes),
       },
