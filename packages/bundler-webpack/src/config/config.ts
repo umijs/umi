@@ -137,6 +137,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       .merge([
         '.wasm',
         '.mjs',
+        '.cjs',
         '.js',
         '.jsx',
         '.ts',

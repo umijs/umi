@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Basic Test', () => {
+describe('import by dynamic import', () => {
   before(() =>
     Cypress.automation('remote:debugger:protocol', {
       command: 'Network.setCacheDisabled',
@@ -11,7 +11,7 @@ describe('Basic Test', () => {
   it('loads page successfully', () => {
     cy.intercept('GET', 'http://127.0.0.1:8001/remote.js').as('remoteLoaded');
 
-    cy.visit('/');
+    cy.visit('/dynamic-import');
 
     cy.wait('@remoteLoaded');
 
@@ -20,7 +20,7 @@ describe('Basic Test', () => {
 
   context('Hooks verification', () => {
     it('remote hooks works', () => {
-      cy.visit('/');
+      cy.visit('/dynamic-import');
 
       cy.get('[data-testid="remote-counter"]').should('have.text', '10');
       cy.get('[data-testid="remote-button"]').click();
@@ -28,7 +28,7 @@ describe('Basic Test', () => {
     });
 
     it('host hooks works', () => {
-      cy.visit('/');
+      cy.visit('/dynamic-import');
 
       cy.get('[data-testid="host-counter"]').should('have.text', '42');
       cy.get('[data-testid="host-button"]').click();

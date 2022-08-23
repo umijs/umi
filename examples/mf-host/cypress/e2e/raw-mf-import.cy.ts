@@ -1,0 +1,22 @@
+/// <reference types="cypress" />
+
+describe('safe MF load', () => {
+  beforeEach(() =>
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.setCacheDisabled',
+      params: { cacheDisabled: true },
+    }),
+  );
+
+  it('supprt raw mf import', () => {
+    cy.intercept('GET', 'http://localhost:8001/remote.js').as(
+      'specifiedRemote',
+    );
+
+    cy.visit('/raw-mf-import');
+
+    cy.wait('@specifiedRemote');
+
+    cy.contains('remote Counter');
+  });
+});

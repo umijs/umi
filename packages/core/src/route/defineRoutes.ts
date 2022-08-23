@@ -17,7 +17,13 @@ export function defineRoutes(callback: (defineRoute: Function) => void) {
     const parentAbsPath = parentRoute?.absPath;
     const absPath = [parentAbsPath, opts.path].join('/');
     const route = {
-      path: opts.path || '/',
+      // 1. root index route path: '/'
+      // 2. nested children route path
+      //    - dir
+      //      - some.ts  -> 'some'
+      //      - index.ts -> ''
+      //    - dir.tsx    -> '/dir'
+      path: absPath === '/' ? '/' : opts.path,
       id: createRouteId(opts.file),
       parentId,
       file: opts.file,

@@ -23,6 +23,13 @@ test('normal', () => {
       file: 'b.ts',
       absPath: '/b',
     },
+    'b/index': {
+      path: '',
+      id: 'b/index',
+      parentId: 'b',
+      file: 'b/index.ts',
+      absPath: '/b/',
+    },
     'b/c': {
       path: 'c',
       id: 'b/c',
@@ -69,6 +76,13 @@ test('exclude', () => {
       exclude: [/(?<!(index|\[index\]|404)(\.(js|jsx|ts|tsx)))$/],
     }),
   ).toEqual({
+    'b/index': {
+      path: 'b',
+      id: 'b/index',
+      parentId: undefined,
+      file: 'b/index.ts',
+      absPath: '/b',
+    },
     'c/$index': {
       absPath: '/c/:index',
       file: 'c/$index.ts',
