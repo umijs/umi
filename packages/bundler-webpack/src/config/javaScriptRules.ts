@@ -31,7 +31,7 @@ export async function addJavaScriptRules(opts: IOpts) {
   const srcRules = [
     config.module
       .rule('src')
-      .test(/\.(js|mjs)$/)
+      .test(/\.(js|mjs|cjs)$/)
       .include.add([
         cwd,
         // import module out of cwd using APP_ROOT
@@ -44,7 +44,7 @@ export async function addJavaScriptRules(opts: IOpts) {
     config.module.rule('jsx-ts-tsx').test(/\.(jsx|ts|tsx)$/),
     config.module
       .rule('extra-src')
-      .test(/\.(js|mjs)$/)
+      .test(/\.(js|mjs|cjs)$/)
       .include.add([
         // support extraBabelIncludes
         ...opts.extraBabelIncludes.map((p) => {
@@ -93,7 +93,7 @@ export async function addJavaScriptRules(opts: IOpts) {
   const depRules = [
     config.module
       .rule('dep')
-      .test(/\.(js|mjs)$/)
+      .test(/\.(js|mjs|cjs)$/)
       .include.add(/node_modules/)
       .end()
       .exclude.add((path: string) => {
