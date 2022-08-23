@@ -1,8 +1,9 @@
 import assert from 'assert';
-import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
+import { existsSync, readdirSync, statSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { extname, join, resolve } from 'path';
 import { IApi } from '../../types';
+import { extractExports } from './extractExports';
 
 // TODO:
 // - 支持通过 env.MPA_FILTER 过滤要启动的项目（提速）
@@ -18,9 +19,9 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  api.modifyAppData((memo) => {
+  api.modifyAppData(async (memo) => {
     memo.mpa = {
-      entry: collectEntry(api.paths.absPagesPath),
+      entry: await collectEntry(api.paths.absPagesPath),
     };
     return memo;
   });
@@ -98,23 +99,27 @@ interface Entry {
   [key: string]: string;
 }
 
-function collectEntry(root: string) {
-  return readdirSync(root).reduce<Entry[]>((memo, dir) => {
-    const absDir = join(root, dir);
-    if (existsSync(absDir) && statSync(absDir).isDirectory()) {
-      const indexFile = getIndexFile(absDir);
-      if (indexFile) {
-        memo.push({
-          name: dir,
-          file: indexFile,
-          tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
-          mountElementId: 'root',
-          ...getConfig(absDir),
-        });
+async function collectEntry(root: string) {
+  return await readdirSync(root).reduce<Promise<Entry[]>>(
+    async (memoP, dir) => {
+      const memo = await memoP;
+      const absDir = join(root, dir);
+      if (existsSync(absDir) && statSync(absDir).isDirectory()) {
+        const indexFile = getIndexFile(absDir);
+        if (indexFile) {
+          memo.push({
+            name: dir,
+            file: indexFile,
+            tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
+            mountElementId: 'root',
+            ...(await getConfig(indexFile)),
+          });
+        }
       }
-    }
-    return memo;
-  }, []);
+      return memo;
+    },
+    Promise.resolve([]),
+  );
 }
 
 function getIndexFile(dir: string) {
@@ -125,13 +130,18 @@ function getIndexFile(dir: string) {
   return null;
 }
 
-function getConfig(dir: string) {
-  if (existsSync(join(dir, 'config.json'))) {
-    const config = JSON.parse(readFileSync(join(dir, 'config.json'), 'utf-8'));
-    checkConfig(config);
-    return config;
-  }
-  return {};
+async function getConfig(indexFile: string) {
+  // if (existsSync(join(dir, 'config.json'))) {
+  //   const config = JSON.parse(readFileSync(join(dir, 'config.json'), 'utf-8'));
+  //   checkConfig(config);
+  //   return config;
+  // }
+  const config = await extractExports({
+    entry: indexFile,
+    exportName: 'config',
+  });
+  checkConfig(config);
+  return config;
 }
 
 function checkConfig(config: any) {
