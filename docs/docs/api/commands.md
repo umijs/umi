@@ -20,7 +20,7 @@ $ umi build
 $ umi config list
  - [key: polyfill] false
  - [key: externals] { esbuild: true }
-  
+
 $ umi config get mfsu
  - [key: externals] { esbuild: true }
 ```
@@ -119,7 +119,7 @@ Details:
 
 ```bash
 $ umi lint
-Usage: umi lint 
+Usage: umi lint
 
  支持只校验 js、ts、tsx、jsx 类型文件： umi lint --eslint-only
 
@@ -173,6 +173,14 @@ $ umi preview --port 9527
 * [mock](../guides/mock)
 
 注意 `dist` 目录会随着配置 `outputPath` 的变更而变更。
+
+## run
+
+`umi run` 命令可以让你像node运行js一样来运行 TypeScript 和 ESM 文件。你可以搭配zx来更好的使用脚本命令。
+
+```bash
+$ umi run ./script.ts
+```
 
 ## setup
 
