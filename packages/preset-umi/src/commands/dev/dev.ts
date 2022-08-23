@@ -336,7 +336,11 @@ PORT=8888 umi dev
         ]),
       };
       opts.mfsuServerBase = `${api.config.https ? 'https' : 'http'}://${
-        api.appData.ip
+        api.appData.ip ||
+        // When the proxy is not set `0.0.0.0` bypass, `0.0.0.0` is invalid
+        // We fallback to `localhost`
+        // https://github.com/umijs/umi/pull/8872/files
+        (api.appData.host === '0.0.0.0' ? 'localhost' : api.appData.host)
       }:${api.appData.port}`;
       if (enableVite) {
         await bundlerVite.dev(opts);
