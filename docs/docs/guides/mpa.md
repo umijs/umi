@@ -29,6 +29,8 @@ export default {
 
 那么，入口 entry 为 `["foo/index.tsx", "bar/index.tsx"]`。
 
+构建之后，会同时为每个入口文件生成相应的 HTML 文件。
+
 ## 入口文件配置
 
 约定入口文件中通过 `export const config` 进行配置。
