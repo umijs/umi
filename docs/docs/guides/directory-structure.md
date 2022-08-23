@@ -68,6 +68,8 @@ COMPRESS=none
 
 配置文件，包含 Umi 内置功能和插件的配置。
 
+配置文件的优先级见：[UMI_ENV](./env-variables.md#UMI_ENV)
+
 ### dist 目录
 
 执行 `umi build` 后，产物默认会存放在这里。可通过配置修改产物输出路径。
