@@ -6,14 +6,10 @@
     "build": "umi build",
     "dev": "umi dev",
     "start": "npm run dev",
-    "zx": "cross-env NODE_ENV=development umi run ./scripts/zx.ts",
-    "zx:noimport": "cross-env NODE_ENV=development umi run ./scripts/zx-noimport.ts"
+    "zx": "umi run ./scripts/zx.ts",
+    "zx:noimport": "umi run ./scripts/zx-noimport.ts"
   },
   "dependencies": {
     "umi": "workspace:*"
-  },
-  "devDependencies": {
-    "@umijs/plugin-run": "workspace:*",
-    "cross-env": "^7.0.3"
   }
 }
