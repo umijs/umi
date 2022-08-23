@@ -3,6 +3,25 @@ const remotes = {
 };
 const scriptLoadedMap: Record<string, Promise<void> | 0 | undefined> = {};
 
+type MFModuleImportRequest = { entry: string, remoteName: string; moduleName: string; }
+type MFModuleRegisterRequest = { entry: string, remoteName: string; aliasName?:string; }
+
+export async function rawMfImport(opts: MFModuleImportRequest) {
+  await loadRemoteScriptWithCache(opts.remoteName, opts.entry);
+  return getRemoteModule(opts.remoteName, opts.moduleName);
+}
+
+export function registerMfRemote (opts: MFModuleRegisterRequest) {
+  const aliasName = opts.aliasName || opts.remoteName;
+  if( remotes[aliasName] ){
+    return console.warn(`registerMfRemote: ${aliasName} is already registered as`, remotes[aliasName]);
+  }
+  remotes[aliasName] ={
+    ...opts,
+    aliasName,
+  }
+}
+
 export async function safeMfImport(moduleSpecifier: any, fallback: any) {
   try {
     const i = moduleSpecifier.indexOf('/');
@@ -28,44 +47,66 @@ export async function safeMfImport(moduleSpecifier: any, fallback: any) {
       return fallback;
     }
 
-    const element = document.createElement('script');
-    element.src = entry;
-    element.type = 'text/javascript';
-    element.async = true;
+    await loadRemoteScriptWithCache(remoteName, entry);
 
-    const loadScriptQ = new Promise<void>((resolve, reject) => {
-      element.onload = () => {
-        scriptLoadedMap[remoteName] = 0;
-        document.head.removeChild(element);
-        resolve();
-      };
-      element.onerror = (e) => {
-        reject(e);
-        scriptLoadedMap[remoteName] = undefined;
-        document.head.removeChild(element);
-      };
-    });
-    document.head.appendChild(element);
-
-    scriptLoadedMap[remoteName] = loadScriptQ;
-
-    await loadScriptQ;
-
-    // @ts-ignore
-    await __webpack_init_sharing__('default');
-    const container = window[remoteName]; // or get the container somewhere else
-    // Initialize the container, it may provide shared modules
-    // @ts-ignore
-    await container.init(__webpack_share_scopes__.default);
-    // @ts-ignore
-    const factory = await window[remoteName].get(`./${module}`);
-    return factory();
+    return getRemoteModule(remoteName, module);
   } catch (e) {
     console.error('safeMfImport: Module', moduleSpecifier, 'failed', e);
     return fallback;
   }
 }
 
-export function toDynamicModule() {
-  return {};
+async function loadScript(url): Promise<void> {
+  const element = document.createElement('script');
+  element.src = url;
+  element.type = 'text/javascript';
+  element.async = true;
+
+  const loadScriptQ = new Promise<void>((resolve, reject) => {
+    element.onload = () => {
+      document.head.removeChild(element);
+      resolve();
+    };
+    element.onerror = (e) => {
+      document.head.removeChild(element);
+      reject(e);
+    };
+  });
+  document.head.appendChild(element);
+
+  return loadScriptQ;
+}
+
+async function getRemoteModule(remoteName:string, moduleName: string): any {
+  // @ts-ignore
+  await __webpack_init_sharing__('default');
+  const container = window[remoteName]; // or get the container somewhere else
+  // Initialize the container, it may provide shared modules
+  // @ts-ignore
+  await container.init(__webpack_share_scopes__.default);
+  // @ts-ignore
+  const factory = await window[remoteName].get(`./${moduleName}`);
+  return factory();
+}
+
+async function loadRemoteScriptWithCache(remoteName:string, url: string): Promise<void> {
+
+  const loadCache = scriptLoadedMap[remoteName];
+  let scriptLoadQ: Promise<void> | null = null;
+
+  if(loadCache === 0){
+    // script Already loaded
+    return;
+  } else if(loadCache) {
+    await loadCache
+  }else{
+    let p = loadScript(url).then(()=>{
+      scriptLoadedMap[remoteName] = 0;
+    },(e)=>{
+      scriptLoadedMap[remoteName] = undefined;
+      throw e;
+    });
+    scriptLoadedMap[remoteName] = p;
+    await p;
+  }
 }
