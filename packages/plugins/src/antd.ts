@@ -7,7 +7,6 @@ import { withTmpPath } from './utils/withTmpPath';
 export default (api: IApi) => {
   let pkgPath: string;
   let antdVersion = '4.0.0';
-  let techUIVersion = '1.0.0';
   try {
     pkgPath =
       resolveProjectDep({
@@ -16,15 +15,6 @@ export default (api: IApi) => {
         dep: 'antd',
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
-
-    const techUiPkgPath =
-      resolveProjectDep({
-        pkg: api.pkg,
-        cwd: api.cwd,
-        dep: '@alipay/tech-ui',
-      }) || dirname(require.resolve('@alipay/tech-ui/package.json'));
-
-    techUIVersion = require(`${techUiPkgPath}/package.json`).version;
   } catch (e) {}
 
   api.describe({
@@ -178,19 +168,6 @@ export function rootContainer(container) {
   // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {
     const style = api.config.antd.style || 'less';
-
-    // 旧版本的 antd 和 tech-ui 同时使用时，因为 babel-import 没有打开，所以样式会不加载
-    const isNewTechUI =
-      antdVersion.startsWith('4') && techUIVersion.startsWith('3');
-
-    if (isNewTechUI) {
-      return [
-        {
-          source:
-            style === 'less' ? 'antd/dist/antd.less' : 'antd/dist/antd.css',
-        },
-      ];
-    }
 
     const doNotImportLess =
       (api.config.antd.import && !api.appData.vite) ||
