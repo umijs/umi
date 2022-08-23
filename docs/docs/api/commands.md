@@ -176,7 +176,7 @@ $ umi preview --port 9527
 
 ## run
 
-`umi run` 命令可以让你像node运行js一样来运行 TypeScript 和 ESM 文件。你可以搭配zx来更好的使用脚本命令。
+`umi run` 命令可以让你像 node 运行 js 一样来运行 TypeScript 和 ESM 文件。你可以搭配 [zx](https://github.com/google/zx) 来更好的使用脚本命令。
 
 ```bash
 $ umi run ./script.ts
