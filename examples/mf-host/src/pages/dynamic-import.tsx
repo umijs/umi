@@ -24,7 +24,6 @@ export default () => {
             setC(c + 1);
           }}
         >
-          {' '}
           Host Button
         </button>
 
