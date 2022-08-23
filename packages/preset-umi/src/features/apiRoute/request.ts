@@ -158,7 +158,7 @@ export function parseMultipart(body: Buffer, boundary: string) {
 export function parseUrlEncoded(body: string) {
   return body.split('&').reduce((acc: { [key: string]: any }, cur: string) => {
     const [key, value] = cur.split('=');
-    acc[key] = decodeURI(value);
+    acc[key] = decodeURIComponent(value);
     return acc;
   }, {});
 }
