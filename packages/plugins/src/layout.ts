@@ -3,9 +3,20 @@ import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
+  let antdVersion = '4.0.0';
+  try {
+    const pkgPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: 'antd',
+      }) || dirname(require.resolve('antd/package.json'));
+    antdVersion = require(`${pkgPath}/package.json`).version;
+  } catch (e) {}
   api.describe({
     key: 'layout',
     config: {
@@ -23,7 +34,7 @@ export default (api: IApi) => {
   /**
    * 优先去找 '@alipay/tech-ui'，保证稳定性
    */
-  const depList = ['@alipay/tech-ui', '@ant-design/pro-layout'];
+  const depList = ['@alipay/tech-ui', '@ant-design/pro-components'];
 
   const pkgHasDep = depList.find((dep) => {
     const { pkg } = api;
@@ -51,7 +62,7 @@ export default (api: IApi) => {
       return join(cwd, 'node_modules', pkgHasDep);
     }
     // 如果项目中没有去找插件以来的
-    return dirname(require.resolve('@ant-design/pro-layout/package.json'));
+    return dirname(require.resolve('@ant-design/pro-components/package.json'));
   };
 
   const pkgPath = winPath(getPkgPath());
@@ -66,10 +77,10 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
-    // 只在没有自行依赖 @ant-design/pro-layout 或 @alipay/tech-ui 时
-    // 才使用插件中提供的 @ant-design/pro-layout
+    // 只在没有自行依赖 @ant-design/pro-components 或 @alipay/tech-ui 时
+    // 才使用插件中提供的 @ant-design/pro-components
     if (!pkgHasDep) {
-      memo.alias['@ant-design/pro-layout'] = pkgPath;
+      memo.alias['@ant-design/pro-components'] = pkgPath;
     }
     return memo;
   });
@@ -85,7 +96,7 @@ import type { IRoute } from 'umi';
 import React, { useMemo } from 'react';
 import {
   ProLayout,
-} from "${pkgPath || '@ant-design/pro-layout'}";
+} from "${pkgPath || '@ant-design/pro-components'}";
 import './Layout.less';
 import Logo from './Logo';
 import Exception from './Exception';
@@ -266,7 +277,7 @@ const { formatMessage } = useIntl();
       path: 'types.d.ts',
       content: `
     import type { ProLayoutProps, HeaderProps } from "${
-      pkgPath || '@ant-design/pro-layout'
+      pkgPath || '@ant-design/pro-components'
     }";
     ${
       hasInitialStatePlugin
@@ -466,7 +477,11 @@ export function getRightRenderContent (opts: {
     api.writeTmpFile({
       path: 'Layout.less',
       content: `
-@import '~antd/es/style/themes/default.less';
+${
+  antdVersion.startsWith('5')
+    ? ''
+    : "@import '~antd/es/style/themes/default.less';"
+}
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
 @media screen and (max-width: @screen-xs) {
   // 在小屏幕的时候可以有更好的体验
@@ -519,7 +534,7 @@ export function getRightRenderContent (opts: {
 .umi-plugin-layout-name {
   margin-left: 8px;
 }
-      `,
+`,
     });
 
     // Logo.tsx

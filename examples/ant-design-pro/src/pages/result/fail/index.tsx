@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, RightOutlined } from '@ant-design/icons';
-import { GridContent } from '@ant-design/pro-layout';
+import { GridContent } from '@ant-design/pro-components';
 import { Button, Card, Result } from 'antd';
 import { Fragment } from 'react';
 import styles from './index.less';

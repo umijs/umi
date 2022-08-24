@@ -1,10 +1,18 @@
 import { PlusOutlined } from '@ant-design/icons';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import type {
+  ActionType,
+  ProColumns,
+  ProDescriptionsItemProps,
+} from '@ant-design/pro-components';
+import {
+  FooterToolbar,
+  ModalForm,
+  PageContainer,
+  ProDescriptions,
+  ProFormText,
+  ProFormTextArea,
+  ProTable,
+} from '@ant-design/pro-components';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
