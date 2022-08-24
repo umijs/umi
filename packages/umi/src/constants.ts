@@ -7,3 +7,5 @@ export const DEFAULT_CONFIG_FILES = [
   'config/config.js',
 ];
 export const FRAMEWORK_NAME = 'umi';
+
+export const RUNTIME_TYPE_FILE_NAME = 'runtimeConfig.d.ts';

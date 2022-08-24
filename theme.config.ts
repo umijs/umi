@@ -41,6 +41,7 @@ export default {
             'introduce/philosophy',
             'introduce/contributing',
             'introduce/upgrade-to-umi-4',
+            'introduce/faq',
           ],
         },
         {
@@ -71,6 +72,7 @@ export default {
             'guides/test',
             'guides/plugins',
             'guides/use-vue',
+            'guides/mpa',
           ],
         },
         {

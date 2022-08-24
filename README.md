@@ -1,4 +1,4 @@
-# umi (v4 develop version)
+# umi
 
 <p>
   <a href="https://www.npmjs.com/package/umi"><img src="https://badgen.net/npm/v/umi" alt="Version" /></a>
@@ -37,12 +37,17 @@ Maintainers are community members who have 10 or more PRs merged in umi, or have
 * [stormslowly](https://github.com/stormslowly)
 * [xierenyuan](https://github.com/xierenyuan)
 * [siyi98](https://github.com/siyi98)
+* [txp1035](https://github.com/txp1035)
 
 ### Contributors
 
 Contributors are community members who have 1 or more PR merged in umi. Contributors can contact me[[sorrycc](https://github.com/sorrycc)] to join the Contributor Group.
 
 <a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
+
+## Community
+
+* [交流和反馈群](https://fb.umijs.org/)
 
 ## LICENSE
 

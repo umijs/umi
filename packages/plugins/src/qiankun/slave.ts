@@ -12,7 +12,7 @@ import { cheerio } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { winPath } from 'umi/plugin-utils';
 import { withTmpPath } from '../utils/withTmpPath';
 import { qiankunStateFromMasterModelNamespace } from './constants';
@@ -99,7 +99,30 @@ export default (api: IApi) => {
       ];
     },
   });
-
+  api.onGenerateFiles(() => {
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+interface LifeCycles {
+    bootstrap?: (props?: any) => Promise<any>;
+    mount?: (props?: any) => Promise<any>;
+    unmount?: (props?: any) => Promise<any>;
+    update?: (props?: any) => Promise<any>;
+}
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = (Without<T, U> & U) | (Without<U, T> & T);
+interface SlaveOption extends LifeCycles {
+    enable?: boolean;
+}
+interface Config {
+    slave?: SlaveOption;
+}
+export interface IRuntimeConfig {
+    qiankun?: XOR<Config, LifeCycles>
+}
+      `,
+    });
+  });
   api.modifyDefaultConfig((memo) => {
     const initialSlaveOptions: SlaveOptions = {
       devSourceMap: true,

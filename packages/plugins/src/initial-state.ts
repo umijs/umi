@@ -1,13 +1,16 @@
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   api.describe({
     config: {
       schema(Joi) {
-        return Joi.object({
-          loading: Joi.string(),
-        });
+        return Joi.alternatives().try(
+          Joi.object({
+            loading: Joi.string(),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
     enableBy: api.EnableBy.config,
@@ -124,6 +127,15 @@ import React from 'react';
 import Provider from './Provider';
 export function dataflowProvider(container) {
   return <Provider>{ container }</Provider>;
+}
+      `,
+    });
+
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+export interface IRuntimeConfig {
+  getInitialState?: () => Promise<Record<string, any>>
 }
       `,
     });

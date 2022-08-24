@@ -40,6 +40,7 @@ export async function dev(opts: IOpts) {
     userConfig: opts.config,
     cwd: opts.cwd,
     port: opts.port,
+    host: opts.host,
     beforeMiddlewares: opts.beforeMiddlewares,
     afterMiddlewares: opts.afterMiddlewares,
     onDevCompileDone: opts.onDevCompileDone,

@@ -45,6 +45,20 @@ export default (api: IApi) => {
                 : {}),
             });
           }
+          // for probe dev server status
+          if (shortPath === 'status') {
+            const isMFSUDone = api.config.mfsu
+              ? api.appData.mfsuBundleStatus?.done
+              : true;
+            const isBundleDone = api.appData.bundleStatus?.done;
+
+            if (isMFSUDone && isBundleDone) {
+              return res.end();
+            } else {
+              return res.status(400).end();
+            }
+          }
+
           return next();
         }
 

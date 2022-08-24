@@ -54,7 +54,7 @@ function transformRoute(opts: {
     const parentAbsPath = opts.parentId
       ? opts.memo.ret[opts.parentId].absPath.replace(/\/+$/, '/') // to remove '/'s on the tail
       : '/';
-    absPath = parentAbsPath + absPath;
+    absPath = `${parentAbsPath}${endsWithStar(parentAbsPath) ? '' : absPath}`;
   }
   opts.memo.ret[id] = {
     ...routeProps,
@@ -75,15 +75,21 @@ function transformRoute(opts: {
   if (wrappers?.length) {
     let parentId = opts.parentId;
     let path = opts.route.path;
+    let layout = opts.route.layout;
     wrappers.forEach((wrapper: any) => {
       const { id } = transformRoute({
-        route: { path, component: wrapper, isWrapper: true },
+        route: {
+          path,
+          component: wrapper,
+          isWrapper: true,
+          ...(layout === false ? { layout: false } : {}),
+        },
         parentId,
         memo: opts.memo,
         onResolveComponent: opts.onResolveComponent,
       });
       parentId = id;
-      path = '';
+      path = endsWithStar(path) ? '*' : '';
     });
     opts.memo.ret[id].parentId = parentId;
     opts.memo.ret[id].path = path;
@@ -99,4 +105,8 @@ function transformRoute(opts: {
     });
   }
   return { id };
+}
+
+function endsWithStar(str: string) {
+  return str.endsWith('*');
 }

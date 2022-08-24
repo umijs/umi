@@ -1,16 +1,30 @@
 import * as allIcons from '@ant-design/icons';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
+  let antdVersion = '4.0.0';
+  try {
+    const pkgPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: 'antd',
+      }) || dirname(require.resolve('antd/package.json'));
+    antdVersion = require(`${pkgPath}/package.json`).version;
+  } catch (e) {}
   api.describe({
     key: 'layout',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema(Joi) {
+        return Joi.alternatives().try(
+          Joi.object(),
+          Joi.boolean().invalid(true),
+        );
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
@@ -262,7 +276,7 @@ const { formatMessage } = useIntl();
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
-    import type { ProLayoutProps } from "${
+    import type { ProLayoutProps, HeaderProps } from "${
       pkgPath || '@ant-design/pro-layout'
     }";
     ${
@@ -273,16 +287,44 @@ const { formatMessage } = useIntl();
         : 'type InitDataType = any;'
     }
 
-    export type RunTimeLayoutConfig = (
-      initData: InitDataType,
-    ) => ProLayoutProps & {
-      childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode,
-      unAccessible?: JSX.Element,
-      noFound?: JSX.Element,
+    import type { IConfigFromPlugins } from '@@/core/pluginConfig';
+
+    export type RunTimeLayoutConfig = (initData: InitDataType) => Omit<
+      ProLayoutProps,
+      'rightContentRender'
+    > & {
+      childrenRender?: (dom: JSX.Element, props: ProLayoutProps) => React.ReactNode;
+      unAccessible?: JSX.Element;
+      noFound?: JSX.Element;
+      logout?: (initialState: InitDataType['initialState']) => Promise<void> | void;
+      rightContentRender?: (
+        headerProps: HeaderProps,
+        dom: JSX.Element,
+        props: {
+          userConfig: IConfigFromPlugins['layout'];
+          runtimeConfig: RunTimeLayoutConfig;
+          loading: InitDataType['loading'];
+          initialState: InitDataType['initialState'];
+          setInitialState: InitDataType['setInitialState'];
+        },
+      ) => JSX.Element;
+      rightRender?: (
+        initialState: InitDataType['initialState'],
+        setInitialState: InitDataType['setInitialState'],
+        runtimeConfig: RunTimeLayoutConfig,
+      ) => JSX.Element;
     };
     `,
     });
-
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import type { RunTimeLayoutConfig } from './types.d';
+export interface IRuntimeConfig {
+  layout?: RunTimeLayoutConfig
+}
+      `,
+    });
     const iconsMap = Object.keys(api.appData.routes).reduce<
       Record<string, boolean>
     >((memo, id) => {
@@ -435,7 +477,11 @@ export function getRightRenderContent (opts: {
     api.writeTmpFile({
       path: 'Layout.less',
       content: `
-@import '~antd/es/style/themes/default.less';
+${
+  antdVersion.startsWith('5')
+    ? ''
+    : "@import '~antd/es/style/themes/default.less';"
+}
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
 @media screen and (max-width: @screen-xs) {
   // 在小屏幕的时候可以有更好的体验
@@ -488,7 +534,7 @@ export function getRightRenderContent (opts: {
 .umi-plugin-layout-name {
   margin-left: 8px;
 }
-      `,
+`,
     });
 
     // Logo.tsx
@@ -601,11 +647,13 @@ const Exception: React.FC<{
   route?: IRoute;
   notFound?: React.ReactNode;
   noAccessible?: React.ReactNode;
+  unAccessible?: React.ReactNode;
+  noFound?: React.ReactNode;
 }> = (props) => (
   // render custom 404
-  (!props.route && props.notFound) ||
+  (!props.route && (props.noFound || props.notFound)) ||
   // render custom 403
-  (props.route.unaccessible && props.noAccessible) ||
+  (props.route.unaccessible && (props.unAccessible || props.noAccessible)) ||
   // render default exception
   ((!props.route || props.route.unaccessible) && (
     <Result

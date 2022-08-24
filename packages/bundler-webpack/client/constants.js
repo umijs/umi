@@ -1,4 +1,4 @@
-// constants.ts
+// src/constants.ts
 var DEFAULT_DEVTOOL = "cheap-module-source-map";
 var DEFAULT_OUTPUT_PATH = "dist";
 var MFSU_NAME = "MFSU";

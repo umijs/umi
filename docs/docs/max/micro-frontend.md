@@ -139,14 +139,15 @@ export default {
           routes: [
             // 配置微应用 app1 关联的路由
             {
-              path: '/app1/project',
+              // 带上 * 通配符意味着将 /app1/project 下所有子路由都关联给微应用 app1
+              path: '/app1/project/*',
               microApp: 'app1',
             },
           ],
         },
         // 配置 app2 关联的路由
         {
-          path: '/app2',
+          path: '/app2/*',
           microApp: 'app2',
         },
       ],

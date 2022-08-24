@@ -7,6 +7,13 @@ import { AppContext, useAppData } from './appContext';
 import { createClientRoutes } from './routes';
 import { ILoaderData, IRouteComponents, IRoutesById } from './types';
 
+let root: ReactDOM.Root | null = null;
+
+// react 18 some scenarios need unmount such as micro app
+export function __getRoot() {
+  return root;
+}
+
 function BrowserRoutes(props: {
   routes: any;
   clientRoutes: any;
@@ -118,7 +125,7 @@ export function renderClient(opts: {
       (id: string, isFirst?: boolean) => {
         // Patched routes has to id
         const matchedRouteIds = (
-          matchRoutes(clientRoutes, id)?.map(
+          matchRoutes(clientRoutes, id, basename)?.map(
             // @ts-ignore
             (route) => route.route.id,
           ) || []
@@ -217,7 +224,8 @@ export function renderClient(opts: {
     ReactDOM.hydrateRoot(rootElement, <Browser />);
   } else {
     if (ReactDOM.createRoot) {
-      ReactDOM.createRoot(rootElement).render(<Browser />);
+      root = ReactDOM.createRoot(rootElement);
+      root.render(<Browser />);
     } else {
       // @ts-ignore
       ReactDOM.render(<Browser />, rootElement);

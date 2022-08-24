@@ -1,6 +1,6 @@
 {
   "name": "@umijs/core",
-  "version": "4.0.8",
+  "version": "4.0.0-canary.20220824.1",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -15,14 +15,14 @@
     "compiled"
   ],
   "scripts": {
-    "build": "pnpm father build",
+    "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "pnpm father dev",
+    "dev": "umi-scripts father dev",
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.8",
-    "@umijs/utils": "4.0.8"
+    "@umijs/bundler-utils": "4.0.0-canary.20220824.1",
+    "@umijs/utils": "4.0.0-canary.20220824.1"
   },
   "devDependencies": {
     "dotenv": "16.0.0",

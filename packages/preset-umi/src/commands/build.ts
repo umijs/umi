@@ -91,12 +91,16 @@ umi build --clean
           args,
         });
       };
+      const entry = await api.applyPlugins({
+        key: 'modifyEntry',
+        initialValue: {
+          umi: join(api.paths.absTmpPath, 'umi.ts'),
+        },
+      });
       const opts = {
         config: api.config,
         cwd: api.cwd,
-        entry: {
-          umi: join(api.paths.absTmpPath, 'umi.ts'),
-        },
+        entry,
         ...(api.config.vite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),
@@ -123,32 +127,34 @@ umi build --clean
 
       // generate html
       // vite 在 build 时通过插件注入 js 和 css
-      const assetsMap = api.config.vite
-        ? {}
-        : getAssetsMap({
-            stats,
-            publicPath: api.config.publicPath,
-          });
-      const { vite } = api.args;
-      const markupArgs = await getMarkupArgs({ api });
-      // @ts-ignore
-      const markup = await getMarkup({
-        ...markupArgs,
-        styles: (api.config.vite ? [] : assetsMap['umi.css'] || []).concat(
-          markupArgs.styles,
-        ),
-        scripts: (api.config.vite ? [] : assetsMap['umi.js'] || []).concat(
-          markupArgs.scripts,
-        ),
-        esmScript: !!opts.config.esm || vite,
-        path: '/',
-      });
-      writeFileSync(
-        join(api.paths.absOutputPath, 'index.html'),
-        markup,
-        'utf-8',
-      );
-      logger.event('Build index.html');
+      if (!api.config.mpa) {
+        const assetsMap = api.config.vite
+          ? {}
+          : getAssetsMap({
+              stats,
+              publicPath: api.config.publicPath,
+            });
+        const { vite } = api.args;
+        const markupArgs = await getMarkupArgs({ api });
+        // @ts-ignore
+        const markup = await getMarkup({
+          ...markupArgs,
+          styles: markupArgs.styles.concat(
+            api.config.vite ? [] : assetsMap['umi.css'] || [],
+          ),
+          scripts: (api.config.vite ? [] : assetsMap['umi.js'] || []).concat(
+            markupArgs.scripts,
+          ),
+          esmScript: !!opts.config.esm || vite,
+          path: '/',
+        });
+        writeFileSync(
+          join(api.paths.absOutputPath, 'index.html'),
+          markup,
+          'utf-8',
+        );
+        logger.event('Build index.html');
+      }
 
       // event when html is completed
       await api.applyPlugins({

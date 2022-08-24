@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
 
 export default function Greet({
   name,

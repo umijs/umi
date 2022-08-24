@@ -3,12 +3,15 @@ import { IApi } from 'umi';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(joi) {
-        return joi.object().keys({
-          slave: joi.object(),
-          master: joi.object(),
-          externalQiankun: joi.boolean(),
-        });
+      schema(Joi) {
+        return Joi.alternatives().try(
+          Joi.object().keys({
+            slave: Joi.object(),
+            master: Joi.object(),
+            externalQiankun: Joi.boolean(),
+          }),
+          Joi.boolean().invalid(true),
+        );
       },
     },
   });

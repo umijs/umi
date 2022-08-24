@@ -36,6 +36,14 @@ export default (api: IApi) => {
     }
   });
 
+  api.onCheckConfig(({ config }) => {
+    if (config.publicPath.startsWith('./') && api.env === 'development') {
+      throw new Error(
+        `publicPath can not start with './' in development environment.`,
+      );
+    }
+  });
+
   function isAbsolutePath(path: string) {
     return path.startsWith('/') || path.startsWith('@fs/');
   }

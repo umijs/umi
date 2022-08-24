@@ -1,4 +1,4 @@
-import { Message } from 'umi';
+import { Message, Tabbed } from 'umi';
 
 # 测试
 
@@ -8,20 +8,46 @@ import { Message } from 'umi';
 
 使用 Umi 4 的微生成器快速的配置好 Jest [参考](./generator#jest-配置生成器), 如果你需要修改 jest 相关的配置，可以在 `jest.config.ts` 修改。
 
+<Tabbed>
+
+umi 项目
+
 ```ts
-// jest.config.ts
 import { Config, configUmiAlias, createConfig } from 'umi/test';
 
 export default async () => {
   return (await configUmiAlias({
     ...createConfig({
       target: 'browser',
+      jsTransformer: 'esbuild',
+      jsTransformerOpts: { jsx: 'automatic' },
     }),
     // 覆盖 umi 的默认 jest 配置, 如
     // displayName: "Umi jest",
   })) as Config.InitialOptions;
 };
 ```
+
+@umijs/max 项目
+
+```ts
+import { Config, configUmiAlias, createConfig } from '@umijs/max/test';
+
+export default async () => {
+  return (await configUmiAlias({
+    ...createConfig({
+      target: 'browser',
+      jsTransformer: 'esbuild',
+      jsTransformerOpts: { jsx: 'automatic' },
+    }),
+    // 覆盖 umi 的默认 jest 配置, 如
+    // displayName: "Umi jest",
+  })) as Config.InitialOptions;
+};
+```
+
+</Tabbed>
+
 配置完后，就可以开始编写单元测试了。
 
 ## 与 UI 无关的测试
@@ -29,6 +55,7 @@ export default async () => {
 假设我们需要测试一个 utils 函数 `reverseApiData`, 它将 api 请求的结果 `data` 对象的 key 和 value 互换。
 
 我们推荐将测试文件被测模块放在同一级目录，这样可以方便查看测试文件以便理解模块的功能。
+
 ```txt
 .
 └── utils
@@ -36,16 +63,16 @@ export default async () => {
     └── reverseApiData.ts
 ```
 
-```typescript
+```ts
 // utils/reverseApiData.ts
 export async function reverseApiData(url: string, fetcher = fetch) {
   const res = await fetcher(url);
   const json = await res.json();
 
-  const {data = {}} = json;
-  const reversed: Record<string, any> = {}
+  const { data = {} } = json;
+  const reversed: Record<string, any> = {};
   for (const key of Object.keys(data)) {
-    const val = data[key]
+    const val = data[key];
     reversed[val] = key;
   }
   return reversed;
@@ -54,27 +81,28 @@ export async function reverseApiData(url: string, fetcher = fetch) {
 
 先来写我们第一个测试用例, 确保 `fetcher` 使用传入的 `url` 请求 api 的数据
 
-```typescript
-import {reverseApiData} from "./reverseApiData";
+```ts
+import { reverseApiData } from './reverseApiData';
 
 // 测试用例名字表明测试的目的
-test('reverseApiData use fetcher to request url', async () => {	
+test('reverseApiData use fetcher to request url', async () => {
   // 测试用例以 3A 的结构来写
 
   // Arrange 准备阶段，准备 mock 函数或者数据
   const fetcher = jest.fn().mockResolvedValue({
-    json: () => Promise.resolve()
-  })
+    json: () => Promise.resolve(),
+  });
 
   // Act 执行被测对象
-  await reverseApiData('https://api.end/point', fetcher)
+  await reverseApiData('https://api.end/point', fetcher);
 
   // Assert 断言测试结果
-  expect(fetcher).toBeCalledWith('https://api.end/point')
-})
+  expect(fetcher).toBeCalledWith('https://api.end/point');
+});
 ```
 
 执行测试
+
 ```bash
 $npx jest
 info  - generate files
@@ -93,19 +121,19 @@ Ran all test suites.
 
 我们再写一个用例来测试这个工具函数完成了键值的对换功能。
 
-```typescript
+```ts
 test('reverseApiData reverse simple object', async () => {
   const fetcher = jest.fn().mockResolvedValue({
-    json: () => Promise.resolve({data: {a: 'b'}})
-  })
+    json: () => Promise.resolve({ data: { a: 'b' } }),
+  });
 
-  const reversed = await reverseApiData('url', fetcher)
+  const reversed = await reverseApiData('url', fetcher);
 
-  expect(reversed).toEqual({b: 'a'})
-})
+  expect(reversed).toEqual({ b: 'a' });
+});
 ```
 
-让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，改动破坏了什么功能。更多的用例请 [参考](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts) 
+让每个测试用例只关注一个功能点，可以让用例在重构的时候给我们更准确的反馈，改动破坏了什么功能。更多的用例请 [参考](https://github.com/umijs/umi/tree/master/examples/test-test/utils/reverseApiData.test.ts)
 
 ## UI 测试
 
@@ -113,11 +141,11 @@ test('reverseApiData reverse simple object', async () => {
 
 ### 渲染结果判断
 
-* 使用 jest 的 snapshot
+- 使用 jest 的 snapshot
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import Greet from './Greet';
 
@@ -126,9 +154,10 @@ test('renders Greet without name by snapshot', () => {
   expect(container).toMatchSnapshot();
 });
 ```
-执行 `npx jest` 后会在测试用例同级目录会生成 `__snapshots__` 文件夹和用例的snapshot，请加入到版本管理中。
 
-* 使用 jest 的 inline snapshot
+执行 `npx jest` 后会在测试用例同级目录会生成 `__snapshots__` 文件夹和用例的 snapshot，请加入到版本管理中。
+
+- 使用 jest 的 inline snapshot
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx
@@ -138,9 +167,10 @@ test('renders Greet without name by inline snapshot', () => {
   expect(container).toMatchInlineSnapshot();
 });
 ```
+
 执行 `npx jest` 后会在 `toMatchInlineSnapshot` 函数的参数中填入 snapshot 字符串；这种方式适合渲染结果比较短的内容。
 
-* 使用 @testing-library/jest-dom 断言
+- 使用 @testing-library/jest-dom 断言
 
 ```tsx
 // examples/test-test/components/Greet/Greet.test.tsx
@@ -155,7 +185,6 @@ test('renders Greet without name assert by testing-library', () => {
 ```
 
 更多[断言 API](https://github.com/testing-library/jest-dom)
-
 
 ### 组件行为判断
 

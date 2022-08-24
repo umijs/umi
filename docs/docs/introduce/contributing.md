@@ -56,7 +56,7 @@ $ pnpm dev
 如果要用 vite 模式跑，加 `--vite` 参数，
 
 ```bash
-$ pnpm dev -- --vite
+$ pnpm dev --vite
 ```
 
 ### 测试

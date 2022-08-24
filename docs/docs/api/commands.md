@@ -20,7 +20,7 @@ $ umi build
 $ umi config list
  - [key: polyfill] false
  - [key: externals] { esbuild: true }
-  
+
 $ umi config get mfsu
  - [key: externals] { esbuild: true }
 ```
@@ -41,7 +41,13 @@ remove config:polyfill on /private/tmp/sorrycc-wsYpty/.umirc.ts
 
 ```bash
 $ umi dev
-ready - App listening at http://127.0.0.1:8000
+        ╔═════════════════════════════════════════════════════╗
+        ║ App listening at:                                   ║
+        ║  >   Local: https://127.0.0.1:8001                  ║
+ready - ║  > Network: https://192.168.1.1:8001                ║
+        ║                                                     ║
+        ║ Now you can open browser with the above addresses👆 ║
+        ╚═════════════════════════════════════════════════════╝
 event - compiled successfully in 1051 ms (416 modules)
 ```
 
@@ -113,7 +119,7 @@ Details:
 
 ```bash
 $ umi lint
-Usage: umi lint 
+Usage: umi lint
 
  支持只校验 js、ts、tsx、jsx 类型文件： umi lint --eslint-only
 
@@ -167,6 +173,14 @@ $ umi preview --port 9527
 * [mock](../guides/mock)
 
 注意 `dist` 目录会随着配置 `outputPath` 的变更而变更。
+
+## run
+
+`umi run` 命令可以让你像 node 运行 js 一样来运行 TypeScript 和 ESM 文件。你可以搭配 [zx](https://github.com/google/zx) 来更好的使用脚本命令。
+
+```bash
+$ umi run ./script.ts
+```
 
 ## setup
 

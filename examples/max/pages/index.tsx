@@ -24,6 +24,11 @@ export default function HomePage() {
       >
         Go to /users
       </Button>
+      <hr />
+
+      <h2 data-testid="tailwind-header" className={'tailwindCSSHead'}>
+        tailwindcss
+      </h2>
     </div>
   );
 }
