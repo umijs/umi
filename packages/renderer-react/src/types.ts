@@ -1,10 +1,12 @@
+import { Location } from 'history';
+
 export interface IRoute {
   id: string;
   path?: string;
   index?: boolean;
   parentId?: string;
   redirect?: string;
-  clientLoader?: () => Promise<any>;
+  clientLoader?: (location?: Location) => Promise<any>;
   hasServerLoader?: boolean;
 }
 

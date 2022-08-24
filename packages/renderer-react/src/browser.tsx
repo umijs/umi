@@ -185,7 +185,7 @@ export function renderClient(opts: {
           // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
           const clientLoader = opts.routes[id]?.clientLoader;
           if (clientLoader && !clientLoaderData[id]) {
-            clientLoader().then((data: any) => {
+            clientLoader(opts.history.location).then((data: any) => {
               setClientLoaderData((d: any) => ({ ...d, [id]: data }));
             });
           }
