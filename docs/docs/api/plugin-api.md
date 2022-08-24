@@ -21,7 +21,7 @@ api.describe({ key?:string, config?: { default , schema, onChange }, enableBy? }
 
 - `key` 是配置中该插件配置的键名
 - `config.default` 是插件配置的默认值，当用户没有在配置中配置 key 时，默认配置将生效。
-- `config.schema` 用于声明配置的类型，基于 [joi](https://hapi.dev/family/joi/) 。 **如果你希望用户进行配置，这个是必须的** ，否则用户的配置无效
+- `config.schema` 用于声明配置的类型，基于 [joi](https://joi.dev/) 。 **如果你希望用户进行配置，这个是必须的** ，否则用户的配置无效
 - `config.onChange` 是 dev 模式下，配置被修改后的处理机制。默认值为 `api.ConfigChangeType.reload`，表示在 dev 模式下，配置项被修改时会重启 dev 进程。 你也可以修改为 `api.ConfigChangeType.regenerateTmpFiles`, 表示只重新生成临时文件。你还可以传入一个方法，来自定义处理机制。
 - `enableBy` 是插件的启用方式，默认是`api.EnableBy.register`，表示注册启用，即插件只要被注册就会被启用。可以更改为 `api.EnableBy.config` ，表示配置启用，只有配置插件的配置项才启用插件。你还可以自定义一个返回布尔值的方法（ true 为启用 ）来决定其启用时机，这通常用来实现动态生效。
 
@@ -545,12 +545,28 @@ args: {
 }
 ```
 
+
+### onPatchRoute
+匹配单个路由，可以修改路由，给路由打补丁
+
+
 ### onPkgJSONChanged
 package.json 变更时。传入的 fn 接收 `{origin?, current}` 作为参数。它们的类型都是 package.json 对象
 
 
 ### onStart
 启动时。传入的 fn 不接收任何参数。
+
+
+### writeTmpFile
+`api.writeTmpFile()`的 type 参数的类型。
+
+- content: 写入的文本内容，有内容就不会使用模板。
+- context: 模板上下文。
+- noPluginDir: 是否使用插件名做为目录。
+- path: 写入文件的路径。
+- tpl: 使用模板字符串，没有模板路径会使用它。
+- tplPath: 使用模板文件的路径。
 
 
 ## 属性

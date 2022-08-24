@@ -269,14 +269,18 @@ PORT=8888 umi dev
         });
       }
 
+      const entry = await api.applyPlugins({
+        key: 'modifyEntry',
+        initialValue: {
+          umi: join(api.paths.absTmpPath, 'umi.ts'),
+        },
+      });
       const opts: any = {
         config: api.config,
         pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),
-        entry: {
-          umi: join(api.paths.absTmpPath, 'umi.ts'),
-        },
+        entry,
         port: api.appData.port,
         host: api.appData.host,
         ip: api.appData.ip,
@@ -294,7 +298,7 @@ PORT=8888 umi dev
         afterMiddlewares: enableVite
           ? []
           : middlewares.concat([
-              createRouteMiddleware({ api }),
+              ...(api.config.mpa ? [] : [createRouteMiddleware({ api })]),
               // 放置 favicon 在 webpack middleware 之后，兼容 public 目录下有 favicon.ico 的场景
               // ref: https://github.com/umijs/umi/issues/8024
               faviconMiddleware,
