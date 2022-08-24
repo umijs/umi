@@ -78,7 +78,7 @@ ret = x.${opts.exportName} || {};
       },
     ],
   });
-  let ret = {};
+  let ret: Record<string, any> = {};
   let code = res.outputFiles[0].text;
   eval(`(() => { ${code}; })();`);
   return ret;
