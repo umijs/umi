@@ -3,9 +3,20 @@ import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
+  let antdVersion = '4.0.0';
+  try {
+    const pkgPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: 'antd',
+      }) || dirname(require.resolve('antd/package.json'));
+    antdVersion = require(`${pkgPath}/package.json`).version;
+  } catch (e) {}
   api.describe({
     key: 'layout',
     config: {
@@ -466,7 +477,11 @@ export function getRightRenderContent (opts: {
     api.writeTmpFile({
       path: 'Layout.less',
       content: `
-@import '~antd/es/style/themes/default.less';
+${
+  antdVersion.startsWith('5')
+    ? ''
+    : "@import '~antd/es/style/themes/default.less';"
+}
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
 @media screen and (max-width: @screen-xs) {
   // 在小屏幕的时候可以有更好的体验
@@ -519,7 +534,7 @@ export function getRightRenderContent (opts: {
 .umi-plugin-layout-name {
   margin-left: 8px;
 }
-      `,
+`,
     });
 
     // Logo.tsx
