@@ -5,8 +5,8 @@ const remotes = {
 };
 const scriptLoadedMap: Record<string, Promise<void> | 0 | undefined> = {};
 
-type MFModuleImportRequest = { entry: string, remoteName: string; moduleName: string; }
-type MFModuleRegisterRequest = { entry: string, remoteName: string; aliasName?:string; }
+type MFModuleImportRequest = { entry: string; remoteName: string; moduleName: string; }
+type MFModuleRegisterRequest = { entry: string; remoteName: string; aliasName?:string; }
 
 export async function rawMfImport(opts: MFModuleImportRequest) {
   await loadRemoteScriptWithCache(opts.remoteName, opts.entry);
@@ -131,9 +131,9 @@ type RawRemoteComponentOpts ={
     entry:string;
     remoteName: string;
     moduleName: string;
-  }
+  };
   fallbackComponent: ComponentType<any>;
-  loadingElement: ReactNode
+  loadingElement: ReactNode;
 }
 
 export function safeRemoteComponentWithMfConfig<T extends ComponentType<any>>(opts: RawRemoteComponentOpts): T {
