@@ -1,3 +1,4 @@
+import { chalk, logger } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readdirSync, statSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -19,15 +20,25 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  api.onStart(() => {
+    logger.warn(chalk.yellow('[MPA] MPA Mode Enabled'));
+  });
+
   api.modifyAppData(async (memo) => {
     memo.mpa = {
-      entry: await collectEntry(api.paths.absPagesPath),
+      entry: await collectEntryWithTimeCount(api.paths.absPagesPath),
     };
     return memo;
   });
 
-  api.onGenerateFiles(() => {
-    // TODO: support react 18
+  api.onGenerateFiles(async ({ isFirstTime }) => {
+    // Config HMR
+    if (!isFirstTime) {
+      api.appData.mpa.entry = await collectEntryWithTimeCount(
+        api.paths.absPagesPath,
+      );
+    }
+
     const isReact18 = api.appData.react.version.startsWith('18.');
     (api.appData.mpa.entry as Entry[]).forEach((entry) => {
       const layoutImport = entry.layout
@@ -84,10 +95,8 @@ ${renderer}
           template: entry.template
             ? resolve(api.cwd, entry.template)
             : join(api.paths.absTmpPath, 'mpa/template.html'),
-          templateParameters: {
-            ...entry,
-            title: entry.title || entry.name,
-          },
+          // TODO: support html hmr
+          templateParameters: entry,
           chunks: [entry.name],
         },
       ]);
@@ -100,6 +109,15 @@ interface Entry {
   [key: string]: string;
 }
 
+async function collectEntryWithTimeCount(root: string) {
+  const d = new Date();
+  const entries = await collectEntry(root);
+  logger.info(
+    `[MPA] Collect Entries in ${new Date().getTime() - d.getTime()}ms`,
+  );
+  return entries;
+}
+
 async function collectEntry(root: string) {
   return await readdirSync(root).reduce<Promise<Entry[]>>(
     async (memoP, dir) => {
@@ -108,12 +126,14 @@ async function collectEntry(root: string) {
       if (existsSync(absDir) && statSync(absDir).isDirectory()) {
         const indexFile = getIndexFile(absDir);
         if (indexFile) {
+          const config = await getConfig(indexFile);
           memo.push({
             name: dir,
             file: indexFile,
             tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
             mountElementId: 'root',
-            ...(await getConfig(indexFile)),
+            ...config,
+            title: config.title || dir,
           });
         }
       }
