@@ -37,3 +37,23 @@ test('Greet click', async () => {
 
   expect(onClick).toBeCalledTimes(1);
 });
+
+test('Greet with module doMock', async () => {
+  jest.doMock('./Greet', () => {
+    return {
+      default: function () {
+        return 'Mocked';
+      },
+    };
+  });
+
+  const Greet = require('./Greet').default;
+
+  const { container } = render(<Greet />);
+
+  expect(container).toMatchInlineSnapshot(`
+    <div>
+      Mocked
+    </div>
+  `);
+});

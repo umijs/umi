@@ -1,6 +1,6 @@
 import type { Program } from '@swc/core';
 import { autoCssModulesHandler, esbuildLoader } from '@umijs/mfsu';
-import { chalk, resolve } from '@umijs/utils';
+import { chalk, lodash, resolve } from '@umijs/utils';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
 import Config from '../../compiled/webpack-5-chain';
@@ -15,7 +15,7 @@ interface IOpts {
   env: Env;
   extraBabelPlugins: any[];
   extraBabelPresets: any[];
-  extraBabelIncludes: string[];
+  extraBabelIncludes: Array<string | RegExp>;
   extraEsbuildLoaderHandler: any[];
   babelPreset: any;
   name?: string;
@@ -31,7 +31,7 @@ export async function addJavaScriptRules(opts: IOpts) {
   const srcRules = [
     config.module
       .rule('src')
-      .test(/\.(js|mjs)$/)
+      .test(/\.(js|mjs|cjs)$/)
       .include.add([
         cwd,
         // import module out of cwd using APP_ROOT
@@ -44,10 +44,15 @@ export async function addJavaScriptRules(opts: IOpts) {
     config.module.rule('jsx-ts-tsx').test(/\.(jsx|ts|tsx)$/),
     config.module
       .rule('extra-src')
-      .test(/\.(js|mjs)$/)
+      .test(/\.(js|mjs|cjs)$/)
       .include.add([
         // support extraBabelIncludes
         ...opts.extraBabelIncludes.map((p) => {
+          // regexp
+          if (lodash.isRegExp(p)) {
+            return p;
+          }
+
           // handle absolute path
           if (isAbsolute(p)) {
             return p;
@@ -88,7 +93,7 @@ export async function addJavaScriptRules(opts: IOpts) {
   const depRules = [
     config.module
       .rule('dep')
-      .test(/\.(js|mjs)$/)
+      .test(/\.(js|mjs|cjs)$/)
       .include.add(/node_modules/)
       .end()
       .exclude.add((path: string) => {

@@ -78,7 +78,10 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
     esm: (Joi) => Joi.object(),
     externals: (Joi) =>
       Joi.alternatives().try(Joi.object(), Joi.string(), Joi.func()),
-    extraBabelIncludes: (Joi) => Joi.array().items(Joi.string()),
+    extraBabelIncludes: (Joi) =>
+      Joi.array().items(
+        Joi.alternatives().try(Joi.string(), Joi.object().instance(RegExp)),
+      ),
     extraBabelPlugins: (Joi) =>
       Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.array())),
     extraBabelPresets: (Joi) =>

@@ -1,7 +1,7 @@
 import * as logger from '@umijs/utils/src/logger';
+import 'zx/globals';
 import { PATHS } from './.internal/constants';
 import { getPkgs } from './.internal/utils';
-import './zxGlobals';
 
 (async () => {
   const pkgs = getPkgs();

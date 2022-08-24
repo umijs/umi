@@ -51,7 +51,7 @@
 
 ### 非官方插件升级
 
-在项目中用到的一些非 Umi 官方提供的 Umi 插件，请联系相关作者及时根据[插件 api 变动](./guides/plugins)。
+在项目中用到的一些非 Umi 官方提供的 Umi 插件，请联系相关作者及时根据[插件 api 变动](../api/plugin-api)。
 
 项目迁移时可先关闭对相应插件包的引用，如临时注释配置中的 `plugins`，移除 package.json 中以 `umi-plugin-`，`@umijs/plugin-` 和 `@umijs/preset-` 开头的所有依赖。
 
@@ -262,7 +262,7 @@ location 中的 query 不再支持了，后续推荐用 [search](https://develop
 
 ```diff
 - const { query } = history.location;
-+ import { parse } from 'querystring';
++ import { parse } from 'query-string';
 + const query = parse(history.location.search);
 ```
 

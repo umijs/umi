@@ -1,4 +1,4 @@
-import './zxGlobals';
+import 'zx/globals';
 
 const msgPath = process.argv[2];
 if (!msgPath) process.exit();

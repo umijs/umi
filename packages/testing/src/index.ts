@@ -1,5 +1,6 @@
 import type { Config } from '@jest/types';
 import { Path, TransformerConfig } from '@jest/types/build/Config';
+import { join } from 'path';
 
 export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
 
@@ -11,7 +12,10 @@ function getJSTransformer(
 ): TransformerConfig | Path {
   switch (jsTransformer) {
     case 'esbuild':
-      return [require.resolve('jest-esbuild'), { ...opts, sourcemap: true }];
+      return [
+        require.resolve(join(__dirname, 'transformers/esbuild')),
+        { ...opts, sourcemap: true },
+      ];
     case 'swc':
       return require.resolve('@swc-node/jest');
     case 'ts-jest':

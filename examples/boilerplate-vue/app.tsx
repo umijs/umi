@@ -11,8 +11,10 @@ export function onAppCreated({ app }: any) {
 
 export function onMounted({ app, router }: any) {
   console.log('onMounted', app, router);
-  router.beforeEach((to, from) => {
+  // @ts-ignore
+  router.beforeEach((to, from, next) => {
     console.log('router beforeEach', to, from);
+    next();
   });
 }
 

@@ -1,6 +1,6 @@
 import { logger, rimraf } from '@umijs/utils';
 import assert from 'assert';
-import './zxGlobals';
+import 'zx/globals';
 
 const fixtureDir = path.join(__dirname, '../codemod/fixtures');
 const tmpDir = path.join(fixtureDir, 'tmp');

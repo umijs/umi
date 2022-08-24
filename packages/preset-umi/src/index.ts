@@ -17,6 +17,7 @@ export default () => {
       require.resolve('./features/esmi/esmi'),
       require.resolve('./features/favicons/favicons'),
       require.resolve('./features/mock/mock'),
+      require.resolve('./features/mpa/mpa'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
       require.resolve('./features/routePrefetch/routePrefetch'),
@@ -30,6 +31,7 @@ export default () => {
       require.resolve('./features/apiRoute/apiRoute'),
       require.resolve('./features/monorepo/redirect'),
       require.resolve('./features/clickToComponent/clickToComponent'),
+      require.resolve('./features/legacy/legacy'),
 
       // commands
       require.resolve('./commands/build'),
@@ -52,6 +54,7 @@ export default () => {
       require.resolve('./commands/plugin'),
       require.resolve('./commands/verify-commit'),
       require.resolve('./commands/preview'),
+      require.resolve('@umijs/plugin-run'),
     ],
   };
 };

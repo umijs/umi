@@ -4,11 +4,11 @@
   "scripts": {
     "dev": "umi dev",
     "start": "npm run dev",
-    "test": "jest"
+    "test": "jest --no-cache --coverage"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.12",
-    "umi": "4.0.12"
+    "@umijs/plugins": "4.0.0-canary.20220824.1",
+    "umi": "4.0.0-canary.20220824.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

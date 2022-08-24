@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@umijs/bundler-webpack';
 import {
+  address,
   chalk,
   lodash,
   logger,
@@ -268,16 +269,21 @@ PORT=8888 umi dev
         });
       }
 
-      const opts = {
+      const entry = await api.applyPlugins({
+        key: 'modifyEntry',
+        initialValue: {
+          umi: join(api.paths.absTmpPath, 'umi.ts'),
+        },
+      });
+      const opts: any = {
         config: api.config,
         pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),
-        entry: {
-          umi: join(api.paths.absTmpPath, 'umi.ts'),
-        },
+        entry,
         port: api.appData.port,
         host: api.appData.host,
+        ip: api.appData.ip,
         ...(enableVite
           ? { modifyViteConfig }
           : { babelPreset, chainWebpack, modifyWebpackConfig }),
@@ -292,7 +298,7 @@ PORT=8888 umi dev
         afterMiddlewares: enableVite
           ? []
           : middlewares.concat([
-              createRouteMiddleware({ api }),
+              ...(api.config.mpa ? [] : [createRouteMiddleware({ api })]),
               // 放置 favicon 在 webpack middleware 之后，兼容 public 目录下有 favicon.ico 的场景
               // ref: https://github.com/umijs/umi/issues/8024
               faviconMiddleware,
@@ -329,6 +335,11 @@ PORT=8888 umi dev
           ...(api.config.mfsu?.include || []),
         ]),
       };
+      if (api.config.mf) {
+        opts.mfsuServerBase = `${api.config.https ? 'https' : 'http'}://${
+          api.appData.ip
+        }:${api.appData.port}`;
+      }
       if (enableVite) {
         await bundlerVite.dev(opts);
       } else {
@@ -342,6 +353,7 @@ PORT=8888 umi dev
       port: parseInt(String(process.env.PORT || DEFAULT_PORT), 10),
     });
     memo.host = process.env.HOST || DEFAULT_HOST;
+    memo.ip = address.ip();
     return memo;
   });
 

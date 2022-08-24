@@ -1,6 +1,6 @@
+import 'zx/globals';
 import { PATHS, SCRIPTS } from './.internal/constants';
 import { setExcludeFolder } from './.internal/utils';
-import './zxGlobals';
 
 (async () => {
   const root = PATHS.ROOT;
@@ -105,6 +105,17 @@ import './zxGlobals';
   },
   "include": ["src"]
 }\n`,
+        'utf-8',
+      );
+
+      // .fatherrc.ts
+      await fs.writeFile(
+        path.join(pkgDir, '.fatherrc.ts'),
+        `import { defineConfig } from 'father';
+
+export default defineConfig({
+  extends: '../../.fatherrc.base.ts',
+});\n`,
         'utf-8',
       );
 

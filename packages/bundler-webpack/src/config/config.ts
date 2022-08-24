@@ -38,7 +38,7 @@ export interface IOpts {
   entry: Record<string, string>;
   extraBabelPresets?: any[];
   extraBabelPlugins?: any[];
-  extraBabelIncludes?: string[];
+  extraBabelIncludes?: Array<string | RegExp>;
   extraEsbuildLoaderHandler?: any[];
   babelPreset?: any;
   chainWebpack?: Function;
@@ -137,6 +137,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       .merge([
         '.wasm',
         '.mjs',
+        '.cjs',
         '.js',
         '.jsx',
         '.ts',
