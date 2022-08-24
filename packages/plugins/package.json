@@ -13,7 +13,8 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "libs"
+    "libs",
+    "tpls"
   ],
   "scripts": {
     "build": "umi-scripts father build",
