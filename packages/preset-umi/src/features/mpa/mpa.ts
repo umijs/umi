@@ -38,12 +38,13 @@ export default (api: IApi) => {
       const renderer = isReact18
         ? `ReactDOM.createRoot(${rootElement}).render(${layoutJSX});`
         : `ReactDOM.render(${layoutJSX}, ${rootElement});`;
+      const reactDOMSource = isReact18 ? 'react-dom/client' : 'react-dom';
       api.writeTmpFile({
         path: entry.tmpFilePath,
         noPluginDir: true,
         content: `
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from '${reactDOMSource}';
 import App from '${entry.file}';
 ${layoutImport}
 ${renderer}
