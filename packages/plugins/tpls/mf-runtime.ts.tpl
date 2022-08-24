@@ -1,5 +1,5 @@
-import {lazy, Suspense,  } from 'react'
-import type {Component, ReactNode} from 'react'
+import { lazy, Suspense } from 'react'
+import type { Component, ReactNode } from 'react'
 const remotes = {
 {{{ remoteCodeString }}}
 };
