@@ -28,3 +28,4 @@ $ npx create-umi@latest
 - [请求库](./request)
 - [Tailwind CSS支持](./tailwindcss)
 - [Moment2dayjs](./moment2dayjs)
+- [Module Federation](./mf)

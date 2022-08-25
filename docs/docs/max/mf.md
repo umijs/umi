@@ -168,6 +168,173 @@ src/exposes/
 }
 ```
 
+## 运行时 API
+
+### 何时需要使用运行时 API ？
+
+采用配置的方式结合`import()`已经可以方便的使用 Module Federation 功能。如果你有以下需求就应该考虑使用运行时 API。
+
+- 远端模块的加载失败时，页面需要使用兜底组件
+- 远端模块的加载的地址无法通过同步函数来确定（需要异步调用）
+- 远端模块的加载的地址和模块名需要在运行时才能确定
+
+### safeMfImport
+
+有兜底的远端模块加载函数，接口定义如下：
+
+```ts
+safeMfImport(moduleSpecifier: string, fallback: any): Promise<any>
+```
+
+结合 `React.lazy` 可以实现远端模块的懒加载
+
+```ts
+import { safeMfImport } from '@umijs/max';
+import React, { Suspense } from 'react';
+
+const RemoteCounter = React.lazy(() => {
+  return safeMfImport('remoteCounter/Counter', { defualt: () => 'Fallback' });
+});
+
+export default () => {
+  return (
+    <Suspense fallback="loading">
+      <RemoteCounter />
+    </Suspense>
+  );
+};
+```
+
+<Message emoji="🚨">
+- 注意这里需要将兜底的***组件***包装到对象的`default`字段上来模拟一个模块。
+- `remoteCounter/Counter` 需要和配置对应。
+</Message>
+
+[实例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/safe-import.tsx)
+
+### safeRemoteComponent
+
+该 API 为封装了 `safeMfImport` 的高阶组件, 接口定义如下：
+
+```ts
+safeRemoteComponent<T extends React.ComponentType<any>>
+  (opts: {
+      moduleSpecifier:string;
+      fallbackComponent: React.ComponentType<any>;  // 远端组件加载失败的兜底组件
+      loadingElement: React.ReactNode ;             // 组件加载中的 loading 展示
+    } ): T
+```
+
+示例:
+
+```ts
+const RemoteCounter = safeRemoteComponent<React.FC<{ init?: number }>>({
+  moduleSpecifier: 'remoteCounter/Counter',
+  fallbackComponent: () => 'fallbacked',
+  loadingElement: 'Loading',
+});
+
+export default () => {
+  return (
+    <div>
+      <RemoteCounter init={808} />
+    </div>
+  );
+};
+```
+
+[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/safe-remote-component.tsx)
+
+### rawMfImport
+
+加载远端模块，接口如下。
+
+```ts
+rawMfImport(opts: {
+  entry: string;
+  remoteName: string;
+  moduleName: string;
+}): Promise<any>
+```
+
+示例
+
+```ts
+const RemoteCounter = React.lazy(() => {
+  return rawMfImport({
+    entry: 'http://localhost:8001/remote.js',
+    moduleName: 'Counter',
+    remoteName: 'remoteCounter',
+  });
+});
+```
+
+[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/raw-mf-import.tsx)
+
+### safeRemoteComponentWithMfConfig
+
+封装了`rawMfImport`的 高阶组件：
+
+```ts
+type RawRemoteComponentOpts ={
+  mfConfig:{
+    entry:string;
+    remoteName: string;
+    moduleName: string;
+  };
+  fallbackComponent: ComponentType<any>;
+  loadingElement: ReactNode;
+}
+safeRemoteComponentWithMfConfig<T extends ComponentType<any>>(opts: RawRemoteComponentOpts): T
+```
+
+示例
+
+```ts
+const RemoteCounter = safeRemoteComponentWithMfConfig<
+  React.FC<{ init?: number }>
+>({
+  mfConfig: {
+    entry: 'http://localhost:8001/remote.js',
+    moduleName: 'Counter',
+    remoteName: 'remoteCounter',
+  },
+  fallbackComponent: () => 'raw Fallback',
+  loadingElement: 'raw Loading',
+});
+
+export default () => {
+  return <RemoteCounter />;
+};
+```
+
+[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/raw-mf-component.tsx)
+
+### registerMfRemote
+
+动态的注册 Module Federation 模块远端配置。
+
+```ts
+type MFModuleRegisterRequest = { entry: string; remoteName: string; aliasName?:string; }
+registerMfRemote (opts: MFModuleRegisterRequest): void
+```
+
+使用 `safeMfImport` 或者 `safeRemoteComponent` 时，`moduleSpecifier` 须是已经配置的远端模块。而 `rawMfImport` 的调用略啰嗦，可以使用 `registerMfRemote` 先注册，然后通过简洁的 `safeMfImport` 和 `safeRemoteComponent`。
+
+```ts
+registerMfRemote({
+  aliasName: 'registered',
+  remoteName: 'remoteCounter',
+  entry: 'http://127.0.0.1:8001/remote.js',
+});
+
+const RemoteCounter = React.lazy(() => {
+  return safeMfImport('registered/Counter', { defualt: null });
+});
+```
+
+[示例代码](https://github.com/umijs/umi/blob/master/examples/mf-host/src/pages/register-then-import.tsx)
+
 ## 和 MFSU 一起使用
 
 关闭 MFSU 后使用 MF 插件时，编译速度会大大下降。需要在开启 MF 插件后仍然使用 MFSU 功能请仔细阅读本部分后再配置开启。

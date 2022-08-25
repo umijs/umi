@@ -44,3 +44,11 @@ describe('safeMfImport with dynamic registered remote', function () {
     cy.contains('remote Counter');
   });
 });
+
+describe('safeMfImport with dynamic registered remote', function () {
+  it('can load registered remote', () => {
+    cy.visit('/safe-remote-component');
+
+    cy.get('[data-testid="remote-counter"]').should('have.text', '808');
+  });
+});

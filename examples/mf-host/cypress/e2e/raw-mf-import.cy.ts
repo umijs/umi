@@ -19,4 +19,16 @@ describe('safe MF load', () => {
 
     cy.contains('remote Counter');
   });
+
+  it('supprt raw mf component', () => {
+    cy.intercept('GET', 'http://localhost:8001/remote.js').as(
+      'specifiedRemote',
+    );
+
+    cy.visit('/raw-mf-component');
+
+    cy.wait('@specifiedRemote');
+
+    cy.contains('remote Counter');
+  });
 });
