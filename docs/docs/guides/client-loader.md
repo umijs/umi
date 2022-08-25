@@ -37,6 +37,21 @@ export async function clientLoader() {
 
 如上代码，在 `clientLoader` 函数返回的数据，可以在组件内调用 `useClientLoaderData` 获取。
 
+**传入参数**
+
+我们会将包含有 location 的 opts 传入给你定义的 clientLoader 方法
+
+```typescript
+// 路由组件中
+// ....
+
+export async function clientLoader({ location }) {
+  const { search } = location;
+  // do something
+}
+
+```
+
 ## 优化效果
 
 考虑一个三层嵌套路由的场景：
