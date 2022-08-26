@@ -37,7 +37,6 @@ export default () => {
       require.resolve('./commands/build'),
       require.resolve('./commands/config/config'),
       require.resolve('./commands/dev/dev'),
-      require.resolve('./commands/dev-config'),
       require.resolve('./commands/help'),
       require.resolve('./commands/lint'),
       require.resolve('./commands/setup'),
