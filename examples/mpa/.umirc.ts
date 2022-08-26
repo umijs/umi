@@ -1,3 +1,5 @@
 export default {
-  mpa: {},
+  mpa: {
+    getConfigFromEntryFile: true,
+  },
 };
