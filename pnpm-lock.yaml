@@ -47,7 +47,7 @@ importers:
       ts-node: ^10.7.0
       tsx: ^3.8.0
       turbo: ^1.3.1
-      typescript: ^4.7.2
+      typescript: ^4.8.2
       uglify-js: ^3.15.4
       umi: workspace:*
       umi-scripts: workspace:*
@@ -85,7 +85,7 @@ importers:
       only-allow: 1.1.1
       playwright-chromium: 1.24.0
       prettier: 2.7.1
-      prettier-plugin-organize-imports: 2.3.4_gd3y7r3s3evy6b2vthd7dmacga
+      prettier-plugin-organize-imports: 2.3.4_3izbkkkilozjwunt7rvlqzc6b4
       prettier-plugin-packagejson: 2.2.18_prettier@2.7.1
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
@@ -93,10 +93,10 @@ importers:
       regenerator-runtime: 0.13.9
       resolve: 1.22.1
       rimraf: 3.0.2
-      ts-node: 10.9.1_x2utdhayajzrh747hktprshhby
+      ts-node: 10.9.1_vxrnv5tlr43u5xabofdb6zoswy
       tsx: 3.8.0
       turbo: 1.3.4
-      typescript: 4.7.4
+      typescript: 4.8.2
       uglify-js: 3.16.3
       umi: link:packages/umi
       umi-scripts: link:scripts
@@ -11677,8 +11677,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -21912,14 +21912,14 @@ packages:
       typescript: '>=2.9'
     dev: false
 
-  /prettier-plugin-organize-imports/2.3.4_gd3y7r3s3evy6b2vthd7dmacga:
+  /prettier-plugin-organize-imports/2.3.4_3izbkkkilozjwunt7rvlqzc6b4:
     resolution: {integrity: sha512-R8o23sf5iVL/U71h9SFUdhdOEPsi3nm42FD/oDYIZ2PQa4TNWWuWecxln6jlIQzpZTDMUeO1NicJP6lLn2TtRw==}
     peerDependencies:
       prettier: '>=2.0'
       typescript: '>=2.9'
     dependencies:
       prettier: 2.7.1
-      typescript: 4.7.4
+      typescript: 4.8.2
     dev: true
 
   /prettier-plugin-packagejson/2.2.18:
@@ -26728,7 +26728,7 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /ts-node/10.9.1_x2utdhayajzrh747hktprshhby:
+  /ts-node/10.9.1_vxrnv5tlr43u5xabofdb6zoswy:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -26754,7 +26754,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.7.4
+      typescript: 4.8.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -27025,6 +27025,12 @@ packages:
 
   /typescript/4.7.4:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
+  /typescript/4.8.2:
+    resolution: {integrity: sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
