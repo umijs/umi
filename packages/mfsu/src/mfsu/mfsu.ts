@@ -12,6 +12,7 @@ import webpack, { Configuration } from 'webpack';
 import isAbsoluteUrl from '../../compiled/is-absolute-url';
 import { lookup } from '../../compiled/mrmime';
 // @ts-ignore
+import type { Worker } from 'worker_threads';
 import WebpackVirtualModules from '../../compiled/webpack-virtual-modules';
 import {
   DEFAULT_MF_NAME,
@@ -58,6 +59,7 @@ interface IOpts {
   remoteName?: string;
   remoteAliases?: string[];
   serverBase?: string;
+  startBuildWorker: (dep: any[]) => Worker;
 }
 
 export class MFSU {

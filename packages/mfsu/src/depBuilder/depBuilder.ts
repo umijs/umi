@@ -17,6 +17,7 @@ export class DepBuilder {
   public opts: IOpts;
   public completeFns: Function[] = [];
   public isBuilding = false;
+
   constructor(opts: IOpts) {
     this.opts = opts;
   }
@@ -71,6 +72,48 @@ export class DepBuilder {
     opts.onBuildComplete();
   }
 
+  async buildWithWorker(opts: { onBuildComplete: Function; deps: Dep[] }) {
+    const worker = this.opts.mfsu.opts.startBuildWorker(opts.deps);
+
+    worker.postMessage(opts.deps);
+
+    return new Promise<void>((resolve, reject) => {
+      const onMessage = ({
+        progress,
+        done,
+        error,
+      }: {
+        done: boolean;
+        error: any;
+        progress: any;
+      }) => {
+        if (done) {
+          opts.onBuildComplete();
+          worker.off('message', onMessage);
+          resolve();
+        }
+        if (error) {
+          worker.off('message', onMessage);
+          opts.onBuildComplete();
+          logger.error('[MFSU][eager] build failed', error);
+          reject(error);
+        }
+
+        if (progress) {
+          this.opts.mfsu.onProgress(progress);
+        }
+      };
+
+      worker.on('message', onMessage);
+
+      worker.once('error', (e) => {
+        logger.error('[MFSU][eager] worker got Error', e);
+        opts.onBuildComplete();
+        reject(e);
+      });
+    });
+  }
+
   async build(opts: { deps: Dep[] }) {
     this.isBuilding = true;
 
@@ -81,15 +124,22 @@ export class DepBuilder {
     };
 
     try {
-      await this.writeMFFiles({ deps: opts.deps });
-      const newOpts = {
+      const buildOpts = {
         ...opts,
         onBuildComplete,
       };
+
+      if (this.opts.mfsu.opts.strategy === 'eager') {
+        await this.buildWithWorker(buildOpts);
+        return;
+      }
+
+      await this.writeMFFiles({ deps: opts.deps });
+
       if (this.opts.mfsu.opts.buildDepWithESBuild) {
-        await this.buildWithESBuild(newOpts);
+        await this.buildWithESBuild(buildOpts);
       } else {
-        await this.buildWithWebpack(newOpts);
+        await this.buildWithWebpack(buildOpts);
       }
     } catch (e) {
       onBuildComplete();
