@@ -33,7 +33,7 @@ type IOpts = {
   mfsuInclude?: string[];
   mfsuServerBase?: string;
   srcCodeCache?: any;
-  startBuildWorker: (deps: any[]) => Worker;
+  startBuildWorker?: (deps: any[]) => Worker;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
@@ -90,7 +90,7 @@ export async function dev(opts: IOpts) {
         });
       },
       serverBase: opts.mfsuServerBase,
-      startBuildWorker: opts.startBuildWorker,
+      startBuildWorker: opts.startBuildWorker!,
     });
   }
 

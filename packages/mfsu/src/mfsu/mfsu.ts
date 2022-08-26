@@ -9,10 +9,10 @@ import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
+import type { Worker } from 'worker_threads';
 import isAbsoluteUrl from '../../compiled/is-absolute-url';
 import { lookup } from '../../compiled/mrmime';
 // @ts-ignore
-import type { Worker } from 'worker_threads';
 import WebpackVirtualModules from '../../compiled/webpack-virtual-modules';
 import {
   DEFAULT_MF_NAME,
