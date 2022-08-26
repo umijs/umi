@@ -10,7 +10,9 @@ mpa 为内置功能，通过配置即可开启。
 
 ```js
 export default {
-  mpa: {},
+  mpa: {
+    configFromEntryFile: Boolean,
+  },
 }
 ```
 
@@ -33,14 +35,14 @@ export default {
 
 ## 入口文件配置
 
-约定入口文件中通过 `export const config` 进行配置。
+约定通过入口文件同层级的 `config.json` 声明配置。
 
-比如 `foo/index.tsx` 中，
+比如 `foo/config.json` 中，
 
-```ts
-export const config = {
-  layout: '@/layouts/bar.ts',
-	title: 'foooooo',
+```json
+{
+  "layout": "@/layouts/bar.ts",
+	"title": "foooooo"
 }
 ```
 
@@ -50,6 +52,21 @@ export const config = {
 * **layout**，页面布局，建议以 `@/` 开头引用 src 目录下的文件
 * **title**，页面标题，默认是 entry 所在的目录名
 * **mountElementId**，页面渲染 id，默认是 `root`
+
+### configFromEntryFile
+
+Umi 还试验性地支持另一种配置读取方式，通过配置 `mpa: { configFromEntryFile: true }` 开启。
+
+此时，会约定入口文件中通过 `export const config` 进行配置。
+
+比如 `foo/index.tsx` 中，
+
+```ts
+export const config = {
+  layout: '@/layouts/bar.ts',
+	title: 'foooooo',
+}
+```
 
 ## 渲染
 

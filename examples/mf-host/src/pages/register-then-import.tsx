@@ -8,7 +8,6 @@ registerMfRemote({
 });
 
 const RemoteCounter = React.lazy(() => {
-  // @ts-ignore
   return safeMfImport('registered/Counter', { defualt: null });
 });
 
