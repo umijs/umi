@@ -271,7 +271,7 @@ export class Service {
       `${chalk.yellow(
         Object.values(SHORT_ENV).join(', '),
       )} config files will be auto loaded by env, Do not configure ${chalk.cyan(
-        `process.env.${prefix}_ENV`,
+        `process.env.${prefix.toUpperCase()}_ENV`,
       )} with these values`,
     );
     // get user config
