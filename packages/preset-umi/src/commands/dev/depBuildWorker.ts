@@ -31,10 +31,10 @@ async function start() {
   let builder: DepBuilderWorker | null = null;
 
   function build(deps: any[]) {
-    logger.error('[MFSU][eager] worker start to build', Date.now() - start);
+    logger.info('[MFSU][eager] build worker start to build');
 
     return builder!.build({ deps }).catch((e) => {
-      logger.error('[MFSU][eager] build failed', Date.now() - start);
+      logger.error('[MFSU][eager] build worker failed');
       parentPort!.postMessage({ error: e });
     });
   }
@@ -44,7 +44,6 @@ async function start() {
       const buildReq = bufferedRequest.shift();
 
       if (buildReq) {
-        console.log('start to handdle req');
         build(buildReq).finally(() => {
           scheduleBuild();
         });
@@ -52,9 +51,8 @@ async function start() {
     }
   }
 
+  // 启动一个 Service 的成本比较高(2-3秒), 所以 worker 中的 build 通过 message 来驱动
   parentPort!.on('message', (buildReq) => {
-    console.log('woker get request schdule build');
-
     bufferedRequest.push(buildReq);
     scheduleBuild();
   });
@@ -123,7 +121,9 @@ async function start() {
   scheduleBuild();
 }
 
-start().then(console.log, console.log);
+start().catch((e) => {
+  logger.error('[MFSU][eager] build worker start failed', e);
+});
 
 type IOpts = {
   depConfig: webpack.Configuration;
