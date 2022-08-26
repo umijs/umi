@@ -79,8 +79,9 @@ jobs:
 
       - name: set mfsu-eager env
         run: | 
-          rm -rf node_modules/.cache
-          npx umi config set mfsu '{"strategy":"eager"}'
+          npx rimraf node_modules/.cache
+          npm run set:eager
+          cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
       - name: e2e:example:mfsu-e2e:eager
