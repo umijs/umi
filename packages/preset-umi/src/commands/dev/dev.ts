@@ -272,7 +272,9 @@ PORT=8888 umi dev
 
         let currentWorker: Worker | null = null;
         const initWorker = () => {
-          currentWorker = new Worker(join(__dirname, 'depBuildWorker.js'));
+          currentWorker = new Worker(
+            join(__dirname, 'depBuildWorker/depBuildWorker.js'),
+          );
           currentWorker.on('exit', () => {
             initWorker();
           });

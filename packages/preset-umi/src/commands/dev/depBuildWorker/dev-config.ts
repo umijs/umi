@@ -1,7 +1,7 @@
 import { lodash } from '@umijs/utils';
 import { join } from 'path';
-import { IApi } from '../types';
-import { getBabelOpts } from './dev/getBabelOpts';
+import { IApi } from '../../../types';
+import { getBabelOpts } from '../getBabelOpts';
 
 const MFSU_EAGER_DEFAULT_INCLUDE = [
   'react',
