@@ -4,7 +4,7 @@ import { Service } from 'umi/src/service/service';
 import { GeneratorHelper } from '../../../dist/commands/generators/utils';
 
 let willUseTLR = false;
-jest.mock('../../../dist/commands/generators/utils', () => {
+jest.doMock('../../../dist/commands/generators/utils', () => {
   const originalModule = jest.requireActual(
     '../../../dist/commands/generators/utils',
   );
