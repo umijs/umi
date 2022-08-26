@@ -1,8 +1,8 @@
 import { chalk, logger } from '@umijs/utils';
 import assert from 'assert';
-import { existsSync, readdirSync, statSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { extname, join, resolve } from 'path';
+import { dirname, extname, join, resolve } from 'path';
 import { IApi } from '../../types';
 import { extractExports } from './extractExports';
 
@@ -14,7 +14,9 @@ export default (api: IApi) => {
     key: 'mpa',
     config: {
       schema(Joi) {
-        return Joi.object({});
+        return Joi.object({
+          getConfigFromEntryFile: Joi.boolean(),
+        });
       },
     },
     enableBy: api.EnableBy.config,
@@ -26,7 +28,10 @@ export default (api: IApi) => {
 
   api.modifyAppData(async (memo) => {
     memo.mpa = {
-      entry: await collectEntryWithTimeCount(api.paths.absPagesPath),
+      entry: await collectEntryWithTimeCount(
+        api.paths.absPagesPath,
+        api.config.mpa,
+      ),
     };
     return memo;
   });
@@ -36,6 +41,7 @@ export default (api: IApi) => {
     if (!isFirstTime) {
       api.appData.mpa.entry = await collectEntryWithTimeCount(
         api.paths.absPagesPath,
+        api.config.mpa,
       );
     }
 
@@ -109,16 +115,20 @@ interface Entry {
   [key: string]: string;
 }
 
-async function collectEntryWithTimeCount(root: string) {
+interface IMpaOpts {
+  getConfigFromEntryFile: boolean;
+}
+
+async function collectEntryWithTimeCount(root: string, opts: IMpaOpts) {
   const d = new Date();
-  const entries = await collectEntry(root);
+  const entries = await collectEntry(root, opts);
   logger.info(
     `[MPA] Collect Entries in ${new Date().getTime() - d.getTime()}ms`,
   );
   return entries;
 }
 
-async function collectEntry(root: string) {
+async function collectEntry(root: string, opts: IMpaOpts) {
   return await readdirSync(root).reduce<Promise<Entry[]>>(
     async (memoP, dir) => {
       const memo = await memoP;
@@ -126,7 +136,9 @@ async function collectEntry(root: string) {
       if (existsSync(absDir) && statSync(absDir).isDirectory()) {
         const indexFile = getIndexFile(absDir);
         if (indexFile) {
-          const config = await getConfig(indexFile);
+          const config = opts.getConfigFromEntryFile
+            ? await getConfigFromEntryFile(indexFile)
+            : await getConfig(indexFile);
           memo.push({
             name: dir,
             file: indexFile,
@@ -152,11 +164,17 @@ function getIndexFile(dir: string) {
 }
 
 async function getConfig(indexFile: string) {
-  // if (existsSync(join(dir, 'config.json'))) {
-  //   const config = JSON.parse(readFileSync(join(dir, 'config.json'), 'utf-8'));
-  //   checkConfig(config);
-  //   return config;
-  // }
+  const dir = dirname(indexFile);
+  if (existsSync(join(dir, 'config.json'))) {
+    const config = JSON.parse(readFileSync(join(dir, 'config.json'), 'utf-8'));
+    checkConfig(config);
+    return config;
+  } else {
+    return {};
+  }
+}
+
+async function getConfigFromEntryFile(indexFile: string) {
   const config = await extractExports({
     entry: indexFile,
     exportName: 'config',
