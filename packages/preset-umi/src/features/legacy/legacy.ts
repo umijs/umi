@@ -98,26 +98,6 @@ export default (api: IApi) => {
         ie: 11,
       };
 
-      // transform all node_modules pkgs to es5
-      if (nodeModulesTransform) {
-        memo.module
-          .rule('extra-src')
-          .include.add(/node_modules/)
-          .end();
-      }
-
-      // prevent transform node_modules some problems
-      memo.module
-        .rule('extra-src')
-        // prevent transform `core-js` polyfill
-        // https://github.com/umijs/umi/issues/9124
-        // https://github.com/zloirock/core-js/issues/514
-        .exclude.add(/core-js/)
-        // prevent transform util functions
-        // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/471
-        .add(/node_modules\/(css-loader)/)
-        .end();
-
       logger.ready(
         `${chalk.cyan(
           'legacy',
@@ -135,6 +115,26 @@ export default (api: IApi) => {
         if (originChainWebpack) {
           originChainWebpack(memo, ...args);
         }
+
+        // transform all node_modules pkgs to es5
+        if (nodeModulesTransform) {
+          memo.module
+            .rule('extra-src')
+            .include.add(/node_modules/)
+            .end();
+        }
+
+        // prevent transform node_modules some problems
+        memo.module
+          .rule('extra-src')
+          // prevent transform `core-js` polyfill
+          // https://github.com/umijs/umi/issues/9124
+          // https://github.com/zloirock/core-js/issues/514
+          .exclude.add(/core-js/)
+          // prevent transform util functions
+          // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/471
+          .add(/node_modules\/(css-loader)/)
+          .end();
 
         // ensure svgr transform outputs is es5
         useBabelTransformSvgr(memo, api);
