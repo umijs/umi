@@ -11,6 +11,7 @@ type WebpackChainFunc = Parameters<IApi['chainWebpack']>[0];
 type WebpackChainConfig = Parameters<WebpackChainFunc>[0];
 interface ILegacyOpts {
   buildOnly?: boolean;
+  nodeModulesTransform?: boolean;
 }
 
 export default (api: IApi) => {
@@ -20,6 +21,7 @@ export default (api: IApi) => {
       schema(Joi) {
         return Joi.object({
           buildOnly: Joi.boolean(),
+          nodeModulesTransform: Joi.boolean(),
         });
       },
     },
@@ -31,7 +33,7 @@ export default (api: IApi) => {
     fn: (memo) => {
       const { userConfig } = api;
       // compatible use plugin config scene
-      const { buildOnly = true }: ILegacyOpts =
+      const { buildOnly = true, nodeModulesTransform = true }: ILegacyOpts =
         api.config.legacy || userConfig.legacy || {};
 
       if (api.env === Env.development) {
@@ -97,10 +99,24 @@ export default (api: IApi) => {
       };
 
       // transform all node_modules pkgs to es5
-      memo.extraBabelIncludes = [
-        ...(memo.extraBabelIncludes || []),
-        /node_modules/,
-      ];
+      if (nodeModulesTransform) {
+        memo.module
+          .rule('extra-src')
+          .include.add(/node_modules/)
+          .end();
+      }
+
+      // prevent transform node_modules some problems
+      memo.module
+        .rule('extra-src')
+        .exclude// prevent transform `core-js` polyfill
+        // https://github.com/umijs/umi/issues/9124
+        // https://github.com/zloirock/core-js/issues/514
+        .add(/core-js/)
+        // prevent transform util functions
+        // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/471
+        .add(/node_modules\/(css-loader)/)
+        .end();
 
       logger.ready(
         `${chalk.cyan(
