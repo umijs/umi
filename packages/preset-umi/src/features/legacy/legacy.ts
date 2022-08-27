@@ -109,10 +109,10 @@ export default (api: IApi) => {
       // prevent transform node_modules some problems
       memo.module
         .rule('extra-src')
-        .exclude// prevent transform `core-js` polyfill
+        // prevent transform `core-js` polyfill
         // https://github.com/umijs/umi/issues/9124
         // https://github.com/zloirock/core-js/issues/514
-        .add(/core-js/)
+        .exclude.add(/core-js/)
         // prevent transform util functions
         // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/471
         .add(/node_modules\/(css-loader)/)
