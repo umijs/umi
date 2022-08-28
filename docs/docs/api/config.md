@@ -618,7 +618,7 @@ https: {
 
 ## legacy
 
-- 类型：`{ buildOnly?: boolean }`
+- 类型：`{ buildOnly?: boolean; nodeModulesTransform?: boolean; }`
 - 默认值：`false`
 
 当你需要兼容低版本浏览器时，可能需要该选项，开启后将默认使用 **非现代** 的打包工具做构建，这会显著增加你的构建时间。
@@ -632,7 +632,7 @@ legacy: {}
 开启此选项后：
 
  - 不支持自定义 `srcTranspiler` 、`jsMinifier` 、 `cssMinifier` 选项。
- - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 。
+ - 将转译全部 `node_modules` 内的源码，`targets` 兼容至 ie 11 ，通过指定 `nodeModulesTransform: false` 来取消对 `node_modules` 的转换，此时你可以通过配置 `extraBabelIncludes` 更精准的转换那些有兼容性问题的包。
  - 因低版本浏览器不支持 Top level await ，当你在使用 `externals` 时，确保你没有在使用异步性质的 [`externalsType`](https://webpack.js.org/configuration/externals/#externalstype) 时又使用了同步导入依赖。
 
 ## links
