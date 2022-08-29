@@ -59,7 +59,9 @@ export default {
     esbuild: true,
   },
   // vite: {},
-  deadCode: {},
+  deadCode: {
+    exclude: ['pages/unused/**'],
+  },
   https: {},
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
