@@ -419,7 +419,7 @@ export class Service {
     });
     const defaultConfig = await this.applyPlugins({
       key: 'modifyDefaultConfig',
-      initialValue: this.configDefaults,
+      initialValue: lodash.cloneDeep(this.configDefaults),
     });
     this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
 
