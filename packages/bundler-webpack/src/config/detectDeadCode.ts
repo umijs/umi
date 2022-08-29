@@ -4,7 +4,7 @@ import {
   Module,
   NormalModule,
 } from '@umijs/bundler-webpack/compiled/webpack';
-import { chalk, glob } from '@umijs/utils';
+import { chalk, fsExtra, glob, winPath } from '@umijs/utils';
 import path from 'path';
 import { DeadCodeParams } from '../types';
 
@@ -15,11 +15,16 @@ export interface Options extends DeadCodeParams {
   detectUnusedFiles: boolean;
   detectUnusedExport: boolean;
 }
-export const disabledFolders: string[] = [
-  'node_modules',
-  '.umi',
-  '.umi-production',
-  'dist',
+export const ignores: string[] = [
+  '**/node_modules/**',
+  '**/.umi/**',
+  '**/.umi-production/**',
+  '**/.umi-test/**',
+  'coverage/**',
+  'dist/**',
+  'config/**',
+  'public/**',
+  'mock/**',
 ];
 
 type FileDictionary = Record<string, boolean>;
@@ -28,8 +33,18 @@ type ExportDictionary = Record<string, string[]>;
 const detectDeadCode = (compilation: Compilation, options: Options) => {
   const assets: string[] = getWebpackAssets(compilation);
   const compiledFilesDictionary: FileDictionary = convertFilesToDict(assets);
-  const includedFiles: string[] = getPattern(options)
-    .map((pattern) => glob.sync(pattern))
+  const context = options.context!;
+  if (!options.patterns.length) {
+    options.patterns = getDefaultSourcePattern({ cwd: context });
+  }
+  const includedFiles: string[] = options.patterns
+    .map((pattern) => {
+      return glob.sync(pattern, {
+        ignore: [...ignores, ...options.exclude],
+        cwd: context,
+        absolute: true,
+      });
+    })
     .flat();
 
   const unusedFiles: string[] = options.detectUnusedFiles
@@ -47,17 +62,6 @@ const detectDeadCode = (compilation: Compilation, options: Options) => {
   if (hasUnusedThings && options.failOnHint) {
     process.exit(2);
   }
-};
-
-const getPattern = (options: Options): string[] => {
-  return options.patterns
-    .map((pattern) => path.resolve(options.context || '', pattern))
-    .concat(
-      options.exclude.map((pattern) =>
-        path.resolve(options.context || '', `!${pattern}`),
-      ),
-    )
-    .map(convertToUnixPath);
 };
 
 const getUnusedExportMap = (
@@ -92,7 +96,7 @@ const outputUnusedExportMap = (
     return;
   }
 
-  const path = convertToUnixPath(module.resource);
+  const path = winPath(module.resource);
   if (!/^((?!(node_modules)).)*$/.test(path)) return;
 
   const providedExports =
@@ -172,13 +176,9 @@ const getWebpackAssets = (compilation: Compilation): string[] => {
 
 const convertFilesToDict = (assets: string[]): FileDictionary => {
   return assets
-    .filter(
-      (file) =>
-        Boolean(file) &&
-        disabledFolders.every((disabledPath) => !file.includes(disabledPath)),
-    )
+    .filter((path) => !/(node_modules|(\.umi))/.test(path) && Boolean(path))
     .reduce((fileDictionary, file) => {
-      const unixFile = convertToUnixPath(file);
+      const unixFile = winPath(file);
 
       fileDictionary[unixFile] = true;
 
@@ -201,6 +201,20 @@ const logUnusedFiles = (unusedFiles: string[]): void => {
   );
 };
 
-const convertToUnixPath = (path: string): string => path.replace(/\\+/g, '/');
+function isDirExist(p: string) {
+  return fsExtra.existsSync(p) && fsExtra.statSync(p).isDirectory();
+}
+
+function getDefaultSourcePattern(opts: { cwd: string }) {
+  const { cwd } = opts;
+  const srcPath = path.join(cwd, 'src');
+  if (isDirExist(srcPath)) {
+    return ['src/**/*'];
+  }
+  const dirs = fsExtra.readdirSync(cwd).filter((p) => {
+    return !p.startsWith('.') && isDirExist(p);
+  });
+  return dirs.map((dir) => `${dir}/**/*`);
+}
 
 export default detectDeadCode;
