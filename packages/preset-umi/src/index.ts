@@ -32,6 +32,7 @@ export default () => {
       require.resolve('./features/monorepo/redirect'),
       require.resolve('./features/clickToComponent/clickToComponent'),
       require.resolve('./features/legacy/legacy'),
+      require.resolve('@umijs/did-you-know'),
 
       // commands
       require.resolve('./commands/build'),

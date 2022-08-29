@@ -1329,6 +1329,7 @@ importers:
       '@umijs/bundler-vite': 4.0.0-canary.20220826.1
       '@umijs/bundler-webpack': 4.0.0-canary.20220826.1
       '@umijs/core': 4.0.0-canary.20220826.1
+      '@umijs/did-you-know': 0.0.0-beta.1
       '@umijs/plugin-run': 4.0.0-canary.20220826.1
       '@umijs/renderer-react': 4.0.0-canary.20220826.1
       '@umijs/server': 4.0.0-canary.20220826.1
@@ -1361,6 +1362,7 @@ importers:
       '@umijs/bundler-vite': link:../bundler-vite
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
+      '@umijs/did-you-know': 0.0.0-beta.1
       '@umijs/plugin-run': link:../plugin-run
       '@umijs/renderer-react': link:../renderer-react
       '@umijs/server': link:../server
@@ -5501,7 +5503,6 @@ packages:
 
   /@hapi/hoek/9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
-    dev: true
 
   /@hapi/joi/17.1.1:
     resolution: {integrity: sha512-p4DKeZAoeZW4g3u7ZeRo+vCDuSDgSvtsB/NpfjXEHTUjSeINAi/RrVOWiVQ1isaoLzMvFEhe8n5065mQq1AdQg==}
@@ -5523,7 +5524,6 @@ packages:
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
     dependencies:
       '@hapi/hoek': 9.3.0
-    dev: true
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
@@ -7531,15 +7531,12 @@ packages:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
     dependencies:
       '@hapi/hoek': 9.3.0
-    dev: true
 
   /@sideway/formula/3.0.0:
     resolution: {integrity: sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==}
-    dev: true
 
   /@sideway/pinpoint/2.0.0:
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
-    dev: true
 
   /@sinclair/typebox/0.24.28:
     resolution: {integrity: sha512-dgJd3HLOkLmz4Bw50eZx/zJwtBq65nms3N9VBYu5LTjJ883oBFkTyXRlCB/ZGGwqYpJJHA5zW2Ibhl5ngITfow==}
@@ -8837,6 +8834,13 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@umijs/did-you-know/0.0.0-beta.1:
+    resolution: {integrity: sha512-soZK1CViTtvTnoPYPbXcUFvfpo+VrVRp0SjcBywwMc6sijO+RiEI2h2BQGQV+MZfXIh0dozvpYX8eIOQkfPvCg==}
+    dependencies:
+      joi: 17.6.0
+      semver: 7.3.7
+    dev: false
 
   /@umijs/mfsu/4.0.8:
     resolution: {integrity: sha512-zlwoFg6OqUmcmnwXcAhWR9Oimq/XCKDI92ze3KCtfKrWFcw/qYc9f85mTwZXU12k6o12QnLxRHbWFb0Adi5AfQ==}
@@ -11677,8 +11681,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      JSONStream: 1.3.5
       is-text-path: 1.0.1
+      JSONStream: 1.3.5
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -17374,7 +17378,6 @@ packages:
       '@sideway/address': 4.1.4
       '@sideway/formula': 3.0.0
       '@sideway/pinpoint': 2.0.0
-    dev: true
 
   /joi2types/1.1.0:
     resolution: {integrity: sha512-FRSmkMZHOaqGwTH0jhSIn3WaLcQoACUDTlpLX3ZlWiykrxZO2G5xjdFIKW5fVy0lCj1omXRLRVyJ+x3gx4xr+A==}
