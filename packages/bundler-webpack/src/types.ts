@@ -37,7 +37,11 @@ export interface ICopy {
 }
 
 type WebpackConfig = Required<Configuration>;
-type IBabelPlugin = Function | string | [string, { [key: string]: any }];
+type IBabelPlugin =
+  | Function
+  | string
+  | [string, { [key: string]: any }]
+  | [string, { [key: string]: any }, string];
 
 export interface DeadCodeParams {
   patterns?: string[];
