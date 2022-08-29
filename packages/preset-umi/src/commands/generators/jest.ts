@@ -57,6 +57,10 @@ export default (api: IApi) => {
         writeFileSync(
           join(api.cwd, 'jest-setup.ts'),
           `import '@testing-library/jest-dom';
+import { createPluginManager } from '@@/core/plugin';
+
+// init runtime plugin manager
+createPluginManager();
           `.trimLeft(),
         );
         logger.info('Write jest-setup.ts');
@@ -99,9 +103,9 @@ export default async () => {
       jsTransformerOpts: { jsx: 'automatic' },
     }),
     ${res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''}
-    collectCoverageFrom: [${collectCoverageFrom
-      .map((v) => `'${v}'`)
-      .join(', ')}],
+    collectCoverageFrom: [
+${collectCoverageFrom.map((v) => `      '${v}'`).join(',\n')}
+    ],
     // if you require some es-module npm package, please uncomment below line and insert your package name
     // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
   })) as Config.InitialOptions;
