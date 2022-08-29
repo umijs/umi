@@ -92,6 +92,9 @@ export default function () {
       require.resolve('./plugins/commands/plugin/plugin'),
       require.resolve('./plugins/commands/version/version'),
       require.resolve('./plugins/commands/webpack/webpack'),
+
+      // features
+      require.resolve('@umijs/did-you-know'),
     ],
   };
 }

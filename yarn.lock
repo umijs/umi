@@ -2319,6 +2319,11 @@
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-8.5.1.tgz#fde96064ca446dec8c55a8c2f130957b070c6e06"
   integrity sha512-yN7kbciD87WzLGc5539Tn0sApjyiGHAJgKvG9W8C7O+6c7qmoQMfVs0W4bX17eqz6C78QJqqFrtgdK5EWf6Qow==
 
+"@hapi/hoek@^9.0.0":
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.3.0.tgz#8368869dcb735be2e7f5cb7647de78e167a251fb"
+  integrity sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==
+
 "@hapi/joi@16.1.8":
   version "16.1.8"
   resolved "https://registry.yarnpkg.com/@hapi/joi/-/joi-16.1.8.tgz#84c1f126269489871ad4e2decc786e0adef06839"
@@ -2341,6 +2346,13 @@
   integrity sha512-tAag0jEcjwH+P2quUfipd7liWCNX2F8NvYjQp2wtInsZxnMlypdw0FtAOLxtvvkO+GSRRbmNi8m/5y42PQJYCQ==
   dependencies:
     "@hapi/hoek" "^8.3.0"
+
+"@hapi/topo@^5.0.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-5.1.0.tgz#dc448e332c6c6e37a4dc02fd84ba8d44b9afb012"
+  integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -3513,6 +3525,23 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@sideway/address@^4.1.3":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.4.tgz#03dccebc6ea47fdc226f7d3d1ad512955d4783f0"
+  integrity sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+
+"@sideway/formula@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.0.tgz#fe158aee32e6bd5de85044be615bc08478a0a13c"
+  integrity sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==
+
+"@sideway/pinpoint@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
+  integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -4529,6 +4558,14 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@umijs/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-1.0.1.tgz#02655299f52912289f2df28fbeaea636e748c1df"
   integrity sha512-kDKJ8yTarxwxGJDInG33hOpaQRZ//XpNuuznQ/1Mscypw6kappzFmrBr2dOYave++K7JHouoANF354UpbEQw0Q==
+
+"@umijs/did-you-know@^0.0.0-beta.1":
+  version "0.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@umijs/did-you-know/-/did-you-know-0.0.0-beta.1.tgz#ac5ad09527e3518f77ce6a7748a0650e8b750609"
+  integrity sha512-soZK1CViTtvTnoPYPbXcUFvfpo+VrVRp0SjcBywwMc6sijO+RiEI2h2BQGQV+MZfXIh0dozvpYX8eIOQkfPvCg==
+  dependencies:
+    joi "^17.6.0"
+    semver "^7.3.7"
 
 "@umijs/plugin-analytics@^0.2.2":
   version "0.2.2"
@@ -11258,6 +11295,17 @@ joi2types@1.1.0:
   dependencies:
     json-schema-to-typescript "^10.1.2"
 
+joi@^17.6.0:
+  version "17.6.0"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.6.0.tgz#0bb54f2f006c09a96e75ce687957bd04290054b2"
+  integrity sha512-OX5dG6DTbcr/kbMFj0KGYxuew69HPcAE3K/sZpEV2nP6e/j/C0HV+HNiBPCASxdx5T7DMoa0s8UeHWMnb6n2zw==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+    "@hapi/topo" "^5.0.0"
+    "@sideway/address" "^4.1.3"
+    "@sideway/formula" "^3.0.0"
+    "@sideway/pinpoint" "^2.0.0"
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -16277,6 +16325,13 @@ semver@^7.3.2, semver@^7.3.4:
   version "7.3.5"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.5.tgz#0b621c879348d8998e4b0e4be94b3f12e6018ef7"
   integrity sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==
+  dependencies:
+    lru-cache "^6.0.0"
+
+semver@^7.3.7:
+  version "7.3.7"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.7.tgz#12c5b649afdbf9049707796e22a4028814ce523f"
+  integrity sha512-QlYTucUYOews+WeEujDoEGziz4K6c47V/Bd+LjSSYcA94p+DmINdf7ncaUinThfvZyu13lN9OY1XDxt8C0Tw0g==
   dependencies:
     lru-cache "^6.0.0"
 

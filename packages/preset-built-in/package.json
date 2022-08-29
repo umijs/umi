@@ -30,6 +30,7 @@
     "@umijs/bundler-webpack": "3.5.33",
     "@umijs/core": "3.5.33",
     "@umijs/deps": "3.5.33",
+    "@umijs/did-you-know": "^0.0.0-beta.1",
     "@umijs/renderer-mpa": "3.5.33",
     "@umijs/renderer-react": "3.5.33",
     "@umijs/runtime": "3.5.33",
