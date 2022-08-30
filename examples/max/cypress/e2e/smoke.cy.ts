@@ -24,11 +24,11 @@ describe('Basic Test', () => {
     cy.get('li.ant-pro-base-menu-menu-item').contains('Index');
     cy.get('li.ant-pro-base-menu-menu-item').contains('users');
     cy.get('li.ant-pro-base-menu-menu-item').contains('app1');
-    cy.get('li.ant-pro-menu-submenu').contains('data-flow');
+    cy.get('li.ant-pro-base-menu-submenu').contains('data-flow');
   });
 
   it('render sub-menu', () => {
-    cy.get('li.ant-pro-menu-submenu').contains('data-flow').click();
+    cy.get('li.ant-pro-base-menu-submenu').contains('data-flow').click();
 
     cy.get('li.ant-pro-base-menu-menu-item').contains('use-model');
     cy.get('li.ant-pro-base-menu-menu-item').contains('dva');
