@@ -419,6 +419,7 @@ export class Service {
     });
     const defaultConfig = await this.applyPlugins({
       key: 'modifyDefaultConfig',
+      // 避免 modifyDefaultConfig 时修改 this.configDefaults
       initialValue: lodash.cloneDeep(this.configDefaults),
     });
     this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
