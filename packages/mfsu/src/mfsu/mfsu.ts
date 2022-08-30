@@ -9,6 +9,7 @@ import assert from 'assert';
 import { readFileSync, statSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
+import type { Worker } from 'worker_threads';
 import isAbsoluteUrl from '../../compiled/is-absolute-url';
 import { lookup } from '../../compiled/mrmime';
 // @ts-ignore
@@ -58,6 +59,7 @@ interface IOpts {
   remoteName?: string;
   remoteAliases?: string[];
   serverBase?: string;
+  startBuildWorker: (dep: any[]) => Worker;
 }
 
 export class MFSU {

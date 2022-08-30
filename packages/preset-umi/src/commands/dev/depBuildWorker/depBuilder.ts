@@ -1,23 +1,31 @@
 import { build } from '@umijs/bundler-esbuild';
+import webpack from '@umijs/bundler-webpack/compiled/webpack';
+import { MF_DEP_PREFIX, MF_VA_PREFIX, REMOTE_FILE_FULL } from '@umijs/mfsu';
+import { Dep } from '@umijs/mfsu/dist/dep/dep';
+import { getESBuildEntry } from '@umijs/mfsu/dist/depBuilder/getESBuildEntry';
+import { DepChunkIdPrefixPlugin } from '@umijs/mfsu/dist/webpackPlugins/depChunkIdPrefixPlugin';
+import { StripSourceMapUrlPlugin } from '@umijs/mfsu/dist/webpackPlugins/stripSourceMapUrlPlugin';
 import { fsExtra, lodash, logger } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
-import { MF_DEP_PREFIX, MF_VA_PREFIX, REMOTE_FILE_FULL } from '../constants';
-import { Dep } from '../dep/dep';
-import { MFSU } from '../mfsu/mfsu';
-import { DepChunkIdPrefixPlugin } from '../webpackPlugins/depChunkIdPrefixPlugin';
-import { StripSourceMapUrlPlugin } from '../webpackPlugins/stripSourceMapUrlPlugin';
-import { getESBuildEntry } from './getESBuildEntry';
+import { parentPort } from 'worker_threads';
 
-interface IOpts {
-  mfsu: MFSU;
-}
+type IOpts = {
+  depConfig: webpack.Configuration;
+  cwd: string;
+  tmpBase: string;
+  mfName: string;
+  shared: any;
+  // all for esbuild needs
+  buildDepWithESBuild: boolean;
+  depEsBuildConfig: any;
+  externals: any[];
+};
 
-export class DepBuilder {
-  public opts: IOpts;
+export class DepBuilderInWorker {
   public completeFns: Function[] = [];
   public isBuilding = false;
-
+  opts: IOpts;
   constructor(opts: IOpts) {
     this.opts = opts;
   }
@@ -25,7 +33,7 @@ export class DepBuilder {
   async buildWithWebpack(opts: { onBuildComplete: Function; deps: Dep[] }) {
     const config = this.getWebpackConfig({ deps: opts.deps });
     return new Promise((resolve, reject) => {
-      const compiler = this.opts.mfsu.opts.implementor(config);
+      const compiler = webpack(config);
       compiler.run((err, stats) => {
         opts.onBuildComplete();
         if (err || stats?.hasErrors()) {
@@ -47,22 +55,25 @@ export class DepBuilder {
 
   // TODO: support watch and rebuild
   async buildWithESBuild(opts: { onBuildComplete: Function; deps: Dep[] }) {
+    const alias = { ...this.opts.depConfig.resolve?.alias };
+    const externals = this.opts.depConfig.externals;
+
     const entryContent = getESBuildEntry({ deps: opts.deps });
     const ENTRY_FILE = 'esbuild-entry.js';
-    const tmpDir = this.opts.mfsu.opts.tmpBase!;
+    const tmpDir = this.opts.tmpBase!;
     const entryPath = join(tmpDir, ENTRY_FILE);
     writeFileSync(entryPath, entryContent, 'utf-8');
     const date = new Date().getTime();
     await build({
-      cwd: this.opts.mfsu.opts.cwd!,
+      cwd: this.opts.cwd!,
       entry: {
         [`${MF_VA_PREFIX}remoteEntry`]: entryPath,
       },
       config: {
-        ...this.opts.mfsu.opts.depBuildConfig,
+        ...this.opts.depEsBuildConfig,
         outputPath: tmpDir,
-        alias: this.opts.mfsu.alias,
-        externals: this.opts.mfsu.externals,
+        alias,
+        externals,
       },
       inlineStyle: true,
     });
@@ -72,77 +83,32 @@ export class DepBuilder {
     opts.onBuildComplete();
   }
 
-  async buildWithWorker(opts: { onBuildComplete: Function; deps: Dep[] }) {
-    const worker = this.opts.mfsu.opts.startBuildWorker(opts.deps);
-
-    worker.postMessage(opts.deps);
-
-    return new Promise<void>((resolve, reject) => {
-      const onMessage = ({
-        progress,
-        done,
-        error,
-      }: {
-        done: boolean;
-        error: any;
-        progress: any;
-      }) => {
-        if (done) {
-          opts.onBuildComplete();
-          worker.off('message', onMessage);
-          resolve();
-        }
-        if (error) {
-          worker.off('message', onMessage);
-          opts.onBuildComplete();
-          logger.error('[MFSU][eager] build failed', error);
-          reject(error);
-        }
-
-        if (progress) {
-          this.opts.mfsu.onProgress(progress);
-        }
-      };
-
-      worker.on('message', onMessage);
-
-      worker.once('error', (e) => {
-        logger.error('[MFSU][eager] worker got Error', e);
-        opts.onBuildComplete();
-        reject(e);
-      });
-    });
-  }
-
   async build(opts: { deps: Dep[] }) {
     this.isBuilding = true;
 
     const onBuildComplete = () => {
       this.isBuilding = false;
-      this.completeFns.forEach((fn) => fn());
-      this.completeFns = [];
+      parentPort!.postMessage({
+        done: true,
+      });
     };
 
     try {
-      const buildOpts = {
+      await this.writeMFFiles({ deps: opts.deps.map((d) => new Dep(d)) });
+      const newOpts = {
         ...opts,
         onBuildComplete,
       };
-
-      if (this.opts.mfsu.opts.strategy === 'eager') {
-        await this.buildWithWorker(buildOpts);
-        return;
-      }
-
-      await this.writeMFFiles({ deps: opts.deps });
-
-      if (this.opts.mfsu.opts.buildDepWithESBuild) {
-        await this.buildWithESBuild(buildOpts);
+      if (this.opts.buildDepWithESBuild) {
+        await this.buildWithESBuild(newOpts);
       } else {
-        await this.buildWithWebpack(buildOpts);
+        await this.buildWithWebpack(newOpts);
       }
     } catch (e) {
       onBuildComplete();
+      parentPort!.postMessage({
+        error: e,
+      });
       throw e;
     }
   }
@@ -156,7 +122,7 @@ export class DepBuilder {
   }
 
   async writeMFFiles(opts: { deps: Dep[] }) {
-    const tmpBase = this.opts.mfsu.opts.tmpBase!;
+    const tmpBase = this.opts.tmpBase!;
     fsExtra.mkdirpSync(tmpBase);
 
     // expose files
@@ -170,13 +136,13 @@ export class DepBuilder {
   }
 
   getWebpackConfig(opts: { deps: Dep[] }) {
-    const mfName = this.opts.mfsu.opts.mfName!;
-    const depConfig = lodash.cloneDeep(this.opts.mfsu.depConfig!);
+    const mfName = this.opts.mfName!;
+    const depConfig = lodash.cloneDeep(this.opts.depConfig!);
 
     // depConfig.stats = 'none';
-    depConfig.entry = join(this.opts.mfsu.opts.tmpBase!, 'index.js');
+    depConfig.entry = join(this.opts.tmpBase!, 'index.js');
 
-    depConfig.output!.path = this.opts.mfsu.opts.tmpBase!;
+    depConfig.output!.path = this.opts.tmpBase!;
 
     depConfig.output!.publicPath = 'auto';
 
@@ -216,23 +182,27 @@ export class DepBuilder {
     };
 
     depConfig.plugins = depConfig.plugins || [];
+    // FIXME remove ignore
+    // @ts-ignore
     depConfig.plugins.push(new DepChunkIdPrefixPlugin());
     depConfig.plugins.push(
+      // FIXME remove ignore
+      // @ts-ignore
       new StripSourceMapUrlPlugin({
-        webpack: this.opts.mfsu.opts.implementor,
+        webpack,
       }),
     );
     depConfig.plugins.push(
-      new this.opts.mfsu.opts.implementor.ProgressPlugin((percent, msg) => {
-        this.opts.mfsu.onProgress({ percent, status: msg });
+      new webpack.ProgressPlugin((percent, msg) => {
+        parentPort!.postMessage({ progress: { percent, status: msg } });
       }),
     );
     const exposes = opts.deps.reduce<Record<string, string>>((memo, dep) => {
-      memo[`./${dep.file}`] = join(this.opts.mfsu.opts.tmpBase!, dep.filePath);
+      memo[`./${dep.file}`] = join(this.opts.tmpBase!, dep.filePath);
       return memo;
     }, {});
     depConfig.plugins.push(
-      new this.opts.mfsu.opts.implementor.container.ModuleFederationPlugin({
+      new webpack.container.ModuleFederationPlugin({
         library: {
           type: 'global',
           name: mfName,
@@ -240,7 +210,7 @@ export class DepBuilder {
         name: mfName,
         filename: REMOTE_FILE_FULL,
         exposes,
-        shared: this.opts.mfsu.opts.shared || {},
+        shared: this.opts.shared || {},
       }),
     );
     return depConfig;

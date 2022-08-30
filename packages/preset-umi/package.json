@@ -32,6 +32,7 @@
     "@umijs/bundler-vite": "4.0.0-canary.20220826.1",
     "@umijs/bundler-webpack": "4.0.0-canary.20220826.1",
     "@umijs/core": "4.0.0-canary.20220826.1",
+    "@umijs/mfsu": "4.0.0-canary.20220826.1",
     "@umijs/plugin-run": "4.0.0-canary.20220826.1",
     "@umijs/renderer-react": "4.0.0-canary.20220826.1",
     "@umijs/server": "4.0.0-canary.20220826.1",
