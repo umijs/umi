@@ -11,7 +11,7 @@ import { createReadStream, existsSync } from 'fs';
 import http from 'http';
 import { extname, join } from 'path';
 import { MESSAGE_TYPE } from '../constants';
-import { IConfig } from '../types';
+import { IConfig, ProxyOptions } from '../types';
 import { createWebSocketServer } from './ws';
 
 interface IOpts {
@@ -173,7 +173,7 @@ export async function createServer(opts: IOpts) {
     // proxy: { target, context }
     // proxy: { '/api': { target, context } }
     // proxy: [{ target, context }]
-    const proxyArr = Array.isArray(proxy)
+    const proxyArr: ProxyOptions[] = Array.isArray(proxy)
       ? proxy
       : proxy.target
       ? [proxy]
@@ -194,9 +194,9 @@ export async function createServer(opts: IOpts) {
           onProxyReq(proxyReq, req: any, res) {
             // add origin in request header
             if (proxyReq.getHeader('origin')) {
-              proxyReq.setHeader('origin', new URL(proxy.target)?.href || '');
+              proxyReq.setHeader('origin', new URL(proxy.target!)?.href || '');
             }
-            proxy.onProxyReq?.(proxyReq, req, res);
+            proxy.onProxyReq?.(proxyReq, req, res, proxy);
           },
           // Add x-real-url in response header
           onProxyRes(proxyRes, req: any, res) {
