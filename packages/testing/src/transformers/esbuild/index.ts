@@ -56,7 +56,10 @@ const createTransformer = (
       /// this will support the jest.mock
       /// https://github.com/aelbore/esbuild-jest/issues/12
       /// TODO: transform the jest.mock to a function using babel traverse/parse then hoist it
-      if (rawCode.indexOf('jest.mock(') >= 0) {
+      if (
+        rawCode.indexOf('jest.mock(') >= 0 ||
+        rawCode.indexOf('jest.doMock(') >= 0
+      ) {
         rawCode = require('./transformer').babelTransform({
           sourceText: rawCode,
           sourcePath: path,

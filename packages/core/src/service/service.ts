@@ -7,7 +7,7 @@ import assert from 'assert';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { Config } from '../config/config';
-import { DEFAULT_FRAMEWORK_NAME, SHORT_ENV } from '../constants';
+import { DEFAULT_FRAMEWORK_NAME } from '../constants';
 import {
   ApplyPluginsType,
   ConfigChangeType,
@@ -265,15 +265,16 @@ export class Service {
 
     const prefix = this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
     const specifiedEnv = process.env[`${prefix}_ENV`.toUpperCase()];
-    assert(
-      !specifiedEnv ||
-        (specifiedEnv && !Object.values(SHORT_ENV).includes(specifiedEnv)),
-      `${chalk.yellow(
-        Object.values(SHORT_ENV).join(', '),
-      )} config files will be auto loaded by env, Do not configure ${chalk.cyan(
-        `process.env.${prefix}_ENV`,
-      )} with these values`,
-    );
+    // https://github.com/umijs/umi/pull/9105
+    // assert(
+    //   !specifiedEnv ||
+    //     (specifiedEnv && !Object.values(SHORT_ENV).includes(specifiedEnv)),
+    //   `${chalk.yellow(
+    //     Object.values(SHORT_ENV).join(', '),
+    //   )} config files will be auto loaded by env, Do not configure ${chalk.cyan(
+    //     `process.env.${prefix.toUpperCase()}_ENV`,
+    //   )} with these values`,
+    // );
     // get user config
     const configManager = new Config({
       cwd: this.cwd,

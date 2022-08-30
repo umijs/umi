@@ -249,6 +249,36 @@ async function middleware(ctx, next) {
 ### request 方法的参数变动
 [umi-request](https://github.com/umijs/umi-request#request-options) 和 [axios](https://axios-http.com/docs/req_config) 的配置项有着一定的区别。具体可以查看其各自的文档进行比较。
 
+### GET 请求参数序列化
+
+[Umi@3](https://github.com/umijs/umi-request/blob/master/src/middleware/simpleGet.js) 默认会用相同的 Key 来序列化数组。Umi@4 请求基于 axios，默认是带括号 `[]` 的形式序列化。
+
+```tsx
+// Umi@3
+import { useRequest } from 'umi';
+// a: [1,2,3] => a=1&a=2&a=3
+
+// Umi@4
+import { useRequest } from '@umijs/max';
+// a: [1,2,3] => a[]=1&a[]=2&a[]=3
+```
+
+如果希望保持 Umi@3 这种形式，可以这样做：
+
+```ts
+// src/app.[ts|tsx]
+
+/** @doc https://github.com/sindresorhus/query-string#arrayformat-1 */
++ import queryString from 'query-string';
+
+export const request: RequestConfig = {
++  paramsSerializer(params) {
++    return queryString.stringify(params);
++  },
+   ...
+}
+```
+
 ## 运行时配置示例
 这里给出一个完整的运行时配置示例，以帮助你能够更好的去为自己的项目设定个性化的请求方案。
 

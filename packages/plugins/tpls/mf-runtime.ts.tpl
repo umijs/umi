@@ -1,10 +1,12 @@
+import { lazy, Suspense } from 'react'
+import type { Component, ReactNode } from 'react'
 const remotes = {
 {{{ remoteCodeString }}}
 };
 const scriptLoadedMap: Record<string, Promise<void> | 0 | undefined> = {};
 
-type MFModuleImportRequest = { entry: string, remoteName: string; moduleName: string; }
-type MFModuleRegisterRequest = { entry: string, remoteName: string; aliasName?:string; }
+type MFModuleImportRequest = { entry: string; remoteName: string; moduleName: string; }
+type MFModuleRegisterRequest = { entry: string; remoteName: string; aliasName?:string; }
 
 export async function rawMfImport(opts: MFModuleImportRequest) {
   await loadRemoteScriptWithCache(opts.remoteName, opts.entry);
@@ -109,4 +111,39 @@ async function loadRemoteScriptWithCache(remoteName:string, url: string): Promis
     scriptLoadedMap[remoteName] = p;
     await p;
   }
+}
+
+type SafeRemoteComponentOpts ={
+  moduleSpecifier:string;
+  fallbackComponent: ComponentType<any>;
+  loadingElement: ReactNode
+}
+
+export function safeRemoteComponent<T extends ComponentType<any>>(opts: SafeRemoteComponentOpts): T {
+  const Lazy = lazy<T>(()=>safeMfImport(opts.moduleSpecifier, { default: opts.fallbackComponent }));
+  return (props)=> (<Suspense fallback={opts.loadingElement}>
+     <Lazy {...props} />
+  </Suspense>)
+}
+
+type RawRemoteComponentOpts ={
+  mfConfig:{
+    entry:string;
+    remoteName: string;
+    moduleName: string;
+  };
+  fallbackComponent: ComponentType<any>;
+  loadingElement: ReactNode;
+}
+
+export function safeRemoteComponentWithMfConfig<T extends ComponentType<any>>(opts: RawRemoteComponentOpts): T {
+  const Lazy = lazy<T>(()=>{
+    return rawMfImport(opts.mfConfig)
+      .catch(()=>{
+        return { default: opts.fallbackComponent };
+      })
+  })
+  return (props)=> (<Suspense fallback={opts.loadingElement}>
+     <Lazy {...props} />
+  </Suspense>)
 }
