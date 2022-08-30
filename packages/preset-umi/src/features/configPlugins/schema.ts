@@ -62,7 +62,9 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         target: stringRule,
         title: stringRule,
         wrappers: Joi.array().items(stringRule),
-      }).id('route');
+      })
+        .unknown()
+        .id('route');
       // joi2types 不支持这种嵌套结构， 对 joi.link 的处理是直接使用 any
       return Joi.array().items(Route);
     },
