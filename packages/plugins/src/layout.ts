@@ -34,7 +34,11 @@ export default (api: IApi) => {
   /**
    * 优先去找 '@alipay/tech-ui'，保证稳定性
    */
-  const depList = ['@alipay/tech-ui', '@ant-design/pro-components'];
+  const depList = [
+    '@alipay/tech-ui',
+    '@ant-design/pro-components',
+    '@ant-design/pro-layout',
+  ];
 
   const pkgHasDep = depList.find((dep) => {
     const { pkg } = api;
@@ -61,7 +65,7 @@ export default (api: IApi) => {
     ) {
       return join(cwd, 'node_modules', pkgHasDep);
     }
-    // 如果项目中没有去找插件以来的
+    // 如果项目中没有去找插件依赖的
     return dirname(require.resolve('@ant-design/pro-components/package.json'));
   };
 
@@ -80,7 +84,9 @@ export default (api: IApi) => {
     // 只在没有自行依赖 @ant-design/pro-components 或 @alipay/tech-ui 时
     // 才使用插件中提供的 @ant-design/pro-components
     if (!pkgHasDep) {
-      memo.alias['@ant-design/pro-components'] = pkgPath;
+      // 寻找到什么就用什么，在 '@alipay/tech-ui','@ant-design/pro-components','@ant-design/pro-layout' 中寻找
+      const name = require(`${pkgPath}/package.json`).name;
+      memo.alias[name] = pkgPath;
     }
     return memo;
   });
