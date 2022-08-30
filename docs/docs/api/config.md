@@ -640,7 +640,7 @@ links: [{ href: '/foo.css', rel: 'preload' }],
 
 ## mdx
 
-- 类型：`{loader:string,loaderOptions:object}`
+- 类型：`{ loader: string; loaderOptions: Object }`
 - 默认值：`{}`
 
 mdx loader 配置 loader 配置路径，[loaderOptions](https://github.com/mdx-js/mdx/blob/v1/packages/mdx/index.js#L12) 配置参数
