@@ -1,9 +1,9 @@
 import assert from 'assert';
 import { fork } from 'child_process';
 import { writeFileSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { dirname, join } from 'path';
 import { IApi } from 'umi';
-import { fsExtra } from 'umi/plugin-utils';
+import { fsExtra, resolve } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -49,9 +49,10 @@ export default (api: IApi) => {
 };
 
 export function getBinPath() {
-  const pkgPath = join(__dirname, '../node_modules/tsx/package.json');
+  // tsx does not export `package.json` subpath, use `resolve` instead of `require.resolve`
+  const pkgPath = resolve.sync('tsx/package.json', { basedir: __dirname });
   const pkgContent = require(pkgPath);
-  return resolve(dirname(pkgPath), pkgContent.bin);
+  return join(dirname(pkgPath), pkgContent.bin);
 }
 
 export function getFileNameByPath(params: string) {
