@@ -147,9 +147,13 @@ function search(routes: any, keyword: string): SearchResultItem[] {
     if (result.find((r) => r.path === path)) return;
     result.push({ path, href });
   }
-
+  console.log(routes);
   Object.keys(routes).forEach((path) => {
-    if (path.split('/')[0] === 'components' || EXCLUDE_PATH.includes(path)) {
+    if (
+      path.split('/')[0] === 'components' ||
+      EXCLUDE_PATH.includes(path) ||
+      /.zh-CN$/.test(path)
+    ) {
       return;
     }
     if (path.toLowerCase().includes(keyword.toLowerCase())) {
