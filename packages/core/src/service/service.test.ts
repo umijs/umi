@@ -64,6 +64,14 @@ test('config umi-env local', async () => {
   });
 });
 
+xtest('config umi-env as short env name, should throw an error', async () => {
+  process.env.UMI_ENV = 'dev';
+  const service = buildService({ name: 'umi-env' });
+  await expect(service.run({ name: 'userConfig' })).rejects.toThrow(
+    /Do not configure/,
+  );
+});
+
 test('config umi-env-dot-env', async () => {
   const service = buildService({ name: 'umi-env-dot-env' });
   const userConfig = await service.run({ name: 'userConfig' });

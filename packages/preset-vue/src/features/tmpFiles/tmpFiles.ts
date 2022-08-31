@@ -50,11 +50,13 @@ export default (api: IApi) => {
         noPluginDir: true,
         path: 'core/EmptyRoute.tsx',
         content: `
-import { defineComponent } from 'vue';
+import { defineComponent, h, resolveComponent } from 'vue';
 
 export default defineComponent({
+  name: 'EmptyRoute',
   setup() {
-    return () => <router-view></router-view>;
+    const RouterView = resolveComponent('RouterView')
+    return () => h(RouterView, null);
   },
 });
         `,

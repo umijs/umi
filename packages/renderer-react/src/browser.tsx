@@ -195,7 +195,7 @@ const getBrowser = (
       (id: string, isFirst?: boolean) => {
         // Patched routes has to id
         const matchedRouteIds = (
-          matchRoutes(clientRoutes, id)?.map(
+          matchRoutes(clientRoutes, id, basename)?.map(
             // @ts-ignore
             (route) => route.route.id,
           ) || []

@@ -2,7 +2,7 @@ export default {
   base: '/foo',
   publicPath: '/foo/',
   deadCode: {},
-  https: {},
+  // https: {},
   headScripts: [`console.log('head script')`],
   npmClient: 'pnpm',
   crossorigin: {},
@@ -43,6 +43,19 @@ export default {
         {
           path: ':id',
           component: 'list/$id',
+        },
+      ],
+    },
+    {
+      path: '/users',
+      routes: [
+        {
+          path: '',
+          redirect: '/users/login',
+        },
+        {
+          path: 'login',
+          component: 'users/login',
         },
       ],
     },

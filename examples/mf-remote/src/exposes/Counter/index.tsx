@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default () => {
-  const [c, setC] = React.useState(10);
+export default (props: { init?: number }) => {
+  const [c, setC] = React.useState(props.init ?? 10);
 
   return (
     <div>

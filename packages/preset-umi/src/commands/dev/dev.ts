@@ -10,6 +10,7 @@ import {
 } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { basename, join } from 'path';
+import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { AutoUpdateSrcCodeCache } from '../../libs/folderCache/AutoUpdateSourceCodeCache';
 import { IApi } from '../../types';
@@ -257,6 +258,7 @@ PORT=8888 umi dev
       const debouncedPrintMemoryUsage = lodash.debounce(printMemoryUsage, 5000);
 
       let srcCodeCache: AutoUpdateSrcCodeCache | undefined;
+      let startBuildWorker: (deps: any[]) => Worker = (() => {}) as any;
 
       if (api.config.mfsu?.strategy === 'eager') {
         srcCodeCache = new AutoUpdateSrcCodeCache({
@@ -267,16 +269,36 @@ PORT=8888 umi dev
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });
+
+        let currentWorker: Worker | null = null;
+        const initWorker = () => {
+          currentWorker = new Worker(
+            join(__dirname, 'depBuildWorker/depBuildWorker.js'),
+          );
+          currentWorker.on('exit', () => {
+            initWorker();
+          });
+          return currentWorker;
+        };
+        currentWorker = initWorker();
+
+        startBuildWorker = () => {
+          return currentWorker!;
+        };
       }
 
+      const entry = await api.applyPlugins({
+        key: 'modifyEntry',
+        initialValue: {
+          umi: join(api.paths.absTmpPath, 'umi.ts'),
+        },
+      });
       const opts: any = {
         config: api.config,
         pkg: api.pkg,
         cwd: api.cwd,
         rootDir: process.cwd(),
-        entry: {
-          umi: join(api.paths.absTmpPath, 'umi.ts'),
-        },
+        entry,
         port: api.appData.port,
         host: api.appData.host,
         ip: api.appData.ip,
@@ -294,7 +316,7 @@ PORT=8888 umi dev
         afterMiddlewares: enableVite
           ? []
           : middlewares.concat([
-              createRouteMiddleware({ api }),
+              ...(api.config.mpa ? [] : [createRouteMiddleware({ api })]),
               // 放置 favicon 在 webpack middleware 之后，兼容 public 目录下有 favicon.ico 的场景
               // ref: https://github.com/umijs/umi/issues/8024
               faviconMiddleware,
@@ -330,6 +352,7 @@ PORT=8888 umi dev
           ...MFSU_EAGER_DEFAULT_INCLUDE,
           ...(api.config.mfsu?.include || []),
         ]),
+        startBuildWorker,
       };
       if (api.config.mf) {
         opts.mfsuServerBase = `${api.config.https ? 'https' : 'http'}://${

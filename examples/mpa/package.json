@@ -1,0 +1,11 @@
+{
+  "name": "@example/mpa",
+  "private": true,
+  "scripts": {
+    "dev": "umi dev",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "4.0.0-canary.20220831.1"
+  }
+}

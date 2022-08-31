@@ -2,6 +2,7 @@ import { existsSync, opendirSync } from 'fs';
 import { join } from 'path';
 import type { IApi } from 'umi';
 import { lodash, winPath } from 'umi/plugin-utils';
+import { toRemotesCodeString } from './utils/mfUtils';
 
 const { isEmpty } = lodash;
 
@@ -90,6 +91,16 @@ export default function mf(api: IApi) {
       content: `/* infer remote public */;
       __webpack_public_path__ = document.currentScript.src + '/../';`,
       path: mfSetupPathFileName,
+    });
+
+    const { remotes = [] } = api.config.mf;
+
+    api.writeTmpFile({
+      path: 'index.tsx',
+      context: {
+        remoteCodeString: toRemotesCodeString(remotes),
+      },
+      tplPath: join(__dirname, '../tpls/mf-runtime.ts.tpl'),
     });
 
     if (api.env === 'development' && api.config.mfsu) {

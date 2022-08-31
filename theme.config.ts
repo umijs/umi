@@ -72,6 +72,7 @@ export default {
             'guides/test',
             'guides/plugins',
             'guides/use-vue',
+            'guides/mpa',
           ],
         },
         {

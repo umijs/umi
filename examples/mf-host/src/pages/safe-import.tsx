@@ -1,8 +1,8 @@
+import { safeMfImport } from '@umijs/max';
 import React, { Suspense } from 'react';
 
 const RemoteCounter = React.lazy(() => {
-  // @ts-ignore
-  return import('remoteCounter/Counter');
+  return safeMfImport('remoteCounter/Counter', { defualt: null });
 });
 
 export default () => {
@@ -24,7 +24,6 @@ export default () => {
             setC(c + 1);
           }}
         >
-          {' '}
           Host Button
         </button>
 

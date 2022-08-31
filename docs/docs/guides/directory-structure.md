@@ -62,6 +62,8 @@ COMPRESS=none
 
 配置文件，包含 Umi 内置功能和插件的配置。
 
+配置文件的优先级见：[UMI_ENV](./env-variables#umi_env)
+
 ### config/config.ts
 
 > 与 `.umirc.ts` 文件功能相同，2 选 1 。`.umirc.ts` 文件优先级较高

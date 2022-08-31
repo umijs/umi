@@ -21,7 +21,11 @@ export class BuildDepPlugin {
     });
 
     compiler.hooks.beforeCompile.tap(PLUGIN_NAME, () => {
-      this.opts.beforeCompile?.();
+      if (this.opts.beforeCompile) {
+        return this.opts.beforeCompile?.();
+      } else {
+        return Promise.resolve();
+      }
     });
 
     compiler.hooks.done.tap(PLUGIN_NAME, (stats: Stats) => {

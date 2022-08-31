@@ -264,12 +264,23 @@ export class Service {
     this.pkgPath = pkgPath || join(this.cwd, 'package.json');
 
     const prefix = this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME;
+    const specifiedEnv = process.env[`${prefix}_ENV`.toUpperCase()];
+    // https://github.com/umijs/umi/pull/9105
+    // assert(
+    //   !specifiedEnv ||
+    //     (specifiedEnv && !Object.values(SHORT_ENV).includes(specifiedEnv)),
+    //   `${chalk.yellow(
+    //     Object.values(SHORT_ENV).join(', '),
+    //   )} config files will be auto loaded by env, Do not configure ${chalk.cyan(
+    //     `process.env.${prefix.toUpperCase()}_ENV`,
+    //   )} with these values`,
+    // );
     // get user config
     const configManager = new Config({
       cwd: this.cwd,
       env: this.env,
       defaultConfigFiles: this.opts.defaultConfigFiles,
-      specifiedEnv: process.env[`${prefix}_ENV`.toUpperCase()],
+      specifiedEnv,
     });
 
     this.configManager = configManager;
@@ -408,7 +419,8 @@ export class Service {
     });
     const defaultConfig = await this.applyPlugins({
       key: 'modifyDefaultConfig',
-      initialValue: this.configDefaults,
+      // 避免 modifyDefaultConfig 时修改 this.configDefaults
+      initialValue: lodash.cloneDeep(this.configDefaults),
     });
     this.config = lodash.merge(defaultConfig, config) as Record<string, any>;
 
