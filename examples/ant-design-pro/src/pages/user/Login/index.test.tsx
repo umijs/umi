@@ -21,7 +21,9 @@ test('should show login form', async () => {
     />,
   );
 
-  await waitTime(9000);
+  await act(async () => {
+    await waitTime(9000);
+  });
 
   expect(
     rootContainer.baseElement?.querySelector('.ant-pro-form-login-desc')
@@ -34,7 +36,9 @@ test('should show login form', async () => {
     ref.current?.push('/user/register');
   });
 
-  await waitTime(9000);
+  await act(async () => {
+    await waitTime(9000);
+  });
 
   expect(rootContainer.baseElement?.querySelector('h3')?.textContent).toBe(
     '注册',
