@@ -34,18 +34,13 @@ function getJSTransformer(
 /**
  * createConfig 的配置
  */
-export type CreateConfigType = {
+export function createConfig(opts?: {
   /**
    * 转化 js 的配置
    * @type {'esbuild' | 'swc' | 'ts-jest'}
    */
   jsTransformer?: JSTransformer;
-  jsTransformerConfig?: {
-    esBuildConfig?: {
-      jsxFactory?: string;
-      jsxFragment?: string;
-    };
-  };
+
   /**
    * 运行环境，node 和 浏览器
    * @type {'node' | 'browser'}
