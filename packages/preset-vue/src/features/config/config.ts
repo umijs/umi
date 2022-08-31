@@ -6,9 +6,6 @@ import { addAssetRules } from './assetRules';
 export function getConfig(config: Config, api: IApi) {
   config.module.noParse(/^(vue|vue-router|vuex|vuex-router-sync)$/);
 
-  // https://github.com/webpack/webpack/issues/14532#issuecomment-947525539
-  config.output.set('hashFunction', 'xxhash64');
-
   // https://github.com/webpack/webpack/issues/11467#issuecomment-691873586
   config.module
     .rule('esm')

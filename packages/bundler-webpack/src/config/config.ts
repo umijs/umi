@@ -121,7 +121,8 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
     .set(
       'assetModuleFilename',
       `${applyOpts.staticPathPrefix}[name].[hash:8][ext]`,
-    );
+    )
+    .set('hashFunction', 'xxhash64'); // https://github.com/webpack/webpack/issues/14532#issuecomment-947525539
 
   // resolve
   // prettier-ignore
