@@ -351,9 +351,6 @@ export interface IRuntimeConfig {
       content: `
 ${icons
   .map((icon) => {
-    if (process.env.NODE_ENV?.toUpperCase() === 'TEST') {
-      return `import ${icon} from '${antIconsPath}/lib/icons/${icon}';`;
-    }
     return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
   })
   .join('\n')}

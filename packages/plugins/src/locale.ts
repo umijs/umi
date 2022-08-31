@@ -83,11 +83,10 @@ export default (api: IApi) => {
       key: 'addAntdLocales',
       type: api.ApplyPluginsType.add,
       initialValue: [
-        `antd/${
-          api.config?.ssr || process.env.NODE_ENV?.toUpperCase() === 'TEST'
-            ? 'lib'
-            : 'es'
-        }/locale/${getAntdLocale(args.lang, args.country)}`,
+        `antd/${api.config?.ssr ? 'lib' : 'es'}/locale/${getAntdLocale(
+          args.lang,
+          args.country,
+        )}`,
       ],
       args,
     });
