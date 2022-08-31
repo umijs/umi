@@ -35,6 +35,7 @@ export default (api: IApi) => {
 
       const hasSrc = api.paths.absSrcPath.endsWith('src');
 
+      const importSource = api.appData.umi.importSource;
       const basicDeps = {
         jest: '^27',
         '@types/jest': '^27',
@@ -53,20 +54,15 @@ export default (api: IApi) => {
       h.addDevDeps(packageToInstall);
       h.addScript('test', 'jest');
 
-      if (res.willUseTLR) {
-        writeFileSync(
-          join(api.cwd, 'jest-setup.ts'),
-          `import '@testing-library/jest-dom';
-import { createPluginManager } from '@@/core/plugin';
+      const setupImports = res.willUseTLR
+        ? [
+            `import '@testing-library/jest-dom';`,
+            `import '${api.appData.umi.importSource}/test-setup'`,
+          ]
+        : [`import '${api.appData.umi.importSource}/test-setup'`];
 
-// init runtime plugin manager
-createPluginManager();
-          `.trimLeft(),
-        );
-        logger.info('Write jest-setup.ts');
-      }
-
-      const importSource = api.appData.umi.importSource;
+      writeFileSync(join(api.cwd, 'jest-setup.ts'), setupImports.join('\n'));
+      logger.info('Write jest-setup.ts');
 
       const collectCoverageFrom = hasSrc
         ? [
