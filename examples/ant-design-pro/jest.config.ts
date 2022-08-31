@@ -4,11 +4,6 @@ export default async () => {
   const config = await configUmiAlias({
     ...createConfig({
       target: 'browser',
-      jsTransformerConfig: {
-        esBuildConfig: {
-          jsxFactory: 'React.createElement',
-        },
-      },
     }),
   });
   return {
