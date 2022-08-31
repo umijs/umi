@@ -15,17 +15,18 @@
     "max": "bin/max.js"
   },
   "files": [
-    "dist",
     "bin",
-    "index.js",
+    "dist",
+    "eslint.js",
     "index.d.ts",
+    "index.js",
     "plugin-utils.d.ts",
     "plugin-utils.js",
     "prettier.js",
+    "stylelint.js",
+    "test-setup.js",
     "test.d.ts",
-    "test.js",
-    "eslint.js",
-    "stylelint.js"
+    "test.js"
   ],
   "scripts": {
     "build": "umi-scripts father build",
