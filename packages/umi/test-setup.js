@@ -1,3 +1,1 @@
-
-
 require('./dist/test-setup');
