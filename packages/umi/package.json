@@ -15,19 +15,20 @@
     "umi": "bin/umi.js"
   },
   "files": [
+    "bin",
+    "client",
     "dist",
+    "eslint.js",
     "index.d.ts",
     "index.esm.js",
-    "client",
-    "bin",
-    "plugin.js",
     "plugin-utils.d.ts",
     "plugin-utils.js",
+    "plugin.js",
     "prettier.js",
+    "stylelint.js",
+    "test-setup.js",
     "test.d.ts",
-    "test.js",
-    "eslint.js",
-    "stylelint.js"
+    "test.js"
   ],
   "scripts": {
     "build": "umi-scripts father build",
