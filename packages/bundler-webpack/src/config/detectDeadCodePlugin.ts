@@ -2,7 +2,7 @@ import { InnerCallback } from '@umijs/bundler-utils/compiled/tapable';
 import { Compilation, Compiler } from '@umijs/bundler-webpack/compiled/webpack';
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import { DeadCodeParams, Env, IConfig } from '../types';
-import detectDeadcode, { disabledFolders, Options } from './detectDeadCode';
+import detectDeadcode, { Options } from './detectDeadCode';
 
 interface IOpts {
   userConfig: IConfig;
@@ -11,7 +11,7 @@ interface IOpts {
 }
 
 const defaultOptions: Options = {
-  patterns: [`!(${disabledFolders.join('|')})/**/*.*`],
+  patterns: [],
   exclude: [],
   failOnHint: false,
   detectUnusedFiles: true,
