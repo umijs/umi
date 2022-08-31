@@ -666,6 +666,13 @@ links: [{ href: '/foo.css', rel: 'preload' }],
 
 注意：只在 build 时生成。
 
+## mdx
+
+- 类型：`{ loader: string; loaderOptions: Object }`
+- 默认值：`{}`
+
+mdx loader 配置 loader 配置路径，[loaderOptions](https://github.com/mdx-js/mdx/blob/v1/packages/mdx/index.js#L12) 配置参数
+
 ## metas
 
 - 类型：`Meta[]`
