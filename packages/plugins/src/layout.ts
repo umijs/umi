@@ -484,12 +484,12 @@ export function getRightRenderContent (opts: {
       path: 'Layout.less',
       content: `
 ${
+  // antd@5里面没有这个样式了
   antdVersion.startsWith('5')
     ? ''
     : "@import '~antd/es/style/themes/default.less';"
 }
-@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
-@media screen and (max-width: @screen-xs) {
+@media screen and (max-width: 480px) {
   // 在小屏幕的时候可以有更好的体验
   .umi-plugin-layout-container {
     width: 100% !important;
@@ -520,14 +520,14 @@ ${
     cursor: pointer;
     transition: all 0.3s;
     > i {
-      color: @text-color;
+      color: rgba(255, 255, 255, 0.85);
       vertical-align: middle;
     }
     &:hover {
-      background: @pro-header-hover-bg;
+      background: rgba(0, 0, 0, 0.025);
     }
     &:global(.opened) {
-      background: @pro-header-hover-bg;
+      background: rgba(0, 0, 0, 0.025);
     }
   }
   .umi-plugin-layout-search {
