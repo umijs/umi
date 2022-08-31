@@ -327,7 +327,7 @@ cssLoaderModules: {
 
 ## deadCode
 
-- 类型：`{}`
+- 类型：`{ patterns?: string[]; exclude?: string[]; failOnHint?: boolean; detectUnusedFiles?: boolean; detectUnusedExport?: boolean; context?: string }`
 - 默认值：`false`
 
 检测未使用的文件和导出，仅在 build 阶段开启。
@@ -338,15 +338,22 @@ cssLoaderModules: {
 deadCode: {}
 ```
 
-然后执行 build，如有发现，会有类似信息抛出。
+然后执行 build，如有发现问题，会打印警告：
 
 ```
-Warning: There are 3 unused files:
- 1. /mock/a.ts
- 2. /mock/b.ts
- 3. /pages/index.module.less
+Warning: There are 1 unused files:
+ 1. /pages/index.module.less
  Please be careful if you want to remove them (¬º-°)¬.
 ```
+
+可配置项：
+
+ - `patterns` : 识别代码的范围，如 `['src/pages/**']`
+ - `exclude` : 排除检测的范围，如 `['src/pages/utils/**']`
+ - `failOnHint` : 检测失败是否终止进程，默认 `false` 不终止
+ - `detectUnusedFiles` : 是否检测未使用的文件，默认 `true` 检测
+ - `detectUnusedExport` : 是否检测未使用的导出，默认 `true` 检测
+ - `context` : 匹配开始的目录，默认为当前项目根目录
 
 ## define
 
@@ -658,6 +665,13 @@ links: [{ href: '/foo.css', rel: 'preload' }],
 关于参数。`fileName` 是生成的文件名，默认是 `asset-manifest.json`；`basePath` 会给所有文件路径加上前缀。
 
 注意：只在 build 时生成。
+
+## mdx
+
+- 类型：`{ loader: string; loaderOptions: Object }`
+- 默认值：`{}`
+
+mdx loader 配置 loader 配置路径，[loaderOptions](https://github.com/mdx-js/mdx/blob/v1/packages/mdx/index.js#L12) 配置参数
 
 ## metas
 

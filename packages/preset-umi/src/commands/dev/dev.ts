@@ -10,6 +10,7 @@ import {
 } from '@umijs/utils';
 import { readFileSync } from 'fs';
 import { basename, join } from 'path';
+import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { AutoUpdateSrcCodeCache } from '../../libs/folderCache/AutoUpdateSourceCodeCache';
 import { IApi } from '../../types';
@@ -257,6 +258,7 @@ PORT=8888 umi dev
       const debouncedPrintMemoryUsage = lodash.debounce(printMemoryUsage, 5000);
 
       let srcCodeCache: AutoUpdateSrcCodeCache | undefined;
+      let startBuildWorker: (deps: any[]) => Worker = (() => {}) as any;
 
       if (api.config.mfsu?.strategy === 'eager') {
         srcCodeCache = new AutoUpdateSrcCodeCache({
@@ -267,6 +269,22 @@ PORT=8888 umi dev
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });
+
+        let currentWorker: Worker | null = null;
+        const initWorker = () => {
+          currentWorker = new Worker(
+            join(__dirname, 'depBuildWorker/depBuildWorker.js'),
+          );
+          currentWorker.on('exit', () => {
+            initWorker();
+          });
+          return currentWorker;
+        };
+        currentWorker = initWorker();
+
+        startBuildWorker = () => {
+          return currentWorker!;
+        };
       }
 
       const entry = await api.applyPlugins({
@@ -334,6 +352,7 @@ PORT=8888 umi dev
           ...MFSU_EAGER_DEFAULT_INCLUDE,
           ...(api.config.mfsu?.include || []),
         ]),
+        startBuildWorker,
       };
       if (api.config.mf) {
         opts.mfsuServerBase = `${api.config.https ? 'https' : 'http'}://${

@@ -2,6 +2,7 @@ import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
 import { logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
+import type { Worker } from 'worker_threads';
 import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
@@ -32,6 +33,7 @@ type IOpts = {
   mfsuInclude?: string[];
   mfsuServerBase?: string;
   srcCodeCache?: any;
+  startBuildWorker?: (deps: any[]) => Worker;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
@@ -88,6 +90,7 @@ export async function dev(opts: IOpts) {
         });
       },
       serverBase: opts.mfsuServerBase,
+      startBuildWorker: opts.startBuildWorker!,
     });
   }
 

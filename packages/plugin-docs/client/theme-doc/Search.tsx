@@ -140,6 +140,7 @@ function search(routes: any, keyword: string): SearchResultItem[] {
   if (!keyword) return [];
 
   const result: SearchResultItem[] = [];
+  const EXCLUDE_PATH = ['README', 'docs-layout'];
 
   function addResult(newResult: { path: string; href: string }) {
     const { path, href } = newResult;
@@ -147,7 +148,14 @@ function search(routes: any, keyword: string): SearchResultItem[] {
     result.push({ path, href });
   }
 
-  Object.keys(routes).map((path) => {
+  Object.keys(routes).forEach((path) => {
+    if (
+      path.split('/')[0] === 'components' ||
+      EXCLUDE_PATH.includes(path) ||
+      /.zh-CN$/.test(path)
+    ) {
+      return;
+    }
     if (path.toLowerCase().includes(keyword.toLowerCase())) {
       addResult({
         path: path.split('/').slice(1).join(' > '),
