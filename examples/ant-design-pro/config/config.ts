@@ -71,37 +71,35 @@ export default defineConfig({
         },
       ],
     },
-    NODE_ENV?.toUpperCase() !== 'TEST'
-      ? {
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      icon: 'dashboard',
+      routes: [
+        {
           path: '/dashboard',
-          name: 'dashboard',
-          icon: 'dashboard',
-          routes: [
-            {
-              path: '/dashboard',
-              redirect: '/dashboard/analysis',
-            },
-            {
-              name: 'analysis',
-              icon: 'smile',
-              path: '/dashboard/analysis',
-              component: './dashboard/analysis',
-            },
-            {
-              name: 'monitor',
-              icon: 'smile',
-              path: '/dashboard/monitor',
-              component: './dashboard/monitor',
-            },
-            {
-              name: 'workplace',
-              icon: 'smile',
-              path: '/dashboard/workplace',
-              component: './dashboard/workplace',
-            },
-          ],
-        }
-      : undefined,
+          redirect: '/dashboard/analysis',
+        },
+        {
+          name: 'analysis',
+          icon: 'smile',
+          path: '/dashboard/analysis',
+          component: './dashboard/analysis',
+        },
+        {
+          name: 'monitor',
+          icon: 'smile',
+          path: '/dashboard/monitor',
+          component: './dashboard/monitor',
+        },
+        {
+          name: 'workplace',
+          icon: 'smile',
+          path: '/dashboard/workplace',
+          component: './dashboard/workplace',
+        },
+      ],
+    },
     {
       path: '/form',
       icon: 'form',
@@ -287,43 +285,41 @@ export default defineConfig({
         },
       ],
     },
-    NODE_ENV?.toUpperCase() !== 'TEST'
-      ? {
-          name: 'editor',
-          icon: 'highlight',
+    {
+      name: 'editor',
+      icon: 'highlight',
+      path: '/editor',
+      routes: [
+        {
           path: '/editor',
-          routes: [
-            {
-              path: '/editor',
-              redirect: '/editor/flow',
-            },
-            {
-              name: 'flow',
-              icon: 'smile',
-              path: '/editor/flow',
-              component: './editor/flow',
-            },
-            {
-              name: 'mind',
-              icon: 'smile',
-              path: '/editor/mind',
-              component: './editor/mind',
-            },
-            {
-              name: 'koni',
-              icon: 'smile',
-              path: '/editor/koni',
-              component: './editor/koni',
-            },
-            {
-              name: 'monaco-editor',
-              icon: 'smile',
-              path: '/editor/monaco-editor',
-              component: './editor/monaco-editor',
-            },
-          ],
-        }
-      : undefined,
+          redirect: '/editor/flow',
+        },
+        {
+          name: 'flow',
+          icon: 'smile',
+          path: '/editor/flow',
+          component: './editor/flow',
+        },
+        {
+          name: 'mind',
+          icon: 'smile',
+          path: '/editor/mind',
+          component: './editor/mind',
+        },
+        {
+          name: 'koni',
+          icon: 'smile',
+          path: '/editor/koni',
+          component: './editor/koni',
+        },
+        {
+          name: 'monaco-editor',
+          icon: 'smile',
+          path: '/editor/monaco-editor',
+          component: './editor/monaco-editor',
+        },
+      ],
+    },
     {
       path: '/',
       redirect: '/dashboard/analysis',
