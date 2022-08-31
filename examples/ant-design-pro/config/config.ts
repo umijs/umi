@@ -3,7 +3,8 @@ import MonacoEditorWebpackPlugin from 'monaco-editor-webpack-plugin';
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-const { REACT_APP_ENV, NODE_ENV } = process.env;
+const { REACT_APP_ENV } = process.env;
+
 export default defineConfig({
   hash: true,
   model: {},
@@ -327,7 +328,7 @@ export default defineConfig({
     {
       component: '404',
     },
-  ].filter(Boolean),
+  ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'root-entry-name': 'variable',
