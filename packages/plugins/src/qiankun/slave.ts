@@ -7,7 +7,7 @@ import {
   createProxyMiddleware,
   // @ts-ignore 现在打包好的 http-proxy-middleware 有导出 responseInterceptor，但没有导出声明
   responseInterceptor,
-} from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
+} from '@umijs/bundler-utils/compiled/http-proxy-middleware';
 import { cheerio } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync } from 'fs';
