@@ -15,6 +15,7 @@ export default (api: IApi) => {
     config: {
       schema(Joi) {
         return Joi.object({
+          template: Joi.string(),
           getConfigFromEntryFile: Joi.boolean(),
         });
       },
@@ -100,6 +101,8 @@ ${renderer}
           minify: false,
           template: entry.template
             ? resolve(api.cwd, entry.template)
+            : api.config.mpa.template
+            ? resolve(api.cwd, api.config.mpa.template)
             : join(api.paths.absTmpPath, 'mpa/template.html'),
           // TODO: support html hmr
           templateParameters: entry,
