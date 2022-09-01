@@ -1,6 +1,5 @@
 import type { Config as SwcConfig } from '@swc/core';
-import type { HttpsServerOptions } from '@umijs/bundler-utils';
-import type { Options as HPMOptions } from '../compiled/http-proxy-middleware';
+import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
 import { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
 
@@ -50,15 +49,6 @@ export interface DeadCodeParams {
   detectUnusedFiles?: boolean;
   detectUnusedExport?: boolean;
   context?: string;
-}
-
-type HPMFnArgs = Parameters<NonNullable<HPMOptions['onProxyReq']>>;
-export interface ProxyOptions extends HPMOptions {
-  target?: string;
-  context?: string | string[];
-  bypass?: (
-    ...args: [HPMFnArgs[1], HPMFnArgs[2], HPMFnArgs[3]]
-  ) => string | boolean | null | void;
 }
 
 export interface IConfig {
