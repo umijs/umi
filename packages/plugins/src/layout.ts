@@ -17,6 +17,7 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+
   api.describe({
     key: 'layout',
     config: {
@@ -32,7 +33,7 @@ export default (api: IApi) => {
   });
 
   /**
-   * 优先去找 '@alipay/tech-ui'，保证稳定性
+   * 优先去找 '@alipay/tech-ui'，内部项目优先
    */
   const depList = [
     '@alipay/tech-ui',
@@ -49,7 +50,7 @@ export default (api: IApi) => {
   });
 
   const getPkgPath = () => {
-    // 如果 layout 和 techui 至少有一个在，找到他们的地址
+    // 如果techui， components 和 layout 至少有一个在，找到他们的地址
     if (
       pkgHasDep &&
       existsSync(join(api.cwd, 'node_modules', pkgHasDep, 'package.json'))
