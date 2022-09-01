@@ -31,7 +31,6 @@ type IOpts = {
   entry: Record<string, string>;
   mfsuStrategy?: 'eager' | 'normal';
   mfsuInclude?: string[];
-  mfsuServerBase?: string;
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
@@ -89,7 +88,6 @@ export async function dev(opts: IOpts) {
           publicPath: opts.config.publicPath,
         });
       },
-      serverBase: opts.mfsuServerBase,
       startBuildWorker: opts.startBuildWorker!,
     });
   }

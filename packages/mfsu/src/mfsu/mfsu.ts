@@ -58,7 +58,6 @@ interface IOpts {
   shared?: any;
   remoteName?: string;
   remoteAliases?: string[];
-  serverBase?: string;
   startBuildWorker: (dep: any[]) => Worker;
 }
 
@@ -241,9 +240,7 @@ promise new Promise(resolve => {
   document.head.appendChild(script);
 })
                 `.trimLeft()
-              : `${mfName}@${
-                  this.opts.serverBase || ''
-                }${publicPath}${REMOTE_FILE_FULL}`, // mfsu 的入口文件会被在其他的站点上被引用, 所以需要显式的指明 serverBase
+              : `${mfName}@${publicPath}${REMOTE_FILE_FULL}`, // mfsu 的入口文件如果需要在其他的站点上被引用,需要显示的指定publicPath,以保证入口文件的正确访问
           },
         }),
         new BuildDepPlugin(this.strategy.getBuildDepPlugConfig()),
