@@ -81,7 +81,7 @@
       "majorVersion": 4
     },
     {
-      "text": "如果你需要使用 Pritter, %%frameworkCliName%% g prettier 就可以一键完成配置",
+      "text": "如果你需要使用 Prettier, %%frameworkCliName%% g prettier 就可以一键完成配置",
       "url": "https://umijs.org/docs/guides/generator#prettier-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
       "majorVersion": 4
     },
