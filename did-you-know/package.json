@@ -69,6 +69,48 @@
       "text": "如果你有 MPA（多页应用）需求，可尝试新出的 mpa 配置项",
       "url": "https://umijs.org/docs/guides/mpa",
       "majorVersion": 4
+    },
+    {
+      "text": "如果你需要使用 Jest 来测试 Umi 项目, %%frameworkCliName%% g jest 就可以一键完成配置",
+      "url": "https://umijs.org/docs/guides/generator#jest-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "majorVersion": 4
+    },
+    {
+      "text": "如果你需要使用 Tailwind CSS, %%frameworkCliName%% g tailwindcss 就可以一键完成配置",
+      "url": "https://umijs.org/docs/guides/generator#tailwind-css-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "majorVersion": 4
+    },
+    {
+      "text": "如果你需要使用 Pritter, %%frameworkCliName%% g prettier 就可以一键完成配置",
+      "url": "https://umijs.org/docs/guides/generator#prettier-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "majorVersion": 4
+    },
+    {
+      "text": "如果你需要使用 DVA 来作为状态管理库, %%frameworkCliName%% g dva 就可以一键完成配置",
+      "url": "https://umijs.org/docs/guides/generator#prettier-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "majorVersion": 4
+    },
+    {
+      "text": "%%frameworkCliName%% g page 可以快速生成页面模板",
+      "url": "https://umijs.org/docs/guides/generator#%E9%A1%B5%E9%9D%A2%E7%94%9F%E6%88%90%E5%99%A8",
+      "majorVersion": 4
+    },
+    {
+      "text": "%%frameworkCliName%% g component 可以快速生成组件模板",
+      "url": "https://umijs.org/docs/guides/generator#%E7%BB%84%E4%BB%B6%E7%94%9F%E6%88%90%E5%99%A8",
+      "majorVersion": 4
+    },
+    {
+      "text": "HMR=none umi dev 可以关闭 Umi 开发服务器的模块热替换功能",
+      "majorVersion": 4
+    },
+    {
+      "text": "PORT=9000 umi dev 可以指定 Umi 开发服务器的端口",
+      "majorVersion": 4
+    },
+    {
+      "text": "COMPRESS=none umi build 可以关闭项目构建时的代码压缩功能, 方便调试项目的构建产物",
+      "majorVersion": 4
     }
   ]
 }
