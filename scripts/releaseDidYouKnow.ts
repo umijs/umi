@@ -12,8 +12,8 @@ function assert(v: unknown, message: string) {
 
 (async () => {
   const cwd = process.cwd();
-  const pkg = '@umijs/codemod';
-  const dirName = 'codemod';
+  const pkg = '@umijs/did-you-know';
+  const dirName = 'did-you-know';
   const { branch } = getGitRepoInfo();
   logger.info(`branch: ${branch}`);
   logger.info(`cwd: ${cwd}`);
@@ -46,7 +46,7 @@ function assert(v: unknown, message: string) {
   logger.info(
     `current version: ${require(join(pkgPath, 'package.json')).version}`,
   );
-  await $`npm version patch`;
+  await $`cd ${pkgPath} && npm version patch`;
   const version = require(path.join(pkgPath, 'package.json'));
 
   // npm publish
