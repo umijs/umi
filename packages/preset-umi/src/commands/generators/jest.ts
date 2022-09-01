@@ -35,6 +35,7 @@ export default (api: IApi) => {
 
       const hasSrc = api.paths.absSrcPath.endsWith('src');
 
+      const importSource = api.appData.umi.importSource;
       const basicDeps = {
         jest: '^27',
         '@types/jest': '^27',
@@ -53,16 +54,15 @@ export default (api: IApi) => {
       h.addDevDeps(packageToInstall);
       h.addScript('test', 'jest');
 
-      if (res.willUseTLR) {
-        writeFileSync(
-          join(api.cwd, 'jest-setup.ts'),
-          `import '@testing-library/jest-dom';
-          `.trimLeft(),
-        );
-        logger.info('Write jest-setup.ts');
-      }
+      const setupImports = res.willUseTLR
+        ? [
+            `import '@testing-library/jest-dom';`,
+            `import '${api.appData.umi.importSource}/test-setup'`,
+          ]
+        : [`import '${api.appData.umi.importSource}/test-setup'`];
 
-      const importSource = api.appData.umi.importSource;
+      writeFileSync(join(api.cwd, 'jest-setup.ts'), setupImports.join('\n'));
+      logger.info('Write jest-setup.ts');
 
       const collectCoverageFrom = hasSrc
         ? [
@@ -99,9 +99,9 @@ export default async () => {
       jsTransformerOpts: { jsx: 'automatic' },
     }),
     ${res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''}
-    collectCoverageFrom: [${collectCoverageFrom
-      .map((v) => `'${v}'`)
-      .join(', ')}],
+    collectCoverageFrom: [
+${collectCoverageFrom.map((v) => `      '${v}'`).join(',\n')}
+    ],
     // if you require some es-module npm package, please uncomment below line and insert your package name
     // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
   })) as Config.InitialOptions;
