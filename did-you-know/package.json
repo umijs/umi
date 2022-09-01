@@ -111,6 +111,24 @@
     {
       "text": "COMPRESS=none umi build 可以关闭项目构建时的代码压缩功能, 方便调试项目的构建产物",
       "majorVersion": 4
+    },
+    {
+      "text": "编写 src/loading.(jsx|tsx) 可以自定义页面的加载动画",
+      "majorVersion": 4
+    },
+    {
+      "text": "你知道可以通过 UMI_ENV 定义多个环境的配置吗",
+      "url": "https://umijs.org/docs/guides/env-variables#umi_env",
+      "majorVersion": 4
+    },
+    {
+      "text": "想快速修改 html 模板、DIY 项目？试试编写项目级插件",
+      "url": "https://umijs.org/docs/guides/directory-structure#plugints",
+      "majorVersion": 4
+    },
+    {
+      "text": "COMPRESS=1 umi build 可以分析产物的源码构成",
+      "majorVersion": 4
     }
   ]
 }
