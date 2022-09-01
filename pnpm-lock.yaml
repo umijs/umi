@@ -1052,7 +1052,6 @@ importers:
       cssnano: 5.1.7
       es5-imcompatible-versions: ^0.1.73
       fork-ts-checker-webpack-plugin: 7.2.4
-      http-proxy-middleware: 2.0.4
       jest-worker: 27.5.1
       less-loader: 10.2.0
       mini-css-extract-plugin: 2.6.0
@@ -1113,7 +1112,6 @@ importers:
       copy-webpack-plugin: 10.2.4_webpack@5.72.1
       css-minimizer-webpack-plugin: 4.0.0_r73e6ujzzyvc4efitbllm4djpa
       cssnano: 5.1.7_postcss@8.4.14
-      http-proxy-middleware: 2.0.4
       less-loader: 10.2.0_webpack@5.72.1
       mini-css-extract-plugin: 2.6.0_webpack@5.72.1
       postcss-flexbugs-fixes: 5.0.2_postcss@8.4.14
