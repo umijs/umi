@@ -263,12 +263,14 @@ Object.keys(exported).forEach(function (key) {
           'utf-8',
         );
       }
-      const { name, author, license, types, typing, typings } = JSON.parse(
-        fs.readFileSync(path.join(pkgRoot, 'package.json'), 'utf-8'),
-      );
+      const { name, author, license, types, typing, typings, version } =
+        JSON.parse(
+          fs.readFileSync(path.join(pkgRoot, 'package.json'), 'utf-8'),
+        );
       fs.writeJSONSync(path.join(target, 'package.json'), {
         ...{},
         ...{ name },
+        ...{ version },
         ...(author ? { author } : undefined),
         ...(license ? { license } : undefined),
         ...(types ? { types } : undefined),
