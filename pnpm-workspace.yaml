@@ -2,4 +2,5 @@ packages:
   - 'packages/*'
   - 'examples/*'
   - 'codemod'
+  - 'did-you-know'
   - 'scripts'
