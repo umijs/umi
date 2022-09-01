@@ -11,10 +11,13 @@ mpa 为内置功能，通过配置即可开启。
 ```js
 export default {
   mpa: {
+    template: string,
     configFromEntryFile: Boolean,
   },
 }
 ```
+
+配置项中。`template` 表示默认模板；`configFromEntryFile` 表示从入口文件中读取页面配置，详见下方介绍。
 
 ## 约定的入口文件
 
@@ -82,3 +85,18 @@ export default () => <div>Hello</div>;
 $ pnpm i react@17 react-dom@17
 ```
 
+## 模板
+
+默认模板如下，
+
+```html
+<!DOCTYPE html>
+<html>
+<head><title><%= title %></title></head>
+<body>
+<div id="<%= mountElementId %>"></div>
+</body>
+</html>
+```
+
+如果自定义模板，请确保包含 `<%= title %>` 和 `<%= mountElementId %>`。
