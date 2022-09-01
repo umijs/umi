@@ -47,7 +47,7 @@ function assert(v: unknown, message: string) {
     `current version: ${require(join(pkgPath, 'package.json')).version}`,
   );
   await $`cd ${pkgPath} && npm version patch`;
-  const version = require(path.join(pkgPath, 'package.json'));
+  const version = require(path.join(pkgPath, 'package.json')).version;
 
   // npm publish
   logger.event('npm publish');
@@ -63,4 +63,8 @@ function assert(v: unknown, message: string) {
   // git push
   logger.event('git push');
   await $`git push origin ${branch}`;
+
+  // tnpm sync
+  logger.event('tnpm sync');
+  await $`tnpm sync ${pkg}`;
 })();
