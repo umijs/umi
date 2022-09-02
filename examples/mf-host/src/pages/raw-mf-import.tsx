@@ -3,7 +3,7 @@ import React, { Suspense } from 'react';
 
 const RemoteCounter = React.lazy(() => {
   return rawMfImport({
-    entry: 'http://localhost:8001/remote.js',
+    entry: 'http://localhost:9000/remote.js',
     moduleName: 'Counter',
     remoteName: 'remoteCounter',
   });
