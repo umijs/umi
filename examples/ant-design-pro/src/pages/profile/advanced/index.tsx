@@ -9,7 +9,7 @@ import {
   GridContent,
   PageContainer,
   RouteContext,
-} from '@ant-design/pro-layout';
+} from '@ant-design/pro-components';
 import {
   Badge,
   Button,

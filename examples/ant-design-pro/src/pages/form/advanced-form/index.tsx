@@ -1,13 +1,15 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
-import ProForm, {
+import type { ProColumnType } from '@ant-design/pro-components';
+import {
+  EditableProTable,
+  FooterToolbar,
+  PageContainer,
+  ProForm,
   ProFormDateRangePicker,
   ProFormSelect,
   ProFormText,
   ProFormTimePicker,
-} from '@ant-design/pro-form';
-import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
-import type { ProColumnType } from '@ant-design/pro-table';
-import { EditableProTable } from '@ant-design/pro-table';
+} from '@ant-design/pro-components';
 import { Card, Col, message, Popover, Row } from 'antd';
 import type { FC } from 'react';
 import { useState } from 'react';

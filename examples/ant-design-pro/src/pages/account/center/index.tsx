@@ -4,7 +4,7 @@ import {
   HomeOutlined,
   PlusOutlined,
 } from '@ant-design/icons';
-import { GridContent } from '@ant-design/pro-layout';
+import { GridContent } from '@ant-design/pro-components';
 import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { RouteChildrenProps } from 'react-router';

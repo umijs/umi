@@ -1,10 +1,11 @@
-import ProForm, {
+import {
+  PageContainer,
+  ProForm,
   ProFormDigit,
   ProFormSelect,
   ProFormText,
   StepsForm,
-} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+} from '@ant-design/pro-components';
 import type { FormInstance } from 'antd';
 import {
   Alert,
