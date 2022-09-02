@@ -9,7 +9,7 @@ describe('safe MF load', () => {
   );
 
   it('supprt raw mf import', () => {
-    cy.intercept('GET', 'http://localhost:8001/remote.js').as(
+    cy.intercept('GET', 'http://localhost:9000/remote.js').as(
       'specifiedRemote',
     );
 
@@ -21,7 +21,7 @@ describe('safe MF load', () => {
   });
 
   it('supprt raw mf component', () => {
-    cy.intercept('GET', 'http://localhost:8001/remote.js').as(
+    cy.intercept('GET', 'http://localhost:9000/remote.js').as(
       'specifiedRemote',
     );
 
