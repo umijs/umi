@@ -2,15 +2,33 @@
 
 {{#each commitGroups}}
 
+### What's Changed
+
 {{#if title}}
-### {{title}}
+#### {{title}}
 
 {{/if}}
 {{#each commits}}
 {{> commit root=@root}}
+
 {{/each}}
+
+{{#if contributors}}
+## New Contributors
+{{/if}}
 
 {{/each}}
 {{> footer}}
 
-
+**Full Changelog**: {{#if @root.repository~}}
+    {{~#if @root.host}}
+      {{~@root.host}}/
+    {{~/if}}
+    {{~#if @root.owner}}
+      {{~@root.owner}}/
+    {{~/if}}
+    {{~@root.repository}}
+  {{~else}}
+    {{~@root.repoUrl}}
+  {{~/if~}}
+  /compare/{{previousTag}}...{{currentTag}}

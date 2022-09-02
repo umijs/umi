@@ -22,7 +22,7 @@ module.exports = Q.all([
     return writerOpts
   })
 
-function getWriterOpts () {
+function getWriterOpts() {
   return {
     transform: (commit, context) => {
       let discard = true
@@ -34,11 +34,11 @@ function getWriterOpts () {
       })
 
       if (commit.type === 'feat') {
-        commit.type = 'Features'
+        commit.type = '新增功能'
       } else if (commit.type === 'fix') {
-        commit.type = 'Bug Fixes'
+        commit.type = '修复功能'
       } else if (commit.type === 'perf') {
-        commit.type = 'Performance Improvements'
+        commit.type = '优化功能'
       } else if (commit.type === 'revert' || commit.revert) {
         commit.type = 'Reverts'
       } else if (discard) {
