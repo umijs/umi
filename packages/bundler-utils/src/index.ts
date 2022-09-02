@@ -72,3 +72,5 @@ function prettyPrintEsBuildErrors(
     }
   }
 }
+
+export * from './proxy';

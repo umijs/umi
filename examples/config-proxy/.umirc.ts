@@ -3,16 +3,17 @@ export default {
   // proxy: {
   //   '/api': {
   //     target: 'https://jsonplaceholder.typicode.com/',
-  //     'changeOrigin': true,
-  //     'pathRewrite': { '^/api' : '' },
+  //     changeOrigin: true,
+  //     pathRewrite: { '^/api': '' },
   //   },
   // },
+  // vite: {},
   // 2
   // proxy: {
   //   context: ['/api', '/foooo'],
   //   target: 'https://jsonplaceholder.typicode.com/',
-  //   'changeOrigin': true,
-  //   'pathRewrite': { '^/api' : '' },
+  //   changeOrigin: true,
+  //   pathRewrite: { '^/api': '' },
   // },
   // 3
   proxy: [
