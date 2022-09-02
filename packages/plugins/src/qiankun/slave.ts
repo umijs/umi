@@ -285,7 +285,7 @@ export { connectMaster } from './connectMaster';
     return async (req: Request, res: Response, next: NextFunction) => {
       const qiankunConfig = api.config.qiankun || {};
       const masterEntry = qiankunConfig.slave?.masterEntry;
-      const isMasterApp = qiankunConfig.master.enable;
+      const isMasterApp = qiankunConfig.master?.enable;
 
       const { proxyToMasterEnabled } = ((await api.applyPlugins({
         key: 'shouldProxyToMaster',
