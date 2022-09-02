@@ -1,6 +1,6 @@
 import { useRequest } from '@@/plugin-request';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { GridContent } from '@ant-design/pro-layout';
+import { GridContent } from '@ant-design/pro-components';
 import { Col, Dropdown, Menu, Row } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
 import type { RadioChangeEvent } from 'antd/es/radio';

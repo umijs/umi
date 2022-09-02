@@ -1,4 +1,4 @@
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { Col, Row } from 'antd';
 import GGEditor, { Flow } from 'gg-editor';
 import { FlowContextMenu } from './components/EditorContextMenu';

@@ -5,7 +5,7 @@ import {
   ProFormText,
   ProFormTextArea,
   StepsForm,
-} from '@ant-design/pro-form';
+} from '@ant-design/pro-components';
 import { Modal } from 'antd';
 import React from 'react';
 import type { TableListItem } from '../data';

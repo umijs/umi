@@ -32,7 +32,7 @@ export default defineConfig({
     baseNavigator: true,
   },
   // dynamicImport: {
-  //   loading: '@ant-design/pro-layout/es/PageLoading',
+  //   loading: '@ant-design/pro-components/es/PageLoading',
   // },
   targets: {
     // TODO: vite mode don't support ie 11

@@ -1,6 +1,6 @@
 import { useRequest } from '@@/plugin-request';
 import { PlusOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, List, Typography } from 'antd';
 import type { CardListItemDataType } from './data.d';
 import { queryFakeList } from './service';

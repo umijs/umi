@@ -17,6 +17,7 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+
   api.describe({
     key: 'layout',
     config: {
@@ -32,9 +33,13 @@ export default (api: IApi) => {
   });
 
   /**
-   * 优先去找 '@alipay/tech-ui'，保证稳定性
+   * 优先去找 '@alipay/tech-ui'，内部项目优先
    */
-  const depList = ['@alipay/tech-ui', '@ant-design/pro-layout'];
+  const depList = [
+    '@alipay/tech-ui',
+    '@ant-design/pro-components',
+    '@ant-design/pro-layout',
+  ];
 
   const pkgHasDep = depList.find((dep) => {
     const { pkg } = api;
@@ -45,7 +50,7 @@ export default (api: IApi) => {
   });
 
   const getPkgPath = () => {
-    // 如果 layout 和 techui 至少有一个在，找到他们的地址
+    // 如果techui， components 和 layout 至少有一个在，找到他们的地址
     if (
       pkgHasDep &&
       existsSync(join(api.cwd, 'node_modules', pkgHasDep, 'package.json'))
@@ -61,8 +66,8 @@ export default (api: IApi) => {
     ) {
       return join(cwd, 'node_modules', pkgHasDep);
     }
-    // 如果项目中没有去找插件以来的
-    return dirname(require.resolve('@ant-design/pro-layout/package.json'));
+    // 如果项目中没有去找插件依赖的
+    return dirname(require.resolve('@ant-design/pro-components/package.json'));
   };
 
   const pkgPath = winPath(getPkgPath());
@@ -77,10 +82,12 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
-    // 只在没有自行依赖 @ant-design/pro-layout 或 @alipay/tech-ui 时
-    // 才使用插件中提供的 @ant-design/pro-layout
+    // 只在没有自行依赖 @ant-design/pro-components 或 @alipay/tech-ui 时
+    // 才使用插件中提供的 @ant-design/pro-components
     if (!pkgHasDep) {
-      memo.alias['@ant-design/pro-layout'] = pkgPath;
+      // 寻找到什么就用什么，在 '@alipay/tech-ui','@ant-design/pro-components','@ant-design/pro-layout' 中寻找
+      const name = require(`${pkgPath}/package.json`).name;
+      memo.alias[name] = pkgPath;
     }
     return memo;
   });
@@ -96,7 +103,7 @@ import type { IRoute } from 'umi';
 import React, { useMemo } from 'react';
 import {
   ProLayout,
-} from "${pkgPath || '@ant-design/pro-layout'}";
+} from "${pkgPath || '@ant-design/pro-components'}";
 import './Layout.less';
 import Logo from './Logo';
 import Exception from './Exception';
@@ -277,7 +284,7 @@ const { formatMessage } = useIntl();
       path: 'types.d.ts',
       content: `
     import type { ProLayoutProps, HeaderProps } from "${
-      pkgPath || '@ant-design/pro-layout'
+      pkgPath || '@ant-design/pro-components'
     }";
     ${
       hasInitialStatePlugin
@@ -478,12 +485,12 @@ export function getRightRenderContent (opts: {
       path: 'Layout.less',
       content: `
 ${
+  // antd@5里面没有这个样式了
   antdVersion.startsWith('5')
     ? ''
     : "@import '~antd/es/style/themes/default.less';"
 }
-@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
-@media screen and (max-width: @screen-xs) {
+@media screen and (max-width: 480px) {
   // 在小屏幕的时候可以有更好的体验
   .umi-plugin-layout-container {
     width: 100% !important;
@@ -514,14 +521,14 @@ ${
     cursor: pointer;
     transition: all 0.3s;
     > i {
-      color: @text-color;
+      color: rgba(255, 255, 255, 0.85);
       vertical-align: middle;
     }
     &:hover {
-      background: @pro-header-hover-bg;
+      background: rgba(0, 0, 0, 0.025);
     }
     &:global(.opened) {
-      background: @pro-header-hover-bg;
+      background: rgba(0, 0, 0, 0.025);
     }
   }
   .umi-plugin-layout-search {

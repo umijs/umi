@@ -1,9 +1,10 @@
 import { useRequest } from '@@/plugin-request';
 import { Gauge, Liquid, RingProgress, WordCloud } from '@ant-design/charts';
-import { GridContent } from '@ant-design/pro-layout';
+import { GridContent } from '@ant-design/pro-components';
 import { Card, Col, Row, Statistic } from 'antd';
 import numeral from 'numeral';
 import type { FC } from 'react';
+import React from 'react';
 import ActiveChart from './components/ActiveChart';
 import Map from './components/Map';
 import { queryTags } from './service';

@@ -1,5 +1,5 @@
 import { Radar } from '@ant-design/charts';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { Avatar, Card, Col, List, Row, Skeleton, Statistic } from 'antd';
 import moment from 'moment';
 import type { FC } from 'react';

@@ -23,7 +23,7 @@ export default defineConfig({
       {
         name: 'remoteCounter',
         entries: {
-          DEV: 'http://127.0.0.1:8001/remote.js',
+          DEV: 'http://127.0.0.1:9000/remote.js',
           PROD: 'https://production.com/remote.js',
         },
         keyResolver: `(()=> 'DEV')()`,
