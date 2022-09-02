@@ -68,6 +68,7 @@
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vercel/ncc": "0.33.3",
+    "conventional-changelog-cli": "^2.2.2",
     "dts-packer": "^0.0.3",
     "expect-playwright": "^0.8.0",
     "father": "^4.0.0-rc.9",
