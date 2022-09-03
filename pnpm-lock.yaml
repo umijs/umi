@@ -23,7 +23,6 @@ importers:
       '@umijs/server': workspace:*
       '@umijs/utils': workspace:*
       '@vercel/ncc': 0.33.3
-      changelog: conventional-changelog -i CHANGELOG.md -s -n ./changelog/index.js
       conventional-changelog-cli: ^2.2.2
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
@@ -74,7 +73,6 @@ importers:
       '@umijs/server': link:packages/server
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.33.3
-      changelog: link:conventional-changelog -i CHANGELOG.md -s -n ./changelog/index.js
       conventional-changelog-cli: 2.2.2
       dts-packer: 0.0.3
       expect-playwright: 0.8.0
