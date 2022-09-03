@@ -1,6 +1,8 @@
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
+import qs from 'qs';
+import open from 'open';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
@@ -154,6 +156,21 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
+
+  // open github release
+  const str = fs.readFileSync(join(PATHS.ROOT, 'CHANGELOG.md'), 'utf-8');
+  const body = new RegExp(
+    `(?<first>\\#\\#\\s${version}[\\s\\S]*${version}\\))`,
+  ).exec(str)?.groups?.first;
+  const releaseParms = {
+    tag: version,
+    title: `v${version}`,
+    body,
+    prerelease: false,
+  };
+  open(
+    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
+  );
 
   // check 2fa config
   let otpArg: string[] = [];
