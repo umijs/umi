@@ -1,4 +1,6 @@
 'use strict'
+// 原始模板参考
+// https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular
 const Q = require('q')
 const conventionalChangelog = require('./conventional-changelog')
 const parserOpts = require('./parser-opts')

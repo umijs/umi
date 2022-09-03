@@ -34,11 +34,11 @@ function getWriterOpts() {
       })
 
       if (commit.type === 'feat') {
-        commit.type = '新增功能'
+        commit.type = '新增'
       } else if (commit.type === 'fix') {
-        commit.type = '修复功能'
+        commit.type = '修复'
       } else if (commit.type === 'perf') {
-        commit.type = '优化功能'
+        commit.type = '优化'
       } else if (commit.type === 'revert' || commit.revert) {
         commit.type = 'Reverts'
       } else if (discard) {
@@ -97,7 +97,6 @@ function getWriterOpts() {
 
         return false
       })
-
       return commit
     },
     groupBy: 'type',
