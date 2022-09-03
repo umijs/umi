@@ -74,10 +74,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // ).stdout.trim().length;
   // assert(!isGitCleanAfterClientBuild, 'client code is updated');
 
-  // generate changelog
-  // TODO
-  logger.event('generate changelog');
-
   // bump version
   logger.event('bump version');
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
@@ -123,6 +119,16 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
       `${JSON.stringify(pkg, null, 2)}\n`,
     );
   });
+
+  // generate changelog
+  logger.event('generate changelog');
+  const pkg = require(join(PATHS.ROOT, 'package.json'));
+  pkg.version = version;
+  fs.writeFileSync(
+    join(PATHS.ROOT, 'package.json'),
+    `${JSON.stringify(pkg, null, 2)}\n`,
+  );
+  await $`npm run changelog`;
 
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
