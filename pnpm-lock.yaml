@@ -24,6 +24,7 @@ importers:
       '@umijs/server': workspace:*
       '@umijs/utils': workspace:*
       '@vercel/ncc': 0.33.3
+      compare-func: ^2.0.0
       conventional-changelog-cli: ^2.2.2
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
@@ -41,6 +42,7 @@ importers:
       prettier: ^2.7.1
       prettier-plugin-organize-imports: ^2.3.4
       prettier-plugin-packagejson: ^2.2.18
+      q: ^1.5.1
       qs: ^6.11.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -77,6 +79,7 @@ importers:
       '@umijs/server': link:packages/server
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.33.3
+      compare-func: 2.0.0
       conventional-changelog-cli: 2.2.2
       dts-packer: 0.0.3
       expect-playwright: 0.8.0
@@ -94,6 +97,7 @@ importers:
       prettier: 2.7.1
       prettier-plugin-organize-imports: 2.3.4_3izbkkkilozjwunt7rvlqzc6b4
       prettier-plugin-packagejson: 2.2.18_prettier@2.7.1
+      q: 1.5.1
       qs: 6.11.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
