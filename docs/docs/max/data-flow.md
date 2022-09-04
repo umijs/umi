@@ -129,6 +129,8 @@ export default () => {
 ![vscode - @umijs/plugin-model 插件演示](https://gw.alipayobjects.com/zos/antfincdn/WcVbbF6KG2/1577073518336-afe6f03d-f817-491a-848a-5feeb4ecd72b.gif)
 </Message>
 
+注意一点，全局 model 在内部自动根据其之间依赖关系进行了加载顺序调整，依赖判断依据是根据 useModel 调用语法，如果用户自行封装了相关 hook，需要在配置 `customUseModelCallNames` 中指出
+
 ## 性能优化
 
 `useModel()` 方法可以接受可选的第二个参数，当组件只需要使用 Model 中的部分参数，而对其它参数的变化不感兴趣时，可以传入一个函数进行过滤。以实现计数器的操作按钮为例：
