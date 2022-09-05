@@ -12,6 +12,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "lodash.uppercase": "^4.3.0",
     "umi": "4.0.17"
   },
   "devDependencies": {
