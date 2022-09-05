@@ -72,8 +72,7 @@ jobs:
         with:
           browser: chrome
           working-directory: ./examples/max
-          install: false
-          install-command: pnpm i cypress
+          install-command: npx cypress install
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
@@ -83,8 +82,7 @@ jobs:
         with:
           browser: chrome
           working-directory: ./examples/mfsu-e2e
-          install: false
-          install-command: pnpm i cypress
+          install-command: npx cypress install
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
@@ -102,8 +100,7 @@ jobs:
         with:
           browser: chrome
           working-directory: ./examples/mfsu-e2e
-          install: false
-          install-command: pnpm i cypress
+          install-command: npx cypress install
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
@@ -114,8 +111,7 @@ jobs:
         with:
           browser: chrome
           working-directory: ./examples/mf-remote
-          install: false
-          install-command: pnpm i cypress
+          install-command: npx cypress install
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
@@ -125,8 +121,7 @@ jobs:
         with:
           browser: chrome
           working-directory: ./examples/mf-host
-          install: false
-          install-command: pnpm i cypress
+          install-command: npx cypress install
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
@@ -136,8 +131,7 @@ jobs:
         with:
           browser: chrome
           working-directory: ./examples/boilerplate-vue
-          install: false
-          install-command: pnpm i cypress
+          install-command: npx cypress install
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
