@@ -127,7 +127,7 @@
       "majorVersion": 4
     },
     {
-      "text": "ANALYZE=1 umi build 可以分析产物的源码构成",
+      "text": "ANALYZE=1 %%frameworkCliName%% build 可以分析产物的源码构成",
       "majorVersion": 4
     },
     {
