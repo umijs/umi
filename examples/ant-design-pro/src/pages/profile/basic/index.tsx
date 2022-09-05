@@ -1,7 +1,6 @@
 import { useRequest } from '@@/plugin-request';
-import { PageContainer } from '@ant-design/pro-layout';
-import type { ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import type { ProColumns } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Badge, Card, Descriptions, Divider } from 'antd';
 import type { FC } from 'react';
 import React from 'react';

@@ -354,11 +354,6 @@ PORT=8888 umi dev
         ]),
         startBuildWorker,
       };
-      if (api.config.mf) {
-        opts.mfsuServerBase = `${api.config.https ? 'https' : 'http'}://${
-          api.appData.ip
-        }:${api.appData.port}`;
-      }
       if (enableVite) {
         await bundlerVite.dev(opts);
       } else {

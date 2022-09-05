@@ -1,4 +1,8 @@
-import { createHttpsServer, resolveHttpsConfig } from '@umijs/bundler-utils';
+import {
+  createHttpsServer,
+  resolveHttpsConfig,
+  createProxy,
+} from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { getDevBanner, logger } from '@umijs/utils';
 import http from 'http';
@@ -75,6 +79,11 @@ export async function createServer(opts: IOpts) {
 
   // before middlewares
   opts.beforeMiddlewares?.forEach((m) => app.use(m));
+
+  // proxy
+  if (userConfig.proxy) {
+    createProxy(userConfig.proxy, app);
+  }
 
   // after middlewares, insert before vite spaFallbackMiddleware
   // refer: https://github.com/vitejs/vite/blob/2c586165d7bc4b60f8bcf1f3b462b97a72cce58c/packages/vite/src/node/server/index.ts#L508

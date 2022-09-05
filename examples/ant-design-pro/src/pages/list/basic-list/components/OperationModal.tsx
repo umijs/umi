@@ -4,7 +4,7 @@ import {
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
-} from '@ant-design/pro-form';
+} from '@ant-design/pro-components';
 import { Button, Result } from 'antd';
 import type { FC } from 'react';
 import type { BasicListItemDataType } from '../data.d';

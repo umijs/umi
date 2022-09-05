@@ -9,7 +9,7 @@ describe('import by dynamic import', () => {
   );
 
   it('loads page successfully', () => {
-    cy.intercept('GET', 'http://127.0.0.1:8001/remote.js').as('remoteLoaded');
+    cy.intercept('GET', 'http://127.0.0.1:9000/remote.js').as('remoteLoaded');
 
     cy.visit('/dynamic-import');
 

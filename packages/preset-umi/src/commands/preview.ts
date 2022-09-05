@@ -1,6 +1,5 @@
-import { createHttpsServer } from '@umijs/bundler-utils';
+import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
-import { createProxyMiddleware } from '@umijs/bundler-webpack/compiled/http-proxy-middleware';
 import { chalk, logger, portfinder } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
@@ -57,24 +56,7 @@ umi preview --port [port]
       const { proxy } = api.userConfig;
 
       if (proxy) {
-        Object.keys(proxy).forEach((key) => {
-          const proxyConfig = proxy[key];
-          const target = proxyConfig.target;
-          if (target) {
-            app.use(
-              key,
-              createProxyMiddleware(key, {
-                ...proxy[key],
-                // Add x-real-url in response header
-                onProxyRes(proxyRes, req: any, res) {
-                  proxyRes.headers['x-real-url'] =
-                    new URL(req.url || '', target as string)?.href || '';
-                  proxyConfig.onProxyRes?.(proxyRes, req, res);
-                },
-              }),
-            );
-          }
-        });
+        createProxy(proxy, app);
       }
 
       // mock

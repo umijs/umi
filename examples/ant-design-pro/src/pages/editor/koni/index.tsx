@@ -1,4 +1,4 @@
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { Col, Row } from 'antd';
 import GGEditor, { Koni } from 'gg-editor';
 import { KoniContextMenu } from './components/EditorContextMenu';

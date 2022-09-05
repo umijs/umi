@@ -1,12 +1,13 @@
 import { useRequest } from '@@/plugin-request';
 import { UploadOutlined } from '@ant-design/icons';
-import ProForm, {
+import {
+  ProForm,
   ProFormDependency,
   ProFormFieldSet,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
-} from '@ant-design/pro-form';
+} from '@ant-design/pro-components';
 import { Button, Input, message, Upload } from 'antd';
 import React from 'react';
 import { queryCity, queryCurrent, queryProvince } from '../service';
