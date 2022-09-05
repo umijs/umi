@@ -131,7 +131,7 @@
       "majorVersion": 4
     },
     {
-      "text": "如果想预览构建后产物, 可尝试新出的 %%frameworkCliName%% preview",
+      "text": "如果想预览构建后产物, 可尝试 %%frameworkCliName%% preview",
       "url": "https://umijs.org/docs/api/commands#preview",
       "majorVersion": 4
     }
