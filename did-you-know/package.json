@@ -101,15 +101,15 @@
       "majorVersion": 4
     },
     {
-      "text": "HMR=none umi dev 可以关闭 Umi 开发服务器的模块热替换功能",
+      "text": "HMR=none %%frameworkCliName%% dev 可以关闭 Umi 开发服务器的模块热替换功能",
       "majorVersion": 4
     },
     {
-      "text": "PORT=9000 umi dev 可以指定 Umi 开发服务器的端口",
+      "text": "PORT=9000 %%frameworkCliName%% dev 可以指定 Umi 开发服务器的端口",
       "majorVersion": 4
     },
     {
-      "text": "COMPRESS=none umi build 可以关闭项目构建时的代码压缩功能, 方便调试项目的构建产物",
+      "text": "COMPRESS=none %%frameworkCliName%% build 可以关闭项目构建时的代码压缩功能, 方便调试项目的构建产物",
       "majorVersion": 4
     },
     {
