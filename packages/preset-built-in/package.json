@@ -36,7 +36,7 @@
     "@umijs/server": "3.5.34",
     "@umijs/types": "3.5.34",
     "@umijs/utils": "3.5.34",
-    "ansi-html": "^0.0.7",
+    "ansi-html": "^0.0.9",
     "core-js": "3.6.5",
     "core-js-pure": "^3.8.1",
     "error-stack-parser": "^2.0.6",
