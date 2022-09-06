@@ -1,6 +1,13 @@
 // @ts-ignore
 import React from 'react';
-import { generatePath, Navigate, useParams } from 'react-router-dom';
+import {
+  generatePath,
+  Navigate,
+  useParams,
+  useLocation,
+  useNavigate,
+  Outlet,
+} from 'react-router-dom';
 import { RouteContext } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
 
@@ -75,21 +82,33 @@ function DefaultLoading() {
 }
 
 function RemoteComponent(props: any) {
-  const useSuspense = true; // !!React.startTransition;
-  if (useSuspense) {
-    const Component = props.loader;
-    return (
-      <React.Suspense fallback={<props.loadingComponent />}>
-        <Component />
-      </React.Suspense>
-    );
-  } else {
-    return null;
-    // // @ts-ignore
-    //     import loadable from '@loadable/component';
-    //     const Component = loadable(props.loader, {
-    //       fallback: <props.loadingComponent />,
-    //     });
-    //     return <Component />;
-  }
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams();
+  const match = { params };
+
+  const history = {
+    back: () => navigate(-1),
+    goBack: () => navigate(-1),
+    location,
+    push: (url: string, state?: any) => navigate(url, { state }),
+    replace: (url: string, state?: any) =>
+      navigate(url, {
+        replace: true,
+        state,
+      }),
+  };
+
+  // staticContext 没有兼容 好像没看到对应的兼容写法
+
+  const Component = props.loader;
+
+  // TODO Outlet 判断 有 children 在渲染, 不确定有没有父 作用
+  return (
+    <React.Suspense fallback={<props.loadingComponent />}>
+      <Component location={location} match={match} history={history}>
+        <Outlet />
+      </Component>
+    </React.Suspense>
+  );
 }
