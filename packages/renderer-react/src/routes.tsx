@@ -8,7 +8,7 @@ import {
   useNavigate,
   Outlet,
 } from 'react-router-dom';
-import { RouteContext } from './routeContext';
+import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
 
 export function createClientRoutes(opts: {
@@ -25,6 +25,10 @@ export function createClientRoutes(opts: {
         route: routesById[id],
         routeComponent: routeComponents[id],
         loadingComponent: opts.loadingComponent,
+        hasChildren:
+          Object.keys(routesById).filter(
+            (rid) => routesById[rid].parentId === id,
+          ).length > 0,
       });
       const children = createClientRoutes({
         routesById,
@@ -55,6 +59,7 @@ function createClientRoute(opts: {
   route: IRoute;
   routeComponent: any;
   loadingComponent?: React.ReactNode;
+  hasChildren?: boolean;
 }): IClientRoute {
   const { route } = opts;
   const { redirect, ...props } = route;
@@ -70,6 +75,7 @@ function createClientRoute(opts: {
         <RemoteComponent
           loader={opts.routeComponent}
           loadingComponent={opts.loadingComponent || DefaultLoading}
+          hasChildren={opts.hasChildren}
         />
       </RouteContext.Provider>
     ),
@@ -85,7 +91,13 @@ function RemoteComponent(props: any) {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
-  const match = { params };
+  const { route } = useRouteData();
+  const match = {
+    params,
+    isExact: true,
+    path: route.path,
+    url: location.pathname,
+  };
 
   const history = {
     back: () => navigate(-1),
@@ -100,14 +112,12 @@ function RemoteComponent(props: any) {
   };
 
   // staticContext 没有兼容 好像没看到对应的兼容写法
-
   const Component = props.loader;
 
-  // TODO Outlet 判断 有 children 在渲染, 不确定有没有父 作用
   return (
     <React.Suspense fallback={<props.loadingComponent />}>
       <Component location={location} match={match} history={history}>
-        <Outlet />
+        {props.hasChildren && <Outlet />}
       </Component>
     </React.Suspense>
   );
