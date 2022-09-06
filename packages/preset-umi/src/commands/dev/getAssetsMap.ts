@@ -1,6 +1,6 @@
 const UMI_ASSETS_REG = {
-  js: /^umi(\..+)?\.js$/,
-  css: /^umi(\..+)?\.css$/,
+  js: /^(.+)?\.js$/,
+  css: /^(.+)?\.css$/,
 };
 const HOT_UPDATE = '.hot-update.';
 
