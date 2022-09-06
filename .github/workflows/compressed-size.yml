@@ -42,9 +42,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-compressed-size-
 
-      - name : Install dependencies
-        run: pnpm install
-
       - uses: preactjs/compressed-size-action@v2
         with:
           build-script: 'build'
