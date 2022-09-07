@@ -139,7 +139,7 @@ function removeFileNameHash(dir: string, fileName: string) {
     .replace(/\\/g, '/')
     .replace(
       /\/?(.*)(\.[0-9a-f]+)(\.chunk)?(\.js|\.css)/,
-      (match, p1, p2, p3, p4) => p1 + p4,
+      (_match, p1, _p2, _p3, p4) => p1 + p4,
     )
     .replace(/^\//, '');
 }
