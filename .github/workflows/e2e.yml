@@ -145,3 +145,10 @@ jobs:
         run: |
           npx umi setup
           pnpm test
+      - name: Notify Contributor Group
+        if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          body: ${{ format('{{"msgtype":"link","link":{{"text":"哪位好心人来看看吧!","title":"Umi CI E2E 测试失败({1})","picUrl":"","messageUrl":"https://github.com/umijs/umi/actions/runs/{0}"}}}}', github.run_id, matrix.os )}}
+
