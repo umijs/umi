@@ -73,5 +73,4 @@ export {
   printHelp,
   filesize,
   gzipSize,
-  fileSizeReporter,
 };
