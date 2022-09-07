@@ -1,5 +1,5 @@
 import { getMarkup } from '@umijs/server';
-import { chalk, logger, rimraf, fileSizeReporter } from '@umijs/utils';
+import { chalk, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { IApi } from '../types';
@@ -8,6 +8,10 @@ import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
 import { getMarkupArgs } from './dev/getMarkupArgs';
 import { printMemoryUsage } from './dev/printMemoryUsage';
+import {
+  measureFileSizesBeforeBuild,
+  printFileSizesAfterBuild,
+} from '../utils/fileSizeReporter';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -118,8 +122,6 @@ umi build --clean
         clean: true,
       };
 
-      const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } =
-        fileSizeReporter;
       let stats: any;
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);

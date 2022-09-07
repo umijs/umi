@@ -1,10 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from '../compiled/chalk';
-import filesize from '../compiled/filesize';
-import stripAnsi from '../compiled/strip-ansi';
-import { sync as gzipSize } from '../compiled/gzip-size';
 import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
+import {
+  chalk,
+  filesize,
+  stripAnsi,
+  gzipSize as _gzipSize,
+} from '@umijs/utils';
+
+const gzipSize = _gzipSize.sync;
 
 interface ISizes {
   root: string;
@@ -77,7 +81,7 @@ export function printFileSizesAfterBuild(opts: {
     );
     console.log(
       chalk.yellow('Consider reducing it with code splitting: '),
-      chalk.cyan('https://umijs.org/docs/code-splitting'),
+      chalk.cyan('https://umijs.org/blog/code-splitting'),
     );
     console.log(
       chalk.yellow('You can also analyze the project dependencies: '),
