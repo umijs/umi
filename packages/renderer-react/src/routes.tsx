@@ -1,7 +1,14 @@
 // @ts-ignore
 import React from 'react';
-import { generatePath, Navigate, useParams } from 'react-router-dom';
-import { RouteContext } from './routeContext';
+import {
+  generatePath,
+  Navigate,
+  useParams,
+  useLocation,
+  useNavigate,
+  Outlet,
+} from 'react-router-dom';
+import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
 
 export function createClientRoutes(opts: {
@@ -18,6 +25,10 @@ export function createClientRoutes(opts: {
         route: routesById[id],
         routeComponent: routeComponents[id],
         loadingComponent: opts.loadingComponent,
+        hasChildren:
+          Object.keys(routesById).filter(
+            (rid) => routesById[rid].parentId === id,
+          ).length > 0,
       });
       const children = createClientRoutes({
         routesById,
@@ -48,6 +59,7 @@ function createClientRoute(opts: {
   route: IRoute;
   routeComponent: any;
   loadingComponent?: React.ReactNode;
+  hasChildren?: boolean;
 }): IClientRoute {
   const { route } = opts;
   const { redirect, ...props } = route;
@@ -63,6 +75,7 @@ function createClientRoute(opts: {
         <RemoteComponent
           loader={opts.routeComponent}
           loadingComponent={opts.loadingComponent || DefaultLoading}
+          hasChildren={opts.hasChildren}
         />
       </RouteContext.Provider>
     ),
@@ -75,21 +88,37 @@ function DefaultLoading() {
 }
 
 function RemoteComponent(props: any) {
-  const useSuspense = true; // !!React.startTransition;
-  if (useSuspense) {
-    const Component = props.loader;
-    return (
-      <React.Suspense fallback={<props.loadingComponent />}>
-        <Component />
-      </React.Suspense>
-    );
-  } else {
-    return null;
-    // // @ts-ignore
-    //     import loadable from '@loadable/component';
-    //     const Component = loadable(props.loader, {
-    //       fallback: <props.loadingComponent />,
-    //     });
-    //     return <Component />;
-  }
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams();
+  const { route } = useRouteData();
+  const match = {
+    params,
+    isExact: true,
+    path: route.path,
+    url: location.pathname,
+  };
+
+  const history = {
+    back: () => navigate(-1),
+    goBack: () => navigate(-1),
+    location,
+    push: (url: string, state?: any) => navigate(url, { state }),
+    replace: (url: string, state?: any) =>
+      navigate(url, {
+        replace: true,
+        state,
+      }),
+  };
+
+  // staticContext 没有兼容 好像没看到对应的兼容写法
+  const Component = props.loader;
+
+  return (
+    <React.Suspense fallback={<props.loadingComponent />}>
+      <Component location={location} match={match} history={history}>
+        {props.hasChildren && <Outlet />}
+      </Component>
+    </React.Suspense>
+  );
 }
