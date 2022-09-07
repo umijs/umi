@@ -293,6 +293,7 @@ declare module '*.txt' {
         basename: api.config.base,
         historyType: api.config.history.type,
         hydrate: !!api.config.ssr,
+        reactRouter5Compat: !!api.config.reactRouter5Compat,
         loadingComponent:
           existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||
           existsSync(join(api.paths.absSrcPath, 'loading.jsx')) ||
