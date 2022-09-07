@@ -89,6 +89,7 @@ export default (api: IApi) => {
                 : {}),
             },
           },
+          include: [`${baseUrl}.umirc.ts`],
         },
         null,
         2,
