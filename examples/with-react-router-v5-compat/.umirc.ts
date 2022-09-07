@@ -1,6 +1,8 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
+  reactRouter5Compat: {},
+  mfsu: false,
   routes: [
     {
       path: '/',
