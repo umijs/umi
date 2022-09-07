@@ -67,6 +67,17 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
+      - name: e2e:example:max:dev
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/max
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:dev:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
       - name: e2e:example:mfsu-e2e
         uses: cypress-io/github-action@v4
         with:
