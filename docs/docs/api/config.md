@@ -919,6 +919,18 @@ proxy: {
 
 配置 webpack 的 publicPath。
 
+## reactRouter5Compat
+
+- 类型：`object`
+- 默认值：`false`
+
+启用 react-router 5 兼容模式。此模式下，路由组件的 props 会包含 location、match、history 和 params 属性，和 react-router 5 的保持一致。
+
+但要注意的是，
+
+1. 此模式下会有额外的 re-render
+2. 由于依赖库 history 更新，location 中依旧没有 query 属性
+
 ## routes
 
 - 类型：`Route[]`

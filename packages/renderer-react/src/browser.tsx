@@ -71,6 +71,7 @@ export function renderClient(opts: {
   loadingComponent?: React.ReactNode;
   history: History;
   hydrate?: boolean;
+  reactRouter5Compat?: boolean;
 }) {
   const basename = opts.basename || '/';
   const rootElement = opts.rootElement || document.getElementById('root')!;
@@ -78,6 +79,7 @@ export function renderClient(opts: {
     routesById: opts.routes,
     routeComponents: opts.routeComponents,
     loadingComponent: opts.loadingComponent,
+    reactRouter5Compat: opts.reactRouter5Compat,
   });
   opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',
