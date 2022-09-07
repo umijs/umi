@@ -4,6 +4,8 @@ env:
   NODE_OPTIONS: --max-old-space-size=6144
 
 on:
+  schedule:
+    - cron: '0 */4 * * *'
   push:
     branches:
       - master
@@ -48,21 +50,8 @@ jobs:
         with:
           run_install: false
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-node-e2e-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-node-e2e-
-
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --no-frozen-lockfile
 
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/mf-remote... --filter ./examples/test-test/... --filter ./packages/umi/... --filter ./packages/preset-vue/...
@@ -89,9 +78,8 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
-
       - name: set mfsu-eager env
-        run: | 
+        run: |
           npx rimraf node_modules/.cache
           npm run set:eager
           cat .umirc.ts
@@ -107,7 +95,6 @@ jobs:
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-
 
       - name: e2e:example:plugin-mf+MFSU
         uses: cypress-io/github-action@v4
