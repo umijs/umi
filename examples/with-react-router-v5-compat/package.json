@@ -1,0 +1,14 @@
+{
+  "name": "@example/with-react-router-v5-compat",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "preview": "umi preview",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "4.0.17"
+  }
+}
