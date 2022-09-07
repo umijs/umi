@@ -105,6 +105,7 @@ export default {
             'umi-4-rc',
             'mfsu-faster-than-vite',
             'mfsu-independent-usage',
+            'code-splitting',
           ],
         },
       ],
