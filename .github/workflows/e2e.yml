@@ -51,7 +51,7 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run: pnpm i --no-frozen-lockfile
+        run: pnpm i --force
 
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/mf-remote... --filter ./examples/test-test/... --filter ./packages/umi/... --filter ./packages/preset-vue/...
