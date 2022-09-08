@@ -89,7 +89,12 @@ export default (api: IApi) => {
                 : {}),
             },
           },
-          include: [`${baseUrl}.umirc.ts`],
+          include: [
+            `${baseUrl}.umirc.ts`,
+            `${baseUrl}**/*.d.ts`,
+            `${baseUrl}**/*.ts`,
+            `${baseUrl}**/*.tsx`
+          ],
         },
         null,
         2,
