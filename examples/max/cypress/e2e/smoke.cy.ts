@@ -2,6 +2,11 @@
 
 describe('Basic Test', () => {
   beforeEach(() => {
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.setCacheDisabled',
+      params: { cacheDisabled: true },
+    });
+
     // 每个测试用例都会先执行一次 `cy.visit(url)` 访问的页面, url 根据测试内容决定
     // 脚手架中已经配置了 baseUrl, 可以直接写 path 部分, PORT 部分可以通过环境变量 PORT 来控制
     cy.visit('/');
