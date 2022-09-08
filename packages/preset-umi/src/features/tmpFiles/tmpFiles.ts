@@ -440,12 +440,15 @@ export default function EmptyRoute() {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
+      const historyPath = api.config.historyWithQuery
+        ? winPath(dirname(require.resolve('@umijs/history/package.json')))
+        : rendererPath;
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/history.ts',
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
-          rendererPath,
+          historyPath,
         },
       });
     }
