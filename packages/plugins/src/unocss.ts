@@ -36,7 +36,7 @@ export default (api: IApi) => {
 
     /** 透过子进程建立 unocss 服务，将生成的 css 写入 generatedPath */
     const unocss = exec(
-      `${binPath} ${watchDirs.join(' ')} --out-file ${generatedPath} ${
+      `${binPath} \"${watchDirs.join(' ')}\" --out-file ${generatedPath} ${
         api.env === 'development' ? '--watch' : ''
       }`,
       { cwd: api.cwd },
