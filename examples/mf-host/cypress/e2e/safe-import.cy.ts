@@ -9,7 +9,7 @@ describe('safeMfImport', () => {
   );
 
   it('can fallback', () => {
-    cy.intercept('GET', 'http://127.0.0.1:8001/remote.js').as('remoteLoaded');
+    cy.intercept('GET', 'http://127.0.0.1:9000/remote.js').as('remoteLoaded');
 
     cy.visit('/safe-import');
 

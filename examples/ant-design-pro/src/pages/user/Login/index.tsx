@@ -14,7 +14,7 @@ import {
   ProFormCaptcha,
   ProFormCheckbox,
   ProFormText,
-} from '@ant-design/pro-form';
+} from '@ant-design/pro-components';
 import { Alert, message, Tabs } from 'antd';
 import { parse } from 'querystring';
 import React, { useState } from 'react';

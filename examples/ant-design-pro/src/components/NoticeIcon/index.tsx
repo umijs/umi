@@ -2,7 +2,7 @@ import { getNotices } from '@/services/ant-design-pro/api';
 import { message, Tag } from 'antd';
 import { groupBy } from 'lodash';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useModel, useRequest } from 'umi';
 import styles from './index.less';
 import NoticeIcon from './NoticeIcon';

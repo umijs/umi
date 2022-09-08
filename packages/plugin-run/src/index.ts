@@ -21,7 +21,8 @@ export default (api: IApi) => {
     name: 'run',
     fn: ({ args }) => {
       const globals: string[] = api.config.run?.globals || [];
-      const absScriptFilePath = join(api.cwd, args._[0]);
+      const [scriptFilePath, ...restArgs] = args._;
+      const absScriptFilePath = join(api.cwd, scriptFilePath);
       const fileName = getFileNameByPath(absScriptFilePath);
       assert(fileName, `${absScriptFilePath} is not a valid file`);
       assert(
@@ -43,7 +44,7 @@ export default (api: IApi) => {
         'utf-8',
       );
       const tsxPath = getBinPath();
-      fork(tsxPath, [absTmpFilePath], { stdio: 'inherit' });
+      fork(tsxPath, [absTmpFilePath, ...restArgs], { stdio: 'inherit' });
     },
   });
 };

@@ -149,6 +149,7 @@ const getBrowser = (
     routesById: opts.routes,
     routeComponents: opts.routeComponents,
     loadingComponent: opts.loadingComponent,
+    reactRouter5Compat: opts.reactRouter5Compat,
   });
   opts.pluginManager.applyPlugins({
     key: 'patchClientRoutes',

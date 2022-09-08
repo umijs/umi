@@ -1,4 +1,4 @@
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { Input } from 'antd';
 import type { FC } from 'react';
 import { history, Outlet, useMatch } from 'umi';

@@ -1,5 +1,7 @@
 import { useRequest } from '@@/plugin-request';
-import ProForm, {
+import {
+  PageContainer,
+  ProForm,
   ProFormDateRangePicker,
   ProFormDependency,
   ProFormDigit,
@@ -7,8 +9,7 @@ import ProForm, {
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
-} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+} from '@ant-design/pro-components';
 import { Card, message } from 'antd';
 import type { FC } from 'react';
 import { fakeSubmitForm } from './service';

@@ -1,4 +1,4 @@
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { Alert, Card, Typography } from 'antd';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'umi';
@@ -48,7 +48,7 @@ const Welcome: React.FC = () => {
             />
           </a>
         </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-table</CodePreview>
+        <CodePreview>yarn add @ant-design/pro-components</CodePreview>
         <Typography.Text
           strong
           style={{
@@ -70,7 +70,7 @@ const Welcome: React.FC = () => {
             />
           </a>
         </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-layout</CodePreview>
+        <CodePreview>yarn add @ant-design/pro-components</CodePreview>
       </Card>
     </PageContainer>
   );

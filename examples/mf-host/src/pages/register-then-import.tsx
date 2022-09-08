@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 registerMfRemote({
   aliasName: 'registered',
   remoteName: 'remoteCounter',
-  entry: 'http://127.0.0.1:8001/remote.js',
+  entry: 'http://127.0.0.1:9000/remote.js',
 });
 
 const RemoteCounter = React.lazy(() => {

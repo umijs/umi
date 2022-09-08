@@ -1,4 +1,4 @@
-import { PageLoading } from '@ant-design/pro-layout';
+import { PageLoading } from '@ant-design/pro-components';
 import { HeatmapLayer, MapboxScene, PointLayer } from '@antv/l7-react';
 import * as React from 'react';
 

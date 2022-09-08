@@ -23,6 +23,7 @@ export default (api: IApi) => {
       version: require('../../../package.json').version,
       name: 'Umi',
       importSource: 'umi',
+      cliName: 'umi',
     };
     memo.bundleStatus = {
       done: false,

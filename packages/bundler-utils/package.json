@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "4.0.0-canary.20220831.1",
+  "version": "4.0.18",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -20,7 +20,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.0-canary.20220831.1",
+    "@umijs/utils": "4.0.18",
     "esbuild": "0.14.49",
     "regenerate": "^1.4.2",
     "regenerate-unicode-properties": "10.0.1",
@@ -59,6 +59,7 @@
     "cjs-module-lexer": "1.2.2",
     "es-module-lexer": "0.10.5",
     "express": "4.18.1",
+    "http-proxy-middleware": "2.0.4",
     "less": "4.1.2",
     "tapable": "2.2.1"
   },
@@ -76,6 +77,7 @@
       "express",
       "less",
       "tapable",
+      "http-proxy-middleware",
       "./bundles/babel/bundle"
     ],
     "externals": {

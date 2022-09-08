@@ -1,0 +1,74 @@
+{
+  "name": "@umijs/did-you-know",
+  "version": "1.0.1",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/umijs/did-you-know#readme",
+  "bugs": {
+    "url": "https://github.com/umijs/did-you-know/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umijs/did-you-know.git"
+  },
+  "license": "MIT",
+  "main": "dist/plugin.js",
+  "scripts": {
+    "build": "father build",
+    "dev": "father dev",
+    "test": "jest"
+  },
+  "packageManager": "pnpm@7.3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "didYouKnow": [
+    {
+      "text": "dev 模式下访问 /__umi 路由，可以发现很多有用的内部信息",
+      "majorVersion": 4
+    },
+    {
+      "text": "father 4 正式发布了",
+      "url": "https://zhuanlan.zhihu.com/p/558192063"
+    },
+    {
+      "text": "@umijs/max 是蚂蚁内网框架 Bigfish 的对外版本"
+    },
+    {
+      "text": "Umi 3 的 MFSU 可能会遇到奇怪的问题，升级到 Umi 4 后就没了",
+      "majorVersion": 3
+    },
+    {
+      "text": "如果要支持低版本浏览器，可尝试新出的 legacy 配置项",
+      "url": "https://umijs.org/docs/api/config#legacy",
+      "majorVersion": 4
+    },
+    {
+      "text": "如果想点击组件跳转至编辑器源码位置，可尝试新出的 clickToComponent 配置项",
+      "url": "https://umijs.org/docs/api/config#clicktocomponent",
+      "majorVersion": 4
+    },
+    {
+      "text": "如果想检测未使用的文件和导出，可尝试新出的 deadCode 配置项",
+      "url": "https://umijs.org/docs/api/config#deadcode",
+      "majorVersion": 4
+    },
+    {
+      "text": "默认使用 esbuild 作为 JavaScript 压缩工具，也可通过 jsMinifier 配置项切换到 terser 或 uglifyJs 等",
+      "url": "https://umijs.org/docs/api/config#jsminifier-webpack",
+      "majorVersion": 4
+    },
+    {
+      "text": "%%frameworkCliName%% g tsconfig 可一键完成项目的 TypeScript 配置",
+      "majorVersion": 4
+    },
+    {
+      "text": "如果你有 MPA（多页应用）需求，可尝试新出的 mpa 配置项",
+      "url": "https://umijs.org/docs/guides/mpa",
+      "majorVersion": 4
+    }
+  ]
+}

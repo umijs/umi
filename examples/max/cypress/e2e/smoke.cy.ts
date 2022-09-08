@@ -2,6 +2,11 @@
 
 describe('Basic Test', () => {
   beforeEach(() => {
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.setCacheDisabled',
+      params: { cacheDisabled: true },
+    });
+
     // 每个测试用例都会先执行一次 `cy.visit(url)` 访问的页面, url 根据测试内容决定
     // 脚手架中已经配置了 baseUrl, 可以直接写 path 部分, PORT 部分可以通过环境变量 PORT 来控制
     cy.visit('/');
@@ -21,24 +26,24 @@ describe('Basic Test', () => {
     // layout 存在
     cy.contains('Ant Design Pro');
 
-    cy.get('li.ant-pro-menu-item').contains('Index');
-    cy.get('li.ant-pro-menu-item').contains('users');
-    cy.get('li.ant-pro-menu-item').contains('app1');
-    cy.get('li.ant-pro-menu-submenu').contains('data-flow');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('Index');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('users');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('app1');
+    cy.get('li.ant-pro-base-menu-submenu').contains('data-flow');
   });
 
   it('render sub-menu', () => {
-    cy.get('li.ant-pro-menu-submenu').contains('data-flow').click();
+    cy.get('li.ant-pro-base-menu-submenu').contains('data-flow').click();
 
-    cy.get('li.ant-pro-menu-item').contains('use-model');
-    cy.get('li.ant-pro-menu-item').contains('dva');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('use-model');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('dva');
   });
 
   it('can change local', () => {
     cy.get('.ant-dropdown-trigger').find('i.anticon').click();
 
     cy.contains('简体中文').click();
-    cy.get('li.ant-pro-menu-item').contains('首页');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('首页');
   });
 
   it('tailwind css', () => {
