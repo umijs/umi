@@ -1,4 +1,4 @@
-import { createHashHistory, createMemoryHistory, createBrowserHistory, History } from '{{{ rendererPath }}}';
+import { createHashHistory, createMemoryHistory, createBrowserHistory, History } from '{{{ historyPath }}}';
 
 let history: History;
 let basename: string = '/';
@@ -14,15 +14,15 @@ export function createHistory(opts: any) {
   if (opts.basename) {
     basename = opts.basename;
   }
-  history = {
-    ...h,
-    push(to, state) {
-      h.push(patchTo(to), state);
-    },
-    replace(to, state) {
-      h.replace(patchTo(to), state);
-    },
-  }
+  history = h;
+  const oldPush = h.push;
+  history.push = (to, state) => {
+    oldPush(patchTo(to), state);
+  };
+  const oldReplace = h.replace;
+  history.replace = (to, state) => {
+    oldReplace(patchTo(to), state);
+  };
   return h;
 }
 
