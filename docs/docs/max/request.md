@@ -152,7 +152,7 @@ export default () => {
 
 
 ### request
-通过 `import { request } from '@@/plugin-request` 你可以使用内置的请求方法。
+通过 `import { request } from '@@/plugin-request'` 你可以使用内置的请求方法。
 
 `request` 接收的 `options`除了透传 [axios](https://axios-http.com/docs/req_config) 的所有 config 之外，我们还额外添加了几个属性 `skipErrorHandler`，`getResponse`，`requestInterceptors` 和 `responseInterceptors` 。
 
