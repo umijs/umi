@@ -1,12 +1,6 @@
 // @ts-ignore
 import React, { useMemo } from 'react';
-import {
-  generatePath,
-  Navigate,
-  useParams,
-  useLocation,
-  Outlet,
-} from 'react-router-dom';
+import { generatePath, Navigate, useParams, Outlet } from 'react-router-dom';
 import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
 import { useAppData } from './appContext';
