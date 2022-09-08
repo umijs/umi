@@ -215,6 +215,7 @@ export function renderClient(opts: {
           clientLoaderData,
           serverLoaderData,
           preloadRoute: handleRouteChange,
+          history: opts.history,
         }}
       >
         {rootContainer}

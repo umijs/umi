@@ -17,6 +17,7 @@ interface IAppContextType {
   clientLoaderData: ILoaderData;
   preloadRoute?: (to: string) => void;
   serverLoaderData: ILoaderData;
+  history: any;
 }
 
 export const AppContext = React.createContext<IAppContextType>(
