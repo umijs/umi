@@ -74,7 +74,7 @@ export default defineConfig({
     title: 'Ant Design Pro',
   },
   mfsu: {
-    esbuild: true,
+    // esbuild: true,
   },
   request: {},
   locale: {
