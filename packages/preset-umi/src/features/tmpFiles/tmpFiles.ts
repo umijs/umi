@@ -66,13 +66,13 @@ export default (api: IApi) => {
             // Supported by vue only
             ...(api.appData.framework === 'vue'
               ? {
-                  // TODO Actually, it should be vite mode, but here it is written as vue only
-                  // Required in Vite https://vitejs.dev/guide/features.html#typescript
-                  isolatedModules: true,
-                  // For `<script setup>`
-                  // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
-                  preserveValueImports: true,
-                }
+                // TODO Actually, it should be vite mode, but here it is written as vue only
+                // Required in Vite https://vitejs.dev/guide/features.html#typescript
+                isolatedModules: true,
+                // For `<script setup>`
+                // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
+                preserveValueImports: true,
+              }
               : {}),
 
             paths: {
@@ -84,8 +84,8 @@ export default (api: IApi) => {
               ],
               ...(api.config.vite
                 ? {
-                    '@fs/*': ['*'],
-                  }
+                  '@fs/*': ['*'],
+                }
                 : {}),
             },
           },
@@ -151,16 +151,15 @@ declare module '*.gif' {
   export default src
 }
 declare module '*.svg' {
-  ${
-    api.config.svgr
-      ? `
+  ${api.config.svgr
+          ? `
   import * as React from 'react';
   export const ReactComponent: React.FunctionComponent<React.SVGProps<
   SVGSVGElement
   > & { title?: string }>;
 `.trimStart()
-      : ''
-  }
+          : ''
+        }
   const src: string
   export default src
 }
@@ -454,6 +453,16 @@ export default function EmptyRoute() {
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
           historyPath,
+          routePaths: Object.keys(clonedRoutes)
+            .reduce((acc: string[], key: string) => {
+              const route = clonedRoutes[key];
+              if (!route.path || route.path === '*') {
+                return acc;
+              }
+              acc.push(`"${route.path}"`);
+              return acc;
+            }, [])
+            .join(' | ')
         },
       });
     }

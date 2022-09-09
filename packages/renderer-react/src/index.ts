@@ -3,6 +3,7 @@ export {
   createHashHistory,
   createMemoryHistory,
   type History,
+  type Path,
 } from 'history';
 export {
   createSearchParams,
