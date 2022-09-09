@@ -69,6 +69,8 @@ export const request: RequestConfig = {
 
 如果你觉得这种方式进行错误处理过于繁琐，可以直接在拦截器中实现自己的错误处理。
 
+> 注：`errorThrower` 是利用 `responseInterceptors` 实现的，它的触发条件是: 当 `data.success` 为 `false` 时，具体代码逻辑可以在路径 `src/.umi/plugin-request` 中找到。
+
 #### requestInterceptors
 为 request 方法添加请求阶段的拦截器。
 
