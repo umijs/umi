@@ -24,10 +24,10 @@ export function createHistory(opts: any) {
       h.replace(patchTo(to), state);
     },
     get location() {
-      return h.location
+      return h.location;
     },
     get action() {
-      return h.action
+      return h.action;
     }
   }
 
