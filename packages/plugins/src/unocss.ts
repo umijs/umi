@@ -32,11 +32,11 @@ export default (api: IApi) => {
 
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = join(api.cwd, 'node_modules/.bin/unocss');
-    const watchDirs = api.config.unocss.watch;
+    const watchDirs = api.config.unocss.watch.map(dir => `\"${dir}\"`);
 
     /** 透过子进程建立 unocss 服务，将生成的 css 写入 generatedPath */
     const unocss = exec(
-      `${binPath} \"${watchDirs.join(' ')}\" --out-file ${generatedPath} ${
+      `${binPath} ${watchDirs.join(' ')} --out-file ${generatedPath} ${
         api.env === 'development' ? '--watch' : ''
       }`,
       { cwd: api.cwd },
