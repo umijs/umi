@@ -1,7 +1,7 @@
 import { transform } from '@umijs/bundler-utils/compiled/babel/core';
 import { getCorejsVersion, winPath } from '@umijs/utils';
 import { dirname, join } from 'path';
-import { DEFAULT_BROWSER_TARGETS } from '../../constants';
+import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
