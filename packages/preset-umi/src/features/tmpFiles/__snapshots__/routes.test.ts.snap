@@ -48,6 +48,14 @@ Object {
     "parentId": "4",
     "path": "/users/foo",
   },
+  "6": Object {
+    "__content": "",
+    "__isJSFile": true,
+    "absPath": "/absolute",
+    "id": "6",
+    "parentId": "@@/global-layout",
+    "path": "/absolute",
+  },
   "@@/global-layout": Object {
     "absPath": "/",
     "file": "@/layouts/index.tsx",
