@@ -566,6 +566,14 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+  examples/umi-3-compat-mode:
+    specifiers:
+      '@umijs/plugin-umi-request-compat': 1.0.0
+      umi: 4.0.19
+    dependencies:
+      '@umijs/plugin-umi-request-compat': 1.0.0_umi@packages+umi
+      umi: link:../../packages/umi
+
   examples/umi-run:
     specifiers:
       umi: 4.0.19
@@ -679,12 +687,6 @@ importers:
       umi: 4.0.19
     dependencies:
       react-query: 3.39.2
-      umi: link:../../packages/umi
-
-  examples/with-react-router-v5-compat:
-    specifiers:
-      umi: 4.0.19
-    dependencies:
       umi: link:../../packages/umi
 
   examples/with-react-three-fiber:
@@ -1337,7 +1339,7 @@ importers:
       '@umijs/bundler-webpack': 4.0.19
       '@umijs/core': 4.0.19
       '@umijs/did-you-know': ^1.0.0
-      '@umijs/history': 5.3.0
+      '@umijs/history': 5.3.1
       '@umijs/mfsu': 4.0.19
       '@umijs/plugin-run': 4.0.19
       '@umijs/renderer-react': 4.0.19
@@ -1372,7 +1374,7 @@ importers:
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
       '@umijs/did-you-know': link:../../did-you-know
-      '@umijs/history': 5.3.0
+      '@umijs/history': 5.3.1
       '@umijs/mfsu': link:../mfsu
       '@umijs/plugin-run': link:../plugin-run
       '@umijs/renderer-react': link:../renderer-react
@@ -9143,8 +9145,8 @@ packages:
       - supports-color
     dev: true
 
-  /@umijs/history/5.3.0:
-    resolution: {integrity: sha512-3q3O1XZZoCHuIKJhCF1D+3+jC+r4RVl1ssRbtdoCf+AimlN4LpAAd/kfVuxoUvpVgzs7EBc9WTm4ZmE0Dz+Nkw==}
+  /@umijs/history/5.3.1:
+    resolution: {integrity: sha512-/e0cEGrR2bIWQD7pRl3dl9dcyRGeC9hoW0OCvUTT/hjY0EfUrkd6G8ZanVghPMpDuY5usxq9GVcvrT8KNXLWvA==}
     dependencies:
       '@babel/runtime': 7.18.9
       query-string: 6.14.1
@@ -9161,6 +9163,18 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@umijs/plugin-umi-request-compat/1.0.0_umi@packages+umi:
+    resolution: {integrity: sha512-pKriKDwfTMlZykDnAPM+az+KK13R2eCHmsTGYJVjINgFvwY0200um9z2LdPp0xux0Xu1sDcj9Dm8L4j/kzTSbw==}
+    peerDependencies:
+      umi: '4'
+    dependencies:
+      '@ahooksjs/use-request': 2.8.15
+      umi: link:packages/umi
+      umi-request: 1.4.0
+    transitivePeerDependencies:
+      - react
+    dev: false
 
   /@umijs/route-utils/2.1.1:
     resolution: {integrity: sha512-N2ftgkqDEPBau1WyAxJfTQOs78OAVJY/Grl90fDo6ui75Eww563FhWcTrribS8sJS33mv9gtSlBLJ3F9WPLVog==}
@@ -13351,8 +13365,6 @@ packages:
     requiresBuild: true
     dependencies:
       iconv-lite: 0.6.3
-    dev: true
-    optional: true
 
   /end-of-stream/1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
@@ -16273,8 +16285,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
-    dev: true
-    optional: true
 
   /icss-utils/5.1.0_postcss@8.4.14:
     resolution: {integrity: sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==}
@@ -16811,6 +16821,11 @@ packages:
       protocols: 2.0.1
     dev: true
 
+  /is-stream/1.1.0:
+    resolution: {integrity: sha512-uQPm8kcs47jx38atAcWTVxyltQYoPT68y9aWYdV6yWXSyW8mzSat0TL6CiWdZeCdF3KrAvpVtnHbTv4RN+rqdQ==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /is-stream/2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
     engines: {node: '>=8'}
@@ -16907,6 +16922,13 @@ packages:
   /isobject/3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
+
+  /isomorphic-fetch/2.2.1:
+    resolution: {integrity: sha512-9c4TNAKYXM5PRyVcwUZrF3W09nQ+sO7+jydgs4ZGW9dhsLG2VOlISJABombdQqQRXCwuYG3sYV/puGf5rp0qmA==}
+    dependencies:
+      node-fetch: 1.7.3
+      whatwg-fetch: 3.6.2
+    dev: false
 
   /isomorphic-unfetch/3.1.0:
     resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
@@ -19705,6 +19727,13 @@ packages:
     resolution: {integrity: sha512-10EKpOCQPXwZVFh3U1ptOMWBgKTbsN7Vvo6WVKt5pw4hp8zbv6ZVBZPlXw+5M6Tyi1oc1iD4/sNPd71KYA16tQ==}
     dev: false
 
+  /node-fetch/1.7.3:
+    resolution: {integrity: sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==}
+    dependencies:
+      encoding: 0.1.13
+      is-stream: 1.1.0
+    dev: false
+
   /node-fetch/2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
@@ -22427,7 +22456,6 @@ packages:
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.0.4
-    dev: true
 
   /qs/6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
@@ -27338,6 +27366,13 @@ packages:
     resolution: {integrity: sha512-lE/rxOhmiScJu9L6RTNVgB/zZbF+vGC0/p6D3xnkAePI2o0sMyFG966iR5Ki50OI/0mNi2yaRnxfLsPmEZF/JA==}
     dev: true
 
+  /umi-request/1.4.0:
+    resolution: {integrity: sha512-OknwtQZddZHi0Ggi+Vr/olJ7HNMx4AzlywyK0W3NZBT7B0stjeZ9lcztA85dBgdAj3KVk8uPJPZSnGaDjELhrA==}
+    dependencies:
+      isomorphic-fetch: 2.2.1
+      qs: 6.11.0
+    dev: false
+
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
     dependencies:
@@ -28433,6 +28468,10 @@ packages:
     dependencies:
       iconv-lite: 0.4.24
     dev: true
+
+  /whatwg-fetch/3.6.2:
+    resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
+    dev: false
 
   /whatwg-mimetype/2.3.0:
     resolution: {integrity: sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==}
