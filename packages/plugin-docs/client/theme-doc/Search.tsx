@@ -94,7 +94,7 @@ export default () => {
           id="search-results-wrapper"
           className={cx(
             'absolute transition-all duration-500 top-12 w-96 rounded-lg',
-            'cursor-pointer shadow overflow-hidden',
+            'cursor-pointer shadow overflow-y-scroll',
             keyword && isFocused ? 'max-h-80' : 'max-h-0',
           )}
         >
