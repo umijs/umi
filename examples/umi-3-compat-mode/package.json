@@ -4,10 +4,11 @@
   "scripts": {
     "build": "umi build",
     "dev": "umi dev",
-    "setup": "umi setup"
+    "setup": "umi setup",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@umijs/plugin-umi-request-compat": "1.0.0",
-    "umi": "4.0.19"
+    "umi": "4.0.20"
   }
 }
