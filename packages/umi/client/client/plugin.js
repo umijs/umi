@@ -1,3 +1,4 @@
+import _regeneratorRuntime from "@babel/runtime/helpers/regeneratorRuntime";
 import _objectSpread from "@babel/runtime/helpers/objectSpread2";
 import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
 import _typeof from "@babel/runtime/helpers/typeof";
@@ -6,7 +7,6 @@ import _toArray from "@babel/runtime/helpers/toArray";
 import _classCallCheck from "@babel/runtime/helpers/classCallCheck";
 import _createClass from "@babel/runtime/helpers/createClass";
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
 import { assert, compose, isPromiseLike } from "./utils";
 export var ApplyPluginsType;
 
@@ -98,9 +98,9 @@ export var PluginManager = /*#__PURE__*/function () {
         case ApplyPluginsType.modify:
           if (async) {
             return hooks.reduce( /*#__PURE__*/function () {
-              var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(memo, hook) {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(memo, hook) {
                 var ret;
-                return _regeneratorRuntime.wrap(function _callee$(_context) {
+                return _regeneratorRuntime().wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:
@@ -184,10 +184,10 @@ export var PluginManager = /*#__PURE__*/function () {
           }
 
         case ApplyPluginsType.event:
-          return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+          return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
             var _iterator2, _step2, hook, ret;
 
-            return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+            return _regeneratorRuntime().wrap(function _callee2$(_context2) {
               while (1) {
                 switch (_context2.prev = _context2.next) {
                   case 0:
