@@ -170,6 +170,12 @@ export class Config {
         try {
           config = lodash.merge(config, require(configFile).default);
         } catch (e) {
+          // Error.prototype.cause has been fully supported from  node v16.9.0
+          // Ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause#browser_compatibility
+          if (process.version < 'v16.9.0') {
+            throw e;
+          }
+
           // @ts-ignore
           throw new Error(`Parse config file failed: [${configFile}]`, {
             cause: e,
