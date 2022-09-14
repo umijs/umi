@@ -531,6 +531,13 @@ headScripts: [
 
 设置路由 history 类型。
 
+## historyWithQuery
+
+- 类型：`‌{}`
+- 默认值：`false`
+
+让 history 带上 query。除了通过 `useNavigate` 进行的跳转场景，此时还需自行处理 query。
+
 ## https
 
 - 类型：`{ cert: string; key: string; hosts: string[] }`
@@ -918,6 +925,18 @@ proxy: {
 - 默认值：`/`
 
 配置 webpack 的 publicPath。
+
+## reactRouter5Compat
+
+- 类型：`object`
+- 默认值：`false`
+
+启用 react-router 5 兼容模式。此模式下，路由组件的 props 会包含 location、match、history 和 params 属性，和 react-router 5 的保持一致。
+
+但要注意的是，
+
+1. 此模式下会有额外的 re-render
+2. 由于依赖库 history 更新，location 中依旧没有 query 属性
 
 ## routes
 

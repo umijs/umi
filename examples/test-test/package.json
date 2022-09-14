@@ -7,8 +7,8 @@
     "test": "jest --no-cache --coverage"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.17",
-    "umi": "4.0.17"
+    "@umijs/plugins": "4.0.20",
+    "umi": "4.0.20"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

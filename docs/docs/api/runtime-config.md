@@ -85,7 +85,7 @@ export default {
 
 ### layout
 
-修改[内置布局](../guides/layout-menu)的配置，比如配置退出登陆、自定义导航暴露的渲染区域等。
+修改[内置布局](../max/layout-menu)的配置，比如配置退出登陆、自定义导航暴露的渲染区域等。
 
 > 注意：需要开启 [layout](../api/config#layout) 插件，才能使用它的运行时配置。
 

@@ -1,6 +1,15 @@
 /// <reference types="cypress" />
 
+import { before } from '@umijs/utils/compiled/cheerio/lib/api/manipulation';
+
 describe('data-flow', function () {
+  beforeEach(() => {
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.setCacheDisabled',
+      params: { cacheDisabled: true },
+    });
+  });
+
   context('dva', () => {
     beforeEach(() => {
       cy.intercept(/dva.async.js$/).as('chunkLoaded');

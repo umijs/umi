@@ -7,7 +7,8 @@ export default () => {
       require.resolve('./registerMethods'),
 
       // features
-      require.resolve('@umijs/did-you-know/dist/plugin'),
+      process.env.DID_YOU_KNOW !== 'none' &&
+        require.resolve('@umijs/did-you-know/dist/plugin'),
       require.resolve('./features/404/404'),
       require.resolve('./features/appData/appData'),
       require.resolve('./features/check/check'),
@@ -57,6 +58,6 @@ export default () => {
       require.resolve('./commands/verify-commit'),
       require.resolve('./commands/preview'),
       require.resolve('@umijs/plugin-run'),
-    ],
+    ].filter(Boolean),
   };
 };

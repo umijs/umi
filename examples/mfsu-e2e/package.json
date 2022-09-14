@@ -12,7 +12,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.17"
+    "lodash.uppercase": "^4.3.0",
+    "umi": "4.0.20"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
