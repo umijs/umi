@@ -140,7 +140,7 @@ article div[data-rehype-pretty-code-fragment] pre > code > .line {
   @apply border-l-2 border-transparent;
 }
 article div[data-rehype-pretty-code-fragment] pre > code > .line.highlighted {
-  @apply bg-neutral-100 dark:bg-neutral-300 bg-opacity-10 dark:bg-opacity-10 border-l-blue-400 dark:border-l-sky-600;
+  @apply bg-neutral-100 dark:bg-neutral-300 bg-opacity-30 dark:bg-opacity-10 border-l-blue-400 dark:border-l-sky-600;
 }
 
 /* 链接 */
@@ -217,6 +217,10 @@ article hr {
     black 80%,
     transparent 100%
   );
+}
+
+body {
+  overflow-y: scroll;
 }
 
 html {

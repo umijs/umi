@@ -232,6 +232,7 @@ const { formatMessage } = useIntl();
         }
         return defaultDom;
       }}
+      itemRender={(route) => <Link to={route.path}>{route.breadcrumbName}</Link>}
       disableContentMargin
       fixSiderbar
       fixedHeader

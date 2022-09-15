@@ -10,6 +10,6 @@
     "zx:noimport": "umi run ./scripts/zx-noimport.ts"
   },
   "dependencies": {
-    "umi": "4.0.17"
+    "umi": "4.0.21"
   }
 }

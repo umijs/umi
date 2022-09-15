@@ -2,6 +2,10 @@ import { join } from 'path';
 import { componentToChunkName, getRoutes } from './routes';
 
 const fixtures = join(__dirname, './fixtures/getRoutes');
+const ABSOLUTE_PAGE_PATH = join(
+  __dirname,
+  './fixtures/getRoutes/pages/absolute.tsx',
+);
 
 test('getRoutes', async () => {
   const routes = await getRoutes({
@@ -36,6 +40,10 @@ test('getRoutes', async () => {
               },
             ],
           },
+          {
+            path: '/absolute',
+            component: ABSOLUTE_PAGE_PATH,
+          },
         ],
       },
       applyPlugins(opts: any) {
@@ -60,6 +68,10 @@ test('getRoutes', async () => {
   // vue 文件测试
   expect(routes[3].file).toBe('@/pages/hello/index.vue');
   expect(routes[3].parentId).toBe('@@/global-layout');
+
+  // resolve absolute path
+  expect(routes[6].file).toBe(ABSOLUTE_PAGE_PATH);
+  delete routes[6].file;
 
   // __absFile 是具体的路径, 快照测试通不过
   Object.keys(routes).forEach((id) => {

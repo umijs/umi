@@ -89,6 +89,12 @@ export default (api: IApi) => {
                 : {}),
             },
           },
+          include: [
+            `${baseUrl}.umirc.ts`,
+            `${baseUrl}**/*.d.ts`,
+            `${baseUrl}**/*.ts`,
+            `${baseUrl}**/*.tsx`,
+          ],
         },
         null,
         2,
@@ -293,6 +299,7 @@ declare module '*.txt' {
         basename: api.config.base,
         historyType: api.config.history.type,
         hydrate: !!api.config.ssr,
+        reactRouter5Compat: !!api.config.reactRouter5Compat,
         loadingComponent:
           existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||
           existsSync(join(api.paths.absSrcPath, 'loading.jsx')) ||
@@ -438,12 +445,15 @@ export default function EmptyRoute() {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
+      const historyPath = api.config.historyWithQuery
+        ? winPath(dirname(require.resolve('@umijs/history/package.json')))
+        : rendererPath;
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/history.ts',
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
-          rendererPath,
+          historyPath,
         },
       });
     }

@@ -15,6 +15,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       Joi.object({
         type: Joi.string().valid('browser', 'hash', 'memory'),
       }),
+    historyWithQuery: (Joi) => Joi.object(),
     links: (Joi) => Joi.array(),
     metas: (Joi) => Joi.array(),
     mountElementId: (Joi) => Joi.string(),
@@ -32,6 +33,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       Joi.string()
         .regex(/(\/|^auto)$/)
         .error(new Error('publicPath must be "auto" or end with /')),
+    reactRouter5Compat: (Joi) => Joi.object(),
     routes: (Joi) => Joi.array().items(Joi.object()),
     scripts: (Joi) => Joi.array(),
     styles: (Joi) => Joi.array(),
