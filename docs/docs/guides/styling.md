@@ -96,10 +96,10 @@ Umi 提供了内置的 [Tailwindcss](https://tailwindcss.com/)
 与 Tailwindcss 相同，Umi 也提供了内置的 [UnoCSS](https://github.com/unocss/unocss) 插件，可以按照相同方式开启。
 
 1. 安装 `plugin-unocss`
-2. 安装 `unocss` 及 `@unocss/cli`
+2. 安装 `unocss` 及 `@unocss/webpack`
 
 ```bash
-pnpm i unocss @unocss/cli
+pnpm i unocss @unocss/webpack
 ```
 
 3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
@@ -111,9 +111,7 @@ export default {
   plugins: [
     require.resolve('@umijs/plugins/dist/unocss')
   ],
-  unocss: {
-    watch: ['pages/**/*.tsx'] // 添加其他包含 unocss 的 classname 的文件目录
-  },
+  unocss: {},
 };
 ```
 
@@ -133,5 +131,3 @@ export function createConfig({strict = true, dev = true} = {}) {
 
 export default createConfig(); 
 ```
-
-5. 启动项目进行开发，插件会监听设置文件中的 `unocss.watch` 字段，动态生成样式文件并自动套用
