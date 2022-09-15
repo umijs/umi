@@ -1087,7 +1087,7 @@ setCreateHistoryOptions({
 ## runtimePublicPath
 
 - Type: `boolean`
-- Default: `false`
+- Default: `true`
 
 配置是否启用运行时 publicPath。
 
