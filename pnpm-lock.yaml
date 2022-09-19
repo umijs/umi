@@ -1534,8 +1534,10 @@ importers:
       debug: 4.3.4
       deepmerge: 4.2.2
       execa: 6.1.0
+      filesize: 9.0.11
       fs-extra: 10.0.1
       glob: 8.0.1
+      gzip-size: 6.0.0
       import-lazy: 4.0.0
       lodash: 4.17.21
       mustache: 4.2.0
@@ -1573,8 +1575,10 @@ importers:
       debug: 4.3.4
       deepmerge: 4.2.2
       execa: 6.1.0
+      filesize: 9.0.11
       fs-extra: 10.0.1
       glob: 8.0.1
+      gzip-size: 6.0.0
       import-lazy: 4.0.0
       lodash: 4.17.21
       mustache: 4.2.0
@@ -12267,7 +12271,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
 
   /concat-stream/1.6.2:
     resolution: {integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==}
@@ -15479,6 +15483,11 @@ packages:
     dependencies:
       fs-extra: 10.1.0
       ramda: 0.28.0
+    dev: true
+
+  /filesize/9.0.11:
+    resolution: {integrity: sha512-gTAiTtI0STpKa5xesyTA9hA3LX4ga8sm2nWRcffEa1L/5vQwb4mj2MdzMkoHoGv4QzfDshQZuYscQSf8c4TKOA==}
+    engines: {node: '>= 0.4.0'}
     dev: true
 
   /fill-range/7.0.1:

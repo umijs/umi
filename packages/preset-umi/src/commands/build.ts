@@ -1,13 +1,17 @@
 import { getMarkup } from '@umijs/server';
 import { chalk, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { IApi } from '../types';
 import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
 import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
 import { getMarkupArgs } from './dev/getMarkupArgs';
 import { printMemoryUsage } from './dev/printMemoryUsage';
+import {
+  measureFileSizesBeforeBuild,
+  printFileSizesAfterBuild,
+} from '../utils/fileSizeReporter';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -122,7 +126,24 @@ umi build --clean
       if (api.config.vite) {
         stats = await bundlerVite.build(opts);
       } else {
+        // Measure files sizes before build
+        const absOutputPath = resolve(
+          opts.cwd,
+          opts.config.outputPath || bundlerWebpack.DEFAULT_OUTPUT_PATH,
+        );
+        const previousFileSizes = measureFileSizesBeforeBuild(absOutputPath);
+
+        // Build
         stats = await bundlerWebpack.build(opts);
+
+        // Print files sizes
+        console.log();
+        logger.info('File sizes after gzip:\n');
+        printFileSizesAfterBuild({
+          webpackStats: stats,
+          previousSizeMap: previousFileSizes,
+          buildFolder: absOutputPath,
+        });
       }
 
       // generate html

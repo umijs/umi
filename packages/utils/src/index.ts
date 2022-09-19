@@ -25,6 +25,8 @@ import generateFile from './BaseGenerator/generateFile';
 import Generator from './Generator/Generator';
 import getGitInfo from './getGitInfo';
 import installDeps from './installDeps';
+import filesize from '../compiled/filesize';
+import gzipSize from '../compiled/gzip-size';
 import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
@@ -69,4 +71,6 @@ export {
   yParser,
   getGitInfo,
   printHelp,
+  filesize,
+  gzipSize,
 };
