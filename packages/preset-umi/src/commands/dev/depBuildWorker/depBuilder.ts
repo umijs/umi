@@ -105,10 +105,10 @@ export class DepBuilderInWorker {
         await this.buildWithWebpack(newOpts);
       }
     } catch (e) {
-      onBuildComplete();
       parentPort!.postMessage({
         error: e,
       });
+      onBuildComplete();
       throw e;
     }
   }
