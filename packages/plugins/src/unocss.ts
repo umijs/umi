@@ -36,7 +36,11 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig((memo) => {
-    if (memo?.mfsu) {
+    if (api.isPluginEnable('mfsu')) {
+      // mfsu默认开启时为undefined
+      if (memo.mfsu === undefined) {
+        memo.mfsu = {};
+      }
       memo.mfsu.exclude = [...(memo.mfsu?.exclude || []), outputPath];
     }
     return memo;
