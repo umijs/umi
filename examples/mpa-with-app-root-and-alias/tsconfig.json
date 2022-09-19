@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["ESNext"],
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "./src/",
+    "paths": {
+      "@/shared": ["./shared"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
