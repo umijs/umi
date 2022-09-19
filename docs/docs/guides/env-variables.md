@@ -17,10 +17,12 @@ $ set PORT=3000&&umi dev
 ```
 
 如果需要同时在不同的操作系统中使用环境变量，推荐使用工具 [cross-env](https://github.com/kentcdodds/cross-env)
+> 若使用的包管理器是 pnpm, 在 `.npmrc` 中设置 `shell-emulator=true`, 则无需安装 cross-env
 
 ```bash
 $ pnpm install cross-env -D
-$ cross-env PORT=3000 umi dev
+# 在 .npmrc 中设置 shell-emulator=true, 避免额外安装 cross-env
+$ PORT=3000 umi dev
 ```
 
 ### 设置在 .env 文件中

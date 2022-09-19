@@ -6,7 +6,7 @@
     "ci": "cypress run",
     "dev": "umi dev",
     "e2e": "cypress run",
-    "e2e:ci": "cross-env HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
     "e2e:open": "cypress open",
     "preview": "max preview --port 6070",
     "setup": "umi setup",
@@ -18,7 +18,6 @@
     "vue": "3.2.36"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "cypress": "^10.0.0",
     "start-server-and-test": "^1.0.0"
   }
