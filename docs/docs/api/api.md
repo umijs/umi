@@ -751,3 +751,16 @@ class HelloWorld extends React.Component<any> {
 
 export default withRouter(HelloWorld);
 ```
+
+
+
+### $route
+
+在任意需要路由的地方, 可获取到路由跳转路径的类型提示
+
+```tsx
+import { Link, $route } from 'umi';
+function IndexPage({ user }) {
+  return <Link to={$route("/user")}>{user.name}</Link>;
+}
+```

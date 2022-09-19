@@ -2,6 +2,14 @@ import { createWebHashHistory, createMemoryHistory, createWebHistory } from '{{{
 import type { RouterHistory } from '{{{ rendererPath }}}';
 
 let history: RouterHistory;
+
+type LiteralUnion<T extends string> = T | Omit<T, T>;
+type RoutePath = {{{routePaths}}}
+export const $route = (to: LiteralUnion<RoutePath>) => {
+  return to;
+}
+
+
 export function createHistory(opts: any) {
   if (opts.type === 'hash') {
     history = createWebHashHistory(opts.basename);

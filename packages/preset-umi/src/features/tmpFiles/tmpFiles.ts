@@ -66,13 +66,13 @@ export default (api: IApi) => {
             // Supported by vue only
             ...(api.appData.framework === 'vue'
               ? {
-                // TODO Actually, it should be vite mode, but here it is written as vue only
-                // Required in Vite https://vitejs.dev/guide/features.html#typescript
-                isolatedModules: true,
-                // For `<script setup>`
-                // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
-                preserveValueImports: true,
-              }
+                  // TODO Actually, it should be vite mode, but here it is written as vue only
+                  // Required in Vite https://vitejs.dev/guide/features.html#typescript
+                  isolatedModules: true,
+                  // For `<script setup>`
+                  // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
+                  preserveValueImports: true,
+                }
               : {}),
 
             paths: {
@@ -84,8 +84,8 @@ export default (api: IApi) => {
               ],
               ...(api.config.vite
                 ? {
-                  '@fs/*': ['*'],
-                }
+                    '@fs/*': ['*'],
+                  }
                 : {}),
             },
           },
@@ -93,7 +93,7 @@ export default (api: IApi) => {
             `${baseUrl}.umirc.ts`,
             `${baseUrl}**/*.d.ts`,
             `${baseUrl}**/*.ts`,
-            `${baseUrl}**/*.tsx`
+            `${baseUrl}**/*.tsx`,
           ],
         },
         null,
@@ -151,15 +151,16 @@ declare module '*.gif' {
   export default src
 }
 declare module '*.svg' {
-  ${api.config.svgr
-          ? `
+  ${
+    api.config.svgr
+      ? `
   import * as React from 'react';
   export const ReactComponent: React.FunctionComponent<React.SVGProps<
   SVGSVGElement
   > & { title?: string }>;
 `.trimStart()
-          : ''
-        }
+      : ''
+  }
   const src: string
   export default src
 }
@@ -462,7 +463,7 @@ export default function EmptyRoute() {
               acc.push(`"${route.path}"`);
               return acc;
             }, [])
-            .join(' | ')
+            .join(' | '),
         },
       });
     }
@@ -533,7 +534,9 @@ export default function EmptyRoute() {
         ).join(', ')} } from '${umiPluginPath}';`,
       );
       // @@/core/history.ts
-      exports.push(`export { history, createHistory } from './core/history';`);
+      exports.push(
+        `export { history, createHistory, $route } from './core/history';`,
+      );
       checkMembers({
         members: ['history', 'createHistory'],
         exportMembers,

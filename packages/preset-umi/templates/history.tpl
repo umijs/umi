@@ -10,6 +10,11 @@ let history: Omit<History, 'push' | 'replace'> & {
   push(to: To, state?: any): void;
   replace(to: To, state?: any): void;
 };
+
+export const $route = (to: LiteralUnion<RoutePath>) => {
+  return to;
+}
+
 let basename: string = '/';
 export function createHistory(opts: any) {
   let h;
