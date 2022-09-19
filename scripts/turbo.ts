@@ -11,8 +11,8 @@ import { spawnSync } from './.internal/utils';
 
   // filter
   if (!args.includes('--filter')) {
-    // Tips: should use double quotes, single quotes are not valid on windows.
-    args.unshift('--filter', `"./packages/*"`);
+    // Tips: pnpm use `@yarnpkg/shell`, so use ' wrap glob
+    args.unshift('--filter', `'./packages/*'`);
   }
 
   // turbo cache
