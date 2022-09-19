@@ -1,4 +1,4 @@
-import { chalk, logger } from '@umijs/utils';
+import { chalk, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -63,7 +63,7 @@ export default (api: IApi) => {
         content: `
 import React from 'react';
 import ReactDOM from '${reactDOMSource}';
-import App from '${entry.file}';
+import App from '${winPath(entry.file)}';
 ${layoutImport}
 ${renderer}
         `.trimStart(),
