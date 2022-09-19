@@ -137,7 +137,7 @@ export interface IRuntimeConfig {
         ...memo.qiankun,
         slave: initialSlaveOptions,
       },
-    };
+    } as any;
 
     const shouldNotModifyDefaultBase =
       api.userConfig.qiankun?.slave?.shouldNotModifyDefaultBase ??
@@ -148,16 +148,11 @@ export interface IRuntimeConfig {
       modifiedDefaultConfig.base = `/${api.pkg.name}`;
     }
 
-    return modifiedDefaultConfig;
-  });
-
-  api.modifyConfig((config) => {
-    // mfsu 场景默认给子应用增加 mfName 配置，从而避免冲突
-    if (config.mfsu !== false) {
-      config.mfsu = {
-        ...config.mfsu,
+    if (modifiedDefaultConfig.mfsu !== false) {
+      modifiedDefaultConfig.mfsu = {
+        ...modifiedDefaultConfig.mfsu,
         mfName:
-          config.mfsu?.mfName ||
+          modifiedDefaultConfig.mfsu?.mfName ||
           `mf_${api.pkg.name
             // 替换掉包名里的特殊字符
             // e.g. @umi/ui -> umi_ui
@@ -165,7 +160,8 @@ export interface IRuntimeConfig {
             .replace(/\W/g, '_')}`,
       };
     }
-    return config;
+
+    return modifiedDefaultConfig;
   });
 
   api.addHTMLHeadScripts(() => {
