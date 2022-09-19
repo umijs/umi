@@ -54,7 +54,7 @@ socket.addEventListener('message', /*#__PURE__*/function () {
               console.log("[webpack] connected."); // proxy(nginx, docker) hmr ws maybe caused timeout,
               // so send ping package let ws keep alive.
 
-              pingTimer = setInterval(function () {
+              pingTimer = window.setInterval(function () {
                 return socket.send('ping');
               }, 30000);
             } else {
