@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { chokidar, lodash, register } from '@umijs/utils';
+import { chokidar, lodash, register, semver } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
 import assert from 'assert';
 import { existsSync } from 'fs';
@@ -170,6 +170,12 @@ export class Config {
         try {
           config = lodash.merge(config, require(configFile).default);
         } catch (e) {
+          // Error.prototype.cause has been fully supported from  node v16.9.0
+          // Ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause#browser_compatibility
+          if (semver.lt(semver.clean(process.version)!, '16.9.0')) {
+            throw e;
+          }
+
           // @ts-ignore
           throw new Error(`Parse config file failed: [${configFile}]`, {
             cause: e,
