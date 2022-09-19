@@ -76,7 +76,7 @@ jobs:
           working-directory: ./examples/max
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:ci
+          command: pnpm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
@@ -87,7 +87,7 @@ jobs:
           working-directory: ./examples/max
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:dev:ci
+          command: pnpm run e2e:dev:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
@@ -98,14 +98,14 @@ jobs:
           working-directory: ./examples/mfsu-e2e
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:ci
+          command: pnpm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
       - name: set mfsu-eager env
         run: |
           npx rimraf node_modules/.cache
-          npm run set:eager
+          pnpm run set:eager
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
@@ -116,7 +116,7 @@ jobs:
           working-directory: ./examples/mfsu-e2e
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:ci
+          command: pnpm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
@@ -127,7 +127,7 @@ jobs:
           working-directory: ./examples/mf-remote
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:ci
+          command: pnpm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
@@ -138,7 +138,7 @@ jobs:
           working-directory: ./examples/mf-host
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:ci
+          command: pnpm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
@@ -149,7 +149,7 @@ jobs:
           working-directory: ./examples/boilerplate-vue
           install: false
           install-command: pnpm i cypress
-          command: npm run e2e:ci
+          command: pnpm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
