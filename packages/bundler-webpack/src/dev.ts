@@ -93,6 +93,7 @@ export async function dev(opts: IOpts) {
   }
 
   const webpackConfig = await getConfig({
+    name: opts.mfsuStrategy === 'eager' ? 'eager' : undefined,
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.development,

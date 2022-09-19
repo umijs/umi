@@ -82,6 +82,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       opts.staticPathPrefix !== undefined ? opts.staticPathPrefix : 'static/',
   };
 
+  // name
+  config.name(opts.name);
+
   // mode
   config.mode(opts.env);
   config.stats('none');
