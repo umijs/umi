@@ -66,6 +66,7 @@ export async function dev(opts: IOpts) {
       implementor: webpack as any,
       buildDepWithESBuild: opts.config.mfsu?.esbuild,
       depBuildConfig: {
+        define: opts.config?.define || {},
         extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
       },
       mfName: opts.config.mfsu?.mfName,
