@@ -104,7 +104,7 @@ jobs:
 
       - name: set mfsu-eager env
         run: |
-          npx rimraf node_modules/.cache
+          pnpm exec rimraf node_modules/.cache
           pnpm run set:eager
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
@@ -156,7 +156,7 @@ jobs:
       - name: e2e:example-test-test
         working-directory: ./examples/test-test
         run: |
-          npx umi setup
+          pnpm exec umi setup
           pnpm test
       - name: Notify Contributor Group
         if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
