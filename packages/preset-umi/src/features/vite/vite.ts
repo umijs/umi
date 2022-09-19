@@ -14,6 +14,11 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     // like vite, use to pre-bundling dependencies in vite mode
     memo.alias['@fs'] = api.cwd;
+
+    // vite development env disable polyfill optimise dev development experience
+    if (api.env === 'development') {
+      memo.polyfill = false;
+    }
     return memo;
   });
 
