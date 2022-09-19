@@ -6,7 +6,7 @@ import type {
 } from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, statSync } from 'fs';
+import { readFileSync, statSync, existsSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -72,6 +72,7 @@ export class MFSU {
   public onProgress: Function;
   public publicPath: string = '/';
   private strategy: IMFSUStrategy;
+  private lastBuildError: any = null;
 
   constructor(opts: IOpts) {
     this.opts = opts;
@@ -264,38 +265,44 @@ promise new Promise(resolve => {
   }
 
   async buildDeps() {
-    const shouldBuild = this.strategy.shouldBuild();
-    if (!shouldBuild) {
-      logger.info('[MFSU] skip buildDeps');
-      return;
-    }
+    try {
+      const shouldBuild = this.strategy.shouldBuild();
+      if (!shouldBuild) {
+        logger.info('[MFSU] skip buildDeps');
+        return;
+      }
 
-    // Snapshot after compiled success
-    this.strategy.refresh();
+      // Snapshot after compiled success
+      this.strategy.refresh();
 
-    const staticDeps = this.strategy.getDepModules();
+      const staticDeps = this.strategy.getDepModules();
 
-    const deps = Dep.buildDeps({
-      deps: staticDeps,
-      cwd: this.opts.cwd!,
-      mfsu: this,
-    });
-    logger.info(`[MFSU] buildDeps since ${shouldBuild}`);
-    logger.debug(deps.map((dep) => dep.file).join(', '));
-
-    await this.depBuilder.build({
-      deps,
-    });
-
-    // Write cache
-    this.strategy.writeCache();
-
-    if (this.buildDepsAgain) {
-      logger.info('[MFSU] buildDepsAgain');
-      this.buildDepsAgain = false;
-      this.buildDeps().catch((e: Error) => {
-        printHelp.runtime(e);
+      const deps = Dep.buildDeps({
+        deps: staticDeps,
+        cwd: this.opts.cwd!,
+        mfsu: this,
       });
+      logger.info(`[MFSU] buildDeps since ${shouldBuild}`);
+      logger.debug(deps.map((dep) => dep.file).join(', '));
+
+      await this.depBuilder.build({
+        deps,
+      });
+      this.lastBuildError = null;
+
+      // Write cache
+      this.strategy.writeCache();
+
+      if (this.buildDepsAgain) {
+        logger.info('[MFSU] buildDepsAgain');
+        this.buildDepsAgain = false;
+        this.buildDeps().catch((e: Error) => {
+          printHelp.runtime(e);
+        });
+      }
+    } catch (e) {
+      this.lastBuildError = e;
+      throw e;
     }
   }
 
@@ -323,9 +330,20 @@ promise new Promise(resolve => {
               new RegExp(`^${relativePublicPath}`),
               '/',
             );
-            const content = readFileSync(
-              join(this.opts.tmpBase!, relativePath),
-            );
+
+            const realFilePath = join(this.opts.tmpBase!, relativePath);
+
+            if (!existsSync(realFilePath)) {
+              logger.error(`MFSU dist file: ${realFilePath} not found`);
+              if (this.lastBuildError) {
+                logger.error(`MFSU latest build error: `, this.lastBuildError);
+              }
+
+              res.status(404);
+              return res.end();
+            }
+
+            const content = readFileSync(realFilePath);
             res.send(content);
           });
         } else {
