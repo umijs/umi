@@ -102,7 +102,7 @@ Umi 提供了内置的 [Tailwindcss](https://tailwindcss.com/)
 pnpm i unocss @unocss/webpack
 ```
 
-3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
+3. 在 Umi 设置中启用插件
 
 ```js
 // .umirc.ts 或 config/config.ts
