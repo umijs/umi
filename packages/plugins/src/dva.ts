@@ -16,6 +16,7 @@ export default (api: IApi) => {
           Joi.object({
             extraModels: Joi.array().items(Joi.string()),
             immer: Joi.object(),
+            skipModelValidate: Joi.boolean(),
           }),
           Joi.boolean().invalid(true),
         );
@@ -193,6 +194,7 @@ export { getDvaApp } from './dva';
 export function getModelUtil(api: IApi | null) {
   return new ModelUtils(api, {
     contentTest(content) {
+      if (api?.config.dva.skipModelValidate) return true;
       return content.startsWith('// @dva-model');
     },
     astTest({ node, content }) {
