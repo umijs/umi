@@ -104,8 +104,8 @@ jobs:
 
       - name: set mfsu-eager env
         run: |
-          pnpm exec rimraf node_modules/.cache
-          pnpm run set:eager
+          npx rimraf node_modules/.cache
+          npm run set:eager
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
