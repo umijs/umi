@@ -105,6 +105,7 @@ export class DepBuilderInWorker {
         await this.buildWithWebpack(newOpts);
       }
     } catch (e) {
+      // 构建失败后,优先发送错误信息给主线程, 如果先执行 onBuildComplete 主进程会认为构成成功.
       parentPort!.postMessage({
         error: e,
       });
