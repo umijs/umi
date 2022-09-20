@@ -178,7 +178,6 @@ importers:
   examples/boilerplate-vue:
     specifiers:
       '@umijs/preset-vue': 4.0.0-canary.20220920.1
-      cross-env: ^7.0.3
       cypress: ^10.0.0
       start-server-and-test: ^1.0.0
       umi: 4.0.0-canary.20220920.1
@@ -300,7 +299,6 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@umijs/max': 4.0.0-canary.20220920.1
-      cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -319,7 +317,6 @@ importers:
   examples/mf-host:
     specifiers:
       '@umijs/max': 4.0.0-canary.20220920.1
-      cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -335,7 +332,6 @@ importers:
   examples/mf-remote:
     specifiers:
       '@umijs/max': 4.0.0-canary.20220920.1
-      cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
       react-dom: 18.1.0
