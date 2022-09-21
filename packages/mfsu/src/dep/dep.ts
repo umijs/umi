@@ -1,4 +1,4 @@
-import { pkgUp, winPath } from '@umijs/utils';
+import { pkgUp, winPath, logger, chalk } from '@umijs/utils';
 import assert from 'assert';
 import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
@@ -68,7 +68,15 @@ export * from '${this.file}';
 
     // none node natives
     const realFile = await this.getRealFile();
-    assert(realFile, `filePath not found of ${this.file}`);
+
+    if (!realFile) {
+      logger.error(
+        `Can not resolve dependence : '${chalk.red(
+          this.file,
+        )}', please install it`,
+      );
+    }
+    assert(realFile, `dependence not found: ${this.file}`);
     const content = readFileSync(realFile, 'utf-8');
     return await getExposeFromContent({
       content,

@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "lodash.uppercase": "^4.3.0",
-    "umi": "4.0.21"
+    "umi": "4.0.0-canary.20220920.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

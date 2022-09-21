@@ -25,7 +25,7 @@ function getPingUrl() {
   return `${h.protocol}//${h.host}/__umi_ping`;
 }
 
-let pingTimer: NodeJS.Timer | null = null;
+let pingTimer: number | null = null;
 
 let isFirstCompilation = true;
 let mostRecentCompilationHash: string | null = null;
@@ -41,7 +41,7 @@ socket.addEventListener('message', async ({ data }) => {
     console.log(`[webpack] connected.`);
     // proxy(nginx, docker) hmr ws maybe caused timeout,
     // so send ping package let ws keep alive.
-    pingTimer = setInterval(() => socket.send('ping'), 30000);
+    pingTimer = window.setInterval(() => socket.send('ping'), 30000);
   } else {
     handleMessage(data).catch(console.error);
   }
