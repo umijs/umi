@@ -93,7 +93,6 @@ export async function dev(opts: IOpts) {
   }
 
   const webpackConfig = await getConfig({
-    name: opts.mfsuStrategy === 'eager' ? 'eager' : undefined,
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.development,
@@ -118,7 +117,12 @@ export async function dev(opts: IOpts) {
     cache: opts.cache
       ? {
           ...opts.cache,
-          cacheDirectory: join(cacheDirectoryPath, 'bundler-webpack'),
+          cacheDirectory: join(
+            cacheDirectoryPath,
+            opts.mfsuStrategy === 'eager'
+              ? 'bundler-webpack-eager'
+              : 'bundler-webpack',
+          ),
         }
       : undefined,
     pkg: opts.pkg,
