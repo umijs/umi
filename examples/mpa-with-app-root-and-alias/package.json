@@ -1,5 +1,5 @@
 {
-  "name": "@example/mpa",
+  "name": "@example/mpa-with-app-root-and-alias",
   "private": true,
   "scripts": {
     "dev": "APP_ROOT=src/webview umi dev",
