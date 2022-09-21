@@ -79,6 +79,7 @@ jobs:
       - run: pnpm build
       - run: pnpm tsc:check
       - run: pnpm test
+      - run: pnpm check:packageFiles
         env:
           CI: true
           NODE_ENV: test

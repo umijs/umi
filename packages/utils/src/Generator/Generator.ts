@@ -25,7 +25,11 @@ class Generator {
 
   async run() {
     const questions = this.prompting();
-    this.prompts = await prompts(questions);
+    this.prompts = await prompts(questions, {
+      onCancel() {
+        process.exit(1);
+      },
+    });
     await this.writing();
   }
 

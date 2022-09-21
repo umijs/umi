@@ -93,7 +93,7 @@ export default (api: IApi) => {
             `${baseUrl}.umirc.ts`,
             `${baseUrl}**/*.d.ts`,
             `${baseUrl}**/*.ts`,
-            `${baseUrl}**/*.tsx`
+            `${baseUrl}**/*.tsx`,
           ],
         },
         null,

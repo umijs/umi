@@ -1,4 +1,4 @@
-import { chalk, logger } from '@umijs/utils';
+import { chalk, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -16,6 +16,7 @@ export default (api: IApi) => {
       schema(Joi) {
         return Joi.object({
           template: Joi.string(),
+          layout: Joi.string(),
           getConfigFromEntryFile: Joi.boolean(),
         });
       },
@@ -48,10 +49,9 @@ export default (api: IApi) => {
 
     const isReact18 = api.appData.react.version.startsWith('18.');
     (api.appData.mpa.entry as Entry[]).forEach((entry) => {
-      const layoutImport = entry.layout
-        ? `import Layout from '${entry.layout}';`
-        : '';
-      const layoutJSX = entry.layout ? `<Layout><App /></Layout>` : `<App />`;
+      const layout = entry.layout || api.config.mpa.layout;
+      const layoutImport = layout ? `import Layout from '${layout}';` : '';
+      const layoutJSX = layout ? `<Layout><App /></Layout>` : `<App />`;
       const rootElement = `document.getElementById('${entry.mountElementId}')`;
       const renderer = isReact18
         ? `ReactDOM.createRoot(${rootElement}).render(${layoutJSX});`
@@ -63,7 +63,7 @@ export default (api: IApi) => {
         content: `
 import React from 'react';
 import ReactDOM from '${reactDOMSource}';
-import App from '${entry.file}';
+import App from '${winPath(entry.file)}';
 ${layoutImport}
 ${renderer}
         `.trimStart(),
