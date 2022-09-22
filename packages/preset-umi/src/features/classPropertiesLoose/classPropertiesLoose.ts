@@ -2,7 +2,7 @@ import { IApi } from '../../types';
 
 export default (api: IApi) => {
   api.describe({
-    key: 'enableClassPropertiesLoose',
+    key: 'classPropertiesLoose',
     config: {
       schema(joi) {
         return joi.object();
@@ -12,7 +12,7 @@ export default (api: IApi) => {
   });
 
   api.modifyBabelPresetOpts((memo) => {
-    memo.enableClassPropertiesLoose = {};
+    memo.classPropertiesLoose = {};
     return memo;
   });
 };
