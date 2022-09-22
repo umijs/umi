@@ -40,7 +40,7 @@ function Provider(props) {${
         hasAccessFile
           ? `
   const { initialState } = useModel('@@initialState');
-  const access = React.useMemo(() => accessFactory(initialState), [initialState]);
+  const access = accessFactory(initialState);
 `
           : `
   const access = {};
@@ -85,48 +85,53 @@ export const Access: React.FC<PropsWithChildren<AccessProps>> = (props) => {
 
 export const useAccessMarkedRoutes = (routes: IRoute[]) => {
   const access = useAccess();
-  const markdedRoutes: IRoute[] = React.useMemo(() => {
-    const process = (route, parentAccessCode) => {
-      const accessCode = route.access || parentAccessCode;
+  const process = (route, parentAccessCode) => {
+    const accessCode = route.access || parentAccessCode;
 
-      // set default status
-      route.unaccessible = ${api.config.access.strictMode ? 'true' : 'false'};
+    // set default status
+    route.unaccessible = ${api.config.access.strictMode ? 'true' : 'false'};
 
-      // check access code
-      if (typeof accessCode === 'string') {
-        const detector = access[accessCode];
+    // check access code
+    if (typeof accessCode === "string") {
+      const detector = access[accessCode];
 
-        if (typeof detector === 'function') {
-          route.unaccessible = !detector(route);
-        } else if (typeof detector === 'boolean') {
-          route.unaccessible = !detector;
-        } else if (typeof detector === 'undefined') {
-          route.unaccessible = true;
-        }
+      if (typeof detector === "function") {
+        route.unaccessible = !detector(route);
+      } else if (typeof detector === "boolean") {
+        route.unaccessible = !detector;
+      } else if (typeof detector === "undefined") {
+        route.unaccessible = true;
       }
+    }
 
-      // check children access code
-      if (route.children?.length) {
-        const isNoAccessibleChild = !route.children.reduce((hasAccessibleChild, child) => {
+    // check children access code
+    if (route.children?.length) {
+      const isNoAccessibleChild = !route.children.reduce(
+        (hasAccessibleChild, child) => {
           process(child, accessCode);
 
           return hasAccessibleChild || !child.unaccessible;
-        }, false);
+        },
+        false
+      );
 
-        // make sure parent route is unaccessible if all children are unaccessible
-        if (isNoAccessibleChild) {
-          route.unaccessible = true;
-        }
+      // make sure parent route is unaccessible if all children are unaccessible
+      if (isNoAccessibleChild) {
+        route.unaccessible = true;
       }
-
-      return route;
     }
 
-    return routes.map(route => process(route));
-  }, [routes.length, access]);
+    // 为了兼容旧版本的layout，<= 7.1.0
+    // 如果是 7.1.0 以下的layout可能会出现数据异常。
+    delete route.routes;
+    route.routes = route.children;
 
-  return markdedRoutes;
-}
+    return route;
+  };
+
+  return routes.map((route) => process(route));
+};
+
       `,
     });
 
