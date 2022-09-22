@@ -394,7 +394,7 @@ devtool: false;
 devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 ```
 
-## enableClassPropertiesLoose
+## classPropertiesLoose
 - 类型：`object`
 - 默认值：`{}`
 
