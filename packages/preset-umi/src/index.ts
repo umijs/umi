@@ -35,6 +35,9 @@ export default () => {
       require.resolve('./features/monorepo/redirect'),
       require.resolve('./features/clickToComponent/clickToComponent'),
       require.resolve('./features/legacy/legacy'),
+      require.resolve(
+        './features/enableClassPropertiesLoose/enableClassPropertiesLoose',
+      ),
 
       // commands
       require.resolve('./commands/build'),

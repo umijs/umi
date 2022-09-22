@@ -25,12 +25,12 @@ test('async generator function', () => {
   expect(code).toContain(`return _awaitAsyncGenerator(111);`);
 });
 
-// loose
+// no loose
 test('class properties', () => {
   const code = doTransform({
     code: `class Foo { a = 'b'; foo = () => this.a; static c = 'd';}`,
   });
-  expect(code).toContain(`this.a = 'b';`);
+  expect(code).toContain(`_defineProperty(this, "a", 'b');`);
 });
 
 test('optional chaining', () => {
@@ -133,7 +133,7 @@ test('typescript with allowDeclareFields', () => {
       code: `class A { declare foo: string; bar: string }`,
       filename: 'foo.ts',
     }),
-  ).toContain(`this.bar = void 0;`);
+  ).toContain(`_defineProperty(this, "bar", void 0);`);
 });
 
 xtest('typescript with onlyRemoveTypeImports', () => {
