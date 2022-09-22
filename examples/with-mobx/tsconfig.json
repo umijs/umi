@@ -1,0 +1,6 @@
+{
+  "extends": "./.umi/tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true
+  }
+}
