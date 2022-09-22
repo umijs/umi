@@ -40,7 +40,7 @@ function Provider(props) {${
         hasAccessFile
           ? `
   const { initialState } = useModel('@@initialState');
-  const access = React.useMemo(() => accessFactory(initialState), [initialState]);
+  const access = accessFactory(initialState);
 `
           : `
   const access = {};
