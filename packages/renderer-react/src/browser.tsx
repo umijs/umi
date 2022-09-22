@@ -38,6 +38,7 @@ function BrowserRoutes(props: {
           clientRoutes: props.clientRoutes,
           location: opts.location,
           action: opts.action,
+          basename: props.basename,
         },
       });
     }
