@@ -394,6 +394,12 @@ devtool: false;
 devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 ```
 
+## enableClassPropertiesLoose
+- 类型：`object`
+- 默认值：`{}`
+
+设置 babel class-properties 启用 loose
+
 ## externals
 
 - 类型：`Record<string, string> | Function`
