@@ -25,7 +25,7 @@ test('alias config', () => {
       entry: {},
     },
     {},
-  ).optimizeDeps.include;
+  ).optimizeDeps!.include;
   expect(include).toEqual(expect.arrayContaining(['alias_config']));
 });
 
@@ -36,4 +36,12 @@ test('empty alias config', () => {
       entries: [],
     }),
   );
+});
+
+test('empty alias config', () => {
+  const include = IConfigProcessor(
+    { alias: { dva$: 'node_modules' }, entry: {} },
+    {},
+  ).optimizeDeps!.include;
+  expect(include).toEqual(expect.arrayContaining(['dva']));
 });
