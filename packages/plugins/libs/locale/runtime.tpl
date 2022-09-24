@@ -16,15 +16,13 @@ export function patchRoutes({ routes }) {
     Object.keys(routes).forEach((key) => {
       const route = routes[key];
       if (route.title) {
+        route.locale = route.title;
         const newTitle = intl.messages[route.title] ? intl.formatMessage({ id: route.title }, {}) : route.title;
         route.name = intl.messages[route.title] ? intl.formatMessage({ id: route.title }, {}) : route.name;
         route.title = newTitle;
       }
-      if (route.routes) {
-        traverseRoute(route.routes);
-      }
-      if (route.routes) {
-        traverseRoute(route.routes);
+      if (route.children) {
+        traverseRoute(route.children);
       }
     })
   }

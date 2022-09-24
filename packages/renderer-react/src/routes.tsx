@@ -38,9 +38,6 @@ export function createClientRoutes(opts: {
       });
       if (children.length > 0) {
         route.children = children;
-        // TODO: remove me
-        // compatible with @ant-design/pro-layout
-        route.routes = children;
       }
       return route;
     });
