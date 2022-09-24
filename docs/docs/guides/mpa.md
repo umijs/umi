@@ -14,11 +14,12 @@ export default {
     template: string,
     configFromEntryFile: Boolean,
     layout: string,
+    entry: {},
   },
 }
 ```
 
-配置项中。`template` 表示默认模板；`configFromEntryFile` 表示从入口文件中读取页面配置，详见下方介绍；`layout` 表示全局 layout，允许在每个入口文件的配置中对此进行覆盖。
+配置项中。`template` 表示默认模板；`configFromEntryFile` 表示从入口文件中读取页面配置，详见下方介绍；`layout` 表示全局 layout，允许在每个入口文件的配置中对此进行覆盖；`entry` 可以全局配置入口文件的属性。
 
 ## 约定的入口文件
 

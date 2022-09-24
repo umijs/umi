@@ -33,4 +33,9 @@ module.exports = {
   template: () => require('@babel/template'),
   traverse: () => require('@babel/traverse'),
   types: () => require('@babel/types'),
+
+  // class 使用 loose 模式需要
+  pluginProposalClassProperties: () => require('@babel/plugin-proposal-class-properties'),
+  pluginProposalPrivateMethods: () => require('@babel/plugin-proposal-private-methods'),
+  pluginProposalPrivatePropertyInObject: () => require('@babel/plugin-proposal-private-property-in-object')
 };

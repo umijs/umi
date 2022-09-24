@@ -18,6 +18,7 @@ export default (api: IApi) => {
           template: Joi.string(),
           layout: Joi.string(),
           getConfigFromEntryFile: Joi.boolean(),
+          entry: Joi.object(),
         });
       },
     },
@@ -119,7 +120,10 @@ interface Entry {
 }
 
 interface IMpaOpts {
+  template: string;
+  layout: string;
   getConfigFromEntryFile: boolean;
+  entry: Record<string, Record<string, any>>;
 }
 
 async function collectEntryWithTimeCount(root: string, opts: IMpaOpts) {
@@ -142,13 +146,16 @@ async function collectEntry(root: string, opts: IMpaOpts) {
           const config = opts.getConfigFromEntryFile
             ? await getConfigFromEntryFile(indexFile)
             : await getConfig(indexFile);
+          const name = dir;
+          const globalConfig = opts.entry?.[dir];
           memo.push({
-            name: dir,
+            name,
             file: indexFile,
             tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
             mountElementId: 'root',
+            ...globalConfig,
             ...config,
-            title: config.title || dir,
+            title: globalConfig?.title || config.title || dir,
           });
         }
       }

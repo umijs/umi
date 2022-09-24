@@ -17,6 +17,14 @@ export default (api: IApi) => {
     return memo;
   });
 
+  api.modifyDefaultConfig((memo) => {
+    // vite development env disable polyfill optimise dev development experience
+    if (api.env === 'development') {
+      memo.polyfill = false;
+    }
+    return memo;
+  });
+
   // scan deps into api.appData by default for vite mode
   api.register({
     key: 'onBeforeCompiler',
