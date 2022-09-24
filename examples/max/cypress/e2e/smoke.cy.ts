@@ -26,7 +26,7 @@ describe('Basic Test', () => {
     // layout 存在
     cy.contains('Ant Design Pro');
 
-    cy.get('li.ant-pro-base-menu-menu-item').contains('首页');
+    cy.get('li.ant-pro-base-menu-menu-item').contains('Index');
     cy.get('li.ant-pro-base-menu-menu-item').contains('users');
     cy.get('li.ant-pro-base-menu-menu-item').contains('app1');
     cy.get('li.ant-pro-base-menu-submenu').contains('data-flow');
