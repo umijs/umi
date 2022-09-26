@@ -86,8 +86,7 @@ export const Access: React.FC<PropsWithChildren<AccessProps>> = (props) => {
 export const useAccessMarkedRoutes = (routes: IRoute[]) => {
   const access = useAccess();
   const markdedRoutes: IRoute[] = React.useMemo(() => {
-    const process = (route, parentAccessCode) => {
-      const accessCode = route.access || parentAccessCode;
+    const process = (route, parentAccessCode, parentRoute) => {
       let accessCode = route.access;
       // 用父级的路由检测父级的 accessCode
       let detectorRoute = route;
