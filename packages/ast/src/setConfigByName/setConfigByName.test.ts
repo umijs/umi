@@ -39,6 +39,27 @@ test('set array', () => {
   expect(generateCode).toContain('eee');
 });
 
+test('set nested objects', () => {
+  const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
+  if (!ast) return;
+  const generateCode = generate(
+    setConfigByName(ast, 'plugins', JSON.stringify({
+      remotes: [
+        {
+          name: 'foo',
+          aliasName: 'bar',
+          keyResolver: '"key1"',
+          entries: {
+            key1: 'http://a.b/c.js',
+            key2: 'http://a.b/c.js',
+          },
+        },
+      ],
+    }))!,
+  );
+  expect(generateCode).toContain('http://a.b/c.js');
+});
+
 test('set new config', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
