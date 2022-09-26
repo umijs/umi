@@ -89,7 +89,7 @@ export const useAccessMarkedRoutes = (routes: IRoute[]) => {
     const process = (route, parentAccessCode) => {
       const accessCode = route.access || parentAccessCode;
       let accessCode = route.access;
-      // 用父级的路由检测父级的 accessCod
+      // 用父级的路由检测父级的 accessCode
       let detectorRoute = route;
       if (!accessCode && parentAccessCode) {
         accessCode = parentAccessCode;
