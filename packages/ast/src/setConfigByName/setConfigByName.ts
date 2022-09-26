@@ -1,6 +1,7 @@
 import type { NodePath } from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as traverse from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
+import { parse } from '../utils/parse';
 
 export function setConfigByName(ast: t.File, name: string, value: any) {
   let _value: any;
@@ -11,38 +12,16 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
   } catch (error) {
     _value = value;
   }
-  const valueType = typeof _value;
-  switch (valueType) {
-    case 'string':
-      valueObject = t.stringLiteral(_value);
-      break;
-    case 'boolean':
-      valueObject = t.booleanLiteral(_value);
-      break;
-    case 'number':
-      valueObject = t.numericLiteral(_value);
-      break;
-    case 'object':
-      if (Array.isArray(_value)) {
-        valueObject = t.arrayExpression(
-          _value.map((i: string) => {
-            return t.stringLiteral(i);
-          }),
-        );
-      } else {
-        const valueObjs = [] as t.ObjectProperty[];
-        Object.keys(_value).forEach((key) => {
-          valueObjs.push(
-            t.objectProperty(t.identifier(key), t.stringLiteral(_value[key])),
-          );
-        });
-        valueObject = t.objectExpression(valueObjs);
+  const simulateCode = `const __JSON__ = ${JSON.stringify(_value)}`;
+  const simulateAst = parse(simulateCode);
+  traverse.default(simulateAst, {
+    VariableDeclarator(path) {
+      //@ts-ignore
+      if (path.node.id?.name === '__JSON__') {
+        valueObject = path.node.init;
       }
-      break;
-    default:
-      console.log(`${valueType} is not supported.`);
-      break;
-  }
+    },
+  });
   if (!valueObject) return;
   // 这里是修改逻辑
   traverse.default(ast, {
