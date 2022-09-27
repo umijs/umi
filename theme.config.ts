@@ -87,6 +87,7 @@ export default {
             'max/access',
             'max/i18n',
             'max/micro-frontend',
+            'max/valtio',
             'max/dva',
             // 暂不支持
             // 'max/bacon',

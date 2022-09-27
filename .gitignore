@@ -25,6 +25,8 @@
 /packages/preset-umi/devToolApp/.umi
 /packages/preset-umi/devToolApp/.umi-production
 /packages/preset-umi/devToolApp/node_modules
+/libs/*/dist
+/libs/*/node_modules
 /.umi
 /.mfsu
 /.umi-production
