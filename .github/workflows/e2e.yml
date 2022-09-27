@@ -67,7 +67,7 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/mf-remote... --filter ./examples/test-test/... --filter ./packages/umi/... --filter ./packages/preset-vue/...
+        run: pnpm umi-scripts turbo build --filter ./examples/max... --filter ./examples/mf-remote... --filter ./examples/test-test/... --filter ./packages/umi/... --filter ./packages/preset-vue/... --filter @umijs/valtio
 
       - name: e2e:example:max
         uses: cypress-io/github-action@v4

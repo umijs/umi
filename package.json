@@ -38,7 +38,10 @@
     "test:clean": "umi-scripts turbo test --no-cache --parallel -- --clearCache",
     "test:e2e": "jest --config jest.e2e.config.ts",
     "tsc:check": "tsc --noEmit",
-    "turbo:clean": "rimraf .turbo"
+    "turbo:clean": "rimraf .turbo",
+    "valtio:build": "pnpm --filter @umijs/valtio build",
+    "valtio:dev": "pnpm --filter @umijs/valtio dev",
+    "valtio:release": "umi-scripts releaseValtio"
   },
   "lint-staged": {
     "*.{jsx,less,md,json}": [
