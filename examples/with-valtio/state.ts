@@ -1,4 +1,4 @@
-import { proxy } from 'valtio';
+import { proxy } from 'umi';
 
 const state = proxy({ number: 0 });
 
