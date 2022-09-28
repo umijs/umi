@@ -1,6 +1,7 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { winPath } from '@umijs/utils';
-import { join, relative } from 'path';
+import { dirname, extname, join, relative } from 'path';
+
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { chalk } from 'umi/plugin-utils';
 import { Model, ModelUtils } from './utils/modelUtils';
@@ -40,7 +41,7 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.onGenerateFiles((args) => {
+  api.onGenerateFiles(async (args) => {
     const models = args.isFirstTime
       ? api.appData.pluginDva.models
       : getAllModels(api);
@@ -166,6 +167,70 @@ export function dataflowProvider(container, opts) {
 export { connect, useDispatch, useStore, useSelector } from 'dva';
 export { getDvaApp } from './dva';
 `,
+    });
+
+    // types.ts
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      tpl: `
+import type { History } from 'umi';
+
+export interface ConnectProps {
+      dispatch?: Dispatch;
+}
+type RequiredConnectProps = Required<ConnectProps>
+export type ConnectRC<
+      T = {},
+      > = React.ForwardRefRenderFunction<any, T & RequiredConnectProps>;
+interface Action<T = any> {
+      type: T
+}
+interface AnyAction extends Action {
+      // Allows any extra properties to be defined in an action.
+      [extraProps: string]: any
+}
+interface Dispatch<A extends Action = AnyAction> {
+      <T extends A>(action: T): T
+}
+interface EffectsCommandMap {
+      put: <A extends AnyAction>(action: A) => any,
+      call: Function,
+      select: Function,
+      take: Function,
+      cancel: Function,
+      [key: string]: any,
+}
+interface Action<T = any> {
+      type: T
+}
+export type Reducer<S = any, A extends Action = AnyAction> = (prevState: S, action: A) => S;
+export type Effect = (action: AnyAction, effects: EffectsCommandMap) => void;
+type EffectType = 'takeEvery' | 'takeLatest' | 'watcher' | 'throttle';
+type EffectWithType = [Effect, { type: EffectType }];
+export type Subscription = (api: SubscriptionAPI, done: Function) => void;
+
+export interface ReducersMapObject<T> {
+      [key: string]: Reducer<T>,
+}
+export interface EffectsMapObject {
+      [key: string]: Effect | EffectWithType,
+}
+export interface SubscriptionAPI {
+      dispatch: Dispatch<any>,
+      history: History,
+}
+export interface SubscriptionsMapObject {
+      [key: string]: Subscription,
+}
+export interface DvaModel<T, E = EffectsMapObject, R = ReducersMapObject<T>> {
+      namespace: string,
+      state?: T,
+      reducers?: R,
+      effects?: E,
+      subscriptions?: SubscriptionsMapObject,
+}
+      `,
+      context: {},
     });
   });
 

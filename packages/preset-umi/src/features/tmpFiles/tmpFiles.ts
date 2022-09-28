@@ -512,6 +512,7 @@ export default function EmptyRoute() {
           })
         ).join(', ')} } from '${rendererPath}';`,
       );
+      exports.push(`export type {  History } from '${rendererPath}'`);
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));

@@ -1,4 +1,9 @@
+import type { DvaModel } from 'umi';
+
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+export interface CountModelState {
+  num: number;
+}
 
 export default {
   namespace: 'count',
@@ -6,7 +11,7 @@ export default {
     num: 0,
   },
   reducers: {
-    add(state: any) {
+    add(state: any): any {
       state.num += 1;
     },
   },
@@ -19,4 +24,4 @@ export default {
       throw new Error('effect error');
     },
   },
-};
+} as DvaModel<CountModelState>;
