@@ -832,13 +832,11 @@ importers:
 
   examples/with-valtio:
     specifiers:
-      '@types/three': ^0.140.0
+      '@umijs/plugins': 4.0.22
       umi: 4.0.22
-      valtio: ^1.6.1
     dependencies:
-      '@types/three': 0.140.0
+      '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
-      valtio: 1.6.4
 
   examples/with-vanilla-extract:
     specifiers:
@@ -29180,34 +29178,6 @@ packages:
     resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
     engines: {node: '>= 0.10'}
     dev: true
-
-  /valtio/1.6.4:
-    resolution: {integrity: sha512-wEslN1bO1ihuv2Xj4jIxkGaDgsnwSvZdcaYcJ6aSwaNYU0ZMe+eZipfEzbTqd4CwnMu7ihDBNes0ZP5CIl1NqA==}
-    engines: {node: '>=12.7.0'}
-    peerDependencies:
-      '@babel/helper-module-imports': '>=7.12'
-      '@babel/types': '>=7.13'
-      aslemammad-vite-plugin-macro: '>=1.0.0-alpha.1'
-      babel-plugin-macros: '>=3.0'
-      react: '>=16.8'
-      vite: '>=2.8.6'
-    peerDependenciesMeta:
-      '@babel/helper-module-imports':
-        optional: true
-      '@babel/types':
-        optional: true
-      aslemammad-vite-plugin-macro:
-        optional: true
-      babel-plugin-macros:
-        optional: true
-      react:
-        optional: true
-      vite:
-        optional: true
-    dependencies:
-      proxy-compare: 2.3.0
-      use-sync-external-store: 1.2.0
-    dev: false
 
   /valtio/1.7.0:
     resolution: {integrity: sha512-3Tnix66EERwMcrl1rfB3ylcewOcL5L/GiPmC3FlVNreQzqf2jufEeqlNmgnLgSGchkEmH3WYVtS+x6Qw4r+yzQ==}
