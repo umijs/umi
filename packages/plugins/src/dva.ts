@@ -1,7 +1,6 @@
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 import { winPath } from '@umijs/utils';
-import { dirname, extname, join, relative } from 'path';
-
+import { join, relative } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { chalk } from 'umi/plugin-utils';
 import { Model, ModelUtils } from './utils/modelUtils';
@@ -41,7 +40,7 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.onGenerateFiles(async (args) => {
+  api.onGenerateFiles((args) => {
     const models = args.isFirstTime
       ? api.appData.pluginDva.models
       : getAllModels(api);
