@@ -13,6 +13,9 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "father build",
     "dev": "father dev",
