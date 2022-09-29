@@ -38,8 +38,9 @@ export function createClientRoutes(opts: {
       });
       if (children.length > 0) {
         route.children = children;
-        // TODO: remove me
-        // compatible with @ant-design/pro-layout
+
+        // 兼容低版本的layout，
+        // layout 4 以下 要使用 routes, 不然菜单会消失
         route.routes = children;
       }
       return route;

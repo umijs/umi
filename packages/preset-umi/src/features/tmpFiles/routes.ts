@@ -188,7 +188,6 @@ export async function getRoutes(opts: {
     key: 'modifyRoutes',
     initialValue: routes,
   });
-
   return routes;
 }
 
