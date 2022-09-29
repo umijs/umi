@@ -70,6 +70,7 @@ export default (api: IApi) => {
     base: '/',
     history: { type: 'browser' },
     svgr: {},
+    mfsu: { strategy: 'eager' },
   };
 
   const bundleSchemas = api.config.vite

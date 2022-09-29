@@ -101,9 +101,10 @@ export class AutoUpdateSrcCodeCache {
         outbase: this.srcPath,
         loader: {
           // in case some js using some feature, eg: decorator
+          '.js': 'jsx',
           '.jsx': 'tsx',
         },
-        logLevel: 'silent',
+        logLevel: 'error',
       });
     } catch (e) {
       // error ignored due to user have to update code to fix then trigger another batchProcess;
@@ -112,7 +113,7 @@ export class AutoUpdateSrcCodeCache {
         logger.warn(
           'transpile code with esbuild got ',
           // @ts-ignore
-          e.errors?.lenght || 0,
+          e.errors?.length || 0,
           'errors,',
           // @ts-ignore
           e.warnings?.length || 0,
