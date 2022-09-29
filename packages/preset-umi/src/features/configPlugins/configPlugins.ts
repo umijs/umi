@@ -70,6 +70,7 @@ export default (api: IApi) => {
     base: '/',
     history: { type: 'browser' },
     svgr: {},
+    ignoreMomentLocale: true,
   };
 
   const bundleSchemas = api.config.vite
