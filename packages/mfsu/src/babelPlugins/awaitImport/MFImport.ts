@@ -51,10 +51,10 @@ export default function () {
           if (
             t.isImport(node.callee) &&
             node.arguments.length === 1 &&
-            node.arguments[0].type === 'StringLiteral'
+            t.isStringLiteral(node.arguments[0])
           ) {
             const newValue = opts.resolveImportSource(node.arguments[0].value);
-            node.arguments[0] = t.stringLiteral(newValue);
+            node.arguments[0].value = newValue;
           }
         },
       },
