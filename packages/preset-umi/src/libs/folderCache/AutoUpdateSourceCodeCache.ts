@@ -4,7 +4,7 @@ import {
   parse,
 } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { build as esBuild } from '@umijs/bundler-utils/compiled/esbuild';
-import { logger } from '@umijs/utils';
+import { logger, winPath } from '@umijs/utils';
 // @ts-ignore
 import fg from 'fast-glob';
 import { readFileSync } from 'fs';
@@ -76,17 +76,20 @@ export class AutoUpdateSrcCodeCache {
 
   private async initFileList(): Promise<string[]> {
     const start = Date.now();
-    const files = await fg(join(this.srcPath, '**', '*.{ts,js,jsx,tsx}'), {
-      dot: true,
-      ignore: [
-        '**/*.d.ts',
-        '**/*.test.{js,ts,jsx,tsx}',
-        // fixme respect to environment
-        '**/.umi-production/**',
-        '**/node_modules/**',
-        '**/.git/**',
-      ],
-    });
+    const files = await fg(
+      winPath(join(this.srcPath, '**', '*.{ts,js,jsx,tsx}')),
+      {
+        dot: true,
+        ignore: [
+          '**/*.d.ts',
+          '**/*.test.{js,ts,jsx,tsx}',
+          // fixme respect to environment
+          '**/.umi-production/**',
+          '**/node_modules/**',
+          '**/.git/**',
+        ],
+      },
+    );
     logger.debug('[MFSU][eager] fast-glob costs', Date.now() - start);
 
     return files;
