@@ -172,11 +172,11 @@ function sleep(ms: number): Promise<void> {
   });
 }
 
-const regExpCodeExtensions = /.{jsx,js,ts,tsx}$/;
+const REG_CODE_EXT = /\.(jsx|js|ts|tsx)$/;
 
 function hasJSCodeFiles(files: ReadonlySet<string>) {
   for (let file of files.values()) {
-    if (regExpCodeExtensions.test(file)) {
+    if (REG_CODE_EXT.test(file)) {
       return true;
     }
   }
