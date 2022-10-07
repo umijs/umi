@@ -44,7 +44,7 @@ export class AutoUpdateSrcCodeCache {
         '**/node_modules/**',
         '**/.git/**',
       ],
-      debouncedTimeout: 500,
+      debouncedTimeout: 200,
       filesLoader: async (files: string[]) => {
         const loaded: Record<string, string> = {};
         await this.batchProcess(files);
