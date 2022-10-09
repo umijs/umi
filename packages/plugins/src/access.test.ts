@@ -112,7 +112,6 @@ const useAccessMarkedRoutes = (routes: IRoute[], fixed?: boolean) => {
       ? (route: IRoute, parentUnaccessible: boolean) => {
           if (route.access) routeMap[route.access] = route;
           let accessCode = route.access;
-          // 用父级的路由检测父级的 accessCode
           let detectorRoute: IRoute | undefined = route;
 
           // set default status
