@@ -81,8 +81,10 @@ export const layout: RunTimeLayoutConfig = ({
         ]
       : [],
     menuHeaderRender: undefined,
+    // 自定义 404 页面
+    // notFound:<div>notFound</div>,
     // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
+    // noAccessible: <div>noAccessible</div>,
     // 增加一个 loading 的状态
     childrenRender: (children, props) => {
       // if (initialState?.loading) return <PageLoading />;
