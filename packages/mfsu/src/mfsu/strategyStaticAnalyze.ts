@@ -141,13 +141,14 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
         const start = Date.now();
         let event = this.staticDepInfo.getProducedEvent();
         while (event.length === 0) {
-          await sleep(200);
+          await sleep(100);
           event = this.staticDepInfo.getProducedEvent();
           if (Date.now() - start > 5000) {
             logger.warn('webpack wait mfsu deps too long');
             break;
           }
         }
+        logger.debug(`webpack waited ${Date.now() - start} ms`);
       },
       onCompileDone: () => {
         // fixme if mf module finished earlier than src compile
