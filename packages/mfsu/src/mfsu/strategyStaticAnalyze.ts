@@ -130,7 +130,7 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
           return;
         }
 
-        // if no code file changed, just compile, dont wait static analysis
+        // if no js code file changed, just compile, dont wait static analysis
         if (
           !hasJSCodeFiles(c.modifiedFiles) &&
           !hasJSCodeFiles(c.removedFiles)
