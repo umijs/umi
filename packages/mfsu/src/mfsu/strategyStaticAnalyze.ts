@@ -130,6 +130,14 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
           return;
         }
 
+        // if no js code file changed, just compile, dont wait static analysis
+        if (
+          !hasJSCodeFiles(c.modifiedFiles) &&
+          !hasJSCodeFiles(c.removedFiles)
+        ) {
+          return;
+        }
+
         const start = Date.now();
         let event = this.staticDepInfo.getProducedEvent();
         while (event.length === 0) {
@@ -162,4 +170,15 @@ function sleep(ms: number): Promise<void> {
       resolve();
     }, ms);
   });
+}
+
+const REG_CODE_EXT = /\.(jsx|js|ts|tsx)$/;
+
+function hasJSCodeFiles(files: ReadonlySet<string>) {
+  for (let file of files.values()) {
+    if (REG_CODE_EXT.test(file)) {
+      return true;
+    }
+  }
+  return false;
 }
