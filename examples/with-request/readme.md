@@ -1,3 +1,3 @@
-# with-sass
+# with-request
 
-An example of using [UmiJS](https://umijs.org/zh-CN) with [Sass](https://sass-lang.com/).
+An example of using [UmiJS](https://umijs.org/zh-CN) with [request](https://v3.umijs.org/zh-CN/plugins/plugin-request#request).
