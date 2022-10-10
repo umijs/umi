@@ -112,11 +112,18 @@ async function collectAllProjects(opts: IOpts) {
 
 const MONOREPO_FILE = ['pnpm-workspace.yaml', 'lerna.json'];
 function isMonorepo(opts: IOpts) {
-  const pkgExist = existsSync(join(opts.root, 'package.json'));
+  const pkgPath = join(opts.root, 'package.json');
+  let pkg: Record<string, any> = {};
+  try {
+    pkg = require(pkgPath);
+  } catch (e) {}
+  const pkgExist = existsSync(pkgPath);
   return (
     pkgExist &&
-    MONOREPO_FILE.some((file) => {
+    (MONOREPO_FILE.some((file) => {
       return existsSync(join(opts.root, file));
-    })
+    }) ||
+      // npm workspaces
+      pkg?.workspaces)
   );
 }

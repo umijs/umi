@@ -89,7 +89,12 @@ export default (api: IApi) => {
                 : {}),
             },
           },
-          include: [`${baseUrl}.umirc.ts`],
+          include: [
+            `${baseUrl}.umirc.ts`,
+            `${baseUrl}**/*.d.ts`,
+            `${baseUrl}**/*.ts`,
+            `${baseUrl}**/*.tsx`,
+          ],
         },
         null,
         2,
@@ -440,12 +445,15 @@ export default function EmptyRoute() {
     // history.ts
     // only react generates because the preset-vue override causes vite hot updates to fail
     if (api.appData.framework === 'react') {
+      const historyPath = api.config.historyWithQuery
+        ? winPath(dirname(require.resolve('@umijs/history/package.json')))
+        : rendererPath;
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/history.ts',
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
-          rendererPath,
+          historyPath,
         },
       });
     }
@@ -504,6 +512,7 @@ export default function EmptyRoute() {
           })
         ).join(', ')} } from '${rendererPath}';`,
       );
+      exports.push(`export type {  History } from '${rendererPath}'`);
       // umi/client/client/plugin
       exports.push('// umi/client/client/plugin');
       const umiPluginPath = winPath(join(umiDir, 'client/client/plugin.js'));

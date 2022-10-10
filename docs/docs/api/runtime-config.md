@@ -8,23 +8,25 @@
 
 
 ## TypeScript 提示
-如果你想在写配置时也有提示，可以通过 umi 的 defineApp 方法定义配置，
+
+如果你想在写配置时也有提示，可以通过 umi 的 defineApp 方法定义配置。
+
 ```js
 import { defineApp } from 'umi'
 export default defineApp({
   layout: () => {
     return {
       title: "umi",
-    }
-  }
+    };
+  },
 })
 
 // or 
 import { RuntimeConfig } from 'umi'
 export const layout: RuntimeConfig['layout'] = () => {
   return {
-    title: 'umi'
-  }
+    title: 'umi',
+  };
 }
 ```
 
@@ -38,7 +40,7 @@ export const layout: RuntimeConfig['layout'] = () => {
 
 比如：
 
-```js
+```ts
 export default {
   dva: {
     immer: true,
@@ -97,21 +99,21 @@ export const layout = {
 
 更多具体配置参考[插件文档](../max/layout-menu#运行时配置)。
 
-### onRouteChange(\{ routes, clientRoutes, location, action \})
+### onRouteChange(\{ routes, clientRoutes, location, action, basename \})
 
 在初始加载和路由切换时做一些事情。
 
 比如用于做埋点统计，
 
-```bash
-export function onRouteChange({ location, clientRoutes, routes, action }) {
+```ts
+export function onRouteChange({ location, clientRoutes, routes, action, basename }) {
   bacon(location.pathname);
 }
 ```
 
 比如用于设置标题，
 
-```bash
+```ts
 import { matchRoutes } from 'umi'
 
 export function onRouteChange({ clientRoutes, location }) {

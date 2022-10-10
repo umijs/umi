@@ -1,0 +1,34 @@
+{
+  "name": "@umijs/valtio",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/umijs/umi/tree/master/libs/valtio",
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "father build",
+    "dev": "father dev",
+    "test": "jest"
+  },
+  "dependencies": {
+    "valtio": "1.7.0"
+  },
+  "packageManager": "pnpm@7.3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
+}

@@ -141,8 +141,17 @@ export class StaticDepInfo {
 
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
-      this.builtWithDep = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
-      logger.info('[MFSU][eager] restored cache');
+      try {
+        this.builtWithDep = JSON.parse(
+          readFileSync(this.cacheFilePath, 'utf-8'),
+        );
+        logger.info('[MFSU][eager] restored cache');
+      } catch (e) {
+        logger.warn(
+          '[MFSU][eager] restore cache failed, fallback to Empty dependency',
+          e,
+        );
+      }
     }
   }
 

@@ -43,10 +43,17 @@ export default (api: IApi) => {
           }
         : {}),
       'react-dom': reactDOMPath,
-      'react-router': dirname(require.resolve('react-router/package.json')),
-      'react-router-dom': dirname(
-        require.resolve('react-router-dom/package.json'),
-      ),
+      // mpa don't need to use react-router
+      ...(userConfig.mpa
+        ? {}
+        : {
+            'react-router': dirname(
+              require.resolve('react-router/package.json'),
+            ),
+            'react-router-dom': dirname(
+              require.resolve('react-router-dom/package.json'),
+            ),
+          }),
     },
     externals: {
       // Keep the `react-dom/client` external consistent with the `react-dom` external when react < 18.
@@ -63,6 +70,7 @@ export default (api: IApi) => {
     base: '/',
     history: { type: 'browser' },
     svgr: {},
+    ignoreMomentLocale: true,
   };
 
   const bundleSchemas = api.config.vite

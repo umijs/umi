@@ -87,6 +87,7 @@ export default {
             'max/access',
             'max/i18n',
             'max/micro-frontend',
+            'max/valtio',
             'max/dva',
             // 暂不支持
             // 'max/bacon',
@@ -105,6 +106,7 @@ export default {
             'umi-4-rc',
             'mfsu-faster-than-vite',
             'mfsu-independent-usage',
+            'code-splitting',
           ],
         },
       ],

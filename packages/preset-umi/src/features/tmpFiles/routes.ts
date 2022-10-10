@@ -50,6 +50,9 @@ export async function getRoutes(opts: {
     routes = getConfigRoutes({
       routes: opts.api.config.routes,
       onResolveComponent(component) {
+        if (isAbsolute(component)) {
+          return component;
+        }
         if (component.startsWith('@/')) {
           component = component.replace('@/', '../');
         }

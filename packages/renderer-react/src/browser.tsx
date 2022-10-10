@@ -43,6 +43,7 @@ function BrowserRoutes(props: {
           clientRoutes: props.clientRoutes,
           location: opts.location,
           action: opts.action,
+          basename: props.basename,
         },
       });
     }
@@ -285,6 +286,7 @@ const getBrowser = (
           clientLoaderData,
           serverLoaderData,
           preloadRoute: handleRouteChange,
+          history: opts.history,
         }}
       >
         {rootContainer}

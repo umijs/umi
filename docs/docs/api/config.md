@@ -394,6 +394,12 @@ devtool: false;
 devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 ```
 
+## classPropertiesLoose
+- 类型：`object`
+- 默认值：`{}`
+
+设置 babel class-properties 启用 loose
+
 ## externals
 
 - 类型：`Record<string, string> | Function`
@@ -530,6 +536,13 @@ headScripts: [
 - 默认值：`{ type: 'browser' }`
 
 设置路由 history 类型。
+
+## historyWithQuery
+
+- 类型：`‌{}`
+- 默认值：`false`
+
+让 history 带上 query。除了通过 `useNavigate` 进行的跳转场景，此时还需自行处理 query。
 
 ## https
 

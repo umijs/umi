@@ -15,6 +15,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
       Joi.object({
         type: Joi.string().valid('browser', 'hash', 'memory'),
       }),
+    historyWithQuery: (Joi) => Joi.object(),
     links: (Joi) => Joi.array(),
     metas: (Joi) => Joi.array(),
     mountElementId: (Joi) => Joi.string(),

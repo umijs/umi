@@ -1,6 +1,6 @@
 import type { Config as SwcConfig } from '@swc/core';
 import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
-import { Configuration } from '../compiled/webpack';
+import webpack, { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
 
 export enum Env {
@@ -55,7 +55,15 @@ export interface IConfig {
   alias?: Record<string, string>;
   autoCSSModules?: boolean;
   base?: string;
-  chainWebpack?: Function;
+  chainWebpack?: {
+    (
+      memo: Config,
+      args: {
+        env: keyof typeof Env,
+        webpack: typeof webpack;
+      },
+    ): void;
+  };
   copy?: ICopy[] | string[];
   cssLoader?: { [key: string]: any };
   cssLoaderModules?: { [key: string]: any };

@@ -1,15 +1,9 @@
 // @ts-ignore
 import React, { useMemo } from 'react';
-import {
-  generatePath,
-  Navigate,
-  useParams,
-  useLocation,
-  useNavigate,
-  Outlet,
-} from 'react-router-dom';
+import { generatePath, Navigate, useParams, Outlet } from 'react-router-dom';
 import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
+import { useAppData } from './appContext';
 
 export function createClientRoutes(opts: {
   routesById: IRoutesById;
@@ -98,31 +92,15 @@ function DefaultLoading() {
 }
 
 function RemoteComponentReactRouter5(props: any) {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = useParams();
   const { route } = useRouteData();
-  const match = useMemo(() => {
-    return {
-      params,
-      isExact: true,
-      path: route.path,
-      url: location.pathname,
-    };
-  }, [location.pathname, route.path, params]);
-  const history = useMemo(() => {
-    return {
-      back: () => navigate(-1),
-      goBack: () => navigate(-1),
-      location: location,
-      push: (url: string, state?: any) => navigate(url, { state }),
-      replace: (url: string, state?: any) =>
-        navigate(url, {
-          replace: true,
-          state,
-        }),
-    };
-  }, [location, navigate]);
+  const { history, clientRoutes } = useAppData();
+  const params = useParams();
+  const match = {
+    params,
+    isExact: true,
+    path: route.path,
+    url: history.location.pathname,
+  };
 
   // staticContext 没有兼容 好像没看到对应的兼容写法
   const Component = props.loader;
@@ -130,10 +108,12 @@ function RemoteComponentReactRouter5(props: any) {
   return (
     <React.Suspense fallback={<props.loadingComponent />}>
       <Component
-        location={location}
+        location={history.location}
         match={match}
         history={history}
         params={params}
+        route={route}
+        routes={clientRoutes}
       >
         {props.hasChildren && <Outlet />}
       </Component>

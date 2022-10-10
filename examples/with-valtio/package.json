@@ -7,8 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@types/three": "^0.140.0",
-    "umi": "4.0.18",
-    "valtio": "^1.6.1"
+    "@umijs/plugins": "4.0.24",
+    "umi": "4.0.24"
   }
 }

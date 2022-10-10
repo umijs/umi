@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSnapshot } from 'valtio';
+import { useSnapshot } from 'umi';
 import state from '../state';
 
 function DisplayCount() {

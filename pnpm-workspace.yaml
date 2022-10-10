@@ -1,6 +1,7 @@
 packages:
   - 'packages/*'
   - 'examples/*'
+  - 'libs/*'
   - 'codemod'
   - 'did-you-know'
   - 'scripts'

@@ -97,6 +97,10 @@ $ ANALYZE=1 umi build
 
 默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
 
+### DID_YOU_KNOW
+
+设置为 `none` 会禁用「你知道吗」提示。
+
 ### FS_LOGGER
 
 默认会开启保存物理日志，值为 none 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。

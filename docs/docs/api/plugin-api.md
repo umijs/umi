@@ -272,13 +272,13 @@ api.addBeforeMiddlewares(() => {
 ```
 
 ### addEntryCode
-在入口文档的最后面添加代码（render 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
+在入口文件的最后面添加代码（render 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
 ```ts
 api.addEntryCode(() => `console.log('I am after render!)`);
 ```
 
 ### addEntryCodeAhead
-在入口文档的最前面添加代码（render 前，import 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
+在入口文件的最前面添加代码（render 前，import 后）。传入的 fn 不需要参数，且需要返回一个 string 或者 string 数组。
 ```ts
 api.addEntryCodeAhead(() => `console.log('I am before render!')`)
 ```

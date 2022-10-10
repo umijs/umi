@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugin-docs",
-  "version": "4.0.18",
+  "version": "4.0.24",
   "description": "@umijs/plugin-docs",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugin-docs#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -17,10 +17,11 @@
     "compiled"
   ],
   "scripts": {
-    "build": "umi-scripts father build",
+    "build": "pnpm build:js && pnpm build:extra",
     "build:css": "tailwindcss -i ./client/theme-doc/tailwind.css -o ./client/theme-doc/tailwind.out.css",
     "build:deps": "umi-scripts bundleDeps",
     "build:extra": "pnpm build:css",
+    "build:js": "umi-scripts father build",
     "dev": "umi-scripts father dev",
     "dev:css": "pnpm build:css --watch",
     "test": "umi-scripts jest-turbo"
@@ -42,7 +43,7 @@
     "rehype-slug": "5.0.1",
     "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.0.24",
-    "umi": "4.0.18"
+    "umi": "4.0.24"
   },
   "publishConfig": {
     "access": "public"

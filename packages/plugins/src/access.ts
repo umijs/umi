@@ -86,8 +86,14 @@ export const Access: React.FC<PropsWithChildren<AccessProps>> = (props) => {
 export const useAccessMarkedRoutes = (routes: IRoute[]) => {
   const access = useAccess();
   const markdedRoutes: IRoute[] = React.useMemo(() => {
-    const process = (route, parentAccessCode) => {
-      const accessCode = route.access || parentAccessCode;
+    const process = (route, parentAccessCode, parentRoute) => {
+      let accessCode = route.access;
+      // 用父级的路由检测父级的 accessCode
+      let detectorRoute = route;
+      if (!accessCode && parentAccessCode) {
+        accessCode = parentAccessCode;
+        detectorRoute = parentRoute;
+      }
 
       // set default status
       route.unaccessible = ${api.config.access.strictMode ? 'true' : 'false'};
@@ -97,7 +103,7 @@ export const useAccessMarkedRoutes = (routes: IRoute[]) => {
         const detector = access[accessCode];
 
         if (typeof detector === 'function') {
-          route.unaccessible = !detector(route);
+          route.unaccessible = !detector(detectorRoute);
         } else if (typeof detector === 'boolean') {
           route.unaccessible = !detector;
         } else if (typeof detector === 'undefined') {
@@ -108,7 +114,7 @@ export const useAccessMarkedRoutes = (routes: IRoute[]) => {
       // check children access code
       if (route.children?.length) {
         const isNoAccessibleChild = !route.children.reduce((hasAccessibleChild, child) => {
-          process(child, accessCode);
+          process(child, accessCode, route);
 
           return hasAccessibleChild || !child.unaccessible;
         }, false);

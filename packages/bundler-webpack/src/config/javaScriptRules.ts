@@ -65,7 +65,14 @@ export async function addJavaScriptRules(opts: IOpts) {
             }
             // use resolve instead of require.resolve
             // since require.resolve may meet the ERR_PACKAGE_PATH_NOT_EXPORTED error
-            return dirname(resolve.sync(`${p}/package.json`, { basedir: cwd }));
+            return dirname(
+              resolve.sync(`${p}/package.json`, {
+                basedir: cwd,
+                // same behavior as webpack, to ensure `include` paths matched
+                // ref: https://webpack.js.org/configuration/resolve/#resolvesymlinks
+                preserveSymlinks: false,
+              }),
+            );
           } catch (e: any) {
             if (e.code === 'MODULE_NOT_FOUND') {
               throw new Error('Cannot resolve extraBabelIncludes: ' + p);
