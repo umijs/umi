@@ -30,6 +30,7 @@ export default (api: IApi) => {
             import: Joi.boolean(),
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
+            theme: Joi.object(),
           }),
           Joi.boolean().invalid(true),
         );
@@ -100,6 +101,17 @@ export default (api: IApi) => {
       'root-entry-name': 'default',
       ...memo.theme,
     };
+
+    // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
+    if (antd.theme) {
+      antd.configProvider ??= {};
+      // priority: antd.theme > antd.configProvider.theme
+      antd.configProvider.theme = Object.assign(
+        {},
+        antd.configProvider.theme,
+        antd.theme,
+      );
+    }
 
     return memo;
   });
