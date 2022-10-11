@@ -1,6 +1,6 @@
 import { dirname } from 'path';
 import { IApi } from 'umi';
-import { Mustache } from 'umi/plugin-utils';
+import { Mustache, deepmerge } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -106,9 +106,8 @@ export default (api: IApi) => {
     if (antdVersion.startsWith('5') && antd.theme) {
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
-      antd.configProvider.theme = Object.assign(
-        {},
-        antd.configProvider.theme,
+      antd.configProvider.theme = deepmerge(
+        antd.configProvider.theme || {},
         antd.theme,
       );
     }
