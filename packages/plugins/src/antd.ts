@@ -103,7 +103,7 @@ export default (api: IApi) => {
     };
 
     // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
-    if (antd.theme) {
+    if (antdVersion.startsWith('5') && antd.theme) {
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
       antd.configProvider.theme = Object.assign(
