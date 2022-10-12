@@ -220,6 +220,11 @@ export class StaticDepInfo {
     const groupedMockImports: Record<string, ImportSpecifier[]> = {};
 
     for (const imp of imports) {
+      // when import('base/${comp}')
+      if (!imp.n) {
+        continue;
+      }
+
       if (pkgNames.indexOf(imp.n!) >= 0) {
         const name = imp.n!;
         if (groupedMockImports[name]) {
