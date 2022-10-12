@@ -268,7 +268,12 @@ declare module '*.txt' {
         entryCodeAhead: (
           await api.applyPlugins({
             key: 'addEntryCodeAhead',
-            initialValue: [],
+            // keep same insert position with umi 3, to raise style priority
+            // ref: https://github.com/umijs/umi/blob/73925addfb33eb936aed7a8c3051bfde6adf741b/packages/preset-built-in/src/plugins/features/globalCSS.ts#L25
+            initialValue: [
+              api.appData.globalCSS.length &&
+                `import '${winPath(api.appData.globalCSS[0])}';`,
+            ].filter(Boolean),
           })
         ).join('\n'),
         polyfillImports: importsToStr(
@@ -281,9 +286,6 @@ declare module '*.txt' {
           await api.applyPlugins({
             key: 'addEntryImportsAhead',
             initialValue: [
-              api.appData.globalCSS.length && {
-                source: api.appData.globalCSS[0],
-              },
               api.appData.globalJS.length && {
                 source: api.appData.globalJS[0],
               },
