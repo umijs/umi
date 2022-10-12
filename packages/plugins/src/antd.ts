@@ -1,5 +1,6 @@
 import { dirname } from 'path';
 import { IApi } from 'umi';
+import assert from 'assert';
 import { Mustache, deepmerge } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
