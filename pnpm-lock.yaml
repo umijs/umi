@@ -127,7 +127,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-components': ^2.0.1
       '@antv/l7-react': ^2.3.9
-      '@umijs/max': 4.0.0-canary.20221011.1
+      '@umijs/max': 4.0.0-canary.20221012.1
       ahooks: ^3.4.0
       antd: 4.20.6
       classnames: ^2.3.1
@@ -163,25 +163,25 @@ importers:
 
   examples/api-route-demo:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/boilerplate:
     specifiers:
       hoist-non-react-statics: ^3.3.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       hoist-non-react-statics: 3.3.2
       umi: link:../../packages/umi
 
   examples/boilerplate-vue:
     specifiers:
-      '@umijs/preset-vue': 4.0.0-canary.20221011.1
+      '@umijs/preset-vue': 4.0.0-canary.20221012.1
       cross-env: ^7.0.3
       cypress: ^10.0.0
       start-server-and-test: ^1.0.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vue: 3.2.36
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -194,7 +194,7 @@ importers:
 
   examples/bug-mfsu-fast-refresh:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
@@ -202,10 +202,10 @@ importers:
     specifiers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.5
-      '@umijs/bundler-vite': 4.0.0-canary.20221011.1
+      '@umijs/bundler-vite': 4.0.0-canary.20221012.1
       react: ^18.1.0
       react-dom: ^18.1.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.6
@@ -222,7 +222,7 @@ importers:
       react: ^18.1.0
       react-dom: ^18.1.0
       react-router-dom: ^6.3.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.6
@@ -235,27 +235,27 @@ importers:
   examples/client-loader:
     specifiers:
       express: 4.18.1
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       express: 4.18.1
       umi: link:../../packages/umi
 
   examples/config-proxy:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/diff-client-loader:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/legacy:
     specifiers:
       es-check: ^7.0.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
@@ -273,7 +273,7 @@ importers:
       redux: ^4.2.0
       swiper: ^8.1.4
       swr: 1.3.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@codesandbox/sandpack-react': 1.0.1
       antd: 4.20.6
@@ -291,7 +291,7 @@ importers:
     specifiers:
       eslint: ^8.15.0
       stylelint: ^14.8.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     devDependencies:
       eslint: 8.15.0
       stylelint: 14.8.2
@@ -300,7 +300,7 @@ importers:
   examples/max:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      '@umijs/max': 4.0.0-canary.20221011.1
+      '@umijs/max': 4.0.0-canary.20221012.1
       antd: ^4.23.2
       cross-env: ^7.0.3
       cypress: ^10.0.0
@@ -322,7 +322,7 @@ importers:
 
   examples/mf-host:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20221011.1
+      '@umijs/max': 4.0.0-canary.20221012.1
       cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
@@ -339,7 +339,7 @@ importers:
 
   examples/mf-remote:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20221011.1
+      '@umijs/max': 4.0.0-canary.20221012.1
       cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
@@ -360,7 +360,7 @@ importers:
       '@types/react-dom': ^18.0.5
       react: ^18.1.0
       react-dom: ^18.1.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.6
@@ -378,7 +378,7 @@ importers:
       rimraf: 3.0.2
       start-server-and-test: ^1.0.0
       typescript: ^4.1.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       wait-on: ^6.0.1
     dependencies:
       lodash.uppercase: 4.3.0
@@ -397,7 +397,7 @@ importers:
     specifiers:
       '@example/x-design': workspace:*
       antd: 4.20.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@example/x-design': link:../x-design
       antd: 4.20.2
@@ -411,7 +411,7 @@ importers:
       '@babel/preset-typescript': ^7.18.6
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.5
-      '@umijs/mfsu': 4.0.0-canary.20221011.1
+      '@umijs/mfsu': 4.0.0-canary.20221012.1
       antd: ^4.20.6
       babel-loader: ^8.2.4
       esbuild: 0.14.35
@@ -444,13 +444,13 @@ importers:
 
   examples/mfsu-un-match-libs:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
-      '@umijs/preset-vue': 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
+      '@umijs/preset-vue': 4.0.0-canary.20221012.1
       '@vant/icons': ^1.8.0
       '@vant/popperjs': ^1.1.0
       '@vant/use': ^1.3.6
       tailwindcss: ^3.0.24
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vant: 3.4.9
       vue: 3.2.36
     dependencies:
@@ -466,19 +466,19 @@ importers:
 
   examples/mpa:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/mpa-with-app-root-and-alias:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/qiankun-slave:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20221011.1
+      '@umijs/max': 4.0.0-canary.20221012.1
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
@@ -488,7 +488,7 @@ importers:
 
   examples/qiankun-slave-app2:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20221011.1
+      '@umijs/max': 4.0.0-canary.20221012.1
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
@@ -498,14 +498,14 @@ importers:
 
   examples/remix:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/ssr-demo:
     specifiers:
       express: 4.17.3
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       express: 4.17.3
       umi: link:../../packages/umi
@@ -513,7 +513,7 @@ importers:
   examples/ssr-demo-2:
     specifiers:
       express: 4.17.3
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       express: 4.17.3
       umi: link:../../packages/umi
@@ -522,7 +522,7 @@ importers:
     specifiers:
       express: 4.17.3
       isomorphic-unfetch: ^3.1.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       express: 4.17.3
       isomorphic-unfetch: 3.1.0
@@ -534,11 +534,11 @@ importers:
       '@testing-library/react': ^13
       '@types/jest': ^27
       '@types/testing-library__jest-dom': ^5.14.5
-      '@umijs/plugins': 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
       jest: ^27
       ts-node: ^10
       typescript: ^4
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -557,7 +557,7 @@ importers:
       '@vitejs/plugin-react': 1.2.0
       react-test-renderer: ^18.2.0
       typescript: ^4.7.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vitest: ^0.16.0
     dependencies:
       umi: link:../../packages/umi
@@ -570,29 +570,29 @@ importers:
 
   examples/tmp-swc-transpiler:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/umi-3-compat-mode:
     specifiers:
       '@umijs/plugin-umi-request-compat': 1.0.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugin-umi-request-compat': 1.0.0_umi@packages+umi
       umi: link:../../packages/umi
 
   examples/umi-run:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
 
   examples/vue-demo:
     specifiers:
-      '@umijs/preset-vue': 4.0.0-canary.20221011.1
+      '@umijs/preset-vue': 4.0.0-canary.20221012.1
       babel-plugin-import: ^1.13.5
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vant: 3.4.9
       vite-plugin-style-import: 2.0.0
       vue: 3.2.36
@@ -607,9 +607,9 @@ importers:
 
   examples/with-antd:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
       antd: ^4.20.6
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       antd: 4.21.3
@@ -617,8 +617,8 @@ importers:
 
   examples/with-dva:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
-      umi: 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -628,7 +628,7 @@ importers:
       '@emotion/cache': ^11.7.1
       '@emotion/react': ^11.9.0
       '@emotion/styled': ^11.8.1
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@emotion/cache': 11.9.3
       '@emotion/react': 11.10.4
@@ -639,7 +639,7 @@ importers:
     specifiers:
       mobx: ^6.6.0
       mobx-react: ^7.5.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       mobx: 6.6.1
       mobx-react: 7.5.2_mobx@6.6.1
@@ -653,7 +653,7 @@ importers:
       monaco-editor: ^0.33.0
       monaco-editor-webpack-plugin: ^7.0.1
       typescript: ^4.7.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       monaco-editor: 0.33.0
       monaco-editor-webpack-plugin: 7.0.1_monaco-editor@0.33.0
@@ -670,7 +670,7 @@ importers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.5
       typescript: ^4.7.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@monaco-editor/react': 4.4.5
       umi: link:../../packages/umi
@@ -683,7 +683,7 @@ importers:
     specifiers:
       react: ^17.0.0
       react-dom: ^17.0.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -692,7 +692,7 @@ importers:
   examples/with-react-query:
     specifiers:
       react-query: ^3.38.1
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       react-query: 3.39.2
       umi: link:../../packages/umi
@@ -704,7 +704,7 @@ importers:
       '@types/three': ^0.140.0
       three: ^0.141.0
       troika-three-text: ^0.46.4
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@react-three/drei': 9.25.2_dvo53idsbni3cefo44fktc57ca
       '@react-three/fiber': 8.6.0_three@0.141.0
@@ -716,7 +716,7 @@ importers:
   examples/with-recoil:
     specifiers:
       recoil: ^0.7.3-alpha.1
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       recoil: 0.7.5
       umi: link:../../packages/umi
@@ -725,7 +725,7 @@ importers:
     specifiers:
       react-redux: ^8.0.2
       redux: ^4.2.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       react-redux: 8.0.2_redux@4.2.0
       redux: 4.2.0
@@ -735,7 +735,7 @@ importers:
     specifiers:
       '@reduxjs/toolkit': ^1.8.2
       react-redux: ^8.0.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@reduxjs/toolkit': 1.8.5_react-redux@8.0.2
       react-redux: 8.0.2
@@ -745,7 +745,7 @@ importers:
     specifiers:
       '@rematch/core': ^2.2.0
       react-redux: ^8.0.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@rematch/core': 2.2.0
       react-redux: 8.0.2
@@ -755,9 +755,9 @@ importers:
     specifiers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.5
-      '@umijs/plugins': 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
       typescript: ^4.7.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -772,7 +772,7 @@ importers:
       '@types/react-dom': ^18.0.5
       sass: ^1.50.0
       typescript: ^4.7.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
@@ -785,7 +785,7 @@ importers:
     specifiers:
       '@types/styled-components': ^5.1.25
       styled-components: ^5.3.5
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       styled-components: 5.3.5
       umi: link:../../packages/umi
@@ -794,9 +794,9 @@ importers:
 
   examples/with-tailwindcss:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
       tailwindcss: ^3.0.24
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       tailwindcss: 3.1.8
@@ -804,9 +804,9 @@ importers:
 
   examples/with-unocss:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
       '@unocss/cli': ^0.33.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       unocss: ^0.34.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
@@ -816,7 +816,7 @@ importers:
 
   examples/with-unstated:
     specifiers:
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       unstated-next: ^1.1.0
     dependencies:
       umi: link:../../packages/umi
@@ -824,16 +824,16 @@ importers:
 
   examples/with-use-model:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
-      umi: 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
 
   examples/with-valtio:
     specifiers:
-      '@umijs/plugins': 4.0.0-canary.20221011.1
-      umi: 4.0.0-canary.20221011.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -843,7 +843,7 @@ importers:
       '@vanilla-extract/babel-plugin': ^1.1.6
       '@vanilla-extract/css': ^1.7.0
       '@vanilla-extract/webpack-plugin': ^2.1.9
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@vanilla-extract/babel-plugin': 1.1.7
       '@vanilla-extract/css': 1.7.3
@@ -852,9 +852,9 @@ importers:
 
   examples/with-vue-element-plus:
     specifiers:
-      '@umijs/preset-vue': 4.0.0-canary.20221011.1
+      '@umijs/preset-vue': 4.0.0-canary.20221012.1
       element-plus: ^2.2.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vue: 3.2.36
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -864,9 +864,9 @@ importers:
 
   examples/with-vue-pinia:
     specifiers:
-      '@umijs/preset-vue': 4.0.0-canary.20221011.1
+      '@umijs/preset-vue': 4.0.0-canary.20221012.1
       pinia: ^2.0.14
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vue: 3.2.36
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -885,7 +885,7 @@ importers:
 
   packages/ast:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
@@ -893,8 +893,8 @@ importers:
     specifiers:
       '@babel/runtime': 7.18.9
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       core-js: 3.22.4
     dependencies:
       '@babel/runtime': 7.18.9
@@ -906,8 +906,8 @@ importers:
   packages/bundler-esbuild:
     specifiers:
       '@alitajs/postcss-plugin-px2rem': ^0.0.1
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       enhanced-resolve: 5.9.3
       postcss: ^8.4.13
       postcss-flexbugs-fixes: 5.0.2
@@ -956,7 +956,7 @@ importers:
       '@types/babel__traverse': 7.17.1
       '@types/less': 3.0.3
       '@types/spdy': ^3.4.5
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.10.5
       esbuild: 0.14.49
@@ -1019,8 +1019,8 @@ importers:
       '@types/caniuse-lite': 1.0.1
       '@types/rollup-plugin-visualizer': 4.2.1
       '@types/svgo': 2.6.3
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       '@vitejs/plugin-legacy': 1.7.1
       '@vitejs/plugin-react': 1.2.0
       caniuse-lite: 1.0.30001327
@@ -1058,11 +1058,11 @@ importers:
       '@types/hapi__joi': 17.1.8
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.5.3
-      '@umijs/babel-preset-umi': 4.0.0-canary.20221011.1
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
+      '@umijs/babel-preset-umi': 4.0.0-canary.20221012.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
       '@umijs/case-sensitive-paths-webpack-plugin': ^1.0.1
-      '@umijs/mfsu': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/mfsu': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       autoprefixer: 10.4.4
       babel-loader: 8.2.4
       compression: 1.7.4
@@ -1157,8 +1157,8 @@ importers:
 
   packages/core:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       dotenv: 16.0.0
       dotenv-expand: 8.0.3
       just-diff: 5.0.1
@@ -1172,7 +1172,7 @@ importers:
 
   packages/create-umi:
     specifiers:
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/utils': link:../utils
 
@@ -1184,7 +1184,7 @@ importers:
       '@stylelint/postcss-css-in-js': ^0.38.0
       '@typescript-eslint/eslint-plugin': 5.36.1
       '@typescript-eslint/parser': 5.36.1
-      '@umijs/babel-preset-umi': 4.0.0-canary.20221011.1
+      '@umijs/babel-preset-umi': 4.0.0-canary.20221012.1
       eslint-plugin-jest: 26.1.5
       eslint-plugin-react: 7.29.4
       eslint-plugin-react-hooks: 4.5.0
@@ -1217,12 +1217,12 @@ importers:
 
   packages/max:
     specifiers:
-      '@umijs/lint': 4.0.0-canary.20221011.1
-      '@umijs/plugins': 4.0.0-canary.20221011.1
+      '@umijs/lint': 4.0.0-canary.20221012.1
+      '@umijs/plugins': 4.0.0-canary.20221012.1
       antd: ^4.20.6
       eslint: 8.15.0
       stylelint: 14.8.2
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       '@umijs/lint': link:../lint
       '@umijs/plugins': link:../plugins
@@ -1233,9 +1233,9 @@ importers:
 
   packages/mfsu:
     specifiers:
-      '@umijs/bundler-esbuild': 4.0.0-canary.20221011.1
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-esbuild': 4.0.0-canary.20221012.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       enhanced-resolve: 5.9.3
       is-absolute-url: ^3.0.3
       is-equal: ^1.6.4
@@ -1270,7 +1270,7 @@ importers:
       remark-gfm: ^3.0.1
       shiki: ^0.10.1
       tailwindcss: ^3.0.24
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
     dependencies:
       classnames: 2.3.1
       github-slugger: 1.4.0
@@ -1301,7 +1301,7 @@ importers:
       '@ant-design/antd-theme-variable': ^1.0.0
       '@ant-design/icons': ^4.7.0
       '@ant-design/pro-components': ^2.0.1
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
       '@umijs/valtio': ^1.0.0
       antd-dayjs-webpack-plugin: ^1.0.6
       axios: ^0.27.2
@@ -1318,7 +1318,7 @@ importers:
       react-intl: 3.12.1
       react-redux: ^8.0.2
       redux: ^4.2.0
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       warning: ^4.0.3
     dependencies:
       '@ahooksjs/use-request': 2.8.15
@@ -1352,19 +1352,19 @@ importers:
       '@types/body-parser': 1.19.2
       '@types/ini': 1.3.31
       '@types/multer': 1.4.7
-      '@umijs/ast': 4.0.0-canary.20221011.1
-      '@umijs/babel-preset-umi': 4.0.0-canary.20221011.1
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/bundler-vite': 4.0.0-canary.20221011.1
-      '@umijs/bundler-webpack': 4.0.0-canary.20221011.1
-      '@umijs/core': 4.0.0-canary.20221011.1
+      '@umijs/ast': 4.0.0-canary.20221012.1
+      '@umijs/babel-preset-umi': 4.0.0-canary.20221012.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/bundler-vite': 4.0.0-canary.20221012.1
+      '@umijs/bundler-webpack': 4.0.0-canary.20221012.1
+      '@umijs/core': 4.0.0-canary.20221012.1
       '@umijs/did-you-know': ^1.0.0
       '@umijs/history': 5.3.1
-      '@umijs/mfsu': 4.0.0-canary.20221011.1
-      '@umijs/plugin-run': 4.0.0-canary.20221011.1
-      '@umijs/renderer-react': 4.0.0-canary.20221011.1
-      '@umijs/server': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/mfsu': 4.0.0-canary.20221012.1
+      '@umijs/plugin-run': 4.0.0-canary.20221012.1
+      '@umijs/renderer-react': 4.0.0-canary.20221012.1
+      '@umijs/server': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       body-parser: 1.20.0
       click-to-react-component: ^1.0.8
       core-js: 3.22.4
@@ -1427,9 +1427,9 @@ importers:
 
   packages/preset-vue:
     specifiers:
-      '@umijs/renderer-vue': 4.0.0-canary.20221011.1
+      '@umijs/renderer-vue': 4.0.0-canary.20221012.1
       '@vitejs/plugin-vue': 2.3.1
-      umi: 4.0.0-canary.20221011.1
+      umi: 4.0.0-canary.20221012.1
       vue: 3.2.36
       vue-loader: 17.0.0
       vue-router: 4.0.15
@@ -1467,7 +1467,7 @@ importers:
 
   packages/server:
     specifiers:
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
       history: 5.3.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -1485,7 +1485,7 @@ importers:
       '@babel/plugin-transform-modules-commonjs': 7.18.6
       '@jest/transform': ^28.1.3
       '@jest/types': 27.5.1
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
       babel-jest: ^28.1.3
       esbuild: 0.14.51
       identity-obj-proxy: 3.0.0
@@ -1507,15 +1507,15 @@ importers:
   packages/umi:
     specifiers:
       '@babel/runtime': 7.18.9
-      '@umijs/bundler-utils': 4.0.0-canary.20221011.1
-      '@umijs/bundler-webpack': 4.0.0-canary.20221011.1
-      '@umijs/core': 4.0.0-canary.20221011.1
-      '@umijs/lint': 4.0.0-canary.20221011.1
-      '@umijs/preset-umi': 4.0.0-canary.20221011.1
-      '@umijs/renderer-react': 4.0.0-canary.20221011.1
-      '@umijs/server': 4.0.0-canary.20221011.1
-      '@umijs/test': 4.0.0-canary.20221011.1
-      '@umijs/utils': 4.0.0-canary.20221011.1
+      '@umijs/bundler-utils': 4.0.0-canary.20221012.1
+      '@umijs/bundler-webpack': 4.0.0-canary.20221012.1
+      '@umijs/core': 4.0.0-canary.20221012.1
+      '@umijs/lint': 4.0.0-canary.20221012.1
+      '@umijs/preset-umi': 4.0.0-canary.20221012.1
+      '@umijs/renderer-react': 4.0.0-canary.20221012.1
+      '@umijs/server': 4.0.0-canary.20221012.1
+      '@umijs/test': 4.0.0-canary.20221012.1
+      '@umijs/utils': 4.0.0-canary.20221012.1
       prettier-plugin-organize-imports: ^2.3.4
       prettier-plugin-packagejson: ^2.2.17
     dependencies:
