@@ -103,7 +103,8 @@ export default (api: IApi) => {
     };
 
     // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
-    if (antdVersion.startsWith('5') && antd.theme) {
+    if (antd.theme) {
+      assert(antdVersion.startsWith('5'), `antd.theme is only valid when antd is 5`);
       antd.configProvider ??= {};
       // priority: antd.theme > antd.configProvider.theme
       antd.configProvider.theme = deepmerge(
