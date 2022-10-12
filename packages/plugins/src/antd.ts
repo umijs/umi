@@ -1,6 +1,6 @@
 import { dirname } from 'path';
 import { IApi } from 'umi';
-import { Mustache } from 'umi/plugin-utils';
+import { Mustache, deepmerge } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -30,6 +30,7 @@ export default (api: IApi) => {
             import: Joi.boolean(),
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
+            theme: Joi.object(),
           }),
           Joi.boolean().invalid(true),
         );
@@ -100,6 +101,17 @@ export default (api: IApi) => {
       'root-entry-name': 'default',
       ...memo.theme,
     };
+
+    // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
+    if (antd.theme) {
+      assert(antdVersion.startsWith('5'), `antd.theme is only valid when antd is 5`);
+      antd.configProvider ??= {};
+      // priority: antd.theme > antd.configProvider.theme
+      antd.configProvider.theme = deepmerge(
+        antd.configProvider.theme || {},
+        antd.theme,
+      );
+    }
 
     return memo;
   });
