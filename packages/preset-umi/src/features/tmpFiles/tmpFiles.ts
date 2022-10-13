@@ -582,7 +582,8 @@ export default function EmptyRoute() {
         if (existsSync(file)) {
           // 带 .ts 后缀的声明文件 会导致声明失效
           const noSuffixFile = file.replace(/\.ts$/, '');
-          exports.push(`export * from '${noSuffixFile}';`);
+          // 必须带 type，否则 export * 会导致 import { NotDefined } from 'umi' 不报错
+          exports.push(`export type * from '${noSuffixFile}';`);
         }
       }
       // plugins runtimeConfig.d.ts
