@@ -137,13 +137,15 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
   let newRoutes = []
   for (const route of routes) {
     if (filterFn(route)) {
-      if (Array.isArray(route.routes)) {
-        newRoutes.push(...filterRoutes(route.routes, filterFn))
+      if (Array.isArray(route.children)) {
+        newRoutes.push(...filterRoutes(route.children, filterFn))
       }
     } else {
       newRoutes.push(route);
-      if (Array.isArray(route.routes)) {
-        route.routes = filterRoutes(route.routes, filterFn);
+      if (Array.isArray(route.children)) {
+        route.children = filterRoutes(route.children, filterFn);
+        // 兼容旧版本的 pro-layout
+        route.routes = route.children;
       }
     }
   }
