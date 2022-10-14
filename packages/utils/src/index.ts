@@ -40,6 +40,7 @@ export * from './randomColor/randomColor';
 export * as register from './register';
 export * from './tryPaths';
 export * from './winPath';
+export * from './setNoDeprecation';
 export {
   address,
   axios,
