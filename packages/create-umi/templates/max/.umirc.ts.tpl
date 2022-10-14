@@ -31,5 +31,13 @@ export default defineConfig({
     },
   ],
   npmClient: '{{{ npmClient }}}',
+  // fix react multi instance problem
+  mfsu:{
+    shared: {
+      react: {
+        singleton: true,
+      },
+    },
+  },
 });
 
