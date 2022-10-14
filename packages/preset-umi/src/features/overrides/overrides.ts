@@ -26,7 +26,12 @@ export default (api: IApi) => {
             const isOverridesFile =
               winPath(api.appData.overridesCSS[0]) === winPath(filePath);
 
-            if (isOverridesFile && !['html', 'body'].includes(selector)) {
+            if (
+              isOverridesFile &&
+              !new RegExp(`^#${api.config.mountElementId}([:[\\s]|$)`).test(
+                selector,
+              )
+            ) {
               // special case for html and body, because they are not in #root
               if (selector === 'html') {
                 return `html:first-child`;
