@@ -77,8 +77,6 @@ export class AutoUpdateSrcCodeCache {
   async init() {
     const [files] = await Promise.all([this.initFileList(), esModuleLexerInit]);
 
-    console.log('files\n', files.join('\n'));
-
     await this.folderCache.loadFiles(files);
   }
 
