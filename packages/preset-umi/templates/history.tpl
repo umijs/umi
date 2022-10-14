@@ -24,7 +24,7 @@ export function createHistory(opts: any) {
       h.replace(patchTo(to), state);
     },
     get location() {
-      return h.location;
+      return { ...h.location, pathname: h.location.pathname.replace(new RegExp(`^${basename}`), '/') };
     },
     get action() {
       return h.action;
