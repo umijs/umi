@@ -6,6 +6,8 @@ import { importLazy } from './importLazy';
 const enableFSLogger =
   process.env.FS_LOGGER !== 'none' && !process.versions.webcontainer;
 
+const enableConsole = process.env.NODE_ENV !== 'test';
+
 const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
 const loggerPath = join(loggerDir, 'umi.log');
 
@@ -58,44 +60,44 @@ if (enableFSLogger) {
 }
 
 export function wait(...message: any[]) {
-  console.log(prefixes.wait, ...message);
+  enableConsole && console.log(prefixes.wait, ...message);
   logger.wait(message[0]);
 }
 
 export function error(...message: any[]) {
-  console.error(prefixes.error, ...message);
+  enableConsole && console.error(prefixes.error, ...message);
   logger.error(message[0]);
 }
 
 export function warn(...message: any[]) {
-  console.warn(prefixes.warn, ...message);
+  enableConsole && console.warn(prefixes.warn, ...message);
   logger.warn(message[0]);
 }
 
 export function ready(...message: any[]) {
-  console.log(prefixes.ready, ...message);
+  enableConsole && console.log(prefixes.ready, ...message);
   logger.ready(message[0]);
 }
 
 export function info(...message: any[]) {
-  console.log(prefixes.info, ...message);
+  enableConsole && console.log(prefixes.info, ...message);
   logger.info(message[0]);
 }
 
 export function event(...message: any[]) {
-  console.log(prefixes.event, ...message);
+  enableConsole && console.log(prefixes.event, ...message);
   logger.event(message[0]);
 }
 
 export function debug(...message: any[]) {
   if (process.env.DEBUG) {
-    console.log(prefixes.debug, ...message);
+    enableConsole && console.log(prefixes.debug, ...message);
   }
   logger.debug(message[0]);
 }
 
 export function fatal(...message: any[]) {
-  console.error(prefixes.fatal, ...message);
+  enableConsole && console.error(prefixes.fatal, ...message);
   logger.fatal(message[0]);
 }
 
