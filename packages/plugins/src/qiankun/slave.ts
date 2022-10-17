@@ -281,7 +281,6 @@ export { connectMaster } from './connectMaster';
     return async (req: Request, res: Response, next: NextFunction) => {
       const qiankunConfig = api.config.qiankun || {};
       const masterEntry = qiankunConfig.slave?.masterEntry;
-      const isMasterApp = qiankunConfig.master?.enable;
 
       const { proxyToMasterEnabled } = ((await api.applyPlugins({
         key: 'shouldProxyToMaster',
@@ -293,11 +292,10 @@ export { connectMaster } from './connectMaster';
       };
 
       if (masterEntry && proxyToMasterEnabled) {
-        // 主应用不应该走 masterEntry 逻辑，shouldProxyToMaster 不一定能拦住
-        if (isMasterApp) {
-          api.logger.warn('You should not set masterEntry in master app ');
-          return next();
-        }
+        const localDevHeaders = await api.applyPlugins({
+          key: 'addLocalProxyHeaders',
+          type: api.ApplyPluginsType.modify,
+        });
         return createProxyMiddleware(
           (pathname) => pathname !== '/local-dev-server',
           {
@@ -307,6 +305,13 @@ export { connectMaster } from './connectMaster';
             followRedirects: false,
             changeOrigin: true,
             selfHandleResponse: true,
+            onProxyReq(proxyReq) {
+              if (localDevHeaders) {
+                Object.keys(localDevHeaders).forEach((key) => {
+                  proxyReq.setHeader(key, localDevHeaders[key]);
+                });
+              }
+            },
             onProxyRes: responseInterceptor(
               async (
                 responseBuffer: any,
