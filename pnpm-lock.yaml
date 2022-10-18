@@ -1378,6 +1378,7 @@ importers:
       multer: 1.4.4
       os-locale: ^6.0.2
       path-to-regexp: 1.7.0
+      postcss-prefix-selector: 1.16.0
       react: 18.1.0
       react-dom: 18.1.0
       react-router: 6.3.0
@@ -1407,6 +1408,7 @@ importers:
       html-webpack-plugin: 5.5.0
       magic-string: 0.26.2
       path-to-regexp: 1.7.0
+      postcss-prefix-selector: 1.16.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-router: 6.3.0_react@18.1.0
@@ -12491,8 +12493,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      JSONStream: 1.3.5
       is-text-path: 1.0.1
+      JSONStream: 1.3.5
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -22835,6 +22837,15 @@ packages:
       postcss: 8.4.16
       postcss-value-parser: 4.2.0
     dev: true
+
+  /postcss-prefix-selector/1.16.0:
+    resolution: {integrity: sha512-rdVMIi7Q4B0XbXqNUEI+Z4E+pueiu/CS5E6vRCQommzdQ/sgsS4dK42U7GX8oJR+TJOtT+Qv3GkNo6iijUMp3Q==}
+    peerDependencies:
+      postcss: '>4 <9'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+    dev: false
 
   /postcss-preset-env/7.5.0:
     resolution: {integrity: sha512-0BJzWEfCdTtK2R3EiKKSdkE51/DI/BwnhlnicSW482Ym6/DGHud8K0wGLcdjip1epVX0HKo4c8zzTeV/SkiejQ==}
