@@ -14,14 +14,14 @@ test('empty config', () => {
 });
 
 test('config analyze', () => {
-  const plugins = rollup({ analyze: {} }, {}).build.rollupOptions.plugins;
+  const plugins = rollup({ analyze: {} }, {}).build?.rollupOptions?.plugins;
   expect(plugins).toEqual(
     expect.arrayContaining([expect.objectContaining({ name: 'visualizer' })]),
   );
 });
 
 test('config copy', () => {
-  const plugins = rollup({ copy: [] }, {}).build.rollupOptions.plugins;
+  const plugins = rollup({ copy: [] }, {}).build?.rollupOptions?.plugins;
   expect(plugins).toEqual(
     expect.arrayContaining([expect.objectContaining({ name: 'copy' })]),
   );

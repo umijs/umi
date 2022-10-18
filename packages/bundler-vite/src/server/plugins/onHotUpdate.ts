@@ -1,4 +1,4 @@
-import type { HmrContext, Plugin } from '../../../compiled/vite';
+import type { HmrContext, Plugin } from 'vite';
 
 export default function handleHotUpdate(
   listener: (modules: HmrContext['modules']) => Promise<void> | void,

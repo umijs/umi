@@ -1,4 +1,4 @@
-import type { Plugin } from '../../compiled/vite';
+import type { Plugin } from 'vite';
 import { IConfig } from '../types';
 
 /**

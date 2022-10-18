@@ -5,7 +5,7 @@ import {
   TransformOptions,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import fs from 'fs';
-import type { Plugin } from '../../compiled/vite';
+import type { Plugin } from 'vite';
 
 type SVGROption = { [key: string]: any };
 type SVGOOption = { [key: string]: any } | false;

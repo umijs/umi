@@ -1,5 +1,5 @@
 import type { IConfigProcessor } from '.';
-import type { Alias } from '../../../compiled/vite';
+import type { Alias } from 'vite';
 
 function hoistAlias(alias: Alias[]) {
   function getFinalReplacement(

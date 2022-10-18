@@ -10,8 +10,8 @@ import type {
   DepOptimizationMetadata,
   HmrContext,
   InlineConfig as ViteInlineConfig,
-} from '../../compiled/vite';
-import { createServer as createViteServer } from '../../compiled/vite';
+} from 'vite';
+import { createServer as createViteServer } from 'vite';
 import type { IConfig } from '../types';
 import pluginOnHotUpdate from './plugins/onHotUpdate';
 
@@ -74,7 +74,7 @@ export async function createServer(opts: IOpts) {
           ]),
         }
       : {}),
-    server: { ...viteConfigServer, middlewareMode: 'html' },
+    server: { ...viteConfigServer, middlewareMode: true },
   });
 
   // before middlewares

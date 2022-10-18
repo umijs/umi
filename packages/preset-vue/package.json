@@ -28,7 +28,7 @@
     "vue-router": "4.0.15"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "2.3.1",
+    "@vitejs/plugin-vue": "3.1.2",
     "umi": "4.0.25"
   },
   "publishConfig": {
@@ -44,7 +44,7 @@
     "externals": {
       "vue": "vue",
       "vue/compiler-sfc": "vue/compiler-sfc",
-      "vite": "@umijs/bundler-vite/compiled/vite",
+      "vite": "vite",
       "esbuild": "@umijs/bundler-utils/compiled/esbuild"
     },
     "excludeDtsDeps": [

@@ -1,4 +1,4 @@
-import type { Plugin } from '../../compiled/vite';
+import type { Plugin } from 'vite';
 type fileType = Parameters<NonNullable<Plugin['generateBundle']>>[1]['file'];
 
 /**

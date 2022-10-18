@@ -1,7 +1,7 @@
 import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
 import type { PluginVisualizerOptions } from 'rollup-plugin-visualizer';
 import { Options as LegacyOptions } from '../compiled/@vitejs/plugin-legacy';
-import type { Plugin } from '../compiled/vite';
+import type { Plugin } from 'vite';
 
 export enum Env {
   development = 'development',

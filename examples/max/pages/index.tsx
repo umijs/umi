@@ -12,7 +12,7 @@ export default function HomePage() {
   const intl = useIntl();
   return (
     <div>
-      <h2 className={styles.myText}>index page</h2>
+      <h2 className={styles.myText}>index page </h2>
       <Button type="primary">Button</Button>
       <Input />
       <DatePicker />
