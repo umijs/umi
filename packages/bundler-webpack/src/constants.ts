@@ -21,3 +21,5 @@ export const DEFAULT_ESBUILD_TARGET_KEYS = [
   'edge',
   'safari',
 ];
+
+export const DEFAULT_RUNTIME_WEBPACK = 'webpack';

@@ -7,6 +7,7 @@ import {
   DEFAULT_BROWSER_TARGETS,
   DEFAULT_DEVTOOL,
   DEFAULT_OUTPUT_PATH,
+  DEFAULT_RUNTIME_WEBPACK,
 } from '../constants';
 import { RuntimePublicPathPlugin } from '../plugins/RuntimePublicPathPlugin';
 import { Env, IConfig } from '../types';
@@ -126,6 +127,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       `${applyOpts.staticPathPrefix}[name].[hash:8][ext]`,
     )
     .set('hashFunction', 'xxhash64'); // https://github.com/webpack/webpack/issues/14532#issuecomment-947525539
+
+  // optimization
+  config.optimization.runtimeChunk({ name: DEFAULT_RUNTIME_WEBPACK });
 
   // resolve
   // prettier-ignore
