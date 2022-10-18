@@ -39,7 +39,7 @@
     "@types/svgo": "2.6.3",
     "@vitejs/plugin-legacy": "2.2.0",
     "caniuse-lite": "1.0.30001327",
-    "rollup": "2.79.1",
+    "rollup": "2.78.1",
     "rollup-plugin-copy": "3.4.0"
   },
   "publishConfig": {
