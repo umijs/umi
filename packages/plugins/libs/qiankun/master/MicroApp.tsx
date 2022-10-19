@@ -74,6 +74,7 @@ export const MicroApp = forwardRef(
       lifeCycles: globalLifeCycles,
       prefetch = true,
       appNameKeyAlias = 'name',
+      prefetchThreshold = 5,
       ...globalSettings
     } = getMasterOptions() as MasterOptions;
 
@@ -184,9 +185,10 @@ export const MicroApp = forwardRef(
               );
               prefetchApps(specialPrefetchApps, configuration);
             } else {
+              // 不能无脑全量 prefetch，需要有一个阈值
               const otherNotMountedApps = apps.filter(
                 (app) => !isCurrentApp(app),
-              );
+              ).slice(0, prefetchThreshold);
               prefetchApps(otherNotMountedApps, configuration);
             }
             noneMounted = false;
