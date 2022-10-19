@@ -4,6 +4,8 @@ import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
 import { IBuildDepPluginOpts } from '../webpackPlugins/buildDepPlugin';
 import type { IMFSUStrategy, MFSU } from './mfsu';
+import type { Configuration } from 'webpack';
+import { extractBabelPluginImportOptions } from '../utils/webpackUtils';
 
 export class StaticAnalyzeStrategy implements IMFSUStrategy {
   private readonly mfsu: MFSU;
@@ -18,7 +20,10 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
     });
   }
 
-  init() {
+  init(webpackConfig: Configuration) {
+    const config = extractBabelPluginImportOptions(webpackConfig);
+    this.staticDepInfo.setBabelPluginImportConfig(config);
+
     this.staticDepInfo.init();
   }
 
@@ -130,16 +135,25 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
           return;
         }
 
+        // if no js code file changed, just compile, dont wait static analysis
+        if (
+          !hasJSCodeFiles(c.modifiedFiles) &&
+          !hasJSCodeFiles(c.removedFiles)
+        ) {
+          return;
+        }
+
         const start = Date.now();
         let event = this.staticDepInfo.getProducedEvent();
         while (event.length === 0) {
-          await sleep(200);
+          await sleep(100);
           event = this.staticDepInfo.getProducedEvent();
           if (Date.now() - start > 5000) {
             logger.warn('webpack wait mfsu deps too long');
             break;
           }
         }
+        logger.debug(`webpack waited ${Date.now() - start} ms`);
       },
       onCompileDone: () => {
         // fixme if mf module finished earlier than src compile
@@ -162,4 +176,15 @@ function sleep(ms: number): Promise<void> {
       resolve();
     }, ms);
   });
+}
+
+const REG_CODE_EXT = /\.(jsx|js|ts|tsx)$/;
+
+function hasJSCodeFiles(files: ReadonlySet<string>) {
+  for (let file of files.values()) {
+    if (REG_CODE_EXT.test(file)) {
+      return true;
+    }
+  }
+  return false;
 }

@@ -71,6 +71,7 @@ export default (api: IApi) => {
     history: { type: 'browser' },
     svgr: {},
     ignoreMomentLocale: true,
+    mfsu: { strategy: 'eager' },
   };
 
   const bundleSchemas = api.config.vite

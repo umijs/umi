@@ -1,6 +1,7 @@
 import { dirname } from 'path';
 import { IApi } from 'umi';
-import { Mustache } from 'umi/plugin-utils';
+import assert from 'assert';
+import { Mustache, deepmerge } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -30,6 +31,7 @@ export default (api: IApi) => {
             import: Joi.boolean(),
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
+            theme: Joi.object(),
           }),
           Joi.boolean().invalid(true),
         );
@@ -66,7 +68,8 @@ export default (api: IApi) => {
     // defaultConfig 的取值在 config 之后，所以改用环境变量传默认值
     if (process.env.UMI_PLUGIN_ANTD_ENABLE) {
       const { defaultConfig } = JSON.parse(process.env.UMI_PLUGIN_ANTD_ENABLE);
-      antd = Object.assign(defaultConfig, antd);
+      // 通过环境变量启用时，保持 memo.antd 与局部变量 antd 的引用关系，方便后续修改
+      memo.antd = antd = Object.assign(defaultConfig, antd);
     }
 
     // antd import
@@ -100,6 +103,20 @@ export default (api: IApi) => {
       'root-entry-name': 'default',
       ...memo.theme,
     };
+
+    // allow use `antd.theme` as the shortcut of `antd.configProvider.theme`
+    if (antd.theme) {
+      assert(
+        antdVersion.startsWith('5'),
+        `antd.theme is only valid when antd is 5`,
+      );
+      antd.configProvider ??= {};
+      // priority: antd.theme > antd.configProvider.theme
+      antd.configProvider.theme = deepmerge(
+        antd.configProvider.theme || {},
+        antd.theme,
+      );
+    }
 
     return memo;
   });

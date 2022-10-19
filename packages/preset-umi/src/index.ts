@@ -21,6 +21,7 @@ export default () => {
       require.resolve('./features/favicons/favicons'),
       require.resolve('./features/mock/mock'),
       require.resolve('./features/mpa/mpa'),
+      require.resolve('./features/overrides/overrides'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
       require.resolve('./features/routePrefetch/routePrefetch'),

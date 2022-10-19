@@ -965,6 +965,12 @@ run 命令的全局注入配置。添加`['zx/globals']`，在使用`umi run ./s
 
 启用运行时 publicPath，开启后会使用 `window.publicPath` 作为资源动态加载的起始路径。
 
+比如，
+
+```js
+runtimePublicPath: {},
+```
+
 ## scripts
 
 - 类型：`string[] | Script[]`

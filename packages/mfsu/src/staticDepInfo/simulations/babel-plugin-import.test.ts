@@ -1,3 +1,4 @@
+import path from 'path';
 import createImports from './babel-plugin-import';
 
 function pathToVersion(): string {
@@ -42,6 +43,32 @@ test('babel-plugin-import: with alias', () => {
 
         { replaceValue: `mf//project/node_modules/antd/es/row`,         value: '/project/node_modules/antd/es/row',         version: '1.2.3', isMatch: true,},
         { replaceValue: `mf//project/node_modules/antd/es/row/style`,   value: '/project/node_modules/antd/es/row/style',   version: '1.2.3', isMatch: true,},
+    ],
+  );
+});
+
+test('WINDOWS: babel-plugin-import: with alias', () => {
+  expect(
+    handleImports({
+      imports: [
+        // prettier-ignore
+        {n: "antd", s: 26, e: 30, ss: 0, se: 31, d: -1, a: -1},
+      ],
+      mfName: 'mf',
+      alias: {
+        antd: 'D:\\user\\umi\\node_modules\\antd',
+      },
+      rawCode: 'import {Model, Row} from "antd";',
+      pathToVersion,
+    }),
+  ).toEqual(
+    // prettier-ignore
+    [
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model`,       value: 'D:\\user\\umi\\node_modules\\antd/es/model',       version: '1.2.3', isMatch: true,},
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model/style`, value: 'D:\\user\\umi\\node_modules\\antd/es/model/style', version: '1.2.3', isMatch: true,},
+
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row`,         value: 'D:\\user\\umi\\node_modules\\antd/es/row',         version: '1.2.3', isMatch: true,},
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row/style`,   value: 'D:\\user\\umi\\node_modules\\antd/es/row/style',   version: '1.2.3', isMatch: true,},
     ],
   );
 });

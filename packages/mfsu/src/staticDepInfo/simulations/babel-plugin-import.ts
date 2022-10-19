@@ -54,7 +54,7 @@ export default function createHandle(importOptions: {
         retMatched.push({
           isMatch: true,
           value: unAliasedModulePath,
-          replaceValue: `${mfName}/${unAliasedModulePath}`,
+          replaceValue: `${mfName}/${winPath(unAliasedModulePath)}`,
           version,
         });
 
@@ -65,7 +65,7 @@ export default function createHandle(importOptions: {
         retMatched.push({
           isMatch: true,
           value: unAliasedStylePath,
-          replaceValue: `${mfName}/${unAliasedStylePath}`,
+          replaceValue: `${mfName}/${winPath(unAliasedStylePath)}`,
           version,
         });
       }
