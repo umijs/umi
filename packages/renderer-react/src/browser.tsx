@@ -121,6 +121,11 @@ export type RenderClientOpts = {
    * 直接返回组件，是为了方便测试
    */
   components?: boolean;
+  /**
+   * 启用 react-router 5 兼容模式。
+   * 此模式下，路由组件的 props 会包含 location、match、history 和 params 属性，和 react-router 5 的保持一致。
+   */
+  reactRouter5Compat?: boolean;
 };
 /**
  * umi max 所需要的所有插件列表，用于获取provide
