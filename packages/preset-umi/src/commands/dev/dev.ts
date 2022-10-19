@@ -260,7 +260,7 @@ PORT=8888 umi dev
       let srcCodeCache: AutoUpdateSrcCodeCache | undefined;
       let startBuildWorker: (deps: any[]) => Worker = (() => {}) as any;
 
-      if (api.config.mfsu?.strategy === 'eager') {
+      if (api.config.mfsu?.strategy === 'eager' && !enableVite) {
         srcCodeCache = new AutoUpdateSrcCodeCache({
           cwd: api.paths.absSrcPath,
           cachePath: join(api.paths.absNodeModulesPath, '.cache', 'mfsu', 'v4'),
