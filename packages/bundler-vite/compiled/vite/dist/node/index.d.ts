@@ -1,56 +1,56 @@
 /// <reference types="node" />
 
-import type { Agent } from 'http';
+import type { Agent } from 'node:http';
 import type { BuildOptions as BuildOptions_2 } from '../../../esbuild';
-import type { ClientRequest } from 'http';
-import type { ClientRequestArgs } from 'http';
+import type { ClientRequest } from 'node:http';
+import type { ClientRequestArgs } from 'node:http';
 import type { CustomPluginOptions } from '../../../rollup';
-import type { Duplex } from 'stream';
-import type { DuplexOptions } from 'stream';
+import type { Duplex } from 'node:stream';
+import type { DuplexOptions } from 'node:stream';
 import { TransformOptions as EsbuildTransformOptions } from '../../../esbuild';
-import { EventEmitter } from 'events';
-import * as events from 'events';
+import { version as esbuildVersion } from '../../../esbuild';
+import { EventEmitter } from 'node:events';
+import * as events from 'node:events';
 import type { ExistingRawSourceMap } from '../../../rollup';
-import type * as fs from 'fs';
+import type * as fs from 'node:fs';
 import type { GetManualChunk } from '../../../rollup';
-import * as http from 'http';
-import type { IncomingMessage } from 'http';
+import * as http from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import type { InputOptions } from '../../../rollup';
 import type { LoadResult } from '../../../rollup';
 import type { ModuleFormat } from '../../../rollup';
 import type { ModuleInfo } from '../../../rollup';
-import type * as net from 'net';
-import type { OutgoingHttpHeaders } from 'http';
+import type * as net from 'node:net';
+import type { ObjectHook } from '../../../rollup';
+import type { OutgoingHttpHeaders } from 'node:http';
 import type { OutputBundle } from '../../../rollup';
 import type { OutputChunk } from '../../../rollup';
 import type { PartialResolvedId } from '../../../rollup';
-import type { Plugin as Plugin_2 } from '../../../rollup';
+import type { Plugin as Plugin_3 } from '../../../rollup';
 import type { PluginContext } from '../../../rollup';
 import type { PluginHooks } from '../../../rollup';
-import type * as Postcss from '../../postcss';
+import type * as PostCSS from '../../postcss';
 import type { ResolveIdResult } from '../../../rollup';
 import type { RollupError } from '../../../rollup';
 import type { RollupOptions } from '../../../rollup';
 import type { RollupOutput } from '../../../rollup';
+import { VERSION as rollupVersion } from '../../../rollup';
 import type { RollupWatcher } from '../../../rollup';
-import type { SecureContextOptions } from 'tls';
-import type { Server } from 'http';
-import type { Server as Server_2 } from 'net';
-import type { Server as Server_3 } from 'https';
-import type { ServerOptions as ServerOptions_2 } from 'https';
-import type { ServerResponse } from 'http';
+import type { SecureContextOptions } from 'node:tls';
+import type { Server } from 'node:http';
+import type { Server as Server_2 } from 'node:https';
+import type { ServerOptions as ServerOptions_2 } from 'node:https';
+import type { ServerResponse } from 'node:http';
 import type { SourceDescription } from '../../../rollup';
 import type { SourceMap } from '../../../rollup';
-import type * as stream from 'stream';
+import type * as stream from 'node:stream';
 import type { TransformPluginContext } from '../../../rollup';
-import type { TransformResult as TransformResult_2 } from '../../../esbuild';
-import type { TransformResult as TransformResult_3 } from '../../../rollup';
-import type * as url from 'url';
-import type { URL as URL_2 } from 'url';
+import type { TransformResult as TransformResult_2 } from '../../../rollup';
+import type { TransformResult as TransformResult_3 } from '../../../esbuild';
+import type * as url from 'node:url';
+import type { URL as URL_2 } from 'node:url';
 import type { WatcherOptions } from '../../../rollup';
-import type { WebSocket as WebSocket_2 } from '../../ws';
-import { WebSocketServer as WebSocketServer_2 } from '../../ws';
-import type { ZlibOptions } from 'zlib';
+import type { ZlibOptions } from 'node:zlib';
 
 export declare interface Alias {
     find: string | RegExp
@@ -78,6 +78,15 @@ export declare type AnymatchFn = (testString: string) => boolean
 
 export declare type AnymatchPattern = string | RegExp | AnymatchFn
 
+/**
+ * spa: include SPA fallback middleware and configure sirv with `single: true` in preview
+ *
+ * mpa: only include non-SPA HTML middlewares
+ *
+ * custom: don't include HTML middlewares
+ */
+export declare type AppType = 'spa' | 'mpa' | 'custom';
+
 export declare interface AwaitWriteFinishOptions {
     /**
      * Amount of time in milliseconds for a file size to remain constant before emitting its event.
@@ -97,11 +106,6 @@ export declare interface AwaitWriteFinishOptions {
 export declare function build(inlineConfig?: InlineConfig): Promise<RollupOutput | RollupOutput[] | RollupWatcher>;
 
 export declare interface BuildOptions {
-    /**
-     * Base public path when served in production.
-     * @deprecated `base` is now a root-level config option.
-     */
-    base?: string;
     /**
      * Compatibility transform target. The transform is performed with esbuild
      * and the lowest supported target is es2015/es6. Note this only handles
@@ -125,13 +129,6 @@ export declare interface BuildOptions {
      * @default true
      */
     polyfillModulePreload?: boolean;
-    /**
-     * whether to inject dynamic import polyfill.
-     * Note: does not apply to library mode.
-     * @default false
-     * @deprecated use plugin-legacy for browsers that don't support dynamic import
-     */
-    polyfillDynamicImport?: boolean;
     /**
      * Directory relative from `root` where build output will be placed. If the
      * directory exists, it will be removed before the build.
@@ -185,10 +182,6 @@ export declare interface BuildOptions {
      * https://terser.org/docs/api-reference#minify-options
      */
     terserOptions?: Terser.MinifyOptions;
-    /**
-     * @deprecated Vite now uses esbuild for CSS minification.
-     */
-    cleanCssOptions?: any;
     /**
      * Will be merged with internal rollup options.
      * https://rollupjs.org/guide/en/#big-list-of-options
@@ -253,12 +246,6 @@ export declare interface BuildOptions {
      * Can slightly improve build speed.
      */
     reportCompressedSize?: boolean;
-    /**
-     * Set to false to disable brotli compressed size reporting for build.
-     * Can slightly improve build speed.
-     * @deprecated use `build.reportCompressedSize` instead.
-     */
-    brotliSize?: boolean;
     /**
      * Adjust chunk size warning limit (in kbs).
      * @default 500
@@ -340,13 +327,17 @@ export declare interface CommonServerOptions {
 export declare interface ConfigEnv {
     command: 'build' | 'serve';
     mode: string;
+    /**
+     * @experimental
+     */
+    ssrBuild?: boolean;
 }
 
 export declare namespace Connect {
     export type ServerHandle = HandleFunction | http.Server
 
     export class IncomingMessage extends http.IncomingMessage {
-        originalUrl?: http.IncomingMessage['url']
+        originalUrl?: http.IncomingMessage['url'] | undefined
     }
 
     export type NextFunction = (err?: any) => void
@@ -462,6 +453,10 @@ export declare interface CorsOptions {
 
 export declare type CorsOrigin = boolean | string | RegExp | (string | RegExp)[];
 
+export declare const createFilter: (include?: FilterPattern | undefined, exclude?: FilterPattern | undefined, options?: {
+    resolve?: string | false | null | undefined;
+} | undefined) => (id: string | unknown) => boolean;
+
 export declare function createLogger(level?: LogLevel, options?: LoggerOptions): Logger;
 
 export declare function createServer(inlineConfig?: InlineConfig): Promise<ViteDevServer>;
@@ -484,8 +479,8 @@ export declare interface CSSOptions {
      */
     modules?: CSSModulesOptions | false;
     preprocessorOptions?: Record<string, any>;
-    postcss?: string | (Postcss.ProcessOptions & {
-        plugins?: Postcss.Plugin[];
+    postcss?: string | (PostCSS.ProcessOptions & {
+        plugins?: PostCSS.AcceptedPlugin[];
     });
     /**
      * Enables css sourcemaps during dev
@@ -515,6 +510,55 @@ export declare interface CustomPayload {
  * `command` (either `'build'` or `'serve'`), and `mode`.
  */
 export declare function defineConfig(config: UserConfigExport): UserConfigExport;
+
+export declare interface DepOptimizationConfig {
+    /**
+     * Force optimize listed dependencies (must be resolvable import paths,
+     * cannot be globs).
+     */
+    include?: string[];
+    /**
+     * Do not optimize these dependencies (must be resolvable import paths,
+     * cannot be globs).
+     */
+    exclude?: string[];
+    /**
+     * Force ESM interop when importing for these dependencies. Some legacy
+     * packages advertise themselves as ESM but use `require` internally
+     * @experimental
+     */
+    needsInterop?: string[];
+    /**
+     * Options to pass to esbuild during the dep scanning and optimization
+     *
+     * Certain options are omitted since changing them would not be compatible
+     * with Vite's dep optimization.
+     *
+     * - `external` is also omitted, use Vite's `optimizeDeps.exclude` option
+     * - `plugins` are merged with Vite's dep plugin
+     *
+     * https://esbuild.github.io/api
+     */
+    esbuildOptions?: Omit<BuildOptions_2, 'bundle' | 'entryPoints' | 'external' | 'write' | 'watch' | 'outdir' | 'outfile' | 'outbase' | 'outExtension' | 'metafile'>;
+    /**
+     * List of file extensions that can be optimized. A corresponding esbuild
+     * plugin must exist to handle the specific extension.
+     *
+     * By default, Vite can optimize `.mjs`, `.js`, `.ts`, and `.mts` files. This option
+     * allows specifying additional extensions.
+     *
+     * @experimental
+     */
+    extensions?: string[];
+    /**
+     * Disables dependencies optimizations, true disables the optimizer during
+     * build and dev. Pass 'build' or 'dev' to only disable the optimizer in
+     * one of the modes. Deps optimization is enabled by default in dev only.
+     * @default 'build'
+     * @experimental
+     */
+    disabled?: boolean | 'build' | 'dev';
+}
 
 export declare interface DepOptimizationMetadata {
     /**
@@ -546,7 +590,7 @@ export declare interface DepOptimizationMetadata {
     depInfoList: OptimizedDepInfo[];
 }
 
-export declare interface DepOptimizationOptions {
+export declare type DepOptimizationOptions = DepOptimizationConfig & {
     /**
      * By default, Vite will crawl your `index.html` to detect dependencies that
      * need to be pre-bundled. If `build.rollupOptions.input` is specified, Vite
@@ -559,43 +603,11 @@ export declare interface DepOptimizationOptions {
      */
     entries?: string | string[];
     /**
-     * Force optimize listed dependencies (must be resolvable import paths,
-     * cannot be globs).
-     */
-    include?: string[];
-    /**
-     * Do not optimize these dependencies (must be resolvable import paths,
-     * cannot be globs).
-     */
-    exclude?: string[];
-    /**
-     * Options to pass to esbuild during the dep scanning and optimization
-     *
-     * Certain options are omitted since changing them would not be compatible
-     * with Vite's dep optimization.
-     *
-     * - `external` is also omitted, use Vite's `optimizeDeps.exclude` option
-     * - `plugins` are merged with Vite's dep plugin
-     * - `keepNames` takes precedence over the deprecated `optimizeDeps.keepNames`
-     *
-     * https://esbuild.github.io/api
-     */
-    esbuildOptions?: Omit<BuildOptions_2, 'bundle' | 'entryPoints' | 'external' | 'write' | 'watch' | 'outdir' | 'outfile' | 'outbase' | 'outExtension' | 'metafile'>;
-    /**
-     * @deprecated use `esbuildOptions.keepNames`
-     */
-    keepNames?: boolean;
-    /**
-     * List of file extensions that can be optimized. A corresponding esbuild
-     * plugin must exist to handle the specific extension.
-     *
-     * By default, Vite can optimize `.mjs`, `.js`, and `.ts` files. This option
-     * allows specifying additional extensions.
-     *
+     * Force dep pre-optimization regardless of whether deps have changed.
      * @experimental
      */
-    extensions?: string[];
-}
+    force?: boolean;
+};
 
 export declare interface DepOptimizationProcessing {
     promise: Promise<void>;
@@ -605,12 +617,27 @@ export declare interface DepOptimizationProcessing {
 export declare interface DepOptimizationResult {
     metadata: DepOptimizationMetadata;
     /**
-     * When doing a re-run, if there are newly discovered dependendencies
+     * When doing a re-run, if there are newly discovered dependencies
      * the page reload will be delayed until the next rerun so we need
      * to be able to discard the result
      */
-    commit: () => void;
+    commit: () => Promise<void>;
     cancel: () => void;
+}
+
+export declare interface DepsOptimizer {
+    metadata: DepOptimizationMetadata;
+    scanProcessing?: Promise<void>;
+    registerMissingImport: (id: string, resolved: string) => OptimizedDepInfo;
+    run: () => void;
+    isOptimizedDepFile: (id: string) => boolean;
+    isOptimizedDepUrl: (url: string) => boolean;
+    getOptimizedDepId: (depInfo: OptimizedDepInfo) => string;
+    delayDepsOptimizerUntil: (id: string, done: () => Promise<any>) => void;
+    registerWorkersSource: (id: string) => void;
+    resetRegisteredIds: () => void;
+    ensureFirstRun: () => void;
+    options: DepOptimizationOptions;
 }
 
 export declare interface ErrorPayload {
@@ -635,12 +662,49 @@ export declare interface ESBuildOptions extends EsbuildTransformOptions {
     include?: string | RegExp | string[] | RegExp[];
     exclude?: string | RegExp | string[] | RegExp[];
     jsxInject?: string;
+    /**
+     * This option is not respected. Use `build.minify` instead.
+     */
+    minify?: never;
 }
 
 export { EsbuildTransformOptions }
 
-export declare type ESBuildTransformResult = Omit<TransformResult_2, 'map'> & {
+export declare type ESBuildTransformResult = Omit<TransformResult_3, 'map'> & {
     map: SourceMap;
+};
+
+export { esbuildVersion }
+
+export declare interface ExperimentalOptions {
+    /**
+     * Append fake `&lang.(ext)` when queries are specified, to preserve the file extension for following plugins to process.
+     *
+     * @experimental
+     * @default false
+     */
+    importGlobRestoreExtension?: boolean;
+    /**
+     * Allow finegrain control over assets and public files paths
+     *
+     * @experimental
+     */
+    renderBuiltUrl?: RenderBuiltAssetUrl;
+    /**
+     * Enables support of HMR partial accept via `import.meta.hot.acceptExports`.
+     *
+     * @experimental
+     * @default false
+     */
+    hmrPartialAccept?: boolean;
+}
+
+export declare type ExportsData = {
+    hasImports: boolean;
+    exports: readonly string[];
+    facade: boolean;
+    hasReExports?: boolean;
+    jsxLoader?: boolean;
 };
 
 export declare interface FileSystemServeOptions {
@@ -666,13 +730,16 @@ export declare interface FileSystemServeOptions {
      * Glob patterns are supported.
      *
      * @default ['.env', '.env.*', '*.crt', '*.pem']
-     *
-     * @experimental
      */
     deny?: string[];
 }
 
-export declare function formatPostcssSourceMap(rawMap: ExistingRawSourceMap, file: string): ExistingRawSourceMap;
+/**
+ * Inlined to keep `@rollup/pluginutils` in devDependencies
+ */
+export declare type FilterPattern = ReadonlyArray<string | RegExp> | string | RegExp | null;
+
+export declare function formatPostcssSourceMap(rawMap: ExistingRawSourceMap, file: string): Promise<ExistingRawSourceMap>;
 
 export declare class FSWatcher extends EventEmitter implements fs.FSWatcher {
     options: WatchOptions
@@ -751,6 +818,8 @@ export declare interface FullReloadPayload {
     path?: string
 }
 
+export declare function getDepOptimizationConfig(config: ResolvedConfig, ssr: boolean): DepOptimizationConfig;
+
 export declare interface HmrContext {
     file: string;
     timestamp: number;
@@ -778,6 +847,8 @@ export declare type HMRPayload =
 | ErrorPayload
 | PrunePayload
 
+export declare type HookHandler<T> = T extends ObjectHook<infer H> ? H : T;
+
 export declare interface HtmlTagDescriptor {
     tag: string;
     attrs?: Record<string, string | boolean | undefined>;
@@ -796,16 +867,16 @@ export declare namespace HttpProxy {
     export interface ProxyTargetDetailed {
         host: string
         port: number
-        protocol?: string
-        hostname?: string
-        socketPath?: string
-        key?: string
-        passphrase?: string
-        pfx?: Buffer | string
-        cert?: string
-        ca?: string
-        ciphers?: string
-        secureProtocol?: string
+        protocol?: string | undefined
+        hostname?: string | undefined
+        socketPath?: string | undefined
+        key?: string | undefined
+        passphrase?: string | undefined
+        pfx?: Buffer | string | undefined
+        cert?: string | undefined
+        ca?: string | undefined
+        ciphers?: string | undefined
+        secureProtocol?: string | undefined
     }
 
     export type ErrorCallback = (
@@ -826,7 +897,7 @@ export declare namespace HttpProxy {
          * Used for proxying regular HTTP(S) requests
          * @param req - Client request.
          * @param res - Client response.
-         * @param options - Additionnal options.
+         * @param options - Additional options.
          */
         web(
         req: http.IncomingMessage,
@@ -958,56 +1029,154 @@ export declare namespace HttpProxy {
 
     export interface ServerOptions {
         /** URL string to be parsed with the url module. */
-        target?: ProxyTarget
+        target?: ProxyTarget | undefined
         /** URL string to be parsed with the url module. */
-        forward?: ProxyTargetUrl
+        forward?: ProxyTargetUrl | undefined
         /** Object to be passed to http(s).request. */
         agent?: any
         /** Object to be passed to https.createServer(). */
         ssl?: any
         /** If you want to proxy websockets. */
-        ws?: boolean
+        ws?: boolean | undefined
         /** Adds x- forward headers. */
-        xfwd?: boolean
+        xfwd?: boolean | undefined
         /** Verify SSL certificate. */
-        secure?: boolean
+        secure?: boolean | undefined
         /** Explicitly specify if we are proxying to another proxy. */
-        toProxy?: boolean
+        toProxy?: boolean | undefined
         /** Specify whether you want to prepend the target's path to the proxy path. */
-        prependPath?: boolean
+        prependPath?: boolean | undefined
         /** Specify whether you want to ignore the proxy path of the incoming request. */
-        ignorePath?: boolean
+        ignorePath?: boolean | undefined
         /** Local interface string to bind for outgoing connections. */
-        localAddress?: string
+        localAddress?: string | undefined
         /** Changes the origin of the host header to the target URL. */
-        changeOrigin?: boolean
+        changeOrigin?: boolean | undefined
         /** specify whether you want to keep letter case of response header key */
-        preserveHeaderKeyCase?: boolean
+        preserveHeaderKeyCase?: boolean | undefined
         /** Basic authentication i.e. 'user:password' to compute an Authorization header. */
-        auth?: string
+        auth?: string | undefined
         /** Rewrites the location hostname on (301 / 302 / 307 / 308) redirects, Default: null. */
-        hostRewrite?: string
+        hostRewrite?: string | undefined
         /** Rewrites the location host/ port on (301 / 302 / 307 / 308) redirects based on requested host/ port.Default: false. */
-        autoRewrite?: boolean
+        autoRewrite?: boolean | undefined
         /** Rewrites the location protocol on (301 / 302 / 307 / 308) redirects to 'http' or 'https'.Default: null. */
-        protocolRewrite?: string
+        protocolRewrite?: string | undefined
         /** rewrites domain of set-cookie headers. */
-        cookieDomainRewrite?: false | string | { [oldDomain: string]: string }
+        cookieDomainRewrite?:
+        | false
+        | string
+        | { [oldDomain: string]: string }
+        | undefined
         /** rewrites path of set-cookie headers. Default: false */
-        cookiePathRewrite?: false | string | { [oldPath: string]: string }
+        cookiePathRewrite?:
+        | false
+        | string
+        | { [oldPath: string]: string }
+        | undefined
         /** object with extra headers to be added to target requests. */
-        headers?: { [header: string]: string }
+        headers?: { [header: string]: string } | undefined
         /** Timeout (in milliseconds) when proxy receives no response from target. Default: 120000 (2 minutes) */
-        proxyTimeout?: number
+        proxyTimeout?: number | undefined
         /** Timeout (in milliseconds) for incoming requests */
-        timeout?: number
+        timeout?: number | undefined
         /** Specify whether you want to follow redirects. Default: false */
-        followRedirects?: boolean
+        followRedirects?: boolean | undefined
         /** If set to true, none of the webOutgoing passes are called and it's your responsibility to appropriately return the response by listening and acting on the proxyRes event */
-        selfHandleResponse?: boolean
+        selfHandleResponse?: boolean | undefined
         /** Buffer */
-        buffer?: stream.Stream
+        buffer?: stream.Stream | undefined
     }
+}
+
+export declare interface ImportGlobEagerFunction {
+    /**
+     * Eagerly import a list of files with a glob pattern.
+     *
+     * Overload 1: No generic provided, infer the type from `as`
+     */
+    <
+    As extends string,
+    T = As extends keyof KnownAsTypeMap ? KnownAsTypeMap[As] : unknown
+    >(
+    glob: string | string[],
+    options?: Omit<ImportGlobOptions<boolean, As>, 'eager'>
+    ): Record<string, T>
+    /**
+     * Eagerly import a list of files with a glob pattern.
+     *
+     * Overload 2: Module generic provided
+     */
+    <M>(
+    glob: string | string[],
+    options?: Omit<ImportGlobOptions<boolean, string>, 'eager'>
+    ): Record<string, M>
+}
+
+export declare interface ImportGlobFunction {
+    /**
+     * Import a list of files with a glob pattern.
+     *
+     * Overload 1: No generic provided, infer the type from `eager` and `as`
+     */
+    <
+    Eager extends boolean,
+    As extends string,
+    T = As extends keyof KnownAsTypeMap ? KnownAsTypeMap[As] : unknown
+    >(
+    glob: string | string[],
+    options?: ImportGlobOptions<Eager, As>
+    ): (Eager extends true ? true : false) extends true
+    ? Record<string, T>
+    : Record<string, () => Promise<T>>
+    /**
+     * Import a list of files with a glob pattern.
+     *
+     * Overload 2: Module generic provided, infer the type from `eager: false`
+     */
+    <M>(
+    glob: string | string[],
+    options?: ImportGlobOptions<false, string>
+    ): Record<string, () => Promise<M>>
+    /**
+     * Import a list of files with a glob pattern.
+     *
+     * Overload 3: Module generic provided, infer the type from `eager: true`
+     */
+    <M>(
+    glob: string | string[],
+    options: ImportGlobOptions<true, string>
+    ): Record<string, M>
+}
+
+export declare interface ImportGlobOptions<
+Eager extends boolean,
+AsType extends string
+> {
+    /**
+     * Import type for the import url.
+     */
+    as?: AsType
+    /**
+     * Import as static or dynamic
+     *
+     * @default false
+     */
+    eager?: Eager
+    /**
+     * Import only the specific named export. Set to `default` to import the default export.
+     */
+    import?: string
+    /**
+     * Custom queries
+     */
+    query?: string | Record<string, string | number | boolean>
+    /**
+     * Search files also inside `node_modules/` and hidden directories (e.g. `.git/`). This might have impact on performance.
+     *
+     * @default false
+     */
+    exhaustive?: boolean
 }
 
 export declare type IndexHtmlTransform = IndexHtmlTransformHook | {
@@ -1030,7 +1199,7 @@ export declare interface IndexHtmlTransformContext {
     originalUrl?: string;
 }
 
-export declare type IndexHtmlTransformHook = (html: string, ctx: IndexHtmlTransformContext) => IndexHtmlTransformResult | void | Promise<IndexHtmlTransformResult | void>;
+export declare type IndexHtmlTransformHook = (this: void, html: string, ctx: IndexHtmlTransformContext) => IndexHtmlTransformResult | void | Promise<IndexHtmlTransformResult | void>;
 
 export declare type IndexHtmlTransformResult = string | HtmlTagDescriptor[] | {
     html: string;
@@ -1066,7 +1235,12 @@ export declare interface InternalResolveOptions extends ResolveOptions {
     isFromTsImporter?: boolean;
     tryEsmOnly?: boolean;
     scan?: boolean;
+    ssrOptimizeCheck?: boolean;
+    getDepsOptimizer?: (ssr: boolean) => DepsOptimizer | undefined;
+    shouldExternalize?: (id: string) => boolean | undefined;
 }
+
+export declare function isDepsOptimizerEnabled(config: ResolvedConfig, ssr: boolean): boolean;
 
 export declare interface JsonOptions {
     /**
@@ -1082,12 +1256,45 @@ export declare interface JsonOptions {
     stringify?: boolean;
 }
 
+export declare interface KnownAsTypeMap {
+    raw: string
+    url: string
+    worker: Worker
+}
+
+export declare interface LegacyOptions {
+    /**
+     * Revert vite build --ssr to the v2.9 strategy. Use CJS SSR build and v2.9 externalization heuristics
+     *
+     * @experimental
+     * @deprecated
+     * @default false
+     */
+    buildSsrCjsExternalHeuristics?: boolean;
+}
+
 export declare type LibraryFormats = 'es' | 'cjs' | 'umd' | 'iife';
 
 export declare interface LibraryOptions {
+    /**
+     * Path of library entry
+     */
     entry: string;
+    /**
+     * The name of the exposed global variable. Required when the `formats` option includes
+     * `umd` or `iife`
+     */
     name?: string;
+    /**
+     * Output bundle formats
+     * @default ['es', 'umd']
+     */
     formats?: LibraryFormats[];
+    /**
+     * The name of the package file output. The default file name is the name option
+     * of the project package.json. It can also be defined as a function taking the
+     * format as an argument.
+     */
     fileName?: string | ((format: ModuleFormat) => string);
 }
 
@@ -1143,6 +1350,8 @@ export declare interface ManifestChunk {
 
 export declare type Matcher = AnymatchPattern | AnymatchPattern[]
 
+export declare function mergeAlias(a?: AliasOptions, b?: AliasOptions): AliasOptions | undefined;
+
 export declare function mergeConfig(defaults: Record<string, any>, overrides: Record<string, any>, isRoot?: boolean): Record<string, any>;
 
 export declare class ModuleGraph {
@@ -1163,8 +1372,8 @@ export declare class ModuleGraph {
      * If there are dependencies that no longer have any importers, they are
      * returned as a Set.
      */
-    updateModuleInfo(mod: ModuleNode, importedModules: Set<string | ModuleNode>, acceptedModules: Set<string | ModuleNode>, isSelfAccepting: boolean, ssr?: boolean): Promise<Set<ModuleNode> | undefined>;
-    ensureEntryFromUrl(rawUrl: string, ssr?: boolean): Promise<ModuleNode>;
+    updateModuleInfo(mod: ModuleNode, importedModules: Set<string | ModuleNode>, importedBindings: Map<string, Set<string>> | null, acceptedModules: Set<string | ModuleNode>, acceptedExports: Set<string> | null, isSelfAccepting: boolean, ssr?: boolean): Promise<Set<ModuleNode> | undefined>;
+    ensureEntryFromUrl(rawUrl: string, ssr?: boolean, setIsSelfAccepting?: boolean): Promise<ModuleNode>;
     createFileOnlyEntry(file: string): ModuleNode;
     resolveUrl(url: string, ssr?: boolean): Promise<ResolvedUrl>;
 }
@@ -1185,13 +1394,19 @@ export declare class ModuleNode {
     importers: Set<ModuleNode>;
     importedModules: Set<ModuleNode>;
     acceptedHmrDeps: Set<ModuleNode>;
-    isSelfAccepting: boolean;
+    acceptedHmrExports: Set<string> | null;
+    importedBindings: Map<string, Set<string>> | null;
+    isSelfAccepting?: boolean;
     transformResult: TransformResult | null;
     ssrTransformResult: TransformResult | null;
     ssrModule: Record<string, any> | null;
+    ssrError: Error | null;
     lastHMRTimestamp: number;
     lastInvalidationTimestamp: number;
-    constructor(url: string);
+    /**
+     * @param setIsSelfAccepting - set `false` to set `isSelfAccepting` later. e.g. #7870
+     */
+    constructor(url: string, setIsSelfAccepting?: boolean);
 }
 
 export declare function normalizePath(id: string): string;
@@ -1208,16 +1423,16 @@ export declare interface OptimizedDepInfo {
      * but the bundles may not yet be saved to disk
      */
     processing?: Promise<void>;
-}
-
-export declare interface OptimizedDeps {
-    metadata: DepOptimizationMetadata;
-    scanProcessing?: Promise<void>;
-    registerMissingImport: (id: string, resolved: string) => OptimizedDepInfo;
+    /**
+     * ExportData cache, discovered deps will parse the src entry to get exports
+     * data used both to define if interop is needed and when pre-bundling
+     */
+    exportsData?: Promise<ExportsData>;
 }
 
 /**
- * Used by Vite CLI when running `vite optimize`
+ * Scan and optimize dependencies within a project.
+ * Used by Vite CLI when running `vite optimize`.
  */
 export declare function optimizeDeps(config: ResolvedConfig, force?: boolean | undefined, asCommand?: boolean): Promise<DepOptimizationMetadata>;
 
@@ -1233,6 +1448,8 @@ export declare interface PackageData {
     getResolvedCache: (key: string, targetWeb: boolean) => string | undefined;
     data: {
         [field: string]: any;
+        name: string;
+        type: string;
         version: string;
         main: string;
         module: string;
@@ -1263,7 +1480,7 @@ export declare interface PackageData {
  * If a plugin should be applied only for server or build, a function format
  * config file can be used to conditional determine the plugins to use.
  */
-export declare interface Plugin extends Plugin_2 {
+declare interface Plugin_2 extends Plugin_3 {
     /**
      * Enforce plugin invocation tier similar to webpack loaders.
      *
@@ -1280,7 +1497,7 @@ export declare interface Plugin extends Plugin_2 {
     /**
      * Apply the plugin only for serve or build, or on certain conditions.
      */
-    apply?: 'serve' | 'build' | ((config: UserConfig, env: ConfigEnv) => boolean);
+    apply?: 'serve' | 'build' | ((this: void, config: UserConfig, env: ConfigEnv) => boolean);
     /**
      * Modify vite config before it's resolved. The hook can either mutate the
      * passed-in config directly, or return a partial config object that will be
@@ -1289,11 +1506,11 @@ export declare interface Plugin extends Plugin_2 {
      * Note: User plugins are resolved before running this hook so injecting other
      * plugins inside  the `config` hook will have no effect.
      */
-    config?: (config: UserConfig, env: ConfigEnv) => UserConfig | null | void | Promise<UserConfig | null | void>;
+    config?: ObjectHook<(this: void, config: UserConfig, env: ConfigEnv) => UserConfig | null | void | Promise<UserConfig | null | void>>;
     /**
      * Use this hook to read and store the final resolved vite config.
      */
-    configResolved?: (config: ResolvedConfig) => void | Promise<void>;
+    configResolved?: ObjectHook<(this: void, config: ResolvedConfig) => void | Promise<void>>;
     /**
      * Configure the vite server. The hook receives the {@link ViteDevServer}
      * instance. This can also be used to store a reference to the server
@@ -1303,7 +1520,16 @@ export declare interface Plugin extends Plugin_2 {
      * can return a post hook that will be called after internal middlewares
      * are applied. Hook can be async functions and will be called in series.
      */
-    configureServer?: ServerHook;
+    configureServer?: ObjectHook<ServerHook>;
+    /**
+     * Configure the preview server. The hook receives the connect server and
+     * its underlying http server.
+     *
+     * The hooks are called before other middlewares are applied. A hook can
+     * return a post hook that will be called after other middlewares are
+     * applied. Hooks can be async functions and will be called in series.
+     */
+    configurePreviewServer?: ObjectHook<PreviewServerHook>;
     /**
      * Transform index.html.
      * The hook receives the following arguments:
@@ -1335,31 +1561,35 @@ export declare interface Plugin extends Plugin_2 {
      * - If the hook doesn't return a value, the hmr update will be performed as
      *   normal.
      */
-    handleHotUpdate?(ctx: HmrContext): Array<ModuleNode> | void | Promise<Array<ModuleNode> | void>;
+    handleHotUpdate?: ObjectHook<(this: void, ctx: HmrContext) => Array<ModuleNode> | void | Promise<Array<ModuleNode> | void>>;
     /**
      * extend hooks with ssr flag
      */
-    resolveId?(this: PluginContext, source: string, importer: string | undefined, options: {
+    resolveId?: ObjectHook<(this: PluginContext, source: string, importer: string | undefined, options: {
         custom?: CustomPluginOptions;
         ssr?: boolean;
         /* Excluded from this release type: scan */
-    }): Promise<ResolveIdResult> | ResolveIdResult;
-    load?(this: PluginContext, id: string, options?: {
+        isEntry: boolean;
+    }) => Promise<ResolveIdResult> | ResolveIdResult>;
+    load?: ObjectHook<(this: PluginContext, id: string, options?: {
         ssr?: boolean;
-    }): Promise<LoadResult> | LoadResult;
-    transform?(this: TransformPluginContext, code: string, id: string, options?: {
+    }) => Promise<LoadResult> | LoadResult>;
+    transform?: ObjectHook<(this: TransformPluginContext, code: string, id: string, options?: {
         ssr?: boolean;
-    }): Promise<TransformResult_3> | TransformResult_3;
+    }) => Promise<TransformResult_2> | TransformResult_2>;
 }
+export { Plugin_2 as Plugin }
 
 export declare interface PluginContainer {
     options: InputOptions;
     getModuleInfo(id: string): ModuleInfo | null;
     buildStart(options: InputOptions): Promise<void>;
     resolveId(id: string, importer?: string, options?: {
-        skip?: Set<Plugin>;
+        custom?: CustomPluginOptions;
+        skip?: Set<Plugin_2>;
         ssr?: boolean;
         /* Excluded from this release type: scan */
+        isEntry?: boolean;
     }): Promise<PartialResolvedId | null>;
     transform(code: string, id: string, options?: {
         inMap?: SourceDescription['map'];
@@ -1371,15 +1601,17 @@ export declare interface PluginContainer {
     close(): Promise<void>;
 }
 
-export declare type PluginOption = Plugin | false | null | undefined;
+export declare interface PluginHookUtils {
+    getSortedPlugins: (hookName: keyof Plugin_2) => Plugin_2[];
+    getSortedPluginHooks: <K extends keyof Plugin_2>(hookName: K) => NonNullable<HookHandler<Plugin_2[K]>>[];
+}
+
+export declare type PluginOption = Plugin_2 | false | null | undefined | PluginOption[] | Promise<Plugin_2 | false | null | undefined | PluginOption[]>;
 
 /**
  * Starts the Vite server in preview mode, to simulate a production deployment
- * @param config - the resolved Vite config
- * @param serverOptions - what host and port to use
- * @experimental
  */
-export declare function preview(inlineConfig: InlineConfig): Promise<PreviewServer>;
+export declare function preview(inlineConfig?: InlineConfig): Promise<PreviewServer>;
 
 export declare interface PreviewOptions extends CommonServerOptions {
 }
@@ -1392,17 +1624,21 @@ export declare interface PreviewServer {
     /**
      * native Node http server instance
      */
-    httpServer: Server;
+    httpServer: http.Server;
+    /**
+     * The resolved urls Vite prints on the CLI
+     */
+    resolvedUrls: ResolvedServerUrls;
     /**
      * Print server urls
      */
-    printUrls: () => void;
+    printUrls(): void;
 }
 
-/**
- * @deprecated Use `server.printUrls()` instead
- */
-export declare function printHttpServerUrls(server: Server_2, config: ResolvedConfig): void;
+export declare type PreviewServerHook = (this: void, server: {
+    middlewares: Connect.Server;
+    httpServer: http.Server;
+}) => (() => void) | void | Promise<(() => void) | void>;
 
 export declare interface ProxyOptions extends HttpProxy.ServerOptions {
     /**
@@ -1424,11 +1660,27 @@ export declare interface PrunePayload {
     paths: string[]
 }
 
+export declare type RenderBuiltAssetUrl = (filename: string, type: {
+    type: 'asset' | 'public';
+    hostId: string;
+    hostType: 'js' | 'css' | 'html';
+    ssr: boolean;
+}) => string | {
+    relative?: boolean;
+    runtime?: string;
+} | undefined;
+
+/**
+ * Resolve base url. Note that some users use Vite to build for non-web targets like
+ * electron or expects to deploy
+ */
+export declare function resolveBaseUrl(base: string | undefined, isBuild: boolean, logger: Logger): string;
+
 export declare function resolveConfig(inlineConfig: InlineConfig, command: 'build' | 'serve', defaultMode?: string): Promise<ResolvedConfig>;
 
-export declare type ResolvedBuildOptions = Required<Omit<BuildOptions, 'base' | 'cleanCssOptions' | 'polyfillDynamicImport' | 'brotliSize'>>;
+export declare type ResolvedBuildOptions = Required<BuildOptions>;
 
-export declare type ResolvedConfig = Readonly<Omit<UserConfig, 'plugins' | 'alias' | 'dedupe' | 'assetsInclude' | 'optimizeDeps' | 'worker'> & {
+export declare type ResolvedConfig = Readonly<Omit<UserConfig, 'plugins' | 'assetsInclude' | 'optimizeDeps' | 'worker'> & {
     configFile: string | undefined;
     configFileDependencies: string[];
     inlineConfig: InlineConfig;
@@ -1439,28 +1691,44 @@ export declare type ResolvedConfig = Readonly<Omit<UserConfig, 'plugins' | 'alia
     command: 'build' | 'serve';
     mode: string;
     isWorker: boolean;
+    /* Excluded from this release type: mainConfig */
     isProduction: boolean;
     env: Record<string, any>;
     resolve: ResolveOptions & {
         alias: Alias[];
     };
-    plugins: readonly Plugin[];
+    plugins: readonly Plugin_2[];
     server: ResolvedServerOptions;
     build: ResolvedBuildOptions;
     preview: ResolvedPreviewOptions;
+    ssr: ResolvedSSROptions;
     assetsInclude: (file: string) => boolean;
     logger: Logger;
     createResolver: (options?: Partial<InternalResolveOptions>) => ResolveFn;
-    optimizeDeps: Omit<DepOptimizationOptions, 'keepNames'>;
+    optimizeDeps: DepOptimizationOptions;
     /* Excluded from this release type: packageCache */
     worker: ResolveWorkerOptions;
-}>;
+    appType: AppType;
+    experimental: ExperimentalOptions;
+} & PluginHookUtils>;
 
 export declare interface ResolvedPreviewOptions extends PreviewOptions {
 }
 
 export declare interface ResolvedServerOptions extends ServerOptions {
     fs: Required<FileSystemServeOptions>;
+    middlewareMode: boolean;
+}
+
+export declare interface ResolvedServerUrls {
+    local: string[];
+    network: string[];
+}
+
+export declare interface ResolvedSSROptions extends SSROptions {
+    target: SSRTarget;
+    format: SSRFormat;
+    optimizeDeps: SsrDepOptimizationOptions;
 }
 
 export declare type ResolvedUrl = [
@@ -1492,9 +1760,9 @@ export declare interface ResolverObject {
     resolveId: ResolverFunction
 }
 
-export declare interface ResolveWorkerOptions {
+export declare interface ResolveWorkerOptions extends PluginHookUtils {
     format: 'es' | 'iife';
-    plugins: Plugin[];
+    plugins: Plugin_2[];
     rollupOptions: RollupOptions;
 }
 
@@ -1507,17 +1775,17 @@ export declare interface ResolveWorkerOptions {
  */
 export declare interface RollupCommonJSOptions {
     /**
-     * A picomatch pattern, or array of patterns, which specifies the files in
+     * A minimatch pattern, or array of patterns, which specifies the files in
      * the build the plugin should operate on. By default, all files with
-     * extension `".cjs"` or those in `extensions` are included, but you can narrow
-     * this list by only including specific files. These files will be analyzed
-     * and transpiled if either the analysis does not find ES module specific
-     * statements or `transformMixedEsModules` is `true`.
+     * extension `".cjs"` or those in `extensions` are included, but you can
+     * narrow this list by only including specific files. These files will be
+     * analyzed and transpiled if either the analysis does not find ES module
+     * specific statements or `transformMixedEsModules` is `true`.
      * @default undefined
      */
     include?: string | RegExp | readonly (string | RegExp)[]
     /**
-     * A picomatch pattern, or array of patterns, which specifies the files in
+     * A minimatch pattern, or array of patterns, which specifies the files in
      * the build the plugin should _ignore_. By default, all files with
      * extensions other than those in `extensions` or `".cjs"` are ignored, but you
      * can exclude additional files. See also the `include` option.
@@ -1537,7 +1805,8 @@ export declare interface RollupCommonJSOptions {
      */
     ignoreGlobal?: boolean
     /**
-     * If false, skips source map generation for CommonJS modules. This will improve performance.
+     * If false, skips source map generation for CommonJS modules. This will
+     * improve performance.
      * @default true
      */
     sourceMap?: boolean
@@ -1566,6 +1835,39 @@ export declare interface RollupCommonJSOptions {
      */
     transformMixedEsModules?: boolean
     /**
+     * By default, this plugin will try to hoist `require` statements as imports
+     * to the top of each file. While this works well for many code bases and
+     * allows for very efficient ESM output, it does not perfectly capture
+     * CommonJS semantics as the order of side effects like log statements may
+     * change. But it is especially problematic when there are circular `require`
+     * calls between CommonJS modules as those often rely on the lazy execution of
+     * nested `require` calls.
+     *
+     * Setting this option to `true` will wrap all CommonJS files in functions
+     * which are executed when they are required for the first time, preserving
+     * NodeJS semantics. Note that this can have an impact on the size and
+     * performance of the generated code.
+     *
+     * The default value of `"auto"` will only wrap CommonJS files when they are
+     * part of a CommonJS dependency cycle, e.g. an index file that is required by
+     * many of its dependencies. All other CommonJS files are hoisted. This is the
+     * recommended setting for most code bases.
+     *
+     * `false` will entirely prevent wrapping and hoist all files. This may still
+     * work depending on the nature of cyclic dependencies but will often cause
+     * problems.
+     *
+     * You can also provide a minimatch pattern, or array of patterns, to only
+     * specify a subset of files which should be wrapped in functions for proper
+     * `require` semantics.
+     *
+     * `"debug"` works like `"auto"` but after bundling, it will display a warning
+     * containing a list of ids that have been wrapped which can be used as
+     * minimatch pattern for fine-tuning.
+     * @default "auto"
+     */
+    strictRequires?: boolean | string | RegExp | readonly (string | RegExp)[]
+    /**
      * Sometimes you have to leave require statements unconverted. Pass an array
      * containing the IDs or a `id => boolean` function.
      * @default []
@@ -1575,14 +1877,16 @@ export declare interface RollupCommonJSOptions {
      * In most cases, where `require` calls are inside a `try-catch` clause,
      * they should be left unconverted as it requires an optional dependency
      * that may or may not be installed beside the rolled up package.
-     * Due to the conversion of `require` to a static `import` - the call is hoisted
-     * to the top of the file, outside of the `try-catch` clause.
+     * Due to the conversion of `require` to a static `import` - the call is
+     * hoisted to the top of the file, outside of the `try-catch` clause.
      *
      * - `true`: All `require` calls inside a `try` will be left unconverted.
-     * - `false`: All `require` calls inside a `try` will be converted as if the `try-catch` clause is not there.
+     * - `false`: All `require` calls inside a `try` will be converted as if the
+     *   `try-catch` clause is not there.
      * - `remove`: Remove all `require` calls from inside any `try` block.
      * - `string[]`: Pass an array containing the IDs to left unconverted.
-     * - `((id: string) => boolean|'remove')`: Pass a function that control individual IDs.
+     * - `((id: string) => boolean|'remove')`: Pass a function that control
+     *   individual IDs.
      *
      * @default false
      */
@@ -1665,12 +1969,17 @@ export declare interface RollupCommonJSOptions {
     | 'preferred'
     | 'namespace'
     | ((id: string) => boolean | 'auto' | 'preferred' | 'namespace')
+
+    /**
+     * @default "auto"
+     */
+    defaultIsModuleExports?: boolean | 'auto' | ((id: string) => boolean | 'auto')
     /**
      * Some modules contain dynamic `require` calls, or require modules that
      * contain circular dependencies, which are not handled well by static
      * imports. Including those modules as `dynamicRequireTargets` will simulate a
-     * CommonJS (NodeJS-like)  environment for them with support for dynamic and
-     * circular dependencies.
+     * CommonJS (NodeJS-like)  environment for them with support for dynamic
+     * dependencies. It also enables `strictRequires` for those modules.
      *
      * Note: In extreme cases, this feature may result in some paths being
      * rendered as absolute in the final bundle. The plugin tries to avoid
@@ -1679,6 +1988,13 @@ export declare interface RollupCommonJSOptions {
      * replacing strings like `"/Users/John/Desktop/foo-project/"` -\> `"/"`.
      */
     dynamicRequireTargets?: string | ReadonlyArray<string>
+    /**
+     * To avoid long paths when using the `dynamicRequireTargets` option, you can use this option to specify a directory
+     * that is a common parent for all files that use dynamic require statements. Using a directory higher up such as `/`
+     * may lead to unnecessarily long paths in the generated code and may expose directory names on your machine like your
+     * home directory name. By default it uses the current working directory.
+     */
+    dynamicRequireRoot?: string
 }
 
 export declare interface RollupDynamicImportVarsOptions {
@@ -1699,6 +2015,8 @@ export declare interface RollupDynamicImportVarsOptions {
     warnOnError?: boolean
 }
 
+export { rollupVersion }
+
 /**
  * Search up for the nearest workspace root
  */
@@ -1713,13 +2031,9 @@ export declare interface SendOptions {
     map?: SourceMap | null;
 }
 
-export declare type ServerHook = (server: ViteDevServer) => (() => void) | void | Promise<(() => void) | void>;
+export declare type ServerHook = (this: void, server: ViteDevServer) => (() => void) | void | Promise<(() => void) | void>;
 
 export declare interface ServerOptions extends CommonServerOptions {
-    /**
-     * Force dep pre-optimization regardless of whether deps have changed.
-     */
-    force?: boolean;
     /**
      * Configure HMR-specific options (port, host, path & protocol)
      */
@@ -1744,18 +2058,25 @@ export declare interface ServerOptions extends CommonServerOptions {
     fs?: FileSystemServeOptions;
     /**
      * Origin for the generated asset URLs.
+     *
+     * @example `http://127.0.0.1:8080`
      */
     origin?: string;
     /**
      * Pre-transform known direct imports
-     *
-     * @experimental this option is experimental and might be changed in the future
      * @default true
      */
     preTransformRequests?: boolean;
+    /**
+     * Force dep pre-optimization regardless of whether deps have changed.
+     *
+     * @deprecated Use optimizeDeps.force instead, this option may be removed
+     * in a future minor version without following semver
+     */
+    force?: boolean;
 }
 
-export declare function sortUserPlugins(plugins: (Plugin | Plugin[])[] | undefined): [Plugin[], Plugin[], Plugin[]];
+export declare function sortUserPlugins(plugins: (Plugin_2 | Plugin_2[])[] | undefined): [Plugin_2[], Plugin_2[], Plugin_2[]];
 
 export declare function splitVendorChunk(options?: {
     cache?: SplitVendorChunkCache;
@@ -1767,17 +2088,38 @@ export declare class SplitVendorChunkCache {
     reset(): void;
 }
 
-export declare function splitVendorChunkPlugin(): Plugin;
+export declare function splitVendorChunkPlugin(): Plugin_2;
+
+export declare type SsrDepOptimizationOptions = DepOptimizationConfig;
+
+export declare type SSRFormat = 'esm' | 'cjs';
 
 export declare interface SSROptions {
-    external?: string[];
     noExternal?: string | RegExp | (string | RegExp)[] | true;
+    external?: string[];
     /**
      * Define the target for the ssr build. The browser field in package.json
      * is ignored for node but used if webworker is the target
      * Default: 'node'
      */
     target?: SSRTarget;
+    /**
+     * Define the format for the ssr build. Since Vite v3 the SSR build generates ESM by default.
+     * `'cjs'` can be selected to generate a CJS build, but it isn't recommended. This option is
+     * left marked as experimental to give users more time to update to ESM. CJS builds requires
+     * complex externalization heuristics that aren't present in the ESM format.
+     * @experimental
+     */
+    format?: SSRFormat;
+    /**
+     * Control over which dependencies are optimized during SSR and esbuild options
+     * During build:
+     *   no external CJS dependencies are optimized by default
+     * During dev:
+     *   explicit no external CJS dependencies are optimized by default
+     * @experimental
+     */
+    optimizeDeps?: SsrDepOptimizationOptions;
 }
 
 export declare type SSRTarget = 'node' | 'webworker';
@@ -1787,6 +2129,7 @@ export declare namespace Terser {
 
     export interface ParseOptions {
         bare_returns?: boolean
+        /** @deprecated legacy option. Currently, all supported EcmaScript is valid to parse. */
         ecma?: ECMA
         html5_comments?: boolean
         shebang?: boolean
@@ -1861,22 +2204,59 @@ export declare namespace Terser {
         keep_classnames?: boolean | RegExp
         keep_fnames?: boolean | RegExp
         module?: boolean
+        nth_identifier?: SimpleIdentifierMangler | WeightedIdentifierMangler
         properties?: boolean | ManglePropertiesOptions
         reserved?: string[]
         safari10?: boolean
         toplevel?: boolean
     }
 
+    /**
+     * An identifier mangler for which the output is invariant with respect to the source code.
+     */
+    export interface SimpleIdentifierMangler {
+        /**
+         * Obtains the nth most favored (usually shortest) identifier to rename a variable to.
+         * The mangler will increment n and retry until the return value is not in use in scope, and is not a reserved word.
+         * This function is expected to be stable; Evaluating get(n) === get(n) should always return true.
+         * @param n - The ordinal of the identifier.
+         */
+        get(n: number): string
+    }
+
+    /**
+     * An identifier mangler that leverages character frequency analysis to determine identifier precedence.
+     */
+    export interface WeightedIdentifierMangler extends SimpleIdentifierMangler {
+        /**
+         * Modifies the internal weighting of the input characters by the specified delta.
+         * Will be invoked on the entire printed AST, and then deduct mangleable identifiers.
+         * @param chars - The characters to modify the weighting of.
+         * @param delta - The numeric weight to add to the characters.
+         */
+        consider(chars: string, delta: number): number
+        /**
+         * Resets character weights.
+         */
+        reset(): void
+        /**
+         * Sorts identifiers by character frequency, in preparation for calls to get(n).
+         */
+        sort(): void
+    }
+
     export interface ManglePropertiesOptions {
         builtins?: boolean
         debug?: boolean
         keep_quoted?: boolean | 'strict'
+        nth_identifier?: SimpleIdentifierMangler | WeightedIdentifierMangler
         regex?: RegExp | string
         reserved?: string[]
     }
 
     export interface FormatOptions {
         ascii_only?: boolean
+        /** @deprecated Not implemented anymore */
         beautify?: boolean
         braces?: boolean
         comments?:
@@ -1896,6 +2276,7 @@ export declare namespace Terser {
         ) => boolean)
         ecma?: ECMA
         ie8?: boolean
+        keep_numbers?: boolean
         indent_level?: number
         indent_start?: number
         inline_script?: boolean
@@ -1926,6 +2307,7 @@ export declare namespace Terser {
     export interface MinifyOptions {
         compress?: boolean | CompressOptions
         ecma?: ECMA
+        enclose?: boolean | string
         ie8?: boolean
         keep_classnames?: boolean | RegExp
         keep_fnames?: boolean | RegExp
@@ -1933,7 +2315,7 @@ export declare namespace Terser {
         module?: boolean
         nameCache?: object
         format?: FormatOptions
-        /** @deprecated use format instead */
+        /** @deprecated deprecated */
         output?: FormatOptions
         parse?: ParseOptions
         safari10?: boolean
@@ -1944,6 +2326,7 @@ export declare namespace Terser {
     export interface MinifyOutput {
         code?: string
         map?: object | string
+        decoded_map?: object | null
     }
 
     export interface SourceMapOptions {
@@ -1976,6 +2359,10 @@ export declare interface Update {
     path: string
     acceptedPath: string
     timestamp: number
+    /**
+     * @experimental internal
+     */
+    explicitImportRequired?: boolean | undefined
 }
 
 export declare interface UpdatePayload {
@@ -2027,7 +2414,7 @@ export declare interface UserConfig {
     /**
      * Array of vite plugins to use.
      */
-    plugins?: (PluginOption | PluginOption[])[];
+    plugins?: PluginOption[];
     /**
      * Configure resolver
      */
@@ -2067,7 +2454,25 @@ export declare interface UserConfig {
      * Dep optimization options
      */
     optimizeDeps?: DepOptimizationOptions;
-    /* Excluded from this release type: ssr */
+    /**
+     * SSR specific options
+     */
+    ssr?: SSROptions;
+    /**
+     * Experimental features
+     *
+     * Features under this field could change in the future and might NOT follow semver.
+     * Please be careful and always pin Vite's version when using them.
+     * @experimental
+     */
+    experimental?: ExperimentalOptions;
+    /**
+     * Legacy options
+     *
+     * Features under this field only follow semver for patches, they could be removed in a
+     * future minor version. Please always pin Vite's version to a minor when using them.
+     */
+    legacy?: LegacyOptions;
     /**
      * Log level.
      * Default: 'info'
@@ -2093,17 +2498,6 @@ export declare interface UserConfig {
      */
     envPrefix?: string | string[];
     /**
-     * Import aliases
-     * @deprecated use `resolve.alias` instead
-     */
-    alias?: AliasOptions;
-    /**
-     * Force Vite to always resolve listed dependencies to the same copy (from
-     * project root).
-     * @deprecated use `resolve.dedupe` instead
-     */
-    dedupe?: string[];
-    /**
      * Worker bundle options
      */
     worker?: {
@@ -2115,17 +2509,26 @@ export declare interface UserConfig {
         /**
          * Vite plugins that apply to worker bundle
          */
-        plugins?: (PluginOption | PluginOption[])[];
+        plugins?: PluginOption[];
         /**
          * Rollup options to build worker bundle
          */
         rollupOptions?: Omit<RollupOptions, 'plugins' | 'input' | 'onwarn' | 'preserveEntrySignatures'>;
     };
+    /**
+     * Whether your application is a Single Page Application (SPA),
+     * a Multi-Page Application (MPA), or Custom Application (SSR
+     * and frameworks with custom HTML handling)
+     * @default 'spa'
+     */
+    appType?: AppType;
 }
 
 export declare type UserConfigExport = UserConfig | Promise<UserConfig> | UserConfigFn;
 
 export declare type UserConfigFn = (env: ConfigEnv) => UserConfig | Promise<UserConfig>;
+
+export declare const version: string;
 
 export declare interface ViteDevServer {
     /**
@@ -2141,10 +2544,6 @@ export declare interface ViteDevServer {
      * https://github.com/senchalabs/connect#use-middleware
      */
     middlewares: Connect.Server;
-    /**
-     * @deprecated use `server.middlewares` instead
-     */
-    app: Connect.Server;
     /**
      * native Node http server instance
      * will be null in middleware mode
@@ -2169,6 +2568,11 @@ export declare interface ViteDevServer {
      */
     moduleGraph: ModuleGraph;
     /**
+     * The resolved urls Vite prints on the CLI. null in middleware mode or
+     * before `server.listen` is called.
+     */
+    resolvedUrls: ResolvedServerUrls | null;
+    /**
      * Programmatically resolve, load and transform a URL and get the result
      * without going through the http request pipeline.
      */
@@ -2178,17 +2582,9 @@ export declare interface ViteDevServer {
      */
     transformIndexHtml(url: string, html: string, originalUrl?: string): Promise<string>;
     /**
-     * Util for transforming a file with esbuild.
-     * Can be useful for certain plugins.
-     *
-     * @deprecated import `transformWithEsbuild` from `vite` instead
-     */
-    transformWithEsbuild(code: string, filename: string, options?: EsbuildTransformOptions, inMap?: object): Promise<ESBuildTransformResult>;
-    /**
      * Transform module code into SSR format.
-     * @experimental
      */
-    ssrTransform(code: string, inMap: SourceMap | null, url: string): Promise<TransformResult | null>;
+    ssrTransform(code: string, inMap: SourceMap | null, url: string, originalCode?: string): Promise<TransformResult | null>;
     /**
      * Load a given URL as an instantiated module for SSR.
      */
@@ -2221,9 +2617,8 @@ export declare interface ViteDevServer {
      * @param forceOptimize - force the optimizer to re-bundle, same as --force cli flag
      */
     restart(forceOptimize?: boolean): Promise<void>;
-    /* Excluded from this release type: _optimizedDeps */
+    /* Excluded from this release type: _importGlobMap */
     /* Excluded from this release type: _ssrExternals */
-    /* Excluded from this release type: _globImporters */
     /* Excluded from this release type: _restartPromise */
     /* Excluded from this release type: _forceOptimizeOnRestart */
     /* Excluded from this release type: _pendingRequests */
@@ -2265,8 +2660,10 @@ export declare interface WatchOptions {
     cwd?: string
 
     /**
-     *  If set to true then the strings passed to .watch() and .add() are treated as literal path
-     *  names, even if they look like globs. Default: false.
+     * If set to true then the strings passed to .watch() and .add() are treated as literal path
+     * names, even if they look like globs.
+     *
+     * @default false
      */
     disableGlobbing?: boolean
 
@@ -2317,7 +2714,7 @@ export declare interface WatchOptions {
     ignorePermissionErrors?: boolean
 
     /**
-     * `true` if `useFsEvents` and `usePolling` are `false`). Automatically filters out artifacts
+     * `true` if `useFsEvents` and `usePolling` are `false`. Automatically filters out artifacts
      * that occur when using editors that use "atomic writes" instead of writing directly to the
      * source file. If a file is re-added within 100 ms of being deleted, Chokidar emits a `change`
      * event rather than `unlink` then `add`. If the default of 100 ms does not work well for you,
@@ -2331,7 +2728,7 @@ export declare interface WatchOptions {
     awaitWriteFinish?: AwaitWriteFinishOptions | boolean
 }
 
-export declare class WebSocket extends EventEmitter {
+declare class WebSocket_2 extends EventEmitter {
     /** The connection is not yet open. */
     static readonly CONNECTING: 0
     /** The connection is open and ready to communicate. */
@@ -2349,10 +2746,10 @@ export declare class WebSocket extends EventEmitter {
     readonly protocol: string
     /** The current state of the connection */
     readonly readyState:
-    | typeof WebSocket.CONNECTING
-    | typeof WebSocket.OPEN
-    | typeof WebSocket.CLOSING
-    | typeof WebSocket.CLOSED
+    | typeof WebSocket_2.CONNECTING
+    | typeof WebSocket_2.OPEN
+    | typeof WebSocket_2.CLOSING
+    | typeof WebSocket_2.CLOSED
     readonly url: string
 
     /** The connection is not yet open. */
@@ -2364,20 +2761,20 @@ export declare class WebSocket extends EventEmitter {
     /** The connection is closed. */
     readonly CLOSED: 3
 
-    onopen: ((event: WebSocket.Event) => void) | null
-    onerror: ((event: WebSocket.ErrorEvent) => void) | null
-    onclose: ((event: WebSocket.CloseEvent) => void) | null
-    onmessage: ((event: WebSocket.MessageEvent) => void) | null
+    onopen: ((event: WebSocket_2.Event) => void) | null
+    onerror: ((event: WebSocket_2.ErrorEvent) => void) | null
+    onclose: ((event: WebSocket_2.CloseEvent) => void) | null
+    onmessage: ((event: WebSocket_2.MessageEvent) => void) | null
 
     constructor(address: null)
     constructor(
     address: string | URL_2,
-    options?: WebSocket.ClientOptions | ClientRequestArgs
+    options?: WebSocket_2.ClientOptions | ClientRequestArgs
     )
     constructor(
     address: string | URL_2,
     protocols?: string | string[],
-    options?: WebSocket.ClientOptions | ClientRequestArgs
+    options?: WebSocket_2.ClientOptions | ClientRequestArgs
     )
 
     close(code?: number, data?: string | Buffer): void
@@ -2411,146 +2808,146 @@ export declare class WebSocket extends EventEmitter {
     // HTML5 WebSocket events
     addEventListener(
     method: 'message',
-    cb: (event: WebSocket.MessageEvent) => void,
-    options?: WebSocket.EventListenerOptions
+    cb: (event: WebSocket_2.MessageEvent) => void,
+    options?: WebSocket_2.EventListenerOptions
     ): void
     addEventListener(
     method: 'close',
-    cb: (event: WebSocket.CloseEvent) => void,
-    options?: WebSocket.EventListenerOptions
+    cb: (event: WebSocket_2.CloseEvent) => void,
+    options?: WebSocket_2.EventListenerOptions
     ): void
     addEventListener(
     method: 'error',
-    cb: (event: WebSocket.ErrorEvent) => void,
-    options?: WebSocket.EventListenerOptions
+    cb: (event: WebSocket_2.ErrorEvent) => void,
+    options?: WebSocket_2.EventListenerOptions
     ): void
     addEventListener(
     method: 'open',
-    cb: (event: WebSocket.Event) => void,
-    options?: WebSocket.EventListenerOptions
+    cb: (event: WebSocket_2.Event) => void,
+    options?: WebSocket_2.EventListenerOptions
     ): void
 
     removeEventListener(
     method: 'message',
-    cb: (event: WebSocket.MessageEvent) => void
+    cb: (event: WebSocket_2.MessageEvent) => void
     ): void
     removeEventListener(
     method: 'close',
-    cb: (event: WebSocket.CloseEvent) => void
+    cb: (event: WebSocket_2.CloseEvent) => void
     ): void
     removeEventListener(
     method: 'error',
-    cb: (event: WebSocket.ErrorEvent) => void
+    cb: (event: WebSocket_2.ErrorEvent) => void
     ): void
     removeEventListener(
     method: 'open',
-    cb: (event: WebSocket.Event) => void
+    cb: (event: WebSocket_2.Event) => void
     ): void
 
     // Events
     on(
     event: 'close',
-    listener: (this: WebSocket, code: number, reason: Buffer) => void
+    listener: (this: WebSocket_2, code: number, reason: Buffer) => void
     ): this
-    on(event: 'error', listener: (this: WebSocket, err: Error) => void): this
+    on(event: 'error', listener: (this: WebSocket_2, err: Error) => void): this
     on(
     event: 'upgrade',
-    listener: (this: WebSocket, request: IncomingMessage) => void
+    listener: (this: WebSocket_2, request: IncomingMessage) => void
     ): this
     on(
     event: 'message',
     listener: (
-    this: WebSocket,
-    data: WebSocket.RawData,
+    this: WebSocket_2,
+    data: WebSocket_2.RawData,
     isBinary: boolean
     ) => void
     ): this
-    on(event: 'open', listener: (this: WebSocket) => void): this
+    on(event: 'open', listener: (this: WebSocket_2) => void): this
     on(
     event: 'ping' | 'pong',
-    listener: (this: WebSocket, data: Buffer) => void
+    listener: (this: WebSocket_2, data: Buffer) => void
     ): this
     on(
     event: 'unexpected-response',
     listener: (
-    this: WebSocket,
+    this: WebSocket_2,
     request: ClientRequest,
     response: IncomingMessage
     ) => void
     ): this
     on(
     event: string | symbol,
-    listener: (this: WebSocket, ...args: any[]) => void
+    listener: (this: WebSocket_2, ...args: any[]) => void
     ): this
 
     once(
     event: 'close',
-    listener: (this: WebSocket, code: number, reason: Buffer) => void
+    listener: (this: WebSocket_2, code: number, reason: Buffer) => void
     ): this
-    once(event: 'error', listener: (this: WebSocket, err: Error) => void): this
+    once(event: 'error', listener: (this: WebSocket_2, err: Error) => void): this
     once(
     event: 'upgrade',
-    listener: (this: WebSocket, request: IncomingMessage) => void
+    listener: (this: WebSocket_2, request: IncomingMessage) => void
     ): this
     once(
     event: 'message',
     listener: (
-    this: WebSocket,
-    data: WebSocket.RawData,
+    this: WebSocket_2,
+    data: WebSocket_2.RawData,
     isBinary: boolean
     ) => void
     ): this
-    once(event: 'open', listener: (this: WebSocket) => void): this
+    once(event: 'open', listener: (this: WebSocket_2) => void): this
     once(
     event: 'ping' | 'pong',
-    listener: (this: WebSocket, data: Buffer) => void
+    listener: (this: WebSocket_2, data: Buffer) => void
     ): this
     once(
     event: 'unexpected-response',
     listener: (
-    this: WebSocket,
+    this: WebSocket_2,
     request: ClientRequest,
     response: IncomingMessage
     ) => void
     ): this
     once(
     event: string | symbol,
-    listener: (this: WebSocket, ...args: any[]) => void
+    listener: (this: WebSocket_2, ...args: any[]) => void
     ): this
 
     off(
     event: 'close',
-    listener: (this: WebSocket, code: number, reason: Buffer) => void
+    listener: (this: WebSocket_2, code: number, reason: Buffer) => void
     ): this
-    off(event: 'error', listener: (this: WebSocket, err: Error) => void): this
+    off(event: 'error', listener: (this: WebSocket_2, err: Error) => void): this
     off(
     event: 'upgrade',
-    listener: (this: WebSocket, request: IncomingMessage) => void
+    listener: (this: WebSocket_2, request: IncomingMessage) => void
     ): this
     off(
     event: 'message',
     listener: (
-    this: WebSocket,
-    data: WebSocket.RawData,
+    this: WebSocket_2,
+    data: WebSocket_2.RawData,
     isBinary: boolean
     ) => void
     ): this
-    off(event: 'open', listener: (this: WebSocket) => void): this
+    off(event: 'open', listener: (this: WebSocket_2) => void): this
     off(
     event: 'ping' | 'pong',
-    listener: (this: WebSocket, data: Buffer) => void
+    listener: (this: WebSocket_2, data: Buffer) => void
     ): this
     off(
     event: 'unexpected-response',
     listener: (
-    this: WebSocket,
+    this: WebSocket_2,
     request: ClientRequest,
     response: IncomingMessage
     ) => void
     ): this
     off(
     event: string | symbol,
-    listener: (this: WebSocket, ...args: any[]) => void
+    listener: (this: WebSocket_2, ...args: any[]) => void
     ): this
 
     addListener(
@@ -2564,7 +2961,7 @@ export declare class WebSocket extends EventEmitter {
     ): this
     addListener(
     event: 'message',
-    listener: (data: WebSocket.RawData, isBinary: boolean) => void
+    listener: (data: WebSocket_2.RawData, isBinary: boolean) => void
     ): this
     addListener(event: 'open', listener: () => void): this
     addListener(event: 'ping' | 'pong', listener: (data: Buffer) => void): this
@@ -2585,7 +2982,7 @@ export declare class WebSocket extends EventEmitter {
     ): this
     removeListener(
     event: 'message',
-    listener: (data: WebSocket.RawData, isBinary: boolean) => void
+    listener: (data: WebSocket_2.RawData, isBinary: boolean) => void
     ): this
     removeListener(event: 'open', listener: () => void): this
     removeListener(event: 'ping' | 'pong', listener: (data: Buffer) => void): this
@@ -2599,28 +2996,28 @@ export declare class WebSocket extends EventEmitter {
     ): this
 }
 
-export declare namespace WebSocket {
+declare namespace WebSocket_2 {
     /**
      * Data represents the raw message payload received over the WebSocket.
      */
-    export type RawData = Buffer | ArrayBuffer | Buffer[]
+    type RawData = Buffer | ArrayBuffer | Buffer[]
 
     /**
      * Data represents the message payload received over the WebSocket.
      */
-    export type Data = string | Buffer | ArrayBuffer | Buffer[]
+    type Data = string | Buffer | ArrayBuffer | Buffer[]
 
     /**
      * CertMeta represents the accepted types for certificate & key data.
      */
-    export type CertMeta = string | string[] | Buffer | Buffer[]
+    type CertMeta = string | string[] | Buffer | Buffer[]
 
     /**
      * VerifyClientCallbackSync is a synchronous callback used to inspect the
      * incoming message. The return value (boolean) of the function determines
      * whether or not to accept the handshake.
      */
-    export type VerifyClientCallbackSync = (info: {
+    type VerifyClientCallbackSync = (info: {
         origin: string
         secure: boolean
         req: IncomingMessage
@@ -2631,7 +3028,7 @@ export declare namespace WebSocket {
      * incoming message. The return value (boolean) of the function determines
      * whether or not to accept the handshake.
      */
-    export type VerifyClientCallbackAsync = (
+    type VerifyClientCallbackAsync = (
     info: { origin: string; secure: boolean; req: IncomingMessage },
     callback: (
     res: boolean,
@@ -2641,7 +3038,7 @@ export declare namespace WebSocket {
     ) => void
     ) => void
 
-    export interface ClientOptions extends SecureContextOptions {
+    interface ClientOptions extends SecureContextOptions {
         protocol?: string | undefined
         followRedirects?: boolean | undefined
         generateMask?(mask: Buffer): void
@@ -2661,7 +3058,7 @@ export declare namespace WebSocket {
         skipUTF8Validation?: boolean | undefined
     }
 
-    export interface PerMessageDeflateOptions {
+    interface PerMessageDeflateOptions {
         serverNoContextTakeover?: boolean | undefined
         clientNoContextTakeover?: boolean | undefined
         serverMaxWindowBits?: number | undefined
@@ -2684,19 +3081,19 @@ export declare namespace WebSocket {
         concurrencyLimit?: number | undefined
     }
 
-    export interface Event {
+    interface Event {
         type: string
         target: WebSocket
     }
 
-    export interface ErrorEvent {
+    interface ErrorEvent {
         error: any
         message: string
         type: string
         target: WebSocket
     }
 
-    export interface CloseEvent {
+    interface CloseEvent {
         wasClean: boolean
         code: number
         reason: string
@@ -2704,21 +3101,21 @@ export declare namespace WebSocket {
         target: WebSocket
     }
 
-    export interface MessageEvent {
+    interface MessageEvent {
         data: Data
         type: string
         target: WebSocket
     }
 
-    export interface EventListenerOptions {
+    interface EventListenerOptions {
         once?: boolean | undefined
     }
 
-    export interface ServerOptions {
+    interface ServerOptions {
         host?: string | undefined
         port?: number | undefined
         backlog?: number | undefined
-        server?: Server | Server_3 | undefined
+        server?: Server | Server_2 | undefined
         verifyClient?:
         | VerifyClientCallbackAsync
         | VerifyClientCallbackSync
@@ -2736,14 +3133,14 @@ export declare namespace WebSocket {
         WebSocket?: typeof WebSocket.WebSocket | undefined
     }
 
-    export interface AddressInfo {
+    interface AddressInfo {
         address: string
         family: string
         port: number
     }
 
     // WebSocket Server
-    export class Server<T extends WebSocket = WebSocket> extends EventEmitter {
+    class Server<T extends WebSocket = WebSocket> extends EventEmitter {
         options: ServerOptions
         path: string
         clients: Set<T>
@@ -2835,20 +3232,21 @@ export declare namespace WebSocket {
     }
 
     const WebSocketServer: typeof Server
-    export interface WebSocketServer extends Server {} // tslint:disable-line no-empty-interface
+    interface WebSocketServer extends Server {} // tslint:disable-line no-empty-interface
     const WebSocket: typeof WebSocketAlias
-    export interface WebSocket extends WebSocketAlias {} // tslint:disable-line no-empty-interface
+    interface WebSocket extends WebSocketAlias {} // tslint:disable-line no-empty-interface
 
     // WebSocket stream
-    export function createWebSocketStream(
+    function createWebSocketStream(
     websocket: WebSocket,
     options?: DuplexOptions
     ): Duplex
 }
+export { WebSocket_2 as WebSocket }
 
-export declare const WebSocketAlias: typeof WebSocket;
+export declare const WebSocketAlias: typeof WebSocket_2;
 
-export declare interface WebSocketAlias extends WebSocket {}
+export declare interface WebSocketAlias extends WebSocket_2 {}
 
 export declare interface WebSocketClient {
     /**
@@ -2874,7 +3272,7 @@ export declare interface WebSocketServer {
      */
     clients: Set<WebSocketClient>;
     /**
-     * Boardcast events to all clients
+     * Broadcast events to all clients
      */
     send(payload: HMRPayload): void;
     /**
@@ -2888,13 +3286,13 @@ export declare interface WebSocketServer {
     /**
      * Handle custom event emitted by `import.meta.hot.send`
      */
-    on: WebSocketServer_2['on'] & {
+    on: WebSocket_2.Server['on'] & {
         <T extends string>(event: T, listener: WebSocketCustomListener<InferCustomEventPayload<T>>): void;
     };
     /**
      * Unregister event listener.
      */
-    off: WebSocketServer_2['off'] & {
+    off: WebSocket_2.Server['off'] & {
         (event: string, listener: Function): void;
     };
 }

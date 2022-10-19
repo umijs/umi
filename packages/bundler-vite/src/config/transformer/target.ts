@@ -1,5 +1,4 @@
 import type { IConfigProcessor } from '.';
-import type { Options } from '../../../compiled/@vitejs/plugin-legacy';
 import legacyPlugin from '../../../compiled/@vitejs/plugin-legacy';
 import * as lite from '../../../compiled/caniuse-lite';
 import { getBrowserlist } from './css';
@@ -36,13 +35,13 @@ export default (function target(userConfig) {
     return false;
   }
   if (userConfig.targets && isLegacyBrowser(userConfig.targets)) {
-    const legacyOpts: Options = {
-      targets: getBrowserlist(userConfig.targets),
-      polyfills: false,
-      ignoreBrowserslistConfig: true,
-    };
-
-    config.plugins!.push(legacyPlugin(legacyOpts));
+    config.plugins!.push(
+      legacyPlugin({
+        targets: getBrowserlist(userConfig.targets),
+        polyfills: false,
+        ignoreBrowserslistConfig: true,
+      }),
+    );
   }
   return config;
 } as IConfigProcessor);

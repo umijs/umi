@@ -23,7 +23,7 @@ export default function svgrPlugin(
 ): Plugin {
   return {
     name: 'bundler-vite:svgr',
-    async transform(code, id) {
+    async transform(code: string, id: string) {
       if (id.endsWith('.svg')) {
         let componentCode = code;
         if (svgr) {

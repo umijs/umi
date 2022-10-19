@@ -1,1 +1,1 @@
-{"name":"vite","author":"Evan You","license":"MIT","types":"dist/node/index.d.ts"}
+{"name":"vite","version":"3.1.8","author":"Evan You","license":"MIT","types":"./dist/node/index.d.ts"}

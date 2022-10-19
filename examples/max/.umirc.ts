@@ -94,7 +94,10 @@ export default defineConfig({
     },
   },
   tailwindcss: {},
-  // vite: {}
+  vite: {},
+  // targets: {
+  //   chrome: 54
+  // }
   // esmi: { cdnOrigin: 'https://npmcore-pre.alipay.com' },
   // lowImport: {},
 });

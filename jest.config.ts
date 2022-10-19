@@ -15,4 +15,8 @@ export default {
     '!**/fixtures/**/*.*',
     '!packages/create-umi/templates/**/*.*',
   ],
+
+  moduleNameMapper: {
+    '^vite$': '<rootDir>/packages/bundler-vite/compiled/vite/index.js',
+  },
 } as Config.InitialOptions;

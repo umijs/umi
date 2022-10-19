@@ -10,12 +10,12 @@ export default function externals(
 ): Plugin {
   return {
     name: 'bundler-vite:externals',
-    resolveId(id) {
+    resolveId(id: string) {
       if (externals[id]) {
         return id;
       }
     },
-    load(id) {
+    load(id: string) {
       if (externals[id]) {
         return `const external = window.${externals[id]};export default external;`;
       }

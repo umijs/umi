@@ -125,6 +125,8 @@ Object.keys(exported).forEach(function (key) {
           'os-locale',
           'copy-webpack-plugin',
           'zx',
+          '@vitejs/plugin-legacy',
+          '@vitejs/plugin-vue',
         ].includes(opts.pkgName)
       ) {
         code = code.replace(/require\("node:/g, 'require("');
@@ -142,6 +144,17 @@ Object.keys(exported).forEach(function (key) {
         code = code.replace(
           'loadPreprocessor("less"',
           'loadPreprocessor("@umijs/bundler-utils/compiled/less"',
+        );
+
+        // 处理 vite 写死的客户端路径
+        code = code.replace(
+          `VITE_PACKAGE_DIR, 'dist/client/client.mjs'`,
+          `VITE_PACKAGE_DIR, 'compiled/vite/client.mjs'`,
+        );
+
+        code = code.replace(
+          `VITE_PACKAGE_DIR, 'dist/client/env.mjs'`,
+          `VITE_PACKAGE_DIR, 'compiled/vite/env.mjs'`,
         );
       }
       fs.writeFileSync(path.join(target, 'index.js'), code, 'utf-8');
@@ -192,10 +205,23 @@ Object.keys(exported).forEach(function (key) {
 
         // copy sourcemap for vite client scripts
         fs.copyFileSync(
+          require.resolve('vite/dist/client/client.mjs', {
+            paths: [opts.base],
+          }),
+          path.join(COMPILED_DIR, 'vite', 'client.mjs'),
+        );
+        fs.copyFileSync(
           require.resolve('vite/dist/client/client.mjs.map', {
             paths: [opts.base],
           }),
           path.join(COMPILED_DIR, 'vite', 'client.mjs.map'),
+        );
+
+        fs.copyFileSync(
+          require.resolve('vite/dist/client/env.mjs', {
+            paths: [opts.base],
+          }),
+          path.join(COMPILED_DIR, 'vite', 'env.mjs'),
         );
         fs.copyFileSync(
           require.resolve('vite/dist/client/env.mjs.map', {
