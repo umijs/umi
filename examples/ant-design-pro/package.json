@@ -5,7 +5,8 @@
     "build": "max build",
     "dev": "max dev",
     "setup": "max setup",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "test": "jest"
   },
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
