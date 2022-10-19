@@ -1,6 +1,6 @@
 ﻿import { act, render } from '@testing-library/react';
 import React from 'react';
-import { TestBrowser } from '../../../.umi-test/testBrowser';
+import { TestBrowser } from '@@/testBrowser';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -21,9 +21,7 @@ test('should show login form', async () => {
     />,
   );
 
-  await act(async () => {
-    await waitTime(9000);
-  });
+  await rootContainer.findAllByText('Ant Design');
 
   expect(
     rootContainer.baseElement?.querySelector('.ant-pro-form-login-desc')
@@ -32,15 +30,17 @@ test('should show login form', async () => {
     'Ant Design is the most influential web design specification in Xihu district',
   );
 
+  expect(rootContainer.baseElement).toMatchSnapshot();
+
   act(() => {
     ref.current?.push('/user/register');
   });
 
-  await act(async () => {
-    await waitTime(9000);
-  });
+  await rootContainer.findAllByText('注册');
 
   expect(rootContainer.baseElement?.querySelector('h3')?.textContent).toBe(
     '注册',
   );
+
+  expect(rootContainer.baseElement).toMatchSnapshot();
 });

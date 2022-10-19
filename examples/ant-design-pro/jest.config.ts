@@ -6,19 +6,16 @@ export default async () => {
       target: 'browser',
     }),
   });
+  const esModules = [].join('|');
   return {
     ...config,
     testEnvironmentOptions: {
       ...(config?.testEnvironmentOptions || {}),
       url: 'http://localhost:8000',
     },
-    moduleNameMapper: {
-      ...config.moduleNameMapper,
-      '^@/(.*)$': '<rootDir>/src/$1',
-      '.(css|less)$': 'identity-obj-proxy',
-    },
     transformIgnorePatterns: [
-      '/node_modules/(?!antd|@ant-design|rc-util|rc-.+?|@babel/runtime|@umijs/renderer-react|@umijs/preset-umi|umi).+(js|jsx)$',
+      ...(config.transformIgnorePatterns || []),
+      `/node_modules/(?!${esModules})`,
     ],
     setupFiles: [...(config.setupFiles || []), './tests/setupTests.jsx'],
     globals: {
