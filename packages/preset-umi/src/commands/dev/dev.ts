@@ -261,12 +261,6 @@ PORT=8888 umi dev
       let startBuildWorker: (deps: any[]) => Worker = (() => {}) as any;
 
       if (api.config.mfsu?.strategy === 'eager') {
-        if (!api.paths.absSrcPath.endsWith('src')) {
-          api.logger.warn(
-            '[MFSU] in eager mode, works better when  place code files in `src` folder',
-          );
-        }
-
         srcCodeCache = new AutoUpdateSrcCodeCache({
           cwd: api.paths.absSrcPath,
           cachePath: join(api.paths.absNodeModulesPath, '.cache', 'mfsu', 'v4'),
