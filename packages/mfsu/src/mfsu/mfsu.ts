@@ -261,7 +261,7 @@ promise new Promise(resolve => {
      */
     this.depConfig = opts.depConfig;
 
-    this.strategy.init();
+    this.strategy.init(opts.config);
   }
 
   async buildDeps() {
@@ -381,7 +381,7 @@ promise new Promise(resolve => {
 }
 
 export interface IMFSUStrategy {
-  init(): void;
+  init(webpackConfig: Configuration): void;
 
   shouldBuild(): string | boolean;
 
