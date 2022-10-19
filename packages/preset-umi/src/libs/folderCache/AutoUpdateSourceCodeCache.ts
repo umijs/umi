@@ -28,6 +28,20 @@ export class AutoUpdateSrcCodeCache {
   folderCache: AutoUpdateFolderCache;
   private listeners: Listener[] = [];
 
+  private ignores: string[] = [
+    '**/*.d.ts',
+    '**/*.test.{js,ts,jsx,tsx}',
+    // fixme respect to environment
+    '**/.umi-production/**',
+    '**/.umi-test/**',
+    '**/node_modules/**',
+    '**/.git/**',
+    '**/dist/**',
+    '**/coverage/**',
+    '**/jest.config.{ts,js}',
+    '**/jest-setup.{ts,js}',
+  ];
+
   constructor(opts: { cwd: string; cachePath: string }) {
     this.srcPath = opts.cwd;
     this.cachePath = opts.cachePath;
@@ -35,15 +49,7 @@ export class AutoUpdateSrcCodeCache {
     this.folderCache = new AutoUpdateFolderCache({
       cwd: this.srcPath,
       exts: ['ts', 'js', 'jsx', 'tsx'],
-      ignored: [
-        '**/*.d.ts',
-        '**/*.test.{js,ts,jsx,tsx}',
-        // fixme respect to environment
-        '**/.umi-production/**',
-        '**/.umi-test/**',
-        '**/node_modules/**',
-        '**/.git/**',
-      ],
+      ignored: this.ignores,
       debouncedTimeout: 200,
       filesLoader: async (files: string[]) => {
         const loaded: Record<string, string> = {};
@@ -80,14 +86,7 @@ export class AutoUpdateSrcCodeCache {
       winPath(join(this.srcPath, '**', '*.{ts,js,jsx,tsx}')),
       {
         dot: true,
-        ignore: [
-          '**/*.d.ts',
-          '**/*.test.{js,ts,jsx,tsx}',
-          // fixme respect to environment
-          '**/.umi-production/**',
-          '**/node_modules/**',
-          '**/.git/**',
-        ],
+        ignore: this.ignores,
       },
     );
     logger.debug('[MFSU][eager] fast-glob costs', Date.now() - start);
