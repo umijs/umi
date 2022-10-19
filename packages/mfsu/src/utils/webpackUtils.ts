@@ -22,7 +22,7 @@ export function extractBabelPluginImportOptions(
 
   for (const c of pluginConfigs) {
     // @ts-ignore
-    !configs.has(c[2]) && configs.set(c[2], c[1]);
+    !configs.has(c[1].libraryName) && configs.set(c[1].libraryName, c[1]);
   }
 
   return configs;
