@@ -42,6 +42,7 @@ export class PluginAPI {
       'info',
       'event',
       'debug',
+      'fatal',
     ];
     // @ts-ignore
     this.logger = loggerKeys.reduce<Logger>((memo, key) => {
