@@ -87,6 +87,9 @@ export default (api: IApi) => {
         ...theme,
         ...memo.theme,
       };
+      if (memo.antd?.import) {
+        memo.antd.import = false;
+      }
     }
 
     // dark mode & compact mode
