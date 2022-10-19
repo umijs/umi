@@ -18,7 +18,7 @@ export default async () => {
       '.(css|less)$': 'identity-obj-proxy',
     },
     transformIgnorePatterns: [
-      '/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime|@umijs/renderer-react|@umijs/preset-umi|umi).+(js|jsx)$',
+      '/node_modules/(?!antd|@ant-design|rc-util|rc-.+?|@babel/runtime|@umijs/renderer-react|@umijs/preset-umi|umi).+(js|jsx)$',
     ],
     setupFiles: [...(config.setupFiles || []), './tests/setupTests.jsx'],
     globals: {
