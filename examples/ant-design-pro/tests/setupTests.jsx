@@ -7,6 +7,23 @@
 
 global.localStorage = localStorageMock;
 
+Object.defineProperty(URL, 'createObjectURL', {
+  writable: true,
+  value: jest.fn(),
+});
+
+class Worker {
+  constructor(stringUrl) {
+    this.url = stringUrl;
+    this.onmessage = () => {};
+  }
+
+  postMessage(msg) {
+    this.onmessage(msg);
+  }
+}
+window.Worker = Worker;
+
 /* eslint-disable global-require */
 if (typeof window !== 'undefined') {
   // ref: https://github.com/ant-design/ant-design/issues/18774

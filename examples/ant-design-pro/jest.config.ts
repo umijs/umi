@@ -6,17 +6,12 @@ export default async () => {
       target: 'browser',
     }),
   });
-  const esModules = [].join('|');
   return {
     ...config,
     testEnvironmentOptions: {
       ...(config?.testEnvironmentOptions || {}),
       url: 'http://localhost:8000',
     },
-    transformIgnorePatterns: [
-      ...(config.transformIgnorePatterns || []),
-      `/node_modules/(?!${esModules})`,
-    ],
     setupFiles: [...(config.setupFiles || []), './tests/setupTests.jsx'],
     globals: {
       ...config.globals,
