@@ -61,6 +61,7 @@ export function createConfig(opts?: {
         require.resolve('identity-obj-proxy'),
     },
     testTimeout: 30000,
+    transformIgnorePatterns: [`/node_modules/(?!${[].join('|')})`],
     modulePathIgnorePatterns: [
       '<rootDir>/packages/.+/compiled',
       '<rootDir>/packages/.+/fixtures',
