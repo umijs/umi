@@ -1,5 +1,4 @@
-﻿import { act } from '@testing-library/react';
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { ApplyPluginsType } from 'umi';
 import { renderClient, RenderClientOpts } from '{{{ rendererPath }}}';
 import { createHistory } from './core/history';
@@ -57,7 +56,6 @@ export function TestBrowser(props: TestBrowserProps) {
       };
     };
     genContext().then((context) => {
-      act(() => {
         setContext(context);
         if (props.location) {
           context?.history?.push(props.location);
@@ -65,7 +63,6 @@ export function TestBrowser(props: TestBrowserProps) {
         if (props.historyRef) {
           props.historyRef.current = context?.history;
         }
-      });
     });
   }, []);
 
