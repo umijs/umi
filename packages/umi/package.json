@@ -8,7 +8,9 @@
     "lib",
     "dist",
     "types.d.ts",
-    "bin"
+    "bin",
+    "deps.js",
+    "deps.d.ts"
   ],
   "sideEffects": false,
   "repository": {
