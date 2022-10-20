@@ -166,7 +166,6 @@ const mapRoutes = (routes: IRoute[]) => {
 
     if (Array.isArray(route.routes)) {
       newRoute.routes = mapRoutes(route.routes);
-      newRoute.children = newRoute.routes;
     }
 
     return newRoute
