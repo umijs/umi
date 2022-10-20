@@ -27,29 +27,40 @@ for (const fixture of readdirSync(fixtures)) {
     try {
       config = require(join(base, 'config.ts')).default;
     } catch (e) {}
-    await build({
-      clean: true,
-      config: {
-        ...config,
-        jsMinifier: JSMinifier.none,
-        // cssMinifier: CSSMinifier.none,
-      },
-      cwd: base,
-      entry: {
-        index: join(base, 'index.ts'),
-      },
-    });
-    const fileNames = readdirSync(join(base, 'dist'));
-    const files = fileNames.reduce<Record<string, string>>((memo, fileName) => {
-      if (['.css', '.js', '.svg'].includes(extname(fileName))) {
-        memo[fileName] = readFileSync(join(base, 'dist', fileName), 'utf-8');
-      } else {
-        memo[fileName] = EXISTS;
-      }
-      return memo;
-    }, {});
-    expects[fixture]({
-      files,
-    });
+    try {
+      await build({
+        clean: true,
+        config: {
+          ...config,
+          jsMinifier: JSMinifier.none,
+          // cssMinifier: CSSMinifier.none,
+        },
+        cwd: base,
+        entry: {
+          index: join(base, 'index.ts'),
+        },
+      });
+      console.log('build base', base);
+      const fileNames = readdirSync(join(base, 'dist'));
+      const files = fileNames.reduce<Record<string, string>>(
+        (memo, fileName) => {
+          if (['.css', '.js', '.svg'].includes(extname(fileName))) {
+            memo[fileName] = readFileSync(
+              join(base, 'dist', fileName),
+              'utf-8',
+            );
+          } else {
+            memo[fileName] = EXISTS;
+          }
+          return memo;
+        },
+        {},
+      );
+      expects[fixture]({
+        files,
+      });
+    } catch (error) {
+      console.log('bundler-vite test error', error);
+    }
   });
 }
