@@ -35,6 +35,10 @@ export async function addCompressPlugin(opts: IOpts) {
     targets: userConfig.targets || {},
     jsMinifier,
   });
+  // 提升 esbuild 压缩产物的兼容性，比如不出现 ?? 这种语法
+  if (!esbuildTarget.includes('es2015')) {
+    esbuildTarget.push('es2015');
+  }
 
   let minify: any;
   let terserOptions: IConfig['jsMinifierOptions'];
