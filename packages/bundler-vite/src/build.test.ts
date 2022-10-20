@@ -39,8 +39,11 @@ for (const fixture of readdirSync(fixtures)) {
         entry: {
           index: join(base, 'index.ts'),
         },
+        onBuildComplete: (result) => {
+          console.log('result', result);
+        },
       });
-      console.log('build base', base);
+      console.log('build base', base, join(base, 'dist'));
       const fileNames = readdirSync(join(base, 'dist'));
       const files = fileNames.reduce<Record<string, string>>(
         (memo, fileName) => {
