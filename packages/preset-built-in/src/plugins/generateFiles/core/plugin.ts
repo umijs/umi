@@ -24,11 +24,14 @@ export default function (api: IApi) {
       ],
     });
 
-    const appRuntimeFilePath = getFile({
-      base: paths.absSrcPath!,
-      fileNameWithoutExt: 'app',
-      type: 'javascript',
-    })?.path;
+    const appRuntimeFilePath =
+      process.env.RUNTIME_APP_JS !== 'none'
+        ? getFile({
+            base: paths.absSrcPath!,
+            fileNameWithoutExt: 'app',
+            type: 'javascript',
+          })?.path
+        : undefined;
     const plugins = await api.applyPlugins({
       key: 'addRuntimePlugin',
       type: api.ApplyPluginsType.add,
