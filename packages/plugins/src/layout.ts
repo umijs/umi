@@ -144,6 +144,7 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
       newRoutes.push(route);
       if (Array.isArray(route.routes)) {
         route.routes = filterRoutes(route.routes, filterFn);
+        route.children = route.routes;
       }
     }
   }
