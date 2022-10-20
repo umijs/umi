@@ -125,6 +125,20 @@ export const useAccessMarkedRoutes = (routes: IRoute[]) => {
         }
       }
 
+      // check children access code
+      if (route.routes?.length) {
+        const isNoAccessibleChild = !route.routes.reduce((hasAccessibleChild, child) => {
+          process(child, accessCode, route);
+
+          return hasAccessibleChild || !child.unaccessible;
+        }, false);
+
+        // make sure parent route is unaccessible if all children are unaccessible
+        if (isNoAccessibleChild) {
+          route.unaccessible = true;
+        }
+      }
+
       return route;
     }
 
