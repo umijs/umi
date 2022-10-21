@@ -69,8 +69,9 @@ jobs:
       - name: Build targets
         run: pnpm umi-scripts turbo build --filter ./examples/max... 
           --filter ./examples/mf-remote... --filter ./examples/test-test/...
-          --filter ./examples/create-umi-simple... --filter ./examples/create-umi-pro/...
-          --filter ./packages/umi/... --filter ./packages/preset-vue/... --filter @umijs/valtio
+          --filter ./examples/create-umi-simple... --filter ./examples/create-umi-pro/... --filter ./examples/antd-pro-create/...
+          --filter ./packages/umi/... --filter ./packages/preset-vue/... 
+          --filter @umijs/valtio
 
       - name: e2e:example:max
         uses: cypress-io/github-action@v4
@@ -203,6 +204,17 @@ jobs:
           install: false
           install-command: pnpm i cypress
           command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:ant-pro-create:dev
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/antd-design-pro
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:dev:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
