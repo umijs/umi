@@ -30,8 +30,8 @@ export class AutoUpdateSrcCodeCache {
 
   private ignores: string[] = [
     '**/*.d.ts',
-    '**/*.test.{js,ts,jsx,tsx}',
-    // fixme respect to environment
+    '**/*.{test,spec}.{js,ts,jsx,tsx}',
+    '**/cypress/**',
     '**/.umi-production/**',
     '**/.umi-test/**',
     '**/node_modules/**',
