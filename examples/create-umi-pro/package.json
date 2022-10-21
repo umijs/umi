@@ -1,0 +1,34 @@
+{
+  "name": "@example/create-umi-pro",
+  "author": "pshu <pishu.spf@antfin.com>",
+  "scripts": {
+    "build": "max build",
+    "dev": "max dev",
+    "e2e": "cypress run",
+    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "format": "prettier --cache --write .",
+    "postinstall": "max setup",
+    "preview": "max preview --port 9527",
+    "setup": "max setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-components": "^2.0.1",
+    "@umijs/max": "4.0.26",
+    "antd": "^4.20.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "cross-env": "^7.0.3",
+    "cypress": "^10.0.0",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^2",
+    "prettier-plugin-packagejson": "^2",
+    "start-server-and-test": "^1.0.0",
+    "typescript": "^4.1.2"
+  }
+}
