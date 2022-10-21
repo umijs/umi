@@ -25,15 +25,26 @@ export default (api: IApi) => {
   });
 
   api.onCheckCode(({ CodeFrameError, ...args }) => {
-    // Fixed version import is not allowed
-    // e.g. import { X } from '_@ant-design_icons@4.7.0@ant-design/icons'
-    if (['cnpm', 'tnpm'].includes(api.appData.npmClient)) {
-      args.imports.forEach(({ source, loc }) => {
+    args.imports.forEach(({ source, loc }) => {
+      // Fixed version import is not allowed
+      // e.g. import { X } from '_@ant-design_icons@4.7.0@ant-design/icons'
+      if (['cnpm', 'tnpm'].includes(api.appData.npmClient)) {
         if (!isAbsolutePath(source) && /@\d/.test(source)) {
           throw new CodeFrameError(`${source} is not allowed to import.`, loc);
         }
-      });
-    }
+      }
+
+      if (
+        !isAbsolutePath(source) &&
+        /\/\.umi(-(test|production))?\//.test(source)
+      ) {
+        const { importSource } = api.appData.umi;
+        throw new CodeFrameError(
+          `${source} includes /.umi/, /.umi-test/ or /.umi-production/. It's not allowed to import. Please import from ${importSource} or the corresponding plugin.`,
+          loc,
+        );
+      }
+    });
   });
 
   api.onCheckConfig(({ config }) => {
