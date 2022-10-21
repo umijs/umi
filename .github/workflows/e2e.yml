@@ -207,11 +207,11 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
-      - name: e2e:example:ant-pro-create:dev
+      - name: e2e:example:antd-pro-create:dev
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
-          working-directory: ./examples/antd-design-pro
+          working-directory: ./examples/antd-pro-create
           install: false
           install-command: pnpm i cypress
           command: npm run e2e:dev:ci

@@ -1,6 +1,14 @@
 /// <reference types="cypress" />
 
 describe('Basic Test', () => {
+
+  beforeEach(() =>
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.setCacheDisabled',
+      params: { cacheDisabled: true },
+    }),
+  );
+
   it('displays some content', () => {
     cy.visit('/');
     cy.contains('欢迎使用 Umi Max ！');
