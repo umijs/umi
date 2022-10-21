@@ -11,6 +11,8 @@ describe('smoke test', () => {
     cy.get('#username').type('admin')
     cy.get('#password').type('ant.design')
 
+    cy.get('button.ant-btn').click()
+
     cy.url().should('include', '/welcome');
   });
 });
