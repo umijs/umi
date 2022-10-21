@@ -1,6 +1,5 @@
 {
-  "name": "ant-design-pro",
-  "version": "6.0.0-beta.1",
+  "name": "@example/antd-pro-create",
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
@@ -10,7 +9,6 @@
     "dev": "npm run start:dev",
     "gh-pages": "gh-pages -d dist",
     "i18n-remove": "pro i18n-remove --locale=zh-CN --write",
-    "postinstall": "max setup",
     "lint": "npm run lint:js && npm run lint:prettier && npm run tsc",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
@@ -19,7 +17,6 @@
     "lint:prettier": "prettier -c --write \"src/**/*\" --end-of-line auto",
     "openapi": "max openapi",
     "playwright": "playwright install && playwright test",
-    "prepare": "husky install",
     "prettier": "prettier -c --write \"src/**/*\"",
     "serve": "umi-serve",
     "start": "cross-env UMI_ENV=dev max dev",
@@ -28,7 +25,9 @@
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev max dev",
     "start:test": "cross-env REACT_APP_ENV=test MOCK=none UMI_ENV=dev max dev",
     "test:e2e": "node ./tests/run-tests.js",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "e2e": "cypress run",
+    "e2e:ci": "start-server-and-test preview http://127.0.0.1:9572  e2e"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
@@ -83,7 +82,9 @@
     "swagger-ui-dist": "^4.14.2",
     "typescript": "^4.8.4",
     "umi-presets-pro": "^1.0.5",
-    "umi-serve": "^1.9.11"
+    "umi-serve": "^1.9.11",
+    "cypress": "^10.0.0",
+    "start-server-and-test": "^1.0.0"
   },
   "engines": {
     "node": ">=12.0.0"

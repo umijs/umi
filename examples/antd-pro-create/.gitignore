@@ -40,3 +40,6 @@ screenshot
 .eslintcache
 
 build
+
+/cypress/screenshots
+/cypress/videos
