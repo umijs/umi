@@ -325,7 +325,8 @@ export class Service {
     }
     const command = this.commands[name];
     if (!command) {
-      return this.commandGuessHelper(Object.keys(this.commands), name);
+      this.commandGuessHelper(Object.keys(this.commands), name);
+      throw Error(`Invalid command ${chalk.red(name)}, it's not registered.`);
     }
     // collect configSchemas and configDefaults
     for (const id of Object.keys(this.plugins)) {
@@ -604,9 +605,6 @@ export class Service {
       );
       console.log();
     }
-    throw Error(
-      `Invalid command ${chalk.red(currentCmd)}, it's not registered.`,
-    );
   }
 }
 
