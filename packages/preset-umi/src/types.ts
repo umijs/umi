@@ -12,8 +12,10 @@ import type {
   PluginAPI,
 } from '@umijs/core';
 import { Env } from '@umijs/core';
+import type { getMarkup } from '@umijs/server';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
+import type { getMarkupArgs } from './commands/dev/getMarkupArgs';
 import type CodeFrameError from './features/transform/CodeFrameError';
 
 export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
@@ -104,6 +106,14 @@ export type IApi = PluginAPI &
     };
     modifyBabelPresetOpts: IModify<any, null>;
     modifyEntry: IModify<Record<string, string>, null>;
+    modifyExportHTMLFiles: IModify<
+      { content: string; path: string }[],
+      | {
+          getMarkup: typeof getMarkup;
+          markupArgs: Awaited<ReturnType<typeof getMarkupArgs>>;
+        }
+      | { getMarkup: typeof getMarkup; mpa: boolean }
+    >;
     modifyHTML: IModify<CheerioAPI, { path: string }>;
     modifyHTMLFavicon: IModify<string[], {}>;
     modifyRendererPath: IModify<string, {}>;

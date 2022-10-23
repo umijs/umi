@@ -1,7 +1,7 @@
 import { getMarkup } from '@umijs/server';
-import { chalk, logger, rimraf } from '@umijs/utils';
+import { chalk, fsExtra, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
-import { join, resolve } from 'path';
+import { dirname, join, resolve } from 'path';
 import { IApi } from '../types';
 import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
 import { getAssetsMap } from './dev/getAssetsMap';
@@ -148,6 +148,9 @@ umi build --clean
 
       // generate html
       // vite 在 build 时通过插件注入 js 和 css
+      let finalMarkUpArgs;
+      const exportHTMLFiles = [];
+
       if (!api.config.mpa) {
         const assetsMap = api.config.vite
           ? {}
@@ -157,8 +160,8 @@ umi build --clean
             });
         const { vite } = api.args;
         const markupArgs = await getMarkupArgs({ api });
-        // @ts-ignore
-        const markup = await getMarkup({
+
+        finalMarkUpArgs = {
           ...markupArgs,
           styles: markupArgs.styles.concat(
             api.config.vite ? [] : assetsMap['umi.css'] || [],
@@ -168,14 +171,30 @@ umi build --clean
           ),
           esmScript: !!opts.config.esm || vite,
           path: '/',
+        };
+        exportHTMLFiles.push({
+          path: 'index.html',
+          content: await getMarkup(finalMarkUpArgs),
         });
-        writeFileSync(
-          join(api.paths.absOutputPath, 'index.html'),
-          markup,
-          'utf-8',
-        );
-        logger.event('Build index.html');
       }
+
+      // allow modify export html files
+      const htmlFiles: { path: string; content: string }[] =
+        await api.applyPlugins({
+          key: 'modifyExportHTMLFiles',
+          initialValue: exportHTMLFiles,
+          args: api.config.mpa
+            ? { mpa: true, getMarkup }
+            : { markupArgs: finalMarkUpArgs, getMarkup },
+        });
+
+      htmlFiles.forEach(({ path, content }) => {
+        const absPath = resolve(api.paths.absOutputPath, path);
+
+        fsExtra.mkdirpSync(dirname(absPath));
+        writeFileSync(absPath, content, 'utf-8');
+        logger.event(`Build ${path}`);
+      });
 
       // event when html is completed
       await api.applyPlugins({
