@@ -53,7 +53,7 @@ export default defineConfig({
     },
   ],
   antd: {
-    import: true,
+    // import: true,
     style: 'less',
     // dark: true,
   },

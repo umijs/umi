@@ -4,6 +4,8 @@ import mfImport from '../babelPlugins/awaitImport/MFImport';
 import { StaticDepInfo } from '../staticDepInfo/staticDepInfo';
 import { IBuildDepPluginOpts } from '../webpackPlugins/buildDepPlugin';
 import type { IMFSUStrategy, MFSU } from './mfsu';
+import type { Configuration } from 'webpack';
+import { extractBabelPluginImportOptions } from '../utils/webpackUtils';
 
 export class StaticAnalyzeStrategy implements IMFSUStrategy {
   private readonly mfsu: MFSU;
@@ -18,7 +20,10 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
     });
   }
 
-  init() {
+  init(webpackConfig: Configuration) {
+    const config = extractBabelPluginImportOptions(webpackConfig);
+    this.staticDepInfo.setBabelPluginImportConfig(config);
+
     this.staticDepInfo.init();
   }
 

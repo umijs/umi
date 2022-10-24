@@ -1,11 +1,10 @@
-import { logger, printHelp, yParser } from '@umijs/utils';
+import { logger, printHelp, yParser, setNoDeprecation } from '@umijs/utils';
 import { DEV_COMMAND } from '../constants';
 import { Service } from '../service/service';
 import { dev } from './dev';
 import {
   checkLocal,
   checkVersion as checkNodeVersion,
-  setNoDeprecation,
   setNodeTitle,
 } from './node';
 

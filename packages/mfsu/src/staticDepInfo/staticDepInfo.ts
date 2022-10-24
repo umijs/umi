@@ -77,24 +77,7 @@ export class StaticDepInfo {
       this.currentDep = this._getDependencies(info.code, info.imports);
     });
 
-    this.runtimeSimulations = [
-      {
-        packageName: 'antd',
-        handleImports: createPluginImport({
-          libraryName: 'antd',
-          style: true,
-          libraryDirectory: 'es',
-        }),
-      },
-      {
-        packageName: '@alipay/bigfish/antd',
-        handleImports: createPluginImport({
-          libraryName: '@alipay/bigfish/antd',
-          style: true,
-          libraryDirectory: 'es',
-        }),
-      },
-    ];
+    this.runtimeSimulations = [];
   }
 
   getProducedEvent() {
@@ -322,5 +305,14 @@ export class StaticDepInfo {
 
   async allRuntimeHelpers() {
     // todo mfsu4
+  }
+
+  setBabelPluginImportConfig(config: Map<string, any>) {
+    for (const [key, c] of config.entries()) {
+      this.runtimeSimulations.push({
+        packageName: key,
+        handleImports: createPluginImport(c),
+      });
+    }
   }
 }
