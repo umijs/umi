@@ -74,7 +74,7 @@ exports[`should show login form 1`] = `
             style="width: 328px;"
           >
             <div
-              class="ant-pro "
+              class="ant-pro"
             >
               <form
                 autocomplete="off"

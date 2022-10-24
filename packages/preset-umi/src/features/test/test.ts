@@ -10,8 +10,15 @@ export default (api: IApi) => {
     key: 'test',
     config: {
       schema(Joi) {
-        return Joi.boolean();
+        return Joi.object();
       },
+    },
+    enableBy() {
+      // 只有 test 才默认开启
+      if (process.env.NODE_ENV?.toLocaleLowerCase() === 'test') {
+        return true;
+      }
+      return false;
     },
   });
 
