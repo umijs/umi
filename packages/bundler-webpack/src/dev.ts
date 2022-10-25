@@ -92,6 +92,10 @@ export async function dev(opts: IOpts) {
     });
   }
 
+  const define = (opts.config.define ||= {});
+  define['process.env.SOCKET_SERVER'] =
+    process.env.SOCKET_SERVER || getSocketServer(opts);
+
   const webpackConfig = await getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
@@ -191,4 +195,13 @@ export async function dev(opts: IOpts) {
     onDevCompileDone: opts.onDevCompileDone,
     onProgress: opts.onProgress,
   });
+}
+
+function getSocketServer(opts: IOpts) {
+  const protocol = opts.config.https ? 'https:' : 'http:';
+  const host =
+    (opts.host === '0.0.0.0' ? 'localhost' : opts.host) || 'localhost';
+  const port = opts.port || 8000;
+
+  return `${protocol}//${host}:${port}`;
 }
