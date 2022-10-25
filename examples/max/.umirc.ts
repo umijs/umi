@@ -30,7 +30,7 @@ export default defineConfig({
       name: 'Deny',
       access: 'canReadBar',
     },
-    { path: '/app1/*', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
+    { path: '/app2/*', icon: 'SmileFilled', name: 'app1', microApp: 'app1' },
     {
       path: '/data-flow',
       component: 'data-flow',
