@@ -42,6 +42,7 @@ export class StaticDepInfo {
   private readonly include: string[];
   private currentDep: Record<string, Match> = {};
   private builtWithDep: Record<string, Match> = {};
+  private cacheDependency: object = {};
 
   private produced: { changes: unknown[] }[] = [];
   private readonly cwd: string;
@@ -89,6 +90,20 @@ export class StaticDepInfo {
   }
 
   shouldBuild() {
+    const currentCacheDep = this.opts.mfsu.opts.getCacheDependency!();
+
+    if (!lodash.isEqual(this.cacheDependency, currentCacheDep)) {
+      if (process.env.DEBUG_UMI) {
+        const reason = why(this.cacheDependency, currentCacheDep);
+        logger.info(
+          '[MFSU][eager]: isEqual(cacheDependency,currentCacheDep) === false, because ',
+          reason,
+        );
+      }
+
+      return 'cacheDependency has changed';
+    }
+
     if (lodash.isEqual(this.builtWithDep, this.currentDep)) {
       return false;
     } else {
@@ -120,14 +135,18 @@ export class StaticDepInfo {
 
   snapshot() {
     this.builtWithDep = this.currentDep;
+    this.cacheDependency = this.mfsu.opts.getCacheDependency!();
   }
 
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
-        this.builtWithDep = JSON.parse(
+        const { dep = {}, cacheDependency = {} } = JSON.parse(
           readFileSync(this.cacheFilePath, 'utf-8'),
         );
+
+        this.builtWithDep = dep;
+        this.cacheDependency = cacheDependency;
         logger.info('[MFSU][eager] restored cache');
       } catch (e) {
         logger.warn(
@@ -140,7 +159,14 @@ export class StaticDepInfo {
 
   writeCache() {
     fsExtra.mkdirpSync(dirname(this.cacheFilePath));
-    const newContent = JSON.stringify(this.builtWithDep, null, 2);
+    const newContent = JSON.stringify(
+      {
+        dep: this.builtWithDep,
+        cacheDependency: this.cacheDependency,
+      },
+      null,
+      2,
+    );
     if (
       existsSync(this.cacheFilePath) &&
       readFileSync(this.cacheFilePath, 'utf-8') === newContent
