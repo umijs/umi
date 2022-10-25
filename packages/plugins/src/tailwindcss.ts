@@ -28,6 +28,10 @@ export default (api: IApi) => {
       'tailwind.config.js',
     );
 
+    if (process.env.IS_UMI_BUILD_WORKER) {
+      return;
+    }
+
     return new Promise<void>((resolve) => {
       /** 透过子进程建立 tailwindcss 服务，将生成的 css 写入 generatedPath */
       tailwind = crossSpawn(
