@@ -458,6 +458,33 @@ export default {
 
 配置额外的 postcss 插件。
 
+## exportStatic
+
+- 类型：`{}`
+- 默认值：`undefined`
+
+开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
+
+```bash
+/
+/docs
+/docs/a
+```
+
+不开启 `exportStatic` 时会输出：
+
+```bash
+dist/index.html
+```
+
+开启 `exportStatic` 时会输出：
+
+```bash
+dist/index.html
+dist/docs/index.html
+dist/docs/a/index.html
+```
+
 ## favicons
 
 - 类型：`string[]`
