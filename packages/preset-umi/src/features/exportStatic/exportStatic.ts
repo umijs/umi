@@ -52,10 +52,12 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  api.onCheck(() => {
+    assert(!api.config.mpa, '`exportStatic` is not supported in `mpa` mode.');
+  });
+
   // export routes to html files
   api.modifyExportHTMLFiles(async (_defaultFiles, opts) => {
-    if ('mpa' in opts) return [];
-
     const { publicPath } = api.config;
     const htmlData = getExportHtmlData(api.appData.routes);
     const htmlFiles: { path: string; content: string }[] = [];

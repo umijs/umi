@@ -108,11 +108,10 @@ export type IApi = PluginAPI &
     modifyEntry: IModify<Record<string, string>, null>;
     modifyExportHTMLFiles: IModify<
       { content: string; path: string }[],
-      | {
-          getMarkup: typeof getMarkup;
-          markupArgs: Awaited<ReturnType<typeof getMarkupArgs>>;
-        }
-      | { getMarkup: typeof getMarkup; mpa: boolean }
+      {
+        getMarkup: typeof getMarkup;
+        markupArgs: Awaited<ReturnType<typeof getMarkupArgs>>;
+      }
     >;
     modifyHTML: IModify<CheerioAPI, { path: string }>;
     modifyHTMLFavicon: IModify<string[], {}>;
