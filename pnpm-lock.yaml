@@ -1556,6 +1556,7 @@ importers:
       debug: 4.3.4
       deepmerge: 4.2.2
       execa: 6.1.0
+      fastest-levenshtein: 1.0.16
       filesize: 9.0.11
       fs-extra: 10.0.1
       glob: 8.0.1
@@ -1597,6 +1598,7 @@ importers:
       debug: 4.3.4
       deepmerge: 4.2.2
       execa: 6.1.0
+      fastest-levenshtein: 1.0.16
       filesize: 9.0.11
       fs-extra: 10.0.1
       glob: 8.0.1
@@ -15468,8 +15470,9 @@ packages:
     resolution: {integrity: sha512-HPtaa38cPgWvaCFmRNhlc6NG7pv6NUHqjPgVAkWGoB9mQMwYB27/K0CvOM5Czy+qpT3e8XJ6Q4aPAnzpNpzNaw==}
     dev: false
 
-  /fastest-levenshtein/1.0.12:
-    resolution: {integrity: sha512-On2N+BpYJ15xIC974QNVuYGMOlEVt4s0EOI3wwMqOmK1fdDY+FN/zltPV8vosq4ad4c/gJ1KHScUn/6AWIgiow==}
+  /fastest-levenshtein/1.0.16:
+    resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
+    engines: {node: '>= 4.9.1'}
 
   /fastest-stable-stringify/2.0.2:
     resolution: {integrity: sha512-bijHueCGd0LqqNK9b5oCMHc0MluJAx0cwqASgbWMvkO01lCYgIhacVRLcaDz3QnyYIRNJRDwMb41VuT6pHJ91Q==}
@@ -27755,7 +27758,7 @@ packages:
       debug: 4.3.4
       execall: 2.0.0
       fast-glob: 3.2.11
-      fastest-levenshtein: 1.0.12
+      fastest-levenshtein: 1.0.16
       file-entry-cache: 6.0.1
       get-stdin: 8.0.0
       global-modules: 2.0.0
@@ -29553,7 +29556,7 @@ packages:
       colorette: 2.0.19
       commander: 7.2.0
       cross-spawn: 7.0.3
-      fastest-levenshtein: 1.0.12
+      fastest-levenshtein: 1.0.16
       import-local: 3.1.0
       interpret: 2.2.0
       rechoir: 0.7.1
