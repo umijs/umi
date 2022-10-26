@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-import { before } from '@umijs/utils/compiled/cheerio/lib/api/manipulation';
-
 describe('access', function () {
   beforeEach(() => {
     Cypress.automation('remote:debugger:protocol', {
