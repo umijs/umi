@@ -286,14 +286,10 @@ export class Service {
     this.configManager = configManager;
     this.userConfig = configManager.getUserConfig().config;
     // get paths
-    const paths = getPaths({
-      cwd: this.cwd,
-      env: this.env,
-      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
-    });
     // temporary paths for use by function generateFinalConfig.
     // the value of paths may be updated by plugins later
-    this.paths = paths;
+    // 抽离成函数，方便后续继承覆盖
+    this.paths = await this.getPaths();
 
     // resolve initial presets and plugins
     const { plugins, presets } = Plugin.getPluginsAndPresets({
@@ -341,13 +337,13 @@ export class Service {
     this.stage = ServiceStage.resolveConfig;
     const { config, defaultConfig } = await this.resolveConfig();
     if (this.config.outputPath) {
-      paths.absOutputPath = isAbsolute(this.config.outputPath)
+      this.paths.absOutputPath = isAbsolute(this.config.outputPath)
         ? this.config.outputPath
         : join(this.cwd, this.config.outputPath);
     }
     this.paths = await this.applyPlugins({
       key: 'modifyPaths',
-      initialValue: paths,
+      initialValue: this.paths,
     });
     // applyPlugin collect app data
     // TODO: some data is mutable
@@ -396,6 +392,16 @@ export class Service {
     let ret = await command.fn({ args });
     this._baconPlugins();
     return ret;
+  }
+
+  async getPaths() {
+    // get paths
+    const paths = getPaths({
+      cwd: this.cwd,
+      env: this.env,
+      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
+    });
+    return paths;
   }
 
   async resolveConfig() {
