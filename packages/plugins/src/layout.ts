@@ -136,16 +136,18 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
 
   let newRoutes = []
   for (const route of routes) {
+    const newRoute = {...route };
     if (filterFn(route)) {
-      if (Array.isArray(route.routes)) {
-        newRoutes.push(...filterRoutes(route.routes, filterFn))
+      if (Array.isArray(newRoute.routes)) {
+        newRoutes.push(...filterRoutes(newRoute.routes, filterFn))
       }
     } else {
-      newRoutes.push(route);
-      if (Array.isArray(route.routes)) {
-        route.routes = filterRoutes(route.routes, filterFn);
-        route.children = route.routes;
+      if (Array.isArray(newRoute.routes)) {
+        newRoute.routes = filterRoutes(newRoute.routes, filterFn);
+        newRoute.children = newRoute.routes;
       }
+      newRoutes.push(newRoute);
+
     }
   }
 
