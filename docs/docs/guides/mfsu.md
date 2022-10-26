@@ -89,3 +89,30 @@ mfsu: {
 <Message emoji="⚠️" >
 如果开启了 [MF插件](../max/mf), 需要开启 `shared`，请[参考](../max/mf#和-mfsu-一起使用)。
 </Message>	
+
+### externals script 兼容问题
+
+如果项目依赖 a，a 依赖 b，而项目配置了 b 的 script 类型的 externals 如下。
+
+```ts
+externals: {
+  b: ['script https://cdn/b.js', b]
+}
+```
+
+在开启 MFSU 时会报错。
+
+```ts
+import * as b from 'b';
+console.log(b);
+```
+
+上述代码的 b 正常应该是 Module 信息，拿到的却是 `Promise<Module>`。我理解这是 webpack 的问题，没有处理好 externals script 和 module federation 之间的兼容问题，可能也是因为 externals script 很少有人知道和在使用。
+
+解法是不要和 MFSU 混着用，只在 `process.env.NODE_ENV === 'production'` 时开启。
+
+```ts
+externals: {
+  ...(process.env.NODE_ENV === 'production' ? {b: ['script https://cdn/b.js', b]} : {})
+}
+```
