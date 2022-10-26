@@ -23,6 +23,8 @@ export default (api: IApi) => {
   const outputPath = 'uno.css';
 
   api.onBeforeCompiler(() => {
+    if (process.env.IS_UMI_BUILD_WORKER) return;
+
     /** 由于 @unocss/cli 对设置文件进行了检查，因此加入需要 unocss.config.ts 设置的提示
      * https://github.com/antfu/unocss/blob/main/packages/cli/src/index.ts#L93 */
     if (!existsSync(join(api.paths.cwd, 'unocss.config.ts')))
