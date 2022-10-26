@@ -142,12 +142,11 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
         newRoutes.push(...filterRoutes(newRoute.routes, filterFn))
       }
     } else {
-      if (Array.isArray(newRoute.routes)) {
-        newRoute.routes = filterRoutes(newRoute.routes, filterFn);
-        newRoute.children = newRoute.routes;
+      if (Array.isArray(newRoute.children)) {
+        newRoute.children = filterRoutes(newRoute.children, filterFn);
+        newRoute.routes = newRoute.children;
       }
       newRoutes.push(newRoute);
-
     }
   }
 
