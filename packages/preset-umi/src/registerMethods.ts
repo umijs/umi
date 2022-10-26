@@ -48,6 +48,7 @@ export default (api: IApi) => {
     'modifyEntry',
     'modifyHTMLFavicon',
     'modifyHTML',
+    'modifyExportHTMLFiles',
     'modifyWebpackConfig',
     'modifyViteConfig',
     // 'modifyHTMLChunks',
