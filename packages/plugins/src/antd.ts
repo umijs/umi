@@ -90,7 +90,6 @@ export default (api: IApi) => {
       if (memo.antd?.import) {
         const errorMessage = `Can't set antd.import=true while using antd5 (${antdVersion})`;
 
-        api.logger.fatal(errorMessage);
         api.logger.fatal(
           'please change config antd.import to false, then start server again',
         );
