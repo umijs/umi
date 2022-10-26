@@ -6,6 +6,7 @@ describe('Basic Test', () => {
       command: 'Network.setCacheDisabled',
       params: { cacheDisabled: true },
     });
+    cy.clearLocalStorage();
 
     // 每个测试用例都会先执行一次 `cy.visit(url)` 访问的页面, url 根据测试内容决定
     // 脚手架中已经配置了 baseUrl, 可以直接写 path 部分, PORT 部分可以通过环境变量 PORT 来控制
@@ -23,6 +24,9 @@ describe('Basic Test', () => {
   });
 
   it('use pro-layout and render menus', () => {
+    // 保证国际化是英文
+    cy.get('.ant-dropdown-trigger').find('i.anticon').click();
+    cy.contains('English').click();
     // layout 存在
     cy.contains('Ant Design Pro');
 
@@ -33,6 +37,10 @@ describe('Basic Test', () => {
   });
 
   it('render sub-menu', () => {
+    // 保证国际化是英文
+    cy.get('.ant-dropdown-trigger').find('i.anticon').click();
+    cy.contains('English').click();
+
     cy.get('li.ant-pro-base-menu-submenu').contains('data-flow').click();
 
     cy.get('li.ant-pro-base-menu-menu-item').contains('use-model');
