@@ -136,16 +136,17 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
 
   let newRoutes = []
   for (const route of routes) {
+    const newRoute = {...route };
     if (filterFn(route)) {
-      if (Array.isArray(route.routes)) {
-        newRoutes.push(...filterRoutes(route.routes, filterFn))
+      if (Array.isArray(newRoute.routes)) {
+        newRoutes.push(...filterRoutes(newRoute.routes, filterFn))
       }
     } else {
-      newRoutes.push(route);
-      if (Array.isArray(route.routes)) {
-        route.routes = filterRoutes(route.routes, filterFn);
-        route.children = route.routes;
+      if (Array.isArray(newRoute.children)) {
+        newRoute.children = filterRoutes(newRoute.children, filterFn);
+        newRoute.routes = newRoute.children;
       }
+      newRoutes.push(newRoute);
     }
   }
 
@@ -166,6 +167,10 @@ const mapRoutes = (routes: IRoute[]) => {
 
     if (Array.isArray(route.routes)) {
       newRoute.routes = mapRoutes(route.routes);
+    }
+
+    if (Array.isArray(route.children)) {
+      newRoute.children = mapRoutes(route.children);
     }
 
     return newRoute
@@ -198,12 +203,14 @@ const { formatMessage } = useIntl();
     },
   });
 
-  const matchedRoute = useMemo(() => matchRoutes(clientRoutes, location.pathname).pop()?.route, [location.pathname]);
+  
   // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
   const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
     return (!!route.isLayout && route.id !== 'ant-design-pro-layout') || !!route.isWrapper;
   })
   const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
+  
+  const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
 
   return (
     <ProLayout
