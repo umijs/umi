@@ -97,7 +97,10 @@ export default (api: IApi) => {
       // 3、language service platform
       // 4、typing
       content: JSON.stringify(
-        deepmerge(defaultTsConfig, api.config.tsconfig?.overrides || {}),
+        // perf: because each `deepmerge` will generate a new object
+        api.config.tsconfig?.overrides
+          ? deepmerge(defaultTsConfig, api.config.tsconfig?.overrides || {})
+          : defaultTsConfig,
         null,
         2,
       ),
