@@ -6,6 +6,7 @@ export async function getDepTree(data: IPkgData): Promise<any> {
     (prev, curr) => prev.concat(curr.deps.map((d) => d.name)),
     [],
   );
+
   const arborist = new Arborist({
     path: process.cwd(),
     lockfileVersion: 3,
@@ -18,24 +19,26 @@ export async function getDepTree(data: IPkgData): Promise<any> {
   const meta = idealTree.meta!;
   const lock = meta.commit();
   const { packages } = lock;
+
+  if (!packages) throw new Error(`本地生成依赖树失败`);
+
   const packageKeys = Object.keys(packages);
 
   const result: Record<string, any> = {};
 
   function collectDependencies(name: string) {
-    const pkgJson = packages[name];
+    const pkgJson = packages![name];
     const { dependencies = {} } = pkgJson;
 
     Object.keys(dependencies).forEach((dep) => {
       let findKey = [name, 'node_modules', dep].join('/');
       while (findKey && !packageKeys.includes(findKey)) {
-        const arr = findKey.split('node_modules');
-        arr.splice(arr.length - 2, 1);
-        findKey = arr.join('node_modules');
+        const findPaths = findKey.split('node_modules');
+        findPaths.splice(findPaths.length - 2, 1);
+        findKey = findPaths.join('node_modules');
       }
 
-      result[findKey] = packages[findKey];
-
+      result[findKey] = packages![findKey];
       collectDependencies(findKey);
     });
   }
@@ -43,6 +46,7 @@ export async function getDepTree(data: IPkgData): Promise<any> {
   deps.forEach((name) => {
     const pkgKey = packageKeys.find((n) => n === `node_modules/${name}`);
     if (pkgKey) {
+      result[pkgKey] = packages[pkgKey];
       collectDependencies(pkgKey);
     }
   });
