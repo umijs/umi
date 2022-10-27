@@ -13,6 +13,8 @@ export async function getDepTree(data: IPkgData): Promise<any> {
     });
   });
 
+  const deps = data.pkgInfo.exports.reduce<string[]>((prev, curr) => prev.concat(curr.deps.map(d => d.name)), [])
+
   fsExtra.ensureDirSync(path.dirname(tmpPkgPath));
   fsExtra.writeFileSync(tmpPkgPath, JSON.stringify(tmpPkg, null, 2));
 
@@ -34,6 +36,38 @@ export async function getDepTree(data: IPkgData): Promise<any> {
   const lock = meta.commit();
 
   console.log(lock.packages);
+
+  const { packages } = lock;
+  const packageKeys = Object.keys(packages);
+
+  const result: Record<string, any>= {};
+
+  function collectDependencies(name: string) {
+    const pkgJson = packages[name];
+    const { dependencies = {} } = pkgJson;
+
+    Object.keys(dependencies).forEach((dep) => {
+      let findKey = [name, 'node_modules', dep].join('/');
+      while (findKey && !packageKeys.includes(findKey)) {
+        const arr = findKey.split('node_modules');
+        arr.splice(arr.length - 2, 1);
+        findKey = arr.join('node_modules');
+      }
+
+      result[findKey] = packages[findKey];
+
+      collectDependencies(findKey);
+    });
+  }
+
+  deps.forEach((name) => {
+    const pkgKey = packageKeys.find((n) => n === `node_modules/${name}`);
+    if (pkgKey) {
+      collectDependencies(pkgKey);
+    }
+  });
+
+  console.log(result);
 
   throw new Error();
 
