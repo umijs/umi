@@ -1,46 +1,26 @@
-import path from 'path';
 import Arborist from '@npmcli/arborist';
-import { fsExtra } from '@umijs/utils';
 import type { IPkgData } from './Service';
 
 export async function getDepTree(data: IPkgData): Promise<any> {
-  const tmpPkg: { dependencies: Record<string, string> } = { dependencies: {} };
-  const tmpPkgPath = path.join(process.cwd(), '.tmp', 'package.json');
-
-  data.pkgInfo.exports.forEach(({ deps }) => {
-    deps.forEach((dep) => {
-      tmpPkg.dependencies[dep.name] = dep.version;
-    });
-  });
-
-  const deps = data.pkgInfo.exports.reduce<string[]>((prev, curr) => prev.concat(curr.deps.map(d => d.name)), [])
-
-  fsExtra.ensureDirSync(path.dirname(tmpPkgPath));
-  fsExtra.writeFileSync(tmpPkgPath, JSON.stringify(tmpPkg, null, 2));
-
-  console.log('start');
+  const deps = data.pkgInfo.exports.reduce<string[]>(
+    (prev, curr) => prev.concat(curr.deps.map((d) => d.name)),
+    [],
+  );
   const arborist = new Arborist({
-    path: path.dirname(tmpPkgPath),
+    path: process.cwd(),
+    lockfileVersion: 3,
     update: false,
     log: 'error' as any,
     legacyPeerDeps: false,
     strictPeerDeps: false,
   });
-  console.log('ideal');
-  const idealTree = await arborist.buildIdealTree({
-    saveType: 'dev',
-  });
-  console.log('meta');
+  const idealTree = await arborist.loadActual({});
   const meta = idealTree.meta!;
-  console.log('commit');
   const lock = meta.commit();
-
-  console.log(lock.packages);
-
   const { packages } = lock;
   const packageKeys = Object.keys(packages);
 
-  const result: Record<string, any>= {};
+  const result: Record<string, any> = {};
 
   function collectDependencies(name: string) {
     const pkgJson = packages[name];
@@ -67,9 +47,10 @@ export async function getDepTree(data: IPkgData): Promise<any> {
     }
   });
 
-  console.log(result);
-
-  throw new Error();
-
-  return lock.packages;
+  return {
+    packageLockJson: {
+      packages: result,
+      dependencies: {},
+    },
+  };
 }

@@ -153,7 +153,7 @@ export default (api: IApi) => {
 
     // skip umi by default
     delete api.appData.deps!['umi'];
-    delete api.appData.deps!['@umijs/renderer-react'];
+    // delete api.appData.deps!['@umijs/renderer-react'];
 
     const data = generatePkgData(api);
     const deps = data.pkgInfo.exports.reduce(
@@ -241,7 +241,11 @@ export default (api: IApi) => {
     const scp = $('<script type="importmap"></script>\n');
 
     scp.html(JSON.stringify(importmap, null, 2));
-    $('head > script:eq(0)').before(scp);
+    if ($('head > script:eq(0)').length) {
+      $('head > script:eq(0)').before(scp);
+    } else {
+      $('head').append(scp);
+    }
 
     // append importmap shim script
     if (api.config.esmi.shimUrl) {
