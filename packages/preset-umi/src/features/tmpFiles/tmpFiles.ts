@@ -1,4 +1,4 @@
-import { lodash, tryPaths, winPath } from '@umijs/utils';
+import { lodash, tryPaths, winPath, deepmerge } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -49,53 +49,56 @@ export default (api: IApi) => {
       // 3、language service platform
       // 4、typing
       content: JSON.stringify(
-        {
-          compilerOptions: {
-            target: 'esnext',
-            module: 'esnext',
-            moduleResolution: 'node',
-            importHelpers: true,
-            jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
-            esModuleInterop: true,
-            sourceMap: true,
-            baseUrl,
-            strict: true,
-            resolveJsonModule: true,
-            allowSyntheticDefaultImports: true,
+        deepmerge(
+          {
+            compilerOptions: {
+              target: 'esnext',
+              module: 'esnext',
+              moduleResolution: 'node',
+              importHelpers: true,
+              jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
+              esModuleInterop: true,
+              sourceMap: true,
+              baseUrl,
+              strict: true,
+              resolveJsonModule: true,
+              allowSyntheticDefaultImports: true,
 
-            // Supported by vue only
-            ...(api.appData.framework === 'vue'
-              ? {
-                  // TODO Actually, it should be vite mode, but here it is written as vue only
-                  // Required in Vite https://vitejs.dev/guide/features.html#typescript
-                  isolatedModules: true,
-                  // For `<script setup>`
-                  // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
-                  preserveValueImports: true,
-                }
-              : {}),
-
-            paths: {
-              '@/*': [`${srcPrefix}*`],
-              '@@/*': [`${umiTempDir}/*`],
-              [`${api.appData.umi.importSource}`]: [umiDir],
-              [`${api.appData.umi.importSource}/typings`]: [
-                `${umiTempDir}/typings`,
-              ],
-              ...(api.config.vite
+              // Supported by vue only
+              ...(api.appData.framework === 'vue'
                 ? {
-                    '@fs/*': ['*'],
+                    // TODO Actually, it should be vite mode, but here it is written as vue only
+                    // Required in Vite https://vitejs.dev/guide/features.html#typescript
+                    isolatedModules: true,
+                    // For `<script setup>`
+                    // See <https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#preserve-value-imports>
+                    preserveValueImports: true,
                   }
                 : {}),
+
+              paths: {
+                '@/*': [`${srcPrefix}*`],
+                '@@/*': [`${umiTempDir}/*`],
+                [`${api.appData.umi.importSource}`]: [umiDir],
+                [`${api.appData.umi.importSource}/typings`]: [
+                  `${umiTempDir}/typings`,
+                ],
+                ...(api.config.vite
+                  ? {
+                      '@fs/*': ['*'],
+                    }
+                  : {}),
+              },
             },
+            include: [
+              `${baseUrl}.umirc.ts`,
+              `${baseUrl}**/*.d.ts`,
+              `${baseUrl}**/*.ts`,
+              `${baseUrl}**/*.tsx`,
+            ],
           },
-          include: [
-            `${baseUrl}.umirc.ts`,
-            `${baseUrl}**/*.d.ts`,
-            `${baseUrl}**/*.ts`,
-            `${baseUrl}**/*.tsx`,
-          ],
-        },
+          api.config.tsconfig?.overrides || {},
+        ),
         null,
         2,
       ),

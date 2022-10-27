@@ -3,7 +3,7 @@ import marked from 'marked';
 import React, { useState } from 'react';
 // @ts-ignore
 import { terminal } from 'umi';
-import { ThemeToggle } from '../components/ThemeToggle';
+import { ThemeToggle } from '@components/ThemeToggle';
 // @ts-ignore
 import Smileurl, { ReactComponent as SvgSmile } from '../smile.svg';
 import './global.less';

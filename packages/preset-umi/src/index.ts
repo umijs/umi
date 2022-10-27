@@ -38,6 +38,7 @@ export default () => {
       require.resolve('./features/clickToComponent/clickToComponent'),
       require.resolve('./features/legacy/legacy'),
       require.resolve('./features/classPropertiesLoose/classPropertiesLoose'),
+      require.resolve('./features/tsconfig/tsconfig'),
 
       // commands
       require.resolve('./commands/build'),

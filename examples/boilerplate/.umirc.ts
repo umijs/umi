@@ -63,6 +63,18 @@ export default {
     exclude: ['pages/unused/**'],
   },
   https: {},
+  alias: {
+    '@components': '@/components',
+  },
+  tsconfig: {
+    overrides: {
+      compilerOptions: {
+        paths: {
+          ['@components/*']: ['components/*'],
+        },
+      },
+    },
+  },
   // fastRefresh: false,
   // favicon: 'https://sivers.com/favicon.ico',
   headScripts: [`console.log('head script')`],

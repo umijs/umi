@@ -2,6 +2,7 @@ import type { Config as SwcConfig } from '@swc/core';
 import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
 import webpack, { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
+import type { CompilerOptions as TsCompilerOptions } from 'typescript';
 
 export enum Env {
   development = 'development',
@@ -59,7 +60,7 @@ export interface IConfig {
     (
       memo: Config,
       args: {
-        env: keyof typeof Env,
+        env: keyof typeof Env;
         webpack: typeof webpack;
       },
     ): void;
@@ -96,6 +97,7 @@ export interface IConfig {
   svgr?: { [key: string]: any };
   svgo?: { [key: string]: any } | false;
   targets?: { [key: string]: any };
+  tsconfig?: { overrides?: ITsConfig };
   writeToDisk?: boolean;
   babelLoaderCustomize?: string;
   [key: string]: any;
@@ -104,4 +106,9 @@ export interface IConfig {
 export interface SwcOptions extends SwcConfig {
   sync?: boolean;
   parseMap?: boolean;
+}
+
+interface ITsConfig {
+  compilerOptions?: TsCompilerOptions;
+  [key: string]: any;
 }
