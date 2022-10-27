@@ -7,7 +7,7 @@
     "dev": "umi dev",
     "e2e": "cypress run",
     "e2e:ci": "cross-env HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
-    "set:eager": "umi config set mfsu {\\\"strategy\\\":\\\"eager\\\"}",
+    "set:normal": "umi config set mfsu {\\\"strategy\\\":\\\"normal\\\"}",
     "setup": "umi setup",
     "start": "npm run dev"
   },
