@@ -1134,6 +1134,28 @@ theme: { '@primary-color': '#1DA57A' }
 
 配置全局页面 title，暂时只支持静态的 Title。
 
+## tsconfig
+
+- 类型：`{ overrides: Record<string, any> }`
+- 默认值：`null`
+
+覆写框架自动生成的 `tsconfig.json` 内容，`overrides` 的值将与默认配置深合并。
+
+比如你有自定义的 `alias` ，需要新增对应的映射类型提示，为了不破坏默认的 `paths` ，需对其进行如下配置：
+
+```ts
+alias: { '@components': '@/components' },
+tsconfig: {
+  overrides: {
+    compilerOptions: {
+      paths: {
+        ['@components/*']: ['src/components/*']
+      }
+    }
+  }
+}
+```
+
 ## verifyCommit
 
 - 类型：`{ scope: string[]; allowEmoji: boolean }`
