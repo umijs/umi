@@ -3,6 +3,7 @@ import { createHash } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import type { IApi } from '../../types';
+import { getDepTree } from './depTree';
 
 export interface IImportmapData {
   importMap: {
@@ -110,15 +111,18 @@ export default class ESMIService {
   /**
    * build importmap from deps tree
    * @param data  package data
-   * @returns ticketId
+   * @returns ticketId or importmap
    */
   async build(data: IPkgData) {
     return axios
-      .post<{ success: boolean; data?: { ticketId?: string } }>(
+      .post<{ success: boolean; data: { ticketId: string } | IImportmapData }>(
         `${this.cdnOrigin}/api/v1/esm/build`,
-        data,
+        {
+          ...data,
+          depTree: await getDepTree(data),
+        },
       )
-      .then((a) => a.data.data?.ticketId);
+      .then((a) => a.data.data);
   }
 
   /**
@@ -143,8 +147,16 @@ export default class ESMIService {
       console.log(chalk.yellow(`  ${dep.name}`));
     });
 
-    // get the build ticket id
-    const ticketId = await this.build(data);
+    // get the build result
+    const ret = await this.build(data);
+
+    // return importmap if cache is valid
+    if ('importMap' in ret) {
+      return ret;
+    }
+
+    // get build ticket id if cache missed
+    const { ticketId } = ret;
     logger.info(`ticketId: ${ticketId}`);
     // continue to the next request after 2s
     const next = () =>

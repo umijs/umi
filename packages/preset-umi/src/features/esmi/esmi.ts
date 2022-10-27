@@ -153,6 +153,7 @@ export default (api: IApi) => {
 
     // skip umi by default
     delete api.appData.deps!['umi'];
+    delete api.appData.deps!['@umijs/renderer-react'];
 
     const data = generatePkgData(api);
     const deps = data.pkgInfo.exports.reduce(
