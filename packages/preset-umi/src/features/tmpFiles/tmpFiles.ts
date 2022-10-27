@@ -99,7 +99,7 @@ export default (api: IApi) => {
       content: JSON.stringify(
         // perf: because each `deepmerge` will generate a new object
         api.config.tsconfig?.overrides
-          ? deepmerge(defaultTsConfig, api.config.tsconfig?.overrides || {})
+          ? deepmerge(defaultTsConfig, api.config.tsconfig.overrides)
           : defaultTsConfig,
         null,
         2,
