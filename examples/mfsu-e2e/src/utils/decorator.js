@@ -9,12 +9,12 @@ export class Test extends React.Component {
   }
 }
 
-
 function withTimestamp(target, name, descriptor) {
   const original = descriptor.value;
   if (typeof original === 'function') {
-    descriptor.value = function(...args) {
-      console.log(`start: ${Date.now()}`);
+    descriptor.value = function (...args) {
+      try {
+        console.log(`start: ${Date.now()}`);
         const result = original.apply(this, args);
         console.log(`end: ${Date.now()}`);
         return result;
@@ -22,7 +22,7 @@ function withTimestamp(target, name, descriptor) {
         console.log(`Error: ${e}`);
         throw e;
       }
-    }
+    };
   }
   return descriptor;
 }
