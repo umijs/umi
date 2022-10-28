@@ -114,7 +114,7 @@ jobs:
       - name: set mfsu-normal env
         run: |
           npx rimraf node_modules/.cache
-          npm run set:eager
+          npm run set:normal
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
