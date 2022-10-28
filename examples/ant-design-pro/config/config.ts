@@ -287,7 +287,6 @@ export default defineConfig({
         },
       ],
     },
-
     {
       path: '/',
       redirect: '/dashboard/analysis',

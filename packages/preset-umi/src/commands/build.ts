@@ -160,16 +160,26 @@ umi build --clean
         const finalMarkUpArgs = {
           ...markupArgs,
           styles: markupArgs.styles.concat(
-            api.config.vite ? [] : assetsMap['umi.css'] || [],
+            api.config.vite
+              ? []
+              : [
+                  ...(assetsMap['framework.css'] || []),
+                  ...(assetsMap['umi.css'] || []),
+                ],
           ),
-          scripts: (api.config.vite ? [] : assetsMap['umi.js'] || []).concat(
-            markupArgs.scripts,
-          ),
+          scripts: (api.config.vite
+            ? []
+            : [
+                // framework 先写死，后续考虑通过插件的方式注入
+                ...(assetsMap['framework.js'] || []),
+                ...(assetsMap['umi.js'] || []),
+              ]
+          ).concat(markupArgs.scripts),
           esmScript: !!opts.config.esm || vite,
           path: '/',
         };
 
-        // allow modify export html files
+        // allow to modify export html files
         const htmlFiles: { path: string; content: string }[] =
           await api.applyPlugins({
             key: 'modifyExportHTMLFiles',
