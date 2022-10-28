@@ -46,7 +46,7 @@ export default (api: IApi) => {
       const packageToInstall: Record<string, string> = res.willUseTLR
         ? {
             ...basicDeps,
-            '@testing-library/react': '^13.4.0',
+            '@testing-library/react': '^13',
             '@testing-library/jest-dom': '^5.16.4',
             '@types/testing-library__jest-dom': '^5.14.5',
           }

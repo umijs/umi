@@ -14,7 +14,6 @@ export default defineConfig({
   mock: {
     include: ['src/pages/**/_mock.ts'],
   },
-  test: {},
   dva: {
     // hmr: true,
   },
