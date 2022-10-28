@@ -1,5 +1,6 @@
 {
   "name": "@example/create-umi-pro",
+  "private": true,
   "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
     "build": "max build",
@@ -15,7 +16,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
-    "@umijs/max": "4.0.0-canary.20221025.1",
+    "@umijs/max": "4.0.0-canary.20221028.1",
     "antd": "^4.20.7"
   },
   "devDependencies": {

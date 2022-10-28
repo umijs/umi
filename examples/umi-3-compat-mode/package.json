@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "@umijs/plugin-umi-request-compat": "1.0.0",
-    "umi": "4.0.0-canary.20221025.1"
+    "umi": "4.0.0-canary.20221028.1"
   }
 }
