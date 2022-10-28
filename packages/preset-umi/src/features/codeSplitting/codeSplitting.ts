@@ -24,7 +24,8 @@ export default (api: IApi) => {
   api.chainWebpack((memo) => {
     if (api.env !== 'production') return;
 
-    const { jsStrategy, jsStrategyOptions } = api.config.codeSplitting;
+    const { jsStrategy, jsStrategyOptions, cssStrategy } =
+      api.config.codeSplitting;
     if (jsStrategy === 'bigVendors') {
       memo.optimization.splitChunks({
         cacheGroups: {
@@ -135,6 +136,9 @@ export default (api: IApi) => {
           },
         },
       });
+    }
+    if (cssStrategy) {
+      throw new Error(`codeSplitting.cssStrategy is not supported yet`);
     }
     return memo;
   });
