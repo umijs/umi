@@ -1,12 +1,12 @@
-import _regeneratorRuntime from "@babel/runtime/helpers/esm/regeneratorRuntime";
-import _objectSpread from "@babel/runtime/helpers/esm/objectSpread2";
-import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
-import _typeof from "@babel/runtime/helpers/esm/typeof";
-import _createForOfIteratorHelper from "@babel/runtime/helpers/esm/createForOfIteratorHelper";
-import _toArray from "@babel/runtime/helpers/esm/toArray";
-import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
-import _createClass from "@babel/runtime/helpers/esm/createClass";
-import _defineProperty from "@babel/runtime/helpers/esm/defineProperty";
+import _regeneratorRuntime from "@babel/runtime/helpers/regeneratorRuntime";
+import _objectSpread from "@babel/runtime/helpers/objectSpread2";
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
+import _typeof from "@babel/runtime/helpers/typeof";
+import _createForOfIteratorHelper from "@babel/runtime/helpers/createForOfIteratorHelper";
+import _toArray from "@babel/runtime/helpers/toArray";
+import _classCallCheck from "@babel/runtime/helpers/classCallCheck";
+import _createClass from "@babel/runtime/helpers/createClass";
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
 import { assert, compose, isPromiseLike } from "./utils";
 export var ApplyPluginsType;
 
