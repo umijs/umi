@@ -103,7 +103,7 @@ export class AutoUpdateSrcCodeCache {
         outbase: this.srcPath,
         loader: {
           // in case some js using some feature, eg: decorator
-          '.js': 'jsx',
+          '.js': 'tsx',
           '.jsx': 'tsx',
         },
         logLevel: 'error',
