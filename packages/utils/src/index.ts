@@ -27,6 +27,7 @@ import getGitInfo from './getGitInfo';
 import installDeps from './installDeps';
 import filesize from '../compiled/filesize';
 import gzipSize from '../compiled/gzip-size';
+import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
@@ -40,6 +41,7 @@ export * from './randomColor/randomColor';
 export * as register from './register';
 export * from './tryPaths';
 export * from './winPath';
+export * from './setNoDeprecation';
 export {
   address,
   axios,
@@ -73,4 +75,5 @@ export {
   printHelp,
   filesize,
   gzipSize,
+  fastestLevenshtein,
 };

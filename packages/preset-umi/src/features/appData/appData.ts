@@ -7,6 +7,7 @@ import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
 import { IApi } from '../../types';
+import { getOverridesCSS } from '../overrides/overrides';
 import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
 export default (api: IApi) => {
@@ -45,9 +46,10 @@ export default (api: IApi) => {
     memo.appJS = await getAppJsInfo();
     memo.locale = await osLocale();
     memo.vite = api.config.vite ? {} : undefined;
-    const { globalCSS, globalJS } = getGlobalFiles();
+    const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
     memo.globalCSS = globalCSS;
     memo.globalJS = globalJS;
+    memo.overridesCSS = overridesCSS;
 
     const gitDir = findGitDir(api.paths.cwd);
     if (gitDir) {
@@ -88,9 +90,10 @@ export default (api: IApi) => {
     async fn(args: any) {
       if (!args.isFirstTime) {
         api.appData.appJS = await getAppJsInfo();
-        const { globalCSS, globalJS } = getGlobalFiles();
+        const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
         api.appData.globalCSS = globalCSS;
         api.appData.globalJS = globalJS;
+        api.appData.overridesCSS = overridesCSS;
       }
     },
     stage: Number.NEGATIVE_INFINITY,
@@ -156,9 +159,14 @@ export default (api: IApi) => {
       [],
     );
 
+    const overridesCSS = [getOverridesCSS(api.paths.absSrcPath)].filter(
+      Boolean,
+    ) as string[];
+
     return {
       globalCSS,
       globalJS,
+      overridesCSS,
     };
   }
 };

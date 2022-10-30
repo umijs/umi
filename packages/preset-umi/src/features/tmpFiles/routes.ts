@@ -276,6 +276,8 @@ export function componentToChunkName(component: string, cwd?: string): string {
         .replace(/[\[\]]/g, '')
         // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
         .replace(/^.umi-production__/, 't__')
+        // 避免产出隐藏文件（比如 .dumi/theme）下的路由组件
+        .replace(/^\./, '')
         .replace(/^pages__/, 'p__')
     : '';
 }

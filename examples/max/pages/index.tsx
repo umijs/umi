@@ -2,6 +2,7 @@
 import { history, useAccess, useIntl, useModel } from '@umijs/max';
 // @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
+import styles from './index.less';
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
@@ -11,7 +12,7 @@ export default function HomePage() {
   const intl = useIntl();
   return (
     <div>
-      <h2>index page</h2>
+      <h2 className={styles.myText}>index page</h2>
       <Button type="primary">Button</Button>
       <Input />
       <DatePicker />

@@ -33,6 +33,8 @@ export type MasterOptions = {
   exportComponentAlias?: string;
   // MicroApp 寻址时使用的应用名唯一键，默认是 name
   appNameKeyAlias?: string;
+  // 预加载应用阈值
+  prefetchThreshold?: number;
 } & FrameworkConfiguration;
 
 export type SlaveOptions = {

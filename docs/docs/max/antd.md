@@ -19,6 +19,9 @@ export default {
     import: true,
     // less or css, default less
     style: 'less',
+    // shortcut of `configProvider.theme`
+    // use to configure theme token, antd v5 only
+    theme: {},
   },
 };
 ```
@@ -80,6 +83,14 @@ export default {
 - Type: `object`
 
 配置 `antd` 的 `configProvider`。
+
+### theme
+
+- Type: `object`
+
+配置 `antd@5` 的 theme token，等同于配置 `configProvider.theme`，且该配置项拥有更高的优先级。
+
+**注意：该配置项仅 antd v5 可用**
 
 ## FAQ
 

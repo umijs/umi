@@ -42,6 +42,7 @@ export class StaticDepInfo {
   private readonly include: string[];
   private currentDep: Record<string, Match> = {};
   private builtWithDep: Record<string, Match> = {};
+  private cacheDependency: object = {};
 
   private produced: { changes: unknown[] }[] = [];
   private readonly cwd: string;
@@ -77,24 +78,7 @@ export class StaticDepInfo {
       this.currentDep = this._getDependencies(info.code, info.imports);
     });
 
-    this.runtimeSimulations = [
-      {
-        packageName: 'antd',
-        handleImports: createPluginImport({
-          libraryName: 'antd',
-          style: true,
-          libraryDirectory: 'es',
-        }),
-      },
-      {
-        packageName: '@alipay/bigfish/antd',
-        handleImports: createPluginImport({
-          libraryName: '@alipay/bigfish/antd',
-          style: true,
-          libraryDirectory: 'es',
-        }),
-      },
-    ];
+    this.runtimeSimulations = [];
   }
 
   getProducedEvent() {
@@ -106,6 +90,20 @@ export class StaticDepInfo {
   }
 
   shouldBuild() {
+    const currentCacheDep = this.opts.mfsu.opts.getCacheDependency!();
+
+    if (!lodash.isEqual(this.cacheDependency, currentCacheDep)) {
+      if (process.env.DEBUG_UMI) {
+        const reason = why(this.cacheDependency, currentCacheDep);
+        logger.info(
+          '[MFSU][eager]: isEqual(cacheDependency,currentCacheDep) === false, because ',
+          reason,
+        );
+      }
+
+      return 'cacheDependency has changed';
+    }
+
     if (lodash.isEqual(this.builtWithDep, this.currentDep)) {
       return false;
     } else {
@@ -137,14 +135,18 @@ export class StaticDepInfo {
 
   snapshot() {
     this.builtWithDep = this.currentDep;
+    this.cacheDependency = this.mfsu.opts.getCacheDependency!();
   }
 
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
-        this.builtWithDep = JSON.parse(
+        const { dep = {}, cacheDependency = {} } = JSON.parse(
           readFileSync(this.cacheFilePath, 'utf-8'),
         );
+
+        this.builtWithDep = dep;
+        this.cacheDependency = cacheDependency;
         logger.info('[MFSU][eager] restored cache');
       } catch (e) {
         logger.warn(
@@ -157,7 +159,14 @@ export class StaticDepInfo {
 
   writeCache() {
     fsExtra.mkdirpSync(dirname(this.cacheFilePath));
-    const newContent = JSON.stringify(this.builtWithDep, null, 2);
+    const newContent = JSON.stringify(
+      {
+        dep: this.builtWithDep,
+        cacheDependency: this.cacheDependency,
+      },
+      null,
+      2,
+    );
     if (
       existsSync(this.cacheFilePath) &&
       readFileSync(this.cacheFilePath, 'utf-8') === newContent
@@ -220,6 +229,11 @@ export class StaticDepInfo {
     const groupedMockImports: Record<string, ImportSpecifier[]> = {};
 
     for (const imp of imports) {
+      // when import('base/${comp}')
+      if (!imp.n) {
+        continue;
+      }
+
       if (pkgNames.indexOf(imp.n!) >= 0) {
         const name = imp.n!;
         if (groupedMockImports[name]) {
@@ -317,5 +331,14 @@ export class StaticDepInfo {
 
   async allRuntimeHelpers() {
     // todo mfsu4
+  }
+
+  setBabelPluginImportConfig(config: Map<string, any>) {
+    for (const [key, c] of config.entries()) {
+      this.runtimeSimulations.push({
+        packageName: key,
+        handleImports: createPluginImport(c),
+      });
+    }
   }
 }

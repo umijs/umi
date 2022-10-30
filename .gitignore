@@ -45,6 +45,8 @@
 /packages/*/coverage
 /examples/*/coverage
 .vscode
+.idea
+.pnpm-*.log
 
 # Ignore declaration files, they are generated from local development
 /packages/bundler-webpack/client/**/*.d.ts

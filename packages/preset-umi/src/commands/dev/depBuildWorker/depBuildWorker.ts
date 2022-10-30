@@ -2,7 +2,7 @@ import { getConfig } from '@umijs/bundler-webpack';
 import { MFSU_NAME } from '@umijs/bundler-webpack/dist/constants';
 import { Env } from '@umijs/bundler-webpack/dist/types';
 import { DEFAULT_MF_NAME, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger } from '@umijs/utils';
+import { logger, setNoDeprecation } from '@umijs/utils';
 import { dirname, join, resolve } from 'path';
 import { isMainThread, parentPort } from 'worker_threads';
 import { DepBuilderInWorker } from './depBuilder';
@@ -11,6 +11,10 @@ import { getDevConfig } from './getConfig';
 if (isMainThread) {
   throw Error('MFSU-eager builder can only be called in a worker thread');
 }
+
+// Prevent deprecated warnings in Worker
+setNoDeprecation();
+setupWorkerEnv();
 
 const bundlerWebpackPath = dirname(require.resolve('@umijs/bundler-webpack'));
 
@@ -113,4 +117,11 @@ start().catch((e) => {
 function makeArray(a: any) {
   if (Array.isArray(a)) return a;
   return [a];
+}
+
+function setupWorkerEnv() {
+  // worker 不启用 DID_YOU_KNOW
+  process.env.DID_YOU_KNOW = 'none';
+  // 此环境变量用于插件判断运行环境, 如果有次变量不去启动一些服务
+  process.env.IS_UMI_BUILD_WORKER = 'true';
 }
