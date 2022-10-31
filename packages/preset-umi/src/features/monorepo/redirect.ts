@@ -32,7 +32,7 @@ export default (api: IApi) => {
   api.modifyConfig(async (memo) => {
     const rootPkg = await pkgUp({
       // APP_ROOT: https://github.com/umijs/umi/issues/9461
-      cwd: process.env.APP_ROOT ? process.cwd() : dirname(api.cwd),
+      cwd: dirname(process.env.APP_ROOT ? process.cwd() : api.cwd),
     });
     if (!rootPkg) return memo;
     const root = dirname(rootPkg);
