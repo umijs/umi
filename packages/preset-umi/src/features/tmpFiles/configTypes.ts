@@ -29,7 +29,7 @@ export default (api: IApi) => {
 
       return {
         ...acc,
-        [key]: schemaFn(joi),
+        [key]: schema,
       };
     }, {});
 
