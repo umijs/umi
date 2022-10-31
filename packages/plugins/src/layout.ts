@@ -271,8 +271,8 @@ const { formatMessage } = useIntl();
     >
       <Exception
         route={matchedRoute}
-        notFound={runtimeConfig.notFound}
-        noAccessible={runtimeConfig.noAccessible}
+        notFound={runtimeConfig?.notFound}
+        noAccessible={runtimeConfig?.noAccessible}
       >
         {runtimeConfig.childrenRender
           ? runtimeConfig.childrenRender(<Outlet />, props)
@@ -670,9 +670,9 @@ const Exception: React.FC<{
   // render custom 404
   (!props.route && (props.noFound || props.notFound)) ||
   // render custom 403
-  (props.route.unaccessible && (props.unAccessible || props.noAccessible)) ||
+  (props.route?.unaccessible && (props.unAccessible || props.noAccessible)) ||
   // render default exception
-  ((!props.route || props.route.unaccessible) && (
+  ((!props.route || props.route?.unaccessible) && (
     <Result
       status={props.route ? '403' : '404'}
       title={props.route ? '403' : '404'}
