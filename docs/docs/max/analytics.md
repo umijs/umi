@@ -10,13 +10,13 @@
 
 ```ts
 {
-	analytics: {
-		ga_v2: 'G-abcdefg', // google analytics 的 key (GA 4)
-		baidu: 'baidu_tongji_key',
+  analytics: {
+    ga_v2: 'G-abcdefg', // google analytics 的 key (GA 4)
+    baidu: 'baidu_tongji_key',
 
     // 若你在使用 GA v1 旧版本，请使用 `ga` 来配置
     ga: 'ga_old_key'
-	}
+  }
 }
 ```
 
