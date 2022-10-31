@@ -213,10 +213,6 @@ PORT=8888 umi dev
         });
       });
 
-      await api.applyPlugins({
-        key: 'onBeforeCompiler',
-      });
-
       // start dev server
       const beforeMiddlewares = await api.applyPlugins({
         key: 'addBeforeMiddlewares',
@@ -354,6 +350,12 @@ PORT=8888 umi dev
         ]),
         startBuildWorker,
       };
+
+      await api.applyPlugins({
+        key: 'onBeforeCompiler',
+        args: { compiler: enableVite ? 'vite' : 'webpack', opts },
+      });
+
       if (enableVite) {
         await bundlerVite.dev(opts);
       } else {
