@@ -1,7 +1,19 @@
-import { IApi } from 'umi';
+import type { IApi } from 'umi';
+
+interface IAnalyticsConfig {
+  baidu?: string;
+  ga?: string;
+  // GA 4 : https://support.google.com/analytics/answer/10089681?hl=zh-Hans
+  ga_v2?: string;
+}
+
+type IScripts = Awaited<
+  ReturnType<Parameters<IApi['addHTMLHeadScripts']>[0]['fn']>
+>;
 
 export default (api: IApi) => {
   const GA_KEY = process.env.GA_KEY;
+  const GA_V2_KEY = process.env.GA_V2_KEY;
 
   const enableBy = (opts: any) => {
     return opts.config.analytics || GA_KEY;
@@ -12,7 +24,11 @@ export default (api: IApi) => {
     config: {
       schema(Joi) {
         return Joi.alternatives().try(
-          Joi.object(),
+          Joi.object({
+            baidu: Joi.string(),
+            ga: Joi.string(),
+            ga_v2: Joi.string(),
+          }),
           Joi.boolean().invalid(true),
         );
       },
@@ -55,21 +71,47 @@ export default (api: IApi) => {
   `;
   };
 
+  const gaV2Tpl = (code: string) => {
+    return `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${code}');
+    `.trim();
+  };
+
   api.addHTMLHeadScripts(() => {
-    const { analytics = {} } = api.config;
-    const { ga = GA_KEY, baidu } = analytics;
-    return [
-      baidu && {
+    const analytics = (api.config.analytics || {}) as IAnalyticsConfig;
+    const { baidu, ga = GA_KEY, ga_v2 = GA_V2_KEY } = analytics;
+    const scripts: IScripts = [];
+    if (baidu) {
+      scripts.push({
         content: 'var _hmt = _hmt || [];',
-      },
-      api.env !== 'development' &&
-        baidu && {
+      });
+    }
+    if (api.env !== 'development') {
+      if (baidu) {
+        scripts.push({
           content: baiduTpl(baidu),
-        },
-      api.env !== 'development' &&
-        ga && {
+        });
+      }
+      if (ga) {
+        scripts.push({
           content: gaTpl(ga),
-        },
-    ].filter(Boolean);
+        });
+      }
+      if (ga_v2) {
+        scripts.push(
+          {
+            async: true,
+            src: `//www.googletagmanager.com/gtag/js?id=${ga_v2}`,
+          },
+          {
+            content: gaV2Tpl(ga_v2),
+          },
+        );
+      }
+    }
+    return scripts.filter(Boolean);
   });
 };
