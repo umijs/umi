@@ -1181,3 +1181,10 @@ vite: {
 }
 ```
 
+## writeToDisk
+
+- 类型：`boolean`
+- 默认值：`false`
+
+开启后会在 dev 模式下额外输出一份文件到 dist 目录，通常用于 chrome 插件、electron 应用、sketch 插件等开发场景。
+
