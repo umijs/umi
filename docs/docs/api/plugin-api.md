@@ -595,10 +595,10 @@ e.g.
 
 ```ts
 api.logger.profile('barId');
-setTimeout(()=>{
+setTimeout(() => {
   api.logger.profile('barId');
 })
-// => [PROFILE] Completed in *ms;
+// profile - barId Completed in 6254ms
 ```
 
 ### name
