@@ -3,32 +3,35 @@ import joi from '@umijs/utils/compiled/@hapi/joi';
 import joi2Types from '../../../compiled/joi2types';
 import { IApi } from '../../types';
 
+// Need to be excluded function type declared in `IConfig`
+// function type will intersect invalid : (() => any) & (IConfig['key']) -> never
+// issue: https://github.com/umijs/umi/issues/9657
+const FILTER_KEYS = ['chainWebpack'];
+
 export default (api: IApi) => {
   api.onGenerateFiles(async () => {
     const { service } = api;
 
-    const properties = Object.keys(service.configSchemas)
-      .map((key) => {
-        const schemaFn = service.configSchemas[key];
-        if (typeof schemaFn !== 'function') return;
+    const properties = Object.keys(service.configSchemas).reduce((acc, key) => {
+      if (FILTER_KEYS.includes(key)) {
+        return acc;
+      }
 
-        const schema = schemaFn(joi);
+      const schemaFn = service.configSchemas[key];
+      if (typeof schemaFn !== 'function') {
+        return acc;
+      }
 
-        if (!joi.isSchema(schema)) {
-          return;
-        }
+      const schema = schemaFn(joi);
+      if (!joi.isSchema(schema)) {
+        return acc;
+      }
 
-        return {
-          [key]: schema,
-        };
-      })
-      .reduce(
-        (acc, curr) => ({
-          ...acc,
-          ...curr,
-        }),
-        {},
-      );
+      return {
+        ...acc,
+        [key]: schema,
+      };
+    }, {});
 
     const interfaceName = 'IConfigFromPlugins';
 
