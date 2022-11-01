@@ -75,12 +75,14 @@ export async function createServer(opts: IOpts) {
       const progress = {
         percent: 0,
         status: 'waiting',
+        details: [],
       };
       progresses.push(progress);
       config.plugins.push(
-        new webpack.ProgressPlugin((percent, msg) => {
+        new webpack.ProgressPlugin((percent, msg, ...details) => {
           progress.percent = percent;
           progress.status = msg;
+          (progress.details as string[]) = details;
           opts.onProgress!({ progresses });
         }),
       );
