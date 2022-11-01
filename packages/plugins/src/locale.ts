@@ -134,8 +134,12 @@ export default (api: IApi) => {
 
     let MomentLocales = momentLocales;
     let DefaultMomentLocale = '';
-    // set moment default accounding to locale.default
-    if (!MomentLocales.length && api.config.locale?.default) {
+    // set moment default accounding to locale.default or antd enable
+    // Why: Datepicker has mixed language problem if antd is enabled but moment is not enabled
+    if (
+      !MomentLocales.length &&
+      (api.config.locale?.default || api.config.locale?.antd)
+    ) {
       const [lang, country = ''] = defaultLocale.split(baseSeparator);
       const { momentLocale } = getMomentLocale(lang, country, resolveKey);
       if (momentLocale) {
