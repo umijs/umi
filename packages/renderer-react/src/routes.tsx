@@ -1,6 +1,12 @@
 // @ts-ignore
-import React, { useMemo } from 'react';
-import { generatePath, Navigate, useParams, Outlet } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import {
+  generatePath,
+  Navigate,
+  useParams,
+  Outlet,
+  matchRoutes,
+} from 'react-router-dom';
 import { RouteContext, useRouteData } from './routeContext';
 import { IClientRoute, IRoute, IRoutesById } from './types';
 import { useAppData } from './appContext';
@@ -102,6 +108,26 @@ function RemoteComponentReactRouter5(props: any) {
     url: history.location.pathname,
   };
 
+  useEffect(() => {
+    function routeChangeHandler({
+      location,
+      action,
+    }: {
+      location: any;
+      action: string;
+    }) {
+      const route = matchRoutes(clientRoutes, location.pathname)?.pop()
+        ?.route as { title?: string };
+
+      // Set title
+      if (typeof document !== 'undefined' && route?.title) {
+        document.title = route.title || '';
+      }
+    }
+    routeChangeHandler({ location: history.location, action: 'POP' });
+    return history.listen(routeChangeHandler);
+  }, [history]);
+
   // staticContext 没有兼容 好像没看到对应的兼容写法
   const Component = props.loader;
 
@@ -122,6 +148,28 @@ function RemoteComponentReactRouter5(props: any) {
 }
 
 function RemoteComponent(props: any) {
+  const { history, clientRoutes } = useAppData();
+
+  useEffect(() => {
+    function routeChangeHandler({
+      location,
+      action,
+    }: {
+      location: any;
+      action: string;
+    }) {
+      const route = matchRoutes(clientRoutes, location.pathname)?.pop()
+        ?.route as { title?: string };
+
+      // Set title
+      if (typeof document !== 'undefined' && route?.title) {
+        document.title = route.title || '';
+      }
+    }
+    routeChangeHandler({ location: history.location, action: 'POP' });
+    return history.listen(routeChangeHandler);
+  }, [history]);
+
   const Component = props.loader;
   return (
     <React.Suspense fallback={<props.loadingComponent />}>
