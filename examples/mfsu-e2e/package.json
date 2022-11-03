@@ -7,13 +7,13 @@
     "dev": "umi dev",
     "e2e": "cypress run",
     "e2e:ci": "cross-env HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
-    "set:eager": "umi config set mfsu {\\\"strategy\\\":\\\"eager\\\"}",
+    "set:normal": "umi config set mfsu {\\\"strategy\\\":\\\"normal\\\"}",
     "setup": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {
     "lodash.uppercase": "^4.3.0",
-    "umi": "4.0.0-canary.20221019.1"
+    "umi": "4.0.0-canary.20221028.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

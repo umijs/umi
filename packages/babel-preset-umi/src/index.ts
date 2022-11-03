@@ -44,7 +44,6 @@ export default (_context: any, opts: IOpts) => {
         {
           runtime: 'automatic',
           development: process.env.NODE_ENV === 'development',
-          importSource: 'react',
           ...opts.presetReact,
         },
       ],

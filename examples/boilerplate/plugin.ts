@@ -1,6 +1,8 @@
 import { IApi } from 'umi';
 
 export default (api: IApi) => {
+  api.logger.profile('mark');
+
   api.modifyHTML(($) => {
     return $;
   });
@@ -16,6 +18,7 @@ export default (api: IApi) => {
     // console.log('> onDevCompileDone', opts.isFirstCompile);
   });
   api.onBuildComplete((opts) => {
+    api.logger.profile('mark', 'end msg');
     opts;
     // console.log('> onBuildComplete', opts.isFirstCompile);
   });

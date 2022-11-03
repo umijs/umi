@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+import { Writable } from 'stream';
 import { renderToPipeableStream } from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import type { IRoutesById } from './types';
@@ -16,26 +18,22 @@ interface CreateRequestHandlerOptions {
   getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
   getClientRootComponent: (PluginManager: any) => any;
+  createHistory: (opts: any) => any;
 }
 
-export default function createRequestHandler(
-  opts: CreateRequestHandlerOptions,
-) {
-  return async function (req: any, res: any, next: any) {
+function createJSXGenerator(opts: CreateRequestHandlerOptions) {
+  return async (url: string) => {
     const {
       routesWithServerLoader,
       PluginManager,
       getPlugins,
       getValidKeys,
       getRoutes,
+      createHistory,
     } = opts;
 
-    // 切换路由场景下，会通过此 API 执行 server loader
-    if (req.url.startsWith('/__serverLoader') && req.query.route) {
-      const data = await executeLoader(req.query.route, routesWithServerLoader);
-      res.status(200).json(data);
-      return;
-    }
+    // make import { history } from 'umi' work
+    createHistory({ type: 'memory', initialEntries: [url], initialIndex: 1 });
 
     const pluginManager = PluginManager.create({
       plugins: getPlugins(),
@@ -43,9 +41,19 @@ export default function createRequestHandler(
     });
     const { routes, routeComponents } = await getRoutes(pluginManager);
 
-    const matches = matchRoutesForSSR(req.url, routes);
+    // allow user to extend routes
+    await pluginManager.applyPlugins({
+      key: 'patchRoutes',
+      type: 'event',
+      args: {
+        routes,
+        routeComponents,
+      },
+    });
+
+    const matches = matchRoutesForSSR(url, routes);
     if (matches.length === 0) {
-      return next();
+      return;
     }
 
     const loaderData: { [key: string]: any } = {};
@@ -67,15 +75,74 @@ export default function createRequestHandler(
       routes,
       routeComponents,
       pluginManager,
-      location: req.url,
+      location: url,
       manifest,
       loaderData,
     };
 
-    const jsx = await opts.getClientRootComponent(context);
+    return {
+      element: (await opts.getClientRootComponent(context)) as ReactElement,
+      manifest,
+    };
+  };
+}
 
-    const stream = renderToPipeableStream(jsx, {
-      bootstrapScripts: [manifest.assets['umi.js'] || '/umi.js'],
+export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
+  const jsxGeneratorDeferrer = createJSXGenerator(opts);
+
+  return async (url: string) => {
+    const jsx = await jsxGeneratorDeferrer(url);
+
+    if (jsx) {
+      return new Promise(async (resolve, reject) => {
+        let chunks: Buffer[] = [];
+        const writable = new Writable();
+
+        writable._write = (chunk, _encoding, next) => {
+          chunks.push(Buffer.from(chunk));
+          next();
+        };
+        writable.on('finish', () => {
+          resolve(Buffer.concat(chunks).toString('utf8'));
+        });
+
+        // why not use `renderToStaticMarkup` or `renderToString`?
+        // they will return empty root by unknown reason (maybe umi has suspense logic?)
+        const stream = renderToPipeableStream(jsx.element, {
+          onShellReady() {
+            stream.pipe(writable);
+          },
+          onError: reject,
+        });
+      });
+    }
+
+    return '';
+  };
+}
+
+export default function createRequestHandler(
+  opts: CreateRequestHandlerOptions,
+) {
+  const jsxGeneratorDeferrer = createJSXGenerator(opts);
+
+  return async function (req: any, res: any, next: any) {
+    // 切换路由场景下，会通过此 API 执行 server loader
+    if (req.url.startsWith('/__serverLoader') && req.query.route) {
+      const data = await executeLoader(
+        req.query.route,
+        opts.routesWithServerLoader,
+      );
+      res.status(200).json(data);
+      return;
+    }
+
+    const jsx = await jsxGeneratorDeferrer(req.url);
+
+    if (!jsx) return next();
+
+    const stream = renderToPipeableStream(jsx.element, {
+      bootstrapScripts: [jsx.manifest.assets['umi.js'] || '/umi.js'],
       onShellReady() {
         res.setHeader('Content-type', 'text/html');
         stream.pipe(res);

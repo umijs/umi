@@ -27,6 +27,7 @@ import getGitInfo from './getGitInfo';
 import installDeps from './installDeps';
 import filesize from '../compiled/filesize';
 import gzipSize from '../compiled/gzip-size';
+import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
@@ -74,4 +75,5 @@ export {
   printHelp,
   filesize,
   gzipSize,
+  fastestLevenshtein,
 };

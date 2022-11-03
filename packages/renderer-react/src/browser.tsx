@@ -113,7 +113,11 @@ export function renderClient(opts: {
       type: 'modify',
       key: key,
       initialValue: rootContainer,
-      args: {},
+      args: {
+        routes: opts.routes,
+        history: opts.history,
+        plugin: opts.pluginManager,
+      },
     });
   }
 

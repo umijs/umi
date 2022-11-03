@@ -23,6 +23,7 @@ interface IOpts {
   afterMiddlewares?: any[];
   onDevCompileDone?: Function;
   onProgress?: Function;
+  onBeforeMiddleware?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -65,6 +66,11 @@ export async function createServer(opts: IOpts) {
   // before middlewares
   (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
 
+  // Provides the ability to execute custom middleware prior to all other middleware internally within the server.
+  if (opts.onBeforeMiddleware) {
+    opts.onBeforeMiddleware(app);
+  }
+
   // webpack dev middleware
   const configs = Array.isArray(webpackConfig)
     ? webpackConfig
@@ -75,12 +81,14 @@ export async function createServer(opts: IOpts) {
       const progress = {
         percent: 0,
         status: 'waiting',
+        details: [],
       };
       progresses.push(progress);
       config.plugins.push(
-        new webpack.ProgressPlugin((percent, msg) => {
+        new webpack.ProgressPlugin((percent, msg, ...details) => {
           progress.percent = percent;
           progress.status = msg;
+          (progress.details as string[]) = details;
           opts.onProgress!({ progresses });
         }),
       );

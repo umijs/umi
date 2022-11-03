@@ -91,3 +91,63 @@ test('config umi-env-dot-env-expand', async () => {
     nest: 8,
   });
 });
+
+test('service custom paths', async () => {
+  class UmiService extends Service {
+    constructor(opts: any) {
+      super({
+        ...opts,
+      });
+    }
+
+    sayUmiHello() {
+      return 'umi hello';
+    }
+  }
+
+  const customPaths = {
+    cwd: 'cwd-1',
+    absSrcPath: 'absSrcPath-2',
+    absPagesPath: '3',
+    absApiRoutesPath: '4',
+    absTmpPath: 'absTmpPath-5',
+    absNodeModulesPath: '6',
+    absOutputPath: '7',
+  };
+
+  class DumiService extends UmiService {
+    constructor(opts: any) {
+      super({
+        ...opts,
+      });
+    }
+
+    async getPaths() {
+      return customPaths;
+    }
+  }
+
+  const cwd = join(base, 'service-custom-paths');
+  const pluginPath = join(cwd, 'plugin.ts');
+  const service = new DumiService({
+    cwd,
+    env: Env.development,
+    defaultConfigFiles: ['config/config.ts'],
+    plugins: [(existsSync(pluginPath) && pluginPath) as string].filter(Boolean),
+  });
+
+  const config = await service.run({ name: 'config' });
+
+  expect(service.sayUmiHello()).toBe('umi hello');
+  expect(service.paths).toBe(customPaths);
+  expect(config).toMatchObject({
+    foo: 1,
+    nest: 4,
+    local: 4,
+    alias: {
+      '@': 'cwd-1-config',
+      src: 'absSrcPath-2-config',
+      tmp: 'absTmpPath-5-config',
+    },
+  });
+});

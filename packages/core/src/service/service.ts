@@ -2,7 +2,7 @@ import {
   AsyncSeriesWaterfallHook,
   SyncWaterfallHook,
 } from '@umijs/bundler-utils/compiled/tapable';
-import { chalk, lodash, yParser } from '@umijs/utils';
+import { chalk, lodash, yParser, fastestLevenshtein } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
@@ -286,14 +286,10 @@ export class Service {
     this.configManager = configManager;
     this.userConfig = configManager.getUserConfig().config;
     // get paths
-    const paths = getPaths({
-      cwd: this.cwd,
-      env: this.env,
-      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
-    });
     // temporary paths for use by function generateFinalConfig.
     // the value of paths may be updated by plugins later
-    this.paths = paths;
+    // 抽离成函数，方便后续继承覆盖
+    this.paths = await this.getPaths();
 
     // resolve initial presets and plugins
     const { plugins, presets } = Plugin.getPluginsAndPresets({
@@ -324,7 +320,10 @@ export class Service {
       await this.initPlugin({ plugin: plugins.shift()!, plugins });
     }
     const command = this.commands[name];
-    assert(command, `Invalid command ${name}, it's not registered.`);
+    if (!command) {
+      this.commandGuessHelper(Object.keys(this.commands), name);
+      throw Error(`Invalid command ${chalk.red(name)}, it's not registered.`);
+    }
     // collect configSchemas and configDefaults
     for (const id of Object.keys(this.plugins)) {
       const { config, key } = this.plugins[id];
@@ -338,13 +337,13 @@ export class Service {
     this.stage = ServiceStage.resolveConfig;
     const { config, defaultConfig } = await this.resolveConfig();
     if (this.config.outputPath) {
-      paths.absOutputPath = isAbsolute(this.config.outputPath)
+      this.paths.absOutputPath = isAbsolute(this.config.outputPath)
         ? this.config.outputPath
         : join(this.cwd, this.config.outputPath);
     }
     this.paths = await this.applyPlugins({
       key: 'modifyPaths',
-      initialValue: paths,
+      initialValue: this.paths,
     });
     // applyPlugin collect app data
     // TODO: some data is mutable
@@ -393,6 +392,16 @@ export class Service {
     let ret = await command.fn({ args });
     this._baconPlugins();
     return ret;
+  }
+
+  async getPaths() {
+    // get paths
+    const paths = getPaths({
+      cwd: this.cwd,
+      env: this.env,
+      prefix: this.opts.frameworkName || DEFAULT_FRAMEWORK_NAME,
+    });
+    return paths;
   }
 
   async resolveConfig() {
@@ -573,6 +582,35 @@ export class Service {
       });
     // EnableBy.register
     return true;
+  }
+
+  commandGuessHelper(commands: string[], currentCmd: string) {
+    const altCmds = commands.filter((cmd) => {
+      return (
+        fastestLevenshtein.distance(currentCmd, cmd) <
+          currentCmd.length * 0.6 && currentCmd !== cmd
+      );
+    });
+    const printHelper = altCmds
+      .slice(0, 3)
+      .map((cmd) => {
+        return ` - ${chalk.green(cmd)}`;
+      })
+      .join('\n');
+    if (altCmds.length) {
+      console.log();
+      console.log(
+        [
+          chalk.cyan(
+            altCmds.length === 1
+              ? 'Did you mean this command ?'
+              : 'Did you mean one of these commands ?',
+          ),
+          printHelper,
+        ].join('\n'),
+      );
+      console.log();
+    }
   }
 }
 
