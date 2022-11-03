@@ -1,7 +1,9 @@
 import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
+import { createHistory as createClientHistory } from './core/history';
+import { getPlugins as getClientPlugins } from './core/plugin';
 import { PluginManager } from '{{{ umiPluginPath }}}';
-import createRequestHandler from '{{{ umiServerPath }}}';
+import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
 
 const routesWithServerLoader = {
 {{#routesWithServerLoader}}
@@ -9,9 +11,8 @@ const routesWithServerLoader = {
 {{/routesWithServerLoader}}
 };
 
-// TODO: support runtime plugins
 export function getPlugins() {
-  return [];
+  return getClientPlugins();
 }
 
 export function getValidKeys() {
@@ -22,6 +23,10 @@ export function getManifest() {
   return JSON.parse(require('fs').readFileSync('{{{ assetsPath }}}', 'utf-8'));
 }
 
+export function createHistory(opts) {
+  return createClientHistory(opts);
+}
+
 // TODO: remove global variable
 global.g_getAssets = (fileName) => {
   let m = typeof manifest === 'function' ? manifest() : manifest;
@@ -29,7 +34,7 @@ global.g_getAssets = (fileName) => {
 };
 
 const manifest = {{{ env }}} === 'development' ? getManifest : getManifest();
-const requestHandler = createRequestHandler({
+const createOpts = {
   routesWithServerLoader,
   PluginManager,
   getPlugins,
@@ -37,6 +42,10 @@ const requestHandler = createRequestHandler({
   getRoutes,
   manifest,
   getClientRootComponent,
-});
+  createHistory,
+};
+const requestHandler = createRequestHandler(createOpts);
+
+export const _markupGenerator = createMarkupGenerator(createOpts);
 
 export default requestHandler;

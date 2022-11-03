@@ -60,10 +60,6 @@ umi build --clean
         isFirstTime: true,
       });
 
-      await api.applyPlugins({
-        key: 'onBeforeCompiler',
-      });
-
       // build
       // TODO: support watch mode
       const {
@@ -121,6 +117,11 @@ umi build --clean
         },
         clean: true,
       };
+
+      await api.applyPlugins({
+        key: 'onBeforeCompiler',
+        args: { compiler: api.config.vite ? 'vite' : 'webpack', opts },
+      });
 
       let stats: any;
       if (api.config.vite) {
