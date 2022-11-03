@@ -14,8 +14,10 @@ export const build = async (api: IApi, opts: any) => {
   // disable deadCode check
   delete bundlerOpts.config.deadCode;
 
-  // use inline styles via style-loader
-  bundlerOpts.config.styleLoader ??= {};
+  // enable exportOnlyLocals for ssr
+  // ref: https://webpack.js.org/loaders/css-loader/#exportonlylocals
+  // FIXME: compile failed when enable exportOnlyLocals
+  // bundlerOpts.config.cssLoaderModules = Object.assign({}, bundlerOpts.config.cssLoaderModules, { exportOnlyLocals: true });
 
   // disable async chunk
   bundlerOpts.extraBabelPlugins.push([
@@ -43,15 +45,6 @@ export const build = async (api: IApi, opts: any) => {
       .filename('umi.server.js')
       .chunkFilename('[name].server.js')
       .libraryTarget('commonjs2');
-
-    // use isomorphic-style-loader
-    ['css', 'less', 'sass'].forEach((name) => {
-      Object.values(memo.module.rule(name).oneOfs.entries()).forEach((rule) => {
-        rule
-          .use('style-loader')
-          .loader(require.resolve('isomorphic-style-loader'));
-      });
-    });
 
     // remove useless progress plugin
     memo.plugins.delete('progress-plugin');
