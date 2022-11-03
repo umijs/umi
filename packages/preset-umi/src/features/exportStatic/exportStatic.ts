@@ -27,9 +27,14 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
       // skip dynamic route for win, because `:` is not allowed in file name
       (!IS_WIN || !route.path.includes('/:')) &&
       // skip `*` route, because `*` is not working for most site serve services
-      !route.path.includes('*')
+      (!route.path.includes('*') ||
+        // except `404.html`
+        route.absPath === '/*')
     ) {
-      const file = join('.', route.absPath, 'index.html');
+      const file =
+        route.absPath === '/*'
+          ? '404.html'
+          : join('.', route.absPath, 'index.html');
 
       map.set(file, {
         route: {
