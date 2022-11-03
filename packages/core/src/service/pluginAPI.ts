@@ -42,6 +42,7 @@ export class PluginAPI {
       'info',
       'event',
       'debug',
+      'fatal',
       'profile',
     ];
     // @ts-ignore

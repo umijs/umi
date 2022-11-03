@@ -1,9 +1,11 @@
 import { dirname, join, relative } from 'path';
 import { getMarkup } from '@umijs/server';
 import type { IApi, IRoute } from '../../types';
-import { lodash, winPath } from '@umijs/utils';
+import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
+import { absServerBuildPath } from '../ssr/utils';
 
+let markupRender: any;
 const IS_WIN = process.platform === 'win32';
 
 interface IExportHtmlItem {
@@ -47,6 +49,33 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
   });
 
   return Array.from(map.values());
+}
+
+/**
+ * get pre-rendered html by route path
+ */
+async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
+  markupRender ??= require(absServerBuildPath(api))._markupGenerator;
+
+  try {
+    const markup = await markupRender(path);
+    const [mainTpl, extraTpl] = markup.split('</html>');
+    const bodyContent = mainTpl.match(/<body[^>]*>([^]+?)<\/body>/)?.[1];
+
+    htmlTpl = htmlTpl
+      // replace #root with pre-rendered body content
+      .replace(
+        new RegExp(`<div id="${api.config.mountElementId}"[^>]*>.*?</div>`),
+        bodyContent,
+      )
+      // append hidden templates
+      .replace(/$/, `${extraTpl}`);
+    logger.info(`Pre-render for ${path}`);
+  } catch (err) {
+    logger.error(`Pre-render ${path} error: ${err}`);
+  }
+
+  return htmlTpl;
 }
 
 export default (api: IApi) => {
@@ -99,7 +128,7 @@ export default (api: IApi) => {
     );
     const htmlFiles: { path: string; content: string }[] = [];
 
-    for (const { file } of htmlData) {
+    for (const { file, route } of htmlData) {
       let { markupArgs } = opts;
 
       // handle relative publicPath, such as `./`
@@ -163,7 +192,14 @@ export default (api: IApi) => {
       }
 
       // append html file
-      htmlFiles.push({ path: file, content: await getMarkup(markupArgs) });
+      const htmlContent = await getMarkup(markupArgs);
+
+      htmlFiles.push({
+        path: file,
+        content: api.config.ssr
+          ? await getPreRenderedHTML(api, htmlContent, route.path)
+          : htmlContent,
+      });
     }
 
     return htmlFiles;
