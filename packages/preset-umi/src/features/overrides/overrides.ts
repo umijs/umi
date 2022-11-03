@@ -12,7 +12,7 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     if (getOverridesCSS(api.paths.absSrcPath)) {
       memo.extraPostCSSPlugins ??= [];
-      memo.extraPostCSSPlugins.push([
+      memo.extraPostCSSPlugins.push(
         // prefix #root for overrides.{ext} style file, to make sure selector priority is higher than async chunk style
         require('postcss-prefix-selector')({
           // why not #root?
@@ -42,7 +42,7 @@ export default (api: IApi) => {
             return selector;
           },
         }),
-      ]);
+      );
     }
 
     return memo;
