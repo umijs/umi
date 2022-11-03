@@ -12,7 +12,6 @@ import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import { AutoUpdateSrcCodeCache } from '../../libs/folderCache/AutoUpdateSourceCodeCache';
 import { IApi } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
@@ -28,6 +27,7 @@ import {
   unwatch,
   watch,
 } from './watch';
+import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -257,15 +257,15 @@ PORT=8888 umi dev
       };
       const debouncedPrintMemoryUsage = lodash.debounce(printMemoryUsage, 5000);
 
-      let srcCodeCache: AutoUpdateSrcCodeCache | undefined;
+      let srcCodeCache: LazySourceCodeCache | undefined;
       let startBuildWorker: (deps: any[]) => Worker = (() => {}) as any;
 
       if (api.config.mfsu?.strategy === 'eager') {
-        srcCodeCache = new AutoUpdateSrcCodeCache({
+        srcCodeCache = new LazySourceCodeCache({
           cwd: api.paths.absSrcPath,
           cachePath: join(api.paths.absNodeModulesPath, '.cache', 'mfsu', 'v4'),
         });
-        await srcCodeCache.init();
+        await srcCodeCache!.init();
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });

@@ -130,29 +130,32 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
           c.removedFiles,
         );
 
-        // webpack init run
-        if (!c.modifiedFiles || c.modifiedFiles.size === 0) {
-          return;
-        }
+        const fileEvents = [
+          ...extractJSCodeFiles(c.modifiedFiles).map((f) => {
+            return {
+              event: 'change' as const,
+              path: f,
+            };
+          }),
+          ...extractJSCodeFiles(c.removedFiles).map((f) => {
+            return {
+              event: 'unlink' as const,
+              path: f,
+            };
+          }),
+        ];
 
-        // if no js code file changed, just compile, dont wait static analysis
-        if (
-          !hasJSCodeFiles(c.modifiedFiles) &&
-          !hasJSCodeFiles(c.removedFiles)
-        ) {
+        // if no js code file changed, just compile, no need to analysis
+        if (fileEvents.length === 0) {
           return;
         }
 
         const start = Date.now();
-        let event = this.staticDepInfo.getProducedEvent();
-        while (event.length === 0) {
-          await sleep(100);
-          event = this.staticDepInfo.getProducedEvent();
-          if (Date.now() - start > 5000) {
-            logger.warn('webpack wait mfsu deps too long');
-            break;
-          }
-        }
+
+        await this.staticDepInfo.opts.srcCodeCache.handleFileChangeEvents(
+          fileEvents,
+        );
+
         logger.debug(`webpack waited ${Date.now() - start} ms`);
       },
       onCompileDone: () => {
@@ -170,21 +173,18 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
   }
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
-}
-
 const REG_CODE_EXT = /\.(jsx|js|ts|tsx)$/;
 
-function hasJSCodeFiles(files: ReadonlySet<string>) {
+function extractJSCodeFiles(files: ReadonlySet<string>) {
+  const jsFiles: string[] = [];
+  if (!files) {
+    return jsFiles;
+  }
+
   for (let file of files.values()) {
     if (REG_CODE_EXT.test(file)) {
-      return true;
+      jsFiles.push(file);
     }
   }
-  return false;
+  return jsFiles;
 }
