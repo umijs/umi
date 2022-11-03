@@ -292,10 +292,6 @@ export { connectMaster } from './connectMaster';
       };
 
       if (masterEntry && proxyToMasterEnabled) {
-        const localDevHeaders = await api.applyPlugins({
-          key: 'addLocalProxyHeaders',
-          type: api.ApplyPluginsType.modify,
-        });
         return createProxyMiddleware(
           (pathname) => pathname !== '/local-dev-server',
           {
@@ -306,11 +302,12 @@ export { connectMaster } from './connectMaster';
             changeOrigin: true,
             selfHandleResponse: true,
             onProxyReq(proxyReq) {
-              if (localDevHeaders) {
-                Object.keys(localDevHeaders).forEach((key) => {
-                  proxyReq.setHeader(key, localDevHeaders[key]);
-                });
-              }
+              api.applyPlugins({
+                key: 'onLocalProxyReq',
+                type: api.ApplyPluginsType.event,
+                sync: true,
+                args: proxyReq,
+              });
             },
             onProxyRes: responseInterceptor(
               async (
