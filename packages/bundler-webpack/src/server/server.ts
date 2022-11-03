@@ -23,6 +23,8 @@ interface IOpts {
   afterMiddlewares?: any[];
   onDevCompileDone?: Function;
   onProgress?: Function;
+  onBeforeMiddleware?: Function;
+  onAfterMiddleware?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -64,6 +66,11 @@ export async function createServer(opts: IOpts) {
 
   // before middlewares
   (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
+
+  // Provides the ability to execute custom middleware prior to all other middleware internally within the server.
+  if (opts.onBeforeMiddleware) {
+    opts.onBeforeMiddleware(app);
+  }
 
   // webpack dev middleware
   const configs = Array.isArray(webpackConfig)
@@ -177,6 +184,10 @@ export async function createServer(opts: IOpts) {
     // TODO: FIXME
     app.use(m.toString().includes(`{ compiler }`) ? m({ compiler }) : m);
   });
+
+  if (opts.onAfterMiddleware) {
+    opts.onAfterMiddleware(app, compiler);
+  }
 
   // history fallback
   app.use(

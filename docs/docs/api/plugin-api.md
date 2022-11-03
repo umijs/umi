@@ -485,8 +485,22 @@ api.modifyWebpackConfig((memo, { webpack, env }) => {
 })
 ```
 
+## onAfterMiddleware
+提供服务器内部 (express) 在所有其他中间件之后执行 自定义中间件的能力
+
 ### onBeforeCompiler
 generate 之后，webpack / vite compiler 之前。传入的 fn 不接收任何参数。
+
+### onBeforeMiddleware
+提供在服务器内部执行所有其他中间件之前执行自定义中间件的能力, 这可以用来定义自定义处理程序， 例如:
+
+```ts
+api.onBeforeMiddleware(({ app }) => {
+  app.get('/some/path', function (req, res) {
+    res.json({ custom: 'response' });
+  });
+});
+```
 
 ### onBuildComplete
 build 完成时。传入的 fn 接收 `{ isFirstCompile: boolean, stats, time: number, err?: Error }` 作为参数。

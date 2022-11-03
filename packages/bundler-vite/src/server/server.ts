@@ -38,6 +38,8 @@ interface IOpts {
     isFirstCompile: boolean;
     stats: HmrContext['modules'] | DepOptimizationMetadata;
   }) => Promise<void> | void;
+  onBeforeMiddleware?: Function;
+  onAfterMiddleware?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -80,6 +82,10 @@ export async function createServer(opts: IOpts) {
   // before middlewares
   opts.beforeMiddlewares?.forEach((m) => app.use(m));
 
+  if (opts.onBeforeMiddleware) {
+    opts.onBeforeMiddleware(app);
+  }
+
   // proxy
   if (userConfig.proxy) {
     createProxy(userConfig.proxy, app);
@@ -105,6 +111,10 @@ export async function createServer(opts: IOpts) {
 
       return false;
     });
+  }
+
+  if (opts.onAfterMiddleware) {
+    opts.onAfterMiddleware(app);
   }
 
   // use vite via middleware way

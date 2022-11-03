@@ -293,6 +293,7 @@ PORT=8888 umi dev
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
       });
+
       const opts: any = {
         config: api.config,
         pkg: api.pkg,
@@ -353,6 +354,23 @@ PORT=8888 umi dev
           ...(api.config.mfsu?.include || []),
         ]),
         startBuildWorker,
+        onBeforeMiddleware(app: any) {
+          api.applyPlugins({
+            key: 'onBeforeMiddleware',
+            args: {
+              app,
+            },
+          });
+        },
+        onAfterMiddleware(app: any, compiler: any) {
+          api.applyPlugins({
+            key: 'onAfterMiddleware',
+            args: {
+              app,
+              compiler,
+            },
+          });
+        },
       };
       if (enableVite) {
         await bundlerVite.dev(opts);
