@@ -8,7 +8,7 @@ export default {
   crossorigin: {},
   presets: [require.resolve('@umijs/preset-vue')],
   polyfill: false,
-  vite: {},
+  // vite: {},
   title: 'boilerplate - umi 4 & vue',
   scripts: [
     `/*alert(2);*/`,
