@@ -9,6 +9,7 @@ export default {
   presets: [require.resolve('@umijs/preset-vue')],
   polyfill: false,
   vite: {},
+  mfsu: false,
   title: 'boilerplate - umi 4 & vue',
   scripts: [
     `/*alert(2);*/`,
