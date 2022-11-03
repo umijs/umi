@@ -111,7 +111,6 @@ function RemoteComponentReactRouter5(props: any) {
   useEffect(() => {
     function routeChangeHandler({
       location,
-      action,
     }: {
       location: any;
       action: string;
@@ -153,7 +152,6 @@ function RemoteComponent(props: any) {
   useEffect(() => {
     function routeChangeHandler({
       location,
-      action,
     }: {
       location: any;
       action: string;
