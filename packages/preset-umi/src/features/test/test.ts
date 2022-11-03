@@ -15,7 +15,7 @@ export default (api: IApi) => {
     },
     enableBy() {
       // 只有 test 才默认开启
-      if (process.env.NODE_ENV?.toLocaleLowerCase() === 'test') {
+      if (process.env.NODE_ENV === 'test') {
         return true;
       }
       return false;
