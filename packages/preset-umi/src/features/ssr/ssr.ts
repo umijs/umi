@@ -36,7 +36,7 @@ export default (api: IApi) => {
     logger.warn(`SSR feature is in beta, may be unstable`);
   });
 
-  api.addBeforeMiddlewares(() => [
+  api.addMiddlewares(() => [
     async (req, res, next) => {
       const modulePath = absServerBuildPath(api);
       if (existsSync(modulePath)) {
