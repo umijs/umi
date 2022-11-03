@@ -87,6 +87,15 @@ export default (api: IApi) => {
         ...theme,
         ...memo.theme,
       };
+      if (memo.antd?.import) {
+        const errorMessage = `Can't set antd.import=true while using antd5 (${antdVersion})`;
+
+        api.logger.fatal(
+          'please change config antd.import to false, then start server again',
+        );
+
+        throw Error(errorMessage);
+      }
     }
 
     // dark mode & compact mode

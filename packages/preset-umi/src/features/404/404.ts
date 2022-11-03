@@ -6,6 +6,7 @@ export function patchRoutes(routes: Routes): Routes {
   Object.keys(routes).forEach((key) => {
     if (routes[key].path === '404') {
       routes[key].path = '*';
+      routes[key].absPath = '/*';
     }
   });
   return routes;

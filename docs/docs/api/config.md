@@ -473,7 +473,7 @@ export default {
 
 ## exportStatic
 
-- 类型：`{}`
+- 类型：`{ extraRoutePaths: string[] | (() => string[] | Promise<string[]>) }`
 - 默认值：`undefined`
 
 开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
@@ -496,6 +496,38 @@ dist/index.html
 dist/index.html
 dist/docs/index.html
 dist/docs/a/index.html
+```
+
+通过 `extraRoutePaths` 子配置项可以产出额外的页面，通常用于动态路由静态化。例如有如下路由：
+
+```bash
+/news/:id
+```
+
+默认情况下只会输出 `dist/news/:id/index.html`，但可以通过配置 `extraRoutePaths` 将其静态化：
+
+```ts
+// .umirc.ts
+export default {
+  exportStatic: {
+    // 配置固定值
+    extraRoutePaths: ['/news/1', '/news/2'],
+    // 也可以配置函数动态获取
+    extraRoutePaths: async () => {
+      const res = await fetch('https://api.example.com/news');
+      const data = await res.json();
+      return data.map((item) => `/news/${item.id}`);
+    },
+  },
+}
+```
+
+此时输出文件会变成：
+
+```bash
+dist/news/:id/index.html
+dist/news/1/index.html
+dist/news/2/index.html
 ```
 
 ## favicons
@@ -1114,7 +1146,7 @@ import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ## targets
 
 - 类型：`object`
-- 默认值：`{ chrome: 87 }`
+- 默认值：`{ chrome: 80 }`
 
 配置需要兼容的浏览器最低版本。Umi 会根据这个自定引入 polyfill、配置 autoprefixer 和做语法转换等。
 
