@@ -34,7 +34,6 @@ type IOpts = {
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
   onBeforeMiddleware?: Function;
-  onAfterMiddleware?: Function;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
@@ -193,6 +192,5 @@ export async function dev(opts: IOpts) {
     onDevCompileDone: opts.onDevCompileDone,
     onProgress: opts.onProgress,
     onBeforeMiddleware: opts.onBeforeMiddleware,
-    onAfterMiddleware: opts.onAfterMiddleware,
   });
 }

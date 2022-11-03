@@ -362,15 +362,6 @@ PORT=8888 umi dev
             },
           });
         },
-        onAfterMiddleware(app: any, compiler: any) {
-          api.applyPlugins({
-            key: 'onAfterMiddleware',
-            args: {
-              app,
-              compiler,
-            },
-          });
-        },
       };
       if (enableVite) {
         await bundlerVite.dev(opts);

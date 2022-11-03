@@ -24,7 +24,6 @@ interface IOpts {
   onDevCompileDone?: Function;
   onProgress?: Function;
   onBeforeMiddleware?: Function;
-  onAfterMiddleware?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -184,10 +183,6 @@ export async function createServer(opts: IOpts) {
     // TODO: FIXME
     app.use(m.toString().includes(`{ compiler }`) ? m({ compiler }) : m);
   });
-
-  if (opts.onAfterMiddleware) {
-    opts.onAfterMiddleware(app, compiler);
-  }
 
   // history fallback
   app.use(

@@ -22,7 +22,6 @@ export default (api: IApi) => {
     'onCheckPkgJSON',
     'onCheckCode',
     'onCheckConfig',
-    'onAfterMiddleware',
     'onBeforeMiddleware',
     'addBeforeMiddlewares',
     'addLayouts',

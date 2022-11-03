@@ -39,7 +39,6 @@ interface IOpts {
     stats: HmrContext['modules'] | DepOptimizationMetadata;
   }) => Promise<void> | void;
   onBeforeMiddleware?: Function;
-  onAfterMiddleware?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -111,10 +110,6 @@ export async function createServer(opts: IOpts) {
 
       return false;
     });
-  }
-
-  if (opts.onAfterMiddleware) {
-    opts.onAfterMiddleware(app);
   }
 
   // use vite via middleware way

@@ -1,11 +1,6 @@
 // sort-object-keys
 import type { ImportDeclaration } from '@umijs/bundler-utils/compiled/@babel/types';
-import type {
-  RequestHandler,
-  webpack,
-  Express,
-  Compiler,
-} from '@umijs/bundler-webpack';
+import type { RequestHandler, webpack, Express } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 import type {
@@ -136,10 +131,6 @@ export type IApi = PluginAPI &
         webpack: typeof webpack;
       }
     >;
-    onAfterMiddleware: IEvent<{
-      app: Express;
-      compiler?: Compiler;
-    }>;
     onBeforeCompiler: IEvent<{}>;
     onBeforeMiddleware: IEvent<{
       app: Express;

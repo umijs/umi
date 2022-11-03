@@ -28,10 +28,6 @@ export default (api: IApi) => {
     // console.log('> onCheckCode', args);
   });
 
-  api.onAfterMiddleware(({ app, compiler }) => {
-    console.log('> onAfterMiddleware', typeof app, typeof compiler);
-  });
-
   api.onBeforeMiddleware(({ app }) => {
     app.get('/some/path', function (req, res) {
       res.json({ custom: 'response' });

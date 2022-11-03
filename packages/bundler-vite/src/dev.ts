@@ -17,7 +17,6 @@ interface IOpts {
   extraBabelPresets?: IBabelPlugin[];
   modifyViteConfig?: Function;
   onBeforeMiddleware?: Function;
-  onAfterMiddleware?: Function;
 }
 
 export async function dev(opts: IOpts) {
@@ -47,6 +46,5 @@ export async function dev(opts: IOpts) {
     afterMiddlewares: opts.afterMiddlewares,
     onDevCompileDone: opts.onDevCompileDone,
     onBeforeMiddleware: opts.onBeforeMiddleware,
-    onAfterMiddleware: opts.onAfterMiddleware,
   });
 }
