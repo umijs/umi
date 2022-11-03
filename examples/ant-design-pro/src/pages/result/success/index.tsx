@@ -1,7 +1,7 @@
 import { DingdingOutlined } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-components';
 import { Button, Card, Descriptions, Result, Steps } from 'antd';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import styles from './index.less';
 
 const { Step } = Steps;
