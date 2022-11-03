@@ -58,8 +58,7 @@ export class AutoUpdateSrcCodeCache {
         for (const f of files) {
           let newFile = join(this.cachePath, relative(this.srcPath, f));
 
-          // fixme ensure the last one
-          newFile = newFile.replace(extname(newFile), '.js');
+          newFile = newFile.replace(new RegExp(`${extname(newFile)}$`), '.js');
 
           loaded[f] = readFileSync(newFile, 'utf-8');
         }
@@ -103,7 +102,7 @@ export class AutoUpdateSrcCodeCache {
         outbase: this.srcPath,
         loader: {
           // in case some js using some feature, eg: decorator
-          '.js': 'jsx',
+          '.js': 'tsx',
           '.jsx': 'tsx',
         },
         logLevel: 'error',

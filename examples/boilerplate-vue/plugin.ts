@@ -1,4 +1,4 @@
-import { IApi } from 'umi';
+import type { IApi } from 'umi';
 
 export default (api: IApi) => {
   api.modifyHTML(($) => {
@@ -26,5 +26,12 @@ export default (api: IApi) => {
   api.onCheckCode((args) => {
     args;
     // console.log('> onCheckCode', args);
+  });
+
+  api.onBeforeMiddleware(({ app }) => {
+    app.get('/some/path', function (req, res) {
+      res.json({ custom: 'response' });
+    });
+    console.log('> onBeforeMiddleware', typeof app);
   });
 };

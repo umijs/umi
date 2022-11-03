@@ -473,7 +473,7 @@ export default {
 
 ## exportStatic
 
-- 类型：`{}`
+- 类型：`{ extraRoutePaths: string[] | (() => string[] | Promise<string[]>) }`
 - 默认值：`undefined`
 
 开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
@@ -496,6 +496,38 @@ dist/index.html
 dist/index.html
 dist/docs/index.html
 dist/docs/a/index.html
+```
+
+通过 `extraRoutePaths` 子配置项可以产出额外的页面，通常用于动态路由静态化。例如有如下路由：
+
+```bash
+/news/:id
+```
+
+默认情况下只会输出 `dist/news/:id/index.html`，但可以通过配置 `extraRoutePaths` 将其静态化：
+
+```ts
+// .umirc.ts
+export default {
+  exportStatic: {
+    // 配置固定值
+    extraRoutePaths: ['/news/1', '/news/2'],
+    // 也可以配置函数动态获取
+    extraRoutePaths: async () => {
+      const res = await fetch('https://api.example.com/news');
+      const data = await res.json();
+      return data.map((item) => `/news/${item.id}`);
+    },
+  },
+}
+```
+
+此时输出文件会变成：
+
+```bash
+dist/news/:id/index.html
+dist/news/1/index.html
+dist/news/2/index.html
 ```
 
 ## favicons
@@ -1180,4 +1212,11 @@ vite: {
   cacheDir: 'node_modules/.bin/.vite',
 }
 ```
+
+## writeToDisk
+
+- 类型：`boolean`
+- 默认值：`false`
+
+开启后会在 dev 模式下额外输出一份文件到 dist 目录，通常用于 chrome 插件、electron 应用、sketch 插件等开发场景。
 

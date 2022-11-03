@@ -100,7 +100,7 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
-      - name: e2e:example:mfsu-e2e
+      - name: e2e:example:mfsu-e2e-eager
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
@@ -111,14 +111,14 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
-      - name: set mfsu-eager env
+      - name: set mfsu-normal env
         run: |
           npx rimraf node_modules/.cache
-          npm run set:eager
+          npm run set:normal
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
-      - name: e2e:example:mfsu-e2e:eager
+      - name: e2e:example:mfsu-e2e:normal
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
