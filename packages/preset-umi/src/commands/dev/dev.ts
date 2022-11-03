@@ -289,6 +289,7 @@ PORT=8888 umi dev
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
       });
+
       const opts: any = {
         config: api.config,
         pkg: api.pkg,
@@ -349,6 +350,14 @@ PORT=8888 umi dev
           ...(api.config.mfsu?.include || []),
         ]),
         startBuildWorker,
+        onBeforeMiddleware(app: any) {
+          api.applyPlugins({
+            key: 'onBeforeMiddleware',
+            args: {
+              app,
+            },
+          });
+        },
       };
 
       await api.applyPlugins({
