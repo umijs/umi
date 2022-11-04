@@ -1,10 +1,10 @@
 import * as allIcons from '@ant-design/icons';
-import {existsSync} from 'fs';
-import {dirname, join} from 'path';
-import {IApi, RUNTIME_TYPE_FILE_NAME} from 'umi';
-import {lodash, Mustache, winPath} from 'umi/plugin-utils';
-import {resolveProjectDep} from './utils/resolveProjectDep';
-import {withTmpPath} from './utils/withTmpPath';
+import { existsSync } from 'fs';
+import { dirname, join } from 'path';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
+import { lodash, Mustache, winPath } from 'umi/plugin-utils';
+import { resolveProjectDep } from './utils/resolveProjectDep';
+import { withTmpPath } from './utils/withTmpPath';
 
 export default (api: IApi) => {
   let antdVersion = '4.0.0';
@@ -16,8 +16,7 @@ export default (api: IApi) => {
         dep: 'antd',
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
-  } catch (e) {
-  }
+  } catch (e) {}
 
   api.describe({
     key: 'layout',
@@ -43,7 +42,7 @@ export default (api: IApi) => {
   ];
 
   const pkgHasDep = depList.find((dep) => {
-    const {pkg} = api;
+    const { pkg } = api;
     if (pkg.dependencies?.[dep] || pkg.devDependencies?.[dep]) {
       return true;
     }
@@ -343,8 +342,10 @@ export interface IRuntimeConfig {
 }
       `,
     });
-    const iconsMap = Object.keys(api.appData.routes).reduce<Record<string, boolean>>((memo, id) => {
-      const {icon} = api.appData.routes[id];
+    const iconsMap = Object.keys(api.appData.routes).reduce<
+      Record<string, boolean>
+      >((memo, id) => {
+      const { icon } = api.appData.routes[id];
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
         // @ts-ignore
@@ -696,7 +697,7 @@ export default Exception;
     return [
       {
         id: 'ant-design-pro-layout',
-        file: withTmpPath({api, path: 'Layout.tsx'}),
+        file: withTmpPath({ api, path: 'Layout.tsx' }),
         test: (route: any) => {
           return route.layout !== false;
         },
@@ -707,6 +708,6 @@ export default Exception;
   api.addRuntimePluginKey(() => ['layout']);
 
   api.addRuntimePlugin(() => {
-    return [withTmpPath({api, path: 'runtime.tsx'})];
+    return [withTmpPath({ api, path: 'runtime.tsx' })];
   });
 };
