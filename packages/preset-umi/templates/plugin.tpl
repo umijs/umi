@@ -4,9 +4,9 @@ import * as Plugin_{{{ index }}} from '{{{ path }}}';
 import { PluginManager } from 'umi';
 
 function __defaultExport (obj) {
-  const { default: defineByFunc, ...overrides } = obj;
+  const { default: defineFunc, ...overrides } = obj;
   return {
-    ...(typeof defineByFunc === 'function' ? defineByFunc() : defineByFunc),
+    ...(typeof defineFunc === 'function' ? defineFunc() : defineByFunc),
     ...overrides
   };
 }
