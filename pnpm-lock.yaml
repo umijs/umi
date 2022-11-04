@@ -39157,7 +39157,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
-git
+
   /webpack/5.74.0_xdjijeb6bgyaxqcwazk6btvxwi:
     resolution: {integrity: sha512-A2InDwnhhGN4LYctJj6M1JEaGL7Luj6LOmyBHjcI8529cm5p6VXiTIW2sn6ffvEAKmveLzvu4jrihwXtPojlAA==}
     engines: {node: '>=10.13.0'}
