@@ -131,6 +131,13 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
         );
 
         const fileEvents = [
+          ...this.staticDepInfo.opts.srcCodeCache
+            .consumePendingNewFiles()
+            .map((f: string) => ({
+              event: 'add' as const,
+              path: f,
+            })),
+
           ...extractJSCodeFiles(c.modifiedFiles).map((f) => {
             return {
               event: 'change' as const,
@@ -144,6 +151,7 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
             };
           }),
         ];
+        logger.debug('all file events', fileEvents);
 
         // if no js code file changed, just compile, no need to analysis
         if (fileEvents.length === 0) {

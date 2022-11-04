@@ -23,6 +23,7 @@ type AutoUpdateSrcCodeCache = {
   register(listener: (info: MergedCodeInfo) => void): void;
   getMergedCode(): MergedCodeInfo;
   handleFileChangeEvents(events: FileChangeEvent[]): void;
+  consumePendingNewFiles(): string[];
 };
 
 interface IOpts {
