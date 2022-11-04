@@ -1,10 +1,10 @@
 import * as allIcons from '@ant-design/icons';
-import { existsSync } from 'fs';
-import { dirname, join } from 'path';
-import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { lodash, Mustache, winPath } from 'umi/plugin-utils';
-import { resolveProjectDep } from './utils/resolveProjectDep';
-import { withTmpPath } from './utils/withTmpPath';
+import {existsSync} from 'fs';
+import {dirname, join} from 'path';
+import {IApi, RUNTIME_TYPE_FILE_NAME} from 'umi';
+import {lodash, Mustache, winPath} from 'umi/plugin-utils';
+import {resolveProjectDep} from './utils/resolveProjectDep';
+import {withTmpPath} from './utils/withTmpPath';
 
 export default (api: IApi) => {
   let antdVersion = '4.0.0';
@@ -16,7 +16,8 @@ export default (api: IApi) => {
         dep: 'antd',
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
-  } catch (e) {}
+  } catch (e) {
+  }
 
   api.describe({
     key: 'layout',
@@ -42,7 +43,7 @@ export default (api: IApi) => {
   ];
 
   const pkgHasDep = depList.find((dep) => {
-    const { pkg } = api;
+    const {pkg} = api;
     if (pkg.dependencies?.[dep] || pkg.devDependencies?.[dep]) {
       return true;
     }
@@ -109,24 +110,24 @@ import Logo from './Logo';
 import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
 ${
-  hasInitialStatePlugin
-    ? `import { useModel } from '@@/plugin-model';`
-    : 'const useModel = null;'
-}
+        hasInitialStatePlugin
+          ? `import { useModel } from '@@/plugin-model';`
+          : 'const useModel = null;'
+      }
 ${
-  api.config.access
-    ? `
+        api.config.access
+          ? `
 import { useAccessMarkedRoutes } from '@@/plugin-access';
    `.trim()
-    : 'const useAccessMarkedRoutes = (r) => r;'
-}
+          : 'const useAccessMarkedRoutes = (r) => r;'
+      }
 ${
-  api.config.locale
-    ? `
+        api.config.locale
+          ? `
 import { useIntl } from '@@/plugin-locale';
     `.trim()
-    : ''
-}
+          : ''
+      }
 
 // 过滤出需要显示的路由, 这里的filterFn 指 不希望显示的层级
 const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) => {
@@ -189,12 +190,12 @@ export default (props: any) => {
   const { initialState, loading, setInitialState } = initialInfo;
   const userConfig = ${JSON.stringify(api.config.layout, null, 2)};
 ${
-  api.config.locale
-    ? `
+        api.config.locale
+          ? `
 const { formatMessage } = useIntl();
 `.trim()
-    : 'const formatMessage = undefined;'
-}
+          : 'const formatMessage = undefined;'
+      }
   const runtimeConfig = pluginManager.applyPlugins({
     key: 'layout',
     type: 'modify',
@@ -203,14 +204,14 @@ const { formatMessage } = useIntl();
     },
   });
 
-  
+
   // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
   const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
     return (!!route.isLayout && route.id !== 'ant-design-pro-layout') || !!route.isWrapper;
   })
   const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
-  
-  const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
+
+  const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname,route]);
 
   return (
     <ProLayout
@@ -294,15 +295,15 @@ const { formatMessage } = useIntl();
       path: 'types.d.ts',
       content: `
     import type { ProLayoutProps, HeaderProps } from "${
-      pkgPath || '@ant-design/pro-components'
-    }";
+        pkgPath || '@ant-design/pro-components'
+      }";
     ${
-      hasInitialStatePlugin
-        ? `import type InitialStateType from '@@/plugin-initialState/@@initialState';
+        hasInitialStatePlugin
+          ? `import type InitialStateType from '@@/plugin-initialState/@@initialState';
            type InitDataType = ReturnType<typeof InitialStateType>;
         `
-        : 'type InitDataType = any;'
-    }
+          : 'type InitDataType = any;'
+      }
 
     import type { IConfigFromPlugins } from '@@/core/pluginConfig';
 
@@ -342,10 +343,8 @@ export interface IRuntimeConfig {
 }
       `,
     });
-    const iconsMap = Object.keys(api.appData.routes).reduce<
-      Record<string, boolean>
-    >((memo, id) => {
-      const { icon } = api.appData.routes[id];
+    const iconsMap = Object.keys(api.appData.routes).reduce<Record<string, boolean>>((memo, id) => {
+      const {icon} = api.appData.routes[id];
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
         // @ts-ignore
@@ -367,10 +366,10 @@ export interface IRuntimeConfig {
       path: 'icons.tsx',
       content: `
 ${icons
-  .map((icon) => {
-    return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
-  })
-  .join('\n')}
+        .map((icon) => {
+          return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
+        })
+        .join('\n')}
 export default { ${icons.join(', ')} };
       `,
     });
@@ -495,11 +494,11 @@ export function getRightRenderContent (opts: {
       path: 'Layout.less',
       content: `
 ${
-  // antd@5里面没有这个样式了
-  antdVersion.startsWith('5')
-    ? ''
-    : "@import '~antd/es/style/themes/default.less';"
-}
+        // antd@5里面没有这个样式了
+        antdVersion.startsWith('5')
+          ? ''
+          : "@import '~antd/es/style/themes/default.less';"
+      }
 @media screen and (max-width: 480px) {
   // 在小屏幕的时候可以有更好的体验
   .umi-plugin-layout-container {
@@ -697,7 +696,7 @@ export default Exception;
     return [
       {
         id: 'ant-design-pro-layout',
-        file: withTmpPath({ api, path: 'Layout.tsx' }),
+        file: withTmpPath({api, path: 'Layout.tsx'}),
         test: (route: any) => {
           return route.layout !== false;
         },
@@ -708,6 +707,6 @@ export default Exception;
   api.addRuntimePluginKey(() => ['layout']);
 
   api.addRuntimePlugin(() => {
-    return [withTmpPath({ api, path: 'runtime.tsx' })];
+    return [withTmpPath({api, path: 'runtime.tsx'})];
   });
 };
