@@ -109,24 +109,24 @@ import Logo from './Logo';
 import Exception from './Exception';
 import { getRightRenderContent } from './rightRender';
 ${
-        hasInitialStatePlugin
-          ? `import { useModel } from '@@/plugin-model';`
-          : 'const useModel = null;'
-      }
+  hasInitialStatePlugin
+    ? `import { useModel } from '@@/plugin-model';`
+    : 'const useModel = null;'
+}
 ${
-        api.config.access
-          ? `
+  api.config.access
+    ? `
 import { useAccessMarkedRoutes } from '@@/plugin-access';
    `.trim()
-          : 'const useAccessMarkedRoutes = (r) => r;'
-      }
+    : 'const useAccessMarkedRoutes = (r) => r;'
+}
 ${
-        api.config.locale
-          ? `
+  api.config.locale
+    ? `
 import { useIntl } from '@@/plugin-locale';
     `.trim()
-          : ''
-      }
+    : ''
+}
 
 // 过滤出需要显示的路由, 这里的filterFn 指 不希望显示的层级
 const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) => {
@@ -189,12 +189,12 @@ export default (props: any) => {
   const { initialState, loading, setInitialState } = initialInfo;
   const userConfig = ${JSON.stringify(api.config.layout, null, 2)};
 ${
-        api.config.locale
-          ? `
+  api.config.locale
+    ? `
 const { formatMessage } = useIntl();
 `.trim()
-          : 'const formatMessage = undefined;'
-      }
+    : 'const formatMessage = undefined;'
+}
   const runtimeConfig = pluginManager.applyPlugins({
     key: 'layout',
     type: 'modify',
@@ -294,15 +294,15 @@ const { formatMessage } = useIntl();
       path: 'types.d.ts',
       content: `
     import type { ProLayoutProps, HeaderProps } from "${
-        pkgPath || '@ant-design/pro-components'
-      }";
+      pkgPath || '@ant-design/pro-components'
+    }";
     ${
-        hasInitialStatePlugin
-          ? `import type InitialStateType from '@@/plugin-initialState/@@initialState';
+      hasInitialStatePlugin
+        ? `import type InitialStateType from '@@/plugin-initialState/@@initialState';
            type InitDataType = ReturnType<typeof InitialStateType>;
         `
-          : 'type InitDataType = any;'
-      }
+        : 'type InitDataType = any;'
+    }
 
     import type { IConfigFromPlugins } from '@@/core/pluginConfig';
 
@@ -344,7 +344,7 @@ export interface IRuntimeConfig {
     });
     const iconsMap = Object.keys(api.appData.routes).reduce<
       Record<string, boolean>
-      >((memo, id) => {
+    >((memo, id) => {
       const { icon } = api.appData.routes[id];
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
@@ -367,10 +367,10 @@ export interface IRuntimeConfig {
       path: 'icons.tsx',
       content: `
 ${icons
-        .map((icon) => {
-          return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
-        })
-        .join('\n')}
+  .map((icon) => {
+    return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
+  })
+  .join('\n')}
 export default { ${icons.join(', ')} };
       `,
     });
@@ -495,11 +495,11 @@ export function getRightRenderContent (opts: {
       path: 'Layout.less',
       content: `
 ${
-        // antd@5里面没有这个样式了
-        antdVersion.startsWith('5')
-          ? ''
-          : "@import '~antd/es/style/themes/default.less';"
-      }
+  // antd@5里面没有这个样式了
+  antdVersion.startsWith('5')
+    ? ''
+    : "@import '~antd/es/style/themes/default.less';"
+}
 @media screen and (max-width: 480px) {
   // 在小屏幕的时候可以有更好的体验
   .umi-plugin-layout-container {
