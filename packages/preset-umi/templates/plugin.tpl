@@ -6,7 +6,7 @@ import { PluginManager } from 'umi';
 function __defaultExport (obj) {
   const { default: defineFunc, ...overrides } = obj;
   return {
-    ...(typeof defineFunc === 'function' ? defineFunc() : defineByFunc),
+    ...(typeof defineFunc === 'function' ? defineFunc() : defineFunc),
     ...overrides
   };
 }
