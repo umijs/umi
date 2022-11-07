@@ -155,9 +155,13 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
 
         const start = Date.now();
 
-        await this.staticDepInfo.opts.srcCodeCache.handleFileChangeEvents(
-          fileEvents,
-        );
+        try {
+          await this.staticDepInfo.opts.srcCodeCache.handleFileChangeEvents(
+            fileEvents,
+          );
+        } catch (e) {
+          logger.error('MFSU[eager] analyze dependencies failed with error', e);
+        }
 
         logger.debug(`webpack waited ${Date.now() - start} ms`);
       },
