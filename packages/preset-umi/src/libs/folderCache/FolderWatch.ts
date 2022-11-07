@@ -9,6 +9,8 @@ export type FileChangeEvent = {
   path: string;
 };
 
+export type Event = FileChangeEvent['event'];
+
 export class FolderWatch {
   private readonly cwd: string;
 
@@ -22,7 +24,7 @@ export class FolderWatch {
     exts: string[];
     /* ([anymatch](https://github.com/micromatch/anymatch)-compatible definition array*/
     ignored: string[];
-    events: string[];
+    events: Event[];
   }) {
     this.cwd = opts.cwd;
 

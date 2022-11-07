@@ -44,7 +44,7 @@ export class LazySourceCodeCache {
   ];
 
   fileContentCache: FileContentCache = {};
-  private pendingNewFiles = new Set<string>();
+  private pendingFilesEvents: FileChangeEvent[] = [];
 
   constructor(opts: { cwd: string; cachePath: string }) {
     this.srcPath = opts.cwd;
@@ -54,10 +54,10 @@ export class LazySourceCodeCache {
       cwd: this.srcPath,
       exts: ['ts', 'js', 'jsx', 'tsx'],
       ignored: this.ignores,
-      events: ['add'],
+      events: ['add', 'unlink'],
     });
     this.folderWatch.listen((e) => {
-      this.pendingNewFiles.add(e.path);
+      this.pendingFilesEvents.push(e);
     });
   }
 
@@ -104,10 +104,30 @@ export class LazySourceCodeCache {
     return merged;
   }
 
-  public consumePendingNewFiles() {
-    const files = Array.from(this.pendingNewFiles);
-    this.pendingNewFiles.clear();
-    return files;
+  public replayChangeEvents(): FileChangeEvent[] {
+    const newFiles = new Set<string>();
+    const events = this.pendingFilesEvents.slice();
+
+    this.pendingFilesEvents = [];
+
+    for (let e of events) {
+      const event = e.event;
+
+      if (event === 'add') {
+        newFiles.add(e.path);
+      } else if (event === 'unlink') {
+        newFiles.delete(e.path);
+      }
+    }
+    /*
+     * 只处理新增的文件, 删除的文件不处理,
+     * 如果是项目实际使用文件的删除, webpack 会携带该信息, 在新编译前触发扫描, 判断是否重新bm
+     * 如果是非项目实际使用文件, 但是扫描的文件, 先不处理, 等待下次启动再处理无关的依赖变化;
+     * */
+    return Array.from(newFiles).map((p) => ({
+      event: 'add',
+      path: p,
+    }));
   }
 
   public async handleFileChangeEvents(events: FileChangeEvent[]) {

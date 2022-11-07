@@ -131,12 +131,7 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
         );
 
         const fileEvents = [
-          ...this.staticDepInfo.opts.srcCodeCache
-            .consumePendingNewFiles()
-            .map((f: string) => ({
-              event: 'add' as const,
-              path: f,
-            })),
+          ...this.staticDepInfo.opts.srcCodeCache.replayChangeEvents(),
 
           ...extractJSCodeFiles(c.modifiedFiles).map((f) => {
             return {
