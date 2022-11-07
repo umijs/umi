@@ -26,20 +26,24 @@ export async function getDepTree(data: IPkgData): Promise<any> {
 
   const result: Record<string, any> = {};
 
-  function collectDependencies(name: string) {
+  function collectDependencies(name: string, orders: string[]) {
     const pkgJson = packages![name];
     const { dependencies = {} } = pkgJson;
 
     Object.keys(dependencies).forEach((dep) => {
-      let findKey = [name, 'node_modules', dep].join('/');
-      while (findKey && !packageKeys.includes(findKey)) {
-        const findPaths = findKey.split('node_modules');
-        findPaths.splice(findPaths.length - 2, 1);
-        findKey = findPaths.join('node_modules');
-      }
+      const isCircularDependency = orders.some((n) => n === dep);
+      // 检查循环依赖
+      if (!isCircularDependency) {
+        let findKey = [name, 'node_modules', dep].join('/');
+        while (findKey && !packageKeys.includes(findKey)) {
+          const findPaths = findKey.split('node_modules');
+          findPaths.splice(findPaths.length - 2, 1);
+          findKey = findPaths.join('node_modules');
+        }
 
-      result[findKey] = packages![findKey];
-      collectDependencies(findKey);
+        result[findKey] = packages![findKey];
+        collectDependencies(findKey, orders.concat(dep));
+      }
     });
   }
 
@@ -47,7 +51,7 @@ export async function getDepTree(data: IPkgData): Promise<any> {
     const pkgKey = packageKeys.find((n) => n === `node_modules/${name}`);
     if (pkgKey) {
       result[pkgKey] = packages[pkgKey];
-      collectDependencies(pkgKey);
+      collectDependencies(pkgKey, [name]);
     }
   });
 
