@@ -12,6 +12,7 @@ import type { IApi } from '../../types';
 import requireToImport from './esbuildPlugins/requireToImport';
 import topLevelExternal from './esbuildPlugins/topLevelExternal';
 import Service, { IImportmapData, IPkgData } from './Service';
+import { lodash } from '@umijs/utils';
 
 let importmap: IImportmapData['importMap'] = { imports: {}, scopes: {} };
 let importmatches: Record<string, string> = {};
@@ -251,13 +252,18 @@ export default (api: IApi) => {
   // apply esmi vite plugin
   api.modifyViteConfig((memo) => {
     if (api.config.vite) {
+      const debounceRefresh = lodash.debounce(refreshImportMap, 100);
+
       memo.plugins = (memo.plugins || []).concat(
         esmi({
           handleHotUpdate: async (ctx) => {
             ctx.file;
 
-            // TODO: incremental refresh by ctx.file
-            await refreshImportMap();
+            if (/\.(j|t)sx?$/.test(ctx.file)) {
+              // skip non-js files
+              // TODO: incremental refresh by ctx.file
+              await debounceRefresh();
+            }
 
             // TODO: refresh page when importmap changed
           },

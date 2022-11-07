@@ -1,6 +1,5 @@
-import { axios, chalk, logger } from '@umijs/utils';
+import { axios, chalk, logger, lodash, fsExtra } from '@umijs/utils';
 import { createHash } from 'crypto';
-import fs from 'fs';
 import path from 'path';
 import type { IApi } from '../../types';
 import { getDepTree } from './depTree';
@@ -59,7 +58,7 @@ export default class ESMIService {
     // restore local cache
     const cacheFilePath = path.join(this.cacheDir, 'importmap.json');
 
-    if (fs.existsSync(cacheFilePath)) {
+    if (fsExtra.existsSync(cacheFilePath)) {
       try {
         this.cache = require(cacheFilePath);
       } catch {
@@ -97,12 +96,10 @@ export default class ESMIService {
     this.cache[key] = data;
 
     // create cache dir
-    if (!fs.existsSync(this.cacheDir)) {
-      fs.mkdirSync(this.cacheDir, { recursive: true });
-    }
+    fsExtra.ensureDirSync(this.cacheDir);
 
     // write cache to file system
-    fs.writeFileSync(
+    fsExtra.writeFileSync(
       path.join(this.cacheDir, 'importmap.json'),
       JSON.stringify(this.cache, null, 2),
     );
@@ -114,15 +111,31 @@ export default class ESMIService {
    * @returns ticketId or importmap
    */
   async build(data: IPkgData) {
+    const requestData = {
+      ...data,
+      depTree: await getDepTree(data),
+    };
+
     return axios
       .post<{ success: boolean; data: { ticketId: string } | IImportmapData }>(
         `${this.cdnOrigin}/api/v1/esm/build/dev`,
-        {
-          ...data,
-          depTree: await getDepTree(data),
-        },
+        requestData,
       )
-      .then((a) => a.data.data);
+      .then((res) => {
+        if ('ticketId' in res.data.data) {
+          const debugLog = path.join(
+            this.cacheDir,
+            'tickets',
+            `req_${res.data.data.ticketId}.json`,
+          );
+
+          fsExtra.ensureDirSync(path.dirname(debugLog));
+          fsExtra.writeFileSync(debugLog, JSON.stringify(requestData, null, 2));
+          console.log(`ESMi ticket debug log: ${debugLog}`);
+        }
+
+        return res.data.data;
+      });
   }
 
   /**
