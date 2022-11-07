@@ -1,4 +1,4 @@
-name: e2e-test:mfsu
+name: mfsu
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e-mfsu:
+  mfsu:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
