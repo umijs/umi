@@ -1,7 +1,12 @@
 import { parse as parseImports } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import MagicString from 'magic-string';
 import { join } from 'path';
-import type { Plugin, ResolvedConfig } from 'vite';
+import type {
+  Plugin,
+  ResolvedConfig,
+  IndexHtmlTransformHook,
+  HtmlTagDescriptor,
+} from 'vite';
 import { createResolver } from '../../libs/scan';
 import type { IApi } from '../../types';
 import requireToImport from './esbuildPlugins/requireToImport';
@@ -15,7 +20,8 @@ let importmatches: Record<string, string> = {};
  * esmi vite plugin
  */
 function esmi(opts: {
-  handleHotUpdate?: Plugin['handleHotUpdate'];
+  handleHotUpdate: NonNullable<Plugin['handleHotUpdate']>;
+  preTransformIndexHtml: IndexHtmlTransformHook;
   resolver: ReturnType<typeof createResolver>;
 }): Plugin {
   return {
@@ -94,7 +100,14 @@ function esmi(opts: {
     },
 
     handleHotUpdate(ctx) {
-      return opts.handleHotUpdate!(ctx);
+      return opts.handleHotUpdate(ctx);
+    },
+
+    transformIndexHtml: {
+      enforce: 'pre',
+      transform(html, ctx) {
+        return opts.preTransformIndexHtml(html, ctx);
+      },
     },
   };
 }
@@ -153,7 +166,6 @@ export default (api: IApi) => {
 
     // skip umi by default
     delete api.appData.deps!['umi'];
-    // delete api.appData.deps!['@umijs/renderer-react'];
 
     const data = generatePkgData(api);
     const deps = data.pkgInfo.exports.reduce(
@@ -236,35 +248,9 @@ export default (api: IApi) => {
     }
   });
 
-  // append ipmortmap script for HTML
-  api.modifyHTML(($) => {
-    const scp = $('<script type="importmap"></script>\n');
-
-    scp.html(JSON.stringify(importmap, null, 2));
-    if ($('head > script:eq(0)').length) {
-      $('head > script:eq(0)').before(scp);
-    } else {
-      $('head').append(scp);
-    }
-
-    // append importmap shim script
-    if (api.config.esmi.shimUrl) {
-      $('body > script:eq(0)').before(
-        $(`<script src="${api.config.esmi.shimUrl}"></script>\n`),
-      );
-    }
-
-    // preload for importmap modules
-    Object.values(importmap.imports).forEach((url) => {
-      scp.before($(`<link rel="modulepreload" href="${url}" />\n`));
-    });
-
-    return $;
-  });
-
-  if (api.config.vite) {
-    // apply esmi vite plugin
-    api.modifyViteConfig((memo) => {
+  // apply esmi vite plugin
+  api.modifyViteConfig((memo) => {
+    if (api.config.vite) {
       memo.plugins = (memo.plugins || []).concat(
         esmi({
           handleHotUpdate: async (ctx) => {
@@ -275,13 +261,46 @@ export default (api: IApi) => {
 
             // TODO: refresh page when importmap changed
           },
+          preTransformIndexHtml: () => {
+            const tags: HtmlTagDescriptor[] = [];
+
+            // preload for importmap modules
+            // why disabled?
+            // Error `An import map is added after module script load was triggered.` will throw by unknown reason
+            // Object.values(importmap.imports).forEach((url) => {
+            //   tags.push({
+            //     tag: 'link',
+            //     attrs: { rel: 'modulepreload', href: url },
+            //     injectTo: 'head-prepend',
+            //   });
+            // });
+
+            // prepend importmap script
+            tags.push({
+              tag: 'script',
+              attrs: { type: 'importmap' },
+              children: JSON.stringify(importmap, null, 2),
+              injectTo: 'head-prepend',
+            });
+
+            // prepend importmap shim script
+            if (api.config.esmi.shimUrl) {
+              tags.push({
+                tag: 'script',
+                attrs: { src: api.config.esmi.shimUrl },
+                injectTo: 'body-prepend',
+              });
+            }
+
+            return tags;
+          },
           resolver,
         }),
       );
+    }
 
-      return memo;
-    });
-  } else {
-    // TODO: webpack implementation
-  }
+    return memo;
+  });
+
+  // TODO: webpack implementation
 };
