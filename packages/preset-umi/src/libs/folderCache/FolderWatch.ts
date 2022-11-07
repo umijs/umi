@@ -1,15 +1,9 @@
 import { chokidar } from '@umijs/utils';
 import { join } from 'path';
+import type { FileChangeEvent, Event } from './types';
 
 const { watch } = chokidar;
 type FSWatcher = ReturnType<typeof watch>;
-
-export type FileChangeEvent = {
-  event: 'unlink' | 'change' | 'add';
-  path: string;
-};
-
-export type Event = FileChangeEvent['event'];
 
 export class FolderWatch {
   private readonly cwd: string;
@@ -17,7 +11,7 @@ export class FolderWatch {
   private watcher: FSWatcher;
   private readyPromise: Promise<void>;
   private listeners: ((e: FileChangeEvent) => void)[] = [];
-  private eventMap: Record<string, number> = {};
+  private eventMap: Record<Event, any> = { add: 0, unlink: 0, change: 0 };
 
   constructor(opts: {
     cwd: string;

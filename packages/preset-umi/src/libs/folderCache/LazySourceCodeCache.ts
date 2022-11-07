@@ -9,39 +9,24 @@ import { logger, winPath } from '@umijs/utils';
 import fg from 'fast-glob';
 import { readFileSync } from 'fs';
 import { extname, join, relative } from 'path';
-import { FileChangeEvent } from './AutoUpdateFolderCache';
 import { FolderWatch } from './FolderWatch';
+import type { FileChangeEvent, FileContentCache } from './types';
+import { DEFAULT_SRC_IGNORES } from './constant';
 
 export type MergedCodeInfo = {
   code: string;
   imports: readonly ImportSpecifier[];
 };
 
-type AbsPath = string;
-type FileContent = string;
-type FileContentCache = Record<AbsPath, FileContent>;
-
 export type Listener = (info: MergedCodeInfo) => void;
 
 export class LazySourceCodeCache {
   private readonly srcPath: string;
   private readonly cachePath: string;
-  folderWatch: FolderWatch;
+  private folderWatch: FolderWatch;
   private listeners: Listener[] = [];
 
-  private ignores: string[] = [
-    '**/*.d.ts',
-    '**/*.{test,spec}.{js,ts,jsx,tsx}',
-    '**/cypress/**',
-    '**/.umi-production/**',
-    '**/.umi-test/**',
-    '**/node_modules/**',
-    '**/.git/**',
-    '**/dist/**',
-    '**/coverage/**',
-    '**/jest.config.{ts,js}',
-    '**/jest-setup.{ts,js}',
-  ];
+  private ignores: string[] = DEFAULT_SRC_IGNORES;
 
   fileContentCache: FileContentCache = {};
   private pendingFilesEvents: FileChangeEvent[] = [];
@@ -75,7 +60,6 @@ export class LazySourceCodeCache {
     const loaded = await this.filesLoader(files);
 
     for (const f of Object.keys(loaded)) {
-      console.log('file', f);
       this.fileContentCache[f] = loaded[f];
     }
   }
