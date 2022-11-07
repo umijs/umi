@@ -116,7 +116,7 @@ export default class ESMIService {
   async build(data: IPkgData) {
     return axios
       .post<{ success: boolean; data: { ticketId: string } | IImportmapData }>(
-        `${this.cdnOrigin}/api/v1/esm/build`,
+        `${this.cdnOrigin}/api/v1/esm/build/dev`,
         {
           ...data,
           depTree: await getDepTree(data),
@@ -141,19 +141,21 @@ export default class ESMIService {
       return cache;
     }
 
-    // log dependency list
-    logger.info(chalk.greenBright('Pre-compiling dependencies on esmi:'));
-    data.pkgInfo.exports[0].deps.forEach((dep) => {
-      console.log(chalk.yellow(`  ${dep.name}`));
-    });
-
     // get the build result
     const ret = await this.build(data);
 
     // return importmap if cache is valid
     if ('importMap' in ret) {
+      console.log('ESMi cloud cache used');
+      this.setCache(cacheKey, lodash.pick(ret, 'importMap', 'deps'));
       return ret;
     }
+
+    // log dependency list
+    logger.info(chalk.greenBright('Pre-compiling dependencies on esmi:'));
+    data.pkgInfo.exports[0].deps.forEach((dep) => {
+      console.log(chalk.yellow(`  ${dep.name}`));
+    });
 
     // get build ticket id if cache missed
     const { ticketId } = ret;
