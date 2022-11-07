@@ -23,6 +23,8 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
   const map = new Map<string, IExportHtmlItem>();
 
   Object.values(routes).forEach((route) => {
+    const is404 = route.absPath === '/*';
+
     if (
       // skip layout
       !route.isLayout &&
@@ -31,16 +33,13 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
       // skip `*` route, because `*` is not working for most site serve services
       (!route.path.includes('*') ||
         // except `404.html`
-        route.absPath === '/*')
+        is404)
     ) {
-      const file =
-        route.absPath === '/*'
-          ? '404.html'
-          : join('.', route.absPath, 'index.html');
+      const file = is404 ? '404.html' : join('.', route.absPath, 'index.html');
 
       map.set(file, {
         route: {
-          path: route.absPath,
+          path: is404 ? '/404' : route.absPath,
           redirect: route.redirect,
         },
         file,
