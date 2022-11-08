@@ -9,10 +9,9 @@ import { logger, winPath } from '@umijs/utils';
 import fg from 'fast-glob';
 import { readFileSync } from 'fs';
 import { extname, join, relative } from 'path';
-import {
-  AutoUpdateFolderCache,
-  FileChangeEvent,
-} from './AutoUpdateFolderCache';
+import { AutoUpdateFolderCache } from './AutoUpdateFolderCache';
+import type { FileChangeEvent } from './types';
+import { DEFAULT_SRC_IGNORES } from './constant';
 
 export type MergedCodeInfo = {
   code: string;
@@ -28,19 +27,7 @@ export class AutoUpdateSrcCodeCache {
   folderCache: AutoUpdateFolderCache;
   private listeners: Listener[] = [];
 
-  private ignores: string[] = [
-    '**/*.d.ts',
-    '**/*.{test,spec}.{js,ts,jsx,tsx}',
-    '**/cypress/**',
-    '**/.umi-production/**',
-    '**/.umi-test/**',
-    '**/node_modules/**',
-    '**/.git/**',
-    '**/dist/**',
-    '**/coverage/**',
-    '**/jest.config.{ts,js}',
-    '**/jest-setup.{ts,js}',
-  ];
+  private ignores: string[] = DEFAULT_SRC_IGNORES;
 
   constructor(opts: { cwd: string; cachePath: string }) {
     this.srcPath = opts.cwd;

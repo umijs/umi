@@ -22,6 +22,8 @@ type MergedCodeInfo = {
 type AutoUpdateSrcCodeCache = {
   register(listener: (info: MergedCodeInfo) => void): void;
   getMergedCode(): MergedCodeInfo;
+  handleFileChangeEvents(events: FileChangeEvent[]): void;
+  replayChangeEvents(): FileChangeEvent[];
 };
 
 interface IOpts {
@@ -35,7 +37,7 @@ export type Match = ReturnType<typeof checkMatch> & { version: string };
 type Matched = Record<string, Match>;
 
 export class StaticDepInfo {
-  private opts: IOpts;
+  public opts: IOpts;
   private readonly cacheFilePath: string;
 
   private mfsu: MFSU;
@@ -74,7 +76,6 @@ export class StaticDepInfo {
     this.cwd = this.mfsu.opts.cwd!;
 
     opts.srcCodeCache.register((info) => {
-      this.produced.push({ changes: info.events });
       this.currentDep = this._getDependencies(info.code, info.imports);
     });
 
