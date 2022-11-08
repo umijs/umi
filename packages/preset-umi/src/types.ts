@@ -56,7 +56,7 @@ export type ILink = Partial<{
 }>;
 export type IMeta = Partial<{
   content: string;
-  httpEquiv: string;
+  'http-equiv': string;
   name: string;
   scheme: string;
 }>;

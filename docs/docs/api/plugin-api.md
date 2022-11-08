@@ -337,7 +337,7 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ```ts
 {
   content?: string,
-  httpEquiv?: string,
+  'http-equiv'?: string,
   name?: string,
   scheme?: string  
 }
