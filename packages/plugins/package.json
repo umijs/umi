@@ -1,6 +1,6 @@
 {
   "name": "@umijs/plugins",
-  "version": "4.0.0-canary.20221108.3",
+  "version": "4.0.0-canary.20221108.4",
   "description": "@umijs/plugins",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/plugins#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -27,7 +27,7 @@
     "@ant-design/antd-theme-variable": "^1.0.0",
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
-    "@umijs/bundler-utils": "4.0.0-canary.20221108.3",
+    "@umijs/bundler-utils": "4.0.0-canary.20221108.4",
     "@umijs/valtio": "^1.0.0",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",
@@ -48,7 +48,7 @@
     "warning": "^4.0.3"
   },
   "devDependencies": {
-    "umi": "4.0.0-canary.20221108.3"
+    "umi": "4.0.0-canary.20221108.4"
   },
   "publishConfig": {
     "access": "public"
