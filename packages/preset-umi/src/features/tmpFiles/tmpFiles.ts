@@ -434,7 +434,9 @@ export default function EmptyRoute() {
           serverRendererPath,
           umiServerPath,
           validKeys,
-          assetsPath: join(api.paths.absOutputPath, 'build-manifest.json'),
+          assetsPath: winPath(
+            join(api.paths.absOutputPath, 'build-manifest.json'),
+          ),
           env: JSON.stringify(api.env),
         },
       });
