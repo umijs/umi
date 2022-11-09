@@ -14,11 +14,6 @@ export function __getRoot() {
   return root;
 }
 
-/**
- * 这个组件的功能是 history 发生改变的时候重新触发渲染
- * @param props
- * @returns
- */
 function BrowserRoutes(props: {
   routes: any;
   clientRoutes: any;
@@ -66,91 +61,21 @@ export function Routes() {
   return useRoutes(clientRoutes);
 }
 
-/**
- * umi 渲染需要的配置，在node端调用的哦
- */
-export type RenderClientOpts = {
-  /**
-   * 配置 webpack 的 publicPath。
-   * @doc https://umijs.org/docs/api/config#publicpath
-   */
+export function renderClient(opts: {
   publicPath?: string;
-  /**
-   * 是否是 runtimePublicPath
-   * @doc https://umijs.org/docs/api/config#runtimepublicpath
-   */
   runtimePublicPath?: boolean;
-  /**
-   * react dom 渲染的的目标 dom
-   * @doc 一般不需要改，微前端的时候会变化
-   */
   rootElement?: HTMLElement;
-  /**
-   * 当前的路由配置
-   */
   routes: IRoutesById;
-  /**
-   * 当前的路由对应的dom组件
-   */
   routeComponents: IRouteComponents;
-  /**
-   * 插件的执行实例
-   */
   pluginManager: any;
-  /**
-   * 设置路由 base，部署项目到非根目录下时使用。
-   * @doc https://umijs.org/docs/api/config#base
-   */
   basename?: string;
-  /**
-   * loading 中展示的组件 dom
-   */
   loadingComponent?: React.ReactNode;
-  /**
-   * react router 的 history，用于控制列表渲染
-   * @doc https://umijs.org/docs/api/config#history
-   * 有多种不同的类型，测试的时候建议用 内存路由，默认是 browserHistory
-   */
   history: History;
-  /**
-   * ssr 的配置
-   */
   hydrate?: boolean;
-
-  /**
-   * 直接返回组件，是为了方便测试
-   */
-  components?: boolean;
-  /**
-   * 启用 react-router 5 兼容模式。
-   * 此模式下，路由组件的 props 会包含 location、match、history 和 params 属性，和 react-router 5 的保持一致。
-   */
   reactRouter5Compat?: boolean;
-};
-/**
- * umi max 所需要的所有插件列表，用于获取provide
- */
-const UMI_CLIENT_RENDER_REACT_PLUGIN_LIST = [
-  // Lowest to the highest priority
-  'innerProvider',
-  'i18nProvider',
-  'accessProvider',
-  'dataflowProvider',
-  'outerProvider',
-  'rootContainer',
-];
-
-/**
- *
- * @param {RenderClientOpts} opts - 插件相关的配置
- * @param {React.ReactElement} routesElement 需要渲染的 routers，为了方便测试注入才导出
- * @returns @returns A function that returns a React component.
- */
-const getBrowser = (
-  opts: RenderClientOpts,
-  routesElement: React.ReactElement,
-) => {
+}) {
   const basename = opts.basename || '/';
+  const rootElement = opts.rootElement || document.getElementById('root')!;
   const clientRoutes = createClientRoutes({
     routesById: opts.routes,
     routeComponents: opts.routeComponents,
@@ -164,7 +89,6 @@ const getBrowser = (
       routes: clientRoutes,
     },
   });
-
   let rootContainer = (
     <BrowserRoutes
       basename={basename}
@@ -173,12 +97,18 @@ const getBrowser = (
       clientRoutes={clientRoutes}
       history={opts.history}
     >
-      {routesElement}
+      <Routes />
     </BrowserRoutes>
   );
-
-  // 加载所有需要的插件
-  for (const key of UMI_CLIENT_RENDER_REACT_PLUGIN_LIST) {
+  for (const key of [
+    // Lowest to the highest priority
+    'innerProvider',
+    'i18nProvider',
+    'accessProvider',
+    'dataflowProvider',
+    'outerProvider',
+    'rootContainer',
+  ]) {
     rootContainer = opts.pluginManager.applyPlugins({
       type: 'modify',
       key: key,
@@ -191,10 +121,6 @@ const getBrowser = (
     });
   }
 
-  /**
-   * umi 增加完 Provide 的 react dom，可以直接交给 react-dom 渲染
-   * @returns {React.ReactElement}
-   */
   const Browser = () => {
     const [clientLoaderData, setClientLoaderData] = useState<ILoaderData>({});
     const [serverLoaderData, setServerLoaderData] = useState<ILoaderData>(
@@ -256,7 +182,6 @@ const getBrowser = (
               .then((data) => {
                 // setServerLoaderData when startTransition because if ssr is enabled,
                 // the component may being hydrated and setLoaderData will break the hydration
-                // @ts-ignore
                 React.startTransition(() => {
                   setServerLoaderData((d) => ({ ...d, [id]: data }));
                 });
@@ -302,29 +227,16 @@ const getBrowser = (
       </AppContext.Provider>
     );
   };
-  return Browser;
-};
-
-/**
- *  执行 react dom 的 render 方法
- * @param {RenderClientOpts} opts - 插件相关的配置
- * @returns void
- */
-export function renderClient(opts: RenderClientOpts) {
-  const rootElement = opts.rootElement || document.getElementById('root')!;
-  const Browser = getBrowser(opts, <Routes />);
-  // 为了测试，直接返回组件
-  if (opts.components) return Browser;
 
   if (opts.hydrate) {
     ReactDOM.hydrateRoot(rootElement, <Browser />);
-    return;
+  } else {
+    if (ReactDOM.createRoot) {
+      root = ReactDOM.createRoot(rootElement);
+      root.render(<Browser />);
+    } else {
+      // @ts-ignore
+      ReactDOM.render(<Browser />, rootElement);
+    }
   }
-
-  if (ReactDOM.createRoot) {
-    ReactDOM.createRoot(rootElement).render(<Browser />);
-    return;
-  }
-  // @ts-ignore
-  ReactDOM.render(<Browser />, rootElement);
 }
