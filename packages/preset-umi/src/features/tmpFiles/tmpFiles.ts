@@ -1,4 +1,4 @@
-import { lodash, tryPaths, winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
