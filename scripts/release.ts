@@ -40,17 +40,24 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // check npm ownership
   logger.event('check npm ownership');
   const whoami = (await $`npm whoami`).stdout.trim();
-  await Promise.all(
-    ['umi', '@umijs/core'].map(async (pkg) => {
-      const owners = (await $`npm owner ls ${pkg}`).stdout
-        .trim()
-        .split('\n')
-        .map((line) => {
-          return line.split(' ')[0];
-        });
-      assert(owners.includes(whoami), `${pkg} is not owned by ${whoami}`);
-    }),
-  );
+  try {
+    await Promise.all(
+      ['umi', '@umijs/core'].map(async (pkg) => {
+        const owners = (await $`npm owner ls ${pkg}`).stdout
+          .trim()
+          .split('\n')
+          .map((line) => {
+            return line.split(' ')[0];
+          });
+        assert(owners.includes(whoami), `${pkg} is not owned by ${whoami}`);
+      }),
+    );
+  } catch (e: any) {
+    // only throw ownership error
+    if (e.message.includes('is not owned by')) {
+      throw e;
+    }
+  }
 
   // check package.json
   logger.event('check package.json info');
