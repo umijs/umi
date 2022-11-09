@@ -48,6 +48,7 @@
     "warning": "^4.0.3"
   },
   "devDependencies": {
+    "antd": "^4.24.1",
     "umi": "4.0.0-canary.20221108.5"
   },
   "publishConfig": {
