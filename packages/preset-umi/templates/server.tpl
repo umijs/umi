@@ -1,4 +1,4 @@
-import { getClientRootComponent } from '{{{ serverRendererPath }}}';
+import { getClientRootComponent, getHelmetContext } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
@@ -42,6 +42,7 @@ const createOpts = {
   getRoutes,
   manifest,
   getClientRootComponent,
+  helmetContext: getHelmetContext(),
   createHistory,
 };
 const requestHandler = createRequestHandler(createOpts);
