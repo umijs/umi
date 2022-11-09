@@ -371,14 +371,7 @@ export default function EmptyRoute() {
     // plugin.ts
     const plugins: string[] = await api.applyPlugins({
       key: 'addRuntimePlugin',
-      initialValue: [
-        tryPaths([
-          join(api.paths.absSrcPath, 'app.ts'),
-          join(api.paths.absSrcPath, 'app.tsx'),
-          join(api.paths.absSrcPath, 'app.jsx'),
-          join(api.paths.absSrcPath, 'app.js'),
-        ]),
-      ].filter(Boolean),
+      initialValue: [api.appData.appJS?.path].filter(Boolean),
     });
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
