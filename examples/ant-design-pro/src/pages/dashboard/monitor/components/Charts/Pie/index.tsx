@@ -2,7 +2,7 @@ import { DataView } from '@antv/data-set';
 import { Divider } from 'antd';
 import { Chart, Coord, Geom, Tooltip } from 'bizcharts';
 import classNames from 'classnames';
-import Debounce from 'lodash.debounce';
+import { debounce as Debounce } from 'lodash';
 import React, { Component } from 'react';
 import ReactFitText from 'react-fittext';
 import autoHeight from '../autoHeight';
