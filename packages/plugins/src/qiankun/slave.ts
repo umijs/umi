@@ -292,6 +292,10 @@ export { connectMaster } from './connectMaster';
       };
 
       if (masterEntry && proxyToMasterEnabled) {
+        await api.applyPlugins({
+          key: 'onLocalProxyStart',
+          type: api.ApplyPluginsType.event,
+        });
         return createProxyMiddleware(
           (pathname) => pathname !== '/local-dev-server',
           {
