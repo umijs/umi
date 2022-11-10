@@ -259,7 +259,12 @@ PORT=8888 umi dev
       if (api.config.mfsu?.strategy === 'eager') {
         srcCodeCache = new LazySourceCodeCache({
           cwd: api.paths.absSrcPath,
-          cachePath: join(api.paths.absNodeModulesPath, '.cache', 'mfsu', 'v4'),
+          cachePath: join(
+            api.paths.absNodeModulesPath,
+            '.cache',
+            'mfsu',
+            'mfsu_v4',
+          ),
         });
         await srcCodeCache!.init();
         addUnWatch(() => {
