@@ -4,6 +4,7 @@ import type {
   Request,
   Response,
 } from '@umijs/bundler-utils/compiled/express';
+import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync, statSync, existsSync } from 'fs';
@@ -350,6 +351,9 @@ promise new Promise(resolve => {
           next();
         }
       },
+      // 兜底依赖构建时, 代码中有指定 chunk 名的情况
+      // TODO: should respect to publicPath
+      express.static(this.opts.tmpBase!),
     ];
   }
 
