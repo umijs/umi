@@ -352,6 +352,7 @@ promise new Promise(resolve => {
         }
       },
       // 兜底依赖构建时, 代码中有指定 chunk 名的情况
+      // TODO: should respect to publicPath
       express.static(this.opts.tmpBase!),
     ];
   }
