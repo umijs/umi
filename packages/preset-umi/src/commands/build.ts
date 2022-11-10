@@ -164,16 +164,16 @@ umi build --clean
             api.config.vite
               ? []
               : [
-                  ...(assetsMap['framework.css'] || []),
-                  ...(assetsMap['umi.css'] || []),
+                  ...(assetsMap['framework.css'] || []).map((src) => ({ src })),
+                  ...(assetsMap['umi.css'] || []).map((src) => ({ src })),
                 ],
           ),
           scripts: (api.config.vite
             ? []
             : [
                 // framework 先写死，后续考虑通过插件的方式注入
-                ...(assetsMap['framework.js'] || []),
-                ...(assetsMap['umi.js'] || []),
+                ...(assetsMap['framework.js'] || []).map((src) => ({ src })),
+                ...(assetsMap['umi.js'] || []).map((src) => ({ src })),
               ]
           ).concat(markupArgs.scripts),
           esmScript: !!opts.config.esm || vite,
