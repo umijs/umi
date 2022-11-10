@@ -104,7 +104,7 @@ export default PageA;
 
 - Type: `boolean`
 
-是否有权限，通常通过 `useAcces` 获取后传入进来。
+是否有权限，通常通过 `useAccess` 获取后传入进来。
 
 #### fallback
 
