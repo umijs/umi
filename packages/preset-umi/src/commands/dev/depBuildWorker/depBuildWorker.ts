@@ -105,7 +105,7 @@ async function start() {
     depEsBuildConfig,
     externals,
   });
-  logger.info('[MFSU][eager] worker init, takes', Date.now() - start);
+  logger.info(`[MFSU][eager] worker init, takes ${Date.now() - start}ms`);
 
   scheduleBuild();
 }
