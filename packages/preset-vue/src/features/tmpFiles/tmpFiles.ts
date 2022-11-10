@@ -35,6 +35,7 @@ export default (api: IApi) => {
           key: 'modifyRendererPath',
         }),
       );
+      const routes = api.appData.routes;
 
       api.writeTmpFile({
         noPluginDir: true,
@@ -42,6 +43,16 @@ export default (api: IApi) => {
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
           rendererPath,
+          routePaths: Object.keys(routes)
+            .reduce((acc: string[], key: string) => {
+              const route = routes[key];
+              if (!route.path || route.path === '*') {
+                return acc;
+              }
+              acc.push(`"${route.path}"`);
+              return acc;
+            }, [])
+            .join(' | '),
         },
       });
 

@@ -454,6 +454,16 @@ export default function EmptyRoute() {
         tplPath: join(TEMPLATES_DIR, 'history.tpl'),
         context: {
           historyPath,
+          routePaths: Object.keys(clonedRoutes)
+            .reduce((acc: string[], key: string) => {
+              const route = clonedRoutes[key];
+              if (!route.path || route.path === '*') {
+                return acc;
+              }
+              acc.push(`"${route.path}"`);
+              return acc;
+            }, [])
+            .join(' | '),
         },
       });
     }
@@ -525,7 +535,9 @@ export default function EmptyRoute() {
         ).join(', ')} } from '${umiPluginPath}';`,
       );
       // @@/core/history.ts
-      exports.push(`export { history, createHistory } from './core/history';`);
+      exports.push(
+        `export { history, createHistory, $route } from './core/history';`,
+      );
       checkMembers({
         members: ['history', 'createHistory'],
         exportMembers,

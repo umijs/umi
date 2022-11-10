@@ -197,6 +197,8 @@ export default withAuth(TheOldPage)
 
 组件内还可以使用 [`useNavigate`](../api/api#usenavigate) hook
 
+如果你希望在使用路由的地方有路由跳转路径的提示，可以使用[`$route`](../api/api/#$route) API
+
 ## Link 组件
 
 比如：
