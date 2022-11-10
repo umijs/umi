@@ -18,6 +18,7 @@ interface CreateRequestHandlerOptions {
   getValidKeys: () => any;
   getRoutes: (PluginManager: any) => any;
   getClientRootComponent: (PluginManager: any) => any;
+  helmetContext: any;
   createHistory: (opts: any) => any;
 }
 
@@ -103,7 +104,24 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
           next();
         };
         writable.on('finish', () => {
-          resolve(Buffer.concat(chunks).toString('utf8'));
+          let html = Buffer.concat(chunks).toString('utf8');
+
+          // append helmet tags to head
+          html = html.replace(
+            /(<\/head>)/,
+            [
+              opts.helmetContext.helmet.title.toString(),
+              opts.helmetContext.helmet.priority.toString(),
+              opts.helmetContext.helmet.meta.toString(),
+              opts.helmetContext.helmet.link.toString(),
+              opts.helmetContext.helmet.script.toString(),
+              '$1',
+            ]
+              .filter(Boolean)
+              .join('/n'),
+          );
+
+          resolve(html);
         });
 
         // why not use `renderToStaticMarkup` or `renderToString`?

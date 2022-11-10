@@ -23,6 +23,7 @@ export {
   useRoutes,
   useSearchParams,
 } from 'react-router-dom';
+export { Helmet } from 'react-helmet-async';
 export {
   useAppData,
   useClientLoaderData,
