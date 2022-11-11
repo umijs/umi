@@ -275,6 +275,8 @@ export function componentToChunkName(component: string, cwd?: string): string {
         )
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
+        // 转换 tnpm node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
+        .replace(/@/g, '_')
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')
         .replace(/\.vue?$/, '')
@@ -283,6 +285,8 @@ export function componentToChunkName(component: string, cwd?: string): string {
         // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
         // ref: https://github.com/umijs/umi/issues/4155
         .replace(/[\[\]]/g, '')
+        // node_modules 文件名在 gh-pages 是默认忽略的，会导致访问 404
+        .replace(/^node_modules__/, 'nm__')
         // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
         .replace(/^.umi-production__/, 't__')
         // 避免产出隐藏文件（比如 .dumi/theme）下的路由组件
