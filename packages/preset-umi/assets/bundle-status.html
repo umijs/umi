@@ -87,6 +87,9 @@
         margin-top: 20px;
         font-size: 13px;
         color: #999999;
+        max-width: calc(100vw - 500px);
+        text-align: center;
+        white-space: pre-wrap;
       }
 
       @keyframes fade-in-out {
@@ -185,7 +188,7 @@
         if (hasProgressDetails) {
           const details = data.bundleStatus.progresses[0].details;
           if (details.length) {
-              progressDetails.innerHTML = details.join('<br />');
+            progressDetails.innerHTML = details.join('<br />');
           }
         }
 
