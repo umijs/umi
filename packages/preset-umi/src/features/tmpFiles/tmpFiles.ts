@@ -348,8 +348,8 @@ export default function EmptyRoute() {
     for (const id of Object.keys(clonedRoutes)) {
       for (const key of Object.keys(clonedRoutes[id])) {
         const route = clonedRoutes[id];
-        // Remove __ prefix props and absPath props
-        if (key.startsWith('__') || key.startsWith('absPath')) {
+        // Remove __ prefix props, absPath props and file props
+        if (key.startsWith('__') || ['absPath', 'file'].includes(key)) {
           delete route[key];
         }
       }
