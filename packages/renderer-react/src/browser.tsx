@@ -1,6 +1,7 @@
 import { History } from 'history';
 import React, { useCallback, useEffect, useState } from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
+import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
@@ -284,22 +285,24 @@ const getBrowser = (
     }, []);
 
     return (
-      <AppContext.Provider
-        value={{
-          routes: opts.routes,
-          routeComponents: opts.routeComponents,
-          clientRoutes,
-          pluginManager: opts.pluginManager,
-          rootElement: opts.rootElement!,
-          basename,
-          clientLoaderData,
-          serverLoaderData,
-          preloadRoute: handleRouteChange,
-          history: opts.history,
-        }}
-      >
-        {rootContainer}
-      </AppContext.Provider>
+      <HelmetProvider context={{}}>
+        <AppContext.Provider
+          value={{
+            routes: opts.routes,
+            routeComponents: opts.routeComponents,
+            clientRoutes,
+            pluginManager: opts.pluginManager,
+            rootElement: opts.rootElement!,
+            basename,
+            clientLoaderData,
+            serverLoaderData,
+            preloadRoute: handleRouteChange,
+            history: opts.history,
+          }}
+        >
+          {rootContainer}
+        </AppContext.Provider>
+      </HelmetProvider>
     );
   };
   return Browser;
