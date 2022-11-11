@@ -275,6 +275,8 @@ export function componentToChunkName(component: string, cwd?: string): string {
         )
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
+        // convert @ of route file which from tnpm node_modules
+        .replace(/@/g, '_')
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')
         .replace(/\.vue?$/, '')
