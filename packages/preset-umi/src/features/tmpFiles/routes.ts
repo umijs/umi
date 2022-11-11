@@ -128,8 +128,6 @@ export async function getRoutes(opts: {
   }
 
   // layout routes
-  const absSrcPath = opts.api.paths.absSrcPath;
-
   const absLayoutPath = tryPaths([
     join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
     join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
