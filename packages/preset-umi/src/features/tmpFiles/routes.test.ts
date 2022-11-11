@@ -57,7 +57,7 @@ test('getRoutes', async () => {
   expect(routes[1].parentId).toBe(undefined);
 
   // @@/global-layout
-  expect(routes['@@/global-layout'].file).toBe('@/layouts/index.tsx');
+  expect(routes['@@/global-layout'].file).toContain('layouts/index.tsx');
   expect(routes['@@/global-layout'].parentId).toBe(undefined);
   expect(routes['@@/global-layout'].isLayout).toBe(true);
 
