@@ -93,11 +93,15 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
+    const PKG_TYPE_REFERENCE = `/// <reference types="${
+      pkgPath || '@ant-design/pro-components'
+    }" />`;
     const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
+${PKG_TYPE_REFERENCE}
 import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
 import type { IRoute } from 'umi';
 import React, { useMemo } from 'react';
@@ -203,13 +207,13 @@ const { formatMessage } = useIntl();
     },
   });
 
-  
+
   // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
   const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
     return (!!route.isLayout && route.id !== 'ant-design-pro-layout') || !!route.isWrapper;
   })
   const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
-  
+
   const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
 
   return (
@@ -293,6 +297,7 @@ const { formatMessage } = useIntl();
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
+    ${PKG_TYPE_REFERENCE}
     import type { ProLayoutProps, HeaderProps } from "${
       pkgPath || '@ant-design/pro-components'
     }";
@@ -331,7 +336,7 @@ const { formatMessage } = useIntl();
         runtimeConfig: RunTimeLayoutConfig,
       ) => JSX.Element;
     };
-    `,
+    `.trimStart(),
     });
     api.writeTmpFile({
       path: RUNTIME_TYPE_FILE_NAME,
