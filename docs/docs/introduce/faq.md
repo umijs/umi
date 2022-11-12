@@ -111,17 +111,9 @@ export default {
 
 ## IE 兼容性问题
 
-IE 被淘汰，现代浏览器主流背景下，umi4 默认不兼容 IE ，在 [issues/8658](https://github.com/umijs/umi/issues/8658) 可以参与相关讨论。
+现代浏览器主流背景下，Umi 4 默认不兼容 IE 。
 
-若你需要兼容 es5 ，目前的缓解方法是： 调整 js 与 css 的压缩器
-
-```ts
-// .umirc.ts
-export default {
-  jsMinifier: 'terser',
-  cssMinifier: 'cssnano'
-}
-```
+若你有调整构建兼容目标、兼容非现代浏览器、兼容 IE 浏览器的需求，请参考 [非现代浏览器兼容](../../blog/legacy-browser) 。
 
 ## SSR 问题
 
