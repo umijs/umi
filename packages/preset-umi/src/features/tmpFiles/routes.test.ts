@@ -78,6 +78,9 @@ test('getRoutes', async () => {
     delete routes[id].__absFile;
   });
 
+  // 覆写 layout 的绝对路径地址，用于保持快照稳定
+  routes['@@/global-layout'].file = '@/layouts/index.tsx';
+
   expect(routes).toMatchSnapshot();
 });
 
