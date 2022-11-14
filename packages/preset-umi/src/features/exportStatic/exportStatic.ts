@@ -67,7 +67,7 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
 
     htmlTpl = htmlTpl
       // append helmet content
-      .replace('</head>', `${helmetContent}</head>`)
+      .replace('</head>', `${helmetContent || ''}</head>`)
       // replace #root with pre-rendered body content
       .replace(
         new RegExp(`<div id="${api.config.mountElementId}"[^>]*>.*?</div>`),
