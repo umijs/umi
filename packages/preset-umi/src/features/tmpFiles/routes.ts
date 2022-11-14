@@ -128,8 +128,6 @@ export async function getRoutes(opts: {
   }
 
   // layout routes
-  const absSrcPath = opts.api.paths.absSrcPath;
-
   const absLayoutPath = tryPaths([
     join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
     join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
@@ -137,26 +135,17 @@ export async function getRoutes(opts: {
     join(opts.api.paths.absSrcPath, 'layouts/index.js'),
   ]);
 
-  const layouts = (
-    await opts.api.applyPlugins({
-      key: 'addLayouts',
-      initialValue: [
-        absLayoutPath && {
-          id: '@@/global-layout',
-          file: winPath(absLayoutPath),
-          test(route: any) {
-            return route.layout !== false;
-          },
+  const layouts = await opts.api.applyPlugins({
+    key: 'addLayouts',
+    initialValue: [
+      absLayoutPath && {
+        id: '@@/global-layout',
+        file: winPath(absLayoutPath),
+        test(route: any) {
+          return route.layout !== false;
         },
-      ].filter(Boolean),
-    })
-  ).map((layout: { file: string }) => {
-    // prune local path prefix, avoid mix in outputs
-    layout.file = layout.file.replace(
-      new RegExp(`^${winPath(absSrcPath)}`),
-      '@',
-    );
-    return layout;
+      },
+    ].filter(Boolean),
   });
   for (const layout of layouts) {
     addParentRoute({
