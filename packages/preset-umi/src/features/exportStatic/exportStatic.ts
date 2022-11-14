@@ -58,10 +58,16 @@ async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
 
   try {
     const markup = await markupRender(path);
-    const [mainTpl, extraTpl] = markup.split('</html>');
+    const [mainTpl, extraTpl = ''] = markup.split('</html>');
+    // TODO: improve return type for markup generator
+    const helmetContent = mainTpl.match(
+      /<head>[^]*?(<[^>]+data-rh[^]+)<\/head>/,
+    )?.[1];
     const bodyContent = mainTpl.match(/<body[^>]*>([^]+?)<\/body>/)?.[1];
 
     htmlTpl = htmlTpl
+      // append helmet content
+      .replace('</head>', `${helmetContent}</head>`)
       // replace #root with pre-rendered body content
       .replace(
         new RegExp(`<div id="${api.config.mountElementId}"[^>]*>.*?</div>`),
