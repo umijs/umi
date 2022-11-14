@@ -11,6 +11,8 @@ interface IOpts {
 export type DepModule = {
   file: string;
   version: string;
+  // 如果 importer 不存在, 需要保证 file 可以从 cwd 解析到
+  importer?: string;
 };
 
 export interface IDepInfo {
