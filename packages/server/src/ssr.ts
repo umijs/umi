@@ -118,7 +118,7 @@ export function createMarkupGenerator(opts: CreateRequestHandlerOptions) {
               '$1',
             ]
               .filter(Boolean)
-              .join('/n'),
+              .join('\n'),
           );
 
           resolve(html);
