@@ -132,10 +132,12 @@ export class ModuleGraph {
   }
 
   getDepInfo(mod: ModuleNode) {
+    const [importer] = mod.importers;
+
     return {
       file: mod.file,
       version: mod.version!,
-      importer: Array.from(mod.importers)[0]?.file,
+      importer: importer?.file,
     };
   }
 
