@@ -2,7 +2,7 @@ import extraConfig from './extraConfig';
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-  base: '/foo',
+  base: '/foo/',
   publicPath: '/foo/',
   // history: { type: 'hash' },
   routes: [
