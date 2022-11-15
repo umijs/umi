@@ -13,6 +13,7 @@ const resolver = enhancedResolve.create({
   extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   exportsFields: ['exports'],
   conditionNames: ['import', 'module', 'require', 'node'],
+  symlinks: false,
 });
 
 async function resolve(context: string, path: string): Promise<string> {
