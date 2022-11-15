@@ -16,7 +16,7 @@ export async function getExposeFromContent(opts: {
     opts.filePath &&
     /\.(css|less|scss|sass|stylus|styl)$/.test(opts.filePath)
   ) {
-    return `import '${opts.filePath}';`;
+    return `import '${importPath}';`;
   }
 
   // Support Assets Files
