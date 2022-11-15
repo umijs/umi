@@ -38,6 +38,7 @@ export default (api: IApi) => {
     const content = await joi2Types(joi.object(properties), {
       interfaceName,
       bannerComment: '// Created by Umi Plugin',
+      unknownAny: true,
     }).catch((err: Error) => {
       api.logger.error('Config types generated error', err);
       return Promise.resolve(`export interface ${interfaceName} {}`);
