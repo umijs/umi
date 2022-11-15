@@ -4,7 +4,8 @@ import type { Root } from '@umijs/utils/compiled/@hapi/joi';
 
 export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
-    base: (Joi) => Joi.string(),
+    base: (Joi) =>
+      Joi.string().label('base').pattern(/\/$/, { name: `"endsWith '/'"` }),
     conventionRoutes: (Joi) =>
       Joi.object({
         base: Joi.string(),
