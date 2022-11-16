@@ -28,7 +28,7 @@ export default (api: IApi) => {
 
       h.addScript('prepare', 'husky install');
 
-      // 添加 .lintstagedrc
+      // create .lintstagedrc
       if (
         !existsSync(join(api.cwd, '.lintstagedrc')) &&
         !api.pkg['lint-staged']
