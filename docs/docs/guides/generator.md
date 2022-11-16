@@ -221,3 +221,18 @@ set config:plugins on /Users/umi/umi-playground/.umirc.ts
 info  - Update config file
 info  - Write example model
 ```
+
+### Precommit 配置生成器
+
+为项目生成 [precommit](https://typicode.github.io/husky) 配置，命令执行后，`umi` 会生成推荐的 precommit 配置和安装相应的依赖。
+
+```bash
+$umi g precommit
+info  - @local
+info  - Update package.json for devDependencies
+info  - Update package.json for scripts
+info  - Write .lintstagedrc
+info  - Create .husky
+info  - Write commit-msg
+info  - Write pre-commit
+```
