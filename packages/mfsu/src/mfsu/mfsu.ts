@@ -388,7 +388,7 @@ export function resolvePublicPath(config: Configuration): string {
 
   assert(typeof publicPath === 'string', 'Not support function publicPath now');
 
-  return String(publicPath);
+  return publicPath;
 }
 
 export interface IMFSUStrategy {
