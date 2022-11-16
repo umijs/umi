@@ -45,9 +45,18 @@ export function TestBrowser(props: TestBrowserProps) {
       });
       return {
         routes,
+{{#hydrate}}
+        hydrate: true,
+{{/hydrate}}
+{{#reactRouter5Compat}}
+        reactRouter5Compat: true,
+{{/reactRouter5Compat}}
         routeComponents,
         pluginManager,
         rootElement: contextOpts.rootElement || document.getElementById('root'),
+{{#loadingComponent}}
+        loadingComponent: Loading,
+{{/loadingComponent}}
         publicPath,
         runtimePublicPath,
         history,
