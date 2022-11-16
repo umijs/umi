@@ -11,6 +11,7 @@ export default () => {
         require.resolve('@umijs/did-you-know/dist/plugin'),
       require.resolve('./features/404/404'),
       require.resolve('./features/appData/appData'),
+      require.resolve('./features/appData/umiInfo'),
       require.resolve('./features/check/check'),
       require.resolve('./features/clientLoader/clientLoader'),
       require.resolve('./features/codeSplitting/codeSplitting'),
