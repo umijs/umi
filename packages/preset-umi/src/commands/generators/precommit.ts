@@ -1,5 +1,5 @@
 import { GeneratorType } from '@umijs/core';
-import { logger } from '@umijs/utils';
+import { logger, execa } from '@umijs/utils';
 import { existsSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -17,6 +17,7 @@ export default (api: IApi) => {
     type: GeneratorType.generate,
     fn: async () => {
       const h = new GeneratorHelper(api);
+      const cliName = api.appData.umi.cliName;
 
       h.addDevDeps({
         husky: '^8',
@@ -25,61 +26,72 @@ export default (api: IApi) => {
         'lint-staged': '^13',
       });
 
-      h.addScripts({
-        prepare: 'husky install',
-      });
+      h.addScript('prepare', 'husky install');
 
       // 添加 .lintstagedrc
-      writeFileSync(
-        join(api.cwd, '.lintstagedrc'),
-        `
+      if (
+        !existsSync(join(api.cwd, '.lintstagedrc')) &&
+        !api.pkg['lint-staged']
+      ) {
+        writeFileSync(
+          join(api.cwd, '.lintstagedrc'),
+          `
 {
   "*.{md,json}": [
     "prettier --cache --write"
   ],
   "*.{js,jsx}": [
-    "umi lint --fix --eslint-only",
+    "${cliName} lint --fix --eslint-only",
     "prettier --cache --write"
   ],
   "*.{css,less}": [
-    "umi lint --fix --stylelint-only",
+    "${cliName} lint --fix --stylelint-only",
     "prettier --cache --write"
   ],
   "*.ts?(x)": [
-    "umi lint --fix --eslint-only",
+    "${cliName} lint --fix --eslint-only",
     "prettier --cache --parser=typescript --write"
   ]
 }
 `.trimStart(),
-      );
-      logger.info('Write .lintstagedrc');
-
+        );
+        logger.info('Write .lintstagedrc');
+      }
+      // create .husky
       if (!existsSync(join(api.cwd, '.husky'))) {
         mkdirSync(join(api.cwd, '.husky'));
         logger.info('Create .husky');
-      }
 
-      writeFileSync(
-        join(api.cwd, '.husky/commit-msg'),
-        `
+        // create commit-msg
+        if (!existsSync(join(api.cwd, '.husky/commit-msg'))) {
+          writeFileSync(
+            join(api.cwd, '.husky/commit-msg'),
+            `
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-
-npx --no-install umi verify-commit $1
+    
+npx --no-install ${cliName} verify-commit $1
 `.trimStart(),
-      );
-      logger.info('Write commit-msg');
+          );
+          logger.info('Write commit-msg');
+          execa.execaCommand('chmod +x .husky/commit-msg');
+        }
 
-      writeFileSync(
-        join(api.cwd, '.husky/pre-commit'),
-        `
+        // create pre-commit
+        if (!existsSync(join(api.cwd, '.husky/pre-commit'))) {
+          writeFileSync(
+            join(api.cwd, '.husky/pre-commit'),
+            `
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-
+    
 npx --no-install lint-staged --quiet
 `.trimStart(),
-      );
-      logger.info('Write pre-commit');
+          );
+          logger.info('Write pre-commit');
+          execa.execaCommand('chmod +x .husky/pre-commit');
+        }
+      }
 
       h.installDeps();
     },
