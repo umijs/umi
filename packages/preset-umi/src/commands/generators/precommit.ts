@@ -57,40 +57,41 @@ export default (api: IApi) => {
         );
         logger.info('Write .lintstagedrc');
       }
+
       // create .husky
       if (!existsSync(join(api.cwd, '.husky'))) {
         mkdirSync(join(api.cwd, '.husky'));
         logger.info('Create .husky');
+      }
 
-        // create commit-msg
-        if (!existsSync(join(api.cwd, '.husky/commit-msg'))) {
-          writeFileSync(
-            join(api.cwd, '.husky/commit-msg'),
-            `
+      // create commit-msg
+      if (!existsSync(join(api.cwd, '.husky/commit-msg'))) {
+        writeFileSync(
+          join(api.cwd, '.husky/commit-msg'),
+          `
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-    
+  
 npx --no-install ${cliName} verify-commit $1
 `.trimStart(),
-          );
-          logger.info('Write commit-msg');
-          execa.execaCommand('chmod +x .husky/commit-msg');
-        }
+        );
+        logger.info('Write commit-msg');
+        execa.execaCommand('chmod +x .husky/commit-msg');
+      }
 
-        // create pre-commit
-        if (!existsSync(join(api.cwd, '.husky/pre-commit'))) {
-          writeFileSync(
-            join(api.cwd, '.husky/pre-commit'),
-            `
+      // create pre-commit
+      if (!existsSync(join(api.cwd, '.husky/pre-commit'))) {
+        writeFileSync(
+          join(api.cwd, '.husky/pre-commit'),
+          `
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-    
+  
 npx --no-install lint-staged --quiet
 `.trimStart(),
-          );
-          logger.info('Write pre-commit');
-          execa.execaCommand('chmod +x .husky/pre-commit');
-        }
+        );
+        logger.info('Write pre-commit');
+        execa.execaCommand('chmod +x .husky/pre-commit');
       }
 
       h.installDeps();
