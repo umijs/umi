@@ -202,7 +202,8 @@ export class MFSU {
     opts.config.plugins = opts.config.plugins || [];
 
     // support publicPath auto
-    this.publicPath = resolvePublicPath(opts.config);
+    let publicPath = resolvePublicPath(opts.config);
+    this.publicPath = publicPath;
 
     opts.config.plugins!.push(
       ...[
