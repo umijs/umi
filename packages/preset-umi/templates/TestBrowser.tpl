@@ -43,7 +43,7 @@ export function TestBrowser(props: TestBrowserProps) {
         type: 'memory',
         basename,
       });
-      return {
+      const context = {
         routes,
         routeComponents,
         pluginManager,
@@ -54,6 +54,12 @@ export function TestBrowser(props: TestBrowserProps) {
         basename,
         components: true,
       };
+      const modifiedContext = pluginManager.applyPlugins({
+        key: 'modifyClientRenderOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: context,
+      });
+      return modifiedContext;
     };
     genContext().then((context) => {
       setContext(context);
