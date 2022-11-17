@@ -10,6 +10,6 @@
     "zx:noimport": "umi run ./scripts/zx-noimport.ts"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20221117.2"
+    "umi": "4.0.31"
   }
 }
