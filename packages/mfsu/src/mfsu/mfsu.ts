@@ -202,11 +202,8 @@ export class MFSU {
     opts.config.plugins = opts.config.plugins || [];
 
     // support publicPath auto
-    let publicPath = opts.config.output!.publicPath;
-    if (publicPath === 'auto') {
-      publicPath = '/';
-    }
-    this.publicPath = publicPath as string;
+    let publicPath = resolvePublicPath(opts.config);
+    this.publicPath = publicPath;
 
     opts.config.plugins!.push(
       ...[
@@ -382,6 +379,17 @@ promise new Promise(resolve => {
   public getCacheFilePath() {
     return this.strategy.getCacheFilePath();
   }
+}
+
+export function resolvePublicPath(config: Configuration): string {
+  let publicPath = config.output?.publicPath ?? 'auto';
+  if (publicPath === 'auto') {
+    publicPath = '/';
+  }
+
+  assert(typeof publicPath === 'string', 'Not support function publicPath now');
+
+  return publicPath;
 }
 
 export interface IMFSUStrategy {
