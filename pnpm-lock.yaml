@@ -1535,7 +1535,7 @@ importers:
       fast-glob: ^3.2.11
       html-webpack-plugin: 5.5.0
       ini: 3.0.0
-      joi2types: 1.1.0
+      joi2types: 1.1.1
       magic-string: 0.26.2
       multer: 1.4.4
       os-locale: ^6.0.2
@@ -1584,7 +1584,7 @@ importers:
       '@types/multer': 1.4.7
       body-parser: 1.20.0
       ini: 3.0.0
-      joi2types: 1.1.0
+      joi2types: 1.1.1
       multer: 1.4.4
       os-locale: 6.0.2
       sirv: 2.0.2
@@ -12526,6 +12526,7 @@ packages:
 
   /@types/lodash/4.14.184:
     resolution: {integrity: sha512-RoZphVtHbxPZizt4IcILciSWiC6dcn+eZ8oX9IWEYfDMcocdd42f7NPI6fQj+6zI8y4E0L7gu2pcZKLGTRaV9Q==}
+    dev: false
 
   /@types/lodash/4.14.186:
     resolution: {integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==}
@@ -25106,8 +25107,8 @@ packages:
       '@sideway/pinpoint': 2.0.0
     dev: true
 
-  /joi2types/1.1.0:
-    resolution: {integrity: sha512-FRSmkMZHOaqGwTH0jhSIn3WaLcQoACUDTlpLX3ZlWiykrxZO2G5xjdFIKW5fVy0lCj1omXRLRVyJ+x3gx4xr+A==}
+  /joi2types/1.1.1:
+    resolution: {integrity: sha512-zKk1YsxRrGAL3YVo4SmxVdC3FjqsyhvlJPy0XDxzw/cAcThVOC1bL9Mn3278DdPyq9Ofw5sX/ZDKWRbbIVhPIg==}
     peerDependencies:
       '@hapi/joi': 16.x
     dependencies:
@@ -25244,7 +25245,7 @@ packages:
     hasBin: true
     dependencies:
       '@types/json-schema': 7.0.11
-      '@types/lodash': 4.14.184
+      '@types/lodash': 4.14.186
       '@types/prettier': 2.7.0
       cli-color: 2.0.3
       get-stdin: 8.0.0

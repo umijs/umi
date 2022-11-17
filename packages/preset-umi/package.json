@@ -61,7 +61,7 @@
     "@types/multer": "1.4.7",
     "body-parser": "1.20.0",
     "ini": "3.0.0",
-    "joi2types": "1.1.0",
+    "joi2types": "1.1.1",
     "multer": "1.4.4",
     "os-locale": "^6.0.2",
     "sirv": "2.0.2",
