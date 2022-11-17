@@ -2,7 +2,7 @@
   "name": "@example/qiankun-master",
   "private": true,
   "scripts": {
-    "dev": "PORT=8888 max dev",
+    "dev": "cross-env PORT=8888 max dev",
     "preview": "max preview --port 8888",
     "setup": "max setup",
     "start": "npm run dev"
@@ -11,5 +11,8 @@
     "@umijs/max": "4.0.32",
     "react": "18.1.0",
     "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

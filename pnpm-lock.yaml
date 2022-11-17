@@ -636,12 +636,15 @@ importers:
   examples/qiankun-master:
     specifiers:
       '@umijs/max': 4.0.32
+      cross-env: ^7.0.3
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
       '@umijs/max': link:../../packages/max
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
+    devDependencies:
+      cross-env: 7.0.3
 
   examples/qiankun-slave:
     specifiers:
