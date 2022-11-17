@@ -55,7 +55,7 @@ export interface IOpts {
     cacheDirectory?: string;
   };
   pkg?: Record<string, any>;
-  copy?: boolean;
+  disableCopy?: boolean;
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -188,7 +188,7 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // fork-ts-checker
   await addForkTSCheckerPlugin(applyOpts);
   // copy
-  if (opts.copy !== false) {
+  if (!opts.disableCopy) {
     await addCopyPlugin(applyOpts);
   }
   // manifest
