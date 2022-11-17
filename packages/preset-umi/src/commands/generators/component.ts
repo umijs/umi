@@ -65,7 +65,7 @@ export class ComponentGenerator {
 
   async run() {
     const { generateFile, appRoot } = this.opts;
-    const capitalizeName = lodash.capitalize(this.name);
+    const capitalizeName = lodash.upperFirst(this.name);
     const base = join(
       this.opts.srcPath,
       'components',

@@ -35,6 +35,13 @@ test('api name: long/nest/foo/[param]', () => {
   });
 });
 
+test('api name: long/nest/foo/[subParam]', () => {
+  expect(generateApiResKV('long/nest/foo/[subParam]')).toEqual({
+    key: '"fooSubParam"',
+    value: 'req.params["subParam"]',
+  });
+});
+
 test('api name: [ spaced ]', () => {
   expect(generateApiResKV('[ spaced ]')).toEqual({
     key: '"spaced"',
