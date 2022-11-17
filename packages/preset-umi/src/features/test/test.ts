@@ -61,6 +61,7 @@ export default (api: IApi) => {
         ).join('\n'),
         basename: api.config.base,
         historyType: api.config.history.type,
+        reactRouter5Compat: !!api.config.reactRouter5Compat,
         hydrate: !!api.config.ssr,
         loadingComponent:
           existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||

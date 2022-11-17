@@ -76,7 +76,7 @@ npx --no-install ${cliName} verify-commit $1
 `.trimStart(),
         );
         logger.info('Write commit-msg');
-        execa.execaCommand('chmod +x .husky/commit-msg');
+        execa.execaCommandSync('chmod +x .husky/commit-msg');
       }
 
       // create pre-commit
@@ -91,7 +91,7 @@ npx --no-install lint-staged --quiet
 `.trimStart(),
         );
         logger.info('Write pre-commit');
-        execa.execaCommand('chmod +x .husky/pre-commit');
+        execa.execaCommandSync('chmod +x .husky/pre-commit');
       }
 
       h.installDeps();
