@@ -27,25 +27,16 @@ async function render() {
     },
   });
 
-  const contextOpts = pluginManager.applyPlugins({
-    key: 'modifyContextOpts',
-    type: ApplyPluginsType.modify,
-    initialValue: {},
-  });
-
-  const basename = contextOpts.basename || '{{{ basename }}}';
-
-  const history = createHistory({
-    type: contextOpts.historyType || '{{{ historyType }}}',
-    basename,
-    ...contextOpts.historyOpts,
-  });
-
   return (pluginManager.applyPlugins({
     key: 'render',
     type: ApplyPluginsType.compose,
     initialValue() {
-      
+      const contextOpts = pluginManager.applyPlugins({
+        key: 'modifyContextOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: {},
+      });
+      const basename = contextOpts.basename || '{{{ basename }}}';
       const context = {
 {{#hydrate}}
         hydrate: true,
@@ -62,7 +53,11 @@ async function render() {
 {{/loadingComponent}}
         publicPath,
         runtimePublicPath,
-        history,
+        history: createHistory({
+          type: contextOpts.historyType || '{{{ historyType }}}',
+          basename,
+          ...contextOpts.historyOpts,
+        }),
         basename,
       };
       return renderClient(context);
