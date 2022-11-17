@@ -49,9 +49,9 @@ export default (api: IApi) => {
             name(module: any) {
               // e.g. node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es
               const path = module.context.replace(/.pnpm[\\/]/, '');
-              const packageName = path.match(
-                /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-              )[1];
+              const match = path.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+              if (!match) return 'npm.unknown';
+              const packageName = match[1];
               return `npm.${packageName
                 .replace(/@/g, '_at_')
                 .replace(/\+/g, '_')}`;
