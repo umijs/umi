@@ -10,7 +10,7 @@ export default {
     },
     slave: {},
   },
-  base: '/',
+  base: '/base/',
   routes: [
     { path: '/', redirect: '/home' },
     { path: '/home', component: 'index' },

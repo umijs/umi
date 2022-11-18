@@ -5,14 +5,14 @@ describe('QianKun Plugin', () => {
 
   it('can navigate to slave', () => {
     // contains https://docs.cypress.io/api/commands/contains
-    cy.visit('/home');
+    cy.visit('/base/home');
     cy.get('button').click();
 
     cy.contains('Slave Home Page');
   });
 
   it('support hooks in slave app', () => {
-    cy.visit('/slave/count');
+    cy.visit('/base/slave/count');
 
     cy.contains('slave Count');
     cy.contains('count:0');

@@ -2,11 +2,6 @@ import React from 'react';
 import { useMatch } from 'umi';
 import { MicroApp } from './MicroApp';
 
-function removeLastSplash(str:string){
-
-
-}
-
 export function getMicroAppRouteComponent(opts: {
   appName: string;
   base: string;
