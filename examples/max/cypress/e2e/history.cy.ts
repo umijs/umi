@@ -32,14 +32,14 @@ describe('Basic Test', () => {
   });
 
   context('with pathname and query', () => {
-    it('push without pathname', () => {
+    it('push with pathname', () => {
       cy.get('button').contains('history.push(pathname)').click();
 
       cy.url().should('contain', '?t=push');
       cy.url().should('not.contain', 'history');
     });
 
-    it('replace without pathname', () => {
+    it('replace with pathname', () => {
       cy.get('button').contains('history.replace(pathname)').click();
 
       cy.url().should('contain', '?t=replace');
