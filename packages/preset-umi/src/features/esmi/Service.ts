@@ -123,15 +123,18 @@ export default class ESMIService {
       )
       .then((res) => {
         if ('ticketId' in res.data.data) {
-          const debugLog = path.join(
+          const debugData = path.join(
             this.cacheDir,
             'tickets',
             `req_${res.data.data.ticketId}.json`,
           );
 
-          fsExtra.ensureDirSync(path.dirname(debugLog));
-          fsExtra.writeFileSync(debugLog, JSON.stringify(requestData, null, 2));
-          console.log(`ESMi ticket debug log: ${debugLog}`);
+          fsExtra.ensureDirSync(path.dirname(debugData));
+          fsExtra.writeFileSync(
+            debugData,
+            JSON.stringify(requestData, null, 2),
+          );
+          console.log(`ESMi ticket debug data: ${debugData}`);
         }
 
         return res.data.data;

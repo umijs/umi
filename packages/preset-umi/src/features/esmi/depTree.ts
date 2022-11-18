@@ -47,7 +47,7 @@ export async function getDepTree(data: IPkgData): Promise<any> {
     });
   }
 
-  deps.forEach((name) => {
+  deps.concat('@umijs/plugins').forEach((name) => {
     const pkgKey = packageKeys.find((n) => n === `node_modules/${name}`);
     if (pkgKey) {
       result[pkgKey] = packages[pkgKey];
