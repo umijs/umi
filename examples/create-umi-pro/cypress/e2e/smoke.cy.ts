@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 
 describe('Basic Test', () => {
-
   beforeEach(() =>
     Cypress.automation('remote:debugger:protocol', {
       command: 'Network.setCacheDisabled',
@@ -10,7 +9,11 @@ describe('Basic Test', () => {
   );
 
   it('displays some content', () => {
+    cy.intercept(/p__Home__index.js$/).as('chunkLoaded');
+
     cy.visit('/');
+
+    cy.wait('@chunkLoaded');
     cy.contains('欢迎使用 Umi Max ！');
   });
 
