@@ -18,10 +18,10 @@ export function createHistory(opts: any) {
   history = {
     ...h,
     push(to, state) {
-      h.push(patchTo(to), state);
+      h.push(patchTo(to, h), state);
     },
     replace(to, state) {
-      h.replace(patchTo(to), state);
+      h.replace(patchTo(to, h), state);
     },
     get location() {
       return h.location;
