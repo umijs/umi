@@ -9,7 +9,7 @@ describe('Basic Test', () => {
   );
 
   it('displays some content', () => {
-    cy.intercept(/p__Home__index.js$/).as('chunkLoaded');
+    cy.intercept(/p__Home__index/).as('chunkLoaded');
 
     cy.visit('/');
 
