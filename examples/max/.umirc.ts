@@ -51,6 +51,10 @@ export default defineConfig({
         },
       ],
     },
+    {
+      path: '/history',
+      component: 'history',
+    },
   ],
   antd: {
     // import: true,

@@ -8,6 +8,7 @@
     "e2e": "cypress run",
     "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  \\\"pnpm umi-scripts cypress\\\"",
     "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:dev:local": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status 'cypress open'",
     "format": "prettier --cache --write .",
     "preview": "max preview --port 9527",
     "setup": "max setup",
