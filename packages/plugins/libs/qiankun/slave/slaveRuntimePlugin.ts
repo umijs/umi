@@ -2,14 +2,9 @@
 import qiankunRender, { contextOptsStack } from './lifecycles';
 
 export function render(oldRender: any) {
-  return qiankunRender().then(oldRender);
-}
-
-export function modifyContextOpts(memo: any) {
-  // 每次应用 render 的时候会调 modifyClientRenderOpts，这时尝试从队列中取 render 的配置
-  const clientRenderOpts = contextOptsStack.shift();
-  return {
-    ...memo,
-    ...clientRenderOpts,
-  };
+  return qiankunRender().then(() => {
+    // modifyContextOpts 调整到 render 之前执行，oldRender 应该在 qiankunRender 之后，子应用配置又是动态的，所以在这里取配置最合理
+    const clientRenderOpts = contextOptsStack.shift();
+    oldRender(clientRenderOpts);
+  });
 }
