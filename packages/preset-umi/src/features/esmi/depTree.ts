@@ -47,8 +47,13 @@ export async function getDepTree(data: IPkgData): Promise<any> {
     });
   }
 
-  deps.concat('@umijs/plugins').forEach((name) => {
-    const pkgKey = packageKeys.find((n) => n === `node_modules/${name}`);
+  deps.forEach((name) => {
+    // 如果找不到就再向 @umijs/plugins 找
+    const pkgKey =
+      packageKeys.find((n) => n === `node_modules/${name}`) ??
+      packageKeys.find(
+        (n) => n === `node_modules/@umijs/plugins/node_modules/${name}`,
+      );
     if (pkgKey) {
       result[pkgKey] = packages[pkgKey];
       collectDependencies(pkgKey, [name]);
