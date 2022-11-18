@@ -2,6 +2,11 @@ import React from 'react';
 import { useMatch } from 'umi';
 import { MicroApp } from './MicroApp';
 
+function removeLastSplash(str:string){
+
+
+}
+
 export function getMicroAppRouteComponent(opts: {
   appName: string;
   base: string;
@@ -14,7 +19,7 @@ export function getMicroAppRouteComponent(opts: {
     const match = useMatch(routePath);
     const url = match ? match.pathnameBase : '';
     // 默认取静态配置的 base
-    let umiConfigBase = base === '/' ? '' : base;
+    let umiConfigBase = base.slice(-1) === '/' ? base.slice(0, -1) : base;
 
     // 拼接子应用挂载路由
     let runtimeMatchedBase = umiConfigBase + (url.endsWith('/') ? url.substr(0, url.length - 1) : url);
