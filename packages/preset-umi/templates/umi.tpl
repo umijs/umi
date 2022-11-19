@@ -36,7 +36,7 @@ async function render() {
         type: ApplyPluginsType.modify,
         initialValue: {},
       });
-      const basename = contextOpts.basename || '{{{ basename }}}';
+      const basename = contextOpts.basename || window.routerBase || '{{{ basename }}}';
       const context = {
 {{#hydrate}}
         hydrate: true,
