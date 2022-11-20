@@ -13,6 +13,9 @@ export default (api: IApi) => {
         return Joi.object();
       },
     },
+    enableBy() {
+      return api.appData.framework === 'react';
+    },
   });
 
   api.onGenerateFiles(async () => {

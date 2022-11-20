@@ -540,12 +540,14 @@ export default function EmptyRoute() {
           path: '@@/core/terminal.ts',
         });
       }
-      if (
-        process.env.NODE_ENV === 'test' ||
-        // development is for TestBrowser's type
-        process.env.NODE_ENV === 'development'
-      ) {
-        exports.push(`export { TestBrowser } from './testBrowser';`);
+      if (api.appData.framework === 'react') {
+        if (
+          process.env.NODE_ENV === 'test' ||
+          // development is for TestBrowser's type
+          process.env.NODE_ENV === 'development'
+        ) {
+          exports.push(`export { TestBrowser } from './testBrowser';`);
+        }
       }
       // plugins
       exports.push('// plugins');
