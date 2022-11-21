@@ -33,7 +33,10 @@ function patchMicroAppRouteComponent(routes: any[]) {
   });
 
   const getRootRoutes = (routes: any[]) => {
-    const rootRoute = routes.find((route) => route.path === '/');
+    // 重定向根路由不能用作 microAppRuntimeRoutes 的父节点
+    const rootRoute = routes.find(
+      (route) => route.path === '/' && !route.element?.props?.to,
+    );
     if (rootRoute) {
       // 如果根路由是叶子节点，则直接返回其父节点
       if (!rootRoute.children?.length) {
