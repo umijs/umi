@@ -75,7 +75,7 @@ error - [MFSU][eager] build worker failed AssertionError [ERR_ASSERTION]: filePa
 
 ![multi-react-instance](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*ScIJTZobWE4AAAAAAAAAAAAAARQnAQ)
 
-根因在某些复杂场景下，React 的代码被打包多份，再运行时产出了多个 React 实例。解法通过 Module Federation 的 `shared` 配置来避免多实例的出现。
+根因在某些复杂场景下，React 的代码被打包多份，在运行时产出了多个 React 实例。解法通过 Module Federation 的 `shared` 配置来避免多实例的出现。
 如果有其他依赖出现多实例的问题，可以通过类似的方式解决。
 
 ```ts {3-5}
