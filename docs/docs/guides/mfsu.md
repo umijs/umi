@@ -28,7 +28,7 @@ MFSU 编译时分析的工作方式，先对应用项目源码单独进行编译
 
 从下图中以 React 引用的构建举例可以看出，整个过程是串行的。
 
-![normal-proccess](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*VRdhQZDag1UAAAAAAAAAAAAAARQnAQ)
+![normal-process](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*VRdhQZDag1UAAAAAAAAAAAAAARQnAQ)
 
 ### eager 策略 (扫描方式)
 
@@ -44,7 +44,7 @@ mfsu: {
 
 从下图可以看出，编译部分是并行。
 
-![eager-proccess](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*XtZ1Spa9hMEAAAAAAAAAAAAAARQnAQ)
+![eager-process](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*XtZ1Spa9hMEAAAAAAAAAAAAAARQnAQ)
 
 ## 如何选择
 
@@ -54,6 +54,7 @@ mfsu: {
 
 基于优缺点的分析，给出以下建议
 
+- 如果在 mono repo 项目中, 推荐使用 "normal" 策略; 推荐开启配置 ["monoreporedirect"](../api/config#monoreporedirect)
 - 如果你的项目较大，项目代码基数较大，推荐使用 "eager" 策略
 - 如果项目刚刚启动，会频繁的改动依赖，推荐使用 "eager" 策略
 - 其他类型的项目则随意选择。
@@ -74,7 +75,7 @@ error - [MFSU][eager] build worker failed AssertionError [ERR_ASSERTION]: filePa
 
 ![multi-react-instance](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*ScIJTZobWE4AAAAAAAAAAAAAARQnAQ)
 
-根因在某些复杂场景下，React 的代码被打包多份，再运行时产出了多个 React 实例。解法通过 Module Feratation 的 `shared` 配置来避免多实例的出现。
+根因在某些复杂场景下，React 的代码被打包多份，再运行时产出了多个 React 实例。解法通过 Module Federation 的 `shared` 配置来避免多实例的出现。
 如果有其他依赖出现多实例的问题，可以通过类似的方式解决。
 
 ```ts {3-5}
@@ -116,3 +117,27 @@ externals: {
   ...(process.env.NODE_ENV === 'production' ? {b: ['script https://cdn/b.js', b]} : {})
 }
 ```
+
+### 依赖环问题
+
+#### 场景 1
+
+在使用 monorepo 时 ，项目依赖了 A 包，A 依赖了 B 包，而 B 包是项目 monorepo 中子包提供。这行就形成项目源码依赖 A ，A 又重新依赖项目源码的情况。
+这种情况建设使用 MFSU 的 exclude 配置。
+
+```ts {2-4}
+mfsu: {
+  exclude: [
+    'B'
+  ]
+}
+```
+
+#### 场景 2
+
+项目的某个依赖的不合理的实现，项目中依赖了 Bigfish 插件相关的功能（即：引用了 `.umi` 目录下的内容 ）；在开启 MFSU 后项目可能不能正常编译；解法和场景 1 类似配置。将这个包配置进 `mfsu.exclude` 字段中。
+
+
+### worker 兼容问题
+
+如果项目代码需要在 Worker 中使用, 目前暂不支持。可以先通过配置关闭 `mfsu: false`。
