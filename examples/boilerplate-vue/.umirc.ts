@@ -1,5 +1,5 @@
 export default {
-  base: '/foo/',
+  base: '/foo',
   publicPath: '/foo/',
   deadCode: {},
   // https: {},
