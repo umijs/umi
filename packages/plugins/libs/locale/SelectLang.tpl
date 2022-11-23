@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 {{#Antd}}
-import { Menu, Dropdown } from 'antd';
+import { Menu,version, Dropdown } from 'antd';
 import { ClickParam } from 'antd/{{{antdFiles}}}/menu';
 import { DropDownProps } from 'antd/{{{antdFiles}}}/dropdown';
 {{/Antd}}
@@ -422,20 +422,30 @@ export const SelectLang: React.FC<SelectLangProps> = (props) => {
 
   const menuItemStyle = { minWidth: "160px" };
   const menuItemIconStyle = { marginRight: "8px" };
-  const langMenu = (
-    <Menu selectedKeys={[selectedLang]} onClick={handleClick}>
-      {allLangUIConfig.map((localeObj) => {
-        return (
-          <Menu.Item key={localeObj.lang || localeObj.key} style={menuItemStyle}>
-            <span role="img" aria-label={localeObj?.label || "en-US"} style={menuItemIconStyle}>
-              {localeObj?.icon || "🌐"}
-            </span>
-            {localeObj?.label || "en-US"}
-          </Menu.Item>
-        );
-      })}
-    </Menu>
-  );
+
+  const langMenu = {
+    selectedKeys: [selectedLang],
+    onClick: handleClick,
+    items: allLangUIConfig.map((localeObj) => ({
+      key: localeObj.lang || localeObj.key,
+      style: menuItemStyle,
+      label: (
+        <>
+          <span role="img" aria-label={localeObj?.label || 'en-US'} style={menuItemIconStyle}>
+            {localeObj?.icon || '🌐'}
+          </span>
+          {localeObj?.label || 'en-US'}
+        </>
+      ),
+    })),
+  };
+
+  // antd@5 和  4.24 之后推荐使用 menu，性能更好
+  const dropdownProps =
+    version.startsWith('5.') || version.startsWith('4.24.')
+      ? { menu: langMenu }
+      : { overlay: <Menu {...langMenu} /> };
+
 
   const inlineStyle = {
     cursor: "pointer",
@@ -449,7 +459,7 @@ export const SelectLang: React.FC<SelectLangProps> = (props) => {
   };
 
   return (
-    <HeaderDropdown overlay={langMenu} placement="bottomRight" {...restProps}>
+    <HeaderDropdown {...dropdownProps} placement="bottomRight" {...restProps}>
       <span className={globalIconClassName} style={inlineStyle}>
         <i className="anticon" title={allLangUIConfig[selectedLang]?.title}>
           { icon ?
