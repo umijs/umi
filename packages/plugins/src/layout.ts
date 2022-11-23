@@ -458,8 +458,7 @@ export function getRightRenderContent (opts: {
 
   const langMenu = {
     className: "umi-plugin-layout-menu",
-    selectedKeys: [selectedLang],
-    onClick: handleClick,
+    selectedKeys: [],
     items: [
       {
         key: "logout",
