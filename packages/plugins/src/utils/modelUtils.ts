@@ -94,6 +94,84 @@ export class Model {
   }
 }
 
+// Topological Sort
+
+interface TNode {
+  namespace: string;
+  deps: string[];
+  index: number;
+  in: number;
+  childs: TNode[];
+}
+
+const removeChild = (n: TNode, c: TNode) => {
+  if (!n || !c) return;
+  const idx = n.childs.findIndex(
+    (nn: TNode) => nn && nn.namespace === c.namespace,
+  );
+  if (idx >= 0) {
+    delete n.childs[idx];
+    c.in--;
+  }
+};
+
+const topologicalSort = (models: Model[]) => {
+  // build depts graph
+  const graph: TNode[] = [];
+  const indexes: any = {}; // namespace -> Node
+  models.forEach((model: Model, index: number) => {
+    const node: TNode = {
+      namespace: model.namespace,
+      deps: model.deps,
+      index,
+      in: 0,
+      childs: [],
+    };
+    graph.push(node);
+    indexes[model.namespace] = node;
+  });
+
+  // build edges.
+  graph.forEach((node: TNode) => {
+    node.deps?.forEach((dep: string) => {
+      const depNode = indexes[dep];
+      if (depNode) {
+        depNode.childs.push(node);
+        node.in++;
+      }
+    });
+  });
+
+  const queue: string[] = [];
+  while (true) {
+    // find first 0 in node;
+    const zeronode = graph.find((n: TNode) => {
+      return n && n.in === 0;
+    });
+    if (!zeronode) {
+      break;
+    }
+
+    queue.push(zeronode.namespace);
+    zeronode.childs?.forEach((child: TNode) => {
+      removeChild(zeronode, child);
+    });
+    delete graph[zeronode.index];
+  }
+
+  let left = 0;
+  graph.map((m: TNode) => m && left++);
+  if (left > 0) {
+    throw new Error(
+      `Duplicate namespace in models: ${graph
+        .map((m: TNode) => m && m.namespace)
+        .join(', ')}`,
+    );
+  }
+
+  return queue;
+};
+
 export class ModelUtils {
   api: IApi;
   opts: IOpts = {};
@@ -147,11 +225,9 @@ export class ModelUtils {
   }
 
   getSortedNamespaces(models: Model[]) {
-    let final: string[] = [];
     models.forEach((model, index) => {
       const { deps, namespace } = model;
       if (deps && deps.length) {
-        const itemGroup = [...deps, namespace];
         const cannotUse = [namespace];
         for (let i = 0; i <= index; i += 1) {
           if (models[i].deps.filter((v) => cannotUse.includes(v)).length) {
@@ -169,26 +245,11 @@ export class ModelUtils {
             )}`,
           );
         }
-        const intersection = final.filter((v) => itemGroup.includes(v));
-        if (intersection.length) {
-          // first intersection
-          const finalIndex = final.indexOf(intersection[0]);
-          // replace with groupItem
-          final = final
-            .slice(0, finalIndex)
-            .concat(itemGroup)
-            .concat(final.slice(finalIndex + 1));
-        } else {
-          final.push(...itemGroup);
-        }
-      }
-      if (!final.includes(namespace)) {
-        // first occurrence append to the end
-        final.push(namespace);
       }
     });
 
-    return [...new Set(final)];
+    const sorted = topologicalSort(models);
+    return sorted;
   }
 
   getModels(opts: { base: string; pattern?: string }) {
