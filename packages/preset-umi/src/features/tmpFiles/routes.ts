@@ -7,6 +7,7 @@ import { lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
+import { isMonorepo } from '../monorepo/redirect';
 import { getModuleExports } from './getModuleExports';
 
 // get api routes
@@ -247,6 +248,25 @@ function lastSlash(str: string) {
   return str[str.length - 1] === '/' ? str : `${str}/`;
 }
 
+function getProjectRootCwd(cwd: string) {
+  const splittedCwd = cwd.split('/');
+
+  // try to find root cwd for monorepo project, only support >= 3 level depth
+  for (let level = -1; level >= -3; level -= 1) {
+    const rootCwd = splittedCwd.slice(0, level).join('/');
+
+    // break if no parent dir
+    if (!rootCwd) break;
+
+    // check monorepo for parent dir
+    if (isMonorepo({ root: rootCwd })) {
+      return rootCwd;
+    }
+  }
+
+  return cwd;
+}
+
 /**
  *
  * transform component into webpack chunkName
@@ -255,11 +275,24 @@ function lastSlash(str: string) {
  * @param {string} [cwd] current root path
  * @return {*}  {string}
  */
-export function componentToChunkName(component: string, cwd?: string): string {
+export function componentToChunkName(
+  component: string,
+  cwd: string = '/',
+): string {
+  cwd = winPath(cwd);
+
   return typeof component === 'string'
     ? component
         .replace(
-          new RegExp(`^${lodash.escapeRegExp(lastSlash(winPath(cwd || '/')))}`),
+          new RegExp(
+            `^(${
+              // match app cwd first
+              lodash.escapeRegExp(lastSlash(cwd))
+            }|${
+              // then try to match monorepo root cwd, because route files may be in root node_modules (such as dumi)
+              lodash.escapeRegExp(lastSlash(getProjectRootCwd(cwd)))
+            })`,
+          ),
           '',
         )
         .replace(/^.(\/|\\)/, '')
