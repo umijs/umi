@@ -7,7 +7,7 @@ import type {
 import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, statSync, existsSync } from 'fs';
+import { readFileSync, statSync, existsSync, createReadStream } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -341,8 +341,7 @@ promise new Promise(resolve => {
               return res.end();
             }
 
-            const content = readFileSync(realFilePath);
-            res.send(content);
+            createReadStream(realFilePath).on('error', next).pipe(res);
           });
         } else {
           next();
