@@ -13,22 +13,22 @@ export function getAssetsMap(opts: { stats: any; publicPath: string }) {
   const displayPublicPath = publicPath === 'auto' ? '/' : publicPath;
 
   let ret: Record<string, string[]> = {};
-  let json = stats.toJson();
-  const entrypoints = json.entrypoints || json.children[0].entrypoints;
-  for (const asset of entrypoints['umi'].assets) {
-    if (!asset.name.includes(HOT_UPDATE)) {
-      if (UMI_ASSETS_REG.js.test(asset.name)) {
-        ret['umi.js'] = [`${displayPublicPath}${asset.name}`];
+  const realStats = stats.stats ? stats.stats[0] : stats;
+  const assets = Object.keys(realStats.compilation.assets);
+  for (const asset of assets) {
+    if (!asset.includes(HOT_UPDATE)) {
+      if (UMI_ASSETS_REG.js.test(asset)) {
+        ret['umi.js'] = [`${displayPublicPath}${asset}`];
       }
-      if (FRAMEWORK_ASSETS_REG.js.test(asset.name)) {
-        ret['framework.js'] = [`${displayPublicPath}${asset.name}`];
+      if (FRAMEWORK_ASSETS_REG.js.test(asset)) {
+        ret['framework.js'] = [`${displayPublicPath}${asset}`];
       }
     }
-    if (UMI_ASSETS_REG.css.test(asset.name)) {
-      ret['umi.css'] = [`${displayPublicPath}${asset.name}`];
+    if (UMI_ASSETS_REG.css.test(asset)) {
+      ret['umi.css'] = [`${displayPublicPath}${asset}`];
     }
-    if (FRAMEWORK_ASSETS_REG.css.test(asset.name)) {
-      ret['framework.css'] = [`${displayPublicPath}${asset.name}`];
+    if (FRAMEWORK_ASSETS_REG.css.test(asset)) {
+      ret['framework.css'] = [`${displayPublicPath}${asset}`];
     }
   }
   return ret;
