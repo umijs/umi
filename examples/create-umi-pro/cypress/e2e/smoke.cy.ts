@@ -13,7 +13,7 @@ describe('Basic Test', () => {
 
     cy.visit('/');
 
-    cy.wait('@chunkLoaded');
+    cy.wait('@chunkLoaded', { timeout: 10000 });
     cy.contains('欢迎使用 Umi Max ！');
   });
 
