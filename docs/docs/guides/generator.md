@@ -209,7 +209,7 @@ info  - Write example model
 
 为项目生成 [precommit](https://typicode.github.io/husky) 配置，命令执行后，`umi` 会为我们添加 husky 和 Git commit message 格式校验行为，在每次 Git commit 前会将 Git 暂存区的代码默认格式化。
 
-> 注意：如果是初始化出来的 max 项目，通常不需要该生成器，因为已经配置好 husky 了
+> 注意：如果是初始化出来的 `@umijs/max` 项目，通常不需要该生成器，因为已经配置好 husky 了
 
 ```bash
 $umi g precommit
