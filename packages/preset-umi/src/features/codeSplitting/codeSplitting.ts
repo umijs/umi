@@ -126,7 +126,11 @@ export default (api: IApi) => {
                   }, ''),
                 )
                 .digest('base64')
-                .replace(/\//g, '');
+                // replace `+=/` that may be escaped in the url
+                // https://github.com/umijs/umi/issues/9845
+                .replace(/\//g, '')
+                .replace(/\+/g, '-')
+                .replace(/=/g, '_');
               return `shared-${cryptoName}`;
             },
             chunks: 'async',
