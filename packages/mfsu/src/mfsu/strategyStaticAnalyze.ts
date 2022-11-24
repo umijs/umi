@@ -130,16 +130,18 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
           c.removedFiles,
         );
 
+        const cwd = this.mfsu.opts.cwd!;
+
         const fileEvents = [
           ...this.staticDepInfo.opts.srcCodeCache.replayChangeEvents(),
 
-          ...extractJSCodeFiles(c.modifiedFiles).map((f) => {
+          ...extractJSCodeFiles(cwd, c.modifiedFiles).map((f) => {
             return {
               event: 'change' as const,
               path: f,
             };
           }),
-          ...extractJSCodeFiles(c.removedFiles).map((f) => {
+          ...extractJSCodeFiles(cwd, c.removedFiles).map((f) => {
             return {
               event: 'unlink' as const,
               path: f,
@@ -182,14 +184,14 @@ export class StaticAnalyzeStrategy implements IMFSUStrategy {
 
 const REG_CODE_EXT = /\.(jsx|js|ts|tsx)$/;
 
-function extractJSCodeFiles(files: ReadonlySet<string>) {
+function extractJSCodeFiles(folderBase: string, files: ReadonlySet<string>) {
   const jsFiles: string[] = [];
   if (!files) {
     return jsFiles;
   }
 
   for (let file of files.values()) {
-    if (REG_CODE_EXT.test(file)) {
+    if (file.startsWith(folderBase) && REG_CODE_EXT.test(file)) {
       jsFiles.push(file);
     }
   }
