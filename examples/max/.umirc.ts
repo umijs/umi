@@ -101,4 +101,7 @@ export default defineConfig({
   // vite: {}
   // esmi: { cdnOrigin: 'https://npmcore-pre.alipay.com' },
   // lowImport: {},
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
 });

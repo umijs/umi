@@ -335,4 +335,7 @@ export default defineConfig({
   //   type: 'none',
   // },
   // exportStatic: {},
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
 });

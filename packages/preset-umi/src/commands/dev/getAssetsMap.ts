@@ -2,10 +2,7 @@ const UMI_ASSETS_REG = {
   js: /^umi(\..+)?\.js$/,
   css: /^umi(\..+)?\.css$/,
 };
-const FRAMEWORK_ASSETS_REG = {
-  js: /^framework(\..+)?\.js$/,
-  css: /^framework(\..+)?\.css$/,
-};
+
 const HOT_UPDATE = '.hot-update.';
 
 export function getAssetsMap(opts: { stats: any; publicPath: string }) {
@@ -20,15 +17,9 @@ export function getAssetsMap(opts: { stats: any; publicPath: string }) {
       if (UMI_ASSETS_REG.js.test(asset)) {
         ret['umi.js'] = [`${displayPublicPath}${asset}`];
       }
-      if (FRAMEWORK_ASSETS_REG.js.test(asset)) {
-        ret['framework.js'] = [`${displayPublicPath}${asset}`];
-      }
     }
     if (UMI_ASSETS_REG.css.test(asset)) {
       ret['umi.css'] = [`${displayPublicPath}${asset}`];
-    }
-    if (FRAMEWORK_ASSETS_REG.css.test(asset)) {
-      ret['framework.css'] = [`${displayPublicPath}${asset}`];
     }
   }
   return ret;
