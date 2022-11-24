@@ -60,7 +60,12 @@ async function render() {
         }),
         basename,
       };
-      return renderClient(context);
+      const modifiedContext = pluginManager.applyPlugins({
+        key: 'modifyClientRenderOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: context,
+      });
+      return renderClient(modifiedContext);
     },
   }))();
 }

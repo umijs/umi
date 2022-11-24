@@ -379,6 +379,7 @@ export default function EmptyRoute() {
         'patchRoutes',
         'patchClientRoutes',
         'modifyContextOpts',
+        'modifyClientRenderOpts',
         'rootContainer',
         'innerProvider',
         'i18nProvider',
