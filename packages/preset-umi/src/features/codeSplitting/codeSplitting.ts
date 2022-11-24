@@ -120,6 +120,7 @@ export default (api: IApi) => {
             priority: 30,
             minChunks: 1,
             reuseExistingChunk: true,
+            chunks: 'async',
           },
           shared: {
             name(_module: any, chunks: any) {
@@ -141,6 +142,7 @@ export default (api: IApi) => {
             priority: 10,
             minChunks: 2,
             reuseExistingChunk: true,
+            chunks: 'async',
           },
         },
       });
