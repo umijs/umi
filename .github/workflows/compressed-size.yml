@@ -25,14 +25,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.2
-        with:
-          run_install: false
+        uses: pnpm/action-setup@v2.2.4
 
       - name: Get pnpm store directory
         id: pnpm-cache
         run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Setup pnpm cache
         uses: actions/cache@v3

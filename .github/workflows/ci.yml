@@ -34,44 +34,33 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org/'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.2
-        with:
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-node${{ matrix.node-version }}-
+          cache: 'pnpm'
 
       # We use week in the turbo cache key to keep the cache from infinitely growing
-      - name: Get cache expires mark
-        id: get-week
-        run: echo ::set-output name=WEEK::$(date +%U)
+      - name: Get cache expires mark (non-windows)
+        if: runner.os != 'Windows'
+        run: echo "EXPIRES_WEEK_MARK=$(date +%U)" >> $GITHUB_OUTPUT
+      - name: Get cache expires mark (windows)
+        if: runner.os == 'Windows'
+        run: echo "EXPIRES_WEEK_MARK=$(date +%U)" >> $env:GITHUB_OUTPUT
 
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
         with:
           path: .turbo
-          key: turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ steps.get-week.outputs.WEEK }}-${{ github.sha }}
+          key: turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-
-            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ steps.get-week.outputs.WEEK }}-
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-
 
       - name: Install dependencies
         run: pnpm i
