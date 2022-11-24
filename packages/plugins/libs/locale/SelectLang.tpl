@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 {{#Antd}}
-import { Menu,version, Dropdown } from 'antd';
+import { Menu, version, Dropdown } from 'antd';
 import { ClickParam } from 'antd/{{{antdFiles}}}/menu';
 import { DropDownProps } from 'antd/{{{antdFiles}}}/dropdown';
 {{/Antd}}
