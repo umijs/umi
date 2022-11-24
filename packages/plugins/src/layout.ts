@@ -411,7 +411,7 @@ export function patchRoutes({ routes }) {
 
     const rightRenderContent = `
 import React from 'react';
-import { Avatar,version, Dropdown, Menu, Spin } from 'antd';
+import { Avatar, version, Dropdown, Menu, Spin } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 {{#Locale}}
 import { SelectLang } from '@@/plugin-locale';
