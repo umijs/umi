@@ -23,22 +23,22 @@ let hasMountedAtLeastOnce = false;
 export default () => defer.promise;
 export const contextOptsStack: any[] = [];
 
-// function normalizeHistory(
-//   history?: 'string' | Record<string, any>,
-//   base?: string,
-// ) {
-//   let normalizedHistory: Record<string, any> = {};
-//   if (base) normalizedHistory.basename = base;
-//   if (history) {
-//     if (typeof history === 'string') {
-//       normalizedHistory.type = history;
-//     } else {
-//       normalizedHistory = history;
-//     }
-//   }
-//
-//   return normalizedHistory;
-// }
+function normalizeHistory(
+  history?: 'string' | Record<string, any>,
+  base?: string,
+) {
+  let normalizedHistory: Record<string, any> = {};
+  if (base) normalizedHistory.basename = base;
+  if (history) {
+    if (typeof history === 'string') {
+      normalizedHistory.type = history;
+    } else {
+      normalizedHistory = history;
+    }
+  }
+
+  return normalizedHistory;
+}
 
 async function getSlaveRuntime() {
   const config = await getPluginManager().applyPlugins({
@@ -73,7 +73,10 @@ export function genMount(mountElementId: string) {
         await slaveRuntime.mount(props);
       }
 
-      const { type, ...historyOpts } = props?.history || {};
+      const { type, ...historyOpts } = normalizeHistory(
+        props?.history || {},
+        props?.base,
+      );
 
       // 更新 clientRender 配置
       const clientRenderOpts = {
