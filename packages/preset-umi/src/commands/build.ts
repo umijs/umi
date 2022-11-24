@@ -116,6 +116,7 @@ umi build --clean
           });
         },
         clean: true,
+        htmlFiles: [] as any[],
       };
 
       await api.applyPlugins({
@@ -149,6 +150,9 @@ umi build --clean
 
       // generate html
       // vite 在 build 时通过插件注入 js 和 css
+
+      let htmlFiles: { path: string; content: string }[] = [];
+
       if (!api.config.mpa) {
         const assetsMap = api.config.vite
           ? {}
@@ -181,17 +185,16 @@ umi build --clean
         };
 
         // allow to modify export html files
-        const htmlFiles: { path: string; content: string }[] =
-          await api.applyPlugins({
-            key: 'modifyExportHTMLFiles',
-            initialValue: [
-              {
-                path: 'index.html',
-                content: await getMarkup(finalMarkUpArgs),
-              },
-            ],
-            args: { markupArgs: finalMarkUpArgs, getMarkup },
-          });
+        htmlFiles = await api.applyPlugins({
+          key: 'modifyExportHTMLFiles',
+          initialValue: [
+            {
+              path: 'index.html',
+              content: await getMarkup(finalMarkUpArgs),
+            },
+          ],
+          args: { markupArgs: finalMarkUpArgs, getMarkup },
+        });
 
         htmlFiles.forEach(({ path, content }) => {
           const absPath = resolve(api.paths.absOutputPath, path);
@@ -205,7 +208,10 @@ umi build --clean
       // event when html is completed
       await api.applyPlugins({
         key: 'onBuildHtmlComplete',
-        args: opts,
+        args: {
+          ...opts,
+          htmlFiles,
+        },
       });
 
       // print size
