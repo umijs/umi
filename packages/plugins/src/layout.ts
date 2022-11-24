@@ -411,7 +411,7 @@ export function patchRoutes({ routes }) {
 
     const rightRenderContent = `
 import React from 'react';
-import { Avatar, Dropdown, Menu, Spin } from 'antd';
+import { Avatar, version, Dropdown, Menu, Spin } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 {{#Locale}}
 import { SelectLang } from '@@/plugin-locale';
@@ -431,19 +431,7 @@ export function getRightRenderContent (opts: {
     );
   }
 
-  const menu = (
-    <Menu className="umi-plugin-layout-menu">
-      <Menu.Item
-        key="logout"
-        onClick={() =>
-          opts.runtimeConfig.logout && opts.runtimeConfig?.logout(opts.initialState)
-        }
-      >
-        <LogoutOutlined />
-        退出登录
-      </Menu.Item>
-    </Menu>
-  );
+ 
 
   const avatar = (
     <span className="umi-plugin-layout-action">
@@ -468,10 +456,35 @@ export function getRightRenderContent (opts: {
     );
   }
 
+  const langMenu = {
+    className: "umi-plugin-layout-menu",
+    selectedKeys: [],
+    items: [
+      {
+        key: "logout",
+        label: (
+          <>
+            <LogoutOutlined />
+            退出登录
+          </>
+        ),
+        onClick: () => {
+          opts?.runtimeConfig?.logout?.(opts.initialState);
+        },
+      },
+    ],
+  };
+  
+  // antd@5 和  4.24 之后推荐使用 menu，性能更好
+  const dropdownProps =
+    version.startsWith("5.") || version.startsWith("4.24.")
+      ? { menu: langMenu }
+      : { overlay: <Menu {...langMenu} /> };  
+
   return (
     <div className="umi-plugin-layout-right anticon">
       {opts.runtimeConfig.logout ? (
-        <Dropdown overlay={menu} overlayClassName="umi-plugin-layout-container">
+        <Dropdown {...dropdownProps} overlayClassName="umi-plugin-layout-container">
           {avatar}
         </Dropdown>
       ) : (
