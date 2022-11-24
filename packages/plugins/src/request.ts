@@ -50,7 +50,7 @@ import {
   PaginatedResult,
 } from '{{{umiRequestPath}}}/es/types';
 
-type ResultWithData< T = any > = { data?: T; [key: string]: any };
+type ResultWithData< T = any > = { {{resultDataType}} [key: string]: any };
 
 function useRequest<
   R = any,
@@ -63,8 +63,8 @@ function useRequest<
 ): BaseResult<U, P>;
 function useRequest<R extends ResultWithData = any, P extends any[] = any>(
   service: CombineService<R, P>,
-  options?: BaseOptions<R['data'], P>,
-): BaseResult<R['data'], P>;
+  options?: BaseOptions<R{{{resultDataField}}}, P>,
+): BaseResult<R{{{resultDataField}}}, P>;
 function useRequest<R extends LoadMoreFormatReturn = any, RR = any>(
   service: CombineService<RR, LoadMoreParams<R>>,
   options: LoadMoreOptionsWithFormat<R, RR>,
@@ -73,9 +73,9 @@ function useRequest<
   R extends ResultWithData<LoadMoreFormatReturn | any> = any,
   RR extends R = any,
 >(
-  service: CombineService<R, LoadMoreParams<R['data']>>,
-  options: LoadMoreOptions<RR['data']>,
-): LoadMoreResult<R['data']>;
+  service: CombineService<R, LoadMoreParams<R{{{resultDataField}}}>>,
+  options: LoadMoreOptions<RR{{{resultDataField}}}>,
+): LoadMoreResult<R{{{resultDataField}}}>;
 
 function useRequest<R = any, Item = any, U extends Item = any>(
   service: CombineService<R, PaginatedParams>,
@@ -295,14 +295,20 @@ export type {
     const axiosPath = winPath(dirname(require.resolve('axios/package.json')));
     let dataField = api.config.request?.dataField;
     if (dataField === undefined) dataField = 'data';
-    const formatResult =
-      dataField === '' ? `result => result` : `result => result?.${dataField}`;
+    const isEmpty = dataField === '';
+    const formatResult = isEmpty
+      ? `result => result`
+      : `result => result?.${dataField}`;
+    const resultDataType = isEmpty ? dataField : `${dataField}?: T;`;
+    const resultDataField = isEmpty ? dataField : `['${dataField}']`;
     api.writeTmpFile({
       path: 'request.ts',
       content: Mustache.render(requestTpl, {
         umiRequestPath,
         axiosPath,
         formatResult,
+        resultDataType,
+        resultDataField,
       }),
     });
     api.writeTmpFile({
