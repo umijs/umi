@@ -105,9 +105,8 @@ interface TNode {
 }
 
 const removeChild = (n: TNode, c: TNode) => {
-  if (!n || !c) return;
   const idx = n.childs.findIndex(
-    (nn: TNode) => nn && nn.namespace === c.namespace,
+    (child) => child && child.namespace === c.namespace,
   );
   if (idx >= 0) {
     delete n.childs[idx];
@@ -115,11 +114,11 @@ const removeChild = (n: TNode, c: TNode) => {
   }
 };
 
-const topologicalSort = (models: Model[]) => {
+export const getSortedNamespaces = (models: Model[]) => {
   // build depts graph
   const graph: TNode[] = [];
-  const indexes: any = {}; // namespace -> Node
-  models.forEach((model: Model, index: number) => {
+  const indexes: Record<string, TNode> = {}; // namespace -> Node
+  models.forEach((model, index) => {
     const node: TNode = {
       namespace: model.namespace,
       deps: model.deps,
@@ -128,17 +127,21 @@ const topologicalSort = (models: Model[]) => {
       childs: [],
     };
     graph.push(node);
+    if (indexes[model.namespace]) {
+      throw new Error(`Duplicate namespace in models: ${model.namespace}`);
+    }
     indexes[model.namespace] = node;
   });
 
   // build edges.
   graph.forEach((node: TNode) => {
-    node.deps?.forEach((dep: string) => {
+    node.deps.forEach((dep) => {
       const depNode = indexes[dep];
-      if (depNode) {
-        depNode.childs.push(node);
-        node.in++;
+      if (!depNode) {
+        throw new Error(`Model namespace not found: ${dep}`);
       }
+      depNode.childs.push(node);
+      node.in++;
     });
   });
 
@@ -153,17 +156,17 @@ const topologicalSort = (models: Model[]) => {
     }
 
     queue.push(zeronode.namespace);
-    zeronode.childs?.forEach((child: TNode) => {
+    zeronode.childs.forEach((child) => {
       removeChild(zeronode, child);
     });
     delete graph[zeronode.index];
   }
 
   let left = 0;
-  graph.map((m: TNode) => m && left++);
+  graph.map((m) => m && left++);
   if (left > 0) {
     throw new Error(
-      `Duplicate namespace in models: ${graph
+      `Circle dependency detected in models: ${graph
         .map((m: TNode) => m && m.namespace)
         .join(', ')}`,
     );
@@ -225,31 +228,7 @@ export class ModelUtils {
   }
 
   getSortedNamespaces(models: Model[]) {
-    models.forEach((model, index) => {
-      const { deps, namespace } = model;
-      if (deps && deps.length) {
-        const cannotUse = [namespace];
-        for (let i = 0; i <= index; i += 1) {
-          if (models[i].deps.filter((v) => cannotUse.includes(v)).length) {
-            if (!cannotUse.includes(models[i].namespace)) {
-              cannotUse.push(models[i].namespace);
-              i = -1;
-            }
-          }
-        }
-        const errorList = deps.filter((v) => cannotUse.includes(v));
-        if (errorList.length) {
-          throw Error(
-            `Circular dependencies: ${namespace} can't use ${errorList.join(
-              ', ',
-            )}`,
-          );
-        }
-      }
-    });
-
-    const sorted = topologicalSort(models);
-    return sorted;
+    return getSortedNamespaces(models);
   }
 
   getModels(opts: { base: string; pattern?: string }) {
