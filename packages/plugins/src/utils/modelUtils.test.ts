@@ -1,4 +1,5 @@
-import { getNamespace, getSortedNamespaces } from './modelUtils';
+import { ModelUtils, Model, getNamespace } from './modelUtils';
+import { chalk } from '@umijs/utils';
 
 test('getNamespace', () => {
   expect(getNamespace('/a/b/src/models/foo.ts', '/a/b/src')).toEqual('foo');
@@ -31,208 +32,168 @@ test('getNamespace strip .model affix', () => {
   );
 });
 
-test('getSortedNamespaces no dep', () => {
+// Topological sort tests
+
+const topologicalSort = (
+  cases: Array<{ namespace: string; deps: string[] }>,
+) => {
+  const models = cases.map((c, i) => {
+    const mock = jest
+      .spyOn(Model.prototype, 'findDeps')
+      .mockImplementation(() => {
+        return c.deps;
+      });
+    const meta = JSON.stringify({ namespace: c.namespace });
+    const model = new Model(
+      `file#${meta}`,
+      'absSrcPath',
+      {} /* sort */,
+      i /* id */,
+    );
+    expect(mock).toHaveBeenCalled();
+    mock.mockClear();
+    return model;
+  });
+  return ModelUtils.topologicalSort(models);
+};
+
+test('TopologicalSort: no dep', () => {
+  // a
+  // b
+  // c
   expect(
-    getSortedNamespaces([
+    topologicalSort([
       {
         namespace: 'a',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'b',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'c',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
     ]),
   ).toEqual(['a', 'b', 'c']);
 });
 
-test('getSortedNamespaces simple dep', () => {
+test('TopologicalSort: simple dep', () => {
+  // a
+  // c -> b
   expect(
-    getSortedNamespaces([
+    topologicalSort([
       {
         namespace: 'a',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'b',
         deps: ['c'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'c',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
     ]),
   ).toEqual(['a', 'c', 'b']);
 });
 
-test('getSortedNamespaces simple deps', () => {
+test('TopologicalSort: simple deps', () => {
+  // a
+  // d -> c -> b
   expect(
-    getSortedNamespaces([
+    topologicalSort([
       {
         namespace: 'a',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'b',
         deps: ['c'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'c',
         deps: ['d'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'd',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
     ]),
   ).toEqual(['a', 'd', 'c', 'b']);
 });
 
-test('getSortedNamespaces complex deps', () => {
+test('TopologicalSort: complex deps', () => {
+  //  ← ← ← ← b
+  // ↓      ↙ ↓
+  // ↓    ↙   ↓
+  // d ← c    ↓
+  // ↑    ↘   ↓
+  // ↑      ↘ ↓
+  //  ← ← ← ← a
+  // e
   expect(
-    getSortedNamespaces([
+    topologicalSort([
       {
         namespace: 'a',
         deps: ['b', 'c'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'b',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'c',
         deps: ['b'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'd',
         deps: ['c', 'b', 'a'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'e',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
     ]),
   ).toEqual(['b', 'c', 'a', 'd', 'e']);
 });
 
-test('getSortedNamespaces detect duplicate', () => {
-  try {
-    getSortedNamespaces([
+test('TopologicalSort: detect duplicate', () => {
+  expect(() => {
+    topologicalSort([
       {
         namespace: 'a',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'a',
         deps: [],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
     ]);
-  } catch (e) {
-    expect(e.message).toBe('Duplicate namespace in models: a');
-  }
+  }).toThrow('Duplicate namespace in models: a');
 });
 
-test('getSortedNamespaces detect circle', () => {
-  try {
-    getSortedNamespaces([
+test('TopologicalSort: detect circle', () => {
+  expect(() => {
+    topologicalSort([
       {
         namespace: 'a',
         deps: ['c'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'b',
         deps: ['a'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
       {
         namespace: 'c',
         deps: ['b'],
-        id: '',
-        exportName: '',
-        file: '',
-        findDeps: () => [],
       },
     ]);
-  } catch (e) {
-    expect(e.message).toBe('Circle dependency detected in models: a, b, c');
-  }
+  }).toThrowError(
+    `Circle dependency detected in models: ${['a', 'b', 'c']
+      .map((i) => chalk.red(i))
+      .join(', ')}`,
+  );
 });
