@@ -25,9 +25,12 @@ if (throughArgs.length) {
   throughArgs.unshift('--')
 }
 
+// current dir path may contain spaces
+// https://github.com/umijs/umi/issues/9865
+const scriptPathAsStr = JSON.stringify(scriptsPath)
 const spawn = sync(
   'tsx',
-  [scriptsPath, ...throughArgs],
+  [scriptPathAsStr, ...throughArgs],
   {
     env: process.env,
     cwd: process.cwd(),
