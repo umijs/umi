@@ -41,6 +41,7 @@ export default () => {
       require.resolve('./features/clickToComponent/clickToComponent'),
       require.resolve('./features/legacy/legacy'),
       require.resolve('./features/classPropertiesLoose/classPropertiesLoose'),
+      require.resolve('./features/webpack/webpack'),
 
       // commands
       require.resolve('./commands/build'),
