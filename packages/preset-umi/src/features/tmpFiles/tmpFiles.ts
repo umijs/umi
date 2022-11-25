@@ -541,7 +541,7 @@ export default function EmptyRoute() {
           path: '@@/core/terminal.ts',
         });
       }
-      if (api.appData.framework === 'react') {
+      if (api.config.test !== false && api.appData.framework === 'react') {
         if (
           process.env.NODE_ENV === 'test' ||
           // development is for TestBrowser's type
