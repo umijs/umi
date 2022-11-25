@@ -27,18 +27,12 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
+      - name: Use latest LTS Node.js
+        uses: actions/setup-node@v3
         with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-compressed-size-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-compressed-size-
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'pnpm'
 
       - uses: preactjs/compressed-size-action@v2
         with:
