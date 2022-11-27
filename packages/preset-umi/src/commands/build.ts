@@ -2,7 +2,7 @@ import { getMarkup } from '@umijs/server';
 import { chalk, fsExtra, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
-import { IApi } from '../types';
+import { IApi, IFileInfo } from '../types';
 import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
 import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
@@ -47,7 +47,10 @@ umi build --clean
       });
 
       // generate files
-      async function generate(opts: { isFirstTime?: boolean; files?: any }) {
+      async function generate(opts: {
+        isFirstTime?: boolean;
+        files?: IFileInfo;
+      }) {
         await api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
