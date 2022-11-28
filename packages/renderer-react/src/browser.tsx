@@ -1,5 +1,10 @@
 import { History } from 'history';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
 import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
@@ -33,8 +38,8 @@ function BrowserRoutes(props: {
     action: history.action,
     location: history.location,
   });
-  React.useLayoutEffect(() => history.listen(setState), [history]);
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => history.listen(setState), [history]);
+  useLayoutEffect(() => {
     function onRouteChange(opts: any) {
       props.pluginManager.applyPlugins({
         key: 'onRouteChange',
@@ -127,6 +132,10 @@ export type RenderClientOpts = {
    * 此模式下，路由组件的 props 会包含 location、match、history 和 params 属性，和 react-router 5 的保持一致。
    */
   reactRouter5Compat?: boolean;
+  /**
+   * 应用渲染完成的回调函数
+   */
+  callback?: () => void;
 };
 /**
  * umi max 所需要的所有插件列表，用于获取provide
@@ -282,6 +291,10 @@ const getBrowser = (
       return opts.history.listen((e) => {
         handleRouteChange(e.location.pathname);
       });
+    }, []);
+
+    useLayoutEffect(() => {
+      if (typeof opts.callback === 'function') opts.callback();
     }, []);
 
     return (

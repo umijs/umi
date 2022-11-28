@@ -80,17 +80,17 @@ export function genMount(mountElementId: string) {
 
       // 更新 clientRender 配置
       const clientRenderOpts = {
-        // 默认开启
-        // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
         callback: () => {
+          // 默认开启
+          // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
           if (props.autoSetLoading && typeof props.setLoading === 'function') {
             props.setLoading(false);
           }
 
-          // // 支持将子应用的 history 回传给父应用
-          // if (typeof props?.onHistoryInit === 'function') {
-          //   props.onHistoryInit(history);
-          // }
+          // 支持将子应用的 history 回传给父应用
+          if (typeof props?.onHistoryInit === 'function') {
+            props.onHistoryInit(history);
+          }
         },
         // 支持通过 props 注入 container 来限定子应用 mountElementId 的查找范围
         // 避免多个子应用出现在同一主应用时出现 mount 冲突
@@ -128,14 +128,6 @@ export function genMount(mountElementId: string) {
       defer.resolve();
     }
 
-    // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
-    // 考虑到 react 18 之后 callback 不再准
-    // 所以在这里直接返回，而不使用 ReactDOM.render 的第三个参数
-    if (typeof props !== 'undefined') {
-      if (props.autoSetLoading && typeof props.setLoading === 'function') {
-        props.setLoading(false);
-      }
-    }
     hasMountedAtLeastOnce = true;
   };
 }
