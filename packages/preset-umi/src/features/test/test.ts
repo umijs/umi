@@ -13,6 +13,9 @@ export default (api: IApi) => {
         return Joi.object();
       },
     },
+    enableBy() {
+      return api.appData.framework === 'react';
+    },
   });
 
   api.onGenerateFiles(async () => {
@@ -61,6 +64,7 @@ export default (api: IApi) => {
         ).join('\n'),
         basename: api.config.base,
         historyType: api.config.history.type,
+        reactRouter5Compat: !!api.config.reactRouter5Compat,
         hydrate: !!api.config.ssr,
         loadingComponent:
           existsSync(join(api.paths.absSrcPath, 'loading.tsx')) ||

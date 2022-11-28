@@ -2,18 +2,21 @@ import assert from 'assert';
 import { basename } from 'path';
 import { Dep } from './dep';
 import { getModuleExports } from './getModuleExports';
+import { winPath } from '@umijs/utils';
 
 export async function getExposeFromContent(opts: {
   dep: Dep;
   filePath: string;
   content: string;
 }) {
+  const importPath = winPath(opts.filePath);
+
   // Support CSS
   if (
     opts.filePath &&
     /\.(css|less|scss|sass|stylus|styl)$/.test(opts.filePath)
   ) {
-    return `import '${opts.dep.file}';`;
+    return `import '${importPath}';`;
   }
 
   // Support Assets Files
@@ -24,7 +27,7 @@ export async function getExposeFromContent(opts: {
     )
   ) {
     return `
-import _ from '${opts.dep.file}';
+import _ from '${importPath}';
 export default _;`.trim();
   }
 
@@ -39,9 +42,9 @@ export default _;`.trim();
   // cjs
   if (isCJS) {
     return [
-      `import _ from '${opts.dep.file}';`,
+      `import _ from '${importPath}';`,
       `export default _;`,
-      `export * from '${opts.dep.file}';`,
+      `export * from '${importPath}';`,
     ].join('\n');
   }
   // esm
@@ -49,7 +52,7 @@ export default _;`.trim();
     const ret = [];
     let hasExports = false;
     if (exports.includes('default')) {
-      ret.push(`import _ from '${opts.dep.file}';`);
+      ret.push(`import _ from '${importPath}';`);
       ret.push(`export default _;`);
       hasExports = true;
     }
@@ -60,18 +63,18 @@ export default _;`.trim();
       //       export * from '.'
       /export\s*\*\s*from/.test(opts.content)
     ) {
-      ret.push(`export * from '${opts.dep.file}';`);
+      ret.push(`export * from '${importPath}';`);
       hasExports = true;
     }
 
     if (!hasExports) {
       // 只有 __esModule 的全量导出
       if (exports.includes('__esModule')) {
-        ret.push(`import _ from '${opts.dep.file}';`);
+        ret.push(`import _ from '${importPath}';`);
         ret.push(`export default _;`);
-        ret.push(`export * from '${opts.dep.file}';`);
+        ret.push(`export * from '${importPath}';`);
       } else {
-        ret.push(`import '${opts.dep.file}';`);
+        ret.push(`import '${importPath}';`);
       }
     }
 

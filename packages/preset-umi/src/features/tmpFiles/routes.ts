@@ -7,6 +7,7 @@ import { lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
+import { isMonorepo } from '../monorepo/redirect';
 import { getModuleExports } from './getModuleExports';
 
 // get api routes
@@ -128,8 +129,6 @@ export async function getRoutes(opts: {
   }
 
   // layout routes
-  const absSrcPath = opts.api.paths.absSrcPath;
-
   const absLayoutPath = tryPaths([
     join(opts.api.paths.absSrcPath, 'layouts/index.tsx'),
     join(opts.api.paths.absSrcPath, 'layouts/index.vue'),
@@ -137,26 +136,17 @@ export async function getRoutes(opts: {
     join(opts.api.paths.absSrcPath, 'layouts/index.js'),
   ]);
 
-  const layouts = (
-    await opts.api.applyPlugins({
-      key: 'addLayouts',
-      initialValue: [
-        absLayoutPath && {
-          id: '@@/global-layout',
-          file: winPath(absLayoutPath),
-          test(route: any) {
-            return route.layout !== false;
-          },
+  const layouts = await opts.api.applyPlugins({
+    key: 'addLayouts',
+    initialValue: [
+      absLayoutPath && {
+        id: '@@/global-layout',
+        file: winPath(absLayoutPath),
+        test(route: any) {
+          return route.layout !== false;
         },
-      ].filter(Boolean),
-    })
-  ).map((layout: { file: string }) => {
-    // prune local path prefix, avoid mix in outputs
-    layout.file = layout.file.replace(
-      new RegExp(`^${winPath(absSrcPath)}`),
-      '@',
-    );
-    return layout;
+      },
+    ].filter(Boolean),
   });
   for (const layout of layouts) {
     addParentRoute({
@@ -258,6 +248,25 @@ function lastSlash(str: string) {
   return str[str.length - 1] === '/' ? str : `${str}/`;
 }
 
+function getProjectRootCwd(cwd: string) {
+  const splittedCwd = cwd.split('/');
+
+  // try to find root cwd for monorepo project, only support >= 3 level depth
+  for (let level = -1; level >= -3; level -= 1) {
+    const rootCwd = splittedCwd.slice(0, level).join('/');
+
+    // break if no parent dir
+    if (!rootCwd) break;
+
+    // check monorepo for parent dir
+    if (isMonorepo({ root: rootCwd })) {
+      return rootCwd;
+    }
+  }
+
+  return cwd;
+}
+
 /**
  *
  * transform component into webpack chunkName
@@ -266,15 +275,30 @@ function lastSlash(str: string) {
  * @param {string} [cwd] current root path
  * @return {*}  {string}
  */
-export function componentToChunkName(component: string, cwd?: string): string {
+export function componentToChunkName(
+  component: string,
+  cwd: string = '/',
+): string {
+  cwd = winPath(cwd);
+
   return typeof component === 'string'
     ? component
         .replace(
-          new RegExp(`^${lodash.escapeRegExp(lastSlash(winPath(cwd || '/')))}`),
+          new RegExp(
+            `^(${
+              // match app cwd first
+              lodash.escapeRegExp(lastSlash(cwd))
+            }|${
+              // then try to match monorepo root cwd, because route files may be in root node_modules (such as dumi)
+              lodash.escapeRegExp(lastSlash(getProjectRootCwd(cwd)))
+            })`,
+          ),
           '',
         )
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
+        // 转换 tnpm node_modules 目录中的 @ 符号，它在 URL 上会被转义，可能导致 CDN 托管失败
+        .replace(/@/g, '_')
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')
         .replace(/\.vue?$/, '')
@@ -283,6 +307,8 @@ export function componentToChunkName(component: string, cwd?: string): string {
         // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
         // ref: https://github.com/umijs/umi/issues/4155
         .replace(/[\[\]]/g, '')
+        // node_modules 文件名在 gh-pages 是默认忽略的，会导致访问 404
+        .replace(/^node_modules__/, 'nm__')
         // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
         .replace(/^.umi-production__/, 't__')
         // 避免产出隐藏文件（比如 .dumi/theme）下的路由组件

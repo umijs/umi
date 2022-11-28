@@ -13,6 +13,8 @@ interface IOpts {
   mfsu: MFSU;
 }
 
+const MF_ENTRY = 'mf_index.js';
+
 export class DepBuilder {
   public opts: IOpts;
   public completeFns: Function[] = [];
@@ -166,7 +168,7 @@ export class DepBuilder {
     }
 
     // index file
-    writeFileSync(join(tmpBase, 'index.js'), '"😛"', 'utf-8');
+    writeFileSync(join(tmpBase, MF_ENTRY), '"😛"', 'utf-8');
   }
 
   getWebpackConfig(opts: { deps: Dep[] }) {
@@ -174,7 +176,7 @@ export class DepBuilder {
     const depConfig = lodash.cloneDeep(this.opts.mfsu.depConfig!);
 
     // depConfig.stats = 'none';
-    depConfig.entry = join(this.opts.mfsu.opts.tmpBase!, 'index.js');
+    depConfig.entry = join(this.opts.mfsu.opts.tmpBase!, MF_ENTRY);
 
     depConfig.output!.path = this.opts.mfsu.opts.tmpBase!;
 

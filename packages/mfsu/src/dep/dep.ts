@@ -2,7 +2,7 @@ import { pkgUp, winPath, logger, chalk } from '@umijs/utils';
 import assert from 'assert';
 import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
+import { isAbsolute, join, dirname } from 'path';
 import { MF_VA_PREFIX } from '../constants';
 import { MFSU } from '../mfsu/mfsu';
 import { trimFileContent } from '../utils/trimFileContent';
@@ -13,6 +13,7 @@ const resolver = enhancedResolve.create({
   extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   exportsFields: ['exports'],
   conditionNames: ['import', 'module', 'require', 'node'],
+  symlinks: false,
 });
 
 async function resolve(context: string, path: string): Promise<string> {
@@ -23,6 +24,20 @@ async function resolve(context: string, path: string): Promise<string> {
   });
 }
 
+async function resolveFromContexts(
+  contexts: string[],
+  path: string,
+): Promise<string> {
+  for (const context of contexts) {
+    try {
+      return await resolve(context, path);
+    } catch (e) {
+      // ignore
+    }
+  }
+  throw new Error(`Can't resolve ${path} from ${contexts.join(', ')}`);
+}
+
 export class Dep {
   public file: string;
   public version: string;
@@ -31,12 +46,14 @@ export class Dep {
   public normalizedFile: string;
   public filePath: string;
   public excludeNodeNatives: boolean;
+  public importer: string | undefined;
 
   constructor(opts: {
     file: string;
     version: string;
     cwd: string;
     excludeNodeNatives: boolean;
+    importer?: string;
   }) {
     this.file = winPath(opts.file);
     this.version = opts.version;
@@ -45,6 +62,7 @@ export class Dep {
     this.normalizedFile = this.shortFile.replace(/\//g, '_').replace(/:/g, '_');
     this.filePath = `${MF_VA_PREFIX}${this.normalizedFile}.js`;
     this.excludeNodeNatives = opts.excludeNodeNatives!;
+    this.importer = opts.importer;
   }
 
   async buildExposeContent() {
@@ -87,16 +105,21 @@ export * from '${this.file}';
 
   async getRealFile() {
     try {
+      const contexts = [this.cwd];
+      if (this.importer) {
+        contexts.push(dirname(this.importer));
+      }
+
       // don't need to handle alias here
       // it's already handled by babel plugin
-      return await resolve(this.cwd, this.file);
+      return await resolveFromContexts(contexts, this.file);
     } catch (e) {
       return null;
     }
   }
 
   static buildDeps(opts: {
-    deps: Record<string, { file: string; version: string }>;
+    deps: Record<string, { file: string; version: string; importer?: string }>;
     cwd: string;
     mfsu: MFSU;
   }) {

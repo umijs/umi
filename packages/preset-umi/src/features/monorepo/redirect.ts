@@ -114,7 +114,7 @@ async function collectAllProjects(opts: IOpts) {
 }
 
 const MONOREPO_FILE = ['pnpm-workspace.yaml', 'lerna.json'];
-function isMonorepo(opts: IOpts) {
+export function isMonorepo(opts: IOpts) {
   const pkgPath = join(opts.root, 'package.json');
   let pkg: Record<string, any> = {};
   try {

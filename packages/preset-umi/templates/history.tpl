@@ -18,10 +18,10 @@ export function createHistory(opts: any) {
   history = {
     ...h,
     push(to, state) {
-      h.push(patchTo(to), state);
+      h.push(patchTo(to, h), state);
     },
     replace(to, state) {
-      h.replace(patchTo(to), state);
+      h.replace(patchTo(to, h), state);
     },
     get location() {
       return h.location;
@@ -38,13 +38,16 @@ export function createHistory(opts: any) {
 // Refs:
 // https://github.com/remix-run/history/blob/3e9dab4/packages/history/index.ts#L484
 // https://github.com/remix-run/history/blob/dev/docs/api-reference.md#to
-function patchTo(to: any) {
+function patchTo(to: any, h: History) {
   if (typeof to === 'string') {
     return `${stripLastSlash(basename)}${to}`;
-  } else if (typeof to === 'object' && to.pathname) {
+  } else if (typeof to === 'object') {
+
+    const currentPathname = h.location.pathname;
+
     return {
       ...to,
-      pathname: `${stripLastSlash(basename)}${to.pathname}`,
+      pathname: to.pathname? `${stripLastSlash(basename)}${to.pathname}` : currentPathname,
     };
   } else {
     throw new Error(`Unexpected to: ${to}`);

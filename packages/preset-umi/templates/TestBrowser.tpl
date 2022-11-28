@@ -5,21 +5,21 @@ import { createHistory } from './core/history';
 import { createPluginManager } from './core/plugin';
 import { getRoutes } from './core/route';
 import type { Location } from 'history';
+
 {{{ polyfillImports }}}
 {{{ importsAhead }}}
-
 const publicPath = '/';
 const runtimePublicPath = false;
 
 type TestBrowserProps = {
-  location?: Location;
-  historyRef?: any;
+  location?: Partial<Location>;
+  historyRef?: React.MutableRefObject<Location>;
 };
 
 export function TestBrowser(props: TestBrowserProps) {
   const pluginManager = createPluginManager();
   const [context, setContext] = useState<RenderClientOpts | undefined>(
-    undefined,
+    undefined
   );
   useEffect(() => {
     const genContext = async () => {
@@ -43,30 +43,45 @@ export function TestBrowser(props: TestBrowserProps) {
         type: 'memory',
         basename,
       });
-      return {
+      const context = {
         routes,
+{{#hydrate}}
+        hydrate: true,
+{{/hydrate}}
+{{#reactRouter5Compat}}
+        reactRouter5Compat: true,
+{{/reactRouter5Compat}}
         routeComponents,
         pluginManager,
         rootElement: contextOpts.rootElement || document.getElementById('root'),
+{{#loadingComponent}}
+        loadingComponent: Loading,
+{{/loadingComponent}}
         publicPath,
         runtimePublicPath,
         history,
         basename,
-        components: true
+        components: true,
       };
+      const modifiedContext = pluginManager.applyPlugins({
+        key: 'modifyClientRenderOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: context,
+      });
+      return modifiedContext;
     };
     genContext().then((context) => {
-        setContext(context);
-        if (props.location) {
-          context?.history?.push(props.location);
-        }
-        if (props.historyRef) {
-          props.historyRef.current = context?.history;
-        }
+      setContext(context);
+      if (props.location) {
+        context?.history?.push(props.location);
+      }
+      if (props.historyRef) {
+        props.historyRef.current = context?.history;
+      }
     });
   }, []);
 
- if (context === undefined) {
+  if (context === undefined) {
     return <div id="loading" />;
   }
 

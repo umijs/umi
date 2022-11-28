@@ -10,6 +10,8 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { parentPort } from 'worker_threads';
 
+const MF_ENTRY = 'mf_index.js';
+
 type IOpts = {
   depConfig: webpack.Configuration;
   cwd: string;
@@ -133,7 +135,7 @@ export class DepBuilderInWorker {
     }
 
     // index file
-    writeFileSync(join(tmpBase, 'index.js'), '"😛"', 'utf-8');
+    writeFileSync(join(tmpBase, MF_ENTRY), '"😛"', 'utf-8');
   }
 
   getWebpackConfig(opts: { deps: Dep[] }) {
@@ -141,7 +143,7 @@ export class DepBuilderInWorker {
     const depConfig = lodash.cloneDeep(this.opts.depConfig!);
 
     // depConfig.stats = 'none';
-    depConfig.entry = join(this.opts.tmpBase!, 'index.js');
+    depConfig.entry = join(this.opts.tmpBase!, MF_ENTRY);
 
     depConfig.output!.path = this.opts.tmpBase!;
 

@@ -176,6 +176,12 @@ export function rootContainer(container) {
       prefixCls: \`\${finalConfig.prefixCls}-notification\`
     });
   }
+  if (finalConfig.iconPrefixCls) {
+    // Icons in message need to set iconPrefixCls via ConfigProvider.config()
+    ConfigProvider.config({
+      iconPrefixCls: finalConfig.iconPrefixCls,
+    });
+  }
   return <ConfigProvider {...finalConfig}>{container}</ConfigProvider>;
 }
       `.trim(),

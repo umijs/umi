@@ -1,4 +1,5 @@
 import type { Compiler, Stats } from 'webpack';
+import { logger } from '@umijs/utils';
 
 export interface IBuildDepPluginOpts {
   onCompileDone: Function;
@@ -17,6 +18,13 @@ export class BuildDepPlugin {
 
   apply(compiler: Compiler): void {
     compiler.hooks.watchRun.tapPromise(PLUGIN_NAME, (c) => {
+      logger.debug(
+        'webpack watched change',
+        'modified: ',
+        c.modifiedFiles,
+        'removed: ',
+        c.removedFiles,
+      );
       return this.opts.onFileChange?.(c) || Promise.resolve();
     });
 

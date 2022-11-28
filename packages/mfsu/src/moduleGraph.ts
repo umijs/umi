@@ -1,4 +1,3 @@
-import { lodash } from '@umijs/utils';
 import type { DepModule } from './depInfo';
 
 class ModuleNode {
@@ -133,15 +132,38 @@ export class ModuleGraph {
   }
 
   getDepInfo(mod: ModuleNode) {
+    const [importer] = mod.importers;
+
     return {
       file: mod.file,
       version: mod.version!,
+      importer: importer?.file,
     };
   }
 
   hasDepChanged() {
     const depModulesInfo = this.getDepsInfo(this.depToModules);
-    return !lodash.isEqual(depModulesInfo, this.depSnapshotModules);
+
+    const depKeys = Object.keys(depModulesInfo);
+    const snapshotKeys = Object.keys(this.depSnapshotModules);
+
+    if (depKeys.length !== snapshotKeys.length) {
+      return true;
+    }
+
+    for (const k of depKeys) {
+      const dep = depModulesInfo[k];
+      const snapshot = this.depSnapshotModules[k];
+      if (dep.file !== snapshot?.file) {
+        return true;
+      }
+
+      if (dep.version !== snapshot?.version) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   onFileChange(opts: { file: string; deps: IDep[] }) {

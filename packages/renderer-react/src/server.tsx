@@ -1,9 +1,18 @@
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { StaticRouter } from 'react-router-dom/server';
 import { AppContext } from './appContext';
 import { Routes } from './browser';
 import { createClientRoutes } from './routes';
 import { IRouteComponents, IRoutesById } from './types';
+
+// store helmet data
+const helmetContext = {};
+
+// get helmet context
+export function getHelmetContext() {
+  return helmetContext;
+}
 
 // Get the root React component for ReactDOMServer.renderToString
 export async function getClientRootComponent(opts: {
@@ -43,19 +52,21 @@ export async function getClientRootComponent(opts: {
   }
   return (
     <Html loaderData={opts.loaderData} manifest={opts.manifest}>
-      <AppContext.Provider
-        value={{
-          routes: opts.routes,
-          routeComponents: opts.routeComponents,
-          clientRoutes,
-          pluginManager: opts.pluginManager,
-          basename,
-          clientLoaderData: {},
-          serverLoaderData: opts.loaderData,
-        }}
-      >
-        {rootContainer}
-      </AppContext.Provider>
+      <HelmetProvider context={helmetContext}>
+        <AppContext.Provider
+          value={{
+            routes: opts.routes,
+            routeComponents: opts.routeComponents,
+            clientRoutes,
+            pluginManager: opts.pluginManager,
+            basename,
+            clientLoaderData: {},
+            serverLoaderData: opts.loaderData,
+          }}
+        >
+          {rootContainer}
+        </AppContext.Provider>
+      </HelmetProvider>
     </Html>
   );
 }

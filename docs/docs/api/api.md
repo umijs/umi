@@ -92,6 +92,24 @@ generatePath("/files/:type/*", {
 }); // "/files/img/cat.jpg"
 ```
 
+### Helmet
+
+即 [react-helmet-async](https://github.com/staylor/react-helmet-async) 提供的 Helmet 组件，用于在页面中动态配置 `head` 中的标签，例如 `title`。
+
+> 注意：为了确保 SSR 时 Helmet 仍能正常工作，请务必使用 Umi 提供的 Helmet 而不是单独安装 react-helmet
+
+```tsx
+import { Helmet } from 'umi';
+
+export default function Page() {
+  return (
+    <Helmet>
+      <title>Hello World</title>
+    </Helmet>
+  );
+}
+```
+
 ### history
 
 和 history 相关的操作，用于获取当前路由信息、执行路由跳转、监听路由变更。

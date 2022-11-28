@@ -50,7 +50,6 @@ Write: src/pages/bar/index.tsx
 
 ```bash
 $umi g page far/far/away/kingdom
-info  - @local
 Write: src/pages/far/far/away/kingdom.tsx
 Write: src/pages/far/far/away/kingdom.less
 ```
@@ -59,7 +58,6 @@ Write: src/pages/far/far/away/kingdom.less
 
 ```bash
 $umi g page  page1  page2   a/nested/page3
-info  - @local
 Write: src/pages/page1.tsx
 Write: src/pages/page1.less
 Write: src/pages/page2.tsx
@@ -75,7 +73,6 @@ Write: src/pages/a/nested/page3.less
 交互式生成：
 ```bash
 $umi g component
-info  - @local
 ✔ Please input you component Name … foo
 Write: src/components/Foo/index.ts
 Write: src/components/Foo/Foo.tsx
@@ -84,7 +81,6 @@ Write: src/components/Foo/Foo.tsx
 直接生成：
 ```bash
 $umi g component bar
-info  - @local
 Write: src/components/Bar/index.ts
 Write: src/components/Bar/Bar.tsx
 ```
@@ -92,7 +88,6 @@ Write: src/components/Bar/Bar.tsx
 嵌套生成：
 ```bash
 $umi g component group/subgroup/baz
-info  - @local
 Write: src/components/group/subgroup/Baz/index.ts
 Write: src/components/group/subgroup/Baz/Baz.tsx
 ```
@@ -100,7 +95,6 @@ Write: src/components/group/subgroup/Baz/Baz.tsx
 批量生成：
 ```bash
 $umi g component apple banana orange
-info  - @local
 Write: src/components/Apple/index.ts
 Write: src/components/Apple/Apple.tsx
 Write: src/components/Banana/index.ts
@@ -116,7 +110,6 @@ Write: src/components/Orange/Orange.tsx
 交互式生成：
 ```bash
 $umi g api
-info  - @local
 ✔ please input your api name: … starwar/people
 Write: api/starwar/people.ts
 ```
@@ -124,21 +117,18 @@ Write: api/starwar/people.ts
 直接生成:
 ```bash
 $umi g api films
-info  - @local
 Write: api/films.ts
 ```
 
 嵌套生成器：
 ```bash
 $umi g api planets/[id]
-info  - @local
 Write: api/planets/[id].ts
 ```
 
 批量生成：
 ```bash
 $umi g api spaceships vehicles species
-info  - @local
 Write: api/spaceships.ts
 Write: api/vehicles.ts
 Write: api/species.ts
@@ -151,7 +141,6 @@ Write: api/species.ts
 交互式生成：
 ```bash
 $umi g mock
-info  - @local
 ✔ please input your mock file name … auth
 Write: mock/auth.ts
 ```
@@ -159,14 +148,12 @@ Write: mock/auth.ts
 直接生成:
 ```bash
 $umi g mock acl
-info  - @local
 Write: mock/acl.ts
 ```
 
 嵌套生成:
 ```bash
 $umi g mock users/profile
-info  - @local
 Write: mock/users/profile.ts
 ```
 
@@ -176,7 +163,6 @@ Write: mock/users/profile.ts
 
 ```bash
 $umi g prettier
-info  - @local
 info  - Write package.json
 info  - Write .prettierrc
 info  - Write .prettierignore
@@ -188,7 +174,6 @@ info  - Write .prettierignore
 
 ```bash
 $umi g jest
-info  - @local
 ✔ Will you use @testing-library/react for UI testing?! … yes
 info  - Write package.json
 info  - Write jest.config.ts
@@ -200,7 +185,6 @@ info  - Write jest.config.ts
 
 ```bash
 $umi g tailwindcss
-info  - @local
 info  - Write package.json
 set config:tailwindcss on /Users/umi/playground/.umirc.ts
 set config:plugins on /Users/umi/playground/.umirc.ts
@@ -215,9 +199,24 @@ info  - Write tailwind.css
 
 ```bash
 $umi g dva
-info  - @local
 set config:dva on /Users/umi/umi-playground/.umirc.ts
 set config:plugins on /Users/umi/umi-playground/.umirc.ts
 info  - Update config file
 info  - Write example model
+```
+
+### Precommit 配置生成器
+
+为项目生成 [precommit](https://typicode.github.io/husky) 配置，命令执行后，`umi` 会为我们添加 husky 和 Git commit message 格式校验行为，在每次 Git commit 前会将 Git 暂存区的代码默认格式化。
+
+> 注意：如果是初始化出来的 `@umijs/max` 项目，通常不需要该生成器，因为已经配置好 husky 了
+
+```bash
+$umi g precommit
+info  - Update package.json for devDependencies
+info  - Update package.json for scripts
+info  - Write .lintstagedrc
+info  - Create .husky
+info  - Write commit-msg
+info  - Write pre-commit
 ```

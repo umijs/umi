@@ -8,6 +8,7 @@
     "e2e": "cypress run",
     "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  \\\"pnpm umi-scripts cypress\\\"",
     "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:dev:local": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status 'cypress open'",
     "format": "prettier --cache --write .",
     "preview": "max preview --port 9527",
     "setup": "max setup",
@@ -16,7 +17,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
-    "@umijs/max": "4.0.0-canary.20221104.2",
+    "@umijs/max": "4.0.33",
     "antd": "^4.20.7"
   },
   "devDependencies": {
