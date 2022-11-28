@@ -59,6 +59,7 @@ async function render() {
           ...contextOpts.historyOpts,
         }),
         basename,
+        callback: contextOpts.callback,
       };
       const modifiedContext = pluginManager.applyPlugins({
         key: 'modifyClientRenderOpts',
