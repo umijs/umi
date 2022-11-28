@@ -403,7 +403,7 @@ export default function EmptyRoute() {
           path: winPath(plugin),
         })),
         validKeys,
-        // use `es-module-lexer` parse results fileds should use the named exported
+        // use `es-module-lexer` parse results fields should use the named exported
         shouldNamedExportKeys: [
           // plugins/src/initial-state.ts : api.appData.appJS?.exports.includes('getInitialState')
           'getInitialState',
