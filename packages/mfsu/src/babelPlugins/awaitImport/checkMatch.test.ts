@@ -49,12 +49,8 @@ test('start with mf/', () => {
   expect(
     checkMatch({
       value: 'mf/foo',
-    }),
-  ).toEqual({
-    isMatch: true,
-    value: 'foo',
-    replaceValue: 'mf/foo',
-  });
+    }).isMatch,
+  ).toEqual(false);
 });
 
 test('babel/svgr-webpack', () => {

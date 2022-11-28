@@ -64,13 +64,13 @@ export function checkMatch({
 
   const unMatchLibsRegex = genUnMatchLibsRegex(opts.unMatchLibs);
 
-  const mfPathInitial = `${remoteName}/`;
-
   if (
     // unMatch specified libs
     unMatchLibsRegex?.test(value) ||
     // do not match bundler-webpack/client/client/client.js
     value.includes('client/client/client.js') ||
+    // already handled
+    value.startsWith(`${remoteName}/`) ||
     // don't match dynamic path
     // e.g. @umijs/deps/compiled/babel/svgr-webpack.js?-svgo,+titleProp,+ref!./umi.svg
     winPath(value).includes('babel/svgr-webpack') ||
@@ -83,9 +83,6 @@ export function checkMatch({
     value.startsWith('.')
   ) {
     isMatch = false;
-    // already handled
-  } else if (value.startsWith(mfPathInitial)) {
-    isMatch = true;
   } else if (isAbsolute(value)) {
     isMatch = RE_NODE_MODULES.test(value) || isUmiLocalDev(value);
   } else {
@@ -113,13 +110,7 @@ export function checkMatch({
   }
 
   if (isMatch) {
-    // in case src file compiled twice or more
-    if (value.startsWith(mfPathInitial)) {
-      replaceValue = value;
-      value = value.replace(mfPathInitial, '');
-    } else {
-      replaceValue = `${remoteName}/${winPath(value)}`;
-    }
+    replaceValue = `${remoteName}/${winPath(value)}`;
   }
 
   // @ts-ignore
