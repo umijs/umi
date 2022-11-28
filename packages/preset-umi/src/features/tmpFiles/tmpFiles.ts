@@ -403,6 +403,13 @@ export default function EmptyRoute() {
           path: winPath(plugin),
         })),
         validKeys,
+        // use `es-module-lexer` parse results fileds should use the named exported
+        shouldNamedExportKeys: [
+          // plugins/src/initial-state.ts : api.appData.appJS?.exports.includes('getInitialState')
+          'getInitialState',
+          // plugins/src/qiankun/master.ts : exports.includes(MODEL_EXPORT_NAME)
+          'useQiankunStateForSlave',
+        ],
       },
     });
 
