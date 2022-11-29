@@ -23,6 +23,23 @@ test('set object', () => {
   expect(generateCode).toContain('react');
 });
 
+test('set object with deep object', () => {
+  const ast = parse('export default {}');
+  const generateCode = generate(
+    setConfigByName(
+      ast,
+      'p2',
+      JSON.stringify({
+        react: 'aaa',
+        subP2: { a: 1, b: { d: 'ddd' }, c: true },
+      }),
+    )!,
+  );
+  expect(generateCode).toMatchInlineSnapshot(
+    `"export default { p2: { react: \\"aaa\\", subP2: { a: 1, b: { d: \\"ddd\\" }, c: true } } };"`,
+  );
+});
+
 test('set number', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;

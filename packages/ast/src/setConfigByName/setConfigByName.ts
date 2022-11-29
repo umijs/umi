@@ -4,45 +4,15 @@ import * as t from '@umijs/bundler-utils/compiled/babel/types';
 
 export function setConfigByName(ast: t.File, name: string, value: any) {
   let _value: any;
-  let valueObject: any;
   let isChanged: boolean = false;
   try {
     _value = JSON.parse(value);
   } catch (error) {
     _value = value;
   }
-  const valueType = typeof _value;
-  switch (valueType) {
-    case 'string':
-      valueObject = t.stringLiteral(_value);
-      break;
-    case 'boolean':
-      valueObject = t.booleanLiteral(_value);
-      break;
-    case 'number':
-      valueObject = t.numericLiteral(_value);
-      break;
-    case 'object':
-      if (Array.isArray(_value)) {
-        valueObject = t.arrayExpression(
-          _value.map((i: string) => {
-            return t.stringLiteral(i);
-          }),
-        );
-      } else {
-        const valueObjs = [] as t.ObjectProperty[];
-        Object.keys(_value).forEach((key) => {
-          valueObjs.push(
-            t.objectProperty(t.identifier(key), t.stringLiteral(_value[key])),
-          );
-        });
-        valueObject = t.objectExpression(valueObjs);
-      }
-      break;
-    default:
-      console.log(`${valueType} is not supported.`);
-      break;
-  }
+
+  const valueObject = literalFromPrimitive(_value);
+
   if (!valueObject) return;
   // 这里是修改逻辑
   traverse.default(ast, {
@@ -94,3 +64,39 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
 
 const config = { dva: {} };
 export default config;
+
+type JSONValueTypes =
+  | t.StringLiteral
+  | t.BooleanLiteral
+  | t.ArrayExpression
+  | t.ObjectExpression
+  | t.NumericLiteral;
+
+function literalFromPrimitive(v: any): JSONValueTypes {
+  switch (typeof v) {
+    case 'string':
+      return t.stringLiteral(v);
+    case 'boolean':
+      return t.booleanLiteral(v);
+    case 'number':
+      return t.numericLiteral(v);
+    case 'object':
+      if (Array.isArray(v)) {
+        return t.arrayExpression(
+          v.map((i: any) => {
+            return literalFromPrimitive(i);
+          }),
+        );
+      } else {
+        const valueObjs = [] as t.ObjectProperty[];
+        Object.keys(v).forEach((key) => {
+          valueObjs.push(
+            t.objectProperty(t.identifier(key), literalFromPrimitive(v[key])),
+          );
+        });
+        return t.objectExpression(valueObjs);
+      }
+    default:
+      throw Error(`Only string,boolean,number supported, but got ${typeof v}`);
+  }
+}
