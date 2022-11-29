@@ -141,4 +141,4 @@ mfsu: {
 ### worker 兼容问题
 
 如果项目代码需要在 Worker 中使用，那么需要将 Worker 需要的依赖添加到 MFSU 的 [`exclude` 配置中](../api/config#mfsu)。
-Worker 相关依赖只能通过这样方式来绕过，因为 Module Federation 是依赖 `window` 对象来共享模块的，所以在 worker 中不能使用了Module Federation 中的依赖。
+Worker 相关依赖只能通过这样方式来绕过，因为 Module Federation 是通过 `window` 对象来共享模块的，所以在 worker 中不能使用 Module Federation 中的模块。
