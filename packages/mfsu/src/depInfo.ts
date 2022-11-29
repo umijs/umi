@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { MFSU } from './mfsu/mfsu';
 import { ModuleGraph } from './moduleGraph';
+import { getDepHash } from './utils/depUtils';
 
 interface IOpts {
   mfsu: MFSU;
@@ -27,6 +28,8 @@ export interface IDepInfo {
   getCacheFilePath(): string;
 
   getDepModules(): Record<string, DepModule>;
+
+  getDepHash(): string;
 }
 
 export class DepInfo implements IDepInfo {
@@ -64,21 +67,31 @@ export class DepInfo implements IDepInfo {
 
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
-      logger.info('[MFSU] restore cache');
+      logger.info('[MFSU] prepare to restore cache');
       try {
-        const { cacheDependency, moduleGraph } = JSON.parse(
+        const { cacheDependency, moduleGraph, hash } = JSON.parse(
           readFileSync(this.cacheFilePath, 'utf-8'),
         );
-        this.cacheDependency = cacheDependency;
-        this.moduleGraph.restore(moduleGraph);
+
+        if (hash == this.getDepHash()) {
+          this.cacheDependency = cacheDependency;
+          this.moduleGraph.restore(moduleGraph);
+          logger.info('[MFSU] restored cache');
+        } else {
+          logger.info('[MFSU] cache out of date, will rebuild soon');
+        }
       } catch (e) {
         logger.error('[MFSU] restore cache failed', e);
-        logger.error('please `rm -rf  node_modules/.cache`, and try again');
+        logger.error(`please rm -rf  ${this.cacheFilePath}, and try again`);
         // 如果 cache 恢复失败, 依赖信息是不完整, 项目代码编译使用了缓存, 那么分析出来的依赖是不完整的
         // 错误透传出去, 让用户删除缓存重新启动才能彻底解决
         throw e;
       }
     }
+  }
+
+  getDepHash() {
+    return getDepHash(this.opts.mfsu.opts.cwd || process.cwd());
   }
 
   writeCache() {
@@ -87,6 +100,7 @@ export class DepInfo implements IDepInfo {
       {
         cacheDependency: this.cacheDependency,
         moduleGraph: this.moduleGraph.toJSON(),
+        hash: this.getDepHash(),
       },
       null,
       2,

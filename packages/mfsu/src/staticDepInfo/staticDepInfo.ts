@@ -7,6 +7,7 @@ import { dirname, join } from 'path';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu/mfsu';
+import { getDepHash } from '../utils/depUtils';
 import createPluginImport from './simulations/babel-plugin-import';
 
 type FileChangeEvent = {
@@ -139,16 +140,30 @@ export class StaticDepInfo {
     this.cacheDependency = this.mfsu.opts.getCacheDependency!();
   }
 
+  getDepHash() {
+    return getDepHash(this.opts.mfsu.opts.cwd || process.cwd());
+  }
+
+  restore(dep: Record<string, Match>, cacheDependency: object) {
+    this.builtWithDep = dep;
+    this.cacheDependency = cacheDependency;
+    logger.info('[MFSU][eager] restored cache');
+  }
+
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
-        const { dep = {}, cacheDependency = {} } = JSON.parse(
-          readFileSync(this.cacheFilePath, 'utf-8'),
-        );
+        const {
+          dep = {},
+          cacheDependency = {},
+          hash = '',
+        } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
-        this.builtWithDep = dep;
-        this.cacheDependency = cacheDependency;
-        logger.info('[MFSU][eager] restored cache');
+        if (hash == this.getDepHash()) {
+          this.restore(dep, cacheDependency);
+        } else {
+          logger.info('[MFSU][eager] cache out of date, will rebuild soon');
+        }
       } catch (e) {
         logger.warn(
           '[MFSU][eager] restore cache failed, fallback to Empty dependency',
@@ -164,6 +179,7 @@ export class StaticDepInfo {
       {
         dep: this.builtWithDep,
         cacheDependency: this.cacheDependency,
+        hash: this.getDepHash(),
       },
       null,
       2,
