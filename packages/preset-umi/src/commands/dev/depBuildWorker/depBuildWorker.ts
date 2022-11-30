@@ -101,7 +101,7 @@ async function start() {
     tmpBase,
     mfName: opts.config.mfsu?.mfName || DEFAULT_MF_NAME,
     shared: opts.config.mfsu?.shared || {},
-    buildDepWithESBuild: false,
+    buildDepWithESBuild: !!opts.config.mfsu?.esbuild,
     depEsBuildConfig,
     externals,
   });
