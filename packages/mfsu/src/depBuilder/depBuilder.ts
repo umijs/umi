@@ -49,7 +49,10 @@ export class DepBuilder {
 
   // TODO: support watch and rebuild
   async buildWithESBuild(opts: { onBuildComplete: Function; deps: Dep[] }) {
-    const entryContent = getESBuildEntry({ deps: opts.deps });
+    const entryContent = getESBuildEntry({
+      mfName: this.opts.mfsu.opts.mfName!,
+      deps: opts.deps,
+    });
     const ENTRY_FILE = 'esbuild-entry.js';
     const tmpDir = this.opts.mfsu.opts.tmpBase!;
     const entryPath = join(tmpDir, ENTRY_FILE);

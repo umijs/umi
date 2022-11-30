@@ -60,7 +60,10 @@ export class DepBuilderInWorker {
     const alias = { ...this.opts.depConfig.resolve?.alias };
     const externals = this.opts.depConfig.externals;
 
-    const entryContent = getESBuildEntry({ deps: opts.deps });
+    const entryContent = getESBuildEntry({
+      mfName: this.opts.mfName!,
+      deps: opts.deps,
+    });
     const ENTRY_FILE = 'esbuild-entry.js';
     const tmpDir = this.opts.tmpBase!;
     const entryPath = join(tmpDir, ENTRY_FILE);
