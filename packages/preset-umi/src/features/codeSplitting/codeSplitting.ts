@@ -91,6 +91,7 @@ export default (api: IApi) => {
           lib: {
             test(module: any) {
               return (
+                !isModuleCSS(module) &&
                 module.size() > 160000 &&
                 /node_modules[/\\]/.test(module.identifier())
               );
@@ -99,7 +100,14 @@ export default (api: IApi) => {
               const rawRequest =
                 module.rawRequest &&
                 module.rawRequest.replace(/^@(\w+)[/\\]/, '$1-');
-              if (rawRequest) return `${rawRequest}-lib`;
+              if (rawRequest) {
+                return `${
+                  // when `require()` a package with relative path,
+                  // need remove leading `.` and `/`, otherwise will not found `.js` file
+                  // e.g. require('../../lib/codemirror')
+                  rawRequest.replace(/\./g, '_').replace(/\//g, '-')
+                }-lib`;
+              }
 
               const identifier = module.identifier();
               const trimmedIdentifier = /(?:^|[/\\])node_modules[/\\](.*)/.exec(
@@ -147,3 +155,14 @@ export default (api: IApi) => {
     return memo;
   });
 };
+
+function isModuleCSS(module: { type: string }) {
+  return (
+    // mini-css-extract-plugin
+    module.type === `css/mini-extract` ||
+    // extract-css-chunks-webpack-plugin (old)
+    module.type === `css/extract-chunks` ||
+    // extract-css-chunks-webpack-plugin (new)
+    module.type === `css/extract-css-chunks`
+  );
+}
