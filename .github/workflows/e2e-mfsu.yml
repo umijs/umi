@@ -29,6 +29,7 @@ jobs:
       matrix:
         node-version: [16.x]
         os: [ubuntu-latest, windows-latest]
+        mfsu-strategy: [normal, eager]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -82,30 +83,16 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build 
-          --filter ./examples/mfsu-e2e...
-          --filter ./examples/max...
-          --filter ./examples/mf-remote...
+        run: pnpm umi-scripts turbo build --filter ./examples/mfsu-e2e... --filter ./examples/max... --filter ./examples/mf-remote...
 
-      - name: e2e:example:mfsu-e2e-eager
-        uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          working-directory: ./examples/mfsu-e2e
-          install: false
-          install-command: pnpm i cypress
-          command: npm run e2e:ci
-        env:
-          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
-
-      - name: set mfsu-normal env
+      - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
         run: |
           npx rimraf node_modules/.cache
-          npm run set:normal
+          npx umi config set mfsu '{"strategy":"${{ matrix.mfsu-strategy }}","esbuild":false}'
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
-      - name: e2e:example:mfsu-e2e:normal
+      - name: e2e:example:mfsu-e2e-${{ matrix.mfsu-strategy }}-webpack
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
@@ -115,6 +102,31 @@ jobs:
           command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: set mfsu-${{ matrix.mfsu-strategy }}-esbuild
+        run: |
+          npx rimraf node_modules/.cache
+          npx umi config set mfsu '{"strategy":"${{ matrix.mfsu-strategy }}","esbuild":true}'
+          cat .umirc.ts
+        working-directory: ./examples/mfsu-e2e
+
+      - name: e2e:example:mfsu-e2e-${{ matrix.mfsu-strategy }}-esbuild
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
+        run: |
+          npx rimraf node_modules/.cache
+          npx umi config set mfsu '{"strategy":"${{ matrix.mfsu-strategy }}","esbuild":false}'
+          cat .umirc.ts
+        working-directory: ./examples/mfsu-e2e
 
       - name: e2e:example:plugin-mf+MFSU
         uses: cypress-io/github-action@v4
