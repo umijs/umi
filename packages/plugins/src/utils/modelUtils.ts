@@ -6,12 +6,20 @@ import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
 import { readFileSync } from 'fs';
 import { basename, dirname, extname, format, join, relative } from 'path';
 import { IApi } from 'umi';
-import { glob, winPath } from 'umi/plugin-utils';
+import { chalk, glob, winPath } from 'umi/plugin-utils';
 import { getIdentifierDeclaration } from './astUtils';
 
 interface IOpts {
   contentTest?: (content: string) => Boolean;
   astTest?: (opts: { node: t.Node; content: string }) => Boolean;
+}
+
+interface ITopologicalNode {
+  namespace: string;
+  deps: string[];
+  index: number;
+  in: number;
+  childs: ITopologicalNode[];
 }
 
 export function getNamespace(absFilePath: string, absSrcPath: string) {
@@ -137,58 +145,13 @@ export class ModelUtils {
     }
     // sort models by deps
     if (opts.sort) {
-      const namespaces: string[] = this.getSortedNamespaces(models);
+      const namespaces: string[] = ModelUtils.topologicalSort(models);
       models.sort(
         (a, b) =>
           namespaces.indexOf(a.namespace) - namespaces.indexOf(b.namespace),
       );
     }
     return models;
-  }
-
-  getSortedNamespaces(models: Model[]) {
-    let final: string[] = [];
-    models.forEach((model, index) => {
-      const { deps, namespace } = model;
-      if (deps && deps.length) {
-        const itemGroup = [...deps, namespace];
-        const cannotUse = [namespace];
-        for (let i = 0; i <= index; i += 1) {
-          if (models[i].deps.filter((v) => cannotUse.includes(v)).length) {
-            if (!cannotUse.includes(models[i].namespace)) {
-              cannotUse.push(models[i].namespace);
-              i = -1;
-            }
-          }
-        }
-        const errorList = deps.filter((v) => cannotUse.includes(v));
-        if (errorList.length) {
-          throw Error(
-            `Circular dependencies: ${namespace} can't use ${errorList.join(
-              ', ',
-            )}`,
-          );
-        }
-        const intersection = final.filter((v) => itemGroup.includes(v));
-        if (intersection.length) {
-          // first intersection
-          const finalIndex = final.indexOf(intersection[0]);
-          // replace with groupItem
-          final = final
-            .slice(0, finalIndex)
-            .concat(itemGroup)
-            .concat(final.slice(finalIndex + 1));
-        } else {
-          final.push(...itemGroup);
-        }
-      }
-      if (!final.includes(namespace)) {
-        // first occurrence append to the end
-        final.push(namespace);
-      }
-    });
-
-    return [...new Set(final)];
   }
 
   getModels(opts: { base: string; pattern?: string }) {
@@ -243,6 +206,68 @@ export class ModelUtils {
 
     return ret;
   }
+
+  // https://github.com/umijs/umi/issues/9837
+  static topologicalSort = (models: Model[]) => {
+    // build depts graph
+    const graph: Array<ITopologicalNode | undefined> = [];
+    const namespaceToNode: Record<string, ITopologicalNode> = {};
+    models.forEach((model, index) => {
+      const node: ITopologicalNode = {
+        namespace: model.namespace,
+        deps: model.deps,
+        index,
+        in: 0,
+        childs: [],
+      };
+      if (namespaceToNode[model.namespace]) {
+        throw new Error(`Duplicate namespace in models: ${model.namespace}`);
+      }
+      namespaceToNode[model.namespace] = node;
+      graph.push(node);
+    });
+
+    // build edges.
+    (graph as ITopologicalNode[]).forEach((node) => {
+      node.deps.forEach((dep) => {
+        const depNode = namespaceToNode[dep];
+        if (!depNode) {
+          throw new Error(`Model namespace not found: ${dep}`);
+        }
+        depNode.childs.push(node);
+        node.in++;
+      });
+    });
+
+    const queue: string[] = [];
+    while (true) {
+      // find first 0 in node;
+      const zeronode = graph.find((n) => {
+        return n && n.in === 0;
+      });
+      if (!zeronode) {
+        break;
+      }
+
+      queue.push(zeronode.namespace);
+      zeronode.childs.forEach((child) => {
+        child.in--;
+      });
+      zeronode.childs = [];
+      delete graph[zeronode.index];
+    }
+
+    const leftNodes = graph.filter(Boolean) as ITopologicalNode[];
+    if (leftNodes.length > 0) {
+      throw new Error(
+        `Circle dependency detected in models: ${leftNodes
+          .map((m) => chalk.red(m.namespace))
+          .join(', ')}`,
+      );
+    }
+
+    return queue;
+  };
 
   static getModelsContent(models: Model[]) {
     const imports: string[] = [];
