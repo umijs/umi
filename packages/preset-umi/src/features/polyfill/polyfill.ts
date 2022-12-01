@@ -50,6 +50,7 @@ export {};
           require.resolve('@umijs/babel-preset-umi/dist/plugins/lockCoreJS'),
         ],
         babelrc: false,
+        configFile: false,
       },
     )!;
     api.writeTmpFile({
