@@ -313,7 +313,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   let webpackConfig = config.toConfig();
 
   // speed measure
-  // TODO: mini-css-extract-plugin 报错
   webpackConfig = await addSpeedMeasureWebpackPlugin({
     webpackConfig,
   });
