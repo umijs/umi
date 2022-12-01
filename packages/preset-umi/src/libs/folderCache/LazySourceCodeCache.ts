@@ -190,6 +190,7 @@ async function esbuildTransform(
         '.jsx': 'tsx',
       },
       logLevel: 'error',
+      tsconfig: join(__dirname, 'empty.tsconfig.json'),
     });
   } catch (e) {
     // error ignored due to user have to update code to fix then trigger another batchProcess;
