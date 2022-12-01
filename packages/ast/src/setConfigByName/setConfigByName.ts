@@ -1,29 +1,28 @@
 import type { NodePath } from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as traverse from '@umijs/bundler-utils/compiled/babel/traverse';
+import { parseExpression } from '@umijs/bundler-utils/compiled/babel/parser';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 
-export function setConfigByName(ast: t.File, name: string, value: any) {
-  let _value: any;
+export function setConfigByName(ast: t.File, name: string, value: string) {
   let isChanged: boolean = false;
+  let valueObject: t.Expression = t.stringLiteral(value);
   try {
-    _value = JSON.parse(value);
-  } catch (error) {
-    _value = value;
-  }
+    JSON.parse(value);
+    valueObject = parseExpression(value);
+  } catch (error) {}
 
-  const valueObject = literalFromPrimitive(_value);
-
-  if (!valueObject) return;
   // 这里是修改逻辑
   traverse.default(ast, {
     ObjectProperty(path) {
       //@ts-ignore
       if (path.node.key?.name === name) {
-        path.node.value = valueObject;
+        path.node.value = valueObject!;
         isChanged = true;
+        path.stop();
       }
     },
   });
+
   if (!isChanged) {
     let modified = false;
     traverse.default(ast, {
@@ -34,7 +33,7 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
           t.isObjectExpression(path.node.arguments[0])
         ) {
           path.node.arguments[0].properties.push(
-            t.objectProperty(t.identifier(name), valueObject),
+            t.objectProperty(t.identifier(name), valueObject!),
           );
           modified = true;
           path.stop();
@@ -44,7 +43,7 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
       ObjectExpression(path: NodePath<t.ObjectExpression>) {
         if (t.isExportDefaultDeclaration(path.parent)) {
           path.node.properties.push(
-            t.objectProperty(t.identifier(name), valueObject),
+            t.objectProperty(t.identifier(name), valueObject!),
           );
           modified = true;
           path.stop();
@@ -64,39 +63,3 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
 
 const config = { dva: {} };
 export default config;
-
-type JSONValueTypes =
-  | t.StringLiteral
-  | t.BooleanLiteral
-  | t.ArrayExpression
-  | t.ObjectExpression
-  | t.NumericLiteral;
-
-function literalFromPrimitive(v: any): JSONValueTypes {
-  switch (typeof v) {
-    case 'string':
-      return t.stringLiteral(v);
-    case 'boolean':
-      return t.booleanLiteral(v);
-    case 'number':
-      return t.numericLiteral(v);
-    case 'object':
-      if (Array.isArray(v)) {
-        return t.arrayExpression(
-          v.map((i: any) => {
-            return literalFromPrimitive(i);
-          }),
-        );
-      } else {
-        const valueObjs = [] as t.ObjectProperty[];
-        Object.keys(v).forEach((key) => {
-          valueObjs.push(
-            t.objectProperty(t.identifier(key), literalFromPrimitive(v[key])),
-          );
-        });
-        return t.objectExpression(valueObjs);
-      }
-    default:
-      throw Error(`Only string,boolean,number supported, but got ${typeof v}`);
-  }
-}

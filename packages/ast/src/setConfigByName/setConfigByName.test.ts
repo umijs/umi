@@ -10,7 +10,7 @@ const cwd = join(fixtures, 'app');
 test('normal', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
-  const generateCode = generate(setConfigByName(ast!, 'abc', false)!);
+  const generateCode = generate(setConfigByName(ast!, 'abc', 'false')!);
   expect(generateCode).toContain('abc: false');
 });
 
@@ -36,14 +36,14 @@ test('set object with deep object', () => {
     )!,
   );
   expect(generateCode).toMatchInlineSnapshot(
-    `"export default { p2: { react: \\"aaa\\", subP2: { a: 1, b: { d: \\"ddd\\" }, c: true } } };"`,
+    `"export default { p2: { \\"react\\": \\"aaa\\", \\"subP2\\": { \\"a\\": 1, \\"b\\": { \\"d\\": \\"ddd\\" }, \\"c\\": true } } };"`,
   );
 });
 
 test('set number', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
-  const generateCode = generate(setConfigByName(ast, 'num', 2)!);
+  const generateCode = generate(setConfigByName(ast, 'num', '2')!);
   expect(generateCode).toContain('num: 2');
 });
 
@@ -59,13 +59,13 @@ test('set array', () => {
 test('set new config', () => {
   const ast = getASTByFilePath(join(cwd, '.umirc.ts'));
   if (!ast) return;
-  const generateCode = generate(setConfigByName(ast, 'aaa', true)!);
+  const generateCode = generate(setConfigByName(ast, 'aaa', 'true')!);
   expect(generateCode).toContain('aaa');
 });
 
 test('set config in export default defineConfig', () => {
   const ast = parse(`const c= {dav:{}}; export default defineConfig({...c})`);
-  const generateCode = generate(setConfigByName(ast, 'tailwindcss', {})!);
+  const generateCode = generate(setConfigByName(ast, 'tailwindcss', '{}')!);
 
   expect(generateCode).toEqual(
     code(
@@ -76,7 +76,7 @@ test('set config in export default defineConfig', () => {
 
 test('set config in export default object', () => {
   const ast = parse(`const c = {dva:{}}; export default {...c}`);
-  const generateCode = generate(setConfigByName(ast, 'tailwindcss', {})!);
+  const generateCode = generate(setConfigByName(ast, 'tailwindcss', '{}')!);
 
   expect(generateCode).toEqual(
     code(`const c = {dva:{}};export default {...c, tailwindcss:{}}`),
