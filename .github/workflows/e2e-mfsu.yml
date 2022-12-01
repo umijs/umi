@@ -27,9 +27,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16.x]
         os: [ubuntu-latest, windows-latest]
         mfsu-strategy: [normal, eager]
+        node-version: [16.x]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
