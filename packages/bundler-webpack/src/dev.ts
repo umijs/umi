@@ -90,6 +90,7 @@ export async function dev(opts: IOpts) {
         });
       },
       startBuildWorker: opts.startBuildWorker!,
+      cwd: opts.cwd!,
     });
   }
 
