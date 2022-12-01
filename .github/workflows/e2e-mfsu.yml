@@ -27,8 +27,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         mfsu-strategy: [normal, eager]
+        os: [ubuntu-latest, windows-latest]
         node-version: [16.x]
       fail-fast: false
     steps:
@@ -88,7 +88,7 @@ jobs:
       - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
         run: |
           npx rimraf node_modules/.cache
-          npx umi config set mfsu '{\\\"strategy\\\":\\\"${{ matrix.mfsu-strategy }}\\\",\\\"esbuild\\\":false}'
+          npm run set:mfsu:${{ matrix.mfsu-strategy }}:webpack
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
@@ -106,7 +106,7 @@ jobs:
       - name: set mfsu-${{ matrix.mfsu-strategy }}-esbuild
         run: |
           npx rimraf node_modules/.cache
-          npx umi config set mfsu '{"strategy":"${{ matrix.mfsu-strategy }}","esbuild":true}'
+          npm run set:mfsu:${{ matrix.mfsu-strategy }}:esbuild
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
@@ -124,7 +124,7 @@ jobs:
       - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
         run: |
           npx rimraf node_modules/.cache
-          npx umi config set mfsu '{"strategy":"${{ matrix.mfsu-strategy }}","esbuild":false}'
+          npm run set:mfsu:${{ matrix.mfsu-strategy }}:webpack
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
