@@ -88,7 +88,7 @@ jobs:
       - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
         run: |
           npx rimraf node_modules/.cache
-          npx umi config set mfsu '{"strategy":"${{ matrix.mfsu-strategy }}","esbuild":false}'
+          npx umi config set mfsu '{\\\"strategy\\\":\\\"${{ matrix.mfsu-strategy }}\\\",\\\"esbuild\\\":false}'
           cat .umirc.ts
         working-directory: ./examples/mfsu-e2e
 
