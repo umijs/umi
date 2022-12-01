@@ -16,7 +16,7 @@ export function setConfigByName(ast: t.File, name: string, value: string) {
     ObjectProperty(path) {
       //@ts-ignore
       if (path.node.key?.name === name) {
-        path.node.value = valueObject!;
+        path.node.value = valueObject;
         isChanged = true;
         path.stop();
       }
@@ -33,7 +33,7 @@ export function setConfigByName(ast: t.File, name: string, value: string) {
           t.isObjectExpression(path.node.arguments[0])
         ) {
           path.node.arguments[0].properties.push(
-            t.objectProperty(t.identifier(name), valueObject!),
+            t.objectProperty(t.identifier(name), valueObject),
           );
           modified = true;
           path.stop();
@@ -43,7 +43,7 @@ export function setConfigByName(ast: t.File, name: string, value: string) {
       ObjectExpression(path: NodePath<t.ObjectExpression>) {
         if (t.isExportDefaultDeclaration(path.parent)) {
           path.node.properties.push(
-            t.objectProperty(t.identifier(name), valueObject!),
+            t.objectProperty(t.identifier(name), valueObject),
           );
           modified = true;
           path.stop();
