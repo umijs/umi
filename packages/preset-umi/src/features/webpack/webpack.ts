@@ -4,6 +4,7 @@ import { IApi } from '../../types';
 export default (api: IApi) => {
   api.describe({
     key: 'preset-umi:webpack',
+    enableBy: () => api.env === 'production',
   });
 
   // html 处理逻辑
