@@ -12,7 +12,7 @@ import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import { IApi } from '../../types';
+import { IApi, IFileInfo } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -88,7 +88,10 @@ PORT=8888 umi dev
       // );
 
       // generate files
-      async function generate(opts: { isFirstTime?: boolean; files?: any }) {
+      async function generate(opts: {
+        isFirstTime?: boolean;
+        files?: IFileInfo;
+      }) {
         await api.applyPlugins({
           key: 'onGenerateFiles',
           args: {

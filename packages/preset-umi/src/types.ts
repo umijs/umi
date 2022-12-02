@@ -69,6 +69,7 @@ export type IEntryImport = {
   specifier?: string;
 };
 export type IRoute = ICoreRoute;
+export type IFileInfo = Array<{ event: string; path: string }>;
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -175,7 +176,7 @@ export type IApi = PluginAPI &
       time: number;
     }>;
     onGenerateFiles: IEvent<{
-      files?: { event: string; path: string } | null;
+      files?: IFileInfo | null;
       isFirstTime?: boolean;
     }>;
     onPatchRoute: IEvent<{
