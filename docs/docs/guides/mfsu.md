@@ -46,6 +46,13 @@ mfsu: {
 
 ![eager-process](https://gw.alipayobjects.com/mdn/rms_ffea06/afts/img/A*XtZ1Spa9hMEAAAAAAAAAAAAAARQnAQ)
 
+
+## 两种构建工具
+
+MFSU 支持使用 Webpack 或者 esbuild 构建项目的依赖。默认配置使用 Webacpk，和 Webpack 生态很好的兼容。
+Esbuild 通过 `mfsu: { esbuild: true }` 来开启，享受 Esbuild 的高效的构建速度。
+
+
 ## 如何选择
 
 **编译时分析**的好处是收集的依赖是完整的，项目代码和依赖代码的构建打包完全分离；再项目代码修改以后只需要构建项目代码部分。缺点也很明显，构建的过程是串行的。
@@ -54,6 +61,7 @@ mfsu: {
 
 基于优缺点的分析，给出以下建议
 
+- 如果不使用 Module Federation 的功能的话，项目依赖变动不频繁，建议先尝试 esbuild 构建
 - 如果在 mono repo 项目中, 推荐使用 "normal" 策略; 推荐开启配置 ["monoreporedirect"](../api/config#monoreporedirect)
 - 如果你的项目较大，项目代码基数较大，推荐使用 "eager" 策略
 - 如果项目刚刚启动，会频繁的改动依赖，推荐使用 "eager" 策略
