@@ -122,7 +122,7 @@ $ ANALYZE=1 umi build
 指定用于 HMR 的 socket 服务器。比如：
 
 ```bash
-$ SOCKET_SERVER=https://localhost:7001/ umi dev
+$ SOCKET_SERVER=http://localhost:8000/ umi dev
 ```
 
 ### SPEED_MEASURE
