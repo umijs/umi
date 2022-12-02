@@ -1,0 +1,37 @@
+{
+  "name": "@example/mfsu-independent-e2e",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack serve --config webpack.config.js",
+    "dev:esbuild": "webpack serve --config webpack.config.esbuild.js",
+    "e2e": "cypress run",
+    "e2e:ci": "cross-env PORT=8080 start-server-and-test dev http://localhost:8080/api e2e",
+    "e2e:ci:esbuild": "cross-env PORT=8080 start-server-and-test dev:esbuild http://localhost:8080/api e2e",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "antd": "^4.20.6",
+    "framer-motion": "^6.3.4",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "@umijs/mfsu": "workspace:*",
+    "babel-loader": "^8.2.4",
+    "cross-env": "^7.0.3",
+    "cypress": "^10.0.0",
+    "esbuild": "0.14.35",
+    "html-webpack-plugin": "^5.5.0",
+    "start-server-and-test": "^1.14.0",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.8.1"
+  }
+}
