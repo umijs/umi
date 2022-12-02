@@ -141,10 +141,10 @@ export default (api: IApi) => {
                 .replace(/=/g, '_');
               return `shared-${cryptoName}`;
             },
-            chunks: 'async',
             priority: 10,
             minChunks: 2,
             reuseExistingChunk: true,
+            chunks: 'async',
           },
         },
       });
