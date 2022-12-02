@@ -14,7 +14,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
     "@umijs/max": "{{{ version }}}",
-    "antd": "^4.20.7"
+    "antd": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
