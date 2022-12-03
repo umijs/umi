@@ -4,6 +4,7 @@ import type { Root } from '@umijs/utils/compiled/@hapi/joi';
 
 export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
+    analyze: (Joi) => Joi.object(),
     base: (Joi) => Joi.string(),
     conventionRoutes: (Joi) =>
       Joi.object({

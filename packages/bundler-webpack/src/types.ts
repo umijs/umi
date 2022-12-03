@@ -59,7 +59,7 @@ export interface IConfig {
     (
       memo: Config,
       args: {
-        env: keyof typeof Env,
+        env: keyof typeof Env;
         webpack: typeof webpack;
       },
     ): void;
@@ -98,6 +98,7 @@ export interface IConfig {
   targets?: { [key: string]: any };
   writeToDisk?: boolean;
   babelLoaderCustomize?: string;
+  analyze?: Record<string, any>;
   [key: string]: any;
 }
 
