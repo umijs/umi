@@ -15,7 +15,9 @@ describe('Basic Test', () => {
     cy.visit('/');
 
     cy.wait('@layoutLoaded', { timeout: 10000 });
-    cy.wait('@chunkLoaded', { timeout: 20000 });
+    cy.wait('@chunkLoaded', {
+      timeout: Cypress.platform === 'win32' ? 60000 : 10000,
+    });
 
     cy.contains('欢迎使用 Umi Max ！');
   });
