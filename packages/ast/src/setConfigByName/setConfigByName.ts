@@ -4,6 +4,9 @@ import { parseExpression } from '@umijs/bundler-utils/compiled/babel/parser';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 
 export function setConfigByName(ast: t.File, name: string, value: string) {
+  if (typeof value !== 'string') {
+    value = JSON.stringify(value);
+  }
   let isChanged: boolean = false;
   let valueObject: t.Expression = t.stringLiteral(value);
   try {
