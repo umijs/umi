@@ -172,7 +172,7 @@ export default {
 import { useClientLoaderData } from 'umi';
 
 export default function SomePage() {
-  const data = useClientLoaderData();
+  const { data } = useClientLoaderData();
   return <div>{data}</div>;
 }
 
