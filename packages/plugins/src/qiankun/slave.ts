@@ -322,7 +322,7 @@ export { connectMaster } from './connectMaster';
               ) => {
                 if (proxyRes.statusCode === 302) {
                   const hostname = (req as Request).hostname;
-                  const port = process.env.PORT;
+                  const port = process.env.PORT || api.appData?.port;
                   const goto = `${hostname}:${port}`;
                   const redirectUrl =
                     proxyRes.headers.location!.replace(
