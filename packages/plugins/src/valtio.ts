@@ -32,6 +32,7 @@ export {
   proxyWithDevtools,
   proxyMap,
   proxySet,
+  derive,
 } from '${libPath}';
       `,
     });
