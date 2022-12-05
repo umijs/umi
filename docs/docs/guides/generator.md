@@ -66,6 +66,83 @@ Write: src/pages/a/nested/page3.tsx
 Write: src/pages/a/nested/page3.less
 ```
 
+#### 对模板内容进行自定义
+
+如果页面生成器使用的默认模板不符合你的需求，你可以选择对模板内容进行自定义设置。
+
+首先，执行 `--eject` 命令：
+
+```bash
+$umi g page --eject
+```
+
+执行命令后，页面生成器会把它的原始模板弹射到项目的 `/templates/page` 目录：
+
+```
+.
+├── node_modules
+│   └── ...
+├── package.json
+└── templates
+    └── page
+        ├── index.less.tpl
+        └── index.tsx.tpl
+```
+
+接下来，你就可以对页面生成器的模板进行想要的修改了。
+
+`--eject` 命令只是把页面生成器的原始模板拷贝到项目目录中，你也可以选择自己在 `/templates/page` 目录新建 `index.tsx.tpl` 和 `index.less.tpl` 文件，而不是使用 `--eject` 命令。
+
+两个模板文件都支持模板语法，你可以像下面这样插入变量：
+
+```tsx
+// filename: index.tsx.tpl
+import React from 'react';
+{{#importAntd}}
+import Antd from 'antd';
+{{/importAntd}}
+import './{{{name}}}.less'
+
+const message = '{{{msg}}}'
+const count = {{{count}}}
+console.log(message);
+console.log(count);
+```
+
+在上面这段代码中，我们使用了 `msg` 、 `count`、`importAntd` 和 `name` 四个变量，接下来，我们执行生成页面的命令：
+
+```bash
+$umi g page foo --msg "Hello World" --count 10 --importAntd
+```
+
+运行命令后，生成的页面内容如下：
+
+```tsx
+// filename: index.tsx.tpl
+import React from 'react';
+import Antd from 'antd';
+import './foo.less'
+
+const message = 'Hello World'
+const count = 10
+console.log(message);
+console.log(count);
+```
+
+除了看到页面中成功生成了自定义内容以外，还可以看到，我们并没有指定 `name` 的值，但它被还是设置值了。这是因为它属于模板中预设的变量，下面是目前模板所有的预设变量：
+
+1. `name`。当前文件的名称。举一个例子，执行 `pnpm umi g page foo`，会生成 `pages/foo.tsx` 和 `pages/foo.less` 两个文件，其中 `name` 的值为 "foo" 。
+2. `color`。随机生成一个颜色，比如：`rgb(121, 242, 147)` 。
+3. `cssExt`。样式文件的后缀名，默认为 `less` 。
+
+如果想了解更多模板语法的内容，请查看 [mustache](https://www.npmjs.com/package/mustache)。
+
+如果还想继续使用默认的模板，可以指定 `--fallback`，此时不再使用用户自定义的模板：
+
+```bash
+$umi g page foo --fallback
+```
+
 ### 组件生成器
 
 在 `src/components/` 目录下生成项目需要的组件。和页面生成器一样，组件生成器也有多种生成方式。
@@ -101,6 +178,45 @@ Write: src/components/Banana/index.ts
 Write: src/components/Banana/Banana.tsx
 Write: src/components/Orange/index.ts
 Write: src/components/Orange/Orange.tsx
+```
+
+#### 对模板内容进行自定义
+
+和页面生成器一样，如果组件生成器使用的默认模板不符合你的需求，你也可以对模板内容进行自定义设置。
+
+首先，执行 `--eject` 命令：
+
+
+```bash
+$umi g component --eject
+```
+
+执行命令后，组件生成器会把它的原始模板弹射到项目的 `/templates/component` 目录：
+
+
+```
+.
+├── node_modules
+│   └── umi -> ...
+├── package.json
+└── templates
+    └── component
+        ├── component.tsx.tpl
+        └── index.ts.tpl  
+```
+
+组件生成器的模板语法规则和页面生成器的 [自定义模板](#对模板内容进行自定义) 一致。所以，你依然可以使用如下的方式写入模板变量：
+
+```bash
+$umi g component foo --msg "Hello World"
+```
+
+组件模板预设的变量和页面模板不同，它只有一个：`compName`，也就是当前组件的名称。如果执行 `pnpm umi g component foo`，此时 `compName` 的值为 `Foo`。
+
+如果还想继续使用默认的模板，可以指定 `--fallback`，此时不再使用用户自定义的模板：
+
+```bash
+$umi g component foo --fallback
 ```
 
 ### RouteAPI 生成器

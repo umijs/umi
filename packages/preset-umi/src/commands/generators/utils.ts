@@ -1,14 +1,26 @@
 import {
+  fsExtra,
+  generateFile,
   installWithNpmClient,
   lodash,
   logger,
   prompts,
   semver,
 } from '@umijs/utils';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+
+import {
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  statSync,
+  readdirSync,
+} from 'fs';
+import { dirname, join } from 'path';
 import { IApi } from '../../types';
 import { set as setUmirc } from '../config/set';
+import { IServicePluginAPI } from '@umijs/core';
+
+export type IArgs = Omit<IServicePluginAPI['args'], '$0'>;
 
 function hasDeps({ name, pkg }: { name: string; pkg: any }) {
   return pkg.dependencies?.[name] || pkg.devDependencies?.[name];
@@ -193,4 +205,118 @@ export function promptsExitWhenCancel<T extends string = string>(
 
 export function trim(s?: string) {
   return s?.trim() || '';
+}
+
+interface IFromToMappingItem {
+  from: string;
+  fromFallback: string;
+  to: string;
+}
+
+type ITempType = 'page' | 'component';
+
+export async function processGenerateFile(
+  {
+    fromToMapping,
+    baseDir: baseDir,
+    data,
+    args,
+    type = 'page',
+  }: {
+    fromToMapping: IFromToMappingItem[];
+    baseDir: string;
+    data: any;
+    args: IArgs;
+    type?: ITempType;
+  },
+  gen: typeof generateFile,
+) {
+  const whetherChooseUserTemp =
+    !args.fallback &&
+    fromToMapping.every(({ from, fromFallback }) => {
+      if (!existsSync(from)) {
+        return false;
+      }
+
+      if (statSync(from).isFile()) {
+        from = dirname(from);
+      }
+
+      if (statSync(fromFallback).isFile()) {
+        fromFallback = dirname(fromFallback);
+      }
+
+      const filesInUserDir = readdirSync(from);
+      const filesInUmiDir = readdirSync(fromFallback);
+
+      return filesInUmiDir.every((filename) =>
+        filesInUserDir.includes(filename),
+      );
+    });
+
+  whetherChooseUserTemp &&
+    console.log(
+      `Generated a ${type} by using yourself template. For more information, please search "对模板内容进行自定义" in the umi doc.`,
+    );
+
+  for (let { from, to, fromFallback } of fromToMapping) {
+    await gen({
+      path: whetherChooseUserTemp ? from : fromFallback,
+      target: to,
+      data: {
+        ...data,
+        ...(excludePresetVariables(args, type) || {}),
+      },
+      baseDir,
+    });
+  }
+}
+
+function excludePresetVariables(args: IArgs, type: ITempType) {
+  const { _, dir, fallback, eject, ...userDefinedArgs } = args;
+
+  if (type === 'page') {
+    return userDefinedArgs;
+  } else {
+    return {
+      dir,
+      ...userDefinedArgs,
+    };
+  }
+}
+
+export async function tryEject(type: ITempType, baseDir: string) {
+  const generateBaseDir = join(__dirname, '../../../templates/generate', type);
+  const targetDir = join(baseDir, 'templates', type);
+  const readyToCopyFilenames = readdirSync(generateBaseDir);
+  const conflictFiles: string[] = [];
+
+  if (existsSync(targetDir) && statSync(targetDir).isDirectory()) {
+    const userExistFiles = readdirSync(targetDir);
+
+    for (let filename of readyToCopyFilenames) {
+      if (userExistFiles.includes(filename)) {
+        conflictFiles.push(filename);
+      }
+    }
+
+    if (conflictFiles.length > 0) {
+      const response = await prompts({
+        type: 'confirm',
+        name: 'value',
+        message: `Will overwrites ${conflictFiles.join(
+          ', ',
+        )} in /templates/${type}, do you want continue ?`,
+        initial: false,
+      });
+
+      if (!response.value) {
+        return;
+      }
+    }
+  }
+
+  fsExtra.ensureDirSync(targetDir);
+  fsExtra.copySync(generateBaseDir, targetDir);
+  console.log(`Ejected ${type} template successfully.`);
 }

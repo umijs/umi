@@ -1,4 +1,4 @@
-import { normalize } from 'path';
+import { join, normalize } from 'path';
 import { PageGenerator } from './page';
 
 describe('page generator', function () {
@@ -42,6 +42,72 @@ describe('page generator', function () {
         ],
       );
     });
+
+    describe('using custom template', () => {
+      beforeEach(() => {
+        jest.spyOn(console, 'log').mockImplementation(() => {});
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('generate page by using custom template', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: false },
+          [
+            {
+              target: '/pages/foo.tsx',
+              path: join(fixtureDir, 'templates/page', 'index.tsx.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+            },
+            {
+              target: '/pages/foo.less',
+              path: join(fixtureDir, 'templates/page', 'index.less.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+            },
+          ],
+          fixtureDir,
+        );
+      });
+
+      it('generate page with custom variables', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: false, foo: 'bar', count: 1, bool: true },
+          [
+            {
+              target: '/pages/foo.tsx',
+              path: join(fixtureDir, 'templates/page', 'index.tsx.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+              data: {
+                foo: 'bar',
+                count: 1,
+                bool: true,
+              },
+            },
+            {
+              target: '/pages/foo.less',
+              path: join(fixtureDir, 'templates/page', 'index.less.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+              data: {
+                foo: 'bar',
+                count: 1,
+                bool: true,
+              },
+            },
+          ],
+          fixtureDir,
+        );
+      });
+    });
   });
 
   describe('in dir mode', function () {
@@ -72,23 +138,74 @@ describe('page generator', function () {
         ],
       );
     });
+
+    describe('using custom template', () => {
+      beforeEach(() => {
+        jest.spyOn(console, 'log').mockImplementation(() => {});
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('generate index files in folder', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: true },
+          [
+            {
+              target: '/pages/foo',
+              path: join(fixtureDir, 'templates/page'),
+              name: 'index',
+              baseDir: fixtureDir,
+            },
+          ],
+          fixtureDir,
+        );
+      });
+
+      it('generate page with custom variables', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: true, foo: 'bar', count: 1, bool: true },
+          [
+            {
+              target: '/pages/foo',
+              path: join(fixtureDir, 'templates/page'),
+              name: 'index',
+              baseDir: fixtureDir,
+              data: {
+                foo: 'bar',
+                count: 1,
+                bool: true,
+              },
+            },
+          ],
+          fixtureDir,
+        );
+      });
+    });
   });
 
   async function expectPageGeneratorArgsMatchesGeneratedFiles(
-    args: { _: string[]; dir: boolean },
+    args: { _: string[]; dir: boolean; [key: string]: any },
     fileGenerations: {
       name: string;
       target: string;
       path: string;
       baseDir?: string;
+      data?: Record<string, any>;
     }[],
+    appCwd?: string,
   ) {
     const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args,
       generateFile,
-      appCwd: normalize('/'),
+      appCwd: appCwd || normalize('/'),
     });
 
     await g.run();
@@ -96,7 +213,12 @@ describe('page generator', function () {
     expect(generateFile).toBeCalledTimes(fileGenerations.length);
     for (const [i, f] of fileGenerations.entries()) {
       expect(generateFile).toHaveBeenNthCalledWith(i + 1, {
-        data: { name: f.name, color: expect.anything(), cssExt: '.less' },
+        data: {
+          name: f.name,
+          color: expect.anything(),
+          cssExt: '.less',
+          ...(f.data || {}),
+        },
         target: normalize(f.target),
         path: expect.stringContaining(normalize(f.path)),
         baseDir: f.baseDir ? normalize(f.baseDir) : undefined,

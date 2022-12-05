@@ -3,7 +3,7 @@ import { generateFile, lodash } from '@umijs/utils';
 import { join, parse } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
-import { GeneratorHelper } from './utils';
+import { GeneratorHelper, IArgs, processGenerateFile, tryEject } from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -17,9 +17,12 @@ export default (api: IApi) => {
     type: GeneratorType.generate,
 
     fn: async (options) => {
-      const h = new GeneratorHelper(api);
-      options.generateFile;
+      if (options.args.eject) {
+        tryEject('component', api.paths.cwd);
+        return;
+      }
 
+      const h = new GeneratorHelper(api);
       let componentNames = options.args._.slice(1);
 
       if (componentNames.length === 0) {
@@ -38,8 +41,9 @@ export default (api: IApi) => {
         await new ComponentGenerator({
           srcPath: api.paths.absSrcPath,
           appRoot: api.paths.cwd,
-          generateFile,
+          generateFile: options.generateFile,
           componentName: cn,
+          args: api.args,
         }).run();
       }
     },
@@ -56,6 +60,7 @@ export class ComponentGenerator {
       srcPath: string;
       appRoot: string;
       generateFile: typeof generateFile;
+      args: IArgs;
     },
   ) {
     const { name, dir } = parse(this.opts.componentName);
@@ -64,7 +69,7 @@ export class ComponentGenerator {
   }
 
   async run() {
-    const { generateFile, appRoot } = this.opts;
+    const { generateFile, appRoot, args } = this.opts;
     const capitalizeName = lodash.upperFirst(this.name);
     const base = join(
       this.opts.srcPath,
@@ -76,21 +81,31 @@ export class ComponentGenerator {
     const indexFile = join(base, 'index.ts');
     const compFile = join(base, `${capitalizeName}.tsx`);
 
-    await generateFile({
-      target: indexFile,
-      path: INDEX_TPL,
-      baseDir: appRoot,
-      data: { compName: capitalizeName },
-    });
-
-    await generateFile({
-      target: compFile,
-      path: COMP_TPL,
-      baseDir: appRoot,
-      data: { compName: capitalizeName },
-    });
+    await processGenerateFile(
+      {
+        fromToMapping: [
+          {
+            from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'index.ts.tpl'),
+            fromFallback: INDEX_TPL,
+            to: indexFile,
+          },
+          {
+            from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'component.tsx.tpl'),
+            fromFallback: COMP_TPL,
+            to: compFile,
+          },
+        ],
+        baseDir: appRoot,
+        data: {
+          compName: capitalizeName,
+        },
+        args,
+      },
+      generateFile,
+    );
   }
 }
 
 const INDEX_TPL = join(TEMPLATES_DIR, 'generate/component/index.ts.tpl');
 const COMP_TPL = join(TEMPLATES_DIR, 'generate/component/component.tsx.tpl');
+const USER_TEMPLATE_COMP_DIR = 'templates/component';

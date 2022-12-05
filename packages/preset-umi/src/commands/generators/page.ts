@@ -3,7 +3,12 @@ import { generateFile, prompts, randomColor } from '@umijs/utils';
 import { join, parse } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
-import { promptsExitWhenCancel } from './utils';
+import {
+  IArgs,
+  processGenerateFile,
+  promptsExitWhenCancel,
+  tryEject,
+} from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -16,6 +21,11 @@ export default (api: IApi) => {
     description: 'Create a umi page by page name',
     type: GeneratorType.generate,
     fn: async (options) => {
+      if (options.args.eject) {
+        tryEject('page', api.paths.cwd);
+        return;
+      }
+
       return new PageGenerator({
         generateFile: options.generateFile,
         args: options.args,
@@ -26,9 +36,11 @@ export default (api: IApi) => {
   });
 };
 
-const INDEX_TPL_PATH = join(TEMPLATES_DIR, 'generate/page/index.tsx.tpl');
-const LEES_TPL_PATH = join(TEMPLATES_DIR, 'generate/page/index.less.tpl');
+const INDEX_TPL_NAME = 'index.tsx.tpl';
+const LESS_TPL_NAME = 'index.less.tpl';
+const PAGE_TEMPLATE_DIR = join(TEMPLATES_DIR, 'generate/page/');
 const DEFAULT_PAGE_NAME = 'unTitledPage';
+const USER_TEMPLATE_PAGE_DIR = 'templates/page';
 
 export class PageGenerator {
   private isDirMode = false;
@@ -40,7 +52,7 @@ export class PageGenerator {
 
   constructor(
     readonly options: {
-      args: any;
+      args: IArgs;
       generateFile: typeof generateFile;
       absPagesPath: string;
       appCwd: string;
@@ -148,7 +160,7 @@ export class PageGenerator {
   }
 
   private async fileModeRun() {
-    const { generateFile, absPagesPath } = this.options;
+    const { absPagesPath, generateFile, args, appCwd } = this.options;
 
     const data = {
       color: randomColor(),
@@ -156,32 +168,49 @@ export class PageGenerator {
       cssExt: '.less',
     };
 
-    await generateFile({
-      path: INDEX_TPL_PATH,
-      target: join(absPagesPath, this.dir, `${this.name}.tsx`),
-      baseDir: this.options.appCwd,
-      data,
-    });
-
-    await generateFile({
-      path: LEES_TPL_PATH,
-      target: join(absPagesPath, this.dir, `${this.name}.less`),
-      baseDir: this.options.appCwd,
-      data,
-    });
+    await processGenerateFile(
+      {
+        fromToMapping: [
+          {
+            from: join(appCwd, USER_TEMPLATE_PAGE_DIR, INDEX_TPL_NAME),
+            fromFallback: join(PAGE_TEMPLATE_DIR, INDEX_TPL_NAME),
+            to: join(absPagesPath, this.dir, `${this.name}.tsx`),
+          },
+          {
+            from: join(appCwd, USER_TEMPLATE_PAGE_DIR, LESS_TPL_NAME),
+            fromFallback: join(PAGE_TEMPLATE_DIR, LESS_TPL_NAME),
+            to: join(absPagesPath, this.dir, `${this.name}.less`),
+          },
+        ],
+        baseDir: this.options.appCwd,
+        data,
+        args,
+      },
+      generateFile,
+    );
   }
 
   private async dirModeRun() {
-    const { generateFile, absPagesPath } = this.options;
-    await generateFile({
-      path: join(__dirname, '../../../templates/generate/page'),
-      target: join(absPagesPath, this.dir, this.name),
-      data: {
-        color: randomColor(),
-        name: 'index',
-        cssExt: '.less',
+    const { absPagesPath, generateFile, args, appCwd } = this.options;
+
+    await processGenerateFile(
+      {
+        fromToMapping: [
+          {
+            from: join(appCwd, USER_TEMPLATE_PAGE_DIR),
+            fromFallback: PAGE_TEMPLATE_DIR,
+            to: join(absPagesPath, this.dir, this.name),
+          },
+        ],
+        baseDir: appCwd,
+        data: {
+          color: randomColor(),
+          name: 'index',
+          cssExt: '.less',
+        },
+        args,
       },
-      baseDir: this.options.appCwd,
-    });
+      generateFile,
+    );
   }
 }
