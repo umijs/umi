@@ -5,9 +5,9 @@ import type {
   Response,
 } from '@umijs/bundler-utils/compiled/express';
 import express from '@umijs/bundler-utils/compiled/express';
-import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
+import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, statSync, existsSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -32,6 +32,7 @@ import getAwaitImportHandler, {
 } from '../esbuildHandlers/awaitImport';
 import { Mode } from '../types';
 import { makeArray } from '../utils/makeArray';
+import { getResolver } from '../utils/webpackUtils';
 import {
   BuildDepPlugin,
   IBuildDepPluginOpts,
@@ -157,21 +158,17 @@ export class MFSU {
       const entryFiles = lodash.isArray(entryObject[key])
         ? entryObject[key]
         : ([entryObject[key]] as unknown as string[]);
+
+      const resolver = getResolver(opts.config);
       for (let entry of entryFiles) {
         // ensure entry is a file
-        if (statSync(entry).isDirectory()) {
-          const realEntry = tryPaths([
-            join(entry, 'index.tsx'),
-            join(entry, 'index.ts'),
-            join(entry, 'index.jsx'),
-            join(entry, 'index.js'),
-          ]);
-          assert(
-            realEntry,
-            `entry file not found, please configure the specific entry path. (e.g. 'src/index.tsx')`,
-          );
-          entry = realEntry;
-        }
+        const realEntry = resolver(entry);
+        assert(
+          realEntry,
+          `entry file not found (${entry}), please configure the specific entry path. (e.g. 'src/index.tsx')`,
+        );
+        entry = realEntry;
+
         const content = readFileSync(entry, 'utf-8');
         const [_imports, exports] = await parseModule({ content, path: entry });
         if (exports.length) {

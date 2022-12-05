@@ -138,6 +138,28 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
+      - name: e2e:example:mfsu-independent-e2e
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-independent-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:mfsu-independent-e2e:esbuild
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-independent-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci:esbuild
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
       - name: Notify Contributor Group
         if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
         uses: zcong1993/actions-ding@master
