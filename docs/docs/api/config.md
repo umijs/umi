@@ -66,6 +66,13 @@
 
 设置 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
 
+## analyze
+
+- 类型：`object`
+- 默认值：`{}`
+
+通过指定 [`ANALYZE`](../guides/env-variables#analyze) 环境变量分析产物构成时，analyzer 插件的具体配置项，见 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)
+
 ## base
 
 - 类型：`string`
