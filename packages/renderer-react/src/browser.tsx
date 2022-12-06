@@ -207,79 +207,76 @@ const getBrowser = (
       window.__UMI_LOADER_DATA__ || {},
     );
 
-    const handleRouteChange = useCallback(
-      (id: string, isFirst?: boolean) => {
-        // Patched routes has to id
-        const matchedRouteIds = (
-          matchRoutes(clientRoutes, id, basename)?.map(
-            // @ts-ignore
-            (route) => route.route.id,
-          ) || []
-        ).filter(Boolean);
-        matchedRouteIds.forEach((id) => {
-          // preload
+    const handleRouteChange = useCallback((id: string, isFirst?: boolean) => {
+      // Patched routes has to id
+      const matchedRouteIds = (
+        matchRoutes(clientRoutes, id, basename)?.map(
           // @ts-ignore
-          const manifest = window.__umi_manifest__;
-          if (manifest) {
-            const routeIdReplaced = id.replace(/[\/\-]/g, '_');
-            const preloadId = `preload-${routeIdReplaced}.js`;
-            if (!document.getElementById(preloadId)) {
-              const keys = Object.keys(manifest).filter((k) =>
-                k.startsWith(routeIdReplaced + '.'),
-              );
-              keys.forEach((key) => {
-                if (!/\.(js|css)$/.test(key)) {
-                  throw Error(`preload not support ${key} file`);
-                }
-                let file = manifest[key];
-                const link = document.createElement('link');
-                link.rel = 'preload';
-                link.as = 'style';
-                if (key.endsWith('.js')) {
-                  link.as = 'script';
-                  link.id = preloadId;
-                }
-                // publicPath already in the manifest,
-                // but if runtimePublicPath is true, we need to replace it
-                if (opts.runtimePublicPath) {
-                  file = file.replace(
-                    new RegExp(`^${opts.publicPath}`),
-                    // @ts-ignore
-                    window.publicPath,
-                  );
-                }
-                link.href = file;
-                document.head.appendChild(link);
-              });
-            }
-          }
-          // server loader
-          // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
-          if (!isFirst && opts.routes[id]?.hasServerLoader) {
-            fetch('/__serverLoader?route=' + id)
-              .then((d) => d.json())
-              .then((data) => {
-                // setServerLoaderData when startTransition because if ssr is enabled,
-                // the component may being hydrated and setLoaderData will break the hydration
-                // @ts-ignore
-                React.startTransition(() => {
-                  serverLoaderData.current[id] = data;
-                });
-              })
-              .catch(console.error);
-          }
-          // client loader
-          // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
-          const clientLoader = opts.routes[id]?.clientLoader;
-          if (clientLoader && !clientLoaderData.current[id]) {
-            clientLoader().then((data: any) => {
-              clientLoaderData.current[id] = data;
+          (route) => route.route.id,
+        ) || []
+      ).filter(Boolean);
+      matchedRouteIds.forEach((id) => {
+        // preload
+        // @ts-ignore
+        const manifest = window.__umi_manifest__;
+        if (manifest) {
+          const routeIdReplaced = id.replace(/[\/\-]/g, '_');
+          const preloadId = `preload-${routeIdReplaced}.js`;
+          if (!document.getElementById(preloadId)) {
+            const keys = Object.keys(manifest).filter((k) =>
+              k.startsWith(routeIdReplaced + '.'),
+            );
+            keys.forEach((key) => {
+              if (!/\.(js|css)$/.test(key)) {
+                throw Error(`preload not support ${key} file`);
+              }
+              let file = manifest[key];
+              const link = document.createElement('link');
+              link.rel = 'preload';
+              link.as = 'style';
+              if (key.endsWith('.js')) {
+                link.as = 'script';
+                link.id = preloadId;
+              }
+              // publicPath already in the manifest,
+              // but if runtimePublicPath is true, we need to replace it
+              if (opts.runtimePublicPath) {
+                file = file.replace(
+                  new RegExp(`^${opts.publicPath}`),
+                  // @ts-ignore
+                  window.publicPath,
+                );
+              }
+              link.href = file;
+              document.head.appendChild(link);
             });
           }
-        });
-      },
-      [clientLoaderData.current],
-    );
+        }
+        // server loader
+        // use ?. since routes patched with patchClientRoutes is not exists in opts.routes
+        if (!isFirst && opts.routes[id]?.hasServerLoader) {
+          fetch('/__serverLoader?route=' + id)
+            .then((d) => d.json())
+            .then((data) => {
+              // setServerLoaderData when startTransition because if ssr is enabled,
+              // the component may being hydrated and setLoaderData will break the hydration
+              // @ts-ignore
+              React.startTransition(() => {
+                serverLoaderData.current[id] = data;
+              });
+            })
+            .catch(console.error);
+        }
+        // client loader
+        // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
+        const clientLoader = opts.routes[id]?.clientLoader;
+        if (clientLoader && !clientLoaderData.current[id]) {
+          clientLoader().then((data: any) => {
+            clientLoaderData.current[id] = data;
+          });
+        }
+      });
+    }, []);
 
     useEffect(() => {
       handleRouteChange(window.location.pathname, true);
