@@ -686,12 +686,13 @@ function App() {
 
 ### useSelectedRoutes
 
-用于读取当前路径命中的所有路由信息。比如在 `layout` 中可以获取到当前命中的所有子路由信息，同时可以获取到在 `routes` 配置中的参数，这格外有用。
+用于读取当前路径命中的所有路由信息。比如在 `layout` 布局中可以获取到当前命中的所有子路由信息，同时可以获取到在 `routes` 配置中的参数，这格外有用。
 
 实例：
 
 ```tsx
-// layout.ts
+// layouts/index.tsx
+
 import { useSelectedRoutes } from 'umi'
 
 export default function Layout() {
