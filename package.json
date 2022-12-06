@@ -45,10 +45,10 @@
   },
   "lint-staged": {
     "*.{jsx,less,md,json}": [
-      "prettier --cache --write"
+      "prettier --no-error-on-unmatched-pattern --cache --write"
     ],
     "*.ts?(x)": [
-      "prettier --cache --parser=typescript --write"
+      "prettier --no-error-on-unmatched-pattern --cache --parser=typescript --write"
     ]
   },
   "devDependencies": {
