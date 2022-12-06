@@ -278,7 +278,7 @@ const getBrowser = (
           }
         });
       },
-      [clientLoaderData],
+      [clientLoaderData.current],
     );
 
     useEffect(() => {
