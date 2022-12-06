@@ -32,6 +32,7 @@ export function useAppData() {
 export function useSelectedRoutes() {
   const location = useLocation();
   const { clientRoutes } = useAppData();
+  // use `useLocation` get location without `basename`, not need `basename` param
   const routes = matchRoutes(clientRoutes, location.pathname);
   return routes || [];
 }
