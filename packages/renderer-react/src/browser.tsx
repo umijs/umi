@@ -1,5 +1,5 @@
 import { History } from 'history';
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
 import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
@@ -207,7 +207,7 @@ const getBrowser = (
       window.__UMI_LOADER_DATA__ || {},
     );
 
-    const handleRouteChange = (id: string, isFirst?: boolean) => {
+    const handleRouteChange = useCallback((id: string, isFirst?: boolean) => {
       // Patched routes has to id
       const matchedRouteIds = (
         matchRoutes(clientRoutes, id, basename)?.map(
@@ -276,7 +276,7 @@ const getBrowser = (
           });
         }
       });
-    };
+    }, []);
 
     useEffect(() => {
       handleRouteChange(window.location.pathname, true);
