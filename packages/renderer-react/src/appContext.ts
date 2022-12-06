@@ -6,6 +6,7 @@ import {
   IRouteComponents,
   IRoutesById,
 } from './types';
+import { useLocation, matchRoutes } from 'react-router-dom';
 
 interface IAppContextType {
   routes: IRoutesById;
@@ -26,6 +27,13 @@ export const AppContext = React.createContext<IAppContextType>(
 
 export function useAppData() {
   return React.useContext(AppContext);
+}
+
+export function useSelectedRoutes() {
+  const location = useLocation();
+  const { clientRoutes } = useAppData();
+  const routes = matchRoutes(clientRoutes, location.pathname);
+  return routes || [];
 }
 
 export function useServerLoaderData() {
