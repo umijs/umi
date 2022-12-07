@@ -2,18 +2,30 @@ import enhancedResolve from 'enhanced-resolve';
 
 type Resolver = ReturnType<typeof enhancedResolve.create>;
 
+const ORDERED_MAIN_FIELDS = ['browser', 'module', 'main'];
+const SUPPORTED_EXTS = ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'];
+const EXPORTS_FIELDS = ['exports'];
+
 const browserResolver = enhancedResolve.create({
-  mainFields: ['browser', 'module', 'main'],
-  extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
-  exportsFields: ['exports'],
-  conditionNames: ['browser', 'import', 'module'],
+  mainFields: ORDERED_MAIN_FIELDS,
+  extensions: SUPPORTED_EXTS,
+  exportsFields: EXPORTS_FIELDS,
+  conditionNames: ['browser', 'import'],
+  symlinks: false,
+});
+
+const esmResolver = enhancedResolve.create({
+  mainFields: ORDERED_MAIN_FIELDS,
+  extensions: SUPPORTED_EXTS,
+  exportsFields: EXPORTS_FIELDS,
+  conditionNames: ['module'],
   symlinks: false,
 });
 
 const cjsResolver = enhancedResolve.create({
-  mainFields: ['browser', 'module', 'main'],
-  extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
-  exportsFields: ['exports'],
+  mainFields: ORDERED_MAIN_FIELDS,
+  extensions: SUPPORTED_EXTS,
+  exportsFields: EXPORTS_FIELDS,
   conditionNames: ['require', 'node'],
   symlinks: false,
 });
@@ -30,14 +42,29 @@ async function resolveWith(
   });
 }
 
-async function resolve(context: string, path: string): Promise<string> {
-  let result: string = '';
-  try {
-    result = await resolveWith(browserResolver, context, path);
-    if (result) return result;
-  } catch (e) {}
-  result = await resolveWith(cjsResolver, context, path);
+async function tryResolvers(rs: Resolver[], context: string, path: string) {
+  let result = '';
+  let lastError: any = null;
+  for (const r of rs) {
+    try {
+      result = await resolveWith(r, context, path);
+      return result;
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  if (!result) {
+    throw lastError || Error(`can't resolve ${path} from ${context}`);
+  }
   return result;
+}
+
+async function resolve(context: string, path: string): Promise<string> {
+  return await tryResolvers(
+    [browserResolver, esmResolver, cjsResolver],
+    context,
+    path,
+  );
 }
 
 export async function resolveFromContexts(
