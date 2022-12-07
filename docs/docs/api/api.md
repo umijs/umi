@@ -684,6 +684,33 @@ function App() {
 }
 ```
 
+### useSelectedRoutes
+
+用于读取当前路径命中的所有路由信息。比如在 `layout` 布局中可以获取到当前命中的所有子路由信息，同时可以获取到在 `routes` 配置中的参数，这格外有用。
+
+实例：
+
+```tsx
+// layouts/index.tsx
+
+import { useSelectedRoutes } from 'umi'
+
+export default function Layout() {
+  const routes = useSelectedRoutes()
+  const lastRoute = routes.at(-1)
+
+  if (lastRoute?.pathname === '/some/path') {
+    return <div>1 : <Outlet /></div>
+  }
+
+  if (lastRoute?.extraProp) {
+    return <div>2 : <Outlet /></div>
+  }
+
+  return <Outlet />
+}
+```
+
 ### useSearchParams
 
 `useSearchParams` 用于读取和修改当前 URL 的 query string。类似 React 的 `useState`，其返回包含两个值的数组，当前 URL 的 search 参数和用于更新 search 参数的函数。
