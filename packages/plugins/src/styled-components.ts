@@ -18,9 +18,11 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
-import styled, { ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme } from '${libPath}';
-export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme };
+import styled, { ThemeProvider, createGlobalStyle, isStyledComponent, css, keyframes, StyleSheetManager, useTheme } from '${libPath}';
+export { styled, ThemeProvider, createGlobalStyle, isStyledComponent, css, keyframes, StyleSheetManager, useTheme };
       `,
     });
   });
+
+  // TODO: 考虑内置 styled-theme
 };
