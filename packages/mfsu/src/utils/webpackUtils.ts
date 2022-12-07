@@ -1,5 +1,6 @@
-import type { Configuration } from 'webpack';
+import { Configuration, util as webpackUtil } from 'webpack';
 import { lodash } from '@umijs/utils';
+import enhancedResolve from 'enhanced-resolve';
 
 const { property, compact, flatMap } = lodash;
 
@@ -26,4 +27,19 @@ export function extractBabelPluginImportOptions(
   }
 
   return configs;
+}
+
+export function getResolver(opts: Configuration) {
+  const context = opts.context ?? process.cwd();
+  const resolveDefaults = {
+    extensions: ['.tsx', '.ts', '.jsx', '.js'], // keep same with previous mfsu version
+    roots: [context],
+  };
+
+  const mergedResolve = webpackUtil.cleverMerge(resolveDefaults, opts.resolve);
+  const resolver = enhancedResolve.create.sync(mergedResolve);
+
+  return (path: string) => {
+    return resolver(context, path);
+  };
 }

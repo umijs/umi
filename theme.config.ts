@@ -107,6 +107,7 @@ export default {
             'mfsu-faster-than-vite',
             'mfsu-independent-usage',
             'code-splitting',
+            'legacy-browser',
           ],
         },
       ],

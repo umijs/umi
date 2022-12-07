@@ -43,6 +43,30 @@ test('test generate nested named component foo/bar/qux', async () => {
   );
 });
 
+test('test generate nested named component foo/subPath/tailName', async () => {
+  const { generateFile } = await runGeneratorWith('foo/subPath/tailName');
+
+  expect(generateFile).toBeCalledTimes(2);
+  expect(generateFile).toHaveBeenNthCalledWith(
+    1,
+    expect.objectContaining({
+      target: normalize(
+        '/my/src/path/components/foo/subPath/TailName/index.ts',
+      ),
+      data: { compName: 'TailName' },
+    }),
+  );
+  expect(generateFile).toHaveBeenNthCalledWith(
+    2,
+    expect.objectContaining({
+      target: normalize(
+        '/my/src/path/components/foo/subPath/TailName/TailName.tsx',
+      ),
+      data: { compName: 'TailName' },
+    }),
+  );
+});
+
 async function runGeneratorWith(name: string) {
   const generateFile = jest.fn();
 

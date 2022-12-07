@@ -70,7 +70,7 @@ export function generateApiResKV(apiName: string): {
   const { name: itemName } = parse(dir);
 
   const key = itemName
-    ? `${itemName}${lodash.capitalize(paramName)}`
+    ? `${itemName}${lodash.upperFirst(paramName)}`
     : paramName;
 
   return { key: quoteStr(key), value: `req.params[${quoteStr(paramName)}]` };

@@ -12,40 +12,37 @@ export default (api: IApi) => {
   api.modifyConfig((memo) => {
     if (getOverridesCSS(api.paths.absSrcPath)) {
       memo.extraPostCSSPlugins ??= [];
-      memo.extraPostCSSPlugins.push([
+      memo.extraPostCSSPlugins.push(
         // prefix #root for overrides.{ext} style file, to make sure selector priority is higher than async chunk style
         require('postcss-prefix-selector')({
-          // put a fake prefix because api.config.mountElementId is not available in config stage
-          prefix: '#fake',
+          // why not #root?
+          // antd will insert dom into body, prefix #root will not works for that
+          prefix: 'body',
           transform(
             _p: string,
             selector: string,
-            _ps: string,
+            prefixedSelector: string,
             filePath: string,
           ) {
             const isOverridesFile =
               winPath(api.appData.overridesCSS[0]) === winPath(filePath);
 
-            if (
-              isOverridesFile &&
-              !new RegExp(`^#${api.config.mountElementId}([:[\\s]|$)`).test(
-                selector,
-              )
-            ) {
-              // special case for html and body, because they are not in #root
+            if (isOverridesFile) {
               if (selector === 'html') {
+                // special :first-child to promote html selector priority
                 return `html:first-child`;
-              } else if (selector === 'body') {
-                return `* + body`;
+              } else if (/^body([\s+~>[:]|$)/.test(selector)) {
+                // use + to promote body selector priority
+                return `* + ${selector}`;
               }
 
-              return `#${api.config.mountElementId} ${selector}`;
+              return prefixedSelector;
             }
 
             return selector;
           },
         }),
-      ]);
+      );
     }
 
     return memo;

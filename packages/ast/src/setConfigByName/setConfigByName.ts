@@ -1,49 +1,19 @@
 import type { NodePath } from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as traverse from '@umijs/bundler-utils/compiled/babel/traverse';
+import { parseExpression } from '@umijs/bundler-utils/compiled/babel/parser';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
 
-export function setConfigByName(ast: t.File, name: string, value: any) {
-  let _value: any;
-  let valueObject: any;
+export function setConfigByName(ast: t.File, name: string, value: string) {
+  if (typeof value !== 'string') {
+    value = JSON.stringify(value);
+  }
   let isChanged: boolean = false;
+  let valueObject: t.Expression = t.stringLiteral(value);
   try {
-    _value = JSON.parse(value);
-  } catch (error) {
-    _value = value;
-  }
-  const valueType = typeof _value;
-  switch (valueType) {
-    case 'string':
-      valueObject = t.stringLiteral(_value);
-      break;
-    case 'boolean':
-      valueObject = t.booleanLiteral(_value);
-      break;
-    case 'number':
-      valueObject = t.numericLiteral(_value);
-      break;
-    case 'object':
-      if (Array.isArray(_value)) {
-        valueObject = t.arrayExpression(
-          _value.map((i: string) => {
-            return t.stringLiteral(i);
-          }),
-        );
-      } else {
-        const valueObjs = [] as t.ObjectProperty[];
-        Object.keys(_value).forEach((key) => {
-          valueObjs.push(
-            t.objectProperty(t.identifier(key), t.stringLiteral(_value[key])),
-          );
-        });
-        valueObject = t.objectExpression(valueObjs);
-      }
-      break;
-    default:
-      console.log(`${valueType} is not supported.`);
-      break;
-  }
-  if (!valueObject) return;
+    JSON.parse(value);
+    valueObject = parseExpression(value);
+  } catch (error) {}
+
   // 这里是修改逻辑
   traverse.default(ast, {
     ObjectProperty(path) {
@@ -51,9 +21,11 @@ export function setConfigByName(ast: t.File, name: string, value: any) {
       if (path.node.key?.name === name) {
         path.node.value = valueObject;
         isChanged = true;
+        path.stop();
       }
     },
   });
+
   if (!isChanged) {
     let modified = false;
     traverse.default(ast, {

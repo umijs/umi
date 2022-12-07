@@ -50,7 +50,7 @@ import { proxyWithComputed } from 'umi';
 const state = proxyWithComputed({
   count: 0,
 }, {
-  double: snap => snap * 2,
+  double: snap => snap.count * 2,
 });
 ```
 

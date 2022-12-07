@@ -1,4 +1,5 @@
 import { fork } from 'child_process';
+import { portfinder } from '@umijs/utils';
 
 const usedPorts: number[] = [];
 
@@ -40,12 +41,35 @@ export default function start({ scriptPath }: IOpts) {
     if (type === 'RESTART') {
       child.kill();
       if (payload?.port) {
-        process.env.PORT = payload.port;
+        utilPortValid(payload.port, 20, () => {
+          process.env.PORT = payload.port;
+          start({ scriptPath });
+        });
+      } else {
+        start({ scriptPath });
       }
-      start({ scriptPath });
     }
     process.send?.(data);
   });
 
   return child;
+}
+
+function utilPortValid(port: number, totalTry: number, callback: Function) {
+  portfinder.getPort({ startPort: port }, (err, findPort) => {
+    if (err) callback(err);
+    else {
+      if (findPort === port) {
+        callback();
+      } else {
+        if (totalTry > 0) {
+          setTimeout(() => {
+            utilPortValid(port, totalTry - 1, callback);
+          }, 100);
+        } else {
+          callback(new Error(`Port ${port} is occupied`));
+        }
+      }
+    }
+  });
 }

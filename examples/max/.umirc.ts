@@ -51,6 +51,10 @@ export default defineConfig({
         },
       ],
     },
+    {
+      path: '/history',
+      component: 'history',
+    },
   ],
   antd: {
     // import: true,
@@ -97,4 +101,7 @@ export default defineConfig({
   // vite: {},
   // esmi: { cdnOrigin: 'https://npmcore-pre.alipay.com' },
   // lowImport: {},
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
 });

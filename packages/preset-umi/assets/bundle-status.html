@@ -15,6 +15,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
       }
 
       #loading {
@@ -82,6 +83,15 @@
         font-size: 16px;
       }
 
+      code.progress-details {
+        margin-top: 20px;
+        font-size: 13px;
+        color: #999999;
+        max-width: calc(100vw - 500px);
+        text-align: center;
+        white-space: pre-wrap;
+      }
+
       @keyframes fade-in-out {
         0% {
           opacity: 0.4;
@@ -141,6 +151,7 @@
       }
     </style>
   </head>
+
   <body>
     <div id="loading">
       <h3>Bundling...</h3>
@@ -148,8 +159,11 @@
       <p class="summary"></p>
       <p class="detail"></p>
     </div>
+    <code class="progress-details"></code>
+
     <script>
       const loading = document.getElementById('loading');
+      const progressDetails = document.querySelector('.progress-details');
       const summary = loading.querySelector('.summary');
       const detail = loading.querySelector('.detail');
 
@@ -167,6 +181,17 @@
 
       function renderStatus(data) {
         const hasMFSU = Boolean(data.mfsuBundleStatus);
+        const hasProgressDetails = Boolean(
+          data.bundleStatus.progresses[0].details,
+        );
+
+        if (hasProgressDetails) {
+          const details = data.bundleStatus.progresses[0].details;
+          if (details.length) {
+            progressDetails.innerHTML = details.join('<br />');
+          }
+        }
+
         const srcPercent = Math.floor(
           (data.bundleStatus.done
             ? 1

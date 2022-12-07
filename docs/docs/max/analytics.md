@@ -10,11 +10,16 @@
 
 ```ts
 {
-	analytics:{
-		ga: 'ga_key', // google analytics 的 key
-		baidu: 'baidu_tongji_key'
-	}
+  analytics: {
+    ga_v2: 'G-abcdefg', // google analytics 的 key (GA 4)
+    baidu: 'baidu_tongji_key',
+
+    // 若你在使用 GA v1 旧版本，请使用 `ga` 来配置
+    ga: 'ga_old_key'
+  }
 }
 ```
 
-Google Analytics 的 key 也可以通过环境变量 `GA_KEY` 来配置。
+### 环境变量
+
+[Google Analytics 4](https://support.google.com/analytics/answer/10089681) 的 key 也可以通过环境变量 `GA_V2_KEY` 来配置，旧版本为 `GA_KEY` 。

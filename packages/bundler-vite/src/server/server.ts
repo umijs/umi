@@ -38,6 +38,7 @@ interface IOpts {
     isFirstCompile: boolean;
     stats: HmrContext['modules'] | DepOptimizationMetadata;
   }) => Promise<void> | void;
+  onBeforeMiddleware?: Function;
 }
 
 export async function createServer(opts: IOpts) {
@@ -79,6 +80,10 @@ export async function createServer(opts: IOpts) {
 
   // before middlewares
   opts.beforeMiddlewares?.forEach((m) => app.use(m));
+
+  if (opts.onBeforeMiddleware) {
+    opts.onBeforeMiddleware(app);
+  }
 
   // proxy
   if (userConfig.proxy) {

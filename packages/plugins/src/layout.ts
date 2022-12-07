@@ -93,11 +93,15 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
+    const PKG_TYPE_REFERENCE = `/// <reference types="${
+      pkgPath || '@ant-design/pro-components'
+    }" />`;
     const hasInitialStatePlugin = api.config.initialState;
     // Layout.tsx
     api.writeTmpFile({
       path: 'Layout.tsx',
       content: `
+${PKG_TYPE_REFERENCE}
 import { Link, useLocation, useNavigate, Outlet, useAppData, useRouteData, matchRoutes } from 'umi';
 import type { IRoute } from 'umi';
 import React, { useMemo } from 'react';
@@ -136,16 +140,17 @@ const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) =>
 
   let newRoutes = []
   for (const route of routes) {
+    const newRoute = {...route };
     if (filterFn(route)) {
-      if (Array.isArray(route.routes)) {
-        newRoutes.push(...filterRoutes(route.routes, filterFn))
+      if (Array.isArray(newRoute.routes)) {
+        newRoutes.push(...filterRoutes(newRoute.routes, filterFn))
       }
     } else {
-      newRoutes.push(route);
-      if (Array.isArray(route.routes)) {
-        route.routes = filterRoutes(route.routes, filterFn);
-        route.children = route.routes;
+      if (Array.isArray(newRoute.children)) {
+        newRoute.children = filterRoutes(newRoute.children, filterFn);
+        newRoute.routes = newRoute.children;
       }
+      newRoutes.push(newRoute);
     }
   }
 
@@ -166,6 +171,10 @@ const mapRoutes = (routes: IRoute[]) => {
 
     if (Array.isArray(route.routes)) {
       newRoute.routes = mapRoutes(route.routes);
+    }
+
+    if (Array.isArray(route.children)) {
+      newRoute.children = mapRoutes(route.children);
     }
 
     return newRoute
@@ -198,12 +207,14 @@ const { formatMessage } = useIntl();
     },
   });
 
-  const matchedRoute = useMemo(() => matchRoutes(clientRoutes, location.pathname).pop()?.route, [location.pathname]);
+
   // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
   const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === 'ant-design-pro-layout'), (route) => {
     return (!!route.isLayout && route.id !== 'ant-design-pro-layout') || !!route.isWrapper;
   })
   const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
+
+  const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
 
   return (
     <ProLayout
@@ -264,8 +275,8 @@ const { formatMessage } = useIntl();
     >
       <Exception
         route={matchedRoute}
-        notFound={runtimeConfig.notFound}
-        noAccessible={runtimeConfig.noAccessible}
+        notFound={runtimeConfig?.notFound}
+        noAccessible={runtimeConfig?.noAccessible}
       >
         {runtimeConfig.childrenRender
           ? runtimeConfig.childrenRender(<Outlet />, props)
@@ -286,6 +297,7 @@ const { formatMessage } = useIntl();
     api.writeTmpFile({
       path: 'types.d.ts',
       content: `
+    ${PKG_TYPE_REFERENCE}
     import type { ProLayoutProps, HeaderProps } from "${
       pkgPath || '@ant-design/pro-components'
     }";
@@ -324,7 +336,7 @@ const { formatMessage } = useIntl();
         runtimeConfig: RunTimeLayoutConfig,
       ) => JSX.Element;
     };
-    `,
+    `.trimStart(),
     });
     api.writeTmpFile({
       path: RUNTIME_TYPE_FILE_NAME,
@@ -399,7 +411,7 @@ export function patchRoutes({ routes }) {
 
     const rightRenderContent = `
 import React from 'react';
-import { Avatar, Dropdown, Menu, Spin } from 'antd';
+import { Avatar, version, Dropdown, Menu, Spin } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 {{#Locale}}
 import { SelectLang } from '@@/plugin-locale';
@@ -419,19 +431,7 @@ export function getRightRenderContent (opts: {
     );
   }
 
-  const menu = (
-    <Menu className="umi-plugin-layout-menu">
-      <Menu.Item
-        key="logout"
-        onClick={() =>
-          opts.runtimeConfig.logout && opts.runtimeConfig?.logout(opts.initialState)
-        }
-      >
-        <LogoutOutlined />
-        退出登录
-      </Menu.Item>
-    </Menu>
-  );
+ 
 
   const avatar = (
     <span className="umi-plugin-layout-action">
@@ -456,10 +456,35 @@ export function getRightRenderContent (opts: {
     );
   }
 
+  const langMenu = {
+    className: "umi-plugin-layout-menu",
+    selectedKeys: [],
+    items: [
+      {
+        key: "logout",
+        label: (
+          <>
+            <LogoutOutlined />
+            退出登录
+          </>
+        ),
+        onClick: () => {
+          opts?.runtimeConfig?.logout?.(opts.initialState);
+        },
+      },
+    ],
+  };
+  
+  // antd@5 和  4.24 之后推荐使用 menu，性能更好
+  const dropdownProps =
+    version.startsWith("5.") || version.startsWith("4.24.")
+      ? { menu: langMenu }
+      : { overlay: <Menu {...langMenu} /> };  
+
   return (
     <div className="umi-plugin-layout-right anticon">
       {opts.runtimeConfig.logout ? (
-        <Dropdown overlay={menu} overlayClassName="umi-plugin-layout-container">
+        <Dropdown {...dropdownProps} overlayClassName="umi-plugin-layout-container">
           {avatar}
         </Dropdown>
       ) : (
@@ -663,9 +688,9 @@ const Exception: React.FC<{
   // render custom 404
   (!props.route && (props.noFound || props.notFound)) ||
   // render custom 403
-  (props.route.unaccessible && (props.unAccessible || props.noAccessible)) ||
+  (props.route?.unaccessible && (props.unAccessible || props.noAccessible)) ||
   // render default exception
-  ((!props.route || props.route.unaccessible) && (
+  ((!props.route || props.route?.unaccessible) && (
     <Result
       status={props.route ? '403' : '404'}
       title={props.route ? '403' : '404'}

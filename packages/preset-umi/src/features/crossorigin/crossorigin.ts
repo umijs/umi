@@ -12,7 +12,7 @@ export default (api: IApi) => {
         return Joi.alternatives(
           Joi.boolean(),
           Joi.object({
-            include: Joi.array().items(Joi.object().instance(RegExp)),
+            includes: Joi.array().items(Joi.object().instance(RegExp)),
           }),
         );
       },

@@ -30,7 +30,10 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig(async (memo) => {
-    const rootPkg = await pkgUp({ cwd: dirname(api.cwd) });
+    const rootPkg = await pkgUp({
+      // APP_ROOT: https://github.com/umijs/umi/issues/9461
+      cwd: dirname(process.env.APP_ROOT ? process.cwd() : api.cwd),
+    });
     if (!rootPkg) return memo;
     const root = dirname(rootPkg);
     assert(
@@ -111,7 +114,7 @@ async function collectAllProjects(opts: IOpts) {
 }
 
 const MONOREPO_FILE = ['pnpm-workspace.yaml', 'lerna.json'];
-function isMonorepo(opts: IOpts) {
+export function isMonorepo(opts: IOpts) {
   const pkgPath = join(opts.root, 'package.json');
   let pkg: Record<string, any> = {};
   try {

@@ -1,6 +1,7 @@
 import extraConfig from './extraConfig';
+import { defineConfig } from 'umi';
 
-export default {
+export default defineConfig({
   base: '/foo',
   publicPath: '/foo/',
   // history: { type: 'hash' },
@@ -52,7 +53,7 @@ export default {
       'G6',
     ],
   },
-  chainWebpack(memo: any) {
+  chainWebpack(memo, { webpack: _ }) {
     memo;
   },
   mfsu: {
@@ -101,4 +102,4 @@ export default {
   ],
   styles: ['//cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css'],
   ...extraConfig,
-};
+});

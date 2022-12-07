@@ -57,7 +57,7 @@ test('getRoutes', async () => {
   expect(routes[1].parentId).toBe(undefined);
 
   // @@/global-layout
-  expect(routes['@@/global-layout'].file).toBe('@/layouts/index.tsx');
+  expect(routes['@@/global-layout'].file).toContain('layouts/index.tsx');
   expect(routes['@@/global-layout'].parentId).toBe(undefined);
   expect(routes['@@/global-layout'].isLayout).toBe(true);
 
@@ -77,6 +77,9 @@ test('getRoutes', async () => {
   Object.keys(routes).forEach((id) => {
     delete routes[id].__absFile;
   });
+
+  // 覆写 layout 的绝对路径地址，用于保持快照稳定
+  routes['@@/global-layout'].file = '@/layouts/index.tsx';
 
   expect(routes).toMatchSnapshot();
 });

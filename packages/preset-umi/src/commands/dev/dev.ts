@@ -12,8 +12,7 @@ import { readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import { AutoUpdateSrcCodeCache } from '../../libs/folderCache/AutoUpdateSourceCodeCache';
-import { IApi } from '../../types';
+import { IApi, IFileInfo } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -28,6 +27,7 @@ import {
   unwatch,
   watch,
 } from './watch';
+import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -88,7 +88,10 @@ PORT=8888 umi dev
       // );
 
       // generate files
-      async function generate(opts: { isFirstTime?: boolean; files?: any }) {
+      async function generate(opts: {
+        isFirstTime?: boolean;
+        files?: IFileInfo;
+      }) {
         await api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
@@ -213,10 +216,6 @@ PORT=8888 umi dev
         });
       });
 
-      await api.applyPlugins({
-        key: 'onBeforeCompiler',
-      });
-
       // start dev server
       const beforeMiddlewares = await api.applyPlugins({
         key: 'addBeforeMiddlewares',
@@ -257,15 +256,20 @@ PORT=8888 umi dev
       };
       const debouncedPrintMemoryUsage = lodash.debounce(printMemoryUsage, 5000);
 
-      let srcCodeCache: AutoUpdateSrcCodeCache | undefined;
+      let srcCodeCache: LazySourceCodeCache | undefined;
       let startBuildWorker: (deps: any[]) => Worker = (() => {}) as any;
 
       if (api.config.mfsu?.strategy === 'eager') {
-        srcCodeCache = new AutoUpdateSrcCodeCache({
+        srcCodeCache = new LazySourceCodeCache({
           cwd: api.paths.absSrcPath,
-          cachePath: join(api.paths.absNodeModulesPath, '.cache', 'mfsu', 'v4'),
+          cachePath: join(
+            api.paths.absNodeModulesPath,
+            '.cache',
+            'mfsu',
+            'mfsu_v4',
+          ),
         });
-        await srcCodeCache.init();
+        await srcCodeCache!.init();
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });
@@ -293,6 +297,7 @@ PORT=8888 umi dev
           umi: join(api.paths.absTmpPath, 'umi.ts'),
         },
       });
+
       const opts: any = {
         config: api.config,
         pkg: api.pkg,
@@ -353,7 +358,21 @@ PORT=8888 umi dev
           ...(api.config.mfsu?.include || []),
         ]),
         startBuildWorker,
+        onBeforeMiddleware(app: any) {
+          api.applyPlugins({
+            key: 'onBeforeMiddleware',
+            args: {
+              app,
+            },
+          });
+        },
       };
+
+      await api.applyPlugins({
+        key: 'onBeforeCompiler',
+        args: { compiler: enableVite ? 'vite' : 'webpack', opts },
+      });
+
       if (enableVite) {
         await bundlerVite.dev(opts);
       } else {

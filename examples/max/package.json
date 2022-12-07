@@ -8,12 +8,14 @@
     "e2e": "cypress run",
     "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  \\\"pnpm umi-scripts cypress\\\"",
     "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:dev:local": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status e2e:open",
+    "e2e:open": "cypress open",
     "preview": "max preview --port 9527",
     "start": "npm run dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@umijs/max": "4.0.26",
+    "@umijs/max": "4.0.0-canary.20221202.1",
     "antd": "^4.23.2",
     "react": "18.1.0",
     "react-dom": "18.1.0"

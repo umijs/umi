@@ -15,6 +15,7 @@ export default (api: IApi) => {
         return joi.object();
       },
     },
+    enableBy: api.EnableBy.config,
   });
 
   const libPath = winPath(
@@ -32,6 +33,7 @@ export {
   proxyWithDevtools,
   proxyMap,
   proxySet,
+  derive,
 } from '${libPath}';
       `,
     });

@@ -6,6 +6,8 @@ import { importLazy } from './importLazy';
 const enableFSLogger =
   process.env.FS_LOGGER !== 'none' && !process.versions.webcontainer;
 
+const profilers: Record<string, { startTime: number }> = {};
+
 const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
 const loggerPath = join(loggerDir, 'umi.log');
 
@@ -18,6 +20,7 @@ export const prefixes = {
   info: chalk.cyan('info') + '  -',
   event: chalk.magenta('event') + ' -',
   debug: chalk.gray('debug') + ' -',
+  profile: chalk.blue('profile') + ' -',
 };
 
 let logger: any;
@@ -97,6 +100,29 @@ export function debug(...message: any[]) {
 export function fatal(...message: any[]) {
   console.error(prefixes.fatal, ...message);
   logger.fatal(message[0]);
+}
+
+export function profile(id: string, ...message: any[]) {
+  // Worker logs only available in debug mode
+  if (process.env.IS_UMI_BUILD_WORKER && !process.env.DEBUG) {
+    return;
+  }
+  if (!profilers[id]) {
+    profilers[id] = {
+      startTime: Date.now(),
+    };
+    console.log(prefixes.profile, chalk.green(id), ...message);
+    return;
+  }
+  const endTime = Date.now();
+  const { startTime } = profilers[id];
+  console.log(
+    prefixes.profile,
+    chalk.green(id),
+    `Completed in ${chalk.cyan(`${endTime - startTime}ms`)}`,
+    ...message,
+  );
+  delete profilers[id];
 }
 
 export function getLatestLogFilePath() {

@@ -66,6 +66,13 @@
 
 设置 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
 
+## analyze
+
+- 类型：`object`
+- 默认值：`{}`
+
+通过指定 [`ANALYZE`](../guides/env-variables#analyze) 环境变量分析产物构成时，analyzer 插件的具体配置项，见 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer#options-for-plugin)
+
 ## base
 
 - 类型：`string`
@@ -165,7 +172,7 @@ export default {
 import { useClientLoaderData } from 'umi';
 
 export default function SomePage() {
-  const data = useClientLoaderData();
+  const { data } = useClientLoaderData();
   return <div>{data}</div>;
 }
 
@@ -174,6 +181,19 @@ export async function clientLoader() {
   return data;
 }
 ```
+
+## codeSplitting
+
+- 类型：`{ jsStrategy: 'bigVendors' | 'depPerChunk' | 'granularChunks'; jsStrategyOptions: {} }`
+- 默认值：`null`
+
+提供 code splitting 的策略方案。
+
+bigVendors 是大 vendors 方案，会将 async chunk 里的 node_modules 下的文件打包到一起，可以避免重复。同时缺点是，1）单文件的尺寸过大，2）毫无缓存效率可言。
+
+depPerChunk 和 bigVendors 类似，不同的是把依赖按 package name + version 进行拆分，算是解了 bigVendors 的尺寸和缓存效率问题。但同时带来的潜在问题是，可能导致请求较多。我的理解是，对于非大型项目来说其实还好，因为，1）单个页面的请求不会包含非常多的依赖，2）基于 HTTP/2，几十个请求不算问题。但是，对于大型项目或巨型项目来说，需要考虑更合适的方案。
+
+granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又能在缓存效率上有更好的利用。无特殊场景，建议用 granularChunks 策略。
 
 ## conventionRoutes
 
@@ -458,6 +478,65 @@ export default {
 
 配置额外的 postcss 插件。
 
+## exportStatic
+
+- 类型：`{ extraRoutePaths: string[] | (() => string[] | Promise<string[]>) }`
+- 默认值：`undefined`
+
+开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
+
+```bash
+/
+/docs
+/docs/a
+```
+
+不开启 `exportStatic` 时会输出：
+
+```bash
+dist/index.html
+```
+
+开启 `exportStatic` 时会输出：
+
+```bash
+dist/index.html
+dist/docs/index.html
+dist/docs/a/index.html
+```
+
+通过 `extraRoutePaths` 子配置项可以产出额外的页面，通常用于动态路由静态化。例如有如下路由：
+
+```bash
+/news/:id
+```
+
+默认情况下只会输出 `dist/news/:id/index.html`，但可以通过配置 `extraRoutePaths` 将其静态化：
+
+```ts
+// .umirc.ts
+export default {
+  exportStatic: {
+    // 配置固定值
+    extraRoutePaths: ['/news/1', '/news/2'],
+    // 也可以配置函数动态获取
+    extraRoutePaths: async () => {
+      const res = await fetch('https://api.example.com/news');
+      const data = await res.json();
+      return data.map((item) => `/news/${item.id}`);
+    },
+  },
+}
+```
+
+此时输出文件会变成：
+
+```bash
+dist/news/:id/index.html
+dist/news/1/index.html
+dist/news/2/index.html
+```
+
 ## favicons
 
 - 类型：`string[]`
@@ -718,14 +797,14 @@ metas: [
 
 关于参数
 
-- `esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有 webpack 的物理缓存，稍慢一些
+- `esbuild` 配为 `true` 后会让依赖的预编译走 esbuild，从而让首次启动更快，缺点是二次编译不会有物理缓存，稍慢一些；推荐项目依赖比较稳定的项目使用。
 - `mfName` 是此方案的 remote 库的全局变量，默认是 mf，通常在微前端中为了让主应用和子应用不冲突才会进行配置
 - `cacheDirectory` 可以自定义缓存目录，默认是 `node_modules/.cache/mfsu`
 - `chainWebpack` 用链式编程的方式修改 依赖的 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/sorrycc/webpack-chain)；
 - `runtimePublicPath` 会让修改 mf 加载文件的 publicPath 为 `window.publicPath`
 - `strategy` 指定 mfsu 编译依赖的时机; `normal` 模式下，采用 babel 编译分析后，构建 Module Federation 远端包；`eager` 模式下采用静态分析的方式，和项目代码同时发起构建。
 - `include` 仅在 `strategy: 'eager' ` 模式下生效， 用于补偿在 eager 模式下，静态分析无法分析到的依赖，例如 `react` 未进入 Module Federation 远端模块可以这样配置 `{ include: [ 'react' ] }`
-- `exclude` 手动排除某些不需要被 MFSU 处理的依赖, 比如 `vant` 不希望走 MFSU 处理 可以配置 `{ exclude: [ 'vant' ] }`
+- `exclude` 手动排除某些不需要被 MFSU 处理的依赖, 字符串或者正则的形式，比如 `vant` 不希望走 MFSU 处理，可以配置 `{ exclude: [ 'vant' ] }` 匹配逻辑为全词匹配，也可以配置 `{ exclude: [ /vant/ ] }` 只要 `import` 路径中匹配该正则的依赖都不走 MFSU 处理
 
 示例，
 
@@ -1074,7 +1153,7 @@ import SmileUrl, { ReactComponent as SvgSmile } from './smile.svg';
 ## targets
 
 - 类型：`object`
-- 默认值：`{ chrome: 87 }`
+- 默认值：`{ chrome: 80 }`
 
 配置需要兼容的浏览器最低版本。Umi 会根据这个自定引入 polyfill、配置 autoprefixer 和做语法转换等。
 
@@ -1140,4 +1219,11 @@ vite: {
   cacheDir: 'node_modules/.bin/.vite',
 }
 ```
+
+## writeToDisk
+
+- 类型：`boolean`
+- 默认值：`false`
+
+开启后会在 dev 模式下额外输出一份文件到 dist 目录，通常用于 chrome 插件、electron 应用、sketch 插件等开发场景。
 

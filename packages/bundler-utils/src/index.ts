@@ -1,7 +1,7 @@
 import { codeFrameColumns } from '@umijs/bundler-utils/compiled/babel/code-frame';
 import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
-import { winPath } from '@umijs/utils';
+import { winPath, logger } from '@umijs/utils';
 import { extname } from 'path';
 
 export async function parseModule(opts: { content: string; path: string }) {
@@ -21,11 +21,17 @@ export function parseModuleSync(opts: { content: string; path: string }) {
     } catch (e) {
       // @ts-ignore
       prettyPrintEsBuildErrors(e.errors, opts);
-      throw Error(`transform ${opts.path} failed`);
+      logger.error(`transform ${opts.path} failed`);
+      throw e;
     }
   }
 
-  return parse(content);
+  try {
+    return parse(content);
+  } catch (e) {
+    logger.error(`parse ${opts.path} failed`);
+    throw e;
+  }
 }
 
 export function isDepPath(path: string) {

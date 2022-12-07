@@ -92,6 +92,24 @@ generatePath("/files/:type/*", {
 }); // "/files/img/cat.jpg"
 ```
 
+### Helmet
+
+即 [react-helmet-async](https://github.com/staylor/react-helmet-async) 提供的 Helmet 组件，用于在页面中动态配置 `head` 中的标签，例如 `title`。
+
+> 注意：为了确保 SSR 时 Helmet 仍能正常工作，请务必使用 Umi 提供的 Helmet 而不是单独安装 react-helmet
+
+```tsx
+import { Helmet } from 'umi';
+
+export default function Page() {
+  return (
+    <Helmet>
+      <title>Hello World</title>
+    </Helmet>
+  );
+}
+```
+
 ### history
 
 和 history 相关的操作，用于获取当前路由信息、执行路由跳转、监听路由变更。
@@ -663,6 +681,33 @@ function App() {
   ]);
 
   return element;
+}
+```
+
+### useSelectedRoutes
+
+用于读取当前路径命中的所有路由信息。比如在 `layout` 布局中可以获取到当前命中的所有子路由信息，同时可以获取到在 `routes` 配置中的参数，这格外有用。
+
+实例：
+
+```tsx
+// layouts/index.tsx
+
+import { useSelectedRoutes } from 'umi'
+
+export default function Layout() {
+  const routes = useSelectedRoutes()
+  const lastRoute = routes.at(-1)
+
+  if (lastRoute?.pathname === '/some/path') {
+    return <div>1 : <Outlet /></div>
+  }
+
+  if (lastRoute?.extraProp) {
+    return <div>2 : <Outlet /></div>
+  }
+
+  return <Outlet />
 }
 ```
 

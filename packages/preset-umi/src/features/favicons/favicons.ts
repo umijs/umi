@@ -36,7 +36,7 @@ export default (api: IApi) => {
   api.addBeforeMiddlewares(() => [
     (req, res, next) => {
       const iconFile = (api.appData.faviconFiles || []).find(
-        (file: any) => req.path === `/${file}`,
+        (file: any) => req.path === `${api.config.publicPath}${file}`,
       );
       if (!iconFile) {
         next();

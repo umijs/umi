@@ -20,6 +20,7 @@ export async function addBundleAnalyzerPlugin(opts: IOpts) {
       openAnalyzer: false,
       logLevel: 'info',
       defaultSizes: 'parsed',
+      ...opts.userConfig.analyze,
     },
   ]);
 }

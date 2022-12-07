@@ -89,6 +89,8 @@ $ ANALYZE=1 umi dev
 $ ANALYZE=1 umi build
 ```
 
+可以通过 `ANALYZE_PORT` 环境变量自定义端口或 [`analyze`](../api/config#analyze) 选项自定义配置。
+
 ### BABEL_POLYFILL
 
 默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
@@ -122,7 +124,7 @@ $ ANALYZE=1 umi build
 指定用于 HMR 的 socket 服务器。比如：
 
 ```bash
-$ SOCKET_SERVER=https://localhost:7001/ umi dev
+$ SOCKET_SERVER=http://localhost:8000/ umi dev
 ```
 
 ### SPEED_MEASURE

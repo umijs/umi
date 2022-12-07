@@ -1,8 +1,8 @@
 import { getMarkup } from '@umijs/server';
-import { chalk, logger, rimraf } from '@umijs/utils';
+import { chalk, fsExtra, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
-import { join, resolve } from 'path';
-import { IApi } from '../types';
+import { dirname, join, resolve } from 'path';
+import { IApi, IFileInfo } from '../types';
 import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
 import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
@@ -47,7 +47,10 @@ umi build --clean
       });
 
       // generate files
-      async function generate(opts: { isFirstTime?: boolean; files?: any }) {
+      async function generate(opts: {
+        isFirstTime?: boolean;
+        files?: IFileInfo;
+      }) {
         await api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
@@ -58,10 +61,6 @@ umi build --clean
       }
       await generate({
         isFirstTime: true,
-      });
-
-      await api.applyPlugins({
-        key: 'onBeforeCompiler',
       });
 
       // build
@@ -120,7 +119,13 @@ umi build --clean
           });
         },
         clean: true,
+        htmlFiles: [] as any[],
       };
+
+      await api.applyPlugins({
+        key: 'onBeforeCompiler',
+        args: { compiler: api.config.vite ? 'vite' : 'webpack', opts },
+      });
 
       let stats: any;
       if (api.config.vite) {
@@ -148,6 +153,9 @@ umi build --clean
 
       // generate html
       // vite 在 build 时通过插件注入 js 和 css
+
+      let htmlFiles: { path: string; content: string }[] = [];
+
       if (!api.config.mpa) {
         const assetsMap = api.config.vite
           ? {}
@@ -157,30 +165,49 @@ umi build --clean
             });
         const { vite } = api.args;
         const markupArgs = await getMarkupArgs({ api });
-        // @ts-ignore
-        const markup = await getMarkup({
+        const finalMarkUpArgs = {
           ...markupArgs,
           styles: markupArgs.styles.concat(
-            api.config.vite ? [] : assetsMap['umi.css'] || [],
+            api.config.vite
+              ? []
+              : [...(assetsMap['umi.css'] || []).map((src) => ({ src }))],
           ),
-          scripts: (api.config.vite ? [] : assetsMap['umi.js'] || []).concat(
-            markupArgs.scripts,
-          ),
+          scripts: (api.config.vite
+            ? []
+            : [...(assetsMap['umi.js'] || []).map((src) => ({ src }))]
+          ).concat(markupArgs.scripts),
           esmScript: !!opts.config.esm || vite,
           path: '/',
+        };
+
+        // allow to modify export html files
+        htmlFiles = await api.applyPlugins({
+          key: 'modifyExportHTMLFiles',
+          initialValue: [
+            {
+              path: 'index.html',
+              content: await getMarkup(finalMarkUpArgs),
+            },
+          ],
+          args: { markupArgs: finalMarkUpArgs, getMarkup },
         });
-        writeFileSync(
-          join(api.paths.absOutputPath, 'index.html'),
-          markup,
-          'utf-8',
-        );
-        logger.event('Build index.html');
+
+        htmlFiles.forEach(({ path, content }) => {
+          const absPath = resolve(api.paths.absOutputPath, path);
+
+          fsExtra.mkdirpSync(dirname(absPath));
+          writeFileSync(absPath, content, 'utf-8');
+          logger.event(`Build ${path}`);
+        });
       }
 
       // event when html is completed
       await api.applyPlugins({
         key: 'onBuildHtmlComplete',
-        args: opts,
+        args: {
+          ...opts,
+          htmlFiles,
+        },
       });
 
       // print size

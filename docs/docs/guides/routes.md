@@ -258,6 +258,17 @@ const location  = useLocation();
 }
 ```
 
+<Message emoji="🚨" >
+推荐使用 `useLocation`, 而不是直接访问 `history.location`. 两者的区别是 `pathname` 的部分。
+`history.location.pathname` 是完整的浏览器的路径名；而 `useLocation` 中返回的 `pathname` 是相对项目配置的`base`的路径。
+
+举例：项目如果配置 `base: '/testbase'`, 当前浏览器地址为 `https://localhost:8000/testbase/page/apple`
+
+`history.location.pathname` 为 `/testbase/page/apple`
+
+`useLocation().pathname` 为 `/page/apple`
+</Message>
+
 ### 路由动态参数
 
 [useParams](https://reactrouter.com/docs/en/v6/api#useparams)

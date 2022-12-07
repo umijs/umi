@@ -59,8 +59,14 @@ async function render() {
           ...contextOpts.historyOpts,
         }),
         basename,
+        callback: contextOpts.callback,
       };
-      return renderClient(context);
+      const modifiedContext = pluginManager.applyPlugins({
+        key: 'modifyClientRenderOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: context,
+      });
+      return renderClient(modifiedContext);
     },
   }))();
 }

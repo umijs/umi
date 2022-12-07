@@ -6,28 +6,27 @@
 
 约定 `src/app.tsx` 为运行时配置。
 
-
 ## TypeScript 提示
 
 如果你想在写配置时也有提示，可以通过 umi 的 defineApp 方法定义配置。
 
 ```js
-import { defineApp } from 'umi'
+import { defineApp } from 'umi';
 export default defineApp({
   layout: () => {
     return {
-      title: "umi",
+      title: 'umi',
     };
   },
-})
+});
 
-// or 
-import { RuntimeConfig } from 'umi'
+// or
+import { RuntimeConfig } from 'umi';
 export const layout: RuntimeConfig['layout'] = () => {
   return {
     title: 'umi',
   };
-}
+};
 ```
 
 ## 配置项
@@ -106,7 +105,13 @@ export const layout = {
 比如用于做埋点统计，
 
 ```ts
-export function onRouteChange({ location, clientRoutes, routes, action, basename }) {
+export function onRouteChange({
+  location,
+  clientRoutes,
+  routes,
+  action,
+  basename,
+}) {
   bacon(location.pathname);
 }
 ```
@@ -114,10 +119,10 @@ export function onRouteChange({ location, clientRoutes, routes, action, basename
 比如用于设置标题，
 
 ```ts
-import { matchRoutes } from 'umi'
+import { matchRoutes } from 'umi';
 
 export function onRouteChange({ clientRoutes, location }) {
-  const route = matchRoutes(clientRoutes, location.pathname)?.pop()?.route
+  const route = matchRoutes(clientRoutes, location.pathname)?.pop()?.route;
   if (route) {
     document.title = route.title || '';
   }

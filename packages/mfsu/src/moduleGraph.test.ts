@@ -196,3 +196,52 @@ test('circular deps restore', () => {
   const restored = new ModuleGraph();
   restored.restore(mg.toJSON());
 });
+
+test('deps with importer', () => {
+  const mg = new ModuleGraph();
+  mg.onFileChange({
+    file: 'a',
+    deps: [{ file: 'b', isDependency: true, version: '0.0.1' }],
+  });
+
+  mg.snapshotDeps();
+
+  expect(mg.depSnapshotModules).toEqual({
+    b: { file: 'b', version: '0.0.1', importer: 'a' },
+  });
+});
+
+test('deps compare ignore importer', () => {
+  const mg = new ModuleGraph();
+  mg.onFileChange({
+    file: 'a',
+    deps: [{ file: 'b', isDependency: true, version: '0.0.1' }],
+  });
+
+  mg.snapshotDeps();
+
+  mg.onFileChange({
+    file: 'a',
+    deps: [],
+  });
+  mg.onFileChange({
+    file: 'c',
+    deps: [{ file: 'b', isDependency: true, version: '0.0.1' }],
+  });
+
+  expect(mg.hasDepChanged()).toEqual(false);
+});
+
+test('deps compare ignore importer when no importer', () => {
+  const mg = new ModuleGraph();
+  mg.onFileChange({
+    file: 'a',
+    deps: [{ file: 'b', isDependency: true, version: '0.0.1' }],
+  });
+
+  mg.depSnapshotModules = {
+    b: { file: 'b', version: '0.0.1' },
+  };
+
+  expect(mg.hasDepChanged()).toEqual(false);
+});
