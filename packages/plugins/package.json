@@ -45,6 +45,7 @@
     "react-intl": "3.12.1",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
+    "styled-components": "6.0.0-beta.6",
     "warning": "^4.0.3"
   },
   "devDependencies": {
