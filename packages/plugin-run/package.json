@@ -20,7 +20,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "tsx": "^3.8.2"
+    "tsx": "^3.12.1"
   },
   "publishConfig": {
     "access": "public"
