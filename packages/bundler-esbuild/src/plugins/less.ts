@@ -45,7 +45,7 @@ const aliasLessImports = async (
     const [imp, _, filePath] = el.match(importRegex) || [];
     let aliaPath = await aliasLessImportPath(filePath, alias, importer);
     if (aliaPath) {
-      ctx = ctx.replace(imp, el.replace(filePath, aliaPath));
+      ctx = ctx.replace(imp!, el.replace(filePath, aliaPath));
     }
   }
   return ctx;
