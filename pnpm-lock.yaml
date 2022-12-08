@@ -1524,7 +1524,7 @@ importers:
       '@ant-design/icons': ^4.7.0
       '@ant-design/pro-components': ^2.0.1
       '@umijs/bundler-utils': 4.0.0-canary.20221202.1
-      '@umijs/valtio': ^1.0.0
+      '@umijs/valtio': ^1.0.2
       antd: ^4.24.1
       antd-dayjs-webpack-plugin: ^1.0.6
       axios: ^0.27.2
