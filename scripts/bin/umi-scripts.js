@@ -17,14 +17,6 @@ assert(
 
 console.log(chalk.cyan(`umi-scripts: ${name}\n`))
 
-// for pass all params
-// e.g. umi-scripts bundleDeps --dep chalk
-//                             ^ pass all => -- --dep chalk
-//      argv.slice(2) <in bundleDeps.ts> : --dep chalk
-if (throughArgs.length) {
-  throughArgs.unshift('--')
-}
-
 // current dir path may contain spaces
 // https://github.com/umijs/umi/issues/9865
 const scriptPathAsStr = JSON.stringify(scriptsPath)
