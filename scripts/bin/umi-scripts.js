@@ -21,9 +21,9 @@ console.log(chalk.cyan(`umi-scripts: ${name}\n`))
 // e.g. umi-scripts bundleDeps --dep chalk
 //                             ^ pass all => -- --dep chalk
 //      argv.slice(2) <in bundleDeps.ts> : --dep chalk
-if (throughArgs.length) {
-  throughArgs.unshift('--')
-}
+// if (throughArgs.length) {
+//   throughArgs.unshift('--')
+// }
 
 // current dir path may contain spaces
 // https://github.com/umijs/umi/issues/9865
