@@ -13,6 +13,7 @@ import requireToImport from './esbuildPlugins/requireToImport';
 import topLevelExternal from './esbuildPlugins/topLevelExternal';
 import Service, { IImportmapData, IPkgData } from './Service';
 import { lodash } from '@umijs/utils';
+import { getDepTree } from './depTree';
 
 let importmap: IImportmapData['importMap'] = { imports: {}, scopes: {} };
 let importmatches: Record<string, string> = {};
@@ -117,7 +118,7 @@ function esmi(opts: {
  * generate package data
  * @param api   plugin api
  */
-function generatePkgData(api: IApi): IPkgData {
+async function generatePkgData(api: IApi): Promise<IPkgData> {
   return {
     pkgJsonContent: {
       dependencies: api.pkg.dependencies || {},
@@ -147,6 +148,7 @@ function generatePkgData(api: IApi): IPkgData {
       ],
       assets: [],
     },
+    depTree: await getDepTree(api.appData.deps!),
   };
 }
 
@@ -168,7 +170,7 @@ export default (api: IApi) => {
     // skip umi by default
     delete api.appData.deps!['umi'];
 
-    const data = generatePkgData(api);
+    const data = await generatePkgData(api);
     const deps = data.pkgInfo.exports.reduce(
       (r, exp) => r.concat(exp.deps.map((dep) => dep.name)),
       [] as string[],

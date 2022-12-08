@@ -2,7 +2,6 @@ import { axios, chalk, logger, lodash, fsExtra } from '@umijs/utils';
 import { createHash } from 'crypto';
 import path from 'path';
 import type { IApi } from '../../types';
-import { getDepTree } from './depTree';
 
 export interface IImportmapData {
   importMap: {
@@ -41,6 +40,7 @@ export interface IPkgData {
     }[];
     assets: any[];
   };
+  depTree: any;
 }
 
 /**
@@ -111,31 +111,23 @@ export default class ESMIService {
    * @returns ticketId or importmap
    */
   async build(data: IPkgData) {
-    const requestData = {
-      ...data,
-      depTree: await getDepTree(data),
-    };
-
     return axios
       .post<{ success: boolean; data: { ticketId: string } | IImportmapData }>(
         `${this.cdnOrigin}/api/v1/esm/build/dev`,
-        requestData,
+        data,
       )
       .then((res) => {
-        if ('ticketId' in res.data.data) {
-          const debugData = path.join(
-            this.cacheDir,
-            'tickets',
-            `req_${res.data.data.ticketId}.json`,
-          );
+        const debugData = path.join(
+          this.cacheDir,
+          'tickets',
+          `req_${
+            'ticketId' in res.data.data ? res.data.data.ticketId : 'cloud_cache'
+          }.json`,
+        );
 
-          fsExtra.ensureDirSync(path.dirname(debugData));
-          fsExtra.writeFileSync(
-            debugData,
-            JSON.stringify(requestData, null, 2),
-          );
-          console.log(`ESMi ticket debug data: ${debugData}`);
-        }
+        fsExtra.ensureDirSync(path.dirname(debugData));
+        fsExtra.writeFileSync(debugData, JSON.stringify(data, null, 2));
+        console.log(`ESMi ticket debug data: ${debugData}`);
 
         return res.data.data;
       });

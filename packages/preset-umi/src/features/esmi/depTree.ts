@@ -1,7 +1,9 @@
 import Arborist from '@npmcli/arborist';
-import type { IPkgData } from './Service';
+import type { IApi } from '../../types';
 
-export async function getDepTree(data: IPkgData): Promise<any> {
+export async function getDepTree(
+  data: NonNullable<IApi['appData']['deps']>,
+): Promise<any> {
   const deps = data.pkgInfo.exports.reduce<string[]>(
     (prev, curr) => prev.concat(curr.deps.map((d) => d.name)),
     [],
