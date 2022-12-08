@@ -1,42 +1,12 @@
 import { pkgUp, winPath, logger, chalk } from '@umijs/utils';
 import assert from 'assert';
-import enhancedResolve from 'enhanced-resolve';
 import { readFileSync } from 'fs';
 import { isAbsolute, join, dirname } from 'path';
 import { MF_VA_PREFIX } from '../constants';
 import { MFSU } from '../mfsu/mfsu';
 import { trimFileContent } from '../utils/trimFileContent';
 import { getExposeFromContent } from './getExposeFromContent';
-
-const resolver = enhancedResolve.create({
-  mainFields: ['module', 'browser', 'main'], // es module first
-  extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
-  exportsFields: ['exports'],
-  conditionNames: ['import', 'module', 'require', 'node'],
-  symlinks: false,
-});
-
-async function resolve(context: string, path: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    resolver(context, path, (err: Error, result: string) =>
-      err ? reject(err) : resolve(result),
-    );
-  });
-}
-
-async function resolveFromContexts(
-  contexts: string[],
-  path: string,
-): Promise<string> {
-  for (const context of contexts) {
-    try {
-      return await resolve(context, path);
-    } catch (e) {
-      // ignore
-    }
-  }
-  throw new Error(`Can't resolve ${path} from ${contexts.join(', ')}`);
-}
+import { resolveFromContexts } from '../utils/resolveUtils';
 
 export class Dep {
   public file: string;
