@@ -810,6 +810,21 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+  examples/vite-e2e:
+    specifiers:
+      antd: ^4.20.6
+      cross-env: ^7.0.3
+      cypress: ^10.0.0
+      start-server-and-test: ^1.0.0
+      umi: 4.0.0-canary.20221202.1
+    dependencies:
+      antd: 4.24.5
+      umi: link:../../packages/umi
+    devDependencies:
+      cross-env: 7.0.3
+      cypress: 10.11.0
+      start-server-and-test: 1.15.1
+
   examples/vue-demo:
     specifiers:
       '@umijs/preset-vue': 4.0.0-canary.20221202.1

@@ -70,9 +70,9 @@ jobs:
         run: pnpm i
 
       - name: Build targets
-        run: pnpm umi-scripts turbo build 
-          --filter ./examples/max... 
-          --filter ./examples/test-test/... 
+        run: pnpm umi-scripts turbo build
+          --filter ./examples/max...
+          --filter ./examples/test-test/...
           --filter ./packages/umi/...
 
       - name: e2e:example:max
@@ -94,6 +94,17 @@ jobs:
           install: false
           install-command: pnpm i cypress
           command: npm run e2e:dev:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:vite-e2e:dev
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/vite-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
         env:
           CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
 
