@@ -126,7 +126,7 @@ function initShortcuts(opts: IInitShortCutsOpts) {
       description: 'quit',
       action() {
         logger.event(`Shutdown server`);
-        process.exit(0);
+        process.exit(1);
       },
     },
   ];
@@ -136,8 +136,7 @@ function initShortcuts(opts: IInitShortCutsOpts) {
   const onKeypress = async (input: string) => {
     // ctrl+c or ctrl+d
     if (input === '\x03' || input === '\x04') {
-      process.emit('SIGTERM');
-      return;
+      process.exit(1);
     }
 
     if (active) return;
