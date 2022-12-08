@@ -27,13 +27,18 @@ export default (api: IApi) => {
       path: 'index.ts',
       content: `
 export {
-  proxy, useSnapshot, snapshot, subscribe,
+  proxy,
+  useSnapshot,
+  snapshot,
+  subscribe,
+  subscribeKey,
   proxyWithComputed,
   proxyWithHistory,
   proxyWithDevtools,
   proxyMap,
   proxySet,
   derive,
+  underive,
 } from '${libPath}';
       `,
     });
