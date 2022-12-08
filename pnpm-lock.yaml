@@ -45,7 +45,7 @@ importers:
       resolve: ^1.22.0
       rimraf: ^3.0.2
       ts-node: ^10.7.0
-      tsx: 3.12.1
+      tsx: ^3.12.1
       turbo: ^1.6.1
       typescript: ^4.8.2
       uglify-js: ^3.15.4
@@ -1117,12 +1117,14 @@ importers:
       '@bloomberg/record-tuple-polyfill': 0.0.4
       '@umijs/bundler-utils': 4.0.0-canary.20221202.1
       '@umijs/utils': 4.0.0-canary.20221202.1
+      babel-plugin-styled-components: 2.0.7
       core-js: 3.22.4
     dependencies:
       '@babel/runtime': 7.18.9
       '@bloomberg/record-tuple-polyfill': 0.0.4
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
+      babel-plugin-styled-components: 2.0.7
       core-js: 3.22.4
 
   packages/bundler-esbuild:
@@ -16494,6 +16496,18 @@ packages:
   /babel-plugin-react-require/3.1.3:
     resolution: {integrity: sha512-kDXhW2iPTL81x4Ye2aUMdEXQ56JP0sBJmRQRXJPH5FsNB7fOc/YCsHTqHv8IovPyw9Rk07gdd7MVUz8tUmRBCA==}
     dev: true
+
+  /babel-plugin-styled-components/2.0.7:
+    resolution: {integrity: sha512-i7YhvPgVqRKfoQ66toiZ06jPNA3p6ierpfUuEWxNF+fV27Uv5gxBkf8KZLHUCc1nFA9j6+80pYoIpqCeyW3/bA==}
+    peerDependencies:
+      styled-components: '>= 2'
+    dependencies:
+      '@babel/helper-annotate-as-pure': 7.18.6
+      '@babel/helper-module-imports': 7.18.6
+      babel-plugin-syntax-jsx: 6.18.0
+      lodash: 4.17.21
+      picomatch: 2.3.1
+    dev: false
 
   /babel-plugin-styled-components/2.0.7_styled-components@5.3.5:
     resolution: {integrity: sha512-i7YhvPgVqRKfoQ66toiZ06jPNA3p6ierpfUuEWxNF+fV27Uv5gxBkf8KZLHUCc1nFA9j6+80pYoIpqCeyW3/bA==}

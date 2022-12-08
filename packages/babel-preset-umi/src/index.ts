@@ -15,6 +15,7 @@ interface IOpts {
   pluginAutoCSSModules: any;
   stripExports: { exports: string[] };
   classPropertiesLoose: any;
+  pluginStyledComponents: any;
 }
 
 export default (_context: any, opts: IOpts) => {
@@ -64,6 +65,12 @@ export default (_context: any, opts: IOpts) => {
       ],
     ],
     plugins: [
+      opts.pluginStyledComponents && [
+        require.resolve('babel-plugin-styled-components'),
+        {
+          ...opts.pluginStyledComponents,
+        },
+      ],
       // TC39 Proposals
       // class-static-block
       // decorators

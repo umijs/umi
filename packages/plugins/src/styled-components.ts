@@ -6,10 +6,21 @@ export default (api: IApi) => {
     key: 'styledComponents',
     config: {
       schema(Joi) {
-        return Joi.object();
+        return Joi.object({
+          babelPlugin: Joi.object(),
+        });
       },
     },
     enableBy: api.EnableBy.config,
+  });
+
+  api.modifyBabelPresetOpts((memo) => {
+    if (api.env === 'development') {
+      memo.pluginStyledComponents = {
+        ...api.config.styledComponents.babelPlugin,
+      };
+    }
+    return memo;
   });
 
   // reexports with types
