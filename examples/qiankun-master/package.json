@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@umijs/max": "4.0.36",
+    "qiankun": "^2.7.0",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },
