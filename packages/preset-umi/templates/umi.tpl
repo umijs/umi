@@ -34,9 +34,10 @@ async function render() {
   });
 
   const basename = contextOpts.basename || '{{{ basename }}}';
+  const historyType = contextOpts.historyType || '{{{ historyType }}}';
 
   const history = createHistory({
-    type: contextOpts.historyType || '{{{ historyType }}}',
+    type: historyType,
     basename,
     ...contextOpts.historyOpts,
   });
@@ -62,6 +63,7 @@ async function render() {
         publicPath,
         runtimePublicPath,
         history,
+        historyType,
         basename,
         callback: contextOpts.callback,
       };
