@@ -1,14 +1,10 @@
 import Arborist from '@npmcli/arborist';
+import path from 'path';
 import type { IApi } from '../../types';
 
 export async function getDepTree(
   data: NonNullable<IApi['appData']['deps']>,
 ): Promise<any> {
-  const deps = data.pkgInfo.exports.reduce<string[]>(
-    (prev, curr) => prev.concat(curr.deps.map((d) => d.name)),
-    [],
-  );
-
   const arborist = new Arborist({
     path: process.cwd(),
     lockfileVersion: 3,
@@ -22,7 +18,7 @@ export async function getDepTree(
   const lock = meta.commit();
   const { packages } = lock;
 
-  if (!packages) throw new Error(`本地生成依赖树失败`);
+  if (!packages) throw new Error('本地生成依赖树失败');
 
   const packageKeys = Object.keys(packages);
 
@@ -36,7 +32,7 @@ export async function getDepTree(
       const isCircularDependency = orders.some((n) => n === dep);
       // 检查循环依赖
       if (!isCircularDependency) {
-        let findKey = [name, 'node_modules', dep].join('/');
+        let findKey = [name, 'node_modules', dep].join(path.sep);
         while (findKey && !packageKeys.includes(findKey)) {
           const findPaths = findKey.split('node_modules');
           findPaths.splice(findPaths.length - 2, 1);
@@ -49,13 +45,26 @@ export async function getDepTree(
     });
   }
 
-  deps.forEach((name) => {
-    // 如果找不到就再向 @umijs/plugins 找
-    const pkgKey =
-      packageKeys.find((n) => n === `node_modules/${name}`) ??
-      packageKeys.find(
-        (n) => n === `node_modules/@umijs/plugins/node_modules/${name}`,
-      );
+  Object.entries(data).forEach(([name, info]) => {
+    // 判断是否是 @umijs/plugin 提供的依赖
+    const umijsPluginPath = [
+      'node_modules',
+      '@umijs/plugins',
+      'node_modules',
+      name,
+    ].join(path.sep);
+    const isUmiPluginDependency = info.matches.some((m) =>
+      m.includes(umijsPluginPath),
+    );
+
+    let pkgKey = packageKeys.find(
+      (n) => n === ['node_modules', name].join(path.sep),
+    );
+
+    if (isUmiPluginDependency) {
+      pkgKey = packageKeys.find((n) => n === umijsPluginPath) ?? pkgKey;
+    }
+
     if (pkgKey) {
       result[pkgKey] = packages[pkgKey];
       collectDependencies(pkgKey, [name]);
