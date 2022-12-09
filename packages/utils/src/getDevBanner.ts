@@ -33,6 +33,7 @@ export function getDevBanner(
     `${protocol}//${address.ip()}:${port}`,
   )} `;
 
+  console.log('process.env: ', process.env);
   const isOpenShortcuts = process.env.UMI_SHORTCUTS !== 'none';
   const shortcutsHelper = chalk.gray(
     ` Press ${chalk.cyan.bold('h')} to show shortcuts help`,
