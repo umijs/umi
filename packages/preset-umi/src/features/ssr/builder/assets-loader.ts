@@ -1,4 +1,4 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import { winPath } from '@umijs/utils';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
@@ -6,7 +6,7 @@ import { ensureLastSlash } from './css-loader';
 
 const NAMESPACE = 'staticAssets';
 
-export function assetsLoader(opts: { cwd: string }): esbuild.Plugin {
+export function assetsLoader(opts: { cwd: string }): Plugin {
   const assetsFilter = /\.(png|jpg|jpeg|gif|woff|woff2|ttf|eot|mp3|mp4)$/;
   return {
     name: 'assets-loader',

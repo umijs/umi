@@ -45,6 +45,7 @@ export async function addCompressPlugin(opts: IOpts) {
   if (jsMinifier === JSMinifier.esbuild) {
     minify = TerserPlugin.esbuildMinify;
     terserOptions = {
+      charset: 'utf8',
       target: esbuildTarget,
       // remove all comments
       legalComments: 'none',
@@ -87,6 +88,7 @@ export async function addCompressPlugin(opts: IOpts) {
   if (cssMinifier === CSSMinifier.esbuild) {
     cssMinify = CSSMinimizerWebpackPlugin.esbuildMinify;
     minimizerOptions = {
+      charset: 'utf8',
       target: esbuildTarget,
     } as EsbuildOpts;
   } else if (cssMinifier === CSSMinifier.cssnano) {

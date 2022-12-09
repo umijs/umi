@@ -43,6 +43,7 @@ ${clientLoaderDefines.join('\n')}
   // core/loader.js 会被 core/route.ts 引用，将每个 route 的 clientLoader 注入进去
   api.onBeforeCompiler(async () => {
     await esbuild.build({
+      charset: 'utf8',
       format: 'esm',
       platform: 'browser',
       target: 'esnext',

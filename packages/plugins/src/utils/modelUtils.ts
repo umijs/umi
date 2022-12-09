@@ -74,6 +74,7 @@ export class Model {
     // to reduce unexpected ast problem
     const loader = extname(this.file).slice(1) as Loader;
     const result = transformSync(content, {
+      charset: 'utf8',
       loader,
       sourcemap: false,
       minify: false,
@@ -180,6 +181,7 @@ export class ModelUtils {
     // to reduce unexpected ast problem
     const loader = extname(file).slice(1) as Loader;
     const result = transformSync(content, {
+      charset: 'utf8',
       loader,
       sourcemap: false,
       minify: false,

@@ -5,6 +5,7 @@ export async function extractExports(opts: {
   exportName: string;
 }) {
   const res = await esbuild.build({
+    charset: 'utf8',
     format: 'cjs',
     platform: 'browser',
     target: 'esnext',

@@ -35,6 +35,7 @@ export async function build(opts: IOpts) {
   return await buildWithESBuild({
     entryPoints: opts.entry,
     bundle: true,
+    charset: 'utf8',
     format: opts.format || 'iife',
     logLevel: 'error',
     // splitting: true,

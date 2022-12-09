@@ -1,4 +1,7 @@
-import esbuild, { PartialMessage } from '@umijs/bundler-utils/compiled/esbuild';
+import type {
+  PartialMessage,
+  Plugin,
+} from '@umijs/bundler-utils/compiled/esbuild';
 import less from '@umijs/bundler-utils/compiled/less';
 import { winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
@@ -8,7 +11,7 @@ import { ensureLastSlash, getClassNames, hashString } from './css-loader';
 export const lessLoader = (opts: {
   cwd: string;
   lessOptions?: Less.Options;
-}): esbuild.Plugin => {
+}): Plugin => {
   const { lessOptions = {} } = opts;
   return {
     name: 'less-loader',

@@ -182,6 +182,7 @@ async function esbuildTransform(
     await esBuild({
       entryPoints: files,
       bundle: false,
+      charset: 'utf8',
       outdir: opts.cachePath,
       outbase: opts.srcPath,
       loader: {

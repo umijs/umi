@@ -85,6 +85,7 @@ export class AutoUpdateSrcCodeCache {
       await esBuild({
         entryPoints: files,
         bundle: false,
+        charset: 'utf8',
         outdir: this.cachePath,
         outbase: this.srcPath,
         loader: {

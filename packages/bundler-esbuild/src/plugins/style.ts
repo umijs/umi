@@ -108,7 +108,11 @@ export function style({
           namespace: inlineStyle ? 'style-content' : 'file',
         },
         async (args) => {
-          const options = { entryPoints: [args.path], ...opt };
+          const options: BuildOptions = {
+            entryPoints: [args.path],
+            charset: 'utf8',
+            ...opt,
+          };
           const { errors, warnings, outputFiles } = await esbuild.build(
             options,
           );

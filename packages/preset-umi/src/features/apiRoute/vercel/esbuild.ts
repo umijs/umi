@@ -13,6 +13,7 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
   const pkg = require(join(api.cwd, './package.json'));
 
   await esbuild.build({
+    charset: 'utf8',
     format: 'cjs',
     platform: 'node',
     bundle: true,

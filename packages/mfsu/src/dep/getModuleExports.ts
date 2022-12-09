@@ -14,6 +14,7 @@ export async function getModuleExports({
   if (filePath && /\.(tsx|jsx)$/.test(filePath)) {
     content = (
       await transform(content, {
+        charset: 'utf8',
         sourcemap: false,
         sourcefile: filePath,
         format: 'esm',

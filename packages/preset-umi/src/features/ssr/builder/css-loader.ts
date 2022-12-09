@@ -1,4 +1,4 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import { parcelCSS } from '@umijs/bundler-webpack/dist/parcelCSS';
 import { winPath } from '@umijs/utils';
 import { readFileSync } from 'fs';
@@ -30,7 +30,7 @@ export function getClassNames(code: Buffer, filename: string) {
   return Object.keys(exports || {});
 }
 
-export function cssLoader(opts: { cwd: string }): esbuild.Plugin {
+export function cssLoader(opts: { cwd: string }): Plugin {
   return {
     name: 'css-loader',
     setup(build) {

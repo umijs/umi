@@ -2,6 +2,7 @@ import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import {
   Loader as EsbuildLoader,
   transform as transformInternal,
+  type TransformOptions,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { extname } from 'path';
 import type { LoaderContext } from 'webpack';
@@ -19,8 +20,9 @@ async function esbuildTranspiler(
   const filePath = this.resourcePath;
   const ext = extname(filePath).slice(1) as EsbuildLoader;
 
-  const transformOptions = {
+  const transformOptions: TransformOptions = {
     ...otherOptions,
+    charset: 'utf8',
     target: options.target ?? 'es2015',
     loader: ext ?? 'js',
     sourcemap: this.sourceMap,

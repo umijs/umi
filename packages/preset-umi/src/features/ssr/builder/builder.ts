@@ -16,6 +16,7 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
   // TODO: 支持通用的 alias
   // TODO: external all import from package.json.dependencies
   await esbuild.build({
+    charset: 'utf8',
     format: 'cjs',
     platform: 'node',
     target: 'esnext',

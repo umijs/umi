@@ -14,6 +14,7 @@ const tranformSvg = callbackify(
   async (contents: string, options: Config, state: Partial<State>) => {
     const jsCode = await transform(contents, options, state);
     const result = await defaultEsbuildTransform(jsCode, {
+      charset: 'utf8',
       loader: 'tsx',
       target: 'es2015',
     });

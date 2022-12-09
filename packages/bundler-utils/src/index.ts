@@ -15,6 +15,7 @@ export function parseModuleSync(opts: { content: string; path: string }) {
   if (opts.path.endsWith('.tsx') || opts.path.endsWith('.jsx')) {
     try {
       content = transformSync(content, {
+        charset: 'utf8',
         loader: extname(opts.path).slice(1) as Loader,
         format: 'esm',
       }).code;

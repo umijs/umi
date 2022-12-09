@@ -67,6 +67,7 @@ export async function getContent(path: string) {
   // es-module-lexer don't support jsx
   if (path.endsWith('.tsx') || path.endsWith('.jsx')) {
     content = transformSync(content, {
+      charset: 'utf8',
       loader: extname(path).slice(1) as Loader,
       format: 'esm',
     }).code;

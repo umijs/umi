@@ -12,6 +12,7 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
   );
 
   await esbuild.build({
+    charset: 'utf8',
     format: 'cjs',
     platform: 'node',
     bundle: true,

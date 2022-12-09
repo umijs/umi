@@ -50,6 +50,7 @@ export default function svgrPlugin(
         }
 
         const result = await transform(componentCode, {
+          charset: 'utf8',
           loader: 'jsx',
           sourcefile: id,
           sourcemap: true,

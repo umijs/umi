@@ -70,6 +70,7 @@ const createTransformer = (
       const result = transformSync(rawCode, {
         ...options,
         ...(config.globals['jest-esbuild'] as UserOptions),
+        charset: 'utf8',
         loader: userOptions.loader || (extname(path).slice(1) as Loader),
         sourcefile: path,
         sourcesContent: false,
