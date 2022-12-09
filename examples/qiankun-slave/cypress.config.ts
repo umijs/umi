@@ -3,8 +3,6 @@ import { defineConfig } from 'cypress';
 const PORT = process.env.PORT || '8000';
 const isWin = process.platform === 'win32';
 
-const isWin = process.platform === 'win32';
-
 export default defineConfig({
   projectId: 'qikpat',
   e2e: {
