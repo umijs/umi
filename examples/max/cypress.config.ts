@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress';
 
 const PORT = process.env.PORT || '8000';
+const isWin = process.platform === 'win32';
 
 export default defineConfig({
   projectId: 'qikpat',
@@ -9,6 +10,9 @@ export default defineConfig({
       // implement node event listeners here
     },
     baseUrl: `http://localhost:${PORT}`,
-    defaultCommandTimeout: 8000,
   },
+  retries: {
+    runMode: 3,
+  },
+  defaultCommandTimeout: isWin ? 60000 : 8000,
 });
