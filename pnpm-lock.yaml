@@ -687,7 +687,7 @@ importers:
       react-dom: 18.1.0
     dependencies:
       '@umijs/max': link:../../packages/max
-      qiankun: 2.7.3
+      qiankun: 2.8.4
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     devDependencies:
@@ -17749,8 +17749,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
