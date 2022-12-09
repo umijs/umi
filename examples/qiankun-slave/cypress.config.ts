@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress';
 
 const PORT = process.env.PORT || '8000';
+
 const isWin = process.platform === 'win32';
 
 export default defineConfig({
