@@ -19,4 +19,20 @@ describe('QianKun Plugin', () => {
     cy.get('button').click();
     cy.contains('count:1');
   });
+
+  describe('manual loaded app', function () {
+    it('be loaded', () => {
+      cy.visit('/manual-slave/home');
+
+      cy.contains('Slave Home Page');
+    });
+
+    it('support hooks in slave app', () => {
+      cy.visit('/manual-slave/count');
+
+      cy.contains('count:0');
+      cy.get('button').click();
+      cy.contains('count:1');
+    });
+  });
 });

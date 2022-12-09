@@ -118,7 +118,8 @@ export default {
     require.resolve('@umijs/plugins/dist/unocss')
   ],
   unocss: {
-    watch: ['pages/**/*.tsx'] // 添加其他包含 unocss 的 classname 的文件目录
+    // 检测 className 的文件范围，若项目不包含 src 目录，可使用 `pages/**/*.tsx`
+    watch: ['src/**/*.tsx']
   },
 };
 ```

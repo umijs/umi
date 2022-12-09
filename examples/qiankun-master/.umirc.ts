@@ -18,5 +18,9 @@ export default {
       path: '/slave/*',
       microApp: 'slave',
     },
+    {
+      path: '/manual-slave/*',
+      component: 'manual-slave',
+    },
   ],
 };

@@ -69,8 +69,10 @@ export default (api: IApi) => {
   }
 
   api.modifyWebpackConfig((config) => {
-    // 处理 代码拆分时, 拆分的 非 入口文件, 自动注入到 html 文件中
-    config.plugins?.push(new HtmlWebpackPlugin());
+    if (!api.config.mpa) {
+      // 处理 代码拆分时, 拆分的 非 入口文件, 自动注入到 html 文件中
+      config.plugins?.push(new HtmlWebpackPlugin());
+    }
     return config;
   });
 

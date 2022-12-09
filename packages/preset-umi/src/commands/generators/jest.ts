@@ -52,7 +52,7 @@ export default (api: IApi) => {
           }
         : basicDeps;
       h.addDevDeps(packageToInstall);
-      h.addScript('test', 'jest');
+      h.addScript('test', 'TS_NODE_TRANSPILE_ONLY=yes jest --passWithNoTests');
 
       const setupImports = res.willUseTLR
         ? [
@@ -91,20 +91,28 @@ export default (api: IApi) => {
 import { Config, configUmiAlias, createConfig } from '${importSource}/test';
 
 export default async () => {
-  return (await configUmiAlias({
-    ...createConfig({
-      target: 'browser',
-      jsTransformer: 'esbuild',
-      // config opts for esbuild , it will pass to esbuild directly
-      jsTransformerOpts: { jsx: 'automatic' },
-    }),
-    ${res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''}
-    collectCoverageFrom: [
-${collectCoverageFrom.map((v) => `      '${v}'`).join(',\n')}
-    ],
-    // if you require some es-module npm package, please uncomment below line and insert your package name
-    // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
-  })) as Config.InitialOptions;
+  try{
+    return (await configUmiAlias({
+      ...createConfig({
+        target: 'browser',
+        jsTransformer: 'esbuild',
+        // config opts for esbuild , it will pass to esbuild directly
+        jsTransformerOpts: { jsx: 'automatic' },
+      }),
+    
+      ${
+        res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''
+      }
+      collectCoverageFrom: [
+  ${collectCoverageFrom.map((v) => `      '${v}'`).join(',\n')}
+      ],
+      // if you require some es-module npm package, please uncomment below line and insert your package name
+      // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
+    })) as Config.InitialOptions;
+  }catch(e){
+    console.log(e);
+    throw e;
+  }
 };
 `.trimLeft(),
       );
