@@ -6,6 +6,7 @@ const isWin = process.platform === 'win32';
 export default defineConfig({
   projectId: 'qikpat',
   e2e: {
+    // @ts-ignore
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
@@ -14,5 +15,5 @@ export default defineConfig({
   retries: {
     runMode: 3,
   },
-  defaultCommandTimeout: isWin ? 60000 : 8000,
+  defaultCommandTimeout: isWin ? 60000 : 4000,
 });
