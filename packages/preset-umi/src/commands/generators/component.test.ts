@@ -1,8 +1,24 @@
 import { join, normalize } from 'path';
+import { generateFile } from '@umijs/utils';
 import { ComponentGenerator } from './component';
 
+jest.mock('@umijs/utils', () => {
+  // Require the original module to not be mocked...
+  const originalModule = jest.requireActual('@umijs/utils');
+
+  return {
+    __esModule: true, // Use it when dealing with esModules
+    ...originalModule,
+    generateFile: jest.fn(),
+  };
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 test('generate component with single name', async () => {
-  const { generateFile } = await runGeneratorWith('foo');
+  await runGeneratorWith('foo');
 
   expect(generateFile).toBeCalledTimes(2);
   expect(generateFile).toHaveBeenNthCalledWith(
@@ -24,8 +40,7 @@ test('generate component with single name', async () => {
 });
 
 test('test generate nested named component foo/bar/qux', async () => {
-  const { generateFile } = await runGeneratorWith('foo/bar/qux');
-
+  await runGeneratorWith('foo/bar/qux');
   expect(generateFile).toBeCalledTimes(2);
   expect(generateFile).toHaveBeenNthCalledWith(
     1,
@@ -44,7 +59,7 @@ test('test generate nested named component foo/bar/qux', async () => {
 });
 
 test('test generate nested named component foo/subPath/tailName', async () => {
-  const { generateFile } = await runGeneratorWith('foo/subPath/tailName');
+  await runGeneratorWith('foo/subPath/tailName');
 
   expect(generateFile).toBeCalledTimes(2);
   expect(generateFile).toHaveBeenNthCalledWith(
@@ -78,7 +93,7 @@ describe('using custom template', () => {
 
   test('generate component with custom template name', async () => {
     const mockProjectPath = join(__dirname, '../../../fixtures/');
-    const { generateFile } = await runGeneratorWith('foo', mockProjectPath);
+    await runGeneratorWith('foo', mockProjectPath);
 
     expect(generateFile).toBeCalledTimes(2);
     expect(generateFile).toHaveBeenNthCalledWith(
@@ -102,11 +117,7 @@ describe('using custom template', () => {
   test('generate component with  defined variables', async () => {
     const mockProjectPath = join(__dirname, '../../../fixtures/');
     const userDefinedArgs = { foo: 'bar', count: 1 };
-    const { generateFile } = await runGeneratorWith(
-      'foo',
-      mockProjectPath,
-      userDefinedArgs,
-    );
+    await runGeneratorWith('foo', mockProjectPath, userDefinedArgs);
 
     expect(generateFile).toBeCalledTimes(2);
     expect(generateFile).toHaveBeenNthCalledWith(
@@ -133,19 +144,12 @@ async function runGeneratorWith(
   appRoot = normalize('/my'),
   args: Record<string, any> = {},
 ) {
-  const generateFile = jest.fn();
-
   const cg = new ComponentGenerator({
     componentName: name,
     srcPath: normalize('/my/src/path'),
-    generateFile,
     appRoot,
     args: { _: [], ...args },
   });
 
   await cg.run();
-
-  return {
-    generateFile,
-  };
 }

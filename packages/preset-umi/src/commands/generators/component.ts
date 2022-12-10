@@ -1,9 +1,15 @@
 import { GeneratorType } from '@umijs/core';
-import { generateFile, lodash } from '@umijs/utils';
+import { lodash } from '@umijs/utils';
 import { join, parse } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
-import { GeneratorHelper, IArgs, processGenerateFile, tryEject } from './utils';
+import {
+  ETempDir,
+  GeneratorHelper,
+  IArgs,
+  processGenerateFiles,
+  tryEject,
+} from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -17,13 +23,19 @@ export default (api: IApi) => {
     type: GeneratorType.generate,
 
     fn: async (options) => {
-      if (options.args.eject) {
-        tryEject('component', api.paths.cwd);
+      const { args } = options;
+      const {
+        paths: { cwd, absSrcPath },
+      } = api;
+      const { eject } = args;
+
+      if (eject) {
+        await tryEject(ETempDir.Component, cwd);
         return;
       }
 
       const h = new GeneratorHelper(api);
-      let componentNames = options.args._.slice(1);
+      let componentNames = args._.slice(1);
 
       if (componentNames.length === 0) {
         let name: string = '';
@@ -39,11 +51,10 @@ export default (api: IApi) => {
 
       for (const cn of componentNames) {
         await new ComponentGenerator({
-          srcPath: api.paths.absSrcPath,
-          appRoot: api.paths.cwd,
-          generateFile: options.generateFile,
+          srcPath: absSrcPath,
+          appRoot: cwd,
           componentName: cn,
-          args: api.args,
+          args,
         }).run();
       }
     },
@@ -59,7 +70,6 @@ export class ComponentGenerator {
       componentName: string;
       srcPath: string;
       appRoot: string;
-      generateFile: typeof generateFile;
       args: IArgs;
     },
   ) {
@@ -69,7 +79,7 @@ export class ComponentGenerator {
   }
 
   async run() {
-    const { generateFile, appRoot, args } = this.opts;
+    const { appRoot, args } = this.opts;
     const capitalizeName = lodash.upperFirst(this.name);
     const base = join(
       this.opts.srcPath,
@@ -77,32 +87,33 @@ export class ComponentGenerator {
       this.dir,
       capitalizeName,
     );
+    const { _, eject: _eject, fallback, ...restArgs } = args;
 
     const indexFile = join(base, 'index.ts');
     const compFile = join(base, `${capitalizeName}.tsx`);
 
-    await processGenerateFile(
-      {
-        fromToMapping: [
-          {
-            from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'index.ts.tpl'),
-            fromFallback: INDEX_TPL,
-            to: indexFile,
-          },
-          {
-            from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'component.tsx.tpl'),
-            fromFallback: COMP_TPL,
-            to: compFile,
-          },
-        ],
-        baseDir: appRoot,
-        data: {
-          compName: capitalizeName,
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'index.ts.tpl'),
+          fromFallback: INDEX_TPL,
+          to: indexFile,
         },
-        args,
+        {
+          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'component.tsx.tpl'),
+          fromFallback: COMP_TPL,
+          to: compFile,
+        },
+      ],
+      baseDir: appRoot,
+      presetArgs: {
+        fallback,
       },
-      generateFile,
-    );
+      templateVars: {
+        compName: capitalizeName,
+        ...restArgs,
+      },
+    });
   }
 }
 

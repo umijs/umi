@@ -1,8 +1,18 @@
-import { prompts, fsExtra } from '@umijs/utils';
+import { prompts, fsExtra, generateFile } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
-import { processGenerateFile, tryEject } from './utils';
+import { ETempDir, processGenerateFiles, tryEject } from './utils';
+
+jest.mock('@umijs/utils', () => {
+  let originalModule = jest.requireActual('@umijs/utils');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    generateFile: jest.fn(),
+  };
+});
 
 describe('processGenerateFile', () => {
   beforeEach(() => {
@@ -10,7 +20,7 @@ describe('processGenerateFile', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    jest.restoreAllMocks().clearAllMocks();
   });
 
   const fallbackPath = join(TEMPLATES_DIR, 'generate/page');
@@ -19,24 +29,20 @@ describe('processGenerateFile', () => {
   const toPath = 'not-exist-to-path';
 
   it('should use fallback template if no user defined', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
-    await processGenerateFile(
-      {
-        fromToMapping: [
-          {
-            from: fromPath,
-            fromFallback: fallbackPath,
-            to: toPath,
-          },
-        ],
-        baseDir: '/',
-        data: {},
-        args: {
-          _: [],
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: fromPath,
+          fromFallback: fallbackPath,
+          to: toPath,
         },
+      ],
+      baseDir: '/',
+      templateVars: {},
+      presetArgs: {
+        fallback: false,
       },
-      generateFile,
-    );
+    });
 
     expect(generateFile).toBeCalledWith({
       data: {},
@@ -47,24 +53,17 @@ describe('processGenerateFile', () => {
   });
 
   it('should use user defined template', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
-    await processGenerateFile(
-      {
-        fromToMapping: [
-          {
-            from: userDefinedPage,
-            fromFallback: fallbackPath,
-            to: toPath,
-          },
-        ],
-        baseDir: '/',
-        data: {},
-        args: {
-          _: [],
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: userDefinedPage,
+          fromFallback: fallbackPath,
+          to: toPath,
         },
-      },
-      generateFile,
-    );
+      ],
+      baseDir: '/',
+      templateVars: {},
+    });
 
     expect(generateFile).toBeCalledWith({
       data: {},
@@ -75,27 +74,21 @@ describe('processGenerateFile', () => {
   });
 
   it('should pass user defined variables to template', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
-    await processGenerateFile(
-      {
-        fromToMapping: [
-          {
-            from: userDefinedPage,
-            fromFallback: fallbackPath,
-            to: toPath,
-          },
-        ],
-        baseDir: '/',
-        data: {},
-        args: {
-          _: [],
-          foo: 'bar',
-          count: 1,
-          baz: true,
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: userDefinedPage,
+          fromFallback: fallbackPath,
+          to: toPath,
         },
+      ],
+      baseDir: '/',
+      templateVars: {
+        foo: 'bar',
+        count: 1,
+        baz: true,
       },
-      generateFile,
-    );
+    });
 
     expect(generateFile).toBeCalledWith({
       data: {
@@ -110,30 +103,24 @@ describe('processGenerateFile', () => {
   });
 
   it('should use fallback template if user defined template is not same with default template', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const paths = [
       'pageNoIndex/index.less.tpl',
       'pageNoLess/index.tsx.tpl',
     ].map((subPath) => join(__dirname, '../../../fixtures/templates', subPath));
 
-    await processGenerateFile(
-      {
-        fromToMapping: paths.map((from) => ({
-          from,
-          fromFallback: fallbackPath,
-          to: toPath,
-        })),
-        baseDir: '/',
-        data: {},
-        args: {
-          _: [],
-          foo: 'bar',
-          count: 1,
-          baz: true,
-        },
+    await processGenerateFiles({
+      filesMap: paths.map((from) => ({
+        from,
+        fromFallback: fallbackPath,
+        to: toPath,
+      })),
+      baseDir: '/',
+      templateVars: {
+        foo: 'bar',
+        count: 1,
+        baz: true,
       },
-      generateFile,
-    );
+    });
 
     expect(generateFile).toHaveBeenCalledTimes(2);
 
@@ -152,29 +139,23 @@ describe('processGenerateFile', () => {
   });
 
   it('should use fallback template if not has same struct with default template', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const paths = ['pageNoIndex', 'pageNoLess', 'emptyPage'].map((subPath) =>
       join(__dirname, '../../../fixtures/templates', subPath),
     );
 
-    await processGenerateFile(
-      {
-        fromToMapping: paths.map((from) => ({
-          from,
-          fromFallback: fallbackPath,
-          to: toPath,
-        })),
-        baseDir: '/',
-        data: {},
-        args: {
-          _: [],
-          foo: 'bar',
-          count: 1,
-          baz: true,
-        },
+    await processGenerateFiles({
+      filesMap: paths.map((from) => ({
+        from,
+        fromFallback: fallbackPath,
+        to: toPath,
+      })),
+      baseDir: '/',
+      templateVars: {
+        foo: 'bar',
+        count: 1,
+        baz: true,
       },
-      generateFile,
-    );
+    });
 
     expect(generateFile).toHaveBeenCalledTimes(3);
 
@@ -193,25 +174,20 @@ describe('processGenerateFile', () => {
   });
 
   it('should use fallback template if specify --fallback', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
-    await processGenerateFile(
-      {
-        fromToMapping: [
-          {
-            from: userDefinedPage,
-            fromFallback: fallbackPath,
-            to: toPath,
-          },
-        ],
-        baseDir: '/',
-        data: {},
-        args: {
-          _: [],
-          fallback: true,
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: userDefinedPage,
+          fromFallback: fallbackPath,
+          to: toPath,
         },
+      ],
+      baseDir: '/',
+      templateVars: {},
+      presetArgs: {
+        fallback: true,
       },
-      generateFile,
-    );
+    });
 
     expect(generateFile).toBeCalledWith({
       data: {},
@@ -224,7 +200,7 @@ describe('processGenerateFile', () => {
   const mockProjectDir = join(__dirname, '../../../fixtures/emptyPage');
 
   it('can eject default template to user dir', async () => {
-    await tryEject('page', mockProjectDir);
+    await tryEject(ETempDir.Page, mockProjectDir);
     expect(
       existsSync(join(mockProjectDir, 'templates/page/index.tsx.tpl')),
     ).toBe(true);
@@ -239,12 +215,12 @@ describe('processGenerateFile', () => {
     const customPath = join(mockProjectDir, 'templates/page/index.tsx.tpl');
     fsExtra.ensureFileSync(customPath);
     prompts.inject([false]);
-    await tryEject('page', mockProjectDir);
+    await tryEject(ETempDir.Page, mockProjectDir);
     expect(
       existsSync(join(mockProjectDir, 'templates/pages/index.less.tpl')),
     ).toBe(false);
     prompts.inject([true]);
-    await tryEject('page', mockProjectDir);
+    await tryEject(ETempDir.Page, mockProjectDir);
     expect(
       existsSync(join(mockProjectDir, 'templates/page/index.tsx.tpl')),
     ).toBe(true);
@@ -259,7 +235,7 @@ describe('processGenerateFile', () => {
     const customPath = join(mockProjectDir, 'templates/page/custom.tsx.tpl');
     fsExtra.ensureFileSync(customPath);
     prompts.inject([true]);
-    await tryEject('page', mockProjectDir);
+    await tryEject(ETempDir.Page, mockProjectDir);
     expect(existsSync(customPath)).toBe(true);
 
     fsExtra.emptydirSync(mockProjectDir);

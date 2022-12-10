@@ -66,7 +66,7 @@ Write: src/pages/a/nested/page3.tsx
 Write: src/pages/a/nested/page3.less
 ```
 
-#### 对模板内容进行自定义
+#### 对页面模板内容进行自定义
 
 如果页面生成器使用的默认模板不符合你的需求，你可以选择对模板内容进行自定义设置。
 
@@ -180,7 +180,7 @@ Write: src/components/Orange/index.ts
 Write: src/components/Orange/Orange.tsx
 ```
 
-#### 对模板内容进行自定义
+#### 对组件模板内容进行自定义
 
 和页面生成器一样，如果组件生成器使用的默认模板不符合你的需求，你也可以对模板内容进行自定义设置。
 
@@ -205,7 +205,7 @@ $umi g component --eject
         └── index.ts.tpl  
 ```
 
-组件生成器的模板语法规则和页面生成器的 [自定义模板](#对模板内容进行自定义) 一致。所以，你依然可以使用如下的方式写入模板变量：
+组件生成器的模板语法规则和页面生成器的 [自定义模板](#对页面模板内容进行自定义) 一致。所以，你依然可以使用如下的方式写入模板变量：
 
 ```bash
 $umi g component foo --msg "Hello World"

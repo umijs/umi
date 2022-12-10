@@ -7,7 +7,6 @@ import {
   prompts,
   semver,
 } from '@umijs/utils';
-
 import {
   existsSync,
   readFileSync,
@@ -18,9 +17,14 @@ import {
 import { dirname, join } from 'path';
 import { IApi } from '../../types';
 import { set as setUmirc } from '../config/set';
-import { IServicePluginAPI } from '@umijs/core';
 
-export type IArgs = Omit<IServicePluginAPI['args'], '$0'>;
+export type IArgs = {
+  fallback?: boolean;
+  eject?: boolean;
+  dir?: boolean;
+  _: string[];
+  [k: string]: any;
+};
 
 function hasDeps({ name, pkg }: { name: string; pkg: any }) {
   return pkg.dependencies?.[name] || pkg.devDependencies?.[name];
@@ -207,33 +211,37 @@ export function trim(s?: string) {
   return s?.trim() || '';
 }
 
-interface IFromToMappingItem {
+interface IFileMap {
   from: string;
   fromFallback: string;
   to: string;
 }
 
-type ITempType = 'page' | 'component';
+export enum ETempDir {
+  Page = 'page',
+  Component = 'component',
+}
 
-export async function processGenerateFile(
-  {
-    fromToMapping,
-    baseDir: baseDir,
-    data,
-    args,
-    type = 'page',
-  }: {
-    fromToMapping: IFromToMappingItem[];
-    baseDir: string;
-    data: any;
-    args: IArgs;
-    type?: ITempType;
-  },
-  gen: typeof generateFile,
-) {
-  const whetherChooseUserTemp =
-    !args.fallback &&
-    fromToMapping.every(({ from, fromFallback }) => {
+export async function processGenerateFiles({
+  filesMap,
+  baseDir,
+  presetArgs = {},
+  templateVars,
+  dir = ETempDir.Page,
+}: {
+  filesMap: IFileMap[];
+  baseDir: string;
+  presetArgs?: {
+    fallback?: boolean;
+  };
+  templateVars: Record<string, any>;
+  dir?: ETempDir;
+}) {
+  const { fallback } = presetArgs;
+
+  const isChooseUserTemp =
+    !fallback &&
+    filesMap.every(({ from, fromFallback }) => {
       if (!existsSync(from)) {
         return false;
       }
@@ -254,43 +262,26 @@ export async function processGenerateFile(
       );
     });
 
-  whetherChooseUserTemp &&
-    console.log(
-      `Generated a ${type} by using yourself template. For more information, please search "对模板内容进行自定义" in the umi doc.`,
-    );
+  isChooseUserTemp &&
+    console.log(`Generated a ${dir} by using yourself template.`);
 
-  for (let { from, to, fromFallback } of fromToMapping) {
-    await gen({
-      path: whetherChooseUserTemp ? from : fromFallback,
+  for (let { from, to, fromFallback } of filesMap) {
+    await generateFile({
+      path: isChooseUserTemp ? from : fromFallback,
       target: to,
-      data: {
-        ...data,
-        ...(excludePresetVariables(args, type) || {}),
-      },
+      data: templateVars,
       baseDir,
     });
   }
 }
 
-function excludePresetVariables(args: IArgs, type: ITempType) {
-  const { _, dir, fallback, eject, ...userDefinedArgs } = args;
-
-  if (type === 'page') {
-    return userDefinedArgs;
-  } else {
-    return {
-      dir,
-      ...userDefinedArgs,
-    };
-  }
-}
-
-export async function tryEject(type: ITempType, baseDir: string) {
-  const generateBaseDir = join(__dirname, '../../../templates/generate', type);
-  const targetDir = join(baseDir, 'templates', type);
+export async function tryEject(dir: ETempDir, baseDir: string) {
+  const generateBaseDir = join(__dirname, '../../../templates/generate', dir);
+  const targetDir = join(baseDir, 'templates', dir);
   const readyToCopyFilenames = readdirSync(generateBaseDir);
   const conflictFiles: string[] = [];
 
+  // TODO: support nested files in sub directory
   if (existsSync(targetDir) && statSync(targetDir).isDirectory()) {
     const userExistFiles = readdirSync(targetDir);
 
@@ -306,7 +297,7 @@ export async function tryEject(type: ITempType, baseDir: string) {
         name: 'value',
         message: `Will overwrites ${conflictFiles.join(
           ', ',
-        )} in /templates/${type}, do you want continue ?`,
+        )} in /templates/${dir}, do you want continue ?`,
         initial: false,
       });
 
@@ -318,5 +309,9 @@ export async function tryEject(type: ITempType, baseDir: string) {
 
   fsExtra.ensureDirSync(targetDir);
   fsExtra.copySync(generateBaseDir, targetDir);
-  console.log(`Ejected ${type} template successfully.`);
+  console.log(
+    `Ejected ${dir} template successfully. More info see: "https://umijs.org/docs/guides/generator#对${
+      dir === ETempDir.Page ? '页面' : '组件'
+    }模板内容进行自定义`,
+  );
 }

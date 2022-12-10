@@ -1,5 +1,20 @@
 import { join, normalize } from 'path';
+import { generateFile } from '@umijs/utils';
 import { PageGenerator } from './page';
+
+jest.mock('@umijs/utils', () => {
+  let originalModule = jest.requireActual('@umijs/utils');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    generateFile: jest.fn(),
+  };
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('page generator', function () {
   describe('in Non dir Mode', function () {
@@ -200,11 +215,9 @@ describe('page generator', function () {
     }[],
     appCwd?: string,
   ) {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args,
-      generateFile,
       appCwd: appCwd || normalize('/'),
     });
 
@@ -229,13 +242,11 @@ describe('page generator', function () {
 
 describe('page generate in interactive way', function () {
   it('generate page with default name when no answer', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
 
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -266,12 +277,10 @@ describe('page generate in interactive way', function () {
   });
 
   it('generate index page when answer file name', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -302,12 +311,10 @@ describe('page generate in interactive way', function () {
   });
 
   it('generate page with trimmed file name', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -321,12 +328,10 @@ describe('page generate in interactive way', function () {
   });
 
   it('generate default page with blank input', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -342,11 +347,9 @@ describe('page generate in interactive way', function () {
 
 describe('page generate multi pages in a run', function () {
   it('can generate multi pages in dir mode', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args: { dir: true, _: ['page', 'login', 'post'] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -358,11 +361,9 @@ describe('page generate multi pages in a run', function () {
   });
 
   it('can generate multi pages in non-dir mode', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args: { dir: false, _: ['page', 'login', 'post'] },
-      generateFile,
       appCwd: '/',
     });
 
