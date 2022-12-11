@@ -95,14 +95,16 @@ export class ComponentGenerator {
     await processGenerateFiles({
       filesMap: [
         {
-          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'index.ts.tpl'),
+          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'index'),
           fromFallback: INDEX_TPL,
           to: indexFile,
+          exts: ['.ts.tpl', '.ts', 'tsx.tpl', 'tsx'],
         },
         {
-          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'component.tsx.tpl'),
+          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'component'),
           fromFallback: COMP_TPL,
           to: compFile,
+          exts: ['.tsx.tpl', '.tsx'],
         },
       ],
       baseDir: appRoot,

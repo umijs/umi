@@ -91,7 +91,7 @@ $umi g page --eject
 
 接下来，你就可以对页面生成器的模板进行想要的修改了。
 
-`--eject` 命令只是把页面生成器的原始模板拷贝到项目目录中，你也可以选择自己在 `/templates/page` 目录新建 `index.tsx.tpl` 和 `index.less.tpl` 文件，而不是使用 `--eject` 命令。
+`--eject` 命令只是把页面生成器的原始模板拷贝到项目目录中，你也可以选择自己在 `/templates/page` 目录新建 `index.tsx.tpl` 和 `index.less.tpl` 文件，而不是使用 `--eject` 命令。在你的自定义模板目录内，并不需要两个模板文件都存在，如果某一个缺失，将会使用默认的模板来填充。
 
 两个模板文件都支持模板语法，你可以像下面这样插入变量：
 
@@ -136,6 +136,26 @@ console.log(count);
 3. `cssExt`。样式文件的后缀名，默认为 `less` 。
 
 如果想了解更多模板语法的内容，请查看 [mustache](https://www.npmjs.com/package/mustache)。
+
+如果你的模板文件需要语法高亮，并且不需要使用模板变量，你可以省略 `.tpl` 后缀名，比如 `index.tsx.tpl` 可以简写为 `index.tsx`，`index.less.tpl` 可以简写为 `index.less`。
+
+页面生成器有 `dir` 模式，它的生成规则会和你的页面自定义模板文件夹保持一致，只有在页面自定义模板文件夹为空时才使用默认模板。也就是说，如果你的页面自定义模板文件夹内容如下：
+
+```
+.
+├── a.tsx
+├── b.tsx
+└── index.tsx.tpl
+```
+
+此时生成的目录将是：
+
+```
+.
+├── a.tsx
+├── b.tsx
+└── index.tsx
+```
 
 如果还想继续使用默认的模板，可以指定 `--fallback`，此时不再使用用户自定义的模板：
 
@@ -193,7 +213,6 @@ $umi g component --eject
 
 执行命令后，组件生成器会把它的原始模板弹射到项目的 `/templates/component` 目录：
 
-
 ```
 .
 ├── node_modules
@@ -212,6 +231,9 @@ $umi g component foo --msg "Hello World"
 ```
 
 组件模板预设的变量和页面模板不同，它只有一个：`compName`，也就是当前组件的名称。如果执行 `pnpm umi g component foo`，此时 `compName` 的值为 `Foo`。
+
+如果你的自定义模板文件需要语法高亮，并且不需要使用模板变量，你可以省略 `.tpl` 后缀名。比如 `index.ts.tpl` 可以简写为 `index.ts`，`component.tsx.tpl` 可以简写为 `component.tsx`。
+
 
 如果还想继续使用默认的模板，可以指定 `--fallback`，此时不再使用用户自定义的模板：
 

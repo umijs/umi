@@ -42,8 +42,6 @@ export default (api: IApi) => {
   });
 };
 
-const INDEX_TPL_NAME = 'index.tsx.tpl';
-const LESS_TPL_NAME = 'index.less.tpl';
 const PAGE_TEMPLATE_DIR = join(TEMPLATES_DIR, 'generate/page/');
 const DEFAULT_PAGE_NAME = 'unTitledPage';
 const USER_TEMPLATE_PAGE_DIR = 'templates/page';
@@ -171,14 +169,16 @@ export class PageGenerator {
     await processGenerateFiles({
       filesMap: [
         {
-          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, INDEX_TPL_NAME),
-          fromFallback: join(PAGE_TEMPLATE_DIR, INDEX_TPL_NAME),
+          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.tsx.tpl'),
           to: join(absPagesPath, this.dir, `${this.name}.tsx`),
+          exts: ['.tsx.tpl', '.tsx'],
         },
         {
-          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, LESS_TPL_NAME),
-          fromFallback: join(PAGE_TEMPLATE_DIR, LESS_TPL_NAME),
+          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.less.tpl'),
           to: join(absPagesPath, this.dir, `${this.name}.less`),
+          exts: ['.less.tpl', '.less'],
         },
       ],
       baseDir: this.options.appCwd,
