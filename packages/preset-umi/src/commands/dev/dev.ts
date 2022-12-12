@@ -319,7 +319,7 @@ PORT=8888 umi dev
         ]),
         // vite 模式使用 ./plugins/ViteHtmlPlugin.ts 处理
         afterMiddlewares: enableVite
-          ? []
+          ? [middlewares.concat(faviconMiddleware)]
           : middlewares.concat([
               ...(api.config.mpa ? [] : [createRouteMiddleware({ api })]),
               // 放置 favicon 在 webpack middleware 之后，兼容 public 目录下有 favicon.ico 的场景
