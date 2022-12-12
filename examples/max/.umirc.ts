@@ -98,7 +98,7 @@ export default defineConfig({
     },
   },
   tailwindcss: {},
-  // vite: {},
+  vite: false,
   // esmi: { cdnOrigin: 'https://npmcore-pre.alipay.com' },
   // lowImport: {},
   codeSplitting: {
