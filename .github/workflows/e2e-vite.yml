@@ -1,4 +1,4 @@
-name: e2e-basic
+name: e2e-vite
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
