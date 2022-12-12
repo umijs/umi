@@ -75,7 +75,7 @@ export async function createServer(opts: IOpts) {
           ]),
         }
       : {}),
-    server: { ...viteConfigServer, middlewareMode: 'html' },
+    server: { ...viteConfigServer, middlewareMode: true },
   });
 
   // before middlewares
