@@ -82,8 +82,6 @@ $umi g page --eject
 
 ```
 .
-├── node_modules
-│   └── ...
 ├── package.json
 └── templates
     └── page
@@ -101,8 +99,6 @@ import './{{{name}}}.less'
 
 const message = '{{{msg}}}'
 const count = {{{count}}}
-console.log(message);
-console.log(count);
 ```
 
 在上面这段代码中，我们使用了 `msg` 、 `count` 和 `name` 三个变量。接下来，我们执行生成页面的命令：
@@ -119,8 +115,6 @@ import './foo.less'
 
 const message = 'Hello World'
 const count = 10
-console.log(message);
-console.log(count);
 ```
 
 如果你不需要使用模板变量，可以省略 `.tpl` 后缀名，将 `index.tsx.tpl` 简写为 `index.tsx`，`index.less.tpl` 简写为 `index.less`。
@@ -144,7 +138,6 @@ console.log(count);
 ```
 .
 ├── a.tsx
-├── b.tsx
 └── index.tsx.tpl
 ```
 
@@ -153,7 +146,6 @@ console.log(count);
 ```
 .
 ├── a.tsx
-├── b.tsx
 └── index.tsx
 ```
 
@@ -223,7 +215,6 @@ $umi g component foo --msg "Hello World"
 ##### 预设变量
 
 与页面模板不同，组件模板只有 `compName`，它是当前组件的名称。如果执行 `pnpm umi g component foo`，此时 `compName` 的值为 `Foo`。
-
 
 ##### 回退
 
