@@ -70,7 +70,7 @@ Write: src/pages/a/nested/page3.less
 
 #### 对页面模板内容进行自定义
 
-如果页面生成器使用的默认模板不符合你的需求，你可以选择对模板内容进行自定义设置。
+如果页面生成器使用的默认模板不符合你的需求，你可以对模板内容进行自定义设置。
 
 执行 `--eject` 命令：
 
@@ -78,7 +78,7 @@ Write: src/pages/a/nested/page3.less
 $umi g page --eject
 ```
 
-执行命令后，页面生成器会把它的原始模板弹射到项目的 `/templates/page` 目录：
+执行命令后，页面生成器会把它的原始模板写入到项目的 `/templates/page` 目录：
 
 ```
 .
@@ -101,12 +101,11 @@ const message = '{{{msg}}}'
 const count = {{{count}}}
 ```
 
-在上面这段代码中，我们使用了 `msg` 、 `count` 和 `name` 三个变量。接下来，我们执行生成页面的命令：
+可以自定义参数值：
 
 ```bash
 $umi g page foo --msg "Hello World" --count 10
 ```
-
 运行命令后，生成的页面内容如下：
 
 ```tsx
@@ -123,9 +122,11 @@ const count = 10
 
 在上一小节生成的内容中，我们并没有指定 `name`，但它被还是设置值了。这是因为它属于模板中预设的变量，下面是目前页面模板所有的预设变量：
 
-1. `name`，当前文件的名称。如果执行 `pnpm umi g page foo`，会生成 `pages/foo.tsx` 和 `pages/foo.less` 两个文件，其中 `name` 的值为 "foo" 。
-2. `color`，随机生成一个颜色，eg: `rgb(121, 242, 147)` 。
-3. `cssExt`，样式文件的后缀名，默认为 `less` 。
+|参数|默认值|说明|
+|:-:|:-:|:-|
+| `name` | - | 当前文件的名称。如果执行 `pnpm umi g page foo`，会生成 `pages/foo.tsx` 和 `pages/foo.less` 两个文件，其中 `name` 的值为 "foo"。 |
+| `color` | - | 随机生成一个 RGB 颜色。 |
+| `cssExt` | `less` | 样式文件的后缀名。 |
 
 如果想了解更多模板语法的内容，请查看 [mustache](https://www.npmjs.com/package/mustache)。
 
@@ -198,7 +199,7 @@ Write: src/components/Orange/Orange.tsx
 
 #### 对组件模板内容进行自定义
 
-与[页面生成器](#对页面模板内容进行自定义)相同，组件生成器也支持对模板内容自定义。首先，先将原始模板弹射到项目的 `/templates/component` 目录：
+与[页面生成器](#对页面模板内容进行自定义)相同，组件生成器也支持对模板内容自定义。首先，先将原始模板写入到项目的 `/templates/component` 目录：
 
 ```bash
 $umi g component --eject
@@ -214,7 +215,9 @@ $umi g component foo --msg "Hello World"
 
 ##### 预设变量
 
-与页面模板不同，组件模板只有 `compName`，它是当前组件的名称。如果执行 `pnpm umi g component foo`，此时 `compName` 的值为 `Foo`。
+|参数|默认值|说明|
+|:-:|:-:|:-|
+| `compName` | - | 当前组件的名称。如果执行 `pnpm umi g component foo`， `compName` 的值为 `Foo`。 |
 
 ##### 回退
 

@@ -14,7 +14,7 @@ import {
   statSync,
   readdirSync,
 } from 'fs';
-import { basename, extname, join } from 'path';
+import { basename, dirname, extname, join, parse } from 'path';
 import { IApi } from '../../types';
 import { set as setUmirc } from '../config/set';
 
@@ -241,7 +241,6 @@ export async function processGenerateFiles({
   templateVars: Record<string, any>;
 }) {
   const { fallback } = presetArgs;
-  const ignorePattern = /^\.DS_Store$/;
 
   const choosePath = ({ from, fromFallback, exts = [] }: IFile) => {
     if (fallback) {
@@ -251,8 +250,7 @@ export async function processGenerateFiles({
     if (existsSync(from)) {
       if (
         statSync(from).isDirectory() &&
-        readdirSync(from).filter((name) => !ignorePattern.test(name)).length ===
-          0
+        readdirSync(from).filter((name) => name !== '.DS_Store').length === 0
       ) {
         return fromFallback;
       }
@@ -270,18 +268,18 @@ export async function processGenerateFiles({
     return fromFallback;
   };
 
-  const extReg = /.(\.\w+)\.tpl$|.(\.\w+)$/;
-  const names = [];
+  const names: string[] = [];
   for (const file of filesMap) {
     const { to, fromFallback } = file;
     const fromPath = choosePath(file);
 
     // keep toPath's ext same with fromPath
-    let match;
-    let toPath = to;
-    if ((match = fromPath.match(extReg))) {
-      toPath = to.replace(extname(to), '') + (match[1] || match[2]);
-    }
+    const toPath = statSync(fromPath).isDirectory()
+      ? to
+      : join(
+          dirname(to),
+          parse(to).name + extname(fromPath.replace(/\.tpl$/, '')),
+        );
 
     await generateFile({
       path: fromPath,
