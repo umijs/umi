@@ -12,16 +12,16 @@ jest.mock('@umijs/utils', () => {
     __esModule: true,
     ...originalModule,
     generateFile: jest.fn(),
+    logger: {
+      ...originalModule.logger,
+      info: () => {},
+    },
   };
 });
 
 describe('processGenerateFile', () => {
-  beforeEach(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-  });
-
   afterEach(() => {
-    jest.restoreAllMocks().clearAllMocks();
+    jest.clearAllMocks();
   });
 
   const fallbackPath = join(TEMPLATES_DIR, 'generate/page');
@@ -225,6 +225,46 @@ describe('processGenerateFile', () => {
       data: {},
       target: 'not-exist-to-path.ts',
       path: tsPath,
+      baseDir: '/',
+    });
+
+    fsExtra.emptyDirSync(mockProjectDir);
+  });
+
+  it('should ignore .DS_Store file', async () => {
+    const tsxPath = join(mockProjectDir, '.DS_Store.tsx');
+    const dsStorePath = join(mockProjectDir, '.DS_Store');
+
+    fsExtra.ensureFileSync(tsxPath);
+    fsExtra.ensureFileSync(dsStorePath);
+
+    const run = async () =>
+      processGenerateFiles({
+        filesMap: [
+          {
+            from: mockProjectDir,
+            fromFallback: fallbackPath,
+            to: toPath,
+          },
+        ],
+        baseDir: '/',
+        templateVars: {},
+      });
+
+    await run();
+    expect(generateFile).toBeCalledWith({
+      data: {},
+      target: toPath,
+      path: mockProjectDir,
+      baseDir: '/',
+    });
+
+    rimraf.sync(tsxPath);
+    await run();
+    expect(generateFile).toBeCalledWith({
+      data: {},
+      target: toPath,
+      path: fallbackPath,
       baseDir: '/',
     });
 

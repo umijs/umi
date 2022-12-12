@@ -59,14 +59,6 @@ describe('page generator', function () {
     });
 
     describe('using custom template', () => {
-      beforeEach(() => {
-        jest.spyOn(console, 'log').mockImplementation(() => {});
-      });
-
-      afterEach(() => {
-        jest.restoreAllMocks();
-      });
-
       it('generate page by using custom template', async () => {
         const fixtureDir = join(__dirname, '../../../fixtures/');
 
@@ -155,14 +147,6 @@ describe('page generator', function () {
     });
 
     describe('using custom template', () => {
-      beforeEach(() => {
-        jest.spyOn(console, 'log').mockImplementation(() => {});
-      });
-
-      afterEach(() => {
-        jest.restoreAllMocks();
-      });
-
       it('generate index files in folder', async () => {
         const fixtureDir = join(__dirname, '../../../fixtures/');
 

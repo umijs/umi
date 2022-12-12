@@ -6,7 +6,7 @@ import { IApi } from '../../types';
 import {
   ETempDir,
   GeneratorHelper,
-  IArgs,
+  type IArgsComponent,
   processGenerateFiles,
   tryEject,
 } from './utils';
@@ -24,13 +24,9 @@ export default (api: IApi) => {
 
     fn: async (options) => {
       const { args } = options;
-      const {
-        paths: { cwd, absSrcPath },
-      } = api;
-      const { eject } = args;
 
-      if (eject) {
-        await tryEject(ETempDir.Component, cwd);
+      if (args.eject) {
+        await tryEject(ETempDir.Component, api.paths.cwd);
         return;
       }
 
@@ -51,8 +47,8 @@ export default (api: IApi) => {
 
       for (const cn of componentNames) {
         await new ComponentGenerator({
-          srcPath: absSrcPath,
-          appRoot: cwd,
+          srcPath: api.paths.absSrcPath,
+          appRoot: api.paths.cwd,
           componentName: cn,
           args,
         }).run();
@@ -70,7 +66,7 @@ export class ComponentGenerator {
       componentName: string;
       srcPath: string;
       appRoot: string;
-      args: IArgs;
+      args: IArgsComponent;
     },
   ) {
     const { name, dir } = parse(this.opts.componentName);

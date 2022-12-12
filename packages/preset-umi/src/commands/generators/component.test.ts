@@ -83,14 +83,6 @@ test('test generate nested named component foo/subPath/tailName', async () => {
 });
 
 describe('using custom template', () => {
-  beforeEach(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   test('generate component with custom template name', async () => {
     const mockProjectPath = join(__dirname, '../../../fixtures/');
     await runGeneratorWith('foo', mockProjectPath);

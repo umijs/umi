@@ -5,7 +5,7 @@ import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import {
   ETempDir,
-  IArgs,
+  type IArgsPage,
   processGenerateFiles,
   promptsExitWhenCancel,
   tryEject,
@@ -23,20 +23,15 @@ export default (api: IApi) => {
     type: GeneratorType.generate,
     fn: async (options) => {
       const { args } = options;
-      const {
-        paths: { absPagesPath, cwd },
-      } = api;
-      const { eject } = args;
-
-      if (eject) {
-        await tryEject(ETempDir.Page, cwd);
+      if (args.eject) {
+        await tryEject(ETempDir.Page, api.paths.cwd);
         return;
       }
 
       return new PageGenerator({
         args,
-        absPagesPath,
-        appCwd: cwd,
+        absPagesPath: api.paths.absPagesPath,
+        appCwd: api.paths.cwd,
       }).run();
     },
   });
@@ -56,7 +51,7 @@ export class PageGenerator {
 
   constructor(
     readonly options: {
-      args: IArgs;
+      args: IArgsPage;
       absPagesPath: string;
       appCwd: string;
     },

@@ -20,6 +20,8 @@ $ umi g
 
 快速生成一个新页面，有以下使用方式。
 
+#### 基本使用
+
 交互式输入页面名称和文件生成方式：
 
 ```bash
@@ -70,7 +72,7 @@ Write: src/pages/a/nested/page3.less
 
 如果页面生成器使用的默认模板不符合你的需求，你可以选择对模板内容进行自定义设置。
 
-首先，执行 `--eject` 命令：
+执行 `--eject` 命令：
 
 ```bash
 $umi g page --eject
@@ -89,18 +91,12 @@ $umi g page --eject
         └── index.tsx.tpl
 ```
 
-接下来，你就可以对页面生成器的模板进行想要的修改了。
-
-`--eject` 命令只是把页面生成器的原始模板拷贝到项目目录中，你也可以选择自己在 `/templates/page` 目录新建 `index.tsx.tpl` 和 `index.less.tpl` 文件，而不是使用 `--eject` 命令。在你的自定义模板目录内，并不需要两个模板文件都存在，如果某一个缺失，将会使用默认的模板来填充。
+##### 使用模板变量
 
 两个模板文件都支持模板语法，你可以像下面这样插入变量：
 
 ```tsx
-// filename: index.tsx.tpl
 import React from 'react';
-{{#importAntd}}
-import Antd from 'antd';
-{{/importAntd}}
 import './{{{name}}}.less'
 
 const message = '{{{msg}}}'
@@ -109,18 +105,16 @@ console.log(message);
 console.log(count);
 ```
 
-在上面这段代码中，我们使用了 `msg` 、 `count`、`importAntd` 和 `name` 四个变量，接下来，我们执行生成页面的命令：
+在上面这段代码中，我们使用了 `msg` 、 `count` 和 `name` 三个变量。接下来，我们执行生成页面的命令：
 
 ```bash
-$umi g page foo --msg "Hello World" --count 10 --importAntd
+$umi g page foo --msg "Hello World" --count 10
 ```
 
 运行命令后，生成的页面内容如下：
 
 ```tsx
-// filename: index.tsx.tpl
 import React from 'react';
-import Antd from 'antd';
 import './foo.less'
 
 const message = 'Hello World'
@@ -129,17 +123,23 @@ console.log(message);
 console.log(count);
 ```
 
-除了看到页面中成功生成了自定义内容以外，还可以看到，我们并没有指定 `name` 的值，但它被还是设置值了。这是因为它属于模板中预设的变量，下面是目前模板所有的预设变量：
+如果你不需要使用模板变量，可以省略 `.tpl` 后缀名，将 `index.tsx.tpl` 简写为 `index.tsx`，`index.less.tpl` 简写为 `index.less`。
 
-1. `name`。当前文件的名称。举一个例子，执行 `pnpm umi g page foo`，会生成 `pages/foo.tsx` 和 `pages/foo.less` 两个文件，其中 `name` 的值为 "foo" 。
-2. `color`。随机生成一个颜色，比如：`rgb(121, 242, 147)` 。
-3. `cssExt`。样式文件的后缀名，默认为 `less` 。
+##### 预设变量
+
+在上一小节生成的内容中，我们并没有指定 `name`，但它被还是设置值了。这是因为它属于模板中预设的变量，下面是目前页面模板所有的预设变量：
+
+1. `name`，当前文件的名称。如果执行 `pnpm umi g page foo`，会生成 `pages/foo.tsx` 和 `pages/foo.less` 两个文件，其中 `name` 的值为 "foo" 。
+2. `color`，随机生成一个颜色，eg: `rgb(121, 242, 147)` 。
+3. `cssExt`，样式文件的后缀名，默认为 `less` 。
 
 如果想了解更多模板语法的内容，请查看 [mustache](https://www.npmjs.com/package/mustache)。
 
-如果你的模板文件需要语法高亮，并且不需要使用模板变量，你可以省略 `.tpl` 后缀名，比如 `index.tsx.tpl` 可以简写为 `index.tsx`，`index.less.tpl` 可以简写为 `index.less`。
+##### `dir` 模式
 
-页面生成器有 `dir` 模式，它的生成规则会和你的页面自定义模板文件夹保持一致，只有在页面自定义模板文件夹为空时才使用默认模板。也就是说，如果你的页面自定义模板文件夹内容如下：
+在不使用 `dir` 模式的情况下，如果你的页面模板文件夹只自定义了一个模板文件，缺失的文件会自动选取默认的模板文件。
+
+如果使用 `dir` 模式，它的生成内容会和你的页面自定义模板文件夹保持一致，只有在页面自定义模板文件夹为空时才使用默认模板。如果你的页面自定义模板文件夹内容如下：
 
 ```
 .
@@ -148,7 +148,7 @@ console.log(count);
 └── index.tsx.tpl
 ```
 
-此时生成的目录将是：
+生成的目录将是：
 
 ```
 .
@@ -156,6 +156,8 @@ console.log(count);
 ├── b.tsx
 └── index.tsx
 ```
+
+##### 回退
 
 如果还想继续使用默认的模板，可以指定 `--fallback`，此时不再使用用户自定义的模板：
 
@@ -166,6 +168,8 @@ $umi g page foo --fallback
 ### 组件生成器
 
 在 `src/components/` 目录下生成项目需要的组件。和页面生成器一样，组件生成器也有多种生成方式。
+
+#### 基本使用
 
 交互式生成：
 ```bash
@@ -202,40 +206,26 @@ Write: src/components/Orange/Orange.tsx
 
 #### 对组件模板内容进行自定义
 
-和页面生成器一样，如果组件生成器使用的默认模板不符合你的需求，你也可以对模板内容进行自定义设置。
-
-首先，执行 `--eject` 命令：
-
+与[页面生成器](#对页面模板内容进行自定义)相同，组件生成器也支持对模板内容自定义。首先，先将原始模板弹射到项目的 `/templates/component` 目录：
 
 ```bash
 $umi g component --eject
 ```
 
-执行命令后，组件生成器会把它的原始模板弹射到项目的 `/templates/component` 目录：
-
-```
-.
-├── node_modules
-│   └── umi -> ...
-├── package.json
-└── templates
-    └── component
-        ├── component.tsx.tpl
-        └── index.ts.tpl  
-```
-
-组件生成器的模板语法规则和页面生成器的 [自定义模板](#对页面模板内容进行自定义) 一致。所以，你依然可以使用如下的方式写入模板变量：
+##### 使用模板变量
 
 ```bash
 $umi g component foo --msg "Hello World"
 ```
 
-组件模板预设的变量和页面模板不同，它只有一个：`compName`，也就是当前组件的名称。如果执行 `pnpm umi g component foo`，此时 `compName` 的值为 `Foo`。
+自定义组件模板可以省略 `.tpl` 后缀名。你可以将 `index.ts.tpl` 简写为 `index.ts`，`component.tsx.tpl` 简写为 `component.tsx`。
 
-如果你的自定义模板文件需要语法高亮，并且不需要使用模板变量，你可以省略 `.tpl` 后缀名。比如 `index.ts.tpl` 可以简写为 `index.ts`，`component.tsx.tpl` 可以简写为 `component.tsx`。
+##### 预设变量
+
+与页面模板不同，组件模板只有 `compName`，它是当前组件的名称。如果执行 `pnpm umi g component foo`，此时 `compName` 的值为 `Foo`。
 
 
-如果还想继续使用默认的模板，可以指定 `--fallback`，此时不再使用用户自定义的模板：
+##### 回退
 
 ```bash
 $umi g component foo --fallback
