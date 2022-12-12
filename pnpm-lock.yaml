@@ -1662,7 +1662,7 @@ importers:
   packages/preset-vue:
     specifiers:
       '@umijs/renderer-vue': 4.0.36
-      '@vitejs/plugin-vue': 2.3.1
+      '@vitejs/plugin-vue': 3.2.0
       umi: 4.0.36
       vue: 3.2.36
       vue-loader: 17.0.0
@@ -1673,7 +1673,7 @@ importers:
       vue-loader: 17.0.0
       vue-router: 4.0.15_vue@3.2.36
     devDependencies:
-      '@vitejs/plugin-vue': 2.3.1_vue@3.2.36
+      '@vitejs/plugin-vue': 3.2.0_vue@3.2.36
       umi: link:../umi
 
   packages/renderer-react:
@@ -15110,11 +15110,11 @@ packages:
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue/2.3.1_vue@3.2.36:
-    resolution: {integrity: sha512-YNzBt8+jt6bSwpt7LP890U1UcTOIZZxfpE5WOJ638PNxSEKOqAi0+FSKS0nVeukfdZ0Ai/H7AFd6k3hayfGZqQ==}
-    engines: {node: '>=12.0.0'}
+  /@vitejs/plugin-vue/3.2.0_vue@3.2.36:
+    resolution: {integrity: sha512-E0tnaL4fr+qkdCNxJ+Xd0yM31UwMkQje76fsDVBBUCoGOUPexu2VDUYHL8P4CwV+zMvWw6nlRw19OnRKmYAJpw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      vite: ^2.5.10
+      vite: ^3.0.0
       vue: ^3.2.25
     dependencies:
       vue: 3.2.36
