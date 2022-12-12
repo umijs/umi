@@ -1,4 +1,5 @@
 import type { Plugin } from '../../compiled/vite';
+// @ts-ignore
 type fileType = Parameters<NonNullable<Plugin['generateBundle']>>[1]['file'];
 
 /**
