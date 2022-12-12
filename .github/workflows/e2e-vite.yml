@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e-basic:
+  e2e-vite:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
