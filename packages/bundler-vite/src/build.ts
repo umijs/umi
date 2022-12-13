@@ -17,6 +17,7 @@ interface IOpts {
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   modifyViteConfig?: Function;
+  absTmpPath?: string;
 }
 
 interface IBuildResult {
@@ -39,9 +40,14 @@ function getUmiTmpDir(entry: IOpts['entry']) {
  * generate temp html entry for vite builder
  * @param cwd   project root
  * @param entry umi entry config
+ * @param absTmpPath umi tmp path
  */
-function generateTempEntry(cwd: string, entry: IOpts['entry']) {
-  const umiTmpDir = entry && getUmiTmpDir(entry);
+function generateTempEntry(
+  cwd: string,
+  entry: IOpts['entry'],
+  absTmpPath?: string,
+) {
+  const umiTmpDir = absTmpPath || (entry && getUmiTmpDir(entry));
 
   if (umiTmpDir) {
     const entryTmpDir = path.join(umiTmpDir, '.bundler-vite-entry');
@@ -72,7 +78,7 @@ export async function build(opts: IOpts): Promise<void> {
     isFirstCompile: true,
     time: 0,
   };
-  const tmpHtmlEntry = generateTempEntry(opts.cwd, opts.entry);
+  const tmpHtmlEntry = generateTempEntry(opts.cwd, opts.entry, opts.absTmpPath);
   const viteUserConfig = await getConfig({
     cwd: opts.cwd,
     env: Env.production,
