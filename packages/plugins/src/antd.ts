@@ -1,7 +1,7 @@
-import { dirname } from 'path';
-import { IApi } from 'umi';
 import assert from 'assert';
-import { Mustache, deepmerge } from 'umi/plugin-utils';
+import { dirname } from 'path';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
+import { deepmerge, Mustache } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -44,6 +44,8 @@ export default (api: IApi) => {
       return process.env.UMI_PLUGIN_ANTD_ENABLE || userConfig.antd;
     },
   });
+
+  api.addRuntimePluginKey(() => ['antd']);
 
   function checkPkgPath() {
     if (!pkgPath) {
@@ -162,9 +164,21 @@ export default (api: IApi) => {
         `
 import React from 'react';
 import { ConfigProvider, Modal, message, notification } from 'antd';
+import { ApplyPluginsType } from 'umi';
+import { getPluginManager } from '../core/plugin';
 
 export function rootContainer(container) {
-  const finalConfig = {...{{{ config }}}}
+  const runtimeConfig = getPluginManager().applyPlugins({
+    key: 'antd',
+    type: ApplyPluginsType.modify,
+    initialValue: {},
+  });
+  const userConfig = {...{{{ config }}}};
+  const finalConfig = {
+    ...userConfig,
+    ...runtimeConfig,
+    theme: { ...userConfig?.theme, ...runtimeConfig?.theme },
+  };
   if (finalConfig.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfig.prefixCls
@@ -189,6 +203,22 @@ export function rootContainer(container) {
           config: JSON.stringify(api.config.antd.configProvider),
         },
       ),
+    });
+    api.writeTmpFile({
+      path: 'types.d.ts',
+      content: `
+import type { ConfigProviderProps } from 'antd/es/config-provider';
+export type RuntimeAntdConfig = () => ConfigProviderProps;
+`,
+    });
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import type { RuntimeAntdConfig } from './types.d'
+export type IRuntimeConfig = {
+  antd?: RuntimeAntdConfig
+};
+      `,
     });
   });
   api.addRuntimePlugin(() => {

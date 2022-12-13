@@ -587,7 +587,7 @@ export default function EmptyRoute() {
 
       // plugins types.ts
       exports.push('// plugins types.d.ts');
-      for (const plugin of plugins) {
+      for (const plugin of allPlugins) {
         const file = winPath(join(api.paths.absTmpPath, plugin, 'types.d.ts'));
         if (existsSync(file)) {
           // 带 .ts 后缀的声明文件 会导致声明失效
