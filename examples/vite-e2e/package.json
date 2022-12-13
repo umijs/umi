@@ -19,7 +19,6 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "cypress": "^10.0.0",
-    "invariant": "2.2.4",
     "start-server-and-test": "^1.0.0"
   }
 }
