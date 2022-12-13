@@ -30,9 +30,19 @@ export function createPluginManager() {
     plugins: getPlugins(),
     validKeys: getValidKeys(),
   });
+
+  // fix https://github.com/umijs/umi/issues/10047
+  // https://vitejs.dev/guide/api-hmr.html#hot-data 通过 hot data 持久化 pluginManager 解决 vite 热更时 getPluginManager 获取到 null 的情况
+  if (import.meta.hot) {
+    import.meta.hot.data.pluginManager = pluginManager
+  }
   return pluginManager;
 }
 
 export function getPluginManager() {
+  // vite 热更模式优先从 hot data 中获取 pluginManager
+  if (import.meta.hot) {
+    return import.meta.hot.data.pluginManager || pluginManager
+  }
   return pluginManager;
 }

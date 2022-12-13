@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { request } from 'umi';
 
-export default function Page() {
+function Page() {
   useEffect(() => {
     (async () => {
       const res = await request('/api/users');
@@ -14,3 +14,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default Page;
