@@ -50,6 +50,7 @@ export default {
             'guides/prepare',
             'guides/directory-structure',
             'guides/routes',
+            'guides/use-plugins',
             // 'guides/api-routes',
             'guides/mock',
             'guides/proxy',
