@@ -1,13 +1,13 @@
-// 解决 vite 插件 内部使用了 vite 导致的报错
-import { join } from 'path';
+// @ts-expect-error 这里不能删除, 不然 ts 声明会有问题 TODO 需要 father 看看
+import path from 'path';
 
-const PKG_ROOT = join(__dirname, '../');
-const resolve = (p: string) => join(PKG_ROOT, p);
-
-const hookPropertyMap = new Map([['vite', resolve('compiled/vite')]]);
+const hookPropertyMap = new Map([
+  ['less', '@umijs/bundler-utils/compiled/less'],
+]);
 
 const mod = require('module');
 const resolveFilename = mod._resolveFilename;
+
 mod._resolveFilename = function (
   request: string,
   parent: any,
@@ -15,6 +15,7 @@ mod._resolveFilename = function (
   options: any,
 ) {
   const hookResolved = hookPropertyMap.get(request);
+
   if (hookResolved) request = hookResolved;
   return resolveFilename.call(mod, request, parent, isMain, options);
 };

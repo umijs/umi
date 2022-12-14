@@ -1,4 +1,4 @@
-import rollup from '../rollup';
+import rollup from './rollup';
 import fs from '../fs-extra';
 import globby from './globby';
 

@@ -16,4 +16,5 @@ export default {
     react: 'React',
     'react-dom': 'ReactDOM',
   },
+  autoCSSModules: true,
 } as IConfig;
