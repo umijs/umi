@@ -46,6 +46,11 @@ function getUmiTmpDir(cwd: string, entry: IOpts['entry']) {
  * @param entry umi entry config
  */
 function generateTempEntry(cwd: string, entry: IOpts['entry']) {
+  // 单侧不执行 兜底逻辑, jest 运行兜底逻辑会有问题, 新版本会改为 e2e 用例, 这里忽略吧,
+  if (process.env.UMI_CLI_TEST) {
+    return;
+  }
+
   const umiTmpDir = getUmiTmpDir(cwd, entry);
 
   if (umiTmpDir) {
