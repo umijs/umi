@@ -1,4 +1,4 @@
-import { cheerio } from '@umijs/utils';
+import { cheerio, fsExtra } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 import { build as viteBuilder, mergeConfig } from '../compiled/vite';
@@ -17,7 +17,6 @@ interface IOpts {
   extraBabelPlugins?: IBabelPlugin[];
   extraBabelPresets?: IBabelPlugin[];
   modifyViteConfig?: Function;
-  absTmpPath?: string;
 }
 
 interface IBuildResult {
@@ -30,24 +29,25 @@ interface IBuildResult {
 /**
  * get umi template directory from entry
  */
-function getUmiTmpDir(entry: IOpts['entry']) {
+function getUmiTmpDir(cwd: string, entry: IOpts['entry']) {
   const mainEntry = Object.values(entry).find((p) => p.includes('/umi.ts'));
 
-  return mainEntry && path.dirname(mainEntry);
+  if (!mainEntry) {
+    const tmp = path.join(cwd, 'node_modules/.tmp');
+    fsExtra.mkdirpSync(tmp);
+    return tmp;
+  }
+
+  return path.dirname(mainEntry);
 }
 
 /**
  * generate temp html entry for vite builder
  * @param cwd   project root
  * @param entry umi entry config
- * @param absTmpPath umi tmp path
  */
-function generateTempEntry(
-  cwd: string,
-  entry: IOpts['entry'],
-  absTmpPath?: string,
-) {
-  const umiTmpDir = absTmpPath || (entry && getUmiTmpDir(entry));
+function generateTempEntry(cwd: string, entry: IOpts['entry']) {
+  const umiTmpDir = getUmiTmpDir(cwd, entry);
 
   if (umiTmpDir) {
     const entryTmpDir = path.join(umiTmpDir, '.bundler-vite-entry');
@@ -78,7 +78,7 @@ export async function build(opts: IOpts): Promise<void> {
     isFirstCompile: true,
     time: 0,
   };
-  const tmpHtmlEntry = generateTempEntry(opts.cwd, opts.entry, opts.absTmpPath);
+  const tmpHtmlEntry = generateTempEntry(opts.cwd, opts.entry);
   const viteUserConfig = await getConfig({
     cwd: opts.cwd,
     env: Env.production,
