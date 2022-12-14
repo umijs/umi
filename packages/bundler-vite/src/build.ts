@@ -34,7 +34,6 @@ function getUmiTmpDir(cwd: string, entry: IOpts['entry']) {
 
   if (!mainEntry) {
     const tmp = path.join(cwd, 'node_modules/.tmp');
-    fsExtra.mkdirpSync(tmp);
     return tmp;
   }
 
@@ -52,7 +51,7 @@ function generateTempEntry(cwd: string, entry: IOpts['entry']) {
   if (umiTmpDir) {
     const entryTmpDir = path.join(umiTmpDir, '.bundler-vite-entry');
 
-    fs.mkdirSync(entryTmpDir);
+    fsExtra.mkdirpSync(entryTmpDir);
 
     return Object.keys(entry).reduce<IOpts['entry']>((r, name) => {
       const entryFilePath = path.join(entryTmpDir, `${name}.html`);
