@@ -214,7 +214,7 @@ export type RuntimeAntdConfig = () => ConfigProviderProps;
     api.writeTmpFile({
       path: RUNTIME_TYPE_FILE_NAME,
       content: `
-import type { RuntimeAntdConfig } from './types.d'
+import type { RuntimeAntdConfig } from './types.d';
 export type IRuntimeConfig = {
   antd?: RuntimeAntdConfig
 };
