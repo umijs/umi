@@ -51,7 +51,7 @@ function generateTempEntry(cwd: string, entry: IOpts['entry']) {
   if (umiTmpDir) {
     const entryTmpDir = path.join(umiTmpDir, '.bundler-vite-entry');
 
-    fsExtra.mkdirpSync(entryTmpDir);
+    fsExtra.ensureDirSync(entryTmpDir);
 
     return Object.keys(entry).reduce<IOpts['entry']>((r, name) => {
       const entryFilePath = path.join(entryTmpDir, `${name}.html`);
