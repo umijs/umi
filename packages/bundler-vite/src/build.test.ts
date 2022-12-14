@@ -23,6 +23,8 @@ for (const fixture of readdirSync(fixtures)) {
   if (fixture.startsWith('x-')) continue;
 
   test(`build ${fixture}`, async () => {
+    process.env.UMI_CLI_TEST = '1';
+
     let config: Record<string, any> = {};
     try {
       config = require(join(base, 'config.ts')).default;
