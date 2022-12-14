@@ -63,17 +63,13 @@ export class DepInfo implements IDepInfo {
     this.moduleGraph.snapshotDeps();
   }
 
-  getDepHash() {
-    return getDepHash(this.opts.mfsu.opts.cwd || process.cwd());
-  }
-
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
         const { cacheDependency, moduleGraph, hash } = JSON.parse(
           readFileSync(this.cacheFilePath, 'utf-8'),
         );
-        if (hash === this.getDepHash()) {
+        if (hash === getDepHash(this.opts.mfsu.opts.cwd!)) {
           this.cacheDependency = cacheDependency;
           this.moduleGraph.restore(moduleGraph);
           logger.info('[MFSU] restored cache');
@@ -96,7 +92,7 @@ export class DepInfo implements IDepInfo {
       {
         cacheDependency: this.cacheDependency,
         moduleGraph: this.moduleGraph.toJSON(),
-        hash: this.getDepHash(),
+        hash: getDepHash(this.opts.mfsu.opts.cwd!),
       },
       null,
       2,

@@ -2,6 +2,7 @@ import { fsExtra } from '@umijs/utils';
 import { createHash } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import path, { join } from 'path';
+import rimraf from 'rimraf';
 import { getDepHash } from './depInfoUtil';
 
 describe('getDepHash', () => {
@@ -9,10 +10,13 @@ describe('getDepHash', () => {
     return createHash('sha256').update(content).digest('hex').substring(0, 8);
   };
   const lockfileContent = 'Hello World';
-  const fixtureDir = join(__dirname, '../../fixtures/depInfo');
+  const fixtureDir = join(__dirname, '../../fixtures/depInfo/dir-getDep');
 
+  beforeEach(() => {
+    fsExtra.ensureDirSync(fixtureDir);
+  });
   afterEach(() => {
-    fsExtra.emptyDirSync(fixtureDir);
+    rimraf.sync(fixtureDir);
   });
 
   test('normal npm/pnpm/yarn repo', () => {

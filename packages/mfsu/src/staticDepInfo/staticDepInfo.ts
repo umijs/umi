@@ -140,10 +140,6 @@ export class StaticDepInfo {
     this.cacheDependency = this.mfsu.opts.getCacheDependency!();
   }
 
-  getDepHash() {
-    return getDepHash(this.opts.mfsu.opts.cwd || process.cwd());
-  }
-
   restore(dep: Record<string, Match>, cacheDependency: object) {
     this.builtWithDep = dep;
     this.cacheDependency = cacheDependency;
@@ -159,7 +155,7 @@ export class StaticDepInfo {
           hash = '',
         } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
-        if (hash == this.getDepHash()) {
+        if (hash == getDepHash(this.opts.mfsu.opts.cwd!)) {
           this.restore(dep, cacheDependency);
         } else {
           logger.info('[MFSU][eager] cache out of date');
@@ -179,7 +175,7 @@ export class StaticDepInfo {
       {
         dep: this.builtWithDep,
         cacheDependency: this.cacheDependency,
-        hash: this.getDepHash(),
+        hash: getDepHash(this.opts.mfsu.opts.cwd!),
       },
       null,
       2,

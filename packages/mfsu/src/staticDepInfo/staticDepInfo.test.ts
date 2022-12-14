@@ -1,11 +1,14 @@
-import { fsExtra } from '@umijs/utils';
+import { fsExtra, rimraf } from '@umijs/utils';
 import path from 'path';
 import { webpack } from 'webpack';
 import { StaticDepInfo } from './staticDepInfo';
 import { MFSU } from '../mfsu/mfsu';
 import { writeFileSync } from 'fs';
 
-const fixtureDir = path.join(__dirname, '../../fixtures/depInfo');
+const fixtureDir = path.join(
+  __dirname,
+  '../../fixtures/depInfo/dir-staticInfo',
+);
 
 const mfsu = new MFSU({
   implementor: webpack as any,
@@ -29,8 +32,11 @@ const staticDepInfo = new StaticDepInfo({
 });
 
 describe('writeCache', () => {
+  beforeEach(() => {
+    fsExtra.ensureDirSync(fixtureDir);
+  });
   afterEach(() => {
-    fsExtra.emptyDirSync(fixtureDir);
+    rimraf.sync(fixtureDir);
   });
 
   it('should generate with a correct struct', () => {
@@ -53,14 +59,13 @@ describe('loadCache', () => {
   const primaryLockFileContent = 'Hello World';
 
   beforeEach(() => {
-    fsExtra.emptyDir(fixtureDir);
+    fsExtra.ensureDirSync(fixtureDir);
+    writeFileSync(lockFilePath, primaryLockFileContent);
   });
 
   afterEach(() => {
-    fsExtra.removeSync(staticDepInfo.getCacheFilePath());
-    fsExtra.writeFileSync(lockFilePath, primaryLockFileContent);
     restoreMockFn.mockClear();
-    fsExtra.emptyDir(fixtureDir);
+    rimraf.sync(fixtureDir);
   });
 
   test('not loadCache if no cached before', () => {

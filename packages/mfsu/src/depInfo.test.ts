@@ -1,11 +1,11 @@
-import { fsExtra } from '@umijs/utils';
+import { fsExtra, rimraf } from '@umijs/utils';
 import path from 'path';
-import { webpack } from 'webpack';
+import webpack from '@umijs/bundler-webpack/compiled/webpack';
 import { DepInfo } from './depInfo';
 import { MFSU } from './mfsu/mfsu';
 import { ModuleGraph } from './moduleGraph';
 
-const fixtureDir = path.join(__dirname, '../fixtures/depInfo');
+const fixtureDir = path.join(__dirname, '../fixtures/depInfo/dir-depInfo');
 
 const mfsu = new MFSU({
   implementor: webpack as any,
@@ -40,18 +40,16 @@ describe('loadCache', () => {
 
   const restoreMockFn = jest
     .spyOn(ModuleGraph.prototype, 'restore')
-    .mockImplementation(() => {
-      console.log('mocked function');
-    });
+    .mockImplementation(() => {});
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    fsExtra.emptyDirSync(fixtureDir);
+    fsExtra.ensureDirSync(fixtureDir);
     fsExtra.writeFileSync(lockFilePath, content);
   });
 
   afterEach(() => {
-    fsExtra.emptyDirSync(fixtureDir);
+    rimraf.sync(fixtureDir);
+    jest.clearAllMocks();
   });
 
   test('not loadCache if no cached before', () => {
