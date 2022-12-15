@@ -1,53 +1,27 @@
 import { createHash } from 'crypto';
-import { existsSync, statSync, readFileSync } from 'fs-extra';
-import { dirname, basename, join } from 'path';
+import { readdirSync, readFileSync, statSync, existsSync } from 'fs';
+import { join } from 'path';
 
-const lockfileFormats = [
-  { name: 'pnpm-lock.yaml', checkPatches: false },
-  { name: 'package-lock.json', checkPatches: true },
-  { name: 'yarn.lock', checkPatches: true },
-];
+// TODO support detect monorepo patches、yarn v2+
+export function getPatchesHash(basedir: string) {
+  const patchesDir = join(basedir, 'patches');
+  const patchesHash: Record<string, string> = {};
 
-export function getDepHash(basedir: string) {
-  const names = lockfileFormats.map((format) => format.name);
+  if (existsSync(patchesDir) && statSync(patchesDir).isDirectory()) {
+    const patchNames = readdirSync(patchesDir, { withFileTypes: true })
+      .filter(
+        (dirEntry) => dirEntry.isFile() && dirEntry.name.endsWith('.patch'),
+      )
+      .map((dirEntry) => dirEntry.name);
 
-  // TS can't infer return type in this situation.
-  const lookup = (basedir: string): string | false => {
-    for (let lockfile of names) {
-      const fullPath = join(basedir, lockfile);
-      if (existsSync(fullPath) && statSync(fullPath).isFile()) {
-        return fullPath;
-      }
-    }
-
-    const parentDir = dirname(basedir);
-    if (parentDir !== basedir) {
-      return lookup(parentDir);
-    }
-
-    return false;
-  };
-
-  const lockfilePath = lookup(basedir);
-  let content = '';
-
-  if (lockfilePath) {
-    content += readFileSync(lockfilePath, 'utf-8');
-    const lockfileName = basename(lockfilePath);
-    const { checkPatches } = lockfileFormats.find(
-      ({ name }) => name === lockfileName,
-    )!;
-
-    if (checkPatches) {
-      const fullPath = join(dirname(lockfilePath), 'patches');
-      if (existsSync(fullPath)) {
-        const stats = statSync(fullPath);
-        if (stats.isDirectory()) {
-          content += stats.mtimeMs.toString();
-        }
-      }
-    }
+    patchNames.forEach((name) => {
+      const content = readFileSync(join(patchesDir, name), 'utf-8');
+      patchesHash[name] = createHash('sha256')
+        .update(content)
+        .digest('hex')
+        .substring(0, 8);
+    });
   }
 
-  return createHash('sha256').update(content).digest('hex').substring(0, 8);
+  return patchesHash;
 }

@@ -3,57 +3,46 @@ import { createHash } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import path, { join } from 'path';
 import rimraf from 'rimraf';
-import { getDepHash } from './depInfoUtil';
+import { getPatchesHash } from './depInfoUtil';
 
-describe('getDepHash', () => {
-  const getHash = (content) => {
-    return createHash('sha256').update(content).digest('hex').substring(0, 8);
-  };
-  const lockfileContent = 'Hello World';
-  const fixtureDir = join(__dirname, '../../fixtures/depInfo/dir-getDep');
+describe('getPatchesHash', () => {
+  const fixtureDir = join(__dirname, '../../fixtures/depInfo/dir-dep');
 
   beforeEach(() => {
-    fsExtra.ensureDirSync(fixtureDir);
+    fsExtra.ensureDirSync(join(fixtureDir, 'patches'));
   });
   afterEach(() => {
     rimraf.sync(fixtureDir);
   });
 
-  test('normal npm/pnpm/yarn repo', () => {
-    const filenames = ['package-lock.json', 'pnpm-lock.yaml', 'yarn.lock'];
-    const expected = getHash(lockfileContent);
-
-    filenames.forEach((filename) => {
-      const fullPath = join(fixtureDir, filename);
-      writeFileSync(fullPath, lockfileContent);
-      const hash = getDepHash(fixtureDir);
-      expect(hash).toBe(expected);
-      fsExtra.rmSync(fullPath);
-    });
+  test('with no patches dir', () => {
+    rimraf.sync(join(fixtureDir, 'patches'));
+    expect(getPatchesHash(fixtureDir)).toStrictEqual({});
   });
 
-  test('npm/yarn with patches dir', () => {
-    const filenames = ['package-lock.json', 'yarn.lock'];
-    const expected = getHash(lockfileContent);
-
-    fsExtra.ensureDirSync(join(fixtureDir, 'patches'));
-    filenames.forEach((filename) => {
-      const fullPath = join(fixtureDir, filename);
-      writeFileSync(fullPath, lockfileContent);
-      const hash = getDepHash(fixtureDir);
-      expect(hash).not.toBe(expected);
-      fsExtra.rmSync(fullPath);
-    });
+  test('return same hash if no file changed in patches', () => {
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'a.patch'));
+    const hash1 = getPatchesHash(fixtureDir);
+    const hash2 = getPatchesHash(fixtureDir);
+    expect(hash1).toStrictEqual(hash2);
   });
 
-  test('pnpm should ignore patches dir', () => {
-    const filename = 'pnpm-lock.yaml';
-    const expected = getHash(lockfileContent);
+  test('changes when patch dir changed', () => {
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'a.patch'));
+    const hash1 = getPatchesHash(fixtureDir);
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'b.patch'));
+    const hash2 = getPatchesHash(fixtureDir);
+    expect(hash1).not.toStrictEqual(hash2);
+  });
 
-    fsExtra.ensureDirSync(join(fixtureDir, 'patches'));
-    const fullPath = join(fixtureDir, filename);
-    writeFileSync(fullPath, lockfileContent);
-    const hash = getDepHash(fixtureDir);
-    expect(hash).toBe(expected);
+  test('ignore any dir and !*.patch files', () => {
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'a.patch'));
+    const hash1 = getPatchesHash(fixtureDir);
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'b'));
+    const hash2 = getPatchesHash(fixtureDir);
+    expect(hash1).toStrictEqual(hash2);
+    fsExtra.ensureDirSync(join(fixtureDir, 'patches', 'b.patch'));
+    const hash3 = getPatchesHash(fixtureDir);
+    expect(hash1).toStrictEqual(hash3);
   });
 });

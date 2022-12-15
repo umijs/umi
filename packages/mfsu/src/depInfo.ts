@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { MFSU } from './mfsu/mfsu';
 import { ModuleGraph } from './moduleGraph';
-import { getDepHash } from './utils/depInfoUtil';
+import { getPatchesHash } from './utils/depInfoUtil';
 
 interface IOpts {
   mfsu: MFSU;
@@ -66,10 +66,15 @@ export class DepInfo implements IDepInfo {
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
-        const { cacheDependency, moduleGraph, hash } = JSON.parse(
-          readFileSync(this.cacheFilePath, 'utf-8'),
-        );
-        if (hash === getDepHash(this.opts.mfsu.opts.cwd!)) {
+        // keep default patchesHash strict equal with `getPatchesHash()` in non-patches case.
+        const {
+          cacheDependency,
+          moduleGraph,
+          patchesHash = {},
+        } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
+        if (
+          lodash.isEqual(patchesHash, getPatchesHash(this.opts.mfsu.opts.cwd!))
+        ) {
           this.cacheDependency = cacheDependency;
           this.moduleGraph.restore(moduleGraph);
           logger.info('[MFSU] restored cache');
@@ -92,7 +97,7 @@ export class DepInfo implements IDepInfo {
       {
         cacheDependency: this.cacheDependency,
         moduleGraph: this.moduleGraph.toJSON(),
-        hash: getDepHash(this.opts.mfsu.opts.cwd!),
+        patchesHash: getPatchesHash(this.opts.mfsu.opts.cwd!),
       },
       null,
       2,

@@ -1,14 +1,10 @@
 import { fsExtra, rimraf } from '@umijs/utils';
-import path from 'path';
+import { join } from 'path';
 import { webpack } from 'webpack';
 import { StaticDepInfo } from './staticDepInfo';
 import { MFSU } from '../mfsu/mfsu';
-import { writeFileSync } from 'fs';
 
-const fixtureDir = path.join(
-  __dirname,
-  '../../fixtures/depInfo/dir-staticInfo',
-);
+const fixtureDir = join(__dirname, '../../fixtures/depInfo/dir-staticInfo');
 
 const mfsu = new MFSU({
   implementor: webpack as any,
@@ -48,19 +44,17 @@ describe('writeCache', () => {
     const cache = Object.keys(JSON.parse(cacheContent));
     expect(cache).toContain('cacheDependency');
     expect(cache).toContain('dep');
-    expect(cache).toContain('hash');
+    expect(cache).toContain('patchesHash');
   });
 });
 
 describe('loadCache', () => {
   const restoreMockFn = jest.fn();
+  const originalRestore = staticDepInfo.restore;
   staticDepInfo.restore = restoreMockFn;
-  const lockFilePath = path.join(fixtureDir, 'package-lock.json');
-  const primaryLockFileContent = 'Hello World';
 
   beforeEach(() => {
-    fsExtra.ensureDirSync(fixtureDir);
-    writeFileSync(lockFilePath, primaryLockFileContent);
+    fsExtra.ensureDirSync(join(fixtureDir, 'patches'));
   });
 
   afterEach(() => {
@@ -68,12 +62,17 @@ describe('loadCache', () => {
     rimraf.sync(fixtureDir);
   });
 
+  afterAll(() => {
+    staticDepInfo.restore = originalRestore;
+  });
+
   test('not loadCache if no cached before', () => {
     staticDepInfo.loadCache();
     expect(restoreMockFn).not.toBeCalled();
   });
 
-  test('call moduleGraph.restore if no changed happen in lockfile', () => {
+  test('call moduleGraph.restore if no changed happen in patches dir', () => {
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'a.patch'));
     staticDepInfo.writeCache();
     staticDepInfo.loadCache();
     expect(restoreMockFn).toBeCalledTimes(1);
@@ -81,9 +80,10 @@ describe('loadCache', () => {
     expect(restoreMockFn).toBeCalledTimes(2);
   });
 
-  test('not used previous cache if lockfile changed', () => {
+  test('not used previous cache if patches dir changed', () => {
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'a.patch'));
     staticDepInfo.writeCache();
-    writeFileSync(lockFilePath, primaryLockFileContent.repeat(2));
+    fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'b.patch'));
     staticDepInfo.loadCache();
     expect(restoreMockFn).not.toBeCalled();
   });

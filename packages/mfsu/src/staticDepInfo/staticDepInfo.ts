@@ -7,7 +7,7 @@ import { dirname, join } from 'path';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu/mfsu';
-import { getDepHash } from '../utils/depInfoUtil';
+import { getPatchesHash } from '../utils/depInfoUtil';
 import createPluginImport from './simulations/babel-plugin-import';
 
 type FileChangeEvent = {
@@ -152,10 +152,12 @@ export class StaticDepInfo {
         const {
           dep = {},
           cacheDependency = {},
-          hash = '',
+          patchesHash = {},
         } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
-        if (hash == getDepHash(this.opts.mfsu.opts.cwd!)) {
+        if (
+          lodash.isEqual(patchesHash, getPatchesHash(this.opts.mfsu.opts.cwd!))
+        ) {
           this.restore(dep, cacheDependency);
         } else {
           logger.info('[MFSU][eager] cache out of date');
@@ -175,7 +177,7 @@ export class StaticDepInfo {
       {
         dep: this.builtWithDep,
         cacheDependency: this.cacheDependency,
-        hash: getDepHash(this.opts.mfsu.opts.cwd!),
+        patchesHash: getPatchesHash(this.opts.mfsu.opts.cwd!),
       },
       null,
       2,
