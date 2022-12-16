@@ -42,7 +42,6 @@ export * as register from './register';
 export * from './tryPaths';
 export * from './winPath';
 export * from './setNoDeprecation';
-export * from './openBrowser';
 export {
   address,
   axios,

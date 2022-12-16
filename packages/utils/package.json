@@ -52,7 +52,6 @@
     "import-lazy": "4.0.0",
     "lodash": "4.17.21",
     "mustache": "4.2.0",
-    "open": "8.4.0",
     "pirates": "4.0.5",
     "pkg-up": "4.0.0",
     "portfinder": "1.0.28",
