@@ -390,27 +390,18 @@ PORT=8888 umi dev
     return memo;
   });
 
-  const restartServer = () => {
-    logger.info(`Restart dev server with port ${api.appData.port}...`);
-    unwatch();
-
-    process.send?.({
-      type: 'RESTART',
-      payload: {
-        port: api.appData.port,
-      },
-    });
-  };
-
-  // for anywhere restart the server
-  process.on('UMI_RESTART_SERVER', () => {
-    restartServer();
-  });
-
   api.registerMethod({
     name: 'restartServer',
     fn() {
-      restartServer();
+      logger.info(`Restart dev server with port ${api.appData.port}...`);
+      unwatch();
+
+      process.send?.({
+        type: 'RESTART',
+        payload: {
+          port: api.appData.port,
+        },
+      });
     },
   });
 
