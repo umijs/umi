@@ -160,6 +160,8 @@ export function useModel<N extends Namespaces, S>(
           : data;
         const previousState = stateRef.current;
         if (!isEqual(currentState, previousState)) {
+          // 避免 currentState 拿到的数据是老的，从而导致 isEqual 比对逻辑有问题
+          stateRef.current = currentState;
           setState(currentState);
         }
       }
