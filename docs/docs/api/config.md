@@ -394,9 +394,22 @@ define: { FOO: 'bar' }
 
 当你在 ts 的项目中使用这些变量时，你需要在 typings 文件中声明变量类型，以支持 ts 类型提示，比如：
 
+如果你的 typings 文件是全局的：
+
 ```ts
-// typings.d.ts
+// typings.d.ts 
 declare const FOO: string;
+```
+
+如果你的 typings 文件是非全局的（包含了 import/export）：
+
+```ts
+// typings.d.ts 
+import './other.d.ts';
+
+declare global {
+  declare const FOO: string;
+}
 ```
 
 ## devtool
