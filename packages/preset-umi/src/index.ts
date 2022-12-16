@@ -43,6 +43,7 @@ export default () => {
       require.resolve('./features/classPropertiesLoose/classPropertiesLoose'),
       require.resolve('./features/webpack/webpack'),
       require.resolve('./features/tsconfig/tsconfig'),
+
       // commands
       require.resolve('./commands/build'),
       require.resolve('./commands/config/config'),
