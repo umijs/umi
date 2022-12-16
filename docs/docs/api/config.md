@@ -392,6 +392,12 @@ define: { FOO: 'bar' }
 
 然后代码里的 `console.log(hello, FOO)` 会被编译成 `console.log(hello, 'bar')`。
 
+当你在 ts 的项目中使用这些变量时，你需要在 typings 文件中声明变量类型，以支持 ts 类型提示，比如：
+
+```ts
+declare const FOO: string;
+```
+
 ## devtool
 
 - 类型：`string`
