@@ -7,7 +7,7 @@ import { dirname, join } from 'path';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu/mfsu';
-import { getPatchesHash } from '../utils/depInfoUtil';
+import { getPatchesHash, isPatchesChanged } from '../utils/patchesHashUtil';
 import createPluginImport from './simulations/babel-plugin-import';
 
 type FileChangeEvent = {
@@ -140,25 +140,24 @@ export class StaticDepInfo {
     this.cacheDependency = this.mfsu.opts.getCacheDependency!();
   }
 
-  restore(dep: Record<string, Match>, cacheDependency: object) {
-    this.builtWithDep = dep;
-    this.cacheDependency = cacheDependency;
-    logger.info('[MFSU][eager] restored cache');
-  }
-
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
       try {
         const {
           dep = {},
           cacheDependency = {},
-          patchesHash = {},
+          patchesHash: prevHashMap,
         } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
         if (
-          lodash.isEqual(patchesHash, getPatchesHash(this.opts.mfsu.opts.cwd!))
+          isPatchesChanged({
+            basedir: this.opts.mfsu.opts.cwd!,
+            prevHashMap,
+          })
         ) {
-          this.restore(dep, cacheDependency);
+          this.builtWithDep = dep;
+          this.cacheDependency = cacheDependency;
+          logger.info('[MFSU][eager] restored cache');
         } else {
           logger.info('[MFSU][eager] cache out of date');
         }

@@ -1,4 +1,4 @@
-import { fsExtra, rimraf } from '@umijs/utils';
+import { fsExtra, rimraf, logger } from '@umijs/utils';
 import { join } from 'path';
 import { webpack } from 'webpack';
 import { StaticDepInfo } from './staticDepInfo';
@@ -48,36 +48,45 @@ describe('writeCache', () => {
   });
 });
 
+jest.mock('@umijs/utils', () => {
+  // Require the original module to not be mocked...
+  const originalModule = jest.requireActual('@umijs/utils');
+
+  return {
+    __esModule: true, // Use it when dealing with esModules
+    ...originalModule,
+    logger: {
+      ...originalModule.logger,
+      info: jest.fn(),
+    },
+  };
+});
+
 describe('loadCache', () => {
-  const restoreMockFn = jest.fn();
-  const originalRestore = staticDepInfo.restore;
-  staticDepInfo.restore = restoreMockFn;
+  const infoMockFn = logger.info;
+  const successText = '[MFSU][eager] restored cache';
 
   beforeEach(() => {
     fsExtra.ensureDirSync(join(fixtureDir, 'patches'));
   });
 
   afterEach(() => {
-    restoreMockFn.mockClear();
     rimraf.sync(fixtureDir);
-  });
-
-  afterAll(() => {
-    staticDepInfo.restore = originalRestore;
+    jest.clearAllMocks();
   });
 
   test('not loadCache if no cached before', () => {
     staticDepInfo.loadCache();
-    expect(restoreMockFn).not.toBeCalled();
+    expect(infoMockFn).not.toBeCalledWith(successText);
   });
 
   test('call moduleGraph.restore if no changed happen in patches dir', () => {
     fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'a.patch'));
     staticDepInfo.writeCache();
     staticDepInfo.loadCache();
-    expect(restoreMockFn).toBeCalledTimes(1);
+    expect(infoMockFn).toBeCalledWith(successText);
     staticDepInfo.loadCache();
-    expect(restoreMockFn).toBeCalledTimes(2);
+    expect(infoMockFn).toBeCalledWith(successText);
   });
 
   test('not used previous cache if patches dir changed', () => {
@@ -85,6 +94,6 @@ describe('loadCache', () => {
     staticDepInfo.writeCache();
     fsExtra.ensureFileSync(join(fixtureDir, 'patches', 'b.patch'));
     staticDepInfo.loadCache();
-    expect(restoreMockFn).not.toBeCalled();
+    expect(infoMockFn).not.toBeCalledWith(successText);
   });
 });

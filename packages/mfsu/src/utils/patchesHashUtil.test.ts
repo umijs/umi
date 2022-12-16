@@ -3,7 +3,7 @@ import { createHash } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import path, { join } from 'path';
 import rimraf from 'rimraf';
-import { getPatchesHash } from './depInfoUtil';
+import { getPatchesHash } from './patchesHashUtil';
 
 describe('getPatchesHash', () => {
   const fixtureDir = join(__dirname, '../../fixtures/depInfo/dir-dep');

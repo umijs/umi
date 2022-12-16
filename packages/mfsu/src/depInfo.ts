@@ -1,9 +1,9 @@
 import { fsExtra, lodash, logger } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
+import { dirname, join, relative } from 'path';
 import { MFSU } from './mfsu/mfsu';
 import { ModuleGraph } from './moduleGraph';
-import { getPatchesHash } from './utils/depInfoUtil';
+import { getPatchesHash, isPatchesChanged } from './utils/patchesHashUtil';
 
 interface IOpts {
   mfsu: MFSU;
@@ -65,16 +65,16 @@ export class DepInfo implements IDepInfo {
 
   loadCache() {
     if (existsSync(this.cacheFilePath)) {
+      const basedir = this.opts.mfsu.opts.cwd!;
+
       try {
-        // keep default patchesHash strict equal with `getPatchesHash()` in non-patches case.
         const {
           cacheDependency,
           moduleGraph,
-          patchesHash = {},
+          patchesHash: prevHashMap,
         } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
-        if (
-          lodash.isEqual(patchesHash, getPatchesHash(this.opts.mfsu.opts.cwd!))
-        ) {
+
+        if (isPatchesChanged({ basedir, prevHashMap })) {
           this.cacheDependency = cacheDependency;
           this.moduleGraph.restore(moduleGraph);
           logger.info('[MFSU] restored cache');
@@ -83,7 +83,12 @@ export class DepInfo implements IDepInfo {
         }
       } catch (e) {
         logger.error('[MFSU] restore cache failed', e);
-        logger.error(`please rm -rf  ${this.cacheFilePath}, and try again`);
+        logger.error(
+          `please rm -rf  ${relative(
+            basedir,
+            dirname(this.cacheFilePath),
+          )}, and try again`,
+        );
         // 如果 cache 恢复失败, 依赖信息是不完整, 项目代码编译使用了缓存, 那么分析出来的依赖是不完整的
         // 错误透传出去, 让用户删除缓存重新启动才能彻底解决
         throw e;
