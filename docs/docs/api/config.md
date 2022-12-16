@@ -395,6 +395,7 @@ define: { FOO: 'bar' }
 当你在 ts 的项目中使用这些变量时，你需要在 typings 文件中声明变量类型，以支持 ts 类型提示，比如：
 
 ```ts
+// typings.d.ts
 declare const FOO: string;
 ```
 
