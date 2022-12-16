@@ -67,7 +67,7 @@ export default function mf(api: IApi) {
     const mfConfig = {
       name,
       remotes,
-      filename: 'remote.js',
+      filename: api.config.hash ? 'remote.[contenthash:8].js' : 'remote.js',
       exposes,
       shared,
       library: api.config.mf.library,
