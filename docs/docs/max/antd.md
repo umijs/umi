@@ -114,6 +114,6 @@ export const antd: RuntimeAntdConfig = (memo) => {
 
 ## FAQ
 
-#### 如何使用 antd 的其他版本？
+### 如何使用 antd 的其他版本？
 
 在项目中安装你需要的 antd 版本。
