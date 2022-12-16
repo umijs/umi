@@ -87,6 +87,7 @@ export async function dev(opts: IOpts) {
           theme: opts.config.theme,
           runtimePublicPath: opts.config.runtimePublicPath,
           publicPath: opts.config.publicPath,
+          define: opts.config.define,
         });
       },
       startBuildWorker: opts.startBuildWorker!,
