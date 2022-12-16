@@ -1,9 +1,15 @@
 import { GeneratorType } from '@umijs/core';
-import { generateFile, prompts, randomColor } from '@umijs/utils';
+import { prompts, randomColor } from '@umijs/utils';
 import { join, parse } from 'path';
 import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
-import { promptsExitWhenCancel } from './utils';
+import {
+  ETempDir,
+  type IArgsPage,
+  processGenerateFiles,
+  promptsExitWhenCancel,
+  tryEject,
+} from './utils';
 
 export default (api: IApi) => {
   api.describe({
@@ -16,9 +22,14 @@ export default (api: IApi) => {
     description: 'Create a umi page by page name',
     type: GeneratorType.generate,
     fn: async (options) => {
+      const { args } = options;
+      if (args.eject) {
+        await tryEject(ETempDir.Page, api.paths.cwd);
+        return;
+      }
+
       return new PageGenerator({
-        generateFile: options.generateFile,
-        args: options.args,
+        args,
         absPagesPath: api.paths.absPagesPath,
         appCwd: api.paths.cwd,
       }).run();
@@ -26,9 +37,9 @@ export default (api: IApi) => {
   });
 };
 
-const INDEX_TPL_PATH = join(TEMPLATES_DIR, 'generate/page/index.tsx.tpl');
-const LEES_TPL_PATH = join(TEMPLATES_DIR, 'generate/page/index.less.tpl');
+const PAGE_TEMPLATE_DIR = join(TEMPLATES_DIR, 'generate/page/');
 const DEFAULT_PAGE_NAME = 'unTitledPage';
+const USER_TEMPLATE_PAGE_DIR = 'templates/page';
 
 export class PageGenerator {
   private isDirMode = false;
@@ -40,14 +51,13 @@ export class PageGenerator {
 
   constructor(
     readonly options: {
-      args: any;
-      generateFile: typeof generateFile;
+      args: IArgsPage;
       absPagesPath: string;
       appCwd: string;
     },
   ) {
-    this.isDirMode = options.args.dir;
-    const [_, ...inputPaths] = options.args._ as string[];
+    this.isDirMode = !!options.args.dir;
+    const [_, ...inputPaths] = options.args._;
 
     if (inputPaths.length > 0) {
       this.paths = inputPaths;
@@ -148,40 +158,59 @@ export class PageGenerator {
   }
 
   private async fileModeRun() {
-    const { generateFile, absPagesPath } = this.options;
+    const { absPagesPath, args, appCwd } = this.options;
+    const { _, dir: _dir, eject: _eject, fallback, ...restVars } = args;
 
-    const data = {
-      color: randomColor(),
-      name: this.name,
-      cssExt: '.less',
-    };
-
-    await generateFile({
-      path: INDEX_TPL_PATH,
-      target: join(absPagesPath, this.dir, `${this.name}.tsx`),
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.tsx.tpl'),
+          to: join(absPagesPath, this.dir, `${this.name}.tsx`),
+          exts: ['.tsx.tpl', '.tsx'],
+        },
+        {
+          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.less.tpl'),
+          to: join(absPagesPath, this.dir, `${this.name}.less`),
+          exts: ['.less.tpl', '.less'],
+        },
+      ],
       baseDir: this.options.appCwd,
-      data,
-    });
-
-    await generateFile({
-      path: LEES_TPL_PATH,
-      target: join(absPagesPath, this.dir, `${this.name}.less`),
-      baseDir: this.options.appCwd,
-      data,
+      presetArgs: {
+        fallback,
+      },
+      templateVars: {
+        color: randomColor(),
+        name: this.name,
+        cssExt: '.less',
+        ...restVars,
+      },
     });
   }
 
   private async dirModeRun() {
-    const { generateFile, absPagesPath } = this.options;
-    await generateFile({
-      path: join(__dirname, '../../../templates/generate/page'),
-      target: join(absPagesPath, this.dir, this.name),
-      data: {
+    const { absPagesPath, args, appCwd } = this.options;
+    const { _, dir: _dir, eject: _eject, fallback, ...restVars } = args;
+
+    await processGenerateFiles({
+      filesMap: [
+        {
+          from: join(appCwd, USER_TEMPLATE_PAGE_DIR),
+          fromFallback: PAGE_TEMPLATE_DIR,
+          to: join(absPagesPath, this.dir, this.name),
+        },
+      ],
+      baseDir: appCwd,
+      presetArgs: {
+        fallback,
+      },
+      templateVars: {
         color: randomColor(),
         name: 'index',
         cssExt: '.less',
+        ...restVars,
       },
-      baseDir: this.options.appCwd,
     });
   }
 }

@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import type { Store } from 'antd/es/form/interface';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { history, Link } from 'umi';
 import type { StateType } from './service';
 import { fakeRegister } from './service';
@@ -28,6 +28,7 @@ const passwordStatusMap = {
       <span>强度：强</span>
     </div>
   ),
+
   pass: (
     <div className={styles.warning}>
       <span>强度：中</span>

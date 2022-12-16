@@ -100,6 +100,7 @@ export interface IConfig {
   tsconfig?: { overrides?: ITsConfig };
   writeToDisk?: boolean;
   babelLoaderCustomize?: string;
+  analyze?: Record<string, any>;
   [key: string]: any;
 }
 

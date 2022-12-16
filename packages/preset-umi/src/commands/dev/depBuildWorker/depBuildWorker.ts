@@ -101,11 +101,11 @@ async function start() {
     tmpBase,
     mfName: opts.config.mfsu?.mfName || DEFAULT_MF_NAME,
     shared: opts.config.mfsu?.shared || {},
-    buildDepWithESBuild: false,
+    buildDepWithESBuild: !!opts.config.mfsu?.esbuild,
     depEsBuildConfig,
     externals,
   });
-  logger.info('[MFSU][eager] worker init, takes', Date.now() - start);
+  logger.info(`[MFSU][eager] worker init, takes ${Date.now() - start}ms`);
 
   scheduleBuild();
 }

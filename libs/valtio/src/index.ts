@@ -5,6 +5,9 @@ export {
   devtools as proxyWithDevtools,
   proxyMap,
   proxySet,
+  derive,
+  underive,
+  subscribeKey,
 } from 'valtio/utils';
 
 // TODO:

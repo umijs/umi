@@ -27,16 +27,25 @@ async function render() {
     },
   });
 
+  const contextOpts = pluginManager.applyPlugins({
+    key: 'modifyContextOpts',
+    type: ApplyPluginsType.modify,
+    initialValue: {},
+  });
+
+  const basename = contextOpts.basename || '{{{ basename }}}';
+  const historyType = contextOpts.historyType || '{{{ historyType }}}';
+
+  const history = createHistory({
+    type: historyType,
+    basename,
+    ...contextOpts.historyOpts,
+  });
+
   return (pluginManager.applyPlugins({
     key: 'render',
     type: ApplyPluginsType.compose,
     initialValue() {
-      const contextOpts = pluginManager.applyPlugins({
-        key: 'modifyContextOpts',
-        type: ApplyPluginsType.modify,
-        initialValue: {},
-      });
-      const basename = contextOpts.basename || '{{{ basename }}}';
       const context = {
 {{#hydrate}}
         hydrate: true,
@@ -53,14 +62,17 @@ async function render() {
 {{/loadingComponent}}
         publicPath,
         runtimePublicPath,
-        history: createHistory({
-          type: contextOpts.historyType || '{{{ historyType }}}',
-          basename,
-          ...contextOpts.historyOpts,
-        }),
+        history,
+        historyType,
         basename,
+        callback: contextOpts.callback,
       };
-      return renderClient(context);
+      const modifiedContext = pluginManager.applyPlugins({
+        key: 'modifyClientRenderOpts',
+        type: ApplyPluginsType.modify,
+        initialValue: context,
+      });
+      return renderClient(modifiedContext);
     },
   }))();
 }

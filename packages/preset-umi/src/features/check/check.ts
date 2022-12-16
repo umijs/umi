@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { IApi } from '../../types';
+import { chalk } from '@umijs/utils';
 
 export default (api: IApi) => {
   api.onCheck(async () => {
@@ -49,6 +50,18 @@ export default (api: IApi) => {
 
   api.onCheckConfig(({ config }) => {
     if (config.publicPath.startsWith('./') && api.env === 'development') {
+      console.log(
+        `\n${chalk.red(
+          `\`publicPath\` does not support start with ${chalk.bold.blue(
+            './',
+          )} in development environment.`,
+        )}
+  You should use :
+    ${chalk.green(
+      `publicPath: process.env.NODE_ENV === 'production' ? './' : '/'`,
+    )}
+`,
+      );
       throw new Error(
         `publicPath can not start with './' in development environment.`,
       );

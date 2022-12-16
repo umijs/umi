@@ -2,6 +2,21 @@
 
 Umi 4 默认 按页拆包、按需加载（这近似等同于 Umi 3 中的 `dynamicImport`），通过 [`loading.tsx`](../docs/guides/directory-structure#loadingtsxjsx) 来自定义加载动画。
 
+### 使用分包策略
+
+Umi 4 内置了不同的代码拆分策略 ( [codeSplitting](../docs/api/config#codesplitting) ) ，通过配置开启：
+
+```ts
+// .umirc.ts
+export default {
+  codeSplitting: {
+    jsStrategy: 'granularChunks'
+  }
+}
+```
+
+这会按照一定的优化策略进行自动分包，若需手动进行更细致的分包，请参见下文。
+
 ### 手动拆分
 
 当你的产物体积变大时，可进一步手动拆包：

@@ -2,15 +2,16 @@
   "name": "@example/bundler-vite-demo",
   "private": true,
   "scripts": {
+    "build": "bundler-vite build",
     "dev": "bundler-vite dev",
     "start": "npm run dev"
   },
   "dependencies": {
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
-    "@umijs/bundler-vite": "4.0.0-canary.20221028.1",
+    "@umijs/bundler-vite": "4.0.38",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "umi": "4.0.0-canary.20221028.1"
+    "umi": "4.0.38"
   }
 }

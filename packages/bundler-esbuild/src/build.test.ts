@@ -47,6 +47,10 @@ const expects: Record<string, Function> = {
     expect(files['index.js']).toContain(`var smile_default =`);
     expect(files['index.css']).toContain(`data:image/svg+xml;`);
   },
+  loader({ files }: IOpts) {
+    expect(files['index.js']).toContain(`data:image/png;base64`);
+    expect(files['index.js']).not.toContain(`json_content`);
+  },
 };
 
 const fixtures = join(__dirname, 'fixtures');

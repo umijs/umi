@@ -1,0 +1,168 @@
+name: e2e-mfsu
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+  pull_request:
+    types:
+      - 'opened'
+      - 'synchronize'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-mfsu:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        mfsu-strategy: [normal, eager]
+        os: [ubuntu-latest, windows-latest]
+        node-version: [16.x]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Setup Global Cypress-cache-folder in Windows
+        if: matrix.os == 'windows-latest'
+        run: echo "CYPRESS_CACHE_FOLDER=${HOME}\.cache\Cypress"  >> $env:GITHUB_ENV
+
+      # We use week in the turbo cache key to keep the cache from infinitely growing
+      - name: Get cache expires mark (non-windows)
+        if: runner.os != 'Windows'
+        run: echo "EXPIRES_WEEK_MARK=$(date +%U)" >> $GITHUB_OUTPUT
+      - name: Get cache expires mark (windows)
+        if: runner.os == 'Windows'
+        run: echo "EXPIRES_WEEK_MARK=$(date +%U)" >> $env:GITHUB_OUTPUT
+
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-
+            turbo-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build targets
+        run: pnpm umi-scripts turbo build --filter ./examples/mfsu-e2e... --filter ./examples/max... --filter ./examples/mf-remote...
+
+      - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
+        run: |
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:${{ matrix.mfsu-strategy }}:webpack
+          cat .umirc.ts
+        working-directory: ./examples/mfsu-e2e
+
+      - name: e2e:example:mfsu-e2e-${{ matrix.mfsu-strategy }}-webpack
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: set mfsu-${{ matrix.mfsu-strategy }}-esbuild
+        run: |
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:${{ matrix.mfsu-strategy }}:esbuild
+          cat .umirc.ts
+        working-directory: ./examples/mfsu-e2e
+
+      - name: e2e:example:mfsu-e2e-${{ matrix.mfsu-strategy }}-esbuild
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: set mfsu-${{ matrix.mfsu-strategy }}-webpack
+        run: |
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:${{ matrix.mfsu-strategy }}:webpack
+          cat .umirc.ts
+        working-directory: ./examples/mfsu-e2e
+
+      - name: e2e:example:plugin-mf+MFSU
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mf-remote
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:plugin-mf-host
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mf-host
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:mfsu-independent-e2e
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-independent-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: e2e:example:mfsu-independent-e2e:esbuild
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./examples/mfsu-independent-e2e
+          install: false
+          install-command: pnpm i cypress
+          command: npm run e2e:ci:esbuild
+        env:
+          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+
+      - name: Notify Contributor Group
+        if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          body: ${{ format('{{"msgtype":"link","link":{{"text":"哪位好心人来看看吧!","title":"Umi CI E2E 测试失败({1})","picUrl":"","messageUrl":"https://github.com/umijs/umi/actions/runs/{0}"}}}}', github.run_id, matrix.os )}}

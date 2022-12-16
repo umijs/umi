@@ -8,7 +8,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20221028.1"
+    "umi": "4.0.38"
   },
   "devDependencies": {
     "es-check": "^7.0.0"

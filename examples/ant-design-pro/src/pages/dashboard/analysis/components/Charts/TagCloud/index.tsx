@@ -1,7 +1,7 @@
 import DataSet from '@antv/data-set';
 import { Chart, Coord, Geom, Shape, Tooltip } from 'bizcharts';
 import classNames from 'classnames';
-import Debounce from 'lodash.debounce';
+import { debounce as Debounce } from 'lodash';
 import React, { Component } from 'react';
 import autoHeight from '../autoHeight';
 import styles from './index.less';

@@ -1,5 +1,20 @@
-import { normalize } from 'path';
+import { join, normalize } from 'path';
+import { generateFile } from '@umijs/utils';
 import { PageGenerator } from './page';
+
+jest.mock('@umijs/utils', () => {
+  let originalModule = jest.requireActual('@umijs/utils');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    generateFile: jest.fn(),
+  };
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('page generator', function () {
   describe('in Non dir Mode', function () {
@@ -42,6 +57,64 @@ describe('page generator', function () {
         ],
       );
     });
+
+    describe('using custom template', () => {
+      it('generate page by using custom template', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: false },
+          [
+            {
+              target: '/pages/foo.tsx',
+              path: join(fixtureDir, 'templates/page', 'index.tsx.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+            },
+            {
+              target: '/pages/foo.less',
+              path: join(fixtureDir, 'templates/page', 'index.less.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+            },
+          ],
+          fixtureDir,
+        );
+      });
+
+      it('generate page with custom variables', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: false, foo: 'bar', count: 1, bool: true },
+          [
+            {
+              target: '/pages/foo.tsx',
+              path: join(fixtureDir, 'templates/page', 'index.tsx.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+              data: {
+                foo: 'bar',
+                count: 1,
+                bool: true,
+              },
+            },
+            {
+              target: '/pages/foo.less',
+              path: join(fixtureDir, 'templates/page', 'index.less.tpl'),
+              name: 'foo',
+              baseDir: fixtureDir,
+              data: {
+                foo: 'bar',
+                count: 1,
+                bool: true,
+              },
+            },
+          ],
+          fixtureDir,
+        );
+      });
+    });
   });
 
   describe('in dir mode', function () {
@@ -72,23 +145,64 @@ describe('page generator', function () {
         ],
       );
     });
+
+    describe('using custom template', () => {
+      it('generate index files in folder', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: true },
+          [
+            {
+              target: '/pages/foo',
+              path: join(fixtureDir, 'templates/page'),
+              name: 'index',
+              baseDir: fixtureDir,
+            },
+          ],
+          fixtureDir,
+        );
+      });
+
+      it('generate page with custom variables', async () => {
+        const fixtureDir = join(__dirname, '../../../fixtures/');
+
+        await expectPageGeneratorArgsMatchesGeneratedFiles(
+          { _: ['page', 'foo'], dir: true, foo: 'bar', count: 1, bool: true },
+          [
+            {
+              target: '/pages/foo',
+              path: join(fixtureDir, 'templates/page'),
+              name: 'index',
+              baseDir: fixtureDir,
+              data: {
+                foo: 'bar',
+                count: 1,
+                bool: true,
+              },
+            },
+          ],
+          fixtureDir,
+        );
+      });
+    });
   });
 
   async function expectPageGeneratorArgsMatchesGeneratedFiles(
-    args: { _: string[]; dir: boolean },
+    args: { _: string[]; dir: boolean; [key: string]: any },
     fileGenerations: {
       name: string;
       target: string;
       path: string;
       baseDir?: string;
+      data?: Record<string, any>;
     }[],
+    appCwd?: string,
   ) {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args,
-      generateFile,
-      appCwd: normalize('/'),
+      appCwd: appCwd || normalize('/'),
     });
 
     await g.run();
@@ -96,7 +210,12 @@ describe('page generator', function () {
     expect(generateFile).toBeCalledTimes(fileGenerations.length);
     for (const [i, f] of fileGenerations.entries()) {
       expect(generateFile).toHaveBeenNthCalledWith(i + 1, {
-        data: { name: f.name, color: expect.anything(), cssExt: '.less' },
+        data: {
+          name: f.name,
+          color: expect.anything(),
+          cssExt: '.less',
+          ...(f.data || {}),
+        },
         target: normalize(f.target),
         path: expect.stringContaining(normalize(f.path)),
         baseDir: f.baseDir ? normalize(f.baseDir) : undefined,
@@ -107,13 +226,11 @@ describe('page generator', function () {
 
 describe('page generate in interactive way', function () {
   it('generate page with default name when no answer', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
 
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -144,12 +261,10 @@ describe('page generate in interactive way', function () {
   });
 
   it('generate index page when answer file name', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -180,12 +295,10 @@ describe('page generate in interactive way', function () {
   });
 
   it('generate page with trimmed file name', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -199,12 +312,10 @@ describe('page generate in interactive way', function () {
   });
 
   it('generate default page with blank input', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const prompts = jest.fn();
     const g = new PageGenerator({
       absPagesPath: '/pages/',
       args: { _: [] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -220,11 +331,9 @@ describe('page generate in interactive way', function () {
 
 describe('page generate multi pages in a run', function () {
   it('can generate multi pages in dir mode', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args: { dir: true, _: ['page', 'login', 'post'] },
-      generateFile,
       appCwd: '/',
     });
 
@@ -236,11 +345,9 @@ describe('page generate multi pages in a run', function () {
   });
 
   it('can generate multi pages in non-dir mode', async () => {
-    const generateFile = jest.fn().mockResolvedValue(null);
     const g = new PageGenerator({
       absPagesPath: normalize('/pages/'),
       args: { dir: false, _: ['page', 'login', 'post'] },
-      generateFile,
       appCwd: '/',
     });
 

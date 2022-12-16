@@ -1,6 +1,6 @@
 // sort-object-keys
 import type { ImportDeclaration } from '@umijs/bundler-utils/compiled/@babel/types';
-import type { RequestHandler, webpack } from '@umijs/bundler-webpack';
+import type { RequestHandler, webpack, Express } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 import type {
@@ -56,7 +56,7 @@ export type ILink = Partial<{
 }>;
 export type IMeta = Partial<{
   content: string;
-  httpEquiv: string;
+  'http-equiv': string;
   name: string;
   scheme: string;
 }>;
@@ -69,6 +69,7 @@ export type IEntryImport = {
   specifier?: string;
 };
 export type IRoute = ICoreRoute;
+export type IFileInfo = Array<{ event: string; path: string }>;
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -131,7 +132,10 @@ export type IApi = PluginAPI &
         webpack: typeof webpack;
       }
     >;
-    onBeforeCompiler: IEvent<{}>;
+    onBeforeCompiler: IEvent<{ compiler: 'vite' | 'webpack'; opts: any }>;
+    onBeforeMiddleware: IEvent<{
+      app: Express;
+    }>;
     onBuildComplete: IEvent<{
       err?: Error;
       isFirstCompile: boolean;
@@ -172,7 +176,7 @@ export type IApi = PluginAPI &
       time: number;
     }>;
     onGenerateFiles: IEvent<{
-      files?: { event: string; path: string } | null;
+      files?: IFileInfo | null;
       isFirstTime?: boolean;
     }>;
     onPatchRoute: IEvent<{

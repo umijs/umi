@@ -33,6 +33,7 @@ type IOpts = {
   mfsuInclude?: string[];
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
+  onBeforeMiddleware?: Function;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function stripUndefined(obj: any) {
@@ -89,6 +90,7 @@ export async function dev(opts: IOpts) {
         });
       },
       startBuildWorker: opts.startBuildWorker!,
+      cwd: opts.cwd!,
     });
   }
 
@@ -134,6 +136,7 @@ export async function dev(opts: IOpts) {
     env: Env.development,
     entry: opts.entry,
     userConfig: opts.config,
+    disableCopy: true,
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,
     name: MFSU_NAME,
@@ -190,5 +193,6 @@ export async function dev(opts: IOpts) {
     afterMiddlewares: [...(opts.afterMiddlewares || [])],
     onDevCompileDone: opts.onDevCompileDone,
     onProgress: opts.onProgress,
+    onBeforeMiddleware: opts.onBeforeMiddleware,
   });
 }

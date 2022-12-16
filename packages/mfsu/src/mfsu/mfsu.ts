@@ -4,9 +4,10 @@ import type {
   Request,
   Response,
 } from '@umijs/bundler-utils/compiled/express';
-import { lodash, logger, printHelp, tryPaths, winPath } from '@umijs/utils';
+import express from '@umijs/bundler-utils/compiled/express';
+import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, statSync, existsSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -31,6 +32,7 @@ import getAwaitImportHandler, {
 } from '../esbuildHandlers/awaitImport';
 import { Mode } from '../types';
 import { makeArray } from '../utils/makeArray';
+import { getResolver } from '../utils/webpackUtils';
 import {
   BuildDepPlugin,
   IBuildDepPluginOpts,
@@ -156,21 +158,17 @@ export class MFSU {
       const entryFiles = lodash.isArray(entryObject[key])
         ? entryObject[key]
         : ([entryObject[key]] as unknown as string[]);
+
+      const resolver = getResolver(opts.config);
       for (let entry of entryFiles) {
         // ensure entry is a file
-        if (statSync(entry).isDirectory()) {
-          const realEntry = tryPaths([
-            join(entry, 'index.tsx'),
-            join(entry, 'index.ts'),
-            join(entry, 'index.jsx'),
-            join(entry, 'index.js'),
-          ]);
-          assert(
-            realEntry,
-            `entry file not found, please configure the specific entry path. (e.g. 'src/index.tsx')`,
-          );
-          entry = realEntry;
-        }
+        const realEntry = resolver(entry);
+        assert(
+          realEntry,
+          `entry file not found (${entry}), please configure the specific entry path. (e.g. 'src/index.tsx')`,
+        );
+        entry = realEntry;
+
         const content = readFileSync(entry, 'utf-8');
         const [_imports, exports] = await parseModule({ content, path: entry });
         if (exports.length) {
@@ -201,11 +199,8 @@ export class MFSU {
     opts.config.plugins = opts.config.plugins || [];
 
     // support publicPath auto
-    let publicPath = opts.config.output!.publicPath;
-    if (publicPath === 'auto') {
-      publicPath = '/';
-    }
-    this.publicPath = publicPath as string;
+    let publicPath = resolvePublicPath(opts.config);
+    this.publicPath = publicPath;
 
     opts.config.plugins!.push(
       ...[
@@ -350,6 +345,9 @@ promise new Promise(resolve => {
           next();
         }
       },
+      // 兜底依赖构建时, 代码中有指定 chunk 名的情况
+      // TODO: should respect to publicPath
+      express.static(this.opts.tmpBase!),
     ];
   }
 
@@ -378,6 +376,17 @@ promise new Promise(resolve => {
   public getCacheFilePath() {
     return this.strategy.getCacheFilePath();
   }
+}
+
+export function resolvePublicPath(config: Configuration): string {
+  let publicPath = config.output?.publicPath ?? 'auto';
+  if (publicPath === 'auto') {
+    publicPath = '/';
+  }
+
+  assert(typeof publicPath === 'string', 'Not support function publicPath now');
+
+  return publicPath;
 }
 
 export interface IMFSUStrategy {

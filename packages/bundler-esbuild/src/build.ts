@@ -2,6 +2,7 @@ import {
   build as buildWithESBuild,
   Format,
   Plugin,
+  BuildOptions,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import { rimraf, winPath } from '@umijs/utils';
 import { join } from 'path';
@@ -32,7 +33,7 @@ export async function build(opts: IOpts) {
   if (opts.clean) {
     rimraf.sync(outputPath);
   }
-  return await buildWithESBuild({
+  const config: BuildOptions = {
     entryPoints: opts.entry,
     bundle: true,
     format: opts.format || 'iife',
@@ -68,8 +69,12 @@ export async function build(opts: IOpts) {
       '.svg': 'dataurl',
       '.ttf': 'dataurl',
       '.wasm': 'dataurl',
+      ...opts.config.loader,
     },
-  });
+  };
+  await opts.config.modifyConfig?.(config);
+  const result = await buildWithESBuild(config);
+  return result;
 }
 
 // TODO: move to api.describe({ config: { format } })

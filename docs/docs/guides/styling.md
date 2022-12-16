@@ -1,3 +1,5 @@
+import { Message } from 'umi';
+
 # 样式
 
 本文介绍各种在 Umi 项目中使用样式的方式。
@@ -50,6 +52,10 @@ export default function () {
 ## 使用 CSS 预处理器
 
 Umi 默认支持 LESS (推荐), SASS 和 SCSS 样式的导入，你可以直接按照引入 CSS 文件的方式引入并使用这些由 CSS 预处理器处理的样式。
+
+<Message emoji="💡" >
+在 Umi 中使用 Sass(Scss) 需要额外安装预处理依赖 如: `npm add -D sass`
+</Message>
 
 ```jsx
 // src/pages/index.js
@@ -112,7 +118,8 @@ export default {
     require.resolve('@umijs/plugins/dist/unocss')
   ],
   unocss: {
-    watch: ['pages/**/*.tsx'] // 添加其他包含 unocss 的 classname 的文件目录
+    // 检测 className 的文件范围，若项目不包含 src 目录，可使用 `pages/**/*.tsx`
+    watch: ['src/**/*.tsx']
   },
 };
 ```

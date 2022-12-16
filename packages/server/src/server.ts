@@ -45,8 +45,19 @@ export async function getMarkup(
     filters?: string[];
   }) {
     return Object.keys(opts.props)
-      .filter((key) => !(opts.filters || []).includes(key))
-      .map((key) => `${key}=${JSON.stringify(opts.props[key])}`)
+      .filter((key) => {
+        const isValidBoolean = opts.props[key] !== false;
+        return !(opts.filters || []).includes(key) && isValidBoolean;
+      })
+      .map((key) => {
+        const value = opts.props[key];
+        // Although not has value, it will still output `key=""` after cheerio parsed
+        // https://github.com/cheeriojs/cheerio/issues/1032
+        if (value === true) {
+          return `${key}`;
+        }
+        return `${key}=${JSON.stringify(value)}`;
+      })
       .join(' ');
   }
 

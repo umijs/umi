@@ -1,9 +1,11 @@
 import { dirname, join, relative } from 'path';
 import { getMarkup } from '@umijs/server';
 import type { IApi, IRoute } from '../../types';
-import { lodash, winPath } from '@umijs/utils';
+import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
+import { absServerBuildPath } from '../ssr/utils';
 
+let markupRender: any;
 const IS_WIN = process.platform === 'win32';
 
 interface IExportHtmlItem {
@@ -21,19 +23,23 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
   const map = new Map<string, IExportHtmlItem>();
 
   Object.values(routes).forEach((route) => {
+    const is404 = route.absPath === '/*';
+
     if (
       // skip layout
       !route.isLayout &&
       // skip dynamic route for win, because `:` is not allowed in file name
       (!IS_WIN || !route.path.includes('/:')) &&
       // skip `*` route, because `*` is not working for most site serve services
-      !route.path.includes('*')
+      (!route.path.includes('*') ||
+        // except `404.html`
+        is404)
     ) {
-      const file = join('.', route.absPath, 'index.html');
+      const file = is404 ? '404.html' : join('.', route.absPath, 'index.html');
 
       map.set(file, {
         route: {
-          path: route.absPath,
+          path: is404 ? '/404' : route.absPath,
           redirect: route.redirect,
         },
         file,
@@ -44,10 +50,67 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
   return Array.from(map.values());
 }
 
+/**
+ * get pre-rendered html by route path
+ */
+async function getPreRenderedHTML(api: IApi, htmlTpl: string, path: string) {
+  markupRender ??= require(absServerBuildPath(api))._markupGenerator;
+
+  try {
+    const markup = await markupRender(path);
+    const [mainTpl, extraTpl = ''] = markup.split('</html>');
+    // TODO: improve return type for markup generator
+    const helmetContent = mainTpl.match(
+      /<head>[^]*?(<[^>]+data-rh[^]+)<\/head>/,
+    )?.[1];
+    const bodyContent = mainTpl.match(/<body[^>]*>([^]+?)<\/body>/)?.[1];
+
+    htmlTpl = htmlTpl
+      // append helmet content
+      .replace('</head>', `${helmetContent || ''}</head>`)
+      // replace #root with pre-rendered body content
+      .replace(
+        new RegExp(`<div id="${api.config.mountElementId}"[^>]*>.*?</div>`),
+        bodyContent,
+      )
+      // append hidden templates
+      .replace(/$/, `${extraTpl}`);
+    logger.info(`Pre-render for ${path}`);
+  } catch (err) {
+    logger.error(`Pre-render ${path} error: ${err}`);
+  }
+
+  return htmlTpl;
+}
+
 export default (api: IApi) => {
+  /**
+   * convert user `exportStatic.extraRoutePaths` config to routes
+   */
+  async function getRoutesFromUserExtraPaths(
+    routePaths: string[] | (() => string[] | Promise<string[]>),
+  ) {
+    const paths =
+      typeof routePaths === 'function' ? await routePaths() : routePaths;
+
+    return paths.reduce<Record<string, IRoute>>(
+      (acc, p) => ({
+        ...acc,
+        [p]: { id: p, absPath: p, path: p.slice(1), file: '' },
+      }),
+      {},
+    );
+  }
+
   api.describe({
     config: {
-      schema: (Joi) => Joi.object(),
+      schema: (Joi) =>
+        Joi.object({
+          extraRoutePaths: Joi.alternatives(
+            Joi.function(),
+            Joi.array().items(Joi.string()),
+          ),
+        }),
     },
     enableBy: api.EnableBy.config,
   });
@@ -58,11 +121,19 @@ export default (api: IApi) => {
 
   // export routes to html files
   api.modifyExportHTMLFiles(async (_defaultFiles, opts) => {
-    const { publicPath } = api.config;
-    const htmlData = getExportHtmlData(api.appData.routes);
+    const {
+      publicPath,
+      exportStatic: { extraRoutePaths = [] },
+    } = api.config;
+    const extraHtmlData = getExportHtmlData(
+      await getRoutesFromUserExtraPaths(extraRoutePaths),
+    );
+    const htmlData = getExportHtmlData(api.appData.routes).concat(
+      extraHtmlData,
+    );
     const htmlFiles: { path: string; content: string }[] = [];
 
-    for (const { file } of htmlData) {
+    for (const { file, route } of htmlData) {
       let { markupArgs } = opts;
 
       // handle relative publicPath, such as `./`
@@ -126,7 +197,14 @@ export default (api: IApi) => {
       }
 
       // append html file
-      htmlFiles.push({ path: file, content: await getMarkup(markupArgs) });
+      const htmlContent = await getMarkup(markupArgs);
+
+      htmlFiles.push({
+        path: file,
+        content: api.config.ssr
+          ? await getPreRenderedHTML(api, htmlContent, route.path)
+          : htmlContent,
+      });
     }
 
     return htmlFiles;

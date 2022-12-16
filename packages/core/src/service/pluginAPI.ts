@@ -42,13 +42,24 @@ export class PluginAPI {
       'info',
       'event',
       'debug',
+      'fatal',
+      'profile',
     ];
     // @ts-ignore
     this.logger = loggerKeys.reduce<Logger>((memo, key) => {
       // @ts-ignore
       memo[key] = (...message: string[]) => {
-        // @ts-ignore
-        logger[key](chalk.green(`[plugin: ${this.plugin.id}]`), ...message);
+        const func = logger[key];
+        if (typeof func !== 'function') {
+          return;
+        }
+        if (key === 'profile') {
+          // Ensure the first argument is profile `id`
+          // @ts-ignore
+          func(...message);
+        } else {
+          func(chalk.green(`[plugin: ${this.plugin.id}]`), ...message);
+        }
       };
       return memo;
     }, {} as any);

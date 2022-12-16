@@ -1,4 +1,4 @@
-import { lodash, tryPaths, winPath, deepmerge } from '@umijs/utils';
+import { lodash, winPath, deepmerge } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -353,8 +353,8 @@ export default function EmptyRoute() {
     for (const id of Object.keys(clonedRoutes)) {
       for (const key of Object.keys(clonedRoutes[id])) {
         const route = clonedRoutes[id];
-        // Remove __ prefix props and absPath props
-        if (key.startsWith('__') || key.startsWith('absPath')) {
+        // Remove __ prefix props, absPath props and file props
+        if (key.startsWith('__') || ['absPath', 'file'].includes(key)) {
           delete route[key];
         }
       }
@@ -376,14 +376,7 @@ export default function EmptyRoute() {
     // plugin.ts
     const plugins: string[] = await api.applyPlugins({
       key: 'addRuntimePlugin',
-      initialValue: [
-        tryPaths([
-          join(api.paths.absSrcPath, 'app.ts'),
-          join(api.paths.absSrcPath, 'app.tsx'),
-          join(api.paths.absSrcPath, 'app.jsx'),
-          join(api.paths.absSrcPath, 'app.js'),
-        ]),
-      ].filter(Boolean),
+      initialValue: [api.appData.appJS?.path].filter(Boolean),
     });
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
@@ -391,6 +384,7 @@ export default function EmptyRoute() {
         'patchRoutes',
         'patchClientRoutes',
         'modifyContextOpts',
+        'modifyClientRenderOpts',
         'rootContainer',
         'innerProvider',
         'i18nProvider',
@@ -446,7 +440,9 @@ export default function EmptyRoute() {
           serverRendererPath,
           umiServerPath,
           validKeys,
-          assetsPath: join(api.paths.absOutputPath, 'build-manifest.json'),
+          assetsPath: winPath(
+            join(api.paths.absOutputPath, 'build-manifest.json'),
+          ),
           env: JSON.stringify(api.env),
         },
       });
@@ -549,6 +545,15 @@ export default function EmptyRoute() {
           exportMembers,
           path: '@@/core/terminal.ts',
         });
+      }
+      if (api.config.test !== false && api.appData.framework === 'react') {
+        if (
+          process.env.NODE_ENV === 'test' ||
+          // development is for TestBrowser's type
+          process.env.NODE_ENV === 'development'
+        ) {
+          exports.push(`export { TestBrowser } from './testBrowser';`);
+        }
       }
       // plugins
       exports.push('// plugins');

@@ -6,3 +6,4 @@ public
 dist
 .umi
 mock
+cypress.config.ts

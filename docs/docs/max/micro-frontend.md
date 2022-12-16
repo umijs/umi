@@ -291,14 +291,22 @@ export const qiankun = {
 
 ### 子应用配置生命周期钩子
 
-在子应用的 `src/app.ts` 中导出 `qiankun` 对象，实现生命周期钩子：
+在子应用的 `src/app.ts` 中导出 `qiankun` 对象，实现生命周期钩子。子应用运行时仅支持配置 bootstrap、mount、unmount 钩子：
 
 ```ts
 // src/app.ts
 export const qiankun = {
-  // 子应用在挂载完成时，打印 props 信息
-  async afterMount(props) {
-    console.log(props);
+  // 应用加载之前
+  async bootstrap(props) {
+    console.log('app1 bootstrap', props);
+  },
+  // 应用 render 之前触发
+  async mount(props) {
+    console.log('app1 mount', props);
+  },
+  // 应用卸载之后触发
+  async unmount(props) {
+    console.log('app1 unmount', props);
   },
 };
 ```

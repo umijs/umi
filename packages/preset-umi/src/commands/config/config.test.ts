@@ -26,7 +26,7 @@ test('remove config:abc', async () => {
 
 test('set config:abc', async () => {
   await runGenerator({
-    _: ['config', 'set', 'abc', true],
+    _: ['config', 'set', 'abc', 'true'],
   });
   const config = readFileSync(join(cwd, 'config.ts'), 'utf-8');
   expect(config).toContain('abc: true');

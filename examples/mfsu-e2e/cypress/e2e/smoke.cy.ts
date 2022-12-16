@@ -14,24 +14,20 @@ describe('Basic Test', () => {
 
   it('display mfsu is working', () => {
     cy.intercept('GET', '/mf-va_remoteEntry.js').as('EntryLoaded');
-    cy.intercept('GET', '/mf-dep____vendor.*.js').as('DepLoaded');
 
     cy.visit('/');
 
     cy.wait('@EntryLoaded');
-    cy.wait('@DepLoaded');
 
     cy.contains('MFSU is working');
   });
 
   it('display mfsu working after rebuild', () => {
     cy.intercept('GET', '/mf-va_remoteEntry.js').as('EntryLoaded');
-    cy.intercept('GET', '/mf-dep____vendor.*.js').as('DepLoaded');
 
     cy.visit('/');
 
     cy.wait('@EntryLoaded');
-    cy.wait('@DepLoaded');
 
     cy.contains('MFSU is working');
 

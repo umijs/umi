@@ -16,5 +16,5 @@ export const isStyleFile = ({
   filename?: string;
   ext?: string;
 }) => {
-  return AUTO_CSS_MODULE_EXTS.includes(ext ?? extname(filename!));
+  return AUTO_CSS_MODULE_EXTS.includes(ext || extname(filename!));
 };

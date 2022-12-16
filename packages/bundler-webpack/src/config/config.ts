@@ -55,6 +55,7 @@ export interface IOpts {
     cacheDirectory?: string;
   };
   pkg?: Record<string, any>;
+  disableCopy?: boolean;
 }
 
 export async function getConfig(opts: IOpts): Promise<Configuration> {
@@ -187,7 +188,9 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // fork-ts-checker
   await addForkTSCheckerPlugin(applyOpts);
   // copy
-  await addCopyPlugin(applyOpts);
+  if (!opts.disableCopy) {
+    await addCopyPlugin(applyOpts);
+  }
   // manifest
   await addManifestPlugin(applyOpts);
   // hmr
@@ -310,7 +313,6 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   let webpackConfig = config.toConfig();
 
   // speed measure
-  // TODO: mini-css-extract-plugin 报错
   webpackConfig = await addSpeedMeasureWebpackPlugin({
     webpackConfig,
   });

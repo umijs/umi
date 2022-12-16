@@ -49,9 +49,9 @@ export default (api: IApi) => {
             name(module: any) {
               // e.g. node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es
               const path = module.context.replace(/.pnpm[\\/]/, '');
-              const packageName = path.match(
-                /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-              )[1];
+              const match = path.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+              if (!match) return 'npm.unknown';
+              const packageName = match[1];
               return `npm.${packageName
                 .replace(/@/g, '_at_')
                 .replace(/\+/g, '_')}`;
@@ -91,6 +91,7 @@ export default (api: IApi) => {
           lib: {
             test(module: any) {
               return (
+                !isModuleCSS(module) &&
                 module.size() > 160000 &&
                 /node_modules[/\\]/.test(module.identifier())
               );
@@ -99,7 +100,14 @@ export default (api: IApi) => {
               const rawRequest =
                 module.rawRequest &&
                 module.rawRequest.replace(/^@(\w+)[/\\]/, '$1-');
-              if (rawRequest) return `${rawRequest}-lib`;
+              if (rawRequest) {
+                return `${
+                  // when `require()` a package with relative path,
+                  // need remove leading `.` and `/`, otherwise will not found `.js` file
+                  // e.g. require('../../lib/codemirror')
+                  rawRequest.replace(/\./g, '_').replace(/\//g, '-')
+                }-lib`;
+              }
 
               const identifier = module.identifier();
               const trimmedIdentifier = /(?:^|[/\\])node_modules[/\\](.*)/.exec(
@@ -126,13 +134,17 @@ export default (api: IApi) => {
                   }, ''),
                 )
                 .digest('base64')
-                .replace(/\//g, '');
+                // replace `+=/` that may be escaped in the url
+                // https://github.com/umijs/umi/issues/9845
+                .replace(/\//g, '')
+                .replace(/\+/g, '-')
+                .replace(/=/g, '_');
               return `shared-${cryptoName}`;
             },
-            chunks: 'async',
             priority: 10,
             minChunks: 2,
             reuseExistingChunk: true,
+            chunks: 'async',
           },
         },
       });
@@ -143,3 +155,14 @@ export default (api: IApi) => {
     return memo;
   });
 };
+
+function isModuleCSS(module: { type: string }) {
+  return (
+    // mini-css-extract-plugin
+    module.type === `css/mini-extract` ||
+    // extract-css-chunks-webpack-plugin (old)
+    module.type === `css/extract-chunks` ||
+    // extract-css-chunks-webpack-plugin (new)
+    module.type === `css/extract-css-chunks`
+  );
+}

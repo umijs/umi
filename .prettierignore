@@ -13,3 +13,4 @@ fixtures
 /packages/plugin-docs/client/theme-doc/tailwind.out.css
 .turbo
 /packages/renderer-vue/src/index.ts
+/packages/mfsu/fixtures/resolvesContexts/

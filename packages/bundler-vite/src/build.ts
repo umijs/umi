@@ -1,4 +1,4 @@
-import { cheerio } from '@umijs/utils';
+import { cheerio, fsExtra } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 import { build as viteBuilder, mergeConfig } from '../compiled/vite';
@@ -29,10 +29,15 @@ interface IBuildResult {
 /**
  * get umi template directory from entry
  */
-function getUmiTmpDir(entry: IOpts['entry']) {
+function getUmiTmpDir(cwd: string, entry: IOpts['entry']) {
   const mainEntry = Object.values(entry).find((p) => p.includes('/umi.ts'));
 
-  return mainEntry && path.dirname(mainEntry);
+  if (!mainEntry) {
+    const tmp = path.join(cwd, 'node_modules/.tmp');
+    return tmp;
+  }
+
+  return path.dirname(mainEntry);
 }
 
 /**
@@ -41,12 +46,17 @@ function getUmiTmpDir(entry: IOpts['entry']) {
  * @param entry umi entry config
  */
 function generateTempEntry(cwd: string, entry: IOpts['entry']) {
-  const umiTmpDir = entry && getUmiTmpDir(entry);
+  // 单侧不执行 兜底逻辑, jest 运行兜底逻辑会有问题, 新版本会改为 e2e 用例, 这里忽略吧,
+  if (process.env.UMI_CLI_TEST) {
+    return;
+  }
+
+  const umiTmpDir = getUmiTmpDir(cwd, entry);
 
   if (umiTmpDir) {
     const entryTmpDir = path.join(umiTmpDir, '.bundler-vite-entry');
 
-    fs.mkdirSync(entryTmpDir);
+    fsExtra.ensureDirSync(entryTmpDir);
 
     return Object.keys(entry).reduce<IOpts['entry']>((r, name) => {
       const entryFilePath = path.join(entryTmpDir, `${name}.html`);

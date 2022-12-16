@@ -87,6 +87,15 @@ export default (api: IApi) => {
         ...theme,
         ...memo.theme,
       };
+      if (memo.antd?.import) {
+        const errorMessage = `Can't set antd.import=true while using antd5 (${antdVersion})`;
+
+        api.logger.fatal(
+          'please change config antd.import to false, then start server again',
+        );
+
+        throw Error(errorMessage);
+      }
     }
 
     // dark mode & compact mode
@@ -165,6 +174,12 @@ export function rootContainer(container) {
     });
     notification.config({
       prefixCls: \`\${finalConfig.prefixCls}-notification\`
+    });
+  }
+  if (finalConfig.iconPrefixCls) {
+    // Icons in message need to set iconPrefixCls via ConfigProvider.config()
+    ConfigProvider.config({
+      iconPrefixCls: finalConfig.iconPrefixCls,
     });
   }
   return <ConfigProvider {...finalConfig}>{container}</ConfigProvider>;

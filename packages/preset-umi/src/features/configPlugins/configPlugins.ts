@@ -89,6 +89,12 @@ export default (api: IApi) => {
     if (key in configDefaults) {
       config.default = configDefaults[key];
     }
+
+    // change type is regenerateTmpFiles
+    if (['routes'].includes(key)) {
+      config.onChange = api.ConfigChangeType.regenerateTmpFiles;
+    }
+
     api.registerPlugins([
       {
         id: `virtual: config-${key}`,

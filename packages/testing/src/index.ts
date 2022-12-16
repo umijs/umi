@@ -6,6 +6,12 @@ export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
 
 export type { Config };
 
+/**
+ * 返回给定 jsTransformer 的 transformer 配置
+ * @param {JSTransformer} JSTransformer 要使用的JS transformer
+ * @param {config}  传递给 build 的配置
+ * @returns 下去 transformer
+ */
 function getJSTransformer(
   jsTransformer: JSTransformer,
   opts?: any,
@@ -25,8 +31,25 @@ function getJSTransformer(
   }
 }
 
+/**
+ * 创建一份jest 的配置
+ * 增加了'esbuild' | 'swc' | 'ts-jest' 的 transform
+ * 增加 css|less|sass|scss|stylus 的支持
+ * 默认编译 所有的 node_modules
+ * @param  {{jsTransformer?:JSTransformer;target?:'node'|'browser';jsTransformerOpts?:any;}} opts?
+ * @returns Config
+ */
 export function createConfig(opts?: {
+  /**
+   * 转化 js 的配置
+   * @type {'esbuild' | 'swc' | 'ts-jest'}
+   */
   jsTransformer?: JSTransformer;
+
+  /**
+   * 运行环境，node 和 浏览器
+   * @type {'node' | 'browser'}
+   */
   target?: 'node' | 'browser';
   jsTransformerOpts?: any;
 }): Config.InitialOptions {
@@ -43,6 +66,7 @@ export function createConfig(opts?: {
         require.resolve('identity-obj-proxy'),
     },
     testTimeout: 30000,
+    transformIgnorePatterns: [`/node_modules/(?!${[].join('|')})`],
     modulePathIgnorePatterns: [
       '<rootDir>/packages/.+/compiled',
       '<rootDir>/packages/.+/fixtures',

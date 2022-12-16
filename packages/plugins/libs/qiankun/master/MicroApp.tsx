@@ -186,9 +186,9 @@ export const MicroApp = forwardRef(
               prefetchApps(specialPrefetchApps, configuration);
             } else {
               // 不能无脑全量 prefetch，需要有一个阈值
-              const otherNotMountedApps = apps.filter(
-                (app) => !isCurrentApp(app),
-              ).slice(0, prefetchThreshold);
+              const otherNotMountedApps = apps
+                .filter((app) => !isCurrentApp(app))
+                .slice(0, prefetchThreshold);
               prefetchApps(otherNotMountedApps, configuration);
             }
             noneMounted = false;
@@ -262,16 +262,19 @@ export const MicroApp = forwardRef(
         ? (loading) => <MicroAppLoader loading={loading} />
         : null);
 
+    const microAppWrapperClassName = wrapperClassName ? `${wrapperClassName} qiankun-micro-app-wrapper` : 'qiankun-micro-app-wrapper';
+    const microAppClassName = className ? `${className} qiankun-micro-app-container` : 'qiankun-micro-app-container';
+
     return Boolean(microAppLoader) || Boolean(microAppErrorBoundary) ? (
-      <div style={{ position: 'relative' }} className={wrapperClassName}>
+      <div style={{ position: 'relative' }} className={microAppWrapperClassName}>
         {Boolean(microAppLoader) && microAppLoader(loading)}
         {Boolean(microAppErrorBoundary) &&
           Boolean(error) &&
           microAppErrorBoundary(error)}
-        <div ref={containerRef} className={className} />
+        <div ref={containerRef} className={microAppClassName} />
       </div>
     ) : (
-      <div ref={containerRef} className={className} />
+      <div ref={containerRef} className={microAppClassName} />
     );
   },
 );

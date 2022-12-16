@@ -16,7 +16,7 @@ var ${ES_INTEROP_FUNC} = (this && this.__exportStar) || function(m, exports) {
 };
 `;
 
-export function getESBuildEntry(opts: { deps: Dep[] }) {
+export function getESBuildEntry(opts: { mfName: string; deps: Dep[] }) {
   return `
 (function() {
 /******/   "use strict";
@@ -308,7 +308,7 @@ ${opts.deps.map(getDepModuleStr).join(',\n')}
     get: function() { return get; },
     init: function() { return init; }
   });
-  self.mf = __webpack_exports__;
+  self.${opts.mfName} = __webpack_exports__;
 })();
 })();
   `;
