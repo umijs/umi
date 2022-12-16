@@ -408,7 +408,7 @@ declare const FOO: string;
 import './other.d.ts';
 
 declare global {
-  declare const FOO: string;
+ const FOO: string;
 }
 ```
 
