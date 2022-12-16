@@ -168,17 +168,11 @@ import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
 
 export function rootContainer(container) {
-  const runtimeConfig = getPluginManager().applyPlugins({
+  const finalConfig = getPluginManager().applyPlugins({
     key: 'antd',
     type: ApplyPluginsType.modify,
-    initialValue: {},
+    initialValue: {...{{{ config }}}},
   });
-  const userConfig = {...{{{ config }}}};
-  const finalConfig = {
-    ...userConfig,
-    ...runtimeConfig,
-    theme: { ...userConfig?.theme, ...runtimeConfig?.theme },
-  };
   if (finalConfig.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfig.prefixCls
@@ -208,7 +202,7 @@ export function rootContainer(container) {
       path: 'types.d.ts',
       content: `
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-export type RuntimeAntdConfig = () => ConfigProviderProps;
+export type RuntimeAntdConfig = (memo: ConfigProviderProps) => ConfigProviderProps;
 `,
     });
     api.writeTmpFile({
