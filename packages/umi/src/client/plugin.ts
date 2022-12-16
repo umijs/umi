@@ -23,13 +23,15 @@ export class PluginManager {
   register(plugin: IPlugin) {
     assert(plugin.apply, `plugin register failed, apply must supplied`);
     Object.keys(plugin.apply).forEach((key) => {
-      assert(
-        this.opts.validKeys.indexOf(key) > -1,
-        `register failed, invalid key ${key} ${
-          plugin.path ? `from plugin ${plugin.path}` : ''
-        }.`,
-      );
-      this.hooks[key] = (this.hooks[key] || []).concat(plugin.apply[key]);
+      if (this.opts.validKeys.includes(key)) {
+        this.hooks[key] = (this.hooks[key] || []).concat(plugin.apply[key]);
+      } else {
+        console.error(
+          `register failed, invalid key [${key}] ${
+            plugin.path ? `from plugin ${plugin.path}` : ''
+          }. Please make sure that the corresponding plugin is turned on.`,
+        );
+      }
     });
   }
 
