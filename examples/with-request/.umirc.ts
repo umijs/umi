@@ -4,4 +4,5 @@ export default {
     dataField: 'data',
   },
   npmClient: 'pnpm',
+  vite: {},
 };
