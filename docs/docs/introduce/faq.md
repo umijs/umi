@@ -126,3 +126,28 @@ Umi 4 新增了 Vite 模式和 Vue 支持，可能存在 edge case ，若发现�
 ## `history` 中取的 pathname 为什么和 `useLocation` 中的不一样
 
 这种情况是在项目配置了 `base` 。 `history.location.pathname` 取到的值是浏览器地址中的 `pathname`，它是包含 `base` 的；而路由相关 hooks 取到的值是**前端路由**定义中的 `pathname`，它是不包含 `base` 的。[参考](../guides/routes#location-信息)。
+
+## 调整产物的压缩编码格式
+
+默认 js / css 的压缩器 `esbuild` 会采用 `ascii` 格式编码压缩，这可能导致中文字符被转码，增大产物体积。
+
+可通过配置调整到 `utf8` 编码，防止字符被转换：
+
+```ts
+// .umirc.ts
+export default {
+  jsMinifierOptions: { charset: 'utf8' },
+  cssMinifierOptions: { charset: 'utf8' }
+}
+```
+
+或通过切换压缩器来解决：
+
+```ts
+// .umirc.ts
+export default {
+  jsMinifier: 'terser',
+  cssMinifier: 'cssnano'
+}
+```
+
