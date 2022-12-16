@@ -32,7 +32,7 @@ test('normal', () => {
   });
 });
 
-test('child routes', () => {
+test('complex nested children routes', () => {
   expect(
     getConfigRoutes({
       routes: [
@@ -42,11 +42,35 @@ test('child routes', () => {
           routes: [
             { path: 'bar', component: 'bar' },
             { path: 'foo', component: 'foo' },
+            {
+              path: 'deep',
+              routes: [
+                {
+                  path: 'foo',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          path: '/sub',
+          routes: [
+            { path: 'bar', component: 'bar' },
+            {
+              path: '',
+            },
+            {
+              path: 'foo/*',
+            },
+            {
+              path: '*',
+            },
           ],
         },
       ],
     }),
   ).toEqual({
+    // `/` group
     1: {
       file: 'index',
       path: '/',
@@ -66,6 +90,80 @@ test('child routes', () => {
       id: '3',
       parentId: '1',
       path: 'foo',
+      absPath: '/foo',
+    },
+    // `/deep` group
+    4: {
+      id: '4',
+      parentId: '1',
+      path: 'deep',
+      absPath: '/deep',
+    },
+    5: {
+      id: '5',
+      parentId: '4',
+      path: 'foo',
+      absPath: '/deep/foo',
+    },
+    // `/sub` group
+    6: {
+      id: '6',
+      parentId: undefined,
+      path: '/sub',
+      absPath: '/sub',
+    },
+    7: {
+      id: '7',
+      parentId: '6',
+      file: 'bar',
+      path: 'bar',
+      absPath: '/sub/bar',
+    },
+    8: {
+      id: '8',
+      parentId: '6',
+      path: '',
+      absPath: '/sub',
+    },
+    9: {
+      id: '9',
+      parentId: '6',
+      path: 'foo/*',
+      absPath: '/sub/foo/*',
+    },
+    10: {
+      id: '10',
+      parentId: '6',
+      path: '*',
+      absPath: '/sub/*',
+    },
+  });
+});
+
+test('compatible subpath maybe empty', () => {
+  expect(
+    getConfigRoutes({
+      routes: [
+        {
+          path: '/foo',
+          component: 'index',
+          routes: [{ component: 'foo' }],
+        },
+      ],
+    }),
+  ).toEqual({
+    1: {
+      id: '1',
+      file: 'index',
+      parentId: undefined,
+      path: '/foo',
+      absPath: '/foo',
+    },
+    2: {
+      id: '2',
+      file: 'foo',
+      parentId: '1',
+      path: undefined,
       absPath: '/foo',
     },
   });
