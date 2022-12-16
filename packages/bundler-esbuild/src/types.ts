@@ -1,4 +1,7 @@
-import { TransformOptions } from '@umijs/bundler-utils/compiled/esbuild';
+import {
+  TransformOptions,
+  BuildOptions,
+} from '@umijs/bundler-utils/compiled/esbuild';
 
 export enum Env {
   development = 'development',
@@ -43,5 +46,7 @@ export interface IConfig {
   publicPath?: string;
   svgr?: TransformOptions;
   targets?: { [key: string]: any };
+  loader?: BuildOptions['loader'];
+  modifyConfig?: (config: BuildOptions) => void | Promise<void>;
   [key: string]: any;
 }
