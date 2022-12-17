@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { MFSU } from './mfsu/mfsu';
 import { ModuleGraph } from './moduleGraph';
-import { getPatchesHash, isPatchesChanged } from './utils/patchesHashUtil';
+import { getPatchesHash, isPatchesEqual } from './utils/patchesHashUtil';
 
 interface IOpts {
   mfsu: MFSU;
@@ -74,7 +74,7 @@ export class DepInfo implements IDepInfo {
           patchesHash: prevHashMap,
         } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
-        if (isPatchesChanged({ basedir, prevHashMap })) {
+        if (isPatchesEqual({ basedir, prevHashMap })) {
           this.cacheDependency = cacheDependency;
           this.moduleGraph.restore(moduleGraph);
           logger.info('[MFSU] restored cache');

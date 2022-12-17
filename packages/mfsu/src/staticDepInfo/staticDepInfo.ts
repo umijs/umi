@@ -7,7 +7,7 @@ import { dirname, join } from 'path';
 import { checkMatch } from '../babelPlugins/awaitImport/checkMatch';
 import { Dep } from '../dep/dep';
 import { MFSU } from '../mfsu/mfsu';
-import { getPatchesHash, isPatchesChanged } from '../utils/patchesHashUtil';
+import { getPatchesHash, isPatchesEqual } from '../utils/patchesHashUtil';
 import createPluginImport from './simulations/babel-plugin-import';
 
 type FileChangeEvent = {
@@ -150,7 +150,7 @@ export class StaticDepInfo {
         } = JSON.parse(readFileSync(this.cacheFilePath, 'utf-8'));
 
         if (
-          isPatchesChanged({
+          isPatchesEqual({
             basedir: this.opts.mfsu.opts.cwd!,
             prevHashMap,
           })

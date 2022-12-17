@@ -32,7 +32,7 @@ export function getPatchesHash(basedir: string, files?: string[]) {
   return map;
 }
 
-export const isPatchesChanged = (opts: {
+export const isPatchesEqual = (opts: {
   basedir: string;
   prevHashMap: Record<string, string>;
 }) => {
