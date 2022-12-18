@@ -46,9 +46,20 @@ export function style({
         charset,
         minify,
         loader: {
+          // images
           '.svg': 'dataurl',
-          // file ?
+          '.png': 'dataurl',
+          '.jpg': 'dataurl',
+          '.jpeg': 'dataurl',
+          '.gif': 'dataurl',
+          '.ico': 'dataurl',
+          '.webp': 'dataurl',
+          // font
           '.ttf': 'dataurl',
+          '.otf': 'dataurl',
+          '.woff': 'dataurl',
+          '.woff2': 'dataurl',
+          '.eot': 'dataurl',
         },
       };
 
