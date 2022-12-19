@@ -160,6 +160,35 @@ export function patchClientRoutes({ routes }) {
 }
 ```
 
+比如在最前面添加一个重定向路由：
+
+```tsx
+import { Navigate } from 'umi';
+
+export const patchClientRoutes = ({ routes }) => {
+  routes.unshift({
+    path: '/',
+    element: <Navigate to="/home" replace />,
+  });
+};
+```
+
+比如添加一个嵌套路由：
+
+```tsx
+import Page from '@/extraRoutes/foo';
+
+export const patchClientRoutes = ({ routes }) => {
+  routes.push({
+    path: '/group',
+    children: [{
+      path: '/group/page',
+      element: <Page />,
+    }],
+  });
+};
+```
+
 比如和 `render` 配置配合使用，请求服务端根据响应动态更新路由，
 
 ```ts
