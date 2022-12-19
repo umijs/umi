@@ -94,7 +94,7 @@ export class MFSU {
     };
     this.opts.cwd = this.opts.cwd || process.cwd();
     this.opts.args = opts.args || {};
-    this.opts.define = this.resolveDefine(opts.define);
+    this.opts.define = lodash.mapValues(opts.define, (v) => JSON.stringify(v));
 
     if (this.opts.strategy === 'eager') {
       // FIXME: I did't find the usage of params, so set it to empty array.
@@ -123,16 +123,6 @@ export class MFSU {
     this.strategy.loadCache();
 
     this.depBuilder = new DepBuilder({ mfsu: this });
-  }
-
-  resolveDefine(define: Record<string, any> = {}) {
-    const ret: Record<string, any> = {};
-
-    Object.entries(define).forEach(([key, value]) => {
-      ret[key] = JSON.stringify(value);
-    });
-
-    return ret;
   }
 
   // swc don't support top-level await
