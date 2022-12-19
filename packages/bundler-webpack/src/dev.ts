@@ -33,6 +33,8 @@ type IOpts = {
   mfsuInclude?: string[];
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
+  args?: Record<string, any>;
+  define?: Record<string, any>;
   onBeforeMiddleware?: Function;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
@@ -92,6 +94,8 @@ export async function dev(opts: IOpts) {
       },
       startBuildWorker: opts.startBuildWorker!,
       cwd: opts.cwd!,
+      args: opts.args,
+      define: opts.config.define,
     });
   }
 

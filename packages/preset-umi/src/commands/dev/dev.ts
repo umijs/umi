@@ -358,6 +358,7 @@ PORT=8888 umi dev
           ...(api.config.mfsu?.include || []),
         ]),
         startBuildWorker,
+        args: api.args,
         onBeforeMiddleware(app: any) {
           api.applyPlugins({
             key: 'onBeforeMiddleware',

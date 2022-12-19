@@ -61,6 +61,8 @@ interface IOpts {
   remoteName?: string;
   remoteAliases?: string[];
   startBuildWorker: (dep: any[]) => Worker;
+  args?: Record<string, any>;
+  define?: Record<string, any>;
 }
 
 export class MFSU {
@@ -91,17 +93,26 @@ export class MFSU {
       this.opts.onMFSUProgress?.(this.progress);
     };
     this.opts.cwd = this.opts.cwd || process.cwd();
+    this.opts.args = opts.args || {};
+    this.opts.define = this.resolveDefine(opts.define);
 
     if (this.opts.strategy === 'eager') {
-      if (opts.srcCodeCache) {
+      // FIXME: I did't find the usage of params, so set it to empty array.
+      const worker = this.opts.startBuildWorker([]);
+      if (opts.srcCodeCache && lodash.hasIn(worker, 'postMessage')) {
         logger.info('MFSU eager strategy enabled');
+        worker.postMessage({ args: this.opts.args });
         this.strategy = new StaticAnalyzeStrategy({
           mfsu: this,
           srcCodeCache: opts.srcCodeCache,
         });
       } else {
         logger.warn(
-          'fallback to MFSU normal strategy, due to srcCache is not provided',
+          'fallback to MFSU normal strategy, due to: ' +
+            (opts.srcCodeCache ? '' : 'srcCache is not provided. ') +
+            (lodash.hasIn(worker, 'postMessage')
+              ? ''
+              : 'startBuildWorker is a invalid Worker Instance.'),
         );
         this.strategy = new StrategyCompileTime({ mfsu: this });
       }
@@ -112,6 +123,16 @@ export class MFSU {
     this.strategy.loadCache();
 
     this.depBuilder = new DepBuilder({ mfsu: this });
+  }
+
+  resolveDefine(define: Record<string, any> = {}) {
+    const ret: Record<string, any> = {};
+
+    Object.entries(define).forEach(([key, value]) => {
+      ret[key] = JSON.stringify(value);
+    });
+
+    return ret;
   }
 
   // swc don't support top-level await

@@ -15,6 +15,7 @@ if (isMainThread) {
 // Prevent deprecated warnings in Worker
 setNoDeprecation();
 setupWorkerEnv();
+const argsPromise = setupArgsPromise();
 
 const bundlerWebpackPath = dirname(require.resolve('@umijs/bundler-webpack'));
 
@@ -45,14 +46,17 @@ async function start() {
   }
 
   // 启动一个 Service 的成本比较高(2-3秒), 所以 worker 中的 build 通过 message 来驱动, 以此来复用 service.
-  parentPort!.on('message', (buildReq) => {
-    bufferedRequest.push(buildReq);
-    scheduleBuild();
+  parentPort!.on('message', ({ deps: buildReq }) => {
+    if (Array.isArray(buildReq)) {
+      bufferedRequest.push(buildReq);
+      scheduleBuild();
+    }
   });
 
   const start = Date.now();
 
-  const opts: any = await getDevConfig();
+  const args = await argsPromise;
+  const opts: any = await getDevConfig(args);
 
   const cacheDirectoryPath = resolve(
     opts.rootDir || opts.cwd,
@@ -86,8 +90,14 @@ async function start() {
     });
   });
 
+  const define: Record<string, any> = {};
+  Object.entries(opts.config?.define || {}).forEach(([key, value]) => {
+    define[key] = JSON.stringify(value);
+  });
+
   const depEsBuildConfig = {
     extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
+    define,
   };
 
   const tmpBase =
@@ -124,4 +134,15 @@ function setupWorkerEnv() {
   process.env.DID_YOU_KNOW = 'none';
   // 此环境变量用于插件判断运行环境, 如果有次变量不去启动一些服务
   process.env.IS_UMI_BUILD_WORKER = 'true';
+}
+
+function setupArgsPromise() {
+  return new Promise<Record<string, any>>((resolve) => {
+    parentPort!.on('message', ({ args }) => {
+      // args will be send in MFSU constructor and not blocks build.
+      if (args) {
+        resolve(args);
+      }
+    });
+  });
 }

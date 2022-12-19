@@ -68,6 +68,7 @@ export class DepBuilder {
         outputPath: tmpDir,
         alias: this.opts.mfsu.alias,
         externals: this.opts.mfsu.externals,
+        define: this.opts.mfsu.opts.define,
       },
       inlineStyle: true,
     });
@@ -80,7 +81,7 @@ export class DepBuilder {
   async buildWithWorker(opts: { onBuildComplete: Function; deps: Dep[] }) {
     const worker = this.opts.mfsu.opts.startBuildWorker(opts.deps);
 
-    worker.postMessage(opts.deps);
+    worker.postMessage({ deps: opts.deps });
 
     return new Promise<void>((resolve, reject) => {
       const onMessage = ({

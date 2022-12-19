@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import foo from 'foo-module';
 import { format } from '../utils/format';
 
 const fileName = 'favicon';
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <div>
       <h2>{format(greeting)}</h2>
+      <div>{foo}</div>
     </div>
   );
 }

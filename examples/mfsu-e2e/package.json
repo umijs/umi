@@ -4,7 +4,7 @@
   "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
     "build": "umi build",
-    "dev": "umi dev",
+    "dev": "umi dev --foo",
     "e2e": "cypress run",
     "e2e:ci": "cross-env HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
     "set:mfsu:eager:esbuild": "umi config set mfsu {\\\"strategy\\\":\\\"eager\\\",\\\"esbuild\\\":true}",
@@ -15,6 +15,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "foo-module": "file:./src/foo-module",
     "lodash.uppercase": "^4.3.0",
     "umi": "4.0.38"
   },
