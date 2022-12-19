@@ -163,7 +163,7 @@ export function patchClientRoutes({ routes }) {
 比如在最前面添加一个重定向路由：
 
 ```tsx
-import { Navigate } from 'umi'
+import { Navigate } from 'umi';
 
 export const patchClientRoutes = ({ routes }) => {
   routes.unshift({
