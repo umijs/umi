@@ -275,7 +275,9 @@ const { formatMessage } = useIntl();
     >
       <Exception
         route={matchedRoute}
+        noFound={runtimeConfig?.noFound}
         notFound={runtimeConfig?.notFound}
+        unAccessible={runtimeConfig?.unAccessible}
         noAccessible={runtimeConfig?.noAccessible}
       >
         {runtimeConfig.childrenRender
