@@ -1,5 +1,5 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger, rimraf } from '@umijs/utils';
+import { lodash, logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import type { Worker } from 'worker_threads';
@@ -33,8 +33,6 @@ type IOpts = {
   mfsuInclude?: string[];
   srcCodeCache?: any;
   startBuildWorker?: (deps: any[]) => Worker;
-  args?: Record<string, any>;
-  define?: Record<string, any>;
   onBeforeMiddleware?: Function;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
@@ -70,6 +68,7 @@ export async function dev(opts: IOpts) {
       buildDepWithESBuild: opts.config.mfsu?.esbuild,
       depBuildConfig: {
         extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
+        define: lodash.mapValues(opts.config?.define, (v) => JSON.stringify(v)),
       },
       mfName: opts.config.mfsu?.mfName,
       runtimePublicPath: opts.config.runtimePublicPath,
@@ -94,8 +93,6 @@ export async function dev(opts: IOpts) {
       },
       startBuildWorker: opts.startBuildWorker!,
       cwd: opts.cwd!,
-      args: opts.args,
-      define: opts.config.define,
     });
   }
 

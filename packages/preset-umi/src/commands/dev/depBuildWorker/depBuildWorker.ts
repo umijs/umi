@@ -8,6 +8,11 @@ import { isMainThread, parentPort } from 'worker_threads';
 import { DepBuilderInWorker } from './depBuilder';
 import { getDevConfig } from './getConfig';
 
+interface IWorkerData {
+  args?: Record<string, any>;
+  deps?: any[];
+}
+
 if (isMainThread) {
   throw Error('MFSU-eager builder can only be called in a worker thread');
 }
@@ -46,7 +51,7 @@ async function start() {
   }
 
   // 启动一个 Service 的成本比较高(2-3秒), 所以 worker 中的 build 通过 message 来驱动, 以此来复用 service.
-  parentPort!.on('message', ({ deps: buildReq }) => {
+  parentPort!.on('message', ({ deps: buildReq }: IWorkerData) => {
     if (Array.isArray(buildReq)) {
       bufferedRequest.push(buildReq);
       scheduleBuild();
@@ -133,8 +138,7 @@ function setupWorkerEnv() {
 
 function setupArgsPromise() {
   return new Promise<Record<string, any>>((resolve) => {
-    parentPort!.on('message', ({ args }) => {
-      // args will be send in MFSU constructor and not blocks build.
+    parentPort!.on('message', ({ args }: IWorkerData) => {
       if (args) {
         resolve(args);
       }
