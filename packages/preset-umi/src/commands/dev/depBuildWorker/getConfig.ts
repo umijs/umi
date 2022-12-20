@@ -1,6 +1,9 @@
 import { Service } from 'umi/dist/service/service';
+import { workerData } from 'worker_threads';
 
-export async function getDevConfig(args: Record<string, any>) {
+const { args } = workerData;
+
+export async function getDevConfig() {
   const service = new Service({
     presets: [require.resolve('./workerPreset')],
   });
