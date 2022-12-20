@@ -68,7 +68,6 @@ export class DepBuilder {
         outputPath: tmpDir,
         alias: this.opts.mfsu.alias,
         externals: this.opts.mfsu.externals,
-        define: this.opts.mfsu.opts.define,
       },
       inlineStyle: true,
     });

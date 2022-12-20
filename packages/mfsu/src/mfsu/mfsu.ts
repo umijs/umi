@@ -61,8 +61,6 @@ interface IOpts {
   remoteName?: string;
   remoteAliases?: string[];
   startBuildWorker: (dep: any[]) => Worker;
-  args?: Record<string, any>;
-  define?: Record<string, any>;
 }
 
 export class MFSU {
@@ -93,26 +91,17 @@ export class MFSU {
       this.opts.onMFSUProgress?.(this.progress);
     };
     this.opts.cwd = this.opts.cwd || process.cwd();
-    this.opts.args = opts.args || {};
-    this.opts.define = lodash.mapValues(opts.define, (v) => JSON.stringify(v));
 
     if (this.opts.strategy === 'eager') {
-      // FIXME: I did't find the usage of params, so set it to empty array.
-      const worker = this.opts.startBuildWorker([]);
-      if (opts.srcCodeCache && lodash.hasIn(worker, 'postMessage')) {
+      if (opts.srcCodeCache) {
         logger.info('MFSU eager strategy enabled');
-        worker.postMessage({ args: this.opts.args });
         this.strategy = new StaticAnalyzeStrategy({
           mfsu: this,
           srcCodeCache: opts.srcCodeCache,
         });
       } else {
         logger.warn(
-          'fallback to MFSU normal strategy, due to: ' +
-            (opts.srcCodeCache ? '' : 'srcCache is not provided. ') +
-            (lodash.hasIn(worker, 'postMessage')
-              ? ''
-              : 'startBuildWorker is a invalid Worker Instance.'),
+          'fallback to MFSU normal strategy, due to srcCache is not provided',
         );
         this.strategy = new StrategyCompileTime({ mfsu: this });
       }
