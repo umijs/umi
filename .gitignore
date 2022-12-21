@@ -56,3 +56,4 @@
 /packages/umi/client/**/*.d.ts
 /packages/umi/client/**/*.d.ts.map
 /packages/bundler-vite/src/fixtures/alias/node_modules
+*/cypress/videos

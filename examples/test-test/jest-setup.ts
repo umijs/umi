@@ -1,2 +1,2 @@
 import '@testing-library/jest-dom';
-import 'umi/test-setup';
+// import 'umi/test-setup';

@@ -12,7 +12,6 @@ export default async () => {
     collectCoverageFrom: [
       '**/*.{ts,tsx,js,jsx}',
       '!.umi/**',
-      '!.umi-test/**',
       '!.umi-production/**',
       '!.umirc.{js,ts}',
       '!.umirc.*.{js,ts}',
