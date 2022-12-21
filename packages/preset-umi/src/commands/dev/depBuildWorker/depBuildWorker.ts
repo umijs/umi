@@ -8,6 +8,10 @@ import { isMainThread, parentPort } from 'worker_threads';
 import { DepBuilderInWorker } from './depBuilder';
 import { getDevConfig } from './getConfig';
 
+export interface IWorkerData {
+  args: Record<string, any>;
+}
+
 if (isMainThread) {
   throw Error('MFSU-eager builder can only be called in a worker thread');
 }
@@ -86,6 +90,8 @@ async function start() {
     });
   });
 
+  // TODO: has duplicate logic in bundler-webpack/dev, need to extract.
+  // https://github.com/umijs/umi/blob/691120058620b31a5093ee2fc79cb8c739eb5bda/packages/bundler-webpack/src/dev.ts#L69
   const depEsBuildConfig = {
     extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
     define: lodash.mapValues(opts.config?.define, (v) => JSON.stringify(v)),
