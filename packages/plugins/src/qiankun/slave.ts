@@ -244,6 +244,7 @@ if (!window.__POWERED_BY_QIANKUN__) {
       [
         'qiankunModel.ts',
         'connectMaster.tsx',
+        'MicroAppLink.tsx',
         'slaveRuntimePlugin.ts',
         'lifecycles.ts',
       ].forEach((file) => {
