@@ -1,6 +1,6 @@
 import { Service } from 'umi/dist/service/service';
 import { workerData } from 'worker_threads';
-import type { IWorkerData } from './depBuildWorker';
+import type { IWorkerData } from './types';
 
 const { args } = workerData as IWorkerData;
 

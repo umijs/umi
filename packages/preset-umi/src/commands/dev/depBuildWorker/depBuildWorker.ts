@@ -8,10 +8,6 @@ import { isMainThread, parentPort } from 'worker_threads';
 import { DepBuilderInWorker } from './depBuilder';
 import { getDevConfig } from './getConfig';
 
-export interface IWorkerData {
-  args: Record<string, any>;
-}
-
 if (isMainThread) {
   throw Error('MFSU-eager builder can only be called in a worker thread');
 }
