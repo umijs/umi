@@ -91,7 +91,7 @@ export interface IConfig {
   publicPath?: string;
   purgeCSS?: { [key: string]: any };
   sassLoader?: { [key: string]: any };
-  srcTranspiler?: Transpiler;
+  srcTranspiler?: `${Transpiler}`;
   styleLoader?: { [key: string]: any };
   svgr?: { [key: string]: any };
   svgo?: { [key: string]: any } | false;
