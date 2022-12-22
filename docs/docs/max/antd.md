@@ -38,14 +38,18 @@ export default {
 
 ## 配置
 
-### dark
+### 构建时配置
+
+注意：构建时配置会经过 json 转换，所以这里只能进行符合 json 格式的配置，如有例如 algorithm 等函数配置，可在[运行时配置](#运行时配置)中进行设置。
+
+#### dark
 
 开启暗色主题。
 
 - Type: `boolean`
 - Default: `false`
 
-### compact
+#### compact
 
 开启紧凑主题。
 
@@ -65,32 +69,48 @@ export default {
 
 启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
 
-### import
+#### import
 
 - Type: `boolean`
 
 配置 `antd` 的 `babel-plugin-import` 按需加载。
 
-### style
+#### style
 
 - Type: `"less" | "css"`
 - Default: `less`
 
 配置使用 `antd` 的样式，默认 `less`。
 
-### configProvider
+#### configProvider
 
 - Type: `object`
 
 配置 `antd` 的 `configProvider`。
 
-### theme
+#### theme
 
 - Type: `object`
 
 配置 `antd@5` 的 theme token，等同于配置 `configProvider.theme`，且该配置项拥有更高的优先级。
 
 **注意：该配置项仅 antd v5 可用**
+
+### 运行时配置
+
+在 app.ts(x) 文件中你可以对 antd 进行更丰富的配置，比如配置 antd5 的预设算法：
+
+```ts
+// app.ts
+import { RuntimeAntdConfig } from 'umi';
+import { theme } from 'antd';
+
+export const antd: RuntimeAntdConfig = (memo) => {
+  memo.theme ||= {};
+  memo.theme.algorithm = theme.darkAlgorithm;
+  return memo;
+};
+```
 
 ## FAQ
 
