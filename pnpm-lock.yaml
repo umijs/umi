@@ -531,7 +531,7 @@ importers:
       '@types/react-dom': ^18.0.0
       cross-env: ^7.0.3
       cypress: ^10.0.0
-      foo-module: file:./src/foo-module
+      foo: link:./foo
       lodash.uppercase: ^4.3.0
       rimraf: 3.0.2
       start-server-and-test: ^1.0.0
@@ -539,7 +539,7 @@ importers:
       umi: 4.0.38
       wait-on: ^6.0.1
     dependencies:
-      foo-module: file:examples/mfsu-e2e/src/foo-module
+      foo: link:foo
       lodash.uppercase: 4.3.0
       umi: link:../../packages/umi
     devDependencies:
@@ -41442,9 +41442,3 @@ packages:
       which: 2.0.2
       yaml: 2.1.1
     dev: true
-
-  file:examples/mfsu-e2e/src/foo-module:
-    resolution: {directory: examples/mfsu-e2e/src/foo-module, type: directory}
-    name: '@example/foo-module'
-    version: 0.0.0
-    dev: false

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import foo from 'foo-module';
+import foo from 'foo';
 import { format } from '../utils/format';
 
 const fileName = 'favicon';

@@ -15,7 +15,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "foo-module": "file:./src/foo-module",
+    "foo": "link:./foo",
     "lodash.uppercase": "^4.3.0",
     "umi": "4.0.38"
   },

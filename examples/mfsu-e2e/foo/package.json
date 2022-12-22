@@ -1,5 +1,5 @@
 {
-  "name": "@example/foo-module",
+  "name": "foo",
   "version": "0.0.0",
   "private": true,
   "type": "module"
