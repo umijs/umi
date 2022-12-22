@@ -87,11 +87,11 @@ export default (api: IApi) => {
         ...theme,
         ...memo.theme,
       };
-      if (memo.antd?.import) {
-        const errorMessage = `Can't set antd.import=true while using antd5 (${antdVersion})`;
+      if (memo.antd?.style) {
+        const errorMessage = `Can't set antd.style while using antd5 (${antdVersion})`;
 
         api.logger.fatal(
-          'please change config antd.import to false, then start server again',
+          'please remove config antd.style, then start server again',
         );
 
         throw Error(errorMessage);
@@ -132,12 +132,10 @@ export default (api: IApi) => {
 
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
-    const style = api.config.antd.style || 'less';
+    // only enable style for non-antd@5
+    const defaultStyle = antdVersion.startsWith('5') ? false : 'less';
+    const style = api.config.antd.style || defaultStyle;
 
-    // antd@5 不需要插件了，会报错
-    if (antdVersion.startsWith('5')) {
-      return [];
-    }
     return api.config.antd.import && !api.appData.vite
       ? [
           [
@@ -145,7 +143,11 @@ export default (api: IApi) => {
             {
               libraryName: 'antd',
               libraryDirectory: 'es',
-              style: style === 'less' ? true : 'css',
+              ...(style
+                ? {
+                    style: style === 'less' || 'css',
+                  }
+                : {}),
             },
             'antd',
           ],
