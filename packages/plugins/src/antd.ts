@@ -133,8 +133,9 @@ export default (api: IApi) => {
   // babel-plugin-import
   api.addExtraBabelPlugins(() => {
     // only enable style for non-antd@5
-    const defaultStyle = antdVersion.startsWith('5') ? false : 'less';
-    const style = api.config.antd.style || defaultStyle;
+    const style = antdVersion.startsWith('5')
+      ? false
+      : api.config.antd.style || 'less';
 
     return api.config.antd.import && !api.appData.vite
       ? [
