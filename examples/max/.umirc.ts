@@ -55,22 +55,6 @@ export default defineConfig({
       path: '/history',
       component: 'history',
     },
-    {
-      path: '/a',
-      component: '@/components/Top',
-      routes: [
-        {
-          path: 'b',
-          component: '@/components/Nest',
-          routes: [
-            {
-              path: 'c',
-              component: '@/components/Nest',
-            },
-          ],
-        },
-      ],
-    },
   ],
   antd: {
     // import: true,
