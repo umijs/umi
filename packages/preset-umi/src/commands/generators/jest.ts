@@ -42,7 +42,7 @@ export default (api: IApi) => {
         // we use `jest.config.ts` so jest needs ts and ts-node
         typescript: '^4',
         'ts-node': '^10',
-        'corss-env': '^7',
+        'cross-env': '^7',
       };
       const packageToInstall: Record<string, string> = res.willUseTLR
         ? {
