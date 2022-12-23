@@ -1,4 +1,5 @@
 import Arborist from '@npmcli/arborist';
+import { semver } from '@umijs/utils';
 import path from 'path';
 import type { IApi } from '../../types';
 
@@ -63,6 +64,22 @@ export async function getDepTree(
 
     if (isUmiPluginDependency) {
       pkgKey = packageKeys.find((n) => n === umijsPluginPath) ?? pkgKey;
+    }
+
+    if (['react', 'react-dom'].includes(name)) {
+      /**
+       * umi 内部有对 react、react-dom 的 alias
+       * 所以这里额外校验两者的版本信息，如果不匹配就直接取 preset-umi 提供的版本和框架保持一致
+       */
+      const version = pkgKey ? packages[pkgKey].version : '';
+      if (!semver.satisfies(version, info.version)) {
+        pkgKey = [
+          'node_modules',
+          '@umijs/preset-umi',
+          'node_modules',
+          name,
+        ].join(path.sep);
+      }
     }
 
     if (pkgKey) {
