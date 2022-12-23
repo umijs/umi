@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('History push', () => {
+describe('Basic Test', () => {
   beforeEach(() => {
     Cypress.automation('remote:debugger:protocol', {
       command: 'Network.setCacheDisabled',
@@ -45,23 +45,5 @@ describe('History push', () => {
       cy.url().should('contain', '?t=replace');
       cy.url().should('not.contain', 'history');
     });
-  });
-});
-
-describe('History.push relative pathname', function () {
-  it('push with pathname when current path ends with /', () => {
-    cy.visit('/a/b/c/');
-
-    cy.get('button').contains('go up').click();
-
-    cy.url().should('match', new RegExp('/a/b/$'));
-  });
-
-  it('push with pathname when current path no /', () => {
-    cy.visit('/a/b/c');
-
-    cy.get('button').contains('go up').click();
-
-    cy.url().should('match', new RegExp('/a/$'));
   });
 });
