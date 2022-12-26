@@ -12,6 +12,10 @@ import React, {
 } from 'react';
 import noop from 'lodash/noop';
 import find from 'lodash/find';
+import {
+  qiankunStateFromMasterModelNamespace,
+  defaultHistoryType,
+} from './constants';
 
 const COMPONENT_NAME = 'qiankun-microapp-link';
 
@@ -27,7 +31,7 @@ interface MicroAppLinkProps {
 }
 
 const urlFactory =
-  (routes: Record<string, any>[]) =>
+  (base: string, routes: Record<string, any>[]) =>
   ({ appName, appRoute, isMaster }: MicroAppLinkProps) => {
     if (isMaster) {
       return appRoute;
@@ -35,11 +39,11 @@ const urlFactory =
 
     const app = find(routes, ({ microApp }) => microApp === appName);
     if (!app) {
-      console.error(`[${COMPONENT_NAME}] microapp "${app}" is not found`);
+      console.error(`[${COMPONENT_NAME}] microapp "${appName}" is not found`);
       return appRoute;
     }
 
-    const prefix = app.path.replace('/*', '');
+    const prefix = `${base}${app.path.replace('/*', '')}`;
     return `${prefix}/${
       appRoute.startsWith('/') ? appRoute.slice(1) : appRoute
     }`;
@@ -55,17 +59,21 @@ export const MicroAppLink: FC<
     isMaster = false,
     ...anchorProps
   } = props;
-  const stateFromMaster = (useModel || noop)('@@qiankunStateFromMaster');
+  const stateFromMaster = (useModel || noop)(
+    qiankunStateFromMasterModelNamespace,
+  );
   const linkRef = useRef<HTMLAnchorElement>();
 
-  const { historyType, routes } = stateFromMaster?.globalRoutesInfo || {};
+  const { masterHistoryType, microAppRoutes, base } =
+    stateFromMaster?.globalRoutesInfo || {};
   const linkProps = { appName, appRoute, isMaster };
-  const createHerf = urlFactory(routes);
-  const linkUrl =
-    historyType === 'hash'
-      ? `#${createHerf(linkProps)}`
-      : createHerf(linkProps);
+  const createHerf = urlFactory(base, microAppRoutes);
 
+  const linkUrl =
+    masterHistoryType === defaultHistoryType
+      ? createHerf(linkProps)
+      : `#${createHerf(linkProps)}`;
+  console.log('masterHistoryType', linkProps, stateFromMaster);
   useImperativeHandle(ref, () => linkRef.current);
 
   const handleClick = useCallback(
@@ -75,22 +83,22 @@ export const MicroAppLink: FC<
       }
 
       // hash路由 使用 a标签 默认行为
-      if (historyType === 'hash') {
+      if (masterHistoryType === 'hash') {
         return;
       }
 
-      if (historyType === 'browser') {
+      if (masterHistoryType === 'browser') {
         e?.stopPropagation();
         e?.preventDefault();
         return window.history.pushState({}, '', linkUrl);
       }
 
       console.error(
-        `[${COMPONENT_NAME}] not support "masterHistoryType = '${historyType}'"`,
+        `[${COMPONENT_NAME}] not support "masterHistoryType = '${masterHistoryType}'"`,
       );
       return;
     },
-    [anchorProps.onClick, historyType],
+    [anchorProps.onClick, masterHistoryType],
   );
 
   return (

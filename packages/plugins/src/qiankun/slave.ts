@@ -242,6 +242,7 @@ if (!window.__POWERED_BY_QIANKUN__) {
       //     });
 
       [
+        'constants.ts',
         'qiankunModel.ts',
         'connectMaster.tsx',
         'MicroAppLink.tsx',
@@ -272,6 +273,7 @@ if (!window.__POWERED_BY_QIANKUN__) {
         path: 'index.ts',
         content: `
 export { connectMaster } from './connectMaster';
+export { MicroAppLink } from './MicroAppLink';
       `,
       });
     },

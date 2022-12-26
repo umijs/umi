@@ -18,6 +18,8 @@ export function isMasterEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
 }
 
+const microAppRoutes: Record<string, any>[] = [];
+
 export default (api: IApi) => {
   api.describe({
     key: 'qiankun-master',
@@ -52,6 +54,7 @@ export default (api: IApi) => {
           /"/g,
           "'",
         );
+        microAppRoutes.push(route);
         route.file = `(async () => {
           const { getMicroAppRouteComponent } = await import('@@/plugin-qiankun-master/getMicroAppRouteComponent');
           return getMicroAppRouteComponent({ appName: '${appName}', base: '${base}', routePath: '${route.path}', masterHistoryType: '${masterHistoryType}', routeProps: ${normalizedRouteProps} })
@@ -104,6 +107,7 @@ export interface IRuntimeConfig {
 let options = ${JSON.stringify({
         masterHistoryType: api.config.history?.type || defaultHistoryType,
         base: api.config.base || '/',
+        microAppRoutes,
         ...api.config.qiankun.master,
       })};
 export const getMasterOptions = () => options;
