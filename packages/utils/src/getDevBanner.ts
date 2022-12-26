@@ -26,11 +26,9 @@ export function getDevBanner(
     `${protocol}//${host === '0.0.0.0' ? 'localhost' : host}:${port}`,
   )} `;
   const ip = address.ip();
-  const network = ip
-    ? `  ${chalk.gray('>')} Network: ${chalk.green(
-        `${protocol}//${ip}:${port}`,
-      )} `
-    : ` Network not available at this moment. `;
+  const network = `  ${chalk.gray('>')} Network: ${
+    ip ? chalk.green(`${protocol}//${ip}:${port}`) : chalk.gray('Not available')
+  } `;
   const maxLen = Math.max(
     ...[header, footer, local, network].map((x) => stripAnsi(x).length),
   );
