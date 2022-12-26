@@ -1,4 +1,5 @@
 export default {
+  model: {},
   qiankun: {
     slave: {},
   },
