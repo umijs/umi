@@ -65,7 +65,7 @@ export const MicroAppLink: FC<
   const linkRef = useRef<HTMLAnchorElement>();
 
   const { masterHistoryType, microAppRoutes, base } =
-    stateFromMaster?.globalRoutesInfo || {};
+    stateFromMaster?.__globalRoutesInfo || {};
   const linkProps = { appName, appRoute, isMaster };
   const createHerf = urlFactory(base, microAppRoutes);
 
