@@ -163,7 +163,7 @@ export const MicroApp = forwardRef(
             ...propsFromConfig,
             ...stateForSlave,
             ...propsFromParams,
-            globalRoutesInfo: {
+            __globalRoutesInfo: {
               masterHistoryType,
               base: globalSettings.base,
               microAppRoutes: globalSettings.microAppRoutes,
@@ -230,7 +230,7 @@ export const MicroApp = forwardRef(
                 ...propsFromConfig,
                 ...stateForSlave,
                 ...propsFromParams,
-                globalRoutesInfo: {
+                __globalRoutesInfo: {
                   masterHistoryType,
                   base: globalSettings.base,
                   microAppRoutes: globalSettings.microAppRoutes,
