@@ -42,6 +42,7 @@ export default (api: IApi) => {
         // we use `jest.config.ts` so jest needs ts and ts-node
         typescript: '^4',
         'ts-node': '^10',
+        'cross-env': '^7',
       };
       const packageToInstall: Record<string, string> = res.willUseTLR
         ? {
@@ -52,7 +53,10 @@ export default (api: IApi) => {
           }
         : basicDeps;
       h.addDevDeps(packageToInstall);
-      h.addScript('test', 'TS_NODE_TRANSPILE_ONLY=yes jest --passWithNoTests');
+      h.addScript(
+        'test',
+        'cross-env TS_NODE_TRANSPILE_ONLY=yes jest --passWithNoTests',
+      );
 
       const setupImports = res.willUseTLR
         ? [
