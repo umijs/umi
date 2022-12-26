@@ -36,7 +36,7 @@ export function register(opts: { implementor: any; exts?: string[] }) {
         transform({ code, filename, implementor: opts.implementor }),
       {
         ext: opts.exts || HOOK_EXTS,
-        ignoreNodeModules: true,
+        ignoreNodeModules: false,
       },
     );
     registered = true;
