@@ -174,7 +174,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 
 #### global.(css|less|sass|scss)
 
-这个文件不走 css modules，自动被引入，可以写一些全局样式，它的引入位置很靠前，所以优先级相对较低；如果想覆盖三方依赖样式，推荐使用下面的 `overrides.(css|less|sass|scss)`。
+这个文件不走 css modules，自动被引入，可以写一些全局样式，它的引入位置很靠前，所以优先级相对较低；如果想覆盖三方依赖样式，推荐使用 `overrides.(css|less|sass|scss)`。
 
 #### overrides.(css|less|sass|scss)
 
