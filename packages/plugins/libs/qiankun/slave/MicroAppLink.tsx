@@ -72,7 +72,7 @@ export const MicroAppLink: FC<
     masterHistoryType === 'browser'
       ? createHerf(linkProps)
       : `#${createHerf(linkProps)}`;
-  console.log('stateFromMaster', stateFromMaster, linkUrl);
+
   useImperativeHandle(ref, () => linkRef.current);
 
   const handleClick = useCallback(
