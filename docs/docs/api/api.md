@@ -1,3 +1,5 @@
+import { Message } from 'umi';
+
 # API
 
 为方便查找，以下内容通过字母排序。
@@ -147,17 +149,29 @@ import { history } from 'umi';
 history.push('/list');
 
 // 带参数跳转到指定路由
-history.push('/list?a=b&c=d#anchor');
+history.push('/list?a=b&c=d#anchor', state);
 history.push({
-  pathname: '/list',
-  search: '?a=b&c=d',
-  hash: 'anchor',
-});
+    pathname: '/list',
+    search: '?a=b&c=d',
+    hash: 'anchor',
+  },
+  {
+    some: 'state-data',
+  }
+);
+
+// 跳转当前路径，并刷新 state
+history.push({}, state)
 
 // 跳转到上一个路由
 history.back();
 history.go(-1);
 ```
+
+<Message emoji="🚨">
+注意：history.push 和 history.replace 需要使用 `state` 需将 `state` 作为这两个 API 的第二个参数传递
+</Message>
+
 
 路由监听。
 
