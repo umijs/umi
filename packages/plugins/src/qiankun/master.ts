@@ -18,9 +18,9 @@ export function isMasterEnable(opts: { userConfig: any }) {
   return !!process.env.INITIAL_QIANKUN_MASTER_OPTIONS;
 }
 
-const microAppRoutes: Record<string, any>[] = [];
-
 export default (api: IApi) => {
+  const microAppRoutes: Record<string, any>[] = [];
+
   api.describe({
     key: 'qiankun-master',
     enableBy: isMasterEnable,

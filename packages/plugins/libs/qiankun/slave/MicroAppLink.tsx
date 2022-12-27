@@ -21,10 +21,10 @@ const COMPONENT_NAME = 'qiankun-microapp-link';
 
 interface MicroAppLinkProps {
   // 应用名称
-  appName?: string;
+  name?: string;
 
-  // 相对路由，不包含应用前缀
-  appRoute: string;
+  // 相对路由，不包含应用前缀，以为 `/` 开头
+  to: string;
 
   // 是否主应用下的路由，默认false
   isMaster?: boolean;
@@ -32,33 +32,32 @@ interface MicroAppLinkProps {
 
 const urlFactory =
   (base: string, routes: Record<string, any>[]) =>
-  ({ appName, appRoute, isMaster }: MicroAppLinkProps) => {
+  ({ name, to, isMaster }: MicroAppLinkProps) => {
     if (isMaster) {
-      return appRoute;
+      return to;
     }
 
-    const app = find(routes, ({ microApp }) => microApp === appName);
+    if (!to?.startsWith('/')) {
+      throw new Error(`[${COMPONENT_NAME}] props "to" should start with "/"`);
+    }
+
+    const app = find(routes, ({ microApp }) => microApp === name);
     if (!app) {
-      console.error(`[${COMPONENT_NAME}] microapp "${appName}" is not found`);
-      return appRoute;
+      console.error(`[${COMPONENT_NAME}] microapp "${name}" is not found`);
+      return to;
     }
 
-    const prefix = `${base}${app.path.replace('/*', '')}`;
-    return `${prefix}/${
-      appRoute.startsWith('/') ? appRoute.slice(1) : appRoute
-    }`;
+    const prefix =
+      base === '/'
+        ? app.path.replace('/*', '')
+        : `${base}${app.path.replace('/*', '')}`;
+    return `${prefix}${to}`;
   };
 
 export const MicroAppLink: FC<
   MicroAppLinkProps & HTMLAttributes<HTMLAnchorElement>
 > = forwardRef((props, ref) => {
-  const {
-    children,
-    appName,
-    appRoute,
-    isMaster = false,
-    ...anchorProps
-  } = props;
+  const { children, name, to, isMaster = false, ...anchorProps } = props;
   const stateFromMaster = (useModel || noop)(
     qiankunStateFromMasterModelNamespace,
   );
@@ -66,14 +65,14 @@ export const MicroAppLink: FC<
 
   const { masterHistoryType, microAppRoutes, base } =
     stateFromMaster?.__globalRoutesInfo || {};
-  const linkProps = { appName, appRoute, isMaster };
+  const linkProps = { name, to, isMaster };
   const createHerf = urlFactory(base, microAppRoutes);
 
   const linkUrl =
-    masterHistoryType === defaultHistoryType
+    masterHistoryType === 'browser'
       ? createHerf(linkProps)
       : `#${createHerf(linkProps)}`;
-
+  console.log('stateFromMaster', stateFromMaster, linkUrl);
   useImperativeHandle(ref, () => linkRef.current);
 
   const handleClick = useCallback(

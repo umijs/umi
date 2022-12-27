@@ -10,7 +10,7 @@ export default function App2Page() {
       <div>
         <img src={dogJpg} />
       </div>
-      <MicroAppLink appName="slave" appRoute="/home">
+      <MicroAppLink name="slave" to="/home">
         goto slave
       </MicroAppLink>
     </div>

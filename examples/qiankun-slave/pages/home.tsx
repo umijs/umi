@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <div>
       Slave Home Page{' '}
-      <MicroAppLink appName="slave-app2" appRoute="/hello">
+      <MicroAppLink name="slave-app2" to="hello">
         goto slave-app2
       </MicroAppLink>
     </div>
