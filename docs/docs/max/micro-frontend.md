@@ -251,7 +251,7 @@ export default () => {
   return (
     <div>
       {/* 跳转链接为 /app2/home */}
-      <MicroAppLink appName="app2" appRoute="/home">
+      <MicroAppLink name="app2" to="/home">
         <Button>go to app2</Button>
       </MicroAppLink>
     </div>
@@ -268,11 +268,11 @@ export default () => {
   return (
     <div>
     {/* 跳转链接为 /app1/project/hello */}
-      <MicroAppLink appName="app1" appRoute="/hello"> 
+      <MicroAppLink name="app1" to="/hello"> 
         <Button>go to app1</Button>
       </MicroAppLink>
       {/* 跳转链接为 /table */}
-      <MicroAppLink appRoute="/table" isMaster>go to maser app</MicroAppLink>
+      <MicroAppLink to="/table" isMaster>go to maser app</MicroAppLink>
     </div>
   );
 }
