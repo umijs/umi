@@ -40,7 +40,8 @@ function handleOriginalHtml(
 
   // 插入 extra-qiankun-config
   $('head').prepend(
-    `<script type="extra-qiankun-config">${JSON.stringify({
+    `<script>window.__QIANKUN_DEVELOPMENT__=true</script>
+    <script type="extra-qiankun-config">${JSON.stringify({
       master: {
         apps: [
           {
