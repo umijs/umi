@@ -12,7 +12,7 @@ describe('QianKun Plugin', () => {
   });
 
   it('support hooks in slave app', () => {
-    cy.visit('/slave/count');
+    cy.visit('/slave-x/count');
 
     cy.contains('slave Count');
     cy.contains('count:0');
