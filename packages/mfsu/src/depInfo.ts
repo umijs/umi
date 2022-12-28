@@ -43,7 +43,7 @@ export class DepInfo implements IDepInfo {
   shouldBuild() {
     // 写缓存时 会忽略 function 类型, 这里 处理逻辑变成和缓存前处理一直, 否则缓存永远无法命中
     const cacheDependency = JSON.parse(
-      JSON.stringify(this.opts.mfsu.opts.getCacheDependency!(), null, 2),
+      this.stringify(this.opts.mfsu.opts.getCacheDependency!()),
     );
     if (!lodash.isEqual(this.cacheDependency, cacheDependency)) {
       return 'cacheDependency has changed';
@@ -56,8 +56,23 @@ export class DepInfo implements IDepInfo {
     return false;
   }
 
+  stringify(val: Record<string, any>) {
+    return JSON.stringify(
+      val,
+      (_key, value) => {
+        if (typeof value === 'function') {
+          return value.toString();
+        }
+        return value;
+      },
+      2,
+    );
+  }
+
   snapshot() {
-    this.cacheDependency = this.opts.mfsu.opts.getCacheDependency!();
+    this.cacheDependency = JSON.parse(
+      this.stringify(this.opts.mfsu.opts.getCacheDependency!()),
+    );
     this.moduleGraph.snapshotDeps();
   }
 
@@ -82,14 +97,11 @@ export class DepInfo implements IDepInfo {
 
   writeCache() {
     fsExtra.mkdirpSync(dirname(this.cacheFilePath));
-    const newContent = JSON.stringify(
-      {
-        cacheDependency: this.cacheDependency,
-        moduleGraph: this.moduleGraph.toJSON(),
-      },
-      null,
-      2,
-    );
+    const newContent = this.stringify({
+      cacheDependency: this.cacheDependency,
+      moduleGraph: this.moduleGraph.toJSON(),
+    });
+
     if (
       existsSync(this.cacheFilePath) &&
       readFileSync(this.cacheFilePath, 'utf-8') === newContent
