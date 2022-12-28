@@ -138,6 +138,13 @@ export async function render(oldRender: typeof noop) {
 
 export function patchClientRoutes({ routes }: { routes: any[] }) {
   if (microAppRuntimeRoutes) {
+    // 动态patch的routes存到 masterOptions.microAppRoutes 下以供 MicroAppLink 使用
+    const masterOptions = getMasterOptions();
+    masterOptions.microAppRoutes = masterOptions.microAppRoutes.concat(
+      microAppRuntimeRoutes,
+    );
+    setMasterOptions(masterOptions);
+
     patchMicroAppRouteComponent(routes);
   }
 }
