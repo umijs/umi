@@ -36,7 +36,7 @@ type IOpts = {
   onBeforeMiddleware?: Function;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
-export function ensureSafeValue(obj: any) {
+export function ensureSerializableValue(obj: any) {
   return JSON.parse(
     JSON.stringify(
       obj,
@@ -85,7 +85,7 @@ export async function dev(opts: IOpts) {
       remoteAliases: opts.config.mfsu?.remoteAliases,
       remoteName: opts.config.mfsu?.remoteName,
       getCacheDependency() {
-        return ensureSafeValue({
+        return ensureSerializableValue({
           version: require('../package.json').version,
           mfsu: opts.config.mfsu,
           alias: opts.config.alias,
