@@ -36,13 +36,19 @@ type IOpts = {
   onBeforeMiddleware?: Function;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
-export function stripUndefined(obj: any) {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === undefined) {
-      delete obj[key];
-    }
-  });
-  return obj;
+export function ensureSafeValue(obj: any) {
+  return JSON.parse(
+    JSON.stringify(
+      obj,
+      (_key, value) => {
+        if (typeof value === 'function') {
+          return value.toString();
+        }
+        return value;
+      },
+      2,
+    ),
+  );
 }
 
 export async function dev(opts: IOpts) {
@@ -79,7 +85,7 @@ export async function dev(opts: IOpts) {
       remoteAliases: opts.config.mfsu?.remoteAliases,
       remoteName: opts.config.mfsu?.remoteName,
       getCacheDependency() {
-        return stripUndefined({
+        return ensureSafeValue({
           version: require('../package.json').version,
           mfsu: opts.config.mfsu,
           alias: opts.config.alias,
