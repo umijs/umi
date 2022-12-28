@@ -41,12 +41,11 @@ export class DepInfo implements IDepInfo {
   }
 
   shouldBuild() {
-    if (
-      !lodash.isEqual(
-        this.cacheDependency,
-        this.opts.mfsu.opts.getCacheDependency!(),
-      )
-    ) {
+    // 写缓存时 会忽略 function 类型, 这里 处理逻辑变成和缓存前处理一直, 否则缓存永远无法命中
+    const cacheDependency = JSON.parse(
+      JSON.stringify(this.opts.mfsu.opts.getCacheDependency!(), null, 2),
+    );
+    if (!lodash.isEqual(this.cacheDependency, cacheDependency)) {
       return 'cacheDependency has changed';
     }
 
