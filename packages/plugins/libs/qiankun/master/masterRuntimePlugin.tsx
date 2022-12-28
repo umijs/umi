@@ -11,6 +11,10 @@ import { MasterOptions, MicroAppRoute } from './types';
 
 let microAppRuntimeRoutes: MicroAppRoute[];
 
+function filterMicroAppRoutes(routes: MicroAppRoute[]) {
+  routes.filter((r) => r.microApp);
+}
+
 async function getMasterRuntime() {
   const config = await getPluginManager().applyPlugins({
     key: 'qiankun',
@@ -137,14 +141,16 @@ export async function render(oldRender: typeof noop) {
 }
 
 export function patchClientRoutes({ routes }: { routes: any[] }) {
-  if (microAppRuntimeRoutes) {
-    // 动态patch的routes存到 masterOptions.microAppRoutes 下以供 MicroAppLink 使用
-    const masterOptions = getMasterOptions();
-    masterOptions.microAppRoutes = masterOptions.microAppRoutes.concat(
-      microAppRuntimeRoutes,
-    );
-    setMasterOptions(masterOptions);
+  const microAppRoutes = [].concat(
+    routes.filter((r) => r.microApp),
+    microAppRuntimeRoutes?.filter((r) => r.microApp),
+  );
+  // 微应用的 routes 存到 masterOptions.microAppRoutes 下以供 MicroAppLink 使用
+  const masterOptions = getMasterOptions();
+  masterOptions.microAppRoutes = microAppRoutes;
+  setMasterOptions(masterOptions);
 
+  if (microAppRuntimeRoutes) {
     patchMicroAppRouteComponent(routes);
   }
 }

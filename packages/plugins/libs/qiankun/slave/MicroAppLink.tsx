@@ -63,9 +63,13 @@ export const MicroAppLink: FC<
   );
   const linkRef = useRef<HTMLAnchorElement>();
 
-  const { masterHistoryType, microAppRoutes, base } =
+  const { masterHistoryType, microAppRoutes, base, appNameKeyAlias } =
     stateFromMaster?.__globalRoutesInfo || {};
-  const linkProps = { name, to, isMaster };
+  // ref: https://github.com/umijs/plugins/pull/866 基于 name 或 appNameKeyAlias 取到 appName 的逻辑
+  const appName =
+    name && props[appNameKeyAlias] ? name : props[appNameKeyAlias] || name;
+
+  const linkProps = { name: appName, to, isMaster };
   const createHerf = urlFactory(base, microAppRoutes);
 
   const linkUrl =
