@@ -18,7 +18,6 @@ export default (api: IApi) => {
       path: 'core/terminal.ts',
       noPluginDir: true,
       content: `
-const console = globalThis.console;
 let count = 0;
 let groupLevel = 0;
 function send(type: string, message?: string) {
