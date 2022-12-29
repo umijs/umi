@@ -28,9 +28,20 @@ export function isExternal({
     return !!external[value];
   } else if (typeof external === 'function') {
     let ret = false;
-    external({}, value, (_: any, b: any) => {
-      ret = !!b;
-    });
+    external(
+      {
+        __mfsu: true,
+        context: '',
+        request: value,
+        contextInfo: {
+          issuer: '',
+        },
+        dependencyType: 'esm',
+      },
+      (_error: any, result: any) => {
+        ret = !!result;
+      },
+    );
     return ret;
   } else {
     return false;
