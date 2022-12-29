@@ -26,6 +26,7 @@ function getCurrentLocalDevServerEntry(api: IApi, req: Request): string {
   return `${protocol}://${hostname}${port ? ':' : ''}${port}/local-dev-server`;
 }
 
+// 用于处理本地研发时拿到的 entry html，只会在本地 dev 时消费
 function handleOriginalHtml(
   api: IApi,
   microAppEntry: string,
@@ -39,6 +40,7 @@ function handleOriginalHtml(
   const $ = cheerio.load(originalHtml);
 
   // 插入 extra-qiankun-config
+  // 本地研发时设置 __QIANKUN_DEVELOPMENT__ 为 true，避免遇到热更新 bug
   $('head').prepend(
     `<script>window.__QIANKUN_DEVELOPMENT__=true</script>
     <script type="extra-qiankun-config">${JSON.stringify({
