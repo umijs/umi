@@ -925,6 +925,27 @@ monorepoRedirect: {
 
 注意：不允许设定为 src、public、pages、mock、config、locales、models 等约定式功能相关的目录。
 
+## phantomDependency
+
+- 类型：`‌{ exclude: string[] }`
+- 默认值：`false`
+
+执行幽灵依赖检测。
+
+当使用未在 package.json 中声明的依赖，以及也没有通过 alias 或 externals 进行配置时，会抛错并提醒。
+
+![](https://mdn.alipayobjects.com/huamei_ddtbzw/afts/img/A*k5uoQ5TOPooAAAAAAAAAAAAADkCKAQ/original)
+
+如遇到有需要需做白名单处理，可通过 exclude 配置项实现。
+
+```ts
+export default {
+  phantomDependency: {
+    exclude: ['foo']
+  }
+}
+```
+
 ## plugins
 
 - 类型：`string[]`
