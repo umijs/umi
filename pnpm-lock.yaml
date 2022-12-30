@@ -1306,7 +1306,7 @@ importers:
       '@umijs/case-sensitive-paths-webpack-plugin': ^1.0.1
       '@umijs/mfsu': 4.0.0-canary.20221230.1
       '@umijs/utils': 4.0.0-canary.20221230.1
-      autoprefixer: 10.4.4
+      autoprefixer: 10.4.13
       babel-loader: 8.2.4
       compression: 1.7.4
       connect-history-api-fallback: 1.6.0
