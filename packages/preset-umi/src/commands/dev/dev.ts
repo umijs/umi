@@ -8,7 +8,7 @@ import {
   rimraf,
   winPath,
 } from '@umijs/utils';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
@@ -215,6 +215,49 @@ PORT=8888 umi dev
           },
         });
       });
+
+      // watch public dir change and restart server
+      function watchPublicDirChange() {
+        const publicDir = join(api.cwd, 'public');
+        const isPublicAvailable =
+          existsSync(publicDir) && readdirSync(publicDir).length;
+        let restarted = false;
+        const restartServer = () => {
+          if (restarted) return;
+          restarted = true;
+          logger.event(`public dir changed, restart server...`);
+          api.restartServer();
+        };
+        watch({
+          path: publicDir,
+          addToUnWatches: true,
+          onChange(event, path) {
+            if (isPublicAvailable) {
+              // listen public dir delete event
+              if (event === 'unlinkDir' && path === publicDir) {
+                restartServer();
+              } else if (
+                // listen public files all deleted
+                event === 'unlink' &&
+                existsSync(publicDir) &&
+                readdirSync(publicDir).length === 0
+              ) {
+                restartServer();
+              }
+            } else {
+              // listen public dir add first file event
+              if (
+                event === 'add' &&
+                existsSync(publicDir) &&
+                readdirSync(publicDir).length === 1
+              ) {
+                restartServer();
+              }
+            }
+          },
+        });
+      }
+      watchPublicDirChange();
 
       // start dev server
       const beforeMiddlewares = await api.applyPlugins({
