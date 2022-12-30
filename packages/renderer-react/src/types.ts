@@ -1,23 +1,21 @@
-export interface IRoute {
+export interface IRouteSSRProps {
+  clientLoader?: () => Promise<any>;
+  hasServerLoader?: boolean;
+}
+
+export interface IRoute extends IRouteSSRProps {
   id: string;
   path?: string;
   index?: boolean;
   parentId?: string;
   redirect?: string;
-  clientLoader?: () => Promise<any>;
-  hasServerLoader?: boolean;
 }
 
-export interface IClientRoute {
-  id: string;
+export interface IClientRoute extends IRoute {
   element: React.ReactNode;
   children?: IClientRoute[];
   // compatible with @ant-design/pro-layout
   routes?: IClientRoute[];
-  path?: string;
-  index?: boolean;
-  parentId?: string;
-  clientLoader?: () => Promise<any>;
 }
 
 export interface IRoutesById {
