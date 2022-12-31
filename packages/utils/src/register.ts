@@ -23,7 +23,6 @@ function transform(opts: { code: string; filename: string; implementor: any }) {
       logLevel: 'error',
     }).code;
   } catch (e) {
-    // @ts-ignore
     throw new Error(`Parse file failed: [${filename}]`, { cause: e });
   }
 }

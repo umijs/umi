@@ -104,7 +104,7 @@ export class Config {
             path,
           })
           .catch((e) => {
-            throw new Error(e);
+            throw e;
           });
       }, WATCH_DEBOUNCE_STEP),
     );
@@ -176,7 +176,6 @@ export class Config {
             throw e;
           }
 
-          // @ts-ignore
           throw new Error(`Parse config file failed: [${configFile}]`, {
             cause: e,
           });

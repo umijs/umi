@@ -32,6 +32,7 @@ export default (api: IApi) => {
                         highlightCode: true,
                         message: err.message,
                       })}\n`,
+                      { cause: err },
                     );
                   } else if (err instanceof Error) {
                     // throw normal error with red text color
