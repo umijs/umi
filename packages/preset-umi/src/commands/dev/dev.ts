@@ -278,6 +278,7 @@ PORT=8888 umi dev
         const initWorker = () => {
           currentWorker = new Worker(
             join(__dirname, 'depBuildWorker/depBuildWorker.js'),
+            { workerData: { args: api.args } },
           );
           currentWorker.on('exit', () => {
             initWorker();

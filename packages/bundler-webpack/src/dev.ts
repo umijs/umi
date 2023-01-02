@@ -1,5 +1,5 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger, rimraf } from '@umijs/utils';
+import { lodash, logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import type { Worker } from 'worker_threads';
@@ -74,6 +74,7 @@ export async function dev(opts: IOpts) {
       buildDepWithESBuild: opts.config.mfsu?.esbuild,
       depBuildConfig: {
         extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
+        define: lodash.mapValues(opts.config?.define, (v) => JSON.stringify(v)),
       },
       mfName: opts.config.mfsu?.mfName,
       runtimePublicPath: opts.config.runtimePublicPath,

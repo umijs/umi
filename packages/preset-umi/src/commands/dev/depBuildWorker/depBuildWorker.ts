@@ -2,7 +2,7 @@ import { getConfig } from '@umijs/bundler-webpack';
 import { MFSU_NAME } from '@umijs/bundler-webpack/dist/constants';
 import { Env } from '@umijs/bundler-webpack/dist/types';
 import { DEFAULT_MF_NAME, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger, setNoDeprecation } from '@umijs/utils';
+import { lodash, logger, setNoDeprecation } from '@umijs/utils';
 import { dirname, join, resolve } from 'path';
 import { isMainThread, parentPort } from 'worker_threads';
 import { DepBuilderInWorker } from './depBuilder';
@@ -86,8 +86,11 @@ async function start() {
     });
   });
 
+  // TODO: has duplicate logic in bundler-webpack/dev, need to extract.
+  // https://github.com/umijs/umi/blob/691120058620b31a5093ee2fc79cb8c739eb5bda/packages/bundler-webpack/src/dev.ts#L69
   const depEsBuildConfig = {
     extraPostCSSPlugins: opts.config?.extraPostCSSPlugins || [],
+    define: lodash.mapValues(opts.config?.define, (v) => JSON.stringify(v)),
   };
 
   const tmpBase =

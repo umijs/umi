@@ -22,6 +22,16 @@ describe('Basic Test', () => {
     cy.contains('MFSU is working');
   });
 
+  it('display foo', () => {
+    cy.intercept('GET', '/mf-va_remoteEntry.js').as('EntryLoaded');
+
+    cy.visit('/');
+
+    cy.wait('@EntryLoaded');
+
+    cy.contains('foo');
+  });
+
   it('display mfsu working after rebuild', () => {
     cy.intercept('GET', '/mf-va_remoteEntry.js').as('EntryLoaded');
 
