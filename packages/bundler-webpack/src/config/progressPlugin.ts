@@ -1,5 +1,6 @@
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
-import ProgressPlugin from '../plugins/ProgressPlugin';
+// import ProgressPlugin from '../plugins/ProgressPlugin';
+import WebpackBar from '../../compiled/webpackbar';
 import { Env, IConfig } from '../types';
 
 interface IOpts {
@@ -11,10 +12,13 @@ interface IOpts {
 }
 
 export async function addProgressPlugin(opts: IOpts) {
-  const { config, name } = opts;
-  config.plugin('progress-plugin').use(ProgressPlugin, [
-    {
-      name,
-    },
-  ]);
+  const { config, name, env } = opts;
+  // build only since build is too long and no web progress
+  if (env === 'production') {
+    config.plugin('progress-plugin').use(WebpackBar, [
+      {
+        name: name || 'webpack',
+      },
+    ]);
+  }
 }
