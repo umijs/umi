@@ -6,6 +6,7 @@
  * ```
  *
  * @param queries Browser queries.
+ * @param opts Options.
  * @returns Array with browser names in Can I Use.
  */
 declare function browserslist(
@@ -14,6 +15,13 @@ declare function browserslist(
 ): string[]
 
 declare namespace browserslist {
+  interface Query {
+    compose: 'or' | 'and'
+    type: string
+    query: string
+    not?: true
+  }
+
   interface Options {
     /**
      * Path to processed file. It will be used to find config files.
@@ -37,7 +45,7 @@ declare namespace browserslist {
      */
     ignoreUnknownVersions?: boolean
     /**
-     * Throw a error if env is not found.
+     * Throw an error if env is not found.
      */
     throwOnMissing?: boolean
     /**
@@ -143,6 +151,18 @@ declare namespace browserslist {
    * @returns Total market coverage for all selected browsers.
    */
   function coverage(browsers: readonly string[], stats?: StatsOptions): number
+
+  /**
+   * Get queries AST to analyze the config content.
+   *
+   * @param queries Browser queries.
+   * @param opts Options.
+   * @returns An array of the data of each query in the config.
+   */
+  function parse(
+    queries?: string | readonly string[] | null,
+    opts?: browserslist.Options
+  ): Query[]
 
   function clearCaches(): void
 
