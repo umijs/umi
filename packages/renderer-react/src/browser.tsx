@@ -277,9 +277,11 @@ const getBrowser = (
           // onPatchClientRoutes 添加的 route 在 opts.routes 里是不存在的
           const clientLoader = opts.routes[id]?.clientLoader;
           if (clientLoader && !clientLoaderData[id]) {
-            clientLoader().then((data: any) => {
-              setClientLoaderData((d: any) => ({ ...d, [id]: data }));
-            });
+            clientLoader({ location: opts.history.location }).then(
+              (data: any) => {
+                setClientLoaderData((d: any) => ({ ...d, [id]: data }));
+              },
+            );
           }
         });
       },
