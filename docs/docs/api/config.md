@@ -936,7 +936,7 @@ monorepoRedirect: {
 
 ![](https://mdn.alipayobjects.com/huamei_ddtbzw/afts/img/A*k5uoQ5TOPooAAAAAAAAAAAAADkCKAQ/original)
 
-如遇到有需要需做白名单处理，可通过 exclude 配置项实现。
+如遇到有需要需做白名单处理，可通过 exclude 配置项实现，exclude 的项是 npm 依赖的包名。
 
 ```ts
 export default {

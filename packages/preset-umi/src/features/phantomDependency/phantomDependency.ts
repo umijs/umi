@@ -28,9 +28,9 @@ export default (api: IApi) => {
       if (source.startsWith('/')) return;
       if (source.startsWith('@/') || source.startsWith('@@/')) return;
 
-      if (api.config.phantomDependency.exclude?.includes(source)) return;
-
       const pkgName = getPkgName(source);
+      if (api.config.phantomDependency.exclude?.includes(pkgName)) return;
+
       if (api.pkg.dependencies?.[pkgName]) return;
       if (api.pkg.devDependencies?.[pkgName]) return;
       // clientDependencies is used in tnpm
