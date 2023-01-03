@@ -56,10 +56,6 @@ export class LazySourceCodeCache {
     await this.loadFiles(files);
   }
 
-  getSrcPath() {
-    return this.srcPath;
-  }
-
   public async loadFiles(files: string[]) {
     const loaded = await this.filesLoader(files);
 
