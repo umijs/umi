@@ -32,4 +32,8 @@ class AutoCSSModule extends Visitor {
   }
 }
 
+/**
+ * @deprecated Swc will not support js plugin in the future.
+ * See https://github.com/swc-project/website/commit/fde42ad5371c1a16ca9729fe17bcfd3489841ac1
+ */
 export default AutoCSSModule;

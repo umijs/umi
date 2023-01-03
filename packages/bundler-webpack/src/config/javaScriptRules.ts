@@ -163,16 +163,15 @@ export async function addJavaScriptRules(opts: IOpts) {
           ].filter(Boolean),
         });
     } else if (srcTranspiler === Transpiler.swc) {
-      const AutoCSSModule = require('../swcPlugins/autoCSSModules').default;
       rule
         .use('swc-loader')
         .loader(require.resolve('../loader/swc'))
         .options({
-          plugin: (m: Program) => new AutoCSSModule().visitProgram(m),
           excludeFiles: [
             // exclude MFSU virtual entry files, because swc not support top level await
             new RegExp(`/${VIRTUAL_ENTRY_DIR}/[^\\/]+\\.js$`),
           ],
+          enableAutoCssModulesPlugin: userConfig.autoCSSModules,
         });
     } else if (srcTranspiler === Transpiler.esbuild) {
       rule

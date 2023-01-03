@@ -102,7 +102,11 @@ export interface IConfig {
   [key: string]: any;
 }
 
-export interface SwcOptions extends SwcConfig {
+interface ISwcPluginOpts {
+  enableAutoCssModulesPlugin?: boolean;
+}
+
+export interface SwcOptions extends SwcConfig, ISwcPluginOpts {
   sync?: boolean;
   parseMap?: boolean;
   excludeFiles?: Array<string | RegExp>;

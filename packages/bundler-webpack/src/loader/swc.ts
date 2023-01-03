@@ -1,6 +1,7 @@
 import { Config, transform, transformSync } from '@swc/core';
 import type { LoaderContext } from '../../compiled/webpack';
 import { Env, type SwcOptions } from '../types';
+import { deepmerge } from '@umijs/utils';
 
 function getBaseOpts({ filename }: { filename: string }) {
   const isTSFile = filename.endsWith('.ts');
@@ -58,6 +59,7 @@ function swcLoader(
     sync = false,
     parseMap = false,
     excludeFiles = [],
+    enableAutoCssModulesPlugin = false,
     ...otherOpts
   } = loaderOpts;
   const filename = this.resourcePath;
@@ -77,7 +79,7 @@ function swcLoader(
     );
   }
 
-  const swcOpts: SwcOptions = {
+  let swcOpts: SwcOptions = {
     ...getBaseOpts({
       filename,
     }),
@@ -93,6 +95,16 @@ function swcLoader(
       : {}),
     ...otherOpts,
   };
+
+  if (enableAutoCssModulesPlugin) {
+    swcOpts = deepmerge(swcOpts, {
+      jsc: {
+        experimental: {
+          plugins: [[require.resolve('swc-plugin-auto-css-modules'), {}]],
+        },
+      },
+    } as SwcOptions);
+  }
 
   try {
     if (sync) {
