@@ -111,7 +111,7 @@ pnpm i unocss @unocss/cli
 3. 在 Umi 设置中启用插件，并声明会用到 `unocss` 的文件目录
 
 ```js
-// .umirc.ts 或 config/config.ts
+// .umirc.ts
 
 export default {
   plugins: [
