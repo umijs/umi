@@ -1,4 +1,3 @@
-import type { Program } from '@swc/core';
 import {
   autoCssModulesHandler,
   esbuildLoader,
@@ -174,6 +173,7 @@ export async function addJavaScriptRules(opts: IOpts) {
             new RegExp(`/${VIRTUAL_ENTRY_DIR}/[^\\/]+\\.js$`),
           ],
           enableAutoCssModulesPlugin: userConfig.autoCSSModules,
+          mergeConfigs: userConfig.srcTranspilerOptions?.swc,
         });
     } else if (srcTranspiler === Transpiler.esbuild) {
       rule
@@ -182,6 +182,7 @@ export async function addJavaScriptRules(opts: IOpts) {
         .options({
           target: isDev ? 'esnext' : 'es2015',
           handler: [autoCssModulesHandler, ...opts.extraEsbuildLoaderHandler],
+          ...userConfig.srcTranspilerOptions?.esbuild,
         });
       // esbuild loader can not auto import `React`
       config.plugin('react-provide-plugin').use(ProvidePlugin, [

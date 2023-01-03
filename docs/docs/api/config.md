@@ -1171,6 +1171,35 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 
 配置构建时转译 js/ts 的工具。
 
+## srcTranspilerOptions
+
+- 类型：`{ swc?: SwcConfig, esbuild?: EsbuildConfig }`
+- 默认值：`undefined`
+
+如果你使用了 `swc` / `esbuild` 作为 `srcTranspiler` 转译器，你可以通过此选项对转译器做进一步的配置。
+
+如给 swc 添加其他的插件：
+
+```ts
+  srcTranspilerOptions: {
+    swc: {
+      jsc: {
+        experimental: {
+          plugins: [
+            [
+              '@swc/plugin-styled-components',
+              {
+                displayName: true,
+                ssr: true,
+              },
+            ],
+          ],
+        },
+      },
+    },
+  }
+```
+
 ## svgr
 
 - 类型：`object`

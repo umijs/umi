@@ -60,6 +60,7 @@ function swcLoader(
     parseMap = false,
     excludeFiles = [],
     enableAutoCssModulesPlugin = false,
+    mergeConfigs,
     ...otherOpts
   } = loaderOpts;
   const filename = this.resourcePath;
@@ -104,6 +105,10 @@ function swcLoader(
         },
       },
     } as SwcOptions);
+  }
+
+  if (mergeConfigs) {
+    swcOpts = deepmerge(swcOpts, mergeConfigs);
   }
 
   try {

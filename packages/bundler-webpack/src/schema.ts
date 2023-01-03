@@ -142,6 +142,11 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         Transpiler.swc,
         Transpiler.none,
       ),
+    srcTranspilerOptions: (Joi) =>
+      Joi.object({
+        esbuild: Joi.object(),
+        swc: Joi.object(),
+      }),
     styleLoader: (Joi) => Joi.object(),
     svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
     svgr: (Joi) => Joi.object(),
