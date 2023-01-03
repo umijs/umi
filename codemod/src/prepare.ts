@@ -1,6 +1,7 @@
 import assert from 'assert';
 import fg from 'fast-glob';
-import { existsSync, promises as fs } from 'fs';
+import { existsSync } from 'fs';
+import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { build } from './configBuilder';
 
@@ -50,7 +51,7 @@ export async function prepare(opts: { cwd: string; pattern: any; args?: any }) {
   const fileCache = new Map<string, string>();
   await Promise.all(
     files.map(async (file) => {
-      fileCache.set(file, await fs.readFile(join(opts.cwd, file), 'utf8'));
+      fileCache.set(file, await readFile(join(opts.cwd, file), 'utf8'));
     }),
   );
 

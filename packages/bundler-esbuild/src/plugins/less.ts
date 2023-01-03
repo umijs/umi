@@ -1,7 +1,7 @@
 import { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import less from '@umijs/bundler-utils/compiled/less';
 import enhancedResolve from 'enhanced-resolve';
-import { promises as fs } from 'fs';
+import { readFile } from 'fs/promises';
 import path from 'path';
 import { IConfig } from '../types';
 import { postcssProcess } from '../utils/postcssProcess';
@@ -145,7 +145,7 @@ export default (
       onLoad(
         { filter: /\.less$/, namespace: inlineStyle ? 'less-content' : 'file' },
         async (args) => {
-          let content = await fs.readFile(args.path, 'utf-8');
+          let content = await readFile(args.path, 'utf-8');
           if (!!alias) {
             content = await aliasLessImports(content, alias, args.path);
           }
