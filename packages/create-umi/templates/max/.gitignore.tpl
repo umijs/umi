@@ -10,3 +10,4 @@
 /.umi-test
 /dist
 /.mfsu
+.swc
