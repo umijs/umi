@@ -75,7 +75,9 @@ export async function addJavaScriptRules(opts: IOpts) {
             );
           } catch (e: any) {
             if (e.code === 'MODULE_NOT_FOUND') {
-              throw new Error('Cannot resolve extraBabelIncludes: ' + p);
+              throw new Error('Cannot resolve extraBabelIncludes: ' + p, {
+                cause: e,
+              });
             }
             throw e;
           }

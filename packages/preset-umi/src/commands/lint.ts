@@ -32,6 +32,7 @@ umi lint --quiet
       } catch (err) {
         throw new Error(
           '@umijs/lint is not built-in, please install it manually before run umi lint.',
+          { cause: err },
         );
       }
 

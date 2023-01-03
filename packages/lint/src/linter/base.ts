@@ -30,7 +30,9 @@ export default class BaseLinter {
 
       return path.resolve(path.dirname(pkgPath), pkgContent.bin[this.linter]);
     } catch (e) {
-      throw new Error(`${this.linter} not found, please install it first.`);
+      throw new Error(`${this.linter} not found, please install it first.`, {
+        cause: e,
+      });
     }
   }
 

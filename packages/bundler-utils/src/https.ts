@@ -51,7 +51,7 @@ export async function resolveHttpsConfig(httpsConfig: HttpsServerOptions) {
       default:
         break;
     }
-    throw new Error(`[HTTPS] mkcert not found.`);
+    throw new Error(`[HTTPS] mkcert not found.`, { cause: e });
   }
 
   hosts = hosts || defaultHttpsHosts;
