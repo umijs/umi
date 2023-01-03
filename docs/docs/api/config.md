@@ -1176,28 +1176,28 @@ styles: [`body { color: red; }`, `https://a.com/b.css`],
 - 类型：`{ swc?: SwcConfig, esbuild?: EsbuildConfig }`
 - 默认值：`undefined`
 
-如果你使用了 `swc` / `esbuild` 作为 `srcTranspiler` 转译器，你可以通过此选项对转译器做进一步的配置。
+如果你使用了 `swc` / `esbuild` 作为 `srcTranspiler` 转译器，你可以通过此选项对转译器做进一步的配置，详见 [SwcConfig](https://swc.rs/docs/configuration/swcrc) 、 [EsbuildConfig](https://esbuild.github.io/api/#transform-api) 配置文档。
 
 如给 swc 添加其他的插件：
 
 ```ts
-  srcTranspilerOptions: {
-    swc: {
-      jsc: {
-        experimental: {
-          plugins: [
-            [
-              '@swc/plugin-styled-components',
-              {
-                displayName: true,
-                ssr: true,
-              },
-            ],
+srcTranspilerOptions: {
+  swc: {
+    jsc: {
+      experimental: {
+        plugins: [
+          [
+            '@swc/plugin-styled-components',
+            {
+              displayName: true,
+              ssr: true,
+            },
           ],
-        },
+        ],
       },
     },
-  }
+  },
+}
 ```
 
 ## svgr
