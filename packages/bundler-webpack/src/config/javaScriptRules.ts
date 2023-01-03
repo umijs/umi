@@ -1,5 +1,9 @@
 import type { Program } from '@swc/core';
-import { autoCssModulesHandler, esbuildLoader } from '@umijs/mfsu';
+import {
+  autoCssModulesHandler,
+  esbuildLoader,
+  VIRTUAL_ENTRY_DIR,
+} from '@umijs/mfsu';
 import { chalk, lodash, resolve } from '@umijs/utils';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
@@ -165,6 +169,10 @@ export async function addJavaScriptRules(opts: IOpts) {
         .loader(require.resolve('../loader/swc'))
         .options({
           plugin: (m: Program) => new AutoCSSModule().visitProgram(m),
+          excludeFiles: [
+            // exclude MFSU virtual entry files, because swc not support top level await
+            new RegExp(`/${VIRTUAL_ENTRY_DIR}/[^\\/]+\\.js$`),
+          ],
         });
     } else if (srcTranspiler === Transpiler.esbuild) {
       rule

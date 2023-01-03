@@ -23,6 +23,7 @@ import {
   MF_VA_PREFIX,
   REMOTE_FILE,
   REMOTE_FILE_FULL,
+  VIRTUAL_ENTRY_DIR,
 } from '../constants';
 import { Dep } from '../dep/dep';
 import { DepBuilder } from '../depBuilder/depBuilder';
@@ -151,7 +152,7 @@ export class MFSU {
         continue;
       }
 
-      const virtualPath = `./mfsu-virtual-entry/${key}.js`;
+      const virtualPath = `./${VIRTUAL_ENTRY_DIR}/${key}.js`;
       const virtualContent: string[] = [];
       let index = 1;
       let hasDefaultExport = false;

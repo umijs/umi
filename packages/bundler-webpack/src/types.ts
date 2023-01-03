@@ -1,4 +1,4 @@
-import type { Config as SwcConfig } from '@swc/core';
+import type { Options as SwcConfig } from '@swc/core';
 import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
 import webpack, { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
@@ -105,4 +105,5 @@ export interface IConfig {
 export interface SwcOptions extends SwcConfig {
   sync?: boolean;
   parseMap?: boolean;
+  excludeFiles?: Array<string | RegExp>;
 }
