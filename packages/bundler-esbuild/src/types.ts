@@ -2,6 +2,7 @@ import {
   TransformOptions,
   BuildOptions,
 } from '@umijs/bundler-utils/compiled/esbuild';
+import type { Plugin } from '@umijs/bundler-vite/compiled/vite';
 
 export enum Env {
   development = 'development',

@@ -77,6 +77,7 @@ export class Plugin {
       } catch (e: any) {
         throw new Error(
           `Register ${this.type} ${this.path} failed, since ${e.message}`,
+          { cause: e },
         );
       } finally {
         register.restore();
@@ -174,7 +175,9 @@ export class Plugin {
             extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js'],
           });
         } catch (_e) {
-          throw new Error(`Invalid plugin ${path}, can not be resolved.`);
+          throw new Error(`Invalid plugin ${path}, can not be resolved.`, {
+            cause: _e,
+          });
         }
 
         return new Plugin({

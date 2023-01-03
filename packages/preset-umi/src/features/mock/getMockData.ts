@@ -44,6 +44,7 @@ export function getMockData(opts: {
       } catch (e) {
         throw new Error(
           `Mock file ${mockFile} parse failed.\n${(e as Error).message}`,
+          { cause: e },
         );
       }
       // Cannot convert undefined or null to object

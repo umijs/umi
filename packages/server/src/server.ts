@@ -66,11 +66,14 @@ export async function getMarkup(
       props: script,
       filters: ['src', 'content'],
     });
+    // allow specific type from config
+    const isEsmScript = opts.esmScript && !('type' in script);
+
     return script.src
-      ? `<script${opts.esmScript ? ' type="module"' : ''} ${attrs} src="${
+      ? `<script${isEsmScript ? ' type="module"' : ''} ${attrs} src="${
           script.src
         }"></script>`
-      : `<script${opts.esmScript ? ' type="module"' : ''} ${attrs}>${
+      : `<script${isEsmScript ? ' type="module"' : ''} ${attrs}>${
           script.content
         }</script>`;
   }

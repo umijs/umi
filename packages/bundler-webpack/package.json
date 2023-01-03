@@ -55,7 +55,7 @@
     "@types/cors": "^2.8.12",
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.3",
-    "autoprefixer": "10.4.4",
+    "autoprefixer": "10.4.13",
     "babel-loader": "8.2.4",
     "compression": "1.7.4",
     "connect-history-api-fallback": "1.6.0",
