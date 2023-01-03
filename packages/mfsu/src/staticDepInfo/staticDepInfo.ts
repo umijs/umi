@@ -24,7 +24,6 @@ type AutoUpdateSrcCodeCache = {
   getMergedCode(): MergedCodeInfo;
   handleFileChangeEvents(events: FileChangeEvent[]): void;
   replayChangeEvents(): FileChangeEvent[];
-  getSrcPath(): string;
 };
 
 interface IOpts {
