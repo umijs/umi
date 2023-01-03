@@ -7,7 +7,7 @@ import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
 import { createServer } from './server/server';
-import { Env, IConfig, Transpiler } from './types';
+import { Env, IConfig } from './types';
 
 type IOpts = {
   afterMiddlewares?: any[];
