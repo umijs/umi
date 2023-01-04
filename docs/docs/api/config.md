@@ -927,7 +927,7 @@ monorepoRedirect: {
 
 ## phantomDependency
 
-- 类型：`‌{ exclude: string[] }`
+- 类型：`{ exclude: string[] }`
 - 默认值：`false`
 
 执行幽灵依赖检测。
@@ -941,7 +941,7 @@ monorepoRedirect: {
 ```ts
 export default {
   phantomDependency: {
-    exclude: ['foo']
+    exclude: ['lodash']
   }
 }
 ```
