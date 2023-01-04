@@ -1,4 +1,6 @@
 // TODO: check import { Icon } from 'umi' first
+// TODO: handle // and /**/
+// TODO: handle <Icon /> in string or template literal
 export function extractIcons(code: string) {
   const icons: string[] = [];
   let current = 0;
