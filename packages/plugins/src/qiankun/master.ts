@@ -123,6 +123,7 @@ export const setMasterOptions = (newOpts) => options = ({ ...options, ...newOpts
       'common.ts',
       'constants.ts',
       'types.ts',
+      'routeUtils.ts',
       'masterRuntimePlugin.tsx',
       'getMicroAppRouteComponent.tsx.tpl',
       'ErrorBoundary.tsx',

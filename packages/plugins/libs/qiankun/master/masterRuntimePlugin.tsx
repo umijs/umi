@@ -8,12 +8,9 @@ import { insertRoute, noop, patchMicroAppRoute } from './common';
 import { getMicroAppRouteComponent } from './getMicroAppRouteComponent';
 import { getMasterOptions, setMasterOptions } from './masterOptions';
 import { MasterOptions, MicroAppRoute } from './types';
+import { deepFilterLeafRoutes } from './routeUtils';
 
 let microAppRuntimeRoutes: MicroAppRoute[];
-
-function filterMicroAppRoutes(routes: MicroAppRoute[]) {
-  routes.filter((r) => r.microApp);
-}
 
 async function getMasterRuntime() {
   const config = await getPluginManager().applyPlugins({
@@ -142,8 +139,8 @@ export async function render(oldRender: typeof noop) {
 
 export function patchClientRoutes({ routes }: { routes: any[] }) {
   const microAppRoutes = [].concat(
-    routes.filter((r) => r.microApp),
-    microAppRuntimeRoutes?.filter((r) => r.microApp),
+    deepFilterLeafRoutes(routes),
+    deepFilterLeafRoutes(microAppRuntimeRoutes),
   );
   // 微应用的 routes 存到 masterOptions.microAppRoutes 下以供 MicroAppLink 使用
   const masterOptions = getMasterOptions();
