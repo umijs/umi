@@ -17,3 +17,7 @@ test('multiple', () => {
     'bar',
   ]);
 });
+
+test('only the first name attribute is valid', () => {
+  expect(extractIcons(`<Icon name="foo" name="bar" />`)).toEqual(['foo']);
+});

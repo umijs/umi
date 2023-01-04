@@ -1,3 +1,4 @@
+// TODO: check import { Icon } from 'umi' first
 export function extractIcons(code: string) {
   const icons: string[] = [];
   let current = 0;
