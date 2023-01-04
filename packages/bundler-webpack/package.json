@@ -82,6 +82,7 @@
     "webpack-dev-middleware": "5.3.3",
     "webpack-manifest-plugin": "5.0.0",
     "webpack-sources": "3.2.3",
+    "webpackbar": "5.0.2",
     "ws": "8.5.0"
   },
   "publishConfig": {
@@ -118,6 +119,7 @@
       "webpack-dev-middleware",
       "webpack-manifest-plugin",
       "webpack-sources",
+      "webpackbar",
       "ws",
       "./bundles/webpack/bundle"
     ],
