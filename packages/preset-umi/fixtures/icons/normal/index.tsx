@@ -21,3 +21,12 @@ import 'alias-1';
 import { alias3 } from 'alias-3';
 
 console.log(1, foo, jsx, bar, json, antd, alias, alias3);
+export function App() {
+  return (
+    <>
+      <Icon name="xxx" />
+      <Icon name="xxx2" />
+      <Icon name="xxx222" />
+    </>
+  );
+}
