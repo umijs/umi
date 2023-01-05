@@ -44,10 +44,11 @@ function getFiles(root: string) {
       try {
         if (!isReactComponent(content)) return false;
       } catch (e) {
+        // console.error(
+        //   `Parse conventional route component ${absFile} failed: ${e.message}`,
+        // );
+
         // 由 friendly-errors-webpack-plugin 统一处理编译错误信息
-        console.error(
-          `Parse conventional route component ${absFile} failed: ${e.message}`,
-        );
         return true;
       }
     }
@@ -108,9 +109,10 @@ function normalizeRoute(route: IRoute, opts: IOpts): IRoute {
     try {
       props = getExportProps(readFileSync(route.component, 'utf-8'));
     } catch (e) {
-      console.error(
-        `Export props from route component ${route.component} failed: ${e.message}`,
-      );
+      // console.error(
+      //   `Export props from route component ${route.component} failed: ${e.message}`,
+      // );
+      props = undefined;
     }
     route.component = winPath(relative(join(opts.root, '..'), route.component));
     route.component = `${opts.componentPrefix || '@/'}${route.component}`;
