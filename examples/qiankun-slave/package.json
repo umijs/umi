@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "cross-env PORT=5555 max dev",
     "e2e": "cypress open",
-    "e2e:ci": "cross-env PORT=8888 start-server-and-test dev http://127.0.0.1:5555/__umi/api/status  \\\"pnpm umi-scripts turbo --filter @example/qiankun-* dev\\\" '8888|7002' \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "cross-env PORT=8888 start-server-and-test dev http://127.0.0.1:5555/__umi/api/status  \\\"pnpm umi-scripts turbo --filter @example/qiankun-* dev\\\" '8888\\|7002' \\\"pnpm umi-scripts cypress\\\"",
     "e2e:local": "cross-env PORT=8888 start-server-and-test dev http://127.0.0.1:5555/__umi/api/status  \\\"pnpm umi-scripts turbo --filter @example/qiankun-* dev\\\" '8888|7002' e2e",
     "setup": "max setup",
     "start": "npm run dev",
