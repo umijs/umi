@@ -1,6 +1,6 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { logger } from '@umijs/utils';
-import { resolve } from 'path';
+import { logger, tryPaths } from '@umijs/utils';
+import { resolve, join } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath, esbuildUmiPlugin } from '../utils';
 import { assetsLoader } from './assets-loader';
@@ -12,6 +12,17 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
   const { api, watch } = opts;
   logger.wait('[SSR] Compiling...');
   const now = new Date().getTime();
+
+  function getExternal() {
+    const { cwd } = api.paths;
+    if (tryPaths([join(cwd, 'lerna.json'), join(cwd, 'pnpm-workspace.yaml')])) {
+      // Monorepo
+    } else {
+      if (api.pkg.dependencies) {
+        return Object.keys(api.pkg.dependencies);
+      }
+    }
+  }
 
   // TODO: 支持通用的 alias
   // TODO: external all import from package.json.dependencies
@@ -43,6 +54,7 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
       assetsLoader({ cwd: api.cwd }),
     ],
     outfile: absServerBuildPath(api),
+    external: getExternal(),
   });
   const diff = new Date().getTime() - now;
   logger.info(`[SSR] Compiled in ${diff}ms`);
