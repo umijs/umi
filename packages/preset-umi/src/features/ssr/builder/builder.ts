@@ -1,12 +1,13 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { logger, tryPaths } from '@umijs/utils';
-import { resolve, join } from 'path';
+import { logger } from '@umijs/utils';
+import { resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath, esbuildUmiPlugin } from '../utils';
 import { assetsLoader } from './assets-loader';
 import { cssLoader } from './css-loader';
 import { lessLoader } from './less-loader';
 import svgLoader from './svg-loader';
+import { isMonorepo } from '../../monorepo/redirect';
 
 export async function build(opts: { api: IApi; watch?: boolean }) {
   const { api, watch } = opts;
@@ -14,13 +15,11 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
   const now = new Date().getTime();
 
   function getExternal() {
-    const { cwd } = api.paths;
-    if (tryPaths([join(cwd, 'lerna.json'), join(cwd, 'pnpm-workspace.yaml')])) {
-      // Monorepo
+    // TODO: 先不考虑 monorepo 的场景，因为可能依赖了其他的子包
+    if (isMonorepo({ root: api.paths.cwd })) {
+      return [];
     } else {
-      if (api.pkg.dependencies) {
-        return Object.keys(api.pkg.dependencies);
-      }
+      return Object.keys(api.pkg.dependencies || {});
     }
   }
 
