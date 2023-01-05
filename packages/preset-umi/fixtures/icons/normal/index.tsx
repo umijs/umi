@@ -1,3 +1,4 @@
+import React from 'react';
 import { foo } from './foo';
 // @ts-ignore
 import { jsx } from './jsx';
@@ -18,7 +19,7 @@ import antd from '@alipay/bigfish/antd';
 import { alias } from '@/alias';
 import 'alias-1';
 // @ts-ignore
-import { alias3 } from 'alias-3';
+import { alias3, Icon } from 'alias-3';
 
 console.log(1, foo, jsx, bar, json, antd, alias, alias3);
 export function App() {
