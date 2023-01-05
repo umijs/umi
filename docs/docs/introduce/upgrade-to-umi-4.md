@@ -227,7 +227,8 @@ export default function Page(props) {
   );
 }
 ```
-在 `component` 组件中的运用:
+
+在 class component 组件中的使用方式:
 
 ```diff
 import { matchPath } from 'umi';
