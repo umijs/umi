@@ -7,7 +7,7 @@ import { lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
-import { isMonorepo } from '../monorepo/redirect';
+import { isMonorepo } from '@umijs/utils';
 import { getModuleExports } from './getModuleExports';
 
 // get api routes

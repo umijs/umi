@@ -7,7 +7,7 @@ import { assetsLoader } from './assets-loader';
 import { cssLoader } from './css-loader';
 import { lessLoader } from './less-loader';
 import svgLoader from './svg-loader';
-import { isMonorepo } from '../../monorepo/redirect';
+import { isMonorepo } from '@umijs/utils';
 
 export async function build(opts: { api: IApi; watch?: boolean }) {
   const { api, watch } = opts;
