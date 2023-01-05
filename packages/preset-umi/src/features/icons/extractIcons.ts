@@ -53,7 +53,6 @@ export function extractIcons(code: string) {
     let icon = null;
     while (code[current] !== '>') {
       //  name="foo"
-      // console.log('> ', current, code[current], isNameAttributeStart());
       if (isNameAttributeStart()) {
         current += 7;
         icon = findNameValue();
@@ -73,11 +72,9 @@ export function extractIcons(code: string) {
   }
 
   while (current < code.length) {
-    // console.log('current', current);
     // <Icon name="foo" />
     if (isIconStart()) {
       current += 5;
-      // console.log('current isIconStart', current);
       finishJSXTag();
     } else {
       current += 1;

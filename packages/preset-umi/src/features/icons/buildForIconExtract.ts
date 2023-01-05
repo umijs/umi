@@ -41,7 +41,7 @@ export async function buildForIconExtract(opts: {
     bundle: true,
     logLevel: 'error',
     entryPoints: opts.entryPoints,
-    // write: false,
+    write: false,
     outdir: path.join(path.dirname(opts.entryPoints[0]), 'out'),
     plugins: [
       esbuildAliasPlugin({ alias: opts.config?.alias || {} }),

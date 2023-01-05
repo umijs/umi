@@ -11,10 +11,6 @@ export function esbuildCollectIconPlugin(opts: { icons: Set<string> }): Plugin {
         const filter = new RegExp(`\\.(${loader})$`);
         build.onLoad({ filter }, async (args) => {
           const contents = fs.readFileSync(args.path, 'utf-8');
-          if (args.path.includes('pages/index')) {
-            console.log(contents);
-            console.log(extractIcons(contents));
-          }
           extractIcons(contents).forEach((icon) => {
             // just add
             // don't handle delete for dev
