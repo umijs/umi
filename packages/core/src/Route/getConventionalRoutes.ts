@@ -44,9 +44,11 @@ function getFiles(root: string) {
       try {
         if (!isReactComponent(content)) return false;
       } catch (e) {
-        throw new Error(
-          `Parse conventional route component ${absFile} failed, ${e.message}`,
+        // 由 friendly-errors-webpack-plugin 统一处理编译错误信息
+        console.error(
+          `Parse conventional route component ${absFile} failed: ${e.message}`,
         );
+        return true;
       }
     }
     return true;
@@ -100,14 +102,14 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
   return memo;
 }
 
-function normalizeRoute(route: IRoute, opts: IOpts) {
+function normalizeRoute(route: IRoute, opts: IOpts): IRoute {
   let props: unknown = undefined;
   if (route.component) {
     try {
       props = getExportProps(readFileSync(route.component, 'utf-8'));
     } catch (e) {
-      throw new Error(
-        `Parse conventional route component ${route.component} failed, ${e.message}`,
+      console.error(
+        `Export props from route component ${route.component} failed: ${e.message}`,
       );
     }
     route.component = winPath(relative(join(opts.root, '..'), route.component));
@@ -188,7 +190,7 @@ function normalizeRoutes(routes: IRoute[]): IRoute[] {
   );
 }
 
-export default function getRoutes(opts: IOpts) {
+export default function getRoutes(opts: IOpts): IRoute[] {
   const { root, relDir = '', config } = opts;
   const files = getFiles(join(root, relDir));
   const routes = normalizeRoutes(
