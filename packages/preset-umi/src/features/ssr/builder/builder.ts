@@ -18,7 +18,9 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
     if (isMonorepo({ root: api.paths.cwd })) {
       return [];
     } else {
-      return Object.keys(api.pkg.dependencies || {});
+      const dependencies = Object.keys(api.pkg.dependencies || {});
+      const devDependencies = Object.keys(api.pkg.devDependencies || {});
+      return [...dependencies, ...devDependencies];
     }
   }
 
