@@ -22,6 +22,7 @@ export default () => {
       require.resolve('./features/esmi/esmi'),
       require.resolve('./features/exportStatic/exportStatic'),
       require.resolve('./features/favicons/favicons'),
+      require.resolve('./features/icons/icons'),
       require.resolve('./features/mock/mock'),
       require.resolve('./features/mpa/mpa'),
       require.resolve('./features/overrides/overrides'),

@@ -15,7 +15,7 @@ export default (api: IApi) => {
         key: 'onGenerateFiles',
         args: {
           files: null,
-          isFirstTime: false,
+          isFirstTime: true,
         },
       });
     },
