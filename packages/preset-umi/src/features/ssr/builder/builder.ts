@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { logger } from '@umijs/utils';
+import { isMonorepo, logger } from '@umijs/utils';
 import { resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath, esbuildUmiPlugin } from '../utils';
@@ -7,7 +7,6 @@ import { assetsLoader } from './assets-loader';
 import { cssLoader } from './css-loader';
 import { lessLoader } from './less-loader';
 import svgLoader from './svg-loader';
-import { isMonorepo } from '@umijs/utils';
 
 export async function build(opts: { api: IApi; watch?: boolean }) {
   const { api, watch } = opts;
