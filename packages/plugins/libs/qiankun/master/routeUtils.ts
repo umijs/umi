@@ -4,6 +4,10 @@ interface Route extends Record<string, any> {
 }
 
 export function deepFilterLeafRoutes(routeTree: Route[]) {
+  if (!routeTree?.length) {
+    return [];
+  }
+
   const leafRoutes: Route[] = [];
 
   const findLeafRoutes = (routes: Route[]) => {

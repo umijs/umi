@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import { Link, Outlet } from 'umi';
+import { Link, Outlet, MicroAppLink } from 'umi';
 
 export default function Layouts() {
   return (
@@ -12,6 +12,16 @@ export default function Layouts() {
         </li>
         <li>
           <Link to="/hello">Hello</Link>
+        </li>
+        <li>
+          <MicroAppLink name="slave" to="/nav">
+            goto slave
+          </MicroAppLink>
+        </li>
+        <li>
+          <MicroAppLink to="/home" isMaster>
+            goto master
+          </MicroAppLink>
         </li>
       </ul>
       <Outlet />

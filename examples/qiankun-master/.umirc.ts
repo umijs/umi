@@ -19,12 +19,17 @@ export default {
     { path: '/', redirect: '/home' },
     { path: '/home', component: 'index' },
     {
-      path: '/slave-x/*',
+      path: '/slave/*',
       microApp: 'slave',
     },
     {
-      path: '/slave-y/*',
-      microApp: 'slave-app2',
+      path: '/animal',
+      routes: [
+        {
+          path: '/animal/ant/*',
+          microApp: 'slave-app2',
+        },
+      ],
     },
     {
       path: '/manual-slave/*',

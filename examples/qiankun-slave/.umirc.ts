@@ -7,5 +7,6 @@ export default {
   routes: [
     { path: '/home', component: 'home' },
     { path: '/count', component: 'count' },
+    { path: '/nav', component: 'nav' },
   ],
 };

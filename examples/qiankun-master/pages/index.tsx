@@ -10,7 +10,7 @@ export default function HomePage() {
       <h2>Qiankun Master Page</h2>
 
       <div>
-        <Link to="/slave-x/home">
+        <Link to="/slave/home">
           <button>go-slave</button>
         </Link>
       </div>
