@@ -30,16 +30,20 @@ class Route {
   async getRoutes(opts: IGetRoutesOpts) {
     const { config, root, componentPrefix } = opts;
     // 避免修改配置里的 routes，导致重复 patch
-    let routes = lodash.cloneDeep(config.routes);
+    let routes: IRoute[] = lodash.cloneDeep(config.routes);
     let isConventional = false;
     if (!routes) {
       assert(root, `opts.root must be supplied for conventional routes.`);
-      routes = this.getConventionRoutes({
-        root: root!,
-        config,
-        componentPrefix,
-      });
-      isConventional = true;
+      try {
+        routes = this.getConventionRoutes({
+          root: root!,
+          config,
+          componentPrefix,
+        });
+        isConventional = true;
+      } catch (err) {
+        console.error(err);
+      }
     }
     await this.patchRoutes(routes, {
       ...opts,
