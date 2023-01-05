@@ -635,6 +635,6 @@ export default function EmptyRoute() {
         content: exports.join('\n'),
       });
     },
-    stage: Infinity,
+    stage: 10000,
   });
 };

@@ -7,9 +7,11 @@ import { logger } from '@umijs/utils';
 
 export async function buildForIconExtract(opts: {
   entryPoints: string[];
-  watch?: {
-    onRebuildSuccess(icons: Set<string>): void;
-  };
+  watch?:
+    | {
+        onRebuildSuccess(): void;
+      }
+    | false;
   config?: { alias?: any };
 }) {
   const icons: Set<string> = new Set();
@@ -24,12 +26,13 @@ export async function buildForIconExtract(opts: {
       '.tsx': 'tsx',
     },
     watch: !!opts.watch && {
-      onRebuild(err, result) {
+      onRebuild(err) {
         if (err) {
           logger.error(`[icons] build failed: ${err}`);
         } else {
-          console.log(result);
-          opts.watch?.onRebuildSuccess(icons);
+          if (opts.watch) {
+            opts.watch.onRebuildSuccess();
+          }
         }
       },
     },

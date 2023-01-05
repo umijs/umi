@@ -16,13 +16,18 @@ export function esbuildExternalPlugin(): Plugin {
       });
       // external deps
       build.onResolve({ filter: /.*/ }, (args) => {
-        if (args.path.startsWith('.') || args.path.startsWith('/')) {
+        if (args.path.startsWith('.')) {
           return null;
-        } else {
-          return {
-            external: true,
-          };
         }
+        if (args.kind === 'entry-point') {
+          return null;
+        }
+        if (args.path.startsWith('/') && !args.path.includes('node_modules')) {
+          return null;
+        }
+        return {
+          external: true,
+        };
       });
     },
   };

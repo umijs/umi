@@ -1599,6 +1599,7 @@ importers:
 
   packages/preset-umi:
     specifiers:
+      '@iconify-json/fa': '1'
       '@iconify/utils': 2.0.9
       '@manypkg/get-packages': 1.1.3
       '@svgr/core': 6.2.1
@@ -1641,6 +1642,7 @@ importers:
       sirv: 2.0.2
       vite: 2.9.1
     dependencies:
+      '@iconify-json/fa': 1.1.3
       '@iconify/utils': 2.0.9
       '@svgr/core': 6.2.1
       '@umijs/ast': link:../ast
@@ -9997,6 +9999,12 @@ packages:
     resolution: {integrity: sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==}
     engines: {node: '>=6.9.0'}
     dev: true
+
+  /@iconify-json/fa/1.1.3:
+    resolution: {integrity: sha512-Cmzx42MZ2kTOLNGFlplEEvFXPsHkofoIX7iO+XZggyUpLjJjf/3AJS01NzNDoDhol9OZEUz7I0syGtuAjfOv4w==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
 
   /@iconify/types/1.1.0:
     resolution: {integrity: sha512-Jh0llaK2LRXQoYsorIH8maClebsnzTcve+7U3rQUSnC11X4jtPnFuyatqFLvMxZ8MLG8dB4zfHsbPfuvxluONw==}

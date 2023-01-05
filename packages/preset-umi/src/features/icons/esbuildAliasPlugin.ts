@@ -40,7 +40,10 @@ export function esbuildAliasPlugin(opts: {
       // node deps alias should be filtered, and mark as externals with other plugins
       sortByAffix({ keys: Object.keys(opts.alias), affix: '$' })
         .filter((key) => {
-          return opts.alias[key].startsWith('/');
+          return (
+            opts.alias[key].startsWith('/') &&
+            !opts.alias[key].includes('node_modules')
+          );
         })
         .forEach((key) => {
           const value = opts.alias[key];

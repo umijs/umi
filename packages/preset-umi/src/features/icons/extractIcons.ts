@@ -1,6 +1,7 @@
 // TODO: check import { Icon } from 'umi' first
 // TODO: handle // and /**/
 // TODO: handle <Icon /> in string or template literal
+// TODO: support <Icon name={`foo`} />
 export function extractIcons(code: string) {
   const icons: string[] = [];
   let current = 0;
@@ -20,10 +21,10 @@ export function extractIcons(code: string) {
   function isNameAttributeStart() {
     if (
       isEmptyChar(code[current]) &&
-      code[current + 1] === 'n' &&
-      code[current + 2] === 'a' &&
-      code[current + 3] === 'm' &&
-      code[current + 4] === 'e' &&
+      code[current + 1] === 'i' &&
+      code[current + 2] === 'c' &&
+      code[current + 3] === 'o' &&
+      code[current + 4] === 'n' &&
       code[current + 5] === '=' &&
       (code[current + 6] === "'" || code[current + 6] === '"')
     ) {

@@ -25,6 +25,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
+    "@iconify-json/fa": "1",
     "@iconify/utils": "2.0.9",
     "@svgr/core": "6.2.1",
     "@umijs/ast": "4.0.0-canary.20221230.1",

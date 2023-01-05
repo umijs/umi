@@ -5,6 +5,10 @@ function camelCase(str: string) {
   return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
+export function generateIconName(opts: { collect: string; icon: string }) {
+  return camelCase(`${opts.collect}-${opts.icon}`);
+}
+
 // Example:
 // generateSVGR({
 //   collect: 'fa',
@@ -18,7 +22,7 @@ export async function generateSVGR(opts: {
   svgrOptions?: object;
 }) {
   const warn = `${opts.collect}/${opts.icon}`;
-  const componentName = camelCase(`${opts.collect}-${opts.icon}`);
+  const componentName = generateIconName(opts);
   const svg = await loadNodeIcon(opts.collect, opts.icon, {
     warn,
     addXmlNs: false,
