@@ -1,5 +1,8 @@
-import type { Program } from '@swc/core';
-import { autoCssModulesHandler, esbuildLoader } from '@umijs/mfsu';
+import {
+  autoCssModulesHandler,
+  esbuildLoader,
+  VIRTUAL_ENTRY_DIR,
+} from '@umijs/mfsu';
 import { chalk, lodash, resolve } from '@umijs/utils';
 import { dirname, isAbsolute } from 'path';
 import { ProvidePlugin } from '../../compiled/webpack';
@@ -161,12 +164,16 @@ export async function addJavaScriptRules(opts: IOpts) {
           ].filter(Boolean),
         });
     } else if (srcTranspiler === Transpiler.swc) {
-      const AutoCSSModule = require('../swcPlugins/autoCSSModules').default;
       rule
         .use('swc-loader')
         .loader(require.resolve('../loader/swc'))
         .options({
-          plugin: (m: Program) => new AutoCSSModule().visitProgram(m),
+          excludeFiles: [
+            // exclude MFSU virtual entry files, because swc not support top level await
+            new RegExp(`/${VIRTUAL_ENTRY_DIR}/[^\\/]+\\.js$`),
+          ],
+          enableAutoCssModulesPlugin: userConfig.autoCSSModules,
+          mergeConfigs: userConfig.srcTranspilerOptions?.swc,
         });
     } else if (srcTranspiler === Transpiler.esbuild) {
       rule
@@ -175,6 +182,7 @@ export async function addJavaScriptRules(opts: IOpts) {
         .options({
           target: isDev ? 'esnext' : 'es2015',
           handler: [autoCssModulesHandler, ...opts.extraEsbuildLoaderHandler],
+          ...userConfig.srcTranspilerOptions?.esbuild,
         });
       // esbuild loader can not auto import `React`
       config.plugin('react-provide-plugin').use(ProvidePlugin, [

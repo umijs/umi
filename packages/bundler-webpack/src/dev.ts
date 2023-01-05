@@ -7,7 +7,7 @@ import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
 import { createServer } from './server/server';
-import { Env, IConfig, Transpiler } from './types';
+import { Env, IConfig } from './types';
 
 type IOpts = {
   afterMiddlewares?: any[];
@@ -60,12 +60,6 @@ export async function dev(opts: IOpts) {
   let mfsu: MFSU | null = null;
 
   if (enableMFSU) {
-    if (opts.config.srcTranspiler === Transpiler.swc) {
-      logger.warn(
-        `Swc currently not supported for use with mfsu, recommended you use srcTranspiler: 'esbuild' in dev.`,
-      );
-    }
-
     mfsu = new MFSU({
       strategy: opts.mfsuStrategy,
       include: opts.mfsuInclude || [],

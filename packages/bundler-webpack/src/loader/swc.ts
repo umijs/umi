@@ -1,6 +1,7 @@
 import { Config, transform, transformSync } from '@swc/core';
 import type { LoaderContext } from '../../compiled/webpack';
-import { Env, SwcOptions } from '../types';
+import { Env, type SwcOptions } from '../types';
+import { deepmerge } from '@umijs/utils';
 
 function getBaseOpts({ filename }: { filename: string }) {
   const isTSFile = filename.endsWith('.ts');
@@ -41,23 +42,74 @@ function getBaseOpts({ filename }: { filename: string }) {
   return swcOpts;
 }
 
-function swcLoader(this: LoaderContext<SwcOptions>, contents: string) {
-  // 启用异步模式
+function swcLoader(
+  this: LoaderContext<SwcOptions>,
+  contents: string,
+  inputSourceMap: string | Record<string, any>,
+) {
   const callback = this.async();
   const loaderOpts = this.getOptions();
 
-  const { sync = false, parseMap = false, ...otherOpts } = loaderOpts;
+  // ensure `inputSourceMap` is string
+  if (inputSourceMap && typeof inputSourceMap === 'object') {
+    inputSourceMap = JSON.stringify(inputSourceMap);
+  }
+
+  const {
+    sync = false,
+    parseMap = false,
+    excludeFiles = [],
+    enableAutoCssModulesPlugin = false,
+    mergeConfigs,
+    ...otherOpts
+  } = loaderOpts;
   const filename = this.resourcePath;
 
-  const swcOpts = {
+  // skip some files for MFSU
+  const isSkip = excludeFiles.some((pattern) => {
+    if (typeof pattern === 'string') {
+      return filename == pattern;
+    }
+    return pattern.test(filename);
+  });
+  if (isSkip) {
+    return callback(
+      null,
+      contents,
+      parseMap ? JSON.parse(inputSourceMap) : inputSourceMap,
+    );
+  }
+
+  let swcOpts: SwcOptions = {
     ...getBaseOpts({
       filename,
     }),
+    // filename
     filename,
-    sourceMaps: this.sourceMap,
     sourceFileName: filename,
+    // source map
+    sourceMaps: this.sourceMap,
+    ...(inputSourceMap
+      ? {
+          inputSourceMap,
+        }
+      : {}),
     ...otherOpts,
   };
+
+  if (enableAutoCssModulesPlugin) {
+    swcOpts = deepmerge(swcOpts, {
+      jsc: {
+        experimental: {
+          plugins: [[require.resolve('swc-plugin-auto-css-modules'), {}]],
+        },
+      },
+    } as SwcOptions);
+  }
+
+  if (mergeConfigs) {
+    swcOpts = deepmerge(swcOpts, mergeConfigs);
+  }
 
   try {
     if (sync) {

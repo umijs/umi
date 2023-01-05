@@ -1,7 +1,8 @@
-import type { Config as SwcConfig } from '@swc/core';
+import type { Options as SwcConfig } from '@swc/core';
 import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
 import webpack, { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
+import type { TransformOptions as EsbuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
 
 export enum Env {
   development = 'development',
@@ -92,6 +93,7 @@ export interface IConfig {
   purgeCSS?: { [key: string]: any };
   sassLoader?: { [key: string]: any };
   srcTranspiler?: `${Transpiler}`;
+  srcTranspilerOptions?: ISrcTranspilerOpts;
   styleLoader?: { [key: string]: any };
   svgr?: { [key: string]: any };
   svgo?: { [key: string]: any } | false;
@@ -102,7 +104,18 @@ export interface IConfig {
   [key: string]: any;
 }
 
-export interface SwcOptions extends SwcConfig {
+export interface ISrcTranspilerOpts {
+  swc?: Partial<SwcConfig>;
+  esbuild?: Partial<EsbuildOptions>;
+}
+
+export interface ISwcPluginOpts {
+  enableAutoCssModulesPlugin?: boolean;
+}
+
+export interface SwcOptions extends SwcConfig, ISwcPluginOpts {
   sync?: boolean;
   parseMap?: boolean;
+  excludeFiles?: Array<string | RegExp>;
+  mergeConfigs?: Partial<SwcConfig>;
 }
