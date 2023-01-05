@@ -228,6 +228,25 @@ export default function Page(props) {
 }
 ```
 
+在 class component 组件中的使用方式:
+
+```diff
+import { matchPath } from 'umi';
+class Page extends Component {
++  match = matchPath({ path: 'list/search/:type' }, window.location.pathname);
+  state = {}
+  render() {
+    return (
+      <div>
+-        {this.props.match.type}
++        {this.match.type} 
+      </div>
+    )
+  }
+}
+```
+更多 `Umi` 相关 [api](https://umijs.org/docs/api/api)
+
 需要注意 match 数据的差异：
 
 ```
