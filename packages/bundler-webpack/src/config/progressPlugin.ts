@@ -21,6 +21,6 @@ export async function addProgressPlugin(opts: IOpts) {
       },
     ]);
   } else {
-    config.plugin('progress-plugin').use(ProgressPlugin);
+    config.plugin('progress-plugin-dev').use(ProgressPlugin);
   }
 }
