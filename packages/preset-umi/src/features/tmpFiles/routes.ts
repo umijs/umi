@@ -3,11 +3,10 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { lodash, resolve, tryPaths, winPath } from '@umijs/utils';
+import { lodash, resolve, tryPaths, winPath, isMonorepo } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
-import { isMonorepo } from '../monorepo/redirect';
 import { getModuleExports } from './getModuleExports';
 
 // get api routes
