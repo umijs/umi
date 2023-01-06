@@ -101,7 +101,7 @@ export const Icon = React.forwardRef((props: {
   height?: string;
   style?: any;
   spin?: boolean;
-  rotate?: number;
+  rotate?: number | string;
 }, ref) => {
   const { icon, style, className, rotate, ...extraProps } = props;
   const iconName = normalizeIconName(icon);
@@ -111,18 +111,35 @@ export const Icon = React.forwardRef((props: {
     return null;
   }
   const cls = props.spin ? 'umiIconLoadingCircle' : undefined;
-  const svgStyle = rotate
-    ? {
-        msTransform: \`rotate(\${rotate}deg)\`,
-        transform: \`rotate(\${rotate}deg)\`,
-      }
-    : undefined;
+  let svgStyle = undefined;
+  if (rotate) {
+    const rotateDeg = normalizeRotate(rotate);
+    svgStyle = {
+      msTransform: \`rotate(\${rotateDeg}deg)\`,
+      transform: \`rotate(\${rotateDeg}deg)\`,
+    };
+  }
   return (
     <span role="img" ref={ref} className={className} style={style}>
       <Component {...extraProps} className={cls} style={svgStyle} />
     </span>
   );
 });
+
+function normalizeRotate(rotate: number | string) {
+  if (typeof rotate === 'number') {
+    return rotate * 90;
+  }
+  if (typeof rotate === 'string') {
+    if (rotate.endsWith('deg')) {
+      return parseInt(rotate, 10);
+    }
+    if (rotate.endsWith('%')) {
+      return parseInt(rotate, 10) / 100 * 360;
+    }
+    return 0;
+  }
+}
 
 function camelCase(str: string) {
   return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
