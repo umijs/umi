@@ -20,6 +20,17 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  api.onCheckConfig(() => {
+    if (
+      api.config.icons.autoInstall &&
+      (api.appData.npmClient === 'tnpm' || api.appData.npmClient === 'cnpm')
+    ) {
+      throw new Error(
+        `[icons] autoInstall option don't support ${api.appData.npmClient}`,
+      );
+    }
+  });
+
   api.register({
     key: 'onGenerateFiles',
     async fn({ isFirstTime }: { isFirstTime: boolean }) {
