@@ -101,17 +101,26 @@ export const Icon = React.forwardRef((props: {
   height?: string;
   style?: any;
   spin?: boolean;
+  rotate?: number;
 }, ref) => {
-  const { icon, ...extraProps } = props;
+  const { icon, style, className, rotate, ...extraProps } = props;
   const iconName = normalizeIconName(icon);
   const Component = iconsMap[iconName];
   if (!Component) {
     // TODO: give a error icon when dev, to help developer find the error
     return null;
   }
-  const cls = props.spin ? \`umiIconLoadingCircle\` : '';
+  const cls = props.spin ? 'umiIconLoadingCircle' : undefined;
+  const svgStyle = rotate
+    ? {
+        msTransform: \`rotate(\${rotate}deg)\`,
+        transform: \`rotate(\${rotate}deg)\`,
+      }
+    : undefined;
   return (
-    <span role="img" ref={ref} className={cls}><Component {...extraProps} /></span>
+    <span role="img" ref={ref} className={className} style={style}>
+      <Component {...extraProps} className={cls} style={svgStyle} />
+    </span>
   );
 });
 
