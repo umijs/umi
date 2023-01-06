@@ -22,6 +22,7 @@ export default async () => {
       '!config/**',
       '!mock/**',
     ],
+    testPathIgnorePatterns: ['/node_modules/', '/config/', '/mock/'],
     // if you require some es-module npm package, please uncomment below line and insert your package name
     // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
     coverageThreshold: {
