@@ -27,7 +27,8 @@ export function createServerRoute(opts: { route: IRoute }) {
   const { route } = opts;
   return {
     id: route.id,
-    path: route.path,
+    path: route.path || route.originPath,
     index: route.index,
+    name: route.name,
   };
 }

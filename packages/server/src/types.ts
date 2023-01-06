@@ -3,6 +3,8 @@ export interface IRoute {
   path?: string;
   index?: boolean;
   parentId?: string;
+  name?: string;
+  originPath?: string;
 }
 
 export interface IRoutesById {
