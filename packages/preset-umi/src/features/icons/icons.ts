@@ -91,6 +91,7 @@ export default (api: IApi) => {
       content: `
 import React from 'react';
 import * as iconsMap from './icons';
+import './index.css';
 
 export const Icon = React.forwardRef((props: {
   icon: string;
@@ -99,6 +100,7 @@ export const Icon = React.forwardRef((props: {
   width?: string;
   height?: string;
   style?: any;
+  spin?: boolean;
 }, ref) => {
   const { icon, ...extraProps } = props;
   const iconName = normalizeIconName(icon);
@@ -107,8 +109,9 @@ export const Icon = React.forwardRef((props: {
     // TODO: give a error icon when dev, to help developer find the error
     return null;
   }
+  const cls = props.spin ? \`umiIconLoadingCircle\` : '';
   return (
-    <span role="img" ref={ref}><Component {...extraProps} /></span>
+    <span role="img" ref={ref} className={cls}><Component {...extraProps} /></span>
   );
 });
 
@@ -118,6 +121,29 @@ function camelCase(str: string) {
 
 function normalizeIconName(name: string) {
   return camelCase(name.replace(':', '-'));
+}
+      `,
+    });
+    api.writeTmpFile({
+      path: 'index.css',
+      content: `
+.umiIconLoadingCircle {
+  display: inline-block;
+  -webkit-animation: loadingCircle 1s infinite linear;
+  animation: umiIconLoadingCircle 1s linear infinite;
+}
+
+@-webkit-keyframes umiIconLoadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes umiIconLoadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
       `,
     });
