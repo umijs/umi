@@ -102,8 +102,9 @@ export const Icon = React.forwardRef((props: {
   style?: any;
   spin?: boolean;
   rotate?: number | string;
+  flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
 }, ref) => {
-  const { icon, style, className, rotate, ...extraProps } = props;
+  const { icon, style, className, rotate, flip, ...extraProps } = props;
   const iconName = normalizeIconName(icon);
   const Component = iconsMap[iconName];
   if (!Component) {
@@ -111,13 +112,28 @@ export const Icon = React.forwardRef((props: {
     return null;
   }
   const cls = props.spin ? 'umiIconLoadingCircle' : undefined;
-  let svgStyle = undefined;
+  const svgStyle = {};
+  const transform: string[] = [];
   if (rotate) {
     const rotateDeg = normalizeRotate(rotate);
-    svgStyle = {
-      msTransform: \`rotate(\${rotateDeg}deg)\`,
-      transform: \`rotate(\${rotateDeg}deg)\`,
-    };
+    transform.push(\`rotate(\${rotateDeg}deg)\`);
+  }
+  if (flip) {
+    const flipMap = flip.split(',').reduce((memo, item) => {
+      memo[item] = 1;
+      return memo;
+    }, {});
+    if (flipMap.vertical) {
+      transform.push(\`rotateY(180deg)\`);
+    }
+    if (flipMap.horizontal) {
+      transform.push(\`rotateX(180deg)\`);
+    }
+  }
+  if (transform.length) {
+    const transformStr = transform.join('');
+    svgStyle.msTransform = transformStr;
+    svgStyle.transform = transformStr;
   }
   return (
     <span role="img" ref={ref} className={className} style={style}>
