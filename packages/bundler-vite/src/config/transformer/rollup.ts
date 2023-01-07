@@ -18,11 +18,27 @@ export default (function rollup(userConfig) {
 
   // handle analyze
   if (typeof userConfig.analyze === 'object' || process.env.ANALYZE) {
-    function getExclude() {
-      const excludesRaw = Array.isArray(userConfig.analyze?.excludeAssets)
-        ? userConfig.analyze?.excludeAssets
-        : [userConfig.analyze?.excludeAssets];
-      return excludesRaw
+    interface Filter {
+      bundle?: string;
+      file?: string;
+    }
+
+    interface IAnalyze {
+      excludeAssets?: Filter;
+      openAnalyzer?: boolean;
+      generateStatsFile?: boolean;
+      reportFilename?: string;
+      reportTitle?: string;
+    }
+
+    const analyze = <IAnalyze>userConfig.analyze;
+
+    function getExclude(): Filter[] {
+      if (!analyze.excludeAssets) return [];
+      const excludes = Array.isArray(analyze.excludeAssets)
+        ? analyze.excludeAssets
+        : [analyze.excludeAssets];
+      return excludes
         .filter((exclude: string | RegExp | Function) => {
           return typeof exclude === 'string';
         })
@@ -35,15 +51,13 @@ export default (function rollup(userConfig) {
     }
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
-        // @ts-ignore
-        template: userConfig.analyze?.generateStatsFile
-          ? 'raw-data'
-          : 'treemap',
-        open: userConfig.analyze?.openAnalyzer,
+        template: analyze.generateStatsFile ? 'raw-data' : 'treemap',
+        open: analyze.openAnalyzer,
         exclude: getExclude(),
-        emitFile: true,
         gzipSize: true,
         brotliSize: true,
+        filename: analyze.reportFilename,
+        title: analyze.reportTitle,
         // TODO: other options transform, refer: https://umijs.org/docs/api/config#analyze
       }),
     );
