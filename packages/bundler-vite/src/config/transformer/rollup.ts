@@ -35,6 +35,7 @@ export default (function rollup(userConfig) {
     }
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
+        // @ts-ignore
         template: userConfig.analyze?.generateStatsFile
           ? 'raw-data'
           : 'treemap',
