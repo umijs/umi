@@ -22,7 +22,7 @@ export default (function rollup(userConfig) {
       visualizer({
         open: true,
         json: userConfig.analyze?.generateStatsFile,
-        // TODO: other options transform, refer: https://umijs.org/config#analyze
+        // TODO: other options transform, refer: https://umijs.org/docs/api/config#analyze
       }),
     );
   }
