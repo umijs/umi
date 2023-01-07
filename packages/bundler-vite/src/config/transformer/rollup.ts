@@ -1,7 +1,18 @@
 import path from 'path';
-import { visualizer } from 'rollup-plugin-visualizer';
+import {
+  visualizer,
+  type PluginVisualizerOptions,
+} from 'rollup-plugin-visualizer';
 import type { IConfigProcessor } from '.';
 import copy from '../../../compiled/rollup-plugin-copy';
+
+interface IAnalyze {
+  excludeAssets?: string | string[];
+  openAnalyzer?: boolean;
+  generateStatsFile?: boolean;
+  reportFilename?: string;
+  reportTitle?: string;
+}
 
 /**
  * transform umi configs to vite rollup options
@@ -18,31 +29,25 @@ export default (function rollup(userConfig) {
 
   // handle analyze
   if (typeof userConfig.analyze === 'object' || process.env.ANALYZE) {
-    interface Filter {
-      bundle?: string;
-      file?: string;
-    }
+    const {
+      generateStatsFile,
+      openAnalyzer,
+      reportFilename,
+      reportTitle,
+      excludeAssets,
+      ...analyzeOverrides
+    } = (userConfig.analyze || {}) as IAnalyze;
 
-    interface IAnalyze {
-      excludeAssets?: Filter;
-      openAnalyzer?: boolean;
-      generateStatsFile?: boolean;
-      reportFilename?: string;
-      reportTitle?: string;
-    }
-
-    const analyze = <IAnalyze>userConfig.analyze;
-
-    function getExclude(): Filter[] {
-      if (!analyze.excludeAssets) return [];
-      const excludes = Array.isArray(analyze.excludeAssets)
-        ? analyze.excludeAssets
-        : [analyze.excludeAssets];
+    function getExclude(): PluginVisualizerOptions['exclude'] {
+      if (!excludeAssets) return [];
+      const excludes = Array.isArray(excludeAssets)
+        ? excludeAssets
+        : [excludeAssets];
       return excludes
-        .filter((exclude: string | RegExp | Function) => {
+        .filter((exclude) => {
           return typeof exclude === 'string';
         })
-        .map((exclude: string) => {
+        .map((exclude) => {
           return {
             bundle: exclude,
             file: exclude,
@@ -51,14 +56,14 @@ export default (function rollup(userConfig) {
     }
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
-        template: analyze.generateStatsFile ? 'raw-data' : 'treemap',
-        open: analyze.openAnalyzer,
+        template: generateStatsFile ? 'raw-data' : 'treemap',
+        open: openAnalyzer,
         exclude: getExclude(),
         gzipSize: true,
         brotliSize: true,
-        filename: analyze.reportFilename,
-        title: analyze.reportTitle,
-        // TODO: other options transform, refer: https://umijs.org/docs/api/config#analyze
+        filename: reportFilename,
+        title: reportTitle,
+        ...analyzeOverrides,
       }),
     );
   }
