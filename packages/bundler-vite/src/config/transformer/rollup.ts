@@ -1,5 +1,5 @@
 import path from 'path';
-import visualizer from 'rollup-plugin-visualizer';
+import { visualizer } from 'rollup-plugin-visualizer';
 import type { IConfigProcessor } from '.';
 import copy from '../../../compiled/rollup-plugin-copy';
 
@@ -18,11 +18,32 @@ export default (function rollup(userConfig) {
 
   // handle analyze
   if (typeof userConfig.analyze === 'object' || process.env.ANALYZE) {
+    function getExclude() {
+      const excludesRaw = Array.isArray(userConfig.analyze?.excludeAssets)
+        ? userConfig.analyze?.excludeAssets
+        : [userConfig.analyze?.excludeAssets];
+      return excludesRaw
+        .filter((exclude: string | RegExp | Function) => {
+          return typeof exclude === 'string';
+        })
+        .map((exclude: string) => {
+          return {
+            bundle: exclude,
+            file: exclude,
+          };
+        });
+    }
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
-        open: true,
-        json: userConfig.analyze?.generateStatsFile,
-        // TODO: other options transform, refer: https://umijs.org/config#analyze
+        template: userConfig.analyze?.generateStatsFile
+          ? 'raw-data'
+          : 'treemap',
+        open: userConfig.analyze?.openAnalyzer,
+        exclude: getExclude(),
+        emitFile: true,
+        gzipSize: true,
+        brotliSize: true,
+        // TODO: other options transform, refer: https://umijs.org/docs/api/config#analyze
       }),
     );
   }
