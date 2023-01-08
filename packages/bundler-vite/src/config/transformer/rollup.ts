@@ -6,14 +6,6 @@ import {
 import type { IConfigProcessor } from '.';
 import copy from '../../../compiled/rollup-plugin-copy';
 
-interface IAnalyze {
-  excludeAssets?: string | string[];
-  openAnalyzer?: boolean;
-  generateStatsFile?: boolean;
-  reportFilename?: string;
-  reportTitle?: string;
-}
-
 /**
  * transform umi configs to vite rollup options
  * @note  include configs:
@@ -36,7 +28,7 @@ export default (function rollup(userConfig) {
       reportTitle,
       excludeAssets,
       ...analyzeOverrides
-    } = (userConfig.analyze || {}) as IAnalyze;
+    } = userConfig.analyze || {};
 
     function getExclude(): PluginVisualizerOptions['exclude'] {
       if (!excludeAssets) return [];
