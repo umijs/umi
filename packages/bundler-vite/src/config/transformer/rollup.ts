@@ -29,23 +29,27 @@ export default (function rollup(userConfig) {
       reportTitle,
       excludeAssets,
       ...analyzeOverrides
-    } = userConfig.analyze || ({} as IConfig['analyze']);
+    } = (userConfig.analyze || {}) as PluginVisualizerOptions &
+      IConfig['analyze'];
 
     function getExclude(): PluginVisualizerOptions['exclude'] {
       if (!excludeAssets) return [];
       const excludes = Array.isArray(excludeAssets)
         ? excludeAssets
         : [excludeAssets];
-      return excludes
-        .filter((exclude) => {
-          return typeof exclude === 'string';
-        })
-        .map((exclude) => {
-          return {
-            bundle: exclude,
-            file: exclude,
-          };
-        });
+      return (
+        excludes
+          .filter((exclude) => {
+            return typeof exclude === 'string';
+          })
+          // @ts-ignore
+          .map((exclude: string) => {
+            return {
+              bundle: exclude,
+              file: exclude,
+            };
+          })
+      );
     }
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
@@ -55,7 +59,7 @@ export default (function rollup(userConfig) {
         gzipSize: true,
         brotliSize: true,
         filename: reportFilename,
-        title: reportTitle,
+        title: reportTitle as string | undefined,
         ...analyzeOverrides,
       }),
     );
