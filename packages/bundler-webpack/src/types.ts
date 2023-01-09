@@ -3,6 +3,7 @@ import type { HttpsServerOptions, ProxyOptions } from '@umijs/bundler-utils';
 import webpack, { Configuration } from '../compiled/webpack';
 import Config from '../compiled/webpack-5-chain';
 import type { TransformOptions as EsbuildOptions } from '@umijs/bundler-utils/compiled/esbuild';
+import type { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 export enum Env {
   development = 'development',
@@ -100,7 +101,7 @@ export interface IConfig {
   targets?: { [key: string]: any };
   writeToDisk?: boolean;
   babelLoaderCustomize?: string;
-  analyze?: Record<string, any>;
+  analyze?: BundleAnalyzerPlugin.Options;
   [key: string]: any;
 }
 
