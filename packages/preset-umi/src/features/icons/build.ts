@@ -13,6 +13,7 @@ export async function build(opts: {
       }
     | false;
   config?: { alias?: any };
+  options?: { alias?: Record<string, string> };
 }) {
   const icons: Set<string> = new Set();
   await esbuild.build({
@@ -48,6 +49,7 @@ export async function build(opts: {
       esbuildExternalPlugin(),
       esbuildCollectIconPlugin({
         icons,
+        alias: opts.options?.alias || {},
       }),
     ],
   });

@@ -49,6 +49,9 @@ export default (api: IApi) => {
         config: {
           alias: api.config.alias,
         },
+        options: {
+          alias: api.config.icons.alias,
+        },
       });
       // TODO: add debounce
       const generate = async () => {
@@ -93,6 +96,8 @@ import React from 'react';
 import * as iconsMap from './icons';
 import './index.css';
 
+const alias = ${JSON.stringify(api.config.icons.alias || {})};
+
 export const Icon = React.forwardRef((props: {
   icon: string;
   className?: string;
@@ -105,7 +110,7 @@ export const Icon = React.forwardRef((props: {
   flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
 }, ref) => {
   const { icon, style, className, rotate, flip, ...extraProps } = props;
-  const iconName = normalizeIconName(icon);
+  const iconName = normalizeIconName(alias[icon] || icon);
   const Component = iconsMap[iconName];
   if (!Component) {
     // TODO: give a error icon when dev, to help developer find the error
