@@ -101,9 +101,10 @@ import * as iconsMap from './icons';
 import './index.css';
 
 const alias = ${JSON.stringify(api.config.icons.alias || {})};
+type AliasKeys = keyof typeof alias;
 
 export const Icon = React.forwardRef((props: {
-  icon: string;
+  icon: AliasKeys | string;
   className?: string;
   viewBox?: string;
   width?: string;
