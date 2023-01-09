@@ -1,6 +1,8 @@
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
+import qs from 'qs';
+import open from 'open';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
@@ -81,10 +83,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // ).stdout.trim().length;
   // assert(!isGitCleanAfterClientBuild, 'client code is updated');
 
-  // generate changelog
-  // TODO
-  logger.event('generate changelog');
-
   // bump version
   logger.event('bump version');
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
@@ -131,6 +129,16 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
     );
   });
 
+  // generate changelog
+  logger.event('generate changelog');
+  const pkg = require(join(PATHS.ROOT, 'package.json'));
+  pkg.version = version;
+  fs.writeFileSync(
+    join(PATHS.ROOT, 'package.json'),
+    `${JSON.stringify(pkg, null, 2)}\n`,
+  );
+  await $`npm run changelog`;
+
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
   $.verbose = false;
@@ -155,6 +163,21 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
+
+  // open github release
+  const str = fs.readFileSync(join(PATHS.ROOT, 'CHANGELOG.md'), 'utf-8');
+  const body = new RegExp(
+    `(?<first>\\#\\#\\s${version}[\\s\\S]*${version}\\))`,
+  ).exec(str)?.groups?.first;
+  const releaseParms = {
+    tag: version,
+    title: `v${version}`,
+    body,
+    prerelease: false,
+  };
+  open(
+    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
+  );
 
   // check 2fa config
   let otpArg: string[] = [];

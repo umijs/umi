@@ -1,0 +1,14 @@
+{{> header}}
+
+### What's Changed
+
+{{#each commitGroups}}
+{{#each commits}}
+{{> commit root=@root}}
+
+{{/each}}
+{{/each}}
+
+{{> footer root=@root}}
+
+
