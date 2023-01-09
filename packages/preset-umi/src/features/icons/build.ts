@@ -1,11 +1,11 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { esbuildExternalPlugin } from './esbuildExternalPlugin';
+import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
 import path from 'path';
-import { esbuildAliasPlugin } from './esbuildAliasPlugin';
-import { esbuildCollectIconPlugin } from './esbuildCollectIconPlugin';
+import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
+import { esbuildCollectIconPlugin } from './esbuildPlugins/esbuildCollectIconPlugin';
 import { logger } from '@umijs/utils';
 
-export async function buildForIconExtract(opts: {
+export async function build(opts: {
   entryPoints: string[];
   watch?:
     | {

@@ -1,6 +1,6 @@
 import type { Plugin, Loader } from '@umijs/bundler-utils/compiled/esbuild';
 import fs from 'fs';
-import { extractIcons } from './extractIcons';
+import { extractIcons } from '../extract';
 
 export function esbuildCollectIconPlugin(opts: { icons: Set<string> }): Plugin {
   return {

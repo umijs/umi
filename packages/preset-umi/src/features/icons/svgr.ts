@@ -15,7 +15,7 @@ export function generateIconName(opts: { collect: string; icon: string }) {
 //   icon: 'home',
 //   iconifyOptions: { autoInstall: true },
 // })
-export async function generateSVGR(opts: {
+export async function generateSvgr(opts: {
   collect: string;
   icon: string;
   iconifyOptions?: object;

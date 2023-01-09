@@ -1,8 +1,8 @@
 import path from 'path';
 import { IApi } from '../../types';
-import { buildForIconExtract } from './buildForIconExtract';
+import { build } from './build';
 import { logger } from '@umijs/utils';
-import { generateIconName, generateSVGR } from './generateSVGR';
+import { generateIconName, generateSvgr } from './svgr';
 
 export default (api: IApi) => {
   api.describe({
@@ -36,7 +36,7 @@ export default (api: IApi) => {
     async fn({ isFirstTime }: { isFirstTime: boolean }) {
       if (!isFirstTime) return;
       const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
-      const icons = await buildForIconExtract({
+      const icons = await build({
         entryPoints: [entryFile],
         // TODO: unwatch when process exit
         watch: api.name === 'dev' && {
@@ -57,7 +57,7 @@ export default (api: IApi) => {
         for (const iconStr of icons) {
           const [collect, icon] = iconStr.split(':');
           const iconName = generateIconName({ collect, icon });
-          const svgr = await generateSVGR({
+          const svgr = await generateSvgr({
             collect,
             icon,
             iconifyOptions: { autoInstall: api.config.icons.autoInstall },
