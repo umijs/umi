@@ -663,7 +663,7 @@ https: {
 
 ## icons
 
-- 类型：`{ autoInstall: boolean; alias: Record<string,string>;  }`
+- 类型：`{ autoInstall: {}; alias: Record<string,string>;  }`
 - 默认值：`false`
 
 配置开启 icons 功能，比如。
