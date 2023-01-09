@@ -109,6 +109,7 @@ export default {
             'mfsu-independent-usage',
             'code-splitting',
             'legacy-browser',
+            'webpack-5-prod-cache',
           ],
         },
       ],
