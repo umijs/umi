@@ -104,7 +104,7 @@ function swcLoader(
           plugins: [[require.resolve('swc-plugin-auto-css-modules'), {}]],
         },
       },
-    } as SwcOptions);
+    } satisfies SwcOptions);
   }
 
   if (mergeConfigs) {
