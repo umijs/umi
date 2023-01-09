@@ -9,6 +9,7 @@ importers:
       '@types/fs-extra': ^9.0.13
       '@types/jest': ^27.5.1
       '@types/node': ^17.0.35
+      '@types/qs': ^6.9.7
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.5
       '@types/resolve': ^1.20.2
@@ -23,6 +24,8 @@ importers:
       '@umijs/server': workspace:*
       '@umijs/utils': workspace:*
       '@vercel/ncc': 0.33.3
+      compare-func: ^2.0.0
+      conventional-changelog-cli: ^2.2.2
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
       father: ^4.1.0
@@ -34,10 +37,13 @@ importers:
       lint-staged: ^12.3.7
       matcher: ^5.0.0
       only-allow: ^1.1.0
+      open: ^8.4.0
       playwright-chromium: ^1.20.2
       prettier: ^2.7.1
       prettier-plugin-organize-imports: ^2.3.4
       prettier-plugin-packagejson: ^2.2.18
+      q: ^1.5.1
+      qs: ^6.11.0
       react: 18.1.0
       react-dom: 18.1.0
       react-text-loop-next: 0.0.3
@@ -58,6 +64,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.5.2
       '@types/node': 17.0.45
+      '@types/qs': 6.9.7
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.6
       '@types/resolve': 1.20.2
@@ -72,6 +79,8 @@ importers:
       '@umijs/server': link:packages/server
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.33.3
+      compare-func: 2.0.0
+      conventional-changelog-cli: 2.2.2
       dts-packer: 0.0.3
       expect-playwright: 0.8.0
       father: 4.1.0
@@ -83,10 +92,13 @@ importers:
       lint-staged: 12.5.0
       matcher: 5.0.0
       only-allow: 1.1.1
+      open: 8.4.0
       playwright-chromium: 1.25.1
       prettier: 2.7.1
       prettier-plugin-organize-imports: 2.3.4_3izbkkkilozjwunt7rvlqzc6b4
       prettier-plugin-packagejson: 2.2.18_prettier@2.7.1
+      q: 1.5.1
+      qs: 6.11.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-text-loop-next: 0.0.3_ef5jwxihqo6n7gxfmzogljlgcm
@@ -18689,6 +18701,41 @@ packages:
       q: 1.5.1
     dev: true
 
+  /conventional-changelog-atom/2.0.8:
+    resolution: {integrity: sha512-xo6v46icsFTK3bb7dY/8m2qvc8sZemRgdqLb/bjpBsH2UyOS8rKNTgcb5025Hri6IpANPApbXMg15QLb1LJpBw==}
+    engines: {node: '>=10'}
+    dependencies:
+      q: 1.5.1
+    dev: true
+
+  /conventional-changelog-cli/2.2.2:
+    resolution: {integrity: sha512-8grMV5Jo8S0kP3yoMeJxV2P5R6VJOqK72IiSV9t/4H5r/HiRqEBQ83bYGuz4Yzfdj4bjaAEhZN/FFbsFXr5bOA==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      add-stream: 1.0.0
+      conventional-changelog: 3.1.25
+      lodash: 4.17.21
+      meow: 8.1.2
+      tempfile: 3.0.0
+    dev: true
+
+  /conventional-changelog-codemirror/2.0.8:
+    resolution: {integrity: sha512-z5DAsn3uj1Vfp7po3gpt2Boc+Bdwmw2++ZHa5Ak9k0UKsYAO5mH1UBTN0qSCuJZREIhX6WU4E1p3IW2oRCNzQw==}
+    engines: {node: '>=10'}
+    dependencies:
+      q: 1.5.1
+    dev: true
+
+  /conventional-changelog-conventionalcommits/4.6.3:
+    resolution: {integrity: sha512-LTTQV4fwOM4oLPad317V/QNQ1FY4Hju5qeBIM1uTHbrnCE+Eg4CdRZ3gO2pUeR+tzWdp80M2j3qFFEDWVqOV4g==}
+    engines: {node: '>=10'}
+    dependencies:
+      compare-func: 2.0.0
+      lodash: 4.17.21
+      q: 1.5.1
+    dev: true
+
   /conventional-changelog-core/4.2.4:
     resolution: {integrity: sha512-gDVS+zVJHE2v4SLc6B0sLsPiloR0ygU7HaDW14aNJE1v4SlqJPILPl/aJC7YdtRE4CybBf8gDwObBvKha8Xlyg==}
     engines: {node: '>=10'}
@@ -18707,6 +18754,42 @@ packages:
       read-pkg: 3.0.0
       read-pkg-up: 3.0.0
       through2: 4.0.2
+    dev: true
+
+  /conventional-changelog-ember/2.0.9:
+    resolution: {integrity: sha512-ulzIReoZEvZCBDhcNYfDIsLTHzYHc7awh+eI44ZtV5cx6LVxLlVtEmcO+2/kGIHGtw+qVabJYjdI5cJOQgXh1A==}
+    engines: {node: '>=10'}
+    dependencies:
+      q: 1.5.1
+    dev: true
+
+  /conventional-changelog-eslint/3.0.9:
+    resolution: {integrity: sha512-6NpUCMgU8qmWmyAMSZO5NrRd7rTgErjrm4VASam2u5jrZS0n38V7Y9CzTtLT2qwz5xEChDR4BduoWIr8TfwvXA==}
+    engines: {node: '>=10'}
+    dependencies:
+      q: 1.5.1
+    dev: true
+
+  /conventional-changelog-express/2.0.6:
+    resolution: {integrity: sha512-SDez2f3iVJw6V563O3pRtNwXtQaSmEfTCaTBPCqn0oG0mfkq0rX4hHBq5P7De2MncoRixrALj3u3oQsNK+Q0pQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      q: 1.5.1
+    dev: true
+
+  /conventional-changelog-jquery/3.0.11:
+    resolution: {integrity: sha512-x8AWz5/Td55F7+o/9LQ6cQIPwrCjfJQ5Zmfqi8thwUEKHstEn4kTIofXub7plf1xvFA2TqhZlq7fy5OmV6BOMw==}
+    engines: {node: '>=10'}
+    dependencies:
+      q: 1.5.1
+    dev: true
+
+  /conventional-changelog-jshint/2.0.9:
+    resolution: {integrity: sha512-wMLdaIzq6TNnMHMy31hql02OEQ8nCQfExw1SE0hYL5KvU+JCTuPaDO+7JiogGT2gJAxiUGATdtYYfh+nT+6riA==}
+    engines: {node: '>=10'}
+    dependencies:
+      compare-func: 2.0.0
+      q: 1.5.1
     dev: true
 
   /conventional-changelog-preset-loader/2.3.4:
@@ -18728,6 +18811,23 @@ packages:
       semver: 6.3.0
       split: 1.0.1
       through2: 4.0.2
+    dev: true
+
+  /conventional-changelog/3.1.25:
+    resolution: {integrity: sha512-ryhi3fd1mKf3fSjbLXOfK2D06YwKNic1nC9mWqybBHdObPd8KJ2vjaXZfYj1U23t+V8T8n0d7gwnc9XbIdFbyQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      conventional-changelog-angular: 5.0.13
+      conventional-changelog-atom: 2.0.8
+      conventional-changelog-codemirror: 2.0.8
+      conventional-changelog-conventionalcommits: 4.6.3
+      conventional-changelog-core: 4.2.4
+      conventional-changelog-ember: 2.0.9
+      conventional-changelog-eslint: 3.0.9
+      conventional-changelog-express: 2.0.6
+      conventional-changelog-jquery: 3.0.11
+      conventional-changelog-jshint: 2.0.9
+      conventional-changelog-preset-loader: 2.3.4
     dev: true
 
   /conventional-commits-filter/2.0.7:
@@ -39254,6 +39354,11 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /temp-dir/2.0.0:
+    resolution: {integrity: sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==}
+    engines: {node: '>=8'}
+    dev: true
+
   /temp-write/4.0.0:
     resolution: {integrity: sha512-HIeWmj77uOOHb0QX7siN3OtwV3CTntquin6TNVg6SHOqCP3hYKmox90eeFOGaY1MqJ9WYDDjkyZrW6qS5AWpbw==}
     engines: {node: '>=8'}
@@ -39262,6 +39367,14 @@ packages:
       is-stream: 2.0.1
       make-dir: 3.1.0
       temp-dir: 1.0.0
+      uuid: 3.4.0
+    dev: true
+
+  /tempfile/3.0.0:
+    resolution: {integrity: sha512-uNFCg478XovRi85iD42egu+eSFUmmka750Jy7L5tfHI5hQKKtbPnxaSaXAbBqCDYrw3wx4tXjKwci4/QmsZJxw==}
+    engines: {node: '>=8'}
+    dependencies:
+      temp-dir: 2.0.0
       uuid: 3.4.0
     dev: true
 
