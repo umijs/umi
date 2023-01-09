@@ -1,4 +1,4 @@
-import { extractIcons } from './extractIcons';
+import { extractIcons } from './extract';
 
 test('normal', () => {
   expect(extractIcons(`<Icon icon="foo" />`)).toEqual(['foo']);

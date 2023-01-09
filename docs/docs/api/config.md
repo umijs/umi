@@ -659,6 +659,47 @@ https: {
 }
 ```
 
+## icons
+
+- 类型：`{ autoInstall: boolean; alias: Record<string,string>;  }`
+- 默认值：`false`
+
+配置开启 icons 功能，比如。
+
+```ts
+icons: {},
+```
+
+然后你就可以通过 umi 导出的 Icon 组件快捷地引用 icon 集或者本地的 icon。
+
+```ts
+import { Icon } from 'umi';
+<Icon icon="fa:home" />
+```
+
+icon 里包含的字符串是 `collect:icon` 的组合，以 `:` 分割。Icon 集推荐在 [Icônes 网站](https://icones.js.org/)上搜索。
+
+本地 svg icon 的使用需要把 svg 保存在 `src/icons` 目录下，然后通过 `local` 这个前缀引用，比如在 `src/icons` 目录下有个 `umi.svg`，然后可以这样引用。
+
+```tsx
+import { Icon } from 'umi';
+<Icon icon="local:umi" />
+```
+
+介绍下子配置项。`autoInstall` 表示是否自动安装 icon 集（注：暂不支持 tnpm/cnpm）；`alias` 用于配置 icon 的别名，比如配置了 `alias:{home:'fa:home'}` 后就可以通过 `icon="home"` 使用 `fa:home` 这个 icon 了。
+
+Icon 组件也支持丰富的属性，如下。
+
+- icon，指定 icon
+- width，svg 宽度
+- height，svg 高度
+- viewBox，svg viewBox
+- style，外部容器样式
+- className，外部容器样式名
+- spin，是否自动旋转
+- rotate，配置旋转角度，支持多种格式，比如 `1`，`"30deg"`、`"25%"` 都可以
+- flip，支持 `vertical`、`horizontal`，或者他们的组合 `vertical,horizontal`
+
 ## ignoreMomentLocale
 
 - 类型：`boolean`

@@ -1,8 +1,8 @@
 import path from 'path';
 import { IApi } from '../../types';
-import { buildForIconExtract } from './buildForIconExtract';
+import { build } from './build';
 import { logger } from '@umijs/utils';
-import { generateIconName, generateSVGR } from './generateSVGR';
+import { generateIconName, generateSvgr } from './svgr';
 
 export default (api: IApi) => {
   api.describe({
@@ -20,12 +20,24 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  api.onCheckConfig(() => {
+    if (
+      api.config.icons.autoInstall &&
+      (api.appData.npmClient === 'tnpm' || api.appData.npmClient === 'cnpm')
+    ) {
+      throw new Error(
+        `[icons] autoInstall option don't support ${api.appData.npmClient}`,
+      );
+    }
+  });
+
   api.register({
     key: 'onGenerateFiles',
     async fn({ isFirstTime }: { isFirstTime: boolean }) {
       if (!isFirstTime) return;
       const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
-      const icons = await buildForIconExtract({
+      const iconsSet: Set<string> = new Set();
+      const icons = await build({
         entryPoints: [entryFile],
         // TODO: unwatch when process exit
         watch: api.name === 'dev' && {
@@ -35,8 +47,12 @@ export default (api: IApi) => {
             });
           },
         },
+        icons: iconsSet,
         config: {
           alias: api.config.alias,
+        },
+        options: {
+          alias: api.config.icons.alias,
         },
       });
       // TODO: add debounce
@@ -46,16 +62,18 @@ export default (api: IApi) => {
         for (const iconStr of icons) {
           const [collect, icon] = iconStr.split(':');
           const iconName = generateIconName({ collect, icon });
-          const svgr = await generateSVGR({
+          const svgr = await generateSvgr({
             collect,
             icon,
             iconifyOptions: { autoInstall: api.config.icons.autoInstall },
+            localIconDir: path.join(api.paths.absSrcPath, 'icons'),
           });
           if (svgr) {
             code.push(svgr!);
             code.push(`export { ${iconName} };`);
           } else {
             if (api.env === 'development') {
+              iconsSet.delete(iconStr);
               logger.error(`[icons] Icon ${iconStr} not found`);
             } else {
               throw new Error(`[icons] Icon ${iconStr} not found`);
@@ -80,26 +98,74 @@ export default (api: IApi) => {
       content: `
 import React from 'react';
 import * as iconsMap from './icons';
+import './index.css';
+
+const alias = ${JSON.stringify(api.config.icons.alias || {})};
+type AliasKeys = keyof typeof alias;
 
 export const Icon = React.forwardRef((props: {
-  icon: string;
+  icon: AliasKeys | string;
   className?: string;
   viewBox?: string;
   width?: string;
   height?: string;
   style?: any;
+  spin?: boolean;
+  rotate?: number | string;
+  flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
 }, ref) => {
-  const { icon, ...extraProps } = props;
-  const iconName = normalizeIconName(icon);
+  const { icon, style, className, rotate, flip, ...extraProps } = props;
+  const iconName = normalizeIconName(alias[icon] || icon);
   const Component = iconsMap[iconName];
   if (!Component) {
     // TODO: give a error icon when dev, to help developer find the error
     return null;
   }
+  const cls = props.spin ? 'umiIconLoadingCircle' : undefined;
+  const svgStyle = {};
+  const transform: string[] = [];
+  if (rotate) {
+    const rotateDeg = normalizeRotate(rotate);
+    transform.push(\`rotate(\${rotateDeg}deg)\`);
+  }
+  if (flip) {
+    const flipMap = flip.split(',').reduce((memo, item) => {
+      memo[item] = 1;
+      return memo;
+    }, {});
+    if (flipMap.vertical) {
+      transform.push(\`rotateY(180deg)\`);
+    }
+    if (flipMap.horizontal) {
+      transform.push(\`rotateX(180deg)\`);
+    }
+  }
+  if (transform.length) {
+    const transformStr = transform.join('');
+    svgStyle.msTransform = transformStr;
+    svgStyle.transform = transformStr;
+  }
   return (
-    <span role="img" ref={ref}><Component {...extraProps} /></span>
+    <span role="img" ref={ref} className={className} style={style}>
+      <Component {...extraProps} className={cls} style={svgStyle} />
+    </span>
   );
 });
+
+function normalizeRotate(rotate: number | string) {
+  if (typeof rotate === 'number') {
+    return rotate * 90;
+  }
+  if (typeof rotate === 'string') {
+    if (rotate.endsWith('deg')) {
+      return parseInt(rotate, 10);
+    }
+    if (rotate.endsWith('%')) {
+      return parseInt(rotate, 10) / 100 * 360;
+    }
+    return 0;
+  }
+}
 
 function camelCase(str: string) {
   return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
@@ -107,6 +173,29 @@ function camelCase(str: string) {
 
 function normalizeIconName(name: string) {
   return camelCase(name.replace(':', '-'));
+}
+      `,
+    });
+    api.writeTmpFile({
+      path: 'index.css',
+      content: `
+.umiIconLoadingCircle {
+  display: inline-block;
+  -webkit-animation: loadingCircle 1s infinite linear;
+  animation: umiIconLoadingCircle 1s linear infinite;
+}
+
+@-webkit-keyframes umiIconLoadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes umiIconLoadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
       `,
     });

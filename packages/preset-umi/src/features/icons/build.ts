@@ -1,11 +1,11 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { esbuildExternalPlugin } from './esbuildExternalPlugin';
+import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
 import path from 'path';
-import { esbuildAliasPlugin } from './esbuildAliasPlugin';
-import { esbuildCollectIconPlugin } from './esbuildCollectIconPlugin';
+import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
+import { esbuildCollectIconPlugin } from './esbuildPlugins/esbuildCollectIconPlugin';
 import { logger } from '@umijs/utils';
 
-export async function buildForIconExtract(opts: {
+export async function build(opts: {
   entryPoints: string[];
   watch?:
     | {
@@ -13,8 +13,10 @@ export async function buildForIconExtract(opts: {
       }
     | false;
   config?: { alias?: any };
+  options?: { alias?: Record<string, string> };
+  icons?: Set<string>;
 }) {
-  const icons: Set<string> = new Set();
+  const icons: Set<string> = opts.icons || new Set();
   await esbuild.build({
     format: 'esm',
     platform: 'browser',
@@ -48,6 +50,7 @@ export async function buildForIconExtract(opts: {
       esbuildExternalPlugin(),
       esbuildCollectIconPlugin({
         icons,
+        alias: opts.options?.alias || {},
       }),
     ],
   });
