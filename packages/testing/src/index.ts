@@ -55,6 +55,12 @@ export function createConfig(opts?: {
 }): Config.InitialOptions {
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
+    testPathIgnorePatterns: [
+      '/node_modules/',
+      '<rootDir>/config/', // in case of config.test.ts
+      '<rootDir>/mock/',
+      '<rootDir>/.umirc.test.ts',
+    ],
     transform: {
       '^.+\\.(t|j)sx?$': getJSTransformer(
         opts?.jsTransformer || 'esbuild',
