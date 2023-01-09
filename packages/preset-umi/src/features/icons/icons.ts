@@ -36,6 +36,7 @@ export default (api: IApi) => {
     async fn({ isFirstTime }: { isFirstTime: boolean }) {
       if (!isFirstTime) return;
       const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
+      const iconsSet: Set<string> = new Set();
       const icons = await build({
         entryPoints: [entryFile],
         // TODO: unwatch when process exit
@@ -46,6 +47,7 @@ export default (api: IApi) => {
             });
           },
         },
+        icons: iconsSet,
         config: {
           alias: api.config.alias,
         },
@@ -64,12 +66,14 @@ export default (api: IApi) => {
             collect,
             icon,
             iconifyOptions: { autoInstall: api.config.icons.autoInstall },
+            localIconDir: path.join(api.paths.absSrcPath, 'icons'),
           });
           if (svgr) {
             code.push(svgr!);
             code.push(`export { ${iconName} };`);
           } else {
             if (api.env === 'development') {
+              iconsSet.delete(iconStr);
               logger.error(`[icons] Icon ${iconStr} not found`);
             } else {
               throw new Error(`[icons] Icon ${iconStr} not found`);

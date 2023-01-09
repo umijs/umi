@@ -14,8 +14,9 @@ export async function build(opts: {
     | false;
   config?: { alias?: any };
   options?: { alias?: Record<string, string> };
+  icons?: Set<string>;
 }) {
-  const icons: Set<string> = new Set();
+  const icons: Set<string> = opts.icons || new Set();
   await esbuild.build({
     format: 'esm',
     platform: 'browser',
