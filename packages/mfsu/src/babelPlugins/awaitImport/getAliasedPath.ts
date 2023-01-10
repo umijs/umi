@@ -1,6 +1,12 @@
 import { aliasUtils } from '@umijs/utils';
 
-export function getAliasedPathWithLoopDetect({ value, alias }: Opts): string {
+export function getAliasedPathWithLoopDetect({
+  value,
+  alias,
+}: {
+  value: string;
+  alias: Record<string, string>;
+}): string {
   let needUnAlias = value;
   for (let i = 0; i < 10; i++) {
     let unAliased = aliasUtils.getAliasValue({ imported: needUnAlias, alias });
