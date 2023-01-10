@@ -49,6 +49,7 @@
 .vscode
 .idea
 .pnpm-*.log
+.github_token
 
 # Ignore declaration files, they are generated from local development
 /packages/bundler-webpack/client/**/*.d.ts
