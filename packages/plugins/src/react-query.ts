@@ -45,23 +45,33 @@ export default (api: IApi) => {
     return [withTmpPath({ api, path: 'runtime.tsx' })];
   });
 
+  api.addRuntimePluginKey(() => {
+    return ['reactQuery'];
+  });
+
   api.onGenerateFiles(() => {
     const enableDevTools = api.config.reactQuery.devtool !== false;
     const enableQueryClient = api.config.reactQuery.queryClient !== false;
+    const reactQueryRuntimeCode = api.appData.appJS?.exports.includes(
+      'reactQuery',
+    )
+      ? `import { reactQuery as reactQueryConfig } from '@/app';`
+      : `const reactQueryConfig = {};`;
     api.writeTmpFile({
       path: 'runtime.tsx',
       content: enableQueryClient
         ? `
 import { defaultContext, QueryClient, QueryClientProvider } from '${pkgPath}';
 import { ReactQueryDevtools } from '${devtoolPkgPath}';
-const client = new QueryClient();
+${reactQueryRuntimeCode}
+const client = new QueryClient(reactQueryConfig.queryClient || {});
 export function rootContainer(container) {
   return (
     <QueryClientProvider client={client} context={defaultContext}>
       {container}
       ${
         enableDevTools
-          ? '<ReactQueryDevtools context={defaultContext} initialIsOpen={false} />'
+          ? '<ReactQueryDevtools context={defaultContext} initialIsOpen={false} {...(reactQueryConfig.devtool || {})} />'
           : ''
       }
     </QueryClientProvider>
