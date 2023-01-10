@@ -88,6 +88,7 @@ export default {
             'max/access',
             'max/i18n',
             'max/micro-frontend',
+            'max/react-query',
             'max/valtio',
             'max/dva',
             // 暂不支持
