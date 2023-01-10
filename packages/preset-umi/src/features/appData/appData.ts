@@ -6,7 +6,7 @@ import { parse } from '../../../compiled/ini';
 import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
-import { IApi } from '../../types';
+import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
 import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
@@ -87,7 +87,7 @@ export default (api: IApi) => {
   // Execute earliest, so that other onGenerateFiles can get it
   api.register({
     key: 'onGenerateFiles',
-    async fn(args: any) {
+    async fn(args: IOnGenerateFiles) {
       if (!args.isFirstTime) {
         api.appData.appJS = await getAppJsInfo();
         const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();

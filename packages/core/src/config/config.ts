@@ -11,7 +11,7 @@ import {
   SHORT_ENV,
   WATCH_DEBOUNCE_STEP,
 } from '../constants';
-import { Env } from '../types';
+import { Env, ConfigChangeType } from '../types';
 import { addExt, getAbsFiles } from './utils';
 
 interface IOpts {
@@ -23,7 +23,7 @@ interface IOpts {
 
 type ISchema = Record<string, any>;
 
-type IOnChangeTypes = Record<string, string | Function>;
+type IOnChangeTypes = Record<string, string | `${ConfigChangeType}` | Function>;
 
 export class Config {
   public opts: IOpts;

@@ -70,6 +70,10 @@ export type IEntryImport = {
 };
 export type IRoute = ICoreRoute;
 export type IFileInfo = Array<{ event: string; path: string }>;
+export interface IOnGenerateFiles {
+  files?: IFileInfo | null;
+  isFirstTime?: boolean;
+}
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -175,10 +179,7 @@ export type IApi = PluginAPI &
       stats: webpack.Stats;
       time: number;
     }>;
-    onGenerateFiles: IEvent<{
-      files?: IFileInfo | null;
-      isFirstTime?: boolean;
-    }>;
+    onGenerateFiles: IEvent<IOnGenerateFiles>;
     onPatchRoute: IEvent<{
       route: IRoute;
     }>;
