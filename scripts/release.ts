@@ -6,6 +6,7 @@ import { Octokit } from 'octokit';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
+import qs from 'qs';
 import { PATHS } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
 
@@ -154,35 +155,10 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
 
-  // get release notes
-  const GITHUB_TOKEN = '.github_token';
-  const token = fs.readFileSync(GITHUB_TOKEN, 'utf8').trim();
-  const octokit = new Octokit({
-    auth: token,
-  });
-  const releaseNotes = await octokit.request(
-    'POST /repos/txp1035/auto-command/releases/generate-notes',
-    {
-      tag_name: version,
-    },
-  );
-
+  // changelog
+  const { releaseNotes } = await githubRelease(version);
   // generate changelog
-
-  // open github release
-  const str = fs.readFileSync(join(PATHS.ROOT, 'CHANGELOG.md'), 'utf-8');
-  const body = new RegExp(
-    `(?<first>\\#\\#\\s${version}[\\s\\S]*${version}\\))`,
-  ).exec(str)?.groups?.first;
-  const releaseParms = {
-    tag: version,
-    title: `v${version}`,
-    body,
-    prerelease: false,
-  };
-  open(
-    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
-  );
+  generateChangelog(releaseNotes);
 
   // check 2fa config
   let otpArg: string[] = [];
@@ -240,4 +216,42 @@ function setDepsVersion(opts: {
     }
   });
   return pkg;
+}
+
+export async function githubRelease(version: String) {
+  // get release notes
+  const GITHUB_TOKEN = '.github_token';
+  const OWNER = 'umijs';
+  const REPO = 'umi';
+  const token = fs.readFileSync(GITHUB_TOKEN, 'utf8').trim();
+  const octokit = new Octokit({
+    auth: token,
+  });
+  const releaseNotesRes = await octokit.request(
+    `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
+    {
+      tag_name: version,
+    },
+  );
+  const releaseNotes = releaseNotesRes.data.body;
+
+  // open github release
+  const releaseParms = {
+    tag: version,
+    title: `v${version}`,
+    body: releaseNotes,
+    prerelease: false,
+  };
+  open(
+    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
+  );
+  return { releaseNotes };
+}
+
+function generateChangelog(releaseNotes: String) {
+  const CHANGELOG_PATH = join(PATHS.ROOT, 'CHANGELOG.md');
+  const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
+  const arr = str.split('# umi changelog');
+  const newStr = `# umi changelog\n\n${releaseNotes}${arr[1]}`;
+  fs.writeFileSync(CHANGELOG_PATH, newStr);
 }
