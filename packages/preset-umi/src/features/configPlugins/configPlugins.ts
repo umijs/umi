@@ -90,7 +90,7 @@ export default (api: IApi) => {
       config.default = configDefaults[key];
     }
 
-    // when `routes...icon` changes, need to refresh the `routes` data
+    // when `routes#icon` changes, need to refresh the `appData.routes`
     // otherwise the `icon` will not update
     if (['routes'].includes(key)) {
       const onRoutesChange: OnConfigChangeFn = async ({ generate }) => {
