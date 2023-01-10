@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author":"{{{ author }}}",
+  "author": "{{{ author }}}",
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",

@@ -1,6 +1,6 @@
 {
   "name": "{{{ name }}}",
-  "author":"{{{ author }}}",
+  "author": "{{{ author }}}",
   "version": "0.0.1",
   "description": "{{{ description }}}",
   "main": "lib/index.js",
