@@ -1,4 +1,4 @@
-import { join } from 'path';
+import path from 'path';
 
 export function getAliasValue(opts: {
   imported: string;
@@ -26,7 +26,12 @@ export function getAliasValue(opts: {
     //      react/jsx-runtime : /dir/jsx-runtime
     const keyWithLastSlash = addLastSlash(key);
     if (imported.startsWith(keyWithLastSlash)) {
-      return join(value, imported.slice(keyWithLastSlash.length));
+      const isWinPath =
+        process.platform === 'win32' && value.includes(path.sep);
+      if (isWinPath) {
+        return path.join(value, imported.slice(keyWithLastSlash.length));
+      }
+      return imported.replace(keyWithLastSlash, addLastSlash(value));
     }
   }
 }

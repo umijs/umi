@@ -30,7 +30,7 @@ test('complex case', () => {
   } as const;
   const parsedAlias = parseCircleAlias({ alias });
   expect(parsedAlias.umi).toEqual(join(__dirname, './parseCircleAlias'));
-  expect(parsedAlias['@@']).toEqual(join(__dirname));
+  expect(parsedAlias['@@']).toEqual(join(__dirname, './'));
   expect(parsedAlias['@']).toEqual(join(__dirname));
   expect(parsedAlias['@@@']).toEqual(alias['@@@']);
 });
