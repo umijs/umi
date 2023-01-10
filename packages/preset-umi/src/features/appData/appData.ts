@@ -70,19 +70,14 @@ export default (api: IApi) => {
     return memo;
   });
 
-  function findGitDir(dir: string): string | null {
-    if (dir === resolve('/')) {
-      return null;
-    }
-    if (existsSync(join(dir, '.git'))) {
-      return join(dir, '.git');
-    }
-    const parent: string | null = findGitDir(join(dir, '..'));
-    if (parent) {
-      return parent;
-    }
-    return null;
-  }
+  api.registerMethod({
+    name: 'refreshRoutes',
+    async fn() {
+      api.appData.routes = await getRoutes({
+        api,
+      });
+    },
+  });
 
   // Execute earliest, so that other onGenerateFiles can get it
   api.register({
@@ -170,3 +165,17 @@ export default (api: IApi) => {
     };
   }
 };
+
+function findGitDir(dir: string): string | null {
+  if (dir === resolve('/')) {
+    return null;
+  }
+  if (existsSync(join(dir, '.git'))) {
+    return join(dir, '.git');
+  }
+  const parent: string | null = findGitDir(join(dir, '..'));
+  if (parent) {
+    return parent;
+  }
+  return null;
+}

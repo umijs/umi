@@ -36,6 +36,9 @@ export enum ConfigChangeType {
   regenerateTmpFiles = 'regenerateTmpFiles',
 }
 
+export type ChangeTypeValue = string | `${ConfigChangeType}` | Function;
+export type IOnChangeTypes = Record<string, ChangeTypeValue>;
+
 export enum ApplyPluginsType {
   add = 'add',
   modify = 'modify',

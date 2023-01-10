@@ -74,6 +74,10 @@ export interface IOnGenerateFiles {
   files?: IFileInfo | null;
   isFirstTime?: boolean;
 }
+export type GenerateFilesFn = (opts: IOnGenerateFiles) => Promise<void>;
+export type OnConfigChangeFn = (opts: {
+  generate: GenerateFilesFn;
+}) => void | Promise<void>;
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -187,6 +191,7 @@ export type IApi = PluginAPI &
       current: Record<string, any>;
       origin: Record<string, any>;
     }>;
+    refreshRoutes: () => void;
     restartServer: () => void;
     writeTmpFile: (opts: {
       content?: string;
