@@ -64,11 +64,11 @@ test('WINDOWS: babel-plugin-import: with alias', () => {
   ).toEqual(
     // prettier-ignore
     [
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model`,       value: 'D:\\user\\umi\\node_modules\\antd/es/model',       version: '1.2.3', isMatch: true,},
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model/style`, value: 'D:\\user\\umi\\node_modules\\antd/es/model/style', version: '1.2.3', isMatch: true,},
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model`,       value: 'D:\\user\\umi\\node_modules\\antd\\es\\model',        version: '1.2.3', isMatch: true,},
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model/style`, value: 'D:\\user\\umi\\node_modules\\antd\\es\\model\\style', version: '1.2.3', isMatch: true,},
 
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row`,         value: 'D:\\user\\umi\\node_modules\\antd/es/row',         version: '1.2.3', isMatch: true,},
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row/style`,   value: 'D:\\user\\umi\\node_modules\\antd/es/row/style',   version: '1.2.3', isMatch: true,},
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row`,         value: 'D:\\user\\umi\\node_modules\\antd\\es\\row',          version: '1.2.3', isMatch: true,},
+      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row/style`,   value: 'D:\\user\\umi\\node_modules\\antd\\es\\row\\style',   version: '1.2.3', isMatch: true,},
     ],
   );
 });
