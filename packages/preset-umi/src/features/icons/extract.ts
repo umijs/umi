@@ -3,7 +3,7 @@
 // TODO: handle <Icon /> in string or template literal
 // TODO: support <Icon name={`foo`} />
 export function extractIcons(code: string) {
-  const icons: string[] = [];
+  const icons: Set<string> = new Set();
   let current = 0;
 
   function isIconStart() {
@@ -18,7 +18,7 @@ export function extractIcons(code: string) {
   }
 
   let quotationMark: string = '';
-  function isNameAttributeStart() {
+  function isIconAttributeStart() {
     if (
       isEmptyChar(code[current]) &&
       code[current + 1] === 'i' &&
@@ -35,12 +35,30 @@ export function extractIcons(code: string) {
     }
   }
 
+  function isHoverAttributeStart() {
+    if (
+      isEmptyChar(code[current]) &&
+      code[current + 1] === 'h' &&
+      code[current + 2] === 'o' &&
+      code[current + 3] === 'v' &&
+      code[current + 4] === 'e' &&
+      code[current + 5] === 'r' &&
+      code[current + 6] === '=' &&
+      (code[current + 7] === "'" || code[current + 7] === '"')
+    ) {
+      quotationMark = code[current + 7];
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   function isEmptyChar(char: string) {
     // \r is for windows
     return char === ' ' || char === '\n' || char === '\r';
   }
 
-  function findNameValue() {
+  function findAttributeValue() {
     let value = '';
     while (code[current] !== quotationMark && code[current] !== '>') {
       value += code[current];
@@ -52,14 +70,20 @@ export function extractIcons(code: string) {
   function finishJSXTag() {
     let icon = null;
     while (code[current] !== '>') {
-      //  name="foo"
-      if (isNameAttributeStart()) {
+      //  icon="foo"
+      if (isIconAttributeStart()) {
         current += 7;
-        icon = findNameValue();
+        icon = findAttributeValue();
         if (icon) {
-          icons.push(icon);
-          // only one name attribute is valid
-          return;
+          icons.add(icon);
+        }
+      }
+      // hover=""
+      else if (isHoverAttributeStart()) {
+        current += 8;
+        icon = findAttributeValue();
+        if (icon) {
+          icons.add(icon);
         }
       } else {
         current += 1;
@@ -80,7 +104,5 @@ export function extractIcons(code: string) {
       current += 1;
     }
   }
-  return icons;
+  return Array.from(icons);
 }
-
-// console.log(extractIcons(`   <Icon name="foo" />`));

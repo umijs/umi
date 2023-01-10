@@ -105,6 +105,7 @@ type AliasKeys = keyof typeof alias;
 
 export const Icon = React.forwardRef((props: {
   icon: AliasKeys | string;
+  hover: AliasKeys | string;
   className?: string;
   viewBox?: string;
   width?: string;
@@ -114,13 +115,14 @@ export const Icon = React.forwardRef((props: {
   rotate?: number | string;
   flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
 }, ref) => {
-  const { icon, style, className, rotate, flip, ...extraProps } = props;
+  const { icon, hover, style, className, rotate, flip, ...extraProps } = props;
   const iconName = normalizeIconName(alias[icon] || icon);
   const Component = iconsMap[iconName];
   if (!Component) {
     // TODO: give a error icon when dev, to help developer find the error
     return null;
   }
+  const HoverComponent = hover ? iconsMap[normalizeIconName(alias[hover] || hover)] : null;
   const cls = props.spin ? 'umiIconLoadingCircle' : undefined;
   const svgStyle = {};
   const transform: string[] = [];
@@ -146,8 +148,11 @@ export const Icon = React.forwardRef((props: {
     svgStyle.transform = transformStr;
   }
   return (
-    <span role="img" ref={ref} className={className} style={style}>
+    <span role="img" ref={ref} className={HoverComponent ? 'umiIconDoNotUseThis ' : '' + className} style={style}>
       <Component {...extraProps} className={cls} style={svgStyle} />
+      {
+        HoverComponent ? <HoverComponent {...extraProps} className={'umiIconDoNotUseThisHover ' + cls} style={svgStyle} /> : null
+      }
     </span>
   );
 });
@@ -179,6 +184,15 @@ function normalizeIconName(name: string) {
     api.writeTmpFile({
       path: 'index.css',
       content: `
+.umiIconDoNotUseThisHover {
+  display: none;
+}
+.umiIconDoNotUseThis:hover svg {
+  display: none;
+}
+.umiIconDoNotUseThis:hover .umiIconDoNotUseThisHover {
+  display: inline-block;
+}
 .umiIconLoadingCircle {
   display: inline-block;
   -webkit-animation: loadingCircle 1s infinite linear;
