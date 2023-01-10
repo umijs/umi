@@ -18,6 +18,7 @@ test('get alias value: simple', () => {
 
   check('react-dom').toEqual('/react-dom');
   check('react-dom/server').toEqual('/react-dom/server');
+  check('react-dom/server/subpath').toEqual('/react-dom/server/subpath');
 
   check('preact').toEqual('/preact/');
   check('preact/subpath').toEqual('/preact/subpath');

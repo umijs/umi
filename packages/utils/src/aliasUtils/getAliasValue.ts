@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 export function getAliasValue(opts: {
   imported: string;
   alias: Record<string, string>;
@@ -24,8 +26,7 @@ export function getAliasValue(opts: {
     //      react/jsx-runtime : /dir/jsx-runtime
     const keyWithLastSlash = addLastSlash(key);
     if (imported.startsWith(keyWithLastSlash)) {
-      const valueWithLastSlash = addLastSlash(value);
-      return imported.replace(keyWithLastSlash, valueWithLastSlash);
+      return join(value, imported.slice(keyWithLastSlash.length));
     }
   }
 }
