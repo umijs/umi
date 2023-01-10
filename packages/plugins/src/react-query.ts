@@ -10,7 +10,7 @@ export default (api: IApi) => {
       schema(Joi) {
         return Joi.object({
           devtool: Joi.alternatives(Joi.object(), Joi.boolean()),
-          globalQueryClient: Joi.object(),
+          queryClient: Joi.alternatives(Joi.object(), Joi.boolean()),
         });
       },
     },
@@ -47,9 +47,11 @@ export default (api: IApi) => {
 
   api.onGenerateFiles(() => {
     const enableDevTools = api.config.reactQuery.devtool !== false;
+    const enableQueryClient = api.config.reactQuery.queryClient !== false;
     api.writeTmpFile({
       path: 'runtime.tsx',
-      content: `
+      content: enableQueryClient
+        ? `
 import { defaultContext, QueryClient, QueryClientProvider } from '${pkgPath}';
 import { ReactQueryDevtools } from '${devtoolPkgPath}';
 const client = new QueryClient();
@@ -65,7 +67,8 @@ export function rootContainer(container) {
     </QueryClientProvider>
   );
 }
-      `,
+      `
+        : '',
     });
     api.writeTmpFile({
       path: 'index.tsx',
