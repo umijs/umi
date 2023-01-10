@@ -191,7 +191,7 @@ export type IApi = PluginAPI &
       current: Record<string, any>;
       origin: Record<string, any>;
     }>;
-    refreshRoutes: () => void;
+    refreshRoutes: () => Promise<void>;
     restartServer: () => void;
     writeTmpFile: (opts: {
       content?: string;
