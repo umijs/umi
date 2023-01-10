@@ -12,6 +12,7 @@ export default () => {
       require.resolve('@umijs/plugins/dist/model'),
       require.resolve('@umijs/plugins/dist/moment2dayjs'),
       require.resolve('@umijs/plugins/dist/qiankun'),
+      require.resolve('@umijs/plugins/dist/react-query'),
       require.resolve('@umijs/plugins/dist/request'),
       require.resolve('@umijs/plugins/dist/styled-components'),
       require.resolve('@umijs/plugins/dist/tailwindcss'),

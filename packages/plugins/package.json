@@ -27,6 +27,8 @@
     "@ant-design/antd-theme-variable": "^1.0.0",
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
+    "@tanstack/react-query": "^4.22.0",
+    "@tanstack/react-query-devtools": "^4.22.0",
     "@umijs/bundler-utils": "4.0.0-canary.20230109.1",
     "@umijs/valtio": "^1.0.2",
     "antd-dayjs-webpack-plugin": "^1.0.6",
@@ -45,7 +47,8 @@
     "react-intl": "3.12.1",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
-    "styled-components": "6.0.0-beta.6",
+    "styled-components": "^6.0.0-beta.9",
+    "tslib": "^2",
     "warning": "^4.0.3"
   },
   "devDependencies": {
