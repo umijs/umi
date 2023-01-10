@@ -12,7 +12,11 @@ export default {
 }
 ```
 
-如果是 umi，先安装 `@umijs/plugins` 依赖，再通过配置开启，
+如果是 umi，先安装 `@umijs/plugins` 依赖，再通过配置开启。
+
+```bash
+$ pnpm i @umijs/plugins -D
+```
 
 ```ts
 export default {
