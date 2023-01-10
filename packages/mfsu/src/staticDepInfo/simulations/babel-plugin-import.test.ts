@@ -56,7 +56,7 @@ test('WINDOWS: babel-plugin-import: with alias', () => {
   } as const;
   const normalizePath = (p: string) => winPath(p.slice('mf/'.length));
 
-  expect(() => {
+  const getHandleImports = () => {
     const result = handleImports({
       imports: [
         // prettier-ignore
@@ -73,7 +73,8 @@ test('WINDOWS: babel-plugin-import: with alias', () => {
       i.value = winPath(i.value);
     });
     return result;
-  }).toEqual(
+  };
+  expect(getHandleImports()).toEqual(
     // prettier-ignore
     [
       { replaceValue: VALUES.es_model,       value: normalizePath(VALUES.es_model),       version: '1.2.3', isMatch: true,},
