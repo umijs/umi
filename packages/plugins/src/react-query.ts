@@ -1,5 +1,6 @@
 import { dirname } from 'path';
 import { IApi } from 'umi';
+import { resolveProjectDep } from './utils/resolveProjectDep';
 
 export default (api: IApi) => {
   api.describe({
@@ -14,10 +15,27 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  // reexports with types
-  const libPath = dirname(
+  let pkgPath: string;
+  const defaultPkgPath = dirname(
     require.resolve('@tanstack/react-query/package.json'),
   );
+  try {
+    pkgPath =
+      resolveProjectDep({
+        pkg: api.pkg,
+        cwd: api.cwd,
+        dep: '@tanstack/react-query',
+      }) || defaultPkgPath;
+  } catch (e: any) {
+    throw new Error(`[reactQuery] package resolve failed, ${e.message}`);
+  }
+
+  api.onStart(() => {
+    if (pkgPath !== defaultPkgPath) {
+      api.logger.info(`[reactQuery] use local package ${pkgPath}`);
+    }
+  });
+
   api.onGenerateFiles(() => {
     api.writeTmpFile({
       path: 'index.tsx',
@@ -35,7 +53,7 @@ export {
   useQueryClient,
   QueryErrorResetBoundary,
   useQueryErrorResetBoundary,
-} from '${libPath}';
+} from '${pkgPath}';
       `,
     });
     api.writeTmpFile({
@@ -56,7 +74,7 @@ export type {
   UseMutateFunction,
   UseMutateAsyncFunction,
   UseBaseMutationResult,
-} from '${libPath}';
+} from '${pkgPath}';
       `,
     });
   });
