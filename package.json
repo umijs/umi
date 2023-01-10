@@ -52,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "@iconify-json/ant-design": "1",
+    "@iconify-json/fa": "1",
     "@pnpm/lockfile-file": "^5.0.3",
     "@pnpm/logger": "^4.0.0",
     "@types/fs-extra": "^9.0.13",
