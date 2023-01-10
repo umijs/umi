@@ -1549,6 +1549,7 @@ importers:
       '@ant-design/icons': ^4.7.0
       '@ant-design/pro-components': ^2.0.1
       '@tanstack/react-query': ^4.22.0
+      '@tanstack/react-query-devtools': ^4.22.0
       '@umijs/bundler-utils': 4.0.0-canary.20230109.1
       '@umijs/valtio': ^1.0.2
       antd: ^4.24.1
@@ -1578,6 +1579,7 @@ importers:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-components': 2.3.4_antd@4.24.1
       '@tanstack/react-query': 4.22.0
+      '@tanstack/react-query-devtools': 4.22.0_tqsbl3x6ixew47ctvte2nz2yki
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/valtio': link:../../libs/valtio
       antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.11.3
@@ -13615,8 +13617,33 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
+  /@tanstack/match-sorter-utils/8.7.6:
+    resolution: {integrity: sha512-2AMpRiA6QivHOUiBpQAVxjiHAA68Ei23ZUMNaRJrN6omWiSFLoYrxGcT6BXtuzp0Jw4h6HZCmGGIM/gbwebO2A==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
+    dev: false
+
   /@tanstack/query-core/4.22.0:
     resolution: {integrity: sha512-OeLyBKBQoT265f5G9biReijeP8mBxNFwY7ZUu1dKL+YzqpG5q5z7J/N1eT8aWyKuhyDTiUHuKm5l+oIVzbtrjw==}
+    dev: false
+
+  /@tanstack/react-query-devtools/4.22.0_tqsbl3x6ixew47ctvte2nz2yki:
+    resolution: {integrity: sha512-YeYFBnfqvb+ZlA0IiJqiHNNSzepNhI1p2o9i8NlhQli9+Zrn230M47OBaBUs8qr3DD1dC2zGB1Dis50Ktz8gAA==}
+    peerDependencies:
+      '@tanstack/react-query': 4.22.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@tanstack/match-sorter-utils': 8.7.6
+      '@tanstack/react-query': 4.22.0
+      superjson: 1.12.1
+      use-sync-external-store: 1.2.0
     dev: false
 
   /@tanstack/react-query/4.22.0:
@@ -19898,6 +19925,13 @@ packages:
     resolution: {integrity: sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==}
     dependencies:
       is-what: 3.14.1
+
+  /copy-anything/3.0.3:
+    resolution: {integrity: sha512-fpW2W/BqEzqPp29QS+MwwfisHCQZtiduTe/m8idFo0xbti9fIZ2WVhAsCv4ggFVH3AgCkVdpoOCtQC6gBrdhjw==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.8
+    dev: false
 
   /copy-descriptor/0.1.1:
     resolution: {integrity: sha512-XgZ0pFcakEUlbwQEVNg3+QAis1FyTL3Qel9FYy8pSkQqoG3PNoT0bOCQtOXcOkur21r2Eq2kI+IE+gsmAEVlYw==}
@@ -26255,6 +26289,11 @@ packages:
 
   /is-what/3.14.1:
     resolution: {integrity: sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==}
+
+  /is-what/4.1.8:
+    resolution: {integrity: sha512-yq8gMao5upkPoGEU9LsB2P+K3Kt8Q3fQFCGyNCWOAnJAMzEXVV9drYb0TXr42TTliLLhKIBvulgAXgtLLnwzGA==}
+    engines: {node: '>=12.13'}
+    dev: false
 
   /is-windows/0.2.0:
     resolution: {integrity: sha512-n67eJYmXbniZB7RF4I/FTjK1s6RPOCTxhYrVYLRaCt3lF0mpWZPKr3T2LSZAqyjQsxR2qMmGYXXzK0YWwcPM1Q==}
@@ -39745,6 +39784,13 @@ packages:
     resolution: {integrity: sha512-EulshI3pGUM66o6ZdH3ReiFcvHpM3vAigyK+vcxdjpJyEbIIrtbmBdY23mGgnI24uXiGFvrGq9Gkum/8U7vJWg==}
     dependencies:
       kdbush: 3.0.0
+    dev: false
+
+  /superjson/1.12.1:
+    resolution: {integrity: sha512-HMTj43zvwW5bD+JCZCvFf4DkZQCmiLTen4C+W1Xogj0SPOpnhxsriogM04QmBVGH5b3kcIIOr6FqQ/aoIDx7TQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      copy-anything: 3.0.3
     dev: false
 
   /supports-color/2.0.0:
