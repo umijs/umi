@@ -182,7 +182,6 @@ PORT=8888 umi dev
               return;
             }
             await api.service.resolveConfig();
-            // after some key change, can contain both `regenerateTmpFiles` and `fns() for custom logic`
             if (data.changes[api.ConfigChangeType.regenerateTmpFiles]) {
               logger.event(
                 `config ${data.changes[
