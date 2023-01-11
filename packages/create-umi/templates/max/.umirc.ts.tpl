@@ -32,4 +32,3 @@ export default defineConfig({
   ],
   npmClient: '{{{ npmClient }}}',
 });
-
