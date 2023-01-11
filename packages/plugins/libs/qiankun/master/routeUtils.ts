@@ -1,5 +1,5 @@
 interface Route extends Record<string, any> {
-  routes?: Route[];
+  children: Route[];
   microApp?: string;
 }
 
@@ -13,8 +13,8 @@ export function deepFilterLeafRoutes(routeTree: Route[]) {
   const findLeafRoutes = (routes: Route[]) => {
     for (let i = 0; i < routes.length; i++) {
       const r = routes[i];
-      if (r?.routes) {
-        findLeafRoutes(r?.routes);
+      if (r.children) {
+        findLeafRoutes(r.children);
       }
       leafRoutes.push(r);
     }
