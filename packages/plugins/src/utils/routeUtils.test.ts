@@ -5,16 +5,17 @@ test('deepFilterLeafRoutes is ok', () => {
     {
       path: '/',
       component: '@/layouts/index.tsx',
-      routes: [
+      children: [
         {
           path: '/app1',
           component: '@/pages/app1/index.tsx',
-          routes: [
+          children: [
             // 配置微应用 app1 关联的路由
             {
               // 带上 * 通配符意味着将 /app1/project 下所有子路由都关联给微应用 app1
               path: '/app1/project/*',
               microApp: 'app1',
+              children: [],
             },
           ],
         },
@@ -22,6 +23,7 @@ test('deepFilterLeafRoutes is ok', () => {
         {
           path: '/app2/*',
           microApp: 'app2',
+          children: [],
         },
       ],
     },
@@ -31,10 +33,12 @@ test('deepFilterLeafRoutes is ok', () => {
     {
       path: '/app1/project/*',
       microApp: 'app1',
+      children: [],
     },
     {
       path: '/app2/*',
       microApp: 'app2',
+      children: [],
     },
   ];
 
