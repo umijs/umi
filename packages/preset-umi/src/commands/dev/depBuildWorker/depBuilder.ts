@@ -37,7 +37,6 @@ export class DepBuilderInWorker {
     return new Promise((resolve, reject) => {
       const compiler = webpack(config);
       compiler.run((err, stats) => {
-        opts.onBuildComplete();
         if (err || stats?.hasErrors()) {
           if (err) {
             reject(err);
@@ -48,6 +47,7 @@ export class DepBuilderInWorker {
             reject(new Error(errorMsg));
           }
         } else {
+          opts.onBuildComplete();
           resolve(stats);
         }
         compiler.close(() => {});
@@ -91,10 +91,13 @@ export class DepBuilderInWorker {
   async build(opts: { deps: Dep[] }) {
     this.isBuilding = true;
 
-    const onBuildComplete = () => {
+    const onBuildComplete = (e: any = null) => {
       this.isBuilding = false;
+
       parentPort!.postMessage({
-        done: true,
+        done: {
+          withError: e,
+        },
       });
     };
 
@@ -110,11 +113,7 @@ export class DepBuilderInWorker {
         await this.buildWithWebpack(newOpts);
       }
     } catch (e) {
-      // 构建失败后,优先发送错误信息给主线程, 如果先执行 onBuildComplete 主进程会认为构建成功
-      parentPort!.postMessage({
-        error: e,
-      });
-      onBuildComplete();
+      onBuildComplete(e);
       throw e;
     }
   }

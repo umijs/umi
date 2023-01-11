@@ -28,10 +28,9 @@ async function start() {
 
     return builder!.build({ deps }).catch((e) => {
       logger.error('[MFSU][eager] build worker failed', e);
-      parentPort!.postMessage({ error: e });
+      parentPort!.postMessage({ done: { withError: e } });
     });
   }
-
   function scheduleBuild() {
     if (builder && !builder.isBuilding) {
       const buildReq = bufferedRequest.shift();

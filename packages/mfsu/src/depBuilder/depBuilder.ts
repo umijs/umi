@@ -86,22 +86,20 @@ export class DepBuilder {
       const onMessage = ({
         progress,
         done,
-        error,
       }: {
-        done: boolean;
+        done: { withError: any };
         error: any;
         progress: any;
       }) => {
         if (done) {
           opts.onBuildComplete();
           worker.off('message', onMessage);
-          resolve();
-        }
-        if (error) {
-          worker.off('message', onMessage);
-          opts.onBuildComplete();
-          logger.error('[MFSU][eager] build failed', error);
-          reject(error);
+          if (done.withError) {
+            logger.error('[MFSU][eager] build failed', done.withError);
+            reject(done.withError);
+          } else {
+            resolve();
+          }
         }
 
         if (progress) {
