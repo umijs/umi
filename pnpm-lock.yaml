@@ -4,6 +4,8 @@ importers:
 
   .:
     specifiers:
+      '@iconify-json/ant-design': '1'
+      '@iconify-json/fa': '1'
       '@pnpm/lockfile-file': ^5.0.3
       '@pnpm/logger': ^4.0.0
       '@types/fs-extra': ^9.0.13
@@ -53,6 +55,8 @@ importers:
       umi-scripts: workspace:*
       zx: ^7.0.8
     devDependencies:
+      '@iconify-json/ant-design': 1.1.4
+      '@iconify-json/fa': 1.1.3
       '@pnpm/lockfile-file': 5.3.3_@pnpm+logger@4.0.0
       '@pnpm/logger': 4.0.0
       '@types/fs-extra': 9.0.13
@@ -1607,7 +1611,6 @@ importers:
 
   packages/preset-umi:
     specifiers:
-      '@iconify-json/fa': '1'
       '@iconify/utils': 2.0.9
       '@manypkg/get-packages': 1.1.3
       '@svgr/core': 6.2.1
@@ -1650,7 +1653,6 @@ importers:
       sirv: 2.0.2
       vite: 2.9.1
     dependencies:
-      '@iconify-json/fa': 1.1.3
       '@iconify/utils': 2.0.9
       '@svgr/core': 6.2.1
       '@umijs/ast': link:../ast
@@ -11001,11 +11003,17 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
+  /@iconify-json/ant-design/1.1.4:
+    resolution: {integrity: sha512-bx8sSFrrJloQUdStRbBn3TMmeKWfbx51aVDF1fEOH/LGKXGiBmtybURjlTdQPwE7S0zhlXcve+agYHuGb2Q9hQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
   /@iconify-json/fa/1.1.3:
     resolution: {integrity: sha512-Cmzx42MZ2kTOLNGFlplEEvFXPsHkofoIX7iO+XZggyUpLjJjf/3AJS01NzNDoDhol9OZEUz7I0syGtuAjfOv4w==}
     dependencies:
       '@iconify/types': 2.0.0
-    dev: false
+    dev: true
 
   /@iconify/types/1.1.0:
     resolution: {integrity: sha512-Jh0llaK2LRXQoYsorIH8maClebsnzTcve+7U3rQUSnC11X4jtPnFuyatqFLvMxZ8MLG8dB4zfHsbPfuvxluONw==}
@@ -11013,7 +11021,6 @@ packages:
 
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-    dev: false
 
   /@iconify/utils/1.0.33:
     resolution: {integrity: sha512-vGeAqo7aGPxOQmGdVoXFUOuyN+0V7Lcrx2EvaiRjxUD1x6Om0Tvq2bdm7E24l2Pz++4S0mWMCVFXe/17EtKImQ==}
