@@ -95,7 +95,7 @@ export class DepBuilder {
           opts.onBuildComplete();
           worker.off('message', onMessage);
           if (done.withError) {
-            logger.error('[MFSU][eager] build failed', done.withError);
+            logger.debug('[MFSU][eager][main] build failed', done.withError);
             reject(done.withError);
           } else {
             resolve();

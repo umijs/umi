@@ -27,7 +27,7 @@ async function start() {
     logger.info('[MFSU][eager] build worker start to build');
 
     return builder!.build({ deps }).catch((e) => {
-      logger.error('[MFSU][eager] build worker failed', e);
+      logger.debug('[MFSU][eager][worker] build worker failed', e);
       parentPort!.postMessage({ done: { withError: e } });
     });
   }
