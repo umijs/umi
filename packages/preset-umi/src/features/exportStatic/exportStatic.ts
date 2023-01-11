@@ -148,7 +148,7 @@ export default (api: IApi) => {
         // prefix for all assets
         if (rltPrefix) {
           // HINT: clone for keep original markupArgs unmodified
-          const picked = lodash.clone(
+          const picked = lodash.cloneDeep(
             lodash.pick(markupArgs, [
               'favicons',
               'links',
