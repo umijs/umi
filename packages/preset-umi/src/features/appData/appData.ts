@@ -71,7 +71,7 @@ export default (api: IApi) => {
   });
 
   api.registerMethod({
-    name: 'refreshRoutes',
+    name: '_refreshRoutes',
     async fn() {
       api.appData.routes = await getRoutes({
         api,

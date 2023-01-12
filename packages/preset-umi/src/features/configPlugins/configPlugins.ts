@@ -2,7 +2,7 @@ import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
 import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
 import { dirname, join } from 'path';
-import type { IApi, OnConfigChangeFn } from '../../types';
+import type { IApi, OnConfigChangeFn, IApiInternalProps } from '../../types';
 import { getSchemas as getExtraSchemas } from './schema';
 
 function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
@@ -94,7 +94,7 @@ export default (api: IApi) => {
     // otherwise the `icon` will not update
     if (['routes'].includes(key)) {
       const onRoutesChange: OnConfigChangeFn = async ({ generate }) => {
-        await api.refreshRoutes();
+        await (api as any as IApiInternalProps)._refreshRoutes();
         await generate({ isFirstTime: false });
       };
       config.onChange = onRoutesChange;
