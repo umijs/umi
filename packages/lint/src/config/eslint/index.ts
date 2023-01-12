@@ -52,8 +52,9 @@ module.exports = {
 
 function detectJestVersion() {
   try {
-    const cwd = process.cwd();
-    const pkg = require.resolve('jest/package.json', { paths: [cwd] });
+    const pkg = require.resolve('jest/package.json', {
+      paths: [process.cwd()],
+    });
     return require(pkg).version;
   } catch {
     return 29;

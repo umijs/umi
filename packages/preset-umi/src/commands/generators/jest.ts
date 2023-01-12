@@ -143,7 +143,6 @@ function getJestVersion() {
       paths: [umiPkg],
     });
     const version: string = require(testPkg).devDependencies.jest;
-    console.log('version: ', version);
     return semver.minVersion(version)!.version.split('.')[0];
   } catch {
     return 29;
