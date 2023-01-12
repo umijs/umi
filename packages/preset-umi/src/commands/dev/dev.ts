@@ -12,7 +12,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import { IApi, IFileInfo } from '../../types';
+import type { IApi, GenerateFilesFn, OnConfigChangeFn } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -88,10 +88,7 @@ PORT=8888 umi dev
       // );
 
       // generate files
-      async function generate(opts: {
-        isFirstTime?: boolean;
-        files?: IFileInfo;
-      }) {
+      const generate: GenerateFilesFn = async (opts) => {
         await api.applyPlugins({
           key: 'onGenerateFiles',
           args: {
@@ -99,7 +96,7 @@ PORT=8888 umi dev
             isFirstTime: opts.isFirstTime,
           },
         });
-      }
+      };
 
       await generate({
         isFirstTime: true,
@@ -193,8 +190,8 @@ PORT=8888 umi dev
               );
               await generate({ isFirstTime: false });
             }
-            for (const fn of data.fns) {
-              fn();
+            for await (const fn of data.fns) {
+              await (fn as OnConfigChangeFn)({ generate });
             }
           },
         }),
