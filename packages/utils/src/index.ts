@@ -43,6 +43,7 @@ export * from './tryPaths';
 export * from './winPath';
 export * from './setNoDeprecation';
 export * from './isMonorepo';
+export * as aliasUtils from './aliasUtils';
 export {
   address,
   axios,

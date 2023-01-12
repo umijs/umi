@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { isMonorepo, logger } from '@umijs/utils';
+import { isMonorepo, logger, aliasUtils } from '@umijs/utils';
 import { resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath, esbuildUmiPlugin } from '../utils';
@@ -24,8 +24,11 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
     }
   }
 
-  // TODO: 支持通用的 alias
+  // currently esbuild not support circle alias
+  const alias = aliasUtils.parseCircleAlias({ alias: api.config.alias });
+
   await esbuild.build({
+    alias,
     format: 'cjs',
     platform: 'node',
     target: 'esnext',

@@ -1,9 +1,8 @@
 import * as Babel from '@umijs/bundler-utils/compiled/babel/core';
-import { isLocalDev, winPath } from '@umijs/utils';
+import { isLocalDev, winPath, aliasUtils } from '@umijs/utils';
 import assert from 'assert';
 import { isAbsolute, join } from 'path';
 import type { IOpts } from './awaitImport';
-import { getAliasedPath } from './getAliasedPath';
 import { isExternals } from './isExternals';
 
 // const UNMATCH_LIBS = ['umi', 'dumi', '@alipay/bigfish'];
@@ -89,8 +88,8 @@ export function checkMatch({
   } else if (isAbsolute(value)) {
     isMatch = RE_NODE_MODULES.test(value) || isUmiLocalDev(value);
   } else {
-    const aliasedPath = getAliasedPath({
-      value,
+    const aliasedPath = aliasUtils.getAliasValue({
+      imported: value,
       alias: opts.alias || {},
     });
     if (aliasedPath) {
