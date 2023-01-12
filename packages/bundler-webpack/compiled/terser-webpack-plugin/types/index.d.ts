@@ -7,7 +7,7 @@ export = TerserPlugin;
 /** @typedef {import('./utils').TerserECMA} TerserECMA */
 /** @typedef {import('./utils').TerserOptions} TerserOptions */
 /** @typedef {import('../jest-worker').Worker} JestWorker */
-/** @typedef {import('../source-map').RawSourceMap} RawSourceMap */
+/** @typedef {import('../@jridgewell/trace-mapping').SourceMapInput} SourceMapInput */
 /** @typedef {RegExp | string} Rule */
 /** @typedef {Rule[] | Rule} Rules */
 /**
@@ -37,7 +37,7 @@ export = TerserPlugin;
 /**
  * @typedef {Object} MinimizedResult
  * @property {string} code
- * @property {RawSourceMap} [map]
+ * @property {SourceMapInput} [map]
  * @property {Array<Error | string>} [errors]
  * @property {Array<Error | string>} [warnings]
  * @property {Array<string>} [extractedComments]
@@ -65,7 +65,7 @@ export = TerserPlugin;
  * @template T
  * @callback BasicMinimizerImplementation
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {SourceMapInput | undefined} sourceMap
  * @param {MinimizerOptions<T>} minifyOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @returns {Promise<MinimizedResult>}
@@ -83,7 +83,7 @@ export = TerserPlugin;
  * @typedef {Object} InternalOptions
  * @property {string} name
  * @property {string} input
- * @property {RawSourceMap | undefined} inputSourceMap
+ * @property {SourceMapInput | undefined} inputSourceMap
  * @property {ExtractCommentsOptions | undefined} extractComments
  * @property {{ implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> }} minimizer
  */
@@ -131,7 +131,7 @@ declare class TerserPlugin<T = import('../../terser').MinifyOptions> {
    * @private
    * @param {any} error
    * @param {string} file
-   * @param {SourceMapConsumer} [sourceMap]
+   * @param {TraceMap} [sourceMap]
    * @param {Compilation["requestShortener"]} [requestShortener]
    * @returns {Error}
    */
@@ -190,7 +190,7 @@ declare namespace TerserPlugin {
     TerserECMA,
     TerserOptions,
     JestWorker,
-    RawSourceMap,
+    SourceMapInput,
     Rule,
     Rules,
     ExtractCommentsFunction,
@@ -244,7 +244,7 @@ type Asset = import('../../webpack').Asset;
 type TerserECMA = import('./utils').TerserECMA;
 type TerserOptions = import('./utils').TerserOptions;
 type JestWorker = import('../jest-worker').Worker;
-type RawSourceMap = import('../source-map').RawSourceMap;
+type SourceMapInput = import('../@jridgewell/trace-mapping').SourceMapInput;
 type Rule = RegExp | string;
 type Rules = Rule[] | Rule;
 type ExtractCommentsFunction = (
@@ -276,7 +276,7 @@ type ExtractCommentsObject = {
 type ExtractCommentsOptions = ExtractCommentsCondition | ExtractCommentsObject;
 type MinimizedResult = {
   code: string;
-  map?: import('../source-map').RawSourceMap | undefined;
+  map?: import('../@jridgewell/trace-mapping').SourceMapInput | undefined;
   errors?: (string | Error)[] | undefined;
   warnings?: (string | Error)[] | undefined;
   extractedComments?: string[] | undefined;
@@ -295,7 +295,7 @@ type PredefinedOptions = {
 type MinimizerOptions<T> = PredefinedOptions & InferDefaultType<T>;
 type BasicMinimizerImplementation<T> = (
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap: SourceMapInput | undefined,
   minifyOptions: MinimizerOptions<T>,
   extractComments: ExtractCommentsOptions | undefined
 ) => Promise<MinimizedResult>;
@@ -307,7 +307,7 @@ type MinimizerImplementation<T> = BasicMinimizerImplementation<T> &
 type InternalOptions<T> = {
   name: string;
   input: string;
-  inputSourceMap: RawSourceMap | undefined;
+  inputSourceMap: SourceMapInput | undefined;
   extractComments: ExtractCommentsOptions | undefined;
   minimizer: {
     implementation: MinimizerImplementation<T>;

@@ -13,10 +13,10 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13",
-    "@types/jest": "^27",
+    "@types/jest": "^29.2.5",
     "@types/testing-library__jest-dom": "^5.14.5",
-    "jest": "^28",
+    "jest": "^29.3.1",
     "ts-node": "^10",
-    "typescript": "^4"
+    "typescript": "^4.9.4"
   }
 }

@@ -12,8 +12,8 @@
   "dependencies": {
     "@umijs/preset-vue": "4.0.0-canary.20230109.1",
     "umi": "4.0.0-canary.20230109.1",
-    "vant": "3.4.9",
-    "vue": "3.2.36"
+    "vant": "4.0.7",
+    "vue": "3.2.45"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.13.6",

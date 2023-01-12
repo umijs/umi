@@ -10,6 +10,9 @@ import * as execa from '../compiled/execa';
 import fsExtra from '../compiled/fs-extra';
 import glob from '../compiled/glob';
 // import globby from '../compiled/globby';
+import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
+import * as filesize from '../compiled/filesize';
+import * as gzipSize from '../compiled/gzip-size';
 import lodash from '../compiled/lodash';
 import Mustache from '../compiled/mustache';
 import * as pkgUp from '../compiled/pkg-up';
@@ -25,25 +28,22 @@ import generateFile from './BaseGenerator/generateFile';
 import Generator from './Generator/Generator';
 import getGitInfo from './getGitInfo';
 import installDeps from './installDeps';
-import filesize from '../compiled/filesize';
-import gzipSize from '../compiled/gzip-size';
-import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
+export * as aliasUtils from './aliasUtils';
 export * from './getCorejsVersion';
 export * from './getDevBanner';
 export * from './importLazy';
 export * from './isLocalDev';
+export * from './isMonorepo';
 export * from './isStyleFile';
 export * from './npmClient';
 export * from './randomColor/randomColor';
 export * as register from './register';
+export * from './setNoDeprecation';
 export * from './tryPaths';
 export * from './winPath';
-export * from './setNoDeprecation';
-export * from './isMonorepo';
-export * as aliasUtils from './aliasUtils';
 export {
   address,
   axios,

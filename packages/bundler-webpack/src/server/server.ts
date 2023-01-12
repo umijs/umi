@@ -1,9 +1,9 @@
 import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
+import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
-import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import { getDevBanner, lodash, logger } from '@umijs/utils';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
@@ -27,7 +27,7 @@ interface IOpts {
   onBeforeMiddleware?: Function;
 }
 
-export async function createServer(opts: IOpts) {
+export async function createServer(opts: IOpts): Promise<any> {
   const { webpackConfig, userConfig } = opts;
   const { proxy } = userConfig;
   const app = express();

@@ -10,37 +10,37 @@ export { default  } from  'antd';
 `);
 
   expect(exportsImports).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "from": "antd",
-        "imports": Array [
+        "imports": [
           "*",
         ],
       },
-      Object {
+      {
         "from": "antd",
-        "imports": Array [
+        "imports": [
           "*",
         ],
       },
-      Object {
+      {
         "from": "antd",
-        "imports": Array [
+        "imports": [
           "name1",
           "name2",
           "nameN",
         ],
       },
-      Object {
+      {
         "from": "antd",
-        "imports": Array [
+        "imports": [
           "import1",
           "import2",
         ],
       },
-      Object {
+      {
         "from": "antd",
-        "imports": Array [
+        "imports": [
           "default",
         ],
       },
@@ -62,62 +62,62 @@ import "module-name";
   `);
 
   expect(imports).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "default",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "*",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "export1",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "export1",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "export1",
           "export2",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "export1",
           "export2",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "default",
           "export1",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [
+        "imports": [
           "default",
           "*",
         ],
       },
-      Object {
+      {
         "from": "module-name",
-        "imports": Array [],
+        "imports": [],
       },
     ]
   `);

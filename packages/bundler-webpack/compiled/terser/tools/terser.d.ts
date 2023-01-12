@@ -1,11 +1,12 @@
 /// <reference lib="es2015" />
 
-import { RawSourceMap } from '../source-map';
+import { SectionedSourceMapInput, EncodedSourceMap, DecodedSourceMap } from '../@jridgewell/source-map';
 
 export type ECMA = 5 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020;
 
 export interface ParseOptions {
     bare_returns?: boolean;
+    /** @deprecated legacy option. Currently, all supported EcmaScript is valid to parse. */
     ecma?: ECMA;
     html5_comments?: boolean;
     shebang?: boolean;
@@ -144,6 +145,7 @@ export interface FormatOptions {
     }) => boolean );
     ecma?: ECMA;
     ie8?: boolean;
+    keep_numbers?: boolean;
     indent_level?: number;
     indent_start?: number;
     inline_script?: boolean;
@@ -192,12 +194,13 @@ export interface MinifyOptions {
 
 export interface MinifyOutput {
     code?: string;
-    map?: RawSourceMap | string;
+    map?: EncodedSourceMap | string;
+    decoded_map?: DecodedSourceMap | null;
 }
 
 export interface SourceMapOptions {
     /** Source map object, 'inline' or source map file content */
-    content?: RawSourceMap | string;
+    content?: SectionedSourceMapInput | string;
     includeSources?: boolean;
     filename?: string;
     root?: string;

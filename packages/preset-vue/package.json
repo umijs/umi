@@ -23,9 +23,9 @@
   },
   "dependencies": {
     "@umijs/renderer-vue": "4.0.0-canary.20230109.1",
-    "vue": "3.2.36",
-    "vue-loader": "17.0.0",
-    "vue-router": "4.0.15"
+    "vue": "3.2.45",
+    "vue-loader": "17.0.1",
+    "vue-router": "4.1.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "2.3.1",

@@ -42,19 +42,19 @@
     "@umijs/utils": "4.0.0-canary.20230109.1",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "click-to-react-component": "^1.0.8",
-    "core-js": "3.22.4",
+    "core-js": "3.27.1",
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.9.3",
-    "fast-glob": "^3.2.11",
+    "fast-glob": "3.2.12",
     "html-webpack-plugin": "5.5.0",
-    "magic-string": "0.26.2",
+    "magic-string": "0.27.0",
     "path-to-regexp": "1.7.0",
     "postcss-prefix-selector": "1.16.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-router": "6.3.0",
     "react-router-dom": "6.3.0",
-    "regenerator-runtime": "0.13.9"
+    "regenerator-runtime": "0.13.11"
   },
   "devDependencies": {
     "@manypkg/get-packages": "1.1.3",
