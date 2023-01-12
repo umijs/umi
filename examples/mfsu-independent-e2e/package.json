@@ -28,6 +28,7 @@
     "cross-env": "^7.0.3",
     "cypress": "^10.0.0",
     "esbuild": "0.14.35",
+    "esbuild-register": "^3.4.2",
     "html-webpack-plugin": "^5.5.0",
     "start-server-and-test": "^1.14.0",
     "webpack": "^5.75.0",
