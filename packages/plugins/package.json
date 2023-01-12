@@ -47,7 +47,7 @@
     "react-intl": "3.12.1",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
-    "styled-components": "^5.3.6",
+    "styled-components": "6.0.0-beta.9",
     "tslib": "^2",
     "warning": "^4.0.3"
   },
