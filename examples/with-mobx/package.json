@@ -9,6 +9,6 @@
   "dependencies": {
     "mobx": "^6.7.0",
     "mobx-react": "^7.6.0",
-    "umi": "4.0.43"
+    "umi": "4.0.44"
   }
 }

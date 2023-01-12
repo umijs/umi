@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "antd": "^4.20.6",
-    "umi": "4.0.43"
+    "umi": "4.0.44"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

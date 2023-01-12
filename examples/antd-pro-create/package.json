@@ -70,7 +70,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-helmet": "^6.1.6",
     "@umijs/fabric": "^3.0.0",
-    "@umijs/max": "4.0.43",
+    "@umijs/max": "4.0.44",
     "@umijs/openapi": "1.8.1",
     "cross-env": "^7.0.3",
     "cross-port-killer": "^1.4.0",

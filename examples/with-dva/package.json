@@ -8,7 +8,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.43",
-    "umi": "4.0.43"
+    "@umijs/plugins": "4.0.44",
+    "umi": "4.0.44"
   }
 }
