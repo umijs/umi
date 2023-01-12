@@ -1141,14 +1141,14 @@ importers:
       '@umijs/bundler-utils': 4.0.0-canary.20230109.1
       '@umijs/utils': 4.0.0-canary.20230109.1
       babel-plugin-styled-components: 2.0.7
-      core-js: 3.22.4
+      core-js: 3.27.1
     dependencies:
       '@babel/runtime': 7.20.7
       '@bloomberg/record-tuple-polyfill': 0.0.4
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
       babel-plugin-styled-components: 2.0.7
-      core-js: 3.22.4
+      core-js: 3.27.1
 
   packages/bundler-esbuild:
     specifiers:
@@ -1637,7 +1637,7 @@ importers:
       babel-plugin-dynamic-import-node: 2.3.3
       body-parser: 1.20.0
       click-to-react-component: ^1.0.8
-      core-js: 3.22.4
+      core-js: 3.27.1
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.9.3
       fast-glob: 3.2.12
@@ -1674,7 +1674,7 @@ importers:
       '@umijs/utils': link:../utils
       babel-plugin-dynamic-import-node: 2.3.3
       click-to-react-component: 1.0.8_ef5jwxihqo6n7gxfmzogljlgcm
-      core-js: 3.22.4
+      core-js: 3.27.1
       current-script-polyfill: 1.0.0
       enhanced-resolve: 5.9.3
       fast-glob: 3.2.12
@@ -18204,6 +18204,11 @@ packages:
     resolution: {integrity: sha512-21491RRQVzUn0GGM9Z1Jrpr6PNPxPi+Za8OM9q4tksTSnlbXXGKK1nXNg/QvwFYettXvSX6zWKCtHHfjN4puyA==}
     requiresBuild: true
     dev: true
+
+  /core-js/3.27.1:
+    resolution: {integrity: sha512-GutwJLBChfGCpwwhbYoqfv03LAfmiz7e7D/BNxzeMxwQf10GRSzqiOjx7AmtEk+heiD/JWmBuyBPgFtx0Sg1ww==}
+    requiresBuild: true
+    dev: false
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}

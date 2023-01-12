@@ -42,7 +42,7 @@
     "@umijs/utils": "4.0.0-canary.20230109.1",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "click-to-react-component": "^1.0.8",
-    "core-js": "3.22.4",
+    "core-js": "3.27.1",
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.9.3",
     "fast-glob": "3.2.12",
