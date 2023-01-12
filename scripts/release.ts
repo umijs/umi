@@ -158,10 +158,17 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
     version.includes(item),
   );
   if (canReleaseNotes) {
-    // changelog
-    const { releaseNotes } = await githubRelease(version);
+    // get release notes
+    logger.event('get release notes');
+    const { releaseNotes } = await getReleaseNotes(version);
+
     // generate changelog
+    logger.event('generate changelog');
     generateChangelog(releaseNotes);
+
+    // release by github
+    logger.event('release by github');
+    releaseBygithub(releaseNotes, version);
   }
 
   // check 2fa config
@@ -222,8 +229,7 @@ function setDepsVersion(opts: {
   return pkg;
 }
 
-export async function githubRelease(version: String) {
-  // get release notes
+export async function getReleaseNotes(version: string) {
   const GITHUB_TOKEN = '.github_token';
   const OWNER = 'umijs';
   const REPO = 'umi';
@@ -238,8 +244,10 @@ export async function githubRelease(version: String) {
     },
   );
   const releaseNotes = releaseNotesRes.data.body;
+  return { releaseNotes };
+}
 
-  // open github release
+function releaseBygithub(releaseNotes: string, version: string) {
   const releaseParms = {
     tag: version,
     title: `v${version}`,
@@ -249,10 +257,9 @@ export async function githubRelease(version: String) {
   open(
     `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
   );
-  return { releaseNotes };
 }
 
-function generateChangelog(releaseNotes: String) {
+function generateChangelog(releaseNotes: string) {
   const CHANGELOG_PATH = join(PATHS.ROOT, 'TMP_CHANGELOG.md');
   const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
   const arr = str.split('# umi changelog');
