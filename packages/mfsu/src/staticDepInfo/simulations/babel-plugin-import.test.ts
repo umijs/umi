@@ -1,5 +1,5 @@
-import path from 'path';
 import createImports from './babel-plugin-import';
+import { winPath } from '@umijs/utils';
 
 function pathToVersion(): string {
   return '1.2.3';
@@ -48,8 +48,16 @@ test('babel-plugin-import: with alias', () => {
 });
 
 test('WINDOWS: babel-plugin-import: with alias', () => {
-  expect(
-    handleImports({
+  const VALUES = {
+    es_model: `mf/D:/user/umi/node_modules/antd/es/model`,
+    es_model_style: `mf/D:/user/umi/node_modules/antd/es/model/style`,
+    es_row: `mf/D:/user/umi/node_modules/antd/es/row`,
+    es_row_style: `mf/D:/user/umi/node_modules/antd/es/row/style`,
+  } as const;
+  const normalizePath = (p: string) => winPath(p.slice('mf/'.length));
+
+  const getHandleImports = () => {
+    const result = handleImports({
       imports: [
         // prettier-ignore
         {n: "antd", s: 26, e: 30, ss: 0, se: 31, d: -1, a: -1},
@@ -60,15 +68,20 @@ test('WINDOWS: babel-plugin-import: with alias', () => {
       },
       rawCode: 'import {Model, Row} from "antd";',
       pathToVersion,
-    }),
-  ).toEqual(
+    });
+    result.forEach((i) => {
+      i.value = winPath(i.value);
+    });
+    return result;
+  };
+  expect(getHandleImports()).toEqual(
     // prettier-ignore
     [
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model`,       value: 'D:\\user\\umi\\node_modules\\antd/es/model',       version: '1.2.3', isMatch: true,},
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/model/style`, value: 'D:\\user\\umi\\node_modules\\antd/es/model/style', version: '1.2.3', isMatch: true,},
+      { replaceValue: VALUES.es_model,       value: normalizePath(VALUES.es_model),       version: '1.2.3', isMatch: true,},
+      { replaceValue: VALUES.es_model_style, value: normalizePath(VALUES.es_model_style), version: '1.2.3', isMatch: true,},
 
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row`,         value: 'D:\\user\\umi\\node_modules\\antd/es/row',         version: '1.2.3', isMatch: true,},
-      { replaceValue: `mf/D:/user/umi/node_modules/antd/es/row/style`,   value: 'D:\\user\\umi\\node_modules\\antd/es/row/style',   version: '1.2.3', isMatch: true,},
+      { replaceValue: VALUES.es_row,         value: normalizePath(VALUES.es_row),         version: '1.2.3', isMatch: true,},
+      { replaceValue: VALUES.es_row_style,   value: normalizePath(VALUES.es_row_style),   version: '1.2.3', isMatch: true,},
     ],
   );
 });

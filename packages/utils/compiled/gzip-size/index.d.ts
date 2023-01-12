@@ -1,96 +1,103 @@
-/// <reference types="node"/>
-import * as stream from 'stream';
-import {ZlibOptions} from 'zlib';
+import {Buffer} from 'node:buffer';
+import {PassThrough as PassThroughStream} from 'node:stream';
+import {ZlibOptions} from 'node:zlib';
 
-declare namespace gzipSize {
-	type Options = ZlibOptions;
+export type Options = ZlibOptions;
 
-	interface GzipSizeStream extends stream.PassThrough {
-		/**
-		Contains the gzip size of the stream after it is finished. Since this happens asynchronously, it is recommended you use the `gzip-size` event instead.
-		*/
-		gzipSize?: number;
+export interface GzipSizeStream extends PassThroughStream {
+	/**
+	Contains the gzip size of the stream after it is finished. Since this happens asynchronously, it is recommended you use the `gzip-size` event instead.
+	*/
+	gzipSize?: number;
 
-		addListener(event: 'gzip-size', listener: (size: number) => void): this;
-		addListener(
-			event: string | symbol,
-			listener: (...args: any[]) => void
-		): this;
-		on(event: 'gzip-size', listener: (size: number) => void): this;
-		on(event: string | symbol, listener: (...args: any[]) => void): this;
-		once(event: 'gzip-size', listener: (size: number) => void): this;
-		once(event: string | symbol, listener: (...args: any[]) => void): this;
-		removeListener(event: 'gzip-size', listener: (size: number) => void): this;
-		removeListener(
-			event: string | symbol,
-			listener: (...args: any[]) => void
-		): this;
-		off(event: 'gzip-size', listener: (size: number) => void): this;
-		off(event: string | symbol, listener: (...args: any[]) => void): this;
-		emit(event: 'gzip-size', size: number): boolean;
-		emit(event: string | symbol, ...args: any[]): boolean;
-		prependListener(event: 'gzip-size', listener: (size: number) => void): this;
-		prependListener(
-			event: string | symbol,
-			listener: (...args: any[]) => void
-		): this;
-		prependOnceListener(
-			event: 'gzip-size',
-			listener: (size: number) => void
-		): this;
-		prependOnceListener(
-			event: string | symbol,
-			listener: (...args: any[]) => void
-		): this;
-	}
+	addListener(event: 'gzip-size', listener: (size: number) => void): this;
+	addListener(
+		event: string | symbol,
+		listener: (...args: any[]) => void
+	): this;
+	on(event: 'gzip-size', listener: (size: number) => void): this;
+	on(event: string | symbol, listener: (...args: any[]) => void): this;
+	once(event: 'gzip-size', listener: (size: number) => void): this;
+	once(event: string | symbol, listener: (...args: any[]) => void): this;
+	removeListener(event: 'gzip-size', listener: (size: number) => void): this;
+	removeListener(
+		event: string | symbol,
+		listener: (...args: any[]) => void
+	): this;
+	off(event: 'gzip-size', listener: (size: number) => void): this;
+	off(event: string | symbol, listener: (...args: any[]) => void): this;
+	emit(event: 'gzip-size', size: number): boolean;
+	emit(event: string | symbol, ...args: any[]): boolean;
+	prependListener(event: 'gzip-size', listener: (size: number) => void): this;
+	prependListener(
+		event: string | symbol,
+		listener: (...args: any[]) => void
+	): this;
+	prependOnceListener(
+		event: 'gzip-size',
+		listener: (size: number) => void
+	): this;
+	prependOnceListener(
+		event: string | symbol,
+		listener: (...args: any[]) => void
+	): this;
 }
 
-declare const gzipSize: {
-	/**
-	Get the gzipped size of a string or buffer.
+/**
+Get the gzipped size of a string or buffer.
 
-	@returns The gzipped size of `input`.
-	*/
-	(input: string | Buffer, options?: gzipSize.Options): Promise<number>;
+@returns The gzipped size of `input`.
 
-	/**
-	Synchronously get the gzipped size of a string or buffer.
+@example
+```
+import {gzipSize} from './gzip-size';
 
-	@returns The gzipped size of `input`.
+const text = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
 
-	@example
-	```
-	import gzipSize = require('./gzip-size');
+console.log(text.length);
+//=> 191
 
-	const text = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
+console.log(await gzipSize(text));
+//=> 78
+```
+*/
+export function gzipSize(input: string | Buffer, options?: Options): Promise<number>;
 
-	console.log(text.length);
-	//=> 191
+/**
+Synchronously get the gzipped size of a string or buffer.
 
-	console.log(gzipSize.sync(text));
-	//=> 78
-	```
-	*/
-	sync(input: string | Buffer, options?: gzipSize.Options): number;
+@returns The gzipped size of `input`.
 
-	/**
-	@returns A stream that emits a `gzip-size` event and has a `gzipSize` property.
-	*/
-	stream(options?: gzipSize.Options): gzipSize.GzipSizeStream;
+@example
+```
+import {gzipSizeSync} from './gzip-size';
 
-	/**
-	Get the gzipped size of a file.
+const text = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
 
-	@returns The size of the file.
-	*/
-	file(path: string, options?: gzipSize.Options): Promise<number>;
+console.log(text.length);
+//=> 191
 
-	/**
-	Synchronously get the gzipped size of a file.
+console.log(gzipSizeSync(text));
+//=> 78
+```
+*/
+export function gzipSizeSync(input: string | Buffer, options?: Options): number;
 
-	@returns The size of the file.
-	*/
-	fileSync(path: string, options?: gzipSize.Options): number;
-};
+/**
+Get the gzipped size of a file.
 
-export = gzipSize;
+@returns The size of the file.
+*/
+export function gzipSizeFromFile(filePath: string, options?: Options): Promise<number>;
+
+/**
+Synchronously get the gzipped size of a file.
+
+@returns The size of the file.
+*/
+export function gzipSizeFromFileSync(filePath: string, options?: Options): number;
+
+/**
+@returns A stream that emits a `gzip-size` event and has a `gzipSize` property.
+*/
+export function gzipSizeStream(options?: Options): GzipSizeStream;

@@ -236,6 +236,50 @@ export default () => {
 
 当您需要在子应用当中嵌套孙子应用时，使用该组件是一个不错的选择。
 
+
+### 子应用之间跳转
+
+#### 使用 `<MicroAppLink />` 组件跳转
+
+通过路由绑定引入的子应用，可以使用 `<MicroAppLink />` 进行跨子应用的跳转。以上述 app1 和 app2 为例
+
+```tsx
+// 在 app1 中
+import { MicroAppLink } from 'umi';
+
+export default () => {
+  return (
+    <div>
+      {/* 跳转链接为 /app2/home */}
+      <MicroAppLink name="app2" to="/home">
+        <Button>go to app2</Button>
+      </MicroAppLink>
+    </div>
+  );
+}
+
+```
+
+```tsx
+// 在 app2 中
+import { MicroAppLink } from 'umi';
+
+export default () => {
+  return (
+    <div>
+    {/* 跳转链接为 /app1/project/hello */}
+      <MicroAppLink name="app1" to="/hello"> 
+        <Button>go to app1</Button>
+      </MicroAppLink>
+      {/* 跳转链接为 /table */}
+      <MicroAppLink to="/table" isMaster>go to maser app</MicroAppLink>
+    </div>
+  );
+}
+
+```
+
+
 ## 子应用生命周期
 
 Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照微应用的生命周期顺序，Qiankun 支持的完整的生命钩子列表如下：
@@ -646,6 +690,8 @@ export default {
   },
 };
 ```
+
+
 
 ## API
 

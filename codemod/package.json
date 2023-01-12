@@ -23,8 +23,8 @@
     "@umijs/babel-preset-umi": "4.0.7",
     "@umijs/bundler-utils": "4.0.7",
     "@umijs/utils": "4.0.7",
-    "fast-glob": "3.2.11",
-    "kleur": "4.1.4"
+    "fast-glob": "3.2.12",
+    "kleur": "4.1.5"
   },
   "publishConfig": {
     "access": "public"

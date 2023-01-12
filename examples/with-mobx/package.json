@@ -7,8 +7,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "mobx": "^6.6.0",
-    "mobx-react": "^7.5.0",
-    "umi": "4.0.0-canary.20230109.1"
+    "mobx": "^6.7.0",
+    "mobx-react": "^7.6.0",
+    "umi": "4.0.44"
   }
 }

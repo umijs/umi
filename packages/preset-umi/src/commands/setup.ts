@@ -1,5 +1,5 @@
 import { logger, rimraf } from '@umijs/utils';
-import { IApi } from '../types';
+import type { IApi, IOnGenerateFiles } from '../types';
 
 export default (api: IApi) => {
   api.registerCommand({
@@ -16,7 +16,7 @@ export default (api: IApi) => {
         args: {
           files: null,
           isFirstTime: true,
-        },
+        } satisfies IOnGenerateFiles,
       });
     },
   });

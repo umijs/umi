@@ -11,9 +11,9 @@ test('toRemote with aliasName', () => {
     ]),
   ).toMatchInlineSnapshot(`
     "myRemote: {
-      aliasName: \\"myRemote\\",
-      remoteName: \\"_long_remote_name\\",        
-      entry: \\"http://test.com/entry.js\\"
+      aliasName: "myRemote",
+      remoteName: "_long_remote_name",        
+      entry: "http://test.com/entry.js"
     }"
   `);
 });
@@ -28,9 +28,9 @@ test('toRemote without aliasName', () => {
     ]),
   ).toMatchInlineSnapshot(`
     "_long_remote_name: {
-      aliasName: \\"_long_remote_name\\",
-      remoteName: \\"_long_remote_name\\",        
-      entry: \\"http://test.com/entry.js\\"
+      aliasName: "_long_remote_name",
+      remoteName: "_long_remote_name",        
+      entry: "http://test.com/entry.js"
     }"
   `);
 });
@@ -50,9 +50,9 @@ test('toRemote with entries', () => {
     ]),
   ).toMatchInlineSnapshot(`
     "mf: {
-      aliasName: \\"mf\\",
-      remoteName: \\"mf\\",        
-      entry: ({\\"DEV\\":\\"http://dev.com/entry.js\\",\\"PROD\\":\\"http://prod.com/entry.js\\"})[(()=>'DEV')()]
+      aliasName: "mf",
+      remoteName: "mf",        
+      entry: ({"DEV":"http://dev.com/entry.js","PROD":"http://prod.com/entry.js"})[(()=>'DEV')()]
     }"
   `);
 });
@@ -74,14 +74,14 @@ test('toRemote with multi remotes', () => {
     ]),
   ).toMatchInlineSnapshot(`
     "r1: {
-      aliasName: \\"r1\\",
-      remoteName: \\"mf1\\",        
-      entry: \\"http://entry1.js\\"
+      aliasName: "r1",
+      remoteName: "mf1",        
+      entry: "http://entry1.js"
     },
     r2: {
-      aliasName: \\"r2\\",
-      remoteName: \\"mf2\\",        
-      entry: \\"http://entry2.js\\"
+      aliasName: "r2",
+      remoteName: "mf2",        
+      entry: "http://entry2.js"
     }"
   `);
 });

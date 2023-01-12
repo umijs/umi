@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "antd": "^4.20.6",
-    "umi": "4.0.0-canary.20230109.1"
+    "umi": "4.0.44"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "cypress": "^10.0.0",
-    "start-server-and-test": "^1.0.0"
+    "start-server-and-test": "^1.15.2"
   }
 }

@@ -1,5 +1,5 @@
 import { GeneratorType } from '@umijs/core';
-import { logger } from '@umijs/utils';
+import { logger, semver } from '@umijs/utils';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
@@ -36,19 +36,26 @@ export default (api: IApi) => {
       const hasSrc = api.paths.absSrcPath.endsWith('src');
 
       const importSource = api.appData.umi.importSource;
+      const jestMajorVersion = `^${getJestVersion()}`;
       const basicDeps = {
-        jest: '^27',
-        '@types/jest': '^27',
+        jest: jestMajorVersion,
+        '@types/jest': jestMajorVersion,
         // we use `jest.config.ts` so jest needs ts and ts-node
         typescript: '^4',
         'ts-node': '^10',
         'cross-env': '^7',
       };
+      const reactTestingDeps = {
+        // `jest-environment-jsdom` is no longer included in jest >= 28
+        'jest-environment-jsdom': jestMajorVersion,
+        // RTL
+        '@testing-library/jest-dom': '^5',
+        '@testing-library/react': '^13',
+      };
       const packageToInstall: Record<string, string> = res.willUseTLR
         ? {
             ...basicDeps,
-            '@testing-library/react': '^13',
-            '@testing-library/jest-dom': '^5.16.4',
+            ...reactTestingDeps,
             '@types/testing-library__jest-dom': '^5.14.5',
           }
         : basicDeps;
@@ -103,17 +110,17 @@ export default async () => {
         // config opts for esbuild , it will pass to esbuild directly
         jsTransformerOpts: { jsx: 'automatic' },
       }),
-    
+
       ${
         res.willUseTLR ? `setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],` : ''
       }
       collectCoverageFrom: [
-  ${collectCoverageFrom.map((v) => `      '${v}'`).join(',\n')}
+${collectCoverageFrom.map((v) => `        '${v}'`).join(',\n')}
       ],
       // if you require some es-module npm package, please uncomment below line and insert your package name
       // transformIgnorePatterns: ['node_modules/(?!.*(lodash-es|your-es-pkg-name)/)']
     })) as Config.InitialOptions;
-  }catch(e){
+  } catch (e) {
     console.log(e);
     throw e;
   }
@@ -126,3 +133,18 @@ export default async () => {
     },
   });
 };
+
+function getJestVersion() {
+  try {
+    const umiPkg = require.resolve('umi/package.json', {
+      paths: [process.cwd()],
+    });
+    const testPkg = require.resolve('@umijs/test/package.json', {
+      paths: [umiPkg],
+    });
+    const version: string = require(testPkg).devDependencies.jest;
+    return semver.minVersion(version)!.version.split('.')[0];
+  } catch {
+    return 29;
+  }
+}

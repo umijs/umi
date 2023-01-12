@@ -6,7 +6,7 @@
 
 type PortfinderCallback = (err: Error, port: number) => void;
 
-interface PortFinderOptions{
+interface PortFinderOptions {
   /**
    * Host to find available port on.
    */
@@ -32,6 +32,21 @@ interface PortFinderOptions{
  * The lowest port to begin any port search from.
  */
 export let basePort: number;
+
+/**
+ * Set the lowest port to begin any port search from.
+ */
+export function setBasePort(port: number): void;
+
+/**
+ * The highest port to end any port search from.
+ */
+export let highestPort: number;
+
+/**
+ * Set the higheset port to end any port search from.
+ */
+export function setHighestPort(port: number): void;
 
 /**
  * Responds with a unbound port on the current machine.

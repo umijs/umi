@@ -1,6 +1,6 @@
 {
   "name": "@umijs/renderer-vue",
-  "version": "4.0.0-canary.20230109.1",
+  "version": "4.0.44",
   "description": "@umijs/renderer-vue",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-vue#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -21,7 +21,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/runtime": "7.18.9"
+    "@babel/runtime": "7.20.7"
   },
   "peerDependencies": {
     "vue": ">=3.2.31",

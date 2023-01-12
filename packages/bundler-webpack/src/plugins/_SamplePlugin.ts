@@ -1,4 +1,7 @@
-import { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import type {
+  Compiler,
+  Compilation,
+} from '@umijs/bundler-webpack/compiled/webpack';
 
 const PLUGIN_NAME = 'SamplePlugin';
 
@@ -12,8 +15,8 @@ class _SamplePlugin {
   }
 
   apply(compiler: Compiler): void {
-    compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
-      compilation.hooks.chunkHash.tap(PLUGIN_NAME, (_) => {});
+    compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation: Compilation) => {
+      compilation.hooks.chunkHash.tap(PLUGIN_NAME, () => {});
     });
   }
 }

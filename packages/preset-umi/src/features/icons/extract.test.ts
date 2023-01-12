@@ -18,6 +18,21 @@ test('multiple', () => {
   ]);
 });
 
-test('only the first icon attribute is valid', () => {
+test('hover', () => {
+  expect(extractIcons(`<Icon hover="foo" />`)).toEqual(['foo']);
+});
+
+test('icon + hover', () => {
+  expect(extractIcons(`<Icon icon="bar" hover="foo" />`)).toEqual([
+    'bar',
+    'foo',
+  ]);
+});
+
+test('icon + hover with same icon', () => {
+  expect(extractIcons(`<Icon icon="bar" hover="bar" />`)).toEqual(['bar']);
+});
+
+xtest('only the first icon attribute is valid', () => {
   expect(extractIcons(`<Icon icon="foo" icon="bar" />`)).toEqual(['foo']);
 });

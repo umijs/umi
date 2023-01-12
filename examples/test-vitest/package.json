@@ -7,13 +7,13 @@
     "test": "vitest"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20230109.1"
+    "umi": "4.0.44"
   },
   "devDependencies": {
     "@types/react-test-renderer": "^18.0.0",
     "@vitejs/plugin-react": "1.2.0",
     "react-test-renderer": "^18.2.0",
-    "typescript": "^4.7.2",
+    "typescript": "^4.9.4",
     "vitest": "^0.16.0"
   }
 }

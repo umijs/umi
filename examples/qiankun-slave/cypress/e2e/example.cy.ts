@@ -35,4 +35,23 @@ describe('QianKun Plugin', () => {
       cy.contains('count:1');
     });
   });
+
+  describe('MicroAppLink crossing multi apps', function () {
+    it('jump between slave and slave-app2', () => {
+      cy.visit('/slave/nav');
+
+      cy.get('a[href*="hello"]').click();
+      cy.contains('App2 HelloPage');
+
+      cy.get('a[href*="nav"]').click();
+      cy.contains('goto slave app2');
+    });
+
+    it('slave-app2 to master', () => {
+      cy.visit('/animal/ant/hello');
+      cy.get('a[href*="home"]').click();
+
+      cy.contains('Qiankun Master Page');
+    });
+  });
 });

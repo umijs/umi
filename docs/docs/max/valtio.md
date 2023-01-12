@@ -121,10 +121,10 @@ useContext(MyContext);
 ### Redux DevTools 支持
 
 ```ts
-import { proxy } from 'umi';
+import { proxy, proxyWithDevtools } from 'umi';
 
 const state = proxy({ count: 0 });
-devtools(state, { name: 'count', enable: true });
+proxyWithDevtools(state, { name: 'count', enabled: true });
 ```
 
 ### Redo & Undo 支持

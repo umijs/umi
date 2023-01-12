@@ -1,5 +1,6 @@
 import { createHttpsServer, createProxy } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
+import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
@@ -26,7 +27,7 @@ interface IOpts {
   onBeforeMiddleware?: Function;
 }
 
-export async function createServer(opts: IOpts) {
+export async function createServer(opts: IOpts): Promise<any> {
   const { webpackConfig, userConfig } = opts;
   const { proxy } = userConfig;
   const app = express();
@@ -114,7 +115,7 @@ export async function createServer(opts: IOpts) {
     compiler.hooks.invalid.tap('server', () => {
       sendMessage(MESSAGE_TYPE.invalid);
     });
-    compiler.hooks.done.tap('server', (_stats) => {
+    compiler.hooks.done.tap('server', (_stats: Stats) => {
       stats = _stats;
       sendStats(getStats(stats));
       opts.onDevCompileDone?.({

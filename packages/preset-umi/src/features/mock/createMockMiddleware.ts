@@ -36,6 +36,7 @@ export function createMockMiddleware(opts: {
             // body parser + multer
             bodyParser.json(jsonOpts)(req, res, () => {
               bodyParser.urlencoded(urlEncodedOpts)(req, res, () => {
+                // @ts-ignore
                 multer().any()(req, res, () => {
                   mock.handler(req, res, next);
                 });

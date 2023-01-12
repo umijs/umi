@@ -6,7 +6,7 @@ import { parse } from '../../../compiled/ini';
 import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
 import { createResolver, scan } from '../../libs/scan';
-import { IApi } from '../../types';
+import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
 import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
@@ -70,24 +70,19 @@ export default (api: IApi) => {
     return memo;
   });
 
-  function findGitDir(dir: string): string | null {
-    if (dir === resolve('/')) {
-      return null;
-    }
-    if (existsSync(join(dir, '.git'))) {
-      return join(dir, '.git');
-    }
-    const parent: string | null = findGitDir(join(dir, '..'));
-    if (parent) {
-      return parent;
-    }
-    return null;
-  }
+  api.registerMethod({
+    name: '_refreshRoutes',
+    async fn() {
+      api.appData.routes = await getRoutes({
+        api,
+      });
+    },
+  });
 
   // Execute earliest, so that other onGenerateFiles can get it
   api.register({
     key: 'onGenerateFiles',
-    async fn(args: any) {
+    async fn(args: IOnGenerateFiles) {
       if (!args.isFirstTime) {
         api.appData.appJS = await getAppJsInfo();
         const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
@@ -170,3 +165,17 @@ export default (api: IApi) => {
     };
   }
 };
+
+function findGitDir(dir: string): string | null {
+  if (dir === resolve('/')) {
+    return null;
+  }
+  if (existsSync(join(dir, '.git'))) {
+    return join(dir, '.git');
+  }
+  const parent: string | null = findGitDir(join(dir, '..'));
+  if (parent) {
+    return parent;
+  }
+  return null;
+}

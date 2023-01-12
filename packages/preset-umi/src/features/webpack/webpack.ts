@@ -1,4 +1,7 @@
-import type webpack from '@umijs/bundler-webpack/compiled/webpack';
+import type {
+  Compiler,
+  Compilation,
+} from '@umijs/bundler-webpack/compiled/webpack';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -16,10 +19,10 @@ export default (api: IApi) => {
   };
 
   class HtmlWebpackPlugin {
-    apply(compiler: webpack.Compiler) {
+    apply(compiler: Compiler) {
       compiler.hooks.emit.tapPromise(
         'UmiHtmlGeneration',
-        async (compilation) => {
+        async (compilation: Compilation) => {
           const entryPointFiles = compilation.entrypoints
             .get('umi')!
             .getFiles();

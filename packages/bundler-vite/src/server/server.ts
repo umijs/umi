@@ -1,7 +1,7 @@
 import {
   createHttpsServer,
-  resolveHttpsConfig,
   createProxy,
+  resolveHttpsConfig,
 } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { getDevBanner, logger } from '@umijs/utils';
@@ -41,7 +41,7 @@ interface IOpts {
   onBeforeMiddleware?: Function;
 }
 
-export async function createServer(opts: IOpts) {
+export async function createServer(opts: IOpts): Promise<any> {
   const startTms = +new Date();
   const { viteConfig, userConfig, onDevCompileDone } = opts;
   const app = express();

@@ -70,6 +70,14 @@ export type IEntryImport = {
 };
 export type IRoute = ICoreRoute;
 export type IFileInfo = Array<{ event: string; path: string }>;
+export interface IOnGenerateFiles {
+  files?: IFileInfo | null;
+  isFirstTime?: boolean;
+}
+export type GenerateFilesFn = (opts: IOnGenerateFiles) => Promise<void>;
+export type OnConfigChangeFn = (opts: {
+  generate: GenerateFilesFn;
+}) => void | Promise<void>;
 
 export type IApi = PluginAPI &
   IServicePluginAPI & {
@@ -175,10 +183,7 @@ export type IApi = PluginAPI &
       stats: webpack.Stats;
       time: number;
     }>;
-    onGenerateFiles: IEvent<{
-      files?: IFileInfo | null;
-      isFirstTime?: boolean;
-    }>;
+    onGenerateFiles: IEvent<IOnGenerateFiles>;
     onPatchRoute: IEvent<{
       route: IRoute;
     }>;
@@ -196,3 +201,12 @@ export type IApi = PluginAPI &
       tplPath?: string;
     }) => void;
   };
+
+export interface IApiInternalProps {
+  /**
+   * 如果不刷新 routes，修改 icon 不会热更新
+   * See https://github.com/umijs/umi/issues/10137
+   * TODO: 不公开这个方法，先解问题，但此问题应该有更好的解法
+   */
+  _refreshRoutes: () => Promise<void>;
+}

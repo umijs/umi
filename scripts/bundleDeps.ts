@@ -123,6 +123,8 @@ Object.keys(exported).forEach(function (key) {
           'execa',
           'globby',
           'os-locale',
+          'gzip-size',
+          'prettier',
           'copy-webpack-plugin',
           'zx',
           '@vitejs/plugin-legacy',
