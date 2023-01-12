@@ -16,7 +16,7 @@
     "vue": "3.2.36"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.13.5",
+    "babel-plugin-import": "^1.13.6",
     "vite-plugin-style-import": "2.0.0"
   }
 }

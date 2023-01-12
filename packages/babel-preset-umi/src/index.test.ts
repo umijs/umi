@@ -85,7 +85,7 @@ test('tc39 export default from', () => {
   const code = doTransform({
     code: `export v from "mod";`,
   });
-  expect(code).toContain(`import _v from "mod";\nexport { _v as v };`);
+  expect(code).toContain(`export { default as v } from "mod";`);
 });
 
 test('tc39 export namespace from', () => {
