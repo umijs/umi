@@ -41,8 +41,7 @@ interface IOpts {
   onBeforeMiddleware?: Function;
 }
 
-// FIXME
-export async function createServer2(opts: IOpts) {
+export async function createServer(opts: IOpts): Promise<any> {
   const startTms = +new Date();
   const { viteConfig, userConfig, onDevCompileDone } = opts;
   const app = express();

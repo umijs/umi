@@ -1,5 +1,5 @@
 import { getConfig } from './config/config';
-import { createServer2 } from './server/server';
+import { createServer } from './server/server';
 import { Env, IBabelPlugin, IConfig } from './types';
 
 interface IOpts {
@@ -36,7 +36,7 @@ export async function dev(opts: IOpts) {
     modifyViteConfig: opts.modifyViteConfig,
   });
 
-  await createServer2({
+  await createServer({
     viteConfig,
     userConfig: opts.config,
     cwd: opts.cwd,
