@@ -261,8 +261,14 @@ function releaseBygithub(releaseNotes: string, version: string) {
 
 function generateChangelog(releaseNotes: string) {
   const CHANGELOG_PATH = join(PATHS.ROOT, 'TMP_CHANGELOG.md');
-  const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
-  const arr = str.split('# umi changelog');
-  const newStr = `# umi changelog\n\n${releaseNotes}${arr[1]}`;
+  const hasFile = fs.existsSync(CHANGELOG_PATH);
+  let newStr = '';
+  if (hasFile) {
+    const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
+    const arr = str.split('# umi changelog');
+    newStr = `# umi changelog\n\n${releaseNotes}${arr[1]}`;
+  } else {
+    newStr = `# umi changelog\n\n${releaseNotes}`;
+  }
   fs.writeFileSync(CHANGELOG_PATH, newStr);
 }
