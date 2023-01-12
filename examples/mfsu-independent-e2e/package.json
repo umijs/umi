@@ -30,8 +30,8 @@
     "esbuild": "0.14.35",
     "html-webpack-plugin": "^5.5.0",
     "start-server-and-test": "^1.14.0",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.8.1"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
   }
 }

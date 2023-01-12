@@ -17,7 +17,7 @@ export class BuildDepPlugin {
   }
 
   apply(compiler: Compiler): void {
-    compiler.hooks.watchRun.tapPromise(PLUGIN_NAME, (c) => {
+    compiler.hooks.watchRun.tapPromise(PLUGIN_NAME, (c: Compiler) => {
       logger.debug(
         'webpack watched change',
         'modified: ',

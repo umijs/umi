@@ -1,4 +1,7 @@
-import type { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import type {
+  Compiler,
+  Compilation,
+} from '@umijs/bundler-webpack/compiled/webpack';
 import { sources } from '@umijs/bundler-webpack/compiled/webpack';
 import { fsExtra } from '@umijs/utils';
 import { writeFileSync } from 'fs';
@@ -26,7 +29,7 @@ class SSRPlugin {
   }
   apply(compiler: Compiler) {
     // ref: https://github.com/webdeveric/webpack-assets-manifest
-    compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+    compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation: Compilation) => {
       compilation.hooks.processAssets.tap(PLUGIN_NAME, () => {
         const publicPath = compiler.options.output.publicPath || '/';
         const assets = compilation.getAssets().filter((asset) => {

@@ -1,5 +1,6 @@
-import {
+import type {
   Compiler,
+  Compilation,
   NormalModule,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import Config from '@umijs/bundler-webpack/compiled/webpack-5-chain';
@@ -17,7 +18,7 @@ class HarmonyLinkingErrorPlugin {
   apply(compiler: Compiler) {
     compiler.hooks.afterCompile.tap(
       'HarmonyLinkingErrorPlugin',
-      (compilation) => {
+      (compilation: Compilation) => {
         if (!compilation.warnings.length) {
           return;
         }

@@ -1,4 +1,7 @@
-import type { Compiler } from '@umijs/bundler-webpack/compiled/webpack';
+import type {
+  Compiler,
+  Compilation,
+} from '@umijs/bundler-webpack/compiled/webpack';
 import { EnableBy } from '@umijs/core/dist/types';
 import { fsExtra, importLazy, logger } from '@umijs/utils';
 import assert from 'assert';
@@ -117,7 +120,7 @@ export default function handler(request, response) {
   const pluginName = 'ProcessAssetsPlugin';
   class ProcessAssetsPlugin {
     apply(compiler: Compiler) {
-      compiler.hooks.compilation.tap(pluginName, (compilation) => {
+      compiler.hooks.compilation.tap(pluginName, (compilation: Compilation) => {
         compilation.hooks.afterProcessAssets.tap(pluginName, () => {
           const modulePath = absServerBuildPath(api);
           delete require.cache[modulePath];
