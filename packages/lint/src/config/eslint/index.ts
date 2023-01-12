@@ -29,7 +29,7 @@ module.exports = {
     {
       settings: {
         jest: {
-          version: 26,
+          version: detectJestVersion(),
         },
       },
       files: ['**/*.{test,spec,unit,e2e}.{ts,tsx,js,jsx}'],
@@ -49,3 +49,14 @@ module.exports = {
     requireConfigFile: false,
   },
 };
+
+function detectJestVersion() {
+  try {
+    const pkg = require.resolve('jest/package.json', {
+      paths: [process.cwd()],
+    });
+    return require(pkg).version;
+  } catch {
+    return 29;
+  }
+}
