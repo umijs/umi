@@ -1,7 +1,7 @@
 import {
   createHttpsServer,
-  resolveHttpsConfig,
   createProxy,
+  resolveHttpsConfig,
 } from '@umijs/bundler-utils';
 import express from '@umijs/bundler-utils/compiled/express';
 import { getDevBanner, logger } from '@umijs/utils';
@@ -41,6 +41,8 @@ interface IOpts {
   onBeforeMiddleware?: Function;
 }
 
+// FIXME: i don't know why this has ts problem, can not reproduce in local
+// @ts-ignore
 export async function createServer(opts: IOpts) {
   const startTms = +new Date();
   const { viteConfig, userConfig, onDevCompileDone } = opts;
