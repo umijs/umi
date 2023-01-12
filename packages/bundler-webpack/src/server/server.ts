@@ -3,6 +3,7 @@ import express from '@umijs/bundler-utils/compiled/express';
 import webpack, {
   Configuration,
 } from '@umijs/bundler-webpack/compiled/webpack';
+import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import { getDevBanner, lodash, logger } from '@umijs/utils';
 import cors from 'cors';
 import { createReadStream, existsSync } from 'fs';
@@ -114,7 +115,7 @@ export async function createServer(opts: IOpts) {
     compiler.hooks.invalid.tap('server', () => {
       sendMessage(MESSAGE_TYPE.invalid);
     });
-    compiler.hooks.done.tap('server', (_stats) => {
+    compiler.hooks.done.tap('server', (_stats: Stats) => {
       stats = _stats;
       sendStats(getStats(stats));
       opts.onDevCompileDone?.({
