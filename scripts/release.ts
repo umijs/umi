@@ -154,11 +154,15 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
-
-  // changelog
-  const { releaseNotes } = await githubRelease(version);
-  // generate changelog
-  generateChangelog(releaseNotes);
+  const canReleaseNotes = !['canary', 'rc', 'beta', 'alpha'].find((item) =>
+    version.includes(item),
+  );
+  if (canReleaseNotes) {
+    // changelog
+    const { releaseNotes } = await githubRelease(version);
+    // generate changelog
+    generateChangelog(releaseNotes);
+  }
 
   // check 2fa config
   let otpArg: string[] = [];
@@ -249,7 +253,7 @@ export async function githubRelease(version: String) {
 }
 
 function generateChangelog(releaseNotes: String) {
-  const CHANGELOG_PATH = join(PATHS.ROOT, 'CHANGELOG.md');
+  const CHANGELOG_PATH = join(PATHS.ROOT, 'TMP_CHANGELOG.md');
   const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
   const arr = str.split('# umi changelog');
   const newStr = `# umi changelog\n\n${releaseNotes}${arr[1]}`;
