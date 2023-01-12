@@ -1,6 +1,3 @@
-// @ts-nocheck
-// FIXME: i don't know why this has ts problem, can not reproduce in local
-
 import {
   createHttpsServer,
   createProxy,
@@ -44,7 +41,8 @@ interface IOpts {
   onBeforeMiddleware?: Function;
 }
 
-export async function createServer(opts: IOpts) {
+// FIXME
+export async function createServer2(opts: IOpts) {
   const startTms = +new Date();
   const { viteConfig, userConfig, onDevCompileDone } = opts;
   const app = express();
