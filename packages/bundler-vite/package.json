@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",
+    "@types/spdy": "3.4.5",
     "@types/svgo": "3.0.0",
     "@vitejs/plugin-legacy": "2.3.1",
     "caniuse-lite": "1.0.30001441",
