@@ -13,8 +13,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/preset-vue": "4.0.0-canary.20230109.1",
-    "umi": "4.0.0-canary.20230109.1",
+    "@umijs/preset-vue": "4.0.43",
+    "umi": "4.0.43",
     "vue": "3.2.45"
   },
   "devDependencies": {
