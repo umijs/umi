@@ -11,7 +11,7 @@ import fsExtra from '../compiled/fs-extra';
 import glob from '../compiled/glob';
 // import globby from '../compiled/globby';
 import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
-import filesize from '../compiled/filesize';
+import * as filesize from '../compiled/filesize';
 import * as gzipSize from '../compiled/gzip-size';
 import lodash from '../compiled/lodash';
 import Mustache from '../compiled/mustache';
