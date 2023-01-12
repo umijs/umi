@@ -1,14 +1,14 @@
-import fs from 'fs';
-import path from 'path';
 import type { Stats } from '@umijs/bundler-webpack/compiled/webpack';
 import {
   chalk,
   filesize,
-  stripAnsi,
   gzipSize as _gzipSize,
+  stripAnsi,
 } from '@umijs/utils';
+import fs from 'fs';
+import path from 'path';
 
-const gzipSize = _gzipSize.sync;
+const gzipSize = _gzipSize.gzipSizeSync;
 
 interface ISizes {
   root: string;
@@ -44,7 +44,8 @@ export function printFileSizesAfterBuild(opts: {
         folder: path.join(path.basename(buildFolder), path.dirname(asset.name)),
         name: path.basename(asset.name),
         size: size,
-        sizeLabel: filesize(size) + (difference ? ' (' + difference + ')' : ''),
+        sizeLabel:
+          filesize.filesize(size) + (difference ? ' (' + difference + ')' : ''),
       };
     });
   if (!assets?.length) {
@@ -96,7 +97,9 @@ export function printFileSizesAfterBuild(opts: {
 const FIFTY_KILOBYTES = 1024 * 50;
 function getDifferenceLabel(currentSize: number, previousSize: number) {
   const difference = currentSize - previousSize;
-  const fileSize = !Number.isNaN(difference) ? filesize(difference) : 0;
+  const fileSize = !Number.isNaN(difference)
+    ? filesize.filesize(difference)
+    : 0;
   if (difference >= FIFTY_KILOBYTES) {
     return chalk.red('+' + fileSize);
   } else if (difference < FIFTY_KILOBYTES && difference > 0) {

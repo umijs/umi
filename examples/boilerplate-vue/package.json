@@ -15,11 +15,11 @@
   "dependencies": {
     "@umijs/preset-vue": "4.0.0-canary.20230109.1",
     "umi": "4.0.0-canary.20230109.1",
-    "vue": "3.2.36"
+    "vue": "3.2.45"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "cypress": "^10.0.0",
-    "start-server-and-test": "^1.0.0"
+    "start-server-and-test": "^1.15.2"
   }
 }

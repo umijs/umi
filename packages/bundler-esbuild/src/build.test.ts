@@ -45,7 +45,7 @@ const expects: Record<string, Function> = {
   svg({ files }: IOpts) {
     expect(files['index.js']).toContain(`console.log("foo");`);
     expect(files['index.js']).toContain(`var smile_default =`);
-    expect(files['index.css']).toContain(`data:image/svg+xml;`);
+    expect(files['index.css']).toContain(`data:image/svg+xml,`);
   },
   loader({ files }: IOpts) {
     expect(files['index.js']).toContain(`data:image/png;base64`);

@@ -36,7 +36,7 @@ test('set object with deep object', () => {
     )!,
   );
   expect(generateCode).toMatchInlineSnapshot(
-    `"export default { p2: { \\"react\\": \\"aaa\\", \\"subP2\\": { \\"a\\": 1, \\"b\\": { \\"d\\": \\"ddd\\" }, \\"c\\": true } } };"`,
+    `"export default { p2: { "react": "aaa", "subP2": { "a": 1, "b": { "d": "ddd" }, "c": true } } };"`,
   );
 });
 

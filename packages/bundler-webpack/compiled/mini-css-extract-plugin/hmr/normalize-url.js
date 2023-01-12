@@ -12,32 +12,24 @@ function normalizeUrl(pathComponents) {
       case "..":
         accumulator.pop();
         break;
-
       case ".":
         break;
-
       default:
         accumulator.push(item);
     }
-
     return accumulator;
-  },
-  /** @type {string[]} */
-  []).join("/");
+  }, /** @type {string[]} */[]).join("/");
 }
+
 /**
  * @param {string} urlString
  * @returns {string}
  */
-
-
 module.exports = function (urlString) {
   urlString = urlString.trim();
-
   if (/^data:/i.test(urlString)) {
     return urlString;
   }
-
   var protocol = urlString.indexOf("//") !== -1 ? urlString.split("//")[0] + "//" : "";
   var components = urlString.replace(new RegExp(protocol, "i"), "").split("/");
   var host = components[0].toLowerCase().replace(/\.$/, "");

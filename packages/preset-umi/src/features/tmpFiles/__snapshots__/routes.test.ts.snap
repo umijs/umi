@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getRoutes 1`] = `
-Object {
-  "1": Object {
+{
+  "1": {
     "__content": "",
     "__isJSFile": true,
     "absPath": "/login",
@@ -12,7 +12,7 @@ Object {
     "parentId": undefined,
     "path": "/login",
   },
-  "2": Object {
+  "2": {
     "__content": "",
     "__isJSFile": true,
     "absPath": "/*",
@@ -21,7 +21,7 @@ Object {
     "parentId": "@@/global-layout",
     "path": "*",
   },
-  "3": Object {
+  "3": {
     "__content": "",
     "__isJSFile": false,
     "absPath": "/hello",
@@ -30,7 +30,7 @@ Object {
     "parentId": "@@/global-layout",
     "path": "/hello",
   },
-  "4": Object {
+  "4": {
     "__content": "",
     "__isJSFile": false,
     "absPath": "/users",
@@ -39,7 +39,7 @@ Object {
     "parentId": "@@/global-layout",
     "path": "/users",
   },
-  "5": Object {
+  "5": {
     "__content": "",
     "__isJSFile": true,
     "absPath": "/users/foo",
@@ -48,7 +48,7 @@ Object {
     "parentId": "4",
     "path": "/users/foo",
   },
-  "6": Object {
+  "6": {
     "__content": "",
     "__isJSFile": true,
     "absPath": "/absolute",
@@ -56,7 +56,7 @@ Object {
     "parentId": "@@/global-layout",
     "path": "/absolute",
   },
-  "@@/global-layout": Object {
+  "@@/global-layout": {
     "absPath": "/",
     "file": "@/layouts/index.tsx",
     "id": "@@/global-layout",

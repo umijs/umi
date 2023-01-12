@@ -1,10 +1,12 @@
 "use strict";
 
-/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
+/** @typedef {import("@jridgewell/trace-mapping").SourceMapInput} SourceMapInput */
 
 /** @typedef {import("terser").FormatOptions} TerserFormatOptions */
 
 /** @typedef {import("terser").MinifyOptions} TerserOptions */
+
+/** @typedef {import("terser").CompressOptions} TerserCompressOptions */
 
 /** @typedef {import("terser").ECMA} TerserECMA */
 
@@ -86,7 +88,7 @@ function throttleAll(limit, tasks) {
 
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {SourceMapInput | undefined} sourceMap
  * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
@@ -218,14 +220,14 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
   };
   /**
    * @param {PredefinedOptions & TerserOptions} [terserOptions={}]
-   * @returns {TerserOptions & { sourceMap: undefined } & ({ output: TerserFormatOptions & { beautify: boolean } } | { format: TerserFormatOptions & { beautify: boolean } })}
+   * @returns {TerserOptions & { sourceMap: undefined } & { compress: TerserCompressOptions } & ({ output: TerserFormatOptions & { beautify: boolean } } | { format: TerserFormatOptions & { beautify: boolean } })}
    */
 
 
   const buildTerserOptions = (terserOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
     return { ...terserOptions,
-      compress: typeof terserOptions.compress === "boolean" ? terserOptions.compress : { ...terserOptions.compress
+      compress: typeof terserOptions.compress === "boolean" ? terserOptions.compress ? {} : false : { ...terserOptions.compress
       },
       // ecma: terserOptions.ecma,
       // ie8: terserOptions.ie8,
@@ -282,6 +284,18 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
     terserOptions.format.comments = buildComments(terserOptions, extractedComments);
   }
 
+  if (terserOptions.compress) {
+    // More optimizations
+    if (typeof terserOptions.compress.ecma === "undefined") {
+      terserOptions.compress.ecma = terserOptions.ecma;
+    } // https://github.com/webpack/webpack/issues/16135
+
+
+    if (terserOptions.ecma === 5 && typeof terserOptions.compress.arrows === "undefined") {
+      terserOptions.compress.arrows = false;
+    }
+  }
+
   const [[filename, code]] = Object.entries(input);
   const result = await minify({
     [filename]: code
@@ -293,7 +307,7 @@ async function terserMinify(input, sourceMap, minimizerOptions, extractComments)
     // @ts-ignore
     // eslint-disable-next-line no-undefined
     map: result.map ?
-    /** @type {RawSourceMap} **/
+    /** @type {SourceMapInput} **/
     result.map : undefined,
     extractedComments
   };
@@ -318,7 +332,7 @@ terserMinify.getMinimizerVersion = () => {
 
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {SourceMapInput | undefined} sourceMap
  * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @param {ExtractCommentsOptions | undefined} extractComments
  * @return {Promise<MinimizedResult>}
@@ -524,7 +538,7 @@ uglifyJsMinify.getMinimizerVersion = () => {
 
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {SourceMapInput | undefined} sourceMap
  * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
@@ -533,12 +547,12 @@ uglifyJsMinify.getMinimizerVersion = () => {
 async function swcMinify(input, sourceMap, minimizerOptions) {
   /**
    * @param {PredefinedOptions & import("@swc/core").JsMinifyOptions} [swcOptions={}]
-   * @returns {import("@swc/core").JsMinifyOptions & { sourceMap: undefined }}
+   * @returns {import("@swc/core").JsMinifyOptions & { sourceMap: undefined } & { compress: import("@swc/core").TerserCompressOptions }}
    */
   const buildSwcOptions = (swcOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
     return { ...swcOptions,
-      compress: typeof swcOptions.compress === "boolean" ? swcOptions.compress : { ...swcOptions.compress
+      compress: typeof swcOptions.compress === "boolean" ? swcOptions.compress ? {} : false : { ...swcOptions.compress
       },
       mangle: swcOptions.mangle == null ? true : typeof swcOptions.mangle === "boolean" ? swcOptions.mangle : { ...swcOptions.mangle
       },
@@ -562,6 +576,18 @@ async function swcMinify(input, sourceMap, minimizerOptions) {
   if (sourceMap) {
     // @ts-ignore
     swcOptions.sourceMap = true;
+  }
+
+  if (swcOptions.compress) {
+    // More optimizations
+    if (typeof swcOptions.compress.ecma === "undefined") {
+      swcOptions.compress.ecma = swcOptions.ecma;
+    } // https://github.com/webpack/webpack/issues/16135
+
+
+    if (swcOptions.ecma === 5 && typeof swcOptions.compress.arrows === "undefined") {
+      swcOptions.compress.arrows = false;
+    }
   }
 
   const [[filename, code]] = Object.entries(input);
@@ -600,7 +626,7 @@ swcMinify.getMinimizerVersion = () => {
 
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {SourceMapInput | undefined} sourceMap
  * @param {PredefinedOptions & CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */

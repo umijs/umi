@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@umijs/preset-vue": "4.0.0-canary.20230109.1",
-    "pinia": "^2.0.14",
+    "pinia": "^2.0.28",
     "umi": "4.0.0-canary.20230109.1",
-    "vue": "3.2.36"
+    "vue": "3.2.45"
   }
 }

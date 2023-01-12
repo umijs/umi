@@ -30,8 +30,8 @@
     "is-equal": "^1.6.4"
   },
   "devDependencies": {
-    "is-absolute-url": "^3.0.3",
-    "mrmime": "1.0.0",
+    "is-absolute-url": "^4.0.1",
+    "mrmime": "1.0.1",
     "webpack": "5.75.0",
     "webpack-virtual-modules": "0.5.0"
   },

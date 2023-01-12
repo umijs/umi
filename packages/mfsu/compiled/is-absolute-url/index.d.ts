@@ -5,7 +5,7 @@ Check if a URL is absolute.
 
 @example
 ```
-import isAbsoluteUrl = require('./is-absolute-url');
+import isAbsoluteUrl from './is-absolute-url';
 
 isAbsoluteUrl('http://sindresorhus.com/foo/bar');
 //=> true
@@ -17,6 +17,4 @@ isAbsoluteUrl('foo/bar');
 //=> false
 ```
 */
-declare function isAbsoluteUrl(url: string): boolean;
-
-export = isAbsoluteUrl;
+export default function isAbsoluteUrl(url: string): boolean;
