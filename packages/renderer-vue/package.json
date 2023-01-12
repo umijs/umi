@@ -21,7 +21,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/runtime": "7.18.9"
+    "@babel/runtime": "7.20.7"
   },
   "peerDependencies": {
     "vue": ">=3.2.31",

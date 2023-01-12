@@ -57,7 +57,7 @@
     "@types/webpack-sources": "3.2.0",
     "@types/ws": "8.5.3",
     "autoprefixer": "10.4.13",
-    "babel-loader": "8.2.4",
+    "babel-loader": "9.1.2",
     "compression": "1.7.4",
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "10.2.4",

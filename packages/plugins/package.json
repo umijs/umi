@@ -33,7 +33,7 @@
     "@umijs/valtio": "^1.0.2",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.27.2",
-    "babel-plugin-import": "^1.13.5",
+    "babel-plugin-import": "^1.13.6",
     "dayjs": "^1.11.2",
     "dva-core": "^2.0.4",
     "dva-immer": "^1.0.0",

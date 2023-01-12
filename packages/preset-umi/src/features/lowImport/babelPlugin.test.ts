@@ -226,7 +226,7 @@ test('import React', () => {
       reactImportItems: ['useState'],
     }),
   ).toEqual(
-    `import { useState as _useState } from "react";\nimport _React from "react";\n_React;\n\n_useState();`,
+    `import { useState as _useState } from "react";\nimport _React from "react";\n_React;\n_useState();`,
   );
 });
 
@@ -238,6 +238,6 @@ test('multiple import React', () => {
       reactImportItems: ['useState'],
     }),
   ).toEqual(
-    `import { useState as _useState } from "react";\nimport _React from "react";\n_React;\n\n_useState();\n\n_React;\n\n_useState();`,
+    `import { useState as _useState } from "react";\nimport _React from "react";\n_React;\n_useState();\n_React;\n_useState();`,
   );
 });
