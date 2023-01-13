@@ -274,11 +274,18 @@ export const MicroApp = forwardRef(
         ? (loading) => <MicroAppLoader loading={loading} />
         : null);
 
-    const microAppWrapperClassName = wrapperClassName ? `${wrapperClassName} qiankun-micro-app-wrapper` : 'qiankun-micro-app-wrapper';
-    const microAppClassName = className ? `${className} qiankun-micro-app-container` : 'qiankun-micro-app-container';
+    const microAppWrapperClassName = wrapperClassName
+      ? `${wrapperClassName} qiankun-micro-app-wrapper`
+      : 'qiankun-micro-app-wrapper';
+    const microAppClassName = className
+      ? `${className} qiankun-micro-app-container`
+      : 'qiankun-micro-app-container';
 
     return Boolean(microAppLoader) || Boolean(microAppErrorBoundary) ? (
-      <div style={{ position: 'relative' }} className={microAppWrapperClassName}>
+      <div
+        style={{ position: 'relative' }}
+        className={microAppWrapperClassName}
+      >
         {Boolean(microAppLoader) && microAppLoader(loading)}
         {Boolean(microAppErrorBoundary) &&
           Boolean(error) &&

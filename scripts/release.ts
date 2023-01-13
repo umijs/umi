@@ -1,9 +1,12 @@
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
+import open from 'open';
+import { Octokit } from 'octokit';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import 'zx/globals';
+import qs from 'qs';
 import { PATHS } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
 
@@ -81,10 +84,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // ).stdout.trim().length;
   // assert(!isGitCleanAfterClientBuild, 'client code is updated');
 
-  // generate changelog
-  // TODO
-  logger.event('generate changelog');
-
   // bump version
   logger.event('bump version');
   await $`lerna version --exact --no-commit-hooks --no-git-tag-version --no-push --loglevel error`;
@@ -155,6 +154,22 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
+  const canReleaseNotes = !['canary', 'rc', 'beta', 'alpha'].find((item) =>
+    version.includes(item),
+  );
+  if (canReleaseNotes) {
+    // get release notes
+    logger.event('get release notes');
+    const { releaseNotes } = await getReleaseNotes(version);
+
+    // generate changelog
+    logger.event('generate changelog');
+    generateChangelog(releaseNotes);
+
+    // release by github
+    logger.event('release by github');
+    releaseBygithub(releaseNotes, version);
+  }
 
   // check 2fa config
   let otpArg: string[] = [];
@@ -212,4 +227,48 @@ function setDepsVersion(opts: {
     }
   });
   return pkg;
+}
+
+export async function getReleaseNotes(version: string) {
+  const GITHUB_TOKEN = '.github_token';
+  const OWNER = 'umijs';
+  const REPO = 'umi';
+  const token = fs.readFileSync(GITHUB_TOKEN, 'utf8').trim();
+  const octokit = new Octokit({
+    auth: token,
+  });
+  const releaseNotesRes = await octokit.request(
+    `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
+    {
+      tag_name: version,
+    },
+  );
+  const releaseNotes = releaseNotesRes.data.body;
+  return { releaseNotes };
+}
+
+function releaseBygithub(releaseNotes: string, version: string) {
+  const releaseParms = {
+    tag: version,
+    title: `v${version}`,
+    body: releaseNotes,
+    prerelease: false,
+  };
+  open(
+    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
+  );
+}
+
+function generateChangelog(releaseNotes: string) {
+  const CHANGELOG_PATH = join(PATHS.ROOT, 'TMP_CHANGELOG.md');
+  const hasFile = fs.existsSync(CHANGELOG_PATH);
+  let newStr = '';
+  if (hasFile) {
+    const str = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
+    const arr = str.split('# umi changelog');
+    newStr = `# umi changelog\n\n${releaseNotes}${arr[1]}`;
+  } else {
+    newStr = `# umi changelog\n\n${releaseNotes}`;
+  }
+  fs.writeFileSync(CHANGELOG_PATH, newStr);
 }
