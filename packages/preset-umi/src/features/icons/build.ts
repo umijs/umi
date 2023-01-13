@@ -1,9 +1,9 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
+import { logger } from '@umijs/utils';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
 import { esbuildCollectIconPlugin } from './esbuildPlugins/esbuildCollectIconPlugin';
-import { logger } from '@umijs/utils';
+import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
 
 export async function build(opts: {
   entryPoints: string[];
@@ -46,8 +46,14 @@ export async function build(opts: {
     write: false,
     outdir: path.join(path.dirname(opts.entryPoints[0]), 'out'),
     plugins: [
-      esbuildAliasPlugin({ alias: opts.config?.alias || {} }),
+      // why externals must be in front of alias?
+      // e.g.
+      // if we have alias { 'foo': 'path' }
+      // then we import 'foo/bar.less'
+      // if we resolve alias first, we will get { path }
+      // if we resolve externals first, we will get { external: true }
       esbuildExternalPlugin(),
+      esbuildAliasPlugin({ alias: opts.config?.alias || {} }),
       esbuildCollectIconPlugin({
         icons,
         alias: opts.options?.alias || {},
