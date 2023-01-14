@@ -317,7 +317,7 @@ const TableList: React.FC = () => {
           defaultMessage: 'New rule',
         })}
         width="400px"
-        visible={createModalVisible}
+        open={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
           const success = await handleAdd(value as API.RuleListItem);
@@ -369,7 +369,7 @@ const TableList: React.FC = () => {
 
       <Drawer
         width={600}
-        visible={showDetail}
+        open={showDetail}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);

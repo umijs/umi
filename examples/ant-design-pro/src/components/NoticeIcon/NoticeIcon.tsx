@@ -125,7 +125,7 @@ const NoticeIcon: React.FC<NoticeIconProps> & {
       overlay={notificationBox}
       overlayClassName={styles.popover}
       trigger={['click']}
-      visible={visible}
+      open={visible}
       onVisibleChange={setVisible}
     >
       {trigger}
