@@ -243,7 +243,7 @@ const TableList: React.FC<unknown> = () => {
 
       <Drawer
         width={600}
-        visible={!!row}
+        open={!!row}
         onClose={() => {
           setRow(undefined);
         }}
