@@ -157,6 +157,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   const canReleaseNotes = !['canary', 'rc', 'beta', 'alpha'].find((item) =>
     version.includes(item),
   );
+  // FIXME: getReleaseNotes don't work with 404 error
   if (false && canReleaseNotes) {
     // get release notes
     logger.event('get release notes');
