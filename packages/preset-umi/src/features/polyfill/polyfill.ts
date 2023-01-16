@@ -1,7 +1,7 @@
 import { transform } from '@umijs/bundler-utils/compiled/babel/core';
+import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { getCorejsVersion, winPath } from '@umijs/utils';
 import { dirname, join } from 'path';
-import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -53,10 +53,11 @@ export {};
         configFile: false,
       },
     )!;
+
     api.writeTmpFile({
       path: 'core/polyfill.ts',
       noPluginDir: true,
-      content: code!,
+      content: excludeMathPolyfillInQiankun(code!),
     });
   });
 
@@ -70,4 +71,23 @@ export {};
     );
     return memo;
   });
+
+  // Prevent some `esnext.math.xxx` constant multiple over write in qiankun
+  // https://github.com/zloirock/core-js/issues/1091
+  function excludeMathPolyfillInQiankun(code: string) {
+    if (!api.config.qiankun) {
+      return code;
+    }
+
+    const EXCLUDE_POLYFILLS = [
+      'esnext.math.deg-per-rad',
+      'esnext.math.rad-per-deg',
+    ];
+    const lines = code.split('\n');
+    return lines
+      .filter((line) => {
+        return !EXCLUDE_POLYFILLS.some((i) => line.includes(i));
+      })
+      .join('\n');
+  }
 };
