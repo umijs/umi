@@ -17,7 +17,7 @@
     "@testing-library/react": "^13.4.0",
     "@umijs/max": "4.0.44",
     "ahooks": "^3.7.4",
-    "antd": "4.20.6",
+    "antd": "^4.24.7",
     "bizcharts": "^4.1.21",
     "bizcharts-plugin-slider": "^3.0.1",
     "classnames": "^2.3.1",

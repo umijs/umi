@@ -198,7 +198,7 @@ const Register: FC = () => {
           }
           overlayStyle={{ width: 240 }}
           placement="right"
-          visible={visible}
+          open={visible}
         >
           <FormItem
             name="password"

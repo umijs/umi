@@ -254,7 +254,7 @@ export const BasicList: FC = () => {
       </Button>
       <OperationModal
         done={done}
-        visible={visible}
+        open={visible}
         current={current}
         onDone={handleDone}
         onSubmit={handleSubmit}

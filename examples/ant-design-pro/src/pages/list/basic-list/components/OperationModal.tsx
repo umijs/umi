@@ -25,7 +25,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   }
   return (
     <ModalForm<BasicListItemDataType>
-      visible={visible}
+      open={visible}
       title={done ? null : `任务${current ? '编辑' : '添加'}`}
       className={styles.standardListForm}
       width={640}
