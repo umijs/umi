@@ -141,7 +141,7 @@ importers:
       '@antv/data-set': ^0.11.8
       '@antv/l7-react': ^2.3.9
       '@testing-library/react': ^13.4.0
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       ahooks: ^3.7.4
       antd: ^4.24.7
       bizcharts: ^4.1.21
@@ -162,15 +162,15 @@ importers:
       rc-util: ^5.27.1
       react-fittext: ^1.0.0
     dependencies:
-      '@ant-design/charts': 1.4.2_3mjjsbobxyjsvsmcnr3ujsq2xq
+      '@ant-design/charts': 1.4.2_lqvguwhkzxdlmhgupt5xppu3fa
       '@ant-design/icons': 4.7.0
-      '@ant-design/pro-components': 2.3.4_antd@4.20.6
+      '@ant-design/pro-components': 2.3.4_antd@4.24.7
       '@antv/data-set': 0.11.8
       '@antv/l7-react': 2.3.9
       '@testing-library/react': 13.4.0
       '@umijs/max': link:../../packages/max
       ahooks: 3.7.4
-      antd: 4.20.6
+      antd: 4.24.7
       bizcharts: 4.1.21
       bizcharts-plugin-slider: 3.0.1_bizcharts@4.1.21
       classnames: 2.3.1
@@ -203,7 +203,7 @@ importers:
       '@types/react-dom': ^18.0.10
       '@types/react-helmet': ^6.1.6
       '@umijs/fabric': ^3.0.0
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       '@umijs/openapi': 1.8.1
       '@umijs/route-utils': ^2.1.3
       antd: ^4.23.3
@@ -280,25 +280,25 @@ importers:
 
   examples/api-route-demo:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
   examples/boilerplate:
     specifiers:
       hoist-non-react-statics: ^3.3.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       hoist-non-react-statics: 3.3.2
       umi: link:../../packages/umi
 
   examples/boilerplate-vue:
     specifiers:
-      '@umijs/preset-vue': 4.0.44
+      '@umijs/preset-vue': 4.0.45
       cross-env: ^7.0.3
       cypress: ^10.0.0
       start-server-and-test: ^1.15.2
-      umi: 4.0.44
+      umi: 4.0.45
       vue: 3.2.45
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -311,7 +311,7 @@ importers:
 
   examples/bug-mfsu-fast-refresh:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
@@ -319,10 +319,10 @@ importers:
     specifiers:
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
-      '@umijs/bundler-vite': 4.0.44
+      '@umijs/bundler-vite': 4.0.45
       react: ^18.1.0
       react-dom: ^18.1.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
@@ -339,7 +339,7 @@ importers:
       react: ^18.1.0
       react-dom: ^18.1.0
       react-router-dom: ^6.3.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
@@ -352,14 +352,14 @@ importers:
   examples/client-loader:
     specifiers:
       express: 4.18.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       express: 4.18.2
       umi: link:../../packages/umi
 
   examples/config-proxy:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
@@ -369,7 +369,7 @@ importers:
       '@ant-design/pro-components': ^2.0.1
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       antd: ^4.24.7
       cross-env: ^7.0.3
       cypress: ^10.0.0
@@ -381,9 +381,9 @@ importers:
       typescript: ^4.9.4
     dependencies:
       '@ant-design/icons': 4.7.0
-      '@ant-design/pro-components': 2.3.4_antd@4.23.2
+      '@ant-design/pro-components': 2.3.4_antd@4.24.7
       '@umijs/max': link:../../packages/max
-      antd: 4.23.2
+      antd: 4.24.7
     devDependencies:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
@@ -404,7 +404,7 @@ importers:
       cypress: ^10.0.0
       start-server-and-test: ^1.15.2
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
@@ -417,14 +417,14 @@ importers:
 
   examples/diff-client-loader:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
   examples/legacy:
     specifiers:
       es-check: ^7.0.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
@@ -442,7 +442,7 @@ importers:
       redux: ^4.2.0
       swiper: ^8.4.5
       swr: 2.0.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@codesandbox/sandpack-react': 1.0.1
       antd: 4.20.6
@@ -460,7 +460,7 @@ importers:
     specifiers:
       eslint: ^8.31.0
       stylelint: ^14.8.2
-      umi: 4.0.44
+      umi: 4.0.45
     devDependencies:
       eslint: 8.31.0
       stylelint: 14.8.2
@@ -469,7 +469,7 @@ importers:
   examples/max:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       antd: ^4.23.2
       cross-env: ^7.0.3
       cypress: ^10.0.0
@@ -491,7 +491,7 @@ importers:
 
   examples/mf-host:
     specifiers:
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
@@ -508,7 +508,7 @@ importers:
 
   examples/mf-remote:
     specifiers:
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
@@ -529,7 +529,7 @@ importers:
       '@types/react-dom': ^18.0.10
       react: ^18.1.0
       react-dom: ^18.1.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
@@ -547,7 +547,7 @@ importers:
       rimraf: 3.0.2
       start-server-and-test: ^1.15.2
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
       wait-on: ^6.0.1
     dependencies:
       lodash.uppercase: 4.3.0
@@ -566,7 +566,7 @@ importers:
     specifiers:
       '@example/x-design': workspace:*
       antd: 4.20.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@example/x-design': link:../x-design
       antd: 4.20.2
@@ -580,7 +580,7 @@ importers:
       '@babel/preset-typescript': ^7.18.6
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
-      '@umijs/mfsu': 4.0.44
+      '@umijs/mfsu': 4.0.45
       antd: ^4.20.6
       babel-loader: ^9.1.2
       esbuild: 0.16.17
@@ -619,7 +619,7 @@ importers:
       '@babel/preset-typescript': ^7.18.6
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
-      '@umijs/mfsu': 4.0.44
+      '@umijs/mfsu': 4.0.45
       antd: ^4.20.6
       babel-loader: ^9.1.2
       cross-env: ^7.0.3
@@ -660,13 +660,13 @@ importers:
 
   examples/mfsu-un-match-libs:
     specifiers:
-      '@umijs/plugins': 4.0.44
-      '@umijs/preset-vue': 4.0.44
+      '@umijs/plugins': 4.0.45
+      '@umijs/preset-vue': 4.0.45
       '@vant/icons': ^1.8.0
       '@vant/popperjs': ^1.1.0
       '@vant/use': ^1.3.6
       tailwindcss: ^3.2.4
-      umi: 4.0.44
+      umi: 4.0.45
       vant: 4.0.7
       vue: 3.2.45
     dependencies:
@@ -682,19 +682,19 @@ importers:
 
   examples/mpa:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
   examples/mpa-with-app-root-and-alias:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
   examples/qiankun-master:
     specifiers:
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       cross-env: ^7.0.3
       qiankun: ^2.8.4
       react: 18.1.0
@@ -709,7 +709,7 @@ importers:
 
   examples/qiankun-slave:
     specifiers:
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       cross-env: ^7.0.3
       cypress: ^10.0.0
       react: 18.1.0
@@ -726,7 +726,7 @@ importers:
 
   examples/qiankun-slave-app2:
     specifiers:
-      '@umijs/max': 4.0.44
+      '@umijs/max': 4.0.45
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
@@ -736,14 +736,14 @@ importers:
 
   examples/remix:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
   examples/ssr-demo:
     specifiers:
       express: 4.18.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       express: 4.18.2
       umi: link:../../packages/umi
@@ -751,7 +751,7 @@ importers:
   examples/ssr-demo-2:
     specifiers:
       express: 4.18.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       express: 4.18.2
       umi: link:../../packages/umi
@@ -760,7 +760,7 @@ importers:
     specifiers:
       express: 4.18.2
       isomorphic-unfetch: ^4.0.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       express: 4.18.2
       isomorphic-unfetch: 4.0.2
@@ -772,11 +772,11 @@ importers:
       '@testing-library/react': ^13
       '@types/jest': ^29.2.5
       '@types/testing-library__jest-dom': ^5.14.5
-      '@umijs/plugins': 4.0.44
+      '@umijs/plugins': 4.0.45
       jest: ^29.3.1
       ts-node: ^10
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -795,7 +795,7 @@ importers:
       '@vitejs/plugin-react': 1.2.0
       react-test-renderer: ^18.2.0
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
       vitest: ^0.16.0
     dependencies:
       umi: link:../../packages/umi
@@ -808,21 +808,21 @@ importers:
 
   examples/tmp-swc-transpiler:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
   examples/umi-3-compat-mode:
     specifiers:
       '@umijs/plugin-umi-request-compat': 1.0.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@umijs/plugin-umi-request-compat': 1.0.0_umi@packages+umi
       umi: link:../../packages/umi
 
   examples/umi-run:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
 
@@ -832,7 +832,7 @@ importers:
       cross-env: ^7.0.3
       cypress: ^10.0.0
       start-server-and-test: ^1.15.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       antd: 4.24.1
       umi: link:../../packages/umi
@@ -843,9 +843,9 @@ importers:
 
   examples/vue-demo:
     specifiers:
-      '@umijs/preset-vue': 4.0.44
+      '@umijs/preset-vue': 4.0.45
       babel-plugin-import: ^1.13.6
-      umi: 4.0.44
+      umi: 4.0.45
       vant: 4.0.7
       vite-plugin-style-import: 2.0.0
       vue: 3.2.45
@@ -860,9 +860,9 @@ importers:
 
   examples/with-antd:
     specifiers:
-      '@umijs/plugins': 4.0.44
+      '@umijs/plugins': 4.0.45
       antd: ^4.20.6
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       antd: 4.21.3
@@ -870,8 +870,8 @@ importers:
 
   examples/with-dva:
     specifiers:
-      '@umijs/plugins': 4.0.44
-      umi: 4.0.44
+      '@umijs/plugins': 4.0.45
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -881,7 +881,7 @@ importers:
       '@emotion/cache': ^11.7.1
       '@emotion/react': ^11.9.0
       '@emotion/styled': ^11.8.1
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@emotion/cache': 11.9.3
       '@emotion/react': 11.10.4
@@ -892,7 +892,7 @@ importers:
     specifiers:
       mobx: ^6.7.0
       mobx-react: ^7.6.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       mobx: 6.7.0
       mobx-react: 7.6.0_mobx@6.7.0
@@ -906,7 +906,7 @@ importers:
       monaco-editor: ^0.34.1
       monaco-editor-webpack-plugin: ^7.0.1
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       monaco-editor: 0.34.1
       monaco-editor-webpack-plugin: 7.0.1_monaco-editor@0.34.1
@@ -923,7 +923,7 @@ importers:
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@monaco-editor/react': 4.4.5
       umi: link:../../packages/umi
@@ -936,7 +936,7 @@ importers:
     specifiers:
       react: ^17.0.0
       react-dom: ^17.0.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -945,7 +945,7 @@ importers:
   examples/with-react-query:
     specifiers:
       react-query: ^3.38.1
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       react-query: 3.39.2
       umi: link:../../packages/umi
@@ -957,7 +957,7 @@ importers:
       '@types/three': ^0.148.0
       three: ^0.148.0
       troika-three-text: ^0.47.1
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@react-three/drei': 9.25.2_gtnsoauvl3if7hfw2fzu6arpra
       '@react-three/fiber': 8.6.0_three@0.148.0
@@ -969,7 +969,7 @@ importers:
   examples/with-recoil:
     specifiers:
       recoil: ^0.7.3-alpha.1
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       recoil: 0.7.5
       umi: link:../../packages/umi
@@ -978,7 +978,7 @@ importers:
     specifiers:
       react-redux: ^8.0.5
       redux: ^4.2.0
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       react-redux: 8.0.5_redux@4.2.0
       redux: 4.2.0
@@ -988,7 +988,7 @@ importers:
     specifiers:
       '@reduxjs/toolkit': ^1.8.2
       react-redux: ^8.0.5
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@reduxjs/toolkit': 1.8.5_react-redux@8.0.5
       react-redux: 8.0.5
@@ -998,7 +998,7 @@ importers:
     specifiers:
       '@rematch/core': ^2.2.0
       react-redux: ^8.0.5
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@rematch/core': 2.2.0
       react-redux: 8.0.5
@@ -1008,9 +1008,9 @@ importers:
     specifiers:
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
-      '@umijs/plugins': 4.0.44
+      '@umijs/plugins': 4.0.45
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -1025,7 +1025,7 @@ importers:
       '@types/react-dom': ^18.0.10
       sass: ^1.57.1
       typescript: ^4.9.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       umi: link:../../packages/umi
     devDependencies:
@@ -1038,7 +1038,7 @@ importers:
     specifiers:
       '@types/styled-components': ^5.1.25
       styled-components: ^5.3.6
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       styled-components: 5.3.6
       umi: link:../../packages/umi
@@ -1047,9 +1047,9 @@ importers:
 
   examples/with-tailwindcss:
     specifiers:
-      '@umijs/plugins': 4.0.44
+      '@umijs/plugins': 4.0.45
       tailwindcss: ^3.2.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       tailwindcss: 3.2.4
@@ -1057,9 +1057,9 @@ importers:
 
   examples/with-unocss:
     specifiers:
-      '@umijs/plugins': 4.0.44
+      '@umijs/plugins': 4.0.45
       '@unocss/cli': ^0.33.0
-      umi: 4.0.44
+      umi: 4.0.45
       unocss: ^0.34.1
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
@@ -1069,7 +1069,7 @@ importers:
 
   examples/with-unstated:
     specifiers:
-      umi: 4.0.44
+      umi: 4.0.45
       unstated-next: ^1.1.0
     dependencies:
       umi: link:../../packages/umi
@@ -1077,16 +1077,16 @@ importers:
 
   examples/with-use-model:
     specifiers:
-      '@umijs/plugins': 4.0.44
-      umi: 4.0.44
+      '@umijs/plugins': 4.0.45
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
 
   examples/with-valtio:
     specifiers:
-      '@umijs/plugins': 4.0.44
-      umi: 4.0.44
+      '@umijs/plugins': 4.0.45
+      umi: 4.0.45
     dependencies:
       '@umijs/plugins': link:../../packages/plugins
       umi: link:../../packages/umi
@@ -1096,7 +1096,7 @@ importers:
       '@vanilla-extract/babel-plugin': ^1.1.6
       '@vanilla-extract/css': ^1.7.0
       '@vanilla-extract/webpack-plugin': ^2.1.9
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@vanilla-extract/babel-plugin': 1.1.7
       '@vanilla-extract/css': 1.7.3
@@ -1105,9 +1105,9 @@ importers:
 
   examples/with-vue-element-plus:
     specifiers:
-      '@umijs/preset-vue': 4.0.44
+      '@umijs/preset-vue': 4.0.45
       element-plus: ^2.2.2
-      umi: 4.0.44
+      umi: 4.0.45
       vue: 3.2.45
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -1117,9 +1117,9 @@ importers:
 
   examples/with-vue-pinia:
     specifiers:
-      '@umijs/preset-vue': 4.0.44
+      '@umijs/preset-vue': 4.0.45
       pinia: ^2.0.28
-      umi: 4.0.44
+      umi: 4.0.45
       vue: 3.2.45
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -1138,7 +1138,7 @@ importers:
 
   packages/ast:
     specifiers:
-      '@umijs/bundler-utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
     dependencies:
       '@umijs/bundler-utils': link:../bundler-utils
 
@@ -1146,8 +1146,8 @@ importers:
     specifiers:
       '@babel/runtime': 7.20.7
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/utils': 4.0.45
       babel-plugin-styled-components: 2.0.7
       core-js: 3.27.1
     dependencies:
@@ -1161,8 +1161,8 @@ importers:
   packages/bundler-esbuild:
     specifiers:
       '@alitajs/postcss-plugin-px2rem': ^0.0.1
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/utils': 4.0.45
       enhanced-resolve: 5.9.3
       postcss: ^8.4.21
       postcss-flexbugs-fixes: 5.0.2
@@ -1212,7 +1212,7 @@ importers:
       '@types/express': 4.17.15
       '@types/less': 3.0.3
       '@types/spdy': ^3.4.5
-      '@umijs/utils': 4.0.44
+      '@umijs/utils': 4.0.45
       cjs-module-lexer: 1.2.2
       es-module-lexer: 0.10.5
       esbuild: 0.16.17
@@ -1275,8 +1275,8 @@ importers:
       '@svgr/core': 6.2.1
       '@types/caniuse-lite': 1.0.1
       '@types/svgo': 3.0.0
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/utils': 4.0.45
       '@vitejs/plugin-legacy': 2.3.1
       '@vitejs/plugin-react': 2.2.0
       caniuse-lite: 1.0.30001441
@@ -1316,11 +1316,11 @@ importers:
       '@types/webpack-bundle-analyzer': ^4.6.0
       '@types/webpack-sources': 3.2.0
       '@types/ws': 8.5.4
-      '@umijs/babel-preset-umi': 4.0.44
-      '@umijs/bundler-utils': 4.0.44
+      '@umijs/babel-preset-umi': 4.0.45
+      '@umijs/bundler-utils': 4.0.45
       '@umijs/case-sensitive-paths-webpack-plugin': ^1.0.1
-      '@umijs/mfsu': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/mfsu': 4.0.45
+      '@umijs/utils': 4.0.45
       autoprefixer: 10.4.13
       babel-loader: 9.1.2
       compression: 1.7.4
@@ -1420,8 +1420,8 @@ importers:
 
   packages/core:
     specifiers:
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/utils': 4.0.45
       dotenv: 16.0.0
       dotenv-expand: 8.0.3
       just-diff: 5.2.0
@@ -1435,7 +1435,7 @@ importers:
 
   packages/create-umi:
     specifiers:
-      '@umijs/utils': 4.0.44
+      '@umijs/utils': 4.0.45
     dependencies:
       '@umijs/utils': link:../utils
 
@@ -1447,7 +1447,7 @@ importers:
       '@stylelint/postcss-css-in-js': ^0.38.0
       '@typescript-eslint/eslint-plugin': 5.48.1
       '@typescript-eslint/parser': 5.48.1
-      '@umijs/babel-preset-umi': 4.0.44
+      '@umijs/babel-preset-umi': 4.0.45
       eslint-plugin-jest: 26.1.5
       eslint-plugin-react: 7.29.4
       eslint-plugin-react-hooks: 4.5.0
@@ -1480,12 +1480,12 @@ importers:
 
   packages/max:
     specifiers:
-      '@umijs/lint': 4.0.44
-      '@umijs/plugins': 4.0.44
+      '@umijs/lint': 4.0.45
+      '@umijs/plugins': 4.0.45
       antd: ^4.20.6
       eslint: 8.31.0
       stylelint: 14.8.2
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       '@umijs/lint': link:../lint
       '@umijs/plugins': link:../plugins
@@ -1496,9 +1496,9 @@ importers:
 
   packages/mfsu:
     specifiers:
-      '@umijs/bundler-esbuild': 4.0.44
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/bundler-esbuild': 4.0.45
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/utils': 4.0.45
       enhanced-resolve: 5.9.3
       is-absolute-url: ^4.0.1
       is-equal: ^1.6.4
@@ -1533,7 +1533,7 @@ importers:
       remark-gfm: ^3.0.1
       shiki: ^0.10.1
       tailwindcss: ^3.2.4
-      umi: 4.0.44
+      umi: 4.0.45
     dependencies:
       classnames: 2.3.1
       github-slugger: 1.4.0
@@ -1566,7 +1566,7 @@ importers:
       '@ant-design/pro-components': ^2.0.1
       '@tanstack/react-query': ^4.22.0
       '@tanstack/react-query-devtools': ^4.22.0
-      '@umijs/bundler-utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
       '@umijs/valtio': ^1.0.2
       antd: ^4.24.1
       antd-dayjs-webpack-plugin: ^1.0.6
@@ -1587,7 +1587,7 @@ importers:
       redux: ^4.2.0
       styled-components: 6.0.0-beta.9
       tslib: ^2
-      umi: 4.0.44
+      umi: 4.0.45
       warning: ^4.0.3
     dependencies:
       '@ahooksjs/use-request': 2.8.15
@@ -1629,19 +1629,19 @@ importers:
       '@types/body-parser': 1.19.2
       '@types/ini': 1.3.31
       '@types/multer': 1.4.7
-      '@umijs/ast': 4.0.44
-      '@umijs/babel-preset-umi': 4.0.44
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/bundler-vite': 4.0.44
-      '@umijs/bundler-webpack': 4.0.44
-      '@umijs/core': 4.0.44
+      '@umijs/ast': 4.0.45
+      '@umijs/babel-preset-umi': 4.0.45
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/bundler-vite': 4.0.45
+      '@umijs/bundler-webpack': 4.0.45
+      '@umijs/core': 4.0.45
       '@umijs/did-you-know': ^1.0.0
       '@umijs/history': 5.3.1
-      '@umijs/mfsu': 4.0.44
-      '@umijs/plugin-run': 4.0.44
-      '@umijs/renderer-react': 4.0.44
-      '@umijs/server': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/mfsu': 4.0.45
+      '@umijs/plugin-run': 4.0.45
+      '@umijs/renderer-react': 4.0.45
+      '@umijs/server': 4.0.45
+      '@umijs/utils': 4.0.45
       babel-plugin-dynamic-import-node: 2.3.3
       body-parser: 1.20.0
       click-to-react-component: ^1.0.8
@@ -1710,9 +1710,9 @@ importers:
 
   packages/preset-vue:
     specifiers:
-      '@umijs/renderer-vue': 4.0.44
+      '@umijs/renderer-vue': 4.0.45
       '@vitejs/plugin-vue': 2.3.1
-      umi: 4.0.44
+      umi: 4.0.45
       vue: 3.2.45
       vue-loader: 17.0.1
       vue-router: 4.1.6
@@ -1752,7 +1752,7 @@ importers:
 
   packages/server:
     specifiers:
-      '@umijs/bundler-utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
       history: 5.3.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -1770,7 +1770,7 @@ importers:
       '@babel/plugin-transform-modules-commonjs': 7.20.11
       '@jest/transform': ^28.1.3
       '@jest/types': 27.5.1
-      '@umijs/bundler-utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
       babel-jest: ^29.3.1
       esbuild: 0.16.17
       identity-obj-proxy: 3.0.0
@@ -1792,15 +1792,15 @@ importers:
   packages/umi:
     specifiers:
       '@babel/runtime': 7.20.7
-      '@umijs/bundler-utils': 4.0.44
-      '@umijs/bundler-webpack': 4.0.44
-      '@umijs/core': 4.0.44
-      '@umijs/lint': 4.0.44
-      '@umijs/preset-umi': 4.0.44
-      '@umijs/renderer-react': 4.0.44
-      '@umijs/server': 4.0.44
-      '@umijs/test': 4.0.44
-      '@umijs/utils': 4.0.44
+      '@umijs/bundler-utils': 4.0.45
+      '@umijs/bundler-webpack': 4.0.45
+      '@umijs/core': 4.0.45
+      '@umijs/lint': 4.0.45
+      '@umijs/preset-umi': 4.0.45
+      '@umijs/renderer-react': 4.0.45
+      '@umijs/server': 4.0.45
+      '@umijs/test': 4.0.45
+      '@umijs/utils': 4.0.45
       prettier-plugin-organize-imports: ^3.2.1
       prettier-plugin-packagejson: ^2.3.0
     dependencies:
@@ -2021,7 +2021,7 @@ packages:
   /@ant-design/antd-theme-variable/1.0.0:
     resolution: {integrity: sha512-0vr5GCwM7xlAl6NxG1lPbABO+SYioNJL3HVy2FA8wTlsIMoZvQwcwsxTw6eLQCiN9V2UQ8kBtfz8DW8utVVE5w==}
 
-  /@ant-design/charts/1.4.2_3mjjsbobxyjsvsmcnr3ujsq2xq:
+  /@ant-design/charts/1.4.2_lqvguwhkzxdlmhgupt5xppu3fa:
     resolution: {integrity: sha512-BcVx6AAnwxSdzAVUZReSuvUVtnT5AkJivq3wmcYj17scll26HHficg35yimGskAj3Gu1upYjBQBz6Tk7GEMJsQ==}
     peerDependencies:
       '@ant-design/icons': ^4.6.0
@@ -2037,12 +2037,12 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@ant-design/flowchart': 1.2.1_3mjjsbobxyjsvsmcnr3ujsq2xq
+      '@ant-design/flowchart': 1.2.1_lqvguwhkzxdlmhgupt5xppu3fa
       '@ant-design/graphs': 1.2.7
       '@ant-design/icons': 4.7.0
       '@ant-design/maps': 1.0.4
       '@ant-design/plots': 1.2.1
-      antd: 4.20.6
+      antd: 4.24.7
       lodash: 4.17.21
     transitivePeerDependencies:
       - classnames
@@ -2100,7 +2100,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
       stylis: 4.1.3
 
-  /@ant-design/flowchart/1.2.1_3mjjsbobxyjsvsmcnr3ujsq2xq:
+  /@ant-design/flowchart/1.2.1_lqvguwhkzxdlmhgupt5xppu3fa:
     resolution: {integrity: sha512-Fo0gfhSLfa3fvw8rV1pBcK2IcIeVUCYx+OwnAu10FqRGZouCSS4NfKcFTTAM5eVB1BlK6RRbFPpqZKjSskQkXA==}
     peerDependencies:
       '@ant-design/icons': ^4.6.0
@@ -2119,10 +2119,10 @@ packages:
       '@ant-design/icons': 4.7.0
       '@antv/layout': 0.1.31
       '@antv/x6': 1.33.1
-      '@antv/x6-react-components': 1.1.15_antd@4.20.6
+      '@antv/x6-react-components': 1.1.15_antd@4.24.7
       '@antv/x6-react-shape': 1.6.1_@antv+x6@1.33.1
-      '@antv/xflow': 1.0.51_3mjjsbobxyjsvsmcnr3ujsq2xq
-      antd: 4.20.6
+      '@antv/xflow': 1.0.51_lqvguwhkzxdlmhgupt5xppu3fa
+      antd: 4.24.7
       lodash: 4.17.21
       react-color: 2.17.3
       react-use: 17.3.1
@@ -2261,50 +2261,6 @@ packages:
     transitivePeerDependencies:
       - react-dom
 
-  /@ant-design/pro-card/2.0.2_antd@4.20.6:
-    resolution: {integrity: sha512-nuaua3yZ3B+Gcp+gfRJOKIe3FE3EqxSrlRtemxOq20Jcrw/Qi6jVDr/DyTk0q/dcF/TlZmH1qKkQK10ekHKCFw==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
-      '@babel/runtime': 7.20.7
-      antd: 4.20.6
-      classnames: 2.3.1
-      omit.js: 2.0.2
-      rc-util: 5.27.1
-    transitivePeerDependencies:
-      - react-dom
-    dev: false
-
-  /@ant-design/pro-card/2.0.2_antd@4.23.2:
-    resolution: {integrity: sha512-nuaua3yZ3B+Gcp+gfRJOKIe3FE3EqxSrlRtemxOq20Jcrw/Qi6jVDr/DyTk0q/dcF/TlZmH1qKkQK10ekHKCFw==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      antd: 4.23.2
-      classnames: 2.3.1
-      omit.js: 2.0.2
-      rc-util: 5.27.1
-    transitivePeerDependencies:
-      - react-dom
-    dev: false
-
   /@ant-design/pro-card/2.0.2_antd@4.24.1:
     resolution: {integrity: sha512-nuaua3yZ3B+Gcp+gfRJOKIe3FE3EqxSrlRtemxOq20Jcrw/Qi6jVDr/DyTk0q/dcF/TlZmH1qKkQK10ekHKCFw==}
     peerDependencies:
@@ -2320,6 +2276,28 @@ packages:
       '@ant-design/pro-utils': 2.0.2_antd@4.24.1
       '@babel/runtime': 7.20.7
       antd: 4.24.1
+      classnames: 2.3.1
+      omit.js: 2.0.2
+      rc-util: 5.27.1
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
+  /@ant-design/pro-card/2.0.2_antd@4.24.7:
+    resolution: {integrity: sha512-nuaua3yZ3B+Gcp+gfRJOKIe3FE3EqxSrlRtemxOq20Jcrw/Qi6jVDr/DyTk0q/dcF/TlZmH1qKkQK10ekHKCFw==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
+      '@babel/runtime': 7.20.7
+      antd: 4.24.7
       classnames: 2.3.1
       omit.js: 2.0.2
       rc-util: 5.27.1
@@ -2400,68 +2378,6 @@ packages:
       - '@types/lodash.merge'
       - rc-field-form
 
-  /@ant-design/pro-components/2.3.4_antd@4.20.6:
-    resolution: {integrity: sha512-mGuDNCtpJVMhIH0JVAL5Mgm+OQSZUZG4nsT/YmkLteZqvtT0hbbdm0JA+KgHDvFtgMuc+Ug4XHh5X+23p9/y0w==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/pro-card': 2.0.2_antd@4.20.6
-      '@ant-design/pro-descriptions': 2.0.3_antd@4.20.6
-      '@ant-design/pro-field': 2.0.3_antd@4.20.6
-      '@ant-design/pro-form': 2.0.3_antd@4.20.6
-      '@ant-design/pro-layout': 7.0.2_antd@4.20.6
-      '@ant-design/pro-list': 2.0.3_antd@4.20.6
-      '@ant-design/pro-provider': 2.0.2_antd@4.20.6
-      '@ant-design/pro-skeleton': 2.0.2_antd@4.20.6
-      '@ant-design/pro-table': 3.0.3_antd@4.20.6
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
-      '@babel/runtime': 7.18.9
-      antd: 4.20.6
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-      - rc-field-form
-    dev: false
-
-  /@ant-design/pro-components/2.3.4_antd@4.23.2:
-    resolution: {integrity: sha512-mGuDNCtpJVMhIH0JVAL5Mgm+OQSZUZG4nsT/YmkLteZqvtT0hbbdm0JA+KgHDvFtgMuc+Ug4XHh5X+23p9/y0w==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/pro-card': 2.0.2_antd@4.23.2
-      '@ant-design/pro-descriptions': 2.0.3_antd@4.23.2
-      '@ant-design/pro-field': 2.0.3_antd@4.23.2
-      '@ant-design/pro-form': 2.0.3_antd@4.23.2
-      '@ant-design/pro-layout': 7.0.2_antd@4.23.2
-      '@ant-design/pro-list': 2.0.3_antd@4.23.2
-      '@ant-design/pro-provider': 2.0.2_antd@4.23.2
-      '@ant-design/pro-skeleton': 2.0.2_antd@4.23.2
-      '@ant-design/pro-table': 3.0.3_antd@4.23.2
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.18.9
-      antd: 4.23.2
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-      - rc-field-form
-    dev: false
-
   /@ant-design/pro-components/2.3.4_antd@4.24.1:
     resolution: {integrity: sha512-mGuDNCtpJVMhIH0JVAL5Mgm+OQSZUZG4nsT/YmkLteZqvtT0hbbdm0JA+KgHDvFtgMuc+Ug4XHh5X+23p9/y0w==}
     peerDependencies:
@@ -2493,6 +2409,37 @@ packages:
       - rc-field-form
     dev: false
 
+  /@ant-design/pro-components/2.3.4_antd@4.24.7:
+    resolution: {integrity: sha512-mGuDNCtpJVMhIH0JVAL5Mgm+OQSZUZG4nsT/YmkLteZqvtT0hbbdm0JA+KgHDvFtgMuc+Ug4XHh5X+23p9/y0w==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@ant-design/pro-card': 2.0.2_antd@4.24.7
+      '@ant-design/pro-descriptions': 2.0.3_antd@4.24.7
+      '@ant-design/pro-field': 2.0.3_antd@4.24.7
+      '@ant-design/pro-form': 2.0.3_antd@4.24.7
+      '@ant-design/pro-layout': 7.0.2_antd@4.24.7
+      '@ant-design/pro-list': 2.0.3_antd@4.24.7
+      '@ant-design/pro-provider': 2.0.2_antd@4.24.7
+      '@ant-design/pro-skeleton': 2.0.2_antd@4.24.7
+      '@ant-design/pro-table': 3.0.3_antd@4.24.7
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
+      '@babel/runtime': 7.18.9
+      antd: 4.24.7
+    transitivePeerDependencies:
+      - '@types/lodash.merge'
+      - rc-field-form
+    dev: false
+
   /@ant-design/pro-descriptions/2.0.17_kwvrsgdhr6zq3h6nvcojtomfqq:
     resolution: {integrity: sha512-fbjmwIZ9znJqaDJMoyBf4BzXP8JCN1w824mofKXH4wYAH3U3A64X650ashKmW2DXQA3CQUHTocGCSxfEWb1KQg==}
     peerDependencies:
@@ -2514,50 +2461,6 @@ packages:
       - antd
       - rc-field-form
       - react-dom
-
-  /@ant-design/pro-descriptions/2.0.3_antd@4.20.6:
-    resolution: {integrity: sha512-15TRYKku5OgzflPolAYs/HOnw+YLsWF0e7TiHo0vUsmQbYwlzbAJAWYAHLP6hC2QtE25fZkM86LuaZ4Jo21/8Q==}
-    peerDependencies:
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/pro-field': 2.0.3_antd@4.20.6
-      '@ant-design/pro-form': 2.0.3_antd@4.20.6
-      '@ant-design/pro-skeleton': 2.0.2_antd@4.20.6
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
-      '@babel/runtime': 7.20.7
-      rc-util: 5.27.1
-      use-json-comparison: 1.0.6
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-      - antd
-      - rc-field-form
-      - react-dom
-    dev: false
-
-  /@ant-design/pro-descriptions/2.0.3_antd@4.23.2:
-    resolution: {integrity: sha512-15TRYKku5OgzflPolAYs/HOnw+YLsWF0e7TiHo0vUsmQbYwlzbAJAWYAHLP6hC2QtE25fZkM86LuaZ4Jo21/8Q==}
-    peerDependencies:
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/pro-field': 2.0.3_antd@4.23.2
-      '@ant-design/pro-form': 2.0.3_antd@4.23.2
-      '@ant-design/pro-skeleton': 2.0.2_antd@4.23.2
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      rc-util: 5.27.1
-      use-json-comparison: 1.0.6
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-      - antd
-      - rc-field-form
-      - react-dom
-    dev: false
 
   /@ant-design/pro-descriptions/2.0.3_antd@4.24.1:
     resolution: {integrity: sha512-15TRYKku5OgzflPolAYs/HOnw+YLsWF0e7TiHo0vUsmQbYwlzbAJAWYAHLP6hC2QtE25fZkM86LuaZ4Jo21/8Q==}
@@ -2581,53 +2484,25 @@ packages:
       - react-dom
     dev: false
 
-  /@ant-design/pro-field/2.0.3_antd@4.20.6:
-    resolution: {integrity: sha512-zNWfN+wSQ7qZnMz56w6PPMn+zLbNwHEOnbFovYubborivp5gP83I40n/FuM1Q1zm8N5fp0VSsmR26vPjay8oJw==}
+  /@ant-design/pro-descriptions/2.0.3_antd@4.24.7:
+    resolution: {integrity: sha512-15TRYKku5OgzflPolAYs/HOnw+YLsWF0e7TiHo0vUsmQbYwlzbAJAWYAHLP6hC2QtE25fZkM86LuaZ4Jo21/8Q==}
     peerDependencies:
       react: '>=16.9.0'
     peerDependenciesMeta:
       react:
         optional: true
     dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 2.0.2_antd@4.20.6
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
+      '@ant-design/pro-field': 2.0.3_antd@4.24.7
+      '@ant-design/pro-form': 2.0.3_antd@4.24.7
+      '@ant-design/pro-skeleton': 2.0.2_antd@4.24.7
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
       '@babel/runtime': 7.20.7
-      '@chenshuai2144/sketch-color': 1.0.8
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      lodash.omit: 4.5.0
-      lodash.tonumber: 4.0.3
-      omit.js: 2.0.2
       rc-util: 5.27.1
-      swr: 1.3.0
+      use-json-comparison: 1.0.6
     transitivePeerDependencies:
+      - '@types/lodash.merge'
       - antd
-      - react-dom
-    dev: false
-
-  /@ant-design/pro-field/2.0.3_antd@4.23.2:
-    resolution: {integrity: sha512-zNWfN+wSQ7qZnMz56w6PPMn+zLbNwHEOnbFovYubborivp5gP83I40n/FuM1Q1zm8N5fp0VSsmR26vPjay8oJw==}
-    peerDependencies:
-      react: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 2.0.2_antd@4.23.2
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      '@chenshuai2144/sketch-color': 1.0.8
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      lodash.omit: 4.5.0
-      lodash.tonumber: 4.0.3
-      omit.js: 2.0.2
-      rc-util: 5.27.1
-      swr: 1.3.0
-    transitivePeerDependencies:
-      - antd
+      - rc-field-form
       - react-dom
     dev: false
 
@@ -2642,6 +2517,31 @@ packages:
       '@ant-design/icons': 4.7.0
       '@ant-design/pro-provider': 2.0.2_antd@4.24.1
       '@ant-design/pro-utils': 2.0.2_antd@4.24.1
+      '@babel/runtime': 7.20.7
+      '@chenshuai2144/sketch-color': 1.0.8
+      classnames: 2.3.1
+      dayjs: 1.11.7
+      lodash.omit: 4.5.0
+      lodash.tonumber: 4.0.3
+      omit.js: 2.0.2
+      rc-util: 5.27.1
+      swr: 1.3.0
+    transitivePeerDependencies:
+      - antd
+      - react-dom
+    dev: false
+
+  /@ant-design/pro-field/2.0.3_antd@4.24.7:
+    resolution: {integrity: sha512-zNWfN+wSQ7qZnMz56w6PPMn+zLbNwHEOnbFovYubborivp5gP83I40n/FuM1Q1zm8N5fp0VSsmR26vPjay8oJw==}
+    peerDependencies:
+      react: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-provider': 2.0.2_antd@4.24.7
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
       '@babel/runtime': 7.20.7
       '@chenshuai2144/sketch-color': 1.0.8
       classnames: 2.3.1
@@ -2681,70 +2581,6 @@ packages:
       - antd
       - react-dom
 
-  /@ant-design/pro-form/2.0.3_antd@4.20.6:
-    resolution: {integrity: sha512-5IjZmaAZuuAPeMJlXNCDgdCZ3U6QtgvhHwFEKIGkfg6UFw2ncF/FaC+g54wTHmbEyLp4DQ/WRFCNqRlo3d/zhA==}
-    peerDependencies:
-      '@types/lodash.merge': ^4.6.7
-      antd: '>=4.20.0'
-      rc-field-form: ^1.22.0
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-field': 2.0.3_antd@4.20.6
-      '@ant-design/pro-provider': 2.0.2_antd@4.20.6
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
-      '@babel/runtime': 7.20.7
-      '@umijs/use-params': 1.0.9
-      antd: 4.20.6
-      classnames: 2.3.1
-      lodash.merge: 4.6.2
-      omit.js: 2.0.2
-      rc-resize-observer: 1.2.0
-      rc-util: 5.27.1
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-    dev: false
-
-  /@ant-design/pro-form/2.0.3_antd@4.23.2:
-    resolution: {integrity: sha512-5IjZmaAZuuAPeMJlXNCDgdCZ3U6QtgvhHwFEKIGkfg6UFw2ncF/FaC+g54wTHmbEyLp4DQ/WRFCNqRlo3d/zhA==}
-    peerDependencies:
-      '@types/lodash.merge': ^4.6.7
-      antd: '>=4.20.0'
-      rc-field-form: ^1.22.0
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-field': 2.0.3_antd@4.23.2
-      '@ant-design/pro-provider': 2.0.2_antd@4.23.2
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      '@umijs/use-params': 1.0.9
-      antd: 4.23.2
-      classnames: 2.3.1
-      lodash.merge: 4.6.2
-      omit.js: 2.0.2
-      rc-resize-observer: 1.2.0
-      rc-util: 5.27.1
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-    dev: false
-
   /@ant-design/pro-form/2.0.3_antd@4.24.1:
     resolution: {integrity: sha512-5IjZmaAZuuAPeMJlXNCDgdCZ3U6QtgvhHwFEKIGkfg6UFw2ncF/FaC+g54wTHmbEyLp4DQ/WRFCNqRlo3d/zhA==}
     peerDependencies:
@@ -2768,6 +2604,38 @@ packages:
       '@babel/runtime': 7.20.7
       '@umijs/use-params': 1.0.9
       antd: 4.24.1
+      classnames: 2.3.1
+      lodash.merge: 4.6.2
+      omit.js: 2.0.2
+      rc-resize-observer: 1.2.0
+      rc-util: 5.27.1
+      use-json-comparison: 1.0.6
+      use-media-antd-query: 1.1.0
+    dev: false
+
+  /@ant-design/pro-form/2.0.3_antd@4.24.7:
+    resolution: {integrity: sha512-5IjZmaAZuuAPeMJlXNCDgdCZ3U6QtgvhHwFEKIGkfg6UFw2ncF/FaC+g54wTHmbEyLp4DQ/WRFCNqRlo3d/zhA==}
+    peerDependencies:
+      '@types/lodash.merge': ^4.6.7
+      antd: '>=4.20.0'
+      rc-field-form: ^1.22.0
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-field': 2.0.3_antd@4.24.7
+      '@ant-design/pro-provider': 2.0.2_antd@4.24.7
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
+      '@babel/runtime': 7.20.7
+      '@umijs/use-params': 1.0.9
+      antd: 4.24.7
       classnames: 2.3.1
       lodash.merge: 4.6.2
       omit.js: 2.0.2
@@ -2810,76 +2678,6 @@ packages:
       use-json-comparison: 1.0.6_react@17.0.2
       use-media-antd-query: 1.1.0_react@17.0.2
 
-  /@ant-design/pro-layout/7.0.2_antd@4.20.6:
-    resolution: {integrity: sha512-ZAgOJjRLAH49ekmeyWPd7myj9f46zzPEdPkM+KqE+e4uvounuuSXgAkXEOJR154QsSKr9CUqx+/VG6rHDoz37Q==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 2.0.2_antd@4.20.6
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
-      '@babel/runtime': 7.20.7
-      '@umijs/route-utils': 2.1.1
-      '@umijs/ssr-darkreader': 4.9.45
-      '@umijs/use-params': 1.0.9
-      antd: 4.20.6
-      classnames: 2.3.1
-      lodash.merge: 4.6.2
-      omit.js: 2.0.2
-      path-to-regexp: 2.4.0
-      rc-resize-observer: 1.2.0
-      rc-util: 5.27.1
-      swr: 1.3.0
-      unstated-next: 1.1.0
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-      warning: 4.0.3
-    dev: false
-
-  /@ant-design/pro-layout/7.0.2_antd@4.23.2:
-    resolution: {integrity: sha512-ZAgOJjRLAH49ekmeyWPd7myj9f46zzPEdPkM+KqE+e4uvounuuSXgAkXEOJR154QsSKr9CUqx+/VG6rHDoz37Q==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 2.0.2_antd@4.23.2
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      '@umijs/route-utils': 2.1.1
-      '@umijs/ssr-darkreader': 4.9.45
-      '@umijs/use-params': 1.0.9
-      antd: 4.23.2
-      classnames: 2.3.1
-      lodash.merge: 4.6.2
-      omit.js: 2.0.2
-      path-to-regexp: 2.4.0
-      rc-resize-observer: 1.2.0
-      rc-util: 5.27.1
-      swr: 1.3.0
-      unstated-next: 1.1.0
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-      warning: 4.0.3
-    dev: false
-
   /@ant-design/pro-layout/7.0.2_antd@4.24.1:
     resolution: {integrity: sha512-ZAgOJjRLAH49ekmeyWPd7myj9f46zzPEdPkM+KqE+e4uvounuuSXgAkXEOJR154QsSKr9CUqx+/VG6rHDoz37Q==}
     peerDependencies:
@@ -2902,6 +2700,41 @@ packages:
       '@umijs/ssr-darkreader': 4.9.45
       '@umijs/use-params': 1.0.9
       antd: 4.24.1
+      classnames: 2.3.1
+      lodash.merge: 4.6.2
+      omit.js: 2.0.2
+      path-to-regexp: 2.4.0
+      rc-resize-observer: 1.2.0
+      rc-util: 5.27.1
+      swr: 1.3.0
+      unstated-next: 1.1.0
+      use-json-comparison: 1.0.6
+      use-media-antd-query: 1.1.0
+      warning: 4.0.3
+    dev: false
+
+  /@ant-design/pro-layout/7.0.2_antd@4.24.7:
+    resolution: {integrity: sha512-ZAgOJjRLAH49ekmeyWPd7myj9f46zzPEdPkM+KqE+e4uvounuuSXgAkXEOJR154QsSKr9CUqx+/VG6rHDoz37Q==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-provider': 2.0.2_antd@4.24.7
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
+      '@babel/runtime': 7.20.7
+      '@umijs/route-utils': 2.1.1
+      '@umijs/ssr-darkreader': 4.9.45
+      '@umijs/use-params': 1.0.9
+      antd: 4.24.7
       classnames: 2.3.1
       lodash.merge: 4.6.2
       omit.js: 2.0.2
@@ -2983,68 +2816,6 @@ packages:
       - '@types/lodash.merge'
       - rc-field-form
 
-  /@ant-design/pro-list/2.0.3_antd@4.20.6:
-    resolution: {integrity: sha512-trtzhVvnQYLjbEyAn+PSUqpW6onpBs7hxoBQ6iFrnuNh0dOtWxDVF70EF0OeDruLMRfN5/+V0iIgDYxqLLK4Uw==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-card': 2.0.2_antd@4.20.6
-      '@ant-design/pro-field': 2.0.3_antd@4.20.6
-      '@ant-design/pro-table': 3.0.3_antd@4.20.6
-      '@babel/runtime': 7.20.7
-      antd: 4.20.6
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      rc-resize-observer: 1.2.0
-      rc-util: 4.21.1
-      unstated-next: 1.1.0
-      use-media-antd-query: 1.1.0
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-      - rc-field-form
-    dev: false
-
-  /@ant-design/pro-list/2.0.3_antd@4.23.2:
-    resolution: {integrity: sha512-trtzhVvnQYLjbEyAn+PSUqpW6onpBs7hxoBQ6iFrnuNh0dOtWxDVF70EF0OeDruLMRfN5/+V0iIgDYxqLLK4Uw==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-card': 2.0.2_antd@4.23.2
-      '@ant-design/pro-field': 2.0.3_antd@4.23.2
-      '@ant-design/pro-table': 3.0.3_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      antd: 4.23.2
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      rc-resize-observer: 1.2.0
-      rc-util: 4.21.1
-      unstated-next: 1.1.0
-      use-media-antd-query: 1.1.0
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-      - rc-field-form
-    dev: false
-
   /@ant-design/pro-list/2.0.3_antd@4.24.1:
     resolution: {integrity: sha512-trtzhVvnQYLjbEyAn+PSUqpW6onpBs7hxoBQ6iFrnuNh0dOtWxDVF70EF0OeDruLMRfN5/+V0iIgDYxqLLK4Uw==}
     peerDependencies:
@@ -3076,8 +2847,8 @@ packages:
       - rc-field-form
     dev: false
 
-  /@ant-design/pro-provider/2.0.2_antd@4.20.6:
-    resolution: {integrity: sha512-8n3YX2UJxpBrVDo05zsbVowXJ0ilG4MYXiNb+fACB5IZK/1Ppkgxpe7UKsAmUjnBWPrQr++06rOrrBosx1Crjw==}
+  /@ant-design/pro-list/2.0.3_antd@4.24.7:
+    resolution: {integrity: sha512-trtzhVvnQYLjbEyAn+PSUqpW6onpBs7hxoBQ6iFrnuNh0dOtWxDVF70EF0OeDruLMRfN5/+V0iIgDYxqLLK4Uw==}
     peerDependencies:
       antd: '>=4.20.0'
       react: '>=16.9.0'
@@ -3090,30 +2861,21 @@ packages:
       react-dom:
         optional: true
     dependencies:
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-card': 2.0.2_antd@4.24.7
+      '@ant-design/pro-field': 2.0.3_antd@4.24.7
+      '@ant-design/pro-table': 3.0.3_antd@4.24.7
       '@babel/runtime': 7.20.7
-      antd: 4.20.6
-      rc-util: 5.27.1
-      swr: 1.3.0
-    dev: false
-
-  /@ant-design/pro-provider/2.0.2_antd@4.23.2:
-    resolution: {integrity: sha512-8n3YX2UJxpBrVDo05zsbVowXJ0ilG4MYXiNb+fACB5IZK/1Ppkgxpe7UKsAmUjnBWPrQr++06rOrrBosx1Crjw==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      antd: 4.23.2
-      rc-util: 5.27.1
-      swr: 1.3.0
+      antd: 4.24.7
+      classnames: 2.3.1
+      dayjs: 1.11.7
+      rc-resize-observer: 1.2.0
+      rc-util: 4.21.1
+      unstated-next: 1.1.0
+      use-media-antd-query: 1.1.0
+    transitivePeerDependencies:
+      - '@types/lodash.merge'
+      - rc-field-form
     dev: false
 
   /@ant-design/pro-provider/2.0.2_antd@4.24.1:
@@ -3132,6 +2894,26 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.7
       antd: 4.24.1
+      rc-util: 5.27.1
+      swr: 1.3.0
+    dev: false
+
+  /@ant-design/pro-provider/2.0.2_antd@4.24.7:
+    resolution: {integrity: sha512-8n3YX2UJxpBrVDo05zsbVowXJ0ilG4MYXiNb+fACB5IZK/1Ppkgxpe7UKsAmUjnBWPrQr++06rOrrBosx1Crjw==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      antd: 4.24.7
       rc-util: 5.27.1
       swr: 1.3.0
     dev: false
@@ -3157,44 +2939,6 @@ packages:
       react-dom: 17.0.2_react@17.0.2
       swr: 1.3.0_react@17.0.2
 
-  /@ant-design/pro-skeleton/2.0.2_antd@4.20.6:
-    resolution: {integrity: sha512-pjUqW4JOfrYrA2eei+sL3T5u+EmHBhYansgTzy7MLMwBQs/tQG4cdayXW0gI3Ue7eRrEwn9ko1I5DRHZ1vu9oA==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      antd: 4.20.6
-      use-media-antd-query: 1.1.0
-    dev: false
-
-  /@ant-design/pro-skeleton/2.0.2_antd@4.23.2:
-    resolution: {integrity: sha512-pjUqW4JOfrYrA2eei+sL3T5u+EmHBhYansgTzy7MLMwBQs/tQG4cdayXW0gI3Ue7eRrEwn9ko1I5DRHZ1vu9oA==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      antd: 4.23.2
-      use-media-antd-query: 1.1.0
-    dev: false
-
   /@ant-design/pro-skeleton/2.0.2_antd@4.24.1:
     resolution: {integrity: sha512-pjUqW4JOfrYrA2eei+sL3T5u+EmHBhYansgTzy7MLMwBQs/tQG4cdayXW0gI3Ue7eRrEwn9ko1I5DRHZ1vu9oA==}
     peerDependencies:
@@ -3211,6 +2955,25 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.7
       antd: 4.24.1
+      use-media-antd-query: 1.1.0
+    dev: false
+
+  /@ant-design/pro-skeleton/2.0.2_antd@4.24.7:
+    resolution: {integrity: sha512-pjUqW4JOfrYrA2eei+sL3T5u+EmHBhYansgTzy7MLMwBQs/tQG4cdayXW0gI3Ue7eRrEwn9ko1I5DRHZ1vu9oA==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      antd: 4.24.7
       use-media-antd-query: 1.1.0
     dev: false
 
@@ -3270,76 +3033,6 @@ packages:
     transitivePeerDependencies:
       - '@types/lodash.merge'
 
-  /@ant-design/pro-table/3.0.3_antd@4.20.6:
-    resolution: {integrity: sha512-QzUp8lUvx1zFD9xAwiZvf4yP35jtmHPU7KCdNgNJViBhztk8pQyyL9wpd2n/uUZL16JIa3Bv3kUYPgir/4S5KQ==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      rc-field-form: ^1.22.0
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-card': 2.0.2_antd@4.20.6
-      '@ant-design/pro-field': 2.0.3_antd@4.20.6
-      '@ant-design/pro-form': 2.0.3_antd@4.20.6
-      '@ant-design/pro-provider': 2.0.2_antd@4.20.6
-      '@ant-design/pro-utils': 2.0.2_antd@4.20.6
-      '@babel/runtime': 7.20.7
-      antd: 4.20.6
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      omit.js: 2.0.2
-      rc-util: 5.27.1
-      react-sortable-hoc: 2.0.0
-      unstated-next: 1.1.0
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-    dev: false
-
-  /@ant-design/pro-table/3.0.3_antd@4.23.2:
-    resolution: {integrity: sha512-QzUp8lUvx1zFD9xAwiZvf4yP35jtmHPU7KCdNgNJViBhztk8pQyyL9wpd2n/uUZL16JIa3Bv3kUYPgir/4S5KQ==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      rc-field-form: ^1.22.0
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-card': 2.0.2_antd@4.23.2
-      '@ant-design/pro-field': 2.0.3_antd@4.23.2
-      '@ant-design/pro-form': 2.0.3_antd@4.23.2
-      '@ant-design/pro-provider': 2.0.2_antd@4.23.2
-      '@ant-design/pro-utils': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      antd: 4.23.2
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      omit.js: 2.0.2
-      rc-util: 5.27.1
-      react-sortable-hoc: 2.0.0
-      unstated-next: 1.1.0
-      use-json-comparison: 1.0.6
-      use-media-antd-query: 1.1.0
-    transitivePeerDependencies:
-      - '@types/lodash.merge'
-    dev: false
-
   /@ant-design/pro-table/3.0.3_antd@4.24.1:
     resolution: {integrity: sha512-QzUp8lUvx1zFD9xAwiZvf4yP35jtmHPU7KCdNgNJViBhztk8pQyyL9wpd2n/uUZL16JIa3Bv3kUYPgir/4S5KQ==}
     peerDependencies:
@@ -3375,10 +3068,11 @@ packages:
       - '@types/lodash.merge'
     dev: false
 
-  /@ant-design/pro-utils/2.0.2_antd@4.20.6:
-    resolution: {integrity: sha512-tmAWLRAKMfMCYKOzpi7u+iIJUpOP6bSubJQ3Ec02j4kw+P4afV5XZWM7/Lr709oSPxN2idCq8XGr4bYF2N8yOQ==}
+  /@ant-design/pro-table/3.0.3_antd@4.24.7:
+    resolution: {integrity: sha512-QzUp8lUvx1zFD9xAwiZvf4yP35jtmHPU7KCdNgNJViBhztk8pQyyL9wpd2n/uUZL16JIa3Bv3kUYPgir/4S5KQ==}
     peerDependencies:
       antd: '>=4.20.0'
+      rc-field-form: ^1.22.0
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     peerDependenciesMeta:
@@ -3389,44 +3083,24 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@ant-design/cssinjs': 0.0.0-alpha.41
       '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 2.0.2_antd@4.20.6
+      '@ant-design/pro-card': 2.0.2_antd@4.24.7
+      '@ant-design/pro-field': 2.0.3_antd@4.24.7
+      '@ant-design/pro-form': 2.0.3_antd@4.24.7
+      '@ant-design/pro-provider': 2.0.2_antd@4.24.7
+      '@ant-design/pro-utils': 2.0.2_antd@4.24.7
       '@babel/runtime': 7.20.7
-      '@ctrl/tinycolor': 3.4.1
-      antd: 4.20.6
+      antd: 4.24.7
       classnames: 2.3.1
       dayjs: 1.11.7
+      omit.js: 2.0.2
       rc-util: 5.27.1
       react-sortable-hoc: 2.0.0
-      swr: 1.3.0
-    dev: false
-
-  /@ant-design/pro-utils/2.0.2_antd@4.23.2:
-    resolution: {integrity: sha512-tmAWLRAKMfMCYKOzpi7u+iIJUpOP6bSubJQ3Ec02j4kw+P4afV5XZWM7/Lr709oSPxN2idCq8XGr4bYF2N8yOQ==}
-    peerDependencies:
-      antd: '>=4.20.0'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      antd:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/cssinjs': 0.0.0-alpha.41
-      '@ant-design/icons': 4.7.0
-      '@ant-design/pro-provider': 2.0.2_antd@4.23.2
-      '@babel/runtime': 7.20.7
-      '@ctrl/tinycolor': 3.4.1
-      antd: 4.23.2
-      classnames: 2.3.1
-      dayjs: 1.11.7
-      rc-util: 5.27.1
-      react-sortable-hoc: 2.0.0
-      swr: 1.3.0
+      unstated-next: 1.1.0
+      use-json-comparison: 1.0.6
+      use-media-antd-query: 1.1.0
+    transitivePeerDependencies:
+      - '@types/lodash.merge'
     dev: false
 
   /@ant-design/pro-utils/2.0.2_antd@4.24.1:
@@ -3449,6 +3123,33 @@ packages:
       '@babel/runtime': 7.20.7
       '@ctrl/tinycolor': 3.4.1
       antd: 4.24.1
+      classnames: 2.3.1
+      dayjs: 1.11.7
+      rc-util: 5.27.1
+      react-sortable-hoc: 2.0.0
+      swr: 1.3.0
+    dev: false
+
+  /@ant-design/pro-utils/2.0.2_antd@4.24.7:
+    resolution: {integrity: sha512-tmAWLRAKMfMCYKOzpi7u+iIJUpOP6bSubJQ3Ec02j4kw+P4afV5XZWM7/Lr709oSPxN2idCq8XGr4bYF2N8yOQ==}
+    peerDependencies:
+      antd: '>=4.20.0'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      antd:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@ant-design/cssinjs': 0.0.0-alpha.41
+      '@ant-design/icons': 4.7.0
+      '@ant-design/pro-provider': 2.0.2_antd@4.24.7
+      '@babel/runtime': 7.20.7
+      '@ctrl/tinycolor': 3.4.1
+      antd: 4.24.7
       classnames: 2.3.1
       dayjs: 1.11.7
       rc-util: 5.27.1
@@ -4219,7 +3920,7 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@antv/x6-react-components/1.1.15_antd@4.20.6:
+  /@antv/x6-react-components/1.1.15_antd@4.24.7:
     resolution: {integrity: sha512-tXUak5CPuZLIA0fVBSM2vZ+TxxoEGBcokr0J69e7H0G3WIutDf6J6RkNeRGuKvcW8O1Lef1jiBGSLLjlrRXf0g==}
     peerDependencies:
       antd: '>=4.4.2'
@@ -4233,7 +3934,7 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      antd: 4.20.6
+      antd: 4.24.7
       clamp: 1.0.1
       classnames: 2.3.2
       rc-dropdown: 3.5.2
@@ -4269,7 +3970,7 @@ packages:
       utility-types: 3.10.0
     dev: false
 
-  /@antv/xflow-core/1.0.51_ettqcyf7dotwwdwiwcwttxcnxu:
+  /@antv/xflow-core/1.0.51_ivz33m2imfk7fbcgmzqfg32qzm:
     resolution: {integrity: sha512-HsT+0xTr5GshHz927djHo/XwwqjYtD+Y2KlfHHQGsHZiWzVpfVQcAqwgHUAnLO8o5M7bAAfBNo91Zab4JMBelA==}
     peerDependencies:
       '@ant-design/icons': ^4.6.0
@@ -4290,10 +3991,10 @@ packages:
     dependencies:
       '@ant-design/icons': 4.7.0
       '@antv/x6': 1.33.1
-      '@antv/x6-react-components': 1.1.15_antd@4.20.6
+      '@antv/x6-react-components': 1.1.15_antd@4.24.7
       '@antv/x6-react-shape': 1.6.1_@antv+x6@1.33.1
       '@antv/xflow-hook': 1.0.51
-      antd: 4.20.6
+      antd: 4.24.7
       classnames: 2.3.2
       immer: 9.0.15
       lodash: 4.17.21
@@ -4303,7 +4004,7 @@ packages:
       rxjs: 6.6.7
     dev: false
 
-  /@antv/xflow-extension/1.0.51_nve6c6pszpzhlcpm634xfc5gie:
+  /@antv/xflow-extension/1.0.51_gugezce3jhfoxjziwswidvfglq:
     resolution: {integrity: sha512-GQ0dik+v+45cUdaeL+fuUJKut5swKMgdUTdDItWofMXCY2/vkY7gLR0CcwRr9wOySF4l6CKADOVInjoQ5Zzgog==}
     peerDependencies:
       '@ant-design/icons': ^4.6.0
@@ -4324,11 +4025,11 @@ packages:
     dependencies:
       '@ant-design/icons': 4.7.0
       '@antv/x6': 1.33.1
-      '@antv/x6-react-components': 1.1.15_antd@4.20.6
+      '@antv/x6-react-components': 1.1.15_antd@4.24.7
       '@antv/x6-react-shape': 1.6.1_@antv+x6@1.33.1
-      '@antv/xflow-core': 1.0.51_ettqcyf7dotwwdwiwcwttxcnxu
+      '@antv/xflow-core': 1.0.51_ivz33m2imfk7fbcgmzqfg32qzm
       '@antv/xflow-hook': 1.0.51
-      antd: 4.20.6
+      antd: 4.24.7
       classnames: 2.3.1
       mana-syringe: 0.2.2
       moment: 2.29.4
@@ -4345,7 +4046,7 @@ packages:
       toposort: 2.0.2
     dev: false
 
-  /@antv/xflow/1.0.51_3mjjsbobxyjsvsmcnr3ujsq2xq:
+  /@antv/xflow/1.0.51_lqvguwhkzxdlmhgupt5xppu3fa:
     resolution: {integrity: sha512-Jm9OLxId/i8ua+pgV/qzmZXbv5Gw5L6LrHcKTpcMQNRv6rnLVZGZZVvY8nWAhKASvw74mumb86d8lXxf6endYg==}
     peerDependencies:
       '@ant-design/icons': ^4.6.0
@@ -4364,12 +4065,12 @@ packages:
       '@ant-design/icons': 4.7.0
       '@antv/layout': 0.1.31
       '@antv/x6': 1.33.1
-      '@antv/x6-react-components': 1.1.15_antd@4.20.6
+      '@antv/x6-react-components': 1.1.15_antd@4.24.7
       '@antv/x6-react-shape': 1.6.1_@antv+x6@1.33.1
-      '@antv/xflow-core': 1.0.51_ettqcyf7dotwwdwiwcwttxcnxu
-      '@antv/xflow-extension': 1.0.51_nve6c6pszpzhlcpm634xfc5gie
+      '@antv/xflow-core': 1.0.51_ivz33m2imfk7fbcgmzqfg32qzm
+      '@antv/xflow-extension': 1.0.51_gugezce3jhfoxjziwswidvfglq
       '@antv/xflow-hook': 1.0.51
-      antd: 4.20.6
+      antd: 4.24.7
       lodash: 4.17.21
     transitivePeerDependencies:
       - classnames
@@ -15221,63 +14922,6 @@ packages:
       scroll-into-view-if-needed: 2.2.29
     dev: false
 
-  /antd/4.23.2:
-    resolution: {integrity: sha512-GGOaIUxPg8wl8lGcCJ2U/1Eg5mt0hNb554a0y4mTJa1ijPRCNM8XjUcio4lTMM7M9/fLm9ttKtyxHg4n+JX26A==}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@ant-design/colors': 6.0.0
-      '@ant-design/icons': 4.7.0
-      '@ant-design/react-slick': 0.29.2
-      '@babel/runtime': 7.18.9
-      '@ctrl/tinycolor': 3.4.1
-      classnames: 2.3.1
-      copy-to-clipboard: 3.3.1
-      lodash: 4.17.21
-      memoize-one: 6.0.0
-      moment: 2.29.4
-      rc-cascader: 3.7.0
-      rc-checkbox: 2.3.2
-      rc-collapse: 3.3.0
-      rc-dialog: 8.9.0
-      rc-drawer: 5.1.0
-      rc-dropdown: 4.0.1
-      rc-field-form: 1.27.1
-      rc-image: 5.7.0
-      rc-input: 0.1.2
-      rc-input-number: 7.3.9
-      rc-mentions: 1.9.2
-      rc-menu: 9.6.4
-      rc-motion: 2.6.2
-      rc-notification: 4.6.0
-      rc-pagination: 3.1.17
-      rc-picker: 2.6.10
-      rc-progress: 3.3.3
-      rc-rate: 2.9.2
-      rc-resize-observer: 1.2.0
-      rc-segmented: 2.1.0
-      rc-select: 14.1.13
-      rc-slider: 10.0.0
-      rc-steps: 4.1.4
-      rc-switch: 3.2.2
-      rc-table: 7.26.0
-      rc-tabs: 12.1.0-alpha.1
-      rc-textarea: 0.3.7
-      rc-tooltip: 5.2.2
-      rc-tree: 5.7.0
-      rc-tree-select: 5.5.0
-      rc-trigger: 5.3.1
-      rc-upload: 4.3.4
-      rc-util: 5.27.1
-      scroll-into-view-if-needed: 2.2.29
-    dev: false
-
   /antd/4.23.2_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-GGOaIUxPg8wl8lGcCJ2U/1Eg5mt0hNb554a0y4mTJa1ijPRCNM8XjUcio4lTMM7M9/fLm9ttKtyxHg4n+JX26A==}
     peerDependencies:
@@ -15505,6 +15149,62 @@ packages:
       rc-util: 5.27.1_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
+      scroll-into-view-if-needed: 2.2.29
+    dev: false
+
+  /antd/4.24.7:
+    resolution: {integrity: sha512-Qr3AYkeqpd3i/c6M7pjca7Y6XlaIv/p6gD3aqe7/0o8Ueg50G7Aeh+TOaiUfXLGDhnVoNEdaVdDiv8aIaoWB5A==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons': 4.7.0
+      '@ant-design/react-slick': 0.29.2
+      '@babel/runtime': 7.20.7
+      '@ctrl/tinycolor': 3.4.1
+      classnames: 2.3.2
+      copy-to-clipboard: 3.3.1
+      lodash: 4.17.21
+      moment: 2.29.4
+      rc-cascader: 3.7.0
+      rc-checkbox: 2.3.2
+      rc-collapse: 3.4.2
+      rc-dialog: 9.0.2
+      rc-drawer: 6.1.2
+      rc-dropdown: 4.0.1
+      rc-field-form: 1.27.1
+      rc-image: 5.13.0
+      rc-input: 0.1.4
+      rc-input-number: 7.3.9
+      rc-mentions: 1.13.1
+      rc-menu: 9.8.1
+      rc-motion: 2.6.2
+      rc-notification: 4.6.0
+      rc-pagination: 3.2.0
+      rc-picker: 2.7.0
+      rc-progress: 3.4.1
+      rc-rate: 2.9.2
+      rc-resize-observer: 1.2.0
+      rc-segmented: 2.1.0
+      rc-select: 14.1.13
+      rc-slider: 10.0.0
+      rc-steps: 5.0.0
+      rc-switch: 3.2.2
+      rc-table: 7.26.0
+      rc-tabs: 12.5.6
+      rc-textarea: 0.4.5
+      rc-tooltip: 5.2.2
+      rc-tree: 5.7.0
+      rc-tree-select: 5.5.0
+      rc-trigger: 5.3.1
+      rc-upload: 4.3.4
+      rc-util: 5.27.1
       scroll-into-view-if-needed: 2.2.29
     dev: false
 
@@ -31095,23 +30795,6 @@ packages:
       react-dom: 18.1.0_react@18.1.0
     dev: false
 
-  /rc-drawer/5.1.0:
-    resolution: {integrity: sha512-pU3Tsn99pxGdYowXehzZbdDVE+4lDXSGb7p8vA9mSmr569oc2Izh4Zw5vLKSe/Xxn2p5MSNbLVqD4tz+pK6SOw==}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      classnames: 2.3.2
-      rc-motion: 2.6.2
-      rc-util: 5.27.1
-    dev: false
-
   /rc-drawer/5.1.0_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-pU3Tsn99pxGdYowXehzZbdDVE+4lDXSGb7p8vA9mSmr569oc2Izh4Zw5vLKSe/Xxn2p5MSNbLVqD4tz+pK6SOw==}
     peerDependencies:
@@ -31184,6 +30867,24 @@ packages:
       rc-util: 5.27.1_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
+    dev: false
+
+  /rc-drawer/6.1.2:
+    resolution: {integrity: sha512-mYsTVT8Amy0LRrpVEv7gI1hOjtfMSO/qHAaCDzFx9QBLnms3cAQLJkaxRWM+Eq99oyLhU/JkgoqTg13bc4ogOQ==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@rc-component/portal': 1.0.2
+      classnames: 2.3.2
+      rc-motion: 2.6.2
+      rc-util: 5.27.1
     dev: false
 
   /rc-dropdown/3.5.2:
@@ -31344,6 +31045,25 @@ packages:
       rc-util: 5.27.1_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+
+  /rc-image/5.13.0:
+    resolution: {integrity: sha512-iZTOmw5eWo2+gcrJMMcnd7SsxVHl3w5xlyCgsULUdJhJbnuI8i/AL0tVOsE7aLn9VfOh1qgDT3mC2G75/c7mqg==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@rc-component/portal': 1.0.2
+      classnames: 2.3.2
+      rc-dialog: 9.0.2
+      rc-motion: 2.6.2
+      rc-util: 5.27.1
+    dev: false
 
   /rc-image/5.6.4:
     resolution: {integrity: sha512-BSVn2b/JSJGOTWbPVA0WAOAXGIfeKO5jLt7N+aszPt9Q5I0a+O7qLlLpjwxPWF7l0FzIaqiRYobKQGvF4EdmUw==}
@@ -31569,22 +31289,6 @@ packages:
       react-dom: 18.1.0_react@18.1.0
     dev: false
 
-  /rc-input/0.1.2:
-    resolution: {integrity: sha512-ZPmwcFspgfYpUfbSx3KnLk9gImBcLOrlQCr4oTJ4jBoIXgJLTfm26yelzRgBJewhkvD8uJbgX0sQ/yOzuOHnJg==}
-    peerDependencies:
-      react: '>=16.0.0'
-      react-dom: '>=16.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      classnames: 2.3.2
-      rc-util: 5.27.1
-    dev: false
-
   /rc-input/0.1.2_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-ZPmwcFspgfYpUfbSx3KnLk9gImBcLOrlQCr4oTJ4jBoIXgJLTfm26yelzRgBJewhkvD8uJbgX0sQ/yOzuOHnJg==}
     peerDependencies:
@@ -31712,6 +31416,25 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
 
+  /rc-mentions/1.13.1:
+    resolution: {integrity: sha512-FCkaWw6JQygtOz0+Vxz/M/NWqrWHB9LwqlY2RtcuFqWJNFK9njijOOzTSsBGANliGufVUzx/xuPHmZPBV0+Hgw==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      classnames: 2.3.2
+      rc-menu: 9.8.1
+      rc-textarea: 0.4.5
+      rc-trigger: 5.3.1
+      rc-util: 5.27.1
+    dev: false
+
   /rc-mentions/1.7.1:
     resolution: {integrity: sha512-JbCS9bTqt6BYN2vfTPythlScLuc42rIlX85n7975RnkfawXlJjskHOlR3o8EpD4asl4KuA2jKTy0dj39DtSVqg==}
     peerDependencies:
@@ -31769,25 +31492,6 @@ packages:
       rc-util: 5.27.1_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-    dev: false
-
-  /rc-mentions/1.9.2:
-    resolution: {integrity: sha512-uxb/lzNnEGmvraKWNGE6KXMVXvt8RQv9XW8R0Dqi3hYsyPiAZeHRCHQKdLARuk5YBhFhZ6ga55D/8XuY367g3g==}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      classnames: 2.3.2
-      rc-menu: 9.6.4
-      rc-textarea: 0.3.7
-      rc-trigger: 5.3.1
-      rc-util: 5.27.1
     dev: false
 
   /rc-mentions/1.9.2_ef5jwxihqo6n7gxfmzogljlgcm:
@@ -31892,6 +31596,26 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       shallowequal: 1.1.0
+
+  /rc-menu/9.8.1:
+    resolution: {integrity: sha512-179weouypfjWJSRvvoo/vPy+StojsMzK2XC5jRNhL1ryt/N/8wAFESte8K6jZJkNp9DHDLFTe+dCGmikKpiFuA==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      classnames: 2.3.2
+      rc-motion: 2.6.2
+      rc-overflow: 1.2.8
+      rc-trigger: 5.3.1
+      rc-util: 5.27.1
+      shallowequal: 1.1.0
+    dev: false
 
   /rc-menu/9.8.1_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-179weouypfjWJSRvvoo/vPy+StojsMzK2XC5jRNhL1ryt/N/8wAFESte8K6jZJkNp9DHDLFTe+dCGmikKpiFuA==}
@@ -32187,6 +31911,21 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
 
+  /rc-pagination/3.2.0:
+    resolution: {integrity: sha512-5tIXjB670WwwcAJzAqp2J+cOBS9W3cH/WU1EiYwXljuZ4vtZXKlY2Idq8FZrnYBz8KhN3vwPo9CoV/SJS6SL1w==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      classnames: 2.3.2
+    dev: false
+
   /rc-picker/2.6.10:
     resolution: {integrity: sha512-9wYtw0DFWs9FO92Qh2D76P0iojUr8ZhLOtScUeOit6ks/F+TBLrOC1uze3IOu+u9gbDAjmosNWLKbBzx/Yuv2w==}
     engines: {node: '>=8.x'}
@@ -32300,6 +32039,28 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       shallowequal: 1.1.0
+
+  /rc-picker/2.7.0:
+    resolution: {integrity: sha512-oZH6FZ3j4iuBxHB4NvQ6ABRsS2If/Kpty1YFFsji7/aej6ruGmfM7WnJWQ88AoPfpJ++ya5z+nVEA8yCRYGKyw==}
+    engines: {node: '>=8.x'}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      classnames: 2.3.2
+      date-fns: 2.28.0
+      dayjs: 1.11.7
+      moment: 2.29.4
+      rc-trigger: 5.3.1
+      rc-util: 5.27.1
+      shallowequal: 1.1.0
+    dev: false
 
   /rc-progress/3.2.4:
     resolution: {integrity: sha512-M9WWutRaoVkPUPIrTpRIDpX0SPSrVHzxHdCRCbeoBFrd9UFWTYNWRlHsruJM5FH1AZI+BwB4wOJUNNylg/uFSw==}
@@ -33028,27 +32789,6 @@ packages:
       react-dom: 18.1.0_react@18.1.0
     dev: false
 
-  /rc-tabs/12.1.0-alpha.1:
-    resolution: {integrity: sha512-M+B88WEnGSuE+mR54fpgPbZLAakzxa/H6FmEetLBl5WG4I3AcwSk9amuIPC/tu0KXBl+H6Bg5ZwrrEUOBUvgzg==}
-    engines: {node: '>=8.x'}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      classnames: 2.3.2
-      rc-dropdown: 4.0.1
-      rc-menu: 9.6.4
-      rc-motion: 2.6.2
-      rc-resize-observer: 1.2.0
-      rc-util: 5.27.1
-    dev: false
-
   /rc-tabs/12.1.0-alpha.1_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-M+B88WEnGSuE+mR54fpgPbZLAakzxa/H6FmEetLBl5WG4I3AcwSk9amuIPC/tu0KXBl+H6Bg5ZwrrEUOBUvgzg==}
     engines: {node: '>=8.x'}
@@ -33136,6 +32876,27 @@ packages:
       rc-util: 5.27.1_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+
+  /rc-tabs/12.5.6:
+    resolution: {integrity: sha512-aArXHzxK7YICxe+622CZ8FlO5coMi8P7E6tXpseCPKm1gdTjUt0LrQK1/AxcrRXZXG3K4QqhlKmET0+cX5DQaQ==}
+    engines: {node: '>=8.x'}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      classnames: 2.3.2
+      rc-dropdown: 4.0.1
+      rc-menu: 9.8.1
+      rc-motion: 2.6.2
+      rc-resize-observer: 1.2.0
+      rc-util: 5.27.1
+    dev: false
 
   /rc-textarea/0.3.7:
     resolution: {integrity: sha512-yCdZ6binKmAQB13hc/oehh0E/QRwoPP1pjF21aHBxlgXO3RzPF6dUu4LG2R4FZ1zx/fQd2L1faktulrXOM/2rw==}

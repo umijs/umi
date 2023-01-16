@@ -13,8 +13,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/preset-vue": "4.0.44",
-    "umi": "4.0.44",
+    "@umijs/preset-vue": "4.0.45",
+    "umi": "4.0.45",
     "vue": "3.2.45"
   },
   "devDependencies": {

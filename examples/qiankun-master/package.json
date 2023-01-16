@@ -8,7 +8,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/max": "4.0.44",
+    "@umijs/max": "4.0.45",
     "qiankun": "^2.8.4",
     "react": "18.1.0",
     "react-dom": "18.1.0"
