@@ -49,7 +49,7 @@ mfsu: {
 
 ## 两种构建工具
 
-MFSU 支持使用 Webpack 或者 esbuild 构建项目的依赖。默认配置使用 Webacpk，和 Webpack 生态很好的兼容。
+MFSU 支持使用 Webpack 或者 esbuild 构建项目的依赖。默认配置使用 Webpack，和 Webpack 生态很好的兼容。
 Esbuild 通过 `mfsu: { esbuild: true }` 来开启，享受 Esbuild 的高效的构建速度。
 
 
