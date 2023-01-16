@@ -37,11 +37,15 @@ type IOpts = {
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function ensureSerializableValue(obj: any) {
+  const isRegExp = (value: any) => {
+    return Object.prototype.toString.call(value) === '[object RegExp]';
+  };
+
   return JSON.parse(
     JSON.stringify(
       obj,
       (_key, value) => {
-        if (typeof value === 'function') {
+        if (typeof value === 'function' || isRegExp(value)) {
           return value.toString();
         }
         return value;
