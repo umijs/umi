@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "lodash.uppercase": "^4.3.0",
-    "umi": "4.0.45"
+    "umi": "4.0.46"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
