@@ -1,12 +1,12 @@
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
-import open from 'open';
 import { Octokit } from 'octokit';
+import open from 'open';
 import { join } from 'path';
+import qs from 'qs';
 import rimraf from 'rimraf';
 import 'zx/globals';
-import qs from 'qs';
 import { PATHS } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
 
@@ -157,7 +157,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   const canReleaseNotes = !['canary', 'rc', 'beta', 'alpha'].find((item) =>
     version.includes(item),
   );
-  if (canReleaseNotes) {
+  if (false && canReleaseNotes) {
     // get release notes
     logger.event('get release notes');
     const { releaseNotes } = await getReleaseNotes(version);
@@ -166,9 +166,9 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
     logger.event('generate changelog');
     generateChangelog(releaseNotes);
 
-    // release by github
+    // release by GitHub
     logger.event('release by github');
-    releaseBygithub(releaseNotes, version);
+    releaseByGithub(releaseNotes, version);
   }
 
   // check 2fa config
@@ -230,32 +230,34 @@ function setDepsVersion(opts: {
 }
 
 export async function getReleaseNotes(version: string) {
-  const GITHUB_TOKEN = '.github_token';
+  const GITHUB_TOKEN_FILE = '.github_token';
   const OWNER = 'umijs';
   const REPO = 'umi';
-  const token = fs.readFileSync(GITHUB_TOKEN, 'utf8').trim();
+  const token = fs
+    .readFileSync(path.join(__dirname, '..', GITHUB_TOKEN_FILE), 'utf-8')
+    .trim();
   const octokit = new Octokit({
     auth: token,
   });
   const releaseNotesRes = await octokit.request(
     `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
     {
-      tag_name: version,
+      tag_name: `v${version}`,
     },
   );
   const releaseNotes = releaseNotesRes.data.body;
   return { releaseNotes };
 }
 
-function releaseBygithub(releaseNotes: string, version: string) {
-  const releaseParms = {
+function releaseByGithub(releaseNotes: string, version: string) {
+  const releaseParams = {
     tag: version,
     title: `v${version}`,
     body: releaseNotes,
     prerelease: false,
   };
   open(
-    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParms)}`,
+    `https://github.com/umijs/umi/releases/new?${qs.stringify(releaseParams)}`,
   );
 }
 

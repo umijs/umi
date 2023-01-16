@@ -7,7 +7,6 @@
 /examples/*/.output
 /examples/*/api
 /examples/*/server
-/examples/*/.umi-test
 /examples/*/src/.umi
 /examples/*/src/.umi-test
 /examples/*/src/.umi-production
@@ -46,11 +45,12 @@
 /coverage
 /packages/*/coverage
 /examples/*/coverage
-.vscode
-.idea
-.pnpm-*.log
-.github_token
-TMP_CHANGELOG.md
+/.vscode
+/.idea
+/.pnpm-*.log
+/.github_token
+/TMP_CHANGELOG.md
+/scripts/__test.ts
 
 # Ignore declaration files, they are generated from local development
 /packages/bundler-webpack/client/**/*.d.ts
