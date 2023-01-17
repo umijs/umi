@@ -1,13 +1,14 @@
-export { proxy, useSnapshot, snapshot, subscribe } from 'valtio';
+export { proxy, snapshot, subscribe, useSnapshot } from 'valtio';
 export {
-  proxyWithComputed,
-  proxyWithHistory,
+  derive,
   devtools as proxyWithDevtools,
   proxyMap,
   proxySet,
-  derive,
-  underive,
+  proxyWithComputed,
+  proxyWithHistory,
   subscribeKey,
+  underive,
+  useProxy,
 } from 'valtio/utils';
 
 // TODO:

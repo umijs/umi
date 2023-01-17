@@ -1,6 +1,6 @@
-import { IApi } from 'umi';
-import { dirname } from 'path';
 import { winPath } from '@umijs/utils';
+import { dirname } from 'path';
+import { IApi } from 'umi';
 
 // TODO:
 // - generator
@@ -39,6 +39,7 @@ export {
   proxySet,
   derive,
   underive,
+  useProxy,
 } from '${libPath}';
       `,
     });
