@@ -74,8 +74,13 @@ ${clientLoaderDefines.join('\n')}
         },
       ],
     });
+    // 开发时使用 watch，非开发时也需要构建一次
     if (api.env === 'development') {
       await ctx.watch();
+    } else {
+      await ctx.rebuild();
+      // 需要释放掉，否则不会中断
+      await ctx.dispose();
     }
   });
 };

@@ -49,7 +49,7 @@ export async function build(opts: {
         alias: opts.options?.alias || {},
       }),
       {
-        name: 'my-plugin',
+        name: 'onrebuild-plugin',
         setup(build) {
           build.onEnd(() => {
             if (opts.watch) {
@@ -63,6 +63,11 @@ export async function build(opts: {
 
   if (!!opts.watch) {
     await ctx.watch();
+  } else {
+    // 不满足 watch 条件重新构建一次
+    await ctx.rebuild();
+    // 需要释放掉，否则不会中断
+    await ctx.dispose();
   }
   return icons;
 }

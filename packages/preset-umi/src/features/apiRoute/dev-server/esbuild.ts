@@ -1,4 +1,5 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import esbuild, { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
+import { logger } from '@umijs/utils';
 import { join, resolve } from 'path';
 import type { IApi, IRoute } from '../../../types';
 import { OUTPUT_PATH } from '../constants';
@@ -22,9 +23,11 @@ export default async function (api: IApi, apiRoutes: IRoute[]) {
     plugins: [
       esbuildIgnorePathPrefixPlugin(),
       {
-        name: 'my-plugin',
+        name: 'onrebuild-plugin',
         setup(build) {
-          build.onEnd(() => {
+          build.onEnd((result: BuildResult) => {
+            if (result.errors)
+              logger.error('Compile api routes failed: ', result.errors);
             // Reload API route modules
             Object.keys(require.cache).forEach((modulePath) => {
               if (modulePath.startsWith(join(api.paths.cwd, OUTPUT_PATH)))

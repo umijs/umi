@@ -1,4 +1,4 @@
-import esbuild from '@umijs/bundler-utils/compiled/esbuild';
+import esbuild, { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import { aliasUtils, isMonorepo, logger } from '@umijs/utils';
 import { resolve } from 'path';
 import { IApi } from '../../../types';
@@ -44,11 +44,14 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
       svgLoader({ cwd: api.cwd }),
       assetsLoader({ cwd: api.cwd }),
       {
-        name: 'my-plugin',
+        name: 'onrebuild-plugin',
         setup(build) {
-          build.onEnd(() => {
+          build.onEnd((result: BuildResult) => {
             logger.event('[SSR] Rebuilt');
             delete require.cache[absServerBuildPath(api)];
+            if (result.errors) {
+              logger.error(result.errors);
+            }
           });
         },
       },
@@ -59,6 +62,11 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
 
   if (watch) {
     await ctx.watch();
+  } else {
+    // 不满足 watch 条件重新构建一次
+    await ctx.rebuild();
+    // 需要释放掉，否则不会中断
+    await ctx.dispose();
   }
 
   const diff = new Date().getTime() - now;
