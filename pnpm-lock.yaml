@@ -1132,9 +1132,9 @@ importers:
 
   libs/valtio:
     specifiers:
-      valtio: 1.8.2
+      valtio: 1.9.0
     dependencies:
-      valtio: 1.8.2
+      valtio: 1.9.0
 
   packages/ast:
     specifiers:
@@ -38420,9 +38420,9 @@ packages:
       use-sync-external-store: 1.2.0_react@17.0.2
     dev: true
 
-  /valtio/1.8.2:
-    resolution: {integrity: sha512-ypFWPi3aY04tojWAFPbTYBDw5iFaCDbKAJ2XqhmY2XOSorNtaCZJNg++FSssv8gMJwmPXfrU/RjncQtsoOHbUg==}
-    engines: {node: '>=12.7.0'}
+  /valtio/1.9.0:
+    resolution: {integrity: sha512-mQLFsAlKbYascZygFQh6lXuDjU5WHLoeZ8He4HqMnWfasM96V6rDbeFkw1XeG54xycmDonr/Jb4xgviHtuySrA==}
+    engines: {node: '>=12.20.0'}
     peerDependencies:
       react: '>=16.8'
     peerDependenciesMeta:
