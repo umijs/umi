@@ -1,5 +1,5 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger, rimraf } from '@umijs/utils';
+import { lodash, logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import type { Worker } from 'worker_threads';
@@ -37,15 +37,11 @@ type IOpts = {
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export function ensureSerializableValue(obj: any) {
-  const isRegExp = (value: any) => {
-    return Object.prototype.toString.call(value) === '[object RegExp]';
-  };
-
   return JSON.parse(
     JSON.stringify(
       obj,
       (_key, value) => {
-        if (typeof value === 'function' || isRegExp(value)) {
+        if (typeof value === 'function' || lodash.isRegExp(value)) {
           return value.toString();
         }
         return value;
