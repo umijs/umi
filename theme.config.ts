@@ -22,17 +22,7 @@ export default {
       children: [
         {
           title: 'Tutorials',
-          children: ['tutorials/getting-started', 'tutorials/blog'],
-        },
-        {
-          title: 'API',
-          children: [
-            'api/api',
-            'api/config',
-            'api/runtime-config',
-            'api/commands',
-            'api/plugin-api',
-          ],
+          children: ['tutorials/getting-started'],
         },
         {
           title: 'Introduce',
@@ -77,6 +67,16 @@ export default {
           ],
         },
         {
+          title: 'API',
+          children: [
+            'api/api',
+            'api/config',
+            'api/runtime-config',
+            'api/commands',
+            'api/plugin-api',
+          ],
+        },
+        {
           title: 'Umi Max',
           children: [
             'max/introduce',
@@ -106,6 +106,7 @@ export default {
         {
           title: 'Blog',
           children: [
+            'tutorials/blog',
             'umi-4-rc',
             'mfsu-faster-than-vite',
             'mfsu-independent-usage',
