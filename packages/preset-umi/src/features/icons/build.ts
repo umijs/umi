@@ -1,5 +1,4 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { logger } from '@umijs/utils';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
 import { esbuildCollectIconPlugin } from './esbuildPlugins/esbuildCollectIconPlugin';
@@ -17,7 +16,8 @@ export async function build(opts: {
   icons?: Set<string>;
 }) {
   const icons: Set<string> = opts.icons || new Set();
-  await esbuild.build({
+
+  const ctx = await esbuild.context({
     format: 'esm',
     platform: 'browser',
     target: 'esnext',
@@ -27,18 +27,8 @@ export async function build(opts: {
       '.ts': 'ts',
       '.tsx': 'tsx',
     },
-    watch: !!opts.watch && {
-      onRebuild(err) {
-        if (err) {
-          logger.error(`[icons] build failed: ${err}`);
-        } else {
-          if (opts.watch) {
-            opts.watch.onRebuildSuccess();
-          }
-        }
-      },
-    },
     // do I need this?
+    // note: has removed from esbuild 0.17.0
     // incremental: true,
     bundle: true,
     logLevel: 'error',
@@ -58,8 +48,22 @@ export async function build(opts: {
         icons,
         alias: opts.options?.alias || {},
       }),
+      {
+        name: 'my-plugin',
+        setup(build) {
+          build.onEnd(() => {
+            if (opts.watch) {
+              opts.watch.onRebuildSuccess();
+            }
+          });
+        },
+      },
     ],
   });
+
+  if (!!opts.watch) {
+    await ctx.watch();
+  }
   return icons;
 }
 

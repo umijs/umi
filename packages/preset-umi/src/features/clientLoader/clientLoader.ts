@@ -42,12 +42,11 @@ ${clientLoaderDefines.join('\n')}
   // 把 core/loader.ts (在 tmpFile.ts 的 onGenerateFiles 产生的) 编译成 core/loader.js
   // core/loader.js 会被 core/route.ts 引用，将每个 route 的 clientLoader 注入进去
   api.onBeforeCompiler(async () => {
-    await esbuild.build({
+    const ctx = await esbuild.context({
       format: 'esm',
       platform: 'browser',
       target: 'esnext',
       loader,
-      watch: api.env === 'development' && {},
       bundle: true,
       logLevel: 'error',
       entryPoints: [join(api.paths.absTmpPath, 'core/loaders.ts')],
@@ -75,6 +74,9 @@ ${clientLoaderDefines.join('\n')}
         },
       ],
     });
+    if (api.env === 'development') {
+      await ctx.watch();
+    }
   });
 };
 

@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { isMonorepo, logger, aliasUtils } from '@umijs/utils';
+import { aliasUtils, isMonorepo, logger } from '@umijs/utils';
 import { resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath, esbuildUmiPlugin } from '../utils';
@@ -27,7 +27,7 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
   // currently esbuild not support circle alias
   const alias = aliasUtils.parseCircleAlias({ alias: api.config.alias });
 
-  await esbuild.build({
+  const ctx = await esbuild.context({
     alias,
     format: 'cjs',
     platform: 'node',
@@ -35,17 +35,6 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
     bundle: true,
     logLevel: 'silent',
     inject: [resolve(api.paths.absTmpPath, 'ssr/react-shim.js')],
-    watch: watch
-      ? {
-          onRebuild(err) {
-            logger.event('[SSR] Rebuilt');
-            delete require.cache[absServerBuildPath(api)];
-            if (err) {
-              logger.error(err);
-            }
-          },
-        }
-      : false,
     loader,
     entryPoints: [resolve(api.paths.absTmpPath, 'umi.server.ts')],
     plugins: [
@@ -54,10 +43,24 @@ export async function build(opts: { api: IApi; watch?: boolean }) {
       cssLoader({ cwd: api.cwd }),
       svgLoader({ cwd: api.cwd }),
       assetsLoader({ cwd: api.cwd }),
+      {
+        name: 'my-plugin',
+        setup(build) {
+          build.onEnd(() => {
+            logger.event('[SSR] Rebuilt');
+            delete require.cache[absServerBuildPath(api)];
+          });
+        },
+      },
     ],
     outfile: absServerBuildPath(api),
     external: getExternal(),
   });
+
+  if (watch) {
+    await ctx.watch();
+  }
+
   const diff = new Date().getTime() - now;
   logger.info(`[SSR] Compiled in ${diff}ms`);
 }
