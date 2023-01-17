@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "@umijs/plugin-umi-request-compat": "1.0.0",
-    "umi": "4.0.45"
+    "umi": "4.0.46"
   }
 }

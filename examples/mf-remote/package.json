@@ -11,7 +11,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/max": "4.0.45",
+    "@umijs/max": "4.0.46",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },

@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "express": "4.18.2",
-    "umi": "4.0.45"
+    "umi": "4.0.46"
   }
 }
