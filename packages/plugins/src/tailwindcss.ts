@@ -1,4 +1,4 @@
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi } from 'umi';
 import { crossSpawn, winPath } from 'umi/plugin-utils';
 
@@ -46,7 +46,7 @@ export default (api: IApi) => {
           api.env === 'development' ? '--watch' : '',
         ],
         {
-          stdio: 'inherit',
+          stdio: ['pipe', 'inherit', 'inherit'],
           cwd: process.env.APP_ROOT || api.cwd,
         },
       );
