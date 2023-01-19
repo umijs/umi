@@ -1,0 +1,15 @@
+name: PullRequest Checker
+
+on:
+  pull_request_target:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-cool/maintain-one-comment@v3
+        with:
+          body: 感谢你的贡献。如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id），我会拉到群里。
