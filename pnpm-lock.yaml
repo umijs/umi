@@ -1567,7 +1567,7 @@ importers:
       '@tanstack/react-query': ^4.22.0
       '@tanstack/react-query-devtools': ^4.22.0
       '@umijs/bundler-utils': 4.0.47
-      '@umijs/valtio': ^1.0.2
+      '@umijs/valtio': ^1.0.3
       antd: ^4.24.1
       antd-dayjs-webpack-plugin: ^1.0.6
       axios: ^0.27.2
