@@ -129,12 +129,12 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   // check independent package version
   logger.event('check independent package version');
-  PATHS.INDEPENDENT_PACKAGES.forEach((fromPkg) => {
-    checkIndependentPackageChanged({
+  for await (const fromPkg of PATHS.INDEPENDENT_PACKAGES) {
+    await checkIndependentPackageChanged({
       pkgDirPath: fromPkg,
       updateTo: pkgsJsonPath,
     });
-  });
+  }
 
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
