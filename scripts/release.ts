@@ -130,7 +130,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   // check independent package version
   logger.event('check independent package version');
   PATHS.INDEPENDENT_PACKAGES.forEach((fromPkg) => {
-    checkIndependentPakcageChanged({
+    checkIndependentPackageChanged({
       pkgDirPath: fromPkg,
       updateTo: pkgsJsonPath,
     });
@@ -282,7 +282,7 @@ function generateChangelog(releaseNotes: string) {
   fs.writeFileSync(CHANGELOG_PATH, newStr);
 }
 
-async function checkIndependentPakcageChanged(opts: {
+async function checkIndependentPackageChanged(opts: {
   pkgDirPath: string;
   updateTo?: string[];
 }) {
