@@ -1,15 +1,20 @@
 import React from 'react';
 
-export interface INav {
+export interface INavBaseProps {
   path: string;
   title: string;
   type: 'nav' | 'link';
+}
+
+export interface INavDropdown extends INavBaseProps {}
+
+export interface INav extends INavBaseProps {
   /**
    * 不使用 navigate 重定向，而是直接用 link 指定最终地址，否则会破坏 history 历史，导致无法返回
    * https://github.com/umijs/umi/issues/10325
    */
   link: string;
-  dropdown?: { title: string; path: string }[];
+  dropdown?: INavDropdown[];
   children: any[];
 }
 

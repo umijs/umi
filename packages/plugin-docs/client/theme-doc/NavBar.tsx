@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useThemeContext, type INav } from './context';
+import { useThemeContext, type INav, type INavDropdown } from './context';
 import ExternalLink from './icons/link.svg';
 import useLanguage from './useLanguage';
 
@@ -24,7 +24,7 @@ function NavItem(props: INavItemProps) {
   const lang = useLanguage();
   const [isExpanded, setExpanded] = useState(false);
 
-  const isExternalLink = (n: INav) => {
+  const isExternalLink = (n: INavDropdown) => {
     return (
       n.type === 'link' && /(https|http):\/\/([\w.]+\/?)\S*/.test(nav.path)
     );
