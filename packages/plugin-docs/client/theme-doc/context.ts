@@ -3,7 +3,7 @@ import React from 'react';
 export interface INavBaseProps {
   path: string;
   title: string;
-  type: 'nav' | 'link';
+  type?: 'nav' | 'link';
 }
 
 export interface INavDropdown extends INavBaseProps {}
