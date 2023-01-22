@@ -140,14 +140,14 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
       .end()
     .extensions
       .merge([
-        '.wasm',
-        '.mjs',
-        '.cjs',
-        '.js',
-        '.jsx',
         '.ts',
         '.tsx',
-        '.json'
+        '.js',
+        '.jsx',
+        '.mjs',
+        '.cjs',
+        '.json',
+        '.wasm'
       ])
       .end();
 
