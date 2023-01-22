@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useThemeContext } from './context';
+import { useThemeContext, type INav, type INavDropdown } from './context';
 import ExternalLink from './icons/link.svg';
 import useLanguage from './useLanguage';
 
@@ -14,25 +14,17 @@ export default () => {
   );
 };
 
-interface NavItemProps {
-  nav: {
-    path: string;
-    title: string;
-    type?: 'nav' | 'link';
-    dropdown?: {
-      title: string;
-      path: string;
-    }[];
-  };
+interface INavItemProps {
+  nav: INav;
 }
 
-function NavItem(props: NavItemProps) {
+function NavItem(props: INavItemProps) {
   const { components } = useThemeContext()!;
   const { nav } = props;
   const lang = useLanguage();
   const [isExpanded, setExpanded] = useState(false);
 
-  const isExternalLink = (n: NavItemProps['nav']) => {
+  const isExternalLink = (n: INavDropdown) => {
     return (
       n.type === 'link' && /(https|http):\/\/([\w.]+\/?)\S*/.test(nav.path)
     );
@@ -54,7 +46,11 @@ function NavItem(props: NavItemProps) {
       ) : (
         <components.Link
           to={
-            lang.isFromPath ? lang.currentLanguage?.locale + nav.path : nav.path
+            nav.link
+              ? nav.link
+              : lang.isFromPath
+              ? lang.currentLanguage?.locale + nav.path
+              : nav.path
           }
         >
           {lang.render(nav.title)}

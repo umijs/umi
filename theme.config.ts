@@ -1,4 +1,3 @@
-// @ts-ignore
 import UmiLogo from './packages/plugin-docs/client/theme-doc/icons/umi.png';
 
 export default {
@@ -19,6 +18,7 @@ export default {
       path: '/docs',
       title: 'Docs',
       type: 'nav',
+      link: '/docs/introduce/introduce',
       children: [
         {
           title: 'Tutorials',
@@ -102,6 +102,7 @@ export default {
       path: '/blog',
       title: 'Blog',
       type: 'nav',
+      link: '/blog/umi-4-rc',
       children: [
         {
           title: 'Blog',
