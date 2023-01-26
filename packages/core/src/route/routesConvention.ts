@@ -88,7 +88,13 @@ function createRoutePath(routeId: string): string {
     .replace(/\./g, '/');
 
   // /index/index -> ''
-  path = /\b\/?index\/index$/.test(path) ? path.replace(/\/?index$/, '') : path;
+  path = /\b\/?^index\/index$/.test(path)
+    ? path.replace(/\/?index$/, '')
+    : path;
+  // /a/index/index -> '/a'
+  path = /\b\/?\/index\/index$/.test(path)
+    ? path.replace(/\/?index$/, '')
+    : path;
   // /(?<!:)\/?\bindex$/
   // e/index true
   // index true
