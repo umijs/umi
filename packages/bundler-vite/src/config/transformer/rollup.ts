@@ -1,3 +1,4 @@
+import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 import path from 'path';
 import {
   visualizer,
@@ -5,7 +6,6 @@ import {
 } from 'rollup-plugin-visualizer';
 import type { IConfigProcessor } from '.';
 import copy from '../../../compiled/rollup-plugin-copy';
-import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 
 /**
  * transform umi configs to vite rollup options
@@ -51,6 +51,8 @@ export default (function rollup(userConfig) {
           })
       );
     }
+
+    // @ts-ignore
     config.build!.rollupOptions!.plugins!.push(
       visualizer({
         template: generateStatsFile ? 'raw-data' : 'treemap',
@@ -67,6 +69,7 @@ export default (function rollup(userConfig) {
 
   // handle copy
   if (Array.isArray(userConfig.copy)) {
+    // @ts-ignore rollup 升级导致的类型不正确, 这里的用法没问题
     config.build!.rollupOptions!.plugins!.push(
       copy({
         targets: userConfig.copy.map((item) => {
