@@ -128,16 +128,16 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 ```
 + pages/
   + users/
-    - index.js
-  - index.js
+    - index.tsx
+  - index.tsx
 ```
 
 那么，会自动生成路由配置如下：
 
 ```javascript
 [
-  { path: '/', component: './pages/index.js' },
-  { path: '/users/', component: './pages/users/index.js' },
+  { path: '/', component: './pages/index.tsx' },
+  { path: '/users/', component: './pages/users/index.tsx' },
 ];
 ```
 
@@ -148,19 +148,19 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 ```
 + pages/
   + foo/
-    - $slug.js
+    - $slug.tsx
   + $bar/
-    - $.js
-  - index.js
+    - $.tsx
+  - index.tsx
 ```
 
 会生成路由配置如下：
 
 ```javascript
 [
-  { path: '/', component: './pages/index.js' },
-  { path: '/foo/:slug', component: './pages/foo/$slug.js' },
-  { path: '/:bar/*', component: './pages/$bar/$.js' },
+  { path: '/', component: './pages/index.tsx' },
+  { path: '/foo/:slug', component: './pages/foo/$slug.tsx' },
+  { path: '/:bar/*', component: './pages/$bar/$.tsx' },
 ];
 ```
 
@@ -177,7 +177,7 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 
 #### global.(j|t)sx?
 
-在入口文件最前面被自动引入，可以考虑在此加入 polyfill。Umi 区别于其他前端框架，没有显式的程序主入口，如 `src/index.js`，所以在引用某些模块的时候，如果模块功能要求在程序主入口添加代码时，你就可以写到这个文件。
+在入口文件最前面被自动引入，可以考虑在此加入 polyfill。Umi 区别于其他前端框架，没有显式的程序主入口，如 `src/index.ts`，所以在引用某些模块的时候，如果模块功能要求在程序主入口添加代码时，你就可以写到这个文件。
 
 #### global.(css|less|sass|scss)
 
