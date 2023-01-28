@@ -250,13 +250,6 @@ granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又�
 
 ### exclude
 
-使用约定式路由时，默认情况下，满足以下任意规则的文件不会被注册为路由：
-
-* 以 `d.ts` 结尾的类型定义文件
-* 以 `test.ts`、`spec.ts`、`e2e.ts` 结尾的测试文件（适用于 `.js`、`.jsx` 和 `.tsx` 文件）
-* 不是 `.js`、`.jsx`、`.ts` 或 `.tsx` 文件
-* 文件内容不包含 JSX 元素
-
 你可以使用 `exclude` 配置过滤一些不需要的文件，比如用于过滤 components、models 等。
 
 示例，

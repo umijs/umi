@@ -210,17 +210,10 @@ export default withAuth(TheOldPage)
 
 ```js
 [
-  { exact: true, path: '/', component: '@/pages/index' },
-  { exact: true, path: '/users', component: '@/pages/users' },
+  { path: '/', component: '@/pages/index' },
+  { path: '/users', component: '@/pages/users' },
 ]
 ```
-
-需要注意的是，满足以下任意规则的文件不会被注册为路由，
-
-* 以 `d.ts` 结尾的类型定义文件
-* 以 `test.ts`、`spec.ts`、`e2e.ts` 结尾的测试文件（适用于 `.js`、`.jsx` 和 `.tsx` 文件）
-* 不是 `.js`、`.jsx`、`.ts` 或 `.tsx` 文件
-* 文件内容不包含 JSX 元素
 
 ### 动态路由
 
@@ -236,25 +229,25 @@ export default withAuth(TheOldPage)
 ```
 + pages/
   + foo/
-    - $slug.js
+    - $slug.tsx
   + $bar/
-    - $.js
-  - index.js
+    - $.tsx
+  - index.tsx
 ```
 
 会生成路由配置如下：
 
 ```javascript
 [
-  { path: '/', component: './pages/index.js' },
-  { path: '/foo/:slug', component: './pages/foo/$slug.js' },
-  { path: '/:bar/*', component: './pages/$bar/$.js' },
+  { path: '/', component: './pages/index.tsx' },
+  { path: '/foo/:slug', component: './pages/foo/$slug.tsx' },
+  { path: '/:bar/*', component: './pages/$bar/$.tsx' },
 ];
 ```
 
 ### 全局 layout
 
-约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `props.children` 渲染子组件。
+约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `<Outlet />` 渲染嵌套路由。
 
 比如以下目录结构，
 
@@ -272,10 +265,12 @@ export default withAuth(TheOldPage)
 
 ```js
 [
-  { exact: false, path: '/', component: '@/layouts/index',
+  { 
+    path: '/', 
+    component: '@/layouts/index',
     routes: [
-      { exact: true, path: '/', component: '@/pages/index' },
-      { exact: true, path: '/users', component: '@/pages/users' },
+      { path: '', component: '@/pages/index' },
+      { path: 'users', component: '@/pages/users' },
     ],
   },
 ]
@@ -284,8 +279,10 @@ export default withAuth(TheOldPage)
 一个自定义的全局 `layout` 如下：
 
 ```tsx
-export default function Layout({ children }) {
-  return children
+import { Outlet } from 'umi'
+
+export default function Layout() {
+  return <Outlet />
 }
 ```
 
@@ -296,18 +293,22 @@ export default function Layout({ children }) {
 比如想要针对 `/login` 输出简单布局，
 
 ```js
-import { useLocation } from 'umi';
+import { useLocation, Outlet } from 'umi';
 
-export default function(props) {
+export default function() {
   const location = useLocation();
   if (location.pathname === '/login') {
-    return <SimpleLayout>{ props.children }</SimpleLayout>
+    return <SimpleLayout><Outlet /></SimpleLayout>
   }
+
+  // 使用 `useAppData` / `useSelectedRoutes` 可以获得更多路由信息
+  // const { clientRoutes } = useAppData()
+  // const routes = useSelectedRoutes()
 
   return (
     <>
       <Header />
-      { props.children }
+      <Outlet />
       <Footer />
     </>
   );
@@ -332,15 +333,15 @@ export default function(props) {
 
 ```js
 [
-  { exact: true, path: '/', component: '@/pages/index' },
-  { exact: true, path: '/users', component: '@/pages/users' },
-  { component: '@/pages/404' },
+  { path: '/', component: '@/pages/index' },
+  { path: '/users', component: '@/pages/users' },
+  { path: '/*', component: '@/pages/404' },
 ]
 ```
 
 这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
 
-> 404 只有 build 之后生效
+> 404 只有约定式路由会自动生效，如果使用配置式路由，需要自行配置 404 的通配路由。
 
 ## 页面跳转
 
