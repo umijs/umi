@@ -92,8 +92,12 @@ export default {
             'max/react-query',
             'max/valtio',
             'max/dva',
-            // 暂不支持
-            // 'max/bacon',
+            'max/analytics',
+            // TODO: tailwind 功能需要修订
+            // 'max/tailwindcss',
+            // 暂不放出
+            // 'max/mf'
+            // 'max/moment2dayjs',
           ],
         },
       ],
