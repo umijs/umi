@@ -106,7 +106,7 @@ export default {
         {
           title: 'Blog',
           children: [
-            'tutorials/blog',
+            'develop-blog-using-umi',
             'umi-4-rc',
             'mfsu-faster-than-vite',
             'mfsu-independent-usage',
