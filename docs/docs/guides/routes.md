@@ -6,7 +6,7 @@ import { Message } from 'umi';
 
 ## 路由类型配置
 
-请参考[配置文档](../api/config#history)
+请参考 [history](../api/config#history) 配置。
 
 ## 配置路由
 
@@ -14,7 +14,8 @@ import { Message } from 'umi';
 
 比如：
 
-```js
+```ts
+// .umirc.ts
 export default {
   routes: [
     { path: '/', component: 'index' },
@@ -23,10 +24,10 @@ export default {
 }
 ```
 
-Umi 4 默认根据路由来进行 JavaScript 模块按需加载。如果需要在路由组件加载的过程中配置自定义加载组件，在项目 `src` 目录下创建 `loading.(tsx|jsx)` 文件，默认导出的组件会在组件加载的时候渲染。
+Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升体验。
 
 <Message emoji="💡">
-你可以在 Chrome 的调试工具的网络 tab 中将网络设置成低速，然后切换路由查看动态加载中组件的展示。
+你可以在 Chrome Devtools > 网络 Tab 中将网络设置成低速，然后切换路由查看加载组件是否生效。
 </Message>
 
 ### path
@@ -58,9 +59,9 @@ Umi 4 默认根据路由来进行 JavaScript 模块按需加载。如果需要�
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始找起。
+配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始寻找。
 
-如果指向 `src` 目录的文件，可以用 `@`，也可以用 `../`。比如 `component: '@/layouts/basic'`，或者 `component: '../layouts/basic'`，推荐用前者。
+如果指向 `src` 目录的文件，可以用 `@`，比如 `component: '@/layouts/basic'`，推荐使用 `@` 组织路由文件位置。
 
 ### routes
 
@@ -84,15 +85,17 @@ export default {
 }
 ```
 
-然后在 `src/layouts/index` 中通过 `<Outlet/>` 渲染子路由，
+在全局布局 `src/layouts/index` 中，通过 `<Outlet/>` 来渲染子路由：
 
-```jsx
-import {Outlet} from 'umi'
+```tsx
+import { Outlet } from 'umi'
 
-export default (props) => {
-  return <div style={{ padding: 20 }}> 
-    <Outlet/> 
-  </div>;
+export default function Page() {
+  return (
+    <div style={{ padding: 20 }}> 
+      <Outlet/> 
+    </div>
+  )
 }
 ```
 
@@ -179,7 +182,7 @@ const withAuth = (Component) => ()=>{
 // src/pages/user.tsx
 
 const TheOldPage = ()=>{
-  ...
+  // ...
 }
 
 export default withAuth(TheOldPage)
@@ -239,9 +242,9 @@ export default withAuth(TheOldPage)
 
 ```javascript
 [
-  { path: '/', component: './pages/index.tsx' },
-  { path: '/foo/:slug', component: './pages/foo/$slug.tsx' },
-  { path: '/:bar/*', component: './pages/$bar/$.tsx' },
+  { path: '/', component: '@/pages/index.tsx' },
+  { path: '/foo/:slug', component: '@/pages/foo/$slug.tsx' },
+  { path: '/:bar/*', component: '@/pages/$bar/$.tsx' },
 ];
 ```
 
@@ -249,7 +252,7 @@ export default withAuth(TheOldPage)
 
 约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `<Outlet />` 渲染嵌套路由。
 
-比如以下目录结构，
+如以下目录结构：
 
 ```bash
 .
@@ -261,7 +264,7 @@ export default withAuth(TheOldPage)
         └── users.tsx
 ```
 
-会生成路由，
+会生成如下路由：
 
 ```js
 [
@@ -276,7 +279,27 @@ export default withAuth(TheOldPage)
 ]
 ```
 
-一个自定义的全局 `layout` 如下：
+可以通过 `layout: false` 来细粒度关闭某个路由的 **全局布局** 显示，该选项只在一级生效：
+
+```ts
+  routes: [
+    { 
+      path: '/', 
+      component: './index', 
+      // 🟢 
+      layout: false 
+    },
+    {
+      path: '/users',
+      routes: [
+        // 🔴 不生效，此时该路由的 layout 并不是全局布局，而是 `/users`
+        { layout: false }
+      ]
+    }
+  ]
+```
+
+一个自定义的全局 `layout` 格式如下：
 
 ```tsx
 import { Outlet } from 'umi'
@@ -371,7 +394,7 @@ export default () => (
 
 ## 路由组件参数
 
-Umi4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
+Umi 4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
 
 ### match 信息
 
@@ -410,7 +433,7 @@ const location  = useLocation();
 }
 ```
 
-<Message emoji="🚨" >
+<Message emoji="🚨" type="warning">
 推荐使用 `useLocation`, 而不是直接访问 `history.location`. 两者的区别是 `pathname` 的部分。
 `history.location.pathname` 是完整的浏览器的路径名；而 `useLocation` 中返回的 `pathname` 是相对项目配置的`base`的路径。
 

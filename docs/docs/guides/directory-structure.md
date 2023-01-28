@@ -142,8 +142,8 @@ build 时的临时文件目录，比如入口文件、路由等，都会被临�
 
 ```
 [
-  { path: '/', component: './pages/index' },
-  { path: '/users', component: './pages/users' },
+  { path: '/', component: '@/pages/index' },
+  { path: '/users', component: '@/pages/users' },
 ]
 ```
 
