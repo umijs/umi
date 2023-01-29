@@ -22,7 +22,13 @@ export function esbuildExternalPlugin(): Plugin {
         if (args.kind === 'entry-point') {
           return null;
         }
-        if (args.path.startsWith('/') && !args.path.includes('node_modules')) {
+        const isAliasImport =
+          args.path.startsWith('@/') || args.path.startsWith('@@/');
+        const isNodeModuleImport = args.path.includes('node_modules');
+        if (
+          (args.path.startsWith('/') || isAliasImport) &&
+          !isNodeModuleImport
+        ) {
           return null;
         }
         return {

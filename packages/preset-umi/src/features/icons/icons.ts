@@ -1,7 +1,7 @@
+import { logger } from '@umijs/utils';
 import path from 'path';
 import type { IApi, IOnGenerateFiles } from '../../types';
 import { build } from './build';
-import { logger } from '@umijs/utils';
 import { generateIconName, generateSvgr } from './svgr';
 
 export default (api: IApi) => {
@@ -30,6 +30,8 @@ export default (api: IApi) => {
       );
     }
   });
+
+  const EMPTY_ICONS_FILE = `export const __no_icons = true;`;
 
   api.register({
     key: 'onGenerateFiles',
@@ -82,7 +84,7 @@ export default (api: IApi) => {
         }
         api.writeTmpFile({
           path: 'icons.tsx',
-          content: code.join('\n') || `export const __no_icons = true;`,
+          content: code.join('\n') || EMPTY_ICONS_FILE,
         });
       };
       generate().catch((e) => {
@@ -92,7 +94,14 @@ export default (api: IApi) => {
     stage: Infinity,
   });
 
-  api.onGenerateFiles(() => {
+  api.onGenerateFiles(({ isFirstTime }) => {
+    // ensure first time file exist for esbuild resolve
+    if (isFirstTime) {
+      api.writeTmpFile({
+        path: 'icons.tsx',
+        content: EMPTY_ICONS_FILE,
+      });
+    }
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
@@ -103,9 +112,9 @@ import './index.css';
 const alias = ${JSON.stringify(api.config.icons.alias || {})};
 type AliasKeys = keyof typeof alias;
 
-export const Icon = React.forwardRef((props: {
+interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
   icon: AliasKeys | string;
-  hover: AliasKeys | string;
+  hover?: AliasKeys | string;
   className?: string;
   viewBox?: string;
   width?: string;
@@ -114,7 +123,9 @@ export const Icon = React.forwardRef((props: {
   spin?: boolean;
   rotate?: number | string;
   flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
-}, ref) => {
+}
+
+export const Icon = React.forwardRef((props: IUmiIconProps, ref) => {
   const { icon, hover, style, className, rotate, flip, ...extraProps } = props;
   const iconName = normalizeIconName(alias[icon] || icon);
   const Component = iconsMap[iconName];
