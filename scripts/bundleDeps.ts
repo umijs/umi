@@ -141,7 +141,6 @@ Object.keys(exported).forEach(function (key) {
           'await detectPolyfills(`Promise.resolve(); Promise.all();`',
           'await (()=>{})(`Promise.resolve(); Promise.all();`',
         );
-        console.log('22', code);
       }
 
       if (
