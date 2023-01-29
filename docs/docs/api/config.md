@@ -1,6 +1,28 @@
 # 配置
 
-为方便查找，以下配置项通过字母排序。
+对于 umi 中能使用的自定义配置，你可以使用项目根目录的 `.umirc.ts` 文件或者 `config/config.ts`，值得注意的是这两个文件功能一致，仅仅是存在目录不同，2 选 1 ，`.umirc.ts` 文件优先级较高。
+
+> 更多目录相关信息介绍，你可以在[目录结构](../guides/directory-structure)了解。
+
+umi 的配置文件是一个正常的 node 模块，它在执行 umi [命令行](./commands)的时候使用，并且不包含在浏览器端构建中。
+
+> 关于浏览器端构建需要用到的一些配置，还有一些在样式表现上产生作用的一些配置，在 umi 中被统一称为“运行时配置”，你可以在[运行时配置](./runtime-config)看到更多关于它的说明。
+
+这里有一个最简单的 umi 配置文件的范例：
+
+```ts
+import { defineConfig } from 'umi';
+
+export default defineConfig({
+  outputPath: 'dist',
+});
+```
+
+使用 `defineConfig` 包裹配置是为了在书写配置文件的时候，能得到更好的拼写联想支持。如果你不需要，直接 `export default {}` 也可以。
+
+值得关注的是在你使用 umi 的时候，你不需要了解每一个配置的作用。你可以大致的浏览一下以下 umi 支持的所有配置，然后在你需要的时候，再回来查看如何启用和修改你需要的内容。
+
+> 为方便查找，以下配置项通过字母排序。
 
 ## alias
 
@@ -64,7 +86,9 @@
 - 类型：`object`
 - 默认值：`{ flexbox: 'no-2009' }`
 
-设置 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
+用于解析 CSS 并使用来自 Can I Use 的值将供应商前缀添加到 CSS 规则。如自动给 CSS 添加 `-webkit-` 前缀。
+
+更多配置，请查阅 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
 
 ## analyze
 
@@ -80,16 +104,18 @@
 - 类型：`string`
 - 默认值：`/`
 
-设置路由 base，部署项目到非根目录下时使用。
+要在非根目录下部署 umi 项目时，你可以使用 base 配置。
 
-比如有路由 `/` 和 `/users`，设置 base 为 `/foo/` 后就可通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
+base 配置允许你为应用程序设置路由前缀。比如有路由 `/` 和 `/users`，设置 base 为 `/foo/` 后就可通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
+
+> 注意：base 配置必须在构建时设置，并且不能在不重新构建的情况下更改，因为该值内联在客户端包中。
 
 ## cacheDirectoryPath
 
 - 类型：`string`
 - 默认值：`node_modules/.cache`
 
-支持配置 cache directory。
+默认情况下 umi 会将构建中的一些缓存文件存放在 `node_modules/.cache` 目录下，比如 logger 日志，webpack 缓存，mfsu 缓存等。你可以通过使用 `cacheDirectoryPath` 配置来修改 umi 的缓存文件目录。
 
 示例，
 
@@ -103,14 +129,24 @@ cacheDirectoryPath: 'node_modules/.cache1',
 - 类型：`(memo, args) => void`
 - 默认值：`null`
 
-用链式编程的方式修改 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
+为了扩展 umi 内置的 webpack 配置，我们提供了用链式编程的方式修改 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
 
-参数中，
+如下所示：
+
+```js
+export default {
+  chainWebpack(memo, args) {
+    return memo;
+  },
+};
+```
+
+该函数具有两个参数：
 
 - `memo` 是现有 webpack 配置
 - `args` 包含一些额外信息和辅助对象，目前有 `env` 和 `webpack`。`env` 为当前环境，值为 `development` 或 `production`；`webpack` 为 webpack 对象，可从中获取 webpack 内置插件等
 
-示例，
+用法示例：
 
 ```js
 export default {
@@ -202,9 +238,19 @@ granularChunks 在 bigVendors 和 depPerChunk 之间取了中间值，同时又�
 - 类型：`{ base: string; exclude: RegExp[] }`
 - 默认值：`null`
 
-约定式路由相关配置。
+仅在使用 umi 约定式路由时有效，约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
 
-其中 `base` 用于设置读取路由的基础路径，比如文档站点可能会需要将其改成 `./docs`；`exclude` 用于过滤一些不需要的文件，比如用于过滤 components、models 等。
+使用约定式路由时，约定 `src/pages` 下所有的 `(j|t)sx?` 文件即路由。
+
+> 你可以从[约定式路由](../guides/routes#约定式路由)查看更多说明。
+
+### base
+
+`base` 用于设置约定的路由的基础路径，默认从 `src/pages` 读取，如果是文档站点可能会需要将其改成 `./docs`；
+
+### exclude
+
+你可以使用 `exclude` 配置过滤一些不需要的文件，比如用于过滤 components、models 等。
 
 示例，
 
@@ -1112,7 +1158,7 @@ proxy: {
 - 类型：`Route[]`
 - 默认值：`[]`
 
-配置路由。
+配置路由。更多信息，请查看 [配置路由](../guides/routes#配置路由)
 
 ## run
 

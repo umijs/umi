@@ -2,7 +2,7 @@
 
 Umi 默认开启 TypeScript，如果使用官方脚手架创建项目，内置的文件就是使用 Typescript。
 
-如果想要使用 Javascript 进行开发，可以直接将项目中用到的 `.ts` 和 `.tsx` 文件改为 `.js` 文件，并使用 Javascript 语法进行开发。
+如果想要使用 Javascript 进行开发，可以直接将项目中用到的 `.(ts|tsx)` 文件改为 `.(js|jsx)` 文件，并使用 Javascript 语法进行开发。
 
 ## 配置中的 Typescript 提示
 
@@ -15,7 +15,7 @@ import { defineConfig } from 'umi';
 
 export default defineConfig({
   routes: [
-    { path: '/', component: './pages/index' },
+    { path: '/', component: '@/pages/index' },
   ],
 });
 ```

@@ -9,7 +9,7 @@ import { Message } from 'umi';
 ### 创建 Model
 
 数据流管理插件采用约定式目录结构，我们约定可以在 `src/models`, `src/pages/xxxx/models/`目录中，和 `src/pages/xxxx/model.{js,jsx,ts,tsx}` 文件引入 Model 文件。
-Model 文件允许使用 `.js`，`.jsx`，`.ts` 和 `.tsx` 四种后缀格式，**命名空间（namespace）** 生成规则如下。
+Model 文件允许使用 `.(tsx|ts|jsx|js)` 四种后缀格式，**命名空间（namespace）** 生成规则如下。
 
 | 路径 | 命名空间 | 说明 |
 | :--- |:--- | :--- |

@@ -1,6 +1,6 @@
 import { Message } from 'umi';
 
-# 开发一个 Blog
+# 使用 Umi 开发一个 Blog
 
 这篇文章将带领你使用 Umi.js 搭配 [PlanetScale](https://planetscale.com/)
 , [Prisma](https://www.prisma.io/) 和 [Tailwindcss](https://tailwindcss.com/)
