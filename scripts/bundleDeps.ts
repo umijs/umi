@@ -133,6 +133,17 @@ Object.keys(exported).forEach(function (key) {
       ) {
         code = code.replace(/require\("node:/g, 'require("');
       }
+
+      // in production, we have the global all `core-js` polyfill (feature/polyfill.ts)
+      // don't need the polyfill added by vite
+      if (opts.pkgName === '@vitejs/plugin-legacy') {
+        code = code.replace(
+          'await detectPolyfills(`Promise.resolve(); Promise.all();`',
+          'await (()=>{})(`Promise.resolve(); Promise.all();`',
+        );
+        console.log('22', code);
+      }
+
       if (
         code.includes('"node:') &&
         opts.pkgName && // skip local file bundle like babel/bundle.js

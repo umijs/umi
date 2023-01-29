@@ -29,7 +29,6 @@
     "@umijs/bundler-utils": "4.0.47",
     "@umijs/utils": "4.0.47",
     "@vitejs/plugin-react": "3.0.1",
-    "core-js": "^3.27.2",
     "less": "4.1.3",
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.9.0",

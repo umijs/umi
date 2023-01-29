@@ -1280,7 +1280,6 @@ importers:
       '@vitejs/plugin-legacy': 3.0.2
       '@vitejs/plugin-react': 3.0.1
       caniuse-lite: 1.0.30001441
-      core-js: ^3.27.2
       less: 4.1.3
       postcss-preset-env: 7.5.0
       rollup: 3.7.0
@@ -1292,7 +1291,6 @@ importers:
       '@umijs/bundler-utils': link:../bundler-utils
       '@umijs/utils': link:../utils
       '@vitejs/plugin-react': 3.0.1_vite@4.0.4
-      core-js: 3.27.2
       less: 4.1.3
       postcss-preset-env: 7.5.0
       rollup-plugin-visualizer: 5.9.0_rollup@3.7.0
@@ -17614,6 +17612,7 @@ packages:
   /core-js/3.27.2:
     resolution: {integrity: sha512-9ashVQskuh5AZEZ1JdQWp1GqSoC1e1G87MzRqg2gIfVAQ7Qn9K+uFj8EcniUFA4P2NLZfV+TOlX1SzoKfo+s7w==}
     requiresBuild: true
+    dev: true
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
