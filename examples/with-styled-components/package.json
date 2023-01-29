@@ -7,10 +7,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "styled-components": "^5.3.6",
+    "@umijs/plugins": "4.0.47",
     "umi": "4.0.47"
-  },
-  "devDependencies": {
-    "@types/styled-components": "^5.1.25"
   }
 }
