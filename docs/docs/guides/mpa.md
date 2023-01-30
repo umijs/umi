@@ -24,8 +24,8 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
 配置项：
 
  - `template` : 产物 HTML 模板，如 `template/index.html` 将使用项目根目录开始寻找，对应路径的 `index.html` 作为产物 HTML 模板。 
- - `getConfigFromEntryFile` : 打开从每个页面的入口文件（`src/*/index.tsx`）中读取页面独立配置。
- - `layout` : 全局默认 layout ，也可以在每个入口文件配置自己的 layout 。
+ - `getConfigFromEntryFile` : 从每个页面的入口文件（`src/*/index.tsx`）中读取页面独立配置。
+ - `layout` : 全局默认 layout 。
  - `entry` : 每个入口文件的配置，如 `{ foo: { title: '...' } }` 可以配置 `src/foo/index.tsx` 页面的 `title` 属性。
 
 ## 约定的入口文件
@@ -70,7 +70,7 @@ MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 
 ```json
 {
   "layout": "@/layouts/bar.ts",
-	"title": "foooooo"
+  "title": "foooooo"
 }
 ```
 
@@ -91,10 +91,9 @@ Umi 还试验性地支持另一种配置读取方式，通过配置 `mpa: { getC
 
 ```ts
 // src/pages/foo/index.tsx
-
 export const config = {
   layout: '@/layouts/bar.ts',
-	title: 'foooooo',
+  title: 'foooooo',
 }
 ```
 
