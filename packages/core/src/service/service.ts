@@ -437,7 +437,6 @@ export class Service {
   }
 
   _profilePlugins() {
-    // TODO: prettier
     if (this.args.profilePlugins) {
       console.log();
       Object.keys(this.plugins)
