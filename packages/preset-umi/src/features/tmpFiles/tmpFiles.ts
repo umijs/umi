@@ -403,6 +403,13 @@ export default function EmptyRoute() {
           path: winPath(plugin),
         })),
         validKeys,
+        // use `es-module-lexer` parse results fields should use the named exported
+        shouldNamedExportKeys: [
+          // plugins/src/initial-state.ts : api.appData.appJS?.exports.includes('getInitialState')
+          'getInitialState',
+          // plugins/src/qiankun/master.ts : exports.includes(MODEL_EXPORT_NAME)
+          'useQiankunStateForSlave',
+        ],
       },
     });
 
@@ -626,9 +633,13 @@ export default function EmptyRoute() {
           runtimeConfigType,
         },
       });
-      exports.push(`export { defineApp } from './core/defineApp'`);
-      // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
-      exports.push(`export type {  RuntimeConfig } from './core/defineApp'`);
+      // FIXME: if exported after plugins, circular dependency will occur
+      //  app.ts -> exports.ts -> plugin -> core/plugin.ts -> app.ts
+      exports.unshift(
+        `export { defineApp } from './core/defineApp'`,
+        // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
+        `export type { RuntimeConfig } from './core/defineApp'`,
+      );
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',
