@@ -171,7 +171,7 @@
       "majorVersion": 4
     },
     {
-      "text": "全局路由用 layout ，多层路由用 wrappers ，从文档了解更多路由的控制方法",
+      "text": "全局布局用 layout ，多层布局用 wrappers ，从文档了解更多路由的控制方法",
       "url": "https://umijs.org/docs/guides/routes",
       "majorVersion": 4
     },
