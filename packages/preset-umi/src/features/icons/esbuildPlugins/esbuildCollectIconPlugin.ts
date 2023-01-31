@@ -1,4 +1,4 @@
-import type { Plugin, Loader } from '@umijs/bundler-utils/compiled/esbuild';
+import type { Loader, Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import fs from 'fs';
 import { extractIcons } from '../extract';
 

@@ -33,6 +33,12 @@ test('icon + hover with same icon', () => {
   expect(extractIcons(`<Icon icon="bar" hover="bar" />`)).toEqual(['bar']);
 });
 
+test('icon in jsx props', () => {
+  expect(extractIcons(`<Button icon={<Icon icon="bar" />}></Button>`)).toEqual([
+    'bar',
+  ]);
+});
+
 xtest('only the first icon attribute is valid', () => {
   expect(extractIcons(`<Icon icon="foo" icon="bar" />`)).toEqual(['foo']);
 });
