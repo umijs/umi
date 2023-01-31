@@ -1,6 +1,5 @@
-import { transform } from '@umijs/bundler-utils/compiled/babel/core';
 import { DEFAULT_BROWSER_TARGETS } from '@umijs/bundler-webpack/dist/constants';
-import { getCorejsVersion, winPath } from '@umijs/utils';
+import { getCorejsVersion, importLazy, winPath } from '@umijs/utils';
 import { dirname, join } from 'path';
 import { IApi } from '../../types';
 
@@ -25,6 +24,11 @@ export default (api: IApi) => {
           .map((item: string) => `import '${item}';`)
           .join('\n')
       : `import 'core-js';`;
+    const {
+      transform,
+    }: typeof import('@umijs/bundler-utils/compiled/babel/core') = importLazy(
+      require.resolve('@umijs/bundler-utils/compiled/babel/core'),
+    );
     const { code } = transform(
       `
 ${coreJsImports}
