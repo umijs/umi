@@ -1,5 +1,5 @@
 import { init } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import { fsExtra, lodash, Mustache } from '@umijs/utils';
+import { fsExtra, importLazy, lodash, Mustache } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
@@ -120,7 +120,9 @@ export default (api: IApi) => {
 
       // transform imports for all javascript-like files only vite mode enable
       if (api.appData.vite && isJsFile) {
-        const transformIEAR = require('./utils/transformIEAR');
+        const transformIEAR = importLazy(
+          require.resolve('./utils/transformIEAR'),
+        );
         content = transformIEAR({ content, path: absPath }, api);
       }
 

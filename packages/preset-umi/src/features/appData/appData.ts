@@ -123,7 +123,7 @@ export default (api: IApi) => {
     for (const path of expandJSPaths(join(api.paths.absSrcPath, 'app'))) {
       if (existsSync(path)) {
         const { parseModule }: typeof import('@umijs/bundler-utils') =
-          importLazy('@umijs/bundler-utils');
+          importLazy(require.resolve('@umijs/bundler-utils'));
         const [_, exports] = await parseModule({
           path,
           content: readFileSync(path, 'utf-8'),
