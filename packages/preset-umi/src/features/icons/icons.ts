@@ -1,8 +1,6 @@
 import { logger } from '@umijs/utils';
 import path from 'path';
 import type { IApi, IOnGenerateFiles } from '../../types';
-import { build } from './build';
-import { generateIconName, generateSvgr } from './svgr';
 
 export default (api: IApi) => {
   api.describe({
@@ -39,6 +37,7 @@ export default (api: IApi) => {
       if (!isFirstTime) return;
       const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
       const iconsSet: Set<string> = new Set();
+      const { build } = await import('./build.js');
       const icons = await build({
         entryPoints: [entryFile],
         // TODO: unwatch when process exit
@@ -63,6 +62,7 @@ export default (api: IApi) => {
           `[icons] generate icons.tsx with ${Array.from(icons).join(', ')}`,
         );
         const code: string[] = [];
+        const { generateIconName, generateSvgr } = await import('./svgr.js');
         for (const iconStr of icons) {
           const [collect, icon] = iconStr.split(':');
           const iconName = generateIconName({ collect, icon });

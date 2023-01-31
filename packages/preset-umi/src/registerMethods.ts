@@ -5,7 +5,6 @@ import { existsSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi } from './types';
 import { isTypeScriptFile } from './utils/isTypeScriptFile';
-import transformIEAR from './utils/transformIEAR';
 
 export default (api: IApi) => {
   [
@@ -121,18 +120,19 @@ export default (api: IApi) => {
 
       // transform imports for all javascript-like files only vite mode enable
       if (api.appData.vite && isJsFile) {
+        const transformIEAR = require('./utils/transformIEAR');
         content = transformIEAR({ content, path: absPath }, api);
       }
 
       if (!existsSync(absPath)) {
-        writeFileSync(absPath, content, 'utf-8');
+        writeFileSync(absPath, content!, 'utf-8');
       } else {
         const fileContent = readFileSync(absPath, 'utf-8');
 
         if (fileContent.startsWith('// debug') || fileContent === content) {
           return;
         } else {
-          writeFileSync(absPath, content, 'utf-8');
+          writeFileSync(absPath, content!, 'utf-8');
         }
       }
     },
