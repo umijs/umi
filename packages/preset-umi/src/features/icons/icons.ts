@@ -59,7 +59,9 @@ export default (api: IApi) => {
       });
       // TODO: add debounce
       const generate = async () => {
-        logger.info(`[icons] generate icons.tsx`);
+        logger.info(
+          `[icons] generate icons.tsx with ${Array.from(icons).join(', ')}`,
+        );
         const code: string[] = [];
         for (const iconStr of icons) {
           const [collect, icon] = iconStr.split(':');
