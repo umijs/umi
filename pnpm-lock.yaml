@@ -1797,7 +1797,7 @@ importers:
       '@umijs/test': 4.0.47
       '@umijs/utils': 4.0.47
       prettier-plugin-organize-imports: ^3.2.1
-      prettier-plugin-packagejson: ^2.3.0
+      prettier-plugin-packagejson: 2.3.0
     dependencies:
       '@babel/runtime': 7.20.7
       '@umijs/bundler-utils': link:../bundler-utils
@@ -24011,7 +24011,7 @@ packages:
       pretty-format: 29.3.1
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
+      ts-node: 10.9.1_typescript@4.9.4
     transitivePeerDependencies:
       - supports-color
     dev: true
