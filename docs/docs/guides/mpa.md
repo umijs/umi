@@ -120,7 +120,7 @@ export default () => <div>Hello</div>;
 默认启用 React 18，如果需要 React 17 的渲染方式，请在项目中安装 react 17 的依赖，框架会自动适配 react 版本。
 
 ```bash
-pnpm i react@17 react-dom@17
+$ pnpm i react@17 react-dom@17
 ```
 
 ## 模板
@@ -139,4 +139,4 @@ pnpm i react@17 react-dom@17
 </html>
 ```
 
-你也可以通过 `` ，请确保包含 `<%= title %>` 和 `<%= mountElementId %>`。
+通过 `template` 配置自定义全局 HTML 模板 ，也可以进行页面级配置定义不同页面使用不同的模板，请确保变量至少包含 `<%= title %>` 和 `<%= mountElementId %>`。
