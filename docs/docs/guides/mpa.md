@@ -12,14 +12,21 @@ mpa 为内置功能，通过配置即可开启。
 export default {
   mpa: {
     template: string,
-    configFromEntryFile: Boolean,
+    getConfigFromEntryFile: boolean,
     layout: string,
-    entry: {},
+    entry: object,
   },
 }
 ```
 
-配置项中。`template` 表示默认模板；`configFromEntryFile` 表示从入口文件中读取页面配置，详见下方介绍；`layout` 表示全局 layout，允许在每个入口文件的配置中对此进行覆盖；`entry` 可以全局配置入口文件的属性。
+MPA 的目录结构是 `src/pages/${dir}/index.tsx` ，每个文件夹 `${dir}` 会生成一个页面，文件夹内的 `index.tsx` 为页面的入口文件，示例见 [examples/mpa](https://github.com/umijs/umi/tree/master/examples/mpa) 。
+
+配置项：
+
+ - `template` : 产物 HTML 模板，如 `template/index.html` 将使用项目根目录开始寻找，对应路径的 `index.html` 作为产物 HTML 模板。 
+ - `getConfigFromEntryFile` : 从每个页面的入口文件（`src/*/index.tsx`）中读取页面独立配置。
+ - `layout` : 全局默认 layout 。
+ - `entry` : 每个入口文件的配置，如 `{ foo: { title: '...' } }` 可以配置 `src/foo/index.tsx` 页面的 `title` 属性。
 
 ## 约定的入口文件
 
@@ -34,50 +41,79 @@ export default {
   - hoo.tsx
 ```
 
-那么，入口 entry 为 `["foo/index.tsx", "bar/index.tsx"]`。
+那么，`entry` 结构为：
 
-构建之后，会同时为每个入口文件生成相应的 HTML 文件。
+```ts
+{
+  foo: 'src/pages/foo/index.tsx',
+  bar: 'src/pages/bar/index.tsx'
+}
+```
 
-## 入口文件配置
+构建之后，会同时为每个入口文件生成相应的 HTML 文件，此时产物为 `foo.html` 和 `bar.html` 。
 
-约定通过入口文件同层级的 `config.json` 声明配置。
+### 页面级配置
 
-比如 `foo/config.json` 中，
+### config.json
+
+约定通过入口文件同层级的 `config.json` 声明配置，比如如下目录结构：
+
+```
++ src/pages
+  + foo
+    - index.tsx
+    - config.json
+```
+
+`foo/config.json` 配置了该页面的独立 `layout` 布局和 `title` 标题：
 
 ```json
 {
   "layout": "@/layouts/bar.ts",
-	"title": "foooooo"
+  "title": "foooooo"
 }
 ```
 
-目前支持的配置项包括，
+目前默认支持的配置项包括：
 
-* **template**，模板路径，可参考 [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 的相关配置
-* **layout**，页面布局，建议以 `@/` 开头引用 src 目录下的文件
-* **title**，页面标题，默认是 entry 所在的目录名
-* **mountElementId**，页面渲染 id，默认是 `root`
+* **template**：模板路径，可参考 [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 的模板写法，通过 lodash template 语法使用变量。
+* **layout**：页面布局，建议以 `@/` 开头引用 src 目录下的文件。
+* **title**：页面标题，默认是入口文件所在的目录名。
+* **mountElementId**：页面渲染时，挂载到节点的 id，默认是 `root` 。
 
-### configFromEntryFile
+### getConfigFromEntryFile
 
-Umi 还试验性地支持另一种配置读取方式，通过配置 `mpa: { configFromEntryFile: true }` 开启。
+Umi 还试验性地支持另一种配置读取方式，通过配置 `mpa: { getConfigFromEntryFile: true }` 开启。
 
-此时，会约定入口文件中通过 `export const config` 进行配置。
+此时，你可以不使用 `config.json` ，而是在入口文件中通过 `export const config` 导出该页面的配置。
 
-比如 `foo/index.tsx` 中，
+比如：
 
 ```ts
+// src/pages/foo/index.tsx
 export const config = {
   layout: '@/layouts/bar.ts',
-	title: 'foooooo',
+  title: 'foooooo',
 }
+```
+
+### entry
+
+在 `.umirc.ts` 中也可以配置每个页面：
+
+```ts
+  mpa: {
+    entry: {
+      foo: { title: 'foo title' }
+    }
+  }
 ```
 
 ## 渲染
 
-默认渲染方式为 react，入口文件只需导出 react 组件，即可进行渲染，无需自行写 ReactDOM.render 逻辑。
+默认渲染方式为 react，入口文件只需导出 react 组件，即可进行渲染，无需自行写 `ReactDOM.render` 逻辑。
 
-```js
+```tsx
 export default () => <div>Hello</div>;
 ```
 
@@ -89,16 +125,18 @@ $ pnpm i react@17 react-dom@17
 
 ## 模板
 
-默认模板如下，
+默认模板如下：
 
 ```html
 <!DOCTYPE html>
 <html>
-<head><title><%= title %></title></head>
-<body>
-<div id="<%= mountElementId %>"></div>
-</body>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <div id="<%= mountElementId %>"></div>
+  </body>
 </html>
 ```
 
-如果自定义模板，请确保包含 `<%= title %>` 和 `<%= mountElementId %>`。
+通过 `template` 配置自定义全局 HTML 模板 ，也可以进行页面级配置定义不同页面使用不同的模板，请确保变量至少包含 `<%= title %>` 和 `<%= mountElementId %>`。
