@@ -1,12 +1,18 @@
 // @ts-ignore
 import data from '../package.json';
 
+enum EFramework {
+  umi = 'umi',
+  max = '@umijs/max',
+  bigfish = '@alipay/bigfish',
+}
+
 export default (api: any) => {
   api.onStart(() => {
     const isUmi3 = !!api.utils;
     let logger = console;
     let chalk: any;
-    let framework = 'umi';
+    let framework = EFramework.umi;
     let frameworkName = 'Umi';
     let frameworkCliName = 'umi';
     let majorVersion = '3';
@@ -29,7 +35,7 @@ export default (api: any) => {
 
     if (process.env.BIGFISH_INFO) {
       frameworkName = 'Bigfish';
-      framework = '@alipay/bigfish';
+      framework = EFramework.bigfish;
     }
 
     const item = getDidYouKnow(data.didYouKnow, framework, majorVersion);
@@ -47,7 +53,7 @@ export default (api: any) => {
 
   function getDidYouKnow(
     items: ITip[] = [],
-    framework: string,
+    framework: Framework,
     majorVersion: string,
   ) {
     // 1、get matched
@@ -66,9 +72,11 @@ export default (api: any) => {
   }
 };
 
+type Framework = `${EFramework}`;
+
 interface ITip {
   text: string;
   url?: string;
   majorVersion?: number;
-  framework?: string[];
+  framework?: Framework[];
 }

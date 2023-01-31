@@ -163,7 +163,11 @@
     {
       "text": "@umijs/max 和 umi 如何选择？max 内置了很多好用的插件，即开即用，而 umi 也可以手动配置插件，独立使用",
       "url": "https://umijs.org/docs/guides/use-plugins",
-      "majorVersion": 4
+      "majorVersion": 4,
+      "framework": [
+        "umi",
+        "@umijs/max"
+      ]
     },
     {
       "text": "遇到难解的配置问题，试试从 Umi FAQ 中寻找答案",
