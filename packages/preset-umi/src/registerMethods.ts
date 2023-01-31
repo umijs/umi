@@ -120,7 +120,7 @@ export default (api: IApi) => {
 
       // transform imports for all javascript-like files only vite mode enable
       if (api.appData.vite && isJsFile) {
-        const transformIEAR = importLazy(
+        const { default: transformIEAR } = importLazy(
           require.resolve('./utils/transformIEAR'),
         );
         content = transformIEAR({ content, path: absPath }, api);
