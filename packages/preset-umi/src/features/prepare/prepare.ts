@@ -1,3 +1,4 @@
+import { logger } from '@umijs/utils';
 import path from 'path';
 import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
@@ -7,6 +8,7 @@ export default (api: IApi) => {
     key: 'onGenerateFiles',
     async fn({ isFirstTime }: IOnGenerateFiles) {
       if (!isFirstTime) return;
+      logger.info('Prepare...');
       const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
       const { build } = await import('./build.js');
       const watch = api.name === 'dev';
@@ -17,11 +19,12 @@ export default (api: IApi) => {
       const buildResult = await build({
         entryPoints: [entryFile],
         watch: watch && {
-          onRebuildSuccess() {
+          onRebuildSuccess({ result }) {
             api.applyPlugins({
               key: 'onPrepareBuildSuccess',
               args: {
                 isWatch: true,
+                result,
               },
             });
           },

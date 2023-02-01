@@ -1,6 +1,7 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import enhancedResolve from 'enhanced-resolve';
-import { existsSync, statSync } from 'fs';
+import fs from 'fs';
+import path from 'path';
 
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'],
@@ -41,7 +42,7 @@ export function esbuildAliasPlugin(opts: {
       sortByAffix({ keys: Object.keys(opts.alias), affix: '$' })
         .filter((key) => {
           return (
-            opts.alias[key].startsWith('/') &&
+            path.isAbsolute(opts.alias[key]) &&
             !opts.alias[key].includes('node_modules')
           );
         })
@@ -63,8 +64,8 @@ export function esbuildAliasPlugin(opts: {
 
           if (
             !key.endsWith('/') &&
-            existsSync(value) &&
-            statSync(value).isDirectory()
+            fs.existsSync(value) &&
+            fs.statSync(value).isDirectory()
           ) {
             const filter = new RegExp(`^${addSlashAffix(key)}`);
             build.onResolve({ filter }, async (args) => {

@@ -1,6 +1,9 @@
 // sort-object-keys
 import type { ImportDeclaration } from '@umijs/bundler-utils/compiled/@babel/types';
-import type { Plugin as ESBuildPlugin } from '@umijs/bundler-utils/compiled/esbuild';
+import type {
+  BuildResult as ESBuildBuildResult,
+  Plugin as ESBuildPlugin,
+} from '@umijs/bundler-utils/compiled/esbuild';
 import type { Express, RequestHandler, webpack } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type { IConfig } from '@umijs/bundler-webpack/dist/types';
@@ -195,6 +198,7 @@ export type IApi = PluginAPI &
     }>;
     onPrepareBuildSuccess: IEvent<{
       isWatch: boolean;
+      result: ESBuildBuildResult;
     }>;
     restartServer: () => void;
     writeTmpFile: (opts: {

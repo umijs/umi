@@ -8,7 +8,7 @@ export async function build(opts: {
   entryPoints: string[];
   watch?:
     | {
-        onRebuildSuccess(): void;
+        onRebuildSuccess({ result }: { result: esbuild.BuildResult }): void;
       }
     | false;
   config?: { alias?: any };
@@ -25,12 +25,12 @@ export async function build(opts: {
       '.tsx': 'tsx',
     },
     watch: !!opts.watch && {
-      onRebuild(err) {
+      onRebuild(err, result) {
         if (err) {
           logger.error(`[icons] build failed: ${err}`);
         } else {
           if (opts.watch) {
-            opts.watch.onRebuildSuccess();
+            opts.watch.onRebuildSuccess({ result: result! });
           }
         }
       },

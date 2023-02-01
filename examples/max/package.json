@@ -11,6 +11,7 @@
     "e2e:dev:local": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status e2e:open",
     "e2e:open": "cypress open",
     "preview": "max preview --port 9527",
+    "setup": "max setup",
     "start": "npm run dev"
   },
   "dependencies": {

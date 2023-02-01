@@ -1,4 +1,6 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
+import { winPath } from '@umijs/utils';
+import path from 'path';
 
 export function esbuildExternalPlugin(): Plugin {
   return {
@@ -24,8 +26,8 @@ export function esbuildExternalPlugin(): Plugin {
           return null;
         }
 
-        const isAliasImport =
-          args.path.startsWith('@/') || args.path.startsWith('@@/');
+        const winP = winPath(args.path);
+        const isAliasImport = winP.startsWith('@/') || winP.startsWith('@@/');
         if (isAliasImport) {
           return null;
         }
@@ -35,7 +37,7 @@ export function esbuildExternalPlugin(): Plugin {
         // /abc > none external
         // /xxx/node_modules/xxx > external
         const isNodeModuleImport = args.path.includes('node_modules');
-        if (args.path.startsWith('/') && !isNodeModuleImport) {
+        if (path.isAbsolute(args.path) && !isNodeModuleImport) {
           return null;
         }
 
