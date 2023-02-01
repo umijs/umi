@@ -304,7 +304,7 @@ async function checkIndependentPackageChanged(opts: {
       path.relative(PATHS.ROOT, pkgDirPath),
     )} since ${chalk.bold.blue(latestTag)}.
 Check published package and update version if necessary.
-Continue? `,
+Continue? (n/y) `,
   );
   if (answer.toLowerCase() !== 'y') {
     console.log(chalk.red(`> Cancelled, please check version and publish.`));
