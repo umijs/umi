@@ -23,7 +23,7 @@ export async function build(opts: {
       // since only ts support decorator
       '.js': 'tsx',
       '.jsx': 'tsx',
-      '.ts': 'tsx',
+      '.ts': 'ts',
       '.tsx': 'tsx',
     },
     watch: !!opts.watch && {
