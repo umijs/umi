@@ -40,7 +40,7 @@ export default (api: IApi) => {
         }
       }
     }
-    let hasPhantomDeps = false;
+    const phantomDeps = [];
     for (const [source, files] of importsBySource) {
       if (source.startsWith('.')) continue;
       if (source.startsWith('/')) continue;
@@ -56,6 +56,7 @@ export default (api: IApi) => {
       if (matchAlias(source, api.config.alias || {})) continue;
       if (matchExternals(source, api.config.externals || {})) continue;
 
+      phantomDeps.push(source);
       logger.error(
         `[phantomDependency] ${chalk.red(
           `${source} is a phantom dependency, please specify it in package.json.`,
@@ -65,8 +66,12 @@ export default (api: IApi) => {
         logger.error(`[phantomDependency] ${file.file} imports ${source}`);
       }
     }
-    if (hasPhantomDeps && api.name !== 'dev') {
-      process.exit(1);
+    if (phantomDeps.length && api.name !== 'dev') {
+      throw new Error(
+        `[phantomDependency] has phantom dependencies ${phantomDeps.join(
+          ', ',
+        )}, exit.`,
+      );
     }
   });
 
