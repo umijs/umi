@@ -34,7 +34,7 @@ export function esbuildAliasPlugin(opts: {
   alias: Record<string, string>;
 }): Plugin {
   return {
-    name: 'esbuildExternalPlugin',
+    name: 'esbuildAliasPlugin',
     setup(build) {
       // only absolute alias should be resolved
       // node deps alias should be filtered, and mark as externals with other plugins
@@ -49,8 +49,8 @@ export function esbuildAliasPlugin(opts: {
           const value = opts.alias[key];
 
           const filter = key.endsWith('$')
-            ? new RegExp(key)
-            : new RegExp(`${key}$`);
+            ? new RegExp(`^${key}`)
+            : new RegExp(`^${key}$`);
           build.onResolve({ filter }, async (args) => {
             const path = await resolve(
               args.importer,

@@ -19,18 +19,26 @@ export function esbuildExternalPlugin(): Plugin {
         if (args.path.startsWith('.')) {
           return null;
         }
+
         if (args.kind === 'entry-point') {
           return null;
         }
+
         const isAliasImport =
           args.path.startsWith('@/') || args.path.startsWith('@@/');
-        const isNodeModuleImport = args.path.includes('node_modules');
-        if (
-          (args.path.startsWith('/') || isAliasImport) &&
-          !isNodeModuleImport
-        ) {
+        if (isAliasImport) {
           return null;
         }
+
+        // 不在 node_modules 里的，并且以 / 开头的，不走 external
+        // e.g.
+        // /abc > none external
+        // /xxx/node_modules/xxx > external
+        const isNodeModuleImport = args.path.includes('node_modules');
+        if (args.path.startsWith('/') && !isNodeModuleImport) {
+          return null;
+        }
+
         return {
           external: true,
         };
