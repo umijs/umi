@@ -1,6 +1,6 @@
-import { logger } from '@umijs/utils';
+import { importLazy, logger } from '@umijs/utils';
 import path from 'path';
-import type { IApi, IOnGenerateFiles } from '../../types';
+import type { IApi } from '../../types';
 
 export default (api: IApi) => {
   api.describe({
@@ -31,69 +31,52 @@ export default (api: IApi) => {
 
   const EMPTY_ICONS_FILE = `export const __no_icons = true;`;
 
-  api.register({
-    key: 'onGenerateFiles',
-    async fn({ isFirstTime }: IOnGenerateFiles) {
-      if (!isFirstTime) return;
-      const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
-      const iconsSet: Set<string> = new Set();
-      const { build } = await import('./build.js');
-      const icons = await build({
-        entryPoints: [entryFile],
-        // TODO: unwatch when process exit
-        watch: api.name === 'dev' && {
-          onRebuildSuccess() {
-            generate().catch((e) => {
-              logger.error(e);
-            });
-          },
-        },
-        icons: iconsSet,
-        config: {
-          alias: api.config.alias,
-        },
-        options: {
-          alias: api.config.icons.alias,
-        },
+  const icons: Set<string> = new Set();
+  api.addPrepareBuildPlugins(() => {
+    const { esbuildIconPlugin }: typeof import('./esbuildIconPlugin') =
+      importLazy(require.resolve('./esbuildIconPlugin'));
+    return [
+      esbuildIconPlugin({
+        icons,
+        alias: api.config.icons.alias || {},
+      }),
+    ];
+  });
+
+  api.onPrepareBuildSuccess(async () => {
+    if (!icons.size) {
+      logger.info(`[icons] no icons was found`);
+      return;
+    }
+
+    logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
+    const code: string[] = [];
+    const { generateIconName, generateSvgr } = await import('./svgr.js');
+    for (const iconStr of icons) {
+      const [collect, icon] = iconStr.split(':');
+      const iconName = generateIconName({ collect, icon });
+      const svgr = await generateSvgr({
+        collect,
+        icon,
+        iconifyOptions: { autoInstall: api.config.icons.autoInstall },
+        localIconDir: path.join(api.paths.absSrcPath, 'icons'),
       });
-      // TODO: add debounce
-      const generate = async () => {
-        logger.info(
-          `[icons] generate icons.tsx with ${Array.from(icons).join(', ')}`,
-        );
-        const code: string[] = [];
-        const { generateIconName, generateSvgr } = await import('./svgr.js');
-        for (const iconStr of icons) {
-          const [collect, icon] = iconStr.split(':');
-          const iconName = generateIconName({ collect, icon });
-          const svgr = await generateSvgr({
-            collect,
-            icon,
-            iconifyOptions: { autoInstall: api.config.icons.autoInstall },
-            localIconDir: path.join(api.paths.absSrcPath, 'icons'),
-          });
-          if (svgr) {
-            code.push(svgr!);
-            code.push(`export { ${iconName} };`);
-          } else {
-            if (api.env === 'development') {
-              iconsSet.delete(iconStr);
-              logger.error(`[icons] Icon ${iconStr} not found`);
-            } else {
-              throw new Error(`[icons] Icon ${iconStr} not found`);
-            }
-          }
+      if (svgr) {
+        code.push(svgr!);
+        code.push(`export { ${iconName} };`);
+      } else {
+        if (api.env === 'development') {
+          icons.delete(iconStr);
+          logger.error(`[icons] Icon ${iconStr} not found`);
+        } else {
+          throw new Error(`[icons] Icon ${iconStr} not found`);
         }
-        api.writeTmpFile({
-          path: 'icons.tsx',
-          content: code.join('\n') || EMPTY_ICONS_FILE,
-        });
-      };
-      generate().catch((e) => {
-        logger.error(e);
-      });
-    },
-    stage: Infinity,
+      }
+    }
+    api.writeTmpFile({
+      path: 'icons.tsx',
+      content: code.join('\n') || EMPTY_ICONS_FILE,
+    });
   });
 
   api.onGenerateFiles(({ isFirstTime }) => {

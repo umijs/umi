@@ -1,6 +1,7 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
-import { existsSync, statSync } from 'fs';
 import enhancedResolve from 'enhanced-resolve';
+import fs from 'fs';
+import path from 'path';
 
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'],
@@ -34,14 +35,14 @@ export function esbuildAliasPlugin(opts: {
   alias: Record<string, string>;
 }): Plugin {
   return {
-    name: 'esbuildExternalPlugin',
+    name: 'esbuildAliasPlugin',
     setup(build) {
       // only absolute alias should be resolved
       // node deps alias should be filtered, and mark as externals with other plugins
       sortByAffix({ keys: Object.keys(opts.alias), affix: '$' })
         .filter((key) => {
           return (
-            opts.alias[key].startsWith('/') &&
+            path.isAbsolute(opts.alias[key]) &&
             !opts.alias[key].includes('node_modules')
           );
         })
@@ -49,8 +50,8 @@ export function esbuildAliasPlugin(opts: {
           const value = opts.alias[key];
 
           const filter = key.endsWith('$')
-            ? new RegExp(key)
-            : new RegExp(`${key}$`);
+            ? new RegExp(`^${key}`)
+            : new RegExp(`^${key}$`);
           build.onResolve({ filter }, async (args) => {
             const path = await resolve(
               args.importer,
@@ -63,8 +64,8 @@ export function esbuildAliasPlugin(opts: {
 
           if (
             !key.endsWith('/') &&
-            existsSync(value) &&
-            statSync(value).isDirectory()
+            fs.existsSync(value) &&
+            fs.statSync(value).isDirectory()
           ) {
             const filter = new RegExp(`^${addSlashAffix(key)}`);
             build.onResolve({ filter }, async (args) => {

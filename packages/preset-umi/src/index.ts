@@ -29,6 +29,7 @@ export default () => {
       require.resolve('./features/phantomDependency/phantomDependency'),
       require.resolve('./features/polyfill/polyfill'),
       require.resolve('./features/polyfill/publicPathPolyfill'),
+      require.resolve('./features/prepare/prepare'),
       require.resolve('./features/routePrefetch/routePrefetch'),
       require.resolve('./features/ssr/ssr'),
       require.resolve('./features/terminal/terminal'),
