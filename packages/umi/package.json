@@ -48,7 +48,7 @@
     "@umijs/test": "4.0.47",
     "@umijs/utils": "4.0.47",
     "prettier-plugin-organize-imports": "^3.2.1",
-    "prettier-plugin-packagejson": "^2.3.0"
+    "prettier-plugin-packagejson": "2.3.0"
   },
   "engines": {
     "node": ">=14"
