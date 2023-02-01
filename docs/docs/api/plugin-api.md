@@ -361,6 +361,8 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ### addPolyfillImports
 添加补丁 import，在整个应用的最前面执行。 传入的 fn 不需要参数，返回 `{ source: string, specifier?:string }`
 
+### addPrepareBuildPlugins
+
 ### addRuntimePlugin
 添加运行时插件，传入的 fn 不需要参数，返回 string ，表示插件的路径。
 
@@ -566,6 +568,7 @@ args: {
 ### onPkgJSONChanged
 package.json 变更时。传入的 fn 接收 `{origin?, current}` 作为参数。它们的类型都是 package.json 对象
 
+### onPrepareBuildSuccess
 
 ### onStart
 启动时。传入的 fn 不接收任何参数。

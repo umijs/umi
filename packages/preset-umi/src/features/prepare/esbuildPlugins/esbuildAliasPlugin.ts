@@ -1,6 +1,6 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
-import { existsSync, statSync } from 'fs';
 import enhancedResolve from 'enhanced-resolve';
+import { existsSync, statSync } from 'fs';
 
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'],

@@ -2,7 +2,6 @@ import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
-import { esbuildCollectIconPlugin } from './esbuildPlugins/esbuildCollectIconPlugin';
 import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
 
 export async function build(opts: {
@@ -13,11 +12,9 @@ export async function build(opts: {
       }
     | false;
   config?: { alias?: any };
-  options?: { alias?: Record<string, string> };
-  icons?: Set<string>;
+  plugins?: esbuild.Plugin[];
 }) {
-  const icons: Set<string> = opts.icons || new Set();
-  await esbuild.build({
+  return await esbuild.build({
     format: 'esm',
     platform: 'browser',
     target: 'esnext',
@@ -54,35 +51,7 @@ export async function build(opts: {
       // if we resolve externals first, we will get { external: true }
       esbuildExternalPlugin(),
       esbuildAliasPlugin({ alias: opts.config?.alias || {} }),
-      esbuildCollectIconPlugin({
-        icons,
-        alias: opts.options?.alias || {},
-      }),
+      ...(opts.plugins || []),
     ],
   });
-  return icons;
 }
-
-// const baseDir = path.join(__dirname, '../../../fixtures/icons/normal');
-// buildForIconExtract({
-//   entryPoints: [path.join(baseDir, 'index.tsx')],
-//   config: {
-//     alias: {
-//       '@': path.join(baseDir, '@'),
-//       'alias-1': 'alias-2',
-//       'alias-3$': path.join(baseDir, 'alias-3.ts'),
-//     },
-//   },
-//   watch: {
-//     onRebuildSuccess(icons) {
-//       console.log('icons', icons);
-//     },
-//   },
-// })
-//   .then((icons) => {
-//     console.log('done');
-//     console.log(icons);
-//   })
-//   .catch((e) => {
-//     console.error(e);
-//   });
