@@ -45,7 +45,9 @@ export default (api: IApi) => {
       }
       await api.applyPlugins({
         key: 'onPrepareBuildSuccess',
-        args: {},
+        args: {
+          result: buildResult,
+        },
       });
     },
     stage: Infinity,
