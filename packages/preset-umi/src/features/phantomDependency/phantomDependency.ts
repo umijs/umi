@@ -32,7 +32,8 @@ export default (api: IApi) => {
       if (path.isAbsolute(file)) continue;
       const { imports } = result.metafile!.inputs[file];
       for (const imp of imports) {
-        if (imp.kind === 'import-statement') {
+        // external means it's not in project src
+        if (imp.kind === 'import-statement' && imp.external) {
           if (!importsBySource.has(imp.path)) {
             importsBySource.set(imp.path, []);
           }
@@ -42,9 +43,13 @@ export default (api: IApi) => {
     }
     const phantomDeps = [];
     for (const [source, files] of importsBySource) {
+      // <runtime> is a special source,
+      // it might be from esbuild internal
+      if (source.startsWith('<')) continue;
       if (source.startsWith('.')) continue;
       if (source.startsWith('/')) continue;
       if (source.startsWith('@/') || source.startsWith('@@/')) continue;
+
       const pkgName = getPkgName(source);
       if (api.config.phantomDependency.exclude?.includes(pkgName)) continue;
 
