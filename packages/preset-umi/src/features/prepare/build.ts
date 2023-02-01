@@ -42,6 +42,7 @@ export async function build(opts: {
     entryPoints: opts.entryPoints,
     write: false,
     outdir: path.join(path.dirname(opts.entryPoints[0]), 'out'),
+    metafile: true,
     plugins: [
       // why externals must be in front of alias?
       // e.g.

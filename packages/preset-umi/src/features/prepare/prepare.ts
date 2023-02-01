@@ -4,11 +4,16 @@ import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
 
 export default (api: IApi) => {
+  // do not support vue
+  if (api.appData.framework === 'vue') {
+    return;
+  }
+
   api.register({
     key: 'onGenerateFiles',
     async fn({ isFirstTime }: IOnGenerateFiles) {
       if (!isFirstTime) return;
-      logger.info('Prepare...');
+      logger.info('Preparing...');
       const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
       const { build } = await import('./build.js');
       const watch = api.name === 'dev';
