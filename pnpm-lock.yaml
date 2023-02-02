@@ -459,36 +459,22 @@ importers:
   examples/mf-host:
     specifiers:
       '@umijs/max': 4.0.0-canary.20230201.2
-      cross-env: ^7.0.3
-      cypress: ^10.0.0
       react: 18.1.0
       react-dom: 18.1.0
-      start-server-and-test: ^1.15.2
     dependencies:
       '@umijs/max': link:../../packages/max
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-    devDependencies:
-      cross-env: 7.0.3
-      cypress: 10.7.0
-      start-server-and-test: 1.15.2
 
   examples/mf-remote:
     specifiers:
       '@umijs/max': 4.0.0-canary.20230201.2
-      cross-env: ^7.0.3
-      cypress: ^10.0.0
       react: 18.1.0
       react-dom: 18.1.0
-      start-server-and-test: ^1.15.2
     dependencies:
       '@umijs/max': link:../../packages/max
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-    devDependencies:
-      cross-env: 7.0.3
-      cypress: 10.7.0
-      start-server-and-test: 1.15.2
 
   examples/mfsu-circular-dependency:
     specifiers:
