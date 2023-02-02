@@ -11,7 +11,7 @@
     "test:e2e": "start-test dev :8000/__umi/api/status e2e"
   },
   "dependencies": {
-    "umi": "4.0.0-canary.20230201.2"
+    "umi": "4.0.48"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

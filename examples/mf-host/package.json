@@ -11,7 +11,7 @@
     "test:e2e": "start-test dev :8000/__umi/api/status start:remote 9000 e2e"
   },
   "dependencies": {
-    "@umijs/max": "4.0.0-canary.20230201.2",
+    "@umijs/max": "4.0.48",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   }
