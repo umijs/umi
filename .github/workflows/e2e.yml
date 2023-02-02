@@ -29,8 +29,8 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        os: [ubuntu-latest] # windows-latest
-        part: [basic, boilerplate, qiankun, vite]
+        os: [ubuntu-latest, windows-latest]
+        part: [basic, boilerplate, qiankun, vite, mfsu]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -76,10 +76,10 @@ jobs:
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'boilerplate'
-        # 8000
-        # 8002
-        # 8004
-        # 8006
+        # create-umi-simple : 8000
+        # create-umi-pro    : 8002
+        # antd-pro-create   : 8004
+        # boilerplate-vue   : 8006
         run: pnpm umi-scripts turbo test:e2e
           --filter @example/create-umi-simple
           --filter @example/create-umi-pro
@@ -88,17 +88,55 @@ jobs:
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'basic'
-        # 8000
-        # 8002
+        # max       : 8000
+        # vite-e2e  : 8002
         run: pnpm umi-scripts turbo test:e2e
           --filter @example/max
           --filter @example/vite-e2e
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'qiankun'
-        # 8000
+        # qiankun-slave  : 8000
         run: pnpm umi-scripts turbo test:e2e
           --filter @example/qiankun-slave
+
+      - name: Run tests (Part ${{ matrix.part }})
+        if: matrix.part == 'mfsu-eager'
+        run: |
+          cd ./examples/mfsu-e2e
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:eager:webpack
+          cat .umirc.ts
+          npm run test:e2e
+
+      - name: Run tests (Part ${{ matrix.part } - 1})
+        if: matrix.part == 'mfsu'
+        run: |
+          cd ./examples/mfsu-e2e
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:normal:webpack
+          npm run test:e2e
+
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:eager:webpack
+          npm run test:e2e
+
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:normal:esbuild
+          npm run test:e2e
+
+          npx rimraf node_modules/.cache
+          npm run set:mfsu:eager:esbuild
+          npm run test:e2e
+
+      - name: Run tests (Part ${{ matrix.part } - 2})
+        if: matrix.part == 'mfsu'
+        # mf-host               : 8000
+        # mf-remote             : 9000
+        # mfsu-independent-e2e  : 8080
+        run: |
+          pnpm umi-scripts build --filter @example/mf-remote
+          pnpm umi-scripts turbo test:e2e --filter @example/mf-host --filter @example/mf-remote @example/mfsu-independent-e2e
 
       # - name: Notify Contributor Group
       #   if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
