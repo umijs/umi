@@ -8,7 +8,7 @@
     "preview": "max preview --port 9527",
     "start": "npm run dev",
     "start:remote": "pnpm --dir ../mf-remote preview",
-    "test:e2e": "start-test dev :8000/__umi/api/status start:remote 9000 e2e"
+    "test:e2e": "start-test start:remote 9000 dev :8000/__umi/api/status e2e"
   },
   "dependencies": {
     "@umijs/max": "4.0.48",
