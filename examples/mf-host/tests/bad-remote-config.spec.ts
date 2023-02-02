@@ -2,8 +2,16 @@ import { expect, test } from '@playwright/test';
 
 test.describe('safe MF load', () => {
   test('can fallback with bad remote', async ({ page }) => {
+    const URL = `http://1.2.3.4:404/bad_file.js`;
     await Promise.all([
-      page.waitForRequest('http://1.2.3.4:404/bad_file.js'),
+      page.route(URL, (route) => {
+        return route.fulfill({
+          status: 404,
+        });
+      }),
+      page.waitForResponse((res) => {
+        return res.url() === URL && res.status() === 404;
+      }),
       page.goto('/bad-remote'),
     ]);
 
