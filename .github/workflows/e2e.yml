@@ -86,13 +86,19 @@ jobs:
           --filter @example/antd-pro-create
           --filter @example/boilerplate-vue
 
-      - name: Run tests (Part ${{ matrix.part }})
+      - name: Run tests (Part ${{ matrix.part }} - 1)
         if: matrix.part == 'basic'
         # max       : 8000
         # vite-e2e  : 8002
         run: pnpm umi-scripts turbo test:e2e
           --filter @example/max
           --filter @example/vite-e2e
+
+      - name: Run tests (Part ${{ matrix.part }} - 2)
+        if: matrix.part == 'basic'
+        run: pnpm umi-scripts turbo test
+          --filter @example/test-test
+          --filter @example/test-vitest
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'qiankun'
@@ -138,9 +144,9 @@ jobs:
           pnpm umi-scripts build --filter @example/mf-remote
           pnpm umi-scripts turbo test:e2e --filter @example/mf-host --filter @example/mf-remote @example/mfsu-independent-e2e
 
-      # - name: Notify Contributor Group
-      #   if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
-      #   uses: zcong1993/actions-ding@master
-      #   with:
-      #     dingToken: ${{ secrets.DING_TOKEN }}
-      #     body: ${{ format('{{"msgtype":"link","link":{{"text":"哪位好心人来看看吧!","title":"Umi CI E2E 测试失败({1})","picUrl":"","messageUrl":"https://github.com/umijs/umi/actions/runs/{0}"}}}}', github.run_id, matrix.os )}}
+      - name: Notify Contributor Group
+        if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          body: ${{ format('{{"msgtype":"link","link":{{"text":"哪位好心人来看看吧!","title":"Umi CI E2E 测试失败({1})","picUrl":"","messageUrl":"https://github.com/umijs/umi/actions/runs/{0}"}}}}', github.run_id, matrix.os )}}
