@@ -287,19 +287,12 @@ importers:
   examples/boilerplate-vue:
     specifiers:
       '@umijs/preset-vue': 4.0.0-canary.20230201.2
-      cross-env: ^7.0.3
-      cypress: ^10.0.0
-      start-server-and-test: ^1.15.2
       umi: 4.0.0-canary.20230201.2
       vue: 3.2.45
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
       umi: link:../../packages/umi
       vue: 3.2.45
-    devDependencies:
-      cross-env: 7.0.3
-      cypress: 10.7.0
-      start-server-and-test: 1.15.2
 
   examples/bug-mfsu-fast-refresh:
     specifiers:
