@@ -62,7 +62,6 @@
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.1.0",
-    "@playwright/test": "^1.26.1",
     "@types/classnames": "^2.3.1",
     "@types/express": "^4.17.15",
     "@types/history": "^5.0.0",

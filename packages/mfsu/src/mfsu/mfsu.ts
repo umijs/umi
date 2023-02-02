@@ -7,7 +7,7 @@ import type {
 import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -92,6 +92,12 @@ export class MFSU {
       this.opts.onMFSUProgress?.(this.progress);
     };
     this.opts.cwd = this.opts.cwd || process.cwd();
+
+    // exclude test deps
+    this.opts.unMatchLibs = lodash.uniq([
+      '@playwright/test',
+      ...(this.opts.unMatchLibs || []),
+    ]);
 
     if (this.opts.strategy === 'eager') {
       if (opts.srcCodeCache) {

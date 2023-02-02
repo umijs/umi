@@ -3,16 +3,12 @@
   "private": true,
   "scripts": {
     "build": "max build",
-    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "max dev",
-    "e2e": "cypress run",
-    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  cypress:ci",
-    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status cypress:ci",
-    "e2e:dev:local": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status e2e:open",
-    "e2e:open": "cypress open",
+    "e2e": "playwright test",
     "preview": "max preview --port 9527",
     "setup": "max setup",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "test": "start-server-and-test dev http://localhost:8000/__umi/api/status e2e"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
