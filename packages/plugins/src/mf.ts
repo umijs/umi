@@ -87,6 +87,23 @@ export default function mf(api: IApi) {
     return config;
   });
 
+  api.modifyDefaultConfig(async (memo) => {
+    if (memo.mfsu) {
+      const exposes = await constructExposes();
+      if (!isEmpty(exposes)) {
+        memo.mfsu.remoteName = mfName();
+        // to avoid module name conflict with host default name
+        memo.mfsu.mfName = `mf_${memo.mfsu.remoteName}`;
+      }
+      const remotes = formatRemotes();
+      memo.mfsu.remoteAliases = Object.keys(remotes);
+
+      memo.mfsu.shared = getShared();
+    }
+
+    return memo;
+  });
+
   api.onGenerateFiles(() => {
     api.writeTmpFile({
       // ref https://webpack.js.org/concepts/module-federation/#infer-publicpath-from-script
@@ -117,7 +134,7 @@ export default function mf(api: IApi) {
   });
 
   function formatRemotes() {
-    const { remotes = [] } = api.config.mf;
+    const { remotes = [] } = api.userConfig.mf;
 
     const memo: Record<string, string> = {};
 
@@ -201,7 +218,7 @@ export default function mf(api: IApi) {
   }
 
   function mfName() {
-    const name = api.config.mf.name;
+    const name = api.userConfig.mf.name;
 
     if (!name) {
       api.logger.warn(
@@ -213,7 +230,7 @@ export default function mf(api: IApi) {
   }
 
   function getShared() {
-    const { shared = {} } = api.config.mf;
+    const { shared = {} } = api.userConfig.mf;
     return shared;
   }
 
