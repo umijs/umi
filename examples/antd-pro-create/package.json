@@ -26,7 +26,7 @@
     "test:e2e": "node ./tests/run-tests.js",
     "tsc": "tsc --noEmit",
     "e2e": "playwright test",
-    "test": "start-server-and-test start http://localhost:8000/__umi/api/status e2e",
+    "test": "start-test start :8000/__umi/api/status e2e",
     "preview": "max preview --port 9527"
   },
   "lint-staged": {

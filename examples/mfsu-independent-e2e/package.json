@@ -8,8 +8,8 @@
     "e2e": "playwright test",
     "start": "npm run dev",
     "test": "pnpm test:webpack && pnpm test:esbuild",
-    "test:esbuild": "start-server-and-test dev:esbuild http://localhost:8080/api e2e",
-    "test:webpack": "start-server-and-test dev http://localhost:8080/api e2e"
+    "test:esbuild": "start-test dev:esbuild :8080/api e2e",
+    "test:webpack": "start-test dev :8080/api e2e"
   },
   "dependencies": {
     "antd": "^4.20.6",

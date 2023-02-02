@@ -8,7 +8,7 @@
     "preview": "max preview --port 9527",
     "setup": "max setup",
     "start": "npm run dev",
-    "test": "start-server-and-test dev http://localhost:8000/__umi/api/status e2e"
+    "test": "start-test dev :8000/__umi/api/status e2e"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

@@ -8,7 +8,7 @@
     "preview": "max preview --port 4020",
     "setup": "umi setup",
     "start": "npm run dev",
-    "test": "start-server-and-test dev http://localhost:8000/__umi/api/status e2e"
+    "test": "start-test dev :8000/__umi/api/status e2e"
   },
   "dependencies": {
     "antd": "^4.20.6",
