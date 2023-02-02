@@ -92,6 +92,8 @@ export default function mf(api: IApi) {
       const exposes = await constructExposes();
       if (!isEmpty(exposes)) {
         memo.mfsu.remoteName = mfName();
+        // to avoid module name conflict with host default name
+        memo.mfsu.mfName = `mf_${memo.mfsu.remoteName}`;
       }
       const remotes = formatRemotes();
       memo.mfsu.remoteAliases = Object.keys(remotes);
