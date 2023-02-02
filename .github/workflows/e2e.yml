@@ -140,9 +140,12 @@ jobs:
         # mf-host               : 8000
         # mf-remote             : 9000
         # mfsu-independent-e2e  : 8080
-        run: |
-          pnpm umi-scripts turbo build --filter @example/mf-remote
-          pnpm umi-scripts turbo test:e2e --filter @example/mf-host --filter @example/mf-remote @example/mfsu-independent-e2e
+        run: pnpm umi-scripts turbo build
+              --filter @example/mf-remote &&
+             pnpm umi-scripts turbo test:e2e
+              --filter @example/mf-host
+              --filter @example/mf-remote
+              --filter @example/mfsu-independent-e2e
 
       - name: Notify Contributor Group
         if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
