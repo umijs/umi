@@ -3,21 +3,15 @@
   "private": true,
   "scripts": {
     "build": "max build",
-    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "max dev",
-    "e2e": "cypress run",
-    "e2e:ci": "cross-env PORT=9000 start-server-and-test dev http://127.0.0.1:9000/__umi/api/status  cypress:ci",
+    "e2e": "playwright test",
     "preview": "max preview --port 9000",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "test": "start-server-and-test dev http://127.0.0.1:9000/__umi/api/status e2e"
   },
   "dependencies": {
     "@umijs/max": "4.0.0-canary.20230201.2",
     "react": "18.1.0",
     "react-dom": "18.1.0"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "cypress": "^10.0.0",
-    "start-server-and-test": "^1.15.2"
   }
 }
