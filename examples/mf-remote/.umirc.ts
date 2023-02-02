@@ -16,9 +16,6 @@ const moduleFederationName = 'remoteCounter';
 export default defineConfig({
   mfsu: {
     strategy: 'eager',
-    mfName: `mf_${moduleFederationName}`,
-    remoteName: moduleFederationName,
-    shared,
   },
   mf: {
     name: moduleFederationName,

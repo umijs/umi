@@ -12,11 +12,6 @@ const shared = {
 };
 
 export default defineConfig({
-  mfsu: {
-    remoteName: 'hostUser',
-    remoteAliases: ['remoteCounter', 'utopia'],
-    shared,
-  },
   mf: {
     name: 'hostUser',
     remotes: [
