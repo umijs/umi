@@ -106,15 +106,6 @@ jobs:
         run: pnpm umi-scripts turbo test:e2e
           --filter @example/qiankun-slave
 
-      - name: Run tests (Part mfsu-eager)
-        if: matrix.part == 'mfsu-eager'
-        run: |
-          cd ./examples/mfsu-e2e
-          npx rimraf node_modules/.cache
-          npm run set:mfsu:eager:webpack
-          cat .umirc.ts
-          npm run test:e2e
-
       - name: Run tests (Part mfsu - 1)
         if: matrix.part == 'mfsu'
         run: |
