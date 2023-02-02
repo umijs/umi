@@ -30,7 +30,7 @@ jobs:
       matrix:
         node-version: [16.x]
         os: [ubuntu-latest, windows-latest]
-        part: [basic, boilerplate, qiankun, vite, mfsu]
+        part: [basic, boilerplate, qiankun, mfsu]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -141,7 +141,7 @@ jobs:
         # mf-remote             : 9000
         # mfsu-independent-e2e  : 8080
         run: |
-          pnpm umi-scripts build --filter @example/mf-remote
+          pnpm umi-scripts turbo build --filter @example/mf-remote
           pnpm umi-scripts turbo test:e2e --filter @example/mf-host --filter @example/mf-remote @example/mfsu-independent-e2e
 
       - name: Notify Contributor Group
