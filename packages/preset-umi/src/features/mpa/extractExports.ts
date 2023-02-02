@@ -73,6 +73,7 @@ import * as x from "${winPath(args.path)}";
 ret = x.${opts.exportName} || {};
               `,
               loader: 'ts',
+              resolveDir: args.path.slice(0, args.path.lastIndexOf('/')),
             };
           });
         },
