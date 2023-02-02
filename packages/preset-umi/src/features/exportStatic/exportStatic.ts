@@ -1,8 +1,8 @@
-import { dirname, join, relative } from 'path';
 import { getMarkup } from '@umijs/server';
-import type { IApi, IRoute } from '../../types';
 import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
+import { dirname, join, relative } from 'path';
+import type { IApi, IRoute } from '../../types';
 import { absServerBuildPath } from '../ssr/utils';
 
 let markupRender: any;
