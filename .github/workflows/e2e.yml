@@ -23,13 +23,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e-basic:
+  e2e:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version: [16.x]
         os: [ubuntu-latest, windows-latest]
+        part: [basic, boilerplate, qiankun, vite]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -73,11 +74,24 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm dlx playwright install --with-deps
 
-      - name: Build predependencies
-        run: pnpm umi-scripts turbo build --filter ./examples/mf-remote # for mf-host
+      - name: Run tests (Part ${{ matrix.part }})
+        if: matrix.part == 'boilerplate'
+        run: pnpm umi-scripts turbo test:e2e
+          --filter @example/create-umi-simple
+          --filter @example/create-umi-pro
+          --filter @example/antd-pro-create
+          --filter @example/boilerplate-vue
 
-      - name: Run examples all e2e tests
-        run: pnpm test:e2e
+      - name: Run tests (Part ${{ matrix.part }})
+        if: matrix.part == 'basic'
+        run: pnpm umi-scripts turbo test:e2e
+          --filter @example/max
+          --filter @example/vite-e2e
+
+      - name: Run tests (Part ${{ matrix.part }})
+        if: matrix.part == 'qiankun'
+        run: pnpm umi-scripts turbo test:e2e
+          --filter @example/qiankun-slave
 
       # - name: Notify Contributor Group
       #   if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
