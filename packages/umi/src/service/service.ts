@@ -5,11 +5,11 @@ import { DEFAULT_CONFIG_FILES, FRAMEWORK_NAME } from '../constants';
 import { getCwd } from './cwd';
 
 export class Service extends CoreService {
-  constructor(opts?: any) {
+  constructor(opts: any = {}) {
     process.env.UMI_DIR = dirname(require.resolve('../../package'));
-    const cwd = getCwd();
+    const cwd = opts.cwd || getCwd();
     // Why?
-    // plugin import from umi but don't explicitly depend on it
+    // plugin import from umi but don't explicitly depend on it,
     // and we may also have old umi installed
     // ref: https://github.com/umijs/umi/issues/8342#issuecomment-1182654076
     require('./requireHook');
@@ -17,9 +17,9 @@ export class Service extends CoreService {
       ...opts,
       env: process.env.NODE_ENV,
       cwd,
-      defaultConfigFiles: opts?.defaultConfigFiles || DEFAULT_CONFIG_FILES,
-      frameworkName: opts?.frameworkName || FRAMEWORK_NAME,
-      presets: [require.resolve('@umijs/preset-umi'), ...(opts?.presets || [])],
+      defaultConfigFiles: opts.defaultConfigFiles || DEFAULT_CONFIG_FILES,
+      frameworkName: opts.frameworkName || FRAMEWORK_NAME,
+      presets: [require.resolve('@umijs/preset-umi'), ...(opts.presets || [])],
       plugins: [
         existsSync(join(cwd, 'plugin.ts')) && join(cwd, 'plugin.ts'),
         existsSync(join(cwd, 'plugin.js')) && join(cwd, 'plugin.js'),
