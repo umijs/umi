@@ -2,8 +2,9 @@
   "name": "@example/max",
   "private": true,
   "scripts": {
+    "//why-use-concurrently": "https://github.com/umijs/umi/discussions/10161#discussioncomment-4530635",
     "build": "max build",
-    "dev": "max dev",
+    "dev": "concurrently \"umi dev\" \"tailwindcss -i ./tailwind.css -o ./.umi/plugin-tailwindcss/tailwind.css -c ./tailwind.config.js --watch\"",
     "e2e": "playwright test",
     "preview": "max preview --port 9527",
     "setup": "max setup",

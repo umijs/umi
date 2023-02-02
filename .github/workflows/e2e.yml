@@ -77,7 +77,7 @@ jobs:
         run: pnpm umi-scripts turbo build --filter ./examples/mf-remote # for mf-host
 
       - name: Run examples all e2e tests
-        run: pnpm umi-scripts turbo test:e2e --filter ./examples
+        run: pnpm test:e2e
 
       # - name: Notify Contributor Group
       #   if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
