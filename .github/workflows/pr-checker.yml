@@ -8,20 +8,23 @@ on:
       - 'docs/**'
 
 jobs:
-  check-permission:
+  read_file:
     runs-on: ubuntu-latest
     outputs:
-      require-result: ${{ steps.checkUser.outputs.require-result }}
+      require-result: ${{ steps.contributors.outputs.content}}
     steps:
-      - uses: actions-cool/check-user-permission@v2
-        id: checkUser
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Read contributors.json
+        id: contributors
+        uses: juliangruber/read-file-action@v1
         with:
-          require: 'write'
+          path: ./contributors.json
 
   check_merged:
     runs-on: ubuntu-latest
-    needs: check-permission
-    if: needs.check-permission.outputs.require-result == 'false' && github.event.pull_request.merged == true
+    needs: read_file
+    if: contains(fromJSON(needs.test_file.outputs.require-result), github.actor) == false && github.event.pull_request.merged == true
     steps:
       - uses: actions-cool/maintain-one-comment@v3
         with:
