@@ -1,7 +1,6 @@
 {
   "name": "@example/mfsu-e2e",
   "private": true,
-  "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
     "build": "umi build",
     "cypress:ci": "pnpm umi-scripts cypress",
