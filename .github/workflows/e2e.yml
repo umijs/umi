@@ -115,7 +115,7 @@ jobs:
           cat .umirc.ts
           npm run test:e2e
 
-      - name: Run tests (Part ${{ matrix.part } - 1})
+      - name: Run tests (Part ${{ matrix.part }} - 1)
         if: matrix.part == 'mfsu'
         run: |
           cd ./examples/mfsu-e2e
@@ -135,7 +135,7 @@ jobs:
           npm run set:mfsu:eager:esbuild
           npm run test:e2e
 
-      - name: Run tests (Part ${{ matrix.part } - 2})
+      - name: Run tests (Part ${{ matrix.part }} - 2)
         if: matrix.part == 'mfsu'
         # mf-host               : 8000
         # mf-remote             : 9000
