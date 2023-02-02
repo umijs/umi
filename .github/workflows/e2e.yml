@@ -74,7 +74,7 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm dlx playwright install --with-deps
 
-      - name: Run tests (Part ${{ matrix.part }})
+      - name: Run tests (Part boilerplate)
         if: matrix.part == 'boilerplate'
         # create-umi-simple : 8000
         # create-umi-pro    : 8002
@@ -86,7 +86,7 @@ jobs:
           --filter @example/antd-pro-create
           --filter @example/boilerplate-vue
 
-      - name: Run tests (Part ${{ matrix.part }} - 1)
+      - name: Run tests (Part basic - 1)
         if: matrix.part == 'basic'
         # max       : 8000
         # vite-e2e  : 8002
@@ -94,19 +94,19 @@ jobs:
           --filter @example/max
           --filter @example/vite-e2e
 
-      - name: Run tests (Part ${{ matrix.part }} - 2)
+      - name: Run tests (Part basic - 2)
         if: matrix.part == 'basic'
         run: pnpm umi-scripts turbo test
           --filter @example/test-test
           --filter @example/test-vitest
 
-      - name: Run tests (Part ${{ matrix.part }})
+      - name: Run tests (Part qiankun)
         if: matrix.part == 'qiankun'
         # qiankun-slave  : 8000
         run: pnpm umi-scripts turbo test:e2e
           --filter @example/qiankun-slave
 
-      - name: Run tests (Part ${{ matrix.part }})
+      - name: Run tests (Part mfsu-eager)
         if: matrix.part == 'mfsu-eager'
         run: |
           cd ./examples/mfsu-e2e
@@ -115,7 +115,7 @@ jobs:
           cat .umirc.ts
           npm run test:e2e
 
-      - name: Run tests (Part ${{ matrix.part }} - 1)
+      - name: Run tests (Part mfsu - 1)
         if: matrix.part == 'mfsu'
         run: |
           cd ./examples/mfsu-e2e
@@ -135,7 +135,7 @@ jobs:
           npm run set:mfsu:eager:esbuild
           npm run test:e2e
 
-      - name: Run tests (Part ${{ matrix.part }} - 2)
+      - name: Run tests (Part mfsu - 2)
         if: matrix.part == 'mfsu'
         # mf-host               : 8000
         # mf-remote             : 9000
