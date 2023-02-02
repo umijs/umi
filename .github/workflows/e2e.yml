@@ -76,22 +76,29 @@ jobs:
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'boilerplate'
+        # 8000
+        # 8002
+        # 8004
+        # 8006
         run: pnpm umi-scripts turbo test:e2e
-          --filter @example/create-umi-simple # 8000
-          --filter @example/create-umi-pro    # 8002
-          --filter @example/antd-pro-create   # 8004
-          --filter @example/boilerplate-vue   # 8006
+          --filter @example/create-umi-simple
+          --filter @example/create-umi-pro
+          --filter @example/antd-pro-create
+          --filter @example/boilerplate-vue
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'basic'
+        # 8000
+        # 8002
         run: pnpm umi-scripts turbo test:e2e
-          --filter @example/max       # 8000
-          --filter @example/vite-e2e  # 8002
+          --filter @example/max
+          --filter @example/vite-e2e
 
       - name: Run tests (Part ${{ matrix.part }})
         if: matrix.part == 'qiankun'
+        # 8000
         run: pnpm umi-scripts turbo test:e2e
-          --filter @example/qiankun-slave # 8000
+          --filter @example/qiankun-slave
 
       # - name: Notify Contributor Group
       #   if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
