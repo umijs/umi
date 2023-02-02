@@ -75,7 +75,6 @@
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vercel/ncc": "0.33.3",
-    "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "dts-packer": "^0.0.3",
     "father": "^4.1.3",
