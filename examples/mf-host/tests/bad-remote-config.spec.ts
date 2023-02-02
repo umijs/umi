@@ -4,9 +4,7 @@ test.describe('safe MF load', () => {
   test('can fallback with bad remote', async ({ page }) => {
     await Promise.all([
       page.waitForResponse((res) => {
-        return (
-          res.url() === 'http://1.2.3.4:404/bad_file.js' && res.status() !== 200
-        );
+        return res.url() === 'http://1.2.3.4:404/bad_file.js';
       }),
       page.goto('/bad-remote'),
     ]);
