@@ -286,8 +286,8 @@ importers:
 
   examples/boilerplate-vue:
     specifiers:
-      '@umijs/preset-vue': 4.0.0-canary.20230201.2
-      umi: 4.0.0-canary.20230201.2
+      '@umijs/preset-vue': 4.0.48
+      umi: 4.0.48
       vue: 3.2.45
     dependencies:
       '@umijs/preset-vue': link:../../packages/preset-vue
@@ -458,7 +458,7 @@ importers:
 
   examples/mf-host:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20230201.2
+      '@umijs/max': 4.0.48
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
@@ -468,7 +468,7 @@ importers:
 
   examples/mf-remote:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20230201.2
+      '@umijs/max': 4.0.48
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
@@ -633,7 +633,7 @@ importers:
 
   examples/qiankun-master:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20230201.2
+      '@umijs/max': 4.0.48
       qiankun: ^2.8.4
       react: 18.1.0
       react-dom: 18.1.0
@@ -645,7 +645,7 @@ importers:
 
   examples/qiankun-slave:
     specifiers:
-      '@umijs/max': 4.0.0-canary.20230201.2
+      '@umijs/max': 4.0.48
       react: 18.1.0
       react-dom: 18.1.0
     dependencies:
@@ -758,7 +758,7 @@ importers:
   examples/vite-e2e:
     specifiers:
       antd: ^4.20.6
-      umi: 4.0.0-canary.20230201.2
+      umi: 4.0.48
     dependencies:
       antd: 4.24.1
       umi: link:../../packages/umi
@@ -1316,7 +1316,7 @@ importers:
       mini-css-extract-plugin: 2.7.2_webpack@5.75.0
       postcss-flexbugs-fixes: 5.0.2_postcss@8.4.21
       postcss-loader: 7.0.2_6jdsrmfenkuhhw3gx4zvjlznce
-      purgecss-webpack-plugin: 4.1.3_@swc+core@1.3.24
+      purgecss-webpack-plugin: 4.1.3_webpack@5.75.0
       sass-loader: 13.2.0_webpack@5.75.0
       schema-utils: 4.0.0
       speed-measure-webpack-plugin: 1.5.0_webpack@5.75.0
@@ -1531,7 +1531,7 @@ importers:
       react-intl: 3.12.1
       react-redux: 8.0.5_redux@4.2.0
       redux: 4.2.0
-      styled-components: 6.0.0-beta.9
+      styled-components: 6.0.0-beta.9_tslib@2.4.1
       tslib: 2.4.1
       warning: 4.0.3
     devDependencies:
@@ -15375,7 +15375,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -17229,8 +17229,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -29412,8 +29412,10 @@ packages:
       - utf-8-validate
     dev: true
 
-  /purgecss-webpack-plugin/4.1.3_@swc+core@1.3.24:
+  /purgecss-webpack-plugin/4.1.3_webpack@5.75.0:
     resolution: {integrity: sha512-1OHS0WE935w66FjaFSlV06ycmn3/A8a6Q+iVUmmCYAujQ1HPdX+psMXUhASEW0uF1PYEpOlhMc5ApigVqYK08g==}
+    peerDependencies:
+      webpack: '*'
     peerDependenciesMeta:
       webpack:
         optional: true
@@ -29421,11 +29423,6 @@ packages:
       purgecss: 4.1.3
       webpack: 5.75.0_@swc+core@1.3.24
       webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-      - webpack-cli
     dev: true
 
   /purgecss/4.1.3:
@@ -32862,6 +32859,14 @@ packages:
   /react-dev-utils/12.0.1_iukboom6ndih5an6iafl45j2fe:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      webpack:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.1.2
@@ -32891,9 +32896,7 @@ packages:
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
     dev: false
 
   /react-devtools-inline/4.4.0:
@@ -35452,13 +35455,14 @@ packages:
       inline-style-parser: 0.1.1
     dev: true
 
-  /styled-components/6.0.0-beta.9:
+  /styled-components/6.0.0-beta.9_tslib@2.4.1:
     resolution: {integrity: sha512-RYtmvWZForwSd24aZgi3iGZM/6HvJkP7zobHK+bwC01vI6QhHK5MX9ayXEnJWaFY7DoEWoAnar5ACiGVkTCoCQ==}
     engines: {node: '>= 14'}
     peerDependencies:
       babel-plugin-styled-components: '>= 2'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
+      tslib: ^2.0.0
     peerDependenciesMeta:
       babel-plugin-styled-components:
         optional: true
