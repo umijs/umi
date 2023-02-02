@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "build": "max build",
-    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "max dev",
     "e2e": "playwright test",
     "format": "prettier --cache --write .",
