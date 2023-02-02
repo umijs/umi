@@ -19,8 +19,10 @@ export async function build(opts: {
     platform: 'browser',
     target: 'esnext',
     loader: {
-      '.js': 'jsx',
-      '.jsx': 'jsx',
+      // use tsx loader for js/jsx/ts/tsx files
+      // since only ts support decorator
+      '.js': 'tsx',
+      '.jsx': 'tsx',
       '.ts': 'ts',
       '.tsx': 'tsx',
     },

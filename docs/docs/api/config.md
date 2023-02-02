@@ -548,7 +548,7 @@ export default {
 
 ## exportStatic
 
-- 类型：`{ extraRoutePaths: string[] | (() => string[] | Promise<string[]>) }`
+- 类型：`{ extraRoutePaths: IUserExtraRoute[] | (() => IUserExtraRoute[] | Promise<IUserExtraRoute[]>) }`
 - 默认值：`undefined`
 
 开启该配置后会针对每个路由单独输出 HTML 文件，通常用于静态站点托管。例如项目有如下路由：
@@ -604,6 +604,19 @@ dist/news/:id/index.html
 dist/news/1/index.html
 dist/news/2/index.html
 ```
+
+`extraRoutePaths` 除了支持配置字符串数据，还可以配置成对象数组，用于启用 SSR 时又希望对部分路由禁用预渲染的场景，例如：
+
+```ts
+// .umirc.ts
+export default {
+  exportStatic: {
+    // 输出额外页面文件但跳过预渲染
+    extraRoutePaths: [{ path: '/news/1', prerender: false }],
+  },
+}
+```
+
 
 ## favicons
 
