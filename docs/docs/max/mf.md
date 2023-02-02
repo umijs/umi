@@ -333,7 +333,7 @@ const RemoteCounter = React.lazy(() => {
 
 ## 和 MFSU 一起使用
 
-Module Federation 插件会根据自己配置自动修改 MFSU 的**默认**配置以使两个功能在开发阶段正常使用，原理介绍如下：
+Module Federation 插件会根据插件配置自动修改 MFSU 的**默认**配置以使两个功能在开发阶段正常使用，原理介绍如下：
 
 假设我们采用了如下 mf 插件的配置
 
