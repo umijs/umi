@@ -24,6 +24,10 @@ test.describe('Basic Test', () => {
   test('simple CRUD ok', async ({ page }) => {
     await page.goto('/table');
 
-    await expect(page.getByText('CRUD 示例', { exact: true })).toBeVisible();
+    await expect(
+      page.locator('span[title]', {
+        hasText: 'CRUD 示例',
+      }),
+    ).toBeVisible();
   });
 });
