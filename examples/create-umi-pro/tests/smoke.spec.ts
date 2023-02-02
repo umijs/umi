@@ -24,6 +24,6 @@ test.describe('Basic Test', () => {
   test('simple CRUD ok', async ({ page }) => {
     await page.goto('/table');
 
-    await expect(page.getByText('CRUD 示例')).toBeVisible();
+    await expect(page.getByText('CRUD 示例', { exact: true })).toBeVisible();
   });
 });
