@@ -5,10 +5,11 @@
     "build": "webpack",
     "dev": "webpack serve --config webpack.config.js",
     "dev:esbuild": "webpack serve --config webpack.config.esbuild.js",
-    "e2e": "cypress run",
-    "e2e:ci": "cross-env PORT=8080 start-server-and-test dev http://localhost:8080/api e2e",
-    "e2e:ci:esbuild": "cross-env PORT=8080 start-server-and-test dev:esbuild http://localhost:8080/api e2e",
-    "start": "npm run dev"
+    "e2e": "playwright test",
+    "start": "npm run dev",
+    "test": "pnpm test:webpack && pnpm test:esbuild",
+    "test:esbuild": "start-server-and-test dev:esbuild http://localhost:8080/api e2e",
+    "test:webpack": "start-server-and-test dev http://localhost:8080/api e2e"
   },
   "dependencies": {
     "antd": "^4.20.6",
@@ -25,12 +26,9 @@
     "@types/react-dom": "^18.0.10",
     "@umijs/mfsu": "4.0.0-canary.20230201.2",
     "babel-loader": "^9.1.2",
-    "cross-env": "^7.0.3",
-    "cypress": "^10.0.0",
     "esbuild": "0.16.17",
     "esbuild-register": "^3.4.2",
     "html-webpack-plugin": "^5.5.0",
-    "start-server-and-test": "^1.15.2",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
