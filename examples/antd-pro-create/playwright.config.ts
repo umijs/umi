@@ -9,6 +9,7 @@ const config: PlaywrightTestConfig = {
       name: 'chrome',
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:8004',
       },
     },
   ],

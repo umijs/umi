@@ -3,13 +3,13 @@
   "private": true,
   "scripts": {
     "build": "max build",
-    "dev": "max dev",
+    "dev": "cross-env PORT=8002 max dev",
     "e2e": "playwright test",
     "format": "prettier --cache --write .",
     "preview": "max preview --port 9527",
     "setup": "max setup",
     "start": "npm run dev",
-    "test:e2e": "start-test dev :8000/__umi/api/status e2e"
+    "test:e2e": "start-test dev :8002/__umi/api/status e2e"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

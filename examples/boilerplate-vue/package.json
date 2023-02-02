@@ -3,12 +3,12 @@
   "private": true,
   "scripts": {
     "build": "umi build",
-    "dev": "umi dev",
+    "dev": "cross-env PORT=8006 umi dev",
     "e2e": "playwright test",
     "preview": "max preview --port 6070",
     "setup": "umi setup",
     "start": "npm run dev",
-    "test:e2e": "start-test dev :8000/__umi/api/status e2e"
+    "test:e2e": "start-test dev :8006/__umi/api/status e2e"
   },
   "dependencies": {
     "@umijs/preset-vue": "4.0.48",

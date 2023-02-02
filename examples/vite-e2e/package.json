@@ -3,12 +3,12 @@
   "private": true,
   "scripts": {
     "build": "umi build",
-    "dev": "umi dev",
+    "dev": "cross-env PORT=8002 umi dev",
     "e2e": "playwright test",
     "preview": "max preview --port 4020",
     "setup": "umi setup",
     "start": "npm run dev",
-    "test:e2e": "start-test dev :8000/__umi/api/status e2e"
+    "test:e2e": "start-test dev :8002/__umi/api/status e2e"
   },
   "dependencies": {
     "antd": "^4.20.6",
