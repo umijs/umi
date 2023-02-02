@@ -6,6 +6,3 @@
 /src/.umi-production
 /src/.umi-test
 /dist
-
-/cypress/screenshots
-/cypress/videos

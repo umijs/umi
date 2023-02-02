@@ -10,6 +10,3 @@
 /.umi-test
 /dist
 /.mfsu
-
-/cypress/screenshots
-/cypress/videos

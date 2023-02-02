@@ -12,8 +12,5 @@
     "qiankun": "^2.8.4",
     "react": "18.1.0",
     "react-dom": "18.1.0"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3"
   }
 }

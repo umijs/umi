@@ -5,6 +5,3 @@
 /config/config.local.js
 /src/.umi
 /.umi
-
-/cypress/screenshots
-/cypress/videos
