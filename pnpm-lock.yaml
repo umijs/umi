@@ -567,15 +567,12 @@ importers:
       '@umijs/mfsu': 4.0.0-canary.20230201.2
       antd: ^4.20.6
       babel-loader: ^9.1.2
-      cross-env: ^7.0.3
-      cypress: ^10.0.0
       esbuild: 0.16.17
       esbuild-register: ^3.4.2
       framer-motion: ^8.4.2
       html-webpack-plugin: ^5.5.0
       react: ^18.1.0
       react-dom: ^18.1.0
-      start-server-and-test: ^1.15.2
       webpack: ^5.75.0
       webpack-cli: ^5.0.1
       webpack-dev-server: ^4.11.1
@@ -593,12 +590,9 @@ importers:
       '@types/react-dom': 18.0.10
       '@umijs/mfsu': link:../../packages/mfsu
       babel-loader: 9.1.2_la66t7xldg4uecmyawueag5wkm
-      cross-env: 7.0.3
-      cypress: 10.7.0
       esbuild: 0.16.17
       esbuild-register: 3.4.2_esbuild@0.16.17
       html-webpack-plugin: 5.5.0_webpack@5.75.0
-      start-server-and-test: 1.15.2
       webpack: 5.75.0_jh3afgd4dccyz4n3zkk5zvv5cy
       webpack-cli: 5.0.1_uaydpeuxkjjcxdbyfgk36cjdxi
       webpack-dev-server: 4.11.1_rjsyjcrmk25kqsjzwkvj3a2evq
