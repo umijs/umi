@@ -1,4 +1,4 @@
-name: e2e-basic
+name: e2e
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
@@ -44,10 +44,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org/'
-
-      - name: Setup Global Cypress-cache-folder in Windows
-        if: matrix.os == 'windows-latest'
-        run: echo "CYPRESS_CACHE_FOLDER=${HOME}\.cache\Cypress"  >> $env:GITHUB_ENV
+          cache: 'pnpm'
 
       # We use week in the turbo cache key to keep the cache from infinitely growing
       - name: Get cache expires mark (non-windows)
@@ -70,43 +67,21 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build targets
-        run: pnpm umi-scripts turbo build 
-          --filter ./examples/max... 
-          --filter ./examples/test-test/... 
-          --filter ./packages/umi/...
+      - name: Build packages
+        run: pnpm build
 
-      - name: e2e:example:max
-        uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          working-directory: ./examples/max
-          install: false
-          install-command: pnpm i cypress
-          command: npm run e2e:ci
-        env:
-          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+      - name: Install Playwright Browsers
+        run: pnpm dlx playwright install --with-deps
 
-      - name: e2e:example:max:dev
-        uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          working-directory: ./examples/max
-          install: false
-          install-command: pnpm i cypress
-          command: npm run e2e:dev:ci
-        env:
-          CYPRESS_RECORD_KEY: ${{secrets.CYPRESS_KEY}}
+      - name: Build predependencies
+        run: pnpm umi-scripts turbo build --filter ./examples/mf-remote # for mf-host
 
-      - name: e2e:example-test-test
-        working-directory: ./examples/test-test
-        run: |
-          npx umi setup
-          pnpm test
+      - name: Run examples all e2e tests
+        run: pnpm umi-scripts turbo test:e2e --filter ./examples
 
-      - name: Notify Contributor Group
-        if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
-        uses: zcong1993/actions-ding@master
-        with:
-          dingToken: ${{ secrets.DING_TOKEN }}
-          body: ${{ format('{{"msgtype":"link","link":{{"text":"哪位好心人来看看吧!","title":"Umi CI E2E 测试失败({1})","picUrl":"","messageUrl":"https://github.com/umijs/umi/actions/runs/{0}"}}}}', github.run_id, matrix.os )}}
+      # - name: Notify Contributor Group
+      #   if: ${{ failure() && github.event.schedule == '0 */4 * * *' }}
+      #   uses: zcong1993/actions-ding@master
+      #   with:
+      #     dingToken: ${{ secrets.DING_TOKEN }}
+      #     body: ${{ format('{{"msgtype":"link","link":{{"text":"哪位好心人来看看吧!","title":"Umi CI E2E 测试失败({1})","picUrl":"","messageUrl":"https://github.com/umijs/umi/actions/runs/{0}"}}}}', github.run_id, matrix.os )}}

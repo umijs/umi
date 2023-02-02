@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "umi dev",
     "start": "npm run dev",
-    "test": "jest --no-cache --coverage"
+    "test": "umi setup && jest --no-cache --coverage"
   },
   "dependencies": {
     "@umijs/plugins": "4.0.0-canary.20230201.2",

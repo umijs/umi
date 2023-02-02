@@ -7,7 +7,7 @@
     "e2e": "playwright test",
     "preview": "max preview --port 9000",
     "start": "npm run dev",
-    "test": "start-test dev :9000/__umi/api/status e2e"
+    "test:e2e": "start-test dev :9000/__umi/api/status e2e"
   },
   "dependencies": {
     "@umijs/max": "4.0.0-canary.20230201.2",

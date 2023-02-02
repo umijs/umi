@@ -7,7 +7,7 @@
     "dev:esbuild": "webpack serve --config webpack.config.esbuild.js",
     "e2e": "playwright test",
     "start": "npm run dev",
-    "test": "pnpm test:webpack && pnpm test:esbuild",
+    "test:e2e": "pnpm test:webpack && pnpm test:esbuild",
     "test:esbuild": "start-test dev:esbuild :8080/api e2e",
     "test:webpack": "start-test dev :8080/api e2e"
   },

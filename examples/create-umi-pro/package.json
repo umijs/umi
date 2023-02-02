@@ -9,7 +9,7 @@
     "preview": "max preview --port 9527",
     "setup": "max setup",
     "start": "npm run dev",
-    "test": "start-test dev :8000/__umi/api/status e2e"
+    "test:e2e": "start-test dev :8000/__umi/api/status e2e"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

@@ -14,12 +14,17 @@
     },
     "test": {
       "outputs": [".jest-cache/**"]
+    },
+    "test:e2e": {
+      "cache": false
     }
   },
   "globalDependencies": [
     "tsconfig.base.json",
     "tsconfig.json",
     "jest.config.ts",
+    "jest.turbo.config.ts",
+    "playwright.base.config.ts",
     ".father.base.ts"
   ]
 }

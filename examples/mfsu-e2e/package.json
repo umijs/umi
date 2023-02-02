@@ -11,7 +11,7 @@
     "set:mfsu:normal:webpack": "umi config set mfsu {\\\"strategy\\\":\\\"normal\\\"}",
     "setup": "umi setup",
     "start": "npm run dev",
-    "test": "start-test dev :8000/__umi/api/status e2e"
+    "test:e2e": "start-test dev :8000/__umi/api/status e2e"
   },
   "dependencies": {
     "lodash.uppercase": "^4.3.0",

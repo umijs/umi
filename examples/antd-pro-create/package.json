@@ -23,10 +23,9 @@
     "start:no-mock": "cross-env MOCK=none UMI_ENV=dev max dev",
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev max dev",
     "start:test": "cross-env REACT_APP_ENV=test MOCK=none UMI_ENV=dev max dev",
-    "test:e2e": "node ./tests/run-tests.js",
     "tsc": "tsc --noEmit",
     "e2e": "playwright test",
-    "test": "start-test start :8000/__umi/api/status e2e",
+    "test:e2e": "start-test start :8000/__umi/api/status e2e",
     "preview": "max preview --port 9527"
   },
   "lint-staged": {
