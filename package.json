@@ -35,7 +35,7 @@
     "setup:webstorm": "umi-scripts setupWebStorm",
     "sync:tnpm": "umi-scripts syncTnpm",
     "test": "jest",
-    "test:clean": "umi-scripts turbo test:e2e --no-cache --parallel -- --clearCache",
+    "test:clean": "umi-scripts turbo test --no-cache --parallel -- --clearCache",
     "test:e2e": "pnpm umi-scripts turbo test:e2e --filter \"@example/*\" --concurrency 1",
     "tsc:check": "tsc --noEmit",
     "turbo:clean": "rimraf .turbo",
