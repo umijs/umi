@@ -115,6 +115,7 @@ async function executePlugin(mfConfig: any) {
       modifier = fn;
     },
     addRuntimePluginKey() {},
+    modifyDefaultConfig() {},
   };
 
   plugin(api as any);
