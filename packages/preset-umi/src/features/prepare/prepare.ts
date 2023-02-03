@@ -1,4 +1,4 @@
-import { logger } from '@umijs/utils';
+import { aliasUtils, logger } from '@umijs/utils';
 import path from 'path';
 import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
@@ -20,6 +20,9 @@ export default (api: IApi) => {
         key: 'addPrepareBuildPlugins',
         initialValue: [],
       });
+      const unwrappedAlias = aliasUtils.parseCircleAlias({
+        alias: api.config.alias,
+      });
       const buildResult = await build({
         entryPoints: [entryFile],
         watch: watch && {
@@ -34,7 +37,7 @@ export default (api: IApi) => {
           },
         },
         config: {
-          alias: api.config.alias,
+          alias: unwrappedAlias,
         },
         plugins,
       });
