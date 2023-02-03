@@ -1,3 +1,4 @@
+import * as URI from '../../../uri-js';
 import type { CodeGen, Code, Name, ScopeValueSets, ValueScopeName } from '../compile/codegen';
 import type { SchemaEnv, SchemaCxt, SchemaObjCxt } from '../compile';
 import type { JSONType } from '../compile/rules';
@@ -173,5 +174,10 @@ export interface RegExpEngine {
 }
 export interface RegExpLike {
     test: (s: string) => boolean;
+}
+export interface UriResolver {
+    parse(uri: string): URI.URIComponents;
+    resolve(base: string, path: string): string;
+    serialize(component: URI.URIComponents): string;
 }
 export {};

@@ -1,7 +1,7 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9413:
+/***/ 9115:
 /***/ (function(module) {
 
 (function (global, factory) {
@@ -18,30 +18,16 @@
      * 3. Host, guaranteed.
      * 4. Port, including ":", optional.
      * 5. Path, including "/", optional.
-     * 6. Query, including "?", optional.
-     * 7. Hash, including "#", optional.
      */
-    const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?(\?[^#]*)?(#.*)?/;
+    const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?/;
     /**
      * File URLs are weird. They dont' need the regular `//` in the scheme, they may or may not start
      * with a leading `/`, they can have a domain (but only if they don't start with a Windows drive).
      *
      * 1. Host, optional.
-     * 2. Path, which may include "/", guaranteed.
-     * 3. Query, including "?", optional.
-     * 4. Hash, including "#", optional.
+     * 2. Path, which may inclue "/", guaranteed.
      */
-    const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/#?]*)?)?(\/?[^#?]*)(\?[^#]*)?(#.*)?/i;
-    var UrlType;
-    (function (UrlType) {
-        UrlType[UrlType["Empty"] = 1] = "Empty";
-        UrlType[UrlType["Hash"] = 2] = "Hash";
-        UrlType[UrlType["Query"] = 3] = "Query";
-        UrlType[UrlType["RelativePath"] = 4] = "RelativePath";
-        UrlType[UrlType["AbsolutePath"] = 5] = "AbsolutePath";
-        UrlType[UrlType["SchemeRelative"] = 6] = "SchemeRelative";
-        UrlType[UrlType["Absolute"] = 7] = "Absolute";
-    })(UrlType || (UrlType = {}));
+    const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/]*)?)?(\/?.*)/i;
     function isAbsoluteUrl(input) {
         return schemeRegex.test(input);
     }
@@ -54,42 +40,35 @@
     function isFileUrl(input) {
         return input.startsWith('file:');
     }
-    function isRelative(input) {
-        return /^[.?#]/.test(input);
-    }
     function parseAbsoluteUrl(input) {
         const match = urlRegex.exec(input);
-        return makeUrl(match[1], match[2] || '', match[3], match[4] || '', match[5] || '/', match[6] || '', match[7] || '');
+        return makeUrl(match[1], match[2] || '', match[3], match[4] || '', match[5] || '/');
     }
     function parseFileUrl(input) {
         const match = fileRegex.exec(input);
         const path = match[2];
-        return makeUrl('file:', '', match[1] || '', '', isAbsolutePath(path) ? path : '/' + path, match[3] || '', match[4] || '');
+        return makeUrl('file:', '', match[1] || '', '', isAbsolutePath(path) ? path : '/' + path);
     }
-    function makeUrl(scheme, user, host, port, path, query, hash) {
+    function makeUrl(scheme, user, host, port, path) {
         return {
             scheme,
             user,
             host,
             port,
             path,
-            query,
-            hash,
-            type: UrlType.Absolute,
+            relativePath: false,
         };
     }
     function parseUrl(input) {
         if (isSchemeRelativeUrl(input)) {
             const url = parseAbsoluteUrl('http:' + input);
             url.scheme = '';
-            url.type = UrlType.SchemeRelative;
             return url;
         }
         if (isAbsolutePath(input)) {
             const url = parseAbsoluteUrl('http://foo.com' + input);
             url.scheme = '';
             url.host = '';
-            url.type = UrlType.AbsolutePath;
             return url;
         }
         if (isFileUrl(input))
@@ -99,13 +78,7 @@
         const url = parseAbsoluteUrl('http://foo.com/' + input);
         url.scheme = '';
         url.host = '';
-        url.type = input
-            ? input.startsWith('?')
-                ? UrlType.Query
-                : input.startsWith('#')
-                    ? UrlType.Hash
-                    : UrlType.RelativePath
-            : UrlType.Empty;
+        url.relativePath = true;
         return url;
     }
     function stripPathFilename(path) {
@@ -117,7 +90,10 @@
         return path.slice(0, index + 1);
     }
     function mergePaths(url, base) {
-        normalizePath(base, base.type);
+        // If we're not a relative path, then we're an absolute path, and it doesn't matter what base is.
+        if (!url.relativePath)
+            return;
+        normalizePath(base);
         // If the path is just a "/", then it was an empty path to begin with (remember, we're a relative
         // path).
         if (url.path === '/') {
@@ -127,13 +103,15 @@
             // Resolution happens relative to the base path's directory, not the file.
             url.path = stripPathFilename(base.path) + url.path;
         }
+        // If the base path is absolute, then our path is now absolute too.
+        url.relativePath = base.relativePath;
     }
     /**
      * The path can have empty directories "//", unneeded parents "foo/..", or current directory
      * "foo/.". We need to normalize to a standard representation.
      */
-    function normalizePath(url, type) {
-        const rel = type <= UrlType.RelativePath;
+    function normalizePath(url) {
+        const { relativePath } = url;
         const pieces = url.path.split('/');
         // We need to preserve the first piece always, so that we output a leading slash. The item at
         // pieces[0] is an empty string.
@@ -165,7 +143,7 @@
                     positive--;
                     pointer--;
                 }
-                else if (rel) {
+                else if (relativePath) {
                     // If we're in a relativePath, then we need to keep the excess parents. Else, in an absolute
                     // URL, protocol relative URL, or an absolute path, we don't need to keep excess.
                     pieces[pointer++] = piece;
@@ -193,60 +171,37 @@
         if (!input && !base)
             return '';
         const url = parseUrl(input);
-        let inputType = url.type;
-        if (base && inputType !== UrlType.Absolute) {
+        // If we have a base, and the input isn't already an absolute URL, then we need to merge.
+        if (base && !url.scheme) {
             const baseUrl = parseUrl(base);
-            const baseType = baseUrl.type;
-            switch (inputType) {
-                case UrlType.Empty:
-                    url.hash = baseUrl.hash;
-                // fall through
-                case UrlType.Hash:
-                    url.query = baseUrl.query;
-                // fall through
-                case UrlType.Query:
-                case UrlType.RelativePath:
-                    mergePaths(url, baseUrl);
-                // fall through
-                case UrlType.AbsolutePath:
-                    // The host, user, and port are joined, you can't copy one without the others.
-                    url.user = baseUrl.user;
-                    url.host = baseUrl.host;
-                    url.port = baseUrl.port;
-                // fall through
-                case UrlType.SchemeRelative:
-                    // The input doesn't have a schema at least, so we need to copy at least that over.
-                    url.scheme = baseUrl.scheme;
+            url.scheme = baseUrl.scheme;
+            // If there's no host, then we were just a path.
+            if (!url.host) {
+                // The host, user, and port are joined, you can't copy one without the others.
+                url.user = baseUrl.user;
+                url.host = baseUrl.host;
+                url.port = baseUrl.port;
             }
-            if (baseType > inputType)
-                inputType = baseType;
+            mergePaths(url, baseUrl);
         }
-        normalizePath(url, inputType);
-        const queryHash = url.query + url.hash;
-        switch (inputType) {
-            // This is impossible, because of the empty checks at the start of the function.
-            // case UrlType.Empty:
-            case UrlType.Hash:
-            case UrlType.Query:
-                return queryHash;
-            case UrlType.RelativePath: {
-                // The first char is always a "/", and we need it to be relative.
-                const path = url.path.slice(1);
-                if (!path)
-                    return queryHash || '.';
-                if (isRelative(base || input) && !isRelative(path)) {
-                    // If base started with a leading ".", or there is no base and input started with a ".",
-                    // then we need to ensure that the relative path starts with a ".". We don't know if
-                    // relative starts with a "..", though, so check before prepending.
-                    return './' + path + queryHash;
-                }
-                return path + queryHash;
-            }
-            case UrlType.AbsolutePath:
-                return url.path + queryHash;
-            default:
-                return url.scheme + '//' + url.user + url.host + url.port + url.path + queryHash;
+        normalizePath(url);
+        // If the input (and base, if there was one) are both relative, then we need to output a relative.
+        if (url.relativePath) {
+            // The first char is always a "/".
+            const path = url.path.slice(1);
+            if (!path)
+                return '.';
+            // If base started with a leading ".", or there is no base and input started with a ".", then we
+            // need to ensure that the relative path starts with a ".". We don't know if relative starts
+            // with a "..", though, so check before prepending.
+            const keepRelative = (base || input).startsWith('.');
+            return !keepRelative || path.startsWith('.') ? path : './' + path;
         }
+        // If there's no host (and no scheme/user/port), then we need to output an absolute path.
+        if (!url.scheme && !url.host)
+            return url.path;
+        // We're outputting either an absolute URL, or a protocol relative one.
+        return `${url.scheme}//${url.user}${url.host}${url.port}${url.path}`;
     }
 
     return resolve;
@@ -257,7 +212,7 @@
 
 /***/ }),
 
-/***/ 3248:
+/***/ 1961:
 /***/ (function(__unused_webpack_module, exports) {
 
 (function (global, factory) {
@@ -438,11 +393,11 @@
 
 /***/ }),
 
-/***/ 6974:
+/***/ 4181:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 (function (global, factory) {
-     true ? factory(exports, __nccwpck_require__(3248), __nccwpck_require__(9413)) :
+     true ? factory(exports, __nccwpck_require__(1961), __nccwpck_require__(9115)) :
     0;
 })(this, (function (exports, sourcemapCodec, resolveUri) { 'use strict';
 
@@ -759,13 +714,13 @@
      */
     exports.originalPositionFor = void 0;
     /**
-     * Finds the generated line/column position of the provided source/line/column source position.
+     * Finds the source/line/column directly after the mapping returned by originalPositionFor, provided
+     * the found mapping is from the same source and line as the originalPositionFor mapping.
+     *
+     * Eg, in the code `let id = 1`, `originalPositionAfter` could find the mapping associated with `1`
+     * using the same needle that would return `id` when calling `originalPositionFor`.
      */
     exports.generatedPositionFor = void 0;
-    /**
-     * Finds all generated line/column positions of the provided source/line/column source position.
-     */
-    exports.allGeneratedPositionsFor = void 0;
     /**
      * Iterates each mapping in generated position order.
      */
@@ -832,9 +787,7 @@
             // mapping (like a "//# sourceMappingURL=") at the end of the child file.
             if (line >= decoded.length)
                 return null;
-            const segments = decoded[line];
-            const index = traceSegmentInternal(segments, map._decodedMemo, line, column, GREATEST_LOWER_BOUND);
-            return index === -1 ? null : segments[index];
+            return traceSegmentInternal(decoded[line], map._decodedMemo, line, column, GREATEST_LOWER_BOUND);
         };
         exports.originalPositionFor = (map, { line, column, bias }) => {
             line--;
@@ -847,22 +800,35 @@
             // mapping (like a "//# sourceMappingURL=") at the end of the child file.
             if (line >= decoded.length)
                 return OMapping(null, null, null, null);
-            const segments = decoded[line];
-            const index = traceSegmentInternal(segments, map._decodedMemo, line, column, bias || GREATEST_LOWER_BOUND);
-            if (index === -1)
+            const segment = traceSegmentInternal(decoded[line], map._decodedMemo, line, column, bias || GREATEST_LOWER_BOUND);
+            if (segment == null)
                 return OMapping(null, null, null, null);
-            const segment = segments[index];
-            if (segment.length === 1)
+            if (segment.length == 1)
                 return OMapping(null, null, null, null);
             const { names, resolvedSources } = map;
             return OMapping(resolvedSources[segment[SOURCES_INDEX]], segment[SOURCE_LINE] + 1, segment[SOURCE_COLUMN], segment.length === 5 ? names[segment[NAMES_INDEX]] : null);
         };
-        exports.allGeneratedPositionsFor = (map, { source, line, column, bias }) => {
-            // SourceMapConsumer uses LEAST_UPPER_BOUND for some reason, so we follow suit.
-            return generatedPosition(map, source, line, column, bias || LEAST_UPPER_BOUND, true);
-        };
         exports.generatedPositionFor = (map, { source, line, column, bias }) => {
-            return generatedPosition(map, source, line, column, bias || GREATEST_LOWER_BOUND, false);
+            line--;
+            if (line < 0)
+                throw new Error(LINE_GTR_ZERO);
+            if (column < 0)
+                throw new Error(COL_GTR_EQ_ZERO);
+            const { sources, resolvedSources } = map;
+            let sourceIndex = sources.indexOf(source);
+            if (sourceIndex === -1)
+                sourceIndex = resolvedSources.indexOf(source);
+            if (sourceIndex === -1)
+                return GMapping(null, null);
+            const generated = (map._bySources || (map._bySources = buildBySources(exports.decodedMappings(map), (map._bySourceMemos = sources.map(memoizedState)))));
+            const memos = map._bySourceMemos;
+            const segments = generated[sourceIndex][line];
+            if (segments == null)
+                return GMapping(null, null);
+            const segment = traceSegmentInternal(segments, memos[sourceIndex], line, column, bias || GREATEST_LOWER_BOUND);
+            if (segment == null)
+                return GMapping(null, null);
+            return GMapping(segment[REV_GENERATED_LINE] + 1, segment[REV_GENERATED_COLUMN]);
         };
         exports.eachMapping = (map, cb) => {
             const decoded = exports.decodedMappings(map);
@@ -915,31 +881,6 @@
         exports.encodedMap = (map) => {
             return clone(map, exports.encodedMappings(map));
         };
-        function generatedPosition(map, source, line, column, bias, all) {
-            line--;
-            if (line < 0)
-                throw new Error(LINE_GTR_ZERO);
-            if (column < 0)
-                throw new Error(COL_GTR_EQ_ZERO);
-            const { sources, resolvedSources } = map;
-            let sourceIndex = sources.indexOf(source);
-            if (sourceIndex === -1)
-                sourceIndex = resolvedSources.indexOf(source);
-            if (sourceIndex === -1)
-                return all ? [] : GMapping(null, null);
-            const generated = (map._bySources || (map._bySources = buildBySources(exports.decodedMappings(map), (map._bySourceMemos = sources.map(memoizedState)))));
-            const segments = generated[sourceIndex][line];
-            if (segments == null)
-                return all ? [] : GMapping(null, null);
-            const memo = map._bySourceMemos[sourceIndex];
-            if (all)
-                return sliceGeneratedPositions(segments, memo, line, column, bias);
-            const index = traceSegmentInternal(segments, memo, line, column, bias);
-            if (index === -1)
-                return GMapping(null, null);
-            const segment = segments[index];
-            return GMapping(segment[REV_GENERATED_LINE] + 1, segment[REV_GENERATED_COLUMN]);
-        }
     })();
     function clone(map, mappings) {
         return {
@@ -966,35 +907,8 @@
         else if (bias === LEAST_UPPER_BOUND)
             index++;
         if (index === -1 || index === segments.length)
-            return -1;
-        return index;
-    }
-    function sliceGeneratedPositions(segments, memo, line, column, bias) {
-        let min = traceSegmentInternal(segments, memo, line, column, GREATEST_LOWER_BOUND);
-        // We ignored the bias when tracing the segment so that we're guarnateed to find the first (in
-        // insertion order) segment that matched. Even if we did respect the bias when tracing, we would
-        // still need to call `lowerBound()` to find the first segment, which is slower than just looking
-        // for the GREATEST_LOWER_BOUND to begin with. The only difference that matters for us is when the
-        // binary search didn't match, in which case GREATEST_LOWER_BOUND just needs to increment to
-        // match LEAST_UPPER_BOUND.
-        if (!found && bias === LEAST_UPPER_BOUND)
-            min++;
-        if (min === -1 || min === segments.length)
-            return [];
-        // We may have found the segment that started at an earlier column. If this is the case, then we
-        // need to slice all generated segments that match _that_ column, because all such segments span
-        // to our desired column.
-        const matchedColumn = found ? column : segments[min][COLUMN];
-        // The binary search is not guaranteed to find the lower bound when a match wasn't found.
-        if (!found)
-            min = lowerBound(segments, matchedColumn, min);
-        const max = upperBound(segments, matchedColumn, min);
-        const result = [];
-        for (; min <= max; min++) {
-            const segment = segments[min];
-            result.push(GMapping(segment[REV_GENERATED_LINE] + 1, segment[REV_GENERATED_COLUMN]));
-        }
-        return result;
+            return null;
+        return segments[index];
     }
 
     exports.AnyMap = AnyMap;
@@ -10422,7 +10336,7 @@ const os = __nccwpck_require__(2037);
 const {
   TraceMap,
   originalPositionFor
-} = __nccwpck_require__(6974);
+} = __nccwpck_require__(4181);
 
 const {
   validate

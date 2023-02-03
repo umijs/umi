@@ -10,7 +10,7 @@ export { JSONType } from "./compile/rules";
 export { JSONSchemaType } from "./types/json-schema";
 export { JTDSchemaType, SomeJTDSchemaType, JTDDataType } from "./types/jtd-schema";
 export { _, str, stringify, nil, Name, Code, CodeGen, CodeGenOptions } from "./compile/codegen";
-import type { Schema, AnySchema, AnySchemaObject, SchemaObject, AsyncSchema, Vocabulary, KeywordDefinition, AddedKeywordDefinition, AnyValidateFunction, ValidateFunction, AsyncValidateFunction, ErrorObject, Format, AddedFormat, RegExpEngine } from './types';
+import type { Schema, AnySchema, AnySchemaObject, SchemaObject, AsyncSchema, Vocabulary, KeywordDefinition, AddedKeywordDefinition, AnyValidateFunction, ValidateFunction, AsyncValidateFunction, ErrorObject, Format, AddedFormat, RegExpEngine, UriResolver } from './types';
 import type { JSONSchemaType } from './types/json-schema';
 import type { JTDSchemaType, SomeJTDSchemaType, JTDDataType } from './types/jtd-schema';
 import ValidationError from './runtime/validation_error';
@@ -68,9 +68,11 @@ export interface CurrentOptions {
     int32range?: boolean;
     messages?: boolean;
     code?: CodeOptions;
+    uriResolver?: UriResolver;
 }
 export interface CodeOptions {
     es5?: boolean;
+    esm?: boolean;
     lines?: boolean;
     optimize?: boolean | number;
     formats?: Code;
@@ -91,7 +93,7 @@ interface DeprecatedOptions {
     unicode?: boolean;
 }
 declare type RequiredInstanceOptions = {
-    [K in "strictSchema" | "strictNumbers" | "strictTypes" | "strictTuples" | "strictRequired" | "inlineRefs" | "loopRequired" | "loopEnum" | "meta" | "messages" | "schemaId" | "addUsedSchema" | "validateSchema" | "validateFormats" | "int32range" | "unicodeRegExp"]: NonNullable<Options[K]>;
+    [K in "strictSchema" | "strictNumbers" | "strictTypes" | "strictTuples" | "strictRequired" | "inlineRefs" | "loopRequired" | "loopEnum" | "meta" | "messages" | "schemaId" | "addUsedSchema" | "validateSchema" | "validateFormats" | "int32range" | "unicodeRegExp" | "uriResolver"]: NonNullable<Options[K]>;
 } & {
     code: InstanceCodeOptions;
 };

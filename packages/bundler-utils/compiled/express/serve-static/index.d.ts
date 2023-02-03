@@ -1,9 +1,10 @@
-// Type definitions for serve-static 1.15
+// Type definitions for serve-static 1.13
 // Project: https://github.com/expressjs/serve-static
 // Definitions by: Uros Smolnik <https://github.com/urossmolnik>
 //                 Linus Unnebäck <https://github.com/LinusU>
 //                 Devansh Jethmalani <https://github.com/devanshj>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 2.3
 
 /// <reference types="node" />
 import * as m from '../mime';

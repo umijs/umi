@@ -1,5 +1,5 @@
 import type { SourceMapSegment } from './sourcemap-segment';
-import type { GREATEST_LOWER_BOUND, LEAST_UPPER_BOUND, TraceMap } from './trace-mapping';
+import type { TraceMap } from './trace-mapping';
 export interface SourceMapV3 {
     file?: string | null;
     names: string[];
@@ -46,19 +46,18 @@ export declare type InvalidGeneratedMapping = {
     line: null;
     column: null;
 };
-export declare type Bias = typeof GREATEST_LOWER_BOUND | typeof LEAST_UPPER_BOUND;
-export declare type SourceMapInput = string | Ro<EncodedSourceMap> | Ro<DecodedSourceMap> | TraceMap;
-export declare type SectionedSourceMapInput = SourceMapInput | Ro<SectionedSourceMap>;
+export declare type SourceMapInput = string | EncodedSourceMap | DecodedSourceMap | TraceMap;
+export declare type SectionedSourceMapInput = SourceMapInput | SectionedSourceMap;
 export declare type Needle = {
     line: number;
     column: number;
-    bias?: Bias;
+    bias?: 1 | -1;
 };
 export declare type SourceNeedle = {
     source: string;
     line: number;
     column: number;
-    bias?: Bias;
+    bias?: 1 | -1;
 };
 export declare type EachMapping = {
     generatedLine: number;
@@ -84,9 +83,3 @@ export declare abstract class SourceMap {
     sourcesContent: SourceMapV3['sourcesContent'];
     resolvedSources: SourceMapV3['sources'];
 }
-export declare type Ro<T> = T extends Array<infer V> ? V[] | Readonly<V[]> | RoArray<V> | Readonly<RoArray<V>> : T extends object ? T | Readonly<T> | RoObject<T> | Readonly<RoObject<T>> : T;
-declare type RoArray<T> = Ro<T>[];
-declare type RoObject<T> = {
-    [K in keyof T]: T[K] | Ro<T[K]>;
-};
-export {};

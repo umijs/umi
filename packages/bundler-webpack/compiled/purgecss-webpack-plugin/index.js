@@ -1,7 +1,7 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9895:
+/***/ 155:
 /***/ (function(module) {
 
 "use strict";
@@ -71,11 +71,11 @@ function range(a, b, str) {
 
 /***/ }),
 
-/***/ 5793:
+/***/ 7847:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-var concatMap = __nccwpck_require__(7551);
-var balanced = __nccwpck_require__(9895);
+var concatMap = __nccwpck_require__(1062);
+var balanced = __nccwpck_require__(155);
 
 module.exports = expandTop;
 
@@ -279,7 +279,7 @@ function expand(str, isTop) {
 
 /***/ }),
 
-/***/ 7551:
+/***/ 1062:
 /***/ (function(module) {
 
 module.exports = function (xs, fn) {
@@ -299,7 +299,7 @@ var isArray = Array.isArray || function (xs) {
 
 /***/ }),
 
-/***/ 7957:
+/***/ 8811:
 /***/ (function(module) {
 
 "use strict";
@@ -417,7 +417,7 @@ module.exports = cssesc;
 
 /***/ }),
 
-/***/ 6899:
+/***/ 4737:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 module.exports = realpath
@@ -427,13 +427,13 @@ realpath.realpathSync = realpathSync
 realpath.monkeypatch = monkeypatch
 realpath.unmonkeypatch = unmonkeypatch
 
-var fs = __nccwpck_require__(5747)
+var fs = __nccwpck_require__(7147)
 var origRealpath = fs.realpath
 var origRealpathSync = fs.realpathSync
 
 var version = process.version
 var ok = /^v[0-5]\./.test(version)
-var old = __nccwpck_require__(8538)
+var old = __nccwpck_require__(7613)
 
 function newError (er) {
   return er && er.syscall === 'realpath' && (
@@ -490,7 +490,7 @@ function unmonkeypatch () {
 
 /***/ }),
 
-/***/ 8538:
+/***/ 7613:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -514,9 +514,9 @@ function unmonkeypatch () {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var pathModule = __nccwpck_require__(5622);
+var pathModule = __nccwpck_require__(1017);
 var isWindows = process.platform === 'win32';
-var fs = __nccwpck_require__(5747);
+var fs = __nccwpck_require__(7147);
 
 // JavaScript implementation of realpath, ported from node pre-v6
 
@@ -800,7 +800,7 @@ exports.realpath = function realpath(p, cache, cb) {
 
 /***/ }),
 
-/***/ 1374:
+/***/ 6639:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 exports.setopts = setopts
@@ -815,9 +815,10 @@ function ownProp (obj, field) {
   return Object.prototype.hasOwnProperty.call(obj, field)
 }
 
-var path = __nccwpck_require__(5622)
-var minimatch = __nccwpck_require__(2707)
-var isAbsolute = __nccwpck_require__(8194)
+var fs = __nccwpck_require__(7147)
+var path = __nccwpck_require__(1017)
+var minimatch = __nccwpck_require__(4235)
+var isAbsolute = __nccwpck_require__(4249)
 var Minimatch = minimatch.Minimatch
 
 function alphasort (a, b) {
@@ -880,6 +881,7 @@ function setopts (self, pattern, options) {
   self.stat = !!options.stat
   self.noprocess = !!options.noprocess
   self.absolute = !!options.absolute
+  self.fs = options.fs || fs
 
   self.maxLength = options.maxLength || Infinity
   self.cache = options.cache || Object.create(null)
@@ -913,6 +915,8 @@ function setopts (self, pattern, options) {
   // Note that they are not supported in Glob itself anyway.
   options.nonegate = true
   options.nocomment = true
+  // always treat \ in patterns as escapes, not path separators
+  options.allowWindowsEscape = false
 
   self.minimatch = new Minimatch(pattern, options)
   self.options = self.minimatch.options
@@ -1041,7 +1045,7 @@ function childrenIgnored (self, path) {
 
 /***/ }),
 
-/***/ 3938:
+/***/ 3476:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 // Approach:
@@ -1086,25 +1090,24 @@ function childrenIgnored (self, path) {
 
 module.exports = glob
 
-var fs = __nccwpck_require__(5747)
-var rp = __nccwpck_require__(6899)
-var minimatch = __nccwpck_require__(2707)
+var rp = __nccwpck_require__(4737)
+var minimatch = __nccwpck_require__(4235)
 var Minimatch = minimatch.Minimatch
-var inherits = __nccwpck_require__(8097)
-var EE = __nccwpck_require__(8614).EventEmitter
-var path = __nccwpck_require__(5622)
-var assert = __nccwpck_require__(2357)
-var isAbsolute = __nccwpck_require__(8194)
-var globSync = __nccwpck_require__(3935)
-var common = __nccwpck_require__(1374)
+var inherits = __nccwpck_require__(6315)
+var EE = (__nccwpck_require__(2361).EventEmitter)
+var path = __nccwpck_require__(1017)
+var assert = __nccwpck_require__(9491)
+var isAbsolute = __nccwpck_require__(4249)
+var globSync = __nccwpck_require__(1232)
+var common = __nccwpck_require__(6639)
 var setopts = common.setopts
 var ownProp = common.ownProp
-var inflight = __nccwpck_require__(9854)
-var util = __nccwpck_require__(1669)
+var inflight = __nccwpck_require__(6900)
+var util = __nccwpck_require__(3837)
 var childrenIgnored = common.childrenIgnored
 var isIgnored = common.isIgnored
 
-var once = __nccwpck_require__(39)
+var once = __nccwpck_require__(4556)
 
 function glob (pattern, options, cb) {
   if (typeof options === 'function') cb = options, options = {}
@@ -1389,7 +1392,10 @@ Glob.prototype._process = function (pattern, index, inGlobStar, cb) {
   var read
   if (prefix === null)
     read = '.'
-  else if (isAbsolute(prefix) || isAbsolute(pattern.join('/'))) {
+  else if (isAbsolute(prefix) ||
+      isAbsolute(pattern.map(function (p) {
+        return typeof p === 'string' ? p : '[*]'
+      }).join('/'))) {
     if (!prefix || !isAbsolute(prefix))
       prefix = '/' + prefix
     read = prefix
@@ -1547,7 +1553,7 @@ Glob.prototype._readdirInGlobStar = function (abs, cb) {
   var lstatcb = inflight(lstatkey, lstatcb_)
 
   if (lstatcb)
-    fs.lstat(abs, lstatcb)
+    self.fs.lstat(abs, lstatcb)
 
   function lstatcb_ (er, lstat) {
     if (er && er.code === 'ENOENT')
@@ -1588,7 +1594,7 @@ Glob.prototype._readdir = function (abs, inGlobStar, cb) {
   }
 
   var self = this
-  fs.readdir(abs, readdirCb(this, abs, cb))
+  self.fs.readdir(abs, readdirCb(this, abs, cb))
 }
 
 function readdirCb (self, abs, cb) {
@@ -1792,13 +1798,13 @@ Glob.prototype._stat = function (f, cb) {
   var self = this
   var statcb = inflight('stat\0' + abs, lstatcb_)
   if (statcb)
-    fs.lstat(abs, statcb)
+    self.fs.lstat(abs, statcb)
 
   function lstatcb_ (er, lstat) {
     if (lstat && lstat.isSymbolicLink()) {
       // If it's a symlink, then treat it as the target, unless
       // the target does not exist, then treat it as a file.
-      return fs.stat(abs, function (er, stat) {
+      return self.fs.stat(abs, function (er, stat) {
         if (er)
           self._stat2(f, abs, null, lstat, cb)
         else
@@ -1836,22 +1842,21 @@ Glob.prototype._stat2 = function (f, abs, er, stat, cb) {
 
 /***/ }),
 
-/***/ 3935:
+/***/ 1232:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 module.exports = globSync
 globSync.GlobSync = GlobSync
 
-var fs = __nccwpck_require__(5747)
-var rp = __nccwpck_require__(6899)
-var minimatch = __nccwpck_require__(2707)
+var rp = __nccwpck_require__(4737)
+var minimatch = __nccwpck_require__(4235)
 var Minimatch = minimatch.Minimatch
-var Glob = __nccwpck_require__(3938).Glob
-var util = __nccwpck_require__(1669)
-var path = __nccwpck_require__(5622)
-var assert = __nccwpck_require__(2357)
-var isAbsolute = __nccwpck_require__(8194)
-var common = __nccwpck_require__(1374)
+var Glob = (__nccwpck_require__(3476).Glob)
+var util = __nccwpck_require__(3837)
+var path = __nccwpck_require__(1017)
+var assert = __nccwpck_require__(9491)
+var isAbsolute = __nccwpck_require__(4249)
+var common = __nccwpck_require__(6639)
 var setopts = common.setopts
 var ownProp = common.ownProp
 var childrenIgnored = common.childrenIgnored
@@ -1890,7 +1895,7 @@ function GlobSync (pattern, options) {
 }
 
 GlobSync.prototype._finish = function () {
-  assert(this instanceof GlobSync)
+  assert.ok(this instanceof GlobSync)
   if (this.realpath) {
     var self = this
     this.matches.forEach(function (matchset, index) {
@@ -1914,7 +1919,7 @@ GlobSync.prototype._finish = function () {
 
 
 GlobSync.prototype._process = function (pattern, index, inGlobStar) {
-  assert(this instanceof GlobSync)
+  assert.ok(this instanceof GlobSync)
 
   // Get the first [n] parts of pattern that are all strings.
   var n = 0
@@ -1951,7 +1956,10 @@ GlobSync.prototype._process = function (pattern, index, inGlobStar) {
   var read
   if (prefix === null)
     read = '.'
-  else if (isAbsolute(prefix) || isAbsolute(pattern.join('/'))) {
+  else if (isAbsolute(prefix) ||
+      isAbsolute(pattern.map(function (p) {
+        return typeof p === 'string' ? p : '[*]'
+      }).join('/'))) {
     if (!prefix || !isAbsolute(prefix))
       prefix = '/' + prefix
     read = prefix
@@ -2087,7 +2095,7 @@ GlobSync.prototype._readdirInGlobStar = function (abs) {
   var lstat
   var stat
   try {
-    lstat = fs.lstatSync(abs)
+    lstat = this.fs.lstatSync(abs)
   } catch (er) {
     if (er.code === 'ENOENT') {
       // lstat failed, doesn't exist
@@ -2124,7 +2132,7 @@ GlobSync.prototype._readdir = function (abs, inGlobStar) {
   }
 
   try {
-    return this._readdirEntries(abs, fs.readdirSync(abs))
+    return this._readdirEntries(abs, this.fs.readdirSync(abs))
   } catch (er) {
     this._readdirError(abs, er)
     return null
@@ -2283,7 +2291,7 @@ GlobSync.prototype._stat = function (f) {
   if (!stat) {
     var lstat
     try {
-      lstat = fs.lstatSync(abs)
+      lstat = this.fs.lstatSync(abs)
     } catch (er) {
       if (er && (er.code === 'ENOENT' || er.code === 'ENOTDIR')) {
         this.statCache[abs] = false
@@ -2293,7 +2301,7 @@ GlobSync.prototype._stat = function (f) {
 
     if (lstat && lstat.isSymbolicLink()) {
       try {
-        stat = fs.statSync(abs)
+        stat = this.fs.statSync(abs)
       } catch (er) {
         stat = lstat
       }
@@ -2327,12 +2335,12 @@ GlobSync.prototype._makeAbs = function (f) {
 
 /***/ }),
 
-/***/ 9854:
+/***/ 6900:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-var wrappy = __nccwpck_require__(1315)
+var wrappy = __nccwpck_require__(2928)
 var reqs = Object.create(null)
-var once = __nccwpck_require__(39)
+var once = __nccwpck_require__(4556)
 
 module.exports = wrappy(inflight)
 
@@ -2388,23 +2396,23 @@ function slice (args) {
 
 /***/ }),
 
-/***/ 8097:
+/***/ 6315:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 try {
-  var util = __nccwpck_require__(1669);
+  var util = __nccwpck_require__(3837);
   /* istanbul ignore next */
   if (typeof util.inherits !== 'function') throw '';
   module.exports = util.inherits;
 } catch (e) {
   /* istanbul ignore next */
-  module.exports = __nccwpck_require__(1312);
+  module.exports = __nccwpck_require__(959);
 }
 
 
 /***/ }),
 
-/***/ 1312:
+/***/ 959:
 /***/ (function(module) {
 
 if (typeof Object.create === 'function') {
@@ -2438,19 +2446,19 @@ if (typeof Object.create === 'function') {
 
 /***/ }),
 
-/***/ 2707:
+/***/ 4235:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 module.exports = minimatch
 minimatch.Minimatch = Minimatch
 
-var path = { sep: '/' }
-try {
-  path = __nccwpck_require__(5622)
-} catch (er) {}
+var path = (function () { try { return __nccwpck_require__(1017) } catch (e) {}}()) || {
+  sep: '/'
+}
+minimatch.sep = path.sep
 
 var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {}
-var expand = __nccwpck_require__(5793)
+var expand = __nccwpck_require__(7847)
 
 var plTypes = {
   '!': { open: '(?:(?!(?:', close: '))[^/]*?)'},
@@ -2499,43 +2507,64 @@ function filter (pattern, options) {
 }
 
 function ext (a, b) {
-  a = a || {}
   b = b || {}
   var t = {}
-  Object.keys(b).forEach(function (k) {
-    t[k] = b[k]
-  })
   Object.keys(a).forEach(function (k) {
     t[k] = a[k]
+  })
+  Object.keys(b).forEach(function (k) {
+    t[k] = b[k]
   })
   return t
 }
 
 minimatch.defaults = function (def) {
-  if (!def || !Object.keys(def).length) return minimatch
+  if (!def || typeof def !== 'object' || !Object.keys(def).length) {
+    return minimatch
+  }
 
   var orig = minimatch
 
   var m = function minimatch (p, pattern, options) {
-    return orig.minimatch(p, pattern, ext(def, options))
+    return orig(p, pattern, ext(def, options))
   }
 
   m.Minimatch = function Minimatch (pattern, options) {
     return new orig.Minimatch(pattern, ext(def, options))
+  }
+  m.Minimatch.defaults = function defaults (options) {
+    return orig.defaults(ext(def, options)).Minimatch
+  }
+
+  m.filter = function filter (pattern, options) {
+    return orig.filter(pattern, ext(def, options))
+  }
+
+  m.defaults = function defaults (options) {
+    return orig.defaults(ext(def, options))
+  }
+
+  m.makeRe = function makeRe (pattern, options) {
+    return orig.makeRe(pattern, ext(def, options))
+  }
+
+  m.braceExpand = function braceExpand (pattern, options) {
+    return orig.braceExpand(pattern, ext(def, options))
+  }
+
+  m.match = function (list, pattern, options) {
+    return orig.match(list, pattern, ext(def, options))
   }
 
   return m
 }
 
 Minimatch.defaults = function (def) {
-  if (!def || !Object.keys(def).length) return Minimatch
   return minimatch.defaults(def).Minimatch
 }
 
 function minimatch (p, pattern, options) {
-  if (typeof pattern !== 'string') {
-    throw new TypeError('glob pattern string required')
-  }
+  assertValidPattern(pattern)
 
   if (!options) options = {}
 
@@ -2543,9 +2572,6 @@ function minimatch (p, pattern, options) {
   if (!options.nocomment && pattern.charAt(0) === '#') {
     return false
   }
-
-  // "" only matches ""
-  if (pattern.trim() === '') return p === ''
 
   return new Minimatch(pattern, options).match(p)
 }
@@ -2555,15 +2581,14 @@ function Minimatch (pattern, options) {
     return new Minimatch(pattern, options)
   }
 
-  if (typeof pattern !== 'string') {
-    throw new TypeError('glob pattern string required')
-  }
+  assertValidPattern(pattern)
 
   if (!options) options = {}
+
   pattern = pattern.trim()
 
   // windows support: need to use /, not \
-  if (path.sep !== '/') {
+  if (!options.allowWindowsEscape && path.sep !== '/') {
     pattern = pattern.split(path.sep).join('/')
   }
 
@@ -2574,6 +2599,7 @@ function Minimatch (pattern, options) {
   this.negate = false
   this.comment = false
   this.empty = false
+  this.partial = !!options.partial
 
   // make the set of regexps etc.
   this.make()
@@ -2583,9 +2609,6 @@ Minimatch.prototype.debug = function () {}
 
 Minimatch.prototype.make = make
 function make () {
-  // don't do it more than once.
-  if (this._made) return
-
   var pattern = this.pattern
   var options = this.options
 
@@ -2605,7 +2628,7 @@ function make () {
   // step 2: expand braces
   var set = this.globSet = this.braceExpand()
 
-  if (options.debug) this.debug = console.error
+  if (options.debug) this.debug = function debug() { console.error.apply(console, arguments) }
 
   this.debug(this.pattern, set)
 
@@ -2685,17 +2708,27 @@ function braceExpand (pattern, options) {
   pattern = typeof pattern === 'undefined'
     ? this.pattern : pattern
 
-  if (typeof pattern === 'undefined') {
-    throw new TypeError('undefined pattern')
-  }
+  assertValidPattern(pattern)
 
-  if (options.nobrace ||
-    !pattern.match(/\{.*\}/)) {
+  // Thanks to Yeting Li <https://github.com/yetingli> for
+  // improving this regexp to avoid a ReDOS vulnerability.
+  if (options.nobrace || !/\{(?:(?!\{).)*\}/.test(pattern)) {
     // shortcut. no need to expand.
     return [pattern]
   }
 
   return expand(pattern)
+}
+
+var MAX_PATTERN_LENGTH = 1024 * 64
+var assertValidPattern = function (pattern) {
+  if (typeof pattern !== 'string') {
+    throw new TypeError('invalid pattern')
+  }
+
+  if (pattern.length > MAX_PATTERN_LENGTH) {
+    throw new TypeError('pattern is too long')
+  }
 }
 
 // parse a component of the expanded set.
@@ -2712,14 +2745,17 @@ function braceExpand (pattern, options) {
 Minimatch.prototype.parse = parse
 var SUBPARSE = {}
 function parse (pattern, isSub) {
-  if (pattern.length > 1024 * 64) {
-    throw new TypeError('pattern is too long')
-  }
+  assertValidPattern(pattern)
 
   var options = this.options
 
   // shortcuts
-  if (!options.noglobstar && pattern === '**') return GLOBSTAR
+  if (pattern === '**') {
+    if (!options.noglobstar)
+      return GLOBSTAR
+    else
+      pattern = '*'
+  }
   if (pattern === '') return ''
 
   var re = ''
@@ -2775,10 +2811,12 @@ function parse (pattern, isSub) {
     }
 
     switch (c) {
-      case '/':
+      /* istanbul ignore next */
+      case '/': {
         // completely not allowed, even escaped.
         // Should already be path-split by now.
         return false
+      }
 
       case '\\':
         clearStateChar()
@@ -2897,25 +2935,23 @@ function parse (pattern, isSub) {
 
         // handle the case where we left a class open.
         // "[z-a]" is valid, equivalent to "\[z-a\]"
-        if (inClass) {
-          // split where the last [ was, make sure we don't have
-          // an invalid re. if so, re-walk the contents of the
-          // would-be class to re-translate any characters that
-          // were passed through as-is
-          // TODO: It would probably be faster to determine this
-          // without a try/catch and a new RegExp, but it's tricky
-          // to do safely.  For now, this is safe and works.
-          var cs = pattern.substring(classStart + 1, i)
-          try {
-            RegExp('[' + cs + ']')
-          } catch (er) {
-            // not a valid class!
-            var sp = this.parse(cs, SUBPARSE)
-            re = re.substr(0, reClassStart) + '\\[' + sp[0] + '\\]'
-            hasMagic = hasMagic || sp[1]
-            inClass = false
-            continue
-          }
+        // split where the last [ was, make sure we don't have
+        // an invalid re. if so, re-walk the contents of the
+        // would-be class to re-translate any characters that
+        // were passed through as-is
+        // TODO: It would probably be faster to determine this
+        // without a try/catch and a new RegExp, but it's tricky
+        // to do safely.  For now, this is safe and works.
+        var cs = pattern.substring(classStart + 1, i)
+        try {
+          RegExp('[' + cs + ']')
+        } catch (er) {
+          // not a valid class!
+          var sp = this.parse(cs, SUBPARSE)
+          re = re.substr(0, reClassStart) + '\\[' + sp[0] + '\\]'
+          hasMagic = hasMagic || sp[1]
+          inClass = false
+          continue
         }
 
         // finish up the class.
@@ -2999,9 +3035,7 @@ function parse (pattern, isSub) {
   // something that could conceivably capture a dot
   var addPatternStart = false
   switch (re.charAt(0)) {
-    case '.':
-    case '[':
-    case '(': addPatternStart = true
+    case '[': case '.': case '(': addPatternStart = true
   }
 
   // Hack to work around lack of negative lookbehind in JS
@@ -3063,7 +3097,7 @@ function parse (pattern, isSub) {
   var flags = options.nocase ? 'i' : ''
   try {
     var regExp = new RegExp('^' + re + '$', flags)
-  } catch (er) {
+  } catch (er) /* istanbul ignore next - should be impossible */ {
     // If it was an invalid regular expression, then it can't match
     // anything.  This trick looks for a character after the end of
     // the string, which is of course impossible, except in multi-line
@@ -3121,7 +3155,7 @@ function makeRe () {
 
   try {
     this.regexp = new RegExp(re, flags)
-  } catch (ex) {
+  } catch (ex) /* istanbul ignore next - should be impossible */ {
     this.regexp = false
   }
   return this.regexp
@@ -3139,8 +3173,8 @@ minimatch.match = function (list, pattern, options) {
   return list
 }
 
-Minimatch.prototype.match = match
-function match (f, partial) {
+Minimatch.prototype.match = function match (f, partial) {
+  if (typeof partial === 'undefined') partial = this.partial
   this.debug('match', f, this.pattern)
   // short-circuit in the case of busted things.
   // comments, etc.
@@ -3222,6 +3256,7 @@ Minimatch.prototype.matchOne = function (file, pattern, partial) {
 
     // should be impossible.
     // some invalid regexp stuff in the set.
+    /* istanbul ignore if */
     if (p === false) return false
 
     if (p === GLOBSTAR) {
@@ -3295,6 +3330,7 @@ Minimatch.prototype.matchOne = function (file, pattern, partial) {
       // no match was found.
       // However, in partial mode, we can't say this is necessarily over.
       // If there's more *pattern* left, then
+      /* istanbul ignore if */
       if (partial) {
         // ran out of file
         this.debug('\n>>> no match, partial?', file, fr, pattern, pr)
@@ -3308,11 +3344,7 @@ Minimatch.prototype.matchOne = function (file, pattern, partial) {
     // patterns with magic have been turned into regexps.
     var hit
     if (typeof p === 'string') {
-      if (options.nocase) {
-        hit = f.toLowerCase() === p.toLowerCase()
-      } else {
-        hit = f === p
-      }
+      hit = f === p
       this.debug('string match', p, f, hit)
     } else {
       hit = f.match(p)
@@ -3343,16 +3375,16 @@ Minimatch.prototype.matchOne = function (file, pattern, partial) {
     // this is ok if we're doing the match as part of
     // a glob fs traversal.
     return partial
-  } else if (pi === pl) {
+  } else /* istanbul ignore else */ if (pi === pl) {
     // ran out of pattern, still have file left.
     // this is only acceptable if we're on the very last
     // empty segment of a file with a trailing slash.
     // a/* should match a/b/
-    var emptyFileEnd = (fi === fl - 1) && (file[fi] === '')
-    return emptyFileEnd
+    return (fi === fl - 1) && (file[fi] === '')
   }
 
   // should be unreachable.
+  /* istanbul ignore next */
   throw new Error('wtf?')
 }
 
@@ -3368,10 +3400,10 @@ function regExpEscape (s) {
 
 /***/ }),
 
-/***/ 39:
+/***/ 4556:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-var wrappy = __nccwpck_require__(1315)
+var wrappy = __nccwpck_require__(2928)
 module.exports = wrappy(once)
 module.exports.strict = wrappy(onceStrict)
 
@@ -3417,7 +3449,7 @@ function onceStrict (fn) {
 
 /***/ }),
 
-/***/ 8194:
+/***/ 4249:
 /***/ (function(module) {
 
 "use strict";
@@ -3445,18 +3477,18 @@ module.exports.win32 = win32;
 
 /***/ }),
 
-/***/ 9746:
+/***/ 7789:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _processor = _interopRequireDefault(__nccwpck_require__(8680));
+var _processor = _interopRequireDefault(__nccwpck_require__(4886));
 
-var selectors = _interopRequireWildcard(__nccwpck_require__(4668));
+var selectors = _interopRequireWildcard(__nccwpck_require__(1156));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -3471,53 +3503,53 @@ var parser = function parser(processor) {
 Object.assign(parser, selectors);
 delete parser.__esModule;
 var _default = parser;
-exports.default = _default;
+exports["default"] = _default;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 2836:
+/***/ 5076:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _root = _interopRequireDefault(__nccwpck_require__(2412));
+var _root = _interopRequireDefault(__nccwpck_require__(1461));
 
-var _selector = _interopRequireDefault(__nccwpck_require__(8980));
+var _selector = _interopRequireDefault(__nccwpck_require__(9668));
 
-var _className = _interopRequireDefault(__nccwpck_require__(1412));
+var _className = _interopRequireDefault(__nccwpck_require__(7940));
 
-var _comment = _interopRequireDefault(__nccwpck_require__(1836));
+var _comment = _interopRequireDefault(__nccwpck_require__(752));
 
-var _id = _interopRequireDefault(__nccwpck_require__(9719));
+var _id = _interopRequireDefault(__nccwpck_require__(8216));
 
-var _tag = _interopRequireDefault(__nccwpck_require__(3427));
+var _tag = _interopRequireDefault(__nccwpck_require__(5163));
 
-var _string = _interopRequireDefault(__nccwpck_require__(9053));
+var _string = _interopRequireDefault(__nccwpck_require__(3097));
 
-var _pseudo = _interopRequireDefault(__nccwpck_require__(7107));
+var _pseudo = _interopRequireDefault(__nccwpck_require__(18));
 
-var _attribute = _interopRequireWildcard(__nccwpck_require__(2735));
+var _attribute = _interopRequireWildcard(__nccwpck_require__(6928));
 
-var _universal = _interopRequireDefault(__nccwpck_require__(1691));
+var _universal = _interopRequireDefault(__nccwpck_require__(7246));
 
-var _combinator = _interopRequireDefault(__nccwpck_require__(9875));
+var _combinator = _interopRequireDefault(__nccwpck_require__(119));
 
-var _nesting = _interopRequireDefault(__nccwpck_require__(9785));
+var _nesting = _interopRequireDefault(__nccwpck_require__(2462));
 
-var _sortAscending = _interopRequireDefault(__nccwpck_require__(4175));
+var _sortAscending = _interopRequireDefault(__nccwpck_require__(4241));
 
-var _tokenize = _interopRequireWildcard(__nccwpck_require__(3383));
+var _tokenize = _interopRequireWildcard(__nccwpck_require__(2795));
 
-var tokens = _interopRequireWildcard(__nccwpck_require__(9087));
+var tokens = _interopRequireWildcard(__nccwpck_require__(6874));
 
-var types = _interopRequireWildcard(__nccwpck_require__(8445));
+var types = _interopRequireWildcard(__nccwpck_require__(2300));
 
-var _util = __nccwpck_require__(8548);
+var _util = __nccwpck_require__(7123);
 
 var _WHITESPACE_TOKENS, _Object$assign;
 
@@ -4445,7 +4477,11 @@ var Parser = /*#__PURE__*/function () {
     }
 
     var hasClass = indexesOf(word, '.').filter(function (i) {
-      return word[i - 1] !== '\\';
+      // Allow escaped dot within class name
+      var escapedDot = word[i - 1] === '\\'; // Allow decimal numbers percent in @keyframes
+
+      var isKeyframesPercent = /^\d+\.\d+%$/.test(word);
+      return !escapedDot && !isKeyframesPercent;
     });
     var hasId = indexesOf(word, '#').filter(function (i) {
       return word[i - 1] !== '\\';
@@ -4717,21 +4753,21 @@ var Parser = /*#__PURE__*/function () {
   return Parser;
 }();
 
-exports.default = Parser;
+exports["default"] = Parser;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 8680:
+/***/ 4886:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _parser = _interopRequireDefault(__nccwpck_require__(2836));
+var _parser = _interopRequireDefault(__nccwpck_require__(5076));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -4930,12 +4966,12 @@ var Processor = /*#__PURE__*/function () {
   return Processor;
 }();
 
-exports.default = Processor;
+exports["default"] = Processor;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 2735:
+/***/ 6928:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -4943,15 +4979,15 @@ module.exports = exports.default;
 
 exports.__esModule = true;
 exports.unescapeValue = unescapeValue;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _cssesc = _interopRequireDefault(__nccwpck_require__(7957));
+var _cssesc = _interopRequireDefault(__nccwpck_require__(8811));
 
-var _unesc = _interopRequireDefault(__nccwpck_require__(9872));
+var _unesc = _interopRequireDefault(__nccwpck_require__(5624));
 
-var _namespace = _interopRequireDefault(__nccwpck_require__(2936));
+var _namespace = _interopRequireDefault(__nccwpck_require__(9427));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 var _CSSESC_QUOTE_OPTIONS;
 
@@ -4965,7 +5001,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var deprecate = __nccwpck_require__(7011);
+var deprecate = __nccwpck_require__(8125);
 
 var WRAPPED_IN_QUOTES = /^('|")([^]*)\1$/;
 var warnOfDeprecatedValueAssignment = deprecate(function () {}, "Assigning an attribute a value containing characters that might need to be escaped is deprecated. " + "Call attribute.setValue() instead.");
@@ -5434,7 +5470,7 @@ var Attribute = /*#__PURE__*/function (_Namespace) {
   return Attribute;
 }(_namespace["default"]);
 
-exports.default = Attribute;
+exports["default"] = Attribute;
 Attribute.NO_QUOTE = null;
 Attribute.SINGLE_QUOTE = "'";
 Attribute.DOUBLE_QUOTE = '"';
@@ -5457,22 +5493,22 @@ function defaultAttrConcat(attrValue, attrSpaces) {
 
 /***/ }),
 
-/***/ 1412:
+/***/ 7940:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _cssesc = _interopRequireDefault(__nccwpck_require__(7957));
+var _cssesc = _interopRequireDefault(__nccwpck_require__(8811));
 
-var _util = __nccwpck_require__(8548);
+var _util = __nccwpck_require__(7123);
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -5528,23 +5564,23 @@ var ClassName = /*#__PURE__*/function (_Node) {
   return ClassName;
 }(_node["default"]);
 
-exports.default = ClassName;
+exports["default"] = ClassName;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 9875:
+/***/ 119:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -5566,23 +5602,23 @@ var Combinator = /*#__PURE__*/function (_Node) {
   return Combinator;
 }(_node["default"]);
 
-exports.default = Combinator;
+exports["default"] = Combinator;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 1836:
+/***/ 752:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -5604,12 +5640,12 @@ var Comment = /*#__PURE__*/function (_Node) {
   return Comment;
 }(_node["default"]);
 
-exports.default = Comment;
+exports["default"] = Comment;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 8714:
+/***/ 8701:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -5618,29 +5654,29 @@ module.exports = exports.default;
 exports.__esModule = true;
 exports.universal = exports.tag = exports.string = exports.selector = exports.root = exports.pseudo = exports.nesting = exports.id = exports.comment = exports.combinator = exports.className = exports.attribute = void 0;
 
-var _attribute = _interopRequireDefault(__nccwpck_require__(2735));
+var _attribute = _interopRequireDefault(__nccwpck_require__(6928));
 
-var _className = _interopRequireDefault(__nccwpck_require__(1412));
+var _className = _interopRequireDefault(__nccwpck_require__(7940));
 
-var _combinator = _interopRequireDefault(__nccwpck_require__(9875));
+var _combinator = _interopRequireDefault(__nccwpck_require__(119));
 
-var _comment = _interopRequireDefault(__nccwpck_require__(1836));
+var _comment = _interopRequireDefault(__nccwpck_require__(752));
 
-var _id = _interopRequireDefault(__nccwpck_require__(9719));
+var _id = _interopRequireDefault(__nccwpck_require__(8216));
 
-var _nesting = _interopRequireDefault(__nccwpck_require__(9785));
+var _nesting = _interopRequireDefault(__nccwpck_require__(2462));
 
-var _pseudo = _interopRequireDefault(__nccwpck_require__(7107));
+var _pseudo = _interopRequireDefault(__nccwpck_require__(18));
 
-var _root = _interopRequireDefault(__nccwpck_require__(2412));
+var _root = _interopRequireDefault(__nccwpck_require__(1461));
 
-var _selector = _interopRequireDefault(__nccwpck_require__(8980));
+var _selector = _interopRequireDefault(__nccwpck_require__(9668));
 
-var _string = _interopRequireDefault(__nccwpck_require__(9053));
+var _string = _interopRequireDefault(__nccwpck_require__(3097));
 
-var _tag = _interopRequireDefault(__nccwpck_require__(3427));
+var _tag = _interopRequireDefault(__nccwpck_require__(5163));
 
-var _universal = _interopRequireDefault(__nccwpck_require__(1691));
+var _universal = _interopRequireDefault(__nccwpck_require__(7246));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -5718,18 +5754,18 @@ exports.universal = universal;
 
 /***/ }),
 
-/***/ 5185:
+/***/ 2050:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var types = _interopRequireWildcard(__nccwpck_require__(8445));
+var types = _interopRequireWildcard(__nccwpck_require__(2300));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -6115,12 +6151,12 @@ var Container = /*#__PURE__*/function (_Node) {
   return Container;
 }(_node["default"]);
 
-exports.default = Container;
+exports["default"] = Container;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 9326:
+/***/ 3736:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -6134,7 +6170,7 @@ exports.isContainer = isContainer;
 exports.isNamespace = isNamespace;
 exports.isUniversal = exports.isTag = exports.isString = exports.isSelector = exports.isRoot = exports.isPseudo = exports.isNesting = exports.isIdentifier = exports.isComment = exports.isCombinator = exports.isClassName = exports.isAttribute = void 0;
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 var _IS_TYPE;
 
@@ -6174,7 +6210,7 @@ var isUniversal = isNodeType.bind(null, _types.UNIVERSAL);
 exports.isUniversal = isUniversal;
 
 function isPseudoElement(node) {
-  return isPseudo(node) && node.value && (node.value.startsWith("::") || node.value.toLowerCase() === ":before" || node.value.toLowerCase() === ":after");
+  return isPseudo(node) && node.value && (node.value.startsWith("::") || node.value.toLowerCase() === ":before" || node.value.toLowerCase() === ":after" || node.value.toLowerCase() === ":first-letter" || node.value.toLowerCase() === ":first-line");
 }
 
 function isPseudoClass(node) {
@@ -6191,18 +6227,18 @@ function isNamespace(node) {
 
 /***/ }),
 
-/***/ 9719:
+/***/ 8216:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6230,12 +6266,12 @@ var ID = /*#__PURE__*/function (_Node) {
   return ID;
 }(_node["default"]);
 
-exports.default = ID;
+exports["default"] = ID;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 4668:
+/***/ 1156:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -6243,7 +6279,7 @@ module.exports = exports.default;
 
 exports.__esModule = true;
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 Object.keys(_types).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6251,7 +6287,7 @@ Object.keys(_types).forEach(function (key) {
   exports[key] = _types[key];
 });
 
-var _constructors = __nccwpck_require__(8714);
+var _constructors = __nccwpck_require__(8701);
 
 Object.keys(_constructors).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6259,7 +6295,7 @@ Object.keys(_constructors).forEach(function (key) {
   exports[key] = _constructors[key];
 });
 
-var _guards = __nccwpck_require__(9326);
+var _guards = __nccwpck_require__(3736);
 
 Object.keys(_guards).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6269,20 +6305,20 @@ Object.keys(_guards).forEach(function (key) {
 
 /***/ }),
 
-/***/ 2936:
+/***/ 9427:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _cssesc = _interopRequireDefault(__nccwpck_require__(7957));
+var _cssesc = _interopRequireDefault(__nccwpck_require__(8811));
 
-var _util = __nccwpck_require__(8548);
+var _util = __nccwpck_require__(7123);
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6371,24 +6407,24 @@ var Namespace = /*#__PURE__*/function (_Node) {
   return Namespace;
 }(_node["default"]);
 
-exports.default = Namespace;
+exports["default"] = Namespace;
 ;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 9785:
+/***/ 2462:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6411,21 +6447,21 @@ var Nesting = /*#__PURE__*/function (_Node) {
   return Nesting;
 }(_node["default"]);
 
-exports.default = Nesting;
+exports["default"] = Nesting;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 2650:
+/***/ 7554:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _util = __nccwpck_require__(8548);
+var _util = __nccwpck_require__(7123);
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -6657,23 +6693,23 @@ var Node = /*#__PURE__*/function () {
   return Node;
 }();
 
-exports.default = Node;
+exports["default"] = Node;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 7107:
+/***/ 18:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _container = _interopRequireDefault(__nccwpck_require__(5185));
+var _container = _interopRequireDefault(__nccwpck_require__(2050));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6702,23 +6738,23 @@ var Pseudo = /*#__PURE__*/function (_Container) {
   return Pseudo;
 }(_container["default"]);
 
-exports.default = Pseudo;
+exports["default"] = Pseudo;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 2412:
+/***/ 1461:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _container = _interopRequireDefault(__nccwpck_require__(5185));
+var _container = _interopRequireDefault(__nccwpck_require__(2050));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6769,23 +6805,23 @@ var Root = /*#__PURE__*/function (_Container) {
   return Root;
 }(_container["default"]);
 
-exports.default = Root;
+exports["default"] = Root;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 8980:
+/***/ 9668:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _container = _interopRequireDefault(__nccwpck_require__(5185));
+var _container = _interopRequireDefault(__nccwpck_require__(2050));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6807,23 +6843,23 @@ var Selector = /*#__PURE__*/function (_Container) {
   return Selector;
 }(_container["default"]);
 
-exports.default = Selector;
+exports["default"] = Selector;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 9053:
+/***/ 3097:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _node = _interopRequireDefault(__nccwpck_require__(2650));
+var _node = _interopRequireDefault(__nccwpck_require__(7554));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6845,23 +6881,23 @@ var String = /*#__PURE__*/function (_Node) {
   return String;
 }(_node["default"]);
 
-exports.default = String;
+exports["default"] = String;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 3427:
+/***/ 5163:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _namespace = _interopRequireDefault(__nccwpck_require__(2936));
+var _namespace = _interopRequireDefault(__nccwpck_require__(9427));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6883,12 +6919,12 @@ var Tag = /*#__PURE__*/function (_Namespace) {
   return Tag;
 }(_namespace["default"]);
 
-exports.default = Tag;
+exports["default"] = Tag;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 8445:
+/***/ 2300:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -6923,18 +6959,18 @@ exports.UNIVERSAL = UNIVERSAL;
 
 /***/ }),
 
-/***/ 1691:
+/***/ 7246:
 /***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _namespace = _interopRequireDefault(__nccwpck_require__(2936));
+var _namespace = _interopRequireDefault(__nccwpck_require__(9427));
 
-var _types = __nccwpck_require__(8445);
+var _types = __nccwpck_require__(2300);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6957,19 +6993,19 @@ var Universal = /*#__PURE__*/function (_Namespace) {
   return Universal;
 }(_namespace["default"]);
 
-exports.default = Universal;
+exports["default"] = Universal;
 module.exports = exports.default;
 
 /***/ }),
 
-/***/ 4175:
+/***/ 4241:
 /***/ (function(module, exports) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = sortAscending;
+exports["default"] = sortAscending;
 
 function sortAscending(list) {
   return list.sort(function (a, b) {
@@ -6982,7 +7018,7 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 9087:
+/***/ 6874:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -7084,17 +7120,17 @@ exports.combinator = combinator;
 
 /***/ }),
 
-/***/ 3383:
+/***/ 2795:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = tokenize;
+exports["default"] = tokenize;
 exports.FIELDS = void 0;
 
-var t = _interopRequireWildcard(__nccwpck_require__(9087));
+var t = _interopRequireWildcard(__nccwpck_require__(6874));
 
 var _unescapable, _wordDelimiters;
 
@@ -7362,14 +7398,14 @@ function tokenize(input) {
 
 /***/ }),
 
-/***/ 251:
+/***/ 3266:
 /***/ (function(module, exports) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = ensureObject;
+exports["default"] = ensureObject;
 
 function ensureObject(obj) {
   for (var _len = arguments.length, props = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -7391,14 +7427,14 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 7725:
+/***/ 2321:
 /***/ (function(module, exports) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = getProp;
+exports["default"] = getProp;
 
 function getProp(obj) {
   for (var _len = arguments.length, props = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -7422,7 +7458,7 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 8548:
+/***/ 7123:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -7431,19 +7467,19 @@ module.exports = exports.default;
 exports.__esModule = true;
 exports.stripComments = exports.ensureObject = exports.getProp = exports.unesc = void 0;
 
-var _unesc = _interopRequireDefault(__nccwpck_require__(9872));
+var _unesc = _interopRequireDefault(__nccwpck_require__(5624));
 
 exports.unesc = _unesc["default"];
 
-var _getProp = _interopRequireDefault(__nccwpck_require__(7725));
+var _getProp = _interopRequireDefault(__nccwpck_require__(2321));
 
 exports.getProp = _getProp["default"];
 
-var _ensureObject = _interopRequireDefault(__nccwpck_require__(251));
+var _ensureObject = _interopRequireDefault(__nccwpck_require__(3266));
 
 exports.ensureObject = _ensureObject["default"];
 
-var _stripComments = _interopRequireDefault(__nccwpck_require__(497));
+var _stripComments = _interopRequireDefault(__nccwpck_require__(6438));
 
 exports.stripComments = _stripComments["default"];
 
@@ -7451,14 +7487,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /***/ }),
 
-/***/ 497:
+/***/ 6438:
 /***/ (function(module, exports) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = stripComments;
+exports["default"] = stripComments;
 
 function stripComments(str) {
   var s = "";
@@ -7485,14 +7521,14 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 9872:
+/***/ 5624:
 /***/ (function(module, exports) {
 
 "use strict";
 
 
 exports.__esModule = true;
-exports.default = unesc;
+exports["default"] = unesc;
 
 // Many thanks for this post which made this migration much easier.
 // https://mathiasbynens.be/notes/css-escapes
@@ -7585,25 +7621,25 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 2997:
+/***/ 2480:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
-var t=__nccwpck_require__(5747),s=__nccwpck_require__(5622),e=__nccwpck_require__(470),o=__nccwpck_require__(7615);function i(t){return t&&"object"==typeof t&&"default"in t?t:{default:t}}var n=i(s),r=i(e);const c=[".css",".scss",".styl",".sass",".less"];module.exports=class{constructor(t){this.purgedStats={},this.options=t}apply(t){t.hooks.compilation.tap("PurgeCSS",this.initializePlugin.bind(this))}initializePlugin(s){s.hooks.additionalAssets.tapPromise("PurgeCSS",(()=>{const e="function"==typeof this.options.paths?this.options.paths():this.options.paths;return e.forEach((s=>{if(!t.existsSync(s))throw new Error(`Path ${s} does not exist.`)})),this.runPluginHook(s,e)}))}async runPluginHook(t,s){const i=Object.entries(t.assets).filter((([t])=>function(t,s){const e=n.default.extname((o=t).includes("?")?o.split("?").slice(0,-1).join(""):o);var o;return s.includes(e)}(t,[".css"])));for(const n of t.chunks){const a=i.filter((([t])=>this.options.only?this.options.only.some((s=>t.includes(s))):Array.isArray(n.files)?n.files.includes(t):n.files.has(t)));for(const[i,n]of a){const a=s.filter((t=>!c.some((s=>t.endsWith(s))))),l={...e.defaultOptions,...this.options,content:a,css:[{raw:n.source().toString()}]};"function"==typeof l.safelist&&(l.safelist=l.safelist()),"function"==typeof l.blocklist&&(l.blocklist=l.blocklist());const u=(await(new r.default).purge({content:l.content,css:l.css,defaultExtractor:l.defaultExtractor,extractors:l.extractors,fontFace:l.fontFace,keyframes:l.keyframes,output:l.output,rejected:l.rejected,variables:l.variables,safelist:l.safelist,blocklist:l.blocklist}))[0];u.rejected&&(this.purgedStats[i]=u.rejected),t.updateAsset(i,new o.ConcatSource(u.css))}}}};
+var t=__nccwpck_require__(7147),e=__nccwpck_require__(1017),s=__nccwpck_require__(8706),o=__nccwpck_require__(9728);function i(t){return t&&"object"==typeof t&&"default"in t?t:{default:t}}function r(t){if(t&&t.__esModule)return t;var e=Object.create(null);return t&&Object.keys(t).forEach((function(s){if("default"!==s){var o=Object.getOwnPropertyDescriptor(t,s);Object.defineProperty(e,s,o.get?o:{enumerable:!0,get:function(){return t[s]}})}})),e.default=t,Object.freeze(e)}var n=r(t),c=i(e),a=i(s);const u=[".css",".scss",".styl",".sass",".less"];module.exports=class{constructor(t){this.purgedStats={},this.options=t}apply(t){t.hooks.compilation.tap("PurgeCSS",this.initializePlugin.bind(this))}initializePlugin(t){t.hooks.additionalAssets.tapPromise("PurgeCSS",(()=>{const e="function"==typeof this.options.paths?this.options.paths():this.options.paths;return e.forEach((t=>{if(!n.existsSync(t))throw new Error(`Path ${t} does not exist.`)})),this.runPluginHook(t,e)}))}async runPluginHook(t,e){const i=Object.entries(t.assets).filter((([t])=>function(t,e){const s=c.default.extname((o=t).includes("?")?o.split("?").slice(0,-1).join(""):o);var o;return e.includes(s)}(t,[".css"])));for(const r of t.chunks){const n=i.filter((([t])=>this.options.only?this.options.only.some((e=>t.includes(e))):Array.isArray(r.files)?r.files.includes(t):r.files.has(t)));for(const[i,r]of n){const n=e.filter((t=>!u.some((e=>t.endsWith(e))))),c={...s.defaultOptions,...this.options,content:n,css:[{raw:r.source().toString()}]};"function"==typeof c.safelist&&(c.safelist=c.safelist()),"function"==typeof c.blocklist&&(c.blocklist=c.blocklist());const l=(await(new a.default).purge({content:c.content,css:c.css,defaultExtractor:c.defaultExtractor,extractors:c.extractors,fontFace:c.fontFace,keyframes:c.keyframes,output:c.output,rejected:c.rejected,variables:c.variables,safelist:c.safelist,blocklist:c.blocklist}))[0];l.rejected&&(this.purgedStats[i]=l.rejected),t.updateAsset(i,new o.ConcatSource(l.css))}}}};
 
 
 /***/ }),
 
-/***/ 470:
+/***/ 8706:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", ({value:!0}));var e=__nccwpck_require__(5747),t=__nccwpck_require__(3938),s=__nccwpck_require__(5622),r=__nccwpck_require__(2043),i=__nccwpck_require__(9746),n=__nccwpck_require__(1669);function a(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}function o(e){if(e&&e.__esModule)return e;var t=Object.create(null);return e&&Object.keys(e).forEach((function(s){if("default"!==s){var r=Object.getOwnPropertyDescriptor(e,s);Object.defineProperty(t,s,r.get?r:{enumerable:!0,get:function(){return e[s]}})}})),t.default=e,Object.freeze(t)}var u=a(t),c=a(s),l=a(i);function d(e,t){t&&t.forEach(e.add,e)}class f{constructor(e){this.undetermined=new Set,this.attrNames=new Set,this.attrValues=new Set,this.classes=new Set,this.ids=new Set,this.tags=new Set,this.merge(e)}merge(e){return Array.isArray(e)?d(this.undetermined,e):e instanceof f?(d(this.undetermined,e.undetermined),d(this.attrNames,e.attrNames),d(this.attrValues,e.attrValues),d(this.classes,e.classes),d(this.ids,e.ids),d(this.tags,e.tags)):(d(this.undetermined,e.undetermined),e.attributes&&(d(this.attrNames,e.attributes.names),d(this.attrValues,e.attributes.values)),d(this.classes,e.classes),d(this.ids,e.ids),d(this.tags,e.tags)),this}hasAttrName(e){return this.attrNames.has(e)||this.undetermined.has(e)}someAttrValue(e){for(const t of this.attrValues)if(e(t))return!0;for(const t of this.undetermined)if(e(t))return!0;return!1}hasAttrPrefix(e){return this.someAttrValue((t=>t.startsWith(e)))}hasAttrSuffix(e){return this.someAttrValue((t=>t.endsWith(e)))}hasAttrSubstr(e){return e.trim().split(" ").every((e=>this.someAttrValue((t=>t.includes(e)))))}hasAttrValue(e){return this.attrValues.has(e)||this.undetermined.has(e)}hasClass(e){return this.classes.has(e)||this.undetermined.has(e)}hasId(e){return this.ids.has(e)||this.undetermined.has(e)}hasTag(e){return this.tags.has(e)||this.undetermined.has(e)}}const h=["*","::-webkit-scrollbar","::selection",":root","::before","::after"],p={css:[],content:[],defaultExtractor:e=>e.match(/[A-Za-z0-9_-]+/g)||[],extractors:[],fontFace:!1,keyframes:!1,rejected:!1,stdin:!1,stdout:!1,variables:!1,safelist:{standard:[],deep:[],greedy:[],variables:[],keyframes:[]},blocklist:[],skippedContentGlobs:[],dynamicAttributes:[]};class m{constructor(e){this.nodes=[],this.isUsed=!1,this.value=e}}class g{constructor(){this.nodes=new Map,this.usedVariables=new Set,this.safelist=[]}addVariable(e){const{prop:t}=e;if(!this.nodes.has(t)){const s=new m(e);this.nodes.set(t,s)}}addVariableUsage(e,t){const{prop:s}=e,r=this.nodes.get(s);for(const e of t){const t=e[1];if(this.nodes.has(t)){const e=this.nodes.get(t);null==r||r.nodes.push(e)}}}addVariableUsageInProperties(e){for(const t of e){const e=t[1];this.usedVariables.add(e)}}setAsUsed(e){const t=[this.nodes.get(e)];for(;0!==t.length;){const e=t.pop();e&&!e.isUsed&&(e.isUsed=!0,t.push(...e.nodes))}}removeUnused(){for(const e of this.usedVariables)this.setAsUsed(e);for(const[e,t]of this.nodes)t.isUsed||this.isVariablesSafelisted(e)||t.value.remove()}isVariablesSafelisted(e){return this.safelist.some((t=>"string"==typeof t?t===e:t.test(e)))}}const y={access:n.promisify(e.access),readFile:n.promisify(e.readFile)};function v(e=[]){return Array.isArray(e)?{...p.safelist,standard:e}:{...p.safelist,...e}}async function S(e="purgecss.config.js"){let t;try{const s=c.default.join(process.cwd(),e);t=await Promise.resolve().then((function(){return o(__nccwpck_require__(5362)(s))}))}catch(e){throw new Error("Error loading the config file "+e.message)}return{...p,...t,safelist:v(t.safelist)}}async function b(e,t){return new f(await t(e))}function w(e,t){switch(t){case"next":return e.text.includes("purgecss ignore");case"start":return e.text.includes("purgecss start ignore");case"end":return e.text.includes("purgecss end ignore")}}function x(...e){const t=new f([]);return e.forEach(t.merge,t),t}function F(e){return e.replace(/(^["'])|(["']$)/g,"")}function k(e,t){if(!t.hasAttrName(e.attribute))return!1;if(void 0===e.value)return!0;switch(e.operator){case"$=":return t.hasAttrSuffix(e.value);case"~=":case"*=":return t.hasAttrSubstr(e.value);case"=":return t.hasAttrValue(e.value);case"|=":case"^=":return t.hasAttrPrefix(e.value);default:return!0}}function A(e,t){return t.hasId(e.value)}function V(e,t){return t.hasTag(e.value)}function U(e){return"atrule"===(null==e?void 0:e.type)}function j(e){return"rule"===(null==e?void 0:e.type)}class C{constructor(){this.ignore=!1,this.atRules={fontFace:[],keyframes:[]},this.usedAnimations=new Set,this.usedFontFaces=new Set,this.selectorsRemoved=new Set,this.variablesStructure=new g,this.options=p}collectDeclarationsData(e){const{prop:t,value:s}=e;if(this.options.variables){const r=function(e,t){const s=[];return e.replace(t,(function(){const t=arguments,r=Array.prototype.slice.call(t,0,-2);return r.input=t[t.length-1],r.index=t[t.length-2],s.push(r),e})),s}(s,/var\((.+?)[,)]/g);t.startsWith("--")?(this.variablesStructure.addVariable(e),r.length>0&&this.variablesStructure.addVariableUsage(e,r)):r.length>0&&this.variablesStructure.addVariableUsageInProperties(r)}if(!this.options.keyframes||"animation"!==t&&"animation-name"!==t)if(this.options.fontFace){if("font-family"===t)for(const e of s.split(",")){const t=F(e.trim());this.usedFontFaces.add(t)}}else;else for(const e of s.split(/[\s,]+/))this.usedAnimations.add(e)}getFileExtractor(e,t){const s=t.find((t=>t.extensions.find((t=>e.endsWith(t)))));return void 0===s?this.options.defaultExtractor:s.extractor}async extractSelectorsFromFiles(t,s){const r=new f([]);for(const i of t){let t=[];try{await y.access(i,e.constants.F_OK),t.push(i)}catch(e){t=u.default.sync(i,{nodir:!0,ignore:this.options.skippedContentGlobs})}for(const e of t){const t=await y.readFile(e,"utf-8"),i=this.getFileExtractor(e,s),n=await b(t,i);r.merge(n)}}return r}async extractSelectorsFromString(e,t){const s=new f([]);for(const{raw:r,extension:i}of e){const e=this.getFileExtractor("."+i,t),n=await b(r,e);s.merge(n)}return s}evaluateAtRule(e){if(this.options.keyframes&&e.name.endsWith("keyframes"))this.atRules.keyframes.push(e);else if(this.options.fontFace&&"font-face"===e.name&&e.nodes)for(const t of e.nodes)"decl"===t.type&&"font-family"===t.prop&&this.atRules.fontFace.push({name:F(t.value),node:e})}async evaluateRule(e,t){if(this.ignore)return;const s=e.prev();if(function(e){return"comment"===(null==e?void 0:e.type)}(s)&&w(s,"next"))return void s.remove();if(e.parent&&U(e.parent)&&"keyframes"===e.parent.name)return;if(!j(e))return;if(function(e){let t=!1;return e.walkComments((e=>{e&&"comment"===e.type&&e.text.includes("purgecss ignore current")&&(t=!0,e.remove())})),t}(e))return;let r=!0;if(e.selector=l.default((e=>{e.walk((e=>{"selector"===e.type&&(r=this.shouldKeepSelector(e,t),r||(this.options.rejected&&this.selectorsRemoved.add(e.toString()),e.remove()))}))})).processSync(e.selector),r&&void 0!==e.nodes)for(const t of e.nodes)"decl"===t.type&&this.collectDeclarationsData(t);const i=e.parent;e.selector||e.remove(),function(e){return!!(j(e)&&!e.selector||(null==e?void 0:e.nodes)&&!e.nodes.length||U(e)&&(!e.nodes&&!e.params||!e.params&&e.nodes&&!e.nodes.length))}(i)&&(null==i||i.remove())}async getPurgedCSS(e,t){const s=[],i=[];for(const t of e)"string"==typeof t?i.push(...u.default.sync(t,{nodir:!0,ignore:this.options.skippedContentGlobs})):i.push(t);for(const e of i){const i="string"==typeof e?this.options.stdin?e:await y.readFile(e,"utf-8"):e.raw,n=r.parse(i);this.walkThroughCSS(n,t),this.options.fontFace&&this.removeUnusedFontFaces(),this.options.keyframes&&this.removeUnusedKeyframes(),this.options.variables&&this.removeUnusedCSSVariables();const a={css:n.toString(),file:"string"==typeof e?e:void 0};"string"==typeof e&&(a.file=e),this.options.rejected&&(a.rejected=Array.from(this.selectorsRemoved),this.selectorsRemoved.clear()),s.push(a)}return s}isKeyframesSafelisted(e){return this.options.safelist.keyframes.some((t=>"string"==typeof t?t===e:t.test(e)))}isSelectorBlocklisted(e){return this.options.blocklist.some((t=>"string"==typeof t?t===e:t.test(e)))}isSelectorSafelisted(e){const t=this.options.safelist.standard.some((t=>"string"==typeof t?t===e:t.test(e)));return h.includes(e)||t}isSelectorSafelistedDeep(e){return this.options.safelist.deep.some((t=>t.test(e)))}isSelectorSafelistedGreedy(e){return this.options.safelist.greedy.some((t=>t.test(e)))}async purge(e){this.options="object"!=typeof e?await S(e):{...p,...e,safelist:v(e.safelist)};const{content:t,css:s,extractors:r,safelist:i}=this.options;this.options.variables&&(this.variablesStructure.safelist=i.variables||[]);const n=t.filter((e=>"string"==typeof e)),a=t.filter((e=>"object"==typeof e)),o=await this.extractSelectorsFromFiles(n,r),u=await this.extractSelectorsFromString(a,r);return this.getPurgedCSS(s,x(o,u))}removeUnusedCSSVariables(){this.variablesStructure.removeUnused()}removeUnusedFontFaces(){for(const{name:e,node:t}of this.atRules.fontFace)this.usedFontFaces.has(e)||t.remove()}removeUnusedKeyframes(){for(const e of this.atRules.keyframes)this.usedAnimations.has(e.params)||this.isKeyframesSafelisted(e.params)||e.remove()}getSelectorValue(e){return"attribute"===e.type&&e.attribute||e.value}shouldKeepSelector(e,t){if(function(e){return e.parent&&"pseudo"===e.parent.type&&e.parent.value.startsWith(":")||!1}(e))return!0;if(this.options.safelist.greedy.length>0){if(e.nodes.map(this.getSelectorValue).some((e=>e&&this.isSelectorSafelistedGreedy(e))))return!0}let s=!1;for(const i of e.nodes){const e=this.getSelectorValue(i);if(e&&this.isSelectorSafelistedDeep(e))return!0;if(e&&(h.includes(e)||this.isSelectorSafelisted(e)))s=!0;else{if(e&&this.isSelectorBlocklisted(e))return!1;switch(i.type){case"attribute":s=!![...this.options.dynamicAttributes,"value","checked","selected","open"].includes(i.attribute)||k(i,t);break;case"class":r=i,s=t.hasClass(r.value);break;case"id":s=A(i,t);break;case"tag":s=V(i,t);break;default:continue}if(!s)return!1}}var r;return s}walkThroughCSS(e,t){e.walk((e=>"rule"===e.type?this.evaluateRule(e,t):"atrule"===e.type?this.evaluateAtRule(e):void("comment"===e.type&&(w(e,"start")?(this.ignore=!0,e.remove()):w(e,"end")&&(this.ignore=!1,e.remove())))))}}exports.PurgeCSS=C,exports.default=C,exports.defaultOptions=p,exports.mergeExtractorSelectors=x,exports.setOptions=S,exports.standardizeSafelist=v;
+Object.defineProperty(exports, "__esModule", ({value:!0}));var e=__nccwpck_require__(7147),t=__nccwpck_require__(3476),s=__nccwpck_require__(1017),r=__nccwpck_require__(977),i=__nccwpck_require__(7789),n=__nccwpck_require__(3837);function o(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}function a(e){if(e&&e.__esModule)return e;var t=Object.create(null);return e&&Object.keys(e).forEach((function(s){if("default"!==s){var r=Object.getOwnPropertyDescriptor(e,s);Object.defineProperty(t,s,r.get?r:{enumerable:!0,get:function(){return e[s]}})}})),t.default=e,Object.freeze(t)}var c=a(e),u=o(t),l=o(s),d=a(r),h=o(i);function f(e,t){t&&t.forEach(e.add,e)}class p{constructor(e){this.undetermined=new Set,this.attrNames=new Set,this.attrValues=new Set,this.classes=new Set,this.ids=new Set,this.tags=new Set,this.merge(e)}merge(e){return Array.isArray(e)?f(this.undetermined,e):e instanceof p?(f(this.undetermined,e.undetermined),f(this.attrNames,e.attrNames),f(this.attrValues,e.attrValues),f(this.classes,e.classes),f(this.ids,e.ids),f(this.tags,e.tags)):(f(this.undetermined,e.undetermined),e.attributes&&(f(this.attrNames,e.attributes.names),f(this.attrValues,e.attributes.values)),f(this.classes,e.classes),f(this.ids,e.ids),f(this.tags,e.tags)),this}hasAttrName(e){return this.attrNames.has(e)||this.undetermined.has(e)}someAttrValue(e){for(const t of this.attrValues)if(e(t))return!0;for(const t of this.undetermined)if(e(t))return!0;return!1}hasAttrPrefix(e){return this.someAttrValue((t=>t.startsWith(e)))}hasAttrSuffix(e){return this.someAttrValue((t=>t.endsWith(e)))}hasAttrSubstr(e){return e.trim().split(" ").every((e=>this.someAttrValue((t=>t.includes(e)))))}hasAttrValue(e){return this.attrValues.has(e)||this.undetermined.has(e)}hasClass(e){return this.classes.has(e)||this.undetermined.has(e)}hasId(e){return this.ids.has(e)||this.undetermined.has(e)}hasTag(e){return this.tags.has(e)||this.undetermined.has(e)}}const m=["*",":root",":after",":before"],g={css:[],content:[],defaultExtractor:e=>e.match(/[A-Za-z0-9_-]+/g)||[],extractors:[],fontFace:!1,keyframes:!1,rejected:!1,rejectedCss:!1,stdin:!1,stdout:!1,variables:!1,safelist:{standard:[],deep:[],greedy:[],variables:[],keyframes:[]},blocklist:[],skippedContentGlobs:[],dynamicAttributes:[]};function v(e,t){const s=[];return e.replace(t,(function(){const t=arguments,r=Array.prototype.slice.call(t,0,-2);return r.input=t[t.length-1],r.index=t[t.length-2],s.push(r),e})),s}class y{constructor(e){this.nodes=[],this.isUsed=!1,this.value=e}}class S{constructor(){this.nodes=new Map,this.usedVariables=new Set,this.safelist=[]}addVariable(e){const{prop:t}=e;if(this.nodes.has(t)){const s=new y(e),r=this.nodes.get(t)||[];this.nodes.set(t,[...r,s])}else{const s=new y(e);this.nodes.set(t,[s])}}addVariableUsage(e,t){const{prop:s}=e,r=this.nodes.get(s);for(const e of t){const t=e[1];if(this.nodes.has(t)){const e=this.nodes.get(t);null==r||r.forEach((t=>{null==e||e.forEach((e=>t.nodes.push(e)))}))}}}addVariableUsageInProperties(e){for(const t of e){const e=t[1];this.usedVariables.add(e)}}setAsUsed(e){const t=this.nodes.get(e);if(t){const e=[...t];for(;0!==e.length;){const t=e.pop();t&&!t.isUsed&&(t.isUsed=!0,e.push(...t.nodes))}}}removeUnused(){for(const e of this.usedVariables){const t=this.nodes.get(e);if(t)for(const e of t){v(e.value.value,/var\((.+?)[,)]/g).forEach((e=>{this.usedVariables.has(e[1])||this.usedVariables.add(e[1])}))}}for(const e of this.usedVariables)this.setAsUsed(e);for(const[e,t]of this.nodes)for(const s of t)s.isUsed||this.isVariablesSafelisted(e)||s.value.remove()}isVariablesSafelisted(e){return this.safelist.some((t=>"string"==typeof t?t===e:t.test(e)))}}const b={access:n.promisify(c.access),readFile:n.promisify(c.readFile)};function w(e=[]){return Array.isArray(e)?{...g.safelist,standard:e}:{...g.safelist,...e}}async function x(e="purgecss.config.js"){let t;try{const s=l.default.resolve(process.cwd(),e);t=await function(e){return Promise.resolve().then((function(){return a(__nccwpck_require__(6089)(e))}))}(s)}catch(e){throw new Error(`Error loading the config file ${e.message}`)}return{...g,...t,safelist:w(t.safelist)}}async function A(e,t){return new p(await t(e))}function F(e,t){switch(t){case"next":return e.text.includes("purgecss ignore");case"start":return e.text.includes("purgecss start ignore");case"end":return e.text.includes("purgecss end ignore")}}function V(...e){const t=new p([]);return e.forEach(t.merge,t),t}function k(e){return e.replace(/(^["'])|(["']$)/g,"")}function j(e,t){if(!t.hasAttrName(e.attribute))return!1;if(void 0===e.value)return!0;switch(e.operator){case"$=":return t.hasAttrSuffix(e.value);case"~=":case"*=":return t.hasAttrSubstr(e.value);case"=":return t.hasAttrValue(e.value);case"|=":case"^=":return t.hasAttrPrefix(e.value);default:return!0}}function C(e,t){return t.hasId(e.value)}function U(e,t){return t.hasTag(e.value)}function E(e){return"atrule"===(null==e?void 0:e.type)}function R(e){return"rule"===(null==e?void 0:e.type)}class P{constructor(){this.ignore=!1,this.atRules={fontFace:[],keyframes:[]},this.usedAnimations=new Set,this.usedFontFaces=new Set,this.selectorsRemoved=new Set,this.removedNodes=[],this.variablesStructure=new S,this.options=g}collectDeclarationsData(e){const{prop:t,value:s}=e;if(this.options.variables){const r=v(s,/var\((.+?)[,)]/g);t.startsWith("--")?(this.variablesStructure.addVariable(e),r.length>0&&this.variablesStructure.addVariableUsage(e,r)):r.length>0&&this.variablesStructure.addVariableUsageInProperties(r)}if(!this.options.keyframes||"animation"!==t&&"animation-name"!==t)if(this.options.fontFace){if("font-family"===t)for(const e of s.split(",")){const t=k(e.trim());this.usedFontFaces.add(t)}}else;else for(const e of s.split(/[\s,]+/))this.usedAnimations.add(e)}getFileExtractor(e,t){const s=t.find((t=>t.extensions.find((t=>e.endsWith(t)))));return void 0===s?this.options.defaultExtractor:s.extractor}async extractSelectorsFromFiles(e,t){const s=new p([]);for(const r of e){let e=[];try{await b.access(r,c.constants.F_OK),e.push(r)}catch(t){e=u.default.sync(r,{nodir:!0,ignore:this.options.skippedContentGlobs})}for(const r of e){const e=await b.readFile(r,"utf-8"),i=this.getFileExtractor(r,t),n=await A(e,i);s.merge(n)}}return s}async extractSelectorsFromString(e,t){const s=new p([]);for(const{raw:r,extension:i}of e){const e=this.getFileExtractor(`.${i}`,t),n=await A(r,e);s.merge(n)}return s}evaluateAtRule(e){if(this.options.keyframes&&e.name.endsWith("keyframes"))this.atRules.keyframes.push(e);else if(this.options.fontFace&&"font-face"===e.name&&e.nodes)for(const t of e.nodes)"decl"===t.type&&"font-family"===t.prop&&this.atRules.fontFace.push({name:k(t.value),node:e})}evaluateRule(e,t){if(this.ignore)return;const s=e.prev();if(function(e){return"comment"===(null==e?void 0:e.type)}(s)&&F(s,"next"))return void s.remove();if(e.parent&&E(e.parent)&&e.parent.name.endsWith("keyframes"))return;if(!R(e))return;if(function(e){let t=!1;return e.walkComments((e=>{e&&"comment"===e.type&&e.text.includes("purgecss ignore current")&&(t=!0,e.remove())})),t}(e))return;let r=!0;const i=[];if(e.selector=h.default((e=>{e.walk((e=>{"selector"===e.type&&(r=this.shouldKeepSelector(e,t),r||(this.options.rejected&&this.selectorsRemoved.add(e.toString()),this.options.rejectedCss&&i.push(e.toString()),e.remove()))}))})).processSync(e.selector),r&&void 0!==e.nodes)for(const t of e.nodes)"decl"===t.type&&this.collectDeclarationsData(t);const n=e.parent;if(e.selector||e.remove(),function(e){return!!(R(e)&&!e.selector||(null==e?void 0:e.nodes)&&!e.nodes.length||E(e)&&(!e.nodes&&!e.params||!e.params&&e.nodes&&!e.nodes.length))}(n)&&(null==n||n.remove()),this.options.rejectedCss&&i.length>0){const t=e.clone(),s=null==n?void 0:n.clone().removeAll().append(t);t.selectors=i;const r=s||t;this.removedNodes.push(r)}}async getPurgedCSS(e,t){const s=[],r=[];for(const t of e)"string"==typeof t?r.push(...u.default.sync(t,{nodir:!0,ignore:this.options.skippedContentGlobs})):r.push(t);for(const e of r){const r="string"==typeof e?this.options.stdin?e:await b.readFile(e,"utf-8"):e.raw,i=d.parse(r);this.walkThroughCSS(i,t),this.options.fontFace&&this.removeUnusedFontFaces(),this.options.keyframes&&this.removeUnusedKeyframes(),this.options.variables&&this.removeUnusedCSSVariables();const n={css:i.toString(),file:"string"==typeof e?e:e.name};this.options.rejected&&(n.rejected=Array.from(this.selectorsRemoved),this.selectorsRemoved.clear()),this.options.rejectedCss&&(n.rejectedCss=d.root({nodes:this.removedNodes}).toString()),s.push(n)}return s}isKeyframesSafelisted(e){return this.options.safelist.keyframes.some((t=>"string"==typeof t?t===e:t.test(e)))}isSelectorBlocklisted(e){return this.options.blocklist.some((t=>"string"==typeof t?t===e:t.test(e)))}isSelectorSafelisted(e){const t=this.options.safelist.standard.some((t=>"string"==typeof t?t===e:t.test(e))),s=/^::.*/.test(e);return m.includes(e)||s||t}isSelectorSafelistedDeep(e){return this.options.safelist.deep.some((t=>t.test(e)))}isSelectorSafelistedGreedy(e){return this.options.safelist.greedy.some((t=>t.test(e)))}async purge(e){this.options="object"!=typeof e?await x(e):{...g,...e,safelist:w(e.safelist)};const{content:t,css:s,extractors:r,safelist:i}=this.options;this.options.variables&&(this.variablesStructure.safelist=i.variables||[]);const n=t.filter((e=>"string"==typeof e)),o=t.filter((e=>"object"==typeof e)),a=await this.extractSelectorsFromFiles(n,r),c=await this.extractSelectorsFromString(o,r);return this.getPurgedCSS(s,V(a,c))}removeUnusedCSSVariables(){this.variablesStructure.removeUnused()}removeUnusedFontFaces(){for(const{name:e,node:t}of this.atRules.fontFace)this.usedFontFaces.has(e)||t.remove()}removeUnusedKeyframes(){for(const e of this.atRules.keyframes)this.usedAnimations.has(e.params)||this.isKeyframesSafelisted(e.params)||e.remove()}getSelectorValue(e){return"attribute"===e.type&&e.attribute||e.value}shouldKeepSelector(e,t){if(function(e){return e.parent&&"pseudo"===e.parent.type&&e.parent.value.startsWith(":")||!1}(e))return!0;if(this.options.safelist.greedy.length>0){if(e.nodes.map(this.getSelectorValue).some((e=>e&&this.isSelectorSafelistedGreedy(e))))return!0}let s=!1;for(const i of e.nodes){const e=this.getSelectorValue(i);if(e&&this.isSelectorSafelistedDeep(e))return!0;if(e&&(m.includes(e)||this.isSelectorSafelisted(e)))s=!0;else{if(e&&this.isSelectorBlocklisted(e))return!1;switch(i.type){case"attribute":s=!![...this.options.dynamicAttributes,"value","checked","selected","open"].includes(i.attribute)||j(i,t);break;case"class":r=i,s=t.hasClass(r.value);break;case"id":s=C(i,t);break;case"tag":s=U(i,t);break;default:continue}if(!s)return!1}}var r;return s}walkThroughCSS(e,t){e.walk((e=>"rule"===e.type?this.evaluateRule(e,t):"atrule"===e.type?this.evaluateAtRule(e):void("comment"===e.type&&(F(e,"start")?(this.ignore=!0,e.remove()):F(e,"end")&&(this.ignore=!1,e.remove())))))}}exports.PurgeCSS=P,exports["default"]=P,exports.defaultOptions=g,exports.mergeExtractorSelectors=V,exports.setOptions=x,exports.standardizeSafelist=w;
 
 
 /***/ }),
 
-/***/ 7011:
+/***/ 8125:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 
@@ -7611,12 +7647,12 @@ Object.defineProperty(exports, "__esModule", ({value:!0}));var e=__nccwpck_requi
  * For Node.js, simply re-export the core `util.deprecate` function.
  */
 
-module.exports = __nccwpck_require__(1669).deprecate;
+module.exports = __nccwpck_require__(3837).deprecate;
 
 
 /***/ }),
 
-/***/ 1315:
+/***/ 2928:
 /***/ (function(module) {
 
 // Returns a wrapper function that returns a wrapped callback
@@ -7656,7 +7692,7 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 5362:
+/***/ 6089:
 /***/ (function(module) {
 
 function webpackEmptyContext(req) {
@@ -7666,12 +7702,12 @@ function webpackEmptyContext(req) {
 }
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 5362;
+webpackEmptyContext.id = 6089;
 module.exports = webpackEmptyContext;
 
 /***/ }),
 
-/***/ 7615:
+/***/ 9728:
 /***/ (function(module) {
 
 "use strict";
@@ -7679,7 +7715,7 @@ module.exports = require("@umijs/bundler-webpack/compiled/webpack-sources");
 
 /***/ }),
 
-/***/ 2357:
+/***/ 9491:
 /***/ (function(module) {
 
 "use strict";
@@ -7687,7 +7723,7 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ 8614:
+/***/ 2361:
 /***/ (function(module) {
 
 "use strict";
@@ -7695,7 +7731,7 @@ module.exports = require("events");
 
 /***/ }),
 
-/***/ 5747:
+/***/ 7147:
 /***/ (function(module) {
 
 "use strict";
@@ -7703,7 +7739,7 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 5622:
+/***/ 1017:
 /***/ (function(module) {
 
 "use strict";
@@ -7711,7 +7747,7 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ 2043:
+/***/ 977:
 /***/ (function(module) {
 
 "use strict";
@@ -7719,7 +7755,7 @@ module.exports = require("postcss");
 
 /***/ }),
 
-/***/ 1669:
+/***/ 3837:
 /***/ (function(module) {
 
 "use strict";
@@ -7774,7 +7810,7 @@ module.exports = require("util");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(2997);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(2480);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

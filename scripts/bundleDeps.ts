@@ -8,6 +8,29 @@ import { PATHS } from './.internal/constants';
 // @ts-ignore
 // import { Package } from '/Users/chencheng/code/github.com/sorrycc/dts-packer/dist/Package.js';
 
+function fixBrowserslist(target: string) {
+  const targetPath = path.join(target, 'index.js');
+  const content = fs.readFileSync(targetPath, 'utf-8');
+  const match = content.match(
+    /require\(__(webpack|nccwpck)_require__\((\S*)\).resolve/,
+  );
+
+  if (match) {
+    const regexp = new RegExp(
+      `(\\r|\\n)*?.*?\\/*\\*\\*\\/ ${match[2]}:(.|\\r|\\n)*?\\/*\\*\\*\\/ \\}\\),`,
+    );
+    fs.writeFileSync(
+      targetPath,
+      content
+        .replace(
+          new RegExp(`__${match[1]}_require__\\(${match[2]}\\)`, 'gm'),
+          'require',
+        )
+        .replace(regexp, ''),
+    );
+  }
+}
+
 export async function buildDep(opts: any) {
   console.log(chalk.green(`Build dep ${opts.pkgName || opts.file}`));
 
@@ -205,6 +228,12 @@ Object.keys(exported).forEach(function (key) {
        ref: https://github.com/umijs/umi/pull/7972`);
           }
         });
+
+        fixBrowserslist(target);
+      }
+
+      if (opts.file === './bundles/webpack/bundle') {
+        fixBrowserslist(target);
       }
     }
   }

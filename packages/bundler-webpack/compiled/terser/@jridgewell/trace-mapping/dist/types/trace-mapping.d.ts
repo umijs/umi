@@ -24,13 +24,13 @@ export declare let traceSegment: (map: TraceMap, line: number, column: number) =
  */
 export declare let originalPositionFor: (map: TraceMap, needle: Needle) => OriginalMapping | InvalidOriginalMapping;
 /**
- * Finds the generated line/column position of the provided source/line/column source position.
+ * Finds the source/line/column directly after the mapping returned by originalPositionFor, provided
+ * the found mapping is from the same source and line as the originalPositionFor mapping.
+ *
+ * Eg, in the code `let id = 1`, `originalPositionAfter` could find the mapping associated with `1`
+ * using the same needle that would return `id` when calling `originalPositionFor`.
  */
 export declare let generatedPositionFor: (map: TraceMap, needle: SourceNeedle) => GeneratedMapping | InvalidGeneratedMapping;
-/**
- * Finds all generated line/column positions of the provided source/line/column source position.
- */
-export declare let allGeneratedPositionsFor: (map: TraceMap, needle: SourceNeedle) => GeneratedMapping[];
 /**
  * Iterates each mapping in generated position order.
  */

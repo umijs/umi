@@ -773,8 +773,8 @@ const arrayUnion = (...arguments_) => [...new Set(arguments_.flat())];
 
 // EXTERNAL MODULE: ../../node_modules/.pnpm/merge2@1.4.1/node_modules/merge2/index.js
 var merge2 = __webpack_require__(1382);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/fast-glob@3.2.11/node_modules/fast-glob/out/index.js
-var out = __webpack_require__(3924);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/fast-glob@3.2.12/node_modules/fast-glob/out/index.js
+var out = __webpack_require__(3215);
 // EXTERNAL MODULE: ../../node_modules/.pnpm/dir-glob@3.0.1/node_modules/dir-glob/index.js
 var dir_glob = __webpack_require__(5352);
 // EXTERNAL MODULE: external "node:url"
@@ -925,7 +925,7 @@ const isGitIgnoredSync = options => {
 };
 
 // EXTERNAL MODULE: external "node:stream"
-var external_node_stream_ = __webpack_require__(4492);
+var external_node_stream_ = __webpack_require__(1360);
 ;// CONCATENATED MODULE: ../../node_modules/.pnpm/globby@12.2.0/node_modules/globby/stream-utils.js
 
 

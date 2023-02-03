@@ -23,7 +23,7 @@
     "@umijs/utils": "4.0.48",
     "esbuild": "0.16.17",
     "regenerate": "^1.4.2",
-    "regenerate-unicode-properties": "10.0.1",
+    "regenerate-unicode-properties": "10.1.0",
     "spdy": "^4.0.2"
   },
   "devDependencies": {
