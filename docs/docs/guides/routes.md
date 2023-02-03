@@ -6,7 +6,7 @@ import { Message } from 'umi';
 
 ## 路由类型配置
 
-请参考[配置文档](../api/config#history)
+请参考 [history](../api/config#history) 配置。
 
 ## 配置路由
 
@@ -14,7 +14,8 @@ import { Message } from 'umi';
 
 比如：
 
-```js
+```ts
+// .umirc.ts
 export default {
   routes: [
     { path: '/', component: 'index' },
@@ -23,10 +24,10 @@ export default {
 }
 ```
 
-Umi 4 默认根据路由来进行 JavaScript 模块按需加载。如果需要在路由组件加载的过程中配置自定义加载组件，在项目 `src` 目录下创建 `loading.tsx` 或者 `loading.jsx` 或者 `loading.js` 文件，默认导出的组件会在组件加载的时候渲染。
+Umi 4 默认按页拆包，从而有更快的页面加载速度，由于加载过程是异步的，所以往往你需要编写 [`loading.tsx`](./directory-structure#loadingtsxjsx) 来给项目添加加载样式，提升体验。
 
 <Message emoji="💡">
-你可以在 Chrome 的调试工具的网络 tab 中将网络设置成低速，然后切换路由查看动态加载中组件的展示。
+你可以在 Chrome Devtools > 网络 Tab 中将网络设置成低速，然后切换路由查看加载组件是否生效。
 </Message>
 
 ### path
@@ -58,9 +59,9 @@ Umi 4 默认根据路由来进行 JavaScript 模块按需加载。如果需要�
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始找起。
+配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始寻找。
 
-如果指向 `src` 目录的文件，可以用 `@`，也可以用 `../`。比如 `component: '@/layouts/basic'`，或者 `component: '../layouts/basic'`，推荐用前者。
+如果指向 `src` 目录的文件，可以用 `@`，比如 `component: '@/layouts/basic'`，推荐使用 `@` 组织路由文件位置。
 
 ### routes
 
@@ -84,15 +85,17 @@ export default {
 }
 ```
 
-然后在 `src/layouts/index` 中通过 `<Outlet/>` 渲染子路由，
+在全局布局 `src/layouts/index` 中，通过 `<Outlet/>` 来渲染子路由：
 
-```jsx
-import {Outlet} from 'umi'
+```tsx
+import { Outlet } from 'umi'
 
-export default (props) => {
-  return <div style={{ padding: 20 }}> 
-    <Outlet/> 
-  </div>;
+export default function Page() {
+  return (
+    <div style={{ padding: 20 }}> 
+      <Outlet/> 
+    </div>
+  )
 }
 ```
 
@@ -162,7 +165,7 @@ export default (props) => {
 举例：
 
 ```jsx
-// src/hocs/withAuth.jsx
+// src/hocs/withAuth.tsx
 import { Navigate } from 'umi'
 
 const withAuth = (Component) => ()=>{
@@ -176,10 +179,10 @@ const withAuth = (Component) => ()=>{
 ```
 
 ```jsx
-// src/pages/user.jsx
+// src/pages/user.tsx
 
 const TheOldPage = ()=>{
-  ...
+  // ...
 }
 
 export default withAuth(TheOldPage)
@@ -190,6 +193,178 @@ export default withAuth(TheOldPage)
 * Type: `string`
 
 配置路由的标题。
+
+## 约定式路由
+
+除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
+
+**如果没有 routes 配置，Umi 会进入约定式路由模式**，然后分析 `src/pages` 目录拿到路由配置。
+
+比如以下文件结构：
+
+```bash
+.
+  └── pages
+    ├── index.tsx
+    └── users.tsx
+```
+
+会得到以下路由配置，
+
+```js
+[
+  { path: '/', component: '@/pages/index' },
+  { path: '/users', component: '@/pages/users' },
+]
+```
+
+### 动态路由
+
+约定，带 `$` 前缀的目录或文件为动态路由。若 `$` 后不指定参数名，则代表 `*` 通配，比如以下目录结构：
+
+比如：
+
+* `src/pages/users/$id.tsx` 会成为 `/users/:id`
+* `src/pages/users/$id/settings.tsx` 会成为 `/users/:id/settings`
+
+举个完整的例子，比如以下文件结构，
+
+```
++ pages/
+  + foo/
+    - $slug.tsx
+  + $bar/
+    - $.tsx
+  - index.tsx
+```
+
+会生成路由配置如下：
+
+```javascript
+[
+  { path: '/', component: '@/pages/index.tsx' },
+  { path: '/foo/:slug', component: '@/pages/foo/$slug.tsx' },
+  { path: '/:bar/*', component: '@/pages/$bar/$.tsx' },
+];
+```
+
+### 全局 layout
+
+约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `<Outlet />` 渲染嵌套路由。
+
+如以下目录结构：
+
+```bash
+.
+└── src
+    ├── layouts
+    │   └── index.tsx
+    └── pages
+        ├── index.tsx
+        └── users.tsx
+```
+
+会生成如下路由：
+
+```js
+[
+  { 
+    path: '/', 
+    component: '@/layouts/index',
+    routes: [
+      { path: '', component: '@/pages/index' },
+      { path: 'users', component: '@/pages/users' },
+    ],
+  },
+]
+```
+
+可以通过 `layout: false` 来细粒度关闭某个路由的 **全局布局** 显示，该选项只在一级生效：
+
+```ts
+  routes: [
+    { 
+      path: '/', 
+      component: './index', 
+      // 🟢 
+      layout: false 
+    },
+    {
+      path: '/users',
+      routes: [
+        // 🔴 不生效，此时该路由的 layout 并不是全局布局，而是 `/users`
+        { layout: false }
+      ]
+    }
+  ]
+```
+
+一个自定义的全局 `layout` 格式如下：
+
+```tsx
+import { Outlet } from 'umi'
+
+export default function Layout() {
+  return <Outlet />
+}
+```
+
+### 不同的全局 layout
+
+你可能需要针对不同路由输出不同的全局 layout，Umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
+
+比如想要针对 `/login` 输出简单布局，
+
+```js
+import { useLocation, Outlet } from 'umi';
+
+export default function() {
+  const location = useLocation();
+  if (location.pathname === '/login') {
+    return <SimpleLayout><Outlet /></SimpleLayout>
+  }
+
+  // 使用 `useAppData` / `useSelectedRoutes` 可以获得更多路由信息
+  // const { clientRoutes } = useAppData()
+  // const routes = useSelectedRoutes()
+
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  );
+}
+```
+
+### 404 路由
+
+约定 `src/pages/404.tsx` 为 404 页面，需返回 React 组件。
+
+比如以下目录结构，
+
+```bash
+.
+└── pages
+    ├── 404.tsx
+    ├── index.tsx
+    └── users.tsx
+```
+
+会生成路由，
+
+```js
+[
+  { path: '/', component: '@/pages/index' },
+  { path: '/users', component: '@/pages/users' },
+  { path: '/*', component: '@/pages/404' },
+]
+```
+
+这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
+
+> 404 只有约定式路由会自动生效，如果使用配置式路由，需要自行配置 404 的通配路由。
 
 ## 页面跳转
 
@@ -219,7 +394,7 @@ export default () => (
 
 ## 路由组件参数
 
-Umi4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
+Umi 4 使用 [react-router@6](https://reactrouter.com/docs/en/v6/api) 作为路由组件，路由参数的获取使其 hooks。
 
 ### match 信息
 
@@ -258,7 +433,7 @@ const location  = useLocation();
 }
 ```
 
-<Message emoji="🚨" >
+<Message emoji="🚨" type="warning">
 推荐使用 `useLocation`, 而不是直接访问 `history.location`. 两者的区别是 `pathname` 的部分。
 `history.location.pathname` 是完整的浏览器的路径名；而 `useLocation` 中返回的 `pathname` 是相对项目配置的`base`的路径。
 

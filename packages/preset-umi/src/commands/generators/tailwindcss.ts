@@ -32,17 +32,18 @@ export default (api: IApi) => {
       h.appendInternalPlugin('@umijs/plugins/dist/tailwindcss');
       logger.info('Update .umirc.ts');
 
+      const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
       writeFileSync(
         join(api.cwd, 'tailwind.config.js'),
         `
 module.exports = {
   content: [
-    './src/pages/**/*.tsx',
-    './src/components/**.tsx',
-    './src/layouts/**.tsx',
+    './${srcPrefix}pages/**/*.tsx',
+    './${srcPrefix}components/**.tsx',
+    './${srcPrefix}layouts/**.tsx',
   ],
 }
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write tailwind.config.js');
 
@@ -52,7 +53,7 @@ module.exports = {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write tailwind.css');
 

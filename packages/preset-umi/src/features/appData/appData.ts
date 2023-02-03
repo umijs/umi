@@ -1,11 +1,9 @@
-import { parseModule } from '@umijs/bundler-utils';
-import { getNpmClient } from '@umijs/utils';
+import { getNpmClient, importLazy } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
 import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
-import { createResolver, scan } from '../../libs/scan';
 import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
 import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
@@ -98,6 +96,7 @@ export default (api: IApi) => {
   api.register({
     key: 'updateAppDataDeps',
     async fn() {
+      const { createResolver, scan } = await import('../../libs/scan.js');
       const resolver = createResolver({
         alias: api.config.alias,
       });
@@ -123,6 +122,8 @@ export default (api: IApi) => {
   async function getAppJsInfo() {
     for (const path of expandJSPaths(join(api.paths.absSrcPath, 'app'))) {
       if (existsSync(path)) {
+        const { parseModule }: typeof import('@umijs/bundler-utils') =
+          importLazy(require.resolve('@umijs/bundler-utils'));
         const [_, exports] = await parseModule({
           path,
           content: readFileSync(path, 'utf-8'),

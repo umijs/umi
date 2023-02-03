@@ -179,8 +179,8 @@ $ pnpm release
 
 ## 加入 Contributor 群
 
-提交过 Bugfix 或 Feature 类 PR 的同学，如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id），我会拉到群里。
+提交过 Bugfix 或 Feature 类 PR 的同学，如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id）加我钉钉，然后我会拉到群里。
 
-<img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h3yg26xbauj20cu0d8my4.jpg" />
+<img src="https://img.alicdn.com/imgextra/i2/O1CN01DLiPrU1WsbDdnwRr9_!!6000000002844-2-tps-340-336.png" />
 
 如果你不知道可以贡献什么，可以到源码里搜 TODO 或 FIXME 找找。

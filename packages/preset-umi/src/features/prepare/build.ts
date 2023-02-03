@@ -2,38 +2,37 @@ import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import path from 'path';
 import { esbuildAliasPlugin } from './esbuildPlugins/esbuildAliasPlugin';
-import { esbuildCollectIconPlugin } from './esbuildPlugins/esbuildCollectIconPlugin';
 import { esbuildExternalPlugin } from './esbuildPlugins/esbuildExternalPlugin';
 
 export async function build(opts: {
   entryPoints: string[];
   watch?:
     | {
-        onRebuildSuccess(): void;
+        onRebuildSuccess({ result }: { result: esbuild.BuildResult }): void;
       }
     | false;
   config?: { alias?: any };
-  options?: { alias?: Record<string, string> };
-  icons?: Set<string>;
+  plugins?: esbuild.Plugin[];
 }) {
-  const icons: Set<string> = opts.icons || new Set();
-  await esbuild.build({
+  return await esbuild.build({
     format: 'esm',
     platform: 'browser',
     target: 'esnext',
     loader: {
-      '.js': 'jsx',
-      '.jsx': 'jsx',
+      // use tsx loader for js/jsx/ts/tsx files
+      // since only ts support decorator
+      '.js': 'tsx',
+      '.jsx': 'tsx',
       '.ts': 'ts',
       '.tsx': 'tsx',
     },
     watch: !!opts.watch && {
-      onRebuild(err) {
+      onRebuild(err, result) {
         if (err) {
           logger.error(`[icons] build failed: ${err}`);
         } else {
           if (opts.watch) {
-            opts.watch.onRebuildSuccess();
+            opts.watch.onRebuildSuccess({ result: result! });
           }
         }
       },
@@ -45,6 +44,7 @@ export async function build(opts: {
     entryPoints: opts.entryPoints,
     write: false,
     outdir: path.join(path.dirname(opts.entryPoints[0]), 'out'),
+    metafile: true,
     plugins: [
       // why externals must be in front of alias?
       // e.g.
@@ -54,35 +54,7 @@ export async function build(opts: {
       // if we resolve externals first, we will get { external: true }
       esbuildExternalPlugin(),
       esbuildAliasPlugin({ alias: opts.config?.alias || {} }),
-      esbuildCollectIconPlugin({
-        icons,
-        alias: opts.options?.alias || {},
-      }),
+      ...(opts.plugins || []),
     ],
   });
-  return icons;
 }
-
-// const baseDir = path.join(__dirname, '../../../fixtures/icons/normal');
-// buildForIconExtract({
-//   entryPoints: [path.join(baseDir, 'index.tsx')],
-//   config: {
-//     alias: {
-//       '@': path.join(baseDir, '@'),
-//       'alias-1': 'alias-2',
-//       'alias-3$': path.join(baseDir, 'alias-3.ts'),
-//     },
-//   },
-//   watch: {
-//     onRebuildSuccess(icons) {
-//       console.log('icons', icons);
-//     },
-//   },
-// })
-//   .then((icons) => {
-//     console.log('done');
-//     console.log(icons);
-//   })
-//   .catch((e) => {
-//     console.error(e);
-//   });

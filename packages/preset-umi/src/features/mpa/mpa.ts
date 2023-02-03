@@ -1,10 +1,8 @@
 import { chalk, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { dirname, extname, join, resolve } from 'path';
 import { IApi } from '../../types';
-import { extractExports } from './extractExports';
 
 // TODO:
 // - 支持通过 env.MPA_FILTER 过滤要启动的项目（提速）
@@ -96,7 +94,7 @@ ${renderer}
 
   api.chainWebpack((memo) => {
     (api.appData.mpa.entry as Entry[]).forEach((entry) => {
-      memo.plugin(`html-${entry.name}`).use(HtmlWebpackPlugin, [
+      memo.plugin(`html-${entry.name}`).use(require('html-webpack-plugin'), [
         {
           filename: `${entry.name}.html`,
           minify: false,
@@ -185,6 +183,7 @@ async function getConfig(indexFile: string) {
 }
 
 async function getConfigFromEntryFile(indexFile: string) {
+  const { extractExports } = await import('./extractExports.js');
   const config = await extractExports({
     entry: indexFile,
     exportName: 'config',

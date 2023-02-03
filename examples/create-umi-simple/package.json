@@ -4,16 +4,17 @@
   "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
     "build": "umi build",
+    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "umi dev",
     "e2e": "cypress run",
-    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  \\\"pnpm umi-scripts cypress\\\"",
-    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  cypress:ci",
+    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test dev http://127.0.0.1:9527/__umi/api/status cypress:ci",
     "preview": "umi preview --port 9527",
     "setup": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {
-    "umi": "4.0.47"
+    "umi": "4.0.49"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

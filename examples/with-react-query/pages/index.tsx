@@ -1,9 +1,8 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from 'umi';
 import '../style.less';
 
 export default function HomePage() {
-  const { isLoading, data } = useQuery('repoData', () =>
+  const { isLoading, data } = useQuery(['repoData'], () =>
     fetch('https://api.github.com/repos/umijs/umi').then((res) => res.json()),
   );
 

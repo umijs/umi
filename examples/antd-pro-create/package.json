@@ -5,6 +5,7 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",
+    "cypress:ci": "pnpm umi-scripts cypress",
     "deploy": "npm run build && npm run gh-pages",
     "dev": "npm run start:dev",
     "gh-pages": "gh-pages -d dist",
@@ -27,8 +28,8 @@
     "test:e2e": "node ./tests/run-tests.js",
     "tsc": "tsc --noEmit",
     "e2e": "cypress run",
-    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  \\\"pnpm umi-scripts cypress\\\"",
-    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test start http://127.0.0.1:9527/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "cross-env PORT=9527 start-server-and-test preview http://127.0.0.1:9527  cypress:ci",
+    "e2e:dev:ci": "cross-env PORT=9527 start-server-and-test start http://127.0.0.1:9527/__umi/api/status cypress:ci",
     "preview": "max preview --port 9527"
   },
   "lint-staged": {
@@ -70,7 +71,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-helmet": "^6.1.6",
     "@umijs/fabric": "^3.0.0",
-    "@umijs/max": "4.0.47",
+    "@umijs/max": "4.0.49",
     "@umijs/openapi": "1.8.1",
     "cross-env": "^7.0.3",
     "cross-port-killer": "^1.4.0",

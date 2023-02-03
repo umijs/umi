@@ -4,9 +4,10 @@
   "author": "pshu <pishu.spf@antfin.com>",
   "scripts": {
     "build": "umi build",
+    "cypress:ci": "pnpm umi-scripts cypress",
     "dev": "umi dev",
     "e2e": "cypress run",
-    "e2e:ci": "cross-env HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status \\\"pnpm umi-scripts cypress\\\"",
+    "e2e:ci": "cross-env HMR=none PORT=8000 start-server-and-test dev http://localhost:8000/__umi/api/status cypress:ci",
     "set:mfsu:eager:esbuild": "umi config set mfsu {\\\"strategy\\\":\\\"eager\\\",\\\"esbuild\\\":true}",
     "set:mfsu:eager:webpack": "umi config set mfsu {\\\"strategy\\\":\\\"eager\\\"}",
     "set:mfsu:normal:esbuild": "umi config set mfsu {\\\"strategy\\\":\\\"normal\\\",\\\"esbuild\\\":true}",
@@ -16,7 +17,7 @@
   },
   "dependencies": {
     "lodash.uppercase": "^4.3.0",
-    "umi": "4.0.47"
+    "umi": "4.0.49"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

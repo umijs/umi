@@ -218,7 +218,7 @@ module.exports = getConfig()
 |`getCacheDependency`|`() => {}`|用返回值来对比，使 MFSU cache 无效的函数|
 |`tmpBase`|`${process.cwd()}/.mfsu`|MFSU 缓存存放目录|
 |`unMatchLibs`|`[]`|手动排除某些不需要被 MFSU 处理的依赖|
-|`runtimePublicPath`|`undefined`|同 umijs > [`runtimePublicPath`](https://umijs.org/config#runtimepublicpath)|
+|`runtimePublicPath`|`undefined`|同 umijs > [`runtimePublicPath`](../docs/api/config#runtimepublicpath)|
 |`implementor`|`undefined`|webpack 实例，需要和项目内使用的唯一实例一致|
 |`buildDepWithESBuild`|`false`|是否使用 `esbuild` 打包依赖|
 |`onMFSUProgress`|`undefined`|获取 MFSU 编译进度的回调|
