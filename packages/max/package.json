@@ -1,6 +1,6 @@
 {
   "name": "@umijs/max",
-  "version": "4.0.48",
+  "version": "4.0.49",
   "description": "@umijs/max",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/max#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -34,12 +34,12 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/lint": "4.0.48",
-    "@umijs/plugins": "4.0.48",
+    "@umijs/lint": "4.0.49",
+    "@umijs/plugins": "4.0.49",
     "antd": "^4.20.6",
     "eslint": "8.31.0",
     "stylelint": "14.8.2",
-    "umi": "4.0.48"
+    "umi": "4.0.49"
   },
   "publishConfig": {
     "access": "public"

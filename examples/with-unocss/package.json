@@ -7,9 +7,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.48",
+    "@umijs/plugins": "4.0.49",
     "@unocss/cli": "^0.33.0",
-    "umi": "4.0.48",
+    "umi": "4.0.49",
     "unocss": "^0.34.1"
   }
 }

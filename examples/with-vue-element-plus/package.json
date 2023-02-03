@@ -9,9 +9,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/preset-vue": "4.0.48",
+    "@umijs/preset-vue": "4.0.49",
     "element-plus": "^2.2.2",
-    "umi": "4.0.48",
+    "umi": "4.0.49",
     "vue": "3.2.45"
   }
 }
