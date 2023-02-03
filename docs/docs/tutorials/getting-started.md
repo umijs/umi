@@ -145,10 +145,14 @@ info  - generate files
 
 使用 `create-umi` 创建项目时，可用的参数如下：
 
-option|description
-:-:|:-
-`--no-git`|创建项目，但不初始化 Git
-`--no-install`|创建项目，但不自动安装依赖
+option|description|demo
+:-:|:-|:-
+`_`| 项目名称 | `npx create-umi@latest myApp`
+`--default`| 使用默认模板 & 包管理工具创建项目 | `npx create-umi@latest myApp --default`
+`--plugin`| 使用插件模板创建项目，优先级高于`default` | `npx create-umi@latest myApp --plugin`
+`--git`| 是否初始化`git`, 默认自动初始化`git` | `npx create-umi@latest myApp --git`
+`--install`| 项目创建结束是否安装依赖, 默认自动安装依赖 | `npx create-umi@latest myApp --install`
+`--no-[command]`| 禁用`[command]`命令 | `--no-git`、 `--no--install`
 
 ## 启动项目
 
