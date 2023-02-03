@@ -1,5 +1,5 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { isMonorepo, logger, aliasUtils } from '@umijs/utils';
+import { aliasUtils, isMonorepo, logger } from '@umijs/utils';
 import { resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath, esbuildUmiPlugin } from '../utils';
@@ -71,7 +71,10 @@ export const loader: { [ext: string]: esbuild.Loader } = {
   '.eot': 'file',
   '.flac': 'file',
   '.gif': 'file',
+  '.htm': 'file',
+  '.html': 'file',
   '.ico': 'file',
+  '.icon': 'file',
   '.jpeg': 'file',
   '.jpg': 'file',
   '.js': 'jsx',

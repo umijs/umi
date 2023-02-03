@@ -6,18 +6,14 @@ export function esbuildExternalPlugin(): Plugin {
   return {
     name: 'esbuildExternalPlugin',
     setup(build) {
-      // externals extensions
-      externalsExtensions.forEach((ext) => {
-        // /\.abc?query$/
-        const filter = new RegExp(`\.${ext}(\\?.*)?$`);
-        build.onResolve({ filter }, () => {
+      build.onResolve({ filter: /.*/ }, (args) => {
+        // only handle js/ts file
+        if (!isSource(args.path)) {
           return {
             external: true,
           };
-        });
-      });
-      // external deps
-      build.onResolve({ filter: /.*/ }, (args) => {
+        }
+
         if (args.path.startsWith('.')) {
           return null;
         }
@@ -49,34 +45,24 @@ export function esbuildExternalPlugin(): Plugin {
   };
 }
 
-const externalsExtensions = [
-  'aac',
-  'css',
-  'less',
-  'sass',
-  'scss',
-  'eot',
-  'flac',
-  'gif',
-  'html',
-  'htm',
-  'ico',
-  'icon',
-  'jpeg',
-  'jpg',
-  'json',
-  'md',
-  'mdx',
-  'mp3',
-  'mp4',
-  'ogg',
-  'otf',
-  'png',
-  'svg',
-  'ttf',
-  'wav',
-  'webm',
-  'webp',
-  'woff',
-  'woff2',
-];
+function parseExt(file: string) {
+  const lastQuestionMarkIdx = file.lastIndexOf('?');
+  if (~lastQuestionMarkIdx) {
+    file = file.substring(0, lastQuestionMarkIdx);
+  }
+  const lastDotIdx = file.lastIndexOf('.');
+  const lastSlashIdx = file.lastIndexOf('/');
+  if (~lastDotIdx && (!~lastSlashIdx || lastDotIdx > lastSlashIdx)) {
+    return file.substring(lastDotIdx + 1);
+  }
+}
+
+const SOURCE_REG = /\.(t|j)sx?$/;
+function isSource(file: string) {
+  // perf optimization
+  if (SOURCE_REG.test(file)) {
+    return true;
+  }
+  const ext = parseExt(file);
+  return !ext || ext === 'tsx' || ext === 'ts' || ext === 'jsx' || ext === 'js';
+}
