@@ -1,5 +1,6 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { winPath } from '@umijs/utils';
+import { dirname } from 'path';
 
 export async function extractExports(opts: {
   entry: string;
@@ -73,7 +74,7 @@ import * as x from "${winPath(args.path)}";
 ret = x.${opts.exportName} || {};
               `,
               loader: 'ts',
-              resolveDir: args.path.slice(0, args.path.lastIndexOf('/')),
+              resolveDir: dirname(args.path),
             };
           });
         },
