@@ -65,6 +65,7 @@ Object.keys(exported).forEach(function (key) {
         const babelCorePkg = require.resolve('@babel/core/package.json', {
           paths: [path.join(PATHS.PACKAGES, './bundler-utils')],
         });
+        // And need overrides a consistent version of `browserslist` in `packages.json#pnpm.overrides`
         const browserslistPkg = require.resolve('browserslist/package.json', {
           paths: [path.dirname(babelCorePkg)],
         });

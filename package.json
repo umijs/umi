@@ -74,6 +74,7 @@
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@vercel/ncc": "0.33.3",
+    "browserslist": "4.21.5",
     "dts-packer": "^0.0.3",
     "expect-playwright": "^0.8.0",
     "father": "^4.1.3",
@@ -112,6 +113,7 @@
     "node": ">=14",
     "pnpm": ">=7"
   },
+  "//why-overrides-browserslist": "See scripts/bundleDeps.ts",
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -125,6 +127,9 @@
         "stylelint",
         "redux"
       ]
+    },
+    "overrides": {
+      "browserslist": "$browserslist"
     }
   },
   "_local": "This flag is used to check if the development in local, Please do not delete."
