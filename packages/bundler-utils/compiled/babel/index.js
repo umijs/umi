@@ -24,7 +24,7 @@ module.exports = webpackEmptyAsyncContext;
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 (function (global, factory) {
-     true ? module.exports = factory(__nccwpck_require__(46974), __nccwpck_require__(99721)) :
+     true ? module.exports = factory(__nccwpck_require__(84181), __nccwpck_require__(99721)) :
     0;
 })(this, (function (traceMapping, genMapping) { 'use strict';
 
@@ -2062,7 +2062,7 @@ module.exports = exports.default;
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 (function (global, factory) {
-     true ? factory(exports, __nccwpck_require__(71465), __nccwpck_require__(33248)) :
+     true ? factory(exports, __nccwpck_require__(65036), __nccwpck_require__(51961)) :
     0;
 })(this, (function (exports, setArray, sourcemapCodec) { 'use strict';
 
@@ -2691,262 +2691,6 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 69413:
-/***/ (function(module) {
-
-(function (global, factory) {
-     true ? module.exports = factory() :
-    0;
-})(this, (function () { 'use strict';
-
-    // Matches the scheme of a URL, eg "http://"
-    const schemeRegex = /^[\w+.-]+:\/\//;
-    /**
-     * Matches the parts of a URL:
-     * 1. Scheme, including ":", guaranteed.
-     * 2. User/password, including "@", optional.
-     * 3. Host, guaranteed.
-     * 4. Port, including ":", optional.
-     * 5. Path, including "/", optional.
-     * 6. Query, including "?", optional.
-     * 7. Hash, including "#", optional.
-     */
-    const urlRegex = /^([\w+.-]+:)\/\/([^@/#?]*@)?([^:/#?]*)(:\d+)?(\/[^#?]*)?(\?[^#]*)?(#.*)?/;
-    /**
-     * File URLs are weird. They dont' need the regular `//` in the scheme, they may or may not start
-     * with a leading `/`, they can have a domain (but only if they don't start with a Windows drive).
-     *
-     * 1. Host, optional.
-     * 2. Path, which may include "/", guaranteed.
-     * 3. Query, including "?", optional.
-     * 4. Hash, including "#", optional.
-     */
-    const fileRegex = /^file:(?:\/\/((?![a-z]:)[^/#?]*)?)?(\/?[^#?]*)(\?[^#]*)?(#.*)?/i;
-    var UrlType;
-    (function (UrlType) {
-        UrlType[UrlType["Empty"] = 1] = "Empty";
-        UrlType[UrlType["Hash"] = 2] = "Hash";
-        UrlType[UrlType["Query"] = 3] = "Query";
-        UrlType[UrlType["RelativePath"] = 4] = "RelativePath";
-        UrlType[UrlType["AbsolutePath"] = 5] = "AbsolutePath";
-        UrlType[UrlType["SchemeRelative"] = 6] = "SchemeRelative";
-        UrlType[UrlType["Absolute"] = 7] = "Absolute";
-    })(UrlType || (UrlType = {}));
-    function isAbsoluteUrl(input) {
-        return schemeRegex.test(input);
-    }
-    function isSchemeRelativeUrl(input) {
-        return input.startsWith('//');
-    }
-    function isAbsolutePath(input) {
-        return input.startsWith('/');
-    }
-    function isFileUrl(input) {
-        return input.startsWith('file:');
-    }
-    function isRelative(input) {
-        return /^[.?#]/.test(input);
-    }
-    function parseAbsoluteUrl(input) {
-        const match = urlRegex.exec(input);
-        return makeUrl(match[1], match[2] || '', match[3], match[4] || '', match[5] || '/', match[6] || '', match[7] || '');
-    }
-    function parseFileUrl(input) {
-        const match = fileRegex.exec(input);
-        const path = match[2];
-        return makeUrl('file:', '', match[1] || '', '', isAbsolutePath(path) ? path : '/' + path, match[3] || '', match[4] || '');
-    }
-    function makeUrl(scheme, user, host, port, path, query, hash) {
-        return {
-            scheme,
-            user,
-            host,
-            port,
-            path,
-            query,
-            hash,
-            type: UrlType.Absolute,
-        };
-    }
-    function parseUrl(input) {
-        if (isSchemeRelativeUrl(input)) {
-            const url = parseAbsoluteUrl('http:' + input);
-            url.scheme = '';
-            url.type = UrlType.SchemeRelative;
-            return url;
-        }
-        if (isAbsolutePath(input)) {
-            const url = parseAbsoluteUrl('http://foo.com' + input);
-            url.scheme = '';
-            url.host = '';
-            url.type = UrlType.AbsolutePath;
-            return url;
-        }
-        if (isFileUrl(input))
-            return parseFileUrl(input);
-        if (isAbsoluteUrl(input))
-            return parseAbsoluteUrl(input);
-        const url = parseAbsoluteUrl('http://foo.com/' + input);
-        url.scheme = '';
-        url.host = '';
-        url.type = input
-            ? input.startsWith('?')
-                ? UrlType.Query
-                : input.startsWith('#')
-                    ? UrlType.Hash
-                    : UrlType.RelativePath
-            : UrlType.Empty;
-        return url;
-    }
-    function stripPathFilename(path) {
-        // If a path ends with a parent directory "..", then it's a relative path with excess parent
-        // paths. It's not a file, so we can't strip it.
-        if (path.endsWith('/..'))
-            return path;
-        const index = path.lastIndexOf('/');
-        return path.slice(0, index + 1);
-    }
-    function mergePaths(url, base) {
-        normalizePath(base, base.type);
-        // If the path is just a "/", then it was an empty path to begin with (remember, we're a relative
-        // path).
-        if (url.path === '/') {
-            url.path = base.path;
-        }
-        else {
-            // Resolution happens relative to the base path's directory, not the file.
-            url.path = stripPathFilename(base.path) + url.path;
-        }
-    }
-    /**
-     * The path can have empty directories "//", unneeded parents "foo/..", or current directory
-     * "foo/.". We need to normalize to a standard representation.
-     */
-    function normalizePath(url, type) {
-        const rel = type <= UrlType.RelativePath;
-        const pieces = url.path.split('/');
-        // We need to preserve the first piece always, so that we output a leading slash. The item at
-        // pieces[0] is an empty string.
-        let pointer = 1;
-        // Positive is the number of real directories we've output, used for popping a parent directory.
-        // Eg, "foo/bar/.." will have a positive 2, and we can decrement to be left with just "foo".
-        let positive = 0;
-        // We need to keep a trailing slash if we encounter an empty directory (eg, splitting "foo/" will
-        // generate `["foo", ""]` pieces). And, if we pop a parent directory. But once we encounter a
-        // real directory, we won't need to append, unless the other conditions happen again.
-        let addTrailingSlash = false;
-        for (let i = 1; i < pieces.length; i++) {
-            const piece = pieces[i];
-            // An empty directory, could be a trailing slash, or just a double "//" in the path.
-            if (!piece) {
-                addTrailingSlash = true;
-                continue;
-            }
-            // If we encounter a real directory, then we don't need to append anymore.
-            addTrailingSlash = false;
-            // A current directory, which we can always drop.
-            if (piece === '.')
-                continue;
-            // A parent directory, we need to see if there are any real directories we can pop. Else, we
-            // have an excess of parents, and we'll need to keep the "..".
-            if (piece === '..') {
-                if (positive) {
-                    addTrailingSlash = true;
-                    positive--;
-                    pointer--;
-                }
-                else if (rel) {
-                    // If we're in a relativePath, then we need to keep the excess parents. Else, in an absolute
-                    // URL, protocol relative URL, or an absolute path, we don't need to keep excess.
-                    pieces[pointer++] = piece;
-                }
-                continue;
-            }
-            // We've encountered a real directory. Move it to the next insertion pointer, which accounts for
-            // any popped or dropped directories.
-            pieces[pointer++] = piece;
-            positive++;
-        }
-        let path = '';
-        for (let i = 1; i < pointer; i++) {
-            path += '/' + pieces[i];
-        }
-        if (!path || (addTrailingSlash && !path.endsWith('/..'))) {
-            path += '/';
-        }
-        url.path = path;
-    }
-    /**
-     * Attempts to resolve `input` URL/path relative to `base`.
-     */
-    function resolve(input, base) {
-        if (!input && !base)
-            return '';
-        const url = parseUrl(input);
-        let inputType = url.type;
-        if (base && inputType !== UrlType.Absolute) {
-            const baseUrl = parseUrl(base);
-            const baseType = baseUrl.type;
-            switch (inputType) {
-                case UrlType.Empty:
-                    url.hash = baseUrl.hash;
-                // fall through
-                case UrlType.Hash:
-                    url.query = baseUrl.query;
-                // fall through
-                case UrlType.Query:
-                case UrlType.RelativePath:
-                    mergePaths(url, baseUrl);
-                // fall through
-                case UrlType.AbsolutePath:
-                    // The host, user, and port are joined, you can't copy one without the others.
-                    url.user = baseUrl.user;
-                    url.host = baseUrl.host;
-                    url.port = baseUrl.port;
-                // fall through
-                case UrlType.SchemeRelative:
-                    // The input doesn't have a schema at least, so we need to copy at least that over.
-                    url.scheme = baseUrl.scheme;
-            }
-            if (baseType > inputType)
-                inputType = baseType;
-        }
-        normalizePath(url, inputType);
-        const queryHash = url.query + url.hash;
-        switch (inputType) {
-            // This is impossible, because of the empty checks at the start of the function.
-            // case UrlType.Empty:
-            case UrlType.Hash:
-            case UrlType.Query:
-                return queryHash;
-            case UrlType.RelativePath: {
-                // The first char is always a "/", and we need it to be relative.
-                const path = url.path.slice(1);
-                if (!path)
-                    return queryHash || '.';
-                if (isRelative(base || input) && !isRelative(path)) {
-                    // If base started with a leading ".", or there is no base and input started with a ".",
-                    // then we need to ensure that the relative path starts with a ".". We don't know if
-                    // relative starts with a "..", though, so check before prepending.
-                    return './' + path + queryHash;
-                }
-                return path + queryHash;
-            }
-            case UrlType.AbsolutePath:
-                return url.path + queryHash;
-            default:
-                return url.scheme + '//' + url.user + url.host + url.port + url.path + queryHash;
-        }
-    }
-
-    return resolve;
-
-}));
-//# sourceMappingURL=resolve-uri.umd.js.map
-
-
-/***/ }),
-
 /***/ 65036:
 /***/ (function(__unused_webpack_module, exports) {
 
@@ -3011,252 +2755,7 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 71465:
-/***/ (function(__unused_webpack_module, exports) {
-
-(function (global, factory) {
-     true ? factory(exports) :
-    0;
-})(this, (function (exports) { 'use strict';
-
-    /**
-     * Gets the index associated with `key` in the backing array, if it is already present.
-     */
-    exports.get = void 0;
-    /**
-     * Puts `key` into the backing array, if it is not already present. Returns
-     * the index of the `key` in the backing array.
-     */
-    exports.put = void 0;
-    /**
-     * Pops the last added item out of the SetArray.
-     */
-    exports.pop = void 0;
-    /**
-     * SetArray acts like a `Set` (allowing only one occurrence of a string `key`), but provides the
-     * index of the `key` in the backing array.
-     *
-     * This is designed to allow synchronizing a second array with the contents of the backing array,
-     * like how in a sourcemap `sourcesContent[i]` is the source content associated with `source[i]`,
-     * and there are never duplicates.
-     */
-    class SetArray {
-        constructor() {
-            this._indexes = { __proto__: null };
-            this.array = [];
-        }
-    }
-    (() => {
-        exports.get = (strarr, key) => strarr._indexes[key];
-        exports.put = (strarr, key) => {
-            // The key may or may not be present. If it is present, it's a number.
-            const index = exports.get(strarr, key);
-            if (index !== undefined)
-                return index;
-            const { array, _indexes: indexes } = strarr;
-            return (indexes[key] = array.push(key) - 1);
-        };
-        exports.pop = (strarr) => {
-            const { array, _indexes: indexes } = strarr;
-            if (array.length === 0)
-                return;
-            const last = array.pop();
-            indexes[last] = undefined;
-        };
-    })();
-
-    exports.SetArray = SetArray;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
-
-}));
-//# sourceMappingURL=set-array.umd.js.map
-
-
-/***/ }),
-
 /***/ 51961:
-/***/ (function(__unused_webpack_module, exports) {
-
-(function (global, factory) {
-     true ? factory(exports) :
-    0;
-})(this, (function (exports) { 'use strict';
-
-    const comma = ','.charCodeAt(0);
-    const semicolon = ';'.charCodeAt(0);
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    const intToChar = new Uint8Array(64); // 64 possible chars.
-    const charToInt = new Uint8Array(128); // z is 122 in ASCII
-    for (let i = 0; i < chars.length; i++) {
-        const c = chars.charCodeAt(i);
-        intToChar[i] = c;
-        charToInt[c] = i;
-    }
-    // Provide a fallback for older environments.
-    const td = typeof TextDecoder !== 'undefined'
-        ? /* #__PURE__ */ new TextDecoder()
-        : typeof Buffer !== 'undefined'
-            ? {
-                decode(buf) {
-                    const out = Buffer.from(buf.buffer, buf.byteOffset, buf.byteLength);
-                    return out.toString();
-                },
-            }
-            : {
-                decode(buf) {
-                    let out = '';
-                    for (let i = 0; i < buf.length; i++) {
-                        out += String.fromCharCode(buf[i]);
-                    }
-                    return out;
-                },
-            };
-    function decode(mappings) {
-        const state = new Int32Array(5);
-        const decoded = [];
-        let index = 0;
-        do {
-            const semi = indexOf(mappings, index);
-            const line = [];
-            let sorted = true;
-            let lastCol = 0;
-            state[0] = 0;
-            for (let i = index; i < semi; i++) {
-                let seg;
-                i = decodeInteger(mappings, i, state, 0); // genColumn
-                const col = state[0];
-                if (col < lastCol)
-                    sorted = false;
-                lastCol = col;
-                if (hasMoreVlq(mappings, i, semi)) {
-                    i = decodeInteger(mappings, i, state, 1); // sourcesIndex
-                    i = decodeInteger(mappings, i, state, 2); // sourceLine
-                    i = decodeInteger(mappings, i, state, 3); // sourceColumn
-                    if (hasMoreVlq(mappings, i, semi)) {
-                        i = decodeInteger(mappings, i, state, 4); // namesIndex
-                        seg = [col, state[1], state[2], state[3], state[4]];
-                    }
-                    else {
-                        seg = [col, state[1], state[2], state[3]];
-                    }
-                }
-                else {
-                    seg = [col];
-                }
-                line.push(seg);
-            }
-            if (!sorted)
-                sort(line);
-            decoded.push(line);
-            index = semi + 1;
-        } while (index <= mappings.length);
-        return decoded;
-    }
-    function indexOf(mappings, index) {
-        const idx = mappings.indexOf(';', index);
-        return idx === -1 ? mappings.length : idx;
-    }
-    function decodeInteger(mappings, pos, state, j) {
-        let value = 0;
-        let shift = 0;
-        let integer = 0;
-        do {
-            const c = mappings.charCodeAt(pos++);
-            integer = charToInt[c];
-            value |= (integer & 31) << shift;
-            shift += 5;
-        } while (integer & 32);
-        const shouldNegate = value & 1;
-        value >>>= 1;
-        if (shouldNegate) {
-            value = -0x80000000 | -value;
-        }
-        state[j] += value;
-        return pos;
-    }
-    function hasMoreVlq(mappings, i, length) {
-        if (i >= length)
-            return false;
-        return mappings.charCodeAt(i) !== comma;
-    }
-    function sort(line) {
-        line.sort(sortComparator);
-    }
-    function sortComparator(a, b) {
-        return a[0] - b[0];
-    }
-    function encode(decoded) {
-        const state = new Int32Array(5);
-        const bufLength = 1024 * 16;
-        const subLength = bufLength - 36;
-        const buf = new Uint8Array(bufLength);
-        const sub = buf.subarray(0, subLength);
-        let pos = 0;
-        let out = '';
-        for (let i = 0; i < decoded.length; i++) {
-            const line = decoded[i];
-            if (i > 0) {
-                if (pos === bufLength) {
-                    out += td.decode(buf);
-                    pos = 0;
-                }
-                buf[pos++] = semicolon;
-            }
-            if (line.length === 0)
-                continue;
-            state[0] = 0;
-            for (let j = 0; j < line.length; j++) {
-                const segment = line[j];
-                // We can push up to 5 ints, each int can take at most 7 chars, and we
-                // may push a comma.
-                if (pos > subLength) {
-                    out += td.decode(sub);
-                    buf.copyWithin(0, subLength, pos);
-                    pos -= subLength;
-                }
-                if (j > 0)
-                    buf[pos++] = comma;
-                pos = encodeInteger(buf, pos, state, segment, 0); // genColumn
-                if (segment.length === 1)
-                    continue;
-                pos = encodeInteger(buf, pos, state, segment, 1); // sourcesIndex
-                pos = encodeInteger(buf, pos, state, segment, 2); // sourceLine
-                pos = encodeInteger(buf, pos, state, segment, 3); // sourceColumn
-                if (segment.length === 4)
-                    continue;
-                pos = encodeInteger(buf, pos, state, segment, 4); // namesIndex
-            }
-        }
-        return out + td.decode(buf.subarray(0, pos));
-    }
-    function encodeInteger(buf, pos, state, segment, j) {
-        const next = segment[j];
-        let num = next - state[j];
-        state[j] = next;
-        num = num < 0 ? (-num << 1) | 1 : num << 1;
-        do {
-            let clamped = num & 0b011111;
-            num >>>= 5;
-            if (num > 0)
-                clamped |= 0b100000;
-            buf[pos++] = intToChar[clamped];
-        } while (num > 0);
-        return pos;
-    }
-
-    exports.decode = decode;
-    exports.encode = encode;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
-
-}));
-//# sourceMappingURL=sourcemap-codec.umd.js.map
-
-
-/***/ }),
-
-/***/ 33248:
 /***/ (function(__unused_webpack_module, exports) {
 
 (function (global, factory) {
@@ -3968,578 +3467,6 @@ module.exports = exports.default;
 
 /***/ }),
 
-/***/ 46974:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-(function (global, factory) {
-     true ? factory(exports, __nccwpck_require__(33248), __nccwpck_require__(69413)) :
-    0;
-})(this, (function (exports, sourcemapCodec, resolveUri) { 'use strict';
-
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var resolveUri__default = /*#__PURE__*/_interopDefaultLegacy(resolveUri);
-
-    function resolve(input, base) {
-        // The base is always treated as a directory, if it's not empty.
-        // https://github.com/mozilla/source-map/blob/8cb3ee57/lib/util.js#L327
-        // https://github.com/chromium/chromium/blob/da4adbb3/third_party/blink/renderer/devtools/front_end/sdk/SourceMap.js#L400-L401
-        if (base && !base.endsWith('/'))
-            base += '/';
-        return resolveUri__default["default"](input, base);
-    }
-
-    /**
-     * Removes everything after the last "/", but leaves the slash.
-     */
-    function stripFilename(path) {
-        if (!path)
-            return '';
-        const index = path.lastIndexOf('/');
-        return path.slice(0, index + 1);
-    }
-
-    const COLUMN = 0;
-    const SOURCES_INDEX = 1;
-    const SOURCE_LINE = 2;
-    const SOURCE_COLUMN = 3;
-    const NAMES_INDEX = 4;
-    const REV_GENERATED_LINE = 1;
-    const REV_GENERATED_COLUMN = 2;
-
-    function maybeSort(mappings, owned) {
-        const unsortedIndex = nextUnsortedSegmentLine(mappings, 0);
-        if (unsortedIndex === mappings.length)
-            return mappings;
-        // If we own the array (meaning we parsed it from JSON), then we're free to directly mutate it. If
-        // not, we do not want to modify the consumer's input array.
-        if (!owned)
-            mappings = mappings.slice();
-        for (let i = unsortedIndex; i < mappings.length; i = nextUnsortedSegmentLine(mappings, i + 1)) {
-            mappings[i] = sortSegments(mappings[i], owned);
-        }
-        return mappings;
-    }
-    function nextUnsortedSegmentLine(mappings, start) {
-        for (let i = start; i < mappings.length; i++) {
-            if (!isSorted(mappings[i]))
-                return i;
-        }
-        return mappings.length;
-    }
-    function isSorted(line) {
-        for (let j = 1; j < line.length; j++) {
-            if (line[j][COLUMN] < line[j - 1][COLUMN]) {
-                return false;
-            }
-        }
-        return true;
-    }
-    function sortSegments(line, owned) {
-        if (!owned)
-            line = line.slice();
-        return line.sort(sortComparator);
-    }
-    function sortComparator(a, b) {
-        return a[COLUMN] - b[COLUMN];
-    }
-
-    let found = false;
-    /**
-     * A binary search implementation that returns the index if a match is found.
-     * If no match is found, then the left-index (the index associated with the item that comes just
-     * before the desired index) is returned. To maintain proper sort order, a splice would happen at
-     * the next index:
-     *
-     * ```js
-     * const array = [1, 3];
-     * const needle = 2;
-     * const index = binarySearch(array, needle, (item, needle) => item - needle);
-     *
-     * assert.equal(index, 0);
-     * array.splice(index + 1, 0, needle);
-     * assert.deepEqual(array, [1, 2, 3]);
-     * ```
-     */
-    function binarySearch(haystack, needle, low, high) {
-        while (low <= high) {
-            const mid = low + ((high - low) >> 1);
-            const cmp = haystack[mid][COLUMN] - needle;
-            if (cmp === 0) {
-                found = true;
-                return mid;
-            }
-            if (cmp < 0) {
-                low = mid + 1;
-            }
-            else {
-                high = mid - 1;
-            }
-        }
-        found = false;
-        return low - 1;
-    }
-    function upperBound(haystack, needle, index) {
-        for (let i = index + 1; i < haystack.length; index = i++) {
-            if (haystack[i][COLUMN] !== needle)
-                break;
-        }
-        return index;
-    }
-    function lowerBound(haystack, needle, index) {
-        for (let i = index - 1; i >= 0; index = i--) {
-            if (haystack[i][COLUMN] !== needle)
-                break;
-        }
-        return index;
-    }
-    function memoizedState() {
-        return {
-            lastKey: -1,
-            lastNeedle: -1,
-            lastIndex: -1,
-        };
-    }
-    /**
-     * This overly complicated beast is just to record the last tested line/column and the resulting
-     * index, allowing us to skip a few tests if mappings are monotonically increasing.
-     */
-    function memoizedBinarySearch(haystack, needle, state, key) {
-        const { lastKey, lastNeedle, lastIndex } = state;
-        let low = 0;
-        let high = haystack.length - 1;
-        if (key === lastKey) {
-            if (needle === lastNeedle) {
-                found = lastIndex !== -1 && haystack[lastIndex][COLUMN] === needle;
-                return lastIndex;
-            }
-            if (needle >= lastNeedle) {
-                // lastIndex may be -1 if the previous needle was not found.
-                low = lastIndex === -1 ? 0 : lastIndex;
-            }
-            else {
-                high = lastIndex;
-            }
-        }
-        state.lastKey = key;
-        state.lastNeedle = needle;
-        return (state.lastIndex = binarySearch(haystack, needle, low, high));
-    }
-
-    // Rebuilds the original source files, with mappings that are ordered by source line/column instead
-    // of generated line/column.
-    function buildBySources(decoded, memos) {
-        const sources = memos.map(buildNullArray);
-        for (let i = 0; i < decoded.length; i++) {
-            const line = decoded[i];
-            for (let j = 0; j < line.length; j++) {
-                const seg = line[j];
-                if (seg.length === 1)
-                    continue;
-                const sourceIndex = seg[SOURCES_INDEX];
-                const sourceLine = seg[SOURCE_LINE];
-                const sourceColumn = seg[SOURCE_COLUMN];
-                const originalSource = sources[sourceIndex];
-                const originalLine = (originalSource[sourceLine] || (originalSource[sourceLine] = []));
-                const memo = memos[sourceIndex];
-                // The binary search either found a match, or it found the left-index just before where the
-                // segment should go. Either way, we want to insert after that. And there may be multiple
-                // generated segments associated with an original location, so there may need to move several
-                // indexes before we find where we need to insert.
-                const index = upperBound(originalLine, sourceColumn, memoizedBinarySearch(originalLine, sourceColumn, memo, sourceLine));
-                insert(originalLine, (memo.lastIndex = index + 1), [sourceColumn, i, seg[COLUMN]]);
-            }
-        }
-        return sources;
-    }
-    function insert(array, index, value) {
-        for (let i = array.length; i > index; i--) {
-            array[i] = array[i - 1];
-        }
-        array[index] = value;
-    }
-    // Null arrays allow us to use ordered index keys without actually allocating contiguous memory like
-    // a real array. We use a null-prototype object to avoid prototype pollution and deoptimizations.
-    // Numeric properties on objects are magically sorted in ascending order by the engine regardless of
-    // the insertion order. So, by setting any numeric keys, even out of order, we'll get ascending
-    // order when iterating with for-in.
-    function buildNullArray() {
-        return { __proto__: null };
-    }
-
-    const AnyMap = function (map, mapUrl) {
-        const parsed = typeof map === 'string' ? JSON.parse(map) : map;
-        if (!('sections' in parsed))
-            return new TraceMap(parsed, mapUrl);
-        const mappings = [];
-        const sources = [];
-        const sourcesContent = [];
-        const names = [];
-        recurse(parsed, mapUrl, mappings, sources, sourcesContent, names, 0, 0, Infinity, Infinity);
-        const joined = {
-            version: 3,
-            file: parsed.file,
-            names,
-            sources,
-            sourcesContent,
-            mappings,
-        };
-        return exports.presortedDecodedMap(joined);
-    };
-    function recurse(input, mapUrl, mappings, sources, sourcesContent, names, lineOffset, columnOffset, stopLine, stopColumn) {
-        const { sections } = input;
-        for (let i = 0; i < sections.length; i++) {
-            const { map, offset } = sections[i];
-            let sl = stopLine;
-            let sc = stopColumn;
-            if (i + 1 < sections.length) {
-                const nextOffset = sections[i + 1].offset;
-                sl = Math.min(stopLine, lineOffset + nextOffset.line);
-                if (sl === stopLine) {
-                    sc = Math.min(stopColumn, columnOffset + nextOffset.column);
-                }
-                else if (sl < stopLine) {
-                    sc = columnOffset + nextOffset.column;
-                }
-            }
-            addSection(map, mapUrl, mappings, sources, sourcesContent, names, lineOffset + offset.line, columnOffset + offset.column, sl, sc);
-        }
-    }
-    function addSection(input, mapUrl, mappings, sources, sourcesContent, names, lineOffset, columnOffset, stopLine, stopColumn) {
-        if ('sections' in input)
-            return recurse(...arguments);
-        const map = new TraceMap(input, mapUrl);
-        const sourcesOffset = sources.length;
-        const namesOffset = names.length;
-        const decoded = exports.decodedMappings(map);
-        const { resolvedSources, sourcesContent: contents } = map;
-        append(sources, resolvedSources);
-        append(names, map.names);
-        if (contents)
-            append(sourcesContent, contents);
-        else
-            for (let i = 0; i < resolvedSources.length; i++)
-                sourcesContent.push(null);
-        for (let i = 0; i < decoded.length; i++) {
-            const lineI = lineOffset + i;
-            // We can only add so many lines before we step into the range that the next section's map
-            // controls. When we get to the last line, then we'll start checking the segments to see if
-            // they've crossed into the column range. But it may not have any columns that overstep, so we
-            // still need to check that we don't overstep lines, too.
-            if (lineI > stopLine)
-                return;
-            // The out line may already exist in mappings (if we're continuing the line started by a
-            // previous section). Or, we may have jumped ahead several lines to start this section.
-            const out = getLine(mappings, lineI);
-            // On the 0th loop, the section's column offset shifts us forward. On all other lines (since the
-            // map can be multiple lines), it doesn't.
-            const cOffset = i === 0 ? columnOffset : 0;
-            const line = decoded[i];
-            for (let j = 0; j < line.length; j++) {
-                const seg = line[j];
-                const column = cOffset + seg[COLUMN];
-                // If this segment steps into the column range that the next section's map controls, we need
-                // to stop early.
-                if (lineI === stopLine && column >= stopColumn)
-                    return;
-                if (seg.length === 1) {
-                    out.push([column]);
-                    continue;
-                }
-                const sourcesIndex = sourcesOffset + seg[SOURCES_INDEX];
-                const sourceLine = seg[SOURCE_LINE];
-                const sourceColumn = seg[SOURCE_COLUMN];
-                out.push(seg.length === 4
-                    ? [column, sourcesIndex, sourceLine, sourceColumn]
-                    : [column, sourcesIndex, sourceLine, sourceColumn, namesOffset + seg[NAMES_INDEX]]);
-            }
-        }
-    }
-    function append(arr, other) {
-        for (let i = 0; i < other.length; i++)
-            arr.push(other[i]);
-    }
-    function getLine(arr, index) {
-        for (let i = arr.length; i <= index; i++)
-            arr[i] = [];
-        return arr[index];
-    }
-
-    const LINE_GTR_ZERO = '`line` must be greater than 0 (lines start at line 1)';
-    const COL_GTR_EQ_ZERO = '`column` must be greater than or equal to 0 (columns start at column 0)';
-    const LEAST_UPPER_BOUND = -1;
-    const GREATEST_LOWER_BOUND = 1;
-    /**
-     * Returns the encoded (VLQ string) form of the SourceMap's mappings field.
-     */
-    exports.encodedMappings = void 0;
-    /**
-     * Returns the decoded (array of lines of segments) form of the SourceMap's mappings field.
-     */
-    exports.decodedMappings = void 0;
-    /**
-     * A low-level API to find the segment associated with a generated line/column (think, from a
-     * stack trace). Line and column here are 0-based, unlike `originalPositionFor`.
-     */
-    exports.traceSegment = void 0;
-    /**
-     * A higher-level API to find the source/line/column associated with a generated line/column
-     * (think, from a stack trace). Line is 1-based, but column is 0-based, due to legacy behavior in
-     * `source-map` library.
-     */
-    exports.originalPositionFor = void 0;
-    /**
-     * Finds the generated line/column position of the provided source/line/column source position.
-     */
-    exports.generatedPositionFor = void 0;
-    /**
-     * Finds all generated line/column positions of the provided source/line/column source position.
-     */
-    exports.allGeneratedPositionsFor = void 0;
-    /**
-     * Iterates each mapping in generated position order.
-     */
-    exports.eachMapping = void 0;
-    /**
-     * Retrieves the source content for a particular source, if its found. Returns null if not.
-     */
-    exports.sourceContentFor = void 0;
-    /**
-     * A helper that skips sorting of the input map's mappings array, which can be expensive for larger
-     * maps.
-     */
-    exports.presortedDecodedMap = void 0;
-    /**
-     * Returns a sourcemap object (with decoded mappings) suitable for passing to a library that expects
-     * a sourcemap, or to JSON.stringify.
-     */
-    exports.decodedMap = void 0;
-    /**
-     * Returns a sourcemap object (with encoded mappings) suitable for passing to a library that expects
-     * a sourcemap, or to JSON.stringify.
-     */
-    exports.encodedMap = void 0;
-    class TraceMap {
-        constructor(map, mapUrl) {
-            const isString = typeof map === 'string';
-            if (!isString && map._decodedMemo)
-                return map;
-            const parsed = (isString ? JSON.parse(map) : map);
-            const { version, file, names, sourceRoot, sources, sourcesContent } = parsed;
-            this.version = version;
-            this.file = file;
-            this.names = names;
-            this.sourceRoot = sourceRoot;
-            this.sources = sources;
-            this.sourcesContent = sourcesContent;
-            const from = resolve(sourceRoot || '', stripFilename(mapUrl));
-            this.resolvedSources = sources.map((s) => resolve(s || '', from));
-            const { mappings } = parsed;
-            if (typeof mappings === 'string') {
-                this._encoded = mappings;
-                this._decoded = undefined;
-            }
-            else {
-                this._encoded = undefined;
-                this._decoded = maybeSort(mappings, isString);
-            }
-            this._decodedMemo = memoizedState();
-            this._bySources = undefined;
-            this._bySourceMemos = undefined;
-        }
-    }
-    (() => {
-        exports.encodedMappings = (map) => {
-            var _a;
-            return ((_a = map._encoded) !== null && _a !== void 0 ? _a : (map._encoded = sourcemapCodec.encode(map._decoded)));
-        };
-        exports.decodedMappings = (map) => {
-            return (map._decoded || (map._decoded = sourcemapCodec.decode(map._encoded)));
-        };
-        exports.traceSegment = (map, line, column) => {
-            const decoded = exports.decodedMappings(map);
-            // It's common for parent source maps to have pointers to lines that have no
-            // mapping (like a "//# sourceMappingURL=") at the end of the child file.
-            if (line >= decoded.length)
-                return null;
-            const segments = decoded[line];
-            const index = traceSegmentInternal(segments, map._decodedMemo, line, column, GREATEST_LOWER_BOUND);
-            return index === -1 ? null : segments[index];
-        };
-        exports.originalPositionFor = (map, { line, column, bias }) => {
-            line--;
-            if (line < 0)
-                throw new Error(LINE_GTR_ZERO);
-            if (column < 0)
-                throw new Error(COL_GTR_EQ_ZERO);
-            const decoded = exports.decodedMappings(map);
-            // It's common for parent source maps to have pointers to lines that have no
-            // mapping (like a "//# sourceMappingURL=") at the end of the child file.
-            if (line >= decoded.length)
-                return OMapping(null, null, null, null);
-            const segments = decoded[line];
-            const index = traceSegmentInternal(segments, map._decodedMemo, line, column, bias || GREATEST_LOWER_BOUND);
-            if (index === -1)
-                return OMapping(null, null, null, null);
-            const segment = segments[index];
-            if (segment.length === 1)
-                return OMapping(null, null, null, null);
-            const { names, resolvedSources } = map;
-            return OMapping(resolvedSources[segment[SOURCES_INDEX]], segment[SOURCE_LINE] + 1, segment[SOURCE_COLUMN], segment.length === 5 ? names[segment[NAMES_INDEX]] : null);
-        };
-        exports.allGeneratedPositionsFor = (map, { source, line, column, bias }) => {
-            // SourceMapConsumer uses LEAST_UPPER_BOUND for some reason, so we follow suit.
-            return generatedPosition(map, source, line, column, bias || LEAST_UPPER_BOUND, true);
-        };
-        exports.generatedPositionFor = (map, { source, line, column, bias }) => {
-            return generatedPosition(map, source, line, column, bias || GREATEST_LOWER_BOUND, false);
-        };
-        exports.eachMapping = (map, cb) => {
-            const decoded = exports.decodedMappings(map);
-            const { names, resolvedSources } = map;
-            for (let i = 0; i < decoded.length; i++) {
-                const line = decoded[i];
-                for (let j = 0; j < line.length; j++) {
-                    const seg = line[j];
-                    const generatedLine = i + 1;
-                    const generatedColumn = seg[0];
-                    let source = null;
-                    let originalLine = null;
-                    let originalColumn = null;
-                    let name = null;
-                    if (seg.length !== 1) {
-                        source = resolvedSources[seg[1]];
-                        originalLine = seg[2] + 1;
-                        originalColumn = seg[3];
-                    }
-                    if (seg.length === 5)
-                        name = names[seg[4]];
-                    cb({
-                        generatedLine,
-                        generatedColumn,
-                        source,
-                        originalLine,
-                        originalColumn,
-                        name,
-                    });
-                }
-            }
-        };
-        exports.sourceContentFor = (map, source) => {
-            const { sources, resolvedSources, sourcesContent } = map;
-            if (sourcesContent == null)
-                return null;
-            let index = sources.indexOf(source);
-            if (index === -1)
-                index = resolvedSources.indexOf(source);
-            return index === -1 ? null : sourcesContent[index];
-        };
-        exports.presortedDecodedMap = (map, mapUrl) => {
-            const tracer = new TraceMap(clone(map, []), mapUrl);
-            tracer._decoded = map.mappings;
-            return tracer;
-        };
-        exports.decodedMap = (map) => {
-            return clone(map, exports.decodedMappings(map));
-        };
-        exports.encodedMap = (map) => {
-            return clone(map, exports.encodedMappings(map));
-        };
-        function generatedPosition(map, source, line, column, bias, all) {
-            line--;
-            if (line < 0)
-                throw new Error(LINE_GTR_ZERO);
-            if (column < 0)
-                throw new Error(COL_GTR_EQ_ZERO);
-            const { sources, resolvedSources } = map;
-            let sourceIndex = sources.indexOf(source);
-            if (sourceIndex === -1)
-                sourceIndex = resolvedSources.indexOf(source);
-            if (sourceIndex === -1)
-                return all ? [] : GMapping(null, null);
-            const generated = (map._bySources || (map._bySources = buildBySources(exports.decodedMappings(map), (map._bySourceMemos = sources.map(memoizedState)))));
-            const segments = generated[sourceIndex][line];
-            if (segments == null)
-                return all ? [] : GMapping(null, null);
-            const memo = map._bySourceMemos[sourceIndex];
-            if (all)
-                return sliceGeneratedPositions(segments, memo, line, column, bias);
-            const index = traceSegmentInternal(segments, memo, line, column, bias);
-            if (index === -1)
-                return GMapping(null, null);
-            const segment = segments[index];
-            return GMapping(segment[REV_GENERATED_LINE] + 1, segment[REV_GENERATED_COLUMN]);
-        }
-    })();
-    function clone(map, mappings) {
-        return {
-            version: map.version,
-            file: map.file,
-            names: map.names,
-            sourceRoot: map.sourceRoot,
-            sources: map.sources,
-            sourcesContent: map.sourcesContent,
-            mappings,
-        };
-    }
-    function OMapping(source, line, column, name) {
-        return { source, line, column, name };
-    }
-    function GMapping(line, column) {
-        return { line, column };
-    }
-    function traceSegmentInternal(segments, memo, line, column, bias) {
-        let index = memoizedBinarySearch(segments, column, memo, line);
-        if (found) {
-            index = (bias === LEAST_UPPER_BOUND ? upperBound : lowerBound)(segments, column, index);
-        }
-        else if (bias === LEAST_UPPER_BOUND)
-            index++;
-        if (index === -1 || index === segments.length)
-            return -1;
-        return index;
-    }
-    function sliceGeneratedPositions(segments, memo, line, column, bias) {
-        let min = traceSegmentInternal(segments, memo, line, column, GREATEST_LOWER_BOUND);
-        // We ignored the bias when tracing the segment so that we're guarnateed to find the first (in
-        // insertion order) segment that matched. Even if we did respect the bias when tracing, we would
-        // still need to call `lowerBound()` to find the first segment, which is slower than just looking
-        // for the GREATEST_LOWER_BOUND to begin with. The only difference that matters for us is when the
-        // binary search didn't match, in which case GREATEST_LOWER_BOUND just needs to increment to
-        // match LEAST_UPPER_BOUND.
-        if (!found && bias === LEAST_UPPER_BOUND)
-            min++;
-        if (min === -1 || min === segments.length)
-            return [];
-        // We may have found the segment that started at an earlier column. If this is the case, then we
-        // need to slice all generated segments that match _that_ column, because all such segments span
-        // to our desired column.
-        const matchedColumn = found ? column : segments[min][COLUMN];
-        // The binary search is not guaranteed to find the lower bound when a match wasn't found.
-        if (!found)
-            min = lowerBound(segments, matchedColumn, min);
-        const max = upperBound(segments, matchedColumn, min);
-        const result = [];
-        for (; min <= max; min++) {
-            const segment = segments[min];
-            result.push(GMapping(segment[REV_GENERATED_LINE] + 1, segment[REV_GENERATED_COLUMN]));
-        }
-        return result;
-    }
-
-    exports.AnyMap = AnyMap;
-    exports.GREATEST_LOWER_BOUND = GREATEST_LOWER_BOUND;
-    exports.LEAST_UPPER_BOUND = LEAST_UPPER_BOUND;
-    exports.TraceMap = TraceMap;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
-
-}));
-//# sourceMappingURL=trace-mapping.umd.js.map
-
-
-/***/ }),
-
 /***/ 94571:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
@@ -4754,7 +3681,7 @@ function _default(targets, method, polyfills) {
 exports.__esModule = true;
 exports.StaticProperties = exports.InstanceProperties = exports.CommonIterators = exports.BuiltIns = void 0;
 
-var _corejs2BuiltIns = _interopRequireDefault(__nccwpck_require__(9395));
+var _corejs2BuiltIns = _interopRequireDefault(__nccwpck_require__(67756));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5033,7 +3960,7 @@ function hasMinVersion(minVersion, runtimeVersion) {
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _corejs2BuiltIns = _interopRequireDefault(__nccwpck_require__(9395));
+var _corejs2BuiltIns = _interopRequireDefault(__nccwpck_require__(67756));
 
 var _builtInDefinitions = __nccwpck_require__(70435);
 
@@ -6169,9 +5096,9 @@ module.exports = BrowserslistError
 /***/ 90443:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-var jsReleases = __nccwpck_require__(7615)
-var agents = (__nccwpck_require__(89601)/* .agents */ .D)
-var jsEOL = __nccwpck_require__(55149)
+var jsReleases = __nccwpck_require__(96878)
+var agents = (__nccwpck_require__(59976)/* .agents */ .D)
+var jsEOL = __nccwpck_require__(95040)
 var path = __nccwpck_require__(71017)
 var e2c = __nccwpck_require__(79476)
 
@@ -7365,8 +6292,8 @@ module.exports = browserslist
 /***/ 53051:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-var feature = (__nccwpck_require__(65620)["default"])
-var region = (__nccwpck_require__(54666)["default"])
+var feature = (__nccwpck_require__(65711)["default"])
+var region = (__nccwpck_require__(62262)["default"])
 var path = __nccwpck_require__(71017)
 var fs = __nccwpck_require__(57147)
 
@@ -7540,7 +6467,7 @@ module.exports = {
     if (!ctx.dangerousExtend && !process.env.BROWSERSLIST_DANGEROUS_EXTEND) {
       checkExtend(name)
     }
-    var queries = require(__nccwpck_require__(88929).resolve(name, { paths: ['.', ctx.path] }))
+    var queries = eval("require")(require.resolve(name, { paths: ['.', ctx.path] }))
     if (queries) {
       if (Array.isArray(queries)) {
         return queries
@@ -7561,7 +6488,7 @@ module.exports = {
     if (!ctx.dangerousExtend && !process.env.BROWSERSLIST_DANGEROUS_EXTEND) {
       checkExtend(name)
     }
-    var stats = require(__nccwpck_require__(88929).resolve(
+    var stats = eval("require")(require.resolve(
       path.join(name, 'browserslist-stats.json'),
       { paths: ['.'] }
     ))
@@ -7940,23 +6867,23 @@ module.exports = bufferFrom
 
 /***/ }),
 
-/***/ 67348:
+/***/ 77715:
 /***/ (function(module) {
 
-module.exports={A:{A:{J:0.0131217,D:0.00621152,E:0.0581246,F:0.0774995,A:0.00968743,B:0.571559,"9B":0.009298},B:"ms",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","9B","J","D","E","F","A","B","","",""],E:"IE",F:{"9B":962323200,J:998870400,D:1161129600,E:1237420800,F:1300060800,A:1346716800,B:1381968000}},B:{A:{C:0.003773,K:0.004267,L:0.004268,G:0.003773,M:0.003702,N:0.003773,O:0.015092,P:0,Q:0.004298,R:0.00944,S:0.004043,T:0.003773,U:0.003773,V:0.003974,W:0.003901,X:0.004318,Y:0.003773,Z:0.004118,a:0.003939,b:0.007546,e:0.004118,f:0.003939,g:0.003801,h:0.003901,i:0.003855,j:0.003929,k:0.003901,l:0.003773,m:0.007546,n:0.003773,o:0.011319,p:0.011319,q:0.018865,r:0.033957,c:1.13945,H:2.85239},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","C","K","L","G","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","e","f","g","h","i","j","k","l","m","n","o","p","q","r","c","H","","",""],E:"Edge",F:{C:1438128000,K:1447286400,L:1470096000,G:1491868800,M:1508198400,N:1525046400,O:1542067200,P:1579046400,Q:1581033600,R:1586736000,S:1590019200,T:1594857600,U:1598486400,V:1602201600,W:1605830400,X:1611360000,Y:1614816000,Z:1618358400,a:1622073600,b:1626912000,e:1630627200,f:1632441600,g:1634774400,h:1637539200,i:1641427200,j:1643932800,k:1646265600,l:1649635200,m:1651190400,n:1653955200,o:1655942400,p:1659657600,q:1661990400,r:1664755200,c:1666915200,H:1670198400},D:{C:"ms",K:"ms",L:"ms",G:"ms",M:"ms",N:"ms",O:"ms"}},C:{A:{"0":0.004317,"1":0.004393,"2":0.004418,"3":0.008834,"4":0.008322,"5":0.008928,"6":0.004471,"7":0.009284,"8":0.004707,"9":0.009076,AC:0.004118,rB:0.004271,I:0.011703,s:0.004879,J:0.020136,D:0.005725,E:0.004525,F:0.00533,A:0.004283,B:0.007546,C:0.004471,K:0.004486,L:0.00453,G:0.008322,M:0.004417,N:0.004425,O:0.004161,t:0.004443,u:0.004283,v:0.008322,w:0.013698,x:0.004161,y:0.008786,z:0.004118,AB:0.007546,BB:0.004783,CB:0.003929,DB:0.004783,EB:0.00487,FB:0.005029,GB:0.0047,HB:0.094325,IB:0.007546,JB:0.003867,KB:0.004525,LB:0.004293,MB:0.003773,NB:0.004538,OB:0.008282,PB:0.011601,QB:0.052822,RB:0.011601,SB:0.003929,TB:0.003974,UB:0.007546,VB:0.011601,WB:0.003939,sB:0.003773,XB:0.003929,tB:0.004356,YB:0.004425,ZB:0.008322,aB:0.00415,bB:0.004267,cB:0.003801,dB:0.004267,eB:0.003773,fB:0.00415,gB:0.004293,hB:0.004425,d:0.003773,iB:0.00415,jB:0.00415,kB:0.004318,lB:0.004356,mB:0.003974,nB:0.033957,P:0.003773,Q:0.003773,R:0.003773,uB:0.003773,S:0.003773,T:0.003929,U:0.004268,V:0.003801,W:0.011319,X:0.007546,Y:0.003773,Z:0.003773,a:0.018865,b:0.003801,e:0.003855,f:0.018865,g:0.003773,h:0.003773,i:0.003901,j:0.003901,k:0.007546,l:0.007546,m:0.007546,n:0.083006,o:0.030184,p:0.015092,q:0.030184,r:0.049049,c:1.12058,H:0.939477,vB:0.011319,wB:0,BC:0.008786,CC:0.00487},B:"moz",C:["AC","rB","BC","CC","I","s","J","D","E","F","A","B","C","K","L","G","M","N","O","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","AB","BB","CB","DB","EB","FB","GB","HB","IB","JB","KB","LB","MB","NB","OB","PB","QB","RB","SB","TB","UB","VB","WB","sB","XB","tB","YB","ZB","aB","bB","cB","dB","eB","fB","gB","hB","d","iB","jB","kB","lB","mB","nB","P","Q","R","uB","S","T","U","V","W","X","Y","Z","a","b","e","f","g","h","i","j","k","l","m","n","o","p","q","r","c","H","vB","wB",""],E:"Firefox",F:{"0":1386633600,"1":1391472000,"2":1395100800,"3":1398729600,"4":1402358400,"5":1405987200,"6":1409616000,"7":1413244800,"8":1417392000,"9":1421107200,AC:1161648000,rB:1213660800,BC:1246320000,CC:1264032000,I:1300752000,s:1308614400,J:1313452800,D:1317081600,E:1317081600,F:1320710400,A:1324339200,B:1327968000,C:1331596800,K:1335225600,L:1338854400,G:1342483200,M:1346112000,N:1349740800,O:1353628800,t:1357603200,u:1361232000,v:1364860800,w:1368489600,x:1372118400,y:1375747200,z:1379376000,AB:1424736000,BB:1428278400,CB:1431475200,DB:1435881600,EB:1439251200,FB:1442880000,GB:1446508800,HB:1450137600,IB:1453852800,JB:1457395200,KB:1461628800,LB:1465257600,MB:1470096000,NB:1474329600,OB:1479168000,PB:1485216000,QB:1488844800,RB:1492560000,SB:1497312000,TB:1502150400,UB:1506556800,VB:1510617600,WB:1516665600,sB:1520985600,XB:1525824000,tB:1529971200,YB:1536105600,ZB:1540252800,aB:1544486400,bB:1548720000,cB:1552953600,dB:1558396800,eB:1562630400,fB:1567468800,gB:1571788800,hB:1575331200,d:1578355200,iB:1581379200,jB:1583798400,kB:1586304000,lB:1588636800,mB:1591056000,nB:1593475200,P:1595894400,Q:1598313600,R:1600732800,uB:1603152000,S:1605571200,T:1607990400,U:1611619200,V:1614038400,W:1616457600,X:1618790400,Y:1622505600,Z:1626134400,a:1628553600,b:1630972800,e:1633392000,f:1635811200,g:1638835200,h:1641859200,i:1644364800,j:1646697600,k:1649116800,l:1651536000,m:1653955200,n:1656374400,o:1658793600,p:1661212800,q:1663632000,r:1666051200,c:1668470400,H:1670889600,vB:null,wB:null}},D:{A:{"0":0.004141,"1":0.004326,"2":0.0047,"3":0.004538,"4":0.008322,"5":0.008596,"6":0.004566,"7":0.004118,"8":0.007546,"9":0.003901,I:0.004706,s:0.004879,J:0.004879,D:0.005591,E:0.005591,F:0.005591,A:0.004534,B:0.004464,C:0.010424,K:0.0083,L:0.004706,G:0.015087,M:0.004393,N:0.004393,O:0.008652,t:0.008322,u:0.004393,v:0.004317,w:0.003901,x:0.008786,y:0.003939,z:0.004461,AB:0.004335,BB:0.004464,CB:0.015092,DB:0.003867,EB:0.015092,FB:0.003773,GB:0.003974,HB:0.007546,IB:0.007948,JB:0.003974,KB:0.003867,LB:0.007546,MB:0.022638,NB:0.049049,OB:0.003867,PB:0.003929,QB:0.007546,RB:0.011319,SB:0.003867,TB:0.007546,UB:0.045276,VB:0.003773,WB:0.003773,sB:0.003773,XB:0.011319,tB:0.011319,YB:0.003773,ZB:0.015092,aB:0.003773,bB:0.011319,cB:0.030184,dB:0.007546,eB:0.007546,fB:0.079233,gB:0.026411,hB:0.011319,d:0.03773,iB:0.011319,jB:0.045276,kB:0.041503,lB:0.026411,mB:0.011319,nB:0.033957,P:0.120736,Q:0.041503,R:0.041503,S:0.07546,T:0.045276,U:0.094325,V:0.07546,W:0.079233,X:0.018865,Y:0.033957,Z:0.026411,a:0.056595,b:0.041503,e:0.049049,f:0.033957,g:0.022638,h:0.041503,i:0.056595,j:0.098098,k:0.049049,l:0.079233,m:0.060368,n:0.098098,o:0.279202,p:0.124509,q:0.192423,r:0.286748,c:3.64849,H:16.8389,vB:0.033957,wB:0.018865,DC:0.011319},B:"webkit",C:["","","","","","I","s","J","D","E","F","A","B","C","K","L","G","M","N","O","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","AB","BB","CB","DB","EB","FB","GB","HB","IB","JB","KB","LB","MB","NB","OB","PB","QB","RB","SB","TB","UB","VB","WB","sB","XB","tB","YB","ZB","aB","bB","cB","dB","eB","fB","gB","hB","d","iB","jB","kB","lB","mB","nB","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","e","f","g","h","i","j","k","l","m","n","o","p","q","r","c","H","vB","wB","DC"],E:"Chrome",F:{"0":1361404800,"1":1364428800,"2":1369094400,"3":1374105600,"4":1376956800,"5":1384214400,"6":1389657600,"7":1392940800,"8":1397001600,"9":1400544000,I:1264377600,s:1274745600,J:1283385600,D:1287619200,E:1291248000,F:1296777600,A:1299542400,B:1303862400,C:1307404800,K:1312243200,L:1316131200,G:1316131200,M:1319500800,N:1323734400,O:1328659200,t:1332892800,u:1337040000,v:1340668800,w:1343692800,x:1348531200,y:1352246400,z:1357862400,AB:1405468800,BB:1409011200,CB:1412640000,DB:1416268800,EB:1421798400,FB:1425513600,GB:1429401600,HB:1432080000,IB:1437523200,JB:1441152000,KB:1444780800,LB:1449014400,MB:1453248000,NB:1456963200,OB:1460592000,PB:1464134400,QB:1469059200,RB:1472601600,SB:1476230400,TB:1480550400,UB:1485302400,VB:1489017600,WB:1492560000,sB:1496707200,XB:1500940800,tB:1504569600,YB:1508198400,ZB:1512518400,aB:1516752000,bB:1520294400,cB:1523923200,dB:1527552000,eB:1532390400,fB:1536019200,gB:1539648000,hB:1543968000,d:1548720000,iB:1552348800,jB:1555977600,kB:1559606400,lB:1564444800,mB:1568073600,nB:1571702400,P:1575936000,Q:1580860800,R:1586304000,S:1589846400,T:1594684800,U:1598313600,V:1601942400,W:1605571200,X:1611014400,Y:1614556800,Z:1618272000,a:1621987200,b:1626739200,e:1630368000,f:1632268800,g:1634601600,h:1637020800,i:1641340800,j:1643673600,k:1646092800,l:1648512000,m:1650931200,n:1653350400,o:1655769600,p:1659398400,q:1661817600,r:1664236800,c:1666656000,H:1669680000,vB:null,wB:null,DC:null}},E:{A:{I:0,s:0.008322,J:0.004656,D:0.004465,E:0.003974,F:0.003929,A:0.004425,B:0.004318,C:0.003801,K:0.018865,L:0.094325,G:0.022638,EC:0,xB:0.008692,FC:0.011319,GC:0.00456,HC:0.004283,IC:0.022638,yB:0.007802,oB:0.007546,pB:0.033957,zB:0.18865,JC:0.256564,KC:0.041503,"0B":0.03773,"1B":0.094325,"2B":0.192423,"3B":1.313,qB:0.162239,"4B":0.64141,"5B":0.143374,"6B":0,LC:0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","EC","xB","I","s","FC","J","GC","D","HC","E","F","IC","A","yB","B","oB","C","pB","K","zB","L","JC","G","KC","0B","1B","2B","3B","qB","4B","5B","6B","LC",""],E:"Safari",F:{EC:1205798400,xB:1226534400,I:1244419200,s:1275868800,FC:1311120000,J:1343174400,GC:1382400000,D:1382400000,HC:1410998400,E:1413417600,F:1443657600,IC:1458518400,A:1474329600,yB:1490572800,B:1505779200,oB:1522281600,C:1537142400,pB:1553472000,K:1568851200,zB:1585008000,L:1600214400,JC:1619395200,G:1632096000,KC:1635292800,"0B":1639353600,"1B":1647216000,"2B":1652745600,"3B":1658275200,qB:1662940800,"4B":1666569600,"5B":1670889600,"6B":null,LC:null}},F:{A:{"0":0.005595,"1":0.004393,"2":0.007546,"3":0.004879,"4":0.004879,"5":0.003773,"6":0.005152,"7":0.005014,"8":0.009758,"9":0.004879,F:0.0082,B:0.016581,C:0.004317,G:0.00685,M:0.00685,N:0.00685,O:0.005014,t:0.006015,u:0.004879,v:0.006597,w:0.006597,x:0.013434,y:0.006702,z:0.006015,AB:0.003773,BB:0.004283,CB:0.004367,DB:0.004534,EB:0.007546,FB:0.004227,GB:0.004418,HB:0.004161,IB:0.004227,JB:0.004725,KB:0.015092,LB:0.008942,MB:0.004707,NB:0.004827,OB:0.004707,PB:0.004707,QB:0.004326,RB:0.008922,SB:0.014349,TB:0.004425,UB:0.00472,VB:0.004425,WB:0.004425,XB:0.00472,YB:0.004532,ZB:0.004566,aB:0.02283,bB:0.00867,cB:0.004656,dB:0.004642,eB:0.003929,fB:0.00944,gB:0.004293,hB:0.003929,d:0.004298,iB:0.096692,jB:0.004201,kB:0.004141,lB:0.004257,mB:0.003939,nB:0.008236,P:0.003855,Q:0.003939,R:0.008514,uB:0.003939,S:0.003939,T:0.003702,U:0.007546,V:0.003855,W:0.003855,X:0.003929,Y:0.007802,Z:0.011703,a:0.007546,b:0.207515,MC:0.00685,NC:0,OC:0.008392,PC:0.004706,oB:0.006229,"7B":0.004879,QC:0.008786,pB:0.00472},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","F","MC","NC","OC","PC","B","oB","7B","QC","C","pB","G","M","N","O","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","AB","BB","CB","DB","EB","FB","GB","HB","IB","JB","KB","LB","MB","NB","OB","PB","QB","RB","SB","TB","UB","VB","WB","XB","YB","ZB","aB","bB","cB","dB","eB","fB","gB","hB","d","iB","jB","kB","lB","mB","nB","P","Q","R","uB","S","T","U","V","W","X","Y","Z","a","b","","",""],E:"Opera",F:{"0":1417132800,"1":1422316800,"2":1425945600,"3":1430179200,"4":1433808000,"5":1438646400,"6":1442448000,"7":1445904000,"8":1449100800,"9":1454371200,F:1150761600,MC:1223424000,NC:1251763200,OC:1267488000,PC:1277942400,B:1292457600,oB:1302566400,"7B":1309219200,QC:1323129600,C:1323129600,pB:1352073600,G:1372723200,M:1377561600,N:1381104000,O:1386288000,t:1390867200,u:1393891200,v:1399334400,w:1401753600,x:1405987200,y:1409616000,z:1413331200,AB:1457308800,BB:1462320000,CB:1465344000,DB:1470096000,EB:1474329600,FB:1477267200,GB:1481587200,HB:1486425600,IB:1490054400,JB:1494374400,KB:1498003200,LB:1502236800,MB:1506470400,NB:1510099200,OB:1515024000,PB:1517961600,QB:1521676800,RB:1525910400,SB:1530144000,TB:1534982400,UB:1537833600,VB:1543363200,WB:1548201600,XB:1554768000,YB:1561593600,ZB:1566259200,aB:1570406400,bB:1573689600,cB:1578441600,dB:1583971200,eB:1587513600,fB:1592956800,gB:1595894400,hB:1600128000,d:1603238400,iB:1613520000,jB:1612224000,kB:1616544000,lB:1619568000,mB:1623715200,nB:1627948800,P:1631577600,Q:1633392000,R:1635984000,uB:1638403200,S:1642550400,T:1644969600,U:1647993600,V:1650412800,W:1652745600,X:1654646400,Y:1657152000,Z:1660780800,a:1663113600,b:1668816000},D:{F:"o",B:"o",C:"o",MC:"o",NC:"o",OC:"o",PC:"o",oB:"o","7B":"o",QC:"o",pB:"o"}},G:{A:{E:0,xB:0,RC:0,"8B":0.00470195,SC:0.00470195,TC:0.00313463,UC:0.0141058,VC:0.00626926,WC:0.0188078,XC:0.0611253,YC:0.00783658,ZC:0.106577,aC:0.0282117,bC:0.0266444,cC:0.0250771,dC:0.405935,eC:0.0423175,fC:0.0109712,gC:0.0391829,hC:0.141058,iC:0.340108,jC:0.647301,kC:0.186511,"0B":0.239799,"1B":0.304059,"2B":0.546993,"3B":2.31493,qB:2.09864,"4B":6.33196,"5B":0.694321,"6B":0.0156732},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","xB","RC","8B","SC","TC","UC","E","VC","WC","XC","YC","ZC","aC","bC","cC","dC","eC","fC","gC","hC","iC","jC","kC","0B","1B","2B","3B","qB","4B","5B","6B","",""],E:"Safari on iOS",F:{xB:1270252800,RC:1283904000,"8B":1299628800,SC:1331078400,TC:1359331200,UC:1394409600,E:1410912000,VC:1413763200,WC:1442361600,XC:1458518400,YC:1473724800,ZC:1490572800,aC:1505779200,bC:1522281600,cC:1537142400,dC:1553472000,eC:1568851200,fC:1572220800,gC:1580169600,hC:1585008000,iC:1600214400,jC:1619395200,kC:1632096000,"0B":1639353600,"1B":1647216000,"2B":1652659200,"3B":1658275200,qB:1662940800,"4B":1666569600,"5B":1670889600,"6B":null}},H:{A:{lC:0.966988},B:"o",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","lC","","",""],E:"Opera Mini",F:{lC:1426464000}},I:{A:{rB:0,I:0.0306951,H:0,mC:0,nC:0.0204634,oC:0,pC:0.0204634,"8B":0.0818537,qC:0,rC:0.4195},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","mC","nC","oC","rB","I","pC","8B","qC","rC","H","","",""],E:"Android Browser",F:{mC:1256515200,nC:1274313600,oC:1291593600,rB:1298332800,I:1318896000,pC:1341792000,"8B":1374624000,qC:1386547200,rC:1401667200,H:1669939200}},J:{A:{D:0,A:0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","D","A","","",""],E:"Blackberry Browser",F:{D:1325376000,A:1359504000}},K:{A:{A:0,B:0,C:0,d:0.0111391,oB:0,"7B":0,pB:0},B:"o",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","A","B","oB","7B","C","pB","d","","",""],E:"Opera Mobile",F:{A:1287100800,B:1300752000,oB:1314835200,"7B":1318291200,C:1330300800,pB:1349740800,d:1666828800},D:{d:"webkit"}},L:{A:{H:41.5426},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","H","","",""],E:"Chrome for Android",F:{H:1669939200}},M:{A:{c:0.292716},B:"moz",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","c","","",""],E:"Firefox for Android",F:{c:1668470400}},N:{A:{A:0.0115934,B:0.022664},B:"ms",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","A","B","","",""],E:"IE Mobile",F:{A:1340150400,B:1353456000}},O:{A:{sC:1.75007},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","sC","","",""],E:"UC Browser for Android",F:{sC:1634688000},D:{sC:"webkit"}},P:{A:{I:0.166409,tC:0.0103543,uC:0.010304,vC:0.0520028,wC:0.0103584,xC:0.0104443,yB:0.0105043,yC:0.0312017,zC:0.0104006,"0C":0.0520028,"1C":0.0624033,"2C":0.0312017,qB:0.114406,"3C":0.124807,"4C":0.249613,"5C":2.25692},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","I","tC","uC","vC","wC","xC","yB","yC","zC","0C","1C","2C","qB","3C","4C","5C","","",""],E:"Samsung Internet",F:{I:1461024000,tC:1481846400,uC:1509408000,vC:1528329600,wC:1546128000,xC:1554163200,yB:1567900800,yC:1582588800,zC:1593475200,"0C":1605657600,"1C":1618531200,"2C":1629072000,qB:1640736000,"3C":1651708800,"4C":1659657600,"5C":1667260800}},Q:{A:{zB:0.199296},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","zB","","",""],E:"QQ Browser",F:{zB:1663718400}},R:{A:{"6C":0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","6C","","",""],E:"Baidu Browser",F:{"6C":1663027200}},S:{A:{"7C":0.068508},B:"moz",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","7C","","",""],E:"KaiOS Browser",F:{"7C":1527811200}}};
+module.exports={A:{A:{J:0.0131217,D:0.00621152,E:0.0440402,F:0.0880805,A:0.00734004,B:0.418382,"8B":0.009298},B:"ms",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","8B","J","D","E","F","A","B","","",""],E:"IE",F:{"8B":962323200,J:998870400,D:1161129600,E:1237420800,F:1300060800,A:1346716800,B:1381968000}},B:{A:{C:0.003901,K:0.004267,L:0.004268,G:0.003901,M:0.003702,N:0.003901,O:0.019505,P:0,Q:0.004298,R:0.00944,S:0.004043,T:0.003901,U:0.003901,V:0.003974,W:0.003901,X:0.004318,Y:0.003901,Z:0.004118,a:0.003939,b:0.007802,e:0.004118,f:0.003939,g:0.003801,h:0.003901,i:0.003855,j:0.003929,k:0.003901,l:0.003901,m:0.011703,n:0.007802,o:0.027307,p:0.023406,q:0.042911,r:0.218456,c:3.95171,H:0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","C","K","L","G","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","e","f","g","h","i","j","k","l","m","n","o","p","q","r","c","H","","",""],E:"Edge",F:{C:1438128000,K:1447286400,L:1470096000,G:1491868800,M:1508198400,N:1525046400,O:1542067200,P:1579046400,Q:1581033600,R:1586736000,S:1590019200,T:1594857600,U:1598486400,V:1602201600,W:1605830400,X:1611360000,Y:1614816000,Z:1618358400,a:1622073600,b:1626912000,e:1630627200,f:1632441600,g:1634774400,h:1637539200,i:1641427200,j:1643932800,k:1646265600,l:1649635200,m:1651190400,n:1653955200,o:1655942400,p:1659657600,q:1661990400,r:1664755200,c:1666915200,H:1670198400},D:{C:"ms",K:"ms",L:"ms",G:"ms",M:"ms",N:"ms",O:"ms"}},C:{A:{"0":0.004317,"1":0.004393,"2":0.004418,"3":0.008834,"4":0.008322,"5":0.008928,"6":0.004471,"7":0.009284,"8":0.004707,"9":0.009076,"9B":0.004118,rB:0.004271,I:0.011703,s:0.004879,J:0.020136,D:0.005725,E:0.004525,F:0.00533,A:0.004283,B:0.007802,C:0.004471,K:0.004486,L:0.00453,G:0.008322,M:0.004417,N:0.004425,O:0.004161,t:0.004443,u:0.004283,v:0.008322,w:0.013698,x:0.004161,y:0.008786,z:0.004118,AB:0.007802,BB:0.004783,CB:0.003929,DB:0.004783,EB:0.00487,FB:0.005029,GB:0.0047,HB:0.027307,IB:0.007802,JB:0.003867,KB:0.004525,LB:0.004293,MB:0.003702,NB:0.004538,OB:0.008282,PB:0.011601,QB:0.050713,RB:0.011601,SB:0.003929,TB:0.003974,UB:0.007802,VB:0.011601,WB:0.003939,sB:0.003855,XB:0.003929,tB:0.004356,YB:0.004425,ZB:0.008322,aB:0.00415,bB:0.004267,cB:0.003801,dB:0.004267,eB:0.007802,fB:0.00415,gB:0.004293,hB:0.004425,d:0.003901,iB:0.00415,jB:0.00415,kB:0.004318,lB:0.004356,mB:0.003974,nB:0.035109,P:0.003901,Q:0.003901,R:0.003901,uB:0.003901,S:0.007802,T:0.003929,U:0.004268,V:0.003801,W:0.011703,X:0.007802,Y:0.003901,Z:0.003901,a:0.035109,b:0.003801,e:0.003855,f:0.019505,g:0.007802,h:0.007802,i:0.003901,j:0.003901,k:0.007802,l:0.007802,m:0.007802,n:0.066317,o:0.035109,p:0.027307,q:0.070218,r:1.27563,c:0.866022,H:0.011703,vB:0,AC:0.008786,BC:0.00487},B:"moz",C:["9B","rB","AC","BC","I","s","J","D","E","F","A","B","C","K","L","G","M","N","O","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","AB","BB","CB","DB","EB","FB","GB","HB","IB","JB","KB","LB","MB","NB","OB","PB","QB","RB","SB","TB","UB","VB","WB","sB","XB","tB","YB","ZB","aB","bB","cB","dB","eB","fB","gB","hB","d","iB","jB","kB","lB","mB","nB","P","Q","R","uB","S","T","U","V","W","X","Y","Z","a","b","e","f","g","h","i","j","k","l","m","n","o","p","q","r","c","H","vB",""],E:"Firefox",F:{"0":1386633600,"1":1391472000,"2":1395100800,"3":1398729600,"4":1402358400,"5":1405987200,"6":1409616000,"7":1413244800,"8":1417392000,"9":1421107200,"9B":1161648000,rB:1213660800,AC:1246320000,BC:1264032000,I:1300752000,s:1308614400,J:1313452800,D:1317081600,E:1317081600,F:1320710400,A:1324339200,B:1327968000,C:1331596800,K:1335225600,L:1338854400,G:1342483200,M:1346112000,N:1349740800,O:1353628800,t:1357603200,u:1361232000,v:1364860800,w:1368489600,x:1372118400,y:1375747200,z:1379376000,AB:1424736000,BB:1428278400,CB:1431475200,DB:1435881600,EB:1439251200,FB:1442880000,GB:1446508800,HB:1450137600,IB:1453852800,JB:1457395200,KB:1461628800,LB:1465257600,MB:1470096000,NB:1474329600,OB:1479168000,PB:1485216000,QB:1488844800,RB:1492560000,SB:1497312000,TB:1502150400,UB:1506556800,VB:1510617600,WB:1516665600,sB:1520985600,XB:1525824000,tB:1529971200,YB:1536105600,ZB:1540252800,aB:1544486400,bB:1548720000,cB:1552953600,dB:1558396800,eB:1562630400,fB:1567468800,gB:1571788800,hB:1575331200,d:1578355200,iB:1581379200,jB:1583798400,kB:1586304000,lB:1588636800,mB:1591056000,nB:1593475200,P:1595894400,Q:1598313600,R:1600732800,uB:1603152000,S:1605571200,T:1607990400,U:1611619200,V:1614038400,W:1616457600,X:1618790400,Y:1622505600,Z:1626134400,a:1628553600,b:1630972800,e:1633392000,f:1635811200,g:1638835200,h:1641859200,i:1644364800,j:1646697600,k:1649116800,l:1651536000,m:1653955200,n:1656374400,o:1658793600,p:1661212800,q:1663632000,r:1666051200,c:1668470400,H:null,vB:null}},D:{A:{"0":0.004141,"1":0.004326,"2":0.0047,"3":0.004538,"4":0.008322,"5":0.008596,"6":0.004566,"7":0.004118,"8":0.007802,"9":0.003901,I:0.004706,s:0.004879,J:0.004879,D:0.005591,E:0.005591,F:0.005591,A:0.004534,B:0.004464,C:0.010424,K:0.0083,L:0.004706,G:0.015087,M:0.004393,N:0.004393,O:0.008652,t:0.008322,u:0.004393,v:0.004317,w:0.003901,x:0.008786,y:0.003939,z:0.004461,AB:0.004335,BB:0.004464,CB:0.015604,DB:0.003867,EB:0.015604,FB:0.003901,GB:0.003974,HB:0.007802,IB:0.007948,JB:0.003974,KB:0.003867,LB:0.007802,MB:0.023406,NB:0.046812,OB:0.003867,PB:0.003929,QB:0.003901,RB:0.007802,SB:0.003867,TB:0.003901,UB:0.046812,VB:0.003901,WB:0.003901,sB:0.003702,XB:0.011703,tB:0.007802,YB:0.007802,ZB:0.007802,aB:0.003929,bB:0.011703,cB:0.027307,dB:0.007802,eB:0.007802,fB:0.054614,gB:0.023406,hB:0.011703,d:0.023406,iB:0.015604,jB:0.050713,kB:0.046812,lB:0.027307,mB:0.011703,nB:0.031208,P:0.109228,Q:0.035109,R:0.03901,S:0.066317,T:0.054614,U:0.097525,V:0.085822,W:0.085822,X:0.023406,Y:0.035109,Z:0.027307,a:0.070218,b:0.042911,e:0.042911,f:0.035109,g:0.023406,h:0.046812,i:0.058515,j:0.046812,k:0.050713,l:0.124832,m:0.07802,n:0.11703,o:0.343288,p:0.202852,q:0.464219,r:2.70339,c:18.6507,H:0.058515,vB:0.015604,CC:0.011703,DC:0},B:"webkit",C:["","","","","I","s","J","D","E","F","A","B","C","K","L","G","M","N","O","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","AB","BB","CB","DB","EB","FB","GB","HB","IB","JB","KB","LB","MB","NB","OB","PB","QB","RB","SB","TB","UB","VB","WB","sB","XB","tB","YB","ZB","aB","bB","cB","dB","eB","fB","gB","hB","d","iB","jB","kB","lB","mB","nB","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","e","f","g","h","i","j","k","l","m","n","o","p","q","r","c","H","vB","CC","DC"],E:"Chrome",F:{"0":1361404800,"1":1364428800,"2":1369094400,"3":1374105600,"4":1376956800,"5":1384214400,"6":1389657600,"7":1392940800,"8":1397001600,"9":1400544000,I:1264377600,s:1274745600,J:1283385600,D:1287619200,E:1291248000,F:1296777600,A:1299542400,B:1303862400,C:1307404800,K:1312243200,L:1316131200,G:1316131200,M:1319500800,N:1323734400,O:1328659200,t:1332892800,u:1337040000,v:1340668800,w:1343692800,x:1348531200,y:1352246400,z:1357862400,AB:1405468800,BB:1409011200,CB:1412640000,DB:1416268800,EB:1421798400,FB:1425513600,GB:1429401600,HB:1432080000,IB:1437523200,JB:1441152000,KB:1444780800,LB:1449014400,MB:1453248000,NB:1456963200,OB:1460592000,PB:1464134400,QB:1469059200,RB:1472601600,SB:1476230400,TB:1480550400,UB:1485302400,VB:1489017600,WB:1492560000,sB:1496707200,XB:1500940800,tB:1504569600,YB:1508198400,ZB:1512518400,aB:1516752000,bB:1520294400,cB:1523923200,dB:1527552000,eB:1532390400,fB:1536019200,gB:1539648000,hB:1543968000,d:1548720000,iB:1552348800,jB:1555977600,kB:1559606400,lB:1564444800,mB:1568073600,nB:1571702400,P:1575936000,Q:1580860800,R:1586304000,S:1589846400,T:1594684800,U:1598313600,V:1601942400,W:1605571200,X:1611014400,Y:1614556800,Z:1618272000,a:1621987200,b:1626739200,e:1630368000,f:1632268800,g:1634601600,h:1637020800,i:1641340800,j:1643673600,k:1646092800,l:1648512000,m:1650931200,n:1653350400,o:1655769600,p:1659398400,q:1661817600,r:1664236800,c:1666656000,H:1669680000,vB:null,CC:null,DC:null}},E:{A:{I:0,s:0.008322,J:0.004656,D:0.004465,E:0.003974,F:0.003929,A:0.004425,B:0.004318,C:0.003801,K:0.023406,L:0.109228,G:0.027307,EC:0,wB:0.008692,FC:0.007802,GC:0.00456,HC:0.004283,IC:0.015604,xB:0.007802,oB:0.023406,pB:0.035109,yB:0.335486,JC:0.288674,KC:0.046812,zB:0.046812,"0B":0.109228,"1B":0.226258,"2B":1.47068,qB:0.253565,"3B":0.565645,"4B":0.003901,"5B":0,LC:0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","EC","wB","I","s","FC","J","GC","D","HC","E","F","IC","A","xB","B","oB","C","pB","K","yB","L","JC","G","KC","zB","0B","1B","2B","qB","3B","4B","5B","LC",""],E:"Safari",F:{EC:1205798400,wB:1226534400,I:1244419200,s:1275868800,FC:1311120000,J:1343174400,GC:1382400000,D:1382400000,HC:1410998400,E:1413417600,F:1443657600,IC:1458518400,A:1474329600,xB:1490572800,B:1505779200,oB:1522281600,C:1537142400,pB:1553472000,K:1568851200,yB:1585008000,L:1600214400,JC:1619395200,G:1632096000,KC:1635292800,zB:1639353600,"0B":1647216000,"1B":1652745600,"2B":1658275200,qB:1662940800,"3B":1666569600,"4B":1670889600,"5B":null,LC:null}},F:{A:{"0":0.005595,"1":0.004393,"2":0.007802,"3":0.004879,"4":0.004879,"5":0.003901,"6":0.005152,"7":0.005014,"8":0.009758,"9":0.004879,F:0.0082,B:0.016581,C:0.004317,G:0.00685,M:0.00685,N:0.00685,O:0.005014,t:0.006015,u:0.004879,v:0.006597,w:0.006597,x:0.013434,y:0.006702,z:0.006015,AB:0.003901,BB:0.004283,CB:0.004367,DB:0.004534,EB:0.007802,FB:0.004227,GB:0.004418,HB:0.004161,IB:0.004227,JB:0.004725,KB:0.011703,LB:0.008942,MB:0.004707,NB:0.004827,OB:0.004707,PB:0.004707,QB:0.004326,RB:0.008922,SB:0.014349,TB:0.004425,UB:0.00472,VB:0.004425,WB:0.004425,XB:0.00472,YB:0.004532,ZB:0.004566,aB:0.02283,bB:0.00867,cB:0.004656,dB:0.004642,eB:0.003929,fB:0.00944,gB:0.004293,hB:0.003929,d:0.004298,iB:0.096692,jB:0.004201,kB:0.004141,lB:0.004257,mB:0.003939,nB:0.008236,P:0.003855,Q:0.003939,R:0.008514,uB:0.003939,S:0.003939,T:0.003702,U:0.011703,V:0.003855,W:0.003855,X:0.003929,Y:0.007802,Z:0.011703,a:0.405704,b:0.678774,MC:0.00685,NC:0,OC:0.008392,PC:0.004706,oB:0.006229,"6B":0.004879,QC:0.008786,pB:0.00472},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","F","MC","NC","OC","PC","B","oB","6B","QC","C","pB","G","M","N","O","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","AB","BB","CB","DB","EB","FB","GB","HB","IB","JB","KB","LB","MB","NB","OB","PB","QB","RB","SB","TB","UB","VB","WB","XB","YB","ZB","aB","bB","cB","dB","eB","fB","gB","hB","d","iB","jB","kB","lB","mB","nB","P","Q","R","uB","S","T","U","V","W","X","Y","Z","a","b","","",""],E:"Opera",F:{"0":1417132800,"1":1422316800,"2":1425945600,"3":1430179200,"4":1433808000,"5":1438646400,"6":1442448000,"7":1445904000,"8":1449100800,"9":1454371200,F:1150761600,MC:1223424000,NC:1251763200,OC:1267488000,PC:1277942400,B:1292457600,oB:1302566400,"6B":1309219200,QC:1323129600,C:1323129600,pB:1352073600,G:1372723200,M:1377561600,N:1381104000,O:1386288000,t:1390867200,u:1393891200,v:1399334400,w:1401753600,x:1405987200,y:1409616000,z:1413331200,AB:1457308800,BB:1462320000,CB:1465344000,DB:1470096000,EB:1474329600,FB:1477267200,GB:1481587200,HB:1486425600,IB:1490054400,JB:1494374400,KB:1498003200,LB:1502236800,MB:1506470400,NB:1510099200,OB:1515024000,PB:1517961600,QB:1521676800,RB:1525910400,SB:1530144000,TB:1534982400,UB:1537833600,VB:1543363200,WB:1548201600,XB:1554768000,YB:1561593600,ZB:1566259200,aB:1570406400,bB:1573689600,cB:1578441600,dB:1583971200,eB:1587513600,fB:1592956800,gB:1595894400,hB:1600128000,d:1603238400,iB:1613520000,jB:1612224000,kB:1616544000,lB:1619568000,mB:1623715200,nB:1627948800,P:1631577600,Q:1633392000,R:1635984000,uB:1638403200,S:1642550400,T:1644969600,U:1647993600,V:1650412800,W:1652745600,X:1654646400,Y:1657152000,Z:1660780800,a:1663113600,b:1668816000},D:{F:"o",B:"o",C:"o",MC:"o",NC:"o",OC:"o",PC:"o",oB:"o","6B":"o",QC:"o",pB:"o"}},G:{A:{E:0,wB:0,RC:0,"7B":0.00314274,SC:0.00314274,TC:0.00314274,UC:0.0141423,VC:0.00628547,WC:0.0141423,XC:0.059712,YC:0.0047141,ZC:0.0722829,aC:0.0251419,bC:0.0251419,cC:0.0219991,dC:0.424269,eC:0.0408556,fC:0.00942821,gC:0.0377128,hC:0.124138,iC:0.339415,jC:0.696116,kC:0.188564,zB:0.257704,"0B":0.317416,"1B":0.697687,"2B":4.97338,qB:3.28102,"3B":3.07988,"4B":0,"5B":0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","wB","RC","7B","SC","TC","UC","E","VC","WC","XC","YC","ZC","aC","bC","cC","dC","eC","fC","gC","hC","iC","jC","kC","zB","0B","1B","2B","qB","3B","4B","5B","",""],E:"Safari on iOS",F:{wB:1270252800,RC:1283904000,"7B":1299628800,SC:1331078400,TC:1359331200,UC:1394409600,E:1410912000,VC:1413763200,WC:1442361600,XC:1458518400,YC:1473724800,ZC:1490572800,aC:1505779200,bC:1522281600,cC:1537142400,dC:1553472000,eC:1568851200,fC:1572220800,gC:1580169600,hC:1585008000,iC:1600214400,jC:1619395200,kC:1632096000,zB:1639353600,"0B":1647216000,"1B":1652659200,"2B":1658275200,qB:1662940800,"3B":1666569600,"4B":1670889600,"5B":null}},H:{A:{lC:0.95835},B:"o",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","lC","","",""],E:"Opera Mini",F:{lC:1426464000}},I:{A:{rB:0,I:0.0643678,H:0,mC:0,nC:0,oC:0,pC:0.0257471,"7B":0.0772413,qC:0,rC:0.296092},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","mC","nC","oC","rB","I","pC","7B","qC","rC","H","","",""],E:"Android Browser",F:{mC:1256515200,nC:1274313600,oC:1291593600,rB:1298332800,I:1318896000,pC:1341792000,"7B":1374624000,qC:1386547200,rC:1401667200,H:1669939200}},J:{A:{D:0,A:0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","D","A","","",""],E:"Blackberry Browser",F:{D:1325376000,A:1359504000}},K:{A:{A:0,B:0,C:0,d:0.0111391,oB:0,"6B":0,pB:0},B:"o",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","A","B","oB","6B","C","pB","d","","",""],E:"Opera Mobile",F:{A:1287100800,B:1300752000,oB:1314835200,"6B":1318291200,C:1330300800,pB:1349740800,d:1666828800},D:{d:"webkit"}},L:{A:{H:41.7017},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","H","","",""],E:"Chrome for Android",F:{H:1669939200}},M:{A:{c:0.286606},B:"moz",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","c","","",""],E:"Firefox for Android",F:{c:1668470400}},N:{A:{A:0.0115934,B:0.022664},B:"ms",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","A","B","","",""],E:"IE Mobile",F:{A:1340150400,B:1353456000}},O:{A:{sC:0.676878},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","sC","","",""],E:"UC Browser for Android",F:{sC:1634688000},D:{sC:"webkit"}},P:{A:{I:0.157301,tC:0.0103543,uC:0.010304,vC:0.0629203,wC:0.0103584,xC:0.0104443,xB:0.0105043,yC:0.0314601,zC:0.0104867,"0C":0.0419468,"1C":0.0419468,"2C":0.0314601,qB:0.0838937,"3C":0.125841,"4C":0.660663,"5C":1.52057},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","I","tC","uC","vC","wC","xC","xB","yC","zC","0C","1C","2C","qB","3C","4C","5C","","",""],E:"Samsung Internet",F:{I:1461024000,tC:1481846400,uC:1509408000,vC:1528329600,wC:1546128000,xC:1554163200,xB:1567900800,yC:1582588800,zC:1593475200,"0C":1605657600,"1C":1618531200,"2C":1629072000,qB:1640736000,"3C":1651708800,"4C":1659657600,"5C":1667260800}},Q:{A:{yB:0.12196},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","yB","","",""],E:"QQ Browser",F:{yB:1663718400}},R:{A:{"6C":0},B:"webkit",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","6C","","",""],E:"Baidu Browser",F:{"6C":1663027200}},S:{A:{"7C":0.042686},B:"moz",C:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","7C","","",""],E:"KaiOS Browser",F:{"7C":1527811200}}};
 
 
 /***/ }),
 
-/***/ 25765:
+/***/ 67808:
 /***/ (function(module) {
 
-module.exports={"0":"26","1":"27","2":"28","3":"29","4":"30","5":"31","6":"32","7":"33","8":"34","9":"35",A:"10",B:"11",C:"12",D:"7",E:"8",F:"9",G:"15",H:"108",I:"4",J:"6",K:"13",L:"14",M:"16",N:"17",O:"18",P:"79",Q:"80",R:"81",S:"83",T:"84",U:"85",V:"86",W:"87",X:"88",Y:"89",Z:"90",a:"91",b:"92",c:"107",d:"72",e:"93",f:"94",g:"95",h:"96",i:"97",j:"98",k:"99",l:"100",m:"101",n:"102",o:"103",p:"104",q:"105",r:"106",s:"5",t:"19",u:"20",v:"21",w:"22",x:"23",y:"24",z:"25",AB:"36",BB:"37",CB:"38",DB:"39",EB:"40",FB:"41",GB:"42",HB:"43",IB:"44",JB:"45",KB:"46",LB:"47",MB:"48",NB:"49",OB:"50",PB:"51",QB:"52",RB:"53",SB:"54",TB:"55",UB:"56",VB:"57",WB:"58",XB:"60",YB:"62",ZB:"63",aB:"64",bB:"65",cB:"66",dB:"67",eB:"68",fB:"69",gB:"70",hB:"71",iB:"73",jB:"74",kB:"75",lB:"76",mB:"77",nB:"78",oB:"11.1",pB:"12.1",qB:"16.0",rB:"3",sB:"59",tB:"61",uB:"82",vB:"109",wB:"110",xB:"3.2",yB:"10.1",zB:"13.1","0B":"15.2-15.3","1B":"15.4","2B":"15.5","3B":"15.6","4B":"16.1","5B":"16.2","6B":"16.3","7B":"11.5","8B":"4.2-4.3","9B":"5.5",AC:"2",BC:"3.5",CC:"3.6",DC:"111",EC:"3.1",FC:"5.1",GC:"6.1",HC:"7.1",IC:"9.1",JC:"14.1",KC:"15.1",LC:"TP",MC:"9.5-9.6",NC:"10.0-10.1",OC:"10.5",PC:"10.6",QC:"11.6",RC:"4.0-4.1",SC:"5.0-5.1",TC:"6.0-6.1",UC:"7.0-7.1",VC:"8.1-8.4",WC:"9.0-9.2",XC:"9.3",YC:"10.0-10.2",ZC:"10.3",aC:"11.0-11.2",bC:"11.3-11.4",cC:"12.0-12.1",dC:"12.2-12.5",eC:"13.0-13.1",fC:"13.2",gC:"13.3",hC:"13.4-13.7",iC:"14.0-14.4",jC:"14.5-14.8",kC:"15.0-15.1",lC:"all",mC:"2.1",nC:"2.2",oC:"2.3",pC:"4.1",qC:"4.4",rC:"4.4.3-4.4.4",sC:"13.4",tC:"5.0-5.4",uC:"6.2-6.4",vC:"7.2-7.4",wC:"8.2",xC:"9.2",yC:"11.1-11.2",zC:"12.0","0C":"13.0","1C":"14.0","2C":"15.0","3C":"17.0","4C":"18.0","5C":"19.0","6C":"13.18","7C":"2.5"};
+module.exports={"0":"26","1":"27","2":"28","3":"29","4":"30","5":"31","6":"32","7":"33","8":"34","9":"35",A:"10",B:"11",C:"12",D:"7",E:"8",F:"9",G:"15",H:"108",I:"4",J:"6",K:"13",L:"14",M:"16",N:"17",O:"18",P:"79",Q:"80",R:"81",S:"83",T:"84",U:"85",V:"86",W:"87",X:"88",Y:"89",Z:"90",a:"91",b:"92",c:"107",d:"72",e:"93",f:"94",g:"95",h:"96",i:"97",j:"98",k:"99",l:"100",m:"101",n:"102",o:"103",p:"104",q:"105",r:"106",s:"5",t:"19",u:"20",v:"21",w:"22",x:"23",y:"24",z:"25",AB:"36",BB:"37",CB:"38",DB:"39",EB:"40",FB:"41",GB:"42",HB:"43",IB:"44",JB:"45",KB:"46",LB:"47",MB:"48",NB:"49",OB:"50",PB:"51",QB:"52",RB:"53",SB:"54",TB:"55",UB:"56",VB:"57",WB:"58",XB:"60",YB:"62",ZB:"63",aB:"64",bB:"65",cB:"66",dB:"67",eB:"68",fB:"69",gB:"70",hB:"71",iB:"73",jB:"74",kB:"75",lB:"76",mB:"77",nB:"78",oB:"11.1",pB:"12.1",qB:"16.0",rB:"3",sB:"59",tB:"61",uB:"82",vB:"109",wB:"3.2",xB:"10.1",yB:"13.1",zB:"15.2-15.3","0B":"15.4","1B":"15.5","2B":"15.6","3B":"16.1","4B":"16.2","5B":"16.3","6B":"11.5","7B":"4.2-4.3","8B":"5.5","9B":"2",AC:"3.5",BC:"3.6",CC:"110",DC:"111",EC:"3.1",FC:"5.1",GC:"6.1",HC:"7.1",IC:"9.1",JC:"14.1",KC:"15.1",LC:"TP",MC:"9.5-9.6",NC:"10.0-10.1",OC:"10.5",PC:"10.6",QC:"11.6",RC:"4.0-4.1",SC:"5.0-5.1",TC:"6.0-6.1",UC:"7.0-7.1",VC:"8.1-8.4",WC:"9.0-9.2",XC:"9.3",YC:"10.0-10.2",ZC:"10.3",aC:"11.0-11.2",bC:"11.3-11.4",cC:"12.0-12.1",dC:"12.2-12.5",eC:"13.0-13.1",fC:"13.2",gC:"13.3",hC:"13.4-13.7",iC:"14.0-14.4",jC:"14.5-14.8",kC:"15.0-15.1",lC:"all",mC:"2.1",nC:"2.2",oC:"2.3",pC:"4.1",qC:"4.4",rC:"4.4.3-4.4.4",sC:"13.4",tC:"5.0-5.4",uC:"6.2-6.4",vC:"7.2-7.4",wC:"8.2",xC:"9.2",yC:"11.1-11.2",zC:"12.0","0C":"13.0","1C":"14.0","2C":"15.0","3C":"17.0","4C":"18.0","5C":"19.0","6C":"13.18","7C":"2.5"};
 
 
 /***/ }),
 
-/***/ 78072:
+/***/ 27969:
 /***/ (function(module) {
 
 module.exports={A:"ie",B:"edge",C:"firefox",D:"chrome",E:"safari",F:"opera",G:"ios_saf",H:"op_mini",I:"android",J:"bb",K:"op_mob",L:"and_chr",M:"and_ff",N:"ie_mob",O:"and_uc",P:"samsung",Q:"and_qq",R:"baidu",S:"kaios"};
@@ -7964,7 +6891,7 @@ module.exports={A:"ie",B:"edge",C:"firefox",D:"chrome",E:"safari",F:"opera",G:"i
 
 /***/ }),
 
-/***/ 2711:
+/***/ 45327:
 /***/ (function(module) {
 
 module.exports = {
@@ -7980,7 +6907,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 12595:
+/***/ 28868:
 /***/ (function(module) {
 
 module.exports = {
@@ -7996,15 +6923,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ 89601:
+/***/ 59976:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-const browsers = (__nccwpck_require__(79052).browsers)
-const versions = (__nccwpck_require__(55726).browserVersions)
-const agentsData = __nccwpck_require__(67348)
+const browsers = (__nccwpck_require__(12402).browsers)
+const versions = (__nccwpck_require__(48468).browserVersions)
+const agentsData = __nccwpck_require__(77715)
 
 function unpackBrowserVersions(versionsData) {
   return Object.keys(versionsData).reduce((usage, version) => {
@@ -8051,32 +6978,32 @@ module.exports.D = Object.keys(agentsData).reduce((map, key) => {
 
 /***/ }),
 
-/***/ 55726:
+/***/ 48468:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports.browserVersions = __nccwpck_require__(25765)
+module.exports.browserVersions = __nccwpck_require__(67808)
 
 
 /***/ }),
 
-/***/ 79052:
+/***/ 12402:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports.browsers = __nccwpck_require__(78072)
+module.exports.browsers = __nccwpck_require__(27969)
 
 
 /***/ }),
 
-/***/ 65620:
+/***/ 65711:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-const statuses = __nccwpck_require__(2711)
-const supported = __nccwpck_require__(12595)
-const browsers = (__nccwpck_require__(79052).browsers)
-const versions = (__nccwpck_require__(55726).browserVersions)
+const statuses = __nccwpck_require__(45327)
+const supported = __nccwpck_require__(28868)
+const browsers = (__nccwpck_require__(12402).browsers)
+const versions = (__nccwpck_require__(48468).browserVersions)
 
 const MATH2LOG = Math.log(2)
 
@@ -8123,13 +7050,13 @@ module.exports["default"] = unpackFeature
 
 /***/ }),
 
-/***/ 54666:
+/***/ 62262:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
 "use strict";
 
 
-const browsers = (__nccwpck_require__(79052).browsers)
+const browsers = (__nccwpck_require__(12402).browsers)
 
 function unpackRegion(packed) {
   return Object.keys(packed).reduce((list, browser) => {
@@ -9842,13 +8769,14 @@ module.exports = function (basedir, relfiles) {
 
 /***/ }),
 
-/***/ 2643:
+/***/ 62213:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 var fs = __nccwpck_require__(57147);
 var path = __nccwpck_require__(71017);
+var SafeBuffer = __nccwpck_require__(23767);
 
 Object.defineProperty(exports, "commentRegex", ({
   get: function getCommentRegex () {
@@ -9863,30 +8791,9 @@ Object.defineProperty(exports, "mapFileCommentRegex", ({
   }
 }));
 
-var decodeBase64;
-if (typeof Buffer !== 'undefined') {
-  if (typeof Buffer.from === 'function') {
-    decodeBase64 = decodeBase64WithBufferFrom;
-  } else {
-    decodeBase64 = decodeBase64WithNewBuffer;
-  }
-} else {
-  decodeBase64 = decodeBase64WithAtob;
-}
 
-function decodeBase64WithBufferFrom(base64) {
-  return Buffer.from(base64, 'base64').toString();
-}
-
-function decodeBase64WithNewBuffer(base64) {
-  if (typeof value === 'number') {
-    throw new TypeError('The value to decode must not be of type number.');
-  }
-  return new Buffer(base64, 'base64').toString();
-}
-
-function decodeBase64WithAtob(base64) {
-  return decodeURIComponent(escape(atob(base64)));
+function decodeBase64(base64) {
+  return (SafeBuffer.Buffer.from(base64, 'base64') || "").toString();
 }
 
 function stripComment(sm) {
@@ -9924,33 +8831,10 @@ Converter.prototype.toJSON = function (space) {
   return JSON.stringify(this.sourcemap, null, space);
 };
 
-if (typeof Buffer !== 'undefined') {
-  if (typeof Buffer.from === 'function') {
-    Converter.prototype.toBase64 = encodeBase64WithBufferFrom;
-  } else {
-    Converter.prototype.toBase64 = encodeBase64WithNewBuffer;
-  }
-} else {
-  Converter.prototype.toBase64 = encodeBase64WithBtoa;
-}
-
-function encodeBase64WithBufferFrom() {
+Converter.prototype.toBase64 = function () {
   var json = this.toJSON();
-  return Buffer.from(json, 'utf8').toString('base64');
-}
-
-function encodeBase64WithNewBuffer() {
-  var json = this.toJSON();
-  if (typeof json === 'number') {
-    throw new TypeError('The json to encode must not be of type number.');
-  }
-  return new Buffer(json, 'utf8').toString('base64');
-}
-
-function encodeBase64WithBtoa() {
-  var json = this.toJSON();
-  return btoa(unescape(encodeURIComponent(json)));
-}
+  return (SafeBuffer.Buffer.from(json, 'utf8') || "").toString('base64');
+};
 
 Converter.prototype.toComment = function (options) {
   var base64 = this.toBase64();
@@ -14342,86 +13226,90 @@ module.exports.sync = cwd => {
 
 /***/ }),
 
-/***/ 28739:
+/***/ 2366:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 var _interopRequireDefault = __nccwpck_require__(40546);
+
 var _assert = _interopRequireDefault(__nccwpck_require__(39491));
-var leap = _interopRequireWildcard(__nccwpck_require__(50015));
-var meta = _interopRequireWildcard(__nccwpck_require__(39937));
-var util = _interopRequireWildcard(__nccwpck_require__(58597));
+
+var leap = _interopRequireWildcard(__nccwpck_require__(77848));
+
+var meta = _interopRequireWildcard(__nccwpck_require__(15721));
+
+var util = _interopRequireWildcard(__nccwpck_require__(24479));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 var hasOwn = Object.prototype.hasOwnProperty;
+
 function Emitter(contextId) {
   _assert["default"].ok(this instanceof Emitter);
-  util.getTypes().assertIdentifier(contextId);
 
-  // Used to generate unique temporary names.
-  this.nextTempId = 0;
+  util.getTypes().assertIdentifier(contextId); // Used to generate unique temporary names.
 
-  // In order to make sure the context object does not collide with
+  this.nextTempId = 0; // In order to make sure the context object does not collide with
   // anything in the local scope, we might have to rename it, so we
   // refer to it symbolically instead of just assuming that it will be
   // called "context".
-  this.contextId = contextId;
 
-  // An append-only list of Statements that grows each time this.emit is
+  this.contextId = contextId; // An append-only list of Statements that grows each time this.emit is
   // called.
-  this.listing = [];
 
-  // A sparse array whose keys correspond to locations in this.listing
+  this.listing = []; // A sparse array whose keys correspond to locations in this.listing
   // that have been marked as branch/jump targets.
+
   this.marked = [true];
-  this.insertedLocs = new Set();
-
-  // The last location will be marked when this.getDispatchLoop is
+  this.insertedLocs = new Set(); // The last location will be marked when this.getDispatchLoop is
   // called.
-  this.finalLoc = this.loc();
 
-  // A list of all leap.TryEntry statements emitted.
-  this.tryEntries = [];
+  this.finalLoc = this.loc(); // A list of all leap.TryEntry statements emitted.
 
-  // Each time we evaluate the body of a loop, we tell this.leapManager
+  this.tryEntries = []; // Each time we evaluate the body of a loop, we tell this.leapManager
   // to enter a nested loop context that determines the meaning of break
   // and continue statements therein.
+
   this.leapManager = new leap.LeapManager(this);
 }
-var Ep = Emitter.prototype;
-exports.Emitter = Emitter;
 
-// Offsets into this.listing that could be used as targets for branches or
+var Ep = Emitter.prototype;
+exports.Emitter = Emitter; // Offsets into this.listing that could be used as targets for branches or
 // jumps are represented as numeric Literal nodes. This representation has
 // the amazingly convenient benefit of allowing the exact value of the
 // location to be determined at any time, even after generating code that
 // refers to the location.
+
 Ep.loc = function () {
   var l = util.getTypes().numericLiteral(-1);
   this.insertedLocs.add(l);
   return l;
 };
+
 Ep.getInsertedLocs = function () {
   return this.insertedLocs;
 };
+
 Ep.getContextId = function () {
   return util.getTypes().clone(this.contextId);
-};
-
-// Sets the exact value of the given location to the offset of the next
+}; // Sets the exact value of the given location to the offset of the next
 // Statement emitted.
+
+
 Ep.mark = function (loc) {
   util.getTypes().assertLiteral(loc);
   var index = this.listing.length;
+
   if (loc.value === -1) {
     loc.value = index;
   } else {
@@ -14429,107 +13317,117 @@ Ep.mark = function (loc) {
     // once set the first time.
     _assert["default"].strictEqual(loc.value, index);
   }
+
   this.marked[index] = true;
   return loc;
 };
+
 Ep.emit = function (node) {
   var t = util.getTypes();
+
   if (t.isExpression(node)) {
     node = t.expressionStatement(node);
   }
+
   t.assertStatement(node);
   this.listing.push(node);
-};
-
-// Shorthand for emitting assignment statements. This will come in handy
+}; // Shorthand for emitting assignment statements. This will come in handy
 // for assignments to temporary variables.
+
+
 Ep.emitAssign = function (lhs, rhs) {
   this.emit(this.assign(lhs, rhs));
   return lhs;
-};
+}; // Shorthand for an assignment statement.
 
-// Shorthand for an assignment statement.
+
 Ep.assign = function (lhs, rhs) {
   var t = util.getTypes();
   return t.expressionStatement(t.assignmentExpression("=", t.cloneDeep(lhs), rhs));
-};
-
-// Convenience function for generating expressions like context.next,
+}; // Convenience function for generating expressions like context.next,
 // context.sent, and context.rval.
+
+
 Ep.contextProperty = function (name, computed) {
   var t = util.getTypes();
   return t.memberExpression(this.getContextId(), computed ? t.stringLiteral(name) : t.identifier(name), !!computed);
-};
+}; // Shorthand for setting context.rval and jumping to `context.stop()`.
 
-// Shorthand for setting context.rval and jumping to `context.stop()`.
+
 Ep.stop = function (rval) {
   if (rval) {
     this.setReturnValue(rval);
   }
+
   this.jump(this.finalLoc);
 };
+
 Ep.setReturnValue = function (valuePath) {
   util.getTypes().assertExpression(valuePath.value);
   this.emitAssign(this.contextProperty("rval"), this.explodeExpression(valuePath));
 };
+
 Ep.clearPendingException = function (tryLoc, assignee) {
   var t = util.getTypes();
   t.assertLiteral(tryLoc);
   var catchCall = t.callExpression(this.contextProperty("catch", true), [t.clone(tryLoc)]);
+
   if (assignee) {
     this.emitAssign(assignee, catchCall);
   } else {
     this.emit(catchCall);
   }
-};
-
-// Emits code for an unconditional jump to the given location, even if the
+}; // Emits code for an unconditional jump to the given location, even if the
 // exact value of the location is not yet known.
+
+
 Ep.jump = function (toLoc) {
   this.emitAssign(this.contextProperty("next"), toLoc);
   this.emit(util.getTypes().breakStatement());
-};
+}; // Conditional jump.
 
-// Conditional jump.
+
 Ep.jumpIf = function (test, toLoc) {
   var t = util.getTypes();
   t.assertExpression(test);
   t.assertLiteral(toLoc);
   this.emit(t.ifStatement(test, t.blockStatement([this.assign(this.contextProperty("next"), toLoc), t.breakStatement()])));
-};
+}; // Conditional jump, with the condition negated.
 
-// Conditional jump, with the condition negated.
+
 Ep.jumpIfNot = function (test, toLoc) {
   var t = util.getTypes();
   t.assertExpression(test);
   t.assertLiteral(toLoc);
   var negatedTest;
+
   if (t.isUnaryExpression(test) && test.operator === "!") {
     // Avoid double negation.
     negatedTest = test.argument;
   } else {
     negatedTest = t.unaryExpression("!", test);
   }
-  this.emit(t.ifStatement(negatedTest, t.blockStatement([this.assign(this.contextProperty("next"), toLoc), t.breakStatement()])));
-};
 
-// Returns a unique MemberExpression that can be used to store and
+  this.emit(t.ifStatement(negatedTest, t.blockStatement([this.assign(this.contextProperty("next"), toLoc), t.breakStatement()])));
+}; // Returns a unique MemberExpression that can be used to store and
 // retrieve temporary values. Since the object of the member expression is
 // the context object, which is presumed to coexist peacefully with all
 // other local variables, and since we just increment `nextTempId`
 // monotonically, uniqueness is assured.
+
+
 Ep.makeTempVar = function () {
   return this.contextProperty("t" + this.nextTempId++);
 };
+
 Ep.getContextFunction = function (id) {
   var t = util.getTypes();
-  return t.functionExpression(id || null /*Anonymous*/, [this.getContextId()], t.blockStatement([this.getDispatchLoop()]), false,
-  // Not a generator anymore!
+  return t.functionExpression(id || null
+  /*Anonymous*/
+  , [this.getContextId()], t.blockStatement([this.getDispatchLoop()]), false, // Not a generator anymore!
   false // Nor an expression.
   );
-};
-
-// Turns this.listing into a loop of the form
+}; // Turns this.listing into a loop of the form
 //
 //   while (1) switch (context.next) {
 //   case 0:
@@ -14540,72 +13438,72 @@ Ep.getContextFunction = function (id) {
 //
 // Each marked location in this.listing will correspond to one generated
 // case statement.
+
+
 Ep.getDispatchLoop = function () {
   var self = this;
   var t = util.getTypes();
   var cases = [];
-  var current;
-
-  // If we encounter a break, continue, or return statement in a switch
+  var current; // If we encounter a break, continue, or return statement in a switch
   // case, we can skip the rest of the statements until the next case.
+
   var alreadyEnded = false;
   self.listing.forEach(function (stmt, i) {
     if (self.marked.hasOwnProperty(i)) {
       cases.push(t.switchCase(t.numericLiteral(i), current = []));
       alreadyEnded = false;
     }
+
     if (!alreadyEnded) {
       current.push(stmt);
       if (t.isCompletionStatement(stmt)) alreadyEnded = true;
     }
-  });
-
-  // Now that we know how many statements there will be in this.listing,
+  }); // Now that we know how many statements there will be in this.listing,
   // we can finally resolve this.finalLoc.value.
+
   this.finalLoc.value = this.listing.length;
-  cases.push(t.switchCase(this.finalLoc, [
-    // Intentionally fall through to the "end" case...
-  ]),
-  // So that the runtime can jump to the final location without having
+  cases.push(t.switchCase(this.finalLoc, [// Intentionally fall through to the "end" case...
+  ]), // So that the runtime can jump to the final location without having
   // to know its offset, we provide the "end" case as a synonym.
-  t.switchCase(t.stringLiteral("end"), [
-  // This will check/clear both context.thrown and context.rval.
+  t.switchCase(t.stringLiteral("end"), [// This will check/clear both context.thrown and context.rval.
   t.returnStatement(t.callExpression(this.contextProperty("stop"), []))]));
   return t.whileStatement(t.numericLiteral(1), t.switchStatement(t.assignmentExpression("=", this.contextProperty("prev"), this.contextProperty("next")), cases));
 };
+
 Ep.getTryLocsList = function () {
   if (this.tryEntries.length === 0) {
     // To avoid adding a needless [] to the majority of runtime.wrap
     // argument lists, force the caller to handle this case specially.
     return null;
   }
+
   var t = util.getTypes();
   var lastLocValue = 0;
   return t.arrayExpression(this.tryEntries.map(function (tryEntry) {
     var thisLocValue = tryEntry.firstLoc.value;
+
     _assert["default"].ok(thisLocValue >= lastLocValue, "try entries out of order");
+
     lastLocValue = thisLocValue;
     var ce = tryEntry.catchEntry;
     var fe = tryEntry.finallyEntry;
-    var locs = [tryEntry.firstLoc,
-    // The null here makes a hole in the array.
+    var locs = [tryEntry.firstLoc, // The null here makes a hole in the array.
     ce ? ce.firstLoc : null];
+
     if (fe) {
       locs[2] = fe.firstLoc;
       locs[3] = fe.afterLoc;
     }
+
     return t.arrayExpression(locs.map(function (loc) {
       return loc && t.clone(loc);
     }));
   }));
-};
-
-// All side effects must be realized in order.
-
+}; // All side effects must be realized in order.
 // If any subexpression harbors a leap, all subexpressions must be
 // neutered of side effects.
-
 // No destructive modification of AST nodes.
+
 
 Ep.explode = function (path, ignoreResult) {
   var t = util.getTypes();
@@ -14615,45 +13513,52 @@ Ep.explode = function (path, ignoreResult) {
   if (t.isDeclaration(node)) throw getDeclError(node);
   if (t.isStatement(node)) return self.explodeStatement(path);
   if (t.isExpression(node)) return self.explodeExpression(path, ignoreResult);
+
   switch (node.type) {
     case "Program":
       return path.get("body").map(self.explodeStatement, self);
+
     case "VariableDeclarator":
       throw getDeclError(node);
-
     // These node types should be handled by their parent nodes
     // (ObjectExpression, SwitchStatement, and TryStatement, respectively).
+
     case "Property":
     case "SwitchCase":
     case "CatchClause":
       throw new Error(node.type + " nodes should be handled by their parents");
+
     default:
       throw new Error("unknown Node of type " + JSON.stringify(node.type));
   }
 };
+
 function getDeclError(node) {
   return new Error("all declarations should have been transformed into " + "assignments before the Exploder began its work: " + JSON.stringify(node));
 }
+
 Ep.explodeStatement = function (path, labelId) {
   var t = util.getTypes();
   var stmt = path.node;
   var self = this;
   var before, after, head;
   t.assertStatement(stmt);
+
   if (labelId) {
     t.assertIdentifier(labelId);
   } else {
     labelId = null;
-  }
-
-  // Explode BlockStatement nodes even if they do not contain a yield,
+  } // Explode BlockStatement nodes even if they do not contain a yield,
   // because we don't want or need the curly braces.
+
+
   if (t.isBlockStatement(stmt)) {
     path.get("body").forEach(function (path) {
       self.explodeStatement(path);
     });
     return;
   }
+
   if (!meta.containsLeap(stmt)) {
     // Technically we should be able to avoid emitting the statement
     // altogether if !meta.hasSideEffects(stmt), but that leads to
@@ -14663,14 +13568,14 @@ Ep.explodeStatement = function (path, labelId) {
     self.emit(stmt);
     return;
   }
+
   switch (stmt.type) {
     case "ExpressionStatement":
       self.explodeExpression(path.get("expression"), true);
       break;
-    case "LabeledStatement":
-      after = this.loc();
 
-      // Did you know you can break from any labeled block statement or
+    case "LabeledStatement":
+      after = this.loc(); // Did you know you can break from any labeled block statement or
       // control structure? Well, you can! Note: when a labeled loop is
       // encountered, the leap.LabeledEntry created here will immediately
       // enclose a leap.LoopEntry on the leap manager's stack, and both
@@ -14690,11 +13595,13 @@ Ep.explodeStatement = function (path, labelId) {
       // themselves. Also remember that labels and break/continue-to-label
       // statements are rare, and all of this logic happens at transform
       // time, so it has no additional runtime cost.
+
       self.leapManager.withEntry(new leap.LabeledEntry(after, stmt.label), function () {
         self.explodeStatement(path.get("body"), stmt.label);
       });
       self.mark(after);
       break;
+
     case "WhileStatement":
       before = this.loc();
       after = this.loc();
@@ -14706,6 +13613,7 @@ Ep.explodeStatement = function (path, labelId) {
       self.jump(before);
       self.mark(after);
       break;
+
     case "DoWhileStatement":
       var first = this.loc();
       var test = this.loc();
@@ -14718,35 +13626,43 @@ Ep.explodeStatement = function (path, labelId) {
       self.jumpIf(self.explodeExpression(path.get("test")), first);
       self.mark(after);
       break;
+
     case "ForStatement":
       head = this.loc();
       var update = this.loc();
       after = this.loc();
+
       if (stmt.init) {
         // We pass true here to indicate that if stmt.init is an expression
         // then we do not care about its result.
         self.explode(path.get("init"), true);
       }
+
       self.mark(head);
+
       if (stmt.test) {
         self.jumpIfNot(self.explodeExpression(path.get("test")), after);
-      } else {
-        // No test means continue unconditionally.
+      } else {// No test means continue unconditionally.
       }
+
       self.leapManager.withEntry(new leap.LoopEntry(after, update, labelId), function () {
         self.explodeStatement(path.get("body"));
       });
       self.mark(update);
+
       if (stmt.update) {
         // We pass true here to indicate that if stmt.update is an
         // expression then we do not care about its result.
         self.explode(path.get("update"), true);
       }
+
       self.jump(head);
       self.mark(after);
       break;
+
     case "TypeCastExpression":
       return self.explodeExpression(path.get("expression"));
+
     case "ForInStatement":
       head = this.loc();
       after = this.loc();
@@ -14762,18 +13678,21 @@ Ep.explodeStatement = function (path, labelId) {
       self.jump(head);
       self.mark(after);
       break;
+
     case "BreakStatement":
       self.emitAbruptCompletion({
         type: "break",
         target: self.leapManager.getBreakLoc(stmt.label)
       });
       break;
+
     case "ContinueStatement":
       self.emitAbruptCompletion({
         type: "continue",
         target: self.leapManager.getContinueLoc(stmt.label)
       });
       break;
+
     case "SwitchStatement":
       // Always save the discriminant into a temporary variable in case the
       // test expressions overwrite values like context.sent.
@@ -14781,19 +13700,21 @@ Ep.explodeStatement = function (path, labelId) {
       after = this.loc();
       var defaultLoc = this.loc();
       var condition = defaultLoc;
-      var caseLocs = [];
+      var caseLocs = []; // If there are no cases, .cases might be undefined.
 
-      // If there are no cases, .cases might be undefined.
       var cases = stmt.cases || [];
+
       for (var i = cases.length - 1; i >= 0; --i) {
         var c = cases[i];
         t.assertSwitchCase(c);
+
         if (c.test) {
           condition = t.conditionalExpression(t.binaryExpression("===", t.cloneDeep(disc), c.test), caseLocs[i] = this.loc(), condition);
         } else {
           caseLocs[i] = defaultLoc;
         }
       }
+
       var discriminant = path.get("discriminant");
       util.replaceWithOrRemove(discriminant, condition);
       self.jump(self.explodeExpression(discriminant));
@@ -14807,31 +13728,40 @@ Ep.explodeStatement = function (path, labelId) {
         });
       });
       self.mark(after);
+
       if (defaultLoc.value === -1) {
         self.mark(defaultLoc);
+
         _assert["default"].strictEqual(after.value, defaultLoc.value);
       }
+
       break;
+
     case "IfStatement":
       var elseLoc = stmt.alternate && this.loc();
       after = this.loc();
       self.jumpIfNot(self.explodeExpression(path.get("test")), elseLoc || after);
       self.explodeStatement(path.get("consequent"));
+
       if (elseLoc) {
         self.jump(after);
         self.mark(elseLoc);
         self.explodeStatement(path.get("alternate"));
       }
+
       self.mark(after);
       break;
+
     case "ReturnStatement":
       self.emitAbruptCompletion({
         type: "return",
         value: self.explodeExpression(path.get("argument"))
       });
       break;
+
     case "WithStatement":
       throw new Error("WithStatement not supported in generator functions.");
+
     case "TryStatement":
       after = this.loc();
       var handler = stmt.handler;
@@ -14844,6 +13774,7 @@ Ep.explodeStatement = function (path, labelId) {
       self.updateContextPrevLoc(tryEntry.firstLoc);
       self.leapManager.withEntry(tryEntry, function () {
         self.explodeStatement(path.get("block"));
+
         if (catchLoc) {
           if (finallyLoc) {
             // If we have both a catch block and a finally block, then
@@ -14855,6 +13786,7 @@ Ep.explodeStatement = function (path, labelId) {
             // catch block to the fall-through location.
             self.jump(after);
           }
+
           self.updateContextPrevLoc(self.mark(catchLoc));
           var bodyPath = path.get("handler.body");
           var safeParam = self.makeTempVar();
@@ -14869,6 +13801,7 @@ Ep.explodeStatement = function (path, labelId) {
             self.explodeStatement(bodyPath);
           });
         }
+
         if (finallyLoc) {
           self.updateContextPrevLoc(self.mark(finallyLoc));
           self.leapManager.withEntry(finallyEntry, function () {
@@ -14879,16 +13812,20 @@ Ep.explodeStatement = function (path, labelId) {
       });
       self.mark(after);
       break;
+
     case "ThrowStatement":
       self.emit(t.throwStatement(self.explodeExpression(path.get("argument"))));
       break;
+
     case "ClassDeclaration":
       self.emit(self.explodeClass(path));
       break;
+
     default:
       throw new Error("unknown Statement of type " + JSON.stringify(stmt.type));
   }
 };
+
 var catchParamVisitor = {
   Identifier: function Identifier(path, state) {
     if (path.node.name === state.catchParamName && util.isReference(path)) {
@@ -14903,13 +13840,17 @@ var catchParamVisitor = {
     }
   }
 };
+
 Ep.emitAbruptCompletion = function (record) {
   if (!isValidCompletion(record)) {
     _assert["default"].ok(false, "invalid completion record: " + JSON.stringify(record));
   }
+
   _assert["default"].notStrictEqual(record.type, "normal", "normal completions are not abrupt");
+
   var t = util.getTypes();
   var abruptArgs = [t.stringLiteral(record.type)];
+
   if (record.type === "break" || record.type === "continue") {
     t.assertLiteral(record.target);
     abruptArgs[1] = this.insertedLocs.has(record.target) ? record.target : t.cloneDeep(record.target);
@@ -14919,23 +13860,27 @@ Ep.emitAbruptCompletion = function (record) {
       abruptArgs[1] = this.insertedLocs.has(record.value) ? record.value : t.cloneDeep(record.value);
     }
   }
+
   this.emit(t.returnStatement(t.callExpression(this.contextProperty("abrupt"), abruptArgs)));
 };
+
 function isValidCompletion(record) {
   var type = record.type;
+
   if (type === "normal") {
     return !hasOwn.call(record, "target");
   }
+
   if (type === "break" || type === "continue") {
     return !hasOwn.call(record, "value") && util.getTypes().isLiteral(record.target);
   }
+
   if (type === "return" || type === "throw") {
     return hasOwn.call(record, "value") && !hasOwn.call(record, "target");
   }
-  return false;
-}
 
-// Not all offsets into emitter.listing are potential jump targets. For
+  return false;
+} // Not all offsets into emitter.listing are potential jump targets. For
 // example, execution typically falls into the beginning of a try block
 // without jumping directly there. This method returns the current offset
 // without marking it, so that a switch case will not necessarily be
@@ -14944,11 +13889,11 @@ function isValidCompletion(record) {
 // statements). There's no logical harm in marking such locations as jump
 // targets, but minimizing the number of switch cases keeps the generated
 // code shorter.
+
+
 Ep.getUnmarkedCurrentLoc = function () {
   return util.getTypes().numericLiteral(this.listing.length);
-};
-
-// The context.prev property takes the value of context.next whenever we
+}; // The context.prev property takes the value of context.next whenever we
 // evaluate the switch statement discriminant, which is generally good
 // enough for tracking the last location we jumped to, but sometimes
 // context.prev needs to be more precise, such as when we fall
@@ -14958,10 +13903,14 @@ Ep.getUnmarkedCurrentLoc = function () {
 // would know the location of the current instruction with complete
 // precision at all times, but we don't have that luxury here, as it would
 // be costly and verbose to set context.prev before every statement.
+
+
 Ep.updateContextPrevLoc = function (loc) {
   var t = util.getTypes();
+
   if (loc) {
     t.assertLiteral(loc);
+
     if (loc.value === -1) {
       // If an uninitialized location literal was passed in, set its value
       // to the current this.listing.length.
@@ -14972,15 +13921,13 @@ Ep.updateContextPrevLoc = function (loc) {
     }
   } else {
     loc = this.getUnmarkedCurrentLoc();
-  }
-
-  // Make sure context.prev is up to date in case we fell into this try
+  } // Make sure context.prev is up to date in case we fell into this try
   // statement without jumping to it. TODO Consider avoiding this
   // assignment when we know control must have jumped here.
-  this.emitAssign(this.contextProperty("prev"), loc);
-};
 
-// In order to save the rest of explodeExpression from a combinatorial
+
+  this.emitAssign(this.contextProperty("prev"), loc);
+}; // In order to save the rest of explodeExpression from a combinatorial
 // trainwreck of special cases, explodeViaTempVar is responsible for
 // deciding when a subexpression needs to be "exploded," which is my
 // very technical term for emitting the subexpression as an assignment
@@ -14989,12 +13936,15 @@ Ep.updateContextPrevLoc = function (loc) {
 // Michael Bay movies. The point of exploding subexpressions is to
 // control the precise order in which the generated code realizes the
 // side effects of those subexpressions.
+
+
 Ep.explodeViaTempVar = function (tempVar, childPath, hasLeapingChildren, ignoreChildResult) {
   _assert["default"].ok(!ignoreChildResult || !tempVar, "Ignoring the result of a child expression but forcing it to " + "be assigned to a temporary variable?");
+
   var t = util.getTypes();
   var result = this.explodeExpression(childPath, ignoreChildResult);
-  if (ignoreChildResult) {
-    // Side effects already emitted above.
+
+  if (ignoreChildResult) {// Side effects already emitted above.
   } else if (tempVar || hasLeapingChildren && !t.isLiteral(result)) {
     // If tempVar was provided, then the result will always be assigned
     // to it, even if the result does not otherwise need to be assigned
@@ -15009,46 +13959,53 @@ Ep.explodeViaTempVar = function (tempVar, childPath, hasLeapingChildren, ignoreC
     // result in question is a Literal value.
     result = this.emitAssign(tempVar || this.makeTempVar(), result);
   }
+
   return result;
 };
+
 Ep.explodeExpression = function (path, ignoreResult) {
   var t = util.getTypes();
   var expr = path.node;
+
   if (expr) {
     t.assertExpression(expr);
   } else {
     return expr;
   }
+
   var self = this;
   var result; // Used optionally by several cases below.
+
   var after;
+
   function finish(expr) {
     t.assertExpression(expr);
+
     if (ignoreResult) {
       self.emit(expr);
     }
-    return expr;
-  }
 
-  // If the expression does not contain a leap, then we either emit the
+    return expr;
+  } // If the expression does not contain a leap, then we either emit the
   // expression as a standalone statement or return it whole.
+
+
   if (!meta.containsLeap(expr)) {
     return finish(expr);
-  }
-
-  // If any child contains a leap (such as a yield or labeled continue or
+  } // If any child contains a leap (such as a yield or labeled continue or
   // break statement), then any sibling subexpressions will almost
   // certainly have to be exploded in order to maintain the order of their
   // side effects relative to the leaping child(ren).
-  var hasLeapingChildren = meta.containsLeap.onlyChildren(expr);
 
-  // If ignoreResult is true, then we must take full responsibility for
+
+  var hasLeapingChildren = meta.containsLeap.onlyChildren(expr); // If ignoreResult is true, then we must take full responsibility for
   // emitting the expression with all its side effects, and we should not
   // return a result.
 
   switch (expr.type) {
     case "MemberExpression":
       return finish(t.memberExpression(self.explodeExpression(path.get("object")), expr.computed ? self.explodeViaTempVar(null, path.get("property"), hasLeapingChildren) : expr.property, expr.computed));
+
     case "CallExpression":
       var calleePath = path.get("callee");
       var argsPath = path.get("arguments");
@@ -15058,6 +14015,7 @@ Ep.explodeExpression = function (path, ignoreResult) {
         return meta.containsLeap(argPath.node);
       });
       var injectFirstArg = null;
+
       if (t.isMemberExpression(calleePath.node)) {
         if (hasLeapingArgs) {
           // If the arguments of the CallExpression contained any yield
@@ -15065,9 +14023,7 @@ Ep.explodeExpression = function (path, ignoreResult) {
           // before evaluating the arguments, but if the callee was a member
           // expression, then we must be careful that the object of the
           // member expression still gets bound to `this` for the call.
-
-          var newObject = self.explodeViaTempVar(
-          // Assign the exploded callee.object expression to a temporary
+          var newObject = self.explodeViaTempVar( // Assign the exploded callee.object expression to a temporary
           // variable so that we can use it twice without reevaluating it.
           self.makeTempVar(), calleePath.get("object"), hasLeapingChildren);
           var newProperty = calleePath.node.computed ? self.explodeViaTempVar(null, calleePath.get("property"), hasLeapingChildren) : calleePath.node.property;
@@ -15078,6 +14034,7 @@ Ep.explodeExpression = function (path, ignoreResult) {
         }
       } else {
         newCallee = self.explodeViaTempVar(null, calleePath, hasLeapingChildren);
+
         if (t.isMemberExpression(newCallee)) {
           // If the callee was not previously a MemberExpression, then the
           // CallExpression was "unqualified," meaning its `this` object
@@ -15090,6 +14047,7 @@ Ep.explodeExpression = function (path, ignoreResult) {
           newCallee = t.sequenceExpression([t.numericLiteral(0), t.cloneDeep(newCallee)]);
         }
       }
+
       if (hasLeapingArgs) {
         newArgs = argsPath.map(function (argPath) {
           return self.explodeViaTempVar(null, argPath, hasLeapingChildren);
@@ -15101,11 +14059,14 @@ Ep.explodeExpression = function (path, ignoreResult) {
       } else {
         newArgs = path.node.arguments;
       }
+
       return finish(t.callExpression(newCallee, newArgs));
+
     case "NewExpression":
       return finish(t.newExpression(self.explodeViaTempVar(null, path.get("callee"), hasLeapingChildren), path.get("arguments").map(function (argPath) {
         return self.explodeViaTempVar(null, argPath, hasLeapingChildren);
       })));
+
     case "ObjectExpression":
       return finish(t.objectExpression(path.get("properties").map(function (propPath) {
         if (propPath.isObjectProperty()) {
@@ -15114,17 +14075,16 @@ Ep.explodeExpression = function (path, ignoreResult) {
           return propPath.node;
         }
       })));
+
     case "ArrayExpression":
       return finish(t.arrayExpression(path.get("elements").map(function (elemPath) {
-        if (!elemPath.node) {
-          return null;
-        }
         if (elemPath.isSpreadElement()) {
           return t.spreadElement(self.explodeViaTempVar(null, elemPath.get("argument"), hasLeapingChildren));
         } else {
           return self.explodeViaTempVar(null, elemPath, hasLeapingChildren);
         }
       })));
+
     case "SequenceExpression":
       var lastIndex = expr.expressions.length - 1;
       path.get("expressions").forEach(function (exprPath) {
@@ -15135,42 +14095,53 @@ Ep.explodeExpression = function (path, ignoreResult) {
         }
       });
       return result;
+
     case "LogicalExpression":
       after = this.loc();
+
       if (!ignoreResult) {
         result = self.makeTempVar();
       }
+
       var left = self.explodeViaTempVar(result, path.get("left"), hasLeapingChildren);
+
       if (expr.operator === "&&") {
         self.jumpIfNot(left, after);
       } else {
         _assert["default"].strictEqual(expr.operator, "||");
+
         self.jumpIf(left, after);
       }
+
       self.explodeViaTempVar(result, path.get("right"), hasLeapingChildren, ignoreResult);
       self.mark(after);
       return result;
+
     case "ConditionalExpression":
       var elseLoc = this.loc();
       after = this.loc();
       var test = self.explodeExpression(path.get("test"));
       self.jumpIfNot(test, elseLoc);
+
       if (!ignoreResult) {
         result = self.makeTempVar();
       }
+
       self.explodeViaTempVar(result, path.get("consequent"), hasLeapingChildren, ignoreResult);
       self.jump(after);
       self.mark(elseLoc);
       self.explodeViaTempVar(result, path.get("alternate"), hasLeapingChildren, ignoreResult);
       self.mark(after);
       return result;
+
     case "UnaryExpression":
-      return finish(t.unaryExpression(expr.operator,
-      // Can't (and don't need to) break up the syntax of the argument.
+      return finish(t.unaryExpression(expr.operator, // Can't (and don't need to) break up the syntax of the argument.
       // Think about delete a[b].
       self.explodeExpression(path.get("argument")), !!expr.prefix));
+
     case "BinaryExpression":
       return finish(t.binaryExpression(expr.operator, self.explodeViaTempVar(null, path.get("left"), hasLeapingChildren), self.explodeViaTempVar(null, path.get("right"), hasLeapingChildren)));
+
     case "AssignmentExpression":
       if (expr.operator === "=") {
         // If this is a simple assignment, the left hand side does not need
@@ -15178,10 +14149,9 @@ Ep.explodeExpression = function (path, ignoreResult) {
         // avoid the more complicated logic below.
         return finish(t.assignmentExpression(expr.operator, self.explodeExpression(path.get("left")), self.explodeExpression(path.get("right"))));
       }
-      var lhs = self.explodeExpression(path.get("left"));
-      var temp = self.emitAssign(self.makeTempVar(), lhs);
 
-      // For example,
+      var lhs = self.explodeExpression(path.get("left"));
+      var temp = self.emitAssign(self.makeTempVar(), lhs); // For example,
       //
       //   x += yield y
       //
@@ -15194,38 +14164,49 @@ Ep.explodeExpression = function (path, ignoreResult) {
       // Fixes https://github.com/facebook/regenerator/issues/345.
 
       return finish(t.assignmentExpression("=", t.cloneDeep(lhs), t.assignmentExpression(expr.operator, t.cloneDeep(temp), self.explodeExpression(path.get("right")))));
+
     case "UpdateExpression":
       return finish(t.updateExpression(expr.operator, self.explodeExpression(path.get("argument")), expr.prefix));
+
     case "YieldExpression":
       after = this.loc();
       var arg = expr.argument && self.explodeExpression(path.get("argument"));
+
       if (arg && expr.delegate) {
         var _result = self.makeTempVar();
+
         var _ret = t.returnStatement(t.callExpression(self.contextProperty("delegateYield"), [arg, t.stringLiteral(_result.property.name), after]));
+
         _ret.loc = expr.loc;
         self.emit(_ret);
         self.mark(after);
         return _result;
       }
+
       self.emitAssign(self.contextProperty("next"), after);
-      var ret = t.returnStatement(t.cloneDeep(arg) || null);
-      // Preserve the `yield` location so that source mappings for the statements
+      var ret = t.returnStatement(t.cloneDeep(arg) || null); // Preserve the `yield` location so that source mappings for the statements
       // link back to the yield properly.
+
       ret.loc = expr.loc;
       self.emit(ret);
       self.mark(after);
       return self.contextProperty("sent");
+
     case "ClassExpression":
       return finish(self.explodeClass(path));
+
     default:
       throw new Error("unknown Expression of type " + JSON.stringify(expr.type));
   }
 };
+
 Ep.explodeClass = function (path) {
   var explodingChildren = [];
+
   if (path.node.superClass) {
     explodingChildren.push(path.get("superClass"));
   }
+
   path.get("body.body").forEach(function (member) {
     if (member.node.computed) {
       explodingChildren.push(member.get("key"));
@@ -15234,60 +14215,65 @@ Ep.explodeClass = function (path) {
   var hasLeapingChildren = explodingChildren.some(function (child) {
     return meta.containsLeap(child);
   });
+
   for (var i = 0; i < explodingChildren.length; i++) {
     var child = explodingChildren[i];
     var isLast = i === explodingChildren.length - 1;
+
     if (isLast) {
       child.replaceWith(this.explodeExpression(child));
     } else {
       child.replaceWith(this.explodeViaTempVar(null, child, hasLeapingChildren));
     }
   }
+
   return path.node;
 };
 
 /***/ }),
 
-/***/ 2758:
+/***/ 76971:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
-var util = _interopRequireWildcard(__nccwpck_require__(58597));
+var util = _interopRequireWildcard(__nccwpck_require__(24479));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-var hasOwn = Object.prototype.hasOwnProperty;
-
-// The hoist function takes a FunctionExpression or FunctionDeclaration
+var hasOwn = Object.prototype.hasOwnProperty; // The hoist function takes a FunctionExpression or FunctionDeclaration
 // and replaces any Declaration nodes in its body with assignments, then
 // returns a VariableDeclaration containing just the names of the removed
 // declarations.
+
 exports.hoist = function (funPath) {
   var t = util.getTypes();
   t.assertFunction(funPath.node);
   var vars = {};
+
   function varDeclToExpr(_ref, includeIdentifiers) {
     var vdec = _ref.node,
-      scope = _ref.scope;
-    t.assertVariableDeclaration(vdec);
-    // TODO assert.equal(vdec.kind, "var");
+        scope = _ref.scope;
+    t.assertVariableDeclaration(vdec); // TODO assert.equal(vdec.kind, "var");
+
     var exprs = [];
     vdec.declarations.forEach(function (dec) {
       // Note: We duplicate 'dec.id' here to ensure that the variable declaration IDs don't
       // have the same 'loc' value, since that can make sourcemaps and retainLines behave poorly.
-      vars[dec.id.name] = t.identifier(dec.id.name);
-
-      // Remove the binding, to avoid "duplicate declaration" errors when it will
+      vars[dec.id.name] = t.identifier(dec.id.name); // Remove the binding, to avoid "duplicate declaration" errors when it will
       // be injected again.
+
       scope.removeBinding(dec.id.name);
+
       if (dec.init) {
         exprs.push(t.assignmentExpression("=", dec.id, dec.init));
       } else if (includeIdentifiers) {
@@ -15298,31 +14284,35 @@ exports.hoist = function (funPath) {
     if (exprs.length === 1) return exprs[0];
     return t.sequenceExpression(exprs);
   }
+
   funPath.get("body").traverse({
     VariableDeclaration: {
       exit: function exit(path) {
         var expr = varDeclToExpr(path, false);
+
         if (expr === null) {
           path.remove();
         } else {
           // We don't need to traverse this expression any further because
           // there can't be any new declarations inside an expression.
           util.replaceWithOrRemove(path, t.expressionStatement(expr));
-        }
-
-        // Since the original node has been either removed or replaced,
+        } // Since the original node has been either removed or replaced,
         // avoid traversing it any further.
+
+
         path.skip();
       }
     },
     ForStatement: function ForStatement(path) {
       var init = path.get("init");
+
       if (init.isVariableDeclaration()) {
         util.replaceWithOrRemove(init, varDeclToExpr(init, false));
       }
     },
     ForXStatement: function ForXStatement(path) {
       var left = path.get("left");
+
       if (left.isVariableDeclaration()) {
         util.replaceWithOrRemove(left, varDeclToExpr(left, true));
       }
@@ -15331,26 +14321,25 @@ exports.hoist = function (funPath) {
       var node = path.node;
       vars[node.id.name] = node.id;
       var assignment = t.expressionStatement(t.assignmentExpression("=", t.clone(node.id), t.functionExpression(path.scope.generateUidIdentifierBasedOnNode(node), node.params, node.body, node.generator, node.expression)));
+
       if (path.parentPath.isBlockStatement()) {
         // Insert the assignment form before the first statement in the
         // enclosing block.
-        path.parentPath.unshiftContainer("body", assignment);
-
-        // Remove the function declaration now that we've inserted the
+        path.parentPath.unshiftContainer("body", assignment); // Remove the function declaration now that we've inserted the
         // equivalent assignment form at the beginning of the block.
+
         path.remove();
       } else {
         // If the parent node is not a block statement, then we can just
         // replace the declaration with the equivalent assignment form
         // without worrying about hoisting it.
         util.replaceWithOrRemove(path, assignment);
-      }
-
-      // Remove the binding, to avoid "duplicate declaration" errors when it will
+      } // Remove the binding, to avoid "duplicate declaration" errors when it will
       // be injected again.
-      path.scope.removeBinding(node.id.name);
 
-      // Don't hoist variables out of inner functions.
+
+      path.scope.removeBinding(node.id.name); // Don't hoist variables out of inner functions.
+
       path.skip();
     },
     FunctionExpression: function FunctionExpression(path) {
@@ -15365,10 +14354,10 @@ exports.hoist = function (funPath) {
   var paramNames = {};
   funPath.get("params").forEach(function (paramPath) {
     var param = paramPath.node;
+
     if (t.isIdentifier(param)) {
       paramNames[param.name] = param;
-    } else {
-      // Variables declared by destructuring parameter patterns will be
+    } else {// Variables declared by destructuring parameter patterns will be
       // harmlessly re-declared.
     }
   });
@@ -15378,6 +14367,7 @@ exports.hoist = function (funPath) {
       declarations.push(t.variableDeclarator(vars[name], null));
     }
   });
+
   if (declarations.length === 0) {
     return null; // Be sure to handle this case!
   }
@@ -15387,7 +14377,7 @@ exports.hoist = function (funPath) {
 
 /***/ }),
 
-/***/ 81301:
+/***/ 96904:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -15395,108 +14385,126 @@ exports.hoist = function (funPath) {
 
 exports.__esModule = true;
 exports["default"] = _default;
-var _visit = __nccwpck_require__(58291);
+
+var _visit = __nccwpck_require__(15843);
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 function _default(context) {
   var plugin = {
     visitor: (0, _visit.getVisitor)(context)
-  };
-
-  // Some presets manually call child presets, but fail to pass along the
+  }; // Some presets manually call child presets, but fail to pass along the
   // context object. Out of an abundance of caution, we verify that it
   // exists first to avoid causing unnecessary breaking changes.
-  var version = context && context.version;
 
-  // The "name" property is not allowed in older versions of Babel (6.x)
+  var version = context && context.version; // The "name" property is not allowed in older versions of Babel (6.x)
   // and will cause the plugin validator to throw an exception.
+
   if (version && parseInt(version, 10) >= 7) {
     plugin.name = "regenerator-transform";
   }
+
   return plugin;
 }
 
 /***/ }),
 
-/***/ 50015:
+/***/ 77848:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 var _interopRequireDefault = __nccwpck_require__(40546);
+
 var _assert = _interopRequireDefault(__nccwpck_require__(39491));
-var _emit = __nccwpck_require__(28739);
+
+var _emit = __nccwpck_require__(2366);
+
 var _util = __nccwpck_require__(73837);
-var _util2 = __nccwpck_require__(58597);
+
+var _util2 = __nccwpck_require__(24479);
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 function Entry() {
   _assert["default"].ok(this instanceof Entry);
 }
+
 function FunctionEntry(returnLoc) {
   Entry.call(this);
   (0, _util2.getTypes)().assertLiteral(returnLoc);
   this.returnLoc = returnLoc;
 }
+
 (0, _util.inherits)(FunctionEntry, Entry);
 exports.FunctionEntry = FunctionEntry;
+
 function LoopEntry(breakLoc, continueLoc, label) {
   Entry.call(this);
   var t = (0, _util2.getTypes)();
   t.assertLiteral(breakLoc);
   t.assertLiteral(continueLoc);
+
   if (label) {
     t.assertIdentifier(label);
   } else {
     label = null;
   }
+
   this.breakLoc = breakLoc;
   this.continueLoc = continueLoc;
   this.label = label;
 }
+
 (0, _util.inherits)(LoopEntry, Entry);
 exports.LoopEntry = LoopEntry;
+
 function SwitchEntry(breakLoc) {
   Entry.call(this);
   (0, _util2.getTypes)().assertLiteral(breakLoc);
   this.breakLoc = breakLoc;
 }
+
 (0, _util.inherits)(SwitchEntry, Entry);
 exports.SwitchEntry = SwitchEntry;
+
 function TryEntry(firstLoc, catchEntry, finallyEntry) {
   Entry.call(this);
   var t = (0, _util2.getTypes)();
   t.assertLiteral(firstLoc);
+
   if (catchEntry) {
     _assert["default"].ok(catchEntry instanceof CatchEntry);
   } else {
     catchEntry = null;
   }
+
   if (finallyEntry) {
     _assert["default"].ok(finallyEntry instanceof FinallyEntry);
   } else {
     finallyEntry = null;
-  }
+  } // Have to have one or the other (or both).
 
-  // Have to have one or the other (or both).
+
   _assert["default"].ok(catchEntry || finallyEntry);
+
   this.firstLoc = firstLoc;
   this.catchEntry = catchEntry;
   this.finallyEntry = finallyEntry;
 }
+
 (0, _util.inherits)(TryEntry, Entry);
 exports.TryEntry = TryEntry;
+
 function CatchEntry(firstLoc, paramId) {
   Entry.call(this);
   var t = (0, _util2.getTypes)();
@@ -15505,8 +14513,10 @@ function CatchEntry(firstLoc, paramId) {
   this.firstLoc = firstLoc;
   this.paramId = paramId;
 }
+
 (0, _util.inherits)(CatchEntry, Entry);
 exports.CatchEntry = CatchEntry;
+
 function FinallyEntry(firstLoc, afterLoc) {
   Entry.call(this);
   var t = (0, _util2.getTypes)();
@@ -15515,8 +14525,10 @@ function FinallyEntry(firstLoc, afterLoc) {
   this.firstLoc = firstLoc;
   this.afterLoc = afterLoc;
 }
+
 (0, _util.inherits)(FinallyEntry, Entry);
 exports.FinallyEntry = FinallyEntry;
+
 function LabeledEntry(breakLoc, label) {
   Entry.call(this);
   var t = (0, _util2.getTypes)();
@@ -15525,97 +14537,119 @@ function LabeledEntry(breakLoc, label) {
   this.breakLoc = breakLoc;
   this.label = label;
 }
+
 (0, _util.inherits)(LabeledEntry, Entry);
 exports.LabeledEntry = LabeledEntry;
+
 function LeapManager(emitter) {
   _assert["default"].ok(this instanceof LeapManager);
+
   _assert["default"].ok(emitter instanceof _emit.Emitter);
+
   this.emitter = emitter;
   this.entryStack = [new FunctionEntry(emitter.finalLoc)];
 }
+
 var LMp = LeapManager.prototype;
 exports.LeapManager = LeapManager;
+
 LMp.withEntry = function (entry, callback) {
   _assert["default"].ok(entry instanceof Entry);
+
   this.entryStack.push(entry);
+
   try {
     callback.call(this.emitter);
   } finally {
     var popped = this.entryStack.pop();
+
     _assert["default"].strictEqual(popped, entry);
   }
 };
+
 LMp._findLeapLocation = function (property, label) {
   for (var i = this.entryStack.length - 1; i >= 0; --i) {
     var entry = this.entryStack[i];
     var loc = entry[property];
+
     if (loc) {
       if (label) {
         if (entry.label && entry.label.name === label.name) {
           return loc;
         }
-      } else if (entry instanceof LabeledEntry) {
-        // Ignore LabeledEntry entries unless we are actually breaking to
+      } else if (entry instanceof LabeledEntry) {// Ignore LabeledEntry entries unless we are actually breaking to
         // a label.
       } else {
         return loc;
       }
     }
   }
+
   return null;
 };
+
 LMp.getBreakLoc = function (label) {
   return this._findLeapLocation("breakLoc", label);
 };
+
 LMp.getContinueLoc = function (label) {
   return this._findLeapLocation("continueLoc", label);
 };
 
 /***/ }),
 
-/***/ 39937:
+/***/ 15721:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
 
 var _interopRequireDefault = __nccwpck_require__(40546);
+
 var _assert = _interopRequireDefault(__nccwpck_require__(39491));
-var _util = __nccwpck_require__(58597);
+
+var _util = __nccwpck_require__(24479);
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 var mMap = new WeakMap();
+
 function m(node) {
   if (!mMap.has(node)) {
     mMap.set(node, {});
   }
+
   return mMap.get(node);
 }
+
 var hasOwn = Object.prototype.hasOwnProperty;
+
 function makePredicate(propertyName, knownTypes) {
   function onlyChildren(node) {
     var t = (0, _util.getTypes)();
-    t.assertNode(node);
+    t.assertNode(node); // Assume no side effects until we find out otherwise.
 
-    // Assume no side effects until we find out otherwise.
     var result = false;
+
     function check(child) {
-      if (result) {
-        // Do nothing.
+      if (result) {// Do nothing.
       } else if (Array.isArray(child)) {
         child.some(check);
       } else if (t.isNode(child)) {
         _assert["default"].strictEqual(result, false);
+
         result = predicate(child);
       }
+
       return result;
     }
+
     var keys = t.VISITOR_KEYS[node.type];
+
     if (keys) {
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
@@ -15623,29 +14657,31 @@ function makePredicate(propertyName, knownTypes) {
         check(child);
       }
     }
+
     return result;
   }
+
   function predicate(node) {
     (0, _util.getTypes)().assertNode(node);
     var meta = m(node);
-    if (hasOwn.call(meta, propertyName)) return meta[propertyName];
-
-    // Certain types are "opaque," which means they have no side
+    if (hasOwn.call(meta, propertyName)) return meta[propertyName]; // Certain types are "opaque," which means they have no side
     // effects or leaps and we don't care about their subexpressions.
+
     if (hasOwn.call(opaqueTypes, node.type)) return meta[propertyName] = false;
     if (hasOwn.call(knownTypes, node.type)) return meta[propertyName] = true;
     return meta[propertyName] = onlyChildren(node);
   }
+
   predicate.onlyChildren = onlyChildren;
   return predicate;
 }
+
 var opaqueTypes = {
   FunctionExpression: true,
   ArrowFunctionExpression: true
-};
-
-// These types potentially have side effects regardless of what side
+}; // These types potentially have side effects regardless of what side
 // effects their subexpressions have.
+
 var sideEffectTypes = {
   CallExpression: true,
   // Anything could happen!
@@ -15660,29 +14696,29 @@ var sideEffectTypes = {
   UpdateExpression: true,
   // Updates are essentially assignments.
   NewExpression: true // Similar to CallExpression.
-};
 
-// These types are the direct cause of all leaps in control flow.
+}; // These types are the direct cause of all leaps in control flow.
+
 var leapTypes = {
   YieldExpression: true,
   BreakStatement: true,
   ContinueStatement: true,
   ReturnStatement: true,
   ThrowStatement: true
-};
+}; // All leap types are also side effect types.
 
-// All leap types are also side effect types.
 for (var type in leapTypes) {
   if (hasOwn.call(leapTypes, type)) {
     sideEffectTypes[type] = leapTypes[type];
   }
 }
+
 exports.hasSideEffects = makePredicate("hasSideEffects", sideEffectTypes);
 exports.containsLeap = makePredicate("containsLeap", leapTypes);
 
 /***/ }),
 
-/***/ 75889:
+/***/ 31763:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -15690,16 +14726,19 @@ exports.containsLeap = makePredicate("containsLeap", leapTypes);
 
 exports.__esModule = true;
 exports["default"] = replaceShorthandObjectMethod;
-var util = _interopRequireWildcard(__nccwpck_require__(58597));
+
+var util = _interopRequireWildcard(__nccwpck_require__(24479));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 // this function converts a shorthand object generator method into a normal
 // (non-shorthand) object property which is a generator function expression. for
 // example, this:
@@ -15730,94 +14769,96 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // argument that isn't an AST node path), it will throw an error.
 function replaceShorthandObjectMethod(path) {
   var t = util.getTypes();
+
   if (!path.node || !t.isFunction(path.node)) {
     throw new Error("replaceShorthandObjectMethod can only be called on Function AST node paths.");
-  }
-
-  // this function only replaces shorthand object methods (called ObjectMethod
+  } // this function only replaces shorthand object methods (called ObjectMethod
   // in Babel-speak).
+
+
   if (!t.isObjectMethod(path.node)) {
     return path;
-  }
+  } // this function only replaces generators.
 
-  // this function only replaces generators.
+
   if (!path.node.generator) {
     return path;
   }
+
   var parameters = path.node.params.map(function (param) {
     return t.cloneDeep(param);
   });
-  var functionExpression = t.functionExpression(null,
-  // id
-  parameters,
-  // params
-  t.cloneDeep(path.node.body),
-  // body
+  var functionExpression = t.functionExpression(null, // id
+  parameters, // params
+  t.cloneDeep(path.node.body), // body
   path.node.generator, path.node.async);
-  util.replaceWithOrRemove(path, t.objectProperty(t.cloneDeep(path.node.key),
-  // key
-  functionExpression,
-  //value
-  path.node.computed,
-  // computed
+  util.replaceWithOrRemove(path, t.objectProperty(t.cloneDeep(path.node.key), // key
+  functionExpression, //value
+  path.node.computed, // computed
   false // shorthand
-  ));
-
-  // path now refers to the ObjectProperty AST node path, but we want to return a
+  )); // path now refers to the ObjectProperty AST node path, but we want to return a
   // Function AST node path for the function expression we created. we know that
   // the FunctionExpression we just created is the value of the ObjectProperty,
   // so return the "value" path off of this path.
+
   return path.get("value");
 }
 
 /***/ }),
 
-/***/ 58597:
+/***/ 24479:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
 
 
 exports.__esModule = true;
+exports.wrapWithTypes = wrapWithTypes;
 exports.getTypes = getTypes;
+exports.runtimeProperty = runtimeProperty;
 exports.isReference = isReference;
 exports.replaceWithOrRemove = replaceWithOrRemove;
-exports.runtimeProperty = runtimeProperty;
-exports.wrapWithTypes = wrapWithTypes;
+
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 var currentTypes = null;
+
 function wrapWithTypes(types, fn) {
   return function () {
     var oldTypes = currentTypes;
     currentTypes = types;
+
     try {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
+
       return fn.apply(this, args);
     } finally {
       currentTypes = oldTypes;
     }
   };
 }
+
 function getTypes() {
   return currentTypes;
 }
+
 function runtimeProperty(name) {
   var t = getTypes();
   return t.memberExpression(t.identifier("regeneratorRuntime"), t.identifier(name), false);
 }
+
 function isReference(path) {
   return path.isReferenced() || path.parentPath.isAssignmentExpression({
     left: path.node
   });
 }
+
 function replaceWithOrRemove(path, replacement) {
   if (replacement) {
     path.replaceWith(replacement);
@@ -15828,7 +14869,7 @@ function replaceWithOrRemove(path, replacement) {
 
 /***/ }),
 
-/***/ 58291:
+/***/ 15843:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -15840,15 +14881,22 @@ function replaceWithOrRemove(path, replacement) {
  */
 
 
-
 var _interopRequireDefault = __nccwpck_require__(40546);
+
 var _assert = _interopRequireDefault(__nccwpck_require__(39491));
-var _hoist = __nccwpck_require__(2758);
-var _emit = __nccwpck_require__(28739);
-var _replaceShorthandObjectMethod = _interopRequireDefault(__nccwpck_require__(75889));
-var util = _interopRequireWildcard(__nccwpck_require__(58597));
+
+var _hoist = __nccwpck_require__(76971);
+
+var _emit = __nccwpck_require__(2366);
+
+var _replaceShorthandObjectMethod = _interopRequireDefault(__nccwpck_require__(31763));
+
+var util = _interopRequireWildcard(__nccwpck_require__(24479));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 exports.getVisitor = function (_ref) {
   var t = _ref.types;
   return {
@@ -15856,31 +14904,30 @@ exports.getVisitor = function (_ref) {
       var node = path.node;
       if (!shouldRegenerate(node, state)) return;
       var container = t.functionExpression(null, [], t.cloneNode(node.body, false), node.generator, node.async);
-      path.get("body").set("body", [t.returnStatement(t.callExpression(container, []))]);
-
-      // Regardless of whether or not the wrapped function is a an async method
+      path.get("body").set("body", [t.returnStatement(t.callExpression(container, []))]); // Regardless of whether or not the wrapped function is a an async method
       // or generator the outer function should not be
-      node.async = false;
-      node.generator = false;
 
-      // Unwrap the wrapper IIFE's environment so super and this and such still work.
+      node.async = false;
+      node.generator = false; // Unwrap the wrapper IIFE's environment so super and this and such still work.
+
       path.get("body.body.0.argument.callee").unwrapFunctionEnvironment();
     },
     Function: {
       exit: util.wrapWithTypes(t, function (path, state) {
         var node = path.node;
-        if (!shouldRegenerate(node, state)) return;
+        if (!shouldRegenerate(node, state)) return; // if this is an ObjectMethod, we need to convert it to an ObjectProperty
 
-        // if this is an ObjectMethod, we need to convert it to an ObjectProperty
         path = (0, _replaceShorthandObjectMethod["default"])(path);
         node = path.node;
         var contextId = path.scope.generateUidIdentifier("context");
         var argsId = path.scope.generateUidIdentifier("args");
         path.ensureBlock();
         var bodyBlockPath = path.get("body");
+
         if (node.async) {
           bodyBlockPath.traverse(awaitVisitor);
         }
+
         bodyBlockPath.traverse(functionSentVisitor, {
           context: contextId
         });
@@ -15888,6 +14935,7 @@ exports.getVisitor = function (_ref) {
         var innerBody = [];
         bodyBlockPath.get("body").forEach(function (childPath) {
           var node = childPath.node;
+
           if (t.isExpressionStatement(node) && t.isStringLiteral(node.expression)) {
             // Babylon represents directives like "use strict" as elements
             // of a bodyBlockPath.node.directives array, but they could just
@@ -15901,20 +14949,21 @@ exports.getVisitor = function (_ref) {
             innerBody.push(node);
           }
         });
+
         if (outerBody.length > 0) {
           // Only replace the inner body if we actually hoisted any statements
           // to the outer body.
           bodyBlockPath.node.body = innerBody;
         }
-        var outerFnExpr = getOuterFnExpr(path);
-        // Note that getOuterFnExpr has the side-effect of ensuring that the
+
+        var outerFnExpr = getOuterFnExpr(path); // Note that getOuterFnExpr has the side-effect of ensuring that the
         // function has a name (so node.id will always be an Identifier), even
         // if a temporary name has to be synthesized.
-        t.assertIdentifier(node.id);
-        var innerFnId = t.identifier(node.id.name + "$");
 
-        // Turn all declarations into vars, and replace the original
+        t.assertIdentifier(node.id);
+        var innerFnId = t.identifier(node.id.name + "$"); // Turn all declarations into vars, and replace the original
         // declarations with equivalent assignment expressions.
+
         var vars = (0, _hoist.hoist)(path);
         var context = {
           usesThis: false,
@@ -15924,17 +14973,22 @@ exports.getVisitor = function (_ref) {
           }
         };
         path.traverse(argumentsThisVisitor, context);
+
         if (context.usesArguments) {
           vars = vars || t.variableDeclaration("var", []);
           vars.declarations.push(t.variableDeclarator(t.clone(argsId), t.identifier("arguments")));
         }
+
         var emitter = new _emit.Emitter(contextId);
         emitter.explode(path.get("body"));
+
         if (vars && vars.declarations.length > 0) {
           outerBody.push(vars);
         }
+
         var wrapArgs = [emitter.getContextFunction(innerFnId)];
         var tryLocsList = emitter.getTryLocsList();
+
         if (node.generator) {
           wrapArgs.push(outerFnExpr);
         } else if (context.usesThis || tryLocsList || node.async) {
@@ -15943,70 +14997,82 @@ exports.getVisitor = function (_ref) {
           // inherit from its .prototype.
           wrapArgs.push(t.nullLiteral());
         }
+
         if (context.usesThis) {
           wrapArgs.push(t.thisExpression());
         } else if (tryLocsList || node.async) {
           wrapArgs.push(t.nullLiteral());
         }
+
         if (tryLocsList) {
           wrapArgs.push(tryLocsList);
         } else if (node.async) {
           wrapArgs.push(t.nullLiteral());
         }
+
         if (node.async) {
           // Rename any locally declared "Promise" variable,
           // to use the global one.
           var currentScope = path.scope;
+
           do {
             if (currentScope.hasOwnBinding("Promise")) currentScope.rename("Promise");
           } while (currentScope = currentScope.parent);
+
           wrapArgs.push(t.identifier("Promise"));
         }
+
         var wrapCall = t.callExpression(util.runtimeProperty(node.async ? "async" : "wrap"), wrapArgs);
         outerBody.push(t.returnStatement(wrapCall));
-        node.body = t.blockStatement(outerBody);
-        // We injected a few new variable declarations (for every hoisted var),
+        node.body = t.blockStatement(outerBody); // We injected a few new variable declarations (for every hoisted var),
         // so we need to add them to the scope.
+
         path.get("body.body").forEach(function (p) {
           return p.scope.registerDeclaration(p);
         });
         var oldDirectives = bodyBlockPath.node.directives;
+
         if (oldDirectives) {
           // Babylon represents directives like "use strict" as elements of
           // a bodyBlockPath.node.directives array. (#248)
           node.body.directives = oldDirectives;
         }
+
         var wasGeneratorFunction = node.generator;
+
         if (wasGeneratorFunction) {
           node.generator = false;
         }
+
         if (node.async) {
           node.async = false;
         }
+
         if (wasGeneratorFunction && t.isExpression(node)) {
           util.replaceWithOrRemove(path, t.callExpression(util.runtimeProperty("mark"), [node]));
           path.addComment("leading", "#__PURE__");
         }
+
         var insertedLocs = emitter.getInsertedLocs();
         path.traverse({
           NumericLiteral: function NumericLiteral(path) {
             if (!insertedLocs.has(path.node)) {
               return;
             }
+
             path.replaceWith(t.numericLiteral(path.node.value));
           }
-        });
-
-        // Generators are processed in 'exit' handlers so that regenerator only has to run on
+        }); // Generators are processed in 'exit' handlers so that regenerator only has to run on
         // an ES5 AST, but that means traversal will not pick up newly inserted references
         // to things like 'regeneratorRuntime'. To avoid this, we explicitly requeue.
+
         path.requeue();
       })
     }
   };
-};
+}; // Check if a node should be transformed by regenerator
 
-// Check if a node should be transformed by regenerator
+
 function shouldRegenerate(node, state) {
   if (node.generator) {
     if (node.async) {
@@ -16023,36 +15089,42 @@ function shouldRegenerate(node, state) {
     // Not a generator or async function.
     return false;
   }
-}
-
-// Given a NodePath for a Function, return an Expression node that can be
+} // Given a NodePath for a Function, return an Expression node that can be
 // used to refer reliably to the function object from inside the function.
 // This expression is essentially a replacement for arguments.callee, with
 // the key advantage that it works in strict mode.
+
+
 function getOuterFnExpr(funPath) {
   var t = util.getTypes();
   var node = funPath.node;
   t.assertFunction(node);
+
   if (!node.id) {
     // Default-exported function declarations, and function expressions may not
     // have a name to reference, so we explicitly add one.
     node.id = funPath.scope.parent.generateUidIdentifier("callee");
   }
-  if (node.generator &&
-  // Non-generator functions don't need to be marked.
+
+  if (node.generator && // Non-generator functions don't need to be marked.
   t.isFunctionDeclaration(node)) {
     // Return the identifier returned by runtime.mark(<node.id>).
     return getMarkedFunctionId(funPath);
   }
+
   return t.clone(node.id);
 }
+
 var markInfo = new WeakMap();
+
 function getMarkInfo(node) {
   if (!markInfo.has(node)) {
     markInfo.set(node, {});
   }
+
   return markInfo.get(node);
 }
+
 function getMarkedFunctionId(funPath) {
   var t = util.getTypes();
   var node = funPath.node;
@@ -16060,28 +15132,37 @@ function getMarkedFunctionId(funPath) {
   var blockPath = funPath.findParent(function (path) {
     return path.isProgram() || path.isBlockStatement();
   });
+
   if (!blockPath) {
     return node.id;
   }
+
   var block = blockPath.node;
+
   _assert["default"].ok(Array.isArray(block.body));
+
   var info = getMarkInfo(block);
+
   if (!info.decl) {
     info.decl = t.variableDeclaration("var", []);
     blockPath.unshiftContainer("body", info.decl);
     info.declPath = blockPath.get("body.0");
   }
-  _assert["default"].strictEqual(info.declPath.node, info.decl);
 
-  // Get a new unique identifier for our marked variable.
+  _assert["default"].strictEqual(info.declPath.node, info.decl); // Get a new unique identifier for our marked variable.
+
+
   var markedId = blockPath.scope.generateUidIdentifier("marked");
   var markCallExp = t.callExpression(util.runtimeProperty("mark"), [t.clone(node.id)]);
   var index = info.decl.declarations.push(t.variableDeclarator(markedId, markCallExp)) - 1;
   var markCallExpPath = info.declPath.get("declarations." + index + ".init");
+
   _assert["default"].strictEqual(markCallExpPath.node, markCallExp);
+
   markCallExpPath.addComment("leading", "#__PURE__");
   return t.clone(markedId);
 }
+
 var argumentsThisVisitor = {
   "FunctionExpression|FunctionDeclaration|Method": function FunctionExpressionFunctionDeclarationMethod(path) {
     path.skip();
@@ -16099,6 +15180,7 @@ var argumentsThisVisitor = {
 var functionSentVisitor = {
   MetaProperty: function MetaProperty(path) {
     var node = path.node;
+
     if (node.meta.name === "function" && node.property.name === "sent") {
       var t = util.getTypes();
       util.replaceWithOrRemove(path, t.memberExpression(t.clone(this.context), t.identifier("_sent")));
@@ -16109,16 +15191,13 @@ var awaitVisitor = {
   Function: function Function(path) {
     path.skip(); // Don't descend into nested function scopes.
   },
-
   AwaitExpression: function AwaitExpression(path) {
-    var t = util.getTypes();
+    var t = util.getTypes(); // Convert await expressions to yield expressions.
 
-    // Convert await expressions to yield expressions.
-    var argument = path.node.argument;
-
-    // Transforming `await x` to `yield regeneratorRuntime.awrap(x)`
+    var argument = path.node.argument; // Transforming `await x` to `yield regeneratorRuntime.awrap(x)`
     // causes the argument to be wrapped in such a way that the runtime
     // can distinguish between awaited and merely yielded values.
+
     util.replaceWithOrRemove(path, t.yieldExpression(t.callExpression(util.runtimeProperty("awrap"), [argument]), false));
   }
 };
@@ -20458,6 +19537,75 @@ module.exports = function resolveSync(x, options) {
         }
     }
 };
+
+
+/***/ }),
+
+/***/ 23767:
+/***/ (function(module, exports, __nccwpck_require__) {
+
+/* eslint-disable node/no-deprecated-api */
+var buffer = __nccwpck_require__(14300)
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
 
 
 /***/ }),
@@ -27717,7 +26865,7 @@ module.exports = new Set([
 
 
 const canonicalProperties = __nccwpck_require__(25435);
-const propertyAliases = __nccwpck_require__(61788);
+const propertyAliases = __nccwpck_require__(17070);
 
 const matchProperty = function(property) {
 	if (canonicalProperties.has(property)) {
@@ -28504,7 +27652,7 @@ module.exports = matchPropertyValue;
 
 /***/ }),
 
-/***/ 61788:
+/***/ 17070:
 /***/ (function(module) {
 
 // Generated using `npm run build`. Do not edit!
@@ -29066,21 +28214,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ 88929:
-/***/ (function(module) {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = function() { return []; };
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 88929;
-module.exports = webpackEmptyContext;
-
-/***/ }),
-
 /***/ 34755:
 /***/ (function(module) {
 
@@ -29094,6 +28227,14 @@ module.exports = require("@umijs/utils/compiled/debug");
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 14300:
+/***/ (function(module) {
+
+"use strict";
+module.exports = require("buffer");
 
 /***/ }),
 
@@ -29331,42 +28472,42 @@ function _default(rawLines, lineNumber, colNumber, opts = {}) {
 
 /***/ }),
 
-/***/ 9395:
+/***/ 67756:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports = __nccwpck_require__(40582);
+module.exports = __nccwpck_require__(81896);
 
 
 /***/ }),
 
-/***/ 10234:
+/***/ 88349:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports = __nccwpck_require__(92216);
+module.exports = __nccwpck_require__(29633);
 
 
 /***/ }),
 
-/***/ 72406:
+/***/ 20859:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports = __nccwpck_require__(29676);
+module.exports = __nccwpck_require__(1030);
 
 
 /***/ }),
 
-/***/ 77107:
+/***/ 64330:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports = __nccwpck_require__(94306);
+module.exports = __nccwpck_require__(1098);
 
 
 /***/ }),
 
-/***/ 12789:
+/***/ 77203:
 /***/ (function(module, __unused_webpack_exports, __nccwpck_require__) {
 
-module.exports = __nccwpck_require__(86847);
+module.exports = __nccwpck_require__(92787);
 
 
 /***/ }),
@@ -34589,7 +33730,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = generateCode;
 function _convertSourceMap() {
-  const data = __nccwpck_require__(2643);
+  const data = __nccwpck_require__(62213);
   _convertSourceMap = function () {
     return data;
   };
@@ -34856,7 +33997,7 @@ function _t() {
   return data;
 }
 function _convertSourceMap() {
-  const data = __nccwpck_require__(2643);
+  const data = __nccwpck_require__(62213);
   _convertSourceMap = function () {
     return data;
   };
@@ -43062,7 +42203,7 @@ exports["default"] = filterItems;
 exports.isRequired = isRequired;
 exports.targetsSupported = targetsSupported;
 var _semver = __nccwpck_require__(8999);
-var _plugins = __nccwpck_require__(12789);
+var _plugins = __nccwpck_require__(77203);
 var _utils = __nccwpck_require__(12864);
 function targetsSupported(target, support) {
   const targetEnvironments = Object.keys(target);
@@ -43180,7 +42321,7 @@ Object.defineProperty(exports, "unreleasedLabels", ({
 }));
 var _browserslist = __nccwpck_require__(90443);
 var _helperValidatorOption = __nccwpck_require__(71200);
-var _nativeModules = __nccwpck_require__(10234);
+var _nativeModules = __nccwpck_require__(88349);
 var _lruCache = __nccwpck_require__(34543);
 var _utils = __nccwpck_require__(12864);
 var _targets = __nccwpck_require__(66974);
@@ -50294,7 +49435,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = _default;
 
-var _helperWrapFunction = __nccwpck_require__(53266);
+var _helperWrapFunction = __nccwpck_require__(55854);
 
 var _helperAnnotateAsPure = __nccwpck_require__(48190);
 
@@ -51831,7 +50972,7 @@ exports.OptionValidator = OptionValidator;
 
 /***/ }),
 
-/***/ 53266:
+/***/ 55854:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -51841,9 +50982,13 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = wrapFunction;
+
 var _helperFunctionName = __nccwpck_require__(27988);
+
 var _template = __nccwpck_require__(80940);
+
 var _t = __nccwpck_require__(22139);
+
 const {
   blockStatement,
   callExpression,
@@ -51851,9 +50996,9 @@ const {
   isAssignmentPattern,
   isFunctionDeclaration,
   isRestElement,
-  returnStatement,
-  isCallExpression
+  returnStatement
 } = _t;
+
 const buildAnonymousExpressionWrapper = _template.default.expression(`
   (function () {
     var REF = FUNCTION;
@@ -51862,6 +51007,7 @@ const buildAnonymousExpressionWrapper = _template.default.expression(`
     };
   })()
 `);
+
 const buildNamedExpressionWrapper = _template.default.expression(`
   (function () {
     var REF = FUNCTION;
@@ -51871,6 +51017,7 @@ const buildNamedExpressionWrapper = _template.default.expression(`
     return NAME;
   })()
 `);
+
 const buildDeclarationWrapper = _template.default.statements(`
   function NAME(PARAMS) { return REF.apply(this, arguments); }
   function REF() {
@@ -51878,25 +51025,25 @@ const buildDeclarationWrapper = _template.default.statements(`
     return REF.apply(this, arguments);
   }
 `);
+
 function classOrObjectMethod(path, callId) {
   const node = path.node;
   const body = node.body;
   const container = functionExpression(null, [], blockStatement(body.body), true);
   body.body = [returnStatement(callExpression(callExpression(callId, [container]), []))];
-
   node.async = false;
   node.generator = false;
-
   path.get("body.body.0.argument.callee.arguments.0").unwrapFunctionEnvironment();
 }
-function plainFunction(inPath, callId, noNewArrows, ignoreFunctionLength) {
-  let path = inPath;
-  let node;
+
+function plainFunction(path, callId, noNewArrows, ignoreFunctionLength) {
   let functionId = null;
-  const nodeParams = inPath.node.params;
+  let node;
+
   if (path.isArrowFunctionExpression()) {
     {
       var _path$arrowFunctionTo;
+
       path = (_path$arrowFunctionTo = path.arrowFunctionToExpression({
         noNewArrows
       })) != null ? _path$arrowFunctionTo : path;
@@ -51905,33 +51052,36 @@ function plainFunction(inPath, callId, noNewArrows, ignoreFunctionLength) {
   } else {
     node = path.node;
   }
+
   const isDeclaration = isFunctionDeclaration(node);
-  let built = node;
-  if (!isCallExpression(node)) {
-    functionId = node.id;
-    node.id = null;
-    node.type = "FunctionExpression";
-    built = callExpression(callId, [node]);
-  }
+  functionId = node.id;
+  node.id = null;
+  node.type = "FunctionExpression";
+  const built = callExpression(callId, [node]);
   const params = [];
-  for (const param of nodeParams) {
+
+  for (const param of node.params) {
     if (isAssignmentPattern(param) || isRestElement(param)) {
       break;
     }
+
     params.push(path.scope.generateUidIdentifier("x"));
   }
+
   const wrapperArgs = {
     NAME: functionId || null,
     REF: path.scope.generateUidIdentifier(functionId ? functionId.name : "ref"),
     FUNCTION: built,
     PARAMS: params
   };
+
   if (isDeclaration) {
     const container = buildDeclarationWrapper(wrapperArgs);
     path.replaceWith(container[0]);
     path.insertAfter(container[1]);
   } else {
     let container;
+
     if (functionId) {
       container = buildNamedExpressionWrapper(wrapperArgs);
     } else {
@@ -51944,6 +51094,7 @@ function plainFunction(inPath, callId, noNewArrows, ignoreFunctionLength) {
       });
       functionId = returnFn.id;
     }
+
     if (functionId || !ignoreFunctionLength && params.length) {
       path.replaceWith(container);
     } else {
@@ -51951,17 +51102,14 @@ function plainFunction(inPath, callId, noNewArrows, ignoreFunctionLength) {
     }
   }
 }
-function wrapFunction(path, callId,
-noNewArrows = true, ignoreFunctionLength = false) {
+
+function wrapFunction(path, callId, noNewArrows = true, ignoreFunctionLength = false) {
   if (path.isMethod()) {
     classOrObjectMethod(path, callId);
   } else {
     plainFunction(path, callId, noNewArrows, ignoreFunctionLength);
   }
 }
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
@@ -69095,7 +68243,7 @@ exports["default"] = index;
 
 /***/ }),
 
-/***/ 39143:
+/***/ 88947:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -69104,7 +68252,7 @@ exports["default"] = index;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 var helperPluginUtils = __nccwpck_require__(90151);
-var pluginProposalOptionalChaining = __nccwpck_require__(69357);
+var pluginProposalOptionalChaining = __nccwpck_require__(71966);
 var helperSkipTransparentExpressionWrappers = __nccwpck_require__(62883);
 var core = __nccwpck_require__(16246);
 
@@ -69116,6 +68264,7 @@ function matchAffectedArguments(argumentNodes) {
 function shouldTransform(path) {
   let optionalPath = path;
   const chains = [];
+
   for (;;) {
     if (optionalPath.isOptionalMemberExpression()) {
       chains.push(optionalPath.node);
@@ -69127,13 +68276,17 @@ function shouldTransform(path) {
       break;
     }
   }
+
   for (let i = 0; i < chains.length; i++) {
     const node = chains[i];
+
     if (core.types.isOptionalCallExpression(node) && matchAffectedArguments(node.arguments)) {
       if (node.optional) {
         return true;
       }
+
       const callee = chains[i + 1];
+
       if (core.types.isOptionalMemberExpression(callee, {
         optional: true
       })) {
@@ -69141,11 +68294,13 @@ function shouldTransform(path) {
       }
     }
   }
+
   return false;
 }
 
 var index = helperPluginUtils.declare(api => {
   var _api$assumption, _api$assumption2;
+
   api.assertVersion(7);
   const noDocumentAll = (_api$assumption = api.assumption("noDocumentAll")) != null ? _api$assumption : false;
   const pureGetters = (_api$assumption2 = api.assumption("pureGetters")) != null ? _api$assumption2 : false;
@@ -69160,6 +68315,7 @@ var index = helperPluginUtils.declare(api => {
           });
         }
       }
+
     }
   };
 });
@@ -69388,7 +68544,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 6577:
+/***/ 32290:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -69398,19 +68554,26 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
+
 var _helperPluginUtils = __nccwpck_require__(90151);
+
 var _pluginSyntaxClassStaticBlock = __nccwpck_require__(9381);
+
 var _helperCreateClassFeaturesPlugin = __nccwpck_require__(36337);
+
 function generateUid(scope, denyList) {
   const name = "";
   let uid;
   let i = 1;
+
   do {
     uid = scope._generateUid(name, i);
     i++;
   } while (denyList.has(uid));
+
   return uid;
 }
+
 var _default = (0, _helperPluginUtils.declare)(({
   types: t,
   template,
@@ -69420,9 +68583,11 @@ var _default = (0, _helperPluginUtils.declare)(({
   return {
     name: "proposal-class-static-block",
     inherits: _pluginSyntaxClassStaticBlock.default,
+
     pre() {
       (0, _helperCreateClassFeaturesPlugin.enableFeature)(this.file, _helperCreateClassFeaturesPlugin.FEATURES.staticBlocks, false);
     },
+
     visitor: {
       ClassBody(classBody) {
         const {
@@ -69430,11 +68595,13 @@ var _default = (0, _helperPluginUtils.declare)(({
         } = classBody;
         const privateNames = new Set();
         const body = classBody.get("body");
+
         for (const path of body) {
           if (path.isPrivate()) {
             privateNames.add(path.get("key.id").node.name);
           }
         }
+
         for (const path of body) {
           if (!path.isStaticBlock()) continue;
           const staticBlockPrivateId = generateUid(scope, privateNames);
@@ -69442,21 +68609,22 @@ var _default = (0, _helperPluginUtils.declare)(({
           const staticBlockRef = t.privateName(t.identifier(staticBlockPrivateId));
           let replacement;
           const blockBody = path.node.body;
+
           if (blockBody.length === 1 && t.isExpressionStatement(blockBody[0])) {
             replacement = blockBody[0].expression;
           } else {
             replacement = template.expression.ast`(() => { ${blockBody} })()`;
           }
+
           path.replaceWith(t.classPrivateProperty(staticBlockRef, replacement, [], true));
         }
       }
+
     }
   };
 });
+
 exports["default"] = _default;
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
@@ -70620,7 +69788,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 39509:
+/***/ 2913:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -70630,9 +69798,13 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
+
 var _helperPluginUtils = __nccwpck_require__(90151);
+
 var _pluginSyntaxLogicalAssignmentOperators = __nccwpck_require__(59873);
+
 var _core = __nccwpck_require__(16246);
+
 var _default = (0, _helperPluginUtils.declare)(api => {
   api.assertVersion(7);
   return {
@@ -70650,10 +69822,13 @@ var _default = (0, _helperPluginUtils.declare)(api => {
           right
         } = node;
         const operatorTrunc = operator.slice(0, -1);
+
         if (!_core.types.LOGICAL_OPERATORS.includes(operatorTrunc)) {
           return;
         }
+
         const lhs = _core.types.cloneNode(left);
+
         if (_core.types.isMemberExpression(left)) {
           const {
             object,
@@ -70661,30 +69836,30 @@ var _default = (0, _helperPluginUtils.declare)(api => {
             computed
           } = left;
           const memo = scope.maybeGenerateMemoised(object);
+
           if (memo) {
             left.object = memo;
-            lhs.object = _core.types.assignmentExpression("=", _core.types.cloneNode(memo),
-            object);
+            lhs.object = _core.types.assignmentExpression("=", _core.types.cloneNode(memo), object);
           }
+
           if (computed) {
             const memo = scope.maybeGenerateMemoised(property);
+
             if (memo) {
               left.property = memo;
-              lhs.property = _core.types.assignmentExpression("=", _core.types.cloneNode(memo),
-              property);
+              lhs.property = _core.types.assignmentExpression("=", _core.types.cloneNode(memo), property);
             }
           }
         }
-        path.replaceWith(_core.types.logicalExpression(
-        operatorTrunc, lhs, _core.types.assignmentExpression("=", left, right)));
+
+        path.replaceWith(_core.types.logicalExpression(operatorTrunc, lhs, _core.types.assignmentExpression("=", left, right)));
       }
+
     }
   };
 });
+
 exports["default"] = _default;
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
@@ -70812,7 +69987,7 @@ var syntaxObjectRestSpread = __nccwpck_require__(4224);
 var core = __nccwpck_require__(16246);
 var pluginTransformParameters = __nccwpck_require__(6250);
 var helperCompilationTargets = __nccwpck_require__(16006);
-var compatData = __nccwpck_require__(9395);
+var compatData = __nccwpck_require__(67756);
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -71308,7 +70483,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 69357:
+/***/ 71966:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -71321,31 +70496,40 @@ var syntaxOptionalChaining = __nccwpck_require__(44552);
 var core = __nccwpck_require__(16246);
 var helperSkipTransparentExpressionWrappers = __nccwpck_require__(62883);
 
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var syntaxOptionalChaining__default = /*#__PURE__*/_interopDefaultLegacy(syntaxOptionalChaining);
+
 function willPathCastToBoolean(path) {
   const maybeWrapped = findOutermostTransparentParent(path);
   const {
     node,
     parentPath
   } = maybeWrapped;
+
   if (parentPath.isLogicalExpression()) {
     const {
       operator,
       right
     } = parentPath.node;
+
     if (operator === "&&" || operator === "||" || operator === "??" && node === right) {
       return willPathCastToBoolean(parentPath);
     }
   }
+
   if (parentPath.isSequenceExpression()) {
     const {
       expressions
     } = parentPath.node;
+
     if (expressions[expressions.length - 1] === node) {
       return willPathCastToBoolean(parentPath);
     } else {
       return true;
     }
   }
+
   return parentPath.isConditional({
     test: node
   }) || parentPath.isUnaryExpression({
@@ -71354,7 +70538,6 @@ function willPathCastToBoolean(path) {
     test: node
   });
 }
-
 function findOutermostTransparentParent(path) {
   let maybeWrapped = path;
   path.findParent(p => {
@@ -71367,6 +70550,7 @@ function findOutermostTransparentParent(path) {
 const {
   ast
 } = core.template.expression;
+
 function isSimpleMemberExpression(expression) {
   expression = helperSkipTransparentExpressionWrappers.skipTransparentExprWrapperNodes(expression);
   return core.types.isIdentifier(expression) || core.types.isSuper(expression) || core.types.isMemberExpression(expression) && !expression.computed && isSimpleMemberExpression(expression.object);
@@ -71377,18 +70561,21 @@ function needsMemoize(path) {
   const {
     scope
   } = path;
+
   while (optionalPath.isOptionalMemberExpression() || optionalPath.isOptionalCallExpression()) {
     const {
       node
     } = optionalPath;
-    const childPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(
-    optionalPath.isOptionalMemberExpression() ? optionalPath.get("object") : optionalPath.get("callee"));
+    const childPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(optionalPath.isOptionalMemberExpression() ? optionalPath.get("object") : optionalPath.get("callee"));
+
     if (node.optional) {
       return !scope.isStatic(childPath.node);
     }
+
     optionalPath = childPath;
   }
 }
+
 function transform(path, {
   pureGetters,
   noDocumentAll
@@ -71404,21 +70591,24 @@ function transform(path, {
   let isDeleteOperation = false;
   const parentIsCall = parentPath.isCallExpression({
     callee: maybeWrapped.node
-  }) &&
-  path.isOptionalMemberExpression();
+  }) && path.isOptionalMemberExpression();
   const optionals = [];
   let optionalPath = path;
+
   if (scope.path.isPattern() && needsMemoize(optionalPath)) {
     path.replaceWith(core.template.ast`(() => ${path.node})()`);
     return;
   }
+
   while (optionalPath.isOptionalMemberExpression() || optionalPath.isOptionalCallExpression()) {
     const {
       node
     } = optionalPath;
+
     if (node.optional) {
       optionals.push(node);
     }
+
     if (optionalPath.isOptionalMemberExpression()) {
       optionalPath.node.type = "MemberExpression";
       optionalPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(optionalPath.get("object"));
@@ -71429,20 +70619,22 @@ function transform(path, {
   }
 
   let replacementPath = path;
+
   if (parentPath.isUnaryExpression({
     operator: "delete"
   })) {
     replacementPath = parentPath;
     isDeleteOperation = true;
   }
+
   for (let i = optionals.length - 1; i >= 0; i--) {
     const node = optionals[i];
     const isCall = core.types.isCallExpression(node);
-    const chainWithTypes = isCall ?
-    node.callee : node.object;
+    const chainWithTypes = isCall ? node.callee : node.object;
     const chain = helperSkipTransparentExpressionWrappers.skipTransparentExprWrapperNodes(chainWithTypes);
     let ref;
     let check;
+
     if (isCall && core.types.isIdentifier(chain, {
       name: "eval"
     })) {
@@ -71452,9 +70644,9 @@ function transform(path, {
       check = ref = node.callee;
     } else {
       ref = scope.maybeGenerateMemoised(chain);
+
       if (ref) {
-        check = core.types.assignmentExpression("=", core.types.cloneNode(ref),
-        chainWithTypes);
+        check = core.types.assignmentExpression("=", core.types.cloneNode(ref), chainWithTypes);
         isCall ? node.callee = ref : node.object = ref;
       } else {
         check = ref = chainWithTypes;
@@ -71469,10 +70661,12 @@ function transform(path, {
           object
         } = chain;
         let context;
+
         if (core.types.isSuper(object)) {
           context = core.types.thisExpression();
         } else {
           const memoized = scope.maybeGenerateMemoised(object);
+
           if (memoized) {
             context = memoized;
             chain.object = core.types.assignmentExpression("=", memoized, object);
@@ -71480,44 +70674,49 @@ function transform(path, {
             context = object;
           }
         }
+
         node.arguments.unshift(core.types.cloneNode(context));
         node.callee = core.types.memberExpression(node.callee, core.types.identifier("call"));
       }
     }
+
     let replacement = replacementPath.node;
+
     if (i === 0 && parentIsCall) {
       var _baseRef;
-      const object = helperSkipTransparentExpressionWrappers.skipTransparentExprWrapperNodes(replacement.object
-      );
 
+      const object = helperSkipTransparentExpressionWrappers.skipTransparentExprWrapperNodes(replacement.object);
       let baseRef;
+
       if (!pureGetters || !isSimpleMemberExpression(object)) {
         baseRef = scope.maybeGenerateMemoised(object);
+
         if (baseRef) {
           replacement.object = core.types.assignmentExpression("=", baseRef, object);
         }
       }
+
       replacement = core.types.callExpression(core.types.memberExpression(replacement, core.types.identifier("bind")), [core.types.cloneNode((_baseRef = baseRef) != null ? _baseRef : object)]);
     }
+
     if (willReplacementCastToBoolean) {
       const nonNullishCheck = noDocumentAll ? ast`${core.types.cloneNode(check)} != null` : ast`
             ${core.types.cloneNode(check)} !== null && ${core.types.cloneNode(ref)} !== void 0`;
       replacementPath.replaceWith(core.types.logicalExpression("&&", nonNullishCheck, replacement));
-      replacementPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(
-      replacementPath.get("right"));
+      replacementPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(replacementPath.get("right"));
     } else {
       const nullishCheck = noDocumentAll ? ast`${core.types.cloneNode(check)} == null` : ast`
             ${core.types.cloneNode(check)} === null || ${core.types.cloneNode(ref)} === void 0`;
       const returnValue = isDeleteOperation ? ast`true` : ast`void 0`;
       replacementPath.replaceWith(core.types.conditionalExpression(nullishCheck, returnValue, replacement));
-      replacementPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(
-      replacementPath.get("alternate"));
+      replacementPath = helperSkipTransparentExpressionWrappers.skipTransparentExprWrappers(replacementPath.get("alternate"));
     }
   }
 }
 
 var index = helperPluginUtils.declare((api, options) => {
   var _api$assumption, _api$assumption2;
+
   api.assertVersion(7);
   const {
     loose = false
@@ -71526,7 +70725,7 @@ var index = helperPluginUtils.declare((api, options) => {
   const pureGetters = (_api$assumption2 = api.assumption("pureGetters")) != null ? _api$assumption2 : loose;
   return {
     name: "proposal-optional-chaining",
-    inherits: syntaxOptionalChaining.default,
+    inherits: syntaxOptionalChaining__default["default"].default,
     visitor: {
       "OptionalCallExpression|OptionalMemberExpression"(path) {
         transform(path, {
@@ -71534,6 +70733,7 @@ var index = helperPluginUtils.declare((api, options) => {
           pureGetters
         });
       }
+
     }
   };
 });
@@ -72537,7 +71737,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 
-var _helperPluginUtils = __nccwpck_require__(49055);
+var _helperPluginUtils = __nccwpck_require__(90151);
 
 var _default = (0, _helperPluginUtils.declare)(api => {
   api.assertVersion(7);
@@ -72736,7 +71936,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 9145:
+/***/ 1063:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -72746,9 +71946,12 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
+
 var _helperPluginUtils = __nccwpck_require__(90151);
+
 var _default = (0, _helperPluginUtils.declare)((api, options) => {
   var _api$assumption;
+
   api.assertVersion(7);
   const noNewArrows = (_api$assumption = api.assumption("noNewArrows")) != null ? _api$assumption : !options.spec;
   return {
@@ -72762,17 +71965,16 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
           specCompliant: !noNewArrows
         });
       }
+
     }
   };
 });
+
 exports["default"] = _default;
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
-/***/ 65786:
+/***/ 74939:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -72782,12 +71984,18 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
+
 var _helperPluginUtils = __nccwpck_require__(90151);
+
 var _helperRemapAsyncToGenerator = __nccwpck_require__(98473);
+
 var _helperModuleImports = __nccwpck_require__(48415);
+
 var _core = __nccwpck_require__(16246);
+
 var _default = (0, _helperPluginUtils.declare)((api, options) => {
   var _api$assumption, _api$assumption2;
+
   api.assertVersion(7);
   const {
     method,
@@ -72795,6 +72003,7 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
   } = options;
   const noNewArrows = (_api$assumption = api.assumption("noNewArrows")) != null ? _api$assumption : true;
   const ignoreFunctionLength = (_api$assumption2 = api.assumption("ignoreFunctionLength")) != null ? _api$assumption2 : false;
+
   if (method && module) {
     return {
       name: "transform-async-to-generator",
@@ -72802,18 +72011,22 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
         Function(path, state) {
           if (!path.node.async || path.node.generator) return;
           let wrapAsync = state.methodWrapper;
+
           if (wrapAsync) {
             wrapAsync = _core.types.cloneNode(wrapAsync);
           } else {
             wrapAsync = state.methodWrapper = (0, _helperModuleImports.addNamed)(path, method, module);
           }
+
           (0, _helperRemapAsyncToGenerator.default)(path, {
             wrapAsync
           }, noNewArrows, ignoreFunctionLength);
         }
+
       }
     };
   }
+
   return {
     name: "transform-async-to-generator",
     visitor: {
@@ -72823,13 +72036,12 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
           wrapAsync: state.addHelper("asyncToGenerator")
         }, noNewArrows, ignoreFunctionLength);
       }
+
     }
   };
 });
+
 exports["default"] = _default;
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
@@ -74318,7 +73530,7 @@ function transformClass(path, file, builtinClasses, isLoose, assumptions, suppor
 
 /***/ }),
 
-/***/ 77563:
+/***/ 97080:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -74328,40 +73540,22 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-var _core = __nccwpck_require__(16246);
+
 var _helperPluginUtils = __nccwpck_require__(90151);
-var _template = __nccwpck_require__(80940);
-const DefineAccessorHelper = _template.default.expression.ast`
-function (type, obj, key, fn) {
-  var desc = { configurable: true, enumerable: true };
-  desc[type] = fn;
-  return Object.defineProperty(obj, key, desc);
-}`;
-DefineAccessorHelper._compact = true;
+
+var _core = __nccwpck_require__(16246);
+
 var _default = (0, _helperPluginUtils.declare)((api, options) => {
   var _api$assumption;
+
   api.assertVersion(7);
   const setComputedProperties = (_api$assumption = api.assumption("setComputedProperties")) != null ? _api$assumption : options.loose;
   const pushComputedProps = setComputedProperties ? pushComputedPropsLoose : pushComputedPropsSpec;
-  function buildDefineAccessor(state, type, obj, key, fn) {
-    let helper;
-    if (state.availableHelper("defineAccessor")) {
-      helper = state.addHelper("defineAccessor");
-    } else {
-      const file = state.file;
-      helper = file.get("fallbackDefineAccessorHelper");
-      if (!helper) {
-        const id = file.scope.generateUidIdentifier("defineAccessor");
-        file.scope.push({
-          id,
-          init: DefineAccessorHelper
-        });
-        file.set("fallbackDefineAccessorHelper", helper = id);
-      }
-      helper = _core.types.cloneNode(helper);
-    }
-    return _core.types.callExpression(helper, [_core.types.stringLiteral(type), obj, key, fn]);
-  }
+
+  const buildMutatorMapAssign = _core.template.statements(`
+    MUTATOR_MAP_REF[KEY] = MUTATOR_MAP_REF[KEY] || {};
+    MUTATOR_MAP_REF[KEY].KIND = VALUE;
+  `);
 
   function getValue(prop) {
     if (_core.types.isObjectProperty(prop)) {
@@ -74370,35 +73564,42 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
       return _core.types.functionExpression(null, prop.params, prop.body, prop.generator, prop.async);
     }
   }
+
   function pushAssign(objId, prop, body) {
     body.push(_core.types.expressionStatement(_core.types.assignmentExpression("=", _core.types.memberExpression(_core.types.cloneNode(objId), prop.key, prop.computed || _core.types.isLiteral(prop.key)), getValue(prop))));
   }
-  function pushAccessorDefine({
+
+  function pushMutatorDefine({
     body,
-    computedProps,
-    initPropExpression,
-    objId,
-    state
+    getMutatorId,
+    scope
   }, prop) {
-    const kind = prop.kind;
-    const key = !prop.computed && _core.types.isIdentifier(prop.key) ? _core.types.stringLiteral(prop.key.name) : prop.key;
-    const value = getValue(prop);
-    if (computedProps.length === 1) {
-      return buildDefineAccessor(state, kind, initPropExpression, key, value);
-    } else {
-      body.push(_core.types.expressionStatement(buildDefineAccessor(state, kind, _core.types.cloneNode(objId), key, value)));
+    let key = !prop.computed && _core.types.isIdentifier(prop.key) ? _core.types.stringLiteral(prop.key.name) : prop.key;
+    const maybeMemoise = scope.maybeGenerateMemoised(key);
+
+    if (maybeMemoise) {
+      body.push(_core.types.expressionStatement(_core.types.assignmentExpression("=", maybeMemoise, key)));
+      key = maybeMemoise;
     }
+
+    body.push(...buildMutatorMapAssign({
+      MUTATOR_MAP_REF: getMutatorId(),
+      KEY: _core.types.cloneNode(key),
+      VALUE: getValue(prop),
+      KIND: _core.types.identifier(prop.kind)
+    }));
   }
+
   function pushComputedPropsLoose(info) {
     for (const prop of info.computedProps) {
       if (_core.types.isObjectMethod(prop) && (prop.kind === "get" || prop.kind === "set")) {
-        const single = pushAccessorDefine(info, prop);
-        if (single) return single;
+        pushMutatorDefine(info, prop);
       } else {
         pushAssign(_core.types.cloneNode(info.objId), prop, info.body);
       }
     }
   }
+
   function pushComputedPropsSpec(info) {
     const {
       objId,
@@ -74406,13 +73607,15 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
       computedProps,
       state
     } = info;
+
     for (const prop of computedProps) {
       const key = _core.types.toComputedKey(prop);
+
       if (_core.types.isObjectMethod(prop) && (prop.kind === "get" || prop.kind === "set")) {
-        const single = pushAccessorDefine(info, prop);
-        if (single) return single;
+        pushMutatorDefine(info, prop);
       } else {
         const value = getValue(prop);
+
         if (computedProps.length === 1) {
           return _core.types.callExpression(state.addHelper("defineProperty"), [info.initPropExpression, key, value]);
         } else {
@@ -74421,6 +73624,7 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
       }
     }
   }
+
   return {
     name: "transform-computed-properties",
     visitor: {
@@ -74432,40 +73636,64 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
             scope
           } = path;
           let hasComputed = false;
+
           for (const prop of node.properties) {
             hasComputed = prop.computed === true;
             if (hasComputed) break;
           }
-          if (!hasComputed) return;
 
+          if (!hasComputed) return;
           const initProps = [];
           const computedProps = [];
           let foundComputed = false;
+
           for (const prop of node.properties) {
             if (_core.types.isSpreadElement(prop)) {
               continue;
             }
+
             if (prop.computed) {
               foundComputed = true;
             }
+
             if (foundComputed) {
               computedProps.push(prop);
             } else {
               initProps.push(prop);
             }
           }
+
           const objId = scope.generateUidIdentifierBasedOnNode(parent);
+
           const initPropExpression = _core.types.objectExpression(initProps);
+
           const body = [];
           body.push(_core.types.variableDeclaration("var", [_core.types.variableDeclarator(objId, initPropExpression)]));
+          let mutatorRef;
+
+          const getMutatorId = function () {
+            if (!mutatorRef) {
+              mutatorRef = scope.generateUidIdentifier("mutatorMap");
+              body.push(_core.types.variableDeclaration("var", [_core.types.variableDeclarator(mutatorRef, _core.types.objectExpression([]))]));
+            }
+
+            return _core.types.cloneNode(mutatorRef);
+          };
+
           const single = pushComputedProps({
             scope,
             objId,
             body,
             computedProps,
             initPropExpression,
+            getMutatorId,
             state
           });
+
+          if (mutatorRef) {
+            body.push(_core.types.expressionStatement(_core.types.callExpression(state.addHelper("defineEnumerableProperties"), [_core.types.cloneNode(objId), _core.types.cloneNode(mutatorRef)])));
+          }
+
           if (single) {
             path.replaceWith(single);
           } else {
@@ -74473,14 +73701,13 @@ var _default = (0, _helperPluginUtils.declare)((api, options) => {
             path.replaceWithMultiple(body);
           }
         }
+
       }
     }
   };
 });
+
 exports["default"] = _default;
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
@@ -78423,7 +77650,7 @@ function isReactCall(path) {
 
 /***/ }),
 
-/***/ 72908:
+/***/ 15891:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -78433,8 +77660,11 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
+
 var _helperPluginUtils = __nccwpck_require__(90151);
-var _regeneratorTransform = __nccwpck_require__(81301);
+
+var _regeneratorTransform = __nccwpck_require__(96904);
+
 var _default = (0, _helperPluginUtils.declare)(({
   types: t,
   assertVersion
@@ -78446,29 +77676,32 @@ var _default = (0, _helperPluginUtils.declare)(({
     visitor: {
       MemberExpression(path) {
         var _this$availableHelper;
+
         if (!((_this$availableHelper = this.availableHelper) != null && _this$availableHelper.call(this, "regeneratorRuntime"))) {
           return;
         }
+
         const obj = path.get("object");
+
         if (obj.isIdentifier({
           name: "regeneratorRuntime"
         })) {
           const helper = this.addHelper("regeneratorRuntime");
-          if (
-          t.isArrowFunctionExpression(helper)) {
+
+          if (t.isArrowFunctionExpression(helper)) {
             obj.replaceWith(helper.body);
             return;
           }
+
           obj.replaceWith(t.callExpression(helper, []));
         }
       }
+
     }
   };
 });
+
 exports["default"] = _default;
-
-//# sourceMappingURL=index.js.map
-
 
 /***/ }),
 
@@ -80608,25 +79841,25 @@ var _pluginSyntaxPrivatePropertyInObject = __nccwpck_require__(18397);
 var _pluginSyntaxTopLevelAwait = __nccwpck_require__(16157);
 var _pluginProposalAsyncGeneratorFunctions = __nccwpck_require__(79348);
 var _pluginProposalClassProperties = __nccwpck_require__(29960);
-var _pluginProposalClassStaticBlock = __nccwpck_require__(6577);
+var _pluginProposalClassStaticBlock = __nccwpck_require__(32290);
 var _pluginProposalDynamicImport = __nccwpck_require__(98745);
 var _pluginProposalExportNamespaceFrom = __nccwpck_require__(87835);
 var _pluginProposalJsonStrings = __nccwpck_require__(66354);
-var _pluginProposalLogicalAssignmentOperators = __nccwpck_require__(39509);
+var _pluginProposalLogicalAssignmentOperators = __nccwpck_require__(2913);
 var _pluginProposalNullishCoalescingOperator = __nccwpck_require__(62930);
 var _pluginProposalNumericSeparator = __nccwpck_require__(13892);
 var _pluginProposalObjectRestSpread = __nccwpck_require__(44377);
 var _pluginProposalOptionalCatchBinding = __nccwpck_require__(70092);
-var _pluginProposalOptionalChaining = __nccwpck_require__(69357);
+var _pluginProposalOptionalChaining = __nccwpck_require__(71966);
 var _pluginProposalPrivateMethods = __nccwpck_require__(38466);
 var _pluginProposalPrivatePropertyInObject = __nccwpck_require__(55172);
 var _pluginProposalUnicodePropertyRegex = __nccwpck_require__(87429);
-var _pluginTransformAsyncToGenerator = __nccwpck_require__(65786);
-var _pluginTransformArrowFunctions = __nccwpck_require__(9145);
+var _pluginTransformAsyncToGenerator = __nccwpck_require__(74939);
+var _pluginTransformArrowFunctions = __nccwpck_require__(1063);
 var _pluginTransformBlockScopedFunctions = __nccwpck_require__(21888);
 var _pluginTransformBlockScoping = __nccwpck_require__(76181);
 var _pluginTransformClasses = __nccwpck_require__(54250);
-var _pluginTransformComputedProperties = __nccwpck_require__(77563);
+var _pluginTransformComputedProperties = __nccwpck_require__(97080);
 var _pluginTransformDestructuring = __nccwpck_require__(85256);
 var _pluginTransformDotallRegex = __nccwpck_require__(45533);
 var _pluginTransformDuplicateKeys = __nccwpck_require__(42361);
@@ -80644,7 +79877,7 @@ var _pluginTransformNewTarget = __nccwpck_require__(6286);
 var _pluginTransformObjectSuper = __nccwpck_require__(66520);
 var _pluginTransformParameters = __nccwpck_require__(6250);
 var _pluginTransformPropertyLiterals = __nccwpck_require__(48034);
-var _pluginTransformRegenerator = __nccwpck_require__(72908);
+var _pluginTransformRegenerator = __nccwpck_require__(15891);
 var _pluginTransformReservedWords = __nccwpck_require__(69002);
 var _pluginTransformShorthandProperties = __nccwpck_require__(53408);
 var _pluginTransformSpread = __nccwpck_require__(23828);
@@ -80660,7 +79893,7 @@ var _transformTaggedTemplateCaching = __nccwpck_require__(5034);
 var _transformSafariBlockShadowing = __nccwpck_require__(10918);
 var _transformSafariForShadowing = __nccwpck_require__(14147);
 var _pluginBugfixSafariIdDestructuringCollisionInFunctionExpression = __nccwpck_require__(55212);
-var _pluginBugfixV8SpreadParametersInOptionalChaining = __nccwpck_require__(39143);
+var _pluginBugfixV8SpreadParametersInOptionalChaining = __nccwpck_require__(88947);
 var _default = {
   "bugfix/transform-async-arrows-in-class": () => _transformAsyncArrowsInClass,
   "bugfix/transform-edge-default-parameters": () => _transformEdgeDefaultParameters,
@@ -80757,7 +79990,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.logPlugin = void 0;
 var _helperCompilationTargets = __nccwpck_require__(16006);
-var _plugins = __nccwpck_require__(12789);
+var _plugins = __nccwpck_require__(77203);
 const logPlugin = (item, targetVersions, list) => {
   const filteredList = (0, _helperCompilationTargets.getInclusionReasons)(item, targetVersions, list);
   const support = list[item];
@@ -81207,7 +80440,7 @@ exports["default"] = normalizeOptions;
 exports.normalizeCoreJSOption = normalizeCoreJSOption;
 exports.validateUseBuiltInsOption = exports.validateModulesOption = exports.normalizePluginName = void 0;
 var _semver = __nccwpck_require__(8999);
-var _corejs2BuiltIns = __nccwpck_require__(9395);
+var _corejs2BuiltIns = __nccwpck_require__(67756);
 var _coreJsCompat = __nccwpck_require__(63897);
 var _pluginsCompatData = __nccwpck_require__(232);
 var _moduleTransformations = __nccwpck_require__(23067);
@@ -81394,9 +80627,9 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.pluginsBugfixes = exports.plugins = exports.overlappingPlugins = void 0;
-var _plugins = __nccwpck_require__(12789);
-var _pluginBugfixes = __nccwpck_require__(77107);
-var _overlappingPlugins = __nccwpck_require__(72406);
+var _plugins = __nccwpck_require__(77203);
+var _pluginBugfixes = __nccwpck_require__(64330);
+var _overlappingPlugins = __nccwpck_require__(20859);
 var _availablePlugins = __nccwpck_require__(836);
 const keys = Object.keys;
 const plugins = filterAvailable(_plugins);
@@ -103740,7 +102973,7 @@ module.exports = function import_(filepath) {
 
 /***/ }),
 
-/***/ 40582:
+/***/ 81896:
 /***/ (function(module) {
 
 "use strict";
@@ -103748,7 +102981,7 @@ module.exports = JSON.parse('{"es6.array.copy-within":{"chrome":"45","opera":"32
 
 /***/ }),
 
-/***/ 92216:
+/***/ 29633:
 /***/ (function(module) {
 
 "use strict";
@@ -103756,7 +102989,7 @@ module.exports = JSON.parse('{"es6.module":{"chrome":"61","and_chr":"61","edge":
 
 /***/ }),
 
-/***/ 29676:
+/***/ 1030:
 /***/ (function(module) {
 
 "use strict";
@@ -103764,7 +102997,7 @@ module.exports = JSON.parse('{"transform-async-to-generator":["bugfix/transform-
 
 /***/ }),
 
-/***/ 94306:
+/***/ 1098:
 /***/ (function(module) {
 
 "use strict";
@@ -103772,7 +103005,7 @@ module.exports = JSON.parse('{"bugfix/transform-async-arrows-in-class":{"chrome"
 
 /***/ }),
 
-/***/ 86847:
+/***/ 92787:
 /***/ (function(module) {
 
 "use strict";
@@ -103828,19 +103061,19 @@ module.exports = JSON.parse('{"assert":true,"node:assert":[">= 14.18 && < 15",">
 
 /***/ }),
 
-/***/ 7615:
+/***/ 96878:
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('[{"name":"nodejs","version":"0.2.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.3.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.4.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.5.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.6.0","date":"2011-11-04","lts":false,"security":false},{"name":"nodejs","version":"0.7.0","date":"2012-01-17","lts":false,"security":false},{"name":"nodejs","version":"0.8.0","date":"2012-06-22","lts":false,"security":false},{"name":"nodejs","version":"0.9.0","date":"2012-07-20","lts":false,"security":false},{"name":"nodejs","version":"0.10.0","date":"2013-03-11","lts":false,"security":false},{"name":"nodejs","version":"0.11.0","date":"2013-03-28","lts":false,"security":false},{"name":"nodejs","version":"0.12.0","date":"2015-02-06","lts":false,"security":false},{"name":"nodejs","version":"4.0.0","date":"2015-09-08","lts":false,"security":false},{"name":"nodejs","version":"4.1.0","date":"2015-09-17","lts":false,"security":false},{"name":"nodejs","version":"4.2.0","date":"2015-10-12","lts":"Argon","security":false},{"name":"nodejs","version":"4.3.0","date":"2016-02-09","lts":"Argon","security":false},{"name":"nodejs","version":"4.4.0","date":"2016-03-08","lts":"Argon","security":false},{"name":"nodejs","version":"4.5.0","date":"2016-08-16","lts":"Argon","security":false},{"name":"nodejs","version":"4.6.0","date":"2016-09-27","lts":"Argon","security":true},{"name":"nodejs","version":"4.7.0","date":"2016-12-06","lts":"Argon","security":false},{"name":"nodejs","version":"4.8.0","date":"2017-02-21","lts":"Argon","security":false},{"name":"nodejs","version":"4.9.0","date":"2018-03-28","lts":"Argon","security":true},{"name":"nodejs","version":"5.0.0","date":"2015-10-29","lts":false,"security":false},{"name":"nodejs","version":"5.1.0","date":"2015-11-17","lts":false,"security":false},{"name":"nodejs","version":"5.2.0","date":"2015-12-09","lts":false,"security":false},{"name":"nodejs","version":"5.3.0","date":"2015-12-15","lts":false,"security":false},{"name":"nodejs","version":"5.4.0","date":"2016-01-06","lts":false,"security":false},{"name":"nodejs","version":"5.5.0","date":"2016-01-21","lts":false,"security":false},{"name":"nodejs","version":"5.6.0","date":"2016-02-09","lts":false,"security":false},{"name":"nodejs","version":"5.7.0","date":"2016-02-23","lts":false,"security":false},{"name":"nodejs","version":"5.8.0","date":"2016-03-09","lts":false,"security":false},{"name":"nodejs","version":"5.9.0","date":"2016-03-16","lts":false,"security":false},{"name":"nodejs","version":"5.10.0","date":"2016-04-01","lts":false,"security":false},{"name":"nodejs","version":"5.11.0","date":"2016-04-21","lts":false,"security":false},{"name":"nodejs","version":"5.12.0","date":"2016-06-23","lts":false,"security":false},{"name":"nodejs","version":"6.0.0","date":"2016-04-26","lts":false,"security":false},{"name":"nodejs","version":"6.1.0","date":"2016-05-05","lts":false,"security":false},{"name":"nodejs","version":"6.2.0","date":"2016-05-17","lts":false,"security":false},{"name":"nodejs","version":"6.3.0","date":"2016-07-06","lts":false,"security":false},{"name":"nodejs","version":"6.4.0","date":"2016-08-12","lts":false,"security":false},{"name":"nodejs","version":"6.5.0","date":"2016-08-26","lts":false,"security":false},{"name":"nodejs","version":"6.6.0","date":"2016-09-14","lts":false,"security":false},{"name":"nodejs","version":"6.7.0","date":"2016-09-27","lts":false,"security":true},{"name":"nodejs","version":"6.8.0","date":"2016-10-12","lts":false,"security":false},{"name":"nodejs","version":"6.9.0","date":"2016-10-18","lts":"Boron","security":false},{"name":"nodejs","version":"6.10.0","date":"2017-02-21","lts":"Boron","security":false},{"name":"nodejs","version":"6.11.0","date":"2017-06-06","lts":"Boron","security":false},{"name":"nodejs","version":"6.12.0","date":"2017-11-06","lts":"Boron","security":false},{"name":"nodejs","version":"6.13.0","date":"2018-02-10","lts":"Boron","security":false},{"name":"nodejs","version":"6.14.0","date":"2018-03-28","lts":"Boron","security":true},{"name":"nodejs","version":"6.15.0","date":"2018-11-27","lts":"Boron","security":true},{"name":"nodejs","version":"6.16.0","date":"2018-12-26","lts":"Boron","security":false},{"name":"nodejs","version":"6.17.0","date":"2019-02-28","lts":"Boron","security":true},{"name":"nodejs","version":"7.0.0","date":"2016-10-25","lts":false,"security":false},{"name":"nodejs","version":"7.1.0","date":"2016-11-08","lts":false,"security":false},{"name":"nodejs","version":"7.2.0","date":"2016-11-22","lts":false,"security":false},{"name":"nodejs","version":"7.3.0","date":"2016-12-20","lts":false,"security":false},{"name":"nodejs","version":"7.4.0","date":"2017-01-04","lts":false,"security":false},{"name":"nodejs","version":"7.5.0","date":"2017-01-31","lts":false,"security":false},{"name":"nodejs","version":"7.6.0","date":"2017-02-21","lts":false,"security":false},{"name":"nodejs","version":"7.7.0","date":"2017-02-28","lts":false,"security":false},{"name":"nodejs","version":"7.8.0","date":"2017-03-29","lts":false,"security":false},{"name":"nodejs","version":"7.9.0","date":"2017-04-11","lts":false,"security":false},{"name":"nodejs","version":"7.10.0","date":"2017-05-02","lts":false,"security":false},{"name":"nodejs","version":"8.0.0","date":"2017-05-30","lts":false,"security":false},{"name":"nodejs","version":"8.1.0","date":"2017-06-08","lts":false,"security":false},{"name":"nodejs","version":"8.2.0","date":"2017-07-19","lts":false,"security":false},{"name":"nodejs","version":"8.3.0","date":"2017-08-08","lts":false,"security":false},{"name":"nodejs","version":"8.4.0","date":"2017-08-15","lts":false,"security":false},{"name":"nodejs","version":"8.5.0","date":"2017-09-12","lts":false,"security":false},{"name":"nodejs","version":"8.6.0","date":"2017-09-26","lts":false,"security":false},{"name":"nodejs","version":"8.7.0","date":"2017-10-11","lts":false,"security":false},{"name":"nodejs","version":"8.8.0","date":"2017-10-24","lts":false,"security":false},{"name":"nodejs","version":"8.9.0","date":"2017-10-31","lts":"Carbon","security":false},{"name":"nodejs","version":"8.10.0","date":"2018-03-06","lts":"Carbon","security":false},{"name":"nodejs","version":"8.11.0","date":"2018-03-28","lts":"Carbon","security":true},{"name":"nodejs","version":"8.12.0","date":"2018-09-10","lts":"Carbon","security":false},{"name":"nodejs","version":"8.13.0","date":"2018-11-20","lts":"Carbon","security":false},{"name":"nodejs","version":"8.14.0","date":"2018-11-27","lts":"Carbon","security":true},{"name":"nodejs","version":"8.15.0","date":"2018-12-26","lts":"Carbon","security":false},{"name":"nodejs","version":"8.16.0","date":"2019-04-16","lts":"Carbon","security":false},{"name":"nodejs","version":"8.17.0","date":"2019-12-17","lts":"Carbon","security":true},{"name":"nodejs","version":"9.0.0","date":"2017-10-31","lts":false,"security":false},{"name":"nodejs","version":"9.1.0","date":"2017-11-07","lts":false,"security":false},{"name":"nodejs","version":"9.2.0","date":"2017-11-14","lts":false,"security":false},{"name":"nodejs","version":"9.3.0","date":"2017-12-12","lts":false,"security":false},{"name":"nodejs","version":"9.4.0","date":"2018-01-10","lts":false,"security":false},{"name":"nodejs","version":"9.5.0","date":"2018-01-31","lts":false,"security":false},{"name":"nodejs","version":"9.6.0","date":"2018-02-21","lts":false,"security":false},{"name":"nodejs","version":"9.7.0","date":"2018-03-01","lts":false,"security":false},{"name":"nodejs","version":"9.8.0","date":"2018-03-07","lts":false,"security":false},{"name":"nodejs","version":"9.9.0","date":"2018-03-21","lts":false,"security":false},{"name":"nodejs","version":"9.10.0","date":"2018-03-28","lts":false,"security":true},{"name":"nodejs","version":"9.11.0","date":"2018-04-04","lts":false,"security":false},{"name":"nodejs","version":"10.0.0","date":"2018-04-24","lts":false,"security":false},{"name":"nodejs","version":"10.1.0","date":"2018-05-08","lts":false,"security":false},{"name":"nodejs","version":"10.2.0","date":"2018-05-23","lts":false,"security":false},{"name":"nodejs","version":"10.3.0","date":"2018-05-29","lts":false,"security":false},{"name":"nodejs","version":"10.4.0","date":"2018-06-06","lts":false,"security":false},{"name":"nodejs","version":"10.5.0","date":"2018-06-20","lts":false,"security":false},{"name":"nodejs","version":"10.6.0","date":"2018-07-04","lts":false,"security":false},{"name":"nodejs","version":"10.7.0","date":"2018-07-18","lts":false,"security":false},{"name":"nodejs","version":"10.8.0","date":"2018-08-01","lts":false,"security":false},{"name":"nodejs","version":"10.9.0","date":"2018-08-15","lts":false,"security":false},{"name":"nodejs","version":"10.10.0","date":"2018-09-06","lts":false,"security":false},{"name":"nodejs","version":"10.11.0","date":"2018-09-19","lts":false,"security":false},{"name":"nodejs","version":"10.12.0","date":"2018-10-10","lts":false,"security":false},{"name":"nodejs","version":"10.13.0","date":"2018-10-30","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.14.0","date":"2018-11-27","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.15.0","date":"2018-12-26","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.16.0","date":"2019-05-28","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.17.0","date":"2019-10-22","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.18.0","date":"2019-12-17","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.19.0","date":"2020-02-05","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.20.0","date":"2020-03-26","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.21.0","date":"2020-06-02","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.22.0","date":"2020-07-21","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.23.0","date":"2020-10-27","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.24.0","date":"2021-02-23","lts":"Dubnium","security":true},{"name":"nodejs","version":"11.0.0","date":"2018-10-23","lts":false,"security":false},{"name":"nodejs","version":"11.1.0","date":"2018-10-30","lts":false,"security":false},{"name":"nodejs","version":"11.2.0","date":"2018-11-15","lts":false,"security":false},{"name":"nodejs","version":"11.3.0","date":"2018-11-27","lts":false,"security":true},{"name":"nodejs","version":"11.4.0","date":"2018-12-07","lts":false,"security":false},{"name":"nodejs","version":"11.5.0","date":"2018-12-18","lts":false,"security":false},{"name":"nodejs","version":"11.6.0","date":"2018-12-26","lts":false,"security":false},{"name":"nodejs","version":"11.7.0","date":"2019-01-17","lts":false,"security":false},{"name":"nodejs","version":"11.8.0","date":"2019-01-24","lts":false,"security":false},{"name":"nodejs","version":"11.9.0","date":"2019-01-30","lts":false,"security":false},{"name":"nodejs","version":"11.10.0","date":"2019-02-14","lts":false,"security":false},{"name":"nodejs","version":"11.11.0","date":"2019-03-05","lts":false,"security":false},{"name":"nodejs","version":"11.12.0","date":"2019-03-14","lts":false,"security":false},{"name":"nodejs","version":"11.13.0","date":"2019-03-28","lts":false,"security":false},{"name":"nodejs","version":"11.14.0","date":"2019-04-10","lts":false,"security":false},{"name":"nodejs","version":"11.15.0","date":"2019-04-30","lts":false,"security":false},{"name":"nodejs","version":"12.0.0","date":"2019-04-23","lts":false,"security":false},{"name":"nodejs","version":"12.1.0","date":"2019-04-29","lts":false,"security":false},{"name":"nodejs","version":"12.2.0","date":"2019-05-07","lts":false,"security":false},{"name":"nodejs","version":"12.3.0","date":"2019-05-21","lts":false,"security":false},{"name":"nodejs","version":"12.4.0","date":"2019-06-04","lts":false,"security":false},{"name":"nodejs","version":"12.5.0","date":"2019-06-26","lts":false,"security":false},{"name":"nodejs","version":"12.6.0","date":"2019-07-03","lts":false,"security":false},{"name":"nodejs","version":"12.7.0","date":"2019-07-23","lts":false,"security":false},{"name":"nodejs","version":"12.8.0","date":"2019-08-06","lts":false,"security":false},{"name":"nodejs","version":"12.9.0","date":"2019-08-20","lts":false,"security":false},{"name":"nodejs","version":"12.10.0","date":"2019-09-04","lts":false,"security":false},{"name":"nodejs","version":"12.11.0","date":"2019-09-25","lts":false,"security":false},{"name":"nodejs","version":"12.12.0","date":"2019-10-11","lts":false,"security":false},{"name":"nodejs","version":"12.13.0","date":"2019-10-21","lts":"Erbium","security":false},{"name":"nodejs","version":"12.14.0","date":"2019-12-17","lts":"Erbium","security":true},{"name":"nodejs","version":"12.15.0","date":"2020-02-05","lts":"Erbium","security":true},{"name":"nodejs","version":"12.16.0","date":"2020-02-11","lts":"Erbium","security":false},{"name":"nodejs","version":"12.17.0","date":"2020-05-26","lts":"Erbium","security":false},{"name":"nodejs","version":"12.18.0","date":"2020-06-02","lts":"Erbium","security":true},{"name":"nodejs","version":"12.19.0","date":"2020-10-06","lts":"Erbium","security":false},{"name":"nodejs","version":"12.20.0","date":"2020-11-24","lts":"Erbium","security":false},{"name":"nodejs","version":"12.21.0","date":"2021-02-23","lts":"Erbium","security":true},{"name":"nodejs","version":"12.22.0","date":"2021-03-30","lts":"Erbium","security":false},{"name":"nodejs","version":"13.0.0","date":"2019-10-22","lts":false,"security":false},{"name":"nodejs","version":"13.1.0","date":"2019-11-05","lts":false,"security":false},{"name":"nodejs","version":"13.2.0","date":"2019-11-21","lts":false,"security":false},{"name":"nodejs","version":"13.3.0","date":"2019-12-03","lts":false,"security":false},{"name":"nodejs","version":"13.4.0","date":"2019-12-17","lts":false,"security":true},{"name":"nodejs","version":"13.5.0","date":"2019-12-18","lts":false,"security":false},{"name":"nodejs","version":"13.6.0","date":"2020-01-07","lts":false,"security":false},{"name":"nodejs","version":"13.7.0","date":"2020-01-21","lts":false,"security":false},{"name":"nodejs","version":"13.8.0","date":"2020-02-05","lts":false,"security":true},{"name":"nodejs","version":"13.9.0","date":"2020-02-18","lts":false,"security":false},{"name":"nodejs","version":"13.10.0","date":"2020-03-04","lts":false,"security":false},{"name":"nodejs","version":"13.11.0","date":"2020-03-12","lts":false,"security":false},{"name":"nodejs","version":"13.12.0","date":"2020-03-26","lts":false,"security":false},{"name":"nodejs","version":"13.13.0","date":"2020-04-14","lts":false,"security":false},{"name":"nodejs","version":"13.14.0","date":"2020-04-29","lts":false,"security":false},{"name":"nodejs","version":"14.0.0","date":"2020-04-21","lts":false,"security":false},{"name":"nodejs","version":"14.1.0","date":"2020-04-29","lts":false,"security":false},{"name":"nodejs","version":"14.2.0","date":"2020-05-05","lts":false,"security":false},{"name":"nodejs","version":"14.3.0","date":"2020-05-19","lts":false,"security":false},{"name":"nodejs","version":"14.4.0","date":"2020-06-02","lts":false,"security":true},{"name":"nodejs","version":"14.5.0","date":"2020-06-30","lts":false,"security":false},{"name":"nodejs","version":"14.6.0","date":"2020-07-20","lts":false,"security":false},{"name":"nodejs","version":"14.7.0","date":"2020-07-29","lts":false,"security":false},{"name":"nodejs","version":"14.8.0","date":"2020-08-11","lts":false,"security":false},{"name":"nodejs","version":"14.9.0","date":"2020-08-27","lts":false,"security":false},{"name":"nodejs","version":"14.10.0","date":"2020-09-08","lts":false,"security":false},{"name":"nodejs","version":"14.11.0","date":"2020-09-15","lts":false,"security":true},{"name":"nodejs","version":"14.12.0","date":"2020-09-22","lts":false,"security":false},{"name":"nodejs","version":"14.13.0","date":"2020-09-29","lts":false,"security":false},{"name":"nodejs","version":"14.14.0","date":"2020-10-15","lts":false,"security":false},{"name":"nodejs","version":"14.15.0","date":"2020-10-27","lts":"Fermium","security":false},{"name":"nodejs","version":"14.16.0","date":"2021-02-23","lts":"Fermium","security":true},{"name":"nodejs","version":"14.17.0","date":"2021-05-11","lts":"Fermium","security":false},{"name":"nodejs","version":"14.18.0","date":"2021-09-28","lts":"Fermium","security":false},{"name":"nodejs","version":"14.19.0","date":"2022-02-01","lts":"Fermium","security":false},{"name":"nodejs","version":"14.20.0","date":"2022-07-07","lts":"Fermium","security":true},{"name":"nodejs","version":"14.21.0","date":"2022-11-01","lts":"Fermium","security":false},{"name":"nodejs","version":"15.0.0","date":"2020-10-20","lts":false,"security":false},{"name":"nodejs","version":"15.1.0","date":"2020-11-04","lts":false,"security":false},{"name":"nodejs","version":"15.2.0","date":"2020-11-10","lts":false,"security":false},{"name":"nodejs","version":"15.3.0","date":"2020-11-24","lts":false,"security":false},{"name":"nodejs","version":"15.4.0","date":"2020-12-09","lts":false,"security":false},{"name":"nodejs","version":"15.5.0","date":"2020-12-22","lts":false,"security":false},{"name":"nodejs","version":"15.6.0","date":"2021-01-14","lts":false,"security":false},{"name":"nodejs","version":"15.7.0","date":"2021-01-25","lts":false,"security":false},{"name":"nodejs","version":"15.8.0","date":"2021-02-02","lts":false,"security":false},{"name":"nodejs","version":"15.9.0","date":"2021-02-18","lts":false,"security":false},{"name":"nodejs","version":"15.10.0","date":"2021-02-23","lts":false,"security":true},{"name":"nodejs","version":"15.11.0","date":"2021-03-03","lts":false,"security":false},{"name":"nodejs","version":"15.12.0","date":"2021-03-17","lts":false,"security":false},{"name":"nodejs","version":"15.13.0","date":"2021-03-31","lts":false,"security":false},{"name":"nodejs","version":"15.14.0","date":"2021-04-06","lts":false,"security":false},{"name":"nodejs","version":"16.0.0","date":"2021-04-20","lts":false,"security":false},{"name":"nodejs","version":"16.1.0","date":"2021-05-04","lts":false,"security":false},{"name":"nodejs","version":"16.2.0","date":"2021-05-19","lts":false,"security":false},{"name":"nodejs","version":"16.3.0","date":"2021-06-03","lts":false,"security":false},{"name":"nodejs","version":"16.4.0","date":"2021-06-23","lts":false,"security":false},{"name":"nodejs","version":"16.5.0","date":"2021-07-14","lts":false,"security":false},{"name":"nodejs","version":"16.6.0","date":"2021-07-29","lts":false,"security":true},{"name":"nodejs","version":"16.7.0","date":"2021-08-18","lts":false,"security":false},{"name":"nodejs","version":"16.8.0","date":"2021-08-25","lts":false,"security":false},{"name":"nodejs","version":"16.9.0","date":"2021-09-07","lts":false,"security":false},{"name":"nodejs","version":"16.10.0","date":"2021-09-22","lts":false,"security":false},{"name":"nodejs","version":"16.11.0","date":"2021-10-08","lts":false,"security":false},{"name":"nodejs","version":"16.12.0","date":"2021-10-20","lts":false,"security":false},{"name":"nodejs","version":"16.13.0","date":"2021-10-26","lts":"Gallium","security":false},{"name":"nodejs","version":"16.14.0","date":"2022-02-08","lts":"Gallium","security":false},{"name":"nodejs","version":"16.15.0","date":"2022-04-26","lts":"Gallium","security":false},{"name":"nodejs","version":"16.16.0","date":"2022-07-07","lts":"Gallium","security":true},{"name":"nodejs","version":"16.17.0","date":"2022-08-16","lts":"Gallium","security":false},{"name":"nodejs","version":"16.18.0","date":"2022-10-12","lts":"Gallium","security":false},{"name":"nodejs","version":"16.19.0","date":"2022-12-13","lts":"Gallium","security":false},{"name":"nodejs","version":"17.0.0","date":"2021-10-19","lts":false,"security":false},{"name":"nodejs","version":"17.1.0","date":"2021-11-09","lts":false,"security":false},{"name":"nodejs","version":"17.2.0","date":"2021-11-30","lts":false,"security":false},{"name":"nodejs","version":"17.3.0","date":"2021-12-17","lts":false,"security":false},{"name":"nodejs","version":"17.4.0","date":"2022-01-18","lts":false,"security":false},{"name":"nodejs","version":"17.5.0","date":"2022-02-10","lts":false,"security":false},{"name":"nodejs","version":"17.6.0","date":"2022-02-22","lts":false,"security":false},{"name":"nodejs","version":"17.7.0","date":"2022-03-09","lts":false,"security":false},{"name":"nodejs","version":"17.8.0","date":"2022-03-22","lts":false,"security":false},{"name":"nodejs","version":"17.9.0","date":"2022-04-07","lts":false,"security":false},{"name":"nodejs","version":"18.0.0","date":"2022-04-18","lts":false,"security":false},{"name":"nodejs","version":"18.1.0","date":"2022-05-03","lts":false,"security":false},{"name":"nodejs","version":"18.2.0","date":"2022-05-17","lts":false,"security":false},{"name":"nodejs","version":"18.3.0","date":"2022-06-02","lts":false,"security":false},{"name":"nodejs","version":"18.4.0","date":"2022-06-16","lts":false,"security":false},{"name":"nodejs","version":"18.5.0","date":"2022-07-06","lts":false,"security":true},{"name":"nodejs","version":"18.6.0","date":"2022-07-13","lts":false,"security":false},{"name":"nodejs","version":"18.7.0","date":"2022-07-26","lts":false,"security":false},{"name":"nodejs","version":"18.8.0","date":"2022-08-24","lts":false,"security":false},{"name":"nodejs","version":"18.9.0","date":"2022-09-07","lts":false,"security":false},{"name":"nodejs","version":"18.10.0","date":"2022-09-28","lts":false,"security":false},{"name":"nodejs","version":"18.11.0","date":"2022-10-13","lts":false,"security":false},{"name":"nodejs","version":"18.12.0","date":"2022-10-25","lts":"Hydrogen","security":false},{"name":"nodejs","version":"19.0.0","date":"2022-10-17","lts":false,"security":false},{"name":"nodejs","version":"19.1.0","date":"2022-11-14","lts":false,"security":false},{"name":"nodejs","version":"19.2.0","date":"2022-11-29","lts":false,"security":false},{"name":"nodejs","version":"19.3.0","date":"2022-12-14","lts":false,"security":false}]');
+module.exports = JSON.parse('[{"name":"nodejs","version":"0.2.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.3.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.4.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.5.0","date":"2011-08-26","lts":false,"security":false},{"name":"nodejs","version":"0.6.0","date":"2011-11-04","lts":false,"security":false},{"name":"nodejs","version":"0.7.0","date":"2012-01-17","lts":false,"security":false},{"name":"nodejs","version":"0.8.0","date":"2012-06-22","lts":false,"security":false},{"name":"nodejs","version":"0.9.0","date":"2012-07-20","lts":false,"security":false},{"name":"nodejs","version":"0.10.0","date":"2013-03-11","lts":false,"security":false},{"name":"nodejs","version":"0.11.0","date":"2013-03-28","lts":false,"security":false},{"name":"nodejs","version":"0.12.0","date":"2015-02-06","lts":false,"security":false},{"name":"nodejs","version":"4.0.0","date":"2015-09-08","lts":false,"security":false},{"name":"nodejs","version":"4.1.0","date":"2015-09-17","lts":false,"security":false},{"name":"nodejs","version":"4.2.0","date":"2015-10-12","lts":"Argon","security":false},{"name":"nodejs","version":"4.3.0","date":"2016-02-09","lts":"Argon","security":false},{"name":"nodejs","version":"4.4.0","date":"2016-03-08","lts":"Argon","security":false},{"name":"nodejs","version":"4.5.0","date":"2016-08-16","lts":"Argon","security":false},{"name":"nodejs","version":"4.6.0","date":"2016-09-27","lts":"Argon","security":true},{"name":"nodejs","version":"4.7.0","date":"2016-12-06","lts":"Argon","security":false},{"name":"nodejs","version":"4.8.0","date":"2017-02-21","lts":"Argon","security":false},{"name":"nodejs","version":"4.9.0","date":"2018-03-28","lts":"Argon","security":true},{"name":"nodejs","version":"5.0.0","date":"2015-10-29","lts":false,"security":false},{"name":"nodejs","version":"5.1.0","date":"2015-11-17","lts":false,"security":false},{"name":"nodejs","version":"5.2.0","date":"2015-12-09","lts":false,"security":false},{"name":"nodejs","version":"5.3.0","date":"2015-12-15","lts":false,"security":false},{"name":"nodejs","version":"5.4.0","date":"2016-01-06","lts":false,"security":false},{"name":"nodejs","version":"5.5.0","date":"2016-01-21","lts":false,"security":false},{"name":"nodejs","version":"5.6.0","date":"2016-02-09","lts":false,"security":false},{"name":"nodejs","version":"5.7.0","date":"2016-02-23","lts":false,"security":false},{"name":"nodejs","version":"5.8.0","date":"2016-03-09","lts":false,"security":false},{"name":"nodejs","version":"5.9.0","date":"2016-03-16","lts":false,"security":false},{"name":"nodejs","version":"5.10.0","date":"2016-04-01","lts":false,"security":false},{"name":"nodejs","version":"5.11.0","date":"2016-04-21","lts":false,"security":false},{"name":"nodejs","version":"5.12.0","date":"2016-06-23","lts":false,"security":false},{"name":"nodejs","version":"6.0.0","date":"2016-04-26","lts":false,"security":false},{"name":"nodejs","version":"6.1.0","date":"2016-05-05","lts":false,"security":false},{"name":"nodejs","version":"6.2.0","date":"2016-05-17","lts":false,"security":false},{"name":"nodejs","version":"6.3.0","date":"2016-07-06","lts":false,"security":false},{"name":"nodejs","version":"6.4.0","date":"2016-08-12","lts":false,"security":false},{"name":"nodejs","version":"6.5.0","date":"2016-08-26","lts":false,"security":false},{"name":"nodejs","version":"6.6.0","date":"2016-09-14","lts":false,"security":false},{"name":"nodejs","version":"6.7.0","date":"2016-09-27","lts":false,"security":true},{"name":"nodejs","version":"6.8.0","date":"2016-10-12","lts":false,"security":false},{"name":"nodejs","version":"6.9.0","date":"2016-10-18","lts":"Boron","security":false},{"name":"nodejs","version":"6.10.0","date":"2017-02-21","lts":"Boron","security":false},{"name":"nodejs","version":"6.11.0","date":"2017-06-06","lts":"Boron","security":false},{"name":"nodejs","version":"6.12.0","date":"2017-11-06","lts":"Boron","security":false},{"name":"nodejs","version":"6.13.0","date":"2018-02-10","lts":"Boron","security":false},{"name":"nodejs","version":"6.14.0","date":"2018-03-28","lts":"Boron","security":true},{"name":"nodejs","version":"6.15.0","date":"2018-11-27","lts":"Boron","security":true},{"name":"nodejs","version":"6.16.0","date":"2018-12-26","lts":"Boron","security":false},{"name":"nodejs","version":"6.17.0","date":"2019-02-28","lts":"Boron","security":true},{"name":"nodejs","version":"7.0.0","date":"2016-10-25","lts":false,"security":false},{"name":"nodejs","version":"7.1.0","date":"2016-11-08","lts":false,"security":false},{"name":"nodejs","version":"7.2.0","date":"2016-11-22","lts":false,"security":false},{"name":"nodejs","version":"7.3.0","date":"2016-12-20","lts":false,"security":false},{"name":"nodejs","version":"7.4.0","date":"2017-01-04","lts":false,"security":false},{"name":"nodejs","version":"7.5.0","date":"2017-01-31","lts":false,"security":false},{"name":"nodejs","version":"7.6.0","date":"2017-02-21","lts":false,"security":false},{"name":"nodejs","version":"7.7.0","date":"2017-02-28","lts":false,"security":false},{"name":"nodejs","version":"7.8.0","date":"2017-03-29","lts":false,"security":false},{"name":"nodejs","version":"7.9.0","date":"2017-04-11","lts":false,"security":false},{"name":"nodejs","version":"7.10.0","date":"2017-05-02","lts":false,"security":false},{"name":"nodejs","version":"8.0.0","date":"2017-05-30","lts":false,"security":false},{"name":"nodejs","version":"8.1.0","date":"2017-06-08","lts":false,"security":false},{"name":"nodejs","version":"8.2.0","date":"2017-07-19","lts":false,"security":false},{"name":"nodejs","version":"8.3.0","date":"2017-08-08","lts":false,"security":false},{"name":"nodejs","version":"8.4.0","date":"2017-08-15","lts":false,"security":false},{"name":"nodejs","version":"8.5.0","date":"2017-09-12","lts":false,"security":false},{"name":"nodejs","version":"8.6.0","date":"2017-09-26","lts":false,"security":false},{"name":"nodejs","version":"8.7.0","date":"2017-10-11","lts":false,"security":false},{"name":"nodejs","version":"8.8.0","date":"2017-10-24","lts":false,"security":false},{"name":"nodejs","version":"8.9.0","date":"2017-10-31","lts":"Carbon","security":false},{"name":"nodejs","version":"8.10.0","date":"2018-03-06","lts":"Carbon","security":false},{"name":"nodejs","version":"8.11.0","date":"2018-03-28","lts":"Carbon","security":true},{"name":"nodejs","version":"8.12.0","date":"2018-09-10","lts":"Carbon","security":false},{"name":"nodejs","version":"8.13.0","date":"2018-11-20","lts":"Carbon","security":false},{"name":"nodejs","version":"8.14.0","date":"2018-11-27","lts":"Carbon","security":true},{"name":"nodejs","version":"8.15.0","date":"2018-12-26","lts":"Carbon","security":false},{"name":"nodejs","version":"8.16.0","date":"2019-04-16","lts":"Carbon","security":false},{"name":"nodejs","version":"8.17.0","date":"2019-12-17","lts":"Carbon","security":true},{"name":"nodejs","version":"9.0.0","date":"2017-10-31","lts":false,"security":false},{"name":"nodejs","version":"9.1.0","date":"2017-11-07","lts":false,"security":false},{"name":"nodejs","version":"9.2.0","date":"2017-11-14","lts":false,"security":false},{"name":"nodejs","version":"9.3.0","date":"2017-12-12","lts":false,"security":false},{"name":"nodejs","version":"9.4.0","date":"2018-01-10","lts":false,"security":false},{"name":"nodejs","version":"9.5.0","date":"2018-01-31","lts":false,"security":false},{"name":"nodejs","version":"9.6.0","date":"2018-02-21","lts":false,"security":false},{"name":"nodejs","version":"9.7.0","date":"2018-03-01","lts":false,"security":false},{"name":"nodejs","version":"9.8.0","date":"2018-03-07","lts":false,"security":false},{"name":"nodejs","version":"9.9.0","date":"2018-03-21","lts":false,"security":false},{"name":"nodejs","version":"9.10.0","date":"2018-03-28","lts":false,"security":true},{"name":"nodejs","version":"9.11.0","date":"2018-04-04","lts":false,"security":false},{"name":"nodejs","version":"10.0.0","date":"2018-04-24","lts":false,"security":false},{"name":"nodejs","version":"10.1.0","date":"2018-05-08","lts":false,"security":false},{"name":"nodejs","version":"10.2.0","date":"2018-05-23","lts":false,"security":false},{"name":"nodejs","version":"10.3.0","date":"2018-05-29","lts":false,"security":false},{"name":"nodejs","version":"10.4.0","date":"2018-06-06","lts":false,"security":false},{"name":"nodejs","version":"10.5.0","date":"2018-06-20","lts":false,"security":false},{"name":"nodejs","version":"10.6.0","date":"2018-07-04","lts":false,"security":false},{"name":"nodejs","version":"10.7.0","date":"2018-07-18","lts":false,"security":false},{"name":"nodejs","version":"10.8.0","date":"2018-08-01","lts":false,"security":false},{"name":"nodejs","version":"10.9.0","date":"2018-08-15","lts":false,"security":false},{"name":"nodejs","version":"10.10.0","date":"2018-09-06","lts":false,"security":false},{"name":"nodejs","version":"10.11.0","date":"2018-09-19","lts":false,"security":false},{"name":"nodejs","version":"10.12.0","date":"2018-10-10","lts":false,"security":false},{"name":"nodejs","version":"10.13.0","date":"2018-10-30","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.14.0","date":"2018-11-27","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.15.0","date":"2018-12-26","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.16.0","date":"2019-05-28","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.17.0","date":"2019-10-22","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.18.0","date":"2019-12-17","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.19.0","date":"2020-02-05","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.20.0","date":"2020-03-26","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.21.0","date":"2020-06-02","lts":"Dubnium","security":true},{"name":"nodejs","version":"10.22.0","date":"2020-07-21","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.23.0","date":"2020-10-27","lts":"Dubnium","security":false},{"name":"nodejs","version":"10.24.0","date":"2021-02-23","lts":"Dubnium","security":true},{"name":"nodejs","version":"11.0.0","date":"2018-10-23","lts":false,"security":false},{"name":"nodejs","version":"11.1.0","date":"2018-10-30","lts":false,"security":false},{"name":"nodejs","version":"11.2.0","date":"2018-11-15","lts":false,"security":false},{"name":"nodejs","version":"11.3.0","date":"2018-11-27","lts":false,"security":true},{"name":"nodejs","version":"11.4.0","date":"2018-12-07","lts":false,"security":false},{"name":"nodejs","version":"11.5.0","date":"2018-12-18","lts":false,"security":false},{"name":"nodejs","version":"11.6.0","date":"2018-12-26","lts":false,"security":false},{"name":"nodejs","version":"11.7.0","date":"2019-01-17","lts":false,"security":false},{"name":"nodejs","version":"11.8.0","date":"2019-01-24","lts":false,"security":false},{"name":"nodejs","version":"11.9.0","date":"2019-01-30","lts":false,"security":false},{"name":"nodejs","version":"11.10.0","date":"2019-02-14","lts":false,"security":false},{"name":"nodejs","version":"11.11.0","date":"2019-03-05","lts":false,"security":false},{"name":"nodejs","version":"11.12.0","date":"2019-03-14","lts":false,"security":false},{"name":"nodejs","version":"11.13.0","date":"2019-03-28","lts":false,"security":false},{"name":"nodejs","version":"11.14.0","date":"2019-04-10","lts":false,"security":false},{"name":"nodejs","version":"11.15.0","date":"2019-04-30","lts":false,"security":false},{"name":"nodejs","version":"12.0.0","date":"2019-04-23","lts":false,"security":false},{"name":"nodejs","version":"12.1.0","date":"2019-04-29","lts":false,"security":false},{"name":"nodejs","version":"12.2.0","date":"2019-05-07","lts":false,"security":false},{"name":"nodejs","version":"12.3.0","date":"2019-05-21","lts":false,"security":false},{"name":"nodejs","version":"12.4.0","date":"2019-06-04","lts":false,"security":false},{"name":"nodejs","version":"12.5.0","date":"2019-06-26","lts":false,"security":false},{"name":"nodejs","version":"12.6.0","date":"2019-07-03","lts":false,"security":false},{"name":"nodejs","version":"12.7.0","date":"2019-07-23","lts":false,"security":false},{"name":"nodejs","version":"12.8.0","date":"2019-08-06","lts":false,"security":false},{"name":"nodejs","version":"12.9.0","date":"2019-08-20","lts":false,"security":false},{"name":"nodejs","version":"12.10.0","date":"2019-09-04","lts":false,"security":false},{"name":"nodejs","version":"12.11.0","date":"2019-09-25","lts":false,"security":false},{"name":"nodejs","version":"12.12.0","date":"2019-10-11","lts":false,"security":false},{"name":"nodejs","version":"12.13.0","date":"2019-10-21","lts":"Erbium","security":false},{"name":"nodejs","version":"12.14.0","date":"2019-12-17","lts":"Erbium","security":true},{"name":"nodejs","version":"12.15.0","date":"2020-02-05","lts":"Erbium","security":true},{"name":"nodejs","version":"12.16.0","date":"2020-02-11","lts":"Erbium","security":false},{"name":"nodejs","version":"12.17.0","date":"2020-05-26","lts":"Erbium","security":false},{"name":"nodejs","version":"12.18.0","date":"2020-06-02","lts":"Erbium","security":true},{"name":"nodejs","version":"12.19.0","date":"2020-10-06","lts":"Erbium","security":false},{"name":"nodejs","version":"12.20.0","date":"2020-11-24","lts":"Erbium","security":false},{"name":"nodejs","version":"12.21.0","date":"2021-02-23","lts":"Erbium","security":true},{"name":"nodejs","version":"12.22.0","date":"2021-03-30","lts":"Erbium","security":false},{"name":"nodejs","version":"13.0.0","date":"2019-10-22","lts":false,"security":false},{"name":"nodejs","version":"13.1.0","date":"2019-11-05","lts":false,"security":false},{"name":"nodejs","version":"13.2.0","date":"2019-11-21","lts":false,"security":false},{"name":"nodejs","version":"13.3.0","date":"2019-12-03","lts":false,"security":false},{"name":"nodejs","version":"13.4.0","date":"2019-12-17","lts":false,"security":true},{"name":"nodejs","version":"13.5.0","date":"2019-12-18","lts":false,"security":false},{"name":"nodejs","version":"13.6.0","date":"2020-01-07","lts":false,"security":false},{"name":"nodejs","version":"13.7.0","date":"2020-01-21","lts":false,"security":false},{"name":"nodejs","version":"13.8.0","date":"2020-02-05","lts":false,"security":true},{"name":"nodejs","version":"13.9.0","date":"2020-02-18","lts":false,"security":false},{"name":"nodejs","version":"13.10.0","date":"2020-03-04","lts":false,"security":false},{"name":"nodejs","version":"13.11.0","date":"2020-03-12","lts":false,"security":false},{"name":"nodejs","version":"13.12.0","date":"2020-03-26","lts":false,"security":false},{"name":"nodejs","version":"13.13.0","date":"2020-04-14","lts":false,"security":false},{"name":"nodejs","version":"13.14.0","date":"2020-04-29","lts":false,"security":false},{"name":"nodejs","version":"14.0.0","date":"2020-04-21","lts":false,"security":false},{"name":"nodejs","version":"14.1.0","date":"2020-04-29","lts":false,"security":false},{"name":"nodejs","version":"14.2.0","date":"2020-05-05","lts":false,"security":false},{"name":"nodejs","version":"14.3.0","date":"2020-05-19","lts":false,"security":false},{"name":"nodejs","version":"14.4.0","date":"2020-06-02","lts":false,"security":true},{"name":"nodejs","version":"14.5.0","date":"2020-06-30","lts":false,"security":false},{"name":"nodejs","version":"14.6.0","date":"2020-07-20","lts":false,"security":false},{"name":"nodejs","version":"14.7.0","date":"2020-07-29","lts":false,"security":false},{"name":"nodejs","version":"14.8.0","date":"2020-08-11","lts":false,"security":false},{"name":"nodejs","version":"14.9.0","date":"2020-08-27","lts":false,"security":false},{"name":"nodejs","version":"14.10.0","date":"2020-09-08","lts":false,"security":false},{"name":"nodejs","version":"14.11.0","date":"2020-09-15","lts":false,"security":true},{"name":"nodejs","version":"14.12.0","date":"2020-09-22","lts":false,"security":false},{"name":"nodejs","version":"14.13.0","date":"2020-09-29","lts":false,"security":false},{"name":"nodejs","version":"14.14.0","date":"2020-10-15","lts":false,"security":false},{"name":"nodejs","version":"14.15.0","date":"2020-10-27","lts":"Fermium","security":false},{"name":"nodejs","version":"14.16.0","date":"2021-02-23","lts":"Fermium","security":true},{"name":"nodejs","version":"14.17.0","date":"2021-05-11","lts":"Fermium","security":false},{"name":"nodejs","version":"14.18.0","date":"2021-09-28","lts":"Fermium","security":false},{"name":"nodejs","version":"14.19.0","date":"2022-02-01","lts":"Fermium","security":false},{"name":"nodejs","version":"14.20.0","date":"2022-07-07","lts":"Fermium","security":true},{"name":"nodejs","version":"15.0.0","date":"2020-10-20","lts":false,"security":false},{"name":"nodejs","version":"15.1.0","date":"2020-11-04","lts":false,"security":false},{"name":"nodejs","version":"15.2.0","date":"2020-11-10","lts":false,"security":false},{"name":"nodejs","version":"15.3.0","date":"2020-11-24","lts":false,"security":false},{"name":"nodejs","version":"15.4.0","date":"2020-12-09","lts":false,"security":false},{"name":"nodejs","version":"15.5.0","date":"2020-12-22","lts":false,"security":false},{"name":"nodejs","version":"15.6.0","date":"2021-01-14","lts":false,"security":false},{"name":"nodejs","version":"15.7.0","date":"2021-01-25","lts":false,"security":false},{"name":"nodejs","version":"15.8.0","date":"2021-02-02","lts":false,"security":false},{"name":"nodejs","version":"15.9.0","date":"2021-02-18","lts":false,"security":false},{"name":"nodejs","version":"15.10.0","date":"2021-02-23","lts":false,"security":true},{"name":"nodejs","version":"15.11.0","date":"2021-03-03","lts":false,"security":false},{"name":"nodejs","version":"15.12.0","date":"2021-03-17","lts":false,"security":false},{"name":"nodejs","version":"15.13.0","date":"2021-03-31","lts":false,"security":false},{"name":"nodejs","version":"15.14.0","date":"2021-04-06","lts":false,"security":false},{"name":"nodejs","version":"16.0.0","date":"2021-04-20","lts":false,"security":false},{"name":"nodejs","version":"16.1.0","date":"2021-05-04","lts":false,"security":false},{"name":"nodejs","version":"16.2.0","date":"2021-05-19","lts":false,"security":false},{"name":"nodejs","version":"16.3.0","date":"2021-06-03","lts":false,"security":false},{"name":"nodejs","version":"16.4.0","date":"2021-06-23","lts":false,"security":false},{"name":"nodejs","version":"16.5.0","date":"2021-07-14","lts":false,"security":false},{"name":"nodejs","version":"16.6.0","date":"2021-07-29","lts":false,"security":true},{"name":"nodejs","version":"16.7.0","date":"2021-08-18","lts":false,"security":false},{"name":"nodejs","version":"16.8.0","date":"2021-08-25","lts":false,"security":false},{"name":"nodejs","version":"16.9.0","date":"2021-09-07","lts":false,"security":false},{"name":"nodejs","version":"16.10.0","date":"2021-09-22","lts":false,"security":false},{"name":"nodejs","version":"16.11.0","date":"2021-10-08","lts":false,"security":false},{"name":"nodejs","version":"16.12.0","date":"2021-10-20","lts":false,"security":false},{"name":"nodejs","version":"16.13.0","date":"2021-10-26","lts":"Gallium","security":false},{"name":"nodejs","version":"16.14.0","date":"2022-02-08","lts":"Gallium","security":false},{"name":"nodejs","version":"16.15.0","date":"2022-04-26","lts":"Gallium","security":false},{"name":"nodejs","version":"16.16.0","date":"2022-07-07","lts":"Gallium","security":true},{"name":"nodejs","version":"17.0.0","date":"2021-10-19","lts":false,"security":false},{"name":"nodejs","version":"17.1.0","date":"2021-11-09","lts":false,"security":false},{"name":"nodejs","version":"17.2.0","date":"2021-11-30","lts":false,"security":false},{"name":"nodejs","version":"17.3.0","date":"2021-12-17","lts":false,"security":false},{"name":"nodejs","version":"17.4.0","date":"2022-01-18","lts":false,"security":false},{"name":"nodejs","version":"17.5.0","date":"2022-02-10","lts":false,"security":false},{"name":"nodejs","version":"17.6.0","date":"2022-02-22","lts":false,"security":false},{"name":"nodejs","version":"17.7.0","date":"2022-03-09","lts":false,"security":false},{"name":"nodejs","version":"17.8.0","date":"2022-03-22","lts":false,"security":false},{"name":"nodejs","version":"17.9.0","date":"2022-04-07","lts":false,"security":false},{"name":"nodejs","version":"18.0.0","date":"2022-04-18","lts":false,"security":false},{"name":"nodejs","version":"18.1.0","date":"2022-05-03","lts":false,"security":false},{"name":"nodejs","version":"18.2.0","date":"2022-05-17","lts":false,"security":false},{"name":"nodejs","version":"18.3.0","date":"2022-06-02","lts":false,"security":false},{"name":"nodejs","version":"18.4.0","date":"2022-06-16","lts":false,"security":false},{"name":"nodejs","version":"18.5.0","date":"2022-07-06","lts":false,"security":true}]');
 
 /***/ }),
 
-/***/ 55149:
+/***/ 95040:
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"v0.8":{"start":"2012-06-25","end":"2014-07-31"},"v0.10":{"start":"2013-03-11","end":"2016-10-31"},"v0.12":{"start":"2015-02-06","end":"2016-12-31"},"v4":{"start":"2015-09-08","lts":"2015-10-12","maintenance":"2017-04-01","end":"2018-04-30","codename":"Argon"},"v5":{"start":"2015-10-29","maintenance":"2016-04-30","end":"2016-06-30"},"v6":{"start":"2016-04-26","lts":"2016-10-18","maintenance":"2018-04-30","end":"2019-04-30","codename":"Boron"},"v7":{"start":"2016-10-25","maintenance":"2017-04-30","end":"2017-06-30"},"v8":{"start":"2017-05-30","lts":"2017-10-31","maintenance":"2019-01-01","end":"2019-12-31","codename":"Carbon"},"v9":{"start":"2017-10-01","maintenance":"2018-04-01","end":"2018-06-30"},"v10":{"start":"2018-04-24","lts":"2018-10-30","maintenance":"2020-05-19","end":"2021-04-30","codename":"Dubnium"},"v11":{"start":"2018-10-23","maintenance":"2019-04-22","end":"2019-06-01"},"v12":{"start":"2019-04-23","lts":"2019-10-21","maintenance":"2020-11-30","end":"2022-04-30","codename":"Erbium"},"v13":{"start":"2019-10-22","maintenance":"2020-04-01","end":"2020-06-01"},"v14":{"start":"2020-04-21","lts":"2020-10-27","maintenance":"2021-10-19","end":"2023-04-30","codename":"Fermium"},"v15":{"start":"2020-10-20","maintenance":"2021-04-01","end":"2021-06-01"},"v16":{"start":"2021-04-20","lts":"2021-10-26","maintenance":"2022-10-18","end":"2023-09-11","codename":"Gallium"},"v17":{"start":"2021-10-19","maintenance":"2022-04-01","end":"2022-06-01"},"v18":{"start":"2022-04-19","lts":"2022-10-25","maintenance":"2023-10-18","end":"2025-04-30","codename":"Hydrogen"},"v19":{"start":"2022-10-18","maintenance":"2023-04-01","end":"2023-06-01"},"v20":{"start":"2023-04-18","lts":"2023-10-24","maintenance":"2024-10-22","end":"2026-04-30","codename":""}}');
+module.exports = JSON.parse('{"v0.8":{"start":"2012-06-25","end":"2014-07-31"},"v0.10":{"start":"2013-03-11","end":"2016-10-31"},"v0.12":{"start":"2015-02-06","end":"2016-12-31"},"v4":{"start":"2015-09-08","lts":"2015-10-12","maintenance":"2017-04-01","end":"2018-04-30","codename":"Argon"},"v5":{"start":"2015-10-29","maintenance":"2016-04-30","end":"2016-06-30"},"v6":{"start":"2016-04-26","lts":"2016-10-18","maintenance":"2018-04-30","end":"2019-04-30","codename":"Boron"},"v7":{"start":"2016-10-25","maintenance":"2017-04-30","end":"2017-06-30"},"v8":{"start":"2017-05-30","lts":"2017-10-31","maintenance":"2019-01-01","end":"2019-12-31","codename":"Carbon"},"v9":{"start":"2017-10-01","maintenance":"2018-04-01","end":"2018-06-30"},"v10":{"start":"2018-04-24","lts":"2018-10-30","maintenance":"2020-05-19","end":"2021-04-30","codename":"Dubnium"},"v11":{"start":"2018-10-23","maintenance":"2019-04-22","end":"2019-06-01"},"v12":{"start":"2019-04-23","lts":"2019-10-21","maintenance":"2020-11-30","end":"2022-04-30","codename":"Erbium"},"v13":{"start":"2019-10-22","maintenance":"2020-04-01","end":"2020-06-01"},"v14":{"start":"2020-04-21","lts":"2020-10-27","maintenance":"2021-10-19","end":"2023-04-30","codename":"Fermium"},"v15":{"start":"2020-10-20","maintenance":"2021-04-01","end":"2021-06-01"},"v16":{"start":"2021-04-20","lts":"2021-10-26","maintenance":"2022-10-18","end":"2023-09-11","codename":"Gallium"},"v17":{"start":"2021-10-19","maintenance":"2022-04-01","end":"2022-06-01"},"v18":{"start":"2022-04-19","lts":"2022-10-25","maintenance":"2023-10-18","end":"2025-04-30","codename":""},"v19":{"start":"2022-10-18","maintenance":"2023-04-01","end":"2023-06-01"},"v20":{"start":"2023-04-18","lts":"2023-10-24","maintenance":"2024-10-22","end":"2026-04-30","codename":""}}');
 
 /***/ }),
 
