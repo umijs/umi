@@ -47,12 +47,12 @@ export function esbuildExternalPlugin(): Plugin {
 
 function parseExt(file: string) {
   const lastQuestionMarkIdx = file.lastIndexOf('?');
-  if (~lastQuestionMarkIdx) {
+  if (lastQuestionMarkIdx > 0) {
     file = file.substring(0, lastQuestionMarkIdx);
   }
   const lastDotIdx = file.lastIndexOf('.');
   const lastSlashIdx = file.lastIndexOf('/');
-  if (~lastDotIdx && (!~lastSlashIdx || lastDotIdx > lastSlashIdx)) {
+  if (lastDotIdx > 0 && (lastSlashIdx < 0 || lastDotIdx > lastSlashIdx)) {
     return file.substring(lastDotIdx + 1);
   }
 }
