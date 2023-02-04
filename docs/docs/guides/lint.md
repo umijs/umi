@@ -25,14 +25,6 @@ $ npm i @umijs/lint -D
 $ pnpm add @umijs/lint -D
 ```
 
-然后安装 ESLint 及 Stylelint：
-
-```bash
-$ npm i eslint stylelint -D
-# or
-$ pnpm add eslint stylelint -D
-```
-
 ### 启用配置
 
 在 `.eslintrc.js` 及 `.stylelintrc.js` 里继承 Umi 提供的配置：
@@ -57,7 +49,7 @@ module.exports = {
 }
 ```
 
-在配置文件创建完毕后，我们其实已经可以通过 `eslint`、`stylelint` 命令来执行 lint 了，但我们仍然推荐使用 `umi lint` 命令，以获得更便捷的体验。
+在配置文件创建完毕后，我们就可以通过`umi lint`命令来执行 lint 了。
 
 ### CLI
 
@@ -92,7 +84,7 @@ lint-staged 用来驱动 `umi lint` 命令，每次仅将变更的内容交给 `
 
 ```bash
 $ npm i lint-staged -D
-#or 
+#or
 $ pnpm add lint-staged -D
 ```
 
