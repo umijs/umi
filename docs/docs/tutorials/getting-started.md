@@ -204,3 +204,9 @@ event - build index.html
 ```
 
 完成构建后，就可以把 dist 目录部署到服务器上了。
+
+## 进阶
+
+进阶学习可以看[《使用umi开发一个blog》](docs/docs/introduce/contributing.md)，它将引导你一步步了解umi怎么使用。
+
+
