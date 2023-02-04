@@ -1,5 +1,6 @@
 import type { Config } from '@jest/types';
 import { Path, TransformerConfig } from '@jest/types/build/Config';
+import { setNoDeprecation } from '@umijs/utils';
 import { join } from 'path';
 
 export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
@@ -53,6 +54,7 @@ export function createConfig(opts?: {
   target?: 'node' | 'browser';
   jsTransformerOpts?: any;
 }): Config.InitialOptions {
+  setNoDeprecation();
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     testPathIgnorePatterns: [
