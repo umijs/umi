@@ -26,7 +26,7 @@ Commands:
     plugin    inspect umi plugins
     verify-commit
     preview   locally preview production build
-    run       
+    run       run the zx script
     generate  generate code snippets quickly
     g         generate code snippets quickly
 
