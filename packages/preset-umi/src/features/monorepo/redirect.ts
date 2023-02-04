@@ -10,6 +10,7 @@ import type { IApi } from '../../types';
 interface IConfigs {
   srcDir?: string[];
   exclude?: RegExp[];
+  peerDeps?: boolean;
 }
 
 export default (api: IApi) => {
