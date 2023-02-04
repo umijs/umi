@@ -150,7 +150,7 @@ jobs:
       - name: Run tests (Part mfsu - 3)
         if: matrix.part == 'mfsu'
         # mfsu-independent-e2e  : 8080
-        run: pnpm umi-scripts test:e2e
+        run: pnpm umi-scripts turbo test:e2e
               --filter @example/mfsu-independent-e2e
 
       - name: Notify Contributor Group
