@@ -21,7 +21,12 @@ function getJSTransformer(
     case 'esbuild':
       return [
         require.resolve(join(__dirname, 'transformers/esbuild')),
-        { ...opts, sourcemap: true },
+        {
+          // See https://github.com/umijs/umi/issues/10412
+          target: 'es2020',
+          ...opts,
+          sourcemap: true,
+        },
       ];
     case 'swc':
       return require.resolve('@swc-node/jest');
