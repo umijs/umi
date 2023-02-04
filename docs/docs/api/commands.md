@@ -24,7 +24,7 @@ Commands:
     version   show umi version
     v         show umi version
     plugin    inspect umi plugins
-    verify-commit
+    verify-commit verify the commit message, which is usually used with husky.
     preview   locally preview production build
     run       run the script commands, support for ts and zx
     generate  generate code snippets quickly
