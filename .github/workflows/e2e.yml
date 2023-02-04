@@ -26,6 +26,8 @@ jobs:
   e2e:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0
     strategy:
       matrix:
         node-version: [16.x]
@@ -70,20 +72,6 @@ jobs:
 
       - name: Build packages
         run: pnpm build
-
-      - name: Cache Playwright
-        id: cache-playwright
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-${{ github.sha }}
-          restore-keys: |
-            playwright-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-
-            playwright-${{ github.job }}-${{ runner.os }}-node${{ matrix.node-version }}-${{ github.ref_name }}-${{ env.EXPIRES_WEEK_MARK }}-
-
-      - name: Install Playwright Browsers
-        if: steps.cache-playwright.outputs.cache-hit != 'true'
-        run: pnpm dlx playwright install --with-deps
 
       - name: Run tests (Part boilerplate)
         if: matrix.part == 'boilerplate'
