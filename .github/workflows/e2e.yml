@@ -26,8 +26,6 @@ jobs:
   e2e:
     timeout-minutes: 60
     runs-on: ${{ matrix.os }}
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0
     strategy:
       matrix:
         node-version: [16.x]
@@ -69,6 +67,14 @@ jobs:
 
       - name: Install dependencies
         run: pnpm i
+
+      - name: Install playwright (ubuntu)
+        if: runner.os != 'Windows'
+        uses: docker://mcr.microsoft.com/playwright:v1.30.0
+
+      - name: Install playwright (windows)
+        if: runner.os == 'Windows'
+        run: pnpm dlx playwright install --with-deps
 
       - name: Build packages
         run: pnpm build
