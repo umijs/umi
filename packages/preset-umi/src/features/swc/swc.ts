@@ -1,16 +1,15 @@
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
-  api.describe({
-    enableBy: ({ userConfig }) => {
-      return (
-        api.config.srcTranspiler === 'swc' || userConfig.srcTranspiler === 'swc'
-      );
-    },
-  });
-
   const bundlerWebpackPkg = require('@umijs/bundler-webpack/package.json');
   api.addOnDemandDeps(() => {
+    const enabled =
+      api.config.srcTranspiler === 'swc' ||
+      api.userConfig.srcTranspiler === 'swc';
+    if (!enabled) {
+      return [];
+    }
+
     return [
       {
         name: '@swc/core',
