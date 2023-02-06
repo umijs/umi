@@ -59,10 +59,10 @@ function parseExt(file: string) {
 
 const SOURCE_REG = /\.(t|j)sx?$/;
 function isSource(file: string) {
-  // perf optimization
   if (SOURCE_REG.test(file)) {
     return true;
   }
+  // allow import without ext
   const ext = parseExt(file);
-  return !ext || ext === 'tsx' || ext === 'ts' || ext === 'jsx' || ext === 'js';
+  return !ext;
 }
