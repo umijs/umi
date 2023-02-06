@@ -226,6 +226,77 @@ export default function mf(api: IApi) {
       );
     }
 
+    const identifierList = [
+      'abstract',
+      'await',
+      'boolean',
+      'break',
+      'byte',
+      'case',
+      'catch',
+      'char',
+      'class',
+      'const',
+      'continue',
+      'debugger',
+      'default',
+      'delete',
+      'do',
+      'double',
+      'else',
+      'enum',
+      'export',
+      'extends',
+      'false',
+      'final',
+      'finally',
+      'float',
+      'for',
+      'function',
+      'goto',
+      'if',
+      'implements',
+      'import',
+      'in',
+      'instanceof',
+      'int',
+      'interface',
+      'let',
+      'long',
+      'native',
+      'new',
+      'null',
+      'package',
+      'private',
+      'protected',
+      'public',
+      'return',
+      'short',
+      'static',
+      'super',
+      'switch',
+      'synchronized',
+      'this',
+      'throw',
+      'transient',
+      'true',
+      'try',
+      'typeof',
+      'var',
+      'void',
+      'volatile',
+      'while',
+      'with',
+      'yield',
+    ];
+    const regexIdentifierName =
+      /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
+    if (identifierList.includes(name) || !regexIdentifierName.test(name)) {
+      api.logger.warn(
+        `module federation name is not valid javascript identifier , "unNamedMF" will be used`,
+      );
+    }
+
     return name || 'unNamedMF';
   }
 
