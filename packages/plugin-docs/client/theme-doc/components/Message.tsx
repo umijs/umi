@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import React, { PropsWithChildren } from 'react';
 
 enum MessageType {
@@ -11,6 +12,7 @@ interface MessageProps {
   type?: MessageType;
   emoji?: string | boolean;
   title?: string;
+  fontsize?: 'small';
 }
 
 function Message(props: PropsWithChildren<MessageProps>) {
@@ -52,7 +54,10 @@ function Message(props: PropsWithChildren<MessageProps>) {
 
   return (
     <div
-      className={`flex w-full py-5 px-4 rounded-lg my-4 mdx-message ${messageClass}`}
+      className={cx(
+        `flex w-full py-5 px-4 rounded-lg my-4 mdx-message ${messageClass}`,
+        props.fontsize === 'small' && 'text-sm',
+      )}
     >
       <span role="img" className="mr-3 dark:text-white">
         {messageEmoji}
