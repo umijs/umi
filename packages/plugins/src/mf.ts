@@ -272,7 +272,7 @@ export default function mf(api: IApi) {
   }
 
   function isValidIdentifyName(name: string) {
-    const identifierList = [
+    const reservedKeywords = [
       'abstract',
       'await',
       'boolean',
@@ -337,7 +337,7 @@ export default function mf(api: IApi) {
     ];
     const regexIdentifierName =
       /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
-    if (identifierList.includes(name) || !regexIdentifierName.test(name)) {
+    if (reservedKeywords.includes(name) || !regexIdentifierName.test(name)) {
       return false;
     }
     return true;
