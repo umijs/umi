@@ -1,6 +1,7 @@
-import { join } from 'path';
+import { dirname, join } from 'path';
 import chalk from '../compiled/chalk';
 import fsExtra from '../compiled/fs-extra';
+import { pkgUpSync } from '../compiled/pkg-up';
 import { importLazy } from './importLazy';
 
 const enableFSLogger =
@@ -8,7 +9,7 @@ const enableFSLogger =
 
 const profilers: Record<string, { startTime: number }> = {};
 
-const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
+const loggerDir = findLoggerDir();
 const loggerPath = join(loggerDir, 'umi.log');
 
 export const prefixes = {
@@ -127,4 +128,13 @@ export function profile(id: string, ...message: any[]) {
 
 export function getLatestLogFilePath() {
   return enableFSLogger ? loggerPath : null;
+}
+
+function findLoggerDir() {
+  let baseDir = process.cwd();
+  const pkg = pkgUpSync({ cwd: baseDir });
+  if (pkg) {
+    baseDir = dirname(pkg);
+  }
+  return join(baseDir, 'node_modules/.cache/logger');
 }
