@@ -403,6 +403,8 @@ export default function EmptyRoute() {
           path: winPath(plugin),
         })),
         validKeys,
+        // Inject code for vite only
+        isViteMode: !!api.config.vite,
       },
     });
 
