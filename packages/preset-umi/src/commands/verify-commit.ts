@@ -18,6 +18,7 @@ export default (api: IApi) => {
 
   api.registerCommand({
     name: 'verify-commit',
+    description: 'verify the commit message, which is usually used with husky.',
     configResolveMode: 'loose',
     fn({ args }) {
       api.logger.info('verify-commit');
