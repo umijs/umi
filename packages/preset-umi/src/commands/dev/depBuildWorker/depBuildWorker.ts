@@ -64,6 +64,7 @@ async function start() {
     env: Env.development,
     entry: opts.entry,
     userConfig: opts.config,
+    disableCopy: true,
     hash: true,
     staticPathPrefix: MF_DEP_PREFIX,
     name: MFSU_NAME,

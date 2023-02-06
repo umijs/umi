@@ -2,7 +2,7 @@ import {
   AsyncSeriesWaterfallHook,
   SyncWaterfallHook,
 } from '@umijs/bundler-utils/compiled/tapable';
-import { chalk, lodash, yParser, fastestLevenshtein } from '@umijs/utils';
+import { chalk, fastestLevenshtein, lodash, yParser } from '@umijs/utils';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { isAbsolute, join } from 'path';
@@ -390,7 +390,7 @@ export class Service {
     // run command
     this.stage = ServiceStage.runCommand;
     let ret = await command.fn({ args });
-    this._baconPlugins();
+    this._profilePlugins();
     return ret;
   }
 
@@ -436,14 +436,59 @@ export class Service {
     return { config, defaultConfig };
   }
 
-  _baconPlugins() {
-    // TODO: prettier
-    if (this.args.baconPlugins) {
+  _profilePlugins() {
+    if (this.args.profilePlugins) {
       console.log();
-      for (const id of Object.keys(this.plugins)) {
-        const plugin = this.plugins[id];
-        console.log(chalk.green('plugin'), plugin.id, plugin.time);
-      }
+      Object.keys(this.plugins)
+        .map((id) => {
+          const plugin = this.plugins[id];
+          const total = totalTime(plugin);
+          return {
+            id,
+            total,
+            register: plugin.time.register || 0,
+            hooks: plugin.time.hooks,
+          };
+        })
+        .filter((time) => {
+          return time.total > (this.args.profilePluginsLimit ?? 10);
+        })
+        .sort((a, b) => (b.total > a.total ? 1 : -1))
+        .forEach((time) => {
+          console.log(chalk.green('plugin'), time.id, time.total);
+          if (this.args.profilePluginsVerbose) {
+            console.log('      ', chalk.green('register'), time.register);
+            console.log(
+              '      ',
+              chalk.green('hooks'),
+              JSON.stringify(sortHooks(time.hooks)),
+            );
+          }
+        });
+    }
+
+    function sortHooks(hooks: Record<string, number[]>) {
+      const ret: Record<string, number[]> = {};
+      Object.keys(hooks)
+        .sort((a, b) => {
+          return add(hooks[b]) - add(hooks[a]);
+        })
+        .forEach((key) => {
+          ret[key] = hooks[key];
+        });
+      return ret;
+    }
+
+    function totalTime(plugin: Plugin) {
+      const time = plugin.time;
+      return (
+        (time.register || 0) +
+        Object.values(time.hooks).reduce<number>((a, b) => a + add(b), 0)
+      );
+    }
+
+    function add(nums: number[]) {
+      return nums.reduce((a, b) => a + b, 0);
     }
   }
 

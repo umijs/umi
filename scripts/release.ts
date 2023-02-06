@@ -128,13 +128,17 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   });
 
   // check independent package version
-  logger.event('check independent package version');
-  for await (const fromPkg of PATHS.INDEPENDENT_PACKAGES) {
-    await checkIndependentPackageChanged({
-      pkgDirPath: fromPkg,
-      updateTo: pkgsJsonPath,
-    });
-  }
+  // 有点问题，先注释掉
+  // 选 y 后，preset-umi 的 package.json 的 version 应该是新版本的，在这里被改回去了
+  PATHS.INDEPENDENT_PACKAGES;
+  checkIndependentPackageChanged;
+  // logger.event('check independent package version');
+  // for await (const fromPkg of PATHS.INDEPENDENT_PACKAGES) {
+  //   await checkIndependentPackageChanged({
+  //     pkgDirPath: fromPkg,
+  //     updateTo: pkgsJsonPath,
+  //   });
+  // }
 
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
@@ -304,7 +308,7 @@ async function checkIndependentPackageChanged(opts: {
       path.relative(PATHS.ROOT, pkgDirPath),
     )} since ${chalk.bold.blue(latestTag)}.
 Check published package and update version if necessary.
-Continue? `,
+Continue? (n/y) `,
   );
   if (answer.toLowerCase() !== 'y') {
     console.log(chalk.red(`> Cancelled, please check version and publish.`));

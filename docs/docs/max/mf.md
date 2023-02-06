@@ -16,7 +16,6 @@ import { Tabbed, Message } from 'umi';
 // .umirc.ts
 import { defineConfig } from '@umijs/max';
 
-// 提取变量是为了和 MFSU 配合使用保持配置一致
 const shared = {
   react: {
     singleton: true,
@@ -43,7 +42,6 @@ export default defineConfig({
     // 配置 MF 共享的模块
     shared,
   },
-  mfsu: false, // 如何开启 mfsu 见下一节
 });
 ```
 
@@ -53,7 +51,6 @@ export default defineConfig({
 // .umirc.ts
 import { defineConfig } from 'umi';
 
-// 提取变量是为了和 MFSU 配合使用保持配置一致
 const shared = {
   react: {
     singleton: true,
@@ -80,7 +77,6 @@ export default defineConfig({
     // 配置 MF 共享的模块
     shared,
   },
-  mfsu: false, // 如何开启 mfsu 见下一节
 });
 ```
 
@@ -337,27 +333,15 @@ const RemoteCounter = React.lazy(() => {
 
 ## 和 MFSU 一起使用
 
-关闭 MFSU 后使用 MF 插件时，编译速度会大大下降。需要在开启 MF 插件后仍然使用 MFSU 功能请仔细阅读本部分后再配置开启。
+Module Federation 插件会根据插件配置自动修改 MFSU 的**默认**配置以使两个功能在开发阶段正常使用，原理介绍如下：
 
 假设我们采用了如下 mf 插件的配置
 
 ```ts
 // .umirc.ts
-const shared = {
-  react: {
-    singleton: true,
-    eager: true,
-  },
-  'react-dom': {
-    singleton: true,
-    eager: true,
-  },
-};
-const remoteMFName = 'remoteMFName';
-
 export default defineConfig({
   mf: {
-    name: remoteMFName,
+    name: 'remoteMFName',
     remotes: [
       {
         name: 'remote1',
@@ -369,28 +353,63 @@ export default defineConfig({
         entry: 'https://to.the.remote.com/remote2.js',
       },
     ],
-    shared,
+    shared: {
+      react: {
+        singleton: true,
+        eager: true,
+      },
+      'react-dom': {
+        singleton: true,
+        eager: true,
+      },
+    }
   },
 });
 ```
 
-那么对应的 MFSU 的配置如下：
+那么对应最后生效的配置如下
 
 ```ts
-// .umirc.ts
-export default defineConfig({
+{
   mfsu: {
-    // 重命名 mfsu 远端模块名称, 需要全局唯一的名字，防止两个启用 mf 的项目模块名冲突
-    mfName: 'mfsu_global_uniq_name',
-
-    // 本项目导出的 MF 模块的名称
-    remoteName: remoteMFName,
-
-    // 所有在项目中使用的 MF 模块的名称
+    // mf 插件自动填充以下和 MFSU 兼容的默认配置
+    // 开启了 MFSU 也能在 DEV 阶段调试 MF 的模块
+    remoteName: remoteMFName, 
     remoteAliases: ['remote1', 'aliasRemote'],
-
-    // 需要和 mf 插件的值保证统一
-    shared,
+    shared: {
+      react: {
+        singleton: true,
+        eager: true,
+      },
+      'react-dom': {
+        singleton: true,
+        eager: true,
+      },
+    }
   },
-});
+  mf: {
+    name: 'remoteMFName',
+    remotes: [
+      {
+        name: 'remote1',
+        entry: 'https://to.the.remote.com/remote.js',
+      },
+      {
+        aliasName: 'aliasRemote',
+        name: 'remote2',
+        entry: 'https://to.the.remote.com/remote2.js',
+      },
+    ],
+    shared: {
+      react: {
+        singleton: true,
+        eager: true,
+      },
+      'react-dom': {
+        singleton: true,
+        eager: true,
+      },
+    },
+  },
+}
 ```

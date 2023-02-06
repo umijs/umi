@@ -1,8 +1,8 @@
-import { dirname, join, relative } from 'path';
 import { getMarkup } from '@umijs/server';
-import type { IApi, IRoute } from '../../types';
 import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
+import { dirname, join, relative } from 'path';
+import type { IApi, IRoute } from '../../types';
 import { absServerBuildPath } from '../ssr/utils';
 
 let markupRender: any;
@@ -14,7 +14,10 @@ interface IExportHtmlItem {
     redirect?: string;
   };
   file: string;
+  prerender: boolean;
 }
+
+type IUserExtraRoute = string | { path: string; prerender: boolean };
 
 /**
  * get export html data from routes
@@ -42,6 +45,7 @@ function getExportHtmlData(routes: Record<string, IRoute>): IExportHtmlItem[] {
           path: is404 ? '/404' : route.absPath,
           redirect: route.redirect,
         },
+        prerender: route.prerender !== false,
         file,
       });
     }
@@ -88,18 +92,29 @@ export default (api: IApi) => {
    * convert user `exportStatic.extraRoutePaths` config to routes
    */
   async function getRoutesFromUserExtraPaths(
-    routePaths: string[] | (() => string[] | Promise<string[]>),
+    routePaths:
+      | IUserExtraRoute[]
+      | (() => IUserExtraRoute[] | Promise<IUserExtraRoute[]>),
   ) {
     const paths =
       typeof routePaths === 'function' ? await routePaths() : routePaths;
 
-    return paths.reduce<Record<string, IRoute>>(
-      (acc, p) => ({
-        ...acc,
-        [p]: { id: p, absPath: p, path: p.slice(1), file: '' },
-      }),
-      {},
-    );
+    return paths.reduce<Record<string, IRoute>>((acc, item) => {
+      const routePath = typeof item === 'string' ? item : item.path;
+
+      acc[routePath] = {
+        id: routePath,
+        absPath: routePath,
+        path: routePath.slice(1),
+        file: '',
+        // allow user to disable prerender for extra route
+        ...(typeof item === 'object' && item.prerender === false
+          ? { prerender: false }
+          : {}),
+      };
+
+      return acc;
+    }, {});
   }
 
   api.describe({
@@ -133,7 +148,7 @@ export default (api: IApi) => {
     );
     const htmlFiles: { path: string; content: string }[] = [];
 
-    for (const { file, route } of htmlData) {
+    for (const { file, route, prerender } of htmlData) {
       let { markupArgs } = opts;
 
       // handle relative publicPath, such as `./`
@@ -201,9 +216,10 @@ export default (api: IApi) => {
 
       htmlFiles.push({
         path: file,
-        content: api.config.ssr
-          ? await getPreRenderedHTML(api, htmlContent, route.path)
-          : htmlContent,
+        content:
+          api.config.ssr && prerender
+            ? await getPreRenderedHTML(api, htmlContent, route.path)
+            : htmlContent,
       });
     }
 

@@ -1,6 +1,10 @@
 // sort-object-keys
 import type { ImportDeclaration } from '@umijs/bundler-utils/compiled/@babel/types';
-import type { RequestHandler, webpack, Express } from '@umijs/bundler-webpack';
+import type {
+  BuildResult as ESBuildBuildResult,
+  Plugin as ESBuildPlugin,
+} from '@umijs/bundler-utils/compiled/esbuild';
+import type { Express, RequestHandler, webpack } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
 import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 import type {
@@ -99,6 +103,7 @@ export type IApi = PluginAPI &
     addLayouts: IAdd<null, { file: string; id: string }>;
     addMiddlewares: IAdd<null, RequestHandler>;
     addPolyfillImports: IAdd<null, { source: string; specifier?: string }>;
+    addPrepareBuildPlugins: IAdd<null, ESBuildPlugin>;
     addRuntimePlugin: IAdd<null, string>;
     addRuntimePluginKey: IAdd<null, string>;
     addTmpGenerateWatcherPaths: IAdd<null, string>;
@@ -190,6 +195,10 @@ export type IApi = PluginAPI &
     onPkgJSONChanged: IEvent<{
       current: Record<string, any>;
       origin: Record<string, any>;
+    }>;
+    onPrepareBuildSuccess: IEvent<{
+      isWatch: boolean;
+      result: ESBuildBuildResult;
     }>;
     restartServer: () => void;
     writeTmpFile: (opts: {

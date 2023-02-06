@@ -135,6 +135,7 @@ export async function addJavaScriptRules(opts: IOpts) {
           sourceType: 'unambiguous',
           babelrc: false,
           cacheDirectory: false,
+          browserslistConfigFile: false,
           // process.env.BABEL_CACHE !== 'none'
           //   ? join(cwd, `.umi/.cache/babel-loader`)
           //   : false,

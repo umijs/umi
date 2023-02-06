@@ -1,6 +1,6 @@
 {
   "name": "@umijs/did-you-know",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/umijs/did-you-know#readme",
@@ -43,7 +43,7 @@
     },
     {
       "text": "如果要支持低版本浏览器，可尝试新出的 legacy 配置项",
-      "url": "https://umijs.org/docs/api/config#legacy",
+      "url": "https://umijs.org/blog/legacy-browser",
       "majorVersion": 4
     },
     {
@@ -82,11 +82,6 @@
     },
     {
       "text": "如果你需要使用 Prettier, %%frameworkCliName%% g prettier 就可以一键完成配置",
-      "url": "https://umijs.org/docs/guides/generator#prettier-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
-      "majorVersion": 4
-    },
-    {
-      "text": "如果你需要使用 DvaJS 来作为状态管理库, %%frameworkCliName%% g dva 就可以一键完成配置",
       "url": "https://umijs.org/docs/guides/generator#prettier-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
       "majorVersion": 4
     },
@@ -138,6 +133,55 @@
     {
       "text": "如果想预览构建后产物, 可尝试 %%frameworkCliName%% preview",
       "url": "https://umijs.org/docs/api/commands#preview",
+      "majorVersion": 4
+    },
+    {
+      "text": "页面加载慢、产物体积大怎么办？试试做代码拆分",
+      "url": "https://umijs.org/blog/code-splitting",
+      "majorVersion": 4
+    },
+    {
+      "text": "全局数据存储，在 React 之外修改数据怎么办？试试一键上手 valtio",
+      "url": "https://umijs.org/docs/max/valtio",
+      "majorVersion": 4
+    },
+    {
+      "text": "请求加载态、数据管理、避免竟态问题，用 react-query 帮你全部解决",
+      "url": "https://umijs.org/docs/max/react-query",
+      "majorVersion": 4
+    },
+    {
+      "text": "CSS 不够灵活、编写动态样式太繁琐怎么办？试试 styled-components 插件",
+      "url": "https://umijs.org/docs/max/styled-components",
+      "majorVersion": 4
+    },
+    {
+      "text": "需要添加全局 React Context 吗？在 src/app.(ts|tsx) 运行时配置中轻松解决",
+      "url": "https://umijs.org/docs/api/runtime-config",
+      "majorVersion": 4
+    },
+    {
+      "text": "@umijs/max 和 umi 如何选择？max 内置了很多好用的插件，即开即用，而 umi 也可以手动配置插件，独立使用",
+      "url": "https://umijs.org/docs/guides/use-plugins",
+      "majorVersion": 4,
+      "framework": [
+        "umi",
+        "@umijs/max"
+      ]
+    },
+    {
+      "text": "遇到难解的配置问题，试试从 Umi FAQ 中寻找答案",
+      "url": "https://umijs.org/docs/introduce/faq",
+      "majorVersion": 4
+    },
+    {
+      "text": "全局布局用 layout ，多层布局用 wrappers ，从文档了解更多路由的控制方法",
+      "url": "https://umijs.org/docs/guides/routes",
+      "majorVersion": 4
+    },
+    {
+      "text": "全局样式、全局脚本写在哪里？创建 src/global.(ts|css) 轻松解决",
+      "url": "https://umijs.org/docs/guides/directory-structure#globaljtsx",
       "majorVersion": 4
     }
   ]

@@ -1,3 +1,5 @@
+import { chalk, logger, winPath } from '@umijs/utils';
+import path from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -19,31 +21,63 @@ export default (api: IApi) => {
     }
   });
 
-  api.onCheckCode((opts) => {
-    if (opts.isFromTmp) return;
-    if (/node_modules/.test(opts.file)) return;
-    opts.imports.forEach((imp) => {
-      const { source, loc } = imp;
-      if (source.startsWith('.')) return;
-      if (source.startsWith('/')) return;
-      if (source.startsWith('@/') || source.startsWith('@@/')) return;
+  api.onPrepareBuildSuccess(({ result }) => {
+    const files = Object.keys(result.metafile!.inputs);
+    const importsBySource = new Map();
+    for (const file of files) {
+      const winP = winPath(file);
+      if (winP.includes('.umi/')) continue;
+      if (winP.includes('/node_modules/')) continue;
+      if (winP.startsWith('../')) continue;
+      if (path.isAbsolute(file)) continue;
+      const { imports } = result.metafile!.inputs[file];
+      for (const imp of imports) {
+        // external means it's not in project src
+        if (imp.kind === 'import-statement' && imp.external) {
+          if (!importsBySource.has(imp.path)) {
+            importsBySource.set(imp.path, []);
+          }
+          importsBySource.get(imp.path).push({ file });
+        }
+      }
+    }
+    const phantomDeps = [];
+    for (const [source, files] of importsBySource) {
+      // <runtime> is a special source,
+      // it might be from esbuild internal
+      if (source.startsWith('<')) continue;
+      if (source.startsWith('.')) continue;
+      if (source.startsWith('/')) continue;
+      if (source.startsWith('@/') || source.startsWith('@@/')) continue;
 
       const pkgName = getPkgName(source);
-      if (api.config.phantomDependency.exclude?.includes(pkgName)) return;
+      if (api.config.phantomDependency.exclude?.includes(pkgName)) continue;
 
-      if (api.pkg.dependencies?.[pkgName]) return;
-      if (api.pkg.devDependencies?.[pkgName]) return;
-      // clientDependencies is used in tnpm
-      if (api.pkg.clientDependencies?.[pkgName]) return;
+      if (api.pkg.dependencies?.[pkgName]) continue;
+      if (api.pkg.devDependencies?.[pkgName]) continue;
+      // clientDependencies is used in ant-fin internal
+      if (api.pkg.clientDependencies?.[pkgName]) continue;
 
-      if (matchAlias(source, api.config.alias || {})) return;
-      if (matchExternals(source, api.config.externals || {})) return;
+      if (matchAlias(source, api.config.alias || {})) continue;
+      if (matchExternals(source, api.config.externals || {})) continue;
 
-      throw new opts.CodeFrameError(
-        `${source} is a phantom dependency, please specify it in package.json.`,
-        loc,
+      phantomDeps.push(source);
+      logger.error(
+        `[phantomDependency] ${chalk.red(
+          `${source} is a phantom dependency, please specify it in package.json.`,
+        )}`,
       );
-    });
+      for (const file of files) {
+        logger.error(`[phantomDependency] ${file.file} imports ${source}`);
+      }
+    }
+    if (phantomDeps.length && api.name !== 'dev') {
+      throw new Error(
+        `[phantomDependency] has phantom dependencies ${phantomDeps.join(
+          ', ',
+        )}, exit.`,
+      );
+    }
   });
 
   function getPkgName(source: string) {

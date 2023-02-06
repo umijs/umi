@@ -1,8 +1,10 @@
 # 插件 API
 
-为方便查找，以下内容通过字母排序。
+Umi 的核心就在于它的插件机制。基于 Umi 的插件机制，你可以获得扩展项目的编译时和运行时的能力。以下罗列出我们为你提供的所有的插件API，以帮助你能自由编写插件。
 
 在查用 Umi 插件 API 之前，我们建议你先阅读[插件](../guides/plugins)一节，以了解 umi 插件的机制及原理，这将帮助你更好的使用插件 API。
+
+> 为方便查找，以下内容通过字母排序。
 
 ## 核心 API
 service 和 PluginAPI 里定义的方法。
@@ -359,6 +361,8 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ### addPolyfillImports
 添加补丁 import，在整个应用的最前面执行。 传入的 fn 不需要参数，返回 `{ source: string, specifier?:string }`
 
+### addPrepareBuildPlugins
+
 ### addRuntimePlugin
 添加运行时插件，传入的 fn 不需要参数，返回 string ，表示插件的路径。
 
@@ -564,6 +568,7 @@ args: {
 ### onPkgJSONChanged
 package.json 变更时。传入的 fn 接收 `{origin?, current}` 作为参数。它们的类型都是 package.json 对象
 
+### onPrepareBuildSuccess
 
 ### onStart
 启动时。传入的 fn 不接收任何参数。

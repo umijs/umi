@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { dirname } from 'path';
 import { IApi } from 'umi';
 import { withTmpPath } from './utils/withTmpPath';
@@ -37,7 +38,9 @@ export default (api: IApi) => {
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
-import styled, { ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme } from '${libPath}';
+import styled, { ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme } from '${winPath(
+        libPath,
+      )}';
 export { styled, ThemeProvider, createGlobalStyle, css, keyframes, StyleSheetManager, useTheme };
       `,
     });

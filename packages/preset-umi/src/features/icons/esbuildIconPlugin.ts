@@ -1,8 +1,9 @@
-import type { Plugin, Loader } from '@umijs/bundler-utils/compiled/esbuild';
+import type { Loader, Plugin } from '@umijs/bundler-utils/compiled/esbuild';
+import { logger } from '@umijs/utils';
 import fs from 'fs';
-import { extractIcons } from '../extract';
+import { extractIcons } from './extract';
 
-export function esbuildCollectIconPlugin(opts: {
+export function esbuildIconPlugin(opts: {
   icons: Set<string>;
   alias: Record<string, string>;
 }): Plugin {
@@ -14,7 +15,9 @@ export function esbuildCollectIconPlugin(opts: {
         const filter = new RegExp(`\\.(${loader})$`);
         build.onLoad({ filter }, (args) => {
           const contents = fs.readFileSync(args.path, 'utf-8');
-          extractIcons(contents).forEach((icon) => {
+          const icons = extractIcons(contents);
+          logger.debug(`[icons] ${args.path} > ${icons}`);
+          icons.forEach((icon) => {
             // just add
             // don't handle delete for dev
             opts.icons.add(opts.alias[icon] || icon);

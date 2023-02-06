@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import { keyframes, styled } from 'umi';
 
 export const Wrapper = styled.section({
   textAlign: 'center',

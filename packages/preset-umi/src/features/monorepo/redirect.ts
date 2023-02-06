@@ -1,8 +1,8 @@
-import { isLocalDev, logger, isMonorepo } from '@umijs/utils';
+import { chalk, isLocalDev, isMonorepo, logger, resolve } from '@umijs/utils';
 import { pkgUp } from '@umijs/utils/compiled/pkg-up';
 import assert from 'assert';
 import { existsSync, statSync } from 'fs';
-import { dirname, join } from 'path';
+import { basename, dirname, join } from 'path';
 // @ts-ignore
 import { getPackages } from '../../../compiled/@manypkg/get-packages';
 import type { IApi } from '../../types';
@@ -10,6 +10,7 @@ import type { IApi } from '../../types';
 interface IConfigs {
   srcDir?: string[];
   exclude?: RegExp[];
+  peerDeps?: boolean;
 }
 
 export default (api: IApi) => {
@@ -22,6 +23,7 @@ export default (api: IApi) => {
           Joi.object({
             srcDir: Joi.array().items(Joi.string()),
             exclude: Joi.array().items(Joi.object().instance(RegExp)),
+            peerDeps: Joi.boolean(),
           }),
         );
       },
@@ -30,9 +32,10 @@ export default (api: IApi) => {
   });
 
   api.modifyConfig(async (memo) => {
+    const currentProjectRoot = process.env.APP_ROOT ? process.cwd() : api.cwd;
     const rootPkg = await pkgUp({
       // APP_ROOT: https://github.com/umijs/umi/issues/9461
-      cwd: dirname(process.env.APP_ROOT ? process.cwd() : api.cwd),
+      cwd: dirname(currentProjectRoot),
     });
     if (!rootPkg) return memo;
     const root = dirname(rootPkg);
@@ -42,7 +45,7 @@ export default (api: IApi) => {
     );
 
     const config: IConfigs = memo.monorepoRedirect || {};
-    const { exclude = [], srcDir = ['src'] } = config;
+    const { exclude = [], srcDir = ['src'], peerDeps = false } = config;
     // Note: not match `umi` package in local dev
     if (isLocalDev()) {
       logger.info(
@@ -58,12 +61,12 @@ export default (api: IApi) => {
     // collect all project
     const projects = await collectAllProjects({ root });
     const alias = usingDeps.reduce<Record<string, string>>((obj, name) => {
-      const root = projects[name];
-      if (!root) {
+      const pkgInfo = projects[name];
+      if (!pkgInfo) {
         return obj;
       }
       srcDir.some((dirName) => {
-        const dirPath = join(root, dirName);
+        const dirPath = join(pkgInfo.dir, dirName);
         if (existsSync(dirPath) && statSync(dirPath).isDirectory()) {
           // redirect to source dir
           obj[name] = dirPath;
@@ -72,8 +75,52 @@ export default (api: IApi) => {
       });
       return obj;
     }, {});
+    // collect peer deps
+    const peerDepsAliasMap: Record<string, string> = {};
+    if (peerDeps) {
+      Object.entries(projects).forEach(([_name, pkgInfo]) => {
+        const willResolveDeps: Record<string, string> =
+          pkgInfo.packageJson?.peerDependencies || {};
+        Object.keys(willResolveDeps).forEach((depName) => {
+          // if already resolved, pass
+          if (peerDepsAliasMap[depName]) {
+            return;
+          }
+          // if in current monorepo, pass
+          if (projects[depName]) {
+            return;
+          }
+          // first resolve from current project
+          const resolved = tryResolveDep({
+            name: depName,
+            from: currentProjectRoot,
+          });
+          if (resolved) {
+            peerDepsAliasMap[depName] = resolved;
+            return;
+          }
+          // then resolve from other project
+          const resolvedFromOtherProject = tryResolveDep({
+            name: depName,
+            from: pkgInfo.dir,
+          });
+          if (resolvedFromOtherProject) {
+            peerDepsAliasMap[depName] = resolvedFromOtherProject;
+          }
+          // if not found, pass
+        });
+        logger.debug(
+          `[monorepoRedirect]: resolved peer deps ${Object.keys(
+            peerDepsAliasMap,
+          )
+            .map((i) => chalk.green(i))
+            .join(', ')} from ${basename(pkgInfo.dir)}`,
+        );
+      });
+    }
     memo.alias = {
       ...memo.alias,
+      ...peerDepsAliasMap,
       ...alias,
     };
 
@@ -85,11 +132,6 @@ interface IOpts {
   root: string;
 }
 
-interface IProject {
-  packageJson: Record<string, any>;
-  dir: string;
-}
-
 const DEP_KEYS = ['devDependencies', 'dependencies'];
 function collectPkgDeps(pkg: Record<string, any>) {
   const deps: string[] = [];
@@ -99,16 +141,31 @@ function collectPkgDeps(pkg: Record<string, any>) {
   return deps;
 }
 
+interface IManyPkgPackageInfo {
+  packageJson: Record<string, any>;
+  dir: string;
+}
+
 async function collectAllProjects(opts: IOpts) {
   const workspaces = await getPackages(opts.root);
-  return workspaces.packages.reduce<Record<string, string>>(
-    (obj: Record<string, string>, pkg: IProject) => {
-      const name = pkg.packageJson?.name;
-      if (name) {
-        obj[name] = pkg.dir;
-      }
-      return obj;
-    },
-    {},
-  );
+  return (workspaces.packages as IManyPkgPackageInfo[]).reduce<
+    Record<string, IManyPkgPackageInfo>
+  >((obj, pkg) => {
+    const name = pkg.packageJson?.name;
+    if (name) {
+      obj[name] = pkg;
+    }
+    return obj;
+  }, {});
+}
+
+function tryResolveDep(opts: { name: string; from: string }) {
+  const { name, from } = opts;
+  try {
+    return dirname(
+      resolve.sync(`${name}/package.json`, {
+        basedir: from,
+      }),
+    );
+  } catch {}
 }

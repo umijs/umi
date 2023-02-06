@@ -16,10 +16,10 @@ import { Message } from 'umi';
 }
 ```
 
-然后在 `src/pages/index.js` 文件中引入即可生效。
+然后在 `src/pages/index.tsx` 文件中引入即可生效。
 
 ```jsx
-// src/pages/index.js
+// src/pages/index.tsx
 
 import './index.css';
 
@@ -36,7 +36,7 @@ export default function () {
 在 `js` 文件中引入样式时，如果赋予他一个变量名，就可以将样式以 CSS Module 的形式引入。
 
 ```jsx
-// src/pages/index.js
+// src/pages/index.tsx
 
 import styles from './index.css';
 
@@ -58,7 +58,7 @@ Umi 默认支持 LESS (推荐), SASS 和 SCSS 样式的导入，你可以直接�
 </Message>
 
 ```jsx
-// src/pages/index.js
+// src/pages/index.tsx
 
 import './index.less';
 import './index.sass';
@@ -72,7 +72,7 @@ export default function () {
 同样也支持 CSS Module 的用法：
 
 ```jsx
-// src/pages/index.js
+// src/pages/index.tsx
 
 import lessStyles from './index.less';
 import sassStyles from './index.sass';
