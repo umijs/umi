@@ -1,37 +1,65 @@
-import { chalk, fsExtra, installWithNpmClient, semver } from '@umijs/utils';
+import {
+  chalk,
+  fsExtra,
+  installWithNpmClient,
+  lodash,
+  logger,
+  semver,
+} from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '../../types';
 
+export interface IOnDemandInstallDep {
+  name: string;
+  version: string;
+  reason?: string;
+  /**
+   * install dev dep by default
+   * @default true
+   */
+  dev?: boolean;
+}
+
+interface IInstallDep extends IOnDemandInstallDep {
+  outdated?: boolean;
+}
+
 export default (api: IApi) => {
-  const bundlerWebpackPkg = require('@umijs/bundler-webpack/package.json');
-
-  api.onStart(() => {
-    // TODO: 支持在上层框架锁定，比如通过 api.appData.depsOnDemand 添加可选依赖
-    const hasSwcConfig =
-      api.config.srcTranspiler === 'swc' || api.config.depTranspiler === 'swc';
-
-    const swcDeps: IInstallDep[] = [
-      {
-        name: '@swc/core',
-        version: `^${bundlerWebpackPkg.devDependencies['@swc/core']}`,
+  api.onStart(async () => {
+    const deps: IOnDemandInstallDep[] = lodash.uniqBy(
+      await api.applyPlugins({
+        key: 'addOnDemandDeps',
+        initialValue: [],
+      }),
+      (dep) => {
+        return dep.name;
       },
-      {
-        name: 'swc-plugin-auto-css-modules',
-        version: `^${bundlerWebpackPkg.devDependencies['swc-plugin-auto-css-modules']}`,
-      },
-    ];
+    );
 
-    const { missingDeps } = checkDeps({
-      deps: swcDeps,
-    });
+    const { missingDeps } = checkDeps({ deps });
 
-    if (hasSwcConfig && missingDeps.length) {
-      api.logger.info(
-        `Since swc is used, install swc dependencies ${missingDeps
+    if (missingDeps.length) {
+      const hasReason = missingDeps.some((dep) => dep.reason);
+      const loggerText = [
+        `Install dependencies ${missingDeps
           .map(({ name }) => chalk.green(name))
           .join(', ')} on demand.`,
-      );
+        ...(hasReason
+          ? [
+              `        ${chalk.bold.bgBlue(' REASONS ')}`,
+              ...missingDeps
+                .filter((dep) => dep.reason)
+                .map(
+                  (dep) =>
+                    `         · ${chalk.cyan(dep.name)}${
+                      dep.outdated ? chalk.gray('(outdated)') : ''
+                    }: ${dep.reason}`,
+                ),
+            ]
+          : []),
+      ].join('\n');
+      logger.info(loggerText);
       addDeps({
         pkgPath: api.pkgPath || join(api.cwd, 'package.json'),
         deps: missingDeps,
@@ -43,9 +71,7 @@ export default (api: IApi) => {
     }
   });
 
-  function checkDeps(opts: { deps: IInstallDep[] }): {
-    missingDeps: IInstallDep[];
-  } {
+  function checkDeps(opts: { deps: IOnDemandInstallDep[] }) {
     const missingDeps: IInstallDep[] = [];
     const { deps } = opts;
     deps.forEach((dep) => {
@@ -59,7 +85,10 @@ export default (api: IApi) => {
         const userVersion = semver.minVersion(installed);
         const isOutdated = !userVersion || semver.ltr(userVersion, dep.version);
         if (isOutdated) {
-          missingDeps.push(dep);
+          missingDeps.push({
+            ...dep,
+            outdated: true,
+          });
         }
       }
     });
@@ -69,18 +98,28 @@ export default (api: IApi) => {
   }
 };
 
-interface IInstallDep {
-  name: string;
-  version: string;
-}
-
-function addDeps(opts: { pkgPath: string; deps: IInstallDep[] }) {
-  const pkg = existsSync(opts.pkgPath)
-    ? fsExtra.readJSONSync(opts.pkgPath)
-    : {};
-  pkg.devDependencies = pkg.devDependencies || {};
-  opts.deps.forEach((dep) => {
-    pkg.devDependencies[dep.name] = dep.version;
-  });
-  fsExtra.writeJSONSync(opts.pkgPath, pkg, { spaces: 2 });
+function addDeps(opts: { pkgPath: string; deps: IOnDemandInstallDep[] }) {
+  const { pkgPath, deps } = opts;
+  const pkg = existsSync(pkgPath) ? fsExtra.readJSONSync(pkgPath) : {};
+  const [devDependencies, dependencies] = [
+    deps.filter((dep) => dep.dev !== false),
+    deps.filter((dep) => dep.dev === false),
+  ];
+  if (devDependencies.length) {
+    pkg.devDependencies ||= {};
+    devDependencies.forEach((dep) => {
+      pkg.devDependencies[dep.name] = dep.version;
+    });
+  }
+  if (dependencies.length) {
+    pkg.dependencies ||= {};
+    dependencies.forEach((dep) => {
+      pkg.dependencies[dep.name] = dep.version;
+    });
+  }
+  fsExtra.writeFileSync(
+    opts.pkgPath,
+    `${JSON.stringify(pkg, null, 2)}\n`,
+    'utf-8',
+  );
 }
