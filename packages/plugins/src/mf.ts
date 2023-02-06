@@ -226,6 +226,52 @@ export default function mf(api: IApi) {
       );
     }
 
+    if (isValidIdentifyName(name)) {
+      api.logger.warn(
+        `module federation name is not valid javascript identifier , "unNamedMF" will be used`,
+      );
+      return 'unNamedMF';
+    }
+
+    return name || 'unNamedMF';
+  }
+
+  function getShared() {
+    const { shared = {} } = api.userConfig.mf;
+    return shared;
+  }
+
+  function changeUmiEntry(config: any) {
+    const { entry } = config;
+
+    const asyncEntryPath = winPath(
+      join(api.paths.absTmpPath, 'plugin-mf', mfAsyncEntryFileName),
+    );
+
+    if (entry.umi) {
+      if (typeof entry.umi === 'string') {
+        entry.umi = asyncEntryPath;
+      } else if (Array.isArray(entry.umi)) {
+        const i = entry.umi.findIndex((f: string) => f.endsWith('umi.ts'));
+
+        if (i >= 0) {
+          entry.umi[i] = asyncEntryPath;
+        } else {
+          api.logger.info(
+            `umi.ts not found in entry.umi ${JSON.stringify(entry.umi)}`,
+          );
+        }
+      }
+    } else {
+      api.logger.warn('umi entry not found');
+    }
+  }
+
+  function addMFEntry(config: any, mfName: string, path: string) {
+    config.entry[mfName] = path;
+  }
+
+  function isValidIdentifyName(name: string) {
     const identifierList = [
       'abstract',
       'await',
@@ -292,46 +338,8 @@ export default function mf(api: IApi) {
     const regexIdentifierName =
       /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
     if (identifierList.includes(name) || !regexIdentifierName.test(name)) {
-      api.logger.warn(
-        `module federation name is not valid javascript identifier , "unNamedMF" will be used`,
-      );
+      return false;
     }
-
-    return name || 'unNamedMF';
-  }
-
-  function getShared() {
-    const { shared = {} } = api.userConfig.mf;
-    return shared;
-  }
-
-  function changeUmiEntry(config: any) {
-    const { entry } = config;
-
-    const asyncEntryPath = winPath(
-      join(api.paths.absTmpPath, 'plugin-mf', mfAsyncEntryFileName),
-    );
-
-    if (entry.umi) {
-      if (typeof entry.umi === 'string') {
-        entry.umi = asyncEntryPath;
-      } else if (Array.isArray(entry.umi)) {
-        const i = entry.umi.findIndex((f: string) => f.endsWith('umi.ts'));
-
-        if (i >= 0) {
-          entry.umi[i] = asyncEntryPath;
-        } else {
-          api.logger.info(
-            `umi.ts not found in entry.umi ${JSON.stringify(entry.umi)}`,
-          );
-        }
-      }
-    } else {
-      api.logger.warn('umi entry not found');
-    }
-  }
-
-  function addMFEntry(config: any, mfName: string, path: string) {
-    config.entry[mfName] = path;
+    return true;
   }
 }
