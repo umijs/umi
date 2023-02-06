@@ -1,6 +1,6 @@
 {
   "name": "@umijs/test",
-  "version": "4.0.49",
+  "version": "4.0.50",
   "description": "@umijs/test",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/testing#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -23,8 +23,8 @@
   "dependencies": {
     "@babel/plugin-transform-modules-commonjs": "7.20.11",
     "@jest/types": "27.5.1",
-    "@umijs/bundler-utils": "4.0.49",
-    "@umijs/utils": "4.0.49",
+    "@umijs/bundler-utils": "4.0.50",
+    "@umijs/utils": "4.0.50",
     "babel-jest": "^29.3.1",
     "esbuild": "0.16.17",
     "identity-obj-proxy": "3.0.0",

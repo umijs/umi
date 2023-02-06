@@ -1,3 +1,5 @@
+import { Message } from 'umi'
+
 # 配置
 
 对于 umi 中能使用的自定义配置，你可以使用项目根目录的 `.umirc.ts` 文件或者 `config/config.ts`，值得注意的是这两个文件功能一致，仅仅是存在目录不同，2 选 1 ，`.umirc.ts` 文件优先级较高。
@@ -988,10 +990,12 @@ mountElementId: 'container'
 
 ## monorepoRedirect
 
-- 类型：`{ srcDir?: string[], exclude?: RegExp[] }`
+- 类型：`{ srcDir?: string[], exclude?: RegExp[], peerDeps?: boolean }`
 - 默认值：`false`
 
-在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
+在 monorepo 中使用 Umi 时，你可能需要引入其他子包的组件、工具方法等，通过开启此选项来重定向这些子包的导入到他们的源码位置（默认为 `src` 文件夹），这也可以解决 `MFSU` 场景改动子包不热更新的问题。
+
+这种重定向的好处是：支持热更新，无需预构建其他子包即可进行开发。
 
 通过配置 `srcDir` 来调整识别源码文件夹的优先位置，通过 `exclude` 来设定不需要重定向的依赖范围。
 
@@ -999,9 +1003,8 @@ mountElementId: 'container'
 
 ```js
 // 默认重定向到子包的 src 文件夹
-monorepoRedirect: {
-}
-// 优先定向到 libs 文件夹
+monorepoRedirect: {}
+// 在子包中寻找，优先定向到 libs 文件夹
 monorepoRedirect: {
   srcDir: ['libs', 'src'],
 }
@@ -1010,6 +1013,22 @@ monorepoRedirect: {
   exclude: [/^@scope\/.+/],
 }
 ```
+
+在实际的大型业务 monorepo 中，每个子包的依赖都是从他们的目录开始向上寻找 `node_modules` 并加载的，但在本地开发时，依赖都安装在 `devDependencies` ，和从 npm 上安装表现不一致，所以不可避免会遇到多实例问题。
+
+<Message fontsize='small'>
+举个例子，每个子包在本地开发时都需要 `antd` ，在 `devDependencies` 中安装了，也在 `peerDependencies` 中指明了 `antd` ，我们预期该包发布到 npm ，被某个项目安装后， `antd` 是使用的项目本身的依赖，全局唯一，但由于在 monorepo 中，指定在 `devDependencies` 中的依赖必定存在，且子包代码寻找依赖时是从该子包进行的，导致了每个子包都用了自己的 `antd` ，出现了产物中有多份 `antd` 、产物体积增大、消息队列被破坏等情况。
+</Message>
+
+为了解决这种问题，我们约定：
+
+当打开 `peerDeps` 选项时，所有子包指明的 `peerDependencies` 都会被自动添加 `alias` 重定向唯一化，避免多实例的存在：
+
+```ts
+monorepoRedirect: { peerDeps: true }
+```
+
+经过重定向，依赖全局唯一，便可以在开发时保持和在 npm 上安装包后的体验一致。
 
 ## mpa
 

@@ -186,6 +186,7 @@ function useBabelTransformSvgr(memo: WebpackChainConfig, api: IApi) {
       sourceType: 'unambiguous',
       babelrc: false,
       cacheDirectory: false,
+      browserslistConfigFile: false,
       targets: api.config.targets,
       presets: [
         [

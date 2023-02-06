@@ -126,6 +126,10 @@ export default (api: IApi) => {
       key: 'addApiMiddlewares',
     });
 
+    middlewares.forEach((middleware) => {
+      middleware.path = winPath(middleware.path);
+    });
+
     api.writeTmpFile({
       noPluginDir: true,
       path: 'api/_middlewares.ts',

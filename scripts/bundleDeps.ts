@@ -57,6 +57,34 @@ Object.keys(exported).forEach(function (key) {
       if (opts.file === './bundles/webpack/bundle') {
         delete opts.webpackExternals['webpack'];
       }
+
+      // babel pre rewrite
+      if (opts.file === './bundles/babel/bundle') {
+        // See https://github.com/umijs/umi/issues/10356
+        // The inherited `browserslist` config is dynamic loaded
+        const babelCorePkg = require.resolve('@babel/core/package.json', {
+          paths: [path.join(PATHS.PACKAGES, './bundler-utils')],
+        });
+        // And need overrides a consistent version of `browserslist` in `packages.json#pnpm.overrides`
+        const browserslistPkg = require.resolve('browserslist/package.json', {
+          paths: [path.dirname(babelCorePkg)],
+        });
+        const nodePartFile = path.join(
+          path.dirname(browserslistPkg),
+          'node.js',
+        );
+        const originContent = fs.readFileSync(nodePartFile, 'utf-8');
+        // https://github.com/browserslist/browserslist/blob/fc5fc088c640466df62a6b6c86154b19be3de821/node.js#L176
+        fs.writeFileSync(
+          nodePartFile,
+          originContent.replace(
+            /require\(require\.resolve/g,
+            'eval("require")(require.resolve',
+          ),
+          'utf-8',
+        );
+      }
+
       let { code, assets } = await ncc(entry, {
         externals: opts.webpackExternals,
         minify: !!opts.minify,

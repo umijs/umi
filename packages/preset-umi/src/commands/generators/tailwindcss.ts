@@ -39,8 +39,8 @@ export default (api: IApi) => {
 module.exports = {
   content: [
     './${srcPrefix}pages/**/*.tsx',
-    './${srcPrefix}components/**.tsx',
-    './${srcPrefix}layouts/**.tsx',
+    './${srcPrefix}components/**/*.tsx',
+    './${srcPrefix}layouts/**/*.tsx',
   ],
 }
 `.trimStart(),

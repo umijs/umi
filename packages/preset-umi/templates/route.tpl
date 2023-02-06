@@ -6,8 +6,9 @@ import React from 'react';
 {{/isReact}}
 
 export async function getRoutes() {
+  const routes = {{{ routes }}} as const;
   return {
-    routes: {{{ routes }}},
+    routes,
     routeComponents: {{{ routeComponents }}},
   };
 }

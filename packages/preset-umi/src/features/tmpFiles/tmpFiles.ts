@@ -459,6 +459,14 @@ export default function EmptyRoute() {
           historyPath,
         },
       });
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/historyIntelli.ts',
+        tplPath: join(TEMPLATES_DIR, 'historyIntelli.tpl'),
+        context: {
+          historyPath,
+        },
+      });
     }
   });
 

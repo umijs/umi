@@ -47,6 +47,7 @@ export {};
               ),
               modules: false,
               targets: api.config.targets,
+              ignoreBrowserslistConfig: true,
             },
           ],
         ],
@@ -55,6 +56,7 @@ export {};
         ],
         babelrc: false,
         configFile: false,
+        browserslistConfigFile: false,
       },
     )!;
 
