@@ -1318,7 +1318,6 @@ importers:
 
   packages/bundler-webpack:
     specifiers:
-      '@parcel/css': 1.9.0
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.7
       '@svgr/core': 6.2.1
       '@svgr/plugin-jsx': ^6.2.1
@@ -1347,6 +1346,7 @@ importers:
       fork-ts-checker-webpack-plugin: 7.3.0
       jest-worker: 29.3.1
       less-loader: 11.1.0
+      lightningcss: 1.18.0
       mini-css-extract-plugin: 2.7.2
       node-libs-browser: 2.2.1
       postcss: ^8.4.21
@@ -1374,7 +1374,6 @@ importers:
       webpackbar: 5.0.2
       ws: 8.12.0
     dependencies:
-      '@parcel/css': 1.9.0
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.7_xsftmjzvfioxqs4ify53ibh7ay
       '@svgr/core': 6.2.1
       '@svgr/plugin-jsx': 6.2.1_@svgr+core@6.2.1
@@ -1390,6 +1389,7 @@ importers:
       es5-imcompatible-versions: 0.1.73
       fork-ts-checker-webpack-plugin: 7.3.0_webpack@5.75.0
       jest-worker: 29.3.1
+      lightningcss: 1.18.0
       node-libs-browser: 2.2.1
       postcss: 8.4.21
       postcss-preset-env: 7.5.0_postcss@8.4.21
@@ -1406,7 +1406,7 @@ importers:
       compression: 1.7.4
       connect-history-api-fallback: 1.6.0
       copy-webpack-plugin: 10.2.4_webpack@5.75.0
-      css-minimizer-webpack-plugin: 4.0.0_eqnbjbkny3wyhesdy2ktlruxea
+      css-minimizer-webpack-plugin: 4.0.0_webpack@5.75.0
       cssnano: 5.1.7_postcss@8.4.21
       less-loader: 11.1.0_webpack@5.75.0
       mini-css-extract-plugin: 2.7.2_webpack@5.75.0
@@ -10185,6 +10185,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-darwin-x64/1.9.0:
@@ -10193,6 +10194,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-linux-arm-gnueabihf/1.9.0:
@@ -10201,6 +10203,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-linux-arm64-gnu/1.9.0:
@@ -10209,6 +10212,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-linux-arm64-musl/1.9.0:
@@ -10217,6 +10221,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-linux-x64-gnu/1.9.0:
@@ -10225,6 +10230,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-linux-x64-musl/1.9.0:
@@ -10233,6 +10239,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css-win32-x64-msvc/1.9.0:
@@ -10241,6 +10248,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@parcel/css/1.9.0:
@@ -10257,6 +10265,7 @@ packages:
       '@parcel/css-linux-x64-gnu': 1.9.0
       '@parcel/css-linux-x64-musl': 1.9.0
       '@parcel/css-win32-x64-msvc': 1.9.0
+    dev: true
 
   /@parcel/watcher/2.0.4:
     resolution: {integrity: sha512-cTDi+FUDBIUOBKEtj+nhiJ71AZVlkAsQFuGQTun5tV9mwQBQgZvhCzG+URPQc8myeN32yRVZEfVAPCs1RW+Jvg==}
@@ -17821,7 +17830,7 @@ packages:
       webpack: 5.75.0_@swc+core@1.3.24
     dev: false
 
-  /css-minimizer-webpack-plugin/4.0.0_eqnbjbkny3wyhesdy2ktlruxea:
+  /css-minimizer-webpack-plugin/4.0.0_webpack@5.75.0:
     resolution: {integrity: sha512-7ZXXRzRHvofv3Uac5Y+RkWRNo0ZMlcg8e9/OtrqUYmwDWJo+qs67GvdeFrXLsFb7czKNwjQhPkM0avlIYl+1nA==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
@@ -17842,7 +17851,6 @@ packages:
       webpack:
         optional: true
     dependencies:
-      '@parcel/css': 1.9.0
       cssnano: 5.1.13_postcss@8.4.21
       jest-worker: 27.5.1
       postcss: 8.4.21
@@ -25068,6 +25076,94 @@ packages:
       - bluebird
       - supports-color
     dev: true
+
+  /lightningcss-darwin-arm64/1.18.0:
+    resolution: {integrity: sha512-OqjydwtiNPgdH1ByIjA1YzqvDG/OMR6L3LPN6wRl1729LB0y4Mik7L06kmZaTb+pvUHr+NmDd2KCwnlrQ4zO3w==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-darwin-x64/1.18.0:
+    resolution: {integrity: sha512-mNiuPHj89/JHZmJMp+5H8EZSt6EL5DZRWJ31O6k3DrLLnRIQjXuXdDdN8kP7LoIkeWI5xvyD60CsReJm+YWYAw==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-linux-arm-gnueabihf/1.18.0:
+    resolution: {integrity: sha512-S+25JjI6601HiAVoTDXW6SqH+E94a+FHA7WQqseyNHunOgVWKcAkNEc2LJvVxgwTq6z41sDIb9/M3Z9wa9lk4A==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-linux-arm64-gnu/1.18.0:
+    resolution: {integrity: sha512-JSqh4+21dCgBecIQUet35dtE4PhhSEMyqe3y0ZNQrAJQ5kyUPSQHiw81WXnPJcOSTTpG0TyMLiC8K//+BsFGQA==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-linux-arm64-musl/1.18.0:
+    resolution: {integrity: sha512-2FWHa8iUhShnZnqhn2wfIcK5adJat9hAAaX7etNsoXJymlliDIOFuBQEsba2KBAZSM4QqfQtvRdR7m8i0I7ybQ==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-linux-x64-gnu/1.18.0:
+    resolution: {integrity: sha512-plCPGQJtDZHcLVKVRLnQVF2XRsIC32WvuJhQ7fJ7F6BV98b/VZX0OlX05qUaOESD9dCDHjYSfxsgcvOKgCWh7A==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-linux-x64-musl/1.18.0:
+    resolution: {integrity: sha512-na+BGtVU6fpZvOHKhnlA0XHeibkT3/46nj6vLluG3kzdJYoBKU6dIl7DSOk++8jv4ybZyFJ0aOFMMSc8g2h58A==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss-win32-x64-msvc/1.18.0:
+    resolution: {integrity: sha512-5qeAH4RMNy2yMNEl7e5TI6upt/7xD2ZpHWH4RkT8iJ7/6POS5mjHbXWUO9Q1hhDhqkdzGa76uAdMzEouIeCyNw==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /lightningcss/1.18.0:
+    resolution: {integrity: sha512-uk10tNxi5fhZqU93vtYiQgx/8a9f0Kvtj5AXIm+VlOXY+t/DWDmCZWJEkZJmmALgvbS6aAW8or+Kq85eJ6TDTw==}
+    engines: {node: '>= 12.0.0'}
+    dependencies:
+      detect-libc: 1.0.3
+    optionalDependencies:
+      lightningcss-darwin-arm64: 1.18.0
+      lightningcss-darwin-x64: 1.18.0
+      lightningcss-linux-arm-gnueabihf: 1.18.0
+      lightningcss-linux-arm64-gnu: 1.18.0
+      lightningcss-linux-arm64-musl: 1.18.0
+      lightningcss-linux-x64-gnu: 1.18.0
+      lightningcss-linux-x64-musl: 1.18.0
+      lightningcss-win32-x64-msvc: 1.18.0
+    dev: false
 
   /lilconfig/2.0.6:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==}
