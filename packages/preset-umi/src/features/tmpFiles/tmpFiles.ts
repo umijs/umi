@@ -636,9 +636,16 @@ export default function EmptyRoute() {
           runtimeConfigType,
         },
       });
-      exports.push(`export { defineApp } from './core/defineApp'`);
-      // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
-      exports.push(`export type {  RuntimeConfig } from './core/defineApp'`);
+      // FIXME: if exported after plugins, circular dependency:
+      //        `app.ts -> exports.ts -> plugin -> core/plugin.ts -> app.ts`
+      //        we will get a `defineApp` of `undefined`
+      // https://github.com/umijs/umi/issues/9702
+      // https://github.com/umijs/umi/issues/10412
+      exports.unshift(
+        `export { defineApp } from './core/defineApp'`,
+        // https://javascript.plainenglish.io/leveraging-type-only-imports-and-exports-with-typescript-3-8-5c1be8bd17fb
+        `export type { RuntimeConfig } from './core/defineApp'`,
+      );
       api.writeTmpFile({
         noPluginDir: true,
         path: 'exports.ts',
