@@ -1290,28 +1290,28 @@ importers:
       '@types/svgo': 3.0.0
       '@umijs/bundler-utils': 4.0.47
       '@umijs/utils': 4.0.50
-      '@vitejs/plugin-legacy': 3.0.2
-      '@vitejs/plugin-react': 3.0.1
+      '@vitejs/plugin-legacy': 4.0.1
+      '@vitejs/plugin-react': 3.1.0
       caniuse-lite: 1.0.30001441
       less: 4.1.3
       postcss-preset-env: 7.5.0
       rollup: 3.7.0
       rollup-plugin-copy: 3.4.0
       rollup-plugin-visualizer: 5.9.0
-      vite: 4.0.4
+      vite: 4.1.1
     dependencies:
       '@svgr/core': 6.2.1
       '@umijs/bundler-utils': 4.0.47
       '@umijs/utils': link:../utils
-      '@vitejs/plugin-react': 3.0.1_vite@4.0.4
+      '@vitejs/plugin-react': 3.1.0_vite@4.1.1
       less: 4.1.3
       postcss-preset-env: 7.5.0
       rollup-plugin-visualizer: 5.9.0_rollup@3.7.0
-      vite: 4.0.4_less@4.1.3
+      vite: 4.1.1_less@4.1.3
     devDependencies:
       '@types/caniuse-lite': 1.0.1
       '@types/svgo': 3.0.0
-      '@vitejs/plugin-legacy': 3.0.2_vite@4.0.4
+      '@vitejs/plugin-legacy': 4.0.1_vite@4.1.1
       caniuse-lite: 1.0.30001441
       rollup: 3.7.0
       rollup-plugin-copy: 3.4.0
@@ -6871,11 +6871,6 @@ packages:
     resolution: {integrity: sha512-TuI4qpWZP6lGOGIuGWtp9sPluqYICmbk8T/1vpSysqJxRPkudh/ofFWyqdcMsDf2s7KvDL4/YHgKyvcS3g9CJQ==}
     dependencies:
       regenerator-runtime: 0.13.11
-    dev: true
-
-  /@babel/standalone/7.20.14:
-    resolution: {integrity: sha512-zxdQD6+eMQumJFPOLpOZE34JAAGrZPMXCKvHR7Mtat/l+nHDOxlit5u85HDk5WkBXmvN5PhUMeimiC95KXD9+A==}
-    engines: {node: '>=6.9.0'}
     dev: true
 
   /@babel/template/7.18.6:
@@ -13970,19 +13965,23 @@ packages:
     hasBin: true
     dev: true
 
-  /@vitejs/plugin-legacy/3.0.2_vite@4.0.4:
-    resolution: {integrity: sha512-9BT2mXunC7kQGKHP70BIbNZ/85P/KUMGKBS9CiV+XKNDZGNBjUnyrh3ofgtqgObmxKaEP2xJsEIRNIFJ+hjI8w==}
+  /@vitejs/plugin-legacy/4.0.1_vite@4.1.1:
+    resolution: {integrity: sha512-/ZV63NagI1c9TB5E4ijGmycY//fNm/2L02nsnXXxACwYaF9W+/OyVlgIW24jYUIS+g0yQRtn+N5hzBc8RLNhGA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       terser: ^5.4.0
       vite: ^4.0.0
     dependencies:
-      '@babel/standalone': 7.20.14
+      '@babel/core': 7.20.12
+      '@babel/preset-env': 7.20.2_@babel+core@7.20.12
+      browserslist: 4.21.5
       core-js: 3.27.2
       magic-string: 0.27.0
       regenerator-runtime: 0.13.11
       systemjs: 6.13.0
-      vite: 4.0.4_less@4.1.3
+      vite: 4.1.1_less@4.1.3
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@vitejs/plugin-react/1.2.0:
@@ -14016,18 +14015,18 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-react/3.0.1_vite@4.0.4:
-    resolution: {integrity: sha512-mx+QvYwIbbpOIJw+hypjnW1lAbKDHtWK5ibkF/V1/oMBu8HU/chb+SnqJDAsLq1+7rGqjktCEomMTM5KShzUKQ==}
+  /@vitejs/plugin-react/3.1.0_vite@4.1.1:
+    resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      vite: ^4.0.0
+      vite: ^4.1.0-beta.0
     dependencies:
       '@babel/core': 7.20.12
       '@babel/plugin-transform-react-jsx-self': 7.18.6_@babel+core@7.20.12
       '@babel/plugin-transform-react-jsx-source': 7.19.6_@babel+core@7.20.12
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.0.4_less@4.1.3
+      vite: 4.1.1_less@4.1.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -38440,8 +38439,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/4.0.4_less@4.1.3:
-    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
+  /vite/4.1.1_less@4.1.3:
+    resolution: {integrity: sha512-LM9WWea8vsxhr782r9ntg+bhSFS06FJgCvvB0+8hf8UWtvaiDagKYWXndjfX6kGl74keHJUcpzrQliDXZlF5yg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:

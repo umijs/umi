@@ -9,7 +9,7 @@
     "e2e": "cypress run",
     "e2e:ci": "cross-env HMR=none PORT=5071 start-server-and-test dev http://localhost:5071/__umi/api/status cypress:ci",
     "e2e:open": "cypress open",
-    "preview": "max preview --port 6070",
+    "preview": "umi preview --port 6070",
     "setup": "umi setup",
     "start": "npm run dev"
   },

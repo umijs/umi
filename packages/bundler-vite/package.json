@@ -28,16 +28,16 @@
     "@svgr/core": "6.2.1",
     "@umijs/bundler-utils": "4.0.47",
     "@umijs/utils": "4.0.50",
-    "@vitejs/plugin-react": "3.0.1",
+    "@vitejs/plugin-react": "3.1.0",
     "less": "4.1.3",
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.9.0",
-    "vite": "4.0.4"
+    "vite": "4.1.1"
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",
     "@types/svgo": "3.0.0",
-    "@vitejs/plugin-legacy": "3.0.2",
+    "@vitejs/plugin-legacy": "4.0.1",
     "caniuse-lite": "1.0.30001441",
     "rollup": "3.7.0",
     "rollup-plugin-copy": "3.4.0"
