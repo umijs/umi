@@ -226,7 +226,7 @@ export default function mf(api: IApi) {
       );
     }
 
-    if (isValidIdentifyName(name)) {
+    if (!isValidIdentifyName(name)) {
       api.logger.warn(
         `module federation name is not valid javascript identifier , "unNamedMF" will be used`,
       );
