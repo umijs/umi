@@ -18,7 +18,7 @@
     "start-remote-prod": "pnpm run --dir ../mf-remote preview"
   },
   "dependencies": {
-    "@umijs/max": "4.0.49",
+    "@umijs/max": "4.0.50",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },

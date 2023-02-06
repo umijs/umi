@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "4.0.49",
+  "version": "4.0.50",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -20,7 +20,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.49",
+    "@umijs/utils": "4.0.50",
     "esbuild": "0.16.17",
     "regenerate": "^1.4.2",
     "regenerate-unicode-properties": "10.0.1",
