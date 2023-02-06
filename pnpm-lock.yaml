@@ -1127,6 +1127,19 @@ importers:
       umi: link:../../packages/umi
       vue: 3.2.45
 
+  examples/with-workerize-loader:
+    specifiers:
+      '@umijs/plugins': 4.0.50
+      antd: ^4.20.6
+      umi: 4.0.50
+      workerize-loader: ^2.0.2
+    dependencies:
+      '@umijs/plugins': link:../../packages/plugins
+      antd: 4.24.7
+      umi: link:../../packages/umi
+    devDependencies:
+      workerize-loader: 2.0.2
+
   examples/x-design:
     specifiers: {}
 
@@ -2163,7 +2176,7 @@ packages:
     dependencies:
       '@ant-design/colors': 6.0.0
       '@ant-design/icons-svg': 4.2.1
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.20.7
       classnames: 2.3.2
       rc-util: 5.27.1
 
@@ -24010,7 +24023,7 @@ packages:
       pretty-format: 29.3.1
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -24726,11 +24739,6 @@ packages:
       minimist: 1.2.6
     dev: true
 
-  /json5/2.2.1:
-    resolution: {integrity: sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==}
-    engines: {node: '>=6'}
-    hasBin: true
-
   /json5/2.2.3:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
@@ -25176,7 +25184,7 @@ packages:
     dependencies:
       big.js: 5.2.2
       emojis-list: 3.0.0
-      json5: 2.2.1
+      json5: 2.2.3
 
   /loader-utils/3.2.0:
     resolution: {integrity: sha512-HVl9ZqccQihZ7JM85dco1MvO9G+ONvxoGa9rkhzFsneGLKSUg1gJf9bWzhRhcvm2qChhWpebQhP44qxjKIUCaQ==}
@@ -39165,6 +39173,17 @@ packages:
 
   /wordwrap/1.0.0:
     resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
+    dev: true
+
+  /workerize-loader/2.0.2:
+    resolution: {integrity: sha512-HoZ6XY4sHWxA2w0WpzgBwUiR3dv1oo7bS+oCwIpb6n54MclQ/7KXdXsVIChTCygyuHtVuGBO1+i3HzTt699UJQ==}
+    peerDependencies:
+      webpack: '*'
+    peerDependenciesMeta:
+      webpack:
+        optional: true
+    dependencies:
+      loader-utils: 2.0.2
     dev: true
 
   /wrap-ansi/6.2.0:
