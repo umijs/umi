@@ -1,7 +1,6 @@
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
-  const bundlerWebpackPkg = require('@umijs/bundler-webpack/package.json');
   api.addOnDemandDeps(() => {
     const enabled =
       api.config.srcTranspiler === 'swc' ||
@@ -9,6 +8,8 @@ export default (api: IApi) => {
     if (!enabled) {
       return [];
     }
+
+    const bundlerWebpackPkg = require('@umijs/bundler-webpack/package.json');
 
     return [
       {
