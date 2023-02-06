@@ -1,5 +1,8 @@
 lockfileVersion: 5.4
 
+overrides:
+  browserslist: 4.21.5
+
 importers:
 
   .:
@@ -26,6 +29,7 @@ importers:
       '@umijs/server': workspace:*
       '@umijs/utils': workspace:*
       '@vercel/ncc': 0.33.3
+      browserslist: 4.21.5
       dts-packer: ^0.0.3
       expect-playwright: ^0.8.0
       father: ^4.1.3
@@ -81,6 +85,7 @@ importers:
       '@umijs/server': link:packages/server
       '@umijs/utils': link:packages/utils
       '@vercel/ncc': 0.33.3
+      browserslist: 4.21.5
       dts-packer: 0.0.3
       expect-playwright: 0.8.0
       father: 4.1.3
@@ -1215,14 +1220,14 @@ importers:
       http-proxy-middleware: 2.0.6
       less: 4.1.3
       regenerate: ^1.4.2
-      regenerate-unicode-properties: 10.0.1
+      regenerate-unicode-properties: 10.1.0
       spdy: ^4.0.2
       tapable: 2.2.1
     dependencies:
       '@umijs/utils': link:../utils
       esbuild: 0.16.17
       regenerate: 1.4.2
-      regenerate-unicode-properties: 10.0.1
+      regenerate-unicode-properties: 10.1.0
       spdy: 4.0.2
     devDependencies:
       '@babel/code-frame': 7.18.6
@@ -1394,7 +1399,7 @@ importers:
       mini-css-extract-plugin: 2.7.2_webpack@5.75.0
       postcss-flexbugs-fixes: 5.0.2_postcss@8.4.21
       postcss-loader: 7.0.2_6jdsrmfenkuhhw3gx4zvjlznce
-      purgecss-webpack-plugin: 4.1.3_@swc+core@1.3.24
+      purgecss-webpack-plugin: 4.1.3_webpack@5.75.0
       sass-loader: 13.2.0_webpack@5.75.0
       schema-utils: 4.0.0
       speed-measure-webpack-plugin: 1.5.0_webpack@5.75.0
@@ -1609,7 +1614,7 @@ importers:
       react-intl: 3.12.1
       react-redux: 8.0.5_redux@4.2.0
       redux: 4.2.0
-      styled-components: 6.0.0-beta.9
+      styled-components: 6.0.0-beta.9_tslib@2.4.1
       tslib: 2.4.1
       warning: 4.0.3
     devDependencies:
@@ -4334,7 +4339,7 @@ packages:
     dependencies:
       '@babel/compat-data': 7.20.5
       '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
     dev: false
@@ -4348,7 +4353,7 @@ packages:
       '@babel/compat-data': 7.20.5
       '@babel/core': 7.17.9
       '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
     dev: true
@@ -4362,7 +4367,7 @@ packages:
       '@babel/compat-data': 7.20.5
       '@babel/core': 7.18.9
       '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
     dev: true
@@ -4376,7 +4381,7 @@ packages:
       '@babel/compat-data': 7.20.5
       '@babel/core': 7.19.0
       '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
     dev: true
@@ -4390,7 +4395,7 @@ packages:
       '@babel/compat-data': 7.20.5
       '@babel/core': 7.20.12
       '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
 
@@ -4403,7 +4408,7 @@ packages:
       '@babel/compat-data': 7.20.5
       '@babel/core': 7.4.5
       '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       lru-cache: 5.1.1
       semver: 6.3.0
     dev: true
@@ -6741,7 +6746,7 @@ packages:
       '@babel/plugin-transform-typeof-symbol': 7.18.9_@babel+core@7.4.5
       '@babel/plugin-transform-unicode-regex': 7.18.6_@babel+core@7.4.5
       '@babel/types': 7.20.7
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       core-js-compat: 3.27.1
       invariant: 2.2.4
       js-levenshtein: 1.1.6
@@ -15435,7 +15440,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       caniuse-lite: 1.0.30001441
       fraction.js: 4.2.0
       normalize-range: 0.1.2
@@ -15454,8 +15459,8 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
-      caniuse-lite: 1.0.30001441
+      browserslist: 4.21.5
+      caniuse-lite: 1.0.30001450
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -15471,8 +15476,8 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
-      caniuse-lite: 1.0.30001441
+      browserslist: 4.21.5
+      caniuse-lite: 1.0.30001450
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -15483,8 +15488,8 @@ packages:
     resolution: {integrity: sha512-eM9d/swFopRt5gdJ7jrpCwgvEMIayITpojhkkSMRsFHYuH5bkSQ4p/9qTEHtmNudUZh22Tehu7I6CxAW0IXTKA==}
     hasBin: true
     dependencies:
-      browserslist: 4.21.4
-      caniuse-lite: 1.0.30001441
+      browserslist: 4.21.5
+      caniuse-lite: 1.0.30001450
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       picocolors: 0.2.1
@@ -15539,7 +15544,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -16310,25 +16315,15 @@ packages:
     dependencies:
       pako: 1.0.11
 
-  /browserslist/4.21.2:
-    resolution: {integrity: sha512-MonuOgAtUB46uP5CezYbRaYKBNt2LxP0yX+Pmj4LkcDFGkn9Cbpi83d9sCjwQDErXsIJSzY5oKGDbgOlF/LPAA==}
+  /browserslist/4.21.5:
+    resolution: {integrity: sha512-tUkiguQGW7S3IhB7N+c2MV/HZPSCPAAiYBZXLsBhFB/PCy6ZKKsZrmBayHV9fdGV/ARIfJ14NkxKzRDjvp7L6w==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001441
+      caniuse-lite: 1.0.30001450
       electron-to-chromium: 1.4.284
-      node-releases: 2.0.6
-      update-browserslist-db: 1.0.9_browserslist@4.21.2
-
-  /browserslist/4.21.4:
-    resolution: {integrity: sha512-CBHJJdDmgjl3daYjN5Cp5kbTf1mUhZoS+beLklHIvkOWscs83YAhLlF3Wsh/lciQYAcbBJgTOD44VtG31ZM4Hw==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
-    hasBin: true
-    dependencies:
-      caniuse-lite: 1.0.30001441
-      electron-to-chromium: 1.4.284
-      node-releases: 2.0.6
-      update-browserslist-db: 1.0.9_browserslist@4.21.4
+      node-releases: 2.0.9
+      update-browserslist-db: 1.0.10_browserslist@4.21.5
 
   /bser/2.1.1:
     resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
@@ -16570,14 +16565,18 @@ packages:
   /caniuse-api/3.0.0:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
-      browserslist: 4.21.4
-      caniuse-lite: 1.0.30001441
+      browserslist: 4.21.5
+      caniuse-lite: 1.0.30001450
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
   /caniuse-lite/1.0.30001441:
     resolution: {integrity: sha512-OyxRR4Vof59I3yGWXws6i908EtGbMzVUi3ganaZQHmydk1iwDhRnvaPG2WaR0KcqrDFKrxVZHULT396LEPhXfg==}
+    dev: true
+
+  /caniuse-lite/1.0.30001450:
+    resolution: {integrity: sha512-qMBmvmQmFXaSxexkjjfMvD5rnDL0+m+dUMZKoDYsGG8iZN29RuYh9eRoMvKsT6uMAWlyUUGDEQGJJYjzCIO9ew==}
 
   /capital-case/1.0.4:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
@@ -17438,8 +17437,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -17524,7 +17523,7 @@ packages:
   /core-js-compat/3.27.1:
     resolution: {integrity: sha512-Dg91JFeCDA17FKnneN7oCMz4BkQ4TcffkgHP4OWwp9yx3pi7ubqMDXXSacfNak1PQqjc95skyt+YBLHQJnkJwA==}
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
 
   /core-js-pure/3.23.2:
     resolution: {integrity: sha512-t6u7H4Ff/yZNk+zqTr74UjCcZ3k8ApBryeLLV4rYQd9aF3gqmjjGjjR44ENfeBMH8VVvSynIjAJ0mUuFhzQtrA==}
@@ -26939,8 +26938,8 @@ packages:
       es6-promise: 3.3.1
     dev: true
 
-  /node-releases/2.0.6:
-    resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
+  /node-releases/2.0.9:
+    resolution: {integrity: sha512-2xfmOrRkGogbTK9R6Leda0DGiXeY3p2NJpy4+gNCffdUvV6mdEJnaDEic1i3Ec2djAo8jWYoJMR5PB0MSMpxUA==}
 
   /nopt/5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
@@ -28439,7 +28438,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       caniuse-api: 3.0.0
       colord: 2.9.2
       postcss: 8.4.21
@@ -28455,7 +28454,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       postcss: 8.4.21
       postcss-value-parser: 4.2.0
     dev: true
@@ -28974,7 +28973,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       caniuse-api: 3.0.0
       cssnano-utils: 3.1.0_postcss@8.4.21
       postcss: 8.4.21
@@ -29018,7 +29017,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       cssnano-utils: 3.1.0_postcss@8.4.21
       postcss: 8.4.21
       postcss-value-parser: 4.2.0
@@ -29209,7 +29208,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       postcss: 8.4.21
       postcss-value-parser: 4.2.0
     dev: true
@@ -29348,7 +29347,7 @@ packages:
       '@csstools/postcss-stepped-value-functions': 1.0.0
       '@csstools/postcss-unset-value': 1.0.1
       autoprefixer: 10.4.7
-      browserslist: 4.21.2
+      browserslist: 4.21.5
       css-blank-pseudo: 3.0.3
       css-has-pseudo: 3.0.4
       css-prefers-color-scheme: 6.0.3
@@ -29403,7 +29402,7 @@ packages:
       '@csstools/postcss-stepped-value-functions': 1.0.0_postcss@8.4.21
       '@csstools/postcss-unset-value': 1.0.1_postcss@8.4.21
       autoprefixer: 10.4.7_postcss@8.4.21
-      browserslist: 4.21.2
+      browserslist: 4.21.5
       css-blank-pseudo: 3.0.3_postcss@8.4.21
       css-has-pseudo: 3.0.4_postcss@8.4.21
       css-prefers-color-scheme: 6.0.3_postcss@8.4.21
@@ -29471,7 +29470,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       caniuse-api: 3.0.0
       postcss: 8.4.21
     dev: true
@@ -30064,8 +30063,10 @@ packages:
       - utf-8-validate
     dev: true
 
-  /purgecss-webpack-plugin/4.1.3_@swc+core@1.3.24:
+  /purgecss-webpack-plugin/4.1.3_webpack@5.75.0:
     resolution: {integrity: sha512-1OHS0WE935w66FjaFSlV06ycmn3/A8a6Q+iVUmmCYAujQ1HPdX+psMXUhASEW0uF1PYEpOlhMc5ApigVqYK08g==}
+    peerDependencies:
+      webpack: '*'
     peerDependenciesMeta:
       webpack:
         optional: true
@@ -30073,11 +30074,6 @@ packages:
       purgecss: 4.1.3
       webpack: 5.75.0_@swc+core@1.3.24
       webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-      - webpack-cli
     dev: true
 
   /purgecss/4.1.3:
@@ -33514,10 +33510,18 @@ packages:
   /react-dev-utils/12.0.1_iukboom6ndih5an6iafl45j2fe:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      webpack:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.1.2
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       chalk: 4.1.2
       cross-spawn: 7.0.3
       detect-port-alt: 1.1.6
@@ -33543,9 +33547,7 @@ packages:
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
     dev: false
 
   /react-devtools-inline/4.4.0:
@@ -36151,13 +36153,14 @@ packages:
       inline-style-parser: 0.1.1
     dev: true
 
-  /styled-components/6.0.0-beta.9:
+  /styled-components/6.0.0-beta.9_tslib@2.4.1:
     resolution: {integrity: sha512-RYtmvWZForwSd24aZgi3iGZM/6HvJkP7zobHK+bwC01vI6QhHK5MX9ayXEnJWaFY7DoEWoAnar5ACiGVkTCoCQ==}
     engines: {node: '>= 14'}
     peerDependencies:
       babel-plugin-styled-components: '>= 2'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
+      tslib: ^2.0.0
     peerDependenciesMeta:
       babel-plugin-styled-components:
         optional: true
@@ -36200,7 +36203,7 @@ packages:
       postcss:
         optional: true
     dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       postcss: 8.4.21
       postcss-selector-parser: 6.0.10
     dev: true
@@ -37954,23 +37957,13 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /update-browserslist-db/1.0.9_browserslist@4.21.2:
-    resolution: {integrity: sha512-/xsqn21EGVdXI3EXSum1Yckj3ZVZugqyOZQ/CxYPBD/R+ko9NSUScf8tFF4dOKY+2pvSSJA/S+5B8s4Zr4kyvg==}
+  /update-browserslist-db/1.0.10_browserslist@4.21.5:
+    resolution: {integrity: sha512-OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==}
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
     dependencies:
-      browserslist: 4.21.2
-      escalade: 3.1.1
-      picocolors: 1.0.0
-
-  /update-browserslist-db/1.0.9_browserslist@4.21.4:
-    resolution: {integrity: sha512-/xsqn21EGVdXI3EXSum1Yckj3ZVZugqyOZQ/CxYPBD/R+ko9NSUScf8tFF4dOKY+2pvSSJA/S+5B8s4Zr4kyvg==}
-    hasBin: true
-    peerDependencies:
-      browserslist: '>= 4.21.0'
-    dependencies:
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       escalade: 3.1.1
       picocolors: 1.0.0
 
@@ -38873,7 +38866,7 @@ packages:
       '@webassemblyjs/wasm-parser': 1.11.1
       acorn: 8.7.1
       acorn-import-assertions: 1.8.0_acorn@8.7.1
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.10.0
       es-module-lexer: 0.9.3
@@ -38913,7 +38906,7 @@ packages:
       '@webassemblyjs/wasm-parser': 1.11.1
       acorn: 8.7.1
       acorn-import-assertions: 1.8.0_acorn@8.7.1
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.10.0
       es-module-lexer: 0.9.3
@@ -38952,7 +38945,7 @@ packages:
       '@webassemblyjs/wasm-parser': 1.11.1
       acorn: 8.7.1
       acorn-import-assertions: 1.8.0_acorn@8.7.1
-      browserslist: 4.21.4
+      browserslist: 4.21.5
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.10.0
       es-module-lexer: 0.9.3
