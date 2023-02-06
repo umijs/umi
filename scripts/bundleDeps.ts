@@ -164,6 +164,7 @@ Object.keys(exported).forEach(function (key) {
 
       // in production, we have the global all `core-js` polyfill (feature/polyfill.ts)
       // don't need the polyfill added by vite
+      // https://github.com/vitejs/vite/blob/d953536aae448e2bea0f3a7cb3c0062b16d45597/packages/plugin-legacy/src/index.ts#L257
       if (opts.pkgName === '@vitejs/plugin-legacy') {
         code = code.replace(
           'await detectPolyfills(`Promise.resolve(); Promise.all();`',
