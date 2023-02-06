@@ -8,7 +8,7 @@ export default (api: IApi) => {
       schema(Joi) {
         return Joi.object({
           // don't support tnpm
-          autoInstall: Joi.object(),
+          autoInstall: Joi.boolean(),
           defaultComponentConfig: Joi.object(),
           // e.g. alias: { home: 'fa:home' }
           alias: Joi.object(),
@@ -52,9 +52,11 @@ export default (api: IApi) => {
     logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
     const code: string[] = [];
     const { generateIconName, generateSvgr } = await import('./svgr.js');
+
     for (const iconStr of icons) {
       const [collect, icon] = iconStr.split(':');
       const iconName = generateIconName({ collect, icon });
+      console.log('进来了2');
       const svgr = await generateSvgr({
         collect,
         icon,
