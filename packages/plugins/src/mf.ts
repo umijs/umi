@@ -334,6 +334,8 @@ export default function mf(api: IApi) {
       'with',
       'yield',
     ];
+    // 匹配合法的标识符，但是不能检查保留字
+    // Copy from https://github.com/tc39/proposal-regexp-unicode-property-escapes#other-examples
     const regexIdentifierName =
       /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
     if (reservedKeywords.includes(name) || !regexIdentifierName.test(name)) {
