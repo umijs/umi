@@ -46,15 +46,12 @@ export function esbuildExternalPlugin(): Plugin {
 }
 
 function parseExt(file: string) {
-  const lastQuestionMarkIdx = file.lastIndexOf('?');
-  if (lastQuestionMarkIdx > 0) {
-    file = file.substring(0, lastQuestionMarkIdx);
+  const ext = path.extname(file);
+  const idx = ext.indexOf('?');
+  if (idx > 0) {
+    return ext.slice(0, idx);
   }
-  const lastDotIdx = file.lastIndexOf('.');
-  const lastSlashIdx = file.lastIndexOf('/');
-  if (lastDotIdx > 0 && (lastSlashIdx < 0 || lastDotIdx > lastSlashIdx)) {
-    return file.substring(lastDotIdx + 1);
-  }
+  return ext;
 }
 
 const SOURCE_REG = /\.(t|j)sx?$/;
