@@ -447,14 +447,14 @@ define: { FOO: 'bar' }
 如果你的 typings 文件是全局的：
 
 ```ts
-// typings.d.ts 
+// typings.d.ts
 declare const FOO: string;
 ```
 
 如果你的 typings 文件是非全局的（包含了 import/export）：
 
 ```ts
-// typings.d.ts 
+// typings.d.ts
 import './other.d.ts';
 
 declare global {
@@ -724,7 +724,7 @@ https: {
 
 ## icons
 
-- 类型：`{ autoInstall: {}; alias: Record<string,string>;  }`
+- 类型：`{ autoInstall: boolean; alias: Record<string,string>;  }`
 - 默认值：`false`
 
 配置开启 icons 功能，比如。
