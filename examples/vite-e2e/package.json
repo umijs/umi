@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "antd": "^4.20.6",
-    "umi": "4.0.50"
+    "umi": "4.0.0-canary.20230207.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
