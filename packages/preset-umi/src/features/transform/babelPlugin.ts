@@ -31,8 +31,10 @@ export default function () {
       const filename = winPath(state.opts.filename);
       if (
         cache.has(filename) &&
+        filename.startsWith(winPath(opts.cwd)) &&
         !filename.includes('bundler-webpack/client') &&
-        !filename.startsWith(winPath(join(opts.cwd, 'node_modules')))
+        !filename.startsWith(winPath(join(opts.cwd, 'node_modules'))) &&
+        !filename.startsWith(winPath(join(opts.cwd, 'packages')))
       ) {
         opts.onCheckCode({
           args: {
