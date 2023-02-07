@@ -372,6 +372,13 @@ api.addHTMLHeadScripts(() => `console.log('I am in HTML-head')`)
 ### addTmpGenerateWatcherPaths
 添加监听路径，变更时会重新生成临时文件。传入的 fn 不需要参数，返回 string，表示要监听的路径。
 
+### addOnDemandDeps
+添加按需安装的依赖，他们会在项目启动时检测是否安装：
+
+```ts
+  api.addOnDemandDeps(() => [{ name: '@swc/core', version: '^1.0.0', dev: true }])
+```
+
 ### chainWebpack
 通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。传入一个fn，该 fn 不需要返回值。它将接收两个参数：
 - `memo` 对应 webpack-chain 的 config

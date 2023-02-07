@@ -20,6 +20,7 @@ import type { getMarkup } from '@umijs/server';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
 import type { getMarkupArgs } from './commands/dev/getMarkupArgs';
+import type { IOnDemandInstallDep } from './features/depsOnDemand/depsOnDemand';
 import type CodeFrameError from './features/transform/CodeFrameError';
 
 export { UmiApiRequest, UmiApiResponse } from './features/apiRoute';
@@ -102,6 +103,7 @@ export type IApi = PluginAPI &
     addHTMLStyles: IAdd<null, IStyle>;
     addLayouts: IAdd<null, { file: string; id: string }>;
     addMiddlewares: IAdd<null, RequestHandler>;
+    addOnDemandDeps: IAdd<null, IOnDemandInstallDep>;
     addPolyfillImports: IAdd<null, { source: string; specifier?: string }>;
     addPrepareBuildPlugins: IAdd<null, ESBuildPlugin>;
     addRuntimePlugin: IAdd<null, string>;
