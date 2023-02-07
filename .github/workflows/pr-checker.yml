@@ -38,4 +38,4 @@ jobs:
     steps:
       - uses: actions-cool/maintain-one-comment@v3
         with:
-          body: 感谢 PR。如果有兴趣一起参与维护 Umi，可先用钉钉扫下方二维码（注明 github id）加我钉钉，然后我会拉到群里。<img src="https://img.alicdn.com/imgextra/i2/O1CN01DLiPrU1WsbDdnwRr9_!!6000000002844-2-tps-340-336.png" width="20%"/>
+          body: 感谢 PR！如果有兴趣一起参与维护 Umi，可加入我们的 Umi Contributor 群。加入方式是先用钉钉扫下方二维码加我钉钉，记得注明 github id，然后我会拉你到群里。<br /><img src="https://img.alicdn.com/imgextra/i2/O1CN01DLiPrU1WsbDdnwRr9_!!6000000002844-2-tps-340-336.png" width="20%"/>
