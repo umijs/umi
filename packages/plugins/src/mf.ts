@@ -226,6 +226,12 @@ export default function mf(api: IApi) {
       );
     }
 
+    if (!isValidIdentifyName(name)) {
+      throw new Error(
+        `module federation name '${name}' is not valid javascript identifier.`,
+      );
+    }
+
     return name || 'unNamedMF';
   }
 
@@ -262,5 +268,79 @@ export default function mf(api: IApi) {
 
   function addMFEntry(config: any, mfName: string, path: string) {
     config.entry[mfName] = path;
+  }
+
+  function isValidIdentifyName(name: string) {
+    const reservedKeywords = [
+      'abstract',
+      'await',
+      'boolean',
+      'break',
+      'byte',
+      'case',
+      'catch',
+      'char',
+      'class',
+      'const',
+      'continue',
+      'debugger',
+      'default',
+      'delete',
+      'do',
+      'double',
+      'else',
+      'enum',
+      'export',
+      'extends',
+      'false',
+      'final',
+      'finally',
+      'float',
+      'for',
+      'function',
+      'goto',
+      'if',
+      'implements',
+      'import',
+      'in',
+      'instanceof',
+      'int',
+      'interface',
+      'let',
+      'long',
+      'native',
+      'new',
+      'null',
+      'package',
+      'private',
+      'protected',
+      'public',
+      'return',
+      'short',
+      'static',
+      'super',
+      'switch',
+      'synchronized',
+      'this',
+      'throw',
+      'transient',
+      'true',
+      'try',
+      'typeof',
+      'var',
+      'void',
+      'volatile',
+      'while',
+      'with',
+      'yield',
+    ];
+    // 匹配合法的标识符，但是不能检查保留字
+    // Copy from https://github.com/tc39/proposal-regexp-unicode-property-escapes#other-examples
+    const regexIdentifierName =
+      /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
+    if (reservedKeywords.includes(name) || !regexIdentifierName.test(name)) {
+      return false;
+    }
+    return true;
   }
 }
