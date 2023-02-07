@@ -1,6 +1,7 @@
-import assert from 'assert';
-import { IApi } from '../../types';
 import { chalk } from '@umijs/utils';
+import assert from 'assert';
+import path from 'path';
+import { IApi } from '../../types';
 
 export default (api: IApi) => {
   api.onCheck(async () => {
@@ -44,6 +45,20 @@ export default (api: IApi) => {
           `${source} includes /.umi/, /.umi-test/ or /.umi-production/. It's not allowed to import. Please import from ${importSource} or the corresponding plugin.`,
           loc,
         );
+      }
+
+      // no mock/**
+      if (source.includes('/mock/')) {
+        let resolvePath: string | undefined;
+        try {
+          resolvePath = path.resolve(source);
+        } catch (error) {}
+        if (
+          resolvePath &&
+          resolvePath.startsWith(path.join(api.paths.cwd, 'mock'))
+        ) {
+          throw new CodeFrameError('`mock/**` is not allowed to import.', loc);
+        }
       }
     });
   });
