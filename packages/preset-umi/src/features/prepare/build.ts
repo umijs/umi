@@ -13,7 +13,9 @@ export async function build(opts: {
     | false;
   config?: { alias?: any };
   plugins?: esbuild.Plugin[];
+  write?: boolean;
 }) {
+  const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
   return await esbuild.build({
     format: 'esm',
     platform: 'browser',
@@ -42,8 +44,8 @@ export async function build(opts: {
     bundle: true,
     logLevel: 'error',
     entryPoints: opts.entryPoints,
-    write: false,
-    outdir: path.join(path.dirname(opts.entryPoints[0]), 'out'),
+    write: opts.write || false,
+    outdir,
     metafile: true,
     plugins: [
       // why externals must be in front of alias?
