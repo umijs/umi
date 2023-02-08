@@ -1,5 +1,6 @@
-import { importLazy, logger } from '@umijs/utils';
+import { getNpmClient, importLazy, logger } from '@umijs/utils';
 import path from 'path';
+
 import type { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -58,7 +59,7 @@ export default (api: IApi) => {
       const svgr = await generateSvgr({
         collect,
         icon,
-        npmClient: api.config.NpmClient,
+        npmClient: api.config.NpmClient || getNpmClient(api.cwd),
         iconifyOptions: { autoInstall: api.config.icons.autoInstall },
         localIconDir: path.join(api.paths.absSrcPath, 'icons'),
       });
