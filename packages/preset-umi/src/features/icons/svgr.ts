@@ -1,7 +1,8 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
-import path from 'path';
+import { installWithNpmClient } from '@umijs/utils';
 import fs from 'fs';
+import path from 'path';
 
 function camelCase(str: string) {
   return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
@@ -20,6 +21,7 @@ export function generateIconName(opts: { collect: string; icon: string }) {
 export async function generateSvgr(opts: {
   collect: string;
   icon: string;
+  npmClient: string;
   localIconDir: string;
   iconifyOptions?: object;
   svgrOptions?: object;
@@ -30,11 +32,20 @@ export async function generateSvgr(opts: {
   if (opts.collect === 'local') {
     svg = loadLocalIcon(opts.icon, opts.localIconDir);
   } else {
+    const { autoInstall, ...rest } = opts.iconifyOptions;
+
     svg = await loadNodeIcon(opts.collect, opts.icon, {
       warn,
       addXmlNs: false,
-      autoInstall: false,
-      ...opts.iconifyOptions,
+      autoInstall: autoInstall
+        ? async (name) => {
+            await installWithNpmClient({
+              npmClient: opts.npmClient,
+              options: { dev: true, names: [name] },
+            });
+          }
+        : false,
+      ...rest,
     });
   }
   if (!svg) {

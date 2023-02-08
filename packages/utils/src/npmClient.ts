@@ -41,9 +41,9 @@ export const installWithNpmClient = ({
   npmClient: NpmClient;
   cwd?: string;
   options?: {
-    dev: boolean;
-    args: string[];
-    names: string[];
+    dev?: boolean;
+    args?: string[];
+    names?: string[];
   };
 }): void => {
   const { sync } = require('../compiled/cross-spawn');
@@ -51,7 +51,7 @@ export const installWithNpmClient = ({
   if (npmClient === 'yarn') {
     npmClientAction = '';
   }
-  if (npmClient === 'yarn' && options?.names.length !== 0) {
+  if (npmClient === 'yarn' && options?.names && options?.names.length > 0) {
     npmClientAction = 'add';
   }
   const npm = sync(
