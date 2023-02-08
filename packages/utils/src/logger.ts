@@ -6,7 +6,7 @@ import { importLazy } from './importLazy';
 const enableFSLogger =
   process.env.FS_LOGGER !== 'none' && !process.versions.webcontainer;
 
-const enableConsole = process.env.NODE_ENV !== 'test';
+const enableConsole = process.env.CLOSE_LOG !== 'open';
 
 const loggerDir = join(process.cwd(), 'node_modules/.cache/logger');
 const loggerPath = join(loggerDir, 'umi.log');
