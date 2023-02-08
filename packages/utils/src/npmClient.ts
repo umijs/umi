@@ -36,15 +36,37 @@ export const getNpmClient = (opts: { cwd: string }): NpmClient => {
 export const installWithNpmClient = ({
   npmClient,
   cwd,
+  options,
 }: {
   npmClient: NpmClient;
   cwd?: string;
+  options?: {
+    dev: boolean;
+    args: string[];
+    names: string[];
+  };
 }): void => {
   const { sync } = require('../compiled/cross-spawn');
-  const npm = sync(npmClient, [npmClient === 'yarn' ? '' : 'install'], {
-    stdio: 'inherit',
-    cwd,
-  });
+  let npmClientAction = 'install';
+  if (npmClient === 'yarn') {
+    npmClientAction = '';
+  }
+  if (npmClient === 'yarn' && options?.names.length !== 0) {
+    npmClientAction = 'add';
+  }
+  const npm = sync(
+    npmClient,
+    [
+      npmClientAction,
+      options?.dev ? '-D' : '',
+      ...(options?.args || []),
+      ...(options?.names || []),
+    ],
+    {
+      stdio: 'inherit',
+      cwd,
+    },
+  );
   if (npm.error) {
     throw npm.error;
   }
