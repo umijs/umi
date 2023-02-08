@@ -746,7 +746,7 @@ import { Icon } from 'umi';
 
 icon 里包含的字符串是 `collect:icon` 的组合，以 `:` 分割。Icon 集推荐在 [Icônes 网站](https://icones.js.org/)上搜索。
 
-## 本地icon使用
+## 本地 icon 使用
 
 在 umi 配置文件设置，开启 icons 功能。
 
