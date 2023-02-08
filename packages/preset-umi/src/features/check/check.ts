@@ -70,7 +70,7 @@ export default (api: IApi) => {
 
   // no mock/**
   api.onPrepareBuildSuccess(({ result }) => {
-    const imps = Object.keys(result.metafile.inputs).filter((f) =>
+    const imps = Object.keys(result.metafile?.inputs || {}).filter((f) =>
       f.startsWith('mock/'),
     );
     if (imps.length) {
