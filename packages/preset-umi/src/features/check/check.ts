@@ -1,6 +1,5 @@
 import { chalk } from '@umijs/utils';
 import assert from 'assert';
-import path from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -46,20 +45,6 @@ export default (api: IApi) => {
           loc,
         );
       }
-
-      // no mock/**
-      if (source.includes('/mock/')) {
-        let resolvePath: string | undefined;
-        try {
-          resolvePath = path.resolve(source);
-        } catch (error) {}
-        if (
-          resolvePath &&
-          resolvePath.startsWith(path.join(api.paths.cwd, 'mock'))
-        ) {
-          throw new CodeFrameError('`mock/**` is not allowed to import.', loc);
-        }
-      }
     });
   });
 
@@ -79,6 +64,20 @@ export default (api: IApi) => {
       );
       throw new Error(
         `publicPath can not start with './' in development environment.`,
+      );
+    }
+  });
+
+  // no mock/**
+  api.onPrepareBuildSuccess(({ result }) => {
+    const imps = Object.keys(result.metafile.inputs).filter((f) =>
+      f.startsWith('mock/'),
+    );
+    if (imps.length) {
+      throw new Error(
+        `Detected mock imports: ${imps.join(
+          ', ',
+        )}. \`mock/**\` is not allowed to import.`,
       );
     }
   });
