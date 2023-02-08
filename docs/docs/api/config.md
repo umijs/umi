@@ -731,7 +731,7 @@ https: {
 
 ### icon 集使用
 
-在umi配置文件设置，开启 icons 功能，并允许自动安装图标库。
+在 umi 配置文件设置，开启 icons 功能，并允许自动安装图标库。
 
 ```ts
 icons: { autoInstall: {} },
@@ -748,7 +748,7 @@ icon 里包含的字符串是 `collect:icon` 的组合，以 `:` 分割。Icon �
 
 ## 本地icon使用
 
-在umi配置文件设置，开启 icons 功能。
+在 umi 配置文件设置，开启 icons 功能。
 
 ```ts
 icons: {},
