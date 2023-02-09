@@ -48,7 +48,7 @@ export async function generateSvgr(opts: {
               {
                 encoding: 'utf-8',
               },
-            );
+            ).stdout;
             addDeps({
               pkgPath: opts.api.pkgPath || join(opts.api.cwd, 'package.json'),
               deps: [{ name, version }],
