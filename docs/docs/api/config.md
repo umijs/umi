@@ -447,14 +447,14 @@ define: { FOO: 'bar' }
 如果你的 typings 文件是全局的：
 
 ```ts
-// typings.d.ts 
+// typings.d.ts
 declare const FOO: string;
 ```
 
 如果你的 typings 文件是非全局的（包含了 import/export）：
 
 ```ts
-// typings.d.ts 
+// typings.d.ts
 import './other.d.ts';
 
 declare global {
@@ -727,13 +727,17 @@ https: {
 - 类型：`{ autoInstall: {}; alias: Record<string,string>;  }`
 - 默认值：`false`
 
-配置开启 icons 功能，比如。
+你就可以通过 umi 导出的 Icon 组件快捷地引用 icon 集或者本地的 icon。
+
+### icon 集使用
+
+在 umi 配置文件设置，开启 icons 功能，并允许自动安装图标库。
 
 ```ts
-icons: {},
+icons: { autoInstall: {} },
 ```
 
-然后你就可以通过 umi 导出的 Icon 组件快捷地引用 icon 集或者本地的 icon。
+页面使用：
 
 ```ts
 import { Icon } from 'umi';
@@ -742,6 +746,14 @@ import { Icon } from 'umi';
 
 icon 里包含的字符串是 `collect:icon` 的组合，以 `:` 分割。Icon 集推荐在 [Icônes 网站](https://icones.js.org/)上搜索。
 
+## 本地 icon 使用
+
+在 umi 配置文件设置，开启 icons 功能。
+
+```ts
+icons: {},
+```
+
 本地 svg icon 的使用需要把 svg 保存在 `src/icons` 目录下，然后通过 `local` 这个前缀引用，比如在 `src/icons` 目录下有个 `umi.svg`，然后可以这样引用。
 
 ```tsx
@@ -749,13 +761,12 @@ import { Icon } from 'umi';
 <Icon icon="local:umi" />
 ```
 
-介绍下子配置项。
+### 配置项介绍
 
 - `autoInstall` 表示是否自动安装 icon 集；tnpm/cnpm 客户端暂不支持，但可以通过手动按需安装对应 icon 集合包 `@iconify-json/collection-name` 。 参考：[Icon 集合列表](https://github.com/iconify/icon-sets/blob/master/collections.md), collection-name 为列表中的 ***Icon set prefix*** 项。
-
 - `alias` 用于配置 icon 的别名，比如配置了 `alias:{home:'fa:home'}` 后就可以通过 `icon="home"` 使用 `fa:home` 这个 icon 了。
 
-Icon 组件也支持丰富的属性，如下。
+### Icon 组件属性
 
 - icon，指定 icon
 - width，svg 宽度
