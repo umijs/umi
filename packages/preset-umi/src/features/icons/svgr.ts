@@ -23,7 +23,6 @@ export function generateIconName(opts: { collect: string; icon: string }) {
 export async function generateSvgr(opts: {
   collect: string;
   icon: string;
-  npmClient: string;
   api: IApi;
   localIconDir: string;
   iconifyOptions?: { autoInstall: object };
@@ -54,7 +53,7 @@ export async function generateSvgr(opts: {
               deps: [{ name, version }],
             });
             await installWithNpmClient({
-              npmClient: opts.npmClient as NpmClient,
+              npmClient: opts.api.appData.npmClient as NpmClient,
               cwd: opts.api.cwd,
             });
           }

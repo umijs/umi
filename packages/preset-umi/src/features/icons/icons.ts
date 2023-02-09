@@ -60,7 +60,6 @@ export default (api: IApi) => {
         collect,
         api,
         icon,
-        npmClient: api.appData.npmClient,
         iconifyOptions: { autoInstall: api.config.icons.autoInstall },
         localIconDir: path.join(api.paths.absSrcPath, 'icons'),
       });
