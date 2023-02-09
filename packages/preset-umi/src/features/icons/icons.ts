@@ -59,7 +59,7 @@ export default (api: IApi) => {
       const svgr = await generateSvgr({
         collect,
         icon,
-        npmClient: api.config.NpmClient || getNpmClient(api.cwd),
+        npmClient: api.config.NpmClient || getNpmClient({ cwd: api.cwd }),
         iconifyOptions: { autoInstall: api.config.icons.autoInstall },
         localIconDir: path.join(api.paths.absSrcPath, 'icons'),
       });

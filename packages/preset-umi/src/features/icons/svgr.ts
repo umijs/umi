@@ -1,5 +1,6 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
+import type { NpmClient } from '@umijs/utils';
 import { installWithNpmClient } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
@@ -23,7 +24,7 @@ export async function generateSvgr(opts: {
   icon: string;
   npmClient: string;
   localIconDir: string;
-  iconifyOptions?: object;
+  iconifyOptions?: { autoInstall: object };
   svgrOptions?: object;
 }) {
   const warn = `${opts.collect}/${opts.icon}`;
@@ -32,7 +33,7 @@ export async function generateSvgr(opts: {
   if (opts.collect === 'local') {
     svg = loadLocalIcon(opts.icon, opts.localIconDir);
   } else {
-    const { autoInstall, ...rest } = opts.iconifyOptions;
+    const { autoInstall, ...rest } = opts?.iconifyOptions || {};
 
     svg = await loadNodeIcon(opts.collect, opts.icon, {
       warn,
@@ -40,7 +41,7 @@ export async function generateSvgr(opts: {
       autoInstall: autoInstall
         ? async (name) => {
             await installWithNpmClient({
-              npmClient: opts.npmClient,
+              npmClient: opts.npmClient as NpmClient,
               options: { dev: true, names: [name] },
             });
           }
