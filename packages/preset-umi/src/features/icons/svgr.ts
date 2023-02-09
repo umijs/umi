@@ -1,10 +1,10 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
-import { crossSpawn, fsExtra, installWithNpmClient } from '@umijs/utils';
-import fs, { existsSync } from 'fs';
-import { join } from 'path';
+import { crossSpawn, installWithNpmClient } from '@umijs/utils';
+import fs from 'fs';
+import path from 'path';
 import type { IApi } from '../../types';
-import type { IOnDemandInstallDep } from '../depsOnDemand/depsOnDemand';
+import { addDeps } from '../depsOnDemand/depsOnDemand';
 function camelCase(str: string) {
   return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
 }
@@ -48,7 +48,8 @@ export async function generateSvgr(opts: {
               },
             ).stdout;
             addDeps({
-              pkgPath: opts.api.pkgPath || join(opts.api.cwd, 'package.json'),
+              pkgPath:
+                opts.api.pkgPath || path.join(opts.api.cwd, 'package.json'),
               deps: [{ name, version }],
             });
             await installWithNpmClient({
@@ -96,29 +97,3 @@ function normalizeSvgr(str: string) {
 // }).catch(e => {
 //   console.error('error', e);
 // })
-
-function addDeps(opts: { pkgPath: string; deps: IOnDemandInstallDep[] }) {
-  const { pkgPath, deps } = opts;
-  const pkg = existsSync(pkgPath) ? fsExtra.readJSONSync(pkgPath) : {};
-  const [devDependencies, dependencies] = [
-    deps.filter((dep) => dep.dev !== false),
-    deps.filter((dep) => dep.dev === false),
-  ];
-  if (devDependencies.length) {
-    pkg.devDependencies ||= {};
-    devDependencies.forEach((dep) => {
-      pkg.devDependencies[dep.name] = dep.version;
-    });
-  }
-  if (dependencies.length) {
-    pkg.dependencies ||= {};
-    dependencies.forEach((dep) => {
-      pkg.dependencies[dep.name] = dep.version;
-    });
-  }
-  fsExtra.writeFileSync(
-    opts.pkgPath,
-    `${JSON.stringify(pkg, null, 2)}\n`,
-    'utf-8',
-  );
-}

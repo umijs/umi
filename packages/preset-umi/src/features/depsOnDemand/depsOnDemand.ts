@@ -98,7 +98,10 @@ export default (api: IApi) => {
   }
 };
 
-function addDeps(opts: { pkgPath: string; deps: IOnDemandInstallDep[] }) {
+export function addDeps(opts: {
+  pkgPath: string;
+  deps: IOnDemandInstallDep[];
+}) {
   const { pkgPath, deps } = opts;
   const pkg = existsSync(pkgPath) ? fsExtra.readJSONSync(pkgPath) : {};
   const [devDependencies, dependencies] = [
