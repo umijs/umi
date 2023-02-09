@@ -1,6 +1,5 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
-import type { NpmClient } from '@umijs/utils';
 import { crossSpawn, fsExtra, installWithNpmClient } from '@umijs/utils';
 import fs, { existsSync } from 'fs';
 import { join } from 'path';
@@ -53,7 +52,7 @@ export async function generateSvgr(opts: {
               deps: [{ name, version }],
             });
             await installWithNpmClient({
-              npmClient: opts.api.appData.npmClient as NpmClient,
+              npmClient: opts.api.appData.npmClient,
               cwd: opts.api.cwd,
             });
           }
