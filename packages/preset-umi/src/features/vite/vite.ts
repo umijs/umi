@@ -62,7 +62,9 @@ export default (api: IApi) => {
     }
   });
   api.modifyHTML(($) => {
-    if (buildStats) {
+    // extraHtml maybe undefined, if vite fallback to vite default entry
+    // @see: packages/bundler-vite/src/build.ts:129
+    if (buildStats && buildStats.extraHtml) {
       $('head').append(buildStats.extraHtml.head);
       $('body').append(buildStats.extraHtml.body);
     }
