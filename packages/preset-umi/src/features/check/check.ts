@@ -75,7 +75,7 @@ export default (api: IApi) => {
     );
     if (imps.length) {
       throw new Error(
-        `Detected mock imports: ${imps.join(
+        `Detected mock imports from src: ${imps.join(
           ', ',
         )}. \`mock/**\` is not allowed to import.`,
       );
