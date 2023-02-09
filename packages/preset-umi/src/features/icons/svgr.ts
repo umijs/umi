@@ -1,10 +1,11 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
 import type { NpmClient } from '@umijs/utils';
-import { installWithNpmClient } from '@umijs/utils';
-import fs from 'fs';
-import path from 'path';
-
+import { crossSpawn, fsExtra, installWithNpmClient } from '@umijs/utils';
+import fs, { existsSync } from 'fs';
+import { join } from 'path';
+import type { IApi } from '../../types';
+import type { IOnDemandInstallDep } from '../depsOnDemand/depsOnDemand';
 function camelCase(str: string) {
   return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
 }
@@ -23,6 +24,7 @@ export async function generateSvgr(opts: {
   collect: string;
   icon: string;
   npmClient: string;
+  api: IApi;
   localIconDir: string;
   iconifyOptions?: { autoInstall: object };
   svgrOptions?: object;
@@ -40,9 +42,20 @@ export async function generateSvgr(opts: {
       addXmlNs: false,
       autoInstall: autoInstall
         ? async (name) => {
+            const version = await crossSpawn.sync(
+              'npm',
+              ['view', name, 'version'],
+              {
+                encoding: 'utf-8',
+              },
+            );
+            addDeps({
+              pkgPath: opts.api.pkgPath || join(opts.api.cwd, 'package.json'),
+              deps: [{ name, version }],
+            });
             await installWithNpmClient({
               npmClient: opts.npmClient as NpmClient,
-              options: { dev: true, names: [name] },
+              cwd: opts.api.cwd,
             });
           }
         : false,
@@ -85,3 +98,29 @@ function normalizeSvgr(str: string) {
 // }).catch(e => {
 //   console.error('error', e);
 // })
+
+function addDeps(opts: { pkgPath: string; deps: IOnDemandInstallDep[] }) {
+  const { pkgPath, deps } = opts;
+  const pkg = existsSync(pkgPath) ? fsExtra.readJSONSync(pkgPath) : {};
+  const [devDependencies, dependencies] = [
+    deps.filter((dep) => dep.dev !== false),
+    deps.filter((dep) => dep.dev === false),
+  ];
+  if (devDependencies.length) {
+    pkg.devDependencies ||= {};
+    devDependencies.forEach((dep) => {
+      pkg.devDependencies[dep.name] = dep.version;
+    });
+  }
+  if (dependencies.length) {
+    pkg.dependencies ||= {};
+    dependencies.forEach((dep) => {
+      pkg.dependencies[dep.name] = dep.version;
+    });
+  }
+  fsExtra.writeFileSync(
+    opts.pkgPath,
+    `${JSON.stringify(pkg, null, 2)}\n`,
+    'utf-8',
+  );
+}
