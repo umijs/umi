@@ -125,7 +125,7 @@ ${collectCoverageFrom.map((v) => `        '${v}'`).join(',\n')}
     throw e;
   }
 };
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write jest.config.ts');
 

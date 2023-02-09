@@ -42,7 +42,7 @@ export default (api: IApi) => {
   "overrides": [{ "files": ".prettierrc", "options": { "parser": "json" } }],
   "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-packagejson"]
 }
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write .prettierrc');
       writeFileSync(
@@ -51,7 +51,7 @@ export default (api: IApi) => {
 node_modules
 .umi
 .umi-production
-`.trimLeft(),
+`.trimStart(),
       );
       logger.info('Write .prettierignore');
 
