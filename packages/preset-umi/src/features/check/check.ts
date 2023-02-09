@@ -1,6 +1,6 @@
+import { chalk } from '@umijs/utils';
 import assert from 'assert';
 import { IApi } from '../../types';
-import { chalk } from '@umijs/utils';
 
 export default (api: IApi) => {
   api.onCheck(async () => {
@@ -64,6 +64,20 @@ export default (api: IApi) => {
       );
       throw new Error(
         `publicPath can not start with './' in development environment.`,
+      );
+    }
+  });
+
+  // no mock/**
+  api.onPrepareBuildSuccess(({ result }) => {
+    const imps = Object.keys(result.metafile?.inputs || {}).filter((f) =>
+      f.startsWith('mock/'),
+    );
+    if (imps.length) {
+      throw new Error(
+        `Detected mock imports from src: ${imps.join(
+          ', ',
+        )}. \`mock/**\` is not allowed to import.`,
       );
     }
   });
