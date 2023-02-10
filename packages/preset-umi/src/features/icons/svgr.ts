@@ -5,7 +5,7 @@ import path from 'path';
 import type { IApi } from '../../types';
 
 function camelCase(str: string) {
-  return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
+  return str.replace(/-([a-z]|[0-9])/g, (g) => g[1].toUpperCase());
 }
 
 export function generateIconName(opts: { collect: string; icon: string }) {
