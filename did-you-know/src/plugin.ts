@@ -1,5 +1,7 @@
 // @ts-ignore
 import data from '../package.json';
+// @ts-ignore
+import terminalLink from '../compiled/terminal-link';
 
 enum EFramework {
   umi = 'umi',
@@ -41,12 +43,13 @@ export default (api: any) => {
     const item = getDidYouKnow(data.didYouKnow, framework, majorVersion);
     if (!item) return;
     const { text, url } = item;
+    const link = terminalLink.isSupported ? terminalLink('文档', url) : url;
     const info = [
       `[你知道吗？] `,
       text
         .replace(/%%frameworkName%%/g, frameworkName)
         .replace(/%%frameworkCliName%%/g, frameworkCliName),
-      url ? `，详见 ${url}` : '。',
+      url ? `，详见 ${link}` : '。',
     ];
     logger.info(chalk.yellow(info.join('')));
   });
