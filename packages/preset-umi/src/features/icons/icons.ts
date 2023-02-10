@@ -1,7 +1,13 @@
-import { importLazy, logger } from '@umijs/utils';
+import {
+  crossSpawn,
+  importLazy,
+  installWithNpmClient,
+  logger,
+} from '@umijs/utils';
 import path from 'path';
 
 import type { IApi } from '../../types';
+import { addDeps } from '../depsOnDemand/depsOnDemand';
 
 export default (api: IApi) => {
   api.describe({
@@ -52,7 +58,8 @@ export default (api: IApi) => {
 
     logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
     const code: string[] = [];
-    const { generateIconName, generateSvgr } = await import('./svgr.js');
+    const { generateIconName, generateSvgr }: typeof import('./svgr') =
+      importLazy(require.resolve('./svgr'));
     for (const iconStr of icons) {
       const [collect, icon] = iconStr.split(':');
       const iconName = generateIconName({ collect, icon });
@@ -60,7 +67,25 @@ export default (api: IApi) => {
         collect,
         api,
         icon,
-        iconifyOptions: { autoInstall: api.config.icons.autoInstall },
+        iconifyOptions: {
+          autoInstall:
+            api.config.icons.autoInstall &&
+            (async (name: string) => {
+              const version = (
+                await crossSpawn.sync('npm', ['view', name, 'version'], {
+                  encoding: 'utf-8',
+                }).stdout
+              ).trim();
+              addDeps({
+                pkgPath: api.pkgPath,
+                deps: [{ name, version }],
+              });
+              await installWithNpmClient({
+                npmClient: api.appData.npmClient,
+                cwd: api.cwd,
+              });
+            }),
+        },
         localIconDir: path.join(api.paths.absSrcPath, 'icons'),
       });
       if (svgr) {
