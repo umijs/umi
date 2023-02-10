@@ -4,10 +4,7 @@ export default defineConfig({
   extends: '../.fatherrc.base.ts',
   prebundle: {
     deps: {
-      'terminal-link': {
-        minify: false,
-        dts: true,
-      },
+      'terminal-link': {},
     },
   },
 });

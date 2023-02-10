@@ -43,13 +43,12 @@ export default (api: any) => {
     const item = getDidYouKnow(data.didYouKnow, framework, majorVersion);
     if (!item) return;
     const { text, url } = item;
-    const link = terminalLink.isSupported ? terminalLink('文档', url) : url;
     const info = [
       `[你知道吗？] `,
       text
         .replace(/%%frameworkName%%/g, frameworkName)
         .replace(/%%frameworkCliName%%/g, frameworkCliName),
-      url ? `，详见 ${link}` : '。',
+      url ? formatLink(url) : '。',
     ];
     logger.info(chalk.yellow(info.join('')));
   });
@@ -82,4 +81,12 @@ interface ITip {
   url?: string;
   majorVersion?: number;
   framework?: Framework[];
+}
+
+function formatLink(url: string) {
+  if (terminalLink.isSupported) {
+    return `：${terminalLink('点我查看', url)}`;
+  } else {
+    return `，详见 ${url}`;
+  }
 }
