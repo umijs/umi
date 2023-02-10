@@ -64,7 +64,9 @@
     "open": "^8.0.2",
     "prettier": "^2.3.0",
     "prettier-plugin-organize-imports": "^2.1.0",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "esprima": "^4.0.1"
+
   },
   "repository": {
     "type": "git",
