@@ -1,10 +1,11 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import type { IApi } from '../../types';
 
 function camelCase(str: string) {
-  return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
+  return str.replace(/-([a-z]|[0-9])/g, (g) => g[1].toUpperCase());
 }
 
 export function generateIconName(opts: { collect: string; icon: string }) {
@@ -20,8 +21,9 @@ export function generateIconName(opts: { collect: string; icon: string }) {
 export async function generateSvgr(opts: {
   collect: string;
   icon: string;
+  api: IApi;
   localIconDir: string;
-  iconifyOptions?: object;
+  iconifyOptions?: { autoInstall: object };
   svgrOptions?: object;
 }) {
   const warn = `${opts.collect}/${opts.icon}`;
@@ -30,11 +32,13 @@ export async function generateSvgr(opts: {
   if (opts.collect === 'local') {
     svg = loadLocalIcon(opts.icon, opts.localIconDir);
   } else {
+    const { autoInstall, ...rest } = opts?.iconifyOptions || {};
     svg = await loadNodeIcon(opts.collect, opts.icon, {
       warn,
       addXmlNs: false,
-      autoInstall: false,
-      ...opts.iconifyOptions,
+      // @ts-ignore
+      autoInstall,
+      ...rest,
     });
   }
   if (!svg) {

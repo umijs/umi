@@ -130,7 +130,7 @@ export default defineConfig({
           `
 export default () => {
   return '${name}';
-};\n`.trimLeft(),
+};\n`.trimStart(),
           'utf-8',
         );
         await fs.writeFile(
@@ -140,7 +140,7 @@ import index from './index';
 
 test('normal', () => {
   expect(index()).toEqual('${name}');
-});\n`.trimLeft(),
+});\n`.trimStart(),
           'utf-8',
         );
       }

@@ -1,4 +1,5 @@
 import { Config } from '@umijs/test';
+import { setNoDeprecation } from '@umijs/utils';
 import { existsSync, statSync } from 'fs';
 import { Service } from './service/service';
 
@@ -41,6 +42,7 @@ export async function getUmiAlias() {
 }
 
 export async function configUmiAlias(config: Config.InitialOptions) {
+  setNoDeprecation();
   config.moduleNameMapper ||= {};
   const alias = await getUmiAlias();
   for (const key of Object.keys(alias)) {

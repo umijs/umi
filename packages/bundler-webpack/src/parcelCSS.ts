@@ -1,2 +1,2 @@
-import * as parcelCSS from '@parcel/css';
+import * as parcelCSS from 'lightningcss';
 export { parcelCSS };

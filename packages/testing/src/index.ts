@@ -1,5 +1,6 @@
 import type { Config } from '@jest/types';
 import { Path, TransformerConfig } from '@jest/types/build/Config';
+import { setNoDeprecation } from '@umijs/utils';
 import { join } from 'path';
 
 export type JSTransformer = 'esbuild' | 'swc' | 'ts-jest';
@@ -20,7 +21,12 @@ function getJSTransformer(
     case 'esbuild':
       return [
         require.resolve(join(__dirname, 'transformers/esbuild')),
-        { ...opts, sourcemap: true },
+        {
+          // See https://github.com/umijs/umi/issues/10412
+          target: 'es2020',
+          ...opts,
+          sourcemap: true,
+        },
       ];
     case 'swc':
       return require.resolve('@swc-node/jest');
@@ -53,6 +59,7 @@ export function createConfig(opts?: {
   target?: 'node' | 'browser';
   jsTransformerOpts?: any;
 }): Config.InitialOptions {
+  setNoDeprecation();
   const config: Config.InitialOptions = {
     testMatch: ['**/*.test.(t|j)s(x)?'],
     testPathIgnorePatterns: [

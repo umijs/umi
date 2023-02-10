@@ -1,6 +1,6 @@
 {
   "name": "@umijs/did-you-know",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/umijs/did-you-know#readme",
@@ -72,32 +72,32 @@
     },
     {
       "text": "如果你需要使用 Jest 来测试 Umi 项目, %%frameworkCliName%% g jest 就可以一键完成配置",
-      "url": "https://umijs.org/docs/guides/generator#jest-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "url": "https://umijs.org/docs/guides/generator#jest-配置生成器",
       "majorVersion": 4
     },
     {
       "text": "如果你需要使用 Tailwind CSS, %%frameworkCliName%% g tailwindcss 就可以一键完成配置",
-      "url": "https://umijs.org/docs/guides/generator#tailwind-css-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "url": "https://umijs.org/docs/guides/generator#tailwind-css-配置生成器",
       "majorVersion": 4
     },
     {
       "text": "如果你需要使用 Prettier, %%frameworkCliName%% g prettier 就可以一键完成配置",
-      "url": "https://umijs.org/docs/guides/generator#prettier-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "url": "https://umijs.org/docs/guides/generator#prettier-配置生成器",
       "majorVersion": 4
     },
     {
       "text": "如果你需要增加 Git 提交消息校验和自动代码格式化, %%frameworkCliName%% g precommit 就可以一键完成配置",
-      "url": "https://umijs.org/docs/guides/generator#precommit-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%88%90%E5%99%A8",
+      "url": "https://umijs.org/docs/guides/generator#precommit-配置生成器",
       "majorVersion": 4
     },
     {
       "text": "%%frameworkCliName%% g page 可以快速生成页面模板",
-      "url": "https://umijs.org/docs/guides/generator#%E9%A1%B5%E9%9D%A2%E7%94%9F%E6%88%90%E5%99%A8",
+      "url": "https://umijs.org/docs/guides/generator#页面生成器",
       "majorVersion": 4
     },
     {
       "text": "%%frameworkCliName%% g component 可以快速生成组件模板",
-      "url": "https://umijs.org/docs/guides/generator#%E7%BB%84%E4%BB%B6%E7%94%9F%E6%88%90%E5%99%A8",
+      "url": "https://umijs.org/docs/guides/generator#组件生成器",
       "majorVersion": 4
     },
     {

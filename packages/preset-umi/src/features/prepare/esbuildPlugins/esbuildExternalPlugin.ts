@@ -6,18 +6,14 @@ export function esbuildExternalPlugin(): Plugin {
   return {
     name: 'esbuildExternalPlugin',
     setup(build) {
-      // externals extensions
-      externalsExtensions.forEach((ext) => {
-        // /\.abc?query$/
-        const filter = new RegExp(`\.${ext}(\\?.*)?$`);
-        build.onResolve({ filter }, () => {
+      build.onResolve({ filter: /.*/ }, (args) => {
+        // only handle js/ts file
+        if (!isSource(args.path)) {
           return {
             external: true,
           };
-        });
-      });
-      // external deps
-      build.onResolve({ filter: /.*/ }, (args) => {
+        }
+
         if (args.path.startsWith('.')) {
           return null;
         }
@@ -49,34 +45,21 @@ export function esbuildExternalPlugin(): Plugin {
   };
 }
 
-const externalsExtensions = [
-  'aac',
-  'css',
-  'less',
-  'sass',
-  'scss',
-  'eot',
-  'flac',
-  'gif',
-  'html',
-  'htm',
-  'ico',
-  'icon',
-  'jpeg',
-  'jpg',
-  'json',
-  'md',
-  'mdx',
-  'mp3',
-  'mp4',
-  'ogg',
-  'otf',
-  'png',
-  'svg',
-  'ttf',
-  'wav',
-  'webm',
-  'webp',
-  'woff',
-  'woff2',
-];
+function parseExt(file: string) {
+  const ext = path.extname(file);
+  const idx = ext.indexOf('?');
+  if (idx > 0) {
+    return ext.slice(0, idx);
+  }
+  return ext;
+}
+
+const SOURCE_REG = /\.(t|j)sx?$/;
+function isSource(file: string) {
+  if (SOURCE_REG.test(file)) {
+    return true;
+  }
+  // allow import without ext
+  const ext = parseExt(file);
+  return !ext;
+}
