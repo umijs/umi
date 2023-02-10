@@ -16,7 +16,7 @@ test('unMatch libs', () => {
         unMatchLibs: ['foo'],
       },
     }).isMatch,
-  ).toEqual(false);
+  ).toBe(false);
 });
 
 test('unMatch libs full match', () => {
@@ -42,7 +42,7 @@ test('unMatch libs regExp', () => {
         unMatchLibs: [/^vant/],
       },
     }).isMatch,
-  ).toEqual(false);
+  ).toBe(false);
 });
 
 test('start with mf/', () => {
@@ -62,7 +62,7 @@ test('babel/svgr-webpack', () => {
     checkMatch({
       value: 'test/babel/svgr-webpack/x',
     }).isMatch,
-  ).toEqual(false);
+  ).toBe(false);
 });
 
 test('webpack loader', () => {
@@ -70,7 +70,7 @@ test('webpack loader', () => {
     checkMatch({
       value: '!!dumi-raw-code-loader!/foo',
     }).isMatch,
-  ).toEqual(false);
+  ).toBe(false);
 });
 
 test('external', () => {
@@ -83,7 +83,7 @@ test('external', () => {
         },
       },
     }).isMatch,
-  ).toEqual(false);
+  ).toBe(false);
 });
 
 test('relative path', () => {
@@ -91,7 +91,7 @@ test('relative path', () => {
     checkMatch({
       value: './foo',
     }).isMatch,
-  ).toEqual(false);
+  ).toBe(false);
 });
 
 test('absolute path within node_modules', () => {

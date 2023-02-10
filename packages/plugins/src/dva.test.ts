@@ -5,7 +5,7 @@ function isModelValid(opts: { content: string; file: string }) {
 }
 
 test('isModelValid empty', () => {
-  expect(isModelValid({ content: '', file: 'a.ts' })).toEqual(false);
+  expect(isModelValid({ content: '', file: 'a.ts' })).toBe(false);
 });
 
 test('isModelValid comment', () => {
@@ -17,7 +17,7 @@ test('isModelValid comment', () => {
 test('isModelValid export default', () => {
   expect(
     isModelValid({ content: `export default { namespace: '' }`, file: 'a.ts' }),
-  ).toEqual(true);
+  ).toBe(true);
 });
 
 test('isModelValid export default + declaration', () => {
@@ -26,7 +26,7 @@ test('isModelValid export default + declaration', () => {
       content: `const foo = { namespace: '' };export default foo;`,
       file: 'a.ts',
     }),
-  ).toEqual(true);
+  ).toBe(true);
 });
 
 test('isModelValid with typescript', () => {
@@ -35,25 +35,25 @@ test('isModelValid with typescript', () => {
       content: `export default <Model>{ namespace: '' }`,
       file: 'a.ts',
     }),
-  ).toEqual(true);
+  ).toBe(true);
   expect(
     isModelValid({
       content: `export default <Model<SubModel>>{ namespace: '' }`,
       file: 'a.ts',
     }),
-  ).toEqual(true);
+  ).toBe(true);
   expect(
     isModelValid({
       content: `export default { namespace: '' } as Model`,
       file: 'a.ts',
     }),
-  ).toEqual(true);
+  ).toBe(true);
   expect(
     isModelValid({
       content: `const foo: Model = { namespace: '' };export default foo;`,
       file: 'a.ts',
     }),
-  ).toEqual(true);
+  ).toBe(true);
 });
 
 test('isModelValid dva-model-extend', () => {
@@ -63,5 +63,5 @@ test('isModelValid dva-model-extend', () => {
 export default foo(model, { namespace: 'foo' });`,
       file: 'a.ts',
     }),
-  ).toEqual(true);
+  ).toBe(true);
 });

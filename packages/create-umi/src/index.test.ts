@@ -26,7 +26,7 @@ test('generate app', async () => {
       default: true,
     },
   });
-  expect(existsSync(join(cwd, 'src', 'pages', 'index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'src', 'pages', 'index.tsx'))).toBe(true);
   rimraf.sync(cwd);
 });
 
@@ -41,7 +41,7 @@ test('generate plugin', async () => {
       default: true,
     },
   });
-  expect(existsSync(join(cwd, 'src', 'index.ts'))).toEqual(true);
+  expect(existsSync(join(cwd, 'src', 'index.ts'))).toBe(true);
   rimraf.sync(cwd);
 });
 
@@ -56,6 +56,6 @@ test('generate max', async () => {
     },
   });
 
-  expect(existsSync(join(cwd, 'src/pages/Home/index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'src/pages/Home/index.tsx'))).toBe(true);
   rimraf.sync(cwd);
 });

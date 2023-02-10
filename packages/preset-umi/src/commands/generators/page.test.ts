@@ -240,7 +240,7 @@ describe('page generate in interactive way', function () {
 
     await g.run();
 
-    expect(g.getDirMode()).toEqual(false);
+    expect(g.getDirMode()).toBe(false);
     expect(prompts).toBeCalledTimes(2);
     expect(prompts).toHaveBeenNthCalledWith(1, {
       type: 'text',
@@ -274,7 +274,7 @@ describe('page generate in interactive way', function () {
 
     await g.run();
 
-    expect(g.getDirMode()).toEqual(true);
+    expect(g.getDirMode()).toBe(true);
     expect(prompts).toBeCalledTimes(2);
     expect(prompts).toHaveBeenNthCalledWith(1, {
       type: 'text',

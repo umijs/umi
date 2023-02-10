@@ -153,7 +153,7 @@ export default [null, 1, '2', () => {}, {a: true, b() {}}];
 test('export literal value', () => {
   expect(getExportProps('export default 0;')).toEqual(0);
   expect(getExportProps('export default "1";')).toEqual('1');
-  expect(getExportProps('export default true;')).toEqual(true);
+  expect(getExportProps('export default true;')).toBe(true);
   expect(getExportProps('export default null;')).toEqual(null);
 });
 

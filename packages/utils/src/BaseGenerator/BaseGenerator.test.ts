@@ -21,7 +21,7 @@ test('generate tpl', async () => {
     path: join(fixtures, 'tpl'),
     target: join(cwd, 'hello/', ''),
   });
-  expect(existsSync(join(cwd, 'hello', 'index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'hello', 'index.tsx'))).toBe(true);
 });
 
 test('generate tpl file', async () => {
@@ -29,7 +29,7 @@ test('generate tpl file', async () => {
     path: join(fixtures, 'tpl', 'index.tsx.tpl'),
     target: join(cwd, 'file-tpl', 'index.tsx'),
   });
-  expect(existsSync(join(cwd, 'file-tpl', 'index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'file-tpl', 'index.tsx'))).toBe(true);
 });
 
 test('generate by file', async () => {
@@ -37,7 +37,7 @@ test('generate by file', async () => {
     path: join(fixtures, 'tpl', 'a.tsx'),
     target: join(cwd, 'file', 'a.tsx'),
   });
-  expect(existsSync(join(cwd, 'file', 'a.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'file', 'a.tsx'))).toBe(true);
 });
 
 test('generate tpl by data', async () => {
@@ -48,7 +48,7 @@ test('generate tpl by data', async () => {
       componentName: 'Home',
     },
   });
-  expect(existsSync(join(cwd, 'data', 'index.tsx'))).toEqual(true);
+  expect(existsSync(join(cwd, 'data', 'index.tsx'))).toBe(true);
   expect(readFileSync(join(cwd, 'data', 'index.tsx'), 'utf-8')).toContain(
     'HomePage',
   );

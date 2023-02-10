@@ -133,7 +133,7 @@ test('snapshot + hasDepChanged', () => {
       { file: 'c', isDependency: true, version: '0.1.0' },
     ],
   });
-  expect(mg.hasDepChanged()).toEqual(true);
+  expect(mg.hasDepChanged()).toBe(true);
   mg.snapshotDeps();
   mg.onFileChange({
     file: 'a',
@@ -142,7 +142,7 @@ test('snapshot + hasDepChanged', () => {
       { file: 'c', isDependency: true, version: '0.2.0' },
     ],
   });
-  expect(mg.hasDepChanged()).toEqual(true);
+  expect(mg.hasDepChanged()).toBe(true);
   mg.snapshotDeps();
   mg.onFileChange({
     file: 'a',
@@ -151,13 +151,13 @@ test('snapshot + hasDepChanged', () => {
       { file: 'c', isDependency: true, version: '0.2.0' },
     ],
   });
-  expect(mg.hasDepChanged()).toEqual(false);
+  expect(mg.hasDepChanged()).toBe(false);
   mg.snapshotDeps();
   mg.onFileChange({
     file: 'a',
     deps: [{ file: 'b', isDependency: false }],
   });
-  expect(mg.hasDepChanged()).toEqual(true);
+  expect(mg.hasDepChanged()).toBe(true);
 });
 
 test('different modules have same deps', () => {
@@ -229,7 +229,7 @@ test('deps compare ignore importer', () => {
     deps: [{ file: 'b', isDependency: true, version: '0.0.1' }],
   });
 
-  expect(mg.hasDepChanged()).toEqual(false);
+  expect(mg.hasDepChanged()).toBe(false);
 });
 
 test('deps compare ignore importer when no importer', () => {
@@ -243,5 +243,5 @@ test('deps compare ignore importer when no importer', () => {
     b: { file: 'b', version: '0.0.1' },
   };
 
-  expect(mg.hasDepChanged()).toEqual(false);
+  expect(mg.hasDepChanged()).toBe(false);
 });
