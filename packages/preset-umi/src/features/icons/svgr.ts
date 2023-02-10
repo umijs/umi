@@ -1,10 +1,9 @@
 import { loadNodeIcon } from '@iconify/utils/lib/loader/node-loader';
 import { transform } from '@svgr/core';
-import { crossSpawn, installWithNpmClient } from '@umijs/utils';
 import fs from 'fs';
 import path from 'path';
 import type { IApi } from '../../types';
-import { addDeps } from '../depsOnDemand/depsOnDemand';
+
 function camelCase(str: string) {
   return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
 }
@@ -34,30 +33,11 @@ export async function generateSvgr(opts: {
     svg = loadLocalIcon(opts.icon, opts.localIconDir);
   } else {
     const { autoInstall, ...rest } = opts?.iconifyOptions || {};
-
     svg = await loadNodeIcon(opts.collect, opts.icon, {
       warn,
       addXmlNs: false,
-      autoInstall: autoInstall
-        ? async (name) => {
-            const version = await crossSpawn.sync(
-              'npm',
-              ['view', name, 'version'],
-              {
-                encoding: 'utf-8',
-              },
-            ).stdout;
-            addDeps({
-              pkgPath:
-                opts.api.pkgPath || path.join(opts.api.cwd, 'package.json'),
-              deps: [{ name, version }],
-            });
-            await installWithNpmClient({
-              npmClient: opts.api.appData.npmClient,
-              cwd: opts.api.cwd,
-            });
-          }
-        : false,
+      // @ts-ignore
+      autoInstall,
       ...rest,
     });
   }
