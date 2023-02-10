@@ -11,6 +11,6 @@
     "umi": "4.0.0-canary.20230210.1"
   },
   "devDependencies": {
-    "es-check": "^7.0.0"
+    "es-check": "^7.1.0"
   }
 }
