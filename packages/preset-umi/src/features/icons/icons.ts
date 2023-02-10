@@ -1,5 +1,6 @@
 import { importLazy, logger } from '@umijs/utils';
 import path from 'path';
+
 import type { IApi } from '../../types';
 
 export default (api: IApi) => {
@@ -57,6 +58,7 @@ export default (api: IApi) => {
       const iconName = generateIconName({ collect, icon });
       const svgr = await generateSvgr({
         collect,
+        api,
         icon,
         iconifyOptions: { autoInstall: api.config.icons.autoInstall },
         localIconDir: path.join(api.paths.absSrcPath, 'icons'),
