@@ -24,7 +24,7 @@ export default (api: IApi) => {
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = getTailwindBinPath({ cwd: api.cwd });
     const configPath = join(
-      process.env.APP_ROOT || api.cwd,
+      api.cwd,
       'tailwind.config.js',
     );
 
