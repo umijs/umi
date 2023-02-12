@@ -31,6 +31,21 @@ jobs:
         with:
           require: 'write'
 
+    output-log:
+    runs-on: ubuntu-latest
+    needs: [read-file, check-permission]
+    steps:
+      - name: check-permission
+        run: echo "${{ needs.check-permission.outputs.require-result }}"
+      - name: contributors.json
+        run: echo "${{ needs.read-file.outputs.require-result }}"
+      - name: actor
+        run: echo "${{ github.actor }}"
+      - name: contains
+        run: echo "${{ contains(fromJSON(needs.read-file.outputs.require-result), github.actor) }}"
+      - name: merged
+        run: echo "${{ github.event.pull_request.merged }}"
+
   check-merged:
     runs-on: ubuntu-latest
     needs: [read-file, check-permission]
