@@ -1,5 +1,4 @@
-import * as allIcons from '@ant-design/icons';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
@@ -71,6 +70,35 @@ export default (api: IApi) => {
   };
 
   const pkgPath = winPath(getPkgPath());
+
+  // 获取所有 icons
+  const antIconsPath = winPath(
+    dirname(require.resolve('@ant-design/icons/package')),
+  );
+
+  const getAllIcons = () => {
+    let iconsList: string[] = [];
+    // 读取 index.d.ts
+    const iconTypePath = `${antIconsPath}/lib/icons/index.d.ts`;
+    const iconTypeContent = readFileSync(iconTypePath).toString();
+    // 正则截取 from './${iconName}';
+    const reg = new RegExp(/from '\.\/(.+)?'/g);
+    let index = 0;
+
+    while (true) {
+      const result = reg.exec(iconTypeContent.slice(index));
+      if (result === null) {
+        break;
+      }
+
+      iconsList.push(result[1]);
+      index = +result[index];
+    }
+
+    return iconsList;
+  };
+
+  const allIcons: string[] = getAllIcons();
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
@@ -367,9 +395,7 @@ export interface IRuntimeConfig {
       return memo;
     }, {});
     const icons = Object.keys(iconsMap);
-    const antIconsPath = winPath(
-      dirname(require.resolve('@ant-design/icons/package')),
-    );
+
     api.writeTmpFile({
       path: 'icons.tsx',
       content: `
@@ -378,6 +404,7 @@ ${icons
     return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
   })
   .join('\n')}
+
 export default { ${icons.join(', ')} };
       `,
     });
@@ -433,7 +460,7 @@ export function getRightRenderContent (opts: {
     );
   }
 
- 
+
 
   const avatar = (
     <span className="umi-plugin-layout-action">
@@ -476,12 +503,12 @@ export function getRightRenderContent (opts: {
       },
     ],
   };
-  
+
   // antd@5 和  4.24 之后推荐使用 menu，性能更好
   const dropdownProps =
     version.startsWith("5.") || version.startsWith("4.24.")
       ? { menu: langMenu }
-      : { overlay: <Menu {...langMenu} /> };  
+      : { overlay: <Menu {...langMenu} /> };
 
   return (
     <div className="umi-plugin-layout-right anticon">
