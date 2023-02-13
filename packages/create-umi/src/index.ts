@@ -91,6 +91,11 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
           hint: 'more plugins and ready to use features',
         },
         { label: 'Vue Simple App', value: ETemplate.vueApp },
+        {
+          label: 'Umi Plugin',
+          value: ETemplate.plugin,
+          hint: 'for plugin development',
+        },
       ],
       initialValue: ETemplate.app,
     })) as ETemplate;
