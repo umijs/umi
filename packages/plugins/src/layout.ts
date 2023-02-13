@@ -384,11 +384,11 @@ export interface IRuntimeConfig {
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
         // @ts-ignore
-        if (allIcons[upperIcon]) {
+        if (allIcons.includes(upperIcon)) {
           memo[upperIcon] = true;
         }
         // @ts-ignore
-        if (allIcons[`${upperIcon}Outlined`]) {
+        if (allIcons.includes(`${upperIcon}Outlined`)) {
           memo[`${upperIcon}Outlined`] = true;
         }
       }
