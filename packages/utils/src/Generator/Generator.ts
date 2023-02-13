@@ -12,6 +12,20 @@ interface IOpts {
   args: yParser.Arguments;
 }
 
+interface IGeneratorBaseOpts {
+  slient?: boolean;
+  context: Record<string, any>;
+  target: string;
+}
+
+interface IGeneratorCopyTplOpts extends IGeneratorBaseOpts {
+  templatePath: string;
+}
+
+interface IGeneratorCopyDirectoryOpts extends IGeneratorBaseOpts {
+  path: string;
+}
+
 class Generator {
   baseDir: string;
   args: yParser.Arguments;
@@ -39,17 +53,19 @@ class Generator {
 
   async writing() {}
 
-  copyTpl(opts: { templatePath: string; target: string; context: object }) {
+  copyTpl(opts: IGeneratorCopyTplOpts) {
     const tpl = readFileSync(opts.templatePath, 'utf-8');
     const content = Mustache.render(tpl, opts.context);
     fsExtra.mkdirpSync(dirname(opts.target));
-    console.log(
-      `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
-    );
+    if (!opts.slient) {
+      console.log(
+        `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
+      );
+    }
     writeFileSync(opts.target, content, 'utf-8');
   }
 
-  copyDirectory(opts: { path: string; context: object; target: string }) {
+  copyDirectory(opts: IGeneratorCopyDirectoryOpts) {
     const files = glob.sync('**/*', {
       cwd: opts.path,
       dot: true,
@@ -65,7 +81,9 @@ class Generator {
           context: opts.context,
         });
       } else {
-        console.log(`${chalk.green('Copy: ')} ${file}`);
+        if (!opts.slient) {
+          console.log(`${chalk.green('Copy: ')} ${file}`);
+        }
         const absTarget = join(opts.target, file);
         fsExtra.mkdirpSync(dirname(absTarget));
         copyFileSync(absFile, absTarget);

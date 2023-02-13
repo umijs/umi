@@ -25,8 +25,8 @@ export async function buildDep(opts: any) {
     if (opts.pkgName === 'mini-css-extract-plugin') {
       resolvePath = 'mini-css-extract-plugin/dist/index';
     }
-    entry = require.resolve(resolvePath, {
-      paths: [nodeModulesPath],
+    entry = resolve.sync(resolvePath, {
+      basedir: nodeModulesPath,
     });
   } else {
     entry = path.join(opts.base, opts.file);
@@ -157,6 +157,7 @@ Object.keys(exported).forEach(function (key) {
           'zx',
           '@vitejs/plugin-legacy',
           '@vitejs/plugin-vue',
+          '@clack/prompts',
         ].includes(opts.pkgName)
       ) {
         code = code.replace(/require\("node:/g, 'require("');

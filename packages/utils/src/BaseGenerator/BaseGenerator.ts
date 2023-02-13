@@ -10,6 +10,7 @@ interface IOpts {
   baseDir?: string;
   data?: any;
   questions?: prompts.PromptObject[];
+  slient?: boolean;
 }
 
 export default class BaseGenerator extends Generator {
@@ -17,13 +18,15 @@ export default class BaseGenerator extends Generator {
   target: string;
   data: any;
   questions: prompts.PromptObject[];
+  slient: boolean;
 
-  constructor({ path, target, data, questions, baseDir }: IOpts) {
+  constructor({ path, target, data, questions, baseDir, slient }: IOpts) {
     super({ baseDir: baseDir || target, args: data });
     this.path = path;
     this.target = target;
     this.data = data;
     this.questions = questions || [];
+    this.slient = !!slient;
   }
 
   prompting() {
@@ -40,6 +43,7 @@ export default class BaseGenerator extends Generator {
         context,
         path: this.path,
         target: this.target,
+        slient: this.slient,
       });
     } else {
       if (this.path.endsWith('.tpl')) {
@@ -47,6 +51,7 @@ export default class BaseGenerator extends Generator {
           templatePath: this.path,
           target: this.target,
           context,
+          slient: this.slient,
         });
       } else {
         const absTarget = this.target;

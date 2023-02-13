@@ -1,33 +1,21 @@
 import {
   BaseGenerator,
+  chalk,
+  clackPrompts,
   execa,
   fsExtra,
   getGitInfo,
   installWithNpmClient,
   logger,
-  NpmClient,
   pkgUp,
-  prompts,
   tryPaths,
   yParser,
 } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 
-const testData = {
-  name: 'umi-plugin-demo',
-  description: 'nothing',
-  mail: 'xiaohuoni@gmail.com',
-  author: 'xiaohuoni',
-  org: 'umijs',
-  version: require('../package').version,
-  npmClient: 'pnpm',
-  registry: 'https://registry.npmjs.org/',
-};
-
 interface IArgs extends yParser.Arguments {
   default?: boolean;
-  plugin?: boolean;
   git?: boolean;
   install?: boolean;
 }
@@ -40,107 +28,124 @@ interface IContext {
 
 interface ITemplateParams {
   version: string;
-  npmClient: NpmClient;
+  npmClient: ENpmClient;
   registry: string;
   author: string;
+  email: string;
   withHusky: boolean;
   extraNpmrc: string;
 }
 
-export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
-  const [name] = args._;
-  let npmClient = 'pnpm' as NpmClient;
-  let registry = 'https://registry.npmjs.org/';
-  let appTemplate = 'app';
-  const { username, email } = await getGitInfo();
-  let author = email && username ? `${username} <${email}>` : '';
+enum ENpmClient {
+  npm = 'npm',
+  cnpm = 'cnpm',
+  tnpm = 'tnpm',
+  yarn = 'yarn',
+  pnpm = 'pnpm',
+}
 
-  // test ignore prompts
-  if (!args.default) {
-    const response = await prompts(
-      [
+enum ERegistry {
+  npm = 'https://registry.npmjs.com/',
+  taobao = 'https://registry.npmmirror.com',
+}
+
+enum ETemplate {
+  app = 'app',
+  max = 'max',
+  vueApp = 'vue-app',
+  plugin = 'plugin',
+}
+
+const pkg = require('../package');
+const DEFAULT_DATA = {
+  name: 'umi-plugin-demo',
+  description: 'nothing',
+  mail: 'i@domain.com',
+  author: 'umijs',
+  org: 'umijs',
+  version: pkg.version,
+  npmClient: ENpmClient.pnpm,
+  registry: ERegistry.npm,
+};
+
+export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
+  let [name] = args._;
+  let npmClient = ENpmClient.pnpm;
+  let registry = ERegistry.npm;
+  let appTemplate = ETemplate.app;
+  const { username, email } = await getGitInfo();
+  const author = email && username ? `${username} <${email}>` : '';
+
+  const { isCancel, text, select, intro, outro } = clackPrompts;
+
+  const useDefaultData = args.default;
+  if (!useDefaultData) {
+    intro(chalk.bgHex('#19BDD2')(' create-umi '));
+    appTemplate = (await select({
+      message: 'Pick Umi App Template',
+      options: [
+        { label: 'Simple App', value: ETemplate.app },
         {
-          type: 'select',
-          name: 'appTemplate',
-          message: 'Pick Umi App Template',
-          choices: [
-            { title: 'Simple App', value: 'app' },
-            { title: 'Ant Design Pro', value: 'max' },
-            { title: 'Vue Simple App', value: 'vue-app' },
-          ],
-          initial: 0,
+          label: 'Ant Design Pro',
+          value: ETemplate.max,
+          hint: 'more plugins and ready to use features',
+        },
+        { label: 'Vue Simple App', value: ETemplate.vueApp },
+      ],
+      initialValue: ETemplate.app,
+    })) as ETemplate;
+    if (isCancel(appTemplate)) {
+      process.exit(1);
+    }
+    npmClient = (await select({
+      message: 'Pick Npm Client',
+      options: [
+        { label: ENpmClient.npm, value: ENpmClient.npm },
+        { label: ENpmClient.cnpm, value: ENpmClient.cnpm },
+        { label: ENpmClient.tnpm, value: ENpmClient.tnpm },
+        { label: ENpmClient.yarn, value: ENpmClient.yarn },
+        { label: ENpmClient.pnpm, value: ENpmClient.pnpm, hint: 'recommended' },
+      ],
+      initialValue: ENpmClient.pnpm,
+    })) as ENpmClient;
+    if (isCancel(npmClient)) {
+      process.exit(1);
+    }
+    registry = (await select({
+      message: 'Pick Npm Registry',
+      options: [
+        {
+          label: 'npm',
+          value: ERegistry.npm,
         },
         {
-          type: 'select',
-          name: 'npmClient',
-          message: 'Pick Npm Client',
-          choices: [
-            { title: 'npm', value: 'npm' },
-            { title: 'cnpm', value: 'cnpm' },
-            { title: 'tnpm', value: 'tnpm' },
-            { title: 'yarn', value: 'yarn' },
-            { title: 'pnpm', value: 'pnpm' },
-          ],
-          initial: 4,
-        },
-        {
-          type: 'select',
-          name: 'registry',
-          message: 'Pick Npm Registry',
-          choices: [
-            {
-              title: 'npm',
-              value: 'https://registry.npmjs.org/',
-              selected: true,
-            },
-            { title: 'taobao', value: 'https://registry.npmmirror.com' },
-          ],
+          label: 'taobao',
+          value: ERegistry.taobao,
+          hint: 'recommended for China',
         },
       ],
-      {
-        onCancel() {
-          process.exit(1);
-        },
-      },
-    );
-    npmClient = response.npmClient;
-    registry = response.registry;
-    appTemplate = response.appTemplate;
+      initialValue: ERegistry.npm,
+    })) as ERegistry;
+    if (isCancel(registry)) {
+      process.exit(1);
+    }
+    // plugin extra questions
+    const isPlugin = appTemplate === ETemplate.plugin;
+    if (isPlugin) {
+      name = (await text({
+        message: `What's the plugin name?`,
+        placeholder: name,
+      })) as string;
+      if (isCancel(name) || !name?.length) {
+        process.exit(1);
+      }
+    }
+    outro(`You're all set!`);
   }
 
-  const pluginPrompts = [
-    {
-      name: 'name',
-      type: 'text',
-      message: `What's the plugin name?`,
-      default: name,
-    },
-    {
-      name: 'description',
-      type: 'text',
-      message: `What's your plugin used for?`,
-    },
-    {
-      name: 'mail',
-      type: 'text',
-      message: `What's your email?`,
-    },
-    {
-      name: 'author',
-      type: 'text',
-      message: `What's your name?`,
-    },
-    {
-      name: 'org',
-      type: 'text',
-      message: `Which organization is your plugin stored under github?`,
-    },
-  ] as prompts.PromptObject[];
-
   const target = name ? join(cwd, name) : cwd;
-  const templateName = args.plugin ? 'plugin' : appTemplate;
 
-  const version = require('../package').version;
+  const version = pkg.version;
 
   // detect monorepo
   const monorepoRoot = await detectMonorepoRoot({ target });
@@ -152,22 +157,25 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
   // now husky is not supported in monorepo
   const withHusky = shouldInitGit && !inMonorepo;
 
+  const isPnpm = npmClient === ENpmClient.pnpm;
   const generator = new BaseGenerator({
-    path: join(__dirname, '..', 'templates', templateName),
+    path: join(__dirname, '..', 'templates', appTemplate),
     target,
-    data: args.default
-      ? testData
+    slient: true,
+    data: useDefaultData
+      ? DEFAULT_DATA
       : ({
           version: version.includes('-canary.') ? version : `^${version}`,
           npmClient,
           registry,
           author,
+          email,
           withHusky,
           // suppress pnpm v7 warning
-          extraNpmrc:
-            npmClient === 'pnpm' ? `strict-peer-dependencies=false` : '',
-        } as ITemplateParams),
-    questions: args.default ? [] : args.plugin ? pluginPrompts : [],
+          // No need when `pnpm` > v7.13.5 , but we are forward compatible
+          // https://pnpm.io/npmrc#strict-peer-dependencies
+          extraNpmrc: isPnpm ? `strict-peer-dependencies=false` : '',
+        } satisfies ITemplateParams),
   });
   await generator.run();
 
@@ -194,7 +202,7 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
   }
 
   // install deps
-  if (!args.default && args.install !== false) {
+  if (!useDefaultData && args.install !== false) {
     installWithNpmClient({ npmClient, cwd: target });
   } else {
     logger.info(`Skip install deps`);
