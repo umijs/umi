@@ -431,7 +431,7 @@ importers:
 
   examples/legacy:
     specifiers:
-      es-check: ^7.0.0
+      es-check: ^7.1.0
       umi: 4.0.0-canary.20230213.1
     dependencies:
       umi: link:../../packages/umi
