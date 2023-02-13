@@ -6,10 +6,12 @@ import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
 import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
-import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
 export default (api: IApi) => {
   api.modifyAppData(async (memo) => {
+    const { getRoutes, getApiRoutes } = await importLazy(
+      require.resolve('../tmpFiles/routes'),
+    );
     memo.routes = await getRoutes({
       api,
     });
@@ -71,6 +73,10 @@ export default (api: IApi) => {
   api.registerMethod({
     name: '_refreshRoutes',
     async fn() {
+      const { getRoutes } = await importLazy(
+        require.resolve('../tmpFiles/routes'),
+      );
+
       api.appData.routes = await getRoutes({
         api,
       });
