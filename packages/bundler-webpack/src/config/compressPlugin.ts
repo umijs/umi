@@ -48,6 +48,8 @@ export async function addCompressPlugin(opts: IOpts) {
       target: esbuildTarget,
       // remove all comments
       legalComments: 'none',
+      // See https://github.com/esbuild-kit/esbuild-loader/issues/139
+      format: 'iife',
     } as EsbuildOpts;
   } else if (jsMinifier === JSMinifier.terser) {
     minify = TerserPlugin.terserMinify;
