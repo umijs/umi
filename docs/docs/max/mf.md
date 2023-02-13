@@ -374,7 +374,7 @@ export default defineConfig({
   mfsu: {
     // mf 插件自动填充以下和 MFSU 兼容的默认配置
     // 开启了 MFSU 也能在 DEV 阶段调试 MF 的模块
-    remoteName: remoteMFName, 
+    remoteName: 'remoteMFName', 
     remoteAliases: ['remote1', 'aliasRemote'],
     shared: {
       react: {
