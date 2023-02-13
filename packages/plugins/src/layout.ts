@@ -77,7 +77,7 @@ export default (api: IApi) => {
   );
 
   const getAllIcons = () => {
-    let iconsList: string[] = [];
+    let iconsList: Record<string, boolean> = [];
     // 读取 index.d.ts
     const iconTypePath = `${antIconsPath}/lib/icons/index.d.ts`;
     const iconTypeContent = readFileSync(iconTypePath).toString();
@@ -91,14 +91,14 @@ export default (api: IApi) => {
         break;
       }
 
-      iconsList.push(result[1]);
+      iconsList[result[1]] = true;
       index = +result[index];
     }
 
     return iconsList;
   };
 
-  const allIcons: string[] = getAllIcons();
+  const allIcons: Record<string, boolean> = getAllIcons();
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
@@ -384,11 +384,11 @@ export interface IRuntimeConfig {
       if (icon) {
         const upperIcon = lodash.upperFirst(lodash.camelCase(icon));
         // @ts-ignore
-        if (allIcons.includes(upperIcon)) {
+        if (allIcons[upperIcon]) {
           memo[upperIcon] = true;
         }
         // @ts-ignore
-        if (allIcons.includes(`${upperIcon}Outlined`)) {
+        if (allIcons[`${upperIcon}Outlined`]) {
           memo[`${upperIcon}Outlined`] = true;
         }
       }
