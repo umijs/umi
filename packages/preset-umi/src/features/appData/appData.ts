@@ -8,14 +8,13 @@ import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
 
 export default (api: IApi) => {
+  const routesApi = importLazy(require.resolve('../tmpFiles/routes'));
+
   api.modifyAppData(async (memo) => {
-    const { getRoutes, getApiRoutes } = await importLazy(
-      require.resolve('../tmpFiles/routes'),
-    );
-    memo.routes = await getRoutes({
+    memo.routes = await routesApi.getRoutes({
       api,
     });
-    memo.apiRoutes = await getApiRoutes({
+    memo.apiRoutes = await routesApi.getApiRoutes({
       api,
     });
     memo.hasSrcDir = api.paths.absSrcPath.endsWith('/src');
@@ -73,11 +72,7 @@ export default (api: IApi) => {
   api.registerMethod({
     name: '_refreshRoutes',
     async fn() {
-      const { getRoutes } = await importLazy(
-        require.resolve('../tmpFiles/routes'),
-      );
-
-      api.appData.routes = await getRoutes({
+      api.appData.routes = await routesApi.getRoutes({
         api,
       });
     },
