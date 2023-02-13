@@ -7,13 +7,13 @@ import Mustache from '../../compiled/mustache';
 import prompts from '../../compiled/prompts';
 import yParser from '../../compiled/yargs-parser';
 
-interface IOpts {
+export interface IGeneratorOpts {
   baseDir: string;
   args: yParser.Arguments;
+  slient?: boolean;
 }
 
 interface IGeneratorBaseOpts {
-  slient?: boolean;
   context: Record<string, any>;
   target: string;
 }
@@ -29,11 +29,14 @@ interface IGeneratorCopyDirectoryOpts extends IGeneratorBaseOpts {
 class Generator {
   baseDir: string;
   args: yParser.Arguments;
+  slient: boolean;
   prompts: any;
 
-  constructor({ baseDir, args }: IOpts) {
+  constructor({ baseDir, args, slient }: IGeneratorOpts) {
     this.baseDir = baseDir;
     this.args = args;
+    this.slient = !!slient;
+
     this.prompts = {};
   }
 
@@ -57,7 +60,7 @@ class Generator {
     const tpl = readFileSync(opts.templatePath, 'utf-8');
     const content = Mustache.render(tpl, opts.context);
     fsExtra.mkdirpSync(dirname(opts.target));
-    if (!opts.slient) {
+    if (!this.slient) {
       console.log(
         `${chalk.green('Write:')} ${relative(this.baseDir, opts.target)}`,
       );
@@ -81,7 +84,7 @@ class Generator {
           context: opts.context,
         });
       } else {
-        if (!opts.slient) {
+        if (!this.slient) {
           console.log(`${chalk.green('Copy: ')} ${file}`);
         }
         const absTarget = join(opts.target, file);

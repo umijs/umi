@@ -1837,7 +1837,7 @@ importers:
 
   packages/utils:
     specifiers:
-      '@clack/prompts': 0.0.5
+      '@clack/prompts': 0.1.1
       '@hapi/joi': 17.1.1
       '@types/color': 3.0.3
       '@types/cross-spawn': 6.0.2
@@ -1883,7 +1883,7 @@ importers:
       chokidar: 3.5.3
       pino: 7.11.0
     devDependencies:
-      '@clack/prompts': 0.0.5
+      '@clack/prompts': 0.1.1
       '@hapi/joi': 17.1.1
       '@types/color': 3.0.3
       '@types/cross-spawn': 6.0.2
@@ -7027,18 +7027,17 @@ packages:
     resolution: {integrity: sha512-KCpFcX+kNyKlVZQW60ZUGRW5Nsg5u0F2CIgHiDQyg282ouHS9xap2ZEKqhwGE/0nYP46nAPnGPdb/IYh7ZHOsA==}
     dev: false
 
-  /@clack/core/0.0.10:
-    resolution: {integrity: sha512-hNnWbbYu1CtTCAKzm+Qism0kPFAdu6oUXpRQs7s9fhR/PBHtJxKXmv2msLrKAyV+51jTM/Vq0TcKb8llEHCe1w==}
+  /@clack/core/0.1.1:
+    resolution: {integrity: sha512-Cd1UzvkZ89c8WRDv338TwQBFlLoyiyrDCKR4N0hMfBPKbY/4DV791wH03l3Jsvs2NECWHEOnJNOTftmQRRMfGw==}
     dependencies:
       picocolors: 1.0.0
       sisteransi: 1.0.5
     dev: true
 
-  /@clack/prompts/0.0.5:
-    resolution: {integrity: sha512-VM0bqkyZdLzISuLPFsnSBOtFewkktwQWOaz6Bq4WGmrjRjpCCaVRC2g8/+XAASGD1XGUfooVUztMQYArMA6H8g==}
+  /@clack/prompts/0.1.1:
+    resolution: {integrity: sha512-3ZzAPkcPsq7jcux/dvxQozqblPQADXNDSE3KiLRu11F1g0039ri06TPog8UqUZnoI+s4iKXhgdt8jt4nSIU33w==}
     dependencies:
-      '@clack/core': 0.0.10
-      add: 2.0.6
+      '@clack/core': 0.1.1
       picocolors: 1.0.0
       sisteransi: 1.0.5
     dev: true
@@ -14446,10 +14445,6 @@ packages:
 
   /add-stream/1.0.0:
     resolution: {integrity: sha512-qQLMr+8o0WC4FZGQTcJiKBVC59JylcPSrTtk6usvmIDFUOCKegapy1VHQwRbFMOFyb/inzUVqHs+eMYKDM1YeQ==}
-    dev: true
-
-  /add/2.0.6:
-    resolution: {integrity: sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==}
     dev: true
 
   /address/1.1.2:

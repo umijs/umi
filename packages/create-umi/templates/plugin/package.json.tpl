@@ -1,9 +1,9 @@
 {
-  "name": "{{{ name }}}",
+  "name": "{{{ pluginName }}}",
   "author": "{{{ author }}}",
   "version": "0.0.1",
-  "main": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "scripts": {
     "dev": "father dev",
     "build": "father build"
@@ -19,6 +19,8 @@
   ],
   "devDependencies": {
     "father": "^4.0.0",
-    "umi": "{{{ version }}}"
+    "umi": "{{{ version }}}",
+    "@types/node": "^18.0.0",
+    "typescript": "^4.0.0"
   }
 }

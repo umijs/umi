@@ -1,11 +1,11 @@
-# {{{ name }}}
+# {{{ pluginName }}}
 
 A umi plugin
 
 ## Install
 
 ```bash
-pnpm i {{{ name }}}
+pnpm i {{{ pluginName }}}
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ Configure in `.umirc.ts`,
 ```js
 export default {
   plugins: [
-    ['{{{ name }}}'],
+    ['{{{ pluginName }}}'],
   ],
 }
 ```

@@ -26,7 +26,11 @@ interface IContext {
   target: string;
 }
 
-interface ITemplateParams {
+interface ITemplatePluginParams {
+  pluginName?: string;
+}
+
+interface ITemplateParams extends ITemplatePluginParams {
   version: string;
   npmClient: ENpmClient;
   registry: string;
@@ -76,7 +80,14 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
   const { username, email } = await getGitInfo();
   const author = email && username ? `${username} <${email}>` : '';
 
+  // plugin params
+  let pluginName = `umi-plugin-${name || 'demo'}`;
+
   const { isCancel, text, select, intro, outro } = clackPrompts;
+  const exitPrompt = () => {
+    outro(chalk.red('Exit create-umi'));
+    process.exit(1);
+  };
 
   const useDefaultData = args.default;
   if (!useDefaultData) {
@@ -100,7 +111,7 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
       initialValue: ETemplate.app,
     })) as ETemplate;
     if (isCancel(appTemplate)) {
-      process.exit(1);
+      exitPrompt();
     }
     npmClient = (await select({
       message: 'Pick Npm Client',
@@ -114,7 +125,7 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
       initialValue: ENpmClient.pnpm,
     })) as ENpmClient;
     if (isCancel(npmClient)) {
-      process.exit(1);
+      exitPrompt();
     }
     registry = (await select({
       message: 'Pick Npm Registry',
@@ -132,17 +143,22 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
       initialValue: ERegistry.npm,
     })) as ERegistry;
     if (isCancel(registry)) {
-      process.exit(1);
+      exitPrompt();
     }
     // plugin extra questions
     const isPlugin = appTemplate === ETemplate.plugin;
     if (isPlugin) {
-      name = (await text({
+      pluginName = (await text({
         message: `What's the plugin name?`,
-        placeholder: name,
+        placeholder: pluginName,
+        validate: (value) => {
+          if (!value?.length) {
+            return 'Please input plugin name';
+          }
+        },
       })) as string;
-      if (isCancel(name) || !name?.length) {
-        process.exit(1);
+      if (isCancel(pluginName)) {
+        exitPrompt();
       }
     }
     outro(`You're all set!`);
@@ -180,6 +196,7 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
           // No need when `pnpm` > v7.13.5 , but we are forward compatible
           // https://pnpm.io/npmrc#strict-peer-dependencies
           extraNpmrc: isPnpm ? `strict-peer-dependencies=false` : '',
+          pluginName,
         } satisfies ITemplateParams),
   });
   await generator.run();
@@ -250,7 +267,6 @@ async function initGit(opts: IContext) {
   if (isGit) return;
   try {
     await execa.execa('git', ['init'], { cwd: projectRoot });
-    logger.ready(`Git initialized successfully`);
   } catch {
     logger.error(`Initial the git repo failed`);
   }
