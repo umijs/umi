@@ -63,31 +63,41 @@ export default (api: IApi) => {
     for (const iconStr of icons) {
       const [collect, icon] = iconStr.split(':');
       const iconName = generateIconName({ collect, icon });
-      const svgr = await generateSvgr({
-        collect,
-        api,
-        icon,
-        iconifyOptions: {
-          autoInstall:
-            api.config.icons.autoInstall &&
-            (async (name: string) => {
-              const version = (
-                await crossSpawn.sync('npm', ['view', name, 'version'], {
-                  encoding: 'utf-8',
-                }).stdout
-              ).trim();
-              addDeps({
-                pkgPath: api.pkgPath,
-                deps: [{ name, version }],
-              });
-              await installWithNpmClient({
-                npmClient: api.appData.npmClient,
-                cwd: api.cwd,
-              });
-            }),
-        },
-        localIconDir: path.join(api.paths.absSrcPath, 'icons'),
-      });
+      let svgr;
+      try {
+        svgr = await generateSvgr({
+          collect,
+          api,
+          icon,
+          iconifyOptions: {
+            autoInstall:
+              api.config.icons.autoInstall &&
+              (async (name: string) => {
+                try {
+                  const version = (
+                    await crossSpawn.sync('npm', ['view', name, 'version'], {
+                      encoding: 'utf-8',
+                    }).stdout
+                  ).trim();
+                  addDeps({
+                    pkgPath: api.pkgPath,
+                    deps: [{ name, version }],
+                  });
+                } catch (e) {
+                  throw new Error(`[icons] npm package ${name} not found`);
+                }
+                logger.info(`[icons] install ${name}...`);
+                await installWithNpmClient({
+                  npmClient: api.appData.npmClient,
+                  cwd: api.cwd,
+                });
+              }),
+          },
+          localIconDir: path.join(api.paths.absSrcPath, 'icons'),
+        });
+      } catch (e) {
+        logger.error(e);
+      }
       if (svgr) {
         code.push(svgr!);
         code.push(`export { ${iconName} };`);
