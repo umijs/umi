@@ -7,8 +7,8 @@
     "test": "jest --no-cache --coverage"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20230210.1",
-    "umi": "4.0.0-canary.20230210.1"
+    "@umijs/plugins": "4.0.0-canary.20230213.1",
+    "umi": "4.0.0-canary.20230213.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
