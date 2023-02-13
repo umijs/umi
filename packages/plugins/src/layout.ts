@@ -77,7 +77,7 @@ export default (api: IApi) => {
   );
 
   const getAllIcons = () => {
-    let iconsList: Record<string, boolean> = [];
+    let iconsMap: Record<string, boolean> = {};
     // 读取 index.d.ts
     const iconTypePath = `${antIconsPath}/lib/icons/index.d.ts`;
     const iconTypeContent = readFileSync(iconTypePath).toString();
@@ -91,11 +91,11 @@ export default (api: IApi) => {
         break;
       }
 
-      iconsList[result[1]] = true;
+      iconsMap[result[1]] = true;
       index = +result[index];
     }
 
-    return iconsList;
+    return iconsMap;
   };
 
   const allIcons: Record<string, boolean> = getAllIcons();
