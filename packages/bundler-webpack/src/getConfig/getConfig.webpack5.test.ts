@@ -32,7 +32,7 @@ test('nodePolyfill', async () => {
 });
 
 test('disable nodePolyfill', async () => {
-  process.env.NODE_POLYFILL_CONFIG = 'none';
+  process.env.NODE_POLYFILL = 'none';
   const config = await getConfig({
     __disableTerserForTest: true,
     cwd: '/foo',
