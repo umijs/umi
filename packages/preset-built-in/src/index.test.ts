@@ -433,13 +433,3 @@ test('exportStatic', async () => {
     expect(existsSync(join(cwd, 'dist', 'list', ':id.html'))).toBeTruthy();
   }
 });
-
-test('nodePolyfill', async () => {
-  const cwd = join(fixtures, 'webpack');
-  const service = new Service({
-    cwd,
-    presets: [require.resolve('./index.ts')],
-  });
-  await service.init();
-  expect(service.config?.nodePolyfill).toBe(true);
-});

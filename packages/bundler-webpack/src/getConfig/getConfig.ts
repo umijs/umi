@@ -629,7 +629,9 @@ export default async function getConfig(
 
   // node polyfills
   const nodeLibs = require('node-libs-browser');
-  if (isWebpack5 && config.nodePolyfill) {
+
+  const nodePolyfill = process.env.NODE_POLYFILL_CONFIG !== 'none';
+  if (isWebpack5 && nodePolyfill) {
     ret.plugins!.push(
       new bundleImplementor.ProvidePlugin({
         process: nodeLibs['process'],

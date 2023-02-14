@@ -10,7 +10,7 @@ test('nodePolyfill', async () => {
   const config = await getConfig({
     __disableTerserForTest: true,
     cwd: '/foo',
-    config: { nodePolyfill: true },
+    config: {},
     env: 'production',
     type: BundlerConfigType.csr,
   });
@@ -31,11 +31,12 @@ test('nodePolyfill', async () => {
   });
 });
 
-test('nodePolyfill - false', async () => {
+test('disable nodePolyfill', async () => {
+  process.env.NODE_POLYFILL_CONFIG = 'none';
   const config = await getConfig({
     __disableTerserForTest: true,
     cwd: '/foo',
-    config: { nodePolyfill: false },
+    config: {},
     env: 'production',
     type: BundlerConfigType.csr,
   });
