@@ -6,14 +6,17 @@ import { osLocale } from '../../../compiled/os-locale';
 import { expandCSSPaths, expandJSPaths } from '../../commands/dev/watch';
 import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
-import { getApiRoutes, getRoutes } from '../tmpFiles/routes';
 
 export default (api: IApi) => {
+  const routesApi: typeof import('../tmpFiles/routes') = importLazy(
+    require.resolve('../tmpFiles/routes'),
+  );
+
   api.modifyAppData(async (memo) => {
-    memo.routes = await getRoutes({
+    memo.routes = await routesApi.getRoutes({
       api,
     });
-    memo.apiRoutes = await getApiRoutes({
+    memo.apiRoutes = await routesApi.getApiRoutes({
       api,
     });
     memo.hasSrcDir = api.paths.absSrcPath.endsWith('/src');
@@ -71,7 +74,7 @@ export default (api: IApi) => {
   api.registerMethod({
     name: '_refreshRoutes',
     async fn() {
-      api.appData.routes = await getRoutes({
+      api.appData.routes = await routesApi.getRoutes({
         api,
       });
     },

@@ -39,6 +39,7 @@ export default (function target(userConfig) {
       targets: getBrowserlist(userConfig.targets),
       polyfills: false,
       ignoreBrowserslistConfig: true,
+      externalSystemJS: true,
     };
 
     config.plugins!.push(legacyPlugin(legacyOpts));

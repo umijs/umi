@@ -856,7 +856,7 @@ import { Icon } from 'umi';
 
 ## legacy
 
-- 类型：`{ buildOnly?: boolean; nodeModulesTransform?: boolean; }`
+- 类型：`{ buildOnly?: boolean; nodeModulesTransform?: boolean; checkOutput?: boolean; }`
 - 默认值：`false`
 
 当你需要兼容低版本浏览器时，可能需要该选项，开启后将默认使用 **非现代** 的打包工具做构建，这会显著增加你的构建时间。
@@ -866,6 +866,8 @@ legacy: {}
 ```
 
 默认只在构建时生效，通过设定 `buildOnly: false` 关闭该限制。
+
+可通过打开 `checkOutput: true` 选项，每次构建结束后将自动运行 [`es-check`](https://github.com/yowainwright/es-check) 检查产物 `.js` 文件的语法是否为 es5 格式。
 
 开启此选项后：
 

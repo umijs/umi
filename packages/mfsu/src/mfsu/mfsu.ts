@@ -7,7 +7,7 @@ import type {
 import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';

@@ -15,7 +15,7 @@ pnpm add  @umijs/preset-vue -D
 ### 配置预设
 
 ```ts
-# .umirc.ts or config/config.ts 中
+// .umirc.ts or config/config.ts 中
 export default {
   presets: [require.resolve('@umijs/preset-vue')],
 };

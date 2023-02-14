@@ -1,10 +1,31 @@
-import * as allIcons from '@ant-design/icons';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
+
+// 获取所有 icons
+const antIconsPath = winPath(
+  dirname(require.resolve('@ant-design/icons/package')),
+);
+
+const getAllIcons = () => {
+  // 读取 index.d.ts
+  const iconTypePath = join(antIconsPath, './lib/icons/index.d.ts');
+  const iconTypeContent = readFileSync(iconTypePath, 'utf-8');
+
+  // 截取 default as ${iconName}, 然后获取 iconName 转换为 map
+  return [...iconTypeContent.matchAll(/default as (\w+)/g)].reduce(
+    (memo: Record<string, boolean>, cur) => {
+      memo[cur[1]] = true;
+      return memo;
+    },
+    {},
+  );
+};
+
+const allIcons: Record<string, boolean> = getAllIcons();
 
 export default (api: IApi) => {
   let antdVersion = '4.0.0';
@@ -367,9 +388,6 @@ export interface IRuntimeConfig {
       return memo;
     }, {});
     const icons = Object.keys(iconsMap);
-    const antIconsPath = winPath(
-      dirname(require.resolve('@ant-design/icons/package')),
-    );
     api.writeTmpFile({
       path: 'icons.tsx',
       content: `
@@ -433,7 +451,6 @@ export function getRightRenderContent (opts: {
     );
   }
 
- 
 
   const avatar = (
     <span className="umi-plugin-layout-action">
@@ -476,12 +493,11 @@ export function getRightRenderContent (opts: {
       },
     ],
   };
-  
   // antd@5 和  4.24 之后推荐使用 menu，性能更好
   const dropdownProps =
     version.startsWith("5.") || version.startsWith("4.24.")
       ? { menu: langMenu }
-      : { overlay: <Menu {...langMenu} /> };  
+      : { overlay: <Menu {...langMenu} /> };
 
   return (
     <div className="umi-plugin-layout-right anticon">

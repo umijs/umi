@@ -28,7 +28,7 @@
     "vue-router": "4.1.6"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "2.3.1",
+    "@vitejs/plugin-vue": "4.0.0",
     "umi": "4.0.0-canary.20230213.1"
   },
   "publishConfig": {
