@@ -60,23 +60,38 @@ enum ETemplate {
   plugin = 'plugin',
 }
 
+export interface IDefaultData extends ITemplateParams {
+  appTemplate?: ETemplate;
+}
+
 const pkg = require('../package');
 const DEFAULT_DATA = {
-  name: 'umi-plugin-demo',
-  description: 'nothing',
-  mail: 'i@domain.com',
+  pluginName: 'umi-plugin-demo',
+  email: 'i@domain.com',
   author: 'umijs',
-  org: 'umijs',
   version: pkg.version,
   npmClient: ENpmClient.pnpm,
   registry: ERegistry.npm,
-};
+  withHusky: false,
+  extraNpmrc: '',
+  appTemplate: ETemplate.app,
+} satisfies IDefaultData;
 
-export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
+interface IGeneratorOpts {
+  cwd: string;
+  args: IArgs;
+  defaultData?: IDefaultData;
+}
+
+export default async ({
+  cwd,
+  args,
+  defaultData = DEFAULT_DATA,
+}: IGeneratorOpts) => {
   let [name] = args._;
   let npmClient = ENpmClient.pnpm;
   let registry = ERegistry.npm;
-  let appTemplate = ETemplate.app;
+  let appTemplate = defaultData?.appTemplate || ETemplate.app;
   const { username, email } = await getGitInfo();
   const author = email && username ? `${username} <${email}>` : '';
 
@@ -184,7 +199,7 @@ export default async ({ cwd, args }: { cwd: string; args: IArgs }) => {
     target,
     slient: true,
     data: useDefaultData
-      ? DEFAULT_DATA
+      ? defaultData
       : ({
           version: version.includes('-canary.') ? version : `^${version}`,
           npmClient,
