@@ -388,7 +388,6 @@ export interface IRuntimeConfig {
       return memo;
     }, {});
     const icons = Object.keys(iconsMap);
-
     api.writeTmpFile({
       path: 'icons.tsx',
       content: `
@@ -397,7 +396,6 @@ ${icons
     return `import ${icon} from '${antIconsPath}/es/icons/${icon}';`;
   })
   .join('\n')}
-
 export default { ${icons.join(', ')} };
       `,
     });
@@ -454,7 +452,6 @@ export function getRightRenderContent (opts: {
   }
 
 
-
   const avatar = (
     <span className="umi-plugin-layout-action">
         <Avatar
@@ -496,12 +493,11 @@ export function getRightRenderContent (opts: {
       },
     ],
   };
-
   // antd@5 和  4.24 之后推荐使用 menu，性能更好
   const dropdownProps =
     version.startsWith("5.") || version.startsWith("4.24.")
       ? { menu: langMenu }
-      : { overlay: <Menu {...langMenu} /> };
+      : { overlay: <Menu {...langMenu} /> };  
 
   return (
     <div className="umi-plugin-layout-right anticon">
