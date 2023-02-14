@@ -8,7 +8,9 @@ import type { IApi, IOnGenerateFiles } from '../../types';
 import { getOverridesCSS } from '../overrides/overrides';
 
 export default (api: IApi) => {
-  const routesApi = importLazy(require.resolve('../tmpFiles/routes'));
+  const routesApi: typeof import('../tmpFiles/routes') = importLazy(
+    require.resolve('../tmpFiles/routes'),
+  );
 
   api.modifyAppData(async (memo) => {
     memo.routes = await routesApi.getRoutes({
