@@ -8,11 +8,12 @@ import {
   rimraf,
   winPath,
 } from '@umijs/utils';
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
-import type { IApi, GenerateFilesFn, OnConfigChangeFn } from '../../types';
+import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
+import type { GenerateFilesFn, IApi, OnConfigChangeFn } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -27,7 +28,6 @@ import {
   unwatch,
   watch,
 } from './watch';
-import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -112,6 +112,7 @@ PORT=8888 umi dev
           ...expandJSPaths(join(absSrcPath, 'app')),
           ...expandJSPaths(join(absSrcPath, 'global')),
           ...expandCSSPaths(join(absSrcPath, 'global')),
+          ...expandCSSPaths(join(absSrcPath, 'overrides')),
         ].filter(Boolean),
       });
       lodash.uniq<string>(watcherPaths.map(winPath)).forEach((p: string) => {
