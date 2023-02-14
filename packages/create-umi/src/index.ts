@@ -176,7 +176,7 @@ export default async ({
         exitPrompt();
       }
     }
-    outro(`You're all set!`);
+    outro(chalk.green(`You're all set!`));
   }
 
   const target = name ? join(cwd, name) : cwd;
