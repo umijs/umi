@@ -1,5 +1,7 @@
 // @ts-ignore
 import data from '../package.json';
+// @ts-ignore
+import terminalLink from '../compiled/terminal-link';
 
 enum EFramework {
   umi = 'umi',
@@ -46,7 +48,7 @@ export default (api: any) => {
       text
         .replace(/%%frameworkName%%/g, frameworkName)
         .replace(/%%frameworkCliName%%/g, frameworkCliName),
-      url ? `，详见 ${url}` : '。',
+      url ? formatLink(url) : '。',
     ];
     logger.info(chalk.yellow(info.join('')));
   });
@@ -79,4 +81,12 @@ interface ITip {
   url?: string;
   majorVersion?: number;
   framework?: Framework[];
+}
+
+function formatLink(url: string) {
+  if (terminalLink.isSupported) {
+    return `：${terminalLink('点我查看', url)}`;
+  } else {
+    return `，详见 ${url}`;
+  }
 }

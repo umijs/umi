@@ -191,5 +191,3 @@ const state = proxy({
 
 可以直接测 store，也可以测基于 store 的 React 组件。正常写用例即可，后者推荐用 @testing-library/react。
 
-
-

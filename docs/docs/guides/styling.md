@@ -51,7 +51,7 @@ export default function () {
 
 ## 使用 CSS 预处理器
 
-Umi 默认支持 LESS (推荐), SASS 和 SCSS 样式的导入，你可以直接按照引入 CSS 文件的方式引入并使用这些由 CSS 预处理器处理的样式。
+Umi 默认支持 LESS (推荐)，SASS 和 SCSS 样式的导入，你可以直接按照引入 CSS 文件的方式引入并使用这些由 CSS 预处理器处理的样式。
 
 <Message emoji="💡" >
 在 Umi 中使用 Sass(Scss) 需要额外安装预处理依赖 如: `npm add -D sass`

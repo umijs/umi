@@ -1,1 +1,1 @@
-export type * from './dist/pluginUtils';
+export * from './dist/pluginUtils';
