@@ -17,7 +17,7 @@ const getAllIcons = () => {
 
   // 截取 default as ${iconName}, 然后获取 iconName 转换为 map
   return [...iconTypeContent.matchAll(/default as (\w+)/g)].reduce(
-    (memo: Record<string, any>, cur) => {
+    (memo: Record<string, boolean>, cur) => {
       memo[cur[1]] = true;
       return memo;
     },
