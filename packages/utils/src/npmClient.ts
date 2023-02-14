@@ -41,9 +41,13 @@ export const installWithNpmClient = ({
   cwd?: string;
 }): void => {
   const { sync } = require('../compiled/cross-spawn');
+  // pnpm install will not install devDependencies when NODE_ENV === 'production'
+  // we should remove NODE_ENV to make sure devDependencies can be installed
+  const { NODE_ENV: _, ...env } = process.env;
   const npm = sync(npmClient, [npmClient === 'yarn' ? '' : 'install'], {
     stdio: 'inherit',
     cwd,
+    env,
   });
   if (npm.error) {
     throw npm.error;
