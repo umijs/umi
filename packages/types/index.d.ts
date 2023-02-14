@@ -408,6 +408,7 @@ export interface BaseIConfig extends IConfigCore {
   webpack5?: {
     lazyCompilation?: object;
   };
+  nodePolyfill?: boolean;
   [key: string]: any;
 }
 

@@ -70,6 +70,7 @@ export default function () {
       require.resolve('./plugins/features/runtimeHistory'),
       require.resolve('./plugins/features/webpack5'),
       require.resolve('./plugins/features/workerLoader'),
+      require.resolve('./plugins/features/nodePolyfill'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
