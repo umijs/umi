@@ -5,6 +5,28 @@ import { lodash, Mustache, winPath } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
+// 获取所有 icons
+const antIconsPath = winPath(
+  dirname(require.resolve('@ant-design/icons/package')),
+);
+
+const getAllIcons = () => {
+  // 读取 index.d.ts
+  const iconTypePath = join(antIconsPath, '/lib/icons/index.d.ts');
+  const iconTypeContent = readFileSync(iconTypePath, 'utf-8');
+
+  // 截取 default as ${iconName}, 然后获取 iconName 转换为 map
+  return [...iconTypeContent.matchAll(/default as (\w+)/g)].reduce(
+    (memo: Record<string, any>, cur) => {
+      memo[cur[1]] = true;
+      return memo;
+    },
+    {},
+  );
+};
+
+const allIcons: Record<string, boolean> = getAllIcons();
+
 export default (api: IApi) => {
   let antdVersion = '4.0.0';
   try {
@@ -70,35 +92,6 @@ export default (api: IApi) => {
   };
 
   const pkgPath = winPath(getPkgPath());
-
-  // 获取所有 icons
-  const antIconsPath = winPath(
-    dirname(require.resolve('@ant-design/icons/package')),
-  );
-
-  const getAllIcons = () => {
-    let iconsMap: Record<string, boolean> = {};
-    // 读取 index.d.ts
-    const iconTypePath = `${antIconsPath}/lib/icons/index.d.ts`;
-    const iconTypeContent = readFileSync(iconTypePath).toString();
-    // 正则截取 from './${iconName}';
-    const reg = new RegExp(/from '\.\/(.+)?'/g);
-    let index = 0;
-
-    while (true) {
-      const result = reg.exec(iconTypeContent.slice(index));
-      if (result === null) {
-        break;
-      }
-
-      iconsMap[result[1]] = true;
-      index = +result[index];
-    }
-
-    return iconsMap;
-  };
-
-  const allIcons: Record<string, boolean> = getAllIcons();
 
   api.modifyAppData((memo) => {
     const version = require(`${pkgPath}/package.json`).version;
