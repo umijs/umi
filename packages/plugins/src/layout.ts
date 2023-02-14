@@ -12,7 +12,7 @@ const antIconsPath = winPath(
 
 const getAllIcons = () => {
   // 读取 index.d.ts
-  const iconTypePath = join(antIconsPath, '/lib/icons/index.d.ts');
+  const iconTypePath = join(antIconsPath, './lib/icons/index.d.ts');
   const iconTypeContent = readFileSync(iconTypePath, 'utf-8');
 
   // 截取 default as ${iconName}, 然后获取 iconName 转换为 map
