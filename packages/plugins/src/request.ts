@@ -321,7 +321,7 @@ export type {
   AxiosResponse,
   AxiosError,
   RequestError,
-  ResponseInterceptor
+  ResponseInterceptor,
   RequestOptions,
   Request } from './request';
 `,
