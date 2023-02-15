@@ -321,7 +321,9 @@ export type {
   AxiosResponse,
   AxiosError,
   RequestError,
-  ResponseInterceptor } from './request';
+  ResponseInterceptor
+  RequestOptions,
+  Request } from './request';
 `,
     });
     api.writeTmpFile({
