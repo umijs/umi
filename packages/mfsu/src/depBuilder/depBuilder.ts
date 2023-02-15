@@ -117,7 +117,7 @@ export class DepBuilder {
     });
   }
 
-  async build(opts: { deps: Dep[] }) {
+  async build(opts: { deps: Dep[]; useWorker: boolean }) {
     this.isBuilding = true;
 
     const onBuildComplete = () => {
@@ -132,7 +132,7 @@ export class DepBuilder {
         onBuildComplete,
       };
 
-      if (this.opts.mfsu.opts.strategy === 'eager') {
+      if (this.opts.mfsu.opts.strategy === 'eager' && opts.useWorker) {
         await this.buildWithWorker(buildOpts);
         return;
       }
