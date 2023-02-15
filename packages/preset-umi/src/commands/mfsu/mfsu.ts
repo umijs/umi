@@ -55,6 +55,7 @@ export default (api: IApi) => {
         case 'list':
         case 'ls':
         case 'l':
+          util.listDeps();
           break;
         case 'remove':
           const { all } = args;

@@ -1,7 +1,7 @@
 import { setup } from '@umijs/bundler-webpack';
 import webpack from '@umijs/bundler-webpack/compiled/webpack';
 import { chalk, fsExtra, lodash, logger, rimraf } from '@umijs/utils';
-import { join } from 'path';
+import { isAbsolute, join, relative } from 'path';
 import { Worker } from 'worker_threads';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import { GenerateFilesFn, IApi } from '../../types';
@@ -23,6 +23,8 @@ export abstract class MFSUUtilBase {
   abstract jsonFilePath(): string;
 
   abstract getCacheJSON(): string;
+
+  abstract listDeps(): void;
 
   abstract build(force?: boolean): Promise<void>;
   async prepare() {
@@ -163,6 +165,19 @@ export abstract class MFSUUtilBase {
   clearAllCache() {
     return fsExtra.removeSync(this.mfsuCacheBase);
   }
+
+  printDeps(deps: any) {
+    const depsList = Object.keys(deps)
+      .map((key) => {
+        const version = deps[key].version;
+        return { dep: shortDep(key, this.api.cwd), version };
+      })
+      .sort((a, b) => b.dep.localeCompare(a.dep));
+
+    for (const { dep, version } of depsList) {
+      console.log(`${dep}@${version}`);
+    }
+  }
 }
 
 export class EagerUtil extends MFSUUtilBase {
@@ -186,6 +201,25 @@ export class EagerUtil extends MFSUUtilBase {
     await mfsu!.buildDeps({ useWorker: false });
     this.api.logger.info('[MFSU][eager] build success');
   }
+
+  listDeps(): void {
+    const cacheJSON = this.getCacheJSON();
+    const deps = cacheJSON['dep'] || {};
+    this.printDeps(deps);
+  }
+}
+
+function shortDep(p: string, base: string): string {
+  if (isAbsolute(p)) {
+    const i = p.lastIndexOf('node_modules');
+    if (i > -1) {
+      return p.slice(i + 'node_modules'.length + 1);
+    } else {
+      return relative(base, p);
+    }
+  } else {
+    return p;
+  }
 }
 export class NormalUtil extends MFSUUtilBase {
   jsonFilePath(): string {
@@ -201,6 +235,12 @@ export class NormalUtil extends MFSUUtilBase {
       );
     }
   }
+  listDeps() {
+    const cacheJSON = this.getCacheJSON();
+    const deps = lodash.get(cacheJSON, 'moduleGraph.depModules', {});
+
+    this.printDeps(deps);
+  }
 
   async build(force: boolean) {
     if (force) {
@@ -211,7 +251,6 @@ export class NormalUtil extends MFSUUtilBase {
       );
     }
   }
-  // @ts-ignore
   private async normalBuild() {
     const opts = await this.prepare();
     const { mfsu, webpackConfig } = await setup(opts);
