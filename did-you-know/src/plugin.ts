@@ -61,7 +61,7 @@ export default (api: any) => {
     // 1、get matched
     const matched = items.filter((item: any) => {
       return (
-        (!item.framwork || item.framwork.includes(framework)) &&
+        (!item.framework || item.framework.includes(framework)) &&
         (!item.majorVersion || majorVersion === `${item.majorVersion}`)
       );
     });
