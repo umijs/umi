@@ -89,11 +89,11 @@ export default (api: IApi) => {
         ...theme,
         ...memo.theme,
       };
-      if (memo.antd?.style) {
-        const errorMessage = `Can't set antd.style while using antd5 (${antdVersion})`;
+      if (memo.antd?.import) {
+        const errorMessage = `Can't set antd.import while using antd5 (${antdVersion})`;
 
         api.logger.fatal(
-          'please remove config antd.style, then start server again',
+          'please change config antd.import to false, then start server again',
         );
 
         throw Error(errorMessage);
