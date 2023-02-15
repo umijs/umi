@@ -7,7 +7,7 @@ import type {
 import express from '@umijs/bundler-utils/compiled/express';
 import { lodash, logger, printHelp, winPath } from '@umijs/utils';
 import assert from 'assert';
-import { readFileSync, existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { extname, join } from 'path';
 import webpack, { Configuration } from 'webpack';
 import type { Worker } from 'worker_threads';
@@ -260,7 +260,7 @@ promise new Promise(resolve => {
     this.strategy.init(opts.config);
   }
 
-  async buildDeps() {
+  async buildDeps(opts: { useWorker: boolean } = { useWorker: true }) {
     try {
       const shouldBuild = this.strategy.shouldBuild();
       if (!shouldBuild) {
@@ -283,6 +283,7 @@ promise new Promise(resolve => {
 
       await this.depBuilder.build({
         deps,
+        useWorker: opts.useWorker,
       });
       this.lastBuildError = null;
 
