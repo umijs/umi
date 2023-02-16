@@ -52,6 +52,27 @@ export function ensureSerializableValue(obj: any) {
 }
 
 export async function dev(opts: IOpts) {
+  const { mfsu, webpackConfig } = await setup(opts);
+
+  await createServer({
+    webpackConfig,
+    userConfig: opts.config,
+    cwd: opts.cwd,
+    beforeMiddlewares: [
+      ...(mfsu?.getMiddlewares() || []),
+      ...(opts.beforeMiddlewares || []),
+    ],
+    port: opts.port,
+    host: opts.host,
+    ip: opts.ip,
+    afterMiddlewares: [...(opts.afterMiddlewares || [])],
+    onDevCompileDone: opts.onDevCompileDone,
+    onProgress: opts.onProgress,
+    onBeforeMiddleware: opts.onBeforeMiddleware,
+  });
+}
+
+export async function setup(opts: IOpts) {
   const cacheDirectoryPath = resolve(
     opts.rootDir || opts.cwd,
     opts.config.cacheDirectoryPath || 'node_modules/.cache',
@@ -180,20 +201,8 @@ export async function dev(opts: IOpts) {
     }
   }
 
-  await createServer({
+  return {
+    mfsu,
     webpackConfig,
-    userConfig: opts.config,
-    cwd: opts.cwd,
-    beforeMiddlewares: [
-      ...(mfsu?.getMiddlewares() || []),
-      ...(opts.beforeMiddlewares || []),
-    ],
-    port: opts.port,
-    host: opts.host,
-    ip: opts.ip,
-    afterMiddlewares: [...(opts.afterMiddlewares || [])],
-    onDevCompileDone: opts.onDevCompileDone,
-    onProgress: opts.onProgress,
-    onBeforeMiddleware: opts.onBeforeMiddleware,
-  });
+  };
 }

@@ -260,7 +260,7 @@ promise new Promise(resolve => {
     this.strategy.init(opts.config);
   }
 
-  async buildDeps() {
+  async buildDeps(opts: { useWorker: boolean } = { useWorker: true }) {
     try {
       const shouldBuild = this.strategy.shouldBuild();
       if (!shouldBuild) {
@@ -283,6 +283,7 @@ promise new Promise(resolve => {
 
       await this.depBuilder.build({
         deps,
+        useWorker: opts.useWorker,
       });
       this.lastBuildError = null;
 
