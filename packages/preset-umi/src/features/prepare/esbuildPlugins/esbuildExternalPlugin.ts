@@ -1,11 +1,8 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
-import { aliasUtils, winPath } from '@umijs/utils';
+import { winPath } from '@umijs/utils';
 import path from 'path';
 
-export function esbuildExternalPlugin(opts: {
-  alias: Record<string, string>;
-}): Plugin {
-  const { alias } = opts;
+export function esbuildExternalPlugin(): Plugin {
   return {
     name: 'esbuildExternalPlugin',
     setup(build) {
@@ -25,18 +22,10 @@ export function esbuildExternalPlugin(opts: {
           return null;
         }
 
-        // alias handle
-        // we need alias import, but not import from node_modules
-        const isAbsoluteImport = path.isAbsolute(args.path);
-        if (!isAbsoluteImport) {
-          const winP = winPath(args.path);
-          const aliasImport = aliasUtils.getAliasValue({
-            alias,
-            imported: winP,
-          });
-          if (aliasImport && !aliasImport.includes('node_modules')) {
-            return null;
-          }
+        const winP = winPath(args.path);
+        const isAliasImport = winP.startsWith('@/') || winP.startsWith('@@/');
+        if (isAliasImport) {
+          return null;
         }
 
         // 不在 node_modules 里的，并且以 / 开头的，不走 external
