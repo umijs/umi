@@ -16,7 +16,6 @@ export async function build(opts: {
   write?: boolean;
 }) {
   const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
-  const alias = opts.config?.alias || {};
   return await esbuild.build({
     format: 'esm',
     platform: 'browser',
@@ -55,8 +54,8 @@ export async function build(opts: {
       // then we import 'foo/bar.less'
       // if we resolve alias first, we will get { path }
       // if we resolve externals first, we will get { external: true }
-      esbuildExternalPlugin({ alias }),
-      esbuildAliasPlugin({ alias }),
+      esbuildExternalPlugin(),
+      esbuildAliasPlugin({ alias: opts.config?.alias || {} }),
       ...(opts.plugins || []),
     ],
   });
