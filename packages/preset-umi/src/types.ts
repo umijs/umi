@@ -152,6 +152,7 @@ export type IApi = PluginAPI &
       app: Express;
     }>;
     onBuildComplete: IEvent<{
+      close?: webpack.Watching['close'];
       err?: Error;
       isFirstCompile: boolean;
       stats: webpack.Stats;

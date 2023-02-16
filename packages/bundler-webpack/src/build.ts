@@ -18,6 +18,7 @@ type IOpts = {
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   clean?: boolean;
+  watch?: boolean;
 } & Pick<IConfigOpts, 'cache' | 'pkg'>;
 
 export async function build(opts: IOpts): Promise<webpack.Stats> {
@@ -59,12 +60,15 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
     }
 
     const compiler = webpack(webpackConfig);
-    compiler.run((err, stats) => {
+    let closeWatching: webpack.Watching['close'];
+    const handler: Parameters<typeof compiler.run>[0] = (err, stats) => {
       opts.onBuildComplete?.({
         err,
         stats,
         isFirstCompile,
         time: stats ? stats.endTime - stats.startTime : null,
+        // pass close function to close watching
+        ...(opts.watch ? { close: closeWatching } : {}),
       });
       isFirstCompile = false;
       if (err || stats?.hasErrors()) {
@@ -80,7 +84,21 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
       } else {
         resolve(stats!);
       }
-      compiler.close(() => {});
-    });
+
+      // close compiler after normal build
+      if (!opts.watch) compiler.close(() => {});
+    };
+
+    // handle watch mode
+    if (opts.watch) {
+      const watching = compiler.watch(
+        webpackConfig.watchOptions || {},
+        handler,
+      );
+
+      closeWatching = watching.close.bind(watching);
+    } else {
+      compiler.run(handler);
+    }
   });
 }
