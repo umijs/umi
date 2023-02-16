@@ -347,13 +347,27 @@ export default function EmptyRoute() {
     const clonedRoutes = lodash.cloneDeep(routes);
     for (const id of Object.keys(clonedRoutes)) {
       for (const key of Object.keys(clonedRoutes[id])) {
-        const route = clonedRoutes[id];
+        let route = clonedRoutes[id];
         // Remove __ prefix props, absPath props and file props
         if (key.startsWith('__') || ['absPath', 'file'].includes(key)) {
           delete route[key];
         }
       }
     }
+
+    let routesString = JSON.stringify(clonedRoutes);
+    if (api.config.clientLoader) {
+      //   // "clientLoaders['foo']" > clientLoaders['foo']
+      routesString = routesString.replace(/"(clientLoaders\[.*?)"/g, '$1');
+    }
+    if (api.config.routeProps) {
+      //   // routeProps":"routeProps['foo']" > ...routeProps['foo']
+      routesString = routesString.replace(
+        /"routeProps":"(routeProps\[.*?)"/g,
+        '...$1',
+      );
+    }
+
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/route.tsx',
@@ -361,9 +375,9 @@ export default function EmptyRoute() {
       context: {
         isReact: api.appData.framework === 'react',
         isClientLoaderEnabled: !!api.config.clientLoader,
-        routes: JSON.stringify(clonedRoutes)
-          // "clientLoaders['foo']" > clientLoaders['foo']
-          .replace(/"(clientLoaders\[.*?)"/g, '$1'),
+        isRoutePropsEnabled: !!api.config.routeProps,
+        routes: routesString,
+
         routeComponents: await getRouteComponents({ routes, prefix, api }),
       },
     });

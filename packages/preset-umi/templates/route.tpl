@@ -1,6 +1,9 @@
 {{#isClientLoaderEnabled}}
 import clientLoaders from './loaders.js';
 {{/isClientLoaderEnabled}}
+{{#isRoutePropsEnabled}}
+import routeProps from './routeProps.ts';
+{{/isRoutePropsEnabled}}
 {{#isReact}}
 import React from 'react';
 {{/isReact}}

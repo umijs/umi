@@ -39,6 +39,7 @@ export default () => {
       require.resolve('./features/lowImport/lowImport'),
       require.resolve('./features/vite/vite'),
       require.resolve('./features/apiRoute/apiRoute'),
+      require.resolve('./features/routeProps/routeProps'),
       require.resolve('./features/monorepo/redirect'),
       require.resolve('./features/test/test'),
       require.resolve('./features/clickToComponent/clickToComponent'),

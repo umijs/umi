@@ -3,7 +3,7 @@ import {
   getConfigRoutes,
   getConventionRoutes,
 } from '@umijs/core';
-import { lodash, resolve, tryPaths, winPath, isMonorepo } from '@umijs/utils';
+import { isMonorepo, lodash, resolve, tryPaths, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 import { IApi } from '../../types';
@@ -107,22 +107,31 @@ export async function getRoutes(opts: {
       routes[id].__content = readFileSync(file, 'utf-8');
       routes[id].__absFile = winPath(file);
       routes[id].__isJSFile = isJSFile;
-      if (opts.api.config.ssr || opts.api.config.clientLoader) {
-        routes[id].__exports =
+
+      let exports: string[] = [];
+      if (
+        opts.api.config.ssr ||
+        opts.api.config.clientLoader ||
+        opts.api.config.routeProps
+      ) {
+        exports =
           isJSFile && existsSync(file)
             ? await getModuleExports({
                 file,
               })
             : [];
       }
+
       if (opts.api.config.ssr) {
-        routes[id].hasServerLoader =
-          routes[id].__exports.includes('serverLoader');
+        routes[id].hasServerLoader = exports.includes('serverLoader');
       }
       if (opts.api.config.clientLoader) {
-        routes[id].__hasClientLoader =
-          routes[id].__exports.includes('clientLoader');
+        routes[id].__hasClientLoader = exports.includes('clientLoader');
         routes[id].clientLoader = `clientLoaders['${id}']`;
+      }
+
+      if (opts.api.config.routeProps && exports.includes('routeProps')) {
+        routes[id].routeProps = `routeProps['${id}']`;
       }
     }
   }
