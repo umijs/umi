@@ -1837,6 +1837,7 @@ importers:
 
   packages/utils:
     specifiers:
+      '@clack/prompts': 0.2.2
       '@hapi/joi': 17.1.1
       '@types/color': 3.0.3
       '@types/cross-spawn': 6.0.2
@@ -1882,6 +1883,7 @@ importers:
       chokidar: 3.5.3
       pino: 7.11.0
     devDependencies:
+      '@clack/prompts': 0.2.2
       '@hapi/joi': 17.1.1
       '@types/color': 3.0.3
       '@types/cross-spawn': 6.0.2
@@ -6983,6 +6985,21 @@ packages:
   /@chevrotain/utils/10.3.0:
     resolution: {integrity: sha512-KCpFcX+kNyKlVZQW60ZUGRW5Nsg5u0F2CIgHiDQyg282ouHS9xap2ZEKqhwGE/0nYP46nAPnGPdb/IYh7ZHOsA==}
     dev: false
+
+  /@clack/core/0.1.3:
+    resolution: {integrity: sha512-MMTuef9cDl05zY3FZJLcixVO2HyId5nQGFodJD57n2g9ElIvffeG/7xIws29vBWrZAqjxWG/sp8Er4erdH1v3w==}
+    dependencies:
+      picocolors: 1.0.0
+      sisteransi: 1.0.5
+    dev: true
+
+  /@clack/prompts/0.2.2:
+    resolution: {integrity: sha512-Jtxq+sLkn3/4swLzGUvhKkgcHYh1XWgwq90RWY3KPWegSI4Aun4WDlHpQakIIeEJSg96Ip+keTJt3g02lUmKWw==}
+    dependencies:
+      '@clack/core': 0.1.3
+      picocolors: 1.0.0
+      sisteransi: 1.0.5
+    dev: true
 
   /@cnakazawa/watch/1.0.4:
     resolution: {integrity: sha512-v9kIhKwjeZThiWrLmj0y17CWoyddASLj9O2yvbZkbvw/N3rWOYy9zkV66ursAoVr0mV15bL8g0c4QZUE6cdDoQ==}

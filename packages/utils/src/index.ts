@@ -1,4 +1,5 @@
 import * as chokidar from 'chokidar';
+import * as clackPrompts from '../compiled/@clack/prompts';
 import address from '../compiled/address';
 import axios from '../compiled/axios';
 import chalk from '../compiled/chalk';
@@ -78,4 +79,5 @@ export {
   filesize,
   gzipSize,
   fastestLevenshtein,
+  clackPrompts,
 };

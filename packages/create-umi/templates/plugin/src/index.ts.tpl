@@ -1,5 +1,5 @@
-import type { IApi } from '@umijs/types';
+import type { IApi } from 'umi';
 
 export default (api: IApi) => {
-  // TODO: https://umijs.org/plugins/api
+  // See https://umijs.org/docs/guides/plugins
 };

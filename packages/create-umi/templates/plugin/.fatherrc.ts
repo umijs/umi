@@ -1,5 +1,5 @@
-export default {
-  target: 'node',
-  cjs: { type: 'babel', lazy: true },
-  disableTypeCheck: true,
-};
+import { defineConfig } from 'father';
+
+export default defineConfig({
+  cjs: {},
+});
