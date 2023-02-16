@@ -144,7 +144,7 @@ export const MicroApp = forwardRef(
     const stateForSlave = (useModel || noop)(
       qiankunStateForSlaveModelNamespace,
     );
-    const { entry, props: propsFromConfig = {} } = appConfig || {};
+    const { entry, props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {} } = appConfig || {};
 
     useEffect(() => {
       setComponentError(null);
@@ -152,6 +152,7 @@ export const MicroApp = forwardRef(
       const configuration = {
         globalContext: window,
         ...globalSettings,
+        ...settingsFromConfig,
         ...settingsFromProps,
       };
       microAppRef.current = loadMicroApp(
