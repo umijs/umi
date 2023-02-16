@@ -1,3 +1,5 @@
+import { Message } from 'umi';
+
 # 请求
 
 `@umijs/max` 内置了插件方案。它基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
@@ -68,6 +70,10 @@ export const request: RequestConfig = {
 这里面的 `errorHandler` 和 `errorThrower` 需要配套使用。文档的末尾有一个完整的例子。
 
 如果你觉得这种方式进行错误处理过于繁琐，可以直接在拦截器中实现自己的错误处理。
+
+<Message emoji="🚨" >
+`errorThrower` 是利用 `responseInterceptors` 实现的，它的触发条件是: 当 `data.success` 为 `false` 时。
+</Message>
 
 #### requestInterceptors
 为 request 方法添加请求阶段的拦截器。
