@@ -21,7 +21,7 @@ jobs:
         with:
           path: ./contributors.json
 
-    output-log:
+  output-log:
     runs-on: ubuntu-latest
     needs: read-file
     steps:
