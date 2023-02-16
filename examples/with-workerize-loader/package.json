@@ -8,9 +8,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20230213.1",
+    "@umijs/plugins": "4.0.0-canary.20230216.1",
     "antd": "^4.20.6",
-    "umi": "4.0.0-canary.20230213.1"
+    "umi": "4.0.0-canary.20230216.1"
   },
   "devDependencies": {
     "workerize-loader": "^2.0.2"

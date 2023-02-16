@@ -9,6 +9,6 @@
   "dependencies": {
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
-    "umi": "4.0.0-canary.20230213.1"
+    "umi": "4.0.0-canary.20230216.1"
   }
 }
