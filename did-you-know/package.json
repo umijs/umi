@@ -186,6 +186,14 @@
       "text": "全局样式、全局脚本写在哪里？创建 src/global.(ts|css) 轻松解决",
       "url": "https://umijs.org/docs/guides/directory-structure#globaljtsx",
       "majorVersion": 4
+    },
+    {
+      "text": "Bigfish Doctor 发布啦！遇到问题请先 tnpx @alipay/bigfish-doctor 一下。",
+      "url": "https://yuque.antfin.com/bigfish/blog/bigfish-doctor",
+      "majorVersion": 4,
+      "framework": [
+        "@alipay/bigfish"
+      ]
     }
   ]
 }

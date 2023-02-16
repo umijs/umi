@@ -59,9 +59,9 @@ export default (api: any) => {
     majorVersion: string,
   ) {
     // 1、get matched
-    const matched = items.filter((item: any) => {
+    const matched = items.filter(item => {
       return (
-        (!item.framwork || item.framwork.includes(framework)) &&
+        (!item.framework || item.framework.includes(framework)) &&
         (!item.majorVersion || majorVersion === `${item.majorVersion}`)
       );
     });
