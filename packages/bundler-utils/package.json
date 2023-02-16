@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "4.0.0-canary.20230216.1",
+  "version": "4.0.52",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -20,7 +20,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/utils": "4.0.0-canary.20230216.1",
+    "@umijs/utils": "4.0.52",
     "esbuild": "0.16.17",
     "regenerate": "^1.4.2",
     "regenerate-unicode-properties": "10.1.0",
