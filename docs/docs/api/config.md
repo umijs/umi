@@ -724,7 +724,7 @@ https: {
 
 ## icons
 
-- 类型：`{ autoInstall: {}; alias: Record<string,string>;  }`
+- 类型：`{ autoInstall: {}; alias: Record<string,string>; include: Array<string>;  }`
 - 默认值：`false`
 
 你就可以通过 umi 导出的 Icon 组件快捷地引用 icon 集或者本地的 icon。
@@ -765,6 +765,7 @@ import { Icon } from 'umi';
 
 - `autoInstall` 表示是否自动安装 icon 集；tnpm/cnpm 客户端暂不支持，但可以通过手动按需安装对应 icon 集合包 `@iconify-json/collection-name` 。 参考：[Icon 集合列表](https://github.com/iconify/icon-sets/blob/master/collections.md), collection-name 为列表中的 ***Icon set prefix*** 项。
 - `alias` 用于配置 icon 的别名，比如配置了 `alias:{home:'fa:home'}` 后就可以通过 `icon="home"` 使用 `fa:home` 这个 icon 了。
+- `include` 配置需要强制使用的 icon， 例如 `include: ['fa:home', 'local:icon']`。常见的使用场景：将 icon 字符串定义在一个 map 中，导致无法检测到；在 `mdx` 使用了 `Icon` 组件。
 
 ### Icon 组件属性
 
