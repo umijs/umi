@@ -342,7 +342,7 @@ const { formatMessage } = useIntl();
       unAccessible?: JSX.Element;
       noFound?: JSX.Element;
       logout?: (initialState: InitDataType['initialState']) => Promise<void> | void;
-      rightContentRender?: (
+      rightContentRender?: ((
         headerProps: HeaderProps,
         dom: JSX.Element,
         props: {
@@ -352,7 +352,7 @@ const { formatMessage } = useIntl();
           initialState: InitDataType['initialState'];
           setInitialState: InitDataType['setInitialState'];
         },
-      ) => JSX.Element;
+      ) => JSX.Element) | false;
       rightRender?: (
         initialState: InitDataType['initialState'],
         setInitialState: InitDataType['setInitialState'],
