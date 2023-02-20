@@ -117,7 +117,7 @@ base 配置允许你为应用程序设置路由前缀。比如有路由 `/` 和 
 - 类型：`string`
 - 默认值：`node_modules/.cache`
 
-默认情况下 umi 会将构建中的一些缓存文件存放在 `node_modules/.cache` 目录下，比如 logger 日志，webpack 缓存，mfsu 缓存等。你可以通过使用 `cacheDirectoryPath` 配置来修改 umi 的缓存文件目录。
+默认情况下 Umi 会将构建中的一些缓存文件存放在 `node_modules/.cache` 目录下，比如 logger 日志，webpack 缓存，mfsu 缓存等。你可以通过使用 `cacheDirectoryPath` 配置来修改 Umi 的缓存文件目录。
 
 示例，
 
@@ -131,7 +131,7 @@ cacheDirectoryPath: 'node_modules/.cache1',
 - 类型：`(memo, args) => void`
 - 默认值：`null`
 
-为了扩展 umi 内置的 webpack 配置，我们提供了用链式编程的方式修改 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
+为了扩展 Umi 内置的 webpack 配置，我们提供了用链式编程的方式修改 webpack 配置，基于 webpack-chain，具体 API 可参考 [webpack-api 的文档](https://github.com/mozilla-neutrino/webpack-chain)。
 
 如下所示：
 
