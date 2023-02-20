@@ -4,6 +4,7 @@ import {
   installWithNpmClient,
   logger,
 } from '@umijs/utils';
+import fs from 'fs';
 import path from 'path';
 
 import type { IApi } from '../../types';
@@ -93,7 +94,7 @@ export default (api: IApi) => {
                 });
               }),
           },
-          localIconDir: path.join(api.paths.absSrcPath, 'icons'),
+          localIconDir: getLocalIconDir(),
         });
       } catch (e) {
         logger.error(e);
@@ -124,6 +125,16 @@ export default (api: IApi) => {
         content: EMPTY_ICONS_FILE,
       });
     }
+    const localIconDir = getLocalIconDir();
+    const localIcons: string[] = [];
+    if (fs.existsSync(localIconDir)) {
+      localIcons.push(
+        ...fs
+          .readdirSync(localIconDir)
+          .filter((file) => file.endsWith('.svg'))
+          .map((file) => file.replace(/\.svg$/, '')),
+      );
+    }
     api.writeTmpFile({
       path: 'index.tsx',
       content: `
@@ -133,6 +144,8 @@ import './index.css';
 
 const alias = ${JSON.stringify(api.config.icons.alias || {})};
 type AliasKeys = keyof typeof alias;
+const localIcons = ${JSON.stringify(localIcons)} as const;
+type LocalIconsKeys = typeof localIcons[number];
 
 type IconCollections = 'academicons' |
   'akar-icons' |
@@ -284,7 +297,7 @@ type IconCollections = 'academicons' |
 type Icon = \`\${IconCollections}:\${string}\`;
 
 interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
-  icon: AliasKeys | Icon | \`local:\${string}\`;
+  icon: AliasKeys | Icon | \`local:\${LocalIconsKeys}\`;
   hover?: AliasKeys | string;
   className?: string;
   viewBox?: string;
@@ -396,4 +409,12 @@ function normalizeIconName(name: string) {
       `,
     });
   });
+
+  api.addTmpGenerateWatcherPaths(() => {
+    return [getLocalIconDir()];
+  });
+
+  function getLocalIconDir() {
+    return path.join(api.paths.absSrcPath, 'icons');
+  }
 };
