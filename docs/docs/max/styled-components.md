@@ -6,7 +6,7 @@
 
 如果是 @umijs/max，配置开启。
 
-```ts
+```ts {2}
 export default {
   styledComponents: {},
 }
