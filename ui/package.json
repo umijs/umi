@@ -15,7 +15,8 @@
   "main": "dist/plugin.js",
   "scripts": {
     "build": "umi build",
-    "dev": "umi dev"
+    "dev": "umi dev",
+    "setup": "umi setup"
   },
   "devDependencies": {
     "@types/react": "^18",

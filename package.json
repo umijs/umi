@@ -32,6 +32,7 @@
     "jest": "jest",
     "prepare": "husky install",
     "release": "umi-scripts release",
+    "setup": "pnpm --filter @umijs/ui run setup",
     "setup:webstorm": "umi-scripts setupWebStorm",
     "sync:tnpm": "umi-scripts syncTnpm",
     "test": "jest",
