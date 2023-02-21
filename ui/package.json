@@ -15,7 +15,7 @@
   "main": "dist/plugin.js",
   "scripts": {
     "build": "umi build",
-    "dev": "umi dev",
+    "dev": "umi dev --ui",
     "setup": "umi setup"
   },
   "devDependencies": {

@@ -29,3 +29,13 @@ a {
 }
   `,
 };
+
+export const reactQuery = {
+  queryClient: {
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  },
+};
