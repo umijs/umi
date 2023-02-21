@@ -1,7 +1,20 @@
 import { state as globalState } from '@/models/global';
-import { Link, styled, useSnapshot } from 'umi';
+import { NavLink, styled, useSnapshot } from 'umi';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  & > div {
+    border-top: 1px solid var(--subtle-color);
+    a {
+      display: block;
+    }
+    a:hover {
+      background: var(--bg-hover-color);
+    }
+    .active {
+      color: var(--highlight-color);
+    }
+  }
+`;
 
 export function Menu() {
   const { menus } = useSnapshot(globalState);
@@ -9,7 +22,12 @@ export function Menu() {
     <Wrapper>
       {menus.map((menu) => (
         <div key={menu.name}>
-          <Link to={menu.path}>{menu.name}</Link>
+          <NavLink
+            to={menu.path}
+            className={({ isActive }) => (isActive ? 'active' : undefined)}
+          >
+            {menu.name}
+          </NavLink>
         </div>
       ))}
     </Wrapper>

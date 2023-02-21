@@ -1,10 +1,24 @@
 import { Logo } from '@/components/Logo';
 import { Menu } from '@/components/Menu';
-import { Outlet } from 'umi';
+import { Helmet, Outlet, styled } from 'umi';
+
+const Wrapper = styled.div`
+  display: flex;
+  border: 1px solid var(--subtle-color);
+  height: 100%;
+  aside {
+    min-width: 200px;
+    border-right: 1px solid var(--subtle-color);
+  }
+  main {
+    flex: 1;
+  }
+`;
 
 export default function Layout() {
   return (
-    <div>
+    <Wrapper>
+      <Helmet title="Umi UI" />
       <aside>
         <Logo />
         <Menu />
@@ -12,6 +26,6 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-    </div>
+    </Wrapper>
   );
 }
