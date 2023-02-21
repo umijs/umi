@@ -3,13 +3,13 @@
   "version": "1.0.3",
   "description": "",
   "keywords": [],
-  "homepage": "https://github.com/umijs/did-you-know#readme",
+  "homepage": "https://github.com/umijs/umi/tree/master/did-you-know#readme",
   "bugs": {
-    "url": "https://github.com/umijs/did-you-know/issues"
+    "url": "https://github.com/umijs/umi/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/umijs/did-you-know.git"
+    "url": "git+https://github.com/umijs/umi.git"
   },
   "license": "MIT",
   "main": "dist/plugin.js",
