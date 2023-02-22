@@ -34,8 +34,23 @@ export function esbuildExternalPlugin(opts: {
             alias,
             imported: winP,
           });
-          if (aliasImport && !aliasImport.includes('node_modules')) {
-            return null;
+
+          if (aliasImport) {
+            // contains node_modules must be an external dep
+            if (aliasImport.includes('node_modules')) {
+              return { external: true };
+            }
+            // non node_modules abs path, keep it as it is
+            if (aliasImport.startsWith('/')) {
+              return null;
+            }
+            // a relative path
+            if (aliasImport.startsWith('.')) {
+              const resolved = path.resolve(args.resolveDir, aliasImport);
+              return { path: resolved };
+            }
+            // not a path, a pkg name, external it; e.g {alias: {request: 'umi-request'} }
+            return { external: true };
           }
         }
 
