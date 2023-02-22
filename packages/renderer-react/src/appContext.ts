@@ -1,4 +1,5 @@
 import React from 'react';
+import { matchRoutes, useLocation } from 'react-router-dom';
 import { useRouteData } from './routeContext';
 import {
   IClientRoute,
@@ -6,7 +7,6 @@ import {
   IRouteComponents,
   IRoutesById,
 } from './types';
-import { useLocation, matchRoutes } from 'react-router-dom';
 
 interface IAppContextType {
   routes: IRoutesById;
@@ -35,6 +35,12 @@ export function useSelectedRoutes() {
   // use `useLocation` get location without `basename`, not need `basename` param
   const routes = matchRoutes(clientRoutes, location.pathname);
   return routes || [];
+}
+
+export function useRouteProps() {
+  const currentRoute = useSelectedRoutes().slice(-1);
+  const props = currentRoute[0]?.route || {};
+  return props;
 }
 
 export function useServerLoaderData() {

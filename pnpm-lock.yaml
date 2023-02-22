@@ -748,6 +748,12 @@ importers:
     dependencies:
       umi: link:../../packages/umi
 
+  examples/route-props:
+    specifiers:
+      umi: 4.0.0-canary.20230213.1
+    dependencies:
+      umi: link:../../packages/umi
+
   examples/ssr-demo:
     specifiers:
       express: 4.18.2

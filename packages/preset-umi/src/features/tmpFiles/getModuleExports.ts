@@ -16,6 +16,7 @@ export async function getModuleExports(opts: {
         file,
       )} exports error, please check this file esm format.`,
     );
-    throw new Error('Parse module exports fail', { cause: e });
+    // do not kill process
+    return [];
   }
 }

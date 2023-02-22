@@ -380,6 +380,21 @@ export default function EmptyRoute() {
       );
       // import: route props
       headerImports.push(`import routeProps from './routeProps.js';`);
+      // prevent override internal route props
+      headerImports.push(`
+if (process.env.NODE_ENV === 'development') {
+  Object.entries(routeProps).forEach(([key, value]) => {
+    const internalProps = ['path', 'id', 'parentId', 'clientLoader'];
+    Object.keys(value).forEach((prop) => {
+      if (internalProps.includes(prop)) {
+        throw new Error(
+          \`[UmiJS] route '\${key}' should not have '\${prop}' prop, please remove this property in 'routeProps'.\`
+        )
+      }
+    })
+  })
+}
+`);
     }
 
     // import: react

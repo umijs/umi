@@ -1,10 +1,5 @@
 import type { IApi } from '../../types';
-import {
-  generateRouteExportTmpFile,
-  setupExportExtractBuilder,
-} from '../../utils/routeExportExtractor';
-
-export const ROUTE_PROPS_PROPERTY = 'routeProps';
+import { setupRouteExportExtractor } from '../../utils/routeExportExtractor';
 
 export default (api: IApi) => {
   api.describe({
@@ -19,19 +14,10 @@ export default (api: IApi) => {
   const entryFile = 'core/routeProps.ts';
   const outFile = 'core/routeProps.js';
 
-  api.onGenerateFiles(() => {
-    generateRouteExportTmpFile({
-      api,
-      propertyName: ROUTE_PROPS_PROPERTY,
-      entryFile,
-    });
+  setupRouteExportExtractor({
+    api,
+    entryFile,
+    outFile,
+    propertyName: 'routeProps',
   });
-
-  api.onBeforeCompiler(() =>
-    setupExportExtractBuilder({
-      api,
-      entryFile,
-      outFile,
-    }),
-  );
 };

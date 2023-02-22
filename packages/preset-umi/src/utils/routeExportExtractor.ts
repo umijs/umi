@@ -15,9 +15,32 @@ interface IRouteExportExtractorSetupBuilderOpts extends IRouteExportExtractor {
   outFile: string;
 }
 
-export function generateRouteExportTmpFile(
-  opts: IRouteExportExtractorGenTmpFileOpts,
+type ISetupRouteExportExtractorOpts = IRouteExportExtractorGenTmpFileOpts &
+  IRouteExportExtractorSetupBuilderOpts;
+
+export function setupRouteExportExtractor(
+  opts: ISetupRouteExportExtractorOpts,
 ) {
+  const { api, entryFile, propertyName, outFile } = opts;
+
+  api.onGenerateFiles(() => {
+    generateRouteExportTmpFile({
+      api,
+      propertyName,
+      entryFile,
+    });
+  });
+
+  api.onBeforeCompiler(() =>
+    setupExportExtractBuilder({
+      api,
+      entryFile,
+      outFile,
+    }),
+  );
+}
+
+function generateRouteExportTmpFile(opts: IRouteExportExtractorGenTmpFileOpts) {
   const { api, entryFile, propertyName } = opts;
   const imports: string[] = [];
   const defines: string[] = [];
@@ -46,7 +69,7 @@ ${defines.join('\n')}
   });
 }
 
-export async function setupExportExtractBuilder(
+async function setupExportExtractBuilder(
   opts: IRouteExportExtractorSetupBuilderOpts,
 ) {
   const { api, entryFile, outFile } = opts;

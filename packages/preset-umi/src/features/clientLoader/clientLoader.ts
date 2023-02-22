@@ -1,10 +1,5 @@
 import type { IApi } from '../../types';
-import {
-  generateRouteExportTmpFile,
-  setupExportExtractBuilder,
-} from '../../utils/routeExportExtractor';
-
-export const CLIENT_LOADER_PROPERTY = 'clientLoader';
+import { setupRouteExportExtractor } from '../../utils/routeExportExtractor';
 
 export default (api: IApi) => {
   api.describe({
@@ -19,19 +14,10 @@ export default (api: IApi) => {
   const entryFile = 'core/loaders.ts';
   const outFile = 'core/loaders.js';
 
-  api.onGenerateFiles(() => {
-    generateRouteExportTmpFile({
-      api,
-      propertyName: CLIENT_LOADER_PROPERTY,
-      entryFile,
-    });
+  setupRouteExportExtractor({
+    api,
+    entryFile,
+    outFile,
+    propertyName: 'clientLoader',
   });
-
-  api.onBeforeCompiler(() =>
-    setupExportExtractBuilder({
-      api,
-      entryFile,
-      outFile,
-    }),
-  );
 };
