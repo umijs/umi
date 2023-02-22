@@ -314,8 +314,12 @@ PORT=8888 umi dev
           ),
         });
 
-        const files = await fileListQ;
-        await srcCodeCache!.init(files);
+        if (api.appData.framework === 'vue') {
+          await srcCodeCache!.initWithScan();
+        } else {
+          const files = await fileListQ;
+          await srcCodeCache!.init(files);
+        }
 
         addUnWatch(() => {
           srcCodeCache!.unwatch();

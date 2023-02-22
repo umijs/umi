@@ -4,8 +4,9 @@ import {
   parse,
 } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { build as esBuild } from '@umijs/bundler-utils/compiled/esbuild';
-import { logger } from '@umijs/utils';
-
+// @ts-ignore
+import { logger, winPath } from '@umijs/utils';
+import fg from 'fast-glob';
 import { readFileSync } from 'fs';
 import { extname, join, relative } from 'path';
 import { DEFAULT_SRC_IGNORES } from './constant';
@@ -49,6 +50,30 @@ export class LazySourceCodeCache {
     await Promise.all([esModuleLexerInit, this.folderWatch.init()]);
 
     await this.loadFiles(files);
+  }
+
+  async initWithScan() {
+    const [files] = await Promise.all([
+      this.initFileList(),
+      esModuleLexerInit,
+      this.folderWatch.init(),
+    ]);
+
+    await this.loadFiles(files);
+  }
+
+  private async initFileList(): Promise<string[]> {
+    const start = Date.now();
+    const files = await fg(
+      winPath(join(this.srcPath, '**', '*.{ts,js,jsx,tsx}')),
+      {
+        dot: true,
+        ignore: this.ignores,
+      },
+    );
+    logger.debug('[MFSU][eager] fast-glob costs', Date.now() - start);
+
+    return files;
   }
 
   getSrcPath() {
