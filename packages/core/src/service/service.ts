@@ -355,7 +355,7 @@ export class Service {
         cwd: this.cwd,
         pkg,
         pkgPath,
-        plugins,
+        plugins: this.plugins,
         presets,
         name,
         args,
