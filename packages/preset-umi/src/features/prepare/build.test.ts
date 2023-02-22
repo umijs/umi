@@ -6,6 +6,9 @@ const fixtures = path.join(__dirname, '../../../fixtures/prepare-build');
 test('build', async () => {
   const res = await build({
     entryPoints: [path.join(fixtures, 'normal/index.ts')],
+    config: {
+      cwd: path.join(fixtures, 'normal'),
+    },
   });
   const text = res.outputFiles![0].text;
   expect(text).toContain(`import "foo"`);

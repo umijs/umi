@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { IApi } from '../../types';
 import { EagerUtil, MFSUUtilBase, NormalUtil } from './util';
 
@@ -21,6 +22,20 @@ export default (api: IApi) => {
   api.describe({
     key: 'mfsu-cli',
   });
+
+  const fileListQ = new Promise<string[]>((rslv) => {
+    api.onPrepareBuildSuccess(({ result, isWatch }) => {
+      if (!isWatch) {
+        const files = Object.keys(result.metafile!.inputs)
+          .sort()
+          .map((f) => resolve(api.paths.cwd, f))
+          .filter((f) => f.startsWith(api.paths.absSrcPath));
+
+        rslv(files);
+      }
+    });
+  });
+
   api.registerCommand({
     name: 'mfsu',
     description: 'umi mfsu CLI util',
@@ -37,8 +52,8 @@ export default (api: IApi) => {
 
       const util: MFSUUtilBase =
         api.config.mfsu?.strategy === 'eager'
-          ? new EagerUtil(api)
-          : new NormalUtil(api);
+          ? new EagerUtil(api, fileListQ)
+          : new NormalUtil(api, fileListQ);
 
       switch (command) {
         case 'build':

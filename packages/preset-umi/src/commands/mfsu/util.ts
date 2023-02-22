@@ -10,7 +10,7 @@ import { getBabelOpts } from '../dev/getBabelOpts';
 export abstract class MFSUUtilBase {
   protected mfsuCacheBase: string;
   protected cliName: string;
-  constructor(readonly api: IApi) {
+  constructor(readonly api: IApi, readonly fileList: Promise<string[]>) {
     const cacheBase =
       api.config.cacheDirectoryPath || join(api.cwd, 'node_modules/.cache');
 
@@ -84,7 +84,7 @@ export abstract class MFSUUtilBase {
           'mfsu_v4',
         ),
       });
-      await srcCodeCache!.init();
+      await srcCodeCache!.init(await this.fileList);
     }
 
     const entry = await api.applyPlugins({
