@@ -13,8 +13,8 @@ export function esbuildIconPlugin(opts: {
       const loaders: Loader[] = ['js', 'jsx', 'ts', 'tsx'];
       loaders.forEach((loader) => {
         const filter = new RegExp(`\\.(${loader})$`);
-        build.onLoad({ filter }, (args) => {
-          const contents = fs.readFileSync(args.path, 'utf-8');
+        build.onLoad({ filter }, async (args) => {
+          const contents = await fs.promises.readFile(args.path, 'utf-8');
           const icons = extractIcons(contents);
           logger.debug(`[icons] ${args.path} > ${icons}`);
           icons.forEach((icon) => {
