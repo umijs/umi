@@ -336,6 +336,7 @@ export default function EmptyRoute() {
       routes = await getRoutes({
         api,
       });
+      api.appData.routes = routes;
     }
 
     const hasSrc = api.appData.hasSrcDir;
