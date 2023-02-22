@@ -348,7 +348,7 @@ export default function EmptyRoute() {
     const clonedRoutes = lodash.cloneDeep(routes);
     for (const id of Object.keys(clonedRoutes)) {
       for (const key of Object.keys(clonedRoutes[id])) {
-        let route = clonedRoutes[id];
+        const route = clonedRoutes[id];
         // Remove __ prefix props, absPath props and file props
         if (key.startsWith('__') || ['absPath', 'file'].includes(key)) {
           delete route[key];
@@ -378,7 +378,6 @@ export default function EmptyRoute() {
         isClientLoaderEnabled: !!api.config.clientLoader,
         isRoutePropsEnabled: !!api.config.routeProps,
         routes: routesString,
-
         routeComponents: await getRouteComponents({ routes, prefix, api }),
       },
     });

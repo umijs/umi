@@ -125,8 +125,7 @@ export async function getRoutes(opts: {
       if (opts.api.config.ssr) {
         routes[id].hasServerLoader = exports.includes('serverLoader');
       }
-      if (opts.api.config.clientLoader) {
-        routes[id].__hasClientLoader = exports.includes('clientLoader');
+      if (opts.api.config.clientLoader && exports.includes('clientLoader')) {
         routes[id].clientLoader = `clientLoaders['${id}']`;
       }
 
