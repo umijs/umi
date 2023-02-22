@@ -4,6 +4,8 @@ import {
   setupExportExtractBuilder,
 } from '../../utils/routeExportExtractor';
 
+export const ROUTE_PROPS_PROPERTY = 'routeProps';
+
 export default (api: IApi) => {
   api.describe({
     config: {
@@ -14,11 +16,22 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  const entryFile = 'core/routeProps.ts';
+  const outFile = 'core/routeProps.js';
+
   api.onGenerateFiles(() => {
-    generateRouteExportTmpFile(api, 'routeProps', 'core/routeProps.ts');
+    generateRouteExportTmpFile({
+      api,
+      propertyName: ROUTE_PROPS_PROPERTY,
+      entryFile,
+    });
   });
 
   api.onBeforeCompiler(() =>
-    setupExportExtractBuilder(api, 'core/routeProps.ts', 'core/routeProps.js'),
+    setupExportExtractBuilder({
+      api,
+      entryFile,
+      outFile,
+    }),
   );
 };

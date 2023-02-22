@@ -2,11 +2,23 @@ import esbuild from '@umijs/bundler-utils/compiled/esbuild';
 import { join, resolve } from 'path';
 import type { IApi } from 'umi';
 
+interface IRouteExportExtractor {
+  api: IApi;
+  entryFile: string;
+}
+
+interface IRouteExportExtractorGenTmpFileOpts extends IRouteExportExtractor {
+  propertyName: string;
+}
+
+interface IRouteExportExtractorSetupBuilderOpts extends IRouteExportExtractor {
+  outFile: string;
+}
+
 export function generateRouteExportTmpFile(
-  api: IApi,
-  propertyName: string,
-  filePath: string,
+  opts: IRouteExportExtractorGenTmpFileOpts,
 ) {
+  const { api, entryFile, propertyName } = opts;
   const imports: string[] = [];
   const defines: string[] = [];
   const routeIds = Object.keys(api.appData.routes);
@@ -24,7 +36,7 @@ export function generateRouteExportTmpFile(
 
   api.writeTmpFile({
     noPluginDir: true,
-    path: filePath,
+    path: entryFile,
     content: `
 ${imports.join('\n')}
 export default {
@@ -35,10 +47,9 @@ ${defines.join('\n')}
 }
 
 export async function setupExportExtractBuilder(
-  api: IApi,
-  filePath: string,
-  outfile: string,
+  opts: IRouteExportExtractorSetupBuilderOpts,
 ) {
+  const { api, entryFile, outFile } = opts;
   await esbuild.build({
     format: 'esm',
     platform: 'browser',
@@ -47,8 +58,9 @@ export async function setupExportExtractBuilder(
     watch: api.env === 'development' && {},
     bundle: true,
     logLevel: 'error',
-    entryPoints: [join(api.paths.absTmpPath, filePath)],
-    outfile: join(api.paths.absTmpPath, outfile),
+    entryPoints: [join(api.paths.absTmpPath, entryFile)],
+    outfile: join(api.paths.absTmpPath, outFile),
+    absWorkingDir: api.cwd,
     plugins: [
       {
         name: 'imports',

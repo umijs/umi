@@ -4,6 +4,8 @@ import {
   setupExportExtractBuilder,
 } from '../../utils/routeExportExtractor';
 
+export const CLIENT_LOADER_PROPERTY = 'clientLoader';
+
 export default (api: IApi) => {
   api.describe({
     config: {
@@ -14,13 +16,22 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
+  const entryFile = 'core/loaders.ts';
+  const outFile = 'core/loaders.js';
+
   api.onGenerateFiles(() => {
-    generateRouteExportTmpFile(api, 'clientLoader', 'core/loaders.ts');
+    generateRouteExportTmpFile({
+      api,
+      propertyName: CLIENT_LOADER_PROPERTY,
+      entryFile,
+    });
   });
 
-  // 把 core/loader.ts (在 tmpFile.ts 的 onGenerateFiles 产生的) 编译成 core/loader.js
-  // core/loader.js 会被 core/route.ts 引用，将每个 route 的 clientLoader 注入进去
   api.onBeforeCompiler(() =>
-    setupExportExtractBuilder(api, 'core/loaders.ts', 'core/loaders.js'),
+    setupExportExtractBuilder({
+      api,
+      entryFile,
+      outFile,
+    }),
   );
 };

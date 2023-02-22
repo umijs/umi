@@ -108,29 +108,27 @@ export async function getRoutes(opts: {
       routes[id].__absFile = winPath(file);
       routes[id].__isJSFile = isJSFile;
 
-      let exports: string[] = [];
-      if (
-        opts.api.config.ssr ||
-        opts.api.config.clientLoader ||
-        opts.api.config.routeProps
-      ) {
-        exports =
+      const enableSSR = opts.api.config.ssr;
+      const enableClientLoader = opts.api.config.clientLoader;
+      const enableRouteProps = opts.api.config.routeProps;
+      const needCollectExports =
+        enableSSR || enableClientLoader || enableRouteProps;
+      if (needCollectExports) {
+        const exports =
           isJSFile && existsSync(file)
             ? await getModuleExports({
                 file,
               })
             : [];
-      }
-
-      if (opts.api.config.ssr) {
-        routes[id].hasServerLoader = exports.includes('serverLoader');
-      }
-      if (opts.api.config.clientLoader && exports.includes('clientLoader')) {
-        routes[id].clientLoader = `clientLoaders['${id}']`;
-      }
-
-      if (opts.api.config.routeProps && exports.includes('routeProps')) {
-        routes[id].routeProps = `routeProps['${id}']`;
+        if (enableSSR) {
+          routes[id].hasServerLoader = exports.includes('serverLoader');
+        }
+        if (enableClientLoader && exports.includes('clientLoader')) {
+          routes[id].clientLoader = `clientLoaders['${id}']`;
+        }
+        if (enableRouteProps && exports.includes('routeProps')) {
+          routes[id].routeProps = `routeProps['${id}']`;
+        }
       }
     }
   }
