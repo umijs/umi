@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { resolve as resolvePath } from 'path';
 import { IApi } from '../types';
 
@@ -14,7 +15,7 @@ export function getProjectFileListPromise(api: IApi): Promise<string[]> {
 
         console.log(
           'resolved',
-          debugfs.map((f) => resolvePath(api.paths.cwd, f)),
+          debugfs.map((f) => winPath(resolvePath(api.paths.cwd, f))),
         );
         console.log(
           '------ api.paths.cwd ->',
@@ -23,7 +24,7 @@ export function getProjectFileListPromise(api: IApi): Promise<string[]> {
         );
 
         const files = Object.keys(result.metafile!.inputs)
-          .map((f) => resolvePath(api.paths.cwd, f))
+          .map((f) => winPath(resolvePath(api.paths.cwd, f)))
           .filter((f) => f.startsWith(api.paths.absSrcPath));
 
         resolve(files);
