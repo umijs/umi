@@ -49,6 +49,10 @@ export class LazySourceCodeCache {
   async init(files: string[]) {
     await Promise.all([esModuleLexerInit, this.folderWatch.init()]);
 
+    console.log('files', JSON.stringify(files, null, 2));
+    const oldList = await this.initFileList();
+    console.log('old files', JSON.stringify(oldList, null, 2));
+
     await this.loadFiles(files);
   }
 
