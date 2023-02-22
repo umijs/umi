@@ -51,6 +51,7 @@ export default (api: IApi) => {
         },
         config: {
           alias: unwrappedAlias,
+          cwd: api.paths.cwd,
         },
         plugins,
       });
