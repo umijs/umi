@@ -335,7 +335,7 @@ export class Service {
     }
     // setup api.config from modifyConfig and modifyDefaultConfig
     this.stage = ServiceStage.resolveConfig;
-    const { config, defaultConfig } = await this.resolveConfig();
+    const { defaultConfig } = await this.resolveConfig();
     if (this.config.outputPath) {
       this.paths.absOutputPath = isAbsolute(this.config.outputPath)
         ? this.config.outputPath
@@ -362,7 +362,7 @@ export class Service {
         // config
         userConfig: this.userConfig,
         mainConfigFile: configManager.mainConfigFile,
-        config,
+        config: this.config,
         defaultConfig: defaultConfig,
         // TODO
         // moduleGraph,

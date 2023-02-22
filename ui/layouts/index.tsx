@@ -12,6 +12,10 @@ const Wrapper = styled.div`
   }
   main {
     flex: 1;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 16px;
   }
 `;
 
