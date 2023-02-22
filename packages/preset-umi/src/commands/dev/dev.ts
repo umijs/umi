@@ -9,12 +9,13 @@ import {
   winPath,
 } from '@umijs/utils';
 import { existsSync, readdirSync, readFileSync } from 'fs';
-import { basename, join, resolve } from 'path';
+import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import type { GenerateFilesFn, IApi, OnConfigChangeFn } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
+import { getProjectFileListPromise } from '../../utils/projectFileList';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
 import { getBabelOpts } from './getBabelOpts';
@@ -48,18 +49,7 @@ export default (api: IApi) => {
     },
   });
 
-  const fileListQ = new Promise<string[]>((rslv) => {
-    api.onPrepareBuildSuccess(({ result, isWatch }) => {
-      if (!isWatch) {
-        const files = Object.keys(result.metafile!.inputs)
-          .sort()
-          .map((f) => resolve(api.paths.cwd, f))
-          .filter((f) => f.startsWith(api.paths.absSrcPath));
-
-        rslv(files);
-      }
-    });
-  });
+  const fileListQ = getProjectFileListPromise(api);
 
   api.registerCommand({
     name: 'dev',

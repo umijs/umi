@@ -1,5 +1,5 @@
-import { resolve } from 'path';
 import { IApi } from '../../types';
+import { getProjectFileListPromise } from '../../utils/projectFileList';
 import { EagerUtil, MFSUUtilBase, NormalUtil } from './util';
 
 const HELP_TEXT = `
@@ -23,18 +23,7 @@ export default (api: IApi) => {
     key: 'mfsu-cli',
   });
 
-  const fileListQ = new Promise<string[]>((rslv) => {
-    api.onPrepareBuildSuccess(({ result, isWatch }) => {
-      if (!isWatch) {
-        const files = Object.keys(result.metafile!.inputs)
-          .sort()
-          .map((f) => resolve(api.paths.cwd, f))
-          .filter((f) => f.startsWith(api.paths.absSrcPath));
-
-        rslv(files);
-      }
-    });
-  });
+  const fileListQ = getProjectFileListPromise(api);
 
   api.registerCommand({
     name: 'mfsu',
