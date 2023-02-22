@@ -340,6 +340,7 @@ export default function EmptyRoute() {
         api,
       });
       // refresh route data, prevent route data outdated
+      // this can immediately get the latest `icon`... props in routes config
       api.appData.routes = routes;
     }
 

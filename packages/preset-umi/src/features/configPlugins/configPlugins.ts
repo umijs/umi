@@ -2,7 +2,7 @@ import { getSchemas as getViteSchemas } from '@umijs/bundler-vite/dist/schema';
 import { getSchemas as getWebpackSchemas } from '@umijs/bundler-webpack/dist/schema';
 import { resolve } from '@umijs/utils';
 import { dirname, join } from 'path';
-import type { IApi, OnConfigChangeFn, IApiInternalProps } from '../../types';
+import type { IApi } from '../../types';
 import { getSchemas as getExtraSchemas } from './schema';
 
 function resolveProjectDep(opts: { pkg: any; cwd: string; dep: string }) {
@@ -90,14 +90,10 @@ export default (api: IApi) => {
       config.default = configDefaults[key];
     }
 
-    // when `routes#icon` changes, need to refresh the `appData.routes`
-    // otherwise the `icon` will not update
+    // when routes change, not need restart server
+    // routes data will auto update in `onGenerateFiles` (../tmpFiles/tmpFiles.ts)
     if (['routes'].includes(key)) {
-      const onRoutesChange: OnConfigChangeFn = async ({ generate }) => {
-        await (api as any as IApiInternalProps)._refreshRoutes();
-        await generate({ isFirstTime: false });
-      };
-      config.onChange = onRoutesChange;
+      config.onChange = api.ConfigChangeType.regenerateTmpFiles;
     }
 
     api.registerPlugins([

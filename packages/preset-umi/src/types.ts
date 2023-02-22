@@ -212,12 +212,3 @@ export type IApi = PluginAPI &
       tplPath?: string;
     }) => void;
   };
-
-export interface IApiInternalProps {
-  /**
-   * 如果不刷新 routes，修改 icon 不会热更新
-   * See https://github.com/umijs/umi/issues/10137
-   * TODO: 不公开这个方法，先解问题，但此问题应该有更好的解法
-   */
-  _refreshRoutes: () => Promise<void>;
-}
