@@ -2,10 +2,16 @@ import { share } from '@/props';
 import { useRouteProps } from 'umi';
 
 export default function Page() {
-  const routes = useRouteProps();
-  console.log('routes: ', routes);
+  const routes: typeof routeProps = useRouteProps();
 
-  return <div>index</div>;
+  return (
+    <div>
+      index, props: {routes.a}
+      {routes.b()}
+      {routes.c}
+      {JSON.stringify(routes.d)}
+    </div>
+  );
 }
 
 export const routeProps = {

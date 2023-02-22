@@ -37,10 +37,10 @@ export function useSelectedRoutes() {
   return routes || [];
 }
 
-export function useRouteProps() {
+export function useRouteProps<T extends Record<string, any> = any>() {
   const currentRoute = useSelectedRoutes().slice(-1);
-  const props = currentRoute[0]?.route || {};
-  return props;
+  const { element: _, ...props } = currentRoute[0]?.route || {};
+  return props as T;
 }
 
 export function useServerLoaderData() {
