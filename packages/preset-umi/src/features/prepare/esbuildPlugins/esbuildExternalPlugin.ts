@@ -45,7 +45,7 @@ export function esbuildExternalPlugin(opts: {
               return null;
             }
             // a relative path
-            if (aliasImport.startsWith('.')) {
+            if (aliasImport.startsWith('./') || aliasImport.startsWith('../')) {
               const resolved = path.resolve(args.resolveDir, aliasImport);
               return { path: resolved };
             }
