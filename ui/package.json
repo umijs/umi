@@ -1,0 +1,36 @@
+{
+  "name": "@umijs/ui",
+  "version": "3.0.0-alpha.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/umijs/umi/tree/master/ui#readme",
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umijs/umi.git"
+  },
+  "license": "MIT",
+  "main": "dist/plugin.js",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev --ui",
+    "setup": "umi setup"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/plugins": "workspace:*",
+    "typescript": "^4",
+    "umi": "workspace:*"
+  },
+  "packageManager": "pnpm@7.3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ]
+}

@@ -5,3 +5,4 @@ packages:
   - 'codemod'
   - 'did-you-know'
   - 'scripts'
+  - 'ui'

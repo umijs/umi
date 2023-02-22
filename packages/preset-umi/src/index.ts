@@ -46,6 +46,7 @@ export default () => {
       require.resolve('./features/classPropertiesLoose/classPropertiesLoose'),
       require.resolve('./features/webpack/webpack'),
       require.resolve('./features/swc/swc'),
+      require.resolve('./features/ui/ui'),
 
       // commands
       require.resolve('./commands/build'),
