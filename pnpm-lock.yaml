@@ -1931,12 +1931,14 @@ importers:
     specifiers:
       '@types/react': ^18
       '@types/react-dom': ^18
+      '@umijs/bundler-utils': workspace:*
       '@umijs/plugins': workspace:*
       typescript: ^4
       umi: workspace:*
     devDependencies:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
+      '@umijs/bundler-utils': link:../packages/bundler-utils
       '@umijs/plugins': link:../packages/plugins
       typescript: 4.9.4
       umi: link:../packages/umi

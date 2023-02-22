@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@umijs/bundler-utils": "workspace:*",
     "@umijs/plugins": "workspace:*",
     "typescript": "^4",
     "umi": "workspace:*"

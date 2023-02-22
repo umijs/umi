@@ -7,6 +7,7 @@ export const state = proxy({
     { name: 'Routes', path: '/routes' },
     { name: 'Doctor', path: '/doctor' },
     { name: 'Plugins', path: '/plugins' },
+    { name: 'Imports', path: '/imports' },
   ],
 });
 

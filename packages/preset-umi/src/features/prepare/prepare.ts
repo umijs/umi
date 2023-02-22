@@ -1,9 +1,21 @@
-import { aliasUtils, logger } from '@umijs/utils';
+import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
+import { aliasUtils, lodash, logger } from '@umijs/utils';
 import path from 'path';
 import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
 
 export default (api: IApi) => {
+  function updateAppdata(_buildResult: BuildResult) {
+    const buildResult = lodash.cloneDeep(_buildResult);
+    (buildResult.outputFiles || []).forEach((file) => {
+      // @ts-ignore
+      delete file?.contents;
+    });
+    api.appData.prepare = {
+      buildResult,
+    };
+  }
+
   api.register({
     key: 'onGenerateFiles',
     async fn({ isFirstTime }: IOnGenerateFiles) {
@@ -27,6 +39,7 @@ export default (api: IApi) => {
         entryPoints: [entryFile],
         watch: watch && {
           onRebuildSuccess({ result }) {
+            updateAppdata(result);
             api.applyPlugins({
               key: 'onPrepareBuildSuccess',
               args: {
@@ -46,6 +59,7 @@ export default (api: IApi) => {
           buildResult.stop?.();
         });
       }
+      updateAppdata(buildResult);
       await api.applyPlugins({
         key: 'onPrepareBuildSuccess',
         args: {
