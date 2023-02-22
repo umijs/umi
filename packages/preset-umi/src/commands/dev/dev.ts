@@ -9,7 +9,7 @@ import {
   winPath,
 } from '@umijs/utils';
 import { existsSync, readdirSync, readFileSync } from 'fs';
-import { basename, join } from 'path';
+import { basename, join, resolve } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
@@ -46,6 +46,19 @@ export default (api: IApi) => {
     enableBy() {
       return api.name === 'dev';
     },
+  });
+
+  const fileListQ = new Promise<string[]>((rslv) => {
+    api.onPrepareBuildSuccess(({ result, isWatch }) => {
+      if (!isWatch) {
+        const files = Object.keys(result.metafile!.inputs)
+          .sort()
+          .map((f) => resolve(api.paths.cwd, f))
+          .filter((f) => f.startsWith(api.paths.absSrcPath));
+
+        rslv(files);
+      }
+    });
   });
 
   api.registerCommand({
@@ -310,7 +323,10 @@ PORT=8888 umi dev
             'mfsu_v4',
           ),
         });
-        await srcCodeCache!.init();
+
+        const files = await fileListQ;
+        await srcCodeCache!.init(files);
+
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });
