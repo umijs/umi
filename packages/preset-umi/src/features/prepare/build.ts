@@ -16,6 +16,7 @@ export async function build(opts: {
   write?: boolean;
 }) {
   const outdir = path.join(path.dirname(opts.entryPoints[0]), 'out');
+  const alias = opts.config?.alias || {};
   return await esbuild.build({
     // 需要指定 absWorkingDir 兼容 APP_ROOT 的情况
     absWorkingDir: opts.config.cwd,
@@ -56,8 +57,8 @@ export async function build(opts: {
       // then we import 'foo/bar.less'
       // if we resolve alias first, we will get { path }
       // if we resolve externals first, we will get { external: true }
-      esbuildExternalPlugin(),
-      esbuildAliasPlugin({ alias: opts.config?.alias || {} }),
+      esbuildExternalPlugin({ alias }),
+      esbuildAliasPlugin({ alias }),
       ...(opts.plugins || []),
     ],
   });
