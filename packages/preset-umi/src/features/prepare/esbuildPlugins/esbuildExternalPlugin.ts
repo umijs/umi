@@ -10,6 +10,8 @@ export function esbuildExternalPlugin(opts: {
     name: 'esbuildExternalPlugin',
     setup(build) {
       build.onResolve({ filter: /.*/ }, (args) => {
+        console.log('external handle external ', args.importer, args.path);
+
         // only handle js/ts file
         if (!isSource(args.path)) {
           return {
