@@ -10,8 +10,6 @@ export function esbuildExternalPlugin(opts: {
     name: 'esbuildExternalPlugin',
     setup(build) {
       build.onResolve({ filter: /.*/ }, (args) => {
-        console.log('external handle external ', args.importer, args.path);
-
         // only handle js/ts file
         if (!isSource(args.path)) {
           return {
@@ -52,6 +50,7 @@ export function esbuildExternalPlugin(opts: {
               const resolved = winPath(
                 path.resolve(args.resolveDir, aliasImport),
               );
+
               return { path: resolved };
             }
             // not a path, a pkg name, external it; e.g {alias: {request: 'umi-request'} }

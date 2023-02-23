@@ -21,10 +21,11 @@ test('build', async () => {
 });
 
 test('build with alias', async () => {
-  const res = await build({
+  await build({
     entryPoints: [path.join(fixtures, 'with-alias/index.ts')],
 
     config: {
+      cwd: path.join(fixtures, 'with-alias'),
       alias: {
         react: '/project/node_modules/react',
         request: 'request-umi',

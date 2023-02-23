@@ -67,7 +67,6 @@ export function esbuildAliasPlugin(opts: {
             fs.existsSync(value) &&
             fs.statSync(value).isDirectory()
           ) {
-            console.log('set alias ', `^${addSlashAffix(key)}`, value);
             const filter = new RegExp(`^${addSlashAffix(key)}`);
             build.onResolve({ filter }, async (args) => {
               const path = await resolve(
