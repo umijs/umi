@@ -16,3 +16,19 @@ test('build', async () => {
   expect(text).toContain(`var bar = "bar"`);
   expect(text).toContain(`var foo = "foo"`);
 });
+
+test('build with alias', async () => {
+  const res = await build({
+    entryPoints: [path.join(fixtures, 'with-alias/index.ts')],
+
+    config: {
+      alias: {
+        react: '/project/node_modules/react',
+        request: 'request-umi',
+        'home-made': './lib/home-made.ts',
+        umi: '@@/export.ts',
+        '@@': '/project/src/.umi',
+      },
+    },
+  });
+});
