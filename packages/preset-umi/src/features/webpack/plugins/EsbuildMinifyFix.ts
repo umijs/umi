@@ -34,7 +34,6 @@ export class EsbuildMinifyFix {
     const matchObject = ModuleFilenameHelpers.matchObject.bind(undefined, {
       include: [/\.(js|mjs|cjs)$/],
     });
-    const cache = compilation.getCache('EsbuildMinifyFix');
 
     const { output } = compiler.options;
 
@@ -60,11 +59,7 @@ export class EsbuildMinifyFix {
         .map(async (name) => {
           const { info, source } = compilation.getAsset(name) as Asset;
 
-          const eTag = cache.getLazyHashedEtag(source);
-          const cacheItem = cache.getItemCache(name, eTag);
-          const output = await cacheItem.getPromise();
-
-          return { name, info, inputSource: source, output, cacheItem };
+          return { name, info, inputSource: source };
         }),
     );
 
