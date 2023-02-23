@@ -390,7 +390,7 @@ export default function EmptyRoute() {
       headerImports.push(`
 if (process.env.NODE_ENV === 'development') {
   Object.entries(routeProps).forEach(([key, value]) => {
-    const internalProps = ['path', 'id', 'parentId', 'isLayout', 'isWrapper', 'layout', 'clientLoader'];
+    const internalProps = ['path', 'id', 'parentId', 'isLayout', 'isWrapper', 'clientLoader'];
     Object.keys(value).forEach((prop) => {
       if (internalProps.includes(prop)) {
         throw new Error(
