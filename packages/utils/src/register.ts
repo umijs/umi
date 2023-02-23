@@ -1,5 +1,6 @@
 import { extname } from 'path';
 import { addHook } from '../compiled/pirates';
+import { logger } from './index';
 
 const COMPILE_EXTS = ['.ts', '.tsx', '.js', '.jsx'];
 const HOOK_EXTS = [...COMPILE_EXTS, '.mjs'];
@@ -23,7 +24,8 @@ function transform(opts: { code: string; filename: string; implementor: any }) {
       logLevel: 'error',
     }).code;
   } catch (e) {
-    throw new Error(`Parse file failed: [${filename}]`, { cause: e });
+    logger.error(e);
+    throw new Error(`Parse file failed: [${filename}]`);
   }
 }
 
