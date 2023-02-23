@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "umi dev",
+    "setup": "umi setup",
     "start": "npm run dev",
     "test": "jest --no-cache --coverage"
   },
