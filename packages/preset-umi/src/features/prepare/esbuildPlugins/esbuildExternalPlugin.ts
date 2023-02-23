@@ -41,7 +41,8 @@ export function esbuildExternalPlugin(opts: {
               return { external: true };
             }
             // non node_modules abs path, keep it as it is
-            if (aliasImport.startsWith('/')) {
+            // don't use startsWith('/') here, it will not match windows abs path (eg d:/a/page.tsx)
+            if (path.isAbsolute(aliasImport)) {
               return null;
             }
             // a relative path
