@@ -104,4 +104,7 @@ export default defineConfig({
   codeSplitting: {
     jsStrategy: 'granularChunks',
   },
+  icons: {
+    include: ['local:rice', 'ant-design:fire-twotone'],
+  },
 });

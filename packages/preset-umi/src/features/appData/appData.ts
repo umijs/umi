@@ -71,15 +71,6 @@ export default (api: IApi) => {
     return memo;
   });
 
-  api.registerMethod({
-    name: '_refreshRoutes',
-    async fn() {
-      api.appData.routes = await routesApi.getRoutes({
-        api,
-      });
-    },
-  });
-
   // Execute earliest, so that other onGenerateFiles can get it
   api.register({
     key: 'onGenerateFiles',

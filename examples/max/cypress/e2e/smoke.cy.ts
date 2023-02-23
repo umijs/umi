@@ -61,4 +61,9 @@ describe('Basic Test', () => {
       'rgb(136, 19, 55)',
     );
   });
+
+  it('display included Icon components', () => {
+    cy.get('span.local\\:rice');
+    cy.get('span.ant-design\\:fire-twotone');
+  });
 });
