@@ -45,9 +45,7 @@ export function esbuildExternalPlugin(opts: {
             // non node_modules abs path, if this happens, it means that the `esbuildAliasPlugin` missed out alias matching
             // this is a known case that happened in windows when using `@/pages/xxx.tsx`
             if (path.isAbsolute(aliasImport)) {
-              return {
-                path: aliasImport,
-              };
+              return null;
             }
             // a relative path
             if (aliasImport.startsWith('./') || aliasImport.startsWith('../')) {
