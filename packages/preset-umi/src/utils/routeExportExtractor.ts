@@ -31,12 +31,13 @@ export function setupRouteExportExtractor(
     });
   });
 
-  api.onBeforeCompiler(() =>
-    setupExportExtractBuilder({
-      api,
-      entryFile,
-      outFile,
-    }),
+  api.onBeforeCompiler(
+    async () =>
+      await setupExportExtractBuilder({
+        api,
+        entryFile,
+        outFile,
+      }),
   );
 }
 
