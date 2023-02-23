@@ -13,7 +13,7 @@ import { basename, join } from 'path';
 import { Worker } from 'worker_threads';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
-import type { GenerateFilesFn, IApi, OnConfigChangeFn } from '../../types';
+import type { GenerateFilesFn, IApi } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
@@ -192,7 +192,7 @@ PORT=8888 umi dev
               await generate({ isFirstTime: false });
             }
             for await (const fn of data.fns) {
-              await (fn as OnConfigChangeFn)({ generate });
+              await fn();
             }
           },
         }),

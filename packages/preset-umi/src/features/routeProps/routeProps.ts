@@ -11,13 +11,13 @@ export default (api: IApi) => {
     enableBy: api.EnableBy.config,
   });
 
-  const entryFile = 'core/loaders.ts';
-  const outFile = 'core/loaders.js';
+  const entryFile = 'core/routeProps.ts';
+  const outFile = 'core/routeProps.js';
 
   setupRouteExportExtractor({
     api,
     entryFile,
     outFile,
-    propertyName: 'clientLoader',
+    propertyName: 'routeProps',
   });
 };

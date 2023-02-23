@@ -1,0 +1,13 @@
+{
+  "name": "@example/route-props",
+  "private": true,
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "4.0.0-canary.20230213.1"
+  }
+}
