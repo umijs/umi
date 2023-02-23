@@ -1,8 +1,10 @@
 // @ts-ignore
-import { history, useAccess, useIntl, useModel } from '@umijs/max';
+import { history, Icon, useAccess, useIntl, useModel } from '@umijs/max';
 // @ts-ignore
 import { Button, DatePicker, Input } from 'antd';
 import styles from './index.less';
+
+const icons = ['local:rice', 'ant-design:fire-twotone'];
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
@@ -30,6 +32,13 @@ export default function HomePage() {
       <h2 data-testid="tailwind-header" className={'tailwindCSSHead'}>
         tailwindcss
       </h2>
+
+      <h2> Icons</h2>
+      <div>
+        {icons.map((i) => (
+          <Icon key={i} icon={i} className={i} />
+        ))}
+      </div>
     </div>
   );
 }
