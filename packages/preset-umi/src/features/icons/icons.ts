@@ -20,6 +20,7 @@ export default (api: IApi) => {
           defaultComponentConfig: Joi.object(),
           // e.g. alias: { home: 'fa:home' }
           alias: Joi.object(),
+          include: Joi.array().items(Joi.string()),
         });
       },
     },
@@ -52,7 +53,10 @@ export default (api: IApi) => {
   });
 
   api.onPrepareBuildSuccess(async () => {
-    if (!icons.size) {
+    const extraIcons = api.config.icons.include || [];
+    const allIcons = new Set([...icons, ...extraIcons]);
+
+    if (!allIcons.size) {
       logger.info(`[icons] no icons was found`);
       return;
     }
@@ -61,7 +65,8 @@ export default (api: IApi) => {
     const code: string[] = [];
     const { generateIconName, generateSvgr }: typeof import('./svgr') =
       importLazy(require.resolve('./svgr'));
-    for (const iconStr of icons) {
+
+    for (const iconStr of allIcons) {
       const [collect, icon] = iconStr.split(':');
       const iconName = generateIconName({ collect, icon });
       let svgr;
@@ -309,8 +314,8 @@ interface IUmiIconProps extends React.SVGAttributes<SVGElement> {
   flip?: 'vertical' | 'horizontal' | 'horizontal,vertical' | 'vertical,horizontal';
 }
 
-export const Icon = React.forwardRef((props: IUmiIconProps, ref) => {
-  const { icon, hover, style, className, rotate, flip, ...extraProps } = props;
+export const Icon = React.forwardRef<HTMLSpanElement, IUmiIconProps>((props, ref) => {
+  const { icon, hover, style, className = '' , rotate, flip, ...extraProps } = props;
   const iconName = normalizeIconName(alias[icon] || icon);
   const Component = iconsMap[iconName];
   if (!Component) {
@@ -342,8 +347,12 @@ export const Icon = React.forwardRef((props: IUmiIconProps, ref) => {
     svgStyle.msTransform = transformStr;
     svgStyle.transform = transformStr;
   }
+  
+  const spanClassName = HoverComponent ? 'umiIconDoNotUseThis ' : '' + className;
+  const spanClass = spanClassName ? { className: spanClassName } : {};
+  
   return (
-    <span role="img" ref={ref} className={HoverComponent ? 'umiIconDoNotUseThis ' : '' + className} style={style}>
+    <span role="img" ref={ref} {...spanClass} style={style}>
       <Component {...extraProps} className={cls} style={svgStyle} />
       {
         HoverComponent ? <HoverComponent {...extraProps} className={'umiIconDoNotUseThisHover ' + cls} style={svgStyle} /> : null

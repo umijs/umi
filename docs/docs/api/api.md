@@ -698,6 +698,32 @@ function App() {
 }
 ```
 
+### useRouteProps
+
+读取当前路由在路由配置里的 props 属性，你可以用此 hook 来获取路由配置中的额外信息。
+
+```ts
+// .umirc.ts
+routes: [
+  {
+    path: '/',
+    custom_key: '1',
+  }
+]
+```
+
+```ts
+import { useRouteProps } from 'umi'
+
+export default function Page() {
+  const routeProps = useRouteProps()
+
+  // use `routeProps.custom_key`
+} 
+```
+
+注：同样适用于约定式路由。
+
 ### useSelectedRoutes
 
 用于读取当前路径命中的所有路由信息。比如在 `layout` 布局中可以获取到当前命中的所有子路由信息，同时可以获取到在 `routes` 配置中的参数，这格外有用。

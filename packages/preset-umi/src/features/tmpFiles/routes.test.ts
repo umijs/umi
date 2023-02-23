@@ -46,6 +46,7 @@ test('getRoutes', async () => {
           },
         ],
       },
+      userConfig: {},
       applyPlugins(opts: any) {
         return opts?.initialValue;
       },

@@ -3,7 +3,11 @@ export interface IRouteSSRProps {
   hasServerLoader?: boolean;
 }
 
-export interface IRoute extends IRouteSSRProps {
+export interface IRouteConventionExportProps {
+  routeProps?: Record<string, any>;
+}
+
+export interface IRoute extends IRouteSSRProps, IRouteConventionExportProps {
   id: string;
   path?: string;
   index?: boolean;

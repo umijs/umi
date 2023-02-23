@@ -1,4 +1,4 @@
-import { rimraf } from '@umijs/utils';
+import { chalk, rimraf } from '@umijs/utils';
 import { join, resolve } from 'path';
 import webpack from '../compiled/webpack';
 import { getConfig, IOpts as IConfigOpts } from './config/config';
@@ -78,7 +78,9 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
         }
         if (stats) {
           const errorMsg = stats.toString('errors-only');
-          // console.error(errorMsg);
+
+          esbuildCompressErrorHelper(errorMsg);
+
           reject(new Error(errorMsg));
         }
       } else {
@@ -101,4 +103,40 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
       compiler.run(handler);
     }
   });
+}
+
+function esbuildCompressErrorHelper(errorMsg: string) {
+  if (typeof errorMsg !== 'string') return;
+  if (
+    // https://github.com/evanw/esbuild/blob/a5f781ecd5edeb3fb6ae8d1045507ab850462614/internal/js_parser/js_parser_lower.go#L18
+    errorMsg.includes('configured target environment') &&
+    errorMsg.includes('es2015')
+  ) {
+    const terserRecommend = {
+      label: chalk.green('change jsMinifier'),
+      details: chalk.cyan(`  jsMinifier: 'terser'`),
+    };
+    const upgradeTargetRecommend = {
+      label: chalk.green('upgrade target'),
+      details: chalk.cyan(`  jsMinifierOptions: {
+    target: ['chrome80', 'es2020']
+  }`),
+    };
+    const ieRecommend = {
+      details: `P.S. compatible with legacy browsers: https://umijs.org/blog/legacy-browser`,
+    };
+    console.log();
+    console.log(chalk.bgRed(' COMPRESSION ERROR '));
+    console.log(
+      chalk.yellow(
+        `esbuild minify failed, please ${terserRecommend.label} or ${upgradeTargetRecommend.label}:`,
+      ),
+    );
+    console.log('e.g. ');
+    console.log(terserRecommend.details);
+    console.log('   or');
+    console.log(upgradeTargetRecommend.details);
+    console.log(ieRecommend.details);
+    console.log();
+  }
 }

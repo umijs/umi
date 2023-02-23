@@ -1,4 +1,4 @@
-import { lodash, winPath } from '@umijs/utils';
+import { importLazy, lodash, winPath } from '@umijs/utils';
 import { existsSync, readdirSync } from 'fs';
 import { basename, dirname, join } from 'path';
 import { RUNTIME_TYPE_FILE_NAME } from 'umi';
@@ -6,7 +6,10 @@ import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import { getModuleExports } from './getModuleExports';
 import { importsToStr } from './importsToStr';
-import { getRouteComponents, getRoutes } from './routes';
+
+const routesApi: typeof import('./routes') = importLazy(
+  require.resolve('./routes'),
+);
 
 export default (api: IApi) => {
   const umiDir = process.env.UMI_DIR!;
@@ -333,9 +336,12 @@ export default function EmptyRoute() {
     if (opts.isFirstTime) {
       routes = api.appData.routes;
     } else {
-      routes = await getRoutes({
+      routes = await routesApi.getRoutes({
         api,
       });
+      // refresh route data, prevent route data outdated
+      // this can immediately get the latest `icon`... props in routes config
+      api.appData.routes = routes;
     }
 
     const hasSrc = api.appData.hasSrcDir;
@@ -354,17 +360,66 @@ export default function EmptyRoute() {
         }
       }
     }
+
+    // header imports
+    const headerImports: string[] = [];
+
+    // trim quotes
+    let routesString = JSON.stringify(clonedRoutes);
+    if (api.config.clientLoader) {
+      // "clientLoaders['foo']" > clientLoaders['foo']
+      routesString = routesString.replace(/"(clientLoaders\[.*?)"/g, '$1');
+      // import: client loader
+      headerImports.push(`import clientLoaders from './loaders.js';`);
+    }
+    // routeProps is enabled for conventional routes
+    if (!api.userConfig.routes) {
+      // routeProps":"routeProps['foo']" > ...routeProps['foo']
+      routesString = routesString.replace(
+        /"routeProps":"(routeProps\[.*?)"/g,
+        '...$1',
+      );
+      // import: route props
+      // why has this branch? since test env don't build routeProps.js
+      if (process.env.NODE_ENV === 'test') {
+        headerImports.push(`import routeProps from './routeProps';`);
+      } else {
+        headerImports.push(`import routeProps from './routeProps.js';`);
+      }
+      // prevent override internal route props
+      headerImports.push(`
+if (process.env.NODE_ENV === 'development') {
+  Object.entries(routeProps).forEach(([key, value]) => {
+    const internalProps = ['path', 'id', 'parentId', 'isLayout', 'isWrapper', 'layout', 'clientLoader'];
+    Object.keys(value).forEach((prop) => {
+      if (internalProps.includes(prop)) {
+        throw new Error(
+          \`[UmiJS] route '\${key}' should not have '\${prop}' prop, please remove this property in 'routeProps'.\`
+        )
+      }
+    })
+  })
+}
+`);
+    }
+
+    // import: react
+    if (api.appData.framework === 'react') {
+      headerImports.push(`import React from 'react';`);
+    }
+
     api.writeTmpFile({
       noPluginDir: true,
       path: 'core/route.tsx',
       tplPath: join(TEMPLATES_DIR, 'route.tpl'),
       context: {
-        isReact: api.appData.framework === 'react',
-        isClientLoaderEnabled: !!api.config.clientLoader,
-        routes: JSON.stringify(clonedRoutes)
-          // "clientLoaders['foo']" > clientLoaders['foo']
-          .replace(/"(clientLoaders\[.*?)"/g, '$1'),
-        routeComponents: await getRouteComponents({ routes, prefix, api }),
+        headerImports: headerImports.join('\n'),
+        routes: routesString,
+        routeComponents: await routesApi.getRouteComponents({
+          routes,
+          prefix,
+          api,
+        }),
       },
     });
 

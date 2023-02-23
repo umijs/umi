@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "dev": "umi dev",
+    "setup": "umi setup",
     "start": "npm run dev",
     "test": "jest --no-cache --coverage"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.0-canary.20230217.1",
-    "umi": "4.0.0-canary.20230217.1"
+    "@umijs/plugins": "4.0.0-canary.20230223.1",
+    "umi": "4.0.0-canary.20230223.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

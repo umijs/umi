@@ -1,8 +1,11 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
-import { winPath } from '@umijs/utils';
+import { aliasUtils, winPath } from '@umijs/utils';
 import path from 'path';
 
-export function esbuildExternalPlugin(): Plugin {
+export function esbuildExternalPlugin(opts: {
+  alias: Record<string, string>;
+}): Plugin {
+  const { alias } = opts;
   return {
     name: 'esbuildExternalPlugin',
     setup(build) {
@@ -22,10 +25,33 @@ export function esbuildExternalPlugin(): Plugin {
           return null;
         }
 
-        const winP = winPath(args.path);
-        const isAliasImport = winP.startsWith('@/') || winP.startsWith('@@/');
-        if (isAliasImport) {
-          return null;
+        // alias handle
+        // we need alias import, but not import from node_modules
+        const isAbsoluteImport = path.isAbsolute(args.path);
+        if (!isAbsoluteImport) {
+          const winP = winPath(args.path);
+          const aliasImport = aliasUtils.getAliasValue({
+            alias,
+            imported: winP,
+          });
+
+          if (aliasImport) {
+            // contains node_modules must be an external dep
+            if (aliasImport.includes('node_modules')) {
+              return { external: true };
+            }
+            // non node_modules abs path, keep it as it is
+            if (aliasImport.startsWith('/')) {
+              return null;
+            }
+            // a relative path
+            if (aliasImport.startsWith('./') || aliasImport.startsWith('../')) {
+              const resolved = path.resolve(args.resolveDir, aliasImport);
+              return { path: resolved };
+            }
+            // not a path, a pkg name, external it; e.g {alias: {request: 'umi-request'} }
+            return { external: true };
+          }
         }
 
         // 不在 node_modules 里的，并且以 / 开头的，不走 external
