@@ -338,6 +338,42 @@ export default function() {
 }
 ```
 
+### 扩展路由属性
+
+#### 启用方式
+
+约定式路由默认开启，配置式路由配置开启。
+
+```ts
+export default {
+  routeProps: {},
+};
+```
+
+#### 介绍
+
+支持在代码层通过导出`routeProps`属性的方式扩展路由。
+
+比如：
+
+```js
+import { HomeOutlined } from '@ant-design/icons';
+
+function HomePage() {
+  return <h1>Home Page</h1>;
+}
+
+export const routeProps = {
+  name: 'Home',
+  menuRender: false,
+  icon: <HomeOutlined />
+};
+
+export default HomePage;
+```
+
+`routeProps`会附加到路由配置中。详情请参考[路由配置](../guides/routes#配置路由) 与 [扩展的路由配置](../max/layout-menu#扩展的路由配置)
+
 ### 404 路由
 
 约定 `src/pages/404.tsx` 为 404 页面，需返回 React 组件。
