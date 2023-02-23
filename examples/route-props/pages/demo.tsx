@@ -1,7 +1,12 @@
 import { share } from '@/props';
+import { HomeOutlined } from '@ant-design/icons';
 
 export default function Page() {
-  return <div>demo</div>;
+  return <div>Demo Page</div>;
 }
 
-export const routeProps = share;
+export const routeProps = {
+  ...share,
+  name: 'DemoMenuName',
+  icon: <HomeOutlined />,
+};
