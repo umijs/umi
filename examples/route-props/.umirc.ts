@@ -1,3 +1,1 @@
-export default {
-  routeProps: {},
-};
+export default {};

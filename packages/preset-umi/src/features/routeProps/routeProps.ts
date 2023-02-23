@@ -8,7 +8,9 @@ export default (api: IApi) => {
         return Joi.object({});
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy: () => {
+      return !api.userConfig.routes;
+    },
   });
 
   const entryFile = 'core/routeProps.ts';

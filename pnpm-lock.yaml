@@ -750,7 +750,7 @@ importers:
 
   examples/route-props:
     specifiers:
-      umi: 4.0.0-canary.20230213.1
+      umi: workspace:*
     dependencies:
       umi: link:../../packages/umi
 
