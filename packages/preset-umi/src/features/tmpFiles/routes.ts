@@ -110,7 +110,7 @@ export async function getRoutes(opts: {
 
       const enableSSR = opts.api.config.ssr;
       const enableClientLoader = opts.api.config.clientLoader;
-      const enableRouteProps = opts.api.config.routeProps;
+      const enableRouteProps = !opts.api.userConfig.routes;
       const needCollectExports =
         enableSSR || enableClientLoader || enableRouteProps;
       if (needCollectExports) {
