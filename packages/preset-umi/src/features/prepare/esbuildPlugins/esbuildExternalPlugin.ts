@@ -46,7 +46,9 @@ export function esbuildExternalPlugin(opts: {
             }
             // a relative path
             if (aliasImport.startsWith('./') || aliasImport.startsWith('../')) {
-              const resolved = path.resolve(args.resolveDir, aliasImport);
+              const resolved = winPath(
+                path.resolve(args.resolveDir, aliasImport),
+              );
               return { path: resolved };
             }
             // not a path, a pkg name, external it; e.g {alias: {request: 'umi-request'} }
