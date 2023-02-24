@@ -75,7 +75,7 @@
     "@umijs/openapi": "1.8.1",
     "cross-env": "^7.0.3",
     "cross-port-killer": "^1.4.0",
-    "cypress": "^10.0.0",
+    "cypress": "^12.0.0",
     "detect-installer": "^1.0.2",
     "eslint": "^8.31.0",
     "gh-pages": "^4.0.0",
