@@ -1,6 +1,6 @@
 import type {
-  Compiler,
   Compilation,
+  Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { IApi } from '../../types';
 

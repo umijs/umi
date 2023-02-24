@@ -15,6 +15,7 @@ import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as filesize from '../compiled/filesize';
 import * as gzipSize from '../compiled/gzip-size';
 import lodash from '../compiled/lodash';
+import MagicString from '../compiled/magic-string';
 import Mustache from '../compiled/mustache';
 import * as pkgUp from '../compiled/pkg-up';
 import portfinder from '../compiled/portfinder';
@@ -80,4 +81,5 @@ export {
   gzipSize,
   fastestLevenshtein,
   clackPrompts,
+  MagicString,
 };

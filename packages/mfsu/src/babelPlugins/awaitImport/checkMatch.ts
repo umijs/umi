@@ -1,5 +1,5 @@
 import * as Babel from '@umijs/bundler-utils/compiled/babel/core';
-import { isLocalDev, winPath, aliasUtils } from '@umijs/utils';
+import { aliasUtils, isLocalDev, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { isAbsolute, join } from 'path';
 import type { IOpts } from './awaitImport';
@@ -10,9 +10,15 @@ const RE_NODE_MODULES = /node_modules/;
 
 function isUmiLocalDev(path: string) {
   const rootPath = isLocalDev();
-  return rootPath
-    ? winPath(path).startsWith(winPath(join(rootPath, './packages')))
-    : false;
+  if (rootPath) {
+    const winP = winPath(path);
+    const pkgP = winPath(join(rootPath, './packages'));
+    const libP = winPath(join(rootPath, './libs'));
+
+    return winP.startsWith(pkgP) || winP.startsWith(libP);
+  } else {
+    return false;
+  }
 }
 
 function genUnMatchLibsRegex(libs?: Array<string | RegExp>) {

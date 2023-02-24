@@ -263,6 +263,18 @@ conventionRoutes: {
 }
 ```
 
+### esbuildMinifyIIFE
+
+- 类型：`Array<string | { from: string; to: string; }>`
+- 默认值：`false`
+
+修复 esbuild 压缩引入的命名冲突问题, 更多[详见](https://github.com/vitejs/vite/pull/7948)
+
+示例,
+```ts
+esbuildMinifyIIFE: true
+```
+
 ## copy
 
 - 类型：`Array<string | { from: string; to: string; }>`

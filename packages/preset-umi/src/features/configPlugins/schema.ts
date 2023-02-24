@@ -11,6 +11,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         base: Joi.string(),
         exclude: Joi.array().items(Joi.any()),
       }),
+    esbuildMinifyIIFE: (Joi) => Joi.boolean(),
     headScripts: (Joi) => Joi.array(),
     history: (Joi) =>
       Joi.object({

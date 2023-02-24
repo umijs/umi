@@ -20,6 +20,7 @@ export default defineConfig({
   mf: {
     name: moduleFederationName,
     shared,
+    library: { type: 'window', name: moduleFederationName },
   },
   publicPath: 'http://127.0.0.1:9000/',
 });
