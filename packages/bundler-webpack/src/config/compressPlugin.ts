@@ -50,8 +50,8 @@ export async function addCompressPlugin(opts: IOpts) {
       // remove all comments
       legalComments: 'none',
     } as EsbuildOpts;
-    // 解决 esbuild 压缩命名冲突
-    if (process.env.ESBUILD_MINIFY_IIFE !== 'none') {
+    // 解决 esbuild 压缩命名冲突 需要用户主动开启
+    if (userConfig.esbuildMinifyIIFE) {
       config.plugin('EsbuildMinifyFix').use(EsbuildMinifyFix);
     }
   } else if (jsMinifier === JSMinifier.terser) {

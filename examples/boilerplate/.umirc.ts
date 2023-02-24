@@ -102,5 +102,6 @@ export default defineConfig({
     },
   ],
   styles: ['//cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css'],
+  esbuildMinifyIIFE: true,
   ...extraConfig,
 });
