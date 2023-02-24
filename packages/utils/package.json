@@ -54,6 +54,7 @@
     "gzip-size": "7.0.0",
     "import-lazy": "4.0.0",
     "lodash": "4.17.21",
+    "magic-string": "0.27.0",
     "mustache": "4.2.0",
     "pirates": "4.0.5",
     "pkg-up": "4.0.0",
@@ -99,7 +100,8 @@
       "yargs-parser",
       "pirates",
       "@hapi/joi",
-      "@clack/prompts"
+      "@clack/prompts",
+      "magic-string"
     ],
     "externals": {
       "address": "$$LOCAL",

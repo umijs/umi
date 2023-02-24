@@ -1,11 +1,11 @@
+import { MagicString } from '@umijs/utils';
 import {
   Asset,
   Compilation,
   Compiler,
   ModuleFilenameHelpers,
   sources,
-} from '@umijs/bundler-webpack/compiled/webpack';
-import MagicString from 'magic-string';
+} from '../../compiled/webpack';
 
 export class EsbuildMinifyFix {
   private name: string;
@@ -21,7 +21,8 @@ export class EsbuildMinifyFix {
           stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_DEV_TOOLING,
           additionalAssets: true,
         },
-        (assets: any) => this.minifyFix(compiler, compilation, assets),
+        (assets: Record<string, sources.Source>) =>
+          this.minifyFix(compiler, compilation, assets),
       );
     });
   }
@@ -87,26 +88,19 @@ export class EsbuildMinifyFix {
         const bundle = new MagicString(code);
         bundle.indent().prepend('!(function () {\n').append('}());');
         code = bundle.toString();
+
+        const output: any = {};
+
+        if (map) {
+          output.source = new SourceMapSource(code, name, map, source, true);
+        } else {
+          output.source = new RawSource(code);
+        }
+
+        compilation.updateAsset(name, output.source, {
+          EsbuildMinifyFix: true,
+        });
       }
-
-      const output: any = {};
-
-      if (map) {
-        output.source = new SourceMapSource(
-          code,
-          name,
-          output.map,
-          source,
-          output.map,
-          true,
-        );
-      } else {
-        output.source = new RawSource(code);
-      }
-
-      compilation.updateAsset(name, output.source, {
-        EsbuildMinifyFix: true,
-      });
     }
   }
 }

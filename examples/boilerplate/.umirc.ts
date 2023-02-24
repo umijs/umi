@@ -1,7 +1,8 @@
-import extraConfig from './extraConfig';
 import { defineConfig } from 'umi';
+import extraConfig from './extraConfig';
 
 export default defineConfig({
+  devtool: 'source-map',
   base: '/foo',
   publicPath: '/foo/',
   // history: { type: 'hash' },

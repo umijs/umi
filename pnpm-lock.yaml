@@ -1873,6 +1873,7 @@ importers:
       gzip-size: 7.0.0
       import-lazy: 4.0.0
       lodash: 4.17.21
+      magic-string: 0.27.0
       mustache: 4.2.0
       pino: 7.11.0
       pirates: 4.0.5
@@ -1918,6 +1919,7 @@ importers:
       gzip-size: 7.0.0
       import-lazy: 4.0.0
       lodash: 4.17.21
+      magic-string: 0.27.0
       mustache: 4.2.0
       pirates: 4.0.5
       pkg-up: 4.0.0
@@ -15598,7 +15600,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.4
+      follow-redirects: 1.15.1
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -24075,7 +24077,7 @@ packages:
       pretty-format: 29.3.1
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true

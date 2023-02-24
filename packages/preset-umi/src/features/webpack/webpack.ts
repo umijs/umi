@@ -3,7 +3,6 @@ import type {
   Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { IApi } from '../../types';
-import { EsbuildMinifyFix } from './plugins/EsbuildMinifyFix';
 
 export default (api: IApi) => {
   api.describe({
@@ -95,17 +94,5 @@ export default (api: IApi) => {
     return assets.js.map((js) => {
       return `${displayPublicPath}${js}`;
     });
-  });
-
-  api.chainWebpack((memo) => {
-    // 默认是 esbuild
-    const isEsBuildMinifier =
-      api.config.jsMinifier === 'esbuild' ||
-      api.config.jsMinifier === undefined;
-
-    if (isEsBuildMinifier && process.env.ESBUILD_MINIFY_FIX !== 'none') {
-      memo.plugin('EsbuildMinifyFix').use(EsbuildMinifyFix);
-    }
-    return memo;
   });
 };

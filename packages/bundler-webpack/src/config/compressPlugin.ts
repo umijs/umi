@@ -5,6 +5,7 @@ import TerserPlugin, {
   type TerserOptions,
 } from '../../compiled/terser-webpack-plugin';
 import Config from '../../compiled/webpack-5-chain';
+import { EsbuildMinifyFix } from '../plugins/EsbuildMinifyFix';
 import { CSSMinifier, Env, IConfig, JSMinifier } from '../types';
 import { getEsBuildTarget } from '../utils/getEsBuildTarget';
 
@@ -49,6 +50,11 @@ export async function addCompressPlugin(opts: IOpts) {
       // remove all comments
       legalComments: 'none',
     } as EsbuildOpts;
+    console.log('ESBUILD_MINIFY_IIFE', process.env.ESBUILD_MINIFY_IIFE);
+    // 解决 esbuild 压缩命名冲突
+    if (process.env.ESBUILD_MINIFY_IIFE !== 'none') {
+      config.plugin('EsbuildMinifyFix').use(EsbuildMinifyFix);
+    }
   } else if (jsMinifier === JSMinifier.terser) {
     minify = TerserPlugin.terserMinify;
     terserOptions = {
