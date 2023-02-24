@@ -30,8 +30,6 @@ test('build with alias', async () => {
         react: '/project/node_modules/react',
         request: 'request-umi',
         'home-made': './lib/home-made.ts',
-        umi: '@@/export.ts',
-        '@@': '/project/src/.umi',
       },
     },
   });
