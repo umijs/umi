@@ -29,6 +29,16 @@ export function setupRouteExportExtractor(
       propertyName,
       entryFile,
     });
+
+    // for use react component in esbuild bundle
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/react-shim.js',
+      content: `
+import * as React from 'react';
+export { React };
+`.trimStart(),
+    });
   });
 
   api.onBeforeCompiler(() =>
@@ -73,6 +83,7 @@ async function setupExportExtractBuilder(
   opts: IRouteExportExtractorSetupBuilderOpts,
 ) {
   const { api, entryFile, outFile } = opts;
+  const reactShimPath = join(api.paths.absTmpPath, 'core/react-shim.js');
   await esbuild.build({
     format: 'esm',
     platform: 'browser',
@@ -84,12 +95,21 @@ async function setupExportExtractBuilder(
     entryPoints: [join(api.paths.absTmpPath, entryFile)],
     outfile: join(api.paths.absTmpPath, outFile),
     absWorkingDir: api.cwd,
+    inject: [reactShimPath],
     plugins: [
       {
         name: 'imports',
         setup(build) {
           let entry: string | undefined;
           build.onResolve({ filter: /.*/ }, (args) => {
+            // skip import `react` from `react-shim.js`
+            if (args.path === 'react') {
+              return {
+                external: true,
+              };
+            }
+
+            // skip indirect imports
             if (args.kind === 'entry-point') entry = args.path;
             if (args.kind === 'entry-point' || args.importer === entry) {
               return { path: resolve(args.resolveDir, args.path) };
