@@ -248,60 +248,17 @@ export default withAuth(TheOldPage)
 ];
 ```
 
-### 全局 layout
+## layout 布局
 
-约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `<Outlet />` 渲染嵌套路由。
+### 全局布局
 
-如以下目录结构：
+无论是约定还是配置式路由，`layouts/index.tsx` 总是被默认加载为全局布局，当你需要添加全局 layout 时，请优先考虑使用该文件。
 
-```bash
-.
-└── src
-    ├── layouts
-    │   └── index.tsx
-    └── pages
-        ├── index.tsx
-        └── users.tsx
-```
-
-会生成如下路由：
-
-```js
-[
-  { 
-    path: '/', 
-    component: '@/layouts/index',
-    routes: [
-      { path: '', component: '@/pages/index' },
-      { path: 'users', component: '@/pages/users' },
-    ],
-  },
-]
-```
-
-可以通过 `layout: false` 来细粒度关闭某个路由的 **全局布局** 显示，该选项只在一级生效：
-
-```ts
-  routes: [
-    { 
-      path: '/', 
-      component: './index', 
-      // 🟢 
-      layout: false 
-    },
-    {
-      path: '/users',
-      routes: [
-        // 🔴 不生效，此时该路由的 layout 并不是全局布局，而是 `/users`
-        { layout: false }
-      ]
-    }
-  ]
-```
-
-一个自定义的全局 `layout` 格式如下：
+注意嵌套子路由使用 `<Outlet />` 展示，一个 layout 的最简实例：
 
 ```tsx
+// layouts/index.tsx
+
 import { Outlet } from 'umi'
 
 export default function Layout() {
@@ -309,11 +266,7 @@ export default function Layout() {
 }
 ```
 
-### 不同的全局 layout
-
-你可能需要针对不同路由输出不同的全局 layout，Umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
-
-比如想要针对 `/login` 输出简单布局，
+通过路径判断，可以实现在一个全局布局中分情况展示不同布局：
 
 ```js
 import { useLocation, Outlet } from 'umi';
@@ -338,69 +291,116 @@ export default function() {
 }
 ```
 
-### 扩展路由属性
+### 约定式路由的布局
 
-#### 启用方式
+约定式路由可使用 `layouts/index.tsx` 添加全局布局。
 
-约定式路由默认开启，配置式路由配置开启。
+### 配置式路由的布局
+
+配置式路由除了使用 `layouts/index.tsx` 作为全局布局外，还可以：
+
+1. 通过定义 `wrappers` 来实现多层嵌套布局。
+
+2. 通过 `layout: false` 来关闭全局布局。
+
+从而你可以自由组合任意页面的布局，一个实例：
 
 ```ts
+// .umirc.ts
 export default {
-  routeProps: {},
-};
+  routes: [
+    {
+      path: '/',
+      // 同时展示 全局布局 + 一个 wrappers 布局
+      wrappers: ['@/wrappers/index.tsx']
+    },
+    {
+      path: '/login',
+      // 不使用全局布局
+      layout: false,
+      // 使用两个 wrappers 布局，依次嵌套
+      wrappers: ['@/wrappers/index.tsx', '@/wrappers/nested.tsx'],
+    },
+    {
+      path: '/parent',
+      routes: [
+        {
+          path: 'sub-route',
+          // 🔴 错误的用法
+          // 注意 `layout: false` 只对一级路由有效，二级路由的父路由不是全局布局
+          layout: false
+        }
+      ]
+    }
+  ]
+}
 ```
 
-#### 介绍
+## 404 路由
 
-支持在代码层通过导出`routeProps`属性的方式扩展路由。
+### 约定式路由
 
-比如：
+使用约定式路由时，`src/pages/404.tsx` 默认被加载为找不到路由时的 404 页面。
 
-```js
-import { HomeOutlined } from '@ant-design/icons';
+### 配置式路由
 
-function HomePage() {
-  return <h1>Home Page</h1>;
+若使用配置式路由，你需要手动在路由配置最后一条添加 fallback 的 404 路由，如：
+
+```ts
+// .umirc.ts
+export default {
+  routes: [
+    // other routes ...
+    { path: '/*', component: '@/pages/404.tsx' }
+  ]
+}
+```
+
+## 扩展路由属性
+
+### 约定式路由
+
+使用约定式路由时，你可以从路由文件内导出 `routeProps` 来配置更多路由属性：
+
+```tsx
+// pages/index.tsx
+import { useRouteProps } from 'umi'
+
+export default function Page() {
+  const props: typeof routeProps = useRouteProps()
+  // props.custom_data
 }
 
 export const routeProps = {
-  name: 'Home',
-  menuRender: false,
-  icon: <HomeOutlined />
-};
-
-export default HomePage;
+  // 禁用全局布局
+  layout: false
+  // 其他属性
+  custom_data: {},
+  // ...
+}
 ```
 
-`routeProps`会附加到路由配置中。详情请参考[路由配置](../guides/routes#配置路由) 与 [扩展的路由配置](../max/layout-menu#扩展的路由配置)
+使用 [`useRouteProps`](../api/api#userouteprops) 可以便捷的获取该路由的额外属性。
 
-### 404 路由
+### 配置式路由
 
-约定 `src/pages/404.tsx` 为 404 页面，需返回 React 组件。
+配置式路由直接在 `routes` 内添加更多属性即可：
 
-比如以下目录结构，
-
-```bash
-.
-└── pages
-    ├── 404.tsx
-    ├── index.tsx
-    └── users.tsx
+```ts
+// .umirc.ts
+export default {
+  routes: [
+    {
+      path: '/',
+      // 自定义更多属性
+      custom_data: {}
+      // other custom route props ...
+    }
+  ]
+}
 ```
 
-会生成路由，
-
-```js
-[
-  { path: '/', component: '@/pages/index' },
-  { path: '/users', component: '@/pages/users' },
-  { path: '/*', component: '@/pages/404' },
-]
-```
-
-这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
-
-> 404 只有约定式路由会自动生效，如果使用配置式路由，需要自行配置 404 的通配路由。
+和约定式路由一致，在路由中可使用 [`useRouteProps`](../api/api#userouteprops) 获取该路由的额外属性。
 
 ## 页面跳转
 
