@@ -1,6 +1,13 @@
 /// <reference types="cypress" />
 
 describe('Basic Test', () => {
+  beforeEach(() => {
+    Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.setCacheDisabled',
+      params: { cacheDisabled: true },
+    });
+  });
+
   it('can render all customized route Props', async () => {
     cy.visit('/');
 
