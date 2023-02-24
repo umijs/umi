@@ -50,7 +50,6 @@ export async function addCompressPlugin(opts: IOpts) {
       // remove all comments
       legalComments: 'none',
     } as EsbuildOpts;
-    console.log('ESBUILD_MINIFY_IIFE', process.env.ESBUILD_MINIFY_IIFE);
     // 解决 esbuild 压缩命名冲突
     if (process.env.ESBUILD_MINIFY_IIFE !== 'none') {
       config.plugin('EsbuildMinifyFix').use(EsbuildMinifyFix);
