@@ -1,6 +1,7 @@
 import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import { aliasUtils, winPath } from '@umijs/utils';
 import path from 'path';
+import { isRelativePath } from './isRelative';
 
 export function esbuildExternalPlugin(opts: {
   alias: Record<string, string>;
@@ -46,7 +47,7 @@ export function esbuildExternalPlugin(opts: {
               return null;
             }
             // a relative path, left it to alias plugin to resolve
-            if (aliasImport.startsWith('./') || aliasImport.startsWith('../')) {
+            if (isRelativePath(aliasImport)) {
               return null;
             }
             // not a path, a pkg name, external it; e.g {alias: {request: 'umi-request'} }
