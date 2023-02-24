@@ -1674,7 +1674,6 @@ importers:
       html-webpack-plugin: 5.5.0
       ini: 3.0.0
       joi2types: 1.1.1
-      magic-string: 0.27.0
       multer: 1.4.4
       os-locale: ^6.0.2
       path-to-regexp: 1.7.0
@@ -1709,7 +1708,6 @@ importers:
       enhanced-resolve: 5.9.3
       fast-glob: 3.2.12
       html-webpack-plugin: 5.5.0
-      magic-string: 0.27.0
       path-to-regexp: 1.7.0
       postcss-prefix-selector: 1.16.0
       react: 18.1.0
@@ -1873,6 +1871,7 @@ importers:
       gzip-size: 7.0.0
       import-lazy: 4.0.0
       lodash: 4.17.21
+      magic-string: 0.27.0
       mustache: 4.2.0
       pino: 7.11.0
       pirates: 4.0.5
@@ -1918,6 +1917,7 @@ importers:
       gzip-size: 7.0.0
       import-lazy: 4.0.0
       lodash: 4.17.21
+      magic-string: 0.27.0
       mustache: 4.2.0
       pirates: 4.0.5
       pkg-up: 4.0.0
