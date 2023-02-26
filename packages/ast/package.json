@@ -21,7 +21,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.0-canary.20230224.1"
+    "@umijs/bundler-utils": "4.0.53"
   },
   "publishConfig": {
     "access": "public"
