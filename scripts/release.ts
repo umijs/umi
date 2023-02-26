@@ -115,11 +115,13 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
     pkg.scripts ||= {};
     pkg.scripts['start'] = 'npm run dev';
     // change deps version
-    setDepsVersion({
-      pkg,
-      version,
-      deps: allPkgsName,
-    });
+    setDepsVersion;
+    allPkgsName;
+    // setDepsVersion({
+    //   pkg,
+    //   version,
+    //   deps: allPkgsName,
+    // });
     delete pkg.version;
     fs.writeFileSync(
       join(examplesDir, example, 'package.json'),
