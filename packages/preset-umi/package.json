@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@iconify/utils": "2.1.1",
-    "@svgr/core": "6.2.1",
+    "@svgr/core": "6.5.1",
     "@umijs/ast": "4.0.0-canary.20230224.1",
     "@umijs/babel-preset-umi": "4.0.0-canary.20230224.1",
     "@umijs/bundler-utils": "4.0.0-canary.20230224.1",
@@ -42,7 +42,7 @@
     "@umijs/utils": "4.0.0-canary.20230224.1",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "click-to-react-component": "^1.0.8",
-    "core-js": "3.27.1",
+    "core-js": "3.28.0",
     "current-script-polyfill": "1.0.0",
     "enhanced-resolve": "5.9.3",
     "fast-glob": "3.2.12",
@@ -66,7 +66,7 @@
     "multer": "1.4.4",
     "os-locale": "^6.0.2",
     "sirv": "2.0.2",
-    "vite": "4.0.4"
+    "vite": "4.1.4"
   },
   "publishConfig": {
     "access": "public"
