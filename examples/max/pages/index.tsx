@@ -1,8 +1,10 @@
 // @ts-ignore
 import { history, Icon, useAccess, useIntl, useModel } from '@umijs/max';
 // @ts-ignore
+import { TestDecorator } from '@/components/decorator';
 import { Button, DatePicker, Input } from 'antd';
 import styles from './index.less';
+console.log(TestDecorator);
 
 const icons = ['local:rice', 'ant-design:fire-twotone'];
 
