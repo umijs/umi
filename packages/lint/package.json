@@ -21,7 +21,7 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@babel/core": "7.20.12",
+    "@babel/core": "7.21.0",
     "@babel/eslint-parser": "7.19.1",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@typescript-eslint/eslint-plugin": "5.48.1",
