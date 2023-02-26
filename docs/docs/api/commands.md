@@ -226,6 +226,47 @@ $ umi run ./script.ts
 }
 ```
 
+## mfsu
+
+`umi mfsu` 命令可以查看 MFSU 依赖信息、重新构建 MFSU 依赖和清除 MFSU 依赖。
+
+
+```bash title="获取 MFSU 命令帮忙"
+$ umi mfsu
+```
+
+```bash title="获取 MFSU 依赖列表"
+$ umi mfsu ls
+warning@4.0.3
+regenerator-runtime/runtime.js@0.13.11
+react/jsx-dev-runtime@18.1.0
+react-intl@3.12.1
+react-error-overlay/lib/index.js@6.0.9
+react@18.1.0
+qiankun@2.8.4
+lodash/noop@4.17.21
+lodash/mergeWith@4.17.21
+lodash/concat@4.17.21
+...
+```
+
+```bash title="重新构建 MFSU 依赖"
+$ umi mfsu build
+info  - Preparing...
+info  - MFSU eager strategy enabled
+warn  - Invalidate webpack cache since mfsu cache is missing
+info  - [MFSU] buildDeps since cacheDependency has changed
+...
+info  - [plugin: @umijs/preset-umi/dist/commands/mfsu/mfsu] [MFSU][eager] build success
+```
+
+```bash title="清除 MFSU 依赖"
+$ # 删除依赖信息列表
+$ umi mfsu remove
+$ # 删除依赖信息列表和产物文件
+$ umi mfsu remove --all
+```
+
 ## verifyCommit
 
 验证 commit message 信息，通常和 [husky](https://github.com/typicode/husky) 搭配使用。
