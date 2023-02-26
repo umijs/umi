@@ -37,7 +37,7 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@babel/runtime": "7.20.7",
+    "@babel/runtime": "7.21.0",
     "@umijs/bundler-utils": "4.0.0-canary.20230224.1",
     "@umijs/bundler-webpack": "4.0.0-canary.20230224.1",
     "@umijs/core": "4.0.0-canary.20230224.1",
