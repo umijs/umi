@@ -494,7 +494,11 @@ devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 - 类型：`boolean`
 - 默认值：`false`
 
-修复 esbuild 压缩引入的命名冲突问题, 更多[详见](https://github.com/vitejs/vite/pull/7948)
+修复 esbuild 压缩器自动引入的全局变量导致的命名冲突问题。
+
+由于 Umi 4 默认使用 esbuild 作为压缩器，该压缩器会自动注入全局变量作为 polyfill ，这可能会引发 异步块全局变量冲突、 qiankun 子应用和主应用全局变量冲突 等问题，通过打开该选项或切换 [`jsMinifier`](#jsminifier-webpack) 压缩器可解决此问题。
+
+更多信息详见 [vite#7948](https://github.com/vitejs/vite/pull/7948) 。
 
 示例,
 ```ts
