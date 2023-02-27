@@ -9,12 +9,7 @@ export default (api: IApi) => {
       schema: (Joi) => {
         return Joi.alternatives().try(
           Joi.object({
-            dataField: Joi.alternatives().try(
-              Joi.string()
-                .pattern(/^[a-zA-Z]*$/)
-                .allow(''),
-              Joi.string(),
-            ),
+            dataField: Joi.string(),
           }),
           Joi.boolean().invalid(true),
         );
