@@ -263,18 +263,6 @@ conventionRoutes: {
 }
 ```
 
-### esbuildMinifyIIFE
-
-- 类型：`boolean`
-- 默认值：`false`
-
-修复 esbuild 压缩引入的命名冲突问题, 更多[详见](https://github.com/vitejs/vite/pull/7948)
-
-示例,
-```ts
-esbuildMinifyIIFE: true
-```
-
 ## copy
 
 - 类型：`Array<string | { from: string; to: string; }>`
@@ -473,7 +461,6 @@ declare global {
  const FOO: string;
 }
 ```
-
 ## devtool
 
 - 类型：`string`
@@ -501,6 +488,18 @@ devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 - 默认值：`{}`
 
 设置 babel class-properties 启用 loose
+
+## esbuildMinifyIIFE
+
+- 类型：`boolean`
+- 默认值：`false`
+
+修复 esbuild 压缩引入的命名冲突问题, 更多[详见](https://github.com/vitejs/vite/pull/7948)
+
+示例,
+```ts
+esbuildMinifyIIFE: true
+```
 
 ## externals
 
