@@ -47,15 +47,13 @@
     "enhanced-resolve": "5.9.3",
     "fast-glob": "3.2.12",
     "html-webpack-plugin": "5.5.0",
-    "madge": "^6.0.0",
     "path-to-regexp": "1.7.0",
     "postcss-prefix-selector": "1.16.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-router": "6.3.0",
     "react-router-dom": "6.3.0",
-    "regenerator-runtime": "0.13.11",
-    "tsconfig-paths": "^4.1.2"
+    "regenerator-runtime": "0.13.11"
   },
   "devDependencies": {
     "@manypkg/get-packages": "1.1.3",

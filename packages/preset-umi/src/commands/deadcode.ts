@@ -1,19 +1,19 @@
 import {
   aliasUtils,
-  getAllFilesSync,
+  fsExtra,
   logger,
+  madge,
+  readDirFilesSync,
   rimraf,
+  tsconfigPaths,
   winPath,
 } from '@umijs/utils';
-import { writeFileSync } from 'fs';
-import madge, { MadgeInstance } from 'madge';
 import { join, relative } from 'path';
-import { loadConfig } from 'tsconfig-paths';
 import type { IApi, IOnGenerateFiles } from '../types';
 
-function winJoin(...args: string[]) {
+const winJoin = (...args: string[]) => {
   return winPath(join(...args));
-}
+};
 
 const outputUnusedFiles = (unusedFiles: string[], fileName: string): void => {
   if (!unusedFiles?.length) {
@@ -29,7 +29,7 @@ const outputUnusedFiles = (unusedFiles: string[], fileName: string): void => {
     \nPlease be careful if you want to remove them (¬º-°)¬.\n
   `;
 
-  writeFileSync(fileName, str, 'utf8');
+  fsExtra.writeFileSync(fileName, str, 'utf8');
 };
 
 interface ITsconfig {
@@ -38,7 +38,7 @@ interface ITsconfig {
 }
 
 // madge instance 中没有暴露 tree
-type MadgeInstanceWithTree = MadgeInstance & {
+type MadgeInstanceWithTree = madge.MadgeInstance & {
   tree: Record<string, string[]>;
 };
 
@@ -66,7 +66,7 @@ export default (api: IApi) => {
       logger.info('begin check deadCode');
 
       const cwd = api.cwd;
-      const tsconfig = (await loadConfig(cwd)) as ITsconfig;
+      const tsconfig = (await tsconfigPaths.loadConfig(cwd)) as ITsconfig;
 
       const exclude: RegExp[] = [/node_modules/, /\.d\.ts$/, /\.umi/];
       const isExclude = (path: string) => {
@@ -115,6 +115,12 @@ export default (api: IApi) => {
               ...tsconfig.paths,
               umi: [exportsFile],
               '@umijs/max': [exportsFile],
+              // 适配 bigfish
+              ...(api.appData?.umi?.importSource
+                ? {
+                    [api.appData.umi.importSource]: [exportsFile],
+                  }
+                : {}),
             },
             target: 'esnext',
             module: 'esnext',
@@ -136,7 +142,7 @@ export default (api: IApi) => {
       // treeMap { src/*: [] } 需要把 key 转化为绝对路径
       const treeMap = res.tree;
       const dependenceMap = Object.keys(treeMap).reduce(
-        (acc: Record<string, boolean>, key: string) => {
+        (acc: Record<string, boolean>, key) => {
           const path = winJoin(api.paths.cwd, key);
           acc[path] = true;
           return acc;
@@ -145,12 +151,15 @@ export default (api: IApi) => {
       );
 
       // get unUseFiles
-      const unUseFiles: string[] = [];
-      getAllFilesSync(api.paths.absSrcPath, [/\.umi/], (path: string) => {
-        if (!dependenceMap[path]) {
-          unUseFiles.push(path);
-        }
-      });
+      const dirExclude = [/\.umi/];
+      const fileExcludeNames = ['.DS_Store'];
+      // 不在 dependenceMap 里, 且不在 fileExcludeNames 里
+      const unUseFiles = readDirFilesSync(api.paths.absSrcPath, dirExclude)
+        .filter(
+          ({ filePath, name }) =>
+            !dependenceMap[filePath] && !fileExcludeNames.includes(name),
+        )
+        .map((file) => file.filePath);
 
       const filePath = winJoin(
         api.paths.absSrcPath,
