@@ -25,6 +25,7 @@
     "pino": "7.11.0"
   },
   "devDependencies": {
+    "@ampproject/remapping": "2.2.0",
     "@clack/prompts": "0.2.2",
     "@hapi/joi": "17.1.1",
     "@types/color": "3.0.3",
@@ -101,7 +102,8 @@
       "pirates",
       "@hapi/joi",
       "@clack/prompts",
-      "magic-string"
+      "magic-string",
+      "@ampproject/remapping"
     ],
     "externals": {
       "address": "$$LOCAL",
