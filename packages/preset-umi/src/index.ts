@@ -39,6 +39,7 @@ export default () => {
       require.resolve('./features/routeProps/routeProps'),
       // 3. `ssr` needs to be run last
       require.resolve('./features/ssr/ssr'),
+
       require.resolve('./features/tmpFiles/configTypes'),
       require.resolve('./features/transform/transform'),
       require.resolve('./features/lowImport/lowImport'),
