@@ -56,6 +56,7 @@ export default () => {
       require.resolve('./commands/help'),
       require.resolve('./commands/lint'),
       require.resolve('./commands/setup'),
+      require.resolve('./commands/deadcode'),
       require.resolve('./commands/version'),
       require.resolve('./commands/generators/page'),
       require.resolve('./commands/generators/prettier'),

@@ -34,6 +34,7 @@ import * as logger from './logger';
 import * as printHelp from './printHelp';
 import updatePackageJSON from './updatePackageJSON';
 export * as aliasUtils from './aliasUtils';
+export * from './getAllFiles';
 export * from './getCorejsVersion';
 export * from './getDevBanner';
 export * from './importLazy';

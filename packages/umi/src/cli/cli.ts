@@ -26,7 +26,7 @@ export async function run(opts?: IOpts) {
     boolean: ['version'],
   });
   const command = args._[0];
-  if ([DEV_COMMAND, 'mfsu', 'setup'].includes(command)) {
+  if ([DEV_COMMAND, 'mfsu', 'setup', 'deadcode'].includes(command)) {
     process.env.NODE_ENV = 'development';
   } else if (command === 'build') {
     process.env.NODE_ENV = 'production';
