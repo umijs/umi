@@ -49,6 +49,11 @@ export class EsbuildMinifyFix {
             return false;
           }
 
+          // 处理过无需再次处理
+          if (info?.EsbuildMinifyFix) {
+            return false;
+          }
+
           return true;
         })
         .map(async (name) => {
@@ -113,6 +118,7 @@ export class EsbuildMinifyFix {
         }
 
         compilation.updateAsset(name, output.source!, {
+          ...asset.info,
           EsbuildMinifyFix: true,
         });
       }
