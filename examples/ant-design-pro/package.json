@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "max build",
+    "deadcode": "max deadcode",
     "dev": "max dev",
     "setup": "max setup",
     "start": "npm run dev",
