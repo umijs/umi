@@ -43,6 +43,8 @@ export default (api: IApi) => {
           }
         : {}),
       'react-dom': reactDOMPath,
+      // alias to empty for control it in features/helmet
+      'react-helmet-async': require.resolve('../../client/helmet/empty'),
       // mpa don't need to use react-router
       ...(userConfig.mpa
         ? {}
