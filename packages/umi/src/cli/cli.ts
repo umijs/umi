@@ -3,6 +3,7 @@ import { DEV_COMMAND } from '../constants';
 import { Service } from '../service/service';
 import { dev } from './dev';
 import {
+  catchUnhandledRejection,
   checkLocal,
   checkVersion as checkNodeVersion,
   setNodeTitle,
@@ -11,6 +12,8 @@ import {
 interface IOpts {
   presets?: string[];
 }
+
+catchUnhandledRejection();
 
 export async function run(opts?: IOpts) {
   checkNodeVersion();
