@@ -8,5 +8,15 @@ export default {
   styledComponents: {},
   reactQuery: {},
   valtio: {},
-  icons: {},
+  icons: {
+    autoInstall: {},
+    include: [
+      'ant-design:fund-projection-screen-outlined',
+      'ant-design:control-outlined',
+      'ant-design:cluster-outlined',
+      'ant-design:medicine-box-outlined',
+      'ant-design:api-outlined',
+      'ant-design:right-square-outlined',
+    ],
+  },
 };
