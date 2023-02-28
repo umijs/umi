@@ -4,7 +4,7 @@ import * as ErrorOverlay from 'react-error-overlay';
 import { MESSAGE_TYPE } from '../constants';
 import { formatWebpackMessages } from '../utils/formatWebpackMessages';
 
-console.log('[webpack] connecting...');
+// console.log('[webpack] connecting...');
 
 function getHost(): { protocol: string; host: string; port: string } {
   if (process.env.SOCKET_SERVER) {
@@ -38,7 +38,7 @@ const socket = new WebSocket(getSocketUrl(), 'webpack-hmr');
 socket.addEventListener('message', async ({ data }) => {
   data = JSON.parse(data);
   if (data.type === 'connected') {
-    console.log(`[webpack] connected.`);
+    // console.log(`[webpack] connected.`);
     // proxy(nginx, docker) hmr ws maybe caused timeout,
     // so send ping package let ws keep alive.
     pingTimer = window.setInterval(() => socket.send('ping'), 30000);
