@@ -1650,6 +1650,7 @@ importers:
       '@svgr/core': 6.5.1
       '@types/body-parser': 1.19.2
       '@types/ini': 1.3.31
+      '@types/madge': ^5.0.0
       '@types/multer': 1.4.7
       '@umijs/ast': 4.0.0-canary.20230224.1
       '@umijs/babel-preset-umi': 4.0.0-canary.20230224.1
@@ -1719,6 +1720,7 @@ importers:
       '@manypkg/get-packages': 1.1.3
       '@types/body-parser': 1.19.2
       '@types/ini': 1.3.31
+      '@types/madge': 5.0.0
       '@types/multer': 1.4.7
       body-parser: 1.20.0
       ini: 3.0.0
@@ -12410,6 +12412,12 @@ packages:
 
   /@types/lru-cache/5.1.1:
     resolution: {integrity: sha512-ssE3Vlrys7sdIzs5LOxCzTVMsU7i9oa/IaW92wF32JFb3CVczqOkru2xspuKczHEbG3nvmPY7IFqVmGGHdNbYw==}
+    dev: true
+
+  /@types/madge/5.0.0:
+    resolution: {integrity: sha512-Son5Z121knxCXlQM3Q0ivh0OP8Fix4ztGl0VfA9JybQMPQprc2K4jtTaRc3IhGyBy6ku5cWKJxEuj8zePiZbBQ==}
+    dependencies:
+      '@types/node': 18.11.18
     dev: true
 
   /@types/mapbox-gl/1.13.4:
@@ -24808,7 +24816,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true

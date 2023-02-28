@@ -1,20 +1,18 @@
 import {
   aliasUtils,
+  chalk,
   fsExtra,
   installWithNpmClient,
   logger,
-  madge,
-  readDirFilesSync,
+  readDirFiles,
+  resolve,
   rimraf,
   tsconfigPaths,
   winPath,
 } from '@umijs/utils';
-import { join, relative } from 'path';
+import type { MadgeConfig, MadgeInstance, MadgePath } from 'madge';
+import { dirname, join, relative } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
-
-const winJoin = (...args: string[]) => {
-  return winPath(join(...args));
-};
 
 const outputUnusedFiles = (unusedFiles: string[], fileName: string): void => {
   if (!unusedFiles?.length) {
@@ -38,10 +36,14 @@ interface ITsconfig {
   paths: Record<string, string[]>;
 }
 
-// madge instance 中没有暴露 tree
-type MadgeInstanceWithTree = madge.MadgeInstance & {
+interface IMadgeInstance extends MadgeInstance {
   tree: Record<string, string[]>;
-};
+}
+
+type MadgeFunc = (
+  path: MadgePath,
+  config: MadgeConfig,
+) => Promise<IMadgeInstance>;
 
 export default (api: IApi) => {
   api.registerCommand({
@@ -66,7 +68,7 @@ export default (api: IApi) => {
           'utf-8',
         );
         logger.info(
-          `Installing ${MADGE_NAME}@${MADGE_VERSION} (required by deadcode) ...`,
+          `Installing ${chalk.blue(MADGE_NAME)} (required by deadcode) ...`,
         );
         installWithNpmClient({
           cwd: api.cwd,
@@ -132,8 +134,15 @@ export default (api: IApi) => {
       const devTmpDir = join(api.paths.absSrcPath, '.umi');
       const entryFile = join(devTmpDir, 'umi.ts');
       const exportsFile = join(devTmpDir, 'exports.ts');
+      // get madge package
+      const madgePkg = dirname(
+        resolve.sync(`${MADGE_NAME}/package.json`, {
+          basedir: cwd,
+        }),
+      );
+      const madge = require(madgePkg) as MadgeFunc;
       // get madgeInstance
-      const res = (await madge(entryFile, {
+      const res = await madge(entryFile, {
         tsConfig: {
           compilerOptions: {
             baseUrl: tsconfig.baseUrl,
@@ -163,38 +172,34 @@ export default (api: IApi) => {
         fileExtensions: ['ts', 'tsx', 'js', 'jsx'],
         excludeRegExp: exclude,
         baseDir: cwd,
-      })) as MadgeInstanceWithTree;
+      });
 
       // get dependence map
       // treeMap { src/*: [] } 需要把 key 转化为绝对路径
       const treeMap = res.tree;
       const dependenceMap = Object.keys(treeMap).reduce(
         (acc: Record<string, boolean>, key) => {
-          const path = winJoin(api.paths.cwd, key);
+          const path = winPath(join(api.paths.cwd, key));
           acc[path] = true;
           return acc;
         },
         {},
       );
 
-      // get unUseFiles
-      const dirExclude = [/\.umi/];
-      const fileExcludeNames = ['.DS_Store'];
       // 不在 dependenceMap 里, 且不在 fileExcludeNames 里
-      const unUseFiles = readDirFilesSync(api.paths.absSrcPath, dirExclude)
-        .filter(
-          ({ filePath, name }) =>
-            !dependenceMap[filePath] && !fileExcludeNames.includes(name),
-        )
-        .map((file) => file.filePath);
+      const unusedFiles = readDirFiles({
+        dir: api.paths.absSrcPath,
+        exclude,
+      })
+        .filter(({ filePath }) => !dependenceMap[filePath])
+        .map((file) => {
+          const relativePath = relative(cwd, file.filePath);
+          return relativePath;
+        });
 
-      const filePath = winJoin(
-        api.paths.absSrcPath,
-        `DeadCodeList-${Date.now()}.txt`,
-      );
-
+      const filePath = winPath(join(cwd, `DeadCodeList-${Date.now()}.txt`));
       logger.info(`write file ${filePath}`);
-      outputUnusedFiles(unUseFiles, filePath);
+      outputUnusedFiles(unusedFiles, filePath);
 
       logger.info(
         `check dead code end, please be careful if you want to remove them (¬º-°)¬`,

@@ -15,7 +15,6 @@ import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as filesize from '../compiled/filesize';
 import * as gzipSize from '../compiled/gzip-size';
 import lodash from '../compiled/lodash';
-import madge from '../compiled/madge';
 import MagicString from '../compiled/magic-string';
 import Mustache from '../compiled/mustache';
 import * as pkgUp from '../compiled/pkg-up';
@@ -44,7 +43,7 @@ export * from './isMonorepo';
 export * from './isStyleFile';
 export * from './npmClient';
 export * from './randomColor/randomColor';
-export * from './readDirFile';
+export * from './readDirFiles';
 export * as register from './register';
 export * from './setNoDeprecation';
 export * from './tryPaths';
@@ -85,6 +84,5 @@ export {
   fastestLevenshtein,
   clackPrompts,
   MagicString,
-  madge,
   tsconfigPaths,
 };
