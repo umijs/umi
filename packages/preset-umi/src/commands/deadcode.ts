@@ -1,6 +1,7 @@
 import {
   aliasUtils,
   fsExtra,
+  installWithNpmClient,
   logger,
   madge,
   readDirFilesSync,
@@ -47,6 +48,32 @@ export default (api: IApi) => {
     name: 'deadcode',
     description: 'check dead code',
     async fn() {
+      // install `madge`(10MB) on demand
+      const pkg = api.pkg;
+      const userDeps = {
+        ...pkg?.dependencies,
+        ...pkg?.devDependencies,
+      };
+      const MADGE_NAME = 'madge';
+      const MADGE_VERSION = '6.0.0';
+      const isInstalled = Object.keys(userDeps).includes(MADGE_NAME);
+      if (!isInstalled) {
+        pkg.devDependencies ||= {};
+        pkg.devDependencies[MADGE_NAME] = MADGE_VERSION;
+        fsExtra.writeFileSync(
+          api.pkgPath,
+          `${JSON.stringify(pkg, null, 2)}\n`,
+          'utf-8',
+        );
+        logger.info(
+          `Installing ${MADGE_NAME}@${MADGE_VERSION} (required by deadcode) ...`,
+        );
+        installWithNpmClient({
+          cwd: api.cwd,
+          npmClient: api.appData.npmClient,
+        });
+      }
+
       // setup first, generate .umi
       // clear tmp
       rimraf.sync(api.paths.absTmpPath);
