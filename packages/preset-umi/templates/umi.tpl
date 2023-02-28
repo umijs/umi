@@ -4,9 +4,7 @@ import { renderClient } from '{{{ rendererPath }}}';
 import { getRoutes } from './core/route';
 import { createPluginManager } from './core/plugin';
 import { createHistory } from './core/history';
-{{#loadingComponent}}
-import Loading from '@/loading';
-{{/loadingComponent}}
+{{{ loadingComponent }}}
 import { ApplyPluginsType } from 'umi';
 {{{ imports }}}
 

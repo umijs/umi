@@ -47,10 +47,12 @@ export default (api: IApi) => {
     memo.appJS = await getAppJsInfo();
     memo.locale = await osLocale();
     memo.vite = api.config.vite ? {} : undefined;
-    const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
+    const { globalCSS, globalJS, overridesCSS, globalLoading } =
+      getGlobalFiles();
     memo.globalCSS = globalCSS;
     memo.globalJS = globalJS;
     memo.overridesCSS = overridesCSS;
+    memo.globalLoading = globalLoading;
 
     const gitDir = findGitDir(api.paths.cwd);
     if (gitDir) {
@@ -77,10 +79,12 @@ export default (api: IApi) => {
     async fn(args: IOnGenerateFiles) {
       if (!args.isFirstTime) {
         api.appData.appJS = await getAppJsInfo();
-        const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
+        const { globalCSS, globalJS, overridesCSS, globalLoading } =
+          getGlobalFiles();
         api.appData.globalCSS = globalCSS;
         api.appData.globalJS = globalJS;
         api.appData.overridesCSS = overridesCSS;
+        api.appData.globalLoading = globalLoading;
       }
     },
     stage: Number.NEGATIVE_INFINITY,
@@ -149,6 +153,10 @@ export default (api: IApi) => {
       [],
     );
 
+    const globalLoading = expandJSPaths(join(absSrcPath, 'loading')).find(
+      existsSync,
+    );
+
     const overridesCSS = [getOverridesCSS(api.paths.absSrcPath)].filter(
       Boolean,
     ) as string[];
@@ -157,6 +165,7 @@ export default (api: IApi) => {
       globalCSS,
       globalJS,
       overridesCSS,
+      globalLoading,
     };
   }
 };
