@@ -24,6 +24,7 @@ import resolve from '../compiled/resolve';
 import rimraf from '../compiled/rimraf';
 import semver from '../compiled/semver';
 import stripAnsi from '../compiled/strip-ansi';
+import * as tsconfigPaths from '../compiled/tsconfig-paths';
 import yParser from '../compiled/yargs-parser';
 import BaseGenerator from './BaseGenerator/BaseGenerator';
 import generateFile from './BaseGenerator/generateFile';
@@ -42,6 +43,7 @@ export * from './isMonorepo';
 export * from './isStyleFile';
 export * from './npmClient';
 export * from './randomColor/randomColor';
+export * from './readDirFiles';
 export * as register from './register';
 export * from './setNoDeprecation';
 export * from './tryPaths';
@@ -82,4 +84,5 @@ export {
   fastestLevenshtein,
   clackPrompts,
   MagicString,
+  tsconfigPaths,
 };
