@@ -23,7 +23,7 @@ const outputUnusedFiles = (unusedFiles: string[], fileName: string): void => {
   const content = unusedFiles.map((file, index) => `\n${index + 1}. ${file}`);
 
   const str = `
-    \nWarning: There are ${unusedFiles.length} unused files:
+    Warning: There are ${unusedFiles.length} unused files:
     ${content.join('')}
     \nPlease be careful if you want to remove them (¬º-°)¬.\n
   `;
@@ -197,8 +197,14 @@ export default (api: IApi) => {
           return relativePath;
         });
 
+      if (!unusedFiles.length) {
+        return logger.info(`good job, no unusedFiles`);
+      }
+
       const filePath = winPath(join(cwd, `DeadCodeList-${Date.now()}.txt`));
-      logger.info(`write file ${filePath}`);
+      logger.info(
+        `${unusedFiles.length} unusedFiles, write content to file ${filePath}`,
+      );
       outputUnusedFiles(unusedFiles, filePath);
 
       logger.info(
