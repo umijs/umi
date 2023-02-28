@@ -15,7 +15,7 @@ export function getDevBanner(
   protocol: string,
   host = '0.0.0.0',
   port: number,
-  base: string,
+  base?: string,
   offset = 8,
 ) {
   // prepare all source lines
