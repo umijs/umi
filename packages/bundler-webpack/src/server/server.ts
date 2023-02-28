@@ -244,7 +244,7 @@ export async function createServer(opts: IOpts): Promise<any> {
   const port = opts.port || 8000;
 
   server.listen(port, () => {
-    const banner = getDevBanner(protocol, opts.host, port);
+    const banner = getDevBanner(protocol, opts.host, port, userConfig.base);
 
     console.log(banner.before);
     logger.ready(banner.main);

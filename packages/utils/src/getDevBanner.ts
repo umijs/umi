@@ -15,6 +15,7 @@ export function getDevBanner(
   protocol: string,
   host = '0.0.0.0',
   port: number,
+  base: string,
   offset = 8,
 ) {
   // prepare all source lines
@@ -23,11 +24,13 @@ export function getDevBanner(
     ' Now you can open browser with the above addresses↑ ',
   );
   const local = `  ${chalk.gray('>')}   Local: ${chalk.green(
-    `${protocol}//${host === '0.0.0.0' ? 'localhost' : host}:${port}`,
+    `${protocol}//${host === '0.0.0.0' ? 'localhost' : host}:${port}${base}`,
   )} `;
   const ip = address.ip();
   const network = `  ${chalk.gray('>')} Network: ${
-    ip ? chalk.green(`${protocol}//${ip}:${port}`) : chalk.gray('Not available')
+    ip
+      ? chalk.green(`${protocol}//${ip}:${port}${base}`)
+      : chalk.gray('Not available')
   } `;
   const maxLen = Math.max(
     ...[header, footer, local, network].map((x) => stripAnsi(x).length),
