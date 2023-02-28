@@ -33,7 +33,6 @@
     "@types/glob": "8.0.0",
     "@types/hapi__joi": "17.1.9",
     "@types/lodash": "4.14.191",
-    "@types/madge": "^5.0.0",
     "@types/mustache": "4.2.2",
     "@types/prompts": "^2.4.2",
     "@types/rimraf": "3.0.2",
@@ -55,7 +54,6 @@
     "gzip-size": "7.0.0",
     "import-lazy": "4.0.0",
     "lodash": "4.17.21",
-    "madge": "6.0.0",
     "magic-string": "0.27.0",
     "mustache": "4.2.0",
     "pirates": "4.0.5",
@@ -105,7 +103,6 @@
       "@hapi/joi",
       "@clack/prompts",
       "magic-string",
-      "madge",
       "tsconfig-paths"
     ],
     "externals": {
@@ -129,7 +126,6 @@
       "yargs-parser": "$$LOCAL",
       "pirates": "$$LOCAL",
       "@hapi/joi": "$$LOCAL",
-      "madge": "$$LOCAL",
       "tsconfig-paths": "$$LOCAL"
     }
   }
