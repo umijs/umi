@@ -15,7 +15,7 @@ import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import type { GenerateFilesFn, IApi } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
-import { getProjectFileListPromise } from '../../utils/projectFileList';
+import { getProjectFileList } from '../../utils/projectFileList';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
 import { getBabelOpts } from './getBabelOpts';
@@ -48,8 +48,6 @@ export default (api: IApi) => {
       return api.name === 'dev';
     },
   });
-
-  const fileListQ = getProjectFileListPromise(api);
 
   api.registerCommand({
     name: 'dev',
@@ -317,7 +315,7 @@ PORT=8888 umi dev
         if (api.appData.framework === 'vue') {
           await srcCodeCache!.initWithScan();
         } else {
-          const files = await fileListQ;
+          const files = getProjectFileList(api);
           await srcCodeCache!.init(files);
         }
 

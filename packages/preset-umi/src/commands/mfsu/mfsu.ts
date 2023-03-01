@@ -1,5 +1,4 @@
 import { IApi } from '../../types';
-import { getProjectFileListPromise } from '../../utils/projectFileList';
 import { EagerUtil, MFSUUtilBase, NormalUtil } from './util';
 
 const HELP_TEXT = `
@@ -27,8 +26,6 @@ export default (api: IApi) => {
     key: 'mfsu-cli',
   });
 
-  const fileListQ = getProjectFileListPromise(api);
-
   api.registerCommand({
     name: 'mfsu',
     description: 'mfsu CLI util',
@@ -45,8 +42,8 @@ export default (api: IApi) => {
 
       const util: MFSUUtilBase =
         api.config.mfsu?.strategy === 'eager'
-          ? new EagerUtil(api, fileListQ)
-          : new NormalUtil(api, fileListQ);
+          ? new EagerUtil(api)
+          : new NormalUtil(api);
 
       switch (command) {
         case 'build':

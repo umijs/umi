@@ -5,12 +5,13 @@ import { isAbsolute, join, relative } from 'path';
 import { Worker } from 'worker_threads';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import { GenerateFilesFn, IApi } from '../../types';
+import { getProjectFileList } from '../../utils/projectFileList';
 import { getBabelOpts } from '../dev/getBabelOpts';
 
 export abstract class MFSUUtilBase {
   protected mfsuCacheBase: string;
   protected cliName: string;
-  constructor(readonly api: IApi, readonly fileList: Promise<string[]>) {
+  constructor(readonly api: IApi) {
     const cacheBase =
       api.config.cacheDirectoryPath || join(api.cwd, 'node_modules/.cache');
 
@@ -84,7 +85,8 @@ export abstract class MFSUUtilBase {
           'mfsu_v4',
         ),
       });
-      await srcCodeCache!.init(await this.fileList);
+      const fileList = getProjectFileList(api);
+      await srcCodeCache!.init(fileList);
     }
 
     const entry = await api.applyPlugins({
