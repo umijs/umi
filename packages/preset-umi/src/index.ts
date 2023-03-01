@@ -30,11 +30,16 @@ export default () => {
       require.resolve('./features/polyfill/publicPathPolyfill'),
       require.resolve('./features/prepare/prepare'),
       require.resolve('./features/routePrefetch/routePrefetch'),
-      require.resolve('./features/ssr/ssr'),
       require.resolve('./features/terminal/terminal'),
+
+      // 1. generate tmp files
       require.resolve('./features/tmpFiles/tmpFiles'),
+      // 2. `clientLoader` and `routeProps` depends on `tmpFiles` files
       require.resolve('./features/clientLoader/clientLoader'),
       require.resolve('./features/routeProps/routeProps'),
+      // 3. `ssr` needs to be run last
+      require.resolve('./features/ssr/ssr'),
+
       require.resolve('./features/tmpFiles/configTypes'),
       require.resolve('./features/transform/transform'),
       require.resolve('./features/lowImport/lowImport'),
@@ -56,6 +61,7 @@ export default () => {
       require.resolve('./commands/help'),
       require.resolve('./commands/lint'),
       require.resolve('./commands/setup'),
+      require.resolve('./commands/deadcode'),
       require.resolve('./commands/version'),
       require.resolve('./commands/generators/page'),
       require.resolve('./commands/generators/prettier'),

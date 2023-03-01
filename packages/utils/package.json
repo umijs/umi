@@ -66,6 +66,7 @@
     "rimraf": "3.0.2",
     "semver": "7.3.8",
     "strip-ansi": "7.0.1",
+    "tsconfig-paths": "4.1.2",
     "yargs-parser": "21.1.1"
   },
   "publishConfig": {
@@ -103,7 +104,8 @@
       "@hapi/joi",
       "@clack/prompts",
       "magic-string",
-      "@ampproject/remapping"
+      "@ampproject/remapping",
+      "tsconfig-paths"
     ],
     "externals": {
       "address": "$$LOCAL",
@@ -125,7 +127,8 @@
       "strip-ansi": "$$LOCAL",
       "yargs-parser": "$$LOCAL",
       "pirates": "$$LOCAL",
-      "@hapi/joi": "$$LOCAL"
+      "@hapi/joi": "$$LOCAL",
+      "tsconfig-paths": "$$LOCAL"
     }
   }
 }

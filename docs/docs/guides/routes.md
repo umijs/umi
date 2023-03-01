@@ -188,12 +188,6 @@ const TheOldPage = ()=>{
 export default withAuth(TheOldPage)
 ```
 
-### title
-
-* Type: `string`
-
-配置路由的标题。
-
 ## 约定式路由
 
 除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
