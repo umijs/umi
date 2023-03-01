@@ -1,4 +1,4 @@
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi } from 'umi';
 import { crossSpawn, winPath } from 'umi/plugin-utils';
 
@@ -23,10 +23,7 @@ export default (api: IApi) => {
     const inputPath = join(api.cwd, 'tailwind.css');
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = getTailwindBinPath({ cwd: api.cwd });
-    const configPath = join(
-      process.env.APP_ROOT || api.cwd,
-      'tailwind.config.js',
-    );
+    const configPath = join(api.cwd, 'tailwind.config.js');
 
     if (process.env.IS_UMI_BUILD_WORKER) {
       return;
