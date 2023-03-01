@@ -21,6 +21,7 @@ Commands:
     help      show commands help
     lint      lint source code using eslint and stylelint
     setup     setup project
+    deadcode  check dead code
     version   show umi version
     v         show umi version
     plugin    inspect umi plugins
@@ -224,6 +225,18 @@ $ umi run ./script.ts
 {
   "scripts": { "postinstall": "umi setup" }
 }
+```
+
+## deadcode
+
+用于查找 src 目录下未被引用的文件，并在根目录输出文件。
+
+```bash
+$ umi deadcode
+- Preparing...
+- begin check deadCode
+- write file /Users/yuyuehui/umi/examples/umi-run/DeadCodeList-{timeStamp}.txt
+- check dead code end, please be careful if you want to remove them
 ```
 
 ## mfsu
