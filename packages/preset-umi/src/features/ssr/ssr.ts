@@ -1,6 +1,6 @@
 import type {
-  Compiler,
   Compilation,
+  Compiler,
 } from '@umijs/bundler-webpack/compiled/webpack';
 import { EnableBy } from '@umijs/core/dist/types';
 import { fsExtra, importLazy, logger } from '@umijs/utils';
@@ -11,6 +11,13 @@ import type { IApi } from '../../types';
 import { absServerBuildPath } from './utils';
 
 export default (api: IApi) => {
+  const esbuildBuilder: typeof import('./builder/builder') = importLazy(
+    require.resolve('./builder/builder'),
+  );
+  const webpackBuilder: typeof import('./webpack/webpack') = importLazy(
+    require.resolve('./webpack/webpack'),
+  );
+
   api.describe({
     key: 'ssr',
     config: {
@@ -68,10 +75,7 @@ export { React };
     const { builder = 'esbuild' } = api.config.ssr;
 
     if (builder === 'esbuild') {
-      const { build }: typeof import('./builder/builder') = importLazy(
-        require.resolve('./builder/builder'),
-      );
-      await build({
+      await esbuildBuilder.build({
         api,
         watch: api.env === 'development',
       });
@@ -81,10 +85,7 @@ export { React };
         `The \`vite\` config is now allowed when \`ssr.builder\` is webpack!`,
       );
 
-      const { build }: typeof import('./webpack/webpack') = importLazy(
-        require.resolve('./webpack/webpack'),
-      );
-      await build(api, opts);
+      await webpackBuilder.build(api, opts);
     }
   });
 

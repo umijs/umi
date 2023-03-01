@@ -24,11 +24,11 @@ export const prefixes = {
   profile: chalk.blue('profile') + ' -',
 };
 
+const pinoModule: typeof import('pino') = importLazy(require.resolve('pino'));
+
 let logger: any;
 if (enableFSLogger) {
-  const { default: pino }: typeof import('pino') = importLazy(
-    require.resolve('pino'),
-  );
+  const pino = pinoModule.default;
   fsExtra.mkdirpSync(loggerDir);
   const customLevels = {
     ready: 31,

@@ -11,6 +11,9 @@ export default (api: IApi) => {
   const routesApi: typeof import('../tmpFiles/routes') = importLazy(
     require.resolve('../tmpFiles/routes'),
   );
+  const bundlerUtils: typeof import('@umijs/bundler-utils') = importLazy(
+    require.resolve('@umijs/bundler-utils'),
+  );
 
   api.modifyAppData(async (memo) => {
     memo.routes = await routesApi.getRoutes({
@@ -116,9 +119,7 @@ export default (api: IApi) => {
   async function getAppJsInfo() {
     for (const path of expandJSPaths(join(api.paths.absSrcPath, 'app'))) {
       if (existsSync(path)) {
-        const { parseModule }: typeof import('@umijs/bundler-utils') =
-          importLazy(require.resolve('@umijs/bundler-utils'));
-        const [_, exports] = await parseModule({
+        const [_, exports] = await bundlerUtils.parseModule({
           path,
           content: readFileSync(path, 'utf-8'),
         });
