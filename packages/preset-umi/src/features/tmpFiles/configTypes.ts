@@ -1,6 +1,4 @@
 import joi from '@umijs/utils/compiled/@hapi/joi';
-// @ts-ignore
-import joi2Types from '../../../compiled/joi2types';
 import { IApi } from '../../types';
 
 // Need to be excluded function type declared in `IConfig`
@@ -35,6 +33,7 @@ export default (api: IApi) => {
 
     const interfaceName = 'IConfigFromPlugins';
 
+    const joi2Types = require('../../../compiled/joi2types').default;
     const content = await joi2Types(joi.object(properties), {
       interfaceName,
       bannerComment: '// Created by Umi Plugin',

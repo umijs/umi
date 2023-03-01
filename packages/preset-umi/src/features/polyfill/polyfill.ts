@@ -4,6 +4,9 @@ import { dirname, join } from 'path';
 import { IApi } from '../../types';
 
 export default (api: IApi) => {
+  const babelCore: typeof import('@umijs/bundler-utils/compiled/babel/core') =
+    importLazy(require.resolve('@umijs/bundler-utils/compiled/babel/core'));
+
   api.describe({
     key: 'polyfill',
     config: {
@@ -24,11 +27,7 @@ export default (api: IApi) => {
           .map((item: string) => `import '${item}';`)
           .join('\n')
       : `import 'core-js';`;
-    const {
-      transform,
-    }: typeof import('@umijs/bundler-utils/compiled/babel/core') = importLazy(
-      require.resolve('@umijs/bundler-utils/compiled/babel/core'),
-    );
+    const { transform } = babelCore;
     const { code } = transform(
       `
 ${coreJsImports}

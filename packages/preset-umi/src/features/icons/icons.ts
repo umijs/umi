@@ -11,6 +11,11 @@ import type { IApi } from '../../types';
 import { addDeps } from '../depsOnDemand/depsOnDemand';
 
 export default (api: IApi) => {
+  const iconPlugin: typeof import('./esbuildIconPlugin') = importLazy(
+    require.resolve('./esbuildIconPlugin'),
+  );
+  const svgr: typeof import('./svgr') = importLazy(require.resolve('./svgr'));
+
   api.describe({
     config: {
       schema(Joi) {
@@ -42,10 +47,8 @@ export default (api: IApi) => {
 
   const icons: Set<string> = new Set();
   api.addPrepareBuildPlugins(() => {
-    const { esbuildIconPlugin }: typeof import('./esbuildIconPlugin') =
-      importLazy(require.resolve('./esbuildIconPlugin'));
     return [
-      esbuildIconPlugin({
+      iconPlugin.esbuildIconPlugin({
         icons,
         alias: api.config.icons.alias || {},
       }),
@@ -63,9 +66,7 @@ export default (api: IApi) => {
 
     logger.info(`[icons] generate icons ${Array.from(icons).join(', ')}`);
     const code: string[] = [];
-    const { generateIconName, generateSvgr }: typeof import('./svgr') =
-      importLazy(require.resolve('./svgr'));
-
+    const { generateIconName, generateSvgr } = svgr;
     for (const iconStr of allIcons) {
       const [collect, icon] = iconStr.split(':');
       const iconName = generateIconName({ collect, icon });
@@ -347,10 +348,10 @@ export const Icon = React.forwardRef<HTMLSpanElement, IUmiIconProps>((props, ref
     svgStyle.msTransform = transformStr;
     svgStyle.transform = transformStr;
   }
-  
+
   const spanClassName = HoverComponent ? 'umiIconDoNotUseThis ' : '' + className;
   const spanClass = spanClassName ? { className: spanClassName } : {};
-  
+
   return (
     <span role="img" ref={ref} {...spanClass} style={style}>
       <Component {...extraProps} className={cls} style={svgStyle} />

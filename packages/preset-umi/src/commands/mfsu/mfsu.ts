@@ -1,20 +1,23 @@
+import { importLazy } from '@umijs/utils';
 import { IApi } from '../../types';
-import { EagerUtil, MFSUUtilBase, NormalUtil } from './util';
+import type { MFSUUtilBase } from './util';
+
+const utils: typeof import('./util') = importLazy(require.resolve('./util'));
 
 const HELP_TEXT = `
 # MFSU CLI util
 # umi mfsu [action]
 
 # Show Help
-$ umi mfsu 
+$ umi mfsu
 
 # Manually build mfsu dependencies
-$ umi mfsu build 
-$ umi mfsu b 
+$ umi mfsu build
+$ umi mfsu b
 
 # list mfsu dependencies
-$ umi mfsu list 
-$ umi mfsu ls 
+$ umi mfsu list
+$ umi mfsu ls
 
 # remove mfsu dependencies
 $ umi mfsu remove
@@ -38,6 +41,8 @@ export default (api: IApi) => {
         api.logger.info('MFSU is not enabled');
         return;
       }
+
+      const { EagerUtil, NormalUtil } = utils;
 
       const util: MFSUUtilBase =
         api.config.mfsu?.strategy === 'eager'
