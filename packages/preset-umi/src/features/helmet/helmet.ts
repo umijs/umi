@@ -1,7 +1,9 @@
+import { winPath } from '@umijs/utils';
+import { dirname } from 'path';
 import type { IApi } from '../../types';
 
 /**
- * plugin for disable built-in react-helmet-async
+ * plugin for built-in react-helmet-async
  */
 export default (api: IApi) => {
   api.describe({
@@ -10,12 +12,22 @@ export default (api: IApi) => {
     },
   });
 
-  api.modifyDefaultConfig((memo) => {
-    // delete alias for resolve real react-helmet-async
-    // because features/configPlugins alias it to an empty module
-    // and helmet will unavailable expectedly when this plugin is disabled
-    delete memo.alias['react-helmet-async'];
+  api.onGenerateFiles(() => {
+    if (!api.config.vite) {
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/helmet.ts',
+        content: `import React from 'react';
+import { HelmetProvider } from '${winPath(
+          dirname(require.resolve('@umijs/renderer-react/package')),
+        )}';
 
-    return memo;
+export const innerProvider = (container) => {
+  return React.createElement(HelmetProvider, { context: {} }, container);
+}`,
+      });
+    }
   });
+
+  api.addRuntimePlugin(() => (api.config.vite ? [] : ['@@/core/helmet.ts']));
 };
