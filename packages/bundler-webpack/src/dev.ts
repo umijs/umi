@@ -1,13 +1,17 @@
 import { MFSU, MF_DEP_PREFIX } from '@umijs/mfsu';
-import { logger, rimraf } from '@umijs/utils';
+import { importLazy, logger, rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import type { Worker } from 'worker_threads';
 import webpack from '../compiled/webpack';
-import { getConfig, IOpts as IConfigOpts } from './config/config';
+import type { IOpts as IConfigOpts } from './config/config';
 import { MFSU_NAME } from './constants';
 import { createServer } from './server/server';
 import { Env, IConfig } from './types';
+
+const configModule: typeof import('./config/config') = importLazy(
+  require.resolve('./config/config'),
+);
 
 type IOpts = {
   afterMiddlewares?: any[];
@@ -116,7 +120,7 @@ export async function setup(opts: IOpts) {
     });
   }
 
-  const webpackConfig = await getConfig({
+  const webpackConfig = await configModule.getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.development,
@@ -152,7 +156,7 @@ export async function setup(opts: IOpts) {
     pkg: opts.pkg,
   });
 
-  const depConfig = await getConfig({
+  const depConfig = await configModule.getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.development,

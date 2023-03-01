@@ -1,8 +1,10 @@
-import { codeFrameColumns } from '@umijs/bundler-utils/compiled/babel/code-frame';
-import { init, parse } from '@umijs/bundler-utils/compiled/es-module-lexer';
-import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
-import { winPath, logger } from '@umijs/utils';
+import { importLazy, logger, winPath } from '@umijs/utils';
 import { extname } from 'path';
+import { init, parse } from '../compiled/es-module-lexer';
+import { Loader, transformSync } from '../compiled/esbuild';
+
+const babelCodeFrame: typeof import('../compiled/babel/code-frame') =
+  importLazy(require.resolve('../compiled/babel/code-frame'));
 
 export async function parseModule(opts: { content: string; path: string }) {
   await init;
@@ -44,6 +46,7 @@ export function isDepPath(path: string) {
 }
 
 export * from './https';
+export * from './proxy';
 export * from './types';
 
 type Errors = {
@@ -61,7 +64,7 @@ function prettyPrintEsBuildErrors(
   for (const error of errors) {
     if (error.location?.line && error.location?.column) {
       // @ts-ignore
-      const message = codeFrameColumns(
+      const message = babelCodeFrame.codeFrameColumns(
         opts.content,
         {
           start: {
@@ -78,5 +81,3 @@ function prettyPrintEsBuildErrors(
     }
   }
 }
-
-export * from './proxy';

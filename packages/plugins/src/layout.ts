@@ -25,8 +25,6 @@ const getAllIcons = () => {
   );
 };
 
-const allIcons: Record<string, boolean> = getAllIcons();
-
 export default (api: IApi) => {
   let antdVersion = '4.0.0';
   try {
@@ -370,6 +368,7 @@ export interface IRuntimeConfig {
 }
       `,
     });
+    const allIcons: Record<string, boolean> = getAllIcons();
     const iconsMap = Object.keys(api.appData.routes).reduce<
       Record<string, boolean>
     >((memo, id) => {

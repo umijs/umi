@@ -1,8 +1,12 @@
-import { chalk, rimraf } from '@umijs/utils';
+import { chalk, importLazy, rimraf } from '@umijs/utils';
 import { join, resolve } from 'path';
 import webpack from '../compiled/webpack';
-import { getConfig, IOpts as IConfigOpts } from './config/config';
+import type { IOpts as IConfigOpts } from './config/config';
 import { Env, IConfig } from './types';
+
+const configModule: typeof import('./config/config') = importLazy(
+  require.resolve('./config/config'),
+);
 
 type IOpts = {
   cwd: string;
@@ -26,7 +30,7 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
     opts.rootDir || opts.cwd,
     opts.config.cacheDirectoryPath || 'node_modules/.cache',
   );
-  const webpackConfig = await getConfig({
+  const webpackConfig = await configModule.getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.production,
