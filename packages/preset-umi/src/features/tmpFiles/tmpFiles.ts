@@ -308,18 +308,7 @@ declare module '*.txt' {
         historyType: api.config.history.type,
         hydrate: !!api.config.ssr,
         reactRouter5Compat: !!api.config.reactRouter5Compat,
-        loadingComponent: importsToStr(
-          await async function () {
-            const { globalLoading } = await api.applyPlugins({
-              key: 'modifyAppData',
-              initialValue: api.appData,
-            });
-            if (globalLoading) {
-              return [{ source: globalLoading, specifier: 'Loading' }]
-            }
-            return []
-          }(),
-        ),
+        loadingComponent: api.appData.globalLoading,
       },
     });
 
