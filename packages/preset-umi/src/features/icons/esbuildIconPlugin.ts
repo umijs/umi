@@ -1,7 +1,14 @@
-import type { Loader, Plugin } from '@umijs/bundler-utils/compiled/esbuild';
+import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import { logger } from '@umijs/utils';
 import fs from 'fs';
 import { extractIcons } from './extract';
+
+const loaderMap = {
+  js: 'tsx',
+  jsx: 'tsx',
+  tsx: 'tsx',
+  ts: 'ts',
+} as const;
 
 export function esbuildIconPlugin(opts: {
   icons: Set<string>;
@@ -10,9 +17,8 @@ export function esbuildIconPlugin(opts: {
   return {
     name: 'esbuildCollectIconPlugin',
     setup(build) {
-      const loaders: Loader[] = ['js', 'jsx', 'ts', 'tsx'];
-      loaders.forEach((loader) => {
-        const filter = new RegExp(`\\.(${loader})$`);
+      Object.keys(loaderMap).forEach((extName) => {
+        const filter = new RegExp(`\\.(${extName})$`);
         build.onLoad({ filter }, async (args) => {
           const contents = await fs.promises.readFile(args.path, 'utf-8');
           const icons = extractIcons(contents);
@@ -22,9 +28,10 @@ export function esbuildIconPlugin(opts: {
             // don't handle delete for dev
             opts.icons.add(opts.alias[icon] || icon);
           });
+
           return {
             contents,
-            loader,
+            loader: loaderMap[extName as keyof typeof loaderMap],
           };
         });
       });

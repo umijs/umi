@@ -8,9 +8,9 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@umijs/plugins": "4.0.53",
+    "@umijs/plugins": "workspace:*",
     "antd": "^4.20.6",
-    "umi": "4.0.53"
+    "umi": "workspace:*"
   },
   "devDependencies": {
     "workerize-loader": "^2.0.2"

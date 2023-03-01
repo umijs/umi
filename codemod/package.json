@@ -19,10 +19,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@umijs/ast": "4.0.7",
-    "@umijs/babel-preset-umi": "4.0.7",
-    "@umijs/bundler-utils": "4.0.7",
-    "@umijs/utils": "4.0.7",
+    "@umijs/ast": "4.0.53",
+    "@umijs/babel-preset-umi": "4.0.53",
+    "@umijs/bundler-utils": "4.0.53",
+    "@umijs/utils": "4.0.53",
     "fast-glob": "3.2.12",
     "kleur": "4.1.5"
   },

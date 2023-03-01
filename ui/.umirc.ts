@@ -9,5 +9,4 @@ export default {
   reactQuery: {},
   valtio: {},
   icons: {},
-  mfsu: false,
 };

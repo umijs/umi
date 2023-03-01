@@ -92,7 +92,7 @@ export const qiankun = {
 
 子应用需要导出必要的生命周期钩子，供父应用在适当的时机调用。
 
-假设您的子应用项目**基于 Umi** 开发且**引入了 `qiankun` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts) **。假如没有，可以按照[此教程](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8)进行配置。
+假设您的子应用项目**基于 Umi 开发**且**引入了 `qiankun` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)**。如果没有，可以按照[此教程](https://qiankun.umijs.org/zh/guide/getting-started#%E5%BE%AE%E5%BA%94%E7%94%A8)进行配置。
 
 修改子应用的 Umi 的配置文件，添加如下内容：
 
@@ -105,13 +105,11 @@ export default {
 };
 ```
 
-这样，微前端插件会自动在项目中创建好 Qiankun 子应用所需的生命周期钩子和方法，Easy as a cake!
-
-我们还可以对子应用进行进一步的配置，例如在子应用的生命周期里调用某些方法，在[此章节](#子应用生命周期)介绍。
+这样，微前端插件会自动在项目中创建好 Qiankun 子应用所需的生命周期钩子和方法，Easy as a cake！
 
 ### 引入子应用
 
-最后，在父应用中引入子应用，有三种实现的方式：
+在父应用中引入子应用，插件提供了三种不同实现的方式：
 
 - 路由绑定引入子应用。
 - `<MicroApp />` 组件引入子应用。
@@ -119,11 +117,12 @@ export default {
 
 #### 路由绑定引入子应用
 
-基于 [Umi 路由](https://umijs.org/docs/guides/routes)绑定子应用。
+手动配置 `.umirc.ts` 文件中的 `routes` 项，通过路由的方式绑定子应用。何时使用：
 
-您需要手动配置 `.umirc.ts` 文件中的 `routes` 项以通过路由的方式绑定子应用。如果您更倾向于约定式路由模式，请考虑[使用组件的方式](#microapp--组件引入子应用)引入子应用。
+- 子应用包含完整的路由切换逻辑时。
+- 父子应用路由相互关联时。
 
-现在，我们想要在 `/app1/project` 和 `/app2` 路由分别加载 `app1` 和 `app2` 子应用，可以配置父应用的 Umi 路由如下：
+现在，我们想要在 `/app1/project` 和 `/app2` 路由分别加载子应用 `app1` 和 `app2`，可以配置父应用的路由如下：
 
 ```ts
 // .umirc.ts
@@ -135,12 +134,12 @@ export default {
       routes: [
         {
           path: '/app1',
-          component: '@/pages/app1/index.tsx',
+          component: '@/layouts/app-layout.tsx',
           routes: [
             // 配置微应用 app1 关联的路由
             {
               // 带上 * 通配符意味着将 /app1/project 下所有子路由都关联给微应用 app1
-              path: '/app1/project/*',
+              path: '/project/*',
               microApp: 'app1',
             },
           ],
@@ -156,15 +155,20 @@ export default {
 };
 ```
 
-我们拓展了 Umi 原有的路由对象，来实现引入子应用。其中，`microApp` 的值为子应用的名称，切换到该路由后，Umi 将会获取并渲染此子应用，并替换原来 Umi 路由对象的 `component` 属性。拓展后的 Umi 路由对象 API 可[见此](#route)。
+`qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
 
-配置好后，子应用的路由将基于当前的路由 `path`。例如，当父应用路由切换为 `/app1/project/info`，子应用 `app1` 的路由变为 `/info`。
+此外，使用 `microApp` 字段引入的子应用路由将基于当前的父应用路由。例如，若父应用路由为 `/app1/project/info`，子应用 `app1` 的路由将自动设为 `/info`。
+
+拓展后的 Umi 路由对象 API [可见此](#route)。
 
 #### `<MicroApp />` 组件引入子应用
 
-基于组件加载（或卸载）子应用。
+通过 `<MicroApp />` 组件加载（或卸载）子应用。何时使用：
 
-现在，我们想在父应用的某个组件中引入 `app1` 子应用，则可以编写代码如下：
+- 子应用包含完整的路由切换逻辑时。
+- 父子应用路由相互关联时。
+
+现在，我们想在父应用的某个页面中引入子应用 `app1`，可以编写代码如下：
 
 ```tsx
 import { MicroApp } from 'umi';
@@ -174,55 +178,28 @@ export default () => {
 };
 ```
 
-使用该方式引入子应用时，父子应用的路由将一一对应，例如当父应用路由为 `/some/page` 时，子应用路由同样变为 `/some/page`。
+使用该方式引入子应用时，父子应用的路由将一一对应。例如，当父应用路由为 `/some/page` 时，子应用路由同样为 `/some/page`。切换子应用路由时，父应用将同步切换。
 
-如果父应用的路由包含前缀，或者当前所在的页面包含其它路由路径时，应当手动处理子应用的路由，保证父子应用的路由正确对应。
-
-例如当父应用路由为 `/prefix/router-path/some/page` 时，我们希望子应用的路由为 `/some/page`，则可以修改代码如下：
+如果父应用的路由包含前缀，可以通过配置 `base` 属性保证父子应用的路由正确对应。例如，父应用路由为 `/prefix/router-path/some/page` 时，我们希望子应用的路由为 `/some/page`，可以修改代码如下：
 
 ```tsx
-<MicroApp name="app1" basename="/prefix/router-path" />
-```
+import { MicroApp } from 'umi';
 
-需注意的是，在 `<MicroApp />` 组件之中并不存在 `basename` 属性，这里的 `basename` 只是传递给子应用的参数。您需要在子应用中**自行处理**该参数，确保当父应用路由改变时，子应用能够切换到对应的页面。
-
-例如，当您的子应用也基于 Umi 开发时，可以在子应用的 `src/app.ts` 文件中导出 `qiankun` 对象，获取父应用传入的 `basename` 属性，最后通过 Umi 提供的 `setCreateHistoryOptions()` 方法在运行时修改子应用的路由前缀。
-
-基于 `qiankun` [插件](https://github.com/umijs/umi/blob/master/packages/plugins/src/qiankun.ts)时，代码实现如下：
-
-```ts
-// src/app.ts
-import { setCreateHistoryOptions } from 'umi';
-
-export const qiankun = {
-  async bootstrap(props: any) {
-    const basename = props?.basename;
-    if (basename) setCreateHistoryOptions({ basename });
-  },
+export default () => {
+  return <MicroApp name="app1" base="/prefix/router-path" />
 };
-```
-
-不使用任何插件时，代码实现如下：
-
-```ts
-// src/app.ts
-import { setCreateHistoryOptions } from 'umi';
-
-export async function bootstrap(props: any) {
-  const basename = props?.basename;
-  if (basename) setCreateHistoryOptions({ basename });
-}
 ```
 
 #### `<MicroAppWithMemoHistory />` 组件引入子应用
 
-基于组件加载（或卸载）子应用。
+通过 `<MicroAppWithMemoHistory />` 组件加载（或卸载）子应用。何时使用：
 
-`<MicroAppWithMemoHistory />` 组件是 `<MicroApp />` 组件的变体，它接受 `<MicroApp />` 的所有参数。
+- 仅使用子应用的指定路由时。
+- 父子应用路由相互独立时。
 
-不同的是，您需要显式提供 `url` 作为子应用的路由。当父应用的路由发生变化时，子应用的路由**不会**改变。
+`<MicroAppWithMemoHistory />` 组件是 `<MicroApp />` 组件的变体，您需要显式提供 `url` 属性作为子应用的路由。当父应用的路由发生变化时，子应用的路由**不会改变**。
 
-现在，我们想在父应用的某个组件中引入 `app2` 子应用，子应用内部的路由为 `/some/page`，则可以编写代码如下：
+现在，我们想在父应用的某个组件内部引入 `app2` 子应用，子应用的路由为 `/some/page`，可以编写代码如下：
 
 ```tsx
 import { MicroAppWithMemoHistory } from 'umi';
@@ -232,16 +209,9 @@ export default () => {
 };
 ```
 
-只有当 `url` 的值发生变化时，子应用的路由才会改变。
-
-当您需要在子应用当中嵌套孙子应用时，使用该组件是一个不错的选择。
-
-
 ### 子应用之间跳转
 
-#### 使用 `<MicroAppLink />` 组件跳转
-
-通过路由绑定引入的子应用，可以使用 `<MicroAppLink />` 进行跨子应用的跳转。以上述 app1 和 app2 为例
+如果子应用通过**路由绑定的方式**引入，在其它子应用的内部，可以使用 `<MicroAppLink />` 跳转到对应的路由。以子应用 `app1` 和 `app2` 为例：
 
 ```tsx
 // 在 app1 中
@@ -249,16 +219,17 @@ import { MicroAppLink } from 'umi';
 
 export default () => {
   return (
-    <div>
+    <>
       {/* 跳转链接为 /app2/home */}
       <MicroAppLink name="app2" to="/home">
         <Button>go to app2</Button>
       </MicroAppLink>
-    </div>
+    </>
   );
 }
-
 ```
+
+在上面的例子中，点击按钮后，父应用的路由变为 `/app2/home`，渲染子应用 `app2` 内部路由为 `/home` 的页面。同理，如果想要从子应用 app2 回到子应用 app1，可以编写代码如下：
 
 ```tsx
 // 在 app2 中
@@ -266,19 +237,33 @@ import { MicroAppLink } from 'umi';
 
 export default () => {
   return (
-    <div>
-    {/* 跳转链接为 /app1/project/hello */}
-      <MicroAppLink name="app1" to="/hello"> 
+    <>
+      {/* 跳转链接为 /app1/project/home */}
+      <MicroAppLink name="app1" to="/home"> 
         <Button>go to app1</Button>
       </MicroAppLink>
-      {/* 跳转链接为 /table */}
-      <MicroAppLink to="/table" isMaster>go to maser app</MicroAppLink>
-    </div>
+    </>
   );
 }
-
 ```
 
+您也可以从子应用跳转到父应用的指定路由：
+
+```tsx
+// 在子应用中
+import { MicroAppLink } from 'umi';
+
+export default () => {
+  return (
+    <>
+      {/* 跳转链接为 /table */}
+      <MicroAppLink isMaster to="/table">
+        <Button>go to master app</Button>
+      </MicroAppLink>
+    </>
+  );
+}
+```
 
 ## 子应用生命周期
 
@@ -293,11 +278,11 @@ Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照
 - `beforeUnmount`，微应用每次**开始卸载前**调用。
 - [`unmount`](https://single-spa.js.org/docs/building-applications/#unmount)，微应用每次**开始卸载时**调用。微应用变成 `UNMOUNTING` 状态。
 - `afterUnmount`，微应用每次**卸载完成时**调用。微应用变成 `NOT_MOUNTED` 状态。
-- [`unload`](https://single-spa.js.org/docs/building-applications/#unload)，微应用**卸下完成时**调用。微应用变成 `NOT_LOADED` 状态。
+- [`unload`](https://single-spa.js.org/docs/building-applications/#unload)，微应用**卸载完成时**调用。微应用变成 `NOT_LOADED` 状态。
 
-此外，还存在一个特殊的生命钩子 `update`，仅在使用 `<MicroApp />` 或 `<MicroAppWithMemoHistory />` 组件引入微应用时生效：状态为 `MOUNTED` 的微应用**手动更新时**调用。开始更新时，微应用变成 `UPDATING` 状态；更新完成时，微应用变成 `MOUNTED` 状态。
+此外，还存在一个特殊的生命钩子 `update`，仅在使用 `<MicroApp />` 或 `<MicroAppWithMemoHistory />` 组件引入微应用时生效：状态为 `MOUNTED` 的微应用**手动刷新时**调用。开始更新时，微应用变成 `UPDATING` 状态；更新完成时，微应用变成 `MOUNTED` 状态。
 
-您可以像这样更新子应用：
+您可以像这样手动刷新子应用：
 
 ```tsx
 import React, { useRef } from 'react';
@@ -308,7 +293,7 @@ export default () => {
 
   // 执行此方法时，更新子应用
   const updateMicroApp = () => {
-    microAppRef.current.update();
+    microAppRef.current?.update();
   };
 
   return <MicroApp name="app1" ref={microAppRef} />;
@@ -335,7 +320,7 @@ export const qiankun = {
 
 ### 子应用配置生命周期钩子
 
-在子应用的 `src/app.ts` 中导出 `qiankun` 对象，实现生命周期钩子。子应用运行时仅支持配置 bootstrap、mount、unmount 钩子：
+在子应用的 `src/app.ts` 中导出 `qiankun` 对象，实现生命周期钩子。子应用运行时仅支持配置 `bootstrap`、`mount` 和 `unmount` 钩子：
 
 ```ts
 // src/app.ts
@@ -366,7 +351,7 @@ export const qiankun = {
 
 该通信方式基于 [数据流](https://github.com/umijs/umi/blob/master/packages/plugins/src/model.ts) 插件，此插件已经内置于 `@umi/max` 解决方案当中。
 
-该通信方式需要子应用**基于 Umi** 开发且**引入了该数据流插件**。
+该通信方式需要子应用**基于 Umi 开发**且**引入了该数据流插件**。
 
 关于此插件的详细介绍可见[数据流指南](./data-flow)。
 
@@ -690,8 +675,6 @@ export default {
   },
 };
 ```
-
-
 
 ## API
 

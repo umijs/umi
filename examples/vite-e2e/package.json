@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "antd": "^4.20.6",
-    "umi": "4.0.53"
+    "umi": "workspace:*"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "cypress": "^10.0.0",
+    "cypress": "^12.0.0",
     "start-server-and-test": "^1.15.2"
   }
 }

@@ -16,6 +16,10 @@ $ umi mfsu b
 # list mfsu dependencies
 $ umi mfsu list 
 $ umi mfsu ls 
+
+# remove mfsu dependencies
+$ umi mfsu remove
+$ umi mfsu remove --all
 `.trim();
 
 export default (api: IApi) => {
@@ -27,7 +31,7 @@ export default (api: IApi) => {
 
   api.registerCommand({
     name: 'mfsu',
-    description: 'umi mfsu CLI util',
+    description: 'mfsu CLI util',
     details: HELP_TEXT,
     configResolveMode: 'strict',
     async fn({ args }) {
@@ -70,7 +74,7 @@ export default (api: IApi) => {
           }
           break;
         case 'help':
-          printHelpInfo();
+          printHelpInfo(api);
           break;
         default:
           throw new Error(`Unsupported mfsu action`);
@@ -79,6 +83,6 @@ export default (api: IApi) => {
   });
 };
 
-function printHelpInfo() {
-  console.log(HELP_TEXT);
+function printHelpInfo(api: IApi) {
+  console.log(HELP_TEXT.replace(/umi/g, api.appData.umi.cliName));
 }

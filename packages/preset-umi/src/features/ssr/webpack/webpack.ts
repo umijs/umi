@@ -1,9 +1,9 @@
-import { lodash, logger } from '@umijs/utils';
 import * as bundlerWebpack from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import { lodash, logger } from '@umijs/utils';
+import { dirname, resolve } from 'path';
 import { IApi } from '../../../types';
 import { absServerBuildPath } from '../utils';
-import { dirname, resolve } from 'path';
 
 export const build = async (api: IApi, opts: any) => {
   logger.wait('[SSR] Compiling...');
@@ -29,6 +29,9 @@ export const build = async (api: IApi, opts: any) => {
   // strip onBuildComplete hook
   delete bundlerOpts.onBuildComplete;
 
+  // enable watch mode in dev
+  bundlerOpts.watch = api.env === 'development';
+
   // override chainWebpack
   bundlerOpts.chainWebpack = async (memo: WebpackChain) => {
     const absOutputFile = absServerBuildPath(api);
@@ -51,11 +54,6 @@ export const build = async (api: IApi, opts: any) => {
 
     // do not minify
     memo.optimization.minimize(false);
-
-    // enable watch mode in dev
-    if (api.env === 'development') {
-      memo.watch(true);
-    }
 
     return memo;
   };
