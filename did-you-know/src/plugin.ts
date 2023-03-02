@@ -83,7 +83,7 @@ export default (api: any) => {
     });
     // 2、matched.length ? random : null
     if (matched.length) {
-      // 为提示过、已提示数小于最大提示的，作为待选项
+      // 未提示过、已提示数小于最大值，作为待选项
       const available = matched.filter(({ index }) => {
         const record = records[index];
         return !record || record.count < MAX_RESET_COUNT;
