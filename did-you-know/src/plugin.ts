@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 // @ts-ignore
 import data from '../package.json';
 // @ts-ignore
@@ -14,7 +14,7 @@ const MAX_RESET_COUNT = 5;
 
 export default (api: any) => {
   const recordJSONPath = path.join(api.paths.absTmpPath, 'did-you-know.json');
-  /** did_you_know 触发记录 */
+  // did_you_know 触发记录
   let records: Record<string, ITipRecord> = fs.existsSync(recordJSONPath)
     ? JSON.parse(fs.readFileSync(recordJSONPath, 'utf-8'))
     : {};
@@ -65,7 +65,7 @@ export default (api: any) => {
 
   api.onDevCompileDone(() => {
     if (fs.existsSync(api.paths.absTmpPath))
-      fs.writeFileSync(recordJSONPath, JSON.stringify(records));
+      fs.writeFileSync(recordJSONPath, JSON.stringify(records), 'utf-8');
   });
 
   function getDidYouKnow(
@@ -74,13 +74,14 @@ export default (api: any) => {
     majorVersion: string,
   ) {
     // 1、get matched
-    const matched = items.filter((item, index) => {
-      item.index = index;
-      return (
-        (!item.framework || item.framework.includes(framework)) &&
-        (!item.majorVersion || majorVersion === `${item.majorVersion}`)
-      );
-    });
+    const matched = items
+      .map((i, index) => ({ ...i, index }))
+      .filter((item) => {
+        return (
+          (!item.framework || item.framework.includes(framework)) &&
+          (!item.majorVersion || majorVersion === `${item.majorVersion}`)
+        );
+      });
     // 2、matched.length ? random : null
     if (matched.length) {
       // 未提示过、已提示数小于最大值，作为待选项
@@ -115,14 +116,13 @@ export default (api: any) => {
         }
       }
 
-      const sorted = available.sort(
+      available.sort(
         (l, r) => records[l.index].lastTime - records[r.index].lastTime,
       );
       // 末位为上次输出的提示，不取
-      const rIndex = Math.floor(Math.random() * (sorted.length - 1));
+      const rIndex = Math.floor(Math.random() * (available.length - 1));
 
-      const luckTip = sorted[rIndex];
-
+      const luckTip = available[rIndex];
       records[luckTip.index] = {
         lastTime: Date.now(),
         count: records[luckTip.index].count + 1,
