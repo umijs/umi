@@ -6,7 +6,7 @@ import { IApi, IOnGenerateFiles } from '../../types';
 
 export default (api: IApi) => {
   function updateAppdata(_buildResult: BuildResult) {
-    const buildResult = lodash.cloneDeep(_buildResult);
+    const buildResult: BuildResult = lodash.cloneDeep(_buildResult);
     (buildResult.outputFiles || []).forEach((file) => {
       // @ts-ignore
       delete file?.contents;
@@ -51,6 +51,7 @@ export default (api: IApi) => {
         },
         config: {
           alias: unwrappedAlias,
+          cwd: api.paths.cwd,
         },
         plugins,
       });

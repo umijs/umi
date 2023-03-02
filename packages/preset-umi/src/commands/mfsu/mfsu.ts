@@ -28,6 +28,7 @@ export default (api: IApi) => {
   api.describe({
     key: 'mfsu-cli',
   });
+
   api.registerCommand({
     name: 'mfsu',
     description: 'mfsu CLI util',

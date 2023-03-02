@@ -2,6 +2,7 @@ import type { Plugin } from '@umijs/bundler-utils/compiled/esbuild';
 import enhancedResolve from 'enhanced-resolve';
 import fs from 'fs';
 import path from 'path';
+import { isRelativePath } from './isRelative';
 
 const resolver = enhancedResolve.create({
   mainFields: ['module', 'browser', 'main'],
@@ -42,8 +43,9 @@ export function esbuildAliasPlugin(opts: {
       sortByAffix({ keys: Object.keys(opts.alias), affix: '$' })
         .filter((key) => {
           return (
-            path.isAbsolute(opts.alias[key]) &&
-            !opts.alias[key].includes('node_modules')
+            (path.isAbsolute(opts.alias[key]) &&
+              !opts.alias[key].includes('node_modules')) ||
+            isRelativePath(opts.alias[key])
           );
         })
         .forEach((key) => {
@@ -52,11 +54,13 @@ export function esbuildAliasPlugin(opts: {
           const filter = key.endsWith('$')
             ? new RegExp(`^${key}`)
             : new RegExp(`^${key}$`);
+
           build.onResolve({ filter }, async (args) => {
             const path = await resolve(
-              args.importer,
+              args.resolveDir,
               args.path.replace(filter, value),
             );
+
             return {
               path,
             };
@@ -70,7 +74,7 @@ export function esbuildAliasPlugin(opts: {
             const filter = new RegExp(`^${addSlashAffix(key)}`);
             build.onResolve({ filter }, async (args) => {
               const path = await resolve(
-                args.importer,
+                args.resolveDir,
                 args.path.replace(filter, addSlashAffix(value)),
               );
               return {

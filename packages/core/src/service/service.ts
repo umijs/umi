@@ -1,3 +1,4 @@
+import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import {
   AsyncSeriesWaterfallHook,
   SyncWaterfallHook,
@@ -49,6 +50,9 @@ export class Service {
       }
     >;
     framework?: IFrameworkType;
+    prepare?: {
+      buildResult: BuildResult;
+    };
     [key: string]: any;
   } = {};
   args: yParser.Arguments = { _: [], $0: '' };
