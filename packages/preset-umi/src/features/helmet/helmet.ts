@@ -13,7 +13,7 @@ export default (api: IApi) => {
   });
 
   api.onGenerateFiles(() => {
-    if (!api.config.vite) {
+    if (api.appData.framework === 'react') {
       api.writeTmpFile({
         noPluginDir: true,
         path: 'core/helmet.ts',
@@ -29,5 +29,7 @@ export const innerProvider = (container) => {
     }
   });
 
-  api.addRuntimePlugin(() => (api.config.vite ? [] : ['@@/core/helmet.ts']));
+  api.addRuntimePlugin(() =>
+    api.appData.framework === 'react' ? ['@@/core/helmet.ts'] : [],
+  );
 };
