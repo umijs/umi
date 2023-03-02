@@ -119,7 +119,7 @@ function getDidYouKnow(
   return null;
 }
 
-const MAX_RESET_COUNT = 2;
+const MAX_RESET_COUNT = 5;
 export function getTip(
   tips: ITip[],
   records: Record<string, ITipRecord>,
