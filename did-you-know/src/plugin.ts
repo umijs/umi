@@ -135,7 +135,7 @@ export function getTip(
     const curTip = available[0];
     updateRecords({
       [encodeURI(curTip.text)]: {
-        lastTime: new Date().getTime(),
+        lastTime: Date.now(),
         count: 1,
       },
     });
@@ -148,7 +148,7 @@ export function getTip(
         ...records,
         [encodeURI(item.text)]: {
           count: 1,
-          lastTime: new Date().getTime(),
+          lastTime: Date.now(),
         },
       });
       return item;
@@ -167,7 +167,7 @@ export function getTip(
   const luckTip = sorted[rIndex];
   const curRecord = getRecord(luckTip, records);
   records[encodeURI(luckTip.text)] = {
-    lastTime: new Date().getTime(),
+    lastTime: Date.now(),
     count: curRecord.count + 1,
   };
   updateRecords(records);
