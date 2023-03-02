@@ -7,6 +7,7 @@ export default (api: IApi) => {
     key: 'request',
     config: {
       schema: (Joi) => {
+        // 生成类型 dataField: '' | string
         return Joi.alternatives().try(
           Joi.object({
             dataField: Joi.alternatives().try(
