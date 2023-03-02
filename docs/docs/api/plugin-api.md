@@ -513,6 +513,10 @@ api.onBeforeMiddleware(({ app }) => {
 ### onBuildComplete
 build 完成时。传入的 fn 接收 `{ isFirstCompile: boolean, stats, time: number, err?: Error }` 作为参数。
 
+### onBuildCompleteAsync
+
+与 `onBuildComplete` 类似，但可以使用 `async/await`，通常用于构建错误时上报监控，可避免上报未完成时进程就终止的问题。
+
 ### onBuildHtmlComplete
 build 完成且 html 完成构建之后。
 

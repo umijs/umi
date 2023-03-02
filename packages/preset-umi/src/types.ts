@@ -158,6 +158,7 @@ export type IApi = PluginAPI &
       stats: webpack.Stats;
       time: number;
     }>;
+    onBuildCompleteAsync: IApi['onBuildComplete'];
     onBuildHtmlComplete: IEvent<{}>;
     onCheckCode: IEvent<{
       cjsExports: string[];

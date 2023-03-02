@@ -61,14 +61,14 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
 
     const compiler = webpack(webpackConfig);
     let closeWatching: webpack.Watching['close'];
-    const handler: Parameters<typeof compiler.run>[0] = (err, stats) => {
+    const handler: Parameters<typeof compiler.run>[0] = async (err, stats) => {
       // generate valid error from normal error and stats error
       const validErr =
         err || stats?.hasErrors()
           ? new Error(stats!.toString('errors-only'))
           : null;
 
-      opts.onBuildComplete?.({
+      await opts.onBuildComplete?.({
         err: validErr,
         stats,
         isFirstCompile,

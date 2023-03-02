@@ -108,12 +108,16 @@ umi build --clean
         beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
-        onBuildComplete(opts: any) {
+        async onBuildComplete(opts: any) {
           printMemoryUsage();
           api.applyPlugins({
             key: 'onBuildComplete',
             args: opts,
             sync: true,
+          });
+          await api.applyPlugins({
+            key: 'onBuildCompleteAsync',
+            args: opts,
           });
         },
         clean: true,
