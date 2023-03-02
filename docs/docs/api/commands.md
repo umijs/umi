@@ -235,7 +235,7 @@ $ umi run ./script.ts
 $ umi deadcode
 - Preparing...
 - begin check deadCode
-- write file /Users/yuyuehui/umi/examples/umi-run/DeadCodeList-{timeStamp}.txt
+- write file /examples/umi-run/DeadCodeList-{timeStamp}.txt
 - check dead code end, please be careful if you want to remove them
 ```
 
