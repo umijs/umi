@@ -78,7 +78,6 @@ export const jest = {
   'jest/no-identical-title': 2,
   'jest/no-interpolation-in-snapshots': 2,
   'jest/no-jasmine-globals': 2,
-  'jest/no-jest-import': 2,
   'jest/no-mocks-import': 2,
   'jest/no-standalone-expect': 2,
   'jest/valid-describe-callback': 2,
