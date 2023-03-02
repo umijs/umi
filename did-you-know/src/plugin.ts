@@ -10,12 +10,13 @@ enum EFramework {
   max = '@umijs/max',
   bigfish = '@alipay/bigfish',
 }
+const MAX_RESET_COUNT = 5;
 
 export default (api: any) => {
   const recordJSONPath = path.join(api.paths.absTmpPath, 'did-you-know.json');
   /** did_you_know 触发记录 */
   let records: Record<string, ITipRecord> = fs.existsSync(recordJSONPath)
-    ? JSON.parse(fs.readFileSync(recordJSONPath, 'utf-8')) ?? {}
+    ? JSON.parse(fs.readFileSync(recordJSONPath, 'utf-8'))
     : {};
 
   api.onStart(() => {
@@ -48,15 +49,7 @@ export default (api: any) => {
       framework = EFramework.bigfish;
     }
 
-    const item = getDidYouKnow(
-      data.didYouKnow,
-      framework,
-      majorVersion,
-      records,
-      (newRecords) => {
-        records = newRecords;
-      },
-    );
+    const item = getDidYouKnow(data.didYouKnow, framework, majorVersion);
 
     if (!item) return;
     const { text, url } = item;
@@ -74,18 +67,84 @@ export default (api: any) => {
     if (fs.existsSync(api.paths.absTmpPath))
       fs.writeFileSync(recordJSONPath, JSON.stringify(records));
   });
+
+  function getDidYouKnow(
+    items: ITip[] = [],
+    framework: Framework,
+    majorVersion: string,
+  ) {
+    // 1、get matched
+    const matched = items.filter((item, index) => {
+      item.index = index;
+      return (
+        (!item.framework || item.framework.includes(framework)) &&
+        (!item.majorVersion || majorVersion === `${item.majorVersion}`)
+      );
+    });
+    // 2、matched.length ? random : null
+    if (matched.length) {
+      // 为提示过、已提示数小于最大提示的，作为待选项
+      const available = matched.filter(({ index }) => {
+        const record = records[index];
+        return !record || record.count < MAX_RESET_COUNT;
+      });
+
+      // 只剩一个选项，直接返回并重置记录
+      if (available.length === 1) {
+        const tip = available[0];
+        records = {
+          [tip.index]: {
+            lastTime: Date.now(),
+            count: 1,
+          },
+        };
+        return tip;
+      }
+
+      // 存在未曾提示过的，或新增的提示，优先提示
+      for (const tip of available) {
+        if (!records[tip.index]) {
+          records = {
+            ...records,
+            [tip.index]: {
+              count: 1,
+              lastTime: Date.now(),
+            },
+          };
+          return tip;
+        }
+      }
+
+      const sorted = available.sort(
+        (l, r) => records[l.index].lastTime - records[r.index].lastTime,
+      );
+      // 末位为上次输出的提示，不取
+      const rIndex = Math.floor(Math.random() * (sorted.length - 1));
+
+      const luckTip = sorted[rIndex];
+
+      records[luckTip.index] = {
+        lastTime: Date.now(),
+        count: records[luckTip.index].count + 1,
+      };
+
+      return luckTip;
+    }
+    return null;
+  }
 };
 
 type Framework = `${EFramework}`;
 
-interface ITip {
+export interface ITip {
   text: string;
   url?: string;
+  index: number;
   majorVersion?: number;
   framework?: Framework[];
 }
 
-interface ITipRecord {
+export interface ITipRecord {
   lastTime: number;
   count: number;
 }
@@ -96,85 +155,4 @@ function formatLink(url: string) {
   } else {
     return `，详见 ${url}`;
   }
-}
-
-function getDidYouKnow(
-  items: ITip[] = [],
-  framework: Framework,
-  majorVersion: string,
-  records: Record<string, ITipRecord>,
-  updateRecords: (newRecords: Record<string, ITipRecord>) => void,
-) {
-  // 1、get matched
-  const matched = items.filter((item) => {
-    return (
-      (!item.framework || item.framework.includes(framework)) &&
-      (!item.majorVersion || majorVersion === `${item.majorVersion}`)
-    );
-  });
-  // 2、matched.length ? random : null
-  if (matched.length) {
-    return getTip(matched, records, updateRecords);
-  }
-  return null;
-}
-
-const MAX_RESET_COUNT = 5;
-export function getTip(
-  tips: ITip[],
-  records: Record<string, ITipRecord>,
-  updateRecords: (newRecords: Record<string, ITipRecord>) => void,
-) {
-  const available = tips.filter((tip) => {
-    const record = getRecord(tip, records);
-    return !record || record.count < MAX_RESET_COUNT;
-  });
-
-  // 仅有一个可选时，重置记录
-  if (available.length === 1) {
-    const curTip = available[0];
-    updateRecords({
-      [encodeURI(curTip.text)]: {
-        lastTime: Date.now(),
-        count: 1,
-      },
-    });
-    return curTip;
-  }
-
-  for (const item of available) {
-    if (!getRecord(item, records)) {
-      updateRecords({
-        ...records,
-        [encodeURI(item.text)]: {
-          count: 1,
-          lastTime: Date.now(),
-        },
-      });
-      return item;
-    }
-  }
-  const sorted = available.sort((l, r) => {
-    const lRecord = getRecord(l, records);
-    const rRecord = getRecord(r, records);
-
-    return lRecord.lastTime - rRecord.lastTime;
-  });
-
-  // 末位为上次输出的提示，不取
-  const rIndex = Math.floor(Math.random() * (sorted.length - 1));
-
-  const luckTip = sorted[rIndex];
-  const curRecord = getRecord(luckTip, records);
-  records[encodeURI(luckTip.text)] = {
-    lastTime: Date.now(),
-    count: curRecord.count + 1,
-  };
-  updateRecords(records);
-
-  return luckTip;
-}
-
-function getRecord(tip: ITip, records: Record<string, ITipRecord>) {
-  return records[encodeURI(tip.text)];
 }
