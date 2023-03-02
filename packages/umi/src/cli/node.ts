@@ -1,7 +1,7 @@
-import { isLocalDev, logger } from '@umijs/utils';
+import { isLocalDev, logger, semver } from '@umijs/utils';
 import { FRAMEWORK_NAME, MIN_NODE_VERSION } from '../constants';
 
-const ver = parseInt(process.version.slice(1));
+const ver = semver.major(process.version);
 
 export function checkVersion() {
   if (ver < MIN_NODE_VERSION || ver === 15 || ver === 17) {
