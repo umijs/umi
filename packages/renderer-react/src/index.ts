@@ -4,7 +4,7 @@ export {
   createMemoryHistory,
   type History,
 } from 'history';
-export { Helmet } from 'react-helmet-async';
+export { Helmet, HelmetProvider } from 'react-helmet-async';
 export {
   createSearchParams,
   generatePath,

@@ -6,7 +6,6 @@ import React, {
   useState,
 } from 'react';
 // compatible with < react@18 in @umijs/preset-umi/src/features/react
-import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
 import { matchRoutes, Router, useRoutes } from 'react-router-dom';
 import { AppContext, useAppData } from './appContext';
@@ -298,24 +297,22 @@ const getBrowser = (
     }, []);
 
     return (
-      <HelmetProvider context={{}}>
-        <AppContext.Provider
-          value={{
-            routes: opts.routes,
-            routeComponents: opts.routeComponents,
-            clientRoutes,
-            pluginManager: opts.pluginManager,
-            rootElement: opts.rootElement!,
-            basename,
-            clientLoaderData,
-            serverLoaderData,
-            preloadRoute: handleRouteChange,
-            history: opts.history,
-          }}
-        >
-          {rootContainer}
-        </AppContext.Provider>
-      </HelmetProvider>
+      <AppContext.Provider
+        value={{
+          routes: opts.routes,
+          routeComponents: opts.routeComponents,
+          clientRoutes,
+          pluginManager: opts.pluginManager,
+          rootElement: opts.rootElement!,
+          basename,
+          clientLoaderData,
+          serverLoaderData,
+          preloadRoute: handleRouteChange,
+          history: opts.history,
+        }}
+      >
+        {rootContainer}
+      </AppContext.Provider>
     );
   };
   return Browser;

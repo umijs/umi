@@ -707,6 +707,13 @@ headScripts: [
 ],
 ```
 
+## helmet
+
+- 类型：`boolean`
+- 默认值：`true`
+
+配置 `react-helmet-async` 的集成，当设置为 `false` 时，不会集成 `react-helmet-async`，此时无法从框架中 `import { Helmet }` 使用，同时构建产物也会减少[相应的尺寸](https://bundlephobia.com/package/react-helmet-async)。
+
 ## history
 
 - 类型：`{ type: 'browser' | 'hash' | 'memory' }`
