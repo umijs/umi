@@ -113,7 +113,7 @@ umi build --clean
           api.applyPlugins({
             key: 'onBuildComplete',
             args: opts,
-            // sync: true,
+            sync: true,
           });
         },
         clean: true,
