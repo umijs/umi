@@ -3,7 +3,7 @@ import { Icon, styled } from 'umi';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 1.25rem 1rem;
   border-bottom: 1px solid var(--subtle-color);
 
   span {

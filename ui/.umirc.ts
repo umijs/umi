@@ -17,6 +17,8 @@ export default {
       'ant-design:medicine-box-outlined',
       'ant-design:api-outlined',
       'ant-design:right-square-outlined',
+      'ant-design:bars-outlined',
+      'ant-design:pie-chart-outlined',
     ],
   },
 };
