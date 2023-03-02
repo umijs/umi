@@ -2,7 +2,10 @@ import { Config, createConfig } from 'umi/test';
 
 export default {
   ...createConfig(),
-  testMatch: ['<rootDir>/packages/*/src/**/*.test.ts'],
+  testMatch: [
+    '<rootDir>/packages/*/src/**/*.test.ts',
+    '<rootDir>/did-you-know/src/**/*.test.ts',
+  ],
   modulePathIgnorePatterns: [
     '<rootDir>/packages/.+/compiled',
     '<rootDir>/packages/.+/fixtures',
