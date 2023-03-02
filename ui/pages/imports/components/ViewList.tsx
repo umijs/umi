@@ -1,7 +1,7 @@
 import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
 import { Input, List } from 'antd';
 import VirtualList from 'rc-virtual-list';
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Icon, styled } from 'umi';
 
 interface IProps {
@@ -32,31 +32,53 @@ const ListContainer = styled.div`
   margin-top: 2rem;
 
   .ant-list-item {
-    font-size: 1rem;
     color: var(--text-color);
     border-color: var(--text-color);
     padding-left: 1rem;
   }
 `;
 
+// 虚拟列表 item 高度不知道为啥是47
+const ItemHeight = 47;
+const exclude: RegExp[] = [/node_modules/];
+const isExclude = (path: string) => {
+  return exclude.some((reg) => reg.test(path));
+};
+
 export const ViewList: FC<IProps> = ({ showNodeModules, metaFile }) => {
-  const ContainerHeight = window.innerHeight - 200;
+  const [ipt, setIpt] = useState('');
 
   const importsList = useMemo(() => {
     const { inputs } = metaFile;
     const list = Object.keys(inputs).reduce((acc, key) => {
       const imports = inputs[key].imports || [];
-      const paths = imports.map((ipt) => ipt.path);
+      const paths = imports
+        .map((ipt) => ipt.path)
+        .filter((path) => {
+          const inSearch = path.indexOf(ipt) !== -1;
+          return inSearch && (showNodeModules || !isExclude(path));
+        });
       return [...acc, ...paths];
     }, [] as string[]);
-    return Array.from(new Set(list));
-  }, [metaFile, showNodeModules]);
+    return Array.from(new Set(list)).sort();
+  }, [metaFile, showNodeModules, ipt]);
+
+  const ContainerHeight = useMemo(() => {
+    const maxHeight = window.innerHeight - 200;
+    const listHeight = ItemHeight * importsList.length;
+    if (listHeight > maxHeight) {
+      return maxHeight;
+    }
+    return listHeight;
+  }, [importsList]);
 
   return (
     <div>
       <SearchContainer>
         <Input
           size="large"
+          value={ipt}
+          onChange={(e) => setIpt(e.target.value)}
           placeholder="large size"
           prefix={
             <Icon
@@ -73,7 +95,7 @@ export const ViewList: FC<IProps> = ({ showNodeModules, metaFile }) => {
           <VirtualList
             data={importsList}
             height={ContainerHeight}
-            itemHeight={40}
+            itemHeight={ItemHeight}
             itemKey={(item) => item}
           >
             {(item: string, index) => (
