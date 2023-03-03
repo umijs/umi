@@ -1,4 +1,4 @@
-import { getNpmClient, importLazy } from '@umijs/utils';
+import { getNpmClient, importLazy, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
@@ -154,9 +154,10 @@ export default (api: IApi) => {
       [],
     );
 
-    const globalLoading = expandJSPaths(join(absSrcPath, 'loading')).find(
+    const loadingFile = expandJSPaths(join(absSrcPath, 'loading')).find(
       existsSync,
     );
+    const globalLoading = loadingFile ? winPath(loadingFile) : undefined;
 
     const overridesCSS = [getOverridesCSS(api.paths.absSrcPath)].filter(
       Boolean,
