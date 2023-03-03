@@ -29,6 +29,20 @@ export class EsbuildMinifyFix {
     });
   }
 
+  private isIIFE(source: string) {
+    source = source.trim();
+    if (source.startsWith('(function(){"use strict";')) {
+      return true;
+    }
+    if (
+      source.startsWith('(function(){') &&
+      (source.endsWith('})()') || source.endsWith('})();'))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   async minifyFix(
     compilation: Compilation,
     assets: Record<string, sources.Source>,
@@ -51,6 +65,11 @@ export class EsbuildMinifyFix {
 
           // 处理过无需再次处理
           if (info?.EsbuildMinifyFix) {
+            return false;
+          }
+
+          // skip worker file
+          if (name.endsWith('.worker.js')) {
             return false;
           }
 
@@ -78,11 +97,11 @@ export class EsbuildMinifyFix {
       // 尝试不处理 无问题的代码
       if (
         !newCode.startsWith('"use strict";(self.') &&
-        !newCode.startsWith('(function(){"use strict";') &&
-        !newCode.startsWith('(self.webpack')
+        !newCode.startsWith('(self.webpack') &&
+        !this.isIIFE(newCode)
       ) {
         const bundle = new MagicString(newCode);
-        bundle.indent().prepend('!(function () {\n').append('}());');
+        bundle.prepend('!(function(){').append('}());');
         newCode = bundle.toString();
 
         const output: {
