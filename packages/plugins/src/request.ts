@@ -262,6 +262,7 @@ const request: IRequest = (url: string, opts: any = { method: 'GET' }) => {
             config?.errorConfig?.errorHandler;
           if(handler)
             handler(error, opts, config);
+            return;
         } catch (e) {
           reject(e);
         }
