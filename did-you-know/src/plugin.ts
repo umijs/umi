@@ -14,7 +14,11 @@ const MAX_RESET_COUNT = 5;
 const RECORD_FILE = 'did-you-know.json';
 
 export default (api: any) => {
-  const recordJSONPath = path.join(api.paths.absTmpPath, RECORD_FILE);
+  const recordJSONPath = path.join(
+    api.paths.absNodeModulesPath,
+    '.cache',
+    RECORD_FILE,
+  );
   // did_you_know 触发记录
   let records: Record<string, ITipRecord> = fs.existsSync(recordJSONPath)
     ? JSON.parse(fs.readFileSync(recordJSONPath, 'utf-8'))
@@ -62,16 +66,9 @@ export default (api: any) => {
       url ? formatLink(url) : '。',
     ];
     logger.info(chalk.yellow(info.join('')));
-  });
 
-  api.onGenerateFiles((arg: any) => {
-    if (arg.isFirstTime) {
-      api.writeTmpFile({
-        path: `./${RECORD_FILE}`,
-        content: JSON.stringify(records),
-        noPluginDir: true,
-      });
-    }
+    if (fs.existsSync(path.join(api.paths.absNodeModulesPath, '.cache')))
+      fs.writeFileSync(recordJSONPath, JSON.stringify(records), 'utf-8');
   });
 
   function getDidYouKnow(
