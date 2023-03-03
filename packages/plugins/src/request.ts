@@ -7,11 +7,13 @@ export default (api: IApi) => {
     key: 'request',
     config: {
       schema: (Joi) => {
+        // 生成类型 dataField: '' | string
         return Joi.alternatives().try(
           Joi.object({
-            dataField: Joi.string()
-              .pattern(/^[a-zA-Z]*$/)
-              .allow(''),
+            dataField: Joi.alternatives().try(
+              Joi.string().allow(''),
+              Joi.string(),
+            ),
           }),
           Joi.boolean().invalid(true),
         );
