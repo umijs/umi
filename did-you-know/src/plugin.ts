@@ -11,9 +11,10 @@ enum EFramework {
   bigfish = '@alipay/bigfish',
 }
 const MAX_RESET_COUNT = 5;
+const RECORD_FILE = 'did-you-know.json';
 
 export default (api: any) => {
-  const recordJSONPath = path.join(api.paths.absTmpPath, 'did-you-know.json');
+  const recordJSONPath = path.join(api.paths.absTmpPath, RECORD_FILE);
   // did_you_know 触发记录
   let records: Record<string, ITipRecord> = fs.existsSync(recordJSONPath)
     ? JSON.parse(fs.readFileSync(recordJSONPath, 'utf-8'))
@@ -63,9 +64,14 @@ export default (api: any) => {
     logger.info(chalk.yellow(info.join('')));
   });
 
-  api.onDevCompileDone(() => {
-    if (fs.existsSync(api.paths.absTmpPath))
-      fs.writeFileSync(recordJSONPath, JSON.stringify(records), 'utf-8');
+  api.onGenerateFiles((arg: any) => {
+    if (arg.isFirstTime) {
+      api.writeTmpFile({
+        path: `./${RECORD_FILE}`,
+        content: JSON.stringify(records),
+        noPluginDir: true,
+      });
+    }
   });
 
   function getDidYouKnow(
@@ -74,19 +80,17 @@ export default (api: any) => {
     majorVersion: string,
   ) {
     // 1、get matched
-    const matched = items
-      .map((i, index) => ({ ...i, index }))
-      .filter((item) => {
-        return (
-          (!item.framework || item.framework.includes(framework)) &&
-          (!item.majorVersion || majorVersion === `${item.majorVersion}`)
-        );
-      });
+    const matched = items.filter((item) => {
+      return (
+        (!item.framework || item.framework.includes(framework)) &&
+        (!item.majorVersion || majorVersion === `${item.majorVersion}`)
+      );
+    });
     // 2、matched.length ? random : null
     if (matched.length) {
       // 未提示过、已提示数小于最大值，作为待选项
-      const available = matched.filter(({ index }) => {
-        const record = records[index];
+      const available = matched.filter(({ text }) => {
+        const record = records[encodeURI(text)];
         return !record || record.count < MAX_RESET_COUNT;
       });
 
@@ -94,7 +98,7 @@ export default (api: any) => {
       if (available.length === 1) {
         const tip = available[0];
         records = {
-          [tip.index]: {
+          [encodeURI(tip.text)]: {
             lastTime: Date.now(),
             count: 1,
           },
@@ -104,10 +108,11 @@ export default (api: any) => {
 
       // 存在未曾提示过的，或新增的提示，优先提示
       for (const tip of available) {
-        if (!records[tip.index]) {
+        const recordKey = encodeURI(tip.text);
+        if (!records[recordKey]) {
           records = {
             ...records,
-            [tip.index]: {
+            [recordKey]: {
               count: 1,
               lastTime: Date.now(),
             },
@@ -117,15 +122,18 @@ export default (api: any) => {
       }
 
       available.sort(
-        (l, r) => records[l.index].lastTime - records[r.index].lastTime,
+        (l, r) =>
+          records[encodeURI(l.text)].lastTime -
+          records[encodeURI(r.text)].lastTime,
       );
       // 末位为上次输出的提示，不取
       const rIndex = Math.floor(Math.random() * (available.length - 1));
 
       const luckTip = available[rIndex];
-      records[luckTip.index] = {
+      const recordKey = encodeURI(luckTip.text);
+      records[recordKey] = {
         lastTime: Date.now(),
-        count: records[luckTip.index].count + 1,
+        count: records[recordKey].count + 1,
       };
 
       return luckTip;
@@ -136,15 +144,14 @@ export default (api: any) => {
 
 type Framework = `${EFramework}`;
 
-export interface ITip {
+interface ITip {
   text: string;
   url?: string;
-  index: number;
   majorVersion?: number;
   framework?: Framework[];
 }
 
-export interface ITipRecord {
+interface ITipRecord {
   lastTime: number;
   count: number;
 }
