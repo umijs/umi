@@ -67,8 +67,11 @@ export default (api: any) => {
     ];
     logger.info(chalk.yellow(info.join('')));
 
-    if (fs.existsSync(path.join(api.paths.absNodeModulesPath, '.cache')))
-      fs.writeFileSync(recordJSONPath, JSON.stringify(records), 'utf-8');
+    const cacheDir = path.join(api.paths.absNodeModulesPath, '.cache');
+    if (!fs.existsSync(cacheDir)) {
+      fs.mkdirSync(cacheDir);
+    }
+    fs.writeFileSync(recordJSONPath, JSON.stringify(records), 'utf-8');
   });
 
   function getDidYouKnow(
