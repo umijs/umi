@@ -18,7 +18,7 @@ const options = [
 ];
 
 export default function Page() {
-  const [viewType, setViewType] = useState('chart');
+  const [viewType, setViewType] = useState('list');
 
   const { data } = useAppData();
 
