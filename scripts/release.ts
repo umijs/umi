@@ -1,7 +1,7 @@
+import { getReleaseNotes } from '@/scripts/utils/getReleaseNotes';
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
-import { Octokit } from 'octokit';
 import open from 'open';
 import { join } from 'path';
 import qs from 'qs';
@@ -240,26 +240,6 @@ function setDepsVersion(opts: {
     }
   });
   return pkg;
-}
-
-export async function getReleaseNotes(version: string) {
-  const GITHUB_TOKEN_FILE = '.github_token';
-  const OWNER = 'umijs';
-  const REPO = 'umi';
-  const token = fs
-    .readFileSync(path.join(__dirname, '..', GITHUB_TOKEN_FILE), 'utf-8')
-    .trim();
-  const octokit = new Octokit({
-    auth: token,
-  });
-  const releaseNotesRes = await octokit.request(
-    `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
-    {
-      tag_name: `v${version}`,
-    },
-  );
-  const releaseNotes = releaseNotesRes.data.body;
-  return { releaseNotes };
 }
 
 function releaseByGithub(releaseNotes: string, version: string) {

@@ -6,6 +6,7 @@
     "build:extra": "umi-scripts turbo build:extra",
     "build:force": "umi-scripts turbo build --no-cache",
     "build:release": "umi-scripts turbo build --no-cache",
+    "changelog": "umi-scripts changelog",
     "check:packageFiles": "umi-scripts checkPackageFiles",
     "codemod:build": "pnpm --filter @umijs/codemod build",
     "codemod:dev": "pnpm --filter @umijs/codemod build --watch",
