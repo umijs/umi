@@ -1,13 +1,29 @@
 import type { Metafile } from '@umijs/bundler-utils/compiled/esbuild';
-import { Input, List } from 'antd';
+import { Input, List, Switch } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { FC, useMemo, useState } from 'react';
 import { Icon, styled } from 'umi';
 
 interface IProps {
-  showNodeModules: boolean;
   metaFile: Metafile;
 }
+
+const SwitchContainer = styled.div`
+  .switch-container {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+
+    .ant-switch {
+      margin-right: 0.5rem;
+      background: var(--text-color);
+
+      &-checked {
+        background: var(--highlight-color);
+      }
+    }
+  }
+`;
 
 const SearchContainer = styled.div`
   background: var(--bg-color);
@@ -45,7 +61,8 @@ const isExclude = (path: string) => {
   return exclude.some((reg) => reg.test(path));
 };
 
-export const ViewList: FC<IProps> = ({ showNodeModules, metaFile }) => {
+export const ViewList: FC<IProps> = ({ metaFile }) => {
+  const [showNodeModules, setShowNodeModules] = useState(false);
   const [ipt, setIpt] = useState('');
 
   const importsList = useMemo(() => {
@@ -64,7 +81,9 @@ export const ViewList: FC<IProps> = ({ showNodeModules, metaFile }) => {
   }, [metaFile, showNodeModules, ipt]);
 
   const ContainerHeight = useMemo(() => {
-    const maxHeight = window.innerHeight - 200;
+    // todo: 屏幕宽度缩小会影响无限滚动列表高度，页面宽度较小时，换行无法确定 item height，
+    // todo: 是否要监听 window resize
+    const maxHeight = window.innerHeight - 216;
     const listHeight = ItemHeight * importsList.length;
     if (listHeight > maxHeight) {
       return maxHeight;
@@ -74,12 +93,17 @@ export const ViewList: FC<IProps> = ({ showNodeModules, metaFile }) => {
 
   return (
     <div>
+      <SwitchContainer>
+        <div className="switch-container">
+          <Switch onChange={setShowNodeModules} />
+          show node_modules paths
+        </div>
+      </SwitchContainer>
       <SearchContainer>
         <Input
           size="large"
           value={ipt}
           onChange={(e) => setIpt(e.target.value)}
-          placeholder="large size"
           prefix={
             <Icon
               width="24"
