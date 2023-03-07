@@ -15,7 +15,7 @@ export enum PluginType {
 export interface IPluginConfig {
   default?: any;
   schema?: {
-    (joi: joi.Root, zod: typeof z): joi.Schema | zod.Schema;
+    (joi: joi.Root & { zod: typeof z }): joi.Schema | zod.Schema;
   };
   onChange?: string | Function;
 }

@@ -1,9 +1,8 @@
+import { isZodSchema, zod2string } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
-import { z } from '@umijs/utils/compiled/zod';
-// @ts-ignore
-import joi2Types from '../../../compiled/joi2types';
+import { z, ZodSchema } from '@umijs/utils/compiled/zod';
+import { dirname } from 'path';
 import { IApi } from '../../types';
-import { zod2string } from './zod2string';
 
 // Need to be excluded function type declared in `IConfig`
 // function type will intersect invalid : (() => any) & (IConfig['key']) -> never
@@ -14,9 +13,8 @@ export default (api: IApi) => {
   api.onGenerateFiles(async () => {
     const { service } = api;
 
-    let properties: any = {};
-    let zodProperties: any = {};
-    let hasZodSchemas = false;
+    let properties: Record<string, joi.Schema> = {};
+    let zodProperties: Record<string, ZodSchema> = {};
     Object.keys(service.configSchemas).forEach((key) => {
       if (FILTER_KEYS.includes(key)) {
         return;
@@ -27,18 +25,15 @@ export default (api: IApi) => {
         return;
       }
 
-      const schema = schemaFn(joi, z);
+      const schema = schemaFn({ ...joi, zod: z });
       if (joi.isSchema(schema)) {
         properties[key] = schema;
-      } else if ('safeParse' in schema) {
+      } else if (isZodSchema(schema)) {
         zodProperties[key] = schema;
-        hasZodSchemas = true;
       }
     });
 
-    const interfaceName = hasZodSchemas
-      ? 'IConfigFromPluginsJoi'
-      : 'IConfigFromPlugins';
+    const interfaceName = 'IConfigFromPluginsJoi';
 
     const joi2Types = require('../../../compiled/joi2types').default;
     const content = await joi2Types(joi.object(properties), {
@@ -52,14 +47,13 @@ export default (api: IApi) => {
 
     api.writeTmpFile({
       noPluginDir: true,
-      path: `core/${hasZodSchemas ? 'joiPluginConfig' : 'pluginConfig'}.d.ts`,
+      path: `core/pluginConfigJoi.d.ts`,
       content,
     });
-    if (!hasZodSchemas) return;
 
     const typeContent: string = `
-import { z } from "@umijs/utils/compiled/zod";
-import { IConfigFromPluginsJoi } from "./joiPluginConfig";
+import { z } from "${dirname(require.resolve('@umijs/utils/package.json'))}";
+import { IConfigFromPluginsJoi } from "./pluginConfigJoi";
 
 const IConfig = ${zod2string(z.object(zodProperties))};
 

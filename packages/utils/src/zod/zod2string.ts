@@ -1,4 +1,4 @@
-import { z } from '@umijs/utils/compiled/zod';
+import { z } from '../../compiled/zod';
 
 export function zod2string<T extends z.ZodType<any>>(schema: T): string {
   if (schema instanceof z.ZodObject) {

@@ -1,4 +1,4 @@
-import { z } from '@umijs/utils/compiled/zod';
+import { z } from '../../compiled/zod';
 import { zod2string } from './zod2string';
 
 test('normal', async () => {

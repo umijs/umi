@@ -4,9 +4,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'hello1',
     config: {
-      schema(_, z) {
-        return z.object({
-          ha: z.optional(z.number().min(4)),
+      schema({ zod }) {
+        return zod.object({
+          ha: zod.optional(zod.number().min(4)),
         });
       },
     },

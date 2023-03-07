@@ -4,10 +4,10 @@ export default (api: IApi) => {
   api.describe({
     key: 'hello',
     config: {
-      schema(_, z) {
-        return z.object({
-          abc: z.array(z.string().max(22)),
-          bc: z.optional(z.number()),
+      schema({ zod }) {
+        return zod.object({
+          abc: zod.array(zod.string().max(22)),
+          bc: zod.optional(zod.number()),
         });
       },
     },
