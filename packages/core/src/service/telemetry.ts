@@ -23,13 +23,13 @@ export class Telemetry implements IMetry {
   private storage: IStorage = new NoopStorage();
   constructor() {}
 
-  copyWith(prefix: string): IMetry {
+  prefixWith(prefix: string): IMetry {
     const upStream = this;
     return {
       record(e: MetreEvent) {
         const { name, ...rest } = e;
         upStream.record({
-          name: `${prefix}:name`,
+          name: `${prefix}:${name}`,
           ...rest,
         });
       },
@@ -39,7 +39,7 @@ export class Telemetry implements IMetry {
       recordAsync(e: MetreEvent): Promise<boolean> {
         const { name, ...rest } = e;
         return upStream.recordAsync({
-          name: `${prefix}:name`,
+          name: `${prefix}:${name}`,
           ...rest,
         });
       },

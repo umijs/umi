@@ -52,3 +52,13 @@ test('telemetry record async nook', async () => {
 
   expect(save).toBeCalledWith({ name: 'test', payload: { a: 1 } });
 });
+
+test('telemetry prefixWith', async () => {
+  save.mockResolvedValue(null);
+
+  const prefixed = t.prefixWith('prefix');
+
+  await prefixed.recordAsync({ name: 'test', payload: { a: 1 } });
+
+  expect(save).toBeCalledWith({ name: 'prefix:test', payload: { a: 1 } });
+});
