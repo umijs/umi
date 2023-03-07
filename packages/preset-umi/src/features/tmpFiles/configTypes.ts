@@ -52,16 +52,16 @@ export default (api: IApi) => {
     });
 
     const typeContent: string = `
-import { z } from "${winPath(
+import { zod as z } from "${winPath(
       dirname(require.resolve('@umijs/utils/package.json')),
     )}";
-import { IConfigFromPluginsJoi } from "./pluginConfigJoi";
+import { IConfigFromPluginsJoi } from "./pluginConfigJoi.d";
 
 const IConfig = ${zod2string(z.object(zodProperties))};
 
 type IConfigTypes = z.infer<typeof IConfig>;
 
-export type IConfigFromPlugins = IConfigFromPluginsJoi & IConfigTypes;
+export type IConfigFromPlugins = IConfigFromPluginsJoi & Partial<IConfigTypes>;
     `;
     api.writeTmpFile({
       noPluginDir: true,
