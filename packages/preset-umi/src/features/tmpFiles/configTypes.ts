@@ -1,4 +1,4 @@
-import { isZodSchema, zod2string } from '@umijs/utils';
+import { isZodSchema, winPath, zod2string } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
 import { z, ZodSchema } from '@umijs/utils/compiled/zod';
 import { dirname } from 'path';
@@ -52,7 +52,9 @@ export default (api: IApi) => {
     });
 
     const typeContent: string = `
-import { z } from "${dirname(require.resolve('@umijs/utils/package.json'))}";
+import { z } from "${winPath(
+      dirname(require.resolve('@umijs/utils/package.json')),
+    )}";
 import { IConfigFromPluginsJoi } from "./pluginConfigJoi";
 
 const IConfig = ${zod2string(z.object(zodProperties))};
