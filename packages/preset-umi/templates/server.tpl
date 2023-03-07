@@ -1,9 +1,15 @@
-import { getClientRootComponent, getHelmetContext } from '{{{ serverRendererPath }}}';
+import { getClientRootComponent } from '{{{ serverRendererPath }}}';
 import { getRoutes } from './core/route';
 import { createHistory as createClientHistory } from './core/history';
 import { getPlugins as getClientPlugins } from './core/plugin';
 import { PluginManager } from '{{{ umiPluginPath }}}';
 import createRequestHandler, { createMarkupGenerator } from '{{{ umiServerPath }}}';
+
+let helmetContext;
+
+try {
+  helmetContext = require('./core/helmetContext').context;
+} catch { /* means `helmet: false`, do noting */ }
 
 const routesWithServerLoader = {
 {{#routesWithServerLoader}}
@@ -42,7 +48,7 @@ const createOpts = {
   getRoutes,
   manifest,
   getClientRootComponent,
-  helmetContext: getHelmetContext(),
+  helmetContext,
   createHistory,
 };
 const requestHandler = createRequestHandler(createOpts);
