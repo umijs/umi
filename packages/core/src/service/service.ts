@@ -27,6 +27,7 @@ import { Hook } from './hook';
 import { getPaths } from './path';
 import { Plugin } from './plugin';
 import { PluginAPI } from './pluginAPI';
+import { noopStorage, Telemetry } from './telemetry';
 
 interface IOpts {
   cwd: string;
@@ -91,6 +92,7 @@ export class Service {
     [key: string]: any;
   } = {};
   pkgPath: string = '';
+  telemetry = new Telemetry();
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd;
@@ -349,6 +351,13 @@ export class Service {
       key: 'modifyPaths',
       initialValue: this.paths,
     });
+
+    const storage = await this.applyPlugins({
+      key: 'modifyTelemetryStorage',
+      initialValue: noopStorage,
+    });
+
+    this.telemetry.useStorage(storage);
     // applyPlugin collect app data
     // TODO: some data is mutable
     this.stage = ServiceStage.collectAppData;
@@ -687,6 +696,7 @@ export interface IServicePluginAPI {
   >;
   modifyDefaultConfig: IModify<typeof Service.prototype.config, null>;
   modifyPaths: IModify<typeof Service.prototype.paths, null>;
+  modifyTelemetryStorage: IModify<typeof Service.prototype.telemetry, null>;
 
   ApplyPluginsType: typeof ApplyPluginsType;
   ConfigChangeType: typeof ConfigChangeType;
