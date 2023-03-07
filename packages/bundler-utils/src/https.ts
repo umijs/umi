@@ -1,6 +1,7 @@
 import { chalk, execa, logger } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { RequestListener } from 'http';
+import https from 'https';
 import { join } from 'path';
 import spdy from 'spdy';
 import { HttpsServerOptions } from './types';
@@ -92,6 +93,10 @@ function hasHostsChanged(jsonFile: string, hosts: string[]) {
   }
 }
 
+function selectProtocol(httpsConfig: HttpsServerOptions) {
+  return httpsConfig.http2 === false ? https : spdy;
+}
+
 export async function createHttpsServer(
   app: RequestListener,
   httpsConfig: HttpsServerOptions,
@@ -101,7 +106,8 @@ export async function createHttpsServer(
   const { key, cert } = await resolveHttpsConfig(httpsConfig);
 
   // Create server
-  return spdy.createServer(
+  const protocol = selectProtocol(httpsConfig);
+  return protocol.createServer(
     {
       key: readFileSync(key, 'utf-8'),
       cert: readFileSync(cert, 'utf-8'),
