@@ -55,7 +55,7 @@ export interface DeadCodeParams {
 
 export interface IConfig {
   alias?: Record<string, string>;
-  autoCSSModules?: boolean;
+  autoCSSModules?: { legacy?: any } | false;
   base?: string;
   chainWebpack?: {
     (

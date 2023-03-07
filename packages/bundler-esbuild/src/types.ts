@@ -1,6 +1,6 @@
 import {
-  TransformOptions,
   BuildOptions,
+  TransformOptions,
 } from '@umijs/bundler-utils/compiled/esbuild';
 import type { Plugin } from '@umijs/bundler-vite/compiled/vite';
 
@@ -27,7 +27,11 @@ export type IBabelPlugin =
 
 export interface IConfig {
   alias?: Record<string, string>;
-  autoCSSModules?: boolean;
+  autoCSSModules?:
+    | false
+    | {
+        legacy?: any;
+      };
   autoprefixer?: any;
   copy?: ICopy[] | string[];
   define?: { [key: string]: any };

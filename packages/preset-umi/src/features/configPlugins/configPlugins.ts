@@ -64,7 +64,7 @@ export default (api: IApi) => {
           }
         : {}),
     },
-    autoCSSModules: true,
+    autoCSSModules: {},
     publicPath: '/',
     mountElementId: 'root',
     base: '/',

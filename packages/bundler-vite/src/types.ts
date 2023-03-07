@@ -27,7 +27,11 @@ export type IBabelPlugin =
 export interface IConfig {
   alias?: Record<string, string>;
   analyze?: PluginVisualizerOptions;
-  autoCSSModules?: boolean;
+  autoCSSModules?:
+    | false
+    | {
+        legacy?: any;
+      };
   autoprefixer?: any;
   copy?: ICopy[] | string[];
   define?: { [key: string]: any };
