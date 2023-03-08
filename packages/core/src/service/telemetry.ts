@@ -50,7 +50,7 @@ export class Telemetry implements IMetry {
     this.storage = s;
   }
   record(e: MetreEvent) {
-    this.storage.save(e).catch(() => {
+    this.storage.save(this.addTimeStamp(e)).catch(() => {
       this.queuedEvents.push({ event: e, tried: 1, status: 'queued' });
       this.scheduleFlush();
     });
@@ -58,7 +58,7 @@ export class Telemetry implements IMetry {
 
   async recordAsync(e: MetreEvent): Promise<boolean> {
     try {
-      await this.storage.save(e);
+      await this.storage.save(this.addTimeStamp(e));
       return true;
     } catch (e) {
       return false;
@@ -109,6 +109,13 @@ export class Telemetry implements IMetry {
       }
       return e.tried < 3;
     });
+  }
+
+  private addTimeStamp(e: MetreEvent) {
+    if (!e.timestamp) {
+      e.timestamp = Date.now();
+    }
+    return e;
   }
 }
 
