@@ -163,35 +163,31 @@ export class PageGenerator {
     const { absPagesPath, args, appCwd, useStyledComponents } = this.options;
     const { _, dir: _dir, eject: _eject, fallback, ...restVars } = args;
 
+    const filesMap = [
+      {
+        from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+        fromFallback: join(
+          PAGE_TEMPLATE_DIR,
+          useStyledComponents
+            ? 'index.styled-components.tsx.tpl'
+            : 'index.tsx.tpl',
+        ),
+        to: join(absPagesPath, this.dir, `${this.name}.tsx`),
+        exts: ['.tsx.tpl', '.tsx'],
+      },
+    ];
+
+    if (!useStyledComponents) {
+      filesMap.push({
+        from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
+        fromFallback: join(PAGE_TEMPLATE_DIR, 'index.less.tpl'),
+        to: join(absPagesPath, this.dir, `${this.name}.less`),
+        exts: ['.less.tpl', '.less'],
+      });
+    }
+
     await processGenerateFiles({
-      filesMap: [
-        {
-          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
-          fromFallback: join(
-            PAGE_TEMPLATE_DIR,
-            useStyledComponents ? 'index.styled.tsx.tpl' : 'index.tsx.tpl',
-          ),
-          to: join(absPagesPath, this.dir, `${this.name}.tsx`),
-          exts: ['.tsx.tpl', '.tsx'],
-        },
-        {
-          from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
-          fromFallback: join(
-            PAGE_TEMPLATE_DIR,
-            useStyledComponents
-              ? 'index.styled-components.ts.tpl'
-              : 'index.less.tpl',
-          ),
-          to: join(
-            absPagesPath,
-            this.dir,
-            `${this.name}.${
-              useStyledComponents ? 'styled-components.ts' : 'less'
-            }`,
-          ),
-          exts: ['.less.tpl', '.less'],
-        },
-      ],
+      filesMap,
       baseDir: this.options.appCwd,
       presetArgs: {
         fallback,
