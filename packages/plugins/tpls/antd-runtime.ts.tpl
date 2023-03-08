@@ -22,7 +22,7 @@ export function rootContainer(rawContainer) {
     type: ApplyPluginsType.modify,
     initialValue: {
 {{#configProvider}}
-      configProvider: {{{configProvider}}},
+    ...{{{configProvider}}},
 {{/configProvider}}
 {{#appConfig}}
       appConfig: {{{appConfig}}},
