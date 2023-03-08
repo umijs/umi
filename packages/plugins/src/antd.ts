@@ -18,8 +18,8 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
-  // App components exist only from 5.2.0 onwards
-  const includeAppComponents = semver.gte(antdVersion, '5.2.0');
+  // App components exist only from 5.1.0 onwards
+  const includeAppComponents = semver.gte(antdVersion, '5.1.0');
 
   api.describe({
     config: {
@@ -35,7 +35,7 @@ export default (api: IApi) => {
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
             theme: Joi.object(),
-            // Only antd@5.2.0 is supported
+            // Only antd@5.1.0 is supported
             appConfig: Joi.object(),
           }),
           Joi.boolean().invalid(true),
@@ -137,7 +137,7 @@ export default (api: IApi) => {
     // appConfig is only available in version 5.2 and above.
     if (antd.appConfig && !includeAppComponents) {
       api.logger.warn(
-        `antd.appConfig is only available in version 5.2.0 and above, but you are using version ${antdVersion}`,
+        `antd.appConfig is only available in version 5.1.0 and above, but you are using version ${antdVersion}`,
       );
     }
 

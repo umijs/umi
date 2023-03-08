@@ -22,7 +22,7 @@ export default {
     // shortcut of `configProvider.theme`
     // use to configure theme token, antd v5 only
     theme: {},
-    // antd <App /> valid for version 5.2.0 or higher, default: undefined
+    // antd <App /> valid for version 5.1.0 or higher, default: undefined
     appConfig: {}
   },
 };
@@ -103,9 +103,9 @@ export default {
 - Type: `object`
 - Default: `undefined`
 
-配置 `antd` 的 App 包裹组件, 请注意 `antd@5.2.0 ~ 5.2.3` 仅能通过 `appConfig: {}` 启用，`antd@5.3.0+` 支持更多 AppConfig 配置。
+配置 `antd` 的 App 包裹组件, 请注意 `antd@5.1.0 ~ 5.2.3` 仅能通过 `appConfig: {}` 启用，`antd@5.3.0+` 支持更多 AppConfig 配置。
 
-**注意：该配置项仅 antd v5.2.0 及以上可用**
+**注意：该配置项仅 antd v5.1.0 及以上可用**
 
 ### 运行时配置
 
