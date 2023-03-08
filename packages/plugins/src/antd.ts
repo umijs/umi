@@ -1,7 +1,7 @@
 import assert from 'assert';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge } from 'umi/plugin-utils';
+import { deepmerge, Mustache } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -32,6 +32,11 @@ export default (api: IApi) => {
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
             theme: Joi.object(),
+            // Only antd@5.x is supported
+            appConfig: Joi.object({
+              message: Joi.object().optional(),
+              notification: Joi.object().optional(),
+            }),
           }),
           Joi.boolean().invalid(true),
         );
@@ -129,6 +134,14 @@ export default (api: IApi) => {
       );
     }
 
+    //FIXME: 实际上需要 5.2 以上的版本，因为 5.2 以下还没有 App 组件
+    // appConfig is only available in version 5.2 and above.
+    if (antd.appConfig && !antdVersion.startsWith('5')) {
+      api.logger.warn(
+        `antd.appConfig is only available in version 5.2 and above, but you are using version ${antdVersion}`,
+      );
+    }
+
     return memo;
   });
 
@@ -160,20 +173,39 @@ export default (api: IApi) => {
 
   // antd config provider
   api.onGenerateFiles(() => {
-    if (!api.config.antd.configProvider) return;
+    //FIXME: 实际上需要 5.2 以上的版本，因为 5.2 以下还没有 App 组件
+    const isAntd5 = antdVersion.startsWith('5');
+
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
-        config: JSON.stringify(api.config.antd.configProvider),
+        configProvider: JSON.stringify(api.config.antd.configProvider),
+        appConfig: isAntd5 && JSON.stringify(api.config.antd.appConfig),
       },
       tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
     });
     api.writeTmpFile({
       path: 'types.d.ts',
-      content: `
+      content: Mustache.render(
+        `
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-export type RuntimeAntdConfig = (memo: ConfigProviderProps) => ConfigProviderProps;
-`,
+{{#isAntd5}}
+import type { AppConfig } from 'antd/es/app/context';
+{{/isAntd5}}
+
+interface AntdConfig {
+  configProvider: ConfigProviderProps;
+{{#isAntd5}}
+  appConfig: AppConfig;
+{{/isAntd5}}
+}
+
+export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
+`.trim(),
+        {
+          isAntd5,
+        },
+      ),
     });
     api.writeTmpFile({
       path: RUNTIME_TYPE_FILE_NAME,

@@ -1,30 +1,62 @@
 import React from 'react';
-import { ConfigProvider, Modal, message, notification } from 'antd';
+import {
+  Modal,
+{{#configProvider}}
+  ConfigProvider,
+{{/configProvider}}
+{{#appConfig}}
+  App,
+{{/appConfig}}
+  message,
+  notification,
+} from 'antd';
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
 
-export function rootContainer(container) {
-  const finalConfig = getPluginManager().applyPlugins({
+export function rootContainer(rawContainer) {
+  const {
+    configProvider: finalConfigProvider = {},
+    appConfig: finalAppConfig = {},
+  } = getPluginManager().applyPlugins({
     key: 'antd',
     type: ApplyPluginsType.modify,
-    initialValue: {...{{{ config }}}},
+    initialValue: {
+{{#configProvider}}
+      configProvider: {{{configProvider}}},
+{{/configProvider}}
+{{#appConfig}}
+      appConfig: {{{appConfig}}},
+{{/appConfig}}
+    },
   });
-  if (finalConfig.prefixCls) {
+
+  if (finalConfigProvider.prefixCls) {
     Modal.config({
-      rootPrefixCls: finalConfig.prefixCls
+      rootPrefixCls: finalConfigProvider.prefixCls
     });
     message.config({
-      prefixCls: `${finalConfig.prefixCls}-message`
+      prefixCls: `${finalConfigProvider.prefixCls}-message`
     });
     notification.config({
-      prefixCls: `${finalConfig.prefixCls}-notification`
+      prefixCls: `${finalConfigProvider.prefixCls}-notification`
     });
   }
-  if (finalConfig.iconPrefixCls) {
+
+  let container = rawContainer;
+
+{{#configProvider}}
+  if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
     ConfigProvider.config({
-      iconPrefixCls: finalConfig.iconPrefixCls,
+      iconPrefixCls: finalConfigProvider.iconPrefixCls,
     });
-  }
-  return <ConfigProvider {...finalConfig}>{container}</ConfigProvider>;
+  };
+  container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
+{{/configProvider}}
+
+{{#appConfig}}
+  container = <App {...finalAppConfig}>{container}</App>;
+{{/appConfig}}
+
+  return container
 }
