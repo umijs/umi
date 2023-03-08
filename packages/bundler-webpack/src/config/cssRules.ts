@@ -45,15 +45,15 @@ export async function addCSSRules(opts: IOpts) {
           .test(test)
           .oneOf('css-modules')
           .resourceQuery(/modules/),
-        isAutoCssModuleRule: true,
+        isAutoCSSModuleRule: true,
       },
       {
         rule: rule.test(test).oneOf('css').sideEffects(true),
-        isAutoCssModuleRule: false,
+        isAutoCSSModuleRule: false,
       },
     ].filter(Boolean);
     // @ts-ignore
-    for (const { rule, isAutoCssModuleRule } of nestRulesConfig) {
+    for (const { rule, isAutoCSSModuleRule } of nestRulesConfig) {
       if (userConfig.styleLoader) {
         rule
           .use('style-loader')
@@ -80,26 +80,24 @@ export async function addCSSRules(opts: IOpts) {
       // and save the class names mapping into opts.cssModulesMapping
       // so the esbuild can use it to generate the correct name for the server side
       const getLocalIdent = userConfig.ssr && getLocalIdentForSSR;
+      const localIdentName = '[local]___[hash:base64:5]';
 
-      let cssLoaderModuleConfig = {};
-      if (isAutoCssModuleRule) {
-        cssLoaderModuleConfig = {
-          modules: {
-            localIdentName: '[local]___[hash:base64:5]',
-            ...userConfig.cssLoaderModules,
-            getLocalIdent,
-          },
+      let cssLoaderModulesConfig: any;
+      if (isAutoCSSModuleRule) {
+        cssLoaderModulesConfig = {
+          localIdentName,
+          ...userConfig.cssLoaderModules,
+          getLocalIdent,
         };
-      } else {
-        if (userConfig?.autoCSSModules && userConfig.autoCSSModules.legacy) {
-          cssLoaderModuleConfig = {
-            modules: {
-              localIdentName: '[local]___[hash:base64:5]',
-              ...userConfig.autoCSSModules.legacy,
-              getLocalIdent,
-            },
-          };
-        }
+      } else if (
+        userConfig?.autoCSSModules &&
+        userConfig.autoCSSModules.legacy
+      ) {
+        cssLoaderModulesConfig = {
+          localIdentName,
+          ...userConfig.autoCSSModules.legacy,
+          getLocalIdent,
+        };
       }
 
       rule
@@ -117,7 +115,7 @@ export async function addCSSRules(opts: IOpts) {
             },
           },
           import: true,
-          ...cssLoaderModuleConfig,
+          modules: cssLoaderModulesConfig,
           ...userConfig.cssLoader,
         });
 

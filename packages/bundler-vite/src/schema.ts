@@ -6,13 +6,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
     alias: (Joi) => Joi.object(),
     analyze: (Joi) => Joi.object(),
-    autoCSSModules: (Joi) =>
-      Joi.alternatives([
-        Joi.boolean().validate(false),
-        Joi.object().keys({
-          legacy: Joi.object(),
-        }),
-      ]),
+    autoCSSModules: (Joi) => Joi.boolean(),
     autoprefixer: (Joi) => Joi.object(),
     copy: (Joi) =>
       Joi.array().items(
