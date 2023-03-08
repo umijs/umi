@@ -44,6 +44,11 @@ export function rootContainer(rawContainer) {
 
   let container = rawContainer;
 
+{{#appConfig}}
+  // The App component should be under ConfigProvider
+  container = <App {...finalAppConfig}>{container}</App>;
+{{/appConfig}}
+
 {{#configProvider}}
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
@@ -54,9 +59,6 @@ export function rootContainer(rawContainer) {
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
 
-{{#appConfig}}
-  container = <App {...finalAppConfig}>{container}</App>;
-{{/appConfig}}
 
   return container
 }
