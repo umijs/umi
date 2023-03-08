@@ -95,7 +95,6 @@ export async function addCSSRules(opts: IOpts) {
           cssLoaderModuleConfig = {
             modules: {
               localIdentName: '[local]___[hash:base64:5]',
-              auto: true,
               ...userConfig.autoCSSModules.legacy,
               getLocalIdent,
             },
