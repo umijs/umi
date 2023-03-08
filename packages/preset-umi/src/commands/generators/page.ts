@@ -177,6 +177,7 @@ export class PageGenerator {
       },
     ];
 
+    // 如果项目开启了 styled-components 功能，则不再生成 less 文件
     if (!useStyledComponents) {
       filesMap.push({
         from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
