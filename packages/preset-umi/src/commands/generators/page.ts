@@ -5,10 +5,10 @@ import { TEMPLATES_DIR } from '../../constants';
 import { IApi } from '../../types';
 import {
   ETempDir,
-  type IArgsPage,
   processGenerateFiles,
   promptsExitWhenCancel,
   tryEject,
+  type IArgsPage,
 } from './utils';
 
 export default (api: IApi) => {
@@ -32,6 +32,7 @@ export default (api: IApi) => {
         args,
         absPagesPath: api.paths.absPagesPath,
         appCwd: api.paths.cwd,
+        useStyledComponents: !!api.userConfig.styledComponents,
       }).run();
     },
   });
@@ -54,6 +55,7 @@ export class PageGenerator {
       args: IArgsPage;
       absPagesPath: string;
       appCwd: string;
+      useStyledComponents: boolean;
     },
   ) {
     this.isDirMode = !!options.args.dir;
@@ -158,21 +160,35 @@ export class PageGenerator {
   }
 
   private async fileModeRun() {
-    const { absPagesPath, args, appCwd } = this.options;
+    const { absPagesPath, args, appCwd, useStyledComponents } = this.options;
     const { _, dir: _dir, eject: _eject, fallback, ...restVars } = args;
 
     await processGenerateFiles({
       filesMap: [
         {
           from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
-          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.tsx.tpl'),
+          fromFallback: join(
+            PAGE_TEMPLATE_DIR,
+            useStyledComponents ? 'index.styled.tsx.tpl' : 'index.tsx.tpl',
+          ),
           to: join(absPagesPath, this.dir, `${this.name}.tsx`),
           exts: ['.tsx.tpl', '.tsx'],
         },
         {
           from: join(appCwd, USER_TEMPLATE_PAGE_DIR, 'index'),
-          fromFallback: join(PAGE_TEMPLATE_DIR, 'index.less.tpl'),
-          to: join(absPagesPath, this.dir, `${this.name}.less`),
+          fromFallback: join(
+            PAGE_TEMPLATE_DIR,
+            useStyledComponents
+              ? 'index.styled-components.ts.tpl'
+              : 'index.less.tpl',
+          ),
+          to: join(
+            absPagesPath,
+            this.dir,
+            `${this.name}.${
+              useStyledComponents ? 'styled-components.ts' : 'less'
+            }`,
+          ),
           exts: ['.less.tpl', '.less'],
         },
       ],
