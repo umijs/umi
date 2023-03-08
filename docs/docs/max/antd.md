@@ -22,6 +22,8 @@ export default {
     // shortcut of `configProvider.theme`
     // use to configure theme token, antd v5 only
     theme: {},
+    // antd <App /> valid for version 5.2 or higher, default: undefined
+    appConfig: {}
   },
 };
 ```
