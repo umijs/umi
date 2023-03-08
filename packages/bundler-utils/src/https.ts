@@ -93,10 +93,6 @@ function hasHostsChanged(jsonFile: string, hosts: string[]) {
   }
 }
 
-function selectProtocol(httpsConfig: HttpsServerOptions) {
-  return httpsConfig.http2 === false ? https : spdy;
-}
-
 export async function createHttpsServer(
   app: RequestListener,
   httpsConfig: HttpsServerOptions,
@@ -106,8 +102,10 @@ export async function createHttpsServer(
   const { key, cert } = await resolveHttpsConfig(httpsConfig);
 
   // Create server
-  const protocol = selectProtocol(httpsConfig);
-  return protocol.createServer(
+  const createServer = (
+    httpsConfig.http2 === false ? https.createServer : spdy.createServer
+  ) as typeof spdy.createServer;
+  return createServer(
     {
       key: readFileSync(key, 'utf-8'),
       cert: readFileSync(cert, 'utf-8'),
