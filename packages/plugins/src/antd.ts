@@ -198,7 +198,9 @@ type AntdConfig = ConfigProviderProps
 export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
 `.trim(),
         {
-          includeAppConfig: semver.gte(antdVersion, '5.3.0'),
+          includeAppConfig:
+            semver.gte(antdVersion, '5.3.0') &&
+            typeof api.config.antd.appConfig !== 'undefined',
         },
       ),
     });
