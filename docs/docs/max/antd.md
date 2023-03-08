@@ -103,7 +103,7 @@ export default {
 - Type: `object`
 - Default: `undefined`
 
-配置 `antd` 的 App 包裹组件, 请注意 `antd@5.2.0 ~ 5.2.3` 只需通过 `appConfig: {}` 即可启用，`antd@5.3.0+` 支持 AppProps 配置。
+配置 `antd` 的 App 包裹组件, 请注意 `antd@5.2.0 ~ 5.2.3` 仅能通过 `appConfig: {}` 启用，`antd@5.3.0+` 支持更多 AppConfig 配置。
 
 **注意：该配置项仅 antd v5.2.0 及以上可用**
 
