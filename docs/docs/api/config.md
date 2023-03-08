@@ -735,11 +735,11 @@ headScripts: [
 
 开启 dev 的 https 模式。
 
-关于参数
+关于参数。
 
 - `cert` 和 `key` 分别用于指定 cert 和 key 文件。
 - `hosts` 用于指定要支持 https 访问的 host，默认是 `['127.0.0.1', 'localhost']`。
-- `http2` 用于指定是否使用 HTTP 2.0 协议（使用 HTTP 2.0 在 Chrome 或 Edge 浏览器中中有偶然出现 `ERR_HTTP2_PROTOCOL_ERRO`报错）。
+- `http2` 用于指定是否使用 HTTP 2.0 协议，默认是 true（使用 HTTP 2.0 在 Chrome 或 Edge 浏览器中中有偶然出现 `ERR_HTTP2_PROTOCOL_ERRO`报错，如有遇到，建议配置为 false）。
 
 示例，
 
