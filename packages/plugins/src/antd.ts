@@ -193,12 +193,10 @@ import type { ConfigProviderProps } from 'antd/es/config-provider';
 import type { AppConfig } from 'antd/es/app/context';
 {{/isAntd5}}
 
-interface AntdConfig {
-  configProvider: ConfigProviderProps;
+type AntdConfig = ConfigProviderProps
 {{#isAntd5}}
-  appConfig: AppConfig;
+  & { appConfig: AppConfig }
 {{/isAntd5}}
-}
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
 `.trim(),
@@ -217,11 +215,8 @@ export type IRuntimeConfig = {
       `,
     });
   });
-  api.addRuntimePlugin(() => {
-    return api.config.antd.configProvider
-      ? [withTmpPath({ api, path: 'runtime.tsx' })]
-      : [];
-  });
+
+  api.addRuntimePlugin(() => [withTmpPath({ api, path: 'runtime.tsx' })]);
 
   // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {

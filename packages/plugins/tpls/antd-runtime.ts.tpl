@@ -15,8 +15,8 @@ import { getPluginManager } from '../core/plugin';
 
 export function rootContainer(rawContainer) {
   const {
-    configProvider: finalConfigProvider = {},
     appConfig: finalAppConfig = {},
+    ...finalConfigProvider
   } = getPluginManager().applyPlugins({
     key: 'antd',
     type: ApplyPluginsType.modify,
