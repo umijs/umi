@@ -35,11 +35,8 @@ export default (api: IApi) => {
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
             theme: Joi.object(),
-            // Only antd@5.x is supported
-            appConfig: Joi.object({
-              message: Joi.object().optional(),
-              notification: Joi.object().optional(),
-            }),
+            // Only antd@5.2.0 is supported
+            appConfig: Joi.object(),
           }),
           Joi.boolean().invalid(true),
         );
@@ -189,19 +186,19 @@ export default (api: IApi) => {
       content: Mustache.render(
         `
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{#includeAppComponents}}
+{{#includeAppConfig}}
 import type { AppConfig } from 'antd/es/app/context';
-{{/includeAppComponents}}
+{{/includeAppConfig}}
 
 type AntdConfig = ConfigProviderProps
-{{#includeAppComponents}}
+{{#includeAppConfig}}
   & { appConfig: AppConfig }
-{{/includeAppComponents}}
+{{/includeAppConfig}}
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
 `.trim(),
         {
-          includeAppComponents,
+          includeAppConfig: semver.gte(antdVersion, '5.3.0'),
         },
       ),
     });
