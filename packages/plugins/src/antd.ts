@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, Mustache } from 'umi/plugin-utils';
+import { deepmerge, Mustache, semver } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -17,6 +17,9 @@ export default (api: IApi) => {
       }) || dirname(require.resolve('antd/package.json'));
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
+
+  // App components exist only from 5.2.0 onwards
+  const includeAppComponents = semver.gte(antdVersion, '5.2.0');
 
   api.describe({
     config: {
@@ -134,11 +137,10 @@ export default (api: IApi) => {
       );
     }
 
-    //FIXME: 实际上需要 5.2 以上的版本，因为 5.2 以下还没有 App 组件
     // appConfig is only available in version 5.2 and above.
-    if (antd.appConfig && !antdVersion.startsWith('5')) {
+    if (antd.appConfig && !includeAppComponents) {
       api.logger.warn(
-        `antd.appConfig is only available in version 5.2 and above, but you are using version ${antdVersion}`,
+        `antd.appConfig is only available in version 5.2.0 and above, but you are using version ${antdVersion}`,
       );
     }
 
@@ -173,14 +175,12 @@ export default (api: IApi) => {
 
   // antd config provider
   api.onGenerateFiles(() => {
-    //FIXME: 实际上需要 5.2 以上的版本，因为 5.2 以下还没有 App 组件
-    const isAntd5 = antdVersion.startsWith('5');
-
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
         configProvider: JSON.stringify(api.config.antd.configProvider),
-        appConfig: isAntd5 && JSON.stringify(api.config.antd.appConfig),
+        appConfig:
+          includeAppComponents && JSON.stringify(api.config.antd.appConfig),
       },
       tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
     });
@@ -189,19 +189,19 @@ export default (api: IApi) => {
       content: Mustache.render(
         `
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{#isAntd5}}
+{{#includeAppComponents}}
 import type { AppConfig } from 'antd/es/app/context';
-{{/isAntd5}}
+{{/includeAppComponents}}
 
 type AntdConfig = ConfigProviderProps
-{{#isAntd5}}
+{{#includeAppComponents}}
   & { appConfig: AppConfig }
-{{/isAntd5}}
+{{/includeAppComponents}}
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
 `.trim(),
         {
-          isAntd5,
+          includeAppComponents,
         },
       ),
     });
