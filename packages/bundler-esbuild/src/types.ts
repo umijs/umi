@@ -38,7 +38,7 @@ export interface IConfig {
   hash?: boolean;
   inlineLimit?: number;
   manifest?: boolean;
-  normalCSSLoaderModules: { [key: string]: any };
+  normalCSSLoaderModules?: { [key: string]: any };
   jsMinifier?: JSMinifier | boolean;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { lessOptions: any };
