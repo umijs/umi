@@ -215,7 +215,7 @@ export class Config {
         if (error) errors.set(key, error);
       } else {
         // invalid schema
-        assert(isZodSchema(schema), `schema for config ${key} is not valid.`);
+        assert(isZodSchema(schema), `schema for config ${key} is not valid, neither joi nor zod.`);
         const { error } = schema.safeParse(opts.config[key]);
         if (error) errors.set(key, error);
       }
