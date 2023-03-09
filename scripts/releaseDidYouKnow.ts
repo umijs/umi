@@ -2,6 +2,7 @@ import { logger } from '@umijs/utils';
 import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
 import 'zx/globals';
+import { PNPM_PUBLISH } from './.internal/constants';
 
 function assert(v: unknown, message: string) {
   if (!v) {
@@ -49,10 +50,10 @@ function assert(v: unknown, message: string) {
   await $`cd ${pkgPath} && npm version patch`;
   const version = require(path.join(pkgPath, 'package.json')).version;
 
-  // npm publish
-  logger.event('npm publish');
+  // pnpm publish
+  logger.event('pnpm publish');
   $.verbose = false;
-  await $`cd ${pkgPath} && npm publish`;
+  await $`cd ${pkgPath} && ${PNPM_PUBLISH}`;
   logger.info(`+ ${pkg}@${version}`);
   $.verbose = true;
 

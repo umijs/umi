@@ -7,7 +7,7 @@ import { join } from 'path';
 import qs from 'qs';
 import rimraf from 'rimraf';
 import 'zx/globals';
-import { PATHS } from './.internal/constants';
+import { PATHS, PNPM_PUBLISH } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
 
 (async () => {
@@ -162,7 +162,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('git push');
   await $`git push origin ${branch} --tags`;
 
-  // npm publish
+  // pnpm publish
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
@@ -201,13 +201,13 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   await Promise.all(
     innerPkgs.map(async (pkg) => {
-      await $`cd packages/${pkg} && npm publish --tag ${tag} ${otpArg}`;
+      await $`cd packages/${pkg} && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
       logger.info(`+ ${pkg}`);
     }),
   );
-  await $`cd packages/umi && npm publish --tag ${tag} ${otpArg}`;
+  await $`cd packages/umi && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
   logger.info(`+ umi`);
-  await $`cd packages/max && npm publish --tag ${tag} ${otpArg}`;
+  await $`cd packages/max && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
   logger.info(`+ @umijs/max`);
   $.verbose = true;
 
