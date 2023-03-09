@@ -1909,7 +1909,7 @@ importers:
       strip-ansi: 7.0.1
       tsconfig-paths: 4.1.2
       yargs-parser: 21.1.1
-      zod: ^3.20.6
+      zod: 3.20.6
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
