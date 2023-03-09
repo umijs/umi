@@ -153,7 +153,7 @@ export default (api: IApi) => {
       const tsconfig = (await tsconfigPaths.loadConfig(cwd)) as ITsconfig;
 
       // 是否生成文件
-      const outFile = api.args?.pathPrefix;
+      const outFile = api.args?.outFile;
       // 生成文件包含更多文件创建、最新修改等信息
       const verbose = api.args?.verbose;
       // monorepo git目录不在当前项目目录，一般需要添加 ../.. 的path前缀定位
