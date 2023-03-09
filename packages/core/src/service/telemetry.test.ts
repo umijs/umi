@@ -10,18 +10,28 @@ beforeEach(() => {
   t.useStorage({ save });
 });
 
+const requestEvent = {
+  name: 'test',
+  payload: { a: 1 },
+};
+const expectSaveValue = {
+  name: 'test',
+  payload: { a: 1 },
+  timestamp: expect.any(Number),
+};
+
 test('telemetry record sync', async () => {
   save.mockResolvedValue(null);
 
-  t.record({ name: 'test', payload: { a: 1 } });
+  t.record(requestEvent);
 
-  expect(save).toBeCalledWith({ name: 'test', payload: { a: 1 } });
+  expect(save).toBeCalledWith(expectSaveValue);
 });
 
 test('telemetry record sync failed will retry 2 time every 5s', async () => {
   save.mockRejectedValue(null);
 
-  t.record({ name: 'test', payload: { a: 1 } });
+  t.record(requestEvent);
   expect(save).toBeCalledTimes(1);
 
   await waitAllMicroTasks();
@@ -41,16 +51,16 @@ async function waitAllMicroTasks() {
 test('telemetry record async save ok', async () => {
   save.mockResolvedValue(null);
 
-  expect(await t.recordAsync({ name: 'test', payload: { a: 1 } })).toBe(true);
-  expect(save).toBeCalledWith({ name: 'test', payload: { a: 1 } });
+  expect(await t.recordAsync(requestEvent)).toBe(true);
+  expect(save).toBeCalledWith(expectSaveValue);
 });
 
 test('telemetry record async nook', async () => {
   save.mockRejectedValue(null);
 
-  expect(await t.recordAsync({ name: 'test', payload: { a: 1 } })).toBe(false);
+  expect(await t.recordAsync(requestEvent)).toBe(false);
 
-  expect(save).toBeCalledWith({ name: 'test', payload: { a: 1 } });
+  expect(save).toBeCalledWith(expectSaveValue);
 });
 
 test('telemetry prefixWith', async () => {
@@ -58,7 +68,11 @@ test('telemetry prefixWith', async () => {
 
   const prefixed = t.prefixWith('prefix');
 
-  await prefixed.recordAsync({ name: 'test', payload: { a: 1 } });
+  await prefixed.recordAsync(requestEvent);
 
-  expect(save).toBeCalledWith({ name: 'prefix:test', payload: { a: 1 } });
+  expect(save).toBeCalledWith({
+    name: 'prefix:test',
+    payload: { a: 1 },
+    timestamp: expect.any(Number),
+  });
 });
