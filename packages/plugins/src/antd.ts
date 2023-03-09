@@ -20,6 +20,9 @@ export default (api: IApi) => {
 
   // App components exist only from 5.1.0 onwards
   const includeAppComponents = semver.gte(antdVersion, '5.1.0');
+  const includeAppConfig =
+    semver.gte(antdVersion, '5.3.0') &&
+    typeof api.config.antd.appConfig !== 'undefined';
 
   api.describe({
     config: {
@@ -198,9 +201,7 @@ type AntdConfig = ConfigProviderProps
 export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
 `.trim(),
         {
-          includeAppConfig:
-            semver.gte(antdVersion, '5.3.0') &&
-            typeof api.config.antd.appConfig !== 'undefined',
+          includeAppConfig,
         },
       ),
     });
