@@ -55,7 +55,7 @@ export interface DeadCodeParams {
 
 export interface IConfig {
   alias?: Record<string, string>;
-  autoCSSModules?: { legacy?: any } | false;
+  autoCSSModules?: boolean;
   base?: string;
   chainWebpack?: {
     (
@@ -87,6 +87,7 @@ export interface IConfig {
   jsMinifier?: `${JSMinifier}`;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { [key: string]: any };
+  normalCSSLoaderModules: { [key: string]: any };
   outputPath?: string;
   postcssLoader?: { [key: string]: any };
   proxy?: { [key: string]: ProxyOptions } | ProxyOptions[];

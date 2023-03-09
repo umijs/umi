@@ -27,11 +27,7 @@ export type IBabelPlugin =
 
 export interface IConfig {
   alias?: Record<string, string>;
-  autoCSSModules?:
-    | false
-    | {
-        legacy?: any;
-      };
+  autoCSSModules?: boolean;
   autoprefixer?: any;
   copy?: ICopy[] | string[];
   define?: { [key: string]: any };
@@ -42,6 +38,7 @@ export interface IConfig {
   hash?: boolean;
   inlineLimit?: number;
   manifest?: boolean;
+  normalCSSLoaderModules: { [key: string]: any };
   jsMinifier?: JSMinifier | boolean;
   jsMinifierOptions?: { [key: string]: any };
   lessLoader?: { lessOptions: any };

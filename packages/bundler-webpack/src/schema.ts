@@ -39,13 +39,7 @@ const DEVTOOL_REGEX = new RegExp(
 export function getSchemas(): Record<string, (Joi: Root) => any> {
   return {
     alias: (Joi) => Joi.object(),
-    autoCSSModules: (Joi) =>
-      Joi.alternatives([
-        Joi.boolean().validate(false),
-        Joi.object().keys({
-          legacy: Joi.object(),
-        }),
-      ]),
+    autoCSSModules: (Joi) => Joi.boolean(),
     autoprefixer: (Joi) => Joi.object(),
     babelLoaderCustomize: (Joi) => Joi.string(),
     cacheDirectoryPath: (Joi) => Joi.string(),
@@ -134,6 +128,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         }),
         Joi.boolean(),
       ),
+    normalCSSLoaderModules: (Joi) => Joi.object(),
     outputPath: (Joi) => Joi.string(),
     postcssLoader: (Joi) => Joi.object(),
     proxy: (Joi) => Joi.alternatives().try(Joi.object(), Joi.array()),

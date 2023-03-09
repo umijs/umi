@@ -89,13 +89,11 @@ export async function addCSSRules(opts: IOpts) {
           ...userConfig.cssLoaderModules,
           getLocalIdent,
         };
-      } else if (
-        userConfig?.autoCSSModules &&
-        userConfig.autoCSSModules.legacy
-      ) {
+      } else if (userConfig.normalCSSLoaderModules) {
         cssLoaderModulesConfig = {
           localIdentName,
-          ...userConfig.autoCSSModules.legacy,
+          auto: true,
+          ...userConfig.normalCSSLoaderModules,
           getLocalIdent,
         };
       }
