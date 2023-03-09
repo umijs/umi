@@ -67,7 +67,8 @@
     "semver": "7.3.8",
     "strip-ansi": "7.0.1",
     "tsconfig-paths": "4.1.2",
-    "yargs-parser": "21.1.1"
+    "yargs-parser": "21.1.1",
+    "zod": "3.20.6"
   },
   "publishConfig": {
     "access": "public"
@@ -105,7 +106,8 @@
       "@clack/prompts",
       "magic-string",
       "@ampproject/remapping",
-      "tsconfig-paths"
+      "tsconfig-paths",
+      "zod"
     ],
     "externals": {
       "address": "$$LOCAL",
