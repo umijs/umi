@@ -1,0 +1,14 @@
+{
+  "name": "@example/telemetry",
+  "private": true,
+  "author": "pshu <pishu.spf@antfin.com>",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "umi": "workspace:*"
+  }
+}

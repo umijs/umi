@@ -12,13 +12,14 @@ import { Generator, makeGenerator } from './generator';
 import { Hook, IOpts as IHookOpts } from './hook';
 import { Plugin } from './plugin';
 import { Service } from './service';
+import type { IMetry } from './telemetry';
 import { makeArray } from './utils';
 
 type Logger = typeof logger;
 
 const resolveConfigModes = ['strict', 'loose'] as const;
 
-export type ResolveConfigMode = typeof resolveConfigModes[number];
+export type ResolveConfigMode = (typeof resolveConfigModes)[number];
 
 // https://stackoverflow.com/a/57103940/1247899
 type DistributiveOmit<T, K extends keyof any> = T extends any
@@ -29,10 +30,13 @@ export class PluginAPI {
   service: Service;
   plugin: Plugin;
   logger: Logger;
+  telemetry: IMetry;
 
   constructor(opts: { service: Service; plugin: Plugin }) {
     this.service = opts.service;
     this.plugin = opts.plugin;
+
+    this.telemetry = opts.service.telemetry.prefixWith(this.plugin.key);
     // logger
     const loggerKeys: (keyof Logger)[] = [
       'wait',

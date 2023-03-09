@@ -8,6 +8,7 @@ export default (api: PluginAPI) => {
     'modifyConfig',
     'modifyDefaultConfig',
     'modifyPaths',
+    'modifyTelemetryStorage',
   ].forEach((name) => {
     api.registerMethod({ name });
   });

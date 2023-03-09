@@ -788,6 +788,12 @@ importers:
       express: 4.18.2
       umi: link:../../packages/umi
 
+  examples/telemetry:
+    specifiers:
+      umi: workspace:*
+    dependencies:
+      umi: link:../../packages/umi
+
   examples/test-test:
     specifiers:
       '@testing-library/jest-dom': ^5.16.4
