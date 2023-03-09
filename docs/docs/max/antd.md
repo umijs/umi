@@ -119,9 +119,12 @@ export const antd: RuntimeAntdConfig = (memo) => {
   memo.theme ??= {};
   memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
 
-  memo.appConfig ??= {}; // antd >= 5.1.0 支持
-  memo.appConfig.message ??= {}; // antd >= 5.3.0 支持
-  memo.appConfig.message.maxCount = 3; // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
+  memo.appConfig = {
+    message: {
+      // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
+      maxCount: 3,
+    }
+  }
 
   return memo;
 };
