@@ -21,10 +21,17 @@ export default (api: IApi) => {
 import { HelmetProvider } from '${winPath(
           dirname(require.resolve('@umijs/renderer-react/package')),
         )}';
+import { context } from './helmetContext';
 
 export const innerProvider = (container) => {
-  return React.createElement(HelmetProvider, { context: {} }, container);
+  return React.createElement(HelmetProvider, { context }, container);
 }`,
+      });
+
+      api.writeTmpFile({
+        noPluginDir: true,
+        path: 'core/helmetContext.ts',
+        content: `export const context = {};`,
       });
     }
   });

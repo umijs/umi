@@ -1,4 +1,7 @@
+import { isZodSchema, winPath, zod2string } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
+import { z, ZodSchema } from '@umijs/utils/compiled/zod';
+import { dirname } from 'path';
 import { IApi } from '../../types';
 
 // Need to be excluded function type declared in `IConfig`
@@ -10,28 +13,27 @@ export default (api: IApi) => {
   api.onGenerateFiles(async () => {
     const { service } = api;
 
-    const properties = Object.keys(service.configSchemas).reduce((acc, key) => {
+    let properties: Record<string, joi.Schema> = {};
+    let zodProperties: Record<string, ZodSchema> = {};
+    Object.keys(service.configSchemas).forEach((key) => {
       if (FILTER_KEYS.includes(key)) {
-        return acc;
+        return;
       }
 
       const schemaFn = service.configSchemas[key];
       if (typeof schemaFn !== 'function') {
-        return acc;
+        return;
       }
 
-      const schema = schemaFn(joi);
-      if (!joi.isSchema(schema)) {
-        return acc;
+      const schema = schemaFn({ ...joi, zod: z });
+      if (joi.isSchema(schema)) {
+        properties[key] = schema;
+      } else if (isZodSchema(schema)) {
+        zodProperties[key] = schema;
       }
+    });
 
-      return {
-        ...acc,
-        [key]: schema,
-      };
-    }, {});
-
-    const interfaceName = 'IConfigFromPlugins';
+    const interfaceName = 'IConfigFromPluginsJoi';
 
     const joi2Types = require('../../../compiled/joi2types').default;
     const content = await joi2Types(joi.object(properties), {
@@ -45,8 +47,26 @@ export default (api: IApi) => {
 
     api.writeTmpFile({
       noPluginDir: true,
-      path: 'core/pluginConfig.d.ts',
+      path: `core/pluginConfigJoi.d.ts`,
       content,
+    });
+
+    const typeContent: string = `
+import { zod as z } from "${winPath(
+      dirname(require.resolve('@umijs/utils/package.json')),
+    )}";
+import { IConfigFromPluginsJoi } from "./pluginConfigJoi.d";
+
+const IConfig = ${zod2string(z.object(zodProperties))};
+
+type IConfigTypes = z.infer<typeof IConfig>;
+
+export type IConfigFromPlugins = IConfigFromPluginsJoi & Partial<IConfigTypes>;
+    `;
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/pluginConfig.ts',
+      content: typeContent,
     });
   });
 };
