@@ -2,8 +2,7 @@ import {
   aliasUtils,
   chalk,
   fsExtra,
-  getFileCreateInfo,
-  getFileLastModifyInfo,
+  git,
   installWithNpmClient,
   logger,
   readDirFiles,
@@ -16,8 +15,24 @@ import type { MadgeConfig, MadgeInstance, MadgePath } from 'madge';
 import { dirname, join, relative } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
 
-type ICreateInfo = Awaited<ReturnType<typeof getFileCreateInfo>>;
-type IModifyInfo = Awaited<ReturnType<typeof getFileLastModifyInfo>>;
+const { getFileCreateInfo, getFileLastModifyInfo, isGitRepo } = git;
+
+type ICreateInfo = git.ICreateInfo;
+type IModifyInfo = git.IModifyInfo;
+
+interface IArgs {
+  /** 是否输出文件，可定制输出文件名 */
+  out?: string | true;
+  /** 输出文件是否携带git信息 */
+  gitInfo?: true;
+}
+
+interface IOutputOptions {
+  /** 输出文件携带 git 信息，包括文件创建信息、最新修改信息 */
+  gitInfo?: boolean;
+  /** 当前 cli 执行路径 */
+  cwd: string;
+}
 
 const response = <R extends unknown>(
   res: PromiseSettledResult<R>,
@@ -26,23 +41,26 @@ const response = <R extends unknown>(
 const outputUnusedFiles = async (
   unusedFiles: ReturnType<typeof readDirFiles>,
   fileName: string,
-  option: {
-    verbose?: boolean;
-    gitDirPath?: string;
-  },
+  option: IOutputOptions,
 ) => {
   if (!unusedFiles?.length) {
     return;
   }
-  const { verbose, gitDirPath } = option;
+  const { gitInfo, cwd } = option;
 
-  if (verbose) {
+  if (gitInfo) {
+    const isInGit = await isGitRepo();
+
+    if (!isInGit) {
+      throw new Error(`当前目录 ${cwd} 不是 git 仓库，请确认！`);
+    }
+
     const records: Record<string, ICreateInfo & IModifyInfo> = {};
     await Promise.allSettled(
-      unusedFiles.map(({ filePath }) => {
+      unusedFiles.map(async ({ filePath }) => {
         return Promise.allSettled([
-          getFileCreateInfo(filePath, gitDirPath),
-          getFileLastModifyInfo(filePath, gitDirPath),
+          getFileCreateInfo(filePath),
+          getFileLastModifyInfo(filePath),
         ]).then((infos) => {
           const [createInfo, modifyInfo] = infos;
 
@@ -61,29 +79,16 @@ const outputUnusedFiles = async (
   } else {
     fsExtra.writeFileSync(
       fileName,
-      `
-      [
+      `[
         ${unusedFiles.reduce((res, { filePath }, index) => {
-          return (
-            res + `"${filePath}" ${index !== unusedFiles.length - 1 ? ',' : ''}`
-          );
+          return `${res}"${filePath}" ${
+            index !== unusedFiles.length - 1 ? ',' : ''
+          }`;
         }, '')}
-      ]
-      `,
+      ]`,
       'utf8',
     );
   }
-
-  // 转化格式 1. ***.ts
-  // const content = unusedFiles.map((file, index) => `\n${index + 1}. ${file}`);
-
-  // const str = `
-  //   Warning: There are ${unusedFiles.length} unused files:
-  //   ${content.join('')}
-  //   \nPlease be careful if you want to remove them (¬º-°)¬.\n
-  // `;
-
-  // fsExtra.writeFileSync(fileName, str, 'utf8');
 };
 
 interface ITsconfig {
@@ -152,21 +157,8 @@ export default (api: IApi) => {
       const cwd = api.cwd;
       const tsconfig = (await tsconfigPaths.loadConfig(cwd)) as ITsconfig;
 
-      // 是否生成文件
-      const outFile = api.args?.outFile;
-      // 生成文件包含更多文件创建、最新修改等信息
-      const verbose = api.args?.verbose;
-      // monorepo git目录不在当前项目目录，一般需要添加 ../.. 的path前缀定位
-      const pathPrefix =
-        typeof api.args?.pathPrefix === 'string' ? api.args.pathPrefix : '';
-
-      const gitDirPath = join(
-        cwd,
-        pathPrefix
-          .split('/')
-          .map(() => '..')
-          .join('/'),
-      );
+      const args = api.args as IArgs;
+      const { out, gitInfo } = args;
 
       const exclude: RegExp[] = [/node_modules/, /\.d\.ts$/, /\.umi/];
       const isExclude = (path: string) => {
@@ -275,15 +267,17 @@ export default (api: IApi) => {
         );
       });
 
-      if (outFile) {
+      if (out) {
         const recordJson = `DeadCodeList-${Date.now()}.json`;
-        const recordJsonPath = winPath(join(cwd, recordJson));
+        const recordJsonPath = winPath(
+          join(cwd, typeof out === 'string' ? out : recordJson),
+        );
 
-        if (verbose) logger.wait('generating file...');
+        if (gitInfo) logger.wait('generating file...');
 
         await outputUnusedFiles(unusedFiles, recordJsonPath, {
-          verbose,
-          gitDirPath,
+          gitInfo,
+          cwd,
         });
 
         logger.warn(

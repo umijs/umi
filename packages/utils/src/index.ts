@@ -39,7 +39,7 @@ import updatePackageJSON from './updatePackageJSON';
 export * as aliasUtils from './aliasUtils';
 export * from './getCorejsVersion';
 export * from './getDevBanner';
-export * from './getFileGitIno';
+export * as git from './getFileGitIno';
 export * from './importLazy';
 export * from './isLocalDev';
 export * from './isMonorepo';

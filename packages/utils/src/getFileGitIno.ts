@@ -1,6 +1,6 @@
 import type { SpawnOptions } from 'child_process';
 import crossSpawn from 'cross-spawn';
-import { logger } from './index';
+import { execa } from '../compiled/execa';
 
 const promisifySpawn = (
   cmd: string,
@@ -37,13 +37,13 @@ const promisifySpawn = (
     });
   });
 
-interface ICreateInfo {
+export interface ICreateInfo {
   createTime?: string;
   creator?: string;
   creatorEmail?: string;
   createSince?: string;
 }
-interface IModifyInfo {
+export interface IModifyInfo {
   modifyTime?: string;
   modifier?: string;
   modifierEmail?: string;
@@ -59,33 +59,31 @@ export const getFileCreateInfo = async (
   filePath: string,
   gitDirPath?: string,
 ) => {
-  return promisifySpawn(
-    'git',
-    // time|name|email|since
-    ['log', '--reverse', '-1000000', "--pretty='%ad|%an|%ae|%ar'", filePath],
-    {
-      cwd: gitDirPath,
-      onlyOnce: true,
-      shell: true,
-    },
-  )
-    .then<ICreateInfo>((info) => {
-      if (info.length && info[0]) {
-        const firstCommit = info[0].slice(0, info[0].indexOf('\n')).split('|');
-        return {
-          createTime: firstCommit.at(0),
-          creator: firstCommit.at(1),
-          creatorEmail: firstCommit.at(2),
-          createSince: firstCommit.at(3),
-        };
-      } else {
-        return {};
-      }
-    })
-    .catch((e) => {
-      logger.warn(e);
+  try {
+    const info = await promisifySpawn(
+      'git',
+      // time|name|email|since
+      ['log', '--reverse', '-1000000', "--pretty='%ad|%an|%ae|%ar'", filePath],
+      {
+        cwd: gitDirPath,
+        onlyOnce: true,
+        shell: true,
+      },
+    );
+    if (info.length && info[0]) {
+      const firstCommit = info[0].slice(0, info[0].indexOf('\n')).split('|');
+      return {
+        createTime: firstCommit.at(0),
+        creator: firstCommit.at(1),
+        creatorEmail: firstCommit.at(2),
+        createSince: firstCommit.at(3),
+      };
+    } else {
       return {};
-    });
+    }
+  } catch (err) {
+    throw new Error(`get file ${filePath} git info failed`);
+  }
 };
 
 /**
@@ -98,30 +96,38 @@ export const getFileLastModifyInfo = async (
   filePath: string,
   gitDirPath?: string,
 ) => {
-  return promisifySpawn(
-    'git',
-    ['log', '-1', "--pretty='%ad|%an|%ae|%ar'", filePath],
-    {
-      cwd: gitDirPath,
-      onlyOnce: true,
-      shell: true,
-    },
-  )
-    .then<IModifyInfo>((info: string[]) => {
-      if (info.length && info[0]) {
-        const firstCommit = info[0].slice(0, info[0].indexOf('\n')).split('|');
-        return {
-          modifyTime: firstCommit.at(0),
-          modifier: firstCommit.at(1),
-          modifierEmail: firstCommit.at(2),
-          modifySince: firstCommit.at(3),
-        };
-      } else {
-        return {};
-      }
-    })
-    .catch((e) => {
-      logger.warn(e);
+  try {
+    const info = await promisifySpawn(
+      'git',
+      ['log', '-1', "--pretty='%ad|%an|%ae|%ar'", filePath],
+      {
+        cwd: gitDirPath,
+        onlyOnce: true,
+        shell: true,
+      },
+    );
+
+    if (info.length && info[0]) {
+      const firstCommit = info[0].slice(0, info[0].indexOf('\n')).split('|');
+      return {
+        modifyTime: firstCommit.at(0),
+        modifier: firstCommit.at(1),
+        modifierEmail: firstCommit.at(2),
+        modifySince: firstCommit.at(3),
+      };
+    } else {
       return {};
-    });
+    }
+  } catch (err) {
+    throw new Error(`get file ${filePath} git info failed`);
+  }
+};
+
+export const isGitRepo = async () => {
+  try {
+    const res = await execa('git', ['rev-parse', '--is-inside-work-tree']);
+    return res.stdout.includes('true');
+  } catch (e) {
+    return false;
+  }
 };
