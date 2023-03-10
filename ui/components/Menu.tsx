@@ -1,11 +1,17 @@
 import { state as globalState } from '@/models/global';
-import { NavLink, styled, useSnapshot } from 'umi';
+import { Icon, NavLink, styled, useSnapshot } from 'umi';
 
 const Wrapper = styled.div`
   & > div {
-    border-top: 1px solid var(--subtle-color);
     a {
-      display: block;
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--subtle-color);
+
+      span {
+        margin-right: 0.5rem;
+      }
     }
     a:hover {
       background: var(--bg-hover-color);
@@ -26,6 +32,7 @@ export function Menu() {
             to={menu.path}
             className={({ isActive }) => (isActive ? 'active' : undefined)}
           >
+            <Icon icon={`ant-design:${menu.icon}`} />
             {menu.name}
           </NavLink>
         </div>

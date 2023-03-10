@@ -49,10 +49,10 @@ function assert(v: unknown, message: string) {
   const version = await question(`What's next version? `);
   await $`cd ${pkgPath} && npm version ${version}`;
 
-  // npm publish
-  logger.event('npm publish');
+  // pnpm publish
+  logger.event('pnpm publish');
   $.verbose = false;
-  await $`cd ${pkgPath} && npm publish`;
+  await $`cd ${pkgPath} && pnpm publish --no-git-checks`;
   logger.info(`+ ${pkg}@${version}`);
   $.verbose = true;
 
