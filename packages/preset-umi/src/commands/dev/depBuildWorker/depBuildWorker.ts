@@ -55,7 +55,7 @@ async function start() {
 
   const cacheDirectoryPath = resolve(
     opts.rootDir || opts.cwd,
-    opts.config.cacheDirectoryPath || 'node_modules/.cache',
+    opts.config.cacheDirectoryPath,
   );
 
   const depConfig = await getConfig({

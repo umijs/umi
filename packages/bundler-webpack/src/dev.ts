@@ -79,7 +79,7 @@ export async function dev(opts: IOpts) {
 export async function setup(opts: IOpts) {
   const cacheDirectoryPath = resolve(
     opts.rootDir || opts.cwd,
-    opts.config.cacheDirectoryPath || 'node_modules/.cache',
+    opts.config.cacheDirectoryPath,
   );
   const enableMFSU = opts.config.mfsu !== false;
   let mfsu: MFSU | null = null;

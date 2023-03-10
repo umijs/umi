@@ -12,8 +12,7 @@ export abstract class MFSUUtilBase {
   protected mfsuCacheBase: string;
   protected cliName: string;
   constructor(readonly api: IApi) {
-    const cacheBase =
-      api.config.cacheDirectoryPath || join(api.cwd, 'node_modules/.cache');
+    const cacheBase = join(api.cwd, api.config.cacheDirectoryPath);
 
     this.mfsuCacheBase =
       api.config?.mfsu?.cacheDirectoryPath || join(cacheBase, 'mfsu');

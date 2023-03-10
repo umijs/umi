@@ -72,6 +72,7 @@ export default (api: IApi) => {
     svgr: {},
     ignoreMomentLocale: true,
     mfsu: { strategy: 'eager' },
+    cacheDirectoryPath: 'node_modules/.cache',
   };
 
   const bundleSchemas = api.config.vite

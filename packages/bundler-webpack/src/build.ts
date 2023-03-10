@@ -28,7 +28,7 @@ type IOpts = {
 export async function build(opts: IOpts): Promise<webpack.Stats> {
   const cacheDirectoryPath = resolve(
     opts.rootDir || opts.cwd,
-    opts.config.cacheDirectoryPath || 'node_modules/.cache',
+    opts.config.cacheDirectoryPath,
   );
   const webpackConfig = await configModule.getConfig({
     cwd: opts.cwd,
