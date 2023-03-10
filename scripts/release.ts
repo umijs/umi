@@ -7,7 +7,7 @@ import { join } from 'path';
 import qs from 'qs';
 import rimraf from 'rimraf';
 import 'zx/globals';
-import { PATHS, PNPM_PUBLISH } from './.internal/constants';
+import { PATHS } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
 
 (async () => {
@@ -176,13 +176,13 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   await Promise.all(
     innerPkgs.map(async (pkg) => {
-      await $`cd packages/${pkg} && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
+      await $`cd packages/${pkg} && pnpm publish --no-git-checks --tag ${tag} ${otpArg}`;
       logger.info(`+ ${pkg}`);
     }),
   );
-  await $`cd packages/umi && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
+  await $`cd packages/umi && pnpm publish --no-git-checks --tag ${tag} ${otpArg}`;
   logger.info(`+ umi`);
-  await $`cd packages/max && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
+  await $`cd packages/max && pnpm publish --no-git-checks --tag ${tag} ${otpArg}`;
   logger.info(`+ @umijs/max`);
   $.verbose = true;
 

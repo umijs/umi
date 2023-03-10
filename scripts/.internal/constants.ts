@@ -15,5 +15,3 @@ export const SCRIPTS = {
   BUILD: 'umi-scripts father build',
   TEST_TURBO: 'umi-scripts jest-turbo',
 } as const;
-
-export const PNPM_PUBLISH = `pnpm publish --no-git-checks`;

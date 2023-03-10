@@ -2,7 +2,6 @@ import { logger } from '@umijs/utils';
 import getGitRepoInfo from 'git-repo-info';
 import { join } from 'path';
 import 'zx/globals';
-import { PNPM_PUBLISH } from './.internal/constants';
 
 function assert(v: unknown, message: string) {
   if (!v) {
@@ -53,7 +52,7 @@ function assert(v: unknown, message: string) {
   // pnpm publish
   logger.event('pnpm publish');
   $.verbose = false;
-  await $`cd ${pkgPath} && ${PNPM_PUBLISH}`;
+  await $`cd ${pkgPath} && pnpm publish --no-git-checks`;
   logger.info(`+ ${pkg}@${version}`);
   $.verbose = true;
 
