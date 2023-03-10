@@ -1713,7 +1713,6 @@ importers:
       regenerator-runtime: 0.13.11
       sirv: 2.0.2
       vite: 4.1.4
-      zod-to-ts: ^1.1.2
     dependencies:
       '@iconify/utils': 2.1.1
       '@svgr/core': 6.5.1
@@ -1757,7 +1756,6 @@ importers:
       os-locale: 6.0.2
       sirv: 2.0.2
       vite: 4.1.4
-      zod-to-ts: 1.1.2
 
   packages/preset-vue:
     specifiers:
@@ -24895,7 +24893,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
+      ts-node: 10.9.1_typescript@4.9.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -40867,13 +40865,6 @@ packages:
       validator: 13.7.0
     optionalDependencies:
       commander: 2.20.3
-    dev: true
-
-  /zod-to-ts/1.1.2:
-    resolution: {integrity: sha512-IZdM0Ga1l/vQnrNy63aV3qsLNchD0aUYZEtXcyt8A3xA7+erFO0zeImEcUH5qNLA6tXDTjRpcWp0paoVoH/D0A==}
-    peerDependencies:
-      typescript: ^4.9.4
-      zod: ^3
     dev: true
 
   /zod/3.20.6:
