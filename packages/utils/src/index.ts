@@ -11,6 +11,7 @@ import * as execa from '../compiled/execa';
 import fsExtra from '../compiled/fs-extra';
 import glob from '../compiled/glob';
 // import globby from '../compiled/globby';
+import remapping from '../compiled/@ampproject/remapping';
 import * as fastestLevenshtein from '../compiled/fastest-levenshtein';
 import * as filesize from '../compiled/filesize';
 import * as gzipSize from '../compiled/gzip-size';
@@ -24,7 +25,9 @@ import resolve from '../compiled/resolve';
 import rimraf from '../compiled/rimraf';
 import semver from '../compiled/semver';
 import stripAnsi from '../compiled/strip-ansi';
+import * as tsconfigPaths from '../compiled/tsconfig-paths';
 import yParser from '../compiled/yargs-parser';
+import { z } from '../compiled/zod';
 import BaseGenerator from './BaseGenerator/BaseGenerator';
 import generateFile from './BaseGenerator/generateFile';
 import Generator from './Generator/Generator';
@@ -36,16 +39,20 @@ import updatePackageJSON from './updatePackageJSON';
 export * as aliasUtils from './aliasUtils';
 export * from './getCorejsVersion';
 export * from './getDevBanner';
+export * as git from './getFileGitIno';
 export * from './importLazy';
 export * from './isLocalDev';
 export * from './isMonorepo';
 export * from './isStyleFile';
 export * from './npmClient';
 export * from './randomColor/randomColor';
+export * from './readDirFiles';
 export * as register from './register';
 export * from './setNoDeprecation';
 export * from './tryPaths';
 export * from './winPath';
+export * from './zod/isZodSchema';
+export * from './zod/zod2string';
 export {
   address,
   axios,
@@ -82,4 +89,7 @@ export {
   fastestLevenshtein,
   clackPrompts,
   MagicString,
+  remapping,
+  tsconfigPaths,
+  z as zod,
 };

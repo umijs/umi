@@ -22,7 +22,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "valtio": "1.9.0"
+    "valtio": "1.10.3"
   },
   "packageManager": "pnpm@7.3.0",
   "publishConfig": {

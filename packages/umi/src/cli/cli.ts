@@ -3,6 +3,7 @@ import { DEV_COMMAND } from '../constants';
 import { Service } from '../service/service';
 import { dev } from './dev';
 import {
+  catchUnhandledRejection,
   checkLocal,
   checkVersion as checkNodeVersion,
   setNodeTitle,
@@ -11,6 +12,8 @@ import {
 interface IOpts {
   presets?: string[];
 }
+
+catchUnhandledRejection();
 
 export async function run(opts?: IOpts) {
   checkNodeVersion();
@@ -26,7 +29,8 @@ export async function run(opts?: IOpts) {
     boolean: ['version'],
   });
   const command = args._[0];
-  if ([DEV_COMMAND, 'mfsu', 'setup'].includes(command)) {
+  const FEATURE_COMMANDS = ['mfsu', 'setup', 'deadcode'];
+  if ([DEV_COMMAND, ...FEATURE_COMMANDS].includes(command)) {
     process.env.NODE_ENV = 'development';
   } else if (command === 'build') {
     process.env.NODE_ENV = 'production';

@@ -5,7 +5,7 @@ import { getRoutes } from './core/route';
 import { createPluginManager } from './core/plugin';
 import { createHistory } from './core/history';
 {{#loadingComponent}}
-import Loading from '@/loading';
+import Loading from '{{{ loadingComponent }}}';
 {{/loadingComponent}}
 import { ApplyPluginsType } from 'umi';
 {{{ imports }}}

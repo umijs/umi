@@ -1,4 +1,4 @@
-import { getNpmClient, importLazy } from '@umijs/utils';
+import { getNpmClient, importLazy, winPath } from '@umijs/utils';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { parse } from '../../../compiled/ini';
@@ -10,6 +10,9 @@ import { getOverridesCSS } from '../overrides/overrides';
 export default (api: IApi) => {
   const routesApi: typeof import('../tmpFiles/routes') = importLazy(
     require.resolve('../tmpFiles/routes'),
+  );
+  const bundlerUtils: typeof import('@umijs/bundler-utils') = importLazy(
+    require.resolve('@umijs/bundler-utils'),
   );
 
   api.modifyAppData(async (memo) => {
@@ -47,10 +50,12 @@ export default (api: IApi) => {
     memo.appJS = await getAppJsInfo();
     memo.locale = await osLocale();
     memo.vite = api.config.vite ? {} : undefined;
-    const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
+    const { globalCSS, globalJS, overridesCSS, globalLoading } =
+      getGlobalFiles();
     memo.globalCSS = globalCSS;
     memo.globalJS = globalJS;
     memo.overridesCSS = overridesCSS;
+    memo.globalLoading = globalLoading;
 
     const gitDir = findGitDir(api.paths.cwd);
     if (gitDir) {
@@ -77,10 +82,12 @@ export default (api: IApi) => {
     async fn(args: IOnGenerateFiles) {
       if (!args.isFirstTime) {
         api.appData.appJS = await getAppJsInfo();
-        const { globalCSS, globalJS, overridesCSS } = getGlobalFiles();
+        const { globalCSS, globalJS, overridesCSS, globalLoading } =
+          getGlobalFiles();
         api.appData.globalCSS = globalCSS;
         api.appData.globalJS = globalJS;
         api.appData.overridesCSS = overridesCSS;
+        api.appData.globalLoading = globalLoading;
       }
     },
     stage: Number.NEGATIVE_INFINITY,
@@ -116,9 +123,7 @@ export default (api: IApi) => {
   async function getAppJsInfo() {
     for (const path of expandJSPaths(join(api.paths.absSrcPath, 'app'))) {
       if (existsSync(path)) {
-        const { parseModule }: typeof import('@umijs/bundler-utils') =
-          importLazy(require.resolve('@umijs/bundler-utils'));
-        const [_, exports] = await parseModule({
+        const [_, exports] = await bundlerUtils.parseModule({
           path,
           content: readFileSync(path, 'utf-8'),
         });
@@ -149,6 +154,11 @@ export default (api: IApi) => {
       [],
     );
 
+    const loadingFile = expandJSPaths(join(absSrcPath, 'loading')).find(
+      existsSync,
+    );
+    const globalLoading = loadingFile ? winPath(loadingFile) : undefined;
+
     const overridesCSS = [getOverridesCSS(api.paths.absSrcPath)].filter(
       Boolean,
     ) as string[];
@@ -157,6 +167,7 @@ export default (api: IApi) => {
       globalCSS,
       globalJS,
       overridesCSS,
+      globalLoading,
     };
   }
 };

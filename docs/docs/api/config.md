@@ -263,18 +263,6 @@ conventionRoutes: {
 }
 ```
 
-### esbuildMinifyIIFE
-
-- 类型：`Array<string | { from: string; to: string; }>`
-- 默认值：`false`
-
-修复 esbuild 压缩引入的命名冲突问题, 更多[详见](https://github.com/vitejs/vite/pull/7948)
-
-示例,
-```ts
-esbuildMinifyIIFE: true
-```
-
 ## copy
 
 - 类型：`Array<string | { from: string; to: string; }>`
@@ -473,7 +461,6 @@ declare global {
  const FOO: string;
 }
 ```
-
 ## devtool
 
 - 类型：`string`
@@ -501,6 +488,22 @@ devtool: process.env.NODE_ENV === 'development' ? 'eval' : false;
 - 默认值：`{}`
 
 设置 babel class-properties 启用 loose
+
+## esbuildMinifyIIFE
+
+- 类型：`boolean`
+- 默认值：`false`
+
+修复 esbuild 压缩器自动引入的全局变量导致的命名冲突问题。
+
+由于 Umi 4 默认使用 esbuild 作为压缩器，该压缩器会自动注入全局变量作为 polyfill ，这可能会引发 异步块全局变量冲突、 qiankun 子应用和主应用全局变量冲突 等问题，通过打开该选项或切换 [`jsMinifier`](#jsminifier-webpack) 压缩器可解决此问题。
+
+更多信息详见 [vite#7948](https://github.com/vitejs/vite/pull/7948) 。
+
+示例,
+```ts
+esbuildMinifyIIFE: true
+```
 
 ## externals
 
@@ -704,6 +707,13 @@ headScripts: [
 ],
 ```
 
+## helmet
+
+- 类型：`boolean`
+- 默认值：`true`
+
+配置 `react-helmet-async` 的集成，当设置为 `false` 时，不会集成 `react-helmet-async`，此时无法从框架中 `import { Helmet }` 使用，同时构建产物也会减少[相应的尺寸](https://bundlephobia.com/package/react-helmet-async)。
+
 ## history
 
 - 类型：`{ type: 'browser' | 'hash' | 'memory' }`
@@ -720,12 +730,16 @@ headScripts: [
 
 ## https
 
-- 类型：`{ cert: string; key: string; hosts: string[] }`
+- 类型：`{ cert: string; key: string; hosts: string[]; http2?: boolean }`
 - 默认值：`{ hosts: ['127.0.0.1', 'localhost'] }`
 
 开启 dev 的 https 模式。
 
-关于参数。`cert` 和 `key` 分别用于指定 cert 和 key 文件；`hosts` 用于指定要支持 https 访问的 host，默认是 `['127.0.0.1', 'localhost']`。
+关于参数。
+
+- `cert` 和 `key` 分别用于指定 cert 和 key 文件。
+- `hosts` 用于指定要支持 https 访问的 host，默认是 `['127.0.0.1', 'localhost']`。
+- `http2` 用于指定是否使用 HTTP 2.0 协议，默认是 true（使用 HTTP 2.0 在 Chrome 或 Edge 浏览器中中有偶然出现 `ERR_HTTP2_PROTOCOL_ERRO`报错，如有遇到，建议配置为 false）。
 
 示例，
 

@@ -2,12 +2,36 @@ import { proxy } from 'umi';
 
 export const state = proxy({
   menus: [
-    { name: 'Overview', path: '/' },
-    { name: 'Configuration', path: '/config' },
-    { name: 'Routes', path: '/routes' },
-    { name: 'Doctor', path: '/doctor' },
-    { name: 'Plugins', path: '/plugins' },
-    { name: 'Imports', path: '/imports' },
+    {
+      name: 'Overview',
+      path: '/',
+      icon: 'fund-projection-screen-outlined',
+    },
+    {
+      name: 'Configuration',
+      path: '/config',
+      icon: 'control-outlined',
+    },
+    {
+      name: 'Routes',
+      path: '/routes',
+      icon: 'cluster-outlined',
+    },
+    {
+      name: 'Doctor',
+      path: '/doctor',
+      icon: 'medicine-box-outlined',
+    },
+    {
+      name: 'Plugins',
+      path: '/plugins',
+      icon: 'api-outlined',
+    },
+    {
+      name: 'Imports',
+      path: '/imports',
+      icon: 'right-square-outlined',
+    },
   ],
 });
 

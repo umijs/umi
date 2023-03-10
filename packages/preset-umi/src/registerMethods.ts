@@ -62,6 +62,9 @@ export default (api: IApi) => {
     await init;
   });
 
+  const transformModule: typeof import('./utils/transformIEAR') = importLazy(
+    require.resolve('./utils/transformIEAR'),
+  );
   api.registerMethod({
     name: 'writeTmpFile',
     fn(opts: {
@@ -116,9 +119,7 @@ export default (api: IApi) => {
 
       // transform imports for all javascript-like files only vite mode enable
       if (api.appData.vite && isJsFile) {
-        const { default: transformIEAR } = importLazy(
-          require.resolve('./utils/transformIEAR'),
-        );
+        const transformIEAR = transformModule.default;
         content = transformIEAR({ content, path: absPath }, api);
       }
 

@@ -15,6 +15,7 @@ import { DEFAULT_HOST, DEFAULT_PORT } from '../../constants';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import type { GenerateFilesFn, IApi } from '../../types';
 import { lazyImportFromCurrentPkg } from '../../utils/lazyImportFromCurrentPkg';
+import { getProjectFileList } from '../../utils/projectFileList';
 import { createRouteMiddleware } from './createRouteMiddleware';
 import { faviconMiddleware } from './faviconMiddleware';
 import { getBabelOpts } from './getBabelOpts';
@@ -310,7 +311,14 @@ PORT=8888 umi dev
             'mfsu_v4',
           ),
         });
-        await srcCodeCache!.init();
+
+        if (api.appData.framework === 'vue') {
+          await srcCodeCache!.initWithScan();
+        } else {
+          const files = getProjectFileList(api);
+          await srcCodeCache!.init(files);
+        }
+
         addUnWatch(() => {
           srcCodeCache!.unwatch();
         });

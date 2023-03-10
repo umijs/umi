@@ -1,6 +1,7 @@
 import { chalk, execa, logger } from '@umijs/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { RequestListener } from 'http';
+import https from 'https';
 import { join } from 'path';
 import spdy from 'spdy';
 import { HttpsServerOptions } from './types';
@@ -101,7 +102,10 @@ export async function createHttpsServer(
   const { key, cert } = await resolveHttpsConfig(httpsConfig);
 
   // Create server
-  return spdy.createServer(
+  const createServer = (
+    httpsConfig.http2 === false ? https.createServer : spdy.createServer
+  ) as typeof spdy.createServer;
+  return createServer(
     {
       key: readFileSync(key, 'utf-8'),
       cert: readFileSync(cert, 'utf-8'),

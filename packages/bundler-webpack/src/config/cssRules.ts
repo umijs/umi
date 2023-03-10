@@ -45,15 +45,15 @@ export async function addCSSRules(opts: IOpts) {
           .test(test)
           .oneOf('css-modules')
           .resourceQuery(/modules/),
-        isCSSModules: true,
+        isAutoCSSModuleRule: true,
       },
       {
         rule: rule.test(test).oneOf('css').sideEffects(true),
-        isCSSModules: false,
+        isAutoCSSModuleRule: false,
       },
     ].filter(Boolean);
     // @ts-ignore
-    for (const { rule, isCSSModules } of nestRulesConfig) {
+    for (const { rule, isAutoCSSModuleRule } of nestRulesConfig) {
       if (userConfig.styleLoader) {
         rule
           .use('style-loader')
@@ -76,6 +76,28 @@ export async function addCSSRules(opts: IOpts) {
           });
       }
 
+      // If SSR is enabled, we need to handling the css modules name hashing
+      // and save the class names mapping into opts.cssModulesMapping
+      // so the esbuild can use it to generate the correct name for the server side
+      const getLocalIdent = userConfig.ssr && getLocalIdentForSSR;
+      const localIdentName = '[local]___[hash:base64:5]';
+
+      let cssLoaderModulesConfig: any;
+      if (isAutoCSSModuleRule) {
+        cssLoaderModulesConfig = {
+          localIdentName,
+          ...userConfig.cssLoaderModules,
+          getLocalIdent,
+        };
+      } else if (userConfig.normalCSSLoaderModules) {
+        cssLoaderModulesConfig = {
+          localIdentName,
+          auto: true,
+          ...userConfig.normalCSSLoaderModules,
+          getLocalIdent,
+        };
+      }
+
       rule
         .use('css-loader')
         .loader(require.resolve('css-loader'))
@@ -91,42 +113,7 @@ export async function addCSSRules(opts: IOpts) {
             },
           },
           import: true,
-          ...(isCSSModules
-            ? {
-                modules: {
-                  localIdentName: '[local]___[hash:base64:5]',
-                  ...userConfig.cssLoaderModules,
-                  // If SSR is enabled, we need to handling the css modules name hashing
-                  // and save the class names mapping into opts.cssModulesMapping
-                  // so the esbuild can use it to generate the correct name for the server side
-                  getLocalIdent:
-                    userConfig.ssr &&
-                    ((
-                      context: LoaderContext,
-                      localIdentName: string,
-                      localName: string,
-                      opt: any,
-                    ) => {
-                      const classIdent = (
-                        winPath(context.resourcePath).replace(
-                          winPath(ensureLastSlash(opt.context)),
-                          '',
-                        ) +
-                        '@' +
-                        localName
-                      ).trim();
-                      let hash = Buffer.from(classIdent)
-                        .toString('base64')
-                        .replace(/=/g, '');
-                      hash = hash.substring(hash.length - 5);
-                      const result = localIdentName
-                        .replace(/\[local]/g, localName)
-                        .replace(/\[hash[^\[]*?]/g, hash);
-                      return result;
-                    }),
-                },
-              }
-            : {}),
+          modules: cssLoaderModulesConfig,
           ...userConfig.cssLoader,
         });
 
@@ -165,4 +152,26 @@ export async function addCSSRules(opts: IOpts) {
 
 function ensureLastSlash(path: string) {
   return path.endsWith('/') ? path : path + '/';
+}
+
+function getLocalIdentForSSR(
+  context: LoaderContext,
+  localIdentName: string,
+  localName: string,
+  opt: any,
+) {
+  const classIdent = (
+    winPath(context.resourcePath).replace(
+      winPath(ensureLastSlash(opt.context)),
+      '',
+    ) +
+    '@' +
+    localName
+  ).trim();
+  let hash = Buffer.from(classIdent).toString('base64').replace(/=/g, '');
+  hash = hash.substring(hash.length - 5);
+  const result = localIdentName
+    .replace(/\[local]/g, localName)
+    .replace(/\[hash[^\[]*?]/g, hash);
+  return result;
 }

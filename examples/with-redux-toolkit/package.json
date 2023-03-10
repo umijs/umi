@@ -7,8 +7,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.2",
+    "@reduxjs/toolkit": "^1.9.3",
     "react-redux": "^8.0.5",
-    "umi": "4.0.0-canary.20230224.1"
+    "umi": "workspace:*"
   }
 }

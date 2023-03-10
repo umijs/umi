@@ -3,15 +3,15 @@ import { chalk, fsExtra, logger, rimraf } from '@umijs/utils';
 import { writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
+import {
+  measureFileSizesBeforeBuild,
+  printFileSizesAfterBuild,
+} from '../utils/fileSizeReporter';
 import { lazyImportFromCurrentPkg } from '../utils/lazyImportFromCurrentPkg';
 import { getAssetsMap } from './dev/getAssetsMap';
 import { getBabelOpts } from './dev/getBabelOpts';
 import { getMarkupArgs } from './dev/getMarkupArgs';
 import { printMemoryUsage } from './dev/printMemoryUsage';
-import {
-  measureFileSizesBeforeBuild,
-  printFileSizesAfterBuild,
-} from '../utils/fileSizeReporter';
 
 const bundlerWebpack: typeof import('@umijs/bundler-webpack') =
   lazyImportFromCurrentPkg('@umijs/bundler-webpack');
@@ -108,9 +108,9 @@ umi build --clean
         beforeBabelPresets,
         extraBabelPlugins,
         extraBabelPresets,
-        onBuildComplete(opts: any) {
+        async onBuildComplete(opts: any) {
           printMemoryUsage();
-          api.applyPlugins({
+          await api.applyPlugins({
             key: 'onBuildComplete',
             args: opts,
           });

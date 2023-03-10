@@ -1,4 +1,5 @@
 import joi from '@umijs/utils/compiled/@hapi/joi';
+import zod, { z } from '@umijs/utils/compiled/zod';
 
 export enum Env {
   development = 'development',
@@ -14,7 +15,7 @@ export enum PluginType {
 export interface IPluginConfig {
   default?: any;
   schema?: {
-    (joi: joi.Root): joi.Schema;
+    (joi: joi.Root & { zod: typeof z }): joi.Schema | zod.Schema;
   };
   onChange?: string | Function;
 }

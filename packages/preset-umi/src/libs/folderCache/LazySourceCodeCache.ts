@@ -4,14 +4,14 @@ import {
   parse,
 } from '@umijs/bundler-utils/compiled/es-module-lexer';
 import { build as esBuild } from '@umijs/bundler-utils/compiled/esbuild';
-import { logger, winPath } from '@umijs/utils';
 // @ts-ignore
+import { logger, winPath } from '@umijs/utils';
 import fg from 'fast-glob';
 import { readFileSync } from 'fs';
 import { extname, join, relative } from 'path';
+import { DEFAULT_SRC_IGNORES } from './constant';
 import { FolderWatch } from './FolderWatch';
 import type { FileChangeEvent, FileContentCache } from './types';
-import { DEFAULT_SRC_IGNORES } from './constant';
 
 export type MergedCodeInfo = {
   code: string;
@@ -46,7 +46,13 @@ export class LazySourceCodeCache {
     });
   }
 
-  async init() {
+  async init(files: string[]) {
+    await Promise.all([esModuleLexerInit, this.folderWatch.init()]);
+
+    await this.loadFiles(files);
+  }
+
+  async initWithScan() {
     const [files] = await Promise.all([
       this.initFileList(),
       esModuleLexerInit,
@@ -54,18 +60,6 @@ export class LazySourceCodeCache {
     ]);
 
     await this.loadFiles(files);
-  }
-
-  getSrcPath() {
-    return this.srcPath;
-  }
-
-  public async loadFiles(files: string[]) {
-    const loaded = await this.filesLoader(files);
-
-    for (const f of Object.keys(loaded)) {
-      this.fileContentCache[f] = loaded[f];
-    }
   }
 
   private async initFileList(): Promise<string[]> {
@@ -82,6 +76,17 @@ export class LazySourceCodeCache {
     return files;
   }
 
+  getSrcPath() {
+    return this.srcPath;
+  }
+
+  public async loadFiles(files: string[]) {
+    const loaded = await this.filesLoader(files);
+
+    for (const f of Object.keys(loaded)) {
+      this.fileContentCache[f] = loaded[f];
+    }
+  }
   getMergedCode() {
     const code = Object.values(this.fileContentCache).join('\n');
     const [imports] = parse(code);

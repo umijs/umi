@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "4.0.0-canary.20230224.1",
+  "version": "4.0.0-canary.20230309.4",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -25,6 +25,7 @@
     "pino": "7.11.0"
   },
   "devDependencies": {
+    "@ampproject/remapping": "2.2.0",
     "@clack/prompts": "0.2.2",
     "@hapi/joi": "17.1.1",
     "@types/color": "3.0.3",
@@ -59,13 +60,15 @@
     "pirates": "4.0.5",
     "pkg-up": "4.0.0",
     "portfinder": "1.0.32",
-    "prettier": "2.8.2",
+    "prettier": "2.8.4",
     "prompts": "2.4.2",
     "resolve": "1.22.0",
     "rimraf": "3.0.2",
     "semver": "7.3.8",
     "strip-ansi": "7.0.1",
-    "yargs-parser": "21.1.1"
+    "tsconfig-paths": "4.1.2",
+    "yargs-parser": "21.1.1",
+    "zod": "3.20.6"
   },
   "publishConfig": {
     "access": "public"
@@ -101,7 +104,10 @@
       "pirates",
       "@hapi/joi",
       "@clack/prompts",
-      "magic-string"
+      "magic-string",
+      "@ampproject/remapping",
+      "tsconfig-paths",
+      "zod"
     ],
     "externals": {
       "address": "$$LOCAL",
@@ -123,7 +129,8 @@
       "strip-ansi": "$$LOCAL",
       "yargs-parser": "$$LOCAL",
       "pirates": "$$LOCAL",
-      "@hapi/joi": "$$LOCAL"
+      "@hapi/joi": "$$LOCAL",
+      "tsconfig-paths": "$$LOCAL"
     }
   }
 }

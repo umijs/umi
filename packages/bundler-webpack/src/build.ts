@@ -1,8 +1,12 @@
-import { chalk, rimraf } from '@umijs/utils';
+import { chalk, importLazy, rimraf } from '@umijs/utils';
 import { join, resolve } from 'path';
 import webpack from '../compiled/webpack';
-import { getConfig, IOpts as IConfigOpts } from './config/config';
+import type { IOpts as IConfigOpts } from './config/config';
 import { Env, IConfig } from './types';
+
+const configModule: typeof import('./config/config') = importLazy(
+  require.resolve('./config/config'),
+);
 
 type IOpts = {
   cwd: string;
@@ -26,7 +30,7 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
     opts.rootDir || opts.cwd,
     opts.config.cacheDirectoryPath || 'node_modules/.cache',
   );
-  const webpackConfig = await getConfig({
+  const webpackConfig = await configModule.getConfig({
     cwd: opts.cwd,
     rootDir: opts.rootDir,
     env: Env.production,
@@ -61,9 +65,14 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
 
     const compiler = webpack(webpackConfig);
     let closeWatching: webpack.Watching['close'];
-    const handler: Parameters<typeof compiler.run>[0] = (err, stats) => {
-      opts.onBuildComplete?.({
-        err,
+    const handler: Parameters<typeof compiler.run>[0] = async (err, stats) => {
+      // generate valid error from normal error and stats error
+      const validErr =
+        err ||
+        (stats?.hasErrors() ? new Error(stats!.toString('errors-only')) : null);
+
+      await opts.onBuildComplete?.({
+        err: validErr,
         stats,
         isFirstCompile,
         time: stats ? stats.endTime - stats.startTime : null,
@@ -71,18 +80,10 @@ export async function build(opts: IOpts): Promise<webpack.Stats> {
         ...(opts.watch ? { close: closeWatching } : {}),
       });
       isFirstCompile = false;
-      if (err || stats?.hasErrors()) {
-        if (err) {
-          // console.error(err);
-          reject(err);
-        }
-        if (stats) {
-          const errorMsg = stats.toString('errors-only');
-
-          esbuildCompressErrorHelper(errorMsg);
-
-          reject(new Error(errorMsg));
-        }
+      if (validErr) {
+        // try to catch esbuild minify error to output  friendly error message
+        stats?.hasErrors() && esbuildCompressErrorHelper(validErr.toString());
+        reject(validErr);
       } else {
         resolve(stats!);
       }

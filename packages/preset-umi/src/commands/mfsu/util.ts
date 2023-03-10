@@ -5,6 +5,7 @@ import { isAbsolute, join, relative } from 'path';
 import { Worker } from 'worker_threads';
 import { LazySourceCodeCache } from '../../libs/folderCache/LazySourceCodeCache';
 import { GenerateFilesFn, IApi } from '../../types';
+import { getProjectFileList } from '../../utils/projectFileList';
 import { getBabelOpts } from '../dev/getBabelOpts';
 
 export abstract class MFSUUtilBase {
@@ -84,7 +85,8 @@ export abstract class MFSUUtilBase {
           'mfsu_v4',
         ),
       });
-      await srcCodeCache!.init();
+      const fileList = getProjectFileList(api);
+      await srcCodeCache!.init(fileList);
     }
 
     const entry = await api.applyPlugins({

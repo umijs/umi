@@ -128,6 +128,7 @@ export function getSchemas(): Record<string, (Joi: Root) => any> {
         }),
         Joi.boolean(),
       ),
+    normalCSSLoaderModules: (Joi) => Joi.object(),
     outputPath: (Joi) => Joi.string(),
     postcssLoader: (Joi) => Joi.object(),
     proxy: (Joi) => Joi.alternatives().try(Joi.object(), Joi.array()),

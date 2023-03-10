@@ -1,8 +1,10 @@
-import { codeFrameColumns } from '@umijs/bundler-utils/compiled/babel/code-frame';
-import { chalk } from '@umijs/utils';
+import { chalk, importLazy } from '@umijs/utils';
 import { IApi } from '../../types';
 import babelPlugin from './babelPlugin';
 import CodeFrameError from './CodeFrameError';
+
+const babelCodeFrame: typeof import('@umijs/bundler-utils/compiled/babel/code-frame') =
+  importLazy(require.resolve('@umijs/bundler-utils/compiled/babel/code-frame'));
 
 export default (api: IApi) => {
   api.addBeforeBabelPresets(() => {
@@ -28,10 +30,14 @@ export default (api: IApi) => {
                   if (err instanceof CodeFrameError) {
                     // throw with babel code frame error
                     throw new Error(
-                      `\n${codeFrameColumns(args.code, err.location, {
-                        highlightCode: true,
-                        message: err.message,
-                      })}\n`,
+                      `\n${babelCodeFrame.codeFrameColumns(
+                        args.code,
+                        err.location,
+                        {
+                          highlightCode: true,
+                          message: err.message,
+                        },
+                      )}\n`,
                       { cause: err },
                     );
                   } else if (err instanceof Error) {
