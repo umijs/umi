@@ -14,7 +14,6 @@ export default {
     appConfig: {
       message: {
         maxCount: 3,
-        duration: 2,
       },
     },
   },
