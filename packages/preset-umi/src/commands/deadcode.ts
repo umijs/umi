@@ -2,6 +2,7 @@ import {
   aliasUtils,
   chalk,
   fsExtra,
+  git,
   installWithNpmClient,
   logger,
   readDirFiles,
@@ -14,21 +15,80 @@ import type { MadgeConfig, MadgeInstance, MadgePath } from 'madge';
 import { dirname, join, relative } from 'path';
 import type { IApi, IOnGenerateFiles } from '../types';
 
-const outputUnusedFiles = (unusedFiles: string[], fileName: string): void => {
+const { getFileCreateInfo, getFileLastModifyInfo, isGitRepo } = git;
+
+type ICreateInfo = git.ICreateInfo;
+type IModifyInfo = git.IModifyInfo;
+
+interface IArgs {
+  /** 是否输出文件，可定制输出文件名 */
+  out?: string | true;
+  /** 输出文件是否携带git信息 */
+  gitInfo?: true;
+}
+
+interface IOutputOptions {
+  /** 输出文件携带 git 信息，包括文件创建信息、最新修改信息 */
+  gitInfo?: boolean;
+  /** 当前 cli 执行路径 */
+  cwd: string;
+}
+
+const response = <R extends unknown>(
+  res: PromiseSettledResult<R>,
+): res is PromiseFulfilledResult<R> => res.status === 'fulfilled';
+
+const outputUnusedFiles = async (
+  unusedFiles: ReturnType<typeof readDirFiles>,
+  fileName: string,
+  option: IOutputOptions,
+) => {
   if (!unusedFiles?.length) {
     return;
   }
+  const { gitInfo, cwd } = option;
 
-  // 转化格式 1. ***.ts
-  const content = unusedFiles.map((file, index) => `\n${index + 1}. ${file}`);
+  if (gitInfo) {
+    const isInGit = await isGitRepo();
 
-  const str = `
-    Warning: There are ${unusedFiles.length} unused files:
-    ${content.join('')}
-    \nPlease be careful if you want to remove them (¬º-°)¬.\n
-  `;
+    if (!isInGit) {
+      throw new Error(`当前目录 ${cwd} 不是 git 仓库，请确认！`);
+    }
 
-  fsExtra.writeFileSync(fileName, str, 'utf8');
+    const records: Record<string, ICreateInfo & IModifyInfo> = {};
+    await Promise.allSettled(
+      unusedFiles.map(async ({ filePath }) => {
+        return Promise.allSettled([
+          getFileCreateInfo(filePath),
+          getFileLastModifyInfo(filePath),
+        ]).then((infos) => {
+          const [createInfo, modifyInfo] = infos;
+
+          records[filePath] = {
+            ...(response<ICreateInfo>(createInfo)
+              ? createInfo.value
+              : undefined),
+            ...(response<IModifyInfo>(modifyInfo)
+              ? modifyInfo.value
+              : undefined),
+          };
+        });
+      }),
+    );
+    fsExtra.writeFileSync(fileName, JSON.stringify(records), 'utf8');
+  } else {
+    fsExtra.writeFileSync(
+      fileName,
+      `[
+        ${unusedFiles.reduce((res, { filePath }, index) => {
+          return `${res}"${filePath}" ${
+            index !== unusedFiles.length - 1 ? ',' : ''
+          }`;
+        }, '')}
+      ]`,
+      'utf8',
+    );
+  }
 };
 
 interface ITsconfig {
@@ -96,6 +156,9 @@ export default (api: IApi) => {
 
       const cwd = api.cwd;
       const tsconfig = (await tsconfigPaths.loadConfig(cwd)) as ITsconfig;
+
+      const args = api.args as IArgs;
+      const { out, gitInfo } = args;
 
       const exclude: RegExp[] = [/node_modules/, /\.d\.ts$/, /\.umi/];
       const isExclude = (path: string) => {
@@ -190,22 +253,41 @@ export default (api: IApi) => {
       const unusedFiles = readDirFiles({
         dir: api.paths.absSrcPath,
         exclude,
-      })
-        .filter(({ filePath }) => !dependenceMap[filePath])
-        .map((file) => {
-          const relativePath = relative(cwd, file.filePath);
-          return relativePath;
-        });
+      }).filter(({ filePath }) => !dependenceMap[filePath]);
 
       if (!unusedFiles.length) {
-        return logger.info(`good job, no unusedFiles`);
+        console.log(`🎉 ${chalk.green('Good job, no unusedFiles.')}`);
+        return;
       }
 
-      const filePath = winPath(join(cwd, `DeadCodeList-${Date.now()}.txt`));
-      logger.info(
-        `${unusedFiles.length} unusedFiles, write content to file ${filePath}`,
-      );
-      outputUnusedFiles(unusedFiles, filePath);
+      logger.warn(`🚨 ${chalk.red('Unused Files found:')}`);
+      unusedFiles.forEach((fileItem) => {
+        logger.warn(
+          ` · ${chalk.yellow(fileItem.filePath, chalk.gray(' -> '))}`,
+        );
+      });
+
+      if (out) {
+        const recordJson = `DeadCodeList-${Date.now()}.json`;
+        const recordJsonPath = winPath(
+          join(cwd, typeof out === 'string' ? out : recordJson),
+        );
+
+        if (gitInfo) logger.wait('generating file...');
+
+        await outputUnusedFiles(unusedFiles, recordJsonPath, {
+          gitInfo,
+          cwd,
+        });
+
+        logger.warn(
+          `👀 ${
+            unusedFiles.length
+          } unused files, write content to file ${chalk.cyan(recordJsonPath)}`,
+        );
+      } else {
+        logger.warn(`${unusedFiles.length} unused files`);
+      }
 
       logger.info(
         `check dead code end, please be careful if you want to remove them (¬º-°)¬`,
