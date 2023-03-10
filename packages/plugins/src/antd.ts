@@ -19,10 +19,8 @@ export default (api: IApi) => {
   } catch (e) {}
 
   // App components exist only from 5.1.0 onwards
-  const includeAppComponents = semver.gte(antdVersion, '5.1.0');
-  const includeAppConfig =
-    semver.gte(antdVersion, '5.3.0') &&
-    typeof api.config.antd.appConfig !== 'undefined';
+  const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
+  const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
 
   api.describe({
     config: {
@@ -138,7 +136,7 @@ export default (api: IApi) => {
     }
 
     // appConfig is only available in version 5.2 and above.
-    if (antd.appConfig && !includeAppComponents) {
+    if (antd.appConfig && !appComponentAvailable) {
       api.logger.warn(
         `antd.appConfig is only available in version 5.1.0 and above, but you are using version ${antdVersion}`,
       );
@@ -180,7 +178,7 @@ export default (api: IApi) => {
       context: {
         configProvider: JSON.stringify(api.config.antd.configProvider),
         appConfig:
-          includeAppComponents && JSON.stringify(api.config.antd.appConfig),
+          appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
       },
       tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
     });
@@ -194,14 +192,14 @@ import type { AppConfig } from 'antd/es/app/context';
 {{/includeAppConfig}}
 
 type AntdConfig = ConfigProviderProps
-{{#includeAppConfig}}
-  & { appConfig: AppConfig }
-{{/includeAppConfig}}
+{{#includeAppConfig}}  & { appConfig: AppConfig };{{/includeAppConfig}}
 
-export type RuntimeAntdConfig = (memo: AntdConfig) => Partial<AntdConfig>;
+export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
 `.trim(),
         {
-          includeAppConfig,
+          includeAppConfig:
+            appConfigAvailable &&
+            typeof api.config.antd.appConfig !== 'undefined',
         },
       ),
     });

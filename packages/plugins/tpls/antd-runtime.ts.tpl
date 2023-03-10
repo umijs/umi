@@ -59,6 +59,5 @@ export function rootContainer(rawContainer) {
   container = <ConfigProvider {...finalConfigProvider}>{container}</ConfigProvider>;
 {{/configProvider}}
 
-
   return container;
 }
