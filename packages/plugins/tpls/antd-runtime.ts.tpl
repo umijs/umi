@@ -60,5 +60,5 @@ export function rootContainer(rawContainer) {
 {{/configProvider}}
 
 
-  return container
+  return container;
 }
