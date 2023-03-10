@@ -22,14 +22,14 @@
     "dev": "umi-scripts father dev"
   },
   "dependencies": {
-    "@umijs/renderer-vue": "4.0.57",
+    "@umijs/renderer-vue": "workspace:*",
     "vue": "3.2.45",
     "vue-loader": "17.0.1",
     "vue-router": "4.1.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "4.0.0",
-    "umi": "4.0.57"
+    "umi": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

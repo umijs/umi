@@ -24,8 +24,8 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "4.0.57",
-    "@umijs/utils": "4.0.57",
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/utils": "workspace:*",
     "enhanced-resolve": "5.9.3",
     "postcss": "^8.4.21",
     "postcss-flexbugs-fixes": "5.0.2",

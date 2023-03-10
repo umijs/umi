@@ -7,7 +7,7 @@ import { join } from 'path';
 import qs from 'qs';
 import rimraf from 'rimraf';
 import 'zx/globals';
-import { PATHS } from './.internal/constants';
+import { PATHS, PNPM_PUBLISH } from './.internal/constants';
 import { assert, eachPkg, getPkgs } from './.internal/utils';
 
 (async () => {
@@ -15,9 +15,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.info(`branch: ${branch}`);
   const pkgs = getPkgs();
   logger.info(`pkgs: ${pkgs.join(', ')}`);
-  const pkgsJsonPath = pkgs.map((pkg) =>
-    join(PATHS.PACKAGES, pkg, 'package.json'),
-  );
 
   // check git status
   logger.event('check git status');
@@ -109,38 +106,16 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
       !dir.startsWith('.') && existsSync(join(examplesDir, dir, 'package.json'))
     );
   });
-  const allPkgsName = pkgsJsonPath.map((p) => require(p).name);
   examples.forEach((example) => {
     const pkg = require(join(examplesDir, example, 'package.json'));
     pkg.scripts ||= {};
     pkg.scripts['start'] = 'npm run dev';
-    // change deps version
-    setDepsVersion;
-    allPkgsName;
-    // setDepsVersion({
-    //   pkg,
-    //   version,
-    //   deps: allPkgsName,
-    // });
     delete pkg.version;
     fs.writeFileSync(
       join(examplesDir, example, 'package.json'),
       `${JSON.stringify(pkg, null, 2)}\n`,
     );
   });
-
-  // check independent package version
-  // 有点问题，先注释掉
-  // 选 y 后，preset-umi 的 package.json 的 version 应该是新版本的，在这里被改回去了
-  PATHS.INDEPENDENT_PACKAGES;
-  checkIndependentPackageChanged;
-  // logger.event('check independent package version');
-  // for await (const fromPkg of PATHS.INDEPENDENT_PACKAGES) {
-  //   await checkIndependentPackageChanged({
-  //     pkgDirPath: fromPkg,
-  //     updateTo: pkgsJsonPath,
-  //   });
-  // }
 
   // update pnpm lockfile
   logger.event('update pnpm lockfile');
@@ -162,7 +137,7 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   logger.event('git push');
   await $`git push origin ${branch} --tags`;
 
-  // npm publish
+  // pnpm publish
   logger.event('pnpm publish');
   $.verbose = false;
   const innerPkgs = pkgs.filter((pkg) => !['umi', 'max'].includes(pkg));
@@ -201,13 +176,13 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
 
   await Promise.all(
     innerPkgs.map(async (pkg) => {
-      await $`cd packages/${pkg} && npm publish --tag ${tag} ${otpArg}`;
+      await $`cd packages/${pkg} && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
       logger.info(`+ ${pkg}`);
     }),
   );
-  await $`cd packages/umi && npm publish --tag ${tag} ${otpArg}`;
+  await $`cd packages/umi && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
   logger.info(`+ umi`);
-  await $`cd packages/max && npm publish --tag ${tag} ${otpArg}`;
+  await $`cd packages/max && ${PNPM_PUBLISH} --tag ${tag} ${otpArg}`;
   logger.info(`+ @umijs/max`);
   $.verbose = true;
 
@@ -223,24 +198,6 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
   );
   $.verbose = true;
 })();
-
-function setDepsVersion(opts: {
-  deps: string[];
-  pkg: Record<string, any>;
-  version: string;
-}) {
-  const { deps, pkg, version } = opts;
-  pkg.dependencies ||= {};
-  deps.forEach((dep) => {
-    if (pkg?.dependencies?.[dep]) {
-      pkg.dependencies[dep] = version;
-    }
-    if (pkg?.devDependencies?.[dep]) {
-      pkg.devDependencies[dep] = version;
-    }
-  });
-  return pkg;
-}
 
 function releaseByGithub(releaseNotes: string, version: string) {
   const releaseParams = {
@@ -266,69 +223,4 @@ function generateChangelog(releaseNotes: string) {
     newStr = `# umi changelog\n\n${releaseNotes}`;
   }
   fs.writeFileSync(CHANGELOG_PATH, newStr);
-}
-
-async function checkIndependentPackageChanged(opts: {
-  pkgDirPath: string;
-  updateTo?: string[];
-}) {
-  console.log(
-    chalk.grey(`> Check independent version packages weather need publish.`),
-  );
-  const { pkgDirPath, updateTo = [] } = opts;
-  $.verbose = false;
-  const latestTag = (await $`git describe --abbrev=0 --tags`).stdout.trim();
-  const diff = (
-    await $`git diff ${latestTag} --name-only ${pkgDirPath}`
-  ).stdout.trim();
-  $.verbose = true;
-  if (!diff?.length) {
-    return;
-  }
-  const answer = await question(
-    `Changes detected in ${chalk.bold.yellow(
-      path.relative(PATHS.ROOT, pkgDirPath),
-    )} since ${chalk.bold.blue(latestTag)}.
-Check published package and update version if necessary.
-Continue? (n/y) `,
-  );
-  if (answer.toLowerCase() !== 'y') {
-    console.log(chalk.red(`> Cancelled, please check version and publish.`));
-    process.exit(0);
-  }
-  // update version to packages/*
-  const pkgJson = require(path.join(pkgDirPath, 'package.json'));
-  const { name, version } = pkgJson;
-  const newVersion = `^${version}`;
-  updateTo.forEach((p) => {
-    const targetPkgPath = p.endsWith('package.json')
-      ? p
-      : path.join(p, 'package.json');
-    const targetPkg = require(targetPkgPath);
-    const depProd = targetPkg?.dependencies?.[name];
-    const depDev = targetPkg?.devDependencies?.[name];
-    let updated = false;
-    if (depProd && depProd !== newVersion) {
-      targetPkg.dependencies[name] = newVersion;
-      updated = true;
-    }
-    if (depDev && depDev !== newVersion) {
-      targetPkg.devDependencies[name] = newVersion;
-      updated = true;
-    }
-    if (updated) {
-      fs.writeFileSync(
-        targetPkgPath,
-        `${JSON.stringify(targetPkg, null, 2)}\n`,
-      );
-      console.log(
-        `Auto updated package ${chalk.bold.cyan(
-          name,
-        )} version ${chalk.bold.blue(newVersion)} to ${chalk.bold.green(
-          path.relative(PATHS.ROOT, targetPkgPath),
-        )}`,
-      );
-    }
-  });
-  console.log(chalk.grey(`> Check independent version packages end.`));
 }
