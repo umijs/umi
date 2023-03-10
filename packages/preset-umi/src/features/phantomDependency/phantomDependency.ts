@@ -8,7 +8,7 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          exclude: zod.array(zod.string()),
+          exclude: zod.array(zod.string()).optional(),
         });
       },
     },

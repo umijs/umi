@@ -21,9 +21,9 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          buildOnly: zod.boolean(),
-          nodeModulesTransform: zod.boolean(),
-          checkOutput: zod.boolean(),
+          buildOnly: zod.boolean().optional(),
+          nodeModulesTransform: zod.boolean().optional(),
+          checkOutput: zod.boolean().optional(),
         });
       },
     },

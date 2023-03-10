@@ -21,9 +21,9 @@ export default (api: IApi) => {
         return zod.union([
           zod.boolean(),
           zod.object({
-            srcDir: zod.array(zod.string()),
-            exclude: zod.array(zod.instanceof(RegExp)),
-            peerDeps: zod.boolean(),
+            srcDir: zod.array(zod.string()).optional(),
+            exclude: zod.array(zod.instanceof(RegExp)).optional(),
+            peerDeps: zod.boolean().optional(),
           }),
         ]);
       },

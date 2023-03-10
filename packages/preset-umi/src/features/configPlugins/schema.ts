@@ -8,8 +8,8 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
     base: ({ zod }) => zod.string(),
     conventionRoutes: ({ zod }) =>
       zod.object({
-        base: zod.string(),
-        exclude: zod.array(zod.any()),
+        base: zod.string().optional(),
+        exclude: zod.array(zod.any()).optional(),
       }),
     esbuildMinifyIIFE: ({ zod }) => zod.boolean(),
     headScripts: ({ zod }) =>
@@ -99,11 +99,9 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
     plugins: ({ zod }) => zod.array(zod.string()),
     presets: ({ zod }) => zod.array(zod.string()),
     publicPath: ({ zod }) =>
-      zod
-        .string()
-        .regex(/(\/|^auto)$/, {
-          message: 'publicPath must be "auto" or end with /',
-        }),
+      zod.string().regex(/(\/|^auto)$/, {
+        message: 'publicPath must be "auto" or end with /',
+      }),
     reactRouter5Compat: ({ zod }) => zod.union([zod.boolean(), zod.object({})]),
     // TODO 给类型
     routes: ({ zod }) => zod.array(zod.any()),

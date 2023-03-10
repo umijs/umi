@@ -13,10 +13,10 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          template: zod.string(),
-          layout: zod.string(),
-          getConfigFromEntryFile: zod.boolean(),
-          entry: zod.object({}),
+          template: zod.string().optional(),
+          layout: zod.string().optional(),
+          getConfigFromEntryFile: zod.boolean().optional(),
+          entry: zod.object({}).optional(),
         });
       },
     },

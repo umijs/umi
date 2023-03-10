@@ -12,7 +12,7 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          imports: zod.array(zod.string().optional()),
+          imports: zod.array(zod.string().optional()).optional(),
         });
       },
     },

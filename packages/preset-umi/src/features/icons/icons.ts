@@ -21,11 +21,11 @@ export default (api: IApi) => {
       schema({ zod }) {
         return zod.object({
           // don't support tnpm
-          autoInstall: zod.object({}),
-          defaultComponentConfig: zod.object({}),
+          autoInstall: zod.object({}).optional(),
+          defaultComponentConfig: zod.object({}).optional(),
           // e.g. alias: { home: 'fa:home' }
-          alias: zod.object({}),
-          include: zod.array(zod.string()),
+          alias: zod.object({}).optional(),
+          include: zod.array(zod.string()).optional(),
         });
       },
     },

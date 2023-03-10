@@ -75,8 +75,8 @@ export default (api: IApi) => {
     config: {
       schema({ zod }) {
         return zod.object({
-          libs: zod.array(zod.any()),
-          css: zod.string(),
+          libs: zod.array(zod.any()).optional(),
+          css: zod.string().optional(),
         });
       },
     },

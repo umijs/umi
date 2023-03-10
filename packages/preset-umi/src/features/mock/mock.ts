@@ -13,8 +13,9 @@ export default function (api: IApi) {
         return zod.object({
           exclude: zod
             .array(zod.string())
+            .optional()
             .describe('exclude files not parse mock'),
-          include: zod.array(zod.string()),
+          include: zod.array(zod.string()).optional(),
         });
       },
     },
