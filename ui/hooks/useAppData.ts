@@ -13,7 +13,7 @@ interface IRoute {
   __isJSFile?: boolean;
 }
 
-interface IAppData {
+export interface IAppData {
   cwd: string;
   pkg: {
     [key: string]: any;
