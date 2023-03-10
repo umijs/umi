@@ -1,7 +1,9 @@
+import { withTmpPath } from '@umijs/plugins/dist/utils/withTmpPath';
 import { getMarkup } from '@umijs/server';
 import { lodash, logger, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { dirname, join, relative } from 'path';
+import { Mustache } from 'umi/plugin-utils';
 import type { IApi, IRoute } from '../../types';
 import { absServerBuildPath } from '../ssr/utils';
 
@@ -224,5 +226,41 @@ export default (api: IApi) => {
     }
 
     return htmlFiles;
+  });
+
+  api.onGenerateFiles(async () => {
+    const {
+      exportStatic: { extraRoutePaths = [] },
+    } = api.config;
+    const extraHtmlData = getExportHtmlData(
+      await getRoutesFromUserExtraPaths(extraRoutePaths),
+    );
+
+    api.writeTmpFile({
+      path: 'exportStaticRuntimePlugin.ts',
+      content: Mustache.render(
+        `
+export function modifyClientRenderOpts(memo: any) {
+  const { history, hydrate } = memo;
+
+  return {
+    ...memo,
+    hydrate: hydrate && !{{{ ignorePaths }}}.includes(history.location.pathname),
+  };
+}
+      `.trim(),
+        {
+          ignorePaths: JSON.stringify(
+            extraHtmlData
+              .filter(({ prerender }) => prerender === false)
+              .map(({ route }) => route.path),
+          ),
+        },
+      ),
+    });
+  });
+
+  api.addRuntimePlugin(() => {
+    return [withTmpPath({ api, path: 'exportStaticRuntimePlugin.ts' })];
   });
 };
