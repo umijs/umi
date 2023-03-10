@@ -19,11 +19,11 @@ export default (api: IApi) => {
   api.describe({
     key: 'legacy',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          buildOnly: Joi.boolean(),
-          nodeModulesTransform: Joi.boolean(),
-          checkOutput: Joi.boolean(),
+      schema({ zod }) {
+        return zod.object({
+          buildOnly: zod.boolean(),
+          nodeModulesTransform: zod.boolean(),
+          checkOutput: zod.boolean(),
         });
       },
     },

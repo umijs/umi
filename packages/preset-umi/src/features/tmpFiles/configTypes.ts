@@ -1,7 +1,6 @@
-import { isZodSchema, winPath, zod2string } from '@umijs/utils';
+import { isZodSchema, zod2ts } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
 import { z, ZodSchema } from '@umijs/utils/compiled/zod';
-import { dirname } from 'path';
 import { IApi } from '../../types';
 
 // Need to be excluded function type declared in `IConfig`
@@ -51,15 +50,12 @@ export default (api: IApi) => {
       content,
     });
 
+    const { node } = zod2ts.zodToTs(z.object(zodProperties), 'IConfigTypes');
+
     const typeContent: string = `
-import { zod as z } from "${winPath(
-      dirname(require.resolve('@umijs/utils/package.json')),
-    )}";
 import { IConfigFromPluginsJoi } from "./pluginConfigJoi.d";
 
-const IConfig = ${zod2string(z.object(zodProperties))};
-
-type IConfigTypes = z.infer<typeof IConfig>;
+type IConfigTypes = ${zod2ts.printNode(node)};
 
 export type IConfigFromPlugins = IConfigFromPluginsJoi & Partial<IConfigTypes>;
     `;

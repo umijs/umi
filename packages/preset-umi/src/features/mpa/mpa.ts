@@ -11,12 +11,12 @@ export default (api: IApi) => {
   api.describe({
     key: 'mpa',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          template: Joi.string(),
-          layout: Joi.string(),
-          getConfigFromEntryFile: Joi.boolean(),
-          entry: Joi.object(),
+      schema({ zod }) {
+        return zod.object({
+          template: zod.string(),
+          layout: zod.string(),
+          getConfigFromEntryFile: zod.boolean(),
+          entry: zod.object({}),
         });
       },
     },

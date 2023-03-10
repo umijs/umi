@@ -36,9 +36,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'apiRoute',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          platform: Joi.string(),
+      schema({ zod }) {
+        return zod.object({
+          platform: zod.string().optional(),
         });
       },
     },

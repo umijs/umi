@@ -18,14 +18,14 @@ export default (api: IApi) => {
 
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.object({
+      schema({ zod }) {
+        return zod.object({
           // don't support tnpm
-          autoInstall: Joi.object(),
-          defaultComponentConfig: Joi.object(),
+          autoInstall: zod.object({}),
+          defaultComponentConfig: zod.object({}),
           // e.g. alias: { home: 'fa:home' }
-          alias: Joi.object(),
-          include: Joi.array().items(Joi.string()),
+          alias: zod.object({}),
+          include: zod.array(zod.string()),
         });
       },
     },
