@@ -121,6 +121,7 @@ export async function createServer(opts: IOpts): Promise<any> {
       opts.onDevCompileDone?.({
         stats,
         isFirstCompile,
+        ws,
         time: stats.endTime - stats.startTime,
       });
       isFirstCompile = false;
@@ -233,10 +234,6 @@ export async function createServer(opts: IOpts): Promise<any> {
   }
 
   ws = createWebSocketServer(server);
-
-  // for umi ui
-  // @ts-ignore
-  (global as any).g_umi_ws = ws;
 
   ws.wss.on('connection', (socket) => {
     if (stats) {
