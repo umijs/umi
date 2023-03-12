@@ -43,6 +43,7 @@ importers:
       octokit: ^2.0.11
       only-allow: ^1.1.0
       open: ^8.4.0
+      openai: ^3.2.1
       playwright-chromium: ^1.29.2
       prettier: ^2.8.4
       prettier-plugin-organize-imports: ^3.2.2
@@ -56,12 +57,15 @@ importers:
       rimraf: ^3.0.2
       ts-node: ^10.7.0
       tsx: ^3.12.2
+      tunnel: ^0.0.6
       turbo: ^1.7.0
       typescript: ^4.9.4
       uglify-js: ^3.17.4
       umi: workspace:*
       umi-scripts: workspace:*
       zx: ^7.1.1
+    dependencies:
+      tunnel: 0.0.6
     devDependencies:
       '@iconify-json/ant-design': 1.1.4
       '@iconify-json/fa': 1.1.3
@@ -99,6 +103,7 @@ importers:
       octokit: 2.0.11
       only-allow: 1.1.1
       open: 8.4.0
+      openai: 3.2.1
       playwright-chromium: 1.29.2
       prettier: 2.8.4
       prettier-plugin-organize-imports: 3.2.2_45dervw7mr3js2ivl662udye7u
@@ -13317,6 +13322,7 @@ packages:
     transitivePeerDependencies:
       - styled-components
       - supports-color
+    dev: false
 
   /@umijs/babel-preset-umi/4.0.55:
     resolution: {integrity: sha512-WnRyHdYkZrw4Ay7eIO02ysuM2cqRG2VzKYHWiTK6WsM2JQ1D2JkcgkiCraHJb1erWSnPFS4lkk7QfP08KxKQmQ==}
@@ -13393,6 +13399,7 @@ packages:
       spdy: 4.0.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@umijs/bundler-utils/4.0.55:
     resolution: {integrity: sha512-Qpn0ShOF7TxdR66Fx62LBYGaaNeDdkXLK/aDRstocEgVtrmMAPEsWGPcujz2DnXrUEZqIGJWDuzuHkEgbyo9XA==}
@@ -14200,6 +14207,7 @@ packages:
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
+    dev: false
 
   /@umijs/utils/4.0.55:
     resolution: {integrity: sha512-vYD7pt2+2hLswjHJo0pCin6dwtMULJiDed5aYgn9Pw1YRO2IUW6CACchzvn2GRe1t6WcAVWtucr6sLn2/AWFmQ==}
@@ -16121,6 +16129,14 @@ packages:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
       follow-redirects: 1.15.1_debug@4.3.4
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /axios/0.26.1:
+    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
+    dependencies:
+      follow-redirects: 1.15.1
     transitivePeerDependencies:
       - debug
     dev: true
@@ -18169,6 +18185,7 @@ packages:
   /core-js/3.27.1:
     resolution: {integrity: sha512-GutwJLBChfGCpwwhbYoqfv03LAfmiz7e7D/BNxzeMxwQf10GRSzqiOjx7AmtEk+heiD/JWmBuyBPgFtx0Sg1ww==}
     requiresBuild: true
+    dev: false
 
   /core-js/3.28.0:
     resolution: {integrity: sha512-GiZn9D4Z/rSYvTeg1ljAIsEqFm0LaN9gVtwDCrKL80zHtS31p9BAjmTxVqTQDMpwlMolJZOFntUG2uwyj7DAqw==}
@@ -21907,11 +21924,11 @@ packages:
     hasBin: true
     dependencies:
       '@microsoft/api-extractor': 7.34.3_@types+node@18.11.18
-      '@umijs/babel-preset-umi': 4.0.53
-      '@umijs/bundler-utils': 4.0.53
+      '@umijs/babel-preset-umi': 4.0.55
+      '@umijs/bundler-utils': 4.0.55
       '@umijs/bundler-webpack': 4.0.55_typescript@4.8.4
       '@umijs/core': 4.0.55
-      '@umijs/utils': 4.0.53
+      '@umijs/utils': 4.0.55
       '@vercel/ncc': 0.33.3
       babel-plugin-dynamic-import-node: 2.3.3
       babel-plugin-module-resolver: 4.1.0
@@ -24868,7 +24885,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -28596,6 +28613,15 @@ packages:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
+
+  /openai/3.2.1:
+    resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==}
+    dependencies:
+      axios: 0.26.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
 
   /openapi3-ts/2.0.2:
     resolution: {integrity: sha512-TxhYBMoqx9frXyOgnRHufjQfPXomTIHYKhSKJ6jHfj13kS8OEIhvmE8CTuQyKtjjWttAjX5DPxM1vmalEpo8Qw==}
@@ -38656,6 +38682,11 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
     dev: true
+
+  /tunnel/0.0.6:
+    resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
+    engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
+    dev: false
 
   /turbo-darwin-64/1.7.0:
     resolution: {integrity: sha512-hSGAueSf5Ko8J67mpqjpt9FsP6ePn1nMcl7IVPoJq5dHsgX3anCP/BPlexJ502bNK+87DDyhQhJ/LPSJXKrSYQ==}

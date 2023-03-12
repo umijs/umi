@@ -50,6 +50,7 @@
 /.pnpm-*.log
 /.github_token
 /TMP_CHANGELOG.md
+/.openai_token
 
 # Ignore declaration files, they are generated from local development
 /packages/bundler-webpack/client/**/*.d.ts
