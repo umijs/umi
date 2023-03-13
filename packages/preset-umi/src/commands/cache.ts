@@ -57,7 +57,7 @@ function getDirectorySize({
 }: GetDirectorySize) {
   const obj: { size: number; tree: any } = {
     size: 0,
-    tree: undefined,
+    tree: null,
   };
   const isCreateTree = index < number;
   if (isCreateTree) {
