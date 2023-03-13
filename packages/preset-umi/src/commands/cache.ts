@@ -3,17 +3,6 @@ import { IApi } from 'umi';
 import { fsExtra } from 'umi/plugin-utils';
 
 export default (api: IApi) => {
-  api.describe({
-    key: 'cache',
-    config: {
-      schema(Joi) {
-        return Joi.object({
-          plies: Joi.string(),
-        });
-      },
-    },
-  });
-
   api.registerCommand({
     name: 'cache',
     description: 'run the script commands, manage umi cache',
@@ -28,7 +17,7 @@ umi cache ls [number]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
-      const plies: number = args._[1] || api.config.cache?.plies || 2;
+      const plies: number = args.depth || 0;
       const absTmpFilePath = join(api.paths.absNodeModulesPath, '.cache');
       if (args._[0] === 'clean') {
         fsExtra.removeSync(absTmpFilePath);
@@ -36,7 +25,7 @@ umi cache ls [number]
       if (args._[0] === 'ls') {
         const dirObj = getDirectorySize({
           directoryPath: absTmpFilePath,
-          number: plies,
+          number: plies + 2,
         });
         dirObj.dirTextArr.reverse().forEach((item) => {
           console.log(item);

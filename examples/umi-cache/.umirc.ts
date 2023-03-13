@@ -1,5 +1,1 @@
-export default {
-  cache: {
-    plies: 2,
-  },
-};
+export default {};
