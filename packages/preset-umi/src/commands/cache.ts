@@ -12,8 +12,8 @@ umi cache
 # clear cache directory
 umi cache clean
 
-# display directory information, number is the number of directory levels
-umi cache ls [number]
+# display directory information, --depth is the number of directory levels
+umi cache ls [--depth]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
@@ -71,7 +71,7 @@ function getDirectorySize({
       const fileSize = Math.floor(stats.size / 1024);
       obj.size += fileSize;
       if (index < number) {
-        const str = `${block}    └── [${fileSize}kb]${file}`;
+        const str = `${block}    ├── [${fileSize}kb] ${file}`;
         obj.dirTextArr.push(str);
       }
     } else if (stats.isDirectory()) {
@@ -87,7 +87,7 @@ function getDirectorySize({
       obj.size += objChild.size;
     }
   });
-  const str = `${block}└── [${obj.size}kb]${name}`;
+  const str = `${block}└── [${obj.size}kb] ${name}`;
 
   obj.dirTextArr.push(str);
   return obj;
