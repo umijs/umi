@@ -9,4 +9,5 @@ export default {
   conventionRoutes: {
     exclude: [/\/components\//],
   },
+  devtool: 'source-map',
 };
