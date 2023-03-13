@@ -15,7 +15,7 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
     headScripts: ({ zod }) =>
       zod.array(
         zod.union([
-          zod.string().optional(),
+          zod.string(),
           zod.object({
             src: zod.string().optional(),
           }),
@@ -31,22 +31,20 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
     historyWithQuery: ({ zod }) => zod.object({}),
     links: ({ zod }) =>
       zod.array(
-        zod.object({
-          crossorigin: zod.enum(['anonymous', 'use-credentials']).optional(),
-          href: zod.string().optional(),
-          hreflang: zod.string().optional(),
-          media: zod.string().optional(),
-          referrerpolicy: zod
-            .enum([
+        zod
+          .object({
+            crossorigin: zod.enum(['anonymous', 'use-credentials']),
+            href: zod.string(),
+            hreflang: zod.string(),
+            media: zod.string(),
+            referrerpolicy: zod.enum([
               'no-referrer',
               'no-referrer-when-downgrade',
               'origin',
               'origin-when-cross-origin',
               'unsafe-url',
-            ])
-            .optional(),
-          rel: zod
-            .enum([
+            ]),
+            rel: zod.enum([
               'alternate',
               'author',
               'dns-prefetch',
@@ -62,30 +60,30 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
               'prev',
               'search',
               'stylesheet',
-            ])
-            .optional(),
-          sizes: zod.any().optional(),
-          title: zod.any().optional(),
-          type: zod.any().optional(),
-        }),
+            ]),
+            sizes: zod.any(),
+            title: zod.any(),
+            type: zod.any(),
+          })
+          .deepPartial(),
       ),
     metas: ({ zod }) =>
       zod.array(
-        zod.object({
-          charset: zod.string().optional(),
-          content: zod.string().optional(),
-          'http-equiv': zod.string().optional(),
-          name: zod
-            .enum([
+        zod
+          .object({
+            charset: zod.string(),
+            content: zod.string(),
+            'http-equiv': zod.string(),
+            name: zod.enum([
               'application-name',
               'author',
               'description',
               'generator',
               'keywords',
               'viewport',
-            ])
-            .optional(),
-        }),
+            ]),
+          })
+          .deepPartial(),
       ),
     mountElementId: ({ zod }) => zod.string(),
     npmClient: ({ zod }) =>
