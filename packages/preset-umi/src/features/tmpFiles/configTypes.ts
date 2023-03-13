@@ -58,7 +58,13 @@ import { IConfigFromPluginsJoi } from "./pluginConfigJoi.d";
 
 type IConfigTypes = ${printNode(node)};
 
-export type IConfigFromPlugins = IConfigFromPluginsJoi & Partial<IConfigTypes>;
+type PrettifyWithCloseable<T> = {
+  [K in keyof T]: T[K] | false;
+} & {};
+
+export type IConfigFromPlugins = PrettifyWithCloseable<
+  IConfigFromPluginsJoi & Partial<IConfigTypes>
+>;
     `;
     api.writeTmpFile({
       noPluginDir: true,
