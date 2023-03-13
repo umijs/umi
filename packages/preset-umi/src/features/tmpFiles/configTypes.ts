@@ -51,19 +51,25 @@ export default (api: IApi) => {
       content,
     });
 
-    const { node } = zodToTs(z.object(zodProperties), 'IConfigTypes');
+    const typeName = `IConfigTypes`;
+    const { node } = zodToTs(z.object(zodProperties), typeName);
+    // FIXME: `zod2ts` not support circular reference, replace it manually
+    const typeString = printNode(node).replace(
+      `routes?: ${typeName} | undefined;`,
+      `routes?: ${typeName}['routes'] | undefined;`,
+    );
 
     const typeContent: string = `
-import { IConfigFromPluginsJoi } from "./pluginConfigJoi.d";
+import { ${interfaceName} } from "./pluginConfigJoi.d";
 
-type IConfigTypes = ${printNode(node)};
+type ${typeName} = ${typeString};
 
 type PrettifyWithCloseable<T> = {
   [K in keyof T]: T[K] | false;
 } & {};
 
 export type IConfigFromPlugins = PrettifyWithCloseable<
-  IConfigFromPluginsJoi & Partial<IConfigTypes>
+  ${interfaceName} & Partial<${typeName}>
 >;
     `;
     api.writeTmpFile({
