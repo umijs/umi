@@ -18,15 +18,14 @@ umi cache ls [--depth <depth>]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
-      const absTmpFilePath = join(api.paths.absNodeModulesPath, '.cache');
+      const absCachePath = join(api.paths.absNodeModulesPath, '.cache');
       if (args._[0] === 'clean') {
-        fsExtra.removeSync(absTmpFilePath);
-      }
-      if (args._[0] === 'ls') {
+        fsExtra.removeSync(absCachePath);
+      } else if (args._[0] === 'ls') {
         const depth: number = args.depth ?? 1;
         const dirObj = getDirectorySize({
-          directoryPath: absTmpFilePath,
-          number: plies + 1,
+          directoryPath: absCachePath,
+          number: depth + 1,
         });
         const tree: any = {};
         const str = `[${dirObj.size}kb] node_modules/.cache`;
@@ -63,8 +62,9 @@ function getDirectorySize({
   if (isCreateTree) {
     obj.tree = {};
   }
-
+  fsExtra.ensureDirSync(directoryPath);
   const files = fsExtra.readdirSync(directoryPath);
+
   files.forEach(function (file) {
     const filePath = join(directoryPath, file);
     const stats = fsExtra.statSync(filePath);
