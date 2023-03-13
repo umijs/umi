@@ -17,7 +17,7 @@ umi cache ls [number]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
-      const plies: number = args.depth || 0;
+      const plies: number = args.depth || 1;
       const absTmpFilePath = join(api.paths.absNodeModulesPath, '.cache');
       if (args._[0] === 'clean') {
         fsExtra.removeSync(absTmpFilePath);
@@ -25,7 +25,7 @@ umi cache ls [number]
       if (args._[0] === 'ls') {
         const dirObj = getDirectorySize({
           directoryPath: absTmpFilePath,
-          number: plies + 2,
+          number: plies + 1,
         });
         dirObj.dirTextArr.reverse().forEach((item) => {
           console.log(item);
