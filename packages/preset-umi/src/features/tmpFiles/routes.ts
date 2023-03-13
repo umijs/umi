@@ -230,7 +230,10 @@ export async function getRouteComponents(opts: {
           ? route.file
           : `${opts.prefix}${route.file}`;
 
-      const webpackChunkName = componentToChunkName(path, opts.api.cwd);
+      const webpackChunkName = componentToChunkName(path, {
+        cwd: opts.api.cwd,
+        id: route.id,
+      });
 
       // 测试环境还不支持 import ，所以用 require
       if (process.env.NODE_ENV === 'test') {
@@ -282,7 +285,7 @@ function getProjectRootCwd(cwd: string) {
  */
 export function componentToChunkName(
   component: string,
-  cwd: string = '/',
+  { cwd = '/', id }: { cwd?: string; id: string | undefined },
 ): string {
   cwd = winPath(cwd);
 
@@ -319,5 +322,6 @@ export function componentToChunkName(
         // 避免产出隐藏文件（比如 .dumi/theme）下的路由组件
         .replace(/^\./, '')
         .replace(/^pages__/, 'p__')
+        .replace(/^/, lodash.isNil(id) ? '' : `${id.replace(/[\/\-]/g, '_')}.`)
     : '';
 }
