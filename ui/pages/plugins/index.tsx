@@ -1,15 +1,14 @@
-import { CodeBlock } from '@/components/CodeBlock';
 import { useAppData } from '@/hooks/useAppData';
+import { PluginList } from '@/pages/plugins/components/PluginList';
 
 export default function Page() {
   const { data } = useAppData();
   if (!data) return <div>Loading...</div>;
+
+  console.log('plugins', data.plugins);
   return (
     <div>
-      <h2>Plugins</h2>
-      <pre>
-        <CodeBlock code={data.plugins} />
-      </pre>
+      <PluginList plugins={data.plugins} />
     </div>
   );
 }

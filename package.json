@@ -41,6 +41,7 @@
     "test:e2e": "jest --config jest.e2e.config.ts",
     "tsc:check": "tsc --noEmit",
     "turbo:clean": "rimraf .turbo",
+    "ui": "pnpm --filter @umijs/ui dev",
     "valtio:build": "pnpm --filter @umijs/valtio build",
     "valtio:dev": "pnpm --filter @umijs/valtio dev",
     "valtio:release": "umi-scripts releaseValtio"
