@@ -232,7 +232,7 @@ export default (api: IApi) => {
     api.appData.exportHtmlData = htmlData;
 
     api.writeTmpFile({
-      path: 'exportStaticRuntimePlugin.ts',
+      path: 'core/exportStaticRuntimePlugin.ts',
       content: Mustache.render(
         `
 export function modifyClientRenderOpts(memo: any) {
@@ -252,18 +252,11 @@ export function modifyClientRenderOpts(memo: any) {
           ),
         },
       ),
+      noPluginDir: true,
     });
   });
 
   api.addRuntimePlugin(() => {
-    return [
-      winPath(
-        join(
-          api.paths.absTmpPath,
-          `plugin-${api.plugin.key}`,
-          'exportStaticRuntimePlugin.ts',
-        ),
-      ),
-    ];
+    return [`@@/core/exportStaticRuntimePlugin.ts`];
   });
 };
