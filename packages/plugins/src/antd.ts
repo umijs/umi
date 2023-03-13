@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { deepmerge, Mustache, semver } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
@@ -173,145 +173,48 @@ export default (api: IApi) => {
 
   // antd config provider
   api.onGenerateFiles(() => {
-    if (!api.config.antd.configProvider) return;
     api.writeTmpFile({
       path: `runtime.tsx`,
-      content: Mustache.render(
-        `
-import React from 'react';
-import { ConfigProvider, Modal, message, notification } from 'antd';
-import { ApplyPluginsType } from 'umi';
-import { getPluginManager } from '../core/plugin';
-
-export function rootContainer(container) {
-  const finalConfig = getPluginManager().applyPlugins({
-    key: 'antd',
-    type: ApplyPluginsType.modify,
-    initialValue: {...{{{ config }}}},
-  });
-  if (finalConfig.prefixCls) {
-    Modal.config({
-      rootPrefixCls: finalConfig.prefixCls
+      context: {
+        configProvider: JSON.stringify(api.config.antd.configProvider),
+        appConfig:
+          appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+      },
+      tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
     });
-    message.config({
-      prefixCls: \`\${finalConfig.prefixCls}-message\`
-    });
-    notification.config({
-      prefixCls: \`\${finalConfig.prefixCls}-notification\`
-    });
-  }
-  if (finalConfig.iconPrefixCls) {
-    // Icons in message need to set iconPrefixCls via ConfigProvider.config()
-    ConfigProvider.config({
-      iconPrefixCls: finalConfig.iconPrefixCls,
-    });
-  }
-  return <ConfigProvider {...finalConfig}>{container}</ConfigProvider>;
-}
-      `.trim(),
-        {
-          config: JSON.stringify(api.config.antd.configProvider),
-        },
-      ),
-    });
-  });
-
-  // App component
-  api.onGenerateFiles(() => {
-    const appComponentIsValid =
-      appComponentAvailable && JSON.stringify(api.config.antd.appConfig);
-
-    if (!appComponentIsValid) return;
-
-    api.writeTmpFile({
-      path: `appRuntime.tsx`,
-      content: Mustache.render(
-        `
-import React from 'react';
-import { App } from 'antd';
-import { ApplyPluginsType } from 'umi';
-import { getPluginManager } from '../core/plugin';
-
-export function rootContainer(container) {
-  const {
-    appConfig: finalAppConfig = {},
-  } = getPluginManager().applyPlugins({
-    key: 'antd',
-    type: ApplyPluginsType.modify,
-    initialValue: { appConfig: {{{ appConfig }}}},
-  });
-
-  return <App {...finalAppConfig}>{container}</App>;;
-}
-`.trim(),
-        {
-          appConfig: appComponentIsValid,
-        },
-      ),
-    });
-  });
-
-  // runtime type generation
-  api.onGenerateFiles(() => {
-    const withCpRuntime = !!api.config.antd.configProvider;
-    const withAppRuntime =
-      appConfigAvailable && JSON.stringify(api.config.antd.appConfig);
-
     api.writeTmpFile({
       path: 'types.d.ts',
       content: Mustache.render(
         `
-{{#withCpRuntime}}
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{/withCpRuntime}}
-{{#withAppRuntime}}
+{{#includeAppConfig}}
 import type { AppConfig } from 'antd/es/app/context';
-{{/withAppRuntime}}
+{{/includeAppConfig}}
 
-type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & {};
-
-type AntdConfig = Prettify<{}
-{{#withCpRuntime}}  & ConfigProviderProps{{/withCpRuntime}}
-{{#withAppRuntime}}  & { appConfig: AppConfig }{{/withAppRuntime}}
->;
+type AntdConfig = ConfigProviderProps
+{{#includeAppConfig}}  & { appConfig: AppConfig };{{/includeAppConfig}}
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
 `.trim(),
         {
-          withCpRuntime,
-          withAppRuntime,
+          includeAppConfig:
+            appConfigAvailable &&
+            typeof api.config.antd.appConfig !== 'undefined',
         },
       ),
     });
-
-    if (withCpRuntime || withAppRuntime) {
-      api.writeTmpFile({
-        path: RUNTIME_TYPE_FILE_NAME,
-        content: `
-  import type { RuntimeAntdConfig } from './types.d';
-  export type IRuntimeConfig = {
-    antd?: RuntimeAntdConfig
-  };
-        `,
-      });
-    }
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import type { RuntimeAntdConfig } from './types.d';
+export type IRuntimeConfig = {
+  antd?: RuntimeAntdConfig
+};
+      `,
+    });
   });
 
-  api.addRuntimePlugin(() => {
-    const appComponentIsValid =
-      appComponentAvailable && JSON.stringify(api.config.antd.appConfig);
-
-    // appRuntime 一定要在 runtime 之前，因为 antd 的 App 必须在 ConfigProvider 内
-    const plugins = [
-      appComponentIsValid && withTmpPath({ api, path: 'appRuntime.tsx' }),
-      api.config.antd.configProvider &&
-        withTmpPath({ api, path: 'runtime.tsx' }),
-    ].filter(Boolean);
-
-    return plugins;
-  });
+  api.addRuntimePlugin(() => [withTmpPath({ api, path: 'runtime.tsx' })]);
 
   // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {
