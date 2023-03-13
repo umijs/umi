@@ -17,6 +17,15 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'cache',
     description: 'run the script commands, manage umi cache',
+    details: `
+umi cache
+
+# clear cache directory
+umi cache clean
+
+# display directory information, number is the number of directory levels
+umi cache ls [number]
+`,
     configResolveMode: 'loose',
     fn: ({ args }) => {
       const plies: number = args._[1] || api.config.cache?.plies || 2;
@@ -56,7 +65,7 @@ function getDirectorySize({
   index = 1,
   name = 'node_modules/.cache',
 }: GetDirectorySize) {
-  const obj = {
+  const obj: { size: number; dirTextArr: string[] } = {
     size: 0,
     dirTextArr: [],
   };
