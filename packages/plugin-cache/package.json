@@ -19,9 +19,6 @@
     "build:deps": "umi-scripts bundleDeps",
     "dev": "umi-scripts father dev"
   },
-  "dependencies": {
-    "tsx": "^3.12.2"
-  },
   "publishConfig": {
     "access": "public"
   },
