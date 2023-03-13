@@ -23,7 +23,7 @@ umi cache ls [--depth <depth>]
         fsExtra.removeSync(absTmpFilePath);
       }
       if (args._[0] === 'ls') {
-        const plies: number = args.depth === undefined ? 1 : args.depth;
+        const depth: number = args.depth ?? 1;
         const dirObj = getDirectorySize({
           directoryPath: absTmpFilePath,
           number: plies + 1,
