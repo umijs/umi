@@ -28,7 +28,7 @@ umi cache ls [--depth]
           directoryPath: absTmpFilePath,
           number: plies + 1,
         });
-        console.log(treeify.asTree(dirObj.tree));
+        console.log(treeify.asTree(dirObj.tree, true, true));
       }
     },
   });
