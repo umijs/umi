@@ -11,7 +11,7 @@ export default (api: IApi) => {
           editor: zod
             .string()
             .describe(
-              '默认情况下，点击将默认编辑器为vscode, 你可以明确设置编辑器',
+              '默认情况下，点击将默认编辑器为vscode, 你可以设置编辑器 vscode 或者 vscode-insiders',
             )
             .optional(),
         });

@@ -1,5 +1,5 @@
+import type { ZodTypeAny } from '@umijs/utils/compiled/zod';
 import ts from 'typescript';
-import type { ZodTypeAny } from '../../../compiled/zod';
 import type { GetType, GetTypeFunction } from './types';
 const { factory: f } = ts;
 

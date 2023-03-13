@@ -37,9 +37,11 @@ export default (api: IApi) => {
     key: 'apiRoute',
     config: {
       schema({ zod }) {
-        return zod.object({
-          platform: zod.string().optional(),
-        });
+        return zod
+          .object({
+            platform: zod.string(),
+          })
+          .deepPartial();
       },
     },
     enableBy: () => {

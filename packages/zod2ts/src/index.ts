@@ -1,7 +1,6 @@
 // fork https://github.com/sachinraja/zod-to-ts 解决一些自定义能力
-// TODO 不确定 preset-umi 是不是需要 安装 typescript 依赖一般我们的项目的会依赖
+import type { ZodTypeAny } from '@umijs/utils/compiled/zod';
 import ts from 'typescript';
-import type { ZodTypeAny } from '../../../compiled/zod';
 import {
   GetType,
   GetTypeFunction,

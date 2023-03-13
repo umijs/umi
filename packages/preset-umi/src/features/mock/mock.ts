@@ -10,13 +10,14 @@ export default function (api: IApi) {
     key: 'mock',
     config: {
       schema({ zod }) {
-        return zod.object({
-          exclude: zod
-            .array(zod.string())
-            .optional()
-            .describe('exclude files not parse mock'),
-          include: zod.array(zod.string()).optional(),
-        });
+        return zod
+          .object({
+            exclude: zod
+              .array(zod.string())
+              .describe('exclude files not parse mock'),
+            include: zod.array(zod.string()),
+          })
+          .deepPartial();
       },
     },
     enableBy() {
