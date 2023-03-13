@@ -745,5 +745,5 @@ export default {
   component: './User',
 }
 ```
-那么我们必须通过 /app1/user 路径才能正常的访问到子应用的 user 页面。
+那么我们必须通过 `/app1/user` 路径才能正常的访问到子应用的 user 页面。
 
