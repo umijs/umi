@@ -74,10 +74,12 @@ export default (api: IApi) => {
     key: 'lowImport',
     config: {
       schema({ zod }) {
-        return zod.object({
-          libs: zod.array(zod.any()).optional(),
-          css: zod.string().optional(),
-        });
+        return zod
+          .object({
+            libs: zod.array(zod.any()),
+            css: zod.string(),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,

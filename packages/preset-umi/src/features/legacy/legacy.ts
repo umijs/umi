@@ -20,11 +20,13 @@ export default (api: IApi) => {
     key: 'legacy',
     config: {
       schema({ zod }) {
-        return zod.object({
-          buildOnly: zod.boolean().optional(),
-          nodeModulesTransform: zod.boolean().optional(),
-          checkOutput: zod.boolean().optional(),
-        });
+        return zod
+          .object({
+            buildOnly: zod.boolean(),
+            nodeModulesTransform: zod.boolean(),
+            checkOutput: zod.boolean(),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,

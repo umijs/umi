@@ -22,11 +22,13 @@ export default (api: IApi) => {
     key: 'ssr',
     config: {
       schema({ zod }) {
-        return zod.object({
-          serverBuildPath: zod.string().optional(),
-          platform: zod.string().optional(),
-          builder: zod.enum(['esbuild', 'webpack']).optional(),
-        });
+        return zod
+          .object({
+            serverBuildPath: zod.string(),
+            platform: zod.string(),
+            builder: zod.enum(['esbuild', 'webpack']),
+          })
+          .deepPartial();
       },
     },
     enableBy: EnableBy.config,

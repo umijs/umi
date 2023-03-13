@@ -19,14 +19,16 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.object({
-          // don't support tnpm
-          autoInstall: zod.object({}).optional(),
-          defaultComponentConfig: zod.object({}).optional(),
-          // e.g. alias: { home: 'fa:home' }
-          alias: zod.object({}).optional(),
-          include: zod.array(zod.string()).optional(),
-        });
+        return zod
+          .object({
+            // don't support tnpm
+            autoInstall: zod.object({}),
+            defaultComponentConfig: zod.object({}),
+            // e.g. alias: { home: 'fa:home' }
+            alias: zod.object({}),
+            include: zod.array(zod.string()),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,

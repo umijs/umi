@@ -120,9 +120,14 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema: ({ zod }) =>
-        zod.object({
-          extraRoutePaths: zod.union([zod.function(), zod.array(zod.string())]),
-        }),
+        zod
+          .object({
+            extraRoutePaths: zod.union([
+              zod.function(),
+              zod.array(zod.string()),
+            ]),
+          })
+          .deepPartial(),
     },
     enableBy: api.EnableBy.config,
   });

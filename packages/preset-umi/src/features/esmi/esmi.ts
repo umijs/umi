@@ -202,7 +202,7 @@ export default (api: IApi) => {
       schema({ zod }) {
         return zod.object({
           cdnOrigin: zod.string(),
-          shimUrl: zod.string(),
+          shimUrl: zod.string().optional(),
         });
       },
     },

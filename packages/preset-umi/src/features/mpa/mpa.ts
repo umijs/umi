@@ -12,12 +12,14 @@ export default (api: IApi) => {
     key: 'mpa',
     config: {
       schema({ zod }) {
-        return zod.object({
-          template: zod.string().optional(),
-          layout: zod.string().optional(),
-          getConfigFromEntryFile: zod.boolean().optional(),
-          entry: zod.object({}).optional(),
-        });
+        return zod
+          .object({
+            template: zod.string(),
+            layout: zod.string(),
+            getConfigFromEntryFile: zod.boolean(),
+            entry: zod.object({}),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,

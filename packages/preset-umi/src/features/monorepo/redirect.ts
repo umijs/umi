@@ -20,11 +20,13 @@ export default (api: IApi) => {
       schema({ zod }) {
         return zod.union([
           zod.boolean(),
-          zod.object({
-            srcDir: zod.array(zod.string()).optional(),
-            exclude: zod.array(zod.instanceof(RegExp)).optional(),
-            peerDeps: zod.boolean().optional(),
-          }),
+          zod
+            .object({
+              srcDir: zod.array(zod.string()),
+              exclude: zod.array(zod.instanceof(RegExp)),
+              peerDeps: zod.boolean(),
+            })
+            .deepPartial(),
         ]);
       },
     },
