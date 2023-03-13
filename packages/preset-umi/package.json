@@ -55,7 +55,7 @@
     "react-router": "6.3.0",
     "react-router-dom": "6.3.0",
     "regenerator-runtime": "0.13.11",
-    "treeify": "^1.1.0"
+    "treeify": "1.1.0"
   },
   "devDependencies": {
     "@manypkg/get-packages": "1.1.3",
