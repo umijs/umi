@@ -14,7 +14,7 @@ umi cache
 umi cache clean
 
 # display directory information, --depth is the number of directory levels
-umi cache ls [--depth]
+umi cache ls [--depth <depth>]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
