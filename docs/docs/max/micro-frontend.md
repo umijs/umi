@@ -155,9 +155,10 @@ export default {
 };
 ```
 
-`qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
+配置好后，子应用的路由 base 会在运行时被设置为主应用中配置的 `path`。
+例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或404页面。
 
-此外，使用 `microApp` 字段引入的子应用路由将基于当前的父应用路由。例如，若父应用路由为 `/app1/project/info`，子应用 `app1` 的路由将自动设为 `/info`。
+`qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
 
 拓展后的 Umi 路由对象 API [可见此](#route)。
 
@@ -723,3 +724,26 @@ export default {
 | `errorBoundary` | 否 | 自定义的微应用错误捕获组件 | `(error: any) => React.ReactNode` | `undefined` |
 | `className` | 否 | 微应用的样式类 | `string` | `undefined` |
 | `wrapperClassName` | 否 | 包裹微应用加载组件、错误捕获组件和微应用的样式类，仅在启用加载组件或错误捕获组件时有效 | `string` | `undefined` |
+
+
+## FAQ
+
+### 子应用的生命周期钩子加载了，但是页面没有渲染
+如果页面没有报错，且通过查看 DOM 发现子应用的根节点已经有了，只是内容是空，这种基本可以确定是因为当前 url 没有匹配到子应用的任何路由导致的。
+
+比如我们在主应用中配置了：
+```js
+{
+  path: '/app1',
+  microApp: 'app1',
+}
+```
+子应用的路由配置是：
+```js
+{
+  path: '/user',
+  component: './User',
+}
+```
+那么我们必须通过 `/app1/user` 路径才能正常的访问到子应用的 user 页面。
+
