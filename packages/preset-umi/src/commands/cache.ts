@@ -28,7 +28,10 @@ umi cache ls [--depth]
           directoryPath: absTmpFilePath,
           number: plies + 1,
         });
-        console.log(treeify.asTree(dirObj.tree, true, true));
+        const tree: any = {};
+        const str = `[${dirObj.size}kb] node_modules/.cache`;
+        tree[str] = dirObj.tree;
+        console.log(treeify.asTree(tree, true, true));
       }
     },
   });
@@ -51,7 +54,6 @@ function getDirectorySize({
   directoryPath,
   number = 2,
   index = 1,
-  name = 'node_modules/.cache',
 }: GetDirectorySize) {
   const obj: { size: number; tree: any } = {
     size: 0,
@@ -86,9 +88,6 @@ function getDirectorySize({
       obj.size += objChild.size;
     }
   });
-  if (index === 1) {
-    obj.tree[`[${obj.size} kb] ${name}`] = obj.tree;
-  }
 
   return obj;
 }
