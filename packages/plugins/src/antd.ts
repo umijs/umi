@@ -183,8 +183,7 @@ export default (api: IApi) => {
   // antd config provider & app component
   api.onGenerateFiles(() => {
     const withConfigProvider = !!api.config.antd.configProvider;
-    const withAppConfig =
-      appConfigAvailable && JSON.stringify(api.config.antd.appConfig);
+    const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
 
     api.writeTmpFile({
       path: `runtime.tsx`,
