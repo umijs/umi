@@ -17,7 +17,7 @@ umi cache ls [number]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
-      const plies: number = args.depth || 1;
+      const plies: number = args.depth === undefined ? 1 : args.depth;
       const absTmpFilePath = join(api.paths.absNodeModulesPath, '.cache');
       if (args._[0] === 'clean') {
         fsExtra.removeSync(absTmpFilePath);
