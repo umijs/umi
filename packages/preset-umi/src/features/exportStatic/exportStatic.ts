@@ -1,9 +1,7 @@
-import { withTmpPath } from '@umijs/plugins/dist/utils/withTmpPath';
 import { getMarkup } from '@umijs/server';
-import { lodash, logger, winPath } from '@umijs/utils';
+import { lodash, logger, Mustache, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { dirname, join, relative } from 'path';
-import { Mustache } from 'umi/plugin-utils';
 import type { IApi, IRoute } from '../../types';
 import { absServerBuildPath } from '../ssr/utils';
 
@@ -138,16 +136,8 @@ export default (api: IApi) => {
 
   // export routes to html files
   api.modifyExportHTMLFiles(async (_defaultFiles, opts) => {
-    const {
-      publicPath,
-      exportStatic: { extraRoutePaths = [] },
-    } = api.config;
-    const extraHtmlData = getExportHtmlData(
-      await getRoutesFromUserExtraPaths(extraRoutePaths),
-    );
-    const htmlData = getExportHtmlData(api.appData.routes).concat(
-      extraHtmlData,
-    );
+    const { publicPath } = api.config;
+    const htmlData = api.appData.exportHtmlData;
     const htmlFiles: { path: string; content: string }[] = [];
 
     for (const { file, route, prerender } of htmlData) {
@@ -235,6 +225,11 @@ export default (api: IApi) => {
     const extraHtmlData = getExportHtmlData(
       await getRoutesFromUserExtraPaths(extraRoutePaths),
     );
+    const htmlData = getExportHtmlData(api.appData.routes).concat(
+      extraHtmlData,
+    );
+
+    api.appData.exportHtmlData = htmlData;
 
     api.writeTmpFile({
       path: 'exportStaticRuntimePlugin.ts',
@@ -251,7 +246,7 @@ export function modifyClientRenderOpts(memo: any) {
       `.trim(),
         {
           ignorePaths: JSON.stringify(
-            extraHtmlData
+            htmlData
               .filter(({ prerender }) => prerender === false)
               .map(({ route }) => route.path),
           ),
@@ -261,6 +256,14 @@ export function modifyClientRenderOpts(memo: any) {
   });
 
   api.addRuntimePlugin(() => {
-    return [withTmpPath({ api, path: 'exportStaticRuntimePlugin.ts' })];
+    return [
+      winPath(
+        join(
+          api.paths.absTmpPath,
+          `plugin-${api.plugin.key}`,
+          'exportStaticRuntimePlugin.ts',
+        ),
+      ),
+    ];
   });
 };
