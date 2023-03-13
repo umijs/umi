@@ -1718,6 +1718,7 @@ importers:
       react-router-dom: 6.3.0
       regenerator-runtime: 0.13.11
       sirv: 2.0.2
+      treeify: ^1.1.0
       vite: 4.1.4
     dependencies:
       '@iconify/utils': 2.1.1
@@ -1749,6 +1750,7 @@ importers:
       react-router: 6.3.0_react@18.1.0
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
       regenerator-runtime: 0.13.11
+      treeify: 1.1.0
     devDependencies:
       '@manypkg/get-packages': 1.1.3
       '@types/body-parser': 1.19.2
@@ -25095,7 +25097,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -39091,6 +39093,11 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
     dev: true
+
+  /treeify/1.1.0:
+    resolution: {integrity: sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==}
+    engines: {node: '>=0.6'}
+    dev: false
 
   /treeverse/2.0.0:
     resolution: {integrity: sha512-N5gJCkLu1aXccpOTtqV6ddSEi6ZmGkh3hjmbu1IjcavJK4qyOVQmi0myQKM7z5jVGmD68SJoliaVrMmVObhj6A==}

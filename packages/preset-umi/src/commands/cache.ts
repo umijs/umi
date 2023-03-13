@@ -1,4 +1,5 @@
 import { join } from 'path';
+import treeify from 'treeify';
 import { IApi } from 'umi';
 import { fsExtra } from 'umi/plugin-utils';
 
@@ -17,19 +18,17 @@ umi cache ls [--depth]
 `,
     configResolveMode: 'loose',
     fn: ({ args }) => {
-      const plies: number = args.depth === undefined ? 1 : args.depth;
       const absTmpFilePath = join(api.paths.absNodeModulesPath, '.cache');
       if (args._[0] === 'clean') {
         fsExtra.removeSync(absTmpFilePath);
       }
       if (args._[0] === 'ls') {
+        const plies: number = args.depth === undefined ? 1 : args.depth;
         const dirObj = getDirectorySize({
           directoryPath: absTmpFilePath,
           number: plies + 1,
         });
-        dirObj.dirTextArr.reverse().forEach((item) => {
-          console.log(item);
-        });
+        console.log(treeify.asTree(dirObj.tree));
       }
     },
   });
@@ -54,15 +53,17 @@ function getDirectorySize({
   index = 1,
   name = 'node_modules/.cache',
 }: GetDirectorySize) {
-  const obj: { size: number; dirTextArr: string[] } = {
+  const obj: { size: number; tree: any; treeCopy: any } = {
     size: 0,
-    dirTextArr: [],
+    tree: {},
+    treeCopy: {},
   };
-  const files = fsExtra.readdirSync(directoryPath);
-  let block = '';
-  for (let indexBlock = 0; indexBlock < index - 1; indexBlock++) {
-    block += '    ';
+  const isCreateTree = index < number;
+  if (isCreateTree) {
+    obj.treeCopy[name] = {};
   }
+
+  const files = fsExtra.readdirSync(directoryPath);
   files.forEach(function (file) {
     const filePath = join(directoryPath, file);
     const stats = fsExtra.statSync(filePath);
@@ -70,9 +71,8 @@ function getDirectorySize({
     if (stats.isFile()) {
       const fileSize = Math.floor(stats.size / 1024);
       obj.size += fileSize;
-      if (index < number) {
-        const str = `${block}    ├── [${fileSize}kb] ${file}`;
-        obj.dirTextArr.push(str);
+      if (name in obj.treeCopy) {
+        obj.treeCopy[name][`[${fileSize}kb] ${file}`] = null;
       }
     } else if (stats.isDirectory()) {
       const objChild = getDirectorySize({
@@ -81,14 +81,19 @@ function getDirectorySize({
         number,
         name: file,
       });
-      if (index < number) {
-        obj.dirTextArr = [...obj.dirTextArr, ...objChild.dirTextArr];
+      if (name in obj.treeCopy) {
+        obj.treeCopy[name][`[${objChild.size}kb] ${file}`] = objChild.tree;
       }
       obj.size += objChild.size;
     }
   });
-  const str = `${block}└── [${obj.size}kb] ${name}`;
+  if (index > 1) {
+    if (name in obj.treeCopy) {
+      obj.tree = obj.treeCopy[name];
+    }
+  } else {
+    obj.tree[`[${obj.size} kb] ${name}`] = obj.treeCopy[name];
+  }
 
-  obj.dirTextArr.push(str);
   return obj;
 }
