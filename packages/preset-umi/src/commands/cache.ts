@@ -53,14 +53,13 @@ function getDirectorySize({
   index = 1,
   name = 'node_modules/.cache',
 }: GetDirectorySize) {
-  const obj: { size: number; tree: any; treeCopy: any } = {
+  const obj: { size: number; tree: any } = {
     size: 0,
-    tree: {},
-    treeCopy: {},
+    tree: undefined,
   };
   const isCreateTree = index < number;
   if (isCreateTree) {
-    obj.treeCopy[name] = {};
+    obj.tree = {};
   }
 
   const files = fsExtra.readdirSync(directoryPath);
@@ -71,8 +70,8 @@ function getDirectorySize({
     if (stats.isFile()) {
       const fileSize = Math.floor(stats.size / 1024);
       obj.size += fileSize;
-      if (name in obj.treeCopy) {
-        obj.treeCopy[name][`[${fileSize}kb] ${file}`] = null;
+      if (obj.tree) {
+        obj.tree[`[${fileSize}kb] ${file}`] = null;
       }
     } else if (stats.isDirectory()) {
       const objChild = getDirectorySize({
@@ -81,18 +80,14 @@ function getDirectorySize({
         number,
         name: file,
       });
-      if (name in obj.treeCopy) {
-        obj.treeCopy[name][`[${objChild.size}kb] ${file}`] = objChild.tree;
+      if (obj.tree) {
+        obj.tree[`[${objChild.size}kb] ${file}`] = objChild.tree;
       }
       obj.size += objChild.size;
     }
   });
-  if (index > 1) {
-    if (name in obj.treeCopy) {
-      obj.tree = obj.treeCopy[name];
-    }
-  } else {
-    obj.tree[`[${obj.size} kb] ${name}`] = obj.treeCopy[name];
+  if (index === 1) {
+    obj.tree[`[${obj.size} kb] ${name}`] = obj.tree;
   }
 
   return obj;
