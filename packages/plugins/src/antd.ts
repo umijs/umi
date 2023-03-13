@@ -135,11 +135,20 @@ export default (api: IApi) => {
       );
     }
 
-    // appConfig is only available in version 5.2 and above.
-    if (antd.appConfig && !appComponentAvailable) {
-      api.logger.warn(
-        `antd.appConfig is only available in version 5.1.0 and above, but you are using version ${antdVersion}`,
-      );
+    if (antd.appConfig) {
+      if (!appComponentAvailable) {
+        delete antd.appConfig;
+        api.logger.warn(
+          `antd.appConfig is only available in version 5.1.0 and above, but you are using version ${antdVersion}`,
+        );
+      } else if (
+        !appConfigAvailable &&
+        Object.keys(antd.appConfig).length > 0
+      ) {
+        api.logger.warn(
+          `versions [5.1.0 ~ 5.3.0) only allows antd.appConfig to be set to \`{}\``,
+        );
+      }
     }
 
     return memo;
