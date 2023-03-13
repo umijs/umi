@@ -191,7 +191,7 @@ export type IApi = PluginAPI &
       isFirstCompile: boolean;
       stats: webpack.Stats;
       time: number;
-      ws: ReturnType<typeof createWebSocketServer>;
+      ws?: ReturnType<typeof createWebSocketServer>;
     }>;
     onGenerateFiles: IEvent<IOnGenerateFiles>;
     onPatchRoute: IEvent<{
