@@ -30,6 +30,14 @@ export function rootContainer(rawContainer) {
     },
   });
 
+  let container = rawContainer;
+
+{{#appConfig}}
+  // The App component should be under ConfigProvider
+  container = <App {...finalAppConfig}>{container}</App>;
+{{/appConfig}}
+
+{{#configProvider}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
       rootPrefixCls: finalConfigProvider.prefixCls
@@ -42,14 +50,6 @@ export function rootContainer(rawContainer) {
     });
   }
 
-  let container = rawContainer;
-
-{{#appConfig}}
-  // The App component should be under ConfigProvider
-  container = <App {...finalAppConfig}>{container}</App>;
-{{/appConfig}}
-
-{{#configProvider}}
   if (finalConfigProvider.iconPrefixCls) {
     // Icons in message need to set iconPrefixCls via ConfigProvider.config()
     ConfigProvider.config({

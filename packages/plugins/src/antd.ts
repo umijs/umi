@@ -171,38 +171,52 @@ export default (api: IApi) => {
       : [];
   });
 
-  // antd config provider
+  // antd config provider & app component
   api.onGenerateFiles(() => {
+    const withConfigProvider = !!api.config.antd.configProvider;
+    const withAppConfig =
+      appConfigAvailable && JSON.stringify(api.config.antd.appConfig);
+
     api.writeTmpFile({
       path: `runtime.tsx`,
       context: {
-        configProvider: JSON.stringify(api.config.antd.configProvider),
+        configProvider:
+          withConfigProvider && JSON.stringify(api.config.antd.configProvider),
         appConfig:
           appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
       },
       tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
     });
+
     api.writeTmpFile({
       path: 'types.d.ts',
       content: Mustache.render(
         `
+{{#withConfigProvider}}
 import type { ConfigProviderProps } from 'antd/es/config-provider';
-{{#includeAppConfig}}
+{{/withConfigProvider}}
+{{#withAppConfig}}
 import type { AppConfig } from 'antd/es/app/context';
-{{/includeAppConfig}}
+{{/withAppConfig}}
 
-type AntdConfig = ConfigProviderProps
-{{#includeAppConfig}}  & { appConfig: AppConfig };{{/includeAppConfig}}
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+type AntdConfig = Prettify<{}
+{{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
+{{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
+>;
 
 export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
 `.trim(),
         {
-          includeAppConfig:
-            appConfigAvailable &&
-            typeof api.config.antd.appConfig !== 'undefined',
+          withConfigProvider,
+          withAppConfig,
         },
       ),
     });
+
     api.writeTmpFile({
       path: RUNTIME_TYPE_FILE_NAME,
       content: `
@@ -214,7 +228,15 @@ export type IRuntimeConfig = {
     });
   });
 
-  api.addRuntimePlugin(() => [withTmpPath({ api, path: 'runtime.tsx' })]);
+  api.addRuntimePlugin(() => {
+    if (
+      api.config.antd.configProvider ||
+      (appComponentAvailable && api.config.antd.appConfig)
+    ) {
+      return [withTmpPath({ api, path: 'runtime.tsx' })];
+    }
+    return [];
+  });
 
   // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {
