@@ -55,6 +55,7 @@ importers:
       regenerator-runtime: ^0.13.11
       resolve: ^1.22.0
       rimraf: ^3.0.2
+      selenium-webdriver: ^4.8.1
       ts-node: ^10.7.0
       tsx: ^3.12.2
       tunnel: ^0.0.6
@@ -65,6 +66,7 @@ importers:
       umi-scripts: workspace:*
       zx: ^7.1.1
     dependencies:
+      selenium-webdriver: 4.8.1
       tunnel: 0.0.6
     devDependencies:
       '@iconify-json/ant-design': 1.1.4
@@ -23673,6 +23675,10 @@ packages:
     requiresBuild: true
     optional: true
 
+  /immediate/3.0.6:
+    resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+    dev: false
+
   /immer/8.0.4:
     resolution: {integrity: sha512-jMfL18P+/6P6epANRvRk6q8t+3gGhqsJ9EuJ25AXE+9bNTYtssvzeYbEd0mXRYWCmmXSIbnlpz6vd6iJlmGGGQ==}
 
@@ -25704,6 +25710,15 @@ packages:
       array-includes: 3.1.6
       object.assign: 4.1.4
 
+  /jszip/3.10.1:
+    resolution: {integrity: sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==}
+    dependencies:
+      lie: 3.3.0
+      pako: 1.0.11
+      readable-stream: 2.3.7
+      setimmediate: 1.0.5
+    dev: false
+
   /just-diff-apply/5.5.0:
     resolution: {integrity: sha512-OYTthRfSh55WOItVqwpefPtNt2VdKsq5AnAK6apdtR6yCH8pr0CmSr710J0Mf+WdQy7K/OzMy7K2MgAfdQURDw==}
     dev: true
@@ -26018,6 +26033,12 @@ packages:
       - bluebird
       - supports-color
     dev: true
+
+  /lie/3.3.0:
+    resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
+    dependencies:
+      immediate: 3.0.6
+    dev: false
 
   /lightningcss-darwin-arm64/1.19.0:
     resolution: {integrity: sha512-wIJmFtYX0rXHsXHSr4+sC5clwblEMji7HHQ4Ub1/CznVRxtCFha6JIt5JZaNf8vQrfdZnBxLLC6R8pC818jXqg==}
@@ -36399,6 +36420,18 @@ packages:
   /select-hose/2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}
 
+  /selenium-webdriver/4.8.1:
+    resolution: {integrity: sha512-p4MtfhCQdcV6xxkS7eI0tQN6+WNReRULLCAuT4RDGkrjfObBNXMJ3WT8XdK+aXTr5nnBKuh+PxIevM0EjJgkxA==}
+    engines: {node: '>= 14.20.0'}
+    dependencies:
+      jszip: 3.10.1
+      tmp: 0.2.1
+      ws: 8.12.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /selfsigned/2.1.1:
     resolution: {integrity: sha512-GSL3aowiF7wa/WtSFwnUrludWFoNhftq8bUkH9pkzjpN2XSPOAYEgg6e0sS9s0rZwgJzJiQRPU18A6clnoW5wQ==}
     engines: {node: '>=10'}
@@ -38376,7 +38409,6 @@ packages:
     engines: {node: '>=8.17.0'}
     dependencies:
       rimraf: 3.0.2
-    dev: true
 
   /tmpl/1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}

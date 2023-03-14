@@ -54,6 +54,7 @@
     ]
   },
   "dependencies": {
+    "selenium-webdriver": "^4.8.1",
     "tunnel": "^0.0.6"
   },
   "devDependencies": {
