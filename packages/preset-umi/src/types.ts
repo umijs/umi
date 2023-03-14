@@ -6,6 +6,7 @@ import type {
 } from '@umijs/bundler-utils/compiled/esbuild';
 import type { Express, RequestHandler, webpack } from '@umijs/bundler-webpack';
 import type WebpackChain from '@umijs/bundler-webpack/compiled/webpack-5-chain';
+import { createWebSocketServer } from '@umijs/bundler-webpack/dist/server/ws';
 import type { IConfig } from '@umijs/bundler-webpack/dist/types';
 import type {
   IAdd,
@@ -190,6 +191,7 @@ export type IApi = PluginAPI &
       isFirstCompile: boolean;
       stats: webpack.Stats;
       time: number;
+      ws?: ReturnType<typeof createWebSocketServer>;
     }>;
     onGenerateFiles: IEvent<IOnGenerateFiles>;
     onPatchRoute: IEvent<{
