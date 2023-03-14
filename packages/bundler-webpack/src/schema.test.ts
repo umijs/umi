@@ -1,4 +1,4 @@
-import joi from '@hapi/joi';
+import { zod } from '@umijs/utils';
 import { getSchemas } from './schema';
 import { IConfig } from './types';
 
@@ -51,9 +51,9 @@ const config = {
 
 test('normal', () => {
   Object.keys(config).forEach((key: any) => {
-    const schema = schemas[key](joi);
+    const schema = schemas[key]({ zod });
     // @ts-ignore
-    const { error } = schema.validate(config[key]);
+    const { error } = schema.safeParse(config[key]);
     expect(error).toBe(undefined);
   });
 });
