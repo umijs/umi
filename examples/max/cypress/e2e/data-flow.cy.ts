@@ -27,7 +27,7 @@ describe('data-flow', function () {
 
   context('use-model', () => {
     beforeEach(() => {
-      cy.intercept(/use-model.async.js$/).as('chunkLoaded');
+      cy.intercept(/use-model_i_*.async.js$/).as('chunkLoaded');
       cy.visit('/data-flow/use-model');
     });
 
