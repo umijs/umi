@@ -1,43 +1,74 @@
 import { Builder, By, Key } from 'selenium-webdriver';
 import 'zx/globals';
+import { getLatestTag } from './utils/getLatestTag';
 import { getReleaseNotes } from './utils/getReleaseNotes';
 
 (async () => {
-  const { releaseNotes } = await getReleaseNotes('4.0.54');
+  console.log(process.argv);
+  // 获取命令参数 自定义Tag名称
+  let customizeTag = process.argv?.[3] || '';
+  // 设置需查询的 Tag
+  let selectTag = customizeTag;
+
+  // 如果命令参数自定义Tag不存在，则获取最新的Git Tag
+  if (!customizeTag) {
+    const { latestTag } = await getLatestTag();
+    selectTag = latestTag;
+  }
+
+  // 获取github自动生成的 Release Notes
+  const { releaseNotes } = await getReleaseNotes(selectTag);
   console.log(releaseNotes);
+
+  // 格式化 Release Notes
   let featLogs = [],
     fixLogs = [],
     depLogs = [],
     changeLogs = [],
     releaseNotesList = [];
   releaseNotes.split('\n').forEach((item) => {
-    if (item.indexOf('* doc') > -1 && item.indexOf('* chore') > -1) {
+    // 删除 doc & chore 日志
+    if (item.indexOf('* doc') > -1 || item.indexOf('* chore') > -1) {
       return;
     } else if (item.indexOf('* feat') > -1) {
+      // 文案转换 feat: -> 新增
       featLogs.push(item.replace(/\* feat(\(.+\)){0,1}:/, '新增'));
     } else if (item.indexOf('* fix') > -1) {
+      // 文案转换 fix: -> 修复
       fixLogs.push(item.replace(/\* fix(\(.+\)){0,1}:/, '修复'));
     } else if (item.indexOf('* dep') > -1) {
+      // 文案转换 dep: -> 依赖
       depLogs.push(item.replace(/\* dep(\(.+\)){0,1}:/, '依赖'));
     } else {
       releaseNotesList.push(item);
     }
   });
+
+  // 将 commit message 通过 ChatGpt 翻译成中文
   changeLogs = [...featLogs, ...fixLogs, ...depLogs];
+  if (changeLogs?.length) {
+    changeLogs[0] = '* ' + changeLogs[0];
+  }
+
+  // 合并 releaseNotes
+  releaseNotesList.splice(1, 0, ...changeLogs);
+  const formatReleaseNotes = releaseNotesList
+    .join('\n')
+    .replace('**Full', '\n**Full');
+  console.log(formatReleaseNotes);
 
   const prompt = '* ' + changeLogs.join('\n') + '\n请将以上内容翻译成中文';
-  console.log(prompt);
 
   // const aiAnswer = await getGptResponse(prompt);
   // console.log('ai666');
   // console.log(aiAnswer);
-  await setGithubReleaseNote(prompt);
+  await setGithubReleaseNote(formatReleaseNotes, customizeTag);
 })().catch((e) => {
   console.error(e);
   process.exit(1);
 });
 
-const setGithubReleaseNote = async (notes: string) => {
+const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
   // 获取 Github 账密配置
   const GITHUB_ACCOUNT = '.github_account';
   const ACCOUNT_INFO = fs
@@ -63,21 +94,24 @@ const setGithubReleaseNote = async (notes: string) => {
     const tagListSelect = driver.findElement(By.id('tag-list'));
     await tagListSelect.click();
 
-    // 使用显性等待，超时时间为10秒
-    // await driver.wait(
-    //   until.elementLocated(By.xpath('//*[@tabindex="0"]')),
-    //   10000,
-    // );
+    // 隐式等待设置2秒超时时间
+    await driver.sleep(2000);
 
-    // 隐式等待设置10秒超时时间
-    // await driver.manage().setTimeouts({ implicit: 10000 });
-    await driver.sleep(3000);
-
-    // 通过 xPath 组合选择器定位最新 Tag 项
-    const tagListIndex0 = driver.findElement(
-      By.xpath('//label[@data-index="0" and @class="SelectMenu-item" ]'),
-    );
-    await tagListIndex0.click();
+    if (customizeTag) {
+      // 自定义 Tag
+      // 通过 xPath 组合选择器定位 newTag 输入框
+      const newTagInput = driver.findElement(
+        By.xpath('//input[@aria-label="Find or create a new tag"]'),
+      );
+      newTagInput.sendKeys(customizeTag, Key.ENTER);
+    } else {
+      // 未自定义 Tag
+      // 通过 xPath 组合选择器定位最新 Tag 项
+      const tagListIndex0 = driver.findElement(
+        By.xpath('//label[@data-index="0" and @class="SelectMenu-item" ]'),
+      );
+      await tagListIndex0.click();
+    }
 
     // 获取最新 Tag 名称
     const selectTagSpan = driver.findElement(

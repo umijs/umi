@@ -13,7 +13,7 @@ export async function getReleaseNotes(version: string) {
   const releaseNotesRes = await octokit.request(
     `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
     {
-      tag_name: `v${version}`,
+      tag_name: version,
       target_commitish: 'feature/tag_max_20230307',
     },
   );
