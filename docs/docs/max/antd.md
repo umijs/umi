@@ -12,11 +12,6 @@ export default {
   antd: {
     // configProvider
     configProvider: {},
-    // themes
-    dark: true,
-    compact: true,
-    // babel-plugin-import antd v4 only
-    import: true,
     // less or css, default less
     style: 'less',
     // shortcut of `configProvider.theme`
@@ -33,7 +28,7 @@ export default {
 包含以下功能：
 
 1. 内置 [antd](https://ant.design/)，目前内置版本是 `^5.0.0`
-2. 基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
+2. 使用 antd@4 时，基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
 3. 使用 antd@4 时，可一键切换为暗色主题，见下图
 
 ![](https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*mYU9R4YFxscAAAAAAAAAAABkARQnAQ)
