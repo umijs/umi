@@ -8,7 +8,8 @@
     "dts": "node ./scripts/dts",
     "ncc-compiled": "ncc cache clean && taskr ncc",
     "printWebpackInner": "node ./scripts/printWebpackInner",
-    "fixBabelBundle": "node ./scripts/fixBabelBundle"
+    "fixBabelBundle": "node ./scripts/fixBabelBundle",
+    "fixBrowserslist": "node ./scripts/fixBrowserslist"
   },
   "taskr": {
     "requires": [
