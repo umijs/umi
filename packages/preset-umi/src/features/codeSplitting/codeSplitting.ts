@@ -5,16 +5,12 @@ export default (api: IApi) => {
   api.describe({
     key: 'codeSplitting',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          jsStrategy: Joi.string().allow(
-            'bigVendors',
-            'depPerChunk',
-            'granularChunks',
-          ),
-          jsStrategyOptions: Joi.object(),
-          cssStrategy: Joi.string().allow('mergeAll'),
-          cssStrategyOptions: Joi.object(),
+      schema({ zod }) {
+        return zod.object({
+          jsStrategy: zod.enum(['bigVendors', 'depPerChunk', 'granularChunks']),
+          jsStrategyOptions: zod.object({}).optional(),
+          cssStrategy: zod.enum(['mergeAll']).optional(),
+          cssStrategyOptions: zod.object({}).optional(),
         });
       },
     },

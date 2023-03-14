@@ -119,13 +119,15 @@ export default (api: IApi) => {
 
   api.describe({
     config: {
-      schema: (Joi) =>
-        Joi.object({
-          extraRoutePaths: Joi.alternatives(
-            Joi.function(),
-            Joi.array().items(Joi.string()),
-          ),
-        }),
+      schema: ({ zod }) =>
+        zod
+          .object({
+            extraRoutePaths: zod.union([
+              zod.function(),
+              zod.array(zod.string()),
+            ]),
+          })
+          .deepPartial(),
     },
     enableBy: api.EnableBy.config,
   });
