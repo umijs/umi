@@ -9,10 +9,10 @@ import {
 } from '@umijs/utils';
 import {
   existsSync,
-  readFileSync,
-  writeFileSync,
-  statSync,
   readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
 } from 'fs';
 import { basename, dirname, extname, join, parse } from 'path';
 import { IApi } from '../../types';
@@ -215,7 +215,7 @@ export function trim(s?: string) {
   return s?.trim() || '';
 }
 
-interface IFile {
+export interface IFile {
   from: string;
   fromFallback: string;
   to: string;
@@ -267,7 +267,6 @@ export async function processGenerateFiles({
 
     return fromFallback;
   };
-
   const names: string[] = [];
   for (const file of filesMap) {
     const { to, fromFallback } = file;
