@@ -32,7 +32,7 @@
   "devDependencies": {
     "is-absolute-url": "^4.0.1",
     "mrmime": "1.0.1",
-    "webpack": "5.75.0",
+    "webpack": "5.76.1",
     "webpack-virtual-modules": "0.5.0"
   },
   "publishConfig": {
