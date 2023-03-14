@@ -69,7 +69,7 @@ export default {
 
 ```javascript
 import React, { Component } from 'react';
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 
 @connect(({ user }) => ({
   user,
@@ -92,7 +92,7 @@ connect 方法同时也会添加 `dispatch` 到 `this.props` 上，你可以在�
 
 ```javascript
 import React, { Component } from 'react';
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 
 @connect(({ user }) => ({
   user,
@@ -142,7 +142,7 @@ dispatch 一个 action 之后会按照 action 中的 type 找到定义在 model 
 
 ```jsx
 import React, { Component } from 'react';
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 
 const mapModelToProps = allModels => {
   return {

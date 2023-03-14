@@ -15,7 +15,7 @@ export default {
     // themes
     dark: true,
     compact: true,
-    // babel-plugin-import
+    // babel-plugin-import antd v4 only
     import: true,
     // less or css, default less
     style: 'less',
@@ -32,7 +32,7 @@ export default {
 
 包含以下功能：
 
-1. 内置 [antd](https://ant.design/)，目前内置版本是 `^4.0.0`
+1. 内置 [antd](https://ant.design/)，目前内置版本是 `^5.0.0`
 2. 基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
 3. 使用 antd@4 时，可一键切换为暗色主题，见下图
 
@@ -112,7 +112,7 @@ export default {
 
 ```ts
 // app.ts
-import { RuntimeAntdConfig } from 'umi';
+import { RuntimeAntdConfig } from '@umijs/max';
 import { theme } from 'antd';
 
 export const antd: RuntimeAntdConfig = (memo) => {

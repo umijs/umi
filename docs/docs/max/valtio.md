@@ -19,7 +19,7 @@ export default {
 极其简单。
 
 ```ts
-import { proxy, useSnapshot } from 'umi';
+import { proxy, useSnapshot } from '@umijs/max';
 
 // 1、定义数据
 const state = proxy({ count: 0 });
@@ -35,7 +35,7 @@ state.count += 1;
 天然支持。
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from '@umijs/max';
 
 const state = proxy({ count: 0 });
 state.count;
@@ -45,7 +45,7 @@ state.count += 1;
 ### 数据推导
 
 ```ts
-import { proxyWithComputed } from 'umi';
+import { proxyWithComputed } from '@umijs/max';
 
 const state = proxyWithComputed({
   count: 0,
@@ -59,7 +59,7 @@ const state = proxyWithComputed({
 两种用法，可以和 state 放一起，也可以分开。
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from '@umijs/max';
 
 // 方法一：放一起
 const state = proxy({
@@ -87,7 +87,7 @@ const actions = {
 ### 数据结构的拆分与组合
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from '@umijs/max';
 
 // 比如如下定义
 // state.foo 和 state.bar 都是 proxy，可拆分使用
@@ -107,7 +107,7 @@ const state = proxy({ foo, bar });
 如果 props 内容和 state 无关，可以不处理；如果有关，按以下方式用 context 包一下，同时做 props 到 state 的数据同步即可。
 
 ```ts
-import { proxy } from 'umi';
+import { proxy } from '@umijs/max';
 
 // 1、createContext
 const MyContext = createContext();
@@ -121,7 +121,7 @@ useContext(MyContext);
 ### Redux DevTools 支持
 
 ```ts
-import { proxy, proxyWithDevtools } from 'umi';
+import { proxy, proxyWithDevtools } from '@umijs/max';
 
 const state = proxy({ count: 0 });
 proxyWithDevtools(state, { name: 'count', enabled: true });
@@ -130,7 +130,7 @@ proxyWithDevtools(state, { name: 'count', enabled: true });
 ### Redo & Undo 支持
 
 ```ts
-import { proxyWithHistory } from 'umi';
+import { proxyWithHistory } from '@umijs/max';
 
 const state = proxyWithHistory({
   count: 0,
@@ -147,7 +147,7 @@ state.history;
 待实现。
 
 ```ts
-import { proxyWithPersistant } from 'umi';
+import { proxyWithPersistant } from '@umijs/max';
 
 const state = proxyWithPersistant({
   count: 0,
@@ -179,7 +179,7 @@ export function proxyWithPersist<V>(val: V, opts: {
 1）需要 React 16.8 或以上，2）不支持 IE 11，3）map 和 set 不能直接用，需改用 valtio 提供的 proxyMap 和 proxySet。
 
 ```ts
-import { proxy, proxyMap } from 'umi';
+import { proxy, proxyMap } from '@umijs/max';
 
 const state = proxy({
   todos: proxyMap<number, Todo>([[1, {id:1,text:'Learn Umi'}]]),

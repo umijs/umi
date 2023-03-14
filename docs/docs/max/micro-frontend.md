@@ -172,7 +172,7 @@ export default {
 现在，我们想在父应用的某个页面中引入子应用 `app1`，可以编写代码如下：
 
 ```tsx
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   return <MicroApp name="app1" />;
@@ -184,7 +184,7 @@ export default () => {
 如果父应用的路由包含前缀，可以通过配置 `base` 属性保证父子应用的路由正确对应。例如，父应用路由为 `/prefix/router-path/some/page` 时，我们希望子应用的路由为 `/some/page`，可以修改代码如下：
 
 ```tsx
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   return <MicroApp name="app1" base="/prefix/router-path" />
@@ -203,7 +203,7 @@ export default () => {
 现在，我们想在父应用的某个组件内部引入 `app2` 子应用，子应用的路由为 `/some/page`，可以编写代码如下：
 
 ```tsx
-import { MicroAppWithMemoHistory } from 'umi';
+import { MicroAppWithMemoHistory } from '@umijs/max';
 
 export default () => {
   return <MicroAppWithMemoHistory name="app2" url="/some/page" />;
@@ -216,7 +216,7 @@ export default () => {
 
 ```tsx
 // 在 app1 中
-import { MicroAppLink } from 'umi';
+import { MicroAppLink } from '@umijs/max';
 
 export default () => {
   return (
@@ -234,7 +234,7 @@ export default () => {
 
 ```tsx
 // 在 app2 中
-import { MicroAppLink } from 'umi';
+import { MicroAppLink } from '@umijs/max';
 
 export default () => {
   return (
@@ -252,7 +252,7 @@ export default () => {
 
 ```tsx
 // 在子应用中
-import { MicroAppLink } from 'umi';
+import { MicroAppLink } from '@umijs/max';
 
 export default () => {
   return (
@@ -287,7 +287,7 @@ Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照
 
 ```tsx
 import React, { useRef } from 'react';
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   const microAppRef = useRef();
@@ -378,7 +378,7 @@ export function useQiankunStateForSlave() {
 
 ```tsx
 import React, { useState } from 'react';
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   const [globalState, setGlobalState] = useState<any>({
@@ -400,7 +400,7 @@ export default () => {
 子应用会自动生成一个全局的 Model，其命名空间为 `@@qiankunStateFromMaster`。通过 `useModel()` 方法，允许子应用在任意组件中获取并消费父应用透传的数据，如下所示：
 
 ```tsx
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 export default () => {
   const masterProps = useModel('@@qiankunStateFromMaster');
@@ -411,7 +411,7 @@ export default () => {
 或者可以通过高阶方法 `connectMaster()` 来获取并消费父应用透传的数据，如下所示：
 
 ```tsx
-import { connectMaster } from 'umi';
+import { connectMaster } from '@umijs/max';
 
 function MyPage(props) {
   return <div>{JSON.stringify(props)}</div>;
@@ -502,7 +502,7 @@ export default {
 如果通过组件的模式引入子应用，直接将 `autoSetLoading` 作为参数传入即可：
 
 ```tsx
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   return <MicroApp name="app1" autoSetLoading />;
@@ -536,7 +536,7 @@ export default {
 
 ```tsx
 import CustomLoader from '@/components/CustomLoader';
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   return (
@@ -578,7 +578,7 @@ export default {
 如果通过组件的模式引入子应用，直接将 `autoCaptureError` 作为参数传入即可：
 
 ```tsx
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   return <MicroApp name="app1" autoCaptureError />;
@@ -612,7 +612,7 @@ export default {
 
 ```tsx
 import CustomErrorBoundary from '@/components/CustomErrorBoundary';
-import { MicroApp } from 'umi';
+import { MicroApp } from '@umijs/max';
 
 export default () => {
   return (

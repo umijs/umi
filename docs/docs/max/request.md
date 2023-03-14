@@ -5,7 +5,7 @@ import { Message } from 'umi';
 `@umijs/max` 内置了插件方案。它基于 [axios](https://axios-http.com/) 和 [ahooks](https://ahooks-v2.surge.sh) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
 ```js
-import { request, useRequest } from 'umi';
+import { request, useRequest } from '@umijs/max';
 
 request;
 useRequest;
@@ -40,7 +40,7 @@ export default {
 在 `src/app.ts` 中你可以通过配置 request 项，来为你的项目进行统一的个性化的请求设定。
 
 ```ts
-import type { RequestConfig } from 'umi';
+import type { RequestConfig } from '@umijs/max';
 
 export const request: RequestConfig = {
   timeout: 1000,
@@ -137,7 +137,7 @@ const request: RequestConfig = {
 ### useRequest
 插件内置了 [@ahooksjs/useRequest](https://ahooks-v2.js.org/hooks/async) ，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
 ```typescript
-import { useRequest } from 'umi';
+import { useRequest } from '@umijs/max';
 
 export default () => {
   const { data, error, loading } = useRequest(() => {
@@ -186,7 +186,7 @@ request 默认返回的是你后端的数据，如果你想要拿到 axios 完�
 ### RequestConfig
 这是一个接口的定义，可以帮助你更好地配置运行时配置。
 ```typescript
-import type { RequestConfig } from 'umi';
+import type { RequestConfig } from '@umijs/max';
 
 export const request:RequestConfig = {};
 ```
@@ -261,7 +261,7 @@ async function middleware(ctx, next) {
 
 ```tsx
 // Umi@3
-import { useRequest } from 'umi';
+import { useRequest } from '@umijs/max';
 // a: [1,2,3] => a=1&a=2&a=3
 
 // Umi@4

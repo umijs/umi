@@ -32,7 +32,7 @@ export default {
 可以通过配置文件 `config/config.ts` 中的 `layout` 属性开启插件。
 
 ```ts
-import { defineConfig } from 'umi';
+import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
   layout: {
