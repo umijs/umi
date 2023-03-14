@@ -28,7 +28,7 @@ Model 文件允许使用 `.(tsx|ts|jsx|js)` 四种后缀格式，**命名空间�
 // src/models/userModel.ts
 export default () => {
   const user = {
-    username: '@umijs/max',
+    username: 'umi',
   };
 
   return { user };
