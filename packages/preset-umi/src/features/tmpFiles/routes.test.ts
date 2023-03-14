@@ -87,54 +87,54 @@ test('getRoutes', async () => {
 
 test('componentToChunkName normal', () => {
   expect(componentToChunkName('@/pages/index.ts', { id: '1' })).toEqual(
-    '1.p__index',
+    'p__index_i_1',
   );
 
   expect(componentToChunkName('@/pages/index.tsx', { id: '1' })).toEqual(
-    '1.p__index',
+    'p__index_i_1',
   );
 
   expect(componentToChunkName('@/pages/index.jsx', { id: '1' })).toEqual(
-    '1.p__index',
+    'p__index_i_1',
   );
 
   expect(componentToChunkName('@/pages/index.js', { id: '1' })).toEqual(
-    '1.p__index',
+    'p__index_i_1',
   );
 
   expect(componentToChunkName('@/pages/users/[id].ts', { id: '1' })).toEqual(
-    '1.p__users__id',
+    'p__users__id_i_1',
   );
 
   expect(componentToChunkName('@/pages/users/[id].tsx', { id: '1' })).toEqual(
-    '1.p__users__id',
+    'p__users__id_i_1',
   );
 
   expect(componentToChunkName('@/pages/users/[id].js', { id: '1' })).toEqual(
-    '1.p__users__id',
+    'p__users__id_i_1',
   );
 
   expect(componentToChunkName('@/pages/users/[id].jsx', { id: '1' })).toEqual(
-    '1.p__users__id',
+    'p__users__id_i_1',
   );
 
   expect(componentToChunkName('@/pages/users/[id].vue', { id: '1' })).toEqual(
-    '1.p__users__id',
+    'p__users__id_i_1',
   );
 
   expect(
     componentToChunkName('@/components/404/index.tsx', { id: '1' }),
-  ).toEqual('1.components__404__index');
+  ).toEqual('components__404__index_i_1');
 
   expect(componentToChunkName('@/layouts/index.tsx', { id: '1' })).toEqual(
-    '1.layouts__index',
+    'layouts__index_i_1',
   );
 
   expect(
     componentToChunkName('@/.umi-production/plugin-layout/Layout.tsx', {
       id: '1',
     }),
-  ).toEqual('1.t__plugin-layout__Layout');
+  ).toEqual('t__plugin-layout__Layout_i_1');
 });
 
 test('componentToChunkName cwd', () => {
@@ -143,14 +143,14 @@ test('componentToChunkName cwd', () => {
       cwd: '/users/test',
       id: '1',
     }),
-  ).toEqual('1.p__users__id');
+  ).toEqual('p__users__id_i_1');
 
   expect(
     componentToChunkName('/users/test/pages/users/[id].vue', {
       cwd: '/users/test',
       id: '1',
     }),
-  ).toEqual('1.p__users__id');
+  ).toEqual('p__users__id_i_1');
 });
 
 test('componentToChunkName cwd escape char', () => {
@@ -159,5 +159,5 @@ test('componentToChunkName cwd escape char', () => {
       cwd: '/users/c++',
       id: '1',
     }),
-  ).toEqual('1.p__users__id');
+  ).toEqual('p__users__id_i_1');
 });

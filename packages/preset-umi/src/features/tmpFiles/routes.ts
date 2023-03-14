@@ -322,6 +322,10 @@ export function componentToChunkName(
         // 避免产出隐藏文件（比如 .dumi/theme）下的路由组件
         .replace(/^\./, '')
         .replace(/^pages__/, 'p__')
-        .replace(/^/, lodash.isNil(id) ? '' : `${id.replace(/[\/\-]/g, '_')}.`)
+        // routePrefetch 需要chunkName中包含routeId
+        .replace(
+          /$/,
+          lodash.isNil(id) ? '' : `_i_${id.replace(/[\/\-]/g, '_')}`,
+        )
     : '';
 }
