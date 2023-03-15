@@ -17,15 +17,17 @@ export default (api: IApi) => {
   api.describe({
     key: 'monorepoRedirect',
     config: {
-      schema(Joi) {
-        return Joi.alternatives(
-          Joi.boolean(),
-          Joi.object({
-            srcDir: Joi.array().items(Joi.string()),
-            exclude: Joi.array().items(Joi.object().instance(RegExp)),
-            peerDeps: Joi.boolean(),
-          }),
-        );
+      schema({ zod }) {
+        return zod.union([
+          zod.boolean(),
+          zod
+            .object({
+              srcDir: zod.array(zod.string()),
+              exclude: zod.array(zod.instanceof(RegExp)),
+              peerDeps: zod.boolean(),
+            })
+            .deepPartial(),
+        ]);
       },
     },
     enableBy: api.EnableBy.config,
