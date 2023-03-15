@@ -5,15 +5,7 @@ export type LiteralType = string | number | boolean;
 export type ZodToTsOptions = {
   // TODO: support Native enum
   // resolveNativeEnums?: boolean;
-
-  /**
-   * ket type of `zod.lazy`
-   * @example zod schema   : { key: z.lazy() }
-   *          lazyTypesMap : { key: (identifier) => `${identifier}['key']` }
-   *          result       : interface IExample { key: IExample['key'] }
-   *                                                   ^^^^^^^^^^^^ nested type
-   */
-  lazyTypesMap?: Record<string, string | ((identifier: string) => string)>;
+  // TODO: support lazy type
 };
 
 export interface IZodToTsOpts {

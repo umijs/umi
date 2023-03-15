@@ -91,11 +91,6 @@ test('zod default', () => {
   const str = zodToTs({
     zod: example,
     identifier,
-    options: {
-      lazyTypesMap: {
-        b: (identifier) => `${identifier}['e']`,
-      },
-    },
   });
   expect(str).toMatchSnapshot();
 });

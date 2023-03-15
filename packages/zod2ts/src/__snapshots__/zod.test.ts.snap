@@ -10,7 +10,7 @@ exports[`zod default 1`] = `
     d: boolean;
     e: {
     a: string;
-    b: Example['e'];
+    b: any;
 };
     f: {
     a: number;

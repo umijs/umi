@@ -6,8 +6,7 @@ import { IZodToTsOpts, LiteralType } from './types';
 
 export const zodToTs = (opts: IZodToTsOpts): string => {
   const { zod, identifier = 'Identifier', options = {} } = opts;
-  const { lazyTypesMap = {} } = options;
-  const { typeName } = zod._def;
+  const { typeName } = zod?._def;
   const props = { identifier, options } as Partial<IZodToTsOpts>;
 
   switch (typeName) {
@@ -66,23 +65,10 @@ export const zodToTs = (opts: IZodToTsOpts): string => {
         properties.map(([key, value]) => {
           const nextZodNode = value as ZodTypeAny;
 
-          let type: string;
-          // handle lazy type
-          if (nextZodNode?._def?.typeName === 'ZodLazy') {
-            const lazyType = lazyTypesMap?.[key];
-            if (typeof lazyType === 'function') {
-              type = lazyType(identifier);
-            } else if (typeof lazyType === 'string') {
-              type = lazyType;
-            } else {
-              type = 'any';
-            }
-          } else {
-            type = zodToTs({
-              zod: nextZodNode,
-              ...props,
-            });
-          }
+          const type = zodToTs({
+            zod: nextZodNode,
+            ...props,
+          });
 
           const { typeName: nextZodNodeTypeName } = nextZodNode._def;
           const isOptional =
@@ -93,6 +79,9 @@ export const zodToTs = (opts: IZodToTsOpts): string => {
             desc = nextZodNode.description;
           }
 
+          if (key.includes('-')) {
+            key = `"${key}"`;
+          }
           if (isOptional) {
             key = `${key}?`;
           }
