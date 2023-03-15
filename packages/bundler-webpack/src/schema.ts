@@ -84,7 +84,8 @@ export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
         Transpiler.swc,
         Transpiler.none,
       ]),
-    devtool: ({ zod }) => zod.union([zod.enum(DevToolValues), zod.boolean()]),
+    devtool: ({ zod }) =>
+      zod.union([zod.enum(DevToolValues as any), zod.boolean()]),
     esm: ({ zod }) => zod.object({}),
     externals: ({ zod }) =>
       zod.union([
