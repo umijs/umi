@@ -19,7 +19,6 @@ export async function getReleaseNotes(tagName: string) {
     `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
     {
       tag_name: tagName,
-      target_commitish: 'feature/tag_max_20230307',
     },
   );
   const releaseNotes = releaseNotesRes?.data?.body;
