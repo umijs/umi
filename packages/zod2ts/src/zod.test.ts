@@ -172,6 +172,16 @@ test('zod.optional()', () => {
   expect(str).toMatchSnapshot();
 });
 
+test('zod.optinal() chain', () => {
+  const schema = z.object({
+    a: z.number().min(0).optional(),
+  });
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
+});
+
 test('zod.nullable()', () => {
   const schema = z.object({
     username: z.string().nullable(),

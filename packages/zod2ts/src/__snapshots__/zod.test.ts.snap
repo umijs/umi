@@ -132,6 +132,12 @@ exports[`zod.object() 1`] = `
 }"
 `;
 
+exports[`zod.optinal() chain 1`] = `
+"{
+    a?: (number | undefined);
+}"
+`;
+
 exports[`zod.optional() 1`] = `
 "{
     optional?: (string | undefined);
