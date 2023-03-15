@@ -56,7 +56,7 @@ export const zodToTs = (opts: IZodToTsOpts): string => {
           break;
       }
 
-      return literal || 'any';
+      return literal;
     }
     case 'ZodObject': {
       const properties = Object.entries(zod._def.shape());
