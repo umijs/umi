@@ -12,7 +12,7 @@ export default (api: IApi) => {
         });
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy: api.env === 'development' ? api.EnableBy.config : () => false,
   });
 
   const pkgPath = dirname(require.resolve('click-to-react-component'));
@@ -31,10 +31,9 @@ export default (api: IApi) => {
   api.onGenerateFiles({
     name: 'clickToComponent',
     fn: () => {
-      if (api.env === 'development') {
-        api.writeTmpFile({
-          path: 'runtime.tsx',
-          content: `
+      api.writeTmpFile({
+        path: 'runtime.tsx',
+        content: `
 import { ClickToComponent } from 'click-to-react-component';
 import React from 'react';
 export function rootContainer(container, opts) {
@@ -42,9 +41,8 @@ return React.createElement(
   (props) => {
     return (
       <>
-        <ClickToComponent editor="${
-          api.config.clickToComponent.editor || 'vscode'
-        }"/>
+        <ClickToComponent editor="${api.config.clickToComponent.editor || 'vscode'
+          }"/>
         {props.children}
       </>
     );
@@ -54,16 +52,10 @@ return React.createElement(
 );
 }
     `,
-        });
-      }
+      });
     },
   });
-
-  if (api.env === 'development') {
-    api.addRuntimePlugin(() => [
-      winPath(
-        join(api.paths.absTmpPath, 'plugin-clickToComponent/runtime.tsx'),
-      ),
-    ]);
-  }
+  api.addRuntimePlugin(() => [
+    winPath(join(api.paths.absTmpPath, 'plugin-clickToComponent/runtime.tsx')),
+  ]);
 };
