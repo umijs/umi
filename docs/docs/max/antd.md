@@ -12,6 +12,11 @@ export default {
   antd: {
     // configProvider
     configProvider: {},
+    // themes, antd v4 only
+    dark: true,
+    compact: true,
+    // babel-plugin-import, antd v4 only
+    import: true,
     // less or css, default less
     style: 'less',
     // shortcut of `configProvider.theme`
