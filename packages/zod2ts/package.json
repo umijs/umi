@@ -1,6 +1,6 @@
 {
   "name": "@umijs/zod2ts",
-  "version": "4.0.0-canary.20230315.1",
+  "version": "4.0.0-canary.20230315.2",
   "description": "@umijs/zod2ts",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/zod2ts#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -17,8 +17,7 @@
   "scripts": {
     "build": "umi-scripts father build",
     "build:deps": "umi-scripts bundleDeps",
-    "dev": "umi-scripts father dev",
-    "test": "umi-scripts jest-turbo"
+    "dev": "umi-scripts father dev"
   },
   "dependencies": {
     "@umijs/utils": "workspace:*"

@@ -1975,6 +1975,12 @@ importers:
       yargs-parser: 21.1.1
       zod: 3.20.6
 
+  packages/zod2ts:
+    specifiers:
+      '@umijs/utils': workspace:*
+    dependencies:
+      '@umijs/utils': link:../utils
+
   scripts:
     specifiers: {}
 
