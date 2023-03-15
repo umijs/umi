@@ -41,8 +41,9 @@ return React.createElement(
   (props) => {
     return (
       <>
-        <ClickToComponent editor="${api.config.clickToComponent.editor || 'vscode'
-          }"/>
+        <ClickToComponent editor="${
+          api.config.clickToComponent.editor || 'vscode'
+        }"/>
         {props.children}
       </>
     );
