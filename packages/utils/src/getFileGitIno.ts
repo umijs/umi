@@ -1,5 +1,4 @@
 import type { SpawnOptions } from 'child_process';
-import crossSpawn from 'cross-spawn';
 import { execa } from '../compiled/execa';
 
 const promisifySpawn = (
@@ -13,7 +12,7 @@ const promisifySpawn = (
   } & SpawnOptions,
 ) =>
   new Promise<string[]>((resolve, reject) => {
-    const cp = crossSpawn(cmd, args, rest);
+    const cp = require('../compiled/cross-spawn')(cmd, args, rest);
     const error: string[] = [];
     const stdout: string[] = [];
 
