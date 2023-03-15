@@ -1,6 +1,11 @@
 import { Octokit } from 'octokit';
 
-export async function getReleaseNotes(version: string) {
+/**
+ * @description 获取 Github Release Notes
+ * @param tagName tag 名称
+ * @returns
+ */
+export async function getReleaseNotes(tagName: string) {
   const GITHUB_TOKEN_FILE = '.github_token';
   const OWNER = 'MaxCDon';
   const REPO = 'umi';
@@ -13,10 +18,10 @@ export async function getReleaseNotes(version: string) {
   const releaseNotesRes = await octokit.request(
     `POST /repos/${OWNER}/${REPO}/releases/generate-notes`,
     {
-      tag_name: version,
+      tag_name: tagName,
       target_commitish: 'feature/tag_max_20230307',
     },
   );
-  const releaseNotes = releaseNotesRes.data.body;
+  const releaseNotes = releaseNotesRes?.data?.body;
   return { releaseNotes };
 }

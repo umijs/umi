@@ -1,7 +1,7 @@
 import { Octokit } from 'octokit';
 
 /**
- * @description 获取最新 Git Tag 名
+ * @description 获取最新 Git Tag
  */
 export async function getLatestTag() {
   const GITHUB_TOKEN_FILE = '.github_token';
@@ -20,7 +20,7 @@ export async function getLatestTag() {
       repo: REPO,
     },
   );
-  const data = response.data;
+  const data = response?.data;
   const len = data?.length || 0;
   const latestTag = data[len - 1]?.ref.replace('refs/tags/', '');
   return { latestTag };

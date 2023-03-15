@@ -5,7 +5,6 @@ import { getLatestTag } from './utils/getLatestTag';
 import { getReleaseNotes } from './utils/getReleaseNotes';
 
 (async () => {
-  console.log(process.argv);
   // 获取命令参数 自定义Tag名称
   let customizeTag = process.argv?.[3] || '';
   // 设置需查询的 Tag
@@ -19,7 +18,6 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
 
   // 获取github自动生成的 Release Notes
   const { releaseNotes } = await getReleaseNotes(selectTag);
-  console.log(releaseNotes);
 
   // 格式化 Release Notes
   let featLogs = [],
@@ -59,19 +57,14 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
     logUsers.push(matchList[3]);
   });
 
+  // 调用 ChatGpt 获取返回结果
   const prompt =
     logContents.join('\n') +
     '\n请将以上内容翻译成中文, 保留换行，不要去重，仅返回翻译后内容';
-  console.log(66666688888);
-  console.log(prompt);
-
   const gptResponse = await getGptResponse(prompt);
-  console.log('ai666');
-  console.log(gptResponse);
+
   if (gptResponse) {
     const translateLogContents = gptResponse.split('\n');
-    console.log(translateLogContents);
-    console.log(translateLogContents.length);
     for (let i = 0; i < changeLogs.length; i++) {
       changeLogs[i] =
         logTypes[i] + ' ' + translateLogContents[i] + ' ' + logUsers[i];
@@ -87,15 +80,18 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
   const formatReleaseNotes = releaseNotesList
     .join('\n')
     .replace('**Full', '\n**Full');
-  console.log(555555);
-  console.log(formatReleaseNotes);
 
+  // 打开浏览器，填入Github Release 信息
   await setGithubReleaseNote(formatReleaseNotes, customizeTag);
 })().catch((e) => {
   console.error(e);
-  process.exit(1);
 });
 
+/**
+ * @description 登陆 Github，填入Github Release 信息
+ * @param notes Github Release 信息
+ * @param customizeTag 自定义Tag 名称
+ */
 const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
   // 获取 Github 账密配置
   const GITHUB_ACCOUNT = '.github_account';
@@ -105,8 +101,8 @@ const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
   const USERNAME = ACCOUNT_INFO.split('\n')?.[0].replace('USERNAME=', '');
   const PASSWORD = ACCOUNT_INFO.split('\n')?.[1].replace('PASSWORD=', '');
 
-  let driver = await new Builder().forBrowser('chrome').build();
   try {
+    let driver = await new Builder().forBrowser('chrome').build();
     // 打开 github Release 发布页
     await driver.get('https://github.com/MaxCDon/umi/releases/new');
     // 通过id选择器定位账号输入框
@@ -156,7 +152,10 @@ const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
     const releaseBodyTextarea = driver.findElement(By.id('release_body'));
     // 输入日志
     await releaseBodyTextarea.sendKeys(notes);
-  } catch {
-    await driver.quit();
+  } catch (e) {
+    console.error(
+      '请检查是否安装 selenium-webdriver 插件：http://chromedriver.storage.googleapis.com/index.html',
+    );
+    throw e;
   }
 };

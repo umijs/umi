@@ -1,6 +1,12 @@
 import { Configuration, OpenAIApi } from 'openai';
 import { httpsOverHttp } from 'tunnel';
 
+// 调用 ChatGpt 需配置代理，请根据本地代理信息正确填写
+// 代理IP
+const PROXY_HOST = '';
+// 代理端口
+const PROXY_PORT = '';
+
 /**
  * @description 获取 ChatGpt 数据
  * @param prompt 提示
@@ -13,17 +19,15 @@ export async function getGptResponse(prompt: string) {
     .readFileSync(path.join(__dirname, '../../', OPENAI_TOKEN_FILE), 'utf-8')
     .trim();
 
-  console.log(777);
-  console.log(token);
-
+  // 设置代理服务器
   const tunnel = httpsOverHttp({
     proxy: {
-      host: '127.0.0.1',
-      port: 13659,
+      host: PROXY_HOST,
+      port: PROXY_PORT,
     },
   });
-  console.log(tunnel);
 
+  // 设置 openai api key
   const configuration = new Configuration({
     apiKey: token,
     baseOptions: {
@@ -32,8 +36,8 @@ export async function getGptResponse(prompt: string) {
     },
   });
 
+  // 调用 openai api
   const openai = new OpenAIApi(configuration);
-
   try {
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
@@ -41,7 +45,7 @@ export async function getGptResponse(prompt: string) {
     });
     return response?.data?.choices?.[0]?.message?.content?.trim();
   } catch (e) {
-    console.log('Error getting GPT completion: ', e);
-    // throw e;
+    console.error('请检查代理IP及端口是否配置正确');
+    throw e;
   }
 }
