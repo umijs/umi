@@ -1978,10 +1978,7 @@ importers:
       zod: 3.20.6
 
   packages/zod2ts:
-    specifiers:
-      '@umijs/utils': workspace:*
-    dependencies:
-      '@umijs/utils': link:../utils
+    specifiers: {}
 
   scripts:
     specifiers: {}

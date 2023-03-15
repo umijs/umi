@@ -1,9 +1,5 @@
 import { zod as z } from '@umijs/utils';
-import ts from 'typescript';
-import { printNode, withGetType, zodToTs } from '.';
-
-export const printNodeTest = (node: ts.Node) =>
-  printNode(node, { newLine: ts.NewLineKind.LineFeed });
+import { zodToTs } from './zod';
 
 test('zod default', () => {
   enum Fruits {
@@ -24,39 +20,10 @@ test('zod default', () => {
 
   const pickedSchema = example2.partial();
 
-  const nativeEnum = withGetType(z.nativeEnum(Fruits), (ts, _, options) => {
-    const identifier = ts.factory.createIdentifier('Fruits');
-
-    if (options.resolveNativeEnums) return identifier;
-
-    return ts.factory.createTypeReferenceNode(identifier, undefined);
-  });
-
-  type ELazy = {
-    a: string;
-    b: ELazy;
-  };
-
-  const eLazy: z.ZodSchema<ELazy> = withGetType(
-    z.lazy(() => e3),
-    (ts, identifier) =>
-      ts.factory.createIndexedAccessTypeNode(
-        ts.factory.createTypeReferenceNode(
-          ts.factory.createIdentifier(identifier),
-          undefined,
-        ),
-        ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral('b')),
-      ),
-  );
-
   const e3 = z.object({
     a: z.string(),
-    b: eLazy,
+    b: z.lazy(() => e3),
   });
-
-  const dateType = withGetType(z.instanceof(Date), (ts) =>
-    ts.factory.createIdentifier('Date'),
-  );
 
   const example = z.object({
     a: z.string(),
@@ -67,7 +34,7 @@ test('zod default', () => {
       }),
     ),
     d: z.boolean(),
-    e: eLazy,
+    e: e3,
     f: z.union([z.object({ a: z.number() }), z.literal('hi')]),
     g: z.enum(['hi', 'bye']),
     h: z
@@ -111,8 +78,6 @@ test('zod default', () => {
       .refine((val) => val.length > 10)
       .or(z.number())
       .and(z.bigint().nullish().default(1000n)),
-    aa: nativeEnum,
-    bb: dateType,
     cc: z.lazy(() => z.string()),
     dd: z.nativeEnum(Fruits),
     ee: z.discriminatedUnion('kind', [
@@ -122,9 +87,17 @@ test('zod default', () => {
     ]),
   });
 
-  const { node } = zodToTs(example, 'Example', { resolveNativeEnums: true });
-
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const identifier = 'Example';
+  const str = zodToTs({
+    zod: example,
+    identifier,
+    options: {
+      lazyTypesMap: {
+        b: (identifier) => `${identifier}['e']`,
+      },
+    },
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.discriminatedUnion()', () => {
@@ -134,9 +107,12 @@ test('zod.discriminatedUnion()', () => {
     z.object({ kind: z.literal('triangle'), x: z.number(), y: z.number() }),
   ]);
 
-  const { node } = zodToTs(ShapeSchema, 'Shape');
-
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const identifier = 'Shape';
+  const str = zodToTs({
+    zod: ShapeSchema,
+    identifier,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.object()', () => {
@@ -153,9 +129,12 @@ test('zod.object()', () => {
     nev: z.never(),
   });
 
-  const { node } = zodToTs(userSchema, 'User');
-
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const identifier = 'User';
+  const str = zodToTs({
+    zod: userSchema,
+    identifier,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.describe()', () => {
@@ -164,9 +143,10 @@ test('zod.describe()', () => {
     price: z.number().describe('The price of the item'),
   });
 
-  const { node } = zodToTs(schema);
-
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.optional()', () => {
@@ -191,9 +171,10 @@ test('zod.optional()', () => {
       .optional(),
   });
 
-  const { node } = zodToTs(schema);
-
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.nullable()', () => {
@@ -201,9 +182,10 @@ test('zod.nullable()', () => {
     username: z.string().nullable(),
   });
 
-  const { node } = zodToTs(schema);
-
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod enum', () => {
@@ -220,24 +202,14 @@ test('zod enum', () => {
   }
 
   const schema = z.object({
-    fruit: withGetType(z.nativeEnum(Fruit), (ts) =>
-      ts.factory.createIdentifier('Fruit'),
-    ),
-    color: withGetType(z.nativeEnum(Color), (ts) =>
-      ts.factory.createIdentifier('Color'),
-    ),
+    fruit: z.nativeEnum(Fruit),
+    color: z.nativeEnum(Color),
   });
 
-  const { node, store } = zodToTs(schema);
-
-  const enums = store.nativeEnums
-    .map((item) => {
-      return printNode(item);
-    })
-    .join('\n');
-
-  expect(enums).toMatchSnapshot();
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.function()', () => {
@@ -245,8 +217,13 @@ test('zod.function()', () => {
     .function()
     .args(z.string().nullish().default('name'), z.boolean(), z.boolean())
     .returns(z.string());
-  const { node } = zodToTs(schema, 'Function');
-  expect(printNodeTest(node)).toMatchSnapshot();
+
+  const identifier = 'Function';
+  const str = zodToTs({
+    zod: schema,
+    identifier,
+  });
+  expect(str).toMatchSnapshot();
 });
 
 test('zod.function() 2', () => {
@@ -259,6 +236,8 @@ test('zod.function() 2', () => {
       .describe('create an item'),
   });
 
-  const { node } = zodToTs(schema);
-  expect(printNodeTest(node)).toMatchSnapshot();
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
 });

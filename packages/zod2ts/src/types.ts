@@ -1,26 +1,23 @@
-import ts from 'typescript';
+import type { ZodTypeAny } from '@umijs/utils/compiled/zod';
 
 export type LiteralType = string | number | boolean;
 
 export type ZodToTsOptions = {
-  resolveNativeEnums?: boolean;
+  // TODO: support Native enum
+  // resolveNativeEnums?: boolean;
+
+  /**
+   * ket type of `zod.lazy`
+   * @example zod schema   : { key: z.lazy() }
+   *          lazyTypesMap : { key: (identifier) => `${identifier}['key']` }
+   *          result       : interface IExample { key: IExample['key'] }
+   *                                                   ^^^^^^^^^^^^ nested type
+   */
+  lazyTypesMap?: Record<string, string | ((identifier: string) => string)>;
 };
 
-export type RequiredZodToTsOptions = Required<ZodToTsOptions>;
-
-export type ZodToTsStore = {
-  nativeEnums: ts.EnumDeclaration[];
-};
-
-export type ZodToTsReturn = {
-  node: ts.TypeNode;
-  store: ZodToTsStore;
-};
-
-export type GetTypeFunction = (
-  typescript: typeof ts,
-  identifier: string,
-  options: RequiredZodToTsOptions,
-) => ts.Identifier | ts.TypeNode;
-
-export type GetType = { getType?: GetTypeFunction };
+export interface IZodToTsOpts {
+  zod: ZodTypeAny;
+  identifier?: string;
+  options?: ZodToTsOptions;
+}
