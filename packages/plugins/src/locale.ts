@@ -146,7 +146,7 @@ export default (api: IApi) => {
 
     let DefaultAntdLocales: string[] = [];
     // set antd default locale
-    if (!antdLocales.length && api.config.locale?.antd) {
+    if (!antdLocales.length && antd) {
       const [lang, country = ''] = defaultLocale.split(baseSeparator);
       DefaultAntdLocales = lodash.uniq(
         await addAntdLocales({
