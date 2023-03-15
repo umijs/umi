@@ -37,9 +37,9 @@ export async function getGptResponse(prompt: string) {
   try {
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: 'Hello World' }],
+      messages: [{ role: 'user', content: prompt }],
     });
-    return response;
+    return response?.data?.choices?.[0]?.message?.content?.trim();
   } catch (e) {
     console.log('Error getting GPT completion: ', e);
     // throw e;

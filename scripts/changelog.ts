@@ -1,5 +1,6 @@
 import { Builder, By, Key } from 'selenium-webdriver';
 import 'zx/globals';
+import { getGptResponse } from './utils/getGptResponse';
 import { getLatestTag } from './utils/getLatestTag';
 import { getReleaseNotes } from './utils/getReleaseNotes';
 
@@ -46,6 +47,37 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
 
   // 将 commit message 通过 ChatGpt 翻译成中文
   changeLogs = [...featLogs, ...fixLogs, ...depLogs];
+  let logTypes = [],
+    logContents = [],
+    logUsers = [];
+
+  let re = /(新增|修复|依赖)(.*)(by .*)/;
+  changeLogs.forEach((item) => {
+    const matchList = item.match(re);
+    logTypes.push(matchList[1]);
+    logContents.push(matchList[2]);
+    logUsers.push(matchList[3]);
+  });
+
+  const prompt =
+    logContents.join('\n') +
+    '\n请将以上内容翻译成中文, 保留换行，不要去重，仅返回翻译后内容';
+  console.log(66666688888);
+  console.log(prompt);
+
+  const gptResponse = await getGptResponse(prompt);
+  console.log('ai666');
+  console.log(gptResponse);
+  if (gptResponse) {
+    const translateLogContents = gptResponse.split('\n');
+    console.log(translateLogContents);
+    console.log(translateLogContents.length);
+    for (let i = 0; i < changeLogs.length; i++) {
+      changeLogs[i] =
+        logTypes[i] + ' ' + translateLogContents[i] + ' ' + logUsers[i];
+    }
+  }
+
   if (changeLogs?.length) {
     changeLogs[0] = '* ' + changeLogs[0];
   }
@@ -55,13 +87,9 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
   const formatReleaseNotes = releaseNotesList
     .join('\n')
     .replace('**Full', '\n**Full');
+  console.log(555555);
   console.log(formatReleaseNotes);
 
-  const prompt = '* ' + changeLogs.join('\n') + '\n请将以上内容翻译成中文';
-
-  // const aiAnswer = await getGptResponse(prompt);
-  // console.log('ai666');
-  // console.log(aiAnswer);
   await setGithubReleaseNote(formatReleaseNotes, customizeTag);
 })().catch((e) => {
   console.error(e);
