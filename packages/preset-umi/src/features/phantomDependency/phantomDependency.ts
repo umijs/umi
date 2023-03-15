@@ -6,9 +6,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'phantomDependency',
     config: {
-      schema({ zod }) {
-        return zod.object({
-          exclude: zod.array(zod.string()).optional(),
+      schema(Joi) {
+        return Joi.object({
+          exclude: Joi.array().items(Joi.string()),
         });
       },
     },

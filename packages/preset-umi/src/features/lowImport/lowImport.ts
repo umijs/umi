@@ -73,13 +73,11 @@ export default (api: IApi) => {
   api.describe({
     key: 'lowImport',
     config: {
-      schema({ zod }) {
-        return zod
-          .object({
-            libs: zod.array(zod.any()),
-            css: zod.string(),
-          })
-          .deepPartial();
+      schema(Joi) {
+        return Joi.object({
+          libs: Joi.array(),
+          css: Joi.string(),
+        });
       },
     },
     enableBy: api.EnableBy.config,

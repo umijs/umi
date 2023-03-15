@@ -199,10 +199,10 @@ export default (api: IApi) => {
   api.describe({
     key: 'esmi',
     config: {
-      schema({ zod }) {
-        return zod.object({
-          cdnOrigin: zod.string(),
-          shimUrl: zod.string().optional(),
+      schema(Joi) {
+        return Joi.object({
+          cdnOrigin: Joi.string(),
+          shimUrl: Joi.string(),
         });
       },
     },

@@ -4,8 +4,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'vite',
     config: {
-      schema({ zod }) {
-        return zod.object({});
+      schema(Joi) {
+        return Joi.object();
       },
     },
     enableBy: api.EnableBy.config,

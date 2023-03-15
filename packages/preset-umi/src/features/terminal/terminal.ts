@@ -5,8 +5,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'terminal',
     config: {
-      schema({ zod }) {
-        return zod.object({});
+      schema(Joi) {
+        return Joi.object();
       },
     },
   });

@@ -10,9 +10,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'polyfill',
     config: {
-      schema({ zod }) {
-        return zod.object({
-          imports: zod.array(zod.string()).optional(),
+      schema(Joi) {
+        return Joi.object().keys({
+          imports: Joi.array().items(Joi.string()).required().unique(),
         });
       },
     },

@@ -40,7 +40,6 @@
     "@umijs/renderer-react": "workspace:*",
     "@umijs/server": "workspace:*",
     "@umijs/utils": "workspace:*",
-    "@umijs/zod2ts": "workspace:*",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "click-to-react-component": "^1.0.8",
     "core-js": "3.28.0",

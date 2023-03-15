@@ -6,14 +6,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'clickToComponent',
     config: {
-      schema({ zod }) {
-        return zod.object({
-          editor: zod
-            .string()
-            .describe(
-              '默认情况下，点击将默认编辑器为vscode, 你可以设置编辑器 vscode 或者 vscode-insiders',
-            )
-            .optional(),
+      schema(joi) {
+        return joi.object({
+          editor: joi.string(),
         });
       },
     },

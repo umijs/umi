@@ -4,8 +4,8 @@ import { setupRouteExportExtractor } from '../../utils/routeExportExtractor';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema({ zod }) {
-        return zod.object({});
+      schema(Joi) {
+        return Joi.object({});
       },
     },
     enableBy: api.EnableBy.config,

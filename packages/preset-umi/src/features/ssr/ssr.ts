@@ -21,14 +21,12 @@ export default (api: IApi) => {
   api.describe({
     key: 'ssr',
     config: {
-      schema({ zod }) {
-        return zod
-          .object({
-            serverBuildPath: zod.string(),
-            platform: zod.string(),
-            builder: zod.enum(['esbuild', 'webpack']),
-          })
-          .deepPartial();
+      schema(Joi) {
+        return Joi.object({
+          serverBuildPath: Joi.string(),
+          platform: Joi.string(),
+          builder: Joi.string().allow('esbuild', 'webpack'),
+        });
       },
     },
     enableBy: EnableBy.config,

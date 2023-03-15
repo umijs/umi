@@ -8,7 +8,7 @@ import type { IApi } from '../../types';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema: ({ zod }) => zod.boolean(),
+      schema: (Joi) => Joi.boolean(),
     },
   });
 

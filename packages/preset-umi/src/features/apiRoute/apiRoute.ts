@@ -36,12 +36,10 @@ export default (api: IApi) => {
   api.describe({
     key: 'apiRoute',
     config: {
-      schema({ zod }) {
-        return zod
-          .object({
-            platform: zod.string(),
-          })
-          .deepPartial();
+      schema(Joi) {
+        return Joi.object({
+          platform: Joi.string(),
+        });
       },
     },
     enableBy: () => {
