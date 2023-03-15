@@ -31,9 +31,10 @@ export default (api: IApi) => {
   api.onGenerateFiles({
     name: 'clickToComponent',
     fn: () => {
-      api.writeTmpFile({
-        path: 'runtime.tsx',
-        content: `
+      if (api.env === 'development') {
+        api.writeTmpFile({
+          path: 'runtime.tsx',
+          content: `
 import { ClickToComponent } from 'click-to-react-component';
 import React from 'react';
 export function rootContainer(container, opts) {
@@ -53,10 +54,16 @@ return React.createElement(
 );
 }
     `,
-      });
+        });
+      }
     },
   });
-  api.addRuntimePlugin(() => [
-    winPath(join(api.paths.absTmpPath, 'plugin-clickToComponent/runtime.tsx')),
-  ]);
+
+  if (api.env === 'development') {
+    api.addRuntimePlugin(() => [
+      winPath(
+        join(api.paths.absTmpPath, 'plugin-clickToComponent/runtime.tsx'),
+      ),
+    ]);
+  }
 };
