@@ -43,6 +43,7 @@ interface SelectLangProps {
   className?: string;
   reload?: boolean;
   icon?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 const transformArrayToObject = (allLangUIConfig:LocalData[])=>{
