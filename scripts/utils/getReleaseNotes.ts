@@ -7,7 +7,7 @@ import { Octokit } from 'octokit';
  */
 export async function getReleaseNotes(tagName: string) {
   const GITHUB_TOKEN_FILE = '.github_token';
-  const OWNER = 'MaxCDon';
+  const OWNER = 'umijs';
   const REPO = 'umi';
   const token = fs
     .readFileSync(path.join(__dirname, '../../', GITHUB_TOKEN_FILE), 'utf-8')

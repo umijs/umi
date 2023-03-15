@@ -104,7 +104,7 @@ const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
   try {
     let driver = await new Builder().forBrowser('chrome').build();
     // 打开 github Release 发布页
-    await driver.get('https://github.com/MaxCDon/umi/releases/new');
+    await driver.get('https://github.com/umijs/umi/releases/new');
     // 通过id选择器定位账号输入框
     const usernameInput = driver.findElement(By.id('login_field'));
     // 输入网址并回车搜索
