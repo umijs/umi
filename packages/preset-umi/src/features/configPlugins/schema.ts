@@ -13,6 +13,7 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
         zod.object({
           content: zod.string().optional(),
         }),
+        zod.record(zod.string(), zod.any()),
       ]),
     );
   return {
@@ -32,59 +33,36 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
     historyWithQuery: ({ zod }) => zod.object({}),
     links: ({ zod }) =>
       zod.array(
-        zod
-          .object({
-            crossorigin: zod.enum(['anonymous', 'use-credentials']),
-            href: zod.string(),
-            hreflang: zod.string(),
-            media: zod.string(),
-            referrerpolicy: zod.enum([
-              'no-referrer',
-              'no-referrer-when-downgrade',
-              'origin',
-              'origin-when-cross-origin',
-              'unsafe-url',
-            ]),
-            rel: zod.enum([
-              'alternate',
-              'author',
-              'dns-prefetch',
-              'help',
-              'icon',
-              'license',
-              'next',
-              'pingback',
-              'preconnect',
-              'prefetch',
-              'preload',
-              'prerender',
-              'prev',
-              'search',
-              'stylesheet',
-            ]),
-            sizes: zod.any(),
-            title: zod.any(),
-            type: zod.any(),
-          })
-          .deepPartial(),
+        zod.union([
+          zod
+            .object({
+              crossorigin: zod.string(),
+              href: zod.string(),
+              hreflang: zod.string(),
+              media: zod.string(),
+              referrerpolicy: zod.string(),
+              rel: zod.string(),
+              sizes: zod.any(),
+              title: zod.any(),
+              type: zod.any(),
+            })
+            .deepPartial(),
+          zod.record(zod.string(), zod.any()),
+        ]),
       ),
     metas: ({ zod }) =>
       zod.array(
-        zod
-          .object({
-            charset: zod.string(),
-            content: zod.string(),
-            'http-equiv': zod.string(),
-            name: zod.enum([
-              'application-name',
-              'author',
-              'description',
-              'generator',
-              'keywords',
-              'viewport',
-            ]),
-          })
-          .deepPartial(),
+        zod.union([
+          zod
+            .object({
+              charset: zod.string(),
+              content: zod.string(),
+              'http-equiv': zod.string(),
+              name: zod.string(),
+            })
+            .deepPartial(),
+          zod.record(zod.string(), zod.any()),
+        ]),
       ),
     mountElementId: ({ zod }) => zod.string(),
     npmClient: ({ zod }) =>
@@ -110,7 +88,7 @@ export function getSchemas(): Record<string, ({}: { zod: typeof z }) => any> {
             layout: zod.literal(false),
             path: zod.string(),
             redirect: zod.string(),
-            // FIXME: `zod2ts` not support circular reference, we will replace it at the generate time.
+            // lazy schema need replace type when `zod2ts`
             routes: zod.lazy(() => routeSchema.array()),
             wrappers: zod.array(zod.string()),
           })

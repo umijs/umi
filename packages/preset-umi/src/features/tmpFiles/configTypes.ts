@@ -1,7 +1,7 @@
 import { isZodSchema } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
 import { z, ZodSchema } from '@umijs/utils/compiled/zod';
-import { printNode, zodToTs } from '@umijs/zod2ts';
+import { zodToTs } from '@umijs/zod2ts';
 import { IApi } from '../../types';
 
 // Need to be excluded function type declared in `IConfig`
@@ -52,17 +52,19 @@ export default (api: IApi) => {
     });
 
     const typeName = `IConfigTypes`;
-    const { node } = zodToTs(z.object(zodProperties), typeName);
-    // FIXME: `zod2ts` not support circular reference, replace it manually
-    const typeString = printNode(node).replace(
-      `routes?: ${typeName} | undefined;`,
-      `routes?: ${typeName}['routes'] | undefined;`,
+    const typeString = zodToTs({
+      zod: z.object(zodProperties),
+      identifier: typeName,
+    }).replace(
+      // replace to support routes circular reference type
+      `routes?: (any | undefined)`,
+      `routes?: ${typeName}['routes']`,
     );
 
     const typeContent: string = `
 import { ${interfaceName} } from "./pluginConfigJoi.d";
 
-type ${typeName} = ${typeString};
+interface ${typeName} ${typeString};
 
 type PrettifyWithCloseable<T> = {
   [K in keyof T]: T[K] | false;
