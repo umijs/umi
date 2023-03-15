@@ -30,10 +30,12 @@ const devTool = [
   'nosources-cheap-module-source-map',
 ];
 
-const DevToolValues: any = devTool
-  .concat(devTool.map((item) => `#${item}`))
-  .concat(devTool.map((item) => `@${item}`))
-  .concat(devTool.map((item) => `#@${item}`));
+const DevToolValues: string[] = [
+  ...devTool,
+  ...devTool.map((item) => `#${item}`),
+  ...devTool.map((item) => `@${item}`),
+  ...devTool.map((item) => `#@${item}`),
+];
 
 export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
   return {
