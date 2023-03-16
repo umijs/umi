@@ -52,7 +52,6 @@ export * from './setNoDeprecation';
 export * from './tryPaths';
 export * from './winPath';
 export * from './zod/isZodSchema';
-export * from './zod/zod2string';
 export {
   address,
   axios,

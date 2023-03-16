@@ -17,8 +17,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'tmpFiles',
     config: {
-      schema(Joi) {
-        return Joi.boolean();
+      schema({ zod }) {
+        return zod.boolean();
       },
     },
   });

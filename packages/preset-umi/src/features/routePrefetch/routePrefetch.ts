@@ -5,8 +5,8 @@ import type { IApi } from '../../types';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.object({});
+      schema({ zod }) {
+        return zod.object({});
       },
     },
     enableBy: api.EnableBy.config,

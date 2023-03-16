@@ -1702,6 +1702,7 @@ importers:
       '@umijs/renderer-react': workspace:*
       '@umijs/server': workspace:*
       '@umijs/utils': workspace:*
+      '@umijs/zod2ts': workspace:*
       babel-plugin-dynamic-import-node: 2.3.3
       body-parser: 1.20.0
       click-to-react-component: ^1.0.8
@@ -1739,6 +1740,7 @@ importers:
       '@umijs/renderer-react': link:../renderer-react
       '@umijs/server': link:../server
       '@umijs/utils': link:../utils
+      '@umijs/zod2ts': link:../zod2ts
       babel-plugin-dynamic-import-node: 2.3.3
       click-to-react-component: 1.0.8_ef5jwxihqo6n7gxfmzogljlgcm
       core-js: 3.28.0
@@ -1976,10 +1978,7 @@ importers:
       zod: 3.20.6
 
   packages/zod2ts:
-    specifiers:
-      '@umijs/utils': workspace:*
-    dependencies:
-      '@umijs/utils': link:../utils
+    specifiers: {}
 
   scripts:
     specifiers: {}
