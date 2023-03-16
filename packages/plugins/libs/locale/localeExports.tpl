@@ -105,6 +105,20 @@ export const addLocale = (
   }
 };
 
+const applyRuntimeLocalePlugin = (initialValue: any) => {
+  return getPluginManager().applyPlugins({
+    key: 'locale',
+    type: 'modify',
+    initialValue
+  });
+}
+
+const _createIntl = (locale: string) => {
+    const runtimeLocale = applyRuntimeLocalePlugin(localeInfo[locale]);
+    const { cache, ...config } = runtimeLocale;
+    return createIntl(config, cache);
+}
+
 /**
  * 获取当前的 intl 对象，可以在 node 中使用
  * @param locale 需要切换的语言类型
@@ -120,7 +134,7 @@ export const getIntl = (locale?: string, changeIntl?: boolean) => {
   if (!locale) locale = getLocale();
   // 如果存在于 localeInfo 中
   if (locale&&localeInfo[locale]) {
-    return createIntl(localeInfo[locale]);
+    return _createIntl(locale);
   }
   {{#ExistLocaleDir}}
   // 不存在需要一个报错提醒
@@ -130,12 +144,14 @@ export const getIntl = (locale?: string, changeIntl?: boolean) => {
   );
   {{/ExistLocaleDir}}
   // 使用 zh-CN
-  if (localeInfo[{{{ DefaultLocale }}}]) return createIntl(localeInfo[{{{ DefaultLocale }}}]);
+  if (localeInfo[{{{ DefaultLocale }}}]) {
+    return _createIntl({{{ DefaultLocale }}});
+  }
 
   // 如果还没有，返回一个空的
   return createIntl({
     locale: {{{ DefaultLocale }}},
-    messages: {},
+    messages: {}
   });
 };
 
@@ -152,12 +168,7 @@ export const setIntl = (locale: string) => {
  * @returns string
  */
 export const getLocale = () => {
-  const runtimeLocale = getPluginManager().applyPlugins({
-    key: 'locale',
-    // workaround: 不使用 ApplyPluginsType.modify 是为了避免循环依赖，与 fast-refresh 一起用时会有问题
-    type: 'modify',
-    initialValue: {},
-  });
+  const runtimeLocale = applyRuntimeLocalePlugin({});
   // runtime getLocale for user define
   if (typeof runtimeLocale?.getLocale === 'function') {
    return runtimeLocale.getLocale();

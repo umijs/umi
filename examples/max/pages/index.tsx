@@ -1,5 +1,12 @@
 // @ts-ignore
-import { history, Icon, useAccess, useIntl, useModel } from '@umijs/max';
+import {
+  FormattedMessage,
+  history,
+  Icon,
+  useAccess,
+  useIntl,
+  useModel,
+} from '@umijs/max';
 // @ts-ignore
 import { TestDecorator } from '@/components/decorator';
 import { Button, DatePicker, Input } from 'antd';
@@ -21,6 +28,7 @@ export default function HomePage() {
       <Input />
       <DatePicker />
       <div>{intl.formatMessage({ id: 'HELLO' })}</div>
+      <FormattedMessage id="World" />
       <Button
         type="primary"
         onClick={() => {
