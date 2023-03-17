@@ -49,7 +49,7 @@ exports[`zod default 1`] = `
     u: Set<string>;
     v: string & number | bigint;
     w: Promise<number>;
-    x: (args_0: ((string | null) | undefined), args_1: boolean, args_2: boolean, ...args: any[]) => string;
+    x: ((args_0: ((string | null) | undefined), args_1: boolean, args_2: boolean, ...args: any[]) => string);
     y?: (string | undefined);
     z: string | number & ((bigint | null) | undefined);
     cc: any;
@@ -75,6 +75,8 @@ exports[`zod enum 1`] = `
 }"
 `;
 
+exports[`zod union and function() 1`] = `"{ [x: string]: any } | string | ((...args: any[]) => unknown)"`;
+
 exports[`zod.describe() 1`] = `
 "{
     /** The name of the item */
@@ -98,16 +100,16 @@ exports[`zod.discriminatedUnion() 1`] = `
 }"
 `;
 
-exports[`zod.function() 1`] = `"(args_0: ((string | null) | undefined), args_1: boolean, args_2: boolean, ...args: any[]) => string"`;
+exports[`zod.function() 1`] = `"((args_0: ((string | null) | undefined), args_1: boolean, args_2: boolean, ...args: any[]) => string)"`;
 
 exports[`zod.function() 2 1`] = `
 "{
     /** create an item */
-    h: (args_0: {
+    h: ((args_0: {
     name: string;
     price: number;
     comment: string;
-}, ...args: any[]) => unknown;
+}, ...args: any[]) => unknown);
 }"
 `;
 

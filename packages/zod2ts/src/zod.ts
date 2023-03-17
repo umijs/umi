@@ -118,6 +118,7 @@ export const zodToTs = (opts: IZodToTsOpts): string => {
     case 'ZodUnion': {
       // z.union([z.string(), z.number()]) -> string | number
       const options: ZodTypeAny[] = zod._def.options;
+
       const types: string[] = options.map((option) => zodToTs({ zod: option }));
       return types.join(' | ');
     }
@@ -242,7 +243,7 @@ export const zodToTs = (opts: IZodToTsOpts): string => {
         ...props,
       });
 
-      return `(${argTypes.join(', ')}) => ${returnType}`;
+      return `((${argTypes.join(', ')}) => ${returnType})`;
     }
 
     case 'ZodDefault': {
