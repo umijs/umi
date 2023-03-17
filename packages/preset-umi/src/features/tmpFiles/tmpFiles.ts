@@ -43,8 +43,8 @@ export default (api: IApi) => {
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
     const umiTempDir = `${srcPrefix}.umi`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
-    const isTs5 = api.appData?.typescript?.tsVersion?.startsWith('5');
-    const isTslibInstalled = !!api.appData?.typescript?.tslibVersion;
+    const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
+    const isTslibInstalled = !!api.appData.typescript.tslibVersion;
 
     api.writeTmpFile({
       noPluginDir: true,
