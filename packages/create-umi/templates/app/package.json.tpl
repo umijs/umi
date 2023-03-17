@@ -14,6 +14,6 @@
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "typescript": "^4.1.2"
+    "typescript": "^5.0.0"
   }
 }
