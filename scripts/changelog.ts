@@ -1,8 +1,7 @@
 import { Builder, By, Key } from 'selenium-webdriver';
 import 'zx/globals';
-import { getGptResponse } from './utils/getGptResponse';
-import { getLatestTag } from './utils/getLatestTag';
-import { getReleaseNotes } from './utils/getReleaseNotes';
+import { getLatestTag, getReleaseNotes } from './utils/github';
+import { getGptResponse } from './utils/openai';
 
 (async () => {
   // 获取命令参数 自定义 Tag 名称
@@ -87,11 +86,6 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
   console.error(e);
 });
 
-/**
- * @description 登陆 GitHub，填入 GitHub ReleaseNotes 信息
- * @param notes GitHub Release 信息
- * @param customizeTag 自定义 Tag 名称
- */
 const setGitHubReleaseNote = async (notes: string, customizeTag: string) => {
   // 获取 GitHub 账密配置
   const GITHUB_ACCOUNT = '.github_account';

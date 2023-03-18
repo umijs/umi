@@ -7,11 +7,6 @@ const PROXY_HOST = '';
 // 代理端口
 const PROXY_PORT = '';
 
-/**
- * @description 获取 ChatGpt 数据
- * @param prompt 提示
- * @returns
- */
 export async function getGptResponse(prompt: string) {
   const OPENAI_TOKEN_FILE = '.openai_token';
 
