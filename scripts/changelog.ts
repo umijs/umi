@@ -5,18 +5,18 @@ import { getLatestTag } from './utils/getLatestTag';
 import { getReleaseNotes } from './utils/getReleaseNotes';
 
 (async () => {
-  // 获取命令参数 自定义Tag名称
+  // 获取命令参数 自定义 Tag 名称
   let customizeTag = argv?.tag || '';
   // 设置需查询的 Tag
   let selectTag = customizeTag;
 
-  // 如果命令参数自定义Tag不存在，则获取最新的Git Tag
+  // 如果命令参数自定义 Tag 不存在，则获取最新的 Git Tag
   if (!customizeTag) {
     const { latestTag } = await getLatestTag();
     selectTag = latestTag;
   }
 
-  // 获取github自动生成的 Release Notes
+  // 获取 GitHub 自动生成的 Release Notes
   const { releaseNotes } = await getReleaseNotes(selectTag);
 
   // 格式化 Release Notes
@@ -75,25 +75,25 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
     changeLogs[0] = '* ' + changeLogs[0];
   }
 
-  // 合并 releaseNotes
+  // 合并 ReleaseNotes
   releaseNotesList.splice(1, 0, ...changeLogs);
   const formatReleaseNotes = releaseNotesList
     .join('\n')
     .replace('**Full', '\n**Full');
 
-  // 打开浏览器，填入Github Release 信息
-  await setGithubReleaseNote(formatReleaseNotes, customizeTag);
+  // 打开浏览器，填入 GitHub ReleaseNotes 信息
+  await setGitHubReleaseNote(formatReleaseNotes, customizeTag);
 })().catch((e) => {
   console.error(e);
 });
 
 /**
- * @description 登陆 Github，填入Github Release 信息
- * @param notes Github Release 信息
- * @param customizeTag 自定义Tag 名称
+ * @description 登陆 GitHub，填入 GitHub ReleaseNotes 信息
+ * @param notes GitHub Release 信息
+ * @param customizeTag 自定义 Tag 名称
  */
-const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
-  // 获取 Github 账密配置
+const setGitHubReleaseNote = async (notes: string, customizeTag: string) => {
+  // 获取 GitHub 账密配置
   const GITHUB_ACCOUNT = '.github_account';
   const ACCOUNT_INFO = fs
     .readFileSync(path.join(__dirname, '../', GITHUB_ACCOUNT), 'utf-8')
@@ -103,22 +103,22 @@ const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
 
   try {
     let driver = await new Builder().forBrowser('chrome').build();
-    // 打开 github Release 发布页
+    // 打开 GitHub Release 发布页
     await driver.get('https://github.com/umijs/umi/releases/new');
-    // 通过id选择器定位账号输入框
+    // 通过 id 选择器定位账号输入框
     const usernameInput = driver.findElement(By.id('login_field'));
     // 输入网址并回车搜索
     await usernameInput.sendKeys(USERNAME);
-    // 通过id选择器定位密码输入框
+    // 通过 id 选择器定位密码输入框
     const passwordInput = driver.findElement(By.id('password'));
     // 输入网址并回车搜索
     await passwordInput.sendKeys(PASSWORD, Key.ENTER);
 
-    // 通过id选择器定位 Tag 列表选择器
+    // 通过 id 选择器定位 Tag 列表选择器
     const tagListSelect = driver.findElement(By.id('tag-list'));
     await tagListSelect.click();
 
-    // 隐式等待设置2秒超时时间
+    // 隐式等待设置 2 秒超时时间
     await driver.sleep(2000);
 
     if (customizeTag) {
@@ -143,12 +143,12 @@ const setGithubReleaseNote = async (notes: string, customizeTag: string) => {
     );
     const latestTagName = await selectTagSpan.getText();
 
-    // 通过id选择器定位日志名称输入框
+    // 通过 id 选择器定位日志名称输入框
     const releaseNameInput = driver.findElement(By.id('release_name'));
     // 输入名称
     await releaseNameInput.sendKeys(latestTagName);
 
-    // 通过id选择器定位日志内容输入框
+    // 通过 id 选择器定位日志内容输入框
     const releaseBodyTextarea = driver.findElement(By.id('release_body'));
     // 输入日志
     await releaseBodyTextarea.sendKeys(notes);

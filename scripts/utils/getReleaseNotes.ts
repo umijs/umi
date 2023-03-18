@@ -2,7 +2,7 @@ import { Octokit } from 'octokit';
 
 /**
  * @description 获取 Github Release Notes
- * @param tagName tag 名称
+ * @param tagName Tag 名称
  * @returns
  */
 export async function getReleaseNotes(tagName: string) {
