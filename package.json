@@ -53,10 +53,6 @@
       "prettier --no-error-on-unmatched-pattern --cache --parser=typescript --write"
     ]
   },
-  "dependencies": {
-    "selenium-webdriver": "^4.8.1",
-    "tunnel": "^0.0.6"
-  },
   "devDependencies": {
     "@iconify-json/ant-design": "1",
     "@iconify-json/fa": "1",
@@ -106,8 +102,10 @@
     "regenerator-runtime": "^0.13.11",
     "resolve": "^1.22.0",
     "rimraf": "^3.0.2",
+    "selenium-webdriver": "^4.8.1",
     "ts-node": "^10.7.0",
     "tsx": "^3.12.2",
+    "tunnel": "^0.0.6",
     "turbo": "^1.7.0",
     "typescript": "^4.9.4",
     "uglify-js": "^3.17.4",
