@@ -6,7 +6,7 @@ import { getReleaseNotes } from './utils/getReleaseNotes';
 
 (async () => {
   // 获取命令参数 自定义Tag名称
-  let customizeTag = process.argv?.[3] || '';
+  let customizeTag = argv?.tag || '';
   // 设置需查询的 Tag
   let selectTag = customizeTag;
 
