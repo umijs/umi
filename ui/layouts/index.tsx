@@ -1,5 +1,6 @@
 import { Logo } from '@/components/Logo';
 import { Menu } from '@/components/Menu';
+import { ConfigProvider } from 'antd';
 import { Helmet, Outlet, styled } from 'umi';
 
 const Wrapper = styled.div`
@@ -15,21 +16,29 @@ const Wrapper = styled.div`
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 16px;
+    padding: 1rem;
   }
 `;
 
 export default function Layout() {
   return (
-    <Wrapper>
-      <Helmet title="Umi UI" />
-      <aside>
-        <Logo />
-        <Menu />
-      </aside>
-      <main>
-        <Outlet />
-      </main>
-    </Wrapper>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#117cf3',
+        },
+      }}
+    >
+      <Wrapper>
+        <Helmet title="Umi UI" />
+        <aside>
+          <Logo />
+          <Menu />
+        </aside>
+        <main>
+          <Outlet />
+        </main>
+      </Wrapper>
+    </ConfigProvider>
   );
 }

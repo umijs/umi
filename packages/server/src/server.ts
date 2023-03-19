@@ -166,7 +166,8 @@ export function createRequestHandler(opts: IOpts): RequestHandler {
     if (
       opts.historyType === 'browser' &&
       opts.base !== '/' &&
-      req.path === '/'
+      req.path === '/' &&
+      process.env.DEV_SERVER_REDIRECT !== 'none'
     ) {
       // 如果是 browser，并且配置了非 / base，访问 / 时 redirect 到 base 路径
       res.redirect(opts.base);

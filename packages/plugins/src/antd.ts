@@ -1,7 +1,7 @@
 import assert from 'assert';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
-import { deepmerge, Mustache } from 'umi/plugin-utils';
+import { deepmerge, Mustache, semver } from 'umi/plugin-utils';
 import { resolveProjectDep } from './utils/resolveProjectDep';
 import { withTmpPath } from './utils/withTmpPath';
 
@@ -18,6 +18,10 @@ export default (api: IApi) => {
     antdVersion = require(`${pkgPath}/package.json`).version;
   } catch (e) {}
 
+  // App components exist only from 5.1.0 onwards
+  const appComponentAvailable = semver.gte(antdVersion, '5.1.0');
+  const appConfigAvailable = semver.gte(antdVersion, '5.3.0');
+
   api.describe({
     config: {
       schema(Joi) {
@@ -32,6 +36,8 @@ export default (api: IApi) => {
             // less or css, default less
             style: Joi.string().allow('less', 'css'),
             theme: Joi.object(),
+            // Only antd@5.1.0 is supported
+            appConfig: Joi.object(),
           }),
           Joi.boolean().invalid(true),
         );
@@ -129,6 +135,22 @@ export default (api: IApi) => {
       );
     }
 
+    if (antd.appConfig) {
+      if (!appComponentAvailable) {
+        delete antd.appConfig;
+        api.logger.warn(
+          `antd.appConfig is only available in version 5.1.0 and above, but you are using version ${antdVersion}`,
+        );
+      } else if (
+        !appConfigAvailable &&
+        Object.keys(antd.appConfig).length > 0
+      ) {
+        api.logger.warn(
+          `versions [5.1.0 ~ 5.3.0) only allows antd.appConfig to be set to \`{}\``,
+        );
+      }
+    }
+
     return memo;
   });
 
@@ -158,56 +180,51 @@ export default (api: IApi) => {
       : [];
   });
 
-  // antd config provider
+  // antd config provider & app component
   api.onGenerateFiles(() => {
-    if (!api.config.antd.configProvider) return;
+    const withConfigProvider = !!api.config.antd.configProvider;
+    const withAppConfig = appConfigAvailable && !!api.config.antd.appConfig;
+
     api.writeTmpFile({
       path: `runtime.tsx`,
+      context: {
+        configProvider:
+          withConfigProvider && JSON.stringify(api.config.antd.configProvider),
+        appConfig:
+          appComponentAvailable && JSON.stringify(api.config.antd.appConfig),
+      },
+      tplPath: join(__dirname, '../tpls/antd-runtime.ts.tpl'),
+    });
+
+    api.writeTmpFile({
+      path: 'types.d.ts',
       content: Mustache.render(
         `
-import React from 'react';
-import { ConfigProvider, Modal, message, notification } from 'antd';
-import { ApplyPluginsType } from 'umi';
-import { getPluginManager } from '../core/plugin';
+{{#withConfigProvider}}
+import type { ConfigProviderProps } from 'antd/es/config-provider';
+{{/withConfigProvider}}
+{{#withAppConfig}}
+import type { AppConfig } from 'antd/es/app/context';
+{{/withAppConfig}}
 
-export function rootContainer(container) {
-  const finalConfig = getPluginManager().applyPlugins({
-    key: 'antd',
-    type: ApplyPluginsType.modify,
-    initialValue: {...{{{ config }}}},
-  });
-  if (finalConfig.prefixCls) {
-    Modal.config({
-      rootPrefixCls: finalConfig.prefixCls
-    });
-    message.config({
-      prefixCls: \`\${finalConfig.prefixCls}-message\`
-    });
-    notification.config({
-      prefixCls: \`\${finalConfig.prefixCls}-notification\`
-    });
-  }
-  if (finalConfig.iconPrefixCls) {
-    // Icons in message need to set iconPrefixCls via ConfigProvider.config()
-    ConfigProvider.config({
-      iconPrefixCls: finalConfig.iconPrefixCls,
-    });
-  }
-  return <ConfigProvider {...finalConfig}>{container}</ConfigProvider>;
-}
-      `.trim(),
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+type AntdConfig = Prettify<{}
+{{#withConfigProvider}}  & ConfigProviderProps{{/withConfigProvider}}
+{{#withAppConfig}}  & { appConfig: AppConfig }{{/withAppConfig}}
+>;
+
+export type RuntimeAntdConfig = (memo: AntdConfig) => AntdConfig;
+`.trim(),
         {
-          config: JSON.stringify(api.config.antd.configProvider),
+          withConfigProvider,
+          withAppConfig,
         },
       ),
     });
-    api.writeTmpFile({
-      path: 'types.d.ts',
-      content: `
-import type { ConfigProviderProps } from 'antd/es/config-provider';
-export type RuntimeAntdConfig = (memo: ConfigProviderProps) => ConfigProviderProps;
-`,
-    });
+
     api.writeTmpFile({
       path: RUNTIME_TYPE_FILE_NAME,
       content: `
@@ -218,10 +235,15 @@ export type IRuntimeConfig = {
       `,
     });
   });
+
   api.addRuntimePlugin(() => {
-    return api.config.antd.configProvider
-      ? [withTmpPath({ api, path: 'runtime.tsx' })]
-      : [];
+    if (
+      api.config.antd.configProvider ||
+      (appComponentAvailable && api.config.antd.appConfig)
+    ) {
+      return [withTmpPath({ api, path: 'runtime.tsx' })];
+    }
+    return [];
   });
 
   // import antd style if antd.import is not configured

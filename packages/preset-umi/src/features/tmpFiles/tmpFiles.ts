@@ -17,8 +17,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'tmpFiles',
     config: {
-      schema(Joi) {
-        return Joi.boolean();
+      schema({ zod }) {
+        return zod.boolean();
       },
     },
   });
@@ -43,6 +43,8 @@ export default (api: IApi) => {
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
     const umiTempDir = `${srcPrefix}.umi`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
+    const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
+    const isTslibInstalled = !!api.appData.typescript.tslibVersion;
 
     api.writeTmpFile({
       noPluginDir: true,
@@ -56,8 +58,12 @@ export default (api: IApi) => {
           compilerOptions: {
             target: 'esnext',
             module: 'esnext',
-            moduleResolution: 'node',
-            importHelpers: true,
+            lib: ['dom', 'dom.iterable', 'esnext'],
+            allowJs: true,
+            skipLibCheck: true,
+            moduleResolution: isTs5 ? 'bundler' : 'node',
+            importHelpers: isTslibInstalled,
+            noEmit: true,
             jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
             esModuleInterop: true,
             sourceMap: true,

@@ -1,5 +1,5 @@
-import { join, normalize } from 'path';
 import { generateFile } from '@umijs/utils';
+import { join, normalize } from 'path';
 import { PageGenerator } from './page';
 
 jest.mock('@umijs/utils', () => {
@@ -213,6 +213,7 @@ describe('page generator', function () {
         data: {
           name: f.name,
           color: expect.anything(),
+          importSource: 'umi',
           cssExt: '.less',
           ...(f.data || {}),
         },

@@ -1,4 +1,7 @@
+import { isZodSchema } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
+import { z, ZodSchema } from '@umijs/utils/compiled/zod';
+import { zodToTs } from '@umijs/zod2ts';
 import { IApi } from '../../types';
 
 // Need to be excluded function type declared in `IConfig`
@@ -10,28 +13,27 @@ export default (api: IApi) => {
   api.onGenerateFiles(async () => {
     const { service } = api;
 
-    const properties = Object.keys(service.configSchemas).reduce((acc, key) => {
+    let properties: Record<string, joi.Schema> = {};
+    let zodProperties: Record<string, ZodSchema> = {};
+    Object.keys(service.configSchemas).forEach((key) => {
       if (FILTER_KEYS.includes(key)) {
-        return acc;
+        return;
       }
 
       const schemaFn = service.configSchemas[key];
       if (typeof schemaFn !== 'function') {
-        return acc;
+        return;
       }
 
-      const schema = schemaFn(joi);
-      if (!joi.isSchema(schema)) {
-        return acc;
+      const schema = schemaFn({ ...joi, zod: z });
+      if (joi.isSchema(schema)) {
+        properties[key] = schema;
+      } else if (isZodSchema(schema)) {
+        zodProperties[key] = schema;
       }
+    });
 
-      return {
-        ...acc,
-        [key]: schema,
-      };
-    }, {});
-
-    const interfaceName = 'IConfigFromPlugins';
+    const interfaceName = 'IConfigFromPluginsJoi';
 
     const joi2Types = require('../../../compiled/joi2types').default;
     const content = await joi2Types(joi.object(properties), {
@@ -45,8 +47,37 @@ export default (api: IApi) => {
 
     api.writeTmpFile({
       noPluginDir: true,
-      path: 'core/pluginConfig.d.ts',
+      path: `core/pluginConfigJoi.d.ts`,
       content,
+    });
+
+    const typeName = `IConfigTypes`;
+    const typeString = zodToTs({
+      zod: z.object(zodProperties),
+      identifier: typeName,
+    }).replace(
+      // replace to support routes circular reference type
+      `routes?: (any | undefined)`,
+      `routes?: ${typeName}['routes']`,
+    );
+
+    const typeContent: string = `
+import { ${interfaceName} } from "./pluginConfigJoi.d";
+
+interface ${typeName} ${typeString};
+
+type PrettifyWithCloseable<T> = {
+  [K in keyof T]: T[K] | false;
+} & {};
+
+export type IConfigFromPlugins = PrettifyWithCloseable<
+  ${interfaceName} & Partial<${typeName}>
+>;
+    `;
+    api.writeTmpFile({
+      noPluginDir: true,
+      path: 'core/pluginConfig.ts',
+      content: typeContent,
     });
   });
 };

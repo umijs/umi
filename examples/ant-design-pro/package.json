@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "max build",
-    "deadcode": "max deadcode",
+    "deadcode": "max deadcode --out unused.json --git-info",
     "dev": "max dev",
     "setup": "max setup",
     "start": "npm run dev",

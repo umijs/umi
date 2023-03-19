@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`zod default 1`] = `
+"{
+    a: string;
+    b: number;
+    c: Array<{
+    a: string;
+}>;
+    d: boolean;
+    e: {
+    a: string;
+    b: any;
+};
+    f: {
+    a: number;
+} | "hi";
+    g: "hi" | "bye";
+    h: number & bigint & number & string;
+    i: Date;
+    j?: undefined;
+    k: null;
+    l?: (void | undefined);
+    m?: any;
+    n?: unknown;
+    o: never;
+    p?: (string | undefined);
+    q: ({
+    a?: (string | undefined);
+    b?: (number | undefined);
+    c?: (Array<string> | undefined);
+    d?: ({
+    e: string;
+} | undefined);
+} | null);
+    r: [string, number, {
+    name: string;
+}];
+    s: { [x: string]: {
+    de: {
+    me: Array<[string, {
+    a: string;
+}] | bigint>;
+};
+} };
+    t: Map<string, Array<{
+    p: string;
+}>>;
+    u: Set<string>;
+    v: string & number | bigint;
+    w: Promise<number>;
+    x: ((args_0: ((string | null) | undefined), args_1: boolean, args_2: boolean, ...args: any[]) => string);
+    y?: (string | undefined);
+    z: string | number & ((bigint | null) | undefined);
+    cc: any;
+    dd: any;
+    ee: {
+    kind: "circle";
+    radius: number;
+} | {
+    kind: "square";
+    x: number;
+} | {
+    kind: "triangle";
+    x: number;
+    y: number;
+};
+}"
+`;
+
+exports[`zod enum 1`] = `
+"{
+    fruit: any;
+    color: any;
+}"
+`;
+
+exports[`zod union and function() 1`] = `"{ [x: string]: any } | string | ((...args: any[]) => unknown)"`;
+
+exports[`zod.describe() 1`] = `
+"{
+    /** The name of the item */
+    name: string;
+    /** The price of the item */
+    price: number;
+}"
+`;
+
+exports[`zod.discriminatedUnion() 1`] = `
+"{
+    kind: "circle";
+    radius: number;
+} | {
+    kind: "square";
+    x: number;
+} | {
+    kind: "triangle";
+    x: number;
+    y: number;
+}"
+`;
+
+exports[`zod.function() 1`] = `"((args_0: ((string | null) | undefined), args_1: boolean, args_2: boolean, ...args: any[]) => string)"`;
+
+exports[`zod.function() 2 1`] = `
+"{
+    /** create an item */
+    h: ((args_0: {
+    name: string;
+    price: number;
+    comment: string;
+}, ...args: any[]) => unknown);
+}"
+`;
+
+exports[`zod.nullable() 1`] = `
+"{
+    username: (string | null);
+}"
+`;
+
+exports[`zod.object() 1`] = `
+"{
+    username: string;
+    age: number;
+    isAdmin: boolean;
+    createdAt: Date;
+    undef?: undefined;
+    nu: null;
+    vo?: (void | undefined);
+    an?: any;
+    unknow?: unknown;
+    nev: never;
+}"
+`;
+
+exports[`zod.optinal() chain 1`] = `
+"{
+    a?: (number | undefined);
+}"
+`;
+
+exports[`zod.optional() 1`] = `
+"{
+    optional?: (string | undefined);
+    required: string;
+    transform?: (number | undefined);
+    or?: (number | undefined) | string;
+    tuple?: ([(string | undefined), number, {
+    optional?: (string | undefined);
+    required: string;
+}] | undefined);
+}"
+`;

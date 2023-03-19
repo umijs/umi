@@ -9,13 +9,15 @@ export default function (api: IApi) {
   api.describe({
     key: 'mock',
     config: {
-      schema(Joi) {
-        return Joi.object().keys({
-          exclude: Joi.array()
-            .items(Joi.string())
-            .description('exclude files not parse mock'),
-          include: Joi.array().items(Joi.string()),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            exclude: zod
+              .array(zod.string())
+              .describe('exclude files not parse mock'),
+            include: zod.array(zod.string()),
+          })
+          .deepPartial();
       },
     },
     enableBy() {

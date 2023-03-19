@@ -66,19 +66,21 @@ socket.addEventListener('close', async () => {
   location.reload();
 });
 
-ErrorOverlay.startReportingRuntimeErrors({
-  onError: function () {
-    hadRuntimeError = true;
-  },
-  filename: '/static/js/bundle.js',
-});
+const enableErrorOverlay = process.env.ERROR_OVERLAY !== 'none';
+enableErrorOverlay &&
+  ErrorOverlay.startReportingRuntimeErrors({
+    onError: function () {
+      hadRuntimeError = true;
+    },
+    filename: '/static/js/bundle.js',
+  });
 
 // @ts-ignore
 if (module.hot && typeof module.hot.dispose === 'function') {
   // @ts-ignore
   module.hot.dispose(function () {
     // TODO: why do we need this?
-    ErrorOverlay.stopReportingRuntimeErrors();
+    enableErrorOverlay && ErrorOverlay.stopReportingRuntimeErrors();
   });
 }
 
@@ -97,7 +99,7 @@ function handleSuccess() {
   if (isHotUpdate) {
     tryApplyUpdates(function onHotUpdateSuccess() {
       // Only dismiss it when we're sure it's a hot update.
-      // Otherwise it would flicker right before the reload.
+      // Otherwise, it would flicker right before the reload.
       tryDismissErrorOverlay();
     });
   }
@@ -131,7 +133,7 @@ function handleWarnings(warnings: string[]) {
   if (isHotUpdate) {
     tryApplyUpdates(function onSuccessfulHotUpdate() {
       // Only dismiss it when we're sure it's a hot update.
-      // Otherwise it would flicker right before the reload.
+      // Otherwise, it would flicker right before the reload.
       tryDismissErrorOverlay();
     });
   }
@@ -147,7 +149,7 @@ function handleErrors(errors: string[]) {
   });
 
   // Only show the first error.
-  ErrorOverlay.reportBuildError(formatted.errors[0]);
+  enableErrorOverlay && ErrorOverlay.reportBuildError(formatted.errors[0]);
 
   // Also log them to the console.
   if (typeof console !== 'undefined' && typeof console.error === 'function') {
@@ -159,7 +161,7 @@ function handleErrors(errors: string[]) {
 
 function tryDismissErrorOverlay() {
   if (!hasCompileErrors) {
-    ErrorOverlay.dismissBuildError();
+    enableErrorOverlay && ErrorOverlay.dismissBuildError();
   }
 }
 

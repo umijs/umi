@@ -733,7 +733,7 @@ headScripts: [
 - 类型：`{ cert: string; key: string; hosts: string[]; http2?: boolean }`
 - 默认值：`{ hosts: ['127.0.0.1', 'localhost'] }`
 
-开启 dev 的 https 模式。
+开启 dev 的 https 模式，Umi 4 默认使用 [`mkcert`](https://github.com/FiloSottile/mkcert) 快捷创建证书，请确保已经安装。
 
 关于参数。
 

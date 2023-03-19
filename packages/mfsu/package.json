@@ -1,6 +1,6 @@
 {
   "name": "@umijs/mfsu",
-  "version": "4.0.56",
+  "version": "4.0.61",
   "description": "@umijs/mfsu",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/mfsu#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -23,16 +23,16 @@
     "test": "umi-scripts jest-turbo"
   },
   "dependencies": {
-    "@umijs/bundler-esbuild": "4.0.56",
-    "@umijs/bundler-utils": "4.0.56",
-    "@umijs/utils": "4.0.56",
+    "@umijs/bundler-esbuild": "workspace:*",
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/utils": "workspace:*",
     "enhanced-resolve": "5.9.3",
     "is-equal": "^1.6.4"
   },
   "devDependencies": {
     "is-absolute-url": "^4.0.1",
     "mrmime": "1.0.1",
-    "webpack": "5.75.0",
+    "webpack": "5.76.1",
     "webpack-virtual-modules": "0.5.0"
   },
   "publishConfig": {

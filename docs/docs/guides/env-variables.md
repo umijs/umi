@@ -103,6 +103,10 @@ $ ANALYZE=1 umi build
 
 设置为 `none` 会禁用「你知道吗」提示。
 
+### ERROR_OVERLAY
+
+设置为 `none` 会禁用「Error Overlay」，在调试 Error Boundary 时会有用。
+
 ### FS_LOGGER
 
 默认会开启保存物理日志，值为 none 时不保存，同时针对 webcontainer 场景（比如 stackbliz）暂不保存。

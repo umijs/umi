@@ -12,7 +12,7 @@
     "umi": "{{{ version }}}"
   },
   "devDependencies": {
-    "typescript": "^4.1.2",
+    "typescript": "^5.0.0",
     "@umijs/preset-vue": "{{{ version }}}"
   }
 }

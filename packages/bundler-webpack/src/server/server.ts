@@ -121,6 +121,7 @@ export async function createServer(opts: IOpts): Promise<any> {
       opts.onDevCompileDone?.({
         stats,
         isFirstCompile,
+        ws,
         time: stats.endTime - stats.startTime,
       });
       isFirstCompile = false;

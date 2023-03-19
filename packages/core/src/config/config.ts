@@ -1,5 +1,12 @@
 import esbuild from '@umijs/bundler-utils/compiled/esbuild';
-import { chokidar, lodash, register, semver } from '@umijs/utils';
+import {
+  chokidar,
+  isZodSchema,
+  lodash,
+  register,
+  semver,
+  zod,
+} from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
 import assert from 'assert';
 import { existsSync } from 'fs';
@@ -201,11 +208,20 @@ export class Config {
     for (const key of Object.keys(opts.schemas)) {
       configKeys.delete(key);
       if (!opts.config[key]) continue;
-      const schema = opts.schemas[key](joi);
-      // invalid schema
-      assert(joi.isSchema(schema), `schema for config ${key} is not valid.`);
-      const { error } = schema.validate(opts.config[key]);
-      if (error) errors.set(key, error);
+      const schema = opts.schemas[key]({ ...joi, zod });
+
+      if (joi.isSchema(schema)) {
+        const { error } = schema.validate(opts.config[key]);
+        if (error) errors.set(key, error);
+      } else {
+        // invalid schema
+        assert(
+          isZodSchema(schema),
+          `schema for config ${key} is not valid, neither joi nor zod.`,
+        );
+        const { error } = schema.safeParse(opts.config[key]);
+        if (error) errors.set(key, error);
+      }
     }
     // invalid config values
     assert(

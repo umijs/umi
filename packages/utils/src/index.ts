@@ -27,6 +27,7 @@ import semver from '../compiled/semver';
 import stripAnsi from '../compiled/strip-ansi';
 import * as tsconfigPaths from '../compiled/tsconfig-paths';
 import yParser from '../compiled/yargs-parser';
+import { z } from '../compiled/zod';
 import BaseGenerator from './BaseGenerator/BaseGenerator';
 import generateFile from './BaseGenerator/generateFile';
 import Generator from './Generator/Generator';
@@ -38,6 +39,7 @@ import updatePackageJSON from './updatePackageJSON';
 export * as aliasUtils from './aliasUtils';
 export * from './getCorejsVersion';
 export * from './getDevBanner';
+export * as git from './getFileGitIno';
 export * from './importLazy';
 export * from './isLocalDev';
 export * from './isMonorepo';
@@ -49,6 +51,7 @@ export * as register from './register';
 export * from './setNoDeprecation';
 export * from './tryPaths';
 export * from './winPath';
+export * from './zod/isZodSchema';
 export {
   address,
   axios,
@@ -87,4 +90,5 @@ export {
   MagicString,
   remapping,
   tsconfigPaths,
+  z as zod,
 };

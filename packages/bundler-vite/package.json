@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-vite",
-  "version": "4.0.56",
+  "version": "4.0.61",
   "description": "@umijs/bundler-vite",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-vite#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "@svgr/core": "6.5.1",
-    "@umijs/bundler-utils": "4.0.56",
-    "@umijs/utils": "4.0.56",
+    "@umijs/bundler-utils": "workspace:*",
+    "@umijs/utils": "workspace:*",
     "@vitejs/plugin-react": "3.1.0",
     "less": "4.1.3",
     "postcss-preset-env": "7.5.0",
     "rollup-plugin-visualizer": "5.9.0",
-    "vite": "4.1.4"
+    "vite": "4.2.0"
   },
   "devDependencies": {
     "@types/caniuse-lite": "1.0.1",

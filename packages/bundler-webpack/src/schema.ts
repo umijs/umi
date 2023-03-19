@@ -1,8 +1,8 @@
 // sort-object-keys
-import type { Root } from '@umijs/utils/compiled/@hapi/joi';
+import type { z } from '@umijs/utils/compiled/zod';
 import { CSSMinifier, JSMinifier, Transpiler } from './types';
 
-const options = [
+const devTool = [
   'cheap-source-map',
   'cheap-module-source-map',
   'eval',
@@ -30,128 +30,164 @@ const options = [
   'nosources-cheap-module-source-map',
 ];
 
-const DEVTOOL_REGEX = new RegExp(
-  '^' + // start of string
-    '(#@|@|#)?' + // maybe one of the pragmas
-    `(${options.join('$|')})`, // one of the options
-);
+const DevToolValues: string[] = [
+  ...devTool,
+  ...devTool.map((item) => `#${item}`),
+  ...devTool.map((item) => `@${item}`),
+  ...devTool.map((item) => `#@${item}`),
+];
 
-export function getSchemas(): Record<string, (Joi: Root) => any> {
+export function getSchemas(): Record<string, (arg: { zod: typeof z }) => any> {
   return {
-    alias: (Joi) => Joi.object(),
-    autoCSSModules: (Joi) => Joi.boolean(),
-    autoprefixer: (Joi) => Joi.object(),
-    babelLoaderCustomize: (Joi) => Joi.string(),
-    cacheDirectoryPath: (Joi) => Joi.string(),
-    chainWebpack: (Joi) => Joi.function(),
-    copy: (Joi) =>
-      Joi.array().items(
-        Joi.alternatives().try(
-          Joi.object({
-            from: Joi.string(),
-            to: Joi.string(),
+    alias: ({ zod }) => zod.record(zod.string(), zod.any()),
+    autoCSSModules: ({ zod }) => zod.boolean(),
+    autoprefixer: ({ zod }) => zod.record(zod.string(), zod.any()),
+    babelLoaderCustomize: ({ zod }) => zod.string(),
+    cacheDirectoryPath: ({ zod }) => zod.string(),
+    chainWebpack: ({ zod }) => zod.function(),
+    copy: ({ zod }) =>
+      zod.array(
+        zod.union([
+          zod.object({
+            from: zod.string(),
+            to: zod.string(),
           }),
-          Joi.string(),
-        ),
+          zod.string(),
+        ]),
       ),
-    cssLoader: (Joi) => Joi.object(),
-    cssLoaderModules: (Joi) => Joi.object(),
-    cssMinifier: (Joi) =>
-      Joi.string().valid(
+    cssLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    cssLoaderModules: ({ zod }) => zod.record(zod.string(), zod.any()),
+    cssMinifier: ({ zod }) =>
+      zod.enum([
         CSSMinifier.cssnano,
         CSSMinifier.esbuild,
         CSSMinifier.parcelCSS,
         CSSMinifier.none,
-      ),
-    cssMinifierOptions: (Joi) => Joi.object(),
-    deadCode: (Joi) => Joi.object(),
-    define: (Joi) => Joi.object(),
-    depTranspiler: (Joi) =>
-      Joi.string().valid(
+      ]),
+    cssMinifierOptions: ({ zod }) => zod.record(zod.string(), zod.any()),
+    deadCode: ({ zod }) =>
+      zod
+        .object({
+          context: zod.string(),
+          detectUnusedExport: zod.boolean(),
+          detectUnusedFiles: zod.boolean(),
+          exclude: zod.array(zod.string()),
+          failOnHint: zod.boolean(),
+          patterns: zod.array(zod.string()),
+        })
+        .deepPartial(),
+    define: ({ zod }) => zod.record(zod.string(), zod.any()),
+    depTranspiler: ({ zod }) =>
+      zod.enum([
         Transpiler.babel,
         Transpiler.esbuild,
         Transpiler.swc,
         Transpiler.none,
-      ),
-    devtool: (Joi) =>
-      Joi.alternatives().try(Joi.string().regex(DEVTOOL_REGEX), Joi.boolean()),
-    esm: (Joi) => Joi.object(),
-    externals: (Joi) =>
-      Joi.alternatives().try(Joi.object(), Joi.string(), Joi.func()),
-    extraBabelIncludes: (Joi) =>
-      Joi.array().items(
-        Joi.alternatives().try(Joi.string(), Joi.object().instance(RegExp)),
-      ),
-    extraBabelPlugins: (Joi) =>
-      Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.array())),
-    extraBabelPresets: (Joi) =>
-      Joi.array().items(Joi.alternatives().try(Joi.string(), Joi.array())),
-    extraPostCSSPlugins: (Joi) => Joi.array(),
-    fastRefresh: (Joi) => Joi.boolean(),
-    forkTSChecker: (Joi) => Joi.object(),
-    hash: (Joi) => Joi.boolean(),
-    https: (Joi) => Joi.object(),
-    ignoreMomentLocale: (Joi) => Joi.boolean(),
-    inlineLimit: (Joi) => Joi.number(),
-    jsMinifier: (Joi) =>
-      Joi.string().valid(
+      ]),
+    devtool: ({ zod }) =>
+      zod.union([zod.enum(DevToolValues as any), zod.boolean()]),
+    esm: ({ zod }) => zod.object({}),
+    externals: ({ zod }) =>
+      zod.union([
+        zod.record(zod.string(), zod.any()),
+        zod.string(),
+        zod.function(),
+      ]),
+    extraBabelIncludes: ({ zod }) =>
+      zod.array(zod.union([zod.string(), zod.instanceof(RegExp)])),
+    extraBabelPlugins: ({ zod }) =>
+      zod.array(zod.union([zod.string(), zod.array(zod.any())])),
+    extraBabelPresets: ({ zod }) =>
+      zod.array(zod.union([zod.string(), zod.array(zod.any())])),
+    extraPostCSSPlugins: ({ zod }) => zod.array(zod.any()),
+    fastRefresh: ({ zod }) => zod.boolean(),
+    forkTSChecker: ({ zod }) => zod.record(zod.string(), zod.any()),
+    hash: ({ zod }) => zod.boolean(),
+    https: ({ zod }) =>
+      zod
+        .object({
+          cert: zod.string(),
+          hosts: zod.array(zod.string()),
+          http2: zod.boolean(),
+          key: zod.string(),
+        })
+        .deepPartial(),
+    ignoreMomentLocale: ({ zod }) => zod.boolean(),
+    inlineLimit: ({ zod }) => zod.number(),
+    jsMinifier: ({ zod }) =>
+      zod.enum([
         JSMinifier.esbuild,
         JSMinifier.swc,
         JSMinifier.terser,
         JSMinifier.uglifyJs,
         JSMinifier.none,
-      ),
-    jsMinifierOptions: (Joi) => Joi.object(),
-    lessLoader: (Joi) => Joi.object(),
-    manifest: (Joi) => Joi.object(),
-    mdx: (Joi) =>
-      Joi.object({
-        loader: Joi.string(),
-        loaderOptions: Joi.object(),
-      }),
-    mfsu: (Joi) =>
-      Joi.alternatives(
-        Joi.object({
-          cacheDirectory: Joi.string(),
-          chainWebpack: Joi.function(),
-          esbuild: Joi.boolean(),
-          exclude: Joi.array().items(
-            Joi.alternatives().try(Joi.string(), Joi.object().regex()),
-          ),
-          include: Joi.array().items(Joi.string()),
-          mfName: Joi.string(),
-          remoteAliases: Joi.array().items(Joi.string()),
-          remoteName: Joi.string(),
-          runtimePublicPath: Joi.boolean(),
-          shared: Joi.object(),
-          strategy: Joi.string().valid('eager', 'normal').default('normal'),
-        }),
-        Joi.boolean(),
-      ),
-    outputPath: (Joi) => Joi.string(),
-    postcssLoader: (Joi) => Joi.object(),
-    proxy: (Joi) => Joi.alternatives().try(Joi.object(), Joi.array()),
-    publicPath: (Joi) => Joi.string(),
-    purgeCSS: (Joi) => Joi.object(),
-    runtimePublicPath: (Joi) => Joi.object(),
-    sassLoader: (Joi) => Joi.object(),
-    srcTranspiler: (Joi) =>
-      Joi.string().valid(
+      ]),
+    jsMinifierOptions: ({ zod }) => zod.record(zod.string(), zod.any()),
+    lessLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    manifest: ({ zod }) =>
+      zod
+        .object({
+          basePath: zod.string(),
+          fileName: zod.string(),
+        })
+        .deepPartial(),
+    mdx: ({ zod }) =>
+      zod
+        .object({
+          loader: zod.string(),
+          loaderOptions: zod.record(zod.string(), zod.any()),
+        })
+        .deepPartial(),
+    mfsu: ({ zod }) =>
+      zod.union([
+        zod
+          .object({
+            cacheDirectory: zod.string(),
+            chainWebpack: zod.function(),
+            esbuild: zod.boolean(),
+            exclude: zod.array(
+              zod.union([zod.string(), zod.instanceof(RegExp)]),
+            ),
+            include: zod.array(zod.string()),
+            mfName: zod.string(),
+            remoteAliases: zod.array(zod.string()),
+            remoteName: zod.string(),
+            runtimePublicPath: zod.boolean(),
+            shared: zod.record(zod.string(), zod.any()),
+            strategy: zod.enum(['eager', 'normal']).default('normal'),
+          })
+          .deepPartial(),
+        zod.boolean(),
+      ]),
+    normalCSSLoaderModules: ({ zod }) => zod.record(zod.string(), zod.any()),
+    outputPath: ({ zod }) => zod.string(),
+    postcssLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    proxy: ({ zod }) =>
+      zod.union([zod.record(zod.string(), zod.any()), zod.array(zod.any())]),
+    publicPath: ({ zod }) => zod.string(),
+    purgeCSS: ({ zod }) => zod.record(zod.string(), zod.any()),
+    runtimePublicPath: ({ zod }) => zod.object({}),
+    sassLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    srcTranspiler: ({ zod }) =>
+      zod.enum([
         Transpiler.babel,
         Transpiler.esbuild,
         Transpiler.swc,
         Transpiler.none,
-      ),
-    srcTranspilerOptions: (Joi) =>
-      Joi.object({
-        esbuild: Joi.object(),
-        swc: Joi.object(),
-      }),
-    styleLoader: (Joi) => Joi.object(),
-    svgo: (Joi) => Joi.alternatives().try(Joi.object(), Joi.boolean()),
-    svgr: (Joi) => Joi.object(),
-    targets: (Joi) => Joi.object(),
-    theme: (Joi) => Joi.object(),
-    writeToDisk: (Joi) => Joi.boolean(),
+      ]),
+    srcTranspilerOptions: ({ zod }) =>
+      zod
+        .object({
+          esbuild: zod.record(zod.string(), zod.any()),
+          swc: zod.record(zod.string(), zod.any()),
+        })
+        .deepPartial(),
+    styleLoader: ({ zod }) => zod.record(zod.string(), zod.any()),
+    svgo: ({ zod }) =>
+      zod.union([zod.record(zod.string(), zod.any()), zod.boolean()]),
+    svgr: ({ zod }) => zod.record(zod.string(), zod.any()),
+    targets: ({ zod }) => zod.record(zod.string(), zod.any()),
+    theme: ({ zod }) => zod.record(zod.string(), zod.any()),
+    writeToDisk: ({ zod }) => zod.boolean(),
   };
 }
