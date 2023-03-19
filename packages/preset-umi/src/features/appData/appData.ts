@@ -73,6 +73,20 @@ export default (api: IApi) => {
 
     memo.framework = 'react';
 
+    // load ts info
+    const tsPkg = tryLoadDepPkg({
+      name: 'typescript',
+      from: api.cwd,
+    });
+    const tslibPkg = tryLoadDepPkg({
+      name: 'tslib',
+      from: api.cwd,
+    });
+    memo.typescript = {
+      tsVersion: tsPkg?.version,
+      tslibVersion: tslibPkg?.version,
+    };
+
     return memo;
   });
 
@@ -184,4 +198,13 @@ function findGitDir(dir: string): string | null {
     return parent;
   }
   return null;
+}
+
+function tryLoadDepPkg(opts: { name: string; from: string }) {
+  const { name, from } = opts;
+  try {
+    return require(require.resolve(`${name}/package.json`, {
+      paths: [from],
+    }));
+  } catch {}
 }
