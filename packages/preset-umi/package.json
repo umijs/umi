@@ -39,7 +39,6 @@
     "@umijs/plugin-run": "workspace:*",
     "@umijs/renderer-react": "workspace:*",
     "@umijs/server": "workspace:*",
-    "@umijs/ui": "workspace:*",
     "@umijs/utils": "workspace:*",
     "@umijs/zod2ts": "workspace:*",
     "babel-plugin-dynamic-import-node": "2.3.3",

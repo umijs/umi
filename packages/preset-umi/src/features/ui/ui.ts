@@ -12,6 +12,8 @@ export default (api: IApi) => {
   });
 
   api.onBeforeMiddleware(({ app }) => {
+    // preset-umi 中如果添加依赖 @umi/ui 会造成循环依赖，现在暂时在 ui 目录下手动打包
+    // todo: 怎么在 pnpm run build 的时候，同时在 ui 下运行 run build
     app.use(ENTRY_PATH, async (req: any, res: any) => {
       const { path } = req;
       const distPath = join(require.resolve('@umijs/ui'), '../');
