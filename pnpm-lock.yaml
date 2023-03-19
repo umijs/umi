@@ -1701,6 +1701,7 @@ importers:
       '@umijs/plugin-run': workspace:*
       '@umijs/renderer-react': workspace:*
       '@umijs/server': workspace:*
+      '@umijs/ui': workspace:*
       '@umijs/utils': workspace:*
       '@umijs/zod2ts': workspace:*
       babel-plugin-dynamic-import-node: 2.3.3
@@ -1739,6 +1740,7 @@ importers:
       '@umijs/plugin-run': link:../plugin-run
       '@umijs/renderer-react': link:../renderer-react
       '@umijs/server': link:../server
+      '@umijs/ui': link:../../ui
       '@umijs/utils': link:../utils
       '@umijs/zod2ts': link:../zod2ts
       babel-plugin-dynamic-import-node: 2.3.3
@@ -13622,6 +13624,7 @@ packages:
 
   /@umijs/bundler-webpack/4.0.57_typescript@4.8.4:
     resolution: {integrity: sha512-e2g/rD0JBXYU+pguCX+fCSj6KYGVpUDxSqqQIcflw7SxIl5+Vvueo24coL5lMBbDFWKk7OFF2G0Yg9/OBXb2aw==}
+    hasBin: true
     dependencies:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_react-refresh@0.14.0
       '@svgr/core': 6.5.1
@@ -13660,6 +13663,7 @@ packages:
 
   /@umijs/bundler-webpack/4.0.57_typescript@4.9.4:
     resolution: {integrity: sha512-e2g/rD0JBXYU+pguCX+fCSj6KYGVpUDxSqqQIcflw7SxIl5+Vvueo24coL5lMBbDFWKk7OFF2G0Yg9/OBXb2aw==}
+    hasBin: true
     dependencies:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_react-refresh@0.14.0
       '@svgr/core': 6.5.1
@@ -39471,6 +39475,7 @@ packages:
   /umi/4.0.57_a7tx3e365mar2vcfv7hnekfysy:
     resolution: {integrity: sha512-qrbB5hMTXHvJtxog5Wmux1TjHUHLm6ANa7Qj7zwAJxppJAA5r6WoZ/yrVaFKr2R+/cyCoBa7UN5qL+rpC3wLrA==}
     engines: {node: '>=14'}
+    hasBin: true
     dependencies:
       '@babel/runtime': 7.21.0
       '@umijs/bundler-utils': 4.0.57

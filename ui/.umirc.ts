@@ -4,10 +4,12 @@ export default {
     '@umijs/plugins/dist/styled-components',
     '@umijs/plugins/dist/react-query',
   ],
-
+  base: '/__umi_ui/',
+  publicPath: '/__umi_ui/',
   styledComponents: {},
   reactQuery: {},
   valtio: {},
+
   icons: {
     autoInstall: {},
     include: [

@@ -12,7 +12,7 @@
     "url": "git+https://github.com/umijs/umi.git"
   },
   "license": "MIT",
-  "main": "dist/plugin.js",
+  "main": "dist/umi.js",
   "scripts": {
     "build": "umi build",
     "dev": "umi dev --ui",
@@ -26,10 +26,7 @@
   "devDependencies": {
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@umijs/bundler-utils": "workspace:*",
-    "@umijs/plugins": "workspace:*",
-    "typescript": "^4",
-    "umi": "workspace:*"
+    "typescript": "^4"
   },
   "packageManager": "pnpm@7.3.0",
   "publishConfig": {
