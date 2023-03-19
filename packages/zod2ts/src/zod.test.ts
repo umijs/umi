@@ -246,3 +246,16 @@ test('zod.function() 2', () => {
   });
   expect(str).toMatchSnapshot();
 });
+
+test('zod union and function()', () => {
+  const schema = z.union([
+    z.record(z.string(), z.any()),
+    z.string(),
+    z.function(),
+  ]);
+
+  const str = zodToTs({
+    zod: schema,
+  });
+  expect(str).toMatchSnapshot();
+});
