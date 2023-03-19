@@ -24,6 +24,6 @@
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^2",
     "prettier-plugin-packagejson": "^2",
-    "typescript": "^4.1.2"
+    "typescript": "^5.0.0"
   }
 }
