@@ -26,7 +26,8 @@
   "devDependencies": {
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "typescript": "^4"
+    "typescript": "^4",
+    "umi": "workspace:*"
   },
   "packageManager": "pnpm@7.3.0",
   "publishConfig": {
