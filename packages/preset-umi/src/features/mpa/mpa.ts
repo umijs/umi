@@ -5,7 +5,6 @@ import { dirname, extname, join, resolve } from 'path';
 import { IApi } from '../../types';
 
 // TODO:
-// - 支持通过 env.MPA_FILTER 过滤要启动的项目（提速）
 // - precompile html-webpack-plugin
 export default (api: IApi) => {
   api.describe({
@@ -34,6 +33,7 @@ export default (api: IApi) => {
       entry: await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
+        api.userConfig.mountElementId,
       ),
     };
     return memo;
@@ -45,6 +45,7 @@ export default (api: IApi) => {
       api.appData.mpa.entry = await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
+        api.userConfig.mountElementId,
       );
     }
 
@@ -126,19 +127,40 @@ interface IMpaOpts {
   entry: Record<string, Record<string, any>>;
 }
 
-async function collectEntryWithTimeCount(root: string, opts: IMpaOpts) {
+async function collectEntryWithTimeCount(
+  root: string,
+  opts: IMpaOpts,
+  mountElementId: string,
+) {
   const d = new Date();
-  const entries = await collectEntry(root, opts);
+  const entries = await collectEntry(root, opts, mountElementId);
   logger.info(
     `[MPA] Collect Entries in ${new Date().getTime() - d.getTime()}ms`,
   );
   return entries;
 }
 
-async function collectEntry(root: string, opts: IMpaOpts) {
+function filterEntry(dir: string) {
+  if (!process.env.MPA_FILTER) {
+    return true;
+  }
+  const entries = process.env.MPA_FILTER.split(',');
+  return entries.includes(dir);
+}
+
+async function collectEntry(
+  root: string,
+  opts: IMpaOpts,
+  mountElementId?: string,
+) {
   return await readdirSync(root).reduce<Promise<Entry[]>>(
     async (memoP, dir) => {
       const memo = await memoP;
+
+      if (!filterEntry(dir)) {
+        return memo;
+      }
+
       const absDir = join(root, dir);
       if (existsSync(absDir) && statSync(absDir).isDirectory()) {
         const indexFile = getIndexFile(absDir);
@@ -152,7 +174,7 @@ async function collectEntry(root: string, opts: IMpaOpts) {
             name,
             file: indexFile,
             tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
-            mountElementId: 'root',
+            mountElementId: mountElementId || 'root',
             ...globalConfig,
             ...config,
             title: globalConfig?.title || config.title || dir,
