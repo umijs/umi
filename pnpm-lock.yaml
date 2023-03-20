@@ -1335,6 +1335,7 @@ importers:
 
   packages/bundler-webpack:
     specifiers:
+      '@modern-js/inspector-webpack-plugin': ^1.0.6
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10
       '@svgr/core': 6.5.1
       '@svgr/plugin-jsx': ^6.5.1
@@ -1413,6 +1414,7 @@ importers:
       react-error-overlay: 6.0.9
       react-refresh: 0.14.0
     devDependencies:
+      '@modern-js/inspector-webpack-plugin': 1.0.6
       '@swc/core': 1.3.24
       '@types/cors': 2.8.13
       '@types/webpack-bundle-analyzer': 4.6.0_@swc+core@1.3.24
@@ -10109,6 +10111,10 @@ packages:
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
     dev: true
 
+  /@modern-js/inspector-webpack-plugin/1.0.6:
+    resolution: {integrity: sha512-QAiW00QKoSfj0Dn/J8rnXh3vq1cA1tHsTbhEOkzgtGdKlV70SZ+54aPDFjygAOrY/GurmuLLoUgPpcPKLbHAmQ==}
+    dev: true
+
   /@monaco-editor/loader/1.3.2:
     resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
     peerDependencies:
@@ -13317,6 +13323,7 @@ packages:
     transitivePeerDependencies:
       - styled-components
       - supports-color
+    dev: false
 
   /@umijs/babel-preset-umi/4.0.55:
     resolution: {integrity: sha512-WnRyHdYkZrw4Ay7eIO02ysuM2cqRG2VzKYHWiTK6WsM2JQ1D2JkcgkiCraHJb1erWSnPFS4lkk7QfP08KxKQmQ==}
@@ -13325,6 +13332,20 @@ packages:
       '@bloomberg/record-tuple-polyfill': 0.0.4
       '@umijs/bundler-utils': 4.0.55
       '@umijs/utils': 4.0.55
+      babel-plugin-styled-components: 2.0.7
+      core-js: 3.28.0
+    transitivePeerDependencies:
+      - styled-components
+      - supports-color
+    dev: true
+
+  /@umijs/babel-preset-umi/4.0.56:
+    resolution: {integrity: sha512-6Gx1F0yYss52zDK1Q7T+OZNFR+n9sB5EJ4PxJSh58vFWGJ66cy/TiPekUe2a8o2up0p2+3VTT/mxr4J+rPJnmA==}
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@bloomberg/record-tuple-polyfill': 0.0.4
+      '@umijs/bundler-utils': 4.0.56
+      '@umijs/utils': 4.0.56
       babel-plugin-styled-components: 2.0.7
       core-js: 3.28.0
     transitivePeerDependencies:
@@ -13393,11 +13414,24 @@ packages:
       spdy: 4.0.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@umijs/bundler-utils/4.0.55:
     resolution: {integrity: sha512-Qpn0ShOF7TxdR66Fx62LBYGaaNeDdkXLK/aDRstocEgVtrmMAPEsWGPcujz2DnXrUEZqIGJWDuzuHkEgbyo9XA==}
     dependencies:
       '@umijs/utils': 4.0.55
+      esbuild: 0.16.17
+      regenerate: 1.4.2
+      regenerate-unicode-properties: 10.1.0
+      spdy: 4.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@umijs/bundler-utils/4.0.56:
+    resolution: {integrity: sha512-PpMTUfNZFqIBvHwGDVqWj0OKHvK9+wq5ke0t/W6I96mLru1Ic+42HfnKppariXwtxQLjsVuSIFUEyarelO4RuA==}
+    dependencies:
+      '@umijs/utils': 4.0.56
       esbuild: 0.16.17
       regenerate: 1.4.2
       regenerate-unicode-properties: 10.1.0
@@ -14200,9 +14234,17 @@ packages:
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
+    dev: false
 
   /@umijs/utils/4.0.55:
     resolution: {integrity: sha512-vYD7pt2+2hLswjHJo0pCin6dwtMULJiDed5aYgn9Pw1YRO2IUW6CACchzvn2GRe1t6WcAVWtucr6sLn2/AWFmQ==}
+    dependencies:
+      chokidar: 3.5.3
+      pino: 7.11.0
+    dev: true
+
+  /@umijs/utils/4.0.56:
+    resolution: {integrity: sha512-tc5yZ9AI3wBSNgRKEhCu8spM4sWyDl5XW+4cJUZ3V1QVeuG7IytFkSvvdxrF+SIFA4Qm2dbqumsarM3ZSB+Z3A==}
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
@@ -18169,6 +18211,7 @@ packages:
   /core-js/3.27.1:
     resolution: {integrity: sha512-GutwJLBChfGCpwwhbYoqfv03LAfmiz7e7D/BNxzeMxwQf10GRSzqiOjx7AmtEk+heiD/JWmBuyBPgFtx0Sg1ww==}
     requiresBuild: true
+    dev: false
 
   /core-js/3.28.0:
     resolution: {integrity: sha512-GiZn9D4Z/rSYvTeg1ljAIsEqFm0LaN9gVtwDCrKL80zHtS31p9BAjmTxVqTQDMpwlMolJZOFntUG2uwyj7DAqw==}
@@ -21907,11 +21950,11 @@ packages:
     hasBin: true
     dependencies:
       '@microsoft/api-extractor': 7.34.3_@types+node@18.11.18
-      '@umijs/babel-preset-umi': 4.0.53
-      '@umijs/bundler-utils': 4.0.53
+      '@umijs/babel-preset-umi': 4.0.56
+      '@umijs/bundler-utils': 4.0.56
       '@umijs/bundler-webpack': 4.0.55_typescript@4.8.4
       '@umijs/core': 4.0.55
-      '@umijs/utils': 4.0.53
+      '@umijs/utils': 4.0.56
       '@vercel/ncc': 0.33.3
       babel-plugin-dynamic-import-node: 2.3.3
       babel-plugin-module-resolver: 4.1.0
@@ -24868,7 +24911,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
