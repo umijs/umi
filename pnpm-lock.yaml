@@ -43,6 +43,7 @@ importers:
       octokit: ^2.0.11
       only-allow: ^1.1.0
       open: ^8.4.0
+      openai: ^3.2.1
       playwright-chromium: ^1.29.2
       prettier: ^2.8.4
       prettier-plugin-organize-imports: ^3.2.2
@@ -54,8 +55,10 @@ importers:
       regenerator-runtime: ^0.13.11
       resolve: ^1.22.0
       rimraf: ^3.0.2
+      selenium-webdriver: ^4.8.1
       ts-node: ^10.7.0
       tsx: ^3.12.2
+      tunnel: ^0.0.6
       turbo: ^1.7.0
       typescript: ^4.9.4
       uglify-js: ^3.17.4
@@ -99,6 +102,7 @@ importers:
       octokit: 2.0.11
       only-allow: 1.1.1
       open: 8.4.0
+      openai: 3.2.1
       playwright-chromium: 1.29.2
       prettier: 2.8.4
       prettier-plugin-organize-imports: 3.2.2_45dervw7mr3js2ivl662udye7u
@@ -110,8 +114,10 @@ importers:
       regenerator-runtime: 0.13.11
       resolve: 1.22.1
       rimraf: 3.0.2
+      selenium-webdriver: 4.8.1
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       tsx: 3.12.2
+      tunnel: 0.0.6
       turbo: 1.7.0
       typescript: 4.9.4
       uglify-js: 3.17.4
@@ -16510,6 +16516,14 @@ packages:
       - debug
     dev: true
 
+  /axios/0.26.1:
+    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
+    dependencies:
+      follow-redirects: 1.15.1
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /axios/0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
@@ -24020,6 +24034,10 @@ packages:
     requiresBuild: true
     optional: true
 
+  /immediate/3.0.6:
+    resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+    dev: true
+
   /immer/8.0.4:
     resolution: {integrity: sha512-jMfL18P+/6P6epANRvRk6q8t+3gGhqsJ9EuJ25AXE+9bNTYtssvzeYbEd0mXRYWCmmXSIbnlpz6vd6iJlmGGGQ==}
 
@@ -25226,7 +25244,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -26035,6 +26053,15 @@ packages:
       array-includes: 3.1.6
       object.assign: 4.1.4
 
+  /jszip/3.10.1:
+    resolution: {integrity: sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==}
+    dependencies:
+      lie: 3.3.0
+      pako: 1.0.11
+      readable-stream: 2.3.7
+      setimmediate: 1.0.5
+    dev: true
+
   /just-diff-apply/5.5.0:
     resolution: {integrity: sha512-OYTthRfSh55WOItVqwpefPtNt2VdKsq5AnAK6apdtR6yCH8pr0CmSr710J0Mf+WdQy7K/OzMy7K2MgAfdQURDw==}
     dev: true
@@ -26346,6 +26373,12 @@ packages:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+    dev: true
+
+  /lie/3.3.0:
+    resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
+    dependencies:
+      immediate: 3.0.6
     dev: true
 
   /lightningcss-darwin-arm64/1.19.0:
@@ -28917,6 +28950,15 @@ packages:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
+
+  /openai/3.2.1:
+    resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==}
+    dependencies:
+      axios: 0.26.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
 
   /openapi3-ts/2.0.2:
     resolution: {integrity: sha512-TxhYBMoqx9frXyOgnRHufjQfPXomTIHYKhSKJ6jHfj13kS8OEIhvmE8CTuQyKtjjWttAjX5DPxM1vmalEpo8Qw==}
@@ -37070,6 +37112,18 @@ packages:
   /select-hose/2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}
 
+  /selenium-webdriver/4.8.1:
+    resolution: {integrity: sha512-p4MtfhCQdcV6xxkS7eI0tQN6+WNReRULLCAuT4RDGkrjfObBNXMJ3WT8XdK+aXTr5nnBKuh+PxIevM0EjJgkxA==}
+    engines: {node: '>= 14.20.0'}
+    dependencies:
+      jszip: 3.10.1
+      tmp: 0.2.1
+      ws: 8.12.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: true
+
   /selfsigned/2.1.1:
     resolution: {integrity: sha512-GSL3aowiF7wa/WtSFwnUrludWFoNhftq8bUkH9pkzjpN2XSPOAYEgg6e0sS9s0rZwgJzJiQRPU18A6clnoW5wQ==}
     engines: {node: '>=10'}
@@ -39329,6 +39383,11 @@ packages:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
     dependencies:
       safe-buffer: 5.2.1
+    dev: true
+
+  /tunnel/0.0.6:
+    resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
+    engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
     dev: true
 
   /turbo-darwin-64/1.7.0:
