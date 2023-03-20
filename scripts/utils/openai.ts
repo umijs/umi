@@ -18,7 +18,7 @@ export async function getGptResponse(prompt: string) {
   const tunnel = httpsOverHttp({
     proxy: {
       host: PROXY_HOST,
-      port: PROXY_PORT,
+      port: Number(PROXY_PORT),
     },
   });
 
