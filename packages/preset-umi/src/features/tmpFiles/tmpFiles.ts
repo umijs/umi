@@ -376,7 +376,7 @@ export default function EmptyRoute() {
       headerImports.push(`import clientLoaders from './loaders.js';`);
     }
     // routeProps is enabled for conventional routes
-    if (!api.userConfig.routes) {
+    if (!api.userConfig.routes && api.isPluginEnable('routeProps')) {
       // routeProps":"routeProps['foo']" > ...routeProps['foo']
       routesString = routesString.replace(
         /"routeProps":"(routeProps\[.*?)"/g,
