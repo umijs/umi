@@ -42,6 +42,12 @@ export async function addSVGRules(opts: IOpts) {
       .end()
       .use('url-loader')
       .loader(require.resolve('@umijs/bundler-webpack/compiled/url-loader'))
+      .options({
+        limit: userConfig.inlineLimit,
+        fallback: require.resolve(
+          '@umijs/bundler-webpack/compiled/file-loader',
+        ),
+      })
       .end();
   }
   if (svgo !== false) {

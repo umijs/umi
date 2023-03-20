@@ -63,6 +63,7 @@
     "copy-webpack-plugin": "10.2.4",
     "css-minimizer-webpack-plugin": "4.0.0",
     "cssnano": "5.1.7",
+    "file-loader": "6.2.0",
     "less-loader": "11.1.0",
     "mini-css-extract-plugin": "2.7.2",
     "postcss-flexbugs-fixes": "5.0.2",
@@ -115,6 +116,7 @@
       "terser",
       "terser-webpack-plugin",
       "url-loader",
+      "file-loader",
       "webpack-5-chain",
       "webpack-bundle-analyzer",
       "webpack-dev-middleware",
@@ -180,6 +182,7 @@
       "style-loader",
       "svgo-loader",
       "url-loader",
+      "file-loader",
       "webpack-bundle-analyzer",
       "webpack-dev-middleware",
       "webpack-manifest-plugin"
