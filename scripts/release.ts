@@ -1,4 +1,4 @@
-import { getReleaseNotes } from '@/scripts/utils/getReleaseNotes';
+// import { getReleaseNotes } from '@/scripts/utils/getReleaseNotes';
 import * as logger from '@umijs/utils/src/logger';
 import { existsSync } from 'fs';
 import getGitRepoInfo from 'git-repo-info';
@@ -145,19 +145,17 @@ import { assert, eachPkg, getPkgs } from './.internal/utils';
     version.includes(item),
   );
   // FIXME: getReleaseNotes don't work with 404 error
-  if (false && canReleaseNotes) {
-    // get release notes
-    logger.event('get release notes');
-    const { releaseNotes } = await getReleaseNotes(version);
-
-    // generate changelog
-    logger.event('generate changelog');
-    generateChangelog(releaseNotes);
-
-    // release by GitHub
-    logger.event('release by github');
-    releaseByGithub(releaseNotes, version);
-  }
+  // if (false && canReleaseNotes) {
+  // // get release notes
+  // logger.event('get release notes');
+  // const { releaseNotes } = await getReleaseNotes(version);
+  // // generate changelog
+  // logger.event('generate changelog');
+  // generateChangelog(releaseNotes);
+  // // release by GitHub
+  // logger.event('release by github');
+  // releaseByGithub(releaseNotes, version);
+  // }
 
   // check 2fa config
   let otpArg: string[] = [];
