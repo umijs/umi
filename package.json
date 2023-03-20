@@ -67,6 +67,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/resolve": "^1.20.2",
     "@types/rimraf": "3.0.2",
+    "@types/tunnel": "^0.0.3",
     "@umijs/bundler-esbuild": "workspace:*",
     "@umijs/bundler-utils": "workspace:*",
     "@umijs/bundler-vite": "workspace:*",

@@ -1,3 +1,5 @@
+// @ts-nocheck
+// FIXME: correct type definition when enable auto changelog
 import { Builder, By, Key } from 'selenium-webdriver';
 import 'zx/globals';
 import { getLatestTag, getReleaseNotes } from './utils/github';
