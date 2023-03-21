@@ -38,6 +38,8 @@ interface ITemplateParams extends ITemplatePluginParams {
   email: string;
   withHusky: boolean;
   extraNpmrc: string;
+  name?: string;
+  productionName?: string;
 }
 
 enum ENpmClient {
@@ -58,6 +60,7 @@ enum ETemplate {
   max = 'max',
   vueApp = 'vue-app',
   plugin = 'plugin',
+  electron = 'electron',
 }
 
 export interface IDefaultData extends ITemplateParams {
@@ -98,6 +101,9 @@ export default async ({
   // plugin params
   let pluginName = `umi-plugin-${name || 'demo'}`;
 
+  // electron production name
+  let productionName = `umi-electron-${name || 'demo'}`;
+
   const { isCancel, text, select, intro, outro } = clackPrompts;
   const exitPrompt = () => {
     outro(chalk.red('Exit create-umi'));
@@ -121,6 +127,11 @@ export default async ({
           label: 'Umi Plugin',
           value: ETemplate.plugin,
           hint: 'for plugin development',
+        },
+        {
+          label: 'Electron App',
+          value: ETemplate.electron,
+          hint: 'umi based electron app',
         },
       ],
       initialValue: ETemplate.app,
@@ -176,6 +187,22 @@ export default async ({
         exitPrompt();
       }
     }
+
+    const isElectron = appTemplate === ETemplate.electron;
+    if (isElectron) {
+      productionName = (await text({
+        message: `What's the Application name?`,
+        placeholder: productionName,
+        validate: (value) => {
+          if (!value?.length) {
+            return 'Please input Application name';
+          }
+        },
+      })) as string;
+      if (isCancel(productionName)) {
+        exitPrompt();
+      }
+    }
     outro(chalk.green(`You're all set!`));
   }
 
@@ -212,6 +239,8 @@ export default async ({
           // https://pnpm.io/npmrc#strict-peer-dependencies
           extraNpmrc: isPnpm ? `strict-peer-dependencies=false` : '',
           pluginName,
+          name,
+          productionName,
         } satisfies ITemplateParams),
   });
   await generator.run();
