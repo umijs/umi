@@ -1,12 +1,12 @@
-import { pkgUp, winPath, logger, chalk } from '@umijs/utils';
+import { chalk, logger, pkgUp, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { readFileSync } from 'fs';
-import { isAbsolute, join, dirname } from 'path';
+import { dirname, isAbsolute, join } from 'path';
 import { MF_VA_PREFIX } from '../constants';
 import { MFSU } from '../mfsu/mfsu';
+import { resolveFromContexts } from '../utils/resolveUtils';
 import { trimFileContent } from '../utils/trimFileContent';
 import { getExposeFromContent } from './getExposeFromContent';
-import { resolveFromContexts } from '../utils/resolveUtils';
 
 export class Dep {
   public file: string;
@@ -75,10 +75,10 @@ export * from '${this.file}';
 
   async getRealFile() {
     try {
-      const contexts = [this.cwd];
-      if (this.importer) {
-        contexts.push(dirname(this.importer));
-      }
+      // resolve from importer's dir priority to cwd
+      const contexts = this.importer
+        ? [dirname(this.importer), this.cwd]
+        : [this.cwd];
 
       // don't need to handle alias here
       // it's already handled by babel plugin
