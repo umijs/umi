@@ -376,6 +376,7 @@ export default function EmptyRoute() {
       headerImports.push(`import clientLoaders from './loaders.js';`);
     }
     // routeProps is enabled for conventional routes
+    // e.g. dumi 需要用到约定式路由但又不需要 routeProps
     if (!api.userConfig.routes && api.isPluginEnable('routeProps')) {
       // routeProps":"routeProps['foo']" > ...routeProps['foo']
       routesString = routesString.replace(
