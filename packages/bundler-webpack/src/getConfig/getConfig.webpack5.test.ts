@@ -19,9 +19,9 @@ test('nodePolyfill', async () => {
   const providePlugins = config.plugins?.filter(
     (plugin) => plugin instanceof defaultWebpack.ProvidePlugin,
   );
-  expect(providePlugins.length).toBeGreaterThan(0);
+  expect(providePlugins?.length).toBeGreaterThan(0);
 
-  const nodePolyfillPlugin: any = providePlugins.find(
+  const nodePolyfillPlugin: any = providePlugins?.find(
     (plugin) => (plugin as any)?.definitions?.Buffer,
   );
 
@@ -45,7 +45,7 @@ test('disable nodePolyfill', async () => {
   const providePlugins = config.plugins?.filter(
     (plugin) => plugin instanceof defaultWebpack.ProvidePlugin,
   );
-  const nodePolyfillPlugin: any = providePlugins.find(
+  const nodePolyfillPlugin: any = providePlugins?.find(
     (plugin) => (plugin as any)?.definitions?.Buffer,
   );
 
