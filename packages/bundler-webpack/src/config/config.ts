@@ -118,9 +118,15 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   const disableCompress = process.env.COMPRESS === 'none';
   config.output
     .path(absOutputPath)
-    .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
+    .filename(
+      useHash
+        ? `${applyOpts.staticPathPrefix}[name].[contenthash:8].js`
+        : `${applyOpts.staticPathPrefix}[name].js`,
+    )
     .chunkFilename(
-      useHash ? `[name].[contenthash:8].async.js` : `[name].async.js`,
+      useHash
+        ? `${applyOpts.staticPathPrefix}[name].[contenthash:8].async.js`
+        : `${applyOpts.staticPathPrefix}[name].async.js`,
     )
     .publicPath(userConfig.publicPath || 'auto')
     .pathinfo(isDev || disableCompress)
