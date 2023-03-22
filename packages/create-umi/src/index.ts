@@ -12,7 +12,9 @@ import {
   yParser,
 } from '@umijs/utils';
 import { existsSync } from 'fs';
+import gitly from 'gitly';
 import { dirname, join } from 'path';
+import rimraf from 'rimraf';
 
 interface IArgs extends yParser.Arguments {
   default?: boolean;
@@ -59,6 +61,23 @@ enum ETemplate {
   vueApp = 'vue-app',
   plugin = 'plugin',
 }
+
+const getTemplatePath = async (appTemplate: ETemplate) => {
+  const gitHref = `https://github.com/umijs/${appTemplate}-template.git`;
+  const temporaryTemplatePath = join(process.cwd(), '.umi-create-tmp');
+  try {
+    const [, b] = await gitly(gitHref, temporaryTemplatePath, {});
+    if (!b) {
+      throw new Error(
+        `no such git repository '${gitHref}', trying internal template...`,
+      );
+    }
+    return b;
+  } catch (error) {
+    console.log(error);
+    return join(__dirname, '..', 'templates', appTemplate);
+  }
+};
 
 export interface IDefaultData extends ITemplateParams {
   appTemplate?: ETemplate;
@@ -194,8 +213,11 @@ export default async ({
   const withHusky = shouldInitGit && !inMonorepo;
 
   const isPnpm = npmClient === ENpmClient.pnpm;
+
+  const templatePath = await getTemplatePath(appTemplate);
+
   const generator = new BaseGenerator({
-    path: join(__dirname, '..', 'templates', appTemplate),
+    path: templatePath,
     target,
     slient: true,
     data: useDefaultData
@@ -215,6 +237,11 @@ export default async ({
         } satisfies ITemplateParams),
   });
   await generator.run();
+
+  // 删除掉临时目录
+  if (templatePath.includes('.umi-create-tmp')) {
+    await rimraf.sync(templatePath);
+  }
 
   const context: IContext = {
     inMonorepo,

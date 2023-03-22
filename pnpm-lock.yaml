@@ -1505,8 +1505,10 @@ importers:
   packages/create-umi:
     specifiers:
       '@umijs/utils': workspace:*
+      gitly: ^2.4.1
     dependencies:
       '@umijs/utils': link:../utils
+      gitly: 2.4.1
 
   packages/lint:
     specifiers:
@@ -13814,6 +13816,7 @@ packages:
 
   /@umijs/bundler-webpack/4.0.57_typescript@4.8.4:
     resolution: {integrity: sha512-e2g/rD0JBXYU+pguCX+fCSj6KYGVpUDxSqqQIcflw7SxIl5+Vvueo24coL5lMBbDFWKk7OFF2G0Yg9/OBXb2aw==}
+    hasBin: true
     dependencies:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_react-refresh@0.14.0
       '@svgr/core': 6.5.1
@@ -16551,15 +16554,14 @@ packages:
       - debug
     dev: true
 
-  /axios/1.2.2:
-    resolution: {integrity: sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q==}
+  /axios/1.3.4:
+    resolution: {integrity: sha512-toYm+Bsyl6VC5wSkfkbbNB6ROv7KY93PEBBL6xyDczaIHasAiv4wPqQ/c4RjoQzipxRD2W5g21cOqQulZ7rHwQ==}
     dependencies:
       follow-redirects: 1.15.1
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-    dev: true
 
   /babel-jest/26.6.3_@babel+core@7.21.0:
     resolution: {integrity: sha512-pl4Q+GAVOHwvjrck6jKjvmGhnO3jHX/xuB9d27f+EJZ/6k+6nMuPjorrYp7s++bKKdANwzElBWnLWaObvTnaZA==}
@@ -17451,7 +17453,7 @@ packages:
       promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 9.0.1
-      tar: 6.1.11
+      tar: 6.1.13
       unique-filename: 2.0.1
     transitivePeerDependencies:
       - bluebird
@@ -17846,7 +17848,6 @@ packages:
   /chownr/2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
-    dev: true
 
   /chrome-trace-event/1.0.3:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
@@ -22911,7 +22912,6 @@ packages:
     engines: {node: '>= 8'}
     dependencies:
       minipass: 3.3.4
-    dev: true
 
   /fs-monkey/1.0.3:
     resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
@@ -23167,6 +23167,15 @@ packages:
 
   /github-slugger/1.4.0:
     resolution: {integrity: sha512-w0dzqw/nt51xMVmlaV1+JRzN+oCa1KfcgGEWhxUG16wbdA+Xnt/yoFO8Z8x/V82ZcZ0wy6ln9QDup5avbhiDhQ==}
+
+  /gitly/2.4.1:
+    resolution: {integrity: sha512-RDGzR94EjKfj+blA2PBf28yZ8erY9GBUv6YAgynID/BRVFcQHPCNMcfWsE22Kbz6ajkgwifk05AnX0wlmD03jA==}
+    dependencies:
+      axios: 1.3.4
+      tar: 6.1.13
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /gl-matrix/3.4.3:
     resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
@@ -25267,7 +25276,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -27913,7 +27922,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       yallist: 4.0.0
-    dev: true
+
+  /minipass/4.2.5:
+    resolution: {integrity: sha512-+yQl7SX3bIT83Lhb4BVorMAHVuqsskxRdlmO9kTpyukp8vsm2Sn/fUOV9xlnG8/a5JsypJzap21lz/y3FBMJ8Q==}
+    engines: {node: '>=8'}
 
   /minizlib/2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
@@ -27921,7 +27933,6 @@ packages:
     dependencies:
       minipass: 3.3.4
       yallist: 4.0.0
-    dev: true
 
   /mixin-deep/1.3.2:
     resolution: {integrity: sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==}
@@ -27949,7 +27960,6 @@ packages:
   /mkdirp/1.0.4:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
-    dev: true
 
   /ml-array-max/1.2.4:
     resolution: {integrity: sha512-BlEeg80jI0tW6WaPyGxf5Sa4sqvcyY6lbSn5Vcv44lp1I2GR6AWojfUvLnGTNsIXrZ8uqWmo8VcG1WpkI2ONMQ==}
@@ -28337,7 +28347,7 @@ packages:
       npmlog: 6.0.2
       rimraf: 3.0.2
       semver: 7.3.8
-      tar: 6.1.11
+      tar: 6.1.13
       which: 2.0.2
     transitivePeerDependencies:
       - bluebird
@@ -28662,7 +28672,7 @@ packages:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.35
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.2.2
+      axios: 1.3.4
       chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
@@ -29284,7 +29294,7 @@ packages:
       read-package-json-fast: 2.0.3
       rimraf: 3.0.2
       ssri: 9.0.1
-      tar: 6.1.11
+      tar: 6.1.13
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -29314,7 +29324,7 @@ packages:
       read-package-json-fast: 2.0.3
       rimraf: 3.0.2
       ssri: 9.0.1
-      tar: 6.1.11
+      tar: 6.1.13
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -31575,7 +31585,6 @@ packages:
 
   /proxy-from-env/1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
-    dev: true
 
   /prr/1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
@@ -38830,6 +38839,17 @@ packages:
       mkdirp: 1.0.4
       yallist: 4.0.0
     dev: true
+
+  /tar/6.1.13:
+    resolution: {integrity: sha512-jdIBIN6LTIe2jqzay/2vtYLlBHa3JF42ot3h1dW8Q0PaAG4v8rm0cvpVePtau5C6OKXGGcgO9q2AMNSWxiLqKw==}
+    engines: {node: '>=10'}
+    dependencies:
+      chownr: 2.0.0
+      fs-minipass: 2.1.0
+      minipass: 4.2.5
+      minizlib: 2.1.2
+      mkdirp: 1.0.4
+      yallist: 4.0.0
 
   /temp-dir/1.0.0:
     resolution: {integrity: sha512-xZFXEGbG7SNC3itwBzI3RYjq/cEhBkx2hJuKGIUOcEULmkQExXiHat2z/qkISYsuR+IKumhEfKKbV5qXmhICFQ==}
