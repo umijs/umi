@@ -94,7 +94,7 @@ export default (api: IApi) => {
         });
       }
       const fileImports = await parseProjectImportSpecifiers(buildResult);
-      updateAppdata(buildResult, fileImports);
+      updateAppdata({ buildResult, fileImports });
       await api.applyPlugins({
         key: 'onPrepareBuildSuccess',
         args: {
