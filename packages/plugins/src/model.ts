@@ -13,6 +13,7 @@ export default (api: IApi) => {
         return Joi.alternatives().try(
           Joi.object({
             extraModels: Joi.array().items(Joi.string()),
+            customUseModelCallNames: Joi.array().items(Joi.string()),
           }),
           Joi.boolean().invalid(true),
         );
@@ -87,5 +88,6 @@ async function getAllModels(api: IApi) {
   }).getAllModels({
     sort: {},
     extraModels: [...extraModels, ...(api.config.model.extraModels || [])],
+    customUseModelCallNames: api.config.model.customUseModelCallNames || [],
   });
 }

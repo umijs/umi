@@ -46,11 +46,15 @@ export class Model {
   id: string;
   exportName: string;
   deps: string[];
+  configs: {
+    customUseModelCallNames: string[];
+  };
   constructor(
     file: string,
     absSrcPath: string,
     sort: {} | undefined,
     id: number,
+    customUseModelCallNames: string[],
   ) {
     let namespace;
     let exportName;
@@ -65,6 +69,9 @@ export class Model {
     this.namespace = namespace || getNamespace(_file, absSrcPath);
     this.exportName = exportName || 'default';
     this.deps = sort ? this.findDeps(sort) : [];
+    this.configs = {
+      customUseModelCallNames,
+    };
   }
 
   findDeps(sort: object) {
@@ -91,7 +98,9 @@ export class Model {
     traverse(ast, {
       CallExpression: (path: Babel.NodePath<t.CallExpression>) => {
         if (
-          t.isIdentifier(path.node.callee, { name: 'useModel' }) &&
+          ['useModel', ...this.configs.customUseModelCallNames].some((key) =>
+            t.isIdentifier(path.node.callee, { name: key }),
+          ) &&
           t.isStringLiteral(path.node.arguments[0])
         ) {
           deps.add(path.node.arguments[0].value);
@@ -111,7 +120,11 @@ export class ModelUtils {
     this.opts = opts;
   }
 
-  getAllModels(opts: { sort?: object; extraModels: string[] }) {
+  getAllModels(opts: {
+    sort?: object;
+    extraModels: string[];
+    customUseModelCallNames: string[];
+  }) {
     // reset count
     this.count = 1;
     const models = [
@@ -134,6 +147,7 @@ export class ModelUtils {
         this.api.paths.absSrcPath,
         opts.sort,
         this.count++,
+        opts.customUseModelCallNames,
       );
     });
     // check duplicate
