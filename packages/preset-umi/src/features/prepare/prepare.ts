@@ -33,13 +33,13 @@ export default (api: IApi) => {
         files.map((f) => path.join(api.paths.cwd, f)),
       );
       api.telemetry.record({
-        name: 'prepare:parse',
+        name: 'parse',
         payload: { duration: Date.now() - start },
       });
       return fileImports;
     } catch (e) {
       api.telemetry.record({
-        name: 'prepare:parse:error',
+        name: 'parse:error',
         payload: {},
       });
       return undefined;
