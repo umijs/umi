@@ -1706,6 +1706,7 @@ importers:
       '@umijs/bundler-webpack': workspace:*
       '@umijs/core': workspace:*
       '@umijs/did-you-know': workspace:*
+      '@umijs/es-module-parser': 0.0.3
       '@umijs/history': 5.3.1
       '@umijs/mfsu': workspace:*
       '@umijs/plugin-run': workspace:*
@@ -1744,6 +1745,7 @@ importers:
       '@umijs/bundler-webpack': link:../bundler-webpack
       '@umijs/core': link:../core
       '@umijs/did-you-know': link:../../did-you-know
+      '@umijs/es-module-parser': 0.0.3
       '@umijs/history': 5.3.1
       '@umijs/mfsu': link:../mfsu
       '@umijs/plugin-run': link:../plugin-run
@@ -13917,6 +13919,52 @@ packages:
     resolution: {integrity: sha512-Q0KSpQYKTF2XWOlAxJO/SRbRhIGAp1GK1spWFbzwv3h0WvfX7pPeA05Y3p0hut7Vcjhdocnx5NduuApF4R1lGQ==}
     dev: true
 
+  /@umijs/es-module-parser-darwin-arm64/0.0.3:
+    resolution: {integrity: sha512-5n3ofi6S/p7dpTfYKywEwsfNJnrL5da87iatIpd3H00oG69/YED3IxgnsHdA9j94BdbIXdEA4Khd90ZHYmGTow==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/es-module-parser-darwin-x64/0.0.3:
+    resolution: {integrity: sha512-5Lt1NR7YfQy7VuVWTPtmb8CdPXOu4n4XhKhBOhJ+ueKwSDM+rI1xuYIyw4oqLdY7TL9CiNyvDwNeq1MRcwhlIA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/es-module-parser-linux-x64-gnu/0.0.3:
+    resolution: {integrity: sha512-mvpH3RF8uVNfhZw0PS0INyag4+roZacMeaiZpvKdTtulzohrmCFOGiklnWe7uePX21I1KEv50YLCaL+jmemPQw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/es-module-parser-win32-x64-msvc/0.0.3:
+    resolution: {integrity: sha512-oHqARVWbELFKV71i4u/HoQkBBC6PalEgm/JNPG71VtSBt3OH970pABV4YBKuRGVMe8Br+CCkT8WrsfHsW5YwmQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@umijs/es-module-parser/0.0.3:
+    resolution: {integrity: sha512-uotZgHXNdRax1XHI/4iBKWKShlhDCwxojPwLdYQvCmP3Dq1utHI/iIwZR6E+ITYUssUTBvtPlo9RBUtdoVXmug==}
+    engines: {node: '>= 10'}
+    optionalDependencies:
+      '@umijs/es-module-parser-darwin-arm64': 0.0.3
+      '@umijs/es-module-parser-darwin-x64': 0.0.3
+      '@umijs/es-module-parser-linux-x64-gnu': 0.0.3
+      '@umijs/es-module-parser-win32-x64-msvc': 0.0.3
+    dev: false
+
   /@umijs/fabric/2.14.0:
     resolution: {integrity: sha512-tiqKWYFwK9dgrdC8U1IjdIqeIv6W3NhROJHb07u1D72KWpGoN2U7/gVRtyMq7psBSK4EwHyXL6sFtIGUibs2ng==}
     dependencies:
@@ -20068,6 +20116,7 @@ packages:
 
   /encoding/0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    requiresBuild: true
     dependencies:
       iconv-lite: 0.6.3
 

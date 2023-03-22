@@ -34,6 +34,7 @@
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
     "@umijs/did-you-know": "workspace:*",
+    "@umijs/es-module-parser": "0.0.3",
     "@umijs/history": "5.3.1",
     "@umijs/mfsu": "workspace:*",
     "@umijs/plugin-run": "workspace:*",
