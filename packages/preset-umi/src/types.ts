@@ -17,7 +17,7 @@ import type {
   PluginAPI,
 } from '@umijs/core';
 import { Env } from '@umijs/core';
-import type { parseCode } from '@umijs/es-module-parser';
+import type { Declaration } from '@umijs/es-module-parser';
 import type { getMarkup } from '@umijs/server';
 import type { CheerioAPI } from '@umijs/utils/compiled/cheerio';
 import type { InlineConfig as ViteInlineConfig } from 'vite';
@@ -203,7 +203,7 @@ export type IApi = PluginAPI &
       origin: Record<string, any>;
     }>;
     onPrepareBuildSuccess: IEvent<{
-      fileImports?: Record<string, ReturnType<typeof parseCode>>;
+      fileImports?: Record<string, Declaration[]>;
       isWatch: boolean;
       result: ESBuildBuildResult;
     }>;
