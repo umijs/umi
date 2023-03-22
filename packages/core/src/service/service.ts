@@ -53,6 +53,7 @@ export class Service {
     framework?: IFrameworkType;
     prepare?: {
       buildResult: BuildResult;
+      fileImports?: Record<string, any[]>;
     };
     [key: string]: any;
   } = {};

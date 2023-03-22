@@ -16,8 +16,11 @@ export default (api: IApi) => {
       // @ts-ignore
       delete file?.contents;
     });
+    const nextFileImports =
+      prepareData.fileImports ?? api.appData.prepare?.fileImports;
     api.appData.prepare = {
-      ...prepareData,
+      buildResult,
+      fileImports: nextFileImports,
     };
   }
 
