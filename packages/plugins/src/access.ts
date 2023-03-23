@@ -7,7 +7,7 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.union([zod.record(zod.any()), zod.literal(false)]);
+        return zod.record(zod.any());
       },
     },
     enableBy: api.EnableBy.config,

@@ -4,16 +4,13 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              slave: zod.record(zod.any()),
-              master: zod.record(zod.any()),
-              externalQiankun: zod.boolean(),
-            })
-            .deepPartial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            slave: zod.record(zod.any()),
+            master: zod.record(zod.any()),
+            externalQiankun: zod.boolean(),
+          })
+          .deepPartial();
       },
     },
   });

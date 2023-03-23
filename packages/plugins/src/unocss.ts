@@ -9,12 +9,9 @@ export default (api: IApi) => {
     key: 'unocss',
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod.object({
-            watch: zod.array(zod.any()),
-          }),
-          zod.literal(false),
-        ]);
+        return zod.object({
+          watch: zod.array(zod.any()),
+        });
       },
     },
     enableBy: api.EnableBy.config,

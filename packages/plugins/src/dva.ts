@@ -12,16 +12,13 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              extraModels: zod.array(zod.string()),
-              immer: zod.record(zod.any()),
-              skipModelValidate: zod.boolean(),
-            })
-            .deepPartial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            extraModels: zod.array(zod.string()),
+            immer: zod.record(zod.any()),
+            skipModelValidate: zod.boolean(),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,
