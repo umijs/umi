@@ -46,18 +46,20 @@ export default (api: IApi) => {
   api.describe({
     key: 'locale',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            default: Joi.string(),
-            useLocalStorage: Joi.boolean(),
-            baseNavigator: Joi.boolean(),
-            title: Joi.boolean(),
-            antd: Joi.boolean(),
-            baseSeparator: Joi.string(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.union([
+          zod
+            .object({
+              default: zod.string(),
+              useLocalStorage: zod.boolean(),
+              baseNavigator: zod.boolean(),
+              title: zod.boolean(),
+              antd: zod.boolean(),
+              baseSeparator: zod.string(),
+            })
+            .partial(),
+          zod.boolean(),
+        ]);
       },
     },
     enableBy: api.EnableBy.config,

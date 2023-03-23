@@ -6,17 +6,17 @@ export default (api: IApi) => {
   api.describe({
     key: 'request',
     config: {
-      schema: (Joi) => {
+      schema: ({ zod }) => {
         // 生成类型 dataField: '' | string
-        return Joi.alternatives().try(
-          Joi.object({
-            dataField: Joi.alternatives().try(
-              Joi.string().allow(''),
-              Joi.string(),
-            ),
-          }),
-          Joi.boolean().invalid(true),
-        );
+        return zod.union([
+          zod
+            .object({
+              // TODO: '' | string 没有找到对应的写法
+              dataField: zod.string(),
+            })
+            .partial(),
+          zod.boolean(),
+        ]);
       },
     },
     enableBy: api.EnableBy.config,

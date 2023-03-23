@@ -11,8 +11,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'valtio',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema({ zod }) {
+        return zod.object({});
       },
     },
     enableBy: api.EnableBy.config,

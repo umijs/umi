@@ -8,11 +8,13 @@ export default (api: IApi) => {
   api.describe({
     key: 'reactQuery',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          devtool: Joi.alternatives(Joi.object(), Joi.boolean()),
-          queryClient: Joi.alternatives(Joi.object(), Joi.boolean()),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            devtool: zod.union([zod.record(zod.any()), zod.boolean()]),
+            queryClient: zod.union([zod.record(zod.any()), zod.boolean()]),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,

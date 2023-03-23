@@ -24,23 +24,29 @@ export default (api: IApi) => {
 
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            configProvider: Joi.object(),
-            // themes
-            dark: Joi.boolean(),
-            compact: Joi.boolean(),
-            // babel-plugin-import
-            import: Joi.boolean(),
-            // less or css, default less
-            style: Joi.string().allow('less', 'css'),
-            theme: Joi.object(),
-            // Only antd@5.1.0 is supported
-            appConfig: Joi.object(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.union([
+          zod
+            .object({
+              configProvider: zod.record(zod.any()),
+              // themes
+              dark: zod.boolean(),
+              compact: zod.boolean(),
+              // babel-plugin-import
+              import: zod.boolean(),
+              // less or css, default less
+              style: zod
+                .enum(['less', 'css'])
+                .describe('less or css, default less'),
+              theme: zod.record(zod.any()),
+              // Only antd@5.1.0 is supported
+              appConfig: zod
+                .record(zod.any())
+                .describe('Only antd@5.1.0 is supported'),
+            })
+            .deepPartial(),
+          zod.boolean(),
+        ]);
       },
     },
     enableBy({ userConfig }) {

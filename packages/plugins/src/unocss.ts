@@ -8,13 +8,13 @@ export default (api: IApi) => {
   api.describe({
     key: 'unocss',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            watch: Joi.array(),
+      schema({ zod }) {
+        return zod.union([
+          zod.object({
+            watch: zod.array(zod.any()),
           }),
-          Joi.boolean().invalid(true),
-        );
+          zod.boolean(),
+        ]);
       },
     },
     enableBy: api.EnableBy.config,

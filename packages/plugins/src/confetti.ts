@@ -31,8 +31,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'confetti',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema({ zod }) {
+        return zod.boolean({});
       },
     },
     enableBy: api.EnableBy.config,

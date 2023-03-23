@@ -7,9 +7,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'styledComponents',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          babelPlugin: Joi.object(),
+      schema({ zod }) {
+        return zod.object({
+          babelPlugin: zod.record(zod.any()).optional(),
         });
       },
     },
