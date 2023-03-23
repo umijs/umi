@@ -6,11 +6,8 @@ import { withTmpPath } from './utils/withTmpPath';
 export default (api: IApi) => {
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object(),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.union([zod.record(zod.any()), zod.literal(false)]);
       },
     },
     enableBy: api.EnableBy.config,
