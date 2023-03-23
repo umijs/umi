@@ -6,9 +6,7 @@ export enum ERegistry {
   taobao = 'https://registry.npmmirror.com/',
 }
 
-export type UmiTemplate =
-  | `@umijs/${string}-template`
-  | `umi-${string}-template`;
+export type UmiTemplate = `@umijs/${string}-template`;
 
 interface IUnpackTemplateOpts {
   template: UmiTemplate;
@@ -37,26 +35,21 @@ export const unpackTemplate = async (opts: IUnpackTemplateOpts) => {
 
   const nameList: string[] = [];
 
-  const isStartWithUmi =
-    template.startsWith('umi-') || template.startsWith('@umijs/');
+  const isStartWithUmi = template.startsWith('@umijs/');
   if (template.endsWith('-template')) {
     // @umijs/electron-template
-    // umi-electron-template
     if (isStartWithUmi) {
       nameList.push(template);
     } else {
       // electron-template
       nameList.push(`@umijs/${template}`);
-      nameList.push(`umi-${template}`);
     }
   } else if (isStartWithUmi) {
     // @umijs/electron
-    // umi-electron
     nameList.push(`${template}-template`);
   } else {
     // electron
     nameList.push(`@umijs/${template}-template`);
-    nameList.push(`umi-${template}-template`);
   }
 
   for await (const name of nameList) {
