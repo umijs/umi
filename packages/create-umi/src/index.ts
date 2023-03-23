@@ -200,7 +200,14 @@ export default async ({
 
   switch (true) {
     case useExternalTemplate:
+      await selectNpmClient();
+      if (isCancel(npmClient)) {
+        exitPrompt();
+      }
       await selectRegistry();
+      if (isCancel(registry)) {
+        exitPrompt();
+      }
       await unpackTemplate({
         template: args.template!,
         dest: target,
