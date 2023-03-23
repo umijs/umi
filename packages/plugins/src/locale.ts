@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
 import {
   exactLocalePaths,
@@ -245,6 +245,21 @@ export default (api: IApi) => {
 export { addLocale, setLocale, getLocale, getIntl, useIntl, injectIntl, formatMessage, FormattedMessage, getAllLocales, FormattedDate, FormattedDateParts, FormattedDisplayName, FormattedHTMLMessage, FormattedList, FormattedNumber, FormattedNumberParts, FormattedPlural, FormattedRelativeTime, FormattedTime, FormattedTimeParts, IntlProvider, RawIntlProvider } from './localeExports';
 export { SelectLang } from './SelectLang';
 `,
+    });
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import {
+  IntlCache,
+  createIntl,
+} from '${reactIntlPkgPath}';
+type OptionalIntlConfig = Omit<Parameters<typeof createIntl>[0], 'locale' | 'defaultLocale'>;
+export interface IRuntimeConfig {
+    locale?: {
+      getLocale?: () => string;
+      cache?: IntlCache;
+    } & OptionalIntlConfig;
+};`,
     });
   });
 
