@@ -31,7 +31,7 @@ export default (api: IApi) => {
               ga_v2: zod.string(),
             })
             .partial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
       onChange: api.ConfigChangeType.reload,

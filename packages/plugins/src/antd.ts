@@ -45,7 +45,7 @@ export default (api: IApi) => {
                 .describe('Only antd@5.1.0 is supported'),
             })
             .deepPartial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

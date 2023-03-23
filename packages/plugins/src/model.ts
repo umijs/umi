@@ -16,7 +16,7 @@ export default (api: IApi) => {
               extraModels: zod.array(zod.string()),
             })
             .partial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

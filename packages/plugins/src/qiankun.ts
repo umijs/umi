@@ -12,8 +12,7 @@ export default (api: IApi) => {
               externalQiankun: zod.boolean(),
             })
             .deepPartial(),
-          // TODO  不允许输入 true
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

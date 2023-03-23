@@ -20,7 +20,7 @@ export default (api: IApi) => {
               skipModelValidate: zod.boolean(),
             })
             .deepPartial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

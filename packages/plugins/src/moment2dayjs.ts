@@ -19,7 +19,7 @@ export default (api: IApi) => {
               plugins: zod.array(zod.string()),
             })
             .partial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

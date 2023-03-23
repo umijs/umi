@@ -15,7 +15,7 @@ export default (api: IApi) => {
               dataField: zod.string(),
             })
             .partial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

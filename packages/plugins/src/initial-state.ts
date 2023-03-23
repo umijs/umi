@@ -11,7 +11,7 @@ export default (api: IApi) => {
               loading: zod.string(),
             })
             .partial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

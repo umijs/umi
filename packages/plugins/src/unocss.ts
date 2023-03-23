@@ -13,7 +13,7 @@ export default (api: IApi) => {
           zod.object({
             watch: zod.array(zod.any()),
           }),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

@@ -58,7 +58,7 @@ export default (api: IApi) => {
               baseSeparator: zod.string(),
             })
             .partial(),
-          zod.boolean(),
+          zod.literal(false),
         ]);
       },
     },

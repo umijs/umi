@@ -41,7 +41,7 @@ export default (api: IApi) => {
     key: 'layout',
     config: {
       schema({ zod }) {
-        return zod.union([zod.record(zod.any()), zod.boolean()]);
+        return zod.union([zod.record(zod.any()), zod.literal(false)]);
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
