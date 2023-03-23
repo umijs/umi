@@ -11,8 +11,10 @@ import {
   tryPaths,
   yParser,
 } from '@umijs/utils';
+import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
 import gitly from 'gitly';
+import { homedir } from 'os';
 import { dirname, join } from 'path';
 import rimraf from 'rimraf';
 
@@ -63,16 +65,33 @@ enum ETemplate {
 }
 
 const getTemplatePath = async (appTemplate: ETemplate) => {
+  const umiHref = `https://github.com/umijs/umi.git`;
   const gitHref = `https://github.com/umijs/${appTemplate}-template.git`;
   const temporaryTemplatePath = join(process.cwd(), '.umi-create-tmp');
+  const umiRepoGlobalPath = join(homedir(), '.umi-repo');
+  const localTemplatePath = join(__dirname, '..', 'templates', appTemplate);
   try {
-    const [, b] = await gitly(gitHref, temporaryTemplatePath, {});
-    if (!b) {
-      throw new Error(
-        `no such git repository '${gitHref}', trying internal template...`,
-      );
+    // 先看看 umi 主仓库的 examples 有没有
+    if (existsSync(umiRepoGlobalPath)) {
+      spawnSync('git', ['pull'], { cwd: umiRepoGlobalPath });
+    } else {
+      spawnSync('git', ['clone', '--depth', '1', umiHref, '.'], {
+        cwd: umiRepoGlobalPath,
+      });
     }
-    return b;
+    const examplePath = join(umiRepoGlobalPath, 'examples', appTemplate);
+    if (existsSync(examplePath)) {
+      console.log(`using umi repo examples/${appTemplate}`);
+      return examplePath;
+    }
+
+    let [, localPath] = await gitly(gitHref, temporaryTemplatePath, {});
+    if (!localPath) {
+      console.log(`using local template ${appTemplate}`);
+      return localTemplatePath;
+    }
+    console.log(`using template repo umijs/${appTemplate}-template`);
+    return localPath;
   } catch (error) {
     console.log(error);
     return join(__dirname, '..', 'templates', appTemplate);
