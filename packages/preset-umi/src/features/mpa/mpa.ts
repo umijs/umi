@@ -5,7 +5,6 @@ import { dirname, extname, join, resolve } from 'path';
 import { IApi } from '../../types';
 
 // TODO:
-// - 支持通过 env.MPA_FILTER 过滤要启动的项目（提速）
 // - precompile html-webpack-plugin
 export default (api: IApi) => {
   api.describe({
@@ -135,10 +134,23 @@ async function collectEntryWithTimeCount(root: string, opts: IMpaOpts) {
   return entries;
 }
 
+function filterEntry(dir: string) {
+  if (!process.env.MPA_FILTER) {
+    return true;
+  }
+  const entries = process.env.MPA_FILTER.split(',');
+  return entries.includes(dir);
+}
+
 async function collectEntry(root: string, opts: IMpaOpts) {
   return await readdirSync(root).reduce<Promise<Entry[]>>(
     async (memoP, dir) => {
       const memo = await memoP;
+
+      if (!filterEntry(dir)) {
+        return memo;
+      }
+
       const absDir = join(root, dir);
       if (existsSync(absDir) && statSync(absDir).isDirectory()) {
         const indexFile = getIndexFile(absDir);
