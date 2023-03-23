@@ -1,14 +1,14 @@
 {
-  "name": "@umijs/codemod",
-  "version": "0.1.0",
-  "homepage": "https://github.com/umijs/umi/tree/master/codemod",
+  "name": "@umijs/copilot",
+  "version": "0.0.0",
+  "homepage": "https://github.com/umijs/umi/tree/master/copilot",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi"
   },
   "bin": {
-    "umi-codemod": "bin/umi-codemod.js"
+    "umi-copilot": "bin/umi-copilot.js"
   },
   "files": [
     "bin",
@@ -18,16 +18,13 @@
     "build": "father build",
     "dev": "father dev",
     "doctor": "father doctor",
-    "release": "father doctor && esno ../scripts/release.ts --pkg codemod",
+    "prebundle": "father prebundle",
+    "release": "father doctor && esno ../scripts/release.ts --pkg copilot",
     "test": "jest"
   },
   "dependencies": {
-    "@umijs/ast": "workspace:*",
-    "@umijs/babel-preset-umi": "workspace:*",
-    "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
-    "fast-glob": "3.2.12",
-    "kleur": "4.1.5"
+    "zx": "^7.2.1"
   },
   "publishConfig": {
     "access": "public"
