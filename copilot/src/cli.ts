@@ -4,7 +4,7 @@ import { SYSTEM_PROMPT } from './constants';
 import { printHelp } from './printHelp';
 const { confirm, spinner } = clackPrompts;
 
-async function main() {
+export async function main() {
   logger.info("🚧  It's in beta, please use it carefully.");
   const args = yParser(process.argv.slice(2), {
     alias: {
@@ -50,7 +50,6 @@ async function main() {
   const shouldRunCommand = await confirm({
     message: `Run the command?`,
   });
-  console.log('shouldRunCommand', shouldRunCommand);
   // why equals true?
   // since if user press ctrl+c, shouldRunCommand will not be falsy
   if (shouldRunCommand === true) {
@@ -89,10 +88,3 @@ function resolveSyncSilently(path: string, cwd: string) {
     return null;
   }
 }
-
-(async () => {
-  await main();
-})().catch((e) => {
-  logger.error(e);
-  process.exit(1);
-});
