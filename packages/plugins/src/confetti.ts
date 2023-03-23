@@ -32,7 +32,7 @@ export default (api: IApi) => {
     key: 'confetti',
     config: {
       schema({ zod }) {
-        return zod.boolean({});
+        return zod.object({});
       },
     },
     enableBy: api.EnableBy.config,
