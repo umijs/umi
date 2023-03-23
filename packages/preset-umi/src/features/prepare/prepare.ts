@@ -74,7 +74,7 @@ export default (api: IApi) => {
           async onRebuildSuccess({ result }) {
             const fileImports = await parseProjectImportSpecifiers(result);
             updateAppdata({ buildResult: result, fileImports });
-            api.applyPlugins({
+            await api.applyPlugins({
               key: 'onPrepareBuildSuccess',
               args: {
                 isWatch: true,
