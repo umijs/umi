@@ -1915,6 +1915,7 @@ importers:
       '@types/prompts': ^2.4.2
       '@types/rimraf': 3.0.2
       '@types/semver': 7.3.13
+      '@types/tar': 6.1.4
       '@types/yargs-parser': 21.0.0
       address: 1.1.2
       axios: 0.27.2
@@ -1945,6 +1946,7 @@ importers:
       rimraf: 3.0.2
       semver: 7.3.8
       strip-ansi: 7.0.1
+      tar: 6.1.13
       tsconfig-paths: 4.1.2
       yargs-parser: 21.1.1
       zod: 3.20.6
@@ -1965,6 +1967,7 @@ importers:
       '@types/prompts': 2.4.2
       '@types/rimraf': 3.0.2
       '@types/semver': 7.3.13
+      '@types/tar': 6.1.4
       '@types/yargs-parser': 21.0.0
       address: 1.1.2
       axios: 0.27.2_debug@4.3.4
@@ -1993,6 +1996,7 @@ importers:
       rimraf: 3.0.2
       semver: 7.3.8
       strip-ansi: 7.0.1
+      tar: 6.1.13
       tsconfig-paths: 4.1.2
       yargs-parser: 21.1.1
       zod: 3.20.6
@@ -13005,6 +13009,13 @@ packages:
       svgo: 2.8.0
     dev: true
 
+  /@types/tar/6.1.4:
+    resolution: {integrity: sha512-Cp4oxpfIzWt7mr2pbhHT2OTXGMAL0szYCzuf8lRWyIMCgsx6/Hfc3ubztuhvzXHXgraTQxyOCmmg7TDGIMIJJQ==}
+    dependencies:
+      '@types/node': 18.11.18
+      minipass: 4.2.5
+    dev: true
+
   /@types/testing-library__jest-dom/5.14.5:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
@@ -17562,7 +17573,7 @@ packages:
       promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 9.0.1
-      tar: 6.1.11
+      tar: 6.1.13
       unique-filename: 2.0.1
     transitivePeerDependencies:
       - bluebird
@@ -28040,6 +28051,11 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /minipass/4.2.5:
+    resolution: {integrity: sha512-+yQl7SX3bIT83Lhb4BVorMAHVuqsskxRdlmO9kTpyukp8vsm2Sn/fUOV9xlnG8/a5JsypJzap21lz/y3FBMJ8Q==}
+    engines: {node: '>=8'}
+    dev: true
+
   /minizlib/2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
     engines: {node: '>= 8'}
@@ -28067,6 +28083,7 @@ packages:
 
   /mkdirp/0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
+    hasBin: true
     dependencies:
       minimist: 1.2.6
     dev: true
@@ -28074,6 +28091,7 @@ packages:
   /mkdirp/1.0.4:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
+    hasBin: true
     dev: true
 
   /ml-array-max/1.2.4:
@@ -28461,7 +28479,7 @@ packages:
       npmlog: 6.0.2
       rimraf: 3.0.2
       semver: 7.3.8
-      tar: 6.1.11
+      tar: 6.1.13
       which: 2.0.2
     transitivePeerDependencies:
       - bluebird
@@ -29408,7 +29426,7 @@ packages:
       read-package-json-fast: 2.0.3
       rimraf: 3.0.2
       ssri: 9.0.1
-      tar: 6.1.11
+      tar: 6.1.13
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -29438,7 +29456,7 @@ packages:
       read-package-json-fast: 2.0.3
       rimraf: 3.0.2
       ssri: 9.0.1
-      tar: 6.1.11
+      tar: 6.1.13
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -36925,6 +36943,7 @@ packages:
 
   /rimraf/2.7.1:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
+    hasBin: true
     dependencies:
       glob: 7.2.3
     dev: true
@@ -38946,6 +38965,18 @@ packages:
       chownr: 2.0.0
       fs-minipass: 2.1.0
       minipass: 3.3.4
+      minizlib: 2.1.2
+      mkdirp: 1.0.4
+      yallist: 4.0.0
+    dev: true
+
+  /tar/6.1.13:
+    resolution: {integrity: sha512-jdIBIN6LTIe2jqzay/2vtYLlBHa3JF42ot3h1dW8Q0PaAG4v8rm0cvpVePtau5C6OKXGGcgO9q2AMNSWxiLqKw==}
+    engines: {node: '>=10'}
+    dependencies:
+      chownr: 2.0.0
+      fs-minipass: 2.1.0
+      minipass: 4.2.5
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0

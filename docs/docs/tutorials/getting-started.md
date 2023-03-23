@@ -141,6 +141,15 @@ info  - generate files
 
 国内建议选 **pnpm + taobao 源**，速度提升明显。这一步会自动安装依赖，同时安装成功后会自动执行 `umi setup` 做一些文件预处理等工作。
 
+### 从模板创建项目
+
+```bash
+  # 从 umi-electron-template 创建一个 electron 模板
+  pnpm create umi --template electron
+```
+
+你也可以创建自己的模板，包名格式为 `umi-${name}-template` ，发布至 npm 便可使用 `umi create` 初始化。
+
 ### 参数选项
 
 使用 `create-umi` 创建项目时，可用的参数如下：
