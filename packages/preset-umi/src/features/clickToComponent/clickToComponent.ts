@@ -17,7 +17,7 @@ export default (api: IApi) => {
         });
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy: api.env === 'development' ? api.EnableBy.config : () => false,
   });
 
   const pkgPath = dirname(require.resolve('click-to-react-component'));
