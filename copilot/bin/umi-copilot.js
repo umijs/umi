@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
 require('../dist/cli').main().catch((e) => {
-  logger.error(e);
+  console.error(e);
   process.exit(1);
 });
