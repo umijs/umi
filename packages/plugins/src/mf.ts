@@ -17,18 +17,20 @@ export default function mf(api: IApi) {
         return zod
           .object({
             name: zod.string().optional(),
-            remotes: zod.array(
-              zod
-                .object({
-                  aliasName: zod.string().optional(),
-                  //  string 上没有 required
-                  name: zod.string(),
-                  entry: zod.string().optional(),
-                  entries: zod.object({}).optional(),
-                  keyResolver: zod.string().optional(),
-                })
-                .optional(),
-            ),
+            remotes: zod
+              .array(
+                zod
+                  .object({
+                    aliasName: zod.string().optional(),
+                    //  string 上没有 required
+                    name: zod.string(),
+                    entry: zod.string().optional(),
+                    entries: zod.object({}).optional(),
+                    keyResolver: zod.string().optional(),
+                  })
+                  .optional(),
+              )
+              .optional(),
             shared: zod.record(zod.any()).optional(),
             library: zod.record(zod.any()).optional(),
           })
