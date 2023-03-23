@@ -29,7 +29,7 @@ export const unpackTemplate = async (opts: IUnpackTemplateOpts) => {
       return;
     }
     try {
-      return await dowloadTar({ dest, url });
+      return await downloadTar({ dest, url });
     } catch (e) {
       throw new Error(`Download ${name} failed from ${registry}`, { cause: e });
     }
@@ -88,7 +88,7 @@ async function getNpmPkgTarUrl(opts: { registry: string; name: string }) {
   return latestTarUrl;
 }
 
-async function dowloadTar(opts: { dest: string; url: string }) {
+async function downloadTar(opts: { dest: string; url: string }) {
   const { dest, url } = opts;
   return new Promise<string>(async (resolve, reject) => {
     try {
