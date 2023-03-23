@@ -25,28 +25,25 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              configProvider: zod.record(zod.any()),
-              // themes
-              dark: zod.boolean(),
-              compact: zod.boolean(),
-              // babel-plugin-import
-              import: zod.boolean(),
-              // less or css, default less
-              style: zod
-                .enum(['less', 'css'])
-                .describe('less or css, default less'),
-              theme: zod.record(zod.any()),
-              // Only antd@5.1.0 is supported
-              appConfig: zod
-                .record(zod.any())
-                .describe('Only antd@5.1.0 is supported'),
-            })
-            .deepPartial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            configProvider: zod.record(zod.any()),
+            // themes
+            dark: zod.boolean(),
+            compact: zod.boolean(),
+            // babel-plugin-import
+            import: zod.boolean(),
+            // less or css, default less
+            style: zod
+              .enum(['less', 'css'])
+              .describe('less or css, default less'),
+            theme: zod.record(zod.any()),
+            // Only antd@5.1.0 is supported
+            appConfig: zod
+              .record(zod.any())
+              .describe('Only antd@5.1.0 is supported'),
+          })
+          .deepPartial();
       },
     },
     enableBy({ userConfig }) {

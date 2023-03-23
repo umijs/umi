@@ -23,16 +23,13 @@ export default (api: IApi) => {
     key: 'analytics',
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              baidu: zod.string(),
-              ga: zod.string(),
-              ga_v2: zod.string(),
-            })
-            .partial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            baidu: zod.string(),
+            ga: zod.string(),
+            ga_v2: zod.string(),
+          })
+          .partial();
       },
       onChange: api.ConfigChangeType.reload,
     },

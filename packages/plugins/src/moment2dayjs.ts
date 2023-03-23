@@ -12,15 +12,12 @@ export default (api: IApi) => {
     key: 'moment2dayjs',
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              preset: zod.enum(['antd', 'antdv3', 'none']), // 'antd' | 'antdv3 | 'none'
-              plugins: zod.array(zod.string()),
-            })
-            .partial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            preset: zod.enum(['antd', 'antdv3', 'none']), // 'antd' | 'antdv3 | 'none'
+            plugins: zod.array(zod.string()),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,

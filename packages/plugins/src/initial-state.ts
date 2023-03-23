@@ -5,14 +5,11 @@ export default (api: IApi) => {
   api.describe({
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              loading: zod.string(),
-            })
-            .partial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            loading: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,

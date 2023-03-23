@@ -8,15 +8,12 @@ export default (api: IApi) => {
     config: {
       schema: ({ zod }) => {
         // 生成类型 dataField: '' | string
-        return zod.union([
-          zod
-            .object({
-              // TODO: '' | string 没有找到对应的写法
-              dataField: zod.string(),
-            })
-            .partial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            // TODO: '' | string 没有找到对应的写法
+            dataField: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,

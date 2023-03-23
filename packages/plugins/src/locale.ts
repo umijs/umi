@@ -47,19 +47,16 @@ export default (api: IApi) => {
     key: 'locale',
     config: {
       schema({ zod }) {
-        return zod.union([
-          zod
-            .object({
-              default: zod.string(),
-              useLocalStorage: zod.boolean(),
-              baseNavigator: zod.boolean(),
-              title: zod.boolean(),
-              antd: zod.boolean(),
-              baseSeparator: zod.string(),
-            })
-            .partial(),
-          zod.literal(false),
-        ]);
+        return zod
+          .object({
+            default: zod.string(),
+            useLocalStorage: zod.boolean(),
+            baseNavigator: zod.boolean(),
+            title: zod.boolean(),
+            antd: zod.boolean(),
+            baseSeparator: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,
