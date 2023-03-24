@@ -192,7 +192,7 @@ const RemoteCounter = React.lazy(() => {
   return safeMfImport('remoteCounter/Counter', { defualt: () => 'Fallback' });
 });
 
-export default () => {
+export default function Page() {
   return (
     <Suspense fallback="loading">
       <RemoteCounter />
@@ -230,7 +230,7 @@ const RemoteCounter = safeRemoteComponent<React.FC<{ init?: number }>>({
   loadingElement: 'Loading',
 });
 
-export default () => {
+export default function Page() {
   return (
     <div>
       <RemoteCounter init={808} />
@@ -299,7 +299,7 @@ const RemoteCounter = safeRemoteComponentWithMfConfig<
   loadingElement: 'raw Loading',
 });
 
-export default () => {
+export default function Page() {
   return <RemoteCounter />;
 };
 ```
