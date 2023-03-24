@@ -34,7 +34,6 @@ export default (api: IApi) => {
   });
 
   api.onBeforeMiddleware(({ app }) => {
-    console.log('xxxx');
     app.use(
       ENTRY_PATH,
       sirv(path.join(uiDir, 'dist'), {
@@ -100,7 +99,7 @@ const container = document.createElement('div')
 container.id = 'umi-ui-container';
 const iframe = document.createElement('iframe');
 iframe.id = 'umi-ui-iframe';
-iframe.src = '${ENTRY_PATH}';
+iframe.src = '${process.env.DEBUG_UMI_UI_PATH || ENTRY_PATH}';
 const uiBtn = document.createElement('div');
 uiBtn.id = 'umi-ui-toggle-btn';
 container.appendChild(iframe);
