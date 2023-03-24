@@ -44,7 +44,7 @@ export default (api: IApi) => {
 
     const execaRes = execa.execa(binPath, args, {
       cwd: api.cwd,
-      stdio: 'inherit',
+      stdio: isDev ? 'pipe' : 'inherit',
     });
     if (!isDev) {
       await execaRes;
