@@ -1,4 +1,4 @@
-import { exec, execSync } from 'child_process';
+import { execa } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
@@ -19,7 +19,7 @@ export default (api: IApi) => {
 
   const outputPath = 'uno.css';
 
-  api.onBeforeCompiler(() => {
+  api.onBeforeCompiler(async () => {
     if (process.env.IS_UMI_BUILD_WORKER) return;
 
     /** 由于 @unocss/cli 对设置文件进行了检查，因此加入需要 unocss.config.ts 设置的提示
@@ -35,17 +35,19 @@ export default (api: IApi) => {
 
     /** 透过子进程建立 unocss 服务，将生成的 css 写入 generatedPath */
     const isDev = api.env === 'development';
-    const command = `${binPath} ${watchDirs} --out-file ${generatedPath} ${
-      isDev ? '--watch' : ''
-    }`;
-    if (isDev) {
-      const unocss = exec(command, { cwd: api.cwd });
-      unocss.on('error', (m: any) => {
-        api.logger.error('unocss service encounter an error: ' + m);
-      });
-    } else {
-      // build 时 需要等待 unocss 生成文件后才能继续走编译流程
-      execSync(command, { cwd: api.cwd });
+    const args = [
+      ...watchDirs,
+      '--out-file',
+      generatedPath,
+      isDev ? '--watch' : '',
+    ].filter(Boolean);
+
+    const execaRes = execa.execa(binPath, args, {
+      cwd: api.cwd,
+      stdio: 'inherit',
+    });
+    if (!isDev) {
+      await execaRes;
     }
   });
 
