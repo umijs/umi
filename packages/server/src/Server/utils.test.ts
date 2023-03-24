@@ -80,6 +80,7 @@ describe('ServerUtils', () => {
           https: { http2: false },
         }),
       ).toEqual({
+        http2: false,
         key: join(__dirname, 'cert', 'key.pem'),
         cert: join(__dirname, 'cert', 'cert.pem'),
       });

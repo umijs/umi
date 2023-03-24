@@ -16,14 +16,7 @@ function useDefaultKeyCertOptions(httpsOptions: IServerOpts['https']): IHttps {
     return defaultKeyCertOptions;
   }
   if (typeof httpsOptions === 'object') {
-    const keys = Object.keys(httpsOptions) as Array<keyof typeof httpsOptions>;
-    if (keys.length === 0) {
-      return defaultKeyCertOptions;
-    }
-    if (keys.length === 1 && keys[0] === 'http2') {
-      return defaultKeyCertOptions;
-    }
-    return httpsOptions;
+    return { ...defaultKeyCertOptions, ...httpsOptions };
   }
   return {};
 }
