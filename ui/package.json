@@ -17,10 +17,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "umi build",
-    "dev": "umi dev --ui",
     "release": "esno ../scripts/release.ts --pkg ui",
-    "setup": "umi setup"
+    "setup": "umi setup",
+    "ui:build": "umi build",
+    "ui:dev": "umi dev --ui"
   },
   "devDependencies": {
     "@antv/g6": "^4.8.7",
