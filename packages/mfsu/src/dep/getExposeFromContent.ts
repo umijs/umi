@@ -1,8 +1,8 @@
+import { winPath } from '@umijs/utils';
 import assert from 'assert';
 import { basename } from 'path';
 import { Dep } from './dep';
 import { getModuleExports } from './getModuleExports';
-import { winPath } from '@umijs/utils';
 
 export async function getExposeFromContent(opts: {
   dep: Dep;
@@ -17,6 +17,16 @@ export async function getExposeFromContent(opts: {
     /\.(css|less|scss|sass|stylus|styl)$/.test(opts.filePath)
   ) {
     return `import '${importPath}';`;
+  }
+
+  // wasm
+  // export default   is for normal use to get a link
+  // export namespace is for experiments asyncWebAssembly or syncWebAssembly
+  if (opts.filePath?.endsWith('.wasm')) {
+    return `
+import _ from '${importPath}';
+export default _; 
+export * from '${importPath}';`.trim();
   }
 
   // Support Assets Files
