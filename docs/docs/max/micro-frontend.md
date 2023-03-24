@@ -174,7 +174,7 @@ export default {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" />;
 };
 ```
@@ -186,7 +186,7 @@ export default () => {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" base="/prefix/router-path" />
 };
 ```
@@ -205,7 +205,7 @@ export default () => {
 ```tsx
 import { MicroAppWithMemoHistory } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroAppWithMemoHistory name="app2" url="/some/page" />;
 };
 ```
@@ -218,7 +218,7 @@ export default () => {
 // 在 app1 中
 import { MicroAppLink } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <>
       {/* 跳转链接为 /app2/home */}
@@ -236,7 +236,7 @@ export default () => {
 // 在 app2 中
 import { MicroAppLink } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <>
       {/* 跳转链接为 /app1/project/home */}
@@ -254,7 +254,7 @@ export default () => {
 // 在子应用中
 import { MicroAppLink } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <>
       {/* 跳转链接为 /table */}
@@ -289,7 +289,7 @@ Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照
 import React, { useRef } from 'react';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   const microAppRef = useRef();
 
   // 执行此方法时，更新子应用
@@ -380,7 +380,7 @@ export function useQiankunStateForSlave() {
 import React, { useState } from 'react';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   const [globalState, setGlobalState] = useState<any>({
     slogan: 'Hello MicroFrontend',
   });
@@ -402,7 +402,7 @@ export default () => {
 ```tsx
 import { useModel } from 'umi';
 
-export default () => {
+export default function Page() {
   const masterProps = useModel('@@qiankunStateFromMaster');
   return <div>{JSON.stringify(masterProps)}</div>;
 };
@@ -504,7 +504,7 @@ export default {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" autoSetLoading />;
 };
 ```
@@ -538,7 +538,7 @@ export default {
 import CustomLoader from '@/components/CustomLoader';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <MicroApp
       name="app1"
@@ -580,7 +580,7 @@ export default {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" autoCaptureError />;
 };
 ```
@@ -589,32 +589,13 @@ export default () => {
 
 如果您没有使用 antd 作为项目组件库，或希望覆盖默认的错误捕获组件样式时，可以设置一个自定义的组件 `errorBoundary` 作为子应用的错误捕获组件。
 
-如果通过路由的模式引入子应用，可以配置如下：
-
-```tsx
-// .umirc.ts
-import CustomErrorBoundary from '../src/components/CustomErrorBoundary';
-
-export default {
-  routes: [
-    {
-      path: '/app1',
-      microApp: 'app1',
-      microAppProps: {
-        errorBoundary: (error) => <CustomErrorBoundary error={error} />,
-      },
-    },
-  ],
-};
-```
-
-如果通过组件的模式引入子应用，直接将 `errorBoundary` 作为参数传入即可：
+通过组件的模式引入子应用，将 `errorBoundary` 作为参数传入即可：
 
 ```tsx
 import CustomErrorBoundary from '@/components/CustomErrorBoundary';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <MicroApp
       name="app1"
