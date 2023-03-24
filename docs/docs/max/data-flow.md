@@ -26,7 +26,7 @@ Model 文件允许使用 `.(tsx|ts|jsx|js)` 四种后缀格式，**命名空间�
 
 ```ts
 // src/models/userModel.ts
-export default function Page()  {
+export default function Page() {
   const user = {
     username: 'umi',
   };
@@ -47,7 +47,7 @@ Model 中允许使用其它 `hooks`，以计数器为例：
 // src/models/counterModel.ts
 import { useState, useCallback } from 'react';
 
-export default function Page()  {
+export default function Page() {
   const [counter, setCounter] = useState(0);
 
   const increment = useCallback(() => setCounter((c) => c + 1), []);
@@ -64,7 +64,7 @@ export default function Page()  {
 import { useState } from 'react';
 import { getUser } from '@/services/user';
 
-export default function Page()  {
+export default function Page() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -89,7 +89,7 @@ export default function Page()  {
 import { useRequest } from 'ahooks';
 import { getUser } from '@/services/user';
 
-export default function Page()  {
+export default function Page() {
   const { data: user, loading: loading } = useRequest(async () => {
     const res = await getUser();
     if (res) {
@@ -113,7 +113,7 @@ export default function Page()  {
 // src/components/Username/index.tsx
 import { useModel } from 'umi';
 
-export default function Page()  {
+export default function Page() {
   const { user, loading } = useModel('userModel');
 
   return (
@@ -137,7 +137,7 @@ export default function Page()  {
 // src/components/CounterActions/index.tsx
 import { useModel } from 'umi';
 
-export default function Page()  {
+export default function Page() {
   const { add, minus } = useModel('counterModel', (model) => ({
     add: model.increment,
     minus: model.decrement,
@@ -179,7 +179,7 @@ export async function getInitialState() {
 ```tsx
 import { useModel } from 'umi';
 
-export default function Page()  {
+export default function Page() {
   const { initialState, loading, error, refresh, setInitialState } =
     useModel('@@initialState');
   return <>{initialState}</>;
@@ -215,7 +215,7 @@ export default function Page()  {
 // src/components/AdminInfo/index.tsx
 import { useModel } from 'umi';
 
-export default function Page()  {
+export default function Page() {
   const { user, fetchUser } = useModel('adminModel', (model) => ({
     user: model.admin,
     fetchUser: model.fetchAdmin,
