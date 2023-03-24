@@ -230,7 +230,7 @@ const { formatMessage } = useIntl();
   })
   const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
 
-  const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
+  const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname,route]);
 
   return (
     <ProLayout
