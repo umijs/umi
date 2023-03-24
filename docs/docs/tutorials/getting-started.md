@@ -144,11 +144,9 @@ info  - generate files
 ### 从模板创建项目
 
 ```bash
-  # 从 umi-electron-template 创建一个 electron 模板
+  # 从 @umijs/electron-template 创建一个 electron 模板
   pnpm create umi --template electron
 ```
-
-你也可以创建自己的模板，包名格式为 `umi-${name}-template` ，发布至 npm 便可使用 `umi create` 初始化。
 
 ### 参数选项
 
