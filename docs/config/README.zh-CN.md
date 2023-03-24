@@ -362,10 +362,16 @@ if (false) {
 
 - port，端口号，默认 `8000`
 - host，默认 `0.0.0.0`
-- https，是否启用 https server，同时也会开启 HTTP/2
+- https，是否启用 https server
 - writeToDisk，生成 `assets` 到文件系统
 
 启用 port 和 host 也可以通过环境变量 PORT 和 HOST 临时指定。
+
+关于 https 配置项。
+
+- 可以通过 `https: true` 或 `https: {}` 开启，使用 umi 内置的证书，http/2 也会开启。
+- 如果不希望使用 http/2，可以通过 `https: { http2: false }` 关闭。(使用 HTTP 2.0 在 Chrome 或 Edge 浏览器中中有偶然出现 `ERR_HTTP2_PROTOCOL_ERROR`报错，如有遇到，建议使用此配置)
+- 如果希望使用自定义证书，可以通过 `https: { cert: '...', key: '...' }` 配置， key 和 cert 指定文件路径。
 
 ## devtool
 

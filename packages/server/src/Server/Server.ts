@@ -15,6 +15,7 @@ import sockjs, {
 import spdy, { ServerOptions } from '@umijs/deps/compiled/spdy';
 import { createDebug, lodash, PartialProps, portfinder } from '@umijs/utils';
 import * as http from 'http';
+import * as https from 'https';
 import * as url from 'url';
 import { getCredentials } from './utils';
 
@@ -37,7 +38,9 @@ type IServerProxyConfig =
   | (IServerProxyConfigItem | (() => IServerProxyConfigItem))[]
   | null;
 
-export interface IHttps extends ServerOptions {}
+export interface IHttps extends ServerOptions {
+  http2?: boolean;
+}
 
 export interface IServerOpts {
   afterMiddlewares?: RequestHandler<any>[];
@@ -115,7 +118,7 @@ class Server {
     }, this);
   }
 
-  private getHttpsOptions(): object | undefined {
+  private getHttpsOptions(): IHttps | undefined {
     if (this.opts.https) {
       const credential = getCredentials(this.opts);
 
@@ -131,11 +134,31 @@ class Server {
         );
         return credential;
       } else {
+        // If user config forces using http2, we should configure spdy
+        if (process.env.HTTP2) {
+          return {
+            ...credential,
+            spdy: {
+              protocols: ['h2', 'http/1.1'],
+            },
+          };
+        }
+        // If user config explicitly sets http2 to false, we should not configure spdy
+        if (
+          typeof this.opts.https === 'object' &&
+          this.opts.https?.http2 === false
+        ) {
+          return {
+            ...credential,
+            spdy: undefined,
+          };
+        }
+        // Default to use spdy(google's http2 implementation) when https is enabled
         return {
+          ...credential,
           spdy: {
             protocols: ['h2', 'http/1.1'],
           },
-          ...credential,
         };
       }
     }
@@ -393,8 +416,13 @@ class Server {
   createServer() {
     const httpsOpts = this.getHttpsOptions();
     if (httpsOpts) {
-      // http2 using spdy, HTTP/2 by default when using https
-      this.listeningApp = spdy.createServer(httpsOpts, this.app);
+      // If spdy is configured, use spdy server
+      if (httpsOpts.spdy) {
+        this.listeningApp = spdy.createServer(httpsOpts, this.app);
+        // Otherwise fallback to plain https server
+      } else {
+        this.listeningApp = https.createServer(httpsOpts, this.app);
+      }
     } else {
       this.listeningApp = http.createServer(this.app);
     }

@@ -65,6 +65,25 @@ describe('ServerUtils', () => {
         key: join(__dirname, 'cert', 'key.pem'),
         cert: join(__dirname, 'cert', 'cert.pem'),
       });
+
+      expect(
+        getCredentials({
+          https: {},
+        }),
+      ).toEqual({
+        key: join(__dirname, 'cert', 'key.pem'),
+        cert: join(__dirname, 'cert', 'cert.pem'),
+      });
+
+      expect(
+        getCredentials({
+          https: { http2: false },
+        }),
+      ).toEqual({
+        http2: false,
+        key: join(__dirname, 'cert', 'key.pem'),
+        cert: join(__dirname, 'cert', 'cert.pem'),
+      });
     });
   });
 });

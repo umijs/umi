@@ -15,6 +15,7 @@ export default (api: IApi) => {
                 .object({
                   key: joi.string(),
                   cert: joi.string(),
+                  http2: joi.boolean(),
                 })
                 .unknown(),
               joi.boolean(),
