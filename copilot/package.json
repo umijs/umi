@@ -29,7 +29,8 @@
     "zx": "^7.2.1"
   },
   "devDependencies": {
-    "https-proxy-agent": "5.0.1"
+    "https-proxy-agent": "5.0.1",
+    "socks-proxy-agent": "7.0.0"
   },
   "publishConfig": {
     "access": "public"
@@ -39,10 +40,12 @@
   ],
   "compiledConfig": {
     "deps": [
-      "https-proxy-agent"
+      "https-proxy-agent",
+      "socks-proxy-agent"
     ],
     "excludeDtsDeps": [
-      "https-proxy-agent"
+      "https-proxy-agent",
+      "socks-proxy-agent"
     ]
   }
 }

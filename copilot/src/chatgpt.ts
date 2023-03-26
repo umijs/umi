@@ -1,16 +1,24 @@
 import { axios, chalk, logger } from '@umijs/utils';
 // @ts-ignore
 import HttpsProxyAgent from '../compiled/https-proxy-agent';
+// @ts-ignore
+import { SocksProxyAgent } from '../compiled/socks-proxy-agent';
 
 // for system proxy
-const proxyUri = process.env.https_proxy || process.env.http_proxy;
+const httpProxyUri = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+const socksProxyUri = process.env.ALL_PROXY;
+
 let axiosProxy: ReturnType<typeof axios.create> | null = null;
 
-if (proxyUri) {
-  const httpsAgent = new HttpsProxyAgent(proxyUri);
+if (socksProxyUri) {
   axiosProxy = axios.create({
     proxy: false,
-    httpsAgent,
+    httpsAgent: new SocksProxyAgent(socksProxyUri),
+  });
+} else if (httpProxyUri) {
+  axiosProxy = axios.create({
+    proxy: false,
+    httpsAgent: new HttpsProxyAgent(httpProxyUri),
   });
 }
 

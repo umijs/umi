@@ -147,12 +147,14 @@ importers:
     specifiers:
       '@umijs/utils': workspace:*
       https-proxy-agent: 5.0.1
+      socks-proxy-agent: 7.0.0
       zx: ^7.2.1
     dependencies:
       '@umijs/utils': link:../packages/utils
       zx: 7.2.1
     devDependencies:
       https-proxy-agent: 5.0.1
+      socks-proxy-agent: 7.0.0
 
   did-you-know:
     specifiers:
