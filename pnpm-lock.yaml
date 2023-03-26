@@ -145,11 +145,16 @@ importers:
 
   copilot:
     specifiers:
+      '@umijs/bundler-utils': workspace:*
       '@umijs/utils': workspace:*
+      https-proxy-agent: ^5.0.1
       zx: ^7.2.1
     dependencies:
+      '@umijs/bundler-utils': link:../packages/bundler-utils
       '@umijs/utils': link:../packages/utils
       zx: 7.2.1
+    devDependencies:
+      https-proxy-agent: 5.0.1
 
   did-you-know:
     specifiers:
@@ -18294,6 +18299,7 @@ packages:
 
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
+    requiresBuild: true
 
   /commander/3.0.2:
     resolution: {integrity: sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==}

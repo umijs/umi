@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "father build",
+    "build:deps": "umi-scripts bundleDeps",
     "dev": "father dev",
     "doctor": "father doctor",
     "prebundle": "father prebundle",
@@ -23,13 +24,25 @@
     "test": "jest"
   },
   "dependencies": {
+    "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
     "zx": "^7.2.1"
+  },
+  "devDependencies": {
+    "https-proxy-agent": "^5.0.1"
   },
   "publishConfig": {
     "access": "public"
   },
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ]
+  ],
+  "compiledConfig": {
+    "deps": [
+      "https-proxy-agent"
+    ],
+    "excludeDtsDeps": [
+      "https-proxy-agent"
+    ]
+  }
 }

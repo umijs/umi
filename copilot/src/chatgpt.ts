@@ -1,4 +1,18 @@
-import { axios } from '@umijs/utils';
+import { axios, chalk, logger } from '@umijs/utils';
+// @ts-ignore
+import HttpsProxyAgent from '../compiled/https-proxy-agent';
+
+// for system proxy
+const proxyUri = process.env.https_proxy || process.env.http_proxy;
+let axiosProxy: ReturnType<typeof axios.create> | null = null;
+
+if (proxyUri) {
+  const httpsAgent = new HttpsProxyAgent(proxyUri);
+  axiosProxy = axios.create({
+    proxy: false,
+    httpsAgent,
+  });
+}
 
 interface IMessage {
   role: 'system' | 'user' | 'assistant';
@@ -47,9 +61,11 @@ export async function sendMessage(opts: {
   timeout?: number;
 }) {
   const apiUrl = getApiUrl(opts.proxyUrl);
+  const axiosInstance = axiosProxy || axios;
+
   let res: any = null;
   try {
-    res = await axios.post<IChatGPTResponse>(
+    res = await axiosInstance.post<IChatGPTResponse>(
       apiUrl,
       {
         ...requestParamsBase,
@@ -70,6 +86,15 @@ export async function sendMessage(opts: {
     if (opts.controller?.signal.aborted === true) {
       // 用户手动取消了请求
     } else {
+      if (e.message.includes('timeout')) {
+        logger.fatal(e.message);
+        logger.warn('Request is too slow or cannot be requested');
+        logger.warn(
+          `Recommended to use a proxy host by passing ${chalk.yellow(
+            '--proxy-url',
+          )}`,
+        );
+      }
       throw new Error('Network Error');
     }
   }
