@@ -12,7 +12,8 @@
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "compiled"
   ],
   "scripts": {
     "build": "father build",
@@ -24,12 +25,11 @@
     "test": "jest"
   },
   "dependencies": {
-    "@umijs/bundler-utils": "workspace:*",
     "@umijs/utils": "workspace:*",
     "zx": "^7.2.1"
   },
   "devDependencies": {
-    "https-proxy-agent": "^5.0.1"
+    "https-proxy-agent": "5.0.1"
   },
   "publishConfig": {
     "access": "public"

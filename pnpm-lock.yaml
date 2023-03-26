@@ -145,12 +145,10 @@ importers:
 
   copilot:
     specifiers:
-      '@umijs/bundler-utils': workspace:*
       '@umijs/utils': workspace:*
-      https-proxy-agent: ^5.0.1
+      https-proxy-agent: 5.0.1
       zx: ^7.2.1
     dependencies:
-      '@umijs/bundler-utils': link:../packages/bundler-utils
       '@umijs/utils': link:../packages/utils
       zx: 7.2.1
     devDependencies:
@@ -25344,7 +25342,7 @@ packages:
       pretty-format: 29.4.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_typescript@4.9.4
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
     transitivePeerDependencies:
       - supports-color
     dev: true
