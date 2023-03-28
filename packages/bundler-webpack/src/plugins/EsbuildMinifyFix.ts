@@ -73,6 +73,11 @@ export class EsbuildMinifyFix {
             return false;
           }
 
+          // 如果存在 sourceMap 则不处理
+          if (info?.related?.sourceMap) {
+            return false;
+          }
+
           return true;
         })
         .map(async (name) => {
