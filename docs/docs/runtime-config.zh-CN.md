@@ -4,7 +4,7 @@
 
 ## 配置方式
 
-约定 `src/app.tsx`  为运行时配置。
+约定 `src/app.tsx` 为运行时配置。
 
 ## 配置项
 
@@ -19,7 +19,7 @@ let isSubApp = false;
 export function modifyClientRenderOpts(memo) {
   return {
     ...memo,
-    rootElement: isSubApp ? 'sub-root' : memo.rootElement,    
+    rootElement: isSubApp ? 'sub-root' : memo.rootElement,
   };
 }
 ```
@@ -50,7 +50,7 @@ export function patchRoutes({ routes }) {
 }
 
 export function render(oldRender) {
-  fetch('/api/routes').then(res=>res.json()).then((res) => { 
+  fetch('/api/routes').then(res=>res.json()).then((res) => {
     extraRoutes = res.routes;
     oldRender();
   })
@@ -59,7 +59,7 @@ export function render(oldRender) {
 
 注意：
 
-* 直接修改routes，不需要返回
+- 直接修改 routes，不需要返回
 
 ### render(oldRender: Function)
 
@@ -73,15 +73,15 @@ import { history } from 'umi';
 export function render(oldRender) {
   fetch('/api/auth').then(auth => {
     if (auth.isLogin) { oldRender() }
-    else { 
-      history.push('/login'); 
+    else {
+      history.push('/login');
       oldRender()
     }
   });
 }
 ```
 
-### onRouteChange({ routes, matchedRoutes, location, action })
+### onRouteChange({ routes, matchedRoutes, location, action, isFirst })
 
 在初始加载和路由切换时做一些事情。
 
@@ -117,9 +117,9 @@ export function rootContainer(container) {
 
 args 包含：
 
-* routes，全量路由配置
-* plugin，运行时插件机制
-* history，history 实例
+- routes，全量路由配置
+- plugin，运行时插件机制
+- history，history 实例
 
 ## 更多配置项
 
