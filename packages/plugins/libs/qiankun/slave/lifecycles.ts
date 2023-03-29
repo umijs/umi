@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { getPluginManager } from '@@/core/plugin';
 import ReactDOM from 'react-dom';
-import { ApplyPluginsType, __getRoot, history } from 'umi';
+import { ApplyPluginsType, history, __getRoot } from 'umi';
 import { setModelState } from './qiankunModel';
 
 const noop = () => {};
@@ -83,7 +83,7 @@ export function genMount(mountElementId: string) {
         callback: () => {
           // 默认开启
           // 如果需要手动控制 loading，通过主应用配置 props.autoSetLoading false 可以关闭
-          if (props.autoSetLoading && typeof props.setLoading === 'function') {
+          if (typeof props.setLoading === 'function') {
             props.setLoading(false);
           }
 
