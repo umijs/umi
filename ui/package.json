@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ui",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/umijs/umi/tree/master/ui#readme",
@@ -17,6 +17,8 @@
     "dist"
   ],
   "scripts": {
+    "build": "umi build",
+    "check:packageFiles": "umi-scripts checkPackageFiles",
     "release": "tsx ../scripts/release.ts --pkg ui",
     "setup": "umi setup",
     "ui:build": "umi build",
