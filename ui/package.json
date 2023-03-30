@@ -17,7 +17,6 @@
     "dist"
   ],
   "scripts": {
-    "build": "umi build",
     "check:packageFiles": "umi-scripts checkPackageFiles",
     "release": "tsx ../scripts/release.ts --pkg ui",
     "setup": "umi setup",
@@ -30,8 +29,7 @@
     "@types/react-dom": "^18",
     "antd": "^5.2.3",
     "rc-virtual-list": "^3.4.13",
-    "typescript": "^4",
-    "umi": "workspace:*"
+    "typescript": "^4"
   },
   "packageManager": "pnpm@7.3.0",
   "publishConfig": {
