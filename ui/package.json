@@ -30,7 +30,8 @@
     "@types/react-dom": "^18",
     "antd": "^5.2.3",
     "rc-virtual-list": "^3.4.13",
-    "typescript": "^4"
+    "typescript": "^4",
+    "umi": "workspace:*"
   },
   "packageManager": "pnpm@7.3.0",
   "publishConfig": {
