@@ -11,7 +11,6 @@ export default function Page() {
   if (!data) return <div>Loading...</div>;
 
   const routes = data.routes;
-  console.log('routes', routes);
   const info = routes[routeId];
   const handleClickNode = (routeId: string) => {
     if (routeId === FAKE_ID) {

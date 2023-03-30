@@ -132,7 +132,6 @@ export const RouteChart: FC<IProps> = ({ routes, onNodeClick }) => {
     window.addEventListener('resize', resizeCb);
     return () => {
       window.removeEventListener('resize', resizeCb);
-      graph.destroy();
     };
   }, [routes]);
 
