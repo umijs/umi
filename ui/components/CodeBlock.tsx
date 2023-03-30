@@ -5,6 +5,7 @@ const Wrapper = styled.pre`
   font-size: 0.88rem;
   font-family: 'MonoLisa', sans-serif;
   padding: 16px;
+  color: #fff;
 `;
 
 export function CodeBlock(props: { code: string | object }) {
