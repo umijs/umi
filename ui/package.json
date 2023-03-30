@@ -17,7 +17,6 @@
     "dist"
   ],
   "scripts": {
-    "build": "umi build",
     "check:packageFiles": "umi-scripts checkPackageFiles",
     "release": "tsx ../scripts/release.ts --pkg ui",
     "setup": "umi setup",
