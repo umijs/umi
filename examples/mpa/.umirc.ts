@@ -8,4 +8,5 @@ export default {
       bar: { description: 'hello bar' },
     },
   },
+  mountElementId: 'main',
 };
