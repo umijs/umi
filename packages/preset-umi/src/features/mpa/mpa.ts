@@ -33,6 +33,7 @@ export default (api: IApi) => {
       entry: await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
+        api.userConfig.mountElementId,
       ),
     };
     return memo;
@@ -44,6 +45,7 @@ export default (api: IApi) => {
       api.appData.mpa.entry = await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
+        api.userConfig.mountElementId,
       );
     }
 
@@ -125,9 +127,13 @@ interface IMpaOpts {
   entry: Record<string, Record<string, any>>;
 }
 
-async function collectEntryWithTimeCount(root: string, opts: IMpaOpts) {
+async function collectEntryWithTimeCount(
+  root: string,
+  opts: IMpaOpts,
+  mountElementId?: string,
+) {
   const d = new Date();
-  const entries = await collectEntry(root, opts);
+  const entries = await collectEntry(root, opts, mountElementId);
   logger.info(
     `[MPA] Collect Entries in ${new Date().getTime() - d.getTime()}ms`,
   );
@@ -142,7 +148,11 @@ function filterEntry(dir: string) {
   return entries.includes(dir);
 }
 
-async function collectEntry(root: string, opts: IMpaOpts) {
+async function collectEntry(
+  root: string,
+  opts: IMpaOpts,
+  mountElementId?: string,
+) {
   return await readdirSync(root).reduce<Promise<Entry[]>>(
     async (memoP, dir) => {
       const memo = await memoP;
@@ -164,7 +174,7 @@ async function collectEntry(root: string, opts: IMpaOpts) {
             name,
             file: indexFile,
             tmpFilePath: `mpa/${dir}${extname(indexFile)}`,
-            mountElementId: 'root',
+            mountElementId: mountElementId || 'root',
             ...globalConfig,
             ...config,
             title: globalConfig?.title || config.title || dir,
