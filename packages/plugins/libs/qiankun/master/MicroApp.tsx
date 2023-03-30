@@ -66,7 +66,8 @@ function unmountMicroApp(microApp?: MicroAppType, updatingPromise?: Promise<void
           microApp.unmount();
           break;
         case "UPDATING":
-          updatingPromise?.then(() => microApp.unmount());
+          // UPDATING 阶段 updatingPromise 一定存在
+          updatingPromise!.then(() => microApp.unmount());
           break;
         default:
           break;
