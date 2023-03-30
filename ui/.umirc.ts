@@ -1,4 +1,5 @@
 export default {
+  presets: ['@umijs/preset-dev-tools'],
   plugins: [
     '@umijs/plugins/dist/valtio',
     '@umijs/plugins/dist/styled-components',

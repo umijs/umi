@@ -1698,6 +1698,9 @@ importers:
       antd: 4.24.1
       umi: link:../umi
 
+  packages/preset-dev-tools:
+    specifiers: {}
+
   packages/preset-umi:
     specifiers:
       '@iconify/utils': 2.1.1
@@ -2014,6 +2017,7 @@ importers:
       '@antv/g6': ^4.8.7
       '@types/react': ^18
       '@types/react-dom': ^18
+      '@umijs/preset-dev-tools': workspace:*
       antd: ^5.2.3
       rc-virtual-list: ^3.4.13
       typescript: ^4
@@ -2021,6 +2025,7 @@ importers:
       '@antv/g6': 4.8.7
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
+      '@umijs/preset-dev-tools': link:../packages/preset-dev-tools
       antd: 5.3.0
       rc-virtual-list: 3.4.13
       typescript: 4.9.4

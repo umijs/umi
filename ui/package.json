@@ -27,6 +27,7 @@
     "@antv/g6": "^4.8.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@umijs/preset-dev-tools": "workspace:*",
     "antd": "^5.2.3",
     "rc-virtual-list": "^3.4.13",
     "typescript": "^4"
