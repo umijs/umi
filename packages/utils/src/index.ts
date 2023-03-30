@@ -41,6 +41,7 @@ export * from './getCorejsVersion';
 export * from './getDevBanner';
 export * as git from './getFileGitIno';
 export * from './importLazy';
+export * from './isJavaScriptFile';
 export * from './isLocalDev';
 export * from './isMonorepo';
 export * from './isStyleFile';

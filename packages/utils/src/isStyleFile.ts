@@ -1,5 +1,3 @@
-import { extname } from 'path';
-
 export const AUTO_CSS_MODULE_EXTS = [
   '.css',
   '.less',
@@ -9,12 +7,13 @@ export const AUTO_CSS_MODULE_EXTS = [
   '.styl',
 ];
 
+const STYLE_EXT_REGX = /\.(:?css|less|scss|sass|stylus|styl)$/;
+
 export const isStyleFile = ({
   filename,
-  ext,
 }: {
   filename?: string;
   ext?: string;
 }) => {
-  return filename && AUTO_CSS_MODULE_EXTS.includes(ext || extname(filename));
+  return filename && STYLE_EXT_REGX.test(filename);
 };

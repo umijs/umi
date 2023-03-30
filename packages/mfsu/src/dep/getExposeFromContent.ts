@@ -1,4 +1,4 @@
-import { winPath } from '@umijs/utils';
+import { isJavaScriptFile, winPath } from '@umijs/utils';
 import assert from 'assert';
 import { basename } from 'path';
 import { Dep } from './dep';
@@ -42,7 +42,7 @@ export default _;`.trim();
   }
 
   assert(
-    /(js|jsx|mjs|ts|tsx)$/.test(opts.filePath),
+    isJavaScriptFile(opts.filePath),
     `file type not supported for ${basename(opts.filePath)}.`,
   );
   const { exports, isCJS } = await getModuleExports({
