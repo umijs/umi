@@ -71,17 +71,19 @@ export default (api: IApi) => {
     },
   });
 
-  api.onBuildComplete(async () => {
+  api.onBuildComplete(async ({ err }) => {
+    if (err) return;
     const jsMinifier = api.config.jsMinifier || 'esbuild';
-    if (jsMinifier === 'esbuild' && !api.config.esbuildMinifyIIFE) {
-      try {
-        await checkDir({
-          dir: api.paths.absOutputPath,
-        });
-      } catch (e: any) {
-        logger.fatal(chalk.red(`[esbuildHelperChecker] ${e.message}`));
-        process.exit(1);
-      }
+    if (jsMinifier !== 'esbuild') return;
+    if (api.config.esbuildMinifyIIFE) return;
+    if (process.env.COMPRESS === 'none') return;
+    try {
+      await checkDir({
+        dir: api.paths.absOutputPath,
+      });
+    } catch (e: any) {
+      logger.fatal(chalk.red(`[esbuildHelperChecker] ${e.message}`));
+      process.exit(1);
     }
   });
 };
