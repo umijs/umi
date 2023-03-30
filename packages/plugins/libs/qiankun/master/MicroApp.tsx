@@ -58,9 +58,20 @@ export type Props = {
   className?: string;
 } & Record<string, any>;
 
-function unmountMicroApp(microApp?: MicroAppType) {
+function unmountMicroApp(microApp?: MicroAppType, updatingPromise?: Promise<void>) {
   if (microApp) {
-    microApp.mountPromise.then(() => microApp.unmount());
+    microApp.mountPromise.then(() => {
+      switch (microApp.getStatus()) {
+        case "MOUNTED":
+          microApp.unmount();
+          break;
+        case "UPDATING":
+          updatingPromise?.then(() => microApp.unmount());
+          break;
+        default:
+          break;
+      }
+    });
   }
 }
 
@@ -213,7 +224,7 @@ export const MicroApp = forwardRef(
         },
       );
 
-      return () => unmountMicroApp(microAppRef.current);
+      return () => unmountMicroApp(microAppRef.current, updatingPromise.current);
     }, [name]);
 
     useEffect(() => {
