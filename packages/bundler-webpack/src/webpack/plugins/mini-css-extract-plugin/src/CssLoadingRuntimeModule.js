@@ -56,7 +56,7 @@ module.exports = class CssLoadingRuntimeModule extends RuntimeModule {
 
     return Template.asString([
       `var createStylesheet = ${runtimeTemplate.basicFunction(
-        'fullhref, resolve, reject',
+        'chunkId, fullhref, resolve, reject',
         [
           'var linkTag = document.createElement("link");',
           'linkTag.rel = "stylesheet";',
@@ -113,7 +113,7 @@ module.exports = class CssLoadingRuntimeModule extends RuntimeModule {
           `var href = ${RuntimeGlobals.require}.miniCssF(chunkId);`,
           `var fullhref = ${RuntimeGlobals.publicPath} + href;`,
           'if(findStylesheet(href, fullhref)) return resolve();',
-          'createStylesheet(fullhref, resolve, reject);',
+          'createStylesheet(chunkId, fullhref, resolve, reject);',
         ])});`,
       )}`,
       withLoading
@@ -177,7 +177,7 @@ module.exports = class CssLoadingRuntimeModule extends RuntimeModule {
                   `promises.push(new Promise(${runtimeTemplate.basicFunction(
                     'resolve, reject',
                     [
-                      `var tag = createStylesheet(fullhref, ${runtimeTemplate.basicFunction(
+                      `var tag = createStylesheet(chunkId, fullhref, ${runtimeTemplate.basicFunction(
                         '',
                         [
                           'tag.as = "style";',
