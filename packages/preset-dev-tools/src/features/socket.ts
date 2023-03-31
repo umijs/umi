@@ -39,7 +39,7 @@ export { createSocket, socket } from './client';
   });
   api.addEntryCode(() => {
     return [
-      `import { createSocket } from '@@/${SOCKET_DIR_NAME}/client';createSocket()`,
+      `import { createSocket } from '@@/${SOCKET_DIR_NAME}/client';createSocket();`,
     ];
   });
   api.onDevCompileDone(({ ws: g_ws }) => {
