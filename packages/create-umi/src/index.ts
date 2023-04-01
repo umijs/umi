@@ -234,7 +234,17 @@ export default async ({
   // now husky is not supported in monorepo
   const withHusky = shouldInitGit && !inMonorepo;
 
+  // pnpm
+  let pnpmExtraNpmrc: string = '';
   const isPnpm = npmClient === ENpmClient.pnpm;
+  if (isPnpm) {
+    const pnpmMajorVersion = await getPnpmMajorVersion();
+    if (pnpmMajorVersion === 7) {
+      // suppress pnpm v7 warning ( 7.0.0 < pnpm < 7.13.5 )
+      // https://pnpm.io/npmrc#strict-peer-dependencies
+      pnpmExtraNpmrc = `strict-peer-dependencies=false`;
+    }
+  }
 
   const injectInternalTemplateFiles = async () => {
     const generator = new BaseGenerator({
@@ -250,10 +260,7 @@ export default async ({
             author,
             email,
             withHusky,
-            // suppress pnpm v7 warning
-            // No need when `pnpm` > v7.13.5 , but we are forward compatible
-            // https://pnpm.io/npmrc#strict-peer-dependencies
-            extraNpmrc: isPnpm ? `strict-peer-dependencies=false` : '',
+            extraNpmrc: isPnpm ? pnpmExtraNpmrc : '',
             pluginName,
           } satisfies ITemplateParams),
     });
@@ -338,5 +345,14 @@ async function removeHusky(opts: IContext) {
   const dir = join(opts.target, './.husky');
   if (existsSync(dir)) {
     await fsExtra.remove(dir);
+  }
+}
+
+async function getPnpmMajorVersion() {
+  try {
+    const { stdout } = await execa.execa('pnpm', ['--version']);
+    return parseInt(stdout.trim().split('.')[0], 10);
+  } catch (e) {
+    throw new Error('Please install pnpm first', { cause: e });
   }
 }
