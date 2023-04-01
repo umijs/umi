@@ -35,7 +35,12 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm
+        if: ${{ matrix.node-version != '14.x' }}
         uses: pnpm/action-setup@v2.2.4
+
+      - name: Install pnpm (node 14)
+        if: ${{ matrix.node-version == '14.x' }}
+        run: npm install -g @pnpm/exe@8.1.0
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
