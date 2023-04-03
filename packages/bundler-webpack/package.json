@@ -51,6 +51,7 @@
     "react-refresh": "0.14.0"
   },
   "devDependencies": {
+    "@modern-js/inspector-webpack-plugin": "^1.0.6",
     "@swc/core": "1.3.24",
     "@types/cors": "^2.8.13",
     "@types/webpack-bundle-analyzer": "^4.6.0",
@@ -124,6 +125,7 @@
       "webpack-sources",
       "webpackbar",
       "ws",
+      "@modern-js/inspector-webpack-plugin",
       "./bundles/webpack/bundle"
     ],
     "externals": {
@@ -185,7 +187,8 @@
       "file-loader",
       "webpack-bundle-analyzer",
       "webpack-dev-middleware",
-      "webpack-manifest-plugin"
+      "webpack-manifest-plugin",
+      "@modern-js/inspector-webpack-plugin"
     ]
   }
 }

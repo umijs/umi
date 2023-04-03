@@ -1,3 +1,4 @@
+import { InspectorWebpackPlugin } from '@modern-js/inspector-webpack-plugin';
 import CaseSensitivePaths from '@umijs/case-sensitive-paths-webpack-plugin';
 import { logger, resolve as resolveModule } from '@umijs/utils';
 import { join, resolve } from 'path';
@@ -296,6 +297,16 @@ export async function getConfig(opts: IOpts): Promise<Configuration> {
   // analyzer
   if (opts.analyze) {
     await addBundleAnalyzerPlugin(applyOpts);
+  }
+
+  // 开启 webpack-inspector
+  if (isDev) {
+    config.plugin('webpack-inspector-plugin').use(InspectorWebpackPlugin, [
+      {
+        port: 3333,
+        ignorePattern: /node_modules/,
+      },
+    ]);
   }
 
   // chain webpack

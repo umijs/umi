@@ -1380,6 +1380,7 @@ importers:
 
   packages/bundler-webpack:
     specifiers:
+      '@modern-js/inspector-webpack-plugin': ^1.0.6
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10
       '@svgr/core': 6.5.1
       '@svgr/plugin-jsx': ^6.5.1
@@ -1459,6 +1460,7 @@ importers:
       react-error-overlay: 6.0.9
       react-refresh: 0.14.0
     devDependencies:
+      '@modern-js/inspector-webpack-plugin': 1.0.6
       '@swc/core': 1.3.24
       '@types/cors': 2.8.13
       '@types/webpack-bundle-analyzer': 4.6.0_@swc+core@1.3.24
@@ -10367,6 +10369,10 @@ packages:
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
     dev: true
 
+  /@modern-js/inspector-webpack-plugin/1.0.6:
+    resolution: {integrity: sha512-QAiW00QKoSfj0Dn/J8rnXh3vq1cA1tHsTbhEOkzgtGdKlV70SZ+54aPDFjygAOrY/GurmuLLoUgPpcPKLbHAmQ==}
+    dev: true
+
   /@monaco-editor/loader/1.3.2:
     resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
     peerDependencies:
@@ -13662,6 +13668,20 @@ packages:
       - supports-color
     dev: true
 
+  /@umijs/babel-preset-umi/4.0.56:
+    resolution: {integrity: sha512-6Gx1F0yYss52zDK1Q7T+OZNFR+n9sB5EJ4PxJSh58vFWGJ66cy/TiPekUe2a8o2up0p2+3VTT/mxr4J+rPJnmA==}
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@bloomberg/record-tuple-polyfill': 0.0.4
+      '@umijs/bundler-utils': 4.0.56
+      '@umijs/utils': 4.0.56
+      babel-plugin-styled-components: 2.0.7
+      core-js: 3.28.0
+    transitivePeerDependencies:
+      - styled-components
+      - supports-color
+    dev: true
+
   /@umijs/bundler-esbuild/4.0.0-canary.20220628.2:
     resolution: {integrity: sha512-Zhb/yTIZ1EjFF4uqufAyLHIAmdnFXaiTa2gHOuH84OALoT0AQM1jVvPGHn9lLIiLwTihuAnCyds4Tt1/P8Wo7Q==}
     dependencies:
@@ -13715,6 +13735,18 @@ packages:
     resolution: {integrity: sha512-fIP2UeiHOZG4me7PLvFivJU2+PaG0EGKXkty6aevBLupiHv+4QKTZ95CPfRWuEQLHthqPXNn3EQDPxAeLblZ/w==}
     dependencies:
       '@umijs/utils': 4.0.57
+      esbuild: 0.16.17
+      regenerate: 1.4.2
+      regenerate-unicode-properties: 10.1.0
+      spdy: 4.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@umijs/bundler-utils/4.0.56:
+    resolution: {integrity: sha512-PpMTUfNZFqIBvHwGDVqWj0OKHvK9+wq5ke0t/W6I96mLru1Ic+42HfnKppariXwtxQLjsVuSIFUEyarelO4RuA==}
+    dependencies:
+      '@umijs/utils': 4.0.56
       esbuild: 0.16.17
       regenerate: 1.4.2
       regenerate-unicode-properties: 10.1.0
@@ -14605,6 +14637,13 @@ packages:
 
   /@umijs/utils/4.0.57:
     resolution: {integrity: sha512-3nsoWOY5KwjuAhw2yEQ3A91x/KyLiX2cFpxnem0AYHTFwFPY06XdtBqvF6Skg7z4Dv2G5n3qUz0EjkmYHCpEvw==}
+    dependencies:
+      chokidar: 3.5.3
+      pino: 7.11.0
+    dev: true
+
+  /@umijs/utils/4.0.56:
+    resolution: {integrity: sha512-tc5yZ9AI3wBSNgRKEhCu8spM4sWyDl5XW+4cJUZ3V1QVeuG7IytFkSvvdxrF+SIFA4Qm2dbqumsarM3ZSB+Z3A==}
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
