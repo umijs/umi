@@ -98,7 +98,7 @@ export const layout = {
 
 更多具体配置参考[插件文档](../max/layout-menu#运行时配置)。
 
-### onRouteChange(\{ routes, clientRoutes, location, action, basename \})
+### onRouteChange(\{ routes, clientRoutes, location, action, basename, isFirst \})
 
 在初始加载和路由切换时做一些事情。
 
@@ -111,6 +111,7 @@ export function onRouteChange({
   routes,
   action,
   basename,
+  isFirst,
 }) {
   bacon(location.pathname);
 }

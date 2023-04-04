@@ -1,6 +1,12 @@
 import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import type { Declaration } from '@umijs/es-module-parser';
-import { aliasUtils, importLazy, lodash, logger } from '@umijs/utils';
+import {
+  aliasUtils,
+  importLazy,
+  isJavaScriptFile,
+  lodash,
+  logger,
+} from '@umijs/utils';
 import path from 'path';
 import { addUnWatch } from '../../commands/dev/watch';
 import { IApi, IOnGenerateFiles } from '../../types';
@@ -28,8 +34,9 @@ export default (api: IApi) => {
   }
 
   async function parseProjectImportSpecifiers(br: BuildResult) {
-    const files = Object.keys(br.metafile!.inputs) || [];
-
+    const files = (Object.keys(br.metafile!.inputs) || []).filter(
+      isJavaScriptFile,
+    );
     if (files.length === 0) {
       return {};
     }

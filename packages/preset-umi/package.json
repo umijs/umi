@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-umi",
-  "version": "4.0.63",
+  "version": "4.0.64",
   "description": "@umijs/preset-umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -34,7 +34,7 @@
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
     "@umijs/did-you-know": "workspace:*",
-    "@umijs/es-module-parser": "0.0.6",
+    "@umijs/es-module-parser": "0.0.7",
     "@umijs/history": "5.3.1",
     "@umijs/mfsu": "workspace:*",
     "@umijs/plugin-run": "workspace:*",

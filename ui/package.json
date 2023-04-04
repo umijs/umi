@@ -17,7 +17,8 @@
     "dist"
   ],
   "scripts": {
-    "release": "esno ../scripts/release.ts --pkg ui",
+    "check:packageFiles": "umi-scripts checkPackageFiles",
+    "release": "tsx ../scripts/release.ts --pkg ui",
     "setup": "umi setup",
     "ui:build": "umi build",
     "ui:dev": "umi dev --ui"

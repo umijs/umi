@@ -1,7 +1,7 @@
 import type { BuildResult } from '@umijs/bundler-utils/compiled/esbuild';
 import { useQuery } from 'umi';
 
-interface IRoute {
+export interface IRoute {
   path: string;
   id: string;
   parentId?: string;

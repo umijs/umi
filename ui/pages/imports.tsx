@@ -1,5 +1,7 @@
+import { ViewButton } from '@/components/imports/ViewButton';
+import { ViewChart } from '@/components/imports/ViewChart';
+import { ViewList } from '@/components/imports/ViewList';
 import { useAppData } from '@/hooks/useAppData';
-import { ViewButton, ViewChart, ViewList } from '@/pages/imports/components';
 import { useState } from 'react';
 import { styled } from 'umi';
 

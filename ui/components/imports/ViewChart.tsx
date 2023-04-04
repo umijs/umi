@@ -30,6 +30,10 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
             type = 'circle';
             color = '#BDD2FD';
             break;
+          case 'jsx':
+            type = 'circle';
+            color = '#FBE5A2';
+            break;
           case 'ts':
             type = 'diamond';
             color = '#BDEFDB';
@@ -39,8 +43,8 @@ export const ViewChart: FC<IProps> = ({ metaFile }) => {
             color = '#FF9D4D';
             break;
           default:
-            color = '#FBE5A2';
-            type = 'triangle';
+            color = '#ecfdf5';
+            type = 'diamond';
         }
 
         const node = {
