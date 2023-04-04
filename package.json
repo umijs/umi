@@ -120,10 +120,10 @@
     "umi-scripts": "workspace:*",
     "zx": "^7.1.1"
   },
-  "packageManager": "pnpm@7.24.2",
+  "packageManager": "pnpm@8.1.0",
   "engines": {
     "node": ">=14",
-    "pnpm": ">=7"
+    "pnpm": ">=8"
   },
   "//why-overrides-browserslist": "See scripts/bundleDeps.ts",
   "pnpm": {
