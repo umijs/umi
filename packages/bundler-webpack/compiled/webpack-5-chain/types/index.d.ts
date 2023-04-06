@@ -151,12 +151,12 @@ declare namespace Config {
 
   type WebpackEntry = NonNullable<Configuration['entry']>;
 
-  type WepackEntryObject = Exclude<
+  type WebpackEntryObject = Exclude<
     WebpackEntry,
     string | string[] | Function
   >[string];
 
-  class EntryPoint extends TypedChainedSet<Config, WepackEntryObject> {}
+  class EntryPoint extends TypedChainedSet<Config, WebpackEntryObject> {}
 
   type WebpackModule = Required<NonNullable<Configuration['module']>>;
 
