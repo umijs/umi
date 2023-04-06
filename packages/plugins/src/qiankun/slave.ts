@@ -32,7 +32,7 @@ function handleOriginalHtml(
   microAppEntry: string,
   originalHtml: string,
 ) {
-  const appName = api.pkg.name;
+  const appName = api.config.qiankun?.slave?.appName || api.pkg.name;
   assert(
     appName,
     '[@umijs/plugin-qiankun]: You should have name in package.json',
