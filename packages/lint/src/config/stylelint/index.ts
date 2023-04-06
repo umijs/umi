@@ -29,6 +29,9 @@ module.exports = {
         message: 'Expected class selector to be kebab-case or lowerCamelCase',
       },
     ],
+    // to avoid conflicts with less option { math: always }
+    // ref: https://github.com/less/less-docs/blob/c8b9d33b0b4ec5fe59a4bbda11db202545741228/content/usage/less-options.md#math
+    'color-function-notation': null,
   },
   customSyntax: require.resolve('../../../compiled/postcss-less'),
   ignoreFiles: ['node_modules'],
