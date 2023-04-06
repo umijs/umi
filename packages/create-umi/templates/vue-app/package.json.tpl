@@ -8,11 +8,11 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "vue": "^3.2.36",
+    "vue": "^3.2.47",
     "umi": "{{{ version }}}"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "typescript": "^5.0.3",
     "@umijs/preset-vue": "{{{ version }}}"
   }
 }
