@@ -214,6 +214,13 @@ importers:
       zx:
         specifier: ^7.2.1
         version: 7.2.1
+    devDependencies:
+      https-proxy-agent:
+        specifier: 5.0.1
+        version: 5.0.1
+      socks-proxy-agent:
+        specifier: 7.0.0
+        version: 7.0.0
 
   did-you-know:
     devDependencies:
@@ -18210,6 +18217,7 @@ packages:
 
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
+    requiresBuild: true
 
   /commander@3.0.2:
     resolution: {integrity: sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==}

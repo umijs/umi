@@ -1,7 +1,7 @@
 import { chalk, clackPrompts, logger, resolve, yParser } from '@umijs/utils';
 import { sendMessage } from './chatgpt';
-import { SYSTEM_PROMPT } from './constants';
 import { printHelp } from './printHelp';
+import prompts from './prompts';
 const { confirm, spinner } = clackPrompts;
 
 export async function main() {
@@ -27,23 +27,53 @@ export async function main() {
   const message = args._.join(' ');
   const s = spinner();
   s.start('🕖  Hold on, asking OpenAI...');
-  const res = await sendMessage({
+
+  const commonParams = {
+    token,
+    proxyUrl: args.proxyUrl,
+  };
+
+  const commandRes = await sendMessage({
     messages: [
       {
         role: 'system',
-        content: SYSTEM_PROMPT,
+        content: prompts.commands,
       },
       {
         role: 'user',
         content: message,
       },
     ],
-    token,
-    // --proxy-url
-    proxyUrl: args.proxyUrl,
+    ...commonParams,
+  });
+  const willUseCommand: string = commandRes.data.choices[0].message.content;
+
+  if (!prompts[willUseCommand]) {
+    logger.warn(willUseCommand);
+    throw new Error('No matching command');
+  }
+
+  const questionRes = await sendMessage({
+    messages: [
+      {
+        role: 'system',
+        content: `${prompts[willUseCommand]}.无法根据要求返回命令时,给出提示`,
+      },
+      {
+        role: 'user',
+        content: message,
+      },
+    ],
+    ...commonParams,
   });
   s.stop();
-  const command = res.data.choices[0].message.content;
+  const command = questionRes.data.choices[0].message.content;
+
+  if (!/^[\w\s=\-'"{}:.]+$/.test(command)) {
+    logger.warn(command);
+    return;
+  }
+
   logger.info('The suggested command is:');
   logger.info(chalk.green(command));
 
