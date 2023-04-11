@@ -69,7 +69,8 @@ export default (api: IApi) => {
       }
       if (!isFirstTime) return;
       logger.info('Preparing...');
-      const entryFile = path.join(api.paths.absTmpPath, 'umi.ts');
+      const umiEntry = path.join(api.paths.absTmpPath, 'umi.ts');
+      const entryPoints = [umiEntry];
       const { build } = await import('./build.js');
       const watch = api.name === 'dev';
       const plugins = await api.applyPlugins({
@@ -79,8 +80,15 @@ export default (api: IApi) => {
       const unwrappedAlias = aliasUtils.parseCircleAlias({
         alias: api.config.alias,
       });
+
+      if (api.userConfig.mpa) {
+        api.appData.mpa?.entry?.forEach(({ tmpFilePath }) => {
+          entryPoints.push(path.join(api.paths.absTmpPath, tmpFilePath));
+        });
+      }
+
       const buildResult = await build({
-        entryPoints: [entryFile],
+        entryPoints,
         watch: watch && {
           async onRebuildSuccess({ result }) {
             const fileImports = await parseProjectImportSpecifiers(result);
