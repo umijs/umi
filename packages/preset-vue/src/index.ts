@@ -5,8 +5,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'vue',
     config: {
-      schema(joi) {
-        return joi.object();
+      schema({ zod }) {
+        return zod.object({});
       },
       default: {},
     },

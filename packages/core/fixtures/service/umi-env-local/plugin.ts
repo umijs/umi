@@ -5,7 +5,7 @@ export default (api: any) => {
         id: `virtual: test-${key}`,
         key,
         config: {
-          schema: (Joi: any) => Joi.any(),
+          schema: ({ zod }: any) => zod.any(),
         }
       },
     ]);
