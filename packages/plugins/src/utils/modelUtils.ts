@@ -1,8 +1,13 @@
+import { prettyPrintEsBuildErrors } from '@umijs/bundler-utils';
 import * as Babel from '@umijs/bundler-utils/compiled/babel/core';
 import * as parser from '@umijs/bundler-utils/compiled/babel/parser';
 import traverse from '@umijs/bundler-utils/compiled/babel/traverse';
 import * as t from '@umijs/bundler-utils/compiled/babel/types';
-import { Loader, transformSync } from '@umijs/bundler-utils/compiled/esbuild';
+import {
+  Loader,
+  transformSync,
+  type TransformResult,
+} from '@umijs/bundler-utils/compiled/esbuild';
 import { readFileSync } from 'fs';
 import { basename, dirname, extname, format, join, relative } from 'path';
 import { IApi } from 'umi';
@@ -176,18 +181,29 @@ export class ModelUtils {
       return true;
     }
 
-    // transform with esbuild first
-    // to reduce unexpected ast problem
-    const loader = extname(file).slice(1) as Loader;
-    const result = transformSync(content, {
-      loader,
-      sourcemap: false,
-      minify: false,
-    });
+    let result: TransformResult | null = null;
+    try {
+      // transform with esbuild first
+      // to reduce unexpected ast problem
+      const ext = extname(file).slice(1);
+      const loader = ext === 'js' ? 'jsx' : (ext as Loader);
+      result = transformSync(content, {
+        loader,
+        sourcemap: false,
+        minify: false,
+        sourcefile: file,
+      });
+    } catch (e: any) {
+      if (e.errors?.length) {
+        prettyPrintEsBuildErrors(e.errors, { path: file, content });
+        delete e.errors;
+      }
+      throw e;
+    }
 
     // transform with babel
     let ret = false;
-    const ast = parser.parse(result.code, {
+    const ast = parser.parse(result!.code, {
       sourceType: 'module',
       sourceFilename: file,
       plugins: [],
