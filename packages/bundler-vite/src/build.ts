@@ -103,11 +103,6 @@ export async function build(opts: IOpts): Promise<void> {
       root: opts.cwd,
       mode: Env.production,
       build: {
-        // generate assets to publicPath dir
-        assetsDir: path.relative(
-          '/',
-          path.join('/', opts.config.publicPath || ''),
-        ),
         rollupOptions: tmpHtmlEntry
           ? // first use entry from options
             {
