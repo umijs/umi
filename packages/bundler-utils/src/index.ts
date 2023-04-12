@@ -57,7 +57,7 @@ type Errors = {
   text: string;
 }[];
 
-function prettyPrintEsBuildErrors(
+export function prettyPrintEsBuildErrors(
   errors: Errors = [],
   opts: { content: string; path: string },
 ) {
