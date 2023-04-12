@@ -5,6 +5,7 @@ import {
 } from '@umijs/bundler-utils/compiled/express';
 import {
   createProxyMiddleware,
+  Options,
   // @ts-ignore 现在打包好的 http-proxy-middleware 有导出 responseInterceptor，但没有导出声明
   responseInterceptor,
 } from '@umijs/bundler-utils/compiled/http-proxy-middleware';
@@ -302,6 +303,13 @@ export { MicroAppLink } from './MicroAppLink';
           key: 'onLocalProxyStart',
           type: api.ApplyPluginsType.event,
         });
+
+        const modifyLocalProxyOpts = ((await api.applyPlugins({
+          key: 'modifyLocalProxyOpts',
+          type: api.ApplyPluginsType.modify,
+          initialValue: {},
+        })) ?? {}) as Partial<Options>;
+
         return createProxyMiddleware(
           (pathname) => pathname !== '/local-dev-server',
           {
@@ -311,6 +319,7 @@ export { MicroAppLink } from './MicroAppLink';
             followRedirects: false,
             changeOrigin: true,
             selfHandleResponse: true,
+            ...modifyLocalProxyOpts,
             onProxyReq(proxyReq) {
               api.applyPlugins({
                 key: 'onLocalProxyReq',
