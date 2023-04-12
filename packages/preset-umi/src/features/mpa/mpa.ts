@@ -42,7 +42,7 @@ export default (api: IApi) => {
   api.onGenerateFiles(async ({ isFirstTime }) => {
     // Config HMR
     if (!isFirstTime) {
-      api.appData.mpa.entry = await collectEntryWithTimeCount(
+      api.appData.mpa!.entry = await collectEntryWithTimeCount(
         api.paths.absPagesPath,
         api.config.mpa,
         api.userConfig.mountElementId,
@@ -50,7 +50,7 @@ export default (api: IApi) => {
     }
 
     const isReact18 = api.appData.react.version.startsWith('18.');
-    (api.appData.mpa.entry as Entry[]).forEach((entry) => {
+    (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       const layout = entry.layout || api.config.mpa.layout;
       const layoutImport = layout ? `import Layout from '${layout}';` : '';
       const layoutJSX = layout ? `<Layout><App /></Layout>` : `<App />`;
@@ -89,14 +89,14 @@ ${renderer}
 
   api.modifyEntry((memo) => {
     if ('umi' in memo) delete memo['umi'];
-    (api.appData.mpa.entry as Entry[]).forEach((entry) => {
+    (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       memo[entry.name] = join(api.paths.absTmpPath, entry.tmpFilePath);
     });
     return memo;
   });
 
   api.chainWebpack((memo) => {
-    (api.appData.mpa.entry as Entry[]).forEach((entry) => {
+    (api.appData.mpa!.entry as Entry[]).forEach((entry) => {
       memo.plugin(`html-${entry.name}`).use(require('html-webpack-plugin'), [
         {
           filename: `${entry.name}.html`,

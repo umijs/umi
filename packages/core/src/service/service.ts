@@ -55,6 +55,9 @@ export class Service {
       buildResult: BuildResult;
       fileImports?: Record<string, Declaration[]>;
     };
+    mpa?: {
+      entry?: { [key: string]: string }[];
+    };
     [key: string]: any;
   } = {};
   args: yParser.Arguments = { _: [], $0: '' };
