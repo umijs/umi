@@ -43,6 +43,7 @@
     "esbuild": "0.12.15",
     "jest-worker": "24.9.0",
     "prettier": "2.2.1",
+    "regenerate": "1.4.2",
     "regenerate-unicode-properties": "10.0.1"
   },
   "devDependencies": {
