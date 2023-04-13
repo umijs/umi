@@ -304,6 +304,7 @@ export { MicroAppLink } from './MicroAppLink';
           type: api.ApplyPluginsType.event,
         });
 
+        // 新增一个 modifyLocalProxyOpts 事件，支持用户自定义本地 proxy 代理参数
         const modifyLocalProxyOpts = ((await api.applyPlugins({
           key: 'modifyLocalProxyOpts',
           type: api.ApplyPluginsType.modify,
@@ -336,14 +337,23 @@ export { MicroAppLink } from './MicroAppLink';
                 res: any,
               ) => {
                 if (proxyRes.statusCode === 302) {
-                  const hostname = (req as Request).hostname;
+                  // 应该使用原始请求的 goto 链接，而非 masterEntry
+                  const { hostname, url, protocol } = req as Request;
                   const port = process.env.PORT || api.appData?.port;
-                  const goto = `${hostname}:${port}`;
-                  const redirectUrl =
-                    proxyRes.headers.location!.replace(
-                      encodeURIComponent(new URL(masterEntry).hostname),
-                      encodeURIComponent(goto),
-                    ) || masterEntry;
+                  const goto = `${protocol}://${hostname}:${port}${
+                    url ? url : ''
+                  }`;
+
+                  const locationUrl = proxyRes.headers.location || '';
+                  // 只替换 search 参数的部分
+                  const [originAndPath, searchParams] = locationUrl.split('?');
+                  const searchHandled = searchParams
+                    ? `?${searchParams.replace(
+                        encodeURIComponent(masterEntry),
+                        encodeURIComponent(goto),
+                      )}`
+                    : '';
+                  const redirectUrl = `${originAndPath}${searchHandled}`;
 
                   const redirectMessage = `[@umijs/plugin-qiankun]: redirect to ${redirectUrl}`;
 
