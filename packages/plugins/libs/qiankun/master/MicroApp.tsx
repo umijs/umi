@@ -3,6 +3,7 @@
 __USE_MODEL__;
 import concat from 'lodash/concat';
 import mergeWith from 'lodash/mergeWith';
+import isEqual from "lodash/isEqual";
 import noop from 'lodash/noop';
 import {
   FrameworkConfiguration,
@@ -62,6 +63,15 @@ function unmountMicroApp(microApp?: MicroAppType) {
   if (microApp) {
     microApp.mountPromise.then(() => microApp.unmount());
   }
+}
+
+function useDeepCompare<T>(value: T): T {
+  const ref = useRef<T>(value);
+  if (!isEqual(value, ref.current)) {
+    ref.current = value;
+  }
+
+  return ref.current;
 }
 
 let noneMounted = true;
@@ -266,7 +276,7 @@ export const MicroApp = forwardRef(
       }
 
       return noop;
-    }, Object.values({ ...stateForSlave, ...propsFromParams }));
+    }, [useDeepCompare({ ...stateForSlave, ...propsFromParams })]);
 
     // 未配置自定义 loader 且开启了 autoSetLoading 场景下，使用插件默认的 loader，否则使用自定义 loader
     const microAppLoader =
