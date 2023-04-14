@@ -135,10 +135,24 @@ export default (api: IApi) => {
     }
     const localIconDir = getLocalIconDir();
     const localIcons: string[] = [];
+    const readdirSync = (dir: string, filelist?: string[]) => {
+      const files = fs.readdirSync(dir);
+      filelist = filelist || [];
+
+      files.forEach(function (file) {
+        if (fs.statSync(path.join(dir, file)).isDirectory()) {
+          filelist = readdirSync(path.join(dir, file), filelist);
+        } else {
+          filelist!.push(path.join(dir, file));
+        }
+      });
+
+      return filelist;
+    };
+
     if (fs.existsSync(localIconDir)) {
       localIcons.push(
-        ...fs
-          .readdirSync(localIconDir)
+        ...readdirSync(localIconDir)
           .filter((file) => file.endsWith('.svg'))
           .map((file) => file.replace(/\.svg$/, '')),
       );
@@ -380,7 +394,7 @@ function normalizeRotate(rotate: number | string) {
 }
 
 function camelCase(str: string) {
-  return str.replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
+  return str.replace(/\\//g, '').replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
 }
 
 function normalizeIconName(name: string) {

@@ -105,6 +105,6 @@ export default defineConfig({
     jsStrategy: 'granularChunks',
   },
   icons: {
-    include: ['local:rice', 'ant-design:fire-twotone'],
+    include: ['local:rice', 'local:logo/umi', 'ant-design:fire-twotone'],
   },
 });

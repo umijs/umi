@@ -13,7 +13,7 @@ import { Button, DatePicker, Input } from 'antd';
 import styles from './index.less';
 console.log(TestDecorator);
 
-const icons = ['local:rice', 'ant-design:fire-twotone'];
+const icons = ['local:rice', 'local:logo/umi', 'ant-design:fire-twotone'];
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
