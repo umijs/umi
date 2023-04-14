@@ -394,7 +394,7 @@ function normalizeRotate(rotate: number | string) {
 }
 
 function camelCase(str: string) {
-  return str.replace(/\\//g, '').replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase());
+  return str.replace(/\\//g, '').replace(/-([a-z]|[1-9])/g, (g) => g[1].toUpperCase()).replace(/-/g, "");
 }
 
 function normalizeIconName(name: string) {
