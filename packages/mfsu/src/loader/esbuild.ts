@@ -17,12 +17,20 @@ async function esbuildTranspiler(
   const transform = implementation?.transform || transformInternal;
 
   const filePath = this.resourcePath;
-  const ext = extname(filePath).slice(1) as EsbuildLoader;
+  const ext = extname(filePath).slice(1);
+
+  let loader = ext ?? 'default';
+
+  if (ext === 'cjs' || ext === 'mjs') {
+    loader = 'js';
+  } else if (ext === 'mts' || ext === 'cts') {
+    loader = 'ts';
+  }
 
   const transformOptions = {
     ...otherOptions,
     target: options.target ?? 'es2015',
-    loader: ext ?? 'js',
+    loader: loader as EsbuildLoader,
     sourcemap: this.sourceMap,
     sourcefile: filePath,
   };
