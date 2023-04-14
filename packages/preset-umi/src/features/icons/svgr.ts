@@ -6,9 +6,8 @@ import { loadIcon } from './loadIcon';
 
 function camelCase(str: string) {
   return str
-    .replace(/\//g, '')
-    .replace(/-([a-z]|[0-9])/g, (g) => g[1].toUpperCase())
-    .replace(/-/g, '');
+    .replace(/\//g, '-')
+    .replace(/-([a-z]|[0-9])/g, (g) => g[1].toUpperCase());
 }
 
 export function generateIconName(opts: { collect: string; icon: string }) {
