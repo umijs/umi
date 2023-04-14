@@ -13,7 +13,7 @@ export default (api: IApi) => {
             scope: zod.array(zod.string()),
             allowEmoji: zod.boolean(),
           })
-          .optional();
+          .deepPartial();
       },
     },
   });
