@@ -311,16 +311,20 @@ export { MicroAppLink } from './MicroAppLink';
           initialValue: {},
         })) ?? {}) as Partial<Options>;
 
+        const localProxyOpts: Partial<Options> = {
+          target: masterEntry,
+          secure: false,
+          ignorePath: false,
+          followRedirects: false,
+          changeOrigin: true,
+          selfHandleResponse: true,
+          ...modifyLocalProxyOpts,
+        };
+
         return createProxyMiddleware(
           (pathname) => pathname !== '/local-dev-server',
           {
-            target: masterEntry,
-            secure: false,
-            ignorePath: false,
-            followRedirects: false,
-            changeOrigin: true,
-            selfHandleResponse: true,
-            ...modifyLocalProxyOpts,
+            ...localProxyOpts,
             onProxyReq(proxyReq) {
               api.applyPlugins({
                 key: 'onLocalProxyReq',
@@ -337,24 +341,26 @@ export { MicroAppLink } from './MicroAppLink';
                 res: any,
               ) => {
                 if (proxyRes.statusCode === 302) {
+                  const { ignorePath = false } = localProxyOpts;
                   // 应该使用原始请求的 goto 链接，而非 masterEntry
                   const { hostname, url, protocol } = req as Request;
                   const port = process.env.PORT || api.appData?.port;
-                  const goto = `${protocol}://${hostname}:${port}${
-                    url ? url : ''
+                  // 如果代理时忽略了 path，则需要把原始请求的 path 拼接到 gotoBasePart 上
+                  const gotoBasePart = `${protocol}://${hostname}:${port}/${
+                    ignorePath && url ? url : ''
                   }`;
-
+                  const fromBasePart = masterEntry;
                   const locationUrl = proxyRes.headers.location || '';
                   // 只替换 search 参数的部分
                   const [originAndPath, searchParams] = locationUrl.split('?');
+                  // 替换时只用替换 url base part 部分
                   const searchHandled = searchParams
                     ? `?${searchParams.replace(
-                        encodeURIComponent(masterEntry),
-                        encodeURIComponent(goto),
+                        encodeURIComponent(fromBasePart),
+                        encodeURIComponent(gotoBasePart),
                       )}`
                     : '';
                   const redirectUrl = `${originAndPath}${searchHandled}`;
-
                   const redirectMessage = `[@umijs/plugin-qiankun]: redirect to ${redirectUrl}`;
 
                   api.logger.info(redirectMessage);
