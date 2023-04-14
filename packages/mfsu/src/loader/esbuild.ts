@@ -7,6 +7,9 @@ import { extname } from 'path';
 import type { LoaderContext } from 'webpack';
 import type { IEsbuildLoaderOpts } from '../types';
 
+const MCJS_REGEXP = /(m|c)js$/;
+const MCTS_REGEXP = /(m|c)ts$/;
+
 async function esbuildTranspiler(
   this: LoaderContext<IEsbuildLoaderOpts>,
   source: string,
@@ -21,9 +24,9 @@ async function esbuildTranspiler(
 
   let loader = ext ?? 'default';
 
-  if (ext === 'cjs' || ext === 'mjs') {
+  if (MCJS_REGEXP.test(ext)) {
     loader = 'js';
-  } else if (ext === 'mts' || ext === 'cts') {
+  } else if (MCTS_REGEXP.test(ext)) {
     loader = 'ts';
   }
 
