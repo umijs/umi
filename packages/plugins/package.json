@@ -14,7 +14,7 @@
   "files": [
     "dist",
     "libs",
-    "tpls"
+    "templates"
   ],
   "scripts": {
     "build": "umi-scripts father build",
