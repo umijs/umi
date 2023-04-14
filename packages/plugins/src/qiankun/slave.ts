@@ -346,8 +346,8 @@ export { MicroAppLink } from './MicroAppLink';
                   const { hostname, url, protocol } = req as Request;
                   const port = process.env.PORT || api.appData?.port;
                   // 如果代理时忽略了 path，则需要把原始请求的 path 拼接到 gotoBasePart 上
-                  const gotoBasePart = `${protocol}://${hostname}:${port}/${
-                    ignorePath && url ? url : ''
+                  const gotoBasePart = `${protocol}://${hostname}:${port}${
+                    ignorePath && url ? url : '/'
                   }`;
                   const fromBasePart = masterEntry;
                   const locationUrl = proxyRes.headers.location || '';
