@@ -13,6 +13,12 @@ import { Button, DatePicker, Input } from 'antd';
 import styles from './index.less';
 console.log(TestDecorator);
 
+const includedIcons = [
+  'local:rice',
+  'local:logo/umi',
+  'ant-design:fire-twotone',
+];
+
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
   console.log('initialState', initialState);
@@ -43,10 +49,10 @@ export default function HomePage() {
 
       <h2> Icons</h2>
       <div>
-        <Icon icon="local:rice" />
-        <Icon icon="local:logo/umi" />
+        {includedIcons.map((i) => {
+          return <Icon icon={i} key={i} />;
+        })}
         <Icon icon="local:logo/foo/smile" />
-        <Icon icon="ant-design:fire-twotone" />
       </div>
     </div>
   );
