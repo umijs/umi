@@ -6,9 +6,9 @@ import { IApi } from '../../types';
 import {
   ETempDir,
   GeneratorHelper,
-  type IArgsComponent,
   processGenerateFiles,
   tryEject,
+  type IArgsComponent,
 } from './utils';
 
 export default (api: IApi) => {
@@ -85,22 +85,12 @@ export class ComponentGenerator {
     );
     const { _, eject: _eject, fallback, ...restArgs } = args;
 
-    const indexFile = join(base, 'index.ts');
-    const compFile = join(base, `${capitalizeName}.tsx`);
-
     await processGenerateFiles({
       filesMap: [
         {
-          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'index'),
-          fromFallback: INDEX_TPL,
-          to: indexFile,
-          exts: ['.ts.tpl', '.ts', 'tsx.tpl', 'tsx'],
-        },
-        {
-          from: join(appRoot, USER_TEMPLATE_COMP_DIR, 'component'),
-          fromFallback: COMP_TPL,
-          to: compFile,
-          exts: ['.tsx.tpl', '.tsx'],
+          from: join(appRoot, USER_TEMPLATE_COMP_DIR),
+          fromFallback: COMP_TEMPLATE_DIR,
+          to: base,
         },
       ],
       baseDir: appRoot,
@@ -115,6 +105,5 @@ export class ComponentGenerator {
   }
 }
 
-const INDEX_TPL = join(TEMPLATES_DIR, 'generate/component/index.ts.tpl');
-const COMP_TPL = join(TEMPLATES_DIR, 'generate/component/component.tsx.tpl');
+const COMP_TEMPLATE_DIR = join(TEMPLATES_DIR, 'generate/component');
 const USER_TEMPLATE_COMP_DIR = 'templates/component';
