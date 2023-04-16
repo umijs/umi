@@ -213,7 +213,7 @@ $umi g component foo --msg "Hello World"
 
 自定义组件模板可以省略 `.tpl` 后缀名。你可以将 `index.ts.tpl` 简写为 `index.ts`，`component.tsx.tpl` 简写为 `component.tsx`。
 
-组件生成器将生成与您的自定义模板文件夹相匹配的组件内容，你可以根据需要添加更多的自定义模板文件。
+组件生成器将生成与你的自定义模板文件夹相一致的内容，你可以根据需要添加更多的自定义模板文件。
 
 ##### 预设变量
 
