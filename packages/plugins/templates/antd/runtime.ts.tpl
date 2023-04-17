@@ -13,21 +13,29 @@ import {
 import { ApplyPluginsType } from 'umi';
 import { getPluginManager } from '../core/plugin';
 
+let cacheAntdConfig = null;
+
+const getAntdConfig = () => {
+  if(!cacheAntdConfig){
+    cacheAntdConfig = getPluginManager().applyPlugins({
+      key: 'antd',
+      type: ApplyPluginsType.modify,
+      initialValue: {
+  {{#configProvider}}
+        ...{{{configProvider}}},
+  {{/configProvider}}
+  {{#appConfig}}
+        appConfig: {{{appConfig}}},
+  {{/appConfig}}
+      },
+    });
+  }
+  return cacheAntdConfig;
+}
+
 export function rootContainer(rawContainer) {
-  const finalConfigProvider = getPluginManager().applyPlugins({
-    key: 'antd',
-    type: ApplyPluginsType.modify,
-    initialValue: {
-{{#configProvider}}
-      ...{{{configProvider}}},
-{{/configProvider}}
-    },
-  });
-
+  const finalConfigProvider = getAntdConfig();
   let container = rawContainer;
-
-
-
 {{#configProvider}}
   if (finalConfigProvider.prefixCls) {
     Modal.config({
@@ -59,15 +67,7 @@ export function rootContainer(rawContainer) {
 export function innerProvider(container: any) {
   const {
     appConfig: finalAppConfig = {},
-  } = getPluginManager().applyPlugins({
-    key: 'antd',
-    type: ApplyPluginsType.modify,
-    initialValue: {
-{{#appConfig}}
-      appConfig: {{{appConfig}}},
-{{/appConfig}}
-    },
-  });
+  } = getAntdConfig();
   return <App {...finalAppConfig}>{container}</App>;
 }
 {{/appConfig}}
