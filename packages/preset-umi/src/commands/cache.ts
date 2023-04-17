@@ -28,7 +28,7 @@ umi cache ls [--depth <depth>]
           number: depth + 1,
         });
         const tree: any = {};
-        const str = `[${dirObj.size}kb] node_modules/.cache`;
+        const str = `[${getSize(dirObj.size)}] node_modules/.cache`;
         tree[str] = dirObj.tree;
         console.log(treeify.asTree(tree, true, true));
       }
@@ -73,7 +73,7 @@ function getDirectorySize({
       const fileSize = Math.floor(stats.size / 1024);
       obj.size += fileSize;
       if (obj.tree) {
-        obj.tree[`[${fileSize}kb] ${file}`] = null;
+        obj.tree[`[${getSize(fileSize)}] ${file}`] = null;
       }
     } else if (stats.isDirectory()) {
       const objChild = getDirectorySize({
@@ -83,11 +83,18 @@ function getDirectorySize({
         name: file,
       });
       if (obj.tree) {
-        obj.tree[`[${objChild.size}kb] ${file}`] = objChild.tree;
+        obj.tree[`[${getSize(objChild.size)}] ${file}`] = objChild.tree;
       }
       obj.size += objChild.size;
     }
   });
 
   return obj;
+}
+
+function getSize(size: number) {
+  if (size > 1024) {
+    return `${(size / 1024).toFixed(2)}MB`;
+  }
+  return `${size}KB`;
 }
