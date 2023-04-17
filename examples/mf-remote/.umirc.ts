@@ -5,10 +5,6 @@ const shared = {
     singleton: true,
     eager: true,
   },
-  'react-dom': {
-    singleton: true,
-    eager: true,
-  },
 };
 
 const moduleFederationName = 'remoteCounter';
