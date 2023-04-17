@@ -6,13 +6,18 @@ export default (api: IApi) => {
   api.describe({
     key: 'clickToComponent',
     config: {
-      schema(joi) {
-        return joi.object({
-          editor: joi.string(),
+      schema({ zod }) {
+        return zod.object({
+          editor: zod
+            .string()
+            .describe(
+              '默认情况下，点击将默认编辑器为vscode, 你可以设置编辑器 vscode 或者 vscode-insiders',
+            )
+            .optional(),
         });
       },
     },
-    enableBy: api.EnableBy.config,
+    enableBy: api.env === 'development' ? api.EnableBy.config : () => false,
   });
 
   const pkgPath = dirname(require.resolve('click-to-react-component'));

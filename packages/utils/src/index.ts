@@ -41,6 +41,7 @@ export * from './getCorejsVersion';
 export * from './getDevBanner';
 export * as git from './getFileGitIno';
 export * from './importLazy';
+export * from './isJavaScriptFile';
 export * from './isLocalDev';
 export * from './isMonorepo';
 export * from './isStyleFile';
@@ -52,7 +53,6 @@ export * from './setNoDeprecation';
 export * from './tryPaths';
 export * from './winPath';
 export * from './zod/isZodSchema';
-export * from './zod/zod2string';
 export {
   address,
   axios,

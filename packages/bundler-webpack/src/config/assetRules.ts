@@ -12,7 +12,7 @@ interface IOpts {
 export async function addAssetRules(opts: IOpts) {
   const { config, userConfig } = opts;
 
-  const inlineLimit = parseInt(userConfig.inlineLimit || '10000', 10);
+  const inlineLimit = userConfig.inlineLimit;
   const rule = config.module.rule('asset');
 
   rule

@@ -82,7 +82,34 @@ Umi 4 使用 react-router v6 ，通过 `<Outlet />` 展示嵌套路由内容，�
 
 ## 怎么用 WebAssembly
 
-借助 webpack5 的原生 wasm 加载特性，需要针对 wasm 配置，一个实例可参见：[discussions/8541](https://github.com/umijs/umi/discussions/8541)
+配置如下：
+
+```ts
+// .umirc.ts
+
+export default {
+  chainWebpack(config) {
+    config.set('experiments', {
+      ...config.get('experiments'),
+      asyncWebAssembly: true
+    })
+
+    const REG = /\.wasm$/
+
+    config.module.rule('asset').exclude.add(REG).end();
+
+    config.module
+      .rule('wasm')
+      .test(REG)
+      .exclude.add(/node_modules/)
+      .end()
+      .type('webassembly/async')
+      .end()
+  },
+}
+```
+
+一个实际例子可参见：[discussions/8541](https://github.com/umijs/umi/discussions/8541)
 
 ## 怎么自定义 loader
 
@@ -102,6 +129,20 @@ Umi 4 使用 react-router v6 ，通过 `<Outlet />` 展示嵌套路由内容，�
 // .umirc.ts
 export default {
   extraBabelIncludes: ['your-pkg-name']
+}
+```
+
+## npm link 的包不热更新怎么解决
+
+Umi 4 默认开启 `mfsu` ，默认忽略 `node_modules` 的变化，配置从 `mfsu` 排除该包即可：
+
+```ts
+// .umirc.ts
+
+export default {
+  mfsu: {
+    exclude: ['package-name']
+  },
 }
 ```
 
@@ -150,4 +191,12 @@ export default {
   cssMinifier: 'cssnano'
 }
 ```
+
+## devServer 选项怎么配置
+
+Umi 4 不再支持配置 `devServer` 选项，但你可以通过以下方式找到替代：
+
+1. [`proxy`](../api/config#proxy) 选项配置代理，可通过 `onProxyReq` 修改请求头信息，可参考 [#10760](https://github.com/umijs/umi/issues/10760#issuecomment-1471158059) 。
+
+2. 编写 [项目级插件](../guides/use-plugins#项目级插件) ，插入 express 中间件以实现对请求的修改，可参考 [#10060](https://github.com/umijs/umi/issues/10060#issuecomment-1471519707) 。
 

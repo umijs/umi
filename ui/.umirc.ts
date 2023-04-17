@@ -4,7 +4,8 @@ export default {
     '@umijs/plugins/dist/styled-components',
     '@umijs/plugins/dist/react-query',
   ],
-
+  publicPath: '/__umi_ui/entry/',
+  base: '/__umi_ui/entry',
   styledComponents: {},
   reactQuery: {},
   valtio: {},

@@ -155,9 +155,10 @@ export default {
 };
 ```
 
-`qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
+配置好后，子应用的路由 base 会在运行时被设置为主应用中配置的 `path`。
+例如，在上面的配置中，我们指定了 app1 关联的 path 为 `/app1/project`，假如 app1 里有一个路由配置为 `/user`，当我们想在父应用中访问 `/user` 对应的页面时，浏览器的 url 需要是 `base + /user`，即 `/app1/project/user` 路径，否则子应用会因为无法匹配到正确的路由而渲染空白或404页面。
 
-此外，使用 `microApp` 字段引入的子应用路由将基于当前的父应用路由。例如，若父应用路由为 `/app1/project/info`，子应用 `app1` 的路由将自动设为 `/info`。
+`qiankun` 插件拓展了 Umi 原有的路由对象，新增了 `microApp` 字段，它的值为注册子应用的 `name`。切换到对应路由后，Umi 将会使用 `<MicroApp />` 组件渲染此子应用，并替换原来路由的 `component`。
 
 拓展后的 Umi 路由对象 API [可见此](#route)。
 
@@ -173,7 +174,7 @@ export default {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" />;
 };
 ```
@@ -185,7 +186,7 @@ export default () => {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" base="/prefix/router-path" />
 };
 ```
@@ -204,7 +205,7 @@ export default () => {
 ```tsx
 import { MicroAppWithMemoHistory } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroAppWithMemoHistory name="app2" url="/some/page" />;
 };
 ```
@@ -217,7 +218,7 @@ export default () => {
 // 在 app1 中
 import { MicroAppLink } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <>
       {/* 跳转链接为 /app2/home */}
@@ -235,7 +236,7 @@ export default () => {
 // 在 app2 中
 import { MicroAppLink } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <>
       {/* 跳转链接为 /app1/project/home */}
@@ -253,7 +254,7 @@ export default () => {
 // 在子应用中
 import { MicroAppLink } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <>
       {/* 跳转链接为 /table */}
@@ -288,7 +289,7 @@ Qiankun 在 single-spa 的基础上实现了一些额外的生命钩子。按照
 import React, { useRef } from 'react';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   const microAppRef = useRef();
 
   // 执行此方法时，更新子应用
@@ -379,7 +380,7 @@ export function useQiankunStateForSlave() {
 import React, { useState } from 'react';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   const [globalState, setGlobalState] = useState<any>({
     slogan: 'Hello MicroFrontend',
   });
@@ -401,7 +402,7 @@ export default () => {
 ```tsx
 import { useModel } from 'umi';
 
-export default () => {
+export default function Page() {
   const masterProps = useModel('@@qiankunStateFromMaster');
   return <div>{JSON.stringify(masterProps)}</div>;
 };
@@ -503,7 +504,7 @@ export default {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" autoSetLoading />;
 };
 ```
@@ -537,7 +538,7 @@ export default {
 import CustomLoader from '@/components/CustomLoader';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <MicroApp
       name="app1"
@@ -579,7 +580,7 @@ export default {
 ```tsx
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return <MicroApp name="app1" autoCaptureError />;
 };
 ```
@@ -588,32 +589,13 @@ export default () => {
 
 如果您没有使用 antd 作为项目组件库，或希望覆盖默认的错误捕获组件样式时，可以设置一个自定义的组件 `errorBoundary` 作为子应用的错误捕获组件。
 
-如果通过路由的模式引入子应用，可以配置如下：
-
-```tsx
-// .umirc.ts
-import CustomErrorBoundary from '../src/components/CustomErrorBoundary';
-
-export default {
-  routes: [
-    {
-      path: '/app1',
-      microApp: 'app1',
-      microAppProps: {
-        errorBoundary: (error) => <CustomErrorBoundary error={error} />,
-      },
-    },
-  ],
-};
-```
-
-如果通过组件的模式引入子应用，直接将 `errorBoundary` 作为参数传入即可：
+通过组件的模式引入子应用，将 `errorBoundary` 作为参数传入即可：
 
 ```tsx
 import CustomErrorBoundary from '@/components/CustomErrorBoundary';
 import { MicroApp } from 'umi';
 
-export default () => {
+export default function Page() {
   return (
     <MicroApp
       name="app1"
@@ -723,3 +705,26 @@ export default {
 | `errorBoundary` | 否 | 自定义的微应用错误捕获组件 | `(error: any) => React.ReactNode` | `undefined` |
 | `className` | 否 | 微应用的样式类 | `string` | `undefined` |
 | `wrapperClassName` | 否 | 包裹微应用加载组件、错误捕获组件和微应用的样式类，仅在启用加载组件或错误捕获组件时有效 | `string` | `undefined` |
+
+
+## FAQ
+
+### 子应用的生命周期钩子加载了，但是页面没有渲染
+如果页面没有报错，且通过查看 DOM 发现子应用的根节点已经有了，只是内容是空，这种基本可以确定是因为当前 url 没有匹配到子应用的任何路由导致的。
+
+比如我们在主应用中配置了：
+```js
+{
+  path: '/app1',
+  microApp: 'app1',
+}
+```
+子应用的路由配置是：
+```js
+{
+  path: '/user',
+  component: './User',
+}
+```
+那么我们必须通过 `/app1/user` 路径才能正常的访问到子应用的 user 页面。
+

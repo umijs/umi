@@ -1,4 +1,4 @@
-import { CodeBlock } from '@/components/CodeBlock';
+import { PluginList } from '@/components/plugin/PluginList';
 import { useAppData } from '@/hooks/useAppData';
 
 export default function Page() {
@@ -6,10 +6,7 @@ export default function Page() {
   if (!data) return <div>Loading...</div>;
   return (
     <div>
-      <h2>Plugins</h2>
-      <pre>
-        <CodeBlock code={data.plugins} />
-      </pre>
+      <PluginList plugins={data.plugins} />
     </div>
   );
 }

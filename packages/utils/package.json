@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "4.0.0-canary.20230309.4",
+  "version": "4.0.65",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/utils#readme",
   "bugs": "https://github.com/umijs/umi/issues",
   "repository": {
@@ -38,6 +38,7 @@
     "@types/prompts": "^2.4.2",
     "@types/rimraf": "3.0.2",
     "@types/semver": "7.3.13",
+    "@types/tar": "6.1.4",
     "@types/yargs-parser": "21.0.0",
     "address": "1.1.2",
     "axios": "0.27.2",
@@ -66,6 +67,7 @@
     "rimraf": "3.0.2",
     "semver": "7.3.8",
     "strip-ansi": "7.0.1",
+    "tar": "6.1.13",
     "tsconfig-paths": "4.1.2",
     "yargs-parser": "21.1.1",
     "zod": "3.20.6"
@@ -107,7 +109,8 @@
       "magic-string",
       "@ampproject/remapping",
       "tsconfig-paths",
-      "zod"
+      "zod",
+      "tar"
     ],
     "externals": {
       "address": "$$LOCAL",

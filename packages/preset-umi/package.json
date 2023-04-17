@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-umi",
-  "version": "4.0.0-canary.20230309.4",
+  "version": "4.0.65",
   "description": "@umijs/preset-umi",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-umi#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -35,12 +35,15 @@
     "@umijs/bundler-webpack": "workspace:*",
     "@umijs/core": "workspace:*",
     "@umijs/did-you-know": "workspace:*",
+    "@umijs/es-module-parser": "0.0.7",
     "@umijs/history": "5.3.1",
     "@umijs/mfsu": "workspace:*",
     "@umijs/plugin-run": "workspace:*",
     "@umijs/renderer-react": "workspace:*",
     "@umijs/server": "workspace:*",
+    "@umijs/ui": "workspace:*",
     "@umijs/utils": "workspace:*",
+    "@umijs/zod2ts": "workspace:*",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "click-to-react-component": "^1.0.8",
     "core-js": "3.28.0",
@@ -69,7 +72,7 @@
     "multer": "1.4.4",
     "os-locale": "^6.0.2",
     "sirv": "2.0.2",
-    "vite": "4.1.4"
+    "vite": "4.2.0"
   },
   "publishConfig": {
     "access": "public"

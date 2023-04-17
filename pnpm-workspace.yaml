@@ -3,6 +3,7 @@ packages:
   - 'examples/*'
   - 'libs/*'
   - 'codemod'
+  - 'copilot'
   - 'did-you-know'
   - 'scripts'
   - 'ui'

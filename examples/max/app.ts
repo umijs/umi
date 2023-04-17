@@ -19,6 +19,23 @@ export async function getInitialState() {
   };
 }
 
+export const locale = {
+  textComponent: 'h1',
+  onError: () => {
+    console.log('error handler...');
+  },
+  // locale: string
+  // formats: CustomFormats
+  // messages: Record<string, string> | Record<string, MessageFormatElement[]>
+  // defaultLocale: string
+  // defaultFormats: CustomFormats
+  // timeZone?: string
+  // textComponent?: React.ComponentType | keyof React.ReactHTML
+  // wrapRichTextChunksInFragment?: boolean
+  // defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>
+  // onError(err: string): void
+};
+
 export const layout = {
   logout() {
     alert('logout');

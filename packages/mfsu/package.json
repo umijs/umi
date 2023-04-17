@@ -1,6 +1,6 @@
 {
   "name": "@umijs/mfsu",
-  "version": "4.0.0-canary.20230309.4",
+  "version": "4.0.65",
   "description": "@umijs/mfsu",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/mfsu#readme",
   "bugs": "https://github.com/umijs/umi/issues",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "is-absolute-url": "^4.0.1",
     "mrmime": "1.0.1",
-    "webpack": "5.75.0",
+    "webpack": "5.76.1",
     "webpack-virtual-modules": "0.5.0"
   },
   "publishConfig": {

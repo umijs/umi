@@ -1,7 +1,7 @@
-import { isZodSchema, winPath, zod2string } from '@umijs/utils';
+import { isZodSchema } from '@umijs/utils';
 import joi from '@umijs/utils/compiled/@hapi/joi';
 import { z, ZodSchema } from '@umijs/utils/compiled/zod';
-import { dirname } from 'path';
+import { zodToTs } from '@umijs/zod2ts';
 import { IApi } from '../../types';
 
 // Need to be excluded function type declared in `IConfig`
@@ -51,17 +51,28 @@ export default (api: IApi) => {
       content,
     });
 
+    const typeName = `IConfigTypes`;
+    const typeString = zodToTs({
+      zod: z.object(zodProperties),
+      identifier: typeName,
+    }).replace(
+      // replace to support routes circular reference type
+      `routes?: (any | undefined)`,
+      `routes?: ${typeName}['routes']`,
+    );
+
     const typeContent: string = `
-import { zod as z } from "${winPath(
-      dirname(require.resolve('@umijs/utils/package.json')),
-    )}";
-import { IConfigFromPluginsJoi } from "./pluginConfigJoi.d";
+import { ${interfaceName} } from "./pluginConfigJoi.d";
 
-const IConfig = ${zod2string(z.object(zodProperties))};
+interface ${typeName} ${typeString};
 
-type IConfigTypes = z.infer<typeof IConfig>;
+type PrettifyWithCloseable<T> = {
+  [K in keyof T]: T[K] | false;
+} & {};
 
-export type IConfigFromPlugins = IConfigFromPluginsJoi & Partial<IConfigTypes>;
+export type IConfigFromPlugins = PrettifyWithCloseable<
+  ${interfaceName} & Partial<${typeName}>
+>;
     `;
     api.writeTmpFile({
       noPluginDir: true,

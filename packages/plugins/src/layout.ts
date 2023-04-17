@@ -40,11 +40,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'layout',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object(),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.record(zod.any());
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },

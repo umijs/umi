@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { execa } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi';
@@ -8,13 +8,10 @@ export default (api: IApi) => {
   api.describe({
     key: 'unocss',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            watch: Joi.array(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.object({
+          watch: zod.array(zod.any()),
+        });
       },
     },
     enableBy: api.EnableBy.config,
@@ -22,7 +19,7 @@ export default (api: IApi) => {
 
   const outputPath = 'uno.css';
 
-  api.onBeforeCompiler(() => {
+  api.onBeforeCompiler(async () => {
     if (process.env.IS_UMI_BUILD_WORKER) return;
 
     /** 由于 @unocss/cli 对设置文件进行了检查，因此加入需要 unocss.config.ts 设置的提示
@@ -34,19 +31,24 @@ export default (api: IApi) => {
 
     const generatedPath = join(api.paths.absTmpPath, outputPath);
     const binPath = join(api.cwd, 'node_modules/.bin/unocss');
-    const watchDirs = api.config.unocss.watch;
+    const watchDirs = api.config.unocss.watch || [];
 
     /** 透过子进程建立 unocss 服务，将生成的 css 写入 generatedPath */
-    const unocss = exec(
-      `${binPath} ${watchDirs.join(' ')} --out-file ${generatedPath} ${
-        api.env === 'development' ? '--watch' : ''
-      }`,
-      { cwd: api.cwd },
-    );
+    const isDev = api.env === 'development';
+    const args = [
+      ...watchDirs,
+      '--out-file',
+      generatedPath,
+      isDev ? '--watch' : '',
+    ].filter(Boolean);
 
-    unocss.on('error', (m: any) => {
-      api.logger.error('unocss service encounter an error: ' + m);
+    const execaRes = execa.execa(binPath, args, {
+      cwd: api.cwd,
+      stdio: isDev ? 'pipe' : 'inherit',
     });
+    if (!isDev) {
+      await execaRes;
+    }
   });
 
   /** 将生成的 css 文件加入到 import 中 */

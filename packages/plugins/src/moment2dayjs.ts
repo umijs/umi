@@ -11,14 +11,13 @@ export default (api: IApi) => {
   api.describe({
     key: 'moment2dayjs',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            preset: Joi.string(), // 'antd' | 'antdv3 | 'none'
-            plugins: Joi.array(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            preset: zod.enum(['antd', 'antdv3', 'none']), // 'antd' | 'antdv3 | 'none'
+            plugins: zod.array(zod.string()),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,

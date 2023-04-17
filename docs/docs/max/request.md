@@ -139,7 +139,7 @@ const request: RequestConfig = {
 ```typescript
 import { useRequest } from 'umi';
 
-export default () => {
+export default function Page() {
   const { data, error, loading } = useRequest(() => {
     return services.getUserList('/api/test');
   });

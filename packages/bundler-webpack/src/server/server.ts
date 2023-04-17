@@ -64,13 +64,13 @@ export async function createServer(opts: IOpts): Promise<any> {
     }
   });
 
-  // before middlewares
-  (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
-
   // Provides the ability to execute custom middleware prior to all other middleware internally within the server.
   if (opts.onBeforeMiddleware) {
     opts.onBeforeMiddleware(app);
   }
+
+  // before middlewares
+  (opts.beforeMiddlewares || []).forEach((m) => app.use(m));
 
   // webpack dev middleware
   const configs = Array.isArray(webpackConfig)
@@ -121,6 +121,7 @@ export async function createServer(opts: IOpts): Promise<any> {
       opts.onDevCompileDone?.({
         stats,
         isFirstCompile,
+        ws,
         time: stats.endTime - stats.startTime,
       });
       isFirstCompile = false;

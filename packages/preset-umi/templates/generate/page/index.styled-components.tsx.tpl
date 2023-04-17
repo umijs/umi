@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from 'umi';
+import { styled } from '{{{importSource}}}';
 
 const Wrapper = styled.div`
   h1 { background: rgb(121, 184, 242); }

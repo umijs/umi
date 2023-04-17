@@ -6,11 +6,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'tailwindcss',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object(),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod.record(zod.any());
       },
     },
     enableBy: api.EnableBy.config,

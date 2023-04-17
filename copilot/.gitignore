@@ -1,0 +1,5 @@
+/dist
+/node_modules
+/fixtures/*/node_modules
+/fixtures/tmp
+/fixtures/**/*.out.js

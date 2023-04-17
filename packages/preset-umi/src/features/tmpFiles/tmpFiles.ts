@@ -17,8 +17,8 @@ export default (api: IApi) => {
   api.describe({
     key: 'tmpFiles',
     config: {
-      schema(Joi) {
-        return Joi.boolean();
+      schema({ zod }) {
+        return zod.boolean();
       },
     },
   });
@@ -43,6 +43,8 @@ export default (api: IApi) => {
     const srcPrefix = api.appData.hasSrcDir ? 'src/' : '';
     const umiTempDir = `${srcPrefix}.umi`;
     const baseUrl = api.appData.hasSrcDir ? '../../' : '../';
+    const isTs5 = api.appData.typescript.tsVersion?.startsWith('5');
+    const isTslibInstalled = !!api.appData.typescript.tslibVersion;
 
     api.writeTmpFile({
       noPluginDir: true,
@@ -56,8 +58,12 @@ export default (api: IApi) => {
           compilerOptions: {
             target: 'esnext',
             module: 'esnext',
-            moduleResolution: 'node',
-            importHelpers: true,
+            lib: ['dom', 'dom.iterable', 'esnext'],
+            allowJs: true,
+            skipLibCheck: true,
+            moduleResolution: isTs5 ? 'bundler' : 'node',
+            importHelpers: isTslibInstalled,
+            noEmit: true,
             jsx: api.appData.framework === 'vue' ? 'preserve' : 'react-jsx',
             esModuleInterop: true,
             sourceMap: true,
@@ -370,7 +376,8 @@ export default function EmptyRoute() {
       headerImports.push(`import clientLoaders from './loaders.js';`);
     }
     // routeProps is enabled for conventional routes
-    if (!api.userConfig.routes) {
+    // e.g. dumi 需要用到约定式路由但又不需要 routeProps
+    if (!api.userConfig.routes && api.isPluginEnable('routeProps')) {
       // routeProps":"routeProps['foo']" > ...routeProps['foo']
       routesString = routesString.replace(
         /"routeProps":"(routeProps\[.*?)"/g,

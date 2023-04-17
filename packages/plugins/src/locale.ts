@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { IApi } from 'umi';
+import { IApi, RUNTIME_TYPE_FILE_NAME } from 'umi';
 import { lodash, Mustache, winPath } from 'umi/plugin-utils';
 import {
   exactLocalePaths,
@@ -46,18 +46,17 @@ export default (api: IApi) => {
   api.describe({
     key: 'locale',
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            default: Joi.string(),
-            useLocalStorage: Joi.boolean(),
-            baseNavigator: Joi.boolean(),
-            title: Joi.boolean(),
-            antd: Joi.boolean(),
-            baseSeparator: Joi.string(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            default: zod.string(),
+            useLocalStorage: zod.boolean(),
+            baseNavigator: zod.boolean(),
+            title: zod.boolean(),
+            antd: zod.boolean(),
+            baseSeparator: zod.string(),
+          })
+          .partial();
       },
     },
     enableBy: api.EnableBy.config,
@@ -243,6 +242,21 @@ export default (api: IApi) => {
 export { addLocale, setLocale, getLocale, getIntl, useIntl, injectIntl, formatMessage, FormattedMessage, getAllLocales, FormattedDate, FormattedDateParts, FormattedDisplayName, FormattedHTMLMessage, FormattedList, FormattedNumber, FormattedNumberParts, FormattedPlural, FormattedRelativeTime, FormattedTime, FormattedTimeParts, IntlProvider, RawIntlProvider } from './localeExports';
 export { SelectLang } from './SelectLang';
 `,
+    });
+    api.writeTmpFile({
+      path: RUNTIME_TYPE_FILE_NAME,
+      content: `
+import {
+  IntlCache,
+  createIntl,
+} from '${reactIntlPkgPath}';
+type OptionalIntlConfig = Omit<Parameters<typeof createIntl>[0], 'locale' | 'defaultLocale'>;
+export interface IRuntimeConfig {
+    locale?: {
+      getLocale?: () => string;
+      cache?: IntlCache;
+    } & OptionalIntlConfig;
+};`,
     });
   });
 

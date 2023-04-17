@@ -11,15 +11,14 @@ export default (api: IApi) => {
 
   api.describe({
     config: {
-      schema(Joi) {
-        return Joi.alternatives().try(
-          Joi.object({
-            extraModels: Joi.array().items(Joi.string()),
-            immer: Joi.object(),
-            skipModelValidate: Joi.boolean(),
-          }),
-          Joi.boolean().invalid(true),
-        );
+      schema({ zod }) {
+        return zod
+          .object({
+            extraModels: zod.array(zod.string()),
+            immer: zod.record(zod.any()),
+            skipModelValidate: zod.boolean(),
+          })
+          .deepPartial();
       },
     },
     enableBy: api.EnableBy.config,
