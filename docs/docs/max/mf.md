@@ -21,10 +21,6 @@ const shared = {
     singleton: true,
     eager: true,
   },
-  'react-dom': {
-    singleton: true,
-    eager: true,
-  },
 };
 
 export default defineConfig({
@@ -53,10 +49,6 @@ import { defineConfig } from 'umi';
 
 const shared = {
   react: {
-    singleton: true,
-    eager: true,
-  },
-  'react-dom': {
     singleton: true,
     eager: true,
   },
@@ -358,10 +350,6 @@ export default defineConfig({
         singleton: true,
         eager: true,
       },
-      'react-dom': {
-        singleton: true,
-        eager: true,
-      },
     }
   },
 });
@@ -378,10 +366,6 @@ export default defineConfig({
     remoteAliases: ['remote1', 'aliasRemote'],
     shared: {
       react: {
-        singleton: true,
-        eager: true,
-      },
-      'react-dom': {
         singleton: true,
         eager: true,
       },
@@ -402,10 +386,6 @@ export default defineConfig({
     ],
     shared: {
       react: {
-        singleton: true,
-        eager: true,
-      },
-      'react-dom': {
         singleton: true,
         eager: true,
       },
