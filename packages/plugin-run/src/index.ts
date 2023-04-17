@@ -9,9 +9,9 @@ export default (api: IApi) => {
   api.describe({
     key: 'run',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          globals: Joi.array().items(Joi.string()),
+      schema({ zod }) {
+        return zod.object({
+          globals: zod.array(zod.string()).optional(),
         });
       },
     },

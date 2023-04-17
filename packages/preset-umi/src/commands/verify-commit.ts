@@ -7,11 +7,13 @@ export default (api: IApi) => {
   api.describe({
     key: 'verifyCommit',
     config: {
-      schema(Joi) {
-        return Joi.object({
-          scope: Joi.array().items(Joi.string()),
-          allowEmoji: Joi.boolean(),
-        });
+      schema({ zod }) {
+        return zod
+          .object({
+            scope: zod.array(zod.string()),
+            allowEmoji: zod.boolean(),
+          })
+          .deepPartial();
       },
     },
   });
