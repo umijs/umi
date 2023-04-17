@@ -7,8 +7,22 @@ import { extname } from 'path';
 import type { LoaderContext } from 'webpack';
 import type { IEsbuildLoaderOpts } from '../types';
 
-const MCJS_REGEXP = /(m|c)js$/;
-const MCTS_REGEXP = /(m|c)ts$/;
+const LOADER_MAP = {
+  // js
+  js: 'js',
+  cjs: 'js',
+  mjs: 'js',
+  jsx: 'jsx',
+  cjsx: 'jsx',
+  mjsx: 'jsx',
+  // ts
+  ts: 'ts',
+  cts: 'ts',
+  mts: 'ts',
+  tsx: 'tsx',
+  ctsx: 'tsx',
+  mtsx: 'tsx',
+} satisfies Record<string, EsbuildLoader>;
 
 async function esbuildTranspiler(
   this: LoaderContext<IEsbuildLoaderOpts>,
@@ -20,15 +34,9 @@ async function esbuildTranspiler(
   const transform = implementation?.transform || transformInternal;
 
   const filePath = this.resourcePath;
-  const ext = extname(filePath).slice(1);
 
-  let loader = ext ?? 'default';
-
-  if (MCJS_REGEXP.test(ext)) {
-    loader = 'js';
-  } else if (MCTS_REGEXP.test(ext)) {
-    loader = 'ts';
-  }
+  const ext = extname(filePath).slice(1) as keyof typeof LOADER_MAP;
+  const loader = LOADER_MAP[ext] ?? 'default';
 
   const transformOptions = {
     ...otherOptions,
