@@ -3,7 +3,7 @@
 __USE_MODEL__;
 import concat from 'lodash/concat';
 import mergeWith from 'lodash/mergeWith';
-import isEqual from "lodash/isEqual";
+import isEqual from 'lodash/isEqual';
 import noop from 'lodash/noop';
 import {
   FrameworkConfiguration,
