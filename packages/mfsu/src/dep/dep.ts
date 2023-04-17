@@ -37,7 +37,12 @@ export class Dep {
   }
 
   private normalizePath(p: string): string {
-    const longPath = p.replace(/\//g, '_').replace(/:/g, '_');
+    let longPath = p;
+
+    if (longPath.startsWith(this.cwd)) {
+      longPath = longPath.slice(this.cwd.length);
+    }
+    longPath = longPath.replace(/\//g, '_').replace(/:/g, '_');
 
     if (longPath.length <= 200) {
       return longPath;
