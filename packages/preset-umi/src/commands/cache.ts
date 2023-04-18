@@ -1,6 +1,6 @@
 import { fsExtra, logger } from '@umijs/utils';
 import { join } from 'path';
-import treeify from 'treeify';
+import treeify from '../../compiled/treeify';
 import { IApi } from '../types';
 
 export default (api: IApi) => {

@@ -2361,9 +2361,6 @@ importers:
       regenerator-runtime:
         specifier: 0.13.11
         version: 0.13.11
-      treeify:
-        specifier: ^1.1.0
-        version: 1.1.0
     devDependencies:
       '@manypkg/get-packages':
         specifier: 1.1.3
@@ -2401,6 +2398,9 @@ importers:
       sirv:
         specifier: 2.0.2
         version: 2.0.2
+      treeify:
+        specifier: ^1.1.0
+        version: 1.1.0
       vite:
         specifier: 4.2.0
         version: 4.2.0(@types/node@18.11.18)(less@4.1.3)
@@ -37325,7 +37325,7 @@ packages:
   /treeify@1.1.0:
     resolution: {integrity: sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==}
     engines: {node: '>=0.6'}
-    dev: false
+    dev: true
 
   /treeverse@2.0.0:
     resolution: {integrity: sha512-N5gJCkLu1aXccpOTtqV6ddSEi6ZmGkh3hjmbu1IjcavJK4qyOVQmi0myQKM7z5jVGmD68SJoliaVrMmVObhj6A==}
