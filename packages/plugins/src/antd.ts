@@ -249,21 +249,23 @@ export type IRuntimeConfig = {
     return [];
   });
 
-  // import antd style if antd.import is not configured
   api.addEntryImportsAhead(() => {
+    const isAntd5 = antdVersion.startsWith('5');
     const style = api.config.antd.style || 'less';
+    const imports: Awaited<
+      ReturnType<Parameters<IApi['addEntryImportsAhead']>[0]['fn']>
+    > = [];
 
-    const doNotImportLess =
-      (api.config.antd.import && !api.appData.vite) ||
-      antdVersion.startsWith('5');
+    if (isAntd5) {
+      // import antd@5 reset style
+      imports.push({ source: 'antd/dist/reset.css' });
+    } else if (!api.config.antd.import || api.appData.vite) {
+      // import antd@4 style if antd.import is not configured
+      imports.push({
+        source: style === 'less' ? 'antd/dist/antd.less' : 'antd/dist/antd.css',
+      });
+    }
 
-    return doNotImportLess
-      ? []
-      : [
-          {
-            source:
-              style === 'less' ? 'antd/dist/antd.less' : 'antd/dist/antd.css',
-          },
-        ];
+    return imports;
   });
 };
