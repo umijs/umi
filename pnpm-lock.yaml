@@ -1158,12 +1158,6 @@ importers:
         specifier: workspace:*
         version: link:../../packages/umi
 
-  examples/umi-cache:
-    dependencies:
-      umi:
-        specifier: workspace:*
-        version: link:../../packages/umi
-
   examples/umi-run:
     dependencies:
       umi:
