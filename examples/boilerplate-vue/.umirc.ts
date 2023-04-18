@@ -60,6 +60,10 @@ export default {
       ],
     },
     {
+      path: '/jsx-demo',
+      component: 'demo-jsx',
+    },
+    {
       // 404
       path: '/:pathMatch(.*)*',
       component: '@/components/404',

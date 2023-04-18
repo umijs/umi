@@ -10,6 +10,7 @@ export default defineConfig({
       // implement node event listeners here
     },
     baseUrl: `http://localhost:${PORT}`,
+    // experimentalStudio: true,
   },
   retries: {
     runMode: 3,

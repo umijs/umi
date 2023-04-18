@@ -69,8 +69,13 @@ export default (api: IApi) => {
       // 支持 tsx
       isTSX: true,
     };
+
+    // 禁用 react
+    memo.presetReact = false;
     return memo;
   });
+
+  api.addExtraBabelPlugins(() => [require.resolve('@vue/babel-plugin-jsx')]);
 
   // 增加运行时key
   api.addRuntimePluginKey(() => [

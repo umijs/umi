@@ -8,6 +8,7 @@
         <router-link to="/about">About</router-link>
         <router-link to="/list">List</router-link>
         <router-link to="/users">Users</router-link>
+        <router-link to="/jsx-demo">Jsx Demo</router-link>
       </nav>
     </header>
     <main>
