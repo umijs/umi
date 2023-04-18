@@ -1,8 +1,7 @@
-import * as logger from '@umijs/utils/src/logger';
+import { fsExtra, logger } from '@umijs/utils';
 import { join } from 'path';
 import treeify from 'treeify';
-import { IApi } from 'umi';
-import { fsExtra } from 'umi/plugin-utils';
+import { IApi } from '../types';
 
 export default (api: IApi) => {
   api.registerCommand({
@@ -73,7 +72,7 @@ function getDirectorySize({ dir, depth = 2, current = 1 }: IGetDirectorySize) {
       if (obj.tree) {
         obj.tree[`[${getSize(fileSize)}] ${file}`] = null;
       }
-    } else if (stats.isDirectory()) {
+    } else {
       const objChild = getDirectorySize({
         dir: filePath,
         current: current + 1,
