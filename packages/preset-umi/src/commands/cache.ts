@@ -24,8 +24,8 @@ umi cache ls [--depth <depth>]
       } else if (args._[0] === 'ls') {
         const depth: number = args.depth ?? 1;
         const dirObj = getDirectorySize({
-          directoryPath: absCachePath,
-          number: depth + 1,
+          dir: absCachePath,
+          depth: depth + 1,
         });
         const tree: any = {};
         const str = `[${getSize(dirObj.size)}] node_modules/.cache`;
@@ -36,37 +36,25 @@ umi cache ls [--depth <depth>]
   });
 };
 
-/**
- * 获取目录信息
- * @param directoryPath 目录路径
- * @param number 展示目录层数
- * @param index 标记层数
- * @returns
- */
 interface GetDirectorySize {
-  directoryPath: string;
-  name?: string;
-  number?: number;
-  index?: number;
+  dir: string;
+  depth?: number;
+  current?: number;
 }
-function getDirectorySize({
-  directoryPath,
-  number = 2,
-  index = 1,
-}: GetDirectorySize) {
+function getDirectorySize({ dir, depth = 2, current = 1 }: GetDirectorySize) {
   const obj: { size: number; tree: any } = {
     size: 0,
     tree: null,
   };
-  const isCreateTree = index < number;
+  const isCreateTree = current < depth;
   if (isCreateTree) {
     obj.tree = {};
   }
-  fsExtra.ensureDirSync(directoryPath);
-  const files = fsExtra.readdirSync(directoryPath);
+  fsExtra.ensureDirSync(dir);
+  const files = fsExtra.readdirSync(dir);
 
   files.forEach(function (file) {
-    const filePath = join(directoryPath, file);
+    const filePath = join(dir, file);
     const stats = fsExtra.statSync(filePath);
 
     if (stats.isFile()) {
@@ -77,10 +65,9 @@ function getDirectorySize({
       }
     } else if (stats.isDirectory()) {
       const objChild = getDirectorySize({
-        directoryPath: filePath,
-        index: index + 1,
-        number,
-        name: file,
+        dir: filePath,
+        current: current + 1,
+        depth,
       });
       if (obj.tree) {
         obj.tree[`[${getSize(objChild.size)}] ${file}`] = objChild.tree;
@@ -94,7 +81,7 @@ function getDirectorySize({
 
 function getSize(size: number) {
   if (size > 1024) {
-    return `${(size / 1024).toFixed(2)}MB`;
+    return `${(size / 1024).toFixed(2)} MB`;
   }
-  return `${size}KB`;
+  return `${size} KB`;
 }
