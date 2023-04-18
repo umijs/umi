@@ -1,3 +1,4 @@
+import * as logger from '@umijs/utils/src/logger';
 import { join } from 'path';
 import treeify from 'treeify';
 import { IApi } from 'umi';
@@ -19,30 +20,41 @@ umi cache ls [--depth <depth>]
     configResolveMode: 'loose',
     fn: ({ args }) => {
       const absCachePath = join(api.paths.absNodeModulesPath, '.cache');
-      if (args._[0] === 'clean') {
-        fsExtra.removeSync(absCachePath);
-      } else if (args._[0] === 'ls') {
-        const depth: number = args.depth ?? 1;
-        const dirObj = getDirectorySize({
-          dir: absCachePath,
-          depth: depth + 1,
-        });
-        const tree: any = {};
-        const str = `[${getSize(dirObj.size)}] node_modules/.cache`;
-        tree[str] = dirObj.tree;
-        console.log(treeify.asTree(tree, true, true));
+      if (fsExtra.existsSync(absCachePath)) {
+        if (args._[0] === 'clean') {
+          fsExtra.removeSync(absCachePath);
+        } else if (args._[0] === 'ls') {
+          const depth: number = args.depth ?? 1;
+          const dirObj = getDirectorySize({
+            dir: absCachePath,
+            depth: depth + 1,
+          });
+          const tree: any = {};
+          const str = `[${getSize(dirObj.size)}] node_modules/.cache`;
+          tree[str] = dirObj.tree;
+          logger.info(
+            `[umi cache] dir info\n${treeify.asTree(tree, true, true)}`,
+          );
+        }
+      } else {
+        logger.info('[umi cache] 当前没有缓存');
       }
     },
   });
 };
 
-interface GetDirectorySize {
+type Tree = null | { [key: string]: null | Tree };
+
+interface IGetDirectorySize {
   dir: string;
   depth?: number;
   current?: number;
 }
-function getDirectorySize({ dir, depth = 2, current = 1 }: GetDirectorySize) {
-  const obj: { size: number; tree: any } = {
+function getDirectorySize({ dir, depth = 2, current = 1 }: IGetDirectorySize) {
+  const obj: {
+    size: number;
+    tree: Tree;
+  } = {
     size: 0,
     tree: null,
   };
@@ -50,10 +62,8 @@ function getDirectorySize({ dir, depth = 2, current = 1 }: GetDirectorySize) {
   if (isCreateTree) {
     obj.tree = {};
   }
-  fsExtra.ensureDirSync(dir);
   const files = fsExtra.readdirSync(dir);
-
-  files.forEach(function (file) {
+  files.forEach((file) => {
     const filePath = join(dir, file);
     const stats = fsExtra.statSync(filePath);
 
