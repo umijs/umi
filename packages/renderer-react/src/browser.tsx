@@ -340,7 +340,7 @@ export function renderClient(opts: RenderClientOpts) {
   }
 
   if (ReactDOM.createRoot) {
-    root = ReactDOM.createRoot(rootElement);
+    root ||= ReactDOM.createRoot(rootElement);
     root.render(<Browser />);
     return;
   }
