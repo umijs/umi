@@ -41,7 +41,7 @@ export default (_context: any, opts: IOpts) => {
         },
       ],
       // 允许禁用 preset-react 用于支持 vue 等其他框架
-      opts.presetReact && [
+      opts.presetReact !== false && [
         require.resolve('@umijs/bundler-utils/compiled/babel/preset-react'),
         {
           runtime: 'automatic',

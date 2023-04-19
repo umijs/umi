@@ -8,19 +8,9 @@ export default (api: IApi) => {
     key: 'preset-vue:vite',
   });
 
-  api.describe({
-    key: 'vuejsx',
-    config: {
-      schema({ zod }) {
-        return zod.object({});
-      },
-      default: {},
-    },
-  });
-
   api.modifyViteConfig((config) => {
     config.plugins?.push(vue(api.config.vue));
-    config.plugins?.push(vueJsx(api.config.vuejsx));
+    config.plugins?.push(vueJsx(api.config?.vue?.vueJsx));
     return config;
   });
 };
