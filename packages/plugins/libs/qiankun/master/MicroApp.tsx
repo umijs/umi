@@ -2,8 +2,8 @@
 /* eslint-disable */
 __USE_MODEL__;
 import concat from 'lodash/concat';
-import mergeWith from 'lodash/mergeWith';
 import isEqual from 'lodash/isEqual';
+import mergeWith from 'lodash/mergeWith';
 import noop from 'lodash/noop';
 import {
   FrameworkConfiguration,
@@ -135,17 +135,21 @@ export const MicroApp = forwardRef(
     };
 
     const containerRef = useRef<HTMLDivElement>();
-    const microAppRef = useRef<MicroAppType>();
+    const [microApp, setMicroApp] = useState<MicroAppType>();
 
-    useImperativeHandle(componentRef, () => microAppRef.current);
+    useImperativeHandle(componentRef, () => microApp!, [microApp]);
 
     const appConfig = apps.find((app: any) => isCurrentApp(app));
     useEffect(() => {
       if (!appConfig) {
         setComponentError(
           new Error(
-            `[@umijs/plugin-qiankun]: Can not find the configuration of ${name} app! Currently, only the following apps are configured:\n${JSON.stringify(apps, null, 2)}`
-          )
+            `[@umijs/plugin-qiankun]: Can not find the configuration of ${name} app! Currently, only the following apps are configured:\n${JSON.stringify(
+              apps,
+              null,
+              2,
+            )}`,
+          ),
         );
       }
       return noop;
@@ -155,7 +159,10 @@ export const MicroApp = forwardRef(
     const stateForSlave = (useModel || noop)(
       qiankunStateForSlaveModelNamespace,
     );
-    const { entry, props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {} } = appConfig || {};
+    const {
+      entry,
+      props: { settings: settingsFromConfig = {}, ...propsFromConfig } = {},
+    } = appConfig || {};
 
     useEffect(() => {
       setComponentError(null);
@@ -166,7 +173,7 @@ export const MicroApp = forwardRef(
         ...settingsFromConfig,
         ...settingsFromProps,
       };
-      microAppRef.current = loadMicroApp(
+      const app: MicroAppType = loadMicroApp(
         {
           name,
           entry,
@@ -189,10 +196,11 @@ export const MicroApp = forwardRef(
           concat(v1 ?? [], v2 ?? []),
         ),
       );
+      setMicroApp(app);
 
       // 当配置了 prefetch true 时，在第一个应用 mount 完成之后，再去预加载其他应用
       if (prefetch && prefetch !== 'all' && noneMounted) {
-        microAppRef.current?.mountPromise.then(() => {
+        app.mountPromise.then(() => {
           if (noneMounted) {
             if (Array.isArray(prefetch)) {
               const specialPrefetchApps = apps.filter(
@@ -216,8 +224,8 @@ export const MicroApp = forwardRef(
 
       (['loadPromise', 'bootstrapPromise', 'mountPromise'] as const).forEach(
         (key) => {
-          const promise = microAppRef.current?.[key];
-          promise.catch((e) => {
+          const promise = app[key];
+          promise?.catch((e) => {
             setComponentError(e);
             setLoading(false);
           });
@@ -225,17 +233,13 @@ export const MicroApp = forwardRef(
       );
 
       return () => {
-        const microApp = microAppRef.current;
-        if (microApp) {
-          // 微应用 unmount 是异步的，中间的流转状态不能确定，所有需要一个标志位来确保 unmount 开始之后不会再触发 update
-          microApp._unmounting = true;
-          unmountMicroApp(microApp);
-        }
+        // 微应用 unmount 是异步的，中间的流转状态不能确定，所有需要一个标志位来确保 unmount 开始之后不会再触发 update
+        app._unmounting = true;
+        unmountMicroApp(app);
       };
     }, [name]);
 
     useEffect(() => {
-      const microApp = microAppRef.current;
       if (microApp) {
         if (!microApp._updatingPromise) {
           // 初始化 updatingPromise 为 microApp.mountPromise，从而确保后续更新是在应用 mount 完成之后
@@ -245,7 +249,9 @@ export const MicroApp = forwardRef(
           // 确保 microApp.update 调用是跟组件状态变更顺序一致的，且后一个微应用更新必须等待前一个更新完成
           microApp._updatingPromise = microApp._updatingPromise.then(() => {
             const canUpdate = (microApp?: MicroAppType) =>
-              microApp?.update && microApp.getStatus() === 'MOUNTED' && !microApp._unmounting;
+              microApp?.update &&
+              microApp.getStatus() === 'MOUNTED' &&
+              !microApp._unmounting;
             if (canUpdate(microApp)) {
               const props = {
                 ...propsFromConfig,
@@ -280,7 +286,7 @@ export const MicroApp = forwardRef(
       }
 
       return noop;
-    }, [useDeepCompare({ ...stateForSlave, ...propsFromParams })]);
+    }, [microApp, useDeepCompare({ ...stateForSlave, ...propsFromParams })]);
 
     // 未配置自定义 loader 且开启了 autoSetLoading 场景下，使用插件默认的 loader，否则使用自定义 loader
     const microAppLoader =
