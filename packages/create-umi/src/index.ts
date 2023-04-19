@@ -237,8 +237,9 @@ export default async ({
   // pnpm
   let pnpmExtraNpmrc: string = '';
   const isPnpm = npmClient === ENpmClient.pnpm;
+  let pnpmMajorVersion: number | undefined;
   if (isPnpm) {
-    const pnpmMajorVersion = await getPnpmMajorVersion();
+    pnpmMajorVersion = await getPnpmMajorVersion();
     if (pnpmMajorVersion === 7) {
       // suppress pnpm v7 warning ( 7.0.0 < pnpm < 7.13.5 )
       // https://pnpm.io/npmrc#strict-peer-dependencies
@@ -293,10 +294,29 @@ export default async ({
   }
 
   // install deps
+  const isPnpm8 = pnpmMajorVersion === 8;
   if (!useDefaultData && args.install !== false) {
-    installWithNpmClient({ npmClient, cwd: target });
+    if (isPnpm8) {
+      await installWithPnpm8(target);
+    } else {
+      installWithNpmClient({ npmClient, cwd: target });
+    }
   } else {
     logger.info(`Skip install deps`);
+    if (isPnpm8) {
+      logger.warn(
+        chalk.yellow(
+          `You current using pnpm v8, it will install minimal version of dependencies`,
+        ),
+      );
+      logger.warn(
+        chalk.green(
+          `Recommended that you run ${chalk.bold.cyan(
+            'pnpm up -L',
+          )} to install latest version of dependencies`,
+        ),
+      );
+    }
   }
 };
 
@@ -346,6 +366,13 @@ async function removeHusky(opts: IContext) {
   if (existsSync(dir)) {
     await fsExtra.remove(dir);
   }
+}
+
+// pnpm v8 will install minimal version of the dependencies
+// so we upgrade all deps to the latest version
+// https://pnpm.io/npmrc#resolution-mode
+async function installWithPnpm8(cwd: string) {
+  await execa.execa('pnpm', ['up', '-L'], { cwd, stdio: 'inherit' });
 }
 
 async function getPnpmMajorVersion() {
