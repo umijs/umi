@@ -2378,7 +2378,7 @@ importers:
         specifier: 1.4.7
         version: 1.4.7
       '@types/treeify':
-        specifier: ^1.0.0
+        specifier: 1.0.0
         version: 1.0.0
       body-parser:
         specifier: 1.20.0
@@ -2399,7 +2399,7 @@ importers:
         specifier: 2.0.2
         version: 2.0.2
       treeify:
-        specifier: ^1.1.0
+        specifier: 1.1.0
         version: 1.1.0
       vite:
         specifier: 4.2.0
