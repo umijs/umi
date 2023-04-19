@@ -53,6 +53,7 @@ export default function HomePage() {
           return <Icon icon={i} className={i} key={i} />;
         })}
         <Icon icon="local:logo/foo/smile" />
+        <Icon icon="local:logo/heart-Upper-CASE" />
       </div>
     </div>
   );
