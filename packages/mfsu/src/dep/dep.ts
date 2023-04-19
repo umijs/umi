@@ -1,5 +1,6 @@
 import { chalk, logger, pkgUp, winPath } from '@umijs/utils';
 import assert from 'assert';
+import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
 import { dirname, isAbsolute, join } from 'path';
 import { MF_VA_PREFIX } from '../constants';
@@ -29,10 +30,28 @@ export class Dep {
     this.version = opts.version;
     this.cwd = opts.cwd;
     this.shortFile = this.file;
-    this.normalizedFile = this.shortFile.replace(/\//g, '_').replace(/:/g, '_');
+    this.normalizedFile = this.normalizePath(this.shortFile);
     this.filePath = `${MF_VA_PREFIX}${this.normalizedFile}.js`;
     this.excludeNodeNatives = opts.excludeNodeNatives!;
     this.importer = opts.importer;
+  }
+
+  private normalizePath(p: string): string {
+    let longPath = p;
+
+    if (longPath.startsWith(this.cwd)) {
+      longPath = longPath.slice(this.cwd.length);
+    }
+    longPath = longPath.replace(/\//g, '_').replace(/:/g, '_');
+
+    if (longPath.length <= 200) {
+      return longPath;
+    }
+
+    const hash = createHash('md5').update(longPath).digest('hex').slice(0, 16);
+    const post = longPath.slice(-200);
+
+    return `${hash}_${post}`;
   }
 
   async buildExposeContent() {
