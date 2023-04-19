@@ -10,7 +10,7 @@ export default (api: IApi) => {
 
   api.modifyViteConfig((config) => {
     config.plugins?.push(vue(api.config.vue));
-    config.plugins?.push(vueJsx(api.config?.vue?.vueJsx));
+    config.plugins?.push(vueJsx(api.config?.vue?.pluginJsx));
     return config;
   });
 };
