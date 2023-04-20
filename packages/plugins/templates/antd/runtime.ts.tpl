@@ -34,7 +34,10 @@ const getAntdConfig = () => {
 }
 
 export function rootContainer(rawContainer) {
-  const finalConfigProvider = getAntdConfig();
+  const {
+    appConfig,
+    ...finalConfigProvider
+  } = getAntdConfig();
   let container = rawContainer;
 {{#configProvider}}
   if (finalConfigProvider.prefixCls) {
